@@ -18,7 +18,8 @@
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class="w-48">
 		<DropdownMenu.Item
-			on:m-click={() => {
+			class="gap-2"
+			on:click={() => {
 				webhookModal.open()
 				open = false
 			}}
@@ -27,7 +28,8 @@
 			<span>{$t('Webhook')}</span>
 		</DropdownMenu.Item>
 		<DropdownMenu.Item
-			on:m-click={() => {
+			class="gap-2"
+			on:click={() => {
 				erdModal.open()
 				open = false
 			}}
@@ -37,7 +39,8 @@
 		</DropdownMenu.Item>
 		{#if $hasPermission('rls:list')}
 			<DropdownMenu.Item
-				on:m-click={() => {
+				class="gap-2"
+				on:click={() => {
 					rlsModal.open()
 				}}
 			>

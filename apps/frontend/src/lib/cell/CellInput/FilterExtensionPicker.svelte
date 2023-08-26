@@ -16,7 +16,7 @@
 	] as const
 </script>
 
-<Select.Root bind:value>
+<Select.Root bind:selected={value}>
 	<Select.Trigger>
 		<Select.Value class="font-bold text-xs" />
 	</Select.Trigger>

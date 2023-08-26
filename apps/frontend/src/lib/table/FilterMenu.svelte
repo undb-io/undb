@@ -9,7 +9,7 @@
 	import FilterEditor from '$lib/filter/FilterEditor.svelte'
 	import { getValidFilters } from '$lib/filter/filter.util'
 	import { hasPermission } from '$lib/store/authz'
-	import * as Popover from '$lib/components/ui/popover'
+	import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover'
 
 	let value = $filters
 
@@ -41,14 +41,14 @@
 	let open = false
 </script>
 
-<Popover.Root positioning={{ placement: 'bottom-start' }} closeOnOutsideClick={true} closeOnEscape bind:open>
-	<Popover.Trigger asChild let:builder>
+<Popover positioning={{ placement: 'bottom-start' }} closeOnOutsideClick={true} closeOnEscape bind:open>
+	<PopoverTrigger asChild let:builder>
 		<Button builders={[builder]} variant="secondary" class="gap-2 whitespace-nowrap" size="sm">
 			<i class="ti ti-filter text-sm" />
 			{$t('Filter')}
 		</Button>
-	</Popover.Trigger>
-	<Popover.Content class="w-[800px]">
+	</PopoverTrigger>
+	<PopoverContent class="w-[800px]">
 		<form on:submit|preventDefault={apply} id="filter_menu" class="space-y-4">
 			{#if $hasPermission('table:set_view_filter')}
 				<span class="text-xs font-medium text-gray-500 dark:text-gray-300">{$t('set filters in this view')}</span>
@@ -73,8 +73,8 @@
 				</div>
 			</FilterEditor>
 		</form>
-	</Popover.Content>
-</Popover.Root>
+	</PopoverContent>
+</Popover>
 
 {#if $setFilter.error}
 	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">

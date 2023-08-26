@@ -134,7 +134,7 @@
 						</span>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content>
-						<DropdownMenu.Item class="text-red-500 font-normal text-xs gap-2 flex items-center" on:m-click={remove}>
+						<DropdownMenu.Item class="text-red-500 font-normal text-xs gap-2 flex items-center" on:click={remove}>
 							<i class="ti ti-trash" />
 							<span>
 								{$t('Delete', { ns: 'common' })}

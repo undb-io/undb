@@ -52,7 +52,7 @@
 					</Button>
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Content>
-					<DropdownMenu.Item on:m-click={() => importDataModal.open()} class="flex items-center gap-2">
+					<DropdownMenu.Item on:click={() => importDataModal.open()} class="flex items-center gap-2">
 						<i class="ti ti-csv" />
 						<span>
 							{$t('import data content')}

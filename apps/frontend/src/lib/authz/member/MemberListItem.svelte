@@ -4,7 +4,6 @@
 	import type { IQueryMember, IRolesWithoutOwner } from '@undb/authz'
 	import { Avatar } from 'flowbite-svelte'
 	import { hasPermission } from '$lib/store/authz'
-	import type { SelectOptionType } from 'flowbite-svelte/dist/types'
 	import { trpc } from '$lib/trpc/client'
 	import { t } from '$lib/i18n'
 	import * as Card from '$lib/components/ui/card'
@@ -15,19 +14,21 @@
 
 	const canUpdateRole = $hasPermission('member:update_role')
 
-	const items: SelectOptionType[] = [
+	const items = [
 		{ value: 'admin', name: $t('admin', { ns: 'authz' }) },
 		{ value: 'editor', name: $t('editor', { ns: 'authz' }) },
 		{ value: 'viewer', name: $t('viewer', { ns: 'authz' }) },
 	]
 
 	const updateRoleMutation = trpc().authz.member.updateRole.mutation({})
-	const updateRole = (value: IRolesWithoutOwner) => {
+	const updateRole = (value: any) => {
 		$updateRoleMutation.mutate({
 			memberId: member.id,
-			role: value,
+			role: value.value,
 		})
 	}
+
+	$: selected = { value: member.role }
 </script>
 
 <Card.Root>
@@ -88,13 +89,13 @@
 			</div>
 			<div>
 				{#if canUpdateRole && member.role !== 'owner'}
-					<Select.Root value={member.role} onValueChange={updateRole}>
+					<Select.Root bind:selected onSelectedChange={updateRole}>
 						<Select.Trigger class="w-[120px]">
-							<Select.Value />
+							<Select.Value>{member.role}</Select.Value>
 						</Select.Trigger>
 						<Select.Content>
 							{#each items as item}
-								<Select.Item value={item.value}>{item.name}</Select.Item>
+								<Select.Item value={item.value} label={item.name}>{item.name}</Select.Item>
 							{/each}
 						</Select.Content>
 					</Select.Root>

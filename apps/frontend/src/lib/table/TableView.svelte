@@ -374,25 +374,27 @@
 	</div>
 </Modal>
 
-<AlertDialog.Root bind:open={$confirmDeleteField}>
-	<AlertDialog.Content>
-		<AlertDialog.Header>
-			<AlertDialog.Title>{$t('Confirm Delete Field')}</AlertDialog.Title>
-		</AlertDialog.Header>
-		<AlertDialog.Footer>
-			<AlertDialog.Cancel>{$t('Confirm No', { ns: 'common' })}</AlertDialog.Cancel>
-			<AlertDialog.Action
-				on:m-click={() => {
-					if ($field) {
-						$deleteField.mutate({ tableId: $table.id.value, id: $field.id.value })
-					}
-				}}
-			>
-				{$t('Confirm Yes', { ns: 'common' })}
-			</AlertDialog.Action>
-		</AlertDialog.Footer>
-	</AlertDialog.Content>
-</AlertDialog.Root>
+{#if $confirmDeleteField}
+	<AlertDialog.Root bind:open={$confirmDeleteField}>
+		<AlertDialog.Content>
+			<AlertDialog.Header>
+				<AlertDialog.Title>{$t('Confirm Delete Field')}</AlertDialog.Title>
+			</AlertDialog.Header>
+			<AlertDialog.Footer>
+				<AlertDialog.Cancel>{$t('Confirm No', { ns: 'common' })}</AlertDialog.Cancel>
+				<AlertDialog.Action
+					on:click={() => {
+						if ($field) {
+							$deleteField.mutate({ tableId: $table.id.value, id: $field.id.value })
+						}
+					}}
+				>
+					{$t('Confirm Yes', { ns: 'common' })}
+				</AlertDialog.Action>
+			</AlertDialog.Footer>
+		</AlertDialog.Content>
+	</AlertDialog.Root>
+{/if}
 
 <style>
 	:global(revo-grid[theme='compact'] revogr-header .header-rgRow) {

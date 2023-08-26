@@ -11,7 +11,7 @@
 	import type { Validation } from 'sveltekit-superforms/index'
 	import { Label } from '$lib/components/ui/label'
 	import { Input } from '$lib/components/ui/input'
-	import { Button } from '$components/ui/button'
+	import { Button } from '$lib/components/ui/button'
 
 	export let data: Validation<typeof createFormSchema>
 

@@ -5,7 +5,6 @@
 	import { trpc } from '$lib/trpc/client'
 	import type { IRolesWithoutOwner } from '@undb/authz'
 	import { getInvitationURL, type IQueryInvitation } from '@undb/integrations'
-	import { Dropdown, DropdownItem } from 'flowbite-svelte'
 	import type { SelectOptionType } from 'flowbite-svelte/dist/types'
 	import { copyText } from 'svelte-copy'
 	import * as Card from '$lib/components/ui/card'
@@ -30,7 +29,8 @@
 
 	const reinviteMutation = trpc().invitation.reinvite.mutation({})
 
-	const reinvite = (value: IRolesWithoutOwner) => {
+	const reinvite = (value: any) => {
+		console.log({ value })
 		$reinviteMutation.mutate({
 			id: invitation.id,
 			role: value,
@@ -66,9 +66,9 @@
 			<div class="flex items-center gap-3">
 				<div>
 					{#if $hasPermission('invitation:invite')}
-						<Select.Root value={invitation.role} onValueChange={reinvite}>
+						<Select.Root selected={{ value: invitation.role }} onSelectedChange={reinvite}>
 							<Select.Trigger class="w-[120px]">
-								<Select.Value />
+								<Select.Value>{invitation.role}</Select.Value>
 							</Select.Trigger>
 							<Select.Content>
 								{#each items as item}
@@ -86,12 +86,12 @@
 							<i class="ti ti-dots"></i>
 						</DropdownMenu.Trigger>
 						<DropdownMenu.Content class="w-48">
-							<DropdownMenu.Item on:m-click={copyURL}>
+							<DropdownMenu.Item on:click={copyURL}>
 								{$t('copy invitation url', { ns: 'common' })}
 							</DropdownMenu.Item>
 							{#if $hasPermission('invitation:cancel')}
 								<DropdownMenu.Item
-									on:m-click={() => {
+									on:click={() => {
 										$cancelInvitation.mutate({
 											id: invitation.id,
 										})

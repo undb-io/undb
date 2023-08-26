@@ -221,7 +221,7 @@
 									</Button>
 								</DropdownMenu.Trigger>
 								<DropdownMenu.Content>
-									<DropdownMenu.Item on:m-click={() => importDataModal.open()}>
+									<DropdownMenu.Item on:click={() => importDataModal.open()}>
 										<i class="ti ti-csv" />
 										<span>
 											{$t('import data content')}
@@ -249,7 +249,7 @@
 						</button>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content class="w-56">
-						<DropdownMenu.Item on:m-click={() => goto('/me')}>
+						<DropdownMenu.Item on:click={() => goto('/me')}>
 							<i class="ti ti-settings" />
 							{$t('Settings', { ns: 'auth' })}
 						</DropdownMenu.Item>
@@ -261,13 +261,13 @@
 								</div>
 							</DropdownMenu.SubTrigger>
 							<DropdownMenu.SubContent>
-								<DropdownMenu.Item class="flex justify-between" on:m-click={() => $i18n.changeLanguage('zh-CN')}>
+								<DropdownMenu.Item class="flex justify-between" on:click={() => $i18n.changeLanguage('zh-CN')}>
 									<span>简体中文</span>
 									{#if $i18n.language === 'zh-CN'}
 										<i class="ti ti-check" />
 									{/if}
 								</DropdownMenu.Item>
-								<DropdownMenu.Item class="flex justify-between" on:m-click={() => $i18n.changeLanguage('en')}>
+								<DropdownMenu.Item class="flex justify-between" on:click={() => $i18n.changeLanguage('en')}>
 									<span>English</span>
 									{#if $i18n.language === 'en'}
 										<i class="ti ti-check" />
@@ -276,12 +276,12 @@
 							</DropdownMenu.SubContent>
 						</DropdownMenu.Sub>
 
-						<DropdownMenu.Item on:m-click={copyToken}>
+						<DropdownMenu.Item on:click={copyToken}>
 							<i class="ti ti-copy" />
 							{$t('Copy Auth Token', { ns: 'auth' })}
 						</DropdownMenu.Item>
 						<DropdownMenu.Item
-							on:m-click={() => {
+							on:click={() => {
 								$theme = $theme === DARK_THEME ? LIGHT_THEME : DARK_THEME
 								changeThemeMode($theme)
 							}}
@@ -333,7 +333,7 @@
 			</DropdownMenu.Trigger>
 
 			<DropdownMenu.Content class="w-56">
-				<DropdownMenu.Item on:m-click={() => goto('/me')}>
+				<DropdownMenu.Item on:click={() => goto('/me')}>
 					<i class="ti ti-settings" />
 					{$t('Settings', { ns: 'auth' })}
 				</DropdownMenu.Item>
@@ -345,13 +345,13 @@
 						</div>
 					</DropdownMenu.SubTrigger>
 					<DropdownMenu.SubContent>
-						<DropdownMenu.Item class="flex justify-between" on:m-click={() => $i18n.changeLanguage('zh-CN')}>
+						<DropdownMenu.Item class="flex justify-between" on:click={() => $i18n.changeLanguage('zh-CN')}>
 							<span>简体中文</span>
 							{#if $i18n.language === 'zh-CN'}
 								<i class="ti ti-check" />
 							{/if}
 						</DropdownMenu.Item>
-						<DropdownMenu.Item class="flex justify-between" on:m-click={() => $i18n.changeLanguage('en')}>
+						<DropdownMenu.Item class="flex justify-between" on:click={() => $i18n.changeLanguage('en')}>
 							<span>English</span>
 							{#if $i18n.language === 'en'}
 								<i class="ti ti-check" />
@@ -360,12 +360,12 @@
 					</DropdownMenu.SubContent>
 				</DropdownMenu.Sub>
 
-				<DropdownMenu.Item on:m-click={copyToken}>
+				<DropdownMenu.Item on:click={copyToken}>
 					<i class="ti ti-copy" />
 					{$t('Copy Auth Token', { ns: 'auth' })}
 				</DropdownMenu.Item>
 				<DropdownMenu.Item
-					on:m-click={() => {
+					on:click={() => {
 						$theme = $theme === DARK_THEME ? LIGHT_THEME : DARK_THEME
 						changeThemeMode($theme)
 					}}
@@ -393,9 +393,7 @@
 		</div>
 	</main>
 
-	{#if $createTableModal.open}
-		<CreateTable data={$page.data.form} />
-	{/if}
+	<CreateTable data={$page.data.form} />
 
 	{#if $importDataModal.open}
 		<ImportData formData={$page.data.createTable} />

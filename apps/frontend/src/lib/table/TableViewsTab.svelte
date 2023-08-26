@@ -109,7 +109,7 @@
 				<DropdownMenu.Group>
 					{#each items as item}
 						<DropdownMenu.Item
-							on:m-click={() => {
+							on:click={() => {
 								$createView.mutate({
 									tableId: $table.id.value,
 									view: {

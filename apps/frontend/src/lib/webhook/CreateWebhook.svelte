@@ -95,7 +95,7 @@
 					<span class="text-red-500">*</span>
 				</div>
 
-				<Select.Root bind:value={$form.method}>
+				<Select.Root bind:selected={$form.method}>
 					<Select.Trigger>
 						<Select.Value />
 					</Select.Trigger>
@@ -112,7 +112,7 @@
 					<span class="text-red-500">*</span>
 				</div>
 
-				<Select.Root bind:value={$form.target.event}>
+				<Select.Root bind:selected={$form.target.event}>
 					<Select.Trigger>
 						<Select.Value />
 					</Select.Trigger>
