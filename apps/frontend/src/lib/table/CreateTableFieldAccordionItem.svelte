@@ -9,10 +9,16 @@
 		createTableInput,
 		updateTableSchema,
 	} from '@undb/core'
-	import { Label, Input, Toggle, Button, Textarea, Dropdown, DropdownItem, Badge } from 'flowbite-svelte'
+	import { Label } from '$lib/components/ui/label'
+	import { Input } from '$lib/components/ui/input'
+	import { Switch } from '$lib/components/ui/switch'
+	import { Button } from '$components/ui/button'
+	import { Badge } from '$lib/components/ui/badge'
+	import { Textarea } from '$lib/components/ui/textarea'
 	import type { SuperForm } from 'sveltekit-superforms/client'
 	import { t } from '$lib/i18n'
 	import * as Accordion from '$lib/components/ui/accordion'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 
 	export let field: ICreateTableInput['schema'][number]
 	export let superFrm: SuperForm<typeof createTableInput | typeof updateTableSchema, string>
@@ -20,7 +26,6 @@
 	export let isNew = false
 
 	$: form = superFrm.form
-	$: errors = superFrm.errors
 
 	$: showDescription = false
 	$: if (!showDescription) {
@@ -72,7 +77,6 @@
 							name={field.id}
 							placeholder={field.description ?? 'name'}
 							required
-							data-invalid={$errors.schema?.[i]}
 							bind:value={field.name}
 						/>
 					</Label>
@@ -94,7 +98,13 @@
 
 		<div class="flex justify-between mt-5">
 			<div>
-				<Button size="xs" color="alternative" class="space-x-1" on:click={() => (showDescription = !showDescription)}>
+				<Button
+					size="sm"
+					variant="secondary"
+					type="button"
+					class="space-x-1"
+					on:click={() => (showDescription = !showDescription)}
+				>
 					{#if showDescription}
 						<i class="ti ti-eye-closed text-sm" />
 					{:else}
@@ -105,23 +115,33 @@
 			</div>
 			<div class="flex gap-4 items-center">
 				{#if !isControlledFieldType(field.type)}
-					<Toggle size="small" bind:checked={field.required}>{$t('Required', { ns: 'common' })}</Toggle>
+					<Label class="flex items-center gap-2">
+						<Switch bind:checked={field.required}></Switch>
+						{$t('Required', { ns: 'common' })}
+					</Label>
 				{/if}
 				{#if canDisplay(field.type)}
-					<Toggle size="small" bind:checked={field.display}>{$t('Display', { ns: 'common' })}</Toggle>
+					<Label class="flex items-center gap-2">
+						<Switch bind:checked={field.display}></Switch>
+						{$t('Display', { ns: 'common' })}
+					</Label>
 				{/if}
-				<span role="button" class="hover:bg-gray-100 px-3 rounded-sm flex items-center justify-center w-7 h-7">
-					<i class="ti ti-dots text-sm" />
-				</span>
-				<Dropdown style="z-index: 50;">
-					<DropdownItem class="text-red-500 font-normal text-xs gap-2 flex items-center" on:click={remove}>
-						<i class="ti ti-trash" />
-						<span>
-							{$t('Delete', { ns: 'common' })}
+
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger type="button">
+						<span class="hover:bg-gray-100 px-3 rounded-sm flex items-center justify-center w-7 h-7">
+							<i class="ti ti-dots text-sm" />
 						</span>
-					</DropdownItem>
-				</Dropdown>
-				<Button size="xs" color="light" on:click={() => {}}>{$t('Done', { ns: 'common' })}</Button>
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content>
+						<DropdownMenu.Item class="text-red-500 font-normal text-xs gap-2 flex items-center" on:m-click={remove}>
+							<i class="ti ti-trash" />
+							<span>
+								{$t('Delete', { ns: 'common' })}
+							</span>
+						</DropdownMenu.Item>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
 			</div>
 		</div>
 	</Accordion.Content>
