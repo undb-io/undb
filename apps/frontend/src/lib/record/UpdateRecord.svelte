@@ -104,8 +104,8 @@
 
 {#key $record}
 	<Dialog.Root bind:open={$open}>
-		<Dialog.Content class="!w-3/4 !max-w-none h-[calc(100vh-64px)] overflow-y-hidden">
-			<Dialog.Header>
+		<Dialog.Content class="!w-1/2 !max-w-none h-[calc(100vh-64px)] overflow-y-hidden p-0 block gap-0">
+			<Dialog.Header class="border-b border-gray-100 h-15 p-6">
 				<Dialog.Title class="pr-6">
 					<div class="flex items-center w-full justify-between mr-6">
 						<div class="flex items-center space-x-4">
@@ -135,7 +135,7 @@
 				</Dialog.Title>
 			</Dialog.Header>
 
-			<div class="h-full overflow-hidden">
+			<div class="h-[calc(100%-150px)] overflow-hidden">
 				{#if !$record}
 					<div
 						class="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-50 z-50 flex items-center justify-center"
@@ -187,7 +187,7 @@
 				</div>
 			</div>
 
-			<Dialog.Footer>
+			<Dialog.Footer class="border-t border-gray-100 h-15 p-6">
 				<div class="w-full flex justify-end gap-2">
 					<Button variant="secondary" type="button" on:click={() => ($currentRecordId = undefined)}>
 						{$t('Cancel', { ns: 'common' })}
