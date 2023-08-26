@@ -10,7 +10,9 @@
 		readonlyRecord,
 	} from '$lib/store/table'
 	import { createMutateRecordValuesSchema } from '@undb/core'
-	import { Button, Label, Modal, P, Spinner, Toast } from 'flowbite-svelte'
+	import { Spinner, Toast } from 'flowbite-svelte'
+	import { Button } from '$components/ui/button'
+	import { Label } from '$lib/components/ui/label'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { writable } from 'svelte/store'
 	import type { Validation } from 'sveltekit-superforms/index'
@@ -24,6 +26,7 @@
 	import UpdateRecordMenu from './UpdateRecordMenu.svelte'
 	import RecordAudits from './RecordAudits.svelte'
 	import { onMount } from 'svelte'
+	import * as Dialog from '$lib/components/ui/dialog'
 
 	const table = getTable()
 	const view = getView()
@@ -100,37 +103,39 @@
 </script>
 
 {#key $record}
-	<Modal class="w-full h-[calc(100vh-64px)]" size="xl" bind:open={$open} outsideclose>
-		<svelte:fragment slot="header">
-			<div class="flex items-center w-full justify-between mr-6">
-				<div class="flex items-center space-x-4">
-					<P>{$t('Update Record')}</P>
-					{#if $record}
-						<ReadonlyRecordBadge />
-					{/if}
-					<!-- <ButtonGroup size="xs">
-						<Button size="xs" disabled={!$prevRecord} on:click={() => ($currentRecordId = $prevRecord?.id.value)}>
-							<i class="ti ti-chevron-left text-gray-500 text-base" />
-						</Button>
-						<Button size="xs" disabled={!$nextRecord} on:click={() => ($currentRecordId = $nextRecord?.id.value)}>
-							<i class="ti ti-chevron-right text-gray-500 text-base" />
-						</Button>
-					</ButtonGroup> -->
-				</div>
+	<Dialog.Root bind:open={$open}>
+		<Dialog.Content class="!w-3/4 !max-w-none h-[calc(100vh-64px)] overflow-y-hidden">
+			<Dialog.Header>
+				<Dialog.Title class="pr-6">
+					<div class="flex items-center w-full justify-between mr-6">
+						<div class="flex items-center space-x-4">
+							<p>{$t('Update Record')}</p>
+							{#if $record}
+								<ReadonlyRecordBadge />
+							{/if}
+							<!-- <ButtonGroup size="xs">
+								<Button size="xs" disabled={!$prevRecord} on:click={() => ($currentRecordId = $prevRecord?.id.value)}>
+									<i class="ti ti-chevron-left text-gray-500 text-base" />
+								</Button>
+								<Button size="xs" disabled={!$nextRecord} on:click={() => ($currentRecordId = $nextRecord?.id.value)}>
+									<i class="ti ti-chevron-right text-gray-500 text-base" />
+								</Button>
+							</ButtonGroup> -->
+						</div>
 
-				<div class="flex items-center gap-2">
-					{#if !$isShare}
-						<button on:click={() => (displayAudits = !displayAudits)}>
-							<i class="ti ti-history"></i>
-						</button>
-					{/if}
-					<UpdateRecordMenu record={$record} />
-				</div>
-			</div>
-		</svelte:fragment>
+						<div class="flex items-center gap-2">
+							{#if !$isShare}
+								<button on:click={() => (displayAudits = !displayAudits)}>
+									<i class="ti ti-history"></i>
+								</button>
+							{/if}
+							<UpdateRecordMenu record={$record} />
+						</div>
+					</div>
+				</Dialog.Title>
+			</Dialog.Header>
 
-		<svelte:fragment>
-			<div class="h-[calc(100%+48px)] -m-6">
+			<div class="h-full overflow-hidden">
 				{#if !$record}
 					<div
 						class="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-50 z-50 flex items-center justify-center"
@@ -181,24 +186,24 @@
 					{/if}
 				</div>
 			</div>
-		</svelte:fragment>
 
-		<svelte:fragment slot="footer">
-			<div class="w-full flex justify-end gap-2">
-				<Button color="alternative" on:click={() => ($currentRecordId = undefined)}>
-					{$t('Cancel', { ns: 'common' })}
-				</Button>
-				<Button class="gap-2" type="submit" form="updateRecord" disabled={$submitting || $readonlyRecord}>
-					{#if $delayed}
-						<Spinner size="5" />
-					{:else}
-						<i class="ti ti-edit" />
-					{/if}
-					{$t('Update Record')}</Button
-				>
-			</div>
-		</svelte:fragment>
-	</Modal>
+			<Dialog.Footer>
+				<div class="w-full flex justify-end gap-2">
+					<Button variant="secondary" type="button" on:click={() => ($currentRecordId = undefined)}>
+						{$t('Cancel', { ns: 'common' })}
+					</Button>
+					<Button class="gap-2" type="submit" form="updateRecord" disabled={$submitting || $readonlyRecord}>
+						{#if $delayed}
+							<Spinner size="5" />
+						{:else}
+							<i class="ti ti-edit" />
+						{/if}
+						{$t('Update Record')}</Button
+					>
+				</div>
+			</Dialog.Footer>
+		</Dialog.Content>
+	</Dialog.Root>
 {/key}
 
 {#if $updateRecord.error}
