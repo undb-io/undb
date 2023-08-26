@@ -125,12 +125,14 @@
 				<Separator class="my-4" />
 
 				<div class="flex items-center space-x-2">
-					<Switch
-						id="show-system-fields"
-						bind:checked={$view.showSystemFields}
-						onCheckedChange={onChangeShowSystemFields}
-					/>
-					<Label for="show-system-fields">{$t('Show System Fields')}</Label>
+					<Label for="show-system-fields" class="flex items-center gap-2">
+						<Switch
+							id="show-system-fields"
+							bind:checked={$view.showSystemFields}
+							onCheckedChange={onChangeShowSystemFields}
+						/>
+						{$t('Show System Fields')}
+					</Label>
 				</div>
 			{/if}
 

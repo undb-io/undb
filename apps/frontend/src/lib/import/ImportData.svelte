@@ -13,12 +13,19 @@
 		createTableInput,
 		castFieldValue,
 	} from '@undb/core'
-	import { Accordion, Button, Checkbox, Input, Label, Modal, Spinner } from 'flowbite-svelte'
+	import { Spinner } from 'flowbite-svelte'
+	import * as Accordion from '$lib/components/ui/accordion'
+	import { Label } from '$lib/components/ui/label'
+	import { Input } from '$lib/components/ui/input'
+	import { Button } from '$components/ui/button'
+	import { Checkbox } from '$lib/components/ui/checkbox'
+
 	import { Dropzone } from 'flowbite-svelte'
 	import { unzip } from 'lodash-es'
 	import { parse, type SheetData } from './import.helper'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
+	import * as Dialog from '$lib/components/ui/dialog'
 
 	export let formData: Validation<typeof createTableInput>
 
@@ -31,7 +38,6 @@
 	let file: File | undefined
 
 	const inferFieldTypeCount = 200
-	let opened: Record<string, boolean> = {}
 
 	const createTable = trpc().table.create.mutation({
 		async onSuccess(data, variables, context) {
@@ -85,8 +91,10 @@
 		records = (data?.slice(1) ?? []).map((values) =>
 			values.reduce((prev, value, index) => {
 				const type = $form.schema.at(index)?.type
-
-				prev[$form.schema![index].id!] = type ? castFieldValue(type, value) : value
+				const id = $form.schema![index]?.id
+				if (id) {
+					prev[id] = type ? castFieldValue(type, value) : value
+				}
 				return prev
 			}, {} as IMutateRecordValueSchema),
 		)
@@ -120,77 +128,89 @@
 	$: flatten, handleFile(file)
 </script>
 
-<Modal class="w-full" bind:open={$importDataModal.open}>
-	<Dropzone
-		accept=".csv, .json, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-		id="dropzone"
-		on:drop={dropHandle}
-		on:dragover={(event) => {
-			event.preventDefault()
-		}}
-		on:change={handleChange}
-	>
-		<svg
-			aria-hidden="true"
-			class="mb-3 w-10 h-10 text-gray-400 dark:text-gray-200"
-			fill="none"
-			stroke="currentColor"
-			viewBox="0 0 24 24"
-			xmlns="http://www.w3.org/2000/svg"
+<Dialog.Root bind:open={$importDataModal.open}>
+	<Dialog.Content class="overflow-y-auto !w-1/2 max-w-none">
+		<Dialog.Header>
+			<Dialog.Title>{$t('import data')}</Dialog.Title>
+		</Dialog.Header>
+
+		<Dropzone
+			accept=".csv, .json, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+			id="dropzone"
+			on:drop={dropHandle}
+			on:dragover={(event) => {
+				event.preventDefault()
+			}}
+			on:change={handleChange}
 		>
-			<path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="2"
-				d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-			/>
-		</svg>
-		<p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-			{@html $t('click to upload or dnd', { ns: 'common' })}
-		</p>
-	</Dropzone>
-	{#if fileName}
-		<div class="flex items-center gap-2">
-			<i class="ti ti-file-code" />
-			<span>
-				{fileName}
-			</span>
-		</div>
-	{/if}
-
-	{#if $form.schema?.length}
-		<Accordion class="my-4">
-			{#each $form.schema as field, i (field.id)}
-				<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} isNew />
-			{/each}
-		</Accordion>
-	{/if}
-
-	<div>
-		<Label for="import_data_name" class="mb-2">{$t('Name', { ns: 'common' })}</Label>
-		<Input disabled={!data} bind:value={$form.name} id="import_data_name" />
-	</div>
-	<Checkbox bind:checked={firstRowAsHeader}>{$t('first row as header')}</Checkbox>
-	<Checkbox bind:checked={importData}>{$t('import data')}</Checkbox>
-	{#if ext === 'json'}
-		<Checkbox bind:checked={flatten}>{$t('flatten import data')}</Checkbox>
-	{/if}
-
-	<div class="flex justify-end">
-		<form id="importData" method="POST" use:enhance>
+			<svg
+				aria-hidden="true"
+				class="mb-3 w-10 h-10 text-gray-400 dark:text-gray-200"
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+				/>
+			</svg>
+			<p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+				{@html $t('click to upload or dnd', { ns: 'common' })}
+			</p>
+		</Dropzone>
+		{#if fileName}
 			<div class="flex items-center gap-2">
-				<Button size="xs" outline color="alternative" on:click={() => importDataModal.close()}>
-					{$t('Cancel', { ns: 'common' })}
-				</Button>
-				<Button size="xs" disabled={!data || $createTable.isLoading} type="submit">
-					<div class="flex items-center">
-						{#if $createTable.isLoading}
-							<Spinner size="4" class="mr-2" />
-						{/if}
-						{$t('Confirm', { ns: 'common' })}
-					</div>
-				</Button>
+				<i class="ti ti-file-code" />
+				<span>
+					{fileName}
+				</span>
 			</div>
-		</form>
-	</div>
-</Modal>
+		{/if}
+
+		{#if $form.schema?.length}
+			<Accordion.Root class="my-4">
+				{#each $form.schema as field, i (field.id)}
+					<CreateTableFieldAccordionItem {superFrm} {i} {field} isNew />
+				{/each}
+			</Accordion.Root>
+		{/if}
+
+		<div>
+			<Label for="import_data_name" class="mb-2">{$t('Name', { ns: 'common' })}</Label>
+			<Input disabled={!data} bind:value={$form.name} id="import_data_name" />
+		</div>
+		<Label class="flex items-center gap-2">
+			<Checkbox bind:checked={firstRowAsHeader}></Checkbox>
+			{$t('first row as header')}
+		</Label>
+		<Label class="flex items-center gap-2">
+			<Checkbox bind:checked={importData}></Checkbox>
+			{$t('import data')}
+		</Label>
+		{#if ext === 'json'}
+			<Checkbox bind:checked={flatten}>{$t('flatten import data')}</Checkbox>
+		{/if}
+
+		<div class="flex justify-end">
+			<form id="importData" method="POST" use:enhance>
+				<div class="flex items-center gap-2">
+					<Button size="sm" type="button" variant="secondary" on:click={() => importDataModal.close()}>
+						{$t('Cancel', { ns: 'common' })}
+					</Button>
+					<Button size="sm" disabled={!data || $createTable.isLoading} type="submit">
+						<div class="flex items-center">
+							{#if $createTable.isLoading}
+								<Spinner size="4" class="mr-2" />
+							{/if}
+							{$t('Confirm', { ns: 'common' })}
+						</div>
+					</Button>
+				</div>
+			</form>
+		</div>
+	</Dialog.Content>
+</Dialog.Root>

@@ -562,7 +562,7 @@ export const config: InitOptions = {
         'import data content': '导入数据 (csv / excel /json)',
         'flatten import data': '扁平化字段',
         'first row as header': '使用第一行作为列标题',
-        'import data': '导入行数据',
+        'import data': '导入数据',
         'Auto Display Field': '使用 <strong>{{table}}</strong> 表中设置的显示列',
         'shortcut T':
           '使用快捷键 <span class="bg-gray-100 text-gray-800 text-xs font-medium mx-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">{{shortcut}}</span> 在任何页面创建表。',
