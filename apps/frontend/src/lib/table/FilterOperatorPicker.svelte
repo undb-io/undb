@@ -11,7 +11,6 @@
 	$: if (!!field && !data.some((v) => v === value)) {
 		value = data[0] ?? ''
 	}
-	$: console.log(value)
 </script>
 
 <Select.Root bind:value disabled={readonly}>

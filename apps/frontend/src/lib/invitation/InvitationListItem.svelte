@@ -3,7 +3,6 @@
 	import { t } from '$lib/i18n'
 	import { hasPermission } from '$lib/store/authz'
 	import { trpc } from '$lib/trpc/client'
-	import type { IRolesWithoutOwner } from '@undb/authz'
 	import { getInvitationURL, type IQueryInvitation } from '@undb/integrations'
 	import type { SelectOptionType } from 'flowbite-svelte/dist/types'
 	import { copyText } from 'svelte-copy'
@@ -30,7 +29,6 @@
 	const reinviteMutation = trpc().invitation.reinvite.mutation({})
 
 	const reinvite = (value: any) => {
-		console.log({ value })
 		$reinviteMutation.mutate({
 			id: invitation.id,
 			role: value,

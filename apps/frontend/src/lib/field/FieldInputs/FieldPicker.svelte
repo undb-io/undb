@@ -21,13 +21,13 @@
 	$: type = selected?.type
 </script>
 
-<Select.Root bind:value disabled={readonly}>
+<Select.Root disabled={readonly}>
 	<Select.Trigger>
 		<Select.Value />
 	</Select.Trigger>
 	<Select.Content>
 		{#each filteredFields as field (field.id)}
-			<Select.Item value={field.id} class="gap-2">
+			<Select.Item value={field.id} label={field.name} class="gap-2">
 				<FieldIcon size={14} type={field.type} />
 				<span class="text-xs">
 					{field.name}

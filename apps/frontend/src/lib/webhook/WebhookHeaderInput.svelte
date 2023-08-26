@@ -33,12 +33,12 @@
 						<Input bind:value={header.key} />
 						<Input bind:value={header.value} />
 					</div>
-					<button class="text-gray-600" on:click|preventDefault|stopPropagation={() => removeHeader(i)}>
+					<button type="button" class="text-gray-600" on:click|preventDefault|stopPropagation={() => removeHeader(i)}>
 						<i class="ti ti-trash" />
 					</button>
 				</div>
 			{/each}
 		</div>
 	{/if}
-	<Button size="sm" variant="outline" on:click={() => addHeader()}>Add Header</Button>
+	<Button size="sm" type="button" variant="outline" on:click={() => addHeader()}>Add Header</Button>
 </div>

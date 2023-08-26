@@ -103,9 +103,7 @@
 	<CreateOption data={data.createOption} />
 {/if}
 <UpdateOption data={data.updateOption} />
-{#if $recordTrashModal.open}
-	<RecordTrashModal />
-{/if}
+<RecordTrashModal />
 {#if $field}
 	{#key $field}
 		<UpdateField field={$field} data={data.updateField} />

@@ -136,7 +136,7 @@
 				</div>
 
 				<FilterEditor bind:value={filters} let:add>
-					<Button variant="secondary" size="sm" on:click={add}>
+					<Button variant="secondary" type="button" size="sm" on:click={add}>
 						{$t('Create New Filter')}
 					</Button>
 				</FilterEditor>
@@ -151,7 +151,7 @@
 			</Label>
 		</div>
 		<div class="w-full flex justify-end gap-4">
-			<Button size="sm" variant="secondary">{$t('Cancel', { ns: 'common' })}</Button>
+			<Button size="sm" type="button" variant="secondary">{$t('Cancel', { ns: 'common' })}</Button>
 			<Button size="sm" form="updateWebhook" type="submit">{$t('Confirm', { ns: 'common' })}</Button>
 		</div>
 	</div>
