@@ -19,12 +19,12 @@
 	import { Badge } from '$lib/components/ui/badge'
 
 	export let data: Validation<typeof createTableInput>
-	let opened: Record<string, boolean> = {}
+	let currentField: string | undefined
 
 	const addField = () => {
 		const id = FieldId.createId()
 		$form.schema = [...($form.schema ?? []), { id, type: 'string', name: '', display: !displayFields?.length }]
-		opened = { [id]: true }
+		currentField = id
 	}
 
 	$: if (!$form.schema?.length) {
@@ -112,15 +112,15 @@
 					</p>
 
 					{#if $form.schema?.length}
-						<Accordion.Root class="my-4" value={$form.schema[0]?.id}>
+						<Accordion.Root class="my-4" value={currentField}>
 							{#each $form.schema as field, i (field.id)}
-								<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} isNew />
+								<CreateTableFieldAccordionItem {superFrm} {i} {field} isNew />
 							{/each}
 						</Accordion.Root>
 					{/if}
 				</div>
 
-				<Button variant="outline" class="w-full my-3" on:click={addField}>
+				<Button variant="outline" type="button" class="w-full my-3" on:click={addField}>
 					<i class="ti ti-plus text-sm mr-4" />
 					{$t('Create New Field')}
 				</Button>
@@ -128,18 +128,18 @@
 		</form>
 
 		<!-- <SuperDebug data={$form} /> -->
+		<Dialog.Footer>
+			<div class="w-full flex justify-end gap-2">
+				<Button variant="secondary" on:click={createTableModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
+				<Button class="gap-4" type="submit" form="createTable" disabled={$submitting}>
+					{#if $delayed}
+						<Spinner size="5" />
+					{/if}
+					{$t('Create New Table')}</Button
+				>
+			</div>
+		</Dialog.Footer>
 	</Dialog.Content>
-	<Dialog.Footer>
-		<div class="w-full flex justify-end gap-2">
-			<Button variant="secondary" on:click={createTableModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
-			<Button class="gap-4" type="submit" form="createTable" disabled={$submitting}>
-				{#if $delayed}
-					<Spinner size="5" />
-				{/if}
-				{$t('Create New Table')}</Button
-			>
-		</div>
-	</Dialog.Footer>
 </Dialog.Root>
 
 {#if $createTable.error}

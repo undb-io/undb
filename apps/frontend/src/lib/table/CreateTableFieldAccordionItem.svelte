@@ -14,7 +14,6 @@
 	import { t } from '$lib/i18n'
 	import * as Accordion from '$lib/components/ui/accordion'
 
-	export let open: boolean
 	export let field: ICreateTableInput['schema'][number]
 	export let superFrm: SuperForm<typeof createTableInput | typeof updateTableSchema, string>
 	export let i: number
@@ -38,7 +37,7 @@
 </script>
 
 <Accordion.Item value={field.id ?? ''}>
-	<Accordion.Trigger>
+	<Accordion.Trigger type="button">
 		<div class="w-full flex items-center justify-between text-sm gap-2">
 			<div class="flex items-center gap-2">
 				<FieldIcon size={14} type={field.type} />
@@ -122,7 +121,7 @@
 						</span>
 					</DropdownItem>
 				</Dropdown>
-				<Button size="xs" color="light" on:click={() => (open = false)}>{$t('Done', { ns: 'common' })}</Button>
+				<Button size="xs" color="light" on:click={() => {}}>{$t('Done', { ns: 'common' })}</Button>
 			</div>
 		</div>
 	</Accordion.Content>
