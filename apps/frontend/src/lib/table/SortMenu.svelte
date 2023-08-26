@@ -82,7 +82,7 @@
 	}
 </script>
 
-<Popover.Root positioning={{ placement: 'bottom-start' }} closeOnOutsideClick={false} closeOnEscape bind:open>
+<Popover.Root positioning={{ placement: 'bottom-start' }} closeOnOutsideClick={true} closeOnEscape bind:open>
 	<Popover.Trigger asChild let:builder>
 		<Button builders={[builder]} variant="secondary" class="gap-2 whitespace-nowrap" size="sm">
 			<i class="ti ti-filter text-sm" />
