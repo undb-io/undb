@@ -35,6 +35,7 @@ export const webhookActions = z.enum(['webhook:create', 'webhook:update', 'webho
 export const shareActions = z.enum(['share:enable', 'share:disable'])
 export const memberActions = z.enum(['member:update_role'])
 export const rlsPermissionActions = z.enum(['rls:list', 'rls:create', 'rls:update', 'rls:delete'])
+export const flsPermissionActions = z.enum(['fls:create'])
 export const widgetActions = z.enum(['widget:create', 'widget:relayout', 'widget:delete'])
 export const visualizationActions = z.enum(['visualization:update'])
 export const invitationActions = z.enum(['invitation:list', 'invitation:invite', 'invitation:cancel'])
@@ -44,6 +45,7 @@ export type PermissionAction = z.infer<
   | typeof recordActions
   | typeof webhookActions
   | typeof rlsPermissionActions
+  | typeof flsPermissionActions
   | typeof memberActions
   | typeof shareActions
   | typeof widgetActions
@@ -91,6 +93,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'rls:create': true,
     'rls:update': true,
     'rls:delete': true,
+    'fls:create': true,
     'share:enable': true,
     'share:disable': true,
     'widget:create': true,
@@ -140,6 +143,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'rls:create': true,
     'rls:update': true,
     'rls:delete': true,
+    'fls:create': true,
     'share:enable': true,
     'share:disable': true,
     'widget:create': true,
@@ -189,6 +193,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'rls:create': false,
     'rls:update': false,
     'rls:delete': false,
+    'fls:create': false,
     'share:enable': true,
     'share:disable': true,
     'widget:create': true,
@@ -238,6 +243,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'rls:create': false,
     'rls:update': false,
     'rls:delete': false,
+    'fls:create': false,
     'share:enable': true,
     'share:disable': true,
     'widget:create': false,
