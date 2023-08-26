@@ -1,2 +1,7 @@
+export * from './fls.factory.js'
 export * from './fls.js'
+export * from './fls.query-model.js'
+export * from './fls.repository.js'
+export * from './fls.schema.js'
+export * from './specifications/index.js'
 export * from './value-objects/index.js'
