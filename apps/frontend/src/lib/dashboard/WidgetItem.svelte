@@ -4,7 +4,7 @@
 	import { currentVisualizationId, getTable, getView, readonly } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import Visualization from '$lib/visualization/Visualization.svelte'
-	import { Dropdown, DropdownDivider, DropdownItem } from 'flowbite-svelte'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import type { WidgetDataItem } from './widget-item.type'
 	import { t } from '$lib/i18n'
 	import { COLS, widgetItems } from '$lib/store/widget'
@@ -105,7 +105,7 @@
 			{/if}
 		</div>
 		{#if !$readonly}
-			<div class="items-center gap-2 hidden group-hover:flex">
+			<div class="items-center gap-2 opacity-0 group-hover:opacity-100">
 				<button
 					class="hover:bg-slate-100 w-6 h-6 dark:hover:bg-gray-300"
 					on:click={() => {
@@ -115,41 +115,48 @@
 				>
 					<i class="text-gray-400 ti ti-arrows-diagonal dark:text-gray-200" />
 				</button>
-				<button class="hover:bg-slate-100 w-6 h-6 dark:hover:bg-gray-300">
-					<i class="text-gray-400 ti ti-dots dark:text-gray-200" />
-				</button>
-				<Dropdown style="z-index: 50;">
-					<DropdownItem
-						class="text-gray-600 text-xs gap-2 flex items-center dark:text-gray-200"
-						on:click={() => {
-							visualizationModal.open()
-							$currentVisualizationId = dataItem.widget?.visualization?.id.value
-						}}
-					>
-						<i class="text-gray-400 ti ti-arrows-diagonal dark:text-gray-200" />
-						<span>
-							{$t('full screen', { ns: 'common' })}
-						</span>
-					</DropdownItem>
-					<DropdownDivider />
-					<DropdownItem
-						class="text-xs text-red-400 gap-2 flex items-center"
-						on:click={() => {
-							if (dataItem.widget) {
-								$deleteWidget.mutate({
-									tableId: $table.id.value,
-									viewId: $view.id.value,
-									widgetId: dataItem.widget.id.value,
-								})
-							}
-						}}
-					>
-						<i class="ti ti-trash" />
-						<span>
-							{$t('delete widget')}
-						</span>
-					</DropdownItem>
-				</Dropdown>
+
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger>
+						<button class="hover:bg-slate-100 w-6 h-6 dark:hover:bg-gray-300">
+							<i class="text-gray-400 ti ti-dots dark:text-gray-200" />
+						</button>
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content>
+						<DropdownMenu.Group>
+							<DropdownMenu.Item
+								class="gap-2 text-xs"
+								on:click={() => {
+									visualizationModal.open()
+									$currentVisualizationId = dataItem.widget?.visualization?.id.value
+								}}
+							>
+								<i class="text-gray-400 ti ti-arrows-diagonal dark:text-gray-200" />
+								<span>
+									{$t('full screen', { ns: 'common' })}
+								</span>
+							</DropdownMenu.Item>
+							<DropdownMenu.Separator></DropdownMenu.Separator>
+							<DropdownMenu.Item
+								class="text-xs text-red-400 gap-2 flex items-center"
+								on:click={() => {
+									if (dataItem.widget) {
+										$deleteWidget.mutate({
+											tableId: $table.id.value,
+											viewId: $view.id.value,
+											widgetId: dataItem.widget.id.value,
+										})
+									}
+								}}
+							>
+								<i class="ti ti-trash" />
+								<span>
+									{$t('delete widget')}
+								</span>
+							</DropdownMenu.Item>
+						</DropdownMenu.Group>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
 			</div>
 		{/if}
 	</div>
