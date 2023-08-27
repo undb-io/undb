@@ -207,7 +207,7 @@
 								class="w-full dark:border-0 dark:hover:border-primary-700  dark:hover:bg-primary-700 dark:focus:ring-primary-800 rounded-r-none border-r-0"
 								variant="outline"
 								on:click={() => createTableModal.open()}
-							>111
+							>
 								{$t('Create New Table')}
 							</Button>
 							<DropdownMenu.Root>
