@@ -84,7 +84,7 @@
 {#if $selectedForm}
 	<div id="form-modal">
 		<Dialog.Root bind:open={$formEditorModal.open} closeOnOutsideClick={false}>
-			<Dialog.Content class="!w-1/2 !max-w-none">
+			<Dialog.Content class="!w-3/4 !max-w-none max-h-[98%] overflow-y-auto">
 				<Dialog.Header>
 					<Dialog.Title class="pr-8">
 						<div class="flex justify-between w-full gap-2">

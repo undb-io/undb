@@ -69,7 +69,7 @@
 			<Button
 				variant="outline"
 				size="sm"
-				class="inline-flex gap-2 items-center rounded-r-none border-r-0"
+				class="inline-flex gap-2 items-center rounded-r-none border-r-0 whitespace-nowrap"
 				on:click={hideAll}
 			>
 				<i class="ti ti-eye-closed" />
@@ -77,7 +77,12 @@
 			</Button>
 		{/if}
 		{#if hiddenFields.length}
-			<Button variant="outline" size="sm" class="inline-flex gap-2 items-center rounded-l-none" on:click={showAll}>
+			<Button
+				variant="outline"
+				size="sm"
+				class="inline-flex gap-2 items-center rounded-l-none whitespace-nowrap"
+				on:click={showAll}
+			>
 				<i class="ti ti-eye" />
 				{$t('show form all')}
 			</Button>
@@ -86,15 +91,16 @@
 </div>
 <div class="space-y-2">
 	{#each hiddenFields as field}
-		<Card.Root
-			class="!py-2 !px-4 shadow-sm hover:shadow-md transition cursor-pointer hover:border-blue-500 !max-w-none"
+		<button
+			class="block border w-full !py-2 !px-4 shadow-sm hover:shadow-md transition cursor-pointer hover:border-blue-500 !max-w-none"
+			on:click={() => setFormFieldsVisibility(field.id.value)}
 		>
-			<div class="flex gap-2 items-center" on:click={() => setFormFieldsVisibility(field.id.value)}>
+			<div class="flex gap-2 items-center">
 				<FieldIcon type={field.type} />
 				<span>
 					{field.name.value}
 				</span>
 			</div>
-		</Card.Root>
+		</button>
 	{/each}
 </div>
