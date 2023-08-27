@@ -37,7 +37,7 @@
 </script>
 
 <Fileupload bind:files multiple {...$$restProps} disabled={readonly} />
-{#if value.length}
+{#if value?.length}
 	<div class="flex gap-1 h-20 mt-2">
 		{#each value ?? [] as attachment, index}
 			<div class="relative h-full flex group">
