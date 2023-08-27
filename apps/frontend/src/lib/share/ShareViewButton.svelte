@@ -5,7 +5,7 @@
 	import { hasPermission } from '$lib/store/authz'
 	import { trpc } from '$lib/trpc/client'
 	import { getShareViewUrl } from '@undb/integrations'
-	import { Button } from 'flowbite-svelte'
+	import { Button } from '$components/ui/button'
 	import ShareDropdown from './ShareDropdown.svelte'
 
 	const table = getTable()
@@ -27,13 +27,16 @@
 	$: url = getShareViewUrl($page.url.origin, $view.id.value)
 </script>
 
-{#if !$hasPermission('share:enable')}
+{#if $hasPermission('share:enable')}
 	<Button
 		on:click={() => (open = true)}
-		color="alternative"
-		size="xs"
-		class="dark:hover:bg-gray-800  dark:border-gray-400 dark:text-gray-200">{$t('share')}</Button
+		variant="secondary"
+		size="sm"
+		class="dark:hover:bg-gray-800  dark:border-gray-400 dark:text-gray-200 gap-2"
 	>
+		<i class="ti ti-brand-stackshare"></i>
+		{$t('share')}
+	</Button>
 	<ShareDropdown
 		{url}
 		{share}
