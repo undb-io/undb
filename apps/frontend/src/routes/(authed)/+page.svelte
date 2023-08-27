@@ -41,13 +41,13 @@
 
 	<div class="w-full flex justify-end" id="navbar-default">
 		{#if $hasPermission('table:create')}
-			<Button size="sm" variant="outline" on:click={() => createTableModal.open()}>
+			<Button size="sm" variant="outline" on:click={() => createTableModal.open()} class="rounded-r-none border-r-0">
 				<i class="ti ti-plus text-sm mr-3" />
 				{$t('Create New Table')}
 			</Button>
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger>
-					<Button size="sm" variant="outline">
+					<Button size="sm" variant="outline" class="rounded-l-none">
 						<i class="ti ti-chevron-down" />
 					</Button>
 				</DropdownMenu.Trigger>
