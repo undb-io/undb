@@ -8,9 +8,13 @@
 	export let action: IRLSAction
 
 	$: rlss = $currentRLSS.filter((rls) => rls.policy.action === action)
+	$: count = rlss.length
 </script>
 
 <div class="space-y-2">
+	{#if !count}
+		<div class="h-6"></div>
+	{/if}
 	<RlsList {rlss} />
 	{#if $hasPermission('rls:create')}
 		<RlsCreate {action} {rlss} />
