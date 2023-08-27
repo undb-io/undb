@@ -98,7 +98,6 @@ export const createRecordStore = (inputs: Records = []) => {
 				if (!$store.order.includes(record.id.value)) {
 					$store.order = [...$store.order, record.id.value]
 				}
-				return $store
 			}
 			return $store
 		})
