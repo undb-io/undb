@@ -22,7 +22,7 @@
   "devDependencies": {
     "@mikro-orm/cli": "^5.7.14",
     "@mikro-orm/reflection": "^5.7.14",
-    "@swc/core": "^1.3.78",
+    "@swc/core": "^1.3.80",
     "@types/lodash-es": "^4.17.8",
     "@types/uuid": "^9.0.2",
     "@undb/logger": "^0.0.0",
@@ -31,9 +31,9 @@
     "tsconfig": "^0.0.0",
     "tslib": "^2.6.2",
     "tsup": "^7.2.0",
-    "type-fest": "^4.2.0",
-    "typescript": "^5.1.6",
-    "vitest": "^0.34.2",
+    "type-fest": "^4.3.0",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.3",
     "vitest-mock-extended": "^1.2.0"
   },
   "exports": {
