@@ -47,6 +47,7 @@ export const config: InitOptions = {
         admin: 'admin',
         editor: 'editor',
         viewer: 'viewer',
+        fls: 'field level security',
       },
       errors: {
         'TABLE.NOT_FOUND': 'Table not found',
@@ -441,6 +442,7 @@ export const config: InitOptions = {
         admin: '管理员',
         editor: '编辑者',
         viewer: '查看者',
+        fls: '列权限',
       },
       errors: {
         'TABLE.NOT_FOUND': '没有找到表格',

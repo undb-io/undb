@@ -2,7 +2,7 @@
 	import cx from 'classnames'
 	import { invalidate } from '$app/navigation'
 	import { currentFieldId, getField, getTable, getView } from '$lib/store/table'
-	import { confirmDeleteField, duplicateFieldModal, updateFieldModal } from '$lib/store/modal'
+	import { confirmDeleteField, duplicateFieldModal, flsModal, updateFieldModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import { canDuplicate, type ISortDirection } from '@undb/core'
 	import { DropdownDivider, DropdownItem, Toast } from 'flowbite-svelte'
@@ -144,6 +144,15 @@
 		{:else}
 			{$t('Sort Descending')}
 		{/if}
+	</span>
+</DropdownItem>
+<DropdownItem
+	class={cx('inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium')}
+	on:click={() => flsModal.open()}
+>
+	<i class="ti ti-shield-checkered-filled text-sm" />
+	<span>
+		{$t('fls', { ns: 'authz' })}
 	</span>
 </DropdownItem>
 <DropdownDivider />
