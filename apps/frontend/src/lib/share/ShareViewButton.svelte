@@ -32,7 +32,7 @@
 		on:click={() => (open = true)}
 		variant="secondary"
 		size="sm"
-		class="dark:hover:bg-gray-800  dark:border-gray-400 dark:text-gray-200 gap-2"
+		class="dark:hover:bg-gray-800  dark:border-gray-400 dark:text-gray-200 gap-2 whitespace-nowrap"
 	>
 		<i class="ti ti-brand-stackshare"></i>
 		{$t('share')}

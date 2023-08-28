@@ -1,6 +1,9 @@
 <script lang="ts">
 	import { getTable, getView } from '$lib/store/table'
-	import { Hr, Radio } from 'flowbite-svelte'
+	import { Button } from '$components/ui/button'
+	import { Separator } from '$lib/components/ui/separator'
+	import { Label } from '$lib/components/ui/label'
+	import * as RadioGroup from '$lib/components/ui/radio-group'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { writable } from 'svelte/store'
@@ -8,7 +11,8 @@
 	import { t } from '$lib/i18n'
 	import { invalidate } from '$app/navigation'
 	import { FieldId } from '@undb/core'
-	import { Button } from '$lib/components/ui/button'
+	import { hasPermission } from '$lib/store/authz'
+
 	const table = getTable()
 	const view = getView()
 	$: calendarFields = $table.schema.calendarFields
@@ -21,37 +25,36 @@
 			configViewModal.close()
 		},
 	})
-	const onChange = async () => {
-		if (calendarFieldId) {
+	const onChange = async (value: string | undefined) => {
+		if (value) {
 			$setField.mutate({
 				tableId: $table.id.value,
 				viewId: $view.id.value,
-				field: $calendarFieldId,
+				field: value,
 			})
 		}
 	}
 </script>
 
 <div class="flex flex-col space-y-2">
-	{#each calendarFields as field}
-		<Radio
-			bind:group={$calendarFieldId}
-			name="calendarFieldId"
-			value={field.id.value}
-			on:change={onChange}
-			class="space-x-1"
-		>
-			<FieldIcon type={field.type} />
-			<span>{field.name.value}</span>
-		</Radio>
-	{/each}
+	<RadioGroup.Root
+		bind:value={$calendarFieldId}
+		disabled={!$hasPermission('table:set_view_field')}
+		onValueChange={onChange}
+	>
+		{#each calendarFields as field}
+			<Label class="flex items-center gap-2">
+				<RadioGroup.Item value={field.id.value} id={field.id.value} name="calendarFieldId" />
+				<FieldIcon type={field.type} />
+				<span>{field.name.value}</span>
+			</Label>
+		{/each}
+	</RadioGroup.Root>
 </div>
 
 {#if calendarFields.length}
-	<div class="my-4">
-		<Hr>
-			<span class="text-gray-400 text-sm font-normal">{$t('or', { ns: 'common' })}</span>
-		</Hr>
+	<div>
+		<Separator class="my-4" />
 	</div>
 {/if}
 

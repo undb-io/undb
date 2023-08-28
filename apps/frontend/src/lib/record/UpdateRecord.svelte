@@ -102,8 +102,8 @@
 	const nextRecord = recordsStore.nextRecord
 </script>
 
-{#key $record}
-	<Dialog.Root bind:open={$open}>
+<Dialog.Root bind:open={$open}>
+	{#key $record}
 		<Dialog.Content class="!w-1/2 !max-w-none h-[calc(100vh-64px)] overflow-y-hidden p-0 block gap-0">
 			<Dialog.Header class="border-b border-gray-100 h-15 p-6">
 				<Dialog.Title class="pr-6">
@@ -203,8 +203,8 @@
 				</div>
 			</Dialog.Footer>
 		</Dialog.Content>
-	</Dialog.Root>
-{/key}
+	{/key}
+</Dialog.Root>
 
 {#if $updateRecord.error}
 	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
