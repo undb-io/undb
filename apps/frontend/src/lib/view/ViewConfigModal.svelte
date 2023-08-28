@@ -24,7 +24,6 @@
 </script>
 
 <Dialog.Root bind:open={$configViewModal.open}>
-	<Dialog.Trigger>Open</Dialog.Trigger>
 	<Dialog.Content>
 		<div class="space-y-1">
 			<svelte:component this={components[type]} slot="default" />

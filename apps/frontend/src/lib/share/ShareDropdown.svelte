@@ -78,7 +78,7 @@
 	}
 </script>
 
-<HoverCard.Root bind:open closeOnOutsideClick={false} openDelay={10}>
+<HoverCard.Root bind:open openDelay={10}>
 	<HoverCard.Trigger>
 		<slot />
 	</HoverCard.Trigger>
