@@ -93,9 +93,7 @@
 <WebhookListModal />
 <FormListDrawer />
 <FormEditorModal />
-{#if $erdModal.open}
-	<ErdModal />
-{/if}
+<ErdModal />
 {#if $currentRecordId}
 	<UpdateRecord data={data.updateRecord} />
 {/if}
@@ -114,9 +112,7 @@
 		<DuplicateField field={$field} />
 	{/key}
 {/if}
-{#if $rlsModal.open}
-	<RLSModal />
-{/if}
+<RLSModal />
 
 <VisualizationModal />
 
