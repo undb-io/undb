@@ -221,7 +221,7 @@
 									</Button>
 								</DropdownMenu.Trigger>
 								<DropdownMenu.Content>
-									<DropdownMenu.Item on:click={() => importDataModal.open()}>
+									<DropdownMenu.Item class="gap-2" on:click={() => importDataModal.open()}>
 										<i class="ti ti-csv" />
 										<span>
 											{$t('import data content')}
@@ -249,25 +249,25 @@
 						</button>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content class="w-56">
-						<DropdownMenu.Item on:click={() => goto('/me')}>
+						<DropdownMenu.Item class="gap-2" on:click={() => goto('/me')}>
 							<i class="ti ti-settings" />
 							{$t('Settings', { ns: 'auth' })}
 						</DropdownMenu.Item>
 						<DropdownMenu.Sub>
-							<DropdownMenu.SubTrigger>
-								<div>
-									<i class="ti ti-world" />
+							<DropdownMenu.SubTrigger class="gap-2">
+								<i class="ti ti-world" />
+								<span>
 									{$t('language', { ns: 'common' })}
-								</div>
+								</span>
 							</DropdownMenu.SubTrigger>
 							<DropdownMenu.SubContent>
-								<DropdownMenu.Item class="flex justify-between" on:click={() => $i18n.changeLanguage('zh-CN')}>
+								<DropdownMenu.Item class="flex justify-between gap-2" on:click={() => $i18n.changeLanguage('zh-CN')}>
 									<span>简体中文</span>
 									{#if $i18n.language === 'zh-CN'}
 										<i class="ti ti-check" />
 									{/if}
 								</DropdownMenu.Item>
-								<DropdownMenu.Item class="flex justify-between" on:click={() => $i18n.changeLanguage('en')}>
+								<DropdownMenu.Item class="flex justify-between gap-2" on:click={() => $i18n.changeLanguage('en')}>
 									<span>English</span>
 									{#if $i18n.language === 'en'}
 										<i class="ti ti-check" />
@@ -276,11 +276,12 @@
 							</DropdownMenu.SubContent>
 						</DropdownMenu.Sub>
 
-						<DropdownMenu.Item on:click={copyToken}>
+						<DropdownMenu.Item class="gap-2" on:click={copyToken}>
 							<i class="ti ti-copy" />
 							{$t('Copy Auth Token', { ns: 'auth' })}
 						</DropdownMenu.Item>
 						<DropdownMenu.Item
+							class="gap-2"
 							on:click={() => {
 								$theme = $theme === DARK_THEME ? LIGHT_THEME : DARK_THEME
 								changeThemeMode($theme)
@@ -294,11 +295,11 @@
 							{/if}
 						</DropdownMenu.Item>
 
-						<DropdownMenu.Item>
-							<button on:click={() => $logout.mutate()} class="w-full h-full text-left text-red-400" type="submit">
-								<i class="ti ti-logout" />
+						<DropdownMenu.Item class="gap-2 text-red-400" on:click={() => $logout.mutate()}>
+							<i class="ti ti-logout" />
+							<span>
 								{$t('logout', { ns: 'auth' })}
-							</button>
+							</span>
 						</DropdownMenu.Item>
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
@@ -333,25 +334,25 @@
 			</DropdownMenu.Trigger>
 
 			<DropdownMenu.Content class="w-56">
-				<DropdownMenu.Item on:click={() => goto('/me')}>
+				<DropdownMenu.Item class="gap-2" on:click={() => goto('/me')}>
 					<i class="ti ti-settings" />
-					{$t('Settings', { ns: 'auth' })}
+					<span>
+						{$t('Settings', { ns: 'auth' })}
+					</span>
 				</DropdownMenu.Item>
 				<DropdownMenu.Sub>
-					<DropdownMenu.SubTrigger>
-						<div>
-							<i class="ti ti-world" />
-							{$t('language', { ns: 'common' })}
-						</div>
+					<DropdownMenu.SubTrigger class="gap-2">
+						<i class="ti ti-world" />
+						{$t('language', { ns: 'common' })}
 					</DropdownMenu.SubTrigger>
 					<DropdownMenu.SubContent>
-						<DropdownMenu.Item class="flex justify-between" on:click={() => $i18n.changeLanguage('zh-CN')}>
+						<DropdownMenu.Item class="flex justify-between gap-2" on:click={() => $i18n.changeLanguage('zh-CN')}>
 							<span>简体中文</span>
 							{#if $i18n.language === 'zh-CN'}
 								<i class="ti ti-check" />
 							{/if}
 						</DropdownMenu.Item>
-						<DropdownMenu.Item class="flex justify-between" on:click={() => $i18n.changeLanguage('en')}>
+						<DropdownMenu.Item class="flex justify-between gap-2" on:click={() => $i18n.changeLanguage('en')}>
 							<span>English</span>
 							{#if $i18n.language === 'en'}
 								<i class="ti ti-check" />
@@ -360,11 +361,12 @@
 					</DropdownMenu.SubContent>
 				</DropdownMenu.Sub>
 
-				<DropdownMenu.Item on:click={copyToken}>
+				<DropdownMenu.Item class="gap-2" on:click={copyToken}>
 					<i class="ti ti-copy" />
 					{$t('Copy Auth Token', { ns: 'auth' })}
 				</DropdownMenu.Item>
 				<DropdownMenu.Item
+					class="gap-2"
 					on:click={() => {
 						$theme = $theme === DARK_THEME ? LIGHT_THEME : DARK_THEME
 						changeThemeMode($theme)
@@ -377,11 +379,11 @@
 						{$t('Dark Mode', { ns: 'auth' })}
 					{/if}
 				</DropdownMenu.Item>
-				<DropdownMenu.Item>
-					<button on:click={() => $logout.mutate()} class="w-full h-full text-left text-red-400" type="submit">
-						<i class="ti ti-logout" />
+				<DropdownMenu.Item class="gap-2 text-red-400" on:click={() => $logout.mutate()}>
+					<i class="ti ti-logout" />
+					<span>
 						{$t('logout', { ns: 'auth' })}
-					</button>
+					</span>
 				</DropdownMenu.Item>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
