@@ -19,9 +19,13 @@
 	$: selected = value ? filteredFields.find((f) => f.id === value) : undefined
 	$: selectedId = selected?.id
 	$: type = selected?.type
+
+	const onSelectedChange = (s: any) => {
+		value = s.value
+	}
 </script>
 
-<Select.Root disabled={readonly}>
+<Select.Root disabled={readonly} {onSelectedChange}>
 	<Select.Trigger>
 		<Select.Value />
 	</Select.Trigger>
