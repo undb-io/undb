@@ -59,7 +59,7 @@
     "i18next-http-middleware": "^3.3.2",
     "ioredis": "^5.3.2",
     "joi": "^17.9.2",
-    "mongodb": "^5.8.1",
+    "mongodb": "^6.0.0",
     "mongoose": "^7.4.5",
     "nestjs-cls": "^3.5.0",
     "nestjs-pino": "^3.4.0",
