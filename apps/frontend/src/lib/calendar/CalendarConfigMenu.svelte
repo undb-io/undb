@@ -3,6 +3,7 @@
 	import { configViewModal } from '$lib/store/modal'
 	import { getTable, getView } from '$lib/store/table'
 	import { Button } from '$lib/components/ui/button'
+
 	const view = getView()
 	const table = getTable()
 	$: fieldId = $view.calendarFieldIdString
@@ -10,7 +11,7 @@
 </script>
 
 {#if field}
-	<Button variant="outline" size="sm" class="text-xs gap-2" on:click={() => configViewModal.open()}>
+	<Button variant="secondary" size="sm" class="text-xs gap-2" on:click={() => configViewModal.open()}>
 		<i class="ti ti-select" />
 		<span class="whitespace-nowrap">{$t('Using Field', { name: field.name.value })}</span>
 	</Button>

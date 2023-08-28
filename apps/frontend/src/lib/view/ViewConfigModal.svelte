@@ -2,7 +2,7 @@
 	import { getView } from '$lib/store/table'
 	import type { IViewDisplayType } from '@undb/core'
 	import type { ComponentType } from 'svelte'
-	import { Modal } from 'flowbite-svelte'
+	import * as Dialog from '$lib/components/ui/dialog'
 	import KanbanConfig from './KanbanConfig.svelte'
 	import CalendarConfig from '$lib/calendar/CalendarConfig.svelte'
 	import { configViewModal } from '$lib/store/modal'
@@ -23,8 +23,11 @@
 	}
 </script>
 
-<Modal bind:open={$configViewModal.open} placement="top-center" class="w-full">
-	<div class="space-y-1">
-		<svelte:component this={components[type]} slot="default" />
-	</div>
-</Modal>
+<Dialog.Root bind:open={$configViewModal.open}>
+	<Dialog.Trigger>Open</Dialog.Trigger>
+	<Dialog.Content>
+		<div class="space-y-1">
+			<svelte:component this={components[type]} slot="default" />
+		</div>
+	</Dialog.Content>
+</Dialog.Root>
