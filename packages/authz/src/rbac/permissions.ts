@@ -35,7 +35,7 @@ export const webhookActions = z.enum(['webhook:create', 'webhook:update', 'webho
 export const shareActions = z.enum(['share:enable', 'share:disable'])
 export const memberActions = z.enum(['member:update_role'])
 export const rlsPermissionActions = z.enum(['rls:list', 'rls:create', 'rls:update', 'rls:delete'])
-export const flsPermissionActions = z.enum(['fls:create'])
+export const flsPermissionActions = z.enum(['fls:create', 'fls:update'])
 export const widgetActions = z.enum(['widget:create', 'widget:relayout', 'widget:delete'])
 export const visualizationActions = z.enum(['visualization:update'])
 export const invitationActions = z.enum(['invitation:list', 'invitation:invite', 'invitation:cancel'])
@@ -94,6 +94,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'rls:update': true,
     'rls:delete': true,
     'fls:create': true,
+    'fls:update': true,
     'share:enable': true,
     'share:disable': true,
     'widget:create': true,
@@ -144,6 +145,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'rls:update': true,
     'rls:delete': true,
     'fls:create': true,
+    'fls:update': true,
     'share:enable': true,
     'share:disable': true,
     'widget:create': true,
@@ -194,6 +196,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'rls:update': false,
     'rls:delete': false,
     'fls:create': false,
+    'fls:update': false,
     'share:enable': true,
     'share:disable': true,
     'widget:create': true,
@@ -244,6 +247,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'rls:update': false,
     'rls:delete': false,
     'fls:create': false,
+    'fls:update': false,
     'share:enable': true,
     'share:disable': true,
     'widget:create': false,

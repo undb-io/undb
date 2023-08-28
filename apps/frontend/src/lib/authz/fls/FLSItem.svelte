@@ -3,12 +3,25 @@
 	import type { IFilter } from '@undb/core'
 	import FlsItemEditor from './FLSItemEditor.svelte'
 	import type { ISubjectType } from './fls.type'
+	import { Button } from 'flowbite-svelte'
+	import { t } from '$lib/i18n'
+	import { hasPermission } from '$lib/store/authz'
+	import { invalidate } from '$app/navigation'
+	import { trpc } from '$lib/trpc/client'
+	import { getTable } from '$lib/store/table'
 
+	const table = getTable()
 	export let fls: FLS
 
 	let userIds: string[] = fls.subjects.subjects.map((s) => s.value.id)
 	let filter: IFilter[] = fls.policy.filter as IFilter[]
 	let subject: ISubjectType
+
+	const updateFLS = trpc().authz.fls.update.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+		},
+	})
 </script>
 
 <li class="flex items-start gap-2">
@@ -16,12 +29,25 @@
 		<FlsItemEditor action={fls.policy.action} bind:filter bind:userIds bind:subject />
 	</div>
 
-	<!-- {#if $hasPermission('fls:update')}
-		<Button class="w-20 whitespace-nowrap" color="alternative" size="xs">
-			{$t('Update RLS', { ns: 'authz' })}
+	{#if $hasPermission('fls:update')}
+		<Button
+			class="w-20 whitespace-nowrap"
+			color="alternative"
+			size="xs"
+			on:click={() => {
+				$updateFLS.mutate({
+					id: fls.id.value,
+					subjects: subject === 'anyone' ? [] : userIds.map((userId) => ({ type: 'user', id: userId })),
+					policy: {
+						filter,
+					},
+				})
+			}}
+		>
+			{$t('Update FLS', { ns: 'authz' })}
 		</Button>
 	{/if}
-	{#if $hasPermission('fls:delete')}
+	<!--{#if $hasPermission('fls:delete')}
 		<Button
 			color="alternative"
 			size="xs"
