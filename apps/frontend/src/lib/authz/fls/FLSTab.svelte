@@ -4,14 +4,17 @@
 	import type { IFLSAction } from '@undb/authz'
 	import { Badge, TabItem } from 'flowbite-svelte'
 	import { hasPermission } from '$lib/store/authz'
+	import FlsList from './FlsList.svelte'
+	import { currentFLSS } from '$lib/store/table'
+	import FlsCreate from './FLSCreate.svelte'
 
 	export let action: IFLSAction
 
-	$: flss = []
+	$: flss = $currentFLSS.filter((fls) => fls.policy.action === action)
 	$: count = flss.length
 </script>
 
-<TabItem open={action === 'view'} defaultClass={cx({ '!text-gray-500 dark:!text-gray-300': !flss.length })}>
+<TabItem open={action === 'update'} defaultClass={cx({ '!text-gray-500 dark:!text-gray-300': !flss.length })}>
 	<span slot="title" class="flex items-center gap-2">
 		{$t(action, { ns: 'authz' })}
 		{#if count}
@@ -21,9 +24,9 @@
 		{/if}
 	</span>
 	<div class="space-y-2">
-		<!-- <RlsList {rlss} />
-		{#if $hasPermission('rls:create')}
-			<RlsCreate {action} {rlss} />
-		{/if} -->
+		<FlsList {flss} />
+		{#if $hasPermission('fls:create')}
+			<FlsCreate {action} {flss} />
+		{/if}
 	</div>
 </TabItem>

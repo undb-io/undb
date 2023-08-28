@@ -1,7 +1,7 @@
 import { page } from '$app/stores'
 import { trpc } from '$lib/trpc/client'
 import type { CreateQueryResult } from '@tanstack/svelte-query'
-import { isUserMatch, type RLS } from '@undb/authz'
+import { FLS, isUserMatch, type RLS } from '@undb/authz'
 import {
 	ChartVisualization,
 	NumberVisualization,
@@ -444,6 +444,11 @@ export const tableById = derived([currentTable, allTables, shareTarget], ([$tabl
 		return t
 	}
 })
+
+export const currentFLSS = writable<FLS[]>()
+export const getFLSS = currentFLSS
+
+export const updateFLSS = derived(currentFLSS, ($flss) => $flss.filter((fls) => fls.policy.action === 'update'))
 
 export const currentRLSS = writable<RLS[]>()
 export const getRLSS = currentRLSS

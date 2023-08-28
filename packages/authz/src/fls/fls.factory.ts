@@ -1,9 +1,10 @@
 import type { Table } from '@undb/core'
 import { and } from '@undb/domain'
+import type { ISubject } from '../common/index.js'
 import { FLS } from './fls.js'
 import type { IQueryFLS } from './fls.schema.js'
 import type { FLSSpecification } from './interface.js'
-import { WithFLSId, WithFLSPolicy, WithFLSTableId } from './specifications/index.js'
+import { WithFLSId, WithFLSPolicy, WithFLSSubjects, WithFLSTableId } from './specifications/index.js'
 import type { FLSPolicyInterface } from './value-objects/index.js'
 
 export class FLSFactory {
@@ -14,15 +15,21 @@ export class FLSFactory {
       .unwrap()
   }
 
-  static from(table: Table, policy: FLSPolicyInterface) {
-    return this.create(WithFLSId.create(), WithFLSTableId.fromString(table.id.value), WithFLSPolicy.from(policy))
+  static from(table: Table, policy: FLSPolicyInterface, subjects: ISubject[]) {
+    return this.create(
+      WithFLSId.create(),
+      WithFLSTableId.fromString(table.id.value),
+      WithFLSPolicy.from(policy),
+      WithFLSSubjects.from(subjects),
+    )
   }
 
-  static fromQuery(rls: IQueryFLS): FLS {
+  static fromQuery(fls: IQueryFLS): FLS {
     return this.create(
-      WithFLSId.fromString(rls.id),
-      WithFLSTableId.fromString(rls.tableId),
-      WithFLSPolicy.from(rls.policy),
+      WithFLSId.fromString(fls.id),
+      WithFLSTableId.fromString(fls.tableId),
+      WithFLSPolicy.from(fls.policy),
+      WithFLSSubjects.from(fls.subjects),
     )
   }
 }

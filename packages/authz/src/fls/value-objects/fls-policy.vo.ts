@@ -4,7 +4,7 @@ import { ValueObject } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { z } from 'zod'
 
-export const flsActions = ['view', 'update'] as const
+export const flsActions = ['update'] as const
 export const flsAction = z.enum(flsActions)
 export type IFLSAction = z.infer<typeof flsAction>
 
