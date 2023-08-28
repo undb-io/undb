@@ -1,5 +1,5 @@
 import type { IQueryFLS } from '@undb/authz'
-import { FLSFactory, WithFLSId, WithFLSPolicy, WithFLSTableId, type FLS as FLSDO } from '@undb/authz'
+import { FLSFactory, WithFLSId, WithFLSPolicy, WithFLSSubjects, WithFLSTableId, type FLS as FLSDO } from '@undb/authz'
 import type { FLS } from '../../entity/fls.js'
 
 export class FLSSqliteMapper {
@@ -8,6 +8,7 @@ export class FLSSqliteMapper {
       WithFLSId.fromString(fls.id),
       WithFLSTableId.fromString(fls.table.id),
       WithFLSPolicy.from(fls.policy),
+      WithFLSSubjects.from(fls.subjects),
     )
   }
 
@@ -19,6 +20,7 @@ export class FLSSqliteMapper {
         action: fls.policy.action,
         filter: fls.policy.filter,
       },
+      subjects: fls.subjects,
     }
   }
 }

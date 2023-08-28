@@ -7,6 +7,7 @@ import type {
   WithFLSPolicy,
   WithFLSPolicyFilter,
 } from './specifications/fls-policy.specification.js'
+import type { FLSSubjectContainsUser, WithFLSSubjects } from './specifications/fls-subject.specification.js'
 import type { WithFLSTableId } from './specifications/fls-table-id.specification.js'
 
 export interface IFLSVisitor extends ISpecVisitor {
@@ -16,6 +17,8 @@ export interface IFLSVisitor extends ISpecVisitor {
   actionsIn(s: WithFLSActionIn): void
   withFLSPolicyFilter(s: WithFLSPolicyFilter): void
   withTableId(s: WithFLSTableId): void
+  withFLSSubjects(s: WithFLSSubjects): void
+  subjectContainsUser(s: FLSSubjectContainsUser): void
 }
 
 export type FLSSpecification = CompositeSpecification<FLS, IFLSVisitor>

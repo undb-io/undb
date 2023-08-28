@@ -1,11 +1,13 @@
 import type { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
 import type {
+  FLSSubjectContainsUser,
   IFLSVisitor,
   WithFLSAction,
   WithFLSActionIn,
   WithFLSId,
   WithFLSPolicy,
   WithFLSPolicyFilter,
+  WithFLSSubjects,
   WithFLSTableId,
 } from '@undb/authz'
 import type { ISpecVisitor, ISpecification } from '@undb/domain'
@@ -17,6 +19,12 @@ export class FLSSqliteQueryVisitor implements IFLSVisitor {
     private qb: QueryBuilder<FLS>,
   ) {
     this.qb = this.qb.andWhere({ deletedAt: null })
+  }
+  withFLSSubjects(s: WithFLSSubjects): void {
+    throw new Error('Method not implemented.')
+  }
+  subjectContainsUser(s: FLSSubjectContainsUser): void {
+    throw new Error('Method not implemented.')
   }
   withId(s: WithFLSId): void {
     this.qb.andWhere({ id: s.id.value })

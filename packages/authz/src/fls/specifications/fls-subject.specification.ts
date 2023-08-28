@@ -3,10 +3,10 @@ import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { ISubject } from '../../common/index.js'
 import { Subject, Subjects } from '../../common/index.js'
-import type { IRLSVisitor } from '../interface.js'
-import type { RLS } from '../rls.js'
+import type { FLS } from '../fls.js'
+import type { IFLSVisitor } from '../interface.js'
 
-export class WithRLSSubjects extends CompositeSpecification<RLS, IRLSVisitor> {
+export class WithFLSSubjects extends CompositeSpecification<FLS, IFLSVisitor> {
   constructor(public readonly subjects: Subjects) {
     super()
   }
@@ -14,31 +14,31 @@ export class WithRLSSubjects extends CompositeSpecification<RLS, IRLSVisitor> {
   static from(subjects: ISubject[]) {
     return new this(new Subjects(subjects.map((subject) => new Subject(subject))))
   }
-  isSatisfiedBy(t: RLS): boolean {
+  isSatisfiedBy(t: FLS): boolean {
     return t.subjects.equals(this.subjects)
   }
-  mutate(t: RLS): Result<RLS, string> {
+  mutate(t: FLS): Result<FLS, string> {
     t.subjects = this.subjects
     return Ok(t)
   }
-  accept(v: IRLSVisitor): Result<void, string> {
-    v.withRLSSubjects(this)
+  accept(v: IFLSVisitor): Result<void, string> {
+    v.withFLSSubjects(this)
     return Ok(undefined)
   }
 }
 
-export class RLSSubjectContainsUser extends CompositeSpecification<RLS, IRLSVisitor> {
+export class FLSSubjectContainsUser extends CompositeSpecification<FLS, IFLSVisitor> {
   constructor(public readonly userId: string) {
     super()
   }
-  isSatisfiedBy(t: RLS): boolean {
+  isSatisfiedBy(t: FLS): boolean {
     if (!t.subjects.users.length) return true
     return t.subjects.users.some((user) => user.value.id === this.userId)
   }
-  mutate(t: RLS): Result<RLS, string> {
+  mutate(t: FLS): Result<FLS, string> {
     throw new Error('Method not implemented.')
   }
-  accept(v: IRLSVisitor): Result<void, string> {
+  accept(v: IFLSVisitor): Result<void, string> {
     v.subjectContainsUser(this)
     return Ok(undefined)
   }

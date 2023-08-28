@@ -1,7 +1,7 @@
 import { ValueObject } from '@undb/domain'
-import type { RLSSubject } from './rls-subject.vo.js'
+import type { Subject } from './subject.vo.js'
 
-export class RLSSubjects extends ValueObject<RLSSubject[]> {
+export class Subjects extends ValueObject<Subject[]> {
   public get subjects() {
     return this.props
   }

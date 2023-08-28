@@ -1,12 +1,14 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
 import type {
+  FLSSubjectContainsUser,
   IFLSVisitor,
   WithFLSAction,
   WithFLSActionIn,
   WithFLSId,
   WithFLSPolicy,
   WithFLSPolicyFilter,
+  WithFLSSubjects,
   WithFLSTableId,
 } from '@undb/authz'
 import type { ISpecVisitor, ISpecification } from '@undb/domain'
@@ -19,6 +21,14 @@ export class FLSSqliteMutationVisitor extends BaseEntityManager implements IFLSV
     public readonly id: string,
   ) {
     super(em)
+  }
+  withFLSSubjects(s: WithFLSSubjects): void {
+    const fls = this.em.getReference(FLS, this.id)
+    wrap(fls).assign({ subjects: s.subjects.subjects.map((s) => s.value) })
+    this.em.persist(fls)
+  }
+  subjectContainsUser(s: FLSSubjectContainsUser): void {
+    throw new Error('Method not implemented.')
   }
   withId(s: WithFLSId): void {
     throw new Error('Method not implemented.')

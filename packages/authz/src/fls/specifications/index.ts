@@ -4,6 +4,7 @@ import { WithFLSTableId } from './fls-table-id.specification.js'
 
 export * from './fls-id.specification.js'
 export * from './fls-policy.specification.js'
+export * from './fls-subject.specification.js'
 export * from './fls-table-id.specification.js'
 
 export const withTableFLS = (tableId: string) => WithFLSTableId.fromString(tableId)
