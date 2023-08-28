@@ -58,6 +58,7 @@
 					<Button
 						class="bg-unset border-gray-200 border text-gray-900 dark:hover:bg-gray-900 hover:text-primary hover:bg-gray-100"
 						size="sm"
+						type="button"
 						on:click={add}
 					>
 						{$t('Create New Filter')}
