@@ -11,7 +11,7 @@
 	import { t } from '$lib/i18n'
 	import { createTableModal } from '$lib/store/modal'
 	import { newTableSchema } from '$lib/store/table'
-	import { onDestroy } from 'svelte'
+	import { onDestroy, onMount } from 'svelte'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import { Label } from '$lib/components/ui/label'
 	import { Input } from '$lib/components/ui/input'
@@ -60,11 +60,15 @@
 	$: $form.schema = []
 	$: displayFields = $form.schema?.filter((f) => !!f.display) ?? []
 
-	$: newTableSchema.set({
-		tableId: $form.id,
-		tableName: $form.name,
-		schema: $form.schema,
-	})
+	$: if ($createTableModal.open) {
+		newTableSchema.set({
+			tableId: $form.id,
+			tableName: $form.name,
+			schema: $form.schema,
+		})
+	} else {
+		newTableSchema.reset()
+	}
 
 	onDestroy(() => {
 		newTableSchema.reset()

@@ -6,14 +6,13 @@
 	import { isFilterable, type Field, type IFilter, isOperatorWithoutValue, type IQueryFieldSchema } from '@undb/core'
 	import { allTableFields, getTable } from '$lib/store/table'
 	import FilterValue from './FilterValue.svelte'
-	import { identity } from 'lodash-es'
 	export let filter: Partial<IFilter>
 
 	export let index: number
 	export let remove: (index: number) => void
 	export let field: Field | undefined = undefined
 	export let readonly = false
-	export let fieldFilter: (field: IQueryFieldSchema) => boolean = identity
+	export let fieldFilter: (field: IQueryFieldSchema) => boolean = () => true
 
 	const table = getTable()
 
@@ -30,9 +29,6 @@
 	<div class="grid grid-cols-3 gap-2 flex-1">
 		<FieldPicker
 			bind:selectedId
-			size="xs"
-			class="h-10 w-full !justify-start"
-			table={$table}
 			bind:value={filter.path}
 			bind:type={filter.type}
 			fields={$allTableFields}
