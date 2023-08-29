@@ -27,11 +27,11 @@
 	$: fields = $table.getOrderedFields($view, false).filter((f) => f.id.value !== field.id.value)
 </script>
 
-<Card.Root class="group shadow-sm hover:shadow-md transition !max-w-none !p-2 relative">
-	<Card.Header>
+<Card.Root class="group shadow-sm hover:shadow-md transition !max-w-none !p-0 relative">
+	<Card.Header class="px-3 py-1">
 		<button
 			on:click={() => ($currentRecordId = record.id.value)}
-			class="top-5 right-5 z-50 py-1 px-3 bg-gray-500/5 absolute opacity-0 group-hover:opacity-100"
+			class="top-5 right-5 z-50 py-1 px-2 border border-gray-200 shadow-md bg-gray-500/5 absolute transition opacity-0 group-hover:opacity-100 hover:shadow-lg rounded-md"
 		>
 			<i class="ti ti-external-link"></i>
 		</button>
@@ -39,7 +39,7 @@
 			{#if images.length}
 				<Carousel divClass="h-auto" {images} showCaptions={false} showThumbs={false} />
 			{:else}
-				<div class="w-full aspect-square flex items-center justify-center bg-gray-100">
+				<div class="w-full aspect-square flex items-center justify-center bg-gray-100 text-gray-500 rounded-md">
 					<i class="ti ti-photo text-[120px]"></i>
 				</div>
 			{/if}
