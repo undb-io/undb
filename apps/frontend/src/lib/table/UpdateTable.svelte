@@ -1,16 +1,11 @@
 <script lang="ts">
-	import {
-		Button,
-		Label,
-		Modal,
-		Input,
-		Spinner,
-		Toast,
-		Dropdown,
-		DropdownItem,
-		Accordion,
-		Badge,
-	} from 'flowbite-svelte'
+	import { Modal, Spinner, Toast, Dropdown, DropdownItem } from 'flowbite-svelte'
+	import { Label } from '$lib/components/ui/label'
+	import { Input } from '$lib/components/ui/input'
+	import { Button } from '$components/ui/button'
+	import { Badge } from '$components/ui/badge'
+	import * as Dialog from '$lib/components/ui/dialog'
+	import * as Accordion from '$lib/components/ui/accordion'
 	import type { Validation } from 'sveltekit-superforms'
 	import { FieldId, createUpdateTableSchema } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
@@ -71,92 +66,91 @@
 	let confirmDeleteTable = false
 </script>
 
-<Modal placement="top-center" class="static w-full" size="lg" bind:open={$updateTableModal.open}>
-	<svelte:fragment slot="header">
-		<div class="flex justify-between w-full mr-6 dark:text-gray-200">
-			<p class="text-lg dark:text-white">{$t('Update Table')}</p>
-			<button>
-				<i class="ti ti-dots" />
-			</button>
-			<Dropdown style="z-index: 50;" class="w-48">
-				<DropdownItem class="inline-flex items-center gap-2 text-red-400" on:click={() => (confirmDeleteTable = true)}>
-					<i class="ti ti-trash" />
-					<span class="text-xs">{$t('Delete Table')}</span>
-				</DropdownItem>
-			</Dropdown>
-		</div>
-	</svelte:fragment>
-
-	<form id="updateTable" class="flex flex-col justify-between flex-1 gap-2" method="POST" use:enhance>
-		<div class="space-y-2">
-			<div>
-				<Label class="space-y-2">
-					<span>
-						<span>{$t('Name', { ns: 'common' })}</span>
-						<span class="text-red-500">*</span>
-					</span>
-					<Input
-						data-auto-focus
-						id="name"
-						name="name"
-						type="text"
-						label="name"
-						bind:value={$form.name}
-						data-invalid={$errors.name}
-						required
-						{...$constraints.name}
-					/>
-				</Label>
-			</div>
-
-			<div class="flex">
-				<span class="inline-block mr-2 text-sm">
-					{$t('Display Fields')}:
-				</span>
-				<div class="flex gap-2">
-					{#each displayFields as field}
-						<Badge>
-							{field.name}
-						</Badge>
-					{/each}
+<Dialog.Root bind:open={$updateTableModal.open}>
+	<Dialog.Content class="!w-3/4 max-w-none max-h-[95%] overflow-y-auto">
+		<Dialog.Header>
+			<Dialog.Title>
+				<div class="flex justify-between w-full mr-6 dark:text-gray-200">
+					<p class="text-lg dark:text-white">{$t('Update Table')}</p>
+					<button>
+						<i class="ti ti-dots" />
+					</button>
+					<Dropdown style="z-index: 50;" class="w-48">
+						<DropdownItem
+							class="inline-flex items-center gap-2 text-red-400"
+							on:click={() => (confirmDeleteTable = true)}
+						>
+							<i class="ti ti-trash" />
+							<span class="text-xs">{$t('Delete Table')}</span>
+						</DropdownItem>
+					</Dropdown>
 				</div>
-			</div>
-			{#if $form.schema?.length}
-				<Accordion class="my-4">
-					{#each $form.schema as field, i (field.id)}
-						{@const isNew = !!newFields[field.id ?? '']}
-						<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} {isNew}>
-							<svelte:fragment slot="header">
-								{#if isNew}
-									<Badge color="green">
-										{$t('new field')}
-									</Badge>
-								{/if}
-							</svelte:fragment>
-						</CreateTableFieldAccordionItem>
-					{/each}
-				</Accordion>
-			{/if}
+			</Dialog.Title>
+		</Dialog.Header>
 
-			<Button color="light" outline class="w-full my-3" on:click={addField}>
-				<i class="ti ti-plus text-sm mr-4" />
-				{$t('Create New Field')}</Button
-			>
-		</div>
-	</form>
+		<form id="updateTable" class="flex flex-col justify-between flex-1 gap-2" method="POST" use:enhance>
+			<div class="space-y-2">
+				<div>
+					<Label class="space-y-2">
+						<span>
+							<span>{$t('Name', { ns: 'common' })}</span>
+							<span class="text-red-500">*</span>
+						</span>
+						<Input id="name" name="name" type="text" bind:value={$form.name} required {...$constraints.name} />
+					</Label>
+				</div>
 
-	<svelte:fragment slot="footer">
-		<div class="w-full flex justify-end gap-2">
-			<Button color="alternative" on:click={updateTableModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
-			<Button class="gap-4" type="submit" form="updateTable" disabled={$submitting}>
-				{#if $delayed}
-					<Spinner size="5" />
+				<div class="flex">
+					<span class="inline-block mr-2 text-sm">
+						{$t('Display Fields')}:
+					</span>
+					<div class="flex gap-2">
+						{#each displayFields as field}
+							<Badge>
+								{field.name}
+							</Badge>
+						{/each}
+					</div>
+				</div>
+				{#if $form.schema?.length}
+					<Accordion.Root class="my-4">
+						{#each $form.schema as field, i (field.id)}
+							{@const isNew = !!newFields[field.id ?? '']}
+							<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} {isNew}>
+								<svelte:fragment slot="header">
+									{#if isNew}
+										<Badge color="green">
+											{$t('new field')}
+										</Badge>
+									{/if}
+								</svelte:fragment>
+							</CreateTableFieldAccordionItem>
+						{/each}
+					</Accordion.Root>
 				{/if}
-				{$t('Update Table')}</Button
-			>
-		</div>
-	</svelte:fragment>
-</Modal>
+
+				<Button variant="secondary" class="w-full my-3" on:click={addField}>
+					<i class="ti ti-plus text-sm mr-4" />
+					{$t('Create New Field')}
+				</Button>
+			</div>
+		</form>
+
+		<Dialog.Footer>
+			<div class="w-full flex justify-end gap-2">
+				<Button variant="secondary" type="button" on:click={updateTableModal.close}
+					>{$t('Cancel', { ns: 'common' })}</Button
+				>
+				<Button class="gap-4" type="submit" form="updateTable" disabled={$submitting}>
+					{#if $delayed}
+						<Spinner size="5" />
+					{/if}
+					{$t('Update Table')}
+				</Button>
+			</div>
+		</Dialog.Footer>
+	</Dialog.Content>
+</Dialog.Root>
 
 {#if $updateTable.error}
 	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
