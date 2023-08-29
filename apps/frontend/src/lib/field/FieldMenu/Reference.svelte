@@ -35,7 +35,7 @@
 			createFieldModal.open()
 		}}
 	>
-		<FieldIcon type={field.type} />
+		<FieldIcon type="lookup" />
 		<span>
 			{$t('Insert Lookup Field')}
 		</span>
@@ -51,7 +51,7 @@
 			createFieldModal.open()
 		}}
 	>
-		<FieldIcon type={field.type} />
+		<FieldIcon type="count" />
 		<span>
 			{$t('Insert Count Field')}
 		</span>
@@ -67,7 +67,7 @@
 			createFieldModal.open()
 		}}
 	>
-		<FieldIcon type={field.type} />
+		<FieldIcon type="sum" />
 		<span>
 			{$t('Insert Sum Field')}
 		</span>
@@ -83,7 +83,7 @@
 			createFieldModal.open()
 		}}
 	>
-		<FieldIcon type={field.type} />
+		<FieldIcon type="average" />
 		<span>
 			{$t('Insert Average Field')}
 		</span>
@@ -99,12 +99,12 @@
 			createFieldModal.open()
 		}}
 	>
-		<FieldIcon type={field.type} />
+		<FieldIcon type="min" />
 		<span>
 			{$t('Insert Min Field')}
 		</span>
 	</DropdownItem>
-	
+
 	<DropdownItem
 		{...$$restProps}
 		on:click={() => {
@@ -115,7 +115,7 @@
 			createFieldModal.open()
 		}}
 	>
-		<FieldIcon type={field.type} />
+		<FieldIcon type="max" />
 		<span>
 			{$t('Insert Max Field')}
 		</span>
