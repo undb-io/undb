@@ -22,6 +22,12 @@
 			await invalidate(`table:${$table.id.value}`)
 		},
 	})
+
+	const deleteFLS = trpc().authz.fls.delete.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+		},
+	})
 </script>
 
 <li class="flex items-start gap-2">
@@ -47,16 +53,16 @@
 			{$t('Update FLS', { ns: 'authz' })}
 		</Button>
 	{/if}
-	<!--{#if $hasPermission('fls:delete')}
+	{#if $hasPermission('fls:delete')}
 		<Button
 			color="alternative"
 			size="xs"
 			on:click={() =>
-				$deleteRLS.mutate({
-					id: rls.id.value,
+				$deleteFLS.mutate({
+					id: fls.id.value,
 				})}
 		>
 			<i class="ti ti-trash"></i>
 		</Button>
-	{/if} -->
+	{/if}
 </li>

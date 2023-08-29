@@ -2,6 +2,7 @@ import type { IGetTableRLSSOutput } from '@undb/cqrs'
 import {
   CreateFLSCommand,
   CreateRLSCommand,
+  DeleteFLSCommand,
   DeleteRLSCommand,
   GetMembersQuery,
   GetTableRLSSQuery,
@@ -10,6 +11,7 @@ import {
   UpdateRoleCommand,
   createFLSCommandInput,
   createRLSCommandInput,
+  deleteFLSCommandInput,
   deleteRLSCommandInput,
   getMembersQueryOutput,
   getMembersQuerySchema,
@@ -76,6 +78,14 @@ export const createFLSRouter = (procedure: typeof publicProcedure) => (commandBu
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new UpdateFLSCommand(input)
+        return commandBus.execute(cmd)
+      }),
+    delete: procedure
+      .use(authz('fls:delete'))
+      .input(deleteFLSCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new DeleteFLSCommand(input)
         return commandBus.execute(cmd)
       }),
   })
