@@ -1,5 +1,5 @@
 import { ITableRepository, Table, createTestTable } from '@undb/core'
-import { Err, None, Some } from 'oxide.ts'
+import { None, Some } from 'oxide.ts'
 import { MockProxy, mock } from 'vitest-mock-extended'
 import { SetRowHeightCommandHandler } from './set-row-height.command.handler.js'
 import { SetRowHeightCommand } from './set-row-height.command.js'
