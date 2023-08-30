@@ -4,7 +4,7 @@ import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import path from 'path'
 import { entities } from './entity/index.js'
 import { SqliteLogger } from './logger.js'
-import { Migration20230828025421 } from './migrations/Migration20230828025421.js'
+import { Migration20230830052614 } from './migrations/Migration20230830052614.js'
 
 export const createConfig = (data: string, env = 'development') =>
   defineConfig({
@@ -24,7 +24,7 @@ export const createConfig = (data: string, env = 'development') =>
       migrationsList: [
         {
           name: 'initial',
-          class: Migration20230828025421,
+          class: Migration20230830052614,
         },
       ],
     },

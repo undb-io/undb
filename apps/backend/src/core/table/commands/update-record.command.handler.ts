@@ -17,6 +17,6 @@ export class UpdateRecordCommandHandler extends DomainHandler implements IComman
     protected readonly rls: NestRLSAuthzService,
     protected readonly fls: NestFLSAuthzService,
   ) {
-    super(tableRepo, recordRepo, rls)
+    super(tableRepo, recordRepo, rls, fls)
   }
 }

@@ -1913,8 +1913,9 @@ CREATE UNIQUE INDEX `undb_invitation_email_unique` on `undb_invitation` (`email`
 CREATE INDEX `undb_invitation_invited_by_id_index` on `undb_invitation` (`invited_by_id`);
 CREATE INDEX `undb_invitation_cancelled_by_id_index` on `undb_invitation` (`cancelled_by_id`);
 
-create table `undb_fls` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `policy_action` text not null, `policy_filter` json not null, `subjects` json not null, constraint `undb_fls_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));
+create table `undb_fls` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `field_id` text null, `policy_action` text not null, `policy_filter` json not null, `subjects` json not null, constraint `undb_fls_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, constraint `undb_fls_field_id_foreign` foreign key(`field_id`) references `undb_field`(`id`) on delete cascade on update cascade, primary key (`id`));
 create index `undb_fls_deleted_at_index` on `undb_fls` (`deleted_at`);
 create index `undb_fls_table_id_index` on `undb_fls` (`table_id`);
+create index `undb_fls_field_id_index` on `undb_fls` (`field_id`);
 
 COMMIT;

@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230828025421 extends Migration {
+export class Migration20230830052614 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `undb_outbox` (`uuid` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text null, `operator_id` text null, `timestamp` datetime not null, `payload` json not null, `meta` json null, primary key (`uuid`));',
@@ -30,12 +30,6 @@ export class Migration20230828025421 extends Migration {
     )
     this.addSql('create index `undb_form_deleted_at_index` on `undb_form` (`deleted_at`);')
     this.addSql('create index `undb_form_table_id_index` on `undb_form` (`table_id`);')
-
-    this.addSql(
-      'create table `undb_fls` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `policy_action` text not null, `policy_filter` json not null, `subjects` json not null, constraint `undb_fls_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));',
-    )
-    this.addSql('create index `undb_fls_deleted_at_index` on `undb_fls` (`deleted_at`);')
-    this.addSql('create index `undb_fls_table_id_index` on `undb_fls` (`table_id`);')
 
     this.addSql(
       'create table `undb_field` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `name` text not null, `description` text null, `system` integer not null default false, `required` integer not null default false, `display` integer not null default false, `type` text not null, `format` text null, `time_format` text null, `foreign_table_id` text null, `symmetric_reference_field_id` text null, `is_owner` integer null default false, `parent_field_id` text null, `tree_field_id` text null, `max` integer null, `symbol` text null, `count_reference_field_id` text null, `lookup_reference_field_id` text null, `sum_reference_field_id` text null, `sum_aggregate_field_id` text null, `average_reference_field_id` text null, `average_aggregate_field_id` text null, `min_reference_field_id` text null, `min_aggregate_field_id` text null, `max_reference_field_id` text null, `max_aggregate_field_id` text null, constraint `undb_field_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, constraint `undb_field_foreign_table_id_foreign` foreign key(`foreign_table_id`) references `undb_table`(`id`) on delete set null on update cascade, constraint `undb_field_symmetric_reference_field_id_foreign` foreign key(`symmetric_reference_field_id`) references `undb_field`(`id`) on delete set null on update cascade, constraint `undb_field_count_reference_field_id_foreign` foreign key(`count_reference_field_id`) references `undb_field`(`id`) on delete set null on update cascade, constraint `undb_field_lookup_reference_field_id_foreign` foreign key(`lookup_reference_field_id`) references `undb_field`(`id`) on delete set null on update cascade, constraint `undb_field_sum_reference_field_id_foreign` foreign key(`sum_reference_field_id`) references `undb_field`(`id`) on delete set null on update cascade, constraint `undb_field_sum_aggregate_field_id_foreign` foreign key(`sum_aggregate_field_id`) references `undb_field`(`id`) on delete set null on update cascade, constraint `undb_field_average_reference_field_id_foreign` foreign key(`average_reference_field_id`) references `undb_field`(`id`) on delete set null on update cascade, constraint `undb_field_average_aggregate_field_id_foreign` foreign key(`average_aggregate_field_id`) references `undb_field`(`id`) on delete set null on update cascade, constraint `undb_field_min_reference_field_id_foreign` foreign key(`min_reference_field_id`) references `undb_field`(`id`) on delete set null on update cascade, constraint `undb_field_min_aggregate_field_id_foreign` foreign key(`min_aggregate_field_id`) references `undb_field`(`id`) on delete set null on update cascade, constraint `undb_field_max_reference_field_id_foreign` foreign key(`max_reference_field_id`) references `undb_field`(`id`) on delete set null on update cascade, constraint `undb_field_max_aggregate_field_id_foreign` foreign key(`max_aggregate_field_id`) references `undb_field`(`id`) on delete set null on update cascade, primary key (`id`));',
@@ -72,6 +66,13 @@ export class Migration20230828025421 extends Migration {
     this.addSql('create index `undb_option_deleted_at_index` on `undb_option` (`deleted_at`);')
     this.addSql('create index `undb_option_field_id_index` on `undb_option` (`field_id`);')
     this.addSql('create index `undb_option_name_index` on `undb_option` (`name`);')
+
+    this.addSql(
+      'create table `undb_fls` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `field_id` text null, `policy_action` text not null, `policy_filter` json not null, `subjects` json not null, constraint `undb_fls_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, constraint `undb_fls_field_id_foreign` foreign key(`field_id`) references `undb_field`(`id`) on delete cascade on update cascade, primary key (`id`));',
+    )
+    this.addSql('create index `undb_fls_deleted_at_index` on `undb_fls` (`deleted_at`);')
+    this.addSql('create index `undb_fls_table_id_index` on `undb_fls` (`table_id`);')
+    this.addSql('create index `undb_fls_field_id_index` on `undb_fls` (`field_id`);')
 
     this.addSql(
       'create table `undb_attachment` (`id` text not null, `record_id` text not null, `field_id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text not null, `mime_type` text not null, `name` text not null, `size` integer not null, `token` text not null, `url` text not null, `extension` text not null, constraint `undb_attachment_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on update cascade, primary key (`id`, `record_id`, `field_id`));',

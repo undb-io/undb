@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation'
-	import { getTable } from '$lib/store/table'
+	import { currentFieldId, getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { IFilter } from '@undb/core'
 	import { Button, Toast } from 'flowbite-svelte'
@@ -47,6 +47,7 @@
 
 					$createFLS.mutate({
 						tableId: $table.id.value,
+						fieldId: $currentFieldId,
 						subjects: userIds.map((userId) => ({ type: 'user', id: userId })),
 						policy: {
 							action,

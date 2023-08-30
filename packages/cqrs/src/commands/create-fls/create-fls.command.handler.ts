@@ -13,8 +13,9 @@ export class CreateFLSCommandHandler implements ICreateFLSCommandHandler {
 
   async execute(command: CreateFLSCommand): Promise<void> {
     const table = (await this.tableRepo.findOneById(command.tableId)).unwrap()
+    const field = table.schema.getFieldById(command.fieldId).unwrap()
 
-    const fls = FLSFactory.from(table, command.policy, command.subjects)
+    const fls = FLSFactory.from(table, field, command.policy, command.subjects)
 
     await this.repo.insert(fls)
   }
