@@ -1,4 +1,5 @@
-import type { ClsStore, IClsService, Table } from '@undb/core'
+import type { ClsStore, IClsService, Record, Table } from '@undb/core'
+import { andOptions } from '@undb/domain'
 import type { FLS } from '../fls'
 import { FLSNotAuthorized } from '../fls.errors'
 import type { IFLSRepository } from '../fls.repository'
@@ -6,7 +7,7 @@ import { isFLSUserMatch, withTableOfActionFLS } from '../specifications/index.js
 import type { IFLSAction } from '../value-objects/index.js'
 
 export interface IFLSAuthzService {
-  check(action: IFLSAction, table: Table, fieldIds: string[]): Promise<void>
+  check(action: IFLSAction, table: Table, record: Record, fieldIds: string[]): Promise<void>
 }
 
 export class FLSAuthzService implements IFLSAuthzService {
@@ -23,11 +24,20 @@ export class FLSAuthzService implements IFLSAuthzService {
     return flss
   }
 
-  async check(action: IFLSAction, table: Table, fieldIds: string[]): Promise<void> {
+  async check(action: IFLSAction, table: Table, record: Record, fieldIds: string[]): Promise<void> {
+    const userId = this.cls.get('user.userId')
+
     const flss = await this.getFLSS(action, table.id.value)
-    const flsFieldIds = flss.map((fls) => fls.fieldId.value)
-    if (!flsFieldIds.some((id) => fieldIds.includes(id))) {
-      throw new FLSNotAuthorized()
+
+    for (const fieldId of fieldIds) {
+      const fs = flss.filter((fls) => fls.fieldId.value === fieldId)
+      if (!fs.length) continue
+
+      const specs = fs.map((fls) => fls.policy.getSpec(userId))
+      const spec = andOptions(...specs)
+
+      const isSatisfiedBy = spec.unwrap().isSatisfiedBy(record)
+      if (!isSatisfiedBy) throw new FLSNotAuthorized()
     }
   }
 }

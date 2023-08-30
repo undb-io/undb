@@ -8,7 +8,7 @@
 	import { t } from '$lib/i18n'
 	import { slide } from 'svelte/transition'
 	import { getValidFilters } from '$lib/filter/filter.util'
-	import type { FLS, IFLSAction } from '@undb/authz/dist'
+	import type { FLS, IFLSAction } from '@undb/authz'
 
 	const table = getTable()
 

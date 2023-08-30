@@ -17,9 +17,9 @@ export class UpdateRecordCommandHandler implements ICommandHandler<updateRecordC
 
     const record = (await this.recordRepo.findOneById(table, command.id)).unwrap()
 
-    await Promise.allSettled([
+    await Promise.all([
       this.rls.check('update', table, record),
-      this.fls.check('update', table, command.fieldIds),
+      this.fls.check('update', table, record, command.fieldIds),
     ])
 
     const schema = createMutateRecordValuesSchema(
