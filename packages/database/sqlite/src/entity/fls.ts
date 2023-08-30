@@ -13,6 +13,7 @@ import type { ISubject } from '@undb/authz'
 import { FLS as FLSDO, type FLSPolicyInterface, type IFLSAction } from '@undb/authz'
 import { type IRootFilter } from '@undb/core'
 import { BaseEntity } from './base.js'
+import { Field } from './field.js'
 import { Table } from './table.js'
 
 @Embeddable()
@@ -31,10 +32,11 @@ export class FLSPolicy {
 
 @Entity({ tableName: 'undb_fls' })
 export class FLS extends BaseEntity {
-  constructor(table: Rel<Table>, fls: FLSDO) {
+  constructor(table: Rel<Table>, field: Rel<Field>, fls: FLSDO) {
     super()
     this.id = fls.id.value
     this.table = table
+    this.field = field
     this.policy = new FLSPolicy(fls.policy)
     this.subjects = fls.subjects.subjects.map((s) => s.value)
   }
@@ -44,6 +46,9 @@ export class FLS extends BaseEntity {
 
   @ManyToOne(() => Table, { cascade: [Cascade.ALL] })
   table: Rel<Table>
+
+  @ManyToOne(() => Field, { cascade: [Cascade.ALL] })
+  field: Rel<Field>
 
   @Embedded(() => FLSPolicy)
   policy: FLSPolicy

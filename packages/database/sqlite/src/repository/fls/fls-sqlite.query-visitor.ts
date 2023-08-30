@@ -4,6 +4,7 @@ import type {
   IFLSVisitor,
   WithFLSAction,
   WithFLSActionIn,
+  WithFLSFieldId,
   WithFLSId,
   WithFLSPolicy,
   WithFLSPolicyFilter,
@@ -31,6 +32,9 @@ export class FLSSqliteQueryVisitor implements IFLSVisitor {
   }
   withTableId(s: WithFLSTableId): void {
     this.qb.andWhere({ table: s.tableId.value })
+  }
+  withFieldId(s: WithFLSFieldId): void {
+    this.qb.andWhere({ field: s.fieldId.value })
   }
   withFLSPolicy(s: WithFLSPolicy): void {
     throw new Error('Method not implemented.')

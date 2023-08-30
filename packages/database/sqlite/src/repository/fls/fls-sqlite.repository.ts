@@ -4,6 +4,7 @@ import type { IFLSCache } from '@undb/authz'
 import { FLSFactory, type FLS as FLSDO, type FLSSpecification, type IFLSRepository } from '@undb/authz'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
+import { Field } from '../../entity/field.js'
 import { FLS } from '../../entity/fls.js'
 import { Table } from '../../entity/table.js'
 import { FLSSqliteMapper } from './fls-sqlite.mapper.js'
@@ -43,7 +44,8 @@ export class FLSSqliteRepository implements IFLSRepository {
   async insert(fls: FLSDO): Promise<void> {
     const em = this.em.fork()
     const table = em.getReference(Table, fls.tableId.value)
-    const entity = new FLS(table, fls)
+    const field = em.getReference(Field, fls.fieldId.value)
+    const entity = new FLS(table, field, fls)
     await em.insert(FLS, entity)
   }
 

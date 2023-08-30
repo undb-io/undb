@@ -1,5 +1,6 @@
 import type { CompositeSpecification, ISpecVisitor } from '@undb/domain'
 import type { FLS } from './fls.js'
+import type { WithFLSFieldId } from './specifications/fls-field-id.specification.js'
 import type { WithFLSId } from './specifications/fls-id.specification.js'
 import type {
   WithFLSAction,
@@ -17,6 +18,7 @@ export interface IFLSVisitor extends ISpecVisitor {
   actionsIn(s: WithFLSActionIn): void
   withFLSPolicyFilter(s: WithFLSPolicyFilter): void
   withTableId(s: WithFLSTableId): void
+  withFieldId(s: WithFLSFieldId): void
   withFLSSubjects(s: WithFLSSubjects): void
   subjectContainsUser(s: FLSSubjectContainsUser): void
 }

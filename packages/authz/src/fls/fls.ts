@@ -1,3 +1,4 @@
+import type { FieldId } from '@undb/core'
 import { RootFilter, type TableId } from '@undb/core'
 import { and } from '@undb/domain'
 import { isArray, isNil } from 'lodash-es'
@@ -16,6 +17,7 @@ import type { FLSPolicy } from './value-objects/fls-policy.vo.js'
 export class FLS {
   id!: FLSID
   tableId!: TableId
+  fieldId!: FieldId
   policy!: FLSPolicy
   subjects!: Subjects
 

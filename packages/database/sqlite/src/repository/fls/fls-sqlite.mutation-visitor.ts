@@ -5,6 +5,7 @@ import type {
   IFLSVisitor,
   WithFLSAction,
   WithFLSActionIn,
+  WithFLSFieldId,
   WithFLSId,
   WithFLSPolicy,
   WithFLSPolicyFilter,
@@ -34,6 +35,9 @@ export class FLSSqliteMutationVisitor extends BaseEntityManager implements IFLSV
     throw new Error('Method not implemented.')
   }
   withTableId(s: WithFLSTableId): void {
+    throw new Error('Method not implemented.')
+  }
+  withFieldId(s: WithFLSFieldId): void {
     throw new Error('Method not implemented.')
   }
   withFLSPolicy(s: WithFLSPolicy): void {

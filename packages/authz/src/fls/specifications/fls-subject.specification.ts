@@ -43,3 +43,5 @@ export class FLSSubjectContainsUser extends CompositeSpecification<FLS, IFLSVisi
     return Ok(undefined)
   }
 }
+
+export const isFLSUserMatch = (userId: string) => new FLSSubjectContainsUser(userId)
