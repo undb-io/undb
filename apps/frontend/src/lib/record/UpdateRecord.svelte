@@ -8,6 +8,7 @@
 		isShare,
 		recordsStore,
 		readonlyRecord,
+		canUpdateRecordField,
 	} from '$lib/store/table'
 	import { createMutateRecordValuesSchema } from '@undb/core'
 	import { Button, Label, Modal, P, Spinner, Toast } from 'flowbite-svelte'
@@ -149,6 +150,7 @@
 						<form id="updateRecord" class="space-y-5" method="POST" use:enhance>
 							<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 								{#each fields as field}
+									{@const readonlyField = !$canUpdateRecordField(field.id.value)}
 									<div class="h-full items-start gap-1 pt-2">
 										<Label class="leading-5" for={field.id.value}>
 											<div class="inline-flex items-center gap-2 truncate w-full">
@@ -167,7 +169,7 @@
 											record={$record}
 											{field}
 											bind:value={$form[field.id.value]}
-											readonly={$readonlyRecord ? true : undefined}
+											readonly={$readonlyRecord || readonlyField ? true : undefined}
 										/>
 									</div>
 								{/each}
