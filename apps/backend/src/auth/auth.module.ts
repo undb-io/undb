@@ -11,16 +11,26 @@ import {
   NestRegisterCommandHandler,
   NestUpdateProfileCommandHandler,
 } from './commands/index.js'
+import { CryptService } from './crypt.service.js'
 import { JwtStrategy } from './jwt.strategy.js'
 import { LocalStrategy } from './local.strategy.js'
 import { NestGetMeQueryHandler } from './queries/index.js'
+import { NestUserService } from './user.service.js'
 
 const CommandHandlers = [NestLgoinCommandHandler, NestRegisterCommandHandler, NestUpdateProfileCommandHandler]
 const QueryHandlers = [NestGetMeQueryHandler]
 
 @Module({
   imports: [CqrsModule, UserModule, AuthzModule, PassportModule, MemberModule],
-  providers: [AuthService, LocalStrategy, JwtStrategy, ...CommandHandlers, ...QueryHandlers],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    ...CommandHandlers,
+    ...QueryHandlers,
+    CryptService,
+    NestUserService,
+  ],
   exports: [AuthService],
   controllers: [AuthController],
 })
