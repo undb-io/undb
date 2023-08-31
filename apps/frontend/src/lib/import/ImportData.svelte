@@ -71,6 +71,8 @@
 		? firstRow
 		: new Array(data?.[0].length).fill(undefined).map((_, index) => $t('Field') + ' ' + String(index + 1))
 
+	$: body = firstRowAsHeader ? data?.slice(1) : data
+
 	$: if (header) {
 		$form.schema = getFieldNames(header as string[], $t).map((name, index) => ({
 			...inferFieldType(transposed[index]),
@@ -82,7 +84,7 @@
 
 	let records: IMutateRecordValueSchema[]
 	$: if ($form.schema) {
-		records = (data?.slice(1) ?? []).map((values) =>
+		records = (body ?? []).map((values) =>
 			values.reduce((prev, value, index) => {
 				const type = $form.schema.at(index)?.type
 
