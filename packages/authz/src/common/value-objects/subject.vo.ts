@@ -2,16 +2,16 @@ import { userIdSchema } from '@undb/core'
 import { ValueObject } from '@undb/domain'
 import { z } from 'zod'
 
-const rlsSubjectUser = z.object({
+const subjectUser = z.object({
   type: z.literal('user'),
   id: userIdSchema,
 })
 
-export const rlsSubject = rlsSubjectUser
+export const subject = subjectUser
 
-export type IRLSSubject = z.infer<typeof rlsSubject>
+export type ISubject = z.infer<typeof subject>
 
-export class RLSSubject extends ValueObject<IRLSSubject> {
+export class Subject extends ValueObject<ISubject> {
   public get value() {
     return this.props
   }

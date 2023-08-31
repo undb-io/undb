@@ -1,19 +1,18 @@
 import { CompositeSpecification } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
+import type { ISubject } from '../../common/index.js'
+import { Subject, Subjects } from '../../common/index.js'
 import type { IRLSVisitor } from '../interface.js'
 import type { RLS } from '../rls.js'
-import type { IRLSSubject } from '../value-objects/rls-subject.vo.js'
-import { RLSSubject } from '../value-objects/rls-subject.vo.js'
-import { RLSSubjects } from '../value-objects/rls-subjects.vo.js'
 
 export class WithRLSSubjects extends CompositeSpecification<RLS, IRLSVisitor> {
-  constructor(public readonly subjects: RLSSubjects) {
+  constructor(public readonly subjects: Subjects) {
     super()
   }
 
-  static from(subjects: IRLSSubject[]) {
-    return new this(new RLSSubjects(subjects.map((subject) => new RLSSubject(subject))))
+  static from(subjects: ISubject[]) {
+    return new this(new Subjects(subjects.map((subject) => new Subject(subject))))
   }
   isSatisfiedBy(t: RLS): boolean {
     return t.subjects.equals(this.subjects)

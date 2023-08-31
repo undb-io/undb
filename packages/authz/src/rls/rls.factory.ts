@@ -1,10 +1,11 @@
 import type { Table } from '@undb/core'
 import { and } from '@undb/domain'
+import type { ISubject } from '../common/index.js'
 import type { RLSSpecification } from './interface.js'
 import { RLS } from './rls.js'
 import type { IQueryRLS } from './rls.schema.js'
 import { WithRLSId, WithRLSPolicy, WithRLSSubjects, WithRLSTableId } from './specifications/index.js'
-import type { IRLSSubject, RLSPolicyInterface } from './value-objects/index.js'
+import type { RLSPolicyInterface } from './value-objects/index.js'
 
 export class RLSFactory {
   static create(...specs: RLSSpecification[]) {
@@ -14,7 +15,7 @@ export class RLSFactory {
       .unwrap()
   }
 
-  static from(table: Table, policy: RLSPolicyInterface, subjects: IRLSSubject[]) {
+  static from(table: Table, policy: RLSPolicyInterface, subjects: ISubject[]) {
     return this.create(
       WithRLSId.create(),
       WithRLSTableId.fromString(table.id.value),
