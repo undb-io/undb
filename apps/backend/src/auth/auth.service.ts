@@ -2,15 +2,16 @@ import { Injectable } from '@nestjs/common'
 import { type ConfigType } from '@nestjs/config'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import type { IQueryUser } from '@undb/core'
-import { UserFactory, WithUserColor, WithUserEmail, WithUserId, WithUserPassword, WithUsername } from '@undb/core'
+import { WithUserEmail } from '@undb/core'
 import { GetMeQuery, LoginCommand, RegisterCommand, UpdateProfileCommand } from '@undb/cqrs'
-import * as bcrypt from 'bcrypt'
 import { NestMemberCreateService } from '../authz/member/member-create.service.js'
 import type { authConfig } from '../configs/auth.config.js'
 import { InjectAuthConfig } from '../configs/auth.config.js'
 import { UserService } from '../core/user/user.service.js'
+import { CryptService } from './crypt.service.js'
 import { InvalidPassword } from './errors/invalid-password.error.js'
 import { UserNotFound } from './errors/user-not-found.error.js'
+import { NestUserService } from './user.service.js'
 
 @Injectable()
 export class AuthService {
@@ -21,6 +22,8 @@ export class AuthService {
     @InjectAuthConfig()
     private readonly config: ConfigType<typeof authConfig>,
     private readonly memberService: NestMemberCreateService,
+    private readonly userService: NestUserService,
+    private readonly crypt: CryptService,
   ) {}
 
   async validateUser(email: string, pass: string): Promise<IQueryUser> {
@@ -29,7 +32,7 @@ export class AuthService {
       throw new UserNotFound()
     }
 
-    const isPasswordMatch = await bcrypt.compare(pass, user.password)
+    const isPasswordMatch = await this.crypt.compare(pass, user.password)
     if (!isPasswordMatch) {
       throw new InvalidPassword()
     }
@@ -37,8 +40,7 @@ export class AuthService {
   }
 
   async register(email: string, password: string) {
-    const hashedPassword = await bcrypt.hash(password, 10)
-    return this.commandBus.execute(new RegisterCommand({ email, password: hashedPassword }))
+    return this.commandBus.execute(new RegisterCommand({ email, password }))
   }
 
   async login(user: IQueryUser) {
@@ -60,16 +62,7 @@ export class AuthService {
       const exists = await this.usersService.exists(email)
       if (exists) return
 
-      const hashedPassword = await bcrypt.hash(admin.password, 10)
-      const user = UserFactory.create(
-        WithUserEmail.fromString(admin.email),
-        WithUserPassword.fromString(hashedPassword),
-        WithUserId.create(),
-        WithUsername.fromEmail(admin.email),
-        WithUserColor.random(),
-      )
-
-      await this.usersService.insert(user)
+      const user = await this.userService.register(admin.email, admin.password)
       await this.memberService.grantDefault(user)
     }
   }
