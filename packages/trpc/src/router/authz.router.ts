@@ -1,16 +1,22 @@
 import type { IGetTableRLSSOutput } from '@undb/cqrs'
 import {
+  CreateFLSCommand,
   CreateRLSCommand,
+  DeleteFLSCommand,
   DeleteRLSCommand,
   GetMembersQuery,
   GetTableRLSSQuery,
+  UpdateFLSCommand,
   UpdateRLSCommand,
   UpdateRoleCommand,
+  createFLSCommandInput,
   createRLSCommandInput,
+  deleteFLSCommandInput,
   deleteRLSCommandInput,
   getMembersQueryOutput,
   getMembersQuerySchema,
   getTableRLSSQueryInput,
+  updateFLSCommandInput,
   updateRLSCommandInput,
   updateRoleCommandInput,
 } from '@undb/cqrs'
@@ -56,6 +62,34 @@ export const createRLSRouter = (procedure: typeof publicProcedure) => (commandBu
       }),
   })
 
+export const createFLSRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
+  router({
+    create: procedure
+      .use(authz('fls:create'))
+      .input(createFLSCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new CreateFLSCommand(input as CommandProps<unknown>)
+        return commandBus.execute(cmd)
+      }),
+    update: procedure
+      .use(authz('fls:update'))
+      .input(updateFLSCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new UpdateFLSCommand(input)
+        return commandBus.execute(cmd)
+      }),
+    delete: procedure
+      .use(authz('fls:delete'))
+      .input(deleteFLSCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new DeleteFLSCommand(input)
+        return commandBus.execute(cmd)
+      }),
+  })
+
 export const createMemberRouter =
   (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
     router({
@@ -80,5 +114,6 @@ export const createAuthzRouter =
   (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
     router({
       rls: createRLSRouter(procedure)(commandBus, queryBus),
+      fls: createFLSRouter(procedure)(commandBus, queryBus),
       member: createMemberRouter(procedure)(commandBus, queryBus),
     })

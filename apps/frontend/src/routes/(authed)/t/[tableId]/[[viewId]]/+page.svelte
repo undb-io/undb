@@ -22,6 +22,7 @@
 	import { onDestroy } from 'svelte'
 	import { match } from 'ts-pattern'
 	import RLSModal from '$lib/authz/rls/RLSModal.svelte'
+	import FlsModal from '$lib/authz/fls/FLSModal.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -113,6 +114,7 @@
 	{/key}
 {/if}
 <RLSModal />
+<FlsModal />
 
 <VisualizationModal />
 

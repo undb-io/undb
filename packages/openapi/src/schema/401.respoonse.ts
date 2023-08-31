@@ -1,6 +1,6 @@
 import type { ResponseConfig } from '@asteasolutions/zod-to-openapi'
-import { UNAUTHORIZED } from 'src/constants'
 import { z } from 'zod'
+import { UNAUTHORIZED } from '../constants.js'
 
 export const create401ResponseSchema = (): ResponseConfig => {
   return {

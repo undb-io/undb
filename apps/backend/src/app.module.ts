@@ -16,6 +16,7 @@ import { AppInfoModule } from './appInfo/appInfo.module.js'
 import { AttachmentModule } from './attachment/attachment.module.js'
 import { AuditModule } from './audit/audit.module.js'
 import { AuthModule } from './auth/auth.module.js'
+import { AuthService } from './auth/auth.service.js'
 import { AuthzModule } from './authz/authz.module.js'
 import { CacheModule } from './cache/cache.module.js'
 import { authConfig } from './configs/auth.config.js'
@@ -23,7 +24,6 @@ import { BaseConfigService } from './configs/base-config.service.js'
 import { ConfigModule } from './configs/config.module.js'
 import { InjectSqliteConfig, sqliteConfig } from './configs/sqlite.config.js'
 import { coreModules } from './core/index.js'
-import { UserService } from './core/user/user.service.js'
 import { HealthModule } from './health/health.module.js'
 import { I18nModule } from './i18n/i18n.module.js'
 import { InvitationModule } from './invitation/invitation.module.js'
@@ -97,7 +97,7 @@ export class AppModule implements OnModuleInit {
 
   constructor(
     private readonly orm: MikroORM,
-    private readonly userService: UserService,
+    private readonly authService: AuthService,
     @InjectSqliteConfig() private readonly config: ConfigType<typeof sqliteConfig>,
   ) {}
 
@@ -111,6 +111,6 @@ export class AppModule implements OnModuleInit {
     } else {
       await this.orm.getMigrator().up()
     }
-    await this.userService.createAdmin()
+    await this.authService.createAdmin()
   }
 }

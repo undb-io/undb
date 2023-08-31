@@ -1,4 +1,4 @@
-import type { IRLSAuthzService } from '@undb/authz'
+import type { IFLSAuthzService, IRLSAuthzService } from '@undb/authz'
 import type { IRecordRepository, ITableRepository } from '@undb/core'
 import { createMutateRecordValuesSchema } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
@@ -9,6 +9,7 @@ export class UpdateRecordCommandHandler implements ICommandHandler<updateRecordC
     protected readonly tableRepo: ITableRepository,
     protected readonly recordRepo: IRecordRepository,
     protected readonly rls: IRLSAuthzService,
+    protected readonly fls: IFLSAuthzService,
   ) {}
 
   async execute(command: updateRecordCommandJs.UpdateRecordCommand): Promise<void> {
@@ -16,7 +17,10 @@ export class UpdateRecordCommandHandler implements ICommandHandler<updateRecordC
 
     const record = (await this.recordRepo.findOneById(table, command.id)).unwrap()
 
-    await this.rls.check('update', table, record)
+    await Promise.all([
+      this.rls.check('update', table, record),
+      this.fls.check('update', table, record, command.fieldIds),
+    ])
 
     const schema = createMutateRecordValuesSchema(
       table.schema.fields.filter((field) => Object.keys(command.values).includes(field.id.value)),

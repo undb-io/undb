@@ -1,5 +1,5 @@
 import type { IMutateRecordValueSchema, Table } from '@undb/core'
-import type { IOpenAPIMutateRecordSchema } from 'src/schema/mutate-record.schema'
+import type { IOpenAPIMutateRecordSchema } from '../schema/mutate-record.schema'
 
 export const openAPIMutateRecordMapper = (
   table: Table,

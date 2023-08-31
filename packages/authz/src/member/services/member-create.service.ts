@@ -1,5 +1,5 @@
 import type { User } from '@undb/core'
-import type { IRoles } from 'src/rbac/role.vo.js'
+import type { IRoles } from '../../rbac/role.vo.js'
 import { MemberFactory } from '../member.factory.js'
 import type { IMemberRepository } from '../member.repository.js'
 

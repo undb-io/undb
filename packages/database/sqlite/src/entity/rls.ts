@@ -9,7 +9,7 @@ import {
   Property,
   type Rel,
 } from '@mikro-orm/core'
-import type { IRLSSubject } from '@undb/authz'
+import type { ISubject } from '@undb/authz'
 import { RLS as RLSDO, type IRLSAction, type RLSPolicyInterface } from '@undb/authz'
 import { type IRootFilter } from '@undb/core'
 import { BaseEntity } from './base.js'
@@ -49,5 +49,5 @@ export class RLS extends BaseEntity {
   policy: RLSPolicy
 
   @Property({ type: JsonType })
-  subjects: IRLSSubject[]
+  subjects: ISubject[]
 }
