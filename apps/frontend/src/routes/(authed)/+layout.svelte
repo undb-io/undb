@@ -22,6 +22,7 @@
 	import { DARK_THEME, LIGHT_THEME } from '$lib/store/ui.type'
 	import TablesNav from '$lib/table/TablesNav.svelte'
 	import { hasPermission } from '$lib/store/authz'
+	import MergeData from '$lib/import/MergeData.svelte'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -406,6 +407,8 @@
 	{#if $importDataModal.open}
 		<ImportData formData={$page.data.createTable} />
 	{/if}
+
+	<MergeData />
 </div>
 
 <Toast
