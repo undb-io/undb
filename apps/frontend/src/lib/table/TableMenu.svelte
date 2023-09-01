@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
-	import { erdModal, rlsModal, webhookModal } from '$lib/store/modal'
+	import { erdModal, mergeDataModal, rlsModal, webhookModal } from '$lib/store/modal'
 	import { currentRLSS } from '$lib/store/table'
 	import { hasPermission } from '$lib/store/authz'
 	import * as DropdownMenu from '$components/ui/dropdown-menu'
@@ -49,6 +49,17 @@
 				{#if $currentRLSS.length > 0}
 					<Badge color="blue">{$currentRLSS.length}</Badge>
 				{/if}
+			</DropdownMenu.Item>
+		{/if}
+		{#if $hasPermission('table:merge_data')}
+			<DropdownMenu.Item
+				on:click={() => {
+					mergeDataModal.open()
+				}}
+				class="items-center gap-2"
+			>
+				<i class="ti ti-database-import text-gray-600 dark:text-gray-50" />
+				<span>{$t('merge data')}</span>
 			</DropdownMenu.Item>
 		{/if}
 	</DropdownMenu.Content>

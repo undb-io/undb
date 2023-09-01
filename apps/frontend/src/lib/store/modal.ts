@@ -72,6 +72,9 @@ export const createOptionModal = createModal(CREATE_OPTION)
 const UPDATE_OPTION = Symbol('UPDATE_OPTION')
 export const updateOptionModal = createModal(UPDATE_OPTION)
 
+const MERGE_DATA_MODAL = Symbol('MERGE_DATA_MODAL')
+export const mergeDataModal = createModal(MERGE_DATA_MODAL)
+
 const IMPORT_DATA_MODAL = Symbol('IMPORT_DATA_MODAL')
 export const importDataModal = createModal(IMPORT_DATA_MODAL)
 

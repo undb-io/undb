@@ -23,6 +23,7 @@
 	import { match } from 'ts-pattern'
 	import RLSModal from '$lib/authz/rls/RLSModal.svelte'
 	import FlsModal from '$lib/authz/fls/FLSModal.svelte'
+	import MergeData from '$lib/import/MergeData.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -85,6 +86,7 @@
 
 <TableIndex />
 
+<MergeData />
 {#key $table}
 	<UpdateTable data={data.updateTable} />
 {/key}
