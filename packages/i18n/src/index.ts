@@ -369,6 +369,7 @@ export const config: InitOptions = {
         'set date': 'set date',
         'recycle bin': 'recycle bin',
         'show form conditions': 'show conditions',
+        'unsupport merge': 'unsupport field types to merge into table',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -767,6 +768,7 @@ export const config: InitOptions = {
         'set date': '设置日期',
         'recycle bin': '回收站',
         'show form conditions': '显示过滤',
+        'unsupport merge': '不支持部分列合并到表格',
       },
       webhook: {
         Webhook: 'Webhook',

@@ -1,16 +1,19 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
 	import { mergeDataModal } from '$lib/store/modal'
-	import { Button, Dropzone, Modal } from 'flowbite-svelte'
+	import { Alert, Badge, Button, Dropzone, Modal, Tooltip } from 'flowbite-svelte'
 	import { parse, type SheetData } from './import.helper'
 	import { getTable } from '$lib/store/table'
-	import { castFieldValue, type IMutateRecordValueSchema } from '@undb/core'
+	import { castFieldValue, type IFieldType, type IMutateRecordValueSchema } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
-	import { isEmpty } from 'lodash-es'
+	import { includes, isEmpty } from 'lodash-es'
+	import FieldIcon from '$lib/field/FieldIcon.svelte'
 
 	const table = getTable()
 
 	let data: SheetData | undefined
+
+	const unsupportedMergeType: IFieldType[] = ['reference', 'attachment', 'parent', 'tree', 'collaborator']
 
 	const createRecords = trpc().record.buldCreate.mutation({
 		onSuccess(data, variables, context) {
@@ -18,7 +21,9 @@
 		},
 	})
 
-	$: header = data?.[0]
+	$: header = data?.[0] ?? []
+	$: importHeaders = header.map((title) => schema.get(String(title))!).filter(Boolean)
+	$: unsupportedFields = importHeaders.filter((field) => unsupportedMergeType.includes(field.type))
 	$: body = data?.slice(1)
 
 	$: schema = $table.schema.toNameMap()
@@ -33,6 +38,9 @@
 				if (!field || field.controlled) return prev
 
 				const type = field.type
+
+				// TODO: support these field types
+				if (unsupportedMergeType.includes(type)) return prev
 
 				prev[field.id.value] = type ? castFieldValue(type, value) : value
 				return prev
@@ -101,6 +109,23 @@
 			{@html $t('click to upload or dnd', { ns: 'common' })}
 		</p>
 	</Dropzone>
+
+	{#if !!unsupportedFields.length}
+		<Alert color="yellow">
+			{$t('unsupport merge')}
+			<div class="flex items-center gap-2 mt-2">
+				{#each unsupportedFields as field}
+					<Badge color="dark" class="inline-flex items-center gap-2">
+						<FieldIcon type={field.type} />
+						{field.name.value}
+					</Badge>
+					<Tooltip>
+						{$t(field.type)}
+					</Tooltip>
+				{/each}
+			</div>
+		</Alert>
+	{/if}
 
 	<div class="flex justify-end items-center gap-2">
 		<Button size="xs" type="button" outline color="alternative" on:click={() => mergeDataModal.close()}>
