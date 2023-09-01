@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
 	import { webhookListDrawer } from '$lib/store/drawer'
-	import { erdModal, rlsModal } from '$lib/store/modal'
+	import { erdModal, mergeDataModal, rlsModal } from '$lib/store/modal'
 	import { currentRLSS } from '$lib/store/table'
 	import { Badge, Dropdown, DropdownItem } from 'flowbite-svelte'
 	import { hasPermission } from '$lib/store/authz'
@@ -45,6 +45,17 @@
 			{#if $currentRLSS.length > 0}
 				<Badge color="blue">{$currentRLSS.length}</Badge>
 			{/if}
+		</DropdownItem>
+	{/if}
+	{#if $hasPermission('table:merge_data')}
+		<DropdownItem
+			on:click={() => {
+				mergeDataModal.open()
+			}}
+			class="text-xs font-normal inline-flex items-center gap-2"
+		>
+			<i class="ti ti-database-import text-gray-600 dark:text-gray-50" />
+			<span>{$t('merge data')}</span>
 		</DropdownItem>
 	{/if}
 </Dropdown>

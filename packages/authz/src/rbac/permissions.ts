@@ -29,6 +29,7 @@ export const tableActions = z.enum([
   'table:list_form',
   'table:create_form',
   'table:update_form',
+  'table:merge_data',
 ])
 export const recordActions = z.enum(['record:create', 'record:update', 'record:delete', 'record:list_trash'])
 export const webhookActions = z.enum(['webhook:create', 'webhook:update', 'webhook:delete'])
@@ -81,6 +82,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'table:set_view_field': true,
     'table:delete_view': true,
     'table:duplicate_view': true,
+    'table:merge_data': true,
     'record:create': true,
     'record:delete': true,
     'record:update': true,
@@ -131,6 +133,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'table:set_view_field': true,
     'table:delete_view': true,
     'table:duplicate_view': true,
+    'table:merge_data': true,
     'table:create_form': true,
     'table:update_form': true,
     'record:create': true,
@@ -185,6 +188,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'table:list_form': true,
     'table:create_form': true,
     'table:update_form': true,
+    'table:merge_data': true,
     'record:create': true,
     'record:delete': true,
     'record:update': true,
@@ -237,6 +241,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'table:list_form': false,
     'table:create_form': false,
     'table:update_form': false,
+    'table:merge_data': false,
     'record:create': false,
     'record:delete': false,
     'record:update': false,
