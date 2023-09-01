@@ -6,6 +6,7 @@
 	import { getTable } from '$lib/store/table'
 	import { castFieldValue, type IMutateRecordValueSchema } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
+	import { isEmpty } from 'lodash-es'
 
 	const table = getTable()
 
@@ -37,7 +38,7 @@
 				return prev
 			}, {} as IMutateRecordValueSchema)
 		})
-		.filter(Boolean)
+		.filter((value) => !isEmpty(value))
 
 	let ext: string | undefined
 	let file: File | undefined
