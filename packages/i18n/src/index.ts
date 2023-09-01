@@ -370,6 +370,7 @@ export const config: InitOptions = {
         'recycle bin': 'recycle bin',
         'show form conditions': 'show conditions',
         'unsupport merge': 'unsupport field types to merge into table',
+        'merge record count': 'will merge {{count}} record(s)',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -769,6 +770,7 @@ export const config: InitOptions = {
         'recycle bin': '回收站',
         'show form conditions': '显示过滤',
         'unsupport merge': '不支持部分列合并到表格',
+        'merge record count': '合并 {{count}} 条记录',
       },
       webhook: {
         Webhook: 'Webhook',

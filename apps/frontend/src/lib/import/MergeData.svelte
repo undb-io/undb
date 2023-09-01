@@ -146,5 +146,10 @@
 				{$t('Confirm', { ns: 'common' })}
 			</div>
 		</Button>
+		{#if records?.length}
+			<Tooltip>
+				{$t('merge record count', { count: records.length })}
+			</Tooltip>
+		{/if}
 	</div>
 </Modal>
