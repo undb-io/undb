@@ -1,13 +1,18 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
 	import { mergeDataModal } from '$lib/store/modal'
-	import { Alert, Badge, Button, Dropzone, Modal, Tooltip } from 'flowbite-svelte'
+	import { Dropzone } from 'flowbite-svelte'
+	import * as Alert from '$lib/components/ui/alert'
+	import { Button } from '$lib/components/ui/button'
+	import { Badge } from '$lib/components/ui/badge'
+	import * as Tooltip from '$lib/components/ui/tooltip'
 	import { parse, type SheetData } from './import.helper'
 	import { getTable } from '$lib/store/table'
 	import { castFieldValue, type IFieldType, type IMutateRecordValueSchema } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
-	import { includes, isEmpty } from 'lodash-es'
+	import { isEmpty } from 'lodash-es'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
+	import * as Dialog from '$lib/components/ui/dialog'
 
 	const table = getTable()
 
@@ -80,76 +85,89 @@
 	}
 </script>
 
-<Modal class="w-full" bind:open={$mergeDataModal.open}>
-	<Dropzone
-		accept=".csv, .json, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-		id="dropzone"
-		on:drop={dropHandle}
-		on:dragover={(event) => {
-			event.preventDefault()
-		}}
-		on:change={handleChange}
-	>
-		<svg
-			aria-hidden="true"
-			class="mb-3 w-10 h-10 text-gray-400 dark:text-gray-200"
-			fill="none"
-			stroke="currentColor"
-			viewBox="0 0 24 24"
-			xmlns="http://www.w3.org/2000/svg"
-		>
-			<path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="2"
-				d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-			/>
-		</svg>
-		<p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
-			{@html $t('click to upload or dnd', { ns: 'common' })}
-		</p>
-	</Dropzone>
-
-	{#if !!unsupportedFields.length}
-		<Alert color="yellow">
-			{$t('unsupport merge')}
-			<div class="flex items-center gap-2 mt-2">
-				{#each unsupportedFields as field}
-					<Badge color="dark" class="inline-flex items-center gap-2">
-						<FieldIcon type={field.type} />
-						{field.name.value}
-					</Badge>
-					<Tooltip>
-						{$t(field.type)}
-					</Tooltip>
-				{/each}
-			</div>
-		</Alert>
-	{/if}
-
-	<div class="flex justify-end items-center gap-2">
-		<Button size="xs" type="button" outline color="alternative" on:click={() => mergeDataModal.close()}>
-			{$t('Cancel', { ns: 'common' })}
-		</Button>
-		<Button
-			size="xs"
-			disabled={!data || $createRecords.isLoading}
-			on:click={() => {
-				if (!records?.length) return
-				$createRecords.mutate({
-					tableId: $table.id.value,
-					records: records.map((record) => ({ values: record })),
-				})
+<Dialog.Root bind:open={$mergeDataModal.open}>
+	<Dialog.Content class="!w-1/2">
+		<Dropzone
+			accept=".csv, .json, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+			id="dropzone"
+			on:drop={dropHandle}
+			on:dragover={(event) => {
+				event.preventDefault()
 			}}
+			on:change={handleChange}
 		>
-			<div class="flex items-center">
-				{$t('Confirm', { ns: 'common' })}
-			</div>
-		</Button>
-		{#if records?.length}
-			<Tooltip>
-				{$t('merge record count', { count: records.length })}
-			</Tooltip>
+			<svg
+				aria-hidden="true"
+				class="mb-3 w-10 h-10 text-gray-400 dark:text-gray-200"
+				fill="none"
+				stroke="currentColor"
+				viewBox="0 0 24 24"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+				/>
+			</svg>
+			<p class="mb-2 text-sm text-gray-500 dark:text-gray-400">
+				{@html $t('click to upload or dnd', { ns: 'common' })}
+			</p>
+		</Dropzone>
+
+		{#if !!unsupportedFields.length}
+			<Alert.Root class="border-yellow-600 bg-yellow-50">
+				<Alert.Description class="text-yellow-600">
+					{$t('unsupport merge')}
+				</Alert.Description>
+				<div class="flex items-center gap-2 mt-2 flex-wrap">
+					{#each unsupportedFields as field}
+						<Tooltip.Root openDelay={50}>
+							<Tooltip.Trigger>
+								<Badge variant="secondary" class="inline-flex items-center gap-2 whitespace-nowrap">
+									<FieldIcon type={field.type} />
+									{field.name.value}
+								</Badge>
+							</Tooltip.Trigger>
+							<Tooltip.Content>
+								{$t(field.type)}
+							</Tooltip.Content>
+						</Tooltip.Root>
+					{/each}
+				</div>
+			</Alert.Root>
 		{/if}
-	</div>
-</Modal>
+		<Dialog.Footer>
+			<Button size="sm" type="button" variant="secondary" on:click={() => mergeDataModal.close()}>
+				{$t('Cancel', { ns: 'common' })}
+			</Button>
+
+			<Tooltip.Root openDelay={50}>
+				<Tooltip.Trigger asChild let:builder>
+					<Button
+						builders={[builder]}
+						size="sm"
+						disabled={!data || $createRecords.isLoading}
+						on:click={() => {
+							if (!records?.length) return
+							$createRecords.mutate({
+								tableId: $table.id.value,
+								records: records.map((record) => ({ values: record })),
+							})
+						}}
+					>
+						<div class="flex items-center">
+							{$t('Confirm', { ns: 'common' })}
+						</div>
+					</Button>
+				</Tooltip.Trigger>
+				{#if records?.length}
+					<Tooltip.Content>
+						{$t('merge record count', { count: records.length })}
+					</Tooltip.Content>
+				{/if}
+			</Tooltip.Root>
+		</Dialog.Footer>
+	</Dialog.Content>
+</Dialog.Root>
