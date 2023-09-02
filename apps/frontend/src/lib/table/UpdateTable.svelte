@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Modal, Spinner, Toast, Dropdown, DropdownItem } from 'flowbite-svelte'
+	import { Spinner, Toast } from 'flowbite-svelte'
 	import { Label } from '$lib/components/ui/label'
 	import { Input } from '$lib/components/ui/input'
 	import { Button } from '$components/ui/button'
@@ -16,6 +16,8 @@
 	import { goto, invalidate, invalidateAll } from '$app/navigation'
 	import CreateTableFieldAccordionItem from './CreateTableFieldAccordionItem.svelte'
 	import { updateTableModal } from '$lib/store/modal'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 
 	export let data: Validation<ReturnType<typeof createUpdateTableSchema>>
 	let opened: Record<string, boolean> = {}
@@ -69,21 +71,27 @@
 <Dialog.Root bind:open={$updateTableModal.open}>
 	<Dialog.Content class="!w-3/4 max-w-none max-h-[95%] overflow-y-auto">
 		<Dialog.Header>
-			<Dialog.Title>
+			<Dialog.Title class="pr-6">
 				<div class="flex justify-between w-full mr-6 dark:text-gray-200">
 					<p class="text-lg dark:text-white">{$t('Update Table')}</p>
-					<button>
-						<i class="ti ti-dots" />
-					</button>
-					<Dropdown style="z-index: 50;" class="w-48">
-						<DropdownItem
-							class="inline-flex items-center gap-2 text-red-400"
-							on:click={() => (confirmDeleteTable = true)}
-						>
-							<i class="ti ti-trash" />
-							<span class="text-xs">{$t('Delete Table')}</span>
-						</DropdownItem>
-					</Dropdown>
+					<DropdownMenu.Root>
+						<DropdownMenu.Trigger>
+							<button>
+								<i class="ti ti-dots" />
+							</button>
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content>
+							<DropdownMenu.Item
+								class="text-red-500 gap-2"
+								on:click={() => {
+									confirmDeleteTable = true
+								}}
+							>
+								<i class="ti ti-trash" />
+								<span class="text-xs">{$t('Delete Table')}</span>
+							</DropdownMenu.Item>
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
 				</div>
 			</Dialog.Title>
 		</Dialog.Header>
@@ -161,40 +169,29 @@
 	</Toast>
 {/if}
 
-<Modal bind:open={confirmDeleteTable} size="xs">
-	<div class="text-center">
-		<svg
-			aria-hidden="true"
-			class="mx-auto mb-4 w-14 h-14 text-gray-400 dark:text-gray-200"
-			fill="none"
-			stroke="currentColor"
-			viewBox="0 0 24 24"
-			xmlns="http://www.w3.org/2000/svg"
-			><path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="2"
-				d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-			/></svg
-		>
-		<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-			{$t('Confirm Delete Table')}
-		</h3>
-		<Button
-			color="red"
-			class="inline-flex whitespace-nowrap mr-2 gap-2"
-			disabled={$deleteTable.isLoading}
-			on:click={() => {
-				$deleteTable.mutate({ id: $table.id.value })
-			}}
-		>
-			{#if $deleteTable.isLoading}
-				<Spinner size="xs" />
-			{:else}
-				<i class="ti ti-circle-check text-lg" />
-			{/if}
-			{$t('Confirm Yes', { ns: 'common' })}</Button
-		>
-		<Button color="alternative">{$t('Confirm No', { ns: 'common' })}</Button>
-	</div>
-</Modal>
+<AlertDialog.Root bind:open={confirmDeleteTable}>
+	<AlertDialog.Content>
+		<AlertDialog.Header>
+			<AlertDialog.Title>{$t('Confirm Delete Table')}</AlertDialog.Title>
+		</AlertDialog.Header>
+		<AlertDialog.Footer>
+			<AlertDialog.Cancel>
+				{$t('Confirm No', { ns: 'common' })}
+			</AlertDialog.Cancel>
+			<AlertDialog.Action disabled={$deleteTable.isLoading}>
+				{#if $deleteTable.isLoading}
+					<Spinner size="xs" />
+				{:else}
+					<i class="ti ti-circle-check text-lg" />
+				{/if}
+				<span
+					on:click={() => {
+						$deleteTable.mutate({ id: $table.id.value })
+					}}
+				>
+					{$t('Confirm Yes', { ns: 'common' })}
+				</span>
+			</AlertDialog.Action>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>
