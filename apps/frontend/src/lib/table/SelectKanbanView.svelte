@@ -5,7 +5,9 @@
 	import { dndzone } from 'svelte-dnd-action'
 	import type { SelectField } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
-	import { Badge, Dropdown, DropdownItem, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { Badge } from '$lib/components/ui/badge'
 	import { Button } from '$lib/components/ui/button'
 	import { createOptionModal, updateOptionModal } from '$lib/store/modal'
 	import { invalidate } from '$app/navigation'
@@ -84,43 +86,46 @@
 								<div class="flex items-center justify-between pr-2">
 									<Option option={item.option} />
 									{#if !$readonly}
-										<i class="ti ti-dots text-gray-400 dark:text-gray-200 cursor-pointer" />
-										<Dropdown style="z-index: 50;">
-											<DropdownItem
-												class="text-gray-600 text-xs space-y-2 dark:text-gray-200"
-												on:click={() => {
-													$currentFieldId = field?.id.value
-													$currentOption = item.option
-													updateOptionModal.open()
-												}}
-											>
-												<i class="ti ti-pencil" />
-												<span>
-													{$t('Update Option')}
-												</span>
-											</DropdownItem>
-											<DropdownItem
-												class="text-red-400 text-xs space-y-2"
-												on:click={() => {
-													if (item.option && field) {
-														$deleteOption.mutate({
-															tableId: $table.id.value,
-															fieldId: field.id.value,
-															id: item.option.key.value,
-														})
-													}
-												}}
-											>
-												<i class="ti ti-trash" />
-												<span>
-													{$t('Delete Option')}
-												</span>
-											</DropdownItem>
-										</Dropdown>
+										<DropdownMenu.Root>
+											<DropdownMenu.Trigger>
+												<i class="ti ti-dots text-gray-400 dark:text-gray-200 cursor-pointer" />
+											</DropdownMenu.Trigger>
+											<DropdownMenu.Content>
+												<DropdownMenu.Item
+													on:click={() => {
+														$currentFieldId = field?.id.value
+														$currentOption = item.option
+														updateOptionModal.open()
+													}}
+												>
+													<i class="ti ti-pencil" />
+													<span>
+														{$t('Update Option')}
+													</span>
+												</DropdownMenu.Item>
+												<DropdownMenu.Item
+													class="text-red-400 text-xs gap-2"
+													on:click={() => {
+														if (item.option && field) {
+															$deleteOption.mutate({
+																tableId: $table.id.value,
+																fieldId: field.id.value,
+																id: item.option.key.value,
+															})
+														}
+													}}
+												>
+													<i class="ti ti-trash" />
+													<span>
+														{$t('Delete Option')}
+													</span>
+												</DropdownMenu.Item>
+											</DropdownMenu.Content>
+										</DropdownMenu.Root>
 									{/if}
 								</div>
 							{:else}
-								<Badge color="dark">{item.name}</Badge>
+								<Badge variant="secondary">{item.name}</Badge>
 							{/if}
 						</div>
 					</div>
