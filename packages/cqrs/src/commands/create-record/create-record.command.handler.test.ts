@@ -62,8 +62,8 @@ describe('CreateRecordCommandHandler', () => {
     tableRepo.findOneById.mockResolvedValue(None)
     spy.mockReturnValue(record)
 
-    await expect(handler.execute).rejects.toThrowErrorMatchingInlineSnapshot(
-      '"Cannot read properties of undefined (reading \'cls\')"',
+    await expect(handler.execute(command)).rejects.toThrowErrorMatchingInlineSnapshot(
+      '"Failed to unwrap Option (found None)"',
     )
 
     expect(spy).not.toHaveBeenCalled()
