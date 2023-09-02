@@ -3,7 +3,7 @@
 	import type { IFilter } from '@undb/core'
 	import FlsItemEditor from './FLSItemEditor.svelte'
 	import type { ISubjectType } from './fls.type'
-	import { Button } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 	import { t } from '$lib/i18n'
 	import { hasPermission } from '$lib/store/authz'
 	import { invalidate } from '$app/navigation'
@@ -38,8 +38,8 @@
 	{#if $hasPermission('fls:update')}
 		<Button
 			class="w-20 whitespace-nowrap"
-			color="alternative"
-			size="xs"
+			variant="outline"
+			size="sm"
 			on:click={() => {
 				$updateFLS.mutate({
 					id: fls.id.value,
@@ -55,8 +55,8 @@
 	{/if}
 	{#if $hasPermission('fls:delete')}
 		<Button
-			color="alternative"
-			size="xs"
+			variant="outline"
+			size="sm"
 			on:click={() =>
 				$deleteFLS.mutate({
 					id: fls.id.value,

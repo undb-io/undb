@@ -1,7 +1,7 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import { colors } from '$lib/field/helpers'
-	import type { IQueryMember, IRolesWithoutOwner } from '@undb/authz'
+	import type { IQueryMember } from '@undb/authz'
 	import { Avatar } from 'flowbite-svelte'
 	import { hasPermission } from '$lib/store/authz'
 	import { trpc } from '$lib/trpc/client'

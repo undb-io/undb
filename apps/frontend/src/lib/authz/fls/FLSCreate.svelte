@@ -3,7 +3,8 @@
 	import { currentFieldId, getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { IFilter } from '@undb/core'
-	import { Button, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 	import FlsItemEditor from './FLSItemEditor.svelte'
 	import { t } from '$lib/i18n'
 	import { slide } from 'svelte/transition'
@@ -39,7 +40,7 @@
 		<div class="flex justify-end">
 			<Button
 				class="whitespace-nowrap"
-				size="xs"
+				size="sm"
 				disabled={$createFLS.isLoading}
 				on:click={() => {
 					const validFilters = getValidFilters(filter)
