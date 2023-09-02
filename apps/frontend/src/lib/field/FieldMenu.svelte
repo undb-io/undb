@@ -5,7 +5,8 @@
 	import { confirmDeleteField, duplicateFieldModal, flsModal, updateFieldModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import { canDuplicate, type ISortDirection } from '@undb/core'
-	import { DropdownDivider, DropdownItem, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { noop } from 'lodash-es'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
@@ -60,31 +61,31 @@
 	}
 </script>
 
-<DropdownItem
+<DropdownMenu.Item
 	class="inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
 	on:click={() => updateFieldModal.open()}
 >
 	<i class="ti ti-edit text-sm" />
 	<span>{$t('Update Field')}</span>
-</DropdownItem>
+</DropdownMenu.Item>
 {#if $field && canDuplicate($field.type)}
-	<DropdownItem
+	<DropdownMenu.Item
 		class="inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
 		on:click={() => duplicateFieldModal.open()}
 	>
 		<i class="ti ti-copy text-sm" />
 		<span>{$t('Duplicate Field')}</span>
-	</DropdownItem>
+	</DropdownMenu.Item>
 {/if}
 
-<DropdownDivider />
+<DropdownMenu.Separator />
 
 <FieldMenuFieldComponent
 	field={$field}
 	class="inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
 />
 
-<DropdownItem
+<DropdownMenu.Item
 	class="inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
 	on:click={() => {
 		if ($field) {
@@ -99,8 +100,8 @@
 		<i class="ti ti-pin text-sm" />
 		<span>{$t('Pin Field')}</span>
 	{/if}
-</DropdownItem>
-<DropdownItem
+</DropdownMenu.Item>
+<DropdownMenu.Item
 	class="inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
 	on:click={() => {
 		if ($field) {
@@ -110,11 +111,11 @@
 >
 	<i class="ti ti-eye-closed text-sm" />
 	<span>{$t('Hide Field')}</span>
-</DropdownItem>
+</DropdownMenu.Item>
 
-<DropdownDivider />
+<DropdownMenu.Separator />
 
-<DropdownItem
+<DropdownMenu.Item
 	class={cx(
 		'inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium',
 		fieldDirection === 'asc' && 'bg-gray-100',
@@ -129,8 +130,8 @@
 			{$t('Sort Ascending')}
 		{/if}
 	</span>
-</DropdownItem>
-<DropdownItem
+</DropdownMenu.Item>
+<DropdownMenu.Item
 	class={cx(
 		'inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium',
 		fieldDirection === 'desc' && 'bg-gray-100',
@@ -145,8 +146,8 @@
 			{$t('Sort Descending')}
 		{/if}
 	</span>
-</DropdownItem>
-<DropdownItem
+</DropdownMenu.Item>
+<DropdownMenu.Item
 	class={cx('inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium')}
 	on:click={() => flsModal.open()}
 >
@@ -154,9 +155,9 @@
 	<span>
 		{$t('fls', { ns: 'authz' })}
 	</span>
-</DropdownItem>
-<DropdownDivider />
-<DropdownItem
+</DropdownMenu.Item>
+<DropdownMenu.Separator />
+<DropdownMenu.Item
 	class={'inline-flex items-center gap-2 text-xs text-red-400'}
 	on:click={() => ($confirmDeleteField = true)}
 >
@@ -164,7 +165,7 @@
 	<span>
 		{$t('Delete Field')}
 	</span>
-</DropdownItem>
+</DropdownMenu.Item>
 
 {#if $resetFieldSort.error}
 	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">

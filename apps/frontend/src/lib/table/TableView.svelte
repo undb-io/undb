@@ -2,7 +2,7 @@
 	import { RecordFactory, type IViewPinnedFields, type PinnedPosition, type IViewRowHeight } from '@undb/core'
 	import cx from 'classnames'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
-	import { Button, Dropdown, Modal, Spinner } from 'flowbite-svelte'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import type { RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
 	import type { Components, RevoGridCustomEvent } from '@revolist/revogrid'
 	import { defineCustomElements } from '@revolist/revogrid/loader'
@@ -325,54 +325,29 @@
 
 {#if fieldMenuDOMId}
 	{#key fieldMenuDOMId}
-		<Dropdown
-			style="z-index: 50;"
-			open
-			triggeredBy={`#${fieldMenuDOMId}`}
-			class="w-[250px] border border-gray-200 dark:border-0 dark:shadow-md rounded-md z-[99999]"
-		>
+		<DropdownMenu.Root open={!!fieldMenuDOMId}>
 			{#if $hasPermission('table:update_field')}
-				<FieldMenu {togglePin} />
+				<DropdownMenu.Content>
+					<FieldMenu {togglePin} />
+				</DropdownMenu.Content>
 			{/if}
-		</Dropdown>
+		</DropdownMenu.Root>
 	{/key}
 {/if}
 
-<Modal bind:open={$confirmBulkDeleteRecords} size="xs">
-	<div class="text-center">
-		<svg
-			aria-hidden="true"
-			class="mx-auto mb-4 w-14 h-14 text-gray-400 dark:text-gray-200"
-			fill="none"
-			stroke="currentColor"
-			viewBox="0 0 24 24"
-			xmlns="http://www.w3.org/2000/svg"
-			><path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="2"
-				d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-			/></svg
-		>
-		<h3 class="mb-5 text-lg font-normal text-gray-500 dark:!text-gray-200">
-			{$t('Confirm Delete Record')}
-		</h3>
-		<Button
-			color="red"
-			class="mr-2 gap-2 whitespace-nowrap"
-			disabled={$bulkDeleteRecordsMutation.isLoading}
-			on:click={bulkDeleteRecords}
-		>
-			{#if $bulkDeleteRecordsMutation.isLoading}
-				<Spinner size="xs" />
-			{:else}
-				<i class="ti ti-circle-check text-lg" />
-			{/if}
-			{$t('Confirm Yes', { ns: 'common' })}</Button
-		>
-		<Button color="alternative">{$t('Confirm No', { ns: 'common' })}</Button>
-	</div>
-</Modal>
+<AlertDialog.Root bind:open={$confirmBulkDeleteRecords}>
+	<AlertDialog.Content>
+		<AlertDialog.Header>
+			<AlertDialog.Title>{$t('Confirm Delete Record')}</AlertDialog.Title>
+		</AlertDialog.Header>
+		<AlertDialog.Footer>
+			<AlertDialog.Cancel>{$t('Confirm No', { ns: 'common' })}</AlertDialog.Cancel>
+			<AlertDialog.Action on:click={bulkDeleteRecords}>
+				{$t('Confirm Yes', { ns: 'common' })}
+			</AlertDialog.Action>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>
 
 {#if $confirmDeleteField}
 	<AlertDialog.Root bind:open={$confirmDeleteField}>
