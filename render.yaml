@@ -6,7 +6,7 @@ services:
     env: docker
     repo: https://github.com/undb-xyz/undb.git
     region: singapore
-    plan: standard
+    plan: starter
     rootDir: .
     numInstances: 1
     healthCheckPath: /health
