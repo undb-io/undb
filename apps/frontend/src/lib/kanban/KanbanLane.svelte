@@ -5,7 +5,8 @@
 	import { trpc } from '$lib/trpc/client'
 	import { RecordFactory, type IFilters, type IKanbanField } from '@undb/core'
 	import { flip } from 'svelte/animate'
-	import { Button, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 	import { slide } from 'svelte/transition'
 	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 	import { UNCATEGORIZED } from './kanban.constants'
@@ -52,9 +53,9 @@
 
 {#if allowCreate && !$readonly}
 	<Button
-		color="alternative"
+		variant="secondary"
 		class="w-full rounded-md transition h-8 mb-4"
-		size="xs"
+		size="sm"
 		on:click={() => {
 			if (initialValue) {
 				$createRecordInitial = initialValue

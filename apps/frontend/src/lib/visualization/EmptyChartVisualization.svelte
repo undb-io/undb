@@ -6,7 +6,7 @@
 	import { aggregateChartFn, getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import { FieldId, type ChartVisualization } from '@undb/core'
-	import { Button } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 
 	const table = getTable()
 	export let visualization: ChartVisualization
@@ -24,8 +24,8 @@
 <div {...$$restProps}>
 	<div class="flex flex-col justify-center items-center gap-2 h-full">
 		<Button
-			size="xs"
-			color="light"
+			size="sm"
+			variant="ghost"
 			class="flex gap-2"
 			on:click={() => {
 				const fieldId = FieldId.createId()

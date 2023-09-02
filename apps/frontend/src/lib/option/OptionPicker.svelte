@@ -1,7 +1,8 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import type { SelectField } from '@undb/core'
-	import { Button, Dropdown, Radio } from 'flowbite-svelte'
+	import { Dropdown, Radio } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 	import Option from './Option.svelte'
 	import { t } from '$lib/i18n'
 
@@ -16,7 +17,7 @@
 	$: open = false
 </script>
 
-<Button class={cx('h-full', $$restProps.class)} color="alternative" disabled={readonly}>
+<Button class={cx('h-full', $$restProps.class)} variant="secondary" disabled={readonly}>
 	{#if option}
 		<Option {option} />
 	{:else}

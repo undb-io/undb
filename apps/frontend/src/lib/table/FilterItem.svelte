@@ -1,7 +1,7 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
-	import { Button } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 	import FilterOperatorPicker from './FilterOperatorPicker.svelte'
 	import { isFilterable, type Field, type IFilter, isOperatorWithoutValue, type IQueryFieldSchema } from '@undb/core'
 	import { allTableFields, getTable } from '$lib/store/table'
@@ -37,7 +37,6 @@
 		/>
 		<FilterOperatorPicker
 			{field}
-			size="sm"
 			class={cx('h-10 py-1', 'w-full', withoutValue && 'col-span-2')}
 			bind:value={filter.operator}
 			{readonly}
@@ -51,7 +50,7 @@
 		/>
 	</div>
 	{#if !readonly}
-		<Button color="light" class="h-10 aspect-square !p-0 border-gray-100" size="xs" on:click={() => remove(index)}>
+		<Button class="h-10 aspect-square !p-0 border-gray-100" size="sm" variant="outline" on:click={() => remove(index)}>
 			<i class="ti ti-trash text-sm" />
 		</Button>
 	{/if}

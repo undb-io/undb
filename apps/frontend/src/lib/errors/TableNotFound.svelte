@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
 	import { ERR_TABLE_NODE_FOUND } from '@undb/core'
-	import { Alert, Button } from 'flowbite-svelte'
+	import { Alert } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 </script>
 
 <div class="flex flex-col gap-4 items-center">

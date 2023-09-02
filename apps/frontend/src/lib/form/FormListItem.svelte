@@ -2,7 +2,6 @@
 	import { selectedFormId } from '$lib/store/drawer'
 	import { formEditorModal, formListDrawer } from '$lib/store/modal'
 	import type { Form } from '@undb/core'
-	import { P } from 'flowbite-svelte'
 	import * as Card from '$lib/components/ui/card'
 
 	export let form: Form
@@ -21,7 +20,7 @@
 			<div class="flex flex-col gap-2">
 				<div class="flex items-center gap-3">
 					<i class="ti ti-forms" />
-					<P class="font-semibold text-lg">{form.name.value}</P>
+					<p class="font-semibold text-lg">{form.name.value}</p>
 				</div>
 			</div>
 		</div>

@@ -1,11 +1,11 @@
 <script>
 	import { createRecordModal } from '$lib/store/modal'
-	import { P, Button } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 	import { t } from '$lib/i18n'
 </script>
 
 <div class="flex-1 w-full flex flex-col gap-4 items-center justify-center content-center">
-	<P weight="bold">{$t('Create New Record')}</P>
+	<p class="font-bold">{$t('Create New Record')}</p>
 
 	<p class="inline-flex items-center dark:text-gray-100">{@html $t('shortcut R', { shortcut: 'R' })}</p>
 

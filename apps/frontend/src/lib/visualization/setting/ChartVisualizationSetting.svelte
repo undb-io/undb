@@ -1,6 +1,7 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Button, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 	import type { ChartVisualization as CoreChartVisualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
 	import { aggregateChartFn, allTableFields, getTable } from '$lib/store/table'
@@ -48,8 +49,6 @@
 	<form on:submit|preventDefault={onSubmit} class="flex flex-col h-full justify-between">
 		<div>
 			<FieldPicker
-				class="w-full !justify-start mb-4"
-				table={$table}
 				fields={$allTableFields}
 				filter={(f) =>
 					f.type === 'select' || f.type === 'collaborator' || f.type === 'created-by' || f.type === 'updated-by'}
@@ -58,7 +57,7 @@
 		</div>
 		<div class="flex-1" />
 		<div class="flex justify-end">
-			<Button {disabled} type="submit" size="xs">{$t('Confirm', { ns: 'common' })}</Button>
+			<Button {disabled} type="submit" size="sm">{$t('Confirm', { ns: 'common' })}</Button>
 		</div>
 	</form>
 </div>

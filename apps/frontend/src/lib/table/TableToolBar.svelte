@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Tooltip } from 'flowbite-svelte'
+	import * as Tooltip from '$lib/components/ui/tooltip'
 	import ToggleDisplayType from './ToggleDisplayType.svelte'
 	import { t } from '$lib/i18n'
 	import ViewToolbar from './ViewToolbar.svelte'
@@ -33,12 +33,16 @@
 			<span class="whitespace-nowrap">{$t('API Preview')}</span>
 		</Button>
 		{#if $hasPermission('table:update')}
-			<button on:click={() => updateTableModal.open()}>
-				<i class="ti ti-settings text-gray-600 dark:text-gray-200" />
-			</button>
-			<Tooltip class="z-50" placement="bottom">
-				{$t('Edit Table')}
-			</Tooltip>
+			<Tooltip.Root openDelay={10}>
+				<Tooltip.Trigger>
+					<button on:click={() => updateTableModal.open()}>
+						<i class="ti ti-settings text-gray-600 dark:text-gray-200" />
+					</button>
+				</Tooltip.Trigger>
+				<Tooltip.Content>
+					{$t('Edit Table')}
+				</Tooltip.Content>
+			</Tooltip.Root>
 		{/if}
 		<ToggleDisplayType />
 		{#if $hasPermission('table:list_form')}

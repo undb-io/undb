@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { IColor } from '@undb/core'
-	import { P } from 'flowbite-svelte'
 	import CollaboratorAvatar from '$lib/user/CollaboratorAvatar.svelte'
 
 	export let username: string
@@ -11,5 +10,5 @@
 </script>
 
 <CollaboratorAvatar {avatar} {color} {username} {size}>
-	<P {size}>{username}</P>
+	<p>{username}</p>
 </CollaboratorAvatar>

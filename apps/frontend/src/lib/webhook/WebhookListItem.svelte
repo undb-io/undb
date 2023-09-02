@@ -4,7 +4,6 @@
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { IQueryWebhook } from '@undb/integrations'
-	import { P } from 'flowbite-svelte'
 	import * as Card from '$lib/components/ui/card'
 	import { Button } from '$components/ui/button'
 	import { Badge } from '$components/ui/badge'
@@ -40,7 +39,7 @@
 			<div class="flex flex-col gap-2">
 				<div class="flex items-center gap-3">
 					<i class="ti ti-webhook" />
-					<P class="font-semibold text-lg">{webhook.name}</P>
+					<p class="font-semibold text-lg">{webhook.name}</p>
 				</div>
 				<div class="flex items-center gap-2">
 					{#if webhook.enabled}

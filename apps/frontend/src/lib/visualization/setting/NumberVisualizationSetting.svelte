@@ -1,6 +1,7 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Alert, Button, Radio, Toast } from 'flowbite-svelte'
+	import { Alert, Radio, Toast } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 	import type { NumberVisualization as CoreNumberVisualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
 	import { allTableFields, getTable } from '$lib/store/table'
@@ -106,7 +107,7 @@
 		{/if}
 		<div class="flex-1" />
 		<div class="flex justify-end">
-			<Button {disabled} type="submit" size="xs">{$t('Confirm', { ns: 'common' })}</Button>
+			<Button {disabled} type="submit" size="sm">{$t('Confirm', { ns: 'common' })}</Button>
 		</div>
 	</form>
 </div>

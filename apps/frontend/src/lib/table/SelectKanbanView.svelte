@@ -5,7 +5,8 @@
 	import { dndzone } from 'svelte-dnd-action'
 	import type { SelectField } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
-	import { Badge, Button, Dropdown, DropdownItem, Toast } from 'flowbite-svelte'
+	import { Badge, Dropdown, DropdownItem, Toast } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 	import { createOptionModal, updateOptionModal } from '$lib/store/modal'
 	import { invalidate } from '$app/navigation'
 	import { slide } from 'svelte/transition'
@@ -152,9 +153,8 @@
 					currentFieldId.set(field?.id.value)
 					createOptionModal.open()
 				}}
-				size="xs"
-				color="light"
-				outline
+				size="sm"
+				variant="ghost"
 				class="w-full rounded-sm whitespace-nowrap inline-flex gap-2 dark:text-gray-200"
 			>
 				<i class="ti ti-plus" />

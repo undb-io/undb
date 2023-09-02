@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { flip } from 'svelte/animate'
 	import type { DateField } from '@undb/core'
-	import { Badge, Button } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
+	import { Badge } from '$lib/components/ui/badge'
 	import { t } from '$lib/i18n'
 	import { NODATE_STACK_ID } from '$lib/kanban/kanban.constants'
 	import { KANBAN_DATE_STACKS, RElAVANT_DATES, getDateFilter, getDateValue } from '$lib/kanban/kanban-date.utils'
@@ -24,14 +25,14 @@
 			<div class="w-[350px] flex flex-col h-full">
 				<div class="flex-0">
 					<div class="min-h-[40px]">
-						<Badge color="dark">{item.name}</Badge>
+						<Badge variant="secondary">{item.name}</Badge>
 					</div>
 
 					{#if !RElAVANT_DATES.includes(item.id) && !$readonly}
 						<Button
-							color="alternative"
 							class="w-full rounded-md transition h-8 mb-4"
-							size="xs"
+							variant="secondary"
+							size="sm"
 							on:click={() => {
 								if (field && item.id !== NODATE_STACK_ID) {
 									$createRecordInitial = {

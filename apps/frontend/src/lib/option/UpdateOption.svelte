@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Button, Input, Modal, Toast } from 'flowbite-svelte'
+	import { Input, Modal, Toast } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 	import OptionColorPicker from './OptionColorPicker.svelte'
 	import type { updateOptionSchema } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
@@ -64,8 +65,8 @@
 
 		<svelte:fragment slot="footer">
 			<div class="w-full flex justify-end gap-4">
-				<Button size="xs" color="alternative">{$t('Cancel', { ns: 'common' })}</Button>
-				<Button size="xs" form="updateOption" type="submit">{$t('Confirm', { ns: 'common' })}</Button>
+				<Button size="sm" variant="secondary">{$t('Cancel', { ns: 'common' })}</Button>
+				<Button size="sm" form="updateOption" type="submit">{$t('Confirm', { ns: 'common' })}</Button>
 			</div>
 		</svelte:fragment>
 	</Modal>

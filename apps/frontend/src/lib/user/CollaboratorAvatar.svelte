@@ -1,7 +1,7 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import type { IColor } from '@undb/core'
-	import { Avatar, P } from 'flowbite-svelte'
+	import { Avatar } from 'flowbite-svelte'
 	import { colors } from '$lib/field/helpers'
 
 	export let username: string

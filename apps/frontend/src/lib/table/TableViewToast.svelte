@@ -4,7 +4,8 @@
 	import { recordSelection, selectedCount, selectedRecords } from '$lib/store/record'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { Toast, P, Button, Spinner, Dropdown, DropdownItem, ButtonGroup } from 'flowbite-svelte'
+	import { Toast, P, Spinner, Dropdown, DropdownItem, ButtonGroup } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 	import { quintOut } from 'svelte/easing'
 	import { slide } from 'svelte/transition'
 
@@ -45,8 +46,7 @@
 
 		<ButtonGroup size="xs">
 			<Button
-				size="xs"
-				color="blue"
+				size="sm"
 				class="inline-flex gap-2"
 				disabled={$bulkDuplicateRecordsMutation.isLoading}
 				on:click={duplicate}
@@ -58,7 +58,7 @@
 				{/if}
 				{$t('Duplicate Selected Record')}
 			</Button>
-			<Button size="xs" color="blue" class="!pl-1">
+			<Button size="sm" class="!pl-1">
 				<i class="ti ti-chevron-down"></i>
 			</Button>
 			<Dropdown style="z-index: 50;" placement="top" class="w-48">

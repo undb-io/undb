@@ -5,7 +5,8 @@
 	import { canCreateRecord, canDeleteRecord, currentRecordId, getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { Record } from '@undb/core'
-	import { Button, Dropdown, DropdownDivider, DropdownItem, Modal, Spinner } from 'flowbite-svelte'
+	import { Dropdown, DropdownDivider, DropdownItem, Modal, Spinner } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 
 	let confirmDeleteOpen = false
 
@@ -75,10 +76,10 @@
 			{$t('Confirm Delete Record')}
 		</h3>
 		<Button
-			color="red"
+			variant="destructive"
 			class="mr-2 gap-2 whitespace-nowrap"
 			disabled={$deleteRecord.isLoading}
-			size="md"
+			size="lg"
 			on:click={() => {
 				if (record) {
 					$deleteRecord.mutate({ tableId: $table.id.value, id: record.id.value })

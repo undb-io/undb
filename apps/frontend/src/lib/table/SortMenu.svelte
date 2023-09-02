@@ -1,6 +1,6 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Alert, Badge, Modal, Toast } from 'flowbite-svelte'
+	import { Alert, Toast } from 'flowbite-svelte'
 	import { allTableFields, getTable, getView, listRecordFn, sorts } from '$lib/store/table'
 	import { isSortable, type ISortSchema } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
@@ -43,7 +43,7 @@
 	const listRecords = $listRecordFn(undefined, { enabled: false })
 
 	const setSort = trpc().table.view.sort.set.mutation({
-		async onSuccess(data, variables, context) {
+		async onSuccess() {
 			await invalidate(`table:${$table.id.value}`)
 			await $listRecords.refetch()
 			open = false

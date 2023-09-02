@@ -1,6 +1,7 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Button, Dropdown, Radio } from 'flowbite-svelte'
+	import { Dropdown, Radio } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 	import type { Table } from '@undb/core'
 	import { t } from '$lib/i18n'
 	import { allTables, tableById } from '$lib/store/table'
@@ -15,11 +16,13 @@
 	let open = false
 </script>
 
-<Button color="alternative" {...$$restProps} class={cx($$restProps.class, 'gap-2')} on:click={() => (open = true)}>
+<Button variant="secondary" {...$$restProps} class={cx($$restProps.class, 'gap-2')} on:click={() => (open = true)}>
 	{#if selected}
 		{selected.name.value}
 	{:else}
-		<span class="text-gray-400">{$t('Select Table')}</span>
+		<span class="text-gray-400">
+			{$t('Select Table')}
+		</span>
 	{/if}
 </Button>
 {#if $allTables}
