@@ -2,7 +2,8 @@
 	import type { IFieldType, IQueryFieldSchema } from '@undb/core'
 	import { identity } from 'lodash-es'
 	import FieldIcon from '../FieldIcon.svelte'
-	import * as Select from '$lib/components/ui/select'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { Button } from '$components/ui/button'
 
 	export let value: string = ''
 
@@ -19,24 +20,31 @@
 	$: selected = value ? filteredFields.find((f) => f.id === value) : undefined
 	$: selectedId = selected?.id
 	$: type = selected?.type
-
-	const onSelectedChange = (s: any) => {
-		value = s.value
-	}
 </script>
 
-<Select.Root disabled={readonly} {onSelectedChange}>
-	<Select.Trigger>
-		<Select.Value />
-	</Select.Trigger>
-	<Select.Content>
-		{#each filteredFields as field (field.id)}
-			<Select.Item value={field.id} label={field.name} class="gap-2">
-				<FieldIcon size={14} type={field.type} />
-				<span class="text-xs">
-					{field.name}
+<DropdownMenu.Root>
+	<DropdownMenu.Trigger asChild let:builder disabled={readonly}>
+		<Button variant="outline" builders={[builder]} type="button">
+			{#if selected}
+				<span class="inline-flex gap-2 items-center text-sm truncate">
+					<FieldIcon type={selected.type} />
+					<span>
+						{selected.name}
+					</span>
 				</span>
-			</Select.Item>
-		{/each}
-	</Select.Content>
-</Select.Root>
+			{/if}
+		</Button>
+	</DropdownMenu.Trigger>
+	<DropdownMenu.Content>
+		<DropdownMenu.RadioGroup bind:value>
+			{#each filteredFields as field (field.id)}
+				<DropdownMenu.RadioItem value={field.id} class="gap-2">
+					<FieldIcon size={14} type={field.type} />
+					<span class="text-xs">
+						{field.name}
+					</span>
+				</DropdownMenu.RadioItem>
+			{/each}
+		</DropdownMenu.RadioGroup>
+	</DropdownMenu.Content>
+</DropdownMenu.Root>
