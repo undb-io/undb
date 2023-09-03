@@ -1,6 +1,6 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Alert, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
 	import { allTableFields, getTable, getView, listRecordFn, sorts } from '$lib/store/table'
 	import { isSortable, type ISortSchema } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
@@ -16,6 +16,7 @@
 	import { Button } from '$components/ui/button'
 	import * as Popover from '$lib/components/ui/popover'
 	import { Separator } from '$lib/components/ui/separator'
+	import * as Alert from '$lib/components/ui/alert'
 
 	const table = getTable()
 	const view = getView()
@@ -138,7 +139,11 @@
 					{/each}
 				</ul>
 			{:else}
-				<Alert color="blue">{$t('no sorts applied')}</Alert>
+				<Alert.Root>
+					<Alert.Title>
+						{$t('no sorts applied')}
+					</Alert.Title>
+				</Alert.Root>
 			{/if}
 		</form>
 		{#if canSetViewSort}

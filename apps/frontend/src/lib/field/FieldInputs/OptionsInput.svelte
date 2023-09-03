@@ -1,11 +1,11 @@
 <script lang="ts">
 	import OptionColorPicker from '$lib/option/OptionColorPicker.svelte'
 	import { OptionColor, type IMutateOptionSchema } from '@undb/core'
-	import { Input } from 'flowbite-svelte'
 	import { Button } from '$lib/components/ui/button'
 	import { onMount } from 'svelte'
 	import type { SetRequired } from 'type-fest'
 	import { t } from '$lib/i18n'
+	import { Input } from '$components/ui/input'
 
 	export let value: SetRequired<IMutateOptionSchema, 'color'>[] = []
 

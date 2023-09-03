@@ -1,8 +1,8 @@
 <script lang="ts">
+	import { Checkbox } from '$components/ui/checkbox'
 	import type { BoolFieldValue } from '@undb/core'
-	import { Checkbox } from 'flowbite-svelte'
 
 	export let value: BoolFieldValue | undefined
 </script>
 
-<Checkbox readonly checked={value?.unpack() ?? false} />
+<Checkbox disabled checked={value?.unpack() ?? false} />

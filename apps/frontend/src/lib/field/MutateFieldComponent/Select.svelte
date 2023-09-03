@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { Alert, Label } from 'flowbite-svelte'
+	import { Alert } from 'flowbite-svelte'
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
 	import OptionsInput from '../FieldInputs/OptionsInput.svelte'
 	import type { Writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
 	import type { FieldTypeConvertStrategy } from '@undb/core'
+	import { Label } from '$components/ui/label'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 	export let path: any[] = []

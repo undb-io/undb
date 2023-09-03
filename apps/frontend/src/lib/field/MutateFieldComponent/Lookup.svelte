@@ -10,8 +10,8 @@
 		getForeignTable,
 		newTableSchema,
 	} from '$lib/store/table'
-	import { Label } from 'flowbite-svelte'
 	import { t } from '$lib/i18n'
+	import { Label } from '$components/ui/label'
 
 	export let path: any[] = []
 

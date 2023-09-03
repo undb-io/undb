@@ -2,11 +2,12 @@
 	import cx from 'classnames'
 	import { t } from '$lib/i18n'
 	import type { IFLSAction } from '@undb/authz'
-	import { Badge, TabItem } from 'flowbite-svelte'
+	import { TabItem } from 'flowbite-svelte'
 	import { hasPermission } from '$lib/store/authz'
 	import FlsList from './FlsList.svelte'
 	import { currentFLSS } from '$lib/store/table'
 	import FlsCreate from './FLSCreate.svelte'
+	import { Badge } from '$components/ui/badge'
 
 	export let action: IFLSAction
 

@@ -5,10 +5,10 @@
 	import ReferenceFieldPicker from '../FieldInputs/ReferenceFieldPicker.svelte'
 	import { getForeignTableFieldsByReferenceId, getTable, tableById } from '$lib/store/table'
 	import { type ReferenceField, type TreeField, isNumeric, isAggregate, Table } from '@undb/core'
-	import { Label } from 'flowbite-svelte'
 	import FieldPicker from '../FieldInputs/FieldPicker.svelte'
 	import type { Writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
+	import { Label } from '$components/ui/label'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 	export let path: any[] = []

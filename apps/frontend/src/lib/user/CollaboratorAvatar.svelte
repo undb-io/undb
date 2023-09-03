@@ -1,7 +1,7 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import type { IColor } from '@undb/core'
-	import { Avatar } from 'flowbite-svelte'
+	import * as Avatar from '$lib/components/ui/avatar'
 	import { colors } from '$lib/field/helpers'
 
 	export let username: string
@@ -12,10 +12,10 @@
 </script>
 
 <span class="inline-flex gap-2 items-center">
-	{#if !avatar}
-		<Avatar {size} class={cx(colors[color], 'text-white')}>{username.slice(0, 2)}</Avatar>
-	{:else}
-		<Avatar {size} src={avatar} alt={username}>{username.slice(0, 2)}</Avatar>
-	{/if}
+	<Avatar.Root>
+		<Avatar.Image src={avatar} alt={username} />
+		<Avatar.Fallback class={cx('text-white', colors[color])}>{username.slice(0, 2)}</Avatar.Fallback>
+	</Avatar.Root>
+
 	<slot />
 </span>

@@ -2,13 +2,13 @@
 	import cx from 'classnames'
 	import { colors } from '$lib/field/helpers'
 	import type { IQueryMember } from '@undb/authz'
-	import { Avatar } from 'flowbite-svelte'
 	import { hasPermission } from '$lib/store/authz'
 	import { trpc } from '$lib/trpc/client'
 	import { t } from '$lib/i18n'
 	import * as Card from '$lib/components/ui/card'
 	import * as Select from '$lib/components/ui/select'
 	import { Badge } from '$lib/components/ui/badge'
+	import * as Avatar from '$lib/components/ui/avatar'
 
 	export let member: IQueryMember
 
@@ -36,13 +36,12 @@
 		<div class="flex items-center">
 			<div class="flex min-w-0 flex-1 items-center">
 				<div class="flex-shrink-0">
-					{#if member.userProfile.avatar}
-						<Avatar src={member.userProfile.avatar} />
-					{:else}
-						<Avatar class={cx('text-white', colors[member.userProfile.color])}>
-							{member.userProfile.username.slice(0, 2)}
-						</Avatar>
-					{/if}
+					<Avatar.Root>
+						<Avatar.Image src={member?.userProfile.avatar} alt={member?.userProfile.username} />
+						<Avatar.Fallback class={cx('text-white', colors[member.userProfile.color])}>
+							{member?.userProfile.username.slice(0, 2)}
+						</Avatar.Fallback>
+					</Avatar.Root>
 				</div>
 				<div class="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
 					<div>
