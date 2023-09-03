@@ -1,7 +1,7 @@
 <script lang="ts">
 	import cx from 'classnames'
 	import type { MultiSelectField, SelectField } from '@undb/core'
-	import { Dropdown, Checkbox } from 'flowbite-svelte'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Button } from '$lib/components/ui/button'
 	import Option from './Option.svelte'
 	import { t } from '$lib/i18n'
@@ -20,41 +20,37 @@
 	$: open = false
 </script>
 
-<Button class={cx('h-full', $$restProps.class)} variant="secondary" disabled={readonly}>
-	{#if selected.length}
-		<span class="inline-flex gap-2">
-			{#each selected as option}
-				<Option {option} />
-			{/each}
-		</span>
-	{:else}
-		<span class="inline-flex items-center gap-2">
-			<i class="ti ti-plus" />
-			<span>{$t('Select Option')}</span>
-		</span>
-	{/if}
-</Button>
-{#if !readonly}
-	<Dropdown style="z-index: 50;" bind:open placement="bottom-start" class="w-full min-w-[200px]">
-		<div class="w-full">
+<DropdownMenu.Root>
+	<DropdownMenu.Trigger asChild let:builder>
+		<Button class={cx('h-full', $$restProps.class)} variant="secondary" disabled={readonly} builders={[builder]}>
+			{#if selected.length}
+				<span class="inline-flex gap-2">
+					{#each selected as option}
+						<Option {option} />
+					{/each}
+				</span>
+			{:else}
+				<span class="inline-flex items-center gap-2">
+					<i class="ti ti-plus" />
+					<span>{$t('Select Option')}</span>
+				</span>
+			{/if}
+		</Button>
+	</DropdownMenu.Trigger>
+	{#if !readonly}
+		<DropdownMenu.Content class="w-56">
 			{#each options as option}
-				{@const select = selected.some((s) => s.key.value === option.key.value)}
-				<Checkbox
-					class="cursor-pointer flex "
+				<DropdownMenu.CheckboxItem
+					class="cursor-pointer flex"
 					bind:group={value}
 					value={option.key.value}
 					{...$$restProps}
-					custom
-					on:change={() => (open = false)}
 				>
-					<span role="button" class="inline-flex justify-between w-full px-3 py-2 hover:bg-gray-100 transition">
+					<span role="button" class="inline-flex w-full hover:bg-gray-100 dark:hover:bg-gray-400 transition">
 						<Option {option} />
-						{#if select}
-							<i class="ti ti-check" />
-						{/if}
 					</span>
-				</Checkbox>
+				</DropdownMenu.CheckboxItem>
 			{/each}
-		</div>
-	</Dropdown>
-{/if}
+		</DropdownMenu.Content>
+	{/if}
+</DropdownMenu.Root>
