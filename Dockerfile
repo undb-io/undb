@@ -30,6 +30,7 @@ ARG PUBLIC_UNDB_ADMIN_PASSWORD
 ARG UNDB_SEED
 
 ENV NODE_ENV production
+ENV NODE_OPTIONS --max-old-space-size=8192
 RUN pnpm run build --filter=backend --filter=frontend
 
 RUN rm -rf ./node_modules
