@@ -5,6 +5,7 @@
 	import { Button } from '$lib/components/ui/button'
 	import Option from './Option.svelte'
 	import { t } from '$lib/i18n'
+	import Label from '$components/ui/label/label.svelte'
 
 	export let field: SelectField | MultiSelectField | undefined
 	export let readonly: boolean = false
@@ -16,8 +17,6 @@
 
 	$: selected = Array.isArray(value) ? value.map((id) => field?.options.getById(id).into()!).filter(Boolean) : []
 	$: options = field?.options?.options ?? []
-
-	$: open = false
 </script>
 
 <DropdownMenu.Root>
@@ -40,16 +39,12 @@
 	{#if !readonly}
 		<DropdownMenu.Content class="w-56">
 			{#each options as option}
-				<DropdownMenu.CheckboxItem
-					class="cursor-pointer flex"
-					bind:group={value}
-					value={option.key.value}
-					{...$$restProps}
-				>
-					<span role="button" class="inline-flex w-full hover:bg-gray-100 dark:hover:bg-gray-400 transition">
+				<DropdownMenu.Item class="cursor-pointer flex" {...$$restProps}>
+					<Label role="button" class="inline-flex w-full hover:bg-gray-100 dark:hover:bg-gray-400 transition">
+						<input type="checkbox" bind:group={value} value={option.key.value} class="hidden" />
 						<Option {option} />
-					</span>
-				</DropdownMenu.CheckboxItem>
+					</Label>
+				</DropdownMenu.Item>
 			{/each}
 		</DropdownMenu.Content>
 	{/if}

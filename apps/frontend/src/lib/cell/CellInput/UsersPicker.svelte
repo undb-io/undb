@@ -5,6 +5,7 @@
 	import type { ICollaboratorProfile } from '@undb/core'
 	import { Button } from '$lib/components/ui/button'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import Label from '$components/ui/label/label.svelte'
 
 	export let value: string[] | undefined
 	export let readonly = false
@@ -47,13 +48,14 @@
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class="w-56">
 		{#each members as member}
-			<DropdownMenu.CheckboxItem bind:group={value} value={member.userId}>
-				<span
+			<DropdownMenu.Item>
+				<Label
 					class="inline-flex items-center justify-between cursor-pointer w-full hover:bg-gray-100 dark:hover:bg-gray-400"
 				>
+					<input type="checkbox" bind:group={value} value={member.userId} class="hidden" />
 					<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />
-				</span>
-			</DropdownMenu.CheckboxItem>
+				</Label>
+			</DropdownMenu.Item>
 		{/each}
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
