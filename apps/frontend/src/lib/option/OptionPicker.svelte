@@ -15,9 +15,15 @@
 	$: options = field?.options?.options ?? []
 </script>
 
-<DropdownMenu.Root>
+<DropdownMenu.Root positioning={{ placement: 'bottom-start' }}>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button class={cx('h-full', $$restProps.class)} variant="outline" disabled={readonly} builders={[builder]}>
+		<Button
+			type="button"
+			class={cx('h-full', $$restProps.class)}
+			variant="outline"
+			disabled={readonly}
+			builders={[builder]}
+		>
 			{#if option}
 				<Option {option} />
 			{:else}

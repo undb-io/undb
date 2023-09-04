@@ -1,7 +1,7 @@
 <script lang="ts">
+	import cx from 'classnames'
 	import { t } from '$lib/i18n'
 	import type { Record, ReferenceFieldTypes, TableSchema } from '@undb/core'
-	import * as Card from '$lib/components/ui/card'
 
 	export let schema: TableSchema
 	export let field: ReferenceFieldTypes
@@ -11,7 +11,7 @@
 </script>
 
 {#if record}
-	<Card.Root {...$$restProps}>
+	<div class={cx('p-3 rounded-sm cursor-pointer border', $$restProps.class)}>
 		{value.toString()}
-	</Card.Root>
+	</div>
 {/if}
