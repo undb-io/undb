@@ -4,7 +4,7 @@
 	import { getTable, getView, readonly } from '$lib/store/table'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import type { Record } from '@undb/core'
-	import { Tooltip } from 'flowbite-svelte'
+	import * as Tooltip from '$lib/components/ui/tooltip'
 	import { fade } from 'svelte/transition'
 	import * as Card from '$lib/components/ui/card'
 
@@ -25,10 +25,15 @@
 	{#each fields as field}
 		{@const value = record.values.value.get(field.id.value)}
 		<div class="flex items-center gap-2 dark:text-gray-200">
-			<FieldIcon size={20} type={field.type} />
-			<Tooltip class="z-[999]" transition={fade} params={{ delay: 100, duration: 200 }} placement="left" arrow={false}>
-				{field.name.value}
-			</Tooltip>
+			<Tooltip.Root>
+				<Tooltip.Trigger>
+					<FieldIcon size={20} type={field.type} />
+				</Tooltip.Trigger>
+				<Tooltip.Content>
+					{field.name.value}
+				</Tooltip.Content>
+			</Tooltip.Root>
+
 			<CellComponent {record} {field} {value} displayValues={record.displayValues?.unpack()} />
 		</div>
 	{/each}
