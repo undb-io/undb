@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Input, Modal, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
 	import { Button } from '$lib/components/ui/button'
 	import OptionColorPicker from './OptionColorPicker.svelte'
 	import { OptionColor, type createOptionSchema } from '@undb/core'
@@ -11,6 +11,8 @@
 	import { t } from '$lib/i18n'
 	import { invalidate } from '$app/navigation'
 	import { createOptionModal } from '$lib/store/modal'
+	import { Input } from '$components/ui/input'
+	import * as Dialog from '$lib/components/ui/dialog'
 
 	export let data: Validation<typeof createOptionSchema>
 
@@ -47,25 +49,27 @@
 </script>
 
 {#if $field?.type === 'select' || $field?.type === 'multi-select'}
-	<Modal
-		title={$t('Create New Option') ?? undefined}
-		bind:open={$createOptionModal.open}
-		placement="top-center"
-		class="w-full rounded-sm"
-		size="sm"
-	>
-		<form id="createOption" class="flex gap-2 items-center" method="POST" use:enhance>
-			<OptionColorPicker bind:value={$form.color.name} name={$form.name} />
-			<Input class="rounded-none outline-none border-none" name="name" size="sm" type="text" bind:value={$form.name} />
-		</form>
+	<Dialog.Root bind:open={$createOptionModal.open}>
+		<Dialog.Content>
+			<Dialog.Header>
+				<Dialog.Title>{$t('Create New Option') ?? undefined}</Dialog.Title>
+			</Dialog.Header>
 
-		<svelte:fragment slot="footer">
-			<div class="w-full flex justify-end gap-4">
-				<Button size="sm" variant="secondary">{$t('Cancel', { ns: 'common' })}</Button>
-				<Button size="sm" form="createOption" type="submit">{$t('Confirm', { ns: 'common' })}</Button>
-			</div>
-		</svelte:fragment>
-	</Modal>
+			<form id="createOption" class="flex gap-2 items-center" method="POST" use:enhance>
+				{#if $form.color}
+					<OptionColorPicker bind:value={$form.color.name} name={$form.name} />
+				{/if}
+				<Input class="rounded-none outline-none border-none" name="name" type="text" bind:value={$form.name} />
+			</form>
+
+			<Dialog.Footer>
+				<div class="w-full flex justify-end gap-4">
+					<Button size="sm" variant="secondary">{$t('Cancel', { ns: 'common' })}</Button>
+					<Button size="sm" form="createOption" type="submit">{$t('Confirm', { ns: 'common' })}</Button>
+				</div>
+			</Dialog.Footer>
+		</Dialog.Content>
+	</Dialog.Root>
 {/if}
 
 {#if $createOption.error}

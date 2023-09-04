@@ -1,12 +1,13 @@
 <script lang="ts">
 	import type { Writable } from 'svelte/store'
 
-	import { Label, Select } from 'flowbite-svelte'
+	import { Select } from 'flowbite-svelte'
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
 	import { type ICurrencySymbol, currencySymbols } from '@undb/core'
 	import { onMount } from 'svelte'
 	import { i18n } from '$lib/i18n'
+	import { Label } from '$components/ui/label'
 
 	export let path: any[] = []
 	export let form: SuperForm<UnwrapEffects<string>, unknown>

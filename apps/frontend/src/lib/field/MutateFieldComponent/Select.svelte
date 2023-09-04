@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Alert } from 'flowbite-svelte'
+	import * as Alert from '$lib/components/ui/alert'
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
 	import OptionsInput from '../FieldInputs/OptionsInput.svelte'
@@ -17,7 +17,11 @@
 </script>
 
 {#if isUpdatingType && fieldConvertStrategy === 'match'}
-	<Alert>{$t('updatingType.select')}</Alert>
+	<Alert.Root>
+		<Alert.Title>
+			{$t('updatingType.select')}
+		</Alert.Title>
+	</Alert.Root>
 {:else}
 	<div class="space-y-2">
 		<Label class="space-y-2">
