@@ -1,5 +1,4 @@
 <script lang="ts">
-	// import { Tabs } from 'flowbite-svelte'
 	import { rlsActions } from '@undb/authz'
 	import RlsTab from './RLSTab.svelte'
 	import * as Tabs from '$components/ui/tabs'
