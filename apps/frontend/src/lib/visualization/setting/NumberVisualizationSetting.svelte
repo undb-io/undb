@@ -1,6 +1,6 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Alert, Radio, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
 	import { Button } from '$lib/components/ui/button'
 	import type { NumberVisualization as CoreNumberVisualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
@@ -12,6 +12,7 @@
 	import { tick } from 'svelte'
 	import { slide } from 'svelte/transition'
 	import { aggregateNumberFn } from '$lib/store/table'
+	import Label from '$components/ui/label/label.svelte'
 
 	const table = getTable()
 
@@ -66,25 +67,27 @@
 	<ul
 		class="items-center w-full rounded-md border border-gray-200 sm:flex dark:bg-gray-800 dark:border-gray-600 divide-x divide-gray-200 dark:divide-gray-600 mb-4 p-0"
 	>
-		<li
-			class="inline-block cursor-pointer rounded-l-md hover:text-white hover:bg-blue-500 w-full h-full px-4 py-2 peer-checked:bg-sky-100 peer-checked:text-blue-600 transition"
-		>
-			<Radio value="table" bind:group={mode} name="mode" custom>
+		<Label>
+			<li
+				class="inline-block cursor-pointer rounded-l-md hover:text-white hover:bg-blue-500 w-full h-full px-4 py-2 peer-checked:bg-sky-100 peer-checked:text-blue-600 transition"
+			>
 				<div role="button">
 					{$t('aggregate mode table')}
 				</div>
-			</Radio>
-		</li>
-		<li class="w-full">
-			<Radio value="field" bind:group={mode} name="mode" custom>
+				<input class="hidden" type="radio" value="table" bind:group={mode} name="mode" />
+			</li>
+		</Label>
+		<Label>
+			<li class="w-full">
 				<div
 					role="button"
 					class="cursor-pointer rounded-r-md hover:text-white hover:bg-blue-500 w-full h-full px-4 py-2 peer-checked:bg-sky-100 peer-checked:text-blue-600 transition"
 				>
 					{$t('aggregate mode field')}
 				</div>
-			</Radio>
-		</li>
+				<input class="hidden" value="field" type="radio" bind:group={mode} name="mode" />
+			</li>
+		</Label>
 	</ul>
 
 	<form on:submit|preventDefault={onSubmit} class="flex flex-col h-full justify-between">
