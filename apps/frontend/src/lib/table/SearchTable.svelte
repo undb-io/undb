@@ -22,15 +22,15 @@
 		tableQ.setTableQ($table.id.value, value || undefined)
 	}}
 >
-	<div class="flex items-center gap-2">
-		<Input bind:value {placeholder} />
+	<div class="flex items-center">
+		<Input bind:value {placeholder} class="min-w-[150px] rounded-r-none border-r-0 h-[36px]" />
 		<!-- <Search
 			size="sm"
 			bind:value
 			{placeholder}
 			class="dark:hover:bg-gray-800 dark:border-gray-400 dark:hover:border-gray-800 dark:text-gray-200 min-w-[100px]"
 		/> -->
-		<Button type="submit" size="sm">
+		<Button type="submit" size="sm" class="rounded-l-none border-l-0">
 			<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 				<path
 					stroke-linecap="round"
