@@ -34,9 +34,9 @@
 	const createField = trpc().table.field.create.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
+			createFieldModal.close()
 			await $records.refetch()
 			await $createFieldModal.callback?.()
-			createFieldModal.close()
 		},
 	})
 
@@ -47,7 +47,7 @@
 		clearOnSubmit: 'errors-and-message',
 		invalidateAll: false,
 		taintedMessage: null,
-		resetForm: true,
+		resetForm: false,
 		async onUpdate(event) {
 			$createField.mutate({ tableId: $table.id.value, field: event.form.data as any })
 		},
@@ -59,8 +59,9 @@
 		}
 	}
 
-	const { form, enhance, delayed, submitting } = superFrm
+	const { form, enhance, submitting } = superFrm
 
+	$: console.log($submitting)
 	$: showDescription = false
 	$: if (!showDescription) {
 		$form.description = ''
@@ -159,12 +160,12 @@
 					</div>
 					<div class="space-x-2">
 						<Button variant="secondary" on:click={createFieldModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
-						<Button class="gap-4" type="submit" form="createField" disabled={$submitting}>
-							{#if $delayed}
+						<Button class="gap-4" type="submit" form="createField" disabled={$createField.isLoading}>
+							{#if $createField.isLoading}
 								<i class="ti ti-rotate animate-spin"></i>
 							{/if}
-							{$t('Create New Field')}</Button
-						>
+							{$t('Create New Field')}
+						</Button>
 					</div>
 				</div>
 			</div>
