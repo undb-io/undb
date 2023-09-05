@@ -55,36 +55,38 @@
 </script>
 
 <Dialog.Root bind:open={$createRecordModal.open}>
-	<Dialog.Content class="!w-3/4 max-w-none max-h-[98%] overflow-y-auto">
-		<Dialog.Header>
+	<Dialog.Content class="!w-3/4 max-w-none h-[calc(100vh-64px)] overflow-y-hidden flex flex-col p-0">
+		<Dialog.Header class="border-b p-6">
 			<Dialog.Title>{$t('Create New Record')}</Dialog.Title>
 		</Dialog.Header>
 
-		<form id="createRecord" class="space-y-5" method="POST" use:enhance>
-			<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
-				{#each fields as field}
-					<div class="h-full items-start gap-1 pt-2">
-						<Label class="leading-5" for={field.id.value} data-field-id={field.id.value}>
-							<div class="inline-flex items-center gap-2">
-								<FieldIcon type={field.type} size={16} />
-								<span>
-									{field.name.value}
-								</span>
-							</div>
-							{#if field.required}
-								<span class="text-red-500">*</span>
-							{/if}
-						</Label>
-					</div>
-					<div class="col-span-4">
-						<CellInput class="w-full" {field} bind:value={$form[field.id.value]} {...$constraints[field.id.value]} />
-					</div>
-				{/each}
-			</div>
-		</form>
+		<div class="flex-1 overflow-y-auto p-6">
+			<form id="createRecord" class="space-y-5" method="POST" use:enhance>
+				<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
+					{#each fields as field}
+						<div class="h-full items-start gap-1 pt-2">
+							<Label class="leading-5" for={field.id.value}>
+								<div class="inline-flex items-center gap-2" data-field-id={field.id.value}>
+									<FieldIcon type={field.type} size={16} />
+									<span>
+										{field.name.value}
+									</span>
+								</div>
+								{#if field.required}
+									<span class="text-red-500">*</span>
+								{/if}
+							</Label>
+						</div>
+						<div class="col-span-4">
+							<CellInput class="w-full" {field} bind:value={$form[field.id.value]} {...$constraints[field.id.value]} />
+						</div>
+					{/each}
+				</div>
+			</form>
+		</div>
 		<!-- <SuperDebug data={$form} /> -->
 
-		<Dialog.Footer>
+		<Dialog.Footer class="border-t p-6">
 			<div class="w-full flex justify-end gap-2">
 				<Button size="sm" variant="secondary" on:click={() => createRecordModal.close()}>
 					{$t('Cancel', { ns: 'common' })}
