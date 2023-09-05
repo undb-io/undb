@@ -5,6 +5,7 @@
 	import { trpc } from '$lib/trpc/client'
 	import { viewRowHeights, type IViewRowHeight } from '@undb/core'
 	import { Button } from '$components/ui/button'
+	import * as Tooltip from '$lib/components/ui/tooltip'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 
 	const table = getTable()
@@ -30,9 +31,16 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button variant="secondary" size="sm" builders={[builder]}>
-			<i class="ti ti-line-height text-sm dark:text-gray-200" />
-		</Button>
+		<Tooltip.Root openDelay={10} positioning={{ placement: 'bottom' }}>
+			<Tooltip.Trigger asChild let:builder={b}>
+				<Button variant="secondary" size="sm" builders={[builder, b]}>
+					<i class="ti ti-line-height text-sm dark:text-gray-200" />
+				</Button>
+			</Tooltip.Trigger>
+			<Tooltip.Content>
+				{$t('Set Row Height')}
+			</Tooltip.Content>
+		</Tooltip.Root>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class="w-56">
 		<DropdownMenu.RadioGroup bind:value={rh} {onValueChange}>
