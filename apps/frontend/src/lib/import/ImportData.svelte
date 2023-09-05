@@ -13,7 +13,6 @@
 		createTableInput,
 		castFieldValue,
 	} from '@undb/core'
-	import { Spinner } from 'flowbite-svelte'
 	import * as Accordion from '$lib/components/ui/accordion'
 	import { Label } from '$lib/components/ui/label'
 	import { Input } from '$lib/components/ui/input'
@@ -203,9 +202,9 @@
 						{$t('Cancel', { ns: 'common' })}
 					</Button>
 					<Button size="sm" disabled={!data || $createTable.isLoading} type="submit">
-						<div class="flex items-center">
+						<div class="flex items-center gap-2">
 							{#if $createTable.isLoading}
-								<Spinner size="4" class="mr-2" />
+								<i class="ti ti-rotate animate-spin"></i>
 							{/if}
 							{$t('Confirm', { ns: 'common' })}
 						</div>

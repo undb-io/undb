@@ -2,7 +2,6 @@
 	import cx from 'classnames'
 	import RecordCard from '$lib/record/RecordCard.svelte'
 	import type { Records, Record, ReferenceFieldTypes, Table } from '@undb/core'
-	import { Spinner } from 'flowbite-svelte'
 	import * as Alert from '$lib/components/ui/alert'
 	import { Button } from '$lib/components/ui/button'
 	import VirtualList from 'svelte-tiny-virtual-list'
@@ -131,7 +130,7 @@
 			class={cx('space-x-2', $$restProps.class)}
 		>
 			{#if initialLoading}
-				<Spinner size="4" />
+				<i class="ti ti-rotate animate-spin"></i>
 			{:else}
 				<i class="ti ti-plus" />
 				<span>{$t('Select Record')}</span>
@@ -146,7 +145,7 @@
 
 				{#if loading}
 					<div class="flex w-full h-full items-center justify-center">
-						<Spinner />
+						<i class="ti ti-rotate animate-spin"></i>
 					</div>
 				{:else if !$records.length}
 					<Alert.Root>

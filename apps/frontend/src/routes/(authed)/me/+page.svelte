@@ -6,7 +6,6 @@
 	import { t } from '$lib/i18n'
 	import { createMutation } from '@tanstack/svelte-query'
 	import type { IAttachmentItem } from '@undb/core'
-	import { Fileupload } from 'flowbite-svelte'
 
 	$: me = $page.data.me?.me
 	let attachment: IAttachmentItem | undefined

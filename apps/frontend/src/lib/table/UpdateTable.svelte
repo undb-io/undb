@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Spinner, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
 	import { Label } from '$lib/components/ui/label'
 	import { Input } from '$lib/components/ui/input'
 	import { Button } from '$components/ui/button'
@@ -151,7 +151,7 @@
 				>
 				<Button class="gap-4" type="submit" form="updateTable" disabled={$submitting}>
 					{#if $delayed}
-						<Spinner size="5" />
+						<i class="ti ti-rotate animate-spin"></i>
 					{/if}
 					{$t('Update Table')}
 				</Button>
@@ -180,7 +180,7 @@
 			</AlertDialog.Cancel>
 			<AlertDialog.Action disabled={$deleteTable.isLoading}>
 				{#if $deleteTable.isLoading}
-					<Spinner size="xs" />
+					<i class="ti ti-rotate animate-spin"></i>
 				{:else}
 					<i class="ti ti-circle-check text-lg" />
 				{/if}

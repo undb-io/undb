@@ -1,7 +1,6 @@
 <script lang="ts">
 	import TableIndex from '$lib/table/TableIndex.svelte'
 	import logo from '$lib/assets/logo.svg'
-	import { Heading } from 'flowbite-svelte'
 	import { currentRecord, currentRecordId, getTable } from '$lib/store/table'
 	import { page } from '$app/stores'
 	import { RecordFactory } from '@undb/core'
@@ -23,7 +22,7 @@
 			<img class="h-6 w-auto" src={logo} alt="undb" />
 			<p class="text-lg font-semibold select-none !text-blue-600">undb</p>
 
-			<Heading tag="h6" class="ml-2">{$table.name.value}</Heading>
+			<h4 class="ml-2 font-bold text-lg">{$table.name.value}</h4>
 		</div>
 	</nav>
 	<main class="flex-1">

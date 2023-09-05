@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Toggle, Tooltip } from 'flowbite-svelte'
 	import { withPrevious } from 'svelte-previous'
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
@@ -10,6 +9,8 @@
 	import type { Writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
 	import { Label } from '$components/ui/label'
+	import { Switch } from '$components/ui/switch'
+	import * as Tooltip from '$lib/components/ui/tooltip'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 	export let isNew = false
@@ -37,10 +38,14 @@
 			<span class="text-red-500">*</span>
 			{#if foreignTable}
 				<a href={`/t/${foreignTable.id.value}`}>
-					<i class="ti ti-external-link text-gray-500" />
-					<Tooltip>
-						{$t('jump to table', { name: foreignTable.name.value })}
-					</Tooltip>
+					<Tooltip.Root>
+						<Tooltip.Trigger>
+							<i class="ti ti-external-link text-gray-500" />
+						</Tooltip.Trigger>
+						<Tooltip.Content>
+							{$t('jump to table', { name: foreignTable.name.value })}
+						</Tooltip.Content>
+					</Tooltip.Root>
 				</a>
 			{/if}
 		</Label>
@@ -62,7 +67,10 @@
 					filter={(f) => canDisplay(f.type)}
 				/>
 				{#if $table?.id.value !== $foreignTableId && isNew}
-					<Toggle size="small" bind:checked={$bidirectional} class="whitespace-nowrap">{$t('Bidirectional')}</Toggle>
+					<Label class="flex items-center gap-2 whitespace-nowrap">
+						<Switch bind:checked={$bidirectional} class="whitespace-nowrap" />
+						{$t('Bidirectional')}
+					</Label>
 				{/if}
 			</div>
 		</div>

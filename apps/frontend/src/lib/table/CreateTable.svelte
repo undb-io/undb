@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Spinner, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
 	import * as Accordion from '$lib/components/ui/accordion'
 	import type { Validation } from 'sveltekit-superforms'
 	import { FieldId, TableId, type createTableInput } from '@undb/core'
@@ -137,7 +137,7 @@
 				<Button variant="secondary" on:click={createTableModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
 				<Button class="gap-4" type="submit" form="createTable" disabled={$submitting}>
 					{#if $delayed}
-						<Spinner size="5" />
+						<i class="ti ti-rotate animate-spin"></i>
 					{/if}
 					{$t('Create New Table')}</Button
 				>

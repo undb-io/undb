@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getTable, getView, q, recordHash } from '$lib/store/table'
 	import { createFieldInitial, createFieldModal } from '$lib/store/modal'
-	import { Spinner, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
 	import { Badge } from '$lib/components/ui/badge'
 	import { Label } from '$lib/components/ui/label'
 	import { Input } from '$lib/components/ui/input'
@@ -162,7 +162,7 @@
 						<Button variant="secondary" on:click={createFieldModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
 						<Button class="gap-4" type="submit" form="createField" disabled={$submitting}>
 							{#if $delayed}
-								<Spinner size="5" />
+								<i class="ti ti-rotate animate-spin"></i>
 							{/if}
 							{$t('Create New Field')}</Button
 						>

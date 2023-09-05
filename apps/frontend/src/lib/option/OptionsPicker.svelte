@@ -21,7 +21,7 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button class={cx('h-full', $$restProps.class)} variant="secondary" disabled={readonly} builders={[builder]}>
+		<Button class={cx('h-full', $$restProps.class)} variant="outline" disabled={readonly} builders={[builder]}>
 			{#if selected.length}
 				<span class="inline-flex gap-2">
 					{#each selected as option}

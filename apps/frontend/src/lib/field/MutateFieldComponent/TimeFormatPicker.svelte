@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { Select, Toggle } from 'flowbite-svelte'
+	import { Select } from 'flowbite-svelte'
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
 	import { DEFAULT_TIME_FORMAT, TIME_FORMATS, timeFormat } from '@undb/core'
 	import type { Writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
 	import { Label } from '$components/ui/label'
+	import { Switch } from '$components/ui/switch'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 	export let path: any[] = []
@@ -30,7 +31,10 @@
 </script>
 
 <div class="flex items-center gap-4 w-full">
-	<Toggle size="small" bind:checked={displayTime}>{$t('display time')}</Toggle>
+	<Label class="flex items-center gap-2">
+		<Switch bind:checked={displayTime} />
+		{$t('display time')}
+	</Label>
 	{#if displayTime && $format}
 		<Label class="flex items-center flex-1 gap-2">
 			<span class="whitespace-nowrap">{$t('Time Format')}</span>

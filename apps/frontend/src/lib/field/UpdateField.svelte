@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getTable, getView, q, recordHash } from '$lib/store/table'
-	import { Spinner, Popover, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
+	import * as Popover from '$lib/components/ui/popover'
 	import { Label } from '$lib/components/ui/label'
 	import { Switch } from '$lib/components/ui/switch'
 	import { Input } from '$lib/components/ui/input'
@@ -182,28 +183,32 @@
 							</Label>
 						{/if}
 						{#if canDisplay($form.type)}
-							<Label class="flex items-center gap-2">
-								<Switch bind:checked={$form.display}></Switch>
-								<span>
-									{$t('Display', { ns: 'common' })}
-								</span>
-							</Label>
-							{#if displayFields.length}
-								<Popover class="w-64 text-sm font-light " title={$t('Display Fields') ?? undefined}>
-									<div class="flex gap-2">
-										{#each displayFields as field}
-											<Badge>{field}</Badge>
-										{/each}
-									</div>
-								</Popover>
-							{/if}
+							<Popover.Root>
+								<Popover.Trigger>
+									<Label class="flex items-center gap-2">
+										<Switch bind:checked={$form.display}></Switch>
+										<span>
+											{$t('Display', { ns: 'common' })}
+										</span>
+									</Label>
+								</Popover.Trigger>
+								{#if displayFields.length}
+									<Popover.Content class="w-64 text-sm font-light">
+										<div class="flex gap-2">
+											{#each displayFields as field}
+												<Badge>{field}</Badge>
+											{/each}
+										</div>
+									</Popover.Content>
+								{/if}
+							</Popover.Root>
 						{/if}
 					</div>
 					<div class="space-x-2">
 						<Button variant="secondary" on:click={updateFieldModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
 						<Button class="gap-4" type="submit" form="updateField" disabled={$submitting}>
 							{#if $delayed}
-								<Spinner size="5" />
+								<i class="ti ti-rotate animate-spin"></i>
 							{/if}
 							{$t('Update Field')}
 						</Button>
