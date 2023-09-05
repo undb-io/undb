@@ -1,5 +1,8 @@
 <script lang="ts">
-	import * as Select from '$lib/components/ui/select'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { Button } from '$lib/components/ui/button'
+	import { Label } from '$components/ui/label'
+	import { t } from '$lib/i18n'
 
 	export let value: string[] = []
 	$: {
@@ -16,13 +19,34 @@
 	] as const
 </script>
 
-<Select.Root bind:selected={value}>
-	<Select.Trigger>
-		<Select.Value class="font-bold text-xs" />
-	</Select.Trigger>
-	<Select.Content>
+<DropdownMenu.Root>
+	<DropdownMenu.Trigger asChild let:builder>
+		<Button variant="outline" builders={[builder]}>
+			{#if value.length}
+				{value.join(', ')}
+			{:else}
+				<span class="text-sm text-gray-300">
+					{$t('select extension')}
+				</span>
+			{/if}
+		</Button>
+	</DropdownMenu.Trigger>
+	<DropdownMenu.Content class="w-56">
 		{#each types as type}
-			<Select.Item value={type.value}>{type.label}</Select.Item>
+			{@const selected = value.includes(type.value)}
+			<DropdownMenu.Item>
+				<Label
+					class="inline-flex items-center justify-between cursor-pointer w-full hover:bg-gray-100 dark:hover:bg-gray-400 gap-2"
+				>
+					<input type="checkbox" bind:group={value} value={type.value} class="hidden" />
+					<span>
+						{type.label}
+					</span>
+					{#if selected}
+						<i class="ti ti-check"></i>
+					{/if}
+				</Label>
+			</DropdownMenu.Item>
 		{/each}
-	</Select.Content>
-</Select.Root>
+	</DropdownMenu.Content>
+</DropdownMenu.Root>

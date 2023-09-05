@@ -50,7 +50,13 @@
 		/>
 	</div>
 	{#if !readonly}
-		<Button class="h-10 aspect-square !p-0 border-gray-100" size="sm" variant="outline" on:click={() => remove(index)}>
+		<Button
+			class="h-10 aspect-square !p-0 border-gray-100"
+			size="sm"
+			variant="outline"
+			on:click={() => remove(index)}
+			type="button"
+		>
 			<i class="ti ti-trash text-sm" />
 		</Button>
 	{/if}

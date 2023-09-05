@@ -7,7 +7,6 @@
 	import type { createWebhookSchema } from '@undb/integrations'
 	import { Label } from '$lib/components/ui/label'
 	import { Input } from '$lib/components/ui/input'
-	import * as Select from '$lib/components/ui/select'
 	import { Button } from '$components/ui/button'
 	import { Checkbox } from '$lib/components/ui/checkbox'
 	import { superForm } from 'sveltekit-superforms/client'
@@ -16,6 +15,7 @@
 	import FilterEditor from '$lib/filter/FilterEditor.svelte'
 	import { getValidFilters } from '$lib/filter/filter.util'
 	import Toast from '$components/ui/toast/toast.svelte'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 
 	export let data: Validation<typeof createWebhookSchema>
 
@@ -94,16 +94,26 @@
 					<span class="text-red-500">*</span>
 				</div>
 
-				<Select.Root bind:selected={$form.method}>
-					<Select.Trigger>
-						<Select.Value />
-					</Select.Trigger>
-					<Select.Content>
-						{#each methods as method}
-							<Select.Item value={method.value}>{method.name}</Select.Item>
-						{/each}
-					</Select.Content>
-				</Select.Root>
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger asChild let:builder>
+						<Button variant="outline" builders={[builder]} class="gap-2" type="button">
+							{#if $form.method}
+								<span>
+									{$t($form.method, { ns: 'webhook' })}
+								</span>
+							{/if}
+						</Button>
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content class="w-56">
+						<DropdownMenu.RadioGroup bind:value={$form.method}>
+							{#each methods as method}
+								<DropdownMenu.RadioItem value={method.value}>
+									{method.name}
+								</DropdownMenu.RadioItem>
+							{/each}
+						</DropdownMenu.RadioGroup>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
@@ -111,16 +121,26 @@
 					<span class="text-red-500">*</span>
 				</div>
 
-				<Select.Root bind:selected={$form.target.event}>
-					<Select.Trigger>
-						<Select.Value />
-					</Select.Trigger>
-					<Select.Content>
-						{#each events as event}
-							<Select.Item value={event.value}>{event.name}</Select.Item>
-						{/each}
-					</Select.Content>
-				</Select.Root>
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger asChild let:builder>
+						<Button variant="outline" builders={[builder]} class="gap-2" type="button">
+							{#if $form.target.event}
+								<span>
+									{$t($form.target.event, { ns: 'event' })}
+								</span>
+							{/if}
+						</Button>
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content class="w-56">
+						<DropdownMenu.RadioGroup bind:value={$form.target.event}>
+							{#each events as event}
+								<DropdownMenu.RadioItem value={event.value}>
+									{event.name}
+								</DropdownMenu.RadioItem>
+							{/each}
+						</DropdownMenu.RadioGroup>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
@@ -136,7 +156,6 @@
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
 					<span>{$t('Headers', { ns: 'webhook' })}</span>
-					<span class="text-red-500">*</span>
 				</div>
 
 				<WebhookHeaderInput bind:value={$form.headers} />

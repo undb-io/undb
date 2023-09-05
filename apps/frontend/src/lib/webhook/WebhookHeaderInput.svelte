@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button } from '$components/ui/button'
 	import { Input } from '$lib/components/ui/input'
+	import { t } from '$lib/i18n'
 
 	export let value: Record<string, string> = {}
 	let headers: { key: string; value: string }[] = Object.entries(value).map(([key, value]) => ({ key, value }))
@@ -40,5 +41,7 @@
 			{/each}
 		</div>
 	{/if}
-	<Button size="sm" type="button" variant="outline" on:click={() => addHeader()}>Add Header</Button>
+	<Button size="sm" type="button" variant="outline" on:click={() => addHeader()}>
+		{$t('Add Header', { ns: 'webhook' })}
+	</Button>
 </div>

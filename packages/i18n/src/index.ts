@@ -375,6 +375,8 @@ export const config: InitOptions = {
         'merge record count': 'will merge {{count}} record(s)',
         'select field': 'select field',
         'select filter operator': 'select filter operator',
+        'select extension': 'select attachment extension',
+        'select filter type': 'select filter type',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -779,6 +781,8 @@ export const config: InitOptions = {
         'merge record count': '合并 {{count}} 条记录',
         'select field': '选择列',
         'select filter operator': '选择筛选操作',
+        'select extension': '选择文件后缀名',
+        'select filter type': '选择筛选类型',
       },
       webhook: {
         Webhook: 'Webhook',

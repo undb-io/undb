@@ -94,7 +94,7 @@
 			{/if}
 		</Button>
 	</Popover.Trigger>
-	<Popover.Content class="w-[800px]">
+	<Popover.Content class="w-[400px]">
 		<form id="sort_menu" class="space-y-4" on:submit={sort}>
 			{#if $value.length}
 				<span class="text-xs font-medium text-gray-500">{$t('set sorts in this view')}</span>

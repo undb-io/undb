@@ -6,11 +6,7 @@
 </script>
 
 {#if $hasPermission('record:create')}
-	<Button
-		on:click={() => createRecordModal.open()}
-		size="sm"
-		class="inline-flex items-center whitespace-nowrap bg-blue-500 "
-	>
+	<Button on:click={() => createRecordModal.open()} size="sm" class="inline-flex items-center whitespace-nowrap">
 		<i class="ti ti-row-insert-bottom text-sm lg:mr-2" />
 		<span class="hidden lg:block">
 			{$t('Create New Record')}
