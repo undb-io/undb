@@ -92,18 +92,22 @@
 	const { form, enhance, delayed, tainted, submitting } = superFrm
 
 	const open = writable<boolean>(false)
-	$: {
+	$: if ($currentRecordId) {
 		open.set(!!$currentRecordId)
-	}
-	$: if (!$open) {
-		currentRecordId.set(undefined)
 	}
 
 	const prevRecord = recordsStore.prevRecord
 	const nextRecord = recordsStore.nextRecord
 </script>
 
-<Dialog.Root bind:open={$open}>
+<Dialog.Root
+	bind:open={$open}
+	onOpenChange={(open) => {
+		if (!open) {
+			currentRecordId.set(undefined)
+		}
+	}}
+>
 	{#key $record}
 		<Dialog.Content class="!w-3/4 !max-w-none h-[calc(100vh-64px)] overflow-y-hidden p-0 block gap-0">
 			<Dialog.Header class="border-b border-gray-100 h-15 p-6">
