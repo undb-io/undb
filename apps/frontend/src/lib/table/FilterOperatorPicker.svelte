@@ -16,8 +16,14 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button variant="outline" builders={[builder]} disabled={readonly}>
-			{$t(value, { ns: 'common' })}
+		<Button variant="outline" builders={[builder]} disabled={readonly} class={$$restProps.class}>
+			{#if value}
+				{$t(value, { ns: 'common' })}
+			{:else}
+				<span class="text-sm font-normal text-gray-400">
+					{$t('select filter operator')}
+				</span>
+			{/if}
 		</Button>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class="w-56">

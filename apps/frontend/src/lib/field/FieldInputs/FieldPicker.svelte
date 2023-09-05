@@ -4,6 +4,7 @@
 	import FieldIcon from '../FieldIcon.svelte'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Button } from '$components/ui/button'
+	import { t } from '$lib/i18n'
 
 	export let value: string = ''
 
@@ -32,10 +33,14 @@
 						{selected.name}
 					</span>
 				</span>
+			{:else}
+				<span class="text-sm text-gray-300 font-normal">
+					{$t('select field')}
+				</span>
 			{/if}
 		</Button>
 	</DropdownMenu.Trigger>
-	<DropdownMenu.Content>
+	<DropdownMenu.Content class="w-56">
 		<DropdownMenu.RadioGroup bind:value>
 			{#each filteredFields as field (field.id)}
 				<DropdownMenu.RadioItem value={field.id} class="gap-2">

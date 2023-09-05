@@ -39,7 +39,7 @@
 			{field}
 			class={cx('h-10 py-1', 'w-full', withoutValue && 'col-span-2')}
 			bind:value={filter.operator}
-			{readonly}
+			readonly={readonly || !field}
 		/>
 		<FilterValue
 			{field}

@@ -373,6 +373,8 @@ export const config: InitOptions = {
         'merge data': 'merge data',
         'unsupport merge': 'unsupport field types to merge into table',
         'merge record count': 'will merge {{count}} record(s)',
+        'select field': 'select field',
+        'select filter operator': 'select filter operator',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -775,6 +777,8 @@ export const config: InitOptions = {
         'merge data': '合并数据',
         'unsupport merge': '不支持部分列合并到表格',
         'merge record count': '合并 {{count}} 条记录',
+        'select field': '选择列',
+        'select filter operator': '选择筛选操作',
       },
       webhook: {
         Webhook: 'Webhook',
