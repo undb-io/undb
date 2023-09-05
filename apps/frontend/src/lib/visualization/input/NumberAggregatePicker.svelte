@@ -13,7 +13,7 @@
 	<RadioGroup.Root bind:value>
 		{#each numberAggregateFunctions as func}
 			<li class="w-full">
-				<Label class="w-full cursor-pointer text-center flex justify-center">
+				<Label class="w-full cursor-pointer text-center flex justify-center items-center">
 					<span
 						class="whitespace-nowrap text-xs hover:text-blue-500 peer-checked:text-blue-500 peer-checked:border-blue-500 peer-checked:border block w-full h-full p-1"
 					>

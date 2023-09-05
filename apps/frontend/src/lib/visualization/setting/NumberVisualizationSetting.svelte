@@ -67,7 +67,7 @@
 	<ul
 		class="items-center w-full rounded-md border border-gray-200 sm:flex dark:bg-gray-800 dark:border-gray-600 divide-x divide-gray-200 dark:divide-gray-600 mb-4 p-0"
 	>
-		<Label>
+		<Label class="flex-1">
 			<li
 				class="inline-block cursor-pointer rounded-l-md hover:text-white hover:bg-blue-500 w-full h-full px-4 py-2 peer-checked:bg-sky-100 peer-checked:text-blue-600 transition"
 			>
@@ -77,8 +77,8 @@
 				<input class="hidden" type="radio" value="table" bind:group={mode} name="mode" />
 			</li>
 		</Label>
-		<Label>
-			<li class="w-full">
+		<Label class="flex-1">
+			<li>
 				<div
 					role="button"
 					class="cursor-pointer rounded-r-md hover:text-white hover:bg-blue-500 w-full h-full px-4 py-2 peer-checked:bg-sky-100 peer-checked:text-blue-600 transition"
@@ -92,12 +92,13 @@
 
 	<form on:submit|preventDefault={onSubmit} class="flex flex-col h-full justify-between">
 		{#if mode === 'field'}
-			<div>
+			<div class="flex flex-col gap-4">
 				<FieldPicker
 					fields={$allTableFields}
 					filter={(f) =>
 						f.type === 'rating' || f.type === 'auto-increment' || f.type === 'number' || f.type === 'currency'}
 					bind:value={fieldId}
+					class="w-full"
 				></FieldPicker>
 				<NumberAggregatePicker bind:value={numberAggregateFunction} />
 			</div>

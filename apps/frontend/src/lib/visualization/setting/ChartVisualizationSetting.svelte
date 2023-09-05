@@ -53,6 +53,7 @@
 				filter={(f) =>
 					f.type === 'select' || f.type === 'collaborator' || f.type === 'created-by' || f.type === 'updated-by'}
 				bind:value={fieldId}
+				class="w-full"
 			/>
 		</div>
 		<div class="flex-1" />
