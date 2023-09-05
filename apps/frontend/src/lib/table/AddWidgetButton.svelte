@@ -67,14 +67,7 @@
 {#if $hasPermission('widget:create')}
 	<DropdownMenu.Root bind:open>
 		<DropdownMenu.Trigger asChild let:builder>
-			<Button
-				on:click={() => (open = true)}
-				builders={[builder]}
-				size="sm"
-				variant="secondary"
-				{...$$restProps}
-				class="gap-2"
-			>
+			<Button builders={[builder]} size="sm" variant="secondary" {...$$restProps} class="gap-2 whitespace-nowrap">
 				<i class="ti ti-plus" />
 				<span>
 					{$t('add widget')}
