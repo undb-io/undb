@@ -51,8 +51,6 @@
 		"eslint": "^8.48.0",
 		"eslint-config-prettier": "^9.0.0",
 		"eslint-plugin-svelte": "^2.33.0",
-		"flowbite": "^1.8.1",
-		"flowbite-svelte": "^0.43.3",
 		"htm": "^3.1.1",
 		"i18next": "^23.0.0",
 		"i18next-browser-languagedetector": "^7.1.0",

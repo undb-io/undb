@@ -1,15 +1,15 @@
 <script lang="ts">
 	import UsersPicker from '$lib/cell/CellInput/UsersPicker.svelte'
 	import type { IRLSAction } from '@undb/authz'
-	import { Select } from 'flowbite-svelte'
-	import type { SelectOptionType } from 'flowbite-svelte/dist/types'
 	import type { ISubjectType } from './fls.type'
 	import { t } from '$lib/i18n'
 	import { onMount } from 'svelte'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { Button } from '$lib/components/ui/button'
 
 	export let action: IRLSAction
 
-	const items: SelectOptionType[] = [
+	const items = [
 		{ value: 'anyone', name: $t('anyone', { ns: 'authz' }) },
 		{ value: 'users', name: $t('users', { ns: 'authz' }) },
 	]
@@ -28,7 +28,21 @@
 
 <div class="flex items-center gap-2 px-1 text-sm">
 	<span>{$t('when', { ns: 'common' })}</span>
-	<Select size="sm" class="inline-flex w-32" bind:value={subject} {items} disabled={readonly}></Select>
+
+	<DropdownMenu.Root>
+		<DropdownMenu.Trigger asChild let:builder>
+			<Button disabled={readonly} variant="outline" builders={[builder]}>
+				{$t(subject, { ns: 'authz' })}
+			</Button>
+		</DropdownMenu.Trigger>
+		<DropdownMenu.Content class="w-32">
+			<DropdownMenu.RadioGroup bind:value={subject}>
+				{#each items as item}
+					<DropdownMenu.RadioItem value={item.value}>{item.name}</DropdownMenu.RadioItem>
+				{/each}
+			</DropdownMenu.RadioGroup>
+		</DropdownMenu.Content>
+	</DropdownMenu.Root>
 
 	{#if subject === 'users'}
 		<UsersPicker {readonly} bind:value />

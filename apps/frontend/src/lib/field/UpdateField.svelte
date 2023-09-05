@@ -148,7 +148,13 @@
 					</Label>
 				{/if}
 
-				<MutateFieldComponent type={$form.type} form={superFrm} {isUpdatingType} {fieldConvertStrategy} />
+				<MutateFieldComponent
+					class="w-full"
+					type={$form.type}
+					form={superFrm}
+					{isUpdatingType}
+					{fieldConvertStrategy}
+				/>
 			</div>
 		</form>
 

@@ -559,12 +559,6 @@ importers:
       eslint-plugin-svelte:
         specifier: ^2.33.0
         version: 2.33.0(eslint@8.48.0)(svelte@4.2.0)(ts-node@10.9.1)
-      flowbite:
-        specifier: ^1.8.1
-        version: 1.8.1
-      flowbite-svelte:
-        specifier: ^0.43.3
-        version: 0.43.3(svelte@4.2.0)
       htm:
         specifier: ^3.1.1
         version: 3.1.1
@@ -10548,25 +10542,6 @@ packages:
 
   /flatted@3.2.7:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
-
-  /flowbite-svelte@0.43.3(svelte@4.2.0):
-    resolution: {integrity: sha512-yxaBPT/TEZe8g5JQ/O8Tuw1FGz3OYOwPwGdnMxe3laACPgnFnc2fJsWVqvrgxnH0J5lOdfVy9/0XwmDsv/RRgQ==}
-    engines: {node: '>=16.0.0', npm: '>=7.0.0'}
-    peerDependencies:
-      svelte: ^3.55.1 || ^4.0.0
-    dependencies:
-      '@floating-ui/dom': 1.5.1
-      flowbite: 1.8.1
-      svelte: 4.2.0
-      tailwind-merge: 1.14.0
-    dev: true
-
-  /flowbite@1.8.1:
-    resolution: {integrity: sha512-lXTcO8a6dRTPFpINyOLcATCN/pK1Of/jY4PryklPllAiqH64tSDUsOdQpar3TO59ZXWwugm2e92oaqwH6X90Xg==}
-    dependencies:
-      '@popperjs/core': 2.11.8
-      mini-svg-data-uri: 1.4.4
-    dev: true
 
   /focus-trap@7.5.2:
     resolution: {integrity: sha512-p6vGNNWLDGwJCiEjkSK6oERj/hEyI9ITsSwIUICBoKLlWiTWXJRfQibCwcoi50rTZdbi87qDtUlMCmQwsGSgPw==}

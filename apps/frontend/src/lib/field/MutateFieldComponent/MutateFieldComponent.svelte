@@ -47,4 +47,12 @@
 	}
 </script>
 
-<svelte:component this={map[type]} {form} {isNew} {path} {isUpdatingType} {fieldConvertStrategy} />
+<svelte:component
+	this={map[type]}
+	class={$$restProps.class}
+	{form}
+	{isNew}
+	{path}
+	{isUpdatingType}
+	{fieldConvertStrategy}
+/>

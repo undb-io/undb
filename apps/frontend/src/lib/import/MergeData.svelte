@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
 	import { mergeDataModal } from '$lib/store/modal'
-	import { Dropzone } from 'flowbite-svelte'
 	import * as Alert from '$lib/components/ui/alert'
 	import { Button } from '$lib/components/ui/button'
 	import { Badge } from '$lib/components/ui/badge'

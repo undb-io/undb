@@ -33,9 +33,9 @@
 
 <div class="space-y-2">
 	{#each value ?? [] as option, index}
-		<div class="flex">
+		<div class="flex items-center">
 			<OptionColorPicker class="rounded-r-none rounded-l-md" bind:value={option.color.name} name={option.name} />
-			<Input class="!rounded-none !focus:rounded-none border-gray-100 h-[30px]" bind:value={option.name} />
+			<Input class="!rounded-l-none !focus:rounded-none border-gray-100 h-[30px]" bind:value={option.name} />
 			<Button
 				class="w-[30px] aspect-square !rounded-l-none !p-0 border-l-0 border-gray-200"
 				variant="ghost"

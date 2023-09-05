@@ -114,7 +114,7 @@
 					</Label>
 				{/if}
 
-				<MutateFieldComponent type={$form.type} form={superFrm} isNew />
+				<MutateFieldComponent type={$form.type} form={superFrm} isNew class="w-full" />
 			</div>
 		</form>
 		<Dialog.Footer>

@@ -93,7 +93,7 @@
 				</Label>
 			{/if}
 
-			<MutateFieldComponent type={field.type} form={superFrm} {isNew} path={['schema', i]} />
+			<MutateFieldComponent type={field.type} form={superFrm} {isNew} path={['schema', i]} class="w-full" />
 		</div>
 
 		<div class="flex justify-between mt-5">

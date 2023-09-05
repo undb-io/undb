@@ -13,7 +13,7 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button variant="outline" builders={[builder]} type="button">
+		<Button variant="outline" builders={[builder]} type="button" {...$$restProps}>
 			{#if value}
 				<span class="inline-flex gap-2 items-center text-sm truncate">
 					<FieldIcon type={value} />
