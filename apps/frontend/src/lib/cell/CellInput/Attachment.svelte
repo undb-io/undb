@@ -36,7 +36,7 @@
 	}
 </script>
 
-<Input type="file" bind:files multiple {...$$restProps} disabled={readonly} />
+<Input type="file" multiple class={$$restProps.class} disabled={readonly} />
 {#if value?.length}
 	<div class="flex gap-1 h-20 mt-2">
 		{#each value ?? [] as attachment, index}
