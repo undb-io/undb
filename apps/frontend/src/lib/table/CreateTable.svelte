@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Toast } from 'flowbite-svelte'
 	import * as Accordion from '$lib/components/ui/accordion'
 	import type { Validation } from 'sveltekit-superforms'
 	import { FieldId, TableId, type createTableInput } from '@undb/core'
@@ -17,6 +16,7 @@
 	import { Input } from '$lib/components/ui/input'
 	import { Button } from '$components/ui/button'
 	import { Badge } from '$lib/components/ui/badge'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	export let data: Validation<typeof createTableInput>
 	let currentField: string | undefined
@@ -147,7 +147,7 @@
 </Dialog.Root>
 
 {#if $createTable.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$createTable.error.message}

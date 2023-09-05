@@ -11,7 +11,6 @@
 		canUpdateRecordField,
 	} from '$lib/store/table'
 	import { createMutateRecordValuesSchema } from '@undb/core'
-	import { Toast } from 'flowbite-svelte'
 	import { Button } from '$components/ui/button'
 	import { Label } from '$lib/components/ui/label'
 	import { superForm } from 'sveltekit-superforms/client'
@@ -28,6 +27,7 @@
 	import RecordAudits from './RecordAudits.svelte'
 	import { onMount } from 'svelte'
 	import * as Dialog from '$lib/components/ui/dialog'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -213,7 +213,7 @@
 </Dialog.Root>
 
 {#if $updateRecord.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$updateRecord.error.message}
@@ -222,7 +222,7 @@
 {/if}
 
 {#if showNoUpdateMessage}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-yellow-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-yellow-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$t('RECORD.NO_COLUMN_TO_UPDATE', { ns: 'warnings' })}

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Toast } from 'flowbite-svelte'
 	import { Button } from '$components/ui/button'
 	import { slide } from 'svelte/transition'
 	import { trpc } from '$lib/trpc/client'
@@ -10,6 +9,7 @@
 	import { getValidFilters } from '$lib/filter/filter.util'
 	import { hasPermission } from '$lib/store/authz'
 	import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	let value = $filters
 
@@ -78,7 +78,7 @@
 </Popover>
 
 {#if $setFilter.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$setFilter.error.message}

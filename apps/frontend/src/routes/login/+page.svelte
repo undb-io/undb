@@ -1,17 +1,16 @@
 <script lang="ts">
-	import { Toast } from 'flowbite-svelte'
 	import type { PageData } from './$types'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { goto } from '$app/navigation'
 	import logo from '$lib/assets/logo.svg'
 	import { page } from '$app/stores'
 	import { createMutation } from '@tanstack/svelte-query'
-	import { slide } from 'svelte/transition'
 	import { env } from '$env/dynamic/public'
 	import { t } from '$lib/i18n'
 	import { Button } from '$components/ui/button'
 	import { Input } from '$components/ui/input'
 	import { Label } from '$components/ui/label'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	export let data: PageData
 
@@ -124,7 +123,7 @@
 </div>
 
 {#if $login.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$login.error}

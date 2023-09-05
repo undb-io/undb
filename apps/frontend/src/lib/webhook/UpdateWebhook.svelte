@@ -5,7 +5,6 @@
 	import { trpc } from '$lib/trpc/client'
 	import { recordEvents, type IFilter } from '@undb/core'
 	import type { IQueryWebhook, updateWebhookSchema } from '@undb/integrations'
-	import { Toast } from 'flowbite-svelte'
 	import { Label } from '$lib/components/ui/label'
 	import { Input } from '$lib/components/ui/input'
 	import * as Select from '$lib/components/ui/select'
@@ -19,6 +18,7 @@
 	import WebhookHeaderInput from './WebhookHeaderInput.svelte'
 	import FilterEditor from '$lib/filter/FilterEditor.svelte'
 	import { getValidFilters } from '$lib/filter/filter.util'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	export let data: Validation<typeof updateWebhookSchema>
 	export let webhook: IQueryWebhook

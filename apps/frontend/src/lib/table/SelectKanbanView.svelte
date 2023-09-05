@@ -5,7 +5,6 @@
 	import { dndzone } from 'svelte-dnd-action'
 	import type { SelectField } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
-	import { Toast } from 'flowbite-svelte'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Badge } from '$lib/components/ui/badge'
 	import { Button } from '$lib/components/ui/button'
@@ -15,6 +14,7 @@
 	import { t } from '$lib/i18n'
 	import KanbanLane from '$lib/kanban/KanbanLane.svelte'
 	import { UNCATEGORIZED } from '$lib/kanban/kanban.constants'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	export let field: SelectField
 	const flipDurationMs = 200
@@ -171,7 +171,7 @@
 </div>
 
 {#if $reorderOptions.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$reorderOptions.error.message}

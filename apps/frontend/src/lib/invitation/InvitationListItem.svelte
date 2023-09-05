@@ -4,7 +4,6 @@
 	import { hasPermission } from '$lib/store/authz'
 	import { trpc } from '$lib/trpc/client'
 	import { getInvitationURL, type IQueryInvitation } from '@undb/integrations'
-	import type { SelectOptionType } from 'flowbite-svelte/dist/types'
 	import { copyText } from 'svelte-copy'
 	import * as Card from '$lib/components/ui/card'
 	import * as Select from '$lib/components/ui/select'
@@ -13,7 +12,7 @@
 
 	export let invitation: IQueryInvitation
 
-	const items: SelectOptionType[] = [
+	const items = [
 		{ value: 'admin', name: $t('admin', { ns: 'authz' }) },
 		{ value: 'editor', name: $t('editor', { ns: 'authz' }) },
 		{ value: 'viewer', name: $t('viewer', { ns: 'authz' }) },

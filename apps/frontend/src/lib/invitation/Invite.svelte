@@ -8,12 +8,10 @@
 	import * as Select from '$lib/components/ui/select'
 	import { Button } from '$lib/components/ui/button'
 
-	import type { SelectOptionType } from 'flowbite-svelte/dist/types'
-
 	let email = ''
 	let role: IRolesWithoutOwner = 'viewer'
 
-	const items: SelectOptionType[] = [
+	const items = [
 		{ value: 'admin', name: $t('admin', { ns: 'authz' }) },
 		{ value: 'editor', name: $t('editor', { ns: 'authz' }) },
 		{ value: 'viewer', name: $t('viewer', { ns: 'authz' }) },

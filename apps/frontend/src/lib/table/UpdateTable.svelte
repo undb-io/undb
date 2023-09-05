@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Toast } from 'flowbite-svelte'
 	import { Label } from '$lib/components/ui/label'
 	import { Input } from '$lib/components/ui/input'
 	import { Button } from '$components/ui/button'
@@ -18,6 +17,7 @@
 	import { updateTableModal } from '$lib/store/modal'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	export let data: Validation<ReturnType<typeof createUpdateTableSchema>>
 	let opened: Record<string, boolean> = {}
@@ -161,7 +161,7 @@
 </Dialog.Root>
 
 {#if $updateTable.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$updateTable.error.message}

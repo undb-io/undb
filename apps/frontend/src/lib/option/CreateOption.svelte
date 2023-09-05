@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Toast } from 'flowbite-svelte'
 	import { Button } from '$lib/components/ui/button'
 	import OptionColorPicker from './OptionColorPicker.svelte'
 	import { OptionColor, type createOptionSchema } from '@undb/core'
@@ -13,6 +12,7 @@
 	import { createOptionModal } from '$lib/store/modal'
 	import { Input } from '$components/ui/input'
 	import * as Dialog from '$lib/components/ui/dialog'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	export let data: Validation<typeof createOptionSchema>
 
@@ -73,7 +73,7 @@
 {/if}
 
 {#if $createOption.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$createOption.error.message}

@@ -5,12 +5,12 @@
 	import { confirmDeleteField, duplicateFieldModal, flsModal, updateFieldModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import { canDuplicate, type ISortDirection } from '@undb/core'
-	import { Toast } from 'flowbite-svelte'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { noop } from 'lodash-es'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import FieldMenuFieldComponent from './FieldMenu/FieldMenuFieldComponent.svelte'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	export let togglePin: (fieldId: string) => void = noop
 
@@ -168,7 +168,7 @@
 </DropdownMenu.Item>
 
 {#if $resetFieldSort.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$resetFieldSort.error.message}
@@ -177,7 +177,7 @@
 {/if}
 
 {#if $setFieldSort.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$setFieldSort.error.message}

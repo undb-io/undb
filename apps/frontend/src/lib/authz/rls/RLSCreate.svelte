@@ -3,13 +3,12 @@
 	import { getTable, listRecordFn } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { IFilter } from '@undb/core'
-	import { Toast } from 'flowbite-svelte'
 	import { Button } from '$lib/components/ui/button'
 	import RlsItemEditor from './RLSItemEditor.svelte'
 	import type { IRLSAction, RLS } from '@undb/authz'
 	import { t } from '$lib/i18n'
-	import { slide } from 'svelte/transition'
 	import { getValidFilters } from '$lib/filter/filter.util'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	const table = getTable()
 
@@ -76,11 +75,7 @@
 {/if}
 
 {#if $createRLS.error}
-	<Toast
-		transition={slide}
-		position="bottom-right"
-		class="z-[99999] !bg-red-500 border-0 text-white font-semibold fixed"
-	>
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$createRLS.error.message}

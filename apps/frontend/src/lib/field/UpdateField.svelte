@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { getTable, getView, q, recordHash } from '$lib/store/table'
-	import { Toast } from 'flowbite-svelte'
 	import * as Popover from '$lib/components/ui/popover'
 	import { Label } from '$lib/components/ui/label'
 	import { Switch } from '$lib/components/ui/switch'
@@ -32,6 +31,7 @@
 	import { isEmpty, keys } from 'lodash-es'
 	import { pick } from 'lodash-es'
 	import * as Dialog from '$lib/components/ui/dialog'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -220,7 +220,7 @@
 </Dialog.Root>
 
 {#if $updateField.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$updateField.error.message}

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Toast } from 'flowbite-svelte'
 	import { Button } from '$lib/components/ui/button'
 	import type { NumberVisualization as CoreNumberVisualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
@@ -13,6 +12,7 @@
 	import { slide } from 'svelte/transition'
 	import { aggregateNumberFn } from '$lib/store/table'
 	import Label from '$components/ui/label/label.svelte'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	const table = getTable()
 
@@ -110,11 +110,7 @@
 </div>
 
 {#if $updateVisualization.isSuccess}
-	<Toast
-		transition={slide}
-		position="bottom-right"
-		class="fixed z-[99999] !bg-green-500 border-0 text-white font-semibold"
-	>
+	<Toast class="fixed z-[99999] !bg-green-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$t('update success', { ns: 'common' })}

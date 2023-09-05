@@ -3,18 +3,17 @@
 	import { t } from '$lib/i18n'
 	import { getTable, shareTarget } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { Toast } from 'flowbite-svelte'
 	import * as Alert from '$lib/components/ui/alert'
 	import { keys, pick } from 'lodash-es'
 	import { superForm } from 'sveltekit-superforms/client'
 	import logo from '$lib/assets/logo.svg'
-	import { slide } from 'svelte/transition'
 	import type { PageData } from './$types'
 	import { onMount } from 'svelte'
 	import { RecordFactory, RecordId, WithRecordId } from '@undb/core'
 	import { me } from '$lib/store/me'
 	import FormSubmitItem from '$lib/form/FormSubmitItem.svelte'
 	import { Button } from '$components/ui/button'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	export let data: PageData
 
@@ -113,7 +112,7 @@
 </main>
 
 {#if $createShareRecord.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$createShareRecord.error.message}

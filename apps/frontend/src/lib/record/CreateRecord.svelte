@@ -3,7 +3,6 @@
 	import { getTable, getView } from '$lib/store/table'
 	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
-	import { Toast } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
@@ -14,6 +13,7 @@
 	import * as Dialog from '$lib/components/ui/dialog'
 	import { Button } from '$lib/components/ui/button'
 	import { Label } from '$components/ui/label'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -103,7 +103,7 @@
 </Dialog.Root>
 
 {#if $createRecord.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$createRecord.error.message}

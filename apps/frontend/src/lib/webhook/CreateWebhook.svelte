@@ -5,18 +5,17 @@
 	import { trpc } from '$lib/trpc/client'
 	import { recordEvents, type IFilter } from '@undb/core'
 	import type { createWebhookSchema } from '@undb/integrations'
-	import { Toast } from 'flowbite-svelte'
 	import { Label } from '$lib/components/ui/label'
 	import { Input } from '$lib/components/ui/input'
 	import * as Select from '$lib/components/ui/select'
 	import { Button } from '$components/ui/button'
 	import { Checkbox } from '$lib/components/ui/checkbox'
-	import { slide } from 'svelte/transition'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import WebhookHeaderInput from './WebhookHeaderInput.svelte'
 	import FilterEditor from '$lib/filter/FilterEditor.svelte'
 	import { getValidFilters } from '$lib/filter/filter.util'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	export let data: Validation<typeof createWebhookSchema>
 
@@ -151,7 +150,7 @@
 </form>
 
 {#if $createWebhook.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$createWebhook.error.message}

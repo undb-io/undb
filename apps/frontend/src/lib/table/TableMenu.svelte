@@ -6,13 +6,11 @@
 	import * as DropdownMenu from '$components/ui/dropdown-menu'
 	import { Button } from '$components/ui/button'
 	import { Badge } from '$components/ui/badge'
-
-	let open = false
 </script>
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button builders={[builder]} variant="ghost" size="icon" class="w-7 h-7">
+		<Button builders={[builder]} variant="ghost" size="icon" class="w-9 h-9">
 			<i class="ti ti-dots dark:text-gray-50"></i>
 		</Button>
 	</DropdownMenu.Trigger>
@@ -21,7 +19,6 @@
 			class="gap-2"
 			on:click={() => {
 				webhookModal.open()
-				open = false
 			}}
 		>
 			<i class="ti ti-webhook text-gray-600 dark:text-gray-50" />
@@ -31,7 +28,6 @@
 			class="gap-2"
 			on:click={() => {
 				erdModal.open()
-				open = false
 			}}
 		>
 			<i class="ti ti-hierarchy-3 text-gray-600 dark:text-gray-50" />

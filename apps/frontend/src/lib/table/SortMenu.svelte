@@ -1,6 +1,5 @@
 <script lang="ts">
 	import cx from 'classnames'
-	import { Toast } from 'flowbite-svelte'
 	import { allTableFields, getTable, getView, listRecordFn, sorts } from '$lib/store/table'
 	import { isSortable, type ISortSchema } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
@@ -17,6 +16,7 @@
 	import * as Popover from '$lib/components/ui/popover'
 	import { Separator } from '$lib/components/ui/separator'
 	import * as Alert from '$lib/components/ui/alert'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -166,7 +166,7 @@
 </Popover.Root>
 
 {#if $setSort.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$setSort.error.message}

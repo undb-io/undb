@@ -5,13 +5,13 @@
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { createFormSchema } from '@undb/core'
-	import { Toast } from 'flowbite-svelte'
 	import { slide } from 'svelte/transition'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import { Label } from '$lib/components/ui/label'
 	import { Input } from '$lib/components/ui/input'
 	import { Button } from '$lib/components/ui/button'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	export let data: Validation<typeof createFormSchema>
 

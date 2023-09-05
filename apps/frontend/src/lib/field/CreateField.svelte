@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { getTable, getView, q, recordHash } from '$lib/store/table'
 	import { createFieldInitial, createFieldModal } from '$lib/store/modal'
-	import { Toast } from 'flowbite-svelte'
 	import { Badge } from '$lib/components/ui/badge'
 	import { Label } from '$lib/components/ui/label'
 	import { Input } from '$lib/components/ui/input'
@@ -21,6 +20,7 @@
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import * as Dialog from '$lib/components/ui/dialog'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -174,7 +174,7 @@
 </Dialog.Root>
 
 {#if $createField.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$createField.error.message}

@@ -3,7 +3,6 @@
 
 	import type { LayoutData } from './$types'
 	import CreateTable from '$lib/table/CreateTable.svelte'
-	import { Toast } from 'flowbite-svelte'
 	import { page } from '$app/stores'
 	import { allTables, currentRecordId } from '$lib/store/table'
 	import { goto } from '$app/navigation'
@@ -16,7 +15,6 @@
 	import ImportData from '$lib/import/ImportData.svelte'
 	import { copyText } from 'svelte-copy'
 	import Cookies from 'js-cookie'
-	import { slide } from 'svelte/transition'
 	import { changeThemeMode, sidebarCollapsed, theme } from '$lib/store/ui'
 	import { DARK_THEME, LIGHT_THEME } from '$lib/store/ui.type'
 	import TablesNav from '$lib/table/TablesNav.svelte'
@@ -26,6 +24,7 @@
 	import { Button } from '$components/ui/button'
 	import * as Tooltip from '$lib/components/ui/tooltip'
 	import * as Avatar from '$lib/components/ui/avatar'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -402,14 +401,8 @@
 	{/if}
 </div>
 
-<Toast
-	color="green"
-	transition={slide}
-	position="top-right"
-	class="z-[99999] dark:bg-blue-50/95 dark:text-gray-700"
-	bind:open={copied}
->
-	<svelte:fragment slot="icon">
+<Toast class="z-[99999] dark:bg-blue-50/95 dark:text-gray-700" bind:open={copied}>
+	<div class="flex items-center gap-2">
 		<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
 			><path
 				fill-rule="evenodd"
@@ -418,6 +411,6 @@
 			/></svg
 		>
 		<span class="sr-only">Check icon</span>
-	</svelte:fragment>
-	{$t('Copied', { ns: 'common' })}
+		{$t('Copied', { ns: 'common' })}
+	</div>
 </Toast>
