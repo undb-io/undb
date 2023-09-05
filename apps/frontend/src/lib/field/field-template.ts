@@ -8,6 +8,7 @@ import { getIconClass } from './helpers'
 
 type HyperFunc = RevoGrid.HyperFunc<VNode>
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const issue = (h: HyperFunc, column: RevoGrid.ColumnRegular, issues: string[]): VNode | VNode[] => {
 	const html = htm.bind(h)
 	const fieldId = column.field.id.value

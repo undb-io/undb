@@ -16,7 +16,7 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button variant="secondary" builders={[builder]} {...$$restProps} class={cx($$restProps.class, 'gap-2')}>
+		<Button variant="outline" builders={[builder]} {...$$restProps} class={cx($$restProps.class, 'gap-2')}>
 			{#if selected}
 				{selected.name.value}
 			{:else}
@@ -27,7 +27,7 @@
 		</Button>
 	</DropdownMenu.Trigger>
 	{#if $allTables}
-		<DropdownMenu.Content class="w-56">
+		<DropdownMenu.Content class="w-72">
 			<DropdownMenu.RadioGroup bind:value>
 				{#each $allTables as table (table.id)}
 					<DropdownMenu.RadioItem value={table.id}>

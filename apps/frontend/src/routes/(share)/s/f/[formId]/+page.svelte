@@ -3,7 +3,8 @@
 	import { t } from '$lib/i18n'
 	import { getTable, shareTarget } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { Alert, Button, Heading, Spinner, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
+	import * as Alert from '$lib/components/ui/alert'
 	import { keys, pick } from 'lodash-es'
 	import { superForm } from 'sveltekit-superforms/client'
 	import logo from '$lib/assets/logo.svg'
@@ -13,6 +14,7 @@
 	import { RecordFactory, RecordId, WithRecordId } from '@undb/core'
 	import { me } from '$lib/store/me'
 	import FormSubmitItem from '$lib/form/FormSubmitItem.svelte'
+	import { Button } from '$components/ui/button'
 
 	export let data: PageData
 
@@ -67,7 +69,7 @@
 		<section
 			class="border dark:border-gray-700 rounded-md bg-white py-8 px-6 shadow-lg w-full max-w-5xl dark:bg-gray-600 dark:text-gray-200 max-h-full overflow-y-auto"
 		>
-			<Heading tag="h3" class="text-center mb-5">{f.name.value}</Heading>
+			<h3 class="text-lg text-center mb-5">{f.name.value}</h3>
 			{#if !submitted}
 				<form id="createShareRecord" class="space-y-5" method="POST" use:enhance>
 					<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
@@ -79,7 +81,7 @@
 					<div class="w-full flex justify-end gap-2">
 						<Button class="gap-2" type="submit" form="createShareRecord" disabled={$submitting}>
 							{#if $delayed}
-								<Spinner size="5" />
+								<i class="ti ti-rotate animate-spin"></i>
 							{:else}
 								<i class="ti ti-row-insert-bottom" />
 							{/if}
@@ -89,9 +91,11 @@
 				</form>
 			{:else}
 				<div class="w-full container">
-					<Alert color="green" class="m-auto text-center w-3/4">
-						{$t('form submitted')}
-					</Alert>
+					<Alert.Root>
+						<Alert.Title>
+							{$t('form submitted')}
+						</Alert.Title>
+					</Alert.Root>
 				</div>
 			{/if}
 		</section>
