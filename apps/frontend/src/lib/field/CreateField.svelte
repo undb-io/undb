@@ -17,7 +17,6 @@
 	import { canDisplay, isControlledFieldType } from '@undb/core'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
-	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import Toast from '$components/ui/toast/toast.svelte'
