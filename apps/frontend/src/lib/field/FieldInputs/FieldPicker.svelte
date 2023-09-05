@@ -24,7 +24,7 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder disabled={readonly}>
-		<Button variant="outline" builders={[builder]} type="button">
+		<Button variant="outline" builders={[builder]} type="button" {...$$restProps}>
 			{#if selected}
 				<span class="inline-flex gap-2 items-center text-sm truncate">
 					<FieldIcon type={selected.type} />

@@ -100,11 +100,9 @@
 							{#if canSetViewSort}
 								<i role="button" class="handle ti ti-grip-vertical flex items-center" />
 							{/if}
-							<div class="flex flex-1">
+							<div class="flex flex-1 items-center">
 								<FieldPicker
 									bind:value={sort.id}
-									table={$table}
-									size="xs"
 									class="w-48 rounded-r-none !justify-start border-r-0"
 									fields={$allTableFields}
 									filter={(f) => isSortable(f.type)}
@@ -114,14 +112,16 @@
 									{#each directions as direction, i (direction)}
 										<Button
 											disabled={!canSetViewSort}
-											size="sm"
+											type="button"
+											variant={sort.direction === direction ? 'default' : 'outline'}
 											class={cx('!rounded-none', i === 1 && '!rounded-r-md border-l-0')}
 											on:click={(e) => {
 												e.stopPropagation()
 												value.update((sort) => sort.map((s, index) => (index === idx ? { ...s, direction } : s)))
 											}}
-											color={sort.direction === direction ? 'blue' : 'light'}>{$t(direction, { ns: 'common' })}</Button
 										>
+											{$t(direction, { ns: 'common' })}
+										</Button>
 									{/each}
 								</div>
 							</div>
