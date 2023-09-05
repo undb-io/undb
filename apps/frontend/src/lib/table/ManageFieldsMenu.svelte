@@ -15,6 +15,7 @@
 	import { Separator } from '$lib/components/ui/separator'
 	import { Label } from '$lib/components/ui/label'
 	import { Switch } from '$lib/components/ui/switch'
+	import { Badge } from '$components/ui/badge'
 
 	const table = getTable()
 	const view = getView()
@@ -32,7 +33,9 @@
 		},
 	})
 
-	const onChangeVisibility = (checked: boolean | 'indeterminate' | undefined, field: Field) => {
+	const onChangeVisibility = (e: Event, field: Field) => {
+		const target = e.target as HTMLInputElement
+		const checked = target.checked
 		$setVisibility.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
@@ -94,6 +97,9 @@
 				<span>
 					{$t('Manage Fields')}
 				</span>
+				{#if hiddenCount}
+					<Badge>{hiddenCount}</Badge>
+				{/if}
 			</Button>
 		</Popover.Trigger>
 		<Popover.Content class="w-[400px]">
@@ -101,14 +107,15 @@
 				{#each items as item (item.id)}
 					{@const checked = visibility[item.id] === undefined || !!visibility[item.id]}
 					<li class="flex items-center gap-2 w-full" data-field-id={item.id}>
-						<Label class="flex items-center justify-center gap-2">
-							<Checkbox
+						<Label class="flex items-center justify-center gap-1">
+							<input
+								type="checkbox"
 								disabled={(checked && fields.length - hiddenCount === 1) ||
 									!$hasPermission('table:toggle_field_visibility')}
 								class="flex items-center gap-2"
 								{checked}
-								onCheckedChange={(checked) => onChangeVisibility(checked, item.field)}
-							></Checkbox>
+								on:change={(e) => onChangeVisibility(e, item.field)}
+							/>
 
 							<div>
 								<FieldIcon type={item.field.type} />

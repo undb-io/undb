@@ -10,8 +10,11 @@
 	import { hasPermission } from '$lib/store/authz'
 	import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover'
 	import Toast from '$components/ui/toast/toast.svelte'
+	import Badge from '$components/ui/badge/badge.svelte'
 
 	let value = $filters
+
+	$: validFilters = getValidFilters(value)
 
 	const table = getTable()
 	const view = getView()
@@ -29,8 +32,6 @@
 		},
 	})
 	async function apply() {
-		const validFilters = getValidFilters(value)
-
 		$setFilter.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
@@ -46,6 +47,10 @@
 		<Button builders={[builder]} variant="secondary" class="gap-2 whitespace-nowrap" size="sm">
 			<i class="ti ti-filter text-sm" />
 			{$t('Filter')}
+
+			{#if validFilters.length}
+				<Badge>{validFilters.length}</Badge>
+			{/if}
 		</Button>
 	</PopoverTrigger>
 	<PopoverContent class="w-[800px]">

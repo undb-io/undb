@@ -17,6 +17,7 @@
 	import { Separator } from '$lib/components/ui/separator'
 	import * as Alert from '$lib/components/ui/alert'
 	import Toast from '$components/ui/toast/toast.svelte'
+	import Badge from '$components/ui/badge/badge.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -88,6 +89,9 @@
 		<Button builders={[builder]} variant="secondary" class="gap-2 whitespace-nowrap" size="sm">
 			<i class="ti ti-filter text-sm" />
 			{$t('Sort')}
+			{#if $value.length}
+				<Badge>{$value.length}</Badge>
+			{/if}
 		</Button>
 	</Popover.Trigger>
 	<Popover.Content class="w-[800px]">
