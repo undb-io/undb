@@ -92,6 +92,7 @@
 											</DropdownMenu.Trigger>
 											<DropdownMenu.Content>
 												<DropdownMenu.Item
+													class="gap-2 text-xs"
 													on:click={() => {
 														$currentFieldId = field?.id.value
 														$currentOption = item.option

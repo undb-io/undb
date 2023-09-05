@@ -3,7 +3,7 @@
 	import { t } from '$lib/i18n'
 	import { getTable, shareTarget } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { Alert, Button, Heading, Label, Spinner, Toast } from 'flowbite-svelte'
+	import { Alert, Button, Heading, Spinner, Toast } from 'flowbite-svelte'
 	import { keys, pick } from 'lodash-es'
 	import { superForm } from 'sveltekit-superforms/client'
 	import logo from '$lib/assets/logo.svg'
