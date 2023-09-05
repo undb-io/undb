@@ -110,9 +110,9 @@
 						{#if !readonly}
 							<button
 								on:click={() => remove(record.id.value)}
-								class="absolute z-50 right-0 top-[50%] text-sm translate-y-[-55%] translate-x-[-50%] hidden group-hover:block text-gray-500"
+								class="absolute z-50 right-2 top-[50%] text-sm translate-y-[-50%] translate-x-[-50%] hidden group-hover:block text-gray-500"
 							>
-								<i class="ti ti-x"></i>
+								<i class="ti ti-x text-lg"></i>
 							</button>
 						{/if}
 					</div>

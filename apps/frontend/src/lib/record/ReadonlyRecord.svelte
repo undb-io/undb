@@ -16,14 +16,18 @@
 	$: {
 		open.set(!!$currentRecordId)
 	}
-	$: if (!$open) {
-		currentRecordId.set(undefined)
-	}
 </script>
 
 {#key $record}
-	<Dialog.Root bind:open={$open}>
-		<Dialog.Content>
+	<Dialog.Root
+		bind:open={$open}
+		onOpenChange={(open) => {
+			if (!open) {
+				currentRecordId.set(undefined)
+			}
+		}}
+	>
+		<Dialog.Content class="!w-3/4 !max-w-none">
 			{#if !$record}
 				<div
 					class="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-50 z-50 flex items-center justify-center"

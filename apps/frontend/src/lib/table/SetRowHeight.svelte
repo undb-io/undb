@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation'
 	import { t } from '$lib/i18n'
-	import { hasPermission } from '$lib/store/authz'
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import { viewRowHeights, type IViewRowHeight } from '@undb/core'
-	import { Dropdown, DropdownItem, Tooltip } from 'flowbite-svelte'
 	import { Button } from '$components/ui/button'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 
