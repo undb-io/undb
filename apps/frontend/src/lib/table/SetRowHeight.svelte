@@ -11,14 +11,11 @@
 	const table = getTable()
 	const view = getView()
 
-	let open = false
-
 	$: rh = $view.rowHeight?.unpack()
 
 	const setRowHeight = trpc().table.view.setRowHeight.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
-			open = false
 		},
 	})
 

@@ -9,7 +9,6 @@
 
 	register()
 
-	const spaceBetween = 10
 	const onProgress = (e) => {
 		const [swiper, progress] = e.detail
 		console.log(progress)
@@ -51,9 +50,9 @@
 				<swiper-container
 					slides-per-view={1}
 					centered-slides={true}
-					pagination={{
-						hideOnClick: true,
-					}}
+					navigation="true"
+					pagination="true"
+					scrollbar="true"
 					on:progress={onProgress}
 					on:slidechange={onSlideChange}
 				>
