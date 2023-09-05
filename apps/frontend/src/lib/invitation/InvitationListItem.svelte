@@ -6,9 +6,9 @@
 	import { getInvitationURL, type IQueryInvitation } from '@undb/integrations'
 	import { copyText } from 'svelte-copy'
 	import * as Card from '$lib/components/ui/card'
-	import * as Select from '$lib/components/ui/select'
 	import { Badge } from '$lib/components/ui/badge'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { Button } from '$components/ui/button'
 
 	export let invitation: IQueryInvitation
 
@@ -63,16 +63,25 @@
 			<div class="flex items-center gap-3">
 				<div>
 					{#if $hasPermission('invitation:invite')}
-						<Select.Root selected={{ value: invitation.role }} onSelectedChange={reinvite}>
-							<Select.Trigger class="w-[120px]">
-								<Select.Value>{invitation.role}</Select.Value>
-							</Select.Trigger>
-							<Select.Content>
-								{#each items as item}
-									<Select.Item value={item.value}>{item.name}</Select.Item>
-								{/each}
-							</Select.Content>
-						</Select.Root>
+						<DropdownMenu.Root>
+							<DropdownMenu.Trigger asChild let:builder>
+								<Button variant="outline" builders={[builder]} class="gap-2">
+									<span>
+										{$t(invitation.role, { ns: 'authz' })}
+									</span>
+									<i class="ti ti-chevron-down"></i>
+								</Button>
+							</DropdownMenu.Trigger>
+							<DropdownMenu.Content class="w-56">
+								<DropdownMenu.RadioGroup bind:value={invitation.role}>
+									{#each items as item}
+										<DropdownMenu.RadioItem value={item.value}>
+											{item.name}
+										</DropdownMenu.RadioItem>
+									{/each}
+								</DropdownMenu.RadioGroup>
+							</DropdownMenu.Content>
+						</DropdownMenu.Root>
 					{:else}
 						<Badge>{$t(invitation.role, { ns: 'authz' })}</Badge>
 					{/if}

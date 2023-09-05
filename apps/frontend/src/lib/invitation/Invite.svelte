@@ -5,7 +5,7 @@
 	import type { IRolesWithoutOwner } from '@undb/authz'
 	import { inviteSchema } from '@undb/integrations'
 	import { Input } from '$lib/components/ui/input'
-	import * as Select from '$lib/components/ui/select'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Button } from '$lib/components/ui/button'
 
 	let email = ''
@@ -40,18 +40,25 @@
 		<div class="col-span-3">
 			<Input placeholder={$t('email', { ns: 'common' })} bind:value={email} autocomplete="off" type="email"></Input>
 		</div>
-		<Select.Root bind:value={role}>
-			<Select.Trigger>
-				<Select.Value />
-			</Select.Trigger>
-			<Select.Content>
-				{#each items as item}
-					<Select.Item value={item.value}>
-						{item.name}
-					</Select.Item>
-				{/each}
-			</Select.Content>
-		</Select.Root>
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger asChild let:builder>
+				<Button variant="outline" builders={[builder]} class="gap-2">
+					<span>
+						{$t(role, { ns: 'authz' })}
+					</span>
+					<i class="ti ti-chevron-down"></i>
+				</Button>
+			</DropdownMenu.Trigger>
+			<DropdownMenu.Content class="w-56">
+				<DropdownMenu.RadioGroup bind:value={role}>
+					{#each items as item}
+						<DropdownMenu.RadioItem value={item.value}>
+							{item.name}
+						</DropdownMenu.RadioItem>
+					{/each}
+				</DropdownMenu.RadioGroup>
+			</DropdownMenu.Content>
+		</DropdownMenu.Root>
 	</div>
 
 	<div class="flex justify-end">

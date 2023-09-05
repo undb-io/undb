@@ -6,9 +6,10 @@
 	import { trpc } from '$lib/trpc/client'
 	import { t } from '$lib/i18n'
 	import * as Card from '$lib/components/ui/card'
-	import * as Select from '$lib/components/ui/select'
 	import { Badge } from '$lib/components/ui/badge'
 	import * as Avatar from '$lib/components/ui/avatar'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { Button } from '$lib/components/ui/button'
 
 	export let member: IQueryMember
 
@@ -27,8 +28,6 @@
 			role: value.value,
 		})
 	}
-
-	$: selected = { value: member.role }
 </script>
 
 <Card.Root>
@@ -88,16 +87,25 @@
 			</div>
 			<div>
 				{#if canUpdateRole && member.role !== 'owner'}
-					<Select.Root bind:selected onSelectedChange={updateRole}>
-						<Select.Trigger class="w-[120px]">
-							<Select.Value>{member.role}</Select.Value>
-						</Select.Trigger>
-						<Select.Content>
-							{#each items as item}
-								<Select.Item value={item.value} label={item.name}>{item.name}</Select.Item>
-							{/each}
-						</Select.Content>
-					</Select.Root>
+					<DropdownMenu.Root>
+						<DropdownMenu.Trigger asChild let:builder>
+							<Button variant="outline" builders={[builder]} class="gap-2">
+								<span>
+									{$t(member.role, { ns: 'authz' })}
+								</span>
+								<i class="ti ti-chevron-down"></i>
+							</Button>
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content class="w-56">
+							<DropdownMenu.RadioGroup bind:value={member.role} on:change={() => updateRole(member.role)}>
+								{#each items as item}
+									<DropdownMenu.RadioItem value={item.value}>
+										{item.name}
+									</DropdownMenu.RadioItem>
+								{/each}
+							</DropdownMenu.RadioGroup>
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
 				{:else}
 					<Badge color="blue" class="border border-blue-500">
 						{$t(member.role, { ns: 'authz' })}
