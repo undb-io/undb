@@ -24,7 +24,7 @@
 			{/if}
 		</Button>
 	</DropdownMenu.Trigger>
-	<DropdownMenu.Content class="w-64 max-h-96 overflow-y-auto">
+	<DropdownMenu.Content class="md:w-64 max-h-96 overflow-y-auto">
 		<DropdownMenu.RadioGroup bind:value>
 			{#each types.filter((type) => filter(type.value)) as type}
 				<DropdownMenu.RadioItem value={type.value} class="gap-2">

@@ -76,14 +76,14 @@
 </script>
 
 <Dialog.Root bind:open={$createFieldModal.open}>
-	<Dialog.Content class="!w-1/2 max-w-none">
+	<Dialog.Content class="md:!w-1/2 max-w-none md:min-w-[720px]">
 		<Dialog.Header>
 			<Dialog.Title>{$t('Create New Field') ?? undefined}</Dialog.Title>
 		</Dialog.Header>
 
 		<form method="POST" id="createField" use:enhance>
 			<div class="space-y-2">
-				<div class="grid grid-cols-2 gap-x-3 gap-y-4">
+				<div class="grid md:grid-cols-2 gap-x-3 gap-y-4">
 					<Label class="flex flex-col gap-2">
 						<div class="flex gap-2 items-center">
 							<FieldIcon size={14} type={$form.type} />
@@ -118,7 +118,7 @@
 			</div>
 		</form>
 		<Dialog.Footer>
-			<div class="w-full flex items-center justify-between">
+			<div class="w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-0 justify-between">
 				<div class="flex-1">
 					<Button size="sm" variant="secondary" class="space-x-1" on:click={() => (showDescription = !showDescription)}>
 						{#if showDescription}
