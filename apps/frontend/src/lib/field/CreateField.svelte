@@ -61,7 +61,6 @@
 
 	const { form, enhance, submitting } = superFrm
 
-	$: console.log($submitting)
 	$: showDescription = false
 	$: if (!showDescription) {
 		$form.description = ''
