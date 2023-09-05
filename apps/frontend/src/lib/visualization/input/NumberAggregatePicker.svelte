@@ -10,17 +10,16 @@
 <ul
 	class="items-center w-full rounded-lg border border-gray-200 sm:flex dark:bg-gray-800 dark:border-gray-600 divide-x divide-gray-200 dark:divide-gray-600"
 >
-	<RadioGroup.Root bind:value>
+	<RadioGroup.Root bind:value class="p-3">
 		{#each numberAggregateFunctions as func}
 			<li class="w-full">
-				<Label class="w-full cursor-pointer text-center flex justify-center items-center">
+				<Label class="w-full cursor-pointer text-center flex justify-start items-center">
+					<RadioGroup.Item value={func} />
 					<span
-						class="whitespace-nowrap text-xs hover:text-blue-500 peer-checked:text-blue-500 peer-checked:border-blue-500 peer-checked:border block w-full h-full p-1"
+						class="whitespace-nowrap text-xs hover:text-blue-500 peer-checked:text-blue-500 peer-checked:border-blue-500 peer-checked:border block h-full p-1"
 					>
 						{$t(func, { ns: 'common' })}
 					</span>
-
-					<RadioGroup.Item value={func} />
 				</Label>
 			</li>
 		{/each}
