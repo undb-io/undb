@@ -1,4 +1,4 @@
-import { currentFieldId } from '$lib/store/table'
+import { currentFieldId, currentFieldMenuRect } from '$lib/store/table'
 import type { RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
 import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime'
 import { AverageField, CountField, MaxField, MinField, ReferenceField, SumField, Table } from '@undb/core'
@@ -73,7 +73,11 @@ export const getColumnTemplate = (h: HyperFunc, column: RevoGrid.ColumnRegular, 
 						<span> ${getIssue(h, column)} </span>
 						<button
 							id="${getFieldDomId(column.prop as string | undefined)}"
-							onClick=${() => currentFieldId.set(column.prop as string)}
+							onClick=${(e: Event) => {
+								currentFieldId.set(column.prop as string)
+								const rect = (e.target as HTMLButtonElement).getBoundingClientRect()
+								currentFieldMenuRect.set(rect)
+							}}
 							class="w-[24px] h-[24px] rounded-sm hover:bg-gray-200 dark:hover:bg-gray-600 inline-flex items-center justify-center"
 						>
 							<i class="ti ti-chevron-down text-gray-500"></i>

@@ -5,7 +5,7 @@
 	import { t } from '$lib/i18n'
 </script>
 
-<Tabs.Root value="account" class="w-[400px]">
+<Tabs.Root value={flsActions[0]}>
 	<Tabs.List>
 		{#each flsActions as action}
 			<Tabs.Trigger value={action}>

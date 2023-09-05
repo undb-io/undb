@@ -62,7 +62,7 @@
 </script>
 
 <DropdownMenu.Item
-	class="inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
+	class="items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
 	on:click={() => updateFieldModal.open()}
 >
 	<i class="ti ti-edit text-sm" />
@@ -70,7 +70,7 @@
 </DropdownMenu.Item>
 {#if $field && canDuplicate($field.type)}
 	<DropdownMenu.Item
-		class="inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
+		class="items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
 		on:click={() => duplicateFieldModal.open()}
 	>
 		<i class="ti ti-copy text-sm" />
@@ -82,11 +82,11 @@
 
 <FieldMenuFieldComponent
 	field={$field}
-	class="inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
+	class="items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
 />
 
 <DropdownMenu.Item
-	class="inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
+	class="items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
 	on:click={() => {
 		if ($field) {
 			togglePin($field.id.value)
@@ -102,7 +102,7 @@
 	{/if}
 </DropdownMenu.Item>
 <DropdownMenu.Item
-	class="inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
+	class="items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium"
 	on:click={() => {
 		if ($field) {
 			$hideField.mutate({ tableId: $table.id.value, fieldId: $field.id.value, viewId: $view.id.value, hidden: true })
@@ -117,7 +117,7 @@
 
 <DropdownMenu.Item
 	class={cx(
-		'inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium',
+		'items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium',
 		fieldDirection === 'asc' && 'bg-gray-100',
 	)}
 	on:click={() => sort('asc')}
@@ -133,7 +133,7 @@
 </DropdownMenu.Item>
 <DropdownMenu.Item
 	class={cx(
-		'inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium',
+		'items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium',
 		fieldDirection === 'desc' && 'bg-gray-100',
 	)}
 	on:click={() => sort('desc')}
@@ -148,7 +148,7 @@
 	</span>
 </DropdownMenu.Item>
 <DropdownMenu.Item
-	class={cx('inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium')}
+	class={cx('items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium')}
 	on:click={() => flsModal.open()}
 >
 	<i class="ti ti-shield-checkered-filled text-sm" />
@@ -157,10 +157,7 @@
 	</span>
 </DropdownMenu.Item>
 <DropdownMenu.Separator />
-<DropdownMenu.Item
-	class={'inline-flex items-center gap-2 text-xs text-red-400'}
-	on:click={() => ($confirmDeleteField = true)}
->
+<DropdownMenu.Item class={'items-center gap-2 text-xs text-red-400'} on:click={() => ($confirmDeleteField = true)}>
 	<i class="ti ti-trash text-sm" />
 	<span>
 		{$t('Delete Field')}
@@ -169,7 +166,7 @@
 
 {#if $resetFieldSort.error}
 	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
+		<span class="items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$resetFieldSort.error.message}
 		</span>
@@ -178,7 +175,7 @@
 
 {#if $setFieldSort.error}
 	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
+		<span class="items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$setFieldSort.error.message}
 		</span>

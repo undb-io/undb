@@ -12,6 +12,7 @@
 	import EmptyTable from './EmptyTable.svelte'
 	import {
 		currentFieldId,
+		currentFieldMenuRect,
 		currentRecordId,
 		getField,
 		getTable,
@@ -292,6 +293,11 @@
 			isLoading = true
 		}, 300)
 	}
+
+	let menu: HTMLButtonElement
+	$: if (fieldMenuDOMId && $currentFieldMenuRect && menu) {
+		menu.click()
+	}
 </script>
 
 <div class="h-full relative">
@@ -323,14 +329,20 @@
 	<TableViewToast open={!!$selectedCount} />
 {/if}
 
-{#if fieldMenuDOMId}
+{#if fieldMenuDOMId && $currentFieldMenuRect}
 	{#key fieldMenuDOMId}
-		<DropdownMenu.Root open={!!fieldMenuDOMId}>
-			{#if $hasPermission('table:update_field')}
-				<DropdownMenu.Content>
-					<FieldMenu {togglePin} />
-				</DropdownMenu.Content>
-			{/if}
+		<DropdownMenu.Root portal={null}>
+			<DropdownMenu.Trigger
+				class="fixed z-[9999999999]"
+				style={`left: ${$currentFieldMenuRect.left}px; right: ${$currentFieldMenuRect.right}px; top: ${$currentFieldMenuRect.top}px; bottom: ${$currentFieldMenuRect.bottom}px`}
+			>
+				<button bind:this={menu} class="absolute !top-0 left-0"></button>
+				{#if $hasPermission('table:update_field')}
+					<DropdownMenu.Content class="absolute w-56 !top-6">
+						<FieldMenu {togglePin} />
+					</DropdownMenu.Content>
+				{/if}
+			</DropdownMenu.Trigger>
 		</DropdownMenu.Root>
 	{/key}
 {/if}
