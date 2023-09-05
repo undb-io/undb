@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { operaotrsMap, type Field } from '@undb/core'
 	import { t } from '$lib/i18n'
-	import * as Select from '$lib/components/ui/select'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { Button } from '$components/ui/button'
 
 	export let value: string = ''
 	export let field: Field | undefined
@@ -13,15 +14,19 @@
 	}
 </script>
 
-<Select.Root bind:value disabled={readonly}>
-	<Select.Trigger>
-		<Select.Value />
-	</Select.Trigger>
-	<Select.Content>
-		{#each data as item}
-			<Select.Item value={item} class="text-xs">
-				{$t(item, { ns: 'common' })}
-			</Select.Item>
-		{/each}
-	</Select.Content>
-</Select.Root>
+<DropdownMenu.Root>
+	<DropdownMenu.Trigger asChild let:builder>
+		<Button variant="outline" builders={[builder]} disabled={readonly}>
+			{$t(value, { ns: 'common' })}
+		</Button>
+	</DropdownMenu.Trigger>
+	<DropdownMenu.Content class="w-56">
+		<DropdownMenu.RadioGroup bind:value>
+			{#each data as item}
+				<DropdownMenu.RadioItem value={item}>
+					{$t(item, { ns: 'common' })}
+				</DropdownMenu.RadioItem>
+			{/each}
+		</DropdownMenu.RadioGroup>
+	</DropdownMenu.Content>
+</DropdownMenu.Root>
