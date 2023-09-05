@@ -3,9 +3,20 @@
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { currentRecordId, getTable, getView } from '$lib/store/table'
 	import type { AttachmentFieldValue, Field, Record } from '@undb/core'
-	import { Carousel } from 'flowbite-svelte'
 	import * as Tooltip from '$lib/components/ui/tooltip'
 	import * as Card from '$lib/components/ui/card'
+	import { register } from 'swiper/element/bundle'
+
+	register()
+
+	const spaceBetween = 10
+	const onProgress = (e) => {
+		const [swiper, progress] = e.detail
+		console.log(progress)
+	}
+	const onSlideChange = (e) => {
+		console.log('slide changed')
+	}
 
 	export let field: Field
 	export let record: Record
@@ -37,7 +48,21 @@
 		</button>
 		<div class="mb-2">
 			{#if images.length}
-				<Carousel divClass="h-auto" {images} showCaptions={false} showThumbs={false} />
+				<swiper-container
+					slides-per-view={1}
+					centered-slides={true}
+					pagination={{
+						hideOnClick: true,
+					}}
+					on:progress={onProgress}
+					on:slidechange={onSlideChange}
+				>
+					{#each images as image}
+						<swiper-slide>
+							<img src={image.imgurl} alt={image.name} />
+						</swiper-slide>
+					{/each}
+				</swiper-container>
 			{:else}
 				<div class="w-full aspect-square flex items-center justify-center bg-gray-100 text-gray-500 rounded-md">
 					<i class="ti ti-photo text-[120px]"></i>

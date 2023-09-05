@@ -661,6 +661,9 @@ importers:
       svelvet:
         specifier: ^8.1.0
         version: 8.1.0(svelte@4.2.0)
+      swiper:
+        specifier: ^10.2.0
+        version: 10.2.0
       tailwind-merge:
         specifier: ^1.14.0
         version: 1.14.0
@@ -17629,6 +17632,11 @@ packages:
       '@swc/core': 1.3.80
       webpack: 5.88.2(@swc/core@1.3.80)
     dev: false
+
+  /swiper@10.2.0:
+    resolution: {integrity: sha512-nktQsOtBInJjr3f5DicxC8eHYGcLXDVIGPSon0QoXRaO6NjKnATCbQ8SZsD3dN1Ph1RH4EhVPwSYCcuDRFWHGQ==}
+    engines: {node: '>= 4.7.0'}
+    dev: true
 
   /symbol-observable@4.0.0:
     resolution: {integrity: sha512-b19dMThMV4HVFynSAM1++gBHAbk2Tc/osgLIBZMKsyqh34jb2e8Os7T6ZW/Bt3pJFdBTd2JwAnAAEQV7rSNvcQ==}
