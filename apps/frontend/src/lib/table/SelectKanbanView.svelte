@@ -159,7 +159,7 @@
 					createOptionModal.open()
 				}}
 				size="sm"
-				variant="ghost"
+				variant="outline"
 				class="w-full rounded-sm whitespace-nowrap inline-flex gap-2 dark:text-gray-200"
 			>
 				<i class="ti ti-plus" />

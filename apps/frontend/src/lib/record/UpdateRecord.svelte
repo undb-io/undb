@@ -11,7 +11,7 @@
 		canUpdateRecordField,
 	} from '$lib/store/table'
 	import { createMutateRecordValuesSchema } from '@undb/core'
-	import { Spinner, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
 	import { Button } from '$components/ui/button'
 	import { Label } from '$lib/components/ui/label'
 	import { superForm } from 'sveltekit-superforms/client'
@@ -141,7 +141,7 @@
 					<div
 						class="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-50 z-50 flex items-center justify-center"
 					>
-						<Spinner />
+						<i class="ti ti-rotate animate-spin"></i>
 					</div>
 				{/if}
 
@@ -196,7 +196,7 @@
 					</Button>
 					<Button class="gap-2" type="submit" form="updateRecord" disabled={$submitting || $readonlyRecord}>
 						{#if $delayed}
-							<Spinner size="5" />
+							<i class="ti ti-rotate animate-spin"></i>
 						{:else}
 							<i class="ti ti-edit" />
 						{/if}

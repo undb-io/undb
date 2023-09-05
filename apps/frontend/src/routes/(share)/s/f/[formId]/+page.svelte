@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { page } from '$app/stores'
-	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
-	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { t } from '$lib/i18n'
 	import { getTable, shareTarget } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'

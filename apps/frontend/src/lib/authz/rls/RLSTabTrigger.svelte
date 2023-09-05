@@ -2,6 +2,7 @@
 	import type { IRLSAction } from '@undb/authz/dist'
 	import { currentRLSS } from '$lib/store/table'
 	import { Badge } from '$components/ui/badge'
+	import { t } from '$lib/i18n'
 
 	export let action: IRLSAction
 	$: rlss = $currentRLSS.filter((rls) => rls.policy.action === action)
@@ -9,7 +10,7 @@
 </script>
 
 <div class="flex gap-1">
-	{action}
+	{$t(action, { ns: 'authz' })}
 	{#if count}
 		<Badge class="rounded-full">
 			{count}

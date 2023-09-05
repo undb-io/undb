@@ -59,7 +59,7 @@
 				{#if $form.color}
 					<OptionColorPicker bind:value={$form.color.name} name={$form.name} />
 				{/if}
-				<Input class="rounded-none outline-none border-none" name="name" type="text" bind:value={$form.name} />
+				<Input name="name" type="text" bind:value={$form.name} />
 			</form>
 
 			<Dialog.Footer>

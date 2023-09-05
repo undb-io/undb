@@ -3,7 +3,7 @@
 	import { getTable, getView } from '$lib/store/table'
 	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
-	import { Label, Modal, Spinner, Toast } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
@@ -13,6 +13,7 @@
 	import { pick } from 'lodash-es'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import { Button } from '$lib/components/ui/button'
+	import { Label } from '$components/ui/label'
 
 	const table = getTable()
 	const view = getView()
@@ -90,7 +91,7 @@
 				</Button>
 				<Button size="sm" class="gap-2" type="submit" form="createRecord" disabled={$submitting}>
 					{#if $delayed}
-						<Spinner size="5" />
+						<i class="ti ti-rotate animate-spin"></i>
 					{:else}
 						<i class="ti ti-row-insert-bottom" />
 					{/if}

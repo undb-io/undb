@@ -5,4 +5,4 @@
 	export let option: Option
 </script>
 
-<OptionComponent id={option.key.value} color={option.color} name={option.name.value} />
+<OptionComponent id={option.key.value} color={option.color} name={option.name.value} {...$$restProps} />

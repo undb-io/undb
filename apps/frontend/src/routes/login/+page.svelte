@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { A, Toast, Banner } from 'flowbite-svelte'
+	import { Toast } from 'flowbite-svelte'
 	import type { PageData } from './$types'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { goto } from '$app/navigation'
@@ -133,7 +133,9 @@
 {/if}
 
 {#if !!PUBLIC_UNDB_ADMIN_EMAIL && !!PUBLIC_UNDB_ADMIN_PASSWORD}
-	<Banner id="default-banner" position="absolute">
+	<div
+		class="absolute top-0 left-0 right-0 h-14 border-b border-gray-200 shadow-sm bg-gray-100 flex items-center justify-center"
+	>
 		<p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
 			<span class="inline-flex p-1 mr-3 bg-gray-200 rounded-full dark:bg-gray-600">
 				<i class="ti ti-bulb-filled" />
@@ -146,5 +148,5 @@
 				})}</span
 			>
 		</p>
-	</Banner>
+	</div>
 {/if}
