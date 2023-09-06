@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Input } from '$components/ui/input'
+	import FileInput from '$components/ui/input/file-input.svelte'
 	import { isImage, type IAttachmentFieldValue } from '@undb/core'
 	let files: FileList
 
@@ -34,9 +34,11 @@
 	$: if (files) {
 		handFiles(files)
 	}
+
+	$: console.log(value)
 </script>
 
-<Input type="file" multiple class={$$restProps.class} disabled={readonly} />
+<FileInput type="file" multiple bind:files class={$$restProps.class} disabled={readonly} />
 {#if value?.length}
 	<div class="flex gap-1 h-20 mt-2">
 		{#each value ?? [] as attachment, index}
