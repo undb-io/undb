@@ -11,13 +11,16 @@
 {#if $aggregateNumber.isLoading}
 	<div class="w-full h-full animate-pulse bg-slate-100" />
 {:else}
-	<h1
-		{...$$restProps}
-		class={cn(
-			'scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-8xl text-center flex items-center justify-center',
-			$$restProps.class,
-		)}
-	>
-		{$aggregateNumber.data?.number}
-	</h1>
+	<div class="flex items-center justify-center w-full">
+		<h2
+			{...$$restProps}
+			title={String($aggregateNumber.data?.number)}
+			class={cn(
+				'scroll-m-20 text-2xl font-extrabold tracking-tight lg:text-8xl flex items-center justify-center truncate text-left',
+				$$restProps.class,
+			)}
+		>
+			{$aggregateNumber.data?.number.toFixed(2)}
+		</h2>
+	</div>
 {/if}
