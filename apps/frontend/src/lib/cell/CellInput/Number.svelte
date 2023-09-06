@@ -4,4 +4,4 @@
 	export let value: number = 0
 </script>
 
-<Input {value} {...$$restProps} type="number" on:change={(e) => (value = Number(e.target.value))} />
+<Input {value} class={$$restProps.class} type="number" on:change={(e) => (value = Number(e.target.value))} />

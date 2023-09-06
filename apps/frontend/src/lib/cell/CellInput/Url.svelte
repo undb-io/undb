@@ -5,4 +5,4 @@
 	export let field: EmailField
 </script>
 
-<Input bind:value placeholder="https://example.com" {...$$restProps} autocomplete="off" type="url" />
+<Input bind:value placeholder="https://example.com" class={$$restProps.class} autocomplete="off" type="url" />

@@ -3,4 +3,4 @@
 	export let value: any
 </script>
 
-<Input {value} {...$$restProps} readonly />
+<Input {value} class={$$restProps.class} readonly />

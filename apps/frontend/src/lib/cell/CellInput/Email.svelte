@@ -5,4 +5,4 @@
 	export let field: EmailField
 </script>
 
-<Input bind:value {...$$restProps} autocomplete="off" type="email"></Input>
+<Input bind:value class={$$restProps.class} autocomplete="off" type="email"></Input>
