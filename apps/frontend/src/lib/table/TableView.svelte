@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { RecordFactory, type IViewPinnedFields, type PinnedPosition, type IViewRowHeight } from '@undb/core'
-	import { cn } from '$lib/utils'
+	import { clickOutside, cn } from '$lib/utils'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import type { RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
@@ -331,18 +331,25 @@
 
 {#if fieldMenuDOMId && $currentFieldMenuRect}
 	{#key fieldMenuDOMId}
-		<DropdownMenu.Root portal={null}>
+		<DropdownMenu.Root>
 			<DropdownMenu.Trigger
-				class="fixed z-[9999999999]"
+				class="fixed"
 				style={`left: ${$currentFieldMenuRect.left}px; right: ${$currentFieldMenuRect.right}px; top: ${$currentFieldMenuRect.top}px; bottom: ${$currentFieldMenuRect.bottom}px`}
 			>
-				<button bind:this={menu} class="absolute !top-0 left-0"></button>
-				{#if $hasPermission('table:update_field')}
-					<DropdownMenu.Content class="absolute w-56 !top-6">
-						<FieldMenu {togglePin} />
-					</DropdownMenu.Content>
-				{/if}
+				<button bind:this={menu} class="hidden" tabindex="-1"></button>
 			</DropdownMenu.Trigger>
+			{#if $hasPermission('table:update_field')}
+				<DropdownMenu.Content asChild>
+					<div
+						use:clickOutside
+						on:click_outside={() => currentFieldId.set(undefined)}
+						class="fixed w-56 bg-white border py-1 rounded-sm shadow-sm z-[999999999]"
+						style={`left: ${$currentFieldMenuRect.left - 50}px; top: ${$currentFieldMenuRect.top + 30}px;`}
+					>
+						<FieldMenu {togglePin} />
+					</div>
+				</DropdownMenu.Content>
+			{/if}
 		</DropdownMenu.Root>
 	{/key}
 {/if}

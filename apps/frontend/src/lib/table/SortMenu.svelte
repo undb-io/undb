@@ -4,7 +4,6 @@
 	import { isSortable, type ISortSchema } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
 	import { writable } from 'svelte/store'
-	import { slide } from 'svelte/transition'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import { t } from '$lib/i18n'
