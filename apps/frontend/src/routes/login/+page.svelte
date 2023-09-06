@@ -133,7 +133,7 @@
 
 {#if !!PUBLIC_UNDB_ADMIN_EMAIL && !!PUBLIC_UNDB_ADMIN_PASSWORD}
 	<div
-		class="absolute top-0 left-0 right-0 h-14 border-b border-gray-200 shadow-sm bg-gray-100 flex items-center justify-center"
+		class="absolute top-0 left-0 right-0 h-14 border-b border-gray-200 shadow-sm bg-gray-100 flex items-center justify-center dark:bg-gray-700 dark:text-white dark:border-gray-800"
 	>
 		<p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
 			<span class="inline-flex p-1 mr-3 bg-gray-200 rounded-full dark:bg-gray-600">

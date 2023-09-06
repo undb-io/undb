@@ -1,4 +1,4 @@
-import { IQueryUser } from '@undb/core'
+import type { IQueryUser } from '@undb/core'
 import type { CommandProps } from '@undb/domain'
 import { Command } from '@undb/domain'
 import type { ILoginCommandInput } from './login.command.interface.js'
