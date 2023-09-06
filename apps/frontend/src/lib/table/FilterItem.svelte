@@ -37,7 +37,7 @@
 		/>
 		<FilterOperatorPicker
 			{field}
-			class={cn('h-10 py-1', 'w-full', withoutValue && 'col-span-2')}
+			class={cn('h-9 py-1', 'w-full', withoutValue && 'col-span-2')}
 			bind:value={filter.operator}
 			readonly={readonly || !field}
 		/>

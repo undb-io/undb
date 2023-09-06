@@ -23,7 +23,7 @@
 	}}
 >
 	<div class="flex items-center">
-		<Input bind:value {placeholder} class="min-w-[150px] rounded-r-none border-r-0 h-[36px]" />
+		<Input bind:value {placeholder} class="min-w-[150px] rounded-r-none border-r-0 h-8" />
 		<!-- <Search
 			size="sm"
 			bind:value
