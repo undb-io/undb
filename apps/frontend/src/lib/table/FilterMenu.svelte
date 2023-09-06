@@ -31,11 +31,12 @@
 			await $data.refetch()
 		},
 	})
+
 	async function apply() {
 		$setFilter.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
-			filter: validFilters,
+			filter: getValidFilters(value),
 		})
 	}
 
