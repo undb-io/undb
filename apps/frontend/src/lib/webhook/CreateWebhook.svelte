@@ -144,15 +144,14 @@
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
-					<span>{$t('Filters')}</span>
+					<span>{$t('Filter')}</span>
 				</div>
-
-				<FilterEditor bind:value={filters} let:add>
-					<Button variant="secondary" type="button" size="sm" on:click={add}>
-						{$t('Create New Filter')}
-					</Button>
-				</FilterEditor>
 			</Label>
+			<FilterEditor bind:value={filters} let:add createInitial={false}>
+				<Button variant="outline" type="button" on:click={add} class="w-full">
+					{$t('Create New Filter')}
+				</Button>
+			</FilterEditor>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
 					<span>{$t('Headers', { ns: 'webhook' })}</span>

@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Button } from '$components/ui/button'
-	import { slide } from 'svelte/transition'
 	import { trpc } from '$lib/trpc/client'
 	import { filters, getTable, getView, q, recordHash } from '$lib/store/table'
 	import { t } from '$lib/i18n'
@@ -11,6 +10,7 @@
 	import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover'
 	import Toast from '$components/ui/toast/toast.svelte'
 	import Badge from '$components/ui/badge/badge.svelte'
+	import * as Alert from '$lib/components/ui/alert'
 
 	let value = $filters
 
@@ -59,6 +59,13 @@
 				<span class="text-xs font-medium text-gray-500 dark:text-gray-300">{$t('set filters in this view')}</span>
 			{/if}
 			<FilterEditor bind:value let:add readonly={!$hasPermission('table:set_view_filter')}>
+				<svelte:fragment slot="empty">
+					<Alert.Root>
+						<Alert.Title>
+							{$t('no filters applied')}
+						</Alert.Title>
+					</Alert.Root>
+				</svelte:fragment>
 				<div class="flex w-full justify-between">
 					<Button
 						class="bg-unset border-gray-200 border text-gray-900 dark:hover:bg-gray-900 hover:text-primary hover:bg-gray-100"

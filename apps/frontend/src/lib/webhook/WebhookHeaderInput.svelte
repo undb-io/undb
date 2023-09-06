@@ -41,7 +41,7 @@
 			{/each}
 		</div>
 	{/if}
-	<Button size="sm" type="button" variant="outline" on:click={() => addHeader()}>
+	<Button class="w-full" type="button" variant="outline" on:click={() => addHeader()}>
 		{$t('Add Header', { ns: 'webhook' })}
 	</Button>
 </div>
