@@ -6,6 +6,7 @@
 	import { Button } from '$lib/components/ui/button'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import Label from '$components/ui/label/label.svelte'
+	import { cn } from '$lib/utils'
 
 	export let value: string[] | undefined
 	export let readonly = false
@@ -36,7 +37,13 @@
 
 <DropdownMenu.Root bind:open>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button builders={[builder]} variant="outline" type="button" class="inline-flex gap-3 max-h-10" disabled={readonly}>
+		<Button
+			builders={[builder]}
+			variant="outline"
+			type="button"
+			class={cn('inline-flex gap-3 max-h-10', $$restProps.class)}
+			disabled={readonly}
+		>
 			{#if selected.length}
 				{#each selected as member}
 					<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />

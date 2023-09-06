@@ -37,21 +37,22 @@
 		/>
 		<FilterOperatorPicker
 			{field}
-			class={cn('h-9 py-1', 'w-full', withoutValue && 'col-span-2')}
+			class={cn('h-9 py-1 text-sm', 'w-full', withoutValue && 'col-span-2')}
 			bind:value={filter.operator}
 			readonly={readonly || !field}
 		/>
 		<FilterValue
 			{field}
 			{readonly}
+			size="sm"
 			operator={filter.operator}
 			bind:value={filter.value}
-			class="h-10 !rounded-none rounded-r-sm"
+			class="h-9 !rounded-none rounded-r-sm"
 		/>
 	</div>
 	{#if !readonly}
 		<Button
-			class="h-10 aspect-square !p-0 border-gray-100"
+			class="h-9 aspect-square !p-0 border-gray-100"
 			size="sm"
 			variant="outline"
 			on:click={() => remove(index)}

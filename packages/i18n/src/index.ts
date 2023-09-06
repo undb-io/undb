@@ -378,6 +378,7 @@ export const config: InitOptions = {
         'select filter operator': 'select filter operator',
         'select extension': 'select attachment extension',
         'select filter type': 'select filter type',
+        'field type filter value': 'input {{field}} filter value',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -785,6 +786,7 @@ export const config: InitOptions = {
         'select filter operator': '选择筛选操作',
         'select extension': '选择文件后缀名',
         'select filter type': '选择筛选类型',
+        'field type filter value': '输入{{field}}筛选值',
       },
       webhook: {
         Webhook: 'Webhook',

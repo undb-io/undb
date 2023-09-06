@@ -24,6 +24,7 @@
 	import { withPrevious } from 'svelte-previous'
 	import DateRange from '$lib/cell/CellInput/DateRange.svelte'
 	import UsersPicker from '$lib/cell/CellInput/UsersPicker.svelte'
+	import { t } from '$lib/i18n'
 
 	export let field: Field | undefined
 	export let operator: string | undefined
@@ -111,7 +112,7 @@
 		}
 	}
 
-	$: wrapperClass = 'h-10 w-full bg-white border-gray-200 !justify-start'
+	$: wrapperClass = 'h-9 w-full bg-white border-gray-200 !justify-start'
 	$: {
 		if (type === 'rating') {
 			wrapperClass += ' box-border border px-2'
@@ -119,6 +120,8 @@
 			wrapperClass += ' border border-r-1'
 		}
 	}
+
+	$: placeholder = $t('field type filter value', { field: field?.name.value })
 </script>
 
 {#if operator && !isOperatorWithoutValue(operator)}
@@ -129,6 +132,7 @@
 		{...$$restProps}
 		class={wrapperClass}
 		disabled={!field}
+		{placeholder}
 		readonly={readonly ? true : undefined}
 	/>
 {/if}
