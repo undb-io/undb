@@ -1,10 +1,10 @@
 import { z } from 'zod'
 import { baseFilter } from '../../../filter/filter.base.js'
-import { $between, $eq, $gt, $gte, $is_today, $lt, $lte, $neq } from '../../../filter/operators.js'
+import { $between, $eq, $gt, $gte, $is_not_today, $is_today, $lt, $lte, $neq } from '../../../filter/operators.js'
 
-export const updatedAtFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte, $between, $is_today])
+export const updatedAtFilterOperators = z.union([$eq, $neq, $gt, $gte, $lt, $lte, $between, $is_today, $is_not_today])
 export type IUpdatedAtFilterOperator = z.infer<typeof updatedAtFilterOperators>
-export const updatedAtBuiltInOperators = new Set<IUpdatedAtFilterOperator>([$is_today.value])
+export const updatedAtBuiltInOperators = new Set<IUpdatedAtFilterOperator>([$is_today.value, $is_not_today.value])
 
 export const updatedAtFilterValue = z.string().nullable()
 export const updatedAtFilter = z

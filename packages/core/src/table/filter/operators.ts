@@ -37,6 +37,7 @@ export const $is_empty = z.literal('$is_empty')
 export const $is_not_empty = z.literal('$is_not_empty')
 
 export const $is_today = z.literal('$is_today')
+export const $is_not_today = z.literal('$is_not_today')
 export const $between = z.literal('$between')
 
 export const $has_file_type = z.literal('$has_file_type')
@@ -47,7 +48,15 @@ export const $is_root = z.literal('$is_root')
 export const $is_me = z.literal('$is_me')
 export const $is_not_me = z.literal('$is_not_me')
 
-export const createdAtBuiltInOperators = new Set<ICreatedAtFilterOperator>([$is_today.value])
+export const createdAtBuiltInOperators = new Set<ICreatedAtFilterOperator>([$is_today.value, $is_not_today.value])
 
-export const operatorsWihtoutValue = z.union([$is_empty, $is_not_empty, $is_today, $is_root, $is_me, $is_not_me])
+export const operatorsWihtoutValue = z.union([
+  $is_empty,
+  $is_not_empty,
+  $is_today,
+  $is_not_today,
+  $is_root,
+  $is_me,
+  $is_not_me,
+])
 export const isOperatorWithoutValue = (value: string): boolean => operatorsWihtoutValue.safeParse(value).success
