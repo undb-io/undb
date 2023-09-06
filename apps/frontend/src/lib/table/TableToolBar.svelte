@@ -23,12 +23,7 @@
 	</div>
 	<div class="flex items-center ml-2 gap-3">
 		<SearchTable />
-		<Button
-			size="sm"
-			variant="outline"
-			class="flex items-center rounded-lg text-primary text-xs border-primary hover:bg-primary hover:text-gray-50 gap-2  dark:bg-primary dark:border-primary-600 dark:hover:bg-primary/90 dark:text-gray-50 "
-			href={`/t/${$table.id.value}/openapi`}
-		>
+		<Button size="sm" variant="outline" class="flex items-center text-xs gap-2" href={`/t/${$table.id.value}/openapi`}>
 			<i class="ti ti-code" />
 			<span class="whitespace-nowrap">{$t('API Preview')}</span>
 		</Button>

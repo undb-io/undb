@@ -51,7 +51,6 @@
 		})
 	})
 
-	let open = false
 	const items = [
 		{ value: 'grid', label: 'Grid' },
 		{ value: 'kanban', label: 'Kanban' },
@@ -66,7 +65,6 @@
 
 	const createView = trpc().table.view.create.mutation({
 		async onSuccess() {
-			open = false
 			await invalidate(`table:${$table.id.value}`)
 			await tick()
 			goto(`/t/${$table.id.value}/${$table.viewsOrder.last}`)
