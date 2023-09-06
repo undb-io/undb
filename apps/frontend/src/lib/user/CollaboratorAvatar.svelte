@@ -8,11 +8,11 @@
 	export let avatar: string | undefined | null
 	export let color: IColor
 
-	export let size: 'xs' | 'sm' | 'lg' | 'xl' | undefined = 'xs'
+	export let size: Avatar.Size | undefined = undefined
 </script>
 
 <span class="inline-flex gap-2 items-center">
-	<Avatar.Root>
+	<Avatar.Root {size}>
 		<Avatar.Image src={avatar} alt={username} />
 		<Avatar.Fallback class={cn('text-white', colors[color])}>{username.slice(0, 2)}</Avatar.Fallback>
 	</Avatar.Root>

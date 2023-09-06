@@ -37,7 +37,7 @@
 			builders={[builder]}
 		>
 			{#if selected}
-				<CollaboratorComponent username={selected.username} avatar={selected.avatar} color={selected.color} />
+				<CollaboratorComponent username={selected.username} avatar={selected.avatar} color={selected.color} size="sm" />
 			{:else}
 				{$t('Select Collaborator')}
 			{/if}

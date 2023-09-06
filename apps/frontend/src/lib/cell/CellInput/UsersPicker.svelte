@@ -46,7 +46,7 @@
 		>
 			{#if selected.length}
 				{#each selected as member}
-					<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />
+					<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} size="sm" />
 				{/each}
 			{:else}
 				{$t('Select Collaborator')}
