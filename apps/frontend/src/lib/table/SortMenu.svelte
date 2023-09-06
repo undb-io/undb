@@ -108,7 +108,7 @@
 									bind:value={sort.id}
 									class="w-48 truncate rounded-r-none !justify-start border-r-0"
 									fields={$allTableFields}
-									filter={(f) => isSortable(f.type)}
+									filter={(f) => isSortable(f.type) && !$value.slice(0, idx).some((v) => v.id === f.id)}
 									readonly={!canSetViewSort}
 								/>
 								<div class="inline-flex w-1/2">

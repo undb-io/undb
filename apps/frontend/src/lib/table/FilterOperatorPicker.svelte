@@ -16,7 +16,7 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button variant="outline" builders={[builder]} disabled={readonly} class={$$restProps.class}>
+		<Button variant="outline" builders={[builder]} disabled={readonly} class={$$restProps.class} type="button">
 			{#if value}
 				{$t(value, { ns: 'common' })}
 			{:else}
