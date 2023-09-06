@@ -51,12 +51,12 @@
 		},
 	})
 
-	async function sort() {
-		const validSorts = $value
-			.filter((v) => !!v.id && v.direction)
-			.filter((v) => v.id !== TEMP_ID)
-			.map((v) => ({ fieldId: v.id, direction: v.direction })) as ISortSchema[]
+	$: validSorts = $value
+		.filter((v) => !!v.id && v.direction)
+		.filter((v) => v.id !== TEMP_ID)
+		.map((v) => ({ fieldId: v.id, direction: v.direction })) as ISortSchema[]
 
+	async function sort() {
 		$setSort.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
@@ -88,8 +88,8 @@
 		<Button builders={[builder]} variant="secondary" class="gap-2 whitespace-nowrap" size="sm">
 			<i class="ti ti-filter text-sm" />
 			{$t('Sort')}
-			{#if $value.length}
-				<Badge>{$value.length}</Badge>
+			{#if validSorts.length}
+				<Badge>{validSorts.length}</Badge>
 			{/if}
 		</Button>
 	</Popover.Trigger>
@@ -106,7 +106,7 @@
 							<div class="flex flex-1 items-center">
 								<FieldPicker
 									bind:value={sort.id}
-									class="w-48 rounded-r-none !justify-start border-r-0"
+									class="w-48 truncate rounded-r-none !justify-start border-r-0"
 									fields={$allTableFields}
 									filter={(f) => isSortable(f.type)}
 									readonly={!canSetViewSort}
