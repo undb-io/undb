@@ -48,12 +48,16 @@
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class="w-56">
 		{#each members as member}
+			{@const selected = value?.includes(member.userId)}
 			<DropdownMenu.Item>
 				<Label
 					class="inline-flex items-center justify-between cursor-pointer w-full hover:bg-gray-100 dark:hover:bg-gray-400"
 				>
 					<input type="checkbox" bind:group={value} value={member.userId} class="hidden" />
 					<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />
+					{#if selected}
+						<i class="ti ti-check"></i>
+					{/if}
 				</Label>
 			</DropdownMenu.Item>
 		{/each}
