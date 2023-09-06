@@ -106,7 +106,7 @@
 							<div class="flex flex-1 items-center">
 								<FieldPicker
 									bind:value={sort.id}
-									class="w-48 truncate rounded-r-none !justify-start border-r-0"
+									class="w-48 truncate rounded-r-none !justify-start border-r-0 h-8"
 									fields={$allTableFields}
 									filter={(f) => isSortable(f.type) && !$value.slice(0, idx).some((v) => v.id === f.id)}
 									readonly={!canSetViewSort}
@@ -116,8 +116,9 @@
 										<Button
 											disabled={!canSetViewSort}
 											type="button"
+											size="sm"
 											variant={sort.direction === direction ? 'default' : 'outline'}
-											class={cn('!rounded-none', i === 1 && '!rounded-r-md border-l-0')}
+											class={cn('!rounded-none text-xs whitespace-nowrap', i === 1 && '!rounded-r-md border-l-0')}
 											on:click={(e) => {
 												e.stopPropagation()
 												value.update((sort) => sort.map((s, index) => (index === idx ? { ...s, direction } : s)))
