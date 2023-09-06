@@ -396,12 +396,6 @@
 			<slot />
 		</div>
 	</main>
-
-	<CreateTable data={$page.data.form} />
-
-	{#if $importDataModal.open}
-		<ImportData formData={$page.data.createTable} />
-	{/if}
 </div>
 
 {#if copied}
@@ -419,3 +413,6 @@
 		</div>
 	</Toast>
 {/if}
+
+<CreateTable data={$page.data.form} />
+<ImportData formData={$page.data.createTable} />
