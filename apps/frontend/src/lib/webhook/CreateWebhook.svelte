@@ -160,7 +160,7 @@
 				<WebhookHeaderInput bind:value={$form.headers} />
 			</Label>
 		</div>
-		<div class="w-full flex justify-end gap-4">
+		<div class="w-full flex justify-end gap-4 mt-4">
 			<Button size="sm" type="button" variant="secondary">{$t('Cancel', { ns: 'common' })}</Button>
 			<Button size="sm" form="createWebhook" type="submit">{$t('Confirm', { ns: 'common' })}</Button>
 		</div>
