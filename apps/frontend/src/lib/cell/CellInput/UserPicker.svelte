@@ -47,9 +47,7 @@
 		<DropdownMenu.RadioGroup bind:value>
 			{#each members as member}
 				<DropdownMenu.RadioItem value={member.userId}>
-					<span
-						class="inline-flex items-center justify-between cursor-pointer w-full hover:bg-gray-100 dark:hover:bg-gray-400"
-					>
+					<span class="inline-flex items-center justify-between cursor-pointer w-full">
 						<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />
 					</span>
 				</DropdownMenu.RadioItem>

@@ -38,7 +38,7 @@
 		<DropdownMenu.RadioGroup bind:value={group}>
 			{#each options as option}
 				<DropdownMenu.RadioItem class="cursor-pointer flex " value={option.key.value} {...$$restProps}>
-					<span role="button" class="inline-flex w-full hover:bg-gray-100 dark:hover:bg-gray-400 transition">
+					<span role="button" class="inline-flex w-full transition">
 						<Option {option} />
 					</span>
 				</DropdownMenu.RadioItem>

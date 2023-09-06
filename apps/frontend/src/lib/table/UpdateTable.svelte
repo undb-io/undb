@@ -109,7 +109,7 @@
 				</div>
 
 				<div class="flex">
-					<span class="inline-block mr-2 text-sm">
+					<span class="inline-block mr-2 text-sm dark:text-white">
 						{$t('Display Fields')}:
 					</span>
 					<div class="flex gap-2">

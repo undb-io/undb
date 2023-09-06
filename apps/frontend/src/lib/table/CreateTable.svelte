@@ -106,7 +106,7 @@
 						/>
 					</Label>
 
-					<p class="flex text-xs items-center !font-bold gap-1">
+					<p class="flex text-xs items-center !font-bold gap-1 dark:text-white">
 						<span>{$t('System fields')}: </span>
 						<Badge class="bg-gray-500 hover:bg-gray-600 rounded-sm">id</Badge>,
 						<Badge class="bg-gray-500 hover:bg-gray-600 rounded-sm">{$t('created-at')}</Badge>,

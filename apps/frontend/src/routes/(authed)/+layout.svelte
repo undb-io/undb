@@ -236,7 +236,7 @@
 					<DropdownMenu.Trigger>
 						<button
 							id="me-button"
-							class="flex items-center gap-x-4 px-2 py-3 w-full text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100 transition"
+							class="flex items-center gap-x-4 px-2 py-3 w-full text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-900 dark:text-white transition"
 						>
 							<Avatar.Root>
 								<Avatar.Image src={me?.avatar} alt={me?.username} />

@@ -171,6 +171,7 @@ export const config: InitOptions = {
         invite: 'invite',
         'cancel invite': 'cancel',
         'copy invitation url': 'copy invitation url',
+        search: 'search',
       },
       table: {
         trash: 'trash',
@@ -575,6 +576,7 @@ export const config: InitOptions = {
         invite: '邀请',
         'cancel invite': '取消邀请',
         'copy invitation url': '复制邀请链接',
+        search: '搜索',
       },
       table: {
         trash: '回收站',
