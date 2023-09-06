@@ -82,12 +82,12 @@
 </script>
 
 <Dialog.Root bind:open={$createTableModal.open}>
-	<Dialog.Content class="!w-1/2 !max-w-none">
+	<Dialog.Content class="!w-1/2 !max-w-none max-h-[90%] flex flex-col overflow-y-hidden">
 		<Dialog.Header>
 			<Dialog.Title>{$t('Create New Table') ?? undefined}</Dialog.Title>
 		</Dialog.Header>
 
-		<form id="createTable" class="flex flex-col justify-between flex-1 gap-2" method="POST" use:enhance>
+		<form id="createTable" class="flex flex-col justify-between flex-1 gap-2 overflow-y-auto" method="POST" use:enhance>
 			<div>
 				<div class="space-y-4">
 					<Label class="space-y-2">
