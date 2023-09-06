@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms/index'
 	import ReferenceFieldPicker from '../FieldInputs/ReferenceFieldPicker.svelte'
@@ -16,6 +16,6 @@
 		bind:value={$referenceFieldId}
 		required
 		{...$$restProps}
-		class={cx('w-full !justify-start', $$restProps.class)}
+		class={cn('w-full !justify-start', $$restProps.class)}
 	/>
 </div>

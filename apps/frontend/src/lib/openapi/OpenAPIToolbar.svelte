@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { sidebarCollapsed } from '$lib/store/ui'
 	import { Button } from '$lib/components/ui/button'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
@@ -27,7 +27,7 @@
 	}
 </script>
 
-<div class={cx('w-full py-3 border-b border-gray-200 dark:bg-gray-800', $sidebarCollapsed ? 'px-2' : 'px-5')}>
+<div class={cn('w-full py-3 border-b border-gray-200 dark:bg-gray-800', $sidebarCollapsed ? 'px-2' : 'px-5')}>
 	<div class="flex items-center gap-2 w-full">
 		{#if $sidebarCollapsed}
 			<div class="ml-2">

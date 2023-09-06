@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { getTable, getView } from '$lib/store/table'
 	import { page } from '$app/stores'
 	import ViewIcon from '$lib/view/ViewIcon.svelte'
@@ -117,7 +117,7 @@
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
-	class={cx('group', active && 'min-w-[100px] max-w-[200px]')}
+	class={cn('group', active && 'min-w-[100px] max-w-[200px]')}
 	data-view-id={view.id.value}
 	on:dblclick={() => (updating = !updating)}
 >
@@ -125,7 +125,7 @@
 		href={active ? $page.url.pathname : `/t/${$table.id.value}/${view.id.value}`}
 		type="button"
 		role="tab"
-		class={cx(
+		class={cn(
 			'inline-flex w-full justify-between items-center gap-2 text-sm font-medium text-center disabled:cursor-not-allowed px-4 py-2 border-b-2',
 			active
 				? 'text-blue-600  border-blue-600 dark:text-gray-50 dark:border-blue-500 active'
@@ -133,7 +133,7 @@
 		)}
 	>
 		<span class="inline-flex items-center gap-2 truncate">
-			<ViewIcon type={view.displayType} class={cx(!active ? '!text-gray-500 dark:!text-gray-300' : '!font-semibold')} />
+			<ViewIcon type={view.displayType} class={cn(!active ? '!text-gray-500 dark:!text-gray-300' : '!font-semibold')} />
 			{#if updating}
 				<form on:submit|preventDefault|stopPropagation={update}>
 					<input

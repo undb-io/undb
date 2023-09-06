@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import {
 		currentRecordId,
 		getRecord,
@@ -151,7 +151,7 @@
 
 				<div class="grid grid-cols-6 h-full">
 					<div
-						class={cx(
+						class={cn(
 							'p-6 border-r dark:border-r-slate-900 h-full overflow-y-auto',
 							shouldDisplayAudits ? 'col-span-4' : 'col-span-6',
 						)}

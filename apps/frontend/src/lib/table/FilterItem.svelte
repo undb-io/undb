@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
 	import { Button } from '$lib/components/ui/button'
 	import FilterOperatorPicker from './FilterOperatorPicker.svelte'
@@ -37,7 +37,7 @@
 		/>
 		<FilterOperatorPicker
 			{field}
-			class={cx('h-10 py-1', 'w-full', withoutValue && 'col-span-2')}
+			class={cn('h-10 py-1', 'w-full', withoutValue && 'col-span-2')}
 			bind:value={filter.operator}
 			readonly={readonly || !field}
 		/>

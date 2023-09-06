@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import type { ReferenceField } from '@undb/core'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { getForeignTable } from '$lib/store/table'
@@ -17,7 +17,7 @@
 {#if foreignTable}
 	<DropdownMenu.Item
 		{...$$restProps}
-		class={cx('flex items-center w-full', $$restProps.class)}
+		class={cn('flex items-center w-full', $$restProps.class)}
 		on:click={() => goto(`/t/${foreignTableId}`)}
 	>
 		<i class="ti ti-external-link" />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { invalidate } from '$app/navigation'
 	import { currentFieldId, getField, getTable, getView } from '$lib/store/table'
 	import { confirmDeleteField, duplicateFieldModal, flsModal, updateFieldModal } from '$lib/store/modal'
@@ -116,7 +116,7 @@
 <DropdownMenu.Separator />
 
 <DropdownMenu.Item
-	class={cx(
+	class={cn(
 		'items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium',
 		fieldDirection === 'asc' && 'bg-gray-100',
 	)}
@@ -132,7 +132,7 @@
 	</span>
 </DropdownMenu.Item>
 <DropdownMenu.Item
-	class={cx(
+	class={cn(
 		'items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium',
 		fieldDirection === 'desc' && 'bg-gray-100',
 	)}
@@ -148,7 +148,7 @@
 	</span>
 </DropdownMenu.Item>
 <DropdownMenu.Item
-	class={cx('items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium')}
+	class={cn('items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium')}
 	on:click={() => flsModal.open()}
 >
 	<i class="ti ti-shield-checkered-filled text-sm" />

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import CellComponent from '$lib/cell/CellComponents/CellComponent.svelte'
 	import { getTable, getView, readonly } from '$lib/store/table'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
@@ -16,7 +16,7 @@
 </script>
 
 <Card.Root
-	class={cx(
+	class={cn(
 		'!py-4 !px-4 shadow-sm rounded-md hover:shadow-md duration-200 select-none space-y-2 text-gray-700 text-sm overflow-hidden',
 		$readonly ? 'cursor-pointer' : 'cursor-grab',
 	)}

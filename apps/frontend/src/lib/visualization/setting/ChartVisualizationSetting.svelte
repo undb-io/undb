@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { Button } from '$lib/components/ui/button'
 	import type { ChartVisualization as CoreChartVisualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
@@ -45,7 +45,7 @@
 	}
 </script>
 
-<div {...$$restProps} class={cx('flex flex-col flex-1', $$restProps.class)}>
+<div {...$$restProps} class={cn('flex flex-col flex-1', $$restProps.class)}>
 	<form on:submit|preventDefault={onSubmit} class="flex flex-col h-full justify-between">
 		<div>
 			<FieldPicker

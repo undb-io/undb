@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import type { SelectField } from '@undb/core'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Button } from '$lib/components/ui/button'
@@ -19,7 +19,7 @@
 	<DropdownMenu.Trigger asChild let:builder>
 		<Button
 			type="button"
-			class={cx('h-full', $$restProps.class)}
+			class={cn('h-full', $$restProps.class)}
 			variant="outline"
 			disabled={readonly}
 			builders={[builder]}

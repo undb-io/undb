@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 
 	import type { LayoutData } from './$types'
 	import CreateTable from '$lib/table/CreateTable.svelte'
@@ -99,7 +99,7 @@
 									<li>
 										<a
 											href={item.href}
-											class={cx(
+											class={cn(
 												item.current
 													? 'bg-gray-50 text-indigo-600'
 													: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
@@ -108,7 +108,7 @@
 										>
 											<div class="h-6 w-6 flex justify-center items-center">
 												<i
-													class={cx(
+													class={cn(
 														item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
 														'shrink-0 text-lg',
 														`ti ti-${item.icon}`,
@@ -134,7 +134,7 @@
 	</Sheet.Root>
 
 	<div
-		class={cx(
+		class={cn(
 			'hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-72 lg:flex-col h-screen transition',
 			$sidebarCollapsed && 'translate-x-[-100%]',
 		)}
@@ -166,7 +166,7 @@
 						<li>
 							<a
 								href={item.href}
-								class={cx(
+								class={cn(
 									item.current
 										? 'bg-gray-50 text-indigo-600 dark:text-gray-50 dark:bg-gray-700'
 										: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700',
@@ -175,7 +175,7 @@
 							>
 								<div class="h-6 w-6 flex justify-center items-center">
 									<i
-										class={cx(
+										class={cn(
 											item.current
 												? 'text-indigo-600 dark:text-gray-50'
 												: 'text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-gray-100',
@@ -236,11 +236,11 @@
 					<DropdownMenu.Trigger>
 						<button
 							id="me-button"
-							class="flex items-center gap-x-4 px-2 py-3 w-full text-sm font-semibold leading-6 text-gray-900"
+							class="flex items-center gap-x-4 px-2 py-3 w-full text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100 transition"
 						>
 							<Avatar.Root>
 								<Avatar.Image src={me?.avatar} alt={me?.username} />
-								<Avatar.Fallback class={cx('text-white', colors[me.color])}>{me?.username.slice(0, 2)}</Avatar.Fallback>
+								<Avatar.Fallback class={cn('text-white', colors[me.color])}>{me?.username.slice(0, 2)}</Avatar.Fallback>
 							</Avatar.Root>
 
 							<span class="sr-only">Your profile</span>
@@ -322,10 +322,13 @@
 				<div class="flex-1 text-sm font-semibold leading-6 text-gray-900">
 					<img class="h-6 w-auto" src={logo} alt="undb" />
 				</div>
-				<button id="me-button" class="flex items-center gap-x-4 p-0 text-sm font-semibold leading-6 text-gray-900">
+				<button
+					id="me-button"
+					class="flex items-center gap-x-4 p-0 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100 transition"
+				>
 					<Avatar.Root>
 						<Avatar.Image src={me?.avatar} alt={me?.username} />
-						<Avatar.Fallback class={cx('text-white', colors[me.color])}>{me?.username.slice(0, 2)}</Avatar.Fallback>
+						<Avatar.Fallback class={cn('text-white', colors[me.color])}>{me?.username.slice(0, 2)}</Avatar.Fallback>
 					</Avatar.Root>
 					<span class="sr-only">Your profile</span>
 					<span aria-hidden="true">{me.username}</span>
@@ -388,7 +391,7 @@
 		</DropdownMenu.Root>
 	</div>
 
-	<main class={cx('h-[100vh] transition-all', 'dark:!bg-slate-800', $sidebarCollapsed ? 'lg:pl-0' : 'lg:pl-72')}>
+	<main class={cn('h-[100vh] transition-all', 'dark:!bg-slate-800', $sidebarCollapsed ? 'lg:pl-0' : 'lg:pl-72')}>
 		<div class="h-full flex flex-col">
 			<slot />
 		</div>

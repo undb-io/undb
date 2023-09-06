@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { invalidate } from '$app/navigation'
 	import { currentVisualizationId, getTable, getView, readonly } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
@@ -74,7 +74,7 @@
 </script>
 
 <div
-	class={cx(
+	class={cn(
 		'group flex flex-col bg-white !opacity-100 border rounded-md w-full h-full dark:bg-gray-700/50 dark:border-gray-500',
 		!$readonly && 'hover:border-blue-600 transition',
 	)}

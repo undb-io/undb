@@ -2,7 +2,7 @@
 	import { optionColorOrder, Option as CoreOption, OptionColor } from '@undb/core'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import Option from '$lib/option/Option.svelte'
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { colors } from '$lib/field/helpers'
 
 	export let value = OptionColor.defaultColorName
@@ -14,7 +14,7 @@
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger>
 		<div
-			class={cx(
+			class={cn(
 				'inline-flex text-white w-[30px] h-[30px] aspect-square justify-center items-center cursor-pointer rounded-sm',
 				selected,
 				$$restProps.class,

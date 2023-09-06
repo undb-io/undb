@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { invalidate } from '$app/navigation'
 	import { t } from '$lib/i18n'
 	import { hasPermission } from '$lib/store/authz'
@@ -39,7 +39,7 @@
 				<Tooltip.Trigger>
 					<button type="button" on:click={() => onChange(displayType)}>
 						<div
-							class={cx(
+							class={cn(
 								'grid h-7 w-7 place-items-center rounded p-1 duration-300 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 peer-checked:bg-gray-100 dark:peer-checked:bg-gray-800 peer-checked:border-gray-600 peer-checked:text-gray-600 hover:text-gray-500 cursor-pointer',
 								isActive && 'bg-gray-100',
 							)}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Button } from '$lib/components/ui/button'
 	import type { Table } from '@undb/core'
@@ -16,7 +16,7 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button variant="outline" builders={[builder]} {...$$restProps} class={cx($$restProps.class, 'gap-2')}>
+		<Button variant="outline" builders={[builder]} {...$$restProps} class={cn($$restProps.class, 'gap-2')}>
 			{#if selected}
 				{selected.name.value}
 			{:else}
@@ -33,7 +33,7 @@
 					<DropdownMenu.RadioItem value={table.id}>
 						<li class="w-full inline-flex gap-2 hover:bg-gray-100 cursor-pointer">
 							<span
-								class={cx(
+								class={cn(
 									'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
 									'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white',
 								)}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { Button } from '$lib/components/ui/button'
 	import type { NumberVisualization as CoreNumberVisualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
@@ -63,7 +63,7 @@
 	}
 </script>
 
-<div {...$$restProps} class={cx('flex flex-col flex-1', $$restProps.class)}>
+<div {...$$restProps} class={cn('flex flex-col flex-1', $$restProps.class)}>
 	<ul
 		class="items-center w-full rounded-md border border-gray-200 sm:flex dark:bg-gray-800 dark:border-gray-600 divide-x divide-gray-200 dark:divide-gray-600 mb-4 p-0"
 	>

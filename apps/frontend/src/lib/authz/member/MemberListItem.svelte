@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { colors } from '$lib/field/helpers'
 	import type { IQueryMember } from '@undb/authz'
 	import { hasPermission } from '$lib/store/authz'
@@ -37,7 +37,7 @@
 				<div class="flex-shrink-0">
 					<Avatar.Root>
 						<Avatar.Image src={member?.userProfile.avatar} alt={member?.userProfile.username} />
-						<Avatar.Fallback class={cx('text-white', colors[member.userProfile.color])}>
+						<Avatar.Fallback class={cn('text-white', colors[member.userProfile.color])}>
 							{member?.userProfile.username.slice(0, 2)}
 						</Avatar.Fallback>
 					</Avatar.Root>

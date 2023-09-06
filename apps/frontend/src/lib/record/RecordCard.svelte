@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { t } from '$lib/i18n'
 	import type { Record, ReferenceFieldTypes, TableSchema } from '@undb/core'
 
@@ -11,7 +11,7 @@
 </script>
 
 {#if record}
-	<div class={cx('p-3 rounded-sm cursor-pointer border', $$restProps.class)}>
+	<div class={cn('p-3 rounded-sm cursor-pointer border', $$restProps.class)}>
 		{value.toString()}
 	</div>
 {/if}

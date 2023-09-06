@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { allTableFields, getTable, getView, listRecordFn, sorts } from '$lib/store/table'
 	import { isSortable, type ISortSchema } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
@@ -118,7 +118,7 @@
 											disabled={!canSetViewSort}
 											type="button"
 											variant={sort.direction === direction ? 'default' : 'outline'}
-											class={cx('!rounded-none', i === 1 && '!rounded-r-md border-l-0')}
+											class={cn('!rounded-none', i === 1 && '!rounded-r-md border-l-0')}
 											on:click={(e) => {
 												e.stopPropagation()
 												value.update((sort) => sort.map((s, index) => (index === idx ? { ...s, direction } : s)))

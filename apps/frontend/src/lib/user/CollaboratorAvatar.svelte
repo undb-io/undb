@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import type { IColor } from '@undb/core'
 	import * as Avatar from '$lib/components/ui/avatar'
 	import { colors } from '$lib/field/helpers'
@@ -14,7 +14,7 @@
 <span class="inline-flex gap-2 items-center">
 	<Avatar.Root>
 		<Avatar.Image src={avatar} alt={username} />
-		<Avatar.Fallback class={cx('text-white', colors[color])}>{username.slice(0, 2)}</Avatar.Fallback>
+		<Avatar.Fallback class={cn('text-white', colors[color])}>{username.slice(0, 2)}</Avatar.Fallback>
 	</Avatar.Root>
 
 	<slot />

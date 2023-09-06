@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import RecordCard from '$lib/record/RecordCard.svelte'
 	import type { Records, Record, ReferenceFieldTypes, Table } from '@undb/core'
 	import * as Alert from '$lib/components/ui/alert'
@@ -127,7 +127,7 @@
 			type="button"
 			on:click={() => (open = true)}
 			{...$$restProps}
-			class={cx('space-x-2', $$restProps.class)}
+			class={cn('space-x-2', $$restProps.class)}
 		>
 			{#if initialLoading}
 				<i class="ti ti-rotate animate-spin"></i>

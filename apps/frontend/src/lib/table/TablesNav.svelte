@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import type { IQueryTable } from '@undb/core'
 	import { page } from '$app/stores'
 
@@ -12,7 +12,7 @@
 		<li>
 			<a
 				href={`/t/${table.id}`}
-				class={cx(
+				class={cn(
 					active
 						? 'bg-blue-50 text-indigo-600 dark:text-gray-50 dark:bg-gray-700'
 						: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50  dark:text-gray-200 dark:hover:bg-gray-700',
@@ -20,7 +20,7 @@
 				)}
 			>
 				<span
-					class={cx(
+					class={cn(
 						active
 							? 'bg-blue-50 text-indigo-600 dark:text-gray-50 dark:bg-gray-700 '
 							: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50 dark:text-gray-200 dark:hover:text-gray-200 dark:bg-gray-700',

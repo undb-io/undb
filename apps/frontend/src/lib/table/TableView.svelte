@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { RecordFactory, type IViewPinnedFields, type PinnedPosition, type IViewRowHeight } from '@undb/core'
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import type { RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
@@ -139,7 +139,7 @@
 						h(
 							'span',
 							{
-								class: cx(
+								class: cn(
 									'undb-row-index relative basis-[50%] text-gray-400 text-xs opacity-100 text-ellipsis whitespace-nowrap group-hover:hidden dark:text-gray-100 ',
 									checked && 'hidden',
 								),
@@ -150,7 +150,7 @@
 							'button',
 							{
 								onClick: () => expand(props.model.id),
-								class: cx(
+								class: cn(
 									'undb-row-expand absolute w-6 h-6 rounded-full hover:bg-blue-100 dark:hover:bg-blue-500 top-1/2 left-3/4 translate-y-[-50%] translate-x-[-50%] text-xs opacity-0 text-gray-400 dark:text-gray-100 ',
 								),
 							},
@@ -162,7 +162,7 @@
 							onChange: (event: any) => {
 								recordSelection.updateSelect(props.model.id, event.target.checked)
 							},
-							class: cx(
+							class: cn(
 								'undb-select absolute top-1/2 left-1/4 translate-y-[-50%] translate-x-[-50%] w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center group-hover:opacity-100',
 								!checked && 'opacity-0',
 							),
@@ -186,7 +186,7 @@
 						const sort = $view.getFieldSort(column.prop as string).into()
 						return {
 							'data-field-id': column.field.id.value,
-							class: cx(
+							class: cn(
 								'border-r border-b border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-600 dark:border-gray-500  transition-[background] group flex justify-between bg-gray-100 !px-2',
 								{
 									'bg-blue-50': !!sort,

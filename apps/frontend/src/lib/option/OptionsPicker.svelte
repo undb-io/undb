@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import type { MultiSelectField, SelectField } from '@undb/core'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Button } from '$lib/components/ui/button'
@@ -21,7 +21,7 @@
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button class={cx('h-full', $$restProps.class)} variant="outline" disabled={readonly} builders={[builder]}>
+		<Button class={cn('h-full', $$restProps.class)} variant="outline" disabled={readonly} builders={[builder]}>
 			{#if selected.length}
 				<span class="inline-flex gap-2">
 					{#each selected as option}

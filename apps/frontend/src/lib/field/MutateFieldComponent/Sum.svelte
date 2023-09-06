@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms/index'
 	import ReferenceFieldPicker from '../FieldInputs/ReferenceFieldPicker.svelte'
@@ -35,7 +35,7 @@
 		bind:value={$referenceFieldId}
 		required
 		{...$$restProps}
-		class={cx('w-full !justify-start', $$restProps.class)}
+		class={cn('w-full !justify-start', $$restProps.class)}
 	/>
 	{#if coreTable}
 		<div class="space-y-2">
@@ -46,7 +46,7 @@
 				table={coreTable}
 				bind:value={$aggregateFieldId}
 				{...$$restProps}
-				class={cx('w-full !justify-start', $$restProps.class)}
+				class={cn('w-full !justify-start', $$restProps.class)}
 				fields={$getForeignTableFieldsByReferenceId($referenceFieldId)}
 				filter={(f) => isNumeric(f.type) && !isAggregate(f.type)}
 			/>

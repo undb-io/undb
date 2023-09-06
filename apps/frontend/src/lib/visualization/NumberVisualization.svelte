@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import type { NumberVisualization } from '@undb/core'
 	import { aggregateNumberFn } from '$lib/store/table'
 
@@ -13,7 +13,7 @@
 {:else}
 	<h1
 		{...$$restProps}
-		class={cx(
+		class={cn(
 			'scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-8xl text-center flex items-center justify-center',
 			$$restProps.class,
 		)}

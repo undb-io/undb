@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { Button } from '$lib/components/ui/button'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import CollaboratorComponent from '../CellComponents/CollaboratorComponent.svelte'
@@ -33,7 +33,7 @@
 		<Button
 			type="button"
 			variant="outline"
-			class={cx('inline-flex gap-3 max-h-10 max-w-none', $$restProps.class)}
+			class={cn('inline-flex gap-3 max-h-10 max-w-none', $$restProps.class)}
 			builders={[builder]}
 		>
 			{#if selected}
