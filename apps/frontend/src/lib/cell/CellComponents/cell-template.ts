@@ -1,5 +1,6 @@
 import { colors } from '$lib/field/helpers'
 import { tt } from '$lib/i18n'
+import { cn } from '$lib/utils'
 import type { RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
 import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime'
 import {
@@ -31,7 +32,6 @@ import {
 	type TreeField,
 	type UpdatedAtField,
 } from '@undb/core'
-import cx from 'classnames'
 import { format } from 'date-fns'
 import htm from 'htm'
 import { isArray, isNumber } from 'lodash-es'
@@ -156,7 +156,7 @@ const collaboratorComponent = (h: HyperFunc, collaborator: ICollaboratorProfile)
 			${!collaborator.avatar
 				? html`
 						<div
-							class=${cx(
+							class=${cn(
 								'relative inline-flex items-center !text-white justify-center w-5 h-5 overflow-hidden rounded-full border border-gray-300',
 								colors[collaborator.color],
 							)}
@@ -249,7 +249,7 @@ const rating: TemplateFunc = (h, props) => {
 		{ class: 'flex items-center ' },
 		new Array(max).fill(0).map((_, index) =>
 			h('i', {
-				class: cx(
+				class: cn(
 					'ti ti-star-filled w-4 h-4 inline-flex items-center justify-center ',
 					index < value ? ' text-yellow-400' : ' text-gray-300 dark:text-gray-500',
 				),
@@ -332,7 +332,7 @@ const referenceComponent = (h: HyperFunc, value: (string | null)[] = []) => {
 	return h(
 		'span',
 		{
-			class: cx(
+			class: cn(
 				'bg-gray-200 text-gray-600 border border-gray-300 dark:border-gray-950 text-xs px-2.5 py-0.5 rounded dark:bg-gray-600 dark:text-gray-200',
 				!content && 'text-gray-400 font-normal',
 			),
@@ -371,7 +371,7 @@ const optionComponent = (h: HyperFunc, { color, name }: IOptionSchema) => {
 	return h(
 		'span',
 		{
-			class: cx(c, textColor, 'text-xs font-medium mr-2 px-2.5 py-0.5 rounded'),
+			class: cn(c, textColor, 'text-xs font-medium mr-2 px-2.5 py-0.5 rounded'),
 		},
 		name,
 	)

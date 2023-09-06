@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { Alert } from 'flowbite-svelte'
+	import * as Alert from '$lib/components/ui/alert'
 
 	export let message: string
 </script>
 
-<Alert color="red" class="w-full">
-	{message}
-</Alert>
+<Alert.Root variant="destructive">
+	<Alert.Description>
+		{message}
+	</Alert.Description>
+</Alert.Root>

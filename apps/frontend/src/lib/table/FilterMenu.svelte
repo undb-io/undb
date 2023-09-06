@@ -1,7 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
-	import { Badge, Button, Modal, Toast } from 'flowbite-svelte'
-	import { slide } from 'svelte/transition'
+	import { Button } from '$components/ui/button'
 	import { trpc } from '$lib/trpc/client'
 	import { filters, getTable, getView, q, recordHash } from '$lib/store/table'
 	import { t } from '$lib/i18n'
@@ -9,8 +7,14 @@
 	import FilterEditor from '$lib/filter/FilterEditor.svelte'
 	import { getValidFilters } from '$lib/filter/filter.util'
 	import { hasPermission } from '$lib/store/authz'
+	import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover'
+	import Toast from '$components/ui/toast/toast.svelte'
+	import Badge from '$components/ui/badge/badge.svelte'
+	import * as Alert from '$lib/components/ui/alert'
 
 	let value = $filters
+
+	$: validFilters = getValidFilters(value)
 
 	const table = getTable()
 	const view = getView()
@@ -27,58 +31,67 @@
 			await $data.refetch()
 		},
 	})
-	async function apply() {
-		const validFilters = getValidFilters(value)
 
+	async function apply() {
 		$setFilter.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
-			filter: validFilters,
+			filter: getValidFilters(value),
 		})
 	}
 
 	let open = false
 </script>
 
-<Button
-	id="filters-menu"
-	size="xs"
-	color="alternative"
-	on:click={() => (open = true)}
-	class={cx(
-		'h-full !rounded-md whitespace-nowrap border-0 hover:!bg-blue-50 dark:hover:!bg-gray-800',
-		!!$filters.length && '!bg-blue-50 dark:!bg-primary-600',
-	)}
->
-	<span class="inline-flex items-center gap-2 text-blue-600 dark:text-gray-100">
-		<i class="ti ti-filter text-sm" />
-		{$t('Filter')}
+<Popover positioning={{ placement: 'bottom-start' }} closeOnOutsideClick={true} closeOnEscape bind:open>
+	<PopoverTrigger asChild let:builder>
+		<Button builders={[builder]} variant="secondary" class="gap-2 whitespace-nowrap" size="sm">
+			<i class="ti ti-filter text-sm" />
+			{$t('Filter')}
 
-		{#if !!$filters.length}
-			<Badge class="rounded-full h-4 px-2 bg-blue-700 !text-white">{$filters.length}</Badge>
-		{/if}
-	</span>
-</Button>
-<Modal placement="top-center" bind:open class="w-full rounded-sm" size="lg">
-	<form on:submit|preventDefault={apply} id="filter_menu" class="space-y-4">
-		{#if $hasPermission('table:set_view_filter')}
-			<span class="text-xs font-medium text-gray-500 dark:text-gray-300">{$t('set filters in this view')}</span>
-		{/if}
-		<FilterEditor bind:value let:add readonly={!$hasPermission('table:set_view_filter')}>
-			<div class="flex w-full justify-between">
-				<Button color="alternative" size="xs" on:click={add}>
-					{$t('Create New Filter')}
-				</Button>
-				<Button size="xs" type="submit" form="filter_menu">
-					{$t('Apply', { ns: 'common' })}
-				</Button>
-			</div>
-		</FilterEditor>
-	</form>
-</Modal>
+			{#if validFilters.length}
+				<Badge>{validFilters.length}</Badge>
+			{/if}
+		</Button>
+	</PopoverTrigger>
+	<PopoverContent class="w-[800px]">
+		<form on:submit|preventDefault={apply} id="filter_menu" class="space-y-4">
+			{#if $hasPermission('table:set_view_filter')}
+				<span class="text-xs font-medium text-gray-500 dark:text-gray-300">{$t('set filters in this view')}</span>
+			{/if}
+			<FilterEditor bind:value let:add readonly={!$hasPermission('table:set_view_filter')}>
+				<svelte:fragment slot="empty">
+					<Alert.Root>
+						<Alert.Title>
+							{$t('no filters applied')}
+						</Alert.Title>
+					</Alert.Root>
+				</svelte:fragment>
+				<div class="flex w-full justify-between">
+					<Button
+						class="bg-unset border-gray-200 border text-gray-900 dark:hover:bg-gray-900 hover:text-primary hover:bg-gray-100"
+						size="sm"
+						type="button"
+						on:click={add}
+					>
+						{$t('Create New Filter')}
+					</Button>
+					<div>
+						<Button size="sm" type="submit" variant="secondary">
+							{$t('Cancel', { ns: 'common' })}
+						</Button>
+						<Button size="sm" type="submit" form="filter_menu">
+							{$t('Apply', { ns: 'common' })}
+						</Button>
+					</div>
+				</div>
+			</FilterEditor>
+		</form>
+	</PopoverContent>
+</Popover>
 
 {#if $setFilter.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$setFilter.error.message}

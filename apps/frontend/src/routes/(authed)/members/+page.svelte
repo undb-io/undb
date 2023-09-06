@@ -2,27 +2,34 @@
 	import type { PageData } from './$types'
 	import { sidebarCollapsed } from '$lib/store/ui'
 	import MemberList from '$lib/authz/member/MemberList.svelte'
-	import { TabItem, Tabs } from 'flowbite-svelte'
 	import InviteModal from '$lib/invitation/InviteModal.svelte'
 	import { inviteModal } from '$lib/store/modal'
 	import InvitationList from '$lib/invitation/InvitationList.svelte'
 	import { t } from '$lib/i18n'
-	import { hasPermission } from '$lib/store/authz'
+	import * as Tabs from '$lib/components/ui/tabs'
 
 	export let data: PageData
 
 	$: members = data.members.members
 </script>
 
-<div class="space-y-2">
-	<Tabs style="underline">
-		<TabItem open title={$t('Members', { ns: 'common' })}>
+<div class="space-y-2 pt-6">
+	<Tabs.Root value="members">
+		<Tabs.List>
+			<Tabs.Trigger value="members">
+				{$t('Members', { ns: 'common' })}
+			</Tabs.Trigger>
+			<Tabs.Trigger value="invitations">
+				{$t('Invitations', { ns: 'common' })}
+			</Tabs.Trigger>
+		</Tabs.List>
+		<Tabs.Content value="members">
 			<MemberList {members} />
-		</TabItem>
-		<TabItem title={$t('Invitations', { ns: 'common' })} disabled={!$hasPermission('invitation:list')}>
+		</Tabs.Content>
+		<Tabs.Content value="invitations">
 			<InvitationList />
-		</TabItem>
-	</Tabs>
+		</Tabs.Content>
+	</Tabs.Root>
 </div>
 
 {#if $sidebarCollapsed}

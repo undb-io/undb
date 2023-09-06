@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Checkbox } from 'flowbite-svelte'
+	import { Checkbox } from '$components/ui/checkbox'
+
 	export let value: boolean = false
 	export let readonly: boolean = false
 </script>

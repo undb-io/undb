@@ -1,16 +1,9 @@
 <script lang="ts">
+	import { Label } from '$components/ui/label'
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { getTable } from '$lib/store/table'
-	import {
-		ANONYMOUS_USER_ID,
-		convertFilterSpec,
-		Record,
-		type Field,
-		type Form,
-		type RecordCompositeSpecification,
-	} from '@undb/core'
-	import { Label } from 'flowbite-svelte'
+	import { ANONYMOUS_USER_ID, Record, type Field, type Form, type RecordCompositeSpecification } from '@undb/core'
 	import type { SuperForm } from 'sveltekit-superforms/client'
 
 	export let form: Form
@@ -38,8 +31,8 @@
 
 {#if isMatch}
 	<div class="h-full items-start gap-1 pt-2">
-		<Label class="leading-5" for={field.id.value} data-field-id={field.id.value}>
-			<div class="inline-flex items-center gap-2">
+		<Label class="leading-5" for={field.id.value}>
+			<div class="inline-flex items-center gap-2" data-field-id={field.id.value}>
 				<FieldIcon type={field.type} size={16} />
 				<span>
 					{field.name.value}

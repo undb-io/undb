@@ -2,7 +2,7 @@
 	import { getTable, getView } from '$lib/store/table'
 	import GalleryConfig from './GalleryConfig.svelte'
 	import GalleryView from './GalleryView.svelte'
-	import { Card } from 'flowbite-svelte'
+	import * as Card from '$lib/components/ui/card'
 	import type { AttachmentField } from '@undb/core'
 
 	const table = getTable()
@@ -16,8 +16,10 @@
 	<GalleryView {field} />
 {:else}
 	<div class="flex items-center justify-center h-screen w-full bg-gray-100 dark:bg-slate-800/80">
-		<Card class="flex-1">
-			<GalleryConfig />
-		</Card>
+		<Card.Root class="w-96">
+			<Card.Header>
+				<GalleryConfig />
+			</Card.Header>
+		</Card.Root>
 	</div>
 {/if}

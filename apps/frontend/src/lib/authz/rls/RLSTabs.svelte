@@ -1,11 +1,21 @@
 <script lang="ts">
-	import { Tabs } from 'flowbite-svelte'
 	import { rlsActions } from '@undb/authz'
 	import RlsTab from './RLSTab.svelte'
+	import * as Tabs from '$components/ui/tabs'
+	import RlsTabTrigger from './RLSTabTrigger.svelte'
 </script>
 
-<Tabs style="underline">
+<Tabs.Root style="underline">
+	<Tabs.List>
+		{#each rlsActions as action}
+			<Tabs.Trigger value={action}>
+				<RlsTabTrigger {action} />
+			</Tabs.Trigger>
+		{/each}
+	</Tabs.List>
 	{#each rlsActions as action}
-		<RlsTab {action} />
+		<Tabs.Content value={action}>
+			<RlsTab {action} />
+		</Tabs.Content>
 	{/each}
-</Tabs>
+</Tabs.Root>

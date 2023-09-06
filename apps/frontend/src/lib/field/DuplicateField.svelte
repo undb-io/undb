@@ -2,14 +2,16 @@
 	import { t } from '$lib/i18n'
 	import { duplicateFieldModal } from '$lib/store/modal'
 	import type { Field } from '@undb/core'
-	import { Button, Modal, Toggle } from 'flowbite-svelte'
+	import { Button } from '$components/ui/button'
+	import { Switch } from '$lib/components/ui/switch'
 	import FieldIcon from './FieldIcon.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import { getTable } from '$lib/store/table'
+	import * as Dialog from '$lib/components/ui/dialog'
+	import { Label } from '$components/ui/label'
 
 	const table = getTable()
-	const view = getTable()
 
 	export let field: Field
 
@@ -23,30 +25,36 @@
 	})
 </script>
 
-<Modal bind:open={$duplicateFieldModal.open} class="w-full" autoclose={false}>
-	<svelte:fragment slot="header">
-		<div class="flex items-center gap-2">
-			<p class="text-xl dark:text-white">{$t('Duplicate Field')}</p>
-			<FieldIcon type={field.type} />
-			<p>{field.name.value}</p>
+<Dialog.Root bind:open={$duplicateFieldModal.open}>
+	<Dialog.Content class="block space-y-2">
+		<Dialog.Header>
+			<Dialog.Title>
+				<div class="flex items-center gap-2">
+					<p class="text-xl dark:text-white">{$t('Duplicate Field')}</p>
+					<FieldIcon type={field.type} />
+					<p>{field.name.value}</p>
+				</div>
+			</Dialog.Title>
+		</Dialog.Header>
+		<Label class="inline-flex items-center gap-2">
+			<Switch bind:checked={includesValues}></Switch>
+			{$t('duplicate field include values')}
+		</Label>
+		<div class="flex justify-end gap-2">
+			<Button size="sm" variant="secondary" on:click={() => duplicateFieldModal.close()}>
+				{$t('Cancel', { ns: 'common' })}
+			</Button>
+			<Button
+				size="sm"
+				on:click={() =>
+					$duplicateField.mutate({
+						tableId: $table.id.value,
+						id: field.id.value,
+						includesValues,
+					})}
+			>
+				{$t('Confirm', { ns: 'common' })}
+			</Button>
 		</div>
-	</svelte:fragment>
-	<Toggle size="small" bind:checked={includesValues}>{$t('duplicate field include values')}</Toggle>
-	<div class="flex justify-end gap-2">
-		<Button size="xs" color="alternative" outline on:click={() => duplicateFieldModal.close()}>
-			{$t('Cancel', { ns: 'common' })}
-		</Button>
-		<Button
-			size="xs"
-			color="blue"
-			on:click={() =>
-				$duplicateField.mutate({
-					tableId: $table.id.value,
-					id: field.id.value,
-					includesValues,
-				})}
-		>
-			{$t('Confirm', { ns: 'common' })}
-		</Button>
-	</div>
-</Modal>
+	</Dialog.Content>
+</Dialog.Root>

@@ -1,13 +1,17 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import RecordCard from '$lib/record/RecordCard.svelte'
 	import type { Records, Record, ReferenceFieldTypes, Table } from '@undb/core'
-	import { Alert, Button, Checkbox, CloseButton, Modal, Search, Spinner } from 'flowbite-svelte'
+	import * as Alert from '$lib/components/ui/alert'
+	import { Button } from '$lib/components/ui/button'
 	import VirtualList from 'svelte-tiny-virtual-list'
 	import { tableById } from '$lib/store/table'
 	import { writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
 	import { isString } from 'lodash-es'
+	import { Input } from '$components/ui/input'
+	import * as Dialog from '$lib/components/ui/dialog'
+	import { Label } from '$components/ui/label'
 
 	let loading = false
 	let initialLoading = false
@@ -100,14 +104,16 @@
 							{field}
 							{record}
 							{schema}
-							class="!py-2 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 !max-w-none"
+							class="w-full shadow-none hover:shadow-md transition hover:border-blue-400 !max-w-none"
 							role="button"
 						/>
 						{#if !readonly}
-							<CloseButton
+							<button
 								on:click={() => remove(record.id.value)}
-								class="absolute z-50 right-0 top-[50%] text-sm translate-y-[-55%] translate-x-[-50%] hidden group-hover:block text-gray-500"
-							/>
+								class="absolute z-50 right-2 top-[50%] text-sm translate-y-[-50%] translate-x-[-50%] hidden group-hover:block text-gray-500"
+							>
+								<i class="ti ti-x text-lg"></i>
+							</button>
 						{/if}
 					</div>
 				{/if}
@@ -117,70 +123,80 @@
 
 	{#if !readonly}
 		<Button
-			color="alternative"
+			variant="outline"
+			type="button"
 			on:click={() => (open = true)}
 			{...$$restProps}
-			class={cx('space-x-2', $$restProps.class)}
+			class={cn('space-x-2', $$restProps.class)}
 		>
 			{#if initialLoading}
-				<Spinner size="4" />
+				<i class="ti ti-rotate animate-spin"></i>
 			{:else}
 				<i class="ti ti-plus" />
 				<span>{$t('Select Record')}</span>
 			{/if}
 		</Button>
-		<Modal title={$t('Select Record') ?? undefined} bind:open size="md" class="w-[700px] h-[600px]">
-			{#if loading}
-				<div class="flex w-full h-full items-center justify-center">
-					<Spinner />
-				</div>
-			{:else if !$records.length}
-				<Alert>{$t('no record available')}</Alert>
-			{:else}
-				<form bind:this={form} on:submit={onSubmit}>
-					<div class="flex items-center gap-2">
-						<Search name="search" placeholder={$t('search')} size="sm"></Search>
-						<Button type="submit" size="xs" class="!p-2.5 hidden lg:block">
-							<svg
-								class="w-3 h-3"
-								fill="none"
-								stroke="currentColor"
-								viewBox="0 0 24 24"
-								xmlns="http://www.w3.org/2000/svg"
-							>
-								<path
-									stroke-linecap="round"
-									stroke-linejoin="round"
-									stroke-width="2"
-									d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+
+		<Dialog.Root bind:open>
+			<Dialog.Content>
+				<Dialog.Header>
+					<Dialog.Title>{$t('Select Record') ?? undefined}</Dialog.Title>
+				</Dialog.Header>
+
+				{#if loading}
+					<div class="flex w-full h-full items-center justify-center">
+						<i class="ti ti-rotate animate-spin"></i>
+					</div>
+				{:else if !$records.length}
+					<Alert.Root>
+						<Alert.Title>
+							{$t('no record available')}
+						</Alert.Title>
+					</Alert.Root>
+				{:else}
+					<form bind:this={form} on:submit={onSubmit}>
+						<div class="flex items-center gap-2">
+							<Input name="search" placeholder={$t('search')}></Input>
+							<Button type="submit" size="sm" class="!p-2.5 hidden lg:block">
+								<svg
+									class="w-3 h-3"
+									fill="none"
+									stroke="currentColor"
+									viewBox="0 0 24 24"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+									/>
+								</svg>
+							</Button>
+						</div>
+					</form>
+					<VirtualList height={600} width="100%" itemCount={$records.length} itemSize={46}>
+						<div slot="item" let:index let:style {style} class="flex items-stretch">
+							<Label class="w-full">
+								<input
+									type="checkbox"
+									class="hidden"
+									value={$records[index].id.value}
+									on:change={(e) => {
+										change(e, $records[index].id.value)
+									}}
 								/>
-							</svg>
-						</Button>
-					</div>
-				</form>
-				<VirtualList height={600} width="100%" itemCount={$records.length} itemSize={46}>
-					<div slot="item" let:index let:style {style} class="flex items-stretch">
-						<Checkbox
-							inline
-							value={$records[index].id.value}
-							custom
-							on:change={(e) => {
-								change(e, $records[index].id.value)
-								open = false
-							}}
-							class="w-full"
-						>
-							<RecordCard
-								{field}
-								{schema}
-								record={$records[index]}
-								class="!py-2 w-full shadow-none hover:shadow-md transition hover:border-blue-400 border-2 !max-w-none"
-								role="button"
-							/>
-						</Checkbox>
-					</div>
-				</VirtualList>
-			{/if}
-		</Modal>
+								<RecordCard
+									{field}
+									{schema}
+									record={$records[index]}
+									class="w-full shadow-none hover:shadow-md transition hover:border-blue-400 !max-w-none"
+								/>
+							</Label>
+						</div>
+					</VirtualList>
+				{/if}
+			</Dialog.Content>
+		</Dialog.Root>
 	{/if}
 {/if}

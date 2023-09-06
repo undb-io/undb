@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { getExtension, isImage, type IAttachmentFieldValue } from '@undb/core'
-	import { Img } from 'flowbite-svelte'
 
 	export let value: IAttachmentFieldValue
 </script>
@@ -11,7 +10,7 @@
 		{#if extension}
 			{@const img = isImage(attachment)}
 			{#if img}
-				<Img src={attachment.url} alt={attachment.name} />
+				<img src={attachment.url} alt={attachment.name} />
 			{:else}
 				{extension}
 			{/if}

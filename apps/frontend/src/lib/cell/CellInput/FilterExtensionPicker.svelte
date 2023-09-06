@@ -1,9 +1,8 @@
 <script lang="ts">
-	import cx from 'classnames'
-	import { Button, Checkbox, Dropdown } from 'flowbite-svelte'
-	import Portal from 'svelte-portal'
-
-	let open = false
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { Button } from '$lib/components/ui/button'
+	import { Label } from '$components/ui/label'
+	import { t } from '$lib/i18n'
 
 	export let value: string[] = []
 	$: {
@@ -18,43 +17,36 @@
 		{ value: '.pptx', label: '.pptx' },
 		{ value: '.txt', label: '.txt' },
 	] as const
-
-	$: selected = types.filter((t) => value.includes(t.value))
 </script>
 
-<Button
-	color="alternative"
-	{...$$restProps}
-	class={cx($$restProps.class, 'gap-2 extension_picker')}
-	on:click={() => (open = true)}
->
-	{#each selected as item}
-		<span class="whitespace-nowrap text-xs">
-			{item.label}
-		</span>
-		<!-- content here -->
-	{/each}
-</Button>
-<Portal target="body">
-	<Dropdown style="z-index: 50;" triggeredBy=".extension_picker" class="z-[99999] w-48" bind:open>
-		{#each types as type (type.value)}
+<DropdownMenu.Root>
+	<DropdownMenu.Trigger asChild let:builder>
+		<Button variant="outline" builders={[builder]}>
+			{#if value.length}
+				{value.join(', ')}
+			{:else}
+				<span class="text-sm text-gray-300">
+					{$t('select extension')}
+				</span>
+			{/if}
+		</Button>
+	</DropdownMenu.Trigger>
+	<DropdownMenu.Content class="w-56">
+		{#each types as type}
 			{@const selected = value.includes(type.value)}
-			<Checkbox value={type.value} bind:group={value} custom on:change={() => (open = false)}>
-				<div
-					role="listitem"
-					class="w-full pr-4 flex justify-between hover:bg-gray-100 transition cursor-pointer"
-					class:bg-gray-100={selected}
+			<DropdownMenu.Item>
+				<Label
+					class="inline-flex items-center justify-between cursor-pointer w-full hover:bg-gray-100 dark:hover:bg-gray-400 gap-2"
 				>
-					<span class="text-xs">
+					<input type="checkbox" bind:group={value} value={type.value} class="hidden" />
+					<span>
 						{type.label}
 					</span>
-					<span>
-						{#if selected}
-							<i class="ti ti-check text-sm" />
-						{/if}
-					</span>
-				</div>
-			</Checkbox>
+					{#if selected}
+						<i class="ti ti-check"></i>
+					{/if}
+				</Label>
+			</DropdownMenu.Item>
 		{/each}
-	</Dropdown>
-</Portal>
+	</DropdownMenu.Content>
+</DropdownMenu.Root>

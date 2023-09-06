@@ -3,15 +3,14 @@
 	import Sortable, { type SortableEvent } from 'sortablejs'
 	import { identity, isNumber } from 'lodash-es'
 	import FilterItem from '$lib/table/FilterItem.svelte'
-	import { Alert } from 'flowbite-svelte'
-	import { t } from '$lib/i18n'
 	export let value: Partial<IFilter>[] = []
 	export let readonly = false
 	export let fieldFilter: (field: IQueryFieldSchema) => boolean = identity
+	export let createInitial = true
 
 	$: if (!value) value = []
 
-	$: if (!value?.length && !readonly) {
+	$: if (!value?.length && !readonly && createInitial) {
 		add()
 	}
 
@@ -51,9 +50,7 @@
 		{/each}
 	</ul>
 {:else}
-	<Alert color="blue">
-		{$t('no filters applied')}
-	</Alert>
+	<slot name="empty" />
 {/if}
 {#if !readonly}
 	<slot {add} />

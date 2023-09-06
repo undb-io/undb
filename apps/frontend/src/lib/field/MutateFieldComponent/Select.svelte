@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { Alert, Label } from 'flowbite-svelte'
+	import * as Alert from '$lib/components/ui/alert'
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
 	import OptionsInput from '../FieldInputs/OptionsInput.svelte'
 	import type { Writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
 	import type { FieldTypeConvertStrategy } from '@undb/core'
+	import { Label } from '$components/ui/label'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 	export let path: any[] = []
@@ -16,7 +17,11 @@
 </script>
 
 {#if isUpdatingType && fieldConvertStrategy === 'match'}
-	<Alert>{$t('updatingType.select')}</Alert>
+	<Alert.Root>
+		<Alert.Title>
+			{$t('updatingType.select')}
+		</Alert.Title>
+	</Alert.Root>
 {:else}
 	<div class="space-y-2">
 		<Label class="space-y-2">

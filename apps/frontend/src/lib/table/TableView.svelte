@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { RecordFactory, type IViewPinnedFields, type PinnedPosition, type IViewRowHeight } from '@undb/core'
-	import cx from 'classnames'
+	import { clickOutside, cn } from '$lib/utils'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
-	import { Button, Dropdown, Modal, Spinner } from 'flowbite-svelte'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import type { RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
 	import type { Components, RevoGridCustomEvent } from '@revolist/revogrid'
 	import { defineCustomElements } from '@revolist/revogrid/loader'
@@ -12,6 +12,7 @@
 	import EmptyTable from './EmptyTable.svelte'
 	import {
 		currentFieldId,
+		currentFieldMenuRect,
 		currentRecordId,
 		getField,
 		getTable,
@@ -22,7 +23,6 @@
 	} from '$lib/store/table'
 	import { invalidate } from '$app/navigation'
 	import FieldMenu from '$lib/field/FieldMenu.svelte'
-	import Portal from 'svelte-portal'
 	import { onMount, tick } from 'svelte'
 	import { editors } from '$lib/cell/CellEditors/editors'
 	import { t } from '$lib/i18n'
@@ -32,6 +32,7 @@
 	import { recordSelection, selectedCount, selectedRecords } from '$lib/store/record'
 	import { getColumnTemplate } from '$lib/field/field-template'
 	import { hasPermission } from '$lib/store/authz'
+	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -138,7 +139,7 @@
 						h(
 							'span',
 							{
-								class: cx(
+								class: cn(
 									'undb-row-index relative basis-[50%] text-gray-400 text-xs opacity-100 text-ellipsis whitespace-nowrap group-hover:hidden dark:text-gray-100 ',
 									checked && 'hidden',
 								),
@@ -149,7 +150,7 @@
 							'button',
 							{
 								onClick: () => expand(props.model.id),
-								class: cx(
+								class: cn(
 									'undb-row-expand absolute w-6 h-6 rounded-full hover:bg-blue-100 dark:hover:bg-blue-500 top-1/2 left-3/4 translate-y-[-50%] translate-x-[-50%] text-xs opacity-0 text-gray-400 dark:text-gray-100 ',
 								),
 							},
@@ -161,7 +162,7 @@
 							onChange: (event: any) => {
 								recordSelection.updateSelect(props.model.id, event.target.checked)
 							},
-							class: cx(
+							class: cn(
 								'undb-select absolute top-1/2 left-1/4 translate-y-[-50%] translate-x-[-50%] w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center group-hover:opacity-100',
 								!checked && 'opacity-0',
 							),
@@ -185,7 +186,7 @@
 						const sort = $view.getFieldSort(column.prop as string).into()
 						return {
 							'data-field-id': column.field.id.value,
-							class: cx(
+							class: cn(
 								'border-r border-b border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-600 dark:border-gray-500  transition-[background] group flex justify-between bg-gray-100 !px-2',
 								{
 									'bg-blue-50': !!sort,
@@ -292,6 +293,11 @@
 			isLoading = true
 		}, 300)
 	}
+
+	let menu: HTMLButtonElement
+	$: if (fieldMenuDOMId && $currentFieldMenuRect && menu) {
+		menu.click()
+	}
 </script>
 
 <div class="h-full relative">
@@ -323,100 +329,66 @@
 	<TableViewToast open={!!$selectedCount} />
 {/if}
 
-{#if fieldMenuDOMId}
+{#if fieldMenuDOMId && $currentFieldMenuRect}
 	{#key fieldMenuDOMId}
-		<Portal target="body">
-			<Dropdown
-				style="z-index: 50;"
-				open
-				triggeredBy={`#${fieldMenuDOMId}`}
-				class="w-[250px] border border-gray-200 dark:border-0 dark:shadow-md rounded-md z-[99999]"
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger
+				class="fixed"
+				style={`left: ${$currentFieldMenuRect.left}px; right: ${$currentFieldMenuRect.right}px; top: ${$currentFieldMenuRect.top}px; bottom: ${$currentFieldMenuRect.bottom}px`}
 			>
-				{#if $hasPermission('table:update_field')}
-					<FieldMenu {togglePin} />
-				{/if}
-			</Dropdown>
-		</Portal>
+				<button bind:this={menu} class="hidden" tabindex="-1"></button>
+			</DropdownMenu.Trigger>
+			{#if $hasPermission('table:update_field')}
+				<DropdownMenu.Content asChild>
+					<div
+						use:clickOutside
+						on:click_outside={() => currentFieldId.set(undefined)}
+						class="fixed w-56 bg-white border py-1 rounded-sm shadow-sm z-[999999999]"
+						style={`left: ${$currentFieldMenuRect.left - 50}px; top: ${$currentFieldMenuRect.top + 30}px;`}
+					>
+						<FieldMenu {togglePin} />
+					</div>
+				</DropdownMenu.Content>
+			{/if}
+		</DropdownMenu.Root>
 	{/key}
 {/if}
 
-<Modal bind:open={$confirmBulkDeleteRecords} size="xs">
-	<div class="text-center">
-		<svg
-			aria-hidden="true"
-			class="mx-auto mb-4 w-14 h-14 text-gray-400 dark:text-gray-200"
-			fill="none"
-			stroke="currentColor"
-			viewBox="0 0 24 24"
-			xmlns="http://www.w3.org/2000/svg"
-			><path
-				stroke-linecap="round"
-				stroke-linejoin="round"
-				stroke-width="2"
-				d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-			/></svg
-		>
-		<h3 class="mb-5 text-lg font-normal text-gray-500 dark:!text-gray-200">
-			{$t('Confirm Delete Record')}
-		</h3>
-		<Button
-			color="red"
-			class="mr-2 gap-2 whitespace-nowrap"
-			disabled={$bulkDeleteRecordsMutation.isLoading}
-			on:click={bulkDeleteRecords}
-		>
-			{#if $bulkDeleteRecordsMutation.isLoading}
-				<Spinner size="xs" />
-			{:else}
-				<i class="ti ti-circle-check text-lg" />
-			{/if}
-			{$t('Confirm Yes', { ns: 'common' })}</Button
-		>
-		<Button color="alternative">{$t('Confirm No', { ns: 'common' })}</Button>
-	</div>
-</Modal>
+<AlertDialog.Root bind:open={$confirmBulkDeleteRecords}>
+	<AlertDialog.Content>
+		<AlertDialog.Header>
+			<AlertDialog.Title>{$t('Confirm Delete Record')}</AlertDialog.Title>
+		</AlertDialog.Header>
+		<AlertDialog.Footer>
+			<AlertDialog.Cancel>{$t('Confirm No', { ns: 'common' })}</AlertDialog.Cancel>
+			<AlertDialog.Action on:click={bulkDeleteRecords}>
+				{$t('Confirm Yes', { ns: 'common' })}
+			</AlertDialog.Action>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>
 
-<Portal target="body">
-	<Modal bind:open={$confirmDeleteField} size="xs">
-		<div class="text-center">
-			<svg
-				aria-hidden="true"
-				class="mx-auto mb-4 w-14 h-14 text-gray-400 dark:text-gray-200"
-				fill="none"
-				stroke="currentColor"
-				viewBox="0 0 24 24"
-				xmlns="http://www.w3.org/2000/svg"
-				><path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-				/></svg
-			>
-			<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-200">
-				{$t('Confirm Delete Field')}
-			</h3>
-			<Button
-				color="red"
-				class="mr-2 gap-2 whitespace-nowrap"
-				disabled={$deleteField.isLoading}
-				on:click={() => {
-					if ($field) {
-						$deleteField.mutate({ tableId: $table.id.value, id: $field.id.value })
-					}
-				}}
-			>
-				{#if $deleteField.isLoading}
-					<Spinner size="xs" />
-				{:else}
-					<i class="ti ti-circle-check text-lg" />
-				{/if}
-				{$t('Confirm Yes', { ns: 'common' })}</Button
-			>
-			<Button color="alternative">{$t('Confirm No', { ns: 'common' })}</Button>
-		</div>
-	</Modal>
-</Portal>
+{#if $confirmDeleteField}
+	<AlertDialog.Root bind:open={$confirmDeleteField}>
+		<AlertDialog.Content>
+			<AlertDialog.Header>
+				<AlertDialog.Title>{$t('Confirm Delete Field')}</AlertDialog.Title>
+			</AlertDialog.Header>
+			<AlertDialog.Footer>
+				<AlertDialog.Cancel>{$t('Confirm No', { ns: 'common' })}</AlertDialog.Cancel>
+				<AlertDialog.Action
+					on:click={() => {
+						if ($field) {
+							$deleteField.mutate({ tableId: $table.id.value, id: $field.id.value })
+						}
+					}}
+				>
+					{$t('Confirm Yes', { ns: 'common' })}
+				</AlertDialog.Action>
+			</AlertDialog.Footer>
+		</AlertDialog.Content>
+	</AlertDialog.Root>
+{/if}
 
 <style>
 	:global(revo-grid[theme='compact'] revogr-header .header-rgRow) {

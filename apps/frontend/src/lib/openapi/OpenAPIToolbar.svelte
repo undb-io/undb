@@ -1,8 +1,9 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { sidebarCollapsed } from '$lib/store/ui'
-	import TableNavigator from '$lib/table/TableNavigator.svelte'
-	import { Button, Dropdown, DropdownItem, Tooltip } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import * as Tooltip from '$lib/components/ui/tooltip'
 	import { getTable } from '$lib/store/table'
 	import { t } from '$lib/i18n'
 
@@ -26,30 +27,42 @@
 	}
 </script>
 
-<div class={cx('w-full py-3 border-b border-gray-200 dark:bg-gray-800', $sidebarCollapsed ? 'px-2' : 'px-5')}>
+<div class={cn('w-full py-3 border-b border-gray-200 dark:bg-gray-800', $sidebarCollapsed ? 'px-2' : 'px-5')}>
 	<div class="flex items-center gap-2 w-full">
 		{#if $sidebarCollapsed}
 			<div class="ml-2">
-				<button on:click={() => ($sidebarCollapsed = false)}>
-					<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
-				</button>
-				<Tooltip placement="bottom">meta + b</Tooltip>
+				<Tooltip.Root>
+					<Tooltip.Trigger>
+						<button on:click={() => ($sidebarCollapsed = false)}>
+							<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
+						</button>
+					</Tooltip.Trigger>
+					<Tooltip.Content>meta + b</Tooltip.Content>
+				</Tooltip.Root>
 			</div>
 		{/if}
 
 		<div class="flex items-center justify-between w-full">
-			<TableNavigator />
+			<p class="font-bold dark:text-white">{$table.name.value}</p>
 			<div>
-				<Button size="xs" class="gap-2">
-					<i class="ti ti-chevron-down"></i>
-					<span>
-						{$t('download openapi')}
-					</span>
-				</Button>
-				<Dropdown style="z-index: 50;">
-					<DropdownItem on:click={() => download()}>{$t('openapi spec')}</DropdownItem>
-					<DropdownItem on:click={() => download('postman')}>{$t('postman collections')}</DropdownItem>
-				</Dropdown>
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger>
+						<Button size="sm" class="gap-2">
+							<i class="ti ti-chevron-down"></i>
+							<span>
+								{$t('download openapi')}
+							</span>
+						</Button>
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content>
+						<DropdownMenu.Item on:click={() => download()}>
+							{$t('openapi spec')}
+						</DropdownMenu.Item>
+						<DropdownMenu.Item on:click={() => download('postman')}>
+							{$t('postman collections')}
+						</DropdownMenu.Item>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
 			</div>
 		</div>
 	</div>

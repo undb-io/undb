@@ -5,13 +5,16 @@
 	import { dndzone } from 'svelte-dnd-action'
 	import type { SelectField } from '@undb/core'
 	import { trpc } from '$lib/trpc/client'
-	import { Badge, Button, Dropdown, DropdownItem, Toast } from 'flowbite-svelte'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { Badge } from '$lib/components/ui/badge'
+	import { Button } from '$lib/components/ui/button'
 	import { createOptionModal, updateOptionModal } from '$lib/store/modal'
 	import { invalidate } from '$app/navigation'
 	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import KanbanLane from '$lib/kanban/KanbanLane.svelte'
 	import { UNCATEGORIZED } from '$lib/kanban/kanban.constants'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	export let field: SelectField
 	const flipDurationMs = 200
@@ -83,43 +86,47 @@
 								<div class="flex items-center justify-between pr-2">
 									<Option option={item.option} />
 									{#if !$readonly}
-										<i class="ti ti-dots text-gray-400 dark:text-gray-200 cursor-pointer" />
-										<Dropdown style="z-index: 50;">
-											<DropdownItem
-												class="text-gray-600 text-xs space-y-2 dark:text-gray-200"
-												on:click={() => {
-													$currentFieldId = field?.id.value
-													$currentOption = item.option
-													updateOptionModal.open()
-												}}
-											>
-												<i class="ti ti-pencil" />
-												<span>
-													{$t('Update Option')}
-												</span>
-											</DropdownItem>
-											<DropdownItem
-												class="text-red-400 text-xs space-y-2"
-												on:click={() => {
-													if (item.option && field) {
-														$deleteOption.mutate({
-															tableId: $table.id.value,
-															fieldId: field.id.value,
-															id: item.option.key.value,
-														})
-													}
-												}}
-											>
-												<i class="ti ti-trash" />
-												<span>
-													{$t('Delete Option')}
-												</span>
-											</DropdownItem>
-										</Dropdown>
+										<DropdownMenu.Root>
+											<DropdownMenu.Trigger>
+												<i class="ti ti-dots text-gray-400 dark:text-gray-200 cursor-pointer" />
+											</DropdownMenu.Trigger>
+											<DropdownMenu.Content>
+												<DropdownMenu.Item
+													class="gap-2 text-xs"
+													on:click={() => {
+														$currentFieldId = field?.id.value
+														$currentOption = item.option
+														updateOptionModal.open()
+													}}
+												>
+													<i class="ti ti-pencil" />
+													<span>
+														{$t('Update Option')}
+													</span>
+												</DropdownMenu.Item>
+												<DropdownMenu.Item
+													class="text-red-400 text-xs gap-2"
+													on:click={() => {
+														if (item.option && field) {
+															$deleteOption.mutate({
+																tableId: $table.id.value,
+																fieldId: field.id.value,
+																id: item.option.key.value,
+															})
+														}
+													}}
+												>
+													<i class="ti ti-trash" />
+													<span>
+														{$t('Delete Option')}
+													</span>
+												</DropdownMenu.Item>
+											</DropdownMenu.Content>
+										</DropdownMenu.Root>
 									{/if}
 								</div>
 							{:else}
-								<Badge color="dark">{item.name}</Badge>
+								<Badge variant="secondary">{item.name}</Badge>
 							{/if}
 						</div>
 					</div>
@@ -152,9 +159,8 @@
 					currentFieldId.set(field?.id.value)
 					createOptionModal.open()
 				}}
-				size="xs"
-				color="light"
-				outline
+				size="sm"
+				variant="outline"
 				class="w-full rounded-sm whitespace-nowrap inline-flex gap-2 dark:text-gray-200"
 			>
 				<i class="ti ti-plus" />
@@ -165,7 +171,7 @@
 </div>
 
 {#if $reorderOptions.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$reorderOptions.error.message}

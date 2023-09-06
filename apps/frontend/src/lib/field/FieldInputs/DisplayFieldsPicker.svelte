@@ -1,9 +1,12 @@
 <script lang="ts">
-	import { Badge, Button, Checkbox, Dropdown, Popover } from 'flowbite-svelte'
+	import * as Popover from '$lib/components/ui/popover'
 	import { canDisplay, type IQueryFieldSchema } from '@undb/core'
-	import Portal from 'svelte-portal'
 	import FieldIcon from '../FieldIcon.svelte'
 	import { t } from '$lib/i18n'
+	import Label from '$components/ui/label/label.svelte'
+	import { Button } from '$components/ui/button'
+	import { Badge } from '$components/ui/badge'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 
 	export let group: string[] | undefined = []
 	export let fields: IQueryFieldSchema[] = []
@@ -15,74 +18,72 @@
 	$: selected = filteredFields.filter((f) => group?.includes(f.id))
 </script>
 
-<Button id="displayFieldIds" color="alternative" class="max-w-max" {...$$restProps}>
-	{@const first = filteredFields.find((f) => f.id === group?.[0])}
-	{#if !group?.length}
-		<span>
-			{#if !displayFields.length}
-				{$t('no display fields in', { table: tableName })}
+<DropdownMenu.Root>
+	<DropdownMenu.Trigger asChild let:builder>
+		<Button variant="outline" class="max-w-max" {...$$restProps} builders={[builder]}>
+			{@const first = filteredFields.find((f) => f.id === group?.[0])}
+			{#if !group?.length}
+				<span>
+					{#if !displayFields.length}
+						{$t('no display fields in', { table: tableName })}
+					{:else}
+						<Popover.Root>
+							<Popover.Trigger>
+								<span>{@html $t('Auto Display Field', { table: tableName })}</span>
+							</Popover.Trigger>
+							<Popover.Content class="w-64 text-sm font-light">
+								<div class="flex flex-wrap gap-2">
+									{#each displayFields as field}
+										<Badge>{field.name}</Badge>
+									{/each}
+								</div>
+							</Popover.Content>
+						</Popover.Root>
+					{/if}
+				</span>
+			{:else if group?.length === 1}
+				<Badge variant="secondary">{first?.name ?? ''}</Badge>
 			{:else}
-				<span>{@html $t('Auto Display Field', { table: tableName })}</span>
-				<Popover class="w-64 text-sm font-light" title={$t('Display Fields') ?? undefined}>
-					<div class="flex flex-wrap gap-2">
-						{#each displayFields as field}
-							<Badge>{field.name}</Badge>
-						{/each}
-					</div>
-				</Popover>
+				<Popover.Root>
+					<Popover.Trigger>
+						<span>
+							<Badge variant="secondary" class="mr-2">{first?.name ?? ''}</Badge>{$t('and n more', {
+								ns: 'common',
+								n: group?.length,
+							})}
+						</span>
+					</Popover.Trigger>
+					<Popover.Content class="w-64 text-sm font-light">
+						<div class="flex flex-wrap gap-2">
+							{#each selected as field}
+								<Badge>{field.name}</Badge>
+							{/each}
+						</div>
+					</Popover.Content>
+				</Popover.Root>
 			{/if}
-		</span>
-	{:else if group?.length === 1}
-		<Badge color="dark">{first?.name ?? ''}</Badge>
-	{:else}
-		<span>
-			<Badge color="dark" class="mr-2">{first?.name ?? ''}</Badge>{$t('and n more', {
-				ns: 'common',
-				n: group?.length,
-			})}</span
-		>
-		<Popover class="w-64 text-sm font-light" title={$t('Display Fields') ?? undefined}>
-			<div class="flex flex-wrap gap-2">
-				{#each selected as field}
-					<Badge>{field.name}</Badge>
-				{/each}
-			</div>
-		</Popover>
-	{/if}
-</Button>
-<Portal target="body">
-	<Dropdown
-		style="z-index: 50;"
-		triggeredBy="#displayFieldIds"
-		inline
-		class="max-h-64 w-[400px] overflow-y-auto py-1 shadow-md z-[999999]"
-	>
-		{#if !filteredFields.length}
-			<div class="px-3 py-2">
-				<slot name="empty" />
-			</div>
-		{/if}
-
+		</Button>
+	</DropdownMenu.Trigger>
+	<DropdownMenu.Content>
 		{#each filteredFields as field}
 			{@const selected = !!group?.includes(field.id)}
-			<Checkbox
-				value={field.id}
-				bind:group
-				class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-500 cursor-pointer"
-				custom
-			>
-				<li class="w-full flex justify-between items-center text-gray-500 dark:text-gray-200">
-					<div class="flex flex-1 items-center gap-2">
-						<FieldIcon type={field.type} size={16} />
-						<span>
-							{field.name}
-						</span>
-					</div>
-					{#if selected}
-						<i class="ti ti-check text-sm" />
-					{/if}
-				</li>
-			</Checkbox>
+			<DropdownMenu.Item>
+				<Label class="px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-500 cursor-pointer">
+					<li class="w-full flex justify-between items-center text-gray-500 dark:text-gray-200">
+						<div class="flex flex-1 items-center gap-2">
+							<FieldIcon type={field.type} size={16} />
+							<span>
+								{field.name}
+							</span>
+						</div>
+						{#if selected}
+							<i class="ti ti-check text-sm" />
+						{/if}
+					</li>
+
+					<input type="checkbox" value={field.id} bind:group />
+				</Label>
+			</DropdownMenu.Item>
 		{/each}
-	</Dropdown>
-</Portal>
+	</DropdownMenu.Content>
+</DropdownMenu.Root>

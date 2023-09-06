@@ -17,7 +17,10 @@ import { TableSqliteMapper } from './table-sqlite.mapper.js'
 import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor.js'
 
 export class TableSqliteRepository implements ITableRepository {
-  constructor(protected readonly uow: IUnitOfWork<EntityManager>, protected readonly cache: ITableCache) {}
+  constructor(
+    protected readonly uow: IUnitOfWork<EntityManager>,
+    protected readonly cache: ITableCache,
+  ) {}
 
   private get em() {
     return this.uow.conn()
@@ -88,7 +91,9 @@ export class TableSqliteRepository implements ITableRepository {
   async updateOneById(id: string, spec: ITableSpec): Promise<void> {
     await this.cache.remove(id)
     const em = this.em
-    await em.transactional(async (em) => {
+
+    try {
+      await em.begin()
       const visitor = new TableSqliteMutationVisitor(id, em)
 
       spec.accept(visitor)
@@ -96,7 +101,12 @@ export class TableSqliteRepository implements ITableRepository {
       await visitor.commit()
       const tm = new UnderlyingTableSqliteManager(em)
       await tm.update(id, spec)
-    })
+
+      await em.commit()
+    } catch (error) {
+      await em.rollback()
+      throw error
+    }
   }
 
   async deleteOneById(id: string): Promise<void> {

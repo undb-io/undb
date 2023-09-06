@@ -1,10 +1,11 @@
 <script lang="ts">
 	import OptionColorPicker from '$lib/option/OptionColorPicker.svelte'
 	import { OptionColor, type IMutateOptionSchema } from '@undb/core'
-	import { Button, Input } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 	import { onMount } from 'svelte'
 	import type { SetRequired } from 'type-fest'
 	import { t } from '$lib/i18n'
+	import { Input } from '$components/ui/input'
 
 	export let value: SetRequired<IMutateOptionSchema, 'color'>[] = []
 
@@ -32,13 +33,13 @@
 
 <div class="space-y-2">
 	{#each value ?? [] as option, index}
-		<div class="flex">
+		<div class="flex items-center">
 			<OptionColorPicker class="rounded-r-none rounded-l-md" bind:value={option.color.name} name={option.name} />
-			<Input class="!rounded-none !focus:rounded-none border-gray-100 h-[30px]" bind:value={option.name} />
+			<Input class="!rounded-l-none !focus:rounded-none border-gray-100 h-[30px]" bind:value={option.name} />
 			<Button
-				color="light"
 				class="w-[30px] aspect-square !rounded-l-none !p-0 border-l-0 border-gray-200"
-				size="xs"
+				variant="ghost"
+				size="sm"
 				on:click={() => removeOption(index)}
 			>
 				<i class="ti ti-trash text-sm" />
@@ -46,4 +47,4 @@
 		</div>
 	{/each}
 </div>
-<Button color="alternative" size="xs" on:click={addOption}>{$t('Create New Option')}</Button>
+<Button variant="secondary" size="sm" on:click={addOption}>{$t('Create New Option')}</Button>

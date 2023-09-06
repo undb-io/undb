@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Anchor, Node } from 'svelvet'
 	import type { Table as CoreTable } from '@undb/core'
-	import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell } from 'flowbite-svelte'
+	import * as Table from '$lib/components/ui/table'
 	import { t } from '$lib/i18n'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 
@@ -14,18 +14,20 @@
 	<Anchor bgColor="transparent" id={table.id.value} input direction="west" />
 	<div class="flex items-center justify-center p-1">{table.name.value}</div>
 
-	<Table striped>
-		<TableHead>
-			<TableHeadCell>id</TableHeadCell>
-			<TableHeadCell>{$t('Name', { ns: 'common' })}</TableHeadCell>
-			<TableHeadCell>{$t('Type', { ns: 'common' })}</TableHeadCell>
-		</TableHead>
+	<Table.Root>
+		<Table.Header>
+			<Table.Row>
+				<Table.Head>id</Table.Head>
+				<Table.Head>{$t('Name', { ns: 'common' })}</Table.Head>
+				<Table.Head>{$t('Type', { ns: 'common' })}</Table.Head>
+			</Table.Row>
+		</Table.Header>
 
-		<TableBody tableBodyClass="divide-y">
-			<TableBodyRow />
+		<Table.Body>
+			<Table.Row />
 			{#each table.schema.fields as field}
-				<TableBodyRow>
-					<TableBodyCell>
+				<Table.Row>
+					<Table.Cell>
 						<div class="relative">
 							{field.id.value}
 							<div class="absolute left-[-25px] translate-y-[50%] top-0">
@@ -45,18 +47,18 @@
 								{/if}
 							</div>
 						</div>
-					</TableBodyCell>
-					<TableBodyCell>{field.name.value}</TableBodyCell>
-					<TableBodyCell>
+					</Table.Cell>
+					<Table.Cell>{field.name.value}</Table.Cell>
+					<Table.Cell>
 						<div class="flex items-center gap-2">
 							<FieldIcon type={field.type} />
 							<span class="inline-block">
 								{$t(field.type)}
 							</span>
 						</div>
-					</TableBodyCell>
-				</TableBodyRow>
+					</Table.Cell>
+				</Table.Row>
 			{/each}
-		</TableBody>
-	</Table>
+		</Table.Body>
+	</Table.Root>
 </Node>

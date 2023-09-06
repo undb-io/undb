@@ -1,14 +1,16 @@
 <script lang="ts">
-	import { Button, A, Toast, Banner } from 'flowbite-svelte'
 	import type { PageData } from './$types'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { goto } from '$app/navigation'
 	import logo from '$lib/assets/logo.svg'
 	import { page } from '$app/stores'
 	import { createMutation } from '@tanstack/svelte-query'
-	import { slide } from 'svelte/transition'
 	import { env } from '$env/dynamic/public'
 	import { t } from '$lib/i18n'
+	import { Button } from '$components/ui/button'
+	import { Input } from '$components/ui/input'
+	import { Label } from '$components/ui/label'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	export let data: PageData
 
@@ -60,7 +62,7 @@
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
 	<div class="sm:mx-auto sm:w-full sm:max-w-sm">
 		<img class="mx-auto h-10 w-auto" src={logo} alt="undb" />
-		<h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+		<h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-gray-100">
 			{$t('login to undb', { ns: 'auth' })}
 		</h2>
 	</div>
@@ -68,11 +70,11 @@
 	<div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
 		<form class="space-y-6" method="POST" use:enhance>
 			<div>
-				<label for="email" class="block text-sm font-medium leading-6 text-gray-900"
-					>{$t('email', { ns: 'auth' })}</label
+				<Label for="email" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+					>{$t('email', { ns: 'auth' })}</Label
 				>
 				<div class="mt-2">
-					<input
+					<Input
 						id="email"
 						name="email"
 						type="email"
@@ -87,15 +89,15 @@
 
 			<div>
 				<div class="flex items-center justify-between">
-					<label for="password" class="block text-sm font-medium leading-6 text-gray-900"
-						>{$t('password', { ns: 'auth' })}</label
+					<Label for="password" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100"
+						>{$t('password', { ns: 'auth' })}</Label
 					>
 					<!-- <div class="text-sm">
 						<a tabindex="-1" href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</a>
 					</div> -->
 				</div>
 				<div class="mt-2">
-					<input
+					<Input
 						id="password"
 						name="password"
 						type="password"
@@ -109,19 +111,19 @@
 			</div>
 
 			<div>
-				<Button type="submit" class="w-full">{$t('login', { ns: 'auth' })}</Button>
+				<Button size="sm" type="submit" class="w-full">{$t('login', { ns: 'auth' })}</Button>
 			</div>
 		</form>
 
 		<p class="mt-10 text-center text-sm text-gray-500">
 			{$t('has no account', { ns: 'auth' })}
-			<A class="ml-1" href="/register">{$t('register', { ns: 'auth' })}</A>
+			<a class="ml-1 text-primary" href="/register">{$t('register', { ns: 'auth' })}</a>
 		</p>
 	</div>
 </div>
 
 {#if $login.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$login.error}
@@ -130,7 +132,9 @@
 {/if}
 
 {#if !!PUBLIC_UNDB_ADMIN_EMAIL && !!PUBLIC_UNDB_ADMIN_PASSWORD}
-	<Banner id="default-banner" position="absolute">
+	<div
+		class="absolute top-0 left-0 right-0 h-14 border-b border-gray-200 shadow-sm bg-gray-100 flex items-center justify-center dark:bg-gray-700 dark:text-white dark:border-gray-800"
+	>
 		<p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
 			<span class="inline-flex p-1 mr-3 bg-gray-200 rounded-full dark:bg-gray-600">
 				<i class="ti ti-bulb-filled" />
@@ -143,5 +147,5 @@
 				})}</span
 			>
 		</p>
-	</Banner>
+	</div>
 {/if}

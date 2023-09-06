@@ -5,10 +5,11 @@
 	import { trpc } from '$lib/trpc/client'
 	import { RecordFactory, type IFilters, type IKanbanField } from '@undb/core'
 	import { flip } from 'svelte/animate'
-	import { Button, Toast } from 'flowbite-svelte'
+	import { Button } from '$lib/components/ui/button'
 	import { slide } from 'svelte/transition'
 	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 	import { UNCATEGORIZED } from './kanban.constants'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	const flipDurationMs = 200
 
@@ -52,9 +53,9 @@
 
 {#if allowCreate && !$readonly}
 	<Button
-		color="alternative"
+		variant="secondary"
 		class="w-full rounded-md transition h-8 mb-4"
-		size="xs"
+		size="sm"
 		on:click={() => {
 			if (initialValue) {
 				$createRecordInitial = initialValue
@@ -89,7 +90,7 @@
 </div>
 
 {#if $updateRecord.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$updateRecord.error.message}

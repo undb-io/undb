@@ -1,9 +1,12 @@
 <script lang="ts">
-	import { Button, Checkbox, Dropdown } from 'flowbite-svelte'
 	import CollaboratorComponent from '../CellComponents/CollaboratorComponent.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { t } from '$lib/i18n'
 	import type { ICollaboratorProfile } from '@undb/core'
+	import { Button } from '$lib/components/ui/button'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import Label from '$components/ui/label/label.svelte'
+	import { cn } from '$lib/utils'
 
 	export let value: string[] | undefined
 	export let readonly = false
@@ -32,29 +35,36 @@
 		selected = value?.map((userId) => allMembers.find((m) => m.userId === userId)!).filter(Boolean) ?? []
 </script>
 
-<Button color="alternative" class="inline-flex gap-3 max-h-10" disabled={readonly}>
-	{#if selected.length}
-		{#each selected as member}
-			<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />
+<DropdownMenu.Root bind:open>
+	<DropdownMenu.Trigger asChild let:builder>
+		<Button
+			builders={[builder]}
+			variant="outline"
+			type="button"
+			class={cn('inline-flex gap-3 max-h-10', $$restProps.class)}
+			disabled={readonly}
+		>
+			{#if selected.length}
+				{#each selected as member}
+					<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} size="sm" />
+				{/each}
+			{:else}
+				{$t('Select Collaborator')}
+			{/if}
+		</Button>
+	</DropdownMenu.Trigger>
+	<DropdownMenu.Content class="w-56">
+		{#each members as member}
+			{@const selected = value?.includes(member.userId)}
+			<DropdownMenu.Item>
+				<Label class="inline-flex items-center justify-between cursor-pointer w-full ">
+					<input type="checkbox" bind:group={value} value={member.userId} class="hidden" />
+					<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />
+					{#if selected}
+						<i class="ti ti-check"></i>
+					{/if}
+				</Label>
+			</DropdownMenu.Item>
 		{/each}
-	{:else}
-		{$t('Select Collaborator')}
-	{/if}
-</Button>
-{#if !readonly}
-	<Dropdown style="z-index: 50" bind:open placement="bottom-start" class="w-[400px] border z-[99999]">
-		<div class="w-full">
-			{#each members as member}
-				{@const isSelected = selected.some((s) => s.userId === member.userId)}
-				<Checkbox bind:group={value} value={member.userId} custom class="flex w-full">
-					<span class="inline-flex items-center justify-between px-4 py-2 cursor-pointer w-full hover:bg-gray-100">
-						<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />
-						{#if isSelected}
-							<i class="ti ti-check" />
-						{/if}
-					</span>
-				</Checkbox>
-			{/each}
-		</div>
-	</Dropdown>
-{/if}
+	</DropdownMenu.Content>
+</DropdownMenu.Root>

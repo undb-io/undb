@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Accordion, Button, Label, Modal, Input, Spinner, Toast, P, Badge } from 'flowbite-svelte'
+	import * as Accordion from '$lib/components/ui/accordion'
 	import type { Validation } from 'sveltekit-superforms'
 	import { FieldId, TableId, type createTableInput } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
@@ -10,16 +10,21 @@
 	import { t } from '$lib/i18n'
 	import { createTableModal } from '$lib/store/modal'
 	import { newTableSchema } from '$lib/store/table'
-	import { onDestroy } from 'svelte'
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
+	import { onDestroy, onMount } from 'svelte'
+	import * as Dialog from '$lib/components/ui/dialog'
+	import { Label } from '$lib/components/ui/label'
+	import { Input } from '$lib/components/ui/input'
+	import { Button } from '$components/ui/button'
+	import { Badge } from '$lib/components/ui/badge'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	export let data: Validation<typeof createTableInput>
-	let opened: Record<string, boolean> = {}
+	let currentField: string | undefined
 
 	const addField = () => {
 		const id = FieldId.createId()
 		$form.schema = [...($form.schema ?? []), { id, type: 'string', name: '', display: !displayFields?.length }]
-		opened = { [id]: true }
+		currentField = id
 	}
 
 	$: if (!$form.schema?.length) {
@@ -55,11 +60,15 @@
 	$: $form.schema = []
 	$: displayFields = $form.schema?.filter((f) => !!f.display) ?? []
 
-	$: newTableSchema.set({
-		tableId: $form.id,
-		tableName: $form.name,
-		schema: $form.schema,
-	})
+	$: if ($createTableModal.open) {
+		newTableSchema.set({
+			tableId: $form.id,
+			tableName: $form.name,
+			schema: $form.schema,
+		})
+	} else {
+		newTableSchema.reset()
+	}
 
 	onDestroy(() => {
 		newTableSchema.reset()
@@ -72,77 +81,73 @@
 	}
 </script>
 
-<Modal
-	title={$t('Create New Table') ?? undefined}
-	placement="top-center"
-	class="static w-full rounded-sm"
-	size="lg"
-	bind:open={$createTableModal.open}
->
-	<form id="createTable" class="flex flex-col justify-between flex-1 gap-2" method="POST" use:enhance>
-		<div>
-			<div class="space-y-4">
-				<Label class="space-y-2">
-					<span>
-						<span>{$t('Name', { ns: 'common' })}</span>
-						<span class="text-red-500">*</span>
-					</span>
-					<Input
-						data-auto-focus
-						id="name"
-						name="name"
-						type="text"
-						label="name"
-						bind:value={$form.name}
-						data-invalid={$errors.name}
-						required
-						on:blur={onBlur}
-						{...$constraints.name}
-					/>
-				</Label>
+<Dialog.Root bind:open={$createTableModal.open}>
+	<Dialog.Content class="!w-1/2 !max-w-none">
+		<Dialog.Header>
+			<Dialog.Title>{$t('Create New Table') ?? undefined}</Dialog.Title>
+		</Dialog.Header>
 
-				<P class="flex text-xs items-center !font-bold gap-2">
-					<span>{$t('System fields')}: </span>
-					<Badge color="dark">id</Badge>,
-					<Badge color="dark">{$t('created-at')}</Badge>,
-					<Badge color="dark">{$t('created-by')}</Badge>,
-					<Badge color="dark">{$t('updated-at')}</Badge>,
-					<Badge color="dark">{$t('updated-by')}</Badge>
-				</P>
+		<form id="createTable" class="flex flex-col justify-between flex-1 gap-2" method="POST" use:enhance>
+			<div>
+				<div class="space-y-4">
+					<Label class="space-y-2">
+						<span>
+							<span>{$t('Name', { ns: 'common' })}</span>
+							<span class="text-red-500">*</span>
+						</span>
+						<Input
+							id="name"
+							name="name"
+							type="text"
+							bind:value={$form.name}
+							required
+							on:blur={onBlur}
+							{...$constraints.name}
+						/>
+					</Label>
 
-				{#if $form.schema?.length}
-					<Accordion class="my-4">
-						{#each $form.schema as field, i (field.id)}
-							<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} isNew />
-						{/each}
-					</Accordion>
-				{/if}
+					<p class="flex text-xs items-center !font-bold gap-1 dark:text-white">
+						<span>{$t('System fields')}: </span>
+						<Badge class="bg-gray-500 hover:bg-gray-600 rounded-sm">id</Badge>,
+						<Badge class="bg-gray-500 hover:bg-gray-600 rounded-sm">{$t('created-at')}</Badge>,
+						<Badge class="bg-gray-500 hover:bg-gray-600 rounded-sm">{$t('created-by')}</Badge>,
+						<Badge class="bg-gray-500 hover:bg-gray-600 rounded-sm">{$t('updated-at')}</Badge>,
+						<Badge class="bg-gray-500 hover:bg-gray-600 rounded-sm">{$t('updated-by')}</Badge>
+					</p>
+
+					{#if $form.schema?.length}
+						<Accordion.Root class="my-4" value={currentField}>
+							{#each $form.schema as field, i (field.id)}
+								<CreateTableFieldAccordionItem {superFrm} {i} {field} isNew />
+							{/each}
+						</Accordion.Root>
+					{/if}
+				</div>
+
+				<Button variant="outline" type="button" class="w-full my-3" on:click={addField}>
+					<i class="ti ti-plus text-sm mr-4" />
+					{$t('Create New Field')}
+				</Button>
 			</div>
+		</form>
 
-			<Button color="light" outline class="w-full my-3" on:click={addField}>
-				<i class="ti ti-plus text-sm mr-4" />
-				{$t('Create New Field')}</Button
-			>
-		</div>
-	</form>
-
-	<!-- <SuperDebug data={$form} /> -->
-
-	<svelte:fragment slot="footer">
-		<div class="w-full flex justify-end gap-2">
-			<Button color="alternative" on:click={createTableModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
-			<Button class="gap-4" type="submit" form="createTable" disabled={$submitting}>
-				{#if $delayed}
-					<Spinner size="5" />
-				{/if}
-				{$t('Create New Table')}</Button
-			>
-		</div>
-	</svelte:fragment>
-</Modal>
+		<!-- <SuperDebug data={$form} /> -->
+		<Dialog.Footer>
+			<div class="w-full flex justify-end gap-2">
+				<Button variant="secondary" on:click={createTableModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
+				<Button class="gap-4" type="submit" form="createTable" disabled={$submitting}>
+					{#if $delayed}
+						<i class="ti ti-rotate animate-spin"></i>
+					{/if}
+					{$t('Create New Table')}</Button
+				>
+			</div>
+		</Dialog.Footer>
+	</Dialog.Content>
+</Dialog.Root>
 
 {#if $createTable.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$createTable.error.message}

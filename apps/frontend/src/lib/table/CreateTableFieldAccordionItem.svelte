@@ -9,18 +9,23 @@
 		createTableInput,
 		updateTableSchema,
 	} from '@undb/core'
-	import { AccordionItem, Label, Input, Toggle, Button, Textarea, Dropdown, DropdownItem, Badge } from 'flowbite-svelte'
+	import { Label } from '$lib/components/ui/label'
+	import { Input } from '$lib/components/ui/input'
+	import { Switch } from '$lib/components/ui/switch'
+	import { Button } from '$components/ui/button'
+	import { Badge } from '$lib/components/ui/badge'
+	import { Textarea } from '$lib/components/ui/textarea'
 	import type { SuperForm } from 'sveltekit-superforms/client'
 	import { t } from '$lib/i18n'
+	import * as Accordion from '$lib/components/ui/accordion'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 
-	export let open: boolean
 	export let field: ICreateTableInput['schema'][number]
 	export let superFrm: SuperForm<typeof createTableInput | typeof updateTableSchema, string>
 	export let i: number
 	export let isNew = false
 
 	$: form = superFrm.form
-	$: errors = superFrm.errors
 
 	$: showDescription = false
 	$: if (!showDescription) {
@@ -36,11 +41,8 @@
 	}
 </script>
 
-<AccordionItem
-	bind:open
-	defaultClass="flex items-center justify-between w-full font-medium text-left group-first:rounded-t-xl !py-4"
->
-	<div slot="header" class="w-full text-sm">
+<Accordion.Item value={field.id ?? ''}>
+	<Accordion.Trigger type="button">
 		<div class="w-full flex items-center justify-between text-sm gap-2">
 			<div class="flex items-center gap-2">
 				<FieldIcon size={14} type={field.type} />
@@ -56,80 +58,91 @@
 				<slot name="header" />
 			</div>
 		</div>
-	</div>
+	</Accordion.Trigger>
 
-	<div slot="arrowup">
-		<i class="ti ti-circle-cheveron-up text-sm" />
-	</div>
-	<div slot="arrowdown">
-		<i class="ti ti-circle-cheveron-down text-sm" />
-	</div>
-
-	<div class="space-y-2">
-		<div class="grid grid-cols-2 gap-4">
-			<div>
-				<Label class="space-y-2">
-					<span>{$t('Type', { ns: 'common' })}</span>
-					<FieldTypePicker disabled={!isNew} class="w-full !justify-start" bind:value={field.type} />
-				</Label>
-			</div>
-			<div>
-				<Label class="space-y-2">
-					<span>{$t('Name', { ns: 'common' })}</span>
-					<Input
-						type="text"
-						placeholder={field.description ?? 'name'}
-						required
-						data-invalid={$errors.schema?.[i]}
-						bind:value={field.name}
-					/>
-				</Label>
-			</div>
-		</div>
-
-		{#if showDescription}
-			<Label class="flex flex-col gap-2">
-				<div class="flex gap-2 items-center">
-					<span>{$t('Description', { ns: 'common' })}</span>
+	<Accordion.Content>
+		<div class="space-y-2">
+			<div class="grid grid-cols-2 gap-4">
+				<div>
+					<Label class="space-y-2">
+						<span>{$t('Type', { ns: 'common' })}</span>
+						<FieldTypePicker disabled={!isNew} class="w-full !justify-start" bind:value={field.type} />
+					</Label>
 				</div>
+				<div>
+					<Label class="space-y-2">
+						<span>{$t('Name', { ns: 'common' })}</span>
+						<Input
+							type="text"
+							name={field.id}
+							placeholder={field.description ?? 'name'}
+							required
+							bind:value={field.name}
+						/>
+					</Label>
+				</div>
+			</div>
 
-				<Textarea class="rounded-sm" name="description" bind:value={field.description} />
-			</Label>
-		{/if}
+			{#if showDescription}
+				<Label class="flex flex-col gap-2">
+					<div class="flex gap-2 items-center">
+						<span>{$t('Description', { ns: 'common' })}</span>
+					</div>
 
-		<MutateFieldComponent type={field.type} form={superFrm} {isNew} path={['schema', i]} />
-	</div>
+					<Textarea class="rounded-sm" name="description" bind:value={field.description} />
+				</Label>
+			{/if}
 
-	<div class="flex justify-between mt-5">
-		<div>
-			<Button size="xs" color="alternative" class="space-x-1" on:click={() => (showDescription = !showDescription)}>
-				{#if showDescription}
-					<i class="ti ti-eye-closed text-sm" />
-				{:else}
-					<i class="ti ti-plus text-sm" />
+			<MutateFieldComponent type={field.type} form={superFrm} {isNew} path={['schema', i]} class="w-full" />
+		</div>
+
+		<div class="flex justify-between mt-5">
+			<div>
+				<Button
+					size="sm"
+					variant="secondary"
+					type="button"
+					class="space-x-1"
+					on:click={() => (showDescription = !showDescription)}
+				>
+					{#if showDescription}
+						<i class="ti ti-eye-closed text-sm" />
+					{:else}
+						<i class="ti ti-plus text-sm" />
+					{/if}
+					<span>{$t('Add Description')}</span>
+				</Button>
+			</div>
+			<div class="flex gap-4 items-center">
+				{#if !isControlledFieldType(field.type)}
+					<Label class="flex items-center gap-2">
+						<Switch bind:checked={field.required}></Switch>
+						{$t('Required', { ns: 'common' })}
+					</Label>
 				{/if}
-				<span>{$t('Add Description')}</span>
-			</Button>
+				{#if canDisplay(field.type)}
+					<Label class="flex items-center gap-2">
+						<Switch bind:checked={field.display}></Switch>
+						{$t('Display', { ns: 'common' })}
+					</Label>
+				{/if}
+
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger type="button">
+						<span class="hover:bg-gray-100 px-3 rounded-sm flex items-center justify-center w-7 h-7">
+							<i class="ti ti-dots text-sm" />
+						</span>
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content>
+						<DropdownMenu.Item class="text-red-500 font-normal text-xs gap-2 flex items-center" on:click={remove}>
+							<i class="ti ti-trash" />
+							<span>
+								{$t('Delete', { ns: 'common' })}
+							</span>
+						</DropdownMenu.Item>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
+			</div>
 		</div>
-		<div class="flex gap-4 items-center">
-			{#if !isControlledFieldType(field.type)}
-				<Toggle size="small" bind:checked={field.required}>{$t('Required', { ns: 'common' })}</Toggle>
-			{/if}
-			{#if canDisplay(field.type)}
-				<Toggle size="small" bind:checked={field.display}>{$t('Display', { ns: 'common' })}</Toggle>
-			{/if}
-			<span role="button" class="hover:bg-gray-100 px-3 rounded-sm flex items-center justify-center w-7 h-7">
-				<i class="ti ti-dots text-sm" />
-			</span>
-			<Dropdown style="z-index: 50;">
-				<DropdownItem class="text-red-500 font-normal text-xs gap-2 flex items-center" on:click={remove}>
-					<i class="ti ti-trash" />
-					<span>
-						{$t('Delete', { ns: 'common' })}
-					</span>
-				</DropdownItem>
-			</Dropdown>
-			<Button size="xs" color="light" on:click={() => (open = false)}>{$t('Done', { ns: 'common' })}</Button>
-		</div>
-	</div>
-</AccordionItem>
+	</Accordion.Content>
+</Accordion.Item>

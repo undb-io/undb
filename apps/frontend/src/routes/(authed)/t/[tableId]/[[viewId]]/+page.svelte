@@ -96,9 +96,7 @@
 <WebhookListModal />
 <FormListDrawer />
 <FormEditorModal />
-{#if $erdModal.open}
-	<ErdModal />
-{/if}
+<ErdModal />
 {#if $currentRecordId}
 	<UpdateRecord data={data.updateRecord} />
 {/if}
@@ -106,9 +104,7 @@
 	<CreateOption data={data.createOption} />
 {/if}
 <UpdateOption data={data.updateOption} />
-{#if $recordTrashModal.open}
-	<RecordTrashModal />
-{/if}
+<RecordTrashModal />
 {#if $field}
 	{#key $field}
 		<UpdateField field={$field} data={data.updateField} />
@@ -119,11 +115,8 @@
 		<DuplicateField field={$field} />
 	{/key}
 {/if}
-{#if $rlsModal.open}
-	<RLSModal />
-{/if}
+<RLSModal />
 <FlsModal />
-
 <VisualizationModal />
 
 <svelte:window on:keydown={onKeydown} />

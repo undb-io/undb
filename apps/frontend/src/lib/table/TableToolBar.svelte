@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Tooltip } from 'flowbite-svelte'
+	import * as Tooltip from '$lib/components/ui/tooltip'
 	import ToggleDisplayType from './ToggleDisplayType.svelte'
 	import { t } from '$lib/i18n'
 	import ViewToolbar from './ViewToolbar.svelte'
@@ -10,6 +10,7 @@
 	import RecordTrashButton from './RecordTrashButton.svelte'
 	import TableMenu from './TableMenu.svelte'
 	import { hasPermission } from '$lib/store/authz'
+	import { Button } from '$components/ui/button'
 
 	const table = getTable()
 </script>
@@ -22,22 +23,21 @@
 	</div>
 	<div class="flex items-center ml-2 gap-3">
 		<SearchTable />
-		<Button
-			size="xs"
-			outline
-			class="flex items-center gap-2 dark:text-gray-200 dark:bg-primary-600 dark:border-primary-600 dark:hover:bg-primary-700 dark:hover:border-primary-700"
-			href={`/t/${$table.id.value}/openapi`}
-		>
+		<Button size="sm" variant="outline" class="flex items-center text-xs gap-2" href={`/t/${$table.id.value}/openapi`}>
 			<i class="ti ti-code" />
 			<span class="whitespace-nowrap">{$t('API Preview')}</span>
 		</Button>
 		{#if $hasPermission('table:update')}
-			<button on:click={() => updateTableModal.open()}>
-				<i class="ti ti-settings text-gray-600 dark:text-gray-200" />
-			</button>
-			<Tooltip class="z-50" placement="bottom">
-				{$t('Edit Table')}
-			</Tooltip>
+			<Tooltip.Root openDelay={10}>
+				<Tooltip.Trigger>
+					<button on:click={() => updateTableModal.open()}>
+						<i class="ti ti-settings text-gray-600 dark:text-gray-200" />
+					</button>
+				</Tooltip.Trigger>
+				<Tooltip.Content>
+					{$t('Edit Table')}
+				</Tooltip.Content>
+			</Tooltip.Root>
 		{/if}
 		<ToggleDisplayType />
 		{#if $hasPermission('table:list_form')}

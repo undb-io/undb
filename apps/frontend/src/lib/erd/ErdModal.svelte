@@ -1,27 +1,23 @@
 <script lang="ts">
-	import { Modal } from 'flowbite-svelte'
 	import Erd from './Erd.svelte'
 	import { erdModal } from '$lib/store/modal'
 	import { t } from '$lib/i18n'
+	import * as Dialog from '$lib/components/ui/dialog'
 </script>
 
 <div id="erd-modal">
-	<Modal
-		bind:open={$erdModal.open}
-		class="w-full h-[calc(100vh-64px)] shadow-xl rounded-lg dark:bg-gray-800 "
-		size="xl"
-		title={$t('ERD')}
-		shadow
-	>
-		<Erd />
-	</Modal>
+	<Dialog.Root bind:open={$erdModal.open}>
+		<Dialog.Content class="!w-[90%] !max-w-none h-[98%] block space-y-2">
+			<Dialog.Header>
+				<Dialog.Title>{$t('ERD')}</Dialog.Title>
+			</Dialog.Header>
+
+			<Erd />
+		</Dialog.Content>
+	</Dialog.Root>
 </div>
 
 <style>
-	:global(#erd-modal .max-w-7xl) {
-		max-width: 100%;
-	}
-
 	:global(.dark #background-wrapper) {
 		background-color: #e8e8e9dc !important;
 	}

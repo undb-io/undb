@@ -69,6 +69,7 @@ export const currentRecord = writable<Record | undefined>()
 export const getRecord = () => currentRecord
 
 export const currentFieldId = writable<string | undefined>()
+export const currentFieldMenuRect = writable<DOMRect | undefined>()
 export const currentField = derived([currentTable, currentFieldId], ([table, fieldId]) =>
 	fieldId ? table.schema.getFieldById(fieldId).into(null) : null,
 )
