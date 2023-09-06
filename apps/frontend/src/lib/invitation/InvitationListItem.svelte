@@ -9,6 +9,7 @@
 	import { Badge } from '$lib/components/ui/badge'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Button } from '$components/ui/button'
+	import type { IRolesWithoutOwner } from '@undb/authz/dist'
 
 	export let invitation: IQueryInvitation
 
@@ -16,7 +17,7 @@
 		{ value: 'admin', name: $t('admin', { ns: 'authz' }) },
 		{ value: 'editor', name: $t('editor', { ns: 'authz' }) },
 		{ value: 'viewer', name: $t('viewer', { ns: 'authz' }) },
-	]
+	] as const
 
 	const getInvitations = trpc().invitation.list.query(
 		{},
@@ -27,7 +28,7 @@
 
 	const reinviteMutation = trpc().invitation.reinvite.mutation({})
 
-	const reinvite = (value: any) => {
+	const reinvite = (value: IRolesWithoutOwner) => {
 		$reinviteMutation.mutate({
 			id: invitation.id,
 			role: value,
@@ -75,7 +76,12 @@
 							<DropdownMenu.Content class="w-56">
 								<DropdownMenu.RadioGroup bind:value={invitation.role}>
 									{#each items as item}
-										<DropdownMenu.RadioItem value={item.value}>
+										<DropdownMenu.RadioItem
+											value={item.value}
+											on:click={() => {
+												reinvite(item.value)
+											}}
+										>
 											{item.name}
 										</DropdownMenu.RadioItem>
 									{/each}

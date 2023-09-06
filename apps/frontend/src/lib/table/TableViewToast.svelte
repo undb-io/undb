@@ -33,10 +33,10 @@
 
 {#if open}
 	<div
-		class="fixed flex items-center p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow-md border bottom-5 right-5 dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800 z-[999999999]"
+		class="fixed flex items-center p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow-md border bottom-5 right-5 dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800 z-[999999999] w-96"
 		role="alert"
 	>
-		<div class="flex items-center space-x-5 justify-between">
+		<div class="flex items-center space-x-5 justify-between w-full">
 			<p class="text-sm !text-gray-700 dark:!text-gray-100">{@html $t('Selected N Records', { n: $selectedCount })}</p>
 
 			<div class="inline-flex items-center">

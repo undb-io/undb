@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cn } from '$lib/utils'
 	import { colors } from '$lib/field/helpers'
-	import type { IQueryMember } from '@undb/authz'
+	import type { IQueryMember, IRolesWithoutOwner } from '@undb/authz'
 	import { hasPermission } from '$lib/store/authz'
 	import { trpc } from '$lib/trpc/client'
 	import { t } from '$lib/i18n'
@@ -19,13 +19,13 @@
 		{ value: 'admin', name: $t('admin', { ns: 'authz' }) },
 		{ value: 'editor', name: $t('editor', { ns: 'authz' }) },
 		{ value: 'viewer', name: $t('viewer', { ns: 'authz' }) },
-	]
+	] as const
 
 	const updateRoleMutation = trpc().authz.member.updateRole.mutation({})
-	const updateRole = (value: any) => {
+	const updateRole = (value: IRolesWithoutOwner) => {
 		$updateRoleMutation.mutate({
 			memberId: member.id,
-			role: value.value,
+			role: value,
 		})
 	}
 </script>
@@ -97,9 +97,14 @@
 							</Button>
 						</DropdownMenu.Trigger>
 						<DropdownMenu.Content class="w-56">
-							<DropdownMenu.RadioGroup bind:value={member.role} on:change={() => updateRole(member.role)}>
+							<DropdownMenu.RadioGroup bind:value={member.role}>
 								{#each items as item}
-									<DropdownMenu.RadioItem value={item.value}>
+									<DropdownMenu.RadioItem
+										value={item.value}
+										on:click={() => {
+											updateRole(item.value)
+										}}
+									>
 										{item.name}
 									</DropdownMenu.RadioItem>
 								{/each}
