@@ -129,6 +129,6 @@
 		{...$$restProps}
 		class={wrapperClass}
 		disabled={!field}
-		{readonly}
+		readonly={readonly ? true : undefined}
 	/>
 {/if}
