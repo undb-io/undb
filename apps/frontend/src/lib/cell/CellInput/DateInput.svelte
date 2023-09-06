@@ -13,4 +13,4 @@
 	$: value = dateValue ? startOfDay(new Date(dateValue)).toISOString() : ''
 </script>
 
-<Input type="date" bind:value={dateValue} {...$$restProps} />
+<Input type="date" bind:value={dateValue} class={$$restProps.class} />
