@@ -163,7 +163,18 @@ import {
 import type { RecordCompositeSpecification } from '../record/specifications/interface.js'
 import type { IConjunction } from './conjunction.js'
 import { conjunctions } from './conjunction.js'
-import { $between, $eq, $is_empty, $is_false, $is_not_empty, $is_root, $is_today, $is_true, $neq } from './operators.js'
+import {
+  $between,
+  $eq,
+  $is_empty,
+  $is_false,
+  $is_not_empty,
+  $is_not_today,
+  $is_root,
+  $is_today,
+  $is_true,
+  $neq,
+} from './operators.js'
 
 export const filterValue = z.union([
   idFilterValue,
@@ -560,6 +571,9 @@ const convertDateFilter = (
 ): Option<RecordCompositeSpecification> => {
   if (filter.operator === $is_today.value) {
     return Some(new DateIsToday(filter.path))
+  }
+  if (filter.operator === $is_not_today.value) {
+    return Some(new DateIsToday(filter.path).not())
   }
 
   if (filter.value === undefined) {
