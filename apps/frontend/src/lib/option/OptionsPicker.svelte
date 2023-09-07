@@ -39,10 +39,16 @@
 	{#if !readonly}
 		<DropdownMenu.Content class="w-56">
 			{#each options as option}
+				{@const isSelected = value?.includes(option.key.value)}
 				<DropdownMenu.Item class="cursor-pointer flex" {...$$restProps}>
-					<Label role="button" class="inline-flex w-full hover:bg-gray-100 dark:hover:bg-gray-400 transition">
-						<input type="checkbox" bind:group={value} value={option.key.value} class="hidden" />
-						<Option {option} />
+					<Label role="button" class="flex justify-between w-full hover:bg-gray-100 dark:hover:bg-gray-400 transition">
+						<div>
+							<input type="checkbox" bind:group={value} value={option.key.value} class="hidden" />
+							<Option {option} />
+						</div>
+						{#if isSelected}
+							<i class="ti ti-check"></i>
+						{/if}
 					</Label>
 				</DropdownMenu.Item>
 			{/each}
