@@ -87,7 +87,7 @@
 		{/each}
 		{#if $hasPermission('table:create')}
 			<Card.Root
-				class="!max-w-none cursor-pointer hover:bg-blue-500/90 hover:text-white transition h-full"
+				class="!max-w-none cursor-pointer hover:bg-primary-500/90 hover:text-white transition h-full"
 				on:click={() => createTableModal.open()}
 			>
 				<Card.Header>

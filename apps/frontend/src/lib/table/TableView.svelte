@@ -126,7 +126,7 @@
 							recordSelection.updateAll($records, event.target.checked)
 						},
 						class:
-							'w-4 h-4 text-blue-600 absolute top-1/2 left-1/4 translate-y-[-50%] translate-x-[-50%] bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center dark:!bg-gray-200 dark:border-gray-300',
+							'w-4 h-4 text-primary absolute top-1/2 left-1/4 translate-y-[-50%] translate-x-[-50%] bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center dark:!bg-gray-200 dark:border-gray-300',
 					})
 				},
 				cellProperties: (cell) => ({
@@ -151,7 +151,7 @@
 							{
 								onClick: () => expand(props.model.id),
 								class: cn(
-									'undb-row-expand absolute w-6 h-6 rounded-full hover:bg-blue-100 dark:hover:bg-blue-500 top-1/2 left-3/4 translate-y-[-50%] translate-x-[-50%] text-xs opacity-0 text-gray-400 dark:text-gray-100 ',
+									'undb-row-expand absolute w-6 h-6 rounded-full hover:bg-primary-100 dark:hover:bg-primary-500 top-1/2 left-3/4 translate-y-[-50%] translate-x-[-50%] text-xs opacity-0 text-gray-400 dark:text-gray-100 ',
 								),
 							},
 							h('i', { class: 'ti ti-arrows-diagonal' }),
@@ -163,7 +163,7 @@
 								recordSelection.updateSelect(props.model.id, event.target.checked)
 							},
 							class: cn(
-								'undb-select absolute top-1/2 left-1/4 translate-y-[-50%] translate-x-[-50%] w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center group-hover:opacity-100',
+								'undb-select absolute top-1/2 left-1/4 translate-y-[-50%] translate-x-[-50%] w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center group-hover:opacity-100',
 								!checked && 'opacity-0',
 							),
 						}),
@@ -189,7 +189,7 @@
 							class: cn(
 								'border-r border-b border-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 dark:bg-gray-600 dark:border-gray-500  transition-[background] group flex justify-between bg-gray-100 !px-2',
 								{
-									'bg-blue-50': !!sort,
+									'bg-primary-50': !!sort,
 								},
 							),
 						}

@@ -76,7 +76,7 @@
 <div
 	class={cn(
 		'group flex flex-col bg-white !opacity-100 border rounded-md w-full h-full dark:bg-gray-700/50 dark:border-gray-500',
-		!$readonly && 'hover:border-blue-600 transition',
+		!$readonly && 'hover:border-primary-600 transition',
 	)}
 >
 	<div class="flex justify-between items-center gap-1 border-b border-gray-200 dark:border-gray-500 p-3 grow-0 h-10">
@@ -166,7 +166,7 @@
 	{#if resizePointerDown}
 		<i
 			class="absolute right-0 bottom-0 cursor-se-resize
-				hidden group-hover:block text-3xl text-blue-400
+				hidden group-hover:block text-3xl text-primary-400
 				ti ti-chevron-down-right"
 			on:pointerdown={resizePointerDown}
 		/>

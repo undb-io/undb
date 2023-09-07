@@ -93,7 +93,7 @@
 				</span>
 				{#if canCreate}
 					<button
-						class="text-blue-400 hover:underline"
+						class="text-primary hover:underline"
 						on:click={() =>
 							$restore.mutate({
 								tableId: $table.id.value,

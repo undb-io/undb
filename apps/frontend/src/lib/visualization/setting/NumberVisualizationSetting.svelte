@@ -69,7 +69,7 @@
 	>
 		<Label class="flex-1">
 			<li
-				class="inline-block cursor-pointer rounded-l-md hover:text-white hover:bg-blue-500 w-full h-full px-4 py-2 peer-checked:bg-sky-100 peer-checked:text-blue-600 transition"
+				class="inline-block cursor-pointer rounded-l-md hover:text-white hover:bg-primary-500 w-full h-full px-4 py-2 peer-checked:bg-sky-100 peer-checked:text-primary-600 transition"
 			>
 				<div role="button">
 					{$t('aggregate mode table')}
@@ -81,7 +81,7 @@
 			<li>
 				<div
 					role="button"
-					class="cursor-pointer rounded-r-md hover:text-white hover:bg-blue-500 w-full h-full px-4 py-2 peer-checked:bg-sky-100 peer-checked:text-blue-600 transition"
+					class="cursor-pointer rounded-r-md hover:text-white hover:bg-primary-500 w-full h-full px-4 py-2 peer-checked:bg-sky-100 peer-checked:text-primary-600 transition"
 				>
 					{$t('aggregate mode field')}
 				</div>
