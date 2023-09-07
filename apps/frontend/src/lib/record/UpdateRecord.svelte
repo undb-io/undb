@@ -92,9 +92,7 @@
 	const { form, enhance, delayed, tainted, submitting } = superFrm
 
 	const open = writable<boolean>(false)
-	$: if ($currentRecordId) {
-		open.set(!!$currentRecordId)
-	}
+	$: open.set(!!$currentRecordId)
 
 	const prevRecord = recordsStore.prevRecord
 	const nextRecord = recordsStore.nextRecord

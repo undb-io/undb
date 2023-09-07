@@ -97,9 +97,7 @@
 <FormListDrawer />
 <FormEditorModal />
 <ErdModal />
-{#if $currentRecordId}
-	<UpdateRecord data={data.updateRecord} />
-{/if}
+<UpdateRecord data={data.updateRecord} />
 {#if $currentFieldId}
 	<CreateOption data={data.createOption} />
 {/if}
