@@ -23,7 +23,15 @@
 
 	const addField = () => {
 		const id = FieldId.createId()
-		$form.schema = [...($form.schema ?? []), { id, type: 'string', name: '', display: !displayFields?.length }]
+		$form.schema = [
+			...($form.schema ?? []),
+			{
+				id,
+				type: 'string',
+				name: `${$t('Field')} ${$form.schema.length + 1}`,
+				display: !displayFields?.length,
+			},
+		]
 		currentField = id
 	}
 
