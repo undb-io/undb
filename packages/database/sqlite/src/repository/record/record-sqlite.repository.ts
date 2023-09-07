@@ -145,7 +145,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       for (const chuncked of chunk(records, 1000)) {
         const event = RecordBulkCreatedEvent.from(table, userId, chuncked)
         this.outboxService.persist(event)
-        await em.flush()
+        await this.outboxService.flush()
       }
 
       // await this.uow.commit()

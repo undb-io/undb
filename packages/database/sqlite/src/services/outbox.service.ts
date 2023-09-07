@@ -5,6 +5,7 @@ import { Outbox } from '../entity/outbox.js'
 
 export interface IOutboxService {
   persist(event: IEvent): Outbox
+  flush(): Promise<void>
   handle(cb: (outboxList: Outbox[]) => Promise<void> | void): Promise<void>
 }
 
@@ -13,6 +14,10 @@ export class OutboxService implements IOutboxService {
     protected readonly uow: IUnitOfWork<EntityManager>,
     private readonly count: number,
   ) {}
+
+  async flush(): Promise<void> {
+    await this.uow.conn().flush()
+  }
 
   private get em() {
     return this.uow.conn()
