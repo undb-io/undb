@@ -138,7 +138,7 @@
 		</Button>
 
 		<Dialog.Root bind:open>
-			<Dialog.Content>
+			<Dialog.Content class="h-3/4">
 				<Dialog.Header>
 					<Dialog.Title>{$t('Select Record') ?? undefined}</Dialog.Title>
 				</Dialog.Header>
