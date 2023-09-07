@@ -355,14 +355,24 @@
 {/if}
 
 <AlertDialog.Root bind:open={$confirmBulkDeleteRecords}>
-	<AlertDialog.Content>
+	<AlertDialog.Content class="z-[999999999]">
 		<AlertDialog.Header>
 			<AlertDialog.Title>{$t('Confirm Delete Record')}</AlertDialog.Title>
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
-			<AlertDialog.Cancel>{$t('Confirm No', { ns: 'common' })}</AlertDialog.Cancel>
-			<AlertDialog.Action on:click={bulkDeleteRecords}>
-				{$t('Confirm Yes', { ns: 'common' })}
+			<AlertDialog.Cancel>
+				<div
+					on:click={() => {
+						confirmBulkDeleteRecords.set(false)
+					}}
+				>
+					{$t('Confirm No', { ns: 'common' })}
+				</div>
+			</AlertDialog.Cancel>
+			<AlertDialog.Action>
+				<div on:click={bulkDeleteRecords}>
+					{$t('Confirm Yes', { ns: 'common' })}
+				</div>
 			</AlertDialog.Action>
 		</AlertDialog.Footer>
 	</AlertDialog.Content>
