@@ -79,7 +79,7 @@ const url: TemplateFunc = (h, props) => {
 
 	const url = value.toString()
 
-	return html`<a class="text-sm underline text-blue-400" href="${url}">${url}</a>`
+	return html`<a class="text-sm underline text-primary" href="${url}">${url}</a>`
 }
 
 const id: TemplateFunc = (h, props) => {
@@ -277,7 +277,7 @@ const bool: TemplateFunc = (h, props) => {
 	return h('input', {
 		type: 'checkbox',
 		class:
-			'w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600',
+			'w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600',
 		disabled: true,
 		checked: !!value,
 	})

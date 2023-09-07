@@ -63,7 +63,7 @@
 	$: tempRecord = RecordFactory.temp($table, values, $me.userId, new WithRecordId(id))
 </script>
 
-<main class="bg-blue-50 h-screen w-screen flex flex-col dark:bg-gray-500">
+<main class="bg-primary-50 h-screen w-screen flex flex-col dark:bg-gray-500">
 	<div class="container mx-auto w-full flex flex-col gap-3 items-center justify-center flex-1 h-full p-6 pb-2">
 		<section
 			class="border dark:border-gray-700 rounded-md bg-white py-8 px-6 shadow-lg w-full max-w-5xl dark:bg-gray-600 dark:text-gray-200 max-h-full overflow-y-auto"

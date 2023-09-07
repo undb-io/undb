@@ -89,7 +89,7 @@
 	{#if formField}
 		<div
 			data-field-id={field.id.value}
-			class="fields space-y-2 px-5 py-3 hover:bg-sky-50 dark:hover:bg-gray-900 hover:border-blue-200 border box-border rounded-md relative group dark:border-gray-400"
+			class="fields space-y-2 px-5 py-3 hover:bg-sky-50 dark:hover:bg-gray-900 hover:border-primary-200 border box-border rounded-md relative group dark:border-gray-400"
 		>
 			{#if !field.required}
 				<button class="absolute right-4 top-2 hidden group-hover:block" on:click={() => setFormFieldsVisibility()}>

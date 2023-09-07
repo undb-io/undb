@@ -104,7 +104,7 @@
 							{field}
 							{record}
 							{schema}
-							class="w-full shadow-none hover:shadow-md transition hover:border-blue-400 !max-w-none"
+							class="w-full shadow-none hover:shadow-md transition hover:border-primary-400 !max-w-none"
 							role="button"
 						/>
 						{#if !readonly}
@@ -190,7 +190,7 @@
 									{field}
 									{schema}
 									record={$records[index]}
-									class="w-full shadow-none hover:shadow-md transition hover:border-blue-400 !max-w-none"
+									class="w-full shadow-none hover:shadow-md transition hover:border-primary-400 !max-w-none"
 								/>
 							</Label>
 						</div>

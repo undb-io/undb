@@ -89,7 +89,7 @@
 			<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white pb-2 h-screen">
 				<div class="flex h-12 shrink-0 items-center gap-2">
 					<img class="h-6 w-auto" src={logo} alt="undb" />
-					<p class="font-semibold select-none !text-blue-600">undb</p>
+					<p class="font-semibold select-none !text-primary-600">undb</p>
 				</div>
 				<nav class="flex flex-1 flex-col">
 					<ul class="flex flex-1 flex-col gap-y-7">
@@ -145,7 +145,7 @@
 			<div class="flex h-12 shrink-0 items-center px-6 justify-between">
 				<div class="flex gap-2">
 					<img class="h-6 w-auto" src={logo} alt="undb" />
-					<p class="font-semibold select-none !text-blue-600 dark:!text-white">undb</p>
+					<p class="font-semibold select-none !text-primary-600 dark:!text-white">undb</p>
 				</div>
 				<Tooltip.Root>
 					<Tooltip.Trigger>
@@ -168,8 +168,8 @@
 								href={item.href}
 								class={cn(
 									item.current
-										? 'bg-gray-50 text-indigo-600 dark:text-gray-50 dark:bg-gray-700'
-										: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700',
+										? 'bg-primary/5 text-primary dark:text-gray-50 dark:bg-gray-700'
+										: 'text-gray-700 hover:text-primary hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700',
 									'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
 								)}
 							>
@@ -177,8 +177,8 @@
 									<i
 										class={cn(
 											item.current
-												? 'text-indigo-600 dark:text-gray-50'
-												: 'text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-gray-100',
+												? 'text-primary dark:text-gray-50'
+												: 'text-gray-400 group-hover:text-primary dark:group-hover:text-gray-100',
 											'shrink-0 text-lg',
 											`ti ti-${item.icon}`,
 										)}
@@ -399,7 +399,7 @@
 </div>
 
 {#if copied}
-	<Toast class="z-[99999] dark:bg-blue-50/95 dark:text-gray-700" bind:open={copied}>
+	<Toast class="z-[99999] dark:bg-primary-50/95 dark:text-gray-700" bind:open={copied}>
 		<div class="flex items-center gap-2">
 			<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
 				><path

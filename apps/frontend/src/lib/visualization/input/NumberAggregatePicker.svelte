@@ -16,7 +16,7 @@
 				<Label class="w-full cursor-pointer text-center flex justify-start items-center">
 					<RadioGroup.Item value={func} />
 					<span
-						class="whitespace-nowrap text-xs hover:text-blue-500 peer-checked:text-blue-500 peer-checked:border-blue-500 peer-checked:border block h-full p-1"
+						class="whitespace-nowrap text-xs hover:text-primary-500 peer-checked:text-primary-500 peer-checked:border-primary-500 peer-checked:border block h-full p-1"
 					>
 						{$t(func, { ns: 'common' })}
 					</span>

@@ -92,7 +92,7 @@
 <div class="space-y-2">
 	{#each hiddenFields as field}
 		<button
-			class="block border w-full !py-2 !px-4 shadow-sm hover:shadow-md transition cursor-pointer hover:border-blue-500 !max-w-none"
+			class="block border w-full !py-2 !px-4 shadow-sm hover:shadow-md transition cursor-pointer hover:border-primary-500 !max-w-none"
 			on:click={() => setFormFieldsVisibility(field.id.value)}
 		>
 			<div class="flex gap-2 items-center">

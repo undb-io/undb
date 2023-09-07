@@ -112,7 +112,7 @@
 						</DropdownMenu.Content>
 					</DropdownMenu.Root>
 				{:else}
-					<Badge color="blue" class="border border-blue-500">
+					<Badge color="blue" class="border border-primary">
 						{$t(member.role, { ns: 'authz' })}
 					</Badge>
 				{/if}
