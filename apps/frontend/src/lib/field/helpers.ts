@@ -51,7 +51,7 @@ export const colors: Record<IColor, string> = {
 	teal: 'bg-teal-500',
 	cyan: 'bg-cyan-500',
 	sky: 'bg-sky-500',
-	blue: 'bg-primary-500',
+	blue: 'bg-blue-500',
 	indigo: 'bg-indigo-500',
 	violet: 'bg-violet-500',
 	purple: 'bg-purple-500',
