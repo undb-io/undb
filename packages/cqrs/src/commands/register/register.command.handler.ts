@@ -19,6 +19,7 @@ export class RegisterCommandHandler implements IRegisterCommandHandler {
     if (exists) throw new Error('user already exists')
 
     const user = await this.svc.register(email, password)
+    await this.memberService.grantDefault(user)
 
     return { email, sub: user.userId.value }
   }
