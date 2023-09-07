@@ -62,7 +62,7 @@
 {/if}
 
 <AlertDialog.Root bind:open={confirmDeleteOpen}>
-	<AlertDialog.Content>
+	<AlertDialog.Content class="z-[999999999]">
 		<div class="text-center">
 			<svg
 				aria-hidden="true"
