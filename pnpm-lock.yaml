@@ -1196,6 +1196,9 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
+      nanoid:
+        specifier: ^4.0.2
+        version: 4.0.2
       openapi-snippet:
         specifier: ^0.14.0
         version: 0.14.0(mkdirp@2.1.6)

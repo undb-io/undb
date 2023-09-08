@@ -1,10 +1,13 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { ISpecVisitor, ISpecification } from '@undb/domain'
-import type { ApiToken as ApiTokenDo, IApiTokenVisitor, WithApiTokenId } from '@undb/openapi'
+import type { ApiToken as ApiTokenDo, IApiTokenVisitor, WithApiTokenId, WithApiTokenToken } from '@undb/openapi'
 
 export class ApiTokenMutationVisitor implements IApiTokenVisitor {
   constructor(private readonly em: EntityManager) {}
   withId(s: WithApiTokenId): void {
+    throw new Error('Method not implemented.')
+  }
+  withToken(s: WithApiTokenToken): void {
     throw new Error('Method not implemented.')
   }
   or(left: ISpecification<ApiTokenDo, ISpecVisitor>, right: ISpecification<ApiTokenDo, ISpecVisitor>): this {

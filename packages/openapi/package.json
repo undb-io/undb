@@ -11,6 +11,7 @@
     "@undb/logger": "^0.0.0",
     "date-fns": "^2.30.0",
     "lodash-es": "^4.17.21",
+    "nanoid": "^4.0.2",
     "openapi-snippet": "^0.14.0",
     "openapi-to-postmanv2": "^4.16.0",
     "oxide.ts": "^1.1.0",
