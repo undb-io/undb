@@ -1178,6 +1178,9 @@ importers:
       '@undb/core':
         specifier: ^0.0.0
         version: link:../core
+      '@undb/domain':
+        specifier: workspace:^
+        version: link:../domain
       '@undb/integrations':
         specifier: ^0.0.0
         version: link:../integrations
@@ -1196,6 +1199,9 @@ importers:
       openapi-to-postmanv2:
         specifier: ^4.16.0
         version: 4.16.0
+      oxide.ts:
+        specifier: ^1.1.0
+        version: 1.1.0
       zod:
         specifier: ^3.22.2
         version: 3.22.2
