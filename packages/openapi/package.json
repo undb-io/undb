@@ -15,8 +15,8 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
-    "@types/lodash-es": "^4.17.8",
-    "@types/openapi-to-postmanv2": "^3.2.0",
+    "@types/lodash-es": "^4.17.9",
+    "@types/openapi-to-postmanv2": "^3.2.1",
     "@types/postman-collection": "^3.5.7",
     "openapi3-ts": "^4.1.2",
     "rimraf": "^5.0.1",

@@ -12,7 +12,7 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
-    "@types/lodash-es": "^4.17.8",
+    "@types/lodash-es": "^4.17.9",
     "@undb/eslint-config": "^0.0.0",
     "rimraf": "^5.0.1",
     "tsconfig": "^0.0.0",
