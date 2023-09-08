@@ -17,7 +17,7 @@
     },
     "keepClassNames": true,
     "experimental": {
-      "keepImportAttributes": true
+      "keepImportAssertions": true
     }
   },
   "minify": false,
