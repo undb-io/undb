@@ -7,7 +7,7 @@ import { authz } from './authz.middleware.js'
 
 const createApiTokenRouter = (procedure: typeof publicProcedure) => (commandBus: ICommandBus, queryBus: IQueryBus) =>
   router({
-    list: procedure
+    create: procedure
       .use(authz('openapi:create_api_token'))
       .input(createApiTokenCommandInput)
       .output(z.any())

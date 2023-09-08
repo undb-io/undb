@@ -23,7 +23,7 @@ export const config: InitOptions = {
         'password placeholder': 'Password',
         'has no account': "Don't have an account yet?",
         'has account': 'Already have an account?',
-        Settings: 'Settings',
+        'Account Settings': 'Account Settings',
         Profile: 'Profile',
         username: 'Username',
         avatar: 'Avatar',
@@ -59,7 +59,11 @@ export const config: InitOptions = {
       warnings: {
         'RECORD.NO_COLUMN_TO_UPDATE': 'No Column to update',
       },
+      openapi: {
+        'Create New Token': 'Create New Token',
+      },
       common: {
+        Settings: 'Settings',
         when: 'when',
         readonly: 'readonly',
         previous: 'Previous',
@@ -419,6 +423,9 @@ export const config: InitOptions = {
       warnings: {
         'RECORD.NO_COLUMN_TO_UPDATE': '没有列可更新',
       },
+      openapi: {
+        'Create New Token': '创建新 token',
+      },
       auth: {
         login: '登录',
         logout: '退出登录',
@@ -433,7 +440,7 @@ export const config: InitOptions = {
         'has account': '已有账号？',
         'login to undb': '登录到 undb',
         'register to undb': '注册 undb 账号',
-        Settings: '设置账号',
+        'Account Settings': '账号账号',
         Profile: '简介',
         username: '用户名',
         avatar: '头像',
@@ -467,6 +474,7 @@ export const config: InitOptions = {
         'TABLE.NOT_FOUND': '没有找到表格',
       },
       common: {
+        Settings: '系统账号',
         when: '当',
         readonly: '只读',
         previous: '上一页',
