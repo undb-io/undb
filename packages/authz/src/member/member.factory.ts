@@ -1,6 +1,6 @@
 import type { User } from '@undb/core'
 import { and } from '@undb/domain'
-import type { IRoles } from 'src/rbac/role.vo.js'
+import type { IRoles } from '../rbac/role.vo.js'
 import type { MemberSpecification } from './interface.js'
 import { Member } from './member.js'
 import { WithMemberId } from './specifications/member-id.specification.js'

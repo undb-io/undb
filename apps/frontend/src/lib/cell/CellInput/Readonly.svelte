@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Input } from 'flowbite-svelte'
+	import { Input } from '$lib/components/ui/input'
 	export let value: any
 </script>
 
-<Input {value} {...$$restProps} readonly />
+<Input {value} class={$$restProps.class} readonly />

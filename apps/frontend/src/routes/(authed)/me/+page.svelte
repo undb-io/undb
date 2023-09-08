@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { page } from '$app/stores'
+	import Button from '$components/ui/button/button.svelte'
+	import Input from '$components/ui/input/input.svelte'
+	import { Label } from '$components/ui/label'
 	import { t } from '$lib/i18n'
 	import { createMutation } from '@tanstack/svelte-query'
 	import type { IAttachmentItem } from '@undb/core'
-	import { Fileupload, Label } from 'flowbite-svelte'
 
 	$: me = $page.data.me?.me
 	let attachment: IAttachmentItem | undefined
@@ -66,14 +68,14 @@
 			<div class="px-4 py-6 sm:p-8">
 				<div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 					<div class="sm:col-span-4">
-						<label for="username" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200"
-							>{$t('username', { ns: 'auth' })}</label
-						>
+						<Label for="username" class="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">
+							{$t('username', { ns: 'auth' })}
+						</Label>
 						<div class="mt-2">
 							<div
 								class="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md"
 							>
-								<input
+								<Input
 									type="text"
 									name="username"
 									id="username"
@@ -88,7 +90,7 @@
 					<div class="col-span-full">
 						<Label class="space-y-2 mb-2">
 							<span>{$t('avatar', { ns: 'auth' })}</span>
-							<Fileupload accept="image/png, image/jpeg" on:change={onChange} />
+							<Input type="file" accept="image/png, image/jpeg" on:change={onChange} />
 						</Label>
 						{#if attachment}
 							<img src={attachment.url} alt={attachment.name} />
@@ -102,12 +104,9 @@
 				<div class="text-gray-400">
 					{$page.data.appInfo.version}
 				</div>
-				<button
-					type="submit"
-					disabled={$updateProfile.isLoading}
-					class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-					>{$t('Confirm', { ns: 'common' })}</button
-				>
+				<Button type="submit" disabled={$updateProfile.isLoading}>
+					{$t('Confirm', { ns: 'common' })}
+				</Button>
 			</div>
 		</form>
 	</div>

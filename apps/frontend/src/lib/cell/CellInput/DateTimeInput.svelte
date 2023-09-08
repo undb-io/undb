@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { format } from 'date-fns'
-	import { Input } from 'flowbite-svelte'
+	import { Input } from '$lib/components/ui/input'
 
 	export let value: string | undefined = undefined
 

@@ -1,3 +1,14 @@
+## v0.8.0
+
+
+### 🎨 Styles
+
+- Table list style ([18a58b0](https://github.com/undb-xyz/undb/commit/18a58b0))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v0.7.2
 
 ## v0.7.1

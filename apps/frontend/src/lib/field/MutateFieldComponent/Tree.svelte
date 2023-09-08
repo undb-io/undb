@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { Input, Label } from 'flowbite-svelte'
-	import { fieldProxy, formFieldProxy, type SuperForm } from 'sveltekit-superforms/client'
+	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms'
 	import DisplayFieldsPicker from '../FieldInputs/DisplayFieldsPicker.svelte'
 	import type { Writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
 	import { allTableFields, getTable, newTableSchema } from '$lib/store/table'
+	import { Label } from '$components/ui/label'
+	import { Input } from '$components/ui/input'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 	export let isNew = false

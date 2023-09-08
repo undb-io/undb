@@ -4,7 +4,11 @@
 	import { hasPermission } from '$lib/store/authz'
 	import { trpc } from '$lib/trpc/client'
 	import { getIframe, type IQueryShare, type IShareTarget } from '@undb/integrations'
-	import { Dropdown, Heading, Input, Toggle } from 'flowbite-svelte'
+	import { Input } from '$lib/components/ui/input'
+	import { Label } from '$lib/components/ui/label'
+	import { Switch } from '$lib/components/ui/switch'
+	import * as HoverCard from '$lib/components/ui/hover-card'
+
 	import { copyText } from 'svelte-copy'
 
 	export let url: string
@@ -28,9 +32,7 @@
 		},
 	})
 
-	const onChange = (e: Event) => {
-		const target = e.target as HTMLInputElement
-
+	const onChange = (checked: boolean | undefined) => {
 		if (!share) {
 			$createShare.mutate({
 				tableId: $table.id.value,
@@ -42,7 +44,7 @@
 			$updateShare.mutate({
 				shareId: share.id,
 				update: {
-					enabled: target.checked,
+					enabled: checked,
 				},
 			})
 		}
@@ -76,21 +78,19 @@
 	}
 </script>
 
-<Dropdown
-	bind:open
-	style="z-index: 50;"
-	class="w-96 text-sm font-light border rounded-lg "
-	title={$t('share')}
-	{trigger}
-	placement="bottom"
->
-	<div class="space-y-2 p-3">
-		<Toggle bind:checked={enabled} disabled={!$hasPermission('share:enable')} on:change={onChange}>
-			{enabled ? $t('disable share') : $t('enable share')}
-		</Toggle>
-		{#if share && enabled}
-			<Input value={url} readonly>
-				<svelte:fragment slot="right">
+<HoverCard.Root bind:open openDelay={10}>
+	<HoverCard.Trigger>
+		<slot />
+	</HoverCard.Trigger>
+	<HoverCard.Content class="w-96">
+		<div class="space-y-2">
+			<Label class="inline-flex items-center gap-2">
+				<Switch bind:checked={enabled} disabled={!$hasPermission('share:enable')} onCheckedChange={onChange}></Switch>
+				{enabled ? $t('disable share') : $t('enable share')}
+			</Label>
+			{#if share && enabled}
+				<Label class="flex items-center gap-2">
+					<Input value={url} readonly></Input>
 					{#if copied}
 						<i class="ti ti-check text-green-500" />
 					{:else}
@@ -101,11 +101,10 @@
 							<i class="ti ti-copy cursor-pointer" on:click={copyURL} />
 						</div>
 					{/if}
-				</svelte:fragment>
-			</Input>
-			<Heading tag="h6">Embed</Heading>
-			<Input value={iframe} readonly>
-				<svelte:fragment slot="right">
+				</Label>
+				<h4>Embed</h4>
+				<div class="flex items-center gap-2">
+					<Input value={iframe} readonly></Input>
 					{#if iframeCopied}
 						<i class="ti ti-check text-green-500" />
 					{:else}
@@ -113,8 +112,8 @@
 							<i class="ti ti-copy cursor-pointer" on:click={copyIFrame} />
 						</div>
 					{/if}
-				</svelte:fragment>
-			</Input>
-		{/if}
-	</div>
-</Dropdown>
+				</div>
+			{/if}
+		</div>
+	</HoverCard.Content>
+</HoverCard.Root>

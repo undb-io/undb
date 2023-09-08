@@ -1,5 +1,5 @@
 import type { TFunction } from 'i18next'
-import { isBoolean, isNumber, isPlainObject, isString, uniq } from 'lodash-es'
+import { castArray, isBoolean, isNumber, isPlainObject, isString, uniq } from 'lodash-es'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
 import { Options } from '../option'
@@ -708,5 +708,6 @@ export const castFieldValue = (type: IFieldType, value: string | number | null |
         .otherwise(Boolean),
     )
     .with('select', () => value || null)
+    .with('multi-select', 'reference', 'tree', 'collaborator', () => (value ? castArray(value) : null))
     .otherwise(() => value)
 }

@@ -1,7 +1,8 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import type { SelectField } from '@undb/core'
-	import { Button, Dropdown, Radio } from 'flowbite-svelte'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { Button } from '$lib/components/ui/button'
 	import Option from './Option.svelte'
 	import { t } from '$lib/i18n'
 
@@ -12,37 +13,36 @@
 
 	$: option = group ? field?.options.getById(group).into() : null
 	$: options = field?.options?.options ?? []
-
-	$: open = false
 </script>
 
-<Button class={cx('h-full', $$restProps.class)} color="alternative" disabled={readonly}>
-	{#if option}
-		<Option {option} />
-	{:else}
-		<span class="inline-flex items-center gap-2">
-			<i class="ti ti-plus" />
-			<span>{$t('Select Option')}</span>
-		</span>
-	{/if}
-</Button>
-{#if !readonly}
-	<Dropdown style="z-index: 50;" bind:open placement="bottom-start" class="w-[400px] border z-[99999]">
-		<div class="w-full">
+<DropdownMenu.Root positioning={{ placement: 'bottom-start' }}>
+	<DropdownMenu.Trigger asChild let:builder>
+		<Button
+			type="button"
+			class={cn('h-full', $$restProps.class)}
+			variant="outline"
+			disabled={readonly}
+			builders={[builder]}
+		>
+			{#if option}
+				<Option {option} />
+			{:else}
+				<span class="inline-flex items-center gap-2">
+					<i class="ti ti-plus" />
+					<span>{$t('Select Option')}</span>
+				</span>
+			{/if}
+		</Button>
+	</DropdownMenu.Trigger>
+	<DropdownMenu.Content class="w-56">
+		<DropdownMenu.RadioGroup bind:value={group}>
 			{#each options as option}
-				<Radio
-					class="cursor-pointer flex "
-					bind:group
-					value={option.key.value}
-					{...$$restProps}
-					custom
-					on:change={() => (open = false)}
-				>
-					<span role="button" class="inline-flex w-full px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-400 transition">
+				<DropdownMenu.RadioItem class="cursor-pointer flex " value={option.key.value} {...$$restProps}>
+					<span role="button" class="inline-flex w-full transition">
 						<Option {option} />
 					</span>
-				</Radio>
+				</DropdownMenu.RadioItem>
 			{/each}
-		</div>
-	</Dropdown>
-{/if}
+		</DropdownMenu.RadioGroup>
+	</DropdownMenu.Content>
+</DropdownMenu.Root>

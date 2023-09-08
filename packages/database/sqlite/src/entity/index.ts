@@ -1,6 +1,7 @@
 import { Attachment } from './attachment.js'
 import { Audit } from './audit.js'
 import { Field, fieldEntities } from './field.js'
+import { FLS } from './fls.js'
 import { Form } from './form.js'
 import { Invitation } from './invitation.js'
 import { Member } from './member.js'
@@ -38,6 +39,7 @@ export const entities = [
   Share,
   Audit,
   RLS,
+  FLS,
   Member,
   Invitation,
 ]

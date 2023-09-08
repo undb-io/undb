@@ -2,13 +2,13 @@ import { RootFilter, type TableId } from '@undb/core'
 import { and } from '@undb/domain'
 import { isArray, isNil } from 'lodash-es'
 import type { Option } from 'oxide.ts'
+import type { Subjects } from '../common/index.js'
 import type { RLSSpecification } from './interface.js'
 import type { IUpdateRLSSchema } from './rls.schema.js'
 import { WithRLSPolicyFilter } from './specifications/rls-policy.specification.js'
 import { WithRLSSubjects } from './specifications/rls-subject.specification.js'
 import type { RLSID } from './value-objects/rls-id.vo.js'
 import type { RLSPolicy } from './value-objects/rls-policy.vo.js'
-import type { RLSSubjects } from './value-objects/rls-subjects.vo.js'
 
 /**
  * Record Level Security
@@ -17,7 +17,7 @@ export class RLS {
   id!: RLSID
   tableId!: TableId
   policy!: RLSPolicy
-  subjects!: RLSSubjects
+  subjects!: Subjects
 
   static empty() {
     return new this()

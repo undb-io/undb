@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import type { ChartVisualization, IFieldType } from '@undb/core'
 	import { aggregateChartFn, getTable } from '$lib/store/table'
 	import EmptyChartVisualization from './EmptyChartVisualization.svelte'
@@ -29,7 +29,7 @@
 	<div class="w-full h-full animate-pulse bg-slate-100" />
 {:else if field}
 	{#key field}
-		<div {...$$restProps} class={cx('text-center flex items-center justify-center w-[70%]', $$restProps.class)}>
+		<div {...$$restProps} class={cn('text-center flex items-center justify-center w-[70%]', $$restProps.class)}>
 			<svelte:component this={map[field.type]} {field} data={$getChartData.data?.data} />
 		</div>
 	{/key}

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import cx from 'classnames'
-	import { Button, Toast } from 'flowbite-svelte'
+	import { cn } from '$lib/utils'
+	import { Button } from '$lib/components/ui/button'
 	import type { ChartVisualization as CoreChartVisualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
 	import { aggregateChartFn, allTableFields, getTable } from '$lib/store/table'
@@ -8,6 +8,7 @@
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import { slide } from 'svelte/transition'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	const table = getTable()
 
@@ -44,31 +45,26 @@
 	}
 </script>
 
-<div {...$$restProps} class={cx('flex flex-col flex-1', $$restProps.class)}>
+<div {...$$restProps} class={cn('flex flex-col flex-1', $$restProps.class)}>
 	<form on:submit|preventDefault={onSubmit} class="flex flex-col h-full justify-between">
 		<div>
 			<FieldPicker
-				class="w-full !justify-start mb-4"
-				table={$table}
 				fields={$allTableFields}
 				filter={(f) =>
 					f.type === 'select' || f.type === 'collaborator' || f.type === 'created-by' || f.type === 'updated-by'}
 				bind:value={fieldId}
+				class="w-full"
 			/>
 		</div>
 		<div class="flex-1" />
 		<div class="flex justify-end">
-			<Button {disabled} type="submit" size="xs">{$t('Confirm', { ns: 'common' })}</Button>
+			<Button {disabled} type="submit" size="sm">{$t('Confirm', { ns: 'common' })}</Button>
 		</div>
 	</form>
 </div>
 
 {#if $updateVisualization.isSuccess}
-	<Toast
-		transition={slide}
-		position="bottom-right"
-		class="fixed z-[99999] !bg-green-500 border-0 text-white font-semibold"
-	>
+	<Toast class="fixed z-[99999] !bg-green-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$t('update success', { ns: 'common' })}

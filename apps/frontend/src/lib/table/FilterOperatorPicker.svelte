@@ -1,10 +1,9 @@
 <script lang="ts">
-	import cx from 'classnames'
 	import { operaotrsMap, type Field } from '@undb/core'
-	import { Button, Dropdown, Radio } from 'flowbite-svelte'
 	import { t } from '$lib/i18n'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { Button } from '$components/ui/button'
 
-	let open = false
 	export let value: string = ''
 	export let field: Field | undefined
 	export let readonly = false
@@ -15,43 +14,32 @@
 	}
 </script>
 
-<Button
-	color="alternative"
-	{...$$restProps}
-	class={cx($$restProps.class, 'gap-2 field_picker text-xs')}
-	on:click={() => (open = true)}
->
-	{$t(value, { ns: 'common' })}
-</Button>
-{#if data.length && !readonly}
-	<Dropdown
-		style="z-index: 999999999;"
-		class="w-[400px] z-[99999] border rounded-sm bg-white shadow-sm dark:shadow-gray-500 dark:bg-gray-700"
-		bind:open
-	>
-		{#each data as item}
-			{@const selected = item === value}
-			<Radio value={item} bind:group={value} custom on:change={() => (open = false)}>
-				<li
-					role="listitem"
-					class="w-full pr-4 flex justify-between hover:bg-gray-100 transition cursor-pointer dark:text-white dark:hover:!text-gray-600"
-					class:bg-gray-100={selected}
-				>
-					<div
-						class={cx(
-							'px-3 py-2 inline-flex gap-2 items-center text-xs text-gray-600 dark:text-white dark:hover:text-gray-600',
-							selected ? 'dark:!text-gray-600' : '',
-						)}
-					>
-						{$t(item, { ns: 'common' })}
-					</div>
-					<span>
-						{#if selected}
-							<i class="ti ti-check text-sm dark:text-gray-600" />
-						{/if}
-					</span>
-				</li>
-			</Radio>
-		{/each}
-	</Dropdown>
-{/if}
+<DropdownMenu.Root>
+	<DropdownMenu.Trigger asChild let:builder>
+		<Button
+			variant="outline"
+			builders={[builder]}
+			disabled={readonly}
+			class={$$restProps.class}
+			type="button"
+			size="sm"
+		>
+			{#if value}
+				{$t(value, { ns: 'common' })}
+			{:else}
+				<span class="text-sm font-normal text-gray-400">
+					{$t('select filter operator')}
+				</span>
+			{/if}
+		</Button>
+	</DropdownMenu.Trigger>
+	<DropdownMenu.Content class="w-56">
+		<DropdownMenu.RadioGroup bind:value>
+			{#each data as item}
+				<DropdownMenu.RadioItem value={item}>
+					{$t(item, { ns: 'common' })}
+				</DropdownMenu.RadioItem>
+			{/each}
+		</DropdownMenu.RadioGroup>
+	</DropdownMenu.Content>
+</DropdownMenu.Root>

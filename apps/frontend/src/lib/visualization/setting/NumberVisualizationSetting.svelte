@@ -1,6 +1,6 @@
 <script lang="ts">
-	import cx from 'classnames'
-	import { Alert, Button, Radio, Toast } from 'flowbite-svelte'
+	import { cn } from '$lib/utils'
+	import { Button } from '$lib/components/ui/button'
 	import type { NumberVisualization as CoreNumberVisualization } from '@undb/core'
 	import FieldPicker from '$lib/field/FieldInputs/FieldPicker.svelte'
 	import { allTableFields, getTable } from '$lib/store/table'
@@ -11,6 +11,8 @@
 	import { tick } from 'svelte'
 	import { slide } from 'svelte/transition'
 	import { aggregateNumberFn } from '$lib/store/table'
+	import Label from '$components/ui/label/label.svelte'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	const table = getTable()
 
@@ -61,62 +63,55 @@
 	}
 </script>
 
-<div {...$$restProps} class={cx('flex flex-col flex-1', $$restProps.class)}>
+<div {...$$restProps} class={cn('flex flex-col flex-1', $$restProps.class)}>
 	<ul
 		class="items-center w-full rounded-md border border-gray-200 sm:flex dark:bg-gray-800 dark:border-gray-600 divide-x divide-gray-200 dark:divide-gray-600 mb-4 p-0"
 	>
-		<li
-			class="inline-block cursor-pointer rounded-l-md hover:text-white hover:bg-blue-500 w-full h-full px-4 py-2 peer-checked:bg-sky-100 peer-checked:text-blue-600 transition"
-		>
-			<Radio value="table" bind:group={mode} name="mode" custom>
+		<Label class="flex-1">
+			<li
+				class="inline-block cursor-pointer rounded-l-md hover:text-white hover:bg-primary-500 w-full h-full px-4 py-2 peer-checked:bg-sky-100 peer-checked:text-primary-600 transition"
+			>
 				<div role="button">
 					{$t('aggregate mode table')}
 				</div>
-			</Radio>
-		</li>
-		<li class="w-full">
-			<Radio value="field" bind:group={mode} name="mode" custom>
+				<input class="hidden" type="radio" value="table" bind:group={mode} name="mode" />
+			</li>
+		</Label>
+		<Label class="flex-1">
+			<li>
 				<div
 					role="button"
-					class="cursor-pointer rounded-r-md hover:text-white hover:bg-blue-500 w-full h-full px-4 py-2 peer-checked:bg-sky-100 peer-checked:text-blue-600 transition"
+					class="cursor-pointer rounded-r-md hover:text-white hover:bg-primary-500 w-full h-full px-4 py-2 peer-checked:bg-sky-100 peer-checked:text-primary-600 transition"
 				>
 					{$t('aggregate mode field')}
 				</div>
-			</Radio>
-		</li>
+				<input class="hidden" value="field" type="radio" bind:group={mode} name="mode" />
+			</li>
+		</Label>
 	</ul>
 
 	<form on:submit|preventDefault={onSubmit} class="flex flex-col h-full justify-between">
 		{#if mode === 'field'}
-			<div>
+			<div class="flex flex-col gap-4">
 				<FieldPicker
-					class="w-full !justify-start mb-4"
-					table={$table}
 					fields={$allTableFields}
 					filter={(f) =>
 						f.type === 'rating' || f.type === 'auto-increment' || f.type === 'number' || f.type === 'currency'}
 					bind:value={fieldId}
-				>
-					<Alert slot="empty" color="yellow">
-						{$t('no numberic fields')}
-					</Alert>
-				</FieldPicker>
+					class="w-full"
+				></FieldPicker>
 				<NumberAggregatePicker bind:value={numberAggregateFunction} />
 			</div>
 		{/if}
 		<div class="flex-1" />
 		<div class="flex justify-end">
-			<Button {disabled} type="submit" size="xs">{$t('Confirm', { ns: 'common' })}</Button>
+			<Button {disabled} type="submit" size="sm">{$t('Confirm', { ns: 'common' })}</Button>
 		</div>
 	</form>
 </div>
 
 {#if $updateVisualization.isSuccess}
-	<Toast
-		transition={slide}
-		position="bottom-right"
-		class="fixed z-[99999] !bg-green-500 border-0 text-white font-semibold"
-	>
+	<Toast class="fixed z-[99999] !bg-green-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$t('update success', { ns: 'common' })}

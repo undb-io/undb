@@ -89,7 +89,7 @@
 				label,
 				from: fromTimeStamp,
 				to: toTimeStampe,
-				classes: '!bg-blue-400 hover:!bg-blue-500',
+				classes: '!bg-primary-400 hover:!bg-primary-500',
 				enableDragging: !$readonly,
 			}
 		})
@@ -216,7 +216,7 @@
 		</div>
 
 		<div>
-			<button bind:this={externalEle} class="rounded-sm bg-blue-500 py-1 px-2 text-white text-xs"
+			<button bind:this={externalEle} class="rounded-sm bg-primary-500 py-1 px-2 text-white text-xs"
 				>{$t('drag to set date')}</button
 			>
 		</div>

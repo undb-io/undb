@@ -1,14 +1,14 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import { fieldProxy, type SuperForm } from 'sveltekit-superforms/client'
 	import type { UnwrapEffects } from 'sveltekit-superforms/index'
 	import ReferenceFieldPicker from '../FieldInputs/ReferenceFieldPicker.svelte'
 	import { getForeignTableFieldsByReferenceId, getTable, tableById } from '$lib/store/table'
 	import { type ReferenceField, type TreeField, isNumeric, isAggregate, Table } from '@undb/core'
-	import { Label } from 'flowbite-svelte'
 	import FieldPicker from '../FieldInputs/FieldPicker.svelte'
 	import type { Writable } from 'svelte/store'
 	import { t } from '$lib/i18n'
+	import { Label } from '$components/ui/label'
 
 	export let form: SuperForm<UnwrapEffects<string>, unknown>
 	export let path: any[] = []
@@ -41,7 +41,7 @@
 				table={coreTable}
 				bind:value={$aggregateFieldId}
 				{...$$restProps}
-				class={cx('w-full !justify-start', $$restProps.class)}
+				class={cn('w-full !justify-start', $$restProps.class)}
 				fields={$getForeignTableFieldsByReferenceId($referenceFieldId)}
 				filter={(f) => isNumeric(f.type) && !isAggregate(f.type)}
 			/>

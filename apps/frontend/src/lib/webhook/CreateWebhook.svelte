@@ -1,18 +1,21 @@
 <script lang="ts">
-	import Checkbox from '$lib/cell/CellInput/Checkbox.svelte'
 	import { t } from '$lib/i18n'
 	import { webhookDrawerMode } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { recordEvents, type IFilter, isOperatorWithoutValue } from '@undb/core'
+	import { recordEvents, type IFilter } from '@undb/core'
 	import type { createWebhookSchema } from '@undb/integrations'
-	import { Button, Input, Label, Select, Toast } from 'flowbite-svelte'
-	import { slide } from 'svelte/transition'
+	import { Label } from '$lib/components/ui/label'
+	import { Input } from '$lib/components/ui/input'
+	import { Button } from '$components/ui/button'
+	import { Checkbox } from '$lib/components/ui/checkbox'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import WebhookHeaderInput from './WebhookHeaderInput.svelte'
 	import FilterEditor from '$lib/filter/FilterEditor.svelte'
 	import { getValidFilters } from '$lib/filter/filter.util'
+	import Toast from '$components/ui/toast/toast.svelte'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 
 	export let data: Validation<typeof createWebhookSchema>
 
@@ -67,7 +70,7 @@
 					<span class="text-red-500">*</span>
 				</div>
 
-				<Input name="name" size="sm" type="text" bind:value={$form.name} />
+				<Input name="name" type="text" bind:value={$form.name} />
 			</Label>
 
 			<Label class="flex flex-col gap-2 w-full">
@@ -76,14 +79,14 @@
 					<span class="text-red-500">*</span>
 				</div>
 
-				<Input name="url" size="sm" type="text" bind:value={$form.url} />
+				<Input name="url" type="text" bind:value={$form.url} />
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
 					<span>{$t('Enabled', { ns: 'webhook' })}</span>
 				</div>
 
-				<Checkbox bind:value={$form.enabled} />
+				<Checkbox bind:checked={$form.enabled} />
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
@@ -91,7 +94,26 @@
 					<span class="text-red-500">*</span>
 				</div>
 
-				<Select items={methods} bind:value={$form.method} />
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger asChild let:builder>
+						<Button variant="outline" builders={[builder]} class="gap-2" type="button">
+							{#if $form.method}
+								<span>
+									{$t($form.method, { ns: 'webhook' })}
+								</span>
+							{/if}
+						</Button>
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content class="w-56">
+						<DropdownMenu.RadioGroup bind:value={$form.method}>
+							{#each methods as method}
+								<DropdownMenu.RadioItem value={method.value}>
+									{method.name}
+								</DropdownMenu.RadioItem>
+							{/each}
+						</DropdownMenu.RadioGroup>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
@@ -99,37 +121,54 @@
 					<span class="text-red-500">*</span>
 				</div>
 
-				<Select items={events} bind:value={$form.target.event} />
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger asChild let:builder>
+						<Button variant="outline" builders={[builder]} class="gap-2" type="button">
+							{#if $form.target.event}
+								<span>
+									{$t($form.target.event, { ns: 'event' })}
+								</span>
+							{/if}
+						</Button>
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content class="w-56">
+						<DropdownMenu.RadioGroup bind:value={$form.target.event}>
+							{#each events as event}
+								<DropdownMenu.RadioItem value={event.value}>
+									{event.name}
+								</DropdownMenu.RadioItem>
+							{/each}
+						</DropdownMenu.RadioGroup>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
 			</Label>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
-					<span>{$t('Filters')}</span>
+					<span>{$t('Filter')}</span>
 				</div>
-
-				<FilterEditor bind:value={filters} let:add>
-					<Button color="alternative" size="xs" on:click={add}>
-						{$t('Create New Filter')}
-					</Button>
-				</FilterEditor>
 			</Label>
+			<FilterEditor bind:value={filters} let:add createInitial={false}>
+				<Button variant="outline" type="button" on:click={add} class="w-full">
+					{$t('Create New Filter')}
+				</Button>
+			</FilterEditor>
 			<Label class="flex flex-col gap-2 w-full">
 				<div class="flex gap-2 items-center">
 					<span>{$t('Headers', { ns: 'webhook' })}</span>
-					<span class="text-red-500">*</span>
 				</div>
 
 				<WebhookHeaderInput bind:value={$form.headers} />
 			</Label>
 		</div>
-		<div class="w-full flex justify-end gap-4">
-			<Button size="xs" color="alternative">{$t('Cancel', { ns: 'common' })}</Button>
-			<Button size="xs" form="createWebhook" type="submit">{$t('Confirm', { ns: 'common' })}</Button>
+		<div class="w-full flex justify-end gap-4 mt-4">
+			<Button size="sm" type="button" variant="secondary">{$t('Cancel', { ns: 'common' })}</Button>
+			<Button size="sm" form="createWebhook" type="submit">{$t('Confirm', { ns: 'common' })}</Button>
 		</div>
 	</div>
 </form>
 
 {#if $createWebhook.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$createWebhook.error.message}

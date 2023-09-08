@@ -1,5 +1,5 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 	import type { IViewDisplayType } from '@undb/core'
 
 	export let type: IViewDisplayType
@@ -25,4 +25,4 @@
 	}
 </script>
 
-<i class={cx(`ti ti-${map[type]} text-sm`, colors[type], $$restProps.class)} />
+<i class={cn(`ti ti-${map[type]} text-sm`, colors[type], $$restProps.class)} />

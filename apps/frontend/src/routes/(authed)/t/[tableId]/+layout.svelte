@@ -3,8 +3,8 @@
 	import { TableFactory } from '@undb/core'
 	import type { LayoutData } from './$types'
 	import { goto } from '$app/navigation'
-	import { currentRLSS, currentTable, currentView } from '$lib/store/table'
-	import { RLSFactory } from '@undb/authz'
+	import { currentFLSS, currentRLSS, currentTable, currentView } from '$lib/store/table'
+	import { FLSFactory, RLSFactory } from '@undb/authz'
 
 	export let data: LayoutData
 
@@ -19,6 +19,10 @@
 
 	$: if (Array.isArray(data.table?.rlss)) {
 		currentRLSS.set(data.table?.rlss.map((rls) => RLSFactory.fromQuery(rls)))
+	}
+
+	$: if (Array.isArray(data.table?.flss)) {
+		currentFLSS.set(data.table?.flss.map((fls) => FLSFactory.fromQuery(fls)))
 	}
 </script>
 

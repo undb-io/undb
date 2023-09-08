@@ -4,6 +4,7 @@ import {
   BulkDeleteRecordsCommand,
   BulkDuplicateRecordsCommand,
   CreateRecordCommand,
+  CreateRecordsCommand,
   DeleteRecordCommand,
   DuplicateRecordCommand,
   GetForeignRecordsQuery,
@@ -40,6 +41,14 @@ export const createRecordRouter =
         .output(createRecordCommandOutput)
         .mutation(({ input }) => {
           const cmd = new CreateRecordCommand(input)
+          return commandBus.execute(cmd)
+        }),
+      buldCreate: procedure
+        .use(authz('record:create'))
+        .input(z.any())
+        .output(z.any())
+        .mutation(({ input }) => {
+          const cmd = new CreateRecordsCommand(input)
           return commandBus.execute(cmd)
         }),
       duplicate: procedure

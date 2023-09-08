@@ -4,9 +4,8 @@
 	import { recordSelection, selectedCount, selectedRecords } from '$lib/store/record'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { Toast, P, Button, Spinner, Dropdown, DropdownItem, ButtonGroup } from 'flowbite-svelte'
-	import { quintOut } from 'svelte/easing'
-	import { slide } from 'svelte/transition'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { Button } from '$lib/components/ui/button'
 
 	const table = getTable()
 
@@ -32,45 +31,47 @@
 	export let open: boolean
 </script>
 
-<Toast
-	{open}
-	color="none"
-	position="bottom-right"
-	class="z-30 shadow-xl bg-white border border-slate-200 !w-[500px] !max-w-xl"
-	transition={slide}
-	params={{ delay: 100, duration: 200, easing: quintOut }}
->
-	<div class="flex items-center space-x-5 justify-between">
-		<P class="text-sm !text-gray-700 dark:!text-gray-100">{@html $t('Selected N Records', { n: $selectedCount })}</P>
+{#if open}
+	<div
+		class="fixed flex items-center p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow-md border bottom-5 right-5 dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800 z-[999999999] w-96"
+		role="alert"
+	>
+		<div class="flex items-center space-x-5 justify-between w-full">
+			<p class="text-sm !text-gray-700 dark:!text-gray-100">{@html $t('Selected N Records', { n: $selectedCount })}</p>
 
-		<ButtonGroup size="xs">
-			<Button
-				size="xs"
-				color="blue"
-				class="inline-flex gap-2"
-				disabled={$bulkDuplicateRecordsMutation.isLoading}
-				on:click={duplicate}
-			>
-				{#if $bulkDuplicateRecordsMutation.isLoading}
-					<Spinner class="mr-3" size="4" />
-				{:else}
-					<i class="ti ti-copy text-lg" />
-				{/if}
-				{$t('Duplicate Selected Record')}
-			</Button>
-			<Button size="xs" color="blue" class="!pl-1">
-				<i class="ti ti-chevron-down"></i>
-			</Button>
-			<Dropdown style="z-index: 50;" placement="top" class="w-48">
-				<DropdownItem class="text-red-400" on:click={() => ($confirmBulkDeleteRecords = true)}>
-					{#if $bulkDeleteRecordsMutation.isLoading}
-						<Spinner class="mr-3" size="4" />
+			<div class="inline-flex items-center">
+				<Button
+					size="sm"
+					class="inline-flex gap-2 rounded-r-none border-r-0"
+					disabled={$bulkDuplicateRecordsMutation.isLoading}
+					on:click={duplicate}
+				>
+					{#if $bulkDuplicateRecordsMutation.isLoading}
+						<i class="ti ti-rotate animate-spin"></i>
 					{:else}
-						<i class="ti ti-trash text-lg" />
+						<i class="ti ti-copy text-lg" />
 					{/if}
-					{$t('Delete Selected Record')}
-				</DropdownItem>
-			</Dropdown>
-		</ButtonGroup>
+					{$t('Duplicate Selected Record')}
+				</Button>
+
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger asChild let:builder>
+						<Button size="sm" class="!pl-1 rounded-l-none" builders={[builder]}>
+							<i class="ti ti-chevron-down"></i>
+						</Button>
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content class="z-[9999999999]">
+						<DropdownMenu.Item class="text-red-400 gap-2" on:click={() => ($confirmBulkDeleteRecords = true)}>
+							{#if $bulkDeleteRecordsMutation.isLoading}
+								<i class="ti ti-rotate animate-spin"></i>
+							{:else}
+								<i class="ti ti-trash text-lg" />
+							{/if}
+							{$t('Delete Selected Record')}
+						</DropdownMenu.Item>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
+			</div>
+		</div>
 	</div>
-</Toast>
+{/if}

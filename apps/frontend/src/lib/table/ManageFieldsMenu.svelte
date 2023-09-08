@@ -1,16 +1,21 @@
 <script lang="ts">
-	import cx from 'classnames'
 	import { invalidate } from '$app/navigation'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { t } from '$lib/i18n'
 	import { getTable, getView } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { Field } from '@undb/core'
-	import { Badge, Button, Checkbox, Hr, Indicator, Modal, Toggle, Tooltip } from 'flowbite-svelte'
+	import { Checkbox } from '$lib/components/ui/checkbox'
 	import { filter, isNumber } from 'lodash-es'
 	import { createFieldModal } from '$lib/store/modal'
 	import Sortable, { type SortableEvent } from 'sortablejs'
 	import { hasPermission } from '$lib/store/authz'
+	import { Button } from '$components/ui/button'
+	import * as Popover from '$lib/components/ui/popover'
+	import { Separator } from '$lib/components/ui/separator'
+	import { Label } from '$lib/components/ui/label'
+	import { Switch } from '$lib/components/ui/switch'
+	import { Badge } from '$components/ui/badge'
 
 	const table = getTable()
 	const view = getView()
@@ -29,13 +34,13 @@
 	})
 
 	const onChangeVisibility = (e: Event, field: Field) => {
-		const ele = e.target as HTMLInputElement
-
+		const target = e.target as HTMLInputElement
+		const checked = target.checked
 		$setVisibility.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
 			fieldId: field.id.value,
-			hidden: !ele.checked,
+			hidden: !checked,
 		})
 	}
 
@@ -45,13 +50,11 @@
 		},
 	})
 
-	const onChangeShowSystemFields = (e: Event) => {
-		const ele = e.target as HTMLInputElement
-
+	const onChangeShowSystemFields = (value: boolean | undefined) => {
 		$setShowSystemFields.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
-			showSystemFields: ele.checked,
+			showSystemFields: !!value,
 		})
 	}
 
@@ -87,64 +90,75 @@
 </script>
 
 {#if $hasPermission('table:toggle_field_visibility')}
-	<Button
-		size="xs"
-		color="alternative"
-		class={cx(
-			'relative h-full !rounded-md gap-2 whitespace-nowrap border-0 hover:!bg-blue-50 dark:hover:!bg-gray-800 text-blue-600 dark:text-gray-100',
-			!!hiddenCount && '!bg-blue-50 dark:!bg-primary-600',
-		)}
-		on:click={() => (open = true)}
-	>
-		<i class="ti ti-columns-3 text-sm" />
-		<span>
-			{$t('Manage Fields')}
-		</span>
-		{#if hiddenCount}
-			<Indicator color="blue" border size="xl" placement="top-right">
-				<span class="text-white text-xs font-bold">{hiddenCount}</span>
-			</Indicator>
-			<Tooltip placement="bottom" class="z-50 dark:bg-primary-900 dark:text-gray-100 hidden lg:block">
-				{$t('N Fields Hidden', { n: hiddenCount })}
-			</Tooltip>
-		{/if}
-	</Button>
-{/if}
+	<Popover.Root positioning={{ placement: 'bottom-start' }} closeOnEscape bind:open>
+		<Popover.Trigger asChild let:builder>
+			<Button builders={[builder]} variant="secondary" class="gap-2 whitespace-nowrap" size="sm">
+				<i class="ti ti-columns-3 text-sm" />
+				<span>
+					{$t('Manage Fields')}
+				</span>
+				{#if hiddenCount}
+					<Badge>{hiddenCount}</Badge>
+				{/if}
+			</Button>
+		</Popover.Trigger>
+		<Popover.Content class="w-[400px]">
+			<ul class="space-y-2" bind:this={el}>
+				{#each items as item (item.id)}
+					{@const checked = visibility[item.id] === undefined || !!visibility[item.id]}
+					<li class="flex items-center gap-2 w-full" data-field-id={item.id}>
+						<Label class="flex items-center justify-center gap-1">
+							<input
+								type="checkbox"
+								disabled={(checked && fields.length - hiddenCount === 1) ||
+									!$hasPermission('table:toggle_field_visibility')}
+								class="flex items-center gap-2"
+								{checked}
+								on:change={(e) => onChangeVisibility(e, item.field)}
+							/>
 
-<Modal bind:open size="xs" class="w-full" placement="top-center">
-	<ul class="space-y-2" bind:this={el}>
-		{#each items as item (item.id)}
-			{@const checked = visibility[item.id] === undefined || !!visibility[item.id]}
-			<li class="flex items-center gap-2 w-full" data-field-id={item.id}>
-				<Checkbox
-					disabled={(checked && fields.length - hiddenCount === 1) || !$hasPermission('table:toggle_field_visibility')}
-					class="flex items-center gap-2"
-					{checked}
-					on:change={(e) => onChangeVisibility(e, item.field)}
+							<div>
+								<FieldIcon type={item.field.type} />
+								<span>
+									{item.field.name.value}
+								</span>
+							</div>
+						</Label>
+					</li>
+				{/each}
+			</ul>
+
+			{#if $hasPermission('table:toggle_field_visibility')}
+				<Separator class="my-4" />
+
+				<div class="flex items-center space-x-2">
+					<Label for="show-system-fields" class="flex items-center gap-2">
+						<Switch
+							id="show-system-fields"
+							bind:checked={$view.showSystemFields}
+							onCheckedChange={onChangeShowSystemFields}
+						/>
+						{$t('Show System Fields')}
+					</Label>
+				</div>
+			{/if}
+
+			{#if $hasPermission('table:create_field')}
+				<Button
+					size="sm"
+					variant="outline"
+					class="mt-4 w-full gap-2 border-gray-200 text-gray-900 dark:text-gray-300  dark:hover:text-gray-50 dark:hover:border-gray-300 !bg-[unset] border hover:!bg-gray-100 dark:hover:!bg-[unset]"
+					on:click={() => {
+						open = false
+						createFieldModal.open()
+					}}
 				>
-					<FieldIcon type={item.field.type} />
+					<i class="ti ti-plus" />
 					<span>
-						{item.field.name.value}
+						{$t('Create New Field')}
 					</span>
-				</Checkbox>
-			</li>
-		{/each}
-	</ul>
-
-	{#if $hasPermission('table:toggle_field_visibility')}
-		<Hr />
-
-		<Toggle size="small" checked={$view.showSystemFields} on:change={onChangeShowSystemFields}>
-			{$t('Show System Fields')}
-		</Toggle>
-	{/if}
-
-	{#if $hasPermission('table:create_field')}
-		<Button size="xs" class="w-full gap-2" color="alternative" on:click={() => createFieldModal.open()}>
-			<i class="ti ti-plus" />
-			<span>
-				{$t('Create New Field')}
-			</span>
-		</Button>
-	{/if}
-</Modal>
+				</Button>
+			{/if}
+		</Popover.Content>
+	</Popover.Root>
+{/if}

@@ -1345,6 +1345,162 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "table_id": {
+          "name": "table_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "field_id": {
+          "name": "field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
+        "policy_action": {
+          "name": "policy_action",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "policy_filter": {
+          "name": "policy_filter",
+          "type": "json",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        },
+        "subjects": {
+          "name": "subjects",
+          "type": "json",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "json"
+        }
+      },
+      "name": "undb_fls",
+      "indexes": [
+        {
+          "columnNames": [
+            "deleted_at"
+          ],
+          "composite": false,
+          "keyName": "undb_fls_deleted_at_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "table_id"
+          ],
+          "composite": false,
+          "keyName": "undb_fls_table_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "field_id"
+          ],
+          "composite": false,
+          "keyName": "undb_fls_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "primary",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "undb_fls_table_id_foreign": {
+          "constraintName": "undb_fls_table_id_foreign",
+          "columnNames": [
+            "table_id"
+          ],
+          "localTableName": "undb_fls",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_table",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        },
+        "undb_fls_field_id_foreign": {
+          "constraintName": "undb_fls_field_id_foreign",
+          "columnNames": [
+            "field_id"
+          ],
+          "localTableName": "undb_fls",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "cascade",
+          "updateRule": "cascade"
+        }
+      }
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
         "record_id": {
           "name": "record_id",
           "type": "text",

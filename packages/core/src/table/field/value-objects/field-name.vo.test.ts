@@ -17,11 +17,11 @@ it('should throw error if input is invlaue', () => {
     "[
       {
         \\"code\\": \\"too_small\\",
-        \\"minimum\\": 2,
+        \\"minimum\\": 1,
         \\"type\\": \\"string\\",
         \\"inclusive\\": true,
         \\"exact\\": false,
-        \\"message\\": \\"String must contain at least 2 character(s)\\",
+        \\"message\\": \\"String must contain at least 1 character(s)\\",
         \\"path\\": []
       }
     ]"

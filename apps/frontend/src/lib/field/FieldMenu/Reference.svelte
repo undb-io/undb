@@ -1,11 +1,12 @@
 <script lang="ts">
-	import cx from 'classnames'
-	import type { IFieldType, ReferenceField } from '@undb/core'
-	import { DropdownItem } from 'flowbite-svelte'
+	import { cn } from '$lib/utils'
+	import type { ReferenceField } from '@undb/core'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { getForeignTable } from '$lib/store/table'
 	import { t } from '$lib/i18n'
 	import FieldIcon from '../FieldIcon.svelte'
 	import { createFieldInitial, createFieldModal } from '$lib/store/modal'
+	import { goto } from '$app/navigation'
 
 	export let field: ReferenceField
 
@@ -14,18 +15,18 @@
 </script>
 
 {#if foreignTable}
-	<DropdownItem
+	<DropdownMenu.Item
 		{...$$restProps}
-		href={`/t/${foreignTableId}`}
-		class={cx('flex items-center w-full', $$restProps.class)}
+		class={cn('flex items-center w-full', $$restProps.class)}
+		on:click={() => goto(`/t/${foreignTableId}`)}
 	>
 		<i class="ti ti-external-link" />
 		<span>
 			{$t('jump to table', { name: foreignTable.name.value })}
 		</span>
-	</DropdownItem>
+	</DropdownMenu.Item>
 
-	<DropdownItem
+	<DropdownMenu.Item
 		{...$$restProps}
 		on:click={() => {
 			$createFieldInitial = {
@@ -35,13 +36,13 @@
 			createFieldModal.open()
 		}}
 	>
-		<FieldIcon type={field.type} />
+		<FieldIcon type="lookup" />
 		<span>
 			{$t('Insert Lookup Field')}
 		</span>
-	</DropdownItem>
+	</DropdownMenu.Item>
 
-	<DropdownItem
+	<DropdownMenu.Item
 		{...$$restProps}
 		on:click={() => {
 			$createFieldInitial = {
@@ -51,13 +52,13 @@
 			createFieldModal.open()
 		}}
 	>
-		<FieldIcon type={field.type} />
+		<FieldIcon type="count" />
 		<span>
 			{$t('Insert Count Field')}
 		</span>
-	</DropdownItem>
+	</DropdownMenu.Item>
 
-	<DropdownItem
+	<DropdownMenu.Item
 		{...$$restProps}
 		on:click={() => {
 			$createFieldInitial = {
@@ -67,13 +68,13 @@
 			createFieldModal.open()
 		}}
 	>
-		<FieldIcon type={field.type} />
+		<FieldIcon type="sum" />
 		<span>
 			{$t('Insert Sum Field')}
 		</span>
-	</DropdownItem>
+	</DropdownMenu.Item>
 
-	<DropdownItem
+	<DropdownMenu.Item
 		{...$$restProps}
 		on:click={() => {
 			$createFieldInitial = {
@@ -83,13 +84,13 @@
 			createFieldModal.open()
 		}}
 	>
-		<FieldIcon type={field.type} />
+		<FieldIcon type="average" />
 		<span>
 			{$t('Insert Average Field')}
 		</span>
-	</DropdownItem>
+	</DropdownMenu.Item>
 
-	<DropdownItem
+	<DropdownMenu.Item
 		{...$$restProps}
 		on:click={() => {
 			$createFieldInitial = {
@@ -99,13 +100,13 @@
 			createFieldModal.open()
 		}}
 	>
-		<FieldIcon type={field.type} />
+		<FieldIcon type="min" />
 		<span>
 			{$t('Insert Min Field')}
 		</span>
-	</DropdownItem>
-	
-	<DropdownItem
+	</DropdownMenu.Item>
+
+	<DropdownMenu.Item
 		{...$$restProps}
 		on:click={() => {
 			$createFieldInitial = {
@@ -115,9 +116,9 @@
 			createFieldModal.open()
 		}}
 	>
-		<FieldIcon type={field.type} />
+		<FieldIcon type="max" />
 		<span>
 			{$t('Insert Max Field')}
 		</span>
-	</DropdownItem>
+	</DropdownMenu.Item>
 {/if}

@@ -5,7 +5,9 @@
 	import { selectedForm } from '$lib/store/drawer'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { Button, ButtonGroup, Card, P } from 'flowbite-svelte'
+	import { Button } from '$components/ui/button'
+
+	import * as Card from '$lib/components/ui/card'
 
 	const table = getTable()
 
@@ -20,10 +22,13 @@
 
 	const hideAll = () => {
 		if (!$selectedForm) return
-		const visibility = notHiddenFields.reduce((prev, curr) => {
-			prev[curr.id.value] = true
-			return prev
-		}, {} as Record<string, true>)
+		const visibility = notHiddenFields.reduce(
+			(prev, curr) => {
+				prev[curr.id.value] = true
+				return prev
+			},
+			{} as Record<string, true>,
+		)
 		$setFormFieldsVisibilityMutation.mutate({
 			tableId: $table.id.value,
 			formId: $selectedForm.id.value,
@@ -33,10 +38,13 @@
 
 	const showAll = () => {
 		if (!$selectedForm) return
-		const visibility = hiddenFields.reduce((prev, curr) => {
-			prev[curr.id.value] = false
-			return prev
-		}, {} as Record<string, false>)
+		const visibility = hiddenFields.reduce(
+			(prev, curr) => {
+				prev[curr.id.value] = false
+				return prev
+			},
+			{} as Record<string, false>,
+		)
 		$setFormFieldsVisibilityMutation.mutate({
 			tableId: $table.id.value,
 			formId: $selectedForm.id.value,
@@ -55,26 +63,36 @@
 </script>
 
 <div class="mb-2 flex justify-between">
-	<P>{$t('Field')}</P>
-	<ButtonGroup>
+	<p>{$t('Field')}</p>
+	<div class="flex items-center">
 		{#if notHiddenFields.length}
-			<Button color="alternative" size="xs" class="inline-flex gap-2 items-center" on:click={hideAll}>
+			<Button
+				variant="outline"
+				size="sm"
+				class="inline-flex gap-2 items-center rounded-r-none border-r-0 whitespace-nowrap"
+				on:click={hideAll}
+			>
 				<i class="ti ti-eye-closed" />
 				{$t('hide form all')}
 			</Button>
 		{/if}
 		{#if hiddenFields.length}
-			<Button color="alternative" size="xs" class="inline-flex gap-2 items-center" on:click={showAll}>
+			<Button
+				variant="outline"
+				size="sm"
+				class="inline-flex gap-2 items-center rounded-l-none whitespace-nowrap"
+				on:click={showAll}
+			>
 				<i class="ti ti-eye" />
 				{$t('show form all')}
 			</Button>
 		{/if}
-	</ButtonGroup>
+	</div>
 </div>
 <div class="space-y-2">
 	{#each hiddenFields as field}
-		<Card
-			class="!py-2 !px-4 shadow-sm hover:shadow-md transition cursor-pointer hover:border-blue-500 !max-w-none"
+		<button
+			class="block border w-full !py-2 !px-4 shadow-sm hover:shadow-md transition cursor-pointer hover:border-primary-500 !max-w-none"
 			on:click={() => setFormFieldsVisibility(field.id.value)}
 		>
 			<div class="flex gap-2 items-center">
@@ -83,6 +101,6 @@
 					{field.name.value}
 				</span>
 			</div>
-		</Card>
+		</button>
 	{/each}
 </div>

@@ -22,6 +22,8 @@
 	import { onDestroy } from 'svelte'
 	import { match } from 'ts-pattern'
 	import RLSModal from '$lib/authz/rls/RLSModal.svelte'
+	import FlsModal from '$lib/authz/fls/FLSModal.svelte'
+	import MergeData from '$lib/import/MergeData.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -84,6 +86,7 @@
 
 <TableIndex />
 
+<MergeData />
 {#key $table}
 	<UpdateTable data={data.updateTable} />
 {/key}
@@ -93,19 +96,13 @@
 <WebhookListModal />
 <FormListDrawer />
 <FormEditorModal />
-{#if $erdModal.open}
-	<ErdModal />
-{/if}
-{#if $currentRecordId}
-	<UpdateRecord data={data.updateRecord} />
-{/if}
+<ErdModal />
+<UpdateRecord data={data.updateRecord} />
 {#if $currentFieldId}
 	<CreateOption data={data.createOption} />
 {/if}
 <UpdateOption data={data.updateOption} />
-{#if $recordTrashModal.open}
-	<RecordTrashModal />
-{/if}
+<RecordTrashModal />
 {#if $field}
 	{#key $field}
 		<UpdateField field={$field} data={data.updateField} />
@@ -116,10 +113,8 @@
 		<DuplicateField field={$field} />
 	{/key}
 {/if}
-{#if $rlsModal.open}
-	<RLSModal />
-{/if}
-
+<RLSModal />
+<FlsModal />
 <VisualizationModal />
 
 <svelte:window on:keydown={onKeydown} />

@@ -1,6 +1,12 @@
 <script lang="ts">
 	import { getTable, getView, q, recordHash } from '$lib/store/table'
-	import { Button, Input, Label, Modal, Spinner, Toggle, Popover, Badge, Textarea, Toast } from 'flowbite-svelte'
+	import * as Popover from '$lib/components/ui/popover'
+	import { Label } from '$lib/components/ui/label'
+	import { Switch } from '$lib/components/ui/switch'
+	import { Input } from '$lib/components/ui/input'
+	import { Button } from '$components/ui/button'
+	import { Badge } from '$components/ui/badge'
+	import { Textarea } from '$lib/components/ui/textarea'
 	import FieldIcon from './FieldIcon.svelte'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { trpc } from '$lib/trpc/client'
@@ -24,6 +30,8 @@
 	import { onMount } from 'svelte'
 	import { isEmpty, keys } from 'lodash-es'
 	import { pick } from 'lodash-es'
+	import * as Dialog from '$lib/components/ui/dialog'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -91,106 +99,134 @@
 	$: fieldConvertStrategy = isUpdatingType ? fieldTypeConvertMap?.[field.type]?.[$form.type as IFieldType] : undefined
 </script>
 
-<Modal
-	title={$t('Update Field') ?? undefined}
-	placement="top-center"
-	class="static w-full rounded-sm"
-	size="lg"
-	bind:open={$updateFieldModal.open}
->
-	<form method="POST" id="updateField" use:enhance>
-		<div class="space-y-2">
-			<div class="grid grid-cols-2 gap-x-3 gap-y-4">
-				<Label class="flex flex-col gap-2">
-					<div class="flex gap-2 items-center">
-						<FieldIcon size={14} type={field.type} />
-						<span>{$t('Type', { ns: 'common' })}</span>
-						<span class="text-red-500">*</span>
-						{#if isUpdatingType}
-							<Badge color="yellow">{$t('updatingTypeTip', { type: $t(field.type), newType: $t($form.type) })}</Badge>
-						{/if}
-					</div>
+<Dialog.Root bind:open={$updateFieldModal.open}>
+	<Dialog.Content class="!w-3/4 max-w-none">
+		<Dialog.Header>
+			<Dialog.Title>
+				{$t('Update Field') ?? undefined}
+			</Dialog.Title>
+		</Dialog.Header>
 
-					<FieldTypePicker
-						disabled={!canChangeType(field.type)}
-						bind:value={$form.type}
-						class="w-full !justify-start"
-						filter={(type) => !!changeFieldTypeStrategy(field.type)(type)}
-					/>
-				</Label>
+		<form method="POST" id="updateField" use:enhance>
+			<div class="space-y-2">
+				<div class="grid grid-cols-2 gap-x-3">
+					<Label class="flex flex-col gap-2">
+						<div class="flex gap-2 items-center h-6">
+							<FieldIcon size={14} type={field.type} />
+							<span>{$t('Type', { ns: 'common' })}</span>
+							<span class="text-red-500">*</span>
+							{#if isUpdatingType}
+								<Badge color="yellow">{$t('updatingTypeTip', { type: $t(field.type), newType: $t($form.type) })}</Badge>
+							{/if}
+						</div>
 
-				<Label class="flex flex-col gap-2">
-					<div class="flex gap-2 items-center">
-						<span>{$t('Name', { ns: 'common' })}</span>
-						<span class="text-red-500">*</span>
-					</div>
+						<FieldTypePicker
+							disabled={!canChangeType(field.type)}
+							bind:value={$form.type}
+							class="w-full !justify-start"
+							filter={(type) => !!changeFieldTypeStrategy(field.type)(type)}
+						/>
+					</Label>
 
-					<Input name="name" required bind:value={$form.name} />
-				</Label>
-			</div>
+					<Label class="flex flex-col gap-2">
+						<div class="flex gap-2 items-center h-6">
+							<span>{$t('Name', { ns: 'common' })}</span>
+							<span class="text-red-500">*</span>
+						</div>
 
-			{#if showDescription}
-				<Label class="flex flex-col gap-2">
-					<div class="flex gap-2 items-center">
-						<span>{$t('Description', { ns: 'common' })}</span>
-					</div>
-
-					<Textarea name="description" bind:value={$form.description} />
-				</Label>
-			{/if}
-
-			<MutateFieldComponent type={$form.type} form={superFrm} {isUpdatingType} {fieldConvertStrategy} />
-		</div>
-	</form>
-
-	<!-- <SuperDebug data={$form} /> -->
-
-	<svelte:fragment slot="footer">
-		<div class="w-full flex items-center justify-between">
-			<div class="flex-1">
-				<Button size="xs" color="alternative" class="space-x-1" on:click={() => (showDescription = !showDescription)}>
-					{#if showDescription}
-						<i class="ti ti-eye-closed text-sm" />
-					{:else}
-						<i class="ti ti-plus text-sm" />
-					{/if}
-					<span>{$t('Add Description')}</span>
-				</Button>
-			</div>
-			<div class="flex justify-end items-center gap-4">
-				<div class="flex gap-2 items-center">
-					{#if !isControlledFieldType($form.type)}
-						<Toggle bind:checked={$form.required}>{$t('Required', { ns: 'common' })}</Toggle>
-					{/if}
-					{#if canDisplay($form.type)}
-						<Toggle bind:checked={$form.display}>{$t('Display', { ns: 'common' })}</Toggle>
-						{#if displayFields.length}
-							<Popover class="w-64 text-sm font-light " title={$t('Display Fields') ?? undefined}>
-								<div class="flex gap-2">
-									{#each displayFields as field}
-										<Badge>{field}</Badge>
-									{/each}
-								</div>
-							</Popover>
-						{/if}
-					{/if}
+						<Input name="name" required bind:value={$form.name} />
+					</Label>
 				</div>
-				<div class="space-x-2">
-					<Button color="alternative" on:click={updateFieldModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
-					<Button class="gap-4" type="submit" form="updateField" disabled={$submitting}>
-						{#if $delayed}
-							<Spinner size="5" />
-						{/if}
-						{$t('Update Field')}</Button
+
+				{#if showDescription}
+					<Label class="flex flex-col gap-2">
+						<div class="flex gap-2 items-center">
+							<span>{$t('Description', { ns: 'common' })}</span>
+						</div>
+
+						<Textarea name="description" bind:value={$form.description} />
+					</Label>
+				{/if}
+
+				<MutateFieldComponent
+					class="w-full"
+					type={$form.type}
+					form={superFrm}
+					{isUpdatingType}
+					{fieldConvertStrategy}
+				/>
+			</div>
+		</form>
+
+		<!-- <SuperDebug data={$form} /> -->
+
+		<Dialog.Footer>
+			<div class="w-full flex items-center justify-between">
+				<div class="flex-1">
+					<Button
+						size="sm"
+						variant="secondary"
+						type="button"
+						class="space-x-1"
+						on:click={() => (showDescription = !showDescription)}
 					>
+						{#if showDescription}
+							<i class="ti ti-eye-closed text-sm" />
+						{:else}
+							<i class="ti ti-plus text-sm" />
+						{/if}
+						<span>{$t('Add Description')}</span>
+					</Button>
+				</div>
+				<div class="flex justify-end items-center gap-4">
+					<div class="flex gap-2 items-center">
+						{#if !isControlledFieldType($form.type)}
+							<Label class="flex items-center gap-2">
+								<Switch bind:checked={$form.required}></Switch>
+								<span>
+									{$t('Required', { ns: 'common' })}
+								</span>
+							</Label>
+						{/if}
+						{#if canDisplay($form.type)}
+							<Popover.Root>
+								<Popover.Trigger>
+									<Label class="flex items-center gap-2">
+										<Switch bind:checked={$form.display}></Switch>
+										<span>
+											{$t('Display', { ns: 'common' })}
+										</span>
+									</Label>
+								</Popover.Trigger>
+								{#if displayFields.length}
+									<Popover.Content class="w-64 text-sm font-light">
+										<div class="flex gap-2">
+											{#each displayFields as field}
+												<Badge>{field}</Badge>
+											{/each}
+										</div>
+									</Popover.Content>
+								{/if}
+							</Popover.Root>
+						{/if}
+					</div>
+					<div class="space-x-2">
+						<Button variant="secondary" on:click={updateFieldModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
+						<Button class="gap-4" type="submit" form="updateField" disabled={$submitting}>
+							{#if $delayed}
+								<i class="ti ti-rotate animate-spin"></i>
+							{/if}
+							{$t('Update Field')}
+						</Button>
+					</div>
 				</div>
 			</div>
-		</div>
-	</svelte:fragment>
-</Modal>
+		</Dialog.Footer>
+	</Dialog.Content>
+</Dialog.Root>
 
 {#if $updateField.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
+	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
 		<span class="inline-flex items-center gap-3">
 			<i class="ti ti-exclamation-circle text-lg" />
 			{$updateField.error.message}

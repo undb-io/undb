@@ -8,7 +8,10 @@ export class DateEditor implements Edition.EditorBase {
 	public element: HTMLInputElement | null = null
 	public editCell: Edition.EditCell | undefined = undefined
 
-	constructor(public column: RevoGrid.ColumnRegular, private saveCallback: SaveCallback) {}
+	constructor(
+		public column: RevoGrid.ColumnRegular,
+		private saveCallback: SaveCallback,
+	) {}
 
 	async componentDidRender() {
 		await delay(0)
@@ -25,7 +28,7 @@ export class DateEditor implements Edition.EditorBase {
 			type: 'date',
 			onchange: (e: Event) => this.onChange(e),
 			class:
-				'border-2 border-blue-300 rounded-none text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5',
+				'border-2 border-primary-300 rounded-none text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5',
 		})
 	}
 }

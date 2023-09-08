@@ -7,7 +7,7 @@
 	export let field: DateField
 </script>
 
-{#if !!field.timeFormatString}
+{#if !!field?.timeFormatString}
 	<DateTimeInput bind:value {...$$restProps} />
 {:else}
 	<DateInput bind:value {...$$restProps} />

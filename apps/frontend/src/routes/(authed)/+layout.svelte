@@ -1,10 +1,8 @@
 <script lang="ts">
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 
-	import { Dialog, DialogOverlay, TransitionChild, TransitionRoot } from '@rgossiaux/svelte-headlessui'
 	import type { LayoutData } from './$types'
 	import CreateTable from '$lib/table/CreateTable.svelte'
-	import { Avatar, Button, ButtonGroup, Dropdown, DropdownItem, P, Toast, Tooltip } from 'flowbite-svelte'
 	import { page } from '$app/stores'
 	import { allTables, currentRecordId } from '$lib/store/table'
 	import { goto } from '$app/navigation'
@@ -17,11 +15,16 @@
 	import ImportData from '$lib/import/ImportData.svelte'
 	import { copyText } from 'svelte-copy'
 	import Cookies from 'js-cookie'
-	import { slide } from 'svelte/transition'
 	import { changeThemeMode, sidebarCollapsed, theme } from '$lib/store/ui'
 	import { DARK_THEME, LIGHT_THEME } from '$lib/store/ui.type'
 	import TablesNav from '$lib/table/TablesNav.svelte'
 	import { hasPermission } from '$lib/store/authz'
+	import * as Sheet from '$lib/components/ui/sheet'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { Button } from '$components/ui/button'
+	import * as Tooltip from '$lib/components/ui/tooltip'
+	import * as Avatar from '$lib/components/ui/avatar'
+	import Toast from '$components/ui/toast/toast.svelte'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -35,7 +38,6 @@
 
 	let sidebarOpen = false
 	const setSidebarOpen = () => (sidebarOpen = true)
-	const setSidebarClose = () => (sidebarOpen = false)
 
 	export let data: LayoutData
 
@@ -82,95 +84,57 @@
 </script>
 
 <div>
-	<TransitionRoot show={sidebarOpen} class=" dark:bg-gray-900">
-		<Dialog as="div" class="relative z-30 lg:hidden" bind:open={sidebarOpen} on:close={setSidebarOpen}>
-			<TransitionChild
-				enter="transition-opacity ease-linear duration-300"
-				enterFrom="opacity-0"
-				enterTo="opacity-100"
-				leave="transition-opacity ease-linear duration-300"
-				leaveFrom="opacity-100"
-				leaveTo="opacity-0"
-			>
-				<div class="fixed inset-0 bg-gray-900/80" />
-			</TransitionChild>
-
-			<div class="fixed inset-0 flex">
-				<TransitionChild
-					enter="transition ease-in-out duration-300 transform"
-					enterFrom="-translate-x-full"
-					enterTo="translate-x-0"
-					leave="transition ease-in-out duration-300 transform"
-					leaveFrom="translate-x-0"
-					leaveTo="-translate-x-full"
-				>
-					<DialogOverlay class="relative mr-16 flex w-full max-w-xs flex-1">
-						<TransitionChild
-							enter="ease-in-out duration-300"
-							enterFrom="opacity-0"
-							enterTo="opacity-100"
-							leave="ease-in-out duration-300"
-							leaveFrom="opacity-100"
-							leaveTo="opacity-0"
-						>
-							<div class="absolute left-full top-0 flex w-16 justify-center pt-5">
-								<button type="button" class="-m-2.5 p-2.5" on:click={setSidebarClose}>
-									<span class="sr-only">Close sidebar</span>
-								</button>
-							</div>
-						</TransitionChild>
-						<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2 h-screen">
-							<div class="flex h-12 shrink-0 items-center px-6 gap-2">
-								<img class="h-6 w-auto" src={logo} alt="undb" />
-								<P size="lg" class="font-semibold select-none !text-blue-600">undb</P>
-							</div>
-							<nav class="flex flex-1 flex-col">
-								<ul class="flex flex-1 flex-col gap-y-7">
+	<Sheet.Root bind:open={sidebarOpen}>
+		<Sheet.Content class="lg:hidden w-4/5" side="left">
+			<div class="flex grow flex-col gap-y-5 overflow-y-auto bg-white pb-2 h-screen">
+				<div class="flex h-12 shrink-0 items-center gap-2">
+					<img class="h-6 w-auto" src={logo} alt="undb" />
+					<p class="font-semibold select-none !text-primary-600">undb</p>
+				</div>
+				<nav class="flex flex-1 flex-col">
+					<ul class="flex flex-1 flex-col gap-y-7">
+						<li>
+							<ul class="-mx-2 space-y-1">
+								{#each navigation as item}
 									<li>
-										<ul class="-mx-2 space-y-1">
-											{#each navigation as item}
-												<li>
-													<a
-														href={item.href}
-														class={cx(
-															item.current
-																? 'bg-gray-50 text-indigo-600'
-																: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
-															'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
-														)}
-													>
-														<div class="h-6 w-6 flex justify-center items-center">
-															<i
-																class={cx(
-																	item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
-																	'shrink-0 text-lg',
-																	`ti ti-${item.icon}`,
-																)}
-																aria-hidden="true"
-															/>
-														</div>
+										<a
+											href={item.href}
+											class={cn(
+												item.current
+													? 'bg-gray-50 text-indigo-600'
+													: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
+												'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
+											)}
+										>
+											<div class="h-6 w-6 flex justify-center items-center">
+												<i
+													class={cn(
+														item.current ? 'text-indigo-600' : 'text-gray-400 group-hover:text-indigo-600',
+														'shrink-0 text-lg',
+														`ti ti-${item.icon}`,
+													)}
+													aria-hidden="true"
+												/>
+											</div>
 
-														{item.name}
-													</a>
-												</li>
-											{/each}
-										</ul>
+											{item.name}
+										</a>
 									</li>
-									<li>
-										<div class="text-xs font-semibold leading-6 text-gray-400">{$t('Tables', { ns: 'common' })}</div>
-										<TablesNav {tables} />
-									</li>
-								</ul>
-							</nav>
-						</div>
-					</DialogOverlay>
-				</TransitionChild>
+								{/each}
+							</ul>
+						</li>
+						<li>
+							<div class="text-xs font-semibold leading-6 text-gray-400">{$t('Tables', { ns: 'common' })}</div>
+							<TablesNav {tables} />
+						</li>
+					</ul>
+				</nav>
 			</div>
-		</Dialog>
-	</TransitionRoot>
+		</Sheet.Content>
+	</Sheet.Root>
 
 	<div
-		class={cx(
+		class={cn(
 			'hidden lg:fixed lg:inset-y-0 lg:z-30 lg:flex lg:w-72 lg:flex-col h-screen transition',
 			$sidebarCollapsed && 'translate-x-[-100%]',
 		)}
@@ -181,14 +145,20 @@
 			<div class="flex h-12 shrink-0 items-center px-6 justify-between">
 				<div class="flex gap-2">
 					<img class="h-6 w-auto" src={logo} alt="undb" />
-					<P size="lg" class="font-semibold select-none !text-blue-600 dark:!text-white ">undb</P>
+					<p class="font-semibold select-none !text-primary-600 dark:!text-white">undb</p>
 				</div>
-				<button on:click={() => ($sidebarCollapsed = true)}>
-					<i
-						class="ti ti-layout-sidebar-left-collapse text-xl text-gray-500 dark:hover:text-gray-100 opacity-0 group-hover/main:opacity-100 transition"
-					/>
-				</button>
-				<Tooltip placement="bottom">meta + b</Tooltip>
+				<Tooltip.Root>
+					<Tooltip.Trigger>
+						<button on:click={() => ($sidebarCollapsed = true)}>
+							<i
+								class="ti ti-layout-sidebar-left-collapse text-xl text-gray-500 dark:hover:text-gray-100 opacity-0 group-hover/main:opacity-100 transition"
+							/>
+						</button>
+					</Tooltip.Trigger>
+					<Tooltip.Content>
+						<p>meta + b</p>
+					</Tooltip.Content>
+				</Tooltip.Root>
 			</div>
 			<div class="border-b dark:border-gray-700">
 				<ul class="px-6 -mx-2 space-y-1 py-2">
@@ -196,19 +166,19 @@
 						<li>
 							<a
 								href={item.href}
-								class={cx(
+								class={cn(
 									item.current
-										? 'bg-gray-50 text-indigo-600 dark:text-gray-50 dark:bg-gray-700'
-										: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700',
+										? 'bg-primary/5 text-primary dark:text-gray-50 dark:bg-gray-700'
+										: 'text-gray-700 hover:text-primary hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700',
 									'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
 								)}
 							>
 								<div class="h-6 w-6 flex justify-center items-center">
 									<i
-										class={cx(
+										class={cn(
 											item.current
-												? 'text-indigo-600 dark:text-gray-50'
-												: 'text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-gray-100',
+												? 'text-primary dark:text-gray-50'
+												: 'text-gray-400 group-hover:text-primary dark:group-hover:text-gray-100',
 											'shrink-0 text-lg',
 											`ti ti-${item.icon}`,
 										)}
@@ -222,111 +192,116 @@
 				</ul>
 			</div>
 			<div class="px-6 py-4">
-				<P class="text-sm font-normal leading-6 !text-gray-400">{$t('Tables', { ns: 'common' })}</P>
+				<p class="text-sm font-normal leading-6 !text-gray-400">{$t('Tables', { ns: 'common' })}</p>
 			</div>
 			<nav class="flex flex-1 flex-col px-6 h-full overflow-y-auto">
 				<TablesNav {tables} />
 			</nav>
 			<ul class="flex flex-col border-t pt-4 space-y-2 dark:border-gray-700">
 				<li class="px-6">
-					{#if $hasPermission('table:create')}
-						<ButtonGroup class="w-full dark:bg-gray-700">
+					<div class="flex w-full items-center">
+						{#if $hasPermission('table:create')}
 							<Button
-								size="xs"
-								class="w-full dark:border-0 dark:hover:border-primary-700  dark:hover:bg-primary-700 dark:focus:ring-primary-800 "
-								outline
+								size="sm"
+								class="w-full dark:border-0 dark:hover:border-primary-700  dark:hover:bg-primary-700 dark:focus:ring-primary-800 rounded-r-none border-r-0"
+								variant="outline"
 								on:click={() => createTableModal.open()}
 							>
 								{$t('Create New Table')}
 							</Button>
-							<Button
-								size="xs"
-								class="dark:border-0 dark:hover:border-primary-700 dark:hover:bg-primary-700  dark:focus:ring-primary-800"
-								outline
-							>
-								<i class="ti ti-chevron-down" />
-							</Button>
-							<Dropdown style="z-index: 50;" placement="top" class="w-[300px]">
-								<DropdownItem on:click={() => importDataModal.open()} class="flex items-center gap-2">
-									<i class="ti ti-csv" />
-									<span>
-										{$t('import data content')}
-									</span>
-								</DropdownItem>
-							</Dropdown>
-						</ButtonGroup>
-					{/if}
+							<DropdownMenu.Root>
+								<DropdownMenu.Trigger>
+									<Button
+										size="sm"
+										class="dark:border-0 dark:hover:border-primary-700 dark:hover:bg-primary-700  dark:focus:ring-primary-800 rounded-l-none"
+										variant="outline"
+									>
+										<i class="ti ti-chevron-down" />
+									</Button>
+								</DropdownMenu.Trigger>
+								<DropdownMenu.Content>
+									<DropdownMenu.Item class="gap-2" on:click={() => importDataModal.open()}>
+										<i class="ti ti-csv" />
+										<span>
+											{$t('import data content')}
+										</span>
+									</DropdownMenu.Item>
+								</DropdownMenu.Content>
+							</DropdownMenu.Root>
+						{/if}
+					</div>
 				</li>
 
-				<button
-					id="me-button"
-					class="w-full flex items-center gap-x-4 px-6 py-2 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-50 dark:text-white dark:hover:bg-gray-700"
-				>
-					{#if me.avatar}
-						<Avatar src={me.avatar} />
-					{:else}
-						<Avatar class={cx('text-white', colors[me.color])}>{me.username.slice(0, 2)}</Avatar>
-					{/if}
-					<span class="sr-only">Your profile</span>
-					<span aria-hidden="true">{me.username}</span>
-				</button>
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger>
+						<button
+							id="me-button"
+							class="flex items-center gap-x-4 px-2 py-3 w-full text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100 dark:hover:bg-gray-900 dark:text-white transition"
+						>
+							<Avatar.Root>
+								<Avatar.Image src={me?.avatar} alt={me?.username} />
+								<Avatar.Fallback class={cn('text-white', colors[me.color])}>{me?.username.slice(0, 2)}</Avatar.Fallback>
+							</Avatar.Root>
 
-				<Dropdown
-					style="z-index: 50;"
-					triggeredBy="#me-button"
-					placement="top"
-					class="w-64 shadow-sm border border-gray-100 dark:border-gray-800/75 dark:shadow-lg"
-				>
-					<DropdownItem href="/me">
-						<i class="ti ti-settings" />
-						{$t('Settings', { ns: 'auth' })}
-					</DropdownItem>
-					<DropdownItem class="flex items-center justify-between">
-						<div>
-							<i class="ti ti-world" />
-							{$t('language', { ns: 'common' })}
-						</div>
-						<i class="ti ti-chevron-right"></i>
-					</DropdownItem>
-					<Dropdown style="z-index: 50;" placement="right-start" class="dark:border dark:border-gray-800/75 w-48">
-						<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('zh-CN')}>
-							<span>简体中文</span>
-							{#if $i18n.language === 'zh-CN'}
-								<i class="ti ti-check" />
-							{/if}
-						</DropdownItem>
-						<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('en')}>
-							<span>English</span>
-							{#if $i18n.language === 'en'}
-								<i class="ti ti-check" />
-							{/if}
-						</DropdownItem>
-					</Dropdown>
-
-					<DropdownItem on:click={copyToken}>
-						<i class="ti ti-copy" />
-						{$t('Copy Auth Token', { ns: 'auth' })}
-					</DropdownItem>
-					<DropdownItem
-						on:click={() => {
-							$theme = $theme === DARK_THEME ? LIGHT_THEME : DARK_THEME
-							changeThemeMode($theme)
-						}}
-					>
-						<i class="ti ti-sun-moon" />
-						{#if $theme === DARK_THEME}
-							{$t('Light Mode', { ns: 'auth' })}
-						{:else}
-							{$t('Dark Mode', { ns: 'auth' })}
-						{/if}
-					</DropdownItem>
-					<DropdownItem>
-						<button on:click={() => $logout.mutate()} class="w-full h-full text-left text-red-400" type="submit">
-							<i class="ti ti-logout" />
-							{$t('logout', { ns: 'auth' })}
+							<span class="sr-only">Your profile</span>
+							<span aria-hidden="true">{me.username}</span>
 						</button>
-					</DropdownItem>
-				</Dropdown>
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content class="w-56">
+						<DropdownMenu.Item class="gap-2" on:click={() => goto('/me')}>
+							<i class="ti ti-settings" />
+							{$t('Settings', { ns: 'auth' })}
+						</DropdownMenu.Item>
+						<DropdownMenu.Sub>
+							<DropdownMenu.SubTrigger class="gap-2">
+								<i class="ti ti-world" />
+								<span>
+									{$t('language', { ns: 'common' })}
+								</span>
+							</DropdownMenu.SubTrigger>
+							<DropdownMenu.SubContent>
+								<DropdownMenu.Item class="flex justify-between gap-2" on:click={() => $i18n.changeLanguage('zh-CN')}>
+									<span>简体中文</span>
+									{#if $i18n.language === 'zh-CN'}
+										<i class="ti ti-check" />
+									{/if}
+								</DropdownMenu.Item>
+								<DropdownMenu.Item class="flex justify-between gap-2" on:click={() => $i18n.changeLanguage('en')}>
+									<span>English</span>
+									{#if $i18n.language === 'en'}
+										<i class="ti ti-check" />
+									{/if}
+								</DropdownMenu.Item>
+							</DropdownMenu.SubContent>
+						</DropdownMenu.Sub>
+
+						<DropdownMenu.Item class="gap-2" on:click={copyToken}>
+							<i class="ti ti-copy" />
+							{$t('Copy Auth Token', { ns: 'auth' })}
+						</DropdownMenu.Item>
+						<DropdownMenu.Item
+							class="gap-2"
+							on:click={() => {
+								$theme = $theme === DARK_THEME ? LIGHT_THEME : DARK_THEME
+								changeThemeMode($theme)
+							}}
+						>
+							<i class="ti ti-sun-moon" />
+							{#if $theme === DARK_THEME}
+								{$t('Light Mode', { ns: 'auth' })}
+							{:else}
+								{$t('Dark Mode', { ns: 'auth' })}
+							{/if}
+						</DropdownMenu.Item>
+
+						<DropdownMenu.Item class="gap-2 text-red-400" on:click={() => $logout.mutate()}>
+							<i class="ti ti-logout" />
+							<span>
+								{$t('logout', { ns: 'auth' })}
+							</span>
+						</DropdownMenu.Item>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
 			</ul>
 		</div>
 	</div>
@@ -338,92 +313,106 @@
 		<div class="flex-1 text-sm font-semibold leading-6 text-gray-900">
 			<img class="h-6 w-auto" src={logo} alt="undb" />
 		</div>
-		<button id="me-button" class="flex items-center gap-x-4 p-0 text-sm font-semibold leading-6 text-gray-900">
-			{#if me.avatar}
-				<Avatar src={me.avatar} />
-			{:else}
-				<Avatar class={cx('text-white', colors[me.color])}>{me.username.slice(0, 2)}</Avatar>
-			{/if}
-			<span class="sr-only">Your profile</span>
-			<span aria-hidden="true">{me.username}</span>
-		</button>
 
-		<Dropdown
-			style="z-index: 50;"
-			triggeredBy="#me-button"
-			placement="bottom"
-			class="w-64 shadow-sm border border-gray-100 "
-		>
-			<DropdownItem href="/me">
-				<i class="ti ti-settings" />
-				{$t('Settings', { ns: 'auth' })}
-			</DropdownItem>
-			<DropdownItem class="flex items-center justify-between">
-				<div>
-					<i class="ti ti-world" />
-					{$t('language', { ns: 'common' })}
-				</div>
-				<i class="ti ti-chevron-right"></i>
-			</DropdownItem>
-			<Dropdown style="z-index: 50;" placement="left-start" class="w-48">
-				<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('zh-CN')}>
-					<span>简体中文</span>
-					{#if $i18n.language === 'zh-CN'}
-						<i class="ti ti-check" />
-					{/if}
-				</DropdownItem>
-				<DropdownItem class="flex justify-between" on:click={() => $i18n.changeLanguage('en')}>
-					<span>English</span>
-					{#if $i18n.language === 'en'}
-						<i class="ti ti-check" />
-					{/if}
-				</DropdownItem>
-			</Dropdown>
-
-			<DropdownItem on:click={copyToken}>
-				<i class="ti ti-copy" />
-				{$t('Copy Auth Token', { ns: 'auth' })}
-			</DropdownItem>
-			<DropdownItem>
-				<button on:click={() => $logout.mutate()} class="w-full h-full text-left text-red-400" type="submit">
-					<i class="ti ti-logout" />
-					{$t('logout', { ns: 'auth' })}
+		<DropdownMenu.Root>
+			<DropdownMenu.Trigger>
+				<button type="button" class="p-2.5 text-gray-700 lg:hidden" on:click={setSidebarOpen}>
+					<i class="ti ti-menu-2" />
 				</button>
-			</DropdownItem>
-		</Dropdown>
+				<div class="flex-1 text-sm font-semibold leading-6 text-gray-900">
+					<img class="h-6 w-auto" src={logo} alt="undb" />
+				</div>
+				<button
+					id="me-button"
+					class="flex items-center gap-x-4 p-0 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100 transition"
+				>
+					<Avatar.Root>
+						<Avatar.Image src={me?.avatar} alt={me?.username} />
+						<Avatar.Fallback class={cn('text-white', colors[me.color])}>{me?.username.slice(0, 2)}</Avatar.Fallback>
+					</Avatar.Root>
+					<span class="sr-only">Your profile</span>
+					<span aria-hidden="true">{me.username}</span>
+				</button>
+			</DropdownMenu.Trigger>
+
+			<DropdownMenu.Content class="w-56">
+				<DropdownMenu.Item class="gap-2" on:click={() => goto('/me')}>
+					<i class="ti ti-settings" />
+					<span>
+						{$t('Settings', { ns: 'auth' })}
+					</span>
+				</DropdownMenu.Item>
+				<DropdownMenu.Sub>
+					<DropdownMenu.SubTrigger class="gap-2">
+						<i class="ti ti-world" />
+						{$t('language', { ns: 'common' })}
+					</DropdownMenu.SubTrigger>
+					<DropdownMenu.SubContent>
+						<DropdownMenu.Item class="flex justify-between gap-2" on:click={() => $i18n.changeLanguage('zh-CN')}>
+							<span>简体中文</span>
+							{#if $i18n.language === 'zh-CN'}
+								<i class="ti ti-check" />
+							{/if}
+						</DropdownMenu.Item>
+						<DropdownMenu.Item class="flex justify-between gap-2" on:click={() => $i18n.changeLanguage('en')}>
+							<span>English</span>
+							{#if $i18n.language === 'en'}
+								<i class="ti ti-check" />
+							{/if}
+						</DropdownMenu.Item>
+					</DropdownMenu.SubContent>
+				</DropdownMenu.Sub>
+
+				<DropdownMenu.Item class="gap-2" on:click={copyToken}>
+					<i class="ti ti-copy" />
+					{$t('Copy Auth Token', { ns: 'auth' })}
+				</DropdownMenu.Item>
+				<DropdownMenu.Item
+					class="gap-2"
+					on:click={() => {
+						$theme = $theme === DARK_THEME ? LIGHT_THEME : DARK_THEME
+						changeThemeMode($theme)
+					}}
+				>
+					<i class="ti ti-sun-moon" />
+					{#if $theme === DARK_THEME}
+						{$t('Light Mode', { ns: 'auth' })}
+					{:else}
+						{$t('Dark Mode', { ns: 'auth' })}
+					{/if}
+				</DropdownMenu.Item>
+				<DropdownMenu.Item class="gap-2 text-red-400" on:click={() => $logout.mutate()}>
+					<i class="ti ti-logout" />
+					<span>
+						{$t('logout', { ns: 'auth' })}
+					</span>
+				</DropdownMenu.Item>
+			</DropdownMenu.Content>
+		</DropdownMenu.Root>
 	</div>
 
-	<main class={cx('h-[100vh] transition-all', 'dark:!bg-slate-800', $sidebarCollapsed ? 'lg:pl-0' : 'lg:pl-72')}>
+	<main class={cn('h-[100vh] transition-all', 'dark:!bg-slate-800', $sidebarCollapsed ? 'lg:pl-0' : 'lg:pl-72')}>
 		<div class="h-full flex flex-col">
 			<slot />
 		</div>
 	</main>
-
-	{#if $createTableModal.open}
-		<CreateTable data={$page.data.form} />
-	{/if}
-
-	{#if $importDataModal.open}
-		<ImportData formData={$page.data.createTable} />
-	{/if}
 </div>
 
-<Toast
-	color="green"
-	transition={slide}
-	position="top-right"
-	class="z-[99999] dark:bg-blue-50/95 dark:text-gray-700"
-	bind:open={copied}
->
-	<svelte:fragment slot="icon">
-		<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
-			><path
-				fill-rule="evenodd"
-				d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-				clip-rule="evenodd"
-			/></svg
-		>
-		<span class="sr-only">Check icon</span>
-	</svelte:fragment>
-	{$t('Copied', { ns: 'common' })}
-</Toast>
+{#if copied}
+	<Toast class="z-[99999] dark:bg-primary-50/95 dark:text-gray-700" bind:open={copied}>
+		<div class="flex items-center gap-2">
+			<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
+				><path
+					fill-rule="evenodd"
+					d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+					clip-rule="evenodd"
+				/></svg
+			>
+			<span class="sr-only">Check icon</span>
+			{$t('Copied', { ns: 'common' })}
+		</div>
+	</Toast>
+{/if}
+
+<CreateTable data={$page.data.form} />
+<ImportData formData={$page.data.createTable} />

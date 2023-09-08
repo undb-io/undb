@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { Spinner } from 'flowbite-svelte'
 	import EmptyWebhook from './EmptyWebhook.svelte'
 	import WebhookListItem from './WebhookListItem.svelte'
 
@@ -22,7 +21,7 @@
 <div class="h-full">
 	{#if $getWebhooks.isLoading}
 		<div class="h-full flex items-center justify-center">
-			<Spinner size="12" />
+			<i class="ti ti-rotate animate-spin"></i>
 		</div>
 	{:else if !webhooks.length}
 		<div class="h-full flex justify-center">

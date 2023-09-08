@@ -1,7 +1,7 @@
-import { RouteConfig } from '@asteasolutions/zod-to-openapi'
-import { Table } from '@undb/core'
-import { TAG_RECORD_WEBHOOK } from 'src/constants'
-import { createWebhookRecordEventsSchema } from 'src/schema'
+import type { RouteConfig } from '@asteasolutions/zod-to-openapi'
+import type { Table } from '@undb/core'
+import { TAG_RECORD_WEBHOOK } from '../constants.js'
+import { createWebhookRecordEventsSchema } from '../schema/index.js'
 
 export const recordEventsWebhook = (table: Table): RouteConfig => {
   return {

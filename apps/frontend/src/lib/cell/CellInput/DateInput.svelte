@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { format, startOfDay } from 'date-fns'
-	import { Input } from 'flowbite-svelte'
+	import { Input } from '$lib/components/ui/input'
 	import { isString } from 'lodash-es'
 
 	function dateIsValid(date: string) {
@@ -13,4 +13,4 @@
 	$: value = dateValue ? startOfDay(new Date(dateValue)).toISOString() : ''
 </script>
 
-<Input type="date" bind:value={dateValue} {...$$restProps} />
+<Input type="date" bind:value={dateValue} class={$$restProps.class} />

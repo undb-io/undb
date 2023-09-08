@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { colors } from '$lib/field/helpers'
 	import type { IOptionColor } from '@undb/core'
-	import cx from 'classnames'
+	import { cn } from '$lib/utils'
 
 	export let id: string
 	export let name: string
@@ -13,7 +13,7 @@
 <span
 	{...$$restProps}
 	data-option-id={id}
-	class={cx(textColor, 'text-xs px-2.5 py-0.5 rounded text-center truncate', $$restProps.class, colors[color.name])}
+	class={cn(textColor, 'text-xs px-2.5 py-0.5 rounded text-center truncate', $$restProps.class, colors[color.name])}
 >
 	{name}
 </span>

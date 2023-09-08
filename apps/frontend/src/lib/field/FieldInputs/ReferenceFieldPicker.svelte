@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { Label } from 'flowbite-svelte'
 	import { t } from '$lib/i18n'
 	import FieldPicker from './FieldPicker.svelte'
 	import { allTableFields } from '$lib/store/table'
+	import { Label } from '$components/ui/label'
 
 	export let value: string
 	export let required = false

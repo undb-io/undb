@@ -12,7 +12,7 @@ RUN tar -C /usr/local/bin -xzf /tmp/litestream.tar.gz
 # installer
 FROM node:20.2.0 AS installer
 
-RUN npm install -g pnpm@8.6.11
+RUN npm install -g pnpm@8.7.0
 
 WORKDIR /undb
 
@@ -30,6 +30,7 @@ ARG PUBLIC_UNDB_ADMIN_PASSWORD
 ARG UNDB_SEED
 
 ENV NODE_ENV production
+ENV NODE_OPTIONS --max-old-space-size=8192
 RUN pnpm run build --filter=backend --filter=frontend
 
 RUN rm -rf ./node_modules

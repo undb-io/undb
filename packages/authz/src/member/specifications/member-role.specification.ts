@@ -1,8 +1,8 @@
 import { CompositeSpecification } from '@undb/domain'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
-import type { IRoles } from 'src/rbac/role.vo.js'
-import { Role } from 'src/rbac/role.vo.js'
+import type { IRoles } from '../../rbac/role.vo.js'
+import { Role } from '../../rbac/role.vo.js'
 import type { IMemberVisitor } from '../interface.js'
 import type { Member } from '../member.js'
 

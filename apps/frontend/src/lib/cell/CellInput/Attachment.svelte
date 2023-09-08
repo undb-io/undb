@@ -1,6 +1,6 @@
 <script lang="ts">
+	import FileInput from '$components/ui/input/file-input.svelte'
 	import { isImage, type IAttachmentFieldValue } from '@undb/core'
-	import { CloseButton, Fileupload } from 'flowbite-svelte'
 	let files: FileList
 
 	export let value: IAttachmentFieldValue = []
@@ -34,10 +34,12 @@
 	$: if (files) {
 		handFiles(files)
 	}
+
+	$: console.log(value)
 </script>
 
-<Fileupload bind:files multiple {...$$restProps} disabled={readonly} />
-{#if value.length}
+<FileInput type="file" multiple bind:files class={$$restProps.class} disabled={readonly} />
+{#if value?.length}
 	<div class="flex gap-1 h-20 mt-2">
 		{#each value ?? [] as attachment, index}
 			<div class="relative h-full flex group">
@@ -47,10 +49,12 @@
 					<span>{attachment.name}</span>
 				{/if}
 
-				<CloseButton
+				<button
 					class="absolute top-0 right-0 translate-y-[-50%] translate-x-[50%] hidden group-hover:block"
 					on:click={() => remove(index)}
-				/>
+				>
+					<i class="ti ti-x"></i>
+				</button>
 			</div>
 		{/each}
 	</div>

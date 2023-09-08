@@ -18,6 +18,13 @@ const config = {
 		adapter: adapter({
 			fallback: 'index.html',
 		}),
+		alias: {
+			$components: 'src/lib/components',
+			'$components/*': 'src/lib/components',
+		},
+	},
+	shadcn: {
+		componentePath: './src/lib/components/ui',
 	},
 }
 

@@ -1,10 +1,7 @@
 <script lang="ts">
-	import cx from 'classnames'
-	import { Button, Dropdown, Radio } from 'flowbite-svelte'
-	import Portal from 'svelte-portal'
 	import { t } from '$lib/i18n'
-
-	let open = false
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { Button } from '$lib/components/ui/button'
 
 	export let value = 'image'
 
@@ -18,42 +15,29 @@
 		{ value: 'pdf', label: $t('PDF', { ns: 'common' }) as string, icon: 'pdf' },
 	] as const
 
-	$: selected = types.find((t) => t.value === value)
+	$: selected = types.find((v) => v.value === value)
 </script>
 
-<Button
-	color="alternative"
-	{...$$restProps}
-	class={cx($$restProps.class, 'gap-2 attachment_type_picker')}
-	on:click={() => (open = true)}
->
-	<i class={`ti ti-${selected?.icon}`} />
-	<span class="whitespace-nowrap text-xs">
-		{selected?.label}
-	</span>
-</Button>
-<Portal target="body">
-	<Dropdown style="z-index: 50;" triggeredBy=".attachment_type_picker" class="z-[99999]" bind:open>
-		{#each types as type (type.value)}
-			<Radio value={type.value} bind:group={value} custom on:change={() => (open = false)}>
-				<div
-					role="listitem"
-					class="w-full pr-4 flex justify-between hover:bg-gray-100 transition cursor-pointer"
-					class:bg-gray-100={value === type.value}
-				>
-					<div class="inline-flex gap-2 items-center text-gray-600">
-						<i class={`ti ti-${type.icon}`} />
-						<span class="text-xs">
-							{type.label}
-						</span>
-					</div>
+<DropdownMenu.Root>
+	<DropdownMenu.Trigger asChild let:builder>
+		<Button variant="outline" builders={[builder]} class="gap-2">
+			{#if selected}
+				{selected.label}
+			{:else}
+				{$t('select filter type')}
+			{/if}
+		</Button>
+	</DropdownMenu.Trigger>
+	<DropdownMenu.Content class="w-56">
+		<DropdownMenu.RadioGroup bind:value>
+			{#each types as type}
+				<DropdownMenu.RadioItem value={type.value} class="gap-2">
+					<i class={`ti ti-${type.icon}`}></i>
 					<span>
-						{#if value === type.value}
-							<i class="ti ti-check text-sm" />
-						{/if}
+						{type.label}
 					</span>
-				</div>
-			</Radio>
-		{/each}
-	</Dropdown>
-</Portal>
+				</DropdownMenu.RadioItem>
+			{/each}
+		</DropdownMenu.RadioGroup>
+	</DropdownMenu.Content>
+</DropdownMenu.Root>

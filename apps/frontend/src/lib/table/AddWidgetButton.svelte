@@ -1,12 +1,12 @@
 <script lang="ts">
-	import cx from 'classnames'
-	import { invalidate } from '$app/navigation'
 	import { t } from '$lib/i18n'
 	import { getTable, getView } from '$lib/store/table'
 	import { COLS, widgetItems } from '$lib/store/widget'
 	import { trpc } from '$lib/trpc/client'
 	import { SelectField, type IVisualizationTypeSchema } from '@undb/core'
-	import { Button, Dropdown, DropdownItem } from 'flowbite-svelte'
+	import { Button } from '$components/ui/button'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { invalidate } from '$app/navigation'
 	import { hasPermission } from '$lib/store/authz'
 
 	const table = getTable()
@@ -65,29 +65,26 @@
 </script>
 
 {#if $hasPermission('widget:create')}
-	<Button
-		on:click={() => (open = true)}
-		size="xs"
-		outline
-		{...$$restProps}
-		class={cx(
-			'h-full !rounded-md items-center whitespace-nowrap flex gap-2 dark:text-gray-50 dark:bg-primary-600 dark:border-primary-600 dark:hover-bg-primary-600 dark:hover:bg-primary-700 dark:hover:border-primary-700',
-			$$restProps.class,
-		)}
-	>
-		<i class="ti ti-plus" />
-		<span>
-			{$t('add widget')}
-		</span>
-	</Button>
-	<Dropdown style="z-index: 50;" bind:open class="z-[99999] w-48 shadow-lg border rounded-md">
-		<DropdownItem class="flex items-center gap-3" on:click={addNumbers}>
-			<i class="ti ti-123" />
-			<span>{$t('Numbers', { ns: 'common' })}</span>
-		</DropdownItem>
-		<DropdownItem class="flex items-center gap-3" on:click={addChart}>
-			<i class="ti ti-chart-area-line-filled" />
-			<span>{$t('Chart', { ns: 'common' })}</span>
-		</DropdownItem>
-	</Dropdown>
+	<DropdownMenu.Root bind:open>
+		<DropdownMenu.Trigger asChild let:builder>
+			<Button builders={[builder]} size="sm" variant="secondary" {...$$restProps} class="gap-2 whitespace-nowrap">
+				<i class="ti ti-plus" />
+				<span>
+					{$t('add widget')}
+				</span>
+			</Button>
+		</DropdownMenu.Trigger>
+		<DropdownMenu.Content class="w-48">
+			<DropdownMenu.Group>
+				<DropdownMenu.Item class="gap-2" on:click={addNumbers}>
+					<i class="ti ti-123" />
+					<span>{$t('Numbers', { ns: 'common' })}</span>
+				</DropdownMenu.Item>
+				<DropdownMenu.Item class="gap-2" on:click={addChart}>
+					<i class="ti ti-chart-area-line-filled" />
+					<span>{$t('Chart', { ns: 'common' })}</span>
+				</DropdownMenu.Item>
+			</DropdownMenu.Group>
+		</DropdownMenu.Content>
+	</DropdownMenu.Root>
 {/if}

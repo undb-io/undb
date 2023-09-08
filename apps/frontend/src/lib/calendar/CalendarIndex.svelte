@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { getTable, getView } from '$lib/store/table'
-	import { Card } from 'flowbite-svelte'
 	import type { ICalendarField, IFieldType } from '@undb/core'
 	import type { ComponentType } from 'svelte'
 	import CalendarConfig from './CalendarConfig.svelte'
 	import DateCalendarView from './DateCalendarView.svelte'
 	import DateRangeCalendarView from './DateRangeCalendarView.svelte'
+	import * as Card from '$lib/components/ui/card'
 
 	const table = getTable()
 	const view = getView()
@@ -25,8 +25,10 @@
 	</div>
 {:else}
 	<div class="flex items-center justify-center h-screen w-full bg-gray-100 dark:bg-slate-800/80">
-		<Card class="flex-1">
-			<CalendarConfig />
-		</Card>
+		<Card.Root class="w-96">
+			<Card.Header>
+				<CalendarConfig />
+			</Card.Header>
+		</Card.Root>
 	</div>
 {/if}

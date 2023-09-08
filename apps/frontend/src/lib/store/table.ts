@@ -1,7 +1,7 @@
 import { page } from '$app/stores'
 import { trpc } from '$lib/trpc/client'
 import type { CreateQueryResult } from '@tanstack/svelte-query'
-import { isUserMatch, type RLS } from '@undb/authz'
+import { FLS, isFLSUserMatch, isUserMatch, type RLS } from '@undb/authz'
 import {
 	ChartVisualization,
 	NumberVisualization,
@@ -69,6 +69,7 @@ export const currentRecord = writable<Record | undefined>()
 export const getRecord = () => currentRecord
 
 export const currentFieldId = writable<string | undefined>()
+export const currentFieldMenuRect = writable<DOMRect | undefined>()
 export const currentField = derived([currentTable, currentFieldId], ([table, fieldId]) =>
 	fieldId ? table.schema.getFieldById(fieldId).into(null) : null,
 )
@@ -98,7 +99,6 @@ export const createRecordStore = (inputs: Records = []) => {
 				if (!$store.order.includes(record.id.value)) {
 					$store.order = [...$store.order, record.id.value]
 				}
-				return $store
 			}
 			return $store
 		})
@@ -445,6 +445,32 @@ export const tableById = derived([currentTable, allTables, shareTarget], ([$tabl
 		return t
 	}
 })
+
+export const currentFLSS = writable<FLS[]>()
+export const getFLSS = currentFLSS
+
+export const updateFLSS = derived([currentFLSS, me], ([$flss, $me]) =>
+	$flss.filter((fls) => fls.policy.action === 'update').filter((fls) => isFLSUserMatch($me.userId).isSatisfiedBy(fls)),
+)
+
+export const updateFieldSpec = derived([updateFLSS, me], ([$flss, $me]) => {
+	const specs = $flss.map((rls) => rls.policy.getSpec($me.userId))
+	return andOptions(...specs)
+})
+
+export const canUpdateRecordField = derived(
+	[me, updateFLSS, currentRecord, hasPermission],
+	([$me, $flss, $record, $hasPermission]) => {
+		return (fieldId: string) => {
+			if (!$hasPermission('record:update')) return false
+			if (!$record) return false
+			const flss = $flss.filter((fls) => fls.fieldId.value === fieldId)
+			const spec = andOptions(...flss.map((fls) => fls.policy.getSpec($me.userId)))
+			if (spec.isNone()) return true
+			return spec.unwrap().isSatisfiedBy($record)
+		}
+	},
+)
 
 export const currentRLSS = writable<RLS[]>()
 export const getRLSS = currentRLSS

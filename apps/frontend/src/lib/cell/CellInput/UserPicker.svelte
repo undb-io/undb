@@ -1,6 +1,7 @@
 <script lang="ts">
-	import cx from 'classnames'
-	import { Button, Radio, Dropdown } from 'flowbite-svelte'
+	import { cn } from '$lib/utils'
+	import { Button } from '$lib/components/ui/button'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import CollaboratorComponent from '../CellComponents/CollaboratorComponent.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { t } from '$lib/i18n'
@@ -27,24 +28,30 @@
 	$: if (value) selected = membersMap.get(value) || selectedMembers.find((u) => u.userId === value)
 </script>
 
-<Button color="alternative" class={cx('inline-flex gap-3 max-h-10 max-w-max', $$restProps.class)} {...$$restProps}>
-	{#if selected}
-		<CollaboratorComponent username={selected.username} avatar={selected.avatar} color={selected.color} />
-	{:else}
-		{$t('Select Collaborator')}
-	{/if}
-</Button>
-<Dropdown style="z-index: 50;" bind:open class="w-[400px] border-2">
-	{#each members as member}
-		<Radio bind:group={value} value={member.userId} custom on:change={() => (open = false)}>
-			<span
-				class="inline-flex items-center justify-between px-4 py-2 cursor-pointer w-full hover:bg-gray-100 dark:hover:bg-gray-400"
-			>
-				<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />
-				{#if selected?.userId === member.userId}
-					<i class="ti ti-check dark:text-gray-300" />
-				{/if}
-			</span>
-		</Radio>
-	{/each}
-</Dropdown>
+<DropdownMenu.Root bind:open>
+	<DropdownMenu.Trigger asChild let:builder>
+		<Button
+			type="button"
+			variant="outline"
+			class={cn('inline-flex gap-3 max-h-10 max-w-none', $$restProps.class)}
+			builders={[builder]}
+		>
+			{#if selected}
+				<CollaboratorComponent username={selected.username} avatar={selected.avatar} color={selected.color} size="sm" />
+			{:else}
+				{$t('Select Collaborator')}
+			{/if}
+		</Button>
+	</DropdownMenu.Trigger>
+	<DropdownMenu.Content class="w-56">
+		<DropdownMenu.RadioGroup bind:value>
+			{#each members as member}
+				<DropdownMenu.RadioItem value={member.userId}>
+					<span class="inline-flex items-center justify-between cursor-pointer w-full">
+						<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />
+					</span>
+				</DropdownMenu.RadioItem>
+			{/each}
+		</DropdownMenu.RadioGroup>
+	</DropdownMenu.Content>
+</DropdownMenu.Root>
