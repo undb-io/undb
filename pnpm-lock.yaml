@@ -923,6 +923,9 @@ importers:
       '@undb/integrations':
         specifier: ^0.0.0
         version: link:../../integrations
+      '@undb/openapi':
+        specifier: workspace:^0.0.0
+        version: link:../../openapi
       date-fns:
         specifier: ^2.30.0
         version: 2.30.0

@@ -11,6 +11,7 @@
     "@undb/core": "^0.0.0",
     "@undb/domain": "^0.0.0",
     "@undb/integrations": "^0.0.0",
+    "@undb/openapi": "workspace:^0.0.0",
     "date-fns": "^2.30.0",
     "lodash-es": "^4.17.21",
     "oxide.ts": "^1.1.0",

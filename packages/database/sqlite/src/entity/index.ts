@@ -1,3 +1,4 @@
+import { ApiToken } from './api-token.js'
 import { Attachment } from './attachment.js'
 import { Audit } from './audit.js'
 import { Field, fieldEntities } from './field.js'
@@ -42,4 +43,5 @@ export const entities = [
   FLS,
   Member,
   Invitation,
+  ApiToken,
 ]
