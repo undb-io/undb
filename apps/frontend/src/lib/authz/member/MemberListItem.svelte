@@ -44,7 +44,7 @@
 				</div>
 				<div class="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
 					<div>
-						<p class="truncate text-sm font-medium text-indigo-600 dark:text-white">
+						<p class="truncate text-sm font-medium text-primary dark:text-white">
 							{member.userProfile.username}
 						</p>
 						<p class="mt-2 flex items-center text-sm text-gray-500 dark:text-gray-200">

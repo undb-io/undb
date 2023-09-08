@@ -73,7 +73,7 @@
 						<div class="flex items-center gap-3">
 							<span
 								class={cn(
-									'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
+									'text-gray-400 border-gray-200 group-hover:border-primary group-hover:text-primary',
 									'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white',
 								)}
 							>
@@ -87,13 +87,13 @@
 		{/each}
 		{#if $hasPermission('table:create')}
 			<Card.Root
-				class="!max-w-none cursor-pointer hover:bg-primary-500/90 hover:text-white transition h-full"
+				class="!max-w-none cursor-pointer hover:bg-primary-500/90  hover:shadow-lg transition h-full"
 				on:click={() => createTableModal.open()}
 			>
 				<Card.Header>
 					<div class="flex items-center gap-2 h-full">
 						<i class="ti ti-plus" />
-						<p class="text-sm font-bold">{$t('Create New Table')}</p>
+						<p class="font-bold">{$t('Create New Table')}</p>
 					</div>
 				</Card.Header>
 			</Card.Root>
