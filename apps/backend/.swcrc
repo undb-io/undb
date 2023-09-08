@@ -15,10 +15,7 @@
       "legacyDecorator": true,
       "decoratorMetadata": true
     },
-    "keepClassNames": true,
-    "experimental": {
-      "keepImportAssertions": true
-    }
+    "keepClassNames": true
   },
   "minify": false,
   "isModule": true
