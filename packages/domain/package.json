@@ -13,7 +13,7 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.2",
+    "@types/uuid": "^9.0.3",
     "rimraf": "^5.0.1",
     "tsconfig": "^0.0.0",
     "tsup": "^7.2.0",
