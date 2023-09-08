@@ -1918,4 +1918,8 @@ create index `undb_fls_deleted_at_index` on `undb_fls` (`deleted_at`);
 create index `undb_fls_table_id_index` on `undb_fls` (`table_id`);
 create index `undb_fls_field_id_index` on `undb_fls` (`field_id`);
 
+create table `undb_api_token` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `token` text not null, `user_id` text not null, constraint `undb_api_token_user_id_foreign` foreign key(`user_id`) references `undb_user`(`id`) on update cascade, primary key (`id`));
+create index `undb_api_token_deleted_at_index` on `undb_api_token` (`deleted_at`);
+create index `undb_api_token_user_id_index` on `undb_api_token` (`user_id`);
+
 COMMIT;

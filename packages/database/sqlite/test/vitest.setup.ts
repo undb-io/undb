@@ -12,7 +12,7 @@ beforeAll(async () => {
       dbName: ':memory:',
       driver: BetterSqliteDriver,
       migrations: {
-        migrationsList: [
+        migratkionsList: [
           {
             name: 'initial',
             class: Migration20230830052614,
