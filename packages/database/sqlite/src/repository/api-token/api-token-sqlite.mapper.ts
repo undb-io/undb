@@ -2,6 +2,7 @@ import {
   ApiTokenFactory,
   WithApiTokenId,
   WithApiTokenToken,
+  WithApiTokenUserId,
   type ApiToken as ApiTokenDo,
   type IQueryApiToken,
 } from '@undb/openapi'
@@ -12,10 +13,15 @@ export class ApiTokenSqliteMapper {
     return {
       id: apiToken.id,
       token: apiToken.token,
+      userId: apiToken.user.id,
     }
   }
 
   static toDomain(apiToken: ApiToken): ApiTokenDo {
-    return ApiTokenFactory.create(WithApiTokenId.fromString(apiToken.id), WithApiTokenToken.fromString(apiToken.token))
+    return ApiTokenFactory.create(
+      WithApiTokenId.fromString(apiToken.id),
+      WithApiTokenToken.fromString(apiToken.token),
+      WithApiTokenUserId.fromString(apiToken.user.id),
+    )
   }
 }

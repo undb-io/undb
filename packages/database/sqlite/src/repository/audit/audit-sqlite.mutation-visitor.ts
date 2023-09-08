@@ -1,6 +1,6 @@
-import { EntityManager } from '@mikro-orm/better-sqlite'
+import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { wrap } from '@mikro-orm/core'
-import {
+import type {
   AuditSpecification,
   IAuditSpecVisitor,
   WithAuditAfter,

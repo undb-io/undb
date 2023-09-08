@@ -1,6 +1,12 @@
 import type { QueryBuilder } from '@mikro-orm/better-sqlite'
 import type { ISpecification, ISpecVisitor } from '@undb/domain'
-import type { ApiToken as ApiTokenDo, IApiTokenVisitor, WithApiTokenId, WithApiTokenToken } from '@undb/openapi'
+import type {
+  ApiToken as ApiTokenDo,
+  IApiTokenVisitor,
+  WithApiTokenId,
+  WithApiTokenToken,
+  WithApiTokenUserId,
+} from '@undb/openapi'
 import type { ApiToken } from '../../entity/api-token.js'
 
 export class ApiTokenQueryVisitor implements IApiTokenVisitor {
@@ -12,6 +18,9 @@ export class ApiTokenQueryVisitor implements IApiTokenVisitor {
   }
   withToken(s: WithApiTokenToken): void {
     throw new Error('Method not implemented.')
+  }
+  withUserId(s: WithApiTokenUserId): void {
+    this.qb.andWhere({ user: s.userId.value })
   }
   or(left: ISpecification<ApiTokenDo, ISpecVisitor>, right: ISpecification<ApiTokenDo, ISpecVisitor>): this {
     throw new Error('Method not implemented.')
