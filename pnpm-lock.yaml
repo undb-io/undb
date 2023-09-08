@@ -819,6 +819,9 @@ importers:
       '@undb/integrations':
         specifier: ^0.0.0
         version: link:../integrations
+      '@undb/openapi':
+        specifier: workspace:^
+        version: link:../openapi
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21

@@ -2,6 +2,7 @@ import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { ApiToken as ApiTokenDo, ApiTokenSpecification, IApiTokenRepository } from '@undb/openapi'
 import { None, Some, type Option } from 'oxide.ts'
 import { ApiToken } from '../../entity/api-token.js'
+import { User } from '../../entity/user.js'
 import { ApiTokenSqliteMapper } from './api-token-sqlite.mapper.js'
 import { ApiTokenQueryVisitor } from './api-token.query-visitor.js'
 
@@ -24,5 +25,11 @@ export class ApiTokenSqliteRepository implements IApiTokenRepository {
     const token = await this.em.findOne(ApiToken, id)
     if (!token) return None
     return Some(ApiTokenSqliteMapper.toDomain(token))
+  }
+
+  async insert(token: ApiTokenDo): Promise<void> {
+    const user = this.em.getReference(User, token.userId.value)
+    const entity = new ApiToken(token, user)
+    await this.em.fork().persistAndFlush(entity)
   }
 }

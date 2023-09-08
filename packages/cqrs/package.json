@@ -8,6 +8,7 @@
     "@undb/core": "^0.0.0",
     "@undb/domain": "^0.0.0",
     "@undb/integrations": "^0.0.0",
+    "@undb/openapi": "workspace:^",
     "lodash-es": "^4.17.21",
     "oxide.ts": "^1.1.0",
     "p-map": "^6.0.0",
