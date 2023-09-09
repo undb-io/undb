@@ -7,5 +7,6 @@ import { queryHandlers } from './queries/index.js'
 @Module({
   imports: [CqrsModule],
   providers: [...adapters, ...commandHandlers, ...queryHandlers],
+  exports: [...adapters],
 })
 export class ApiTokenModule {}

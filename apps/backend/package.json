@@ -67,6 +67,7 @@
     "oxide.ts": "^1.1.0",
     "p-limit": "^4.0.0",
     "passport": "^0.6.0",
+    "passport-custom": "^1.1.1",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "pino-http": "^8.5.0",

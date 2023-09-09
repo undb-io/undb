@@ -17,7 +17,7 @@ export class ApiTokenQueryVisitor implements IApiTokenVisitor {
     this.qb.andWhere({ id: s.id.value })
   }
   withToken(s: WithApiTokenToken): void {
-    throw new Error('Method not implemented.')
+    this.qb.andWhere({ token: s.token.unpack() })
   }
   withUserId(s: WithApiTokenUserId): void {
     this.qb.andWhere({ user: s.userId.value })

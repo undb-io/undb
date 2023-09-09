@@ -27,6 +27,19 @@ export class ApiTokenSqliteRepository implements IApiTokenRepository {
     return Some(ApiTokenSqliteMapper.toDomain(token))
   }
 
+  async findOne(spec: ApiTokenSpecification): Promise<Option<ApiTokenDo>> {
+    const em = this.em.fork()
+    const qb = em.qb(ApiToken)
+    const visitor = new ApiTokenQueryVisitor(qb)
+
+    spec.accept(visitor)
+
+    const result = await qb.getSingleResult()
+    if (!result) return None
+
+    return Some(ApiTokenSqliteMapper.toDomain(result))
+  }
+
   async insert(token: ApiTokenDo): Promise<void> {
     const user = this.em.getReference(User, token.userId.value)
     const entity = new ApiToken(token, user)

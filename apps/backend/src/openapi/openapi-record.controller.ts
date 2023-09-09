@@ -13,7 +13,7 @@ import {
 import { type IOpenAPIMutateRecordSchema } from '@undb/openapi'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { Observable, map, tap } from 'rxjs'
-import { JwtAuthGuard } from '../auth/jwt-auth.guard.js'
+import { OpenApiGuard } from '../auth/open-api.guard.js'
 import { AuthzGuard } from '../authz/authz.guard.js'
 import { Permissions } from '../authz/rbac/permission.decorator.js'
 import { NestRealtimeEventsHandler } from '../realtime/events/realtime.events-handler.js'
@@ -23,7 +23,7 @@ import { OpenAPIRecordService } from './openapi-record.service.js'
   path: 'openapi',
   version: '1',
 })
-@UseGuards(JwtAuthGuard, AuthzGuard)
+@UseGuards(OpenApiGuard, AuthzGuard)
 export class OpenAPIRecordController {
   constructor(
     private queryBus: QueryBus,

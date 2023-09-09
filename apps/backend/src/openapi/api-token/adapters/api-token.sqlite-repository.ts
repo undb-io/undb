@@ -28,6 +28,11 @@ export class NestApiTokenSqliteRepository extends ApiTokenSqliteRepository {
   }
 
   @UseRequestContext()
+  findOne(spec: ApiTokenSpecification): Promise<Option<ApiToken>> {
+    return super.findOne(spec)
+  }
+
+  @UseRequestContext()
   insert(token: ApiToken): Promise<void> {
     return super.insert(token)
   }

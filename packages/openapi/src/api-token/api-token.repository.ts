@@ -5,6 +5,7 @@ import type { ApiTokenSpecification } from './interface.js'
 export interface IApiTokenRepository {
   find(spec: ApiTokenSpecification): Promise<ApiToken[]>
   findOneById(id: string): Promise<Option<ApiToken>>
+  findOne(spec: ApiTokenSpecification): Promise<Option<ApiToken>>
 
   insert(token: ApiToken): Promise<void>
 }

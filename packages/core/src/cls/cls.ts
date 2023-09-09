@@ -62,6 +62,7 @@ export interface ClsStore {
   user: {
     userId: string
     isAnonymous?: boolean
+    isApiToken?: boolean
   }
   member: {
     memberId: string
