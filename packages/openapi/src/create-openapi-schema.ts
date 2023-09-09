@@ -73,12 +73,14 @@ export const createTableSchema = (table: Table, record?: Record, host = 'http://
     type: 'http',
     scheme: 'bearer',
     bearerFormat: 'JWT',
+    description: 'https://docs.undb.xyz/openapi/1tokens#auth-token',
   })
 
   const apiKeyAuth = registry.registerComponent('securitySchemes', 'apiKeyAuth', {
     type: 'apiKey',
     in: 'header',
     name: API_TOKEN_HEADER_NAME,
+    description: 'https://docs.undb.xyz/openapi/1tokens#api-token',
   })
 
   const createWebhookSchema = createCreateWebhookSchema(table)
