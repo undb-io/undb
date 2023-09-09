@@ -44,7 +44,7 @@ describe('CreateRecordCommandHandler', () => {
     handler = new CreateRecordCommandHandler(tableRepo, recordRepo, cls, rls)
   })
   test('create record success', async () => {
-    cls.get.calledWith('user.userId').mockResolvedValue('usr123')
+    cls.get.calledWith('user.userId').mockReturnValue('usr123')
     tableRepo.findOneById.calledWith(table.id.value).mockResolvedValue(Some(table))
     spy.mockReturnValue(record)
 
@@ -57,7 +57,7 @@ describe('CreateRecordCommandHandler', () => {
     expect(id).toEqual(record.id.value)
   })
   test('findOneById failed', async () => {
-    cls.get.calledWith('user.userId').mockResolvedValue('usr123')
+    cls.get.calledWith('user.userId').mockReturnValue('usr123')
     tableRepo.findOneById.mockResolvedValue(None)
     spy.mockReturnValue(record)
 
