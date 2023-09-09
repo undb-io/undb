@@ -9,7 +9,7 @@
 	import { Badge } from '$lib/components/ui/badge'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Button } from '$components/ui/button'
-	import type { IRolesWithoutOwner } from '@undb/authz/dist'
+	import type { IRolesWithoutOwner } from '@undb/authz'
 
 	export let invitation: IQueryInvitation
 

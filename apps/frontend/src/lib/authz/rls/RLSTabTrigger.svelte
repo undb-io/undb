@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { IRLSAction } from '@undb/authz/dist'
+	import type { IRLSAction } from '@undb/authz'
 	import { currentRLSS } from '$lib/store/table'
 	import { Badge } from '$components/ui/badge'
 	import { t } from '$lib/i18n'
