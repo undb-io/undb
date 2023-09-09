@@ -481,7 +481,7 @@ export const config: InitOptions = {
         'TABLE.NOT_FOUND': '没有找到表格',
       },
       common: {
-        Settings: '系统账号',
+        Settings: '系统设置',
         when: '当',
         readonly: '只读',
         previous: '上一页',
