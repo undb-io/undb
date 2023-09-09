@@ -1257,6 +1257,9 @@ importers:
       '@undb/domain':
         specifier: workspace:^
         version: link:../domain
+      oxide.ts:
+        specifier: ^1.1.0
+        version: 1.1.0
       zod:
         specifier: ^3.22.2
         version: 3.22.2

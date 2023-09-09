@@ -1,18 +1,14 @@
-import { createFieldSchema, tableIdSchema, tableNameSchema } from '@undb/core'
 import { z } from 'zod'
-
-export const templateTableSchema = z.object({
-  id: tableIdSchema,
-  name: tableNameSchema,
-  schema: createFieldSchema.array(),
-})
-
-export const exportSchema = z.object({
-  tables: templateTableSchema,
-})
+import { zodToJsonSchema } from 'zod-to-json-schema'
+import { exportSchema, templateIdSchema, templateNameSchema } from './value-objects/index.js'
 
 export const templateSchema = z.object({
   version: z.number().int().positive(),
-  name: z.string().nonempty(),
+  id: templateIdSchema,
+  name: templateNameSchema,
   exports: exportSchema.array(),
 })
+
+export const templateJsonSchema = zodToJsonSchema(templateIdSchema, 'templateSchema')
+
+export type ITemplateSchema = z.infer<typeof templateSchema>
