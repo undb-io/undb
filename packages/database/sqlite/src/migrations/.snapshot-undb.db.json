@@ -2511,6 +2511,15 @@
         },
         {
           "columnNames": [
+            "token"
+          ],
+          "composite": false,
+          "keyName": "undb_api_token_token_unique",
+          "primary": false,
+          "unique": true
+        },
+        {
+          "columnNames": [
             "user_id"
           ],
           "composite": false,

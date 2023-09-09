@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230908100730 extends Migration {
+export class Migration20230909031310 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `undb_outbox` (`uuid` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text null, `operator_id` text null, `timestamp` datetime not null, `payload` json not null, `meta` json null, primary key (`uuid`));',
@@ -131,6 +131,7 @@ export class Migration20230908100730 extends Migration {
       'create table `undb_api_token` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `token` text not null, `user_id` text not null, constraint `undb_api_token_user_id_foreign` foreign key(`user_id`) references `undb_user`(`id`) on update cascade, primary key (`id`));',
     )
     this.addSql('create index `undb_api_token_deleted_at_index` on `undb_api_token` (`deleted_at`);')
+    this.addSql('create unique index `undb_api_token_token_unique` on `undb_api_token` (`token`);')
     this.addSql('create index `undb_api_token_user_id_index` on `undb_api_token` (`user_id`);')
 
     this.addSql(
