@@ -40,6 +40,4 @@
 	</div>
 {/if}
 
-{#if $inviteModal.open}
-	<InviteModal />
-{/if}
+<InviteModal />
