@@ -248,10 +248,12 @@
 						</button>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content class="w-56">
-						<DropdownMenu.Item class="gap-2" on:click={() => goto('/setting')}>
-							<i class="ti ti-settings" />
-							{$t('Settings', { ns: 'common' })}
-						</DropdownMenu.Item>
+						{#if $hasPermission('openapi:list_api_token')}
+							<DropdownMenu.Item class="gap-2" on:click={() => goto('/setting')}>
+								<i class="ti ti-settings" />
+								{$t('Settings', { ns: 'common' })}
+							</DropdownMenu.Item>
+						{/if}
 						<DropdownMenu.Item class="gap-2" on:click={() => goto('/me')}>
 							<i class="ti ti-user-circle" />
 							{$t('Account Settings', { ns: 'auth' })}
