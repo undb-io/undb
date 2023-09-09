@@ -248,9 +248,13 @@
 						</button>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content class="w-56">
-						<DropdownMenu.Item class="gap-2" on:click={() => goto('/me')}>
+						<DropdownMenu.Item class="gap-2" on:click={() => goto('/setting')}>
 							<i class="ti ti-settings" />
-							{$t('Settings', { ns: 'auth' })}
+							{$t('Settings', { ns: 'common' })}
+						</DropdownMenu.Item>
+						<DropdownMenu.Item class="gap-2" on:click={() => goto('/me')}>
+							<i class="ti ti-user-circle" />
+							{$t('Account Settings', { ns: 'auth' })}
 						</DropdownMenu.Item>
 						<DropdownMenu.Sub>
 							<DropdownMenu.SubTrigger class="gap-2">

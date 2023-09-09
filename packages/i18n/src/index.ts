@@ -23,7 +23,7 @@ export const config: InitOptions = {
         'password placeholder': 'Password',
         'has no account': "Don't have an account yet?",
         'has account': 'Already have an account?',
-        Settings: 'Settings',
+        'Account Settings': 'Account Settings',
         Profile: 'Profile',
         username: 'Username',
         avatar: 'Avatar',
@@ -59,7 +59,13 @@ export const config: InitOptions = {
       warnings: {
         'RECORD.NO_COLUMN_TO_UPDATE': 'No Column to update',
       },
+      openapi: {
+        'Create New Token': 'Create New Token',
+        'your tokens': 'A list of your tokens.',
+        'Confirm Delete': 'Confirm to delete Api Token?',
+      },
       common: {
+        Settings: 'Settings',
         when: 'when',
         readonly: 'readonly',
         previous: 'Previous',
@@ -75,6 +81,7 @@ export const config: InitOptions = {
         Cancel: 'Cancel',
         Confirm: 'Confirm',
         Delete: 'Delete',
+        Actions: 'Actions',
         Create: 'Create',
         Done: 'Done',
         Update: 'Update',
@@ -419,6 +426,11 @@ export const config: InitOptions = {
       warnings: {
         'RECORD.NO_COLUMN_TO_UPDATE': '没有列可更新',
       },
+      openapi: {
+        'Create New Token': '创建新 token',
+        'your tokens': '属于你的 API token',
+        'Confirm Delete': '确认删除 API token？',
+      },
       auth: {
         login: '登录',
         logout: '退出登录',
@@ -433,7 +445,7 @@ export const config: InitOptions = {
         'has account': '已有账号？',
         'login to undb': '登录到 undb',
         'register to undb': '注册 undb 账号',
-        Settings: '设置账号',
+        'Account Settings': '账号账号',
         Profile: '简介',
         username: '用户名',
         avatar: '头像',
@@ -467,6 +479,7 @@ export const config: InitOptions = {
         'TABLE.NOT_FOUND': '没有找到表格',
       },
       common: {
+        Settings: '系统账号',
         when: '当',
         readonly: '只读',
         previous: '上一页',
@@ -482,6 +495,7 @@ export const config: InitOptions = {
         Cancel: '取消',
         Confirm: '确认',
         Delete: '删除',
+        Actions: '操作',
         Create: '创建',
         Done: '完成',
         Update: '更新',

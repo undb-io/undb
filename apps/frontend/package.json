@@ -40,6 +40,7 @@
 		"@undb/i18n": "^0.0.0",
 		"@undb/integrations": "^0.0.0",
 		"@undb/trpc": "^0.0.0",
+		"@undb/openapi": "^0.0.0",
 		"autoprefixer": "^10.4.15",
 		"bits-ui": "^0.5.7",
 		"chart.js": "^4.4.0",
