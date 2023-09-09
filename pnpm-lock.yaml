@@ -1257,6 +1257,9 @@ importers:
       '@undb/domain':
         specifier: workspace:^
         version: link:../domain
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
       oxide.ts:
         specifier: ^1.1.0
         version: 1.1.0
@@ -1267,6 +1270,9 @@ importers:
         specifier: ^3.21.4
         version: 3.21.4(zod@3.22.2)
     devDependencies:
+      '@types/lodash-es':
+        specifier: ^4.17.9
+        version: 4.17.9
       rimraf:
         specifier: ^5.0.1
         version: 5.0.1
@@ -1282,6 +1288,9 @@ importers:
       vitest:
         specifier: ^0.34.3
         version: 0.34.3
+      vitest-mock-extended:
+        specifier: ^1.2.1
+        version: 1.2.1(typescript@5.2.2)(vitest@0.34.3)
 
   packages/trpc:
     dependencies:

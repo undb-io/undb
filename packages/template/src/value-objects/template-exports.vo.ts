@@ -1,4 +1,5 @@
-import { createFieldSchema, tableIdSchema, tableNameSchema } from '@undb/core'
+import type { ClsStore, Table } from '@undb/core'
+import { TableFactory, createFieldSchema, tableIdSchema, tableNameSchema } from '@undb/core'
 import { ValueObject } from '@undb/domain'
 import { z } from 'zod'
 
@@ -9,9 +10,26 @@ export const templateTableSchema = z.object({
 })
 
 export const exportSchema = z.object({
-  tables: templateTableSchema,
+  tables: templateTableSchema.array(),
 })
 
 export type IExportSchema = z.infer<typeof exportSchema>
 
-export class TemplateExport extends ValueObject<IExportSchema> {}
+export class TemplateExport extends ValueObject<IExportSchema> {
+  public get tables() {
+    return this.props.tables
+  }
+
+  toTables(ctx: ClsStore): Table[] {
+    return this.tables.map((table) => {
+      return TableFactory.from(
+        {
+          id: table.id,
+          name: table.name,
+          schema: table.schema,
+        },
+        ctx,
+      ).unwrap()
+    })
+  }
+}
