@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common'
 import { PassportStrategy } from '@nestjs/passport'
 import type { ClsStore } from '@undb/core'
-import { WithApiTokenToken, type IApiTokenRepository } from '@undb/openapi'
+import { API_TOKEN_HEADER_NAME, WithApiTokenToken, type IApiTokenRepository } from '@undb/openapi'
 import type { Request } from 'express'
 import { ClsService } from 'nestjs-cls'
 import { Strategy } from 'passport-custom'
 import { InjectApiTokenRepository } from '../../openapi/api-token/adapters/api-token.sqlite-repository.js'
-import { API_TOKEN_AUTH, API_TOKEN_HEADER_NAME } from './api-token.constants.js'
+import { API_TOKEN_AUTH } from './api-token.constants.js'
 
 @Injectable()
 export class ApiTokenStrategy extends PassportStrategy(Strategy, API_TOKEN_AUTH) {
