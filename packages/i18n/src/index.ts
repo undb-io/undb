@@ -62,6 +62,7 @@ export const config: InitOptions = {
       openapi: {
         'Create New Token': 'Create New Token',
         'your tokens': 'A list of your tokens.',
+        'Confirm Create': 'Confirm to create new Api Token?',
         'Confirm Delete': 'Confirm to delete Api Token?',
       },
       common: {
@@ -429,6 +430,7 @@ export const config: InitOptions = {
       openapi: {
         'Create New Token': '创建新 token',
         'your tokens': '属于你的 API token',
+        'Confirm Create': '确认创建新的 API token？',
         'Confirm Delete': '确认删除 API token？',
       },
       auth: {

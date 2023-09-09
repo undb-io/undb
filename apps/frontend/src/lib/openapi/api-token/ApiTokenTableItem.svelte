@@ -68,25 +68,22 @@
 			<AlertDialog.Title>{$t('Confirm Delete', { ns: 'openapi' })}</AlertDialog.Title>
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
-			<AlertDialog.Cancel>
-				<span
-					on:click={() => {
-						confirmDelete = false
-					}}
-				>
-					{$t('Cancel', { ns: 'common' })}
-				</span>
+			<AlertDialog.Cancel
+				on:click={() => {
+					confirmDelete = false
+				}}
+			>
+				{$t('Cancel', { ns: 'common' })}
 			</AlertDialog.Cancel>
-			<AlertDialog.Action>
-				<span
-					on:click={() => {
-						$deleteApiToken.mutate({
-							apiTokenId: apiToken.id,
-						})
-					}}
-				>
-					{$t('Confirm', { ns: 'common' })}
-				</span>
+			<AlertDialog.Action
+				variant="destructive"
+				on:click={() => {
+					$deleteApiToken.mutate({
+						apiTokenId: apiToken.id,
+					})
+				}}
+			>
+				{$t('Confirm', { ns: 'common' })}
 			</AlertDialog.Action>
 		</AlertDialog.Footer>
 	</AlertDialog.Content>

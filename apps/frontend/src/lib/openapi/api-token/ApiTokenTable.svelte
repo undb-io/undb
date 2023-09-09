@@ -2,25 +2,15 @@
 	import { Button } from '$components/ui/button'
 	import * as Table from '$lib/components/ui/table'
 	import { t } from '$lib/i18n'
-	import { trpc } from '$lib/trpc/client'
 	import type { IQueryApiToken } from '@undb/openapi'
 	import ApiTokenTableItem from './ApiTokenTableItem.svelte'
+	import { confirmCreateApiToken } from '$lib/store/modal'
 
 	export let apiTokens: IQueryApiToken[]
-
-	const getApiTokens = trpc().openapi.apiToken.list.query(undefined, {
-		enabled: false,
-	})
-
-	const createToken = trpc().openapi.apiToken.create.mutation({
-		async onSuccess(data, variables, context) {
-			await $getApiTokens.refetch()
-		},
-	})
 </script>
 
 <div class="flex justify-end mb-4">
-	<Button class="w-40 gap-2" variant="secondary" on:click={() => $createToken.mutate()}>
+	<Button class="w-40 gap-2" variant="secondary" on:click={() => ($confirmCreateApiToken = true)}>
 		<i class="ti ti-plus"></i>
 		{$t('Create New Token', { ns: 'openapi' })}
 	</Button>
