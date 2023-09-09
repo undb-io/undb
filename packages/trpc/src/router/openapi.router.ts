@@ -1,7 +1,9 @@
 import {
   CreateApiTokenCommand,
+  DeleteApiTokenCommand,
   GetApiTokensQuery,
   createApiTokenCommandInput,
+  deleteApiTokenCommandInput,
   getApiTokensQueryOutput,
   getApiTokensQuerySchema,
 } from '@undb/cqrs'
@@ -27,6 +29,14 @@ const createApiTokenRouter = (procedure: typeof publicProcedure) => (commandBus:
       .output(z.any())
       .mutation(({ input }) => {
         const cmd = new CreateApiTokenCommand({})
+        return commandBus.execute(cmd)
+      }),
+    delete: procedure
+      .use(authz('openapi:delete_api_token'))
+      .input(deleteApiTokenCommandInput)
+      .output(z.any())
+      .mutation(({ input }) => {
+        const cmd = new DeleteApiTokenCommand(input)
         return commandBus.execute(cmd)
       }),
   })

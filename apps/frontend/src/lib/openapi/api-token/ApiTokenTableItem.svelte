@@ -5,10 +5,22 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import type { IQueryApiToken } from '@undb/openapi/dist'
 	import { copyText } from 'svelte-copy'
+	import { trpc } from '$lib/trpc/client'
+	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 
 	export let apiToken: IQueryApiToken
 
 	let show = false
+
+	const getApiTokens = trpc().openapi.apiToken.list.query()
+
+	let confirmDelete = false
+
+	const deleteApiToken = trpc().openapi.apiToken.delete.mutation({
+		async onSuccess(data, variables, context) {
+			await $getApiTokens.refetch()
+		},
+	})
 </script>
 
 <Table.Row>
@@ -37,8 +49,45 @@
 				</Button>
 			</DropdownMenu.Trigger>
 			<DropdownMenu.Content>
-				<DropdownMenu.Item class="text-red-500">{$t('Delete', { ns: 'common' })}</DropdownMenu.Item>
+				<DropdownMenu.Item
+					class="text-red-500"
+					on:click={() => {
+						confirmDelete = true
+					}}
+				>
+					{$t('Delete', { ns: 'common' })}
+				</DropdownMenu.Item>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</Table.Cell>
 </Table.Row>
+
+<AlertDialog.Root bind:open={confirmDelete}>
+	<AlertDialog.Content>
+		<AlertDialog.Header>
+			<AlertDialog.Title>{$t('Confirm Delete', { ns: 'openapi' })}</AlertDialog.Title>
+		</AlertDialog.Header>
+		<AlertDialog.Footer>
+			<AlertDialog.Cancel>
+				<span
+					on:click={() => {
+						confirmDelete = false
+					}}
+				>
+					{$t('Cancel', { ns: 'common' })}
+				</span>
+			</AlertDialog.Cancel>
+			<AlertDialog.Action>
+				<span
+					on:click={() => {
+						$deleteApiToken.mutate({
+							apiTokenId: apiToken.id,
+						})
+					}}
+				>
+					{$t('Confirm', { ns: 'common' })}
+				</span>
+			</AlertDialog.Action>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>

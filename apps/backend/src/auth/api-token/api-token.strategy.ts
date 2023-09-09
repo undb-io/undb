@@ -24,10 +24,9 @@ export class ApiTokenStrategy extends PassportStrategy(Strategy, API_TOKEN_AUTH)
     if (typeof token !== 'string') return
 
     const spec = WithApiTokenToken.fromString(token)
-    const apiToken = await this.repo.findOne(spec)
-    if (apiToken.isNone()) return
+    const apiToken = (await this.repo.findOne(spec)).unwrap()
 
-    const userId = apiToken.unwrap().userId.value
+    const userId = apiToken.userId.value
     this.cls.set('user.userId', userId)
     this.cls.set('user.isApiToken', true)
 

@@ -45,4 +45,8 @@ export class ApiTokenSqliteRepository implements IApiTokenRepository {
     const entity = new ApiToken(token, user)
     await this.em.fork().persistAndFlush(entity)
   }
+
+  async deleteOneById(id: string): Promise<void> {
+    await this.em.nativeDelete(ApiToken, { id })
+  }
 }

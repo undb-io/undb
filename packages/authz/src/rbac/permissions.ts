@@ -40,7 +40,7 @@ export const flsPermissionActions = z.enum(['fls:create', 'fls:update', 'fls:del
 export const widgetActions = z.enum(['widget:create', 'widget:relayout', 'widget:delete'])
 export const visualizationActions = z.enum(['visualization:update'])
 export const invitationActions = z.enum(['invitation:list', 'invitation:invite', 'invitation:cancel'])
-export const openapiActions = z.enum(['openapi:create_api_token', 'openapi:list_api_token'])
+export const openapiActions = z.enum(['openapi:create_api_token', 'openapi:list_api_token', 'openapi:delete_api_token'])
 
 export type PermissionAction = z.infer<
   | typeof tableActions
@@ -111,6 +111,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'invitation:cancel': true,
     'openapi:create_api_token': true,
     'openapi:list_api_token': true,
+    'openapi:delete_api_token': true,
   },
   admin: {
     'table:create': true,
@@ -166,6 +167,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'invitation:cancel': true,
     'openapi:create_api_token': true,
     'openapi:list_api_token': true,
+    'openapi:delete_api_token': true,
   },
   editor: {
     'table:create': false,
@@ -221,6 +223,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'invitation:cancel': false,
     'openapi:create_api_token': true,
     'openapi:list_api_token': true,
+    'openapi:delete_api_token': true,
   },
   viewer: {
     'table:create': false,
@@ -276,6 +279,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'invitation:cancel': false,
     'openapi:create_api_token': false,
     'openapi:list_api_token': false,
+    'openapi:delete_api_token': false,
   },
 }
 

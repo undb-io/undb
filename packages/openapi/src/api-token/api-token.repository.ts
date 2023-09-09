@@ -8,4 +8,5 @@ export interface IApiTokenRepository {
   findOne(spec: ApiTokenSpecification): Promise<Option<ApiToken>>
 
   insert(token: ApiToken): Promise<void>
+  deleteOneById(id: string): Promise<void>
 }
