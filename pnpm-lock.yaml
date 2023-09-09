@@ -523,6 +523,9 @@ importers:
       '@undb/integrations':
         specifier: ^0.0.0
         version: link:../../packages/integrations
+      '@undb/openapi':
+        specifier: ^0.0.0
+        version: link:../../packages/openapi
       '@undb/trpc':
         specifier: ^0.0.0
         version: link:../../packages/trpc

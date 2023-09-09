@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryKey, Property, type Rel } from '@mikro-orm/core'
+import { Entity, ManyToOne, PrimaryKey, Property, Unique, type Rel } from '@mikro-orm/core'
 import { type ApiToken as ApiTokenDo } from '@undb/openapi'
 import { BaseEntity } from './base.js'
 import { User } from './user.js'
@@ -15,6 +15,7 @@ export class ApiToken extends BaseEntity {
   @PrimaryKey()
   id: string
 
+  @Unique()
   @Property()
   token: string
 
