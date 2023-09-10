@@ -39,6 +39,8 @@ export const $is_not_empty = z.literal('$is_not_empty')
 
 export const $is_today = z.literal('$is_today')
 export const $is_not_today = z.literal('$is_not_today')
+export const $is_tomorrow = z.literal('$is_tomorrow')
+export const $is_yesterday = z.literal('$is_yesterday')
 export const $between = z.literal('$between')
 
 export const $has_file_type = z.literal('$has_file_type')
@@ -56,6 +58,8 @@ export const operatorsWihtoutValue = z.union([
   $is_not_empty,
   $is_today,
   $is_not_today,
+  $is_tomorrow,
+  $is_yesterday,
   $is_root,
   $is_me,
   $is_not_me,

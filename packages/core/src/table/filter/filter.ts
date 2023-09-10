@@ -125,6 +125,8 @@ import {
   DateGreaterThan,
   DateGreaterThanOrEqual,
   DateIsToday,
+  DateIsTomorrow,
+  DateIsYesterday,
   DateLessThan,
   DateLessThanOrEqual,
   DateRangeDateEqual,
@@ -173,7 +175,9 @@ import {
   $is_not_today,
   $is_root,
   $is_today,
+  $is_tomorrow,
   $is_true,
+  $is_yesterday,
   $neq,
 } from './operators.js'
 
@@ -584,6 +588,12 @@ const convertDateFilter = (
   }
   if (filter.operator === $is_not_today.value) {
     return Some(new DateIsToday(filter.path).not())
+  }
+  if (filter.operator === $is_tomorrow.value) {
+    return Some(new DateIsTomorrow(filter.path))
+  }
+  if (filter.operator === $is_yesterday.value) {
+    return Some(new DateIsYesterday(filter.path))
   }
 
   if (filter.value === undefined) {
