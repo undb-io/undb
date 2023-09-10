@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cn } from '$lib/utils'
 	import { invalidate } from '$app/navigation'
-	import { currentFieldId, getField, getTable, getView } from '$lib/store/table'
+	import { currentFieldId, getField, getTable, getView, listRecordFn } from '$lib/store/table'
 	import { confirmDeleteField, duplicateFieldModal, flsModal, updateFieldModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import { canDuplicate, type ISortDirection } from '@undb/core'
@@ -12,6 +12,8 @@
 	import Toast from '$components/ui/toast/toast.svelte'
 
 	export let togglePin: (fieldId: string) => void = noop
+
+	const listRecords = $listRecordFn(undefined, { enabled: false })
 
 	const table = getTable()
 	const view = getView()
@@ -24,6 +26,7 @@
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			currentFieldId.set(undefined)
+			await $listRecords.refetch()
 		},
 	})
 
@@ -31,6 +34,7 @@
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			currentFieldId.set(undefined)
+			await $listRecords.refetch()
 		},
 	})
 
