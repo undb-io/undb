@@ -382,6 +382,9 @@ const convertStringFilter = (
     case '$contains': {
       return Some(new StringContain(filter.path, new StringFieldValue(filter.value)))
     }
+    case '$not_contains': {
+      return Some(new StringContain(filter.path, new StringFieldValue(filter.value)).not())
+    }
     case '$starts_with': {
       return Some(new StringStartsWith(filter.path, new StringFieldValue(filter.value)))
     }
