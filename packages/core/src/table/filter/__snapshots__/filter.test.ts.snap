@@ -311,3 +311,36 @@ OptionType {
   },
 }
 `;
+
+exports[`should create root filter 23`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): DateBetween {
+    "date1": 2023-09-09T00:00:00.000Z,
+    "date2": 2023-09-10T08:56:37.102Z,
+    "fieldId": "between",
+  },
+}
+`;
+
+exports[`should create root filter 24`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): DateBetween {
+    "date1": 2023-09-09T00:00:00.000Z,
+    "date2": 2023-09-10T08:56:37.102Z,
+    "fieldId": "between",
+  },
+}
+`;
+
+exports[`should create root filter 25`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): DateBetween {
+    "date1": 2023-09-09T00:00:00.000Z,
+    "date2": 2023-09-10T08:56:37.102Z,
+    "fieldId": "between",
+  },
+}
+`;

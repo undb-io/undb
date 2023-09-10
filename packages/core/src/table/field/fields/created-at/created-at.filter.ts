@@ -29,7 +29,10 @@ export const createdAtFilterOperators = z.union([
 ])
 export type ICreatedAtFilterOperator = z.infer<typeof createdAtFilterOperators>
 
-export const createdAtFilterValue = z.string().nullable()
+export const createdAtFilterValue = z
+  .string()
+  .nullable()
+  .or(z.tuple([z.string(), z.string()]))
 export const createdAtFilter = z
   .object({
     type: z.literal('created-at'),

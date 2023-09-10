@@ -13,14 +13,14 @@
 
 <div class="flex gap-2 items-center">
 	{#if !!field?.timeFormatString}
-		<DateTimeInput bind:value={value[0]} {...$$restProps} />
+		<DateTimeInput bind:value={value[0]} class={$$restProps.class} />
 	{:else}
-		<DateInput bind:value={value[0]} {...$$restProps} />
+		<DateInput bind:value={value[0]} class={$$restProps.class} />
 	{/if}
 	<span>-</span>
 	{#if !!field?.timeFormatString}
-		<DateTimeInput bind:value={value[1]} {...$$restProps} />
+		<DateTimeInput bind:value={value[1]} class={$$restProps.class} />
 	{:else}
-		<DateInput bind:value={value[1]} {...$$restProps} />
+		<DateInput bind:value={value[1]} class={$$restProps.class} />
 	{/if}
 </div>

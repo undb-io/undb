@@ -1,3 +1,4 @@
+import { startOfYesterday } from 'date-fns'
 import { convertFilterSpec, IRootFilter, rootFilter } from './filter.js'
 
 const userId = 'usr1'
@@ -148,6 +149,24 @@ test.each<IRootFilter>([
     operator: '$is_yesterday',
     path: 'is_yesterday',
     value: null,
+  },
+  {
+    type: 'created-at',
+    operator: '$between',
+    path: 'between',
+    value: [startOfYesterday().toISOString(), new Date().toISOString()],
+  },
+  {
+    type: 'updated-at',
+    operator: '$between',
+    path: 'between',
+    value: [startOfYesterday().toISOString(), new Date().toISOString()],
+  },
+  {
+    type: 'date',
+    operator: '$between',
+    path: 'between',
+    value: [startOfYesterday().toISOString(), new Date().toISOString()],
   },
 ])('should create root filter', (filter) => {
   const parsed = rootFilter.parse(filter)

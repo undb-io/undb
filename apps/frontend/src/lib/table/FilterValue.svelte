@@ -52,6 +52,8 @@
 			if (isBuiltInDateOperator(operator as IDateFilterOperator)) {
 				component = undefined
 				value = null
+			} else if ((operator as IDateFilterOperator) === '$between') {
+				component = DateRange
 			} else {
 				component = Date
 			}

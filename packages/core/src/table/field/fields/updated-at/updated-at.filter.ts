@@ -35,7 +35,11 @@ export const updatedAtBuiltInOperators = new Set<IUpdatedAtFilterOperator>([
   $is_yesterday.value,
 ])
 
-export const updatedAtFilterValue = z.string().nullable()
+export const updatedAtFilterValue = z
+  .string()
+  .nullable()
+  .or(z.tuple([z.string(), z.string()]))
+
 export const updatedAtFilter = z
   .object({
     type: z.literal('updated-at'),
