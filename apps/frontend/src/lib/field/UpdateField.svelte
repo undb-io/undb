@@ -23,10 +23,8 @@
 	} from '@undb/core'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
-	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import { updateFieldModal } from '$lib/store/modal'
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 	import { onMount } from 'svelte'
 	import { isEmpty, keys } from 'lodash-es'
 	import { pick } from 'lodash-es'
@@ -99,7 +97,7 @@
 	$: fieldConvertStrategy = isUpdatingType ? fieldTypeConvertMap?.[field.type]?.[$form.type as IFieldType] : undefined
 </script>
 
-<Dialog.Root bind:open={$updateFieldModal.open}>
+<Dialog.Root open={$updateFieldModal.open}>
 	<Dialog.Content class="!w-3/4 max-w-none">
 		<Dialog.Header>
 			<Dialog.Title>

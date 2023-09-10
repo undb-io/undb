@@ -43,7 +43,7 @@
 		{/if}
 
 		<div class="flex items-center justify-between w-full">
-			<p class="font-bold dark:text-white">{$table.name.value}</p>
+			<p class="font-bold dark:text-white">{$table.name.value} Open API</p>
 			<div>
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger>

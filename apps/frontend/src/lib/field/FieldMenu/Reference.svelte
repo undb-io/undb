@@ -25,100 +25,109 @@
 			{$t('jump to table', { name: foreignTable.name.value })}
 		</span>
 	</DropdownMenu.Item>
+	<DropdownMenu.Sub>
+		<DropdownMenu.SubTrigger class={cn('flex items-center w-full', $$restProps.class)}>
+			<i class="ti ti-column-insert-right" />
+			<span>
+				{$t('insert refenrence looking field')}
+			</span>
+		</DropdownMenu.SubTrigger>
+		<DropdownMenu.SubContent class="w-56">
+			<DropdownMenu.Item
+				{...$$restProps}
+				on:click={() => {
+					$createFieldInitial = {
+						type: 'lookup',
+						referenceFieldId: field.id.value,
+					}
+					createFieldModal.open()
+				}}
+			>
+				<FieldIcon type="lookup" />
+				<span>
+					{$t('Insert Lookup Field')}
+				</span>
+			</DropdownMenu.Item>
 
-	<DropdownMenu.Item
-		{...$$restProps}
-		on:click={() => {
-			$createFieldInitial = {
-				type: 'lookup',
-				referenceFieldId: field.id.value,
-			}
-			createFieldModal.open()
-		}}
-	>
-		<FieldIcon type="lookup" />
-		<span>
-			{$t('Insert Lookup Field')}
-		</span>
-	</DropdownMenu.Item>
+			<DropdownMenu.Item
+				{...$$restProps}
+				on:click={() => {
+					$createFieldInitial = {
+						type: 'count',
+						referenceFieldId: field.id.value,
+					}
+					createFieldModal.open()
+				}}
+			>
+				<FieldIcon type="count" />
+				<span>
+					{$t('Insert Count Field')}
+				</span>
+			</DropdownMenu.Item>
 
-	<DropdownMenu.Item
-		{...$$restProps}
-		on:click={() => {
-			$createFieldInitial = {
-				type: 'count',
-				referenceFieldId: field.id.value,
-			}
-			createFieldModal.open()
-		}}
-	>
-		<FieldIcon type="count" />
-		<span>
-			{$t('Insert Count Field')}
-		</span>
-	</DropdownMenu.Item>
+			<DropdownMenu.Item
+				{...$$restProps}
+				on:click={() => {
+					$createFieldInitial = {
+						type: 'sum',
+						referenceFieldId: field.id.value,
+					}
+					createFieldModal.open()
+				}}
+			>
+				<FieldIcon type="sum" />
+				<span>
+					{$t('Insert Sum Field')}
+				</span>
+			</DropdownMenu.Item>
 
-	<DropdownMenu.Item
-		{...$$restProps}
-		on:click={() => {
-			$createFieldInitial = {
-				type: 'sum',
-				referenceFieldId: field.id.value,
-			}
-			createFieldModal.open()
-		}}
-	>
-		<FieldIcon type="sum" />
-		<span>
-			{$t('Insert Sum Field')}
-		</span>
-	</DropdownMenu.Item>
+			<DropdownMenu.Item
+				{...$$restProps}
+				on:click={() => {
+					$createFieldInitial = {
+						type: 'average',
+						referenceFieldId: field.id.value,
+					}
+					createFieldModal.open()
+				}}
+			>
+				<FieldIcon type="average" />
+				<span>
+					{$t('Insert Average Field')}
+				</span>
+			</DropdownMenu.Item>
 
-	<DropdownMenu.Item
-		{...$$restProps}
-		on:click={() => {
-			$createFieldInitial = {
-				type: 'average',
-				referenceFieldId: field.id.value,
-			}
-			createFieldModal.open()
-		}}
-	>
-		<FieldIcon type="average" />
-		<span>
-			{$t('Insert Average Field')}
-		</span>
-	</DropdownMenu.Item>
+			<DropdownMenu.Item
+				{...$$restProps}
+				on:click={() => {
+					$createFieldInitial = {
+						type: 'min',
+						referenceFieldId: field.id.value,
+					}
+					createFieldModal.open()
+				}}
+			>
+				<FieldIcon type="min" />
+				<span>
+					{$t('Insert Min Field')}
+				</span>
+			</DropdownMenu.Item>
 
-	<DropdownMenu.Item
-		{...$$restProps}
-		on:click={() => {
-			$createFieldInitial = {
-				type: 'min',
-				referenceFieldId: field.id.value,
-			}
-			createFieldModal.open()
-		}}
-	>
-		<FieldIcon type="min" />
-		<span>
-			{$t('Insert Min Field')}
-		</span>
-	</DropdownMenu.Item>
-
-	<DropdownMenu.Item
-		{...$$restProps}
-		on:click={() => {
-			$createFieldInitial = {
-				type: 'max',
-				referenceFieldId: field.id.value,
-			}
-			createFieldModal.open()
-		}}
-	>
-		<FieldIcon type="max" />
-		<span>
-			{$t('Insert Max Field')}
-		</span>
-	</DropdownMenu.Item>
+			<DropdownMenu.Item
+				{...$$restProps}
+				on:click={() => {
+					$createFieldInitial = {
+						type: 'max',
+						referenceFieldId: field.id.value,
+					}
+					createFieldModal.open()
+				}}
+			>
+				<FieldIcon type="max" />
+				<span>
+					{$t('Insert Max Field')}
+				</span>
+			</DropdownMenu.Item>
+		</DropdownMenu.SubContent>
+	</DropdownMenu.Sub>
 {/if}

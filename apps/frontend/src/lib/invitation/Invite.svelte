@@ -61,8 +61,11 @@
 		</DropdownMenu.Root>
 	</div>
 
-	<div class="flex justify-end">
-		<Button disabled={!valid} size="sm" class="w-28" type="submit">
+	<div class="flex justify-end gap-2">
+		<Button variant="secondary" on:click={inviteModal.close}>
+			{$t('Cancel', { ns: 'common' })}
+		</Button>
+		<Button disabled={!valid} class="w-28" type="submit">
 			{$t('invite', { ns: 'common' })}
 		</Button>
 	</div>

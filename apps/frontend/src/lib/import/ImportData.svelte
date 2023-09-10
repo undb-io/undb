@@ -181,38 +181,43 @@
 			</Accordion.Root>
 		{/if}
 
-		<div>
-			<Label for="import_data_name" class="mb-2">{$t('Name', { ns: 'common' })}</Label>
-			<Input disabled={!data} bind:value={$form.name} id="import_data_name" />
-		</div>
-		<Label class="flex items-center gap-2">
-			<Checkbox bind:checked={firstRowAsHeader}></Checkbox>
-			{$t('first row as header')}
-		</Label>
-		<Label class="flex items-center gap-2">
-			<Checkbox bind:checked={importData}></Checkbox>
-			{$t('import data')}
-		</Label>
-		{#if ext === 'json'}
-			<Checkbox bind:checked={flatten}>{$t('flatten import data')}</Checkbox>
-		{/if}
+		{#if data}
+			<div>
+				<Label for="import_data_name" class="mb-2">{$t('Name', { ns: 'common' })}</Label>
+				<Input disabled={!data} bind:value={$form.name} id="import_data_name" />
+			</div>
+			<Label class="flex items-center gap-2">
+				<Checkbox bind:checked={firstRowAsHeader}></Checkbox>
+				{$t('first row as header')}
+			</Label>
+			<Label class="flex items-center gap-2">
+				<Checkbox bind:checked={importData}></Checkbox>
+				{$t('import data')}
+			</Label>
+			{#if ext === 'json'}
+				<Label class="flex items-center gap-2">
+					<Checkbox bind:checked={flatten}></Checkbox>
+					{$t('flatten import data')}
+				</Label>
+			{/if}
 
-		<div class="flex justify-end">
-			<form id="importData" method="POST" use:enhance>
-				<div class="flex items-center gap-2">
-					<Button size="sm" type="button" variant="secondary" on:click={() => importDataModal.close()}>
-						{$t('Cancel', { ns: 'common' })}
-					</Button>
-					<Button size="sm" disabled={!data || $createTable.isLoading} type="submit">
-						<div class="flex items-center gap-2">
-							{#if $createTable.isLoading}
-								<i class="ti ti-rotate animate-spin"></i>
-							{/if}
-							{$t('Confirm', { ns: 'common' })}
-						</div>
-					</Button>
-				</div>
-			</form>
-		</div>
+			<div class="flex justify-end">
+				<form id="importData" method="POST" use:enhance>
+					<div class="flex items-center gap-2">
+						<Button size="sm" type="button" variant="secondary" on:click={() => importDataModal.close()}>
+							{$t('Cancel', { ns: 'common' })}
+						</Button>
+						<Button size="sm" disabled={!data || $createTable.isLoading} type="submit">
+							<div class="flex items-center gap-2">
+								{#if $createTable.isLoading}
+									<i class="ti ti-rotate animate-spin"></i>
+								{/if}
+								{$t('Confirm', { ns: 'common' })}
+							</div>
+						</Button>
+					</div>
+				</form>
+			</div>
+		{/if}
 	</Dialog.Content>
 </Dialog.Root>

@@ -69,8 +69,8 @@
 </script>
 
 <Dialog.Root bind:open={$updateTableModal.open}>
-	<Dialog.Content class="!w-3/4 max-w-none max-h-[95%] overflow-y-auto">
-		<Dialog.Header>
+	<Dialog.Content class="!w-3/4 max-w-none max-h-[95%] flex flex-col overflow-y-hidden p-0">
+		<Dialog.Header class="border-b py-4 px-6">
 			<Dialog.Title class="pr-6">
 				<div class="flex justify-between w-full mr-6 dark:text-gray-200">
 					<p class="text-lg dark:text-white">{$t('Update Table')}</p>
@@ -96,25 +96,28 @@
 			</Dialog.Title>
 		</Dialog.Header>
 
-		<form id="updateTable" class="flex flex-col justify-between flex-1 gap-2" method="POST" use:enhance>
-			<div class="space-y-2">
-				<div>
-					<Label class="space-y-2">
-						<span>
-							<span>{$t('Name', { ns: 'common' })}</span>
-							<span class="text-red-500">*</span>
-						</span>
-						<Input id="name" name="name" type="text" bind:value={$form.name} required {...$constraints.name} />
-					</Label>
-				</div>
+		<form
+			id="updateTable"
+			class="flex flex-col justify-between flex-1 gap-2 overflow-y-auto py-4 px-6"
+			method="POST"
+			use:enhance
+		>
+			<div class="space-y-4">
+				<Label class="space-y-2">
+					<span>
+						<span>{$t('Name', { ns: 'common' })}</span>
+						<span class="text-red-500">*</span>
+					</span>
+					<Input id="name" name="name" type="text" bind:value={$form.name} required {...$constraints.name} />
+				</Label>
 
 				<div class="flex">
-					<span class="inline-block mr-2 text-sm dark:text-white">
+					<span class="inline-block mr-2 text-sm dark:text-white text-gray-700">
 						{$t('Display Fields')}:
 					</span>
 					<div class="flex gap-2">
 						{#each displayFields as field}
-							<Badge>
+							<Badge variant="secondary">
 								{field.name}
 							</Badge>
 						{/each}
@@ -127,7 +130,7 @@
 							<CreateTableFieldAccordionItem bind:open={opened[field.id ?? '']} {superFrm} {i} {field} {isNew}>
 								<svelte:fragment slot="header">
 									{#if isNew}
-										<Badge color="green">
+										<Badge>
 											{$t('new field')}
 										</Badge>
 									{/if}
@@ -144,7 +147,7 @@
 			</div>
 		</form>
 
-		<Dialog.Footer>
+		<Dialog.Footer class="border-t py-4 px-6">
 			<div class="w-full flex justify-end gap-2">
 				<Button variant="secondary" type="button" on:click={updateTableModal.close}
 					>{$t('Cancel', { ns: 'common' })}</Button
@@ -172,25 +175,30 @@
 <AlertDialog.Root bind:open={confirmDeleteTable}>
 	<AlertDialog.Content>
 		<AlertDialog.Header>
-			<AlertDialog.Title>{$t('Confirm Delete Table')}</AlertDialog.Title>
+			<AlertDialog.Title>{$t('Confirm Delete Table', { table: $table.name.value })}</AlertDialog.Title>
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
-			<AlertDialog.Cancel>
+			<AlertDialog.Cancel
+				on:click={() => {
+					confirmDeleteTable = false
+				}}
+			>
 				{$t('Confirm No', { ns: 'common' })}
 			</AlertDialog.Cancel>
-			<AlertDialog.Action disabled={$deleteTable.isLoading}>
+			<AlertDialog.Action
+				class="gap-2"
+				variant="destructive"
+				disabled={$deleteTable.isLoading}
+				on:click={() => {
+					$deleteTable.mutate({ id: $table.id.value })
+				}}
+			>
 				{#if $deleteTable.isLoading}
 					<i class="ti ti-rotate animate-spin"></i>
 				{:else}
 					<i class="ti ti-circle-check text-lg" />
 				{/if}
-				<span
-					on:click={() => {
-						$deleteTable.mutate({ id: $table.id.value })
-					}}
-				>
-					{$t('Confirm Yes', { ns: 'common' })}
-				</span>
+				{$t('Confirm Yes', { ns: 'common' })}
 			</AlertDialog.Action>
 		</AlertDialog.Footer>
 	</AlertDialog.Content>

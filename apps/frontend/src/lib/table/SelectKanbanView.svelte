@@ -9,12 +9,12 @@
 	import { Badge } from '$lib/components/ui/badge'
 	import { Button } from '$lib/components/ui/button'
 	import { createOptionModal, updateOptionModal } from '$lib/store/modal'
-	import { invalidate } from '$app/navigation'
-	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import KanbanLane from '$lib/kanban/KanbanLane.svelte'
 	import { UNCATEGORIZED } from '$lib/kanban/kanban.constants'
 	import Toast from '$components/ui/toast/toast.svelte'
+	import * as AlertDialog from '$lib/components/ui/alert-dialog'
+	import { invalidate } from '$app/navigation'
 
 	export let field: SelectField
 	const flipDurationMs = 200
@@ -68,6 +68,8 @@
 			})
 		}
 	}
+
+	let confirmDeleteOption = false
 </script>
 
 <div class="flex gap-5 h-full px-10 py-5 overflow-auto">
@@ -108,11 +110,8 @@
 													class="text-red-400 text-xs gap-2"
 													on:click={() => {
 														if (item.option && field) {
-															$deleteOption.mutate({
-																tableId: $table.id.value,
-																fieldId: field.id.value,
-																id: item.option.key.value,
-															})
+															$currentOption = item.option
+															confirmDeleteOption = true
 														}
 													}}
 												>
@@ -178,3 +177,34 @@
 		</span>
 	</Toast>
 {/if}
+
+<AlertDialog.Root bind:open={confirmDeleteOption}>
+	<AlertDialog.Content>
+		<AlertDialog.Header>
+			<AlertDialog.Title>{$t('Confirm Delete Option')}</AlertDialog.Title>
+		</AlertDialog.Header>
+		<AlertDialog.Footer>
+			<AlertDialog.Cancel
+				on:click={() => {
+					confirmDeleteOption = false
+				}}
+			>
+				{$t('Cancel', { ns: 'common' })}
+			</AlertDialog.Cancel>
+			<AlertDialog.Action
+				variant="destructive"
+				on:click={() => {
+					if ($currentOption) {
+						$deleteOption.mutate({
+							tableId: $table.id.value,
+							fieldId: field.id.value,
+							id: $currentOption.key.value,
+						})
+					}
+				}}
+			>
+				{$t('Confirm', { ns: 'common' })}
+			</AlertDialog.Action>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>

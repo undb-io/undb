@@ -11,7 +11,7 @@
 </script>
 
 {#if record}
-	<div class={cn('p-3 rounded-sm cursor-pointer border', $$restProps.class)}>
+	<div class={cn('px-3 py-2 rounded-sm cursor-pointer border h-10 flex items-center', $$restProps.class)}>
 		{value.toString()}
 	</div>
 {/if}
