@@ -10,6 +10,7 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Button } from '$components/ui/button'
 	import type { IRolesWithoutOwner } from '@undb/authz'
+	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 
 	export let invitation: IQueryInvitation
 
@@ -50,6 +51,8 @@
 		copyText(url)
 		open = false
 	}
+
+	let confirmCancelInvitation = false
 </script>
 
 <Card.Root class="!max-w-none w-full">
@@ -104,9 +107,7 @@
 							{#if $hasPermission('invitation:cancel')}
 								<DropdownMenu.Item
 									on:click={() => {
-										$cancelInvitation.mutate({
-											id: invitation.id,
-										})
+										confirmCancelInvitation = true
 									}}
 									class="text-red-500"
 								>
@@ -120,3 +121,28 @@
 		</div>
 	</Card.Header>
 </Card.Root>
+
+<AlertDialog.Root bind:open={confirmCancelInvitation}>
+	<AlertDialog.Content>
+		<AlertDialog.Header>
+			<AlertDialog.Title>
+				{$t('Confirm Cancel Invitation', { ns: 'common' })}
+			</AlertDialog.Title>
+		</AlertDialog.Header>
+		<AlertDialog.Footer>
+			<AlertDialog.Cancel on:click={() => (confirmCancelInvitation = false)}>
+				{$t('Cancel', { ns: 'common' })}
+			</AlertDialog.Cancel>
+			<AlertDialog.Action
+				variant="destructive"
+				on:click={() => {
+					$cancelInvitation.mutate({
+						id: invitation.id,
+					})
+				}}
+			>
+				{$t('Confirm', { ns: 'common' })}
+			</AlertDialog.Action>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>

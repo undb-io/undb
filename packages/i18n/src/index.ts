@@ -182,6 +182,7 @@ export const config: InitOptions = {
         'copy invitation url': 'copy invitation url',
         search: 'search',
         'Create New Invitation': 'Create New Invitation',
+        'Confirm Cancel Invitation': 'Confirm Cancel Invitation?',
       },
       table: {
         trash: 'trash',
@@ -600,6 +601,7 @@ export const config: InitOptions = {
         'copy invitation url': '复制邀请链接',
         search: '搜索',
         'Create New Invitation': '创建邀请',
+        'Confirm Cancel Invitation': '确认取消邀请吗？',
       },
       table: {
         trash: '回收站',
