@@ -25,6 +25,7 @@ import type {
 import type { JsonEmpty } from './json.specification.js'
 import type { MultiSelectEqual, MultiSelectIn, MultiSelectIsEmpty } from './multi-select.specification.js'
 import type {
+  NumberEmpty,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -84,6 +85,7 @@ interface IRecordValueVisitor {
   numberLessThan(s: NumberLessThan): void
   numberGreaterThanOrEqual(s: NumberGreaterThanOrEqual): void
   numberLessThanOrEqual(s: NumberLessThanOrEqual): void
+  numberEmpty(s: NumberEmpty): void
 
   dateEqual(s: DateEqual): void
   dateGreaterThan(s: DateGreaterThan): void

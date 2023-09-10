@@ -30,6 +30,7 @@ import type {
   MultiSelectEqual,
   MultiSelectIn,
   MultiSelectIsEmpty,
+  NumberEmpty,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -207,6 +208,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     throw new Error('Method not implemented.')
   }
   numberLessThanOrEqual(s: NumberLessThanOrEqual): void {
+    throw new Error('Method not implemented.')
+  }
+  numberEmpty(s: NumberEmpty): void {
     throw new Error('Method not implemented.')
   }
   dateEqual(s: DateEqual): void {

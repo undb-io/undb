@@ -142,6 +142,7 @@ import {
   MultiSelectEqual,
   MultiSelectIn,
   MultiSelectIsEmpty,
+  NumberEmpty,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -382,6 +383,9 @@ const convertStringFilter = (
     case '$contains': {
       return Some(new StringContain(filter.path, new StringFieldValue(filter.value)))
     }
+    case '$not_contains': {
+      return Some(new StringContain(filter.path, new StringFieldValue(filter.value)).not())
+    }
     case '$starts_with': {
       return Some(new StringStartsWith(filter.path, new StringFieldValue(filter.value)))
     }
@@ -437,6 +441,12 @@ const convertNumberFilter = (
     }
     case '$lte': {
       return Some(new NumberLessThanOrEqual(filter.path, new NumberFieldValue(filter.value)))
+    }
+    case '$is_empty': {
+      return Some(new NumberEmpty(filter.path))
+    }
+    case '$is_not_empty': {
+      return Some(new NumberEmpty(filter.path).not())
     }
     default:
       return None
