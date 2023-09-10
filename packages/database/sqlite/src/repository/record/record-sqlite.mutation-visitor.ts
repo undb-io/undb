@@ -11,6 +11,8 @@ import type {
   DateGreaterThan,
   DateGreaterThanOrEqual,
   DateIsToday,
+  DateIsTomorrow,
+  DateIsYesterday,
   DateLessThan,
   DateLessThanOrEqual,
   DateRangeDateEqual,
@@ -229,6 +231,12 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     throw new Error('Method not implemented.')
   }
   dateIsToday(s: DateIsToday): void {
+    throw new Error('Method not implemented.')
+  }
+  dateIsTomorrow(s: DateIsTomorrow): void {
+    throw new Error('Method not implemented.')
+  }
+  dateIsYesterday(s: DateIsYesterday): void {
     throw new Error('Method not implemented.')
   }
   dateRangeEqual(s: DateRangeEqual): void {

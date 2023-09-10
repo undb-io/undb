@@ -19,6 +19,8 @@ import type {
   DateGreaterThan,
   DateGreaterThanOrEqual,
   DateIsToday,
+  DateIsTomorrow,
+  DateIsYesterday,
   DateLessThan,
   DateLessThanOrEqual,
 } from './date.specification.js'
@@ -93,6 +95,8 @@ interface IRecordValueVisitor {
   dateGreaterThanOrEqual(s: DateGreaterThanOrEqual): void
   dateLessThanOrEqual(s: DateLessThanOrEqual): void
   dateIsToday(s: DateIsToday): void
+  dateIsTomorrow(s: DateIsTomorrow): void
+  dateIsYesterday(s: DateIsYesterday): void
   dateBetween(s: DateBetween): void
 
   dateRangeEqual(s: DateRangeEqual): void

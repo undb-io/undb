@@ -227,3 +227,87 @@ OptionType {
   },
 }
 `;
+
+exports[`should create root filter 17`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): DateIsTomorrow {
+    "fieldId": "is_tomorrow",
+    "value": DateFieldValue {
+      "props": {
+        "value": null,
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 18`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): DateIsTomorrow {
+    "fieldId": "is_tomorrow",
+    "value": DateFieldValue {
+      "props": {
+        "value": null,
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 19`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): DateIsTomorrow {
+    "fieldId": "is_tomorrow",
+    "value": DateFieldValue {
+      "props": {
+        "value": null,
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 20`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): DateIsYesterday {
+    "fieldId": "is_yesterday",
+    "value": DateFieldValue {
+      "props": {
+        "value": null,
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 21`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): DateIsYesterday {
+    "fieldId": "is_yesterday",
+    "value": DateFieldValue {
+      "props": {
+        "value": null,
+      },
+    },
+  },
+}
+`;
+
+exports[`should create root filter 22`] = `
+OptionType {
+  Symbol(T): true,
+  Symbol(Val): DateIsYesterday {
+    "fieldId": "is_yesterday",
+    "value": DateFieldValue {
+      "props": {
+        "value": null,
+      },
+    },
+  },
+}
+`;

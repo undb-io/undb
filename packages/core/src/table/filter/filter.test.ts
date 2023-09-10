@@ -113,6 +113,42 @@ test.each<IRootFilter>([
     path: 'field',
     value: null,
   },
+  {
+    type: 'created-at',
+    operator: '$is_tomorrow',
+    path: 'is_tomorrow',
+    value: null,
+  },
+  {
+    type: 'updated-at',
+    operator: '$is_tomorrow',
+    path: 'is_tomorrow',
+    value: null,
+  },
+  {
+    type: 'date',
+    operator: '$is_tomorrow',
+    path: 'is_tomorrow',
+    value: null,
+  },
+  {
+    type: 'created-at',
+    operator: '$is_yesterday',
+    path: 'is_yesterday',
+    value: null,
+  },
+  {
+    type: 'updated-at',
+    operator: '$is_yesterday',
+    path: 'is_yesterday',
+    value: null,
+  },
+  {
+    type: 'date',
+    operator: '$is_yesterday',
+    path: 'is_yesterday',
+    value: null,
+  },
 ])('should create root filter', (filter) => {
   const parsed = rootFilter.parse(filter)
   expect(parsed).toEqual(filter)

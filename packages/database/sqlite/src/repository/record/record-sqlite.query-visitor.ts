@@ -74,7 +74,7 @@ import {
   ParentField,
   TreeField,
 } from '@undb/core'
-import { endOfDay, startOfDay } from 'date-fns'
+import { endOfToday, endOfTomorrow, endOfYesterday, startOfToday, startOfTomorrow, startOfYesterday } from 'date-fns'
 import { castArray } from 'lodash-es'
 import { Attachment } from '../../entity/attachment.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
@@ -264,10 +264,13 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     }
   }
   dateIsToday(s: DateIsToday): void {
-    this.qb.whereBetween(this.getFieldId(s.fieldId), [
-      startOfDay(new Date()).toISOString(),
-      endOfDay(new Date()).toISOString(),
-    ])
+    this.qb.whereBetween(this.getFieldId(s.fieldId), [startOfToday().toISOString(), endOfToday().toISOString()])
+  }
+  dateIsTomorrow(s: DateIsToday): void {
+    this.qb.whereBetween(this.getFieldId(s.fieldId), [startOfTomorrow().toISOString(), endOfTomorrow().toISOString()])
+  }
+  dateIsYesterday(s: DateIsToday): void {
+    this.qb.whereBetween(this.getFieldId(s.fieldId), [startOfYesterday().toISOString(), endOfYesterday().toISOString()])
   }
   dateRangeEqual(s: DateRangeEqual): void {
     const range = s.value.unpack()
