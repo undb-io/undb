@@ -6,6 +6,8 @@
 	import type { SetRequired } from 'type-fest'
 	import { t } from '$lib/i18n'
 	import { Input } from '$components/ui/input'
+	import Sortable, { type SortableEvent } from 'sortablejs'
+	import { isNumber } from 'lodash-es'
 
 	export let value: SetRequired<IMutateOptionSchema, 'color'>[] = []
 
@@ -29,11 +31,31 @@
 	function removeOption(index: number) {
 		value = value.filter((_, i) => i !== index)
 	}
+
+	const onEnd = (event: SortableEvent) => {
+		const { oldIndex, newIndex } = event
+		if (isNumber(oldIndex) && isNumber(newIndex)) {
+			;[value[oldIndex], value[newIndex]] = [value[newIndex], value[oldIndex]]
+		}
+	}
+
+	let el: HTMLUListElement
+	$: if (el) {
+		Sortable.create(el, {
+			animation: 200,
+			direction: 'vertical',
+			onEnd,
+			handle: '.handle',
+		})
+	}
 </script>
 
-<div class="space-y-2">
-	{#each value ?? [] as option, index}
-		<div class="flex items-center">
+<ul class="space-y-2" bind:this={el}>
+	{#each value ?? [] as option, index (option.key)}
+		<li class="flex items-center">
+			<button type="button" class="handle mr-2">
+				<i class="ti ti-grip-vertical"></i>
+			</button>
 			<OptionColorPicker class="rounded-r-none rounded-l-md" bind:value={option.color.name} name={option.name} />
 			<Input class="!rounded-l-none !focus:rounded-none border-gray-100 h-[30px]" bind:value={option.name} />
 			<Button
@@ -44,7 +66,7 @@
 			>
 				<i class="ti ti-trash text-sm" />
 			</Button>
-		</div>
+		</li>
 	{/each}
-</div>
+</ul>
 <Button variant="secondary" size="sm" on:click={addOption}>{$t('Create New Option')}</Button>
