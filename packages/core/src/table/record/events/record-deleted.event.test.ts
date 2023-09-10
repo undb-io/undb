@@ -1,7 +1,6 @@
-import { StringFieldValue } from '../../field'
 import { createTestTable } from '../../fixtures'
 import { createTestRecord } from '../fixtures'
-import { RecordDeletedEvent, recordDeletedEvent } from './record-deleted.event'
+import { RecordDeletedEvent } from './record-deleted.event'
 
 describe('delete record', () => {
   test('delete record', () => {
