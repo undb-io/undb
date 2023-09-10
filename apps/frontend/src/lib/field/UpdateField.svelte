@@ -44,9 +44,10 @@
 
 	const updateField = trpc().table.field.update.mutation({
 		async onSuccess(data, variables, context) {
-			updateFieldModal.close()
 			await invalidate(`table:${$table.id.value}`)
+			updateFieldModal.close()
 			await $records.refetch()
+			updateFieldModal.close()
 		},
 	})
 
@@ -97,7 +98,7 @@
 	$: fieldConvertStrategy = isUpdatingType ? fieldTypeConvertMap?.[field.type]?.[$form.type as IFieldType] : undefined
 </script>
 
-<Dialog.Root open={$updateFieldModal.open}>
+<Dialog.Root bind:open={$updateFieldModal.open}>
 	<Dialog.Content class="!w-3/4 max-w-none">
 		<Dialog.Header>
 			<Dialog.Title>
