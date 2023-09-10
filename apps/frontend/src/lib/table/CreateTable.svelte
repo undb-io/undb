@@ -6,7 +6,6 @@
 	import CreateTableFieldAccordionItem from './CreateTableFieldAccordionItem.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import { goto, invalidate } from '$app/navigation'
-	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import { createTableModal } from '$lib/store/modal'
 	import { newTableSchema } from '$lib/store/table'
@@ -28,7 +27,7 @@
 			{
 				id,
 				type: 'string',
-				name: `${$t('Field')} ${$form.schema.length + 1}`,
+				name: `${$t('Field')} ${($form.schema?.length ?? 0) + 1}`,
 				display: !displayFields?.length,
 			},
 		]

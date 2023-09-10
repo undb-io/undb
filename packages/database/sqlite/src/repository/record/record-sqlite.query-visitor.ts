@@ -31,6 +31,7 @@ import type {
   MultiSelectEqual,
   MultiSelectIn,
   MultiSelectIsEmpty,
+  NumberEmpty,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -220,6 +221,9 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   }
   numberLessThanOrEqual(s: NumberLessThanOrEqual): void {
     this.qb.where(this.getFieldId(s.fieldId), '<=', s.value.unpack())
+  }
+  numberEmpty(s: NumberEmpty): void {
+    this.qb.whereNull(this.getFieldId(s.fieldId))
   }
   dateEqual(s: DateEqual): void {
     if (s.value.unpack() === null) {

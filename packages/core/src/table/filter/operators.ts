@@ -4,6 +4,7 @@ import type { ICreatedAtFilterOperator } from '../field'
 export const $eq = z.literal('$eq')
 export const $neq = z.literal('$neq')
 export const $contains = z.literal('$contains')
+export const $not_contains = z.literal('$not_contains')
 export const $starts_with = z.literal('$starts_with')
 export const $ends_with = z.literal('$ends_with')
 export const $regex = z.literal('$regex')

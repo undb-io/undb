@@ -20,6 +20,7 @@
 	import { t } from '$lib/i18n'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import Toast from '$components/ui/toast/toast.svelte'
+	import { onMount } from 'svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -53,13 +54,20 @@
 		},
 	})
 
+	const { form, enhance, tainted } = superFrm
+
 	$: if ($createFieldInitial) {
 		for (const [key, value] of Object.entries($createFieldInitial)) {
 			$form[key] = value
 		}
 	}
 
-	const { form, enhance, submitting } = superFrm
+	onMount(() => {
+		$tainted = undefined
+		if (!$form.name) {
+			$form.name = `${$t('Field')} ${($table.schema.fields.length - 5 ?? 0) + 1}`
+		}
+	})
 
 	$: showDescription = false
 	$: if (!showDescription) {

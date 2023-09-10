@@ -3,7 +3,7 @@
 	import * as Table from '$lib/components/ui/table'
 	import { t } from '$lib/i18n'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
-	import type { IQueryApiToken } from '@undb/openapi/dist'
+	import type { IQueryApiToken } from '@undb/openapi'
 	import { copyText } from 'svelte-copy'
 	import { trpc } from '$lib/trpc/client'
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'

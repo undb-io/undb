@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { Input } from '$lib/components/ui/input'
 
-	export let value: number = 0
+	export let value: number | null = null
+	const onChange = (e: Event) => {
+		const target = e.target as HTMLInputElement
+		if (target) {
+			value = target.value === '' ? null : Number(target.value)
+		}
+	}
 </script>
 
-<Input {value} class={$$restProps.class} type="number" on:change={(e) => (value = Number(e.target.value))} />
+<Input {value} class={$$restProps.class} type="number" on:change={onChange} />
