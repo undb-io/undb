@@ -8,7 +8,7 @@
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import { getTable } from '$lib/store/table'
-	import * as Dialog from '$lib/components/ui/dialog'
+	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 	import { Label } from '$components/ui/label'
 
 	const table = getTable()
@@ -25,17 +25,17 @@
 	})
 </script>
 
-<Dialog.Root bind:open={$duplicateFieldModal.open}>
-	<Dialog.Content class="block space-y-2">
-		<Dialog.Header>
-			<Dialog.Title>
+<AlertDialog.Root bind:open={$duplicateFieldModal.open}>
+	<AlertDialog.Content class="block space-y-4">
+		<AlertDialog.Header>
+			<AlertDialog.Title>
 				<div class="flex items-center gap-2">
 					<p class="text-xl dark:text-white">{$t('Duplicate Field')}</p>
 					<FieldIcon type={field.type} />
 					<p>{field.name.value}</p>
 				</div>
-			</Dialog.Title>
-		</Dialog.Header>
+			</AlertDialog.Title>
+		</AlertDialog.Header>
 		<Label class="inline-flex items-center gap-2">
 			<Switch bind:checked={includesValues}></Switch>
 			{$t('duplicate field include values')}
@@ -56,5 +56,5 @@
 				{$t('Confirm', { ns: 'common' })}
 			</Button>
 		</div>
-	</Dialog.Content>
-</Dialog.Root>
+	</AlertDialog.Content>
+</AlertDialog.Root>
