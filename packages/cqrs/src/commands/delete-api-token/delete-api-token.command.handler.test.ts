@@ -1,4 +1,4 @@
-import { IClsService, ClsStore, User, UserId } from '@undb/core'
+import { IClsService, ClsStore, UserId } from '@undb/core'
 import { ApiToken, IApiTokenRepository } from '@undb/openapi'
 import { MockProxy, mock } from 'vitest-mock-extended'
 import { DeleteApiTokenCommand } from './delete-api-token.command'
@@ -10,7 +10,7 @@ describe('test DeleteApiTokenCommandHandler', () => {
   let cls: MockProxy<IClsService<ClsStore>>
   let command: DeleteApiTokenCommand
   let handler: DeleteApiTokenCommandHandler
-  const apiToken: ApiToken = new ApiToken()
+  const apiToken = new ApiToken()
   let userId: UserId
 
   beforeEach(() => {
@@ -36,6 +36,7 @@ describe('test DeleteApiTokenCommandHandler', () => {
   })
 
   test('Delete api token error', async () => {
+    cls.get.calledWith('user.userId').mockReturnValue('user321')
     repo.findOneById.mockResolvedValue(Some(apiToken))
     await expect(handler.execute(command)).rejects.toThrowErrorMatchingInlineSnapshot(
       '"cannot delete api token belongs to other user"',
