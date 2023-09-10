@@ -142,6 +142,7 @@ import {
   MultiSelectEqual,
   MultiSelectIn,
   MultiSelectIsEmpty,
+  NumberEmpty,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -440,6 +441,12 @@ const convertNumberFilter = (
     }
     case '$lte': {
       return Some(new NumberLessThanOrEqual(filter.path, new NumberFieldValue(filter.value)))
+    }
+    case '$is_empty': {
+      return Some(new NumberEmpty(filter.path))
+    }
+    case '$is_not_empty': {
+      return Some(new NumberEmpty(filter.path).not())
     }
     default:
       return None
