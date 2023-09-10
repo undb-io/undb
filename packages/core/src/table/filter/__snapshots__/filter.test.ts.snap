@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`should create root filter 1`] = `
+exports[`test filters > should create root filter 1`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): StringEqual {
@@ -14,7 +14,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 2`] = `
+exports[`test filters > should create root filter 2`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): StringContain {
@@ -28,7 +28,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 3`] = `
+exports[`test filters > should create root filter 3`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): StringStartsWith {
@@ -42,7 +42,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 4`] = `
+exports[`test filters > should create root filter 4`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): StringEndsWith {
@@ -56,7 +56,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 5`] = `
+exports[`test filters > should create root filter 5`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): m {
@@ -72,7 +72,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 6`] = `
+exports[`test filters > should create root filter 6`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): m {
@@ -88,7 +88,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 7`] = `
+exports[`test filters > should create root filter 7`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): StringEqual {
@@ -102,7 +102,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 8`] = `
+exports[`test filters > should create root filter 8`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): StringEqual {
@@ -116,7 +116,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 9`] = `
+exports[`test filters > should create root filter 9`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): NumberGreaterThan {
@@ -130,7 +130,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 10`] = `
+exports[`test filters > should create root filter 10`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): NumberGreaterThanOrEqual {
@@ -144,7 +144,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 11`] = `
+exports[`test filters > should create root filter 11`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): NumberLessThan {
@@ -158,7 +158,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 12`] = `
+exports[`test filters > should create root filter 12`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): NumberLessThanOrEqual {
@@ -172,7 +172,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 13`] = `
+exports[`test filters > should create root filter 13`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): DateIsToday {
@@ -186,7 +186,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 14`] = `
+exports[`test filters > should create root filter 14`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): BoolIsTrue {
@@ -200,7 +200,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 15`] = `
+exports[`test filters > should create root filter 15`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): BoolIsFalse {
@@ -214,7 +214,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 16`] = `
+exports[`test filters > should create root filter 16`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): CollaboratorEqual {
@@ -228,7 +228,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 17`] = `
+exports[`test filters > should create root filter 17`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): DateIsTomorrow {
@@ -242,7 +242,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 18`] = `
+exports[`test filters > should create root filter 18`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): DateIsTomorrow {
@@ -256,7 +256,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 19`] = `
+exports[`test filters > should create root filter 19`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): DateIsTomorrow {
@@ -270,7 +270,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 20`] = `
+exports[`test filters > should create root filter 20`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): DateIsYesterday {
@@ -284,7 +284,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 21`] = `
+exports[`test filters > should create root filter 21`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): DateIsYesterday {
@@ -298,7 +298,7 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 22`] = `
+exports[`test filters > should create root filter 22`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): DateIsYesterday {
@@ -312,34 +312,34 @@ OptionType {
 }
 `;
 
-exports[`should create root filter 23`] = `
+exports[`test filters > should create root filter 23`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): DateBetween {
-    "date1": 2023-09-09T00:00:00.000Z,
-    "date2": 2023-09-10T08:56:37.102Z,
+    "date1": 2020-01-31T00:00:00.000Z,
+    "date2": 2020-02-01T00:00:00.000Z,
     "fieldId": "between",
   },
 }
 `;
 
-exports[`should create root filter 24`] = `
+exports[`test filters > should create root filter 24`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): DateBetween {
-    "date1": 2023-09-09T00:00:00.000Z,
-    "date2": 2023-09-10T08:56:37.102Z,
+    "date1": 2020-01-31T00:00:00.000Z,
+    "date2": 2020-02-01T00:00:00.000Z,
     "fieldId": "between",
   },
 }
 `;
 
-exports[`should create root filter 25`] = `
+exports[`test filters > should create root filter 25`] = `
 OptionType {
   Symbol(T): true,
   Symbol(Val): DateBetween {
-    "date1": 2023-09-09T00:00:00.000Z,
-    "date2": 2023-09-10T08:56:37.102Z,
+    "date1": 2020-01-31T00:00:00.000Z,
+    "date2": 2020-02-01T00:00:00.000Z,
     "fieldId": "between",
   },
 }
