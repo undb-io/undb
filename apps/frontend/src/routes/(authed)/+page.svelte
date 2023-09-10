@@ -79,7 +79,14 @@
 							>
 								{table.name.slice(0, 1)}
 							</span>
-							<h5 class="font-semibold truncate" title={table.name}>{table.name}</h5>
+							<Tooltip.Root openDelay={50}>
+								<Tooltip.Trigger class="truncate">
+									<h5 class="font-semibold truncate">{table.name}</h5>
+								</Tooltip.Trigger>
+								<Tooltip.Content>
+									<p>{table.name}</p>
+								</Tooltip.Content>
+							</Tooltip.Root>
 						</div>
 					</Card.Header>
 				</Card.Root>
@@ -91,9 +98,9 @@
 				on:click={() => createTableModal.open()}
 			>
 				<Card.Header>
-					<div class="flex items-center gap-2 h-full">
+					<div class="flex items-center gap-2 h-full font-semibold text-gray-600">
 						<i class="ti ti-plus" />
-						<p class="font-bold">{$t('Create New Table')}</p>
+						<p>{$t('Create New Table')}</p>
 					</div>
 				</Card.Header>
 			</Card.Root>
