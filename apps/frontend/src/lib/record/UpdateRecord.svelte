@@ -107,7 +107,7 @@
 	}}
 >
 	{#key $record}
-		<Dialog.Content class="!w-3/4 !max-w-none h-[calc(100vh-64px)] overflow-y-hidden p-0 block gap-0">
+		<Dialog.Content class="!w-[95%] lg:!w-3/4 !max-w-none h-[calc(100vh-64px)] overflow-y-hidden p-0 block gap-0">
 			<Dialog.Header class="border-b border-gray-100 h-15 p-6">
 				<Dialog.Title class="pr-6">
 					<div class="flex items-center w-full justify-between mr-6">
@@ -159,20 +159,21 @@
 								{#each fields as field}
 									{@const readonlyField = !$canUpdateRecordField(field.id.value)}
 									<div class="h-full items-start gap-1 pt-2">
-										<Label class="leading-5" for={field.id.value}>
-											<div class="inline-flex items-center gap-2 truncate w-full">
+										<Label class="flex items-center gap-2 leading-5" for={field.id.value}>
+											<div class="inline-flex items-center gap-2 truncate">
 												<FieldIcon type={field.type} size={16} />
 												<span class="truncate flex-1" title={field.name.value}>
 													{field.name.value}
 												</span>
 											</div>
 											{#if field.required}
-												<span class="text-red-500">*</span>
+												<span class="text-red-500 inline-flex self-center"> * </span>
 											{/if}
 										</Label>
 									</div>
 									<div class="col-span-4">
 										<CellInput
+											class="w-full"
 											record={$record}
 											{field}
 											bind:value={$form[field.id.value]}

@@ -7,7 +7,6 @@
 	import { canDuplicate, type ISortDirection } from '@undb/core'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { noop } from 'lodash-es'
-	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import FieldMenuFieldComponent from './FieldMenu/FieldMenuFieldComponent.svelte'
 	import Toast from '$components/ui/toast/toast.svelte'

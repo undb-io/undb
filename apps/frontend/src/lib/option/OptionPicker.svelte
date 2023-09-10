@@ -15,7 +15,7 @@
 	$: options = field?.options?.options ?? []
 </script>
 
-<DropdownMenu.Root positioning={{ placement: 'bottom-start' }}>
+<DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
 		<Button
 			type="button"

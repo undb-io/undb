@@ -388,6 +388,8 @@ export const config: InitOptions = {
         'select extension': 'select attachment extension',
         'select filter type': 'select filter type',
         'field type filter value': 'input {{field}} filter value',
+        'Search Foreign Records': 'search foreign table records',
+        'insert refenrence looking field': 'insert looking field',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -805,6 +807,8 @@ export const config: InitOptions = {
         'select extension': '选择文件后缀名',
         'select filter type': '选择筛选类型',
         'field type filter value': '输入{{field}}筛选值',
+        'Search Foreign Records': '搜索关联表记录',
+        'insert refenrence looking field': '插入关联查看列',
       },
       webhook: {
         Webhook: 'Webhook',
