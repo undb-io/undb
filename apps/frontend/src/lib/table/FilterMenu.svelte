@@ -49,8 +49,8 @@
 			<i class="ti ti-filter text-sm" />
 			{$t('Filter')}
 
-			{#if validFilters.length}
-				<Badge>{validFilters.length}</Badge>
+			{#if $filters.length}
+				<Badge>{$filters.length}</Badge>
 			{/if}
 		</Button>
 	</PopoverTrigger>
