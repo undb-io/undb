@@ -158,6 +158,10 @@ export class TableSchema extends ValueObject<Field[]> {
     return Option(this.fields.find((f) => f.id.value === id))
   }
 
+  public getFieldByName(name: string): Option<Field> {
+    return Option(this.fields.find((f) => f.name.value === name))
+  }
+
   public getFieldByIdOfType<F extends Field>(id: string, type: Class<F>): Option<F> {
     return Option(this.fields.find((f) => f.id.value === id && f instanceof type) as F)
   }

@@ -144,7 +144,7 @@
 							</Label>
 						{/if}
 						{#if canDisplay($form.type)}
-							<HoverCard.Root>
+							<HoverCard.Root openDelay={10}>
 								<HoverCard.Trigger>
 									<Label class="flex items-center justify-center gap-2">
 										<Switch class="whitespace-nowrap" bind:checked={$form.display}></Switch>
@@ -155,7 +155,15 @@
 									<HoverCard.Content>
 										<div class="flex gap-2">
 											{#each displayFields as field}
-												<Badge>{field}</Badge>
+												{@const f = $table.schema.getFieldByName(field)}
+												{#if f.isSome()}
+													<Badge variant="secondary" class="inline-flex items-center gap-2">
+														<FieldIcon type={f.unwrap().type} />
+														<span>
+															{f.unwrap().name.value}
+														</span>
+													</Badge>
+												{/if}
 											{/each}
 										</div>
 									</HoverCard.Content>
