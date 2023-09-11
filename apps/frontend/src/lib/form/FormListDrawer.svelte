@@ -23,12 +23,12 @@
 
 <Sheet.Root bind:open={$formListDrawer.open}>
 	<Sheet.Content class="!w-1/3 !max-w-none">
-		<Sheet.Header>
+		<Sheet.Header class="mb-4">
 			<Sheet.Title>{$t('Forms')}</Sheet.Title>
 		</Sheet.Header>
 		{#if $formDrawerMode === 'list'}
 			<div class="flex items-center justify-between">
-				<h4 class="whitespace-nowrap truncate">
+				<h4 class="whitespace-nowrap truncate dark:text-white">
 					{$table.name.value} - {$t('forms')}
 				</h4>
 

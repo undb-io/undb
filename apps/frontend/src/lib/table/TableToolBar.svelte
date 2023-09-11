@@ -28,7 +28,7 @@
 			<span class="whitespace-nowrap">{$t('API Preview')}</span>
 		</Button>
 		{#if $hasPermission('table:update')}
-			<Tooltip.Root openDelay={10}>
+			<Tooltip.Root openDelay={10} positioning={{ placement: 'bottom' }}>
 				<Tooltip.Trigger>
 					<button on:click={() => updateTableModal.open()}>
 						<i class="ti ti-settings text-gray-600 dark:text-gray-200" />
