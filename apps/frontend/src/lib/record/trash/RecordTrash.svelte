@@ -54,7 +54,7 @@
 	}
 </script>
 
-<div>
+<div class="my-4">
 	<form bind:this={form} on:submit={onSubmit}>
 		<div class="flex items-center gap-2">
 			<Input name="search" placeholder={$t('search trash')} />

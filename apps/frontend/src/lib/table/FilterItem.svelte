@@ -24,7 +24,7 @@
 
 <li class="flex h-10 items-center justify-between gap-2 dark:border-gray-200">
 	{#if !readonly}
-		<i role="button" class="handle ti ti-grip-vertical" />
+		<i role="button" class="handle ti ti-grip-vertical dark:text-white" />
 	{/if}
 	<div class="grid grid-cols-3 gap-2 flex-1">
 		<FieldPicker
