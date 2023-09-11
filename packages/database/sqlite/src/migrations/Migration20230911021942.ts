@@ -1,6 +1,6 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230909031310 extends Migration {
+export class Migration20230911021942 extends Migration {
   async up(): Promise<void> {
     this.addSql(
       'create table `undb_outbox` (`uuid` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text null, `operator_id` text null, `timestamp` datetime not null, `payload` json not null, `meta` json null, primary key (`uuid`));',
@@ -61,11 +61,12 @@ export class Migration20230909031310 extends Migration {
     this.addSql('create index `undb_field_max_aggregate_field_id_index` on `undb_field` (`max_aggregate_field_id`);')
 
     this.addSql(
-      'create table `undb_option` (`key` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `field_id` text null, `name` text not null, `color_name` text not null, `color_shade` integer not null, constraint `undb_option_field_id_foreign` foreign key(`field_id`) references `undb_field`(`id`) on delete cascade on update cascade, primary key (`key`));',
+      'create table `undb_option` (`key` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `field_id` text null, `name` text not null, `color_name` text not null, `color_shade` integer not null, `order` integer not null, constraint `undb_option_field_id_foreign` foreign key(`field_id`) references `undb_field`(`id`) on delete cascade on update cascade, primary key (`key`));',
     )
     this.addSql('create index `undb_option_deleted_at_index` on `undb_option` (`deleted_at`);')
     this.addSql('create index `undb_option_field_id_index` on `undb_option` (`field_id`);')
     this.addSql('create index `undb_option_name_index` on `undb_option` (`name`);')
+    this.addSql('create index `undb_option_order_index` on `undb_option` (`order`);')
 
     this.addSql(
       'create table `undb_fls` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `field_id` text null, `policy_action` text not null, `policy_filter` json not null, `subjects` json not null, constraint `undb_fls_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, constraint `undb_fls_field_id_foreign` foreign key(`field_id`) references `undb_field`(`id`) on delete cascade on update cascade, primary key (`id`));',

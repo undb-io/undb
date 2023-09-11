@@ -1276,6 +1276,15 @@
           "primary": false,
           "nullable": false,
           "mappedType": "enum"
+        },
+        "order": {
+          "name": "order",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "integer"
         }
       },
       "name": "undb_option",
@@ -1304,6 +1313,15 @@
           ],
           "composite": false,
           "keyName": "undb_option_name_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "order"
+          ],
+          "composite": false,
+          "keyName": "undb_option_order_index",
           "primary": false,
           "unique": false
         },

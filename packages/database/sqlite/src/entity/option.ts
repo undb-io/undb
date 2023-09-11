@@ -35,12 +35,13 @@ export class OptionColor {
 
 @Entity({ tableName: 'undb_option' })
 export class Option extends BaseEntity {
-  constructor(field: Rel<SelectField | MultiSelectField>, option: CoreOption) {
+  constructor(field: Rel<SelectField | MultiSelectField>, option: CoreOption, order: number) {
     super()
     this.key = option.key.value
     this.field = field
     this.name = option.name.value
     this.color = new OptionColor(option.color)
+    this.order = order
   }
 
   @PrimaryKey()
@@ -55,4 +56,8 @@ export class Option extends BaseEntity {
 
   @Embedded(() => OptionColor)
   color: OptionColor
+
+  @Property()
+  @Index()
+  order: number
 }
