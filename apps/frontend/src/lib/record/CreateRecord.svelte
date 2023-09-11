@@ -6,20 +6,30 @@
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
-	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import { keys } from 'lodash-es'
 	import { pick } from 'lodash-es'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import { Button } from '$lib/components/ui/button'
+	import { createRecordForm } from '$lib/store/table'
 	import { Label } from '$components/ui/label'
 	import Toast from '$components/ui/toast/toast.svelte'
+	import type { Field } from '@undb/core'
+	import Badge from '$components/ui/badge/badge.svelte'
 
 	const table = getTable()
 	const view = getView()
 
 	export let data: Validation<any>
-	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
+	let fields: Field[] = []
+
+	$: {
+		if ($createRecordForm) {
+			fields = $createRecordForm.getNotHiddenFields($table.schema)
+		} else {
+			fields = $view.getOrderedFields($table.schema.nonSystemFields)
+		}
+	}
 
 	const createRecord = trpc().record.create.mutation({
 		async onSuccess(data, variables, context) {
@@ -57,7 +67,17 @@
 <Dialog.Root bind:open={$createRecordModal.open}>
 	<Dialog.Content class="!w-3/4 max-w-none h-[calc(100vh-64px)] overflow-y-hidden flex flex-col p-0">
 		<Dialog.Header class="border-b p-6">
-			<Dialog.Title>{$t('Create New Record')}</Dialog.Title>
+			<Dialog.Title class="gap-2 items-center flex">
+				<span>
+					{$t('Create New Record')}
+				</span>
+
+				{#if $createRecordForm}
+					<Badge variant="secondary">
+						{$t('create record by form', { form: ` ${$createRecordForm.name.value} ` })}
+					</Badge>
+				{/if}
+			</Dialog.Title>
 		</Dialog.Header>
 
 		<div class="flex-1 overflow-y-auto p-6">

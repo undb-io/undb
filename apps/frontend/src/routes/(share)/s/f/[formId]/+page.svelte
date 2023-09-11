@@ -47,7 +47,7 @@
 			})
 		},
 	})
-	const { form, enhance, constraints, delayed, submitting, tainted } = superFrm
+	const { form, enhance, delayed, submitting, tainted } = superFrm
 
 	onMount(() => {
 		$tainted = undefined

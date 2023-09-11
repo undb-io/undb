@@ -395,6 +395,7 @@ export const config: InitOptions = {
         'field type filter value': 'input {{field}} filter value',
         'Search Foreign Records': 'search foreign table records',
         'insert refenrence looking field': 'insert looking field',
+        'create record by form': 'create record by{{form}}',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -819,6 +820,7 @@ export const config: InitOptions = {
         'field type filter value': '输入{{field}}筛选值',
         'Search Foreign Records': '搜索关联表记录',
         'insert refenrence looking field': '插入关联查看列',
+        'create record by form': '通过表单{{form}}创建',
       },
       webhook: {
         Webhook: 'Webhook',
