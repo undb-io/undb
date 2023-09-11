@@ -20,6 +20,8 @@ import type {
   IdField as CoreIdField,
   JsonField as CoreJsonField,
   LookupField as CoreLookupField,
+  MaxField as CoreMaxField,
+  MinField as CoreMinField,
   MultiSelectField as CoreMultiSelectField,
   NumberField as CoreNumberField,
   ParentField as CoreParentField,
@@ -31,8 +33,6 @@ import type {
   TreeField as CoreTreeField,
   UpdatedByField as CoreUpdatedByField,
   UrlField as CoreUrlField,
-  MinField as CoreMinField,
-  MaxField as CoreMaxField,
   IFieldVisitor,
 } from '@undb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@undb/core'
@@ -54,6 +54,8 @@ import {
   IdField,
   JsonField,
   LookupField,
+  MaxField,
+  MinField,
   MultiSelectField,
   NumberField,
   Option,
@@ -68,8 +70,6 @@ import {
   UpdatedAtField,
   UpdatedByField,
   UrlField,
-  MinField,
-  MaxField,
 } from '../../entity/index.js'
 import {
   AdjacencyListTable,
@@ -79,7 +79,10 @@ import {
 import { BaseEntityManager } from '../base-entity-manager.js'
 
 export class TableSqliteFieldVisitor extends BaseEntityManager implements IFieldVisitor {
-  constructor(private readonly table: Table, em: EntityManager) {
+  constructor(
+    private readonly table: Table,
+    em: EntityManager,
+  ) {
     super(em)
   }
   id(value: CoreIdField): void {
@@ -186,13 +189,13 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   select(value: CoreSelectField): void {
     const field = new SelectField(this.table, value)
-    wrap(field).assign({ options: value.options.options.map((option) => new Option(field, option)) })
+    wrap(field).assign({ options: value.options.options.map((option, index) => new Option(field, option, index + 1)) })
     this.em.persist(field)
   }
 
   multiSelect(value: CoreMultiSelectField): void {
     const field = new MultiSelectField(this.table, value)
-    wrap(field).assign({ options: value.options.options.map((option) => new Option(field, option)) })
+    wrap(field).assign({ options: value.options.options.map((option, index) => new Option(field, option, index + 1)) })
     this.em.persist(field)
   }
 

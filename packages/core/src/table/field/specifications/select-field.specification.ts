@@ -33,7 +33,11 @@ export class WithOptions extends CompositeSpecification<Table, ITableSpecVisitor
 }
 
 export class WithOption extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly type: ISelectFieldType, public readonly fieldId: string, public readonly option: Option) {
+  constructor(
+    public readonly type: ISelectFieldType,
+    public readonly fieldId: string,
+    public readonly option: Option,
+  ) {
     super()
   }
 
@@ -53,7 +57,11 @@ export class WithOption extends CompositeSpecification<Table, ITableSpecVisitor>
   }
 }
 export class WithNewOption extends CompositeSpecification<Table, ITableSpecVisitor> {
-  constructor(public readonly type: ISelectFieldType, public readonly fieldId: string, public readonly option: Option) {
+  constructor(
+    public readonly type: ISelectFieldType,
+    public readonly fieldId: string,
+    public readonly option: Option,
+  ) {
     super()
   }
 
