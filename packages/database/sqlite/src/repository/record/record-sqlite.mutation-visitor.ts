@@ -40,6 +40,7 @@ import type {
   NumberLessThanOrEqual,
   ParentAvailableSpec,
   ReferenceEqual,
+  SelectEmpty,
   SelectEqual,
   SelectIn,
   StringContain,
@@ -252,6 +253,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     throw new Error('Method not implemented.')
   }
   selectIn(s: SelectIn): void {
+    throw new Error('Method not implemented.')
+  }
+  selectEmpty(s: SelectEmpty): void {
     throw new Error('Method not implemented.')
   }
   boolIsTrue(s: BoolIsTrue): void {
