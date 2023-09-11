@@ -3,8 +3,8 @@
   "display": "lib",
   "extends": "./base.json",
   "compilerOptions": {
-    "module": "ESNext",
-    "target": "ESNext",
+    "module": "esnext",
+    "target": "esnext",
     "types": ["vitest/globals"]
   }
 }
