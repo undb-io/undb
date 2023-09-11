@@ -64,9 +64,7 @@
 
 	onMount(() => {
 		$tainted = undefined
-		if (!$form.name) {
-			$form.name = `${$t('Field')} ${($table.schema.fields.length - 5 ?? 0) + 1}`
-		}
+		$form.name = `${$t('Field')} ${($table.schema.fields.length - 5 ?? 0) + 1}`
 	})
 
 	$: showDescription = false
