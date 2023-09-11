@@ -24,6 +24,7 @@
 	import RLSModal from '$lib/authz/rls/RLSModal.svelte'
 	import FlsModal from '$lib/authz/fls/FLSModal.svelte'
 	import MergeData from '$lib/import/MergeData.svelte'
+	import { sidebarCollapsed } from '$lib/store/ui'
 
 	const table = getTable()
 	export let data: PageData
@@ -46,6 +47,9 @@
 			createTableModal.open()
 		} else if (event.key === 'r' && !(event.ctrlKey || event.altKey || event.metaKey)) {
 			createRecordModal.open()
+		}
+		if (event.key === 'b' && event.metaKey) {
+			$sidebarCollapsed = !$sidebarCollapsed
 		}
 	}
 	let evtSource: EventSource

@@ -32,8 +32,11 @@
 						<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
 					</Button>
 				</Tooltip.Trigger>
-				<Tooltip.Content sideOffset={1}>
-					<p class="w-24">meta + b</p>
+				<Tooltip.Content
+					sideOffset={1}
+					class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
+				>
+					<kbd> Command + b </kbd>
 				</Tooltip.Content>
 			</Tooltip.Root>
 		</div>
