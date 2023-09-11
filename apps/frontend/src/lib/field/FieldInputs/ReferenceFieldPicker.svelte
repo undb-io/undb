@@ -10,17 +10,17 @@
 	$: fields = $allTableFields
 </script>
 
-<Label class="space-y-2">
-	<div class="space-x-1">
+<div class="space-y-2">
+	<Label class="space-x-1">
 		<span>{$t('Reference Field')}</span>
 		{#if required}
 			<span class="text-red-500">*</span>
 		{/if}
-	</div>
+	</Label>
 	<FieldPicker
 		{...$$restProps}
 		{fields}
 		bind:value
 		filter={(f) => f.type === 'reference' || f.type === 'tree' || f.type === 'parent'}
 	/>
-</Label>
+</div>
