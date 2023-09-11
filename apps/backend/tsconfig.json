@@ -6,6 +6,7 @@
     "resolveJsonModule": true,
     "module": "NodeNext",
     "moduleResolution": "node16",
+    "types": ["vitest/globals"],
     "outDir": "./dist"
   }
 }
