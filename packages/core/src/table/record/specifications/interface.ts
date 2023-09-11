@@ -45,7 +45,7 @@ import type { WithRecordUpdatedAt } from './record-updated-at.specification.js'
 import type { UdpatedByIn, WithRecordUpdatedBy } from './record-updated-by.specification.js'
 import type { WithRecordValues } from './record-values.specification.js'
 import type { ReferenceEqual } from './reference.specification.js'
-import type { SelectEqual, SelectIn } from './select.specification.js'
+import type { SelectEmpty, SelectEqual, SelectIn } from './select.specification.js'
 import type {
   StringContain,
   StringEndsWith,
@@ -116,6 +116,7 @@ interface IRecordValueVisitor {
 
   selectEqual(s: SelectEqual): void
   selectIn(s: SelectIn): void
+  selectEmpty(s: SelectEmpty): void
 
   boolIsTrue(s: BoolIsTrue): void
   boolIsFalse(s: BoolIsFalse): void
