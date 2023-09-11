@@ -150,6 +150,7 @@ import {
   NumberGreaterThanOrEqual,
   NumberLessThan,
   NumberLessThanOrEqual,
+  SelectEmpty,
   SelectEqual,
   SelectIn,
   StringContain,
@@ -484,6 +485,12 @@ const convertSelectFilter = (filter: ISelectFilter): Option<RecordCompositeSpeci
           (filter.value as ISelectFieldValue[]).map((v) => new SelectFieldValue(v)),
         ).not(),
       )
+    }
+    case '$is_empty': {
+      return Some(new SelectEmpty(filter.path))
+    }
+    case '$is_not_empty': {
+      return Some(new SelectEmpty(filter.path).not())
     }
 
     default: {

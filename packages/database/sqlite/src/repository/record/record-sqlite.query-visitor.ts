@@ -39,6 +39,7 @@ import type {
   NumberLessThanOrEqual,
   ParentAvailableSpec,
   ReferenceEqual,
+  SelectEmpty,
   SelectEqual,
   SelectIn,
   StringContain,
@@ -389,6 +390,9 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       s.fieldId,
       s.value.map((v) => v.id),
     )
+  }
+  selectEmpty(s: SelectEmpty): void {
+    this.qb.whereNull(this.getFieldId(s.fieldId))
   }
   boolIsTrue(s: BoolIsTrue): void {
     this.qb.where(this.getFieldId(s.fieldId), true)
