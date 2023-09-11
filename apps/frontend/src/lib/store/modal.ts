@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ICreateFieldSchema, RecordValueJSON } from '@undb/core'
 import { derived, writable } from 'svelte/store'
+import { createRecordFormId } from './table'
 
 export const createRecordInitial = writable<RecordValueJSON | undefined>()
 export const createFieldInitial = writable<Partial<ICreateFieldSchema> | undefined>()
@@ -44,6 +45,11 @@ const createModal = (id: symbol) => {
 const CREATE_RECORD = Symbol('CREATE_RECORD')
 export const createRecordModal = createModal(CREATE_RECORD)
 export const createRecordCallback = derived(createRecordModal, ($modal) => $modal.callback)
+createRecordModal.subscribe(({ open }) => {
+	if (!open) {
+		createRecordFormId.set(undefined)
+	}
+})
 
 const CREATE_TABLE = Symbol('CREATE_TABLE')
 export const createTableModal = createModal(CREATE_TABLE)

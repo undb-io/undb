@@ -167,6 +167,11 @@ export const createRecordStore = (inputs: Records = []) => {
 
 export const recordsStore = createRecordStore()
 
+export const createRecordFormId = writable<string | undefined>(undefined)
+export const createRecordForm = derived([currentTable, createRecordFormId], ([$table, $formId]) =>
+	$formId ? $table.forms.getById($formId).into() : undefined,
+)
+
 export const sorts = derived(currentView, (view) => view.sorts?.sorts ?? [])
 // TODO: nested should be IFilters
 export const filters = derived(currentView, (view) => (view.filter?.group.children ?? []) as IFilters)
