@@ -1,5 +1,5 @@
-import { EntityManager } from '@mikro-orm/better-sqlite'
-import { AuditSpecification, IAuditQueryModel, IQueryAudit } from '@undb/integrations'
+import type { EntityManager } from '@mikro-orm/better-sqlite'
+import type { AuditSpecification, IAuditQueryModel, IQueryAudit } from '@undb/integrations'
 import { Audit } from '../../entity/audit.js'
 import { AuditSqliteMapper } from './audit-sqlite.mapper.js'
 import { AuditSqliteQueryVisitor } from './audit-sqlite.query-visitor.js'

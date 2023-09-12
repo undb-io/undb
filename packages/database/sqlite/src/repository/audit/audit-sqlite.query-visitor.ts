@@ -1,5 +1,5 @@
-import { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
-import {
+import type { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
+import type {
   AuditSpecification,
   IAuditSpecVisitor,
   WithAuditAfter,
@@ -11,7 +11,7 @@ import {
   WithAuditTarget,
   WithAuditTimestamp,
 } from '@undb/integrations'
-import { Audit } from '../../entity/audit.js'
+import type { Audit } from '../../entity/audit.js'
 
 export class AuditSqliteQueryVisitor implements IAuditSpecVisitor {
   constructor(

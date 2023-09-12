@@ -11,9 +11,12 @@ import { InjectAuthConfig } from '../configs/auth.config.js'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(@InjectAuthConfig() config: ConfigType<typeof authConfig>, private readonly cls: ClsService<ClsStore>) {
+  constructor(
+    @InjectAuthConfig() config: ConfigType<typeof authConfig>,
+    private readonly cls: ClsService<ClsStore>,
+  ) {
     super({
-      jwtFromRequest: ExtractJwt.fromExtractors([JwtStrategy.extractJWT, ExtractJwt.fromAuthHeaderAsBearerToken()]),
+      jwtFromRequest,
       ignoreExpiration: false,
       secretOrKey: config.jwt.secret,
     })

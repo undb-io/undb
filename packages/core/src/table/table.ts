@@ -11,7 +11,14 @@ import type {
   IReorderOptionsSchema,
   IUpdateFieldSchema,
 } from './field/index.js'
-import { FieldId, SelectField, WithDuplicatedField } from './field/index.js'
+import {
+  CannotSetFieldDisplayException,
+  FieldId,
+  SelectField,
+  WithDuplicatedField,
+  WithFieldDisplay,
+  canDisplay,
+} from './field/index.js'
 import { UpdateFieldHelper } from './field/update-field.helper.js'
 import type { IRootFilter } from './filter/index.js'
 import type {
@@ -195,6 +202,20 @@ export class Table {
     const spec = new WithSorts(sorts, view)
     spec.mutate(this).unwrap()
     return Ok(spec)
+  }
+
+  public setFieldDisplay(fieldId: string, display: boolean): Option<TableCompositeSpecification> {
+    const field = this.schema.getFieldById(fieldId).unwrap()
+
+    if (!canDisplay(field.type)) {
+      throw new CannotSetFieldDisplayException(field.type)
+    }
+
+    if (display === field.display) {
+      return None
+    }
+
+    return Some(new WithFieldDisplay(field.type, field.id.value, display))
   }
 
   public resetFieldSort(fieldId: string, viewId?: string): Result<TableCompositeSpecification, string> {
@@ -405,6 +426,10 @@ export class Table {
     spec.mutate(this)
 
     return spec
+  }
+
+  public deleteForm(formId: string): Option<TableCompositeSpecification> {
+    return this.forms.deleteForm(formId)
   }
 
   public deleteWidget(viewId: string, widgetId: string): TableCompositeSpecification {

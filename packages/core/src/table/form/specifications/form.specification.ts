@@ -57,3 +57,22 @@ export class WithNewForm extends CompositeSpecification<Table, ITableSpecVisitor
     return Ok(undefined)
   }
 }
+
+export class WithoutForm extends CompositeSpecification<Table, ITableSpecVisitor> {
+  constructor(public readonly form: Form) {
+    super()
+  }
+
+  isSatisfiedBy(t: Table): boolean {
+    throw new Error('Method not implemented.')
+  }
+
+  mutate(t: Table): Result<Table, string> {
+    return Ok(t)
+  }
+
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withoutForm(this)
+    return Ok(undefined)
+  }
+}

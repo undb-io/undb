@@ -1,4 +1,4 @@
-import { IMemberCreateService } from '@undb/authz/dist'
+import { IMemberCreateService } from '@undb/authz'
 import { IUserRepository, IUserService, User, UserId } from '@undb/core'
 import { MockProxy, mock } from 'vitest-mock-extended'
 import { RegisterCommand } from './register.command'

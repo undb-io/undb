@@ -1,4 +1,5 @@
-import { OpenAPIRegistry, OpenApiGeneratorV31, RouteConfig } from '@asteasolutions/zod-to-openapi'
+import type { RouteConfig } from '@asteasolutions/zod-to-openapi'
+import { OpenAPIRegistry, OpenApiGeneratorV31 } from '@asteasolutions/zod-to-openapi'
 import type { Record } from '@undb/core'
 import {
   RecordId,
@@ -16,6 +17,7 @@ import { format } from 'date-fns'
 // @ts-ignore
 import OpenAPISnippet from 'openapi-snippet'
 import type { OpenAPIObject } from 'openapi3-ts/oas31'
+import { API_TOKEN_HEADER_NAME } from './api-token/api-token.constants.js'
 import {
   COMPONENT_MUTATE_RECORD_VALUES,
   COMPONENT_OPTION,
@@ -71,6 +73,14 @@ export const createTableSchema = (table: Table, record?: Record, host = 'http://
     type: 'http',
     scheme: 'bearer',
     bearerFormat: 'JWT',
+    description: 'https://docs.undb.xyz/openapi/1tokens#auth-token',
+  })
+
+  const apiKeyAuth = registry.registerComponent('securitySchemes', 'apiKeyAuth', {
+    type: 'apiKey',
+    in: 'header',
+    name: API_TOKEN_HEADER_NAME,
+    description: 'https://docs.undb.xyz/openapi/1tokens#api-token',
   })
 
   const createWebhookSchema = createCreateWebhookSchema(table)
@@ -103,7 +113,7 @@ export const createTableSchema = (table: Table, record?: Record, host = 'http://
     const unauthorized = create401ResponseSchema()
     route.responses[401] = unauthorized
 
-    route.security = [{ [bearerAuth.name]: [] }]
+    route.security = [{ [bearerAuth.name]: [] }, { [apiKeyAuth.name]: [] }]
   }
 
   const webhooks: RouteConfig[] = [recordEventsWebhook(table)]

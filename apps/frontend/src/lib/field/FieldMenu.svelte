@@ -1,18 +1,19 @@
 <script lang="ts">
 	import { cn } from '$lib/utils'
 	import { invalidate } from '$app/navigation'
-	import { currentFieldId, getField, getTable, getView } from '$lib/store/table'
+	import { currentFieldId, getField, getTable, getView, listRecordFn } from '$lib/store/table'
 	import { confirmDeleteField, duplicateFieldModal, flsModal, updateFieldModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
-	import { canDuplicate, type ISortDirection } from '@undb/core'
+	import { canDisplay, canDuplicate, type ISortDirection } from '@undb/core'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { noop } from 'lodash-es'
-	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import FieldMenuFieldComponent from './FieldMenu/FieldMenuFieldComponent.svelte'
 	import Toast from '$components/ui/toast/toast.svelte'
 
 	export let togglePin: (fieldId: string) => void = noop
+
+	const listRecords = $listRecordFn(undefined, { enabled: false })
 
 	const table = getTable()
 	const view = getView()
@@ -25,6 +26,7 @@
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			currentFieldId.set(undefined)
+			await $listRecords.refetch()
 		},
 	})
 
@@ -32,10 +34,18 @@
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			currentFieldId.set(undefined)
+			await $listRecords.refetch()
 		},
 	})
 
 	const hideField = trpc().table.view.field.setVisibility.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+			currentFieldId.set(undefined)
+		},
+	})
+
+	const setFieldDisplay = trpc().table.field.setDisplay.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
 			currentFieldId.set(undefined)
@@ -156,6 +166,24 @@
 		{$t('fls', { ns: 'authz' })}
 	</span>
 </DropdownMenu.Item>
+{#if $field && !$field.display && canDisplay($field.type)}
+	<DropdownMenu.Item
+		class={cn('items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium')}
+		on:click={() => {
+			if (!$field) return
+			$setFieldDisplay.mutate({
+				tableId: $table.id.value,
+				fieldId: $field.id.value,
+				display: true,
+			})
+		}}
+	>
+		<i class="ti ti-eye-check text-sm" />
+		<span>
+			{$t('set as display field')}
+		</span>
+	</DropdownMenu.Item>
+{/if}
 <DropdownMenu.Separator />
 <DropdownMenu.Item class={'items-center gap-2 text-xs text-red-400'} on:click={() => ($confirmDeleteField = true)}>
 	<i class="ti ti-trash text-sm" />

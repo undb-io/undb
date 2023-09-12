@@ -8,27 +8,37 @@ import { TableSqliteMapper } from './table-sqlite.mapper.js'
 import { TableSqliteQueryVisitor } from './table-sqlite.query-visitor.js'
 
 export class TableSqliteQueryModel implements ITableQueryModel {
-  constructor(protected readonly em: EntityManager, protected readonly cache: ITableCache) {}
+  constructor(
+    protected readonly em: EntityManager,
+    protected readonly cache: ITableCache,
+  ) {}
 
   async find(): Promise<IQueryTable[]> {
     const tables = await this.em.find(
       Table,
       {},
-      { populate: ['fields.options', 'views', 'forms', 'forms', 'fields.displayFields'] },
+      {
+        populate: ['fields.options', 'views', 'forms', 'forms', 'fields.displayFields'],
+        orderBy: { fields: { options: { order: 'ASC' } } },
+      },
     )
     return tables.map((table) => TableSqliteMapper.entityToQuery(table))
   }
 
   async #populateTable(table: Table) {
-    await this.em.populate(table, [
-      'fields',
-      'fields.options',
-      'views',
-      'forms',
-      'fields.displayFields',
-      'fields.foreignTable',
-      'views.widgets.visualization',
-    ])
+    await this.em.populate(
+      table,
+      [
+        'fields',
+        'fields.options',
+        'views',
+        'forms',
+        'fields.displayFields',
+        'fields.foreignTable',
+        'views.widgets.visualization',
+      ],
+      { orderBy: { fields: { options: { order: 'ASC' } } } },
+    )
     for (const field of table.fields) {
       if (field instanceof ReferenceField) {
         if (!field.foreignTable?.fields.isInitialized()) {

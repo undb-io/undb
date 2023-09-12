@@ -19,12 +19,15 @@ import type {
   DateGreaterThan,
   DateGreaterThanOrEqual,
   DateIsToday,
+  DateIsTomorrow,
+  DateIsYesterday,
   DateLessThan,
   DateLessThanOrEqual,
 } from './date.specification.js'
 import type { JsonEmpty } from './json.specification.js'
 import type { MultiSelectEqual, MultiSelectIn, MultiSelectIsEmpty } from './multi-select.specification.js'
 import type {
+  NumberEmpty,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -42,7 +45,7 @@ import type { WithRecordUpdatedAt } from './record-updated-at.specification.js'
 import type { UdpatedByIn, WithRecordUpdatedBy } from './record-updated-by.specification.js'
 import type { WithRecordValues } from './record-values.specification.js'
 import type { ReferenceEqual } from './reference.specification.js'
-import type { SelectEqual, SelectIn } from './select.specification.js'
+import type { SelectEmpty, SelectEqual, SelectIn } from './select.specification.js'
 import type {
   StringContain,
   StringEndsWith,
@@ -84,6 +87,7 @@ interface IRecordValueVisitor {
   numberLessThan(s: NumberLessThan): void
   numberGreaterThanOrEqual(s: NumberGreaterThanOrEqual): void
   numberLessThanOrEqual(s: NumberLessThanOrEqual): void
+  numberEmpty(s: NumberEmpty): void
 
   dateEqual(s: DateEqual): void
   dateGreaterThan(s: DateGreaterThan): void
@@ -91,6 +95,8 @@ interface IRecordValueVisitor {
   dateGreaterThanOrEqual(s: DateGreaterThanOrEqual): void
   dateLessThanOrEqual(s: DateLessThanOrEqual): void
   dateIsToday(s: DateIsToday): void
+  dateIsTomorrow(s: DateIsTomorrow): void
+  dateIsYesterday(s: DateIsYesterday): void
   dateBetween(s: DateBetween): void
 
   dateRangeEqual(s: DateRangeEqual): void
@@ -110,6 +116,7 @@ interface IRecordValueVisitor {
 
   selectEqual(s: SelectEqual): void
   selectIn(s: SelectIn): void
+  selectEmpty(s: SelectEmpty): void
 
   boolIsTrue(s: BoolIsTrue): void
   boolIsFalse(s: BoolIsFalse): void

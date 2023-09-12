@@ -155,8 +155,10 @@
 							/>
 						</button>
 					</Tooltip.Trigger>
-					<Tooltip.Content>
-						<p>meta + b</p>
+					<Tooltip.Content
+						class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
+					>
+						<kbd> Command + b </kbd>
 					</Tooltip.Content>
 				</Tooltip.Root>
 			</div>
@@ -248,9 +250,15 @@
 						</button>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content class="w-56">
+						{#if $hasPermission('openapi:list_api_token')}
+							<DropdownMenu.Item class="gap-2" on:click={() => goto('/setting')}>
+								<i class="ti ti-settings" />
+								{$t('Settings', { ns: 'common' })}
+							</DropdownMenu.Item>
+						{/if}
 						<DropdownMenu.Item class="gap-2" on:click={() => goto('/me')}>
-							<i class="ti ti-settings" />
-							{$t('Settings', { ns: 'auth' })}
+							<i class="ti ti-user-circle" />
+							{$t('Account Settings', { ns: 'auth' })}
 						</DropdownMenu.Item>
 						<DropdownMenu.Sub>
 							<DropdownMenu.SubTrigger class="gap-2">
@@ -315,16 +323,10 @@
 		</div>
 
 		<DropdownMenu.Root>
-			<DropdownMenu.Trigger>
-				<button type="button" class="p-2.5 text-gray-700 lg:hidden" on:click={setSidebarOpen}>
-					<i class="ti ti-menu-2" />
-				</button>
-				<div class="flex-1 text-sm font-semibold leading-6 text-gray-900">
-					<img class="h-6 w-auto" src={logo} alt="undb" />
-				</div>
+			<DropdownMenu.Trigger class="flex items-center gap-2">
 				<button
 					id="me-button"
-					class="flex items-center gap-x-4 p-0 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100 transition"
+					class="px-5 py-1 flex items-center gap-x-2 text-sm font-semibold leading-6 text-gray-900 hover:bg-gray-100 transition rounded-sm"
 				>
 					<Avatar.Root>
 						<Avatar.Image src={me?.avatar} alt={me?.username} />
@@ -336,10 +338,16 @@
 			</DropdownMenu.Trigger>
 
 			<DropdownMenu.Content class="w-56">
+				{#if $hasPermission('openapi:list_api_token')}
+					<DropdownMenu.Item class="gap-2" on:click={() => goto('/setting')}>
+						<i class="ti ti-settings" />
+						{$t('Settings', { ns: 'common' })}
+					</DropdownMenu.Item>
+				{/if}
 				<DropdownMenu.Item class="gap-2" on:click={() => goto('/me')}>
 					<i class="ti ti-settings" />
 					<span>
-						{$t('Settings', { ns: 'auth' })}
+						{$t('Account Settings', { ns: 'auth' })}
 					</span>
 				</DropdownMenu.Item>
 				<DropdownMenu.Sub>

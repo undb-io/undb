@@ -7,7 +7,7 @@
 
 <div class="flex flex-col items-center justify-center gap-4">
 	{#if $hasPermission('table:create_form')}
-		<p class="font-bold">{$t('Create New Form')}</p>
+		<p class="font-bold dark:text-white">{$t('Create New Form')}</p>
 
 		<Button on:click={() => ($formDrawerMode = 'create')} class="w-[250px]">{$t('Create New Form')}</Button>
 	{:else}

@@ -343,7 +343,7 @@
 					<div
 						use:clickOutside
 						on:click_outside={() => currentFieldId.set(undefined)}
-						class="fixed w-56 bg-white border py-1 rounded-sm shadow-sm z-[999999999]"
+						class="fixed w-56 bg-white dark:bg-gray-600 border dark:border-gray-400 py-1 rounded-sm shadow-sm z-[999999999]"
 						style={`left: ${$currentFieldMenuRect.left - 50}px; top: ${$currentFieldMenuRect.top + 30}px;`}
 					>
 						<FieldMenu {togglePin} />

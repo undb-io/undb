@@ -23,10 +23,8 @@
 	} from '@undb/core'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
-	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import { updateFieldModal } from '$lib/store/modal'
-	import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
 	import { onMount } from 'svelte'
 	import { isEmpty, keys } from 'lodash-es'
 	import { pick } from 'lodash-es'
@@ -46,9 +44,10 @@
 
 	const updateField = trpc().table.field.update.mutation({
 		async onSuccess(data, variables, context) {
-			updateFieldModal.close()
 			await invalidate(`table:${$table.id.value}`)
+			updateFieldModal.close()
 			await $records.refetch()
+			updateFieldModal.close()
 		},
 	})
 

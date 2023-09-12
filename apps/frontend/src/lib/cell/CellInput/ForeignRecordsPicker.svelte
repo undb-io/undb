@@ -80,7 +80,8 @@
 	}
 
 	$: if (open) getForeign()
-	$: selected = Array.isArray(value) ? value?.map((r) => $recordsMap.get(r)!) ?? [] : []
+	$: selected = Array.isArray(value) ? value?.map((r) => $recordsMap.get(r)!).filter(Boolean) ?? [] : []
+	$: selectedIds = selected.map((s) => s.id.value)
 
 	let form: HTMLFormElement
 
@@ -110,7 +111,7 @@
 						{#if !readonly}
 							<button
 								on:click={() => remove(record.id.value)}
-								class="absolute z-50 right-2 top-[50%] text-sm translate-y-[-50%] translate-x-[-50%] hidden group-hover:block text-gray-500"
+								class="absolute z-50 right-2 top-[50%] text-sm translate-y-[-50%] translate-x-[-50%] opacity-0 group-hover:opacity-100 transition text-gray-400"
 							>
 								<i class="ti ti-x text-lg"></i>
 							</button>
@@ -138,8 +139,8 @@
 		</Button>
 
 		<Dialog.Root bind:open>
-			<Dialog.Content class="h-3/4">
-				<Dialog.Header>
+			<Dialog.Content class="h-3/4 block space-y-2">
+				<Dialog.Header class="mb-5">
 					<Dialog.Title>{$t('Select Record') ?? undefined}</Dialog.Title>
 				</Dialog.Header>
 
@@ -156,7 +157,7 @@
 				{:else}
 					<form bind:this={form} on:submit={onSubmit}>
 						<div class="flex items-center gap-2">
-							<Input name="search" placeholder={$t('search')}></Input>
+							<Input name="search" placeholder={$t('Search Foreign Records')}></Input>
 							<Button type="submit" size="sm" class="!p-2.5 hidden lg:block">
 								<svg
 									class="w-3 h-3"
@@ -175,8 +176,9 @@
 							</Button>
 						</div>
 					</form>
-					<VirtualList height={600} width="100%" itemCount={$records.length} itemSize={46}>
+					<VirtualList height={600} width="100%" itemCount={$records.length} itemSize={50}>
 						<div slot="item" let:index let:style {style} class="flex items-stretch">
+							{@const isSelected = selectedIds.includes($records[index].id.value)}
 							<Label class="w-full">
 								<input
 									type="checkbox"
@@ -190,7 +192,10 @@
 									{field}
 									{schema}
 									record={$records[index]}
-									class="w-full shadow-none hover:shadow-md transition hover:border-primary-400 !max-w-none"
+									class={cn(
+										'w-full shadow-none hover:shadow-md transition hover:border-primary !max-w-none',
+										isSelected && 'border-primary',
+									)}
 								/>
 							</Label>
 						</div>

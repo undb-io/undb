@@ -125,6 +125,8 @@ import {
   DateGreaterThan,
   DateGreaterThanOrEqual,
   DateIsToday,
+  DateIsTomorrow,
+  DateIsYesterday,
   DateLessThan,
   DateLessThanOrEqual,
   DateRangeDateEqual,
@@ -142,11 +144,13 @@ import {
   MultiSelectEqual,
   MultiSelectIn,
   MultiSelectIsEmpty,
+  NumberEmpty,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
   NumberLessThan,
   NumberLessThanOrEqual,
+  SelectEmpty,
   SelectEqual,
   SelectIn,
   StringContain,
@@ -172,7 +176,9 @@ import {
   $is_not_today,
   $is_root,
   $is_today,
+  $is_tomorrow,
   $is_true,
+  $is_yesterday,
   $neq,
 } from './operators.js'
 
@@ -382,6 +388,9 @@ const convertStringFilter = (
     case '$contains': {
       return Some(new StringContain(filter.path, new StringFieldValue(filter.value)))
     }
+    case '$not_contains': {
+      return Some(new StringContain(filter.path, new StringFieldValue(filter.value)).not())
+    }
     case '$starts_with': {
       return Some(new StringStartsWith(filter.path, new StringFieldValue(filter.value)))
     }
@@ -438,6 +447,12 @@ const convertNumberFilter = (
     case '$lte': {
       return Some(new NumberLessThanOrEqual(filter.path, new NumberFieldValue(filter.value)))
     }
+    case '$is_empty': {
+      return Some(new NumberEmpty(filter.path))
+    }
+    case '$is_not_empty': {
+      return Some(new NumberEmpty(filter.path).not())
+    }
     default:
       return None
   }
@@ -470,6 +485,12 @@ const convertSelectFilter = (filter: ISelectFilter): Option<RecordCompositeSpeci
           (filter.value as ISelectFieldValue[]).map((v) => new SelectFieldValue(v)),
         ).not(),
       )
+    }
+    case '$is_empty': {
+      return Some(new SelectEmpty(filter.path))
+    }
+    case '$is_not_empty': {
+      return Some(new SelectEmpty(filter.path).not())
     }
 
     default: {
@@ -574,6 +595,12 @@ const convertDateFilter = (
   }
   if (filter.operator === $is_not_today.value) {
     return Some(new DateIsToday(filter.path).not())
+  }
+  if (filter.operator === $is_tomorrow.value) {
+    return Some(new DateIsTomorrow(filter.path))
+  }
+  if (filter.operator === $is_yesterday.value) {
+    return Some(new DateIsYesterday(filter.path))
   }
 
   if (filter.value === undefined) {

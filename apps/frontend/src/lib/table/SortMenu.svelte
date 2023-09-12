@@ -17,6 +17,8 @@
 	import * as Alert from '$lib/components/ui/alert'
 	import Toast from '$components/ui/toast/toast.svelte'
 	import Badge from '$components/ui/badge/badge.svelte'
+	import { quintOut } from 'svelte/easing'
+	import { fly } from 'svelte/transition'
 
 	const table = getTable()
 	const view = getView()
@@ -99,7 +101,7 @@
 				<span class="text-xs font-medium text-gray-500">{$t('set sorts in this view')}</span>
 				<ul class="w-full items-center space-y-2" bind:this={el}>
 					{#each $value as sort, idx (sort.id)}
-						<li class="flex gap-2 items-center">
+						<li class="flex gap-2 items-center" transition:fly={{ duration: 300, x: 100, easing: quintOut }}>
 							{#if canSetViewSort}
 								<i role="button" class="handle ti ti-grip-vertical flex items-center" />
 							{/if}

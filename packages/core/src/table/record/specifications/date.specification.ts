@@ -1,5 +1,5 @@
 import { CompositeSpecification } from '@undb/domain'
-import { isAfter, isBefore, isEqual, isToday, isWithinInterval } from 'date-fns'
+import { isAfter, isBefore, isEqual, isToday, isTomorrow, isWithinInterval, isYesterday } from 'date-fns'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import { DateFieldValue } from '../../field/index.js'
@@ -103,8 +103,52 @@ export class DateIsToday extends BaseRecordSpecification<DateFieldValue> {
   }
 }
 
+export class DateIsTomorrow extends BaseRecordSpecification<DateFieldValue> {
+  constructor(fieldId: string) {
+    super(fieldId, new DateFieldValue(null))
+  }
+
+  isSatisfiedBy(r: Record): boolean {
+    const value = r.values.value.get(this.fieldId)
+    if (!(value instanceof DateFieldValue)) return false
+
+    const date = value.unpack()
+
+    return !!date && isTomorrow(date)
+  }
+
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.dateIsTomorrow(this)
+    return Ok(undefined)
+  }
+}
+
+export class DateIsYesterday extends BaseRecordSpecification<DateFieldValue> {
+  constructor(fieldId: string) {
+    super(fieldId, new DateFieldValue(null))
+  }
+
+  isSatisfiedBy(r: Record): boolean {
+    const value = r.values.value.get(this.fieldId)
+    if (!(value instanceof DateFieldValue)) return false
+
+    const date = value.unpack()
+
+    return !!date && isYesterday(date)
+  }
+
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.dateIsYesterday(this)
+    return Ok(undefined)
+  }
+}
+
 export class DateBetween extends CompositeSpecification<Record, IRecordVisitor> {
-  constructor(public readonly fieldId: string, public readonly date1: Date, public readonly date2: Date) {
+  constructor(
+    public readonly fieldId: string,
+    public readonly date1: Date,
+    public readonly date2: Date,
+  ) {
     super()
   }
 

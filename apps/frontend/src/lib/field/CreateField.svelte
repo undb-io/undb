@@ -20,6 +20,7 @@
 	import { t } from '$lib/i18n'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import Toast from '$components/ui/toast/toast.svelte'
+	import { onMount } from 'svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -53,13 +54,18 @@
 		},
 	})
 
+	const { form, enhance, tainted } = superFrm
+
 	$: if ($createFieldInitial) {
 		for (const [key, value] of Object.entries($createFieldInitial)) {
 			$form[key] = value
 		}
 	}
 
-	const { form, enhance, submitting } = superFrm
+	onMount(() => {
+		$tainted = undefined
+		$form.name = `${$t('Field')} ${($table.schema.fields.length - 5 ?? 0) + 1}`
+	})
 
 	$: showDescription = false
 	$: if (!showDescription) {
@@ -138,7 +144,7 @@
 							</Label>
 						{/if}
 						{#if canDisplay($form.type)}
-							<HoverCard.Root>
+							<HoverCard.Root openDelay={10}>
 								<HoverCard.Trigger>
 									<Label class="flex items-center justify-center gap-2">
 										<Switch class="whitespace-nowrap" bind:checked={$form.display}></Switch>
@@ -149,7 +155,15 @@
 									<HoverCard.Content>
 										<div class="flex gap-2">
 											{#each displayFields as field}
-												<Badge>{field}</Badge>
+												{@const f = $table.schema.getFieldByName(field)}
+												{#if f.isSome()}
+													<Badge variant="secondary" class="inline-flex items-center gap-2">
+														<FieldIcon type={f.unwrap().type} />
+														<span>
+															{f.unwrap().name.value}
+														</span>
+													</Badge>
+												{/if}
 											{/each}
 										</div>
 									</HoverCard.Content>

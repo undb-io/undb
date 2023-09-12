@@ -4,6 +4,9 @@ import { PassportModule } from '@nestjs/passport'
 import { AuthzModule } from '../authz/authz.module.js'
 import { MemberModule } from '../authz/member/member.module.js'
 import { UserModule } from '../core/user/user.module.js'
+import { ApiTokenModule } from '../openapi/api-token/api-token.module.js'
+import { ApiTokenGuard } from './api-token/api-token.guard.js'
+import { ApiTokenStrategy } from './api-token/api-token.strategy.js'
 import { AuthController } from './auth.controller.js'
 import { AuthService } from './auth.service.js'
 import {
@@ -21,11 +24,13 @@ const CommandHandlers = [NestLgoinCommandHandler, NestRegisterCommandHandler, Ne
 const QueryHandlers = [NestGetMeQueryHandler]
 
 @Module({
-  imports: [CqrsModule, UserModule, AuthzModule, PassportModule, MemberModule],
+  imports: [CqrsModule, UserModule, AuthzModule, PassportModule, MemberModule, ApiTokenModule],
   providers: [
     AuthService,
     LocalStrategy,
     JwtStrategy,
+    ApiTokenStrategy,
+    ApiTokenGuard,
     ...CommandHandlers,
     ...QueryHandlers,
     CryptService,

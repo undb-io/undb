@@ -45,7 +45,7 @@
 
 {#if value?.length}
 	<ul class="space-y-2" bind:this={el}>
-		{#each value as filter, index (filter.path)}
+		{#each value as filter, index (String(filter.path) + filter.operator + String(filter.value))}
 			<FilterItem {filter} {index} {remove} {readonly} {fieldFilter} />
 		{/each}
 	</ul>

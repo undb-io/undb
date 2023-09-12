@@ -31,6 +31,7 @@ import type {
   MultiSelectEqual,
   MultiSelectIn,
   MultiSelectIsEmpty,
+  NumberEmpty,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -38,6 +39,7 @@ import type {
   NumberLessThanOrEqual,
   ParentAvailableSpec,
   ReferenceEqual,
+  SelectEmpty,
   SelectEqual,
   SelectIn,
   StringContain,
@@ -73,7 +75,7 @@ import {
   ParentField,
   TreeField,
 } from '@undb/core'
-import { endOfDay, startOfDay } from 'date-fns'
+import { endOfToday, endOfTomorrow, endOfYesterday, startOfToday, startOfTomorrow, startOfYesterday } from 'date-fns'
 import { castArray } from 'lodash-es'
 import { Attachment } from '../../entity/attachment.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
@@ -221,6 +223,9 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
   numberLessThanOrEqual(s: NumberLessThanOrEqual): void {
     this.qb.where(this.getFieldId(s.fieldId), '<=', s.value.unpack())
   }
+  numberEmpty(s: NumberEmpty): void {
+    this.qb.whereNull(this.getFieldId(s.fieldId))
+  }
   dateEqual(s: DateEqual): void {
     if (s.value.unpack() === null) {
       this.qb.whereNull(this.getFieldId(s.fieldId))
@@ -260,10 +265,13 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     }
   }
   dateIsToday(s: DateIsToday): void {
-    this.qb.whereBetween(this.getFieldId(s.fieldId), [
-      startOfDay(new Date()).toISOString(),
-      endOfDay(new Date()).toISOString(),
-    ])
+    this.qb.whereBetween(this.getFieldId(s.fieldId), [startOfToday().toISOString(), endOfToday().toISOString()])
+  }
+  dateIsTomorrow(s: DateIsToday): void {
+    this.qb.whereBetween(this.getFieldId(s.fieldId), [startOfTomorrow().toISOString(), endOfTomorrow().toISOString()])
+  }
+  dateIsYesterday(s: DateIsToday): void {
+    this.qb.whereBetween(this.getFieldId(s.fieldId), [startOfYesterday().toISOString(), endOfYesterday().toISOString()])
   }
   dateRangeEqual(s: DateRangeEqual): void {
     const range = s.value.unpack()
@@ -382,6 +390,9 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
       s.fieldId,
       s.value.map((v) => v.id),
     )
+  }
+  selectEmpty(s: SelectEmpty): void {
+    this.qb.whereNull(this.getFieldId(s.fieldId))
   }
   boolIsTrue(s: BoolIsTrue): void {
     this.qb.where(this.getFieldId(s.fieldId), true)

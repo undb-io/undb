@@ -2,13 +2,12 @@ import { and } from '@undb/domain'
 import { isArray, isBoolean, isNull, isNumber, isString } from 'lodash-es'
 import type { Option as O } from 'oxide.ts'
 import { WithFormFieldsRequirements } from '../form/specifications/form-fields.specification.js'
-import { OptionKey } from '../option/option-key.vo.js'
 import { Option } from '../option/option.js'
 import { Options } from '../option/options.js'
 import type { TableCompositeSpecification } from '../specifications/index.js'
 import type { Table } from '../table.js'
 import type { BaseField } from './field.base.js'
-import type { IUpdateFieldSchema, SelectFieldTypes } from './field.type.js'
+import type { IUpdateFieldSchema } from './field.type.js'
 import { canDisplay, isControlledFieldType } from './field.util.js'
 import { CurrencySymbol } from './fields/currency/currency-symbol.vo.js'
 import type { ReferenceField } from './fields/reference/reference-field.js'
@@ -21,7 +20,7 @@ import { WithNewFieldType } from './specifications/field.specification.js'
 import { WithReferenceFieldId } from './specifications/lookup-field.specification.js'
 import { WithRatingMax } from './specifications/rating-field.specification.js'
 import { WithDisplayFields, WithForeignTableId } from './specifications/reference-field.specification.js'
-import { WithNewOption, WithOption, WithOptions, WithoutOption } from './specifications/select-field.specification.js'
+import { WithOptions } from './specifications/select-field.specification.js'
 
 export class UpdateFieldHelper {
   static updateField(table: Table, fromField: BaseField, input: IUpdateFieldSchema): O<TableCompositeSpecification> {
@@ -105,32 +104,9 @@ export class UpdateFieldHelper {
       case 'select':
       case 'multi-select': {
         const optionsInput = input.options
-        if (typeChanged) {
-          if (isArray(optionsInput) && optionsInput.length > 0) {
-            const options = optionsInput.map((option) => Option.create(option))
-            specs.push(new WithOptions(type, fromField.id.value, new Options(options)))
-          }
-        } else {
-          if (isArray(optionsInput) && optionsInput.length > 0) {
-            const options = (fromField as SelectFieldTypes).options.optionsMap
-            for (const option of optionsInput) {
-              const existing = !!option.key && !!options.get(option.key)
-              if (existing) {
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                specs.push(new WithOption(type, id, options.get(option.key!)!.updateOption(option)))
-                continue
-              }
-
-              specs.push(new WithNewOption(type, id, Option.create(option)))
-            }
-
-            for (const [optionId] of options) {
-              if (!optionsInput.some((o) => o.key === optionId)) {
-                const optionKey = OptionKey.fromString(optionId)
-                specs.push(new WithoutOption(type, id, optionKey))
-              }
-            }
-          }
+        if (isArray(optionsInput) && optionsInput.length > 0) {
+          const options = optionsInput.map((option) => Option.create(option))
+          specs.push(new WithOptions(type, fromField.id.value, new Options(options)))
         }
         break
       }

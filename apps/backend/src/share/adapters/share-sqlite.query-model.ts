@@ -1,9 +1,10 @@
-import { EntityManager } from '@mikro-orm/better-sqlite'
+import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
-import { IQueryShare, type ShareSpecification } from '@undb/integrations'
+import type { IQueryShare } from '@undb/integrations'
+import { type ShareSpecification } from '@undb/integrations'
 import { ShareSqliteQueryModel } from '@undb/sqlite'
-import { Option } from 'oxide.ts'
+import type { Option } from 'oxide.ts'
 
 export const SHARE_QUERY_MODEL = Symbol('SHARE_QUERY_MODEL')
 export const InjectShareQueryModel = () => Inject(SHARE_QUERY_MODEL)

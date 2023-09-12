@@ -31,7 +31,7 @@
 	$: allMembers = [...members, ...selectedMembers]
 
 	let selected: ICollaboratorProfile[] = []
-	$: if (value?.length)
+	$: if (Array.isArray(value) && value?.length)
 		selected = value?.map((userId) => allMembers.find((m) => m.userId === userId)!).filter(Boolean) ?? []
 </script>
 

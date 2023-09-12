@@ -63,7 +63,7 @@
 </script>
 
 <div class="mb-2 flex justify-between">
-	<p>{$t('Field')}</p>
+	<p class="dark:text-white">{$t('Field')}</p>
 	<div class="flex items-center">
 		{#if notHiddenFields.length}
 			<Button
@@ -92,10 +92,10 @@
 <div class="space-y-2">
 	{#each hiddenFields as field}
 		<button
-			class="block border w-full !py-2 !px-4 shadow-sm hover:shadow-md transition cursor-pointer hover:border-primary-500 !max-w-none"
+			class="block border w-full !py-2 !px-4 shadow-sm hover:shadow-md transition cursor-pointer hover:border-primary-500 !max-w-none rounded-sm"
 			on:click={() => setFormFieldsVisibility(field.id.value)}
 		>
-			<div class="flex gap-2 items-center">
+			<div class="flex gap-2 items-center dark:text-white">
 				<FieldIcon type={field.type} />
 				<span>
 					{field.name.value}

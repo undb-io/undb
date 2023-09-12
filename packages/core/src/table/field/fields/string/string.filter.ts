@@ -7,6 +7,7 @@ import {
   $is_empty,
   $is_not_empty,
   $neq,
+  $not_contains,
   $regex,
   $starts_with,
 } from '../../../filter/operators.js'
@@ -15,6 +16,7 @@ export const stringFilterOperators = z.union([
   $eq,
   $neq,
   $contains,
+  $not_contains,
   $starts_with,
   $ends_with,
   $regex,

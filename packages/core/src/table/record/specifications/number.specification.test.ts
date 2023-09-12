@@ -1,6 +1,7 @@
 import { NumberFieldValue } from '../../field'
 import { createTestRecord } from '../fixtures'
 import {
+  NumberEmpty,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -101,6 +102,16 @@ test.each<[NumberLessThanOrEqual, NumberEqual, boolean]>([
     new NumberEqual('name', new NumberFieldValue(null)),
     false,
   ],
+])('NumberLessThanOrEqual.isSatisfiedBy', (spec, value, result) => {
+  const record = createTestRecord(value)
+
+  expect(spec.isSatisfiedBy(record)).toBe(result)
+})
+
+test.each<[NumberEmpty, NumberEqual, boolean]>([
+  [new NumberEmpty('name'), new NumberEqual('name', new NumberFieldValue(8)), false],
+  [new NumberEmpty('name'), new NumberEqual('name', new NumberFieldValue(null)), true],
+  [new NumberEmpty('name'), new NumberEqual('name', new NumberFieldValue(0)), false],
 ])('NumberLessThanOrEqual.isSatisfiedBy', (spec, value, result) => {
   const record = createTestRecord(value)
 

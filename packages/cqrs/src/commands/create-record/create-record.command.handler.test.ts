@@ -1,3 +1,4 @@
+import { IRLSAuthzService } from '@undb/authz'
 import {
   ClsStore,
   IClsService,
@@ -7,17 +8,15 @@ import {
   Record,
   Table,
   WithTableSchema,
-  createMutateRecordValuesSchema,
   createTestRecord,
   createTestTable,
 } from '@undb/core'
-import { CreateRecordCommand } from './create-record.command'
-import { MockProxy, mock, mockDeep } from 'vitest-mock-extended'
-import { CreateRecordCommandHandler } from './create-record.command.handler'
-import { IRLSAuthzService } from '@undb/authz/dist'
-import { SpyInstance } from 'vitest'
-import { None, Some } from 'oxide.ts'
 import { identity } from 'lodash-es'
+import { None, Some } from 'oxide.ts'
+import { SpyInstance } from 'vitest'
+import { MockProxy, mock, mockDeep } from 'vitest-mock-extended'
+import { CreateRecordCommand } from './create-record.command'
+import { CreateRecordCommandHandler } from './create-record.command.handler'
 
 describe('CreateRecordCommandHandler', () => {
   let table: Table
@@ -45,7 +44,7 @@ describe('CreateRecordCommandHandler', () => {
     handler = new CreateRecordCommandHandler(tableRepo, recordRepo, cls, rls)
   })
   test('create record success', async () => {
-    cls.get.calledWith('user.userId').mockResolvedValue('usr123')
+    cls.get.calledWith('user.userId').mockReturnValue('usr123')
     tableRepo.findOneById.calledWith(table.id.value).mockResolvedValue(Some(table))
     spy.mockReturnValue(record)
 
@@ -58,7 +57,7 @@ describe('CreateRecordCommandHandler', () => {
     expect(id).toEqual(record.id.value)
   })
   test('findOneById failed', async () => {
-    cls.get.calledWith('user.userId').mockResolvedValue('usr123')
+    cls.get.calledWith('user.userId').mockReturnValue('usr123')
     tableRepo.findOneById.mockResolvedValue(None)
     spy.mockReturnValue(record)
 

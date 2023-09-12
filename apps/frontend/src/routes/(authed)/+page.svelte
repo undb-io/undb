@@ -32,8 +32,11 @@
 						<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
 					</Button>
 				</Tooltip.Trigger>
-				<Tooltip.Content sideOffset={1}>
-					<p class="w-24">meta + b</p>
+				<Tooltip.Content
+					sideOffset={1}
+					class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
+				>
+					<kbd> Command + b </kbd>
 				</Tooltip.Content>
 			</Tooltip.Root>
 		</div>
@@ -79,7 +82,14 @@
 							>
 								{table.name.slice(0, 1)}
 							</span>
-							<h5 class="font-semibold truncate" title={table.name}>{table.name}</h5>
+							<Tooltip.Root openDelay={50}>
+								<Tooltip.Trigger class="truncate">
+									<h5 class="font-semibold truncate">{table.name}</h5>
+								</Tooltip.Trigger>
+								<Tooltip.Content>
+									<p>{table.name}</p>
+								</Tooltip.Content>
+							</Tooltip.Root>
 						</div>
 					</Card.Header>
 				</Card.Root>
@@ -91,9 +101,9 @@
 				on:click={() => createTableModal.open()}
 			>
 				<Card.Header>
-					<div class="flex items-center gap-2 h-full">
+					<div class="flex items-center gap-2 h-full font-semibold text-gray-600">
 						<i class="ti ti-plus" />
-						<p class="font-bold">{$t('Create New Table')}</p>
+						<p>{$t('Create New Table')}</p>
 					</div>
 				</Card.Header>
 			</Card.Root>

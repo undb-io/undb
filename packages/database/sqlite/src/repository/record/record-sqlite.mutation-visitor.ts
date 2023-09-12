@@ -11,6 +11,8 @@ import type {
   DateGreaterThan,
   DateGreaterThanOrEqual,
   DateIsToday,
+  DateIsTomorrow,
+  DateIsYesterday,
   DateLessThan,
   DateLessThanOrEqual,
   DateRangeDateEqual,
@@ -30,6 +32,7 @@ import type {
   MultiSelectEqual,
   MultiSelectIn,
   MultiSelectIsEmpty,
+  NumberEmpty,
   NumberEqual,
   NumberGreaterThan,
   NumberGreaterThanOrEqual,
@@ -37,6 +40,7 @@ import type {
   NumberLessThanOrEqual,
   ParentAvailableSpec,
   ReferenceEqual,
+  SelectEmpty,
   SelectEqual,
   SelectIn,
   StringContain,
@@ -209,6 +213,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
   numberLessThanOrEqual(s: NumberLessThanOrEqual): void {
     throw new Error('Method not implemented.')
   }
+  numberEmpty(s: NumberEmpty): void {
+    throw new Error('Method not implemented.')
+  }
   dateEqual(s: DateEqual): void {
     throw new Error('Method not implemented.')
   }
@@ -227,6 +234,12 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
   dateIsToday(s: DateIsToday): void {
     throw new Error('Method not implemented.')
   }
+  dateIsTomorrow(s: DateIsTomorrow): void {
+    throw new Error('Method not implemented.')
+  }
+  dateIsYesterday(s: DateIsYesterday): void {
+    throw new Error('Method not implemented.')
+  }
   dateRangeEqual(s: DateRangeEqual): void {
     throw new Error('Method not implemented.')
   }
@@ -240,6 +253,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     throw new Error('Method not implemented.')
   }
   selectIn(s: SelectIn): void {
+    throw new Error('Method not implemented.')
+  }
+  selectEmpty(s: SelectEmpty): void {
     throw new Error('Method not implemented.')
   }
   boolIsTrue(s: BoolIsTrue): void {

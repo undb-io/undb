@@ -7,7 +7,7 @@
 
 <div class="flex flex-col items-center justify-center gap-4">
 	{#if $hasPermission('webhook:create')}
-		<p class="font-bold">{$t('Create New Webhook', { ns: 'webhook' })}</p>
+		<p class="font-bold text-white">{$t('Create New Webhook', { ns: 'webhook' })}</p>
 
 		<Button on:click={() => ($webhookDrawerMode = 'create')} class="w-[250px]">
 			{$t('Create New Webhook', { ns: 'webhook' })}

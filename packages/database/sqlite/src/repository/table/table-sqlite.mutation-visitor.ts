@@ -23,6 +23,7 @@ import type {
   WithTableForms,
   WithTableViewId,
   WithTimeFormat,
+  WithoutForm,
   WithoutWidgetSpecification,
 } from '@undb/core'
 import {
@@ -292,6 +293,10 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const form = new Form(table, s.form)
     this.em.persist(form)
   }
+  withoutForm(s: WithoutForm): void {
+    const form = this.em.getReference(Form, s.form.id.value)
+    this.em.remove(form)
+  }
   viewsOrderEqual(s: WithViewsOrder): void {
     const table = this.table
     wrap(table).assign({ viewsOrder: s.order.order })
@@ -394,7 +399,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
           ? await this.em.findOne(SelectField, s.fieldId, { populate: ['options'] })
           : await this.em.findOne(MultiSelectField, s.fieldId, { populate: ['options'] })
       if (field) {
-        wrap(field).assign({ options: s.options.options.map((option) => new Option(field, option)) })
+        wrap(field).assign({ options: s.options.options.map((option, index) => new Option(field, option, index + 1)) })
         this.em.persist(field)
       }
     })
@@ -408,9 +413,12 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     this.em.persist(option)
   }
   newOption(s: WithNewOption): void {
-    const field = this.#getField(s.type, s.fieldId) as SelectField | MultiSelectField
-    const option = new Option(field, s.option)
-    this.em.persist(option)
+    this.addJobs(async () => {
+      const field = this.#getField(s.type, s.fieldId) as SelectField | MultiSelectField
+      const count = await this.em.count(Option, { field: s.fieldId })
+      const option = new Option(field, s.option, count + 1)
+      this.em.persist(option)
+    })
   }
   withoutOption(s: WithoutOption): void {
     const option = this.em.getReference(Option, s.optionKey.value as never)

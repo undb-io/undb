@@ -62,6 +62,7 @@ import type {
   WithWidgetSpecification,
   WithWidgetsLayout,
   WithoutField,
+  WithoutForm,
   WithoutOption,
   WithoutView,
   WithoutWidgetSpecification,
@@ -146,6 +147,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   newForm(s: WithNewForm): void {
+    throw new Error('Method not implemented.')
+  }
+  withoutForm(s: WithoutForm): void {
     throw new Error('Method not implemented.')
   }
   filterEqual(s: WithFilter): void {

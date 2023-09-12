@@ -47,7 +47,7 @@
 			})
 		},
 	})
-	const { form, enhance, constraints, delayed, submitting, tainted } = superFrm
+	const { form, enhance, delayed, submitting, tainted } = superFrm
 
 	onMount(() => {
 		$tainted = undefined
@@ -71,11 +71,9 @@
 			<h3 class="text-lg text-center mb-5">{f.name.value}</h3>
 			{#if !submitted}
 				<form id="createShareRecord" class="space-y-5" method="POST" use:enhance>
-					<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
-						{#each fields as field}
-							<FormSubmitItem form={f} {field} {tempRecord} {superFrm} />
-						{/each}
-					</div>
+					{#each fields as field}
+						<FormSubmitItem form={f} {field} {tempRecord} {superFrm} />
+					{/each}
 
 					<div class="w-full flex justify-end gap-2">
 						<Button class="gap-2" type="submit" form="createShareRecord" disabled={$submitting}>

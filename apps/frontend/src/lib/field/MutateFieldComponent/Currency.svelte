@@ -31,9 +31,9 @@
 
 <DropdownMenu.Root positioning={{ placement: 'bottom-start' }}>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Label>
+		<Label class="flex flex-col gap-2">
 			{$t('symbol')}
-			<Button variant="outline" builders={[builder]} {...$$restProps}>
+			<Button type="button" variant="outline" builders={[builder]} {...$$restProps}>
 				{$symbol}
 			</Button>
 		</Label>

@@ -29,7 +29,7 @@
 		<section class="h-full">
 			{#if $webhookDrawerMode === 'list'}
 				<div class="flex items-center justify-between">
-					<h3 class="whitespace-nowrap truncate">
+					<h3 class="whitespace-nowrap truncate dark:text-white">
 						{$table.name.value} - Webhooks
 					</h3>
 
@@ -43,7 +43,7 @@
 			{:else if $webhookDrawerMode === 'create' && $hasPermission('webhook:create')}
 				<div class="flex flex-col flex-1">
 					<div class="flex items-center justify-between mb-4">
-						<h3 class="whitespace-nowrap truncate">
+						<h3 class="whitespace-nowrap truncate dark:text-white">
 							<button on:click={() => ($webhookDrawerMode = 'list')}>
 								<i class="ti ti-corner-up-left" />
 							</button>
@@ -55,7 +55,7 @@
 			{:else if $webhookDrawerMode === 'update' && $selectedWebhook && $hasPermission('webhook:update')}
 				<div class="flex flex-col flex-1">
 					<div class="flex items-center justify-between mb-4">
-						<h3 class="whitespace-nowrap truncate">
+						<h3 class="whitespace-nowrap truncate dark:text-white">
 							<button on:click={() => ($selectedWebhook = undefined)}>
 								<i class="ti ti-corner-up-left" />
 							</button>

@@ -1,9 +1,9 @@
-import { EntityManager } from '@mikro-orm/better-sqlite'
+import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { MikroORM, UseRequestContext } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import { type Share, type ShareSpecification } from '@undb/integrations'
 import { ShareSqliteRepository } from '@undb/sqlite'
-import { Option } from 'oxide.ts'
+import type { Option } from 'oxide.ts'
 
 export const SHARE_REPOSITORY = Symbol('SHARE_REPOSITORY')
 export const InjectShareRepository = () => Inject(SHARE_REPOSITORY)

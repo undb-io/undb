@@ -1,4 +1,5 @@
-import { isNumber } from 'lodash-es'
+import { CompositeSpecification } from '@undb/domain'
+import { isNil, isNumber } from 'lodash-es'
 import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import { NumberFieldValue } from '../../field/fields/number/number-field-value.js'
@@ -76,6 +77,27 @@ export class NumberLessThanOrEqual extends BaseRecordSpecification<NumberFieldVa
 
   accept(v: IRecordVisitor): Result<void, string> {
     v.numberLessThanOrEqual(this)
+    return Ok(undefined)
+  }
+}
+
+export class NumberEmpty extends CompositeSpecification<Record, IRecordVisitor> {
+  constructor(public readonly fieldId: string) {
+    super()
+  }
+
+  mutate(r: Record): Result<Record, string> {
+    r.values.setValue(this.fieldId, new NumberFieldValue(null))
+    return Ok(r)
+  }
+
+  isSatisfiedBy(r: Record): boolean {
+    const value = r.values.value.get(this.fieldId)
+    return value instanceof NumberFieldValue && isNil(value.unpack())
+  }
+
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.numberEmpty(this)
     return Ok(undefined)
   }
 }

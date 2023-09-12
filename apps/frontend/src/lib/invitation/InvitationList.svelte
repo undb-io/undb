@@ -6,6 +6,7 @@
 	import { hasPermission } from '$lib/store/authz'
 	import { Input } from '$lib/components/ui/input'
 	import { Button } from '$lib/components/ui/button'
+	import EmptyInvitation from './EmptyInvitation.svelte'
 
 	let q = ''
 
@@ -20,9 +21,9 @@
 	}
 </script>
 
-<div class="space-y-4">
-	<div class="w-full flex items-center justify-between">
-		<h5>{$t('empty invitation', { ns: 'common', count: invitations.length })}</h5>
+<div class="space-y-4 flex-1 flex flex-col">
+	<div class="w-full flex items-center justify-between h-full">
+		<h5 class="text-sm text-gray-500">{$t('n invitation(s)', { ns: 'common', count: invitations.length })}</h5>
 		<div class="flex items-center gap-2">
 			<form on:submit={onSubmit}>
 				<div class="flex items-center gap-2">
@@ -38,9 +39,13 @@
 		</div>
 	</div>
 
-	<ul class="gap-4 flex flex-col w-full">
-		{#each invitations as invitation (invitation.id)}
-			<InvitationListItem {invitation} />
-		{/each}
-	</ul>
+	{#if invitations.length}
+		<ul class="gap-4 flex flex-col w-full">
+			{#each invitations as invitation (invitation.id)}
+				<InvitationListItem {invitation} />
+			{/each}
+		</ul>
+	{:else}
+		<EmptyInvitation />
+	{/if}
 </div>
