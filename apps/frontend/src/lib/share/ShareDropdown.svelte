@@ -10,6 +10,7 @@
 	import * as Popover from '$lib/components/ui/popover'
 
 	import { copyText } from 'svelte-copy'
+	import { Textarea } from '$components/ui/textarea'
 
 	export let url: string
 	export let share: IQueryShare | null
@@ -102,9 +103,9 @@
 						</div>
 					{/if}
 				</Label>
-				<h4>Embed</h4>
+				<h5>{$t('Embed', { ns: 'common' })}</h5>
 				<div class="flex items-center gap-2">
-					<Input value={iframe} readonly></Input>
+					<Textarea value={iframe} readonly />
 					{#if iframeCopied}
 						<i class="ti ti-check text-green-500" />
 					{:else}
