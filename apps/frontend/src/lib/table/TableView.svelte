@@ -254,6 +254,7 @@
 	const onAfterColumnResize = async (
 		event: RevoGridCustomEvent<Record<RevoGridType.ColumnProp, RevoGridType.ColumnRegular>>,
 	): Promise<void> => {
+		if ($readonly) return
 		for (const [fieldId, f] of Object.entries(event.detail)) {
 			const width = f.size
 			if (width && $view.getFieldWidth(fieldId) !== width) {
