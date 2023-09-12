@@ -26,6 +26,7 @@ import { ReorderOptionsCommandHandler } from './reorder-options.command.handler.
 import { ResetFieldSortCommandHandler } from './reset-field-sort.command.handler.js'
 import { RestoreRecordCommandHandler } from './restore-record.command.handler.js'
 import { SetCalendarFieldCommandHandler } from './set-calendar-field.command.handler.js'
+import { SetFieldDisplayCommandHandler } from './set-field-display.command.handler.js'
 import { SetFieldSortCommandHandler } from './set-field-sort.command.handler.js'
 import { SetFieldVisibilityCommandHandler } from './set-field-visibility.command.handler.js'
 import { SetFieldWidthCommandHandler } from './set-field-width.command.handler.js'
@@ -106,4 +107,5 @@ export const commandHandlers = [
   UpdateFormCommandHandler,
   RestoreRecordCommandHandler,
   SetFormFieldFilterCommandHandler,
+  SetFieldDisplayCommandHandler,
 ]
