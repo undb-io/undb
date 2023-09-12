@@ -34,8 +34,6 @@
 	$: if (files) {
 		handFiles(files)
 	}
-
-	$: console.log(value)
 </script>
 
 <FileInput type="file" multiple bind:files class={$$restProps.class} disabled={readonly} />

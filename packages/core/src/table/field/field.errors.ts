@@ -29,3 +29,11 @@ export class FieldTypeNotSearchable extends ExceptionBase {
     )
   }
 }
+
+export class CannotSetFieldDisplayException extends ExceptionBase {
+  code = 'FIELD.CANNOT_SET_FIELD_DISPLAY'
+
+  constructor(type: IFieldType) {
+    super(`cannot set field of type ${type} display`)
+  }
+}

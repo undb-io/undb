@@ -396,6 +396,7 @@ export const config: InitOptions = {
         'Search Foreign Records': 'search foreign table records',
         'insert refenrence looking field': 'insert looking field',
         'create record by form': 'create record by{{form}}',
+        'set as display field': 'set as display field',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -821,6 +822,7 @@ export const config: InitOptions = {
         'Search Foreign Records': '搜索关联表记录',
         'insert refenrence looking field': '插入关联查看列',
         'create record by form': '通过表单{{form}}创建',
+        'set as display field': '设置为显示列',
       },
       webhook: {
         Webhook: 'Webhook',

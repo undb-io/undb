@@ -2,10 +2,12 @@ import {
   CreateFieldCommand,
   DeleteFieldCommand,
   DuplicateFieldCommand,
+  SetFieldDisplayCommand,
   UpdateFieldCommand,
   createFieldCommandInput,
   deleteFieldCommandInput,
   duplicateFieldCommandInput,
+  setFieldDisplaysCommandInput,
   updateFieldCommandInput,
 } from '@undb/cqrs'
 import type { ICommandBus } from '@undb/domain'
@@ -47,6 +49,14 @@ export const createFieldRouter = (procedure: typeof publicProcedure) => (command
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new DeleteFieldCommand(input)
+        return commandBus.execute(cmd)
+      }),
+    setDisplay: procedure
+      .use(authz('table:update_field'))
+      .input(setFieldDisplaysCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new SetFieldDisplayCommand(input)
         return commandBus.execute(cmd)
       }),
     select: createSelectFieldRouter(procedure)(commandBus),
