@@ -60,9 +60,8 @@
 
 	$: url = $selectedForm ? getShareFormUrl($page.url.origin, $selectedForm?.id.value) : ''
 
-	const onChange = (e: Event) => {
-		const target = e.target as HTMLInputElement
-		if (!share && target.checked && $selectedForm) {
+	const onChange = (checked: boolean | undefined) => {
+		if (!share && checked && $selectedForm) {
 			$createFormShare.mutate({
 				tableId: $table.id.value,
 				targetId: $selectedForm.id.value,
@@ -74,7 +73,7 @@
 			$updateFormShare.mutate({
 				shareId: share.id,
 				update: {
-					enabled: target.checked,
+					enabled: checked,
 				},
 			})
 		}
@@ -107,7 +106,7 @@
 								}}
 							>
 								<Label class="inline-flex items-center gap-2">
-									<Switch class="inline-flex" checked={share?.enabled ?? false} on:change={onChange}></Switch>
+									<Switch class="inline-flex" checked={share?.enabled ?? false} onCheckedChange={onChange}></Switch>
 									<div class="whitespace-nowrap">
 										{$t('share')}
 									</div>
