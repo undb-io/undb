@@ -10,6 +10,7 @@ import { CreateTableCommandHandler } from './create-table.command.handler.js'
 import { CreateViewCommandHandler } from './create-view.command.handler.js'
 import { CreateWidgetCommandHandler } from './create-widget.command.handler.js'
 import { DeleteFieldCommandHandler } from './delete-field.command.handler.js'
+import { DeleteFormCommandHandler } from './delete-form.command.handler.js'
 import { DeleteOptionCommandHandler } from './delete-option.command.handler.js'
 import { DeleteRecordCommandHandler } from './delete-record.command.handler.js'
 import { DeleteTableCommandHandler } from './delete-table.command.handler.js'
@@ -108,4 +109,5 @@ export const commandHandlers = [
   RestoreRecordCommandHandler,
   SetFormFieldFilterCommandHandler,
   SetFieldDisplayCommandHandler,
+  DeleteFormCommandHandler,
 ]

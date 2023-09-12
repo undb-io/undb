@@ -428,6 +428,10 @@ export class Table {
     return spec
   }
 
+  public deleteForm(formId: string): Option<TableCompositeSpecification> {
+    return this.forms.deleteForm(formId)
+  }
+
   public deleteWidget(viewId: string, widgetId: string): TableCompositeSpecification {
     const view = this.mustGetView(viewId)
 

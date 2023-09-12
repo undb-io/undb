@@ -1,9 +1,11 @@
 import {
   CreateFormCommand,
   CreateFormFromViewCommand,
+  DeleteFormCommand,
   UpdateFormCommand,
   createFormCommandInput,
   createFormFromViewCommandInput,
+  deleteFormCommandInput,
   updateFormCommandInput,
 } from '@undb/cqrs'
 import type { ICommandBus } from '@undb/domain'
@@ -37,6 +39,14 @@ export const createFormRouter = (procedure: typeof publicProcedure) => (commandB
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new UpdateFormCommand(input)
+        return commandBus.execute(cmd)
+      }),
+    delete: procedure
+      .use(authz('table:delete_form'))
+      .input(deleteFormCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new DeleteFormCommand(input)
         return commandBus.execute(cmd)
       }),
     field: createFormFieldRouter(procedure.use(authz('table:update_form')))(commandBus),

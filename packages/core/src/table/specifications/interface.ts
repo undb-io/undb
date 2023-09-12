@@ -35,7 +35,7 @@ import type {
 } from '../form/index.js'
 import type { WithFormFieldsOrder } from '../form/specifications/form-fields-order.specification.js'
 import type { WithFormName } from '../form/specifications/form-name.specification.js'
-import type { WithNewForm, WithTableForms } from '../form/specifications/form.specification.js'
+import type { WithNewForm, WithTableForms, WithoutForm } from '../form/specifications/form.specification.js'
 import { type Table } from '../table.js'
 import type {
   WithWidgetSpecification,
@@ -97,6 +97,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withFormFieldFilter(s: WithFormFieldFilter): void
   formIdEqual(s: WithTableFormId): void
   newForm(s: WithNewForm): void
+  withoutForm(s: WithoutForm): void
 
   sortsEqual(s: WithSorts): void
 

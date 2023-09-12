@@ -60,6 +60,7 @@ import type {
   WithFormName,
   WithNewForm,
   WithTableForms,
+  WithoutForm,
 } from '../form/index.js'
 import type { WithFormFieldsOrder } from '../form/specifications/form-fields-order.specification.js'
 import type {
@@ -164,6 +165,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   withFormFieldsVisibility(s: WithFormFieldsVisibility): void {}
   withFormFieldsRequirements(s: WithFormFieldsRequirements): void {}
   newForm(s: WithNewForm): void {}
+  withoutForm(s: WithoutForm): void {}
   newView(s: WithNewView): void {}
   emojiEqual(s: WithTableEmoji): void {}
   withoutView(s: WithoutView): void {}
