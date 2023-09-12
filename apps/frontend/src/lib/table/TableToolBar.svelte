@@ -6,8 +6,6 @@
 	import { updateTableModal } from '$lib/store/modal'
 	import { getTable } from '$lib/store/table'
 	import SearchTable from './SearchTable.svelte'
-	import FormsButton from './FormsButton.svelte'
-	import RecordTrashButton from './RecordTrashButton.svelte'
 	import TableMenu from './TableMenu.svelte'
 	import { hasPermission } from '$lib/store/authz'
 	import { Button } from '$components/ui/button'
