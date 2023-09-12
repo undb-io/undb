@@ -3,6 +3,8 @@
 	import { Input } from '$lib/components/ui/input'
 	import { isString } from 'lodash-es'
 
+	export let readonly = false
+
 	function dateIsValid(date: string) {
 		return !Number.isNaN(new Date(date).getTime())
 	}
@@ -13,4 +15,4 @@
 	$: value = dateValue ? startOfDay(new Date(dateValue)).toISOString() : ''
 </script>
 
-<Input type="date" bind:value={dateValue} class={$$restProps.class} />
+<Input type="date" bind:value={dateValue} class={$$restProps.class} {readonly} />
