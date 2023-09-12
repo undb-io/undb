@@ -18,12 +18,12 @@
 
 <div class="flex flex-col h-screen">
 	<nav class="py-3 px-4 border-b">
-		<div class="flex items-center gap-2">
+		<a target="_blank" href="https://www.undb.xyz" class="flex items-center gap-2">
 			<img class="h-6 w-auto" src={logo} alt="undb" />
 			<p class="text-lg font-semibold select-none !text-primary-600">undb</p>
 
 			<h4 class="ml-2 font-bold text-lg">{$table.name.value}</h4>
-		</div>
+		</a>
 	</nav>
 	<main class="flex-1">
 		<TableIndex />
