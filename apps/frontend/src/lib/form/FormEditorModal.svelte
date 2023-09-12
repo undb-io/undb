@@ -10,9 +10,9 @@
 	import ShareDropdown from '$lib/share/ShareDropdown.svelte'
 	import { invalidate } from '$app/navigation'
 	import * as Dialog from '$lib/components/ui/dialog'
-	import { Switch } from '$lib/components/ui/switch'
 	import { Input } from '$lib/components/ui/input'
 	import { Label } from '$lib/components/ui/label'
+	import { Button } from '$components/ui/button'
 
 	const table = getTable()
 
@@ -45,39 +45,9 @@
 		})
 	}
 
-	const createFormShare = trpc().share.create.mutation({
-		async onSuccess(data, variables, context) {
-			await $getShare.refetch()
-		},
-	})
-
-	const updateFormShare = trpc().share.update.mutation({
-		async onSuccess(data, variables, context) {
-			await $getShare.refetch()
-		},
-	})
 	$: share = $getShare.data?.share ?? null
 
 	$: url = $selectedForm ? getShareFormUrl($page.url.origin, $selectedForm?.id.value) : ''
-
-	const onChange = (checked: boolean | undefined) => {
-		if (!share && checked && $selectedForm) {
-			$createFormShare.mutate({
-				tableId: $table.id.value,
-				targetId: $selectedForm.id.value,
-				targetType: 'form',
-				enabled: true,
-			})
-		}
-		if (share) {
-			$updateFormShare.mutate({
-				shareId: share.id,
-				update: {
-					enabled: checked,
-				},
-			})
-		}
-	}
 </script>
 
 {#if $selectedForm}
@@ -106,10 +76,10 @@
 								}}
 							>
 								<Label class="inline-flex items-center gap-2">
-									<Switch class="inline-flex" checked={share?.enabled ?? false} onCheckedChange={onChange}></Switch>
-									<div class="whitespace-nowrap">
+									<Button variant="secondary" class="gap-2">
+										<i class="ti ti-share"></i>
 										{$t('share')}
-									</div>
+									</Button>
 								</Label>
 							</ShareDropdown>
 						</div></Dialog.Title
