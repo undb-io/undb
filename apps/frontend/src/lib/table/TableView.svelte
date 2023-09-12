@@ -125,8 +125,10 @@
 						onChange: (event: any) => {
 							recordSelection.updateAll($records, event.target.checked)
 						},
-						class:
+						class: cn(
 							'w-4 h-4 text-primary absolute top-1/2 left-1/4 translate-y-[-50%] translate-x-[-50%] bg-gray-100 border-gray-300 rounded focus:ring-primary dark:focus:ring-primary dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center dark:!bg-gray-200 dark:border-gray-300',
+							$readonly && 'hidden',
+						),
 					})
 				},
 				cellProperties: (cell) => ({
@@ -140,8 +142,11 @@
 							'span',
 							{
 								class: cn(
-									'undb-row-index relative basis-[50%] text-gray-400 text-xs opacity-100 text-ellipsis whitespace-nowrap group-hover:hidden dark:text-gray-100 ',
+									'undb-row-index relative basis-[50%] text-gray-400 text-xs opacity-100 text-ellipsis whitespace-nowrap dark:text-gray-100 ',
 									checked && 'hidden',
+									{
+										'group-hover:hidden': !$readonly,
+									},
 								),
 							},
 							String(props.rowIndex + 1),
@@ -164,7 +169,9 @@
 							},
 							class: cn(
 								'undb-select absolute top-1/2 left-1/4 translate-y-[-50%] translate-x-[-50%] w-4 h-4 text-primary-600 bg-gray-100 border-gray-300 rounded focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 justify-self-center self-center group-hover:opacity-100',
-								!checked && 'opacity-0',
+								{
+									'!opacity-0': !checked || $readonly,
+								},
 							),
 						}),
 					])
