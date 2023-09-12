@@ -8,6 +8,8 @@
 			value = target.value === '' ? null : Number(target.value)
 		}
 	}
+
+	export let readonly = false
 </script>
 
-<Input {value} class={$$restProps.class} type="number" on:change={onChange} />
+<Input {value} class={$$restProps.class} type="number" on:change={onChange} readonly={readonly ? true : undefined} />

@@ -7,4 +7,4 @@
 	export let readonly = false
 </script>
 
-<Input bind:value class={$$restProps.class} autocomplete="off" type="email" {readonly} />
+<Input bind:value class={$$restProps.class} autocomplete="off" type="email" readonly={readonly ? true : undefined} />

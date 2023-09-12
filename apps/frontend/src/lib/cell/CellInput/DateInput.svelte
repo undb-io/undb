@@ -15,4 +15,4 @@
 	$: value = dateValue ? startOfDay(new Date(dateValue)).toISOString() : ''
 </script>
 
-<Input type="date" bind:value={dateValue} class={$$restProps.class} {readonly} />
+<Input type="date" bind:value={dateValue} class={$$restProps.class} readonly={readonly ? true : undefined} />
