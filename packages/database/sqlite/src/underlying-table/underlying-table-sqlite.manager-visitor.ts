@@ -16,6 +16,7 @@ import type {
   WithTableSchema,
   WithTableViewId,
   WithVisualizationFieldSpec,
+  WithoutForm,
   WithoutOption,
 } from '@undb/core'
 import { WithNewField, isSelectFieldType } from '@undb/core'
@@ -93,6 +94,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
   withFormFieldsVisibility(): void {}
   withFormFieldsRequirements(s: WithFormFieldsRequirements): void {}
   newForm(s: WithNewForm): void {}
+  withoutForm(s: WithoutForm): void {}
   filterEqual(): void {}
   ratingMaxEqual(s: WithRatingMax): void {
     const query = this.#qb.update(s.fieldId, s.max).where(s.fieldId, '>', s.max).from(this.tableName).toQuery()

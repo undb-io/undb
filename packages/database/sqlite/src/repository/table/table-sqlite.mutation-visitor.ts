@@ -23,6 +23,7 @@ import type {
   WithTableForms,
   WithTableViewId,
   WithTimeFormat,
+  WithoutForm,
   WithoutWidgetSpecification,
 } from '@undb/core'
 import {
@@ -291,6 +292,10 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
     const table = this.table
     const form = new Form(table, s.form)
     this.em.persist(form)
+  }
+  withoutForm(s: WithoutForm): void {
+    const form = this.em.getReference(Form, s.form.id.value)
+    this.em.remove(form)
   }
   viewsOrderEqual(s: WithViewsOrder): void {
     const table = this.table
