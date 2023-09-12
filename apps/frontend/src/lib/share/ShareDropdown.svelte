@@ -7,7 +7,7 @@
 	import { Input } from '$lib/components/ui/input'
 	import { Label } from '$lib/components/ui/label'
 	import { Switch } from '$lib/components/ui/switch'
-	import * as HoverCard from '$lib/components/ui/hover-card'
+	import * as Popover from '$lib/components/ui/popover'
 
 	import { copyText } from 'svelte-copy'
 
@@ -78,11 +78,11 @@
 	}
 </script>
 
-<HoverCard.Root bind:open openDelay={10}>
-	<HoverCard.Trigger>
+<Popover.Root bind:open>
+	<Popover.Trigger>
 		<slot />
-	</HoverCard.Trigger>
-	<HoverCard.Content class="w-96">
+	</Popover.Trigger>
+	<Popover.Content class="w-96 z-[999999999999]">
 		<div class="space-y-2">
 			<Label class="inline-flex items-center gap-2">
 				<Switch bind:checked={enabled} disabled={!$hasPermission('share:enable')} onCheckedChange={onChange}></Switch>
@@ -115,5 +115,5 @@
 				</div>
 			{/if}
 		</div>
-	</HoverCard.Content>
-</HoverCard.Root>
+	</Popover.Content>
+</Popover.Root>
