@@ -86,11 +86,9 @@
 
 		<div class="flex-1 overflow-y-auto p-6">
 			<form id="createRecord" class="space-y-5" method="POST" use:enhance>
-				<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
-					{#each fields as field (field.id.value)}
-						<CreateRecordItem record={tempRecord} {field} bind:value={$form[field.id.value]} />
-					{/each}
-				</div>
+				{#each fields as field (field.id.value)}
+					<CreateRecordItem record={tempRecord} {field} bind:value={$form[field.id.value]} />
+				{/each}
 			</form>
 		</div>
 		<!-- <SuperDebug data={$form} /> -->
