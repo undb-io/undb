@@ -2,6 +2,7 @@
 	import { Label } from '$components/ui/label'
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
+	import { me } from '$lib/store/me'
 	import { getTable } from '$lib/store/table'
 	import { ANONYMOUS_USER_ID, Record, type Field, type Form, type RecordCompositeSpecification } from '@undb/core'
 	import type { SuperForm } from 'sveltekit-superforms/client'
@@ -22,8 +23,11 @@
 
 	let spec: RecordCompositeSpecification | null = null
 
-	$: if (filter && formField && form.fieldsOrder) {
-		spec = formField.getSpec(field.id.value, ANONYMOUS_USER_ID, form.getOrderedField($table.schema)).into(null)
+	$: if (filter && formField) {
+		spec = formField
+			.getSpec(field.id.value, $me?.userId ?? ANONYMOUS_USER_ID, form.getOrderedField($table.schema))
+			.into(null)
+		console.log(spec)
 	}
 
 	$: isMatch = spec ? spec.isSatisfiedBy(tempRecord) : true
