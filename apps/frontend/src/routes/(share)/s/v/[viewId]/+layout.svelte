@@ -32,6 +32,4 @@
 
 <slot />
 
-{#if $currentRecordId}
-	<ReadonlyRecord />
-{/if}
+<ReadonlyRecord />
