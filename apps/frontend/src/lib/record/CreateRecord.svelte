@@ -1,21 +1,20 @@
 <script lang="ts">
-	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import { getTable, getView } from '$lib/store/table'
 	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms'
-	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { t } from '$lib/i18n'
 	import { keys } from 'lodash-es'
 	import { pick } from 'lodash-es'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import { Button } from '$lib/components/ui/button'
 	import { createRecordForm } from '$lib/store/table'
-	import { Label } from '$components/ui/label'
 	import Toast from '$components/ui/toast/toast.svelte'
-	import type { Field } from '@undb/core'
+	import { RecordFactory, type Field, WithRecordId, RecordId } from '@undb/core'
 	import Badge from '$components/ui/badge/badge.svelte'
+	import CreateRecordItem from './CreateRecordItem.svelte'
+	import { me } from '$lib/store/me'
 
 	const table = getTable()
 	const view = getView()
@@ -39,7 +38,7 @@
 		},
 	})
 
-	const { form, enhance, constraints, delayed, reset, submitting, tainted } = superForm(data, {
+	const { form, enhance, delayed, reset, submitting, tainted } = superForm(data, {
 		id: 'createRecord',
 		SPA: true,
 		dataType: 'json',
@@ -62,6 +61,11 @@
 	}
 
 	$: $table, reset()
+
+	$: values = pick($form, keys($tainted))
+
+	const id = RecordId.create()
+	$: tempRecord = RecordFactory.temp($table, values, $me.userId, new WithRecordId(id))
 </script>
 
 <Dialog.Root bind:open={$createRecordModal.open}>
@@ -83,23 +87,8 @@
 		<div class="flex-1 overflow-y-auto p-6">
 			<form id="createRecord" class="space-y-5" method="POST" use:enhance>
 				<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
-					{#each fields as field}
-						<div class="h-full items-start gap-1 pt-2">
-							<Label class="leading-5" for={field.id.value}>
-								<div class="inline-flex items-center gap-2" data-field-id={field.id.value}>
-									<FieldIcon type={field.type} size={16} />
-									<span>
-										{field.name.value}
-									</span>
-								</div>
-								{#if field.required}
-									<span class="text-red-500">*</span>
-								{/if}
-							</Label>
-						</div>
-						<div class="col-span-4">
-							<CellInput class="w-full" {field} bind:value={$form[field.id.value]} {...$constraints[field.id.value]} />
-						</div>
+					{#each fields as field (field.id.value)}
+						<CreateRecordItem record={tempRecord} {field} bind:value={$form[field.id.value]} />
 					{/each}
 				</div>
 			</form>
