@@ -3,6 +3,7 @@
 	import Sortable, { type SortableEvent } from 'sortablejs'
 	import { identity, isNumber } from 'lodash-es'
 	import FilterItem from '$lib/table/FilterItem.svelte'
+
 	export let value: Partial<IFilter>[] = []
 	export let readonly = false
 	export let fieldFilter: (field: IQueryFieldSchema) => boolean = identity
