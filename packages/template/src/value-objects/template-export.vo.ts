@@ -1,5 +1,12 @@
 import type { ClsStore, ICreateFieldSchema, Table } from '@undb/core'
-import { TableFactory, createFieldSchema, tableIdSchema, tableNameSchema } from '@undb/core'
+import {
+  TableFactory,
+  createFieldSchema,
+  createViewsSchema,
+  tableIdSchema,
+  tableNameSchema,
+  viewsOrderSchema,
+} from '@undb/core'
 import { ValueObject } from '@undb/domain'
 import { z } from 'zod'
 
@@ -7,6 +14,8 @@ export const templateTableSchema = z.object({
   id: tableIdSchema,
   name: tableNameSchema,
   schema: createFieldSchema.array(),
+  views: createViewsSchema.optional(),
+  viewsOrder: viewsOrderSchema.optional(),
 })
 
 export const exportSchema = z.object({
@@ -26,6 +35,8 @@ export class TemplateExport extends ValueObject<IExportSchema> {
         id: table.id.value,
         name: table.name.value,
         schema: table.schema.fields.map((f) => f.json as ICreateFieldSchema),
+        views: table.views.views.map((v) => v.toJSON()),
+        viewsOrder: table.viewsOrder.order,
       })),
     }
     return new this(exp)
@@ -38,6 +49,8 @@ export class TemplateExport extends ValueObject<IExportSchema> {
           id: table.id,
           name: table.name,
           schema: table.schema,
+          views: table.views,
+          viewsOrder: table.viewsOrder,
         },
         ctx,
       ).unwrap()

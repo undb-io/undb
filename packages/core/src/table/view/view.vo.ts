@@ -503,8 +503,8 @@ export class ViewVO extends ValueObject<IView> {
     return and(...specs)
   }
 
-  duplicate(input: Partial<ICreateViewInput_internal>): ViewVO {
-    const newView = ViewVO.create({
+  toJSON() {
+    return {
       name: this.name.value,
       sorts: this.sorts?.toArray(),
       showSystemFields: this.showSystemFields,
@@ -520,6 +520,12 @@ export class ViewVO extends ValueObject<IView> {
       fieldsOrder: this.fieldsOrder?.toJSON(),
       pinnedFields: this.pinnedFields?.toJSON(),
       rowHeight: this.rowHeight?.unpack(),
+    }
+  }
+
+  duplicate(input: Partial<ICreateViewInput_internal>): ViewVO {
+    const newView = ViewVO.create({
+      ...this.toJSON(),
       ...input,
     })
 
