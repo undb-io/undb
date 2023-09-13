@@ -17,14 +17,12 @@
 	import * as Alert from '$lib/components/ui/alert'
 	import Toast from '$components/ui/toast/toast.svelte'
 	import Badge from '$components/ui/badge/badge.svelte'
-	import { quintOut } from 'svelte/easing'
-	import { fly } from 'svelte/transition'
 
 	const table = getTable()
 	const view = getView()
 
 	const TEMP_ID = '__TEMP_ID'
-	const value = writable<(Omit<ISortSchema, 'fieldId'> & { id: string })[]>([
+	$: value = writable<(Omit<ISortSchema, 'fieldId'> & { id: string })[]>([
 		...$sorts.map((s) => ({ id: s.fieldId, direction: s.direction })),
 	])
 	onMount(() => {
