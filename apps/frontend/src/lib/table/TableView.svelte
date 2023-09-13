@@ -172,6 +172,7 @@
 								{
 									// hover row to toggle opacity
 									'undb-select': !$readonly,
+									'opacity-100': checked,
 								},
 							),
 						}),
