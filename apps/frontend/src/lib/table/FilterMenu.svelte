@@ -11,10 +11,12 @@
 	import Toast from '$components/ui/toast/toast.svelte'
 	import Badge from '$components/ui/badge/badge.svelte'
 	import * as Alert from '$lib/components/ui/alert'
+	import { writable } from 'svelte/store'
+	import type { IFilter } from '@undb/core'
 
-	$: value = $filters
+	$: value = writable<Partial<IFilter>[]>($filters)
 
-	$: validFilters = getValidFilters(value)
+	$: validFilters = getValidFilters($value)
 
 	const table = getTable()
 	const view = getView()
@@ -36,7 +38,7 @@
 		$setFilter.mutate({
 			tableId: $table.id.value,
 			viewId: $view.id.value,
-			filter: getValidFilters(value),
+			filter: getValidFilters($value),
 		})
 	}
 
@@ -49,8 +51,8 @@
 			<i class="ti ti-filter text-sm" />
 			{$t('Filter')}
 
-			{#if $filters.length}
-				<Badge>{$filters.length}</Badge>
+			{#if validFilters.length}
+				<Badge>{validFilters.length}</Badge>
 			{/if}
 		</Button>
 	</PopoverTrigger>
@@ -59,7 +61,7 @@
 			{#if $hasPermission('table:set_view_filter')}
 				<span class="text-xs font-medium text-gray-500 dark:text-gray-300">{$t('set filters in this view')}</span>
 			{/if}
-			<FilterEditor bind:value let:add readonly={!$hasPermission('table:set_view_filter')}>
+			<FilterEditor bind:value={$value} let:add readonly={!$hasPermission('table:set_view_filter')}>
 				<svelte:fragment slot="empty">
 					<Alert.Root>
 						<Alert.Title>
