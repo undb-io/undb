@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
-	import { erdModal, mergeDataModal, rlsModal, webhookModal } from '$lib/store/modal'
+	import { erdModal, formListDrawer, mergeDataModal, recordTrashModal, rlsModal, webhookModal } from '$lib/store/modal'
 	import { currentRLSS } from '$lib/store/table'
 	import { hasPermission } from '$lib/store/authz'
 	import * as DropdownMenu from '$components/ui/dropdown-menu'
@@ -15,6 +15,18 @@
 		</Button>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class="w-48">
+		{#if $hasPermission('table:list_form')}
+			<DropdownMenu.Item
+				on:click={() => {
+					formListDrawer.open()
+				}}
+				class="items-center gap-2"
+			>
+				<i class="ti ti-clipboard-text"></i>
+				{$t('forms')}
+			</DropdownMenu.Item>
+		{/if}
+
 		<DropdownMenu.Item
 			class="gap-2"
 			on:click={() => {
@@ -57,6 +69,19 @@
 				<i class="ti ti-database-import text-gray-600 dark:text-gray-50" />
 				<span>{$t('merge data')}</span>
 			</DropdownMenu.Item>
+		{/if}
+
+		{#if $hasPermission('record:list_trash')}
+			<DropdownMenu.Separator />
+			<DropdownMenu.Item
+				on:click={() => {
+					recordTrashModal.open()
+				}}
+				class="items-center gap-2"
+			>
+				<i class="ti ti-recycle" />
+				<span class="hidden lg:block truncate">{$t('recycle bin', { ns: 'table' })} </span></DropdownMenu.Item
+			>
 		{/if}
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

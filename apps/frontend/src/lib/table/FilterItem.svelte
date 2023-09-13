@@ -6,8 +6,6 @@
 	import { isFilterable, type Field, type IFilter, isOperatorWithoutValue, type IQueryFieldSchema } from '@undb/core'
 	import { allTableFields, getTable } from '$lib/store/table'
 	import FilterValue from './FilterValue.svelte'
-	import { quintOut } from 'svelte/easing'
-	import { fly } from 'svelte/transition'
 	export let filter: Partial<IFilter>
 
 	export let index: number
@@ -24,10 +22,7 @@
 	$: withoutValue = !!filter.operator && isOperatorWithoutValue(filter.operator)
 </script>
 
-<li
-	class="flex h-10 items-center justify-between gap-2 dark:border-gray-200"
-	transition:fly={{ duration: 300, x: 100, easing: quintOut }}
->
+<li class="flex h-10 items-center justify-between gap-2 dark:border-gray-200">
 	{#if !readonly}
 		<i role="button" class="handle ti ti-grip-vertical dark:text-white" />
 	{/if}

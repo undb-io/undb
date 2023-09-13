@@ -3,6 +3,7 @@
 	import { JSONEditor, Mode, type Content, type OnChange } from 'svelte-jsoneditor'
 	export let value: Json | undefined = undefined
 	export let field: JsonField
+	export let readonly = false
 
 	let content: Content = {
 		text: undefined,
@@ -18,7 +19,7 @@
 
 <JSONEditor
 	{content}
-	readOnly={$$restProps.readonly}
+	readOnly={readonly ? true : undefined}
 	onChange={handleChange}
 	mode={Mode.text}
 	mainMenuBar={false}

@@ -6,8 +6,6 @@
 	import { updateTableModal } from '$lib/store/modal'
 	import { getTable } from '$lib/store/table'
 	import SearchTable from './SearchTable.svelte'
-	import FormsButton from './FormsButton.svelte'
-	import RecordTrashButton from './RecordTrashButton.svelte'
 	import TableMenu from './TableMenu.svelte'
 	import { hasPermission } from '$lib/store/authz'
 	import { Button } from '$components/ui/button'
@@ -40,13 +38,6 @@
 			</Tooltip.Root>
 		{/if}
 		<ToggleDisplayType />
-		{#if $hasPermission('table:list_form')}
-			<FormsButton />
-		{/if}
-
-		{#if $hasPermission('record:list_trash')}
-			<RecordTrashButton />
-		{/if}
 
 		<TableMenu />
 	</div>
