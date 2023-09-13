@@ -11,6 +11,9 @@ export class WithTemplateId extends CompositeSpecification<Template, ITemplateVi
   static create() {
     return new this(TemplateID.create())
   }
+  static fromString(id: string) {
+    return new this(TemplateID.from(id))
+  }
   isSatisfiedBy(t: Template): boolean {
     return t.id.equals(this.id)
   }

@@ -1,12 +1,16 @@
 import { CompositeSpecification } from '@undb/domain'
 import { Ok, type Result } from 'oxide.ts'
-import type { TemplateExport } from 'src/value-objects/template-export.vo.js'
+import type { ITemplateExportSchema } from 'src/value-objects/template-export.vo.js'
+import { TemplateExport } from 'src/value-objects/template-export.vo.js'
 import type { ITemplateVisitor } from '../interface.js'
 import type { Template } from '../template.js'
 
 export class WithTemplateExport extends CompositeSpecification<Template, ITemplateVisitor> {
   constructor(public readonly exp: TemplateExport) {
     super()
+  }
+  static fromJSON(json: ITemplateExportSchema) {
+    return new this(TemplateExport.fromJSON(json))
   }
   isSatisfiedBy(t: Template): boolean {
     return false

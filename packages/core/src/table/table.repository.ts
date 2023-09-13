@@ -8,6 +8,7 @@ export interface ITableRepository {
   find(spec: ITableSpec): Promise<Table[]>
 
   insert(table: Table): Promise<void>
+  insertMany(tables: Table[]): Promise<void>
   updateOneById(id: string, spec: ITableSpec): Promise<void>
   deleteOneById(id: string): Promise<void>
 }

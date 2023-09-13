@@ -88,6 +88,10 @@ export class TableSqliteRepository implements ITableRepository {
     em.persist(tableEntity)
   }
 
+  async insertMany(tables: CoreTable[]): Promise<void> {
+    await Promise.all(tables.map((table) => this.insert(table)))
+  }
+
   async updateOneById(id: string, spec: ITableSpec): Promise<void> {
     await this.cache.remove(id)
     const em = this.em

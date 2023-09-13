@@ -18,23 +18,23 @@ export const templateTableSchema = z.object({
   viewsOrder: viewsOrderSchema.optional(),
 })
 
-export const exportSchema = z.object({
+export const templateExportSchema = z.object({
   tables: templateTableSchema.array(),
 })
 
-export type IExportSchema = z.infer<typeof exportSchema>
+export type ITemplateExportSchema = z.infer<typeof templateExportSchema>
 
-export class TemplateExport extends ValueObject<IExportSchema> {
+export class TemplateExport extends ValueObject<ITemplateExportSchema> {
   public get tables() {
     return this.props.tables
   }
 
-  static fromJSON(json: IExportSchema) {
+  static fromJSON(json: ITemplateExportSchema) {
     return new this(json)
   }
 
   static fromTables(tables: Table[]): TemplateExport {
-    const exp: IExportSchema = {
+    const exp: ITemplateExportSchema = {
       tables: tables.map((table) => ({
         id: table.id.value,
         name: table.name.value,

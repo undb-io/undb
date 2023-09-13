@@ -7,6 +7,8 @@ import { WithTemplateExport } from './specifications/template-export.specificati
 import { WithTemplateId } from './specifications/template-id.specification.js'
 import { WithTemplateName } from './specifications/template-name.specification.js'
 import { Template } from './template.js'
+import type { ITemplateSchema } from './template.schema.js'
+import { templateSchema } from './template.schema.js'
 import { TemplateExport } from './value-objects/template-export.vo.js'
 
 export class TemplateFactory {
@@ -17,8 +19,19 @@ export class TemplateFactory {
       .unwrap()
   }
 
+  static fromJSON(json: ITemplateSchema) {
+    const schema = templateSchema.parse(json)
+
+    return this.create(
+      WithTemplateId.fromString(schema.id),
+      WithTemplateName.fromString(schema.name),
+      WithTemplateExport.fromJSON(schema.export),
+    )
+  }
+
   static fromTables(tables: Table[]): Option<Template> {
     if (!tables.length) return None
+
     return Some(
       this.create(
         WithTemplateId.create(),
