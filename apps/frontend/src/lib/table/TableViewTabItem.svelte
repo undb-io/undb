@@ -86,7 +86,7 @@
 	}
 
 	const exportGrid = async (type: IExportType) => {
-		const res = await fetch(`/api/record/export/grid/${$table.id.value}/${view.id.value}/${type}`)
+		const res = await fetch(`/api/tables/${$table.id.value}/${view.id.value}/${type}/export/grid`)
 		open = false
 		const blob = await res.blob()
 		const a = document.createElement('a')
