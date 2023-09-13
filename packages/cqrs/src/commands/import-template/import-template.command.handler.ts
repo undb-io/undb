@@ -1,6 +1,6 @@
 import type { ClsStore, IClsService, ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
-import { TemplateFactory } from '@undb/template/dist/index.js'
+import { TemplateFactory } from '@undb/template'
 import type { ImportTemplateCommand } from './import-template.command.js'
 
 export class ImportTemplateCommandHandler implements ICommandHandler<ImportTemplateCommand, void> {
