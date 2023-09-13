@@ -70,6 +70,17 @@
 				<span>{$t('merge data')}</span>
 			</DropdownMenu.Item>
 		{/if}
+		{#if $hasPermission('table:merge_data')}
+			<DropdownMenu.Item
+				on:click={() => {
+					mergeDataModal.open()
+				}}
+				class="items-center gap-2"
+			>
+				<i class="ti ti-database-import text-gray-600 dark:text-gray-50" />
+				<span>{$t('Export As Template')}</span>
+			</DropdownMenu.Item>
+		{/if}
 
 		{#if $hasPermission('record:list_trash')}
 			<DropdownMenu.Separator />

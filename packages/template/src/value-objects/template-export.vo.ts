@@ -29,6 +29,10 @@ export class TemplateExport extends ValueObject<IExportSchema> {
     return this.props.tables
   }
 
+  static fromJSON(json: IExportSchema) {
+    return new this(json)
+  }
+
   static fromTables(tables: Table[]): TemplateExport {
     const exp: IExportSchema = {
       tables: tables.map((table) => ({

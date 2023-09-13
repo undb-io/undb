@@ -4,7 +4,7 @@ export class Template {
   id!: TemplateID
   name!: TemplateName
   enabled!: boolean
-  exports!: TemplateExport[]
+  export!: TemplateExport
 
   static empty() {
     return new this()

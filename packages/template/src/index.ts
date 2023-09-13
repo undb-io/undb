@@ -1,4 +1,5 @@
 export * from './interface.js'
+export * from './service/index.js'
 export * from './specifications/index.js'
 export * from './template.factory.js'
 export * from './template.js'

@@ -399,6 +399,7 @@ export const config: InitOptions = {
         'create record by form': 'create record by{{form}}',
         'set as display field': 'set as display field',
         'confirm delete form': 'Confirm to delete form?',
+        'Export As Template': 'export as template',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -827,6 +828,7 @@ export const config: InitOptions = {
         'create record by form': '通过表单{{form}}创建',
         'set as display field': '设置为显示列',
         'confirm delete form': '确认删除表单吗？',
+        'Export As Template': '导出为模板',
       },
       webhook: {
         Webhook: 'Webhook',

@@ -1,25 +1,22 @@
 import { CompositeSpecification } from '@undb/domain'
 import { Ok, type Result } from 'oxide.ts'
-import { TemplateID } from 'src/value-objects/template-id.vo.js'
+import type { TemplateExport } from 'src/value-objects/template-export.vo.js'
 import type { ITemplateVisitor } from '../interface.js'
 import type { Template } from '../template.js'
 
-export class WithTemplateId extends CompositeSpecification<Template, ITemplateVisitor> {
-  constructor(public readonly id: TemplateID) {
+export class WithTemplateExport extends CompositeSpecification<Template, ITemplateVisitor> {
+  constructor(public readonly exp: TemplateExport) {
     super()
   }
-  static create() {
-    return new this(TemplateID.create())
-  }
   isSatisfiedBy(t: Template): boolean {
-    return t.id.equals(this.id)
+    return false
   }
   mutate(t: Template): Result<Template, string> {
-    t.id = this.id
+    t.export = this.exp
     return Ok(t)
   }
   accept(v: ITemplateVisitor): Result<void, string> {
-    v.withId(this)
+    v.withExports(this)
     return Ok(undefined)
   }
 }
