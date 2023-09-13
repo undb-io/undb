@@ -84,6 +84,9 @@ export const mergeDataModal = createModal(MERGE_DATA_MODAL)
 const IMPORT_DATA_MODAL = Symbol('IMPORT_DATA_MODAL')
 export const importDataModal = createModal(IMPORT_DATA_MODAL)
 
+const IMPORT_TEMPLATE = Symbol('IMPORT_TEMPLATE')
+export const importTemplate = createModal(IMPORT_TEMPLATE)
+
 const ERD_MODAL = Symbol('ERD_MODAL')
 export const erdModal = createModal(ERD_MODAL)
 

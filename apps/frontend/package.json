@@ -39,8 +39,8 @@
 		"@undb/domain": "workspace:^0.0.0",
 		"@undb/i18n": "^0.0.0",
 		"@undb/integrations": "^0.0.0",
-		"@undb/trpc": "^0.0.0",
 		"@undb/openapi": "^0.0.0",
+		"@undb/trpc": "^0.0.0",
 		"autoprefixer": "^10.4.15",
 		"bits-ui": "^0.5.7",
 		"chart.js": "^4.4.0",
@@ -96,5 +96,8 @@
 		"xlsx": "^0.18.5",
 		"zod": "^3.22.2"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@undb/template": "workspace:^"
+	}
 }

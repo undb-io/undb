@@ -447,6 +447,10 @@ importers:
         version: 1.0.4
 
   apps/frontend:
+    dependencies:
+      '@undb/template':
+        specifier: workspace:^
+        version: link:../../packages/template
     devDependencies:
       '@event-calendar/core':
         specifier: ^2.3.2

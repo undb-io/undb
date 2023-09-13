@@ -400,6 +400,7 @@ export const config: InitOptions = {
         'set as display field': 'set as display field',
         'confirm delete form': 'Confirm to delete form?',
         'Export As Template': 'export as template',
+        'import template': 'import template',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -829,6 +830,7 @@ export const config: InitOptions = {
         'set as display field': '设置为显示列',
         'confirm delete form': '确认删除表单吗？',
         'Export As Template': '导出为模板',
+        'import template': '导入模板',
       },
       webhook: {
         Webhook: 'Webhook',
