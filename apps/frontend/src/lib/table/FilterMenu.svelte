@@ -12,7 +12,7 @@
 	import Badge from '$components/ui/badge/badge.svelte'
 	import * as Alert from '$lib/components/ui/alert'
 
-	let value = $filters
+	$: value = $filters
 
 	$: validFilters = getValidFilters(value)
 
