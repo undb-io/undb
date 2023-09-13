@@ -1,11 +1,23 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
 	import { erdModal, formListDrawer, mergeDataModal, recordTrashModal, rlsModal, webhookModal } from '$lib/store/modal'
-	import { currentRLSS } from '$lib/store/table'
+	import { currentRLSS, getTable } from '$lib/store/table'
 	import { hasPermission } from '$lib/store/authz'
 	import * as DropdownMenu from '$components/ui/dropdown-menu'
 	import { Button } from '$components/ui/button'
 	import { Badge } from '$components/ui/badge'
+
+	const table = getTable()
+
+	const exportTemplate = async () => {
+		const res = await fetch(`/api/templates/export/tables/${$table.id.value}`)
+		const blob = await res.blob()
+		const a = document.createElement('a')
+		a.href = window.URL.createObjectURL(blob)
+		a.download = $table.name.value
+		a.click()
+		a.remove()
+	}
 </script>
 
 <DropdownMenu.Root>
@@ -70,14 +82,14 @@
 				<span>{$t('merge data')}</span>
 			</DropdownMenu.Item>
 		{/if}
-		{#if $hasPermission('table:merge_data')}
+		{#if $hasPermission('table:export_template')}
 			<DropdownMenu.Item
 				on:click={() => {
-					mergeDataModal.open()
+					exportTemplate()
 				}}
 				class="items-center gap-2"
 			>
-				<i class="ti ti-database-import text-gray-600 dark:text-gray-50" />
+				<i class="ti ti-template text-gray-600 dark:text-gray-50" />
 				<span>{$t('Export As Template')}</span>
 			</DropdownMenu.Item>
 		{/if}

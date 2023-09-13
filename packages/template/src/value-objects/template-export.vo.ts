@@ -38,7 +38,7 @@ export class TemplateExport extends ValueObject<IExportSchema> {
       tables: tables.map((table) => ({
         id: table.id.value,
         name: table.name.value,
-        schema: table.schema.fields.map((f) => f.json as ICreateFieldSchema),
+        schema: table.schema.fields.filter((f) => !f.isSystem()).map((f) => f.json as ICreateFieldSchema),
         views: table.views.views.map((v) => v.toJSON()),
         viewsOrder: table.viewsOrder.order,
       })),
