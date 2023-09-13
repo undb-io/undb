@@ -3,6 +3,7 @@ import type { TemplateExport, TemplateID, TemplateName } from './value-objects/i
 export class Template {
   id!: TemplateID
   name!: TemplateName
+  enabled!: boolean
   exports!: TemplateExport[]
 
   static empty() {
