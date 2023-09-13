@@ -183,6 +183,9 @@ importers:
       '@undb/sqlite':
         specifier: ^0.0.0
         version: link:../../packages/database/sqlite
+      '@undb/template':
+        specifier: workspace:^
+        version: link:../../packages/template
       '@undb/trpc':
         specifier: ^0.0.0
         version: link:../../packages/trpc
