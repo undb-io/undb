@@ -14,26 +14,26 @@ export class TemplateIdMapper {
   }
 
   tableId(id: string) {
-    return this.getOrCreateId(id, TableId.createId)
+    return this.getOrCreateId(id, TableId.createId.bind(TableId))
   }
 
   fieldId(id: string) {
-    return this.getOrCreateId(id, FieldId.createId)
+    return this.getOrCreateId(id, FieldId.createId.bind(FieldId))
   }
 
   optionId(id: string) {
-    return this.getOrCreateId(id, OptionKey.createId)
+    return this.getOrCreateId(id, OptionKey.createId.bind(OptionKey))
   }
 
   viewId(id: string) {
-    return this.getOrCreateId(id, ViewId.createId)
+    return this.getOrCreateId(id, ViewId.createId.bind(ViewId))
   }
 
   widgetId(id: string) {
-    return this.getOrCreateId(id, WidgetID.createId)
+    return this.getOrCreateId(id, WidgetID.createId.bind(WidgetID))
   }
 
   visualizationId(id: string) {
-    return this.getOrCreateId(id, VisualizationID.createId)
+    return this.getOrCreateId(id, VisualizationID.createId.bind(VisualizationID))
   }
 }

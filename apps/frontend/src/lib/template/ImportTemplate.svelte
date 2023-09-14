@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
 	import { importTemplate } from '$lib/store/modal'
-	import { templateSchema } from '@undb/template'
+	import { templateSchema, type ITemplateSchema } from '@undb/template'
 	import * as Dialog from '$lib/components/ui/dialog'
+	import { Button } from '$components/ui/button'
+	import { trpc } from '$lib/trpc/client'
+	import { invalidateAll } from '$app/navigation'
 
 	let file: File | undefined
 
@@ -22,21 +25,25 @@
 		}
 	}
 
+	let schema: ITemplateSchema | undefined = undefined
 	const handleFile = async (file: File | undefined) => {
 		if (!file) return
 
 		const text = await file.text()
 		const json = JSON.parse(text)
 
-		console.log({ json })
-
-		const schema = await templateSchema.parseAsync(json)
-		console.log({ schema })
+		schema = await templateSchema.parseAsync(json)
 	}
 
 	$: if (file) {
 		handleFile(file)
 	}
+
+	const importTemplateMutateion = trpc().template.import.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidateAll()
+		},
+	})
 </script>
 
 <Dialog.Root bind:open={$importTemplate.open}>
@@ -75,5 +82,31 @@
 				/>
 			</label>
 		</div>
+
+		<Dialog.Footer>
+			<div class="w-full flex justify-end gap-4">
+				<Button
+					size="sm"
+					variant="secondary"
+					on:click={() => {
+						importTemplate.close()
+					}}
+				>
+					{$t('Cancel', { ns: 'common' })}
+				</Button>
+				<Button
+					size="sm"
+					disabled={!schema}
+					on:click={() => {
+						if (!schema) return
+						$importTemplateMutateion.mutate({
+							template: schema,
+						})
+					}}
+				>
+					{$t('Confirm', { ns: 'common' })}
+				</Button>
+			</div>
+		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>

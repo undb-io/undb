@@ -15,6 +15,10 @@ export class VisualizationID extends NanoID {
     return new VisualizationID(id)
   }
 
+  static createId(): string {
+    return this.create().value
+  }
+
   static from(id: string): Result<VisualizationID, InvalidTableIdError> {
     if (!id) {
       return Err(new InvalidTableIdError())

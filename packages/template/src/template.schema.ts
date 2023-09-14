@@ -3,7 +3,6 @@ import { zodToJsonSchema } from 'zod-to-json-schema'
 import { templateExportSchema, templateIdSchema, templateNameSchema } from './value-objects/index.js'
 
 export const templateSchema = z.object({
-  version: z.number().int().positive(),
   id: templateIdSchema,
   name: templateNameSchema,
   export: templateExportSchema,

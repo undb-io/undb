@@ -505,6 +505,7 @@ export class ViewVO extends ValueObject<IView> {
 
   toJSON() {
     return {
+      id: this.id.value,
       name: this.name.value,
       sorts: this.sorts?.toArray(),
       showSystemFields: this.showSystemFields,

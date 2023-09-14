@@ -10,9 +10,10 @@ export class ImportTemplateCommandHandler implements ICommandHandler<ImportTempl
   ) {}
 
   async execute(command: ImportTemplateCommand): Promise<void> {
-    const template = TemplateFactory.fromJSON(command.template)
+    const ctx = this.cls.get()
 
-    const tables = template.export.toTables(this.cls.get())
+    const template = TemplateFactory.fromJSON(command.template)
+    const tables = template.export.toTables(ctx)
 
     await this.repo.insertMany(tables)
   }
