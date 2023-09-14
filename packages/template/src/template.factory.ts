@@ -6,6 +6,7 @@ import type { TemplateSpecification } from './interface.js'
 import { WithTemplateExport } from './specifications/template-export.specification.js'
 import { WithTemplateId } from './specifications/template-id.specification.js'
 import { WithTemplateName } from './specifications/template-name.specification.js'
+import { TemplateIdVisitor } from './template-id.visitor.js'
 import { Template } from './template.js'
 import type { ITemplateSchema } from './template.schema.js'
 import { templateSchema } from './template.schema.js'
@@ -20,12 +21,13 @@ export class TemplateFactory {
   }
 
   static fromJSON(json: ITemplateSchema) {
-    const schema = templateSchema.parse(json)
+    let template = templateSchema.parse(json)
+    template = new TemplateIdVisitor().visit(template)
 
     return this.create(
-      WithTemplateId.fromString(schema.id),
-      WithTemplateName.fromString(schema.name),
-      WithTemplateExport.fromJSON(schema.export),
+      WithTemplateId.fromString(template.id),
+      WithTemplateName.fromString(template.name),
+      WithTemplateExport.fromJSON(template.export),
     )
   }
 
