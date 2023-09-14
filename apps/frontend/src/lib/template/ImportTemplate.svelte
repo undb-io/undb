@@ -41,6 +41,7 @@
 
 	const importTemplateMutateion = trpc().template.import.mutation({
 		async onSuccess(data, variables, context) {
+			importTemplate.close()
 			await invalidateAll()
 		},
 	})
