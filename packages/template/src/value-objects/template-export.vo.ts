@@ -1,8 +1,9 @@
-import type { ClsStore, ICreateFieldSchema, Table } from '@undb/core'
+import type { ClsStore, ICreateFieldSchema, IQueryRecordSchema, Table } from '@undb/core'
 import {
   TableFactory,
   createFieldSchema,
   createViewsSchema,
+  queryRecordSchema,
   tableIdSchema,
   tableNameSchema,
   viewsOrderSchema,
@@ -16,6 +17,7 @@ export const templateTableSchema = z.object({
   schema: createFieldSchema.array(),
   views: createViewsSchema.optional(),
   viewsOrder: viewsOrderSchema.optional(),
+  records: queryRecordSchema.array().optional(),
 })
 
 export const templateExportSchema = z.object({
@@ -33,14 +35,15 @@ export class TemplateExport extends ValueObject<ITemplateExportSchema> {
     return new this(json)
   }
 
-  static fromTables(tables: Table[]): TemplateExport {
+  static fromTables(inputs: { table: Table; records?: IQueryRecordSchema[] }[]): TemplateExport {
     const exp: ITemplateExportSchema = {
-      tables: tables.map((table) => ({
+      tables: inputs.map(({ table, records }) => ({
         id: table.id.value,
         name: table.name.value,
         schema: table.schema.fields.filter((f) => !f.isSystem()).map((f) => f.json as ICreateFieldSchema),
         views: table.views.views.map((v) => v.toJSON()),
         viewsOrder: table.viewsOrder.order,
+        records,
       })),
     }
     return new this(exp)

@@ -1,4 +1,4 @@
-import type { Table } from '@undb/core'
+import type { IQueryRecordSchema, Table } from '@undb/core'
 import { and } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
@@ -31,14 +31,14 @@ export class TemplateFactory {
     )
   }
 
-  static fromTables(tables: Table[]): Option<Template> {
-    if (!tables.length) return None
+  static fromTables(inputs: { table: Table; records?: IQueryRecordSchema[] }[]): Option<Template> {
+    if (!inputs.length) return None
 
     return Some(
       this.create(
         WithTemplateId.create(),
-        WithTemplateName.fromString(tables.at(0)!.name.value),
-        new WithTemplateExport(TemplateExport.fromTables(tables)),
+        WithTemplateName.fromString(inputs.at(0)!.table.name.value),
+        new WithTemplateExport(TemplateExport.fromTables(inputs)),
       ),
     )
   }

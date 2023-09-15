@@ -401,6 +401,8 @@ export const config: InitOptions = {
         'confirm delete form': 'Confirm to delete form?',
         'Export As Template': 'export as template',
         'import template': 'import template',
+        'export template with records': 'export with records',
+        'export records count': 'export records count',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -831,6 +833,8 @@ export const config: InitOptions = {
         'confirm delete form': '确认删除表单吗？',
         'Export As Template': '导出为模板',
         'import template': '导入模板',
+        'export template with records': '导出模板包含行记录',
+        'export records count': '导出行记录数量',
       },
       webhook: {
         Webhook: 'Webhook',
