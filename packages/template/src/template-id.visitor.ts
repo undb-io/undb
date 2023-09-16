@@ -1,6 +1,6 @@
 import type { IFilterOrGroup } from '@undb/core'
 import { isFilter, isGroup } from '@undb/core'
-import { keyBy, transform } from 'lodash-es'
+import { isString, keyBy, transform } from 'lodash-es'
 import { match } from 'ts-pattern'
 import { TemplateIdMapper } from './template-id.mapper'
 import type { ITemplateSchema } from './template.schema'
@@ -23,11 +23,8 @@ export class TemplateIdVisitor {
           }
         }
         if (field.type === 'reference') {
-          if (field.foreignTableId) {
+          if (field.foreignTableId && !field.bidirectional) {
             field.foreignTableId = this.mapper.tableId(field.foreignTableId)
-          }
-          if (field.symmetricReferenceFieldId) {
-            field.symmetricReferenceFieldId = this.mapper.fieldId(field.symmetricReferenceFieldId)
           }
         }
         if (field.type === 'reference' || field.type === 'lookup' || field.type === 'tree' || field.type === 'parent') {
@@ -123,13 +120,22 @@ export class TemplateIdVisitor {
             const field = schema[newFieldId]
             if (!field) return
 
-            const newValue = match(field.type)
+            const newValue = match(field)
               .with(
-                'reference',
-                'tree',
+                { type: 'attachment' },
+                { type: 'collaborator' },
+                { type: 'reference', bidirectional: true },
+                () => null,
+              )
+              .with(
+                { type: 'tree' },
+                { type: 'reference' },
                 () => (value as string[] | undefined)?.map((id) => this.mapper.recordId(id)) ?? null,
               )
-              .with('attachment', 'collaborator', () => null)
+              .with({ type: 'parent' }, () => {
+                if (isString(value)) return this.mapper.recordId(value)
+                return null
+              })
               .otherwise(() => value)
 
             result[newFieldId] = newValue

@@ -11,7 +11,7 @@ export interface ITemplateService {
 export class TemplateService implements ITemplateService {
   constructor(
     protected readonly tableRepo: ITableRepository,
-    protected readonly recordQueryModel: IRecordQueryModel,
+    protected readonly recordRM: IRecordQueryModel,
   ) {}
 
   async fromTable(tableId: string, recordIds?: string[]): Promise<Option<Template>> {
@@ -19,10 +19,10 @@ export class TemplateService implements ITemplateService {
 
     let records: IQueryRecords = []
     if (recordIds?.length) {
-      records = await this.recordQueryModel.find(tableId, undefined, WithRecordIds.fromIds(recordIds))
+      records = await this.recordRM.find(table.id.value, undefined, WithRecordIds.fromIds(recordIds))
     }
 
-    const template = TemplateFactory.fromTables([{ table, records }])
+    const template = TemplateFactory.fromTables([{ table, records: records }])
 
     return template
   }
