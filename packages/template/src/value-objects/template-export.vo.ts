@@ -3,7 +3,8 @@ import {
   TableFactory,
   createFieldSchema,
   createViewsSchema,
-  queryRecordSchema,
+  queryRecordValues,
+  recordIdSchema,
   tableIdSchema,
   tableNameSchema,
   viewsOrderSchema,
@@ -11,13 +12,18 @@ import {
 import { ValueObject } from '@undb/domain'
 import { z } from 'zod'
 
+export const templateRecord = z.object({
+  id: recordIdSchema,
+  values: queryRecordValues,
+})
+
 export const templateTableSchema = z.object({
   id: tableIdSchema,
   name: tableNameSchema,
   schema: createFieldSchema.array(),
   views: createViewsSchema.optional(),
   viewsOrder: viewsOrderSchema.optional(),
-  records: queryRecordSchema.array().optional(),
+  records: templateRecord.array().optional(),
 })
 
 export const templateExportSchema = z.object({
@@ -43,7 +49,7 @@ export class TemplateExport extends ValueObject<ITemplateExportSchema> {
         schema: table.schema.fields.filter((f) => !f.isSystem()).map((f) => f.json as ICreateFieldSchema),
         views: table.views.views.map((v) => v.toJSON()),
         viewsOrder: table.viewsOrder.order,
-        records,
+        records: records?.map((record) => ({ id: record.id, values: record.values })),
       })),
     }
     return new this(exp)
