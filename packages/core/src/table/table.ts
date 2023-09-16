@@ -665,4 +665,19 @@ export class Table {
 
     return form.setFormFieldsOrder(this.schema, input.fieldsOrder)
   }
+
+  public get foreignTableIds() {
+    const ids = new Set<string>()
+
+    for (const field of this.schema.fields) {
+      if (field.type === 'reference') {
+        const foreignTableId = field.foreignTableId.unwrap()
+        if (field.isOwner && foreignTableId !== this.id.value) {
+          ids.add(foreignTableId)
+        }
+      }
+    }
+
+    return ids
+  }
 }
