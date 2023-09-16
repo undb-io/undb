@@ -10,6 +10,7 @@ import {
   viewsOrderSchema,
 } from '@undb/core'
 import { ValueObject } from '@undb/domain'
+import { transform } from 'lodash-es'
 import { z } from 'zod'
 
 export const templateRecord = z.object({
@@ -43,21 +44,35 @@ export class TemplateExport extends ValueObject<ITemplateExportSchema> {
 
   static fromTables(inputs: { table: Table; records?: IQueryRecordSchema[] }[]): TemplateExport {
     const exp: ITemplateExportSchema = {
-      tables: inputs.map(({ table, records }) => ({
-        id: table.id.value,
-        name: table.name.value,
-        schema: table.schema.fields
-          .filter((f) => !f.isSystem())
-          .map((f) => {
-            if (f.type === 'reference' && !f.isOneway) {
-              return { id: f.id.value, type: 'string', name: f.name.value }
-            }
-            return f.json as ICreateFieldSchema
-          }),
-        views: table.views.views.map((v) => v.toJSON()),
-        viewsOrder: table.viewsOrder.order,
-        records: records?.map((record) => ({ id: record.id, values: record.values })),
-      })),
+      tables: inputs.map(({ table, records }) => {
+        const schema = table.schema.toIdMap()
+        return {
+          id: table.id.value,
+          name: table.name.value,
+          schema: table.schema.fields
+            .filter((f) => !f.isSystem())
+            .map((f) => {
+              if (f.type === 'reference' && !f.isOneway) {
+                return { id: f.id.value, type: 'string', name: f.name.value }
+              }
+              return f.json as ICreateFieldSchema
+            }),
+          views: table.views.views.map((v) => v.toJSON()),
+          viewsOrder: table.viewsOrder.order,
+          records: records?.map((record) => ({
+            id: record.id,
+            values: transform(record.values, (result, value, fieldId) => {
+              const field = schema.get(fieldId)
+              if (field?.type === 'reference') {
+                result[fieldId] = null
+              } else {
+                result[fieldId] = value
+              }
+              return result
+            }),
+          })),
+        }
+      }),
     }
     return new this(exp)
   }

@@ -113,7 +113,8 @@
 					on:click={() => {
 						if (!template) return
 						$importTemplateMutateion.mutate({
-							template: template,
+							template,
+							includeRecords,
 						})
 					}}
 				>

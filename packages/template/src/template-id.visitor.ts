@@ -1,7 +1,7 @@
 import type { IFilterOrGroup } from '@undb/core'
 import { isFilter, isGroup } from '@undb/core'
-import { isString, keyBy, transform } from 'lodash-es'
-import { match } from 'ts-pattern'
+import { isNil, isString, keyBy, transform } from 'lodash-es'
+import { P, match } from 'ts-pattern'
 import { TemplateIdMapper } from './template-id.mapper'
 import type { ITemplateSchema } from './template.schema'
 
@@ -124,7 +124,7 @@ export class TemplateIdVisitor {
               .with(
                 { type: 'attachment' },
                 { type: 'collaborator' },
-                { type: 'reference', bidirectional: true },
+                { type: 'reference', symmetricReferenceFieldId: P.when((value) => !isNil(value)) },
                 () => null,
               )
               .with(
