@@ -1,5 +1,6 @@
 import type { IFilterOrGroup } from '@undb/core'
 import { isFilter, isGroup } from '@undb/core'
+import { keyBy, transform } from 'lodash-es'
 import { TemplateIdMapper } from './template-id.mapper'
 import type { ITemplateSchema } from './template.schema'
 
@@ -108,6 +109,22 @@ export class TemplateIdVisitor {
 
       if (table.viewsOrder) {
         table.viewsOrder = table.viewsOrder.map((id) => this.mapper.viewId(id))
+      }
+
+      const schema = keyBy(table.schema, 'id')
+      if (table.records) {
+        for (const record of table.records) {
+          record.id = this.mapper.recordId(record.id)
+          record.values = transform(record.values, (result, value, fieldId) => {
+            const newFieldId = this.mapper.fieldId(fieldId)
+            if (!newFieldId) return
+
+            const field = schema[newFieldId]
+            if (!field) return
+
+            result[newFieldId] = value
+          })
+        }
       }
     }
 

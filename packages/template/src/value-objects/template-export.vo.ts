@@ -1,4 +1,4 @@
-import type { ClsStore, ICreateFieldSchema, IQueryRecordSchema, Table } from '@undb/core'
+import type { ClsStore, ICreateFieldSchema, IQueryRecordSchema, Records, Table } from '@undb/core'
 import {
   TableFactory,
   createFieldSchema,
@@ -55,18 +55,22 @@ export class TemplateExport extends ValueObject<ITemplateExportSchema> {
     return new this(exp)
   }
 
-  toTables(ctx: ClsStore): Table[] {
-    return this.tables.map((table) => {
-      return TableFactory.from(
+  toTables(ctx: ClsStore): { table: Table; records?: Records }[] {
+    return this.tables.map((t) => {
+      const table = TableFactory.from(
         {
-          id: table.id,
-          name: table.name,
-          schema: table.schema,
-          views: table.views,
-          viewsOrder: table.viewsOrder,
+          id: t.id,
+          name: t.name,
+          schema: t.schema,
+          views: t.views,
+          viewsOrder: t.viewsOrder,
         },
         ctx,
       ).unwrap()
+
+      const records = t.records?.map((r) => table.createRecord(r.id, r.values, ctx.user.userId))
+
+      return { table, records }
     })
   }
 }

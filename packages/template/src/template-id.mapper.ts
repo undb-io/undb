@@ -1,4 +1,4 @@
-import { FieldId, OptionKey, TableId, ViewId, VisualizationID, WidgetID } from '@undb/core'
+import { FieldId, OptionKey, RecordId, TableId, ViewId, VisualizationID, WidgetID } from '@undb/core'
 
 export class TemplateIdMapper {
   private readonly idMapper = new Map<string, string>()
@@ -19,6 +19,10 @@ export class TemplateIdMapper {
 
   fieldId(id: string) {
     return this.getOrCreateId(id, FieldId.createId.bind(FieldId))
+  }
+
+  recordId(id: string) {
+    return this.getOrCreateId(id, RecordId.createId.bind(RecordId))
   }
 
   optionId(id: string) {
