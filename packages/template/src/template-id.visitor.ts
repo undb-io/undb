@@ -1,6 +1,7 @@
 import type { IFilterOrGroup } from '@undb/core'
 import { isFilter, isGroup } from '@undb/core'
 import { keyBy, transform } from 'lodash-es'
+import { match } from 'ts-pattern'
 import { TemplateIdMapper } from './template-id.mapper'
 import type { ITemplateSchema } from './template.schema'
 
@@ -122,7 +123,16 @@ export class TemplateIdVisitor {
             const field = schema[newFieldId]
             if (!field) return
 
-            result[newFieldId] = value
+            const newValue = match(field.type)
+              .with(
+                'reference',
+                'tree',
+                () => (value as string[] | undefined)?.map((id) => this.mapper.recordId(id)) ?? null,
+              )
+              .with('attachment', 'collaborator', () => null)
+              .otherwise(() => value)
+
+            result[newFieldId] = newValue
           })
         }
       }
