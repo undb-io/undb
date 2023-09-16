@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Res } from '@nestjs/common'
+import { Body, Controller, Param, Post, Res } from '@nestjs/common'
 import { CommandBus } from '@nestjs/cqrs'
 import { ExportTemplateCommand } from '@undb/cqrs'
 import type { Template } from '@undb/template'
@@ -9,10 +9,10 @@ import type { Option } from 'oxide.ts'
 export class TemplateController {
   constructor(private readonly commandBus: CommandBus) {}
 
-  @Get('export/tables/:tableId')
-  async exportTable(@Param('tableId') tableId: string, @Res() res: Response) {
+  @Post('export/tables/:tableId')
+  async exportTable(@Param('tableId') tableId: string, @Body('recordIds') recordIds: string[], @Res() res: Response) {
     const template: Option<Template> = await this.commandBus.execute<ExportTemplateCommand>(
-      new ExportTemplateCommand({ tableId }),
+      new ExportTemplateCommand({ tableId, recordIds }),
     )
 
     if (template.isNone()) return

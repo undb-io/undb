@@ -7,6 +7,6 @@ export class ExportTemplateCommandHandler implements ICommandHandler<ExportTempl
   constructor(protected readonly svc: ITemplateService) {}
 
   async execute(command: ExportTemplateCommand): Promise<Option<Template>> {
-    return this.svc.fromTable(command.tableId)
+    return this.svc.fromTable(command.tableId, command.recordIds)
   }
 }

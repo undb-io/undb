@@ -1,16 +1,31 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
 	import { erdModal, formListDrawer, mergeDataModal, recordTrashModal, rlsModal, webhookModal } from '$lib/store/modal'
-	import { currentRLSS, getTable } from '$lib/store/table'
+	import { currentRLSS, getTable, recordsStore } from '$lib/store/table'
 	import { hasPermission } from '$lib/store/authz'
 	import * as DropdownMenu from '$components/ui/dropdown-menu'
 	import { Button } from '$components/ui/button'
 	import { Badge } from '$components/ui/badge'
 
 	const table = getTable()
+	const records = recordsStore.records
+
+	// TODO: move recordIds to export modal
+	$: recordIds = $records.slice(0, 10).map((r) => r.id.value)
 
 	const exportTemplate = async () => {
-		const res = await fetch(`/api/templates/export/tables/${$table.id.value}`)
+		const res = await fetch(`/api/templates/export/tables/${$table.id.value}`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				recordIds,
+			}),
+		})
+
+		if (!res.ok) return
+
 		const blob = await res.blob()
 		const a = document.createElement('a')
 		a.href = window.URL.createObjectURL(blob)

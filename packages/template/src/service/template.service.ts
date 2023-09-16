@@ -5,7 +5,7 @@ import { TemplateFactory } from 'src/template.factory.js'
 import type { Template } from '../template.js'
 
 export interface ITemplateService {
-  fromTable(tableId: string): Promise<Option<Template>>
+  fromTable(tableId: string, recordIds?: string[]): Promise<Option<Template>>
 }
 
 export class TemplateService implements ITemplateService {
