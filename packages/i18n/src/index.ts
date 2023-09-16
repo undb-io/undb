@@ -403,6 +403,7 @@ export const config: InitOptions = {
         'import template': 'import template',
         'export template with records': 'export with records',
         'export records count': 'export records count',
+        'import template include records': 'include records',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -835,6 +836,7 @@ export const config: InitOptions = {
         'import template': '导入模板',
         'export template with records': '导出模板包含行记录',
         'export records count': '导出行记录数量',
+        'import template include records': '包含行记录',
       },
       webhook: {
         Webhook: 'Webhook',

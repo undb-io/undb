@@ -20,7 +20,7 @@ export class ImportTemplateCommandHandler implements ICommandHandler<ImportTempl
     await Promise.all(
       tables.map(async ({ table, records }) => {
         await this.repo.insert(table)
-        if (records) {
+        if (records && command.includeRecords) {
           await this.recordRepo.insertMany(table, records)
         }
       }),
