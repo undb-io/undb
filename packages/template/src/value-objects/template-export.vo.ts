@@ -46,7 +46,14 @@ export class TemplateExport extends ValueObject<ITemplateExportSchema> {
       tables: inputs.map(({ table, records }) => ({
         id: table.id.value,
         name: table.name.value,
-        schema: table.schema.fields.filter((f) => !f.isSystem()).map((f) => f.json as ICreateFieldSchema),
+        schema: table.schema.fields
+          .filter((f) => !f.isSystem())
+          .map((f) => {
+            if (f.type === 'reference' && !f.isOneway) {
+              return { id: f.id.value, type: 'string', name: f.name.value }
+            }
+            return f.json as ICreateFieldSchema
+          }),
         views: table.views.views.map((v) => v.toJSON()),
         viewsOrder: table.viewsOrder.order,
         records: records?.map((record) => ({ id: record.id, values: record.values })),
