@@ -1,38 +1,19 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
-	import { erdModal, formListDrawer, mergeDataModal, recordTrashModal, rlsModal, webhookModal } from '$lib/store/modal'
-	import { currentRLSS, getTable, recordsStore } from '$lib/store/table'
+	import {
+		erdModal,
+		exportTableTemplate,
+		formListDrawer,
+		mergeDataModal,
+		recordTrashModal,
+		rlsModal,
+		webhookModal,
+	} from '$lib/store/modal'
+	import { currentRLSS } from '$lib/store/table'
 	import { hasPermission } from '$lib/store/authz'
 	import * as DropdownMenu from '$components/ui/dropdown-menu'
 	import { Button } from '$components/ui/button'
 	import { Badge } from '$components/ui/badge'
-
-	const table = getTable()
-	const records = recordsStore.records
-
-	// TODO: move recordIds to export modal
-	$: recordIds = $records.slice(0, 10).map((r) => r.id.value)
-
-	const exportTemplate = async () => {
-		const res = await fetch(`/api/templates/export/tables/${$table.id.value}`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				recordIds,
-			}),
-		})
-
-		if (!res.ok) return
-
-		const blob = await res.blob()
-		const a = document.createElement('a')
-		a.href = window.URL.createObjectURL(blob)
-		a.download = $table.name.value
-		a.click()
-		a.remove()
-	}
 </script>
 
 <DropdownMenu.Root>
@@ -100,7 +81,7 @@
 		{#if $hasPermission('table:export_template')}
 			<DropdownMenu.Item
 				on:click={() => {
-					exportTemplate()
+					exportTableTemplate.open()
 				}}
 				class="items-center gap-2"
 			>

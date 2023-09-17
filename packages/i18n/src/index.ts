@@ -404,6 +404,10 @@ export const config: InitOptions = {
         'export template with records': 'export with records',
         'export records count': 'export records count',
         'import template include records': 'include records',
+        'confirm export table template': 'Export table {{tableName}} as template?',
+        'export table template alert':
+          'All reference type fields which has foreign table will be converted to string field.',
+        'export table includes records': 'includes records',
       },
       webhook: {
         Webhook: 'Webhook',
@@ -837,6 +841,9 @@ export const config: InitOptions = {
         'export template with records': '导出模板包含行记录',
         'export records count': '导出行记录数量',
         'import template include records': '包含行记录',
+        'confirm export table template': '导出表 {{tableName}} 为模板吗？',
+        'export table template alert': '导出表模板会将所有有外联表的关联列转换为文本列。',
+        'export table includes records': '导出包含行记录',
       },
       webhook: {
         Webhook: 'Webhook',
