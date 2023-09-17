@@ -45,6 +45,16 @@ export class TemplateIdVisitor {
         if (field.type === 'min' || field.type === 'max' || field.type === 'sum' || field.type === 'average') {
           field.aggregateFieldId = this.mapper.fieldId(field.aggregateFieldId)
         }
+
+        if (field.type === 'tree') {
+          if (field.parentFieldId) {
+            field.parentFieldId = this.mapper.fieldId(field.parentFieldId)
+          }
+        }
+
+        if (field.type === 'parent') {
+          field.treeFieldId = this.mapper.fieldId(field.treeFieldId)
+        }
       }
 
       for (const view of table.views ?? []) {

@@ -24,6 +24,7 @@ export class TreeField extends Mixin(AbstractReferenceField<ITreeField>, Abstrac
   override get json() {
     return {
       ...super.json,
+      parentFieldId: this.parentFieldId?.value,
       displayFieldIds: this.displayFieldIds.map((id) => id.value),
     }
   }
