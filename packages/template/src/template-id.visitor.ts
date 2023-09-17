@@ -1,6 +1,6 @@
 import type { IFilterOrGroup } from '@undb/core'
 import { isFilter, isGroup } from '@undb/core'
-import { isNil, isString, keyBy, transform } from 'lodash-es'
+import { isString, keyBy, transform } from 'lodash-es'
 import { P, match } from 'ts-pattern'
 import { TemplateIdMapper } from './template-id.mapper'
 import type { ITemplateSchema } from './template.schema'
@@ -134,13 +134,13 @@ export class TemplateIdVisitor {
               .with(
                 { type: 'attachment' },
                 { type: 'collaborator' },
-                { type: 'reference', symmetricReferenceFieldId: P.when((value) => !isNil(value)) },
+                { type: 'reference', foreignTableId: P.when((id) => id !== table.id) },
                 () => null,
               )
               .with(
                 { type: 'tree' },
-                { type: 'reference' },
-                () => (value as string[] | undefined)?.map((id) => this.mapper.recordId(id)) ?? null,
+                { type: 'reference', foreignTableId: P.when((id) => id === table.id) },
+                () => (value as string[] | null)?.map((id) => this.mapper.recordId(id)) ?? null,
               )
               .with(
                 { type: 'multi-select' },
