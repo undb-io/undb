@@ -82,7 +82,7 @@ export class TableSqliteRepository implements ITableRepository {
 
     for (const view of table.views.views ?? []) {
       const viewEntity = new ViewEntity(tableEntity, view)
-      em.persist(viewEntity)
+      await em.persistAndFlush(viewEntity)
     }
 
     em.persist(tableEntity)

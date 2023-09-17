@@ -83,16 +83,13 @@ export class TemplateExport extends ValueObject<ITemplateExportSchema> {
 
   toTables(ctx: ClsStore): { table: Table; records?: Records }[] {
     return this.tables.map((t) => {
-      const table = TableFactory.from(
-        {
-          id: t.id,
-          name: t.name,
-          schema: t.schema,
-          views: t.views,
-          viewsOrder: t.viewsOrder,
-        },
-        ctx,
-      ).unwrap()
+      const table = TableFactory.unsafeCreate({
+        id: t.id,
+        name: t.name,
+        schema: t.schema,
+        views: t.views,
+        viewsOrder: t.viewsOrder,
+      }).unwrap()
 
       const records = t.records?.map((r) => table.createRecord(r.id, r.values, ctx.user.userId))
 

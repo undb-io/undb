@@ -1,6 +1,6 @@
-import type { IFilterOrGroup } from '@undb/core'
+import type { IFilter, IFilterOrGroup } from '@undb/core'
 import { isFilter, isGroup } from '@undb/core'
-import { isString, keyBy, transform } from 'lodash-es'
+import { isString, keyBy, mapKeys, transform } from 'lodash-es'
 import { P, match } from 'ts-pattern'
 import { TemplateIdMapper } from './template-id.mapper'
 import type { ITemplateSchema } from './template.schema'
@@ -62,6 +62,9 @@ export class TemplateIdVisitor {
           view.id = this.mapper.viewId(view.id)
         }
 
+        if (view.fieldOptions) {
+          view.fieldOptions = mapKeys(view.fieldOptions, (_, fieldId) => this.mapper.fieldId(fieldId))
+        }
         if (view.calendar?.fieldId) {
           view.calendar.fieldId = this.mapper.fieldId(view.calendar.fieldId)
         }
@@ -162,9 +165,20 @@ export class TemplateIdVisitor {
     return template
   }
 
+  private visitFilterItem(filter: IFilter) {
+    filter.path = this.mapper.fieldId(filter.path)
+    if (filter.type === 'select') {
+      if (Array.isArray(filter.value)) {
+        filter.value = filter.value.filter(Boolean).map((optionId) => this.mapper.optionId(optionId!))
+      } else if (isString(filter.value)) {
+        filter.value = this.mapper.optionId(filter.value)
+      }
+    }
+  }
+
   private visitFilter(filter: IFilterOrGroup) {
     if (isFilter(filter)) {
-      filter.path = this.mapper.fieldId(filter.path)
+      this.visitFilterItem(filter)
     } else if (isGroup(filter)) {
       for (const f of filter.children ?? []) {
         this.visitFilter(f)
