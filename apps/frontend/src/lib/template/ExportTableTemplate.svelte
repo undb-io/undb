@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Checkbox from '$components/ui/checkbox/checkbox.svelte'
+	import { Input } from '$components/ui/input'
 	import Label from '$components/ui/label/label.svelte'
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 	import { t } from '$lib/i18n'
@@ -10,8 +11,11 @@
 
 	const records = recordsStore.records
 
+	let importCount = 0
+
 	// TODO: allow user to select records
-	$: recordIds = $records.slice(0, 10).map((r) => r.id.value)
+	$: count = $records.length
+	$: recordIds = $records.slice(0, importCount).map((r) => r.id.value)
 
 	let includeRecords = true
 
@@ -48,10 +52,20 @@
 			</AlertDialog.Description>
 		</AlertDialog.Header>
 
-		<Label class="flex items-center gap-2">
-			<Checkbox bind:checked={includeRecords} />
-			<span>{$t('export table includes records')}</span>
-		</Label>
+		{#if count}
+			<div class="flex items-center gap-2 w-full">
+				<Label class="flex items-center gap-2">
+					<Checkbox bind:checked={includeRecords} />
+					<span>{$t('export table includes records')}</span>
+				</Label>
+
+				{#if includeRecords}
+					<Label class="flex items-center gap-2 flex-1">
+						<Input type="number" bind:value={importCount} min={1} max={count} step={1} />
+					</Label>
+				{/if}
+			</div>
+		{/if}
 
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel>
