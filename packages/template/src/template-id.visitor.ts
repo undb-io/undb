@@ -132,6 +132,11 @@ export class TemplateIdVisitor {
                 { type: 'reference' },
                 () => (value as string[] | undefined)?.map((id) => this.mapper.recordId(id)) ?? null,
               )
+              .with(
+                { type: 'multi-select' },
+                () => (value as string[] | undefined)?.map((id) => this.mapper.optionId(id)) ?? null,
+              )
+              .with({ type: 'select' }, () => (isString(value) ? this.mapper.optionId(value) : null))
               .with({ type: 'parent' }, () => {
                 if (isString(value)) return this.mapper.recordId(value)
                 return null
