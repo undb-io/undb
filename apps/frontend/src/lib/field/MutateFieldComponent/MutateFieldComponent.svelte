@@ -45,7 +45,7 @@
 		'updated-at': UpdatedAt,
 		min: Min,
 		max: Max,
-		qrcode: QrCode,
+		// qrcode: QrCode,
 	}
 </script>
 
