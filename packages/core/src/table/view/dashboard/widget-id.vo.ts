@@ -13,6 +13,10 @@ export class WidgetID extends NanoID {
     return new WidgetID(id)
   }
 
+  static createId(): string {
+    return super.createId(this.WIDGE_ID_PREFIX, this.WIDGE_ID_SIZE)
+  }
+
   static from(id: string): Result<WidgetID, InvalidTableIdError> {
     if (!id) {
       return Err(new InvalidTableIdError())

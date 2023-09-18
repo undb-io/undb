@@ -82,10 +82,14 @@ export class TableSqliteRepository implements ITableRepository {
 
     for (const view of table.views.views ?? []) {
       const viewEntity = new ViewEntity(tableEntity, view)
-      em.persist(viewEntity)
+      await em.persistAndFlush(viewEntity)
     }
 
     em.persist(tableEntity)
+  }
+
+  async insertMany(tables: CoreTable[]): Promise<void> {
+    await Promise.all(tables.map((table) => this.insert(table)))
   }
 
   async updateOneById(id: string, spec: ITableSpec): Promise<void> {

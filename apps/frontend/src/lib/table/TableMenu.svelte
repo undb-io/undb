@@ -1,6 +1,14 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
-	import { erdModal, formListDrawer, mergeDataModal, recordTrashModal, rlsModal, webhookModal } from '$lib/store/modal'
+	import {
+		erdModal,
+		exportTableTemplate,
+		formListDrawer,
+		mergeDataModal,
+		recordTrashModal,
+		rlsModal,
+		webhookModal,
+	} from '$lib/store/modal'
 	import { currentRLSS } from '$lib/store/table'
 	import { hasPermission } from '$lib/store/authz'
 	import * as DropdownMenu from '$components/ui/dropdown-menu'
@@ -68,6 +76,17 @@
 			>
 				<i class="ti ti-database-import text-gray-600 dark:text-gray-50" />
 				<span>{$t('merge data')}</span>
+			</DropdownMenu.Item>
+		{/if}
+		{#if $hasPermission('table:export_template')}
+			<DropdownMenu.Item
+				on:click={() => {
+					exportTableTemplate.open()
+				}}
+				class="items-center gap-2"
+			>
+				<i class="ti ti-template text-gray-600 dark:text-gray-50" />
+				<span>{$t('Export As Template')}</span>
 			</DropdownMenu.Item>
 		{/if}
 

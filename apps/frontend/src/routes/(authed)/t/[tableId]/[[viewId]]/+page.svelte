@@ -25,6 +25,7 @@
 	import FlsModal from '$lib/authz/fls/FLSModal.svelte'
 	import MergeData from '$lib/import/MergeData.svelte'
 	import { sidebarCollapsed } from '$lib/store/ui'
+	import ExportTableTemplate from '$lib/template/ExportTableTemplate.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -120,5 +121,6 @@
 <RLSModal />
 <FlsModal />
 <VisualizationModal />
+<ExportTableTemplate />
 
 <svelte:window on:keydown={onKeydown} />

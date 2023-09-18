@@ -22,7 +22,7 @@ export const createRecordInput_internal = z.object({
 })
 export type ICreateRecordInput_internal = z.infer<typeof createRecordInput_internal>
 
-const queryRecordValues = z.record(fieldIdSchema, fieldQueryValue)
+export const queryRecordValues = z.record(fieldIdSchema, fieldQueryValue)
 export type IQueryRecordValues = z.infer<typeof queryRecordValues>
 
 export const recordDisplayValues = z.record(fieldIdSchema, z.record(z.array(z.string().nullable()).nullable()))

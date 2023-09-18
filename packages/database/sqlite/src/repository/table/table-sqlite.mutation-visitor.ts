@@ -21,6 +21,7 @@ import type {
   WithReferenceFieldId,
   WithTableFormId,
   WithTableForms,
+  WithTableIds,
   WithTableViewId,
   WithTimeFormat,
   WithoutForm,
@@ -200,6 +201,9 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
 
   idEqual(): void {
     throw new Error('[TableSqliteMutationVisitor.idEqual] Method not implemented.')
+  }
+  idsIn(s: WithTableIds): void {
+    throw new Error('[TableSqliteMutationVisitor.idsIn] Method not implemented.')
   }
   nameEqual(s: WithTableName): void {
     const table = this.table

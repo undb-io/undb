@@ -33,6 +33,7 @@ import { OutboxModule } from './outbox/outbox.module.js'
 import { RealtimeModule } from './realtime/realtime.module.js'
 import { RelayModule } from './relay/relay.module.js'
 import { ShareModule } from './share/share.module.js'
+import { TemplateModule } from './template/template.module.js'
 import { TrpcModule } from './trpc/trpc.module.js'
 import { WebhookModule } from './webhook/webhook.module.js'
 
@@ -90,6 +91,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
     AuditModule,
     AppInfoModule,
     InvitationModule,
+    TemplateModule,
   ],
 })
 export class AppModule implements OnModuleInit {

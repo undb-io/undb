@@ -70,13 +70,14 @@ import type { WithVisualizationFieldSpec } from '../visualization/specifications
 import type { WithVisualizationNameSpec } from '../visualization/specifications/visualization-name.specification.js'
 import type { WithTableEmoji } from './table-emoji.specification.js'
 import type { WithNewField } from './table-field.specification.js'
-import type { WithTableId } from './table-id.specification.js'
+import type { WithTableId, WithTableIds } from './table-id.specification.js'
 import type { WithTableName } from './table-name.specification.js'
 import type { WithTableSchema } from './table-schema.specification.js'
 import type { WithTableFormId, WithTableViewId } from './table-view-id.specification.js'
 
 export interface ITableSpecVisitor extends ISpecVisitor {
   idEqual(s: WithTableId): void
+  idsIn(s: WithTableIds): void
   nameEqual(s: WithTableName): void
   emojiEqual(s: WithTableEmoji): void
   schemaEqual(s: WithTableSchema): void

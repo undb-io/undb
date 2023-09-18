@@ -183,6 +183,9 @@ importers:
       '@undb/sqlite':
         specifier: ^0.0.0
         version: link:../../packages/database/sqlite
+      '@undb/template':
+        specifier: workspace:^
+        version: link:../../packages/template
       '@undb/trpc':
         specifier: ^0.0.0
         version: link:../../packages/trpc
@@ -444,6 +447,10 @@ importers:
         version: 1.0.4
 
   apps/frontend:
+    dependencies:
+      '@undb/template':
+        specifier: workspace:^
+        version: link:../../packages/template
     devDependencies:
       '@event-calendar/core':
         specifier: ^2.3.2
@@ -828,6 +835,9 @@ importers:
       '@undb/openapi':
         specifier: workspace:^
         version: link:../openapi
+      '@undb/template':
+        specifier: workspace:^
+        version: link:../template
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1248,6 +1258,52 @@ importers:
       vitest:
         specifier: ^0.34.3
         version: 0.34.3
+
+  packages/template:
+    dependencies:
+      '@undb/core':
+        specifier: workspace:^0.0.0
+        version: link:../core
+      '@undb/domain':
+        specifier: workspace:^
+        version: link:../domain
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
+      oxide.ts:
+        specifier: ^1.1.0
+        version: 1.1.0
+      ts-pattern:
+        specifier: ^5.0.5
+        version: 5.0.5
+      zod:
+        specifier: ^3.22.2
+        version: 3.22.2
+      zod-to-json-schema:
+        specifier: ^3.21.4
+        version: 3.21.4(zod@3.22.2)
+    devDependencies:
+      '@types/lodash-es':
+        specifier: ^4.17.9
+        version: 4.17.9
+      rimraf:
+        specifier: ^5.0.1
+        version: 5.0.1
+      tsconfig:
+        specifier: ^0.0.0
+        version: link:../tsconfig
+      tsup:
+        specifier: ^7.2.0
+        version: 7.2.0(@swc/core@1.3.85)(ts-node@10.9.1)(typescript@5.2.2)
+      typescript:
+        specifier: ^5.2.2
+        version: 5.2.2
+      vitest:
+        specifier: ^0.34.3
+        version: 0.34.3
+      vitest-mock-extended:
+        specifier: ^1.2.1
+        version: 1.2.1(typescript@5.2.2)(vitest@0.34.3)
 
   packages/trpc:
     dependencies:
@@ -2190,7 +2246,7 @@ packages:
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
       resolve-from: 5.0.0
-      ts-node: 10.9.1(@swc/core@1.3.85)(@types/node@20.5.9)(typescript@5.2.2)
+      ts-node: 10.9.1(@types/node@20.5.9)(typescript@5.2.2)
       typescript: 5.2.2
     transitivePeerDependencies:
       - '@swc/core'
@@ -3715,7 +3771,7 @@ packages:
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     dependencies:
       '@npmcli/name-from-folder': 2.0.0
-      glob: 10.2.5
+      glob: 10.3.3
       minimatch: 9.0.0
       read-package-json-fast: 3.0.2
     dev: true
@@ -7839,7 +7895,7 @@ packages:
     dependencies:
       '@npmcli/fs': 3.1.0
       fs-minipass: 3.0.2
-      glob: 10.2.5
+      glob: 10.3.3
       lru-cache: 7.18.3
       minipass: 5.0.0
       minipass-collect: 1.0.2
@@ -8554,7 +8610,7 @@ packages:
     dependencies:
       '@types/node': 20.4.7
       cosmiconfig: 8.1.3
-      ts-node: 10.9.1(@swc/core@1.3.85)(@types/node@20.5.9)(typescript@5.2.2)
+      ts-node: 10.9.1(@types/node@20.5.9)(typescript@5.2.2)
       typescript: 5.2.2
     dev: true
 
@@ -10580,7 +10636,6 @@ packages:
       minimatch: 9.0.3
       minipass: 5.0.0
       path-scurry: 1.10.1
-    dev: false
 
   /glob@7.1.6:
     resolution: {integrity: sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==}
@@ -12687,7 +12742,6 @@ packages:
     engines: {node: '>=16 || 14 >=14.17'}
     dependencies:
       brace-expansion: 2.0.1
-    dev: false
 
   /minimist-options@4.1.0:
     resolution: {integrity: sha512-Q4r8ghd80yhO/0j1O3B2BjweX3fiHg9cdOwjJd2J76Q135c+NDxGCqdYKQ1SKBuFfgWbAUzBfvYjPUEeNgqN1A==}
@@ -14549,7 +14603,7 @@ packages:
     dependencies:
       lilconfig: 2.1.0
       postcss: 8.4.29
-      ts-node: 10.9.1(@swc/core@1.3.85)(@types/node@20.5.9)(typescript@5.2.2)
+      ts-node: 10.9.1(@types/node@20.5.9)(typescript@5.2.2)
       yaml: 1.10.2
     dev: true
 
@@ -14567,7 +14621,7 @@ packages:
     dependencies:
       lilconfig: 2.1.0
       postcss: 8.4.29
-      ts-node: 10.9.1(@swc/core@1.3.85)(@types/node@20.5.9)(typescript@5.2.2)
+      ts-node: 10.9.1(@types/node@20.5.9)(typescript@5.2.2)
       yaml: 2.2.2
     dev: true
 
@@ -14584,7 +14638,7 @@ packages:
         optional: true
     dependencies:
       lilconfig: 2.1.0
-      ts-node: 10.9.1(@swc/core@1.3.85)(@types/node@20.5.9)(typescript@5.2.2)
+      ts-node: 10.9.1(@types/node@20.5.9)(typescript@5.2.2)
       yaml: 2.3.1
     dev: true
 
@@ -15106,7 +15160,7 @@ packages:
     resolution: {integrity: sha512-Ismd3km1d/FGzcjm8fBf/4ktkyd0t6pbkjYqu1gvRzOzN+aTxi1eigdZp7441TlszQ+GsdYezgS+g9cgy8QK9w==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     dependencies:
-      glob: 10.2.5
+      glob: 10.3.3
       json-parse-even-better-errors: 3.0.0
       normalize-package-data: 5.0.0
       npm-normalize-package-bin: 3.0.0
@@ -17091,6 +17145,37 @@ packages:
       yn: 3.1.1
     dev: true
 
+  /ts-node@10.9.1(@types/node@20.5.9)(typescript@5.2.2):
+    resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
+    hasBin: true
+    peerDependencies:
+      '@swc/core': '>=1.2.50'
+      '@swc/wasm': '>=1.2.50'
+      '@types/node': '*'
+      typescript: '>=2.7'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      '@swc/wasm':
+        optional: true
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      '@tsconfig/node10': 1.0.9
+      '@tsconfig/node12': 1.0.11
+      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.3
+      '@types/node': 20.5.9
+      acorn: 8.9.0
+      acorn-walk: 8.2.0
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      typescript: 5.2.2
+      v8-compile-cache-lib: 3.0.1
+      yn: 3.1.1
+    dev: true
+
   /ts-pattern@5.0.5:
     resolution: {integrity: sha512-tL0w8U/pgaacOmkb9fRlYzWEUDCfVjjv9dD4wHTgZ61MjhuMt46VNWTG747NqW6vRzoWIKABVhFSOJ82FvXrfA==}
 
@@ -18233,6 +18318,14 @@ packages:
       zod: '>=3.17.0'
     dependencies:
       i18next: 23.0.0
+      zod: 3.22.2
+    dev: false
+
+  /zod-to-json-schema@3.21.4(zod@3.22.2):
+    resolution: {integrity: sha512-fjUZh4nQ1s6HMccgIeE0VP4QG/YRGPmyjO9sAh890aQKPEk3nqbfUXhMFaC+Dr5KvYBm8BCyvfpZf2jY9aGSsw==}
+    peerDependencies:
+      zod: ^3.21.4
+    dependencies:
       zod: 3.22.2
     dev: false
 

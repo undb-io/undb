@@ -1,6 +1,14 @@
 import { ValueObject } from '@undb/domain'
+import { isString } from 'lodash-es'
 import { Option } from 'oxide.ts'
-import type { FieldValue, ICreateFieldsSchema_internal, UnpackedFieldValue } from '../../field/index.js'
+import type {
+  FieldValue,
+  ICreateFieldsSchema_internal,
+  ParentFieldValue,
+  ReferenceFieldValue,
+  TreeFieldValue,
+  UnpackedFieldValue,
+} from '../../field/index.js'
 import { TreeField } from '../../field/index.js'
 import type { TableSchemaIdMap } from '../../value-objects/index.js'
 import type { RecordValueJSON, RecordValuePair } from '../record.schema.js'
@@ -43,6 +51,34 @@ export class RecordValues extends ValueObject<Map<string, FieldValue>> {
     }
 
     return result
+  }
+
+  public getForeignRecordIds(schema: TableSchemaIdMap): Set<string> {
+    const ids = new Set<string>()
+
+    for (const [fieldId, value] of this) {
+      const field = schema.get(fieldId)
+      if (!field) continue
+
+      if (field.type === 'reference' || field.type === 'tree') {
+        const v = (value as ReferenceFieldValue | TreeFieldValue).unpack()
+
+        if (Array.isArray(v)) {
+          for (const recordId of v) {
+            ids.add(recordId)
+          }
+        }
+      }
+
+      if (field.type === 'parent') {
+        const v = (value as ParentFieldValue).unpack()
+        if (isString(v)) {
+          ids.add(v)
+        }
+      }
+    }
+
+    return ids
   }
 
   *[Symbol.iterator]() {

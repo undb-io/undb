@@ -70,6 +70,7 @@ import type {
   WithTableEmoji,
   WithTableFormId,
   WithTableId,
+  WithTableIds,
   WithTableName,
   WithTableSchema,
   WithTableViewId,
@@ -149,6 +150,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   min(field: MinField): void {}
   max(field: MaxField): void {}
   idEqual(s: WithTableId): void {}
+  idsIn(s: WithTableIds): void {}
   nameEqual(s: WithTableName): void {}
   schemaEqual(s: WithTableSchema): void {
     for (const field of s.schema.fields) {

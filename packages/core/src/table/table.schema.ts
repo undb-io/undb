@@ -11,7 +11,7 @@ import {
 import { tableEmojiSchema } from './value-objects/table-emoji.vo.js'
 import { createViewInput_internal, queryViews, viewsOrderSchema } from './view/index.js'
 
-const createViewsSchema = z.array(createViewInput_internal).optional()
+export const createViewsSchema = z.array(createViewInput_internal).optional()
 export type ICreateViewsSchema = z.infer<typeof createViewsSchema>
 
 export const createTableInput = z.object({

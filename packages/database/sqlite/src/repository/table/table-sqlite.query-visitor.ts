@@ -46,6 +46,7 @@ import type {
   WithTableFormId,
   WithTableForms,
   WithTableId,
+  WithTableIds,
   WithTableName,
   WithTableSchema,
   WithTableView,
@@ -97,6 +98,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   }
   idEqual(s: WithTableId): void {
     this.qb.andWhere({ id: s.id.value })
+  }
+  idsIn(s: WithTableIds): void {
+    this.qb.andWhere({ id: { $in: s.ids.map((id) => id.value) } })
   }
   nameEqual(s: WithTableName): void {
     this.qb.andWhere({ name: s.name.value })
