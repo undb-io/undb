@@ -113,6 +113,10 @@ export class TableSchema extends ValueObject<Field[]> {
     return this.fields.filter((f) => !f.isSystem()) as NoneSystemField[]
   }
 
+  public get nonControlledFields() {
+    return this.fields.filter((f) => !f.controlled)
+  }
+
   public get referenceFields(): ReferenceField[] {
     return this.fields.filter((f) => f instanceof ReferenceField) as ReferenceField[]
   }

@@ -3,7 +3,6 @@
 import { INTERNAL_COLUMN_ID_NAME, type CountField } from '@undb/core'
 import { ReferenceField } from '../../entity/field.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
-import { UnderlyingForeignTableFactory } from '../underlying-foreign-table.factory.js'
 import {
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
@@ -18,6 +17,7 @@ import {
   UnderlyingStringColumn,
   UnderlyingUrlColumn,
 } from '../underlying-column.js'
+import { UnderlyingForeignTableFactory } from '../underlying-foreign-table.factory.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
 export class CountColumnTypeModifier extends BaseColumnTypeModifier<CountField> {
@@ -112,6 +112,9 @@ export class CountColumnTypeModifier extends BaseColumnTypeModifier<CountField> 
   }
   count(): void {
     throw new Error('Method not implemented.')
+  }
+  qrcode(): void {
+    this.dropColumn(this.column)
   }
   sum(): void {
     this.dropColumn(this.column)

@@ -96,6 +96,7 @@ import {
   NumberField,
   Option,
   ParentField,
+  QRCodeField,
   RatingField,
   ReferenceField,
   SelectField,
@@ -154,6 +155,8 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
         return this.em.getReference(ColorField, id)
       case 'email':
         return this.em.getReference(EmailField, id)
+      case 'qrcode':
+        return this.em.getReference(QRCodeField, id)
       case 'url':
         return this.em.getReference(UrlField, id)
       case 'json':

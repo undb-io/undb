@@ -73,6 +73,9 @@ export class RatingColumnTypeModifier extends BaseColumnTypeModifier<RatingField
   collaborator(): void {
     this.castToCollaborator(this.column)
   }
+  qrcode(): void {
+    this.dropColumn(this.column)
+  }
   count(): void {
     this.dropColumn(this.column)
   }

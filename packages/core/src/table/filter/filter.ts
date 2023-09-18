@@ -75,6 +75,7 @@ import {
 import type { INumberFilter } from '../field/fields/number/number.filter.js'
 import { numberFilter, numberFilterOperators, numberFilterValue } from '../field/fields/number/number.filter.js'
 import { parentFilter, parentFilterOperators, parentFilterValue } from '../field/fields/parent/parent.filter.js'
+import { qrcodeFilter, qrcodeFilterOperators, qrcodeFilterValue } from '../field/fields/qrcode/qrcode.filter.js'
 import type { IRatingFilter } from '../field/fields/rating/rating.filter.js'
 import { ratingFilter, ratingFilterOperators, ratingFilterValue } from '../field/fields/rating/rating.filter.js'
 import {
@@ -189,6 +190,7 @@ export const filterValue = z.union([
   autoIncrementFilterValue,
   stringFilterValue,
   emailFilterValue,
+  qrcodeFilterValue,
   urlFilterValue,
   jsonFilterValue,
   colorFieldValue,
@@ -223,6 +225,7 @@ export const operaotrs = z.union([
   autoIncrementFilterOperators,
   stringFilterOperators,
   emailFilterOperators,
+  qrcodeFilterOperators,
   urlFilterOperators,
   jsonFilterOperators,
   colorFilterOperators,
@@ -260,6 +263,7 @@ export const operaotrsMap: Record<IFieldType, IOperator[]> = {
   'auto-increment': autoIncrementFilterOperators.options.map((v) => v._def.value),
   color: colorFilterOperators.options.map((v) => v._def.value),
   email: emailFilterOperators.options.map((v) => v._def.value),
+  qrcode: qrcodeFilterOperators.options.map((v) => v._def.value),
   url: urlFilterOperators.options.map((v) => v._def.value),
   json: jsonFilterOperators.options.map((v) => v._def.value),
   select: selectFilterOperators.options.map((v) => v._def.value),
@@ -290,6 +294,7 @@ const filter = z.discriminatedUnion('type', [
   autoIncrementFilter,
   stringFilter,
   emailFilter,
+  qrcodeFilter,
   urlFilter,
   jsonFilter,
   colorFilter,
@@ -733,6 +738,7 @@ const convertFilter = (
     return None
   }
   return match(filter)
+    .returnType<Option<RecordCompositeSpecification>>()
     .with({ type: 'id' }, (filter) => convertIdFilter(filter))
     .with({ type: 'string' }, { type: 'email' }, { type: 'url' }, { type: 'color' }, (filter) =>
       convertStringFilter(filter),

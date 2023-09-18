@@ -102,6 +102,9 @@ export class SelectColumnTypeModifier extends BaseColumnTypeModifier<SelectField
         .toQuery(),
     )
   }
+  qrcode(): void {
+    this.dropColumn(this.column)
+  }
   count(): void {
     this.dropColumn(this.column)
   }

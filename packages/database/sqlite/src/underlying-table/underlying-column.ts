@@ -14,7 +14,10 @@ import type { IUnderlyingColumn } from '../interfaces/underlying-column.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME, INTERNAL_COLUMN_DELETED_BY_NAME } from './constants.js'
 
 export abstract class UnderlyingColumn implements IUnderlyingColumn {
-  constructor(public readonly fieldId: string | undefined, protected readonly tableName: string) {}
+  constructor(
+    public readonly fieldId: string | undefined,
+    protected readonly tableName: string,
+  ) {}
 
   public readonly queries: string[] = []
   get system(): boolean {
@@ -122,7 +125,10 @@ export class UnderlyingDeletedByColumn extends UnderlyingColumn {
 }
 
 abstract class UnderlyingFieldColumn implements IUnderlyingColumn {
-  constructor(public readonly fieldId: string, protected readonly tableName: string) {}
+  constructor(
+    public readonly fieldId: string,
+    protected readonly tableName: string,
+  ) {}
   public readonly queries: string[] = []
   get system(): boolean {
     return false
@@ -313,6 +319,8 @@ export class UnderlyingMultiSelectColumn extends UnderlyingFieldColumn {
 }
 
 export class UnderlyingCollaboratorColumn extends UnderlyingVirtualColumn {}
+
+export class UnderlyingQRCodeColumn extends UnderlyingVirtualColumn {}
 
 export class UnderlyingReferenceColumn extends UnderlyingVirtualColumn {}
 

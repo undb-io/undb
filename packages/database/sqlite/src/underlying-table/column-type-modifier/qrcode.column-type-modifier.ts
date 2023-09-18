@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { INTERNAL_COLUMN_ID_NAME, type AttachmentField } from '@undb/core'
-import { Attachment } from '../../entity/attachment.js'
+import type { QRCodeField } from '@undb/core'
 import {
-  UnderlyingAttachmentColumn,
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
   UnderlyingDateColumn,
@@ -11,6 +9,7 @@ import {
   UnderlyingJsonColumn,
   UnderlyingMultiSelectColumn,
   UnderlyingNumberColumn,
+  UnderlyingQRCodeColumn,
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
   UnderlyingStringColumn,
@@ -18,41 +17,11 @@ import {
 } from '../underlying-column.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
-export class AttachmentColumnTypeModifier extends BaseColumnTypeModifier<AttachmentField> {
-  private readonly column = new UnderlyingAttachmentColumn(this.field.id.value, this.tableId)
+export class QRCodeColumnTypeModifier extends BaseColumnTypeModifier<QRCodeField> {
+  private readonly column = new UnderlyingQRCodeColumn(this.field.id.value, this.tableId)
   string(): void {
     const newColumn = new UnderlyingStringColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
-
-    const {
-      tableName: attachmentTableName,
-      properties: { recordId, name, fieldId },
-    } = this.em.getMetadata().get(Attachment.name)
-
-    const { tableId, knex, field } = this
-    const subQuery = this.knex
-      .queryBuilder()
-      .select(
-        `${attachmentTableName}.${recordId.fieldNames[0]}`,
-        this.knex.raw(`group_concat(distinct ${attachmentTableName}.${name.fieldNames[0]}) as value`),
-      )
-      .from(this.tableId)
-      .innerJoin(attachmentTableName, function () {
-        this.on(`${attachmentTableName}.${recordId.fieldNames[0]}`, `${tableId}.${INTERNAL_COLUMN_ID_NAME}`).andOn(
-          `${attachmentTableName}.${fieldId.fieldNames[0]}`,
-          knex.raw('?', [field.id.value]),
-        )
-      })
-      .groupBy(`${attachmentTableName}.${recordId.fieldNames[0]}`)
-      .toQuery()
-
-    const query = `
-      UPDATE \`${this.tableId}\`
-      SET ${newColumn.name} = tt.value
-      FROM (${subQuery}) as tt
-      WHERE tt.${recordId.fieldNames[0]} = ${this.tableId}.id
-    `
-    this.addQueries(query)
   }
   number(): void {
     const newColumn = new UnderlyingNumberColumn(this.field.id.value, this.tableId)
@@ -70,18 +39,15 @@ export class AttachmentColumnTypeModifier extends BaseColumnTypeModifier<Attachm
     const newColumn = new UnderlyingUrlColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
-
   json(): void {
     const newColumn = new UnderlyingJsonColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
   date(): void {
-    const newColumn = new UnderlyingDateColumn(this.field.id.value, this.tableId)
-    this.alterColumn(newColumn, this.column)
+    this.alterColumn(new UnderlyingDateColumn(this.field.id.value, this.tableId), this.column)
   }
   select(): void {
-    const newColumn = new UnderlyingSelectColumn(this.field.id.value, this.tableId)
-    this.alterColumn(newColumn, this.column)
+    this.alterColumn(new UnderlyingSelectColumn(this.field.id.value, this.tableId), this.column)
   }
   bool(): void {
     const newColumn = new UnderlyingBoolColumn(this.field.id.value, this.tableId)
@@ -105,17 +71,17 @@ export class AttachmentColumnTypeModifier extends BaseColumnTypeModifier<Attachm
     this.dropColumn(this.column)
   }
   collaborator(): void {
-    this.castToCollaborator(this.column)
+    this.dropColumn(this.column)
+  }
+  count(): void {
+    this.dropColumn(this.column)
   }
   ['multi-select'](): void {
     const newColumn = new UnderlyingMultiSelectColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
   qrcode(): void {
-    this.dropColumn(this.column)
-  }
-  count(): void {
-    this.dropColumn(this.column)
+    throw new Error('Method not implemented.')
   }
   sum(): void {
     this.dropColumn(this.column)

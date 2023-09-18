@@ -117,6 +117,9 @@ export class DateRangeColumnTypeModifier extends BaseColumnTypeModifier<DateRang
   attachment(): void {
     this.dropDateRange()
   }
+  qrcode(): void {
+    this.dropDateRange()
+  }
   count(): void {
     this.dropDateRange()
   }

@@ -21,6 +21,7 @@
 	import Url from '../CellInput/Url.svelte'
 	import CreatedBy from './CreatedBy.svelte'
 	import UpdatedBy from './UpdatedBy.svelte'
+	import Readonly from '../CellInput/Readonly.svelte'
 
 	export let field: Field
 	export let value: FieldValue | undefined
@@ -35,6 +36,7 @@
 		'auto-increment': Number,
 		color: Color,
 		email: String,
+		qrcode: Readonly,
 		json: String,
 		date: Date,
 		select: Select,

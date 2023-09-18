@@ -69,6 +69,9 @@ export class CurrencyColumnTypeModifier extends BaseColumnTypeModifier<CurrencyF
   attachment(): void {
     this.dropColumn(this.column)
   }
+  qrcode(): void {
+    this.dropColumn(this.column)
+  }
   count(): void {
     this.dropColumn(this.column)
   }

@@ -191,6 +191,9 @@ export class StringColumnTypeModifier extends BaseColumnTypeModifier<StringField
       await this.em.execute(alterName)
     })
   }
+  qrcode(): void {
+    this.dropColumn(this.column)
+  }
   sum(): void {
     this.dropColumn(this.column)
   }

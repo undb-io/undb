@@ -7,6 +7,7 @@ import type { LookupField } from '../field/fields/lookup/lookup-field.js'
 import type { MultiSelectField } from '../field/fields/multi-select/multi-select-field.js'
 import { multiSelectReadableValueSchema } from '../field/fields/multi-select/multi-select-field.type.js'
 import type { ParentField } from '../field/fields/parent/parent-field.js'
+import { qrcodeReadableValueSchema } from '../field/fields/qrcode/qrcode-field.type.js'
 import type { SelectField } from '../field/fields/select/select-field.js'
 import type { TreeField } from '../field/fields/tree/tree-field.js'
 import { urlReadableValueSchema } from '../field/fields/url/url-field.type.js'
@@ -65,6 +66,7 @@ export const recordReadableValueMapper = (record?: Record): globalThis.Record<IF
     url: getValue,
     json: getValue,
     date: getValue,
+    qrcode: getValue,
     select: (field) => {
       const value = getValue(field) as string
       if (!value) return null
@@ -156,6 +158,7 @@ export const recordReadableValueSchemaMap: globalThis.Record<IFieldType, ZodType
   'auto-increment': autoIncrementReadableValueSchema,
   color: colorReadableValueSchema,
   email: emailReadableValueSchema,
+  qrcode: qrcodeReadableValueSchema,
   url: urlReadableValueSchema,
   // jsonFieldQueryValue is not valid for openapi
   json: jsonReadableValueSchema,

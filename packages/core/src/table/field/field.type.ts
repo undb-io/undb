@@ -237,6 +237,17 @@ import {
   parentTypeSchema,
   updateParentFieldSchema,
 } from './fields/parent/parent-field.type.js'
+import type { QRCodeFieldValue } from './fields/qrcode/qrcode-field-value.js'
+import type { QRCodeField } from './fields/qrcode/qrcode-field.js'
+import type { IQRCodeFieldValue } from './fields/qrcode/qrcode-field.type.js'
+import {
+  createQRCodeFieldSchema,
+  createQRCodeFieldValue_internal,
+  qrcodeFieldQuerySchema,
+  qrcodeFieldQueryValue,
+  qrcodeTypeSchema,
+  updateQRCodeFieldSchema,
+} from './fields/qrcode/qrcode-field.type.js'
 import type { RatingFieldValue } from './fields/rating/rating-field-value.js'
 import type { RatingField } from './fields/rating/rating-field.js'
 import type { IRatingFieldValue } from './fields/rating/rating-field.type.js'
@@ -362,6 +373,7 @@ export const createFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   createAutoIncrementFieldSchema,
   createStringFieldSchema,
   createEmailFieldSchema,
+  createQRCodeFieldSchema,
   createUrlFieldSchema,
   createJsonFieldSchema,
   createColorFieldSchema,
@@ -396,6 +408,7 @@ export const updateFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   updateAutoIncrementFieldSchema,
   updateStringFieldSchema,
   updateEmailFieldSchema,
+  updateQRCodeFieldSchema,
   updateUrlFieldSchema,
   updateJsonFieldSchema,
   updateColorFieldSchema,
@@ -430,6 +443,7 @@ export const queryFieldSchema = z.discriminatedUnion(FIELD_TYPE_KEY, [
   autoIncrementFieldQuerySchema,
   stringFieldQuerySchema,
   emailFieldQuerySchema,
+  qrcodeFieldQuerySchema,
   urlFieldQuerySchema,
   jsonFieldQuerySchema,
   colorFieldQuerySchema,
@@ -467,6 +481,7 @@ export const fieldTypes = z.union([
   stringTypeSchema,
   colorTypeSchema,
   emailTypeSchema,
+  qrcodeTypeSchema,
   urlTypeSchema,
   jsonTypeSchema,
   numberTypeSchema,
@@ -500,6 +515,7 @@ export const createFieldValueSchema_internal = z.discriminatedUnion(FIELD_TYPE_K
   createAutoIncrementFieldValue_internal,
   createStringFieldValue_internal,
   createEmailFieldValue_internal,
+  createQRCodeFieldValue_internal,
   createUrlFieldValue_internal,
   createJsonFieldValue_internal,
   createColorFieldValue_internal,
@@ -580,6 +596,7 @@ export type NoneSystemField =
   | StringField
   | NumberField
   | EmailField
+  | QRCodeField
   | UrlField
   | JsonField
   | ColorField
@@ -607,6 +624,7 @@ export type PrimitiveField =
   | StringField
   | NumberField
   | EmailField
+  | QRCodeField
   | UrlField
   | JsonField
   | ColorField
@@ -635,6 +653,7 @@ export type FieldValue =
   | AutoIncrementFieldValue
   | StringFieldValue
   | EmailFieldValue
+  | QRCodeFieldValue
   | UrlFieldValue
   | JsonFieldValue
   | ColorFieldValue
@@ -669,6 +688,7 @@ export type UnpackedFieldValue =
   | IAutoIncrementFieldValue
   | IStringFieldValue
   | IEmailFieldValue
+  | IQRCodeFieldValue
   | IUrlFieldValue
   | IJsonFieldValue
   | IColorFieldValue
@@ -703,6 +723,7 @@ export const fieldQueryValueMap: Record<IFieldType, z.ZodTypeAny> = {
   'auto-increment': autoIncrementQueryValue,
   color: colorFieldQueryValue,
   email: emailFieldQueryValue,
+  qrcode: qrcodeFieldQueryValue,
   url: urlFieldQueryValue,
   json: jsonReadableValueSchema,
   date: dateFieldQueryValue,
@@ -736,6 +757,7 @@ export const fieldQueryValue = z.union([
   dateFieldQueryValue,
   dateRangeFieldQueryValue,
   emailFieldQueryValue,
+  qrcodeFieldQueryValue,
   urlFieldQueryValue,
   jsonReadableValueSchema,
   idFieldQueryValue,

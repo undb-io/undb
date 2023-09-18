@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import type { QRCodeField } from '../field/fields/qrcode/qrcode-field.js'
 import type {
   AttachmentField,
   AutoIncrementField,
@@ -128,6 +129,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   autoIncrement(field: AutoIncrementField): void {}
   string(field: StringField): void {}
   email(field: EmailField): void {}
+  qrcode(field: QRCodeField): void {}
   url(field: UrlField): void {}
   json(field: JsonField): void {}
   color(field: ColorField): void {}
