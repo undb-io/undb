@@ -100,7 +100,6 @@ export class UpdateFieldHelper {
         }
         break
       }
-      // TODO: implement
       case 'select':
       case 'multi-select': {
         const optionsInput = input.options

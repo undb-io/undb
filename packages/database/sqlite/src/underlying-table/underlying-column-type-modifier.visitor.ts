@@ -52,6 +52,7 @@ import { MaxColumnTypeModifier } from './column-type-modifier/max.column-type-mo
 import { MinColumnTypeModifier } from './column-type-modifier/min.column-type-modifier.js'
 import { MultiSelectColumnTypeModifier } from './column-type-modifier/multi-select.column-type-modifier.js'
 import { NumberColumnTypeModifier } from './column-type-modifier/number.column-type-modifier.js'
+import { QRCodeColumnTypeModifier } from './column-type-modifier/qrcode.column-type-modifier.js'
 import { RatingColumnTypeModifier } from './column-type-modifier/rating.column-type-modifier.js'
 import { SelectColumnTypeModifier } from './column-type-modifier/select.column-type-modifier.js'
 import { StringColumnTypeModifier } from './column-type-modifier/string.column-type-modifier.js'
@@ -158,8 +159,10 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
     this.unshiftJobs(...modifier.jobs)
   }
   qrcode(field: QRCodeField): void {
-    // TODO: implement
-    throw new Error('[UnderlyingColumnConvertTypeVisitor.qrcode] Method not implemented.')
+    const modifier = new QRCodeColumnTypeModifier(field, this.tableName, this.newType, this.em, this.knex)
+    modifier[this.newType]()
+    this.unshiftQueries(...modifier.queries)
+    this.unshiftJobs(...modifier.jobs)
   }
   reference(field: ReferenceField): void {
     throw new Error('Method not implemented.')
