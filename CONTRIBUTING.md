@@ -3,7 +3,7 @@ it's very easy to start with development.
 
 ## Prerequisite
 
-- [Node.js](https://nodejs.org/en), required version >= 20.2.0
+- [Node.js](https://nodejs.org/en), required version >= 20.6.1
 - [pnpm](https://pnpm.io/), package management for undb, required version >= 8.0.0
 
 ## Setup steps
