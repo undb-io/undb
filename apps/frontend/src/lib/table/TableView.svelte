@@ -26,13 +26,15 @@
 	import { onMount, tick } from 'svelte'
 	import { editors } from '$lib/cell/CellEditors/editors'
 	import { t } from '$lib/i18n'
-	import { confirmBulkDeleteRecords, confirmDeleteField } from '$lib/store/modal'
+	import { confirmDeleteField } from '$lib/store/modal'
 	import LoadingTable from './LoadingTable.svelte'
 	import TableViewToast from './TableViewToast.svelte'
 	import { recordSelection, selectedCount, selectedRecords } from '$lib/store/record'
 	import { getColumnTemplate } from '$lib/field/field-template'
 	import { hasPermission } from '$lib/store/authz'
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'
+	import ConfirmBulkDeleteRecord from '$lib/record/ConfirmBulkDeleteRecord.svelte'
+	import ConfirmBulkDuplicateRecord from '$lib/record/ConfirmBulkDuplicateRecord.svelte'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -272,24 +274,6 @@
 
 	$: hasRecord = !!$records.length
 
-	const bulkDeleteRecordsMutation = trpc().record.bulkDelete.mutation({
-		async onSuccess(data, variables, context) {
-			recordSelection.set({})
-		},
-	})
-
-	const bulkDeleteRecords = async () => {
-		if (!$selectedRecords.length) {
-			return
-		}
-
-		$bulkDeleteRecordsMutation.mutate({
-			tableId: $table.id.value,
-			ids: $selectedRecords as [string, ...string[]],
-		})
-		$confirmBulkDeleteRecords = false
-	}
-
 	const deleteField = trpc().table.field.delete.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidate(`table:${$table.id.value}`)
@@ -364,29 +348,8 @@
 	{/key}
 {/if}
 
-<AlertDialog.Root bind:open={$confirmBulkDeleteRecords}>
-	<AlertDialog.Content class="z-[999999999]">
-		<AlertDialog.Header>
-			<AlertDialog.Title>{$t('Confirm Delete Record')}</AlertDialog.Title>
-		</AlertDialog.Header>
-		<AlertDialog.Footer>
-			<AlertDialog.Cancel>
-				<div
-					on:click={() => {
-						confirmBulkDeleteRecords.set(false)
-					}}
-				>
-					{$t('Confirm No', { ns: 'common' })}
-				</div>
-			</AlertDialog.Cancel>
-			<AlertDialog.Action>
-				<div on:click={bulkDeleteRecords}>
-					{$t('Confirm Yes', { ns: 'common' })}
-				</div>
-			</AlertDialog.Action>
-		</AlertDialog.Footer>
-	</AlertDialog.Content>
-</AlertDialog.Root>
+<ConfirmBulkDeleteRecord />
+<ConfirmBulkDuplicateRecord />
 
 <AlertDialog.Root bind:open={$confirmDeleteField}>
 	<AlertDialog.Content>
