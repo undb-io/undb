@@ -138,6 +138,11 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
   qrcode(value: CoreQRCodeField): void {
     const field = new QRCodeField(this.table, value)
 
+    const dataFieldId = value.data.unpack().dataFieldId
+    if (dataFieldId) {
+      field.dataFieldId = this.em.getReference(Field, dataFieldId)
+    }
+
     this.em.persist(field)
   }
 

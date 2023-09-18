@@ -13,6 +13,7 @@ const controlledFieldTypes: Set<IFieldType> = new Set([
   'updated-at',
   'created-by',
   'updated-by',
+  'qrcode',
   'count',
   'sum',
   'average',

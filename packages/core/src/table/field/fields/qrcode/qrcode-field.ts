@@ -4,6 +4,7 @@ import type { IRecordDisplayValues } from '../../../record/record.type.js'
 import { BaseField } from '../../field.base.js'
 import type { IFieldVisitor } from '../../field.visitor.js'
 import { FieldId } from '../../value-objects/field-id.vo.js'
+import { QRCodeData } from './qrcode-data.vo.js'
 import { QRCodeFieldValue } from './qrcode-field-value.js'
 import type {
   ICreateQRCodeFieldInput,
@@ -24,16 +25,39 @@ export class QRCodeField extends BaseField<IQRCodeField> {
   }
   type: QRCodeFieldType = 'qrcode'
 
+  get data() {
+    return this.props.data
+  }
+
+  override get json() {
+    return {
+      ...super.json,
+      ...this.data.unpack(),
+    }
+  }
+
   override get primitive() {
     return true
   }
 
   static create(input: Omit<ICreateQRCodeFieldInput, 'type'>): QRCodeField {
-    return new QRCodeField(super.createBase(input))
+    return new QRCodeField({
+      ...super.createBase(input),
+      data: new QRCodeData({
+        displayRecordURL: input.displayRecordURL,
+        dataFieldId: input.dataFieldId,
+      }),
+    })
   }
 
   static unsafeCreate(input: ICreateQRCodeFieldInput): QRCodeField {
-    return new QRCodeField(super.unsafeCreateBase(input))
+    return new QRCodeField({
+      ...super.unsafeCreateBase(input),
+      data: new QRCodeData({
+        displayRecordURL: input.displayRecordURL,
+        dataFieldId: input.dataFieldId,
+      }),
+    })
   }
 
   getDisplayValue(valueJson: RecordValueJSON, displayValues?: IRecordDisplayValues): string | null {

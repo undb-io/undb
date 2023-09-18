@@ -1140,7 +1140,14 @@ export class LookupField extends Field {
 export class QRCodeField extends Field {
   constructor(table: Rel<Table>, field: CoreQRCodeField) {
     super(table, field)
+    this.displayRecordURL = !!field.data.unpack().displayRecordURL
   }
+
+  @Property({ default: false })
+  displayRecordURL!: boolean
+
+  @ManyToOne({ entity: () => Field, nullable: true })
+  dataField?: Field
 
   toDomain(): CoreQRCodeField {
     return CoreQRCodeField.unsafeCreate({

@@ -703,7 +703,8 @@
             "updated-by",
             "url",
             "min",
-            "max"
+            "max",
+            "qrcode"
           ],
           "mappedType": "text"
         },
@@ -878,6 +879,25 @@
           "primary": false,
           "nullable": true,
           "mappedType": "text"
+        },
+        "display_record_url": {
+          "name": "display_record_url",
+          "type": "integer",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "default": "false",
+          "mappedType": "integer"
+        },
+        "data_field_id": {
+          "name": "data_field_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
         }
       },
       "name": "undb_field",
@@ -1014,6 +1034,15 @@
           ],
           "composite": false,
           "keyName": "undb_field_max_aggregate_field_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "data_field_id"
+          ],
+          "composite": false,
+          "keyName": "undb_field_data_field_id_index",
           "primary": false,
           "unique": false
         },
@@ -1189,6 +1218,19 @@
           "constraintName": "undb_field_max_aggregate_field_id_foreign",
           "columnNames": [
             "max_aggregate_field_id"
+          ],
+          "localTableName": "undb_field",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_field",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        },
+        "undb_field_data_field_id_foreign": {
+          "constraintName": "undb_field_data_field_id_foreign",
+          "columnNames": [
+            "data_field_id"
           ],
           "localTableName": "undb_field",
           "referencedColumnNames": [
