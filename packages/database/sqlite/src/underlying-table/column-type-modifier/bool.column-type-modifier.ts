@@ -70,6 +70,9 @@ export class BoolColumnTypeModifier extends BaseColumnTypeModifier<BoolField> {
   collaborator(): void {
     this.castToCollaborator(this.column)
   }
+  qrcode(): void {
+    this.dropColumn(this.column)
+  }
   count(): void {
     this.dropColumn(this.column)
   }

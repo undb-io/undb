@@ -68,6 +68,11 @@ const email: TemplateFunc = (h, props) => {
 	return h('span', { class: 'text-sm ' }, value.toString() ?? '')
 }
 
+const qrcode: TemplateFunc = (h, props) => {
+	// TODO: implement
+	return null
+}
+
 const url: TemplateFunc = (h, props) => {
 	const type = props.column.field.type as IFieldType
 	if (type !== 'url') return
@@ -501,6 +506,7 @@ export const cellTemplateMap: Record<IFieldType, TemplateFunc> = {
 	'created-by': createdBy,
 	'date-range': dateRange,
 	email,
+	qrcode,
 	url,
 	json,
 	lookup,

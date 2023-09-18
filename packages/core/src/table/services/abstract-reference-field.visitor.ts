@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import type { QRCodeField } from '../field/fields/qrcode/qrcode-field.js'
 import type {
   AttachmentField,
   AutoIncrementField,
@@ -17,6 +18,8 @@ import type {
   IdField,
   JsonField,
   LookupField,
+  MaxField,
+  MinField,
   MultiSelectField,
   NumberField,
   ParentField,
@@ -29,8 +32,6 @@ import type {
   UpdatedAtField,
   UpdatedByField,
   UrlField,
-  MinField,
-  MaxField,
 } from '../field/index.js'
 
 export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
@@ -52,6 +53,7 @@ export abstract class AbstractReferenceFieldVisitor implements IFieldVisitor {
   dateRange(field: DateRangeField): void {}
   select(field: SelectField): void {}
   multiSelect(field: MultiSelectField): void {}
+  qrcode(field: QRCodeField): void {}
   abstract reference(field: ReferenceField): void
   abstract tree(field: TreeField): void
   abstract parent(field: ParentField): void

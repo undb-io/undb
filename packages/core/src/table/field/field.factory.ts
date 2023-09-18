@@ -14,11 +14,14 @@ import {
   ColorField,
   CurrencyField,
   EmailField,
+  QRCodeField,
   StringField,
   UrlField,
 } from './fields/index.js'
 import { JsonField } from './fields/json/json-field.js'
 import { LookupField } from './fields/lookup/lookup-field.js'
+import { MaxField } from './fields/max/max-field.js'
+import { MinField } from './fields/min/min-field.js'
 import { MultiSelectField } from './fields/multi-select/multi-select-field.js'
 import { NumberField } from './fields/number/number-field.js'
 import { ParentField } from './fields/parent/parent-field.js'
@@ -29,8 +32,6 @@ import { SumField } from './fields/sum/sum-field.js'
 import { TreeField } from './fields/tree/tree-field.js'
 import { UpdatedAtField } from './fields/updated-at/updated-at-field.js'
 import { UpdatedByField } from './fields/updated-by/updated-by-field.js'
-import { MinField } from './fields/min/min-field.js'
-import { MaxField } from './fields/max/max-field.js'
 
 export class FieldFactory {
   static create(input: ICreateFieldSchema): Field | Field[] {
@@ -126,8 +127,8 @@ export class FieldFactory {
       case 'max': {
         return MaxField.create(input)
       }
-      default: {
-        throw new Error()
+      case 'qrcode': {
+        return QRCodeField.create(input)
       }
     }
   }
@@ -224,8 +225,8 @@ export class FieldFactory {
       case 'max': {
         return MaxField.unsafeCreate(input)
       }
-      default: {
-        throw new Error()
+      case 'qrcode': {
+        return QRCodeField.unsafeCreate(input)
       }
     }
   }

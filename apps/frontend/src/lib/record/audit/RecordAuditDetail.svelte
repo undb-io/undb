@@ -57,6 +57,7 @@
 		'updated-by': undefined,
 		min: undefined,
 		max: undefined,
+		qrcode: undefined,
 	}
 </script>
 

@@ -3,7 +3,6 @@
 import { INTERNAL_COLUMN_ID_NAME, type MinField } from '@undb/core'
 import { ReferenceField } from '../../entity/field.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
-import { UnderlyingForeignTableFactory } from '../underlying-foreign-table.factory.js'
 import {
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
@@ -11,13 +10,14 @@ import {
   UnderlyingDateColumn,
   UnderlyingEmailColumn,
   UnderlyingJsonColumn,
+  UnderlyingMinColumn,
   UnderlyingNumberColumn,
   UnderlyingRatingColumn,
   UnderlyingSelectColumn,
   UnderlyingStringColumn,
-  UnderlyingMinColumn,
   UnderlyingUrlColumn,
 } from '../underlying-column.js'
+import { UnderlyingForeignTableFactory } from '../underlying-foreign-table.factory.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
 export class MinColumnTypeModifier extends BaseColumnTypeModifier<MinField> {
@@ -116,6 +116,9 @@ export class MinColumnTypeModifier extends BaseColumnTypeModifier<MinField> {
   }
   collaborator(): void {
     this.castToCollaborator(this.column)
+  }
+  qrcode(): void {
+    this.dropColumn(this.column)
   }
   count(): void {
     this.dropColumn(this.column)

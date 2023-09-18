@@ -20,11 +20,12 @@ import type {
   IdFieldValue,
   JsonFieldValue,
   LookupFieldValue,
-  MultiSelectFieldValue,
-  MinFieldValue,
   MaxFieldValue,
+  MinFieldValue,
+  MultiSelectFieldValue,
   NumberFieldValue,
   ParentFieldValue,
+  QRCodeFieldValue,
   RatingFieldValue,
   ReferenceFieldValue,
   SelectFieldValue,
@@ -98,6 +99,7 @@ export class RecordValueSqliteMutationVisitor extends BaseEntityManager implemen
   email(value: EmailFieldValue): void {
     this.setData(this.fieldId, value.unpack())
   }
+  qrcode(value: QRCodeFieldValue): void {}
   url(value: UrlFieldValue): void {
     this.setData(this.fieldId, value.unpack())
   }

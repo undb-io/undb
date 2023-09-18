@@ -25,6 +25,7 @@ import type {
   MultiSelectField as CoreMultiSelectField,
   NumberField as CoreNumberField,
   ParentField as CoreParentField,
+  QRCodeField as CoreQRCodeField,
   RatingField as CoreRatingField,
   ReferenceField as CoreReferenceField,
   SelectField as CoreSelectField,
@@ -60,6 +61,7 @@ import {
   NumberField,
   Option,
   ParentField,
+  QRCodeField,
   RatingField,
   ReferenceField,
   SelectField,
@@ -129,6 +131,12 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
   email(value: CoreEmailField): void {
     const field = new EmailField(this.table, value)
+
+    this.em.persist(field)
+  }
+
+  qrcode(value: CoreQRCodeField): void {
+    const field = new QRCodeField(this.table, value)
 
     this.em.persist(field)
   }

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
-import type { CurrencyField, JsonField, MultiSelectField, UrlField } from '@undb/core'
+import type { CurrencyField, JsonField, MultiSelectField, QRCodeField, UrlField } from '@undb/core'
 import {
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
@@ -21,6 +21,8 @@ import {
   type IFieldVisitor,
   type IdField,
   type LookupField,
+  type MaxField,
+  type MinField,
   type NumberField,
   type ParentField,
   type RatingField,
@@ -33,8 +35,6 @@ import {
   type TreeField,
   type UpdatedAtField,
   type UpdatedByField,
-  type MinField,
-  type MaxField,
 } from '@undb/core'
 import { User } from '../../entity/user.js'
 import { CollaboratorForeignTable } from '../../underlying-table/underlying-foreign-table.js'
@@ -121,6 +121,9 @@ export class RecordChartGroupVisitor implements IFieldVisitor {
     throw new Error('Method not implemented.')
   }
   url(field: UrlField): void {
+    throw new Error('Method not implemented.')
+  }
+  qrcode(field: QRCodeField): void {
     throw new Error('Method not implemented.')
   }
   json(field: JsonField): void {

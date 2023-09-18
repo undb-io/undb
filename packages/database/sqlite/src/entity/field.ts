@@ -36,6 +36,7 @@ import type {
   INumberFieldQuerySchema,
   IOptionColorName,
   IParentFieldQuerySchema,
+  IQRCodeFieldQuerySchema,
   IQueryFieldSchema,
   IRatingFieldQuerySchema,
   IReferenceFieldQuerySchema,
@@ -70,6 +71,7 @@ import {
   MultiSelectField as CoreMultiSelectField,
   NumberField as CoreNumberField,
   ParentField as CoreParentField,
+  QRCodeField as CoreQRCodeField,
   RatingField as CoreRatingField,
   ReferenceField as CoreReferenceField,
   SelectField as CoreSelectField,
@@ -1133,6 +1135,36 @@ export class LookupField extends Field {
     }
   }
 }
+
+@Entity({ discriminatorValue: 'qrcode' })
+export class QRCodeField extends Field {
+  constructor(table: Rel<Table>, field: CoreQRCodeField) {
+    super(table, field)
+  }
+
+  toDomain(): CoreQRCodeField {
+    return CoreQRCodeField.unsafeCreate({
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'qrcode',
+      required: !!this.required,
+      display: !!this.display,
+    })
+  }
+
+  toQuery(): IQRCodeFieldQuerySchema {
+    return {
+      id: this.id,
+      name: this.name,
+      description: this.description,
+      type: 'qrcode',
+      required: !!this.required,
+      display: !!this.display,
+    }
+  }
+}
+
 @Entity({ discriminatorValue: 'min' })
 export class MinField extends Field {
   constructor(table: Rel<Table>, field: CoreMinField) {
@@ -1234,6 +1266,7 @@ export type IField =
   | CurrencyField
   | CountField
   | LookupField
+  | QRCodeField
   | SumField
   | AverageField
   | AttachmentField
@@ -1274,4 +1307,5 @@ export const fieldEntities = [
   UrlField,
   MinField,
   MaxField,
+  QRCodeField,
 ]

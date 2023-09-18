@@ -19,9 +19,12 @@ import type {
   IdField,
   JsonField,
   LookupField,
+  MaxField,
+  MinField,
   MultiSelectField,
   NumberField,
   ParentField,
+  QRCodeField,
   RatingField,
   ReferenceField,
   SelectField,
@@ -31,8 +34,6 @@ import type {
   UpdatedAtField,
   UpdatedByField,
   UrlField,
-  MinField,
-  MaxField,
 } from '@undb/core'
 import { BaseEntityManager } from '../repository/base-entity-manager.js'
 import { AttachmentColumnTypeModifier } from './column-type-modifier/attachment.column-type-modifier.js'
@@ -47,6 +48,8 @@ import { DateColumnTypeModifier } from './column-type-modifier/date.column-type-
 import { EmailColumnTypeModifier } from './column-type-modifier/email.column-type-modifier.js'
 import { JsonColumnTypeModifier } from './column-type-modifier/json.column-type-modifier.js'
 import { LookupColumnTypeModifier } from './column-type-modifier/lookup.column-type-modifier.js'
+import { MaxColumnTypeModifier } from './column-type-modifier/max.column-type-modifier.js'
+import { MinColumnTypeModifier } from './column-type-modifier/min.column-type-modifier.js'
 import { MultiSelectColumnTypeModifier } from './column-type-modifier/multi-select.column-type-modifier.js'
 import { NumberColumnTypeModifier } from './column-type-modifier/number.column-type-modifier.js'
 import { RatingColumnTypeModifier } from './column-type-modifier/rating.column-type-modifier.js'
@@ -54,8 +57,6 @@ import { SelectColumnTypeModifier } from './column-type-modifier/select.column-t
 import { StringColumnTypeModifier } from './column-type-modifier/string.column-type-modifier.js'
 import { SumColumnTypeModifier } from './column-type-modifier/sum.column-type-modifier.js'
 import { UrlColumnTypeModifier } from './column-type-modifier/url.column-type-modifier.js'
-import { MinColumnTypeModifier } from './column-type-modifier/min.column-type-modifier.js'
-import { MaxColumnTypeModifier } from './column-type-modifier/max.column-type-modifier.js'
 
 export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implements IFieldVisitor {
   constructor(
@@ -155,6 +156,10 @@ export class UnderlyingColumnConvertTypeVisitor extends BaseEntityManager implem
     modifier[this.newType]()
     this.unshiftQueries(...modifier.queries)
     this.unshiftJobs(...modifier.jobs)
+  }
+  qrcode(field: QRCodeField): void {
+    // TODO: implement
+    throw new Error('[UnderlyingColumnConvertTypeVisitor.qrcode] Method not implemented.')
   }
   reference(field: ReferenceField): void {
     throw new Error('Method not implemented.')

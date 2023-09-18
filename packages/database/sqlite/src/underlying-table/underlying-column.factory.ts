@@ -18,9 +18,12 @@ import {
   UnderlyingIdColumn,
   UnderlyingJsonColumn,
   UnderlyingLookupColumn,
+  UnderlyingMaxColumn,
+  UnderlyingMinColumn,
   UnderlyingMultiSelectColumn,
   UnderlyingNumberColumn,
   UnderlyingParentColumn,
+  UnderlyingQRCodeColumn,
   UnderlyingRatingColumn,
   UnderlyingReferenceColumn,
   UnderlyingSelectColumn,
@@ -30,8 +33,6 @@ import {
   UnderlyingUpdatedAtColumn,
   UnderlyingUpdatedByColumn,
   UnderlyingUrlColumn,
-  UnderlyingMinColumn,
-  UnderlyingMaxColumn,
 } from './underlying-column.js'
 
 export class UnderlyingColumnFactory {
@@ -76,6 +77,8 @@ export class UnderlyingColumnFactory {
         return new UnderlyingSelectColumn(field.id.value, tableName)
       case 'multi-select':
         return new UnderlyingMultiSelectColumn(field.id.value, tableName)
+      case 'qrcode':
+        return new UnderlyingQRCodeColumn(field.id.value, tableName)
       case 'collaborator':
         return new UnderlyingCollaboratorColumn(field.id.value, tableName)
       case 'reference':

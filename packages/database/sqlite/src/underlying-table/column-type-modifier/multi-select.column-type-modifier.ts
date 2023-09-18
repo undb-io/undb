@@ -110,6 +110,9 @@ export class MultiSelectColumnTypeModifier extends BaseColumnTypeModifier<MultiS
   collaborator(): void {
     this.castToCollaborator(this.column)
   }
+  qrcode(): void {
+    this.dropColumn(this.column)
+  }
   count(): void {
     this.dropColumn(this.column)
   }

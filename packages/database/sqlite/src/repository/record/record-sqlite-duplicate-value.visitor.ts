@@ -18,9 +18,12 @@ import type {
   IdField,
   JsonField,
   LookupField,
+  MaxField,
+  MinField,
   MultiSelectField,
   NumberField,
   ParentField,
+  QRCodeField,
   RatingField,
   SelectField,
   StringField,
@@ -28,8 +31,6 @@ import type {
   UpdatedAtField,
   UpdatedByField,
   UrlField,
-  MinField,
-  MaxField,
 } from '@undb/core'
 import {
   CollaboratorField,
@@ -244,6 +245,7 @@ export class RecordSqliteDuplicateValueVisitor extends BaseEntityManager impleme
   currency(field: CurrencyField): void {
     this.addQueries(`UPDATE ${this.tableId} SET ${field.id.value} = ${this.from.id.value}`)
   }
+  qrcode(field: QRCodeField): void {}
   count(field: CountField): void {}
   sum(field: SumField): void {}
   average(field: AverageField): void {}

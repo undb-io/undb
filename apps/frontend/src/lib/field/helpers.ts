@@ -15,6 +15,7 @@ export const icons: Record<IFieldType, string> = {
 	'created-at': 'calendar-plus',
 	'updated-at': 'calendar-stats',
 	email: 'mail',
+	qrcode: 'qrcode',
 	url: 'link',
 	json: 'json',
 	color: 'palette',

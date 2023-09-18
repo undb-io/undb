@@ -56,6 +56,7 @@
 		max: Readonly,
 		'created-by': Readonly,
 		'updated-by': Readonly,
+		qrcode: Readonly,
 	}
 </script>
 
