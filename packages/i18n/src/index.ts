@@ -299,6 +299,7 @@ export const config: InitOptions = {
         'Confirm Delete Table': 'Are you sure to delete table {{table}}?',
         'Confirm Delete Record':
           'Are you sure to delete this record? It will be moved to the recycle bin, and you can restore it from there.',
+        'Confirm Duplicate Record': 'Confirm to duplicate record?',
         'Confirm Delete Field': 'Are you sure to delete field?',
         'Total Records': 'loaded {{total}} records',
         'Create New Option': 'Create New Option',
@@ -737,6 +738,7 @@ export const config: InitOptions = {
         'Delete Table': '删除表',
         'Confirm Delete Table': '确认删除表 {{table}} 吗？',
         'Confirm Delete Record': '确认删除记录吗？删除后将移至回收站，您可以在回收站中重新恢复该记录。',
+        'Confirm Duplicate Record': '确认复制记录吗？',
         'Confirm Delete Field': '确认删除列吗？',
         'Total Records': '载入 {{total}} 行记录',
         Options: '选项',

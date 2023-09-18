@@ -6,7 +6,6 @@
 		getTable,
 		getView,
 		isShare,
-		recordsStore,
 		readonlyRecord,
 		canUpdateRecordField,
 	} from '$lib/store/table'
@@ -20,7 +19,6 @@
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'
 	import { pick, keys } from 'lodash-es'
-	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import ReadonlyRecordBadge from '$lib/authz/rls/ReadonlyRecordBadge.svelte'
 	import UpdateRecordMenu from './UpdateRecordMenu.svelte'
@@ -28,6 +26,8 @@
 	import { onMount } from 'svelte'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import Toast from '$components/ui/toast/toast.svelte'
+	import ConfirmDeleteRecord from './ConfirmDeleteRecord.svelte'
+	import ConfirmDuplicateRecord from './ConfirmDuplicateRecord.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -42,7 +42,7 @@
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
 	const updateRecord = trpc().record.update.mutation({
-		async onSuccess(data, variables, context) {
+		async onSuccess() {
 			currentRecordId.set(undefined)
 		},
 	})
@@ -93,9 +93,6 @@
 
 	const open = writable<boolean>(false)
 	$: open.set(!!$currentRecordId)
-
-	const prevRecord = recordsStore.prevRecord
-	const nextRecord = recordsStore.nextRecord
 </script>
 
 <Dialog.Root
@@ -107,7 +104,10 @@
 	}}
 >
 	{#key $record}
-		<Dialog.Content class="!w-[95%] lg:!w-3/4 !max-w-none h-[calc(100vh-64px)] overflow-y-hidden p-0 block gap-0">
+		<Dialog.Content
+			class="!w-[95%] lg:!w-3/4 !max-w-none h-[calc(100vh-64px)] overflow-y-hidden p-0 block gap-0"
+			id="updateRecord"
+		>
 			<Dialog.Header class="border-b border-gray-100 h-15 p-6">
 				<Dialog.Title class="pr-6">
 					<div class="flex items-center w-full justify-between mr-6">
@@ -207,6 +207,9 @@
 					>
 				</div>
 			</Dialog.Footer>
+
+			<ConfirmDeleteRecord />
+			<ConfirmDuplicateRecord />
 		</Dialog.Content>
 	{/key}
 </Dialog.Root>

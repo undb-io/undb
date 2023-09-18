@@ -9,6 +9,10 @@ export const createFieldInitial = writable<Partial<ICreateFieldSchema> | undefin
 export const confirmDeleteField = writable<boolean>(false)
 export const confirmBulkDeleteRecords = writable<boolean>(false)
 
+export const confirmDeleteRecord = writable<boolean>(false)
+export const confirmDuplicateRecord = writable<boolean>(false)
+export const confirmBulkDuplicateRecords = writable<boolean>(false)
+
 const createModal = (id: symbol) => {
 	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	const modal = writable({ id, open: false, callback: async () => {} })

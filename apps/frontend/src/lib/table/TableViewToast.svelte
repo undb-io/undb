@@ -1,32 +1,9 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
-	import { confirmBulkDeleteRecords } from '$lib/store/modal'
-	import { recordSelection, selectedCount, selectedRecords } from '$lib/store/record'
-	import { getTable } from '$lib/store/table'
-	import { trpc } from '$lib/trpc/client'
+	import { confirmBulkDeleteRecords, confirmBulkDuplicateRecords } from '$lib/store/modal'
+	import { selectedCount } from '$lib/store/record'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Button } from '$lib/components/ui/button'
-
-	const table = getTable()
-
-	const bulkDeleteRecordsMutation = trpc().record.bulkDelete.mutation({
-		async onSuccess(data, variables, context) {
-			recordSelection.reset()
-		},
-	})
-
-	const bulkDuplicateRecordsMutation = trpc().record.bulkDuplicate.mutation({
-		async onSuccess(data, variables, context) {
-			recordSelection.reset()
-		},
-	})
-
-	const duplicate = () => {
-		$bulkDuplicateRecordsMutation.mutate({
-			tableId: $table.id.value,
-			ids: $selectedRecords as [string, ...string[]],
-		})
-	}
 
 	export let open: boolean
 </script>
@@ -43,14 +20,8 @@
 				<Button
 					size="sm"
 					class="inline-flex gap-2 rounded-r-none border-r-0"
-					disabled={$bulkDuplicateRecordsMutation.isLoading}
-					on:click={duplicate}
+					on:click={() => ($confirmBulkDuplicateRecords = true)}
 				>
-					{#if $bulkDuplicateRecordsMutation.isLoading}
-						<i class="ti ti-rotate animate-spin"></i>
-					{:else}
-						<i class="ti ti-copy text-lg" />
-					{/if}
 					{$t('Duplicate Selected Record')}
 				</Button>
 
@@ -62,11 +33,7 @@
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content class="z-[9999999999]">
 						<DropdownMenu.Item class="text-red-400 gap-2" on:click={() => ($confirmBulkDeleteRecords = true)}>
-							{#if $bulkDeleteRecordsMutation.isLoading}
-								<i class="ti ti-rotate animate-spin"></i>
-							{:else}
-								<i class="ti ti-trash text-lg" />
-							{/if}
+							<i class="ti ti-trash text-lg" />
 							{$t('Delete Selected Record')}
 						</DropdownMenu.Item>
 					</DropdownMenu.Content>
