@@ -10,6 +10,7 @@ import {
 	INTERNAL_COLUMN_UPDATED_BY_NAME,
 	MultiSelectField,
 	Option,
+	QRCodeField,
 	getAnonymousCollaboratorProfile,
 	isAnonymous,
 	isImage,
@@ -35,6 +36,7 @@ import {
 import { format } from 'date-fns'
 import htm from 'htm'
 import { isArray, isNumber } from 'lodash-es'
+import * as QRCode from 'qrcode'
 
 type TemplateFunc = RevoGrid.CellTemplateFunc<VNode>
 type HyperFunc = RevoGrid.HyperFunc<VNode>
@@ -69,8 +71,30 @@ const email: TemplateFunc = (h, props) => {
 }
 
 const qrcode: TemplateFunc = (h, props) => {
+	const field = props.column.field as QRCodeField
+	const type = field.type as IFieldType
+	if (type !== 'qrcode') return
+
+	const html = htm.bind(h)
+	if (field.data.unpack().displayRecordURL) {
+		const recordId = props.model.id as string
+		const id = field.id.value + '_' + recordId
+		const url = window.location.origin + '/r' + '/' + recordId
+
+		QRCode.toDataURL(url, {}, (error, data) => {
+			if (error !== null) return
+			setTimeout(() => {
+				const img = document.getElementById(id) as HTMLImageElement | null
+				if (img) {
+					img.src = data
+				}
+			}, 0)
+		})
+		return html`<img class="object-cover h-full m-auto" id=${id} />`
+	}
+
 	// TODO: implement
-	return null
+	return html`<div>hello world</div>`
 }
 
 const url: TemplateFunc = (h, props) => {

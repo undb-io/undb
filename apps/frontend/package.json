@@ -30,6 +30,7 @@
 		"@types/lodash-es": "^4.17.9",
 		"@types/nprogress": "^0.2.0",
 		"@types/papaparse": "^5.3.8",
+		"@types/qrcode": "^1.5.2",
 		"@types/safe-flat": "^2.0.0",
 		"@types/sortablejs": "^1.15.2",
 		"@typescript-eslint/eslint-plugin": "^6.7.0",
@@ -94,10 +95,9 @@
 		"vite": "^4.4.9",
 		"vitest": "^0.34.4",
 		"xlsx": "^0.18.5",
+		"@undb/template": "workspace:^",
+		"qrcode": "^1.5.3",
 		"zod": "^3.22.2"
 	},
-	"type": "module",
-	"dependencies": {
-		"@undb/template": "workspace:^"
-	}
+	"type": "module"
 }
