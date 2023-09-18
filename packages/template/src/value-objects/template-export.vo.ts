@@ -1,4 +1,4 @@
-import type { ClsStore, ICreateFieldSchema, IQueryRecordSchema, Records, Table } from '@undb/core'
+import type { ICreateFieldSchema, IQueryRecordSchema, Records, Table } from '@undb/core'
 import {
   TableFactory,
   createFieldSchema,
@@ -49,14 +49,12 @@ export class TemplateExport extends ValueObject<ITemplateExportSchema> {
         return {
           id: table.id.value,
           name: table.name.value,
-          schema: table.schema.fields
-            .filter((f) => !f.isSystem())
-            .map((f) => {
-              if (f.type === 'reference' && f.foreignTableId.isSome() && f.foreignTableId.unwrap() !== table.id.value) {
-                return { id: f.id.value, type: 'string', name: f.name.value, required: false, display: false }
-              }
-              return f.json as ICreateFieldSchema
-            }),
+          schema: table.schema.fields.map((f) => {
+            if (f.type === 'reference' && f.foreignTableId.isSome() && f.foreignTableId.unwrap() !== table.id.value) {
+              return { id: f.id.value, type: 'string', name: f.name.value, required: false, display: false }
+            }
+            return f.json as ICreateFieldSchema
+          }),
           views: table.views.views.map((v) => v.toJSON()),
           viewsOrder: table.viewsOrder.order,
           records: records?.map((record) => ({
@@ -81,20 +79,17 @@ export class TemplateExport extends ValueObject<ITemplateExportSchema> {
     return new this(exp)
   }
 
-  toTables(ctx: ClsStore): { table: Table; records?: Records }[] {
+  toTables(userId: string): { table: Table; records?: Records }[] {
     return this.tables.map((t) => {
-      const table = TableFactory.from(
-        {
-          id: t.id,
-          name: t.name,
-          schema: t.schema,
-          views: t.views,
-          viewsOrder: t.viewsOrder,
-        },
-        ctx,
-      ).unwrap()
+      const table = TableFactory.unsafeCreate({
+        id: t.id,
+        name: t.name,
+        schema: t.schema,
+        views: t.views,
+        viewsOrder: t.viewsOrder,
+      }).unwrap()
 
-      const records = t.records?.map((r) => table.createRecord(r.id, r.values, ctx.user.userId))
+      const records = t.records?.map((r) => table.createRecord(r.id, r.values, userId))
 
       return { table, records }
     })

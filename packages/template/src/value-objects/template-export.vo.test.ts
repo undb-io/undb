@@ -1,15 +1,6 @@
-import { ClsStore } from '@undb/core'
-import { identity } from 'lodash-es'
-import { mockDeep } from 'vitest-mock-extended'
 import { TemplateExport } from './template-export.vo'
 
 describe('test toTables', () => {
-  let ctx: ClsStore
-
-  beforeEach(() => {
-    ctx = mockDeep<ClsStore>({ t: identity })
-  })
-
   test('should create table from template exports', () => {
     const exports = new TemplateExport({
       tables: [
@@ -27,9 +18,9 @@ describe('test toTables', () => {
       ],
     })
 
-    const tables = exports.toTables(ctx)
+    const tables = exports.toTables('usr1')
 
     expect(tables).toHaveLength(1)
-    expect(tables[0].schema.fields).toHaveLength(6)
+    expect(tables[0].table.schema.fields).toHaveLength(1)
   })
 })

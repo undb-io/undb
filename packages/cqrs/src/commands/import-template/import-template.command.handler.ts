@@ -12,10 +12,10 @@ export class ImportTemplateCommandHandler implements ICommandHandler<ImportTempl
   ) {}
 
   async execute(command: ImportTemplateCommand): Promise<void> {
-    const ctx = this.cls.get()
+    const userId = this.cls.get('user.userId')
 
     const template = TemplateFactory.fromJSON(command.template)
-    const tables = template.export.toTables(ctx)
+    const tables = template.export.toTables(userId)
 
     await Promise.all(
       tables.map(async ({ table, records }) => {
