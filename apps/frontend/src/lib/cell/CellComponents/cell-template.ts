@@ -79,7 +79,7 @@ const qrcode: TemplateFunc = (h, props) => {
 	if (field.data.unpack().displayRecordURL) {
 		const recordId = props.model.id as string
 		const id = field.id.value + '_' + recordId
-		const url = window.location.origin + '/r' + '/' + recordId
+		const url = window.location.origin + '/t' + '/' + props.column.table.id.value + '?r' + '=' + recordId
 
 		QRCode.toDataURL(url, {}, (error, data) => {
 			if (error !== null) return
