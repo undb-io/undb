@@ -13,6 +13,7 @@
 	import * as Alert from '$lib/components/ui/alert'
 	import { writable } from 'svelte/store'
 	import type { IFilter } from '@undb/core'
+	import { cn } from '$lib/utils'
 
 	$: value = writable<Partial<IFilter>[]>($filters)
 
@@ -47,13 +48,26 @@
 
 <Popover positioning={{ placement: 'bottom-start' }} closeOnEscape bind:open>
 	<PopoverTrigger asChild let:builder>
-		<Button builders={[builder]} variant="secondary" class="gap-2 whitespace-nowrap" size="sm">
+		<Button
+			builders={[builder]}
+			variant="ghost"
+			class={cn(
+				'gap-2 whitespace-nowrap border-2 border-transparent',
+				!!validFilters.length && 'bg-green-100 hover:bg-green-100 hover:border-green-200',
+			)}
+			size="sm"
+		>
 			<i class="ti ti-filter text-sm" />
-			{$t('Filter')}
 
 			{#if validFilters.length}
-				<Badge>{validFilters.length}</Badge>
+				<span>
+					{validFilters.length}
+				</span>
 			{/if}
+
+			<span>
+				{$t('Filter')}
+			</span>
 		</Button>
 	</PopoverTrigger>
 	<PopoverContent class="w-[800px]">

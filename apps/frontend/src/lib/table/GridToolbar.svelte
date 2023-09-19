@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Separator } from '$lib/components/ui/separator'
 	import CreateRecordButton from './CreateRecordButton.svelte'
 	import FilterMenu from './FilterMenu.svelte'
 	import InsertFieldButton from './InsertFieldButton.svelte'
@@ -9,6 +10,9 @@
 </script>
 
 <CreateRecordButton />
+
+<Separator orientation="vertical" class="mx-1 h-6" />
+
 <FilterMenu />
 <SortMenu />
 <ManageFieldsMenu />

@@ -39,7 +39,7 @@
 	>
 		<Button
 			on:click={() => (open = true)}
-			variant="secondary"
+			variant="ghost"
 			size="sm"
 			class="dark:hover:bg-gray-800  dark:border-gray-400 dark:text-gray-200 gap-2 whitespace-nowrap"
 		>

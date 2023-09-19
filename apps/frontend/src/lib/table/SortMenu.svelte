@@ -85,12 +85,22 @@
 
 <Popover.Root positioning={{ placement: 'bottom-start' }} closeOnEscape bind:open>
 	<Popover.Trigger asChild let:builder>
-		<Button builders={[builder]} variant="secondary" class="gap-2 whitespace-nowrap" size="sm">
+		<Button
+			builders={[builder]}
+			variant="ghost"
+			class={cn(
+				'gap-2 whitespace-nowrap border-2 border-transparent',
+				!!validSorts.length && 'bg-yellow-100 hover:bg-yellow-100 hover:border-yellow-200',
+			)}
+			size="sm"
+		>
 			<i class="ti ti-arrows-sort text-sm" />
-			{$t('Sort')}
 			{#if validSorts.length}
-				<Badge>{validSorts.length}</Badge>
+				<span>{validSorts.length}</span>
 			{/if}
+			<span>
+				{$t('Sort')}
+			</span>
 		</Button>
 	</Popover.Trigger>
 	<Popover.Content class="w-[400px]">

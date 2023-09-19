@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Separator } from '$components/ui/separator'
 	import CalendarConfigMenu from '$lib/calendar/CalendarConfigMenu.svelte'
 	import ShareViewButton from '$lib/share/ShareViewButton.svelte'
 	import CreateRecordButton from './CreateRecordButton.svelte'
@@ -9,6 +10,9 @@
 </script>
 
 <CreateRecordButton />
+
+<Separator orientation="vertical" class="mx-1 h-6" />
+
 <CalendarConfigMenu />
 <FilterMenu />
 <SortMenu />

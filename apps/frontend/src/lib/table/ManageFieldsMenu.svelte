@@ -16,6 +16,7 @@
 	import { Label } from '$lib/components/ui/label'
 	import { Switch } from '$lib/components/ui/switch'
 	import { Badge } from '$components/ui/badge'
+	import { cn } from '$lib/utils'
 
 	const table = getTable()
 	const view = getView()
@@ -92,14 +93,22 @@
 {#if $hasPermission('table:toggle_field_visibility')}
 	<Popover.Root positioning={{ placement: 'bottom-start' }} closeOnEscape bind:open>
 		<Popover.Trigger asChild let:builder>
-			<Button builders={[builder]} variant="secondary" class="gap-2 whitespace-nowrap" size="sm">
+			<Button
+				builders={[builder]}
+				variant="ghost"
+				class={cn(
+					'gap-2 whitespace-nowrap border-2 border-transparent',
+					hiddenCount && 'bg-sky-100 hover:bg-sky-100 hover:border-sky-200',
+				)}
+				size="sm"
+			>
 				<i class="ti ti-columns-3 text-sm" />
+				{#if hiddenCount}
+					<span>{hiddenCount}</span>
+				{/if}
 				<span>
 					{$t('Manage Fields')}
 				</span>
-				{#if hiddenCount}
-					<Badge>{hiddenCount}</Badge>
-				{/if}
 			</Button>
 		</Popover.Trigger>
 		<Popover.Content class="w-[400px]">

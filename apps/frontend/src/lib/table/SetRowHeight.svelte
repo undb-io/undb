@@ -30,7 +30,7 @@
 	<DropdownMenu.Trigger asChild let:builder>
 		<Tooltip.Root openDelay={10} positioning={{ placement: 'bottom' }}>
 			<Tooltip.Trigger asChild let:builder={b}>
-				<Button variant="secondary" size="sm" builders={[builder, b]}>
+				<Button variant="ghost" size="sm" builders={[builder, b]}>
 					<i class="ti ti-line-height text-sm dark:text-gray-200" />
 				</Button>
 			</Tooltip.Trigger>
