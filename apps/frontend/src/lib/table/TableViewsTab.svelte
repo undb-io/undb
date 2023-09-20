@@ -101,7 +101,7 @@
 	{#if $hasPermission('table:create_view')}
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild let:builder>
-				<Button size="icon" builders={[builder]} variant="ghost" class="w-7 h-7">
+				<Button size="icon" builders={[builder]} variant="ghost" class="w-7 h-7 text-gray-500">
 					<i class="ti ti-plus"></i>
 				</Button>
 			</DropdownMenu.Trigger>

@@ -9,18 +9,20 @@
 		rlsModal,
 		webhookModal,
 	} from '$lib/store/modal'
-	import { currentRLSS } from '$lib/store/table'
+	import { currentRLSS, getTable } from '$lib/store/table'
 	import { hasPermission } from '$lib/store/authz'
 	import * as DropdownMenu from '$components/ui/dropdown-menu'
-	import { Button } from '$components/ui/button'
 	import { Badge } from '$components/ui/badge'
+	import { goto } from '$app/navigation'
+
+	const table = getTable()
 </script>
 
 <DropdownMenu.Root>
-	<DropdownMenu.Trigger asChild let:builder>
-		<Button builders={[builder]} variant="ghost" size="icon" class="w-9 h-9">
-			<i class="ti ti-dots dark:text-gray-50"></i>
-		</Button>
+	<DropdownMenu.Trigger>
+		<button>
+			<i class="ti ti-dots dark:text-gray-50 hover:bg-gray-100 p-1 text-gray-400"></i>
+		</button>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class="w-48">
 		{#if $hasPermission('table:list_form')}
@@ -52,6 +54,15 @@
 		>
 			<i class="ti ti-hierarchy-3 text-gray-600 dark:text-gray-50" />
 			<span>{$t('ERD')}</span>
+		</DropdownMenu.Item>
+		<DropdownMenu.Item
+			class="gap-2"
+			on:click={() => {
+				goto(`/t/${$table.id.value}/openapi`)
+			}}
+		>
+			<i class="ti ti-code text-gray-600 dark:text-gray-50" />
+			<span>{$t('API Preview')}</span>
 		</DropdownMenu.Item>
 		{#if $hasPermission('rls:list')}
 			<DropdownMenu.Item

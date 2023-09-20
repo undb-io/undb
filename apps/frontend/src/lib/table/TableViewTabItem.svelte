@@ -4,7 +4,7 @@
 	import { page } from '$app/stores'
 	import ViewIcon from '$lib/view/ViewIcon.svelte'
 	import { trpc } from '$lib/trpc/client'
-	import { ViewVO, ViewName, type IExportType, FormId } from '@undb/core'
+	import { ViewVO, ViewName, type IExportType, FormId, type IViewDisplayType } from '@undb/core'
 	import { tick } from 'svelte'
 	import { goto, invalidate } from '$app/navigation'
 	import { t } from '$lib/i18n'
@@ -113,6 +113,29 @@
 			form: { id },
 		})
 	}
+
+	const switchDisplayTypeMutation = trpc().table.view.switchDisplayType.mutation({
+		async onSuccess(data, variables, context) {
+			await invalidate(`table:${$table.id.value}`)
+		},
+	})
+
+	const switchDisplayType = async (displayType: IViewDisplayType) => {
+		$switchDisplayTypeMutation.mutate({
+			tableId: $table.id.value,
+			viewId: view.id.value,
+			displayType,
+		})
+	}
+	const items = [
+		{ value: 'grid', label: 'Grid' },
+		{ value: 'kanban', label: 'Kanban' },
+		{ value: 'gantt', label: 'Gantt' },
+		{ value: 'calendar', label: 'Calendar' },
+		{ value: 'tree', label: 'Tree' },
+		{ value: 'gallery', label: 'Gallery' },
+		{ value: 'dashboard', label: 'Dashboard' },
+	] as const
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -204,6 +227,29 @@
 										<i class="ti ti-json text-gray-600 dark:text-gray-50" />
 										<span>{$t('Export Json')}</span>
 									</DropdownMenu.Item>
+								</DropdownMenu.SubContent>
+							</DropdownMenu.Sub>
+						{/if}
+						{#if $hasPermission('table:switch_view_display_type')}
+							<DropdownMenu.Sub>
+								<DropdownMenu.SubTrigger>
+									<span class="text-xs font-normal flex items-center gap-2">
+										<i class="ti ti-switch-horizontal text-gray-600 dark:text-gray-50" />
+										{$t('Select Display Type')}
+									</span>
+								</DropdownMenu.SubTrigger>
+								<DropdownMenu.SubContent class="w-52">
+									{#each items.filter((i) => i.value !== view.displayType) as item}
+										<DropdownMenu.Item
+											on:click={() => {
+												switchDisplayType(item.value)
+											}}
+											class="text-xs font-normal flex items-center gap-2"
+										>
+											<ViewIcon type={item.value} />
+											<span>{$t(item.value)}</span>
+										</DropdownMenu.Item>
+									{/each}
 								</DropdownMenu.SubContent>
 							</DropdownMenu.Sub>
 						{/if}
