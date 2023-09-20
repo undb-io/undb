@@ -53,7 +53,7 @@
 			variant="ghost"
 			class={cn(
 				'gap-2 whitespace-nowrap border-2 border-transparent',
-				!!validFilters.length && 'bg-green-100 hover:bg-green-100 hover:border-green-200',
+				!!validFilters.length && 'bg-green-100 hover:bg-green-100 hover:border-green-200 text-green-800',
 			)}
 			size="sm"
 		>
