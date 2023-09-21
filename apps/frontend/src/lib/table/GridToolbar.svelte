@@ -7,9 +7,11 @@
 	import SortMenu from './SortMenu.svelte'
 	import SetRowHeight from './SetRowHeight.svelte'
 	import ShareViewButton from '$lib/share/ShareViewButton.svelte'
+	import CurrentViewButton from '$lib/view/CurrentViewButton.svelte'
 </script>
 
 <CreateRecordButton />
+<CurrentViewButton />
 
 <Separator orientation="vertical" class="mx-1 h-6" />
 
