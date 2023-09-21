@@ -140,6 +140,29 @@
 				<span>{$t('Update View Name')}</span>
 			</DropdownMenu.Item>
 		{/if}
+		{#if $hasPermission('table:switch_view_display_type')}
+			<DropdownMenu.Sub>
+				<DropdownMenu.SubTrigger>
+					<span class="font-normal flex items-center gap-2">
+						<i class="ti ti-switch-horizontal text-gray-500 dark:text-gray-50" />
+						{$t('Select Display Type')}
+					</span>
+				</DropdownMenu.SubTrigger>
+				<DropdownMenu.SubContent class="w-52">
+					{#each items.filter((i) => i.value !== view.displayType) as item}
+						<DropdownMenu.Item
+							on:click={() => {
+								switchDisplayType(item.value)
+							}}
+							class="font-normal flex items-center gap-2"
+						>
+							<ViewIcon type={item.value} />
+							<span>{$t(item.value)}</span>
+						</DropdownMenu.Item>
+					{/each}
+				</DropdownMenu.SubContent>
+			</DropdownMenu.Sub>
+		{/if}
 		{#if $hasPermission('table:duplicate_view')}
 			<DropdownMenu.Item on:click={duplicateView} class="font-normal flex items-center gap-2">
 				<i class="ti ti-copy text-gray-500 dark:text-gray-50" />
@@ -167,29 +190,6 @@
 						<i class="ti ti-json text-gray-500 dark:text-gray-50" />
 						<span>{$t('Export Json')}</span>
 					</DropdownMenu.Item>
-				</DropdownMenu.SubContent>
-			</DropdownMenu.Sub>
-		{/if}
-		{#if $hasPermission('table:switch_view_display_type')}
-			<DropdownMenu.Sub>
-				<DropdownMenu.SubTrigger>
-					<span class="font-normal flex items-center gap-2">
-						<i class="ti ti-switch-horizontal text-gray-500 dark:text-gray-50" />
-						{$t('Select Display Type')}
-					</span>
-				</DropdownMenu.SubTrigger>
-				<DropdownMenu.SubContent class="w-52">
-					{#each items.filter((i) => i.value !== view.displayType) as item}
-						<DropdownMenu.Item
-							on:click={() => {
-								switchDisplayType(item.value)
-							}}
-							class="font-normal flex items-center gap-2"
-						>
-							<ViewIcon type={item.value} />
-							<span>{$t(item.value)}</span>
-						</DropdownMenu.Item>
-					{/each}
 				</DropdownMenu.SubContent>
 			</DropdownMenu.Sub>
 		{/if}
