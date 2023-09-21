@@ -139,20 +139,16 @@
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div
-	class={cn('group', active && 'min-w-[100px] max-w-[200px]')}
-	data-view-id={view.id.value}
-	on:dblclick={() => (updating = !updating)}
->
+<li class="group" data-view-id={view.id.value} on:dblclick={() => (updating = !updating)}>
 	<a
 		href={active ? $page.url.pathname : `/t/${$table.id.value}/${view.id.value}`}
 		type="button"
 		role="tab"
 		class={cn(
-			'group inline-flex w-full justify-between items-center gap-2 text-sm font-medium text-center disabled:cursor-not-allowed px-4 py-2 border-b-2',
+			'group rounded-sm inline-flex w-full justify-between items-center gap-2 text-sm font-medium text-center disabled:cursor-not-allowed px-4 py-2',
 			active
-				? 'text-primary border-primary dark:text-gray-50 dark:border-primary active'
-				: 'border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 text-gray-400 dark:text-gray-300',
+				? 'text-primary bg-primary/5 dark:text-gray-50 dark:bg-primary active'
+				: 'hover:bg-gray-50 hover:text-primary hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 text-gray-500 dark:text-gray-300',
 		)}
 	>
 		<span class="inline-flex items-center gap-2 truncate">
@@ -176,11 +172,11 @@
 			{/if}
 		</span>
 
-		{#if active}
+		<div class="opacity-0 group-hover:opacity-100 flex gap-2 items-center">
 			<DropdownMenu.Root bind:open>
 				<DropdownMenu.Trigger>
 					<span id={view.id.value} class="w-4 inline-block">
-						<i class="ti ti-dots" />
+						<i class="ti ti-square-rounded-chevron-down-filled" />
 					</span>
 				</DropdownMenu.Trigger>
 				<DropdownMenu.Content class="w-48">
@@ -274,6 +270,10 @@
 					</DropdownMenu.Group>
 				</DropdownMenu.Content>
 			</DropdownMenu.Root>
-		{/if}
+
+			<div class="handle">
+				<i class="ti ti-grip-vertical"></i>
+			</div>
+		</div>
 	</a>
-</div>
+</li>

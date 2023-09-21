@@ -1,6 +1,7 @@
 <script lang="ts">
 	import ViewToolbar from './ViewToolbar.svelte'
 	import SearchTable from './SearchTable.svelte'
+	import ToggleViewButton from './ToggleViewButton.svelte'
 </script>
 
 <div
@@ -11,5 +12,6 @@
 	</div>
 	<div class="flex items-center ml-2 gap-3">
 		<SearchTable />
+		<ToggleViewButton />
 	</div>
 </div>

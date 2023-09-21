@@ -323,7 +323,7 @@
 	}
 </script>
 
-<div class="h-full relative">
+<div class="h-full w-full relative">
 	<RevoGrid
 		bind:this={grid}
 		source={rows}

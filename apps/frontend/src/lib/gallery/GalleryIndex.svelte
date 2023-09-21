@@ -15,7 +15,7 @@
 {#if field}
 	<GalleryView {field} />
 {:else}
-	<div class="flex items-center justify-center h-screen w-full bg-gray-100 dark:bg-slate-800/80">
+	<div class="flex items-center justify-center h-full w-full bg-gray-100 dark:bg-slate-800/80">
 		<Card.Root class="w-96">
 			<Card.Header>
 				<GalleryConfig />
