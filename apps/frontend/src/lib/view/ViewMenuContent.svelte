@@ -135,36 +135,36 @@
 <DropdownMenu.Content class="w-48">
 	<DropdownMenu.Group>
 		{#if $hasPermission('table:update_view_name')}
-			<DropdownMenu.Item on:click={() => (updating = true)} class="text-xs font-normal flex items-center gap-2">
-				<i class="ti ti-pencil text-gray-600 dark:text-gray-50" />
+			<DropdownMenu.Item on:click={() => (updating = true)} class="font-normal flex items-center gap-2">
+				<i class="ti ti-pencil text-gray-500 dark:text-gray-50" />
 				<span>{$t('Update View Name')}</span>
 			</DropdownMenu.Item>
 		{/if}
 		{#if $hasPermission('table:duplicate_view')}
-			<DropdownMenu.Item on:click={duplicateView} class="text-xs font-normal flex items-center gap-2">
-				<i class="ti ti-copy text-gray-600 dark:text-gray-50" />
+			<DropdownMenu.Item on:click={duplicateView} class="font-normal flex items-center gap-2">
+				<i class="ti ti-copy text-gray-500 dark:text-gray-50" />
 				<span>{$t('Duplicate View')}</span>
 			</DropdownMenu.Item>
 		{/if}
 		{#if $hasPermission('table:export')}
 			<DropdownMenu.Sub>
 				<DropdownMenu.SubTrigger>
-					<span class="text-xs font-normal flex items-center gap-2">
-						<i class="ti ti-file-export text-gray-600 dark:text-gray-50" />
+					<span class="font-normal flex items-center gap-2">
+						<i class="ti ti-file-export text-gray-500 dark:text-gray-50" />
 						{$t('Export')}
 					</span>
 				</DropdownMenu.SubTrigger>
 				<DropdownMenu.SubContent>
-					<DropdownMenu.Item on:click={() => exportGrid('csv')} class="text-xs font-normal flex items-center gap-2">
-						<i class="ti ti-csv text-gray-600 dark:text-gray-50" />
+					<DropdownMenu.Item on:click={() => exportGrid('csv')} class="font-normal flex items-center gap-2">
+						<i class="ti ti-csv text-gray-500 dark:text-gray-50" />
 						<span>{$t('Export CSV')}</span>
 					</DropdownMenu.Item>
-					<DropdownMenu.Item on:click={() => exportGrid('excel')} class="text-xs font-normal flex items-center gap-2">
-						<i class="ti ti-file-spreadsheet text-gray-600 dark:text-gray-50" />
+					<DropdownMenu.Item on:click={() => exportGrid('excel')} class="font-normal flex items-center gap-2">
+						<i class="ti ti-file-spreadsheet text-gray-500 dark:text-gray-50" />
 						<span>{$t('Export Excel')}</span>
 					</DropdownMenu.Item>
-					<DropdownMenu.Item on:click={() => exportGrid('json')} class="text-xs font-normal flex items-center gap-2">
-						<i class="ti ti-json text-gray-600 dark:text-gray-50" />
+					<DropdownMenu.Item on:click={() => exportGrid('json')} class="font-normal flex items-center gap-2">
+						<i class="ti ti-json text-gray-500 dark:text-gray-50" />
 						<span>{$t('Export Json')}</span>
 					</DropdownMenu.Item>
 				</DropdownMenu.SubContent>
@@ -173,8 +173,8 @@
 		{#if $hasPermission('table:switch_view_display_type')}
 			<DropdownMenu.Sub>
 				<DropdownMenu.SubTrigger>
-					<span class="text-xs font-normal flex items-center gap-2">
-						<i class="ti ti-switch-horizontal text-gray-600 dark:text-gray-50" />
+					<span class="font-normal flex items-center gap-2">
+						<i class="ti ti-switch-horizontal text-gray-500 dark:text-gray-50" />
 						{$t('Select Display Type')}
 					</span>
 				</DropdownMenu.SubTrigger>
@@ -184,7 +184,7 @@
 							on:click={() => {
 								switchDisplayType(item.value)
 							}}
-							class="text-xs font-normal flex items-center gap-2"
+							class="font-normal flex items-center gap-2"
 						>
 							<ViewIcon type={item.value} />
 							<span>{$t(item.value)}</span>
@@ -198,15 +198,15 @@
 				on:click={() => {
 					createFormFromView()
 				}}
-				class="text-xs font-normal flex items-center gap-2"
+				class="font-normal flex items-center gap-2"
 			>
-				<i class="ti ti-clipboard-text text-gray-600 dark:text-gray-50" />
+				<i class="ti ti-clipboard-text text-gray-500 dark:text-gray-50" />
 				<span>{$t('create form from view')}</span>
 			</DropdownMenu.Item>
 		{/if}
 		{#if $table.views.count > 1 && $hasPermission('table:delete_view')}
 			<DropdownMenu.Separator />
-			<DropdownMenu.Item class="text-red-500 text-xs font-normal flex items-center gap-2" on:click={deleteView}>
+			<DropdownMenu.Item class="text-red-500 font-normal flex items-center gap-2" on:click={deleteView}>
 				<i class="ti ti-trash" />
 				<span>{$t('Delete View')}</span>
 			</DropdownMenu.Item>
