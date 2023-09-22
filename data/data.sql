@@ -13,19 +13,19 @@ CREATE TABLE `undb_table` (
 	`deleted_at` datetime null,
 	`name` text not null,
 	`emoji` text not null,
-	`views_order` text null,
+	`views_order` text null, `base_id` text null constraint `undb_table_base_id_foreign` references `undb_base` (`id`) on update cascade on delete set null,
 	primary key (`id`)
 );
-INSERT INTO undb_table VALUES('tbl4undb0lh',1684577267430,1685212920300,NULL,'Deal Tracker','1f44d','viwnxi5l3qi,viw64ia4fxz,viwmc5m5646');
-INSERT INTO undb_table VALUES('tblramxgp7z',1684577324093,1684577324093,NULL,'Contacts','1f44d','viw1f88x075');
-INSERT INTO undb_table VALUES('tblwqjcq0x8',1684597096588,1684597096588,NULL,'Company','1f44d','viw70p8od12');
-INSERT INTO undb_table VALUES('tbl4ezqb49a',1684599288325,1684599288325,NULL,'Title','1f44d','viw9p12yoag');
-INSERT INTO undb_table VALUES('tbl2za35hbg',1684655636180,1684655636180,NULL,'Employee onboarding','1f44d','viw3qge14qx');
-INSERT INTO undb_table VALUES('tblruubokdc',1684655754437,1685265649318,NULL,'Employees','1f44d','viw2j74tv49,viwbo3rzlbe');
-INSERT INTO undb_table VALUES('tblk4h9pgm7',1685172790220,1685213176904,NULL,'Project details','','viws2429fm1,viw1hmtgok8,viw2oflfayp,viw1afphzlj,viwv5pxkvis,viwufxtr4ao');
-INSERT INTO undb_table VALUES('tblpgqt9f8e',1685174348986,1685213158771,NULL,'Subcontractors','','viwgtqmkuso,viwimtmwzd0,viwbcscykkd,viwab1ycczl,viwe6cxqgup');
-INSERT INTO undb_table VALUES('tblfx77neny',1685174750727,1689829211628,NULL,'Project overview','','viwdhyehe16,viwoxmuxqte,viwjas8t22c');
-INSERT INTO undb_table VALUES('tblq36e537c',1685178619601,1685212845932,1685212860180,'test','','viwdec4oi8c');
+INSERT INTO undb_table VALUES('tbl4undb0lh',1684577267430,1685212920300,NULL,'Deal Tracker','1f44d','viwnxi5l3qi,viw64ia4fxz,viwmc5m5646',NULL);
+INSERT INTO undb_table VALUES('tblramxgp7z',1684577324093,1684577324093,NULL,'Contacts','1f44d','viw1f88x075',NULL);
+INSERT INTO undb_table VALUES('tblwqjcq0x8',1684597096588,1684597096588,NULL,'Company','1f44d','viw70p8od12',NULL);
+INSERT INTO undb_table VALUES('tbl4ezqb49a',1684599288325,1684599288325,NULL,'Title','1f44d','viw9p12yoag',NULL);
+INSERT INTO undb_table VALUES('tbl2za35hbg',1684655636180,1684655636180,NULL,'Employee onboarding','1f44d','viw3qge14qx',NULL);
+INSERT INTO undb_table VALUES('tblruubokdc',1684655754437,1685265649318,NULL,'Employees','1f44d','viw2j74tv49,viwbo3rzlbe',NULL);
+INSERT INTO undb_table VALUES('tblk4h9pgm7',1685172790220,1685213176904,NULL,'Project details','','viws2429fm1,viw1hmtgok8,viw2oflfayp,viw1afphzlj,viwv5pxkvis,viwufxtr4ao',NULL);
+INSERT INTO undb_table VALUES('tblpgqt9f8e',1685174348986,1685213158771,NULL,'Subcontractors','','viwgtqmkuso,viwimtmwzd0,viwbcscykkd,viwab1ycczl,viwe6cxqgup',NULL);
+INSERT INTO undb_table VALUES('tblfx77neny',1685174750727,1689829211628,NULL,'Project overview','','viwdhyehe16,viwoxmuxqte,viwjas8t22c',NULL);
+INSERT INTO undb_table VALUES('tblq36e537c',1685178619601,1685212845932,1685212860180,'test','','viwdec4oi8c',NULL);
 CREATE TABLE `undb_field` (
 	`id` text not null,
 	`created_at` datetime not null,
@@ -1741,6 +1741,7 @@ INSERT INTO undb_member VALUES('mem12345679',1684577267430,1685212920300,NULL,'a
 CREATE TABLE `undb_invitation` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `email` text not null, `role` text not null, `expired_at` datetime not null, `status` text not null, `invited_by_id` text not null, `invited_at` datetime not null, `cancelled_by_id` text null, `cancelld_at` datetime null, `accepted_at` datetime null, constraint `undb_invitation_invited_by_id_foreign` foreign key(`invited_by_id`) references `undb_user`(`id`) on update cascade, constraint `undb_invitation_cancelled_by_id_foreign` foreign key(`cancelled_by_id`) references `undb_user`(`id`) on delete set null on update cascade, primary key (`id`));
 CREATE TABLE `undb_fls` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `field_id` text null, `policy_action` text not null, `policy_filter` json not null, `subjects` json not null, constraint `undb_fls_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, constraint `undb_fls_field_id_foreign` foreign key(`field_id`) references `undb_field`(`id`) on delete cascade on update cascade, primary key (`id`));
 CREATE TABLE `undb_api_token` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `token` text not null, `user_id` text not null, constraint `undb_api_token_user_id_foreign` foreign key(`user_id`) references `undb_user`(`id`) on update cascade, primary key (`id`));
+CREATE TABLE `undb_base` (`id` text not null, `name` text not null, primary key (`id`));
 DELETE FROM sqlite_sequence;
 INSERT INTO sqlite_sequence VALUES('mikro_orm_migrations',5);
 INSERT INTO sqlite_sequence VALUES('tbl4undb0lh',24);
@@ -1911,4 +1912,5 @@ CREATE INDEX `undb_api_token_deleted_at_index` on `undb_api_token` (`deleted_at`
 CREATE UNIQUE INDEX `undb_api_token_token_unique` on `undb_api_token` (`token`);
 CREATE INDEX `undb_api_token_user_id_index` on `undb_api_token` (`user_id`);
 CREATE INDEX `undb_field_data_field_id_index` on `undb_field` (`data_field_id`);
+CREATE INDEX `undb_table_base_id_index` on `undb_table` (`base_id`);
 COMMIT;

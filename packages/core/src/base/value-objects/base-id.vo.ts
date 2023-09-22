@@ -4,7 +4,7 @@ import * as z from 'zod'
 export const baseIdSchema = z.string().min(1)
 
 export class BaseId extends NanoID {
-  private static BASE_ID_PREFIX = 'tbl'
+  private static BASE_ID_PREFIX = 'bas'
   private static BASE_ID_SIZE = 8
 
   static create(): BaseId {

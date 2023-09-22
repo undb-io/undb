@@ -3,6 +3,42 @@
   "tables": [
     {
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "text"
+        }
+      },
+      "name": "undb_base",
+      "indexes": [
+        {
+          "keyName": "primary",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {}
+    },
+    {
+      "columns": {
         "uuid": {
           "name": "uuid",
           "type": "text",
@@ -284,6 +320,15 @@
           "nullable": false,
           "mappedType": "text"
         },
+        "base_id": {
+          "name": "base_id",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "text"
+        },
         "views_order": {
           "name": "views_order",
           "type": "text",
@@ -306,6 +351,15 @@
           "unique": false
         },
         {
+          "columnNames": [
+            "base_id"
+          ],
+          "composite": false,
+          "keyName": "undb_table_base_id_index",
+          "primary": false,
+          "unique": false
+        },
+        {
           "keyName": "primary",
           "columnNames": [
             "id"
@@ -316,7 +370,21 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {}
+      "foreignKeys": {
+        "undb_table_base_id_foreign": {
+          "constraintName": "undb_table_base_id_foreign",
+          "columnNames": [
+            "base_id"
+          ],
+          "localTableName": "undb_table",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "undb_base",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      }
     },
     {
       "columns": {

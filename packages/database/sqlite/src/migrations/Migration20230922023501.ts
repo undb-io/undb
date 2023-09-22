@@ -1,7 +1,9 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230918042311 extends Migration {
+export class Migration20230922023501 extends Migration {
   async up(): Promise<void> {
+    this.addSql('create table `undb_base` (`id` text not null, `name` text not null, primary key (`id`));')
+
     this.addSql(
       'create table `undb_outbox` (`uuid` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text null, `operator_id` text null, `timestamp` datetime not null, `payload` json not null, `meta` json null, primary key (`uuid`));',
     )
@@ -15,9 +17,10 @@ export class Migration20230918042311 extends Migration {
     this.addSql('create unique index `undb_share_target_id_unique` on `undb_share` (`target_id`);')
 
     this.addSql(
-      'create table `undb_table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `emoji` text not null, `views_order` text null, primary key (`id`));',
+      'create table `undb_table` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, `emoji` text not null, `base_id` text null, `views_order` text null, constraint `undb_table_base_id_foreign` foreign key(`base_id`) references `undb_base`(`id`) on delete set null on update cascade, primary key (`id`));',
     )
     this.addSql('create index `undb_table_deleted_at_index` on `undb_table` (`deleted_at`);')
+    this.addSql('create index `undb_table_base_id_index` on `undb_table` (`base_id`);')
 
     this.addSql(
       'create table `undb_rls` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `table_id` text null, `policy_action` text not null, `policy_filter` json not null, `subjects` json not null, constraint `undb_rls_table_id_foreign` foreign key(`table_id`) references `undb_table`(`id`) on delete cascade on update cascade, primary key (`id`));',
