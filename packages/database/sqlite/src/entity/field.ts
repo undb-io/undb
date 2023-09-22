@@ -84,7 +84,7 @@ import {
   type Field as CoreField,
   type ICurrencySymbol,
 } from '@undb/core'
-import { BaseEntity } from './base.js'
+import { BaseEntity } from './base.entity.js'
 import { Option } from './option.js'
 import { Table } from './table.js'
 

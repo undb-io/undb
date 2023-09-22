@@ -1,6 +1,6 @@
 import { Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core'
-import type { User as CoreUser, IColor } from '@undb/core'
-import { BaseEntity } from './base.js'
+import { User as CoreUser, type IColor } from '@undb/core'
+import { BaseEntity } from './base.entity.js'
 
 export const USER_TABLE_NAME = 'undb_user'
 

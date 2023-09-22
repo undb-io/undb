@@ -1,6 +1,6 @@
 import { Entity, ManyToOne, PrimaryKey, Property, type Rel } from '@mikro-orm/core'
 import { Member as MemberDO } from '@undb/authz'
-import { BaseEntity } from './base.js'
+import { BaseEntity } from './base.entity.js'
 import { User } from './user.js'
 
 @Entity({ tableName: 'undb_member' })

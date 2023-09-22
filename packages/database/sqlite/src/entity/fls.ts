@@ -12,7 +12,7 @@ import {
 import type { ISubject } from '@undb/authz'
 import { FLS as FLSDO, type FLSPolicyInterface, type IFLSAction } from '@undb/authz'
 import { type IRootFilter } from '@undb/core'
-import { BaseEntity } from './base.js'
+import { BaseEntity } from './base.entity.js'
 import { Field } from './field.js'
 import { Table } from './table.js'
 

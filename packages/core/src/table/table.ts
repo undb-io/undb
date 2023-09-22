@@ -2,6 +2,7 @@ import { and, andOptions } from '@undb/domain'
 import { difference, isEmpty, isEqual, isString, sortBy } from 'lodash-es'
 import type { Option, Result } from 'oxide.ts'
 import { None, Ok, Some } from 'oxide.ts'
+import type { BaseId } from '../base/index.js'
 import { FieldNotFoundException } from './field/field.errors.js'
 import type {
   Field,
@@ -112,6 +113,8 @@ export class Table {
   public id!: TableId
   public name!: TableName
   public emoji!: TableEmoji
+
+  public baseId!: BaseId
 
   public schema: TableSchema = new TableSchema([])
 

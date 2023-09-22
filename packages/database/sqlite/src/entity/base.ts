@@ -1,19 +1,11 @@
-import { Index, Property } from '@mikro-orm/core'
-import { SoftDelete } from '../decorators/soft-delete.decorator.js'
+import { Entity, PrimaryKey } from '@mikro-orm/core'
+import { type Base as CoreBase } from '@undb/core'
 
-@SoftDelete()
-export abstract class BaseEntity {
-  @Property()
-  createdAt: Date = new Date()
-
-  @Property({ onUpdate: () => new Date() })
-  updatedAt: Date = new Date()
-
-  @Index()
-  @Property({ nullable: true })
-  deletedAt?: Date
-
-  public get isDeleted() {
-    return !!this.deletedAt
+@Entity({ tableName: 'undb_base' })
+export class Base {
+  constructor(base: CoreBase) {
+    this.id = base.id.value
   }
+  @PrimaryKey()
+  id: string
 }

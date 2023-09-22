@@ -42,6 +42,7 @@ import type {
   WithShowSystemFieldsSpec,
   WithSorts,
   WithSymmetricReferenceField,
+  WithTableBaseId,
   WithTableEmoji,
   WithTableFormId,
   WithTableForms,
@@ -101,6 +102,9 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
   }
   idsIn(s: WithTableIds): void {
     this.qb.andWhere({ id: { $in: s.ids.map((id) => id.value) } })
+  }
+  baseIdEq(s: WithTableBaseId): void {
+    this.qb.andWhere({ base: s.id.value })
   }
   nameEqual(s: WithTableName): void {
     this.qb.andWhere({ name: s.name.value })

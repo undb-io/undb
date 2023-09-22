@@ -16,7 +16,7 @@ import {
   type IOptionColorName,
   type IOptionColorShade,
 } from '@undb/core'
-import { BaseEntity } from './base.js'
+import { BaseEntity } from './base.entity.js'
 import { MultiSelectField, SelectField } from './field.js'
 
 @Embeddable()

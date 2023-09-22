@@ -12,6 +12,7 @@ import type {
   WithNewFieldType,
   WithNewForm,
   WithRatingMax,
+  WithTableBaseId,
   WithTableFormId,
   WithTableIds,
   WithTableSchema,
@@ -75,6 +76,7 @@ export class UnderlyingTableSqliteManagerVisitor implements ITableSpecVisitor {
     throw new Error('Method not implemented.')
   }
   idsIn(s: WithTableIds): void {}
+  baseIdEq(s: WithTableBaseId): void {}
   nameEqual(): void {}
   emojiEqual(): void {}
   schemaEqual(s: WithTableSchema): void {

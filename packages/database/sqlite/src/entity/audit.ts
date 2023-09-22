@@ -1,6 +1,6 @@
 import { Cascade, Entity, Index, JsonType, ManyToOne, PrimaryKey, Property, type Rel } from '@mikro-orm/core'
 import { Audit as CoreAudit } from '@undb/integrations'
-import { BaseEntity } from './base.js'
+import { BaseEntity } from './base.entity.js'
 import { Table } from './table.js'
 import { User } from './user.js'
 
