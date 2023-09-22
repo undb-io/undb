@@ -11,7 +11,7 @@
 </script>
 
 {#if field}
-	<Button size="sm" variant="secondary" class="text-xs gap-2" on:click={() => configViewModal.open()}>
+	<Button size="sm" variant="ghost" class="text-xs gap-2" on:click={() => configViewModal.open()}>
 		<i class="ti ti-select" />
 		<span class="whitespace-nowrap">{$t('Using Field', { name: field.name.value })}</span>
 	</Button>

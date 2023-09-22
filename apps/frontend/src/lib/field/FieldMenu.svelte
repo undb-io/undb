@@ -72,7 +72,7 @@
 </script>
 
 <DropdownMenu.Item
-	class="items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium hover:bg-gray-100"
+	class="items-center gap-2 text-xs text-gray-800 dark:text-gray-100 font-medium hover:bg-gray-100"
 	on:click={() => updateFieldModal.open()}
 >
 	<i class="ti ti-edit text-sm" />
@@ -80,7 +80,7 @@
 </DropdownMenu.Item>
 {#if $field && canDuplicate($field.type)}
 	<DropdownMenu.Item
-		class="items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium hover:bg-gray-100"
+		class="items-center gap-2 text-xs text-gray-800 dark:text-gray-100 font-medium hover:bg-gray-100"
 		on:click={() => duplicateFieldModal.open()}
 	>
 		<i class="ti ti-copy text-sm" />
@@ -92,11 +92,11 @@
 
 <FieldMenuFieldComponent
 	field={$field}
-	class="items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium hover:bg-gray-100"
+	class="items-center gap-2 text-xs text-gray-800 dark:text-gray-100 font-medium hover:bg-gray-100"
 />
 
 <DropdownMenu.Item
-	class="items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium hover:bg-gray-100"
+	class="items-center gap-2 text-xs text-gray-800 dark:text-gray-100 font-medium hover:bg-gray-100"
 	on:click={() => {
 		if ($field) {
 			togglePin($field.id.value)
@@ -112,7 +112,7 @@
 	{/if}
 </DropdownMenu.Item>
 <DropdownMenu.Item
-	class="items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium hover:bg-gray-100"
+	class="items-center gap-2 text-xs text-gray-800 dark:text-gray-100 font-medium hover:bg-gray-100"
 	on:click={() => {
 		if ($field) {
 			$hideField.mutate({ tableId: $table.id.value, fieldId: $field.id.value, viewId: $view.id.value, hidden: true })
@@ -128,7 +128,7 @@
 {#if $field && isSortable($field.type)}
 	<DropdownMenu.Item
 		class={cn(
-			'items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium hover:bg-gray-100',
+			'items-center gap-2 text-xs text-gray-800 dark:text-gray-100 font-medium hover:bg-gray-100',
 			fieldDirection === 'asc' && 'bg-gray-100',
 		)}
 		on:click={() => sort('asc')}
@@ -144,7 +144,7 @@
 	</DropdownMenu.Item>
 	<DropdownMenu.Item
 		class={cn(
-			'items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium hover:bg-gray-100',
+			'items-center gap-2 text-xs text-gray-800 dark:text-gray-100 font-medium hover:bg-gray-100',
 			fieldDirection === 'desc' && 'bg-gray-100',
 		)}
 		on:click={() => sort('desc')}
@@ -160,7 +160,7 @@
 	</DropdownMenu.Item>
 {/if}
 <DropdownMenu.Item
-	class={cn('items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium hover:bg-gray-100')}
+	class={cn('items-center gap-2 text-xs text-gray-800 dark:text-gray-100 font-medium hover:bg-gray-100')}
 	on:click={() => flsModal.open()}
 >
 	<i class="ti ti-shield-checkered-filled text-sm" />
@@ -170,7 +170,7 @@
 </DropdownMenu.Item>
 {#if $field && !$field.display && canDisplay($field.type)}
 	<DropdownMenu.Item
-		class={cn('items-center gap-2 text-xs text-gray-500 dark:text-gray-100 font-medium hover:bg-gray-100')}
+		class={cn('items-center gap-2 text-xs text-gray-800 dark:text-gray-100 font-medium hover:bg-gray-100')}
 		on:click={() => {
 			if (!$field) return
 			$setFieldDisplay.mutate({
@@ -188,7 +188,7 @@
 {/if}
 <DropdownMenu.Separator />
 <DropdownMenu.Item
-	class={'items-center gap-2 text-xs text-red-400 hover:bg-red-50'}
+	class={'items-center gap-2 text-xs text-red-400 font-medium hover:bg-red-50'}
 	on:click={() => ($confirmDeleteField = true)}
 >
 	<i class="ti ti-trash text-sm" />

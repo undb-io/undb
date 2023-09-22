@@ -26,7 +26,7 @@
 	import { onMount, tick } from 'svelte'
 	import { editors } from '$lib/cell/CellEditors/editors'
 	import { t } from '$lib/i18n'
-	import { confirmDeleteField } from '$lib/store/modal'
+	import { confirmDeleteField, createFieldModal } from '$lib/store/modal'
 	import LoadingTable from './LoadingTable.svelte'
 	import TableViewToast from './TableViewToast.svelte'
 	import { recordSelection, selectedCount, selectedRecords } from '$lib/store/record'
@@ -35,6 +35,7 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 	import ConfirmBulkDeleteRecord from '$lib/record/ConfirmBulkDeleteRecord.svelte'
 	import ConfirmBulkDuplicateRecord from '$lib/record/ConfirmBulkDuplicateRecord.svelte'
+	import htm from 'htm'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -182,6 +183,7 @@
 				},
 				size: 80,
 			},
+
 			...fields.map<Components.RevoGrid['columns'][0]>((field) => {
 				const position = $view.pinnedFields?.getPinnedPosition(field.id.value)
 				return {
@@ -215,6 +217,33 @@
 					table: $table,
 				}
 			}),
+
+			{
+				prop: 'createColumn',
+				autoSize: true,
+				columnProperties: () => {
+					return {
+						class:
+							'!p-0 cursor-pointer text-center border-r border-b border-gray-300 flex items-stretch bg-gray-100 hover:bg-gray-50 dark:bg-gray-600 dark:border-gray-500',
+					}
+				},
+				columnTemplate: (h) => {
+					return h(
+						'button',
+						{
+							class: 'flex items-center justify-center w-full h-full',
+							onClick: () => {
+								createFieldModal.open()
+							},
+						},
+						h('i', {
+							class: 'ti ti-plus font-bold',
+						}),
+					)
+				},
+				cellTemplate: () => null,
+				size: 80,
+			},
 		])
 	}
 
@@ -294,7 +323,7 @@
 	}
 </script>
 
-<div class="h-full relative">
+<div class="h-full w-full relative">
 	<RevoGrid
 		bind:this={grid}
 		source={rows}
@@ -338,7 +367,7 @@
 						use:clickOutside
 						on:click_outside={() => currentFieldId.set(undefined)}
 						class="fixed w-56 bg-white dark:bg-gray-600 border dark:border-gray-400 py-1 rounded-sm shadow-sm z-[999999999]"
-						style={`left: ${$currentFieldMenuRect.left - 50}px; top: ${$currentFieldMenuRect.top + 30}px;`}
+						style={`left: ${$currentFieldMenuRect.left - 90}px; top: ${$currentFieldMenuRect.top + 30}px;`}
 					>
 						<FieldMenu {togglePin} />
 					</div>

@@ -52,7 +52,7 @@
 
 {#if $selectedForm}
 	<div id="form-modal">
-		<Dialog.Root bind:open={$formEditorModal.open} closeOnOutsideClick={false}>
+		<Dialog.Root bind:open={$formEditorModal.open}>
 			<Dialog.Content class="!w-3/4 !max-w-none max-h-[98%] overflow-y-auto">
 				<Dialog.Header>
 					<Dialog.Title class="pr-8">
@@ -82,8 +82,8 @@
 									</Button>
 								</Label>
 							</ShareDropdown>
-						</div></Dialog.Title
-					>
+						</div>
+					</Dialog.Title>
 				</Dialog.Header>
 
 				<FormEditor />

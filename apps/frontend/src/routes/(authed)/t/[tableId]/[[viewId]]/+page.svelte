@@ -9,8 +9,9 @@
 	import UpdateRecord from '$lib/record/UpdateRecord.svelte'
 	import CreateOption from '$lib/option/CreateOption.svelte'
 	import ViewConfigModal from '$lib/view/ViewConfigModal.svelte'
+	import ViewsSideBar from '$lib/view/ViewsSideBar.svelte'
 	import UpdateTable from '$lib/table/UpdateTable.svelte'
-	import { createRecordModal, createTableModal, erdModal, recordTrashModal, rlsModal } from '$lib/store/modal'
+	import { createRecordModal, createTableModal, viewsSideBarOpen } from '$lib/store/modal'
 	import UpdateOption from '$lib/option/UpdateOption.svelte'
 	import VisualizationModal from '$lib/visualization/VisualizationModal.svelte'
 	import DuplicateField from '$lib/field/DuplicateField.svelte'
@@ -26,6 +27,7 @@
 	import MergeData from '$lib/import/MergeData.svelte'
 	import { sidebarCollapsed } from '$lib/store/ui'
 	import ExportTableTemplate from '$lib/template/ExportTableTemplate.svelte'
+	import { cn } from '$lib/utils'
 
 	const table = getTable()
 	export let data: PageData
@@ -89,7 +91,16 @@
 	})
 </script>
 
-<TableIndex />
+<div class="grid grid-cols-6 h-full overflow-auto">
+	<div class={cn('h-full overflow-auto', $viewsSideBarOpen ? 'col-span-5' : 'col-span-6')}>
+		<TableIndex />
+	</div>
+	{#if $viewsSideBarOpen}
+		<div class="col-span-1">
+			<ViewsSideBar />
+		</div>
+	{/if}
+</div>
 
 <MergeData />
 {#key $table}
