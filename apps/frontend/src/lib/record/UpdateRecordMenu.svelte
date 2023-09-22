@@ -11,7 +11,7 @@
 {#if $canCreateRecord || $canDeleteRecord}
 	<DropdownMenu.Root>
 		<DropdownMenu.Trigger>
-			<button>
+			<button class="dark:text-white">
 				<i class="ti ti-dots" />
 			</button>
 		</DropdownMenu.Trigger>

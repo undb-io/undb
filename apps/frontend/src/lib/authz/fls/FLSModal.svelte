@@ -6,7 +6,7 @@
 </script>
 
 <Dialog.Root bind:open={$flsModal.open}>
-	<Dialog.Content class="!w-1/2 !max-w-none">
+	<Dialog.Content class="!w-1/2 !max-w-none bg-white dark:bg-gray-800">
 		<Dialog.Header>
 			<Dialog.Title>{$t('fls', { ns: 'authz' })}</Dialog.Title>
 		</Dialog.Header>

@@ -91,7 +91,7 @@
 			class={cn(
 				'gap-2 whitespace-nowrap border-2 border-transparent',
 				!!validSorts.length &&
-					'bg-yellow-100 hover:bg-yellow-100 hover:border-yellow-200 text-yellow-800 hover:text-yellow-950',
+					'bg-yellow-100 hover:bg-yellow-100 hover:border-yellow-200 text-yellow-800 hover:text-yellow-950 dark:bg-yellow-600 dark:text-yellow-100',
 			)}
 			size="sm"
 		>
