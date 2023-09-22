@@ -17,11 +17,12 @@ import type {
 } from './fields/index.js'
 import type { JsonField } from './fields/json/json-field.js'
 import type { LookupField } from './fields/lookup/lookup-field.js'
-import type { MinField } from './fields/min/min-field.js'
 import type { MaxField } from './fields/max/max-field.js'
+import type { MinField } from './fields/min/min-field.js'
 import type { MultiSelectField } from './fields/multi-select/multi-select-field.js'
 import type { NumberField } from './fields/number/number-field.js'
 import type { ParentField } from './fields/parent/parent-field.js'
+import type { QRCodeField } from './fields/qrcode/qrcode-field.js'
 import type { RatingField } from './fields/rating/rating-field.js'
 import type { ReferenceField } from './fields/reference/reference-field.js'
 import type { SelectField } from './fields/select/select-field.js'
@@ -41,6 +42,7 @@ export interface IFieldVisitor {
   autoIncrement(field: AutoIncrementField): void
   string(field: StringField): void
   email(field: EmailField): void
+  qrcode(field: QRCodeField): void
   url(field: UrlField): void
   json(field: JsonField): void
   color(field: ColorField): void

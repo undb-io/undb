@@ -9,7 +9,7 @@
 {#if $hasPermission('table:create_field')}
 	<Tooltip.Root openDelay={10} positioning={{ placement: 'bottom' }}>
 		<Tooltip.Trigger asChild let:builder>
-			<Button builders={[builder]} on:click={() => createFieldModal.open()} size="sm" variant="secondary">
+			<Button builders={[builder]} on:click={() => createFieldModal.open()} size="sm" variant="ghost">
 				<i class="ti ti-column-insert-right text-sm dark:text-gray-200" />
 			</Button>
 		</Tooltip.Trigger>

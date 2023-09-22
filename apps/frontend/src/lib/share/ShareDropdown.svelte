@@ -91,7 +91,7 @@
 			</Label>
 			{#if share && enabled}
 				<Label class="flex items-center gap-2">
-					<Input value={url} readonly></Input>
+					<Input value={url} readonly on:focus={(e) => e.target.select()}></Input>
 					{#if copied}
 						<i class="ti ti-check text-green-500" />
 					{:else}
@@ -105,7 +105,7 @@
 				</Label>
 				<h5>{$t('Embed', { ns: 'common' })}</h5>
 				<div class="flex items-center gap-2">
-					<Textarea value={iframe} readonly />
+					<Textarea value={iframe} readonly on:focus={(e) => e.target.select()} />
 					{#if iframeCopied}
 						<i class="ti ti-check text-green-500" />
 					{:else}

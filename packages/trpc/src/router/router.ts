@@ -8,6 +8,7 @@ import { createOpenApiRouter } from './openapi.router.js'
 import { createRecordRouter } from './record.router.js'
 import { createShareRouter } from './share.router.js'
 import { createTableRouter } from './table.router.js'
+import { createTemplateRouter } from './template.router.js'
 import { createUserRouter } from './user.router.js'
 import { createWebhookRouter } from './webhook.router.js'
 
@@ -50,6 +51,7 @@ export const createRouter = (commandBus: ICommandBus, queryBus: IQueryBus, logge
     share: createShareRouter(procedure)(commandBus, queryBus),
     invitation: createInvitationRouter(authedProceducr, publicProcedure)(commandBus, queryBus),
     openapi: createOpenApiRouter(authedProceducr)(commandBus, queryBus),
+    template: createTemplateRouter(authedProceducr)(commandBus, queryBus),
   })
   return appRouter
 }

@@ -133,7 +133,7 @@
 			{#if initialLoading}
 				<i class="ti ti-rotate animate-spin"></i>
 			{:else}
-				<i class="ti ti-plus" />
+				<i class="ti ti-link" />
 				<span>{$t('Select Record')}</span>
 			{/if}
 		</Button>

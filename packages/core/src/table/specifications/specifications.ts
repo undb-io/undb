@@ -8,10 +8,11 @@ import { WithTableName } from './table-name.specification.js'
 import { WithTableSchema } from './table-schema.specification.js'
 
 export const newTableSpec = (input: ICreateTableInput_internal, ctx: ClsStore) => {
+  const schema = WithTableSchema.from(input.schema, ctx)
   return WithTableName.fromString(input.name)
     .and(WithTableId.fromString(input.id))
-    .and(WithTableSchema.from(input.schema, ctx))
+    .and(schema)
     .and(WithTableViews.from(input.views))
-    .and(WithTableForms.from(input.forms ?? []))
+    .and(WithTableForms.from(input.forms ?? [], schema.schema))
     .and(WithTableEmoji.fromString(input.emoji ?? null))
 }

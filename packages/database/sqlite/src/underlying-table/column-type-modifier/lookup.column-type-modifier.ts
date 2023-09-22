@@ -4,7 +4,6 @@ import type { LookupField } from '@undb/core'
 import { INTERNAL_COLUMN_ID_NAME } from '@undb/core'
 import { ReferenceField } from '../../entity/field.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
-import { UnderlyingForeignTableFactory } from '../underlying-foreign-table.factory.js'
 import {
   UnderlyingBoolColumn,
   UnderlyingColorColumn,
@@ -19,6 +18,7 @@ import {
   UnderlyingStringColumn,
   UnderlyingUrlColumn,
 } from '../underlying-column.js'
+import { UnderlyingForeignTableFactory } from '../underlying-foreign-table.factory.js'
 import { BaseColumnTypeModifier } from './base.column-type-modifier.js'
 
 export class LookupColumnTypeModifier extends BaseColumnTypeModifier<LookupField> {
@@ -120,6 +120,9 @@ export class LookupColumnTypeModifier extends BaseColumnTypeModifier<LookupField
   }
   collaborator(): void {
     this.castToCollaborator(this.column)
+  }
+  qrcode(): void {
+    this.dropColumn(this.column)
   }
   count(): void {
     this.dropColumn(this.column)

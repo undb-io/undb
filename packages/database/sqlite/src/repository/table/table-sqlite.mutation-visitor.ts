@@ -21,6 +21,7 @@ import type {
   WithReferenceFieldId,
   WithTableFormId,
   WithTableForms,
+  WithTableIds,
   WithTableViewId,
   WithTimeFormat,
   WithoutForm,
@@ -95,6 +96,7 @@ import {
   NumberField,
   Option,
   ParentField,
+  QRCodeField,
   RatingField,
   ReferenceField,
   SelectField,
@@ -153,6 +155,8 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
         return this.em.getReference(ColorField, id)
       case 'email':
         return this.em.getReference(EmailField, id)
+      case 'qrcode':
+        return this.em.getReference(QRCodeField, id)
       case 'url':
         return this.em.getReference(UrlField, id)
       case 'json':
@@ -200,6 +204,9 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
 
   idEqual(): void {
     throw new Error('[TableSqliteMutationVisitor.idEqual] Method not implemented.')
+  }
+  idsIn(s: WithTableIds): void {
+    throw new Error('[TableSqliteMutationVisitor.idsIn] Method not implemented.')
   }
   nameEqual(s: WithTableName): void {
     const table = this.table

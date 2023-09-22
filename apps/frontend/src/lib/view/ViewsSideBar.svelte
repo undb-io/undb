@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { getTable, getView } from '$lib/store/table'
-	import * as Tooltip from '$lib/components/ui/tooltip'
-	import TableViewTabItem from './TableViewTabItem.svelte'
 	import { t } from '$lib/i18n'
 	import Sortable from 'sortablejs'
 	import { onMount, tick } from 'svelte'
@@ -14,6 +12,7 @@
 	import { hasPermission } from '$lib/store/authz'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Button } from '$components/ui/button'
+	import ViewListItem from './ViewListItem.svelte'
 
 	const table = getTable()
 	const currentView = getView()
@@ -43,13 +42,14 @@
 		}
 	}
 
-	onMount(async () => {
+	$: if (el) {
 		Sortable.create(el, {
 			animation: 200,
-			direction: 'horizontal',
+			direction: 'vertical',
 			onEnd,
+			handle: '.handle',
 		})
-	})
+	}
 
 	const items = [
 		{ value: 'grid', label: 'Grid' },
@@ -73,60 +73,47 @@
 </script>
 
 <section
-	class="w-full mx-auto bg-gradient-to-r bg-white dark:bg-gray-800 border-b dark:border-gray-700 flex space-x-2 items-center"
+	class="w-full h-full bg-gradient-to-r bg-white dark:bg-gray-800 dark:border-gray-700 space-x-2 flex flex-col border-l border-gra300 shadow-lg"
 >
-	{#if $sidebarCollapsed}
-		<div class="ml-2">
-			<Tooltip.Root>
-				<Tooltip.Trigger>
-					<button on:click={() => ($sidebarCollapsed = false)}>
-						<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500 dark:hover:text-gray-100" />
-					</button>
-				</Tooltip.Trigger>
-				<Tooltip.Content
-					class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
-				>
-					<kbd> Command + b </kbd>
-				</Tooltip.Content>
-			</Tooltip.Root>
-		</div>
-	{/if}
-	<ul bind:this={el} class="flex flex-wrap space-x-2">
+	<ul bind:this={el} class="flex-1 p-2 space-y-1">
 		{#each views as view}
-			<li class="dark:text-gray-100">
-				<TableViewTabItem view={view.id.value === $currentView.id.value ? $currentView : view} />
-			</li>
+			<ViewListItem view={view.id.value === $currentView.id.value ? $currentView : view} />
 		{/each}
 	</ul>
-	{#if $hasPermission('table:create_view')}
-		<DropdownMenu.Root>
-			<DropdownMenu.Trigger asChild let:builder>
-				<Button size="icon" builders={[builder]} variant="ghost" class="w-7 h-7">
-					<i class="ti ti-plus"></i>
-				</Button>
-			</DropdownMenu.Trigger>
-			<DropdownMenu.Content class="w-48">
-				<DropdownMenu.Group>
-					{#each items as item}
-						<DropdownMenu.Item
-							on:click={() => {
-								$createView.mutate({
-									tableId: $table.id.value,
-									view: {
-										name: $t('view n', { n: views.length + 1 }),
-										displayType: item.value,
-									},
-								})
-							}}
-						>
-							<div role="button" class="flex items-center w-full h-full gap-2">
-								<ViewIcon type={item.value} />
-								{$t(item.value)}
-							</div>
-						</DropdownMenu.Item>
-					{/each}
-				</DropdownMenu.Group>
-			</DropdownMenu.Content>
-		</DropdownMenu.Root>
-	{/if}
+	<div class="p-4 w-full">
+		{#if $hasPermission('table:create_view')}
+			<DropdownMenu.Root>
+				<DropdownMenu.Trigger asChild let:builder>
+					<Button size="sm" builders={[builder]} variant="outline" class="w-full gap-2">
+						<i class="ti ti-plus"></i>
+						<span>
+							{$t('Create New View')}
+						</span>
+					</Button>
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content class="w-48">
+					<DropdownMenu.Group>
+						{#each items as item}
+							<DropdownMenu.Item
+								on:click={() => {
+									$createView.mutate({
+										tableId: $table.id.value,
+										view: {
+											name: $t('view n', { n: views.length + 1 }),
+											displayType: item.value,
+										},
+									})
+								}}
+							>
+								<div role="button" class="flex items-center w-full h-full gap-2">
+									<ViewIcon type={item.value} />
+									{$t(item.value)}
+								</div>
+							</DropdownMenu.Item>
+						{/each}
+					</DropdownMenu.Group>
+				</DropdownMenu.Content>
+			</DropdownMenu.Root>
+		{/if}
+	</div>
 </section>

@@ -68,6 +68,9 @@ export class DateColumnTypeModifier extends BaseColumnTypeModifier<DateField> {
     const newColumn = new UnderlyingCurrencyColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
+  qrcode(): void {
+    this.dropColumn(this.column)
+  }
   attachment(): void {
     this.dropColumn(this.column)
   }

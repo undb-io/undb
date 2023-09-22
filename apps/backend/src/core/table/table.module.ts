@@ -10,7 +10,6 @@ import { dbAdapters } from './adapters/index.js'
 import { TableAdapterModule } from './adapters/table-adapter.module.js'
 import { commandHandlers } from './commands/index.js'
 import { queryHandlers } from './queries/index.js'
-import { RecordController } from './record.controller.js'
 import { tableSpecHandler } from './services/table-spec.handler.js'
 import { TableController } from './table.controller.js'
 
@@ -25,7 +24,7 @@ import { TableController } from './table.controller.js'
     RLSModule,
     FLSModule,
   ],
-  controllers: [RecordController, TableController],
+  controllers: [TableController],
   providers: [...commandHandlers, ...queryHandlers, ...dbAdapters, tableSpecHandler],
 })
 export class TableModule {}

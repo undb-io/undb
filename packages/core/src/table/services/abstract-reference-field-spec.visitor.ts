@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import type { QRCodeField } from '../field/fields/qrcode/qrcode-field.js'
 import type {
   AttachmentField,
   AutoIncrementField,
@@ -70,6 +71,7 @@ import type {
   WithTableEmoji,
   WithTableFormId,
   WithTableId,
+  WithTableIds,
   WithTableName,
   WithTableSchema,
   WithTableViewId,
@@ -127,6 +129,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   autoIncrement(field: AutoIncrementField): void {}
   string(field: StringField): void {}
   email(field: EmailField): void {}
+  qrcode(field: QRCodeField): void {}
   url(field: UrlField): void {}
   json(field: JsonField): void {}
   color(field: ColorField): void {}
@@ -149,6 +152,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   min(field: MinField): void {}
   max(field: MaxField): void {}
   idEqual(s: WithTableId): void {}
+  idsIn(s: WithTableIds): void {}
   nameEqual(s: WithTableName): void {}
   schemaEqual(s: WithTableSchema): void {
     for (const field of s.schema.fields) {

@@ -1,0 +1,40 @@
+{
+  "name": "@undb/template",
+  "description": "",
+  "version": "0.0.0",
+  "author": "",
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.9",
+    "rimraf": "^5.0.1",
+    "tsconfig": "^0.0.0",
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.4",
+    "vitest-mock-extended": "^1.2.1"
+  },
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/index.js"
+  },
+  "keywords": [],
+  "main": "./dist/index",
+  "private": true,
+  "scripts": {
+    "build": "tsup",
+    "clean": "rimraf dist",
+    "coverage": "vitest run --coverage",
+    "dev": "tsup --watch",
+    "prebuild": "pnpm run clean"
+  },
+  "type": "module",
+  "types": "dist/index.d",
+  "dependencies": {
+    "@undb/core": "workspace:^0.0.0",
+    "@undb/domain": "workspace:^",
+    "lodash-es": "^4.17.21",
+    "oxide.ts": "^1.1.0",
+    "ts-pattern": "^5.0.5",
+    "zod": "^3.22.2",
+    "zod-to-json-schema": "^3.21.4"
+  }
+}

@@ -10,7 +10,7 @@
 	import logo from '$lib/assets/logo.svg'
 	import { i18n, t } from '$lib/i18n'
 	import { createMutation } from '@tanstack/svelte-query'
-	import { createTableModal, importDataModal } from '$lib/store/modal'
+	import { createTableModal, importDataModal, importTemplate } from '$lib/store/modal'
 	import { colors } from '$lib/field/helpers'
 	import ImportData from '$lib/import/ImportData.svelte'
 	import { copyText } from 'svelte-copy'
@@ -25,6 +25,7 @@
 	import * as Tooltip from '$lib/components/ui/tooltip'
 	import * as Avatar from '$lib/components/ui/avatar'
 	import Toast from '$components/ui/toast/toast.svelte'
+	import ImportTemplate from '$lib/template/ImportTemplate.svelte'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -228,6 +229,12 @@
 											{$t('import data content')}
 										</span>
 									</DropdownMenu.Item>
+									<DropdownMenu.Item class="gap-2" on:click={() => importTemplate.open()}>
+										<i class="ti ti-csv" />
+										<span>
+											{$t('import template')}
+										</span>
+									</DropdownMenu.Item>
 								</DropdownMenu.Content>
 							</DropdownMenu.Root>
 						{/if}
@@ -424,3 +431,4 @@
 
 <CreateTable data={$page.data.form} />
 <ImportData formData={$page.data.createTable} />
+<ImportTemplate />

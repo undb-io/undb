@@ -28,7 +28,7 @@
 				<Option {option} />
 			{:else}
 				<span class="inline-flex items-center gap-2">
-					<i class="ti ti-plus" />
+					<i class="ti ti-list" />
 					<span>{$t('Select Option')}</span>
 				</span>
 			{/if}

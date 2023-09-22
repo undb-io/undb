@@ -1,18 +1,28 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
-	import { erdModal, formListDrawer, mergeDataModal, recordTrashModal, rlsModal, webhookModal } from '$lib/store/modal'
-	import { currentRLSS } from '$lib/store/table'
+	import {
+		erdModal,
+		exportTableTemplate,
+		formListDrawer,
+		mergeDataModal,
+		recordTrashModal,
+		rlsModal,
+		webhookModal,
+	} from '$lib/store/modal'
+	import { currentRLSS, getTable } from '$lib/store/table'
 	import { hasPermission } from '$lib/store/authz'
 	import * as DropdownMenu from '$components/ui/dropdown-menu'
-	import { Button } from '$components/ui/button'
 	import { Badge } from '$components/ui/badge'
+	import { goto } from '$app/navigation'
+
+	const table = getTable()
 </script>
 
 <DropdownMenu.Root>
-	<DropdownMenu.Trigger asChild let:builder>
-		<Button builders={[builder]} variant="ghost" size="icon" class="w-9 h-9">
-			<i class="ti ti-dots dark:text-gray-50"></i>
-		</Button>
+	<DropdownMenu.Trigger>
+		<button>
+			<i class="ti ti-dots dark:text-gray-50 hover:bg-gray-100 p-1 text-gray-600"></i>
+		</button>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class="w-48">
 		{#if $hasPermission('table:list_form')}
@@ -45,6 +55,15 @@
 			<i class="ti ti-hierarchy-3 text-gray-600 dark:text-gray-50" />
 			<span>{$t('ERD')}</span>
 		</DropdownMenu.Item>
+		<DropdownMenu.Item
+			class="gap-2"
+			on:click={() => {
+				goto(`/t/${$table.id.value}/openapi`)
+			}}
+		>
+			<i class="ti ti-code text-gray-600 dark:text-gray-50" />
+			<span>{$t('API Preview')}</span>
+		</DropdownMenu.Item>
 		{#if $hasPermission('rls:list')}
 			<DropdownMenu.Item
 				class="gap-2"
@@ -68,6 +87,17 @@
 			>
 				<i class="ti ti-database-import text-gray-600 dark:text-gray-50" />
 				<span>{$t('merge data')}</span>
+			</DropdownMenu.Item>
+		{/if}
+		{#if $hasPermission('table:export_template')}
+			<DropdownMenu.Item
+				on:click={() => {
+					exportTableTemplate.open()
+				}}
+				class="items-center gap-2"
+			>
+				<i class="ti ti-template text-gray-600 dark:text-gray-50" />
+				<span>{$t('Export As Template')}</span>
 			</DropdownMenu.Item>
 		{/if}
 

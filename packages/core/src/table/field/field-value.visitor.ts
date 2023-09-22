@@ -14,9 +14,12 @@ import type { EmailFieldValue } from './fields/email/email-field-value.js'
 import type { IdFieldValue } from './fields/id/id-field-value.js'
 import type { JsonFieldValue } from './fields/json/json-field-value.js'
 import type { LookupFieldValue } from './fields/lookup/lookup-field-value.js'
+import type { MaxFieldValue } from './fields/max/max-field-value.js'
+import type { MinFieldValue } from './fields/min/min-field-value.js'
 import type { MultiSelectFieldValue } from './fields/multi-select/multi-select-field-value.js'
 import type { NumberFieldValue } from './fields/number/number-field-value.js'
 import type { ParentFieldValue } from './fields/parent/parent-field-value.js'
+import type { QRCodeFieldValue } from './fields/qrcode/qrcode-field-value.js'
 import type { RatingFieldValue } from './fields/rating/rating-field-value.js'
 import type { ReferenceFieldValue } from './fields/reference/reference-field-value.js'
 import type { SelectFieldValue } from './fields/select/select-field-value.js'
@@ -26,8 +29,6 @@ import type { TreeFieldValue } from './fields/tree/tree-field-value.js'
 import type { UpdatedAtFieldValue } from './fields/updated-at/updated-at-field-value.js'
 import type { UpdatedByFieldValue } from './fields/updated-by/updated-by-field-value.js'
 import type { UrlFieldValue } from './fields/url/url-field-value.js'
-import type { MinFieldValue } from './fields/min/min-field-value.js'
-import type { MaxFieldValue } from './fields/max/max-field-value.js'
 
 export interface IFieldValueVisitor {
   id(value: IdFieldValue): void
@@ -39,6 +40,7 @@ export interface IFieldValueVisitor {
   autoIncrement(value: AutoIncrementFieldValue): void
   string(value: StringFieldValue): void
   email(value: EmailFieldValue): void
+  qrcode(value: QRCodeFieldValue): void
   url(value: UrlFieldValue): void
   json(value: JsonFieldValue): void
   color(value: ColorFieldValue): void

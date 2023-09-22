@@ -20,6 +20,7 @@
 	import Currency from './Currency.svelte'
 	import Json from './Json.svelte'
 	import Url from './Url.svelte'
+	import QrCode from './QRCode.svelte'
 
 	export let field: Field
 	export let record: Record | undefined = undefined
@@ -56,6 +57,7 @@
 		max: Readonly,
 		'created-by': Readonly,
 		'updated-by': Readonly,
+		qrcode: QrCode,
 	}
 </script>
 

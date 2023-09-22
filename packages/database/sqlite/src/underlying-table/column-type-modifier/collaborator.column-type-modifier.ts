@@ -101,6 +101,9 @@ export class CollaboratorColumnTypeModifier extends BaseColumnTypeModifier<Colla
   collaborator(): void {
     this.castToCollaborator(this.column)
   }
+  qrcode(): void {
+    this.dropColumn(this.column)
+  }
   count(): void {
     this.dropColumn(this.column)
   }

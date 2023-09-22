@@ -19,6 +19,7 @@
 	import Currency from './Currency.svelte'
 	import Min from './Min.svelte'
 	import Max from './Max.svelte'
+	import QrCode from './QRCode.svelte'
 
 	export let type: IFieldType
 	export let isNew = false
@@ -44,6 +45,7 @@
 		'updated-at': UpdatedAt,
 		min: Min,
 		max: Max,
+		// qrcode: QrCode,
 	}
 </script>
 

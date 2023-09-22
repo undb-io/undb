@@ -69,6 +69,9 @@ export class EmailColumnTypeModifier extends BaseColumnTypeModifier<EmailField> 
   collaborator(): void {
     this.castToCollaborator(this.column, 'email')
   }
+  qrcode(): void {
+    this.dropColumn(this.column)
+  }
   count(): void {
     this.dropColumn(this.column)
   }

@@ -111,6 +111,9 @@ export class AttachmentColumnTypeModifier extends BaseColumnTypeModifier<Attachm
     const newColumn = new UnderlyingMultiSelectColumn(this.field.id.value, this.tableId)
     this.alterColumn(newColumn, this.column)
   }
+  qrcode(): void {
+    this.dropColumn(this.column)
+  }
   count(): void {
     this.dropColumn(this.column)
   }
@@ -124,6 +127,9 @@ export class AttachmentColumnTypeModifier extends BaseColumnTypeModifier<Attachm
     this.dropColumn(this.column)
   }
   min(): void {
+    this.dropColumn(this.column)
+  }
+  max(): void {
     this.dropColumn(this.column)
   }
   ['date-range'](): void {

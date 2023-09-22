@@ -72,6 +72,9 @@ export class NumberColumnTypeModifier extends BaseColumnTypeModifier<NumberField
   collaborator(): void {
     this.castToCollaborator(this.column)
   }
+  qrcode(): void {
+    this.dropColumn(this.column)
+  }
   count(): void {
     this.dropColumn(this.column)
   }

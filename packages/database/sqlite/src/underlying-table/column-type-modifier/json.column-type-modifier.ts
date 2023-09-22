@@ -69,6 +69,9 @@ export class JsonColumnTypeModifier extends BaseColumnTypeModifier<JsonField> {
   collaborator(): void {
     this.castToCollaborator(this.column)
   }
+  qrcode(): void {
+    this.dropColumn(this.column)
+  }
   count(): void {
     this.dropColumn(this.column)
   }

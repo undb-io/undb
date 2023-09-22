@@ -26,7 +26,7 @@
 		if ($createRecordForm) {
 			fields = $createRecordForm.getNotHiddenFields($table.schema)
 		} else {
-			fields = $view.getOrderedFields($table.schema.nonSystemFields)
+			fields = $view.getOrderedFields($table.schema.nonControlledFields)
 		}
 	}
 

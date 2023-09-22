@@ -7,6 +7,5 @@ export const getIframe = (url: string) => {
   frameborder="0"
   width="100%"
   height="700"
-  style="background: transparent; border: 1px solid #ddd"></iframe>
-	`
+  style="background: transparent; border: 1px solid #ddd"></iframe>`
 }

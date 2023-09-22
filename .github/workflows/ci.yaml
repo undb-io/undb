@@ -25,11 +25,11 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: 20.2.0
+          node-version: 20.6.1
 
       - uses: pnpm/action-setup@v2.4.0
         with:
-          version: 8.7.0
+          version: 8.7.6
 
       - name: Install dependencies
         run: pnpm install
