@@ -49,7 +49,12 @@
 					<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} size="sm" />
 				{/each}
 			{:else}
-				{$t('Select Collaborator')}
+				<div class="flex items-center gap-2">
+					<i class="ti ti-user"></i>
+					<span>
+						{$t('Select Collaborator')}
+					</span>
+				</div>
 			{/if}
 		</Button>
 	</DropdownMenu.Trigger>
