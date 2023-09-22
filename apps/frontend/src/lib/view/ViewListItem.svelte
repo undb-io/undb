@@ -57,10 +57,10 @@
 		type="button"
 		role="tab"
 		class={cn(
-			'group rounded-sm inline-flex w-full justify-between items-center gap-2 text-sm font-medium text-center disabled:cursor-not-allowed px-4 py-2',
+			'group rounded-sm inline-flex w-full justify-between items-center gap-2 text-sm font-medium text-center disabled:cursor-not-allowed px-4 py-2 transition',
 			active
 				? 'text-primary bg-primary/5 dark:text-gray-50 dark:bg-primary active'
-				: 'hover:bg-gray-50 hover:text-primary hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 text-gray-500 dark:text-gray-300',
+				: 'hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-primary hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 text-gray-500 dark:text-gray-300',
 		)}
 	>
 		<span class="inline-flex items-center gap-2 truncate">

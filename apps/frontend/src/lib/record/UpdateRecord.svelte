@@ -104,19 +104,20 @@
 	}}
 >
 	{#key $record}
-		<Dialog.Content
-			class="!w-[95%] lg:!w-3/4 !max-w-none h-[calc(100vh-64px)] overflow-y-hidden p-0 block gap-0"
-			id="updateRecord"
-		>
-			<Dialog.Header class="border-b border-gray-100 h-15 p-6">
-				<Dialog.Title class="pr-6">
-					<div class="flex items-center w-full justify-between mr-6">
-						<div class="flex items-center space-x-4">
-							<p>{$t('Update Record')}</p>
-							{#if $record}
-								<ReadonlyRecordBadge />
-							{/if}
-							<!-- <ButtonGroup size="xs">
+		<form id="updateRecord" class="space-y-5" method="POST" use:enhance>
+			<Dialog.Content
+				class="!w-[95%] lg:!w-3/4 !max-w-none h-[calc(100vh-64px)] overflow-y-hidden p-0 block gap-0 bg-white dark:bg-gray-800"
+				id="updateRecord"
+			>
+				<Dialog.Header class="border-b border-gray-100 h-15 p-6">
+					<Dialog.Title class="pr-6">
+						<div class="flex items-center w-full justify-between mr-6">
+							<div class="flex items-center space-x-4">
+								<p class="dark:text-white">{$t('Update Record')}</p>
+								{#if $record}
+									<ReadonlyRecordBadge />
+								{/if}
+								<!-- <ButtonGroup size="xs">
 								<Button size="xs" disabled={!$prevRecord} on:click={() => ($currentRecordId = $prevRecord?.id.value)}>
 									<i class="ti ti-chevron-left text-gray-500 text-base" />
 								</Button>
@@ -124,37 +125,36 @@
 									<i class="ti ti-chevron-right text-gray-500 text-base" />
 								</Button>
 							</ButtonGroup> -->
+							</div>
+
+							<div class="flex items-center gap-2">
+								{#if !$isShare}
+									<button on:click={() => (displayAudits = !displayAudits)} class="dark:text-white">
+										<i class="ti ti-history"></i>
+									</button>
+								{/if}
+								<UpdateRecordMenu record={$record} />
+							</div>
 						</div>
+					</Dialog.Title>
+				</Dialog.Header>
 
-						<div class="flex items-center gap-2">
-							{#if !$isShare}
-								<button on:click={() => (displayAudits = !displayAudits)}>
-									<i class="ti ti-history"></i>
-								</button>
-							{/if}
-							<UpdateRecordMenu record={$record} />
+				<div class="h-[calc(100%-150px)] overflow-hidden">
+					{#if !$record}
+						<div
+							class="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-50 z-50 flex items-center justify-center"
+						>
+							<i class="ti ti-rotate animate-spin"></i>
 						</div>
-					</div>
-				</Dialog.Title>
-			</Dialog.Header>
+					{/if}
 
-			<div class="h-[calc(100%-150px)] overflow-hidden">
-				{#if !$record}
-					<div
-						class="absolute top-0 left-0 right-0 bottom-0 bg-white bg-opacity-50 z-50 flex items-center justify-center"
-					>
-						<i class="ti ti-rotate animate-spin"></i>
-					</div>
-				{/if}
-
-				<div class="grid grid-cols-6 h-full">
-					<div
-						class={cn(
-							'p-6 border-r dark:border-r-slate-900 h-full overflow-y-auto',
-							shouldDisplayAudits ? 'col-span-4' : 'col-span-6',
-						)}
-					>
-						<form id="updateRecord" class="space-y-5" method="POST" use:enhance>
+					<div class="grid grid-cols-6 h-full">
+						<div
+							class={cn(
+								'p-6 border-r dark:border-r-slate-900 h-full overflow-y-auto',
+								shouldDisplayAudits ? 'col-span-4' : 'col-span-6',
+							)}
+						>
 							<div class="grid grid-cols-5 gap-x-3 gap-y-4 items-center">
 								{#each fields as field}
 									{@const readonlyField = !$canUpdateRecordField(field.id.value)}
@@ -182,35 +182,35 @@
 									</div>
 								{/each}
 							</div>
-						</form>
-					</div>
-					{#if shouldDisplayAudits}
-						<div class="col-span-2 px-2 py-6 h-full overflow-y-auto bg-slate-50 dark:bg-slate-700">
-							<RecordAudits />
 						</div>
-					{/if}
-				</div>
-			</div>
-
-			<Dialog.Footer class="border-t border-gray-100 h-15 p-6">
-				<div class="w-full flex justify-end gap-2">
-					<Button variant="secondary" type="button" on:click={() => ($currentRecordId = undefined)}>
-						{$t('Cancel', { ns: 'common' })}
-					</Button>
-					<Button class="gap-2" type="submit" form="updateRecord" disabled={$submitting || $readonlyRecord}>
-						{#if $delayed}
-							<i class="ti ti-rotate animate-spin"></i>
-						{:else}
-							<i class="ti ti-edit" />
+						{#if shouldDisplayAudits}
+							<div class="col-span-2 px-2 py-6 h-full overflow-y-auto bg-slate-50 dark:bg-slate-700">
+								<RecordAudits />
+							</div>
 						{/if}
-						{$t('Update Record')}</Button
-					>
+					</div>
 				</div>
-			</Dialog.Footer>
 
-			<ConfirmDeleteRecord />
-			<ConfirmDuplicateRecord />
-		</Dialog.Content>
+				<Dialog.Footer class="border-t border-gray-100 h-15 p-6">
+					<div class="w-full flex justify-end gap-2">
+						<Button variant="secondary" type="button" on:click={() => ($currentRecordId = undefined)}>
+							{$t('Cancel', { ns: 'common' })}
+						</Button>
+						<Button class="gap-2" type="submit" form="updateRecord" disabled={$submitting || $readonlyRecord}>
+							{#if $delayed}
+								<i class="ti ti-rotate animate-spin"></i>
+							{:else}
+								<i class="ti ti-edit" />
+							{/if}
+							{$t('Update Record')}</Button
+						>
+					</div>
+				</Dialog.Footer>
+
+				<ConfirmDeleteRecord />
+				<ConfirmDuplicateRecord />
+			</Dialog.Content>
+		</form>
 	{/key}
 </Dialog.Root>
 
