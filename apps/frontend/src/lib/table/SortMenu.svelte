@@ -90,7 +90,8 @@
 			variant="ghost"
 			class={cn(
 				'gap-2 whitespace-nowrap border-2 border-transparent',
-				!!validSorts.length && 'bg-yellow-100 hover:bg-yellow-100 hover:border-yellow-200 text-yellow-800',
+				!!validSorts.length &&
+					'bg-yellow-100 hover:bg-yellow-100 hover:border-yellow-200 text-yellow-800 hover:text-yellow-950',
 			)}
 			size="sm"
 		>
