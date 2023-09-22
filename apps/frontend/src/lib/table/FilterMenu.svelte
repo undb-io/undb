@@ -54,7 +54,7 @@
 			class={cn(
 				'gap-2 whitespace-nowrap border-2 border-transparent',
 				!!validFilters.length &&
-					'bg-green-100 hover:bg-green-100 hover:border-green-200 text-green-800 hover:text-green-950',
+					'bg-green-100 hover:bg-green-100 hover:border-green-200 text-green-800 hover:text-green-950 dark:bg-green-600 dark:text-green-100',
 			)}
 			size="sm"
 		>

@@ -39,7 +39,7 @@
 			>
 				{$table.name.value.slice(0, 1)}
 			</span>
-			<p class="text-sm font-medium text-gray-800">
+			<p class="text-sm font-medium text-gray-800 dark:text-white">
 				{$table.name.value}
 			</p>
 		</div>
@@ -50,7 +50,7 @@
 			<Tooltip.Root openDelay={10} positioning={{ placement: 'bottom' }}>
 				<Tooltip.Trigger>
 					<button on:click={() => updateTableModal.open()}>
-						<i class="ti ti-settings text-gray-600 dark:text-gray-200" />
+						<i class="ti ti-settings text-gray-600 dark:text-gray-200 dark:bg-gray-700" />
 					</button>
 				</Tooltip.Trigger>
 				<Tooltip.Content>

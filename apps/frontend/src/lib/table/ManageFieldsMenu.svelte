@@ -98,7 +98,8 @@
 				variant="ghost"
 				class={cn(
 					'gap-2 whitespace-nowrap border-2 border-transparent',
-					hiddenCount && 'bg-sky-100 hover:bg-sky-100 hover:border-sky-200 text-sky-800 hover:text-sky-950',
+					hiddenCount &&
+						'bg-sky-100 hover:bg-sky-100 hover:border-sky-200 text-sky-800 hover:text-sky-950 dark:bg-sky-600 dark:text-sky-100',
 				)}
 				size="sm"
 			>

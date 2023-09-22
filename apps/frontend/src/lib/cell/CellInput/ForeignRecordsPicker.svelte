@@ -139,7 +139,7 @@
 		</Button>
 
 		<Dialog.Root bind:open>
-			<Dialog.Content class="h-3/4 block space-y-2">
+			<Dialog.Content class="h-3/4 block space-y-2 bg-white dark:bg-gray-800">
 				<Dialog.Header class="mb-5">
 					<Dialog.Title>{$t('Select Record') ?? undefined}</Dialog.Title>
 				</Dialog.Header>

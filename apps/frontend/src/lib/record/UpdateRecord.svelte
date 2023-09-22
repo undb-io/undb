@@ -105,14 +105,14 @@
 >
 	{#key $record}
 		<Dialog.Content
-			class="!w-[95%] lg:!w-3/4 !max-w-none h-[calc(100vh-64px)] overflow-y-hidden p-0 block gap-0"
+			class="!w-[95%] lg:!w-3/4 !max-w-none h-[calc(100vh-64px)] overflow-y-hidden p-0 block gap-0 bg-white dark:bg-gray-800"
 			id="updateRecord"
 		>
 			<Dialog.Header class="border-b border-gray-100 h-15 p-6">
 				<Dialog.Title class="pr-6">
 					<div class="flex items-center w-full justify-between mr-6">
 						<div class="flex items-center space-x-4">
-							<p>{$t('Update Record')}</p>
+							<p class="dark:text-white">{$t('Update Record')}</p>
 							{#if $record}
 								<ReadonlyRecordBadge />
 							{/if}
@@ -128,7 +128,7 @@
 
 						<div class="flex items-center gap-2">
 							{#if !$isShare}
-								<button on:click={() => (displayAudits = !displayAudits)}>
+								<button on:click={() => (displayAudits = !displayAudits)} class="dark:text-white">
 									<i class="ti ti-history"></i>
 								</button>
 							{/if}

@@ -69,9 +69,11 @@
 </script>
 
 <Dialog.Root bind:open={$createRecordModal.open}>
-	<Dialog.Content class="!w-3/4 max-w-none h-[calc(100vh-64px)] overflow-y-hidden flex flex-col p-0">
+	<Dialog.Content
+		class="!w-3/4 max-w-none h-[calc(100vh-64px)] overflow-y-hidden flex flex-col p-0 bg-white dark:bg-gray-800"
+	>
 		<Dialog.Header class="border-b p-6">
-			<Dialog.Title class="gap-2 items-center flex">
+			<Dialog.Title class="gap-2 items-center flex dark:text-white">
 				<span>
 					{$t('Create New Record')}
 				</span>

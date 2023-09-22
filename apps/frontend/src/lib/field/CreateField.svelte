@@ -82,7 +82,7 @@
 </script>
 
 <Dialog.Root bind:open={$createFieldModal.open}>
-	<Dialog.Content class="md:!w-1/2 max-w-none md:min-w-[720px]">
+	<Dialog.Content class="md:!w-1/2 max-w-none md:min-w-[720px] bg-white dark:bg-gray-800">
 		<Dialog.Header>
 			<Dialog.Title>{$t('Create New Field') ?? undefined}</Dialog.Title>
 		</Dialog.Header>
