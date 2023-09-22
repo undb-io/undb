@@ -1,3 +1,14 @@
+## v0.9.0
+
+
+### 🎨 Styles
+
+- Cell input picker icon ([9ceec0f](https://github.com/undb-xyz/undb/commit/9ceec0f))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v0.8.3
 
 ## v0.8.2
