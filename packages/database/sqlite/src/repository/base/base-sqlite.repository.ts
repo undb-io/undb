@@ -1,7 +1,7 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { BaseRepository, BaseSpecification, Base as CoreBase } from '@undb/core'
 import { Base } from '../../entity/base.js'
-import { BaseSqliteMapper } from './base-sqlite.mapper'
+import { BaseSqliteMapper } from './base-sqlite.mapper.js'
 import { BaseSqliteQueryVisitor } from './base-sqlite.query-visitor.js'
 
 export class BaseSqliteRepository implements BaseRepository {

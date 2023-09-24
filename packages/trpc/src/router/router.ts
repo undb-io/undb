@@ -3,6 +3,7 @@ import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { middleware, publicProcedure, router } from '../trpc.js'
 import type { ILogger } from '../type.js'
 import { createAuthzRouter } from './authz.router.js'
+import { createBaseRouter } from './base.router.js'
 import { createInvitationRouter } from './invitation.router.js'
 import { createOpenApiRouter } from './openapi.router.js'
 import { createRecordRouter } from './record.router.js'
@@ -44,6 +45,7 @@ export const createRouter = (commandBus: ICommandBus, queryBus: IQueryBus, logge
 
   const appRouter = router({
     authz: createAuthzRouter(authedProceducr)(commandBus, queryBus),
+    base: createBaseRouter(authedProceducr)(commandBus, queryBus),
     table: createTableRouter(authedProceducr)(commandBus, queryBus),
     record: createRecordRouter(authedProceducr)(commandBus, queryBus),
     user: createUserRouter(authedProceducr)(commandBus, queryBus),

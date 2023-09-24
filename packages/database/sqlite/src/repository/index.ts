@@ -1,5 +1,6 @@
 export * from './api-token/index.js'
 export * from './audit/index.js'
+export * from './base/index.js'
 export * from './fls/index.js'
 export * from './invitation/index.js'
 export * from './member/index.js'
