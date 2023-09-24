@@ -1,3 +1,4 @@
+export * from './base.factory.js'
 export * from './base.js'
 export * from './base.query-model.js'
 export * from './base.repository.js'
