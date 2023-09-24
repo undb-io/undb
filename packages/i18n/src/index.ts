@@ -188,6 +188,9 @@ export const config: InitOptions = {
         'Create New Invitation': 'Create New Invitation',
         'Confirm Cancel Invitation': 'Confirm Cancel Invitation?',
       },
+      base: {
+        search: 'search for all bases',
+      },
       table: {
         trash: 'trash',
         'search trash': 'search trash',
@@ -625,6 +628,9 @@ export const config: InitOptions = {
         search: '搜索',
         'Create New Invitation': '创建邀请',
         'Confirm Cancel Invitation': '确认取消邀请吗？',
+      },
+      base: {
+        search: '搜索 base',
       },
       table: {
         trash: '回收站',
