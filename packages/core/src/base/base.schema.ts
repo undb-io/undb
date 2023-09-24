@@ -7,3 +7,9 @@ export const queryBase = z.object({
 })
 
 export type IQueryBase = z.infer<typeof queryBase>
+
+export const createBaseSchema = z.object({
+  name: baseNameSchema,
+})
+
+export type ICreateBaseSchema = z.infer<typeof createBaseSchema>

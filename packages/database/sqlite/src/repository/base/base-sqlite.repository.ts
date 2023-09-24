@@ -17,4 +17,10 @@ export class BaseSqliteRepository implements BaseRepository {
 
     return bases.map((base) => BaseSqliteMapper.toDomain(base))
   }
+
+  async insert(base: CoreBase): Promise<void> {
+    const baseEntity = new Base(base)
+
+    await this.em.insert(baseEntity)
+  }
 }
