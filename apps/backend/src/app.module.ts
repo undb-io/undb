@@ -18,6 +18,7 @@ import { AuditModule } from './audit/audit.module.js'
 import { AuthModule } from './auth/auth.module.js'
 import { AuthService } from './auth/auth.service.js'
 import { AuthzModule } from './authz/authz.module.js'
+import { BaseModule } from './base/base.module.js'
 import { CacheModule } from './cache/cache.module.js'
 import { authConfig } from './configs/auth.config.js'
 import { BaseConfigService } from './configs/base-config.service.js'
@@ -79,6 +80,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
       rootPath: process.env.UNDB_FRONTEND_OUT_DIR || path.resolve(process.cwd(), './out'),
     }),
     ...coreModules,
+    BaseModule,
     AttachmentModule,
     AuthModule,
     I18nModule,
