@@ -1,5 +1,6 @@
 export * from './aggregate-number/index.js'
 export * from './get-api-tokens/index.js'
+export * from './get-base-by-id/index.js'
 export * from './get-bases/index.js'
 export * from './get-chart-data/index.js'
 export * from './get-foreign-records/index.js'

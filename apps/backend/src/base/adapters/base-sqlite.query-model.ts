@@ -16,8 +16,14 @@ export class NestBaseSqliteQueryModel extends BaseSqliteQueryModel {
   ) {
     super(em)
   }
+
   @UseRequestContext()
   find(spec: Option<BaseSpecification>): Promise<IQueryBase[]> {
     return super.find(spec)
+  }
+
+  @UseRequestContext()
+  findOneById(id: string): Promise<Option<IQueryBase>> {
+    return super.findOneById(id)
   }
 }

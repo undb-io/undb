@@ -1,7 +1,10 @@
 import {
   CreateBaseCommand,
+  GetBaseByIdQuery,
   GetBasesQuery,
   createBaseCommandInput,
+  getBaseByIdQueryInput,
+  getBaseByIdQueryOutput,
   getBasesQueryInput,
   getBasesQueryOutput,
 } from '@undb/cqrs'
@@ -17,6 +20,13 @@ export const createBaseRouter = (procedure: typeof publicProcedure) => (commandB
       .output(getBasesQueryOutput)
       .query(({ input }) => {
         const query = new GetBasesQuery(input)
+        return queryBus.execute(query)
+      }),
+    getById: procedure
+      .input(getBaseByIdQueryInput)
+      .output(getBaseByIdQueryOutput)
+      .query(({ input }) => {
+        const query = new GetBaseByIdQuery(input)
         return queryBus.execute(query)
       }),
     create: procedure

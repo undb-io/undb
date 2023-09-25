@@ -4,4 +4,5 @@ import type { BaseSpecification } from './interface'
 
 export interface IBaseQueryModel {
   find(spec: Option<BaseSpecification>): Promise<IQueryBase[]>
+  findOneById(id: string): Promise<Option<IQueryBase>>
 }

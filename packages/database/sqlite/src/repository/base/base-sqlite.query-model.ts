@@ -1,6 +1,6 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import type { BaseSpecification, IBaseQueryModel, IQueryBase } from '@undb/core'
-import type { Option } from 'oxide.ts'
+import { None, Some, type Option } from 'oxide.ts'
 import { Base } from '../../entity/base.js'
 import { BaseSqliteMapper } from './base-sqlite.mapper.js'
 import { BaseSqliteQueryVisitor } from './base-sqlite.query-visitor.js'
@@ -18,5 +18,12 @@ export class BaseSqliteQueryModel implements IBaseQueryModel {
     const bases = await qb.getResultList()
 
     return bases.map((base) => BaseSqliteMapper.toQuery(base))
+  }
+
+  async findOneById(id: string): Promise<Option<IQueryBase>> {
+    const base = await this.em.findOne(Base, { id })
+    if (!base) return None
+
+    return Some(BaseSqliteMapper.toQuery(base))
   }
 }

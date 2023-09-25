@@ -13,6 +13,7 @@
 			<span class="text-xs text-gray-500">
 				{$t('Base', { ns: 'base' })}
 			</span>
+			<h6 class="font-semibold leading-6">{data.base.base?.name}</h6>
 		</div>
 
 		<Button variant="outline" class="w-40">
