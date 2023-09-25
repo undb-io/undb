@@ -103,6 +103,7 @@ export interface IQueryTable {
   id: string
   name: string
   emoji?: string | null
+  baseId?: string
   schema: IQuerySchemaSchema
   views?: IQueryView[]
   forms?: IQueryForm[]
@@ -114,7 +115,7 @@ export class Table {
   public name!: TableName
   public emoji!: TableEmoji
 
-  public baseId!: BaseId
+  public baseId!: Option<BaseId>
 
   public schema: TableSchema = new TableSchema([])
 
@@ -685,10 +686,10 @@ export class Table {
   }
 
   public moveToBase(baseId: BaseId): Option<TableCompositeSpecification> {
-    if (baseId.equals(this.baseId)) {
+    if (this.baseId.isSome() && baseId.equals(this.baseId.unwrap())) {
       return None
     }
 
-    return Some(new WithTableBaseId(baseId))
+    return Some(new WithTableBaseId(Some(baseId)))
   }
 }

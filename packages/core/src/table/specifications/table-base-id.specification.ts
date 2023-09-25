@@ -1,20 +1,21 @@
 import { CompositeSpecification } from '@undb/domain'
-import { Ok, type Result } from 'oxide.ts'
+import type { Option } from 'oxide.ts'
+import { None, Ok, Some, type Result } from 'oxide.ts'
 import { BaseId } from '../../base/index.js'
 import { type Table } from '../table.js'
 import type { ITableSpecVisitor } from './interface.js'
 
 export class WithTableBaseId extends CompositeSpecification {
-  constructor(public readonly id: BaseId) {
+  constructor(public readonly id: Option<BaseId>) {
     super()
   }
 
-  static fromString(id: string): WithTableBaseId {
-    return new WithTableBaseId(BaseId.from(id))
+  static fromString(id?: string): WithTableBaseId {
+    return new WithTableBaseId(id ? Some(BaseId.from(id)) : None)
   }
 
   isSatisfiedBy(t: Table): boolean {
-    return this.id.equals(t.baseId)
+    throw new Error('Method not implemented.')
   }
 
   mutate(t: Table): Result<Table, string> {

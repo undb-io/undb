@@ -22,7 +22,9 @@ export class TableSqliteQueryModel implements ITableQueryModel {
     }
 
     qb = qb
-      .populate(['fields.options', 'views', 'forms', 'forms', 'fields.displayFields'].map((field) => ({ field })))
+      .populate(
+        ['fields.options', 'base.id', 'views', 'forms', 'forms', 'fields.displayFields'].map((field) => ({ field })),
+      )
       .andWhere({ deletedAt: null })
 
     const tables = await qb.getResultList()
@@ -34,6 +36,7 @@ export class TableSqliteQueryModel implements ITableQueryModel {
     await this.em.populate(
       table,
       [
+        'base.id',
         'fields',
         'fields.options',
         'views',

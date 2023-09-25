@@ -211,7 +211,7 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   }
   baseIdEq(s: WithTableBaseId): void {
     const table = this.table
-    wrap(table).assign({ base: s.id.value })
+    wrap(table).assign({ base: s.id.into()?.value })
     this.em.persist(table)
   }
   nameEqual(s: WithTableName): void {
