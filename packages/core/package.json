@@ -14,10 +14,10 @@
     "ts-mixer": "^6.0.3",
     "ts-pattern": "^5.0.5",
     "zod": "^3.22.2",
-    "zod-i18n-map": "^2.16.0"
+    "zod-i18n-map": "^2.17.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.198",
+    "@types/lodash": "^4.14.199",
     "@types/lodash-es": "^4.17.9",
     "@types/mime-types": "^2.1.1",
     "i18next": "^23.0.0",
@@ -27,7 +27,7 @@
     "tsup": "^7.2.0",
     "type-fest": "^4.3.1",
     "typescript": "^5.2.2",
-    "vitest": "^0.34.4",
+    "vitest": "^0.34.5",
     "vitest-mock-extended": "^1.2.1"
   },
   "exports": {
