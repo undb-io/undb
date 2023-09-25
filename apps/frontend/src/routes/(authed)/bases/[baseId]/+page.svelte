@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button } from '$components/ui/button'
 	import { t } from '$lib/i18n'
+	import { createBaseModal } from '$lib/store/modal'
 	import TableCards from '$lib/table/TableCards.svelte'
 	import type { PageData } from './$types'
 
@@ -16,8 +17,11 @@
 			<h6 class="font-semibold leading-6">{data.base.base?.name}</h6>
 		</div>
 
-		<Button variant="outline" class="w-40">
-			{$t('Create New Base', { ns: 'base' })}
+		<Button variant="outline" class="w-40 gap-2" on:click={() => createBaseModal.open()}>
+			<i class="ti ti-plus"></i>
+			<span>
+				{$t('Create New Base', { ns: 'base' })}
+			</span>
 		</Button>
 	</div>
 
