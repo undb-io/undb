@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { baseIdSchema } from '../base/index.js'
+import { baseIdSchema } from '../base/value-objects/base-id.vo.js'
 import { querySchemaSchema } from './field/index.js'
 import { createFormsSchema, queryForms } from './form/form.schema.js'
 import type { Table } from './table.js'
