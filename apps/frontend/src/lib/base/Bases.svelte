@@ -12,8 +12,11 @@
 			href={`/bases/${base.id}`}
 			class="cursor-pointer disabled:cursor-not-allowed disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 [&:focus:not(:focus-visible)]:outline-none focus-visible:ring-indigo-600 rounded-md block p-4 bg-white border border-solid border-slate-200 hover:border-slate-100 hover:shadow"
 		>
-			<h6 class="antialiased font-medium text-slate-900 leading-6 text-[1rem] mt-0 mb-6 [container-type:inline-size]">
-				{base.name}
+			<h6 class="antialiased font-bold text-slate-900 leading-6 text-[1rem] flex items-center gap-1">
+				<i class="ti ti-category"></i>
+				<span>
+					{base.name}
+				</span>
 			</h6>
 		</a>
 	{/each}
