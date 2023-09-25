@@ -100,6 +100,8 @@
 					'gap-2 whitespace-nowrap border-2 border-transparent',
 					hiddenCount &&
 						'bg-sky-100 hover:bg-sky-100 hover:border-sky-200 text-sky-800 hover:text-sky-950 dark:bg-sky-600 dark:text-sky-100',
+					open && hiddenCount && 'border-sky-200 text-sky-950',
+					open && !hiddenCount && 'bg-gray-100',
 				)}
 				size="sm"
 			>
