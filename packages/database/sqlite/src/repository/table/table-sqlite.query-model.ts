@@ -21,7 +21,9 @@ export class TableSqliteQueryModel implements ITableQueryModel {
       spec.unwrap().accept(visitor)
     }
 
-    qb = qb.populate(['fields.options', 'views', 'forms', 'forms', 'fields.displayFields'].map((field) => ({ field })))
+    qb = qb
+      .populate(['fields.options', 'views', 'forms', 'forms', 'fields.displayFields'].map((field) => ({ field })))
+      .where({ deletedAt: null })
 
     const tables = await qb.getResultList()
 
