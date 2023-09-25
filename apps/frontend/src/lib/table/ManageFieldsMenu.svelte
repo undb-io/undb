@@ -70,6 +70,7 @@
 		Sortable.create(el, {
 			animation: 200,
 			direction: 'vertical',
+			handle: '.handle',
 			onEnd,
 			disabled: !$hasPermission('table:move_field'),
 		})
@@ -100,6 +101,8 @@
 					'gap-2 whitespace-nowrap border-2 border-transparent',
 					hiddenCount &&
 						'bg-sky-100 hover:bg-sky-100 hover:border-sky-200 text-sky-800 hover:text-sky-950 dark:bg-sky-600 dark:text-sky-100',
+					open && hiddenCount && 'border-sky-200 text-sky-950',
+					open && !hiddenCount && 'bg-gray-100',
 				)}
 				size="sm"
 			>
@@ -113,11 +116,11 @@
 			</Button>
 		</Popover.Trigger>
 		<Popover.Content class="w-[400px]">
-			<ul class="space-y-2" bind:this={el}>
+			<ul class="space-y-1 max-h-64 overflow-auto" bind:this={el}>
 				{#each items as item (item.id)}
 					{@const checked = visibility[item.id] === undefined || !!visibility[item.id]}
-					<li class="flex items-center gap-2 w-full" data-field-id={item.id}>
-						<Label class="flex items-center justify-center gap-1">
+					<li class="flex items-center gap-2 w-full justify-between group" data-field-id={item.id}>
+						<Label class="flex items-center justify-center gap-2 text-sm font-normal">
 							<input
 								type="checkbox"
 								disabled={(checked && fields.length - hiddenCount === 1) ||
@@ -134,6 +137,8 @@
 								</span>
 							</div>
 						</Label>
+
+						<i class="ti ti-grip-vertical text-gray-500 cursor-grab handle"></i>
 					</li>
 				{/each}
 			</ul>

@@ -9,7 +9,6 @@
 	import { hasPermission } from '$lib/store/authz'
 	import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover'
 	import Toast from '$components/ui/toast/toast.svelte'
-	import Badge from '$components/ui/badge/badge.svelte'
 	import * as Alert from '$lib/components/ui/alert'
 	import { writable } from 'svelte/store'
 	import type { IFilter } from '@undb/core'
@@ -55,6 +54,8 @@
 				'gap-2 whitespace-nowrap border-2 border-transparent',
 				!!validFilters.length &&
 					'bg-green-100 hover:bg-green-100 hover:border-green-200 text-green-800 hover:text-green-950 dark:bg-green-600 dark:text-green-100',
+				open && !!validFilters.length && 'border-green-200 text-green-950',
+				open && !validFilters.length && 'bg-gray-100',
 			)}
 			size="sm"
 		>

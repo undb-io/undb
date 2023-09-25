@@ -16,7 +16,6 @@
 	import { Separator } from '$lib/components/ui/separator'
 	import * as Alert from '$lib/components/ui/alert'
 	import Toast from '$components/ui/toast/toast.svelte'
-	import Badge from '$components/ui/badge/badge.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -92,6 +91,8 @@
 				'gap-2 whitespace-nowrap border-2 border-transparent',
 				!!validSorts.length &&
 					'bg-yellow-100 hover:bg-yellow-100 hover:border-yellow-200 text-yellow-800 hover:text-yellow-950 dark:bg-yellow-600 dark:text-yellow-100',
+				open && !!validSorts.length && 'border-yellow-200 text-yellow-950',
+				open && !validSorts.length && 'bg-gray-100',
 			)}
 			size="sm"
 		>
