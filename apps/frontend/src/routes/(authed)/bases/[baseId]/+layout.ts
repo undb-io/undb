@@ -4,8 +4,10 @@ import type { LayoutLoad } from './$types'
 export const ssr = false
 export const prerender = false
 
-export const load: LayoutLoad = async () => {
+export const load: LayoutLoad = async (e) => {
+	const baseId = e.params.baseId
+
 	return {
-		tables: trpc().table.list.utils.fetch({}),
+		baseTables: trpc().table.list.utils.fetch({ baseId }),
 	}
 }
