@@ -26,6 +26,7 @@
 	import * as Avatar from '$lib/components/ui/avatar'
 	import Toast from '$components/ui/toast/toast.svelte'
 	import ImportTemplate from '$lib/template/ImportTemplate.svelte'
+	import CreateBase from '$lib/base/CreateBase.svelte'
 
 	$: navigation = [
 		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
@@ -430,5 +431,6 @@
 {/if}
 
 <CreateTable data={$page.data.form} />
+<CreateBase />
 <ImportData formData={$page.data.createTable} />
 <ImportTemplate />

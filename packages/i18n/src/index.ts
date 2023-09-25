@@ -190,6 +190,8 @@ export const config: InitOptions = {
       },
       base: {
         search: 'search for all bases',
+        'Create New Base': 'Create New Base',
+        'Base Name Placeholder': 'input base name',
       },
       table: {
         trash: 'trash',
@@ -631,6 +633,8 @@ export const config: InitOptions = {
       },
       base: {
         search: '搜索 base',
+        'Create New Base': '创建 base',
+        'Base Name Placeholder': '输入 base 名称',
       },
       table: {
         trash: '回收站',

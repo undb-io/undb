@@ -121,3 +121,6 @@ export const formListDrawer = createModal(FORM_LIST_DRAWER)
 export const confirmCreateApiToken = writable(false)
 
 export const viewsSideBarOpen = writable(false)
+
+const CREATE_BASE_MODAL = Symbol('CREATE_BASE_MODAL')
+export const createBaseModal = createModal(CREATE_BASE_MODAL)
