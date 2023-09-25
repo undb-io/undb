@@ -5,6 +5,7 @@
 		exportTableTemplate,
 		formListDrawer,
 		mergeDataModal,
+		moveToBaseModal,
 		recordTrashModal,
 		rlsModal,
 		webhookModal,
@@ -100,6 +101,17 @@
 				<span>{$t('Export As Template')}</span>
 			</DropdownMenu.Item>
 		{/if}
+		{#if $hasPermission('table:move_to_base')}
+			<DropdownMenu.Item
+				on:click={() => {
+					moveToBaseModal.open()
+				}}
+				class="items-center gap-2"
+			>
+				<i class="ti ti-arrow-bar-to-right" />
+				<span>{$t('move to base', { ns: 'base' })} </span>
+			</DropdownMenu.Item>
+		{/if}
 
 		{#if $hasPermission('record:list_trash')}
 			<DropdownMenu.Separator />
@@ -110,8 +122,8 @@
 				class="items-center gap-2"
 			>
 				<i class="ti ti-recycle" />
-				<span class="hidden lg:block truncate">{$t('recycle bin', { ns: 'table' })} </span></DropdownMenu.Item
-			>
+				<span>{$t('recycle bin', { ns: 'table' })} </span>
+			</DropdownMenu.Item>
 		{/if}
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

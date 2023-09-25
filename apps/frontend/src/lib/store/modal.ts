@@ -124,3 +124,6 @@ export const viewsSideBarOpen = writable(false)
 
 const CREATE_BASE_MODAL = Symbol('CREATE_BASE_MODAL')
 export const createBaseModal = createModal(CREATE_BASE_MODAL)
+
+const MOVE_TO_BASE_MODAL = Symbol('MOVE_TO_BASE_MODAL')
+export const moveToBaseModal = createModal(MOVE_TO_BASE_MODAL)
