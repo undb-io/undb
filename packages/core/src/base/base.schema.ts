@@ -1,5 +1,6 @@
 import { z } from 'zod'
-import { baseIdSchema, baseNameSchema } from './value-objects'
+import { tableIdSchema } from '../table/index.js'
+import { baseIdSchema, baseNameSchema } from './value-objects/index.js'
 
 export const queryBase = z.object({
   id: baseIdSchema,
@@ -13,3 +14,10 @@ export const createBaseSchema = z.object({
 })
 
 export type ICreateBaseSchema = z.infer<typeof createBaseSchema>
+
+export const moveToBaseSchema = z.object({
+  tableId: tableIdSchema,
+  baseId: baseIdSchema,
+})
+
+export type IMoveToBaseSchema = z.infer<typeof moveToBaseSchema>

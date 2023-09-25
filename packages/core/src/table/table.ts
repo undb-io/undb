@@ -47,7 +47,7 @@ import { RecordFactory } from './record/record.factory.js'
 import type { IMutateRecordValueSchema } from './record/record.schema.js'
 import { createRecordInputs } from './record/record.utils.js'
 import { WithRecordValues } from './record/specifications/record-values.specification.js'
-import { WithTableEmoji, WithTableName } from './specifications/index.js'
+import { WithTableBaseId, WithTableEmoji, WithTableName } from './specifications/index.js'
 import type { TableCompositeSpecification } from './specifications/interface.js'
 import type { IUpdateTableSchema } from './table.schema.js'
 import type { IUpdateTableSchemaSchema, TableId } from './value-objects/index.js'
@@ -682,5 +682,13 @@ export class Table {
     }
 
     return ids
+  }
+
+  public moveToBase(baseId: BaseId): Option<TableCompositeSpecification> {
+    if (baseId.equals(this.baseId)) {
+      return None
+    }
+
+    return Some(new WithTableBaseId(baseId))
   }
 }
