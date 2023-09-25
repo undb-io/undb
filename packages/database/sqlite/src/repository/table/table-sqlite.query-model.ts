@@ -23,7 +23,7 @@ export class TableSqliteQueryModel implements ITableQueryModel {
 
     qb = qb
       .populate(['fields.options', 'views', 'forms', 'forms', 'fields.displayFields'].map((field) => ({ field })))
-      .where({ deletedAt: null })
+      .andWhere({ deletedAt: null })
 
     const tables = await qb.getResultList()
 
