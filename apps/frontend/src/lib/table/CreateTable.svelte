@@ -8,8 +8,8 @@
 	import { goto, invalidate } from '$app/navigation'
 	import { t } from '$lib/i18n'
 	import { createTableModal } from '$lib/store/modal'
-	import { currentBaseId, newTableSchema } from '$lib/store/table'
-	import { onDestroy, onMount } from 'svelte'
+	import { createTableDefaultValue, newTableSchema } from '$lib/store/table'
+	import { onDestroy } from 'svelte'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import { Label } from '$lib/components/ui/label'
 	import { Input } from '$lib/components/ui/input'
@@ -64,7 +64,12 @@
 	const { form, errors, reset, constraints, enhance, delayed, submitting } = superFrm
 
 	$: $form.id = TableId.createId()
-	$: $form.baseId = $currentBaseId
+	$: if ($createTableDefaultValue) {
+		for (const [key, value] of Object.entries($createTableDefaultValue)) {
+			// @ts-ignore
+			$form[key] = value
+		}
+	}
 	$: $form.schema = []
 	$: displayFields = $form.schema?.filter((f) => !!f.display) ?? []
 

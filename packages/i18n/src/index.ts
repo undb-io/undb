@@ -195,6 +195,7 @@ export const config: InitOptions = {
         'Base Name Placeholder': 'input base name',
         'move to base': 'move to base',
         'Select Base': 'select base',
+        'Empty Base': 'No base',
       },
       table: {
         trash: 'trash',
@@ -641,6 +642,7 @@ export const config: InitOptions = {
         'Base Name Placeholder': '输入 base 名称',
         'move to base': '移动到 base',
         'Select Base': '选择 base',
+        'Empty Base': '无 base',
       },
       table: {
         trash: '回收站',

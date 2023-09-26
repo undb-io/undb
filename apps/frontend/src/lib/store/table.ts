@@ -8,6 +8,7 @@ import {
 	TableFactory,
 	TreeField,
 	type IChartData,
+	type ICreateTableInput,
 	type ICreateTableSchemaInput,
 	type IFilters,
 	type IQueryBase,
@@ -546,4 +547,9 @@ export const readonlyRecord = derived(
 	([$readonly, $canUpdateRecord]) => $readonly || !$canUpdateRecord,
 )
 
-export const currentBaseId = derived([page], ([$page]) => $page.params.baseId)
+export const currentBaseId = derived(
+	[page, currentTable],
+	([$page, $table]) => $page.params.baseId ?? $table?.baseId.into()?.value ?? '',
+)
+
+export const createTableDefaultValue = writable<Partial<ICreateTableInput> | undefined>()
