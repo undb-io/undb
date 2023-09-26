@@ -19,12 +19,13 @@ import { View } from './view.js'
 
 @Entity({ tableName: 'undb_table' })
 export class Table extends BaseEntity {
-  constructor(table: CoreTable) {
+  constructor(table: CoreTable, base?: Rel<Base>) {
     super()
     this.id = table.id.value
     this.name = table.name.value
     this.emoji = table.emoji.unpack() ?? ''
     this.viewsOrder = table.viewsOrder.toJSON()
+    this.base = base
   }
 
   @PrimaryKey()

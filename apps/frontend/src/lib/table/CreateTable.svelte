@@ -8,7 +8,7 @@
 	import { goto, invalidate } from '$app/navigation'
 	import { t } from '$lib/i18n'
 	import { createTableModal } from '$lib/store/modal'
-	import { newTableSchema } from '$lib/store/table'
+	import { currentBaseId, newTableSchema } from '$lib/store/table'
 	import { onDestroy, onMount } from 'svelte'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import { Label } from '$lib/components/ui/label'
@@ -64,6 +64,7 @@
 	const { form, errors, reset, constraints, enhance, delayed, submitting } = superFrm
 
 	$: $form.id = TableId.createId()
+	$: $form.baseId = $currentBaseId
 	$: $form.schema = []
 	$: displayFields = $form.schema?.filter((f) => !!f.display) ?? []
 

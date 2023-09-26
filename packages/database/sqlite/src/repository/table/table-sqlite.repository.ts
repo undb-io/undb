@@ -9,7 +9,7 @@ import {
 import { type IUnitOfWork } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
-import { ReferenceField, Table, Table as TableEntity } from '../../entity/index.js'
+import { Base, ReferenceField, Table, Table as TableEntity } from '../../entity/index.js'
 import { View as ViewEntity } from '../../entity/view.js'
 import { UnderlyingTableSqliteManager } from '../../underlying-table/underlying-table-sqlite.manager.js'
 import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
@@ -72,7 +72,8 @@ export class TableSqliteRepository implements ITableRepository {
     const tm = new UnderlyingTableSqliteManager(em)
     await tm.create(table)
 
-    const tableEntity = new TableEntity(table)
+    const base = table.baseId.isSome() ? this.em.getReference(Base, table.baseId.unwrap().value) : undefined
+    const tableEntity = new TableEntity(table, base)
 
     for (const field of table.schema.fields) {
       const visitor = new TableSqliteFieldVisitor(tableEntity, em)
