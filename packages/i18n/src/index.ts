@@ -200,6 +200,7 @@ export const config: InitOptions = {
       table: {
         trash: 'trash',
         'search trash': 'search trash',
+        'search table': 'search table',
         'import data content': 'Import data (csv / excel / json)',
         'flatten import data': 'Flatten import data',
         'first row as header': 'Use First Row as Headers',
@@ -647,6 +648,7 @@ export const config: InitOptions = {
       table: {
         trash: '回收站',
         'search trash': '搜索回收站',
+        'search table': '搜索表',
         'import data content': '导入数据 (csv / excel /json)',
         'flatten import data': '扁平化字段',
         'first row as header': '使用第一行作为列标题',

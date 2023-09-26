@@ -22,7 +22,7 @@
 
 	let q: string | undefined = undefined
 
-	$: bases = data.bases.bases.filter((base) => (q ? base.name.includes(q) : true))
+	$: bases = data.bases.bases.filter((base) => (q ? base.name.toLowerCase().includes(q.toLowerCase()) : true))
 </script>
 
 {#if $sidebarCollapsed}
