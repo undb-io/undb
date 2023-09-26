@@ -8,7 +8,6 @@
 	import * as Tooltip from '$components/ui/tooltip'
 	import Bases from '$lib/base/Bases.svelte'
 	import { Input } from '$components/ui/input'
-	import { trpc } from '$lib/trpc/client'
 
 	export let data: PageData
 
@@ -22,9 +21,8 @@
 	}
 
 	let q: string | undefined = undefined
-	$: getBases = trpc().base.list.query({ q })
 
-	$: bases = $getBases.data?.bases ?? []
+	$: bases = data.bases.bases.filter((base) => (q ? base.name.includes(q) : true))
 </script>
 
 {#if $sidebarCollapsed}

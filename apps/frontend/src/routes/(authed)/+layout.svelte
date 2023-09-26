@@ -4,7 +4,7 @@
 	import type { LayoutData } from './$types'
 	import CreateTable from '$lib/table/CreateTable.svelte'
 	import { page } from '$app/stores'
-	import { allTables, currentRecordId } from '$lib/store/table'
+	import { allBases, allTables, currentRecordId } from '$lib/store/table'
 	import { goto } from '$app/navigation'
 	import { browser } from '$app/environment'
 	import logo from '$lib/assets/logo.svg'
@@ -62,6 +62,7 @@
 
 	$: tables = data.tables
 	$: allTables.set(tables)
+	$: allBases.set(data.bases.bases ?? [])
 	$: me = data.me.me
 
 	$: r = $page.url.searchParams.get('r')
@@ -133,7 +134,7 @@
 						</li>
 						<li>
 							<div class="text-xs font-semibold leading-6 text-gray-400">{$t('Tables', { ns: 'common' })}</div>
-							<TablesNav {tables} />
+							<TablesNav {tables} bases={data.bases.bases} />
 						</li>
 					</ul>
 				</nav>
@@ -205,7 +206,7 @@
 				<p class="text-sm font-normal leading-6 !text-gray-400">{$t('Tables', { ns: 'common' })}</p>
 			</div>
 			<nav class="flex flex-1 flex-col px-6 h-full overflow-y-auto">
-				<TablesNav {tables} />
+				<TablesNav {tables} bases={data.bases.bases} />
 			</nav>
 			<ul class="flex flex-col border-t pt-4 space-y-2 dark:border-gray-700">
 				<li class="px-6">

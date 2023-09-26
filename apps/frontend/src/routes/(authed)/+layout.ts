@@ -15,9 +15,10 @@ export const load: LayoutLoad = async (event) => {
 		throw redirect(303, `/login?redirectTo=${event.url.pathname}`)
 	}
 
-	event.depends('tables')
+	event.depends('tables', 'bases', 'me')
 
 	return {
+		bases: trpc().base.list.utils.fetch({}),
 		tables: trpc().table.list.utils.fetch({}),
 		me,
 	}

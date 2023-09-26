@@ -1,38 +1,36 @@
 <script lang="ts">
-	import { cn } from '$lib/utils'
-	import type { IQueryTable } from '@undb/core'
+	import type { IQueryBase, IQueryTable } from '@undb/core'
 	import { page } from '$app/stores'
+	import TablesNavItem from './TablesNavItem.svelte'
+	import * as Accordion from '$lib/components/ui/accordion'
+	import { currentBaseId } from '$lib/store/table'
 
 	export let tables: IQueryTable[]
+	export let bases: IQueryBase[]
+
+	$: noBaseTables = tables.filter((t) => !t.baseId)
 </script>
 
 <ul class="-mx-2 space-y-1 pb-2">
-	{#each tables as table}
-		{@const active = table.id === $page.params.tableId}
-		<li>
-			<a
-				href={`/t/${table.id}`}
-				class={cn(
-					active
-						? 'bg-primary/5 text-primary dark:text-gray-50 dark:bg-gray-700'
-						: 'text-gray-700 hover:text-primary hover:bg-gray-50  dark:text-gray-200 dark:hover:bg-gray-700',
-					'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
-				)}
-			>
-				<span
-					class={cn(
-						active
-							? 'bg-primary/5 text-primary dark:text-gray-50 dark:bg-gray-700 '
-							: 'text-gray-700 hover:text-primary hover:bg-gray-50 dark:text-gray-200 dark:hover:text-gray-200 dark:bg-gray-700',
+	<Accordion.Root>
+		{#each bases as base (base.id)}
+			<Accordion.Item value={base.id}>
+				<Accordion.Trigger class="hover:no-underline hover:bg-gray-100 px-2 py-2">
+					<div class="text-sm text-gray-500 font-light">{base.name}</div>
+				</Accordion.Trigger>
+				<Accordion.Content>
+					{@const baseTables = tables.filter((t) => t.baseId === base.id)}
+					{#each baseTables as table}
+						{@const active = table.id === $page.params.tableId}
+						<TablesNavItem {active} {table} />
+					{/each}
+				</Accordion.Content>
+			</Accordion.Item>
+		{/each}
+	</Accordion.Root>
 
-						' border-gray-200 group-hover:border-primary group-hover:text-primary dark:border-white dark:group-hover:border-gray-50 dark:group-hover:text-gray-50',
-						'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white ',
-					)}
-				>
-					{table.name.slice(0, 1)}
-				</span>
-				<span class="truncate">{table.name}</span>
-			</a>
-		</li>
+	{#each noBaseTables as table}
+		{@const active = table.id === $page.params.tableId}
+		<TablesNavItem {active} {table} />
 	{/each}
 </ul>

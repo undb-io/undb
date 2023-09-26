@@ -10,6 +10,7 @@ import {
 	type IChartData,
 	type ICreateTableSchemaInput,
 	type IFilters,
+	type IQueryBase,
 	type IQueryFieldSchema,
 	type IQueryRecordSchema,
 	type IQueryTable,
@@ -31,6 +32,7 @@ import { match } from 'ts-pattern'
 import { hasPermission } from './authz'
 import { me } from './me'
 
+export const allBases = writable<IQueryBase[]>([])
 export const allTables = writable<IQueryTable[] | undefined>()
 
 export const currentTable = writable<Table>()
