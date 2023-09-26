@@ -6,7 +6,7 @@
 </script>
 
 <div class="h-full">
-	<div class="flex items-center justify-center h-full gap-6">
+	<div class="flex items-center justify-center h-full gap-6 pb-36">
 		<Card.Root
 			class="!max-w-none cursor-pointer hover:bg-primary-500/90  hover:shadow-sm transition border border-dashed border-slate-200 hover:border-slate-100 w-52"
 			on:click={() => createTableModal.open()}
