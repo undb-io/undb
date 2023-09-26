@@ -1,6 +1,6 @@
 import type { EntityManager, QueryBuilder } from '@mikro-orm/better-sqlite'
-import type { IBaseSpecVisitor, WithBaseId, WithBaseName } from '@undb/core'
-import type { ISpecVisitor, ISpecification } from '@undb/domain/dist/index.js'
+import type { IBaseSpecVisitor, WithBaseId, WithBaseName, WithBaseQ } from '@undb/core'
+import type { ISpecVisitor, ISpecification } from '@undb/domain'
 import type { Base } from '../../entity/base.js'
 
 export class BaseSqliteQueryVisitor implements IBaseSpecVisitor {
@@ -14,6 +14,9 @@ export class BaseSqliteQueryVisitor implements IBaseSpecVisitor {
   }
   withName(v: WithBaseName): void {
     this.qb.andWhere({ name: v.name.unpack() })
+  }
+  withQ(v: WithBaseQ): void {
+    this.qb.andWhere({ name: { $like: `%${v.q}%` } })
   }
   or(left: ISpecification<Base, ISpecVisitor>, right: ISpecification<Base, ISpecVisitor>): this {
     throw new Error('Method not implemented.')

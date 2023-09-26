@@ -8,6 +8,7 @@
 	import * as Tooltip from '$components/ui/tooltip'
 	import Bases from '$lib/base/Bases.svelte'
 	import { Input } from '$components/ui/input'
+	import { trpc } from '$lib/trpc/client'
 
 	export let data: PageData
 
@@ -20,7 +21,10 @@
 		}
 	}
 
-	let q = ''
+	let q: string | undefined = undefined
+	$: getBases = trpc().base.list.query({ q })
+
+	$: bases = $getBases.data?.bases ?? []
 </script>
 
 {#if $sidebarCollapsed}
@@ -47,7 +51,7 @@
 
 		<h3 class="font-semibold my-4">Base</h3>
 
-		<Bases bases={data.bases.bases} />
+		<Bases {bases} />
 	</main>
 {:else}
 	<Empty />
