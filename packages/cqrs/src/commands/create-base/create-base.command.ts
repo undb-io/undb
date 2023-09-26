@@ -5,10 +5,12 @@ import type { ICreateBaseCommandInput } from './create-base.command.interface.js
 export class CreateBaseCommand extends Command implements ICreateBaseCommandInput {
   public readonly id?: string
   public readonly name: string
+  public readonly tableIds?: [string, ...string[]]
 
   constructor(props: CommandProps<ICreateBaseCommandInput>) {
     super(props)
     this.id = props.id
     this.name = props.name
+    this.tableIds = props.tableIds
   }
 }

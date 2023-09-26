@@ -29,6 +29,7 @@
 		$createBaseMutation.mutate({
 			id: BaseId.createId(),
 			name,
+			tableIds,
 		})
 	}
 </script>
