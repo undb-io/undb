@@ -434,7 +434,7 @@ export const aggregateChartFn: Readable<
 export const tableById = derived([currentTable, allTables, shareTarget], ([$table, $tables, $shareTarget]) => {
 	let t: Table | undefined
 	return async (tableId: string) => {
-		if (tableId === $table.id.value) {
+		if (tableId === $table?.id.value) {
 			t = $table
 		} else if ($tables) {
 			const found = $tables.find((t) => t.id === tableId)
