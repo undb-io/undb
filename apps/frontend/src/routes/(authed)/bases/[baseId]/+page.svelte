@@ -3,13 +3,14 @@
 	import { t } from '$lib/i18n'
 	import { createBaseModal } from '$lib/store/modal'
 	import TableCards from '$lib/table/TableCards.svelte'
+	import EmptyBase from '$lib/base/EmptyBase.svelte'
 	import type { PageData } from './$types'
 
 	export let data: PageData
 </script>
 
-<main class="pt-6">
-	<div class="flex justify-between px-10">
+<main class="pt-6 h-full flex flex-col">
+	<div class="flex justify-between px-10 flex-shrink-0">
 		<div>
 			<span class="text-xs text-gray-500">
 				{$t('Base', { ns: 'base' })}
@@ -25,5 +26,11 @@
 		</Button>
 	</div>
 
-	<TableCards tables={data.baseTables} />
+	<section class="px-10 py-6 flex-1">
+		{#if data.baseTables.length}
+			<TableCards tables={data.baseTables} />
+		{:else}
+			<EmptyBase />
+		{/if}
+	</section>
 </main>

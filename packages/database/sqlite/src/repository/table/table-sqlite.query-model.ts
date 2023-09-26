@@ -14,18 +14,18 @@ export class TableSqliteQueryModel implements ITableQueryModel {
   ) {}
 
   async find(spec: Option<TableCompositeSpecification>): Promise<IQueryTable[]> {
-    let qb = this.em.qb(Table)
+    const qb = this.em
+      .qb(Table)
+      .populate(
+        ['fields.options', 'base.id', 'views', 'forms', 'forms', 'fields.displayFields'].map((field) => ({ field })),
+      )
+      .andWhere({ deletedAt: null })
+
     const visitor = new TableSqliteQueryVisitor(qb)
 
     if (spec.isSome()) {
       spec.unwrap().accept(visitor)
     }
-
-    qb = qb
-      .populate(
-        ['fields.options', 'base.id', 'views', 'forms', 'forms', 'fields.displayFields'].map((field) => ({ field })),
-      )
-      .andWhere({ deletedAt: null })
 
     const tables = await qb.getResultList()
 

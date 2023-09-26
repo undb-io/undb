@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { invalidate } from '$app/navigation'
+	import { goto, invalidate } from '$app/navigation'
 	import { Button } from '$components/ui/button'
 	import Input from '$components/ui/input/input.svelte'
 	import Label from '$components/ui/label/label.svelte'
@@ -7,7 +7,7 @@
 	import { t } from '$lib/i18n'
 	import { createBaseModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
-	import { createBaseSchema } from '@undb/core'
+	import { BaseId, createBaseSchema } from '@undb/core'
 
 	let name = ''
 
@@ -17,6 +17,7 @@
 		async onSuccess(data, variables, context) {
 			await invalidate('bases')
 			createBaseModal.close()
+			await goto(`/bases/${variables.id}`)
 		},
 	})
 
@@ -24,6 +25,7 @@
 		e.preventDefault()
 
 		$createBaseMutation.mutate({
+			id: BaseId.createId(),
 			name,
 		})
 	}

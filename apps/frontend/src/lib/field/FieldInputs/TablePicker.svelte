@@ -6,7 +6,7 @@
 	import { t } from '$lib/i18n'
 	import { allTables, tableById } from '$lib/store/table'
 
-	export let value: string
+	export let value: string | undefined
 
 	let selected: Table | undefined
 	$: if (value) {
@@ -20,9 +20,12 @@
 			{#if selected}
 				{selected.name.value}
 			{:else}
-				<span class="text-gray-400">
-					{$t('Select Table')}
-				</span>
+				<div class="flex items-center gap-2 text-gray-500 font-normal">
+					<i class="ti ti-table"></i>
+					<span>
+						{$t('Select Table')}
+					</span>
+				</div>
 			{/if}
 		</Button>
 	</DropdownMenu.Trigger>

@@ -16,6 +16,5 @@ export const load: LayoutLoad = async (e) => {
 
 	return {
 		base,
-		baseTables: trpc().table.list.utils.fetch({ baseId }),
 	}
 }

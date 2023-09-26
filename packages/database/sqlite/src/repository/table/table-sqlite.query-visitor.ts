@@ -104,7 +104,7 @@ export class TableSqliteQueryVisitor implements ITableSpecVisitor {
     this.qb.andWhere({ id: { $in: s.ids.map((id) => id.value) } })
   }
   baseIdEq(s: WithTableBaseId): void {
-    this.qb.andWhere({ base: s.id.value })
+    this.qb.andWhere({ base: s.id.into()?.value ?? null })
   }
   nameEqual(s: WithTableName): void {
     this.qb.andWhere({ name: s.name.value })

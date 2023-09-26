@@ -27,6 +27,7 @@
 	import Toast from '$components/ui/toast/toast.svelte'
 	import ImportTemplate from '$lib/template/ImportTemplate.svelte'
 	import CreateBase from '$lib/base/CreateBase.svelte'
+	import SelectTableMoveToBase from '$lib/base/SelectTableMoveToBase.svelte'
 
 	$: navigation = [
 		{
@@ -437,5 +438,6 @@
 
 <CreateTable data={$page.data.form} />
 <CreateBase />
+<SelectTableMoveToBase />
 <ImportData formData={$page.data.createTable} />
 <ImportTemplate />

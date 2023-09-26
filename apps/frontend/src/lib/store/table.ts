@@ -543,3 +543,5 @@ export const readonlyRecord = derived(
 	[readonly, canUpdateRecord],
 	([$readonly, $canUpdateRecord]) => $readonly || !$canUpdateRecord,
 )
+
+export const currentBaseId = derived([page], ([$page]) => $page.params.baseId)

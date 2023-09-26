@@ -15,6 +15,6 @@ export class BaseFactory {
   }
 
   static new(input: ICreateBaseSchema): Base {
-    return this.create(new WithBaseId(BaseId.create()), WithBaseName.fromString(input.name))
+    return this.create(new WithBaseId(BaseId.fromOrCreate(input.id)), WithBaseName.fromString(input.name))
   }
 }

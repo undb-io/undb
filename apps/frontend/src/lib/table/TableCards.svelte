@@ -10,7 +10,7 @@
 	export let tables: IQueryTable[] = []
 </script>
 
-<ul class="w-full p-10 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
+<ul class="w-full grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
 	{#each tables as table}
 		<li>
 			<a href={`/t/${table.id}`}>
@@ -42,11 +42,11 @@
 
 	{#if $hasPermission('table:create')}
 		<Card.Root
-			class="!max-w-none cursor-pointer hover:bg-primary-500/90  hover:shadow-lg transition h-full"
+			class="!max-w-none cursor-pointer hover:bg-primary-500/90  hover:shadow-sm transition h-full border border-dashed border-slate-200 hover:border-slate-100"
 			on:click={() => createTableModal.open()}
 		>
 			<Card.Header>
-				<div class="flex items-center gap-2 h-full font-semibold text-gray-600">
+				<div class="flex items-center gap-2 h-full font-normal text-sm text-gray-500">
 					<i class="ti ti-plus" />
 					<p>{$t('Create New Table')}</p>
 				</div>
