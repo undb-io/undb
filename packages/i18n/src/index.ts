@@ -196,6 +196,7 @@ export const config: InitOptions = {
         'move to base': 'move to base',
         'Select Base': 'select base',
         'Empty Base': 'No base',
+        'base settings': 'base settings',
       },
       table: {
         Tables: 'Tables',
@@ -645,6 +646,7 @@ export const config: InitOptions = {
         'move to base': '移动到 base',
         'Select Base': '选择 base',
         'Empty Base': '无 base',
+        'base settings': 'base 设置',
       },
       table: {
         Tables: '表格',

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import * as Tooltip from '$components/ui/tooltip'
 	import { t } from '$lib/i18n'
 	import { createBaseModal } from '$lib/store/modal'
 	import { firstTableOfBase } from '$lib/store/table'
@@ -17,7 +18,7 @@
 	{#each bases as base}
 		<a
 			href={getHref(base)}
-			class="cursor-pointer disabled:cursor-not-allowed disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 [&:focus:not(:focus-visible)]:outline-none focus-visible:ring-indigo-600 rounded-md block p-4 bg-white border border-solid border-slate-200 hover:border-slate-100 hover:shadow-md transition h-20 flex items-center"
+			class="cursor-pointer disabled:cursor-not-allowed disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 [&:focus:not(:focus-visible)]:outline-none focus-visible:ring-indigo-600 rounded-md p-4 bg-white border border-solid border-slate-200 hover:border-slate-100 hover:shadow-md transition h-20 flex items-center justify-between group"
 		>
 			<h6 class="antialiased font-bold text-slate-900 text-[1rem] flex items-center gap-1">
 				<i class="ti ti-category"></i>
@@ -25,6 +26,19 @@
 					{base.name}
 				</span>
 			</h6>
+
+			<Tooltip.Root>
+				<Tooltip.Trigger>
+					<a href={`/bases/${base.id}`} class="text-gray-600 hidden group-hover:block">
+						<i class="ti ti-settings"></i>
+					</a>
+				</Tooltip.Trigger>
+				<Tooltip.Content
+					class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
+				>
+					{$t('base settings', { ns: 'base' })}
+				</Tooltip.Content>
+			</Tooltip.Root>
 		</a>
 	{/each}
 
