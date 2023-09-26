@@ -553,3 +553,10 @@ export const currentBaseId = derived(
 )
 
 export const createTableDefaultValue = writable<Partial<ICreateTableInput> | undefined>()
+
+export const firstTableOfBase = derived(
+	[allTables],
+	([$tables]) =>
+		(baseId: string) =>
+			$tables?.find((table) => table.baseId === baseId),
+)
