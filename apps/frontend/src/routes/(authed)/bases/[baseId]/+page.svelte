@@ -11,11 +11,16 @@
 
 <main class="pt-6 h-full flex flex-col">
 	<div class="flex justify-between px-10 flex-shrink-0">
-		<div>
-			<span class="text-xs text-gray-500">
-				{$t('Base', { ns: 'base' })}
-			</span>
-			<h6 class="font-semibold leading-6">{data.base.base?.name}</h6>
+		<div class="inline-flex items-center gap-5">
+			<Button size="icon" variant="outline" href="/">
+				<i class="ti ti-arrow-back-up"></i>
+			</Button>
+			<div>
+				<span class="text-xs text-gray-500">
+					{$t('Base', { ns: 'base' })}
+				</span>
+				<h6 class="font-semibold leading-6">{data.base.base?.name}</h6>
+			</div>
 		</div>
 
 		<Button variant="outline" class="w-40 gap-2" on:click={() => createBaseModal.open()}>
