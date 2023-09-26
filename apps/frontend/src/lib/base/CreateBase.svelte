@@ -4,12 +4,14 @@
 	import Input from '$components/ui/input/input.svelte'
 	import Label from '$components/ui/label/label.svelte'
 	import * as Dialog from '$lib/components/ui/dialog'
+	import TablesPicker from '$lib/field/FieldInputs/TablesPicker.svelte'
 	import { t } from '$lib/i18n'
 	import { createBaseModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import { BaseId, createBaseSchema } from '@undb/core'
 
 	let name = ''
+	let tableIds: string[] = []
 
 	$: valid = createBaseSchema.safeParse({ name }).success
 
@@ -40,12 +42,21 @@
 		</Dialog.Header>
 
 		<form action="POST" id="createBase" on:submit={onSubmit}>
-			<Label class="space-y-2">
-				<span>
-					{$t('Name', { ns: 'common' })}
-				</span>
-				<Input bind:value={name} placeholder={$t('Base Name Placeholder', { ns: 'base' })} />
-			</Label>
+			<div class="space-y-2">
+				<Label class="block space-y-2">
+					<span>
+						{$t('Name', { ns: 'common' })}
+					</span>
+					<Input bind:value={name} placeholder={$t('Base Name Placeholder', { ns: 'base' })} />
+				</Label>
+
+				<Label class="block space-y-2">
+					<div>
+						{$t('Tables')}
+					</div>
+					<TablesPicker bind:value={tableIds} class="w-full" />
+				</Label>
+			</div>
 		</form>
 
 		<Dialog.Footer>

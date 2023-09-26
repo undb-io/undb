@@ -198,6 +198,7 @@ export const config: InitOptions = {
         'Empty Base': 'No base',
       },
       table: {
+        Tables: 'Tables',
         trash: 'trash',
         'search trash': 'search trash',
         'search table': 'search table',
@@ -646,6 +647,7 @@ export const config: InitOptions = {
         'Empty Base': '无 base',
       },
       table: {
+        Tables: '表格',
         trash: '回收站',
         'search trash': '搜索回收站',
         'search table': '搜索表',
