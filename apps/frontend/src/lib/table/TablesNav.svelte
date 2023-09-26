@@ -19,11 +19,16 @@
 <ul class="-mx-2 space-y-1 pb-2">
 	<Accordion.Root value={$currentBaseId || EMPTY_ID}>
 		{#each bases as base (base.id)}
-			<Accordion.Item value={base.id}>
-				<Accordion.Trigger class="hover:no-underline hover:bg-gray-100 px-2 py-2">
-					<div class="text-sm text-gray-500 font-light">{base.name}</div>
+			<Accordion.Item value={base.id} class="border-0">
+				<Accordion.Trigger class="hover:no-underline hover:bg-gray-100 px-3 py-2 border-0">
+					<div class="text-sm text-gray-900 font-light flex items-center gap-2">
+						<i class="ti ti-database"></i>
+						<span>
+							{base.name}
+						</span>
+					</div>
 				</Accordion.Trigger>
-				<Accordion.Content>
+				<Accordion.Content class="border-0">
 					{@const baseTables = tables.filter((t) => t.baseId === base.id)}
 					{#if baseTables.length}
 						{#each baseTables as table}
@@ -49,13 +54,13 @@
 			</Accordion.Item>
 		{/each}
 		{#if noBaseTables.length}
-			<Accordion.Item value={EMPTY_ID}>
-				<Accordion.Trigger class="hover:no-underline hover:bg-gray-100 px-2 py-2">
-					<div class="text-sm text-gray-500 font-light">
+			<Accordion.Item value={EMPTY_ID} class="border-0">
+				<Accordion.Trigger class="hover:no-underline hover:bg-gray-100 px-3 py-2 border-0">
+					<div class="text-sm text-gray-900 font-light">
 						{$t('Empty Base', { ns: 'base' })}
 					</div>
 				</Accordion.Trigger>
-				<Accordion.Content>
+				<Accordion.Content class="border-0">
 					{#each noBaseTables as table}
 						{@const active = table.id === $page.params.tableId}
 						<TablesNavItem {active} {table} />

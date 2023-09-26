@@ -205,7 +205,7 @@
 			<div class="px-6 py-4">
 				<p class="text-sm font-normal leading-6 !text-gray-400">{$t('Tables', { ns: 'common' })}</p>
 			</div>
-			<nav class="flex flex-1 flex-col px-6 h-full overflow-y-auto">
+			<nav class="flex flex-1 flex-col px-4 h-full overflow-y-auto">
 				<TablesNav {tables} bases={data.bases.bases} />
 			</nav>
 			<ul class="flex flex-col border-t pt-4 space-y-2 dark:border-gray-700">
