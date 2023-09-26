@@ -29,7 +29,12 @@
 	import CreateBase from '$lib/base/CreateBase.svelte'
 
 	$: navigation = [
-		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
+		{
+			name: $t('Dashboard', { ns: 'common' }),
+			href: '/',
+			icon: 'layout-dashboard',
+			current: $page.url.pathname === '/',
+		},
 		{
 			name: $t('Members', { ns: 'common' }),
 			href: '/members',

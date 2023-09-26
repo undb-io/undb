@@ -66,6 +66,7 @@ export const config: InitOptions = {
         'Confirm Delete': 'Confirm to delete Api Token?',
       },
       common: {
+        Dashboard: 'Dashboard',
         Embed: 'Embed iframe',
         Settings: 'Settings',
         when: 'when',
@@ -511,6 +512,7 @@ export const config: InitOptions = {
         'TABLE.NOT_FOUND': '没有找到表格',
       },
       common: {
+        Dashboard: '仪表盘',
         Embed: '嵌入 iframe',
         Settings: '系统设置',
         when: '当',
