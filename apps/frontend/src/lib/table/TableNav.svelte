@@ -18,8 +18,8 @@
 			<div class="ml-2">
 				<Tooltip.Root>
 					<Tooltip.Trigger>
-						<button on:click={() => ($sidebarCollapsed = false)}>
-							<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500 dark:hover:text-gray-100" />
+						<button on:click={() => ($sidebarCollapsed = false)} class="w-4 h-4 flex items-center justify-center">
+							<i class="ti ti-layout-sidebar-left-expand text-md text-gray-500 dark:hover:text-gray-100" />
 						</button>
 					</Tooltip.Trigger>
 					<Tooltip.Content
@@ -32,6 +32,16 @@
 		{/if}
 
 		<div class="flex items-center gap-2">
+			<Button
+				size="icon"
+				class="w-6 h-6"
+				variant="outline"
+				on:click={() => {
+					window.history.back()
+				}}
+			>
+				<i class="ti ti-arrow-back-up"></i>
+			</Button>
 			<span
 				class="
 	bg-primary/5 text-gray-700 dark:text-gray-50 dark:bg-gray-700 border-gray-200 group-hover:border-primary group-hover:text-primary dark:border-white dark:group-hover:border-gray-50 dark:group-hover:text-gray-50 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white
