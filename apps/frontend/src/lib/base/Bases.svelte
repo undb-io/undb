@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Button from '$components/ui/button/button.svelte'
 	import * as Tooltip from '$components/ui/tooltip'
 	import { t } from '$lib/i18n'
 	import { createBaseModal } from '$lib/store/modal'
@@ -29,9 +30,14 @@
 
 			<Tooltip.Root>
 				<Tooltip.Trigger>
-					<a href={`/bases/${base.id}`} class="text-gray-600 hidden group-hover:block">
+					<Button
+						variant="ghost"
+						size="icon"
+						href={`/bases/${base.id}`}
+						class="text-gray-600 hidden group-hover:flex items-center"
+					>
 						<i class="ti ti-settings"></i>
-					</a>
+					</Button>
 				</Tooltip.Trigger>
 				<Tooltip.Content
 					class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
