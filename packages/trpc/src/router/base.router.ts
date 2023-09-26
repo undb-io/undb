@@ -3,12 +3,14 @@ import {
   GetBaseByIdQuery,
   GetBasesQuery,
   MoveToBaseCommand,
+  UpdateBaseCommand,
   createBaseCommandInput,
   getBaseByIdQueryInput,
   getBaseByIdQueryOutput,
   getBasesQueryInput,
   getBasesQueryOutput,
   moveToBaseCommandInput,
+  updateBaseCommandInput,
 } from '@undb/cqrs'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { z } from 'zod'
@@ -36,6 +38,13 @@ export const createBaseRouter = (procedure: typeof publicProcedure) => (commandB
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new CreateBaseCommand(input)
+        return commandBus.execute(cmd)
+      }),
+    update: procedure
+      .input(updateBaseCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new UpdateBaseCommand(input)
         return commandBus.execute(cmd)
       }),
     moveToBase: procedure

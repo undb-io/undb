@@ -16,6 +16,14 @@ export const createBaseSchema = z.object({
 
 export type ICreateBaseSchema = z.infer<typeof createBaseSchema>
 
+export const updateBaseSchema = z
+  .object({
+    name: baseNameSchema,
+  })
+  .partial()
+
+export type IUpdateBaseSchema = z.infer<typeof updateBaseSchema>
+
 export const moveToBaseSchema = z.object({
   tableId: tableIdSchema,
   baseId: baseIdSchema,

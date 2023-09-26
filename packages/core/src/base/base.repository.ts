@@ -7,4 +7,5 @@ export interface BaseRepository {
   findOneById(id: string): Promise<Option<Base>>
 
   insert(base: Base): Promise<void>
+  updateOneById(id: string, spec: BaseSpecification): Promise<void>
 }
