@@ -36,4 +36,9 @@ export class NestBaseSqliteRepository extends BaseSqliteRepository {
   updateOneById(id: string, spec: BaseSpecification): Promise<void> {
     return super.updateOneById(id, spec)
   }
+
+  @UseRequestContext()
+  deleteOneById(id: string): Promise<void> {
+    return super.deleteOneById(id)
+  }
 }

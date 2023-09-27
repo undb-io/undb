@@ -1,8 +1,11 @@
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20230922023501 extends Migration {
+export class Migration20230927011121 extends Migration {
   async up(): Promise<void> {
-    this.addSql('create table `undb_base` (`id` text not null, `name` text not null, primary key (`id`));')
+    this.addSql(
+      'create table `undb_base` (`id` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text not null, primary key (`id`));',
+    )
+    this.addSql('create index `undb_base_deleted_at_index` on `undb_base` (`deleted_at`);')
 
     this.addSql(
       'create table `undb_outbox` (`uuid` text not null, `created_at` datetime not null, `updated_at` datetime not null, `deleted_at` datetime null, `name` text null, `operator_id` text null, `timestamp` datetime not null, `payload` json not null, `meta` json null, primary key (`uuid`));',

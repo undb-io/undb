@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Button } from '$components/ui/button'
 	import { t } from '$lib/i18n'
-	import { createBaseModal } from '$lib/store/modal'
+	import { confirmDeleteBase, createBaseModal } from '$lib/store/modal'
 	import TableCards from '$lib/table/TableCards.svelte'
 	import EmptyBase from '$lib/base/EmptyBase.svelte'
 	import type { PageData } from './$types'
@@ -65,7 +65,7 @@
 						</Button>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content class="w-40">
-						<DropdownMenu.Item class="text-red-500 text-xs gap-2">
+						<DropdownMenu.Item class="text-red-500 text-xs gap-2" on:click={() => ($confirmDeleteBase = true)}>
 							<i class="ti ti-trash"></i>
 							<span>
 								{$t('Delete Base', { ns: 'base' })}

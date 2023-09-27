@@ -5,9 +5,13 @@ import { BaseId } from '../../base/index.js'
 import { type Table } from '../table.js'
 import type { ITableSpecVisitor } from './interface.js'
 
-export class WithTableBaseId extends CompositeSpecification {
+export class WithTableBaseId extends CompositeSpecification<Table, ITableSpecVisitor> {
   constructor(public readonly id: Option<BaseId>) {
     super()
+  }
+
+  static none(): WithTableBaseId {
+    return new WithTableBaseId(None)
   }
 
   static fromString(id?: string): WithTableBaseId {

@@ -12,6 +12,8 @@
 	export let data: PageData
 
 	const onKeydown = (event: KeyboardEvent) => {
+		const type = (event.target as any)?.type
+		if (type === 'search' || type === 'text') return
 		if (event.key === 't' && !(event.ctrlKey || event.altKey || event.metaKey)) {
 			createTableModal.open()
 		}

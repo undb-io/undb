@@ -692,4 +692,10 @@ export class Table {
 
     return Some(new WithTableBaseId(Some(baseId)))
   }
+
+  public withoutBase(): Option<TableCompositeSpecification> {
+    if (this.baseId.isNone()) return None
+
+    return Some(WithTableBaseId.none())
+  }
 }

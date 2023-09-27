@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto, invalidate } from '$app/navigation'
+	import { goto, invalidate, invalidateAll } from '$app/navigation'
 	import { Button } from '$components/ui/button'
 	import Input from '$components/ui/input/input.svelte'
 	import Label from '$components/ui/label/label.svelte'
@@ -17,9 +17,13 @@
 
 	const createBaseMutation = trpc().base.create.mutation({
 		async onSuccess(data, variables, context) {
-			await invalidate('bases')
+			await invalidateAll()
 			createBaseModal.close()
-			await goto(`/bases/${variables.id}`)
+			if (variables.tableIds?.length) {
+				await goto(`/t/${variables.tableIds.at(0)}`)
+			} else {
+				await goto(`/bases/${variables.id}`)
+			}
 		},
 	})
 

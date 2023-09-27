@@ -7,7 +7,9 @@ export class BaseSqliteQueryVisitor implements IBaseSpecVisitor {
   constructor(
     private readonly em: EntityManager,
     private qb: QueryBuilder<Base>,
-  ) {}
+  ) {
+    this.qb = this.qb.andWhere({ deletedAt: null })
+  }
 
   withId(v: WithBaseId): void {
     this.qb.andWhere({ id: v.id.value })

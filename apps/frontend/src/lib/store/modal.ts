@@ -130,3 +130,5 @@ export const moveToBaseModal = createModal(MOVE_TO_BASE_MODAL)
 
 const SELECT_TABLE_MOVE_TO_BASE_MODAL = Symbol('SELECT_TABLE_MOVE_TO_BASE_MODAL')
 export const selectTableMoveToBaseModal = createModal(SELECT_TABLE_MOVE_TO_BASE_MODAL)
+
+export const confirmDeleteBase = writable(false)

@@ -57,7 +57,10 @@
 			</Accordion.Item>
 		{/each}
 		{#if noBaseTables.length}
-			<Accordion.Item value={EMPTY_ID} class="border-0">
+			<Accordion.Item
+				value={EMPTY_ID}
+				class={cn('border-0', $currentBaseId === EMPTY_ID || (!$currentBaseId && 'bg-slate-50'))}
+			>
 				<Accordion.Trigger class="hover:no-underline hover:bg-gray-100 px-3 py-2 border-0">
 					<div class="text-sm text-gray-900 font-light">
 						{$t('Empty Base', { ns: 'base' })}

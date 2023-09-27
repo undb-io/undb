@@ -1,4 +1,5 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
+import { wrap } from '@mikro-orm/core'
 import type { BaseRepository, BaseSpecification, Base as CoreBase } from '@undb/core'
 import { None, Some, type Option } from 'oxide.ts'
 import { Base } from '../../entity/base.js'
@@ -38,5 +39,11 @@ export class BaseSqliteRepository implements BaseRepository {
     spec.accept(visitor)
 
     await this.em.flush()
+  }
+
+  async deleteOneById(id: string): Promise<void> {
+    const base = this.em.getReference(Base, id)
+    wrap(base).assign({ deletedAt: new Date() })
+    await this.em.persistAndFlush(base)
   }
 }
