@@ -7,6 +7,7 @@
 	import type { PageData } from './$types'
 	import Input from '$components/ui/input/input.svelte'
 	import { trpc } from '$lib/trpc/client'
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 
 	export let data: PageData
 
@@ -49,12 +50,30 @@
 				</div>
 			</div>
 
-			<Button variant="outline" class="w-40 gap-2" on:click={() => createBaseModal.open()}>
-				<i class="ti ti-plus"></i>
-				<span>
-					{$t('Create New Base', { ns: 'base' })}
-				</span>
-			</Button>
+			<div class="flex items-center gap-2">
+				<Button variant="outline" class="w-40 gap-2" on:click={() => createBaseModal.open()}>
+					<i class="ti ti-plus"></i>
+					<span>
+						{$t('Create New Base', { ns: 'base' })}
+					</span>
+				</Button>
+
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger asChild let:builder>
+						<Button variant="ghost" size="icon" builders={[builder]}>
+							<i class="ti ti-dots"></i>
+						</Button>
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content class="w-40">
+						<DropdownMenu.Item class="text-red-500 text-xs gap-2">
+							<i class="ti ti-trash"></i>
+							<span>
+								{$t('Delete Base', { ns: 'base' })}
+							</span>
+						</DropdownMenu.Item>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
+			</div>
 		</div>
 
 		<section class="px-10 py-6 flex-1">
