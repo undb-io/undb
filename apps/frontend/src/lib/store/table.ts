@@ -560,3 +560,14 @@ export const firstTableOfBase = derived(
 		(baseId: string) =>
 			$tables?.find((table) => table.baseId === baseId),
 )
+
+export const currentBase = derived([allBases, currentBaseId], ([$bases, $baseId]) =>
+	$bases.find((base) => base.id === $baseId),
+)
+
+export const getBaseById = derived(
+	[allBases],
+	([$bases]) =>
+		(baseId: string) =>
+			$bases.find((base) => base.id === baseId),
+)

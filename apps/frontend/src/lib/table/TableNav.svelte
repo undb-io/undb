@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Separator from '$components/ui/separator/separator.svelte'
-	import { getTable } from '$lib/store/table'
+	import { currentBase, getTable } from '$lib/store/table'
 	import TableMenu from './TableMenu.svelte'
 	import { hasPermission } from '$lib/store/authz'
 	import * as Tooltip from '$lib/components/ui/tooltip'
@@ -8,6 +8,7 @@
 	import { t } from '$lib/i18n'
 	import { sidebarCollapsed } from '$lib/store/ui'
 	import Button from '$components/ui/button/button.svelte'
+	import Badge from '$components/ui/badge/badge.svelte'
 
 	const table = getTable()
 </script>
@@ -52,6 +53,14 @@
 			<p class="text-sm font-medium text-gray-800 dark:text-white">
 				{$table.name.value}
 			</p>
+
+			{#if $currentBase}
+				<a href={`/bases/${$currentBase.id}`}>
+					<Badge variant="outline">
+						{$currentBase.name}
+					</Badge>
+				</a>
+			{/if}
 		</div>
 
 		{#if $hasPermission('table:update')}

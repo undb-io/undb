@@ -59,7 +59,7 @@
 					<div>
 						{$t('Tables')}
 					</div>
-					<TablesPicker bind:value={tableIds} class="w-full" />
+					<TablesPicker bind:value={tableIds} class="w-full" filter={(table) => !table.baseId} />
 				</Label>
 			</div>
 		</form>

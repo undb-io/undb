@@ -2,7 +2,7 @@
 	import { cn } from '$lib/utils'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Button } from '$lib/components/ui/button'
-	import type { Table } from '@undb/core'
+	import type { IQueryTable, Table } from '@undb/core'
 	import { t } from '$lib/i18n'
 	import { allTables } from '$lib/store/table'
 	import Label from '$components/ui/label/label.svelte'
@@ -11,6 +11,8 @@
 
 	export let value: string[] | undefined
 
+	export let filter: (table: IQueryTable) => boolean = () => true
+	$: tables = $allTables?.filter(filter)
 	let selected: Table[] | undefined
 
 	async function getTables() {
@@ -55,9 +57,9 @@
 			{/if}
 		</Button>
 	</DropdownMenu.Trigger>
-	{#if $allTables}
+	{#if tables}
 		<DropdownMenu.Content class="w-72 max-h-72 overflow-auto">
-			{#each $allTables as table (table.id)}
+			{#each tables as table (table.id)}
 				{@const isSelected = value?.includes(table.id)}
 				<DropdownMenu.Item>
 					<Label class="w-full flex items-center justify-between gap-2 hover:bg-gray-100 cursor-pointer">
