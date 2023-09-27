@@ -8,6 +8,7 @@
 	import { t } from '$lib/i18n'
 	import { createTableModal } from '$lib/store/modal'
 	import { cn } from '$lib/utils'
+	import { goto } from '$app/navigation'
 
 	export let tables: IQueryTable[]
 	export let bases: IQueryBase[]
@@ -20,13 +21,25 @@
 <ul class="-mx-2 space-y-1 pb-2">
 	<Accordion.Root value={$currentBaseId || EMPTY_ID}>
 		{#each bases as base (base.id)}
-			<Accordion.Item value={base.id} class={cn('border-0', $currentBaseId === base.id && 'bg-slate-50')}>
-				<Accordion.Trigger class="hover:no-underline hover:bg-gray-100 px-3 py-2 border-0">
-					<div class="text-sm text-gray-900 font-light flex items-center gap-2">
-						<i class="ti ti-database"></i>
-						<span>
-							{base.name}
-						</span>
+			<Accordion.Item value={base.id} class={cn('border-0 group', $currentBaseId === base.id && 'bg-slate-50')}>
+				<Accordion.Trigger class="hover:no-underline hover:bg-gray-100 px-3 py-2 border-0 w-full">
+					<div class="text-sm text-gray-900 font-light flex items-center justify-between gap-2 w-full pr-2">
+						<div class="flex items-center gap-2">
+							<i class="ti ti-database"></i>
+							<span>
+								{base.name}
+							</span>
+						</div>
+
+						<button
+							on:click={(e) => {
+								e.stopPropagation()
+								goto(`/bases/${base.id}`)
+							}}
+							class={cn('opacity-0 group-hover:opacity-100', $currentBaseId === base.id && 'opacity-100')}
+						>
+							<i class="ti ti-settings"></i>
+						</button>
 					</div>
 				</Accordion.Trigger>
 				<Accordion.Content class="border-0">
