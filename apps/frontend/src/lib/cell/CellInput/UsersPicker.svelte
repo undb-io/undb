@@ -61,7 +61,7 @@
 	<DropdownMenu.Content class="w-56">
 		{#each members as member}
 			{@const selected = value?.includes(member.userId)}
-			<DropdownMenu.Item>
+			<DropdownMenu.Item on:click={(e) => e.preventDefault()}>
 				<Label class="inline-flex items-center justify-between cursor-pointer w-full ">
 					<input type="checkbox" bind:group={value} value={member.userId} class="hidden" />
 					<CollaboratorComponent username={member.username} avatar={member.avatar} color={member.color} />

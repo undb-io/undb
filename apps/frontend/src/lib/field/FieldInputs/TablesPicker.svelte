@@ -61,7 +61,11 @@
 		<DropdownMenu.Content class="w-72 max-h-72 overflow-auto">
 			{#each tables as table (table.id)}
 				{@const isSelected = value?.includes(table.id)}
-				<DropdownMenu.Item>
+				<DropdownMenu.Item
+					on:click={(e) => {
+						e.preventDefault()
+					}}
+				>
 					<Label class="w-full flex items-center justify-between gap-2 hover:bg-gray-100 cursor-pointer">
 						<div class="inline-flex items-center gap-2">
 							<input type="checkbox" bind:group={value} value={table.id} class="hidden" />

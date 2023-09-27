@@ -40,7 +40,13 @@
 		<DropdownMenu.Content class="w-56">
 			{#each options as option}
 				{@const isSelected = value?.includes(option.key.value)}
-				<DropdownMenu.Item class="cursor-pointer flex" {...$$restProps}>
+				<DropdownMenu.Item
+					class="cursor-pointer flex"
+					{...$$restProps}
+					on:click={(e) => {
+						e.preventDefault()
+					}}
+				>
 					<Label role="button" class="flex justify-between w-full hover:bg-gray-100 dark:hover:bg-gray-400 transition">
 						<div>
 							<input type="checkbox" bind:group={value} value={option.key.value} class="hidden" />
