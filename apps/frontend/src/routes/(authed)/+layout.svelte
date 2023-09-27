@@ -112,7 +112,7 @@
 												item.current
 													? 'bg-gray-50 text-indigo-600'
 													: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
-												'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
+												'group flex gap-x-3 rounded-md py-1 px-2 text-xs leading-6 font-semibold',
 											)}
 										>
 											<div class="h-6 w-6 flex justify-center items-center">
@@ -181,7 +181,7 @@
 									item.current
 										? 'bg-primary/5 text-primary dark:text-gray-50 dark:bg-gray-700'
 										: 'text-gray-700 hover:text-primary hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700',
-									'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
+									'group flex gap-x-3 rounded-md py-1 px-2 text-xs leading-6 font-semibold',
 								)}
 							>
 								<div class="h-6 w-6 flex justify-center items-center">
