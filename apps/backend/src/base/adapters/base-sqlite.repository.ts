@@ -31,4 +31,9 @@ export class NestBaseSqliteRepository extends BaseSqliteRepository {
   insert(base: Base): Promise<void> {
     return super.insert(base)
   }
+
+  @UseRequestContext()
+  updateOneById(id: string, spec: BaseSpecification): Promise<void> {
+    return super.updateOneById(id, spec)
+  }
 }

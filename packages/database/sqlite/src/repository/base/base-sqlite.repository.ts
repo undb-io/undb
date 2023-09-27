@@ -3,6 +3,7 @@ import type { BaseRepository, BaseSpecification, Base as CoreBase } from '@undb/
 import { None, Some, type Option } from 'oxide.ts'
 import { Base } from '../../entity/base.js'
 import { BaseSqliteMapper } from './base-sqlite.mapper.js'
+import { BaseSqliteMutationVisitor } from './base-sqlite.mutation-visitor.js'
 import { BaseSqliteQueryVisitor } from './base-sqlite.query-visitor.js'
 
 export class BaseSqliteRepository implements BaseRepository {
@@ -30,5 +31,12 @@ export class BaseSqliteRepository implements BaseRepository {
     const baseEntity = new Base(base)
 
     await this.em.insert(baseEntity)
+  }
+
+  async updateOneById(id: string, spec: BaseSpecification): Promise<void> {
+    const visitor = new BaseSqliteMutationVisitor(id, this.em)
+    spec.accept(visitor)
+
+    await this.em.flush()
   }
 }
