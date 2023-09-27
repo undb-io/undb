@@ -29,7 +29,7 @@
 		$createBaseMutation.mutate({
 			id: BaseId.createId(),
 			name,
-			tableIds,
+			tableIds: tableIds.length ? tableIds : undefined,
 		})
 	}
 </script>

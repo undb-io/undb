@@ -36,23 +36,23 @@
 							{@const active = table.id === $page.params.tableId}
 							<TablesNavItem {active} {table} />
 						{/each}
-						<Button
-							size="sm"
-							variant={baseTables.length ? 'ghost' : 'outline'}
-							class={cn('w-full gap-2 py-1', baseTables.length && 'text-slate-500  justify-start')}
-							on:click={() => {
-								createTableDefaultValue.set({
-									baseId: base.id,
-								})
-								createTableModal.open()
-							}}
-						>
-							<i class="ti ti-plus"></i>
-							<span>
-								{$t('Create New Table')}
-							</span>
-						</Button>
 					{/if}
+					<Button
+						size="sm"
+						variant={baseTables.length ? 'ghost' : 'outline'}
+						class={cn('w-full gap-2 py-1', baseTables.length ? 'text-slate-500 justify-start' : 'my-3')}
+						on:click={() => {
+							createTableDefaultValue.set({
+								baseId: base.id,
+							})
+							createTableModal.open()
+						}}
+					>
+						<i class="ti ti-plus"></i>
+						<span>
+							{$t('Create New Table')}
+						</span>
+					</Button>
 				</Accordion.Content>
 			</Accordion.Item>
 		{/each}
