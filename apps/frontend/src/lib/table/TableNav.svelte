@@ -59,7 +59,7 @@
 					<Badge variant="outline" class="gap-1.5">
 						<i class="ti ti-database"></i>
 						<span>
-							{$currentBase.name}
+							{$currentBase?.name}
 						</span>
 					</Badge>
 				</a>
