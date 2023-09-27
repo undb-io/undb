@@ -8,4 +8,5 @@ export interface BaseRepository {
 
   insert(base: Base): Promise<void>
   updateOneById(id: string, spec: BaseSpecification): Promise<void>
+  deleteOneById(id: string): Promise<void>
 }

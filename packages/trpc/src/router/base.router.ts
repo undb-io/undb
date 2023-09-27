@@ -1,10 +1,12 @@
 import {
   CreateBaseCommand,
+  DeleteBaseCommand,
   GetBaseByIdQuery,
   GetBasesQuery,
   MoveToBaseCommand,
   UpdateBaseCommand,
   createBaseCommandInput,
+  deleteBaseCommandInput,
   getBaseByIdQueryInput,
   getBaseByIdQueryOutput,
   getBasesQueryInput,
@@ -45,6 +47,13 @@ export const createBaseRouter = (procedure: typeof publicProcedure) => (commandB
       .output(z.void())
       .mutation(({ input }) => {
         const cmd = new UpdateBaseCommand(input)
+        return commandBus.execute(cmd)
+      }),
+    delete: procedure
+      .input(deleteBaseCommandInput)
+      .output(z.void())
+      .mutation(({ input }) => {
+        const cmd = new DeleteBaseCommand(input)
         return commandBus.execute(cmd)
       }),
     moveToBase: procedure
