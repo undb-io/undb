@@ -36,6 +36,11 @@ export class NestTableSqliteRepository extends TableSqliteRepository {
   }
 
   @UseRequestContext()
+  find(spec: ITableSpec): Promise<Table[]> {
+    return super.find(spec)
+  }
+
+  @UseRequestContext()
   async insert(table: Table): Promise<void> {
     return super.insert(table)
   }

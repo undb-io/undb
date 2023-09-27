@@ -2,7 +2,7 @@ import type { Rel } from '@mikro-orm/core'
 import { Entity, Index, ManyToOne, PrimaryKey, PrimaryKeyType, Property } from '@mikro-orm/core'
 import type { IAttachmentItem } from '@undb/core'
 import path from 'path'
-import { BaseEntity } from './base.js'
+import { BaseEntity } from './base.entity.js'
 import { Table } from './table.js'
 
 @Entity({ tableName: 'undb_attachment' })

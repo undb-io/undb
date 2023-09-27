@@ -14,7 +14,7 @@ import {
   type IVisualizationTypeSchema,
   type VisualizationVO,
 } from '@undb/core'
-import { BaseEntity } from './base.js'
+import { BaseEntity } from './base.entity.js'
 import { Table } from './table.js'
 
 @Entity({ tableName: 'undb_visualization', abstract: true, discriminatorColumn: 'type' })

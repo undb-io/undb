@@ -177,7 +177,7 @@
 						{$t('Export')}
 					</span>
 				</DropdownMenu.SubTrigger>
-				<DropdownMenu.SubContent>
+				<DropdownMenu.SubContent class="w-52">
 					<DropdownMenu.Item on:click={() => exportGrid('csv')} class="font-normal flex items-center gap-2">
 						<i class="ti ti-csv text-gray-500 dark:text-gray-50" />
 						<span>{$t('Export CSV')}</span>

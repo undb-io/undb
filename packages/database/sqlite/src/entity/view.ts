@@ -29,7 +29,7 @@ import {
   type IViewPinnedFields,
   type IViewRowHeight,
 } from '@undb/core'
-import { BaseEntity } from './base.js'
+import { BaseEntity } from './base.entity.js'
 import { Table } from './table.js'
 import { VisualizationFactory } from './visualization.factory.js'
 import { Widget } from './widget.js'

@@ -1,5 +1,5 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
-import type { ITableCache } from '@undb/core'
+import type { ITableCache, TableCompositeSpecification } from '@undb/core'
 import { type IQueryTable, type ITableQueryModel, type ITableSpec } from '@undb/core'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
@@ -13,15 +13,22 @@ export class TableSqliteQueryModel implements ITableQueryModel {
     protected readonly cache: ITableCache,
   ) {}
 
-  async find(): Promise<IQueryTable[]> {
-    const tables = await this.em.find(
-      Table,
-      {},
-      {
-        populate: ['fields.options', 'views', 'forms', 'forms', 'fields.displayFields'],
-        orderBy: { fields: { options: { order: 'ASC' } } },
-      },
-    )
+  async find(spec: Option<TableCompositeSpecification>): Promise<IQueryTable[]> {
+    const qb = this.em
+      .qb(Table)
+      .populate(
+        ['fields.options', 'base.id', 'views', 'forms', 'forms', 'fields.displayFields'].map((field) => ({ field })),
+      )
+      .andWhere({ deletedAt: null })
+
+    const visitor = new TableSqliteQueryVisitor(qb)
+
+    if (spec.isSome()) {
+      spec.unwrap().accept(visitor)
+    }
+
+    const tables = await qb.getResultList()
+
     return tables.map((table) => TableSqliteMapper.entityToQuery(table))
   }
 
@@ -29,6 +36,7 @@ export class TableSqliteQueryModel implements ITableQueryModel {
     await this.em.populate(
       table,
       [
+        'base.id',
         'fields',
         'fields.options',
         'views',

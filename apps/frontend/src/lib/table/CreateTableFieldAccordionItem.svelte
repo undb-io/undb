@@ -51,7 +51,7 @@
 				</span>
 
 				{#if field.display}
-					<Badge>{$t('Display Fields')}</Badge>
+					<Badge variant="outline">{$t('Display Fields')}</Badge>
 				{/if}
 			</div>
 			<div>
@@ -96,7 +96,7 @@
 			<MutateFieldComponent type={field.type} form={superFrm} {isNew} path={['schema', i]} class="w-full" />
 		</div>
 
-		<div class="flex justify-between mt-5">
+		<div class="flex justify-between mt-5 mb-3">
 			<div>
 				<Button
 					size="sm"

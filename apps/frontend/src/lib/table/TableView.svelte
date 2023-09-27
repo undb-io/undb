@@ -110,7 +110,7 @@
 	}
 
 	$: if (grid) {
-		columns.set([
+		const cols: RevoGridType.ColumnRegular[] = [
 			{
 				prop: 'selection',
 				pin: 'colPinStart',
@@ -217,21 +217,25 @@
 					table: $table,
 				}
 			}),
+		]
 
-			{
+		if (!$readonly) {
+			cols.push({
 				prop: 'createColumn',
 				autoSize: true,
 				columnProperties: () => {
 					return {
-						class:
+						class: cn(
 							'!p-0 cursor-pointer text-center border-r border-b border-gray-300 flex items-stretch bg-gray-100 hover:bg-gray-50 dark:bg-gray-600 dark:border-gray-500',
+							$readonly && 'hidden',
+						),
 					}
 				},
 				columnTemplate: (h) => {
 					return h(
 						'button',
 						{
-							class: 'flex items-center justify-center w-full h-full',
+							class: cn('flex items-center justify-center w-full h-full', $readonly && 'hidden'),
 							onClick: () => {
 								createFieldModal.open()
 							},
@@ -242,9 +246,10 @@
 					)
 				},
 				cellTemplate: () => null,
-				size: 80,
-			},
-		])
+				size: $readonly ? 0 : 80,
+			})
+		}
+		columns.set(cols)
 	}
 
 	$: pinned = $view.pinnedFields?.toJSON() ?? { left: [], right: [] }

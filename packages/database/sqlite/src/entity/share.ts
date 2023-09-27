@@ -1,6 +1,6 @@
 import { Entity, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core'
 import type { Share as CoreShare } from '@undb/integrations'
-import { BaseEntity } from './base.js'
+import { BaseEntity } from './base.entity.js'
 
 export const SHARE_TABLE_NAME = 'undb_share'
 

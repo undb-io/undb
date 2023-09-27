@@ -6,7 +6,7 @@
 	import { t } from '$lib/i18n'
 	import { allTables, tableById } from '$lib/store/table'
 
-	export let value: string
+	export let value: string | undefined
 
 	let selected: Table | undefined
 	$: if (value) {
@@ -18,16 +18,30 @@
 	<DropdownMenu.Trigger asChild let:builder>
 		<Button variant="outline" builders={[builder]} {...$$restProps} class={cn($$restProps.class, 'gap-2')}>
 			{#if selected}
-				{selected.name.value}
+				<div class="inline-flex items-center gap-2">
+					<span
+						class={cn(
+							'text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600',
+							'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white',
+						)}
+					>
+						{selected.name.value.slice(0, 1)}
+					</span>
+
+					{selected.name.value}
+				</div>
 			{:else}
-				<span class="text-gray-400">
-					{$t('Select Table')}
-				</span>
+				<div class="flex items-center gap-2 text-gray-500 font-normal">
+					<i class="ti ti-table"></i>
+					<span>
+						{$t('Select Table')}
+					</span>
+				</div>
 			{/if}
 		</Button>
 	</DropdownMenu.Trigger>
 	{#if $allTables}
-		<DropdownMenu.Content class="w-72">
+		<DropdownMenu.Content class="w-72 max-h-72 overflow-auto">
 			<DropdownMenu.RadioGroup bind:value>
 				{#each $allTables as table (table.id)}
 					<DropdownMenu.RadioItem value={table.id}>

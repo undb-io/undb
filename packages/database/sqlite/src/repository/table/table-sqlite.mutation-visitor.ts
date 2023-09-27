@@ -19,6 +19,7 @@ import type {
   WithNewForm,
   WithOption,
   WithReferenceFieldId,
+  WithTableBaseId,
   WithTableFormId,
   WithTableForms,
   WithTableIds,
@@ -207,6 +208,19 @@ export class TableSqliteMutationVisitor extends BaseEntityManager implements ITa
   }
   idsIn(s: WithTableIds): void {
     throw new Error('[TableSqliteMutationVisitor.idsIn] Method not implemented.')
+  }
+  baseIdEq(s: WithTableBaseId): void {
+    const table = this.table
+    if (s.id.isNone()) {
+      this.addJobs(async () => {
+        await wrap(table).init()
+        wrap(table).assign({ base: null })
+        await this.em.persistAndFlush(table)
+      })
+    } else {
+      wrap(table).assign({ base: s.id.into()?.value || null })
+      this.em.persist(table)
+    }
   }
   nameEqual(s: WithTableName): void {
     const table = this.table

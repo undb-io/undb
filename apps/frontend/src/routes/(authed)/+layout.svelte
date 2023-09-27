@@ -4,7 +4,7 @@
 	import type { LayoutData } from './$types'
 	import CreateTable from '$lib/table/CreateTable.svelte'
 	import { page } from '$app/stores'
-	import { allTables, currentRecordId } from '$lib/store/table'
+	import { allBases, allTables, currentRecordId } from '$lib/store/table'
 	import { goto } from '$app/navigation'
 	import { browser } from '$app/environment'
 	import logo from '$lib/assets/logo.svg'
@@ -26,9 +26,16 @@
 	import * as Avatar from '$lib/components/ui/avatar'
 	import Toast from '$components/ui/toast/toast.svelte'
 	import ImportTemplate from '$lib/template/ImportTemplate.svelte'
+	import CreateBase from '$lib/base/CreateBase.svelte'
+	import SelectTableMoveToBase from '$lib/base/SelectTableMoveToBase.svelte'
 
 	$: navigation = [
-		{ name: $t('Tables', { ns: 'common' }), href: '/', icon: 'table', current: $page.url.pathname === '/' },
+		{
+			name: $t('Dashboard', { ns: 'common' }),
+			href: '/',
+			icon: 'layout-dashboard',
+			current: $page.url.pathname === '/',
+		},
 		{
 			name: $t('Members', { ns: 'common' }),
 			href: '/members',
@@ -55,6 +62,7 @@
 
 	$: tables = data.tables
 	$: allTables.set(tables)
+	$: allBases.set(data.bases.bases ?? [])
 	$: me = data.me.me
 
 	$: r = $page.url.searchParams.get('r')
@@ -104,7 +112,7 @@
 												item.current
 													? 'bg-gray-50 text-indigo-600'
 													: 'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
-												'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
+												'group flex gap-x-3 rounded-md py-1 px-2 text-xs leading-6 font-semibold',
 											)}
 										>
 											<div class="h-6 w-6 flex justify-center items-center">
@@ -126,7 +134,7 @@
 						</li>
 						<li>
 							<div class="text-xs font-semibold leading-6 text-gray-400">{$t('Tables', { ns: 'common' })}</div>
-							<TablesNav {tables} />
+							<TablesNav {tables} bases={data.bases.bases} />
 						</li>
 					</ul>
 				</nav>
@@ -173,7 +181,7 @@
 									item.current
 										? 'bg-primary/5 text-primary dark:text-gray-50 dark:bg-gray-700'
 										: 'text-gray-700 hover:text-primary hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-700',
-									'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
+									'group flex gap-x-3 rounded-md py-1 px-2 text-xs leading-6 font-semibold',
 								)}
 							>
 								<div class="h-6 w-6 flex justify-center items-center">
@@ -197,8 +205,8 @@
 			<div class="px-6 py-4">
 				<p class="text-sm font-normal leading-6 !text-gray-400">{$t('Tables', { ns: 'common' })}</p>
 			</div>
-			<nav class="flex flex-1 flex-col px-6 h-full overflow-y-auto">
-				<TablesNav {tables} />
+			<nav class="flex flex-1 flex-col px-4 h-full overflow-y-auto">
+				<TablesNav {tables} bases={data.bases.bases} />
 			</nav>
 			<ul class="flex flex-col border-t pt-4 space-y-2 dark:border-gray-700">
 				<li class="px-6">
@@ -430,5 +438,7 @@
 {/if}
 
 <CreateTable data={$page.data.form} />
+<CreateBase />
+<SelectTableMoveToBase />
 <ImportData formData={$page.data.createTable} />
 <ImportTemplate />

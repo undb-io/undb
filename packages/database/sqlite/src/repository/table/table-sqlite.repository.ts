@@ -9,12 +9,13 @@ import {
 import { type IUnitOfWork } from '@undb/domain'
 import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
-import { ReferenceField, Table, Table as TableEntity } from '../../entity/index.js'
+import { Base, ReferenceField, Table, Table as TableEntity } from '../../entity/index.js'
 import { View as ViewEntity } from '../../entity/view.js'
 import { UnderlyingTableSqliteManager } from '../../underlying-table/underlying-table-sqlite.manager.js'
 import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
 import { TableSqliteMapper } from './table-sqlite.mapper.js'
 import { TableSqliteMutationVisitor } from './table-sqlite.mutation-visitor.js'
+import { TableSqliteQueryVisitor } from './table-sqlite.query-visitor.js'
 
 export class TableSqliteRepository implements ITableRepository {
   constructor(
@@ -63,8 +64,21 @@ export class TableSqliteRepository implements ITableRepository {
     throw new Error('Method not implemented.')
   }
 
-  find(spec: ITableSpec): Promise<CoreTable[]> {
-    throw new Error('Method not implemented.')
+  async find(spec: ITableSpec): Promise<CoreTable[]> {
+    const qb = this.em
+      .qb(Table)
+      .populate(
+        ['fields.options', 'base.id', 'views', 'forms', 'forms', 'fields.displayFields'].map((field) => ({ field })),
+      )
+      .andWhere({ deletedAt: null })
+
+    const visitor = new TableSqliteQueryVisitor(qb)
+
+    spec.accept(visitor)
+
+    const tables = await qb.getResultList()
+
+    return tables.map((table) => TableSqliteMapper.entityToDomain(table).unwrap())
   }
 
   async insert(table: CoreTable): Promise<void> {
@@ -72,7 +86,8 @@ export class TableSqliteRepository implements ITableRepository {
     const tm = new UnderlyingTableSqliteManager(em)
     await tm.create(table)
 
-    const tableEntity = new TableEntity(table)
+    const base = table.baseId.isSome() ? this.em.getReference(Base, table.baseId.unwrap().value) : undefined
+    const tableEntity = new TableEntity(table, base)
 
     for (const field of table.schema.fields) {
       const visitor = new TableSqliteFieldVisitor(tableEntity, em)

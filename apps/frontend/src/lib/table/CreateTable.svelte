@@ -8,14 +8,15 @@
 	import { goto, invalidate } from '$app/navigation'
 	import { t } from '$lib/i18n'
 	import { createTableModal } from '$lib/store/modal'
-	import { newTableSchema } from '$lib/store/table'
-	import { onDestroy, onMount } from 'svelte'
+	import { createTableDefaultValue, newTableSchema } from '$lib/store/table'
+	import { onDestroy } from 'svelte'
 	import * as Dialog from '$lib/components/ui/dialog'
 	import { Label } from '$lib/components/ui/label'
 	import { Input } from '$lib/components/ui/input'
 	import { Button } from '$components/ui/button'
 	import { Badge } from '$lib/components/ui/badge'
 	import Toast from '$components/ui/toast/toast.svelte'
+	import BasePicker from '$lib/base/BasePicker.svelte'
 
 	export let data: Validation<typeof createTableInput>
 	let currentField: string | undefined
@@ -64,6 +65,12 @@
 	const { form, errors, reset, constraints, enhance, delayed, submitting } = superFrm
 
 	$: $form.id = TableId.createId()
+	$: if ($createTableDefaultValue) {
+		for (const [key, value] of Object.entries($createTableDefaultValue)) {
+			// @ts-ignore
+			$form[key] = value
+		}
+	}
 	$: $form.schema = []
 	$: displayFields = $form.schema?.filter((f) => !!f.display) ?? []
 
@@ -97,29 +104,32 @@
 		<form id="createTable" class="flex flex-col justify-between flex-1 gap-2 overflow-y-auto" method="POST" use:enhance>
 			<div>
 				<div class="space-y-4">
-					<Label class="space-y-2">
-						<span>
-							<span>{$t('Name', { ns: 'common' })}</span>
-							<span class="text-red-500">*</span>
-						</span>
-						<Input
-							id="name"
-							name="name"
-							type="text"
-							bind:value={$form.name}
-							required
-							on:blur={onBlur}
-							{...$constraints.name}
-						/>
-					</Label>
+					<div class="flex items-end gap-2">
+						<Label class="space-y-2 flex-1">
+							<span>
+								<span>{$t('Name', { ns: 'common' })}</span>
+								<span class="text-red-500">*</span>
+							</span>
+							<Input
+								id="name"
+								name="name"
+								type="text"
+								bind:value={$form.name}
+								required
+								on:blur={onBlur}
+								{...$constraints.name}
+							/>
+						</Label>
+						<BasePicker enabled bind:value={$form.baseId} />
+					</div>
 
 					<p class="flex text-xs items-center !font-bold gap-1 dark:text-white">
 						<span>{$t('System fields')}: </span>
-						<Badge class="bg-gray-500 hover:bg-gray-600 rounded-sm">id</Badge>,
-						<Badge class="bg-gray-500 hover:bg-gray-600 rounded-sm">{$t('created-at')}</Badge>,
-						<Badge class="bg-gray-500 hover:bg-gray-600 rounded-sm">{$t('created-by')}</Badge>,
-						<Badge class="bg-gray-500 hover:bg-gray-600 rounded-sm">{$t('updated-at')}</Badge>,
-						<Badge class="bg-gray-500 hover:bg-gray-600 rounded-sm">{$t('updated-by')}</Badge>
+						<Badge variant="secondary">id</Badge>,
+						<Badge variant="secondary">{$t('created-at')}</Badge>,
+						<Badge variant="secondary">{$t('created-by')}</Badge>,
+						<Badge variant="secondary">{$t('updated-at')}</Badge>,
+						<Badge variant="secondary">{$t('updated-by')}</Badge>
 					</p>
 
 					{#if $form.schema?.length}

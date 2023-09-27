@@ -1,19 +1,19 @@
 <script lang="ts">
-	import { cn } from '$lib/utils'
-	import type { LayoutData } from './$types'
+	import type { PageData } from './$types'
 	import Empty from '$lib/table/Empty.svelte'
 	import { t } from '$lib/i18n'
-	import { createTableModal, importDataModal } from '$lib/store/modal'
+	import { createTableModal } from '$lib/store/modal'
 	import { sidebarCollapsed } from '$lib/store/ui'
-	import { hasPermission } from '$lib/store/authz'
-	import * as Card from '$lib/components/ui/card'
 	import { Button } from '$components/ui/button'
-	import * as DropdownMenu from '$components/ui/dropdown-menu'
 	import * as Tooltip from '$components/ui/tooltip'
+	import Bases from '$lib/base/Bases.svelte'
+	import { Input } from '$components/ui/input'
 
-	export let data: LayoutData
+	export let data: PageData
 
 	const onKeydown = (event: KeyboardEvent) => {
+		const type = (event.target as any)?.type
+		if (type === 'search' || type === 'text') return
 		if (event.key === 't' && !(event.ctrlKey || event.altKey || event.metaKey)) {
 			createTableModal.open()
 		}
@@ -21,93 +21,37 @@
 			$sidebarCollapsed = !$sidebarCollapsed
 		}
 	}
+
+	let q: string | undefined = undefined
+
+	$: bases = data.bases.bases.filter((base) => (q ? base.name.toLowerCase().includes(q.toLowerCase()) : true))
 </script>
 
-<nav class="bg-white border-b h-16 px-5 py-4 border-gray-200 dark:bg-gray-900 dark:border-gray-600">
-	{#if $sidebarCollapsed}
-		<div class="fixed top-5 left-3">
-			<Tooltip.Root>
-				<Tooltip.Trigger asChild let:builder>
-					<Button variant="ghost" builders={[builder]} on:click={() => ($sidebarCollapsed = false)}>
-						<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
-					</Button>
-				</Tooltip.Trigger>
-				<Tooltip.Content
-					sideOffset={1}
-					class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
-				>
-					<kbd> Command + b </kbd>
-				</Tooltip.Content>
-			</Tooltip.Root>
-		</div>
-	{/if}
-
-	<div class="w-full flex justify-end" id="navbar-default">
-		{#if $hasPermission('table:create')}
-			<Button size="sm" variant="outline" on:click={() => createTableModal.open()} class="rounded-r-none border-r-0">
-				<i class="ti ti-plus text-sm mr-3" />
-				{$t('Create New Table')}
-			</Button>
-			<DropdownMenu.Root>
-				<DropdownMenu.Trigger>
-					<Button size="sm" variant="outline" class="rounded-l-none">
-						<i class="ti ti-chevron-down" />
-					</Button>
-				</DropdownMenu.Trigger>
-				<DropdownMenu.Content>
-					<DropdownMenu.Item on:click={() => importDataModal.open()} class="flex items-center gap-2">
-						<i class="ti ti-csv" />
-						<span>
-							{$t('import data content')}
-						</span>
-					</DropdownMenu.Item>
-				</DropdownMenu.Content>
-			</DropdownMenu.Root>
-		{/if}
+{#if $sidebarCollapsed}
+	<div class="fixed top-5 left-3">
+		<Tooltip.Root>
+			<Tooltip.Trigger asChild let:builder>
+				<Button variant="ghost" size="icon" builders={[builder]} on:click={() => ($sidebarCollapsed = false)}>
+					<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500" />
+				</Button>
+			</Tooltip.Trigger>
+			<Tooltip.Content
+				sideOffset={1}
+				class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
+			>
+				<kbd> Command + b </kbd>
+			</Tooltip.Content>
+		</Tooltip.Root>
 	</div>
-</nav>
+{/if}
 
 {#if !!data.tables.length}
-	<main class="w-full p-10 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4">
-		{#each data.tables as table}
-			<a href={`/t/${table.id}`}>
-				<Card.Root class="hover:shadow-lg transition">
-					<Card.Header>
-						<div class="flex items-center gap-3">
-							<span
-								class={cn(
-									'text-gray-400 border-gray-200 group-hover:border-primary group-hover:text-primary',
-									'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white',
-								)}
-							>
-								{table.name.slice(0, 1)}
-							</span>
-							<Tooltip.Root openDelay={50}>
-								<Tooltip.Trigger class="truncate">
-									<h5 class="font-semibold truncate">{table.name}</h5>
-								</Tooltip.Trigger>
-								<Tooltip.Content>
-									<p>{table.name}</p>
-								</Tooltip.Content>
-							</Tooltip.Root>
-						</div>
-					</Card.Header>
-				</Card.Root>
-			</a>
-		{/each}
-		{#if $hasPermission('table:create')}
-			<Card.Root
-				class="!max-w-none cursor-pointer hover:bg-primary-500/90  hover:shadow-lg transition h-full"
-				on:click={() => createTableModal.open()}
-			>
-				<Card.Header>
-					<div class="flex items-center gap-2 h-full font-semibold text-gray-600">
-						<i class="ti ti-plus" />
-						<p>{$t('Create New Table')}</p>
-					</div>
-				</Card.Header>
-			</Card.Root>
-		{/if}
+	<main class="container pt-6">
+		<Input bind:value={q} placeholder={$t('search', { ns: 'base' })}></Input>
+
+		<h3 class="font-semibold my-4">Base</h3>
+
+		<Bases {bases} />
 	</main>
 {:else}
 	<Empty />

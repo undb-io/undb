@@ -1,6 +1,6 @@
 import { Entity, JsonType, PrimaryKey, Property } from '@mikro-orm/core'
 import { type IEvent } from '@undb/domain'
-import { BaseEntity } from './base.js'
+import { BaseEntity } from './base.entity.js'
 
 export const OPTBOX_TABLE_NAME = 'undb_outbox'
 

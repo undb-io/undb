@@ -12,7 +12,7 @@ import {
 import type { ISubject } from '@undb/authz'
 import { RLS as RLSDO, type IRLSAction, type RLSPolicyInterface } from '@undb/authz'
 import { type IRootFilter } from '@undb/core'
-import { BaseEntity } from './base.js'
+import { BaseEntity } from './base.entity.js'
 import { Table } from './table.js'
 
 @Embeddable()

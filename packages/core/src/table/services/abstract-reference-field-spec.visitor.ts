@@ -66,8 +66,8 @@ import type {
 import type { WithFormFieldsOrder } from '../form/specifications/form-fields-order.specification.js'
 import type {
   ITableSpecVisitor,
-  WithFilter,
   WithNewField,
+  WithTableBaseId,
   WithTableEmoji,
   WithTableFormId,
   WithTableId,
@@ -88,6 +88,7 @@ import type {
   WithFieldOption,
   WithFieldVisibility,
   WithFieldWidth,
+  WithFilter,
   WithGalleryField,
   WithGanttField,
   WithKanbanField,
@@ -121,6 +122,7 @@ export abstract class AbstractReferenceFieldSpecVisitor implements ITableSpecVis
   ratingMaxEqual(s: WithRatingMax): void {}
   currencySymbolEqual(s: WithCurrencySymbol): void {}
   id(field: IdField): void {}
+  baseIdEq(s: WithTableBaseId): void {}
   createdAt(field: CreatedAtField): void {}
   createdBy(field: CreatedByField): void {}
   updatedBy(field: UpdatedByField): void {}

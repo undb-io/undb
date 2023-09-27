@@ -1,6 +1,6 @@
 import { Entity, Index, ManyToOne, PrimaryKey, Property, Unique, type Rel } from '@mikro-orm/core'
 import { Invitation as InvitationDo } from '@undb/integrations'
-import { BaseEntity } from './base.js'
+import { BaseEntity } from './base.entity.js'
 import { User } from './user.js'
 
 @Entity({

@@ -9,6 +9,7 @@ export class TableSqliteMapper {
       id: entity.id,
       name: entity.name,
       emoji: entity.emoji,
+      baseId: entity.base?.id,
       schema: entity.fields.getItems(false).map((field) => field.toQuery()),
       viewsOrder: entity.viewsOrder,
       forms: entity.forms.getItems(false).map((form) => ({
@@ -51,6 +52,7 @@ export class TableSqliteMapper {
       name: entity.name,
       schema: [],
       emoji: entity.emoji,
+      baseId: entity.base?.id,
       forms: entity.forms.getItems(false).map((form) => ({
         id: form.id,
         name: form.name,

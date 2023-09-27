@@ -1,6 +1,6 @@
 <script lang="ts">
 	import OptionColorPicker from '$lib/option/OptionColorPicker.svelte'
-	import { OptionColor, type IMutateOptionSchema } from '@undb/core'
+	import { OptionColor, type IMutateOptionSchema, OptionKey } from '@undb/core'
 	import { Button } from '$lib/components/ui/button'
 	import { onMount } from 'svelte'
 	import type { SetRequired } from 'type-fest'
@@ -10,6 +10,8 @@
 	import { isNumber } from 'lodash-es'
 
 	export let value: SetRequired<IMutateOptionSchema, 'color'>[] = []
+
+	$: console.log(value)
 
 	onMount(() => {
 		if (!value) value = []
@@ -25,7 +27,7 @@
 				: OptionColor.create(value[value.length - 1]?.color)
 						.next()
 						.toJSON()
-		value = [...value, { name: '', color }]
+		value = [...value, { key: OptionKey.createId(), name: '', color }]
 	}
 
 	function removeOption(index: number) {
