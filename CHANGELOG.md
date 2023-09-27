@@ -1,3 +1,14 @@
+## v0.10.0
+
+
+### 🎨 Styles
+
+- Create table field schema style ([5d77f4c](https://github.com/undb-xyz/undb/commit/5d77f4c))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v0.9.1
 
 ## v0.9.0
