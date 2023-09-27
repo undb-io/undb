@@ -12,7 +12,7 @@
 		class={cn(
 			active
 				? 'bg-primary/5 text-primary dark:text-gray-50 dark:bg-gray-700'
-				: 'text-gray-700 hover:text-primary hover:bg-gray-50  dark:text-gray-200 dark:hover:bg-gray-700',
+				: 'text-gray-700 hover:text-primary hover:bg-gray-100  dark:text-gray-200 dark:hover:bg-gray-700',
 			'group/table flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold',
 		)}
 	>
