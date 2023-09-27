@@ -18,6 +18,8 @@
 	const createBaseMutation = trpc().base.create.mutation({
 		async onSuccess(data, variables, context) {
 			await invalidateAll()
+			name = ''
+			tableIds = []
 			createBaseModal.close()
 			if (variables.tableIds?.length) {
 				await goto(`/t/${variables.tableIds.at(0)}`)

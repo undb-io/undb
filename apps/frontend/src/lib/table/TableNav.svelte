@@ -56,8 +56,11 @@
 
 			{#if $currentBase}
 				<a href={`/bases/${$currentBase.id}`}>
-					<Badge variant="outline">
-						{$currentBase.name}
+					<Badge variant="outline" class="gap-1.5">
+						<i class="ti ti-database"></i>
+						<span>
+							{$currentBase.name}
+						</span>
 					</Badge>
 				</a>
 			{/if}
