@@ -7,6 +7,7 @@
 	import { Button } from '$components/ui/button'
 	import { t } from '$lib/i18n'
 	import { createTableModal } from '$lib/store/modal'
+	import { cn } from '$lib/utils'
 
 	export let tables: IQueryTable[]
 	export let bases: IQueryBase[]
@@ -19,7 +20,7 @@
 <ul class="-mx-2 space-y-1 pb-2">
 	<Accordion.Root value={$currentBaseId || EMPTY_ID}>
 		{#each bases as base (base.id)}
-			<Accordion.Item value={base.id} class="border-0">
+			<Accordion.Item value={base.id} class={cn('border-0', $currentBaseId === base.id && 'bg-slate-50')}>
 				<Accordion.Trigger class="hover:no-underline hover:bg-gray-100 px-3 py-2 border-0">
 					<div class="text-sm text-gray-900 font-light flex items-center gap-2">
 						<i class="ti ti-database"></i>
@@ -35,20 +36,22 @@
 							{@const active = table.id === $page.params.tableId}
 							<TablesNavItem {active} {table} />
 						{/each}
-					{:else}
-						<div class="w-full py-3">
-							<Button
-								size="sm"
-								variant="outline"
-								class="w-full"
-								on:click={() => {
-									createTableDefaultValue.set({
-										baseId: base.id,
-									})
-									createTableModal.open()
-								}}>{$t('Create New Table')}</Button
-							>
-						</div>
+						<Button
+							size="sm"
+							variant={baseTables.length ? 'ghost' : 'outline'}
+							class={cn('w-full gap-2 py-1', baseTables.length && 'text-slate-500  justify-start')}
+							on:click={() => {
+								createTableDefaultValue.set({
+									baseId: base.id,
+								})
+								createTableModal.open()
+							}}
+						>
+							<i class="ti ti-plus"></i>
+							<span>
+								{$t('Create New Table')}
+							</span>
+						</Button>
 					{/if}
 				</Accordion.Content>
 			</Accordion.Item>
