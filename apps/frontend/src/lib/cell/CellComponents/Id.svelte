@@ -3,7 +3,7 @@
 
 	export let record: Record
 
-	$: value = record.id.value
+	$: value = record?.id.value
 </script>
 
 <span
