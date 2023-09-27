@@ -51,7 +51,7 @@
 			</div>
 
 			<div class="flex items-center gap-2">
-				<Button variant="outline" class="w-40 gap-2" on:click={() => createBaseModal.open()}>
+				<Button variant="outline" class="min-w-40 gap-2" on:click={() => createBaseModal.open()}>
 					<i class="ti ti-plus"></i>
 					<span>
 						{$t('Create New Base', { ns: 'base' })}
