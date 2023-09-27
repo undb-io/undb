@@ -2,6 +2,7 @@ import { and, andOptions } from '@undb/domain'
 import { difference, isEmpty, isEqual, isString, sortBy } from 'lodash-es'
 import type { Option, Result } from 'oxide.ts'
 import { None, Ok, Some } from 'oxide.ts'
+import type { BaseId } from '../base/index.js'
 import { FieldNotFoundException } from './field/field.errors.js'
 import type {
   Field,
@@ -46,7 +47,7 @@ import { RecordFactory } from './record/record.factory.js'
 import type { IMutateRecordValueSchema } from './record/record.schema.js'
 import { createRecordInputs } from './record/record.utils.js'
 import { WithRecordValues } from './record/specifications/record-values.specification.js'
-import { WithTableEmoji, WithTableName } from './specifications/index.js'
+import { WithTableBaseId, WithTableEmoji, WithTableName } from './specifications/index.js'
 import type { TableCompositeSpecification } from './specifications/interface.js'
 import type { IUpdateTableSchema } from './table.schema.js'
 import type { IUpdateTableSchemaSchema, TableId } from './value-objects/index.js'
@@ -102,6 +103,7 @@ export interface IQueryTable {
   id: string
   name: string
   emoji?: string | null
+  baseId?: string
   schema: IQuerySchemaSchema
   views?: IQueryView[]
   forms?: IQueryForm[]
@@ -112,6 +114,8 @@ export class Table {
   public id!: TableId
   public name!: TableName
   public emoji!: TableEmoji
+
+  public baseId!: Option<BaseId>
 
   public schema: TableSchema = new TableSchema([])
 
@@ -679,5 +683,19 @@ export class Table {
     }
 
     return ids
+  }
+
+  public moveToBase(baseId: BaseId): Option<TableCompositeSpecification> {
+    if (this.baseId.isSome() && baseId.equals(this.baseId.unwrap())) {
+      return None
+    }
+
+    return Some(new WithTableBaseId(Some(baseId)))
+  }
+
+  public withoutBase(): Option<TableCompositeSpecification> {
+    if (this.baseId.isNone()) return None
+
+    return Some(WithTableBaseId.none())
   }
 }

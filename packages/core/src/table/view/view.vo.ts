@@ -6,7 +6,6 @@ import type { Field } from '../field/index.js'
 import { FieldId } from '../field/index.js'
 import type { IFilterOrGroupList, IRootFilter } from '../filter/index.js'
 import { RootFilter } from '../filter/index.js'
-import { WithFilter } from '../specifications/index.js'
 import type { TableCompositeSpecification } from '../specifications/interface.js'
 import type { VisualizationVO } from '../visualization/visualization.vo.js'
 import { Calendar } from './calendar/index.js'
@@ -26,6 +25,7 @@ import { Sorts } from './sort/sorts.js'
 import { WithDisplayType } from './specifications/display-type.specification.js'
 import {
   WithCalendarField,
+  WithFilter,
   WithGalleryField,
   WithGanttField,
   WithKanbanField,

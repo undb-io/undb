@@ -1,6 +1,6 @@
 import { Entity, ManyToOne, PrimaryKey, Property, Unique, type Rel } from '@mikro-orm/core'
 import { type ApiToken as ApiTokenDo } from '@undb/openapi'
-import { BaseEntity } from './base.js'
+import { BaseEntity } from './base.entity.js'
 import { User } from './user.js'
 
 @Entity({ tableName: 'undb_api_token' })

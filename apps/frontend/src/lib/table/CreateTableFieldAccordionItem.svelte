@@ -51,7 +51,7 @@
 				</span>
 
 				{#if field.display}
-					<Badge>{$t('Display Fields')}</Badge>
+					<Badge variant="outline">{$t('Display Fields')}</Badge>
 				{/if}
 			</div>
 			<div>

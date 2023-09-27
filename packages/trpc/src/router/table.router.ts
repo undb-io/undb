@@ -36,8 +36,8 @@ export const createTableRouter =
       list: procedure
         .input(getTablesQuerySchema)
         .output(z.any())
-        .query<IGetTablesOutput>(() => {
-          const query = new GetTablesQuery()
+        .query<IGetTablesOutput>(({ input }) => {
+          const query = new GetTablesQuery(input)
           return queryBus.execute(query)
         }),
       create: procedure

@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { baseIdSchema } from '../base/value-objects/base-id.vo.js'
 import { querySchemaSchema } from './field/index.js'
 import { createFormsSchema, queryForms } from './form/form.schema.js'
 import type { Table } from './table.js'
@@ -18,6 +19,7 @@ export const createTableInput = z.object({
   id: tableIdSchema.optional(),
   name: tableNameSchema,
   emoji: tableEmojiSchema.optional(),
+  baseId: baseIdSchema.optional(),
   schema: createTableSchemaSchema,
 })
 
@@ -36,6 +38,7 @@ export type ICreateTableInput_internal = z.infer<typeof createTableInput_interna
 export const queryTable = z.object({
   id: z.string(),
   name: z.string(),
+  baseId: baseIdSchema.optional(),
   emoji: tableEmojiSchema.optional(),
   schema: querySchemaSchema,
   views: queryViews,

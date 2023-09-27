@@ -1,6 +1,6 @@
 import type { ICreateSelectFieldSchema, ICreateStringFieldInput } from '../field/index.js'
 import { FieldFactory, SelectField, StringField } from '../field/index.js'
-import { WithNewField, WithTableEmoji, WithTableId, WithTableName } from '../specifications/index.js'
+import { WithNewField, WithTableBaseId, WithTableEmoji, WithTableId, WithTableName } from '../specifications/index.js'
 import type { TableCompositeSpecification } from '../specifications/interface.js'
 import { TableFactory } from '../table.factory.js'
 import type { ICreateViewInput_internal } from '../view/index.js'
@@ -13,6 +13,7 @@ export const createTestTable = (...specs: TableCompositeSpecification[]) => {
     .and(WithTableName.fromString('name'))
     .and(new WithTableViews(new Views([])))
     .and(WithTableEmoji.fromString(null))
+    .and(WithTableBaseId.fromString(undefined))
     .and(new WithNewField(FieldFactory.create({ type: 'string', name: 'field1' }) as StringField))
 
   for (const s of specs) {

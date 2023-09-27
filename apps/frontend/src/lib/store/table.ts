@@ -8,8 +8,10 @@ import {
 	TableFactory,
 	TreeField,
 	type IChartData,
+	type ICreateTableInput,
 	type ICreateTableSchemaInput,
 	type IFilters,
+	type IQueryBase,
 	type IQueryFieldSchema,
 	type IQueryRecordSchema,
 	type IQueryTable,
@@ -31,6 +33,7 @@ import { match } from 'ts-pattern'
 import { hasPermission } from './authz'
 import { me } from './me'
 
+export const allBases = writable<IQueryBase[]>([])
 export const allTables = writable<IQueryTable[] | undefined>()
 
 export const currentTable = writable<Table>()
@@ -434,7 +437,7 @@ export const aggregateChartFn: Readable<
 export const tableById = derived([currentTable, allTables, shareTarget], ([$table, $tables, $shareTarget]) => {
 	let t: Table | undefined
 	return async (tableId: string) => {
-		if (tableId === $table.id.value) {
+		if (tableId === $table?.id.value) {
 			t = $table
 		} else if ($tables) {
 			const found = $tables.find((t) => t.id === tableId)
@@ -542,4 +545,29 @@ export const readonly = derived(isShare, ($isShare) => $isShare)
 export const readonlyRecord = derived(
 	[readonly, canUpdateRecord],
 	([$readonly, $canUpdateRecord]) => $readonly || !$canUpdateRecord,
+)
+
+export const currentBaseId = derived(
+	[page, currentTable],
+	([$page, $table]) => $page.params.baseId ?? $table?.baseId.into()?.value ?? '',
+)
+
+export const createTableDefaultValue = writable<Partial<ICreateTableInput> | undefined>()
+
+export const firstTableOfBase = derived(
+	[allTables],
+	([$tables]) =>
+		(baseId: string) =>
+			$tables?.find((table) => table.baseId === baseId),
+)
+
+export const currentBase = derived([allBases, currentBaseId], ([$bases, $baseId]) =>
+	$bases.find((base) => base.id === $baseId),
+)
+
+export const getBaseById = derived(
+	[allBases],
+	([$bases]) =>
+		(baseId: string) =>
+			$bases.find((base) => base.id === baseId),
 )

@@ -33,6 +33,7 @@ export const tableActions = z.enum([
   'table:merge_data',
   'table:export_template',
   'table:import_template',
+  'table:move_to_base',
 ])
 export const recordActions = z.enum(['record:create', 'record:update', 'record:delete', 'record:list_trash'])
 export const webhookActions = z.enum(['webhook:create', 'webhook:update', 'webhook:delete'])
@@ -91,6 +92,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'table:merge_data': true,
     'table:export_template': true,
     'table:import_template': true,
+    'table:move_to_base': true,
     'record:create': true,
     'record:delete': true,
     'record:update': true,
@@ -150,6 +152,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'table:delete_form': true,
     'table:export_template': true,
     'table:import_template': true,
+    'table:move_to_base': true,
     'record:create': true,
     'record:delete': true,
     'record:update': true,
@@ -209,6 +212,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'table:merge_data': true,
     'table:export_template': true,
     'table:import_template': true,
+    'table:move_to_base': true,
     'record:create': true,
     'record:delete': true,
     'record:update': true,
@@ -268,6 +272,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'table:merge_data': false,
     'table:export_template': false,
     'table:import_template': false,
+    'table:move_to_base': false,
     'record:create': false,
     'record:delete': false,
     'record:update': false,

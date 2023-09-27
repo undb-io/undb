@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Separator from '$components/ui/separator/separator.svelte'
-	import { getTable } from '$lib/store/table'
+	import { currentBase, getTable } from '$lib/store/table'
 	import TableMenu from './TableMenu.svelte'
 	import { hasPermission } from '$lib/store/authz'
 	import * as Tooltip from '$lib/components/ui/tooltip'
@@ -8,6 +8,7 @@
 	import { t } from '$lib/i18n'
 	import { sidebarCollapsed } from '$lib/store/ui'
 	import Button from '$components/ui/button/button.svelte'
+	import Badge from '$components/ui/badge/badge.svelte'
 
 	const table = getTable()
 </script>
@@ -18,8 +19,8 @@
 			<div class="ml-2">
 				<Tooltip.Root>
 					<Tooltip.Trigger>
-						<button on:click={() => ($sidebarCollapsed = false)}>
-							<i class="ti ti-layout-sidebar-left-expand text-lg text-gray-500 dark:hover:text-gray-100" />
+						<button on:click={() => ($sidebarCollapsed = false)} class="w-4 h-4 flex items-center justify-center">
+							<i class="ti ti-layout-sidebar-left-expand text-md text-gray-500 dark:hover:text-gray-100" />
 						</button>
 					</Tooltip.Trigger>
 					<Tooltip.Content
@@ -32,6 +33,16 @@
 		{/if}
 
 		<div class="flex items-center gap-2">
+			<Button
+				size="icon"
+				class="w-6 h-6"
+				variant="outline"
+				on:click={() => {
+					window.history.back()
+				}}
+			>
+				<i class="ti ti-arrow-back-up"></i>
+			</Button>
 			<span
 				class="
 	bg-primary/5 text-gray-700 dark:text-gray-50 dark:bg-gray-700 border-gray-200 group-hover:border-primary group-hover:text-primary dark:border-white dark:group-hover:border-gray-50 dark:group-hover:text-gray-50 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white
@@ -42,6 +53,17 @@
 			<p class="text-sm font-medium text-gray-800 dark:text-white">
 				{$table.name.value}
 			</p>
+
+			{#if $currentBase}
+				<a href={`/bases/${$currentBase.id}`}>
+					<Badge variant="outline" class="gap-1.5">
+						<i class="ti ti-database"></i>
+						<span>
+							{$currentBase.name}
+						</span>
+					</Badge>
+				</a>
+			{/if}
 		</div>
 
 		{#if $hasPermission('table:update')}

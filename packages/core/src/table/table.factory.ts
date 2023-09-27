@@ -3,7 +3,7 @@ import type { Result } from 'oxide.ts'
 import { Ok } from 'oxide.ts'
 import type { ClsStore } from '../cls/cls.js'
 import { WithTableForms } from './form/specifications/form.specification.js'
-import { WithTableEmoji, WithTableId, WithTableName, WithTableSchema } from './specifications/index.js'
+import { WithTableBaseId, WithTableEmoji, WithTableId, WithTableName, WithTableSchema } from './specifications/index.js'
 import type { TableCompositeSpecification } from './specifications/interface.js'
 import { newTableSpec } from './specifications/specifications.js'
 import type { IQueryTable } from './table.js'
@@ -42,6 +42,7 @@ export class TableFactory {
       .and(WithTableSchema.unsafeFrom(input.schema))
       .and(WithTableViews.from(input.views))
       .and(WithViewsOrder.fromArray(input.viewsOrder ?? []))
+      .and(WithTableBaseId.fromString(input.baseId))
       .and(WithTableForms.unsafeFrom(input.forms ?? []))
       .and(WithTableEmoji.fromString(input.emoji ?? null))
 
@@ -55,6 +56,7 @@ export class TableFactory {
       .and(ts)
       .and(WithTableViews.from(q.views))
       .and(WithViewsOrder.fromArray(q.viewsOrder ?? []))
+      .and(WithTableBaseId.fromString(q.baseId))
       .and(WithTableForms.from(q.forms ?? [], ts.schema))
       .and(WithTableEmoji.fromString(q.emoji))
 

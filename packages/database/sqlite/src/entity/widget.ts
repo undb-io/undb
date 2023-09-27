@@ -2,7 +2,7 @@ import type { Rel } from '@mikro-orm/core'
 import { Embeddable, Embedded, Entity, ManyToOne, OneToOne, PrimaryKey, Property } from '@mikro-orm/core'
 import type { ILayoutSchema, IWidgetSchema } from '@undb/core'
 import { Widget as CoreWidget, LayoutVO, WidgetID } from '@undb/core'
-import { BaseEntity } from './base.js'
+import { BaseEntity } from './base.entity.js'
 import { View } from './view.js'
 import { Visualization } from './visualization.js'
 

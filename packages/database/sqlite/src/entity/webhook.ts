@@ -1,7 +1,7 @@
 import { BooleanType, Entity, Index, JsonType, PrimaryKey, Property } from '@mikro-orm/core'
 import { type IRootFilter } from '@undb/core'
 import { Webhook as CoreWebhook } from '@undb/integrations'
-import { BaseEntity } from './base.js'
+import { BaseEntity } from './base.entity.js'
 
 export const WEBHOOK_TABLE_NAME = 'undb_webhook'
 

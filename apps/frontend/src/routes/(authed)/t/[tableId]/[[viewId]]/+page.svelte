@@ -28,6 +28,8 @@
 	import { sidebarCollapsed } from '$lib/store/ui'
 	import ExportTableTemplate from '$lib/template/ExportTableTemplate.svelte'
 	import { cn } from '$lib/utils'
+	import MoveToBase from '$lib/base/MoveToBase.svelte'
+	import SelectTableMoveToBase from '$lib/base/SelectTableMoveToBase.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -108,6 +110,7 @@
 {/key}
 <ViewConfigModal />
 <CreateRecord data={data.createRecord} />
+<MoveToBase />
 <CreateField data={data.createField} />
 <WebhookListModal />
 <FormListDrawer />

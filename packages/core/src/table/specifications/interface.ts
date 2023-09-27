@@ -68,6 +68,7 @@ import type { WithChartAggregateSpec } from '../visualization/specifications/cha
 import type { WithNumberAggregateSpec } from '../visualization/specifications/number-visualization.specification.js'
 import type { WithVisualizationFieldSpec } from '../visualization/specifications/visualization-field.specification.js'
 import type { WithVisualizationNameSpec } from '../visualization/specifications/visualization-name.specification.js'
+import type { WithTableBaseId } from './table-base-id.specification.js'
 import type { WithTableEmoji } from './table-emoji.specification.js'
 import type { WithNewField } from './table-field.specification.js'
 import type { WithTableId, WithTableIds } from './table-id.specification.js'
@@ -88,6 +89,8 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   newView(s: WithNewView): void
   withoutView(s: WithoutView): void
   viewsOrderEqual(s: WithViewsOrder): void
+
+  baseIdEq(s: WithTableBaseId): void
 
   formsEqual(s: WithTableForms): void
   withFormName(s: WithFormName): void

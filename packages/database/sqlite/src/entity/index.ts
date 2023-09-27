@@ -1,6 +1,7 @@
 import { ApiToken } from './api-token.js'
 import { Attachment } from './attachment.js'
 import { Audit } from './audit.js'
+import { Base } from './base.js'
 import { Field, fieldEntities } from './field.js'
 import { FLS } from './fls.js'
 import { Form } from './form.js'
@@ -17,6 +18,7 @@ import { visualizationEntities } from './visualization.js'
 import { Webhook } from './webhook.js'
 
 export * from './audit.js'
+export * from './base.js'
 export * from './field.js'
 export * from './option.js'
 export * from './outbox.js'
@@ -27,6 +29,7 @@ export * from './webhook.js'
 
 export const entities = [
   Table,
+  Base,
   ...viewEntities,
   Form,
   Field,
