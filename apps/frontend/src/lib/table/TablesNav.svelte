@@ -25,7 +25,7 @@
 				<Accordion.Trigger class="hover:no-underline hover:bg-gray-100 px-3 py-2 border-0 w-full">
 					<div class="text-sm text-gray-900 font-light flex items-center justify-between gap-2 w-full pr-2">
 						<div class="flex items-center gap-2">
-							<i class="ti ti-database"></i>
+							<i class="ti ti-database text-gray-500"></i>
 							<span>
 								{base.name}
 							</span>
@@ -41,7 +41,7 @@
 								$currentBaseId === base.id && 'opacity-100',
 							)}
 						>
-							<i class="ti ti-settings"></i>
+							<i class="ti ti-settings text-gray-500"></i>
 						</button>
 					</div>
 				</Accordion.Trigger>

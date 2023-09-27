@@ -72,7 +72,9 @@
 			<Tooltip.Root openDelay={10} positioning={{ placement: 'bottom' }}>
 				<Tooltip.Trigger>
 					<button on:click={() => updateTableModal.open()}>
-						<i class="ti ti-settings text-gray-600 dark:text-gray-200 dark:bg-gray-700" />
+						<i
+							class="ti ti-settings rounded-sm transition hover:bg-gray-100 dark:hover:bg-gray-700 p-1 text-gray-600 dark:text-gray-200 dark:bg-gray-700"
+						/>
 					</button>
 				</Tooltip.Trigger>
 				<Tooltip.Content>

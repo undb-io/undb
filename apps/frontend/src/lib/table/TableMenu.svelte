@@ -22,7 +22,9 @@
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger>
 		<button>
-			<i class="ti ti-dots dark:text-gray-50 hover:bg-gray-100 dark:hover:bg-gray-700 p-1 text-gray-600"></i>
+			<i
+				class="ti ti-dots rounded-sm transition dark:text-gray-50 hover:bg-gray-100 dark:hover:bg-gray-700 p-1 text-gray-600"
+			></i>
 		</button>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class="w-48">
