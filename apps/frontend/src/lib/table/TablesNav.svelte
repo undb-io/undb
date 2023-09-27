@@ -41,7 +41,7 @@
 								$currentBaseId === base.id && 'opacity-100',
 							)}
 						>
-							<i class="ti ti-settings"></i>
+							<i class="ti ti-settings text-gray-500"></i>
 						</button>
 					</div>
 				</Accordion.Trigger>
