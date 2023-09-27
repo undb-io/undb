@@ -198,6 +198,7 @@ export const config: InitOptions = {
         'Empty Base': 'No base',
         'base settings': 'base settings',
         'Delete Base': 'Delete base',
+        'n tables': '{{n}} tables',
       },
       table: {
         Tables: 'Tables',
@@ -649,6 +650,7 @@ export const config: InitOptions = {
         'Empty Base': '无 base',
         'base settings': 'base 设置',
         'Delete Base': '删除 base',
+        'n tables': '{{n}} 个表',
       },
       table: {
         Tables: '表格',

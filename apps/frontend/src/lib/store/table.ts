@@ -571,3 +571,10 @@ export const getBaseById = derived(
 		(baseId: string) =>
 			$bases.find((base) => base.id === baseId),
 )
+
+export const baseTables = derived(
+	[allTables],
+	([$tables]) =>
+		(baseId: string) =>
+			$tables?.filter((table) => table.baseId === baseId),
+)

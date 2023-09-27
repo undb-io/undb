@@ -5,6 +5,7 @@
 	import { createBaseModal } from '$lib/store/modal'
 	import { firstTableOfBase } from '$lib/store/table'
 	import type { IQueryBase } from '@undb/core'
+	import BaseCardTablesCard from './BaseCardTablesCard.svelte'
 
 	export let bases: IQueryBase[] = []
 
@@ -21,12 +22,16 @@
 			href={getHref(base)}
 			class="cursor-pointer disabled:cursor-not-allowed disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 [&:focus:not(:focus-visible)]:outline-none focus-visible:ring-indigo-600 rounded-md p-4 bg-white border border-solid border-slate-200 hover:border-slate-100 hover:shadow-md transition h-20 flex items-center justify-between group"
 		>
-			<h6 class="antialiased font-bold text-slate-800 text-[1rem] flex items-center gap-2">
-				<i class="ti ti-database"></i>
-				<span>
-					{base.name}
-				</span>
-			</h6>
+			<div>
+				<h6 class="antialiased font-bold text-slate-800 text-[1rem] flex items-center gap-2">
+					<i class="ti ti-database"></i>
+					<span>
+						{base.name}
+					</span>
+				</h6>
+
+				<BaseCardTablesCard {base} />
+			</div>
 
 			<Tooltip.Root>
 				<Tooltip.Trigger>
