@@ -21,8 +21,8 @@
 			href={getHref(base)}
 			class="cursor-pointer disabled:cursor-not-allowed disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 [&:focus:not(:focus-visible)]:outline-none focus-visible:ring-indigo-600 rounded-md p-4 bg-white border border-solid border-slate-200 hover:border-slate-100 hover:shadow-md transition h-20 flex items-center justify-between group"
 		>
-			<h6 class="antialiased font-bold text-slate-900 text-[1rem] flex items-center gap-1">
-				<i class="ti ti-category"></i>
+			<h6 class="antialiased font-bold text-slate-800 text-[1rem] flex items-center gap-2">
+				<i class="ti ti-database"></i>
 				<span>
 					{base.name}
 				</span>
@@ -34,7 +34,7 @@
 						variant="ghost"
 						size="icon"
 						href={`/bases/${base.id}`}
-						class="text-gray-600 hidden group-hover:flex items-center"
+						class="text-gray-600 flex opacity-0 group-hover:opacity-100 items-center transition"
 					>
 						<i class="ti ti-settings"></i>
 					</Button>

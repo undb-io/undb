@@ -17,7 +17,7 @@
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
 		<Button class={cn('gap-2', $$restProps.class)} variant="outline" builders={[builder]}>
-			<i class="ti ti-category"></i>
+			<i class="ti ti-database"></i>
 			<span>
 				{$t('Select Base', { ns: 'base' })}
 			</span>
@@ -27,7 +27,7 @@
 		<DropdownMenu.RadioGroup bind:value>
 			{#each bases as base}
 				<DropdownMenu.RadioItem value={base.id} class="flex items-center gap-2">
-					<i class="ti ti-category"></i>
+					<i class="ti ti-database"></i>
 					<span>
 						{base.name}
 					</span>
