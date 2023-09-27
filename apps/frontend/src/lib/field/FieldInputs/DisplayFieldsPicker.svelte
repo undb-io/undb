@@ -95,7 +95,7 @@
 	<DropdownMenu.Content class="w-56">
 		{#each filteredFields as field}
 			{@const selected = !!group?.includes(field.id)}
-			<DropdownMenu.Item>
+			<DropdownMenu.Item on:click={(e) => e.preventDefault()}>
 				<Label class="hover:bg-gray-100 dark:hover:bg-gray-500 cursor-pointer flex w-full">
 					<li class="w-full flex justify-between items-center text-gray-800 dark:text-gray-200">
 						<div class="flex flex-1 items-center gap-2">
