@@ -12,15 +12,24 @@
 	const getBases = trpc().base.list.query({}, { enabled })
 
 	$: bases = $getBases.data?.bases ?? []
+
+	$: selected = value ? bases.find((base) => base.id === value) : undefined
 </script>
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger asChild let:builder>
 		<Button class={cn('gap-2', $$restProps.class)} variant="outline" builders={[builder]}>
-			<i class="ti ti-database"></i>
-			<span>
-				{$t('Select Base', { ns: 'base' })}
-			</span>
+			{#if selected}
+				<i class="ti ti-database"></i>
+				<span>
+					{selected.name}
+				</span>
+			{:else}
+				<i class="ti ti-database"></i>
+				<span>
+					{$t('Select Base', { ns: 'base' })}
+				</span>
+			{/if}
 		</Button>
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content class="w-56">
