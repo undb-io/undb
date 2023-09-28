@@ -1,7 +1,9 @@
 <script lang="ts">
+	import { Button } from '$components/ui/button'
 	import * as HoverCard from '$lib/components/ui/hover-card'
 	import { t } from '$lib/i18n'
-	import { baseTables } from '$lib/store/table'
+	import { createTableModal } from '$lib/store/modal'
+	import { baseTables, createTableDefaultValue } from '$lib/store/table'
 	import { cn } from '$lib/utils'
 	import type { IQueryBase } from '@undb/core'
 
@@ -14,11 +16,11 @@
 	<HoverCard.Trigger>
 		<span class="text-xs text-gray-400">
 			<i class="ti ti-table"></i>
-			{$t('n tables', { ns: 'base', n: tables.length })}</span
-		>
+			{$t('n tables', { ns: 'base', n: tables.length })}
+		</span>
 	</HoverCard.Trigger>
-	{#if tables.length}
-		<HoverCard.Content class="py-2 px-1.5">
+	<HoverCard.Content class="py-2 px-1.5">
+		{#if tables.length}
 			{#each tables as table}
 				<a
 					href={`/t/${table.id}`}
@@ -35,6 +37,19 @@
 					{table.name}
 				</a>
 			{/each}
-		</HoverCard.Content>
-	{/if}
+		{:else}
+			<Button
+				variant="outline"
+				class="w-full"
+				on:click={() => {
+					createTableDefaultValue.set({
+						baseId: base.id,
+					})
+					createTableModal.open()
+				}}
+			>
+				{$t('Create New Table')}
+			</Button>
+		{/if}
+	</HoverCard.Content>
 </HoverCard.Root>
