@@ -445,8 +445,8 @@ export class Table {
     return spec
   }
 
-  public duplicateView(id: string): TableCompositeSpecification {
-    const s1 = this.views.duplicateView(id)
+  public duplicateView(id: string, name?: string): TableCompositeSpecification {
+    const s1 = this.views.duplicateView(id, name)
     const s2 = this.viewsOrder.addView(s1.view)
     const spec = s1.and(s2)
     spec.mutate(this)
