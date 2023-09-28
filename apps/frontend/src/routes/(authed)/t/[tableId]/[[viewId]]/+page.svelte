@@ -93,8 +93,8 @@
 	})
 </script>
 
-<div class="grid grid-cols-6 h-full overflow-auto">
-	<div class={cn('h-full overflow-auto', $viewsSideBarOpen ? 'col-span-5' : 'col-span-6')}>
+<div class="grid grid-cols-5 h-full overflow-auto">
+	<div class={cn('h-full overflow-auto', $viewsSideBarOpen ? 'col-span-4' : 'col-span-5')}>
 		<TableIndex />
 	</div>
 	{#if $viewsSideBarOpen}
