@@ -134,3 +134,4 @@ export const selectTableMoveToBaseModal = createModal(SELECT_TABLE_MOVE_TO_BASE_
 export const confirmDeleteBase = writable(false)
 
 export const confirmDuplicateView = writable(false)
+export const confirmUpdateViewName = writable(false)
