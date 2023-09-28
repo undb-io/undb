@@ -24,10 +24,10 @@
 	import { Button } from '$components/ui/button'
 	import * as Tooltip from '$lib/components/ui/tooltip'
 	import * as Avatar from '$lib/components/ui/avatar'
-	import Toast from '$components/ui/toast/toast.svelte'
 	import ImportTemplate from '$lib/template/ImportTemplate.svelte'
 	import CreateBase from '$lib/base/CreateBase.svelte'
 	import SelectTableMoveToBase from '$lib/base/SelectTableMoveToBase.svelte'
+	import { toast } from 'svelte-sonner'
 
 	$: navigation = [
 		{
@@ -49,15 +49,11 @@
 
 	export let data: LayoutData
 
-	let copied = false
 	const token = Cookies.get('undb_auth')!
 
 	const copyToken = () => {
 		copyText(token)
-		copied = true
-		setTimeout(() => {
-			copied = false
-		}, 2000)
+		toast.success($t('COPIED', { ns: 'success' }))
 	}
 
 	$: tables = data.tables
@@ -420,22 +416,6 @@
 		</div>
 	</main>
 </div>
-
-{#if copied}
-	<Toast class="z-[99999] dark:bg-primary-50/95 dark:text-gray-700" bind:open={copied}>
-		<div class="flex items-center gap-2">
-			<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"
-				><path
-					fill-rule="evenodd"
-					d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-					clip-rule="evenodd"
-				/></svg
-			>
-			<span class="sr-only">Check icon</span>
-			{$t('Copied', { ns: 'common' })}
-		</div>
-	</Toast>
-{/if}
 
 <CreateTable data={$page.data.form} />
 <CreateBase />

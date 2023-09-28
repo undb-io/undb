@@ -7,18 +7,20 @@
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { ViewVO } from '@undb/core'
+	import { toast } from 'svelte-sonner'
 
 	const table = getTable()
 	export let view: ViewVO
 
+	let name = view.name.value
+
 	const duplicate = trpc().table.view.duplicate.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('TABLE.VIEW_DUPLICTED', { ns: 'success', name }))
 			await invalidate(`table:${$table.id.value}`)
 			await goto(`/t/${$table.id.value}/${$table.viewsOrder.last}`)
 		},
 	})
-
-	let name = view.name.value
 
 	const duplicateView = async () => {
 		$duplicate.mutate({

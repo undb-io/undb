@@ -5,13 +5,12 @@
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
 	import type { createFormSchema } from '@undb/core'
-	import { slide } from 'svelte/transition'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import { Label } from '$lib/components/ui/label'
 	import { Input } from '$lib/components/ui/input'
 	import { Button } from '$lib/components/ui/button'
-	import Toast from '$components/ui/toast/toast.svelte'
+	import { toast } from 'svelte-sonner'
 
 	export let data: Validation<typeof createFormSchema>
 
@@ -19,8 +18,12 @@
 
 	const createForm = trpc().table.form.create.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('TABLE.FORM_CREATED', { ns: 'success', name: $form.name }))
 			$formDrawerMode = 'list'
 			await invalidate(`table:${$table.id.value}`)
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -61,12 +64,3 @@
 		</div>
 	</div>
 </form>
-
-{#if $createForm.error}
-	<Toast transition={slide} position="bottom-right" class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$createForm.error.message}
-		</span>
-	</Toast>
-{/if}

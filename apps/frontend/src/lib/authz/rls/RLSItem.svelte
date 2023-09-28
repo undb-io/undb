@@ -9,6 +9,7 @@
 	import type { ISubjectType } from './rls.type'
 	import { hasPermission } from '$lib/store/authz'
 	import { Button } from '$lib/components/ui/button'
+	import { toast } from 'svelte-sonner'
 
 	export let rls: RLS
 
@@ -22,19 +23,27 @@
 
 	const deleteRLS = trpc().authz.rls.delete.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('TABLE.RLS_DELETED', { ns: 'success' }))
 			await invalidate(`table:${$table.id.value}`)
 			if (rls.policy.action === 'list') {
 				await $data.refetch()
 			}
 		},
+		onError(error, variables, context) {
+			toast.error(error.message)
+		},
 	})
 
 	const updateRLS = trpc().authz.rls.update.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('TABLE.RLS_UPDATED', { ns: 'success' }))
 			await invalidate(`table:${$table.id.value}`)
 			if (rls.policy.action === 'list') {
 				await $data.refetch()
 			}
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 </script>

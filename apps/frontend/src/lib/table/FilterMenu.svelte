@@ -8,11 +8,11 @@
 	import { getValidFilters } from '$lib/filter/filter.util'
 	import { hasPermission } from '$lib/store/authz'
 	import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover'
-	import Toast from '$components/ui/toast/toast.svelte'
 	import * as Alert from '$lib/components/ui/alert'
 	import { writable } from 'svelte/store'
 	import type { IFilter } from '@undb/core'
 	import { cn } from '$lib/utils'
+	import { toast } from 'svelte-sonner'
 
 	$: value = writable<Partial<IFilter>[]>($filters)
 
@@ -28,9 +28,13 @@
 
 	const setFilter = trpc().table.view.filter.set.mutation({
 		async onSuccess() {
+			toast.success($t('TABLE.FILTER_SET', { ns: 'success' }))
 			open = false
 			await invalidate(`table:${$table.id.value}`)
 			await $data.refetch()
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -107,12 +111,3 @@
 		</form>
 	</PopoverContent>
 </Popover>
-
-{#if $setFilter.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$setFilter.error.message}
-		</span>
-	</Toast>
-{/if}

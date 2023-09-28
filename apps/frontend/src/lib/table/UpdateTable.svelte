@@ -9,7 +9,6 @@
 	import { FieldId, createUpdateTableSchema } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { trpc } from '$lib/trpc/client'
-	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import { getTable } from '$lib/store/table'
 	import { goto, invalidate, invalidateAll } from '$app/navigation'
@@ -17,7 +16,7 @@
 	import { updateTableModal } from '$lib/store/modal'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'
-	import Toast from '$components/ui/toast/toast.svelte'
+	import { toast } from 'svelte-sonner'
 
 	export let data: Validation<ReturnType<typeof createUpdateTableSchema>>
 	let opened: Record<string, boolean> = {}
@@ -34,16 +33,24 @@
 
 	const updateTable = trpc().table.update.mutation({
 		async onSuccess(data, variables, context) {
-			updateTableModal.close()
+			toast.success($t('TABLE.UPDATED', { ns: 'success', name: $table.name.value }))
 			await invalidate(`table:${$table.id.value}`)
 			reset()
+			updateTableModal.close()
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
 	const deleteTable = trpc().table.delete.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('TABLE.DELETED', { ns: 'success', name: $table.name.value }))
 			await invalidateAll()
 			await goto('/')
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -162,15 +169,6 @@
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>
-
-{#if $updateTable.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$updateTable.error.message}
-		</span>
-	</Toast>
-{/if}
 
 <AlertDialog.Root bind:open={confirmDeleteTable}>
 	<AlertDialog.Content>

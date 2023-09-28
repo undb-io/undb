@@ -8,7 +8,7 @@
 	import { t } from '$lib/i18n'
 	import { getValidFilters } from '$lib/filter/filter.util'
 	import type { FLS, IFLSAction } from '@undb/authz'
-	import Toast from '$components/ui/toast/toast.svelte'
+	import { toast } from 'svelte-sonner'
 
 	const table = getTable()
 
@@ -21,10 +21,14 @@
 
 	const createFLS = trpc().authz.fls.create.mutation({
 		async onSettled(variables) {
+			toast.success($t('TABLE.FLS_CREATED', { ns: 'success' }))
 			await invalidate(`table:${$table.id.value}`)
 			filter = []
 			userIds = []
 			createMode = false
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 </script>
@@ -66,13 +70,4 @@
 			{$t('Create New FLS', { ns: 'authz' })}
 		</Button>
 	</div>
-{/if}
-
-{#if $createFLS.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$createFLS.error.message}
-		</span>
-	</Toast>
 {/if}

@@ -29,7 +29,7 @@
 	import { isEmpty, keys } from 'lodash-es'
 	import { pick } from 'lodash-es'
 	import * as Dialog from '$lib/components/ui/dialog'
-	import Toast from '$components/ui/toast/toast.svelte'
+	import { toast } from 'svelte-sonner'
 
 	const table = getTable()
 	const view = getView()
@@ -44,10 +44,14 @@
 
 	const updateField = trpc().table.field.update.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('TABLE.FIELD_UPDATED', { ns: 'success', name: field.name.value }))
 			await invalidate(`table:${$table.id.value}`)
 			updateFieldModal.close()
 			await $records.refetch()
 			updateFieldModal.close()
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -223,12 +227,3 @@
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>
-
-{#if $updateField.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$updateField.error.message}
-		</span>
-	</Toast>
-{/if}

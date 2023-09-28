@@ -655,6 +655,9 @@ importers:
       svelte-previous:
         specifier: ^2.1.4
         version: 2.1.4(svelte@4.2.1)
+      svelte-sonner:
+        specifier: ^0.3.0
+        version: 0.3.0(svelte@4.2.1)
       svelte-tiny-virtual-list:
         specifier: ^2.0.5
         version: 2.0.5
@@ -16573,6 +16576,14 @@ packages:
     resolution: {integrity: sha512-D4/Z7LQ6ThawYb7FlAeS/qGbcwVlqzRHn1zZgWPlEK0cp4l2UMcscqel58mp+gTuk4UX9gl516GYXcHFvuyslA==}
     peerDependencies:
       svelte: ^3.30.0 || ^4.0.0
+    dependencies:
+      svelte: 4.2.1
+    dev: true
+
+  /svelte-sonner@0.3.0(svelte@4.2.1):
+    resolution: {integrity: sha512-AbRxxqQJb0cc2wEbluc+HVbHukYcnXUZtfSCAcxCHjV3JxB7qrBK4s4XUDSBsVT4Lboqk/0Qv7THIghkEl665A==}
+    peerDependencies:
+      svelte: '>=3 <5'
     dependencies:
       svelte: 4.2.1
     dev: true
