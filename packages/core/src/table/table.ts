@@ -449,7 +449,7 @@ export class Table {
     const s1 = this.views.duplicateView(id)
     const s2 = this.viewsOrder.addView(s1.view)
     const spec = s1.and(s2)
-    spec.mutate(this).unwrap()
+    spec.mutate(this)
 
     return spec
   }
