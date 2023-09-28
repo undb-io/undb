@@ -3,15 +3,16 @@
 	import * as DropdownMenu from '$components/ui/dropdown-menu'
 	import { t } from '$lib/i18n'
 	import { hasPermission } from '$lib/store/authz'
-	import { selectedFormId } from '$lib/store/drawer'
-	import { confirmDuplicateView, confirmUpdateViewName, formEditorModal } from '$lib/store/modal'
+	import { confirmCreateFormFromView, confirmDuplicateView, confirmUpdateViewName } from '$lib/store/modal'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { type IExportType, type ViewVO, FormId, type IViewDisplayType } from '@undb/core'
+	import type { IExportType, ViewVO, IViewDisplayType } from '@undb/core'
 	import { tick } from 'svelte'
 	import ViewIcon from './ViewIcon.svelte'
 	import ConfirmDuplicateView from './ConfirmDuplicateView.svelte'
 	import ConfirmUpdateViewName from './ConfirmUpdateViewName.svelte'
+	import ConfirmCreateFormFromView from './ConfirmCreateFormFromView.svelte'
+	import { toast } from 'svelte-sonner'
 
 	const table = getTable()
 
@@ -58,27 +59,19 @@
 		a.remove()
 	}
 
-	const createFormFromViewMutation = trpc().table.form.createFromView.mutation({
-		async onSuccess(data, variables, context) {
-			const id = variables.form.id
-			await invalidate(`table:${$table.id.value}`)
-			selectedFormId.set(id)
-			formEditorModal.open()
-		},
-	})
-
-	const createFormFromView = () => {
-		const id = FormId.createId()
-		$createFormFromViewMutation.mutate({
-			tableId: $table.id.value,
-			viewId: view.id.value,
-			form: { id },
-		})
-	}
-
 	const switchDisplayTypeMutation = trpc().table.view.switchDisplayType.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success(
+				$t('TABLE.VIEW_DISPLAY_TYPE_SWITCHED', {
+					ns: 'success',
+					viewName: view.name.value,
+					type: $t(variables.displayType),
+				}),
+			)
 			await invalidate(`table:${$table.id.value}`)
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -164,7 +157,7 @@
 		{#if $hasPermission('table:create_form')}
 			<DropdownMenu.Item
 				on:click={() => {
-					createFormFromView()
+					confirmCreateFormFromView.set(true)
 				}}
 				class="font-normal flex items-center gap-2"
 			>
@@ -184,3 +177,4 @@
 
 <ConfirmDuplicateView {view} />
 <ConfirmUpdateViewName {view} />
+<ConfirmCreateFormFromView {view} />
