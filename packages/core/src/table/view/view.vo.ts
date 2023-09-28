@@ -528,6 +528,7 @@ export class ViewVO extends ValueObject<IView> {
     const newView = ViewVO.create({
       ...this.toJSON(),
       ...input,
+      id: ViewId.createId(),
     })
 
     return newView

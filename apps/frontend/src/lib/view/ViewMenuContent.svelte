@@ -4,12 +4,14 @@
 	import { t } from '$lib/i18n'
 	import { hasPermission } from '$lib/store/authz'
 	import { selectedFormId } from '$lib/store/drawer'
-	import { formEditorModal } from '$lib/store/modal'
+	import { confirmDuplicateView, confirmUpdateViewName, formEditorModal } from '$lib/store/modal'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import { ViewName, type IExportType, type ViewVO, FormId, type IViewDisplayType } from '@undb/core'
+	import { type IExportType, type ViewVO, FormId, type IViewDisplayType } from '@undb/core'
 	import { tick } from 'svelte'
 	import ViewIcon from './ViewIcon.svelte'
+	import ConfirmDuplicateView from './ConfirmDuplicateView.svelte'
+	import ConfirmUpdateViewName from './ConfirmUpdateViewName.svelte'
 
 	const table = getTable()
 
@@ -18,7 +20,6 @@
 	export let updating = false
 
 	let input: HTMLInputElement
-	$: name = view.name.value
 
 	const handleUpdating = async () => {
 		await tick()
@@ -27,39 +28,6 @@
 		input.select()
 	}
 	$: if (updating) handleUpdating()
-
-	const updateName = trpc().table.view.updateName.mutation({
-		async onSuccess(data, variables, context) {
-			await invalidate(`table:${$table.id.value}`)
-			view.name = new ViewName({ value: name })
-			open = false
-		},
-	})
-	const update = async () => {
-		updating = false
-		$updateName.mutate({
-			tableId: $table.id.value,
-			view: {
-				id: view.id.value,
-				name,
-			},
-		})
-	}
-
-	const duplicate = trpc().table.view.duplicate.mutation({
-		async onSuccess(data, variables, context) {
-			await invalidate(`table:${$table.id.value}`)
-			open = false
-			await tick()
-			goto(`/t/${$table.id.value}/${$table.viewsOrder.last}`)
-		},
-	})
-	const duplicateView = async () => {
-		$duplicate.mutate({
-			tableId: $table.id.value,
-			id: view.id.value,
-		})
-	}
 
 	const deleteMutation = trpc().table.view.delete.mutation({
 		async onSuccess(data, variables, context) {
@@ -135,7 +103,7 @@
 <DropdownMenu.Content class="w-48">
 	<DropdownMenu.Group>
 		{#if $hasPermission('table:update_view_name')}
-			<DropdownMenu.Item on:click={() => (updating = true)} class="font-normal flex items-center gap-2">
+			<DropdownMenu.Item on:click={() => ($confirmUpdateViewName = true)} class="font-normal flex items-center gap-2">
 				<i class="ti ti-pencil text-gray-500 dark:text-gray-50" />
 				<span>{$t('Update View Name')}</span>
 			</DropdownMenu.Item>
@@ -164,7 +132,7 @@
 			</DropdownMenu.Sub>
 		{/if}
 		{#if $hasPermission('table:duplicate_view')}
-			<DropdownMenu.Item on:click={duplicateView} class="font-normal flex items-center gap-2">
+			<DropdownMenu.Item on:click={() => ($confirmDuplicateView = true)} class="font-normal flex items-center gap-2">
 				<i class="ti ti-copy text-gray-500 dark:text-gray-50" />
 				<span>{$t('Duplicate View')}</span>
 			</DropdownMenu.Item>
@@ -213,3 +181,6 @@
 		{/if}
 	</DropdownMenu.Group>
 </DropdownMenu.Content>
+
+<ConfirmDuplicateView {view} />
+<ConfirmUpdateViewName {view} />
