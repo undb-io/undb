@@ -39,7 +39,7 @@
 						variant="ghost"
 						size="icon"
 						href={`/bases/${base.id}`}
-						class="text-gray-600 flex opacity-0 group-hover:opacity-100 items-center transition"
+						class="text-gray-500 flex opacity-0 group-hover:opacity-100 items-center transition"
 					>
 						<i class="ti ti-settings"></i>
 					</Button>
