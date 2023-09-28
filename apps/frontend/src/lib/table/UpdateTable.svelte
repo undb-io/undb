@@ -17,6 +17,7 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 	import { toast } from 'svelte-sonner'
+	import { tick } from 'svelte'
 
 	export let data: Validation<ReturnType<typeof createUpdateTableSchema>>
 	let opened: Record<string, boolean> = {}
@@ -36,6 +37,10 @@
 			toast.success($t('TABLE.UPDATED', { ns: 'success', name: $table.name.value }))
 			await invalidate(`table:${$table.id.value}`)
 			reset()
+			await tick()
+			updateTableModal.close()
+		},
+		onSettled(data, error, variables, context) {
 			updateTableModal.close()
 		},
 		onError(error, variables, context) {
