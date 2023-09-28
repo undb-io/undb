@@ -110,7 +110,7 @@
 							<span class="text-red-500">*</span>
 						</div>
 
-						<Input name="name" required bind:value={$form.name} />
+						<Input name="name" required bind:value={$form.name} autofocus />
 					</Label>
 				</div>
 

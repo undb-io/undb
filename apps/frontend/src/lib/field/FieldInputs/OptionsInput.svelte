@@ -11,8 +11,6 @@
 
 	export let value: SetRequired<IMutateOptionSchema, 'color'>[] = []
 
-	$: console.log(value)
-
 	onMount(() => {
 		if (!value) value = []
 		if (!value?.length) {
