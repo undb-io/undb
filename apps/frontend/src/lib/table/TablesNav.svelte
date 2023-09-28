@@ -3,12 +3,11 @@
 	import { page } from '$app/stores'
 	import TablesNavItem from './TablesNavItem.svelte'
 	import * as Accordion from '$lib/components/ui/accordion'
-	import { createTableDefaultValue, currentBaseId } from '$lib/store/table'
-	import { Button } from '$components/ui/button'
+	import { currentBaseId } from '$lib/store/table'
 	import { t } from '$lib/i18n'
-	import { createTableModal } from '$lib/store/modal'
 	import { cn } from '$lib/utils'
 	import { goto } from '$app/navigation'
+	import CreateTableButton from './CreateTableButton.svelte'
 
 	export let tables: IQueryTable[]
 	export let bases: IQueryBase[]
@@ -53,22 +52,11 @@
 							<TablesNavItem {active} {table} />
 						{/each}
 					{/if}
-					<Button
+					<CreateTableButton
 						size="sm"
 						variant={baseTables.length ? 'ghost' : 'outline'}
 						class={cn('w-full gap-2 py-1', baseTables.length ? 'text-slate-500 justify-start' : 'my-3')}
-						on:click={() => {
-							createTableDefaultValue.set({
-								baseId: base.id,
-							})
-							createTableModal.open()
-						}}
-					>
-						<i class="ti ti-plus"></i>
-						<span>
-							{$t('Create New Table')}
-						</span>
-					</Button>
+					/>
 				</Accordion.Content>
 			</Accordion.Item>
 		{/each}

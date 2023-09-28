@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { Button } from '$components/ui/button'
 	import * as HoverCard from '$lib/components/ui/hover-card'
+	import CreateTableButton from '$lib/table/CreateTableButton.svelte'
 	import { t } from '$lib/i18n'
-	import { createTableModal } from '$lib/store/modal'
-	import { baseTables, createTableDefaultValue } from '$lib/store/table'
+	import { baseTables } from '$lib/store/table'
 	import { cn } from '$lib/utils'
 	import type { IQueryBase } from '@undb/core'
 
@@ -38,18 +37,7 @@
 				</a>
 			{/each}
 		{:else}
-			<Button
-				variant="outline"
-				class="w-full"
-				on:click={() => {
-					createTableDefaultValue.set({
-						baseId: base.id,
-					})
-					createTableModal.open()
-				}}
-			>
-				{$t('Create New Table')}
-			</Button>
+			<CreateTableButton class="w-full" variant="outline" />
 		{/if}
 	</HoverCard.Content>
 </HoverCard.Root>
