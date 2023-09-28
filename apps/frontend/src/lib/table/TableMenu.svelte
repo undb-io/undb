@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { t } from '$lib/i18n'
 	import {
+		confirmDeleteTable,
 		erdModal,
 		exportTableTemplate,
 		formListDrawer,
@@ -27,7 +28,7 @@
 			></i>
 		</button>
 	</DropdownMenu.Trigger>
-	<DropdownMenu.Content class="w-48">
+	<DropdownMenu.Content class="w-52">
 		{#if $hasPermission('table:list_form')}
 			<DropdownMenu.Item
 				on:click={() => {
@@ -125,6 +126,19 @@
 			>
 				<i class="ti ti-recycle" />
 				<span>{$t('recycle bin', { ns: 'table' })} </span>
+			</DropdownMenu.Item>
+		{/if}
+
+		{#if $hasPermission('table:delete')}
+			<DropdownMenu.Separator />
+			<DropdownMenu.Item
+				class="text-red-500 gap-2"
+				on:click={() => {
+					$confirmDeleteTable = true
+				}}
+			>
+				<i class="ti ti-trash" />
+				<span>{$t('Delete Table')}</span>
 			</DropdownMenu.Item>
 		{/if}
 	</DropdownMenu.Content>

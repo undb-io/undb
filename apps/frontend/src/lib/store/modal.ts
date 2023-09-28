@@ -136,3 +136,5 @@ export const confirmDeleteBase = writable(false)
 export const confirmDuplicateView = writable(false)
 export const confirmUpdateViewName = writable(false)
 export const confirmCreateFormFromView = writable(false)
+
+export const confirmDeleteTable = writable(false)

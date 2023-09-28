@@ -30,6 +30,8 @@
 	import { cn } from '$lib/utils'
 	import MoveToBase from '$lib/base/MoveToBase.svelte'
 	import SelectTableMoveToBase from '$lib/base/SelectTableMoveToBase.svelte'
+	import ConfirmDeleteBase from '$lib/base/ConfirmDeleteBase.svelte'
+	import ConfirmDeleteTable from '$lib/table/ConfirmDeleteTable.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -108,6 +110,7 @@
 {#key $table}
 	<UpdateTable data={data.updateTable} />
 {/key}
+<ConfirmDeleteTable />
 <ViewConfigModal />
 <CreateRecord data={data.createRecord} />
 <MoveToBase />

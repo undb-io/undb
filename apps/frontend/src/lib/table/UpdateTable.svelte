@@ -11,11 +11,10 @@
 	import { trpc } from '$lib/trpc/client'
 	import { t } from '$lib/i18n'
 	import { getTable } from '$lib/store/table'
-	import { goto, invalidate, invalidateAll } from '$app/navigation'
+	import { invalidate } from '$app/navigation'
 	import CreateTableFieldAccordionItem from './CreateTableFieldAccordionItem.svelte'
-	import { updateTableModal } from '$lib/store/modal'
+	import { confirmDeleteTable, updateTableModal } from '$lib/store/modal'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
-	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 	import { toast } from 'svelte-sonner'
 	import { tick } from 'svelte'
 
@@ -33,28 +32,17 @@
 	}
 
 	const updateTable = trpc().table.update.mutation({
-		async onSuccess(data, variables, context) {
+		async onSuccess() {
 			toast.success($t('TABLE.UPDATED', { ns: 'success', name: $table.name.value }))
 			await invalidate(`table:${$table.id.value}`)
 			reset()
 			await tick()
 			updateTableModal.close()
 		},
-		onSettled(data, error, variables, context) {
+		onSettled() {
 			updateTableModal.close()
 		},
-		onError(error, variables, context) {
-			toast.error(error.message)
-		},
-	})
-
-	const deleteTable = trpc().table.delete.mutation({
-		async onSuccess(data, variables, context) {
-			toast.success($t('TABLE.DELETED', { ns: 'success', name: $table.name.value }))
-			await invalidateAll()
-			await goto('/')
-		},
-		onError(error, variables, context) {
+		onError(error) {
 			toast.error(error.message)
 		},
 	})
@@ -74,10 +62,9 @@
 		},
 	})
 
-	const { form, errors, reset, constraints, enhance, delayed, submitting } = superFrm
+	const { form, reset, constraints, enhance, delayed, submitting } = superFrm
 
 	$: displayFields = $form.schema?.filter((f) => !!f.display) ?? []
-	let confirmDeleteTable = false
 </script>
 
 <Dialog.Root bind:open={$updateTableModal.open}>
@@ -96,7 +83,7 @@
 							<DropdownMenu.Item
 								class="text-red-500 gap-2"
 								on:click={() => {
-									confirmDeleteTable = true
+									$confirmDeleteTable = true
 								}}
 							>
 								<i class="ti ti-trash" />
@@ -174,35 +161,3 @@
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>
-
-<AlertDialog.Root bind:open={confirmDeleteTable}>
-	<AlertDialog.Content>
-		<AlertDialog.Header>
-			<AlertDialog.Title>{$t('Confirm Delete Table', { table: $table.name.value })}</AlertDialog.Title>
-		</AlertDialog.Header>
-		<AlertDialog.Footer>
-			<AlertDialog.Cancel
-				on:click={() => {
-					confirmDeleteTable = false
-				}}
-			>
-				{$t('Confirm No', { ns: 'common' })}
-			</AlertDialog.Cancel>
-			<AlertDialog.Action
-				class="gap-2"
-				variant="destructive"
-				disabled={$deleteTable.isLoading}
-				on:click={() => {
-					$deleteTable.mutate({ id: $table.id.value })
-				}}
-			>
-				{#if $deleteTable.isLoading}
-					<i class="ti ti-rotate animate-spin"></i>
-				{:else}
-					<i class="ti ti-circle-check text-lg" />
-				{/if}
-				{$t('Confirm Yes', { ns: 'common' })}
-			</AlertDialog.Action>
-		</AlertDialog.Footer>
-	</AlertDialog.Content>
-</AlertDialog.Root>
