@@ -7,11 +7,14 @@
 	import { Button } from '$components/ui/button'
 	import * as Tooltip from '$lib/components/ui/tooltip'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { cn } from '$lib/utils'
 
 	const table = getTable()
 	const view = getView()
 
 	$: rh = $view.rowHeight?.unpack()
+
+	let open = false
 
 	const setRowHeight = trpc().table.view.setRowHeight.mutation({
 		async onSuccess(data, variables, context) {
@@ -26,11 +29,11 @@
 	}
 </script>
 
-<DropdownMenu.Root>
+<DropdownMenu.Root bind:open>
 	<DropdownMenu.Trigger asChild let:builder>
 		<Tooltip.Root openDelay={10} positioning={{ placement: 'bottom' }}>
 			<Tooltip.Trigger asChild let:builder={b}>
-				<Button variant="ghost" size="sm" builders={[builder, b]}>
+				<Button variant="ghost" size="sm" builders={[builder, b]} class={cn(open && 'bg-gray-100')}>
 					<i class="ti ti-line-height text-sm dark:text-gray-200" />
 				</Button>
 			</Tooltip.Trigger>

@@ -7,6 +7,7 @@
 	import { getShareViewUrl } from '@undb/integrations'
 	import { Button } from '$components/ui/button'
 	import ShareDropdown from './ShareDropdown.svelte'
+	import { cn } from '$lib/utils'
 
 	const table = getTable()
 	const view = getView()
@@ -40,7 +41,10 @@
 		<Button
 			variant="ghost"
 			size="sm"
-			class="dark:hover:bg-gray-800  dark:border-gray-400 dark:text-gray-200 gap-2 whitespace-nowrap"
+			class={cn(
+				'dark:hover:bg-gray-800  dark:border-gray-400 dark:text-gray-200 gap-2 whitespace-nowrap',
+				open && 'bg-gray-100',
+			)}
 		>
 			<i class="ti ti-brand-stackshare"></i>
 			{$t('share')}
