@@ -1,12 +1,13 @@
 <script lang="ts">
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 	import { selectTableMoveToBaseModal } from '$lib/store/modal'
-	import { currentBaseId } from '$lib/store/table'
+	import { currentBaseId, currentBase, tableById } from '$lib/store/table'
 	import { moveToBaseSchema, type IMoveToBaseSchema } from '@undb/core'
 	import { t } from '$lib/i18n'
 	import { trpc } from '$lib/trpc/client'
 	import TablePicker from '$lib/field/FieldInputs/TablePicker.svelte'
 	import { invalidate } from '$app/navigation'
+	import { toast } from 'svelte-sonner'
 
 	let tableId: string | undefined
 
@@ -15,6 +16,11 @@
 
 	const moveToBaseMutation = trpc().base.moveToBase.mutation({
 		async onSuccess(data, variables, context) {
+			if (!tableId) return
+			const table = await $tableById(tableId)
+			toast.success(
+				$t('TABLE.MOVED_TO_BASE', { ns: 'success', tableName: table?.name.value, baseName: $currentBase?.name }),
+			)
 			await invalidate('baseTables')
 		},
 	})

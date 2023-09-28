@@ -15,7 +15,7 @@
 	import * as Popover from '$lib/components/ui/popover'
 	import { Separator } from '$lib/components/ui/separator'
 	import * as Alert from '$lib/components/ui/alert'
-	import Toast from '$components/ui/toast/toast.svelte'
+	import { toast } from 'svelte-sonner'
 
 	const table = getTable()
 	const view = getView()
@@ -44,9 +44,13 @@
 
 	const setSort = trpc().table.view.sort.set.mutation({
 		async onSuccess() {
+			toast.success($t('TABLE.SORT_SET', { ns: 'success' }))
 			await invalidate(`table:${$table.id.value}`)
 			await $listRecords.refetch()
 			open = false
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -180,12 +184,3 @@
 		{/if}
 	</Popover.Content>
 </Popover.Root>
-
-{#if $setSort.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$setSort.error.message}
-		</span>
-	</Toast>
-{/if}

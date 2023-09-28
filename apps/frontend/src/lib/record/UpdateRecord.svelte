@@ -25,9 +25,9 @@
 	import RecordAudits from './RecordAudits.svelte'
 	import { onMount } from 'svelte'
 	import * as Dialog from '$lib/components/ui/dialog'
-	import Toast from '$components/ui/toast/toast.svelte'
 	import ConfirmDeleteRecord from './ConfirmDeleteRecord.svelte'
 	import ConfirmDuplicateRecord from './ConfirmDuplicateRecord.svelte'
+	import { toast } from 'svelte-sonner'
 
 	const table = getTable()
 	const view = getView()
@@ -36,14 +36,17 @@
 	export let data: Validation<any>
 
 	let displayAudits = true
-	let showNoUpdateMessage = false
 	$: shouldDisplayAudits = displayAudits && !$isShare
 	$: validators = createMutateRecordValuesSchema(fields ?? [], $record?.valuesJSON)
 	$: fields = $view.getOrderedFields($table.schema.nonSystemFields)
 
 	const updateRecord = trpc().record.update.mutation({
 		async onSuccess() {
+			toast.success($t('RECORD.UPDATED', { ns: 'success' }))
 			currentRecordId.set(undefined)
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -64,7 +67,6 @@
 			const values = pick(event.form.data, taintedKeys)
 			const oldValues = $record?.valuesJSON
 			let changedSet = {}
-			showNoUpdateMessage = false
 			for (let key of taintedKeys) {
 				if (values[key] !== oldValues?.[key]) {
 					changedSet = {
@@ -74,7 +76,7 @@
 				}
 			}
 			if (Object.keys(changedSet).length === 0) {
-				showNoUpdateMessage = true
+				toast.warning($t('RECORD.NO_COLUMN_TO_UPDATE', { ns: 'warnings' }))
 			} else {
 				$updateRecord.mutate({
 					tableId: $table.id.value,
@@ -213,21 +215,3 @@
 		</form>
 	{/key}
 </Dialog.Root>
-
-{#if $updateRecord.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$updateRecord.error.message}
-		</span>
-	</Toast>
-{/if}
-
-{#if showNoUpdateMessage}
-	<Toast class="z-[99999] !bg-yellow-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$t('RECORD.NO_COLUMN_TO_UPDATE', { ns: 'warnings' })}
-		</span>
-	</Toast>
-{/if}

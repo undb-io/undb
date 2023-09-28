@@ -5,6 +5,7 @@
 	import { QueryClientProvider } from '@tanstack/svelte-query'
 	import { trpc } from '$lib/trpc/client'
 	import { env } from '$env/dynamic/public'
+	import { Toaster } from 'svelte-sonner'
 
 	import 'nprogress/nprogress.css'
 	import { onMount } from 'svelte'
@@ -58,3 +59,5 @@
 </svelte:head>
 
 <svelte:window on:beforeunload={null} />
+
+<Toaster richColors position="bottom-center" />

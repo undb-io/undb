@@ -14,8 +14,8 @@
 	import WebhookHeaderInput from './WebhookHeaderInput.svelte'
 	import FilterEditor from '$lib/filter/FilterEditor.svelte'
 	import { getValidFilters } from '$lib/filter/filter.util'
-	import Toast from '$components/ui/toast/toast.svelte'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+	import { toast } from 'svelte-sonner'
 
 	export let data: Validation<typeof createWebhookSchema>
 
@@ -24,6 +24,10 @@
 	const createWebhook = trpc().webhook.create.mutation({
 		onSuccess() {
 			$webhookDrawerMode = 'list'
+			toast.success($t('WEBHOOK.CREATED', { ns: 'success', name: $form.name }))
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -166,12 +170,3 @@
 		</div>
 	</div>
 </form>
-
-{#if $createWebhook.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$createWebhook.error.message}
-		</span>
-	</Toast>
-{/if}

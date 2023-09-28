@@ -7,6 +7,7 @@
 	import { Input } from '$lib/components/ui/input'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Button } from '$lib/components/ui/button'
+	import { toast } from 'svelte-sonner'
 
 	let email = ''
 	let role: IRolesWithoutOwner = 'viewer'
@@ -20,8 +21,12 @@
 
 	const inviteMutation = trpc().invitation.invite.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('INVITED', { ns: 'success', email: variables.email, role: $t(variables.role, { ns: 'authz' }) }))
 			inviteModal.close()
 			await $getInvitations.refetch()
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 

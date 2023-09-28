@@ -2,17 +2,18 @@
 	import { getTable, getView } from '$lib/store/table'
 	import { t } from '$lib/i18n'
 	import Sortable from 'sortablejs'
-	import { onMount, tick } from 'svelte'
+	import { tick } from 'svelte'
 	import type { SortableEvent } from 'sortablejs'
 	import { trpc } from '$lib/trpc/client'
 	import { goto, invalidate } from '$app/navigation'
 	import ViewIcon from '$lib/view/ViewIcon.svelte'
 	import type { IViewDisplayType } from '@undb/core'
-	import { sidebarCollapsed } from '$lib/store/ui'
 	import { hasPermission } from '$lib/store/authz'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Button } from '$components/ui/button'
 	import ViewListItem from './ViewListItem.svelte'
+	import { toast } from 'svelte-sonner'
+	import { viewsSideBarOpen } from '$lib/store/modal'
 
 	const table = getTable()
 	const currentView = getView()
@@ -21,11 +22,7 @@
 
 	let el: HTMLUListElement
 
-	const moveView = trpc().table.view.move.mutation({
-		async onSuccess() {
-			// await invalidate(`table:${$table.id.value}`)
-		},
-	})
+	const moveView = trpc().table.view.move.mutation({})
 
 	const onEnd = (event: SortableEvent) => {
 		const { oldIndex, newIndex } = event
@@ -65,9 +62,14 @@
 
 	const createView = trpc().table.view.create.mutation({
 		async onSuccess() {
+			toast.success($t('TABLE.VIEW_CREATED', { ns: 'success' }))
 			await invalidate(`table:${$table.id.value}`)
 			await tick()
 			goto(`/t/${$table.id.value}/${$table.viewsOrder.last}`)
+			viewsSideBarOpen.set(false)
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 </script>

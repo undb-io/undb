@@ -13,7 +13,7 @@
 	import { me } from '$lib/store/me'
 	import FormSubmitItem from '$lib/form/FormSubmitItem.svelte'
 	import { Button } from '$components/ui/button'
-	import Toast from '$components/ui/toast/toast.svelte'
+	import { toast } from 'svelte-sonner'
 
 	export let data: PageData
 
@@ -23,6 +23,10 @@
 	const createShareRecord = trpc().share.createRecord.mutation({
 		onSuccess(data, variables, context) {
 			submitted = true
+			toast.success($t('TABLE.FORM_SUBMITTED', { ns: 'success' }))
+		},
+		onError(error) {
+			toast.error(error.message)
 		},
 	})
 
@@ -108,12 +112,3 @@
 		</section>
 	</div>
 </main>
-
-{#if $createShareRecord.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$createShareRecord.error.message}
-		</span>
-	</Toast>
-{/if}

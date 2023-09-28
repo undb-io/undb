@@ -9,10 +9,9 @@
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
 	import { tick } from 'svelte'
-	import { slide } from 'svelte/transition'
 	import { aggregateNumberFn } from '$lib/store/table'
 	import Label from '$components/ui/label/label.svelte'
-	import Toast from '$components/ui/toast/toast.svelte'
+	import { toast } from 'svelte-sonner'
 
 	const table = getTable()
 
@@ -27,11 +26,15 @@
 
 	const updateVisualization = trpc().table.visualization.update.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('TABLE.VISUALIZATION_UPDATED', { ns: 'success' }))
 			await invalidate(`table:${$table.id.value}`)
 			await $aggregateNumber.refetch()
 			await tick()
 			fieldId = visualization.fieldId?.value
 			numberAggregateFunction = visualization.numberAggregateFunction
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -109,12 +112,3 @@
 		</div>
 	</form>
 </div>
-
-{#if $updateVisualization.isSuccess}
-	<Toast class="fixed z-[99999] !bg-green-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$t('update success', { ns: 'common' })}
-		</span>
-	</Toast>
-{/if}

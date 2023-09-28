@@ -10,6 +10,8 @@
 	import { getTable } from '$lib/store/table'
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 	import { Label } from '$components/ui/label'
+	import { toast } from 'svelte-sonner'
+	import { tick } from 'svelte'
 
 	const table = getTable()
 
@@ -19,8 +21,16 @@
 
 	const duplicateField = trpc().table.field.duplicate.mutation({
 		async onSuccess(data, variables, context) {
-			duplicateFieldModal.close()
+			toast.success($t('TABLE.FIELD_DUPLICATED', { ns: 'success', name: $table.name.value }))
 			await invalidate(`table:${$table.id.value}`)
+			await tick()
+			duplicateFieldModal.close()
+		},
+		onSettled(data, error, variables, context) {
+			duplicateFieldModal.close()
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 </script>

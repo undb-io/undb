@@ -8,7 +8,7 @@
 	import type { IRLSAction, RLS } from '@undb/authz'
 	import { t } from '$lib/i18n'
 	import { getValidFilters } from '$lib/filter/filter.util'
-	import Toast from '$components/ui/toast/toast.svelte'
+	import { toast } from 'svelte-sonner'
 
 	const table = getTable()
 
@@ -23,6 +23,7 @@
 
 	const createRLS = trpc().authz.rls.create.mutation({
 		async onSettled(variables) {
+			toast.success($t('TABLE.RLS_CREATED', { ns: 'success' }))
 			await invalidate(`table:${$table.id.value}`)
 			filter = []
 			userIds = []
@@ -30,6 +31,9 @@
 			if ((variables as any)?.policy.action === 'list') {
 				await $data.refetch()
 			}
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 </script>
@@ -72,13 +76,4 @@
 			{$t('Create New RLS', { ns: 'authz' })}
 		</Button>
 	</div>
-{/if}
-
-{#if $createRLS.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$createRLS.error.message}
-		</span>
-	</Toast>
 {/if}

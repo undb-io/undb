@@ -9,6 +9,7 @@
 	import { createBaseModal } from '$lib/store/modal'
 	import { trpc } from '$lib/trpc/client'
 	import { BaseId, createBaseSchema } from '@undb/core'
+	import { toast } from 'svelte-sonner'
 
 	let name = ''
 	let tableIds: string[] = []
@@ -17,6 +18,7 @@
 
 	const createBaseMutation = trpc().base.create.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('BASE.CREATED', { ns: 'success', name }))
 			await invalidateAll()
 			name = ''
 			tableIds = []
@@ -26,6 +28,9 @@
 			} else {
 				await goto(`/bases/${variables.id}`)
 			}
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 

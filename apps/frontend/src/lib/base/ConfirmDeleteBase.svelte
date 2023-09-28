@@ -3,13 +3,18 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 	import { t } from '$lib/i18n'
 	import { confirmDeleteBase } from '$lib/store/modal'
-	import { currentBaseId } from '$lib/store/table'
+	import { currentBaseId, currentBase } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
+	import { toast } from 'svelte-sonner'
 
 	const deleteBaseMutation = trpc().base.delete.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('BASE.DELETED', { ns: 'success', name: $currentBase?.name }))
 			await invalidateAll()
 			await goto('/')
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 

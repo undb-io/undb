@@ -6,13 +6,12 @@
 	import type { Validation } from 'sveltekit-superforms/index'
 	import { trpc } from '$lib/trpc/client'
 	import { getField, getTable } from '$lib/store/table'
-	import { slide } from 'svelte/transition'
 	import { t } from '$lib/i18n'
 	import { invalidate } from '$app/navigation'
 	import { createOptionModal } from '$lib/store/modal'
 	import { Input } from '$components/ui/input'
 	import * as Dialog from '$lib/components/ui/dialog'
-	import Toast from '$components/ui/toast/toast.svelte'
+	import { toast } from 'svelte-sonner'
 
 	export let data: Validation<typeof createOptionSchema>
 
@@ -21,9 +20,13 @@
 
 	const createOption = trpc().table.field.select.createOption.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('TABLE.OPTION_CREATED', { ns: 'success', name: variables.option.name }))
 			reset()
 			await invalidate(`table:${$table.id.value}`)
 			createOptionModal.close()
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -70,13 +73,4 @@
 			</Dialog.Footer>
 		</Dialog.Content>
 	</Dialog.Root>
-{/if}
-
-{#if $createOption.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$createOption.error.message}
-		</span>
-	</Toast>
 {/if}

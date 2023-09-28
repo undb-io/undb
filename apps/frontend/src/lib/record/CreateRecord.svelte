@@ -10,11 +10,11 @@
 	import * as Dialog from '$lib/components/ui/dialog'
 	import { Button } from '$lib/components/ui/button'
 	import { createRecordForm } from '$lib/store/table'
-	import Toast from '$components/ui/toast/toast.svelte'
 	import { RecordFactory, type Field, WithRecordId, RecordId } from '@undb/core'
 	import Badge from '$components/ui/badge/badge.svelte'
 	import CreateRecordItem from './CreateRecordItem.svelte'
 	import { me } from '$lib/store/me'
+	import { toast } from 'svelte-sonner'
 
 	const table = getTable()
 	const view = getView()
@@ -32,9 +32,13 @@
 
 	const createRecord = trpc().record.create.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('RECORD.CREATED', { ns: 'success' }))
 			await $createRecordModal.callback()
 			createRecordModal.close()
 			reset()
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -112,12 +116,3 @@
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>
-
-{#if $createRecord.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$createRecord.error.message}
-		</span>
-	</Toast>
-{/if}
