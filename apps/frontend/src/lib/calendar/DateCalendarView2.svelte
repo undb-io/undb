@@ -1,9 +1,11 @@
 <script lang="ts">
+	import Button from '$components/ui/button/button.svelte'
 	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 	import { currentRecordId, getTable, listRecordFn, recordsStore } from '$lib/store/table'
 	import Calendar, { type EventObject } from '@toast-ui/calendar'
 	import '@toast-ui/calendar/dist/toastui-calendar.min.css'
 	import { RecordFactory, type DateField } from '@undb/core'
+	import { format } from 'date-fns'
 
 	export let field: DateField
 	const table = getTable()
@@ -61,6 +63,7 @@
 		}
 	}) satisfies EventObject[]
 
+	let range = ''
 	let calendar: Calendar | undefined = undefined
 	$: if (el) {
 		calendar = new Calendar(el, {
@@ -73,8 +76,17 @@
 			},
 		})
 
+		setDateRange()
+	}
+
+	const setDateRange = () => {
+		if (!calendar) return
 		start = calendar.getDateRangeStart().toDate()
 		end = calendar.getDateRangeEnd().toDate()
+	}
+
+	$: if (start && end) {
+		range = getNavbarRange()
 	}
 
 	$: if (calendar) {
@@ -87,6 +99,7 @@
 		calendar.on('clickEvent', (event) => {
 			$currentRecordId = event.event.id
 		})
+
 		calendar.on('selectDateTime', (event) => {
 			createRecordInitial.set({
 				[field.id.value]: event.start.toISOString(),
@@ -95,6 +108,40 @@
 			createRecordModal.open()
 		})
 	}
+
+	function getNavbarRange() {
+		if (!start || !end) return ''
+		const middle = new Date(start.getTime() + (end.getTime() - start.getTime()) / 2)
+
+		return format(middle, 'yyyy-MM')
+	}
 </script>
 
-<div bind:this={el} class="h-full w-full"></div>
+<div class="w-full h-full flex flex-col">
+	<div class="px-3 py-1.5 border-b flex items-center justify-center gap-4">
+		<Button
+			size="icon"
+			variant="outline"
+			on:click={() => {
+				calendar?.prev()
+				setDateRange()
+			}}
+		>
+			<i class="ti ti-chevron-left"></i>
+		</Button>
+		<span class="text-gray-700 text-sm">
+			{range}
+		</span>
+		<Button
+			size="icon"
+			variant="outline"
+			on:click={() => {
+				calendar?.next()
+				setDateRange()
+			}}
+		>
+			<i class="ti ti-chevron-right"></i>
+		</Button>
+	</div>
+	<div bind:this={el} class="flex-1 w-full"></div>
+</div>
