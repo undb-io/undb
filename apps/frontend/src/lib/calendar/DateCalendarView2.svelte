@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 	import { currentRecordId, getTable, listRecordFn, recordsStore } from '$lib/store/table'
 	import Calendar, { type EventObject } from '@toast-ui/calendar'
 	import '@toast-ui/calendar/dist/toastui-calendar.min.css'
@@ -85,6 +86,13 @@
 	const bindEvents = (calendar: Calendar) => {
 		calendar.on('clickEvent', (event) => {
 			$currentRecordId = event.event.id
+		})
+		calendar.on('selectDateTime', (event) => {
+			createRecordInitial.set({
+				[field.id.value]: event.start.toISOString(),
+			})
+			calendar.clearGridSelections()
+			createRecordModal.open()
 		})
 	}
 </script>
