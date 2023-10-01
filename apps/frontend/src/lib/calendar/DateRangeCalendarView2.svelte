@@ -19,6 +19,7 @@
 
 	let el: HTMLDivElement | undefined
 
+	let updating = false
 	let range = ''
 	let calendar: Calendar | undefined = undefined
 	$: if (el) {
@@ -47,10 +48,11 @@
 		range = getNavbarRange()
 	}
 
-	const updateRecord = trpc().record.update.mutation({
+	$: updateRecord = trpc().record.update.mutation({
 		async onSuccess(data, variables, context) {
 			toast.success($t('RECORD.UPDATED', { ns: 'success' }))
 			await $data.refetch()
+			updating = false
 		},
 		onError(error, variables, context) {
 			toast.error(error.message)
@@ -64,23 +66,31 @@
 
 		calendar.on('selectDateTime', (event) => {
 			createRecordInitial.set({
-				[field.id.value]: event.start.toISOString(),
+				[field.id.value]: [event.start.toISOString(), event.end.toISOString()],
 			})
 			calendar.clearGridSelections()
 			createRecordModal.open()
 		})
 
 		calendar.on('beforeUpdateEvent', (info) => {
-			if (info.changes.start instanceof TZDate) {
+			if (updating) return
+			if (info.changes.start instanceof TZDate || info.changes.end instanceof TZDate) {
+				const start = (info.changes.start ?? info.event.start) as TZDate
+				const end = (info.changes.end ?? info.event.end) as TZDate
+				updating = true
 				calendar.updateEvent(info.event.id, info.event.calendarId, info.changes)
 				$updateRecord.mutate({
 					tableId: $table.id.value,
 					id: info.event.id,
 					values: {
-						[field.id.value]: info.changes.start.toDate(),
+						[field.id.value]: [start.toDate(), end.toDate()],
 					},
 				})
 			}
+		})
+
+		calendar.on('afterUpdateEvent', (info) => {
+			console.log({ info })
 		})
 	}
 
@@ -112,6 +122,7 @@
 
 	$: events = $records.map((record) => {
 		const values = record.valuesJSON
+		const [start, end] = values[field.id.value] ?? []
 		const title = record.getDisplayFieldsValue($table)
 
 		return {
@@ -122,8 +133,8 @@
 			location: '',
 			body: '',
 			recurrenceRule: '',
-			start: new Date(values[field.id.value]),
-			end: new Date(values[field.id.value]),
+			start: new Date(start),
+			end: new Date(end),
 			goingDuration: 0,
 			comingDuration: 0,
 			state: 'Free',
