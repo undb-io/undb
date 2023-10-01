@@ -7,6 +7,7 @@
 	import '@toast-ui/calendar/dist/toastui-calendar.min.css'
 	import { RecordFactory, type DateField } from '@undb/core'
 	import { format } from 'date-fns'
+	import { tick } from 'svelte'
 	import { writable } from 'svelte/store'
 
 	export let field: DateField
@@ -37,12 +38,12 @@
 		end = calendar.getDateRangeEnd().toDate()
 	}
 
-	$: if (start && end) {
-		range = getNavbarRange()
-	}
-
 	$: if (calendar) {
 		setDateRange()
+	}
+
+	$: if (start && end) {
+		range = getNavbarRange()
 	}
 
 	const bindEvents = (calendar: Calendar) => {
@@ -59,7 +60,7 @@
 		})
 	}
 
-	function getNavbarRange() {
+	const getNavbarRange = () => {
 		if (!start || !end) return ''
 		const middle = new Date(start.getTime() + (end.getTime() - start.getTime()) / 2)
 
@@ -76,7 +77,7 @@
 			},
 		],
 		{
-			enabled: !!start?.toISOString() && !!end?.toISOString(),
+			enabled: !!start && !!end,
 		},
 	)
 
@@ -128,8 +129,11 @@
 			<Button
 				size="icon"
 				variant="outline"
-				on:click={() => {
+				on:click={async () => {
 					calendar?.prev()
+					setDateRange()
+					await tick()
+					$data.refetch()
 				}}
 			>
 				<i class="ti ti-chevron-left"></i>
@@ -140,8 +144,11 @@
 			<Button
 				size="icon"
 				variant="outline"
-				on:click={() => {
+				on:click={async () => {
 					calendar?.next()
+					setDateRange()
+					await tick()
+					$data.refetch()
 				}}
 			>
 				<i class="ti ti-chevron-right"></i>
@@ -151,8 +158,11 @@
 			<Button
 				size="sm"
 				variant="outline"
-				on:click={() => {
+				on:click={async () => {
 					calendar?.today()
+					setDateRange()
+					await tick()
+					$data.refetch()
 				}}
 			>
 				{$t('TODAY', { ns: 'common' })}
