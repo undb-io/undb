@@ -23,7 +23,7 @@ export class TemplateIdVisitor {
           }
         }
         if (field.type === 'reference') {
-          if (field.foreignTableId && !field.bidirectional) {
+          if (field.foreignTableId) {
             field.foreignTableId = this.mapper.tableId(field.foreignTableId)
           }
         }

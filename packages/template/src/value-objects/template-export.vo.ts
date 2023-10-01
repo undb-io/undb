@@ -84,7 +84,7 @@ export class TemplateExport extends ValueObject<ITemplateExportSchema> {
     return new this(exp)
   }
 
-  toTables(userId: string): { table: Table; records?: Records }[] {
+  toTables(userId: string, baseId?: string): { table: Table; records?: Records }[] {
     return this.tables.map((t) => {
       const table = TableFactory.unsafeCreate({
         id: t.id,
@@ -92,6 +92,7 @@ export class TemplateExport extends ValueObject<ITemplateExportSchema> {
         schema: t.schema,
         views: t.views,
         viewsOrder: t.viewsOrder,
+        baseId,
       }).unwrap()
 
       const records = t.records?.map((r) => table.createRecord(r.id, r.values, userId))

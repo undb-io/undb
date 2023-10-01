@@ -33,14 +33,16 @@ export class CreateBaseCommandHandler implements ICreateBaseCommandHandler {
     } else if (command.template) {
       const userId = this.cls.get('user.userId')
       const template = TemplateFactory.fromJSON(command.template)
-      const tables = template.export.toTables(userId)
+      const tables = template.export.toTables(userId, base.id.value)
 
-      for (const { table, records } of tables) {
-        await this.tableRepo.insert(table)
-        if (records?.length) {
-          await this.recordRepo.insertMany(table, records)
-        }
-      }
+      await Promise.all(
+        tables.map(async ({ table, records }) => {
+          await this.tableRepo.insert(table)
+          if (records?.length) {
+            await this.recordRepo.insertMany(table, records)
+          }
+        }),
+      )
     }
   }
 }

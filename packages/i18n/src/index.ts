@@ -237,6 +237,8 @@ export const config: InitOptions = {
         'Delete Base': 'Delete base',
         'n tables': '{{n}} tables',
         'Export Base Template': 'Export base as template',
+        'Select Base Table': 'Select tables',
+        'Import Base Template': 'Import template',
       },
       table: {
         Tables: 'Tables',
@@ -728,6 +730,8 @@ export const config: InitOptions = {
         'Delete Base': '删除 Base',
         'n tables': '{{n}} 个表',
         'Export Base Template': '导出 Base 为模板',
+        'Select Base Table': '选择表',
+        'Import Base Template': '导入模板',
       },
       table: {
         Tables: '表格',
