@@ -3,9 +3,9 @@
 	import type { ICalendarField, IFieldType } from '@undb/core'
 	import type { ComponentType } from 'svelte'
 	import CalendarConfig from './CalendarConfig.svelte'
+	import * as Card from '$lib/components/ui/card'
 	import DateCalendarView from './DateCalendarView.svelte'
 	import DateRangeCalendarView from './DateRangeCalendarView.svelte'
-	import * as Card from '$lib/components/ui/card'
 
 	const table = getTable()
 	const view = getView()
