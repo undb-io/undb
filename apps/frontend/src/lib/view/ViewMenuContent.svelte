@@ -93,7 +93,7 @@
 	] as const
 </script>
 
-<DropdownMenu.Content class="w-48">
+<DropdownMenu.Content class="w-56">
 	<DropdownMenu.Group>
 		{#if $hasPermission('table:update_view_name')}
 			<DropdownMenu.Item on:click={() => ($confirmUpdateViewName = true)} class="font-normal flex items-center gap-2">
