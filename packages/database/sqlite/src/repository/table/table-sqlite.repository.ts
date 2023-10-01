@@ -65,18 +65,14 @@ export class TableSqliteRepository implements ITableRepository {
   }
 
   async find(spec: ITableSpec): Promise<CoreTable[]> {
-    const qb = this.em
-      .qb(Table)
-      .populate(
-        ['fields.options', 'base.id', 'views', 'forms', 'forms', 'fields.displayFields'].map((field) => ({ field })),
-      )
-      .andWhere({ deletedAt: null })
+    const qb = this.em.qb(Table).andWhere({ deletedAt: null })
 
     const visitor = new TableSqliteQueryVisitor(qb)
 
     spec.accept(visitor)
 
     const tables = await qb.getResultList()
+    await this.em.populate(tables, ['fields.options', 'base.id', 'views', 'forms', 'forms', 'fields.displayFields'])
 
     return tables.map((table) => TableSqliteMapper.entityToDomain(table).unwrap())
   }

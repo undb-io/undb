@@ -133,6 +133,9 @@ export const selectTableMoveToBaseModal = createModal(SELECT_TABLE_MOVE_TO_BASE_
 
 export const confirmDeleteBase = writable(false)
 
+const CONFIRM_EXPORT_BASE_TEMPLATE = Symbol('CONFIRM_EXPORT_BASE_TEMPLATE')
+export const confirmExportBaseTemplate = createModal(CONFIRM_EXPORT_BASE_TEMPLATE)
+
 export const confirmDuplicateView = writable(false)
 export const confirmUpdateViewName = writable(false)
 export const confirmCreateFormFromView = writable(false)

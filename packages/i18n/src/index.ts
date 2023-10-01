@@ -82,6 +82,7 @@ export const config: InitOptions = {
         'TABLE.RESET_FIELD_SORT': 'field sort has been reset',
         'BASE.CREATED': 'base {{name}} has been created',
         'BASE.DELETED': 'base {{name}} has been deleted',
+        'BASE.EXPORTED': 'base {{name}} has been exported as template',
         'TABLE.MOVED_TO_BASE': 'table {{tableName}} has been moved to {{baseName}}',
         'WEBHOOK.CREATED': 'webhook {{name}} has been created',
         'WEBHOOK.UPDATED': 'webhook {{name}} has been updated',
@@ -235,6 +236,7 @@ export const config: InitOptions = {
         'base settings': 'Base settings',
         'Delete Base': 'Delete base',
         'n tables': '{{n}} tables',
+        'Export Base Template': 'Export base as template',
       },
       table: {
         Tables: 'Tables',
@@ -581,6 +583,7 @@ export const config: InitOptions = {
         'TABLE.MOVED_TO_BASE': '表格 {{tableName}} 成功移动到 {{baseName}}',
         'BASE.CREATED': 'base {{name}} 创建成功',
         'BASE.DELETED': 'base {{name}} 删除成功',
+        'BASE.EXPORTED': 'base {{name}} 成功导出为模板',
         'WEBHOOK.CREATED': 'webhook {{name}} 创建成功',
         'WEBHOOK.UPDATED': 'webhook {{name}} 更新成功',
         'RECORD.CREATED': '行记录创建成功',
@@ -724,6 +727,7 @@ export const config: InitOptions = {
         'base settings': 'Base 设置',
         'Delete Base': '删除 Base',
         'n tables': '{{n}} 个表',
+        'Export Base Template': '导出 Base 为模板',
       },
       table: {
         Tables: '表格',
