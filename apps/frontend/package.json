@@ -12,10 +12,6 @@
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
-		"@event-calendar/core": "^2.3.3",
-		"@event-calendar/day-grid": "^2.3.3",
-		"@event-calendar/interaction": "^2.3.3",
-		"@event-calendar/time-grid": "^2.3.3",
 		"@playwright/test": "^1.38.1",
 		"@popperjs/core": "^2.11.8",
 		"@revolist/revogrid": "^3.6.16",

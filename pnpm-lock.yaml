@@ -448,18 +448,6 @@ importers:
 
   apps/frontend:
     devDependencies:
-      '@event-calendar/core':
-        specifier: ^2.3.3
-        version: 2.3.3
-      '@event-calendar/day-grid':
-        specifier: ^2.3.3
-        version: 2.3.3
-      '@event-calendar/interaction':
-        specifier: ^2.3.3
-        version: 2.3.3
-      '@event-calendar/time-grid':
-        specifier: ^2.3.3
-        version: 2.3.3
       '@playwright/test':
         specifier: ^1.38.1
         version: 1.38.1
@@ -2680,33 +2668,6 @@ packages:
   /@eslint/js@8.50.0:
     resolution: {integrity: sha512-NCC3zz2+nvYd+Ckfh87rA47zfu2QsQpvc6k1yzTk+b9KzRj0wkGa8LSoGOXN6Zv4lRf/EIoZ80biDh9HOI+RNQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
-
-  /@event-calendar/core@2.3.3:
-    resolution: {integrity: sha512-hp56uxo7trieqjUVhxmCRslDrE8sbcr3V8ZK+YNA1jMaNW4/U6JpujNeewFBpB64SUV666rVlITINGjIKsPZsw==}
-    dependencies:
-      svelte: 4.2.1
-    dev: true
-
-  /@event-calendar/day-grid@2.3.3:
-    resolution: {integrity: sha512-qHSqbTe3n8jeny65FDhaUFNBwkNU/r46ILmDlv+yLCF4BAktShvx97ho2hGQDBgqBZ0sHW8vRZFM24XZKLcOGw==}
-    dependencies:
-      '@event-calendar/core': 2.3.3
-      svelte: 4.2.1
-    dev: true
-
-  /@event-calendar/interaction@2.3.3:
-    resolution: {integrity: sha512-g985T/sR+uUNbA9H01NYm5cFbarqYLaXddgsOSo0zGTUw7J67PeFEmB20zKFkv7K44iVA+whCaDbivxhxKeb0w==}
-    dependencies:
-      '@event-calendar/core': 2.3.3
-      svelte: 4.2.1
-    dev: true
-
-  /@event-calendar/time-grid@2.3.3:
-    resolution: {integrity: sha512-BA0VDKczkHDUDZpBcm0rtd/axInwB9UmnITEgS4jM/tn3sOgLuQaJ1qGgvfO5NYWfS/DlSydDgm+3mKpP6qXWg==}
-    dependencies:
-      '@event-calendar/core': 2.3.3
-      svelte: 4.2.1
-    dev: true
 
   /@exodus/schemasafe@1.0.1:
     resolution: {integrity: sha512-PQdbF8dGd4LnbwBlcc4ML8RKYdplm+e9sUeWBTr4zgF13/Shiuov9XznvM4T8cb1CfyKK21yTUkuAIIh/DAH/g==}

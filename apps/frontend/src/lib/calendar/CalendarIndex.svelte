@@ -5,7 +5,7 @@
 	import CalendarConfig from './CalendarConfig.svelte'
 	import * as Card from '$lib/components/ui/card'
 	import DateCalendarView from './DateCalendarView.svelte'
-	import DateRangeCalendarView2 from './DateRangeCalendarView2.svelte'
+	import DateRangeCalendarView from './DateRangeCalendarView.svelte'
 
 	const table = getTable()
 	const view = getView()
@@ -15,7 +15,7 @@
 
 	const map: Partial<Record<IFieldType, ComponentType>> = {
 		date: DateCalendarView,
-		'date-range': DateRangeCalendarView2,
+		'date-range': DateRangeCalendarView,
 	}
 </script>
 
