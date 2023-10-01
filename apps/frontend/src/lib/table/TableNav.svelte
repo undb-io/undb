@@ -55,14 +55,23 @@
 			</p>
 
 			{#if $currentBase}
-				<a href={`/bases/${$currentBase.id}`}>
-					<Badge variant="outline" class="gap-1.5">
-						<i class="ti ti-database"></i>
-						<span>
-							{$currentBase?.name}
-						</span>
-					</Badge>
-				</a>
+				<Tooltip.Root openDelay={100}>
+					<Tooltip.Trigger>
+						<a href={`/bases/${$currentBase.id}`}>
+							<Badge variant="outline" class="gap-1.5">
+								<i class="ti ti-database"></i>
+								<span>
+									{$currentBase?.name}
+								</span>
+							</Badge>
+						</a>
+					</Tooltip.Trigger>
+					<Tooltip.Content
+						class="px-2 py-1.5 text-xs font-semibold text-gray-800 bg-gray-100 border border-gray-200 rounded-lg dark:bg-gray-600 dark:text-gray-100 dark:border-gray-500"
+					>
+						{$t('base settings', { ns: 'base' })}
+					</Tooltip.Content>
+				</Tooltip.Root>
 			{/if}
 		</div>
 
