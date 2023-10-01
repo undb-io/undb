@@ -9,7 +9,7 @@
 	import { Button } from '$components/ui/button'
 	import { Input } from '$components/ui/input'
 	import { Label } from '$components/ui/label'
-	import Toast from '$components/ui/toast/toast.svelte'
+	import { toast } from 'svelte-sonner'
 
 	export let data: PageData
 
@@ -36,6 +36,9 @@
 
 		async onSuccess(data, variables, context) {
 			await goto($page.url.searchParams.get('redirectTo') || '/', { replaceState: true, invalidateAll: true })
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -105,12 +108,3 @@
 		</p>
 	</div>
 </div>
-
-{#if $register.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$register.error}
-		</span>
-	</Toast>
-{/if}

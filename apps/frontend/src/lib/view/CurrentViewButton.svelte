@@ -2,6 +2,7 @@
 	import Button from '$components/ui/button/button.svelte'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { getView } from '$lib/store/table'
+	import { cn } from '$lib/utils'
 	import ViewIcon from './ViewIcon.svelte'
 	import ViewMenuContent from './ViewMenuContent.svelte'
 
@@ -10,9 +11,9 @@
 	let open = false
 </script>
 
-<DropdownMenu.Root>
+<DropdownMenu.Root bind:open>
 	<DropdownMenu.Trigger asChild let:builder>
-		<Button class="gap-2" builders={[builder]} variant="outline" on:click={() => (open = true)}>
+		<Button class={cn('gap-2', open && 'bg-gray-100')} builders={[builder]} variant="outline">
 			<ViewIcon type={$view.displayType} />
 			<span>
 				{$view.name.value}

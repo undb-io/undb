@@ -10,6 +10,7 @@
 	import * as Avatar from '$lib/components/ui/avatar'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { Button } from '$lib/components/ui/button'
+	import { toast } from 'svelte-sonner'
 
 	export let member: IQueryMember
 
@@ -21,7 +22,20 @@
 		{ value: 'viewer', name: $t('viewer', { ns: 'authz' }) },
 	] as const
 
-	const updateRoleMutation = trpc().authz.member.updateRole.mutation({})
+	const updateRoleMutation = trpc().authz.member.updateRole.mutation({
+		onSuccess(data, variables, context) {
+			toast.success(
+				$t('MEMBER.ROLE_UPDATED', {
+					ns: 'success',
+					username: member.userProfile.username,
+					role: $t(variables.role, { ns: 'authz' }),
+				}),
+			)
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
+		},
+	})
 	const updateRole = (value: IRolesWithoutOwner) => {
 		$updateRoleMutation.mutate({
 			memberId: member.id,

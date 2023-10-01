@@ -1,12 +1,12 @@
 import type { CommandProps } from '@undb/domain'
 import { Command } from '@undb/domain'
-import type { IExportTemplateInput } from './export-template.command.input.js'
+import type { IExportTableTemplateInput } from './export-table-template.command.input.js'
 
-export class ExportTemplateCommand extends Command {
+export class ExportTableTemplateCommand extends Command {
   readonly tableId: string
   readonly recordIds?: string[]
 
-  constructor(props: CommandProps<IExportTemplateInput>) {
+  constructor(props: CommandProps<IExportTableTemplateInput>) {
     super(props)
     this.tableId = props.tableId
     this.recordIds = props.recordIds

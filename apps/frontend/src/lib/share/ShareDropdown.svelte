@@ -11,6 +11,7 @@
 
 	import { copyText } from 'svelte-copy'
 	import { Textarea } from '$components/ui/textarea'
+	import { toast } from 'svelte-sonner'
 
 	export let url: string
 	export let share: IQueryShare | null
@@ -63,6 +64,7 @@
 
 	const copyURL = () => {
 		copyText(url)
+		toast.success($t('COPIED', { ns: 'success' }))
 		copied = true
 		setTimeout(() => {
 			copied = false
@@ -72,6 +74,7 @@
 	let iframeCopied = false
 	const copyIFrame = () => {
 		copyText(iframe)
+		toast.success($t('COPIED', { ns: 'success' }))
 		iframeCopied = true
 		setTimeout(() => {
 			iframeCopied = false

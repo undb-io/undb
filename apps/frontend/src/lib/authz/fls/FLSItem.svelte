@@ -9,6 +9,7 @@
 	import { invalidate } from '$app/navigation'
 	import { trpc } from '$lib/trpc/client'
 	import { getTable } from '$lib/store/table'
+	import { toast } from 'svelte-sonner'
 
 	const table = getTable()
 	export let fls: FLS
@@ -19,13 +20,21 @@
 
 	const updateFLS = trpc().authz.fls.update.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('TABLE.FLS_UPDATED', { ns: 'success' }))
 			await invalidate(`table:${$table.id.value}`)
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
 	const deleteFLS = trpc().authz.fls.delete.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('TABLE.FLS_DELETED', { ns: 'success' }))
 			await invalidate(`table:${$table.id.value}`)
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 </script>

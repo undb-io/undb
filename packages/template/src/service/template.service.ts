@@ -1,11 +1,12 @@
 import type { IQueryRecords, IRecordQueryModel } from '@undb/core'
-import { WithRecordIds, type ITableRepository } from '@undb/core'
+import { WithRecordIds, WithTableBaseId, type ITableRepository } from '@undb/core'
 import type { Option } from 'oxide.ts'
 import { TemplateFactory } from 'src/template.factory.js'
 import type { Template } from '../template.js'
 
 export interface ITemplateService {
   fromTable(tableId: string, recordIds?: string[]): Promise<Option<Template>>
+  fromBase(baseId: string): Promise<Option<Template>>
 }
 
 export class TemplateService implements ITemplateService {
@@ -22,8 +23,12 @@ export class TemplateService implements ITemplateService {
       records = await this.recordRM.find(table.id.value, undefined, WithRecordIds.fromIds(recordIds))
     }
 
-    const template = TemplateFactory.fromTables([{ table, records: records }])
+    return TemplateFactory.fromTables([{ table, records: records }])
+  }
 
-    return template
+  async fromBase(baseId: string): Promise<Option<Template>> {
+    const tables = await this.tableRepo.find(WithTableBaseId.fromString(baseId))
+
+    return TemplateFactory.fromTables(tables.map((table) => ({ table })))
   }
 }

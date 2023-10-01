@@ -1,4 +1,4 @@
-import type { ICreateFieldSchema, IQueryRecordSchema, Records, Table } from '@undb/core'
+import type { Field, ICreateFieldSchema, IQueryRecordSchema, Records, Table } from '@undb/core'
 import {
   TableFactory,
   createFieldSchema,
@@ -46,11 +46,20 @@ export class TemplateExport extends ValueObject<ITemplateExportSchema> {
     const exp: ITemplateExportSchema = {
       tables: inputs.map(({ table, records }) => {
         const schema = table.schema.toIdMap()
+        // has foreign table
+        const hasNotForeignTable = (field?: Field) => {
+          return (
+            field?.type === 'reference' &&
+            field.foreignTableId.isSome() &&
+            field.foreignTableId.unwrap() !== table.id.value &&
+            !inputs.find(({ table: ft }) => field.foreignTableId.unwrap() === ft.id.value)
+          )
+        }
         return {
           id: table.id.value,
           name: table.name.value,
           schema: table.schema.fields.map((f) => {
-            if (f.type === 'reference' && f.foreignTableId.isSome() && f.foreignTableId.unwrap() !== table.id.value) {
+            if (hasNotForeignTable(f)) {
               return { id: f.id.value, type: 'string', name: f.name.value, required: false, display: false }
             }
             return f.json as ICreateFieldSchema
@@ -61,11 +70,7 @@ export class TemplateExport extends ValueObject<ITemplateExportSchema> {
             id: record.id,
             values: transform(record.values, (result, value, fieldId) => {
               const field = schema.get(fieldId)
-              if (
-                field?.type === 'reference' &&
-                field.foreignTableId.isSome() &&
-                field.foreignTableId.unwrap() !== table.id.value
-              ) {
+              if (hasNotForeignTable(field)) {
                 result[fieldId] = null
               } else {
                 result[fieldId] = value
@@ -79,7 +84,7 @@ export class TemplateExport extends ValueObject<ITemplateExportSchema> {
     return new this(exp)
   }
 
-  toTables(userId: string): { table: Table; records?: Records }[] {
+  toTables(userId: string, baseId?: string): { table: Table; records?: Records }[] {
     return this.tables.map((t) => {
       const table = TableFactory.unsafeCreate({
         id: t.id,
@@ -87,6 +92,7 @@ export class TemplateExport extends ValueObject<ITemplateExportSchema> {
         schema: t.schema,
         views: t.views,
         viewsOrder: t.viewsOrder,
+        baseId,
       }).unwrap()
 
       const records = t.records?.map((r) => table.createRecord(r.id, r.values, userId))

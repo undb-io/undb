@@ -30,6 +30,8 @@
 	import { cn } from '$lib/utils'
 	import MoveToBase from '$lib/base/MoveToBase.svelte'
 	import SelectTableMoveToBase from '$lib/base/SelectTableMoveToBase.svelte'
+	import ConfirmDeleteBase from '$lib/base/ConfirmDeleteBase.svelte'
+	import ConfirmDeleteTable from '$lib/table/ConfirmDeleteTable.svelte'
 
 	const table = getTable()
 	export let data: PageData
@@ -93,8 +95,8 @@
 	})
 </script>
 
-<div class="grid grid-cols-6 h-full overflow-auto">
-	<div class={cn('h-full overflow-auto', $viewsSideBarOpen ? 'col-span-5' : 'col-span-6')}>
+<div class="grid grid-cols-5 h-full overflow-auto">
+	<div class={cn('h-full overflow-auto', $viewsSideBarOpen ? 'col-span-4' : 'col-span-5')}>
 		<TableIndex />
 	</div>
 	{#if $viewsSideBarOpen}
@@ -108,6 +110,7 @@
 {#key $table}
 	<UpdateTable data={data.updateTable} />
 {/key}
+<ConfirmDeleteTable />
 <ViewConfigModal />
 <CreateRecord data={data.createRecord} />
 <MoveToBase />

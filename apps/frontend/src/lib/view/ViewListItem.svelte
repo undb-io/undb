@@ -9,6 +9,7 @@
 	import { invalidate } from '$app/navigation'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import ViewMenuContent from './ViewMenuContent.svelte'
+	import { viewsSideBarOpen } from '$lib/store/modal'
 
 	const table = getTable()
 	const currentView = getView()
@@ -62,6 +63,7 @@
 				? 'text-primary bg-primary/5 dark:text-gray-50 dark:bg-primary active'
 				: 'hover:bg-gray-50 dark:hover:bg-gray-600 hover:text-primary hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 text-gray-500 dark:text-gray-300',
 		)}
+		on:click={() => viewsSideBarOpen.set(false)}
 	>
 		<span class="inline-flex items-center gap-2 truncate">
 			<ViewIcon

@@ -11,13 +11,12 @@
 	import { Checkbox } from '$lib/components/ui/checkbox'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import { keys, pick } from 'lodash-es'
-	import { slide } from 'svelte/transition'
 	import { superForm } from 'sveltekit-superforms/client'
 	import type { Validation } from 'sveltekit-superforms/index'
 	import WebhookHeaderInput from './WebhookHeaderInput.svelte'
 	import FilterEditor from '$lib/filter/FilterEditor.svelte'
 	import { getValidFilters } from '$lib/filter/filter.util'
-	import Toast from '$components/ui/toast/toast.svelte'
+	import { toast } from 'svelte-sonner'
 
 	export let data: Validation<typeof updateWebhookSchema>
 	export let webhook: IQueryWebhook
@@ -25,8 +24,12 @@
 	const table = getTable()
 
 	const updateWebhook = trpc().webhook.update.mutation({
-		onSuccess(data, variables, context) {
+		onSuccess() {
+			toast.success($t('WEBHOOK.UPDATED', { ns: 'success', name: webhook.name }))
 			$webhookDrawerMode = 'list'
+		},
+		onError(error) {
+			toast.error(error.message)
 		},
 	})
 
@@ -173,12 +176,3 @@
 		</div>
 	</div>
 </form>
-
-{#if $updateWebhook.error}
-	<Toast transition={slide} position="bottom-right" class="z- !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$updateWebhook.error.message}
-		</span>
-	</Toast>
-{/if}

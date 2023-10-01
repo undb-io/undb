@@ -13,6 +13,7 @@
 	import { Input } from '$lib/components/ui/input'
 	import { Label } from '$lib/components/ui/label'
 	import { Button } from '$components/ui/button'
+	import { toast } from 'svelte-sonner'
 
 	const table = getTable()
 
@@ -27,8 +28,12 @@
 
 	const updateForm = trpc().table.form.update.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('TABLE.FORM_UPDATED', { ns: 'success', name: variables.name }))
 			updating = false
 			await invalidate(`table:${$table.id.value}`)
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 

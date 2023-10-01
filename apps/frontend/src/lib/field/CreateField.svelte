@@ -19,8 +19,8 @@
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
 	import { t } from '$lib/i18n'
 	import * as Dialog from '$lib/components/ui/dialog'
-	import Toast from '$components/ui/toast/toast.svelte'
 	import { onMount } from 'svelte'
+	import { toast } from 'svelte-sonner'
 
 	const table = getTable()
 	const view = getView()
@@ -34,10 +34,14 @@
 
 	const createField = trpc().table.field.create.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('TABLE.FIELD_CREATED', { ns: 'success', name: $form.name }))
 			await invalidate(`table:${$table.id.value}`)
 			createFieldModal.close()
 			await $records.refetch()
 			await $createFieldModal.callback?.()
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -106,7 +110,7 @@
 							<span class="text-red-500">*</span>
 						</div>
 
-						<Input name="name" required bind:value={$form.name} />
+						<Input name="name" required bind:value={$form.name} autofocus />
 					</Label>
 				</div>
 
@@ -185,12 +189,3 @@
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>
-
-{#if $createField.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$createField.error.message}
-		</span>
-	</Toast>
-{/if}

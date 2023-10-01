@@ -7,8 +7,7 @@
 	import { t } from '$lib/i18n'
 	import { trpc } from '$lib/trpc/client'
 	import { invalidate } from '$app/navigation'
-	import { slide } from 'svelte/transition'
-	import Toast from '$components/ui/toast/toast.svelte'
+	import { toast } from 'svelte-sonner'
 
 	const table = getTable()
 
@@ -20,10 +19,14 @@
 
 	const updateVisualization = trpc().table.visualization.update.mutation({
 		async onSuccess() {
+			toast.success($t('TABLE.VISUALIZATION_UPDATED', { ns: 'success' }))
 			await invalidate(`table:${$table.id.value}`)
 			await $getChartData.refetch()
 
 			fieldId = visualization.fieldId?.value
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -62,12 +65,3 @@
 		</div>
 	</form>
 </div>
-
-{#if $updateVisualization.isSuccess}
-	<Toast class="fixed z-[99999] !bg-green-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$t('update success', { ns: 'common' })}
-		</span>
-	</Toast>
-{/if}

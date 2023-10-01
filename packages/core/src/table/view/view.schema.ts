@@ -156,3 +156,9 @@ export const setGalleryFieldSchema = z.object({
   field: fieldIdSchema,
 })
 export type ISetGalleryFieldSchema = z.infer<typeof setGalleryFieldSchema>
+
+export const duplicateViewSchema = z.object({
+  name: viewNameSchema.optional(),
+})
+
+export type IDuplciateViewSchema = z.infer<typeof duplicateViewSchema>

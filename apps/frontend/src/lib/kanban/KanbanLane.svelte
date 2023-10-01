@@ -6,10 +6,10 @@
 	import { RecordFactory, type IFilters, type IKanbanField } from '@undb/core'
 	import { flip } from 'svelte/animate'
 	import { Button } from '$lib/components/ui/button'
-	import { slide } from 'svelte/transition'
 	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 	import { UNCATEGORIZED } from './kanban.constants'
-	import Toast from '$components/ui/toast/toast.svelte'
+	import { toast } from 'svelte-sonner'
+	import { t } from '$lib/i18n'
 
 	const flipDurationMs = 200
 
@@ -32,7 +32,11 @@
 
 	const updateRecord = trpc().record.update.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('RECORD.UPDATED', { ns: 'success' }))
 			await $data.refetch()
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -88,12 +92,3 @@
 		</div>
 	{/each}
 </div>
-
-{#if $updateRecord.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$updateRecord.error.message}
-		</span>
-	</Toast>
-{/if}

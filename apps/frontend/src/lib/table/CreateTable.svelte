@@ -15,8 +15,8 @@
 	import { Input } from '$lib/components/ui/input'
 	import { Button } from '$components/ui/button'
 	import { Badge } from '$lib/components/ui/badge'
-	import Toast from '$components/ui/toast/toast.svelte'
 	import BasePicker from '$lib/base/BasePicker.svelte'
+	import { toast } from 'svelte-sonner'
 
 	export let data: Validation<typeof createTableInput>
 	let currentField: string | undefined
@@ -41,10 +41,14 @@
 
 	const createTable = trpc().table.create.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('TABLE.CREATED', { ns: 'success', name: $form.name }))
 			createTableModal.close()
 			await invalidate('tables')
 			await goto(`/t/${data.id}`)
 			reset()
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -162,12 +166,3 @@
 		</Dialog.Footer>
 	</Dialog.Content>
 </Dialog.Root>
-
-{#if $createTable.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="inline-flex items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$createTable.error.message}
-		</span>
-	</Toast>
-{/if}

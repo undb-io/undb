@@ -9,7 +9,7 @@
 	import { noop } from 'lodash-es'
 	import { t } from '$lib/i18n'
 	import FieldMenuFieldComponent from './FieldMenu/FieldMenuFieldComponent.svelte'
-	import Toast from '$components/ui/toast/toast.svelte'
+	import { toast } from 'svelte-sonner'
 
 	export let togglePin: (fieldId: string) => void = noop
 
@@ -24,9 +24,13 @@
 
 	const resetFieldSort = trpc().table.view.sort.resetFieldSort.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('TABLE.RESET_FIELD_SORT', { ns: 'success' }))
 			await invalidate(`table:${$table.id.value}`)
 			currentFieldId.set(undefined)
 			await $listRecords.refetch()
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -35,6 +39,9 @@
 			await invalidate(`table:${$table.id.value}`)
 			currentFieldId.set(undefined)
 			await $listRecords.refetch()
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
 
@@ -196,21 +203,3 @@
 		{$t('Delete Field')}
 	</span>
 </DropdownMenu.Item>
-
-{#if $resetFieldSort.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$resetFieldSort.error.message}
-		</span>
-	</Toast>
-{/if}
-
-{#if $setFieldSort.error}
-	<Toast class="z-[99999] !bg-red-500 border-0 text-white font-semibold">
-		<span class="items-center gap-3">
-			<i class="ti ti-exclamation-circle text-lg" />
-			{$setFieldSort.error.message}
-		</span>
-	</Toast>
-{/if}

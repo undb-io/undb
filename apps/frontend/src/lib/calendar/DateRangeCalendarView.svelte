@@ -1,35 +1,101 @@
 <script lang="ts">
-	import { currentRecordId, getTable, listRecordFn, readonly, recordsStore } from '$lib/store/table'
-	import { trpc } from '$lib/trpc/client'
-
-	// @ts-ignore
-	import Calendar from '@event-calendar/core'
-	// @ts-ignore
-	import TimeGrid from '@event-calendar/time-grid'
-	// @ts-ignore
-	import DayGrid from '@event-calendar/day-grid'
-	// @ts-ignore
-	import Interaction from '@event-calendar/interaction'
-	import { RecordFactory, type DateRangeField } from '@undb/core'
-	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
-	import { format } from 'date-fns'
-	import { theme } from './calendar-theme'
+	import Button from '$components/ui/button/button.svelte'
 	import { t } from '$lib/i18n'
+	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
+	import { currentRecordId, getTable, listRecordFn, recordsStore } from '$lib/store/table'
+	import { trpc } from '$lib/trpc/client'
+	import Calendar, { TZDate, type EventObject } from '@toast-ui/calendar'
+	import '@toast-ui/calendar/dist/toastui-calendar.min.css'
+	import { RecordFactory, type DateField } from '@undb/core'
+	import { format } from 'date-fns'
+	import { tick } from 'svelte'
+	import { toast } from 'svelte-sonner'
 
-	export let field: DateRangeField
-
+	export let field: DateField
 	const table = getTable()
 
-	let date = new Date()
+	let start: Date | undefined = undefined
+	let end: Date | undefined = undefined
 
-	let start: Date | undefined
-	let end: Date | undefined
+	let el: HTMLDivElement | undefined
 
-	const updateRecord = trpc().record.update.mutation({
+	let updating = false
+	let range = ''
+	let calendar: Calendar | undefined = undefined
+	$: if (el) {
+		calendar = new Calendar(el, {
+			defaultView: 'month',
+			usageStatistics: false,
+			template: {
+				allday(event) {
+					return `<span class="text-white">${event.title}</span>`
+				},
+			},
+		})
+	}
+
+	const setDateRange = () => {
+		if (!calendar) return
+		start = calendar.getDateRangeStart().toDate()
+		end = calendar.getDateRangeEnd().toDate()
+	}
+
+	$: if (calendar) {
+		setDateRange()
+	}
+
+	$: if (start && end) {
+		range = getNavbarRange()
+	}
+
+	$: updateRecord = trpc().record.update.mutation({
 		async onSuccess(data, variables, context) {
+			toast.success($t('RECORD.UPDATED', { ns: 'success' }))
 			await $data.refetch()
+			updating = false
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
 		},
 	})
+
+	const bindEvents = (calendar: Calendar) => {
+		calendar.on('clickEvent', (event) => {
+			$currentRecordId = event.event.id
+		})
+
+		calendar.on('selectDateTime', (event) => {
+			createRecordInitial.set({
+				[field.id.value]: [event.start.toISOString(), event.end.toISOString()],
+			})
+			calendar.clearGridSelections()
+			createRecordModal.open()
+		})
+
+		calendar.on('beforeUpdateEvent', (info) => {
+			if (updating) return
+			if (info.changes.start instanceof TZDate || info.changes.end instanceof TZDate) {
+				const start = (info.changes.start ?? info.event.start) as TZDate
+				const end = (info.changes.end ?? info.event.end) as TZDate
+				updating = true
+				calendar.updateEvent(info.event.id, info.event.calendarId, info.changes)
+				$updateRecord.mutate({
+					tableId: $table.id.value,
+					id: info.event.id,
+					values: {
+						[field.id.value]: [start.toDate(), end.toDate()],
+					},
+				})
+			}
+		})
+	}
+
+	const getNavbarRange = () => {
+		if (!start || !end) return ''
+		const middle = new Date(start.getTime() + (end.getTime() - start.getTime()) / 2)
+
+		return format(middle, 'yyyy-MM')
+	}
 
 	$: data = $listRecordFn(
 		[
@@ -50,107 +116,89 @@
 	)
 	$: records = recordsStore.records
 
-	$: events =
-		$records?.map((record) => {
-			const values = record.valuesJSON
-			const [start, end] = values[field.id.value] ?? []
-			const title = record.getDisplayFieldsValue($table)
-			const titleHTML = !title ? `<span class="opacity-80">${$t('unnamed', { ns: 'common' })}</span>` : ''
-			return {
-				id: record.id.value,
-				title,
-				titleHTML,
-				start: new Date(start),
-				end: new Date(end),
-			}
-		}) ?? []
+	$: events = $records.map((record) => {
+		const values = record.valuesJSON
+		const [start, end] = values[field.id.value] ?? []
+		const title = record.getDisplayFieldsValue($table)
 
-	let plugins = [TimeGrid, DayGrid, Interaction]
-	$: options = {
-		view: 'dayGridMonth',
-		date,
-		datesSet: (info: { start: Date; end: Date }) => {
-			start = info.start
-			end = info.end
-		},
-		height: '100%',
-		headerToolbar: {
-			start: 'prev,next today',
-			center: 'title',
-			end: '',
-		},
-		views: {
-			timeGridWeek: { pointer: true },
-		},
-		dayMaxEvents: true,
-		nowIndicator: true,
-		dateClick: (info: { date: Date }) => {
-			$createRecordInitial = { [field.id.value]: [format(info.date, 'yyyy-MM-dd'), format(info.date, 'yyyy-MM-dd')] }
-			createRecordModal.open()
-		},
-		events,
-		selectable: !$readonly,
-		select: (info: { start: Date; end: Date }) => {
-			if ($readonly) return
-			$createRecordInitial = {
-				[field.id.value]: [format(info.start, 'yyyy-MM-dd'), format(info.end, 'yyyy-MM-dd')],
-			}
-			createRecordModal.open()
-		},
-		eventClick: (info: { event: { id: string } }) => {
-			$currentRecordId = info.event.id
-		},
-		eventTimeFormat: () => '',
-		eventResize: (info: { event: { id: string; start: Date; end: Date } }) => {
-			$updateRecord.mutate({
-				tableId: $table.id.value,
-				id: info.event.id,
-				values: {
-					[field.id.value]: [info.event.start, info.event.end],
-				},
-			})
-		},
-		editable: !$readonly,
-		eventDrop: $readonly
-			? undefined
-			: (info: { event: { id: string; start: Date; end: Date } }) => {
-					$updateRecord.mutate({
-						tableId: $table.id.value,
-						id: info.event.id,
-						values: {
-							[field.id.value]: [info.event.start, info.event.end],
-						},
-					})
-			  },
-		theme,
+		return {
+			id: record.id.value,
+			title: title || $t('unnamed', { ns: 'common' }),
+			isAllday: true,
+			isPrivate: false,
+			location: '',
+			body: '',
+			recurrenceRule: '',
+			start: new Date(start),
+			end: new Date(end),
+			goingDuration: 0,
+			comingDuration: 0,
+			state: 'Free',
+			attendees: [],
+			dueDateClass: '',
+			category: 'allday',
+			isVisible: true,
+			isPending: false,
+			isReadOnly: false,
+			isFocused: false,
+			customStyle: {},
+			backgroundColor: 'hsl(var(--primary) / 0.75)',
+		}
+	}) satisfies EventObject[]
+
+	$: if (calendar) {
+		calendar.clear()
+		calendar.createEvents(events)
+		bindEvents(calendar)
 	}
 </script>
 
-<div class="flex-1 overflow-y-auto p-4 h-full">
-	<Calendar {plugins} {options} />
+<div class="w-full h-full flex flex-col" id="calendar-date">
+	<div class="px-3 py-1.5 border-b flex items-center">
+		<div class="flex-1"></div>
+		<div class="flex gap-4 items-center">
+			<Button
+				size="icon"
+				variant="outline"
+				on:click={async () => {
+					calendar?.prev()
+					setDateRange()
+					await tick()
+					$data.refetch()
+				}}
+			>
+				<i class="ti ti-chevron-left"></i>
+			</Button>
+			<span class="text-gray-700 text-sm">
+				{range}
+			</span>
+			<Button
+				size="icon"
+				variant="outline"
+				on:click={async () => {
+					calendar?.next()
+					setDateRange()
+					await tick()
+					$data.refetch()
+				}}
+			>
+				<i class="ti ti-chevron-right"></i>
+			</Button>
+		</div>
+		<div class="flex-1 flex justify-end">
+			<Button
+				size="sm"
+				variant="outline"
+				on:click={async () => {
+					calendar?.today()
+					setDateRange()
+					await tick()
+					$data.refetch()
+				}}
+			>
+				{$t('TODAY', { ns: 'common' })}
+			</Button>
+		</div>
+	</div>
+	<div bind:this={el} class="flex-1 w-full"></div>
 </div>
-
-<style>
-	:global(.ec-event.ec-preview) {
-		z-index: 49;
-	}
-
-	:global(.ec-popup) {
-		z-index: 10;
-	}
-
-	:global(.dark .ec-toolbar) {
-		color: #e5e7eb;
-		/* background-color: gray; */
-	}
-
-	:global(.dark .ec-today) {
-		color: #e5e7eb;
-		background-color: #2663eb;
-		border-color: #2663eb;
-	}
-
-	:global(.dark .ec-month) {
-		color: #e5e7eb;
-	}
-</style>
