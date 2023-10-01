@@ -88,10 +88,6 @@
 				})
 			}
 		})
-
-		calendar.on('afterUpdateEvent', (info) => {
-			console.log({ info })
-		})
 	}
 
 	const getNavbarRange = () => {
