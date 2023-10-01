@@ -20,7 +20,7 @@
 
 		confirmExportBaseTemplate.close()
 
-		toast.success($t('BASE.EXPORTED', { name: $currentBase.name }))
+		toast.success($t('BASE.EXPORTED', { ns: 'success', name: $currentBase.name }))
 
 		const blob = await res.blob()
 		const a = document.createElement('a')
