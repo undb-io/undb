@@ -72,8 +72,8 @@
 		})
 
 		calendar.on('beforeUpdateEvent', (info) => {
-			calendar.updateEvent(info.event.id, info.event.calendarId, info.changes)
 			if (info.changes.start instanceof TZDate) {
+				calendar.updateEvent(info.event.id, info.event.calendarId, info.changes)
 				$updateRecord.mutate({
 					tableId: $table.id.value,
 					id: info.event.id,
