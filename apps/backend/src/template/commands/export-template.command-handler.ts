@@ -1,9 +1,9 @@
 import { CommandHandler } from '@nestjs/cqrs'
-import { ExportTemplateCommand, ExportTemplateCommandHandler } from '@undb/cqrs'
+import { ExportTableTemplateCommand, ExportTableTemplateCommandHandler } from '@undb/cqrs'
 import { NestTemplateService } from '../template.service.js'
 
-@CommandHandler(ExportTemplateCommand)
-export class NestExportTemplateCommandHandler extends ExportTemplateCommandHandler {
+@CommandHandler(ExportTableTemplateCommand)
+export class NestExportTableTemplateCommandHandler extends ExportTableTemplateCommandHandler {
   constructor(svc: NestTemplateService) {
     super(svc)
   }
