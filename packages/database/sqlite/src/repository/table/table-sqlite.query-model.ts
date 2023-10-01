@@ -14,12 +14,7 @@ export class TableSqliteQueryModel implements ITableQueryModel {
   ) {}
 
   async find(spec: Option<TableCompositeSpecification>): Promise<IQueryTable[]> {
-    const qb = this.em
-      .qb(Table)
-      .populate(
-        ['fields.options', 'base.id', 'views', 'forms', 'forms', 'fields.displayFields'].map((field) => ({ field })),
-      )
-      .andWhere({ deletedAt: null })
+    const qb = this.em.qb(Table).andWhere({ deletedAt: null })
 
     const visitor = new TableSqliteQueryVisitor(qb)
 
@@ -28,13 +23,14 @@ export class TableSqliteQueryModel implements ITableQueryModel {
     }
 
     const tables = await qb.getResultList()
+    await this.#populateTable(...tables)
 
     return tables.map((table) => TableSqliteMapper.entityToQuery(table))
   }
 
-  async #populateTable(table: Table) {
+  async #populateTable(...tables: Table[]) {
     await this.em.populate(
-      table,
+      tables,
       [
         'base.id',
         'fields',
@@ -47,10 +43,12 @@ export class TableSqliteQueryModel implements ITableQueryModel {
       ],
       { orderBy: { fields: { options: { order: 'ASC' } } } },
     )
-    for (const field of table.fields) {
-      if (field instanceof ReferenceField) {
-        if (!field.foreignTable?.fields.isInitialized()) {
-          await field.foreignTable?.fields.init()
+    for (const table of tables) {
+      for (const field of table.fields) {
+        if (field instanceof ReferenceField) {
+          if (!field.foreignTable?.fields.isInitialized()) {
+            await field.foreignTable?.fields.init()
+          }
         }
       }
     }
