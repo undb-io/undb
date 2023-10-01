@@ -88,11 +88,11 @@
 
 	$: events = $records.map((record) => {
 		const values = record.valuesJSON
-		const title = record.getDisplayFieldsValue($table) || record.id.value
+		const title = record.getDisplayFieldsValue($table)
 
 		return {
 			id: record.id.value,
-			title,
+			title: title || $t('unnamed', { ns: 'common' }),
 			isAllday: true,
 			isPrivate: false,
 			location: '',
