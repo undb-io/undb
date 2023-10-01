@@ -10,7 +10,6 @@
 	import { format } from 'date-fns'
 	import { tick } from 'svelte'
 	import { toast } from 'svelte-sonner'
-	import { writable } from 'svelte/store'
 
 	export let field: DateField
 	const table = getTable()
@@ -147,7 +146,7 @@
 	}
 </script>
 
-<div class="w-full h-full flex flex-col">
+<div class="w-full h-full flex flex-col" id="calendar-date">
 	<div class="px-3 py-1.5 border-b flex items-center">
 		<div class="flex-1"></div>
 		<div class="flex gap-4 items-center">
@@ -196,3 +195,9 @@
 	</div>
 	<div bind:this={el} class="flex-1 w-full"></div>
 </div>
+
+<style>
+	:global(.toastui-calendar-weekday-resize-handle) {
+		display: none;
+	}
+</style>
