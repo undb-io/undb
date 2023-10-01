@@ -6,6 +6,7 @@ import type { Template } from '../template.js'
 
 export interface ITemplateService {
   fromTable(tableId: string, recordIds?: string[]): Promise<Option<Template>>
+  fromBase(baseId: string): Promise<Option<Template>>
 }
 
 export class TemplateService implements ITemplateService {
@@ -25,5 +26,9 @@ export class TemplateService implements ITemplateService {
     const template = TemplateFactory.fromTables([{ table, records: records }])
 
     return template
+  }
+
+  fromBase(baseId: string): Promise<Option<Template>> {
+    throw new Error('Method not implemented.')
   }
 }
