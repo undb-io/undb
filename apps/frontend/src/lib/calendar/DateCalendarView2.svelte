@@ -136,7 +136,7 @@
 			isReadOnly: false,
 			isFocused: false,
 			customStyle: {},
-			backgroundColor: 'hsl(var(--primary))',
+			backgroundColor: 'hsl(var(--primary) / 0.75)',
 		}
 	}) satisfies EventObject[]
 
