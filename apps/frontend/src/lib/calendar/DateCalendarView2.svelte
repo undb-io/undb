@@ -3,11 +3,13 @@
 	import { t } from '$lib/i18n'
 	import { createRecordInitial, createRecordModal } from '$lib/store/modal'
 	import { currentRecordId, getTable, listRecordFn, recordsStore } from '$lib/store/table'
-	import Calendar, { type EventObject } from '@toast-ui/calendar'
+	import { trpc } from '$lib/trpc/client'
+	import Calendar, { TZDate, type EventObject } from '@toast-ui/calendar'
 	import '@toast-ui/calendar/dist/toastui-calendar.min.css'
 	import { RecordFactory, type DateField } from '@undb/core'
 	import { format } from 'date-fns'
 	import { tick } from 'svelte'
+	import { toast } from 'svelte-sonner'
 	import { writable } from 'svelte/store'
 
 	export let field: DateField
@@ -46,6 +48,16 @@
 		range = getNavbarRange()
 	}
 
+	const updateRecord = trpc().record.update.mutation({
+		async onSuccess(data, variables, context) {
+			toast.success($t('RECORD.UPDATED', { ns: 'success' }))
+			await $data.refetch()
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
+		},
+	})
+
 	const bindEvents = (calendar: Calendar) => {
 		calendar.on('clickEvent', (event) => {
 			$currentRecordId = event.event.id
@@ -57,6 +69,19 @@
 			})
 			calendar.clearGridSelections()
 			createRecordModal.open()
+		})
+
+		calendar.on('beforeUpdateEvent', (info) => {
+			calendar.updateEvent(info.event.id, info.event.calendarId, info.changes)
+			if (info.changes.start instanceof TZDate) {
+				$updateRecord.mutate({
+					tableId: $table.id.value,
+					id: info.event.id,
+					values: {
+						[field.id.value]: info.changes.start.toDate(),
+					},
+				})
+			}
 		})
 	}
 
