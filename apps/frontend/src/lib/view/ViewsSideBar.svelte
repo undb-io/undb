@@ -86,7 +86,7 @@
 		{#if $hasPermission('table:create_view')}
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger asChild let:builder>
-					<Button size="sm" builders={[builder]} variant="outline" class="w-full gap-2">
+					<Button size="sm" builders={[builder]} class="w-full gap-2">
 						<i class="ti ti-plus"></i>
 						<span>
 							{$t('Create New View')}
