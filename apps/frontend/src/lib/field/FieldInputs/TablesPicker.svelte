@@ -8,6 +8,7 @@
 	import Label from '$components/ui/label/label.svelte'
 	import { tableById } from '$lib/store/table'
 	import Badge from '$components/ui/badge/badge.svelte'
+	import * as HoverCard from '$lib/components/ui/hover-card'
 
 	export let value: string[] | undefined
 
@@ -42,7 +43,22 @@
 							{item.name.value}
 
 							{#if selected.length > 1}
-								<Badge variant="outline">{$t('and n more', { n: selected.length, ns: 'common' })}</Badge>
+								<HoverCard.Root openDelay={100}>
+									<HoverCard.Trigger>
+										<Badge variant="outline">{$t('and n more', { n: selected.length - 1, ns: 'common' })}</Badge>
+									</HoverCard.Trigger>
+									<HoverCard.Content class="p-0">
+										<ul class="p-1.5">
+											{#each selected.slice(1) as t}
+												<li class="w-full hover:bg-gray-100 p-1 transition text-sm">
+													<span>
+														{t.name.value}
+													</span>
+												</li>
+											{/each}
+										</ul>
+									</HoverCard.Content>
+								</HoverCard.Root>
 							{/if}
 						</div>
 					{/each}
