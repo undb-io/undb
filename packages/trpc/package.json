@@ -3,7 +3,7 @@
   "description": "",
   "version": "0.0.0",
   "dependencies": {
-    "@trpc/server": "^10.38.4",
+    "@trpc/server": "^10.38.5",
     "@undb/authz": "workspace:^",
     "@undb/core": "^0.0.0",
     "@undb/cqrs": "^0.0.0",
@@ -12,11 +12,11 @@
     "zod": "^3.22.2"
   },
   "devDependencies": {
-    "rimraf": "^5.0.4",
+    "rimraf": "^5.0.5",
     "tsconfig": "^0.0.0",
     "tsup": "^7.2.0",
     "typescript": "^5.2.2",
-    "vitest": "^0.34.5"
+    "vitest": "^0.34.6"
   },
   "exports": {
     "import": "./dist/index.js",

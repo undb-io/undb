@@ -13,7 +13,7 @@
     "lodash-es": "^4.17.21",
     "nanoid": "^5.0.1",
     "openapi-snippet": "^0.14.0",
-    "openapi-to-postmanv2": "^4.17.0",
+    "openapi-to-postmanv2": "^4.18.0",
     "oxide.ts": "^1.1.0",
     "zod": "^3.22.2"
   },
@@ -22,11 +22,11 @@
     "@types/openapi-to-postmanv2": "^3.2.1",
     "@types/postman-collection": "^3.5.8",
     "openapi3-ts": "^4.1.2",
-    "rimraf": "^5.0.4",
+    "rimraf": "^5.0.5",
     "tsconfig": "^0.0.0",
     "tsup": "^7.2.0",
     "typescript": "^5.2.2",
-    "vitest": "^0.34.5"
+    "vitest": "^0.34.6"
   },
   "exports": {
     "import": "./dist/index.js",
