@@ -10,6 +10,7 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
 	import ViewMenuContent from './ViewMenuContent.svelte'
 	import { viewsSideBarOpen } from '$lib/store/modal'
+	import { Button } from '$components/ui/button'
 
 	const table = getTable()
 	const currentView = getView()
@@ -48,6 +49,11 @@
 				name,
 			},
 		})
+	}
+
+	const handleInnerClick = (event: MouseEvent) => {
+		event.stopPropagation()
+		event.preventDefault()
 	}
 </script>
 
@@ -88,10 +94,12 @@
 
 		<div class="opacity-0 group-hover:opacity-100 flex gap-2 items-center">
 			<DropdownMenu.Root bind:open>
-				<DropdownMenu.Trigger>
-					<span id={view.id.value} class="w-4 inline-block">
-						<i class="ti ti-square-rounded-chevron-down-filled" />
-					</span>
+				<DropdownMenu.Trigger asChild let:builder>
+					<Button builders={[builder]} variant="ghost" on:click={handleInnerClick} class="p-0 h-[unset]">
+						<span id={view.id.value} class="w-4 inline-block">
+							<i class="ti ti-square-rounded-chevron-down-filled" />
+						</span>
+					</Button>
 				</DropdownMenu.Trigger>
 				<ViewMenuContent bind:updating {view} bind:open />
 			</DropdownMenu.Root>
