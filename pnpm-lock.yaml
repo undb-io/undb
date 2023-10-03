@@ -1194,8 +1194,8 @@ importers:
   packages/openapi:
     dependencies:
       '@asteasolutions/zod-to-openapi':
-        specifier: ^5.5.0
-        version: 5.5.0(zod@3.22.2)
+        specifier: ^6.0.0
+        version: 6.0.0(zod@3.22.2)
       '@undb/core':
         specifier: ^0.0.0
         version: link:../core
@@ -1454,8 +1454,8 @@ packages:
     resolution: {integrity: sha512-pvFiLP2BeOKA/ZOS6jxx4XhKzdVLHDhGlFEaZ2flWWYf2xOqVniqpk38I04DFRyz+L0ASggl7SkItTc+ZLju4w==}
     dev: true
 
-  /@asteasolutions/zod-to-openapi@5.5.0(zod@3.22.2):
-    resolution: {integrity: sha512-d5HwrvM6dOKr3XdeF+DmashGvfEc+1oiEfbscugsiwSTrFtuMa7ETpW9sTNnVgn+hJaz+PRxPQUYD7q9/5dUig==}
+  /@asteasolutions/zod-to-openapi@6.0.0(zod@3.22.2):
+    resolution: {integrity: sha512-9yvsiW0otgosv54f2I1Q8Z9m+XJH6yOXBfEo2Fsm4M7UEvFGbQspm52NxxbQyDcpIohWLp4b8l8PMC3W6joC/A==}
     peerDependencies:
       zod: ^3.20.2
     dependencies:
