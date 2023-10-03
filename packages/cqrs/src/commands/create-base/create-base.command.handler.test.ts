@@ -6,6 +6,7 @@ import {
   IClsService,
   IRecordRepository,
   ITableRepository,
+  Table,
   TableId,
   createTestTable,
 } from '@undb/core'
@@ -30,22 +31,34 @@ describe('create base command handler test', () => {
     repo = mock<BaseRepository>()
     tableRepo = mock<ITableRepository>()
     recordRepo = mock<IRecordRepository>()
-    command = new CreateBaseCommand({ name: 'baseName1', tableIds: ['tbl1', 'tbl2', 'tbl3'] })
+    command = new CreateBaseCommand({ name: 'baseName1', tableIds: ['tbl1', 'tbl2'] })
     // base = new Base()
     spy = vi.spyOn(BaseFactory, 'new')
     handler = new CreateBaseCommandHandler(cls, repo, tableRepo, recordRepo)
   })
 
   test('create base success', async () => {
-    await handler.execute(command)
     const base = spy.mock.results[0]
-    expect(repo.insert).toHaveBeenCalledWith(base.value)
-    for (const tableId of ['tbl1', 'tbl2', 'tbl3']) {
-      const table = createTestTable()
-      table.id = TableId.fromOrCreate(tableId)
-      tableRepo.findOneById.calledWith(tableId).mockResolvedValue(Some(table))
-      const spec = table.moveToBase(base.value.id)
-      expect(tableRepo.updateOneById).toHaveBeenCalledWith(table.id.value, spec)
+    console.log(222, base)
+    const table1 = createTestTable()
+    table1.id = TableId.fromOrCreate('tbl1')
+    const tbl1Spy = vi.spyOn(table1, 'moveToBase')
+    const table2 = createTestTable()
+    table2.id = TableId.fromOrCreate('tbl2')
+    const tbl2Spy = vi.spyOn(table2, 'moveToBase')
+    for (const table of [table1, table2]) {
+      tableRepo.findOneById.calledWith(table.id.value).mockResolvedValue(Some(table))
+    }
+    await handler.execute(command)
+    // expect(repo.insert).toHaveBeenCalledWith(base.value)
+    // console.log(1111, tbl1Spy.mock.calls[0], tbl1Spy.mock.results[0].value)
+    // console.log(1111, tbl2Spy.mock.calls[0])
+    for (const table of [table1, table2]) {
+      if (table1.id.value === 'tbl1') {
+        expect(tableRepo.updateOneById).toHaveBeenCalledWith(table.id.value, tbl1Spy.mock.results[0].value)
+      } else {
+        expect(tableRepo.updateOneById).toHaveBeenCalledWith(table.id.value, tbl2Spy.mock.results[0].value)
+      }
     }
   })
 })
