@@ -26,6 +26,7 @@ describe('create base command handler test', () => {
   const table1 = createTestTable(WithTableId.fromExistingString('tbl1').unwrap(), WithTableBaseId.fromString('basId1'))
   const table2 = createTestTable(WithTableId.fromExistingString('tbl2').unwrap())
   let tbl2Spy: SpyInstance
+  let tbl1Spy: SpyInstance
 
   beforeEach(() => {
     cls = mock<IClsService<ClsStore>>()
@@ -35,6 +36,7 @@ describe('create base command handler test', () => {
     spy = vi.spyOn(BaseFactory, 'new')
     handler = new CreateBaseCommandHandler(cls, repo, tableRepo, recordRepo)
     tbl2Spy = vi.spyOn(table2, 'moveToBase')
+    tbl1Spy = vi.spyOn(table1, 'moveToBase')
   })
 
   test('Successfully create base and updated the table', async () => {
@@ -69,6 +71,7 @@ describe('create base command handler test', () => {
     expect(repo.insert).toHaveBeenCalledWith(base)
     expect(tableRepo.findOneById).toHaveBeenLastCalledWith('tbl2')
     const spec = tbl2Spy.mock.results[0].value
+    expect(tbl1Spy.mock.results[0].value.isNone()).toBe(true)
     expect(tableRepo.updateOneById).toHaveBeenCalledOnce()
     expect(tableRepo.updateOneById).toHaveBeenCalledWith(table2.id.value, spec.unwrap())
   })
