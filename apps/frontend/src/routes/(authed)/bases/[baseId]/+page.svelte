@@ -38,7 +38,7 @@
 		<div class="flex justify-between px-10 flex-shrink-0">
 			<div class="inline-flex items-center gap-5">
 				<Button size="icon" variant="outline" href="/">
-					<i class="ti ti-arrow-back-up"></i>
+					<i class="ti ti-home"></i>
 				</Button>
 				<div>
 					<span class="text-xs text-gray-500">
