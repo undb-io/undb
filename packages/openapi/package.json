@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "author": "",
   "dependencies": {
-    "@asteasolutions/zod-to-openapi": "^5.5.0",
+    "@asteasolutions/zod-to-openapi": "^6.0.0",
     "@undb/core": "^0.0.0",
     "@undb/domain": "workspace:^",
     "@undb/integrations": "^0.0.0",

@@ -581,8 +581,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       lucide-svelte:
-        specifier: ^0.279.0
-        version: 0.279.0(svelte@4.2.1)
+        specifier: ^0.284.0
+        version: 0.284.0(svelte@4.2.1)
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
@@ -1194,8 +1194,8 @@ importers:
   packages/openapi:
     dependencies:
       '@asteasolutions/zod-to-openapi':
-        specifier: ^5.5.0
-        version: 5.5.0(zod@3.22.2)
+        specifier: ^6.0.0
+        version: 6.0.0(zod@3.22.2)
       '@undb/core':
         specifier: ^0.0.0
         version: link:../core
@@ -1454,8 +1454,8 @@ packages:
     resolution: {integrity: sha512-pvFiLP2BeOKA/ZOS6jxx4XhKzdVLHDhGlFEaZ2flWWYf2xOqVniqpk38I04DFRyz+L0ASggl7SkItTc+ZLju4w==}
     dev: true
 
-  /@asteasolutions/zod-to-openapi@5.5.0(zod@3.22.2):
-    resolution: {integrity: sha512-d5HwrvM6dOKr3XdeF+DmashGvfEc+1oiEfbscugsiwSTrFtuMa7ETpW9sTNnVgn+hJaz+PRxPQUYD7q9/5dUig==}
+  /@asteasolutions/zod-to-openapi@6.0.0(zod@3.22.2):
+    resolution: {integrity: sha512-9yvsiW0otgosv54f2I1Q8Z9m+XJH6yOXBfEo2Fsm4M7UEvFGbQspm52NxxbQyDcpIohWLp4b8l8PMC3W6joC/A==}
     peerDependencies:
       zod: ^3.20.2
     dependencies:
@@ -12623,8 +12623,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /lucide-svelte@0.279.0(svelte@4.2.1):
-    resolution: {integrity: sha512-u9j8tMPxWsv5iXJvrUU/jpyML/k49flr7440UE8QM9V3u0OZt5+qaY5TMiPDTVRMdEELBg4d4ueW1+3Mo3VT4A==}
+  /lucide-svelte@0.284.0(svelte@4.2.1):
+    resolution: {integrity: sha512-T/ob9yPwN5lzI4x4KYJiv5QAHeNIorTmvQeKUXJSUlbRxBd14uNDp0KLyre+VbuPD6RfJfycsDIxEJ1dDYzw1w==}
     peerDependencies:
       svelte: '>=3 <5'
     dependencies:
