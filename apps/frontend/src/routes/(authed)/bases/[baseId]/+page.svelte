@@ -8,6 +8,10 @@
 	import Input from '$components/ui/input/input.svelte'
 	import { trpc } from '$lib/trpc/client'
 	import BaseMenu from '$lib/base/BaseMenu.svelte'
+	import { hasPermission } from '$lib/store/authz'
+	import { createTableModal } from '$lib/store/modal'
+	import * as Card from '$components/ui/card'
+	import { createTableDefaultValue } from '$lib/store/table'
 
 	export let data: PageData
 
@@ -64,7 +68,26 @@
 
 		<section class="px-10 py-6 flex-1">
 			{#if data.baseTables.length}
-				<TableCards tables={data.baseTables} />
+				<TableCards tables={data.baseTables}>
+					{#if $hasPermission('table:create')}
+						<Card.Root
+							class="!max-w-none cursor-pointer hover:bg-primary-500/90  hover:shadow-sm transition h-full border border-dashed border-slate-200 hover:border-slate-100"
+							on:click={() => {
+								createTableDefaultValue.set({
+									baseId: base?.id,
+								})
+								createTableModal.open()
+							}}
+						>
+							<Card.Header>
+								<div class="flex items-center gap-2 h-full font-normal text-sm text-gray-500">
+									<i class="ti ti-plus" />
+									<p>{$t('Create New Table')}</p>
+								</div>
+							</Card.Header>
+						</Card.Root>
+					{/if}
+				</TableCards>
 			{:else}
 				<EmptyBase />
 			{/if}
