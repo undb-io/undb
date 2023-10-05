@@ -58,18 +58,19 @@ describe('create base command handler test', () => {
 
     const base = spy.mock.results[0].value
     expect(repo.insert).toHaveBeenCalledWith(base)
+    expect(tbl1Spy.mock.results[0].value.isNone()).toBe(true)
     expect(tableRepo.updateOneById).not.toHaveBeenCalled()
   })
 
   test('Successfully create base and updated the table once time', async () => {
     command = new CreateBaseCommand({ name: 'baseName1', id: 'basId1', tableIds: ['tbl1', 'tbl2'] })
-    tableRepo.findOneById.mockResolvedValue(Some(table1)).mockResolvedValueOnce(Some(table2))
+    tableRepo.findOneById.mockResolvedValueOnce(Some(table1)).mockResolvedValueOnce(Some(table2))
 
     await handler.execute(command)
 
     const base = spy.mock.results[0].value
     expect(repo.insert).toHaveBeenCalledWith(base)
-    expect(tableRepo.findOneById).toHaveBeenLastCalledWith('tbl2')
+    expect(tableRepo.findOneById).toHaveBeenCalledTimes(2)
     const spec = tbl2Spy.mock.results[0].value
     expect(tbl1Spy.mock.results[0].value.isNone()).toBe(true)
     expect(tableRepo.updateOneById).toHaveBeenCalledOnce()
