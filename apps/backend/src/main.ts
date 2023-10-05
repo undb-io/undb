@@ -1,6 +1,8 @@
 import tracer from './tracer.js'
 
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
+import type { SwaggerDocumentOptions } from '@nestjs/swagger'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import * as trpcExpress from '@trpc/server/adapters/express'
 import type { AppRouter } from '@undb/trpc'
 import compression from 'compression'
@@ -15,6 +17,7 @@ import { AppModule } from './app.module.js'
 import { AllExceptionsFilter } from './filters/http-exception.filter.js'
 import { i18nMiddleware } from './i18n/i18n.middleware.js'
 import { I18NEXT } from './i18n/i18next.provider.js'
+import { OpenAPIModule } from './openapi/openapi.module.js'
 import { AppRouterSymbol } from './trpc/providers/app-router.js'
 import { TRPC_CONTEXT } from './trpc/providers/context.js'
 import { TRPC_ENDPOINT } from './trpc/trpc.constants.js'
@@ -43,6 +46,20 @@ export async function bootstrap() {
   const createContext = app.get(TRPC_CONTEXT)
   const i18next: i18n = app.get(I18NEXT)
   const cls = app.get(ClsService)
+
+  const config = new DocumentBuilder()
+    .setTitle('Cats example')
+    .setDescription('The cats API description')
+    .setVersion('1.0')
+    .addTag('cats')
+    .build()
+
+  const options: SwaggerDocumentOptions = {
+    include: [OpenAPIModule],
+  }
+
+  const document = SwaggerModule.createDocument(app, config, options)
+  SwaggerModule.setup('api', app, document)
 
   app
     .use(cookieParser())

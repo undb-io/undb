@@ -1,4 +1,5 @@
 import { Controller, Get, Headers, Param, Query, Res, StreamableFile, UseGuards } from '@nestjs/common'
+import { ApiExcludeController } from '@nestjs/swagger'
 import { type Response } from 'express'
 import { type IncomingHttpHeaders } from 'http'
 import { parseURL } from 'ufo'
@@ -7,6 +8,7 @@ import { AuthzGuard } from '../authz/authz.guard.js'
 import { OpenAPIDocService } from './openapi-doc.service.js'
 
 @Controller('openapi')
+@ApiExcludeController()
 export class OpenAPIDocController {
   constructor(private readonly openAPIService: OpenAPIDocService) {}
 
