@@ -8,17 +8,19 @@ import type { ICreateOpenAPIMutateRecordSchema } from '../schema/mutate-record.s
 export const updateRecord = (table: Table, schema: ICreateOpenAPIMutateRecordSchema, record?: Record): RouteConfig => {
   return {
     method: 'patch',
-    path: `/tables/${table.id.value}/records`,
-    description: `Update ${table.name.value} record`,
-    summary: `Update ${table.name.value} record`,
+    path: `/tables/${table.id.value}/records/{id}`,
+    description: `Update ${table.name.value} record by id`,
+    summary: `Update ${table.name.value} record by id`,
     tags: [TAG_RECORD],
     request: {
+      params: z.object({
+        id: recordIdSchema.openapi(COMPONENT_RECORD_ID, { example: record?.id.value ?? RecordId.createId() }),
+      }),
       body: {
         description: 'update record body',
         content: {
           'application/json': {
             schema: z.object({
-              id: recordIdSchema.openapi(COMPONENT_RECORD_ID, { example: record?.id.value ?? RecordId.createId() }),
               values: schema,
             }),
           },

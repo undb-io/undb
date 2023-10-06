@@ -85,12 +85,12 @@ export class OpenAPIRecordController {
   }
 
   @Version('1')
-  @Patch('tables/:tableId/records')
+  @Patch('tables/:tableId/records/:id')
   @Permissions('record:update')
-  @ApiOperation({ summary: 'update record' })
+  @ApiOperation({ summary: 'update record by id' })
   public async updateRecord(
     @Param('tableId') tableId: string,
-    @Body('id') id: string,
+    @Param('id') id: string,
     @Body('values') values: IOpenAPIMutateRecordSchema,
   ) {
     await this.service.updateRecord(tableId, id, values)
