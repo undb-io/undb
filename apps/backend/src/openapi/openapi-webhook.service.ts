@@ -11,6 +11,7 @@ export class OpenAPIWebhookService {
     await this.commandBus.execute(
       new CreateWebhookCommand({
         tableId,
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         webhook: {
           ...values,

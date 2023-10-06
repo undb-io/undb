@@ -15,6 +15,7 @@ import { AppModule } from './app.module.js'
 import { AllExceptionsFilter } from './filters/http-exception.filter.js'
 import { i18nMiddleware } from './i18n/i18n.middleware.js'
 import { I18NEXT } from './i18n/i18next.provider.js'
+import { configureOpenAPISwagger } from './openapi/swagger.js'
 import { AppRouterSymbol } from './trpc/providers/app-router.js'
 import { TRPC_CONTEXT } from './trpc/providers/context.js'
 import { TRPC_ENDPOINT } from './trpc/trpc.constants.js'
@@ -43,6 +44,8 @@ export async function bootstrap() {
   const createContext = app.get(TRPC_CONTEXT)
   const i18next: i18n = app.get(I18NEXT)
   const cls = app.get(ClsService)
+
+  configureOpenAPISwagger(app)
 
   app
     .use(cookieParser())

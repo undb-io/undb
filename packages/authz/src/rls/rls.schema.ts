@@ -15,7 +15,7 @@ export const queryRLS: any = z.object({
 
 export type IQueryRLS = z.infer<typeof queryRLS>
 
-export const updateRLSSchema = z.object({
+export const updateRLSSchema: any = z.object({
   policy: z
     .object({
       // action: rlsAction,
