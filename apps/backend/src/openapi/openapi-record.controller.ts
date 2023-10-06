@@ -1,7 +1,7 @@
 import type { MessageEvent } from '@nestjs/common'
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Sse, UseGuards, Version } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
-import { ApiQuery, ApiTags } from '@nestjs/swagger'
+import { ApiForbiddenResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 import {
   BulkDeleteRecordsCommand,
   BulkDuplicateRecordsCommand,
@@ -27,6 +27,7 @@ import { API_TAG_RECORD, API_TAG_SUBSCRIPTION } from './openapi.constants.js'
 })
 @ApiTags(API_TAG_RECORD)
 @UseGuards(OpenApiGuard, AuthzGuard)
+@ApiForbiddenResponse()
 export class OpenAPIRecordController {
   constructor(
     private queryBus: QueryBus,
@@ -40,6 +41,7 @@ export class OpenAPIRecordController {
   @Version('1')
   @Get('tables/:tableId/records')
   @ApiQuery({ required: false, name: 'viewId' })
+  @ApiOperation({ summary: 'get all records' })
   public async getRecords(
     @Param('tableId') tableId: string,
     @Query('viewId')
@@ -52,6 +54,7 @@ export class OpenAPIRecordController {
 
   @Version('1')
   @Get('tables/:tableId/records/:id')
+  @ApiOperation({ summary: 'get record by id' })
   public async getRecordById(@Param('tableId') tableId: string, @Param('id') id: string) {
     const result = await this.queryBus.execute(new GetRecordQuery({ tableId, id }))
     const record = result ? await this.service.mapMany(tableId, result) : null
@@ -61,6 +64,7 @@ export class OpenAPIRecordController {
   @Version('1')
   @Post('tables/:tableId/records')
   @Permissions('record:create')
+  @ApiOperation({ summary: 'create new record' })
   public async createRecord(
     @Param('tableId') tableId: string,
     @Body('id') id: string | undefined,
@@ -72,6 +76,7 @@ export class OpenAPIRecordController {
   @Version('1')
   @Post('tables/:tableId/records/bulk')
   @Permissions('record:create')
+  @ApiOperation({ summary: 'create new records bulk' })
   public async createRecords(
     @Param('tableId') tableId: string,
     @Body('records') records: { id?: string; values: IOpenAPIMutateRecordSchema }[],
@@ -82,6 +87,7 @@ export class OpenAPIRecordController {
   @Version('1')
   @Patch('tables/:tableId/records')
   @Permissions('record:update')
+  @ApiOperation({ summary: 'update record' })
   public async updateRecord(
     @Param('tableId') tableId: string,
     @Body('id') id: string,
@@ -93,6 +99,7 @@ export class OpenAPIRecordController {
   @Version('1')
   @Patch('tables/:tableId/records/bulk')
   @Permissions('record:update')
+  @ApiOperation({ summary: 'update records bulk' })
   public async updateRecords(
     @Param('tableId') tableId: string,
     @Body('records') records: { id: string; values: IOpenAPIMutateRecordSchema }[],
@@ -103,6 +110,7 @@ export class OpenAPIRecordController {
   @Version('1')
   @Delete('tables/:tableId/records/:id')
   @Permissions('record:delete')
+  @ApiOperation({ summary: 'delete record by id' })
   public async deleteRecord(@Param('tableId') tableId: string, @Param('id') id: string) {
     await this.commandBus.execute(new DeleteRecordCommand({ tableId, id }))
   }
@@ -110,6 +118,7 @@ export class OpenAPIRecordController {
   @Version('1')
   @Post('tables/:tableId/records/:id/restore')
   @Permissions('record:create')
+  @ApiOperation({ summary: 'restore record by id' })
   public async restoreRecord(@Param('tableId') tableId: string, @Param('id') id: string) {
     await this.commandBus.execute(new RestoreRecordCommand({ tableId, id }))
   }
@@ -117,6 +126,7 @@ export class OpenAPIRecordController {
   @Version('1')
   @Delete('tables/:tableId/records')
   @Permissions('record:delete')
+  @ApiOperation({ summary: 'restore records bulk' })
   public async deleteRecordsByIds(@Param('tableId') tableId: string, @Body('ids') ids: [string, ...string[]]) {
     await this.commandBus.execute(new BulkDeleteRecordsCommand({ tableId, ids }))
   }
@@ -124,19 +134,22 @@ export class OpenAPIRecordController {
   @Version('1')
   @Post('tables/:tableId/records/:id')
   @Permissions('record:create')
+  @ApiOperation({ summary: 'duplicate record by id' })
   public async duplicateRecordById(@Param('tableId') tableId: string, @Param('id') id: string) {
     await this.commandBus.execute(new DuplicateRecordCommand({ tableId, id }))
   }
 
   @Version('1')
-  @Post('tables/:tableId/records')
+  @Post('tables/:tableId/records/duplicate/bulk')
   @Permissions('record:create')
+  @ApiOperation({ summary: 'duplicate records by ids' })
   public async duplicateRecordsByIds(@Param('tableId') tableId: string, @Body('ids') ids: [string, ...string[]]) {
     await this.commandBus.execute(new BulkDuplicateRecordsCommand({ tableId, ids }))
   }
 
   @Sse('tables/:tableId/subscription')
   @ApiTags(API_TAG_SUBSCRIPTION)
+  @ApiOperation({ summary: 'subscribe record events' })
   subscription(@Param('tableId') tableId: string): Observable<MessageEvent> {
     return this.handler.observe(tableId).pipe(
       map((event) => ({ data: { event }, id: event.id })),
