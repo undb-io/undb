@@ -126,7 +126,7 @@ export class OpenAPIRecordController {
   @Version('1')
   @Delete('tables/:tableId/records')
   @Permissions('record:delete')
-  @ApiOperation({ summary: 'restore records bulk' })
+  @ApiOperation({ summary: 'delete records bulk' })
   public async deleteRecordsByIds(@Param('tableId') tableId: string, @Body('ids') ids: [string, ...string[]]) {
     await this.commandBus.execute(new BulkDeleteRecordsCommand({ tableId, ids }))
   }
