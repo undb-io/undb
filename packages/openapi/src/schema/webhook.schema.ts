@@ -34,9 +34,9 @@ import {
 } from '@undb/integrations'
 import { z } from 'zod'
 
-export const createCreateWebhookSchema = (table: Table) => {
+export const createCreateWebhookSchema = (table?: Table) => {
   const schema = z.object({
-    id: webhookIdSchema.openapi({ example: WebhookId.createId() }),
+    id: webhookIdSchema.optional().openapi({ example: WebhookId.createId() }),
     enabled: z.boolean().openapi({ example: true }),
     method: webhookMethodSchema.openapi({ example: 'POST' }),
     name: z.string().openapi({ example: 'your awesome webhook' }),
@@ -52,7 +52,7 @@ export type IOpenAPICreateWebhookSchema = ReturnType<typeof createCreateWebhookS
 
 export type IOpenAPICreateWebhook = z.infer<IOpenAPICreateWebhookSchema>
 
-export const createUpdateWebhookSchema = (table: Table) => {
+export const createUpdateWebhookSchema = (table?: Table) => {
   const schema = z
     .object({
       enabled: z.boolean().openapi({ example: true }),

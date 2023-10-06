@@ -1,4 +1,4 @@
-import { EVT_RECORD_CREATED, events, rootFilter, userIdSchema } from '@undb/core'
+import { EVT_RECORD_CREATED, events, recordEvents, rootFilter, userIdSchema } from '@undb/core'
 import { z } from 'zod'
 import { webhookHeadersSchema } from './webhook-headers.vo.js'
 import { webhookIdSchema } from './webhook-id.vo.js'
@@ -39,6 +39,7 @@ export const createWebhookSchema = z.object({
   target: webhookTargetSchema.unwrap().default({ id: '', type: 'table', event: EVT_RECORD_CREATED }),
   headers: webhookHeadersSchema.default({}),
   filter: rootFilter.optional().default([]),
+  event: z.enum(recordEvents),
 })
 
 export type ICreateWebhookSchema = z.infer<typeof createWebhookSchema>

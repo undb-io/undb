@@ -12,6 +12,7 @@ export const configureOpenAPISwagger = (app: INestApplication) => {
     .setTitle('undb openapi')
     .setDescription('undb open api documentation')
     .setVersion(packageFile.version)
+    .addBearerAuth()
     .addTag(API_TAG_RECORD)
     .addTag(API_TAG_WEBHOOK)
     .addTag(API_TAG_SUBSCRIPTION)

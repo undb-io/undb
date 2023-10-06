@@ -1,7 +1,7 @@
 import type { MessageEvent } from '@nestjs/common'
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Sse, UseGuards, Version } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
-import { ApiForbiddenResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiForbiddenResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger'
 import {
   BulkDeleteRecordsCommand,
   BulkDuplicateRecordsCommand,
@@ -32,8 +32,9 @@ import { API_TAG_RECORD, API_TAG_SUBSCRIPTION } from './openapi.constants.js'
   path: 'openapi',
   version: '1',
 })
-@ApiTags(API_TAG_RECORD)
 @UseGuards(OpenApiGuard, AuthzGuard)
+@ApiTags(API_TAG_RECORD)
+@ApiBearerAuth()
 @ApiForbiddenResponse()
 export class OpenAPIRecordController {
   constructor(
