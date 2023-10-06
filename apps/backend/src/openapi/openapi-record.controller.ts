@@ -11,13 +11,20 @@ import {
   GetRecordsQuery,
   RestoreRecordCommand,
 } from '@undb/cqrs'
-import { type IOpenAPIMutateRecordSchema } from '@undb/openapi'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { Observable, map, tap } from 'rxjs'
 import { OpenApiGuard } from '../auth/open-api.guard.js'
 import { AuthzGuard } from '../authz/authz.guard.js'
 import { Permissions } from '../authz/rbac/permission.decorator.js'
 import { NestRealtimeEventsHandler } from '../realtime/events/realtime.events-handler.js'
+import {
+  CreateRecordBulkDTO,
+  CreateRecordDTO,
+  DeleteRecordsBulkDTO,
+  DuplicateRecordsBulkDTO,
+  UpdateRecordBulkDTO,
+  UpdateRecordDTO,
+} from './dtos/record.dto.js'
 import { OpenAPIRecordService } from './openapi-record.service.js'
 import { API_TAG_RECORD, API_TAG_SUBSCRIPTION } from './openapi.constants.js'
 
@@ -65,11 +72,7 @@ export class OpenAPIRecordController {
   @Post('tables/:tableId/records')
   @Permissions('record:create')
   @ApiOperation({ summary: 'create new record' })
-  public async createRecord(
-    @Param('tableId') tableId: string,
-    @Body('id') id: string | undefined,
-    @Body('values') values: IOpenAPIMutateRecordSchema,
-  ) {
+  public async createRecord(@Param('tableId') tableId: string, @Body() { id, values }: CreateRecordDTO) {
     await this.service.createRecord(tableId, id, values)
   }
 
@@ -77,10 +80,7 @@ export class OpenAPIRecordController {
   @Post('tables/:tableId/records/bulk')
   @Permissions('record:create')
   @ApiOperation({ summary: 'create new records bulk' })
-  public async createRecords(
-    @Param('tableId') tableId: string,
-    @Body('records') records: { id?: string; values: IOpenAPIMutateRecordSchema }[],
-  ) {
+  public async createRecords(@Param('tableId') tableId: string, @Body() { records }: CreateRecordBulkDTO) {
     await this.service.createRecords(tableId, records)
   }
 
@@ -91,7 +91,7 @@ export class OpenAPIRecordController {
   public async updateRecord(
     @Param('tableId') tableId: string,
     @Param('id') id: string,
-    @Body('values') values: IOpenAPIMutateRecordSchema,
+    @Body() { values }: UpdateRecordDTO,
   ) {
     await this.service.updateRecord(tableId, id, values)
   }
@@ -100,10 +100,7 @@ export class OpenAPIRecordController {
   @Patch('tables/:tableId/records/bulk')
   @Permissions('record:update')
   @ApiOperation({ summary: 'update records bulk' })
-  public async updateRecords(
-    @Param('tableId') tableId: string,
-    @Body('records') records: { id: string; values: IOpenAPIMutateRecordSchema }[],
-  ) {
+  public async updateRecords(@Param('tableId') tableId: string, @Body() { records }: UpdateRecordBulkDTO) {
     await this.service.updateRecords(tableId, records)
   }
 
@@ -127,7 +124,7 @@ export class OpenAPIRecordController {
   @Delete('tables/:tableId/records')
   @Permissions('record:delete')
   @ApiOperation({ summary: 'delete records bulk' })
-  public async deleteRecordsByIds(@Param('tableId') tableId: string, @Body('ids') ids: [string, ...string[]]) {
+  public async deleteRecordsByIds(@Param('tableId') tableId: string, @Body() { ids }: DeleteRecordsBulkDTO) {
     await this.commandBus.execute(new BulkDeleteRecordsCommand({ tableId, ids }))
   }
 
@@ -143,7 +140,7 @@ export class OpenAPIRecordController {
   @Post('tables/:tableId/records/duplicate/bulk')
   @Permissions('record:create')
   @ApiOperation({ summary: 'duplicate records by ids' })
-  public async duplicateRecordsByIds(@Param('tableId') tableId: string, @Body('ids') ids: [string, ...string[]]) {
+  public async duplicateRecordsByIds(@Param('tableId') tableId: string, @Body() { ids }: DuplicateRecordsBulkDTO) {
     await this.commandBus.execute(new BulkDuplicateRecordsCommand({ tableId, ids }))
   }
 

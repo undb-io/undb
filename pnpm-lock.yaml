@@ -63,6 +63,12 @@ importers:
 
   apps/backend:
     dependencies:
+      '@anatine/zod-nestjs':
+        specifier: ^2.0.3
+        version: 2.0.3(@anatine/zod-openapi@2.2.0)(@nestjs/common@10.2.6)(@nestjs/swagger@7.1.13)(openapi3-ts@4.1.2)(zod@3.22.2)
+      '@anatine/zod-openapi':
+        specifier: ^2.2.0
+        version: 2.2.0(openapi3-ts@4.1.2)(zod@3.22.2)
       '@aws-sdk/client-s3':
         specifier: ^3.421.0
         version: 3.421.0
@@ -303,6 +309,9 @@ importers:
       xlsx:
         specifier: ^0.18.5
         version: 0.18.5
+      zod:
+        specifier: ^3.22.2
+        version: 3.22.2
     devDependencies:
       '@nestjs/cli':
         specifier: ^10.1.18
@@ -1371,6 +1380,34 @@ packages:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.18
     dev: true
+
+  /@anatine/zod-nestjs@2.0.3(@anatine/zod-openapi@2.2.0)(@nestjs/common@10.2.6)(@nestjs/swagger@7.1.13)(openapi3-ts@4.1.2)(zod@3.22.2):
+    resolution: {integrity: sha512-g/Fwf0xDqsSUvrtxUetwvVLJHycVkgF32EmN6SRfZxuEfweb3+0HZ2i7/9RtXBja11fYzSoZduaDB6snaI79sQ==}
+    peerDependencies:
+      '@anatine/zod-openapi': ^2.0.1
+      '@nestjs/common': ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
+      '@nestjs/swagger': ^6.0.0 || ^7.0.0
+      openapi3-ts: ^4.1.2
+      zod: ^3.20.0
+    dependencies:
+      '@anatine/zod-openapi': 2.2.0(openapi3-ts@4.1.2)(zod@3.22.2)
+      '@nestjs/common': 10.2.6(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/swagger': 7.1.13(@nestjs/common@10.2.6)(@nestjs/core@10.2.6)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)
+      openapi3-ts: 4.1.2
+      ts-deepmerge: 6.2.0
+      zod: 3.22.2
+    dev: false
+
+  /@anatine/zod-openapi@2.2.0(openapi3-ts@4.1.2)(zod@3.22.2):
+    resolution: {integrity: sha512-Ponwenf2NMIVbs9IuB3YoW7CQPkuRWxhYV/qxBu48DQhmRyipEw/YROVTWnvku7+lwhv1EyP4+h3J5SwrvmfHg==}
+    peerDependencies:
+      openapi3-ts: ^4.1.2
+      zod: ^3.20.0
+    dependencies:
+      openapi3-ts: 4.1.2
+      ts-deepmerge: 6.2.0
+      zod: 3.22.2
+    dev: false
 
   /@angular-devkit/core@16.1.8(chokidar@3.5.3):
     resolution: {integrity: sha512-dSRD/+bGanArIXkj+kaU1kDFleZeQMzmBiOXX+pK0Ah9/0Yn1VmY3RZh1zcX9vgIQXV+t7UPrTpOjaERMUtVGw==}
@@ -17480,6 +17517,11 @@ packages:
     dependencies:
       typescript: 5.2.2
     dev: true
+
+  /ts-deepmerge@6.2.0:
+    resolution: {integrity: sha512-2qxI/FZVDPbzh63GwWIZYE7daWKtwXZYuyc8YNq0iTmMUwn4mL0jRLsp6hfFlgbdRSR4x2ppe+E86FnvEpN7Nw==}
+    engines: {node: '>=14.13.1'}
+    dev: false
 
   /ts-essentials@9.3.2(typescript@5.2.2):
     resolution: {integrity: sha512-JxKJzuWqH1MmH4ZFHtJzGEhkfN3QvVR3C3w+4BIoWeoY68UVVoA2Np/Bca9z0IPSErVCWhv439aT0We4Dks8kQ==}
