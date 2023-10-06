@@ -1,7 +1,7 @@
 import type { MessageEvent } from '@nestjs/common'
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Sse, UseGuards, Version } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiQuery, ApiTags } from '@nestjs/swagger'
 import {
   BulkDeleteRecordsCommand,
   BulkDuplicateRecordsCommand,
@@ -39,7 +39,12 @@ export class OpenAPIRecordController {
 
   @Version('1')
   @Get('tables/:tableId/records')
-  public async getRecords(@Param('tableId') tableId: string, @Query('viewId') viewId?: string) {
+  @ApiQuery({ required: false, name: 'viewId' })
+  public async getRecords(
+    @Param('tableId') tableId: string,
+    @Query('viewId')
+    viewId?: string,
+  ) {
     const result = await this.queryBus.execute(new GetRecordsQuery({ tableId, viewId }))
     const records = await this.service.mapMany(tableId, result.records ?? [])
     return { records }
