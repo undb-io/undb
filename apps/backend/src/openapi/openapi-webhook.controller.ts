@@ -1,16 +1,19 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, Version } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
+import { ApiTags } from '@nestjs/swagger'
 import { DeleteWebhookCommand, GetWebhooksQuery } from '@undb/cqrs'
 import { type IOpenAPICreateWebhook, type IOpenAPIUpdateWebhook } from '@undb/openapi'
 import { OpenApiGuard } from '../auth/open-api.guard.js'
 import { AuthzGuard } from '../authz/authz.guard.js'
 import { Permissions } from '../authz/rbac/permission.decorator.js'
 import { OpenAPIWebhookService } from './openapi-webhook.service.js'
+import { API_TAG_WEBHOOK } from './openapi.constants.js'
 
 @Controller({
   path: 'openapi',
   version: '1',
 })
+@ApiTags(API_TAG_WEBHOOK)
 @UseGuards(OpenApiGuard, AuthzGuard)
 export class OpenAPIWebhookController {
   constructor(
