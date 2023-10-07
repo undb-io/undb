@@ -10,10 +10,10 @@ describe('import template command hanlder test ', () => {
   let recordRepo: MockProxy<IRecordRepository>
   let cls: MockProxy<IClsService<ClsStore>>
   let handler: ImportTemplateCommandHandler
-  let userId: UserId
+  const userId: UserId = new UserId('user1')
   let spy: SpyInstance
   let tabSpy: SpyInstance
-  const templateInput = {
+  const templateInput: ITemplateSchema = {
     id: 'tplt1wjru6o',
     name: 'testTable',
     export: {
@@ -95,14 +95,12 @@ describe('import template command hanlder test ', () => {
       ],
     },
   }
-  const template = TemplateFactory.fromJSON(templateInput as ITemplateSchema)
+  const template = TemplateFactory.fromJSON(templateInput)
 
   beforeEach(() => {
     repo = mock<ITableRepository>()
     recordRepo = mock<IRecordRepository>()
     cls = mock<IClsService<ClsStore>>()
-
-    userId = new UserId('user1')
     spy = vi.spyOn(TemplateFactory, 'fromJSON').mockReturnValue(template)
     handler = new ImportTemplateCommandHandler(repo, recordRepo, cls)
     tabSpy = vi.spyOn(template.export, 'toTables')
@@ -110,7 +108,7 @@ describe('import template command hanlder test ', () => {
   })
 
   test('import template success and includeRecords is false', async () => {
-    const command = new ImportTemplateCommand({ template: templateInput as ITemplateSchema })
+    const command = new ImportTemplateCommand({ template: templateInput })
 
     await handler.execute(command)
 
@@ -120,7 +118,7 @@ describe('import template command hanlder test ', () => {
   })
 
   test('import template success includeRecords is true', async () => {
-    const command = new ImportTemplateCommand({ template: templateInput as ITemplateSchema, includeRecords: true })
+    const command = new ImportTemplateCommand({ template: templateInput, includeRecords: true })
 
     await handler.execute(command)
 
