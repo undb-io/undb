@@ -13,8 +13,8 @@
     "oxide.ts": "^1.1.0",
     "ts-mixer": "^6.0.3",
     "ts-pattern": "^5.0.5",
-    "zod": "^3.22.2",
-    "zod-i18n-map": "^2.19.0"
+    "zod": "^3.22.4",
+    "zod-i18n-map": "^2.20.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.199",
@@ -28,7 +28,7 @@
     "type-fest": "^4.3.3",
     "typescript": "^5.2.2",
     "vitest": "^0.34.6",
-    "vitest-mock-extended": "^1.3.0"
+    "vitest-mock-extended": "^1.3.1"
   },
   "exports": {
     "import": "./dist/index.js",

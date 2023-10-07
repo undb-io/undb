@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "author": "",
   "dependencies": {
-    "@asteasolutions/zod-to-openapi": "^6.0.0",
+    "@asteasolutions/zod-to-openapi": "^6.1.0",
     "@undb/core": "^0.0.0",
     "@undb/domain": "workspace:^",
     "@undb/integrations": "^0.0.0",
@@ -15,7 +15,7 @@
     "openapi-snippet": "^0.14.0",
     "openapi-to-postmanv2": "^4.18.0",
     "oxide.ts": "^1.1.0",
-    "zod": "^3.22.2"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/lodash-es": "^4.17.9",
