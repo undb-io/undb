@@ -121,6 +121,7 @@
     "type-fest": "^4.3.3",
     "typescript": "^5.2.2",
     "unplugin-swc": "^1.4.2",
+    "vite": "^4.4.11",
     "vitest": "^0.34.6"
   },
   "private": true,
