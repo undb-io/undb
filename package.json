@@ -4,7 +4,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.7.2",
     "@commitlint/config-conventional": "^17.7.0",
-    "@types/node": "^20.8.0",
+    "@types/node": "^20.8.3",
     "@undb/eslint-config": "^0.0.0",
     "chalk": "^5.3.0",
     "commitizen": "^4.3.0",
@@ -14,7 +14,7 @@
     "prettier": "^3.0.3",
     "rimraf": "^5.0.5",
     "taze": "^0.11.3",
-    "turbo": "^1.10.14",
+    "turbo": "^1.10.15",
     "typescript": "^5.2.2",
     "zx": "^7.2.3"
   },

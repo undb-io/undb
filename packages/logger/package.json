@@ -27,7 +27,7 @@
   "type": "module",
   "types": "dist/index.d",
   "dependencies": {
-    "pino": "^8.15.3",
-    "pino-pretty": "^10.2.0"
+    "pino": "^8.15.6",
+    "pino-pretty": "^10.2.3"
   }
 }
