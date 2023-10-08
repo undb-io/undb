@@ -1,0 +1,88 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`test createTestTemplate > create default test template success 1`] = `
+{
+  "export": {
+    "tables": [
+      {
+        "id": "tblh5muva7x",
+        "name": "testTable",
+        "records": [
+          {
+            "id": "recnrwbwi0h",
+            "values": {
+              "fldy08vpazg": "test data",
+            },
+          },
+        ],
+        "schema": [
+          {
+            "display": false,
+            "id": "fldlvkhvhqz",
+            "name": "id",
+            "required": false,
+            "type": "id",
+          },
+          {
+            "display": true,
+            "id": "fldy08vpazg",
+            "name": "name",
+            "required": false,
+            "type": "string",
+          },
+          {
+            "display": false,
+            "format": "yyyy-MM-dd",
+            "id": "fld2p5gpabk",
+            "name": "createdAt",
+            "required": false,
+            "timeFormat": null,
+            "type": "created-at",
+          },
+          {
+            "display": false,
+            "id": "fldzpsh2eed",
+            "name": "createdBy",
+            "required": false,
+            "type": "created-by",
+          },
+          {
+            "display": false,
+            "format": "yyyy-MM-dd",
+            "id": "fldeswxg3sh",
+            "name": "updatedAt",
+            "required": false,
+            "timeFormat": null,
+            "type": "updated-at",
+          },
+          {
+            "display": false,
+            "id": "fldyl028jku",
+            "name": "updatedBy",
+            "required": false,
+            "type": "updated-by",
+          },
+        ],
+        "views": [
+          {
+            "dashboard": {
+              "widgets": [],
+            },
+            "displayType": "grid",
+            "fieldOptions": {},
+            "id": "viw1x8vbpmb",
+            "name": "testTable",
+            "rowHeight": "short",
+            "showSystemFields": false,
+          },
+        ],
+        "viewsOrder": [
+          "viw1x8vbpmb",
+        ],
+      },
+    ],
+  },
+  "id": "tplt1wjru6o",
+  "name": "testTable",
+}
+`;

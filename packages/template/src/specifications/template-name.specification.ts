@@ -1,6 +1,6 @@
 import { CompositeSpecification } from '@undb/domain'
 import { Ok, type Result } from 'oxide.ts'
-import { TemplateName } from 'src/value-objects/template-name.vo.js'
+import { TemplateName } from '../value-objects/template-name.vo.js'
 import type { ITemplateVisitor } from '../interface.js'
 import type { Template } from '../template.js'
 
