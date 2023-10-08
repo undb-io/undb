@@ -1,8 +1,8 @@
-import { Controller, Get, UseGuards, Version } from '@nestjs/common'
+import { Controller, Get, Param, UseGuards, Version } from '@nestjs/common'
 import { QueryBus } from '@nestjs/cqrs'
 import { ApiBearerAuth, ApiForbiddenResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import type { IGetTablesOutput } from '@undb/cqrs'
-import { GetTablesQuery } from '@undb/cqrs'
+import type { IGetTableOutput, IGetTablesOutput } from '@undb/cqrs'
+import { GetTableQuery, GetTablesQuery } from '@undb/cqrs'
 import { OpenApiGuard } from '../auth/open-api.guard.js'
 import { AuthzGuard } from '../authz/authz.guard.js'
 import { Permissions } from '../authz/rbac/permission.decorator.js'
@@ -27,5 +27,15 @@ export class OpenAPITableController {
     const tables: IGetTablesOutput = await this.queryBus.execute(new GetTablesQuery({}))
 
     return { tables }
+  }
+
+  @Version('1')
+  @Get('tables/:tableId')
+  @ApiOperation({ summary: 'get table by id' })
+  @Permissions('table:get')
+  public async getTable(@Param('tableId') tableId: string) {
+    const table: IGetTableOutput = await this.queryBus.execute(new GetTableQuery({ id: tableId }))
+
+    return { table: table.table }
   }
 }
