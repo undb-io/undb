@@ -4,6 +4,7 @@ import type { IRoles } from './role.vo.js'
 
 export const tableActions = z.enum([
   'table:list',
+  'table:get',
   'table:create',
   'table:update',
   'table:delete',
@@ -64,6 +65,7 @@ export type PermissionAction = z.infer<
 export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
   owner: {
     'table:list': true,
+    'table:get': true,
     'table:create': true,
     'table:update': true,
     'table:export': true,
@@ -125,6 +127,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
   },
   admin: {
     'table:list': true,
+    'table:get': true,
     'table:create': true,
     'table:export': true,
     'table:update': true,
@@ -186,6 +189,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
   },
   editor: {
     'table:list': true,
+    'table:get': true,
     'table:create': false,
     'table:export': true,
     'table:update': false,
@@ -247,6 +251,7 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
   },
   viewer: {
     'table:list': true,
+    'table:get': true,
     'table:create': false,
     'table:update': false,
     'table:export': true,
