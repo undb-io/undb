@@ -22,6 +22,13 @@ export class OpenAPIRecordService {
     )
   }
 
+  public async map(tableId: string, record: IQueryRecordSchema) {
+    const table = (await this.repo.findOneById(tableId)).unwrap()
+    const fields = table.schema.fields
+
+    return recordReadableMapper(fields, RecordFactory.fromQuery(record, table.schema.toIdMap()).unwrap())
+  }
+
   public async createRecord(tableId: string, id: string | undefined, values: IOpenAPIMutateRecordSchema) {
     const table = (await this.repo.findOneById(tableId)).unwrap()
     const internalValues = openAPIMutateRecordMapper(table, values)
