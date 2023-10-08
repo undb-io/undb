@@ -1,7 +1,7 @@
 import { CompositeSpecification } from '@undb/domain'
 import { Ok, type Result } from 'oxide.ts'
-import type { ITemplateExportSchema } from 'src/value-objects/template-export.vo.js'
-import { TemplateExport } from 'src/value-objects/template-export.vo.js'
+import type { ITemplateExportSchema } from '../value-objects/template-export.vo.js'
+import { TemplateExport } from '../value-objects/template-export.vo.js'
 import type { ITemplateVisitor } from '../interface.js'
 import type { Template } from '../template.js'
 

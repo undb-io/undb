@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`base fixture test > create test base success 1`] = `
+Base {
+  "id": BaseId {
+    "props": {
+      "value": "baseId",
+    },
+  },
+  "name": BaseName {
+    "props": {
+      "value": "name",
+    },
+  },
+}
+`;

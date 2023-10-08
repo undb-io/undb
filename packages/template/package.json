@@ -24,7 +24,8 @@
     "clean": "rimraf dist",
     "coverage": "vitest run --coverage",
     "dev": "tsup --watch",
-    "prebuild": "pnpm run clean"
+    "prebuild": "pnpm run clean",
+    "test":"vitest run"
   },
   "type": "module",
   "types": "dist/index.d",
