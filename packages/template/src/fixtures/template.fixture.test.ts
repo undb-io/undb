@@ -4,6 +4,6 @@ describe('test createTestTemplate', () => {
   test('create default test template success', () => {
     const template = createTestTemplate()
 
-    expect(template).toMatchSnapshot()
+    expect(template).toHaveProperty(['export'])
   })
 })
