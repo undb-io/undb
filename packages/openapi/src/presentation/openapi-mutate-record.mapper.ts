@@ -11,9 +11,10 @@ export const openAPIMutateRecordMapper = (
 
   for (const [fieldName, value] of Object.entries(values)) {
     const field = schema.get(fieldName)
-    if (field) {
-      result[field.id.value] = value
-    }
+    if (!field) continue
+    if (field.controlled) continue
+
+    result[field.id.value] = value
   }
 
   return result
