@@ -20,11 +20,16 @@
 <ul class="-mx-2 space-y-1 pb-2">
 	<Accordion.Root value={$currentBaseId || EMPTY_ID}>
 		{#each bases as base (base.id)}
-			<Accordion.Item value={base.id} class={cn('border-0 group/base', $currentBaseId === base.id && 'bg-slate-50')}>
-				<Accordion.Trigger class="hover:no-underline hover:bg-gray-100 px-3 py-2 border-0 w-full">
-					<div class="text-sm text-gray-900 font-light flex items-center justify-between gap-2 w-full pr-2">
+			<Accordion.Item
+				value={base.id}
+				class={cn('border-0 group/base', $currentBaseId === base.id && 'bg-slate-50 dark:bg-gray-500 rounded-lg')}
+			>
+				<Accordion.Trigger
+					class="hover:no-underline hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg px-3 py-2 border-0 w-full"
+				>
+					<div class=" text-gray-900 dark:text-gray-50 flex items-center justify-between gap-2 w-full pr-2">
 						<div class="flex items-center gap-2">
-							<i class="ti ti-database text-gray-500"></i>
+							<i class="ti ti-database"></i>
 							<span>
 								{base.name}
 							</span>
@@ -53,9 +58,11 @@
 						{/each}
 					{/if}
 					<CreateTableButton
-						size="sm"
-						variant={baseTables.length ? 'ghost' : 'outline'}
-						class={cn('w-full gap-2 py-1', baseTables.length ? 'text-slate-500 justify-start' : 'my-3')}
+						size="default"
+						variant="ghost"
+						class={cn(
+							'w-full gap-2 py-1 text-slate-500 justify-start hover:text-primary dark:hover:bg-gray-600 dark:hover:text-primary',
+						)}
 					/>
 				</Accordion.Content>
 			</Accordion.Item>
@@ -65,9 +72,14 @@
 				value={EMPTY_ID}
 				class={cn('border-0', $currentBaseId === EMPTY_ID || (!$currentBaseId && 'bg-slate-50'))}
 			>
-				<Accordion.Trigger class="hover:no-underline hover:bg-gray-100 px-3 py-2 border-0">
-					<div class="text-sm text-gray-900 font-light">
-						{$t('Empty Base', { ns: 'base' })}
+				<Accordion.Trigger
+					class="hover:no-underline hover:bg-gray-100 dark:hover:bg-gray-600 rounded-lg px-3 py-2 border-0"
+				>
+					<div class="flex items-center gap-2 font-light">
+						<i class="ti ti-align-box-bottom-left"></i>
+						<span>
+							{$t('Empty Base', { ns: 'base' })}
+						</span>
 					</div>
 				</Accordion.Trigger>
 				<Accordion.Content class="border-0">
