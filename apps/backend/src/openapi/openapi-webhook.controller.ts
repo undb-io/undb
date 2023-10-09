@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards, Version } from '@nestjs/common'
 import { CommandBus, QueryBus } from '@nestjs/cqrs'
 import { ApiBearerAuth, ApiForbiddenResponse, ApiTags } from '@nestjs/swagger'
-import { DeleteWebhookCommand, GetWebhooksQuery } from '@undb/cqrs'
+import { DeleteWebhookCommand, GetWebhookByIdQuery, GetWebhooksQuery } from '@undb/cqrs'
 import { OpenApiGuard } from '../auth/open-api.guard.js'
 import { AuthzGuard } from '../authz/authz.guard.js'
 import { Permissions } from '../authz/rbac/permission.decorator.js'
@@ -28,7 +28,15 @@ export class OpenAPIWebhookController {
   @Post('tables/:tableId/webhooks')
   @Permissions('webhook:create')
   public async createWebhook(@Param('tableId') tableId: string, @Body() values: CreateWebhookDTO) {
-    await this.service.createWebhook(tableId, values)
+    return this.service.createWebhook(tableId, values)
+  }
+
+  @Version('1')
+  @Get('tables/:tableId/webhooks/:id')
+  @Permissions('webhook:get')
+  public async getWebhook(@Param('tableId') tableId: string, @Param('id') id: string) {
+    const query = new GetWebhookByIdQuery({ id })
+    return this.queryBus.execute(query)
   }
 
   @Version('1')
@@ -52,8 +60,9 @@ export class OpenAPIWebhookController {
 
   @Version('1')
   @Get('tables/:tableId/webhooks')
+  @Permissions('webhook:list')
   public async getWebhooks(@Param('tableId') tableId: string) {
     const query = new GetWebhooksQuery({ tableId })
-    await this.queryBus.execute(query)
+    return this.queryBus.execute(query)
   }
 }

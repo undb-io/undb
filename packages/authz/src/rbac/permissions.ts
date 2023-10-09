@@ -38,7 +38,13 @@ export const tableActions = z.enum([
   'table:move_to_base',
 ])
 export const recordActions = z.enum(['record:create', 'record:update', 'record:delete', 'record:list_trash'])
-export const webhookActions = z.enum(['webhook:create', 'webhook:update', 'webhook:delete'])
+export const webhookActions = z.enum([
+  'webhook:list',
+  'webhook:get',
+  'webhook:create',
+  'webhook:update',
+  'webhook:delete',
+])
 export const shareActions = z.enum(['share:enable', 'share:disable'])
 export const memberActions = z.enum(['member:update_role'])
 export const rlsPermissionActions = z.enum(['rls:list', 'rls:create', 'rls:update', 'rls:delete'])
@@ -101,6 +107,8 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'record:delete': true,
     'record:update': true,
     'record:list_trash': true,
+    'webhook:list': true,
+    'webhook:get': true,
     'webhook:create': true,
     'webhook:update': true,
     'webhook:delete': true,
@@ -163,6 +171,8 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'record:delete': true,
     'record:update': true,
     'record:list_trash': true,
+    'webhook:list': true,
+    'webhook:get': true,
     'webhook:create': true,
     'webhook:update': true,
     'webhook:delete': true,
@@ -225,6 +235,8 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'record:delete': true,
     'record:update': true,
     'record:list_trash': true,
+    'webhook:list': true,
+    'webhook:get': true,
     'webhook:create': true,
     'webhook:update': true,
     'webhook:delete': true,
@@ -287,6 +299,8 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'record:delete': false,
     'record:update': false,
     'record:list_trash': false,
+    'webhook:list': true,
+    'webhook:get': true,
     'webhook:create': false,
     'webhook:update': false,
     'webhook:delete': false,
