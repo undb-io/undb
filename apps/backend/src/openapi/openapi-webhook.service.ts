@@ -8,7 +8,7 @@ export class OpenAPIWebhookService {
   constructor(private readonly commandBus: CommandBus) {}
 
   public async createWebhook(tableId: string, values: IOpenAPICreateWebhook) {
-    await this.commandBus.execute(
+    return this.commandBus.execute(
       new CreateWebhookCommand({
         tableId,
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

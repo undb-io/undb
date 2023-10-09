@@ -14,7 +14,7 @@ import { z } from 'zod'
 export const CreateWebhook = extendApi(
   z.object({
     id: webhookIdSchema.optional() as unknown as ZodOptional<ZodString>,
-    name: z.string().nonempty(),
+    name: z.string().min(1),
     url: webhookURLSchema,
     method: webhookMethodSchema,
     enabled: z.boolean(),
@@ -30,7 +30,7 @@ export class CreateWebhookDTO extends createZodDto(CreateWebhook) {}
 export const UpdateWebhook = extendApi(
   z
     .object({
-      name: z.string().nonempty(),
+      name: z.string().min(1),
       url: webhookURLSchema,
       method: webhookMethodSchema,
       enabled: z.boolean(),
