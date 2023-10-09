@@ -52,7 +52,7 @@ export class OpenAPIWebhookController {
 
   @Version('1')
   @Delete('tables/:tableId/webhooks/:id')
-  @Permissions('webhook:create')
+  @Permissions('webhook:delete')
   public async deleteWebhook(@Param('tableId') tableId: string, @Param('id') id: string) {
     const cmd = new DeleteWebhookCommand({ webhookId: id })
     await this.commandBus.execute(cmd)
