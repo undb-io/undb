@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       better-sqlite3:
-        specifier: ^8.7.0
-        version: 8.7.0
+        specifier: ^9.0.0
+        version: 9.0.0
       husky:
         specifier: ^8.0.3
         version: 8.0.3
@@ -86,7 +86,7 @@ importers:
         version: 5.8.7(@mikro-orm/better-sqlite@5.8.7)(@mikro-orm/migrations@5.8.7)
       '@mikro-orm/migrations':
         specifier: ^5.8.7
-        version: 5.8.7(@mikro-orm/core@5.8.7)(better-sqlite3@8.7.0)
+        version: 5.8.7(@mikro-orm/core@5.8.7)(better-sqlite3@9.0.0)
       '@mikro-orm/nestjs':
         specifier: ^5.2.2
         version: 5.2.2(@mikro-orm/core@5.8.7)(@nestjs/common@10.2.7)(@nestjs/core@10.2.7)
@@ -208,8 +208,8 @@ importers:
         specifier: ^5.1.1
         version: 5.1.1
       better-sqlite3:
-        specifier: ^8.7.0
-        version: 8.7.0
+        specifier: ^9.0.0
+        version: 9.0.0
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
@@ -940,7 +940,7 @@ importers:
         version: 5.8.7(@mikro-orm/better-sqlite@5.8.7)(@mikro-orm/migrations@5.8.7)
       '@mikro-orm/migrations':
         specifier: ^5.8.7
-        version: 5.8.7(@mikro-orm/core@5.8.7)(better-sqlite3@8.7.0)
+        version: 5.8.7(@mikro-orm/core@5.8.7)(better-sqlite3@9.0.0)
       '@mikro-orm/sql-highlighter':
         specifier: ^1.0.1
         version: 1.0.1
@@ -983,7 +983,7 @@ importers:
     devDependencies:
       '@mikro-orm/cli':
         specifier: ^5.8.7
-        version: 5.8.7(@mikro-orm/better-sqlite@5.8.7)(@mikro-orm/migrations@5.8.7)(better-sqlite3@8.7.0)
+        version: 5.8.7(@mikro-orm/better-sqlite@5.8.7)(@mikro-orm/migrations@5.8.7)(better-sqlite3@9.0.0)
       '@mikro-orm/reflection':
         specifier: ^5.8.7
         version: 5.8.7(@mikro-orm/core@5.8.7)
@@ -3094,7 +3094,7 @@ packages:
     dependencies:
       '@mikro-orm/core': 5.8.7(@mikro-orm/better-sqlite@5.8.7)(@mikro-orm/migrations@5.8.7)
       '@mikro-orm/knex': 5.8.7(@mikro-orm/core@5.8.7)(@mikro-orm/migrations@5.8.7)(better-sqlite3@8.7.0)
-      '@mikro-orm/migrations': 5.8.7(@mikro-orm/core@5.8.7)(better-sqlite3@8.7.0)
+      '@mikro-orm/migrations': 5.8.7(@mikro-orm/core@5.8.7)(better-sqlite3@9.0.0)
       better-sqlite3: 8.7.0
       fs-extra: 11.1.1
       sqlstring-sqlite: 0.1.1
@@ -3108,7 +3108,7 @@ packages:
       - supports-color
       - tedious
 
-  /@mikro-orm/cli@5.8.7(@mikro-orm/better-sqlite@5.8.7)(@mikro-orm/migrations@5.8.7)(better-sqlite3@8.7.0):
+  /@mikro-orm/cli@5.8.7(@mikro-orm/better-sqlite@5.8.7)(@mikro-orm/migrations@5.8.7)(better-sqlite3@9.0.0):
     resolution: {integrity: sha512-GywR4DzcZyqbwuHFwHunmTICmudknzbFeiUZwbS/TeTf/RDjwc4DCzAe9YkpMzryAZeByypFJsgYqXJJu+fEVQ==}
     engines: {node: '>= 14.0.0'}
     hasBin: true
@@ -3148,8 +3148,8 @@ packages:
       '@jercle/yargonaut': 1.1.5
       '@mikro-orm/better-sqlite': 5.8.7(@mikro-orm/core@5.8.7)(@mikro-orm/migrations@5.8.7)
       '@mikro-orm/core': 5.8.7(@mikro-orm/better-sqlite@5.8.7)(@mikro-orm/migrations@5.8.7)
-      '@mikro-orm/knex': 5.8.7(@mikro-orm/core@5.8.7)(@mikro-orm/migrations@5.8.7)(better-sqlite3@8.7.0)
-      '@mikro-orm/migrations': 5.8.7(@mikro-orm/core@5.8.7)(better-sqlite3@8.7.0)
+      '@mikro-orm/knex': 5.8.7(@mikro-orm/core@5.8.7)(@mikro-orm/migrations@5.8.7)(better-sqlite3@9.0.0)
+      '@mikro-orm/migrations': 5.8.7(@mikro-orm/core@5.8.7)(better-sqlite3@9.0.0)
       fs-extra: 11.1.1
       tsconfig-paths: 4.2.0
       yargs: 17.7.2
@@ -3202,7 +3202,7 @@ packages:
         optional: true
     dependencies:
       '@mikro-orm/better-sqlite': 5.8.7(@mikro-orm/core@5.8.7)(@mikro-orm/migrations@5.8.7)
-      '@mikro-orm/migrations': 5.8.7(@mikro-orm/core@5.8.7)(better-sqlite3@8.7.0)
+      '@mikro-orm/migrations': 5.8.7(@mikro-orm/core@5.8.7)(better-sqlite3@9.0.0)
       acorn-loose: 8.3.0
       acorn-walk: 8.2.0
       dotenv: 16.3.1
@@ -3243,7 +3243,7 @@ packages:
         optional: true
     dependencies:
       '@mikro-orm/core': 5.8.7(@mikro-orm/better-sqlite@5.8.7)(@mikro-orm/migrations@5.8.7)
-      '@mikro-orm/migrations': 5.8.7(@mikro-orm/core@5.8.7)(better-sqlite3@8.7.0)
+      '@mikro-orm/migrations': 5.8.7(@mikro-orm/core@5.8.7)(better-sqlite3@9.0.0)
       better-sqlite3: 8.7.0
       fs-extra: 11.1.1
       knex: 2.5.1(better-sqlite3@8.7.0)
@@ -3253,16 +3253,58 @@ packages:
       - supports-color
       - tedious
 
-  /@mikro-orm/migrations@5.8.7(@mikro-orm/core@5.8.7)(better-sqlite3@8.7.0):
+  /@mikro-orm/knex@5.8.7(@mikro-orm/core@5.8.7)(@mikro-orm/migrations@5.8.7)(better-sqlite3@9.0.0):
+    resolution: {integrity: sha512-CD5lF4dY9pKeHaNuZ6Fn5Q3GrroJWkStI5WPdyaNKmyAPqpsT15OGoiaj1h0XFI53rAdP1EGN7sZf4cExxN4VQ==}
+    engines: {node: '>= 14.0.0'}
+    peerDependencies:
+      '@mikro-orm/core': ^5.0.0
+      '@mikro-orm/entity-generator': ^5.0.0
+      '@mikro-orm/migrations': ^5.0.0
+      better-sqlite3: '*'
+      mssql: '*'
+      mysql: '*'
+      mysql2: '*'
+      pg: '*'
+      sqlite3: '*'
+    peerDependenciesMeta:
+      '@mikro-orm/entity-generator':
+        optional: true
+      '@mikro-orm/migrations':
+        optional: true
+      better-sqlite3:
+        optional: true
+      mssql:
+        optional: true
+      mysql:
+        optional: true
+      mysql2:
+        optional: true
+      pg:
+        optional: true
+      sqlite3:
+        optional: true
+    dependencies:
+      '@mikro-orm/core': 5.8.7(@mikro-orm/better-sqlite@5.8.7)(@mikro-orm/migrations@5.8.7)
+      '@mikro-orm/migrations': 5.8.7(@mikro-orm/core@5.8.7)(better-sqlite3@9.0.0)
+      better-sqlite3: 9.0.0
+      fs-extra: 11.1.1
+      knex: 2.5.1(better-sqlite3@9.0.0)
+      sqlstring: 2.3.3
+    transitivePeerDependencies:
+      - pg-native
+      - supports-color
+      - tedious
+
+  /@mikro-orm/migrations@5.8.7(@mikro-orm/core@5.8.7)(better-sqlite3@9.0.0):
     resolution: {integrity: sha512-gM5FBlzUADbo0+jWdSl6i579dF6HUWv3XVRWzJbd87OMKfavFXTGw/jUijelyoq830X3xS9xnbDRFOfOXlMZGA==}
     engines: {node: '>= 14.0.0'}
     peerDependencies:
       '@mikro-orm/core': ^5.0.0
     dependencies:
       '@mikro-orm/core': 5.8.7(@mikro-orm/better-sqlite@5.8.7)(@mikro-orm/migrations@5.8.7)
-      '@mikro-orm/knex': 5.8.7(@mikro-orm/core@5.8.7)(@mikro-orm/migrations@5.8.7)(better-sqlite3@8.7.0)
+      '@mikro-orm/knex': 5.8.7(@mikro-orm/core@5.8.7)(@mikro-orm/migrations@5.8.7)(better-sqlite3@9.0.0)
       fs-extra: 11.1.1
-      knex: 2.5.1(better-sqlite3@8.7.0)
+      knex: 2.5.1(better-sqlite3@9.0.0)
       umzug: 3.3.1
     transitivePeerDependencies:
       - '@mikro-orm/entity-generator'
@@ -7674,6 +7716,13 @@ packages:
 
   /better-sqlite3@8.7.0:
     resolution: {integrity: sha512-99jZU4le+f3G6aIl6PmmV0cxUIWqKieHxsiF7G34CVFiE+/UabpYqkU0NJIkY/96mQKikHeBjtR27vFfs5JpEw==}
+    requiresBuild: true
+    dependencies:
+      bindings: 1.5.0
+      prebuild-install: 7.1.1
+
+  /better-sqlite3@9.0.0:
+    resolution: {integrity: sha512-lDxQ9qg/XuUHZG6xzrQaMHkNWl37t35/LPB/VJGV8DdScSuGFNfFSqgscXEd8UIuyk/d9wU8iaMxQa4If5Wqog==}
     requiresBuild: true
     dependencies:
       bindings: 1.5.0
@@ -12302,6 +12351,52 @@ packages:
         optional: true
     dependencies:
       better-sqlite3: 8.7.0
+      colorette: 2.0.19
+      commander: 10.0.1
+      debug: 4.3.4
+      escalade: 3.1.1
+      esm: 3.2.25
+      get-package-type: 0.1.0
+      getopts: 2.3.0
+      interpret: 2.2.0
+      lodash: 4.17.21
+      pg-connection-string: 2.6.1
+      rechoir: 0.8.0
+      resolve-from: 5.0.0
+      tarn: 3.0.2
+      tildify: 2.0.0
+    transitivePeerDependencies:
+      - supports-color
+
+  /knex@2.5.1(better-sqlite3@9.0.0):
+    resolution: {integrity: sha512-z78DgGKUr4SE/6cm7ku+jHvFT0X97aERh/f0MUKAKgFnwCYBEW4TFBqtHWFYiJFid7fMrtpZ/gxJthvz5mEByA==}
+    engines: {node: '>=12'}
+    hasBin: true
+    peerDependencies:
+      better-sqlite3: '*'
+      mysql: '*'
+      mysql2: '*'
+      pg: '*'
+      pg-native: '*'
+      sqlite3: '*'
+      tedious: '*'
+    peerDependenciesMeta:
+      better-sqlite3:
+        optional: true
+      mysql:
+        optional: true
+      mysql2:
+        optional: true
+      pg:
+        optional: true
+      pg-native:
+        optional: true
+      sqlite3:
+        optional: true
+      tedious:
+        optional: true
+    dependencies:
+      better-sqlite3: 9.0.0
       colorette: 2.0.19
       commander: 10.0.1
       debug: 4.3.4
