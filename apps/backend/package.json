@@ -91,7 +91,7 @@
     "@nestjs/schematics": "^10.0.2",
     "@nestjs/testing": "^10.2.7",
     "@swc/cli": "^0.1.62",
-    "@swc/core": "1.3.93",
+    "@swc/core": "1.3.94",
     "@types/bcrypt": "^5.0.0",
     "@types/compression": "^1.7.3",
     "@types/cookie-parser": "^1.4.4",
