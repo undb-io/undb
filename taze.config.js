@@ -2,7 +2,7 @@ import { defineConfig } from 'taze'
 
 export default defineConfig({
   // ignore packages from bumping
-  exclude: ['/@undb/', 'i18next', 'sveltekit-superforms', 'cron'],
+  exclude: ['/@undb/', 'i18next', 'sveltekit-superforms'],
   recursive: true,
   // fetch latest package info from registry without cache
   force: true,
