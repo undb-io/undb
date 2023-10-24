@@ -223,8 +223,8 @@ importers:
         specifier: ^1.4.6
         version: 1.4.6
       cron:
-        specifier: ^2.4.3
-        version: 2.4.3
+        specifier: ^3.1.4
+        version: 3.1.4
       got:
         specifier: ^13.0.0
         version: 13.0.0
@@ -2233,6 +2233,7 @@ packages:
   /@commitlint/config-validator@18.0.0:
     resolution: {integrity: sha512-PlXy5QZzQeMgQM7jb0odIhxsI6GWcbGgfy+Hkz5ap31KES/oJgtEvgD8pjg0Z9Ri296bT6zK3ts6brS0MAcMgg==}
     engines: {node: '>=v18'}
+    requiresBuild: true
     dependencies:
       '@commitlint/types': 18.0.0
       ajv: 8.12.0
@@ -2253,6 +2254,7 @@ packages:
   /@commitlint/execute-rule@18.0.0:
     resolution: {integrity: sha512-eNUSaHajb+g3sgZeIrfc6cXNnKIkYN2SXtDVXuiE+hOa055T0bLdZK29gSd945JCztxPVwdOkPLDeLg3NfDubg==}
     engines: {node: '>=v18'}
+    requiresBuild: true
     dev: true
 
   /@commitlint/format@18.0.0:
@@ -2297,7 +2299,7 @@ packages:
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
       resolve-from: 5.0.0
-      ts-node: 10.9.1(@swc/core@1.3.94)(@types/node@20.8.3)(typescript@5.2.2)
+      ts-node: 10.9.1(@types/node@18.16.9)(typescript@5.2.2)
       typescript: 5.2.2
     transitivePeerDependencies:
       - '@swc/core'
@@ -2332,6 +2334,7 @@ packages:
   /@commitlint/resolve-extends@18.0.0:
     resolution: {integrity: sha512-MD9+6GSiWvqgdJtfos+1gqz+zmy2vV7TbUVz2ETZzpfECgmUZSZSYzyivivBAQK6feS71KxmMLL8+YFF9+FFRQ==}
     engines: {node: '>=v18'}
+    requiresBuild: true
     dependencies:
       '@commitlint/config-validator': 18.0.0
       '@commitlint/types': 18.0.0
@@ -6411,7 +6414,7 @@ packages:
     resolution: {integrity: sha512-5bBaAkqvSFBX8JMi/xCofNzG5E594TNsApMz68dLd/sQYz/HGQqgcxGHTRjOvD4G3Y+YF1Oo3S7QdCvKt1KAJQ==}
     deprecated: This is a stub types definition. cron provides its own type definitions, so you do not need this installed.
     dependencies:
-      cron: 2.4.3
+      cron: 3.1.4
     dev: true
 
   /@types/debug@4.1.8:
@@ -8796,7 +8799,7 @@ packages:
     dependencies:
       '@types/node': 18.16.9
       cosmiconfig: 8.1.3
-      ts-node: 10.9.1(@swc/core@1.3.94)(@types/node@20.8.3)(typescript@5.2.2)
+      ts-node: 10.9.1(@types/node@18.16.9)(typescript@5.2.2)
       typescript: 5.2.2
     dev: true
 
@@ -8843,18 +8846,18 @@ packages:
     resolution: {integrity: sha512-VQ2MBenTq1fWZUH9DJNGti7kKv6EeAuYr3cLwxUWhIu1baTaXh4Ib5W2CqHVqib4/MqbYGJqiL3Zb8GJZr3l4g==}
     dev: true
 
-  /cron@2.4.3:
-    resolution: {integrity: sha512-YBvExkQYF7w0PxyeFLRyr817YVDhGxaCi5/uRRMqa4aWD3IFKRd+uNbpW1VWMdqQy8PZ7CElc+accXJcauPKzQ==}
-    dependencies:
-      '@types/luxon': 3.3.1
-      luxon: 3.3.0
-
   /cron@3.1.3:
     resolution: {integrity: sha512-KVxeKTKYj2eNzN4ElnT6nRSbjbfhyxR92O/Jdp6SH3pc05CDJws59jBrZWEMQlxevCiE6QUTrXy+Im3vC3oD3A==}
     dependencies:
       '@types/luxon': 3.3.1
       luxon: 3.4.3
     dev: false
+
+  /cron@3.1.4:
+    resolution: {integrity: sha512-HMq+5lvaKFR7os6E+2FuA9nMydylYJWVN8gIkU/UVa7bYBr7RxExH++hTWSTApkCoyf/c03jEbWgHrNNOwsvCA==}
+    dependencies:
+      '@types/luxon': 3.3.1
+      luxon: 3.4.3
 
   /cross-fetch@3.1.6:
     resolution: {integrity: sha512-riRvo06crlE8HiqOwIpQhxwdOk4fOeR7FVM/wXoxchFEqMNUjvbs3bfo4OTgMEMHzppd4DxFBDbyySj8Cv781g==}
@@ -12737,14 +12740,9 @@ packages:
       svelte: 4.2.1
     dev: true
 
-  /luxon@3.3.0:
-    resolution: {integrity: sha512-An0UCfG/rSiqtAIiBPO0Y9/zAnHUZxAMiCpTd5h2smgsj7GGmcenvrvww2cqNA8/4A5ZrD1gJpHN2mIHZQF+Mg==}
-    engines: {node: '>=12'}
-
   /luxon@3.4.3:
     resolution: {integrity: sha512-tFWBiv3h7z+T/tDaoxA8rqTxy1CHV6gHS//QdaH4pulbq/JuBSGgQspQQqcgnwdAx6pNI7cmvz5Sv/addzHmUg==}
     engines: {node: '>=12'}
-    dev: false
 
   /macos-release@2.5.1:
     resolution: {integrity: sha512-DXqXhEM7gW59OjZO8NIjBCz9AQ1BEMrfiOAl4AYByHCtVHRF4KoGNO8mqQeM8lRCtQe/UnJ4imO/d2HdkKsd+A==}
@@ -17579,6 +17577,37 @@ packages:
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.3
       '@types/node': 20.8.3
+      acorn: 8.8.2
+      acorn-walk: 8.2.0
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      typescript: 5.2.2
+      v8-compile-cache-lib: 3.0.1
+      yn: 3.1.1
+    dev: true
+
+  /ts-node@10.9.1(@types/node@18.16.9)(typescript@5.2.2):
+    resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
+    hasBin: true
+    peerDependencies:
+      '@swc/core': '>=1.2.50'
+      '@swc/wasm': '>=1.2.50'
+      '@types/node': '*'
+      typescript: '>=2.7'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      '@swc/wasm':
+        optional: true
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      '@tsconfig/node10': 1.0.9
+      '@tsconfig/node12': 1.0.11
+      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.3
+      '@types/node': 18.16.9
       acorn: 8.8.2
       acorn-walk: 8.2.0
       arg: 4.1.3
