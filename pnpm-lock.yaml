@@ -689,8 +689,8 @@ importers:
         specifier: ^3.3.3
         version: 3.3.3(ts-node@10.9.1)
       trpc-svelte-query:
-        specifier: ^1.0.3
-        version: 1.0.3(@sveltejs/kit@1.25.1)(@tanstack/svelte-query@5.0.0)(@trpc/client@10.40.0)(@trpc/server@10.40.0)(svelte@4.2.1)
+        specifier: ^2.0.0
+        version: 2.0.1(@sveltejs/kit@1.25.1)(@tanstack/svelte-query@5.0.0)(@trpc/client@10.40.0)(@trpc/server@10.40.0)(svelte@4.2.1)
       ts-pattern:
         specifier: ^5.0.5
         version: 5.0.5
@@ -17474,13 +17474,13 @@ packages:
       escape-string-regexp: 5.0.0
     dev: true
 
-  /trpc-svelte-query@1.0.3(@sveltejs/kit@1.25.1)(@tanstack/svelte-query@5.0.0)(@trpc/client@10.40.0)(@trpc/server@10.40.0)(svelte@4.2.1):
-    resolution: {integrity: sha512-CvLg2reyFFwBQrzYgVLbmuTdLb/PYsbfpNM/+qP0iBNy8J6OlWGWpJkVFv2MNZscRF/+v43BpqFIXHhAqA3BQA==}
+  /trpc-svelte-query@2.0.1(@sveltejs/kit@1.25.1)(@tanstack/svelte-query@5.0.0)(@trpc/client@10.40.0)(@trpc/server@10.40.0)(svelte@4.2.1):
+    resolution: {integrity: sha512-1y7VeIA46fMempHhy9xdvcmv+6oZjZ6KE/aSnD+gvx+LiW+FZnu+wzzQu/Aj55jKh2rj1rc3dZnwZ+rq1IpTjw==}
     peerDependencies:
-      '@sveltejs/kit': ^1.22.3
-      '@tanstack/svelte-query': ^4.29.25
-      '@trpc/client': ^10.35.0
-      '@trpc/server': ^10.35.0
+      '@sveltejs/kit': ^1.27.1
+      '@tanstack/svelte-query': ^5.3.0
+      '@trpc/client': ^10.43.0
+      '@trpc/server': ^10.43.0
       svelte: '>=3 <5'
     dependencies:
       '@sveltejs/kit': 1.25.1(svelte@4.2.1)(vite@4.4.11)
