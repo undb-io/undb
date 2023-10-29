@@ -1,4 +1,5 @@
-import { Record, type Table } from '@undb/core'
+import type { Record } from '@undb/core'
+import { type Table } from '@undb/core'
 import type { ZodDefault, ZodRawShape, ZodTypeAny } from 'zod'
 import { z } from 'zod'
 import { COMPONENT_MUTATE_RECORD_VALUES } from '../constants.js'

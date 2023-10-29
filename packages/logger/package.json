@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "author": "",
   "devDependencies": {
-    "rimraf": "^5.0.4",
+    "rimraf": "^5.0.5",
     "tsconfig": "^0.0.0",
     "tsup": "^7.2.0",
     "typescript": "^5.2.2",
-    "vitest": "^0.34.5"
+    "vitest": "^0.34.6"
   },
   "exports": {
     "import": "./dist/index.js",
@@ -27,7 +27,7 @@
   "type": "module",
   "types": "dist/index.d",
   "dependencies": {
-    "pino": "^8.15.1",
-    "pino-pretty": "^10.2.0"
+    "pino": "^8.16.1",
+    "pino-pretty": "^10.2.3"
   }
 }

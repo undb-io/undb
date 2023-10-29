@@ -3,9 +3,11 @@ import type { Table } from '@undb/core'
 import { type IRecordRepository, type ITableRepository } from '@undb/core'
 import { createRedocHTML, createTableSchema, type IPostmanCollectionConvertor } from '@undb/openapi'
 import type { OpenAPIObject } from 'openapi3-ts/oas31'
+import openapiTS, { OpenAPI3, astToString } from 'openapi-typescript'
 import { InjectRecordRepository } from '../core/table/adapters/sqlite/record-sqlite.repository.js'
 import { InjectTableRepository } from '../core/table/adapters/sqlite/table-sqlite.repository.js'
 import { InjectPostmanConvertor } from './convertor/index.js'
+import { match } from 'ts-pattern'
 
 @Injectable()
 export class OpenAPIDocService {
@@ -34,15 +36,32 @@ export class OpenAPIDocService {
     const table = (await this.repo.findOneById(tableId)).unwrap()
     const spec = await this.getSpec(table, host)
 
-    let buffer: Buffer
-    if (type === 'postman') {
-      const collection = await this.postmanConvertor.convert(spec)
-      buffer = Buffer.from(JSON.stringify(collection))
-    } else {
-      buffer = Buffer.from(JSON.stringify(spec))
-    }
+    const data = await match(type)
+      .returnType<Promise<{ content: string; ext: string }>>()
+      .with('postman', async () => {
+        const collection = await this.postmanConvertor.convert(spec)
+        return {
+          content: JSON.stringify(collection),
+          ext: 'json',
+        }
+      })
+      .with('typescript', async () => {
+        const ast = await openapiTS(spec as OpenAPI3)
+        const contents = astToString(ast)
+        return {
+          content: contents,
+          ext: 'ts',
+        }
+      })
+      .otherwise(async () => {
+        const content = JSON.stringify(spec)
+        return {
+          content,
+          ext: 'json',
+        }
+      })
 
-    return { name: `${table.name.value}_openapi.json`, buffer }
+    return { name: `${table.name.value}_openapi.${data.ext}`, buffer: Buffer.from(data.content) }
   }
 
   public async generateDoc(tableId: string, host: string): Promise<string> {

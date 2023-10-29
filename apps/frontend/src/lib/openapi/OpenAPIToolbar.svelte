@@ -65,6 +65,9 @@
 						<DropdownMenu.Item on:click={() => download('postman')}>
 							{$t('postman collections')}
 						</DropdownMenu.Item>
+						<DropdownMenu.Item on:click={() => download('typescript')}>
+              Typescript
+						</DropdownMenu.Item>
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
 			</div>

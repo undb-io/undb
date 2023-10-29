@@ -3,6 +3,8 @@ import { RBACHasNotPermission } from './rbac.errors.js'
 import type { IRoles } from './role.vo.js'
 
 export const tableActions = z.enum([
+  'table:list',
+  'table:get',
   'table:create',
   'table:update',
   'table:delete',
@@ -36,7 +38,13 @@ export const tableActions = z.enum([
   'table:move_to_base',
 ])
 export const recordActions = z.enum(['record:create', 'record:update', 'record:delete', 'record:list_trash'])
-export const webhookActions = z.enum(['webhook:create', 'webhook:update', 'webhook:delete'])
+export const webhookActions = z.enum([
+  'webhook:list',
+  'webhook:get',
+  'webhook:create',
+  'webhook:update',
+  'webhook:delete',
+])
 export const shareActions = z.enum(['share:enable', 'share:disable'])
 export const memberActions = z.enum(['member:update_role'])
 export const rlsPermissionActions = z.enum(['rls:list', 'rls:create', 'rls:update', 'rls:delete'])
@@ -62,6 +70,8 @@ export type PermissionAction = z.infer<
 
 export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
   owner: {
+    'table:list': true,
+    'table:get': true,
     'table:create': true,
     'table:update': true,
     'table:export': true,
@@ -97,6 +107,8 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'record:delete': true,
     'record:update': true,
     'record:list_trash': true,
+    'webhook:list': true,
+    'webhook:get': true,
     'webhook:create': true,
     'webhook:update': true,
     'webhook:delete': true,
@@ -122,6 +134,8 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'openapi:delete_api_token': true,
   },
   admin: {
+    'table:list': true,
+    'table:get': true,
     'table:create': true,
     'table:export': true,
     'table:update': true,
@@ -157,6 +171,8 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'record:delete': true,
     'record:update': true,
     'record:list_trash': true,
+    'webhook:list': true,
+    'webhook:get': true,
     'webhook:create': true,
     'webhook:update': true,
     'webhook:delete': true,
@@ -182,6 +198,8 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'openapi:delete_api_token': true,
   },
   editor: {
+    'table:list': true,
+    'table:get': true,
     'table:create': false,
     'table:export': true,
     'table:update': false,
@@ -217,6 +235,8 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'record:delete': true,
     'record:update': true,
     'record:list_trash': true,
+    'webhook:list': true,
+    'webhook:get': true,
     'webhook:create': true,
     'webhook:update': true,
     'webhook:delete': true,
@@ -242,6 +262,8 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'openapi:delete_api_token': true,
   },
   viewer: {
+    'table:list': true,
+    'table:get': true,
     'table:create': false,
     'table:update': false,
     'table:export': true,
@@ -277,6 +299,8 @@ export const permissions: Record<IRoles, Record<PermissionAction, boolean>> = {
     'record:delete': false,
     'record:update': false,
     'record:list_trash': false,
+    'webhook:list': true,
+    'webhook:get': true,
     'webhook:create': false,
     'webhook:update': false,
     'webhook:delete': false,

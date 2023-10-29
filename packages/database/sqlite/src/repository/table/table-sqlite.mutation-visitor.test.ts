@@ -85,8 +85,8 @@ describe('TableSqliteMutationVisitor', () => {
     expect(view!.displayType).to.be.eq('grid')
     expect(view!.kanban).to.be.undefined
     expect(view!.calendar).to.be.undefined
-    expect(view!.filter).to.be.null
-    expect(view!.fieldOptions).to.be.null
+    expect(view!.filter).to.be.undefined
+    expect(view!.fieldOptions).to.be.undefined
     expect(view!.fieldsOrder).to.be.undefined
     expect(view!.createdAt).to.be.instanceOf(Date)
     expect(view!.updatedAt).to.be.instanceOf(Date)

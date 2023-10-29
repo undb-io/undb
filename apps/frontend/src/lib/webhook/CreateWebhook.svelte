@@ -49,6 +49,7 @@
 					name: event.form.data.name,
 					headers: event.form.data.headers,
 					filter: validFilters.length ? validFilters : undefined,
+					event: event.form.data.target.event,
 					target: {
 						id: $table.id.value,
 						type: 'table',

@@ -87,7 +87,7 @@
 					<Input bind:value={name} placeholder={$t('Base Name Placeholder', { ns: 'base' })} />
 				</Label>
 				<Tabs.Root value="tables" class="mt-4">
-					<Tabs.List>
+					<Tabs.List class="grid w-full grid-cols-2">
 						<Tabs.Trigger value="tables">{$t('Select Base Table', { ns: 'base' })}</Tabs.Trigger>
 						<Tabs.Trigger value="template">{$t('Import Base Template', { ns: 'base' })}</Tabs.Trigger>
 					</Tabs.List>

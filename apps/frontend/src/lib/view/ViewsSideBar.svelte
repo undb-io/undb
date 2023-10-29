@@ -75,7 +75,7 @@
 </script>
 
 <section
-	class="w-full h-full bg-gradient-to-r bg-white dark:bg-gray-800 dark:border-gray-700 space-x-2 flex flex-col border-l border-gra300 shadow-lg"
+	class="w-full h-full bg-gradient-to-r bg-white dark:bg-gray-800 dark:border-gray-700 flex flex-col border-l border-gra300 shadow-lg"
 >
 	<ul bind:this={el} class="flex-1 p-2 space-y-1">
 		{#each views as view}
@@ -86,7 +86,7 @@
 		{#if $hasPermission('table:create_view')}
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger asChild let:builder>
-					<Button size="sm" builders={[builder]} class="w-full gap-2">
+					<Button size="sm" builders={[builder]} class="w-full gap-2 whitespace-nowrap ">
 						<i class="ti ti-plus"></i>
 						<span>
 							{$t('Create New View')}

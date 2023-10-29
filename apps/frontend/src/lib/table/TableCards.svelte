@@ -2,10 +2,8 @@
 	import * as Card from '$components/ui/card'
 	import * as Tooltip from '$components/ui/tooltip'
 	import { t } from '$lib/i18n'
-	import { createTableModal } from '$lib/store/modal'
 	import { cn } from '$lib/utils'
 	import type { IQueryTable } from '@undb/core'
-	import { hasPermission } from '$lib/store/authz'
 	import { Input } from '$components/ui/input'
 
 	export let tables: IQueryTable[] = []
@@ -48,18 +46,6 @@
 			</li>
 		{/each}
 
-		{#if $hasPermission('table:create')}
-			<Card.Root
-				class="!max-w-none cursor-pointer hover:bg-primary-500/90  hover:shadow-sm transition h-full border border-dashed border-slate-200 hover:border-slate-100"
-				on:click={() => createTableModal.open()}
-			>
-				<Card.Header>
-					<div class="flex items-center gap-2 h-full font-normal text-sm text-gray-500">
-						<i class="ti ti-plus" />
-						<p>{$t('Create New Table')}</p>
-					</div>
-				</Card.Header>
-			</Card.Root>
-		{/if}
+		<slot />
 	</ul>
 </div>
