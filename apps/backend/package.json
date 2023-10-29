@@ -68,6 +68,7 @@
     "nestjs-cls": "^3.5.1",
     "nestjs-pino": "^3.5.0",
     "nodemailer": "^6.9.5",
+    "openapi-typescript": "7.0.0-next.2",
     "oxide.ts": "^1.1.0",
     "p-limit": "^4.0.0",
     "passport": "^0.6.0",
