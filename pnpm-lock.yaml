@@ -554,8 +554,8 @@ importers:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.31)
       bits-ui:
-        specifier: ^0.8.4
-        version: 0.8.4(svelte@4.2.2)
+        specifier: ^0.9.0
+        version: 0.9.0(svelte@4.2.2)
       chart.js:
         specifier: ^4.4.0
         version: 4.4.0
@@ -3077,8 +3077,8 @@ packages:
       - supports-color
     dev: false
 
-  /@melt-ui/svelte@0.57.1(svelte@4.2.2):
-    resolution: {integrity: sha512-MnW/wsuRzpVqDsaBFr6+gNAC4EdGjJ7MsnHBBvBhacxqbrfruCB2aRDIe1ovmLtAkQDHGWyYS08NcHMHiXPnSg==}
+  /@melt-ui/svelte@0.57.2(svelte@4.2.2):
+    resolution: {integrity: sha512-Ul+pebT2wff5rp5xzlXwQ7W6z5YOS9oXsds21dqlE2gUAFBIfN1vIo4IZrTed/FkpCyey90CvHDQYfQvZiNvkA==}
     peerDependencies:
       svelte: '>=3 <5'
     dependencies:
@@ -7538,12 +7538,12 @@ packages:
     dependencies:
       file-uri-to-path: 1.0.0
 
-  /bits-ui@0.8.4(svelte@4.2.2):
-    resolution: {integrity: sha512-2gbT6DuIOg4SeMayzlKCUtylX70CNLVaE4gBUVzhpTJGSHLY6+eDB03Runq5rh5YEtBEHyiAjw6H+zDFHwrRzg==}
+  /bits-ui@0.9.0(svelte@4.2.2):
+    resolution: {integrity: sha512-wEVWMnR4or4t8dY+UP+G4jVugzsfhMcuIrTOoJh8V6t/JcHWne/z1nnBA/yD1E1cn391IUurSatRkv7qTJXMww==}
     peerDependencies:
       svelte: ^4.0.0
     dependencies:
-      '@melt-ui/svelte': 0.57.1(svelte@4.2.2)
+      '@melt-ui/svelte': 0.57.2(svelte@4.2.2)
       nanoid: 5.0.2
       svelte: 4.2.2
     dev: true
