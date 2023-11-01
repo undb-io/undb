@@ -70,7 +70,7 @@
     "nodemailer": "^6.9.7",
     "openapi-typescript": "7.0.0-next.2",
     "oxide.ts": "^1.1.0",
-    "p-limit": "^4.0.0",
+    "p-limit": "^5.0.0",
     "passport": "^0.6.0",
     "passport-custom": "^1.1.1",
     "passport-jwt": "^4.0.1",
