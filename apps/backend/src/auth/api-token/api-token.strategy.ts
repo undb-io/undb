@@ -7,6 +7,7 @@ import { ClsService } from 'nestjs-cls'
 import { Strategy } from 'passport-custom'
 import { InjectApiTokenRepository } from '../../openapi/api-token/adapters/api-token.sqlite-repository.js'
 import { API_TOKEN_AUTH } from './api-token.constants.js'
+import { InvalidApiToken } from '../errors/invalid-api-token.error.js'
 
 @Injectable()
 export class ApiTokenStrategy extends PassportStrategy(Strategy, API_TOKEN_AUTH) {
@@ -24,9 +25,12 @@ export class ApiTokenStrategy extends PassportStrategy(Strategy, API_TOKEN_AUTH)
     if (typeof token !== 'string') return
 
     const spec = WithApiTokenToken.fromString(token)
-    const apiToken = (await this.repo.findOne(spec)).unwrap()
+    const apiToken = await this.repo.findOne(spec)
+    if (apiToken.isNone()) {
+      throw new InvalidApiToken()
+    }
 
-    const userId = apiToken.userId.value
+    const userId = apiToken.unwrap().userId.value
     this.cls.set('user.userId', userId)
     this.cls.set('user.isApiToken', true)
 
