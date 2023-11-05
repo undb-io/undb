@@ -23,7 +23,7 @@
   "devDependencies": {
     "@mikro-orm/cli": "^5.9.0",
     "@mikro-orm/reflection": "^5.9.0",
-    "@swc/core": "1.3.95",
+    "@swc/core": "1.3.96",
     "@types/lodash-es": "^4.17.10",
     "@types/uuid": "^9.0.6",
     "@undb/logger": "^0.0.0",
