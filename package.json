@@ -25,7 +25,7 @@
   "lint-staged": {
     "*.{ts,tsx,md}": "prettier --write"
   },
-  "packageManager": "pnpm@8.10.0",
+  "packageManager": "pnpm@8.10.3",
   "private": true,
   "scripts": {
     "bootstrap": "pnpm install && pnpm run build",
