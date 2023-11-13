@@ -25,7 +25,7 @@
     "@nestjs/serve-static": "^4.0.0",
     "@nestjs/swagger": "^7.1.14",
     "@nestjs/terminus": "^10.1.1",
-    "@opentelemetry/auto-instrumentations-node": "^0.39.4",
+    "@opentelemetry/auto-instrumentations-node": "^0.40.0",
     "@opentelemetry/exporter-trace-otlp-http": "^0.45.0",
     "@opentelemetry/resources": "^1.17.1",
     "@opentelemetry/sdk-node": "^0.45.0",
