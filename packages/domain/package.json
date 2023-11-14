@@ -7,17 +7,17 @@
     "array-move": "^4.0.0",
     "date-fns": "^2.30.0",
     "dequal": "^2.0.3",
-    "nanoid": "^5.0.2",
+    "nanoid": "^5.0.3",
     "oxide.ts": "^1.1.0",
     "uuid": "^9.0.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.6",
+    "@types/uuid": "^9.0.7",
     "rimraf": "^5.0.5",
     "tsconfig": "^0.0.0",
     "tsup": "^7.2.0",
-    "type-fest": "^4.6.0",
+    "type-fest": "^4.7.1",
     "typescript": "^5.2.2",
     "vitest": "^0.34.6"
   },
