@@ -5,6 +5,7 @@ import path from 'path'
 import { entities } from './entity/index.js'
 import { SqliteLogger } from './logger.js'
 import { Migration20230927011121 } from './migrations/Migration20230927011121.js'
+import { isMemoryDatabase } from './utils.js'
 
 export const createConfig = (data: string, env = 'development') =>
   defineConfig({
@@ -13,7 +14,7 @@ export const createConfig = (data: string, env = 'development') =>
     highlighter: new SqlHighlighter(),
     metadataProvider: ReflectMetadataProvider,
     driver: BetterSqliteDriver,
-    dbName: path.join(data, `undb.db`),
+    dbName: isMemoryDatabase(data) ? data : path.join(data, `undb.db`),
     debug: env !== 'production' ? ['query'] : false,
     forceUndefined: true,
     flushMode: FlushMode.ALWAYS,

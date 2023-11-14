@@ -1,8 +1,10 @@
 import 'reflect-metadata'
 
 export { EntityManager } from '@mikro-orm/better-sqlite'
+export * from './constants.js'
 export * from './create-mikro-orm-config.js'
 export * from './entity/index.js'
 export * from './repository/index.js'
 export * from './services/index.js'
 export * from './sqlite.uow.js'
+export * from './utils.js'

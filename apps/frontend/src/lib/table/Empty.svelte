@@ -12,8 +12,8 @@
 
 		<p class="inline-flex items-center">{@html $t('shortcut T', { shortcut: 'T' })}</p>
 
-		<div>
-			<Button class="w-[250px] rounded-r-none border-r-0" on:click={() => createTableModal.open()}>
+		<div class="flex items-center">
+			<Button class="w-[250px] rounded-r-none border-r border-r-blue-700" on:click={() => createTableModal.open()}>
 				{$t('Create New Table')}
 			</Button>
 
