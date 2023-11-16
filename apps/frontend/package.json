@@ -82,7 +82,7 @@
 		"svelte-tiny-virtual-list": "^2.0.5",
 		"sveltekit-search-params": "^1.0.15",
 		"sveltekit-superforms": "^0.8.7",
-		"svelvet": "^8.1.0",
+		"svelvet": "^9.0.0",
 		"swiper": "^11.0.4",
 		"tailwind-merge": "^2.0.0",
 		"tailwind-variants": "^0.1.18",
