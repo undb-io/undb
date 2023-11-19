@@ -262,8 +262,8 @@ importers:
         specifier: ^6.9.7
         version: 6.9.7
       openapi-typescript:
-        specifier: 7.0.0-next.2
-        version: 7.0.0-next.2
+        specifier: 7.0.0-next.3
+        version: 7.0.0-next.3
       oxide.ts:
         specifier: ^1.1.0
         version: 1.1.0
@@ -5024,7 +5024,7 @@ packages:
       js-yaml: 4.1.0
       lodash.isequal: 4.5.0
       minimatch: 5.1.6
-      node-fetch: 2.6.11
+      node-fetch: 2.7.0
       pluralize: 8.0.0
       yaml-ast-parser: 0.0.43
     transitivePeerDependencies:
@@ -14002,8 +14002,8 @@ packages:
       - encoding
     dev: false
 
-  /openapi-typescript@7.0.0-next.2:
-    resolution: {integrity: sha512-28z7waM6zQngdylvz0reHP/Ax40FzcdcIMqLoz9zaV7l3k/iDzr+wcjMH+KlQh7x7THXBMe2L1K2edfwvJmz8A==}
+  /openapi-typescript@7.0.0-next.3:
+    resolution: {integrity: sha512-MWbXwyagp00PcKBb/7pqwenCbYIuMhRsWo+fxT2Az4FJV/o39pizqxjHs+P4Nv/pJ0xMHS+uSeI/i6aGLmomNg==}
     hasBin: true
     dependencies:
       '@redocly/openapi-core': 1.4.0
