@@ -656,8 +656,8 @@ importers:
         specifier: ^2.2.2
         version: 2.2.2(i18next@23.0.0)(svelte@4.2.3)
       svelte-jsoneditor:
-        specifier: ^0.18.13
-        version: 0.18.13(@lezer/common@1.1.0)
+        specifier: ^0.19.0
+        version: 0.19.0(@lezer/common@1.1.0)
       svelte-preprocess:
         specifier: ^5.1.0
         version: 5.1.0(postcss-load-config@4.0.1)(postcss@8.4.31)(svelte@4.2.3)(typescript@5.2.2)
@@ -16460,12 +16460,12 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  /svelte-awesome@3.2.1(svelte@4.2.3):
+  /svelte-awesome@3.2.1(svelte@4.2.7):
     resolution: {integrity: sha512-4jckcBktldqgmHUWg1xvl3vCrZllt5YSSsPun4NW7dOp9VZx1mOqJ9ddkYCH7O3PJN4ntucJr5P9/6q2xvw/0A==}
     peerDependencies:
       svelte: ^3.43.1 || ^4.0.0
     dependencies:
-      svelte: 4.2.3
+      svelte: 4.2.7
     dev: true
 
   /svelte-chartjs@3.1.2(chart.js@4.4.0)(svelte@4.2.3):
@@ -16579,8 +16579,8 @@ packages:
       svelte: 4.2.3
     dev: true
 
-  /svelte-jsoneditor@0.18.13(@lezer/common@1.1.0):
-    resolution: {integrity: sha512-DYQL9rt6IJ4//GUkl4WjU8KQtxecWV1w81p8j6Rsc10bsDLDYG4F2d4XDtJMYuHcbcYVjJiWj/VOXYZTpCQi7Q==}
+  /svelte-jsoneditor@0.19.0(@lezer/common@1.1.0):
+    resolution: {integrity: sha512-DzaOfixnt/2sGLlTqxng3S/WGGjw4No43U5RD7U7p+lsEf2/tyZlmTHTYMNza0w2BCI7n/Ufp9yp7BUOTHYk8g==}
     dependencies:
       '@codemirror/autocomplete': 6.11.0(@codemirror/language@6.9.2)(@codemirror/state@6.3.1)(@codemirror/view@6.22.0)(@lezer/common@1.1.0)
       '@codemirror/commands': 6.3.0
@@ -16604,10 +16604,10 @@ packages:
       memoize-one: 6.0.0
       natural-compare-lite: 1.4.0
       sass: 1.69.5
-      svelte: 4.2.3
-      svelte-awesome: 3.2.1(svelte@4.2.3)
-      svelte-select: 5.7.0
-      svelte-simple-modal: 1.6.1(svelte@4.2.3)
+      svelte: 4.2.7
+      svelte-awesome: 3.2.1(svelte@4.2.7)
+      svelte-select: 5.8.1
+      svelte-simple-modal: 1.6.1(svelte@4.2.7)
       vanilla-picker: 2.12.2
     transitivePeerDependencies:
       - '@lezer/common'
@@ -16670,19 +16670,19 @@ packages:
       svelte: 4.2.3
     dev: true
 
-  /svelte-select@5.7.0:
-    resolution: {integrity: sha512-oClK1exjcWDj2817+0djGhK04t5CSZbuP0oh7gz+3dEcn/G+QqRsfI2/dvIyOSHILqNzlj+Ztp2z1pMtE7Wf8Q==}
+  /svelte-select@5.8.1:
+    resolution: {integrity: sha512-DXODz7bsk1vej6Buxd+kEip+xKtlM1CQP51F4wyQgeaRvWLsRVqmktK+TIRgjOMJD7NoS7600adk3rzftK/s0g==}
     dependencies:
       '@floating-ui/dom': 1.5.1
       svelte-floating-ui: 1.2.8
     dev: true
 
-  /svelte-simple-modal@1.6.1(svelte@4.2.3):
+  /svelte-simple-modal@1.6.1(svelte@4.2.7):
     resolution: {integrity: sha512-D4/Z7LQ6ThawYb7FlAeS/qGbcwVlqzRHn1zZgWPlEK0cp4l2UMcscqel58mp+gTuk4UX9gl516GYXcHFvuyslA==}
     peerDependencies:
       svelte: ^3.30.0 || ^4.0.0
     dependencies:
-      svelte: 4.2.3
+      svelte: 4.2.7
     dev: true
 
   /svelte-sonner@0.3.3(svelte@4.2.3):
@@ -16699,6 +16699,25 @@ packages:
 
   /svelte@4.2.3:
     resolution: {integrity: sha512-sqmG9KC6uUc7fb3ZuWoxXvqk6MI9Uu4ABA1M0fYDgTlFYu1k02xp96u6U9+yJZiVm84m9zge7rrA/BNZdFpOKw==}
+    engines: {node: '>=16'}
+    dependencies:
+      '@ampproject/remapping': 2.2.1
+      '@jridgewell/sourcemap-codec': 1.4.15
+      '@jridgewell/trace-mapping': 0.3.18
+      acorn: 8.10.0
+      aria-query: 5.3.0
+      axobject-query: 3.2.1
+      code-red: 1.0.3
+      css-tree: 2.3.1
+      estree-walker: 3.0.3
+      is-reference: 3.0.1
+      locate-character: 3.0.0
+      magic-string: 0.30.5
+      periscopic: 3.1.0
+    dev: true
+
+  /svelte@4.2.7:
+    resolution: {integrity: sha512-UExR1KS7raTdycsUrKLtStayu4hpdV3VZQgM0akX8XbXgLBlosdE/Sf3crOgyh9xIjqSYB3UEBuUlIQKRQX2hg==}
     engines: {node: '>=16'}
     dependencies:
       '@ampproject/remapping': 2.2.1
