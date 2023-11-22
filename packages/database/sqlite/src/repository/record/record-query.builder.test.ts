@@ -9,7 +9,8 @@ import {
   WithTableSchema,
   WithTableViews,
 } from '@undb/core'
-import { RecordSqliteQueryBuilder } from './record-query.builder'
+import { Table } from '../../entity/table.js'
+import { RecordSqliteQueryBuilder } from './record-query.builder.js'
 
 const directions = ['asc', 'desc'] as const
 
@@ -31,7 +32,7 @@ describe('RecordSqliteQueryBuilder', () => {
           new WithTableViews(new Views([createTestView({ sorts: [{ fieldId: 'fld1', direction }] })])),
         )
 
-        queryBuilder = new RecordSqliteQueryBuilder(em, table, null)
+        queryBuilder = new RecordSqliteQueryBuilder(em, table, new Table(table), null)
         queryBuilder.sort()
 
         const query = queryBuilder.qb.toQuery()
@@ -47,7 +48,7 @@ describe('RecordSqliteQueryBuilder', () => {
           new WithTableViews(new Views([createTestView({ sorts: [{ fieldId: 'fld1', direction }] })])),
         )
 
-        queryBuilder = new RecordSqliteQueryBuilder(em, table, null)
+        queryBuilder = new RecordSqliteQueryBuilder(em, table, new Table(table), null)
         queryBuilder.sort()
 
         const query = queryBuilder.qb.toQuery()

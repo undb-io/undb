@@ -140,7 +140,7 @@ export class TableSqliteFieldVisitor extends BaseEntityManager implements IField
 
     const dataFieldId = value.data.unpack().dataFieldId
     if (dataFieldId) {
-      field.dataFieldId = this.em.getReference(Field, dataFieldId)
+      field.dataField = this.em.getReference(Field, dataFieldId)
     }
 
     this.em.persist(field)
