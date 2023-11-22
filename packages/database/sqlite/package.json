@@ -58,8 +58,8 @@
     "db:schema:update": "NODE_OPTIONS=\"--loader ts-node/esm\" mikro-orm schema:update -r",
     "dev": "tsup --watch",
     "prebuild": "pnpm run clean",
-    "test": "TZ=UTC NODE_OPTIONS=\"--loader ts-node/esm\" vitest run",
-    "test:watch": "TZ=UTC NODE_OPTIONS=\"--loader ts-node/esm\" vitest"
+    "test": "TZ=UTC vitest run",
+    "test:watch": "TZ=UTC vitest"
   },
   "type": "module"
 }
