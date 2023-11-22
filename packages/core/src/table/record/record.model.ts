@@ -1,6 +1,5 @@
 import { z } from 'zod'
-import { autoIncrementQueryValue } from '../field/auto-increment-field.type.js'
-import { fieldQueryValue } from '../field/index.js'
+import { autoIncrementQueryValue, fieldQueryValue } from '../field/index.js'
 import { fieldIdSchema } from '../field/value-objects/field-id.schema.js'
 import { recordIdSchema } from './value-objects/record-id.schema.js'
 

@@ -2,9 +2,9 @@
   "name": "undb",
   "version": "0.10.2",
   "devDependencies": {
-    "@commitlint/cli": "^18.4.1",
-    "@commitlint/config-conventional": "^18.4.0",
-    "@types/node": "^20.9.0",
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "@types/node": "^20.9.4",
     "@undb/eslint-config": "^0.0.0",
     "chalk": "^5.3.0",
     "commitizen": "^4.3.0",
@@ -15,7 +15,7 @@
     "rimraf": "^5.0.5",
     "taze": "^0.12.0",
     "turbo": "^1.10.16",
-    "typescript": "^5.2.2",
+    "typescript": "^5.3.2",
     "zx": "^7.2.3"
   },
   "engines": {
@@ -25,7 +25,7 @@
   "lint-staged": {
     "*.{ts,tsx,md}": "prettier --write"
   },
-  "packageManager": "pnpm@8.10.4",
+  "packageManager": "pnpm@8.10.5",
   "private": true,
   "scripts": {
     "bootstrap": "pnpm install && pnpm run build",
