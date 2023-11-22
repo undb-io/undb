@@ -16,7 +16,7 @@
     "@types/uuid": "^9.0.7",
     "rimraf": "^5.0.5",
     "tsconfig": "^0.0.0",
-    "tsup": "^7.2.0",
+    "tsup": "^8.0.0",
     "type-fest": "^4.7.1",
     "typescript": "^5.2.2",
     "vitest": "^0.34.6"
