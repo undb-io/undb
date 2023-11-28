@@ -71,7 +71,7 @@
     "openapi-typescript": "7.0.0-next.4",
     "oxide.ts": "^1.1.0",
     "p-limit": "^5.0.0",
-    "passport": "^0.6.0",
+    "passport": "^0.7.0",
     "passport-custom": "^1.1.1",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
