@@ -262,8 +262,8 @@ importers:
         specifier: ^6.9.7
         version: 6.9.7
       openapi-typescript:
-        specifier: 7.0.0-next.4
-        version: 7.0.0-next.4
+        specifier: 7.0.0-next.5
+        version: 7.0.0-next.5
       oxide.ts:
         specifier: ^1.1.0
         version: 1.1.0
@@ -14436,8 +14436,8 @@ packages:
       - encoding
     dev: false
 
-  /openapi-typescript@7.0.0-next.4:
-    resolution: {integrity: sha512-mm6cpWnvYZgaTTfMnA/z+NkbmjzWNX5FeoW7+ZBAfI9tBhb8JlNf/HZfXueV1Eq6ZOWKQ1doyjTxJNgmsF6mNQ==}
+  /openapi-typescript@7.0.0-next.5:
+    resolution: {integrity: sha512-zqEDw/FZkT0ndOCd8EybkDVwEYgaOh+ryWm6OCON70DmY9YqUnNSIVyRFVjN8hesa0bxOs9QOMzXAasczNdHbQ==}
     hasBin: true
     dependencies:
       '@redocly/openapi-core': 1.4.1
