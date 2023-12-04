@@ -554,8 +554,8 @@ importers:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.31)
       bits-ui:
-        specifier: ^0.9.8
-        version: 0.9.8(svelte@4.2.7)
+        specifier: ^0.10.0
+        version: 0.10.0(svelte@4.2.7)
       chart.js:
         specifier: ^4.4.0
         version: 4.4.0
@@ -3250,8 +3250,8 @@ packages:
       - supports-color
     dev: false
 
-  /@melt-ui/svelte@0.61.2(svelte@4.2.7):
-    resolution: {integrity: sha512-BHkD9G31zQBToA4euDRBgTQRvWxT9scufOVCXgDO6HKTvyxFspbWT2bgiSFqAK4BbAGDn9Ao36Q8F9O71KN4OQ==}
+  /@melt-ui/svelte@0.64.3(svelte@4.2.7):
+    resolution: {integrity: sha512-6P2H0Kf3mqS3fzCI75k0DHqsMhBYniO4HsOTMqMQFEPKTAiUNRPUD5n8m/p2MQk88ba+RacK+9Mp5GhDdIM9WA==}
     peerDependencies:
       svelte: '>=3 <5'
     dependencies:
@@ -7823,13 +7823,14 @@ packages:
     dependencies:
       file-uri-to-path: 1.0.0
 
-  /bits-ui@0.9.8(svelte@4.2.7):
-    resolution: {integrity: sha512-cjuurfmqEIhQy51uOY370ihAN/oPxZXT7ifa7CAf3G+Ft2G4ucJKk3xM3Mq1AidJn4zCoDOjr8EW+VOJtcS0+g==}
+  /bits-ui@0.10.0(svelte@4.2.7):
+    resolution: {integrity: sha512-a2L8DrI/LDGIheRrrO3ly2gUyJkNSAtvrb+byrMh+S/40GEhXudV6HzVIeEG+Cb1XpJn0szGZN2wFrcYpIJM9g==}
     peerDependencies:
       svelte: ^4.0.0
     dependencies:
-      '@melt-ui/svelte': 0.61.2(svelte@4.2.7)
-      nanoid: 5.0.3
+      '@internationalized/date': 3.5.0
+      '@melt-ui/svelte': 0.64.3(svelte@4.2.7)
+      nanoid: 5.0.4
       svelte: 4.2.7
     dev: true
 
@@ -13857,6 +13858,13 @@ packages:
     resolution: {integrity: sha512-I7X2b22cxA4LIHXPSqbBCEQSL+1wv8TuoefejsX4HFWyC6jc5JG7CEaxOltiKjc1M+YCS2YkrZZcj4+dytw9GA==}
     engines: {node: ^18 || >=20}
     hasBin: true
+    dev: false
+
+  /nanoid@5.0.4:
+    resolution: {integrity: sha512-vAjmBf13gsmhXSgBrtIclinISzFFy22WwCYoyilZlsrRXNIHSwgFQ1bEdjRwMT3aoadeIF6HMuDRlOxzfXV8ig==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+    dev: true
 
   /napi-build-utils@1.0.2:
     resolution: {integrity: sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==}
