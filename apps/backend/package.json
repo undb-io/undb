@@ -123,7 +123,7 @@
     "typescript": "^5.3.2",
     "unplugin-swc": "^1.4.3",
     "vite": "^4.5.0",
-    "vitest": "^0.34.6"
+    "vitest": "^1.0.0"
   },
   "private": true,
   "scripts": {
