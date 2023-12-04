@@ -440,8 +440,8 @@ importers:
         specifier: ^1.5.1
         version: 1.5.1
       electron:
-        specifier: ^27.1.0
-        version: 27.1.0
+        specifier: ^28.0.0
+        version: 28.0.0
       electron-builder:
         specifier: ^24.6.4
         version: 24.6.4
@@ -9516,8 +9516,8 @@ packages:
   /electron-to-chromium@1.4.491:
     resolution: {integrity: sha512-ZzPqGKghdVzlQJ+qpfE+r6EB321zed7e5JsvHIlMM4zPFF8okXUkF5Of7h7F3l3cltPL0rG7YVmlp5Qro7RQLA==}
 
-  /electron@27.1.0:
-    resolution: {integrity: sha512-XPdJiO475QJ8cx59/goWNNWnlV0vab+Ut3occymos7VDxkHV5mFrlW6tcGi+M3bW6gBfwpJocWMng8tw542vww==}
+  /electron@28.0.0:
+    resolution: {integrity: sha512-eDhnCFBvG0PGFVEpNIEdBvyuGUBsFdlokd+CtuCe2ER3P+17qxaRfWRxMmksCOKgDHb5Wif5UxqOkZSlA4snlw==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
     requiresBuild: true
