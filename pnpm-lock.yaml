@@ -862,8 +862,8 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       p-map:
-        specifier: ^6.0.0
-        version: 6.0.0
+        specifier: ^7.0.0
+        version: 7.0.0
       ts-pattern:
         specifier: ^5.0.5
         version: 5.0.5
@@ -972,8 +972,8 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0
       p-map:
-        specifier: ^6.0.0
-        version: 6.0.0
+        specifier: ^7.0.0
+        version: 7.0.0
       reflect-metadata:
         specifier: ^0.1.13
         version: 0.1.13
@@ -14603,9 +14603,9 @@ packages:
       aggregate-error: 3.1.0
     dev: true
 
-  /p-map@6.0.0:
-    resolution: {integrity: sha512-T8BatKGY+k5rU+Q/GTYgrEf2r4xRMevAN5mtXc2aPc4rS1j3s+vWTaO2Wag94neXuCAUAs8cxBL9EeB5EA6diw==}
-    engines: {node: '>=16'}
+  /p-map@7.0.0:
+    resolution: {integrity: sha512-EZl03dLKv3RypkrjlevZoNwQMSy4bAblWcR18zhonktnN4fUs3asFQKSe0awn982omGxamvbejqQKQYDJYHCEg==}
+    engines: {node: '>=18'}
     dev: false
 
   /p-timeout@3.2.0:
