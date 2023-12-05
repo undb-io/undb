@@ -12,7 +12,7 @@
     "@undb/template": "workspace:^",
     "lodash-es": "^4.17.21",
     "oxide.ts": "^1.1.0",
-    "p-map": "^6.0.0",
+    "p-map": "^7.0.0",
     "ts-pattern": "^5.0.5",
     "zod": "^3.22.4"
   },
