@@ -16,7 +16,7 @@
     "lodash-es": "^4.17.21",
     "oxide.ts": "^1.1.0",
     "p-map": "^7.0.0",
-    "reflect-metadata": "^0.1.13",
+    "reflect-metadata": "^0.2.0",
     "ts-mixer": "^6.0.3",
     "uuid": "^9.0.1"
   },
