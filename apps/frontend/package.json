@@ -16,7 +16,7 @@
 		"@popperjs/core": "^2.11.8",
 		"@revolist/revogrid": "^3.7.0",
 		"@revolist/svelte-datagrid": "^3.2.16",
-		"@sveltejs/adapter-auto": "^2.1.1",
+		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-static": "^2.0.3",
 		"@sveltejs/kit": "^1.27.6",
 		"@tanstack/svelte-query": "^5.8.4",
