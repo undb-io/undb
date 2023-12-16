@@ -260,7 +260,7 @@ export const config: InitOptions = {
         'Field Name': 'Field Name',
         Sort: 'Sort',
         'Manage Fields': 'Manage fields',
-        'Select Display Type': 'SwitcH display type',
+        'Select Display Type': 'Switch display type',
         grid: 'Grid',
         kanban: 'Kanban',
         gallery: 'Gallery',
