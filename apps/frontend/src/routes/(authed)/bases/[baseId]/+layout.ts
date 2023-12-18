@@ -11,7 +11,7 @@ export const load: LayoutLoad = async (e) => {
 	const base = await trpc().base.getById.utils.fetch({ id: baseId })
 
 	if (!base) {
-		throw error(404)
+		error(404)
 	}
 
 	return {

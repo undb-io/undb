@@ -45,7 +45,7 @@ describe('register', () => {
   test('should throw error if exists', async () => {
     repo.exists.mockResolvedValueOnce(true)
 
-    await expect(handler.execute(command)).rejects.toThrowErrorMatchingInlineSnapshot('"user already exists"')
+    await expect(handler.execute(command)).rejects.toThrowErrorMatchingInlineSnapshot(`[Error: user already exists]`)
 
     expect(repo.exists).toHaveBeenCalledOnce()
     expect(userService.register).not.toBeCalled()

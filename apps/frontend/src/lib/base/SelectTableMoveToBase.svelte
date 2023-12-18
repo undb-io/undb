@@ -21,7 +21,7 @@
 			toast.success(
 				$t('TABLE.MOVED_TO_BASE', { ns: 'success', tableName: table?.name.value, baseName: $currentBase?.name }),
 			)
-			await invalidate('baseTables')
+			await invalidate('app:baseTables')
 		},
 	})
 

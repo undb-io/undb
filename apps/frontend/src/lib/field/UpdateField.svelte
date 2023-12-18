@@ -21,7 +21,7 @@
 		type Field,
 		type IFieldType,
 	} from '@undb/core'
-	import type { Validation } from 'sveltekit-superforms/index'
+	import type { Validation } from 'sveltekit-superforms'
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
 	import { t } from '$lib/i18n'
 	import { updateFieldModal } from '$lib/store/modal'

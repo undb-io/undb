@@ -46,14 +46,14 @@
 				<Button
 					variant="destructive"
 					class="mr-2 gap-2 whitespace-nowrap"
-					disabled={$deleteRecord.isLoading}
+					disabled={$deleteRecord.isPending}
 					on:click={() => {
 						if ($record) {
 							$deleteRecord.mutate({ tableId: $table.id.value, id: $record.id.value })
 						}
 					}}
 				>
-					{#if $deleteRecord.isLoading}
+					{#if $deleteRecord.isPending}
 						<i class="ti ti-rotate animate-spin"></i>
 					{:else}
 						<i class="ti ti-circle-check text-sm" />

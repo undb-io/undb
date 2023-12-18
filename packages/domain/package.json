@@ -7,7 +7,7 @@
     "array-move": "^4.0.0",
     "date-fns": "^2.30.0",
     "dequal": "^2.0.3",
-    "nanoid": "^5.0.3",
+    "nanoid": "^5.0.4",
     "oxide.ts": "^1.1.0",
     "uuid": "^9.0.1",
     "zod": "^3.22.4"
@@ -17,9 +17,9 @@
     "rimraf": "^5.0.5",
     "tsconfig": "^0.0.0",
     "tsup": "^8.0.1",
-    "type-fest": "^4.8.2",
-    "typescript": "^5.3.2",
-    "vitest": "^0.34.6"
+    "type-fest": "^4.8.3",
+    "typescript": "^5.3.3",
+    "vitest": "^1.0.4"
   },
   "exports": {
     "import": "./dist/index.js",

@@ -9,16 +9,16 @@ describe('TableSchema', () => {
       expect(() => {
         schema.createField({ type: 'string', name: 'string' })
       }).toThrowErrorMatchingInlineSnapshot(`
-        "[
+        [ZodError: [
           {
-            \\"code\\": \\"custom\\",
-            \\"message\\": \\"field name should not be duplicated\\",
-            \\"path\\": [
-              \\"field\\",
-              \\"name\\"
+            "code": "custom",
+            "message": "field name should not be duplicated",
+            "path": [
+              "field",
+              "name"
             ]
           }
-        ]"
+        ]]
       `)
     })
   })

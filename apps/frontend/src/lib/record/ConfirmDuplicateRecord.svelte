@@ -30,14 +30,14 @@
 				</AlertDialog.Cancel>
 				<AlertDialog.Action
 					class="mr-2 gap-2 whitespace-nowrap"
-					disabled={$duplicateRecord.isLoading}
+					disabled={$duplicateRecord.isPending}
 					on:click={() => {
 						if ($record) {
 							$duplicateRecord.mutate({ tableId: $table.id.value, id: $record.id.value })
 						}
 					}}
 				>
-					{#if $duplicateRecord.isLoading}
+					{#if $duplicateRecord.isPending}
 						<i class="ti ti-rotate animate-spin"></i>
 					{:else}
 						<i class="ti ti-circle-check text-sm" />

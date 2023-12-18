@@ -3,7 +3,7 @@
 	import OptionColorPicker from './OptionColorPicker.svelte'
 	import type { updateOptionSchema } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
-	import type { Validation } from 'sveltekit-superforms/index'
+	import type { Validation } from 'sveltekit-superforms'
 	import { trpc } from '$lib/trpc/client'
 	import { getField, getOption, getTable } from '$lib/store/table'
 	import { t } from '$lib/i18n'
