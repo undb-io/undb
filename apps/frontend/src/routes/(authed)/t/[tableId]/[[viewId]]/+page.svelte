@@ -1,5 +1,13 @@
 <script lang="ts">
-	import { currentFieldId, currentRecord, currentRecordId, getField, getTable, recordsStore } from '$lib/store/table'
+	import {
+		currentFieldId,
+		currentRecord,
+		currentRecordId,
+		getField,
+		getRecord,
+		getTable,
+		recordsStore,
+	} from '$lib/store/table'
 	import TableIndex from '$lib/table/TableIndex.svelte'
 	import { EventFactory, RecordFactory } from '@undb/core'
 	import type { PageData } from './$types'
@@ -29,9 +37,8 @@
 	import ExportTableTemplate from '$lib/template/ExportTableTemplate.svelte'
 	import { cn } from '$lib/utils'
 	import MoveToBase from '$lib/base/MoveToBase.svelte'
-	import SelectTableMoveToBase from '$lib/base/SelectTableMoveToBase.svelte'
-	import ConfirmDeleteBase from '$lib/base/ConfirmDeleteBase.svelte'
 	import ConfirmDeleteTable from '$lib/table/ConfirmDeleteTable.svelte'
+	import { trpc } from '$lib/trpc/client'
 
 	const table = getTable()
 	export let data: PageData
@@ -41,8 +48,16 @@
 	$: if (data.record) {
 		currentRecord.set(RecordFactory.fromQuery(data.record, schema).unwrap())
 	}
+	async function fetchRecord(recordId: string) {
+		const record = await trpc().record.get.utils.fetch({ id: recordId, tableId: $table.id.value })
+		const r = record ? RecordFactory.fromQuery(record, schema) : undefined
+		currentRecord.set(r?.into())
+	}
 	$: if (!$currentRecordId) {
 		currentRecord.set(undefined)
+	}
+	$: if ($currentRecordId) {
+		fetchRecord($currentRecordId)
 	}
 
 	const field = getField()

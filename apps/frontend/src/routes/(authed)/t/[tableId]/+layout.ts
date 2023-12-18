@@ -3,12 +3,12 @@ import type { LayoutLoad } from './$types'
 
 export const ssr = false
 export const prerender = 'auto'
-export const load: LayoutLoad = (event) => {
+export const load: LayoutLoad = async (event) => {
 	const { tableId } = event.params
 
 	event.depends(`table:${tableId}`)
 
 	return {
-		table: trpc().table.get.utils.fetch({ id: tableId }),
+		table: await trpc().table.get.utils.fetch({ id: tableId }),
 	}
 }

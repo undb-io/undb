@@ -14,7 +14,7 @@
 	import { Label } from '$lib/components/ui/label'
 	import { superForm } from 'sveltekit-superforms/client'
 	import { writable } from 'svelte/store'
-	import type { Validation } from 'sveltekit-superforms/index'
+	import type { Validation } from 'sveltekit-superforms'
 	import { trpc } from '$lib/trpc/client'
 	import CellInput from '$lib/cell/CellInput/CellInput.svelte'
 	import FieldIcon from '$lib/field/FieldIcon.svelte'

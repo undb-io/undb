@@ -18,7 +18,7 @@ export const load: LayoutLoad = async (event) => {
 
 	return {
 		share,
-		createShareRecord: superValidate({}, createMutateRecordValuesSchema(fields), {
+		createShareRecord: await superValidate({}, createMutateRecordValuesSchema(fields), {
 			id: 'createShareRecord',
 			errors: false,
 		}),

@@ -15,7 +15,7 @@
 	import { invalidate } from '$app/navigation'
 	import MutateFieldComponent from './MutateFieldComponent/MutateFieldComponent.svelte'
 	import { canDisplay, isControlledFieldType } from '@undb/core'
-	import type { Validation } from 'sveltekit-superforms/index'
+	import type { Validation } from 'sveltekit-superforms'
 	import FieldTypePicker from './FieldInputs/FieldTypePicker.svelte'
 	import { t } from '$lib/i18n'
 	import * as Dialog from '$lib/components/ui/dialog'
@@ -177,8 +177,8 @@
 					</div>
 					<div class="space-x-2">
 						<Button variant="secondary" on:click={createFieldModal.close}>{$t('Cancel', { ns: 'common' })}</Button>
-						<Button class="gap-4" type="submit" form="createField" disabled={$createField.isLoading}>
-							{#if $createField.isLoading}
+						<Button class="gap-4" type="submit" form="createField" disabled={$createField.isPending}>
+							{#if $createField.isPending}
 								<i class="ti ti-rotate animate-spin"></i>
 							{/if}
 							{$t('Create New Field')}

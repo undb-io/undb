@@ -49,7 +49,7 @@
 			<Button
 				class="whitespace-nowrap"
 				size="sm"
-				disabled={$createRLS.isLoading}
+				disabled={$createRLS.isPending}
 				on:click={() => {
 					const validFilters = getValidFilters(filter)
 					if (!validFilters.length) return

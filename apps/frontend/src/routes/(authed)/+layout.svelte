@@ -69,7 +69,7 @@
 		if ($currentRecordId) {
 			const search = $page.url.searchParams
 			search.set('r', $currentRecordId)
-			goto(`?${search.toString()}`, { invalidateAll: false })
+			goto(`${$page.url.pathname}/?${search.toString()}`, { invalidateAll: false })
 		}
 		if (!$currentRecordId) {
 			goto($page.url.pathname, { invalidateAll: false })

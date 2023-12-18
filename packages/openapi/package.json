@@ -11,7 +11,7 @@
     "@undb/logger": "^0.0.0",
     "date-fns": "^2.30.0",
     "lodash-es": "^4.17.21",
-    "nanoid": "^5.0.3",
+    "nanoid": "^5.0.4",
     "openapi-snippet": "^0.14.0",
     "openapi-to-postmanv2": "^4.18.0",
     "oxide.ts": "^1.1.0",
@@ -25,8 +25,8 @@
     "rimraf": "^5.0.5",
     "tsconfig": "^0.0.0",
     "tsup": "^8.0.1",
-    "typescript": "^5.3.2",
-    "vitest": "^0.34.6"
+    "typescript": "^5.3.3",
+    "vitest": "^1.0.4"
   },
   "exports": {
     "import": "./dist/index.js",

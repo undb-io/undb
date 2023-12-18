@@ -10,7 +10,7 @@
 	import { Button } from '$components/ui/button'
 	import { Checkbox } from '$lib/components/ui/checkbox'
 	import { superForm } from 'sveltekit-superforms/client'
-	import type { Validation } from 'sveltekit-superforms/index'
+	import type { Validation } from 'sveltekit-superforms'
 	import WebhookHeaderInput from './WebhookHeaderInput.svelte'
 	import FilterEditor from '$lib/filter/FilterEditor.svelte'
 	import { getValidFilters } from '$lib/filter/filter.util'

@@ -7,6 +7,6 @@ export const prerender = false
 
 export const load: PageLoad = async () => {
 	return {
-		createTable: superValidate({ name: '', schema: [] }, createTableInput, { id: 'createTable' }),
+		createTable: await superValidate({ name: '', schema: [] }, createTableInput, { id: 'createTable' }),
 	}
 }

@@ -30,13 +30,14 @@ export const load: PageLoad = async (event) => {
 	const fields = view.getOrderedFields(coreTable.schema.nonSystemFields)
 
 	const recordId = event.url.searchParams.get('r')
+	console.log(event)
 
 	const record = recordId ? await trpc().record.get.utils.fetch({ tableId, id: recordId }) : undefined
 	const coreRecord = record ? RecordFactory.fromQuery(record, coreTable.schema.toIdMap()).unwrap() : undefined
 
 	return {
 		record,
-		updateTable: superValidate(
+		updateTable: await superValidate(
 			{
 				name: coreTable.name.value,
 				emoji: coreTable.emoji.unpack(),
@@ -47,19 +48,22 @@ export const load: PageLoad = async (event) => {
 				id: 'updateTable',
 			},
 		),
-		createRecord: superValidate({}, createMutateRecordValuesSchema(fields), { id: 'createRecord', errors: false }),
-		updateRecord: superValidate({}, createMutateRecordValuesSchema(fields, coreRecord?.valuesJSON), {
+		createRecord: await superValidate({}, createMutateRecordValuesSchema(fields), {
+			id: 'createRecord',
+			errors: false,
+		}),
+		updateRecord: await superValidate({}, createMutateRecordValuesSchema(fields, coreRecord?.valuesJSON), {
 			id: 'updateRecord',
 			errors: false,
 		}),
-		createField: superValidate(
+		createField: await superValidate(
 			{ type: 'string' },
 			z.object<{ [key: string]: any }>({
 				type: z.string(),
 			}),
 			{ id: 'createField' },
 		),
-		updateField: superValidate(
+		updateField: await superValidate(
 			{
 				type: 'string',
 			},
@@ -68,11 +72,11 @@ export const load: PageLoad = async (event) => {
 				id: 'updateField',
 			},
 		),
-		createOption: superValidate({}, createOptionSchema, { id: 'createOption' }),
-		updateOption: superValidate({}, updateOptionSchema, { id: 'createOption' }),
-		createView: superValidate({}, createViewSchema, { id: 'createView', errors: false }),
-		createForm: superValidate({}, createFormSchema, { id: 'createForm', errors: false }),
-		createWebhook: superValidate({}, createWebhookSchema, { id: 'createWebhook' }),
-		updateWebhook: superValidate({}, updateWebhookSchema, { id: 'updateWebhook' }),
+		createOption: await superValidate({}, createOptionSchema, { id: 'createOption' }),
+		updateOption: await superValidate({}, updateOptionSchema, { id: 'createOption' }),
+		createView: await superValidate({}, createViewSchema, { id: 'createView', errors: false }),
+		createForm: await superValidate({}, createFormSchema, { id: 'createForm', errors: false }),
+		createWebhook: await superValidate({}, createWebhookSchema, { id: 'createWebhook' }),
+		updateWebhook: await superValidate({}, updateWebhookSchema, { id: 'updateWebhook' }),
 	}
 }

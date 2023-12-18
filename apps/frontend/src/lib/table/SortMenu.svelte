@@ -175,7 +175,7 @@
 					size="sm"
 					class="bg-unset border-gray-200 border text-gray-900 dark:hover:bg-gray-900 hover:text-primary hover:bg-gray-100"
 					on:click={add}
-					disabled={$value.some((v) => v.id === TEMP_ID) || $setSort.isLoading}
+					disabled={$value.some((v) => v.id === TEMP_ID) || $setSort.isPending}
 				>
 					{$t('Create New Sort')}
 				</Button>

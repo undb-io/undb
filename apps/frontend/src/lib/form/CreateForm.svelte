@@ -6,7 +6,7 @@
 	import { trpc } from '$lib/trpc/client'
 	import type { createFormSchema } from '@undb/core'
 	import { superForm } from 'sveltekit-superforms/client'
-	import type { Validation } from 'sveltekit-superforms/index'
+	import type { Validation } from 'sveltekit-superforms'
 	import { Label } from '$lib/components/ui/label'
 	import { Input } from '$lib/components/ui/input'
 	import { Button } from '$lib/components/ui/button'
