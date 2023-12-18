@@ -12,7 +12,7 @@
     "@undb/domain": "^0.0.0",
     "@undb/integrations": "^0.0.0",
     "@undb/openapi": "workspace:^0.0.0",
-    "date-fns": "^2.30.0",
+    "date-fns": "^3.0.0",
     "lodash-es": "^4.17.21",
     "oxide.ts": "^1.1.0",
     "p-map": "^7.0.0",

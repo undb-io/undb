@@ -566,8 +566,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       date-fns:
-        specifier: ^2.30.0
-        version: 2.30.0
+        specifier: ^3.0.0
+        version: 3.0.0
       delay:
         specifier: ^6.0.0
         version: 6.0.0
@@ -774,8 +774,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       date-fns:
-        specifier: ^2.30.0
-        version: 2.30.0
+        specifier: ^3.0.0
+        version: 3.0.0
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -966,8 +966,8 @@ importers:
         specifier: workspace:^0.0.0
         version: link:../../openapi
       date-fns:
-        specifier: ^2.30.0
-        version: 2.30.0
+        specifier: ^3.0.0
+        version: 3.0.0
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1039,8 +1039,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       date-fns:
-        specifier: ^2.30.0
-        version: 2.30.0
+        specifier: ^3.0.0
+        version: 3.0.0
       dequal:
         specifier: ^2.0.3
         version: 2.0.3
@@ -1150,8 +1150,8 @@ importers:
         specifier: ^0.0.0
         version: link:../logger
       date-fns:
-        specifier: ^2.30.0
-        version: 2.30.0
+        specifier: ^3.0.0
+        version: 3.0.0
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1230,8 +1230,8 @@ importers:
         specifier: ^0.0.0
         version: link:../logger
       date-fns:
-        specifier: ^2.30.0
-        version: 2.30.0
+        specifier: ^3.0.0
+        version: 3.0.0
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -9116,11 +9116,8 @@ packages:
       whatwg-url: 11.0.0
     dev: true
 
-  /date-fns@2.30.0:
-    resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
-    engines: {node: '>=0.11'}
-    dependencies:
-      '@babel/runtime': 7.22.5
+  /date-fns@3.0.0:
+    resolution: {integrity: sha512-xjDz3rNN9jp+Lh3P/4MeY4E5HkaRnEnrJCcrdRZnKdn42gJlIe6hwrrwVXePRwVR2kh1UcMnz00erYBnHF8PFA==}
 
   /dateformat@4.6.3:
     resolution: {integrity: sha512-2P0p0pFGzHS5EMnhdxQi7aJN+iMheud0UhG4dlE1DLAlvL8JHjJJTX/CSm4JXwV0Ka5nGk3zC5mcb5bUQUxxMA==}
