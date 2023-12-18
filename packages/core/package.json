@@ -6,7 +6,7 @@
   "dependencies": {
     "@undb/domain": "^0.0.0",
     "array-move": "^4.0.0",
-    "date-fns": "^2.30.0",
+    "date-fns": "^3.0.0",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "mime-types": "^2.1.35",
