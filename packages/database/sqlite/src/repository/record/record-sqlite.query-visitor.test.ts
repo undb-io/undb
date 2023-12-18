@@ -69,14 +69,14 @@ describe('RecordSqliteQueryVisitor', () => {
   test('createdAt', () => {
     visitor.createdAt(WithRecordCreatedAt.fromDate(date))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`created_at` = \\"2022-03-02T00:00:00.000Z\\""',
+      `"select * from \`tabletest\` as \`t\` where \`t\`.\`deleted_at\` is null and \`t\`.\`created_at\` = '2022-03-02 00:00:00.000'"`,
     )
   })
 
   test('updatedAt', () => {
     visitor.updatedAt(WithRecordUpdatedAt.fromDate(date))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`updated_at` = \\"2022-03-02T00:00:00.000Z\\""',
+      `"select * from \`tabletest\` as \`t\` where \`t\`.\`deleted_at\` is null and \`t\`.\`updated_at\` = '2022-03-02 00:00:00.000'"`,
     )
   })
 
@@ -233,12 +233,12 @@ describe('RecordSqliteQueryVisitor', () => {
       new DateRangeEqual('field', new DateRangeFieldValue([subDays(new Date(), 1), addDays(new Date(), 1)])),
     )
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`field` between \\"2022-03-01T00:00:00.000Z\\" and \\"2022-03-03T00:00:00.000Z\\""',
+      `"select * from \`tabletest\` as \`t\` where \`t\`.\`deleted_at\` is null and \`t\`.\`field\` between '2022-03-01 00:00:00.000' and '2022-03-03 00:00:00.000'"`,
     )
 
     visitor.dateRangeEqual(new DateRangeEqual('field', new DateRangeFieldValue(null)))
     expect(visitor.query).toMatchInlineSnapshot(
-      '"select * from `tabletest` as `t` where `t`.`deleted_at` is null and `t`.`field` between \\"2022-03-01T00:00:00.000Z\\" and \\"2022-03-03T00:00:00.000Z\\" and `t`.`field` is null"',
+      `"select * from \`tabletest\` as \`t\` where \`t\`.\`deleted_at\` is null and \`t\`.\`field\` between '2022-03-01 00:00:00.000' and '2022-03-03 00:00:00.000' and \`t\`.\`field\` is null"`,
     )
   })
 

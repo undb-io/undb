@@ -6,7 +6,7 @@ export const prerender = false
 export const load: PageLoad = async ({ url }) => {
 	const q = url.searchParams.get('q')
 	return {
-		members: trpc().authz.member.list.utils.fetch({
+		members: await trpc().authz.member.list.utils.fetch({
 			q: q ? q : undefined,
 		}),
 	}

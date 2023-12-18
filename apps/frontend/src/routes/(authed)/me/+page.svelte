@@ -104,7 +104,7 @@
 				<div class="text-gray-400">
 					{$page.data.appInfo.version}
 				</div>
-				<Button type="submit" disabled={$updateProfile.isLoading}>
+				<Button type="submit" disabled={$updateProfile.isPending}>
 					{$t('Confirm', { ns: 'common' })}
 				</Button>
 			</div>

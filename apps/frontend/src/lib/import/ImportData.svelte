@@ -21,7 +21,7 @@
 	import { unzip } from 'lodash-es'
 	import { parse, type SheetData } from './import.helper'
 	import { superForm } from 'sveltekit-superforms/client'
-	import type { Validation } from 'sveltekit-superforms/index'
+	import type { Validation } from 'sveltekit-superforms'
 	import * as Dialog from '$lib/components/ui/dialog'
 
 	export let formData: Validation<typeof createTableInput>
@@ -40,7 +40,7 @@
 		async onSuccess(data, variables, context) {
 			importDataModal.close()
 			await goto(`/t/${data.id}`)
-			await invalidate('tables')
+			await invalidate('app:tables')
 		},
 	})
 
@@ -207,9 +207,9 @@
 						<Button size="sm" type="button" variant="secondary" on:click={() => importDataModal.close()}>
 							{$t('Cancel', { ns: 'common' })}
 						</Button>
-						<Button size="sm" disabled={!data || $createTable.isLoading} type="submit">
+						<Button size="sm" disabled={!data || $createTable.isPending} type="submit">
 							<div class="flex items-center gap-2">
-								{#if $createTable.isLoading}
+								{#if $createTable.isPending}
 									<i class="ti ti-rotate animate-spin"></i>
 								{/if}
 								{$t('Confirm', { ns: 'common' })}

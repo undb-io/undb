@@ -5,7 +5,6 @@
 	import { confirmDeleteTable, updateTableModal } from '$lib/store/modal'
 	import { getTable } from '$lib/store/table'
 	import { trpc } from '$lib/trpc/client'
-	import type { Table } from '@undb/core'
 	import { toast } from 'svelte-sonner'
 
 	const table = getTable()
@@ -39,12 +38,12 @@
 			<AlertDialog.Action
 				class="gap-2"
 				variant="destructive"
-				disabled={$deleteTable.isLoading}
+				disabled={$deleteTable.isPending}
 				on:click={() => {
 					$deleteTable.mutate({ id: $table.id.value })
 				}}
 			>
-				{#if $deleteTable.isLoading}
+				{#if $deleteTable.isPending}
 					<i class="ti ti-rotate animate-spin"></i>
 				{:else}
 					<i class="ti ti-circle-check text-lg" />

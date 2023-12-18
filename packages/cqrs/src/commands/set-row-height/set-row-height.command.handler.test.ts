@@ -41,7 +41,7 @@ describe('SetRowHeightCommandHandler', () => {
     repo.findOneById.mockResolvedValue(None)
 
     await expect(handler.execute(command)).rejects.toThrowErrorMatchingInlineSnapshot(
-      '"Failed to unwrap Option (found None)"',
+      `[Error: Failed to unwrap Option (found None)]`,
     )
     expect(repo.findOneById).toHaveBeenCalledWith(table.id.value)
     expect(spy).not.toHaveBeenCalled()
@@ -51,7 +51,7 @@ describe('SetRowHeightCommandHandler', () => {
   test('findOneById throw error', async () => {
     repo.findOneById.mockRejectedValue(new Error('findOneById failed'))
 
-    await expect(handler.execute(command)).rejects.toThrowErrorMatchingInlineSnapshot('"findOneById failed"')
+    await expect(handler.execute(command)).rejects.toThrowErrorMatchingInlineSnapshot(`[Error: findOneById failed]`)
     expect(spy).not.toHaveBeenCalled()
     expect(repo.updateOneById).not.toHaveBeenCalled()
   })
@@ -60,7 +60,7 @@ describe('SetRowHeightCommandHandler', () => {
     repo.findOneById.mockResolvedValue(Some(table))
     repo.updateOneById.mockRejectedValue(new Error('updateOneById failed'))
 
-    await expect(handler.execute(command)).rejects.toThrowErrorMatchingInlineSnapshot('"updateOneById failed"')
+    await expect(handler.execute(command)).rejects.toThrowErrorMatchingInlineSnapshot(`[Error: updateOneById failed]`)
 
     expect(repo.findOneById).toHaveBeenCalledWith(table.id.value)
     expect(spy).toHaveBeenCalledWith(command)

@@ -14,16 +14,16 @@ it('should create new field name value object', () => {
 
 it('should throw error if input is invlaue', () => {
   expect(() => FieldName.create('')).toThrowErrorMatchingInlineSnapshot(`
-    "[
+    [ZodError: [
       {
-        \\"code\\": \\"too_small\\",
-        \\"minimum\\": 1,
-        \\"type\\": \\"string\\",
-        \\"inclusive\\": true,
-        \\"exact\\": false,
-        \\"message\\": \\"String must contain at least 1 character(s)\\",
-        \\"path\\": []
+        "code": "too_small",
+        "minimum": 1,
+        "type": "string",
+        "inclusive": true,
+        "exact": false,
+        "message": "String must contain at least 1 character(s)",
+        "path": []
       }
-    ]"
+    ]]
   `)
 })

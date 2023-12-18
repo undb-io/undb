@@ -151,7 +151,7 @@
 					<Button
 						builders={[builder]}
 						size="sm"
-						disabled={!data || $createRecords.isLoading}
+						disabled={!data || $createRecords.isPending}
 						on:click={() => {
 							if (!records?.length) return
 							$createRecords.mutate({

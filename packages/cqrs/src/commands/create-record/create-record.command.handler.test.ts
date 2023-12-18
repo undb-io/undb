@@ -62,7 +62,7 @@ describe('CreateRecordCommandHandler', () => {
     spy.mockReturnValue(record)
 
     await expect(handler.execute(command)).rejects.toThrowErrorMatchingInlineSnapshot(
-      '"Failed to unwrap Option (found None)"',
+      `[Error: Failed to unwrap Option (found None)]`,
     )
 
     expect(spy).not.toHaveBeenCalled()

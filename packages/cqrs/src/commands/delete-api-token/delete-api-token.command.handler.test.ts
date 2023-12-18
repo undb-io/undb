@@ -39,7 +39,7 @@ describe('test DeleteApiTokenCommandHandler', () => {
     cls.get.calledWith('user.userId').mockReturnValue('user321')
     repo.findOneById.mockResolvedValue(Some(apiToken))
     await expect(handler.execute(command)).rejects.toThrowErrorMatchingInlineSnapshot(
-      '"cannot delete api token belongs to other user"',
+      `[Error: cannot delete api token belongs to other user]`,
     )
     expect(repo.deleteOneById).not.toHaveBeenCalled()
   })

@@ -1,28 +1,28 @@
-import type { ICollaboratorProfile, IAppInfo } from '@undb/core'
+import type { IAppInfo, ICollaboratorProfile } from '@undb/core'
 import Cookies from 'js-cookie'
 import type { LayoutLoad } from './$types'
 
 export const ssr = false
 
-export const load: LayoutLoad = (event) => {
+export const load: LayoutLoad = async (event) => {
 	const auth = Cookies.get('undb_auth')
 
-	const appInfo = event
+	const appInfo = (await event
 		.fetch('/api/appInfo')
 		.then((r) => r.json())
 		.catch(() => ({
 			appInfo: {
 				version: null,
 			},
-		})) as Promise<{ appInfo: IAppInfo }>
+		}))) as { appInfo: IAppInfo }
 
 	if (!auth) {
 		return { me: { me: null }, appInfo }
 	}
-	const me = event
+	const me = (await event
 		.fetch('/api/auth/me')
 		.then((r) => r.json())
-		.catch(() => ({ me: null })) as Promise<{ me: ICollaboratorProfile }>
+		.catch(() => ({ me: null }))) as { me: ICollaboratorProfile }
 
 	return { me, appInfo }
 }
