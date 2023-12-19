@@ -30,7 +30,6 @@ export const load: PageLoad = async (event) => {
 	const fields = view.getOrderedFields(coreTable.schema.nonSystemFields)
 
 	const recordId = event.url.searchParams.get('r')
-	console.log(event)
 
 	const record = recordId ? await trpc().record.get.utils.fetch({ tableId, id: recordId }) : undefined
 	const coreRecord = record ? RecordFactory.fromQuery(record, coreTable.schema.toIdMap()).unwrap() : undefined

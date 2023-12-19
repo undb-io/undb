@@ -4,6 +4,7 @@
 	import { currentRecord, currentRecordId, getTable } from '$lib/store/table'
 	import { page } from '$app/stores'
 	import { RecordFactory } from '@undb/core'
+	import { trpc } from '$lib/trpc/client'
 
 	const table = getTable()
 	$: schema = $table.schema.toIdMap()
@@ -13,6 +14,14 @@
 	}
 	$: if (!$currentRecordId) {
 		currentRecord.set(undefined)
+	}
+	async function fetchRecord(recordId: string) {
+		const record = await trpc().record.get.utils.fetch({ id: recordId, tableId: $table.id.value })
+		const r = record ? RecordFactory.fromQuery(record, schema).unwrap() : undefined
+		currentRecord.set(r)
+	}
+	$: if ($currentRecordId) {
+		fetchRecord($currentRecordId)
 	}
 </script>
 

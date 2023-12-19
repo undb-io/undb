@@ -87,6 +87,11 @@
 		},
 	})
 
+	$: if ($record) {
+		form.set($record.valuesJSON)
+		$tainted = undefined
+	}
+
 	onMount(() => {
 		$tainted = undefined
 	})
