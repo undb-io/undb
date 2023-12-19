@@ -1,3 +1,10 @@
+## v0.11.0
+
+
+### 🩹 Fixes
+
+- **deps:** Update dependency date-fns to v3 ([622dfc8](https://github.com/undb-xyz/undb/commit/622dfc8))
+
 ## v0.10.3
 
 ## v0.10.2
