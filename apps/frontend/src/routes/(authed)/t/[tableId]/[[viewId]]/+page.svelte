@@ -50,8 +50,8 @@
 	}
 	async function fetchRecord(recordId: string) {
 		const record = await trpc().record.get.utils.fetch({ id: recordId, tableId: $table.id.value })
-		const r = record ? RecordFactory.fromQuery(record, schema) : undefined
-		currentRecord.set(r?.into())
+		const r = record ? RecordFactory.fromQuery(record, schema).unwrap() : undefined
+		currentRecord.set(r)
 	}
 	$: if (!$currentRecordId) {
 		currentRecord.set(undefined)
