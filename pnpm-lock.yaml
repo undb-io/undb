@@ -659,8 +659,8 @@ importers:
         specifier: ^2.2.2
         version: 2.2.2(i18next@23.0.0)(svelte@4.2.8)
       svelte-jsoneditor:
-        specifier: ^0.20.0
-        version: 0.20.0(@lezer/common@1.1.0)
+        specifier: ^0.21.0
+        version: 0.21.1(@lezer/common@1.1.0)
       svelte-preprocess:
         specifier: ^5.1.2
         version: 5.1.2(postcss-load-config@5.0.2)(postcss@8.4.32)(svelte@4.2.8)(typescript@5.3.3)
@@ -11606,8 +11606,8 @@ packages:
     resolution: {integrity: sha512-bc4NBHqOqSfRW7POMkHd51LvClaeMXpm8dx0e8oE2GORbq5aRK7Bxl4FyzVLdGtLmvLKL7BTDBG5ACQm4HWjTA==}
     dev: true
 
-  /immutable-json-patch@5.1.3:
-    resolution: {integrity: sha512-95AsF9hJTPpwtBGAnHmw57PASL672tb+vGHR5xLhH2VPuHSsLho7grjlfgQ65DIhHP+UmLCjdmuuA6L1ndJbZg==}
+  /immutable-json-patch@6.0.0:
+    resolution: {integrity: sha512-kBI1s6OAoWI0yRfjPr+zTAMqBJRPZeyfkG3CAHhM/S5RYO+EXoaiVmEpYYMvdiAS8GoEJbuKvwcfy38TrRlcuQ==}
     dev: true
 
   /immutable@4.3.0:
@@ -17120,8 +17120,8 @@ packages:
       svelte: 4.2.8
     dev: true
 
-  /svelte-jsoneditor@0.20.0(@lezer/common@1.1.0):
-    resolution: {integrity: sha512-vvMatTS0TvzpEkiQysERAMsPv5Yc7B0RYHbvLPkZSGBmVOi7IZMG+IStuepcEYRIy5xhUwpT7x5OaOOngUkGqQ==}
+  /svelte-jsoneditor@0.21.1(@lezer/common@1.1.0):
+    resolution: {integrity: sha512-2gdfmtkHo97wzhBqOixiOZYotqdfEyXQJxyO5LgnilZTiricn8e+VnOB91Fu/7V6l4vFPoOa6//NKBBmi/HGug==}
     dependencies:
       '@codemirror/autocomplete': 6.11.1(@codemirror/language@6.9.3)(@codemirror/state@6.3.3)(@codemirror/view@6.22.3)(@lezer/common@1.1.0)
       '@codemirror/commands': 6.3.2
@@ -17137,7 +17137,7 @@ packages:
       ajv: 8.12.0
       codemirror-wrapped-line-indent: 1.0.0(@codemirror/language@6.9.3)(@codemirror/state@6.3.3)(@codemirror/view@6.22.3)
       diff-sequences: 29.6.3
-      immutable-json-patch: 5.1.3
+      immutable-json-patch: 6.0.0
       jmespath: 0.16.0
       json-source-map: 0.6.1
       jsonrepair: 3.4.1
