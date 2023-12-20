@@ -76,7 +76,7 @@
 		"svelte-gantt": "4.2.1",
 		"svelte-grid": "^5.1.2",
 		"svelte-i18next": "^2.2.2",
-		"svelte-jsoneditor": "^0.20.0",
+		"svelte-jsoneditor": "^0.21.0",
 		"svelte-preprocess": "^5.1.2",
 		"svelte-previous": "^2.1.4",
 		"svelte-sonner": "^0.3.6",
