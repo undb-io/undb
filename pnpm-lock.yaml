@@ -257,7 +257,7 @@ importers:
         version: 3.6.0(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(reflect-metadata@0.2.1)(rxjs@7.8.1)
       nestjs-pino:
         specifier: ^3.5.0
-        version: 3.5.0(@nestjs/common@10.2.10)(pino-http@8.6.0)
+        version: 3.5.0(@nestjs/common@10.2.10)(pino-http@9.0.0)
       nodemailer:
         specifier: ^6.9.7
         version: 6.9.7
@@ -283,8 +283,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       pino-http:
-        specifier: ^8.6.0
-        version: 8.6.0
+        specifier: ^9.0.0
+        version: 9.0.0
       pino-pretty:
         specifier: ^10.3.0
         version: 10.3.0
@@ -13960,7 +13960,7 @@ packages:
       rxjs: 7.8.1
     dev: false
 
-  /nestjs-pino@3.5.0(@nestjs/common@10.2.10)(pino-http@8.6.0):
+  /nestjs-pino@3.5.0(@nestjs/common@10.2.10)(pino-http@9.0.0):
     resolution: {integrity: sha512-IWJ3dzLVjg5istcd3Cz3rVO+gmvabfVAT1YmQgzL1HnC2hkc0H6qA6k6SZ7OIwQfewuRejYfPu3TlkxwRrqxHQ==}
     engines: {node: '>= 14'}
     requiresBuild: true
@@ -13969,7 +13969,7 @@ packages:
       pino-http: ^6.4.0 || ^7.0.0 || ^8.0.0
     dependencies:
       '@nestjs/common': 10.2.10(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.2.1)(rxjs@7.8.1)
-      pino-http: 8.6.0
+      pino-http: 9.0.0
     dev: false
 
   /netmask@2.0.2:
@@ -15003,13 +15003,13 @@ packages:
       split2: 4.2.0
     dev: false
 
-  /pino-http@8.6.0:
-    resolution: {integrity: sha512-SMkt0R7nzoX76BhTlmCWg0s2F0UYKGeln8y+thL2OUcCxZbbPB1AqgrEMuHAjHyc7oBefext3Af3ZT3k9ieETw==}
+  /pino-http@9.0.0:
+    resolution: {integrity: sha512-Q9QDNEz0vQmbJtMFjOVr2c9yL92vHudjmr3s3m6J1hbw3DBGFZJm3TIj9TWyynZ4GEsEA9SOtni4heRUr6lNOg==}
     dependencies:
       get-caller-file: 2.0.5
       pino: 8.17.1
-      pino-std-serializers: 6.2.0
-      process-warning: 2.2.0
+      pino-std-serializers: 6.2.2
+      process-warning: 3.0.0
     dev: false
 
   /pino-pretty@10.3.0:
@@ -15034,6 +15034,10 @@ packages:
 
   /pino-std-serializers@6.2.0:
     resolution: {integrity: sha512-IWgSzUL8X1w4BIWTwErRgtV8PyOGOOi60uqv0oKuS/fOA8Nco/OeI6lBuc4dyP8MMfdFwyHqTMcBIA7nDiqEqA==}
+    dev: false
+
+  /pino-std-serializers@6.2.2:
+    resolution: {integrity: sha512-cHjPPsE+vhj/tnhCy/wiMh3M3z3h/j15zHQX+S9GkTBgqJuTuJzYJ4gUyACLhDaJ7kk9ba9iRDmbH2tJU03OiA==}
     dev: false
 
   /pino@8.17.1:
@@ -15388,6 +15392,10 @@ packages:
 
   /process-warning@2.2.0:
     resolution: {integrity: sha512-/1WZ8+VQjR6avWOgHeEPd7SDQmFQ1B5mC1eRXsCm5TarlNmx/wCsa5GEaxGm05BORRtyG/Ex/3xq3TuRvq57qg==}
+    dev: false
+
+  /process-warning@3.0.0:
+    resolution: {integrity: sha512-mqn0kFRl0EoqhnL0GQ0veqFHyIN1yig9RHh/InzORTUiZHFRAur+aMtRkELNwGs9aNwKS6tg/An4NYBPGwvtzQ==}
     dev: false
 
   /process@0.11.10:
