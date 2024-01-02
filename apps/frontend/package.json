@@ -81,7 +81,7 @@
 		"svelte-previous": "^2.1.4",
 		"svelte-sonner": "^0.3.6",
 		"svelte-tiny-virtual-list": "^2.0.5",
-		"sveltekit-search-params": "^1.1.0",
+		"sveltekit-search-params": "^2.0.0",
 		"sveltekit-superforms": "^0.8.7",
 		"svelvet": "^9.0.0",
 		"swiper": "^11.0.5",
