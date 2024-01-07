@@ -602,8 +602,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       lucide-svelte:
-        specifier: ^0.304.0
-        version: 0.304.0(svelte@4.2.8)
+        specifier: ^0.307.0
+        version: 0.307.0(svelte@4.2.8)
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
@@ -12914,8 +12914,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /lucide-svelte@0.304.0(svelte@4.2.8):
-    resolution: {integrity: sha512-DknYGA5R8QCcEWxgxYial9YKuHtLi4Hj7QSlwliJCt0qF9Lbq+6EMnVYcq3sI9xsTZrbYtso2WG34RPAsI2RVA==}
+  /lucide-svelte@0.307.0(svelte@4.2.8):
+    resolution: {integrity: sha512-9iGONh7UHEbA3xCTJlT5PYv9GuWrerX4429XWSoLTIjF9UnNCuOmYAu8sA72FmjehrwdJFbvHB+yT/HmCadL4A==}
     peerDependencies:
       svelte: '>=3 <5'
     dependencies:
