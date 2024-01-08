@@ -1,5 +1,5 @@
 import { EntityManager } from '@mikro-orm/better-sqlite'
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import { type AuditSpecification } from '@undb/integrations'
 import { AuditSqliteQueryModel } from '@undb/sqlite'
@@ -17,7 +17,7 @@ export class NestAuditSqliteQueryModel extends AuditSqliteQueryModel {
     super(em)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   find(spec: AuditSpecification) {
     return super.find(spec)
   }

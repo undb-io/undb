@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import type { IQueryInvitation } from '@undb/integrations'
 import { type InvitationSpecification } from '@undb/integrations'
@@ -18,12 +18,12 @@ export class NestInvitationSqliteQueryModel extends InvitationSqliteQueryModel {
     super(em)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   find(spec: Option<InvitationSpecification>) {
     return super.find(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   findOneById(id: string): Promise<Option<IQueryInvitation>> {
     return super.findOneById(id)
   }

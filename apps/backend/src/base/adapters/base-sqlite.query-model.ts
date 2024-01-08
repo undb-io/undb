@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import type { BaseSpecification, IQueryBase } from '@undb/core'
 import { BaseSqliteQueryModel, EntityManager } from '@undb/sqlite'
@@ -17,12 +17,12 @@ export class NestBaseSqliteQueryModel extends BaseSqliteQueryModel {
     super(em)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   find(spec: Option<BaseSpecification>): Promise<IQueryBase[]> {
     return super.find(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   findOneById(id: string): Promise<Option<IQueryBase>> {
     return super.findOneById(id)
   }

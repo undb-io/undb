@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import type { IQueryTreeRecords, IRecordTreeQueryModel } from '@undb/core'
 import { TreeField, type IRecordSpec } from '@undb/core'
@@ -9,11 +9,14 @@ export const InjectRecordTreeQueryModel = () => Inject(RECORD_TREE_QUERY_MODEL)
 
 @Injectable()
 export class NestRecordSqliteTreeQueryModel extends RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
-  constructor(protected readonly orm: MikroORM, em: EntityManager) {
+  constructor(
+    protected readonly orm: MikroORM,
+    em: EntityManager,
+  ) {
     super(em)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async findTrees(tableId: string, field: TreeField, spec: IRecordSpec): Promise<IQueryTreeRecords> {
     return super.findTrees(tableId, field, spec)
   }

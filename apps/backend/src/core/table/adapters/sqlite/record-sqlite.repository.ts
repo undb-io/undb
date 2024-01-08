@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import type { ClsStore, IClsService } from '@undb/core'
 import { Record, Table, type IRecordSpec } from '@undb/core'
@@ -27,47 +27,47 @@ export class NestRecordSqliteRepository extends RecordSqliteRepository {
     super(uow, cls as IClsService<ClsStore>, outboxService)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async insert(table: Table, record: Record): Promise<void> {
     return super.insert(table, record)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async insertMany(table: Table, records: Record[]): Promise<void> {
     return super.insertMany(table, records)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async findOneById(table: Table, id: string): Promise<Option<Record>> {
     return super.findOneById(table, id)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   findDeletedOneById(table: Table, id: string): Promise<Option<Record>> {
     return super.findDeletedOneById(table, id)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async find(table: Table, spec: IRecordSpec): Promise<Record[]> {
     return super.find(table, spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async updateOneById(table: Table, id: string, spec: IRecordSpec): Promise<void> {
     return super.updateOneById(table, id, spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async deleteOneById(table: Table, id: string): Promise<void> {
     return super.deleteOneById(table, id)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async deleteManyByIds(table: Table, ids: string[]): Promise<void> {
     return super.deleteManyByIds(table, ids)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   restoreOneById(table: Table, id: string): Promise<void> {
     return super.restoreOneById(table, id)
   }

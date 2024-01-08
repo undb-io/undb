@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import type { IQueryUser } from '@undb/core'
 import { type UserSpecification } from '@undb/core'
@@ -14,17 +14,17 @@ export class NestUserSqliteQueryModel extends UserSqliteQueryModel {
     super(em)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   override find(spec: Option<UserSpecification>) {
     return super.find(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   override findOne(spec: UserSpecification) {
     return super.findOne(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   override async findOneById(id: string): Promise<Option<IQueryUser>> {
     return super.findOneById(id)
   }

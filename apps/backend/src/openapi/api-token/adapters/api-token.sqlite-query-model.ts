@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import type { IQueryApiToken } from '@undb/openapi'
 import { type ApiTokenSpecification } from '@undb/openapi'
@@ -18,12 +18,12 @@ export class NestApiTokenSqliteQueryModel extends ApiTokenSqliteQueryModel {
     super(em)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   find(spec: ApiTokenSpecification): Promise<IQueryApiToken[]> {
     return super.find(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   findOneById(id: string): Promise<Option<IQueryApiToken>> {
     return super.findOneById(id)
   }

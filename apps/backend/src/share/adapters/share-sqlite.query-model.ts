@@ -1,5 +1,5 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import type { IQueryShare } from '@undb/integrations'
 import { type ShareSpecification } from '@undb/integrations'
@@ -15,17 +15,17 @@ export class NestShareSqliteQueryModel extends ShareSqliteQueryModel {
     super(orm.em as EntityManager)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   find(spec: ShareSpecification | null): Promise<IQueryShare[]> {
     return super.find(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   findOne(spec: ShareSpecification): Promise<Option<IQueryShare>> {
     return super.findOne(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   findOneById(id: string): Promise<Option<IQueryShare>> {
     return super.findOneById(id)
   }

@@ -41,6 +41,8 @@ export class TableSqliteQueryModel implements ITableQueryModel {
         'fields.foreignTable',
         'views.widgets.visualization',
       ],
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       { orderBy: { fields: { options: { order: 'ASC' } } } },
     )
     for (const table of tables) {

@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import type { IQueryTable, TableCompositeSpecification } from '@undb/core'
 import { type ITableCache, type ITableSpec } from '@undb/core'
@@ -19,17 +19,17 @@ export class NestTableSqliteQueryModel extends TableSqliteQueryModel {
     super(em, cache)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async find(spec: Option<TableCompositeSpecification>): Promise<IQueryTable[]> {
     return super.find(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async findOne(spec: ITableSpec): Promise<Option<IQueryTable>> {
     return super.findOne(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async findOneById(id: string): Promise<Option<IQueryTable>> {
     return super.findOneById(id)
   }

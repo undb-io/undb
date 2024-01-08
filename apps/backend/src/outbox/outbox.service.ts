@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import type { ConfigType } from '@nestjs/config'
 import { type IEvent, type IUnitOfWork } from '@undb/domain'
@@ -19,12 +19,12 @@ export class NestOutboxService extends OutboxService {
     super(uow, config.count)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   handle(cb: (outboxList: Outbox[]) => void | Promise<void>): Promise<void> {
     return super.handle(cb)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   persist(event: IEvent<object>): Outbox {
     return super.persist(event)
   }

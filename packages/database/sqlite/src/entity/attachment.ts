@@ -1,6 +1,5 @@
-import type { Rel } from '@mikro-orm/core'
-import { Entity, Index, ManyToOne, PrimaryKey, PrimaryKeyType, Property } from '@mikro-orm/core'
-import type { IAttachmentItem } from '@undb/core'
+import { Entity, Index, ManyToOne, PrimaryKey, PrimaryKeyProp, Property, Rel } from '@mikro-orm/core'
+import { IAttachmentItem } from '@undb/core'
 import path from 'path'
 import { BaseEntity } from './base.entity.js'
 import { Table } from './table.js'
@@ -16,7 +15,7 @@ export class Attachment extends BaseEntity {
   @PrimaryKey()
   fieldId: string;
 
-  [PrimaryKeyType]?: [string, string, string]
+  [PrimaryKeyProp]?: [string, string, string]
 
   @ManyToOne(() => Table)
   table: Rel<Table>

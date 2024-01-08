@@ -1,5 +1,5 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import { Table, type ITableCache, type ITableSpec } from '@undb/core'
 import { type IUnitOfWork } from '@undb/domain'
@@ -25,32 +25,32 @@ export class NestTableSqliteRepository extends TableSqliteRepository {
     super(uow, cache)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async findOneById(id: string): Promise<Option<Table>> {
     return super.findOneById(id)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async findOne(spec: ITableSpec): Promise<Option<Table>> {
     return super.findOne(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   find(spec: ITableSpec): Promise<Table[]> {
     return super.find(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async insert(table: Table): Promise<void> {
     return super.insert(table)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async updateOneById(id: string, spec: ITableSpec): Promise<void> {
     return super.updateOneById(id, spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async deleteOneById(id: string): Promise<void> {
     return super.deleteOneById(id)
   }

@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import { FLS, type FLSSpecification, type IFLSCache } from '@undb/authz'
 import { EntityManager, FLSSqliteRepository } from '@undb/sqlite'
@@ -20,27 +20,27 @@ export class NestFLSSqliteRepository extends FLSSqliteRepository {
     super(em, cache)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   find(spec: FLSSpecification): Promise<FLS[]> {
     return super.find(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   findOneById(id: string): Promise<Option<FLS>> {
     return super.findOneById(id)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   insert(fls: FLS): Promise<void> {
     return super.insert(fls)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   updateOneById(id: string, spec: FLSSpecification): Promise<void> {
     return super.updateOneById(id, spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   deleteOneById(id: string): Promise<void> {
     return super.deleteOneById(id)
   }

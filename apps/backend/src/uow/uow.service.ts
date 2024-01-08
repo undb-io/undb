@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import { EntityManager, SqliteUnitOfWork } from '@undb/sqlite'
 
@@ -8,19 +8,22 @@ export const InjectUnitOfWork = () => Inject(UNIT_OF_WORK)
 
 @Injectable()
 export class NestSqliteUnitOfWork extends SqliteUnitOfWork {
-  constructor(public readonly orm: MikroORM, em: EntityManager) {
+  constructor(
+    public readonly orm: MikroORM,
+    em: EntityManager,
+  ) {
     super(em)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async begin(): Promise<void> {
     await super.begin()
   }
-  @UseRequestContext()
+  @CreateRequestContext()
   async commit(): Promise<void> {
     await super.commit()
   }
-  @UseRequestContext()
+  @CreateRequestContext()
   async rollback(): Promise<void> {
     await super.rollback()
   }

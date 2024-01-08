@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import { type FLSSpecification } from '@undb/authz'
 import { EntityManager, FLSSqliteQueryModel } from '@undb/sqlite'
@@ -16,7 +16,7 @@ export class NestFLSSqliteQueryModel extends FLSSqliteQueryModel {
     super(em)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   find(spec: FLSSpecification) {
     return super.find(spec)
   }

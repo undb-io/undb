@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import type { IQueryMember } from '@undb/authz'
 import { type MemberSpecification } from '@undb/authz'
@@ -18,7 +18,7 @@ export class NestMemberSqliteQueryModel extends MemberSqliteQueryModel {
     super(em)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   find(spec: Option<MemberSpecification>): Promise<IQueryMember[]> {
     return super.find(spec)
   }

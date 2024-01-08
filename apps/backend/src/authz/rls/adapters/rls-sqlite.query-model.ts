@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import { type RLSSpecification } from '@undb/authz'
 import { EntityManager, RLSSqliteQueryModel } from '@undb/sqlite'
@@ -16,7 +16,7 @@ export class NestRLSSqliteQueryModel extends RLSSqliteQueryModel {
     super(em)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   find(spec: RLSSpecification) {
     return super.find(spec)
   }

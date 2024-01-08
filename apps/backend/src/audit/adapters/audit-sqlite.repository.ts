@@ -1,5 +1,5 @@
 import { EntityManager } from '@mikro-orm/better-sqlite'
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import { Audit, type AuditSpecification } from '@undb/integrations'
 import { AuditSqliteRepository } from '@undb/sqlite'
@@ -18,22 +18,22 @@ export class NestAuditSqliteRepository extends AuditSqliteRepository {
     super(em)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   insert(audit: Audit): Promise<void> {
     return super.insert(audit)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   findOne(spec: AuditSpecification): Promise<Option<Audit>> {
     return super.findOne(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   updateOneById(id: string, spec: AuditSpecification): Promise<void> {
     return super.updateOneById(id, spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   deleteOneById(id: string): Promise<void> {
     return super.deleteOneById(id)
   }

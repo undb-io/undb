@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import { type IEvent } from '@undb/domain'
 import { Invitation, type InvitationSpecification } from '@undb/integrations'
@@ -18,22 +18,22 @@ export class NestInvitationSqliteRepository extends InvitationSqliteRepository {
     super(em)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   insert(invitation: Invitation, evt: IEvent): Promise<void> {
     return super.insert(invitation, evt)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   findOneById(id: string): Promise<Option<Invitation>> {
     return super.findOneById(id)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   findOne(spec: InvitationSpecification): Promise<Option<Invitation>> {
     return super.findOne(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   updateOneById(id: string, spec: InvitationSpecification): Promise<void> {
     return super.updateOneById(id, spec)
   }

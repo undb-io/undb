@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import { RLS, type IRLSCache, type RLSSpecification } from '@undb/authz'
 import { EntityManager, RLSSqliteRepository } from '@undb/sqlite'
@@ -20,27 +20,27 @@ export class NestRLSSqliteRepository extends RLSSqliteRepository {
     super(em, cache)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   find(spec: RLSSpecification): Promise<RLS[]> {
     return super.find(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   findOneById(id: string): Promise<Option<RLS>> {
     return super.findOneById(id)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   insert(rls: RLS): Promise<void> {
     return super.insert(rls)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   updateOneById(id: string, spec: RLSSpecification): Promise<void> {
     return super.updateOneById(id, spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   deleteOneById(id: string): Promise<void> {
     return super.deleteOneById(id)
   }

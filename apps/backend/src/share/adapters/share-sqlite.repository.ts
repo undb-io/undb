@@ -1,5 +1,5 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import { type Share, type ShareSpecification } from '@undb/integrations'
 import { ShareSqliteRepository } from '@undb/sqlite'
@@ -14,27 +14,27 @@ export class NestShareSqliteRepository extends ShareSqliteRepository {
     super(orm.em as EntityManager)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async findOneById(id: string): Promise<Option<Share>> {
     return super.findOneById(id)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async findOne(spec: ShareSpecification): Promise<Option<Share>> {
     return super.findOne(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async insert(table: Share): Promise<void> {
     return super.insert(table)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async updateOneById(id: string, spec: ShareSpecification): Promise<void> {
     return super.updateOneById(id, spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async deleteOneById(id: string): Promise<void> {
     return super.deleteOneById(id)
   }

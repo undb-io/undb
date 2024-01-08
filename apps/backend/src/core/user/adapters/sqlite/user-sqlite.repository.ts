@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import { User, type UserSpecification } from '@undb/core'
 import { EntityManager, UserSqliteRepository } from '@undb/sqlite'
@@ -13,32 +13,32 @@ export class NestUserSqliteRepository extends UserSqliteRepository {
     super(em)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   exists(spec: UserSpecification): Promise<boolean> {
     return super.exists(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   insert(user: User): Promise<void> {
     return super.insert(user)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   findOneById(id: string): Promise<Option<User>> {
     return super.findOneById(id)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   findOne(spec: UserSpecification): Promise<Option<User>> {
     return super.findOne(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   count(spec: UserSpecification | null): Promise<number> {
     return super.count(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   updateOneById(id: string, spec: UserSpecification): Promise<void> {
     return super.updateOneById(id, spec)
   }

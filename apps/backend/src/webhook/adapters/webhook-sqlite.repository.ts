@@ -1,5 +1,5 @@
 import { EntityManager } from '@mikro-orm/better-sqlite'
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import { type Webhook, type WebhookSpecification } from '@undb/integrations'
 import { WebhookSqliteRepository } from '@undb/sqlite'
@@ -17,32 +17,32 @@ export class NestWebhookSqliteRepository extends WebhookSqliteRepository {
     super(em)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   find(spec: WebhookSpecification): Promise<Webhook[]> {
     return super.find(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async findOneById(id: string): Promise<Option<Webhook>> {
     return super.findOneById(id)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async findOne(spec: WebhookSpecification): Promise<Option<Webhook>> {
     return super.findOne(spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async insert(table: Webhook): Promise<void> {
     return super.insert(table)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async updateOneById(id: string, spec: WebhookSpecification): Promise<void> {
     return super.updateOneById(id, spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async deleteOneById(id: string): Promise<void> {
     return super.deleteOneById(id)
   }

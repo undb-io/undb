@@ -1,4 +1,4 @@
-import { MikroORM, UseRequestContext } from '@mikro-orm/core'
+import { CreateRequestContext, MikroORM } from '@mikro-orm/core'
 import { Inject, Injectable } from '@nestjs/common'
 import type {
   IQueryRecordSchema,
@@ -24,7 +24,7 @@ export class NestRecordSqliteQueryModel extends RecordSqliteQueryModel implement
     super(em)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   find(
     tableId: string,
     viewId: ViewId | undefined,
@@ -34,7 +34,7 @@ export class NestRecordSqliteQueryModel extends RecordSqliteQueryModel implement
     return super.find(tableId, viewId, spec, option)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async findAndCount(
     tableId: string,
     viewId: ViewId | undefined,
@@ -44,17 +44,17 @@ export class NestRecordSqliteQueryModel extends RecordSqliteQueryModel implement
     return super.findAndCount(tableId, viewId, spec, option)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   async findOne(tableId: string, spec: IRecordSpec | null): Promise<Option<IQueryRecordSchema>> {
     return super.findOne(tableId, spec)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   findOneById(tableId: string, id: string): Promise<Option<IQueryRecordSchema>> {
     return super.findOneById(tableId, id)
   }
 
-  @UseRequestContext()
+  @CreateRequestContext()
   findDeletedAndCount(tableId: string, spec: IRecordSpec | null, option?: IRepositoryOption) {
     return super.findDeletedAndCount(tableId, spec, option)
   }
