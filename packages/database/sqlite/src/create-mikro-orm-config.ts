@@ -1,5 +1,6 @@
 import { BetterSqliteDriver } from '@mikro-orm/better-sqlite'
 import { defineConfig, FlushMode, ReflectMetadataProvider } from '@mikro-orm/core'
+import { Migrator } from '@mikro-orm/migrations'
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 import path from 'path'
 import { entities } from './entity/index.js'
@@ -9,6 +10,7 @@ import { isMemoryDatabase } from './utils.js'
 
 export const createConfig = (data: string, env = 'development') =>
   defineConfig({
+    extensions: [Migrator],
     entities,
     entitiesTs: entities,
     highlighter: new SqlHighlighter(),
