@@ -557,8 +557,8 @@ importers:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.32)
       bits-ui:
-        specifier: ^0.13.0
-        version: 0.13.0(svelte@4.2.8)
+        specifier: ^0.14.0
+        version: 0.14.0(svelte@4.2.8)
       chart.js:
         specifier: ^4.4.1
         version: 4.4.1
@@ -3058,8 +3058,8 @@ packages:
       - supports-color
     dev: false
 
-  /@melt-ui/svelte@0.67.0(svelte@4.2.8):
-    resolution: {integrity: sha512-fd9PsDE6sKbeyExagqH0nOpZEnDqyr2efbkjfmCRRYXVW5vlDEOPaSB+mg4Tjch121102sFH1Od+MlXwmeHy3A==}
+  /@melt-ui/svelte@0.68.0(svelte@4.2.8):
+    resolution: {integrity: sha512-/QvA98hnYEodZtHJ71+ocum/WWp30hVNt3F8uiZKnNYwZDaiQYjlyR9AaGKYcZLCe6R68op1mfCzc0kTzJilyA==}
     peerDependencies:
       svelte: '>=3 <5'
     dependencies:
@@ -3068,7 +3068,7 @@ packages:
       '@internationalized/date': 3.5.1
       dequal: 2.0.3
       focus-trap: 7.5.2
-      nanoid: 4.0.2
+      nanoid: 5.0.4
       svelte: 4.2.8
     dev: true
 
@@ -7901,13 +7901,13 @@ packages:
     dependencies:
       file-uri-to-path: 1.0.0
 
-  /bits-ui@0.13.0(svelte@4.2.8):
-    resolution: {integrity: sha512-XMvGKhJQMvSWqaan0eaIx1uAVcFBpImgO6xf+XTb7UhqdzbH0//6be4DeR1nRUpIU70XoU1B7i3lMPrTWg37ng==}
+  /bits-ui@0.14.0(svelte@4.2.8):
+    resolution: {integrity: sha512-S1LNwp/Sge1Ro1g0iJ+msIUeJYmoNhXBFShnLDOUOKQe3JG1wd027KxZnVd7db6UWr1IqlJdd4/bbB7NYXeYDw==}
     peerDependencies:
       svelte: ^4.0.0
     dependencies:
       '@internationalized/date': 3.5.1
-      '@melt-ui/svelte': 0.67.0(svelte@4.2.8)
+      '@melt-ui/svelte': 0.68.0(svelte@4.2.8)
       nanoid: 5.0.4
       svelte: 4.2.8
     dev: true
@@ -13914,12 +13914,6 @@ packages:
   /nanoid@3.3.7:
     resolution: {integrity: sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
-    hasBin: true
-    dev: true
-
-  /nanoid@4.0.2:
-    resolution: {integrity: sha512-7ZtY5KTCNheRGfEFxnedV5zFiORN1+Y1N6zvPTnHQd8ENUvfaDBeuJDZb2bN/oXwXxu3qkTXDzy57W5vAmDTBw==}
-    engines: {node: ^14 || ^16 || >=18}
     hasBin: true
     dev: true
 
