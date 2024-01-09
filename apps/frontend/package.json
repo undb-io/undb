@@ -42,7 +42,7 @@
 		"@undb/template": "workspace:^",
 		"@undb/trpc": "^0.0.0",
 		"autoprefixer": "^10.4.16",
-		"bits-ui": "^0.13.0",
+		"bits-ui": "^0.14.0",
 		"chart.js": "^4.4.1",
 		"clsx": "^2.0.0",
 		"date-fns": "^3.0.0",
