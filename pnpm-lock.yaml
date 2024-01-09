@@ -79,17 +79,17 @@ importers:
         specifier: ^9.0.4
         version: 9.0.4(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@nestjs/terminus@10.2.0)(ioredis@5.3.2)
       '@mikro-orm/better-sqlite':
-        specifier: ^6.0.0
+        specifier: ^6.0.1
         version: 6.0.1(@mikro-orm/core@6.0.1)
       '@mikro-orm/core':
-        specifier: ^6.0.0
+        specifier: ^6.0.1
         version: 6.0.1
       '@mikro-orm/migrations':
-        specifier: ^6.0.0
+        specifier: ^6.0.1
         version: 6.0.1(@mikro-orm/core@6.0.1)(better-sqlite3@9.2.2)
       '@mikro-orm/nestjs':
-        specifier: ^5.2.2
-        version: 5.2.2(@mikro-orm/core@6.0.1)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)
+        specifier: ^5.2.3
+        version: 5.2.3(@mikro-orm/core@6.0.1)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)
       '@nestjs-modules/mailer':
         specifier: ^1.9.1
         version: 1.9.1(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(nodemailer@6.9.7)
@@ -131,7 +131,7 @@ importers:
         version: 7.1.17(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.2.1)
       '@nestjs/terminus':
         specifier: ^10.2.0
-        version: 10.2.0(@mikro-orm/core@6.0.1)(@mikro-orm/nestjs@5.2.2)(@nestjs/axios@3.0.1)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@nestjs/mongoose@10.0.2)(mongoose@8.0.3)(reflect-metadata@0.2.1)(rxjs@7.8.1)
+        version: 10.2.0(@mikro-orm/core@6.0.1)(@mikro-orm/nestjs@5.2.3)(@nestjs/axios@3.0.1)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@nestjs/mongoose@10.0.2)(mongoose@8.0.3)(reflect-metadata@0.2.1)(rxjs@7.8.1)
       '@opentelemetry/auto-instrumentations-node':
         specifier: ^0.40.2
         version: 0.40.2(@opentelemetry/api@1.4.1)
@@ -939,13 +939,13 @@ importers:
   packages/database/sqlite:
     dependencies:
       '@mikro-orm/better-sqlite':
-        specifier: ^6.0.0
+        specifier: ^6.0.1
         version: 6.0.1(@mikro-orm/core@6.0.1)
       '@mikro-orm/core':
-        specifier: ^6.0.0
+        specifier: ^6.0.1
         version: 6.0.1
       '@mikro-orm/migrations':
-        specifier: ^6.0.0
+        specifier: ^6.0.1
         version: 6.0.1(@mikro-orm/core@6.0.1)(better-sqlite3@9.2.2)
       '@mikro-orm/sql-highlighter':
         specifier: ^1.0.1
@@ -988,10 +988,10 @@ importers:
         version: 9.0.1
     devDependencies:
       '@mikro-orm/cli':
-        specifier: ^6.0.0
+        specifier: ^6.0.1
         version: 6.0.1(better-sqlite3@9.2.2)
       '@mikro-orm/reflection':
-        specifier: ^6.0.0
+        specifier: ^6.0.1
         version: 6.0.1(@mikro-orm/core@6.0.1)
       '@swc/core':
         specifier: 1.3.102
@@ -1240,7 +1240,7 @@ importers:
         version: 5.0.4
       openapi-snippet:
         specifier: ^0.14.0
-        version: 0.14.0(mkdirp@2.1.6)
+        version: 0.14.0(mkdirp@3.0.1)
       openapi-to-postmanv2:
         specifier: ^4.18.0
         version: 4.18.0
@@ -3005,7 +3005,7 @@ packages:
     dependencies:
       '@nestjs/common': 10.2.10(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.2.1)(rxjs@7.8.1)
       '@nestjs/core': 10.2.10(@nestjs/common@10.2.10)(@nestjs/platform-express@10.2.10)(reflect-metadata@0.2.1)(rxjs@7.8.1)
-      '@nestjs/terminus': 10.2.0(@mikro-orm/core@6.0.1)(@mikro-orm/nestjs@5.2.2)(@nestjs/axios@3.0.1)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@nestjs/mongoose@10.0.2)(mongoose@8.0.3)(reflect-metadata@0.2.1)(rxjs@7.8.1)
+      '@nestjs/terminus': 10.2.0(@mikro-orm/core@6.0.1)(@mikro-orm/nestjs@5.2.3)(@nestjs/axios@3.0.1)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@nestjs/mongoose@10.0.2)(mongoose@8.0.3)(reflect-metadata@0.2.1)(rxjs@7.8.1)
       ioredis: 5.3.2
       tslib: 2.4.1
     dev: false
@@ -3202,8 +3202,8 @@ packages:
       - tedious
     dev: false
 
-  /@mikro-orm/nestjs@5.2.2(@mikro-orm/core@6.0.1)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10):
-    resolution: {integrity: sha512-NwPTmpmwf4/aX7FjKk/CTncYS7Mbr4fMvSOfbo9rOElySjpniTnk2cCGABgj2kaX9NSFHzWCUy5tAMIkoedd4A==}
+  /@mikro-orm/nestjs@5.2.3(@mikro-orm/core@6.0.1)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10):
+    resolution: {integrity: sha512-JMxaXrNXlo6j59D3LWMC1tEC1a5JanCtqdfv91JUH0sfVZh97SsjQ9K794BY3JWIUKSFyQwpnLxYZ0Ash/BlPA==}
     engines: {node: '>= 14.0.0'}
     peerDependencies:
       '@mikro-orm/core': ^5.0.0 || ^6.0.0-dev.0
@@ -3584,7 +3584,7 @@ packages:
       swagger-ui-dist: 5.10.3
     dev: false
 
-  /@nestjs/terminus@10.2.0(@mikro-orm/core@6.0.1)(@mikro-orm/nestjs@5.2.2)(@nestjs/axios@3.0.1)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@nestjs/mongoose@10.0.2)(mongoose@8.0.3)(reflect-metadata@0.2.1)(rxjs@7.8.1):
+  /@nestjs/terminus@10.2.0(@mikro-orm/core@6.0.1)(@mikro-orm/nestjs@5.2.3)(@nestjs/axios@3.0.1)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@nestjs/mongoose@10.0.2)(mongoose@8.0.3)(reflect-metadata@0.2.1)(rxjs@7.8.1):
     resolution: {integrity: sha512-zPs98xvJ4ogEimRQOz8eU90mb7z+W/kd/mL4peOgrJ/VqER+ibN2Cboj65uJZW3XuNhpOqaeYOJte86InJd44A==}
     peerDependencies:
       '@grpc/grpc-js': '*'
@@ -3633,7 +3633,7 @@ packages:
         optional: true
     dependencies:
       '@mikro-orm/core': 6.0.1
-      '@mikro-orm/nestjs': 5.2.2(@mikro-orm/core@6.0.1)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)
+      '@mikro-orm/nestjs': 5.2.3(@mikro-orm/core@6.0.1)(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)
       '@nestjs/axios': 3.0.1(@nestjs/common@10.2.10)(axios@1.6.2)(reflect-metadata@0.2.1)(rxjs@7.8.1)
       '@nestjs/common': 10.2.10(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.2.1)(rxjs@7.8.1)
       '@nestjs/core': 10.2.10(@nestjs/common@10.2.10)(@nestjs/platform-express@10.2.10)(reflect-metadata@0.2.1)(rxjs@7.8.1)
@@ -10250,6 +10250,7 @@ packages:
       glob-parent: 5.1.2
       merge2: 1.4.1
       micromatch: 4.0.5
+    dev: true
 
   /fast-glob@3.3.2:
     resolution: {integrity: sha512-oX2ruAFQwf/Orj8m737Y5adxDQO0LAB7/S5MnxCdTNDd4p6BsyIVsv9JQsATbTSq8KHRpLwIHbVlUNatxd+1Ow==}
@@ -10260,7 +10261,6 @@ packages:
       glob-parent: 5.1.2
       merge2: 1.4.1
       micromatch: 4.0.5
-    dev: true
 
   /fast-json-stable-stringify@2.1.0:
     resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
@@ -10641,11 +10641,11 @@ packages:
       graceful-fs: 4.2.11
     dev: false
 
-  /fs-writefile-promise@1.0.3(mkdirp@2.1.6):
+  /fs-writefile-promise@1.0.3(mkdirp@3.0.1):
     resolution: {integrity: sha512-yI+wDwj0FsgX7tyIQJR+EP60R64evMSixtGb9AzGWjJVKlF5tCet95KomfqGBg/aIAG1Dhd6wjCOQe5HbX/qLA==}
     engines: {node: '>=0.10'}
     dependencies:
-      mkdirp-promise: 1.1.0(mkdirp@2.1.6)
+      mkdirp-promise: 1.1.0(mkdirp@3.0.1)
       pinkie-promise: 1.0.0
     transitivePeerDependencies:
       - mkdirp
@@ -11019,7 +11019,7 @@ packages:
     dependencies:
       array-union: 2.1.0
       dir-glob: 3.0.1
-      fast-glob: 3.3.1
+      fast-glob: 3.3.2
       ignore: 5.2.4
       merge2: 1.4.1
       slash: 3.0.0
@@ -11393,7 +11393,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /httpsnippet@2.0.0(mkdirp@2.1.6):
+  /httpsnippet@2.0.0(mkdirp@3.0.1):
     resolution: {integrity: sha512-Hb2ttfB5OhasYxwChZ8QKpYX3v4plNvwMaMulUIC7M3RHRDf1Op6EMp47LfaU2sgQgfvo5spWK4xRAirMEisrg==}
     engines: {node: '>=10'}
     hasBin: true
@@ -11404,7 +11404,7 @@ packages:
       event-stream: 3.3.4
       form-data: 3.0.0
       fs-readfile-promise: 2.0.1
-      fs-writefile-promise: 1.0.3(mkdirp@2.1.6)
+      fs-writefile-promise: 1.0.3(mkdirp@3.0.1)
       har-validator: 5.1.5
       stringify-object: 3.3.0
     transitivePeerDependencies:
@@ -13600,14 +13600,14 @@ packages:
   /mkdirp-classic@0.5.3:
     resolution: {integrity: sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==}
 
-  /mkdirp-promise@1.1.0(mkdirp@2.1.6):
+  /mkdirp-promise@1.1.0(mkdirp@3.0.1):
     resolution: {integrity: sha512-xzB0UZFcW1UGS2xkXeDh39jzTP282lb3Vwp4QzCQYmkTn4ysaV5dBdbkOXmhkcE1TQlZebQlgTceaWvDr3oFgw==}
     engines: {node: '>=4'}
     deprecated: This package is broken and no longer maintained. 'mkdirp' itself supports promises now, please switch to that.
     peerDependencies:
       mkdirp: '>=0.5.0'
     dependencies:
-      mkdirp: 2.1.6
+      mkdirp: 3.0.1
     dev: false
 
   /mkdirp@0.5.6:
@@ -13621,17 +13621,10 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  /mkdirp@2.1.6:
-    resolution: {integrity: sha512-+hEnITedc8LAtIP9u3HJDFIdcLV2vXP33sqLLIzkv1Db1zO/1OxbvYf0Y1OC/S/Qo5dxHXepofhmxL02PsKe+A==}
-    engines: {node: '>=10'}
-    hasBin: true
-    dev: false
-
   /mkdirp@3.0.1:
     resolution: {integrity: sha512-+NsyUUAZDmo6YVHzL/stxSu3t9YS1iljliy3BSDrXJ/dkn1KYdmtZODGGjLcc9XLgVVpH4KshHB8XmZgMhaBXg==}
     engines: {node: '>=10'}
     hasBin: true
-    dev: true
 
   /mlly@1.4.2:
     resolution: {integrity: sha512-i/Ykufi2t1EZ6NaPLdfnZk2AX8cs0d+mTzVKuPfqPKPatxLApaBoxJQ9x1/uckXtrS/U5oisPMDkNs0yQTaBRg==}
@@ -14381,10 +14374,10 @@ packages:
       json-pointer: 0.6.2
     dev: false
 
-  /openapi-snippet@0.14.0(mkdirp@2.1.6):
+  /openapi-snippet@0.14.0(mkdirp@3.0.1):
     resolution: {integrity: sha512-EObLQB2Hv6t+ZwfSot+ClS4p0bbfzd9pAvSfB8gHoiKwP3F301+baQiEGg5EgdD42rUQ7JwsfskELIP+wXPZWA==}
     dependencies:
-      httpsnippet: 2.0.0(mkdirp@2.1.6)
+      httpsnippet: 2.0.0(mkdirp@3.0.1)
       openapi-sampler: 1.3.1
     transitivePeerDependencies:
       - mkdirp

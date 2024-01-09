@@ -824,8 +824,8 @@ export class ReferenceField extends Field {
       symmetricReferenceFieldId: isForeignTableDeleted
         ? undefined
         : this.symmetricReferenceField?.isDeleted
-        ? undefined
-        : this.symmetricReferenceField?.id,
+          ? undefined
+          : this.symmetricReferenceField?.id,
       required: !!this.required,
       display: !!this.display,
       bidirectional: !!this.isOwner,

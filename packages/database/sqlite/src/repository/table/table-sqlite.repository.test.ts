@@ -40,7 +40,7 @@ describe('TableSqliteRepository', () => {
     expect(found!.name).to.eq(table.name.value)
   })
 
-  test.skip('findOneById', async () => {
+  test('findOneById', async () => {
     await repo.insert(table)
 
     const found = await repo.findOneById(table.id.value)
