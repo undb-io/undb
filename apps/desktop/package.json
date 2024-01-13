@@ -17,7 +17,7 @@
     "detect-port": "^1.5.1",
     "electron": "^28.0.0",
     "electron-builder": "^24.9.1",
-    "electron-is-dev": "^2.0.0",
+    "electron-is-dev": "^3.0.0",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",
     "vite-plugin-electron": "^0.28.0",
