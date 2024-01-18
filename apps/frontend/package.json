@@ -73,7 +73,7 @@
 		"svelte-check": "^3.6.2",
 		"svelte-copy": "^1.4.1",
 		"svelte-dnd-action": "^0.9.35",
-		"svelte-gantt": "4.2.1",
+		"svelte-gantt": "4.2.2",
 		"svelte-grid": "^5.1.2",
 		"svelte-i18next": "^2.2.2",
 		"svelte-jsoneditor": "^0.21.0",
