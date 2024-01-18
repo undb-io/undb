@@ -650,8 +650,8 @@ importers:
         specifier: ^0.9.35
         version: 0.9.35(svelte@4.2.8)
       svelte-gantt:
-        specifier: 4.2.1
-        version: 4.2.1(moment@2.29.4)(svelte@4.2.8)
+        specifier: 4.2.2
+        version: 4.2.2(moment@2.29.4)(svelte@4.2.8)
       svelte-grid:
         specifier: ^5.1.2
         version: 5.1.2
@@ -17130,8 +17130,8 @@ packages:
       '@floating-ui/dom': 1.5.1
     dev: true
 
-  /svelte-gantt@4.2.1(moment@2.29.4)(svelte@4.2.8):
-    resolution: {integrity: sha512-z3MfGEAYIHfLjVPVH1Oa+rtpPiayqTx5P7kq9ogMy3nnAaMII8s/oTfpdLPwJUbUevb3glcfkLsxb/3aPlIcxg==}
+  /svelte-gantt@4.2.2(moment@2.29.4)(svelte@4.2.8):
+    resolution: {integrity: sha512-4Km4730feZTffKepQEUg2/DhJUIkCWgV+W9kKXcedFs0KCigHdew3HnS7fIYYRRnwTGO7YmHL/GzSOw7gbTOGg==}
     peerDependencies:
       moment: ^2.22.2
       svelte: ^4.0.0
