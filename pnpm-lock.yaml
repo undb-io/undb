@@ -262,8 +262,8 @@ importers:
         specifier: ^6.9.7
         version: 6.9.7
       openapi-typescript:
-        specifier: 7.0.0-next.5
-        version: 7.0.0-next.5
+        specifier: 7.0.0-next.7
+        version: 7.0.0-next.7(typescript@5.3.3)
       oxide.ts:
         specifier: ^1.1.0
         version: 1.1.0
@@ -5356,8 +5356,8 @@ packages:
       uri-js: 4.4.1
     dev: false
 
-  /@redocly/openapi-core@1.4.1:
-    resolution: {integrity: sha512-oAhnG8MKocM9LuP++NGFxdniNKWSLA7hzHPQoOK92LIP/DdvXx8pEeZ68UTNxIXhKonoUcO6s86I3L0zj143zg==}
+  /@redocly/openapi-core@1.6.0:
+    resolution: {integrity: sha512-oao6Aey4peLKfagzWGb6N7OBI6CoDWEP4ka/XjrUNZw+UoKVVg3hVBXW4Vr3CJ2O8j6wEa2i+Lbb92VQQsoxwg==}
     engines: {node: '>=14.19.0', npm: '>=7.0.0'}
     dependencies:
       '@redocly/ajv': 8.11.0
@@ -14548,11 +14548,13 @@ packages:
       - encoding
     dev: false
 
-  /openapi-typescript@7.0.0-next.5:
-    resolution: {integrity: sha512-zqEDw/FZkT0ndOCd8EybkDVwEYgaOh+ryWm6OCON70DmY9YqUnNSIVyRFVjN8hesa0bxOs9QOMzXAasczNdHbQ==}
+  /openapi-typescript@7.0.0-next.7(typescript@5.3.3):
+    resolution: {integrity: sha512-10eoW5weEvUV+knxqd4Ve4n5acSSWLBGvZOVkuctfWwr0v65v7J7IRbP5+3K2Oys7yTHGZnvtKmWhn9ao0L/bw==}
     hasBin: true
+    peerDependencies:
+      typescript: ^5.x
     dependencies:
-      '@redocly/openapi-core': 1.4.1
+      '@redocly/openapi-core': 1.6.0
       ansi-colors: 4.1.3
       supports-color: 9.4.0
       typescript: 5.3.3
