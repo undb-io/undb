@@ -57,6 +57,6 @@
   ],
   "dependencies": {
     "better-sqlite3": "^9.2.2",
-    "husky": "^8.0.3"
+    "husky": "^9.0.0"
   }
 }
