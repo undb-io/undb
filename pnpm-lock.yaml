@@ -557,8 +557,8 @@ importers:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.32)
       bits-ui:
-        specifier: ^0.15.0
-        version: 0.15.0(svelte@4.2.8)
+        specifier: ^0.16.0
+        version: 0.16.0(svelte@4.2.8)
       chart.js:
         specifier: ^4.4.1
         version: 4.4.1
@@ -7964,8 +7964,8 @@ packages:
     dependencies:
       file-uri-to-path: 1.0.0
 
-  /bits-ui@0.15.0(svelte@4.2.8):
-    resolution: {integrity: sha512-j25QhsBVJHHQn0tnNFqtoMJY2z+EgYTSRXyoNs95qQXsYEXCh+06xGq/gKsfJKkrs1ngh2Hefx4jqPaYYpw48w==}
+  /bits-ui@0.16.0(svelte@4.2.8):
+    resolution: {integrity: sha512-HEkuVDyUG9dTWtKujKpdDsGOe9GRmuYOEF9yGbjVwNazxMQDQa9deUX8vM3ofGBWaJgr1cEu88p38kP5Z5gQ8w==}
     peerDependencies:
       svelte: ^4.0.0
     dependencies:
