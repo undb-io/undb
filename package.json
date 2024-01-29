@@ -19,13 +19,13 @@
     "zx": "^7.2.3"
   },
   "engines": {
-    "pnpm": ">=8.12.1",
+    "pnpm": ">=8.15.0",
     "node": ">=20.0.0"
   },
   "lint-staged": {
     "*.{ts,tsx,md}": "prettier --write"
   },
-  "packageManager": "pnpm@8.12.1",
+  "packageManager": "pnpm@8.15.0",
   "private": true,
   "scripts": {
     "bootstrap": "pnpm install && pnpm run build",
