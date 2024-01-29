@@ -12,4 +12,12 @@
 	export let readonly = false
 </script>
 
-<Input {value} class={$$restProps.class} type="number" on:change={onChange} readonly={readonly ? true : undefined} />
+<Input
+	{value}
+	class={$$restProps.class}
+	type="number"
+	step={0.01}
+	{...$$restProps}
+	on:change={onChange}
+	readonly={readonly ? true : undefined}
+/>
