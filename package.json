@@ -44,7 +44,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
     "preinstall": "npx only-allow pnpm",
-    "prepare": "husky install || echo 1",
+    "prepare": "husky || echo 1",
     "test": "FORCE_COLOR=1 TZ=UTC turbo run test",
     "test:watch": "FORCE_COLOR=1 TZ=UTC turbo run test:watch",
     "db:seed": "zx scripts/seed.mjs",
