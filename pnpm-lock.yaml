@@ -318,7 +318,7 @@ importers:
     devDependencies:
       '@nestjs/cli':
         specifier: ^10.2.1
-        version: 10.2.1(@swc/cli@0.1.63)(@swc/core@1.3.105)
+        version: 10.2.1(@swc/cli@0.3.6)(@swc/core@1.3.105)
       '@nestjs/schematics':
         specifier: ^10.0.3
         version: 10.0.3(typescript@5.3.3)
@@ -326,8 +326,8 @@ importers:
         specifier: ^10.2.10
         version: 10.2.10(@nestjs/common@10.2.10)(@nestjs/core@10.2.10)(@nestjs/platform-express@10.2.10)
       '@swc/cli':
-        specifier: ^0.1.63
-        version: 0.1.63(@swc/core@1.3.105)
+        specifier: ^0.3.0
+        version: 0.3.6(@swc/core@1.3.105)
       '@swc/core':
         specifier: 1.3.105
         version: 1.3.105
@@ -3418,7 +3418,7 @@ packages:
       rxjs: 7.8.1
     dev: false
 
-  /@nestjs/cli@10.2.1(@swc/cli@0.1.63)(@swc/core@1.3.105):
+  /@nestjs/cli@10.2.1(@swc/cli@0.3.6)(@swc/core@1.3.105):
     resolution: {integrity: sha512-CAJAQwmxFZfB3RTvqz/eaXXWpyU+mZ4QSqfBYzjneTsPgF+uyOAW3yQpaLNn9Dfcv39R9UxSuAhayv6yuFd+Jg==}
     engines: {node: '>= 16.14'}
     hasBin: true
@@ -3435,7 +3435,7 @@ packages:
       '@angular-devkit/schematics': 16.2.8(chokidar@3.5.3)
       '@angular-devkit/schematics-cli': 16.2.8(chokidar@3.5.3)
       '@nestjs/schematics': 10.0.3(chokidar@3.5.3)(typescript@5.2.2)
-      '@swc/cli': 0.1.63(@swc/core@1.3.105)
+      '@swc/cli': 0.3.6(@swc/core@1.3.105)
       '@swc/core': 1.3.105
       chalk: 4.1.2
       chokidar: 3.5.3
@@ -5900,9 +5900,9 @@ packages:
       - supports-color
     dev: true
 
-  /@swc/cli@0.1.63(@swc/core@1.3.105):
-    resolution: {integrity: sha512-EM9oxxHzmmsprYRbGqsS2M4M/Gr5Gkcl0ROYYIdlUyTkhOiX822EQiRCpPCwdutdnzH2GyaTN7wc6i0Y+CKd3A==}
-    engines: {node: '>= 12.13'}
+  /@swc/cli@0.3.6(@swc/core@1.3.105):
+    resolution: {integrity: sha512-ZoQbsJXjiWIlbCgr1m+m7TGNk7pILb3uWm4t423jM8vot8clseclXFU4QCMqJUVcYCSwKStzP3+yYMZvme/lsQ==}
+    engines: {node: '>= 16.14.0'}
     hasBin: true
     peerDependencies:
       '@swc/core': ^1.2.66
@@ -5915,6 +5915,8 @@ packages:
       '@swc/core': 1.3.105
       commander: 7.2.0
       fast-glob: 3.3.1
+      minimatch: 9.0.3
+      piscina: 4.3.1
       semver: 7.5.4
       slash: 3.0.0
       source-map: 0.7.4
@@ -7981,7 +7983,7 @@ packages:
       clone-response: 1.0.3
       get-stream: 5.2.0
       http-cache-semantics: 4.1.1
-      keyv: 4.5.2
+      keyv: 4.5.4
       lowercase-keys: 2.0.0
       normalize-url: 6.1.0
       responselike: 2.0.1
@@ -12181,17 +12183,10 @@ packages:
     resolution: {integrity: sha512-Rdgz9Hl9Iv4QKi8b0OlCRQEzp4AgVxyCtz5S/+VIHezDmrDhkp2N2TqBWOLz0/gbeREXOOiI9/4b8BY9uw2vFg==}
     dev: true
 
-  /keyv@4.5.2:
-    resolution: {integrity: sha512-5MHbFaKn8cNSmVW7BYnijeAVlE4cYA/SVkifVgrh7yotnfhKmjuXpDKjrABLnT0SfHWV21P8ow07OGfRrNDg8g==}
-    dependencies:
-      json-buffer: 3.0.1
-    dev: true
-
   /keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
     dependencies:
       json-buffer: 3.0.1
-    dev: false
 
   /kind-of@6.0.3:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
@@ -13720,6 +13715,16 @@ packages:
     engines: {node: '>= 0.4.0'}
     dev: false
 
+  /nice-napi@1.0.2:
+    resolution: {integrity: sha512-px/KnJAJZf5RuBGcfD+Sp2pAKq0ytz8j+1NehvgIGFkvtvFrDM3T8E4x/JJODXK9WZow8RRGrbA9QQ3hs+pDhA==}
+    os: ['!win32']
+    requiresBuild: true
+    dependencies:
+      node-addon-api: 3.2.1
+      node-gyp-build: 4.8.0
+    dev: true
+    optional: true
+
   /nice-try@1.0.5:
     resolution: {integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==}
     dev: false
@@ -13742,6 +13747,12 @@ packages:
 
   /node-addon-api@1.7.2:
     resolution: {integrity: sha512-ibPK3iA+vaY1eEjESkQkM0BbCqFOaZMiXRTtdB0u7b4djtY6JnsjvPdUHVMg6xQt3B8fpTTWHI9A+ADjM9frzg==}
+    requiresBuild: true
+    dev: true
+    optional: true
+
+  /node-addon-api@3.2.1:
+    resolution: {integrity: sha512-mmcei9JghVNDYydghQmeDX8KoAm0FAiYyIcUt/N4nhyAipB17pllZQDOJD2fotxABnt4Mdz+dKTO7eftLg4d0A==}
     requiresBuild: true
     dev: true
     optional: true
@@ -13815,6 +13826,13 @@ packages:
   /node-forge@1.3.1:
     resolution: {integrity: sha512-dPEtOeMvF9VMcYV/1Wb8CPoVAXtp6MKMlcbAt4ddqmGqUJ6fQZFXkNZNkNlfevtNkGtaSoXf/vNNNSvgrdXwtA==}
     engines: {node: '>= 6.13.0'}
+
+  /node-gyp-build@4.8.0:
+    resolution: {integrity: sha512-u6fs2AEUljNho3EYTJNBfImO5QTo/J/1Etd+NVdCj7qWKUSN/bSLkZwhDv7I+w/MSC6qJ4cknepkAYykDdK8og==}
+    hasBin: true
+    requiresBuild: true
+    dev: true
+    optional: true
 
   /node-gyp@9.3.1:
     resolution: {integrity: sha512-4Q16ZCqq3g8awk6UplT7AuxQ35XN4R/yf/+wSAwcBUAjg7l58RTactWaP8fIDTi0FzI7YcVLujwExakZlfWkXg==}
@@ -14789,6 +14807,12 @@ packages:
   /pirates@4.0.5:
     resolution: {integrity: sha512-8V9+HQPupnaXMA23c5hvl69zXvTwTzyAYasnkb0Tts4XvO4CliqONMOnvlq26rkhLC3nWDFBJf73LU1e1VZLaQ==}
     engines: {node: '>= 6'}
+    dev: true
+
+  /piscina@4.3.1:
+    resolution: {integrity: sha512-MBj0QYm3hJQ/C/wIXTN1OCYC8uQ4BBJ4LVele2P4ZwVQAH04vkk8E1SpDbuemLAL1dZorbuOob9rYqJeWCcCRg==}
+    optionalDependencies:
+      nice-napi: 1.0.2
     dev: true
 
   /pkg-types@1.0.3:
@@ -15962,13 +15986,6 @@ packages:
     resolution: {integrity: sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==}
     hasBin: true
 
-  /semver@7.5.0:
-    resolution: {integrity: sha512-+XC0AD/R7Q2mPSRuy2Id0+CGTZ98+8f+KvwirxOKIEyid+XSx6HbC63p+O4IndTHuX5Z+JxQ0TghCkO5Cg/2HA==}
-    engines: {node: '>=10'}
-    hasBin: true
-    dependencies:
-      lru-cache: 6.0.0
-
   /semver@7.5.4:
     resolution: {integrity: sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==}
     engines: {node: '>=10'}
@@ -16684,7 +16701,7 @@ packages:
       methods: 1.1.2
       mime: 2.6.0
       qs: 6.11.1
-      semver: 7.5.0
+      semver: 7.5.4
     transitivePeerDependencies:
       - supports-color
 
