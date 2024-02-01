@@ -57,7 +57,7 @@
 		"js-cookie": "^3.0.5",
 		"keycode": "^2.2.1",
 		"lodash-es": "^4.17.21",
-		"lucide-svelte": "^0.320.0",
+		"lucide-svelte": "^0.321.0",
 		"nprogress": "^0.2.0",
 		"papaparse": "^5.4.1",
 		"plausible-tracker": "^0.3.8",
