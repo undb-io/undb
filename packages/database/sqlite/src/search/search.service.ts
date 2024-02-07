@@ -1,11 +1,8 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
-import { IRecordRepository, Table } from '@undb/core'
-import { IUnitOfWork } from '@undb/domain/dist'
+import { IRecordRepository, ISearchService, Table } from '@undb/core'
+import { IUnitOfWork } from '@undb/domain'
+import { SearchTableRecord } from './earsch-table-record'
 import { SqliteSearchTable } from './search-table'
-
-export interface ISearchService {
-  initSearchForTable(table: Table): Promise<void>
-}
 
 export class SearchService implements ISearchService {
   constructor(
@@ -17,29 +14,28 @@ export class SearchService implements ISearchService {
     return this.uow.conn()
   }
 
-  async initSearchForTable(table: Table): Promise<void> {
+  private async initSearchTable(table: Table) {
     const searchTable = new SqliteSearchTable(table)
     const query = searchTable.getCreateFT5Query()
-    const searchableFields = table.schema.searchableFields
 
     await this.em.execute(query)
+    return searchTable
+  }
 
+  private async fillTableRecords(searchTable: SqliteSearchTable, table: Table): Promise<SearchTableRecord[]> {
     const records = await this.repo.find(table, null)
+    const srs = records.map((record) => new SearchTableRecord(table, record))
 
     await this.em.getKnex().batchInsert(
       searchTable.name,
-      records.map((record) => {
-        const result: Record<string, string> = {}
-
-        for (const field of searchableFields) {
-          const value = record.values.getUnpackedValue(field.id.value).into(null)
-          if (value) {
-            result[field.id.value] = value.toString()
-          }
-        }
-
-        return result
-      }),
+      srs.map((sr) => sr.value),
     )
+
+    return srs
+  }
+
+  async initSearchForTable(table: Table): Promise<void> {
+    const searchTable = await this.initSearchTable(table)
+    await this.fillTableRecords(searchTable, table)
   }
 }
