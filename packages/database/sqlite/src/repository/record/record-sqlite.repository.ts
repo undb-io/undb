@@ -267,7 +267,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     return Some(record)
   }
 
-  private async findRecordsEntity(tableId: string, spec: IRecordSpec): Promise<RecordSqlite[]> {
+  private async findRecordsEntity(tableId: string, spec: IRecordSpec | null): Promise<RecordSqlite[]> {
     const em = this.em
     const tableEntity = await em.findOneOrFail(
       Table,
@@ -306,7 +306,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     return data
   }
 
-  async find(table: CoreTable, spec: IRecordSpec): Promise<CoreRecord[]> {
+  async find(table: CoreTable, spec: IRecordSpec | null): Promise<CoreRecord[]> {
     const tableId = table.id.value
     const data = await this.findRecordsEntity(tableId, spec)
 
