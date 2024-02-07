@@ -43,7 +43,7 @@ import type {
   PrimitiveField,
   SystemField,
 } from './field.type.js'
-import { isAggregate, isControlledFieldType, isFilterable, isNumeric, isSortable } from './field.util.js'
+import { isAggregate, isControlledFieldType, isFilterable, isNumeric, isSearchable, isSortable } from './field.util.js'
 import type { IFieldVisitor } from './field.visitor.js'
 import type { ReferenceField } from './fields/reference/reference-field.js'
 import type { TreeField } from './fields/tree/tree-field.js'
@@ -116,6 +116,10 @@ export abstract class BaseField<C extends IBaseField = IBaseField> extends Value
 
   get valueConstrains() {
     return this.props.valueConstrains
+  }
+
+  get isSearchable(): boolean {
+    return isSearchable(this.type)
   }
 
   get isNumeric(): boolean {

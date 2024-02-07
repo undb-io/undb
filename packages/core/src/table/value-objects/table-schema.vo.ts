@@ -30,7 +30,6 @@ import {
   createFieldSchema,
   getNamesWithInternals,
   getNextFieldName,
-  isSearchable,
 } from '../field/index.js'
 import { fieldNameSchema } from '../field/value-objects/field-name.schema.js'
 import type { Records } from '../record/record.type.js'
@@ -134,7 +133,7 @@ export class TableSchema extends ValueObject<Field[]> {
   }
 
   public get searchableFields(): Field[] {
-    return this.fields.filter((f) => isSearchable(f.type))
+    return this.fields.filter((f) => f.isSearchable)
   }
 
   public get calendarFields(): ICalendarField[] {

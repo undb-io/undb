@@ -10,7 +10,7 @@ export interface IRecordRepository {
   findOneById(table: Table, id: string): Promise<Option<Record>>
   findDeletedOneById(table: Table, id: string): Promise<Option<Record>>
   findOne(table: Table, spec: IRecordSpec | null): Promise<Option<Record>>
-  find(table: Table, spec: IRecordSpec): Promise<Record[]>
+  find(table: Table, spec: IRecordSpec | null): Promise<Record[]>
 
   updateOneById(table: Table, id: string, spec: IRecordSpec): Promise<void>
   updateManyByIds(table: Table, updates: { id: string; spec: IRecordSpec }[]): Promise<void>
