@@ -680,8 +680,8 @@ importers:
         specifier: ^0.8.7
         version: 0.8.7(@sveltejs/kit@2.0.2)(svelte@4.2.8)(zod@3.22.4)
       svelvet:
-        specifier: ^9.0.0
-        version: 9.0.0(svelte@4.2.8)
+        specifier: ^10.0.0
+        version: 10.0.0(svelte@4.2.8)
       swiper:
         specifier: ^11.0.5
         version: 11.0.5
@@ -10327,6 +10327,11 @@ packages:
   /flatted@3.2.7:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
 
+  /flatten@1.0.3:
+    resolution: {integrity: sha512-dVsPA/UwQ8+2uoFe5GHtiBMu48dWLTdsuEd7CKGlZlD78r1TTWBvDuFaFGKCo/ZfEr95Uk56vZoX86OsHkUeIg==}
+    deprecated: flatten is deprecated in favor of utility frameworks such as lodash.
+    dev: true
+
   /focus-trap@7.5.2:
     resolution: {integrity: sha512-p6vGNNWLDGwJCiEjkSK6oERj/hEyI9ITsSwIUICBoKLlWiTWXJRfQibCwcoi50rTZdbi87qDtUlMCmQwsGSgPw==}
     dependencies:
@@ -17008,11 +17013,12 @@ packages:
       zod: 3.22.4
     dev: true
 
-  /svelvet@9.0.0(svelte@4.2.8):
-    resolution: {integrity: sha512-M7EwbLNXlhh45zfqcRP2bUP3gTGyurIPgibjrqyhmMdrE8YMIGqbGJW1SsnJ1BVRd4JPd8rNAuz5PWV6mf3ftg==}
+  /svelvet@10.0.0(svelte@4.2.8):
+    resolution: {integrity: sha512-vnpq5fa9crOKPk4rQ55Fyz4j3qRsa+DqxMgsosOA3Yy2//sjEKJycIsdSCbIT8OaN9w9SpmE9JdPYhi94ZDmIw==}
     peerDependencies:
       svelte: '>=3.59.2 || ^4.0.0'
     dependencies:
+      flatten: 1.0.3
       svelte: 4.2.8
     dev: true
 
