@@ -557,8 +557,8 @@ importers:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.32)
       bits-ui:
-        specifier: ^0.17.0
-        version: 0.17.0(svelte@4.2.8)
+        specifier: ^0.18.0
+        version: 0.18.0(svelte@4.2.8)
       chart.js:
         specifier: ^4.4.1
         version: 4.4.1
@@ -3074,7 +3074,7 @@ packages:
       '@internationalized/date': 3.5.1
       dequal: 2.0.3
       focus-trap: 7.5.2
-      nanoid: 5.0.4
+      nanoid: 5.0.5
       svelte: 4.2.8
     dev: true
 
@@ -7670,14 +7670,14 @@ packages:
     dependencies:
       file-uri-to-path: 1.0.0
 
-  /bits-ui@0.17.0(svelte@4.2.8):
-    resolution: {integrity: sha512-K73jjco1qPmvGXMQtTkZG6K36UmNrPR21u+C1jzoRWmF3NnUfDP4hPJnAci0LosUycfvOxtaHB1M4awvLvQXyQ==}
+  /bits-ui@0.18.0(svelte@4.2.8):
+    resolution: {integrity: sha512-pLMYlw6y+8YHU6TZuBWTElVY/lJM5YzjT0Qn/J34UTKWguB9DmBIkEEfZiz9DvwXFSsUzluP5NJ3+DjzrEe/qQ==}
     peerDependencies:
       svelte: ^4.0.0
     dependencies:
       '@internationalized/date': 3.5.1
       '@melt-ui/svelte': 0.71.2(svelte@4.2.8)
-      nanoid: 5.0.4
+      nanoid: 5.0.5
       svelte: 4.2.8
     dev: true
 
@@ -13674,6 +13674,13 @@ packages:
     resolution: {integrity: sha512-vAjmBf13gsmhXSgBrtIclinISzFFy22WwCYoyilZlsrRXNIHSwgFQ1bEdjRwMT3aoadeIF6HMuDRlOxzfXV8ig==}
     engines: {node: ^18 || >=20}
     hasBin: true
+    dev: false
+
+  /nanoid@5.0.5:
+    resolution: {integrity: sha512-/Veqm+QKsyMY3kqi4faWplnY1u+VuKO3dD2binyPIybP31DRO29bPF+1mszgLnrR2KqSLceFLBNw0zmvDzN1QQ==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+    dev: true
 
   /napi-build-utils@1.0.2:
     resolution: {integrity: sha512-ONmRUqK7zj7DWX0D9ADe03wbwOBZxNAfF20PlGfCWQcD3+/MakShIHrMqx9YwPTfxDdF1zLeL+RGZiR9kGMLdg==}
