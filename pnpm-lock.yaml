@@ -602,8 +602,8 @@ importers:
         specifier: ^4.17.21
         version: 4.17.21
       lucide-svelte:
-        specifier: ^0.323.0
-        version: 0.323.0(svelte@4.2.8)
+        specifier: ^0.331.0
+        version: 0.331.0(svelte@4.2.8)
       nprogress:
         specifier: ^0.2.0
         version: 0.2.0
@@ -8385,6 +8385,7 @@ packages:
   /color-convert@2.0.1:
     resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==}
     engines: {node: '>=7.0.0'}
+    requiresBuild: true
     dependencies:
       color-name: 1.1.4
 
@@ -12660,8 +12661,8 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /lucide-svelte@0.323.0(svelte@4.2.8):
-    resolution: {integrity: sha512-3GEFk1vCwB8BtHTHZTocFJfX6AtTLQw9a74JSuihAGx+MzhxqeWk8W1TkM4WUlvE0x9UdONM2rJGRyx9IyjkJg==}
+  /lucide-svelte@0.331.0(svelte@4.2.8):
+    resolution: {integrity: sha512-QlXeBFJ2ipe5Fgt7qKx1v37FLuA9zFa+68tASm5tGgz+ocNdMkXDxSIsED2SegEZCuuiFW+UAckD2H+susexrQ==}
     peerDependencies:
       svelte: ^3 || ^4 || ^5.0.0-next.42
     dependencies:
