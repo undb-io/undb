@@ -1,5 +1,5 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
-import { IRecordRepository, ISearchService, Table } from '@undb/core'
+import { IRecordRepository, ISearchService, Record, Table } from '@undb/core'
 import { IUnitOfWork } from '@undb/domain'
 import { SearchTableRecord } from './earsch-table-record'
 import { SqliteSearchTable } from './search-table'
@@ -14,28 +14,36 @@ export class SearchService implements ISearchService {
     return this.uow.conn()
   }
 
-  private async initSearchTable(table: Table) {
+  async onRecordCreated(table: Table, record: Record): Promise<void> {
+    const t = new SqliteSearchTable(table)
+    const r = new SearchTableRecord(table, record)
+
+    const query = this.em.getKnex().insert(r.value).into(t.name).toQuery()
+
+    await this.em.execute(query)
+  }
+
+  async onRecordUpdated(table: Table, record: Record): Promise<void> {
+    const t = new SqliteSearchTable(table)
+    const r = new SearchTableRecord(table, record)
+
+    const query = this.em.getKnex().table(t.name).where(t.idField, r.value).update(r.value).toQuery()
+
+    await this.em.execute(query)
+  }
+
+  async onRecordDeleted(table: Table, record: Record): Promise<void> {
+    const t = new SqliteSearchTable(table)
+
+    const query = this.em.getKnex().table(t.name).where(record.id.value).delete()
+
+    await this.em.execute(query)
+  }
+
+  async initSearchForTable(table: Table): Promise<void> {
     const searchTable = new SqliteSearchTable(table)
     const query = searchTable.getCreateFT5Query()
 
     await this.em.execute(query)
-    return searchTable
-  }
-
-  private async fillTableRecords(searchTable: SqliteSearchTable, table: Table): Promise<SearchTableRecord[]> {
-    const records = await this.repo.find(table, null)
-    const srs = records.map((record) => new SearchTableRecord(table, record))
-
-    await this.em.getKnex().batchInsert(
-      searchTable.name,
-      srs.map((sr) => sr.value),
-    )
-
-    return srs
-  }
-
-  async initSearchForTable(table: Table): Promise<void> {
-    const searchTable = await this.initSearchTable(table)
-    await this.fillTableRecords(searchTable, table)
   }
 }

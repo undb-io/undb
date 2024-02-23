@@ -7,9 +7,16 @@ export class SqliteSearchTable {
     return `undb_search_${this.table.id}`
   }
 
+  public get idField() {
+    return 'id'
+  }
+
   public getCreateFT5Query(): string {
     const searchableFields = this.table.schema.searchableFields
-    const fieldNames = searchableFields.map((f) => f.id).join(', ')
+    const fieldNames = searchableFields
+      .map((f) => f.id.value)
+      .concat(this.idField)
+      .join(', ')
     return `CREATE VIRTUAL TABLE ${this.name} USING fts5(${fieldNames});`
   }
 }
