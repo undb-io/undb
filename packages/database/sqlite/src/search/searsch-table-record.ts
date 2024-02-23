@@ -1,5 +1,5 @@
 import { Record as CoreRecord, Table } from '@undb/core'
-import { SqliteSearchTable } from './search-table'
+import { SqliteSearchTable } from './search-table.js'
 
 export class SearchTableRecord {
   public readonly value: Record<string, string>

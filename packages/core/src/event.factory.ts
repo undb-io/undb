@@ -8,6 +8,7 @@ import {
   EVT_RECORD_DELETED,
   EVT_RECORD_RESTORED,
   EVT_RECORD_UPDATED,
+  EVT_TABLE_CREATED,
   RecordBulkCreatedEvent,
   RecordBulkDeletedEvent,
   RecordBulkUpdatedEvent,
@@ -15,6 +16,7 @@ import {
   RecordDeletedEvent,
   RecordRestoredEvent,
   RecordUpdatedEvent,
+  TableCreatedEvent,
 } from './table/index.js'
 
 export class EventFactory {
@@ -28,6 +30,7 @@ export class EventFactory {
       .with(EVT_RECORD_BULK_CREATED, () => new RecordBulkCreatedEvent(payload, operatorId, meta, id, timestamp))
       .with(EVT_RECORD_BULK_UPDATED, () => new RecordBulkUpdatedEvent(payload, operatorId, meta, id, timestamp))
       .with(EVT_RECORD_BULK_DELETED, () => new RecordBulkDeletedEvent(payload, operatorId, meta, id, timestamp))
+      .with(EVT_TABLE_CREATED, () => new TableCreatedEvent(payload, operatorId, meta, id, timestamp))
       .otherwise(() => null)
   }
 
