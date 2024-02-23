@@ -1,8 +1,8 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import { IRecordRepository, ISearchService, Record, Table } from '@undb/core'
 import { IUnitOfWork } from '@undb/domain'
-import { SearchTableRecord } from './earsch-table-record'
-import { SqliteSearchTable } from './search-table'
+import { SqliteSearchTable } from './search-table.js'
+import { SearchTableRecord } from './searsch-table-record.js'
 
 export class SearchService implements ISearchService {
   constructor(

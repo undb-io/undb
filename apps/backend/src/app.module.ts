@@ -33,6 +33,7 @@ import { OpenAPIModule } from './openapi/openapi.module.js'
 import { OutboxModule } from './outbox/outbox.module.js'
 import { RealtimeModule } from './realtime/realtime.module.js'
 import { RelayModule } from './relay/relay.module.js'
+import { SearchModule } from './search/search.module.js'
 import { ShareModule } from './share/share.module.js'
 import { TemplateModule } from './template/template.module.js'
 import { TrpcModule } from './trpc/trpc.module.js'
@@ -87,6 +88,7 @@ import { WebhookModule } from './webhook/webhook.module.js'
     OpenAPIModule,
     OutboxModule,
     RelayModule,
+    SearchModule,
     WebhookModule.register({}),
     RealtimeModule,
     ShareModule,

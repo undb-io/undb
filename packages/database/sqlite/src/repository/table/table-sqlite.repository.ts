@@ -1,5 +1,8 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
 import {
+  ClsStore,
+  IClsService,
+  TableCreatedEvent,
   TableFactory,
   type Table as CoreTable,
   type ITableCache,
@@ -11,6 +14,7 @@ import type { Option } from 'oxide.ts'
 import { None, Some } from 'oxide.ts'
 import { Base, ReferenceField, Table, Table as TableEntity } from '../../entity/index.js'
 import { View as ViewEntity } from '../../entity/view.js'
+import { IOutboxService } from '../../services/outbox.service.js'
 import { UnderlyingTableSqliteManager } from '../../underlying-table/underlying-table-sqlite.manager.js'
 import { TableSqliteFieldVisitor } from './table-sqlite-field.visitor.js'
 import { TableSqliteMapper } from './table-sqlite.mapper.js'
@@ -21,6 +25,8 @@ export class TableSqliteRepository implements ITableRepository {
   constructor(
     protected readonly uow: IUnitOfWork<EntityManager>,
     protected readonly cache: ITableCache,
+    protected readonly cls: IClsService<ClsStore>,
+    protected readonly outboxService: IOutboxService,
   ) {}
 
   private get em() {
@@ -78,6 +84,8 @@ export class TableSqliteRepository implements ITableRepository {
   }
 
   async insert(table: CoreTable): Promise<void> {
+    const userId = this.cls.get('user.userId')
+
     const em = this.em
     const tm = new UnderlyingTableSqliteManager(em)
     await tm.create(table)
@@ -97,6 +105,12 @@ export class TableSqliteRepository implements ITableRepository {
     }
 
     em.persist(tableEntity)
+
+    await em.flush()
+
+    const event = TableCreatedEvent.from(table, userId)
+    this.outboxService.persist(event)
+    await this.outboxService.flush()
   }
 
   async insertMany(tables: CoreTable[]): Promise<void> {
