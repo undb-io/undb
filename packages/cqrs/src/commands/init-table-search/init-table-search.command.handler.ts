@@ -9,7 +9,9 @@ export class InitTableSearchCommandHandler implements ICommandHandler<InitTableS
   ) {}
 
   async execute(command: InitTableSearchCommand): Promise<void> {
-    const table = (await this.repo.findOneById(command.tableId)).unwrap()
+    const table = (await this.repo.findOneById(command.tableId)).expect(
+      `failed to find table ${command.tableId} to init search table`,
+    )
 
     await this.searchService.initSearchForTable(table)
   }

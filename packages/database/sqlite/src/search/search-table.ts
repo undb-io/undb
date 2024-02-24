@@ -4,7 +4,7 @@ export class SqliteSearchTable {
   constructor(private readonly table: Table) {}
 
   public get name() {
-    return `undb_search_${this.table.id}`
+    return `undb_search_${this.table.id.value}`
   }
 
   public get idField() {
@@ -16,7 +16,9 @@ export class SqliteSearchTable {
     const fieldNames = searchableFields
       .map((f) => f.id.value)
       .concat(this.idField)
+      .map((f) => `'${f}'`)
       .join(', ')
+
     return `CREATE VIRTUAL TABLE ${this.name} USING fts5(${fieldNames});`
   }
 }
