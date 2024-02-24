@@ -35,7 +35,7 @@ export class SearchService implements ISearchService {
   async onRecordDeleted(table: Table, record: Record): Promise<void> {
     const t = new SqliteSearchTable(table)
 
-    const query = this.em.getKnex().table(t.name).where(record.id.value).delete()
+    const query = this.em.getKnex().table(t.name).where(record.id.value).delete().toQuery()
 
     await this.em.execute(query)
   }
