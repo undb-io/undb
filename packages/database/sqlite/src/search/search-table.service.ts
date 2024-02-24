@@ -1,10 +1,10 @@
 import type { EntityManager } from '@mikro-orm/better-sqlite'
-import { IRecordRepository, ISearchService, Record, Table } from '@undb/core'
+import { IRecordRepository, ISearchTableService, Record, Table } from '@undb/core'
 import { IUnitOfWork } from '@undb/domain'
 import { SqliteSearchTable } from './search-table.js'
 import { SearchTableRecord } from './searsch-table-record.js'
 
-export class SearchService implements ISearchService {
+export class SearchTableService implements ISearchTableService {
   constructor(
     protected readonly uow: IUnitOfWork<EntityManager>,
     protected readonly repo: IRecordRepository,
@@ -16,7 +16,7 @@ export class SearchService implements ISearchService {
 
   async onRecordCreated(table: Table, record: Record): Promise<void> {
     const t = new SqliteSearchTable(table)
-    const r = new SearchTableRecord(table, record)
+    const r = new SearchTableRecord(t, record)
 
     const query = this.em.getKnex().insert(r.value).into(t.name).toQuery()
 
@@ -25,7 +25,7 @@ export class SearchService implements ISearchService {
 
   async onRecordUpdated(table: Table, record: Record): Promise<void> {
     const t = new SqliteSearchTable(table)
-    const r = new SearchTableRecord(table, record)
+    const r = new SearchTableRecord(t, record)
 
     const query = this.em.getKnex().table(t.name).where(t.idField, r.value).update(r.value).toQuery()
 

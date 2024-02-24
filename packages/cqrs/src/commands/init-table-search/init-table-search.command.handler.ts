@@ -1,10 +1,10 @@
-import type { ISearchService, ITableRepository } from '@undb/core'
+import type { ISearchTableService, ITableRepository } from '@undb/core'
 import type { ICommandHandler } from '@undb/domain'
 import { InitTableSearchCommand } from './init-table-search.command.js'
 
 export class InitTableSearchCommandHandler implements ICommandHandler<InitTableSearchCommand, void> {
   constructor(
-    private readonly searchService: ISearchService,
+    private readonly searchService: ISearchTableService,
     private readonly repo: ITableRepository,
   ) {}
 
@@ -13,6 +13,6 @@ export class InitTableSearchCommandHandler implements ICommandHandler<InitTableS
       `failed to find table ${command.tableId} to init search table`,
     )
 
-    await this.searchService.initSearchForTable(table)
+    await this.searchTableService.initSearchForTable(table)
   }
 }

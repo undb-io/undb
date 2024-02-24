@@ -1,1 +1,2 @@
-export * from './search.service.js'
+export * from './events/index.js'
+export * from './search-table.service.js'
