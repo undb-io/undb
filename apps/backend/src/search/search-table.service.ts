@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common'
 import { type IRecordRepository } from '@undb/core'
 import { type IUnitOfWork } from '@undb/domain'
-import { EntityManager, SearchService } from '@undb/sqlite'
+import { EntityManager, SearchTableService } from '@undb/sqlite'
 import { InjectRecordRepository } from '../core/table/adapters/sqlite/record-sqlite.repository.js'
 import { InjectUnitOfWork } from '../uow/uow.service.js'
 
 @Injectable()
-export class NestSearchService extends SearchService {
+export class NestSearchTableService extends SearchTableService {
   constructor(
     @InjectUnitOfWork()
     protected readonly uow: IUnitOfWork<EntityManager>,

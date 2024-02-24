@@ -3,11 +3,12 @@ import { CqrsModule } from '@nestjs/cqrs'
 import { TableAdapterModule } from '../core/table/adapters/table-adapter.module.js'
 import { UnitOfWorkModule } from '../uow/uow.module.js'
 import { commands } from './commands/index.js'
+import { events } from './events/index.js'
 import { sagas } from './sagas/index.js'
-import { NestSearchService } from './search.service.js'
+import { NestSearchTableService } from './search-table.service.js'
 
 @Module({
   imports: [CqrsModule, TableAdapterModule, UnitOfWorkModule],
-  providers: [NestSearchService, ...sagas, ...commands],
+  providers: [NestSearchTableService, ...sagas, ...commands, ...events],
 })
 export class SearchModule {}

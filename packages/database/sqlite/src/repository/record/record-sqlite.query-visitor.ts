@@ -74,6 +74,7 @@ import {
   MultiSelectField,
   ParentField,
   TreeField,
+  isSearchable,
 } from '@undb/core'
 import { endOfToday, endOfTomorrow, endOfYesterday, startOfToday, startOfTomorrow, startOfYesterday } from 'date-fns'
 import { castArray } from 'lodash-es'
@@ -168,7 +169,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     throw new Error('Method not implemented.')
   }
   like(s: WithRecordLike): void {
-    if (s.type === 'string' || s.type === 'email' || s.type === 'number' || s.type === 'currency') {
+    if (isSearchable(s.type)) {
       this.qb.andWhereLike(this.getFieldId(s.fieldId), `%${s.q}%`)
     } else {
       throw new FieldTypeNotSearchable(s.type)
