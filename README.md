@@ -4,8 +4,6 @@
 
 🚀 Private first, unified, self-hosted no code database.
 
-<a href="https://demo.undb.xyz?lng=en">Live Demo</a>
-·
 <a href="https://docs.undb.xyz/">Documentation</a>
 ·
 <a href="https://www.undb.xyz/">Website</a>
@@ -15,8 +13,6 @@
 ![undb](https://github.com/undb-xyz/undb/assets/22788984/e3495c5f-84ff-4b89-b7ed-2ec25081a990)
 
 ## 🚀 Quick Start
-
-- Visit out [Live Demo](https://demo.undb.xyz?lng=en) to try `undb`
 
 - Checkout quick install / deployment [document](https://docs.undb.xyz/installation/1installation-with-docker/)
 
