@@ -9,7 +9,7 @@ export class SearchOnRecordUpdatedEventHandler implements IEventHandler<RecordUp
   ) {}
 
   async handle(event: RecordUpdatedEvent): Promise<void> {
-    const tableId = event.meta.record.tableId
+    const tableId = event.payload.tableId
     const table = (await this.repo.findOneById(tableId)).unwrap()
 
     const record = RecordFactory.fromQuery(event.meta.record, table.schema.toIdMap()).unwrap()
