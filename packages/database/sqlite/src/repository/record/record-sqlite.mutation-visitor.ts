@@ -51,6 +51,7 @@ import type {
   TableSchemaIdMap,
   TreeAvailableSpec,
   UdpatedByIn,
+  WithQ,
   WithRecordAutoIncrement,
   WithRecordCreatedAt,
   WithRecordCreatedBy,
@@ -96,6 +97,9 @@ export class RecordSqliteMutationVisitor extends BaseEntityManager implements IR
     throw new Error('Method not implemented.')
   }
   like(s: WithRecordLike): void {
+    throw new Error('Method not implemented.')
+  }
+  search(s: WithQ): void {
     throw new Error('Method not implemented.')
   }
   multiSelectEqual(s: MultiSelectEqual): void {

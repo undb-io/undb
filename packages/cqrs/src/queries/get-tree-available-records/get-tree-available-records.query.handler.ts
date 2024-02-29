@@ -22,7 +22,7 @@ export class GetTreeAvailableRecordsQueryHandler
       table.getSpec(userId, query.viewId),
       Option(WithRecordTableId.fromString(query.tableId).unwrap()),
       Option(new TreeAvailableSpec(query.treeFieldId, query.recordId)),
-      withQ(table, query.q),
+      withQ(query.q),
     ).unwrap()
 
     const viewId = query.viewId ? ViewId.fromString(query.viewId) : undefined

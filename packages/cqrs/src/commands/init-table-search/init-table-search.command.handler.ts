@@ -4,7 +4,7 @@ import { InitTableSearchCommand } from './init-table-search.command.js'
 
 export class InitTableSearchCommandHandler implements ICommandHandler<InitTableSearchCommand, void> {
   constructor(
-    private readonly searchService: ISearchTableService,
+    private readonly searchTableService: ISearchTableService,
     private readonly repo: ITableRepository,
   ) {}
 
