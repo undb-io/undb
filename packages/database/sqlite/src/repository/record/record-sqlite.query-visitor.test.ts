@@ -26,11 +26,14 @@ import {
   StringEqual,
   StringFieldValue,
   StringStartsWith,
+  Table,
   TreeAvailableSpec,
   TreeField,
   WithRecordCreatedAt,
   WithRecordId,
   WithRecordUpdatedAt,
+  WithTableId,
+  createTestTable,
 } from '@undb/core'
 import { addDays, subDays } from 'date-fns'
 import { RecordSqliteQueryVisitor } from './record-sqlite.query-visitor.js'
@@ -40,17 +43,19 @@ describe('RecordSqliteQueryVisitor', () => {
   let em: EntityManager
   let knex: Knex
   let visitor: RecordSqliteQueryVisitor
+  let table: Table
 
   beforeAll(async () => {
     // @ts-expect-error type
     em = global.em
     // @ts-expect-error type
     knex = global.knex
+    table = createTestTable(WithTableId.fromString('tabletest'))
     vi.setSystemTime(date)
   })
 
   beforeEach(() => {
-    visitor = new RecordSqliteQueryVisitor('tabletest', new Map(), em, knex.queryBuilder(), knex)
+    visitor = new RecordSqliteQueryVisitor(table, new Map(), em, knex.queryBuilder(), knex)
     expect(visitor).not.to.be.undefined
     expect(visitor).to.be.instanceof(RecordSqliteQueryVisitor)
   })
@@ -299,7 +304,7 @@ describe('RecordSqliteQueryVisitor', () => {
     const treeFieldId = 'treefieldid'
     beforeEach(() => {
       visitor = new RecordSqliteQueryVisitor(
-        'tabletest',
+        table,
         new Map([[treeFieldId, TreeField.create({ id: treeFieldId, name: 'tree' })]]),
         em,
         knex.queryBuilder(),

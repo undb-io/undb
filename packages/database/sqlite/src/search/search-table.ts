@@ -1,4 +1,4 @@
-import { Table } from '@undb/core'
+import { INTERNAL_COLUMN_ID_NAME, Table } from '@undb/core'
 
 export class SqliteSearchTable {
   constructor(public readonly table: Table) {}
@@ -8,7 +8,7 @@ export class SqliteSearchTable {
   }
 
   public get idField() {
-    return 'id'
+    return INTERNAL_COLUMN_ID_NAME
   }
 
   public get fields() {
@@ -16,7 +16,7 @@ export class SqliteSearchTable {
   }
 
   public getCreateFT5Query(): string {
-    const fieldNames = this.fields.map((f) => `'${f}'`).join(', ')
+    const fieldNames = this.fields.map((f) => (f === this.idField ? `'${f}' UNINDEXED` : `'${f}'`)).join(', ')
 
     return `CREATE VIRTUAL TABLE ${this.name} USING fts5(${fieldNames});`
   }

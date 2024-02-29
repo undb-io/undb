@@ -47,6 +47,7 @@ import type {
   StringEqual,
   StringRegex,
   StringStartsWith,
+  Table,
   TableSchemaIdMap,
   TreeAvailableSpec,
   UdpatedByIn,
@@ -87,8 +88,12 @@ import { ClosureTable, CollaboratorForeignTable } from '../../underlying-table/u
 import { TABLE_ALIAS, getForeignTableAlias } from './record.constants.js'
 
 export class RecordSqliteQueryVisitor implements IRecordVisitor {
+  private get tableId() {
+    return this.table.id.value
+  }
+
   constructor(
-    private readonly tableId: string,
+    private readonly table: Table,
     private readonly schema: TableSchemaIdMap,
     private readonly em: EntityManager,
     private qb: Knex.QueryBuilder,
@@ -96,7 +101,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     includeDeleted: boolean = false,
   ) {
     const alias = TABLE_ALIAS
-    this.qb = qb.from(tableId + ' as ' + alias)
+    this.qb = qb.from(this.tableId + ' as ' + alias)
     if (!includeDeleted) {
       this.qb = qb.whereNull(`${alias}.${INTERNAL_COLUMN_DELETED_AT_NAME}`)
     }
@@ -172,7 +177,7 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     this.qb.andWhereLike(this.getFieldId(s.fieldId), `%${s.q}%`)
   }
   search(s: WithQ): void {
-    const sqb = new SearchQueryBuilderService(this.qb)
+    const sqb = new SearchQueryBuilderService(this.table, this.qb)
     sqb.search(s.q)
   }
   stringEqual(s: StringEqual): void {

@@ -7,9 +7,13 @@ export class SearchTableRecord {
     const result: Record<string, string> = {}
 
     for (const field of table.fields) {
-      const value = record.values.getUnpackedValue(field).into(null)
-      if (value) {
-        result[field] = value.toString()
+      if (field === table.idField) {
+        result[field] = record.id.value
+      } else {
+        const value = record.values.getUnpackedValue(field).into(null)
+        if (value) {
+          result[field] = value.toString()
+        }
       }
     }
 

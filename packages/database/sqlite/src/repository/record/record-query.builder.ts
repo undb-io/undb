@@ -73,14 +73,7 @@ export class RecordSqliteQueryBuilder implements IRecordQueryBuilder {
 
   where(includeDeleted = false): this {
     if (this.spec) {
-      const visitor = new RecordSqliteQueryVisitor(
-        this.table.id.value,
-        this.schema,
-        this.em,
-        this.qb,
-        this.knex,
-        includeDeleted,
-      )
+      const visitor = new RecordSqliteQueryVisitor(this.table, this.schema, this.em, this.qb, this.knex, includeDeleted)
 
       this.spec.accept(visitor).unwrap()
     }
