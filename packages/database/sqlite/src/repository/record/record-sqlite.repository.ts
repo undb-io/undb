@@ -316,11 +316,12 @@ export class RecordSqliteRepository implements IRecordRepository {
     return record
   }
 
-  private async _update(em: EntityManager, tableId: string, schema: TableSchemaIdMap, id: string, spec: IRecordSpec) {
+  private async _update(em: EntityManager, table: CoreTable, schema: TableSchemaIdMap, id: string, spec: IRecordSpec) {
     const knex = em.getKnex()
     const qb = knex.queryBuilder()
 
-    const qv = new RecordSqliteQueryVisitor(tableId, schema, em, qb, knex)
+    const tableId = table.id.value
+    const qv = new RecordSqliteQueryVisitor(table, schema, em, qb, knex)
     WithRecordTableId.fromString(tableId).unwrap().and(WithRecordId.fromString(id)).accept(qv)
 
     const mv = new RecordSqliteMutationVisitor(this.cls, tableId, id, schema, em, qb)
@@ -345,7 +346,7 @@ export class RecordSqliteRepository implements IRecordRepository {
       const previousRecord = await this.findOneRecordEntity(tableId, idSpec, em)
       if (!previousRecord) throw new Error('record not found')
 
-      const visitor = await this._update(this.em, tableId, schema, id, spec)
+      const visitor = await this._update(this.em, table, schema, id, spec)
 
       const record = await this.findOneRecordEntity(tableId, idSpec, em)
 
@@ -384,7 +385,7 @@ export class RecordSqliteRepository implements IRecordRepository {
     try {
       const updated = await Promise.all(
         updates.map(async (update) => {
-          const visitor = await this._update(em, tableId, schema, update.id, update.spec)
+          const visitor = await this._update(em, table, schema, update.id, update.spec)
           return { id: update.id, visitor }
         }),
       )

@@ -70,7 +70,7 @@ export class RecordSqliteTreeQueryModel implements IRecordTreeQueryModel {
       .whereNull(`t2.${DELETED_AT_COLUMN_NAME}`)
       .select([...columns.filter((c) => !c.virtual).map((c) => `t.${c.name}`), `c.${ClosureTable.PARENT_ID}`])
 
-    const visitor = new RecordSqliteQueryVisitor(tableId, schema, this.em, qb, knex)
+    const visitor = new RecordSqliteQueryVisitor(table, schema, this.em, qb, knex)
     spec.accept(visitor).unwrap()
 
     new RecordSqliteReferenceQueryVisitor(em, knex, qb, table, tableEntity).visit(table)
