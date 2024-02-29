@@ -50,6 +50,7 @@ import type {
   TableSchemaIdMap,
   TreeAvailableSpec,
   UdpatedByIn,
+  WithQ,
   WithRecordAutoIncrement,
   WithRecordCreatedAt,
   WithRecordCreatedBy,
@@ -64,7 +65,6 @@ import type {
 import {
   CollaboratorField,
   DateRangeField,
-  FieldTypeNotSearchable,
   INTERNAL_COLUMN_CREATED_AT_NAME,
   INTERNAL_COLUMN_CREATED_BY_NAME,
   INTERNAL_COLUMN_ID_NAME,
@@ -74,12 +74,12 @@ import {
   MultiSelectField,
   ParentField,
   TreeField,
-  isSearchable,
 } from '@undb/core'
 import { endOfToday, endOfTomorrow, endOfYesterday, startOfToday, startOfTomorrow, startOfYesterday } from 'date-fns'
 import { castArray } from 'lodash-es'
 import { Attachment } from '../../entity/attachment.js'
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
+import { SearchQueryBuilderService } from '../../search/search-query-builder.service.js'
 import { INTERNAL_COLUMN_DELETED_AT_NAME } from '../../underlying-table/constants.js'
 import { UnderlyingColumnFactory } from '../../underlying-table/underlying-column.factory.js'
 import { UnderlyingDateRangeFromColumn, UnderlyingDateRangeToColumn } from '../../underlying-table/underlying-column.js'
@@ -169,11 +169,11 @@ export class RecordSqliteQueryVisitor implements IRecordVisitor {
     throw new Error('Method not implemented.')
   }
   like(s: WithRecordLike): void {
-    if (isSearchable(s.type)) {
-      this.qb.andWhereLike(this.getFieldId(s.fieldId), `%${s.q}%`)
-    } else {
-      throw new FieldTypeNotSearchable(s.type)
-    }
+    this.qb.andWhereLike(this.getFieldId(s.fieldId), `%${s.q}%`)
+  }
+  search(s: WithQ): void {
+    const sqb = new SearchQueryBuilderService(this.qb)
+    sqb.search(s.q)
   }
   stringEqual(s: StringEqual): void {
     this.qb.where({ [this.getFieldId(s.fieldId)]: s.value.unpack() })

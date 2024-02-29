@@ -8,3 +8,7 @@ export interface ISearchTableService {
   onRecordUpdated(table: Table, record: Record): Promise<void>
   onRecordDeleted(table: Table, record: Record): Promise<void>
 }
+
+export interface ISearchQueryBuilderService {
+  search(keyword: string): void
+}

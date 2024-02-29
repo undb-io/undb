@@ -43,7 +43,7 @@ export const withTableRecordsSpec = (
     spec = spec.and(querySpec.unwrap())
   }
 
-  const search = withQ(table, q)
+  const search = withQ(q)
   if (search.isSome()) spec = spec.and(search.unwrap())
 
   return spec
