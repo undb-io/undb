@@ -3,7 +3,8 @@ import { Saga, UnhandledExceptionBus, ofType } from '@nestjs/cqrs'
 import { TableCreatedEvent } from '@undb/core'
 import { InitTableSearchCommand } from '@undb/cqrs'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
-import { Observable, Subject, map, takeUntil } from 'rxjs'
+import type { Observable } from 'rxjs'
+import { Subject, map, takeUntil } from 'rxjs'
 
 @Injectable()
 export class InitSearchTableSaga {
