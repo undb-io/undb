@@ -5,7 +5,7 @@ import delay from 'delay'
 import htm from 'htm'
 import { BaseEditor } from './base-editor'
 
-export class EmailEditor extends BaseEditor<EmailField> {
+export class EmailEditor extends BaseEditor<HTMLInputElement, EmailField> {
 	public element: HTMLInputElement | null = null
 	public editCell: Edition.EditCell | undefined = undefined
 

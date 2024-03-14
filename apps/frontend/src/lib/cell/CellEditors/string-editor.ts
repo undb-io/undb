@@ -5,7 +5,7 @@ import delay from 'delay'
 import htm from 'htm'
 import { BaseEditor } from './base-editor'
 
-export class StringEditor extends BaseEditor<StringField> {
+export class StringEditor extends BaseEditor<HTMLInputElement, StringField> {
 	private initElement() {
 		const element = this.element
 		if (!element) return

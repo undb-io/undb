@@ -6,8 +6,8 @@ import { toast } from 'svelte-sonner'
 
 export type SaveCallback = (value: any, preventFocus: boolean) => void
 
-export abstract class BaseEditor<T extends BaseField> implements Edition.EditorBase {
-	element?: HTMLInputElement | null | undefined
+export abstract class BaseEditor<E extends Element, T extends BaseField> implements Edition.EditorBase {
+	element?: E | null | undefined
 	editCell?: Edition.EditCell | undefined
 
 	constructor(
@@ -19,15 +19,19 @@ export abstract class BaseEditor<T extends BaseField> implements Edition.EditorB
 		return this.column.field as T
 	}
 
+	// TODO: describe type
 	onChange<V = unknown>(value: V) {
+		// TODO: better check updates
+		if (value === this.editCell?.model[this.editCell.prop]) {
+			return
+		}
+
 		if (this.field.required && isEmpty(value)) {
-			this.element?.blur()
 			return
 		}
 
 		const result = this.field.valueSchema.safeParse(value)
 		if (result.success) {
-			this.element?.blur()
 			this.saveCallback(result.data, false)
 		} else {
 			toast.warning(result.error.flatten((i) => i.message).formErrors.join('\n'))

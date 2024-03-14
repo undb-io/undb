@@ -1,13 +1,11 @@
-import type { Edition, RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
+import type { RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
 import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime'
 import type { DateField } from '@undb/core'
 import delay from 'delay'
 import htm from 'htm'
 import { BaseEditor } from './base-editor'
 
-export type SaveCallback = (value: Edition.SaveData, preventFocus: boolean) => void
-
-export class DateEditor extends BaseEditor<DateField> {
+export class DateEditor extends BaseEditor<HTMLInputElement, DateField> {
 	private initElement() {
 		const element = this.element
 		if (!element) return

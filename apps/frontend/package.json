@@ -98,5 +98,9 @@
 		"xlsx": "^0.18.5",
 		"zod": "^3.22.4"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"@zag-js/number-input": "^0.38.1",
+		"@zag-js/types": "^0.38.1"
+	}
 }

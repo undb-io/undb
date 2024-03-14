@@ -1,24 +1,40 @@
 import type { Edition, RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
 import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime'
 import type { CurrencyField, NumberField } from '@undb/core'
+import * as numberInput from '@zag-js/number-input'
 import delay from 'delay'
 import htm from 'htm'
-import { BaseEditor } from './base-editor'
+import { BaseEditor, type SaveCallback } from './base-editor'
+import { normalizer } from './normalizer'
 
-export class NumberEditor extends BaseEditor<NumberField | CurrencyField> {
+export class NumberEditor extends BaseEditor<HTMLDivElement, NumberField | CurrencyField> {
 	public element: HTMLInputElement | null = null
 	public editCell: Edition.EditCell | undefined = undefined
+	private api: numberInput.Api | null = null
+
+	constructor(
+		public column: RevoGrid.ColumnRegular,
+		protected saveCallback: SaveCallback,
+	) {
+		super(column, saveCallback)
+
+		const service = numberInput.machine({
+			id: this.column.prop as string,
+		})
+		const machine = service.start()
+
+		const api = numberInput.connect(machine.state, machine.send, normalizer)
+
+		this.api = api
+	}
 
 	private initElement() {
-		const element = this.element
-		if (!element) return
-
-		element.focus()
-
 		const editCell = this.editCell
 		if (!editCell) return
 
-		element.value = editCell.model[editCell.prop] as string
+		const value = editCell.model[editCell.prop] as string
+		this.api?.setValue(Number(value))
+		this.api?.focus()
 	}
 
 	async componentDidRender() {
@@ -28,12 +44,20 @@ export class NumberEditor extends BaseEditor<NumberField | CurrencyField> {
 
 	render(createComponent: RevoGrid.HyperFunc<VNode>) {
 		const html = htm.bind(createComponent)
+		const api = this.api
+
 		return html`
-			<input
-				type="number"
-				onblur=${(e: Event) => this.onChange(Number((e.target as HTMLInputElement).value))}
-				class="border-2 border-primary-300 rounded-none text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
-			/>
+			<div class="flex items-center" ...${api?.rootProps}>
+				<input
+					type="number"
+					...${api?.inputProps}
+					onchange=${(e: Event) => {
+						const value = (e.target as HTMLInputElement).value
+						return this.onChange(parseInt(value.replace(/,/g, ''), 10))
+					}}
+					class="border-2 border-primary-300 rounded-none text-gray-900 text-sm focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+				/>
+			</div>
 		`
 	}
 }
