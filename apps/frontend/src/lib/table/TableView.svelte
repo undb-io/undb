@@ -3,7 +3,7 @@
 	import { clickOutside, cn } from '$lib/utils'
 	import { RevoGrid } from '@revolist/svelte-datagrid'
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
-	import type { RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
+	import type { Edition, RevoGrid as RevoGridType } from '@revolist/revogrid/dist/types/interfaces'
 	import type { Components, RevoGridCustomEvent } from '@revolist/revogrid'
 	import { defineCustomElements } from '@revolist/revogrid/loader'
 	import { cellTemplateMap } from '$lib/cell/CellComponents/cell-template'
@@ -35,7 +35,8 @@
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'
 	import ConfirmBulkDeleteRecord from '$lib/record/ConfirmBulkDeleteRecord.svelte'
 	import ConfirmBulkDuplicateRecord from '$lib/record/ConfirmBulkDuplicateRecord.svelte'
-	import htm from 'htm'
+	import { toast } from 'svelte-sonner'
+	import { has } from 'lodash-es'
 
 	const pinnedPositionMap: Record<PinnedPosition, RevoGridType.DimensionColPin> = {
 		left: 'colPinStart',
@@ -193,6 +194,7 @@
 					size: $view.getFieldWidth(field.id.value),
 					pin: position ? pinnedPositionMap[position] : undefined,
 					autoSize: true,
+					readonly: $readonly,
 					cellTemplate: cellTemplateMap[field.type],
 					columnTemplate: (h, c) => getColumnTemplate(h, c, $readonly),
 					columnProperties: (column: RevoGridType.ColumnRegular) => {
@@ -306,6 +308,41 @@
 		}
 	}
 
+	const updateRecord = trpc().record.update.mutation({
+		async onSuccess() {
+			toast.success($t('RECORD.UPDATED', { ns: 'success' }))
+			currentRecordId.set(undefined)
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
+		},
+	})
+	const onAfterEdit = async (
+		event: RevoGridCustomEvent<Edition.BeforeSaveDataDetails | Edition.BeforeRangeSaveDataDetails>,
+	) => {
+		if ($readonly) return
+		const detail = event.detail
+		const isSingleEdit = (data: any): data is Edition.BeforeSaveDataDetails => has(data, 'model')
+
+		if (isSingleEdit(detail)) {
+			$updateRecord.mutate({
+				tableId: $table.id.value,
+				id: detail.model.id,
+				values: {
+					[detail.prop]: detail.val,
+				},
+			})
+		} else {
+			// $updateRecord.mutate({
+			// 	tableId: $table.id.value,
+			// 	id: detail.mode
+			// 	values: {
+			// 		[detail.prop]: detail.val,
+			// 	},
+			// })
+		}
+	}
+
 	$: hasRecord = !!$records.length
 
 	const deleteField = trpc().table.field.delete.mutation({
@@ -337,10 +374,11 @@
 		theme="compact"
 		range
 		rowClass="id"
-		readonly
+		readonly={$readonly}
 		{rowDefinitions}
 		{editors}
 		on:aftercolumnresize={onAfterColumnResize}
+		on:afteredit={onAfterEdit}
 	/>
 	{#if isLoading}
 		<div class="absolute top-0 left-0">
