@@ -6,5 +6,8 @@ import { StringEditor } from './string-editor'
 export const editors: Components.RevoGrid['editors'] = {
 	string: StringEditor,
 	date: DateEditor,
+	// @ts-expect-error expect number save callback value as number
 	number: NumberEditor,
+	// @ts-expect-error expect number save callback value as number
+	currency: NumberEditor,
 }

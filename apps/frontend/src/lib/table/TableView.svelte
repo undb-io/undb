@@ -29,7 +29,7 @@
 	import { confirmDeleteField, createFieldModal } from '$lib/store/modal'
 	import LoadingTable from './LoadingTable.svelte'
 	import TableViewToast from './TableViewToast.svelte'
-	import { recordSelection, selectedCount, selectedRecords } from '$lib/store/record'
+	import { recordSelection, selectedCount } from '$lib/store/record'
 	import { getColumnTemplate } from '$lib/field/field-template'
 	import { hasPermission } from '$lib/store/authz'
 	import * as AlertDialog from '$lib/components/ui/alert-dialog'
@@ -344,7 +344,6 @@
 				},
 			})
 		} else {
-			console.log({ detail })
 			$updateRecords.mutate({
 				tableId: $table.id.value,
 				records: Object.entries(detail.data).flatMap(([index, d]) => {
