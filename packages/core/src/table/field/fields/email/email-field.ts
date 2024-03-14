@@ -48,7 +48,7 @@ export class EmailField extends BaseField<IEmailField> {
   }
 
   get valueSchema() {
-    const email = z.string()
-    return this.required ? email.email() : email.nullable()
+    const email = z.string().email()
+    return this.required ? email : email.nullable()
   }
 }
