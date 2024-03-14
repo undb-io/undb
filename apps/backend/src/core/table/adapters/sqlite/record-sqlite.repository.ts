@@ -71,4 +71,9 @@ export class NestRecordSqliteRepository extends RecordSqliteRepository {
   restoreOneById(table: Table, id: string): Promise<void> {
     return super.restoreOneById(table, id)
   }
+
+  @UseRequestContext()
+  updateManyByIds(table: Table, updates: { id: string; spec: IRecordSpec }[]): Promise<void> {
+    return super.updateManyByIds(table, updates)
+  }
 }

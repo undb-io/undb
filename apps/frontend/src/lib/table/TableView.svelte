@@ -317,6 +317,17 @@
 			toast.error(error.message)
 		},
 	})
+
+	const updateRecords = trpc().record.bulkUpdate.mutation({
+		async onSuccess() {
+			toast.success($t('RECORD.UPDATED', { ns: 'success' }))
+			currentRecordId.set(undefined)
+		},
+		onError(error, variables, context) {
+			toast.error(error.message)
+		},
+	})
+
 	const onAfterEdit = async (
 		event: RevoGridCustomEvent<Edition.BeforeSaveDataDetails | Edition.BeforeRangeSaveDataDetails>,
 	) => {
@@ -333,13 +344,20 @@
 				},
 			})
 		} else {
-			// $updateRecord.mutate({
-			// 	tableId: $table.id.value,
-			// 	id: detail.mode
-			// 	values: {
-			// 		[detail.prop]: detail.val,
-			// 	},
-			// })
+			console.log({ detail })
+			$updateRecords.mutate({
+				tableId: $table.id.value,
+				records: Object.entries(detail.data).flatMap(([index, d]) => {
+					return Object.entries(d).map(([fieldId, value]) => {
+						return {
+							id: detail.models[Number(index)].id,
+							values: {
+								[fieldId]: value,
+							},
+						}
+					})
+				}),
+			})
 		}
 	}
 

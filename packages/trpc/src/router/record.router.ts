@@ -12,6 +12,7 @@ import {
   GetRecordsQuery,
   RestoreRecordCommand,
   UpdateRecordCommand,
+  UpdateRecordsCommand,
   bulkDeleteRecordsCommandInput,
   bulkDuplicateRecordsCommandInput,
   createRecordCommandOutput,
@@ -73,6 +74,14 @@ export const createRecordRouter =
         .output(z.void())
         .mutation(({ input }) => {
           const cmd = new UpdateRecordCommand(input)
+          return commandBus.execute(cmd)
+        }),
+      bulkUpdate: procedure
+        .use(authz('record:update'))
+        .input(z.any())
+        .output(z.void())
+        .mutation(({ input }) => {
+          const cmd = new UpdateRecordsCommand(input)
           return commandBus.execute(cmd)
         }),
       delete: procedure
