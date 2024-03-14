@@ -1,6 +1,7 @@
 import type { Edition, RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
 import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime'
 import type { BaseField } from '@undb/core'
+import { isEmpty } from 'lodash-es'
 import { toast } from 'svelte-sonner'
 
 export type SaveCallback = (value: any, preventFocus: boolean) => void
@@ -19,6 +20,11 @@ export abstract class BaseEditor<T extends BaseField> implements Edition.EditorB
 	}
 
 	onChange<V = unknown>(value: V) {
+		if (this.field.required && isEmpty(value)) {
+			this.element?.blur()
+			return
+		}
+
 		const result = this.field.valueSchema.safeParse(value)
 		if (result.success) {
 			this.element?.blur()

@@ -8,8 +8,6 @@ export const editors: Components.RevoGrid['editors'] = {
 	string: StringEditor,
 	date: DateEditor,
 	email: EmailEditor,
-	// @ts-expect-error expect number save callback value as number
 	number: NumberEditor,
-	// @ts-expect-error expect number save callback value as number
 	currency: NumberEditor,
 }

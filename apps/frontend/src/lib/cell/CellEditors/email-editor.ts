@@ -5,8 +5,6 @@ import delay from 'delay'
 import htm from 'htm'
 import { BaseEditor } from './base-editor'
 
-export type SaveCallback = (value: Edition.SaveData, preventFocus: boolean) => void
-
 export class EmailEditor extends BaseEditor<EmailField> {
 	public element: HTMLInputElement | null = null
 	public editCell: Edition.EditCell | undefined = undefined
