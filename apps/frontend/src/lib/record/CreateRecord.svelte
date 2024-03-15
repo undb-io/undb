@@ -10,7 +10,7 @@
 	import * as Dialog from '$lib/components/ui/dialog'
 	import { Button } from '$lib/components/ui/button'
 	import { createRecordForm } from '$lib/store/table'
-	import { RecordFactory, type Field, WithRecordId, RecordId } from '@undb/core'
+	import { RecordFactory, type Field, WithRecordId, RecordId, Record } from '@undb/core'
 	import Badge from '$components/ui/badge/badge.svelte'
 	import CreateRecordItem from './CreateRecordItem.svelte'
 	import { me } from '$lib/store/me'
@@ -69,7 +69,10 @@
 	$: values = pick($form, keys($tainted))
 
 	const id = RecordId.create()
-	$: tempRecord = RecordFactory.temp($table, values, $me.userId, new WithRecordId(id))
+	let tempRecord: Record | undefined
+	$: if ($me) {
+		tempRecord = RecordFactory.temp($table, values, $me.userId, new WithRecordId(id))
+	}
 </script>
 
 <Dialog.Root bind:open={$createRecordModal.open}>
@@ -92,9 +95,11 @@
 
 		<div class="flex-1 overflow-y-auto p-6">
 			<form id="createRecord" class="space-y-5" method="POST" use:enhance>
-				{#each fields as field (field.id.value)}
-					<CreateRecordItem record={tempRecord} {field} bind:value={$form[field.id.value]} />
-				{/each}
+				{#if tempRecord}
+					{#each fields as field (field.id.value)}
+						<CreateRecordItem record={tempRecord} {field} bind:value={$form[field.id.value]} />
+					{/each}
+				{/if}
 			</form>
 		</div>
 		<!-- <SuperDebug data={$form} /> -->
