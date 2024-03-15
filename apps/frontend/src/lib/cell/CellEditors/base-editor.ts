@@ -10,6 +10,10 @@ export abstract class BaseEditor<E extends Element, T extends BaseField> impleme
 	element?: E | null | undefined
 	editCell?: Edition.EditCell | undefined
 
+	componentDidRender(): void {}
+	disconnectedCallback(): void {}
+	abstract render(createElement?: RevoGrid.HyperFunc<VNode> | undefined): string | void | VNode | VNode[]
+
 	constructor(
 		public column: RevoGrid.ColumnRegular,
 		protected saveCallback: SaveCallback,
@@ -37,7 +41,4 @@ export abstract class BaseEditor<E extends Element, T extends BaseField> impleme
 			toast.warning(result.error.flatten((i) => i.message).formErrors.join('\n'))
 		}
 	}
-
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	render(createElement?: RevoGrid.HyperFunc<VNode> | undefined): string | void | VNode | VNode[] {}
 }

@@ -1,4 +1,4 @@
-import type { Edition, RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
+import type { RevoGrid } from '@revolist/revogrid/dist/types/interfaces'
 import type { VNode } from '@revolist/revogrid/dist/types/stencil-public-runtime'
 import type { CurrencyField, NumberField } from '@undb/core'
 import * as numberInput from '@zag-js/number-input'
@@ -8,9 +8,8 @@ import { BaseEditor, type SaveCallback } from './base-editor'
 import { normalizer } from './normalizer'
 
 export class NumberEditor extends BaseEditor<HTMLDivElement, NumberField | CurrencyField> {
-	public element: HTMLInputElement | null = null
-	public editCell: Edition.EditCell | undefined = undefined
-	private api: numberInput.Api | null = null
+	private api: numberInput.Api
+	private service: ReturnType<typeof numberInput.machine>
 
 	constructor(
 		public column: RevoGrid.ColumnRegular,
@@ -21,6 +20,7 @@ export class NumberEditor extends BaseEditor<HTMLDivElement, NumberField | Curre
 		const service = numberInput.machine({
 			id: this.column.prop as string,
 		})
+		this.service = service
 		const machine = service.start()
 
 		const api = numberInput.connect(machine.state, machine.send, normalizer)
@@ -33,8 +33,8 @@ export class NumberEditor extends BaseEditor<HTMLDivElement, NumberField | Curre
 		if (!editCell) return
 
 		const value = editCell.model[editCell.prop] as string
-		this.api?.setValue(Number(value))
-		this.api?.focus()
+		this.api.setValue(Number(value))
+		this.api.focus()
 	}
 
 	async componentDidRender() {
@@ -42,15 +42,19 @@ export class NumberEditor extends BaseEditor<HTMLDivElement, NumberField | Curre
 		this.initElement()
 	}
 
+	disconnectedCallback(): void {
+		this.service.stop()
+	}
+
 	render(createComponent: RevoGrid.HyperFunc<VNode>) {
 		const html = htm.bind(createComponent)
 		const api = this.api
 
 		return html`
-			<div class="flex items-center" ...${api?.rootProps}>
+			<div class="flex items-center" ...${api.rootProps}>
 				<input
 					type="number"
-					...${api?.inputProps}
+					...${api.inputProps}
 					onchange=${(e: Event) => {
 						const value = (e.target as HTMLInputElement).value
 						return this.onChange(parseInt(value.replace(/,/g, ''), 10))

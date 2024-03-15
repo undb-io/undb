@@ -1,4 +1,5 @@
 import type { Components } from '@revolist/revogrid'
+import { ColorEditor } from './color-editor'
 import { DateEditor } from './date-editor'
 import { EmailEditor } from './email-editor'
 import { NumberEditor } from './number-editor'
@@ -10,4 +11,5 @@ export const editors: Components.RevoGrid['editors'] = {
 	email: EmailEditor,
 	number: NumberEditor,
 	currency: NumberEditor,
+	color: ColorEditor,
 }
