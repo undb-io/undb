@@ -469,6 +469,9 @@ importers:
       '@zag-js/color-picker':
         specifier: ^0.38.1
         version: 0.38.1
+      '@zag-js/combobox':
+        specifier: ^0.38.1
+        version: 0.38.1
       '@zag-js/number-input':
         specifier: ^0.38.1
         version: 0.38.1
@@ -7320,6 +7323,16 @@ packages:
     resolution: {integrity: sha512-y6foq9vX+EfjfCwi9DMt5gI9eU7kshFjioidACI+u8TjBG2Z3nOjvEq+3Ct+dy5v/aRwsvSquaXpB555e0OLNQ==}
     dev: false
 
+  /@zag-js/aria-hidden@0.38.1:
+    resolution: {integrity: sha512-n0qP/w8tXxvpZp0F2U+I4WYDW24/yqp49eP6kSo+Av9M4E9F8/o17yGxu30/dli3/KthsCjkde+0cfZqHs/Duw==}
+    dependencies:
+      '@zag-js/dom-query': 0.38.1
+    dev: false
+
+  /@zag-js/collection@0.38.1:
+    resolution: {integrity: sha512-Z+73tmgLS/KgKVJiTQQX9ujTo2MaYhx5G9yMvZ15G3zLZx8DoFGcKmFl3RvuDgmnTGjcLpV+Tn76O5mZKpHOkA==}
+    dev: false
+
   /@zag-js/color-picker@0.38.1:
     resolution: {integrity: sha512-Ae0ivxHAqX9+gJWRnci8iPYR/HQvyTQOxc1kCwSY077XiW0BqlQACf0DYVBOw/dXQSoBRsgHzyOJ71M1e1PFoA==}
     dependencies:
@@ -7342,6 +7355,22 @@ packages:
     resolution: {integrity: sha512-y/8mKFlPqiNNSPdb22qEUYDqeYm/S/j8IvdkHUg2zdyCIeShUd2D5y7u1oSQUQphskzmIoGp8y7HrQ0xVKY93g==}
     dependencies:
       '@zag-js/numeric-range': 0.38.1
+    dev: false
+
+  /@zag-js/combobox@0.38.1:
+    resolution: {integrity: sha512-S01hBrYcUPRrmzT0GDYMrRIxggUXBL9Fn5FlBvNVBqVHHJUyTVBSMB8Va7omKRK/Y2gspEhrodggxSzwwOZvEg==}
+    dependencies:
+      '@zag-js/anatomy': 0.38.1
+      '@zag-js/aria-hidden': 0.38.1
+      '@zag-js/collection': 0.38.1
+      '@zag-js/core': 0.38.1
+      '@zag-js/dismissable': 0.38.1
+      '@zag-js/dom-event': 0.38.1
+      '@zag-js/dom-query': 0.38.1
+      '@zag-js/mutation-observer': 0.38.1
+      '@zag-js/popper': 0.38.1
+      '@zag-js/types': 0.38.1
+      '@zag-js/utils': 0.38.1
     dev: false
 
   /@zag-js/core@0.38.1:
