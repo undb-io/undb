@@ -1,6 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": [".env"],
+  "experimentalUI": true,
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
