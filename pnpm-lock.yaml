@@ -1100,6 +1100,9 @@ importers:
       eslint-import-resolver-typescript:
         specifier: ^3.6.1
         version: 3.6.1(@typescript-eslint/parser@6.14.0)(eslint-plugin-import@2.29.1)(eslint@8.56.0)
+      eslint-plugin-perfectionist:
+        specifier: ^2.8.0
+        version: 2.8.0(eslint@8.56.0)(typescript@5.3.3)
       eslint-plugin-tsdoc:
         specifier: ^0.2.17
         version: 0.2.17
@@ -10171,6 +10174,33 @@ packages:
       - eslint-import-resolver-typescript
       - eslint-import-resolver-webpack
       - supports-color
+    dev: true
+
+  /eslint-plugin-perfectionist@2.8.0(eslint@8.56.0)(typescript@5.3.3):
+    resolution: {integrity: sha512-XBjQ4ctU1rOzQ4bFJoUowe8XdsIIz42JqNrouFlae1TO78HjoyYBaRP8+gAHDDQCSdHY10pbChyzlJeBA6D51w==}
+    peerDependencies:
+      astro-eslint-parser: ^0.16.0
+      eslint: '>=8.0.0'
+      svelte: '>=3.0.0'
+      svelte-eslint-parser: ^0.33.0
+      vue-eslint-parser: '>=9.0.0'
+    peerDependenciesMeta:
+      astro-eslint-parser:
+        optional: true
+      svelte:
+        optional: true
+      svelte-eslint-parser:
+        optional: true
+      vue-eslint-parser:
+        optional: true
+    dependencies:
+      '@typescript-eslint/utils': 6.14.0(eslint@8.56.0)(typescript@5.3.3)
+      eslint: 8.56.0
+      minimatch: 9.0.3
+      natural-compare-lite: 1.4.0
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
     dev: true
 
   /eslint-plugin-svelte@2.35.1(eslint@8.56.0)(svelte@4.2.8):

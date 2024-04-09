@@ -1,15 +1,18 @@
-import { and } from '@undb/domain'
 import type { Result } from 'oxide.ts'
+
+import { and } from '@undb/domain'
 import { Ok } from 'oxide.ts'
+
 import type { ClsStore } from '../cls/cls.js'
-import { WithTableForms } from './form/specifications/form.specification.js'
-import { WithTableBaseId, WithTableEmoji, WithTableId, WithTableName, WithTableSchema } from './specifications/index.js'
 import type { TableCompositeSpecification } from './specifications/interface.js'
-import { newTableSpec } from './specifications/specifications.js'
 import type { IQueryTable } from './table.js'
-import { Table } from './table.js'
 import type { ICreateTableInput_internal } from './table.schema.js'
 import type { ICreateTableSchemaInput } from './value-objects/index.js'
+
+import { WithTableForms } from './form/specifications/form.specification.js'
+import { WithTableBaseId, WithTableEmoji, WithTableId, WithTableName, WithTableSchema } from './specifications/index.js'
+import { newTableSpec } from './specifications/specifications.js'
+import { Table } from './table.js'
 import { WithTableViews, WithViewsOrder } from './view/index.js'
 
 export class TableFactory {
@@ -36,19 +39,6 @@ export class TableFactory {
     return Ok(table)
   }
 
-  static unsafeCreate(input: ICreateTableInput_internal) {
-    const spec = WithTableName.unsafe(input.name)
-      .and(WithTableId.fromString(input.id))
-      .and(WithTableSchema.unsafeFrom(input.schema))
-      .and(WithTableViews.from(input.views))
-      .and(WithViewsOrder.fromArray(input.viewsOrder ?? []))
-      .and(WithTableBaseId.fromString(input.baseId))
-      .and(WithTableForms.unsafeFrom(input.forms ?? []))
-      .and(WithTableEmoji.fromString(input.emoji ?? null))
-
-    return this.create(spec)
-  }
-
   static fromQuery(q: IQueryTable): Table {
     const ts = WithTableSchema.unsafeFrom(q.schema as ICreateTableSchemaInput)
     const spec = WithTableName.fromString(q.name)
@@ -61,5 +51,18 @@ export class TableFactory {
       .and(WithTableEmoji.fromString(q.emoji))
 
     return this.create(spec).unwrap()
+  }
+
+  static unsafeCreate(input: ICreateTableInput_internal) {
+    const spec = WithTableName.unsafe(input.name)
+      .and(WithTableId.fromString(input.id))
+      .and(WithTableSchema.unsafeFrom(input.schema))
+      .and(WithTableViews.from(input.views))
+      .and(WithViewsOrder.fromArray(input.viewsOrder ?? []))
+      .and(WithTableBaseId.fromString(input.baseId))
+      .and(WithTableForms.unsafeFrom(input.forms ?? []))
+      .and(WithTableEmoji.fromString(input.emoji ?? null))
+
+    return this.create(spec)
   }
 }

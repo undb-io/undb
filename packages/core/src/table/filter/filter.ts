@@ -1,112 +1,117 @@
-import { isEmpty } from 'lodash-es'
 import type { Option } from 'oxide.ts'
+
+import { isEmpty } from 'lodash-es'
 import { None, Some } from 'oxide.ts'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
+
 import type { IAttachmentFilter, IAttachmentFilterTypeValue } from '../field/fields/attachment/attachment.filter.js'
+import type { IAutoIncrementFilter } from '../field/fields/auto-increment/auto-increment.filter.js'
+import type { IAverageFilter } from '../field/fields/average/average.filter.js'
+import type { IBoolFilter } from '../field/fields/bool/bool.filter.js'
+import type { ICollaboratorFilter } from '../field/fields/collaborator/collaborator.filter.js'
+import type { IColorFilter } from '../field/fields/color/color.filter.js'
+import type { ICountFilter } from '../field/fields/count/count.filter.js'
+import type { ICreatedAtFilter } from '../field/fields/created-at/created-at.filter.js'
+import type { ICreatedByFilter } from '../field/fields/created-by/created-by.filter.js'
+import type { ICurrencyFilter } from '../field/fields/currency/currency.filter.js'
+import type { IDateRangeFilter } from '../field/fields/date-range/date-range.filter.js'
+import type { IDateFilter } from '../field/fields/date/date.filter.js'
+import type { IEmailFilter } from '../field/fields/email/email.filter.js'
+import type { IIdFilter } from '../field/fields/id/id.filter.js'
+import type { IJsonFilter } from '../field/fields/json/json.filter.js'
+import type { IMaxFilter } from '../field/fields/max/max.filter.js'
+import type { IMinFilter } from '../field/fields/min/min.filter.js'
+import type { IMultiSelectFilter } from '../field/fields/multi-select/multi-select.filter.js'
+import type { INumberFilter } from '../field/fields/number/number.filter.js'
+import type { IRatingFilter } from '../field/fields/rating/rating.filter.js'
+import type { ISelectFieldValue } from '../field/fields/select/select-field.type.js'
+import type { ISelectFilter } from '../field/fields/select/select.filter.js'
+import type { IStringFilter } from '../field/fields/string/string.filter.js'
+import type { ISumFilter } from '../field/fields/sum/sum.filter.js'
+import type { ITreeFilter } from '../field/fields/tree/tree.filter.js'
+import type { IUpdatedAtFilter } from '../field/fields/updated-at/updated-at.filter.js'
+import type { IUpdatedByFilter } from '../field/fields/updated-by/updated-by.filter.js'
+import type { IUrlFilter } from '../field/fields/url/url.filter.js'
+import type { IFieldType } from '../field/index.js'
+import type { RecordCompositeSpecification } from '../record/specifications/interface.js'
+import type { IConjunction } from './conjunction.js'
+
 import {
   attachmentFilter,
   attachmentFilterOperators,
   attachmentFilterValue,
 } from '../field/fields/attachment/attachment.filter.js'
-import type { IAutoIncrementFilter } from '../field/fields/auto-increment/auto-increment.filter.js'
 import {
   autoIncrementFilter,
   autoIncrementFilterOperators,
   autoIncrementFilterValue,
 } from '../field/fields/auto-increment/auto-increment.filter.js'
-import type { IAverageFilter } from '../field/fields/average/average.filter.js'
 import { averageFilter, averageFilterOperators, averageFilterValue } from '../field/fields/average/average.filter.js'
-import type { IBoolFilter } from '../field/fields/bool/bool.filter.js'
 import { boolFilter, boolFilterOperators, boolFilterValue } from '../field/fields/bool/bool.filter.js'
-import type { ICollaboratorFilter } from '../field/fields/collaborator/collaborator.filter.js'
 import {
   collaboratorFilter,
   collaboratorFilterOperators,
   collaboratorFilterValue,
 } from '../field/fields/collaborator/collaborator.filter.js'
-import type { IColorFilter } from '../field/fields/color/color.filter.js'
 import { colorFilter, colorFilterOperators } from '../field/fields/color/color.filter.js'
-import type { ICountFilter } from '../field/fields/count/count.filter.js'
 import { countFilter, countFilterOperators, countFilterValue } from '../field/fields/count/count.filter.js'
-import type { ICreatedAtFilter } from '../field/fields/created-at/created-at.filter.js'
 import {
   createdAtFilter,
   createdAtFilterOperators,
   createdAtFilterValue,
 } from '../field/fields/created-at/created-at.filter.js'
-import type { ICreatedByFilter } from '../field/fields/created-by/created-by.filter.js'
 import {
   createdByFilter,
   createdByFilterOperators,
   createdByFilterValue,
 } from '../field/fields/created-by/created-by.filter.js'
-import type { ICurrencyFilter } from '../field/fields/currency/currency.filter.js'
 import {
   currencyFilter,
   currencyFilterOperators,
   currencyFilterValue,
 } from '../field/fields/currency/currency.filter.js'
-import type { IDateRangeFilter } from '../field/fields/date-range/date-range.filter.js'
 import {
   dateRangeFilter,
   dateRangeFilterOperators,
   dateRangeFilterValue,
 } from '../field/fields/date-range/date-range.filter.js'
-import type { IDateFilter } from '../field/fields/date/date.filter.js'
 import { dateFilter, dateFilterOperators, dateFilterValue } from '../field/fields/date/date.filter.js'
-import type { IEmailFilter } from '../field/fields/email/email.filter.js'
 import { emailFilter, emailFilterOperators, emailFilterValue } from '../field/fields/email/email.filter.js'
-import type { IIdFilter } from '../field/fields/id/id.filter.js'
 import { idFilter, idFilterOperators, idFilterValue } from '../field/fields/id/id.filter.js'
-import type { IJsonFilter } from '../field/fields/json/json.filter.js'
 import { jsonFilter, jsonFilterOperators, jsonFilterValue } from '../field/fields/json/json.filter.js'
 import { lookupFilter, lookupFilterOperators, lookupFilterValue } from '../field/fields/lookup/lookup.filter.js'
-import type { IMaxFilter } from '../field/fields/max/max.filter.js'
 import { maxFilter, maxFilterOperators, maxFilterValue } from '../field/fields/max/max.filter.js'
-import type { IMinFilter } from '../field/fields/min/min.filter.js'
 import { minFilter, minFilterOperators, minFilterValue } from '../field/fields/min/min.filter.js'
-import type { IMultiSelectFilter } from '../field/fields/multi-select/multi-select.filter.js'
 import {
   multiSelectFilter,
   multiSelectFilterOperators,
   multiSelectFilterValue,
 } from '../field/fields/multi-select/multi-select.filter.js'
-import type { INumberFilter } from '../field/fields/number/number.filter.js'
 import { numberFilter, numberFilterOperators, numberFilterValue } from '../field/fields/number/number.filter.js'
 import { parentFilter, parentFilterOperators, parentFilterValue } from '../field/fields/parent/parent.filter.js'
 import { qrcodeFilter, qrcodeFilterOperators, qrcodeFilterValue } from '../field/fields/qrcode/qrcode.filter.js'
-import type { IRatingFilter } from '../field/fields/rating/rating.filter.js'
 import { ratingFilter, ratingFilterOperators, ratingFilterValue } from '../field/fields/rating/rating.filter.js'
 import {
   referenceFilter,
   referenceFilterOperators,
   referenceFilterValue,
 } from '../field/fields/reference/reference.filter.js'
-import type { ISelectFieldValue } from '../field/fields/select/select-field.type.js'
-import type { ISelectFilter } from '../field/fields/select/select.filter.js'
 import { selectFilter, selectFilterOperators, selectFilterValue } from '../field/fields/select/select.filter.js'
-import type { IStringFilter } from '../field/fields/string/string.filter.js'
 import { stringFilter, stringFilterOperators, stringFilterValue } from '../field/fields/string/string.filter.js'
-import type { ISumFilter } from '../field/fields/sum/sum.filter.js'
 import { sumFilter, sumFilterOperators, sumFilterValue } from '../field/fields/sum/sum.filter.js'
-import type { ITreeFilter } from '../field/fields/tree/tree.filter.js'
 import { treeFilter, treeFilterOperators, treeFilterValue } from '../field/fields/tree/tree.filter.js'
-import type { IUpdatedAtFilter } from '../field/fields/updated-at/updated-at.filter.js'
 import {
   updatedAtFilter,
   updatedAtFilterOperators,
   updatedAtFilterValue,
 } from '../field/fields/updated-at/updated-at.filter.js'
-import type { IUpdatedByFilter } from '../field/fields/updated-by/updated-by.filter.js'
 import {
   updatedByFilter,
   updatedByFilterOperators,
   updatedByFilterValue,
 } from '../field/fields/updated-by/updated-by.filter.js'
-import type { IUrlFilter } from '../field/fields/url/url.filter.js'
 import { urlFilter, urlFilterOperators, urlFilterValue } from '../field/fields/url/url.filter.js'
-import type { IFieldType } from '../field/index.js'
 import {
   DateFieldValue,
   DateRangeFieldValue,
@@ -165,8 +170,6 @@ import {
   WithRecordIds,
   WithRecordUpdatedBy,
 } from '../record/index.js'
-import type { RecordCompositeSpecification } from '../record/specifications/interface.js'
-import type { IConjunction } from './conjunction.js'
 import { conjunctions } from './conjunction.js'
 import {
   $between,
@@ -254,37 +257,37 @@ export const operaotrs = z.union([
 export type IOperator = z.infer<typeof operaotrs>
 
 export const operaotrsMap: Record<IFieldType, IOperator[]> = {
-  string: stringFilterOperators.options.map((v) => v._def.value),
-  number: numberFilterOperators.options.map((v) => v._def.value),
-  date: dateFilterOperators.options.map((v) => v._def.value),
-  id: idFilterOperators.options.map((v) => v._def.value),
-  'created-at': createdAtFilterOperators.options.map((v) => v._def.value),
-  'updated-at': updatedAtFilterOperators.options.map((v) => v._def.value),
-  'auto-increment': autoIncrementFilterOperators.options.map((v) => v._def.value),
-  color: colorFilterOperators.options.map((v) => v._def.value),
-  email: emailFilterOperators.options.map((v) => v._def.value),
-  qrcode: qrcodeFilterOperators.options.map((v) => v._def.value),
-  url: urlFilterOperators.options.map((v) => v._def.value),
-  json: jsonFilterOperators.options.map((v) => v._def.value),
-  select: selectFilterOperators.options.map((v) => v._def.value),
-  'multi-select': multiSelectFilterOperators.options.map((v) => v._def.value),
-  bool: boolFilterOperators.options.map((v) => v._def.value),
-  'date-range': dateRangeFilterOperators.options.map((v) => v._def.value),
-  reference: referenceFilterOperators.options.map((v) => v._def.value),
-  tree: treeFilterOperators.options.map((v) => v._def.value),
-  parent: parentFilterOperators.options.map((v) => v._def.value),
-  rating: ratingFilterOperators.options.map((v) => v._def.value),
-  currency: currencyFilterOperators.options.map((v) => v._def.value),
-  count: countFilterOperators.options.map((v) => v._def.value),
-  lookup: lookupFilterOperators.options.map((v) => v._def.value),
-  sum: sumFilterOperators.options.map((v) => v._def.value),
-  average: averageFilterOperators.options.map((v) => v._def.value),
   attachment: attachmentFilterOperators.options.map((v) => v._def.value),
+  'auto-increment': autoIncrementFilterOperators.options.map((v) => v._def.value),
+  average: averageFilterOperators.options.map((v) => v._def.value),
+  bool: boolFilterOperators.options.map((v) => v._def.value),
   collaborator: collaboratorFilterOperators.options.map((v) => v._def.value),
+  color: colorFilterOperators.options.map((v) => v._def.value),
+  count: countFilterOperators.options.map((v) => v._def.value),
+  'created-at': createdAtFilterOperators.options.map((v) => v._def.value),
   'created-by': createdByFilterOperators.options.map((v) => v._def.value),
-  'updated-by': updatedByFilterOperators.options.map((v) => v._def.value),
-  min: minFilterOperators.options.map((v) => v._def.value),
+  currency: currencyFilterOperators.options.map((v) => v._def.value),
+  date: dateFilterOperators.options.map((v) => v._def.value),
+  'date-range': dateRangeFilterOperators.options.map((v) => v._def.value),
+  email: emailFilterOperators.options.map((v) => v._def.value),
+  id: idFilterOperators.options.map((v) => v._def.value),
+  json: jsonFilterOperators.options.map((v) => v._def.value),
+  lookup: lookupFilterOperators.options.map((v) => v._def.value),
   max: maxFilterOperators.options.map((v) => v._def.value),
+  min: minFilterOperators.options.map((v) => v._def.value),
+  'multi-select': multiSelectFilterOperators.options.map((v) => v._def.value),
+  number: numberFilterOperators.options.map((v) => v._def.value),
+  parent: parentFilterOperators.options.map((v) => v._def.value),
+  qrcode: qrcodeFilterOperators.options.map((v) => v._def.value),
+  rating: ratingFilterOperators.options.map((v) => v._def.value),
+  reference: referenceFilterOperators.options.map((v) => v._def.value),
+  select: selectFilterOperators.options.map((v) => v._def.value),
+  string: stringFilterOperators.options.map((v) => v._def.value),
+  sum: sumFilterOperators.options.map((v) => v._def.value),
+  tree: treeFilterOperators.options.map((v) => v._def.value),
+  'updated-at': updatedAtFilterOperators.options.map((v) => v._def.value),
+  'updated-by': updatedByFilterOperators.options.map((v) => v._def.value),
+  url: urlFilterOperators.options.map((v) => v._def.value),
 }
 
 const filter = z.discriminatedUnion('type', [
@@ -325,14 +328,14 @@ export type IFilter = z.infer<typeof filter>
 export type IFilters = IFilter[]
 
 export interface IGroup {
-  conjunction: IConjunction
   children?: IFilterOrGroupList
+  conjunction: IConjunction
 }
 
 const group: z.ZodType<IGroup> = z.lazy(() =>
   z.object({
-    conjunction: conjunctions,
     children: z.union([group, filter]).array().nonempty().optional(),
+    conjunction: conjunctions,
   }),
 )
 
@@ -377,7 +380,7 @@ const convertIdFilter = (filter: IIdFilter): Option<RecordCompositeSpecification
 }
 
 const convertStringFilter = (
-  filter: IStringFilter | IEmailFilter | IColorFilter | IUrlFilter,
+  filter: IColorFilter | IEmailFilter | IStringFilter | IUrlFilter,
 ): Option<RecordCompositeSpecification> => {
   if (filter.value === undefined) {
     return None
@@ -419,15 +422,15 @@ const convertStringFilter = (
 
 const convertNumberFilter = (
   filter:
-    | INumberFilter
     | IAutoIncrementFilter
-    | IRatingFilter
-    | ICountFilter
-    | ISumFilter
     | IAverageFilter
+    | ICountFilter
     | ICurrencyFilter
+    | IMaxFilter
     | IMinFilter
-    | IMaxFilter,
+    | INumberFilter
+    | IRatingFilter
+    | ISumFilter,
 ): Option<RecordCompositeSpecification> => {
   if (filter.value === undefined) {
     return None
@@ -593,7 +596,7 @@ const convertDateRangeFilter = (filter: IDateRangeFilter): Option<RecordComposit
 }
 
 const convertDateFilter = (
-  filter: IDateFilter | ICreatedAtFilter | IUpdatedAtFilter,
+  filter: ICreatedAtFilter | IDateFilter | IUpdatedAtFilter,
 ): Option<RecordCompositeSpecification> => {
   if (filter.operator === $is_today.value) {
     return Some(new DateIsToday(filter.path))

@@ -1,4 +1,5 @@
 import { z } from 'zod'
+
 import type { ICreatedAtFilterOperator } from '../field'
 
 export const $eq = z.literal('$eq')

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { EntityManager, Knex } from '@mikro-orm/better-sqlite'
+
 import {
   AbstractFieldTypeHandler,
   INTERNAL_COLUMN_ID_NAME,
@@ -10,8 +11,10 @@ import {
 } from '@undb/core'
 import { isValid } from 'date-fns'
 import { Mixin } from 'ts-mixer'
-import { User } from '../../entity/user.js'
+
 import type { IUnderlyingColumn } from '../../interfaces/underlying-column.js'
+
+import { User } from '../../entity/user.js'
 import { BaseEntityManager } from '../../repository/base-entity-manager.js'
 import {
   UnderlyingDateColumn,
@@ -20,7 +23,7 @@ import {
 } from '../underlying-column.js'
 import { CollaboratorForeignTable } from '../underlying-foreign-table.js'
 
-export type SqliteCastType = 'text' | 'int' | 'real' | 'bool'
+export type SqliteCastType = 'bool' | 'int' | 'real' | 'text'
 
 export abstract class BaseColumnTypeModifier<F extends Field>
   extends Mixin(AbstractFieldTypeHandler, BaseEntityManager)
@@ -36,17 +39,28 @@ export abstract class BaseColumnTypeModifier<F extends Field>
     super(em)
   }
 
-  protected dropColumn(column: IUnderlyingColumn) {
-    if (!column.virtual) {
-      const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${column.name}`
-      this.addQueries(dropColumn)
-    }
+  ['auto-increment'](): void {
+    throw new Error('Method not implemented.')
   }
 
+  ['created-at'](): void {
+    throw new Error('Method not implemented.')
+  }
+
+  ['created-by'](): void {
+    throw new Error('Method not implemented.')
+  }
+
+  ['updated-at'](): void {
+    throw new Error('Method not implemented.')
+  }
+  ['updated-by'](): void {
+    throw new Error('Method not implemented.')
+  }
   protected alterColumn(
     newColumn: IUnderlyingColumn,
     column: IUnderlyingColumn,
-    cast?: (newColumn: IUnderlyingColumn, column: IUnderlyingColumn) => string | null,
+    cast?: (newColumn: IUnderlyingColumn, column: IUnderlyingColumn) => null | string,
   ): void {
     const addColumn = this.knex.schema
       .alterTable(this.tableId, (tb) => {
@@ -69,7 +83,6 @@ export abstract class BaseColumnTypeModifier<F extends Field>
       this.addQueries(alterName)
     }
   }
-
   protected castTo(type: SqliteCastType, newColumn: IUnderlyingColumn, column: IUnderlyingColumn) {
     if (column.virtual) throw new Error('cannot cast virtual underlying column')
     return this.alterColumn(newColumn, column, () =>
@@ -83,73 +96,8 @@ export abstract class BaseColumnTypeModifier<F extends Field>
         .toQuery(),
     )
   }
-
-  id(): void {
-    throw new Error('Method not implemented.')
-  }
-  ['created-at'](): void {
-    throw new Error('Method not implemented.')
-  }
-  ['created-by'](): void {
-    throw new Error('Method not implemented.')
-  }
-  ['updated-at'](): void {
-    throw new Error('Method not implemented.')
-  }
-  ['updated-by'](): void {
-    throw new Error('Method not implemented.')
-  }
-  ['auto-increment'](): void {
-    throw new Error('Method not implemented.')
-  }
-  parent(): void {
-    throw new Error('Method not implemented.')
-  }
-
-  protected castToDate(column: IUnderlyingColumn) {
-    this.addJobs(async () => {
-      const newColumn = new UnderlyingDateColumn(this.field.id.value, this.tableId)
-
-      const addColumn = this.knex.schema
-        .alterTable(this.tableId, (tb) => {
-          newColumn.buildTemp(tb)
-        })
-        .toQuery()
-
-      await this.em.execute(addColumn)
-
-      const qb = this.knex.queryBuilder().select(INTERNAL_COLUMN_ID_NAME, column.name).from(this.tableId)
-      const value = (await this.em.execute(qb)) as { id: string; [key: string]: string }[]
-
-      for (const row of value) {
-        const dateString = row[column.name]
-        if (!dateString) continue
-
-        const date = new Date(dateString)
-        if (!isValid(date)) continue
-
-        const qb = this.knex
-          .queryBuilder()
-          .table(this.tableId)
-          .update(newColumn.tempName, date.toISOString())
-          .where(INTERNAL_COLUMN_ID_NAME, row.id)
-        await this.em.execute(qb)
-      }
-
-      const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${column.name}`
-      await this.em.execute(dropColumn)
-
-      const alterName = this.knex.schema
-        .alterTable(this.tableId, (tb) => {
-          tb.renameColumn(newColumn.tempName, newColumn.name)
-        })
-        .toQuery()
-      await this.em.execute(alterName)
-    })
-  }
-
-  protected castToCollaborator(column: IUnderlyingColumn, collaboratorField?: 'username' | 'email') {
-    const { tableName: userTableName, properties } = this.em.getMetadata().get(User.name)
+  protected castToCollaborator(column: IUnderlyingColumn, collaboratorField?: 'email' | 'username') {
+    const { properties, tableName: userTableName } = this.em.getMetadata().get(User.name)
     const collaboratorTable = new CollaboratorForeignTable(this.tableId, this.field.id.value)
     this.addQueries(...collaboratorTable.getCreateTableSqls(this.knex))
 
@@ -186,7 +134,47 @@ export abstract class BaseColumnTypeModifier<F extends Field>
 
     this.dropColumn(column)
   }
+  protected castToDate(column: IUnderlyingColumn) {
+    this.addJobs(async () => {
+      const newColumn = new UnderlyingDateColumn(this.field.id.value, this.tableId)
 
+      const addColumn = this.knex.schema
+        .alterTable(this.tableId, (tb) => {
+          newColumn.buildTemp(tb)
+        })
+        .toQuery()
+
+      await this.em.execute(addColumn)
+
+      const qb = this.knex.queryBuilder().select(INTERNAL_COLUMN_ID_NAME, column.name).from(this.tableId)
+      const value = (await this.em.execute(qb)) as { [key: string]: string; id: string }[]
+
+      for (const row of value) {
+        const dateString = row[column.name]
+        if (!dateString) continue
+
+        const date = new Date(dateString)
+        if (!isValid(date)) continue
+
+        const qb = this.knex
+          .queryBuilder()
+          .table(this.tableId)
+          .update(newColumn.tempName, date.toISOString())
+          .where(INTERNAL_COLUMN_ID_NAME, row.id)
+        await this.em.execute(qb)
+      }
+
+      const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${column.name}`
+      await this.em.execute(dropColumn)
+
+      const alterName = this.knex.schema
+        .alterTable(this.tableId, (tb) => {
+          tb.renameColumn(newColumn.tempName, newColumn.name)
+        })
+        .toQuery()
+      await this.em.execute(alterName)
+    })
+  }
   protected castToDateRange(column: IUnderlyingColumn, cast = false) {
     const newFrom = new UnderlyingDateRangeFromColumn(this.field.id.value, this.tableId)
     const newTo = new UnderlyingDateRangeToColumn(this.field.id.value, this.tableId)
@@ -215,5 +203,20 @@ export abstract class BaseColumnTypeModifier<F extends Field>
     }
 
     this.dropColumn(column)
+  }
+
+  protected dropColumn(column: IUnderlyingColumn) {
+    if (!column.virtual) {
+      const dropColumn = `ALTER TABLE ${this.tableId} DROP COLUMN ${column.name}`
+      this.addQueries(dropColumn)
+    }
+  }
+
+  id(): void {
+    throw new Error('Method not implemented.')
+  }
+
+  parent(): void {
+    throw new Error('Method not implemented.')
   }
 }
