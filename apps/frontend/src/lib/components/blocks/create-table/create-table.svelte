@@ -12,14 +12,16 @@
 	import CreateSchema from './create-schema.svelte';
 	import { toast } from 'svelte-sonner';
 	import { invalidate } from '$app/navigation';
+	import { goto } from '$app/navigation';
 
 	// @ts-ignore
 	export let data: SuperValidated<Infer<typeof createTableCommand>>;
 
 	const mutation = createMutation({
 		mutationFn: trpc.table.create.mutate,
-		onSuccess(data, variables, context) {
+		async onSuccess(data, variables, context) {
 			invalidate('undb:tables');
+			await goto(`/t/${data}`);
 			createTableOpened.set(false);
 			form.reset();
 		},

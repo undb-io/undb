@@ -1,8 +1,9 @@
-import { createTableOpened } from '$lib/components/blocks/create-table/create-table.store';
-
 export function handleKeydown(e: KeyboardEvent) {
-	if (e.key === 't') {
-		e.preventDefault();
-		createTableOpened.update((o) => !o);
+	const type = (e.target as any)?.type;
+	const isInput = type === 'search' || type === 'input';
+
+	if (e.key === 't' && !isInput) {
+		// e.preventDefault();
+		// createTableOpened.update((o) => !o);
 	}
 }
