@@ -1,0 +1,31 @@
+{
+  "name": "@undb/backend",
+  "version": "1.0.50",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun --hot src/index.ts",
+    "build": "bun build --compile --sourcemap src/index.ts --outfile undb"
+  },
+  "dependencies": {
+    "@elysiajs/cookie": "^0.8.0",
+    "@elysiajs/cors": "^1.0.2",
+    "@elysiajs/html": "^1.0.2",
+    "@elysiajs/static": "^1.0.3",
+    "@elysiajs/trpc": "^1.0.2",
+    "@undb/logger": "workspace:*",
+    "@undb/cqrs": "workspace:*",
+    "@undb/persistence": "workspace:*",
+    "@undb/command-handlers": "workspace:*",
+    "@undb/query-handlers": "workspace:*",
+    "@undb/trpc": "workspace:*",
+    "bun": "^1.1.6",
+    "core-js": "^3.37.0",
+    "elysia": "latest",
+    "elysia-requestid": "^1.0.9",
+    "reflect-metadata": "^0.2.2"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  },
+  "module": "src/index.js"
+}

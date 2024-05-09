@@ -1,0 +1,21 @@
+{
+  "name": "@undb/desktop",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:desktop": "bun tauri dev",
+    "build:desktop": "bun tauri build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^1"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1",
+    "vite": "^5.0.0",
+    "typescript": "^5.0.2"
+  }
+}

@@ -1,0 +1,5 @@
+export * from './table-id.specification'
+export * from './table-name.specification'
+export * from './table-schema.specification'
+export * from './table-visitor.interface'
+export type { TableComositeSpecification } from './table.composite-specification'
