@@ -1,11 +1,16 @@
+import { trpc } from '$lib/trpc/client';
 import { createTableCommand } from '@undb/commands';
 import { createSchemaDTO } from '@undb/table';
 import { superValidate } from 'sveltekit-superforms';
 import { zod } from 'sveltekit-superforms/adapters';
 import { z } from 'zod';
-import type { PageLoad } from './$types';
+import type { LayoutLoad } from './$types';
 
-export const load: PageLoad = async () => {
+export const ssr = false;
+
+export const load: LayoutLoad = async () => {
+	const tables = await trpc.table.list.query();
+
 	const createTableForm = await superValidate(
 		zod(
 			createTableCommand.merge(
@@ -17,6 +22,7 @@ export const load: PageLoad = async () => {
 	);
 
 	return {
+		tables,
 		createTableForm
 	};
 };

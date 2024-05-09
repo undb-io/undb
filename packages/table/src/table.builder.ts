@@ -1,4 +1,4 @@
-import { inject, injectable, singleton } from '@undb/di'
+import { container, inject, injectable, singleton } from '@undb/di'
 import { createTableDTO, type ICreateTableDTO } from './dto'
 import type { ICreateSchemaDTO } from './modules/schema/dto/create-schema.dto'
 import type { ISchemaDTO } from './modules/schema/dto/schema.dto'
@@ -72,3 +72,5 @@ export class TableCreator {
     return this.builder.setId(dto.id).setName(dto.name).createSchema(dto.schema).build()
   }
 }
+
+export const tableCreator = container.resolve(TableCreator)
