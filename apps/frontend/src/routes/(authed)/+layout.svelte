@@ -12,11 +12,11 @@
 
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import * as Card from '$lib/components/ui/card/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import CreateTableButton from '$lib/components/blocks/create-table/create-table-button.svelte';
+	import TablesNav from '$lib/components/blocks/tables-nav/tables-nav.svelte';
 	import type { LayoutData } from './$types';
 	import CreateTableDialog from '$lib/components/blocks/create-table/create-table-dialog.svelte';
 
@@ -37,46 +37,7 @@
 				</Button>
 			</div>
 			<div class="flex-1">
-				<nav class="grid items-start px-2 text-sm font-medium lg:px-4">
-					<a
-						href="##"
-						class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-					>
-						<Home class="h-4 w-4" />
-						Dashboard
-					</a>
-					<a
-						href="##"
-						class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-					>
-						<ShoppingCart class="h-4 w-4" />
-						Orders
-						<Badge class="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-							6
-						</Badge>
-					</a>
-					<a
-						href="##"
-						class="bg-muted text-primary hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-					>
-						<Package class="h-4 w-4" />
-						Products
-					</a>
-					<a
-						href="##"
-						class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-					>
-						<Users class="h-4 w-4" />
-						Customers
-					</a>
-					<a
-						href="##"
-						class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
-					>
-						<LineChart class="h-4 w-4" />
-						Analytics
-					</a>
-				</nav>
+				<TablesNav tables={data.tables} />
 			</div>
 			<div class="mt-auto p-4">
 				<CreateTableButton />

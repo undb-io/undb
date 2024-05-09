@@ -8,8 +8,9 @@ import type { LayoutLoad } from './$types';
 
 export const ssr = false;
 
-export const load: LayoutLoad = async () => {
+export const load: LayoutLoad = async (event) => {
 	const tables = await trpc.table.list.query();
+	event.depends('undb:tables');
 
 	const createTableForm = await superValidate(
 		zod(
