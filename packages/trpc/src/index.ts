@@ -4,7 +4,7 @@ import { CommandBus, QueryBus } from '@undb/cqrs'
 import { container } from '@undb/di'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { createLogger } from '@undb/logger'
-import { GetTablesQuery } from '@undb/queries'
+import { GetTableQuery, GetTablesQuery, getTableQuery } from '@undb/queries'
 import { tableDTO } from '@undb/table'
 import { z } from 'zod'
 import pkg from '../package.json'
@@ -43,6 +43,10 @@ const tableRouter = t.router({
     .input(z.void())
     .output(tableDTO.array())
     .query(() => queryBus.execute(new GetTablesQuery())),
+  get: p
+    .input(getTableQuery)
+    .output(tableDTO)
+    .query(({ input }) => queryBus.execute(new GetTableQuery(input))),
   create: p
     .input(createTableCommand)
     .output(z.string())

@@ -1,1 +1,1 @@
-page
+<slot />

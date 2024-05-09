@@ -2,22 +2,22 @@ import { queryHandler } from '@undb/cqrs'
 import { singleton } from '@undb/di'
 import type { IQueryHandler } from '@undb/domain'
 import { createLogger } from '@undb/logger'
-import { GetTablesQuery } from '@undb/queries'
+import { GetTableQuery, type IGetTableQuery } from '@undb/queries'
 import { injectTableQueryService, type ITableDTO, type ITableQueryService } from '@undb/table'
 
-@queryHandler(GetTablesQuery)
+@queryHandler(GetTableQuery)
 @singleton()
-export class GetTablesQueryHandler implements IQueryHandler<any, any> {
-  private readonly logger = createLogger(GetTablesQueryHandler.name)
+export class GetTableQueryHandler implements IQueryHandler<any, ITableDTO> {
+  private readonly logger = createLogger(GetTableQueryHandler.name)
 
   constructor(
     @injectTableQueryService()
     private readonly svc: ITableQueryService
   ) {}
 
-  async execute(query: any): Promise<ITableDTO[]> {
+  async execute(query: IGetTableQuery): Promise<ITableDTO> {
     this.logger.debug(query, 'get tables query executed')
 
-    return this.svc.getTables()
+    return this.svc.getTable(query.tableId)
   }
 }

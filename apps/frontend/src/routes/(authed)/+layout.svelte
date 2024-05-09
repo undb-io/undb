@@ -19,8 +19,19 @@
 	import TablesNav from '$lib/components/blocks/tables-nav/tables-nav.svelte';
 	import type { LayoutData } from './$types';
 	import CreateTableDialog from '$lib/components/blocks/create-table/create-table-dialog.svelte';
+	import { onMount } from 'svelte';
+	import { handleKeydown } from '$lib/utils/hot-key';
 
 	export let data: LayoutData;
+
+	onMount(() => {
+    document.addEventListener("keydown", handleKeydown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeydown);
+    };
+  });
+
 </script>
 
 <div class="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">

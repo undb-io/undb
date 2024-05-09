@@ -13,13 +13,13 @@
 	import { toast } from 'svelte-sonner';
 	import { invalidate } from '$app/navigation';
 
-		// @ts-ignore
+	// @ts-ignore
 	export let data: SuperValidated<Infer<typeof createTableCommand>>;
 
 	const mutation = createMutation({
 		mutationFn: trpc.table.create.mutate,
 		onSuccess(data, variables, context) {
-			invalidate('undb:tables')
+			invalidate('undb:tables');
 			createTableOpened.set(false);
 			form.reset();
 		},
@@ -68,4 +68,4 @@
 	<Form.Button disabled={$mutation.isPending}>Submit</Form.Button>
 </form>
 
-<SuperDebug data={$formData} />
+<!-- <SuperDebug data={$formData} /> -->
