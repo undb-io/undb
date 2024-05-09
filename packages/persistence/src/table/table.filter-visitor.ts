@@ -9,7 +9,7 @@ import { eq } from 'drizzle-orm'
 import { AbstractDBVisitor } from '../abstract-db.visitor'
 import { tables } from '../tables'
 
-export class TableQueryVisitor extends AbstractDBVisitor<TableDo> implements ITableSpecVisitor {
+export class TableFilterVisitor extends AbstractDBVisitor<TableDo> implements ITableSpecVisitor {
   withId(id: TableIdSpecification): void {
     this.addCond(eq(tables.id, id.id.value))
   }

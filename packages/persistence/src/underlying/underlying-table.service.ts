@@ -1,7 +1,7 @@
 import { singleton } from '@undb/di'
 import type { TableDo } from '@undb/table'
-import type { IQueryBuilder } from '../../qb'
-import { injectQueryBuilder } from '../../qb.provider'
+import type { IQueryBuilder } from '../qb'
+import { injectQueryBuilder } from '../qb.provider'
 import { UnderlyingTable } from './underlying-table'
 import { UnderlyingTableFieldVisitor } from './underlying-table-field.visitor'
 

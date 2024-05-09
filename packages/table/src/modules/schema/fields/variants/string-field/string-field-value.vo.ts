@@ -9,11 +9,11 @@ export const mutateStringFieldValueSchema = z.union([
   }),
   z.object({
     type: z.literal('append'),
-    value: z.string(),
+    value: z.string().min(1),
   }),
   z.object({
     type: z.literal('prepend'),
-    value: z.string(),
+    value: z.string().min(1),
   }),
 ])
 

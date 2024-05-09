@@ -29,4 +29,4 @@ export function createQueryBuilder(db: Database): Kysely<unknown> {
   })
 }
 
-export type IQueryBuilder = Kysely<unknown>
+export type IQueryBuilder = Kysely<any>

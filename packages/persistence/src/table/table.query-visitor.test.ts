@@ -4,16 +4,16 @@ import Database from 'bun:sqlite'
 import { beforeEach, describe, expect, test } from 'bun:test'
 import { drizzle } from 'drizzle-orm/bun-sqlite'
 import { tables } from '../tables'
-import { TableQueryVisitor } from './table.query-visitor'
+import { TableFilterVisitor } from './table.filter-visitor'
 
 export const sqlite = new Database(':memory:')
 const db = drizzle(sqlite)
 
 describe('TableQueryVisitor', () => {
-  let visitor: TableQueryVisitor
+  let visitor: TableFilterVisitor
 
   beforeEach(() => {
-    visitor = new TableQueryVisitor()
+    visitor = new TableFilterVisitor()
   })
 
   test.each([

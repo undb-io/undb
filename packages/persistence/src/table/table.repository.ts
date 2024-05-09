@@ -4,10 +4,10 @@ import { TableIdSpecification, type ITableRepository, type TableDo, type TableId
 import type { Database } from '../db'
 import { injectDb } from '../db.provider'
 import { tables } from '../tables'
+import { UnderlyingTableService } from '../underlying/underlying-table.service'
 import { TableDbQuerySpecHandler } from './table-db.query-spec-handler'
 import { TableMapper } from './table.mapper'
 import { injectTableMapper } from './table.mapper.provider'
-import { UnderlyingTableService } from './underlying/underlying-table.service'
 
 @singleton()
 export class TableRepository implements ITableRepository {

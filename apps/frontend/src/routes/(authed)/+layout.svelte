@@ -24,14 +24,14 @@
 
 	export let data: LayoutData;
 
+
 	onMount(() => {
-    document.addEventListener("keydown", handleKeydown);
+		document.addEventListener('keydown', handleKeydown);
 
-    return () => {
-      document.removeEventListener("keydown", handleKeydown);
-    };
-  });
-
+		return () => {
+			document.removeEventListener('keydown', handleKeydown);
+		};
+	});
 </script>
 
 <div class="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">

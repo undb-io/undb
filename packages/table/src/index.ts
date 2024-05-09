@@ -1,6 +1,3 @@
-import 'core-js'
-import 'reflect-metadata'
-
 export * from './dto'
 export * from './modules'
 export * from './services'
