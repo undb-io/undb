@@ -1,6 +1,7 @@
-import { ValueObject } from '@undb/domain'
+import { Option, ValueObject } from '@undb/domain'
 import type { ICreateSchemaDTO } from './dto'
 import type { ISchemaDTO } from './dto/schema.dto'
+import type { FieldId } from './fields/field-id.vo'
 import { FieldFactory } from './fields/field.factory'
 import type { Field } from './fields/field.type'
 
@@ -25,5 +26,10 @@ export class Schema extends ValueObject {
 
   toJSON(): ISchemaDTO {
     return this.fields.map((field) => field.toJSON())
+  }
+
+  getFieldById(fieldId: FieldId): Option<Field> {
+    const field = this.fields.find((f) => f.id.equals(fieldId))
+    return Option(field)
   }
 }

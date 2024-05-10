@@ -1,8 +1,10 @@
 import type { Option } from '@undb/domain'
+import type { TableDo } from '../../../table.do'
 import type { FieldValue } from '../../schema'
 import type { FieldId } from '../../schema/fields/field-id.vo'
-import type { RecordId } from './record-id.vo'
-import type { RecordValuesVO } from './record-values.vo'
+import type { ICreateRecordDTO } from './dto'
+import { RecordIdVO, type RecordId } from './record-id.vo'
+import { RecordValuesVO } from './record-values.vo'
 
 export class RecordDO {
   constructor(
@@ -10,7 +12,18 @@ export class RecordDO {
     private readonly values: RecordValuesVO
   ) {}
 
+  static create(table: TableDo, dto: ICreateRecordDTO) {
+    return new RecordDO(RecordIdVO.create(dto.id), RecordValuesVO.create(table, dto.values))
+  }
+
   public flatten() {
+    return {
+      id: this.id.value,
+      ...this.values.toJSON(),
+    }
+  }
+
+  public insertValues() {
     return {
       id: this.id.value,
       ...this.values.toJSON(),

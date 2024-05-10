@@ -1,5 +1,5 @@
 import { initTRPC } from '@trpc/server'
-import { CreateTableCommand, createTableCommand } from '@undb/commands'
+import { CreateRecordCommand, CreateTableCommand, createRecordCommand, createTableCommand } from '@undb/commands'
 import { CommandBus, QueryBus } from '@undb/cqrs'
 import { container } from '@undb/di'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
@@ -55,6 +55,7 @@ const tableRouter = t.router({
 
 export const recordRouter = t.router({
   list: p.input(getRecordsQuery).query(({ input }) => queryBus.execute(new GetRecordsQuery(input))),
+  create: p.input(createRecordCommand).mutation(({ input }) => commandBus.execute(new CreateRecordCommand(input))),
 })
 
 export const route = t.router({

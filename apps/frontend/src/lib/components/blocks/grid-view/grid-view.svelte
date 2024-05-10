@@ -20,6 +20,7 @@
 	import type { ITableDTO } from '@undb/table';
 	import { createQuery } from '@tanstack/svelte-query';
 	import { trpc } from '$lib/trpc/client';
+	import CreateRecord from '../create-record/create-record.svelte';
 
 	export let t: ITableDTO;
 
@@ -27,7 +28,6 @@
 
 	$: getRecords = createQuery({
 		queryKey: ['records', tableId],
-		queryHash: tableId,
 		queryFn: () => trpc.record.list.query({ tableId })
 	});
 
@@ -183,7 +183,8 @@
 <div class="w-full">
 	{t.name}
 	<div class="mb-4 flex items-center gap-4">
-		<Input class="max-w-sm" placeholder="Filter emails..." type="text" bind:value={$filterValue} />
+		<!-- <Input class="max-w-sm" placeholder="Filter emails..." type="text" bind:value={$filterValue} /> -->
+		<CreateRecord table={t} />
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild let:builder>
 				<Button variant="outline" class="ml-auto" builders={[builder]}>
