@@ -1,26 +1,26 @@
 <script lang="ts">
 	import * as Sheet from '$lib/components/ui/sheet';
-	import type { ITableDTO } from '@undb/table';
-	import { createRecordSheetOpen } from './create-record.store';
+	import type { SuperValidated } from 'sveltekit-superforms';
 	import CreateRecord from './create-record.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
+	import { createRecordSheetOpen } from './create-record.store';
 
-	export let table: ITableDTO;
+	export let data: SuperValidated<any>;
 </script>
 
 <Sheet.Root bind:open={$createRecordSheetOpen}>
-	<Sheet.Content class="flex flex-col" transitionConfig={{ duration: 50 }}>
+	<Sheet.Content class="flex flex-col sm:max-w-lg" transitionConfig={{ duration: 50 }}>
 		<Sheet.Header>
 			<Sheet.Title>Create Record</Sheet.Title>
 		</Sheet.Header>
 
 		<div class="flex-1">
-			<CreateRecord {table} />
+			<CreateRecord {data} />
 		</div>
 
 		<Sheet.Footer>
-			<Button variant="outline" on:click={() => ($createRecordSheetOpen = false)}>Cancel</Button>
-			<Button>Create</Button>
+			<Button variant="outline" type="button" on:click={() => ($createRecordSheetOpen = false)}>Cancel</Button>
+			<Button type="submit" form="createRecord">Create</Button>
 		</Sheet.Footer>
 	</Sheet.Content>
 </Sheet.Root>

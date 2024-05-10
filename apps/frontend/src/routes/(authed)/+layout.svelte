@@ -21,9 +21,14 @@
 	import CreateTableDialog from '$lib/components/blocks/create-table/create-table-dialog.svelte';
 	import { onMount } from 'svelte';
 	import { handleKeydown } from '$lib/utils/hot-key';
+	import { goto } from '$app/navigation';
+  import { page } from '$app/stores'
 
 	export let data: LayoutData;
 
+  if (data.tables.length !== 0 && !$page.params.tableId) {
+    goto(`/t/${data.tables[0].id}`, { replaceState: true })
+  }
 
 	onMount(() => {
 		document.addEventListener('keydown', handleKeydown);
@@ -143,9 +148,7 @@
 				</DropdownMenu.Content>
 			</DropdownMenu.Root>
 		</header>
-		<main class="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-			<slot />
-		</main>
+		<slot />
 	</div>
 </div>
 

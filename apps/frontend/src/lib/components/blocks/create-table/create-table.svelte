@@ -2,30 +2,28 @@
 	import * as Form from '$lib/components/ui/form';
 	import { trpc } from '$lib/trpc/client.js';
 	import { createMutation } from '@tanstack/svelte-query';
-	import { type SuperValidated, type Infer, superForm } from 'sveltekit-superforms';
+	import { type SuperValidated, superForm } from 'sveltekit-superforms';
 	import { createTableCommand } from '@undb/commands';
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Input } from '$lib/components/ui/input';
 	import { createTableOpened } from './create-table.store';
-	import SuperDebug from 'sveltekit-superforms';
 	import Button from '$lib/components/ui/button/button.svelte';
 	import CreateSchema from './create-schema.svelte';
 	import { toast } from 'svelte-sonner';
 	import { invalidate } from '$app/navigation';
 	import { goto } from '$app/navigation';
 
-	// @ts-ignore
-	export let data: SuperValidated<Infer<typeof createTableCommand>>;
+	export let data: SuperValidated<any>;
 
 	const mutation = createMutation({
 		mutationFn: trpc.table.create.mutate,
-		async onSuccess(data, variables, context) {
+		async onSuccess(data) {
 			invalidate('undb:tables');
 			await goto(`/t/${data}`);
 			createTableOpened.set(false);
 			form.reset();
 		},
-		onError(error, variables, context) {
+		onError(error) {
 			toast.error(error.message);
 		}
 	});
@@ -47,7 +45,7 @@
 	const addField = () => {
 		$formData.schema = [
 			...$formData.schema,
-			{ type: 'string', name: 'field' + ($formData.schema.length + 1) }
+			{ type: 'number', name: 'field' + ($formData.schema.length + 1) }
 		];
 	};
 </script>

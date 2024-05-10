@@ -1,35 +1,48 @@
-import { Option, ValueObject } from '@undb/domain'
-import type { ICreateSchemaDTO } from './dto'
-import type { ISchemaDTO } from './dto/schema.dto'
-import type { FieldId } from './fields/field-id.vo'
-import { FieldFactory } from './fields/field.factory'
-import type { Field } from './fields/field.type'
+import { Option,ValueObject } from "@undb/domain";
+import { z,type ZodRawShape } from "zod";
+import type { ICreateSchemaDTO } from "./dto";
+import type { ISchemaDTO } from "./dto/schema.dto";
+import type { FieldId } from "./fields/field-id.vo";
+import { FieldFactory } from "./fields/field.factory";
+import type { Field } from "./fields/field.type";
 
 export class Schema extends ValueObject {
   private constructor(public readonly fields: Field[]) {
-    super(fields)
+    super(fields);
   }
 
   static create(dto: ICreateSchemaDTO): Schema {
-    const fields = dto.map((field) => FieldFactory.create(field))
-    return new Schema(fields)
+    const fields = dto.map((field) => FieldFactory.create(field));
+    return new Schema(fields);
   }
 
   static fromJSON(dto: ISchemaDTO): Schema {
-    const fields = dto.map((field) => FieldFactory.fromJSON(field))
-    return new Schema(fields)
+    const fields = dto.map((field) => FieldFactory.fromJSON(field));
+    return new Schema(fields);
   }
 
   *[Symbol.iterator]() {
-    yield* this.fields
+    yield* this.fields;
+  }
+
+  get valuesSchema() {
+    const schema: ZodRawShape = this.fields.reduce(
+      (acc, field) => {
+        acc[field.id.value] = field.valueSchema;
+        return acc;
+      },
+      {} as ZodRawShape,
+    );
+
+    return z.object(schema);
   }
 
   toJSON(): ISchemaDTO {
-    return this.fields.map((field) => field.toJSON())
+    return this.fields.map((field) => field.toJSON());
   }
 
   getFieldById(fieldId: FieldId): Option<Field> {
-    const field = this.fields.find((f) => f.id.equals(fieldId))
-    return Option(field)
+    const field = this.fields.find((f) => f.id.equals(fieldId));
+    return Option(field);
   }
 }

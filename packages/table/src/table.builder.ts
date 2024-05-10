@@ -1,5 +1,5 @@
 import { container, inject, injectable, singleton } from '@undb/di'
-import { createTableDTO, type ICreateTableDTO } from './dto'
+import { createTableDTO, type ICreateTableDTO, type ITableDTO } from './dto'
 import type { ICreateSchemaDTO } from './modules/schema/dto/create-schema.dto'
 import type { ISchemaDTO } from './modules/schema/dto/schema.dto'
 import { Schema } from './modules/schema/schema.vo'
@@ -70,6 +70,10 @@ export class TableCreator {
   create(dto: ICreateTableDTO): TableDo {
     dto = createTableDTO.parse(dto)
     return this.builder.setId(dto.id).setName(dto.name).createSchema(dto.schema).build()
+  }
+
+  fromJSON(dto: ITableDTO): TableDo {
+    return this.builder.setId(dto.id).setName(dto.name).setSchema(dto.schema).build()
   }
 }
 

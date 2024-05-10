@@ -16,11 +16,9 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { cn } from '$lib/utils.js';
-	import { Input } from '$lib/components/ui/input/index.js';
 	import type { ITableDTO } from '@undb/table';
 	import { createQuery } from '@tanstack/svelte-query';
 	import { trpc } from '$lib/trpc/client';
-	import CreateRecord from '../create-record/create-record.svelte';
 	import CreateRecordButton from '../create-record/create-record-button.svelte';
 
 	export let t: ITableDTO;
@@ -182,10 +180,9 @@
 </script>
 
 <div class="w-full">
-	{t.name}
 	<div class="mb-4 flex items-center gap-4">
 		<!-- <Input class="max-w-sm" placeholder="Filter emails..." type="text" bind:value={$filterValue} /> -->
-		<CreateRecordButton  />
+		<CreateRecordButton />
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild let:builder>
 				<Button variant="outline" class="ml-auto" builders={[builder]}>

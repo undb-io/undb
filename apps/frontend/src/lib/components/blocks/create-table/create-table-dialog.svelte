@@ -5,7 +5,7 @@
 	import CreateTable from './create-table.svelte';
 	import { createTableOpened } from './create-table.store';
 
-	export let data: SuperValidated<Infer<typeof createTableCommand>>;
+	export let data: SuperValidated<any>;
 </script>
 
 <Dialog.Root open={$createTableOpened} onOpenChange={(open) => createTableOpened.set(open)}>
