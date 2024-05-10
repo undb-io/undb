@@ -21,6 +21,7 @@
 	import { createQuery } from '@tanstack/svelte-query';
 	import { trpc } from '$lib/trpc/client';
 	import CreateRecord from '../create-record/create-record.svelte';
+	import CreateRecordButton from '../create-record/create-record-button.svelte';
 
 	export let t: ITableDTO;
 
@@ -184,7 +185,7 @@
 	{t.name}
 	<div class="mb-4 flex items-center gap-4">
 		<!-- <Input class="max-w-sm" placeholder="Filter emails..." type="text" bind:value={$filterValue} /> -->
-		<CreateRecord table={t} />
+		<CreateRecordButton  />
 		<DropdownMenu.Root>
 			<DropdownMenu.Trigger asChild let:builder>
 				<Button variant="outline" class="ml-auto" builders={[builder]}>

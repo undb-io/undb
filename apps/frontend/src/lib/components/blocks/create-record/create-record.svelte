@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Button from '$lib/components/ui/button/button.svelte';
 	import { trpc } from '$lib/trpc/client';
 	import { createMutation, useQueryClient } from '@tanstack/svelte-query';
 	import type { ITableDTO } from '@undb/table';
@@ -28,4 +27,4 @@
 	};
 </script>
 
-<Button on:click={createRecord}>Create Record</Button>
+create record

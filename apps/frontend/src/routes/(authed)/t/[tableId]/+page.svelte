@@ -1,4 +1,6 @@
 <script lang="ts">
+	import CreateRecordSheet from '$lib/components/blocks/create-record/create-record-sheet.svelte';
+	import CreateRecord from '$lib/components/blocks/create-record/create-record.svelte';
 	import GridView from '$lib/components/blocks/grid-view/grid-view.svelte';
 	import type { PageData } from './$types';
 
@@ -6,3 +8,4 @@
 </script>
 
 <GridView t={data.table} />
+<CreateRecordSheet table={data.table} />
