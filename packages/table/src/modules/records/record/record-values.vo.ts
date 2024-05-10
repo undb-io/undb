@@ -1,6 +1,9 @@
 import { Option, ValueObject } from '@undb/domain'
+import { z } from 'zod'
 import type { FieldValue } from '../../schema'
-import type { FieldId, IFieldId } from '../../schema/fields/field-id.vo'
+import { fieldId, type FieldId, type IFieldId } from '../../schema/fields/field-id.vo'
+
+export const recordValues = z.record(fieldId, z.any())
 
 export class RecordValuesVO extends ValueObject {
   #map: Map<IFieldId, FieldValue>

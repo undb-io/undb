@@ -1,3 +1,4 @@
+export * from './dto'
 export * from './record-id.vo'
 export * from './record-values.vo'
 export * from './record-visitor.interface'

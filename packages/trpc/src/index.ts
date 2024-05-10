@@ -4,7 +4,7 @@ import { CommandBus, QueryBus } from '@undb/cqrs'
 import { container } from '@undb/di'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
 import { createLogger } from '@undb/logger'
-import { GetTableQuery, GetTablesQuery, getTableQuery } from '@undb/queries'
+import { GetRecordsQuery, GetTableQuery, GetTablesQuery, getRecordsQuery, getTableQuery } from '@undb/queries'
 import { tableDTO } from '@undb/table'
 import { z } from 'zod'
 import pkg from '../package.json'
@@ -53,8 +53,13 @@ const tableRouter = t.router({
     .mutation(({ input }) => commandBus.execute(new CreateTableCommand(input))),
 })
 
+export const recordRouter = t.router({
+  list: p.input(getRecordsQuery).query(({ input }) => queryBus.execute(new GetRecordsQuery(input))),
+})
+
 export const route = t.router({
   table: tableRouter,
+  record: recordRouter,
 })
 
 export type AppRouter = typeof route

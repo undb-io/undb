@@ -1,6 +1,5 @@
 import { Ok, type Result } from '@undb/domain'
-import type { RecordDO } from '../../../../records'
-import type { IRecordVisitor } from '../../../../records/record/record-visitor.interface'
+import type { IRecordVisitor, RecordDO } from '../../../../records'
 import { RecordComositeSpecification } from '../../../../records/record/record.composite-specification'
 import type { FieldId } from '../../field-id.vo'
 import { StringFieldValue } from './string-field-value.vo'
@@ -8,7 +7,7 @@ import { StringFieldValue } from './string-field-value.vo'
 export class StringEqual extends RecordComositeSpecification {
   constructor(
     readonly values: StringFieldValue,
-    fieldId: FieldId
+    readonly fieldId: FieldId
   ) {
     super(fieldId)
   }

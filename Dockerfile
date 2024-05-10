@@ -13,22 +13,30 @@ RUN cd /temp/dev && bun install --frozen-lockfile
 FROM base AS prerelease
 COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
+RUN mkdir .undb
 
 ENV NODE_ENV=production
 ENV PORT=3000
 RUN bun run build
 
-FROM oven/bun:1.1-alpine AS release
+# Add Tini init-system
+ENV TINI_VERSION v0.19.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static /tini
+RUN chmod +x /tini
+
+FROM gcr.io/distroless/base:nonroot AS release
 
 ENV NODE_ENV=production
 ENV PORT=3000
 
 WORKDIR /usr/src/app
 COPY --from=prerelease /usr/src/app/apps/backend/undb .
-RUN mkdir .undb
+COPY --from=prerelease /usr/src/app/.undb ./.undb
 COPY --from=prerelease /usr/src/app/apps/backend/drizzle ./drizzle
 COPY --from=prerelease /usr/src/app/apps/frontend/dist ./dist
+COPY --from=prerelease /tini /tini
 
 # run the app
 EXPOSE 3000/tcp
+ENTRYPOINT ["/tini", "--"]
 CMD [ "./undb" ]

@@ -1,1 +1,1 @@
-export * from './record.repository'
+export * from './record.query-repository'

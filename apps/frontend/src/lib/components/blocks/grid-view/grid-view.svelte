@@ -18,8 +18,20 @@
 	import { cn } from '$lib/utils.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import type { ITableDTO } from '@undb/table';
+	import { createQuery } from '@tanstack/svelte-query';
+	import { trpc } from '$lib/trpc/client';
 
 	export let t: ITableDTO;
+
+	$: tableId = t.id;
+
+	$: getRecords = createQuery({
+		queryKey: ['records', tableId],
+		queryHash: tableId,
+		queryFn: () => trpc.record.list.query({ tableId })
+	});
+
+	$: console.log($getRecords.data);
 
 	type Payment = {
 		id: string;
