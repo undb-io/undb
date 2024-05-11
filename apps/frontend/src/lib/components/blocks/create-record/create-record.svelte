@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form';
+	import FieldIcon from '$lib/components/blocks/field-icon/field-icon.svelte';
 	import { getTable } from '$lib/store/table.store';
 	import { trpc } from '$lib/trpc/client';
 	import { createMutation, useQueryClient } from '@tanstack/svelte-query';
@@ -50,7 +51,13 @@
 	{#each $table.schema.fields as field}
 		<Form.Field {form} name={field.id.value}>
 			<Form.Control let:attrs>
-				<Form.Label>{field.name.value}</Form.Label>
+				<Form.Label class="flex items-center gap-2">
+					<FieldIcon type={field.type} class="w-4 h-4" />
+					<span>{field.name.value}</span>
+          {#if field.required}
+					  <span class="text-red-500">*</span>
+          {/if}
+				</Form.Label>
 				<FieldControl {...attrs} bind:value={$formData[field.id.value]} {field} />
 			</Form.Control>
 			<Form.FieldErrors />

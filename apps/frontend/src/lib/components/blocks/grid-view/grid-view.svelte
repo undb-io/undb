@@ -3,7 +3,7 @@
 	import { writable } from 'svelte/store';
 	import DataTableCheckbox from './grid-view-checkbox.svelte';
 	import * as Table from '$lib/components/ui/table/index.js';
-	import { addSelectedRows } from 'svelte-headless-table/plugins';
+	import { addResizedColumns, addSelectedRows } from 'svelte-headless-table/plugins';
 	import { cn } from '$lib/utils.js';
 	import type { IRecordsDTO } from '@undb/table';
 	import { createQuery } from '@tanstack/svelte-query';
@@ -11,6 +11,7 @@
 	import CreateRecordButton from '../create-record/create-record-button.svelte';
 	import { getTable } from '$lib/store/table.store';
 	import GridViewActions from './grid-view-actions.svelte';
+	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
 
 	const t = getTable();
 
@@ -27,12 +28,14 @@
 	$: records, data.set(records.map((r) => ({ id: r.id, ...r.values })));
 
 	const table = createTable(data, {
-		select: addSelectedRows()
+		select: addSelectedRows(),
+		resize: addResizedColumns()
 	});
 
 	$: columns =
 		table.createColumns([
-			table.display({
+			table.column({
+				accessor: 'select',
 				header: (_, { pluginStates }) => {
 					const { allPageRowsSelected } = pluginStates.select;
 					return createRender(DataTableCheckbox, {
@@ -46,6 +49,12 @@
 					return createRender(DataTableCheckbox, {
 						checked: isSelected
 					});
+				},
+				plugins: {
+					resize: {
+						initialWidth: 40,
+						disable: true
+					}
 				}
 			}),
 			...($t.schema.fields ?? []).map((field) => {
@@ -59,6 +68,12 @@
 				accessor: ({ id }) => id,
 				cell: (item) => {
 					return createRender(GridViewActions, { id: item.value });
+				},
+				plugins: {
+					resize: {
+						initialWidth: 50,
+						disable: true
+					}
 				}
 			})
 		]) ?? [];
@@ -88,7 +103,11 @@
 							{#each headerRow.cells as cell (cell.id)}
 								<Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
 									<Table.Head {...attrs} class={cn('[&:has([role=checkbox])]:pl-3')}>
-										<Render of={cell.render()} />
+										{#if cell.id === 'select' && !$data.length}
+											<Checkbox checked={false} disabled />
+										{:else}
+											<Render of={cell.render()} />
+										{/if}
 									</Table.Head>
 								</Subscribe>
 							{/each}

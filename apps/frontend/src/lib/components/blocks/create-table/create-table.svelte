@@ -7,7 +7,6 @@
 	import { zodClient } from 'sveltekit-superforms/adapters';
 	import { Input } from '$lib/components/ui/input';
 	import { createTableOpened } from './create-table.store';
-	import Button from '$lib/components/ui/button/button.svelte';
 	import CreateSchema from './create-schema.svelte';
 	import { toast } from 'svelte-sonner';
 	import { invalidate } from '$app/navigation';
@@ -41,13 +40,6 @@
 	});
 
 	const { form: formData, enhance } = form;
-
-	const addField = () => {
-		$formData.schema = [
-			...$formData.schema,
-			{ type: 'number', name: 'field' + ($formData.schema.length + 1) }
-		];
-	};
 </script>
 
 <form id="createTable" method="POST" use:enhance>
@@ -62,8 +54,6 @@
 	<Form.Fieldset {form} name="schema">
 		<CreateSchema />
 	</Form.Fieldset>
-
-	<Button on:click={addField}>Add Field</Button>
 </form>
 
 <!-- <SuperDebug data={$formData} /> -->
