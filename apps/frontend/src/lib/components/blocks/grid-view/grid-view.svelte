@@ -10,6 +10,7 @@
 	import { trpc } from '$lib/trpc/client';
 	import CreateRecordButton from '../create-record/create-record-button.svelte';
 	import { getTable } from '$lib/store/table.store';
+	import GridViewActions from './grid-view-actions.svelte';
 
 	const t = getTable();
 
@@ -31,14 +32,13 @@
 
 	$: columns =
 		table.createColumns([
-			table.column({
+			table.display({
 				header: (_, { pluginStates }) => {
 					const { allPageRowsSelected } = pluginStates.select;
 					return createRender(DataTableCheckbox, {
 						checked: allPageRowsSelected
 					});
 				},
-				accessor: 'select',
 				cell: ({ row }, { pluginStates }) => {
 					const { getRowState } = pluginStates.select;
 					const { isSelected } = getRowState(row);
@@ -53,6 +53,13 @@
 					header: field.name.value,
 					accessor: field.id.value
 				});
+			}),
+			table.column({
+				header: '',
+				accessor: ({ id }) => id,
+				cell: (item) => {
+					return createRender(GridViewActions, { id: item.value });
+				}
 			})
 		]) ?? [];
 

@@ -2,8 +2,16 @@
 	import Ellipsis from 'lucide-svelte/icons/ellipsis';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
+	import { copyToClipboard } from '@svelte-put/copy';
+	import { toast } from 'svelte-sonner';
+	import { confirmDeleteRecordOpen } from '$lib/store/record.store';
 
 	export let id: string;
+
+	const copy = async () => {
+		await copyToClipboard(id);
+		toast.success('Copied record ID to clipboard');
+	};
 </script>
 
 <DropdownMenu.Root>
@@ -16,12 +24,15 @@
 	<DropdownMenu.Content>
 		<DropdownMenu.Group>
 			<DropdownMenu.Label>Actions</DropdownMenu.Label>
-			<DropdownMenu.Item on:click={() => navigator.clipboard.writeText(id)}>
-				Copy payment ID
-			</DropdownMenu.Item>
+			<DropdownMenu.Item on:click={copy}>Copy record ID</DropdownMenu.Item>
 		</DropdownMenu.Group>
 		<DropdownMenu.Separator />
-		<DropdownMenu.Item>View customer</DropdownMenu.Item>
+		<DropdownMenu.Item
+			on:click={() => ($confirmDeleteRecordOpen = true)}
+			class="text-red-500 data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500"
+		>
+			Delete Record
+		</DropdownMenu.Item>
 		<DropdownMenu.Item>View payment details</DropdownMenu.Item>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

@@ -19,24 +19,20 @@
 	import TablesNav from '$lib/components/blocks/tables-nav/tables-nav.svelte';
 	import type { LayoutData } from './$types';
 	import CreateTableDialog from '$lib/components/blocks/create-table/create-table-dialog.svelte';
-	import { onMount } from 'svelte';
-	import { handleKeydown } from '$lib/utils/hot-key';
 	import { goto } from '$app/navigation';
-  import { page } from '$app/stores'
+	import { page } from '$app/stores';
+	import { shortcut, type ShortcutEventDetail } from '@svelte-put/shortcut';
+	import { createTableOpened } from '$lib/components/blocks/create-table/create-table.store';
 
 	export let data: LayoutData;
 
-  if (data.tables.length !== 0 && !$page.params.tableId) {
-    goto(`/t/${data.tables[0].id}`, { replaceState: true })
-  }
+	function handleT(detail: ShortcutEventDetail) {
+		$createTableOpened = true;
+	}
 
-	onMount(() => {
-		document.addEventListener('keydown', handleKeydown);
-
-		return () => {
-			document.removeEventListener('keydown', handleKeydown);
-		};
-	});
+	if (data.tables.length !== 0 && !$page.params.tableId) {
+		goto(`/t/${data.tables[0].id}`, { replaceState: true });
+	}
 </script>
 
 <div class="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -153,3 +149,13 @@
 </div>
 
 <CreateTableDialog data={data.createTableForm} />
+
+<svelte:window
+	use:shortcut={{
+		trigger: {
+			key: 't',
+			modifier: ['ctrl', 'meta'],
+			callback: handleT
+		}
+	}}
+/>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Badge } from '$lib/components/ui/badge';
+	import { page } from '$app/stores';
 	import type { ITableDTO } from '@undb/table';
 	import { Database } from 'lucide-svelte';
 
@@ -10,7 +10,8 @@
 	{#each tables as table}
 		<a
 			href={`/t/${table.id}`}
-			class="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
+			data-active={table.id === $page.params.tableId}
+			class="text-muted-foreground hover:text-primary data-[active=true]:bg-primary data-[active=true]:text-primary-foreground flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
 		>
 			<Database class="h-4 w-4" />
 			{table.name}

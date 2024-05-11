@@ -18,7 +18,7 @@
 	const mutation = createMutation({
 		mutationFn: trpc.table.create.mutate,
 		async onSuccess(data) {
-			invalidate('undb:tables');
+			await invalidate('undb:tables');
 			await goto(`/t/${data}`);
 			createTableOpened.set(false);
 			form.reset();
