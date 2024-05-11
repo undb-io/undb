@@ -18,7 +18,7 @@
 	import CreateTableButton from '$lib/components/blocks/create-table/create-table-button.svelte';
 	import TablesNav from '$lib/components/blocks/tables-nav/tables-nav.svelte';
 	import type { LayoutData } from './$types';
-	import CreateTableDialog from '$lib/components/blocks/create-table/create-table-dialog.svelte';
+	import CreateTableSheet from '$lib/components/blocks/create-table/create-table-sheet.svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { shortcut, type ShortcutEventDetail } from '@svelte-put/shortcut';
@@ -148,7 +148,7 @@
 	</div>
 </div>
 
-<CreateTableDialog data={data.createTableForm} />
+<CreateTableSheet data={data.createTableForm} />
 
 <svelte:window
 	use:shortcut={{

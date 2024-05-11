@@ -50,7 +50,7 @@
 	};
 </script>
 
-<form method="POST" use:enhance>
+<form id="createTable" method="POST" use:enhance>
 	<Form.Field {form} name="name">
 		<Form.Control let:attrs>
 			<Form.Label>Name</Form.Label>
@@ -64,8 +64,6 @@
 	</Form.Fieldset>
 
 	<Button on:click={addField}>Add Field</Button>
-
-	<Form.Button disabled={$mutation.isPending}>Submit</Form.Button>
 </form>
 
 <!-- <SuperDebug data={$formData} /> -->
