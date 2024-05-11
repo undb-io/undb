@@ -1,8 +1,11 @@
+import { match } from 'ts-pattern'
 import { z } from 'zod'
 import { FieldIdVo } from '../../field-id.vo'
 import type { IFieldVisitor } from '../../field.visitor'
-import { AbstractField,baseFieldDTO,createBaseFieldDTO } from '../abstract-field.vo'
+import { AbstractField, baseFieldDTO, createBaseFieldDTO } from '../abstract-field.vo'
+import { StringEqual } from './string-field-value.specification'
 import { StringFieldValue } from './string-field-value.vo'
+import type { IStringFieldFilter } from './string-field.filter'
 
 export const STRING_TYPE = 'string' as const
 
@@ -39,5 +42,12 @@ export class StringField extends AbstractField<StringFieldValue> {
 
   override accept(visitor: IFieldVisitor): void {
     visitor.string(this)
+  }
+
+  override getSpec(filter: IStringFieldFilter) {
+    return match(filter)
+      .with({ op: 'eq' }, ({ value }) => new StringEqual(new StringFieldValue(value), this.id))
+      .with({ op: 'neq' }, ({ value }) => new StringEqual(new StringFieldValue(value), this.id).not())
+      .exhaustive()
   }
 }

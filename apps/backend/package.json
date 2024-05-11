@@ -4,7 +4,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun --watch src/index.ts",
-    "build": "bun build --compile --sourcemap src/index.ts --outfile undb"
+    "build": "bun build --compile --minify --sourcemap src/index.ts --outfile undb"
   },
   "dependencies": {
     "@elysiajs/cookie": "^0.8.0",

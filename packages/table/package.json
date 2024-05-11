@@ -14,6 +14,7 @@
     "@undb/di": "workspace:*",
     "@undb/logger": "workspace:*",
     "@undb/domain": "workspace:*",
+    "ts-pattern": "^5.1.1",
     "zod": "^3.23.6"
   }
 }

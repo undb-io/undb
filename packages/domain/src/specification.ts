@@ -75,7 +75,7 @@ class Or<T, V extends ISpecVisitor> extends CompositeSpecification<T, V> {
   }
 }
 
-class Not<T, V extends ISpecVisitor> extends CompositeSpecification<T, V> {
+export class Not<T, V extends ISpecVisitor> extends CompositeSpecification<T, V> {
   constructor(public readonly spec: ISpecification<T, V>) {
     super()
   }

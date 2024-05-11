@@ -1,4 +1,4 @@
-import { CompositeSpecification } from '@undb/domain'
+import { CompositeSpecification, Not } from '@undb/domain'
 import type { FieldId } from '../../schema/fields/field-id.vo'
 import type { IRecordVisitor } from './record-visitor.interface'
 import type { RecordDO } from './record.do'
@@ -8,3 +8,5 @@ export abstract class RecordComositeSpecification extends CompositeSpecification
     super()
   }
 }
+
+export type NotRecordComositeSpecification = Not<RecordDO, IRecordVisitor>

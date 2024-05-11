@@ -1,9 +1,13 @@
 import { ValueObject } from '@undb/domain'
-import { z,type ZodSchema } from 'zod'
+import { z, type ZodSchema } from 'zod'
+import type {
+  NotRecordComositeSpecification,
+  RecordComositeSpecification,
+} from '../../../records/record/record.composite-specification'
 import type { IFieldDTO } from '../dto/field.dto'
-import { FieldIdVo,fieldId,type FieldId } from '../field-id.vo'
-import { FieldNameVo,fieldName } from '../field-name.vo'
-import type { FieldType } from '../field.type'
+import { FieldIdVo, fieldId, type FieldId } from '../field-id.vo'
+import { FieldNameVo, fieldName } from '../field-name.vo'
+import type { FieldType, IFieldFilter } from '../field.type'
 import type { IFieldVisitor } from '../field.visitor'
 
 export const createBaseFieldDTO = z.object({
@@ -53,6 +57,8 @@ export abstract class AbstractField<V extends ValueObject> {
   validate(value: V) {
     return this.valueSchema.safeParse(value.unpack())
   }
+
+  abstract getSpec(filter: IFieldFilter): RecordComositeSpecification | NotRecordComositeSpecification
 
   abstract accept(visitor: IFieldVisitor): void
 

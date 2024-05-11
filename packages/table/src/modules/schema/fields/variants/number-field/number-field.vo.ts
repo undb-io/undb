@@ -1,8 +1,11 @@
+import { match } from 'ts-pattern'
 import { z } from 'zod'
 import { FieldIdVo } from '../../field-id.vo'
 import type { IFieldVisitor } from '../../field.visitor'
-import { AbstractField,baseFieldDTO,createBaseFieldDTO } from '../abstract-field.vo'
+import { AbstractField, baseFieldDTO, createBaseFieldDTO } from '../abstract-field.vo'
+import { NumberEqual } from './number-field-value.specification'
 import { NumberFieldValue } from './number-field-value.vo'
+import type { INumberFieldFilter } from './number-field.filter'
 
 export const NUMBER_TYPE = 'number' as const
 
@@ -39,5 +42,12 @@ export class NumberField extends AbstractField<NumberFieldValue> {
 
   override accept(visitor: IFieldVisitor): void {
     visitor.number(this)
+  }
+
+  override getSpec(filter: INumberFieldFilter) {
+    return match(filter)
+      .with({ op: 'eq' }, ({ value }) => new NumberEqual(new NumberFieldValue(value), this.id))
+      .with({ op: 'neq' }, ({ value }) => new NumberEqual(new NumberFieldValue(value), this.id).not())
+      .exhaustive()
   }
 }
