@@ -1,10 +1,9 @@
-import { TableDo, tableCreator, type ITableDTO } from '@undb/table';
-import { getContext, setContext } from 'svelte';
-import { writable, type Writable } from 'svelte/store';
+import { TableDo } from '@undb/table';
+import { getContext,setContext } from 'svelte';
+import { type Writable } from 'svelte/store';
 
-export function setTable(table: ITableDTO) {
-	const t = tableCreator.fromJSON(table);
-	setContext('table', writable(t));
+export function setTable(table: Writable<TableDo>) {
+	setContext('table', table);
 }
 
 export function getTable() {

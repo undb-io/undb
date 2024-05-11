@@ -6,5 +6,5 @@
 	export let data: PageData;
 </script>
 
-<GridView t={data.table} />
+<GridView />
 <CreateRecordSheet data={data.createRecord} />
