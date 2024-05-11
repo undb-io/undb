@@ -9,4 +9,5 @@ export abstract class RecordComositeSpecification extends CompositeSpecification
   }
 }
 
-export type NotRecordComositeSpecification = Not<RecordDO, IRecordVisitor>
+export type INotRecordComositeSpecification = Not<RecordDO, IRecordVisitor>
+export type IRecordComositeSpecification = CompositeSpecification<RecordDO, IRecordVisitor>

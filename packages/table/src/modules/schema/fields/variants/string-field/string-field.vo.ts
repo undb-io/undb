@@ -1,3 +1,4 @@
+import { Option } from '@undb/domain'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
 import { FieldIdVo } from '../../field-id.vo'
@@ -45,9 +46,11 @@ export class StringField extends AbstractField<StringFieldValue> {
   }
 
   override getSpec(filter: IStringFieldFilter) {
-    return match(filter)
+    const spec = match(filter)
       .with({ op: 'eq' }, ({ value }) => new StringEqual(new StringFieldValue(value), this.id))
       .with({ op: 'neq' }, ({ value }) => new StringEqual(new StringFieldValue(value), this.id).not())
-      .exhaustive()
+      .otherwise(() => null)
+
+    return Option(spec)
   }
 }

@@ -13,6 +13,9 @@ export abstract class AbstractDBVisitor<T> implements IAbastractDBVisitor, ISpec
   }
 
   #isNot = false
+  setIsNot() {
+    this.#isNot = true
+  }
 
   get cond(): SQL | undefined {
     const cond = and(...this.#conds)
@@ -27,13 +30,23 @@ export abstract class AbstractDBVisitor<T> implements IAbastractDBVisitor, ISpec
     return and(cond)
   }
 
-  or(left: ISpecification<T, ISpecVisitor>, right: ISpecification<T, ISpecVisitor>): this {
-    const Visitor = Object.getPrototypeOf(this).constructor as new () => AbstractDBVisitor<T>
-
-    const lv = new Visitor()
+  and(left: ISpecification<T, ISpecVisitor>, right: ISpecification<T, ISpecVisitor>): this {
+    const lv = this.clone()
     left.accept(lv)
 
-    const rv = new Visitor()
+    const rv = this.clone()
+    right.accept(rv)
+
+    this.addCond(and(lv.cond!, rv.cond!))
+
+    return this
+  }
+
+  or(left: ISpecification<T, ISpecVisitor>, right: ISpecification<T, ISpecVisitor>): this {
+    const lv = this.clone()
+    left.accept(lv)
+
+    const rv = this.clone()
     right.accept(rv)
 
     this.addCond(or(lv.cond!, rv.cond!))
@@ -41,8 +54,18 @@ export abstract class AbstractDBVisitor<T> implements IAbastractDBVisitor, ISpec
     return this
   }
 
-  not(): this {
-    this.#isNot = true
+  not(spec: ISpecification<T, ISpecVisitor>): this {
+    const v = this.clone()
+    v.setIsNot()
+
+    spec.accept(v)
+    this.addCond(v.cond)
+
     return this
+  }
+
+  clone(): this {
+    const Visitor = Object.getPrototypeOf(this).constructor as new () => AbstractDBVisitor<T>
+    return new Visitor() as this
   }
 }

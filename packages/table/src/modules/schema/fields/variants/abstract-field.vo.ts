@@ -1,8 +1,8 @@
-import { ValueObject } from '@undb/domain'
+import { Option, ValueObject } from '@undb/domain'
 import { z, type ZodSchema } from 'zod'
 import type {
-  NotRecordComositeSpecification,
-  RecordComositeSpecification,
+  INotRecordComositeSpecification,
+  IRecordComositeSpecification,
 } from '../../../records/record/record.composite-specification'
 import type { IFieldDTO } from '../dto/field.dto'
 import { FieldIdVo, fieldId, type FieldId } from '../field-id.vo'
@@ -58,7 +58,7 @@ export abstract class AbstractField<V extends ValueObject> {
     return this.valueSchema.safeParse(value.unpack())
   }
 
-  abstract getSpec(filter: IFieldFilter): RecordComositeSpecification | NotRecordComositeSpecification
+  abstract getSpec(filter: IFieldFilter): Option<IRecordComositeSpecification | INotRecordComositeSpecification>
 
   abstract accept(visitor: IFieldVisitor): void
 

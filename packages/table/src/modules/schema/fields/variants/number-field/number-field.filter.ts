@@ -14,6 +14,30 @@ export const numberFieldFilter = z.union([
       value: z.number(),
     })
     .merge(baseFilter),
+  z
+    .object({
+      op: z.literal('gt'),
+      value: z.number(),
+    })
+    .merge(baseFilter),
+  z
+    .object({
+      op: z.literal('gte'),
+      value: z.number(),
+    })
+    .merge(baseFilter),
+  z
+    .object({
+      op: z.literal('lt'),
+      value: z.number(),
+    })
+    .merge(baseFilter),
+  z
+    .object({
+      op: z.literal('lte'),
+      value: z.number(),
+    })
+    .merge(baseFilter),
 ])
 
 export type INumberFieldFilter = z.infer<typeof numberFieldFilter>

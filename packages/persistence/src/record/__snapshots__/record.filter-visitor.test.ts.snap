@@ -1,0 +1,22 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`record.filter-visitor should get query 1`] = `"select * from "table" where ("field1" = ? and "field2" > ?)"`;
+
+exports[`record.filter-visitor should get query 2`] = `
+[
+  "value1",
+  1,
+]
+`;
+
+exports[`record.filter-visitor should get query 3`] = `"select * from "table" where (("field1" = ? or ("field1" = ? and "field2" > ?)) or ("field1" = ? or "field2" < ?))"`;
+
+exports[`record.filter-visitor should get query 4`] = `
+[
+  "value1",
+  "value1",
+  1,
+  "value2",
+  2,
+]
+`;

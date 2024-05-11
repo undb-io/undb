@@ -2,8 +2,10 @@ import type { Option, Result } from 'oxide.ts'
 import { None, Ok, Some } from 'oxide.ts'
 
 export interface ISpecVisitor {
+  and(left: ISpecification, right: ISpecification): this
   or(left: ISpecification, right: ISpecification): this
-  not(): this
+  not(spec: ISpecification): this
+  clone(): this
 }
 
 export interface ISpecification<T = any, V extends ISpecVisitor = ISpecVisitor> {
@@ -49,7 +51,8 @@ class And<T, V extends ISpecVisitor> extends CompositeSpecification<T, V> {
   }
 
   accept(v: V): Result<void, string> {
-    return this.left.accept(v).and(this.right.accept(v))
+    v.and(this.left, this.right)
+    return Ok(undefined)
   }
 }
 
@@ -89,7 +92,8 @@ export class Not<T, V extends ISpecVisitor> extends CompositeSpecification<T, V>
   }
 
   accept(v: V): Result<void, string> {
-    return this.spec.accept(v.not())
+    v.not(this.spec)
+    return Ok(undefined)
   }
 }
 
@@ -123,4 +127,10 @@ export const or = <T, V extends ISpecVisitor>(
   }
 
   return Some(s)
+}
+
+export const orOptions = <T, V extends ISpecVisitor>(
+  ...specs: Option<CompositeSpecification<T, V>>[]
+): Option<CompositeSpecification<T, V>> => {
+  return or(...specs.filter((spec) => spec.isSome()).map((spec) => spec.unwrap()))
 }

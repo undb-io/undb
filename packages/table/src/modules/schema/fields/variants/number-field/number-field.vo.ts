@@ -1,9 +1,10 @@
+import { Option } from '@undb/domain'
 import { match } from 'ts-pattern'
 import { z } from 'zod'
 import { FieldIdVo } from '../../field-id.vo'
 import type { IFieldVisitor } from '../../field.visitor'
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from '../abstract-field.vo'
-import { NumberEqual } from './number-field-value.specification'
+import { NumberEqual, NumberGT, NumberGTE, NumberLT, NumberLTE } from './number-field-value.specification'
 import { NumberFieldValue } from './number-field-value.vo'
 import type { INumberFieldFilter } from './number-field.filter'
 
@@ -45,9 +46,15 @@ export class NumberField extends AbstractField<NumberFieldValue> {
   }
 
   override getSpec(filter: INumberFieldFilter) {
-    return match(filter)
+    const spec = match(filter)
       .with({ op: 'eq' }, ({ value }) => new NumberEqual(new NumberFieldValue(value), this.id))
       .with({ op: 'neq' }, ({ value }) => new NumberEqual(new NumberFieldValue(value), this.id).not())
-      .exhaustive()
+      .with({ op: 'gt' }, ({ value }) => new NumberGT(value, this.id))
+      .with({ op: 'gte' }, ({ value }) => new NumberGTE(value, this.id))
+      .with({ op: 'lt' }, ({ value }) => new NumberLT(value, this.id))
+      .with({ op: 'lte' }, ({ value }) => new NumberLTE(value, this.id))
+      .otherwise(() => null)
+
+    return Option(spec)
   }
 }
