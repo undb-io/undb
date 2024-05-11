@@ -1,7 +1,7 @@
 import { singleton } from '@undb/di'
 import type { Mapper } from '@undb/domain'
-import { injectTableBuilder, type ITableBuilder, type ITableDTO, type TableDo } from '@undb/table'
-import type { NewTable, Table } from '../tables'
+import { injectTableBuilder,type ITableBuilder,type ITableDTO,type TableDo } from '@undb/table'
+import type { NewTable,Table } from '../tables'
 
 @singleton()
 export class TableMapper implements Mapper<TableDo, NewTable, ITableDTO> {
@@ -15,6 +15,7 @@ export class TableMapper implements Mapper<TableDo, NewTable, ITableDTO> {
       .setId(entity.id)
       .setName(entity.name)
       .setSchema(entity.schema ?? [])
+      .setViews(entity.views ?? [])
       .build()
   }
 
@@ -23,6 +24,7 @@ export class TableMapper implements Mapper<TableDo, NewTable, ITableDTO> {
       id: domain.id.value,
       name: domain.name.value,
       schema: domain.schema.toJSON(),
+      views: domain.views.toJSON(),
     }
   }
 
@@ -31,6 +33,7 @@ export class TableMapper implements Mapper<TableDo, NewTable, ITableDTO> {
       id: entity.id,
       name: entity.name,
       schema: entity.schema ?? [],
+      views: entity.views ?? [],
     }
   }
 }

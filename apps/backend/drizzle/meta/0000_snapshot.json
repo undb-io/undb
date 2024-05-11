@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "b3204270-e4e9-4a2a-9b64-48f8ab653ed8",
+  "id": "ae84fcd2-1464-4fcf-924b-1829dfb73aa4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_table": {
@@ -23,6 +23,13 @@
         },
         "schema": {
           "name": "schema",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "views": {
+          "name": "views",
           "type": "text",
           "primaryKey": false,
           "notNull": false,

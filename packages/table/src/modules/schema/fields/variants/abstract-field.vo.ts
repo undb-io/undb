@@ -1,8 +1,9 @@
 import { ValueObject } from '@undb/domain'
-import { z, type ZodSchema } from 'zod'
+import { z,type ZodSchema } from 'zod'
 import type { IFieldDTO } from '../dto/field.dto'
-import { FieldIdVo, fieldId, type FieldId } from '../field-id.vo'
-import { FieldNameVo, fieldName } from '../field-name.vo'
+import { FieldIdVo,fieldId,type FieldId } from '../field-id.vo'
+import { FieldNameVo,fieldName } from '../field-name.vo'
+import type { FieldType } from '../field.type'
 import type { IFieldVisitor } from '../field.visitor'
 
 export const createBaseFieldDTO = z.object({
@@ -30,7 +31,7 @@ export abstract class AbstractField<V extends ValueObject> {
     this.required = dto.required
   }
 
-  abstract type: string
+  abstract type: FieldType
   /**
    * whether the field value is controlled by system
    */
@@ -59,7 +60,7 @@ export abstract class AbstractField<V extends ValueObject> {
     return {
       id: this.id.value,
       name: this.name.value,
-      type: this.type as 'string' | 'number',
+      type: this.type,
       required: this.required,
     }
   }

@@ -23,6 +23,7 @@
 	import { page } from '$app/stores';
 	import { shortcut, type ShortcutEventDetail } from '@svelte-put/shortcut';
 	import { createTableOpened } from '$lib/components/blocks/create-table/create-table.store';
+	import { cn } from '$lib/utils';
 
 	export let data: LayoutData;
 
@@ -48,11 +49,11 @@
 					<span class="sr-only">Toggle notifications</span>
 				</Button>
 			</div>
-			<div class="flex-1">
+			<div class={cn(data.tables.length ? 'flex-1' : '')}>
 				<TablesNav tables={data.tables} />
 			</div>
-			<div class="mt-auto p-4">
-				<CreateTableButton />
+			<div class={cn('p-4', data.tables.length ? 'mt-auto' : '')}>
+				<CreateTableButton variant={data.tables.length ? "outline": "default"} />
 			</div>
 		</div>
 	</div>

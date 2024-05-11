@@ -1,10 +1,10 @@
 import { z } from 'zod'
 import { FieldIdVo } from '../../field-id.vo'
 import type { IFieldVisitor } from '../../field.visitor'
-import { AbstractField, baseFieldDTO, createBaseFieldDTO } from '../abstract-field.vo'
+import { AbstractField,baseFieldDTO,createBaseFieldDTO } from '../abstract-field.vo'
 import { StringFieldValue } from './string-field-value.vo'
 
-export const STRING_TYPE = 'string'
+export const STRING_TYPE = 'string' as const
 
 export const createStringFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(STRING_TYPE),
