@@ -1,8 +1,8 @@
 <script lang="ts">
 	import * as Popover from '$lib/components/ui/popover/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import FieldPicker from '../field-picker/field-picker.svelte';
 	import { FilterIcon } from 'lucide-svelte';
+	import FiltersEditor from '../filters-editor/filters-editor.svelte';
 </script>
 
 <Popover.Root>
@@ -13,6 +13,6 @@
 		</Button>
 	</Popover.Trigger>
 	<Popover.Content class="w-80" align="start">
-		<FieldPicker />
+		<!-- <FiltersEditor /> -->
 	</Popover.Content>
 </Popover.Root>

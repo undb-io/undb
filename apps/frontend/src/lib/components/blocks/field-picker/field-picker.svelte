@@ -31,6 +31,7 @@
 <Popover.Root bind:open let:ids>
 	<Popover.Trigger asChild let:builder>
 		<Button
+			size="sm"
 			builders={[builder]}
 			variant="outline"
 			role="combobox"

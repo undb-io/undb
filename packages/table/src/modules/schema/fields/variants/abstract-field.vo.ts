@@ -5,6 +5,7 @@ import type {
   IRecordComositeSpecification,
 } from '../../../records/record/record.composite-specification'
 import type { IFieldDTO } from '../dto/field.dto'
+import type { IFieldFilterSchema, MaybeFieldFilterWithFieldId } from '../field-filter.type'
 import { FieldIdVo, fieldId, type FieldId } from '../field-id.vo'
 import { FieldNameVo, fieldName } from '../field-name.vo'
 import type { FieldType, IFieldFilter } from '../field.type'
@@ -61,6 +62,12 @@ export abstract class AbstractField<V extends ValueObject> {
   abstract getSpec(filter: IFieldFilter): Option<IRecordComositeSpecification | INotRecordComositeSpecification>
 
   abstract accept(visitor: IFieldVisitor): void
+
+  protected abstract get filterSchema(): IFieldFilterSchema
+
+  validateFilter(filter: MaybeFieldFilterWithFieldId) {
+    return this.filterSchema.safeParse(filter)
+  }
 
   toJSON(): IFieldDTO {
     return {

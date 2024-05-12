@@ -6,7 +6,7 @@ import type { IFieldVisitor } from '../../field.visitor'
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from '../abstract-field.vo'
 import { StringEqual } from './string-field-value.specification'
 import { StringFieldValue } from './string-field-value.vo'
-import type { IStringFieldFilter } from './string-field.filter'
+import { stringFieldFilter, type IStringFieldFilter, type IStringFieldFilterSchema } from './string-field.filter'
 
 export const STRING_TYPE = 'string' as const
 
@@ -52,5 +52,9 @@ export class StringField extends AbstractField<StringFieldValue> {
       .otherwise(() => null)
 
     return Option(spec)
+  }
+
+  protected override get filterSchema(): IStringFieldFilterSchema {
+    return stringFieldFilter
   }
 }

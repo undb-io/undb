@@ -16,4 +16,5 @@ export const stringFieldFilter = z.union([
     .merge(baseFilter),
 ])
 
+export type IStringFieldFilterSchema = typeof stringFieldFilter
 export type IStringFieldFilter = z.infer<typeof stringFieldFilter>

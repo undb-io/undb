@@ -7,7 +7,7 @@ OptionType {
     "left": StringEqual {
       "fieldId": {
         "props": {
-          "value": "field1",
+          "value": "fld_1",
         },
       },
       "values": StringFieldValue {
@@ -19,7 +19,7 @@ OptionType {
     "right": NumberGT {
       "fieldId": {
         "props": {
-          "value": "field2",
+          "value": "fld_2",
         },
       },
       "value": 1,
@@ -36,7 +36,7 @@ OptionType {
       "left": StringEqual {
         "fieldId": {
           "props": {
-            "value": "field1",
+            "value": "fld_1",
           },
         },
         "values": StringFieldValue {
@@ -49,7 +49,7 @@ OptionType {
         "left": StringEqual {
           "fieldId": {
             "props": {
-              "value": "field1",
+              "value": "fld_1",
             },
           },
           "values": StringFieldValue {
@@ -61,7 +61,7 @@ OptionType {
         "right": NumberGT {
           "fieldId": {
             "props": {
-              "value": "field2",
+              "value": "fld_2",
             },
           },
           "value": 1,
@@ -72,7 +72,7 @@ OptionType {
       "left": StringEqual {
         "fieldId": {
           "props": {
-            "value": "field1",
+            "value": "fld_1",
           },
         },
         "values": StringFieldValue {
@@ -84,7 +84,7 @@ OptionType {
       "right": NumberLT {
         "fieldId": {
           "props": {
-            "value": "field2",
+            "value": "fld_2",
           },
         },
         "value": 2,

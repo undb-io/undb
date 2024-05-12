@@ -6,7 +6,7 @@ import type { IFieldVisitor } from '../../field.visitor'
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from '../abstract-field.vo'
 import { NumberEqual, NumberGT, NumberGTE, NumberLT, NumberLTE } from './number-field-value.specification'
 import { NumberFieldValue } from './number-field-value.vo'
-import type { INumberFieldFilter } from './number-field.filter'
+import { numberFieldFilter, type INumberFieldFilter, type INumberFieldFilterSchema } from './number-field.filter'
 
 export const NUMBER_TYPE = 'number' as const
 
@@ -56,5 +56,9 @@ export class NumberField extends AbstractField<NumberFieldValue> {
       .otherwise(() => null)
 
     return Option(spec)
+  }
+
+  protected override get filterSchema(): INumberFieldFilterSchema {
+    return numberFieldFilter
   }
 }

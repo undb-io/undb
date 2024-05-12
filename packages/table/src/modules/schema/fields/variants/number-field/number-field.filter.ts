@@ -40,4 +40,5 @@ export const numberFieldFilter = z.union([
     .merge(baseFilter),
 ])
 
+export type INumberFieldFilterSchema = typeof numberFieldFilter
 export type INumberFieldFilter = z.infer<typeof numberFieldFilter>

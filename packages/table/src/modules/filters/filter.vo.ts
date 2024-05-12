@@ -1,10 +1,10 @@
 import { ValueObject } from '@undb/domain'
 import type { Schema } from '../schema'
-import type { IFilterGroup } from './filter.type'
+import type { IRootFilter } from './filter.type'
 import { getSpec } from './filter.util'
 
-export class Filter extends ValueObject<IFilterGroup> {
-  constructor(value: IFilterGroup) {
+export class Filter extends ValueObject<IRootFilter> {
+  constructor(value: IRootFilter) {
     super(value)
   }
 
