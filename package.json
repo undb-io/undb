@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "better-sqlite3": "^9.6.0",
-    "drizzle-kit": "^0.20.17",
+    "drizzle-kit": "^0.21.1",
     "npm-run-all2": "^6.1.2",
     "prettier": "^3.2.5",
     "turbo": "latest"

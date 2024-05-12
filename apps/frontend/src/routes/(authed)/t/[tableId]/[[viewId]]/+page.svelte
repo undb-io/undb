@@ -21,7 +21,7 @@
 	use:shortcut={{
 		trigger: {
 			key: 'r',
-			modifier: ['ctrl', 'meta'],
+			modifier: ['ctrl'],
 			callback: handleR
 		}
 	}}

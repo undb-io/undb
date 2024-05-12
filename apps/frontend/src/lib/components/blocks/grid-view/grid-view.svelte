@@ -8,10 +8,10 @@
 	import type { IRecordsDTO } from '@undb/table';
 	import { createQuery } from '@tanstack/svelte-query';
 	import { trpc } from '$lib/trpc/client';
-	import CreateRecordButton from '../create-record/create-record-button.svelte';
 	import { getTable } from '$lib/store/table.store';
 	import GridViewActions from './grid-view-actions.svelte';
 	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
+	import TableTools from '../table-tools/table-tools.svelte';
 
 	const t = getTable();
 
@@ -91,8 +91,8 @@
 </script>
 
 <div class="w-full">
-	<div class="mb-4 flex items-center gap-4">
-		<CreateRecordButton />
+	<div class="mb-4">
+		<TableTools />
 	</div>
 	<div class="rounded-md border">
 		<Table.Root {...$tableAttrs}>
