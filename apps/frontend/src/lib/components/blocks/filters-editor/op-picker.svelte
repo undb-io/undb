@@ -6,21 +6,19 @@
 	import * as Popover from '$lib/components/ui/popover/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { cn } from '$lib/utils.js';
-	import { getTable } from '$lib/store/table.store';
-	import FieldIcon from '../field-icon/field-icon.svelte';
+	import type { Field } from '@undb/table';
 
-	const table = getTable();
-
-	$: fields =
-		$table.schema.fields.map((f) => ({ value: f.id.value, label: f.name.value, type: f.type })) ??
-		[];
+	export let field: Field;
+	$: ops = field.filterOps.map((op) => ({ value: op, label: op })) ?? [];
 
 	let open = false;
 	export let value: string | undefined = undefined;
 
-	$: selected = fields.find((f) => f.value === value);
-	$: selectedValue = selected?.label ?? 'Select a field...';
+	$: selectedValue = ops.find((f) => f.value === value)?.label ?? 'op...';
 
+	// We want to refocus the trigger button when the user selects
+	// an item from the list so users can continue navigating the
+	// rest of the form with the keyboard.
 	function closeAndFocusTrigger(triggerId: string) {
 		open = false;
 		tick().then(() => {
@@ -32,47 +30,34 @@
 <Popover.Root bind:open let:ids>
 	<Popover.Trigger asChild let:builder>
 		<Button
-			size="sm"
 			builders={[builder]}
+			size="sm"
 			variant="outline"
 			role="combobox"
 			aria-expanded={open}
-			class={cn('w-[200px] justify-between', $$restProps.class)}
+			class={cn('w-[100px] justify-between', value && 'rounded-r-none', $$restProps.class)}
 		>
-			<span class="flex items-center">
-				{#if selected}
-					<FieldIcon type={selected.type} class="mr-2 h-3 w-3" />
-				{/if}
+			<span>
 				{selectedValue}
 			</span>
 			<CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
 		</Button>
 	</Popover.Trigger>
 	<Popover.Content class="w-[200px] p-0">
-		<Command.Root
-			filter={(value, search) => {
-				const label = fields.find((f) => f.value === value)?.label ?? '';
-				return label.toLowerCase().includes(search.toLowerCase());
-			}}
-		>
-			<Command.Input placeholder="Search field..." class="h-9" />
-			<Command.Empty>No field found.</Command.Empty>
+		<Command.Root>
+			<Command.Input placeholder="Search framework..." class="h-9" />
+			<Command.Empty>No framework found.</Command.Empty>
 			<Command.Group>
-				{#each fields as field}
+				{#each ops as framework}
 					<Command.Item
-						value={field.value}
+						value={framework.value}
 						onSelect={(currentValue) => {
 							value = currentValue;
 							closeAndFocusTrigger(ids.trigger);
 						}}
 					>
-						<Check class={cn('mr-2 h-4 w-4', value !== field.value && 'text-transparent')} />
-						<div class="flex items-center gap-2">
-							<FieldIcon type={field.type} class="h-4 w-4" />
-							<span>
-								{field.label}
-							</span>
-						</div>
+						<Check class={cn('mr-2 h-4 w-4', value !== framework.value && 'text-transparent')} />
+						{framework.label}
 					</Command.Item>
 				{/each}
 			</Command.Group>

@@ -3,6 +3,11 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { FilterIcon } from 'lucide-svelte';
 	import FiltersEditor from '../filters-editor/filters-editor.svelte';
+	import type { MaybeFilterGroup } from '@undb/table';
+	import { getTable } from '$lib/store/table.store';
+
+	const table = getTable();
+	let value: MaybeFilterGroup | undefined = undefined;
 </script>
 
 <Popover.Root>
@@ -12,7 +17,7 @@
 			Filters
 		</Button>
 	</Popover.Trigger>
-	<Popover.Content class="w-80" align="start">
-		<!-- <FiltersEditor /> -->
+	<Popover.Content class="w-[500px]" align="start">
+		<FiltersEditor bind:value table={$table} />
 	</Popover.Content>
 </Popover.Root>

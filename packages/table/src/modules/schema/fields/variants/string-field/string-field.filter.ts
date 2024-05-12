@@ -14,6 +14,16 @@ export const stringFieldFilter = z.union([
       value: z.string().min(1),
     })
     .merge(baseFilter),
+  z
+    .object({
+      op: z.literal('empty'),
+    })
+    .merge(baseFilter),
+  z
+    .object({
+      op: z.literal('not_empty'),
+    })
+    .merge(baseFilter),
 ])
 
 export type IStringFieldFilterSchema = typeof stringFieldFilter

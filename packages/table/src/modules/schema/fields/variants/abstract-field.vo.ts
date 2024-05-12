@@ -5,10 +5,10 @@ import type {
   IRecordComositeSpecification,
 } from '../../../records/record/record.composite-specification'
 import type { IFieldDTO } from '../dto/field.dto'
-import type { IFieldFilterSchema, MaybeFieldFilterWithFieldId } from '../field-filter.type'
+import type { IFieldFilter, IFieldFilterSchema, MaybeFieldFilterWithFieldId } from '../field-filter.type'
 import { FieldIdVo, fieldId, type FieldId } from '../field-id.vo'
 import { FieldNameVo, fieldName } from '../field-name.vo'
-import type { FieldType, IFieldFilter } from '../field.type'
+import type { FieldType } from '../field.type'
 import type { IFieldVisitor } from '../field.visitor'
 
 export const createBaseFieldDTO = z.object({
@@ -67,6 +67,15 @@ export abstract class AbstractField<V extends ValueObject> {
 
   validateFilter(filter: MaybeFieldFilterWithFieldId) {
     return this.filterSchema.safeParse(filter)
+  }
+
+  isOpHasValue(op: string) {
+    const shape = this.filterSchema.options.find((o) => o.shape.op.value === op)?.keyof()
+    return shape?._def.values.includes('value' as any)
+  }
+
+  get filterOps() {
+    return this.filterSchema.options.map((o) => o.shape.op.value)
   }
 
   toJSON(): IFieldDTO {

@@ -14,13 +14,13 @@ type Spec = Option<IRecordComositeSpecification | INotRecordComositeSpecificatio
 export const isGroup = (filter: IFilterGroup | IFieldFilter): filter is IFilterGroup =>
   Reflect.has(filter, 'conjunction')
 
-const isMaybeGroup = (filter: MaybeFieldFilter | MaybeFilterGroup): filter is MaybeFilterGroup =>
+export const isMaybeGroup = (filter: MaybeFieldFilter | MaybeFilterGroup): filter is MaybeFilterGroup =>
   Reflect.has(filter, 'conjunction')
 
 export const isFieldFilter = (filter: IFilterGroup | IFieldFilter): filter is IFieldFilter =>
   Reflect.has(filter, 'fieldId') && Reflect.has(filter, 'op')
 
-const isMaybeFieldFilter = (filter: any): filter is MaybeFieldFilter => isObject(filter)
+export const isMaybeFieldFilter = (filter: any): filter is MaybeFieldFilter => isObject(filter)
 
 function getFieldSpec(schema: SchemaMap, filter: IFieldFilter): Spec {
   const field = schema.get(filter.fieldId) as AbstractField<any> | undefined
@@ -56,7 +56,7 @@ export function getSpec(schema: SchemaMap, filter: IFilterGroup): Spec {
   return getGroupSpec(schema, filter)
 }
 
-function isValidFieldFilter(schema: SchemaMap, filter: MaybeFieldFilter): filter is IFieldFilter {
+function isValidFieldFilter(schema: SchemaMap, filter: MaybeFieldFilter) {
   if (!filter.fieldId) return false
   const field = schema.get(filter.fieldId)
   if (!field) return false
@@ -74,7 +74,7 @@ export function parseValidFilter(schema: SchemaMap, filter: MaybeFilterGroup): I
       children.push(validChild)
     } else if (isMaybeFieldFilter(child)) {
       if (isValidFieldFilter(schema, child)) {
-        children.push(child)
+        children.push(child as IFieldFilter)
       }
     }
   }
@@ -83,4 +83,8 @@ export function parseValidFilter(schema: SchemaMap, filter: MaybeFilterGroup): I
     conjunction: filter.conjunction,
     children,
   }
+}
+
+export function isEmptyFilterGroup(filter: IFilterGroup): boolean {
+  return filter.children.length === 0
 }
