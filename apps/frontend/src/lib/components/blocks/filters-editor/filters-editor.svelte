@@ -4,6 +4,7 @@
 		isEmptyFilterGroup,
 		isMaybeFieldFilter,
 		parseValidFilter,
+		type IFilterGroup,
 		type MaybeFilterGroup
 	} from '@undb/table';
 	import FilterField from './filter-field.svelte';
@@ -13,9 +14,12 @@
 	import { FieldIdVo } from '@undb/table/src/modules/schema/fields/field-id.vo';
 	import { cn } from '$lib/utils';
 	import { PlusIcon } from 'lucide-svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let table: TableDo;
 	export let value: MaybeFilterGroup | undefined;
+
+	const dispatch = createEventDispatcher();
 
 	$: validValue = value ? parseValidFilter(table.schema.fieldMapById, value) : undefined;
 	$: isEmpty = !validValue || isEmptyFilterGroup(validValue);
@@ -65,6 +69,8 @@
 			Add Filter
 		</Button>
 
-		<Button size="xs" disabled={isEmpty}>Submit</Button>
+		<Button size="xs" disabled={isEmpty} on:click={() => dispatch('submit', validValue)}>
+			Submit
+		</Button>
 	</div>
 </div>

@@ -1,5 +1,12 @@
 import { initTRPC } from '@trpc/server'
-import { CreateRecordCommand, CreateTableCommand, createRecordCommand, createTableCommand } from '@undb/commands'
+import {
+  CreateRecordCommand,
+  CreateTableCommand,
+  SetViewFilterCommand,
+  createRecordCommand,
+  createTableCommand,
+  setViewFilterCommand,
+} from '@undb/commands'
 import { CommandBus, QueryBus } from '@undb/cqrs'
 import { container } from '@undb/di'
 import type { ICommandBus, IQueryBus } from '@undb/domain'
@@ -38,6 +45,10 @@ const p = t.procedure.use(async ({ type, input, path, next }) => {
   return result
 })
 
+const viewRouter = t.router({
+  setFilter: p.input(setViewFilterCommand).mutation(({ input }) => commandBus.execute(new SetViewFilterCommand(input))),
+})
+
 const tableRouter = t.router({
   list: p
     .input(z.void())
@@ -51,6 +62,7 @@ const tableRouter = t.router({
     .input(createTableCommand)
     .output(z.string())
     .mutation(({ input }) => commandBus.execute(new CreateTableCommand(input))),
+  view: viewRouter,
 })
 
 export const recordRouter = t.router({

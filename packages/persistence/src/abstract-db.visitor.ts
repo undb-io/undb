@@ -5,7 +5,7 @@ export interface IAbastractDBVisitor {
   get cond(): SQL | undefined
 }
 
-export abstract class AbstractDBVisitor<T> implements IAbastractDBVisitor, ISpecVisitor {
+export abstract class AbstractDBFilterVisitor<T> implements IAbastractDBVisitor, ISpecVisitor {
   #conds: (SQL | undefined)[] = []
 
   protected addCond(cond: SQL | undefined) {
@@ -65,7 +65,7 @@ export abstract class AbstractDBVisitor<T> implements IAbastractDBVisitor, ISpec
   }
 
   clone(): this {
-    const Visitor = Object.getPrototypeOf(this).constructor as new () => AbstractDBVisitor<T>
+    const Visitor = Object.getPrototypeOf(this).constructor as new () => AbstractDBFilterVisitor<T>
     return new Visitor() as this
   }
 }

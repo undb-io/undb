@@ -41,11 +41,13 @@ export const numberFieldFilter = z.union([
   z
     .object({
       op: z.literal('is_empty'),
+      value: z.undefined(),
     })
     .merge(baseFilter),
   z
     .object({
       op: z.literal('is_not_empty'),
+      value: z.undefined(),
     })
     .merge(baseFilter),
 ])

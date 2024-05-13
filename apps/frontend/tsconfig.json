@@ -8,6 +8,8 @@
 		"strict": true,
 		"noFallthroughCasesInSwitch": true,
 		"noEmit": true,
-		"moduleResolution": "bundler"
+		"moduleResolution": "bundler",
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true
 	}
 }
