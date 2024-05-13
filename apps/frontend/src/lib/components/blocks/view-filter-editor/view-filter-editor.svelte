@@ -12,7 +12,7 @@
 	import Badge from '$lib/components/ui/badge/badge.svelte';
 
 	const table = getTable();
-	const value = writable<MaybeFilterGroup | undefined>();
+	const value = writable<MaybeFilterGroup>();
 	$: filter = $table.views.getViewById().filter.into(undefined);
 
 	$: $table, value.set(filter?.toJSON() as MaybeFilterGroup);
@@ -51,7 +51,7 @@
 			{/if}
 		</Button>
 	</Popover.Trigger>
-	<Popover.Content class="w-[500px]" align="start">
-		<FiltersEditor bind:value={$value} table={$table} on:submit={(e) => handleSubmit(e.detail)} />
+	<Popover.Content class="w-[630px] p-0" align="start">
+		<FiltersEditor {value} table={$table} on:submit={(e) => handleSubmit(e.detail)} />
 	</Popover.Content>
 </Popover.Root>
