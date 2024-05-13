@@ -11,6 +11,10 @@
 	export let field: Field | undefined;
 	$: ops = field?.filterOps.map((op) => ({ value: op, label: op })) ?? [];
 
+	$: if (field && !value) {
+		value = ops[0]?.value;
+	}
+
 	let open = false;
 	export let value: string | undefined = undefined;
 

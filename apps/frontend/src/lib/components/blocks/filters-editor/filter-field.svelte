@@ -1,8 +1,7 @@
 <script lang="ts">
-	import type { MaybeFieldFilter } from '@undb/table';
 	import FieldPicker from '../field-picker/field-picker.svelte';
 
-	export let value: MaybeFieldFilter;
+	export let value: string | undefined;
 </script>
 
-<FieldPicker bind:value={value.fieldId} {...$$restProps} />
+<FieldPicker bind:value {...$$restProps} />

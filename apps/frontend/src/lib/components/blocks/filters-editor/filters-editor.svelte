@@ -12,22 +12,17 @@
 	import { FieldIdVo } from '@undb/table/src/modules/schema/fields/field-id.vo';
 	import { cn } from '$lib/utils';
 	import { GripVertical, PlusIcon, Trash2Icon } from 'lucide-svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, tick } from 'svelte';
 	import { SortableList } from '@jhubbardsf/svelte-sortablejs';
 	import { type Writable } from 'svelte/store';
-	import Input from '$lib/components/ui/input/input.svelte';
 	import ConjunctionPicker from './conjunction-picker.svelte';
 
 	export let table: TableDo;
-	export let value: Writable<MaybeFilterGroup>;
+	export let value: Writable<MaybeFilterGroup | undefined>;
 
 	const dispatch = createEventDispatcher();
 
 	$: validValue = $value ? parseValidFilter(table.schema.fieldMapById, $value) : undefined;
-
-	$: children = $value?.children ?? [];
-
-	let el: HTMLDivElement;
 
 	function addFilter() {
 		const filter = {
@@ -53,12 +48,32 @@
 			value.set($value);
 		}
 	}
+
+	function swapFilter(oldIndex: number, newIndex: number) {
+		if ($value) {
+			const filters = $value.children;
+			const [removed] = filters.splice(oldIndex, 1);
+			filters.splice(newIndex, 0, removed);
+			value.set($value);
+		}
+	}
 </script>
 
 <div class="space-y-2">
-	{#if children.length}
-		<SortableList class="space-y-2 p-4 pb-2" animation={200}>
-			{#each children as child, i}
+	{#if $value?.children.length}
+		<SortableList
+			class="space-y-1.5 p-4 pb-2"
+			animation={200}
+			onEnd={(event) => {
+				if (event.oldIndex && event.newIndex) {
+					swapFilter(event.oldIndex - 1, event.newIndex - 1);
+				}
+			}}
+		>
+			{#each $value.children as child, i (JSON.stringify(child))}
+				{#if i === 0}
+					<div class="text-muted-foreground text-xs">Filters</div>
+				{/if}
 				<div class="grid grid-cols-12 items-center gap-2">
 					{#if i === 0}
 						<div class="col-span-2 text-center text-xs">Where</div>
@@ -72,7 +87,7 @@
 					<div class="col-span-9 grid grid-cols-12 items-center">
 						{#if isMaybeFieldFilter(child)}
 							<FilterField
-								bind:value={child}
+								bind:value={child.fieldId}
 								class={cn(!!child.fieldId && 'col-span-4 rounded-r-none border-r-0')}
 							/>
 							{@const field = child.fieldId
@@ -99,7 +114,7 @@
 			{/each}
 		</SortableList>
 	{/if}
-	<div class={cn('flex justify-between border-t px-4', children.length ? 'py-2' : 'py-4')}>
+	<div class={cn('flex justify-between border-t px-4', $value?.children.length ? 'py-2' : 'py-4')}>
 		<Button variant="ghost" size="xs" on:click={addFilter}>
 			<PlusIcon class="mr-2 h-3 w-3" />
 			Add Filter

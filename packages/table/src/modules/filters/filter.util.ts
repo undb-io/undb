@@ -12,10 +12,10 @@ import type { IFilterGroup, IFilterGroupChildren, MaybeFilterGroup } from './fil
 type Spec = Option<IRecordComositeSpecification | INotRecordComositeSpecification>
 
 export const isGroup = (filter: IFilterGroup | IFieldFilter): filter is IFilterGroup =>
-  Reflect.has(filter, 'conjunction')
+  isObject(filter) && Reflect.has(filter, 'conjunction')
 
 export const isMaybeGroup = (filter: MaybeFieldFilter | MaybeFilterGroup): filter is MaybeFilterGroup =>
-  Reflect.has(filter, 'conjunction')
+  isObject(filter) && Reflect.has(filter, 'conjunction')
 
 export const isFieldFilter = (filter: IFilterGroup | IFieldFilter): filter is IFieldFilter =>
   Reflect.has(filter, 'fieldId') && Reflect.has(filter, 'op')
