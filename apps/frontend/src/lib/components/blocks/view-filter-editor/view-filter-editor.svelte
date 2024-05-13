@@ -8,15 +8,24 @@
 	import { trpc } from '$lib/trpc/client';
 	import { createMutation } from '@tanstack/svelte-query';
 	import { invalidateAll } from '$app/navigation';
+	import { writable } from 'svelte/store';
+	import Badge from '$lib/components/ui/badge/badge.svelte';
 
 	const table = getTable();
-	let value: MaybeFilterGroup | undefined = undefined;
+	const value = writable<MaybeFilterGroup | undefined>();
+	$: filter = $table.views.getViewById().filter.into(undefined);
+
+	$: $table, value.set(filter?.toJSON() as MaybeFilterGroup);
+	$: count = filter?.count ?? 0;
+
+	let open = false;
 
 	const mutation = createMutation({
 		mutationKey: [$table.id.value, 'setFilters'],
 		mutationFn: trpc.table.view.setFilter.mutate,
 		onSuccess: () => {
 			invalidateAll();
+			open = false;
 		}
 	});
 
@@ -29,14 +38,17 @@
 	};
 </script>
 
-<Popover.Root>
+<Popover.Root bind:open>
 	<Popover.Trigger asChild let:builder>
-		<Button builders={[builder]} size="xs">
-			<FilterIcon class="mr-2 h-3 w-3" />
+		<Button builders={[builder]} size="sm">
+			<FilterIcon class="mr-2 h-4 w-4" />
 			Filters
+			{#if count}
+				<Badge variant="secondary" class="ml-2 rounded-full">{count}</Badge>
+			{/if}
 		</Button>
 	</Popover.Trigger>
 	<Popover.Content class="w-[500px]" align="start">
-		<FiltersEditor bind:value table={$table} on:submit={(e) => handleSubmit(e.detail)} />
+		<FiltersEditor bind:value={$value} table={$table} on:submit={(e) => handleSubmit(e.detail)} />
 	</Popover.Content>
 </Popover.Root>

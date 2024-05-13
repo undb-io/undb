@@ -1,5 +1,5 @@
 import { Option, ValueObject } from '@undb/domain'
-import { z, type ZodSchema } from 'zod'
+import { ZodUndefined, z, type ZodSchema } from 'zod'
 import type {
   INotRecordComositeSpecification,
   IRecordComositeSpecification,
@@ -70,8 +70,9 @@ export abstract class AbstractField<V extends ValueObject> {
   }
 
   isOpHasValue(op: string) {
-    const shape = this.filterSchema.options.find((o) => o.shape.op.value === op)?.keyof()
-    return shape?._def.values.includes('value' as any)
+    return (
+      this.filterSchema.options.find((o) => o.shape.op.value === op)?.shape.value._def.typeName !== ZodUndefined.name
+    )
   }
 
   get filterOps() {

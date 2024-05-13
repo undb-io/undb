@@ -3,7 +3,7 @@
 	import ViewFilterEditor from '../view-filter-editor/view-filter-editor.svelte';
 </script>
 
-<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
 	<CreateRecordButton />
 	<ViewFilterEditor />
 </div>

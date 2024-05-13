@@ -12,6 +12,10 @@ export class Filter extends ValueObject<IRootFilter> {
     return isEmptyFilterGroup(this.value)
   }
 
+  get count() {
+    return this.value.children.length
+  }
+
   getSpec(schema: Schema) {
     const fieldMap = schema.fieldMapById
 
@@ -19,6 +23,6 @@ export class Filter extends ValueObject<IRootFilter> {
   }
 
   toJSON() {
-    return this.value
+    return { ...this.value }
   }
 }

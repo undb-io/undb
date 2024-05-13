@@ -4,7 +4,6 @@
 		isEmptyFilterGroup,
 		isMaybeFieldFilter,
 		parseValidFilter,
-		type IFilterGroup,
 		type MaybeFilterGroup
 	} from '@undb/table';
 	import FilterField from './filter-field.svelte';
@@ -27,7 +26,11 @@
 	$: children = value?.children ?? [];
 
 	function addFilter() {
-		const filter = { fieldId: undefined, op: undefined, value: undefined };
+		const filter = {
+			fieldId: table.schema.fields.at(0)?.id.value,
+			op: undefined,
+			value: undefined
+		};
 		if (!value) {
 			value = { children: [filter], conjunction: 'and' };
 		} else {
@@ -37,9 +40,6 @@
 </script>
 
 <div class="space-y-2">
-	<code class="block">
-		{JSON.stringify(value, null, 2)}
-	</code>
 	{#if children.length}
 		<div class="space-y-2">
 			{#each children as child}
@@ -49,15 +49,11 @@
 							bind:value={child}
 							class={cn(!!child.fieldId && 'rounded-r-none border-r-0')}
 						/>
-						{#if child.fieldId}
-							{@const field = table.schema.getFieldById(new FieldIdVo(child.fieldId))}
-							{#if field.isSome()}
-								<OpPicker field={field.unwrap()} bind:value={child.op} class="rounded-l-none" />
-								{#if child.op}
-									<FilterValue field={field.unwrap()} bind:value={child.value} bind:op={child.op} />
-								{/if}
-							{/if}
-						{/if}
+						{@const field = child.fieldId
+							? table.schema.getFieldById(new FieldIdVo(child.fieldId)).into(undefined)
+							: undefined}
+						<OpPicker {field} bind:value={child.op} class="rounded-l-none" />
+						<FilterValue {field} bind:value={child.value} bind:op={child.op} />
 					{/if}
 				</div>
 			{/each}

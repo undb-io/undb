@@ -8,8 +8,8 @@
 	import { cn } from '$lib/utils.js';
 	import type { Field } from '@undb/table';
 
-	export let field: Field;
-	$: ops = field.filterOps.map((op) => ({ value: op, label: op })) ?? [];
+	export let field: Field | undefined;
+	$: ops = field?.filterOps.map((op) => ({ value: op, label: op })) ?? [];
 
 	let open = false;
 	export let value: string | undefined = undefined;
@@ -35,7 +35,7 @@
 			variant="outline"
 			role="combobox"
 			aria-expanded={open}
-			class={cn('w-[100px] justify-between', value && 'rounded-r-none', $$restProps.class)}
+			class={cn('w-[100px] justify-between', 'rounded-r-none', $$restProps.class)}
 		>
 			<span>
 				{selectedValue}
