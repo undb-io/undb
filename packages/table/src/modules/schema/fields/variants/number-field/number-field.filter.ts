@@ -38,6 +38,16 @@ export const numberFieldFilter = z.union([
       value: z.number(),
     })
     .merge(baseFilter),
+  z
+    .object({
+      op: z.literal('is_empty'),
+    })
+    .merge(baseFilter),
+  z
+    .object({
+      op: z.literal('is_not_empty'),
+    })
+    .merge(baseFilter),
 ])
 
 export type INumberFieldFilterSchema = typeof numberFieldFilter

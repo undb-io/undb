@@ -1,8 +1,10 @@
 import type { ISpecVisitor, ISpecification } from '@undb/domain'
-import type { ExpressionBuilder, ExpressionWrapper } from 'kysely'
+import type { Expression, ExpressionBuilder } from 'kysely'
+
+type TExpression = Expression<any>
 
 export interface IAbastractQBVisitor {
-  get cond(): ExpressionWrapper<any, any, any>
+  get cond(): TExpression
 }
 
 export abstract class AbstractQBVisitor<T> implements IAbastractQBVisitor, ISpecVisitor {
@@ -13,16 +15,27 @@ export abstract class AbstractQBVisitor<T> implements IAbastractQBVisitor, ISpec
     this.#isNot = true
   }
 
-  #conds: ExpressionWrapper<any, any, any>[] = []
-  protected addCond(cond: ExpressionWrapper<any, any, any>): void {
+  #conds: TExpression[] = []
+  protected addCond(cond: Expression<any>): void {
     this.#conds.push(cond)
   }
-  get cond(): ExpressionWrapper<any, any, any> {
-    if (this.#isNot) {
-      return this.eb.not(this.eb.and(this.#conds))
+  get cond(): TExpression {
+    const conds = this.#conds
+    if (!conds.length) {
+      return this.eb.and([])
     }
 
-    return this.eb.and(this.#conds)
+    let cond: TExpression | undefined
+    if (conds.length === 1) {
+      cond = conds[0]
+    } else {
+      cond = this.eb.and(conds)
+    }
+    if (this.#isNot) {
+      return this.eb.not(cond)
+    }
+
+    return cond
   }
 
   and(left: ISpecification<T, ISpecVisitor>, right: ISpecification<T, ISpecVisitor>): this {

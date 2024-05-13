@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { FieldIdVo } from '../../field-id.vo'
 import type { IFieldVisitor } from '../../field.visitor'
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from '../abstract-field.vo'
-import { NumberEqual, NumberGT, NumberGTE, NumberLT, NumberLTE } from './number-field-value.specification'
+import { NumberEmpty, NumberEqual, NumberGT, NumberGTE, NumberLT, NumberLTE } from './number-field-value.specification'
 import { NumberFieldValue } from './number-field-value.vo'
 import { numberFieldFilter, type INumberFieldFilter, type INumberFieldFilterSchema } from './number-field.filter'
 
@@ -53,7 +53,9 @@ export class NumberField extends AbstractField<NumberFieldValue> {
       .with({ op: 'gte' }, ({ value }) => new NumberGTE(value, this.id))
       .with({ op: 'lt' }, ({ value }) => new NumberLT(value, this.id))
       .with({ op: 'lte' }, ({ value }) => new NumberLTE(value, this.id))
-      .otherwise(() => null)
+      .with({ op: 'is_empty' }, () => new NumberEmpty(this.id))
+      .with({ op: 'is_not_empty' }, () => new NumberEmpty(this.id).not())
+      .exhaustive()
 
     return Option(spec)
   }

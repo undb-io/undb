@@ -1,4 +1,11 @@
-import type { NumberEqual, NumberGT, NumberGTE, NumberLT, NumberLTE } from './number-field-value.specification'
+import type {
+  NumberEmpty,
+  NumberEqual,
+  NumberGT,
+  NumberGTE,
+  NumberLT,
+  NumberLTE,
+} from './number-field-value.specification'
 
 export interface INumberFieldValueVisitor {
   numberEqual(spec: NumberEqual): void
@@ -6,4 +13,5 @@ export interface INumberFieldValueVisitor {
   numberGTE(spec: NumberGTE): void
   numberLT(spec: NumberLT): void
   numberLTE(spec: NumberLTE): void
+  numberEmpty(spec: NumberEmpty): void
 }

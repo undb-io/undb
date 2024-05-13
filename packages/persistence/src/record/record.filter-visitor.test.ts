@@ -47,6 +47,51 @@ describe('record.filter-visitor', () => {
         },
       ],
     },
+    {
+      conjunction: 'and',
+      children: [
+        { fieldId: 'field1', op: 'starts_with', value: 'value1' },
+        { fieldId: 'field1', op: 'ends_with', value: 'value2' },
+        { fieldId: 'field1', op: 'contains', value: 'value3' },
+        { fieldId: 'field2', op: 'eq', value: 1 },
+        { fieldId: 'field2', op: 'gt', value: 2 },
+        { fieldId: 'field2', op: 'gte', value: 3 },
+        { fieldId: 'field2', op: 'lt', value: 4 },
+        { fieldId: 'field2', op: 'lte', value: 5 },
+      ],
+    },
+    {
+      conjunction: 'and',
+      children: [{ fieldId: 'field1', op: 'is_empty' }],
+    },
+    {
+      conjunction: 'and',
+      children: [{ fieldId: 'field1', op: 'is_not_empty' }],
+    },
+    {
+      conjunction: 'and',
+      children: [{ fieldId: 'field1', op: 'starts_with', value: 'hello' }],
+    },
+    {
+      conjunction: 'and',
+      children: [{ fieldId: 'field1', op: 'contains', value: 'hello' }],
+    },
+    {
+      conjunction: 'and',
+      children: [{ fieldId: 'field1', op: 'does_not_contain', value: 'hello' }],
+    },
+    {
+      conjunction: 'and',
+      children: [{ fieldId: 'field1', op: 'ends_with', value: 'hello' }],
+    },
+    {
+      conjunction: 'and',
+      children: [{ fieldId: 'field2', op: 'is_empty' }],
+    },
+    {
+      conjunction: 'and',
+      children: [{ fieldId: 'field2', op: 'is_not_empty' }],
+    },
   ])('should get query', (filter) => {
     const f = new Filter(filter)
     const spec = f.getSpec(schema)

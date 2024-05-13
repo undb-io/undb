@@ -16,12 +16,36 @@ export const stringFieldFilter = z.union([
     .merge(baseFilter),
   z
     .object({
-      op: z.literal('empty'),
+      op: z.literal('contains'),
+      value: z.string().min(1),
     })
     .merge(baseFilter),
   z
     .object({
-      op: z.literal('not_empty'),
+      op: z.literal('does_not_contain'),
+      value: z.string().min(1),
+    })
+    .merge(baseFilter),
+  z
+    .object({
+      op: z.literal('starts_with'),
+      value: z.string().min(1),
+    })
+    .merge(baseFilter),
+  z
+    .object({
+      op: z.literal('ends_with'),
+      value: z.string().min(1),
+    })
+    .merge(baseFilter),
+  z
+    .object({
+      op: z.literal('is_empty'),
+    })
+    .merge(baseFilter),
+  z
+    .object({
+      op: z.literal('is_not_empty'),
     })
     .merge(baseFilter),
 ])
