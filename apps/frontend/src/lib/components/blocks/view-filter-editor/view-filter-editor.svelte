@@ -6,7 +6,7 @@
 	import type { IFilterGroup, MaybeFilterGroup } from '@undb/table';
 	import { getTable } from '$lib/store/table.store';
 	import { trpc } from '$lib/trpc/client';
-	import { createMutation } from '@tanstack/svelte-query';
+	import { createMutation, useQueryClient } from '@tanstack/svelte-query';
 	import { invalidateAll } from '$app/navigation';
 	import { writable } from 'svelte/store';
 	import Badge from '$lib/components/ui/badge/badge.svelte';
@@ -20,11 +20,14 @@
 
 	let open = false;
 
+	const client = useQueryClient();
+
 	const mutation = createMutation({
 		mutationKey: [$table.id.value, 'setFilters'],
 		mutationFn: trpc.table.view.setFilter.mutate,
-		onSuccess: () => {
-			invalidateAll();
+		onSuccess: async () => {
+			await invalidateAll();
+			await client.invalidateQueries({ queryKey: ['records', $table.id.value] });
 			open = false;
 		}
 	});

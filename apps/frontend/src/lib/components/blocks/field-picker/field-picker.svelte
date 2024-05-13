@@ -37,9 +37,9 @@
 			variant="outline"
 			role="combobox"
 			aria-expanded={open}
-			class={cn('w-[200px] justify-between', $$restProps.class)}
+			class={cn('justify-between', $$restProps.class)}
 		>
-			<span class="flex items-center">
+			<span class="flex items-center overflow-hidden text-ellipsis" title={selectedValue}>
 				{#if selected}
 					<FieldIcon type={selected.type} class="mr-2 h-3 w-3" />
 				{/if}
