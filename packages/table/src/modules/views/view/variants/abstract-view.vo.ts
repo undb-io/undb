@@ -1,8 +1,7 @@
-import { None, Some, applyRules, type Option } from '@undb/domain'
+import { None, Some, type Option } from '@undb/domain'
 import { z } from 'zod'
 import { WithViewFilter } from '../../../../specifications/table-view.specification'
 import { Filter, filterGroup, type IRootFilter } from '../../../filters'
-import { FilterNotEmptyRule } from '../../../filters/rules/filter-not-empty.rule'
 import { ViewIdVo, viewId, type ViewId } from '../view-id.vo'
 import { ViewNameVo, viewName } from '../view-name.vo'
 import type { ViewType } from '../view.type'
@@ -40,9 +39,11 @@ export abstract class AbstractView {
   setFilter(filter: IRootFilter) {
     const filterVO = new Filter(filter)
 
-    applyRules(new FilterNotEmptyRule(filterVO))
-
-    this.filter = Some(filterVO)
+    if (filterVO.isEmpty) {
+      this.filter = None
+    } else {
+      this.filter = Some(filterVO)
+    }
   }
 
   $setFilterSpec(filter: IRootFilter) {
