@@ -20,12 +20,7 @@ export class TableMapper implements Mapper<TableDo, NewTable, ITableDTO> {
   }
 
   toEntity(domain: TableDo): NewTable {
-    return {
-      id: domain.id.value,
-      name: domain.name.value,
-      schema: domain.schema.toJSON(),
-      views: domain.views.toJSON(),
-    }
+    return domain.toJSON()
   }
 
   toDTO(entity: Table): ITableDTO {

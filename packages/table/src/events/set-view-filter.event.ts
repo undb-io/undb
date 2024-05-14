@@ -3,7 +3,7 @@ import { z } from "zod"
 import { filterGroup, viewId } from "../modules"
 import { tableId } from "../table-id.vo"
 
-const EVT_SET_VIEW_FILTER = "table.setViewFilter" as const
+const EVT_SET_VIEW_FILTER = "table.view.filter.set" as const
 
 export const setViewFilterEventPayload = z.object({
   tableId: tableId,

@@ -3,6 +3,7 @@ import {
   RecordOutboxService,
   RecordQueryRepository,
   RecordRepository,
+  TableOutboxService,
   TableQueryRepository,
   TableRepository,
 } from "@undb/persistence"
@@ -10,6 +11,7 @@ import {
   RECORD_OUTBOX_SERVICE,
   RECORD_QUERY_REPOSITORY,
   RECORD_REPOSITORY,
+  TABLE_OUTBOX_SERVICE,
   TABLE_QUERY_REPOSITORY,
   TABLE_REPOSITORY,
 } from "@undb/table"
@@ -20,4 +22,5 @@ export const registerDb = () => {
   container.register(RECORD_QUERY_REPOSITORY, RecordQueryRepository)
   container.register(RECORD_REPOSITORY, RecordRepository)
   container.register(RECORD_OUTBOX_SERVICE, RecordOutboxService)
+  container.register(TABLE_OUTBOX_SERVICE, TableOutboxService)
 }

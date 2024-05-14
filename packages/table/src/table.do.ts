@@ -1,4 +1,5 @@
 import { AggregateRoot } from "@undb/domain"
+import type { ITableDTO } from "./dto"
 import type { ITableEvents } from "./events"
 import { setViewFilter } from "./methods/set-view-filter.method"
 import type { Schema } from "./modules/schema/schema.vo"
@@ -13,4 +14,13 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   public views!: Views
 
   $setViewFilter = setViewFilter
+
+  toJSON(): ITableDTO {
+    return {
+      id: this.id.value,
+      name: this.name.value,
+      schema: this.schema.toJSON(),
+      views: this.views.toJSON(),
+    }
+  }
 }

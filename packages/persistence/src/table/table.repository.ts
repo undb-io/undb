@@ -3,6 +3,8 @@ import { None, Option, Some } from "@undb/domain"
 import {
   TableComositeSpecification,
   TableIdSpecification,
+  injectTableOutboxService,
+  type ITableOutboxService,
   type ITableRepository,
   type TableDo,
   type TableId,
@@ -26,19 +28,28 @@ export class TableRepository implements ITableRepository {
     private readonly mapper: TableMapper,
     @inject(UnderlyingTableService)
     private readonly underlyingTableService: UnderlyingTableService,
+    @injectTableOutboxService()
+    private readonly outboxService: ITableOutboxService,
   ) {}
 
-  async updateOneById(table: TableDo, spec: TableComositeSpecification): Promise<void> {
+  async updateOneById(table: TableDo, spec: Option<TableComositeSpecification>): Promise<void> {
+    if (spec.isNone()) {
+      return
+    }
+
     const visitor = new TableMutationVisitor(table)
-    spec.accept(visitor)
+    spec.unwrap().accept(visitor)
 
     await this.db.update(tables).set(visitor.updates).where(eq(tables.id, table.id.value))
+    await this.outboxService.save(table.domainEvents)
   }
 
   async insert(table: TableDo): Promise<void> {
     const values = this.mapper.toEntity(table)
+
     await this.db.insert(tables).values(values)
     await this.underlyingTableService.create(table)
+    await this.outboxService.save(table.domainEvents)
   }
 
   async findOneById(id: TableId): Promise<Option<TableDo>> {

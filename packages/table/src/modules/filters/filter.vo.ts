@@ -1,4 +1,5 @@
 import { ValueObject } from "@undb/domain"
+import { isEqual } from "radash"
 import type { Schema } from "../schema"
 import type { IRootFilter, MaybeFilterGroup } from "./filter.type"
 import { getSpec, isEmptyFilterGroup, toMaybeFilterGroup } from "./filter.util"
@@ -24,6 +25,10 @@ export class Filter extends ValueObject<IRootFilter> {
 
   toJSON() {
     return { ...this.value }
+  }
+
+  isEqual(filter: IRootFilter): boolean {
+    return isEqual(this.value, filter)
   }
 
   toMaybeFilterGroup(): MaybeFilterGroup {
