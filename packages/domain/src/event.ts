@@ -3,7 +3,7 @@ import { v4 } from "uuid"
 export interface IEvent<TPayload extends object = object, TMeta = any> {
   id: string
   name: string
-  operatorId: string
+  operatorId?: string
   payload: TPayload
   timestamp: Date
   meta: TMeta
@@ -12,7 +12,7 @@ export interface IEvent<TPayload extends object = object, TMeta = any> {
 export interface IEventJSON<TPayload extends object = object, TMeta = any> {
   id: string
   name: string
-  operatorId: string
+  operatorId?: string
   payload: TPayload
   timestamp: string
   meta: TMeta
@@ -25,9 +25,18 @@ export abstract class BaseEvent<
 > implements IEvent<TPayload>
 {
   abstract name: TName
+  #operatorId?: string | undefined
+
+  public get operatorId() {
+    return this.#operatorId
+  }
+
+  public set operatorId(operatorId: string | undefined) {
+    this.#operatorId = operatorId
+  }
+
   constructor(
     public readonly payload: TPayload,
-    public readonly operatorId: string,
     public readonly meta: TMeta,
     public readonly id = v4(),
     public readonly timestamp = new Date(),

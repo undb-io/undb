@@ -1,4 +1,5 @@
 import { SetViewFilterCommand } from "@undb/commands"
+import { injectContext, type IExecutionContext } from "@undb/context"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import type { ICommandHandler } from "@undb/domain"
@@ -13,6 +14,8 @@ export class SetViewFilterCommandHandler implements ICommandHandler<SetViewFilte
   constructor(
     @injectTableRepository()
     private readonly repo: ITableRepository,
+    @injectContext()
+    private readonly context: IExecutionContext,
   ) {}
 
   async execute(command: SetViewFilterCommand): Promise<any> {

@@ -1,0 +1,23 @@
+{
+  "name": "@undb/context",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "types": "./src/index.d.ts"
+    },
+    "./server": {
+      "import": "./src/server.ts",
+      "types": "./src/server.d.ts"
+    }
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@undb/di": "workspace:*"
+  }
+}

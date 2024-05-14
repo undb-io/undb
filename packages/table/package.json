@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@undb/di": "workspace:*",
+    "@undb/context": "workspace:*",
     "@undb/logger": "workspace:*",
     "@undb/domain": "workspace:*",
     "ts-pattern": "^5.1.1",

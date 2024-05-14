@@ -46,7 +46,7 @@ export abstract class AbstractView {
     }
   }
 
-  $setFilterSpec(filter: IRootFilter) {
+  $setFilterSpec(filter: IRootFilter): WithViewFilter {
     return new WithViewFilter(this.id, filter)
   }
 
