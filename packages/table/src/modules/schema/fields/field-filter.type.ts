@@ -13,5 +13,5 @@ export const filedFilter = z.union([stringFieldFilter, numberFieldFilter])
 
 export type IFieldFilter = IStringFieldFilter | INumberFieldFilter
 export type IFieldFilterSchema = IStringFieldFilterSchema | INumberFieldFilterSchema
-export type MaybeFieldFilter = SetFieldType<PartialDeep<IFieldFilter>, "value", any>
+export type MaybeFieldFilter = SetFieldType<PartialDeep<IFieldFilter>, "value", any> & { id: string }
 export type MaybeFieldFilterWithFieldId = SetRequired<MaybeFieldFilter, "fieldId">

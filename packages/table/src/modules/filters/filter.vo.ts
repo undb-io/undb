@@ -1,7 +1,7 @@
 import { ValueObject } from "@undb/domain"
 import type { Schema } from "../schema"
-import type { IRootFilter } from "./filter.type"
-import { getSpec, isEmptyFilterGroup } from "./filter.util"
+import type { IRootFilter, MaybeFilterGroup } from "./filter.type"
+import { getSpec, isEmptyFilterGroup, toMaybeFilterGroup } from "./filter.util"
 
 export class Filter extends ValueObject<IRootFilter> {
   constructor(value: IRootFilter) {
@@ -24,5 +24,9 @@ export class Filter extends ValueObject<IRootFilter> {
 
   toJSON() {
     return { ...this.value }
+  }
+
+  toMaybeFilterGroup(): MaybeFilterGroup {
+    return toMaybeFilterGroup(this.value)
   }
 }

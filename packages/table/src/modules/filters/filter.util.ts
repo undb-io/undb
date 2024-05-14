@@ -1,5 +1,5 @@
 import { None, andOptions, orOptions, type Option } from "@undb/domain"
-import { isObject } from "radash"
+import { isObject, uid } from "radash"
 import type {
   INotRecordComositeSpecification,
   IRecordComositeSpecification,
@@ -66,6 +66,29 @@ function isValidFieldFilter(schema: SchemaMap, filter: MaybeFieldFilter) {
   return parsed.success
 }
 
+export function toMaybeFieldFilter(filter: IFieldFilter): MaybeFieldFilter {
+  return {
+    id: uid(10),
+    ...filter,
+  } as MaybeFieldFilter
+}
+
+export function toMaybeFilterGroup(filter: IFilterGroup): MaybeFilterGroup {
+  return {
+    id: uid(10),
+    conjunction: filter.conjunction,
+    children: filter.children.map((child) => {
+      if (isGroup(child)) {
+        return toMaybeFilterGroup(child)
+      }
+      if (isFieldFilter(child)) {
+        return toMaybeFieldFilter(child)
+      }
+      return child
+    }),
+  }
+}
+
 export function parseValidFilter(schema: SchemaMap, filter: MaybeFilterGroup): IFilterGroup {
   const children: IFilterGroupChildren = []
 
@@ -75,7 +98,8 @@ export function parseValidFilter(schema: SchemaMap, filter: MaybeFilterGroup): I
       children.push(validChild)
     } else if (isMaybeFieldFilter(child)) {
       if (isValidFieldFilter(schema, child)) {
-        children.push(child as IFieldFilter)
+        const { id, ...value } = child
+        children.push(value as IFieldFilter)
       }
     }
   }

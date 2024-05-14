@@ -1,5 +1,11 @@
 <script lang="ts">
-  import { TableDo, isMaybeFieldFilter, parseValidFilter, type MaybeFilterGroup } from "@undb/table"
+  import {
+    TableDo,
+    isMaybeFieldFilter,
+    parseValidFilter,
+    type MaybeFieldFilter,
+    type MaybeFilterGroup,
+  } from "@undb/table"
   import FilterField from "./filter-field.svelte"
   import OpPicker from "./op-picker.svelte"
   import FilterValue from "./filter-value.svelte"
@@ -10,23 +16,24 @@
   import { createEventDispatcher } from "svelte"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
   import ConjunctionPicker from "./conjunction-picker.svelte"
+  import { uid } from "radash"
 
   export let table: TableDo
   export let value: MaybeFilterGroup | undefined = undefined
-  $: console.log(value)
 
   const dispatch = createEventDispatcher()
 
   $: validValue = value ? parseValidFilter(table.schema.fieldMapById, value) : undefined
 
   function addFilter() {
-    const filter = {
+    const filter: MaybeFieldFilter = {
+      id: uid(10),
       fieldId: table.schema.fields.at(0)?.id.value,
       op: undefined,
       value: undefined,
     }
     if (!value) {
-      value = { children: [filter], conjunction: "and" }
+      value = { children: [filter], conjunction: "and", id: uid(10) }
     } else {
       value.children = [...value.children, filter]
     }
@@ -34,19 +41,20 @@
 
   function addFilterGroup() {
     const filterGroup: MaybeFilterGroup = {
+      id: uid(10),
       conjunction: "and",
       children: [],
     }
     if (!value) {
-      value = { children: [filterGroup], conjunction: "and" }
+      value = { children: [filterGroup], conjunction: "and", id: uid(10) }
     } else {
       value.children = [...value.children, filterGroup]
     }
   }
   function removeFilter(index: number) {
     if (value) {
-      debugger
-      value.children = value.children.splice(index, 1)
+      value.children.splice(index, 1)
+      value.children = [...value.children]
     }
   }
 
@@ -54,7 +62,8 @@
     if (value) {
       const filters = [...value.children]
       const [removed] = filters.splice(oldIndex, 1)
-      value.children = filters.splice(newIndex, 0, removed)
+      filters.splice(newIndex, 0, removed)
+      value.children = [...filters]
     }
   }
 </script>
@@ -70,7 +79,7 @@
         }
       }}
     >
-      {#each value.children as child, i (JSON.stringify(child))}
+      {#each value.children as child, i (child.id)}
         {#if isMaybeFieldFilter(child)}
           {@const field = child.fieldId
             ? table.schema.getFieldById(new FieldIdVo(child.fieldId)).into(undefined)
@@ -105,8 +114,6 @@
               </button>
             </div>
           </div>
-        {:else}
-          <!-- <svelte:self {table} /> -->
         {/if}
       {/each}
     </SortableList>

@@ -12,10 +12,10 @@
   import Badge from "$lib/components/ui/badge/badge.svelte"
 
   const table = getTable()
-  const value = writable<MaybeFilterGroup>()
+  const value = writable<MaybeFilterGroup | undefined>()
   $: filter = $table.views.getViewById().filter.into(undefined)
 
-  $: $table, value.set(filter?.toJSON() as MaybeFilterGroup)
+  $: $table, value.set(filter?.toMaybeFilterGroup())
   $: count = filter?.count ?? 0
 
   let open = false
@@ -35,8 +35,8 @@
   const handleSubmit = (filter?: IFilterGroup) => {
     if (!filter) return
     $mutation.mutate({
-      tableId: $table.id.value,
       filter,
+      tableId: $table.id.value,
     })
   }
 </script>
@@ -51,7 +51,7 @@
       {/if}
     </Button>
   </Popover.Trigger>
-  <Popover.Content class="w-[630px] p-0" align="start">
+  <Popover.Content class="w-[500px]" align="start">
     <FiltersEditor bind:value={$value} table={$table} on:submit={(e) => handleSubmit(e.detail)} />
   </Popover.Content>
 </Popover.Root>

@@ -18,6 +18,7 @@ export interface IFilterGroup {
 export type IRootFilter = IFilterGroup
 
 export interface MaybeFilterGroup {
+  id: string
   conjunction: Conjunction
   children: Array<MaybeFieldFilter | MaybeFilterGroup>
 }
