@@ -3,7 +3,7 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import { FilterIcon } from "lucide-svelte"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
-  import type { IFilterGroup, MaybeFilterGroup } from "@undb/table"
+  import { parseValidFilter, type IFilterGroup, type MaybeFilterGroup } from "@undb/table"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
@@ -12,11 +12,13 @@
   import Badge from "$lib/components/ui/badge/badge.svelte"
 
   const table = getTable()
-  const value = writable<MaybeFilterGroup | undefined>()
   $: filter = $table.views.getViewById().filter.into(undefined)
+  $: count = filter?.count ?? 0
+
+  const value = writable<MaybeFilterGroup | undefined>()
+  $: validValue = $value ? parseValidFilter($table.schema.fieldMapById, $value) : undefined
 
   $: $table, value.set(filter?.toMaybeFilterGroup())
-  $: count = filter?.count ?? 0
 
   let open = false
 
@@ -51,7 +53,10 @@
       {/if}
     </Button>
   </Popover.Trigger>
-  <Popover.Content class="w-[500px]" align="start">
-    <FiltersEditor bind:value={$value} table={$table} on:submit={(e) => handleSubmit(e.detail)} />
+  <Popover.Content class="w-[600px] space-y-2" align="start">
+    <div class="text-muted-foreground text-xs">Filters</div>
+    <FiltersEditor bind:value={$value} table={$table} on:submit={(e) => handleSubmit(e.detail)}>
+      <Button size="xs" on:click={() => handleSubmit(validValue)} slot="footer">Submit</Button>
+    </FiltersEditor>
   </Popover.Content>
 </Popover.Root>

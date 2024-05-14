@@ -2,6 +2,7 @@
   import {
     TableDo,
     isMaybeFieldFilter,
+    isMaybeGroup,
     parseValidFilter,
     type MaybeFieldFilter,
     type MaybeFilterGroup,
@@ -13,17 +14,15 @@
   import { FieldIdVo } from "@undb/table/src/modules/schema/fields/field-id.vo"
   import { cn } from "$lib/utils"
   import { GripVertical, PlusIcon, Trash2Icon } from "lucide-svelte"
-  import { createEventDispatcher } from "svelte"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
   import ConjunctionPicker from "./conjunction-picker.svelte"
   import { uid } from "radash"
 
   export let table: TableDo
   export let value: MaybeFilterGroup | undefined = undefined
+  export let level = 1
 
-  const dispatch = createEventDispatcher()
-
-  $: validValue = value ? parseValidFilter(table.schema.fieldMapById, value) : undefined
+  $: isEven = level % 2 === 0
 
   function addFilter() {
     const filter: MaybeFieldFilter = {
@@ -68,10 +67,10 @@
   }
 </script>
 
-<div class="space-y-2">
+<div class={cn("space-y-2", isEven && "bg-muted")} data-level={level}>
   {#if value?.children.length}
     <SortableList
-      class="space-y-1.5 p-4 pb-2"
+      class={cn("space-y-1.5", level > 1 && "p-4 pb-2")}
       animation={200}
       onEnd={(event) => {
         if (event.oldIndex && event.newIndex) {
@@ -84,9 +83,6 @@
           {@const field = child.fieldId
             ? table.schema.getFieldById(new FieldIdVo(child.fieldId)).into(undefined)
             : undefined}
-          {#if i === 0}
-            <div class="text-muted-foreground text-xs">Filters</div>
-          {/if}
           <div class="grid grid-cols-12 items-center gap-2">
             {#if i === 0}
               <div class="col-span-2 text-center text-xs">Where</div>
@@ -115,6 +111,16 @@
             </div>
           </div>
         {/if}
+        {#if isMaybeGroup(child)}
+          <div class="grid grid-cols-12">
+            <ConjunctionPicker
+              disabled={i !== 1}
+              class="col-span-2 text-center text-xs"
+              bind:value={value.conjunction}
+            />
+          </div>
+          <svelte:self bind:value={child} {table} level={level + 1} />
+        {/if}
       {/each}
     </SortableList>
   {/if}
@@ -130,6 +136,6 @@
       </Button>
     </div>
 
-    <Button size="xs" on:click={() => dispatch("submit", validValue)}>Submit</Button>
+    <slot name="footer" />
   </div>
 </div>
