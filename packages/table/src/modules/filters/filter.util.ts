@@ -81,9 +81,11 @@ export function toMaybeFilterGroup(filter: IFilterGroup): MaybeFilterGroup {
       if (isGroup(child)) {
         return toMaybeFilterGroup(child)
       }
+
       if (isFieldFilter(child)) {
         return toMaybeFieldFilter(child)
       }
+
       return child
     }),
   }
