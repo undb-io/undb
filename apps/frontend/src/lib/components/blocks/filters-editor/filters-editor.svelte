@@ -1,12 +1,5 @@
 <script lang="ts">
-  import {
-    TableDo,
-    isMaybeFieldFilter,
-    isMaybeGroup,
-    parseValidFilter,
-    type MaybeFieldFilter,
-    type MaybeFilterGroup,
-  } from "@undb/table"
+  import { TableDo, isMaybeFieldFilter, isMaybeGroup, type MaybeFieldFilter, type MaybeFilterGroup } from "@undb/table"
   import FilterField from "./filter-field.svelte"
   import OpPicker from "./op-picker.svelte"
   import FilterValue from "./filter-value.svelte"
