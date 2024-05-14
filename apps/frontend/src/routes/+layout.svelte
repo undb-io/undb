@@ -16,7 +16,7 @@
 </script>
 
 <ModeWatcher defaultMode="light" />
-<Toaster />
+<Toaster richColors position="bottom-center" />
 <div class="app">
   <main>
     <QueryClientProvider client={queryClient}>
