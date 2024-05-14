@@ -1,6 +1,6 @@
-import { z } from 'zod'
-import { recordId } from '../record-id.vo'
-import { recordValues } from '../record-values.vo'
+import { z } from "zod"
+import { recordId } from "../record-id.vo"
+import { recordValues } from "../record-values.vo"
 
 export const createRecordDTO = z.object({
   id: recordId.optional(),

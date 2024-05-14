@@ -1,7 +1,7 @@
-import { createLogger } from '@undb/logger'
-import type { Logger } from 'drizzle-orm'
+import { createLogger } from "@undb/logger"
+import type { Logger } from "drizzle-orm"
 
-const drizzleLogger = createLogger('db')
+const drizzleLogger = createLogger("db")
 
 export class DrizzleLogger implements Logger {
   logQuery(query: string, params: unknown[]): void {

@@ -1,11 +1,11 @@
-import { DomainRules, ExceptionBase } from '@undb/domain'
-import type { Filter } from '../filter.vo'
+import { DomainRules, ExceptionBase } from "@undb/domain"
+import type { Filter } from "../filter.vo"
 
 export class FilterNotEmptyException extends ExceptionBase {
-  code = 'table:filter.not.empty'
+  code = "table:filter.not.empty"
 
   constructor() {
-    super('Filter should not be empty')
+    super("Filter should not be empty")
   }
 }
 

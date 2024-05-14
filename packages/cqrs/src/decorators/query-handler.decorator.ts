@@ -1,9 +1,9 @@
-import 'reflect-metadata'
+import "reflect-metadata"
 
-import type { Query } from '@undb/domain'
-import type { Class } from 'type-fest'
-import { v4 } from 'uuid'
-import { QUERY_HANDLER_METADATA, QUERY_METADATA } from './constants'
+import type { Query } from "@undb/domain"
+import type { Class } from "type-fest"
+import { v4 } from "uuid"
+import { QUERY_HANDLER_METADATA, QUERY_METADATA } from "./constants"
 
 export const queryHandler = (query: Class<Query>): ClassDecorator => {
   return (target: object) => {

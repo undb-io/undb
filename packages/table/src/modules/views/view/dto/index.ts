@@ -1,1 +1,1 @@
-export * from './view.dto';
+export * from "./view.dto"

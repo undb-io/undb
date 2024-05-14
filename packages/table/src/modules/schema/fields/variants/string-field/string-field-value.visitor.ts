@@ -4,7 +4,7 @@ import type {
   StringEndsWith,
   StringEqual,
   StringStartsWith,
-} from './string-field-value.specification'
+} from "./string-field-value.specification"
 
 export interface IStringFieldValueVisitor {
   stringEqual(spec: StringEqual): void

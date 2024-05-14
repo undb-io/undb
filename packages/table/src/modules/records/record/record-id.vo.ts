@@ -1,7 +1,7 @@
-import { IdFactory } from '@undb/domain'
-import { z } from 'zod'
+import { IdFactory } from "@undb/domain"
+import { z } from "zod"
 
-const prefix = 'rec'
+const prefix = "rec"
 
 const size = 8
 

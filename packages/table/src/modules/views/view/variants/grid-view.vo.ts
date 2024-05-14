@@ -1,8 +1,8 @@
-import { z } from 'zod'
-import { ViewIdVo } from '../view-id.vo'
-import { AbstractView,baseViewDTO,createBaseViewDTO } from './abstract-view.vo'
+import { z } from "zod"
+import { ViewIdVo } from "../view-id.vo"
+import { AbstractView, baseViewDTO, createBaseViewDTO } from "./abstract-view.vo"
 
-export const GRID_TYPE = 'grid' as const
+export const GRID_TYPE = "grid" as const
 
 export const createGridViewDTO = createBaseViewDTO.extend({
   type: z.literal(GRID_TYPE),

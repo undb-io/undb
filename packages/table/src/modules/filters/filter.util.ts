@@ -1,26 +1,27 @@
-import { None, andOptions, orOptions, type Option } from '@undb/domain'
-import { isObject } from 'radash'
+import { None, andOptions, orOptions, type Option } from "@undb/domain"
+import { isObject } from "radash"
 import type {
   INotRecordComositeSpecification,
   IRecordComositeSpecification,
-} from '../records/record/record.composite-specification'
-import type { IFieldFilter, MaybeFieldFilter, MaybeFieldFilterWithFieldId } from '../schema/fields/field-filter.type'
-import type { AbstractField } from '../schema/fields/variants/abstract-field.vo'
-import type { SchemaMap } from '../schema/schema.type'
-import type { IFilterGroup, IFilterGroupChildren, MaybeFilterGroup } from './filter.type'
+} from "../records/record/record.composite-specification"
+import type { IFieldFilter, MaybeFieldFilter, MaybeFieldFilterWithFieldId } from "../schema/fields/field-filter.type"
+import type { AbstractField } from "../schema/fields/variants/abstract-field.vo"
+import type { SchemaMap } from "../schema/schema.type"
+import type { IFilterGroup, IFilterGroupChildren, MaybeFilterGroup } from "./filter.type"
 
 type Spec = Option<IRecordComositeSpecification | INotRecordComositeSpecification>
 
 export const isGroup = (filter: IFilterGroup | IFieldFilter): filter is IFilterGroup =>
-  isObject(filter) && Reflect.has(filter, 'conjunction')
+  isObject(filter) && Reflect.has(filter, "conjunction")
 
 export const isMaybeGroup = (filter: MaybeFieldFilter | MaybeFilterGroup): filter is MaybeFilterGroup =>
-  isObject(filter) && Reflect.has(filter, 'conjunction')
+  isObject(filter) && Reflect.has(filter, "conjunction")
 
 export const isFieldFilter = (filter: IFilterGroup | IFieldFilter): filter is IFieldFilter =>
-  Reflect.has(filter, 'fieldId') && Reflect.has(filter, 'op')
+  Reflect.has(filter, "fieldId") && Reflect.has(filter, "op")
 
-export const isMaybeFieldFilter = (filter: any): filter is MaybeFieldFilter => isObject(filter)
+export const isMaybeFieldFilter = (filter: any): filter is MaybeFieldFilter =>
+  isObject(filter) && !Reflect.has(filter, "conjunction")
 
 function getFieldSpec(schema: SchemaMap, filter: IFieldFilter): Spec {
   const field = schema.get(filter.fieldId) as AbstractField<any> | undefined
@@ -42,10 +43,10 @@ function getGroupOrFieldSpec(schema: SchemaMap, filter: IFilterGroup | IFieldFil
 }
 
 function getGroupSpec(schema: SchemaMap, filter: IFilterGroup): Spec {
-  if (filter.conjunction === 'and') {
+  if (filter.conjunction === "and") {
     const specs = filter.children.map((child) => getGroupOrFieldSpec(schema, child))
     return andOptions(...specs)
-  } else if (filter.conjunction === 'or') {
+  } else if (filter.conjunction === "or") {
     const specs = filter.children.map((child) => getGroupOrFieldSpec(schema, child))
     return orOptions(...specs)
   }

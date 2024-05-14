@@ -1,8 +1,8 @@
-import { Ok, type Result } from '@undb/domain'
-import type { Schema } from '../modules/schema/schema.vo'
-import type { TableDo } from '../table.do'
-import type { ITableSpecVisitor } from './table-visitor.interface'
-import { TableComositeSpecification } from './table.composite-specification'
+import { Ok, type Result } from "@undb/domain"
+import type { Schema } from "../modules/schema/schema.vo"
+import type { TableDo } from "../table.do"
+import type { ITableSpecVisitor } from "./table-visitor.interface"
+import { TableComositeSpecification } from "./table.composite-specification"
 
 export class TableSchemaSpecification extends TableComositeSpecification {
   constructor(public readonly schema: Schema) {

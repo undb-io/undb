@@ -1,5 +1,5 @@
-import { z } from 'zod'
-import { createFieldDTO } from '../fields/dto/create-field.dto'
+import { z } from "zod"
+import { createFieldDTO } from "../fields/dto/create-field.dto"
 
 export const createSchemaDTO = z.array(createFieldDTO).nonempty()
 

@@ -1,11 +1,11 @@
-import { container, singleton } from '@undb/di'
-import type { IQueryBus, IQueryHandler, IQueryPublisher, Query, QueryMetadata } from '@undb/domain'
-import { Subject } from 'rxjs'
-import type { Class } from 'type-fest'
-import { QUERY_HANDLER_METADATA, QUERY_METADATA } from './decorators/constants'
-import { DefaultQueryPubSub } from './default-query-publisher'
-import { InvalidQueryHandlerException } from './exceptions/invalid-query-handler.exception'
-import { QueryHandlerNotFoundException } from './exceptions/query-handler-not-found.exception'
+import { container, singleton } from "@undb/di"
+import type { IQueryBus, IQueryHandler, IQueryPublisher, Query, QueryMetadata } from "@undb/domain"
+import { Subject } from "rxjs"
+import type { Class } from "type-fest"
+import { QUERY_HANDLER_METADATA, QUERY_METADATA } from "./decorators/constants"
+import { DefaultQueryPubSub } from "./default-query-publisher"
+import { InvalidQueryHandlerException } from "./exceptions/invalid-query-handler.exception"
+import { QueryHandlerNotFoundException } from "./exceptions/query-handler-not-found.exception"
 
 export type QueryHandlerType = Class<IQueryHandler<Query, any>>
 

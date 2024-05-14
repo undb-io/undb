@@ -1,7 +1,7 @@
-import { ValueObject } from '@undb/domain'
-import { z } from 'zod'
+import { ValueObject } from "@undb/domain"
+import { z } from "zod"
 
-export const tableName = z.string().min(2, { message: 'table name contains at least 2 chars' })
+export const tableName = z.string().min(2, { message: "table name contains at least 2 chars" })
 
 export type ITableName = z.infer<typeof tableName>
 

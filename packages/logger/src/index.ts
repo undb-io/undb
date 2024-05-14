@@ -1,14 +1,14 @@
-import pino, { type LoggerOptions } from 'pino'
+import pino, { type LoggerOptions } from "pino"
 
-export * from './logger.provider'
+export * from "./logger.provider"
 
 export const loggerOptions: LoggerOptions = {
-  level: import.meta.env.LOG_LEVEL ?? 'info',
+  level: import.meta.env.LOG_LEVEL ?? "info",
   transport:
-    import.meta.env.NODE_ENV === 'production'
+    import.meta.env.NODE_ENV === "production"
       ? undefined
       : {
-          target: 'pino-pretty',
+          target: "pino-pretty",
         },
 }
 

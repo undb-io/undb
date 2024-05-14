@@ -1,21 +1,21 @@
-import { inject, singleton } from '@undb/di'
-import { None, Option, Some } from '@undb/domain'
+import { inject, singleton } from "@undb/di"
+import { None, Option, Some } from "@undb/domain"
 import {
   TableComositeSpecification,
   TableIdSpecification,
   type ITableRepository,
   type TableDo,
   type TableId,
-} from '@undb/table'
-import { eq } from 'drizzle-orm'
-import type { Database } from '../db'
-import { injectDb } from '../db.provider'
-import { tables } from '../tables'
-import { UnderlyingTableService } from '../underlying/underlying-table.service'
-import { TableDbQuerySpecHandler } from './table-db.query-spec-handler'
-import { TableMapper } from './table.mapper'
-import { injectTableMapper } from './table.mapper.provider'
-import { TableMutationVisitor } from './table.mutation-visitor'
+} from "@undb/table"
+import { eq } from "drizzle-orm"
+import type { Database } from "../db"
+import { injectDb } from "../db.provider"
+import { tables } from "../tables"
+import { UnderlyingTableService } from "../underlying/underlying-table.service"
+import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
+import { TableMapper } from "./table.mapper"
+import { injectTableMapper } from "./table.mapper.provider"
+import { TableMutationVisitor } from "./table.mutation-visitor"
 
 @singleton()
 export class TableRepository implements ITableRepository {
@@ -25,7 +25,7 @@ export class TableRepository implements ITableRepository {
     @injectTableMapper()
     private readonly mapper: TableMapper,
     @inject(UnderlyingTableService)
-    private readonly underlyingTableService: UnderlyingTableService
+    private readonly underlyingTableService: UnderlyingTableService,
   ) {}
 
   async updateOneById(table: TableDo, spec: TableComositeSpecification): Promise<void> {

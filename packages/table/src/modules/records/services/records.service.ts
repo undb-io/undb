@@ -1,8 +1,8 @@
-import { singleton } from '@undb/di'
-import type { ITableRepository } from '../../../table.repository'
-import { injectTableRepository } from '../../../table.repository.provider'
-import { injectRecordRepository, type ICreateRecordDTO, type IRecordRepository, type RecordDO } from '../record'
-import { createRecordMethod } from './methods/create-record.method'
+import { singleton } from "@undb/di"
+import type { ITableRepository } from "../../../table.repository"
+import { injectTableRepository } from "../../../table.repository.provider"
+import { injectRecordRepository, type ICreateRecordDTO, type IRecordRepository, type RecordDO } from "../record"
+import { createRecordMethod } from "./methods/create-record.method"
 
 export interface IRecordsService {
   createRecord(tableId: string, dto: ICreateRecordDTO): Promise<RecordDO>
@@ -14,7 +14,7 @@ export class RecordsService implements IRecordsService {
     @injectTableRepository()
     readonly tableRepository: ITableRepository,
     @injectRecordRepository()
-    readonly repo: IRecordRepository
+    readonly repo: IRecordRepository,
   ) {}
 
   createRecord = createRecordMethod

@@ -5,7 +5,7 @@ import type {
   NumberGTE,
   NumberLT,
   NumberLTE,
-} from './number-field-value.specification'
+} from "./number-field-value.specification"
 
 export interface INumberFieldValueVisitor {
   numberEqual(spec: NumberEqual): void

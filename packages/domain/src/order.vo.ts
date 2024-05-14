@@ -1,7 +1,7 @@
-import { arrayMoveImmutable } from 'array-move'
-import type { Option } from 'oxide.ts'
-import { None, Some } from 'oxide.ts'
-import { ValueObject } from './value-object.js'
+import { arrayMoveImmutable } from "array-move"
+import type { Option } from "oxide.ts"
+import { None, Some } from "oxide.ts"
+import { ValueObject } from "./value-object.js"
 
 export class OrderVO extends ValueObject<string[]> {
   public get order() {
@@ -29,7 +29,7 @@ export class OrderVO extends ValueObject<string[]> {
   }
 
   public addAt(id: string, at?: number): OrderVO {
-    if (typeof at !== 'number') return this.add(id)
+    if (typeof at !== "number") return this.add(id)
 
     const order = this.props.flatMap((item, index) => (index === at ? [item, id] : item))
     return OrderVO.fromArray(order)

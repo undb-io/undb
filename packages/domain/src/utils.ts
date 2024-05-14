@@ -1,4 +1,4 @@
-import { ValueObject } from './value-object.js'
+import { ValueObject } from "./value-object.js"
 
 export function convertPropsToObject(props: any): any {
   const propsCopy = { ...props }

@@ -1,9 +1,9 @@
-import { singleton } from '@undb/di'
-import { createLogger } from '@undb/logger'
-import type { IRecordRepository, RecordDO, TableDo } from '@undb/table'
-import type { IQueryBuilder } from '../qb'
-import { injectQueryBuilder } from '../qb.provider'
-import { UnderlyingTable } from '../underlying/underlying-table'
+import { singleton } from "@undb/di"
+import { createLogger } from "@undb/logger"
+import type { IRecordRepository, RecordDO, TableDo } from "@undb/table"
+import type { IQueryBuilder } from "../qb"
+import { injectQueryBuilder } from "../qb.provider"
+import { UnderlyingTable } from "../underlying/underlying-table"
 
 @singleton()
 export class RecordRepository implements IRecordRepository {
@@ -11,7 +11,7 @@ export class RecordRepository implements IRecordRepository {
 
   constructor(
     @injectQueryBuilder()
-    private readonly qb: IQueryBuilder
+    private readonly qb: IQueryBuilder,
   ) {}
 
   async insert(table: TableDo, record: RecordDO): Promise<void> {
@@ -19,7 +19,7 @@ export class RecordRepository implements IRecordRepository {
 
     const values = record.insertValues()
 
-    this.logger.debug({ values }, 'Inserting record')
+    this.logger.debug({ values }, "Inserting record")
 
     await this.qb.insertInto(t.name).values(values).executeTakeFirst()
   }

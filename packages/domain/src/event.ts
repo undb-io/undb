@@ -1,4 +1,4 @@
-import { v4 } from 'uuid'
+import { v4 } from "uuid"
 
 export interface IEvent<TPayload extends object = object, TMeta = any> {
   id: string

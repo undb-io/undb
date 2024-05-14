@@ -1,8 +1,8 @@
-import { Option, ValueObject } from '@undb/domain'
-import type { IViewsDTO } from './dto'
-import { GridView } from './view/variants/grid-view.vo'
-import type { ViewId } from './view/view-id.vo'
-import type { View } from './view/view.type'
+import { Option, ValueObject } from "@undb/domain"
+import type { IViewsDTO } from "./dto"
+import { GridView } from "./view/variants/grid-view.vo"
+import type { ViewId } from "./view/view-id.vo"
+import type { View } from "./view/view.type"
 
 export class Views extends ValueObject {
   constructor(public readonly views: View[]) {
@@ -10,7 +10,7 @@ export class Views extends ValueObject {
   }
 
   static create() {
-    return new Views([GridView.create({ name: 'view1', type: 'grid' })])
+    return new Views([GridView.create({ name: "view1", type: "grid" })])
   }
 
   toJSON(): IViewsDTO {
@@ -29,6 +29,6 @@ export class Views extends ValueObject {
     } else {
       view = this.views.find((view) => view.id.equals(id)) ?? this.views.at(0)
     }
-    return Option(view).expect('View not found')
+    return Option(view).expect("View not found")
   }
 }

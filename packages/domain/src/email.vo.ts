@@ -1,5 +1,5 @@
-import { z } from 'zod'
-import { ValueObject } from './value-object.js'
+import { z } from "zod"
+import { ValueObject } from "./value-object.js"
 
 export const emailSchema = z.string().email()
 

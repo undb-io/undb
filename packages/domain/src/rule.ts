@@ -1,4 +1,4 @@
-import type { ExceptionBase } from './exception.base'
+import type { ExceptionBase } from "./exception.base"
 
 export abstract class DomainRules<Err extends ExceptionBase> {
   constructor(readonly error: Err) {}

@@ -1,14 +1,14 @@
-import { Option } from '@undb/domain'
-import { match } from 'ts-pattern'
-import { z } from 'zod'
-import { FieldIdVo } from '../../field-id.vo'
-import type { IFieldVisitor } from '../../field.visitor'
-import { AbstractField, baseFieldDTO, createBaseFieldDTO } from '../abstract-field.vo'
-import { NumberEmpty, NumberEqual, NumberGT, NumberGTE, NumberLT, NumberLTE } from './number-field-value.specification'
-import { NumberFieldValue } from './number-field-value.vo'
-import { numberFieldFilter, type INumberFieldFilter, type INumberFieldFilterSchema } from './number-field.filter'
+import { Option } from "@undb/domain"
+import { match } from "ts-pattern"
+import { z } from "zod"
+import { FieldIdVo } from "../../field-id.vo"
+import type { IFieldVisitor } from "../../field.visitor"
+import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
+import { NumberEmpty, NumberEqual, NumberGT, NumberGTE, NumberLT, NumberLTE } from "./number-field-value.specification"
+import { NumberFieldValue } from "./number-field-value.vo"
+import { numberFieldFilter, type INumberFieldFilter, type INumberFieldFilterSchema } from "./number-field.filter"
 
-export const NUMBER_TYPE = 'number' as const
+export const NUMBER_TYPE = "number" as const
 
 export const createNumberFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(NUMBER_TYPE),
@@ -47,14 +47,14 @@ export class NumberField extends AbstractField<NumberFieldValue> {
 
   override getSpec(filter: INumberFieldFilter) {
     const spec = match(filter)
-      .with({ op: 'eq' }, ({ value }) => new NumberEqual(new NumberFieldValue(value), this.id))
-      .with({ op: 'neq' }, ({ value }) => new NumberEqual(new NumberFieldValue(value), this.id).not())
-      .with({ op: 'gt' }, ({ value }) => new NumberGT(value, this.id))
-      .with({ op: 'gte' }, ({ value }) => new NumberGTE(value, this.id))
-      .with({ op: 'lt' }, ({ value }) => new NumberLT(value, this.id))
-      .with({ op: 'lte' }, ({ value }) => new NumberLTE(value, this.id))
-      .with({ op: 'is_empty' }, () => new NumberEmpty(this.id))
-      .with({ op: 'is_not_empty' }, () => new NumberEmpty(this.id).not())
+      .with({ op: "eq" }, ({ value }) => new NumberEqual(new NumberFieldValue(value), this.id))
+      .with({ op: "neq" }, ({ value }) => new NumberEqual(new NumberFieldValue(value), this.id).not())
+      .with({ op: "gt" }, ({ value }) => new NumberGT(value, this.id))
+      .with({ op: "gte" }, ({ value }) => new NumberGTE(value, this.id))
+      .with({ op: "lt" }, ({ value }) => new NumberLT(value, this.id))
+      .with({ op: "lte" }, ({ value }) => new NumberLTE(value, this.id))
+      .with({ op: "is_empty" }, () => new NumberEmpty(this.id))
+      .with({ op: "is_not_empty" }, () => new NumberEmpty(this.id).not())
       .exhaustive()
 
     return Option(spec)

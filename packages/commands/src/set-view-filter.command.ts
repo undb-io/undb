@@ -1,6 +1,6 @@
-import { Command, type CommandProps } from '@undb/domain'
-import { setViewFilterDTO, type IFilterGroup } from '@undb/table'
-import { z } from 'zod'
+import { Command, type CommandProps } from "@undb/domain"
+import { setViewFilterDTO, type IFilterGroup } from "@undb/table"
+import { z } from "zod"
 
 export const setViewFilterCommand = setViewFilterDTO
 

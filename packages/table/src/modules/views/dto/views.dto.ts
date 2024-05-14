@@ -1,5 +1,5 @@
-import type { z } from 'zod'
-import { viewDTO } from '../view/dto'
+import type { z } from "zod"
+import { viewDTO } from "../view/dto"
 
 export const viewsDTO = viewDTO.array()
 

@@ -1,9 +1,9 @@
-import type { Option } from '@undb/domain'
-import type { TableDo } from '../../../table.do'
-import type { ViewId } from '../../views'
-import type { IRecordsDTO } from '../dto/records.dto'
-import type { RecordComositeSpecification } from './record.composite-specification'
-import type { RecordDO } from './record.do'
+import type { Option } from "@undb/domain"
+import type { TableDo } from "../../../table.do"
+import type { ViewId } from "../../views"
+import type { IRecordsDTO } from "../dto/records.dto"
+import type { RecordComositeSpecification } from "./record.composite-specification"
+import type { RecordDO } from "./record.do"
 
 export interface Query {
   select: Option<RecordComositeSpecification>

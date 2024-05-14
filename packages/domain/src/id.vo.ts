@@ -1,8 +1,8 @@
-import { customAlphabet } from 'nanoid'
-import type { ZodSchema } from 'zod'
-import { ValueObject } from './value-object.js'
+import { customAlphabet } from "nanoid"
+import type { ZodSchema } from "zod"
+import { ValueObject } from "./value-object.js"
 
-const ALPHABETS = '0123456789abcdefghijklmnopqrstuvwxyz'
+const ALPHABETS = "0123456789abcdefghijklmnopqrstuvwxyz"
 
 export const IdFactory = (prefix: string, size = 10, schema?: ZodSchema) => {
   return class extends ID {

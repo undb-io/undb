@@ -1,18 +1,18 @@
-import { singleton } from '@undb/di'
-import { None, Option, Some } from '@undb/domain'
+import { singleton } from "@undb/di"
+import { None, Option, Some } from "@undb/domain"
 import {
   TableIdSpecification,
   type ITableDTO,
   type ITableQueryRepository,
   type TableComositeSpecification,
   type TableId,
-} from '@undb/table'
-import type { Database } from '../db'
-import { injectDb } from '../db.provider'
-import { tables } from '../tables'
-import { TableDbQuerySpecHandler } from './table-db.query-spec-handler'
-import type { TableMapper } from './table.mapper'
-import { injectTableMapper } from './table.mapper.provider'
+} from "@undb/table"
+import type { Database } from "../db"
+import { injectDb } from "../db.provider"
+import { tables } from "../tables"
+import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
+import type { TableMapper } from "./table.mapper"
+import { injectTableMapper } from "./table.mapper.provider"
 
 @singleton()
 export class TableQueryRepository implements ITableQueryRepository {
@@ -20,7 +20,7 @@ export class TableQueryRepository implements ITableQueryRepository {
     @injectDb()
     private readonly db: Database,
     @injectTableMapper()
-    private readonly mapper: TableMapper
+    private readonly mapper: TableMapper,
   ) {}
 
   async find(spec: Option<TableComositeSpecification>): Promise<ITableDTO[]> {

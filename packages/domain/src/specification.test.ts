@@ -1,18 +1,18 @@
-import { describe, expect, test } from 'bun:test'
-import type { Result } from 'oxide.ts'
-import { CompositeSpecification } from './specification.js'
+import { describe, expect, test } from "bun:test"
+import type { Result } from "oxide.ts"
+import { CompositeSpecification } from "./specification.js"
 
-describe('and', () => {
-  test('should return true for matched senario', () => {
+describe("and", () => {
+  test("should return true for matched senario", () => {
     class Test1 extends CompositeSpecification {
       isSatisfiedBy(t: any): boolean {
         return 1 > 0
       }
       mutate(t: any): Result<any, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
       accept(v: any): Result<void, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
     }
     class Test2 extends CompositeSpecification {
@@ -20,10 +20,10 @@ describe('and', () => {
         return 2 > 0
       }
       mutate(t: any): Result<any, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
       accept(v: any): Result<void, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
     }
 
@@ -31,16 +31,16 @@ describe('and', () => {
     expect(v).toBe(true)
   })
 
-  test('should return false for not matched senario', () => {
+  test("should return false for not matched senario", () => {
     class Test1 extends CompositeSpecification {
       isSatisfiedBy(t: any): boolean {
         return 0 > 1
       }
       mutate(t: any): Result<any, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
       accept(v: any): Result<void, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
     }
     class Test2 extends CompositeSpecification {
@@ -48,10 +48,10 @@ describe('and', () => {
         return 2 > 0
       }
       mutate(t: any): Result<any, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
       accept(v: any): Result<void, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
     }
 
@@ -60,17 +60,17 @@ describe('and', () => {
   })
 })
 
-describe('or', () => {
-  test('should return true for matched senario', () => {
+describe("or", () => {
+  test("should return true for matched senario", () => {
     class Test1 extends CompositeSpecification {
       isSatisfiedBy(t: any): boolean {
         return 1 > 0
       }
       mutate(t: any): Result<any, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
       accept(v: any): Result<void, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
     }
     class Test2 extends CompositeSpecification {
@@ -78,10 +78,10 @@ describe('or', () => {
         return 2 > 0
       }
       mutate(t: any): Result<any, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
       accept(v: any): Result<void, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
     }
 
@@ -89,16 +89,16 @@ describe('or', () => {
     expect(v).toBe(true)
   })
 
-  test('should return true if any match', () => {
+  test("should return true if any match", () => {
     class Test1 extends CompositeSpecification {
       isSatisfiedBy(t: any): boolean {
         return 0 > 1
       }
       mutate(t: any): Result<any, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
       accept(v: any): Result<void, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
     }
     class Test2 extends CompositeSpecification {
@@ -106,10 +106,10 @@ describe('or', () => {
         return 2 > 0
       }
       mutate(t: any): Result<any, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
       accept(v: any): Result<void, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
     }
 
@@ -117,16 +117,16 @@ describe('or', () => {
     expect(v).toBe(true)
   })
 
-  test('should return false if none match', () => {
+  test("should return false if none match", () => {
     class Test1 extends CompositeSpecification {
       isSatisfiedBy(t: any): boolean {
         return 0 > 1
       }
       mutate(t: any): Result<any, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
       accept(v: any): Result<void, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
     }
     class Test2 extends CompositeSpecification {
@@ -134,10 +134,10 @@ describe('or', () => {
         return 0 > 1
       }
       mutate(t: any): Result<any, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
       accept(v: any): Result<void, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
     }
 
@@ -146,17 +146,17 @@ describe('or', () => {
   })
 })
 
-describe('not', () => {
-  test('should return reverse boolean value', () => {
+describe("not", () => {
+  test("should return reverse boolean value", () => {
     class Test1 extends CompositeSpecification {
       isSatisfiedBy(t: any): boolean {
         return true
       }
       mutate(t: any): Result<any, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
       accept(v: any): Result<void, string> {
-        throw new Error('Method not implemented.')
+        throw new Error("Method not implemented.")
       }
     }
 

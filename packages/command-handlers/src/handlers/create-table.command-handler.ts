@@ -1,9 +1,9 @@
-import { CreateTableCommand } from '@undb/commands'
-import { commandHandler } from '@undb/cqrs'
-import { singleton } from '@undb/di'
-import type { ICommandHandler } from '@undb/domain'
-import { createLogger } from '@undb/logger'
-import { injectTableService, type ITableService } from '@undb/table'
+import { CreateTableCommand } from "@undb/commands"
+import { commandHandler } from "@undb/cqrs"
+import { singleton } from "@undb/di"
+import type { ICommandHandler } from "@undb/domain"
+import { createLogger } from "@undb/logger"
+import { injectTableService, type ITableService } from "@undb/table"
 
 @commandHandler(CreateTableCommand)
 @singleton()
@@ -12,7 +12,7 @@ export class CreateTableCommandHandler implements ICommandHandler<CreateTableCom
 
   constructor(
     @injectTableService()
-    private readonly service: ITableService
+    private readonly service: ITableService,
   ) {}
 
   async execute(command: CreateTableCommand): Promise<any> {

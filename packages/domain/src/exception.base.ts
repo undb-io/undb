@@ -33,7 +33,12 @@ export abstract class ExceptionBase extends Error {
    * @param cause
    * @param metadata
    */
-  constructor(readonly message: string, correlationId?: string, readonly cause?: Error, readonly metadata?: unknown) {
+  constructor(
+    readonly message: string,
+    correlationId?: string,
+    readonly cause?: Error,
+    readonly metadata?: unknown,
+  ) {
     super(message)
     Error.captureStackTrace(this, this.constructor)
     this.correlationId = correlationId

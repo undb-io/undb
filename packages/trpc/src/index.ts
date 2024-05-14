@@ -1,4 +1,4 @@
-import { initTRPC } from '@trpc/server'
+import { initTRPC } from "@trpc/server"
 import {
   CreateRecordCommand,
   CreateTableCommand,
@@ -6,15 +6,15 @@ import {
   createRecordCommand,
   createTableCommand,
   setViewFilterCommand,
-} from '@undb/commands'
-import { CommandBus, QueryBus } from '@undb/cqrs'
-import { container } from '@undb/di'
-import type { ICommandBus, IQueryBus } from '@undb/domain'
-import { createLogger } from '@undb/logger'
-import { GetRecordsQuery, GetTableQuery, GetTablesQuery, getRecordsQuery, getTableQuery } from '@undb/queries'
-import { tableDTO } from '@undb/table'
-import { z } from 'zod'
-import pkg from '../package.json'
+} from "@undb/commands"
+import { CommandBus, QueryBus } from "@undb/cqrs"
+import { container } from "@undb/di"
+import type { ICommandBus, IQueryBus } from "@undb/domain"
+import { createLogger } from "@undb/logger"
+import { GetRecordsQuery, GetTableQuery, GetTablesQuery, getRecordsQuery, getTableQuery } from "@undb/queries"
+import { tableDTO } from "@undb/table"
+import { z } from "zod"
+import pkg from "../package.json"
 
 const log = createLogger(pkg.name)
 

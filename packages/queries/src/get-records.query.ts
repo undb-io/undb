@@ -1,6 +1,6 @@
-import { Query, type QueryProps } from '@undb/domain'
-import { getRecordsDTO } from '@undb/table'
-import { z } from 'zod'
+import { Query, type QueryProps } from "@undb/domain"
+import { getRecordsDTO } from "@undb/table"
+import { z } from "zod"
 
 export const getRecordsQuery = getRecordsDTO
 

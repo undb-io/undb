@@ -1,7 +1,7 @@
-import { Command, type CommandProps } from '@undb/domain'
-import type { ICreateSchemaDTO } from '@undb/table'
-import { createTableDTO } from '@undb/table'
-import { z } from 'zod'
+import { Command, type CommandProps } from "@undb/domain"
+import type { ICreateSchemaDTO } from "@undb/table"
+import { createTableDTO } from "@undb/table"
+import { z } from "zod"
 
 export const createTableCommand = createTableDTO.omit({ id: true })
 

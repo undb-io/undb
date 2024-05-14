@@ -1,5 +1,5 @@
-import { z } from 'zod'
-import { numberFieldDTO, stringFieldDTO } from '..'
+import { z } from "zod"
+import { numberFieldDTO, stringFieldDTO } from ".."
 
 export const fieldDTO = z.union([stringFieldDTO, numberFieldDTO])
 

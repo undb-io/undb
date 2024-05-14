@@ -1,5 +1,5 @@
-import type { z } from 'zod'
-import { fieldDTO } from '../fields/dto/field.dto'
+import type { z } from "zod"
+import { fieldDTO } from "../fields/dto/field.dto"
 
 export const schemaDTO = fieldDTO.array()
 

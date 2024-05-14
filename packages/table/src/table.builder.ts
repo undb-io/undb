@@ -1,17 +1,17 @@
-import { container,inject,injectable,singleton } from '@undb/di'
-import { createTableDTO,type ICreateTableDTO,type ITableDTO } from './dto'
-import type { ICreateSchemaDTO } from './modules/schema/dto/create-schema.dto'
-import type { ISchemaDTO } from './modules/schema/dto/schema.dto'
-import { Schema } from './modules/schema/schema.vo'
-import type { IViewsDTO } from './modules/views/dto'
-import { Views } from './modules/views/views.vo'
-import { TableViewsSpecification } from './specifications'
-import { TableIdSpecification } from './specifications/table-id.specification'
-import { TableNameSpecification } from './specifications/table-name.specification'
-import { TableSchemaSpecification } from './specifications/table-schema.specification'
-import { TableIdVo } from './table-id.vo'
-import { TableNameVo } from './table-name.vo'
-import { TableDo } from './table.do'
+import { container, inject, injectable, singleton } from "@undb/di"
+import { createTableDTO, type ICreateTableDTO, type ITableDTO } from "./dto"
+import type { ICreateSchemaDTO } from "./modules/schema/dto/create-schema.dto"
+import type { ISchemaDTO } from "./modules/schema/dto/schema.dto"
+import { Schema } from "./modules/schema/schema.vo"
+import type { IViewsDTO } from "./modules/views/dto"
+import { Views } from "./modules/views/views.vo"
+import { TableViewsSpecification } from "./specifications"
+import { TableIdSpecification } from "./specifications/table-id.specification"
+import { TableNameSpecification } from "./specifications/table-name.specification"
+import { TableSchemaSpecification } from "./specifications/table-schema.specification"
+import { TableIdVo } from "./table-id.vo"
+import { TableNameVo } from "./table-name.vo"
+import { TableDo } from "./table.do"
 
 export interface ITableBuilder {
   reset(): void
@@ -79,7 +79,7 @@ export interface ITableCreator {
 export class TableCreator {
   constructor(
     @inject(TableBuilder)
-    private readonly builder: ITableBuilder
+    private readonly builder: ITableBuilder,
   ) {}
 
   create(dto: ICreateTableDTO): TableDo {

@@ -1,18 +1,18 @@
-import { ValueObject } from '@undb/domain'
-import { z } from 'zod'
+import { ValueObject } from "@undb/domain"
+import { z } from "zod"
 
 export const mutateStringFieldValueSchema = z.union([
   z.string().optional(),
   z.object({
-    type: z.literal('set'),
+    type: z.literal("set"),
     value: z.string(),
   }),
   z.object({
-    type: z.literal('append'),
+    type: z.literal("append"),
     value: z.string().min(1),
   }),
   z.object({
-    type: z.literal('prepend'),
+    type: z.literal("prepend"),
     value: z.string().min(1),
   }),
 ])

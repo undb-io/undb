@@ -1,4 +1,4 @@
-import type { TableDo } from '@undb/table'
+import type { TableDo } from "@undb/table"
 
 export class UnderlyingTable {
   constructor(public readonly table: TableDo) {}

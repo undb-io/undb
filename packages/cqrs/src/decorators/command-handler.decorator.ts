@@ -1,9 +1,9 @@
-import 'reflect-metadata'
+import "reflect-metadata"
 
-import type { Command } from '@undb/domain'
-import type { Class } from 'type-fest'
-import { v4 } from 'uuid'
-import { COMMAND_HANDLER_METADATA, COMMAND_METADATA } from './constants'
+import type { Command } from "@undb/domain"
+import type { Class } from "type-fest"
+import { v4 } from "uuid"
+import { COMMAND_HANDLER_METADATA, COMMAND_METADATA } from "./constants"
 
 export const commandHandler = (command: Class<Command>): ClassDecorator => {
   return (target: object) => {

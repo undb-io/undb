@@ -1,5 +1,5 @@
-import type { ISpecVisitor, ISpecification } from '@undb/domain'
-import { and, not, or, type SQL } from 'drizzle-orm'
+import type { ISpecVisitor, ISpecification } from "@undb/domain"
+import { and, not, or, type SQL } from "drizzle-orm"
 
 export interface IAbastractDBVisitor {
   get cond(): SQL | undefined

@@ -1,15 +1,15 @@
-import { Option, ValueObject } from '@undb/domain'
-import { ZodUndefined, z, type ZodSchema } from 'zod'
+import { Option, ValueObject } from "@undb/domain"
+import { ZodUndefined, z, type ZodSchema } from "zod"
 import type {
   INotRecordComositeSpecification,
   IRecordComositeSpecification,
-} from '../../../records/record/record.composite-specification'
-import type { IFieldDTO } from '../dto/field.dto'
-import type { IFieldFilter, IFieldFilterSchema, MaybeFieldFilterWithFieldId } from '../field-filter.type'
-import { FieldIdVo, fieldId, type FieldId } from '../field-id.vo'
-import { FieldNameVo, fieldName } from '../field-name.vo'
-import type { FieldType } from '../field.type'
-import type { IFieldVisitor } from '../field.visitor'
+} from "../../../records/record/record.composite-specification"
+import type { IFieldDTO } from "../dto/field.dto"
+import type { IFieldFilter, IFieldFilterSchema, MaybeFieldFilterWithFieldId } from "../field-filter.type"
+import { FieldIdVo, fieldId, type FieldId } from "../field-id.vo"
+import { FieldNameVo, fieldName } from "../field-name.vo"
+import type { FieldType } from "../field.type"
+import type { IFieldVisitor } from "../field.visitor"
 
 export const createBaseFieldDTO = z.object({
   id: fieldId.optional(),

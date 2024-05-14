@@ -1,7 +1,7 @@
-import { IdFactory } from '@undb/domain'
-import { z } from 'zod'
+import { IdFactory } from "@undb/domain"
+import { z } from "zod"
 
-const prefix = 'fld'
+const prefix = "fld"
 const size = 6
 
 export const fieldId = z.string().startsWith(prefix)

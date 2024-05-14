@@ -1,14 +1,14 @@
-import { Ok, type Result } from '@undb/domain'
-import { isNumber } from 'radash'
-import type { IRecordVisitor, RecordDO } from '../../../../records'
-import { RecordComositeSpecification } from '../../../../records/record/record.composite-specification'
-import type { FieldId } from '../../field-id.vo'
-import { NumberFieldValue } from './number-field-value.vo'
+import { Ok, type Result } from "@undb/domain"
+import { isNumber } from "radash"
+import type { IRecordVisitor, RecordDO } from "../../../../records"
+import { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
+import type { FieldId } from "../../field-id.vo"
+import { NumberFieldValue } from "./number-field-value.vo"
 
 export class NumberEqual extends RecordComositeSpecification {
   constructor(
     readonly values: NumberFieldValue,
-    readonly fieldId: FieldId
+    readonly fieldId: FieldId,
   ) {
     super(fieldId)
   }
@@ -17,7 +17,7 @@ export class NumberEqual extends RecordComositeSpecification {
     return value.mapOr(false, (v) => v instanceof NumberFieldValue && v.equals(this.values))
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.numberEqual(this)
@@ -28,7 +28,7 @@ export class NumberEqual extends RecordComositeSpecification {
 export class NumberGT extends RecordComositeSpecification {
   constructor(
     readonly value: number,
-    readonly fieldId: FieldId
+    readonly fieldId: FieldId,
   ) {
     super(fieldId)
   }
@@ -37,7 +37,7 @@ export class NumberGT extends RecordComositeSpecification {
     return value.mapOr(false, (v) => v instanceof NumberFieldValue && v.value > this.value)
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.numberGT(this)
@@ -48,7 +48,7 @@ export class NumberGT extends RecordComositeSpecification {
 export class NumberGTE extends RecordComositeSpecification {
   constructor(
     readonly value: number,
-    readonly fieldId: FieldId
+    readonly fieldId: FieldId,
   ) {
     super(fieldId)
   }
@@ -57,7 +57,7 @@ export class NumberGTE extends RecordComositeSpecification {
     return value.mapOr(false, (v) => v instanceof NumberFieldValue && v.value >= this.value)
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.numberGTE(this)
@@ -68,7 +68,7 @@ export class NumberGTE extends RecordComositeSpecification {
 export class NumberLT extends RecordComositeSpecification {
   constructor(
     readonly value: number,
-    readonly fieldId: FieldId
+    readonly fieldId: FieldId,
   ) {
     super(fieldId)
   }
@@ -77,7 +77,7 @@ export class NumberLT extends RecordComositeSpecification {
     return value.mapOr(false, (v) => v instanceof NumberFieldValue && v.value < this.value)
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.numberLT(this)
@@ -88,7 +88,7 @@ export class NumberLT extends RecordComositeSpecification {
 export class NumberLTE extends RecordComositeSpecification {
   constructor(
     readonly value: number,
-    readonly fieldId: FieldId
+    readonly fieldId: FieldId,
   ) {
     super(fieldId)
   }
@@ -97,7 +97,7 @@ export class NumberLTE extends RecordComositeSpecification {
     return value.mapOr(false, (v) => v instanceof NumberFieldValue && v.value <= this.value)
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.numberLTE(this)
@@ -113,11 +113,11 @@ export class NumberEmpty extends RecordComositeSpecification {
     const value = t.getValue(this.fieldId)
     return value.mapOr(
       false,
-      (v) => v instanceof NumberFieldValue && !isNumber(v.value) && (v.value === undefined || v.value === null)
+      (v) => v instanceof NumberFieldValue && !isNumber(v.value) && (v.value === undefined || v.value === null),
     )
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.numberEmpty(this)

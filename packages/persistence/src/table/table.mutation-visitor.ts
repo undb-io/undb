@@ -1,4 +1,4 @@
-import { NotImplementException, WontImplementException, type ISpecification, type ISpecVisitor } from '@undb/domain'
+import { NotImplementException, WontImplementException, type ISpecification, type ISpecVisitor } from "@undb/domain"
 import type {
   ITableSpecVisitor,
   TableDo,
@@ -6,10 +6,10 @@ import type {
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
-} from '@undb/table'
-import type { WithViewFilter } from '@undb/table/src/specifications/table-view.specification'
-import type { SQLiteUpdateSetSource } from 'drizzle-orm/sqlite-core'
-import type { tables } from '../tables'
+} from "@undb/table"
+import type { WithViewFilter } from "@undb/table/src/specifications/table-view.specification"
+import type { SQLiteUpdateSetSource } from "drizzle-orm/sqlite-core"
+import type { tables } from "../tables"
 
 type Source = SQLiteUpdateSetSource<typeof tables>
 
@@ -23,29 +23,29 @@ export class TableMutationVisitor implements ITableSpecVisitor {
   }
 
   withId(id: TableIdSpecification): void {
-    throw new WontImplementException(TableMutationVisitor.name + '.withId')
+    throw new WontImplementException(TableMutationVisitor.name + ".withId")
   }
   withName(name: TableNameSpecification): void {
-    throw new NotImplementException(TableMutationVisitor.name + '.withName')
+    throw new NotImplementException(TableMutationVisitor.name + ".withName")
   }
   withSchema(schema: TableSchemaSpecification): void {
-    throw new NotImplementException(TableMutationVisitor.name + '.withSchema')
+    throw new NotImplementException(TableMutationVisitor.name + ".withSchema")
   }
   withViews(views: TableViewsSpecification): void {
-    throw new NotImplementException(TableMutationVisitor.name + '.withSchema')
+    throw new NotImplementException(TableMutationVisitor.name + ".withSchema")
   }
   withViewFilter(viewFilter: WithViewFilter): void {
     this.#updates = { ...this.#updates, views: this.table.views.toJSON() }
   }
   // TODO: abstraction
   and(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   or(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   not(spec: ISpecification<any, ISpecVisitor>): this {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   clone(): this {
     const visitor = new TableMutationVisitor(this.table)

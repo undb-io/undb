@@ -1,7 +1,7 @@
-import { ValueObject } from '@undb/domain'
-import { z } from 'zod'
+import { ValueObject } from "@undb/domain"
+import { z } from "zod"
 
-export const viewName = z.string().min(2, { message: 'view name contains at least 2 chars' })
+export const viewName = z.string().min(2, { message: "view name contains at least 2 chars" })
 
 export type IViewName = z.infer<typeof viewName>
 

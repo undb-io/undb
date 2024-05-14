@@ -1,3 +1,3 @@
-import Root from "./aspect-ratio.svelte";
+import Root from "./aspect-ratio.svelte"
 
-export { Root, Root as AspectRatio };
+export { Root, Root as AspectRatio }

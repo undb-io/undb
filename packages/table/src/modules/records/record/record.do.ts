@@ -1,15 +1,15 @@
-import type { Option } from '@undb/domain'
-import type { TableDo } from '../../../table.do'
-import type { FieldValue } from '../../schema'
-import type { FieldId } from '../../schema/fields/field-id.vo'
-import type { ICreateRecordDTO } from './dto'
-import { RecordIdVO, type RecordId } from './record-id.vo'
-import { RecordValuesVO } from './record-values.vo'
+import type { Option } from "@undb/domain"
+import type { TableDo } from "../../../table.do"
+import type { FieldValue } from "../../schema"
+import type { FieldId } from "../../schema/fields/field-id.vo"
+import type { ICreateRecordDTO } from "./dto"
+import { RecordIdVO, type RecordId } from "./record-id.vo"
+import { RecordValuesVO } from "./record-values.vo"
 
 export class RecordDO {
   constructor(
     private readonly id: RecordId,
-    private readonly values: RecordValuesVO
+    private readonly values: RecordValuesVO,
   ) {}
 
   static create(table: TableDo, dto: ICreateRecordDTO) {

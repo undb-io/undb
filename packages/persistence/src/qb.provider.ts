@@ -1,9 +1,9 @@
-import { container, inject, instanceCachingFactory } from '@undb/di'
-import type Database from 'bun:sqlite'
-import { SQLITE_DATABSE } from './db.provider'
-import { createQueryBuilder } from './qb'
+import { container, inject, instanceCachingFactory } from "@undb/di"
+import type Database from "bun:sqlite"
+import { SQLITE_DATABSE } from "./db.provider"
+import { createQueryBuilder } from "./qb"
 
-const QUERY_BUILDER = Symbol('queryBuilder')
+const QUERY_BUILDER = Symbol("queryBuilder")
 
 container.register(QUERY_BUILDER, {
   useFactory: instanceCachingFactory((c) => {

@@ -1,11 +1,11 @@
-import { inject, singleton } from '@undb/di'
-import { Option, andOptions } from '@undb/domain'
-import type { IRecordQueryRepository, IRecordsDTO, Query, TableDo, ViewId } from '@undb/table'
-import type { IQueryBuilder } from '../qb'
-import { injectQueryBuilder } from '../qb.provider'
-import { UnderlyingTable } from '../underlying/underlying-table'
-import { RecordFilterVisitor } from './record.filter-visitor'
-import { RecordMapper } from './record.mapper'
+import { inject, singleton } from "@undb/di"
+import { Option, andOptions } from "@undb/domain"
+import type { IRecordQueryRepository, IRecordsDTO, Query, TableDo, ViewId } from "@undb/table"
+import type { IQueryBuilder } from "../qb"
+import { injectQueryBuilder } from "../qb.provider"
+import { UnderlyingTable } from "../underlying/underlying-table"
+import { RecordFilterVisitor } from "./record.filter-visitor"
+import { RecordMapper } from "./record.mapper"
 
 @singleton()
 export class RecordQueryRepository implements IRecordQueryRepository {
@@ -13,7 +13,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
     @inject(RecordMapper)
-    private readonly mapper: RecordMapper
+    private readonly mapper: RecordMapper,
   ) {}
 
   async find(table: TableDo, viewId: Option<ViewId>, query: Option<Query>): Promise<IRecordsDTO> {

@@ -1,5 +1,5 @@
-import type { z } from 'zod'
-import { recordDTO } from '../record/dto'
+import type { z } from "zod"
+import { recordDTO } from "../record/dto"
 
 export const recordsDTO = recordDTO.array()
 

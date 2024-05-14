@@ -1,13 +1,13 @@
-import { Ok, type Result } from '@undb/domain'
-import type { IRecordVisitor, RecordDO } from '../../../../records'
-import { RecordComositeSpecification } from '../../../../records/record/record.composite-specification'
-import type { FieldId } from '../../field-id.vo'
-import { StringFieldValue } from './string-field-value.vo'
+import { Ok, type Result } from "@undb/domain"
+import type { IRecordVisitor, RecordDO } from "../../../../records"
+import { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
+import type { FieldId } from "../../field-id.vo"
+import { StringFieldValue } from "./string-field-value.vo"
 
 export class StringEqual extends RecordComositeSpecification {
   constructor(
     readonly values: StringFieldValue,
-    readonly fieldId: FieldId
+    readonly fieldId: FieldId,
   ) {
     super(fieldId)
   }
@@ -16,7 +16,7 @@ export class StringEqual extends RecordComositeSpecification {
     return value.mapOr(false, (v) => v instanceof StringFieldValue && v.equals(this.values))
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.stringEqual(this)
@@ -27,7 +27,7 @@ export class StringEqual extends RecordComositeSpecification {
 export class StringContains extends RecordComositeSpecification {
   constructor(
     readonly value: string,
-    readonly fieldId: FieldId
+    readonly fieldId: FieldId,
   ) {
     super(fieldId)
   }
@@ -36,7 +36,7 @@ export class StringContains extends RecordComositeSpecification {
     return value.mapOr(false, (v) => v instanceof StringFieldValue && v.value.includes(this.value))
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.stringContains(this)
@@ -47,7 +47,7 @@ export class StringContains extends RecordComositeSpecification {
 export class StringStartsWith extends RecordComositeSpecification {
   constructor(
     readonly value: string,
-    readonly fieldId: FieldId
+    readonly fieldId: FieldId,
   ) {
     super(fieldId)
   }
@@ -56,7 +56,7 @@ export class StringStartsWith extends RecordComositeSpecification {
     return value.mapOr(false, (v) => v instanceof StringFieldValue && v.value.startsWith(this.value))
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.stringStartsWith(this)
@@ -67,7 +67,7 @@ export class StringStartsWith extends RecordComositeSpecification {
 export class StringEndsWith extends RecordComositeSpecification {
   constructor(
     readonly value: string,
-    readonly fieldId: FieldId
+    readonly fieldId: FieldId,
   ) {
     super(fieldId)
   }
@@ -76,7 +76,7 @@ export class StringEndsWith extends RecordComositeSpecification {
     return value.mapOr(false, (v) => v instanceof StringFieldValue && v.value.endsWith(this.value))
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.stringEndsWith(this)
@@ -93,7 +93,7 @@ export class StringEmpty extends RecordComositeSpecification {
     return value.mapOr(false, (v) => v instanceof StringFieldValue && !v.value)
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
-    throw new Error('Method not implemented.')
+    throw new Error("Method not implemented.")
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.stringEmpty(this)

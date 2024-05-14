@@ -1,5 +1,5 @@
-import type { z } from "zod";
-import { gridViewDTO } from "../variants/grid-view.vo";
+import type { z } from "zod"
+import { gridViewDTO } from "../variants/grid-view.vo"
 
 export const viewDTO = gridViewDTO
 

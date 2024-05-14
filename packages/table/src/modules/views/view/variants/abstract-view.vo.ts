@@ -1,10 +1,10 @@
-import { None, Some, type Option } from '@undb/domain'
-import { z } from 'zod'
-import { WithViewFilter } from '../../../../specifications/table-view.specification'
-import { Filter, filterGroup, type IRootFilter } from '../../../filters'
-import { ViewIdVo, viewId, type ViewId } from '../view-id.vo'
-import { ViewNameVo, viewName } from '../view-name.vo'
-import type { ViewType } from '../view.type'
+import { None, Some, type Option } from "@undb/domain"
+import { z } from "zod"
+import { WithViewFilter } from "../../../../specifications/table-view.specification"
+import { Filter, filterGroup, type IRootFilter } from "../../../filters"
+import { ViewIdVo, viewId, type ViewId } from "../view-id.vo"
+import { ViewNameVo, viewName } from "../view-name.vo"
+import type { ViewType } from "../view.type"
 
 export const createBaseViewDTO = z.object({
   id: viewId.optional(),

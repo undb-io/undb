@@ -1,7 +1,7 @@
-import { Option } from '@undb/domain'
-import type { TableComositeSpecification } from '@undb/table'
-import type { SQLiteSelectQueryBuilder } from 'drizzle-orm/sqlite-core'
-import { TableFilterVisitor } from './table.filter-visitor'
+import { Option } from "@undb/domain"
+import type { TableComositeSpecification } from "@undb/table"
+import type { SQLiteSelectQueryBuilder } from "drizzle-orm/sqlite-core"
+import { TableFilterVisitor } from "./table.filter-visitor"
 
 export class TableDbQuerySpecHandler<Q extends SQLiteSelectQueryBuilder> {
   constructor(private qb: Q) {}

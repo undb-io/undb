@@ -9,19 +9,25 @@
     "dev:desktop": "bun --cwd=apps/desktop run dev:desktop",
     "dev": "bun --bun turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format": "prettier --write \"**/*.{ts,tsx,md,svelte}\"",
     "studio": "drizzle-kit studio --config drizzle.config.ts",
     "generate": "bun generate:db",
     "generate:db": "drizzle-kit generate:sqlite --config drizzle.config.ts",
     "migrate:db": "drizzle-kit push:sqlite --config drizzle.config.ts",
-    "move-assets": "bun run ./scripts/move-assets.ts"
+    "move-assets": "bun run ./scripts/move-assets.ts",
+    "prepare": "husky"
   },
   "devDependencies": {
     "better-sqlite3": "^9.6.0",
     "drizzle-kit": "^0.21.1",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
     "npm-run-all2": "^6.1.2",
     "prettier": "^3.2.5",
     "turbo": "latest"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "engines": {
     "node": ">=18"

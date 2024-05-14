@@ -1,2 +1,2 @@
-export * from './handlers'
-export { registerQueries } from './registry'
+export * from "./handlers"
+export { registerQueries } from "./registry"

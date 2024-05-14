@@ -1,5 +1,5 @@
-import type { ISpecVisitor, ISpecification } from '@undb/domain'
-import type { Expression, ExpressionBuilder } from 'kysely'
+import type { ISpecVisitor, ISpecification } from "@undb/domain"
+import type { Expression, ExpressionBuilder } from "kysely"
 
 type TExpression = Expression<any>
 

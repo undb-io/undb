@@ -1,6 +1,6 @@
-import { z } from 'zod'
-import { filterGroup, viewId } from '../modules'
-import { tableId } from '../table-id.vo'
+import { z } from "zod"
+import { filterGroup, viewId } from "../modules"
+import { tableId } from "../table-id.vo"
 
 export const setViewFilterDTO = z.object({
   tableId: tableId,

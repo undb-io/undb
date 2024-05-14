@@ -1,52 +1,52 @@
-import { z } from 'zod'
-import { baseFilter } from '../../../../filters/base.filter'
+import { z } from "zod"
+import { baseFilter } from "../../../../filters/base.filter"
 
 export const numberFieldFilter = z.union([
   z
     .object({
-      op: z.literal('eq'),
+      op: z.literal("eq"),
       value: z.number(),
     })
     .merge(baseFilter),
   z
     .object({
-      op: z.literal('neq'),
+      op: z.literal("neq"),
       value: z.number(),
     })
     .merge(baseFilter),
   z
     .object({
-      op: z.literal('gt'),
+      op: z.literal("gt"),
       value: z.number(),
     })
     .merge(baseFilter),
   z
     .object({
-      op: z.literal('gte'),
+      op: z.literal("gte"),
       value: z.number(),
     })
     .merge(baseFilter),
   z
     .object({
-      op: z.literal('lt'),
+      op: z.literal("lt"),
       value: z.number(),
     })
     .merge(baseFilter),
   z
     .object({
-      op: z.literal('lte'),
+      op: z.literal("lte"),
       value: z.number(),
     })
     .merge(baseFilter),
   z
     .object({
-      op: z.literal('is_empty'),
+      op: z.literal("is_empty"),
       value: z.undefined(),
     })
     .merge(baseFilter),
   z
     .object({
-      op: z.literal('is_not_empty'),
+      op: z.literal("is_not_empty"),
       value: z.undefined(),
     })
     .merge(baseFilter),

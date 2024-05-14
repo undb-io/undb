@@ -1,26 +1,26 @@
 <script lang="ts">
-	import * as Sheet from '$lib/components/ui/sheet';
-	import type { SuperValidated } from 'sveltekit-superforms';
-	import CreateRecord from './create-record.svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import { createRecordSheetOpen } from './create-record.store';
+  import * as Sheet from "$lib/components/ui/sheet"
+  import type { SuperValidated } from "sveltekit-superforms"
+  import CreateRecord from "./create-record.svelte"
+  import Button from "$lib/components/ui/button/button.svelte"
+  import { createRecordSheetOpen } from "./create-record.store"
 
-	export let data: SuperValidated<any>;
+  export let data: SuperValidated<any>
 </script>
 
 <Sheet.Root bind:open={$createRecordSheetOpen}>
-	<Sheet.Content class="flex flex-col sm:max-w-lg" transitionConfig={{ duration: 50 }}>
-		<Sheet.Header>
-			<Sheet.Title>Create Record</Sheet.Title>
-		</Sheet.Header>
+  <Sheet.Content class="flex flex-col sm:max-w-lg" transitionConfig={{ duration: 50 }}>
+    <Sheet.Header>
+      <Sheet.Title>Create Record</Sheet.Title>
+    </Sheet.Header>
 
-		<div class="flex-1">
-			<CreateRecord {data} />
-		</div>
+    <div class="flex-1">
+      <CreateRecord {data} />
+    </div>
 
-		<Sheet.Footer>
-			<Button variant="outline" type="button" on:click={() => ($createRecordSheetOpen = false)}>Cancel</Button>
-			<Button type="submit" form="createRecord">Create</Button>
-		</Sheet.Footer>
-	</Sheet.Content>
+    <Sheet.Footer>
+      <Button variant="outline" type="button" on:click={() => ($createRecordSheetOpen = false)}>Cancel</Button>
+      <Button type="submit" form="createRecord">Create</Button>
+    </Sheet.Footer>
+  </Sheet.Content>
 </Sheet.Root>

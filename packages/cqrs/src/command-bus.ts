@@ -1,11 +1,11 @@
-import { container, singleton } from '@undb/di'
-import type { Command, CommandMetadata, ICommandBus, ICommandHandler, ICommandPublisher } from '@undb/domain'
-import { Subject } from 'rxjs'
-import type { Class } from 'type-fest'
-import { COMMAND_HANDLER_METADATA, COMMAND_METADATA } from './decorators/constants'
-import { DefaultCommandPubSub } from './default-command-publisher'
-import { CommandHandlerNotFoundException } from './exceptions/command-handler-not-found.exception'
-import { InvalidCommandHandlerException } from './exceptions/invalid-command-handler.exception'
+import { container, singleton } from "@undb/di"
+import type { Command, CommandMetadata, ICommandBus, ICommandHandler, ICommandPublisher } from "@undb/domain"
+import { Subject } from "rxjs"
+import type { Class } from "type-fest"
+import { COMMAND_HANDLER_METADATA, COMMAND_METADATA } from "./decorators/constants"
+import { DefaultCommandPubSub } from "./default-command-publisher"
+import { CommandHandlerNotFoundException } from "./exceptions/command-handler-not-found.exception"
+import { InvalidCommandHandlerException } from "./exceptions/invalid-command-handler.exception"
 
 export type CommandHandlerType = Class<ICommandHandler<Command, any>>
 

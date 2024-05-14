@@ -1,12 +1,12 @@
-import { Option, ValueObject } from '@undb/domain'
-import { objectify } from 'radash'
-import { z } from 'zod'
-import type { ICreateSchemaDTO } from './dto'
-import type { ISchemaDTO } from './dto/schema.dto'
-import type { FieldId } from './fields/field-id.vo'
-import { FieldFactory } from './fields/field.factory'
-import type { Field } from './fields/field.type'
-import type { SchemaMap } from './schema.type'
+import { Option, ValueObject } from "@undb/domain"
+import { objectify } from "radash"
+import { z } from "zod"
+import type { ICreateSchemaDTO } from "./dto"
+import type { ISchemaDTO } from "./dto/schema.dto"
+import type { FieldId } from "./fields/field-id.vo"
+import { FieldFactory } from "./fields/field.factory"
+import type { Field } from "./fields/field.type"
+import type { SchemaMap } from "./schema.type"
 
 export class Schema extends ValueObject {
   private constructor(public readonly fields: Field[]) {
@@ -35,7 +35,7 @@ export class Schema extends ValueObject {
     const schema = objectify(
       this.fields,
       (f) => f.id.value,
-      (f) => f.valueSchema
+      (f) => f.valueSchema,
     )
 
     return z.object(schema)

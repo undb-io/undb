@@ -1,8 +1,8 @@
-import { Ok, type Result } from '@undb/domain'
-import type { TableNameVo } from '../table-name.vo'
-import type { TableDo } from '../table.do'
-import type { ITableSpecVisitor } from './table-visitor.interface'
-import { TableComositeSpecification } from './table.composite-specification'
+import { Ok, type Result } from "@undb/domain"
+import type { TableNameVo } from "../table-name.vo"
+import type { TableDo } from "../table.do"
+import type { ITableSpecVisitor } from "./table-visitor.interface"
+import { TableComositeSpecification } from "./table.composite-specification"
 
 export class TableNameSpecification extends TableComositeSpecification {
   constructor(public readonly name: TableNameVo) {

@@ -1,7 +1,7 @@
-import type { ISetViewFilterDTO } from '../dto'
-import { ViewIdVo } from '../modules'
-import type { TableComositeSpecification } from '../specifications'
-import type { TableDo } from '../table.do'
+import type { ISetViewFilterDTO } from "../dto"
+import { ViewIdVo } from "../modules"
+import type { TableComositeSpecification } from "../specifications"
+import type { TableDo } from "../table.do"
 
 export function setViewFilter(this: TableDo, dto: ISetViewFilterDTO): TableComositeSpecification {
   const viewId = dto.viewId ? new ViewIdVo(dto.viewId) : undefined

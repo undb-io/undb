@@ -1,9 +1,9 @@
-import { SetViewFilterCommand } from '@undb/commands'
-import { commandHandler } from '@undb/cqrs'
-import { singleton } from '@undb/di'
-import type { ICommandHandler } from '@undb/domain'
-import { createLogger } from '@undb/logger'
-import { TableIdVo, injectTableRepository, type ITableRepository } from '@undb/table'
+import { SetViewFilterCommand } from "@undb/commands"
+import { commandHandler } from "@undb/cqrs"
+import { singleton } from "@undb/di"
+import type { ICommandHandler } from "@undb/domain"
+import { createLogger } from "@undb/logger"
+import { TableIdVo, injectTableRepository, type ITableRepository } from "@undb/table"
 
 @commandHandler(SetViewFilterCommand)
 @singleton()
@@ -12,7 +12,7 @@ export class SetViewFilterCommandHandler implements ICommandHandler<SetViewFilte
 
   constructor(
     @injectTableRepository()
-    private readonly repo: ITableRepository
+    private readonly repo: ITableRepository,
   ) {}
 
   async execute(command: SetViewFilterCommand): Promise<any> {

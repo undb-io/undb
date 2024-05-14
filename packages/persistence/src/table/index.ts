@@ -1,2 +1,2 @@
-export * from './table.query-repository'
-export * from './table.repository'
+export * from "./table.query-repository"
+export * from "./table.repository"

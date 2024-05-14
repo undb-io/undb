@@ -1,5 +1,5 @@
-import type { IQueryPublisher, Query } from '@undb/domain'
-import { Subject } from 'rxjs'
+import type { IQueryPublisher, Query } from "@undb/domain"
+import { Subject } from "rxjs"
 
 export class DefaultQueryPubSub<Q extends Query> implements IQueryPublisher<Q> {
   constructor(public subject$: Subject<Q>) {}
