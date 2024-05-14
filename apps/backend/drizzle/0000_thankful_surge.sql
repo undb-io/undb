@@ -1,3 +1,12 @@
+CREATE TABLE `undb_outbox` (
+	`id` text PRIMARY KEY NOT NULL,
+	`payload` text NOT NULL,
+	`meta` text,
+	`timestamp` text NOT NULL,
+	`operator_id` text NOT NULL,
+	`name` text NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE `undb_table` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,

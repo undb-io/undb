@@ -1,19 +1,27 @@
-import type { Option } from "@undb/domain"
+import { AggregateRoot, type Option } from "@undb/domain"
 import type { TableDo } from "../../../table.do"
 import type { FieldValue } from "../../schema"
 import type { FieldId } from "../../schema/fields/field-id.vo"
+import { RecordCreatedEvent, type IRecordEvent } from "../events"
 import type { ICreateRecordDTO } from "./dto"
 import { RecordIdVO, type RecordId } from "./record-id.vo"
 import { RecordValuesVO } from "./record-values.vo"
 
-export class RecordDO {
+export class RecordDO extends AggregateRoot<IRecordEvent> {
   constructor(
-    private readonly id: RecordId,
-    private readonly values: RecordValuesVO,
-  ) {}
+    readonly id: RecordId,
+    readonly values: RecordValuesVO,
+  ) {
+    super()
+  }
 
   static create(table: TableDo, dto: ICreateRecordDTO) {
-    return new RecordDO(RecordIdVO.create(dto.id), RecordValuesVO.create(table, dto.values))
+    const record = new RecordDO(RecordIdVO.create(dto.id), RecordValuesVO.create(table, dto.values))
+
+    const event = new RecordCreatedEvent(table, record)
+    record.addDomainEvent(event)
+
+    return record
   }
 
   public flatten() {

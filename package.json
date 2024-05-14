@@ -12,8 +12,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md,svelte}\"",
     "studio": "drizzle-kit studio --config drizzle.config.ts",
     "generate": "bun generate:db",
-    "generate:db": "drizzle-kit generate:sqlite --config drizzle.config.ts",
-    "migrate:db": "drizzle-kit push:sqlite --config drizzle.config.ts",
+    "generate:db": "drizzle-kit generate --config drizzle.config.ts",
+    "migrate:db": "drizzle-kit push --config drizzle.config.ts",
     "move-assets": "bun run ./scripts/move-assets.ts",
     "prepare": "husky"
   },

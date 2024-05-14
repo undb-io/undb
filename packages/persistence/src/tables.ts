@@ -25,3 +25,15 @@ export const tables = sqliteTable("table", {
 
 export type Table = typeof tables.$inferSelect
 export type NewTable = typeof tables.$inferInsert
+
+export const outbox = sqliteTable("outbox", {
+  id: text("id").notNull().primaryKey(),
+  payload: text("payload", { mode: "json" }).notNull(),
+  meta: text("meta", { mode: "json" }),
+  timestamp: text("timestamp").notNull(),
+  operatorId: text("operator_id").notNull(),
+  name: text("name").notNull(),
+})
+
+export type Outbox = typeof outbox.$inferSelect
+export type NewOutbox = typeof outbox.$inferInsert

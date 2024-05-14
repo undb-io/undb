@@ -2,6 +2,7 @@ import "core-js"
 import "reflect-metadata"
 
 export * from "./dto"
+export * from "./events"
 export * from "./modules"
 export * from "./services"
 export * from "./specifications"

@@ -1,6 +1,12 @@
 import { singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
-import type { IRecordRepository, RecordDO, TableDo } from "@undb/table"
+import {
+  injectRecordOutboxService,
+  type IRecordOutboxService,
+  type IRecordRepository,
+  type RecordDO,
+  type TableDo,
+} from "@undb/table"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
@@ -12,6 +18,8 @@ export class RecordRepository implements IRecordRepository {
   constructor(
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
+    @injectRecordOutboxService()
+    private readonly outboxService: IRecordOutboxService,
   ) {}
 
   async insert(table: TableDo, record: RecordDO): Promise<void> {
@@ -22,5 +30,6 @@ export class RecordRepository implements IRecordRepository {
     this.logger.debug({ values }, "Inserting record")
 
     await this.qb.insertInto(t.name).values(values).executeTakeFirst()
+    await this.outboxService.save(record.domainEvents)
   }
 }

@@ -1,13 +1,13 @@
 import type { BaseEvent } from "./event"
 
-export abstract class AggregateRoot {
-  #domainEvents: BaseEvent[] = []
+export abstract class AggregateRoot<E extends BaseEvent> {
+  #domainEvents: E[] = []
 
   get domainEvents() {
     return this.#domainEvents
   }
 
-  protected addDomainEvent(event: BaseEvent) {
+  protected addDomainEvent(event: E) {
     this.#domainEvents.push(event)
   }
 }
