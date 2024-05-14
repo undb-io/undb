@@ -53,7 +53,7 @@
       {/if}
     </Button>
   </Popover.Trigger>
-  <Popover.Content class="w-[600px] space-y-2" align="start">
+  <Popover.Content class="w-[630px] space-y-2" align="start">
     <div class="text-muted-foreground text-xs">Filters</div>
     <FiltersEditor bind:value={$value} table={$table} on:submit={(e) => handleSubmit(e.detail)}>
       <Button size="xs" on:click={() => handleSubmit(validValue)} slot="footer">Submit</Button>

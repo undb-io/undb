@@ -43,6 +43,7 @@
       value.children = [...value.children, filterGroup]
     }
   }
+
   function removeFilter(index: number) {
     if (value) {
       value.children.splice(index, 1)
@@ -60,7 +61,7 @@
   }
 </script>
 
-<div class={cn("space-y-2", isEven && "bg-muted")} data-level={level}>
+<div class={cn("space-y-2", isEven ? "bg-muted" : "bg-white")} data-level={level}>
   {#if value?.children.length}
     <SortableList
       class={cn("space-y-1.5", level > 1 && "p-4 pb-2")}
@@ -103,16 +104,26 @@
               </button>
             </div>
           </div>
-        {/if}
-        {#if isMaybeGroup(child)}
-          <div class="grid grid-cols-12">
-            <ConjunctionPicker
-              disabled={i !== 1}
-              class="col-span-2 text-center text-xs"
-              bind:value={value.conjunction}
-            />
+        {:else if isMaybeGroup(child)}
+          <div class="space-y-2">
+            <div class="grid grid-cols-12">
+              <ConjunctionPicker
+                disabled={i !== 1}
+                class="col-span-2 text-center text-xs"
+                bind:value={value.conjunction}
+              />
+              <div class="col-span-9"></div>
+              <div class="col-span-1 flex items-center gap-2">
+                <button on:click={() => removeFilter(i)}>
+                  <Trash2Icon class="text-muted-foreground h-3 w-3" />
+                </button>
+                <button class="handler">
+                  <GripVertical class="text-muted-foreground h-3 w-3" />
+                </button>
+              </div>
+            </div>
+            <svelte:self bind:value={child} {table} level={level + 1} />
           </div>
-          <svelte:self bind:value={child} {table} level={level + 1} />
         {/if}
       {/each}
     </SortableList>
@@ -123,10 +134,12 @@
         <PlusIcon class="mr-2 h-3 w-3" />
         Add Filter
       </Button>
-      <Button variant="ghost" class="text-muted-foreground" size="xs" on:click={addFilterGroup}>
-        <PlusIcon class="mr-2 h-3 w-3" />
-        Add Filter Group
-      </Button>
+      {#if level < 3}
+        <Button variant="ghost" class="text-muted-foreground" size="xs" on:click={addFilterGroup}>
+          <PlusIcon class="mr-2 h-3 w-3" />
+          Add Filter Group
+        </Button>
+      {/if}
     </div>
 
     <slot name="footer" />
