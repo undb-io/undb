@@ -27,7 +27,7 @@
     "turbo": "latest"
   },
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
+    "**/*": "bunx --bun prettier --write --ignore-unknown"
   },
   "engines": {
     "node": ">=18"
