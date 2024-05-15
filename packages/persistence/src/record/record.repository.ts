@@ -1,4 +1,5 @@
 import { singleton } from "@undb/di"
+import type { IUnitOfWork } from "@undb/domain"
 import { createLogger } from "@undb/logger"
 import {
   injectRecordOutboxService,
@@ -10,6 +11,7 @@ import {
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
+import { injectDbUnitOfWork, transactional } from "../uow"
 
 @singleton()
 export class RecordRepository implements IRecordRepository {
@@ -20,8 +22,11 @@ export class RecordRepository implements IRecordRepository {
     private readonly qb: IQueryBuilder,
     @injectRecordOutboxService()
     private readonly outboxService: IRecordOutboxService,
+    @injectDbUnitOfWork()
+    public readonly uow: IUnitOfWork,
   ) {}
 
+  @transactional()
   async insert(table: TableDo, record: RecordDO): Promise<void> {
     const t = new UnderlyingTable(table)
 

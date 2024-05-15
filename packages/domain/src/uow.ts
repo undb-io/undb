@@ -3,5 +3,4 @@ export interface IUnitOfWork<T = any> {
   commit(): Promise<void>
   rollback(): Promise<void>
   conn(): T
-  close(): Promise<void>
 }

@@ -1,5 +1,5 @@
 import { inject, singleton } from "@undb/di"
-import { None, Option, Some } from "@undb/domain"
+import { None, Option, Some, type IUnitOfWork } from "@undb/domain"
 import {
   TableComositeSpecification,
   TableIdSpecification,
@@ -14,6 +14,7 @@ import type { Database } from "../db"
 import { injectDb } from "../db.provider"
 import { tables } from "../tables"
 import { UnderlyingTableService } from "../underlying/underlying-table.service"
+import { injectDbUnitOfWork, transactional } from "../uow"
 import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
 import { TableMapper } from "./table.mapper"
 import { injectTableMapper } from "./table.mapper.provider"
@@ -30,8 +31,11 @@ export class TableRepository implements ITableRepository {
     private readonly underlyingTableService: UnderlyingTableService,
     @injectTableOutboxService()
     private readonly outboxService: ITableOutboxService,
+    @injectDbUnitOfWork()
+    public readonly uow: IUnitOfWork,
   ) {}
 
+  @transactional()
   async updateOneById(table: TableDo, spec: Option<TableComositeSpecification>): Promise<void> {
     if (spec.isNone()) {
       return
@@ -44,6 +48,7 @@ export class TableRepository implements ITableRepository {
     await this.outboxService.save(table)
   }
 
+  @transactional()
   async insert(table: TableDo): Promise<void> {
     const values = this.mapper.toEntity(table)
 

@@ -1,27 +1,25 @@
 import { singleton } from "@undb/di"
 import type { IUnitOfWork } from "@undb/domain"
-import type { Database } from "bun:sqlite"
-import { injectSqlite } from "../db.provider"
+import { sql } from "kysely"
+import type { IQueryBuilder } from "../qb"
+import { injectQueryBuilder } from "../qb.provider"
 
 @singleton()
-export class DatabaseUnitOfWork implements IUnitOfWork<Database> {
+export class DatabaseUnitOfWork implements IUnitOfWork<IQueryBuilder> {
   constructor(
-    @injectSqlite()
-    private readonly sqlite: Database,
+    @injectQueryBuilder()
+    private readonly qb: IQueryBuilder,
   ) {}
   async begin(): Promise<void> {
-    this.sqlite.query("BEGIN").run()
+    await sql<any>`BEGIN;`.execute(this.qb)
   }
   async commit(): Promise<void> {
-    this.sqlite.query("COMMIT").run()
+    await sql<any>`COMMIT;`.execute(this.qb)
   }
   async rollback(): Promise<void> {
-    this.sqlite.query("ROLLBACK").run()
+    await sql<any>`ROLLBACK;`.execute(this.qb)
   }
   conn() {
-    return this.sqlite
-  }
-  async close(): Promise<void> {
-    this.sqlite.close()
+    return this.qb
   }
 }
