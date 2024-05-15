@@ -1,7 +1,7 @@
 import { z } from "zod"
-import { abstractDateFieldFilter } from "../abstractions/abstract-date-field.filter"
+import { createAbstractDateFieldFilter } from "../abstractions/abstract-date-field.filter"
 
-export const updatedAtFieldFilter = abstractDateFieldFilter
+export const createUpdatedAtFieldFilter = createAbstractDateFieldFilter
 
-export type IUpdatedAtFieldFilterSchema = typeof updatedAtFieldFilter
-export type IUpdatedAtFieldFilter = z.infer<typeof updatedAtFieldFilter>
+export type IUpdatedAtFieldFilterSchema = ReturnType<typeof createUpdatedAtFieldFilter>
+export type IUpdatedAtFieldFilter = z.infer<IUpdatedAtFieldFilterSchema>

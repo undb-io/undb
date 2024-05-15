@@ -4,7 +4,7 @@ import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { NumberFieldValue } from "./number-field-value.vo"
-import { numberFieldFilter, type INumberFieldFilter, type INumberFieldFilterSchema } from "./number-field.filter"
+import { createNumberFieldFilter, type INumberFieldFilter, type INumberFieldFilterSchema } from "./number-field.filter"
 import { createAbstractNumberFieldMather } from "../abstractions/abstract-number-field.filter"
 
 export const NUMBER_TYPE = "number" as const
@@ -51,6 +51,6 @@ export class NumberField extends AbstractField<NumberFieldValue> {
   }
 
   protected override get filterSchema(): INumberFieldFilterSchema {
-    return numberFieldFilter
+    return createNumberFieldFilter(z.undefined())
   }
 }

@@ -1,15 +1,15 @@
 import { Option } from "@undb/domain"
 import { z } from "zod"
+import { createAbstractDateFilterMather } from "../.."
 import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { CreatedAtFieldValue } from "./created-at-field-value.vo"
 import {
-  createdAtFieldFilter,
+  createCreatedAtFieldFilter,
   type ICreatedAtFieldFilter,
   type ICreatedAtFieldFilterSchema,
 } from "./created-at-field.filter"
-import { createAbstractDateFilterMather } from "../.."
 
 export const CREATED_AT_TYPE = "createdAt" as const
 
@@ -57,6 +57,6 @@ export class CreatedAtField extends AbstractField<CreatedAtFieldValue> {
   }
 
   protected override get filterSchema(): ICreatedAtFieldFilterSchema {
-    return createdAtFieldFilter
+    return createCreatedAtFieldFilter(z.undefined())
   }
 }

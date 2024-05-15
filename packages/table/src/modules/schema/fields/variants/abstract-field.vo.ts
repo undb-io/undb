@@ -1,5 +1,5 @@
 import { Option, ValueObject } from "@undb/domain"
-import { ZodUndefined, z, type ZodSchema } from "zod"
+import { ZodUndefined, z, type ZodSchema, type ZodTypeAny } from "zod"
 import type {
   INotRecordComositeSpecification,
   IRecordComositeSpecification,
@@ -66,7 +66,7 @@ export abstract class AbstractField<V extends ValueObject> {
 
   abstract accept(visitor: IFieldVisitor): void
 
-  protected abstract get filterSchema(): IFieldFilterSchema
+  protected abstract get filterSchema(): ZodTypeAny
 
   validateFilter(filter: MaybeFieldFilterWithFieldId) {
     return this.filterSchema.safeParse(filter)

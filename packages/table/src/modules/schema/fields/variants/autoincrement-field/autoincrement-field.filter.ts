@@ -1,7 +1,7 @@
 import { z } from "zod"
-import { abstractNumberFieldFilter } from "../abstractions"
+import { createAbstractNumberFieldFilter } from "../abstractions"
 
-export const autoIncrementFieldFilter = abstractNumberFieldFilter
+export const createAutoIncrementFieldFilter = createAbstractNumberFieldFilter
 
-export type IAutoIncrementFieldFilterSchema = typeof autoIncrementFieldFilter
-export type IAutoIncrementFieldFilter = z.infer<typeof autoIncrementFieldFilter>
+export type IAutoIncrementFieldFilterSchema = ReturnType<typeof createAutoIncrementFieldFilter>
+export type IAutoIncrementFieldFilter = z.infer<IAutoIncrementFieldFilterSchema>

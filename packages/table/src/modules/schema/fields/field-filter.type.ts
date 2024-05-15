@@ -1,47 +1,35 @@
 import type { PartialDeep, SetFieldType, SetRequired } from "type-fest"
 import { z } from "zod"
+import { colors } from "../../colors"
 import {
-  autoIncrementFieldFilter,
-  createdAtFieldFilter,
-  idFieldFilter,
-  numberFieldFilter,
-  stringFieldFilter,
-  updatedAtFieldFilter,
-  type IAutoIncrementFieldFilter,
-  type IAutoIncrementFieldFilterSchema,
-  type INumberFieldFilter,
-  type INumberFieldFilterSchema,
-  type IStringFieldFilter,
-  type IStringFieldFilterSchema,
+  createAutoIncrementFieldFilter,
+  createCreatedAtFieldFilter,
+  createIdFieldFilter,
+  createNumberFieldFilter,
+  createStringFieldFilter,
+  createUpdatedAtFieldFilter,
 } from "./variants"
-import type { ICreatedAtFieldFilter, ICreatedAtFieldFilterSchema } from "./variants/created-at-field"
-import type { IIdFieldFilter, IIdFieldFilterSchema } from "./variants/id-field"
-import type { IUpdatedAtFieldFilter, IUpdatedAtFieldFilterSchema } from "./variants/updated-at-field"
 
-export const fieldFilter = z.union([
-  stringFieldFilter,
-  numberFieldFilter,
-  idFieldFilter,
-  createdAtFieldFilter,
-  updatedAtFieldFilter,
-  autoIncrementFieldFilter,
-])
+function createFilterSchema<ItemType extends z.ZodTypeAny>(itemType: ItemType) {
+  return z.union([
+    ...createStringFieldFilter(itemType).options,
+    ...createNumberFieldFilter(itemType).options,
+    ...createIdFieldFilter(itemType).options,
+    ...createCreatedAtFieldFilter(itemType).options,
+    ...createUpdatedAtFieldFilter(itemType).options,
+    ...createAutoIncrementFieldFilter(itemType).options,
+  ])
+}
 
-export type IFieldFilter =
-  | IStringFieldFilter
-  | INumberFieldFilter
-  | IIdFieldFilter
-  | ICreatedAtFieldFilter
-  | IUpdatedAtFieldFilter
-  | IAutoIncrementFieldFilter
+export const fieldFilter = createFilterSchema(z.undefined())
 
-export type IFieldFilterSchema =
-  | IStringFieldFilterSchema
-  | INumberFieldFilterSchema
-  | IIdFieldFilterSchema
-  | ICreatedAtFieldFilterSchema
-  | IUpdatedAtFieldFilterSchema
-  | IAutoIncrementFieldFilterSchema
+export type IFieldFilterSchema = typeof fieldFilter
+export type IFieldFilter = z.infer<IFieldFilterSchema>
 
 export type MaybeFieldFilter = SetFieldType<PartialDeep<IFieldFilter>, "value", any> & { id: string }
 export type MaybeFieldFilterWithFieldId = SetRequired<MaybeFieldFilter, "fieldId">
+
+export const fieldColorFilter = createFilterSchema(z.object({ color: colors }))
+
+export type IFieldColorFilterSchema = typeof fieldColorFilter
+export type IFieldColorFilter = z.infer<IFieldColorFilterSchema>

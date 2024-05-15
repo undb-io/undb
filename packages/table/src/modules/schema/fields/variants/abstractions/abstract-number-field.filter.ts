@@ -1,6 +1,6 @@
 import { match } from "ts-pattern"
 import { z } from "zod"
-import { baseFilter } from "../../../../filters"
+import { createBaseFilterSchema } from "../../../../filters"
 import type { FieldId } from "../../field-id.vo"
 import {
   NumberEmpty,
@@ -11,18 +11,24 @@ import {
   NumberLTE,
 } from "./abstract-number-value.specification"
 
-export const abstractNumberFieldFilter = z.union([
-  z.object({ op: z.literal("eq"), value: z.number() }).merge(baseFilter),
-  z.object({ op: z.literal("neq"), value: z.number() }).merge(baseFilter),
-  z.object({ op: z.literal("gt"), value: z.number() }).merge(baseFilter),
-  z.object({ op: z.literal("gte"), value: z.number() }).merge(baseFilter),
-  z.object({ op: z.literal("lt"), value: z.number() }).merge(baseFilter),
-  z.object({ op: z.literal("lte"), value: z.number() }).merge(baseFilter),
-  z.object({ op: z.literal("is_empty"), value: z.undefined() }).merge(baseFilter),
-  z.object({ op: z.literal("is_not_empty"), value: z.undefined() }).merge(baseFilter),
-])
+export function createAbstractNumberFieldFilter<ItemType extends z.ZodTypeAny>(itemType: ItemType) {
+  const base = createBaseFilterSchema(itemType)
+  return z.union([
+    z.object({ op: z.literal("eq"), value: z.number() }).merge(base),
+    z.object({ op: z.literal("neq"), value: z.number() }).merge(base),
+    z.object({ op: z.literal("gt"), value: z.number() }).merge(base),
+    z.object({ op: z.literal("gte"), value: z.number() }).merge(base),
+    z.object({ op: z.literal("lt"), value: z.number() }).merge(base),
+    z.object({ op: z.literal("lte"), value: z.number() }).merge(base),
+    z.object({ op: z.literal("is_empty"), value: z.undefined() }).merge(base),
+    z.object({ op: z.literal("is_not_empty"), value: z.undefined() }).merge(base),
+  ])
+}
 
-export const createAbstractNumberFieldMather = (filter: z.infer<typeof abstractNumberFieldFilter>, fieldId: FieldId) =>
+export const createAbstractNumberFieldMather = (
+  filter: z.infer<ReturnType<typeof createAbstractNumberFieldFilter>>,
+  fieldId: FieldId,
+) =>
   match(filter)
     .with({ op: "eq" }, ({ value }) => new NumberEqual(value, fieldId))
     .with({ op: "neq" }, ({ value }) => new NumberEqual(value, fieldId).not())

@@ -12,7 +12,7 @@ import {
   StringStartsWith,
 } from "./string-field-value.specification"
 import { StringFieldValue } from "./string-field-value.vo"
-import { stringFieldFilter, type IStringFieldFilter, type IStringFieldFilterSchema } from "./string-field.filter"
+import { createStringFieldFilter, type IStringFieldFilter, type IStringFieldFilterSchema } from "./string-field.filter"
 
 export const STRING_TYPE = "string" as const
 
@@ -67,6 +67,6 @@ export class StringField extends AbstractField<StringFieldValue> {
   }
 
   protected override get filterSchema(): IStringFieldFilterSchema {
-    return stringFieldFilter
+    return createStringFieldFilter(z.undefined())
   }
 }

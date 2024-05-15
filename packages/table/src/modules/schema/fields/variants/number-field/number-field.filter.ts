@@ -1,7 +1,7 @@
 import { z } from "zod"
-import { abstractNumberFieldFilter } from "../abstractions/abstract-number-field.filter"
+import { createAbstractNumberFieldFilter } from "../abstractions/abstract-number-field.filter"
 
-export const numberFieldFilter = abstractNumberFieldFilter
+export const createNumberFieldFilter = createAbstractNumberFieldFilter
 
-export type INumberFieldFilterSchema = typeof numberFieldFilter
-export type INumberFieldFilter = z.infer<typeof numberFieldFilter>
+export type INumberFieldFilterSchema = ReturnType<typeof createNumberFieldFilter>
+export type INumberFieldFilter = z.infer<INumberFieldFilterSchema>

@@ -6,7 +6,7 @@ import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { IdEqual } from "./id-field-value.specification"
 import { IdFieldValue } from "./id-field-value.vo"
-import { idFieldFilter, type IIdFieldFilter, type IIdFieldFilterSchema } from "./id-field.filter"
+import { createIdFieldFilter, type IIdFieldFilter, type IIdFieldFilterSchema } from "./id-field.filter"
 
 export const ID_TYPE = "id" as const
 
@@ -57,6 +57,6 @@ export class IdField extends AbstractField<IdFieldValue> {
   }
 
   protected override get filterSchema(): IIdFieldFilterSchema {
-    return idFieldFilter
+    return createIdFieldFilter(z.undefined())
   }
 }

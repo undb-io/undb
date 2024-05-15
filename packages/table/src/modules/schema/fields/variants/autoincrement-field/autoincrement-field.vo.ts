@@ -6,7 +6,7 @@ import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-fie
 import { createAbstractNumberFieldMather } from "../abstractions"
 import type { INumberFieldFilter } from "../number-field"
 import { AutoIncrementFieldValue } from "./autoincrement-field-value.vo"
-import { autoIncrementFieldFilter, type IAutoIncrementFieldFilterSchema } from "./autoincrement-field.filter"
+import { createAutoIncrementFieldFilter, type IAutoIncrementFieldFilterSchema } from "./autoincrement-field.filter"
 
 export const AUTO_INCREMENT_TYPE = "autoIncrement" as const
 
@@ -54,6 +54,6 @@ export class AutoIncrementField extends AbstractField<AutoIncrementFieldValue> {
   }
 
   protected override get filterSchema(): IAutoIncrementFieldFilterSchema {
-    return autoIncrementFieldFilter
+    return createAutoIncrementFieldFilter(z.undefined())
   }
 }
