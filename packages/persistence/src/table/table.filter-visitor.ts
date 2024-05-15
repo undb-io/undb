@@ -6,8 +6,8 @@ import type {
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
+  WithViewFilter,
 } from "@undb/table"
-import type { WithViewFilter } from "@undb/table/src/specifications/table-view.specification"
 import { eq } from "drizzle-orm"
 import { AbstractDBFilterVisitor } from "../abstract-db.visitor"
 import { tables } from "../tables"

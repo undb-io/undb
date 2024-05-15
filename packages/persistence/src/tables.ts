@@ -1,5 +1,4 @@
-import type { ISchemaDTO } from "@undb/table"
-import type { IViewsDTO } from "@undb/table/src/modules/views/dto"
+import type { ISchemaDTO, IViewsDTO } from "@undb/table"
 import { sql } from "drizzle-orm"
 import { integer, sqliteTableCreator, text } from "drizzle-orm/sqlite-core"
 

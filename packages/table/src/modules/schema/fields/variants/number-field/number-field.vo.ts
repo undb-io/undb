@@ -4,7 +4,14 @@ import { z } from "zod"
 import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
-import { NumberEmpty, NumberEqual, NumberGT, NumberGTE, NumberLT, NumberLTE } from "./number-field-value.specification"
+import {
+  NumberEmpty,
+  NumberEqual,
+  NumberGT,
+  NumberGTE,
+  NumberLT,
+  NumberLTE,
+} from "../abstractions/abstract-number-value.specification"
 import { NumberFieldValue } from "./number-field-value.vo"
 import { numberFieldFilter, type INumberFieldFilter, type INumberFieldFilterSchema } from "./number-field.filter"
 
@@ -47,8 +54,8 @@ export class NumberField extends AbstractField<NumberFieldValue> {
 
   override getSpec(filter: INumberFieldFilter) {
     const spec = match(filter)
-      .with({ op: "eq" }, ({ value }) => new NumberEqual(new NumberFieldValue(value), this.id))
-      .with({ op: "neq" }, ({ value }) => new NumberEqual(new NumberFieldValue(value), this.id).not())
+      .with({ op: "eq" }, ({ value }) => new NumberEqual(value, this.id))
+      .with({ op: "neq" }, ({ value }) => new NumberEqual(value, this.id).not())
       .with({ op: "gt" }, ({ value }) => new NumberGT(value, this.id))
       .with({ op: "gte" }, ({ value }) => new NumberGTE(value, this.id))
       .with({ op: "lt" }, ({ value }) => new NumberLT(value, this.id))

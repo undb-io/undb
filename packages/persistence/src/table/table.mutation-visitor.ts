@@ -6,8 +6,8 @@ import type {
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
+  WithViewFilter,
 } from "@undb/table"
-import type { WithViewFilter } from "@undb/table/src/specifications/table-view.specification"
 import type { SQLiteUpdateSetSource } from "drizzle-orm/sqlite-core"
 import type { tables } from "../tables"
 

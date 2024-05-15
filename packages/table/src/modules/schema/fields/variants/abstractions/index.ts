@@ -1,1 +1,6 @@
+export * from "./abstract-date-field.filter"
 export * from "./abstract-date-value.specification"
+export * from "./abstract-date-value.visitor"
+export * from "./abstract-number-field.filter"
+export * from "./abstract-number-value.specification"
+export * from "./abstract-number-value.visitor"

@@ -1,17 +1,3 @@
-import type {
-  NumberEmpty,
-  NumberEqual,
-  NumberGT,
-  NumberGTE,
-  NumberLT,
-  NumberLTE,
-} from "./number-field-value.specification"
+import type { IAbstractNumberFieldValueVisitor } from "../abstractions/abstract-number-value.visitor"
 
-export interface INumberFieldValueVisitor {
-  numberEqual(spec: NumberEqual): void
-  numberGT(spec: NumberGT): void
-  numberGTE(spec: NumberGTE): void
-  numberLT(spec: NumberLT): void
-  numberLTE(spec: NumberLTE): void
-  numberEmpty(spec: NumberEmpty): void
-}
+export interface INumberFieldValueVisitor extends IAbstractNumberFieldValueVisitor {}

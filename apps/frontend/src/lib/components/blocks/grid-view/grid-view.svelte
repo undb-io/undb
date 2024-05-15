@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
   import { writable } from "svelte/store"
-  import DataTableCheckbox from "./grid-view-checkbox.svelte"
+  import GridViewCheckbox from "./grid-view-checkbox.svelte"
   import * as Table from "$lib/components/ui/table/index.js"
   import { addResizedColumns, addSelectedRows } from "svelte-headless-table/plugins"
   import { cn } from "$lib/utils.js"
@@ -39,7 +39,7 @@
         accessor: "select",
         header: (_, { pluginStates }) => {
           const { allPageRowsSelected } = pluginStates.select
-          return createRender(DataTableCheckbox, {
+          return createRender(GridViewCheckbox, {
             checked: allPageRowsSelected,
           })
         },
@@ -47,7 +47,7 @@
           const { getRowState } = pluginStates.select
           const { isSelected } = getRowState(row)
 
-          return createRender(DataTableCheckbox, {
+          return createRender(GridViewCheckbox, {
             checked: isSelected,
           })
         },

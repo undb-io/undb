@@ -64,7 +64,7 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     this.addCond(cond)
   }
   numberEqual(spec: NumberEqual): void {
-    const cond = this.eb.eb(spec.fieldId.value, "=", spec.values.value)
+    const cond = this.eb.eb(spec.fieldId.value, "=", spec.value)
     this.addCond(cond)
   }
   stringEqual(spec: StringEqual): void {

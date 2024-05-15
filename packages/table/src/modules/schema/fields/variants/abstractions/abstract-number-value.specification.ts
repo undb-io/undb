@@ -3,18 +3,17 @@ import { isNumber } from "radash"
 import type { IRecordVisitor, RecordDO } from "../../../../records"
 import { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import type { FieldId } from "../../field-id.vo"
-import { NumberFieldValue } from "./number-field-value.vo"
 
 export class NumberEqual extends RecordComositeSpecification {
   constructor(
-    readonly values: NumberFieldValue,
+    readonly value: number,
     readonly fieldId: FieldId,
   ) {
     super(fieldId)
   }
   isSatisfiedBy(t: RecordDO): boolean {
     const value = t.getValue(this.fieldId)
-    return value.mapOr(false, (v) => v instanceof NumberFieldValue && v.equals(this.values))
+    return value.mapOr(false, (v) => isNumber(v.value) && v.value == this.value)
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
     throw new Error("Method not implemented.")
@@ -34,7 +33,7 @@ export class NumberGT extends RecordComositeSpecification {
   }
   isSatisfiedBy(t: RecordDO): boolean {
     const value = t.getValue(this.fieldId)
-    return value.mapOr(false, (v) => v instanceof NumberFieldValue && v.value > this.value)
+    return value.mapOr(false, (v) => isNumber(v.value) && v.value > this.value)
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
     throw new Error("Method not implemented.")
@@ -54,7 +53,7 @@ export class NumberGTE extends RecordComositeSpecification {
   }
   isSatisfiedBy(t: RecordDO): boolean {
     const value = t.getValue(this.fieldId)
-    return value.mapOr(false, (v) => v instanceof NumberFieldValue && v.value >= this.value)
+    return value.mapOr(false, (v) => isNumber(v.value) && v.value >= this.value)
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
     throw new Error("Method not implemented.")
@@ -74,7 +73,7 @@ export class NumberLT extends RecordComositeSpecification {
   }
   isSatisfiedBy(t: RecordDO): boolean {
     const value = t.getValue(this.fieldId)
-    return value.mapOr(false, (v) => v instanceof NumberFieldValue && v.value < this.value)
+    return value.mapOr(false, (v) => isNumber(v.value) && v.value < this.value)
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
     throw new Error("Method not implemented.")
@@ -94,7 +93,7 @@ export class NumberLTE extends RecordComositeSpecification {
   }
   isSatisfiedBy(t: RecordDO): boolean {
     const value = t.getValue(this.fieldId)
-    return value.mapOr(false, (v) => v instanceof NumberFieldValue && v.value <= this.value)
+    return value.mapOr(false, (v) => isNumber(v.value) && v.value <= this.value)
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
     throw new Error("Method not implemented.")
@@ -111,10 +110,7 @@ export class NumberEmpty extends RecordComositeSpecification {
   }
   isSatisfiedBy(t: RecordDO): boolean {
     const value = t.getValue(this.fieldId)
-    return value.mapOr(
-      false,
-      (v) => v instanceof NumberFieldValue && !isNumber(v.value) && (v.value === undefined || v.value === null),
-    )
+    return value.mapOr(false, (v) => !isNumber(v.value) || v.value === undefined || v.value === null)
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
     throw new Error("Method not implemented.")

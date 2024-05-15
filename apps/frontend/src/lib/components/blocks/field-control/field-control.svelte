@@ -15,6 +15,7 @@
     createdAt: DateControl,
     string: StringControl,
     number: NumberControl,
+    autoIncrement: NumberControl,
   }
 </script>
 
