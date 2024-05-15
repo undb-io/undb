@@ -5,6 +5,6 @@ const drizzleLogger = createLogger("db")
 
 export class DrizzleLogger implements Logger {
   logQuery(query: string, params: unknown[]): void {
-    drizzleLogger.debug({ query, params })
+    drizzleLogger.debug({ query, params }, "drizzle.query")
   }
 }

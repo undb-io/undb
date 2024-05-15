@@ -12,18 +12,24 @@ export function createQueryBuilder(db: Database): Kysely<unknown> {
     }),
     log: (event) => {
       if (event.level == "query") {
-        logger.debug({
-          query: event.query.sql,
-          params: event.query.parameters,
-          duration: event.queryDurationMillis,
-        })
+        logger.debug(
+          {
+            query: event.query.sql,
+            params: event.query.parameters,
+            duration: event.queryDurationMillis,
+          },
+          "kysely.query",
+        )
       } else if (event.level == "error") {
-        logger.error({
-          error: event.error,
-          query: event.query.sql,
-          params: event.query.parameters,
-          duration: event.queryDurationMillis,
-        })
+        logger.error(
+          {
+            error: event.error,
+            query: event.query.sql,
+            params: event.query.parameters,
+            duration: event.queryDurationMillis,
+          },
+          "kysely.error",
+        )
       }
     },
   })

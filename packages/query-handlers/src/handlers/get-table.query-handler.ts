@@ -16,8 +16,6 @@ export class GetTableQueryHandler implements IQueryHandler<any, ITableDTO> {
   ) {}
 
   async execute(query: IGetTableQuery): Promise<ITableDTO> {
-    this.logger.debug(query, "get tables query executed")
-
     return this.svc.getTable(query.tableId)
   }
 }
