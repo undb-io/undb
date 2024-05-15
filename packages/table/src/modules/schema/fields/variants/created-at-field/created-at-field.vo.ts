@@ -4,7 +4,7 @@ import { z } from "zod"
 import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
-import { CreatedAtIsSameDay } from "./created-at-field-value.specification"
+import { DateIsSameDay } from "../abstractions/abstract-date-value.specification"
 import { CreatedAtFieldValue } from "./created-at-field-value.vo"
 import {
   createdAtFieldFilter,
@@ -53,8 +53,8 @@ export class CreatedAtField extends AbstractField<CreatedAtFieldValue> {
 
   override getSpec(filter: ICreatedAtFieldFilter) {
     const spec = match(filter)
-      .with({ op: "is_same_day" }, ({ value }) => new CreatedAtIsSameDay(value, this.id))
-      .with({ op: "is_not_same_day" }, ({ value }) => new CreatedAtIsSameDay(value, this.id).not())
+      .with({ op: "is_same_day" }, ({ value }) => new DateIsSameDay(value, this.id))
+      .with({ op: "is_not_same_day" }, ({ value }) => new DateIsSameDay(value, this.id).not())
       .exhaustive()
 
     return Option(spec)

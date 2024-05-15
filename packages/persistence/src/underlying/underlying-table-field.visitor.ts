@@ -1,6 +1,4 @@
-import type { IFieldVisitor, NumberField, StringField } from "@undb/table"
-import type { CreatedAtField } from "@undb/table/src/modules/schema/fields/variants/created-at-field"
-import type { IdField } from "@undb/table/src/modules/schema/fields/variants/id-field"
+import type { CreatedAtField, IFieldVisitor, IdField, NumberField, StringField } from "@undb/table"
 import { sql, type CreateTableBuilder } from "kysely"
 
 export class UnderlyingTableFieldVisitor implements IFieldVisitor {
