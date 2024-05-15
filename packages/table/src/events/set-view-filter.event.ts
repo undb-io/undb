@@ -8,7 +8,7 @@ const EVT_SET_VIEW_FILTER = "table.view.filter.set" as const
 export const setViewFilterEventPayload = z.object({
   tableId: tableId,
   viewId: viewId,
-  filter: filterGroup,
+  filter: filterGroup.nullable(),
 })
 
 export type ISetViewFilterEventPayload = z.infer<typeof setViewFilterEventPayload>

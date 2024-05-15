@@ -16,7 +16,7 @@ export function setViewFilter(this: TableDo, dto: ISetViewFilterDTO): Option<Tab
     const event = new SetViewFilterEvent({
       tableId: this.id.value,
       viewId: view.id.value,
-      filter: view.filter.unwrap().toJSON(),
+      filter: view.filter.into(null)?.toJSON() ?? null,
     })
     this.addDomainEvent(event)
   }

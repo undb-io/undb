@@ -1,5 +1,6 @@
 <script lang="ts">
-  import type { Field } from "@undb/table"
+  import type { Field, FieldType } from "@undb/table"
+  import IdControl from "./id-control.svelte"
   import StringControl from "./string-control.svelte"
   import NumberControl from "./number-control.svelte"
   import type { ComponentType } from "svelte"
@@ -8,8 +9,8 @@
 
   export let value: any
 
-  // TODO: key type
-  const map: Record<string, ComponentType> = {
+  const map: Record<FieldType, ComponentType> = {
+    id: IdControl,
     string: StringControl,
     number: NumberControl,
   }
