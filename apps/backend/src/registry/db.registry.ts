@@ -1,5 +1,7 @@
 import { container } from "@undb/di"
 import {
+  DB_UNIT_OF_WORK_PROVIDER,
+  DatabaseUnitOfWork,
   RecordOutboxService,
   RecordQueryRepository,
   RecordRepository,
@@ -23,4 +25,5 @@ export const registerDb = () => {
   container.register(RECORD_REPOSITORY, RecordRepository)
   container.register(RECORD_OUTBOX_SERVICE, RecordOutboxService)
   container.register(TABLE_OUTBOX_SERVICE, TableOutboxService)
+  container.register(DB_UNIT_OF_WORK_PROVIDER, DatabaseUnitOfWork)
 }
