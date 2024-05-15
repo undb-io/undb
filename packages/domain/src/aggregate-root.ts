@@ -10,4 +10,8 @@ export abstract class AggregateRoot<E extends BaseEvent> {
   protected addDomainEvent(event: E) {
     this.#domainEvents.push(event)
   }
+
+  removeEvents(events: E[]) {
+    this.#domainEvents = this.#domainEvents.filter((event) => !events.includes(event))
+  }
 }

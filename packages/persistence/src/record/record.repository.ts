@@ -30,6 +30,6 @@ export class RecordRepository implements IRecordRepository {
     this.logger.debug({ values }, "Inserting record")
 
     await this.qb.insertInto(t.name).values(values).executeTakeFirst()
-    await this.outboxService.save(record.domainEvents)
+    await this.outboxService.save(record)
   }
 }

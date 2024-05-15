@@ -1,4 +1,4 @@
 import type { IOutboxService } from "@undb/domain"
-import type { IRecordEvent } from "../events"
+import type { RecordDO } from "."
 
-export type IRecordOutboxService = IOutboxService<IRecordEvent>
+export type IRecordOutboxService = IOutboxService<RecordDO>

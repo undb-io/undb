@@ -23,6 +23,9 @@
       $createRecordSheetOpen = false
       client.invalidateQueries({ queryKey: ["records", $table.id.value] })
     },
+    onError: (error) => {
+      toast.error(error.message)
+    },
   })
 
   const createRecord = (values: any) => {

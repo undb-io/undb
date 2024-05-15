@@ -61,10 +61,10 @@
   }
 </script>
 
-<div class={cn("space-y-2", isEven ? "bg-muted" : "bg-white")} data-level={level}>
+<div class={cn("space-y-2", isEven ? "bg-muted" : "bg-popover")} data-level={level}>
   {#if value?.children.length}
     <SortableList
-      class={cn("space-y-1.5", level > 1 && "p-4 pb-2")}
+      class={cn("space-y-1.5", level > 1 ? "p-4 pb-2" : "px-4 py-2")}
       animation={200}
       onEnd={(event) => {
         if (event.oldIndex && event.newIndex) {
@@ -83,7 +83,7 @@
             {:else}
               <ConjunctionPicker
                 disabled={i !== 1}
-                class="col-span-2 text-center text-xs"
+                class="col-span-2 bg-white text-center text-xs"
                 bind:value={value.conjunction}
               />
             {/if}
@@ -93,7 +93,12 @@
                 class={cn(!!child.fieldId && "col-span-4 rounded-r-none border-r-0")}
               />
               <OpPicker {field} bind:value={child.op} class="col-span-3 rounded-l-none" />
-              <FilterValue {field} bind:value={child.value} bind:op={child.op} class="col-span-5 text-xs font-medium" />
+              <FilterValue
+                {field}
+                bind:value={child.value}
+                bind:op={child.op}
+                class="col-span-5 bg-white text-xs font-medium"
+              />
             </div>
             <div class="col-span-1 flex items-center gap-2">
               <button on:click={() => removeFilter(i)}>
@@ -106,10 +111,10 @@
           </div>
         {:else if isMaybeGroup(child)}
           <div class="space-y-2">
-            <div class="grid grid-cols-12">
+            <div class="grid grid-cols-12 gap-2">
               <ConjunctionPicker
                 disabled={i !== 1}
-                class="col-span-2 text-center text-xs"
+                class="col-span-2 bg-white text-center text-xs"
                 bind:value={value.conjunction}
               />
               <div class="col-span-9"></div>

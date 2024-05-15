@@ -1,5 +1,5 @@
-import type { BaseEvent } from "./event"
+import type { AggregateRoot } from "./aggregate-root"
 
-export interface IOutboxService<E extends BaseEvent> {
-  save(events: E[]): Promise<void>
+export interface IOutboxService<DO extends AggregateRoot<any>> {
+  save(d: DO): Promise<void>
 }

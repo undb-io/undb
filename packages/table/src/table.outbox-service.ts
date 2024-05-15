@@ -1,4 +1,4 @@
 import type { IOutboxService } from "@undb/domain"
-import type { ITableEvents } from "./events"
+import type { TableDo } from "./table.do"
 
-export interface ITableOutboxService extends IOutboxService<ITableEvents> {}
+export interface ITableOutboxService extends IOutboxService<TableDo> {}

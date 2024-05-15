@@ -41,7 +41,7 @@ export class TableRepository implements ITableRepository {
     spec.unwrap().accept(visitor)
 
     await this.db.update(tables).set(visitor.updates).where(eq(tables.id, table.id.value))
-    await this.outboxService.save(table.domainEvents)
+    await this.outboxService.save(table)
   }
 
   async insert(table: TableDo): Promise<void> {
@@ -49,7 +49,7 @@ export class TableRepository implements ITableRepository {
 
     await this.db.insert(tables).values(values)
     await this.underlyingTableService.create(table)
-    await this.outboxService.save(table.domainEvents)
+    await this.outboxService.save(table)
   }
 
   async findOneById(id: TableId): Promise<Option<TableDo>> {

@@ -1,8 +1,9 @@
 import { singleton } from "@undb/di"
-import type { ITableEvents, ITableOutboxService } from "@undb/table"
+import type { ITableOutboxService, TableDo } from "@undb/table"
 import type { Database } from "../db"
 import { injectDb } from "../db.provider"
 import { outbox } from "../tables"
+import { OutboxMapper } from "../outbox.mapper"
 
 @singleton()
 export class TableOutboxService implements ITableOutboxService {
@@ -11,17 +12,9 @@ export class TableOutboxService implements ITableOutboxService {
     private readonly db: Database,
   ) {}
 
-  async save(events: ITableEvents[]): Promise<void> {
-    await this.db.insert(outbox).values(
-      events.map((e) => ({
-        id: e.id,
-        payload: e.payload,
-        meta: e.meta,
-        name: e.name,
-        // TODO: real user
-        operatorId: e.operatorId ?? "123",
-        timestamp: e.timestamp.toISOString(),
-      })),
-    )
+  async save(table: TableDo): Promise<void> {
+    const values = table.domainEvents.map(OutboxMapper.fromEvent)
+    await this.db.insert(outbox).values(values)
+    table.removeEvents(table.domainEvents)
   }
 }
