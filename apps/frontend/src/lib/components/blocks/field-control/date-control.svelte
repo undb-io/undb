@@ -1,6 +1,6 @@
 <script lang="ts">
   import CalendarIcon from "lucide-svelte/icons/calendar"
-  import { type DateValue, DateFormatter, getLocalTimeZone } from "@internationalized/date"
+  import { type DateValue, DateFormatter, getLocalTimeZone, parseDate } from "@internationalized/date"
   import { cn } from "$lib/utils.js"
   import { Button } from "$lib/components/ui/button"
   import { Calendar } from "$lib/components/ui/calendar"
@@ -10,7 +10,8 @@
     dateStyle: "long",
   })
 
-  let value: DateValue | undefined = undefined
+  export let value: string | undefined = undefined
+  $: internalDate = value ? parseDate(value) : undefined
 </script>
 
 <Popover.Root openFocus>
@@ -22,10 +23,20 @@
       builders={[builder]}
     >
       <CalendarIcon class="mr-2 h-4 w-4" />
-      {value ? df.format(value.toDate(getLocalTimeZone())) : ""}
+      {internalDate ? df.format(internalDate.toDate(getLocalTimeZone())) : ""}
     </Button>
   </Popover.Trigger>
   <Popover.Content class="w-auto p-0">
-    <Calendar bind:value initialFocus />
+    <Calendar
+      value={internalDate}
+      onValueChange={(v) => {
+        if (v) {
+          value = v.toString()
+        } else {
+          value = undefined
+        }
+      }}
+      initialFocus
+    />
   </Popover.Content>
 </Popover.Root>

@@ -53,8 +53,8 @@ export class UpdatedAtField extends AbstractField<UpdatedAtFieldValue> {
 
   override getSpec(filter: IUpdatedAtFieldFilter) {
     const spec = match(filter)
-      .with({ op: "is_same_day" }, ({ value }) => new DateIsSameDay(value, this.id))
-      .with({ op: "is_not_same_day" }, ({ value }) => new DateIsSameDay(value, this.id).not())
+      .with({ op: "is_same_day" }, ({ value }) => new DateIsSameDay(new Date(value), this.id))
+      .with({ op: "is_not_same_day" }, ({ value }) => new DateIsSameDay(new Date(value), this.id).not())
       .exhaustive()
 
     return Option(spec)

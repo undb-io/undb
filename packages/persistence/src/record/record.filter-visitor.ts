@@ -16,11 +16,16 @@ import type {
   StringStartsWith,
 } from "@undb/table"
 import { startOfDay } from "date-fns"
+import { endOfDay } from "date-fns/fp/endOfDay"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 
 export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements IRecordVisitor {
   dateIsSameDate(spec: DateIsSameDay): void {
-    const cond = this.eb.eb.between(spec.fieldId.value, startOfDay(spec.date), startOfDay(spec.date))
+    const cond = this.eb.between(
+      spec.fieldId.value,
+      startOfDay(spec.date).toISOString(),
+      endOfDay(spec.date).toISOString(),
+    )
     this.addCond(cond)
   }
   idEqual(spec: IdEqual): void {

@@ -25,22 +25,22 @@ export class UnderlyingTableFieldVisitor implements IFieldVisitor {
 
   updatedAt(field: UpdatedAtField): void {
     const tableName = this.t.name
-    this.tb = this.tb.addColumn(field.id.value, "datetime", (b) => b.defaultTo(sql`(CURRENT_TIMESTAMP)`).notNull())
+    this.tb = this.tb.addColumn(field.id.value, "timestamp", (b) => b.defaultTo(sql`(CURRENT_TIMESTAMP)`).notNull())
 
     // TODO: better solution
     const query = `
-		CREATE TRIGGER IF NOT EXISTS update_at_update_${tableName} AFTER UPDATE ON \`${tableName}\`
-		BEGIN
-			update \`${tableName}\` SET ${field.id.value} = datetime('now') WHERE ${ID_TYPE} = NEW.${ID_TYPE};
-		END;
-      `
+    CREATE TRIGGER IF NOT EXISTS update_at_update_${tableName} AFTER UPDATE ON \`${tableName}\`
+    BEGIN
+    	update \`${tableName}\` SET ${field.id.value} = datetime('now') WHERE ${ID_TYPE} = NEW.${ID_TYPE};
+    END;
+        `
     this.#rawSQL.push(query)
   }
   autoIncrement(field: AutoIncrementField): void {
     this.tb = this.tb.addColumn(field.id.value, "integer", (b) => b.autoIncrement().primaryKey())
   }
   createdAt(field: CreatedAtField): void {
-    this.tb = this.tb.addColumn(field.id.value, "datetime", (b) => b.defaultTo(sql`(CURRENT_TIMESTAMP)`).notNull())
+    this.tb = this.tb.addColumn(field.id.value, "timestamp", (b) => b.defaultTo(sql`CURRENT_TIMESTAMP`).notNull())
   }
   id(field: IdField): void {
     this.tb = this.tb.addColumn(field.id.value, "varchar(50)", (b) => b.notNull().unique())

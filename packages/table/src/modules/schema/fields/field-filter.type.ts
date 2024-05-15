@@ -1,8 +1,14 @@
 import type { PartialDeep, SetFieldType, SetRequired } from "type-fest"
 import { z } from "zod"
 import {
+  autoIncrementFieldFilter,
+  createdAtFieldFilter,
+  idFieldFilter,
   numberFieldFilter,
   stringFieldFilter,
+  updatedAtFieldFilter,
+  type IAutoIncrementFieldFilter,
+  type IAutoIncrementFieldFilterSchema,
   type INumberFieldFilter,
   type INumberFieldFilterSchema,
   type IStringFieldFilter,
@@ -12,7 +18,14 @@ import type { ICreatedAtFieldFilter, ICreatedAtFieldFilterSchema } from "./varia
 import type { IIdFieldFilter, IIdFieldFilterSchema } from "./variants/id-field"
 import type { IUpdatedAtFieldFilter, IUpdatedAtFieldFilterSchema } from "./variants/updated-at-field"
 
-export const filedFilter = z.union([stringFieldFilter, numberFieldFilter])
+export const filedFilter = z.union([
+  stringFieldFilter,
+  numberFieldFilter,
+  idFieldFilter,
+  createdAtFieldFilter,
+  updatedAtFieldFilter,
+  autoIncrementFieldFilter,
+])
 
 export type IFieldFilter =
   | IStringFieldFilter
@@ -20,6 +33,7 @@ export type IFieldFilter =
   | IIdFieldFilter
   | ICreatedAtFieldFilter
   | IUpdatedAtFieldFilter
+  | IAutoIncrementFieldFilter
 
 export type IFieldFilterSchema =
   | IStringFieldFilterSchema
@@ -27,6 +41,7 @@ export type IFieldFilterSchema =
   | IIdFieldFilterSchema
   | ICreatedAtFieldFilterSchema
   | IUpdatedAtFieldFilterSchema
+  | IAutoIncrementFieldFilterSchema
 
 export type MaybeFieldFilter = SetFieldType<PartialDeep<IFieldFilter>, "value", any> & { id: string }
 export type MaybeFieldFilterWithFieldId = SetRequired<MaybeFieldFilter, "fieldId">

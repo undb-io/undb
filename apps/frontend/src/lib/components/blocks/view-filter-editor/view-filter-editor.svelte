@@ -16,6 +16,7 @@
   $: count = filter?.count ?? 0
 
   const value = writable<MaybeFilterGroup | undefined>()
+  $: console.log($value)
   $: validValue = $value ? parseValidFilter($table.schema.fieldMapById, $value) : undefined
 
   $: $table, value.set(filter?.toMaybeFilterGroup())

@@ -39,7 +39,7 @@ const p = t.procedure.use(async ({ type, input, path, next }) => {
   if (result.ok) {
     log.info(meta, `trpc.${type}: ${path}`)
   } else {
-    log.error({ ...meta, error: result.error })
+    log.error({ ...meta, error: result.error }, `trpc.error: ${result.error.message}`)
   }
 
   return result
