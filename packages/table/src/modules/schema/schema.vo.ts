@@ -3,6 +3,7 @@ import { objectify } from "radash"
 import { z } from "zod"
 import type { ICreateSchemaDTO } from "./dto"
 import type { ISchemaDTO } from "./dto/schema.dto"
+import { IdField } from "./fields"
 import type { FieldId } from "./fields/field-id.vo"
 import { FieldFactory } from "./fields/field.factory"
 import type { Field } from "./fields/field.type"
@@ -13,9 +14,14 @@ export class Schema extends ValueObject {
     super(fields)
   }
 
+  static createSystemFields(): Field[] {
+    return [IdField.create({ name: "id", type: "id" })]
+  }
+
   static create(dto: ICreateSchemaDTO): Schema {
+    const systemFields = this.createSystemFields()
     const fields = dto.map((field) => FieldFactory.create(field))
-    return new Schema(fields)
+    return new Schema([...systemFields, ...fields])
   }
 
   static fromJSON(dto: ISchemaDTO): Schema {

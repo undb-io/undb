@@ -8,7 +8,10 @@ export class RecordMapper implements Mapper<RecordDO, any, IRecordDTO> {
     throw new Error("Method not implemented.")
   }
   toEntity(domain: RecordDO) {
-    throw new Error("Method not implemented.")
+    return {
+      id: domain.id.value,
+      ...domain.values.toJSON(),
+    }
   }
   toDTO(entity: any): IRecordDTO {
     const { id, ...rest } = entity

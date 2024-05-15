@@ -4,7 +4,7 @@ import { z } from "zod"
 const prefix = "fld"
 const size = 6
 
-export const fieldId = z.string().startsWith(prefix)
+export const fieldId = z.string()
 export type IFieldId = z.infer<typeof fieldId>
 
 export const FieldIdVo = IdFactory(prefix, size, fieldId)

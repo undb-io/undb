@@ -17,7 +17,6 @@ export class UnderlyingTableService {
     return this.qb.schema
       .createTable(t.name)
       .addColumn("auto_increament", "integer", (b) => b.autoIncrement().primaryKey())
-      .addColumn("id", "varchar(50)", (b) => b.notNull().unique())
       .$call((tb) => {
         const visitor = new UnderlyingTableFieldVisitor(tb)
         for (const field of table.schema) {

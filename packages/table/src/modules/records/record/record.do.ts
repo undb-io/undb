@@ -31,13 +31,6 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
     }
   }
 
-  public insertValues() {
-    return {
-      id: this.id.value,
-      ...this.values.toJSON(),
-    }
-  }
-
   getValue(fieldId: FieldId): Option<FieldValue> {
     return this.values.getValue(fieldId)
   }

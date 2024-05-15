@@ -1,5 +1,6 @@
 import type {
   IRecordVisitor,
+  IdEqual,
   NumberEmpty,
   NumberEqual,
   NumberGT,
@@ -16,6 +17,10 @@ import type {
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 
 export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements IRecordVisitor {
+  idEqual(spec: IdEqual): void {
+    const cond = this.eb.eb(spec.fieldId.value, "=", spec.values.value)
+    this.addCond(cond)
+  }
   numberEmpty(spec: NumberEmpty): void {
     const cond = this.eb.eb(spec.fieldId.value, "is", null)
     this.addCond(cond)
