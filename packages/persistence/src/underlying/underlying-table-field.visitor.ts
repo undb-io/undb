@@ -27,6 +27,7 @@ export class UnderlyingTableFieldVisitor implements IFieldVisitor {
     const tableName = this.t.name
     this.tb = this.tb.addColumn(field.id.value, "datetime", (b) => b.defaultTo(sql`(CURRENT_TIMESTAMP)`).notNull())
 
+    // TODO: better solution
     const query = `
 		CREATE TRIGGER IF NOT EXISTS update_at_update_${tableName} AFTER UPDATE ON \`${tableName}\`
 		BEGIN

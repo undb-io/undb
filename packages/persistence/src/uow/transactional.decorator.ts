@@ -6,10 +6,10 @@ import { DB_UNIT_OF_WORK_PROVIDER } from "./db.unit-of-work.provider"
 export function transactional() {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value
-    console.log(target)
     const logger = createLogger(target + "." + originalMethod.name)
 
     descriptor.value = async function (...args: any[]) {
+      // FIXME: always undefined
       let uow = target.uow as IUnitOfWork | undefined
       if (!uow) {
         logger.warn('No unit of work found, you should inject a unit of work in the repository constructor named "uow"')
