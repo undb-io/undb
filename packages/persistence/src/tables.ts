@@ -1,7 +1,7 @@
 import type { ISchemaDTO } from "@undb/table"
 import type { IViewsDTO } from "@undb/table/src/modules/views/dto"
 import { sql } from "drizzle-orm"
-import { sqliteTableCreator, text } from "drizzle-orm/sqlite-core"
+import { integer, sqliteTableCreator, text } from "drizzle-orm/sqlite-core"
 
 const sqliteTable = sqliteTableCreator((name) => `undb_${name}`)
 
@@ -30,7 +30,7 @@ export const outbox = sqliteTable("outbox", {
   id: text("id").notNull().primaryKey(),
   payload: text("payload", { mode: "json" }).notNull(),
   meta: text("meta", { mode: "json" }),
-  timestamp: text("timestamp").notNull(),
+  timestamp: integer("timestamp", { mode: "timestamp" }).notNull(),
   operatorId: text("operator_id").notNull(),
   name: text("name").notNull(),
 })

@@ -9,7 +9,7 @@ export class OutboxMapper {
       payload: event.payload,
       meta: event.meta,
       operatorId: event.operatorId ?? "123",
-      timestamp: event.timestamp.toISOString(),
+      timestamp: event.timestamp,
     }
   }
 }

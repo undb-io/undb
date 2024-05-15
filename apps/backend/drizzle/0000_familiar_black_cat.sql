@@ -2,7 +2,7 @@ CREATE TABLE `undb_outbox` (
 	`id` text PRIMARY KEY NOT NULL,
 	`payload` text NOT NULL,
 	`meta` text,
-	`timestamp` text NOT NULL,
+	`timestamp` integer NOT NULL,
 	`operator_id` text NOT NULL,
 	`name` text NOT NULL
 );
