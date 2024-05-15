@@ -1,6 +1,6 @@
 import { None, Some, type Option } from "@undb/domain"
 import { z } from "zod"
-import { WithViewFilter } from "../../../../specifications/table-view.specification"
+import { WithViewColor, WithViewFilter } from "../../../../specifications/table-view.specification"
 import { Filter, filterGroup, type IRootFilter } from "../../../filters"
 import { ViewIdVo, viewId, type ViewId } from "../view-id.vo"
 import { ViewNameVo, viewName } from "../view-name.vo"
@@ -17,6 +17,7 @@ export const baseViewDTO = z.object({
   id: viewId,
   name: viewName,
   filter: filterGroup.optional(),
+  color: filterGroup.optional(),
 })
 
 export type IBaseViewDTO = z.infer<typeof baseViewDTO> & { filter?: IRootFilter }
@@ -25,6 +26,7 @@ export abstract class AbstractView {
   id!: ViewId
   name!: ViewNameVo
   filter: Option<Filter> = None
+  color: Option<Filter> = None
 
   abstract type: ViewType
 
@@ -33,6 +35,9 @@ export abstract class AbstractView {
     this.name = new ViewNameVo(dto.name)
     if (dto.filter) {
       this.setFilter(dto.filter)
+    }
+    if (dto.color) {
+      this.setColor(dto.color)
     }
   }
 
@@ -54,12 +59,31 @@ export abstract class AbstractView {
     return Some(new WithViewFilter(this.id, filter))
   }
 
+  setColor(color: IRootFilter) {
+    const filterVO = new Filter(color)
+
+    if (filterVO.isEmpty) {
+      this.color = None
+    } else {
+      this.color = Some(filterVO)
+    }
+  }
+
+  $setColorSpec(color: IRootFilter): Option<WithViewColor> {
+    if (this.color.mapOr(false, (f) => f.isEqual(color))) {
+      return None
+    }
+
+    return Some(new WithViewColor(this.id, color))
+  }
+
   toJSON() {
     return {
       id: this.id.value,
       name: this.name.value,
       type: this.type,
       filter: this.filter.into(null)?.toJSON(),
+      color: this.color.into(null)?.toJSON(),
     }
   }
 }

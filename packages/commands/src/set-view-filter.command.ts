@@ -6,7 +6,7 @@ export const setViewFilterCommand = setViewFilterDTO
 
 export type ISetViewFilterCommand = z.infer<typeof setViewFilterCommand>
 
-export class SetViewFilterCommand extends Command implements ISetViewFilterCommand {
+export class fieldFilter extends Command implements ISetViewFilterCommand {
   public readonly tableId: string
   public readonly viewId?: string
   public readonly filter: IFilterGroup

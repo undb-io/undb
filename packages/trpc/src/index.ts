@@ -2,9 +2,11 @@ import { initTRPC } from "@trpc/server"
 import {
   CreateRecordCommand,
   CreateTableCommand,
-  SetViewFilterCommand,
+  SetViewColorCommand,
+  fieldFilter,
   createRecordCommand,
   createTableCommand,
+  setViewColorCommand,
   setViewFilterCommand,
 } from "@undb/commands"
 import { CommandBus, QueryBus } from "@undb/cqrs"
@@ -46,7 +48,8 @@ const p = t.procedure.use(async ({ type, input, path, next }) => {
 })
 
 const viewRouter = t.router({
-  setFilter: p.input(setViewFilterCommand).mutation(({ input }) => commandBus.execute(new SetViewFilterCommand(input))),
+  setFilter: p.input(setViewFilterCommand).mutation(({ input }) => commandBus.execute(new fieldFilter(input))),
+  setColor: p.input(setViewColorCommand).mutation(({ input }) => commandBus.execute(new SetViewColorCommand(input))),
 })
 
 const tableRouter = t.router({

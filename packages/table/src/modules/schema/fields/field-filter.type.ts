@@ -18,7 +18,7 @@ import type { ICreatedAtFieldFilter, ICreatedAtFieldFilterSchema } from "./varia
 import type { IIdFieldFilter, IIdFieldFilterSchema } from "./variants/id-field"
 import type { IUpdatedAtFieldFilter, IUpdatedAtFieldFilterSchema } from "./variants/updated-at-field"
 
-export const filedFilter = z.union([
+export const fieldFilter = z.union([
   stringFieldFilter,
   numberFieldFilter,
   idFieldFilter,

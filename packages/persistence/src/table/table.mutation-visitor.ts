@@ -6,6 +6,7 @@ import type {
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
+  WithViewColor,
   WithViewFilter,
 } from "@undb/table"
 import type { SQLiteUpdateSetSource } from "drizzle-orm/sqlite-core"
@@ -15,6 +16,9 @@ type Source = SQLiteUpdateSetSource<typeof tables>
 
 export class TableMutationVisitor implements ITableSpecVisitor {
   constructor(public readonly table: TableDo) {}
+  withViewColor(viewFilter: WithViewColor): void {
+    this.#updates = { ...this.#updates, views: this.table.views.toJSON() }
+  }
 
   #updates: Source = {}
 

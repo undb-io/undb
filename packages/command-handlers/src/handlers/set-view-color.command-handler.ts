@@ -1,21 +1,21 @@
-import { fieldFilter } from "@undb/commands"
+import { SetViewColorCommand } from "@undb/commands"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import type { ICommandHandler } from "@undb/domain"
 import { TableIdVo, injectTableRepository, type ITableRepository } from "@undb/table"
 
-@commandHandler(fieldFilter)
+@commandHandler(SetViewColorCommand)
 @singleton()
-export class SetViewFilterCommandHandler implements ICommandHandler<fieldFilter, any> {
+export class SetViewColorCommandHandler implements ICommandHandler<SetViewColorCommand, any> {
   constructor(
     @injectTableRepository()
     private readonly repo: ITableRepository,
   ) {}
 
-  async execute(command: fieldFilter): Promise<any> {
+  async execute(command: SetViewColorCommand): Promise<any> {
     const table = (await this.repo.findOneById(new TableIdVo(command.tableId))).unwrap()
 
-    const spec = table.$setViewFilter(command)
+    const spec = table.$setViewColor(command)
 
     await this.repo.updateOneById(table, spec)
   }

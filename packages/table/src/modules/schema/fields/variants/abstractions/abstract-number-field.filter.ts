@@ -1,6 +1,7 @@
 import { match } from "ts-pattern"
 import { z } from "zod"
 import { baseFilter } from "../../../../filters"
+import type { FieldId } from "../../field-id.vo"
 import {
   NumberEmpty,
   NumberEqual,
@@ -9,7 +10,6 @@ import {
   NumberLT,
   NumberLTE,
 } from "./abstract-number-value.specification"
-import type { FieldId } from "../../field-id.vo"
 
 export const abstractNumberFieldFilter = z.union([
   z.object({ op: z.literal("eq"), value: z.number() }).merge(baseFilter),

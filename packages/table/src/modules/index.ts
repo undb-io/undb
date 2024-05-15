@@ -1,4 +1,5 @@
 export * from "./filters"
 export * from "./records"
+export * from "./colors"
 export * from "./schema"
 export * from "./views"
