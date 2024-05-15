@@ -7,6 +7,7 @@ import { IdField } from "./fields"
 import type { FieldId } from "./fields/field-id.vo"
 import { FieldFactory } from "./fields/field.factory"
 import type { Field } from "./fields/field.type"
+import { CreatedAtField } from "./fields/variants/created-at-field"
 import type { SchemaMap } from "./schema.type"
 
 export class Schema extends ValueObject {
@@ -15,7 +16,7 @@ export class Schema extends ValueObject {
   }
 
   static createSystemFields(): Field[] {
-    return [IdField.create({ name: "id", type: "id" })]
+    return [IdField.create({ name: "id", type: "id" }), CreatedAtField.create({ name: "createdAt", type: "createdAt" })]
   }
 
   static create(dto: ICreateSchemaDTO): Schema {

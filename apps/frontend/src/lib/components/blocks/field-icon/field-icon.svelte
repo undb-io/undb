@@ -3,12 +3,13 @@
   import NumberIcon from "./number-icon.svelte"
   import StringIcon from "./string-icon.svelte"
   import type { FieldType } from "@undb/table"
-  import { KeyRoundIcon } from "lucide-svelte"
+  import { KeyRoundIcon, CalendarPlus2Icon } from "lucide-svelte"
 
   export let type: FieldType
 
   const map: Record<FieldType, ComponentType> = {
     id: KeyRoundIcon,
+    createdAt: CalendarPlus2Icon,
     string: StringIcon,
     number: NumberIcon,
   }

@@ -3,7 +3,7 @@
 
   export let value: number
   const onInput = (event: Event) => {
-    value = +event.target!.value
+    value = +(event.target as HTMLInputElement).value
   }
 </script>
 

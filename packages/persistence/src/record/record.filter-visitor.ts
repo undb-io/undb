@@ -14,9 +14,15 @@ import type {
   StringEqual,
   StringStartsWith,
 } from "@undb/table"
+import type { CreatedAtIsSameDay } from "@undb/table/src/modules/schema/fields/variants/created-at-field"
+import { startOfDay } from "date-fns"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 
 export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements IRecordVisitor {
+  createdAtIsSameDate(spec: CreatedAtIsSameDay): void {
+    const cond = this.eb.eb.between(spec.fieldId.value, startOfDay(spec.date), startOfDay(spec.date))
+    this.addCond(cond)
+  }
   idEqual(spec: IdEqual): void {
     const cond = this.eb.eb(spec.fieldId.value, "=", spec.values.value)
     this.addCond(cond)

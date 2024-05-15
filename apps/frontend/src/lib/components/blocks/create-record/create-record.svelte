@@ -62,7 +62,7 @@
             <span class="text-red-500">*</span>
           {/if}
         </Form.Label>
-        <FieldControl {...attrs} bind:value={$formData[field.id.value]} {field} />
+        <FieldControl {...attrs} bind:value={$formData[field.id.value]} {field} disabled={field.isSystem} />
       </Form.Control>
       <Form.FieldErrors />
     </Form.Field>

@@ -16,6 +16,7 @@
     "@undb/logger": "workspace:*",
     "@undb/domain": "workspace:*",
     "ts-pattern": "^5.1.1",
+    "date-fns": "^3.6.0",
     "radash": "^12.1.0",
     "zod": "^3.23.6"
   }

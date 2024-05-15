@@ -25,7 +25,9 @@ export class RecordValuesVO extends ValueObject {
       const fieldId = new FieldIdVo(id)
       const field = table.schema.getFieldById(fieldId).expect("Field not found")
       const fieldValue = FieldValueFactory.create(field, value)
-      Reflect.set(values, fieldId.value, fieldValue)
+      if (fieldValue.isSome()) {
+        Reflect.set(values, fieldId.value, fieldValue.unwrap())
+      }
     }
 
     return new RecordValuesVO(values)

@@ -1,9 +1,14 @@
 import type { IFieldVisitor, NumberField, StringField } from "@undb/table"
+import type { CreatedAtField } from "@undb/table/src/modules/schema/fields/variants/created-at-field"
 import type { IdField } from "@undb/table/src/modules/schema/fields/variants/id-field"
-import type { CreateTableBuilder } from "kysely"
+import { sql, type CreateTableBuilder } from "kysely"
 
 export class UnderlyingTableFieldVisitor implements IFieldVisitor {
   constructor(public tb: CreateTableBuilder<any, any>) {}
+
+  createdAt(field: CreatedAtField): void {
+    this.tb = this.tb.addColumn(field.id.value, "datetime", (b) => b.defaultTo(sql`(CURRENT_TIMESTAMP)`).notNull())
+  }
   id(field: IdField): void {
     this.tb = this.tb.addColumn(field.id.value, "varchar(50)", (b) => b.notNull().unique())
   }

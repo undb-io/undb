@@ -4,6 +4,7 @@
   import StringControl from "./string-control.svelte"
   import NumberControl from "./number-control.svelte"
   import type { ComponentType } from "svelte"
+  import DateControl from "./date-control.svelte"
 
   export let field: Field
 
@@ -11,6 +12,7 @@
 
   const map: Record<FieldType, ComponentType> = {
     id: IdControl,
+    createdAt: DateControl,
     string: StringControl,
     number: NumberControl,
   }

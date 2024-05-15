@@ -41,6 +41,9 @@ export abstract class AbstractField<V extends ValueObject> {
    * whether the field value is controlled by system
    */
   protected system = false
+  public get isSystem() {
+    return this.system
+  }
 
   #required: boolean | undefined = undefined
   get required() {
