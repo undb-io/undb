@@ -1,5 +1,6 @@
 import type {
   DateIsSameDay,
+  DateIsToday,
   IRecordVisitor,
   IdEqual,
   NumberEmpty,
@@ -18,8 +19,14 @@ import type {
 import { startOfDay } from "date-fns"
 import { endOfDay } from "date-fns/fp/endOfDay"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
+import { startOfToday } from "date-fns/startOfToday"
+import { endOfToday } from "date-fns/endOfToday"
 
 export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements IRecordVisitor {
+  dateIsToday(spec: DateIsToday): void {
+    const cond = this.eb.between(spec.fieldId.value, startOfToday().toISOString(), endOfToday().toISOString())
+    this.addCond(cond)
+  }
   dateIsSameDate(spec: DateIsSameDay): void {
     const cond = this.eb.between(
       spec.fieldId.value,

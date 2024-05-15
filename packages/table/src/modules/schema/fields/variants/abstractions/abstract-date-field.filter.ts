@@ -2,7 +2,7 @@ import { match } from "ts-pattern"
 import { z } from "zod"
 import { createBaseFilterSchema } from "../../../../filters/base.filter"
 import type { FieldId } from "../../field-id.vo"
-import { DateIsSameDay } from "./abstract-date-value.specification"
+import { DateIsSameDay, DateIsToday } from "./abstract-date-value.specification"
 
 export function createAbstractDateFieldFilter<ItemType extends z.ZodTypeAny>(itemType: ItemType) {
   const base = createBaseFilterSchema(itemType)
@@ -28,3 +28,4 @@ export const createAbstractDateFilterMather = (
   match(filter)
     .with({ op: "is_same_day" }, ({ value }) => new DateIsSameDay(new Date(value), fieldId))
     .with({ op: "is_not_same_day" }, ({ value }) => new DateIsSameDay(new Date(value), fieldId).not())
+    .with({ op: "is_tody" }, ({}) => new DateIsToday(fieldId).not())
