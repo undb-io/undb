@@ -20,6 +20,8 @@
 
   $: selectedValue = ops.find((f) => f.value === value)?.label ?? "op..."
 
+  $: hasValue = selectedValue ? field?.isOpHasValue(selectedValue) ?? false : false
+
   // We want to refocus the trigger button when the user selects
   // an item from the list so users can continue navigating the
   // rest of the form with the keyboard.
@@ -39,7 +41,7 @@
       variant="outline"
       role="combobox"
       aria-expanded={open}
-      class={cn("justify-between", "rounded-r-none", $$restProps.class)}
+      class={cn("justify-between", "rounded-r-none", !hasValue && "rounded-r-md", $$restProps.class)}
     >
       <span class="overflow-hidden text-ellipsis" title={selectedValue}>
         {selectedValue}
