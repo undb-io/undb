@@ -1,10 +1,9 @@
 import { Option } from "@undb/domain"
-import { match } from "ts-pattern"
 import { z } from "zod"
 import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
-import { NumberEmpty, NumberEqual, NumberGT, NumberGTE, NumberLT, NumberLTE } from "../abstractions"
+import { createAbstractNumberFieldMather } from "../abstractions"
 import type { INumberFieldFilter } from "../number-field"
 import { AutoIncrementFieldValue } from "./autoincrement-field-value.vo"
 import { autoIncrementFieldFilter, type IAutoIncrementFieldFilterSchema } from "./autoincrement-field.filter"
@@ -49,16 +48,7 @@ export class AutoIncrementField extends AbstractField<AutoIncrementFieldValue> {
   }
 
   override getSpec(filter: INumberFieldFilter) {
-    const spec = match(filter)
-      .with({ op: "eq" }, ({ value }) => new NumberEqual(value, this.id))
-      .with({ op: "neq" }, ({ value }) => new NumberEqual(value, this.id).not())
-      .with({ op: "gt" }, ({ value }) => new NumberGT(value, this.id))
-      .with({ op: "gte" }, ({ value }) => new NumberGTE(value, this.id))
-      .with({ op: "lt" }, ({ value }) => new NumberLT(value, this.id))
-      .with({ op: "lte" }, ({ value }) => new NumberLTE(value, this.id))
-      .with({ op: "is_empty" }, () => new NumberEmpty(this.id))
-      .with({ op: "is_not_empty" }, () => new NumberEmpty(this.id).not())
-      .exhaustive()
+    const spec = createAbstractNumberFieldMather(filter, this.id).exhaustive()
 
     return Option(spec)
   }
