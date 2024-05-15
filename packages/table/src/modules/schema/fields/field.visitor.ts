@@ -1,3 +1,4 @@
+import type { UpdatedAtField } from ".."
 import type { AutoIncrementField } from "./variants/autoincrement-field"
 import type { CreatedAtField } from "./variants/created-at-field"
 import type { IdField } from "./variants/id-field"
@@ -8,6 +9,7 @@ export interface IFieldVisitor {
   id(field: IdField): void
   autoIncrement(field: AutoIncrementField): void
   createdAt(field: CreatedAtField): void
+  updatedAt(field: UpdatedAtField): void
   string(field: StringField): void
   number(field: NumberField): void
 }

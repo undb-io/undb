@@ -10,14 +10,23 @@ import {
 } from "./variants"
 import type { ICreatedAtFieldFilter, ICreatedAtFieldFilterSchema } from "./variants/created-at-field"
 import type { IIdFieldFilter, IIdFieldFilterSchema } from "./variants/id-field"
+import type { IUpdatedAtFieldFilter, IUpdatedAtFieldFilterSchema } from "./variants/updated-at-field"
 
 export const filedFilter = z.union([stringFieldFilter, numberFieldFilter])
 
-export type IFieldFilter = IStringFieldFilter | INumberFieldFilter | IIdFieldFilter | ICreatedAtFieldFilter
+export type IFieldFilter =
+  | IStringFieldFilter
+  | INumberFieldFilter
+  | IIdFieldFilter
+  | ICreatedAtFieldFilter
+  | IUpdatedAtFieldFilter
+
 export type IFieldFilterSchema =
   | IStringFieldFilterSchema
   | INumberFieldFilterSchema
   | IIdFieldFilterSchema
   | ICreatedAtFieldFilterSchema
+  | IUpdatedAtFieldFilterSchema
+
 export type MaybeFieldFilter = SetFieldType<PartialDeep<IFieldFilter>, "value", any> & { id: string }
 export type MaybeFieldFilterWithFieldId = SetRequired<MaybeFieldFilter, "fieldId">

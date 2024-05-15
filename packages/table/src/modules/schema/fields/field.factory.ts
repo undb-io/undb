@@ -1,4 +1,5 @@
 import { match } from "ts-pattern"
+import { UpdatedAtField } from ".."
 import type { ICreateFieldDTO } from "./dto/create-field.dto"
 import type { IFieldDTO } from "./dto/field.dto"
 import type { Field } from "./field.type"
@@ -16,6 +17,7 @@ export class FieldFactory {
       .with({ type: "id" }, (dto) => new IdField(dto))
       .with({ type: "createdAt" }, (dto) => new CreatedAtField(dto))
       .with({ type: "autoIncrement" }, (dto) => new AutoIncrementField(dto))
+      .with({ type: "updatedAt" }, (dto) => new UpdatedAtField(dto))
       .exhaustive()
   }
 

@@ -6,7 +6,8 @@ import { DB_UNIT_OF_WORK_PROVIDER } from "./db.unit-of-work.provider"
 export function transactional() {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value
-    const logger = createLogger(target.name + "." + originalMethod.name)
+    console.log(target)
+    const logger = createLogger(target + "." + originalMethod.name)
 
     descriptor.value = async function (...args: any[]) {
       let uow = target.uow as IUnitOfWork | undefined

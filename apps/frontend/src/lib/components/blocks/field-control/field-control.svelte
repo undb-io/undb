@@ -12,10 +12,11 @@
 
   const map: Record<FieldType, ComponentType> = {
     id: IdControl,
-    createdAt: DateControl,
     string: StringControl,
     number: NumberControl,
     autoIncrement: NumberControl,
+    createdAt: DateControl,
+    updatedAt: DateControl,
   }
 </script>
 
