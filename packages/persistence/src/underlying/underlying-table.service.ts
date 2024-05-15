@@ -1,14 +1,17 @@
-import { Database } from "bun:sqlite"
 import { singleton } from "@undb/di"
+import { createLogger } from "@undb/logger"
 import type { TableDo } from "@undb/table"
+import { Database } from "bun:sqlite"
+import { injectSqlite } from "../db.provider"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "./underlying-table"
 import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
-import { injectSqlite } from "../db.provider"
 
 @singleton()
 export class UnderlyingTableService {
+  readonly logger = createLogger(UnderlyingTableService.name)
+
   constructor(
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
@@ -33,6 +36,7 @@ export class UnderlyingTableService {
 
     for (const query of queies) {
       this.sqlite.query(query).run()
+      this.logger.debug({ query })
     }
   }
 }
