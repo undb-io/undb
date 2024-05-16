@@ -3,10 +3,10 @@ import type { TableDo } from "../../../table.do"
 import type { FieldValue } from "../../schema"
 import type { FieldId } from "../../schema/fields/field-id.vo"
 import { RecordCreatedEvent, type IRecordEvent } from "../events"
-import type { ICreateRecordDTO } from "./dto"
+import type { ICreateRecordDTO, IRecordDTO } from "./dto"
 import { RecordIdVO, type RecordId } from "./record-id.vo"
 import { RecordValuesVO } from "./record-values.vo"
-import type { RecordComositeSpecification } from "./record.composite-specification"
+import type { IRecordComositeSpecification } from "./record.composite-specification"
 
 export class RecordDO extends AggregateRoot<IRecordEvent> {
   constructor(
@@ -25,6 +25,10 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
     return record
   }
 
+  static fromJSON(table: TableDo, dto: IRecordDTO): RecordDO {
+    return new RecordDO(new RecordIdVO(dto.id), RecordValuesVO.fromJSON(table, dto.values))
+  }
+
   public flatten() {
     return {
       id: this.id.value,
@@ -36,7 +40,7 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
     return this.values.getValue(fieldId)
   }
 
-  match(spec: RecordComositeSpecification): boolean {
+  match(spec: IRecordComositeSpecification): boolean {
     return spec.isSatisfiedBy(this)
   }
 }

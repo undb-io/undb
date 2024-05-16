@@ -12,7 +12,7 @@
   import {
     parseValidViewColor,
     type IConditionGroup,
-    type IViewColorOption,
+    type IViewColorOptionSchema,
     type MaybeConditionGroup,
   } from "@undb/table"
   import ColorPicker from "$lib/components/ui/color-picker/color-picker.svelte"
@@ -21,7 +21,7 @@
   $: color = $table.views.getViewById().color.into(undefined)
   $: count = color?.count ?? 0
 
-  const value = writable<MaybeConditionGroup<IViewColorOption> | undefined>()
+  const value = writable<MaybeConditionGroup<IViewColorOptionSchema> | undefined>()
   $: validValue = $value ? parseValidViewColor($table.schema.fieldMapById, $value) : undefined
 
   $: $table, value.set(color?.toMaybeConditionGroup())
@@ -60,7 +60,7 @@
     {#if $value?.children.length}
       <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Color</div>
     {/if}
-    <FiltersEditor bind:value={$value} table={$table} disableGroup>
+    <FiltersEditor bind:value={$value} table={$table} disableGroup defaultConjunction="or">
       <div slot="option" class="flex items-center justify-center" let:option let:onChange>
         <ColorPicker
           value={option.option?.color}

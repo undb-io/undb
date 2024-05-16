@@ -5,7 +5,7 @@
   import * as Table from "$lib/components/ui/table/index.js"
   import { addResizedColumns, addSelectedRows } from "svelte-headless-table/plugins"
   import { cn } from "$lib/utils.js"
-  import type { IRecordsDTO } from "@undb/table"
+  import { RecordDO, type IColors, type IRecordsDTO } from "@undb/table"
   import { createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
@@ -18,13 +18,35 @@
   const t = getTable()
 
   $: tableId = $t.id.value
+  $: view = $t.views.getViewById()
+  $: colorSpec = view.color.into(undefined)?.getSpec($t.schema).into(undefined)
 
   $: getRecords = createQuery({
     queryKey: ["records", tableId],
     queryFn: () => trpc.record.list.query({ tableId }),
   })
 
+  function getBorder(color: IColors): string {
+    const map: Record<IColors, string> = {
+      black: "border-black",
+      red: "border-red-500",
+      green: "border-green-500",
+      blue: "border-blue-500",
+      yellow: "border-yellow-500",
+      purple: "border-purple-500",
+      gray: "border-gray-500",
+      orange: "border-orange-500",
+      pink: "border-pink-500",
+      cyan: "border-cyan-500",
+      teal: "border-teal-500",
+      indigo: "border-indigo-500",
+    }
+    return map[color]
+  }
+
   $: records = ($getRecords.data as IRecordsDTO | undefined) ?? []
+  $: dos = new Map(records.map((r) => [r.id, RecordDO.fromJSON($t, r)]))
+
   // TODO: record type
   let data = writable<any[]>([])
   $: records, data.set(records.map((r) => ({ id: r.id, ...r.values })))
@@ -124,9 +146,20 @@
         {#each $pageRows as row (row.id)}
           <Subscribe rowAttrs={row.attrs()} let:rowAttrs>
             <Table.Row {...rowAttrs} data-state={$selectedDataIds[row.id] && "selected"}>
-              {#each row.cells as cell (cell.id)}
+              {@const record = dos.get(row.original.id)}
+              {@const match = colorSpec && record ? record.match(colorSpec) : false}
+              {@const condition =
+                match && record ? view.color.into(undefined)?.getMatchedFieldConditions($t, record)[0] : undefined}
+              {#each row.cells as cell, idx (cell.id)}
                 <Subscribe attrs={cell.attrs()} let:attrs>
-                  <Table.Cell class="p-0 [&:has([role=checkbox])]:pl-3" {...attrs}>
+                  <Table.Cell
+                    class={cn(
+                      "p-0 [&:has([role=checkbox])]:pl-3",
+                      idx === 0 && match && "border-l-4",
+                      idx === 0 && condition && getBorder(condition.option.color),
+                    )}
+                    {...attrs}
+                  >
                     {#if cell.id === "amount"}
                       <div class="text-right font-medium">
                         <Render of={cell.render()} />

@@ -39,11 +39,7 @@ export class AutoIncrementField extends AbstractField<AutoIncrementFieldValue> {
   override type = AUTO_INCREMENT_TYPE
 
   override get valueSchema() {
-    if (this.required) {
-      return z.string().min(1)
-    }
-
-    return z.string().optional()
+    return z.number()
   }
 
   override accept(visitor: IFieldVisitor): void {

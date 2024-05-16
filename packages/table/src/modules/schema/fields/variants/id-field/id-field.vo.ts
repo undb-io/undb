@@ -36,11 +36,7 @@ export class IdField extends AbstractField<IdFieldValue> {
   override type = ID_TYPE
 
   override get valueSchema() {
-    if (this.required) {
-      return z.string().min(1)
-    }
-
-    return z.string().optional()
+    return z.string()
   }
 
   override accept(visitor: IFieldVisitor): void {

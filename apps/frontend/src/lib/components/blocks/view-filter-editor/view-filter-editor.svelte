@@ -9,13 +9,18 @@
   import { invalidateAll } from "$app/navigation"
   import { writable } from "svelte/store"
   import Badge from "$lib/components/ui/badge/badge.svelte"
-  import { parseValidViewFilter, type IConditionGroup, type MaybeConditionGroup } from "@undb/table"
+  import {
+    parseValidViewFilter,
+    type IConditionGroup,
+    type IViewFilterOptionSchema,
+    type MaybeConditionGroup,
+  } from "@undb/table"
 
   const table = getTable()
   $: filter = $table.views.getViewById().filter.into(undefined)
   $: count = filter?.count ?? 0
 
-  const value = writable<MaybeConditionGroup | undefined>()
+  const value = writable<MaybeConditionGroup<IViewFilterOptionSchema> | undefined>()
   $: validValue = $value ? parseValidViewFilter($table.schema.fieldMapById, $value) : undefined
 
   $: $table, value.set(filter?.toMaybeConditionGroup())

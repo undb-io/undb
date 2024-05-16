@@ -6,6 +6,7 @@
     type MaybeFieldCondition,
     type MaybeConditionGroup,
     FieldIdVo,
+    type Conjunction,
   } from "@undb/table"
   import FilterField from "./filter-field.svelte"
   import OpPicker from "./op-picker.svelte"
@@ -15,11 +16,12 @@
   import { GripVertical, PlusIcon, Trash2Icon } from "lucide-svelte"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
   import ConjunctionPicker from "./conjunction-picker.svelte"
-  import { uid } from "radash"
+  import { isNumber, uid } from "radash"
 
   export let table: TableDo
   export let value: MaybeConditionGroup<any> | undefined = undefined
   export let level = 1
+  export let defaultConjunction: Conjunction = "and"
 
   export let disableGroup = false
 
@@ -33,20 +35,20 @@
       value: undefined,
     }
     if (!value) {
-      value = { children: [filter], conjunction: "and", id: uid(10) }
+      value = { children: [filter], conjunction: defaultConjunction, id: uid(10) }
     } else {
       value.children = [...value.children, filter]
     }
   }
 
   function addConditionGroup() {
-    const conditionGroup: MaybeConditionGroup = {
+    const conditionGroup: MaybeConditionGroup<any> = {
       id: uid(10),
-      conjunction: "and",
+      conjunction: defaultConjunction,
       children: [],
     }
     if (!value) {
-      value = { children: [conditionGroup], conjunction: "and", id: uid(10) }
+      value = { children: [conditionGroup], conjunction: defaultConjunction, id: uid(10) }
     } else {
       value.children = [...value.children, conditionGroup]
     }
@@ -75,8 +77,8 @@
       class={cn("space-y-1.5", level > 1 ? "p-4 pb-2" : "px-4 py-2")}
       animation={200}
       onEnd={(event) => {
-        if (event.oldIndex && event.newIndex) {
-          swapFilter(event.oldIndex - 1, event.newIndex - 1)
+        if (isNumber(event.oldIndex) && isNumber(event.newIndex)) {
+          swapFilter(event.oldIndex, event.newIndex)
         }
       }}
     >

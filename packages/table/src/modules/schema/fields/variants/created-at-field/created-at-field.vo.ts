@@ -39,11 +39,7 @@ export class CreatedAtField extends AbstractField<CreatedAtFieldValue> {
   override type = CREATED_AT_TYPE
 
   override get valueSchema() {
-    if (this.required) {
-      return z.string().min(1)
-    }
-
-    return z.string().optional()
+    return z.string()
   }
 
   override accept(visitor: IFieldVisitor): void {
