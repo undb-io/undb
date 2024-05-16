@@ -6,17 +6,18 @@
   import * as Popover from "$lib/components/ui/popover/index.js"
   import { Button } from "$lib/components/ui/button/index.js"
   import { cn } from "$lib/utils.js"
-  import type { Field } from "@undb/table"
+  import type { Field, IOpType } from "@undb/table"
 
   export let field: Field | undefined
-  $: ops = field?.conditionOps.map((op) => ({ value: op, label: op })) ?? []
+  $: conditionOps = field?.conditionOps ?? []
+  $: ops = conditionOps.map((op) => ({ value: op, label: op })) ?? []
 
-  $: if (field && !ops.includes(value as any)) {
+  $: if (field && !conditionOps.includes(value)) {
     value = ops[0]?.value
   }
 
   let open = false
-  export let value: string | undefined = undefined
+  export let value: IOpType | undefined = undefined
 
   $: selectedValue = ops.find((f) => f.value === value)?.label ?? "op..."
 

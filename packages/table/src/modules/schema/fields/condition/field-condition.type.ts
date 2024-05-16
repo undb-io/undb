@@ -23,9 +23,12 @@ export function createConditionSchema<OptionType extends z.ZodTypeAny>(optionTyp
 export type IFieldConditionSchema<OptionType extends z.ZodTypeAny = z.ZodUndefined> = ReturnType<
   typeof createConditionSchema<OptionType>
 >
+
 export type IFieldCondition<OptionType extends z.ZodTypeAny = z.ZodUndefined> = z.infer<
   IFieldConditionSchema<OptionType>
 >
+
+export type IOpType = IFieldCondition["op"]
 
 export type MaybeFieldCondition = SetFieldType<PartialDeep<IFieldCondition>, "value", any> & { id: string }
 export type MaybeFieldConditionWithFieldId = SetRequired<MaybeFieldCondition, "fieldId">
