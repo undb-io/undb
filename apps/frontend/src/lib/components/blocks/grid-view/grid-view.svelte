@@ -10,6 +10,7 @@
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
   import GridViewActions from "./grid-view-actions.svelte"
+  import GridViewCell from "./grid-view-cell.svelte"
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
   import TableTools from "../table-tools/table-tools.svelte"
   import GridViewHeader from "./grid-view-header.svelte"
@@ -58,10 +59,13 @@
           },
         },
       }),
-      ...($t.schema.fields ?? []).map((field) => {
+      ...($t.schema.fields ?? []).map((field, index) => {
         return table.column({
           header: () => createRender(GridViewHeader, { field }),
           accessor: field.id.value,
+          cell: (item) => {
+            return createRender(GridViewCell, { index, value: item.value })
+          },
         })
       }),
       table.column({
@@ -122,7 +126,7 @@
             <Table.Row {...rowAttrs} data-state={$selectedDataIds[row.id] && "selected"}>
               {#each row.cells as cell (cell.id)}
                 <Subscribe attrs={cell.attrs()} let:attrs>
-                  <Table.Cell class="[&:has([role=checkbox])]:pl-3" {...attrs}>
+                  <Table.Cell class="p-0 [&:has([role=checkbox])]:pl-3" {...attrs}>
                     {#if cell.id === "amount"}
                       <div class="text-right font-medium">
                         <Render of={cell.render()} />
