@@ -12,7 +12,7 @@ export type IViewFilterOption = z.infer<typeof viewFilterOption>
 
 export type IRootViewFilter = IRootCondition<IViewFilterOption>
 
-export const viewFilterGroup = createConditionGroup(viewFilterOption)
+export const viewFilterGroup = createConditionGroup(viewFilterOption, viewFilterOption)
 
 export type IViewFilterGroup = z.infer<typeof viewFilterGroup>
 

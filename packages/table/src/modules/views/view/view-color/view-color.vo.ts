@@ -15,7 +15,7 @@ export type IViewColorOption = z.infer<typeof viewColorOption>
 
 export type IRootViewColor = IRootCondition<IViewColorOption>
 
-export const viewColorGroup = createConditionGroup(viewColorOption)
+export const viewColorGroup = createConditionGroup(viewColorOption.optional(), viewColorOption)
 
 export type IViewColorGroup = z.infer<typeof viewColorGroup>
 

@@ -21,9 +21,11 @@
   export let value: MaybeConditionGroup<any> | undefined = undefined
   export let level = 1
 
+  export let disableNested = false
+
   $: isEven = level % 2 === 0
 
-  function addFilter() {
+  function addCondition() {
     const filter: MaybeFieldCondition = {
       id: uid(10),
       fieldId: table.schema.fields.at(0)?.id.value,
@@ -37,7 +39,7 @@
     }
   }
 
-  function addFilterGroup() {
+  function addConditionGroup() {
     const conditionGroup: MaybeConditionGroup = {
       id: uid(10),
       conjunction: "and",
@@ -84,8 +86,11 @@
             ? table.schema.getFieldById(new FieldIdVo(child.fieldId)).into(undefined)
             : undefined}
           <div class="grid grid-cols-12 items-center gap-2">
-            {#if i === 0}
-              <div class="col-span-2 text-center text-xs">Where</div>
+            {#if i === 0 || disableNested}
+              <div class="item-center col-span-2 flex gap-2">
+                <slot name="option" option={child} onChange={(option) => (child.option = option)} />
+                <span class="flex flex-1 items-center justify-center text-center text-xs">Where</span>
+              </div>
             {:else}
               <ConjunctionPicker
                 disabled={i !== 1}
@@ -141,15 +146,17 @@
   {/if}
   <div class={cn("flex justify-between border-t px-4", value?.children.length ? "py-2" : "py-4")}>
     <div class="flex items-center gap-2">
-      <Button variant="ghost" size="xs" on:click={addFilter}>
+      <Button variant="ghost" size="xs" on:click={addCondition}>
         <PlusIcon class="mr-2 h-3 w-3" />
-        Add Filter
+        Add Condition
       </Button>
-      {#if level < 3}
-        <Button variant="ghost" class="text-muted-foreground" size="xs" on:click={addFilterGroup}>
-          <PlusIcon class="mr-2 h-3 w-3" />
-          Add Filter Group
-        </Button>
+      {#if !disableNested}
+        {#if level < 3}
+          <Button variant="ghost" class="text-muted-foreground" size="xs" on:click={addConditionGroup}>
+            <PlusIcon class="mr-2 h-3 w-3" />
+            Add Condition Group
+          </Button>
+        {/if}
       {/if}
     </div>
 

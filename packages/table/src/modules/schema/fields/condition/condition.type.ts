@@ -1,5 +1,5 @@
 import { ZodType, z, type ZodTypeAny } from "zod"
-import { fieldCondition, type IFieldCondition, type MaybeFieldCondition } from "./field-condition.type"
+import { createConditionSchema, type IFieldCondition, type MaybeFieldCondition } from "./field-condition.type"
 
 type Conjunction = "and" | "or"
 
@@ -22,12 +22,15 @@ export interface MaybeConditionGroup<OptionType = undefined> {
   option?: OptionType
 }
 
-export function createConditionGroup<OptionType extends ZodTypeAny>(
+export function createConditionGroup<OptionType extends ZodTypeAny, FieldOptionType extends ZodTypeAny = OptionType>(
   optionType: OptionType,
+  fieldType: FieldOptionType,
 ): ZodType<IConditionGroup<z.infer<OptionType>>> {
   return z.object({
     conjunction: z.enum(["and", "or"]),
-    children: z.array(z.union([...fieldCondition.options, z.lazy(() => createConditionGroup(optionType))])),
+    children: z.array(
+      z.union([...createConditionSchema(fieldType).options, z.lazy(() => createConditionGroup(optionType, fieldType))]),
+    ),
     disabled: z.boolean().optional(),
     option: optionType,
   })

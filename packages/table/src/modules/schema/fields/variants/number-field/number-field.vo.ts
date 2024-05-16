@@ -55,6 +55,6 @@ export class NumberField extends AbstractField<NumberFieldValue> {
   }
 
   protected override getConditionSchema(optionType: z.ZodTypeAny): INumberFieldConditionSchema {
-    return createNumberFieldCondition(z.undefined())
+    return createNumberFieldCondition(optionType)
   }
 }

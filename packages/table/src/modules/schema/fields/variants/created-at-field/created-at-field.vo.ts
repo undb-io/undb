@@ -57,6 +57,6 @@ export class CreatedAtField extends AbstractField<CreatedAtFieldValue> {
   }
 
   protected override getConditionSchema(optionType: z.ZodTypeAny): ICreatedAtFieldConditionSchema {
-    return createCreatedAtFieldCondition(z.undefined())
+    return createCreatedAtFieldCondition(optionType)
   }
 }

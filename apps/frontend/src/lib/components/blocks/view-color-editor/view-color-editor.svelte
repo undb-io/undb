@@ -15,6 +15,7 @@
     type IViewColorOption,
     type MaybeConditionGroup,
   } from "@undb/table"
+  import ColorPicker from "$lib/components/ui/color-picker/color-picker.svelte"
 
   const table = getTable()
   $: color = $table.views.getViewById().color.into(undefined)
@@ -22,6 +23,7 @@
 
   const value = writable<MaybeConditionGroup<IViewColorOption> | undefined>()
   $: validValue = $value ? parseValidViewColor($table.schema.fieldMapById, $value) : undefined
+  $: console.log($value, validValue)
 
   $: $table, value.set(color?.toMaybeConditionGroup())
 
@@ -57,7 +59,15 @@
   </Popover.Trigger>
   <Popover.Content class="w-[630px] space-y-2 p-0" align="start">
     <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Filters</div>
-    <FiltersEditor bind:value={$value} table={$table} on:submit={(e) => handleSubmit(e.detail)}>
+    <FiltersEditor bind:value={$value} table={$table} disableNested>
+      <div slot="option" class="flex items-center justify-center" let:option let:onChange>
+        <ColorPicker
+          value={option.option?.color}
+          onColorChange={(color) => {
+            onChange({ color })
+          }}
+        />
+      </div>
       <Button size="xs" on:click={() => handleSubmit(validValue)} slot="footer">Submit</Button>
     </FiltersEditor>
   </Popover.Content>

@@ -1,6 +1,5 @@
 import type { PartialDeep, SetFieldType, SetRequired } from "type-fest"
 import { z } from "zod"
-import { colors } from "../../../colors"
 import {
   createAutoIncrementFieldCondition,
   createCreatedAtFieldCondition,
@@ -10,26 +9,19 @@ import {
   createUpdatedAtFieldCondition,
 } from "../variants"
 
-function createConditionSchema<ItemType extends z.ZodTypeAny>(itemType: ItemType) {
+export function createConditionSchema<OptionType extends z.ZodTypeAny>(optionType: OptionType) {
   return z.union([
-    ...createStringFieldCondition(itemType).options,
-    ...createNumberFieldCondition(itemType).options,
-    ...createIdFieldCondition(itemType).options,
-    ...createCreatedAtFieldCondition(itemType).options,
-    ...createUpdatedAtFieldCondition(itemType).options,
-    ...createAutoIncrementFieldCondition(itemType).options,
+    ...createStringFieldCondition(optionType).options,
+    ...createNumberFieldCondition(optionType).options,
+    ...createIdFieldCondition(optionType).options,
+    ...createCreatedAtFieldCondition(optionType).options,
+    ...createUpdatedAtFieldCondition(optionType).options,
+    ...createAutoIncrementFieldCondition(optionType).options,
   ])
 }
 
-export const fieldCondition = createConditionSchema(z.undefined())
-
-export type IFieldConditionSchema = typeof fieldCondition
+export type IFieldConditionSchema = ReturnType<typeof createConditionSchema>
 export type IFieldCondition = z.infer<IFieldConditionSchema>
 
 export type MaybeFieldCondition = SetFieldType<PartialDeep<IFieldCondition>, "value", any> & { id: string }
 export type MaybeFieldConditionWithFieldId = SetRequired<MaybeFieldCondition, "fieldId">
-
-export const fieldColorCondition = createConditionSchema(z.object({ color: colors }))
-
-export type IFieldColorConditionSchema = typeof fieldColorCondition
-export type IFieldColorCondition = z.infer<IFieldColorConditionSchema>

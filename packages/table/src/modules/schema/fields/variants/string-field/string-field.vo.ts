@@ -71,6 +71,6 @@ export class StringField extends AbstractField<StringFieldValue> {
   }
 
   protected override getConditionSchema(optionType: z.ZodTypeAny): IStringFieldConditionSchema {
-    return createStringFieldCondition(z.undefined())
+    return createStringFieldCondition(optionType)
   }
 }

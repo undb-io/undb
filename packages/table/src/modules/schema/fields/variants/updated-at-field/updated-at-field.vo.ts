@@ -53,6 +53,6 @@ export class UpdatedAtField extends AbstractField<UpdatedAtFieldValue> {
   }
 
   protected override getConditionSchema(optionType: z.ZodTypeAny): IUpdatedAtFieldConditionSchema {
-    return createUpdatedAtFieldCondition(z.undefined())
+    return createUpdatedAtFieldCondition(optionType)
   }
 }
