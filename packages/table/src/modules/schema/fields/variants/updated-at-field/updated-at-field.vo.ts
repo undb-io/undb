@@ -1,11 +1,11 @@
 import { Option } from "@undb/domain"
 import { z } from "zod"
-import { createAbstractDateFilterMather, createUpdatedAtFieldFilter } from "../.."
+import { createAbstractDateConditionMather, createUpdatedAtFieldCondition } from "../.."
 import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { UpdatedAtFieldValue } from "./updated-at-field-value.vo"
-import { type IUpdatedAtFieldFilter, type IUpdatedAtFieldFilterSchema } from "./updated-at-field.filter"
+import { type IUpdatedAtFieldCondition, type IUpdatedAtFieldConditionSchema } from "./updated-at-field.condition"
 
 export const UPDATED_AT_TYPE = "updatedAt" as const
 
@@ -46,13 +46,13 @@ export class UpdatedAtField extends AbstractField<UpdatedAtFieldValue> {
     visitor.updatedAt(this)
   }
 
-  override getSpec(filter: IUpdatedAtFieldFilter) {
-    const spec = createAbstractDateFilterMather(filter, this.id).exhaustive()
+  override getSpec(condition: IUpdatedAtFieldCondition) {
+    const spec = createAbstractDateConditionMather(condition, this.id).exhaustive()
 
     return Option(spec)
   }
 
-  protected override get filterSchema(): IUpdatedAtFieldFilterSchema {
-    return createUpdatedAtFieldFilter(z.undefined())
+  protected override getConditionSchema(optionType: z.ZodTypeAny): IUpdatedAtFieldConditionSchema {
+    return createUpdatedAtFieldCondition(z.undefined())
   }
 }

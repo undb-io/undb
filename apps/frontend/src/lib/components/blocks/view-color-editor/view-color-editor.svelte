@@ -3,22 +3,27 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import { PaintBucketIcon } from "lucide-svelte"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
-  import { parseValidFilter, type IFilterGroup, type MaybeFilterGroup } from "@undb/table"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { invalidateAll } from "$app/navigation"
   import { writable } from "svelte/store"
   import Badge from "$lib/components/ui/badge/badge.svelte"
+  import {
+    parseValidViewColor,
+    type IConditionGroup,
+    type IViewColorOption,
+    type MaybeConditionGroup,
+  } from "@undb/table"
 
   const table = getTable()
   $: color = $table.views.getViewById().color.into(undefined)
   $: count = color?.count ?? 0
 
-  const value = writable<MaybeFilterGroup | undefined>()
-  $: validValue = $value ? parseValidFilter($table.schema.fieldMapById, $value) : undefined
+  const value = writable<MaybeConditionGroup<IViewColorOption> | undefined>()
+  $: validValue = $value ? parseValidViewColor($table.schema.fieldMapById, $value) : undefined
 
-  $: $table, value.set(color?.toMaybeFilterGroup())
+  $: $table, value.set(color?.toMaybeConditionGroup())
 
   let open = false
 
@@ -31,7 +36,7 @@
     },
   })
 
-  const handleSubmit = (color?: IFilterGroup) => {
+  const handleSubmit = (color?: IConditionGroup<IViewColorOption>) => {
     if (!color) return
     $mutation.mutate({
       color,
@@ -45,6 +50,9 @@
     <Button builders={[builder]} size="sm">
       <PaintBucketIcon class="mr-2 h-4 w-4" />
       Color
+      {#if count}
+        <Badge variant="secondary" class="ml-2 rounded-full">{count}</Badge>
+      {/if}
     </Button>
   </Popover.Trigger>
   <Popover.Content class="w-[630px] space-y-2 p-0" align="start">

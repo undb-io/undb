@@ -1,15 +1,21 @@
 import { Option, ValueObject } from "@undb/domain"
-import { ZodUndefined, z, type ZodSchema, type ZodTypeAny } from "zod"
+import { ZodUndefined, z, type ZodSchema } from "zod"
 import type {
   INotRecordComositeSpecification,
   IRecordComositeSpecification,
 } from "../../../records/record/record.composite-specification"
+import type { IFieldCondition, MaybeFieldConditionWithFieldId } from "../condition/field-condition.type"
 import type { IFieldDTO } from "../dto/field.dto"
-import type { IFieldFilter, IFieldFilterSchema, MaybeFieldFilterWithFieldId } from "../field-filter.type"
 import { FieldIdVo, fieldId, type FieldId } from "../field-id.vo"
 import { FieldNameVo, fieldName } from "../field-name.vo"
 import type { FieldType } from "../field.type"
 import type { IFieldVisitor } from "../field.visitor"
+import type { IAutoIncrementFieldConditionSchema } from "./autoincrement-field/autoincrement-field.condition"
+import type { ICreatedAtFieldConditionSchema } from "./created-at-field"
+import type { IIdFieldConditionSchema } from "./id-field/id-field.condition"
+import type { INumberFieldConditionSchema } from "./number-field"
+import type { IStringFieldConditionSchema } from "./string-field"
+import type { IUpdatedAtFieldConditionSchema } from "./updated-at-field"
 
 export const createBaseFieldDTO = z.object({
   id: fieldId.optional(),
@@ -62,24 +68,37 @@ export abstract class AbstractField<V extends ValueObject> {
     return this.valueSchema.safeParse(value.unpack())
   }
 
-  abstract getSpec(filter: IFieldFilter): Option<IRecordComositeSpecification | INotRecordComositeSpecification>
+  abstract getSpec(condition: IFieldCondition): Option<IRecordComositeSpecification | INotRecordComositeSpecification>
 
   abstract accept(visitor: IFieldVisitor): void
 
-  protected abstract get filterSchema(): ZodTypeAny
+  protected abstract getConditionSchema<OptionType extends z.ZodTypeAny>(
+    optionType: OptionType,
+  ):
+    | IIdFieldConditionSchema
+    | IStringFieldConditionSchema
+    | INumberFieldConditionSchema
+    | ICreatedAtFieldConditionSchema
+    | IUpdatedAtFieldConditionSchema
+    | IAutoIncrementFieldConditionSchema
 
-  validateFilter(filter: MaybeFieldFilterWithFieldId) {
-    return this.filterSchema.safeParse(filter)
+  validateCondition<OptionType extends z.ZodTypeAny>(
+    condition: MaybeFieldConditionWithFieldId,
+    optionType: OptionType,
+  ) {
+    return this.getConditionSchema(optionType).safeParse(condition)
   }
 
   isOpHasValue(op: string) {
-    return (
-      this.filterSchema.options.find((o) => o.shape.op.value === op)?.shape.value._def.typeName !== ZodUndefined.name
-    )
+    const hasValue =
+      this.getConditionSchema(z.any()).options.find((o) => o.shape.op.value === op)?.shape.value._def.typeName !==
+      ZodUndefined.name
+
+    return hasValue
   }
 
-  get filterOps() {
-    return this.filterSchema.options.map((o) => o.shape.op.value)
+  get conditionOps() {
+    return this.getConditionSchema(z.any()).options.map((o) => o.shape.op.value)
   }
 
   toJSON(): IFieldDTO {

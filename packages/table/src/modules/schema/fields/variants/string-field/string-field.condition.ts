@@ -1,8 +1,8 @@
 import { z } from "zod"
-import { createBaseFilterSchema } from "../../../../filters"
+import { createBaseConditionSchema } from "../../condition"
 
-export function createStringFieldFilter<ItemType extends z.ZodTypeAny>(itemType: ItemType) {
-  const base = createBaseFilterSchema(itemType)
+export function createStringFieldCondition<ItemType extends z.ZodTypeAny>(itemType: ItemType) {
+  const base = createBaseConditionSchema(itemType)
   return z.union([
     z.object({ op: z.literal("eq"), value: z.string().min(1) }).merge(base),
     z.object({ op: z.literal("neq"), value: z.string().min(1) }).merge(base),
@@ -15,5 +15,5 @@ export function createStringFieldFilter<ItemType extends z.ZodTypeAny>(itemType:
   ])
 }
 
-export type IStringFieldFilterSchema = ReturnType<typeof createStringFieldFilter>
-export type IStringFieldFilter = z.infer<IStringFieldFilterSchema>
+export type IStringFieldConditionSchema = ReturnType<typeof createStringFieldCondition>
+export type IStringFieldCondition = z.infer<IStringFieldConditionSchema>

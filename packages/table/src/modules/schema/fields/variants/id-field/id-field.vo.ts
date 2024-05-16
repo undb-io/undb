@@ -6,7 +6,7 @@ import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { IdEqual } from "./id-field-value.specification"
 import { IdFieldValue } from "./id-field-value.vo"
-import { createIdFieldFilter, type IIdFieldFilter, type IIdFieldFilterSchema } from "./id-field.filter"
+import { createIdFieldCondition, type IIdFieldCondition, type IIdFieldConditionSchema } from "./id-field.condition"
 
 export const ID_TYPE = "id" as const
 
@@ -47,8 +47,8 @@ export class IdField extends AbstractField<IdFieldValue> {
     visitor.id(this)
   }
 
-  override getSpec(filter: IIdFieldFilter) {
-    const spec = match(filter)
+  override getSpec(condition: IIdFieldCondition) {
+    const spec = match(condition)
       .with({ op: "eq" }, ({ value }) => new IdEqual(new IdFieldValue(value), this.id))
       .with({ op: "neq" }, ({ value }) => new IdEqual(new IdFieldValue(value), this.id).not())
       .exhaustive()
@@ -56,7 +56,9 @@ export class IdField extends AbstractField<IdFieldValue> {
     return Option(spec)
   }
 
-  protected override get filterSchema(): IIdFieldFilterSchema {
-    return createIdFieldFilter(z.undefined())
+  protected override getConditionSchema<OptionType extends z.ZodTypeAny>(
+    optionType: OptionType,
+  ): IIdFieldConditionSchema {
+    return createIdFieldCondition(optionType)
   }
 }

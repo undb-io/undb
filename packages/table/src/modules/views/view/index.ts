@@ -1,5 +1,7 @@
 export * from "./dto"
 export * from "./variants"
+export * from "./view-color"
+export * from "./view-filter"
 export * from "./view-id.vo"
 export * from "./view-name.vo"
 export * from "./view.type"

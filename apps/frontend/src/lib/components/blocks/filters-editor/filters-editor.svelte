@@ -1,10 +1,16 @@
 <script lang="ts">
-  import { TableDo, isMaybeFieldFilter, isMaybeGroup, type MaybeFieldFilter, type MaybeFilterGroup } from "@undb/table"
+  import {
+    TableDo,
+    isMaybeFieldCondition,
+    isMaybeGroup,
+    type MaybeFieldCondition,
+    type MaybeConditionGroup,
+    FieldIdVo,
+  } from "@undb/table"
   import FilterField from "./filter-field.svelte"
   import OpPicker from "./op-picker.svelte"
   import FilterValue from "./filter-value.svelte"
   import Button from "$lib/components/ui/button/button.svelte"
-  import { FieldIdVo } from "@undb/table/src/modules/schema/fields/field-id.vo"
   import { cn } from "$lib/utils"
   import { GripVertical, PlusIcon, Trash2Icon } from "lucide-svelte"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
@@ -12,13 +18,13 @@
   import { uid } from "radash"
 
   export let table: TableDo
-  export let value: MaybeFilterGroup | undefined = undefined
+  export let value: MaybeConditionGroup<any> | undefined = undefined
   export let level = 1
 
   $: isEven = level % 2 === 0
 
   function addFilter() {
-    const filter: MaybeFieldFilter = {
+    const filter: MaybeFieldCondition = {
       id: uid(10),
       fieldId: table.schema.fields.at(0)?.id.value,
       op: undefined,
@@ -32,15 +38,15 @@
   }
 
   function addFilterGroup() {
-    const filterGroup: MaybeFilterGroup = {
+    const conditionGroup: MaybeConditionGroup = {
       id: uid(10),
       conjunction: "and",
       children: [],
     }
     if (!value) {
-      value = { children: [filterGroup], conjunction: "and", id: uid(10) }
+      value = { children: [conditionGroup], conjunction: "and", id: uid(10) }
     } else {
-      value.children = [...value.children, filterGroup]
+      value.children = [...value.children, conditionGroup]
     }
   }
 
@@ -73,7 +79,7 @@
       }}
     >
       {#each value.children as child, i (child.id)}
-        {#if isMaybeFieldFilter(child)}
+        {#if isMaybeFieldCondition(child)}
           {@const field = child.fieldId
             ? table.schema.getFieldById(new FieldIdVo(child.fieldId)).into(undefined)
             : undefined}

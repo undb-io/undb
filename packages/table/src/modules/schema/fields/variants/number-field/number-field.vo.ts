@@ -3,9 +3,13 @@ import { z } from "zod"
 import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
+import { createAbstractNumberFieldMather } from "../abstractions/abstract-number-field.condition"
 import { NumberFieldValue } from "./number-field-value.vo"
-import { createNumberFieldFilter, type INumberFieldFilter, type INumberFieldFilterSchema } from "./number-field.filter"
-import { createAbstractNumberFieldMather } from "../abstractions/abstract-number-field.filter"
+import {
+  createNumberFieldCondition,
+  type INumberFieldCondition,
+  type INumberFieldConditionSchema,
+} from "./number-field.condition"
 
 export const NUMBER_TYPE = "number" as const
 
@@ -44,13 +48,13 @@ export class NumberField extends AbstractField<NumberFieldValue> {
     visitor.number(this)
   }
 
-  override getSpec(filter: INumberFieldFilter) {
-    const spec = createAbstractNumberFieldMather(filter, this.id).exhaustive()
+  override getSpec(condition: INumberFieldCondition) {
+    const spec = createAbstractNumberFieldMather(condition, this.id).exhaustive()
 
     return Option(spec)
   }
 
-  protected override get filterSchema(): INumberFieldFilterSchema {
-    return createNumberFieldFilter(z.undefined())
+  protected override getConditionSchema(optionType: z.ZodTypeAny): INumberFieldConditionSchema {
+    return createNumberFieldCondition(z.undefined())
   }
 }

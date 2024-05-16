@@ -1,6 +1,6 @@
 import { match } from "ts-pattern"
 import { z } from "zod"
-import { createBaseFilterSchema } from "../../../../filters"
+import { createBaseConditionSchema } from "../../condition"
 import type { FieldId } from "../../field-id.vo"
 import {
   NumberEmpty,
@@ -11,8 +11,8 @@ import {
   NumberLTE,
 } from "./abstract-number-value.specification"
 
-export function createAbstractNumberFieldFilter<ItemType extends z.ZodTypeAny>(itemType: ItemType) {
-  const base = createBaseFilterSchema(itemType)
+export function createAbstractNumberFieldCondition<OptionType extends z.ZodTypeAny>(optionType: OptionType) {
+  const base = createBaseConditionSchema(optionType)
   return z.union([
     z.object({ op: z.literal("eq"), value: z.number() }).merge(base),
     z.object({ op: z.literal("neq"), value: z.number() }).merge(base),
@@ -26,10 +26,10 @@ export function createAbstractNumberFieldFilter<ItemType extends z.ZodTypeAny>(i
 }
 
 export const createAbstractNumberFieldMather = (
-  filter: z.infer<ReturnType<typeof createAbstractNumberFieldFilter>>,
+  condition: z.infer<ReturnType<typeof createAbstractNumberFieldCondition>>,
   fieldId: FieldId,
 ) =>
-  match(filter)
+  match(condition)
     .with({ op: "eq" }, ({ value }) => new NumberEqual(value, fieldId))
     .with({ op: "neq" }, ({ value }) => new NumberEqual(value, fieldId).not())
     .with({ op: "gt" }, ({ value }) => new NumberGT(value, fieldId))

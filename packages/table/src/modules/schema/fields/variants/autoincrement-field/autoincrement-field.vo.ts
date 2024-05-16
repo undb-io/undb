@@ -4,9 +4,12 @@ import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { createAbstractNumberFieldMather } from "../abstractions"
-import type { INumberFieldFilter } from "../number-field"
+import type { INumberFieldCondition } from "../number-field"
 import { AutoIncrementFieldValue } from "./autoincrement-field-value.vo"
-import { createAutoIncrementFieldFilter, type IAutoIncrementFieldFilterSchema } from "./autoincrement-field.filter"
+import {
+  createAutoIncrementFieldCondition,
+  type IAutoIncrementFieldConditionSchema,
+} from "./autoincrement-field.condition"
 
 export const AUTO_INCREMENT_TYPE = "autoIncrement" as const
 
@@ -47,13 +50,13 @@ export class AutoIncrementField extends AbstractField<AutoIncrementFieldValue> {
     visitor.autoIncrement(this)
   }
 
-  override getSpec(filter: INumberFieldFilter) {
-    const spec = createAbstractNumberFieldMather(filter, this.id).exhaustive()
+  override getSpec(condition: INumberFieldCondition) {
+    const spec = createAbstractNumberFieldMather(condition, this.id).exhaustive()
 
     return Option(spec)
   }
 
-  protected override get filterSchema(): IAutoIncrementFieldFilterSchema {
-    return createAutoIncrementFieldFilter(z.undefined())
+  protected override getConditionSchema(optionType: z.ZodTypeAny): IAutoIncrementFieldConditionSchema {
+    return createAutoIncrementFieldCondition(optionType)
   }
 }

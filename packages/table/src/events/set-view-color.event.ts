@@ -1,6 +1,7 @@
 import { BaseEvent } from "@undb/domain"
 import { z } from "zod"
-import { filterGroup, viewId } from "../modules"
+import { viewId } from "../modules"
+import { viewColorGroup } from "../modules/views/view/view-color"
 import { tableId } from "../table-id.vo"
 
 const EVT_SET_VIEW_COLOR = "table.view.color.set" as const
@@ -8,7 +9,8 @@ const EVT_SET_VIEW_COLOR = "table.view.color.set" as const
 export const setViewColorEventPayload = z.object({
   tableId: tableId,
   viewId: viewId,
-  color: filterGroup.nullable(),
+  previous: viewColorGroup.nullable(),
+  color: viewColorGroup.nullable(),
 })
 
 export type ISetViewColorEventPayload = z.infer<typeof setViewColorEventPayload>

@@ -9,9 +9,9 @@
   import type { Field } from "@undb/table"
 
   export let field: Field | undefined
-  $: ops = field?.filterOps.map((op) => ({ value: op, label: op })) ?? []
+  $: ops = field?.conditionOps.map((op) => ({ value: op, label: op })) ?? []
 
-  $: if (field && !value) {
+  $: if (field && !ops.includes(value as any)) {
     value = ops[0]?.value
   }
 
@@ -22,9 +22,6 @@
 
   $: hasValue = selectedValue ? field?.isOpHasValue(selectedValue) ?? false : false
 
-  // We want to refocus the trigger button when the user selects
-  // an item from the list so users can continue navigating the
-  // rest of the form with the keyboard.
   function closeAndFocusTrigger(triggerId: string) {
     open = false
     tick().then(() => {

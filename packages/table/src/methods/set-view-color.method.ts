@@ -16,6 +16,7 @@ export function setViewColor(this: TableDo, dto: ISetViewColorDTO): Option<Table
     const event = new SetViewColorEvent({
       tableId: this.id.value,
       viewId: view.id.value,
+      previous: spec.unwrap().prefiousColor.into(null) ?? null,
       color: view.color.into(null)?.toJSON() ?? null,
     })
     this.addDomainEvent(event)

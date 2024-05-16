@@ -1,7 +1,8 @@
-import { None, Some, type Option } from "@undb/domain"
+import { None, Option, Some } from "@undb/domain"
 import { z } from "zod"
 import { WithViewColor, WithViewFilter } from "../../../../specifications/table-view.specification"
-import { Filter, filterGroup, type IRootFilter } from "../../../filters"
+import { ViewColor, viewColorGroup, type IRootViewColor } from "../view-color"
+import { ViewFilter, viewFilterGroup, type IRootViewFilter } from "../view-filter/view-filter.vo"
 import { ViewIdVo, viewId, type ViewId } from "../view-id.vo"
 import { ViewNameVo, viewName } from "../view-name.vo"
 import type { ViewType } from "../view.type"
@@ -16,17 +17,17 @@ export type ICreateBaseViewDTO = z.infer<typeof createBaseViewDTO>
 export const baseViewDTO = z.object({
   id: viewId,
   name: viewName,
-  filter: filterGroup.optional(),
-  color: filterGroup.optional(),
+  filter: viewFilterGroup.optional(),
+  color: viewColorGroup.optional(),
 })
 
-export type IBaseViewDTO = z.infer<typeof baseViewDTO> & { filter?: IRootFilter }
+export type IBaseViewDTO = z.infer<typeof baseViewDTO>
 
 export abstract class AbstractView {
   id!: ViewId
   name!: ViewNameVo
-  filter: Option<Filter> = None
-  color: Option<Filter> = None
+  filter: Option<ViewFilter> = None
+  color: Option<ViewColor> = None
 
   abstract type: ViewType
 
@@ -41,40 +42,34 @@ export abstract class AbstractView {
     }
   }
 
-  setFilter(filter: IRootFilter) {
-    const filterVO = new Filter(filter)
-
-    if (filterVO.isEmpty) {
-      this.filter = None
-    } else {
-      this.filter = Some(filterVO)
-    }
+  setFilter(filter: IRootViewFilter) {
+    const filterVO = new ViewFilter(filter)
+    this.filter = Option(filterVO.isEmpty ? undefined : filterVO)
   }
 
-  $setFilterSpec(filter: IRootFilter): Option<WithViewFilter> {
+  $setFilterSpec(filter: IRootViewFilter): Option<WithViewFilter> {
     if (this.filter.mapOr(false, (f) => f.isEqual(filter))) {
       return None
     }
 
-    return Some(new WithViewFilter(this.id, filter))
+    const previous = this.filter.into(null)?.value
+
+    return Some(new WithViewFilter(this.id, Option(previous), filter))
   }
 
-  setColor(color: IRootFilter) {
-    const filterVO = new Filter(color)
+  setColor(color: IRootViewColor) {
+    const colorVO = new ViewColor(color)
 
-    if (filterVO.isEmpty) {
-      this.color = None
-    } else {
-      this.color = Some(filterVO)
-    }
+    this.color = Option(colorVO.isEmpty ? undefined : colorVO)
   }
 
-  $setColorSpec(color: IRootFilter): Option<WithViewColor> {
+  $setColorSpec(color: IRootViewColor): Option<WithViewColor> {
     if (this.color.mapOr(false, (f) => f.isEqual(color))) {
       return None
     }
 
-    return Some(new WithViewColor(this.id, color))
+    const previous = this.color.into(null)?.value
+    return Some(new WithViewColor(this.id, Option(previous), color))
   }
 
   toJSON() {

@@ -3,22 +3,22 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import { FilterIcon } from "lucide-svelte"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
-  import { parseValidFilter, type IFilterGroup, type MaybeFilterGroup } from "@undb/table"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { invalidateAll } from "$app/navigation"
   import { writable } from "svelte/store"
   import Badge from "$lib/components/ui/badge/badge.svelte"
+  import { parseValidViewFilter, type IConditionGroup, type MaybeConditionGroup } from "@undb/table"
 
   const table = getTable()
   $: filter = $table.views.getViewById().filter.into(undefined)
   $: count = filter?.count ?? 0
 
-  const value = writable<MaybeFilterGroup | undefined>()
-  $: validValue = $value ? parseValidFilter($table.schema.fieldMapById, $value) : undefined
+  const value = writable<MaybeConditionGroup | undefined>()
+  $: validValue = $value ? parseValidViewFilter($table.schema.fieldMapById, $value) : undefined
 
-  $: $table, value.set(filter?.toMaybeFilterGroup())
+  $: $table, value.set(filter?.toMaybeConditionGroup())
 
   let open = false
 
@@ -34,7 +34,7 @@
     },
   })
 
-  const handleSubmit = (filter?: IFilterGroup) => {
+  const handleSubmit = (filter?: IConditionGroup) => {
     if (!filter) return
     $mutation.mutate({
       filter,

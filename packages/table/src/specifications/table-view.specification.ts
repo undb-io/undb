@@ -1,5 +1,6 @@
-import { Ok, WontImplementException, type Result } from "@undb/domain"
-import type { IFilterGroup, ViewId } from "../modules"
+import { Ok, Option, WontImplementException, type Result } from "@undb/domain"
+import type { IRootViewFilter, ViewId } from "../modules"
+import type { IRootViewColor } from "../modules/views/view/view-color"
 import type { TableDo } from "../table.do"
 import type { ITableSpecVisitor } from "./table-visitor.interface"
 import { TableComositeSpecification } from "./table.composite-specification"
@@ -7,8 +8,8 @@ import { TableComositeSpecification } from "./table.composite-specification"
 export class WithViewFilter extends TableComositeSpecification {
   constructor(
     public readonly viewId: ViewId,
-    // public readonly prefiousFilter: Option<IFilterGroup>,
-    public readonly filter: IFilterGroup,
+    public readonly prefiousFilter: Option<IRootViewFilter>,
+    public readonly filter: IRootViewFilter,
   ) {
     super()
   }
@@ -29,8 +30,8 @@ export class WithViewFilter extends TableComositeSpecification {
 export class WithViewColor extends TableComositeSpecification {
   constructor(
     public readonly viewId: ViewId,
-    // public readonly prefiousFilter: Option<IFilterGroup>,
-    public readonly color: IFilterGroup,
+    public readonly prefiousColor: Option<IRootViewColor>,
+    public readonly color: IRootViewColor,
   ) {
     super()
   }

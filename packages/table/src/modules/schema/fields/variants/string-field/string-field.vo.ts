@@ -12,7 +12,11 @@ import {
   StringStartsWith,
 } from "./string-field-value.specification"
 import { StringFieldValue } from "./string-field-value.vo"
-import { createStringFieldFilter, type IStringFieldFilter, type IStringFieldFilterSchema } from "./string-field.filter"
+import {
+  createStringFieldCondition,
+  type IStringFieldCondition,
+  type IStringFieldConditionSchema,
+} from "./string-field.condition"
 
 export const STRING_TYPE = "string" as const
 
@@ -51,8 +55,8 @@ export class StringField extends AbstractField<StringFieldValue> {
     visitor.string(this)
   }
 
-  override getSpec(filter: IStringFieldFilter) {
-    const spec = match(filter)
+  override getSpec(condition: IStringFieldCondition) {
+    const spec = match(condition)
       .with({ op: "eq" }, ({ value }) => new StringEqual(new StringFieldValue(value), this.id))
       .with({ op: "neq" }, ({ value }) => new StringEqual(new StringFieldValue(value), this.id).not())
       .with({ op: "contains" }, ({ value }) => new StringContains(value, this.id))
@@ -66,7 +70,7 @@ export class StringField extends AbstractField<StringFieldValue> {
     return Option(spec)
   }
 
-  protected override get filterSchema(): IStringFieldFilterSchema {
-    return createStringFieldFilter(z.undefined())
+  protected override getConditionSchema(optionType: z.ZodTypeAny): IStringFieldConditionSchema {
+    return createStringFieldCondition(z.undefined())
   }
 }

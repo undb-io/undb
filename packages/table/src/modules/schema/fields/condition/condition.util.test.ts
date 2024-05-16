@@ -1,15 +1,15 @@
 import { describe, expect, test } from "bun:test"
-import { Schema } from "../schema"
-import type { IFilterGroup, MaybeFilterGroup } from "./filter.type"
-import { getSpec, parseValidFilter } from "./filter.util"
+import { Schema } from "../.."
+import type { IConditionGroup, MaybeConditionGroup } from "./condition.type"
+import { getSpec, parseValidCondition } from "./condition.util"
 
 const schema = Schema.fromJSON([
   { id: "fld_1", type: "string", name: "fld_1" },
   { id: "fld_2", type: "number", name: "fld_2" },
 ])
 
-describe("filter.util", () => {
-  test.each<IFilterGroup>([
+describe("condition.util", () => {
+  test.each<IConditionGroup>([
     {
       conjunction: "and",
       children: [
@@ -37,13 +37,13 @@ describe("filter.util", () => {
         },
       ],
     },
-  ])("should get correct spec", (filter) => {
-    const spec = getSpec(schema.fieldMapById, filter)
+  ])("should get correct spec", (condition) => {
+    const spec = getSpec(schema.fieldMapById, condition)
     expect(spec).toMatchSnapshot()
   })
 
-  describe("parseValidFilter", () => {
-    test.each<IFilterGroup>([
+  describe("parseValidCondition", () => {
+    test.each<IConditionGroup>([
       {
         conjunction: "and",
         children: [
@@ -71,23 +71,25 @@ describe("filter.util", () => {
           },
         ],
       },
-    ])("should parse valid filter", (filter) => {
-      const parsed = parseValidFilter(schema.fieldMapById, filter)
-      expect(parsed).toEqual(filter)
+    ])("should parse valid condition", (condition) => {
+      const parsed = parseValidCondition(schema.fieldMapById, condition)
+      expect(parsed).toEqual(condition)
     })
 
-    test.each<[MaybeFilterGroup, IFilterGroup]>([
+    test.each<[MaybeConditionGroup, IConditionGroup]>([
       [
         {
+          id: "1",
           conjunction: "and",
           children: [
-            { fieldId: "fld_1", op: "eq", value: "value1" },
-            { fieldId: "fld_2", op: "gt", value: "1" },
+            { id: "2", fieldId: "fld_1", op: "eq", value: "value1" },
+            { id: "3", fieldId: "fld_2", op: "gt", value: "1" },
           ],
         },
         {
+          id: "5",
           conjunction: "and",
-          children: [{ fieldId: "fld_1", op: "eq", value: "value1" }],
+          children: [{ id: "6", fieldId: "fld_1", op: "eq", value: "value1" }],
         },
       ],
       [
@@ -126,8 +128,8 @@ describe("filter.util", () => {
           ],
         },
       ],
-    ])("should ignore invalid filter", (filter, value) => {
-      const parsed = parseValidFilter(schema.fieldMapById, filter)
+    ])("should ignore invalid condition", (condition, value) => {
+      const parsed = parseValidCondition(schema.fieldMapById, condition)
       expect(parsed).toEqual(value)
     })
   })
