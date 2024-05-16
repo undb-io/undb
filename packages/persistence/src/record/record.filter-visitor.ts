@@ -1,4 +1,6 @@
 import type {
+  DateIsAfter,
+  DateIsBefore,
   DateIsSameDay,
   DateIsToday,
   DateIsTomorrow,
@@ -30,6 +32,14 @@ import {
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 
 export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements IRecordVisitor {
+  dateIsBefore(spec: DateIsBefore): void {
+    const cond = this.eb.eb(spec.fieldId.value, "<", startOfDay(spec.date).toISOString())
+    this.addCond(cond)
+  }
+  dateIsAfter(spec: DateIsAfter): void {
+    const cond = this.eb.eb(spec.fieldId.value, ">", endOfDay(spec.date).toISOString())
+    this.addCond(cond)
+  }
   dateIsTomorrow(spec: DateIsTomorrow): void {
     const cond = this.eb.between(spec.fieldId.value, startOfTomorrow().toISOString(), endOfTomorrow().toISOString())
     this.addCond(cond)
