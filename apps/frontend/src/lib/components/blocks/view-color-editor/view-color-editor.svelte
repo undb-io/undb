@@ -58,8 +58,10 @@
     </Button>
   </Popover.Trigger>
   <Popover.Content class="w-[630px] space-y-2 p-0" align="start">
-    <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Filters</div>
-    <FiltersEditor bind:value={$value} table={$table} disableNested>
+    {#if $value?.children.length}
+      <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Color</div>
+    {/if}
+    <FiltersEditor bind:value={$value} table={$table} disableGroup>
       <div slot="option" class="flex items-center justify-center" let:option let:onChange>
         <ColorPicker
           value={option.option?.color}

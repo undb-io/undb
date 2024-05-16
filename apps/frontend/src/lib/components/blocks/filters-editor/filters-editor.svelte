@@ -21,7 +21,7 @@
   export let value: MaybeConditionGroup<any> | undefined = undefined
   export let level = 1
 
-  export let disableNested = false
+  export let disableGroup = false
 
   $: isEven = level % 2 === 0
 
@@ -86,7 +86,7 @@
             ? table.schema.getFieldById(new FieldIdVo(child.fieldId)).into(undefined)
             : undefined}
           <div class="grid grid-cols-12 items-center gap-2">
-            {#if i === 0 || disableNested}
+            {#if i === 0 || disableGroup}
               <div class="item-center col-span-2 flex gap-2">
                 <slot name="option" option={child} onChange={(option) => (child.option = option)} />
                 <span class="flex flex-1 items-center justify-center text-center text-xs">Where</span>
@@ -150,7 +150,7 @@
         <PlusIcon class="mr-2 h-3 w-3" />
         Add Condition
       </Button>
-      {#if !disableNested}
+      {#if !disableGroup}
         {#if level < 3}
           <Button variant="ghost" class="text-muted-foreground" size="xs" on:click={addConditionGroup}>
             <PlusIcon class="mr-2 h-3 w-3" />
