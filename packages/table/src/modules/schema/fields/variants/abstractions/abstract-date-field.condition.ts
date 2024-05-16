@@ -2,7 +2,7 @@ import { match } from "ts-pattern"
 import { z } from "zod"
 import { createBaseConditionSchema } from "../../condition/base.condition"
 import type { FieldId } from "../../field-id.vo"
-import { DateIsSameDay, DateIsToday } from "./abstract-date-value.specification"
+import { DateIsSameDay, DateIsToday, DateIsTomorrow, DateIsYesterday } from "./abstract-date-value.specification"
 
 export function createAbstractDateFieldCondition<ItemType extends z.ZodTypeAny>(itemType: ItemType) {
   const base = createBaseConditionSchema(itemType)
@@ -31,5 +31,9 @@ export const createAbstractDateConditionMather = (
   match(condition)
     .with({ op: "is_same_day" }, ({ value }) => new DateIsSameDay(new Date(value), fieldId))
     .with({ op: "is_not_same_day" }, ({ value }) => new DateIsSameDay(new Date(value), fieldId).not())
-    .with({ op: "is_tody" }, ({}) => new DateIsToday(fieldId))
-    .with({ op: "is_not_today" }, ({}) => new DateIsToday(fieldId).not())
+    .with({ op: "is_tody" }, () => new DateIsToday(fieldId))
+    .with({ op: "is_not_today" }, () => new DateIsToday(fieldId).not())
+    .with({ op: "is_tomorrow" }, () => new DateIsTomorrow(fieldId))
+    .with({ op: "is_not_tomorrow" }, () => new DateIsTomorrow(fieldId).not())
+    .with({ op: "is_yesterday" }, () => new DateIsYesterday(fieldId))
+    .with({ op: "is_not_yesterday" }, () => new DateIsYesterday(fieldId).not())
