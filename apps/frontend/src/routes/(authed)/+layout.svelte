@@ -12,6 +12,7 @@
 
   import { Badge } from "$lib/components/ui/badge/index.js"
   import * as Resizable from "$lib/components/ui/resizable"
+  import { type PaneAPI } from "paneforge"
   import { Button } from "$lib/components/ui/button/index.js"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js"
   import { Input } from "$lib/components/ui/input/index.js"
@@ -32,13 +33,34 @@
     $createTableOpened = true
   }
 
+  let panelLeft: PaneAPI
+  let collapsed = false
+  function handleB(detail: ShortcutEventDetail) {
+    collapsed = !collapsed
+    if (collapsed) {
+      panelLeft.collapse()
+    } else {
+      panelLeft.expand()
+    }
+  }
+
   if (data.tables.length !== 0 && !$page.params.tableId) {
     goto(`/t/${data.tables[0].id}`, { replaceState: true })
   }
 </script>
 
 <Resizable.PaneGroup direction="horizontal">
-  <Resizable.Pane class="bg-muted/40 hidden border-r md:block" defaultSize={20} minSize={15} maxSize={30}>
+  <Resizable.Pane
+    bind:pane={panelLeft}
+    onCollapse={() => (collapsed = true)}
+    onExpand={() => (collapsed = false)}
+    class="bg-muted/40 hidden border-r md:block"
+    defaultSize={20}
+    minSize={15}
+    maxSize={30}
+    collapsedSize={5}
+    collapsible={true}
+  >
     <div class="flex h-full max-h-screen flex-col gap-2">
       <div class="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
         <a href="/" class="flex items-center gap-2 font-semibold">
@@ -155,10 +177,17 @@
 
 <svelte:window
   use:shortcut={{
-    trigger: {
-      key: "t",
-      modifier: ["ctrl", "meta"],
-      callback: handleT,
-    },
+    trigger: [
+      {
+        key: "t",
+        modifier: ["ctrl", "meta"],
+        callback: handleT,
+      },
+      {
+        key: "b",
+        modifier: ["meta"],
+        callback: handleB,
+      },
+    ],
   }}
 />
