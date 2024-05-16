@@ -145,7 +145,11 @@
       <Table.Body {...$tableBodyAttrs}>
         {#each $pageRows as row (row.id)}
           <Subscribe rowAttrs={row.attrs()} let:rowAttrs>
-            <Table.Row {...rowAttrs} data-state={$selectedDataIds[row.id] && "selected"}>
+            <Table.Row
+              {...rowAttrs}
+              data-state={$selectedDataIds[row.id] && "selected"}
+              class="text-foreground text-sm"
+            >
               {@const record = dos.get(row.original.id)}
               {@const match = colorSpec && record ? record.match(colorSpec) : false}
               {@const condition =
