@@ -6,6 +6,7 @@ import { RecordCreatedEvent, type IRecordEvent } from "../events"
 import type { ICreateRecordDTO } from "./dto"
 import { RecordIdVO, type RecordId } from "./record-id.vo"
 import { RecordValuesVO } from "./record-values.vo"
+import type { RecordComositeSpecification } from "./record.composite-specification"
 
 export class RecordDO extends AggregateRoot<IRecordEvent> {
   constructor(
@@ -33,6 +34,10 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
 
   getValue(fieldId: FieldId): Option<FieldValue> {
     return this.values.getValue(fieldId)
+  }
+
+  match(spec: RecordComositeSpecification): boolean {
+    return spec.isSatisfiedBy(this)
   }
 }
 
