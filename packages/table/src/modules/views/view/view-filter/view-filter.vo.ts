@@ -14,6 +14,8 @@ export type IRootViewFilter = IRootCondition<IViewFilterOption>
 
 export const viewFilterGroup = createConditionGroup(viewFilterOption)
 
+export type IViewFilterGroup = z.infer<typeof viewFilterGroup>
+
 export class ViewFilter extends Condition<IViewFilterOption> {}
 
 export const parseValidViewFilter = parseValidCondition(viewFilterOption)

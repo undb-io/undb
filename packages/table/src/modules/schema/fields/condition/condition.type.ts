@@ -29,6 +29,6 @@ export function createConditionGroup<OptionType extends ZodTypeAny>(
     conjunction: z.enum(["and", "or"]),
     children: z.array(z.union([...fieldCondition.options, z.lazy(() => createConditionGroup(optionType))])),
     disabled: z.boolean().optional(),
-    option: optionType.optional(),
+    option: optionType,
   })
 }

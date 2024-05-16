@@ -5,6 +5,6 @@ export function createBaseConditionSchema<OptionType extends z.ZodTypeAny>(optio
   return z.object({
     fieldId: fieldId,
     disabled: z.boolean().optional(),
-    option: optionType.optional(),
+    option: optionType,
   })
 }
