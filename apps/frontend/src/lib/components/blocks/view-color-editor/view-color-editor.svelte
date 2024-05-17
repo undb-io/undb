@@ -37,7 +37,7 @@
     },
   })
 
-  const handleSubmit = (color?: IConditionGroup<IViewColorOption>) => {
+  const handleSubmit = (color?: IConditionGroup<IViewColorOptionSchema>) => {
     if (!color) return
     $mutation.mutate({
       color,
@@ -61,7 +61,7 @@
       <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Color</div>
     {/if}
     <FiltersEditor bind:value={$value} table={$table} disableGroup defaultConjunction="or">
-      <div slot="option" class="flex items-center justify-center" let:option let:onChange>
+      <div slot="option" class="flex items-center justify-center" let:index let:option let:onChange>
         <ColorPicker
           value={option.option?.color}
           onColorChange={(color) => {

@@ -90,7 +90,7 @@
           <div class="grid grid-cols-12 items-center gap-2">
             {#if i === 0 || disableGroup}
               <div class="item-center col-span-2 flex gap-2">
-                <slot name="option" option={child} onChange={(option) => (child.option = option)} />
+                <slot name="option" index={i} option={child} onChange={(option) => (child.option = option)} />
                 <span class="flex flex-1 items-center justify-center text-center text-xs">Where</span>
               </div>
             {:else}

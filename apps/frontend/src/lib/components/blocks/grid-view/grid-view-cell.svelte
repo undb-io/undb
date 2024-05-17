@@ -1,6 +1,5 @@
 <script lang="ts">
   import { cn } from "$lib/utils"
-  import type { RecordDO } from "@undb/table"
 
   export let value: any
   export let index: number
