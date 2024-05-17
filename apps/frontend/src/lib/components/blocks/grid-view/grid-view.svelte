@@ -92,7 +92,7 @@
           },
         },
       }),
-      ...($t.schema.fields ?? []).map((field, index) => {
+      ...($t.getOrderedFields() ?? []).map((field, index) => {
         return table.column({
           header: () => createRender(GridViewHeader, { field }),
           accessor: field.id.value,

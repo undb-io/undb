@@ -15,6 +15,9 @@ export class GetRecordsQueryHandler implements IQueryHandler<IGetRecordsQuery, I
   async execute(query: IGetRecordsQuery): Promise<IGetRecordsOutput> {
     const records = await this.svc.getRecords(query)
 
-    return records
+    return {
+      total: records.total,
+      records: records.values,
+    }
   }
 }

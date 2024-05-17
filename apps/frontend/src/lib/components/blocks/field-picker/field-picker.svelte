@@ -11,7 +11,7 @@
 
   const table = getTable()
 
-  $: fields = $table.schema.fields.map((f) => ({ value: f.id.value, label: f.name.value, type: f.type })) ?? []
+  $: fields = $table.getOrderedFields().map((f) => ({ value: f.id.value, label: f.name.value, type: f.type })) ?? []
 
   let open = false
   export let value: string | undefined = undefined

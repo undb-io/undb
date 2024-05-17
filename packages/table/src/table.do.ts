@@ -21,6 +21,10 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   $setViewColor = setViewColor
   $setTableRLS = setTableRLS
 
+  getOrderedFields() {
+    return this.schema.fields
+  }
+
   toJSON(): ITableDTO {
     return {
       id: this.id.value,

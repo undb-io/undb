@@ -10,3 +10,8 @@ export const pagniationSchema = simplePaginationSchema
 export type ISimplePagination = z.infer<typeof simplePaginationSchema>
 
 export type IPagination = ISimplePagination
+
+export interface PaginatedDTO<V> {
+  total: number
+  values: V[]
+}

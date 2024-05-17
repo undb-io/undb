@@ -30,7 +30,7 @@
   function addCondition() {
     const filter: MaybeFieldCondition = {
       id: uid(10),
-      fieldId: table.schema.fields.at(0)?.id.value,
+      fieldId: table.getOrderedFields().at(0)?.id.value,
       op: undefined,
       value: undefined,
     }

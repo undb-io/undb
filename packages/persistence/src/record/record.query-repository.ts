@@ -1,6 +1,6 @@
 import { inject, singleton } from "@undb/di"
-import { Option, andOptions } from "@undb/domain"
-import type { IRecordQueryRepository, IRecordsDTO, Query, TableDo, ViewId } from "@undb/table"
+import { Option, andOptions, type PaginatedDTO } from "@undb/domain"
+import type { IRecordDTO, IRecordQueryRepository, Query, TableDo, ViewId } from "@undb/table"
 import type { ExpressionBuilder } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
@@ -17,11 +17,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     private readonly mapper: RecordMapper,
   ) {}
 
-  async find(
-    table: TableDo,
-    viewId: Option<ViewId>,
-    query: Option<Query>,
-  ): Promise<{ total: number; records: IRecordsDTO }> {
+  async find(table: TableDo, viewId: Option<ViewId>, query: Option<Query>): Promise<PaginatedDTO<IRecordDTO>> {
     const t = new UnderlyingTable(table)
     const schema = table.schema
 
@@ -61,6 +57,6 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       .executeTakeFirstOrThrow()
 
     const records = result.map((r) => this.mapper.toDTO(r))
-    return { records, total: Number(total) }
+    return { values: records, total: Number(total) }
   }
 }

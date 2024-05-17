@@ -52,7 +52,7 @@
 </script>
 
 <form method="POST" use:enhance id="createRecord">
-  {#each $table.schema.fields as field}
+  {#each $table.getOrderedFields() as field}
     <Form.Field {form} name={field.id.value}>
       <Form.Control let:attrs>
         <Form.Label class="flex items-center gap-2">
