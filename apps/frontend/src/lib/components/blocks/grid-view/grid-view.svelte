@@ -129,9 +129,7 @@
 </script>
 
 <div class="w-full">
-  <div class="mb-4">
-    <TableTools />
-  </div>
+  <TableTools />
   <div class="rounded-md border">
     <Table.Root {...$tableAttrs}>
       <Table.Header>
@@ -169,8 +167,8 @@
                 <Subscribe attrs={cell.attrs()} let:attrs>
                   <Table.Cell
                     class={cn(
-                      "p-0 [&:has([role=checkbox])]:pl-3",
-                      idx === 0 && match && "border-l-4",
+                      "border-border border-r p-0 [&:has([role=checkbox])]:pl-3",
+                      idx === 0 && match && "border-l-4 border-r-0",
                       idx === 0 && condition && getBorder(condition.option.color),
                     )}
                     {...attrs}
@@ -191,7 +189,7 @@
       </Table.Body>
     </Table.Root>
   </div>
-  <div class="flex items-center justify-between space-x-2 py-4">
+  <div class="flex items-center justify-between space-x-2 px-4 py-2">
     <div class="text-muted-foreground flex-1 text-sm">
       {Object.keys($selectedDataIds).length} of {$rows.length} row(s) selected.
     </div>

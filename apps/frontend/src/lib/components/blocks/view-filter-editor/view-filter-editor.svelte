@@ -15,6 +15,7 @@
     type IViewFilterOptionSchema,
     type MaybeConditionGroup,
   } from "@undb/table"
+  import { cn } from "$lib/utils"
 
   const table = getTable()
   $: filter = $table.views.getViewById().filter.into(undefined)
@@ -50,7 +51,12 @@
 
 <Popover.Root bind:open>
   <Popover.Trigger asChild let:builder>
-    <Button builders={[builder]} size="sm">
+    <Button
+      variant="ghost"
+      builders={[builder]}
+      size="sm"
+      class={cn(count && "text-background hover:text-background bg-orange-400/75 hover:bg-orange-400/90")}
+    >
       <FilterIcon class="mr-2 h-4 w-4" />
       Filters
       {#if count}

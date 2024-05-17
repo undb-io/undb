@@ -9,6 +9,7 @@
   import { invalidateAll } from "$app/navigation"
   import { writable } from "svelte/store"
   import Badge from "$lib/components/ui/badge/badge.svelte"
+  import { cn } from "$lib/utils.js"
   import {
     parseValidViewColor,
     type IConditionGroup,
@@ -48,7 +49,12 @@
 
 <Popover.Root bind:open>
   <Popover.Trigger asChild let:builder>
-    <Button builders={[builder]} size="sm">
+    <Button
+      variant="ghost"
+      builders={[builder]}
+      size="sm"
+      class={cn(count && "text-background hover:text-background bg-sky-400/75 hover:bg-sky-400/90")}
+    >
       <PaintBucketIcon class="mr-2 h-4 w-4" />
       Color
       {#if count}

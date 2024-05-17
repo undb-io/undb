@@ -4,7 +4,7 @@
   import ViewColorEditor from "../view-color-editor/view-color-editor.svelte"
 </script>
 
-<div class="flex items-center gap-2">
+<div class="flex items-center gap-2 px-4 py-2">
   <CreateRecordButton />
   <ViewFilterEditor />
   <ViewColorEditor />
