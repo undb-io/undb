@@ -5,27 +5,36 @@
   import * as Table from "$lib/components/ui/table/index.js"
   import { addResizedColumns, addSelectedRows } from "svelte-headless-table/plugins"
   import { cn } from "$lib/utils.js"
-  import { RecordDO, type IColors, type IRecordsDTO } from "@undb/table"
+  import { Records, type IColors, type IRecordsDTO } from "@undb/table"
   import { createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
   import GridViewActions from "./grid-view-actions.svelte"
   import GridViewCell from "./grid-view-cell.svelte"
+  import GridViewPagination from "./grid-view-pagination.svelte"
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
   import TableTools from "../table-tools/table-tools.svelte"
   import GridViewHeader from "./grid-view-header.svelte"
+  import * as Select from "$lib/components/ui/select"
 
   const t = getTable()
 
   $: tableId = $t.id.value
   $: view = $t.views.getViewById()
-  $: colorSpec = view.color.into(undefined)?.getSpec($t.schema).into(undefined)
+
+  let perPage = 50
+  let currentPage = 1
 
   $: getRecords = createQuery({
-    queryKey: ["records", tableId],
-    queryFn: () => trpc.record.list.query({ tableId }),
+    queryKey: [tableId, view.id.value, "records"],
+    queryFn: () =>
+      trpc.record.list.query({
+        tableId,
+        pagination: { limit: perPage, page: currentPage },
+      }),
   })
 
+  $: colorSpec = view.color.into(undefined)?.getSpec($t.schema).into(undefined)
   function getBorder(color: IColors): string {
     const map: Record<IColors, string> = {
       black: "border-black",
@@ -44,8 +53,10 @@
     return map[color]
   }
 
-  $: records = ($getRecords.data as IRecordsDTO | undefined) ?? []
-  $: dos = new Map(records.map((r) => [r.id, RecordDO.fromJSON($t, r)]))
+  // TODO: record type
+  $: records = (($getRecords.data as any)?.records as IRecordsDTO) ?? []
+  $: dos = Records.fromJSON($t, records).map
+  $: total = ($getRecords.data as any)?.total ?? 0
 
   // TODO: record type
   let data = writable<any[]>([])
@@ -180,9 +191,36 @@
       </Table.Body>
     </Table.Root>
   </div>
-  <div class="flex items-center justify-end space-x-2 py-4">
+  <div class="flex items-center justify-between space-x-2 py-4">
     <div class="text-muted-foreground flex-1 text-sm">
       {Object.keys($selectedDataIds).length} of {$rows.length} row(s) selected.
+    </div>
+
+    <div class="flex flex-1 flex-row items-center">
+      <GridViewPagination {perPage} bind:currentPage />
+      <div class="flex items-center gap-2 text-sm">
+        <Select.Root
+          selected={{ value: perPage, label: String(perPage) }}
+          onSelectedChange={(value) => {
+            perPage = value.value
+            currentPage = 1
+          }}
+        >
+          <Select.Trigger value={perPage} class="min-w-16">
+            <Select.Value placeholder="Theme" />
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Item value={1}>1</Select.Item>
+            <Select.Item value={10}>10</Select.Item>
+            <Select.Item value={50}>50</Select.Item>
+            <Select.Item value={100}>100</Select.Item>
+          </Select.Content>
+        </Select.Root>
+
+        <span class="text-muted-foreground inline-flex flex-1 flex-nowrap text-xs">
+          {total} rows
+        </span>
+      </div>
     </div>
   </div>
 </div>

@@ -6,7 +6,7 @@ import { injectRecordQueryRepository, type IRecordQueryRepository } from "../rec
 import { getRecords } from "./methods/get-records.method"
 
 export interface IRecordsQueryService {
-  getRecords(query: IGetRecordsDTO): Promise<IRecordsDTO>
+  getRecords(query: IGetRecordsDTO): Promise<{ total: number; records: IRecordsDTO }>
 }
 
 @singleton()

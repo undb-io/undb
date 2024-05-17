@@ -1,8 +1,12 @@
 import { z } from "zod"
 
-export const paginationSchema = z.object({
+export const simplePaginationSchema = z.object({
   limit: z.number().positive().int().optional(),
   page: z.number().positive().int().optional(),
 })
 
-export type IPagination = z.infer<typeof paginationSchema>
+export const pagniationSchema = simplePaginationSchema
+
+export type ISimplePagination = z.infer<typeof simplePaginationSchema>
+
+export type IPagination = ISimplePagination
