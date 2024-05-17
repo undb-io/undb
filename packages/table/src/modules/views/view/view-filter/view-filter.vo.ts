@@ -10,7 +10,7 @@ export const viewFilterOption = z.undefined()
 
 export type IViewFilterOptionSchema = typeof viewFilterOption
 
-export type IViewFilterOption = z.infer<typeof viewFilterOption>
+export type IViewFilterOption = z.infer<IViewFilterOptionSchema>
 
 export type IRootViewFilter = IRootCondition<IViewFilterOptionSchema>
 
@@ -18,6 +18,6 @@ export const viewFilterGroup = createConditionGroup(viewFilterOption, viewFilter
 
 export type IViewFilterGroup = z.infer<typeof viewFilterGroup>
 
-export class ViewFilter extends Condition<typeof viewFilterOption> {}
+export class ViewFilter extends Condition<IViewFilterOptionSchema> {}
 
 export const parseValidViewFilter = parseValidCondition(viewFilterOption)

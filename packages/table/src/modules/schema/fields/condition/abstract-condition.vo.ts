@@ -2,6 +2,8 @@ import { ValueObject } from "@undb/domain"
 import { isEqual } from "radash"
 import type { z } from "zod"
 import type { IFieldCondition, Schema } from "../.."
+import type { TableDo } from "../../../../table.do"
+import type { RecordDO } from "../../../records/record/record.do"
 import type { IRootCondition, MaybeConditionGroup } from "./condition.type"
 import {
   getFieldSpec,
@@ -10,8 +12,6 @@ import {
   isEmptyConditionGroup,
   toMaybeConditionGroup,
 } from "./condition.util"
-import type { TableDo } from "../../../../table.do"
-import type { RecordDO } from "../../../records/record/record.do"
 
 export abstract class Condition<OptionType extends z.ZodTypeAny> extends ValueObject<IRootCondition<OptionType>> {
   constructor(value: IRootCondition<OptionType>) {
@@ -32,7 +32,7 @@ export abstract class Condition<OptionType extends z.ZodTypeAny> extends ValueOb
     return getSpec(fieldMap, this.value)
   }
 
-  toJSON() {
+  toJSON(): IRootCondition<OptionType> {
     return { ...this.value }
   }
 

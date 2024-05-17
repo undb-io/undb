@@ -27,7 +27,7 @@ export interface MaybeConditionGroup<OptionType extends z.ZodTypeAny> {
 export function createConditionGroup<OptionType extends ZodTypeAny, FieldOptionType extends ZodTypeAny = OptionType>(
   optionType: OptionType,
   fieldType: FieldOptionType,
-): z.ZodType<IConditionGroup<OptionType>> {
+): z.ZodType<IConditionGroup<FieldOptionType>> {
   return z.object({
     conjunction: z.enum(["and", "or"]),
     children: z.array(
@@ -35,5 +35,5 @@ export function createConditionGroup<OptionType extends ZodTypeAny, FieldOptionT
     ),
     disabled: z.boolean().optional(),
     option: optionType,
-  }) as z.ZodType<IConditionGroup<OptionType>>
+  }) as z.ZodType<IConditionGroup<FieldOptionType>>
 }

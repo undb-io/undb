@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { rlsDTO } from "../modules"
 import { schemaDTO } from "../modules/schema/dto/schema.dto"
 import { viewsDTO } from "../modules/views/dto"
 import { tableId } from "../table-id.vo"
@@ -9,6 +10,7 @@ export const tableDTO = z.object({
   name: tableName,
   schema: schemaDTO,
   views: viewsDTO,
+  rls: rlsDTO,
 })
 
 export type ITableDTO = z.infer<typeof tableDTO>

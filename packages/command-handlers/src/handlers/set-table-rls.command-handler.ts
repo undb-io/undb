@@ -1,23 +1,23 @@
-import { SetViewFilterCommand } from "@undb/commands"
+import { SetTableRLSCommand } from "@undb/commands"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import type { ICommandHandler } from "@undb/domain"
 import { createLogger } from "@undb/logger"
 import { TableIdVo, injectTableRepository, type ITableRepository } from "@undb/table"
 
-@commandHandler(SetViewFilterCommand)
+@commandHandler(SetTableRLSCommand)
 @singleton()
-export class SetViewFilterCommandHandler implements ICommandHandler<SetViewFilterCommand, any> {
-  public readonly logger = createLogger(SetViewFilterCommandHandler.name)
+export class SetTableRLSCommandHandler implements ICommandHandler<SetTableRLSCommand, any> {
+  public readonly logger = createLogger(SetTableRLSCommandHandler.name)
   constructor(
     @injectTableRepository()
     private readonly repo: ITableRepository,
   ) {}
 
-  async execute(command: SetViewFilterCommand): Promise<any> {
+  async execute(command: SetTableRLSCommand): Promise<any> {
     const table = (await this.repo.findOneById(new TableIdVo(command.tableId))).unwrap()
 
-    const spec = table.$setViewFilter(command)
+    const spec = table.$setTableRLS(command)
 
     await this.repo.updateOneById(table, spec)
   }
