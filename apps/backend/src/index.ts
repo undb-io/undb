@@ -7,11 +7,12 @@ import cors from "@elysiajs/cors"
 import { html } from "@elysiajs/html"
 import { staticPlugin } from "@elysiajs/static"
 import { trpc } from "@elysiajs/trpc"
+import { executionContext } from "@undb/context/server"
 import { route } from "@undb/trpc"
 import { Elysia } from "elysia"
 import { requestID } from "elysia-requestid"
 import { loggerPlugin } from "./plugins/logging"
-import { executionContext } from "@undb/context/server"
+import { ui } from "./routes/ui.route"
 
 const app = new Elysia()
   .onStart(() => {
@@ -27,6 +28,7 @@ const app = new Elysia()
   .use(cors())
   .use(html())
   .use(loggerPlugin())
+  .use(ui())
   .use(trpc(route))
 
 export type App = typeof app

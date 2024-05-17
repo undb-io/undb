@@ -1,0 +1,10 @@
+{
+  "name": "@undb/ui",
+  "module": "src/index.ts",
+  "types": "src/index.d.ts",
+  "type": "module",
+  "peerDependencies": {
+    "@elysiajs/html": "^1.0.2",
+    "typescript": "^5.0.0"
+  }
+}
