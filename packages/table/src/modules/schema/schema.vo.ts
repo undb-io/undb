@@ -11,7 +11,7 @@ import { AutoIncrementField } from "./fields/variants/autoincrement-field"
 import { CreatedAtField } from "./fields/variants/created-at-field"
 import type { SchemaMap } from "./schema.type"
 
-export class Schema extends ValueObject {
+export class Schema extends ValueObject<Field[]> {
   private constructor(public readonly fields: Field[]) {
     super(fields)
   }

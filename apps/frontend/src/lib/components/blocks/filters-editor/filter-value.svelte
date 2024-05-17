@@ -22,8 +22,10 @@
   const className = cn("h-8 rounded-l-none border-l-0 py-0", $$restProps.class)
 </script>
 
-{#if field}
-  <FieldControl bind:value {field} class={className} />
-{:else if $hasValue}
-  <Input disabled class={className} placeholder="select a field" />
+{#if $hasValue}
+  {#if field}
+    <FieldControl bind:value {field} class={className} />
+  {:else if $hasValue}
+    <Input disabled class={className} placeholder="select a field" />
+  {/if}
 {/if}

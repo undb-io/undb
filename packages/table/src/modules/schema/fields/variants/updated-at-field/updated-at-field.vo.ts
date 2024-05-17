@@ -35,7 +35,7 @@ export class UpdatedAtField extends AbstractField<UpdatedAtFieldValue> {
   override type = UPDATED_AT_TYPE
 
   override get valueSchema() {
-    return z.string().optional()
+    return z.string().date()
   }
 
   override accept(visitor: IFieldVisitor): void {

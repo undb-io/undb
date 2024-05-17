@@ -10,6 +10,15 @@
 
   export let value: any
 
+  function handleValue() {
+    const { success } = field.valueSchema.safeParse(value)
+    if (!success) {
+      value = undefined
+    }
+  }
+
+  $: field, handleValue()
+
   const map: Record<FieldType, ComponentType> = {
     id: IdControl,
     string: StringControl,

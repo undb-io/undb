@@ -56,7 +56,7 @@
       {/if}
     </Button>
   </Popover.Trigger>
-  <Popover.Content class="w-[630px] space-y-2 p-0" align="start">
+  <Popover.Content class="w-[630px] space-y-2 p-0 shadow-2xl" align="start">
     {#if $value?.children.length}
       <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Color</div>
     {/if}

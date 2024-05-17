@@ -11,7 +11,7 @@
   import Badge from "$lib/components/ui/badge/badge.svelte"
   import {
     parseValidViewFilter,
-    type IConditionGroup,
+    type IViewFilterGroup,
     type IViewFilterOptionSchema,
     type MaybeConditionGroup,
   } from "@undb/table"
@@ -39,7 +39,7 @@
     },
   })
 
-  const handleSubmit = (filter?: IConditionGroup) => {
+  const handleSubmit = (filter?: IViewFilterGroup) => {
     if (!filter) return
     $mutation.mutate({
       filter,
@@ -58,7 +58,7 @@
       {/if}
     </Button>
   </Popover.Trigger>
-  <Popover.Content class="w-[630px] space-y-2 p-0" align="start">
+  <Popover.Content class="w-[630px] space-y-2 p-0 shadow-2xl" align="start">
     {#if $value?.children.length}
       <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Filters</div>
     {/if}
