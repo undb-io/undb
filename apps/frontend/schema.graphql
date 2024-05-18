@@ -1,3 +1,18 @@
+type Field {
+  id: ID!
+  name: String!
+  type: FieldType!
+}
+
+enum FieldType {
+  autoIncrement
+  createdAt
+  id
+  number
+  string
+  updatedAt
+}
+
 type Query {
   table(id: ID!): Table
   tables: [Table]
@@ -7,4 +22,16 @@ type Table {
   id: ID!
   name: String!
   recordsCount: Int!
+  schema: [Field!]!
+  views: [View!]!
+}
+
+type View {
+  id: ID!
+  name: String!
+  type: ViewType!
+}
+
+enum ViewType {
+  grid
 }

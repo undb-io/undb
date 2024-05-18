@@ -1,3 +1,4 @@
+import { GetTableQueryStore } from "$houdini"
 import { trpc } from "$lib/trpc/client"
 import { tableCreator } from "@undb/table"
 import { superValidate } from "sveltekit-superforms"
@@ -18,6 +19,7 @@ export const load: LayoutLoad = async (event) => {
 
   return {
     table,
+    t: await new GetTableQueryStore().fetch({ event, variables: { tableId } }),
     createRecord,
   }
 }

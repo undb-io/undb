@@ -13,9 +13,36 @@ export class Graphql {
   public get yoga() {
     return yoga({
       typeDefs: `
+      enum FieldType {
+        string
+        number
+        id
+        createdAt
+        updatedAt
+        autoIncrement
+      }
+
+      type Field {
+        id: ID!
+        name: String!
+        type: FieldType!
+      }
+
+      enum ViewType {
+        grid
+      }
+
+      type View {
+        id: ID!
+        name: String!
+        type: ViewType!
+      }
+
       type Table {
         id: ID!
         name: String!
+        schema: [Field!]!
+        views: [View!]!
 
         recordsCount: Int!
       }
@@ -36,9 +63,11 @@ export class Graphql {
           },
         },
         Table: {
+          // @ts-ignore
           recordsCount: (table) => 100,
         },
       },
+      batching: true,
     })
   }
 }
