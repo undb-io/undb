@@ -71,12 +71,7 @@
 
 <Popover.Root bind:open>
   <Popover.Trigger asChild let:builder>
-    <Button
-      variant="ghost"
-      builders={[builder]}
-      size="sm"
-      class={cn(count && "text-background hover:text-background bg-rose-400/75 hover:bg-rose-400/90")}
-    >
+    <Button variant="ghost" builders={[builder]} size="sm" class={cn(count && "bg-rose-100 hover:bg-rose-200")}>
       <ArrowUpDownIcon class="mr-2 h-4 w-4" />
       Sorts
       {#if count}

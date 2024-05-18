@@ -55,7 +55,7 @@
       variant="ghost"
       builders={[builder]}
       size="sm"
-      class={cn(count && "text-background hover:text-background bg-orange-400/75 hover:bg-orange-400/90")}
+      class={cn(count && "text-foreground bg-orange-100 hover:bg-orange-200")}
     >
       <FilterIcon class="mr-2 h-4 w-4" />
       Filters
