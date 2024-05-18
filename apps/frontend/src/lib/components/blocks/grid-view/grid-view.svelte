@@ -21,7 +21,8 @@
 
   $: tableId = $t.id.value
   $: view = $t.views.getViewById()
-
+  $: viewFilter = view.filter.into(undefined)
+  $: hasFilterFieldIds = viewFilter?.fieldIds
   let perPage = 50
   let currentPage = 1
 
@@ -136,9 +137,17 @@
         {#each $headerRows as headerRow}
           <Subscribe rowAttrs={headerRow.attrs()}>
             <Table.Row>
-              {#each headerRow.cells as cell (cell.id)}
+              {#each headerRow.cells as cell, i (cell.id)}
                 <Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
-                  <Table.Head {...attrs} class={cn("[&:has([role=checkbox])]:pl-3")}>
+                  {@const hasFilter = hasFilterFieldIds?.has(cell.id) ?? false}
+                  <Table.Head
+                    {...attrs}
+                    class={cn(
+                      "border-r [&:has([role=checkbox])]:pl-3 ",
+                      i === 0 && "border-r-0",
+                      hasFilter && "bg-orange-50",
+                    )}
+                  >
                     {#if cell.id === "select" && !$data.length}
                       <Checkbox checked={false} disabled />
                     {:else}
@@ -164,12 +173,14 @@
               {@const condition =
                 match && record ? view.color.into(undefined)?.getMatchedFieldConditions($t, record)[0] : undefined}
               {#each row.cells as cell, idx (cell.id)}
+                {@const hasFilter = hasFilterFieldIds?.has(cell.id) ?? false}
                 <Subscribe attrs={cell.attrs()} let:attrs>
                   <Table.Cell
                     class={cn(
                       "border-border border-r p-0 [&:has([role=checkbox])]:pl-3",
                       idx === 0 && match && "border-l-4 border-r-0",
                       idx === 0 && condition && getBorder(condition.option.color),
+                      hasFilter && "bg-orange-50",
                     )}
                     {...attrs}
                   >

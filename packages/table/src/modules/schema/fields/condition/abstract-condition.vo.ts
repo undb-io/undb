@@ -1,7 +1,7 @@
 import { ValueObject } from "@undb/domain"
 import { isEqual } from "radash"
 import type { z } from "zod"
-import type { IFieldCondition, Schema } from "../.."
+import type { FieldId, IFieldCondition, Schema } from "../.."
 import type { TableDo } from "../../../../table.do"
 import type { RecordDO } from "../../../records/record/record.do"
 import type { IRootCondition, MaybeConditionGroup } from "./condition.type"
@@ -64,5 +64,23 @@ export abstract class Condition<OptionType extends z.ZodTypeAny> extends ValueOb
 
   get flattenFieldConditions(): IFieldCondition<OptionType>[] {
     return getFlattenFieldConditions<OptionType>(this.value)
+  }
+
+  get fieldConditiosIter() {
+    const vo = this
+    return {
+      *[Symbol.iterator]() {
+        yield* vo.flattenFieldConditions
+      },
+    }
+  }
+
+  get fieldIds(): Set<string> {
+    const result = new Set<string>()
+    for (const condition of this.fieldConditiosIter) {
+      result.add(condition.fieldId)
+    }
+
+    return result
   }
 }
