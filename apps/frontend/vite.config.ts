@@ -1,9 +1,11 @@
 import { sveltekit } from "@sveltejs/kit/vite"
+import houdini from "houdini/vite"
 import { visualizer } from "rollup-plugin-visualizer"
 import { defineConfig } from "vitest/config"
 
 export default defineConfig({
   plugins: [
+    houdini(),
     sveltekit(),
     visualizer({
       emitFile: true,

@@ -4,13 +4,17 @@
   "types": "src/index.d.ts",
   "type": "module",
   "devDependencies": {
-    "@undb/di": "workspace:*",
-    "@undb/cqrs": "workspace:*",
-    "@undb/queries": "workspace:*",
     "@types/bun": "latest"
   },
   "peerDependencies": {
+    "@undb/di": "workspace:*",
+    "@undb/cqrs": "workspace:*",
+    "@undb/queries": "workspace:*",
     "@elysiajs/graphql-yoga": "^1.0.3",
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "graphql": "^16.8.1",
+    "graphql-yoga": "^5.3.1"
   }
 }

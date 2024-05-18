@@ -2,7 +2,6 @@ import { yoga } from "@elysiajs/graphql-yoga"
 import { QueryBus } from "@undb/cqrs"
 import { container, inject, singleton } from "@undb/di"
 import { GetTableQuery, GetTablesQuery } from "@undb/queries"
-import { createSchema } from "graphql-yoga"
 
 @singleton()
 export class Graphql {
@@ -11,8 +10,8 @@ export class Graphql {
     public readonly queryBus: QueryBus,
   ) {}
 
-  createSchema() {
-    return createSchema({
+  public get yoga() {
+    return yoga({
       typeDefs: `
       type Table {
         id: ID!
@@ -37,15 +36,9 @@ export class Graphql {
           },
         },
         Table: {
-          recordsCount: () => 100,
+          recordsCount: (table) => 100,
         },
       },
-    })
-  }
-
-  public get yoga() {
-    return yoga({
-      schema: this.createSchema(),
     })
   }
 }

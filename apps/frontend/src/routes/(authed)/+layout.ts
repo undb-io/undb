@@ -1,3 +1,4 @@
+import { TablesStore } from "$houdini"
 import { trpc } from "$lib/trpc/client"
 import { createTableCommand } from "@undb/commands"
 import { createSchemaDTO } from "@undb/table"
@@ -12,6 +13,8 @@ export const load: LayoutLoad = async (event) => {
   const tables = await trpc.table.list.query()
   event.depends("undb:tables")
 
+  const s = await new TablesStore().fetch({ event })
+
   const createTableForm = await superValidate(
     zod(
       // @ts-ignore
@@ -25,6 +28,7 @@ export const load: LayoutLoad = async (event) => {
 
   return {
     tables,
+    s,
     createTableForm,
   }
 }

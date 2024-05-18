@@ -1,0 +1,10 @@
+type Query {
+  table(id: ID!): Table
+  tables: [Table]
+}
+
+type Table {
+  id: ID!
+  name: String!
+  recordsCount: Int!
+}

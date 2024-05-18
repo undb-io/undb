@@ -10,7 +10,7 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js"
   import * as Sheet from "$lib/components/ui/sheet/index.js"
   import { Button } from "$lib/components/ui/button/index.js"
-  import { DatabaseIcon, HomeIcon, Package2 } from "lucide-svelte"
+  import { DatabaseIcon, Package2 } from "lucide-svelte"
   import CreateTableButton from "../create-table/create-table-button.svelte"
   import * as Breadcrumb from "$lib/components/ui/breadcrumb/index.js"
   import { getTable } from "$lib/store/table.store"
