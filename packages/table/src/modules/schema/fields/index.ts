@@ -4,5 +4,6 @@ export * from "./field-name.vo"
 export * from "./field.type"
 export * from "./field.visitor"
 export * from "./variants"
+export * from "./field.util"
 
 export const fieldTypes = ["string", "number"] as const
