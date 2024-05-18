@@ -4,12 +4,12 @@ import type { ITableEvents } from "./events"
 import { setTableRLS } from "./methods/set-table-rls.method"
 import { setViewColor } from "./methods/set-view-color.method"
 import { setViewFilter } from "./methods/set-view-filter.method"
+import { setViewSort } from "./methods/set-view-sort.method"
 import type { TableRSL } from "./modules"
 import type { Schema } from "./modules/schema/schema.vo"
 import type { Views } from "./modules/views/views.vo"
 import type { TableId } from "./table-id.vo"
 import type { TableNameVo } from "./table-name.vo"
-import { setViewSort } from "./methods/set-view-sort.method"
 
 export class TableDo extends AggregateRoot<ITableEvents> {
   public id!: TableId
@@ -33,7 +33,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
       name: this.name.value,
       schema: this.schema.toJSON(),
       views: this.views.toJSON(),
-      rls: this.rls.toJSON(),
+      rls: this.rls?.toJSON(),
     }
   }
 }

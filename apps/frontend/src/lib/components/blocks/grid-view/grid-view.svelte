@@ -136,14 +136,14 @@
       <Table.Header>
         {#each $headerRows as headerRow}
           <Subscribe rowAttrs={headerRow.attrs()}>
-            <Table.Row>
+            <Table.Row class="text-xs transition-none hover:bg-inherit">
               {#each headerRow.cells as cell, i (cell.id)}
                 <Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
                   {@const hasFilter = hasFilterFieldIds?.has(cell.id) ?? false}
                   <Table.Head
                     {...attrs}
                     class={cn(
-                      "border-r [&:has([role=checkbox])]:pl-3 ",
+                      "h-9 border-r [&:has([role=checkbox])]:pl-3",
                       i === 0 && "border-r-0",
                       hasFilter && "bg-orange-50",
                     )}
@@ -166,7 +166,7 @@
             <Table.Row
               {...rowAttrs}
               data-state={$selectedDataIds[row.id] && "selected"}
-              class="text-foreground text-sm"
+              class="text-foreground text-xs transition-none"
             >
               {@const record = dos.get(row.original.id)}
               {@const match = colorSpec && record ? record.match(colorSpec) : false}
@@ -178,7 +178,8 @@
                   <Table.Cell
                     class={cn(
                       "border-border border-r p-0 [&:has([role=checkbox])]:pl-3",
-                      idx === 0 && match && "border-l-4 border-r-0",
+                      idx == 0 && "border-r-0",
+                      idx === 0 && match && "border-l-4",
                       idx === 0 && condition && getBorder(condition.option.color),
                       hasFilter && "bg-orange-50",
                     )}
