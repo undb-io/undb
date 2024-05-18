@@ -11,10 +11,24 @@
 
   const table = getTable()
 
-  $: fields = $table.getOrderedFields().map((f) => ({ value: f.id.value, label: f.name.value, type: f.type })) ?? []
+  interface IField {
+    value: string
+    label: string
+    type: string
+  }
+
+  $: fields =
+    $table.getOrderedFields().map<IField>((f) => ({
+      value: f.id.value,
+      label: f.name.value,
+      type: f.type,
+    })) ?? []
 
   let open = false
   export let value: string | undefined = undefined
+  export let filter: ((field: IField) => boolean) | undefined = undefined
+
+  $: filteredFields = filter ? fields.filter(filter) : fields
 
   $: selected = fields.find((f) => f.value === value)
   $: selectedValue = selected?.label ?? "Select a field..."
@@ -49,14 +63,14 @@
   <Popover.Content class="w-[200px] p-0">
     <Command.Root
       filter={(value, search) => {
-        const label = fields.find((f) => f.value === value)?.label ?? ""
+        const label = filteredFields.find((f) => f.value === value)?.label ?? ""
         return label.toLowerCase().includes(search.toLowerCase())
       }}
     >
       <Command.Input placeholder="Search field..." class="h-9" />
       <Command.Empty>No field found.</Command.Empty>
       <Command.Group>
-        {#each fields as field}
+        {#each filteredFields as field}
           <Command.Item
             value={field.value}
             onSelect={(currentValue) => {

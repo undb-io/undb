@@ -5,6 +5,7 @@ import { ViewIdVo } from "../modules"
 import type { TableComositeSpecification } from "../specifications"
 import type { TableDo } from "../table.do"
 
+// TODO: add a rule to apply only sorable fields can set
 export function setViewSort(this: TableDo, dto: ISetViewSortDTO): Option<TableComositeSpecification> {
   const viewId = dto.viewId ? new ViewIdVo(dto.viewId) : undefined
   const view = this.views.getViewById(viewId)

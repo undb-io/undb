@@ -18,14 +18,18 @@ export class ViewSort extends ValueObject<IViewSort> {
   }
 
   public isEqual(sort: IViewSort): boolean {
-    return isEqual(sort, this.value)
+    return isEqual(sort, this.props)
   }
 
   public toJSON(): IViewSort {
-    return [...this.value]
+    return [...this.props]
+  }
+
+  public fieldIds(): Set<string> {
+    return this.props.reduce((acc, { fieldId }) => acc.add(fieldId), new Set<string>())
   }
 
   public get count() {
-    return this.value.length
+    return this.props.length
   }
 }

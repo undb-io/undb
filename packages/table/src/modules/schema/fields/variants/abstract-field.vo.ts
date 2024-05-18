@@ -16,6 +16,7 @@ import type { IIdFieldConditionSchema } from "./id-field/id-field.condition"
 import type { INumberFieldConditionSchema } from "./number-field"
 import type { IStringFieldConditionSchema } from "./string-field"
 import type { IUpdatedAtFieldConditionSchema } from "./updated-at-field"
+import { isFieldSortable } from "../field.util"
 
 export const createBaseFieldDTO = z.object({
   id: fieldId.optional(),
@@ -99,6 +100,10 @@ export abstract class AbstractField<V extends ValueObject> {
 
   get conditionOps() {
     return this.getConditionSchema(z.any()).options.map((o) => o.shape.op.value)
+  }
+
+  get sortable(): boolean {
+    return isFieldSortable(this.type)
   }
 
   toJSON(): IFieldDTO {

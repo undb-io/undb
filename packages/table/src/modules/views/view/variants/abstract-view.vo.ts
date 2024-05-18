@@ -44,6 +44,9 @@ export abstract class AbstractView {
     if (dto.color) {
       this.setColor(dto.color)
     }
+    if (dto.sort) {
+      this.setSort(dto.sort)
+    }
   }
 
   setFilter(filter: IRootViewFilter) {
@@ -82,13 +85,13 @@ export abstract class AbstractView {
     this.sort = Some(sortVO)
   }
 
-  $setSortSpec(color: IViewSort): Option<WithViewSort> {
-    if (this.sort.mapOr(false, (f) => f.isEqual(color))) {
+  $setSortSpec(sort: IViewSort): Option<WithViewSort> {
+    if (this.sort.mapOr(false, (f) => f.isEqual(sort))) {
       return None
     }
 
     const previous = this.sort.into(null)?.value
-    return Some(new WithViewSort(this.id, Option(previous), color))
+    return Some(new WithViewSort(this.id, Option(previous), sort))
   }
 
   toJSON(): IViewDTO {

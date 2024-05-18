@@ -30,6 +30,15 @@ export abstract class ValueObject<T = any> {
       return this.props.value
     }
 
+    if (Array.isArray(this.props)) {
+      return this.props.map((item) => {
+        if (ValueObject.isValueObject(item)) {
+          return item.unpack()
+        }
+        return item
+      }) as unknown as T
+    }
+
     const propsCopy = convertPropsToObject(this.props)
 
     return Object.freeze(propsCopy)
