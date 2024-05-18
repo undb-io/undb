@@ -2,12 +2,15 @@ import { yoga } from "@elysiajs/graphql-yoga"
 import { QueryBus } from "@undb/cqrs"
 import { container, inject, singleton } from "@undb/di"
 import { GetTableQuery, GetTablesQuery } from "@undb/queries"
+import { TableIdVo, injectRecordQueryRepository, type IRecordQueryRepository } from "@undb/table"
 
 @singleton()
 export class Graphql {
   constructor(
     @inject(QueryBus)
     public readonly queryBus: QueryBus,
+    @injectRecordQueryRepository()
+    public readonly repo: IRecordQueryRepository,
   ) {}
 
   public get yoga() {
@@ -48,7 +51,7 @@ export class Graphql {
       }
 
       type Query {
-        tables: [Table]
+        tables: [Table!]
         table(id: ID!): Table
       }
       `,
@@ -64,7 +67,7 @@ export class Graphql {
         },
         Table: {
           // @ts-ignore
-          recordsCount: (table) => 100,
+          recordsCount: async (table) => this.repo.count(new TableIdVo(table.id)),
         },
       },
       batching: true,

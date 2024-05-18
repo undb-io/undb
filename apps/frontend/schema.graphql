@@ -15,7 +15,7 @@ enum FieldType {
 
 type Query {
   table(id: ID!): Table
-  tables: [Table]
+  tables: [Table!]
 }
 
 type Table {

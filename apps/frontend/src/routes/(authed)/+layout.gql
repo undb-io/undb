@@ -1,7 +1,8 @@
-query Tables {
+query GetTablesQuery {
   tables {
     id
     name
+
     recordsCount
   }
 }

@@ -8,7 +8,6 @@
 
   type $$Props = Props
 
-  let className: $$Props["class"] = undefined
   export let value: IColors | undefined = undefined
 
   $: if (!value) {
@@ -16,9 +15,7 @@
     onColorChange?.(value)
   }
 
-  export let size: $$Props["size"] = "default"
   export let onColorChange: $$Props["onColorChange"] = undefined
-  export { className as class }
 
   let open = false
 </script>

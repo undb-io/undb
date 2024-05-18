@@ -1,6 +1,6 @@
 import { inject, singleton } from "@undb/di"
 import { Option, andOptions, type PaginatedDTO } from "@undb/domain"
-import type { IRecordDTO, IRecordQueryRepository, Query, TableDo, ViewId } from "@undb/table"
+import type { IRecordDTO, IRecordQueryRepository, Query, TableDo, TableId, ViewId } from "@undb/table"
 import type { ExpressionBuilder, SelectQueryBuilder } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
@@ -16,6 +16,15 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     @inject(RecordMapper)
     private readonly mapper: RecordMapper,
   ) {}
+
+  async count(tableId: TableId): Promise<number> {
+    const { total } = await this.qb
+      .selectFrom(tableId.value)
+      .select((eb) => eb.fn.countAll().as("total"))
+      .executeTakeFirstOrThrow()
+
+    return Number(total)
+  }
 
   async find(table: TableDo, viewId: Option<ViewId>, query: Option<Query>): Promise<PaginatedDTO<IRecordDTO>> {
     const t = new UnderlyingTable(table)

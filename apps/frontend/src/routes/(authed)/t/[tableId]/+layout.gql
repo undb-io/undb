@@ -12,5 +12,6 @@ query GetTableQuery($tableId: ID!) {
       name
       type
     }
+    recordsCount
   }
 }

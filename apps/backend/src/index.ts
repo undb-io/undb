@@ -2,6 +2,7 @@ import "core-js"
 import "reflect-metadata"
 
 import { register } from "./registry"
+register()
 
 import cors from "@elysiajs/cors"
 import { html } from "@elysiajs/html"
@@ -16,9 +17,6 @@ import { loggerPlugin } from "./plugins/logging"
 import { ui } from "./routes/ui.route"
 
 const app = new Elysia()
-  .onStart(() => {
-    register()
-  })
   .use(requestID())
   .onRequest(({ set }) => {
     const requestId = set.headers["X-Request-ID"]

@@ -17,9 +17,9 @@ export const load: LayoutLoad = async (event) => {
   // @ts-ignore
   const createRecord = await superValidate(zod(t.schema.valuesSchema))
 
+  const ta = await new GetTableQueryStore().fetch({ event, variables: { tableId } })
   return {
     table,
-    t: await new GetTableQueryStore().fetch({ event, variables: { tableId } }),
     createRecord,
   }
 }

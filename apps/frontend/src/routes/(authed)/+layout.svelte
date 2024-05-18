@@ -32,8 +32,10 @@
     }
   }
 
-  if (data.tables.length !== 0 && !$page.params.tableId) {
-    goto(`/t/${data.tables[0].id}`, { replaceState: true })
+  $: tables = data.tables.data?.tables ?? []
+
+  if (tables?.length !== 0 && !$page.params.tableId) {
+    goto(`/t/${tables[0].id}`, { replaceState: true })
   }
 </script>
 
@@ -60,11 +62,11 @@
           <span class="sr-only">Toggle notifications</span>
         </Button>
       </div>
-      <div class={cn(data.tables.length ? "flex-1" : "")}>
-        <TablesNav tables={data.tables} />
+      <div class={cn(tables.length ? "flex-1" : "")}>
+        <TablesNav {tables} />
       </div>
-      <div class={cn("p-4", data.tables.length ? "mt-auto" : "")}>
-        <CreateTableButton variant={data.tables.length ? "outline" : "default"} />
+      <div class={cn("p-4", tables.length ? "mt-auto" : "")}>
+        <CreateTableButton variant={tables.length ? "outline" : "default"} />
       </div>
     </div>
   </Resizable.Pane>
