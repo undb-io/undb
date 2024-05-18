@@ -5,6 +5,7 @@
   import { createRecordSheetOpen } from "$lib/components/blocks/create-record/create-record.store.ts"
   import type { PageData } from "./$types"
   import { shortcut, type ShortcutEventDetail } from "@svelte-put/shortcut"
+  import TableHeader from "$lib/components/blocks/table-header/table-header.svelte"
 
   export let data: PageData
   function handleR(detail: ShortcutEventDetail) {
@@ -12,6 +13,7 @@
   }
 </script>
 
+<TableHeader />
 <GridView />
 
 <CreateRecordSheet data={data.createRecord} />
