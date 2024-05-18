@@ -6,13 +6,25 @@ import type {
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
+  WithViewColor,
   WithViewFilter,
+  WithViewSort,
 } from "@undb/table"
 import { eq } from "drizzle-orm"
 import { AbstractDBFilterVisitor } from "../abstract-db.visitor"
 import { tables } from "../tables"
+import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
 
 export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> implements ITableSpecVisitor {
+  withTableRLS(rls: WithTableRLS): void {
+    throw new WontImplementException(TableFilterVisitor.name + ".withTableRLS")
+  }
+  withViewColor(viewColor: WithViewColor): void {
+    throw new WontImplementException(TableFilterVisitor.name + ".withViewColor")
+  }
+  withViewSort(viewSort: WithViewSort): void {
+    throw new WontImplementException(TableFilterVisitor.name + ".withViewSort")
+  }
   withViewFilter(viewFilter: WithViewFilter): void {
     throw new WontImplementException(TableFilterVisitor.name + ".withViewFilter")
   }

@@ -9,6 +9,7 @@ import type { Schema } from "./modules/schema/schema.vo"
 import type { Views } from "./modules/views/views.vo"
 import type { TableId } from "./table-id.vo"
 import type { TableNameVo } from "./table-name.vo"
+import { setViewSort } from "./methods/set-view-sort.method"
 
 export class TableDo extends AggregateRoot<ITableEvents> {
   public id!: TableId
@@ -19,6 +20,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
 
   $setViewFilter = setViewFilter
   $setViewColor = setViewColor
+  $setViewSort = setViewSort
   $setTableRLS = setTableRLS
 
   getOrderedFields() {

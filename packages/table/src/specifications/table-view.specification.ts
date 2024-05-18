@@ -4,6 +4,7 @@ import type { IRootViewColor } from "../modules/views/view/view-color"
 import type { TableDo } from "../table.do"
 import type { ITableSpecVisitor } from "./table-visitor.interface"
 import { TableComositeSpecification } from "./table.composite-specification"
+import type { IViewSort } from "../modules/views/view/view-sort"
 
 export class WithViewFilter extends TableComositeSpecification {
   constructor(
@@ -45,6 +46,28 @@ export class WithViewColor extends TableComositeSpecification {
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
     v.withViewColor(this)
+    return Ok(undefined)
+  }
+}
+
+export class WithViewSort extends TableComositeSpecification {
+  constructor(
+    public readonly viewId: ViewId,
+    public readonly previous: Option<IViewSort>,
+    public readonly sort: IViewSort,
+  ) {
+    super()
+  }
+  isSatisfiedBy(t: TableDo): boolean {
+    throw new WontImplementException(WithViewColor.name + ".isSatisfiedBy")
+  }
+  mutate(t: TableDo): Result<TableDo, string> {
+    const view = t.views.getViewById(this.viewId)
+    view.setSort(this.sort)
+    return Ok(t)
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withViewSort(this)
     return Ok(undefined)
   }
 }

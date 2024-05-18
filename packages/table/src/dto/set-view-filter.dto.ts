@@ -1,12 +1,11 @@
 import { z } from "zod"
-import { viewId } from "../modules"
-import { viewColorGroup } from "../modules/views/view/view-color"
+import { viewFilterGroup, viewId } from "../modules"
 import { tableId } from "../table-id.vo"
 
-export const setViewColorDTO = z.object({
+export const setViewFilterDTO = z.object({
   tableId: tableId,
   viewId: viewId.optional(),
-  color: viewColorGroup,
+  filter: viewFilterGroup,
 })
 
-export type ISetViewColorDTO = z.infer<typeof setViewColorDTO>
+export type ISetViewFilterDTO = z.infer<typeof setViewFilterDTO>

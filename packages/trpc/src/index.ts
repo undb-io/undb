@@ -5,11 +5,13 @@ import {
   SetTableRLSCommand,
   SetViewColorCommand,
   SetViewFilterCommand,
+  SetViewSortCommand,
   createRecordCommand,
   createTableCommand,
   setTableRLSCommand,
   setViewColorCommand,
   setViewFilterCommand,
+  setViewSortCommand,
 } from "@undb/commands"
 import { CommandBus, QueryBus } from "@undb/cqrs"
 import { container } from "@undb/di"
@@ -52,6 +54,7 @@ const p = t.procedure.use(async ({ type, input, path, next }) => {
 const viewRouter = t.router({
   setFilter: p.input(setViewFilterCommand).mutation(({ input }) => commandBus.execute(new SetViewFilterCommand(input))),
   setColor: p.input(setViewColorCommand).mutation(({ input }) => commandBus.execute(new SetViewColorCommand(input))),
+  setSort: p.input(setViewSortCommand).mutation(({ input }) => commandBus.execute(new SetViewSortCommand(input))),
 })
 
 const rlsRouter = t.router({

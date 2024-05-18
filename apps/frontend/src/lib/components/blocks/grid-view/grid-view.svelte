@@ -211,12 +211,14 @@
         <Select.Root
           selected={{ value: perPage, label: String(perPage) }}
           onSelectedChange={(value) => {
-            perPage = value.value
+            if (value) {
+              perPage = value.value
+            }
             currentPage = 1
           }}
         >
           <Select.Trigger value={perPage} class="min-w-16">
-            <Select.Value placeholder="Theme" />
+            <Select.Value placeholder="page" />
           </Select.Trigger>
           <Select.Content>
             <Select.Item value={1}>1</Select.Item>

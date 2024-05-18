@@ -8,14 +8,22 @@ import type {
   TableViewsSpecification,
   WithViewColor,
   WithViewFilter,
+  WithViewSort,
 } from "@undb/table"
 import type { SQLiteUpdateSetSource } from "drizzle-orm/sqlite-core"
 import type { tables } from "../tables"
+import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
 
 type Source = SQLiteUpdateSetSource<typeof tables>
 
 export class TableMutationVisitor implements ITableSpecVisitor {
   constructor(public readonly table: TableDo) {}
+  withTableRLS(rls: WithTableRLS): void {
+    throw new NotImplementException(TableMutationVisitor.name + ".withTableRLS")
+  }
+  withViewSort(viewSort: WithViewSort): void {
+    this.#updates = { ...this.#updates, views: this.table.views.toJSON() }
+  }
   withViewColor(viewFilter: WithViewColor): void {
     this.#updates = { ...this.#updates, views: this.table.views.toJSON() }
   }
@@ -43,13 +51,13 @@ export class TableMutationVisitor implements ITableSpecVisitor {
   }
   // TODO: abstraction
   and(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
-    throw new Error("Method not implemented.")
+    throw new NotImplementException(TableMutationVisitor.name + ".and")
   }
   or(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
-    throw new Error("Method not implemented.")
+    throw new WontImplementException(TableMutationVisitor.name + ".or")
   }
   not(spec: ISpecification<any, ISpecVisitor>): this {
-    throw new Error("Method not implemented.")
+    throw new WontImplementException(TableMutationVisitor.name + ".not")
   }
   clone(): this {
     const visitor = new TableMutationVisitor(this.table)
