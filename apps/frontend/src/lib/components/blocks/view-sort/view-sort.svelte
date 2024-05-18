@@ -3,8 +3,9 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import * as Select from "$lib/components/ui/select"
   import Badge from "$lib/components/ui/badge/badge.svelte"
-  import { ArrowDownAzIcon, ArrowUpDownIcon, ArrowUpZaIcon } from "lucide-svelte"
+  import { ArrowDownAzIcon, ArrowUpDownIcon, ArrowUpZaIcon, GripVerticalIcon, Trash2Icon } from "lucide-svelte"
   import { cn } from "$lib/utils"
+  import { SortableList } from "@jhubbardsf/svelte-sortablejs"
 
   import { getTable } from "$lib/store/table.store"
   import { type IViewSort, isFieldSortable } from "@undb/table"
@@ -12,6 +13,7 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { invalidateAll } from "$app/navigation"
+  import { isNumber } from "radash"
 
   const table = getTable()
   $: view = $table.views.getViewById()
@@ -52,6 +54,19 @@
       sort: value,
     })
   }
+
+  function removeSort(i: number): void {
+    value = value.filter((_, index) => index !== i)
+  }
+
+  function swapSort(oldIndex: number, newIndex: number) {
+    if (value) {
+      const filters = [...value]
+      const [removed] = filters.splice(oldIndex, 1)
+      filters.splice(newIndex, 0, removed)
+      value = [...filters]
+    }
+  }
 </script>
 
 <Popover.Root bind:open>
@@ -73,50 +88,70 @@
     {#if value?.length}
       <div class="space-y-2 border-b px-4 pb-2 pt-0.5">
         <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Sorts</div>
-        {#each value as item}
-          <div class="grid w-full grid-cols-6 items-center">
-            <FieldPicker
-              filter={(field) => !selectedFieldIds.has(field.value) && isFieldSortable(field.value)}
-              }
-              bind:value={item.fieldId}
-              class="col-span-4 rounded-r-none border-r-0"
-            />
+        <SortableList
+          class={cn("space-y-1.5")}
+          animation={200}
+          onEnd={(event) => {
+            if (isNumber(event.oldIndex) && isNumber(event.newIndex)) {
+              swapSort(event.oldIndex, event.newIndex)
+            }
+          }}
+        >
+          {#each value as item, i (JSON.stringify(item))}
+            <div class="grid w-full grid-cols-12 items-center gap-2">
+              <div class="col-span-10 grid grid-cols-8">
+                <FieldPicker
+                  filter={(field) => !selectedFieldIds.has(field.value) && isFieldSortable(field.value)}
+                  }
+                  bind:value={item.fieldId}
+                  class="col-span-5 rounded-r-none border-r-0"
+                />
 
-            <Select.Root
-              selected={{ value: item.direction, label: item.direction }}
-              onSelectedChange={(value) => {
-                if (value) {
-                  item.direction = value.value
-                }
-              }}
-            >
-              <Select.Trigger class="col-span-2 h-8 rounded-l-none">
-                <Select.Value asChild let:label>
-                  <div class="flex items-center gap-2">
-                    {#if label === "asc"}
+                <Select.Root
+                  selected={{ value: item.direction, label: item.direction }}
+                  onSelectedChange={(value) => {
+                    if (value) {
+                      item.direction = value.value
+                    }
+                  }}
+                >
+                  <Select.Trigger class="col-span-3 h-8 rounded-l-none">
+                    <Select.Value asChild let:label>
+                      <div class="flex items-center gap-2">
+                        {#if label === "asc"}
+                          <ArrowDownAzIcon class="mr-1 h-3 w-3" />
+                        {:else}
+                          <ArrowUpZaIcon class="mr-1 h-4 w-4" />
+                        {/if}
+                        <span>
+                          {label}
+                        </span>
+                      </div>
+                    </Select.Value>
+                  </Select.Trigger>
+                  <Select.Content class="text-sm">
+                    <Select.Item value="asc">
                       <ArrowDownAzIcon class="mr-1 h-3 w-3" />
-                    {:else}
+                      asc
+                    </Select.Item>
+                    <Select.Item value="desc">
                       <ArrowUpZaIcon class="mr-1 h-4 w-4" />
-                    {/if}
-                    <span>
-                      {label}
-                    </span>
-                  </div>
-                </Select.Value>
-              </Select.Trigger>
-              <Select.Content class="text-sm">
-                <Select.Item value="asc">
-                  <ArrowDownAzIcon class="mr-1 h-3 w-3" />
-                  asc
-                </Select.Item>
-                <Select.Item value="desc">
-                  <ArrowUpZaIcon class="mr-1 h-4 w-4" />
-                  desc
-                </Select.Item>
-              </Select.Content>
-            </Select.Root>
-          </div>
-        {/each}
+                      desc
+                    </Select.Item>
+                  </Select.Content>
+                </Select.Root>
+              </div>
+              <div class="text-muted-foreground col-span-2 flex justify-end gap-2">
+                <button on:click={() => removeSort(i)}>
+                  <Trash2Icon class="h-3 w-3" />
+                </button>
+                <button class=".handler" on:click={() => removeSort(i)}>
+                  <GripVerticalIcon class="h-3 w-3" />
+                </button>
+              </div>
+            </div>
+          {/each}
+        </SortableList>
       </div>
     {/if}
     <div class="flex w-full items-center justify-between px-4 py-1">
