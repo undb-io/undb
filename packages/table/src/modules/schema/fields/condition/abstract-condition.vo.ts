@@ -1,7 +1,7 @@
 import { ValueObject } from "@undb/domain"
 import { isEqual } from "radash"
 import type { z } from "zod"
-import type { FieldId, IFieldCondition, Schema } from "../.."
+import type { IFieldCondition, Schema } from "../.."
 import type { TableDo } from "../../../../table.do"
 import type { RecordDO } from "../../../records/record/record.do"
 import type { IRootCondition, MaybeConditionGroup } from "./condition.type"
@@ -23,7 +23,7 @@ export abstract class Condition<OptionType extends z.ZodTypeAny> extends ValueOb
   }
 
   get count() {
-    return this.value.children.length
+    return this.fieldIds.size
   }
 
   getSpec(schema: Schema) {
