@@ -1,12 +1,18 @@
-import type { Option } from "@undb/domain"
+import { applyRules, type Option } from "@undb/domain"
 import type { ISetViewSortDTO } from "../dto"
 import { SetViewSortEvent } from "../events"
 import { ViewIdVo } from "../modules"
+import { ViewSortShouldBeSortable } from "../rules/view-sort-should-be-sortable.rule"
+import { ViewSortShouldNotDuplicated } from "../rules/view-sort-should-not-duplicated.rule"
 import type { TableComositeSpecification } from "../specifications"
 import type { TableDo } from "../table.do"
 
-// TODO: add a rule to apply only sorable fields can set
 export function setViewSort(this: TableDo, dto: ISetViewSortDTO): Option<TableComositeSpecification> {
+  applyRules(
+    new ViewSortShouldBeSortable(this.schema.fieldMapById, dto.sort),
+    new ViewSortShouldNotDuplicated(dto.sort),
+  )
+
   const viewId = dto.viewId ? new ViewIdVo(dto.viewId) : undefined
   const view = this.views.getViewById(viewId)
 

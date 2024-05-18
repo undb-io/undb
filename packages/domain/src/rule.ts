@@ -1,8 +1,7 @@
 import type { ExceptionBase } from "./exception.base"
 
 export abstract class DomainRules<Err extends ExceptionBase> {
-  constructor(readonly error: Err) {}
-
+  abstract err: Err
   abstract isBroken(): boolean
 }
 
