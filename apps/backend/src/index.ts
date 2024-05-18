@@ -8,6 +8,7 @@ import { html } from "@elysiajs/html"
 import { staticPlugin } from "@elysiajs/static"
 import { trpc } from "@elysiajs/trpc"
 import { executionContext } from "@undb/context/server"
+import { graphql } from "@undb/graphql"
 import { route } from "@undb/trpc"
 import { Elysia } from "elysia"
 import { requestID } from "elysia-requestid"
@@ -30,6 +31,7 @@ const app = new Elysia()
   .use(loggerPlugin())
   .use(ui())
   .use(trpc(route))
+  .use(graphql().yoga)
 
 export type App = typeof app
 

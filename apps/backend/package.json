@@ -19,6 +19,7 @@
     "@undb/command-handlers": "workspace:*",
     "@undb/query-handlers": "workspace:*",
     "@undb/trpc": "workspace:*",
+    "@undb/graphql": "workspace:*",
     "bun": "^1.1.6",
     "core-js": "^3.37.0",
     "elysia": "latest",

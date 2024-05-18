@@ -1,0 +1,16 @@
+{
+  "name": "@undb/graphql",
+  "module": "src/index.ts",
+  "types": "src/index.d.ts",
+  "type": "module",
+  "devDependencies": {
+    "@undb/di": "workspace:*",
+    "@undb/cqrs": "workspace:*",
+    "@undb/queries": "workspace:*",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "@elysiajs/graphql-yoga": "^1.0.3",
+    "typescript": "^5.0.0"
+  }
+}
