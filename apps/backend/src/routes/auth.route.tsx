@@ -36,19 +36,6 @@ export const authStore = async (
   user: User | null
   session: Session | null
 }> => {
-  // CSRF check
-  if (context.request.method !== "GET") {
-    const originHeader = context.request.headers.get("Origin")
-    // NOTE: You may need to use `X-Forwarded-Host` instead
-    const hostHeader = context.request.headers.get("Host")
-    if (!originHeader || !hostHeader || !verifyRequestOrigin(originHeader, [hostHeader])) {
-      return {
-        user: null,
-        session: null,
-      }
-    }
-  }
-
   // use headers instead of Cookie API to prevent type coercion
   const cookieHeader = context.request.headers.get("Cookie") ?? ""
   const sessionId = lucia.readSessionCookie(cookieHeader)

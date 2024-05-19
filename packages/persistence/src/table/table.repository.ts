@@ -19,7 +19,6 @@ import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
 import { TableMapper } from "./table.mapper"
 import { injectTableMapper } from "./table.mapper.provider"
 import { TableMutationVisitor } from "./table.mutation-visitor"
-
 @singleton()
 export class TableRepository implements ITableRepository {
   constructor(
