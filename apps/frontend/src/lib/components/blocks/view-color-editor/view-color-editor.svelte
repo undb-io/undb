@@ -6,7 +6,7 @@
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
-  import { invalidateAll } from "$app/navigation"
+  import { invalidate } from "$app/navigation"
   import { writable } from "svelte/store"
   import Badge from "$lib/components/ui/badge/badge.svelte"
   import { cn } from "$lib/utils.js"
@@ -33,7 +33,7 @@
     mutationKey: [$table.id.value, "setColor"],
     mutationFn: trpc.table.view.setColor.mutate,
     onSuccess: async () => {
-      await invalidateAll()
+      await invalidate(`table:${$table.id.value}`)
       open = false
     },
   })

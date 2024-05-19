@@ -6,7 +6,7 @@
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
-  import { invalidateAll } from "$app/navigation"
+  import { invalidate } from "$app/navigation"
   import { writable } from "svelte/store"
   import Badge from "$lib/components/ui/badge/badge.svelte"
   import {
@@ -34,7 +34,7 @@
     mutationKey: [$table.id.value, "setFilters"],
     mutationFn: trpc.table.view.setFilter.mutate,
     onSuccess: async () => {
-      await invalidateAll()
+      await invalidate(`table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
       open = false
     },

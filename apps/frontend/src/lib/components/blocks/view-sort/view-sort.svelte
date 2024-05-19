@@ -12,7 +12,7 @@
   import FieldPicker from "../field-picker/field-picker.svelte"
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
-  import { invalidateAll } from "$app/navigation"
+  import { invalidate } from "$app/navigation"
   import { isNumber } from "radash"
 
   const table = getTable()
@@ -41,8 +41,8 @@
   const setViewSortMutation = createMutation({
     mutationKey: [$table.id.value, "setSort"],
     mutationFn: trpc.table.view.setSort.mutate,
-    onSettled() {
-      invalidateAll()
+    async onSettled() {
+      await invalidate(`table:${$table.id.value}`)
       open = false
     },
   })
