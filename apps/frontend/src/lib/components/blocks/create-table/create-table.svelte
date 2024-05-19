@@ -30,7 +30,6 @@
     {
       SPA: true,
       dataType: "json",
-      // @ts-ignore
       validators: zodClient(createTableCommand),
       resetForm: false,
       invalidateAll: true,

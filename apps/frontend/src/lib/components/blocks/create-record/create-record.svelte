@@ -36,7 +36,6 @@
   const form = superForm(defaults({}, zodClient(schema)), {
     SPA: true,
     dataType: "json",
-    // @ts-ignore
     validators: zodClient(schema),
     resetForm: false,
     invalidateAll: false,

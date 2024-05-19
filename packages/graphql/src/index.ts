@@ -16,6 +16,8 @@ export class Graphql {
   public get yoga() {
     return yoga({
       typeDefs: `
+      scalar JSON
+
       enum FieldType {
         string
         number
@@ -39,6 +41,9 @@ export class Graphql {
         id: ID!
         name: String!
         type: ViewType!
+        filter: JSON
+        color: JSON
+        sort: JSON
       }
 
       type Table {

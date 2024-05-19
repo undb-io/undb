@@ -11,6 +11,9 @@ query GetTableQuery($tableId: ID!) {
       id
       name
       type
+      filter
+      color
+      sort
     }
     recordsCount
   }

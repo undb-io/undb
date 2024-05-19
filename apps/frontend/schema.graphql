@@ -13,6 +13,8 @@ enum FieldType {
   updatedAt
 }
 
+scalar JSON
+
 type Query {
   table(id: ID!): Table
   tables: [Table!]
@@ -27,8 +29,11 @@ type Table {
 }
 
 type View {
+  color: JSON
+  filter: JSON
   id: ID!
   name: String!
+  sort: JSON
   type: ViewType!
 }
 
