@@ -9,9 +9,6 @@ export default ({ children }: { children: JSX.Element }) => (
       <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body>
-      <header>
-        <h1 class="text-red-500">My watchlist</h1>
-      </header>
       <main>{children}</main>
     </body>
   </html>
