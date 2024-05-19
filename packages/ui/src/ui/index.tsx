@@ -1,5 +1,5 @@
 import Layout from "../layout"
-import { Test } from "./test"
+export * from "./signup"
 
 export const UI = () => {
   return (

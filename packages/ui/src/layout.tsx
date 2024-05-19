@@ -7,6 +7,7 @@ export default ({ children }: { children: JSX.Element }) => (
       <title>Document</title>
       <script src="https://unpkg.com/htmx.org@1.9.12"></script>
       <script src="https://cdn.tailwindcss.com"></script>
+      <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
     </head>
     <body>
       <main>{children}</main>

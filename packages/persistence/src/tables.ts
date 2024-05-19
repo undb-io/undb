@@ -6,6 +6,8 @@ const sqliteTable = sqliteTableCreator((name) => `undb_${name}`)
 
 export const users = sqliteTable("user", {
   id: text("id").notNull().primaryKey(),
+  email: text("email").notNull().unique(),
+  password: text("password").notNull(),
 })
 
 export const tables = sqliteTable("table", {
@@ -36,3 +38,15 @@ export const outbox = sqliteTable("outbox", {
 
 export type Outbox = typeof outbox.$inferSelect
 export type NewOutbox = typeof outbox.$inferInsert
+
+export const userTable = sqliteTable("user", {
+  id: text("id").notNull().primaryKey(),
+})
+
+export const sessionTable = sqliteTable("session", {
+  id: text("id").notNull().primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => userTable.id),
+  expiresAt: integer("expires_at").notNull(),
+})

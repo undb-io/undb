@@ -14,20 +14,20 @@ import { route } from "@undb/trpc"
 import { Elysia } from "elysia"
 import { requestID } from "elysia-requestid"
 import { loggerPlugin } from "./plugins/logging"
-import { ui } from "./routes/ui.route"
+import { auth, authStore } from "./routes/auth.route"
 
 const app = new Elysia()
+  .derive(authStore)
   .use(requestID())
-  .onRequest(({ set }) => {
-    const requestId = set.headers["X-Request-ID"]
-    // TODO: remove test user
-    executionContext.enterWith({ requestId, user: { userId: "test" } })
+  .onBeforeHandle((ctx) => {
+    const requestId = ctx.set.headers["X-Request-ID"]
+    executionContext.enterWith({ requestId, user: { userId: ctx.user?.id ?? null } })
   })
   .use(staticPlugin({ prefix: "/", assets: "dist" }))
   .use(cors())
   .use(html())
+  .use(auth)
   .use(loggerPlugin())
-  .use(ui())
   .use(trpc(route))
   .use(graphql().yoga)
 

@@ -1,5 +1,5 @@
 interface ContextUser {
-  userId: string
+  userId: string | null
 }
 
 export interface ExecuteContext {
