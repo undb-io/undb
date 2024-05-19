@@ -10,7 +10,7 @@ export const load: LayoutLoad = async (event) => {
 
   const store = new GetTableQueryStore()
 
-  await store.fetch({ event, variables: { tableId } })
+  await store.fetch({ event, variables: { tableId }, policy: "NetworkOnly" })
 
   return {
     tableStore: store,
