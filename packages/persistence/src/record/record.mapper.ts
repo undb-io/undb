@@ -1,6 +1,6 @@
 import { singleton } from "@undb/di"
 import type { Mapper } from "@undb/domain"
-import type { IRecordDTO, RecordDO } from "@undb/table"
+import { RecordDO, type IRecordDTO } from "@undb/table"
 
 @singleton()
 export class RecordMapper implements Mapper<RecordDO, any, IRecordDTO> {

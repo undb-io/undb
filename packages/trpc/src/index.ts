@@ -6,12 +6,14 @@ import {
   SetViewColorCommand,
   SetViewFilterCommand,
   SetViewSortCommand,
+  UpdateRecordCommand,
   createRecordCommand,
   createTableCommand,
   setTableRLSCommand,
   setViewColorCommand,
   setViewFilterCommand,
   setViewSortCommand,
+  updateRecordCommand,
 } from "@undb/commands"
 import { CommandBus, QueryBus } from "@undb/cqrs"
 import { container } from "@undb/di"
@@ -81,6 +83,7 @@ const tableRouter = t.router({
 export const recordRouter = t.router({
   list: p.input(getRecordsQuery).query(({ input }) => queryBus.execute(new GetRecordsQuery(input))),
   create: p.input(createRecordCommand).mutation(({ input }) => commandBus.execute(new CreateRecordCommand(input))),
+  update: p.input(updateRecordCommand).mutation(({ input }) => commandBus.execute(new UpdateRecordCommand(input))),
 })
 
 export const route = t.router({

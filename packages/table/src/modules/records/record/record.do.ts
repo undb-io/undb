@@ -3,10 +3,10 @@ import type { TableDo } from "../../../table.do"
 import type { FieldValue } from "../../schema"
 import type { FieldId } from "../../schema/fields/field-id.vo"
 import { RecordCreatedEvent, type IRecordEvent } from "../events"
-import type { ICreateRecordDTO, IRecordDTO } from "./dto"
+import type { ICreateRecordDTO, IRecordDTO, IUpdateRecordDTO } from "./dto"
 import { RecordIdVO, type RecordId } from "./record-id.vo"
 import { RecordValuesVO } from "./record-values.vo"
-import type { IRecordComositeSpecification } from "./record.composite-specification"
+import type { IRecordComositeSpecification, RecordComositeSpecification } from "./record.composite-specification"
 
 export class RecordDO extends AggregateRoot<IRecordEvent> {
   constructor(
@@ -42,6 +42,10 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
 
   match(spec: IRecordComositeSpecification): boolean {
     return spec.isSatisfiedBy(this)
+  }
+
+  update(table: TableDo, dto: IUpdateRecordDTO): Option<RecordComositeSpecification> {
+    throw new Error("Method not implemented.")
   }
 }
 

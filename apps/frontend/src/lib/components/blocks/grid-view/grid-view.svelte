@@ -16,6 +16,7 @@
   import TableTools from "../table-tools/table-tools.svelte"
   import GridViewHeader from "./grid-view-header.svelte"
   import * as Select from "$lib/components/ui/select"
+  import { getBorder } from "./grid-view.util"
 
   const t = getTable()
 
@@ -36,23 +37,6 @@
   })
 
   $: colorSpec = view.color.into(undefined)?.getSpec($t.schema).into(undefined)
-  function getBorder(color: IColors): string {
-    const map: Record<IColors, string> = {
-      black: "border-black",
-      red: "border-red-500",
-      green: "border-green-500",
-      blue: "border-blue-500",
-      yellow: "border-yellow-500",
-      purple: "border-purple-500",
-      gray: "border-gray-500",
-      orange: "border-orange-500",
-      pink: "border-pink-500",
-      cyan: "border-cyan-500",
-      teal: "border-teal-500",
-      indigo: "border-indigo-500",
-    }
-    return map[color]
-  }
 
   // TODO: record type
   $: records = (($getRecords.data as any)?.records as IRecordsDTO) ?? []
@@ -98,7 +82,8 @@
           header: () => createRender(GridViewHeader, { field }),
           accessor: field.id.value,
           cell: (item) => {
-            return createRender(GridViewCell, { index, value: item.value })
+            console.log(item)
+            return createRender(GridViewCell, { index, value: item.value, field, recordId: item.row.original.id })
           },
         })
       }),

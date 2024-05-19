@@ -4,6 +4,7 @@ import { SetTableRLSCommandHandler } from "./set-table-rls.command-handler"
 import { SetViewColorCommandHandler } from "./set-view-color.command-handler"
 import { SetViewFilterCommandHandler } from "./set-view-filter.command-handler"
 import { SetViewSortCommandHandler } from "./set-view-sort.command-handler"
+import { UpdateRecordCommandHandler } from "./update-record.command-handler"
 
 export const commandHandlers = [
   CreateTableCommandHandler,
@@ -12,4 +13,5 @@ export const commandHandlers = [
   SetViewColorCommandHandler,
   SetTableRLSCommandHandler,
   SetViewSortCommandHandler,
+  UpdateRecordCommandHandler,
 ]
