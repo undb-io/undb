@@ -4,12 +4,6 @@ import { integer, sqliteTableCreator, text } from "drizzle-orm/sqlite-core"
 
 const sqliteTable = sqliteTableCreator((name) => `undb_${name}`)
 
-export const users = sqliteTable("user", {
-  id: text("id").notNull().primaryKey(),
-  email: text("email").notNull().unique(),
-  password: text("password").notNull(),
-})
-
 export const tables = sqliteTable("table", {
   id: text("id").notNull().primaryKey(),
   name: text("name").notNull(),
@@ -39,14 +33,16 @@ export const outbox = sqliteTable("outbox", {
 export type Outbox = typeof outbox.$inferSelect
 export type NewOutbox = typeof outbox.$inferInsert
 
-export const userTable = sqliteTable("user", {
+export const users = sqliteTable("user", {
   id: text("id").notNull().primaryKey(),
+  email: text("email").notNull().unique(),
+  password: text("password").notNull(),
 })
 
 export const sessionTable = sqliteTable("session", {
   id: text("id").notNull().primaryKey(),
   userId: text("user_id")
     .notNull()
-    .references(() => userTable.id),
+    .references(() => users.id),
   expiresAt: integer("expires_at").notNull(),
 })

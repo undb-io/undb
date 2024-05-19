@@ -1,9 +1,12 @@
-import { adapter, db, users } from "@undb/persistence"
+import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle"
+import { db, sessionTable, users } from "@undb/persistence"
 import { eq } from "drizzle-orm"
 import { Context, Elysia, t } from "elysia"
 import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize, verifyRequestOrigin } from "lucia"
 import { Login, SignUp } from "@undb/ui"
+
+const adapter = new DrizzleSQLiteAdapter(db, sessionTable, users)
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {

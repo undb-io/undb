@@ -1,4 +1,4 @@
-export { adapter, db } from "./db"
+export { db } from "./db"
 export type { Database } from "./db"
 export { injectDb } from "./db.provider"
 export * from "./record"
