@@ -3,20 +3,20 @@
   import ConfirmDeleteRecord from "$lib/components/blocks/delete-record/confirm-delete-record.svelte"
   import GridView from "$lib/components/blocks/grid-view/grid-view.svelte"
   import { createRecordSheetOpen } from "$lib/components/blocks/create-record/create-record.store.ts"
-  import type { PageData } from "./$types"
   import { shortcut, type ShortcutEventDetail } from "@svelte-put/shortcut"
   import TableHeader from "$lib/components/blocks/table-header/table-header.svelte"
 
-  export let data: PageData
   function handleR(detail: ShortcutEventDetail) {
     $createRecordSheetOpen = true
   }
 </script>
 
 <TableHeader />
-<GridView />
+<main class="h-full flex-1 overflow-auto">
+  <GridView />
+</main>
 
-<CreateRecordSheet data={data.createRecord} />
+<CreateRecordSheet />
 <ConfirmDeleteRecord />
 
 <svelte:window

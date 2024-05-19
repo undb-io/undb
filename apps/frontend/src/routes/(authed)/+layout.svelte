@@ -32,9 +32,10 @@
     }
   }
 
-  $: tables = data.tables.data?.tables ?? []
+  $: tablesStore = data.tablesStore
+  $: tables = $tablesStore.data?.tables?.filter(Boolean) ?? []
 
-  if (tables?.length !== 0 && !$page.params.tableId) {
+  if (tables && tables?.length !== 0 && !$page.params.tableId) {
     goto(`/t/${tables[0].id}`, { replaceState: true })
   }
 </script>
@@ -71,14 +72,12 @@
     </div>
   </Resizable.Pane>
   <Resizable.Handle />
-  <Resizable.Pane class="grid min-h-screen" defaultSize={80}>
-    <div class="flex w-full flex-col">
-      <slot />
-    </div>
+  <Resizable.Pane class="grid h-screen" defaultSize={80}>
+    <slot />
   </Resizable.Pane>
 </Resizable.PaneGroup>
 
-<CreateTableSheet data={data.createTableForm} />
+<CreateTableSheet />
 
 <svelte:window
   use:shortcut={{

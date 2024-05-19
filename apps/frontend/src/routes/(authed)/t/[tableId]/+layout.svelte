@@ -1,21 +1,27 @@
 <script lang="ts">
   import { page } from "$app/stores"
-  import { tableCreator } from "@undb/table"
+  import { TableDo, tableCreator } from "@undb/table"
   import { setTable } from "$lib/store/table.store"
   import type { LayoutData } from "./$types"
   import { writable } from "svelte/store"
 
   export let data: LayoutData
+  $: tableStore = data.tableStore
 
-  const table = writable(tableCreator.fromJSON(data.table))
+  $: fetching = $tableStore.fetching
+  $: tableDTO = $tableStore.data?.table
+
+  const table = writable<TableDo>()
   $: {
-    if ($page.params.tableId === $table.id.value) {
-      table.set(tableCreator.fromJSON(data.table))
+    if (!fetching && tableDTO && $page.params.tableId === tableDTO.id) {
+      table.set(tableCreator.fromJSON(tableDTO))
       setTable(table)
     }
   }
 </script>
 
-<main class="flex flex-1 flex-col">
-  <slot />
+<main class="flex h-screen flex-1 flex-col">
+  {#if $table}
+    <slot />
+  {/if}
 </main>

@@ -5,16 +5,13 @@
   import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import FieldControl from "../field-control/field-control.svelte"
-  import type { SuperValidated } from "sveltekit-superforms"
-  import { superForm } from "sveltekit-superforms"
+  import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { createRecordSheetOpen } from "./create-record.store"
   import { toast } from "svelte-sonner"
 
   const table = getTable()
-  const schema = $table.schema.valuesSchema
-
-  export let data: SuperValidated<any>
+  const schema = $table.schema.mutableSchema
 
   const client = useQueryClient()
 
@@ -36,7 +33,7 @@
     })
   }
 
-  const form = superForm(data, {
+  const form = superForm(defaults({}, zodClient(schema)), {
     SPA: true,
     dataType: "json",
     // @ts-ignore
@@ -49,10 +46,12 @@
   })
 
   const { form: formData, enhance } = form
+
+  $: fields = $table.getOrderedFields().filter((f) => f.isMutable)
 </script>
 
 <form method="POST" use:enhance id="createRecord">
-  {#each $table.getOrderedFields() as field}
+  {#each fields as field}
     <Form.Field {form} name={field.id.value}>
       <Form.Control let:attrs>
         <Form.Label class="flex items-center gap-2">

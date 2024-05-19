@@ -1,11 +1,8 @@
 <script lang="ts">
   import * as Sheet from "$lib/components/ui/sheet"
-  import type { SuperValidated } from "sveltekit-superforms"
   import CreateRecord from "./create-record.svelte"
   import Button from "$lib/components/ui/button/button.svelte"
   import { createRecordSheetOpen } from "./create-record.store"
-
-  export let data: SuperValidated<any>
 </script>
 
 <Sheet.Root bind:open={$createRecordSheetOpen}>
@@ -15,7 +12,7 @@
     </Sheet.Header>
 
     <div class="flex-1">
-      <CreateRecord {data} />
+      <CreateRecord />
     </div>
 
     <Sheet.Footer>

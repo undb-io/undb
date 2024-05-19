@@ -9,6 +9,7 @@ import type { IFieldDTO } from "../dto/field.dto"
 import { FieldIdVo, fieldId, type FieldId } from "../field-id.vo"
 import { FieldNameVo, fieldName } from "../field-name.vo"
 import type { FieldType } from "../field.type"
+import { isFieldSortable } from "../field.util"
 import type { IFieldVisitor } from "../field.visitor"
 import type { IAutoIncrementFieldConditionSchema } from "./autoincrement-field/autoincrement-field.condition"
 import type { ICreatedAtFieldConditionSchema } from "./created-at-field"
@@ -16,7 +17,6 @@ import type { IIdFieldConditionSchema } from "./id-field/id-field.condition"
 import type { INumberFieldConditionSchema } from "./number-field"
 import type { IStringFieldConditionSchema } from "./string-field"
 import type { IUpdatedAtFieldConditionSchema } from "./updated-at-field"
-import { isFieldSortable } from "../field.util"
 
 export const createBaseFieldDTO = z.object({
   id: fieldId.optional(),
@@ -50,6 +50,10 @@ export abstract class AbstractField<V extends ValueObject> {
   protected system = false
   public get isSystem() {
     return this.system
+  }
+
+  public get isMutable() {
+    return !this.isSystem
   }
 
   #required: boolean | undefined = undefined

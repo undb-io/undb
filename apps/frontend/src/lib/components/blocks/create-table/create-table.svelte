@@ -2,7 +2,7 @@
   import * as Form from "$lib/components/ui/form"
   import { trpc } from "$lib/trpc/client.js"
   import { createMutation } from "@tanstack/svelte-query"
-  import { type SuperValidated, superForm } from "sveltekit-superforms"
+  import { superForm, defaults } from "sveltekit-superforms"
   import { createTableCommand } from "@undb/commands"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { Input } from "$lib/components/ui/input"
@@ -11,8 +11,6 @@
   import { toast } from "svelte-sonner"
   import { invalidate } from "$app/navigation"
   import { goto } from "$app/navigation"
-
-  export let data: SuperValidated<any>
 
   const mutation = createMutation({
     mutationFn: trpc.table.create.mutate,
@@ -27,17 +25,20 @@
     },
   })
 
-  const form = superForm(data, {
-    SPA: true,
-    dataType: "json",
-    // @ts-ignore
-    validators: zodClient(createTableCommand),
-    resetForm: false,
-    invalidateAll: false,
-    onSubmit() {
-      $mutation.mutate($formData)
+  const form = superForm(
+    defaults({ name: "table", schema: [{ type: "string", name: "field1" }] }, zodClient(createTableCommand)),
+    {
+      SPA: true,
+      dataType: "json",
+      // @ts-ignore
+      validators: zodClient(createTableCommand),
+      resetForm: false,
+      invalidateAll: true,
+      onSubmit() {
+        $mutation.mutate($formData)
+      },
     },
-  })
+  )
 
   const { form: formData, enhance } = form
 </script>

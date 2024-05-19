@@ -48,6 +48,16 @@ export class Schema extends ValueObject<Field[]> {
     return this.fields.filter((f) => !f.isSystem) as NoneSystemField[]
   }
 
+  get mutableSchema() {
+    const schema = objectify(
+      this.fields.filter((f) => f.isMutable),
+      (f) => f.id.value,
+      (f) => f.valueSchema,
+    )
+
+    return z.object(schema)
+  }
+
   get valuesSchema() {
     const schema = objectify(
       this.fields,
