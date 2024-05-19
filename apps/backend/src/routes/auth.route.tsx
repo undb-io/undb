@@ -1,10 +1,9 @@
-import { hash, verify } from "@node-rs/argon2"
 import { adapter, db, users } from "@undb/persistence"
 import { eq } from "drizzle-orm"
 import { Context, Elysia, t } from "elysia"
 import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize, verifyRequestOrigin } from "lucia"
-import { SignUp } from "@undb/ui"
+import { Login, SignUp } from "@undb/ui"
 
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
@@ -14,7 +13,6 @@ export const lucia = new Lucia(adapter, {
   },
   getUserAttributes: (attributes) => {
     return {
-      // we don't need to expose the password hash!
       email: attributes.email,
     }
   },
@@ -89,36 +87,36 @@ export const auth = () => {
         const email = ctx.body.email
         const password = ctx.body.password
 
-        const passwordHash = await hash(password, {
-          // recommended minimum parameters
-          memoryCost: 19456,
-          timeCost: 2,
-          outputLen: 32,
-          parallelism: 1,
-        })
-        const userId = generateIdFromEntropySize(10) // 16 characters long
+        let userId: string
 
-        try {
+        const user = (await db.select().from(users).where(eq(users.email, email)).limit(1)).at(0)
+        if (user) {
+          const validPassword = await Bun.password.verify(password, user.password)
+          if (!validPassword) {
+            return new Response("Invalid email or password", {
+              status: 400,
+            })
+          }
+
+          userId = user.id
+        } else {
+          userId = generateIdFromEntropySize(10) // 16 characters long
+
+          const passwordHash = await Bun.password.hash(password)
           await db.insert(users).values({
             email,
             id: userId,
             password: passwordHash,
           })
-
-          const session = await lucia.createSession(userId, {})
-          const sessionCookie = lucia.createSessionCookie(session.id)
-          return new Response(null, {
-            status: 302,
-            headers: {
-              Location: "/",
-              "Set-Cookie": sessionCookie.serialize(),
-            },
-          })
-        } catch (e) {
-          return new Response((e as Error).message, {
-            status: 400,
-          })
         }
+
+        const session = await lucia.createSession(userId, {})
+        const sessionCookie = lucia.createSessionCookie(session.id)
+
+        const response = new Response()
+        response.headers.set("Set-Cookie", sessionCookie.serialize())
+        response.headers.set("HX-Redirect", "/")
+        return response
       },
       {
         body: t.Object({
@@ -127,8 +125,9 @@ export const auth = () => {
         }),
       },
     )
+    .get("/login", () => <Login />)
     .post(
-      "/api/login",
+      "/login",
       async (ctx) => {
         const email = ctx.body.email
         const password = ctx.body.password
@@ -136,27 +135,12 @@ export const auth = () => {
         const user = (await db.select().from(users).where(eq(users.email, email)).limit(1)).at(0)
 
         if (!user) {
-          // NOTE:
-          // Returning immediately allows malicious actors to figure out valid emails from response times,
-          // allowing them to only focus on guessing passwords in brute-force attacks.
-          // As a preventive measure, you may want to hash passwords even for invalid emails.
-          // However, valid emails can be already be revealed with the signup page
-          // and a similar timing issue can likely be found in password reset implementation.
-          // It will also be much more resource intensive.
-          // Since protecting against this is non-trivial,
-          // it is crucial your implementation is protected against brute-force attacks with login throttling etc.
-          // If emails/usernames are public, you may outright tell the user that the username is invalid.
           return new Response("Invalid email or password", {
             status: 400,
           })
         }
 
-        const validPassword = await verify(user.password, password, {
-          memoryCost: 19456,
-          timeCost: 2,
-          outputLen: 32,
-          parallelism: 1,
-        })
+        const validPassword = await Bun.password.verify(password, user.password)
         if (!validPassword) {
           return new Response("Invalid email or password", {
             status: 400,

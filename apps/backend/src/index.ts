@@ -17,16 +17,16 @@ import { loggerPlugin } from "./plugins/logging"
 import { auth, authStore } from "./routes/auth.route"
 
 const app = new Elysia()
+  .use(staticPlugin({ prefix: "/", assets: "dist" }))
+  .use(cors())
+  .use(html())
   .derive(authStore)
   .use(requestID())
   .onBeforeHandle((ctx) => {
     const requestId = ctx.set.headers["X-Request-ID"]
     executionContext.enterWith({ requestId, user: { userId: ctx.user?.id ?? null } })
   })
-  .use(staticPlugin({ prefix: "/", assets: "dist" }))
-  .use(cors())
-  .use(html())
-  .use(auth)
+  .use(auth())
   .use(loggerPlugin())
   .use(trpc(route))
   .use(graphql().yoga)

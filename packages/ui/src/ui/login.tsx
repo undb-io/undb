@@ -1,6 +1,6 @@
 import Layout from "../layout"
 
-export const SignUp = () => {
+export const Login = () => {
   return (
     <Layout>
       <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -16,7 +16,7 @@ export const SignUp = () => {
         </div>
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form hx-post="/signup" hx-ext="json-enc">
+          <form hx-post="/login" hx-ext="json-enc">
             <div>
               <label for="email" class="block text-sm font-medium leading-6 text-gray-900">
                 Email address
