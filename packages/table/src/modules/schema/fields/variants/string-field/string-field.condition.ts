@@ -12,6 +12,8 @@ export function createStringFieldCondition<ItemType extends z.ZodTypeAny>(itemTy
     z.object({ op: z.literal("ends_with"), value: z.string().min(1) }).merge(base),
     z.object({ op: z.literal("is_empty"), value: z.undefined() }).merge(base),
     z.object({ op: z.literal("is_not_empty"), value: z.undefined() }).merge(base),
+    z.object({ op: z.literal("min"), value: z.number().int().positive() }).merge(base),
+    z.object({ op: z.literal("max"), value: z.number().int().positive() }).merge(base),
   ])
 }
 

@@ -100,3 +100,43 @@ export class StringEmpty extends RecordComositeSpecification {
     return Ok(undefined)
   }
 }
+
+export class StringMin extends RecordComositeSpecification {
+  constructor(
+    readonly fieldId: FieldId,
+    readonly min: number,
+  ) {
+    super(fieldId)
+  }
+  isSatisfiedBy(t: RecordDO): boolean {
+    const value = t.getValue(this.fieldId)
+    return value.mapOr(false, (v) => v instanceof StringFieldValue && v.value.length >= this.min)
+  }
+  mutate(t: RecordDO): Result<RecordDO, string> {
+    throw new Error("Method not implemented.")
+  }
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.stringMin(this)
+    return Ok(undefined)
+  }
+}
+
+export class StringMax extends RecordComositeSpecification {
+  constructor(
+    readonly fieldId: FieldId,
+    readonly max: number,
+  ) {
+    super(fieldId)
+  }
+  isSatisfiedBy(t: RecordDO): boolean {
+    const value = t.getValue(this.fieldId)
+    return value.mapOr(false, (v) => v instanceof StringFieldValue && v.value.length <= this.max)
+  }
+  mutate(t: RecordDO): Result<RecordDO, string> {
+    throw new Error("Method not implemented.")
+  }
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.stringMax(this)
+    return Ok(undefined)
+  }
+}

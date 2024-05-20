@@ -17,6 +17,8 @@ import type {
   StringEmpty,
   StringEndsWith,
   StringEqual,
+  StringMax,
+  StringMin,
   StringStartsWith,
 } from "@undb/table"
 import {
@@ -32,6 +34,14 @@ import {
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 
 export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements IRecordVisitor {
+  stringMin(spec: StringMin): void {
+    const cond = this.eb.eb(this.eb.fn("LENGTH", [spec.fieldId.value]), ">=", spec.min)
+    this.addCond(cond)
+  }
+  stringMax(spec: StringMax): void {
+    const cond = this.eb.eb(this.eb.fn("LENGTH", [spec.fieldId.value]), "<=", spec.max)
+    this.addCond(cond)
+  }
   dateIsBefore(spec: DateIsBefore): void {
     const cond = this.eb.eb(spec.fieldId.value, "<", startOfDay(spec.date).toISOString())
     this.addCond(cond)

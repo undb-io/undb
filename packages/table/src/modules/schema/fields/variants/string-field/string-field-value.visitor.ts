@@ -3,6 +3,8 @@ import type {
   StringEmpty,
   StringEndsWith,
   StringEqual,
+  StringMax,
+  StringMin,
   StringStartsWith,
 } from "./string-field-value.specification"
 
@@ -12,4 +14,6 @@ export interface IStringFieldValueVisitor {
   stringStartsWith(spec: StringStartsWith): void
   stringEndsWith(spec: StringEndsWith): void
   stringEmpty(spec: StringEmpty): void
+  stringMin(spec: StringMin): void
+  stringMax(spec: StringMax): void
 }

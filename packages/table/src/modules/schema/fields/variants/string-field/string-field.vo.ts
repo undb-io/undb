@@ -10,6 +10,8 @@ import {
   StringEmpty,
   StringEndsWith,
   StringEqual,
+  StringMax,
+  StringMin,
   StringStartsWith,
 } from "./string-field-value.specification"
 import { StringFieldValue } from "./string-field-value.vo"
@@ -66,6 +68,8 @@ export class StringField extends AbstractField<StringFieldValue> {
       .with({ op: "ends_with" }, ({ value }) => new StringEndsWith(value, this.id))
       .with({ op: "is_empty" }, () => new StringEmpty(this.id))
       .with({ op: "is_not_empty" }, () => new StringEmpty(this.id).not())
+      .with({ op: "min" }, ({ value }) => new StringMin(this.id, value))
+      .with({ op: "max" }, ({ value }) => new StringMax(this.id, value))
       .exhaustive()
 
     return Option(spec)
