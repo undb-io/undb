@@ -50,7 +50,10 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
 
     for (const [fieldId, value] of Object.entries(dto.values)) {
       const field = table.schema.getFieldById(new FieldIdVo(fieldId))
+
       if (field.isNone()) continue
+      if (!field.unwrap().isMutable) continue
+
       const fieldValue = FieldValueFactory.fromJSON(field.unwrap(), value).expect(
         `invalid field value ${value} for ${field.unwrap().id.value}`,
       )

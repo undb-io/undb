@@ -26,24 +26,36 @@
     autoIncrement: TextCell,
   }
 
+  let form: HTMLFormElement
   const updateRecord = createMutation({
     mutationKey: [field.id.value, recordId],
     mutationFn: trpc.record.update.mutate,
+    onSuccess(data, variables, context) {
+      form.querySelectorAll("input").forEach((input) => {
+        input.blur()
+      })
+    },
     onError(error, variables, context) {
       toast.error(error.message)
     },
   })
-</script>
 
-<svelte:component
-  this={map[field.type]}
-  bind:value
-  {index}
-  onValueChange={(value) => {
+  function handleSubmit() {
     $updateRecord.mutate({
       tableId: $table.id.value,
       id: recordId,
       values: { [field.id.value]: value },
     })
-  }}
-/>
+  }
+</script>
+
+<form on:submit|preventDefault|stopPropagation={handleSubmit} bind:this={form}>
+  <svelte:component
+    this={map[field.type]}
+    bind:value
+    {index}
+    onValueChange={(v) => {
+      value = v
+    }}
+  />
+</form>
