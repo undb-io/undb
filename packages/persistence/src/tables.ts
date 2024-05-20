@@ -13,9 +13,15 @@ export const tables = sqliteTable("table", {
   createdAt: text("created_at")
     .notNull()
     .default(sql`(CURRENT_TIMESTAMP)`),
+  createdBy: text("created_by")
+    .notNull()
+    .references(() => users.id),
   updateAt: text("updated_at")
     .notNull()
     .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
+  updatedBy: text("updated_by")
+    .notNull()
+    .references(() => users.id),
 })
 
 export type Table = typeof tables.$inferSelect

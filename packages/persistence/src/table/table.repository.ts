@@ -1,3 +1,4 @@
+import { executionContext } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import { None, Option, Some, type IUnitOfWork } from "@undb/domain"
 import {
@@ -40,18 +41,27 @@ export class TableRepository implements ITableRepository {
       return
     }
 
+    const ctx = executionContext.getStore()
+    const userId = ctx!.user!.userId!
+
     const visitor = new TableMutationVisitor(table)
     spec.unwrap().accept(visitor)
 
-    await this.db.update(tables).set(visitor.updates).where(eq(tables.id, table.id.value))
+    await this.db
+      .update(tables)
+      .set({ ...visitor.updates, updatedBy: userId })
+      .where(eq(tables.id, table.id.value))
     await this.outboxService.save(table)
   }
 
   @transactional()
   async insert(table: TableDo): Promise<void> {
+    const ctx = executionContext.getStore()
+    const userId = ctx!.user!.userId!
+
     const values = this.mapper.toEntity(table)
 
-    await this.db.insert(tables).values(values)
+    await this.db.insert(tables).values({ ...values, createdBy: userId, updatedBy: userId })
     await this.underlyingTableService.create(table)
     await this.outboxService.save(table)
   }

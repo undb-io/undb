@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "d8866f2f-10c0-40b6-9466-212d6ac5e2d4",
+  "id": "d917deb8-9a09-4d11-a7ea-8f907612de57",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_outbox": {
@@ -55,6 +55,46 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "undb_session": {
+      "name": "undb_session",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "undb_session_user_id_undb_user_id_fk": {
+          "name": "undb_session_user_id_undb_user_id_fk",
+          "tableFrom": "undb_session",
+          "tableTo": "undb_user",
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "undb_table": {
       "name": "undb_table",
       "columns": {
@@ -94,8 +134,22 @@
           "autoincrement": false,
           "default": "(CURRENT_TIMESTAMP)"
         },
+        "created_by": {
+          "name": "created_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "updated_at": {
           "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_by": {
+          "name": "updated_by",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -103,7 +157,26 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "undb_table_created_by_undb_user_id_fk": {
+          "name": "undb_table_created_by_undb_user_id_fk",
+          "tableFrom": "undb_table",
+          "tableTo": "undb_user",
+          "columnsFrom": ["created_by"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "undb_table_updated_by_undb_user_id_fk": {
+          "name": "undb_table_updated_by_undb_user_id_fk",
+          "tableFrom": "undb_table",
+          "tableTo": "undb_user",
+          "columnsFrom": ["updated_by"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -116,9 +189,29 @@
           "primaryKey": true,
           "notNull": true,
           "autoincrement": false
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "password": {
+          "name": "password",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "undb_user_email_unique": {
+          "name": "undb_user_email_unique",
+          "columns": ["email"],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}

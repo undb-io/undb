@@ -15,6 +15,7 @@
     "@undb/domain": "workspace:*",
     "@undb/table": "workspace:*",
     "@undb/logger": "workspace:*",
+    "@undb/context": "workspace:*",
     "date-fns": "^3.6.0",
     "drizzle-orm": "^0.30.10",
     "kysely": "^0.27.3",

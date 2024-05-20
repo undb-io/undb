@@ -23,7 +23,7 @@ const app = new Elysia()
   .use(requestID())
   .onBeforeHandle((ctx) => {
     const requestId = ctx.set.headers["X-Request-ID"]
-    executionContext.enterWith({ requestId, user: { userId: "123" } })
+    executionContext.enterWith({ requestId, user: { userId: ctx.user?.id ?? null } })
   })
   .use(auth())
   .use(loggerPlugin())
