@@ -7,6 +7,7 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
+  import { toast } from "svelte-sonner"
 
   const table = getTable()
 
@@ -27,6 +28,9 @@
   const updateRecord = createMutation({
     mutationKey: [field.id.value, recordId],
     mutationFn: trpc.record.update.mutate,
+    onError(error, variables, context) {
+      toast.error(error.message)
+    },
   })
 </script>
 

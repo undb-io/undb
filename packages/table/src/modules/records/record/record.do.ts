@@ -1,7 +1,8 @@
-import { AggregateRoot, type Option } from "@undb/domain"
+import { AggregateRoot, andOptions, type Option } from "@undb/domain"
 import type { TableDo } from "../../../table.do"
 import type { FieldValue } from "../../schema"
-import type { FieldId } from "../../schema/fields/field-id.vo"
+import { FieldIdVo, type FieldId } from "../../schema/fields/field-id.vo"
+import { FieldValueFactory } from "../../schema/fields/field-value.factory"
 import { RecordCreatedEvent, type IRecordEvent } from "../events"
 import type { ICreateRecordDTO, IRecordDTO, IUpdateRecordDTO } from "./dto"
 import { RecordIdVO, type RecordId } from "./record-id.vo"
@@ -45,7 +46,17 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
   }
 
   update(table: TableDo, dto: IUpdateRecordDTO): Option<RecordComositeSpecification> {
-    throw new Error("Method not implemented.")
+    const specs: Option<RecordComositeSpecification>[] = []
+
+    for (const [fieldId, value] of Object.entries(dto.values)) {
+      const field = table.schema.getFieldById(new FieldIdVo(fieldId))
+      if (field.isNone()) continue
+      const fieldValue = FieldValueFactory.fromJSON(field.unwrap(), value).unwrap()
+      const spec = field.unwrap().updateValue(fieldValue as any)
+      specs.push(spec)
+    }
+
+    return andOptions(...specs) as Option<RecordComositeSpecification>
   }
 }
 

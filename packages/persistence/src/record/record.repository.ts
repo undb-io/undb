@@ -1,6 +1,7 @@
 import { inject, singleton } from "@undb/di"
 import { None, Some, type IUnitOfWork, type Option } from "@undb/domain"
 import {
+  ID_TYPE,
   RecordComositeSpecification,
   RecordDO,
   injectRecordOutboxService,
@@ -14,6 +15,7 @@ import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { injectDbUnitOfWork, transactional } from "../uow"
 import { RecordMapper } from "./record.mapper"
+import { RecordMutateVisitor } from "./record.mutate-visitor"
 
 @singleton()
 export class RecordRepository implements IRecordRepository {
@@ -40,7 +42,7 @@ export class RecordRepository implements IRecordRepository {
 
   async findOneById(table: TableDo, recordId: RecordId): Promise<Option<RecordDO>> {
     const t = new UnderlyingTable(table)
-    const records = await this.qb.selectFrom(t.name).where("id", "=", recordId).limit(1).execute()
+    const records = await this.qb.selectFrom(t.name).selectAll().where(ID_TYPE, "=", recordId.value).limit(1).execute()
 
     if (!records.length) {
       return None
@@ -50,7 +52,22 @@ export class RecordRepository implements IRecordRepository {
     return Some(RecordDO.fromJSON(table, { id, values }))
   }
 
-  async updateOneById(table: TableDo, id: RecordId, spec: Option<RecordComositeSpecification>): Promise<void> {
-    throw new Error("Method not implemented.")
+  @transactional()
+  async updateOneById(table: TableDo, record: RecordDO, spec: Option<RecordComositeSpecification>): Promise<void> {
+    if (spec.isNone()) return
+
+    const t = new UnderlyingTable(table)
+
+    await this.qb
+      .updateTable(t.name)
+      .set((eb) => {
+        const visitor = new RecordMutateVisitor(eb)
+        spec.unwrap().accept(visitor)
+        return visitor.data
+      })
+      .where(ID_TYPE, "=", record.id.value)
+      .executeTakeFirst()
+
+    await this.outboxService.save(record)
   }
 }

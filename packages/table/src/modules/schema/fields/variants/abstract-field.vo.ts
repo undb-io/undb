@@ -3,6 +3,7 @@ import { ZodUndefined, z, type ZodSchema } from "zod"
 import type {
   INotRecordComositeSpecification,
   IRecordComositeSpecification,
+  RecordComositeSpecification,
 } from "../../../records/record/record.composite-specification"
 import type { IFieldCondition, MaybeFieldConditionWithFieldId } from "../condition/field-condition.type"
 import type { IFieldDTO } from "../dto/field.dto"
@@ -101,6 +102,8 @@ export abstract class AbstractField<V extends ValueObject> {
 
     return hasValue
   }
+
+  abstract updateValue(value: V): Option<RecordComositeSpecification>
 
   get conditionOps() {
     return this.getConditionSchema(z.any()).options.map((o) => o.shape.op.value)

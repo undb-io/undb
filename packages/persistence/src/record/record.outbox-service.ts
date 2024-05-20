@@ -14,6 +14,7 @@ export class RecordOutboxService implements IRecordOutboxService {
 
   async save(r: RecordDO): Promise<void> {
     const values = r.domainEvents.map(OutboxMapper.fromEvent)
+    if (!values.length) return
     await this.db.insert(outbox).values(values)
     r.removeEvents(r.domainEvents)
   }

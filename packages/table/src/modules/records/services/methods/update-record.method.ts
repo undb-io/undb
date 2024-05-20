@@ -13,7 +13,7 @@ export async function updateRecordMethod(
   const record = (await this.repo.findOneById(table, new RecordIdVO(dto.id))).unwrap()
 
   const spec = record.update(table, dto)
-  await this.repo.updateOneById(table, record.id, spec)
+  await this.repo.updateOneById(table, record, spec)
 
   return record
 }

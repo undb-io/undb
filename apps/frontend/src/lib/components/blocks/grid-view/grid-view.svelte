@@ -5,7 +5,7 @@
   import * as Table from "$lib/components/ui/table/index.js"
   import { addResizedColumns, addSelectedRows } from "svelte-headless-table/plugins"
   import { cn } from "$lib/utils.js"
-  import { Records, type IColors, type IRecordsDTO } from "@undb/table"
+  import { Records, type IRecordsDTO } from "@undb/table"
   import { createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
@@ -82,7 +82,6 @@
           header: () => createRender(GridViewHeader, { field }),
           accessor: field.id.value,
           cell: (item) => {
-            console.log(item)
             return createRender(GridViewCell, { index, value: item.value, field, recordId: item.row.original.id })
           },
         })

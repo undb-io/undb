@@ -1,6 +1,7 @@
-import { Option } from "@undb/domain"
+import { Option, Some } from "@undb/domain"
 import { match } from "ts-pattern"
 import { z } from "zod"
+import type { RecordComositeSpecification } from "../../../../records"
 import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
@@ -68,6 +69,10 @@ export class StringField extends AbstractField<StringFieldValue> {
       .exhaustive()
 
     return Option(spec)
+  }
+
+  updateValue(value: StringFieldValue): Option<RecordComositeSpecification> {
+    return Some(new StringEqual(value, this.id))
   }
 
   protected override getConditionSchema(optionType: z.ZodTypeAny): IStringFieldConditionSchema {
