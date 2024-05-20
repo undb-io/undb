@@ -6,7 +6,6 @@ register()
 
 import cors from "@elysiajs/cors"
 import { html } from "@elysiajs/html"
-import { staticPlugin } from "@elysiajs/static"
 import { trpc } from "@elysiajs/trpc"
 import { executionContext } from "@undb/context/server"
 import { graphql } from "@undb/graphql"
@@ -19,7 +18,6 @@ import { web } from "./routes/web.route"
 
 const app = new Elysia()
   .use(cors())
-  .use(staticPlugin({ indexHTML: true, prefix: "/", assets: "dist" }))
   .use(html())
   .derive(authStore)
   .use(requestID())
