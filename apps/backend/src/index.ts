@@ -5,7 +5,6 @@ import { register } from "./registry"
 register()
 
 import cors from "@elysiajs/cors"
-import { html } from "@elysiajs/html"
 import { trpc } from "@elysiajs/trpc"
 import { executionContext } from "@undb/context/server"
 import { graphql } from "@undb/graphql"
@@ -18,7 +17,6 @@ import { web } from "./routes/web.route"
 
 const app = new Elysia()
   .use(cors())
-  .use(html())
   .derive(authStore)
   .use(requestID())
   .onBeforeHandle((ctx) => {

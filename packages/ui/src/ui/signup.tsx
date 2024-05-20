@@ -16,7 +16,7 @@ export const SignUp = () => {
         </div>
 
         <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form hx-post="/signup" hx-ext="json-enc">
+          <form class="space-y-2" hx-post="/signup" hx-ext="json-enc">
             <div>
               <label for="email" class="block text-sm font-medium leading-6 text-gray-900">
                 Email address

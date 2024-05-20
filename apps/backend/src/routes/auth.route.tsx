@@ -70,6 +70,11 @@ export const authStore = async (
 
 export const auth = () => {
   return new Elysia()
+    .onBeforeHandle((ctx) => {
+      if (ctx.request.method === "GET") {
+        ctx.set.headers["Content-Type"] = "text/html; charset=utf8"
+      }
+    })
     .get("/signup", () => <SignUp />)
     .post(
       "/signup",
