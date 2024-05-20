@@ -32,9 +32,6 @@
   "engines": {
     "node": ">=18"
   },
-  "resolutions": {
-    "graphql": "16.x"
-  },
   "packageManager": "bun@1.1.6",
   "workspaces": [
     "apps/*",
