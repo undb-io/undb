@@ -51,7 +51,9 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
     for (const [fieldId, value] of Object.entries(dto.values)) {
       const field = table.schema.getFieldById(new FieldIdVo(fieldId))
       if (field.isNone()) continue
-      const fieldValue = FieldValueFactory.fromJSON(field.unwrap(), value).unwrap()
+      const fieldValue = FieldValueFactory.fromJSON(field.unwrap(), value).expect(
+        `invalid field value ${value} for ${field.unwrap().id.value}`,
+      )
       const spec = field.unwrap().updateValue(fieldValue as any)
       specs.push(spec)
     }

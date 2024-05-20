@@ -49,7 +49,7 @@ export class RecordMutateVisitor implements IRecordVisitor {
     throw new Error("Method not implemented.")
   }
   numberEqual(spec: NumberEqual): void {
-    throw new Error("Method not implemented.")
+    this.setData(spec.fieldId.value, spec.value)
   }
   numberGT(spec: NumberGT): void {
     throw new Error("Method not implemented.")

@@ -1,4 +1,4 @@
-import { Option, ValueObject } from "@undb/domain"
+import { None, NotImplementException, Option, ValueObject } from "@undb/domain"
 import { ZodUndefined, z, type ZodSchema } from "zod"
 import type {
   INotRecordComositeSpecification,
@@ -103,7 +103,13 @@ export abstract class AbstractField<V extends ValueObject> {
     return hasValue
   }
 
-  abstract updateValue(value: V): Option<RecordComositeSpecification>
+  updateValue(value: V): Option<RecordComositeSpecification> {
+    if (this.isSystem) {
+      return None
+    }
+
+    throw new NotImplementException(this.type + ".updateValue")
+  }
 
   get conditionOps() {
     return this.getConditionSchema(z.any()).options.map((o) => o.shape.op.value)

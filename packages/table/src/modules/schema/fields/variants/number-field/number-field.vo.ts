@@ -1,8 +1,10 @@
-import { Option } from "@undb/domain"
+import { Option, Some } from "@undb/domain"
 import { z } from "zod"
+import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
+import { NumberEqual } from "../abstractions"
 import { createAbstractNumberFieldMather } from "../abstractions/abstract-number-field.condition"
 import { NumberFieldValue } from "./number-field-value.vo"
 import {
@@ -52,6 +54,10 @@ export class NumberField extends AbstractField<NumberFieldValue> {
     const spec = createAbstractNumberFieldMather(condition, this.id).exhaustive()
 
     return Option(spec)
+  }
+
+  override updateValue(value: NumberFieldValue): Option<RecordComositeSpecification> {
+    return Some(new NumberEqual(value.value, this.id))
   }
 
   protected override getConditionSchema(optionType: z.ZodTypeAny): INumberFieldConditionSchema {

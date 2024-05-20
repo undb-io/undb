@@ -2,6 +2,7 @@
   import type { Field, FieldType } from "@undb/table"
   import type { ComponentType } from "svelte"
   import StringCell from "./editable-cell/string-cell.svelte"
+  import NumberCell from "./editable-cell/number-cell.svelte"
   import TextCell from "./editable-cell/text-cell.svelte"
   import IdCell from "./editable-cell/id-cell.svelte"
   import { createMutation } from "@tanstack/svelte-query"
@@ -18,7 +19,7 @@
 
   const map: Record<FieldType, ComponentType> = {
     string: StringCell,
-    number: StringCell,
+    number: NumberCell,
     id: IdCell,
     createdAt: TextCell,
     updatedAt: TextCell,
