@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@elysiajs/cors": "^1.0.2",
+    "@elysiajs/html": "^1.0.2",
     "@elysiajs/static": "^1.0.3",
     "@elysiajs/trpc": "^1.0.2",
     "@lucia-auth/adapter-drizzle": "^1.0.7",
