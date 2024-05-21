@@ -7,6 +7,7 @@ import type {
 } from "../../../records/record/record.composite-specification"
 import type { IFieldCondition, MaybeFieldConditionWithFieldId } from "../condition/field-condition.type"
 import type { IFieldDTO } from "../dto/field.dto"
+import type { FieldConstraintVO } from "../field-constraint.vo"
 import { FieldIdVo, fieldId, type FieldId } from "../field-id.vo"
 import { FieldNameVo, fieldName } from "../field-name.vo"
 import type { FieldType } from "../field.type"
@@ -34,9 +35,10 @@ export const baseFieldDTO = z.object({
 
 export type IBaseFieldDTO = z.infer<typeof baseFieldDTO>
 
-export abstract class AbstractField<V extends ValueObject> {
+export abstract class AbstractField<V extends ValueObject, C extends FieldConstraintVO = any> {
   id!: FieldId
   name!: FieldNameVo
+  constraint: Option<C> = None
 
   constructor(dto: IBaseFieldDTO) {
     this.id = new FieldIdVo(dto.id)

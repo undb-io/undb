@@ -1,9 +1,5 @@
-import { Option, Some, andOptions } from "@undb/domain"
 import { z } from "zod"
-import type { RecordComositeSpecification } from "../../../../records"
 import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.vo"
-import type { FieldId } from "../../field-id.vo"
-import { StringEmpty } from "./string-field-value.specification"
 
 export const stringFieldConstraint = z
   .object({
@@ -16,14 +12,18 @@ export const stringFieldConstraint = z
 export type IStringFieldConstraint = z.infer<typeof stringFieldConstraint>
 
 export class StringFieldConstraint extends FieldConstraintVO<IStringFieldConstraint> {
-  getSpec(fieldId: FieldId) {
-    const specs: Option<RecordComositeSpecification>[] = []
-
-    if (this.required) {
-      //  TODO: fix as unknown
-      specs.push(Some(new StringEmpty(fieldId).not() as unknown as RecordComositeSpecification))
+  override get schema() {
+    let base: z.ZodTypeAny = z.string()
+    if (!this.props.required) {
+      base = base.optional()
+    }
+    if (this.props.min) {
+      base = base.and(z.string().min(this.props.min))
+    }
+    if (this.props.max) {
+      base = base.and(z.string().max(this.props.max))
     }
 
-    return andOptions(...specs) as Option<RecordComositeSpecification>
+    return base
   }
 }

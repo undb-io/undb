@@ -19,9 +19,12 @@ export class RecordValuesVO extends ValueObject {
   }
 
   static create(table: TableDo, dto: IRecordValues) {
+    const schema = table.schema.mutableSchema
+    const parsed = schema.parse(dto)
+
     const values: RecordValues = {}
 
-    for (const [id, value] of Object.entries(dto)) {
+    for (const [id, value] of Object.entries(parsed)) {
       const fieldId = new FieldIdVo(id)
       const field = table.schema.getFieldById(fieldId).expect("Field not found")
       const fieldValue = FieldValueFactory.create(field, value)

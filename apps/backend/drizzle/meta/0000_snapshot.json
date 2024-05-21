@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "d917deb8-9a09-4d11-a7ea-8f907612de57",
+  "id": "e3c9fc68-bcab-4677-963a-8ec65116aeef",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_outbox": {

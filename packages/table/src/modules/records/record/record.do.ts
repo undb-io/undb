@@ -47,8 +47,11 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
 
   update(table: TableDo, dto: IUpdateRecordDTO): Option<RecordComositeSpecification> {
     const specs: Option<RecordComositeSpecification>[] = []
+    // TODO: update should consider set operations
+    const schema = table.schema.mutableSchema
+    const values = schema.parse(dto.values)
 
-    for (const [fieldId, value] of Object.entries(dto.values)) {
+    for (const [fieldId, value] of Object.entries(values)) {
       const field = table.schema.getFieldById(new FieldIdVo(fieldId))
 
       if (field.isNone()) continue

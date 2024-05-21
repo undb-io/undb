@@ -5,6 +5,7 @@ import type { RecordComositeSpecification } from "../../../../records"
 import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
+import { StringFieldConstraint } from "./string-field-constraint.vo"
 import {
   StringContains,
   StringEmpty,
@@ -35,7 +36,7 @@ export const stringFieldDTO = baseFieldDTO.extend({
 
 export type IStringFieldDTO = z.infer<typeof stringFieldDTO>
 
-export class StringField extends AbstractField<StringFieldValue> {
+export class StringField extends AbstractField<StringFieldValue, StringFieldConstraint> {
   constructor(dto: IStringFieldDTO) {
     super(dto)
   }
@@ -47,11 +48,7 @@ export class StringField extends AbstractField<StringFieldValue> {
   override type = STRING_TYPE
 
   override get valueSchema() {
-    if (this.required) {
-      return z.string().min(1)
-    }
-
-    return z.string().optional()
+    return this.constraint.unwrapOrElse(() => new StringFieldConstraint({})).schema
   }
 
   override accept(visitor: IFieldVisitor): void {
