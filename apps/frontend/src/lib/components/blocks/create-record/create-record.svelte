@@ -33,6 +33,7 @@
     onSettled: () => {
       $createRecordSheetOpen = false
       client.invalidateQueries({ queryKey: ["records", $table.id.value] })
+      toast.success("Record has been created!")
     },
     onError: (error) => {
       toast.error(error.message)
