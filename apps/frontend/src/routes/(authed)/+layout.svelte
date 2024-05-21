@@ -14,6 +14,7 @@
   import { shortcut, type ShortcutEventDetail } from "@svelte-put/shortcut"
   import { createTableOpened } from "$lib/components/blocks/create-table/create-table.store"
   import { cn } from "$lib/utils"
+  import { ScrollArea } from "$lib/components/ui/scroll-area/index.js"
 
   export let data: LayoutData
 
@@ -63,9 +64,9 @@
           <span class="sr-only">Toggle notifications</span>
         </Button>
       </div>
-      <div class={cn(tables.length ? "flex-1" : "")}>
+      <ScrollArea class={cn(tables.length ? "flex-1" : "")}>
         <TablesNav {tables} />
-      </div>
+      </ScrollArea>
       <div class={cn("p-4", tables.length ? "mt-auto" : "")}>
         <CreateTableButton variant={tables.length ? "outline" : "default"} />
       </div>

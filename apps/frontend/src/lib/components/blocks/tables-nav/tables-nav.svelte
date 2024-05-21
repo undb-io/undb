@@ -3,11 +3,17 @@
   import { type GetTablesQuery$result } from "$houdini"
   import { Database } from "lucide-svelte"
   import { cn } from "$lib/utils"
+  import { onMount } from "svelte"
 
   export let tables: GetTablesQuery$result["tables"] = []
+
+  let el: HTMLElement
+  onMount(() => {
+    el.querySelector('[data-active="true"]')?.scrollIntoView()
+  })
 </script>
 
-<nav class="grid items-start px-2 text-sm font-medium lg:px-4">
+<nav bind:this={el} class="grid items-start px-2 text-sm font-medium lg:px-4">
   {#if tables}
     {#each tables as table}
       {@const active = table.id === $page.params.tableId}
