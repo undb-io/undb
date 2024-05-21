@@ -11,7 +11,7 @@ export const IdFactory = (prefix: string, size = 10, schema?: ZodSchema) => {
     }
 
     static create(id = customAlphabet(ALPHABETS, size)()) {
-      const value = `${prefix}_${id}`
+      const value = `${prefix}${id}`
       return new this(value)
     }
 

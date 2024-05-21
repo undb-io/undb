@@ -5,6 +5,7 @@ import { Context, Elysia, t } from "elysia"
 import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize, verifyRequestOrigin } from "lucia"
 import { Login, SignUp } from "@undb/ui"
+import { executionContext } from "@undb/context/server"
 
 const adapter = new DrizzleSQLiteAdapter(db, sessionTable, users)
 
@@ -70,6 +71,14 @@ export const authStore = async (
 
 export const auth = () => {
   return new Elysia()
+    .get("/api/me", (ctx) => {
+      const user = executionContext.getStore()?.user
+      if (!user?.userId) {
+        return (ctx.set.redirect = "/signup")
+      }
+
+      return user
+    })
     .get("/signup", () => <SignUp />)
     .post(
       "/signup",
