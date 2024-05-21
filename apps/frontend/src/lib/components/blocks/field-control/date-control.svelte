@@ -19,7 +19,7 @@
     <Button
       variant="outline"
       {...$$restProps}
-      class={cn("justify-start text-left font-normal", !value && "text-muted-foreground", $$restProps.class)}
+      class={cn("w-full justify-start text-left font-normal", !value && "text-muted-foreground", $$restProps.class)}
       builders={[builder]}
     >
       <CalendarIcon class="mr-2 h-4 w-4" />

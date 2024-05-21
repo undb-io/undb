@@ -5,6 +5,7 @@
   import { createRecordSheetOpen } from "$lib/components/blocks/create-record/create-record.store.ts"
   import { shortcut, type ShortcutEventDetail } from "@svelte-put/shortcut"
   import TableHeader from "$lib/components/blocks/table-header/table-header.svelte"
+  import RecordDetailSheet from "$lib/components/blocks/record-detail/record-detail-sheet.svelte"
 
   function handleR(detail: ShortcutEventDetail) {
     $createRecordSheetOpen = true
@@ -17,6 +18,7 @@
 </main>
 
 <CreateRecordSheet />
+<RecordDetailSheet />
 <ConfirmDeleteRecord />
 
 <svelte:window

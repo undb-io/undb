@@ -1,21 +1,12 @@
 <script lang="ts">
   import * as Pagination from "$lib/components/ui/pagination"
   import { getTable } from "$lib/store/table.store"
-  import { createQuery } from "@tanstack/svelte-query"
   const t = getTable()
 
   export let perPage: number
   export let currentPage: number = 1
 
-  $: tableId = $t.id.value
-  $: view = $t.views.getViewById()
-
-  $: getRecords = createQuery({
-    queryKey: [tableId, view.id.value, "records"],
-  })
-
-  //  TODO: type
-  $: count = ($getRecords.data as any)?.total ?? 0
+  export let count: number
 </script>
 
 <Pagination.Root

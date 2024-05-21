@@ -18,7 +18,7 @@
     }
   }}
 >
-  <Sheet.Content class="flex flex-col sm:max-w-lg" transitionConfig={{ duration: 50 }}>
+  <Sheet.Content class="sm:max-w-1/2 flex w-1/2 flex-col" transitionConfig={{ duration: 50 }}>
     <Sheet.Header>
       <Sheet.Title>Create Record</Sheet.Title>
     </Sheet.Header>

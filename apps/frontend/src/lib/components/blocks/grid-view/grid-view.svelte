@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
-  import { writable } from "svelte/store"
+  import { derived, writable } from "svelte/store"
   import GridViewCheckbox from "./grid-view-checkbox.svelte"
   import * as Table from "$lib/components/ui/table/index.js"
   import { addResizedColumns, addSelectedRows } from "svelte-headless-table/plugins"
@@ -17,25 +17,28 @@
   import GridViewHeader from "./grid-view-header.svelte"
   import * as Select from "$lib/components/ui/select"
   import { getBorder } from "./grid-view.util"
+  import GridViewOpen from "./grid-view-open.svelte"
 
   const t = getTable()
 
-  $: tableId = $t.id.value
   $: view = $t.views.getViewById()
   $: viewFilter = view.filter.into(undefined)
   $: hasFilterFieldIds = viewFilter?.fieldIds
   let perPage = 50
   let currentPage = 1
 
-  $: getRecords = createQuery({
-    queryKey: [tableId, view.id.value, "records"],
-    queryFn: () =>
-      trpc.record.list.query({
-        tableId,
-        pagination: { limit: perPage, page: currentPage },
-      }),
-  })
+  const getRecords = createQuery(
+    derived([t], ([$table]) => ({
+      queryKey: [$table?.id.value, view?.id.value, "records"],
+      queryFn: () =>
+        trpc.record.list.query({
+          tableId: $table?.id.value,
+          // pagination: { limit: perPage, page: currentPage },
+        }),
+    })),
+  )
 
+  $: console.log($getRecords)
   $: colorSpec = view.color.into(undefined)?.getSpec($t.schema).into(undefined)
 
   // TODO: record type
@@ -73,6 +76,19 @@
         plugins: {
           resize: {
             initialWidth: 40,
+            disable: true,
+          },
+        },
+      }),
+      table.column({
+        accessor: "open",
+        header: () => "",
+        cell: ({ row }) => {
+          return createRender(GridViewOpen, { recordId: row.original.id })
+        },
+        plugins: {
+          resize: {
+            initialWidth: 30,
             disable: true,
           },
         },
@@ -150,7 +166,7 @@
             <Table.Row
               {...rowAttrs}
               data-state={$selectedDataIds[row.id] && "selected"}
-              class="text-foreground text-xs transition-none"
+              class="text-foreground group text-xs transition-none"
             >
               {@const record = dos.get(row.original.id)}
               {@const match = colorSpec && record ? record.match(colorSpec) : false}
@@ -161,8 +177,8 @@
                 <Subscribe attrs={cell.attrs()} let:attrs>
                   <Table.Cell
                     class={cn(
-                      "border-border border-r p-0 hover:bg-white [&:has([role=checkbox])]:pl-3",
-                      idx == 0 && "border-r-0",
+                      "border-border border-r p-0  [&:has([role=checkbox])]:pl-3",
+                      (idx === 0 || idx === 1) && "border-r-0",
                       idx === 0 && match && "border-l-4",
                       idx === 0 && condition && getBorder(condition.option.color),
                       hasFilter && "bg-orange-50",
@@ -191,7 +207,7 @@
     </div>
 
     <div class="flex flex-1 flex-row items-center">
-      <GridViewPagination {perPage} bind:currentPage />
+      <GridViewPagination {perPage} bind:currentPage count={$getRecords.data?.total} />
       <div class="flex items-center gap-2 text-sm">
         <Select.Root
           selected={{ value: perPage, label: String(perPage) }}
