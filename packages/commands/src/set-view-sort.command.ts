@@ -1,6 +1,6 @@
 import { Command, type CommandProps } from "@undb/domain"
 import { setViewSortDTO, type IViewSort } from "@undb/table"
-import { z } from "zod"
+import { z } from "@undb/zod"
 
 export const setViewSortCommand = setViewSortDTO
 

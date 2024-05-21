@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { recordId } from "../record-id.vo"
 import { recordValues } from "../record-values.vo"
 

@@ -1,5 +1,5 @@
 {
-  "name": "@undb/commands",
+  "name": "@undb/zod",
   "module": "src/index.ts",
   "types": "src/index.d.ts",
   "type": "module",
@@ -10,8 +10,8 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@undb/domain": "workspace:*",
-    "@undb/table": "workspace:*",
-    "@undb/zod": "workspace:*"
+    "i18next": "^23.11.5",
+    "zod": "^3.23.8",
+    "zod-i18n-map": "^2.27.0"
   }
 }

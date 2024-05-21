@@ -1,6 +1,6 @@
 import { None, andOptions, orOptions, type Option } from "@undb/domain"
+import type { z } from "@undb/zod"
 import { isObject, uid } from "radash"
-import type { z } from "zod"
 import type {
   INotRecordComositeSpecification,
   IRecordComositeSpecification,

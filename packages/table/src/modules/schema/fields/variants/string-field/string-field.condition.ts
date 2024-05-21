@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { createBaseConditionSchema } from "../../condition"
 
 export function createStringFieldCondition<ItemType extends z.ZodTypeAny>(itemType: ItemType) {

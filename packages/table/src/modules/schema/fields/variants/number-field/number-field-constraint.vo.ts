@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.vo"
 
 export const numberFieldConstraint = z

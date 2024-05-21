@@ -1,5 +1,5 @@
 import { Option } from "@undb/domain"
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { createAbstractDateConditionMather, createUpdatedAtFieldCondition } from "../.."
 import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"

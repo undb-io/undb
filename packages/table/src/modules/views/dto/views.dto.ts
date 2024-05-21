@@ -1,4 +1,4 @@
-import type { z } from "zod"
+import type { z } from "@undb/zod"
 import { viewDTO } from "../view/dto"
 
 export const viewsDTO = viewDTO.array()

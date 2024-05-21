@@ -1,4 +1,4 @@
-import type { z } from "zod"
+import type { z } from "@undb/zod"
 import { fieldDTO } from "../fields/dto/field.dto"
 
 export const schemaDTO = fieldDTO.array()

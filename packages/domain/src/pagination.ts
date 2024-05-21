@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@undb/zod"
 
 export const simplePaginationSchema = z.object({
   limit: z.number().positive().int().optional(),

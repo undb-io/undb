@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { createSchemaDTO } from "../modules"
 import { tableId } from "../table-id.vo"
 import { tableName } from "../table-name.vo"

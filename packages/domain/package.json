@@ -16,6 +16,6 @@
     "nanoid": "^5.0.7",
     "oxide.ts": "^1.1.0",
     "uuid": "^9.0.1",
-    "zod": "^3.23.6"
+    "@undb/zod": "workspace:*"
   }
 }

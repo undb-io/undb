@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { createAbstractDateFieldCondition } from "../abstractions/abstract-date-field.condition"
 
 export const createUpdatedAtFieldCondition = createAbstractDateFieldCondition

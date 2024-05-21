@@ -1,5 +1,5 @@
 import { pagniationSchema } from "@undb/domain"
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { tableId } from "../../../table-id.vo"
 import { viewId } from "../../views"
 

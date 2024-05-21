@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { createAbstractNumberFieldCondition } from "../abstractions/abstract-number-field.condition"
 
 export const createNumberFieldCondition = createAbstractNumberFieldCondition

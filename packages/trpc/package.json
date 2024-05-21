@@ -18,6 +18,6 @@
     "@undb/queries": "workspace:*",
     "@undb/table": "workspace:*",
     "zod-validation-error": "^3.3.0",
-    "zod": "^3.23.6"
+    "@undb/zod": "workspace:*"
   }
 }

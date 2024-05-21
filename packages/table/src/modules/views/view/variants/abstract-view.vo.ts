@@ -1,13 +1,13 @@
 import { None, Option, Some } from "@undb/domain"
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { WithViewColor, WithViewFilter, WithViewSort } from "../../../../specifications/table-view.specification"
+import type { IViewDTO } from "../dto"
 import { ViewColor, viewColorGroup, type IRootViewColor } from "../view-color"
 import { ViewFilter, viewFilterGroup, type IRootViewFilter } from "../view-filter/view-filter.vo"
 import { ViewIdVo, viewId, type ViewId } from "../view-id.vo"
 import { ViewNameVo, viewName } from "../view-name.vo"
-import type { ViewType } from "../view.type"
 import { ViewSort, viewSort, type IViewSort } from "../view-sort"
-import type { IViewDTO } from "../dto"
+import type { ViewType } from "../view.type"
 
 export const createBaseViewDTO = z.object({
   id: viewId.optional(),

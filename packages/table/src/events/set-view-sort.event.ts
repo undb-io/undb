@@ -1,6 +1,6 @@
 import { BaseEvent } from "@undb/domain"
-import { z } from "zod"
-import { viewSort, viewId } from "../modules"
+import { z } from "@undb/zod"
+import { viewId, viewSort } from "../modules"
 import { tableId } from "../table-id.vo"
 
 const EVT_SET_VIEW_SORT = "table.view.sort.set" as const

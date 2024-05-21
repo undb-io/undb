@@ -1,6 +1,6 @@
 import { Option, ValueObject } from "@undb/domain"
+import { z } from "@undb/zod"
 import { objectify } from "radash"
-import { z } from "zod"
 import type { ICreateSchemaDTO } from "./dto"
 import type { ISchemaDTO } from "./dto/schema.dto"
 import { IdField, UpdatedAtField } from "./fields"

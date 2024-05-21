@@ -12,6 +12,6 @@
   "dependencies": {
     "@undb/domain": "workspace:*",
     "@undb/table": "workspace:*",
-    "zod": "^3.23.6"
+    "@undb/zod": "workspace:*"
   }
 }

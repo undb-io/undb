@@ -1,5 +1,5 @@
 import { ValueObject } from "@undb/domain"
-import { z } from "zod"
+import { z } from "@undb/zod"
 
 export const viewName = z.string().min(2, { message: "view name contains at least 2 chars" })
 

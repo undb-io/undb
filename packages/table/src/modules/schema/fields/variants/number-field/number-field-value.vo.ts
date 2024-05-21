@@ -1,5 +1,5 @@
 import { ValueObject } from "@undb/domain"
-import { z } from "zod"
+import { z } from "@undb/zod"
 
 export const mutateNumberFieldValueSchema = z.union([
   z.number().optional(),

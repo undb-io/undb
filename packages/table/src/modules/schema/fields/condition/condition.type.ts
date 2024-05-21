@@ -1,4 +1,4 @@
-import { z, type ZodTypeAny } from "zod"
+import { z, type ZodTypeAny } from "@undb/zod"
 import { createConditionSchema, type IFieldCondition, type MaybeFieldCondition } from "./field-condition.type"
 
 export type Conjunction = "and" | "or"

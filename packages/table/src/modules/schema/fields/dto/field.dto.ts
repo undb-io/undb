@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { numberFieldDTO, stringFieldDTO, updatedAtFieldDTO } from ".."
 import { autoIncrementFieldDTO } from "../variants/autoincrement-field"
 import { createdAtFieldDTO } from "../variants/created-at-field"

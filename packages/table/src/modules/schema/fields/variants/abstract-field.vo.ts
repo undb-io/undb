@@ -1,5 +1,5 @@
 import { None, NotImplementException, Option, ValueObject } from "@undb/domain"
-import { ZodUndefined, z, type ZodSchema } from "zod"
+import { ZodUndefined, z, type ZodSchema } from "@undb/zod"
 import type {
   INotRecordComositeSpecification,
   IRecordComositeSpecification,

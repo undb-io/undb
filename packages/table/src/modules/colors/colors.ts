@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@undb/zod"
 
 export const colors = z.enum([
   //

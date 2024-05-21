@@ -1,5 +1,5 @@
 import { BaseEvent } from "@undb/domain"
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { viewId } from "../modules"
 import { viewColorGroup } from "../modules/views/view/view-color"
 import { tableId } from "../table-id.vo"

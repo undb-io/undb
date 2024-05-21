@@ -1,6 +1,6 @@
 import { Command, type CommandProps } from "@undb/domain"
 import { setTableRLSDTO, type ITableRLS } from "@undb/table"
-import { z } from "zod"
+import { z } from "@undb/zod"
 
 export const setTableRLSCommand = setTableRLSDTO
 

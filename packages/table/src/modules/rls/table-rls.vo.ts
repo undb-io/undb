@@ -1,5 +1,5 @@
 import { ValueObject } from "@undb/domain"
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { Condition, createConditionGroup, parseValidCondition, type IRootCondition } from "../schema/fields/condition"
 
 export const tableRLSOption = z

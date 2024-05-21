@@ -1,5 +1,5 @@
 import { BaseEvent } from "@undb/domain"
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { tableId } from "../../../table-id.vo"
 import type { TableDo } from "../../../table.do"
 import { RecordDO, recordId, recordValues } from "../record"

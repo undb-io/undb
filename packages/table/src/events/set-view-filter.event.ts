@@ -1,5 +1,5 @@
 import { BaseEvent } from "@undb/domain"
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { viewFilterGroup, viewId } from "../modules"
 import { tableId } from "../table-id.vo"
 

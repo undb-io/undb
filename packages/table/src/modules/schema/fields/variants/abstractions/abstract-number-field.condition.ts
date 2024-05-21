@@ -1,5 +1,5 @@
+import { z } from "@undb/zod"
 import { match } from "ts-pattern"
-import { z } from "zod"
 import { createBaseConditionSchema } from "../../condition"
 import type { FieldId } from "../../field-id.vo"
 import {

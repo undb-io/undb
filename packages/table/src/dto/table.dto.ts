@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { rlsDTO } from "../modules"
 import { schemaDTO } from "../modules/schema/dto/schema.dto"
 import { viewsDTO } from "../modules/views/dto"

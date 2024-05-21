@@ -1,6 +1,6 @@
 import { Option, Some } from "@undb/domain"
+import { z } from "@undb/zod"
 import { match } from "ts-pattern"
-import { z } from "zod"
 import type { RecordComositeSpecification } from "../../../../records"
 import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"

@@ -1,5 +1,5 @@
 import { IdFactory } from "@undb/domain"
-import { z } from "zod"
+import { z } from "@undb/zod"
 
 const prefix = "fld"
 const size = 6

@@ -1,5 +1,5 @@
+import { z } from "@undb/zod"
 import type { PartialDeep, SetFieldType, SetRequired } from "type-fest"
-import { z } from "zod"
 import {
   createAutoIncrementFieldCondition,
   createCreatedAtFieldCondition,

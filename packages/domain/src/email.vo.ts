@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { ValueObject } from "./value-object.js"
 
 export const emailSchema = z.string().email()

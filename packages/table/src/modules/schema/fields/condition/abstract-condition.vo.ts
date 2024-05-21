@@ -1,6 +1,6 @@
 import { ValueObject } from "@undb/domain"
+import type { z } from "@undb/zod"
 import { isEqual } from "radash"
-import type { z } from "zod"
 import type { IFieldCondition, Schema } from "../.."
 import type { TableDo } from "../../../../table.do"
 import type { RecordDO } from "../../../records/record/record.do"

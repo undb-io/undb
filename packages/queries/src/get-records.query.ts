@@ -1,6 +1,6 @@
 import { Query, type IPagination, type QueryProps } from "@undb/domain"
 import { getRecordsDTO, recordsDTO } from "@undb/table"
-import { z } from "zod"
+import { z } from "@undb/zod"
 
 export const getRecordsQuery = getRecordsDTO
 

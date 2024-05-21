@@ -1,5 +1,5 @@
 import { ValueObject } from "@undb/domain"
-import { z } from "zod"
+import { z } from "@undb/zod"
 
 export const tableName = z.string().min(2, { message: "table name contains at least 2 chars" })
 

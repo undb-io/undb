@@ -1,5 +1,5 @@
 import { BaseEvent } from "@undb/domain"
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { tableRLS } from "../modules"
 import { tableId } from "../table-id.vo"
 

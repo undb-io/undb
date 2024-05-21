@@ -1,5 +1,5 @@
 import { Option } from "@undb/domain"
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"

@@ -72,6 +72,6 @@
     "tailwind-variants": "^0.2.1",
     "trpc-svelte-query-adapter": "^2.2.7",
     "vaul-svelte": "^0.3.0",
-    "zod": "^3.23.6"
+    "@undb/zod": "workspace:*"
   }
 }

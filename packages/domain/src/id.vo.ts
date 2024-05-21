@@ -1,5 +1,5 @@
+import type { ZodSchema } from "@undb/zod"
 import { customAlphabet } from "nanoid"
-import type { ZodSchema } from "zod"
 import { ValueObject } from "./value-object.js"
 
 const ALPHABETS = "0123456789abcdefghijklmnopqrstuvwxyz"

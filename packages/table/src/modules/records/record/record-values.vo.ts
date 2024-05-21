@@ -1,5 +1,5 @@
 import { Option, ValueObject } from "@undb/domain"
-import { z } from "zod"
+import { z } from "@undb/zod"
 import type { TableDo } from "../../../table.do"
 import type { FieldValue } from "../../schema"
 import { FieldIdVo, fieldId, type FieldId, type IFieldId } from "../../schema/fields/field-id.vo"

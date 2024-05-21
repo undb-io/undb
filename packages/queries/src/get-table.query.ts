@@ -1,6 +1,6 @@
 import { Query, type QueryProps } from "@undb/domain"
 import { tableId } from "@undb/table"
-import { z } from "zod"
+import { z } from "@undb/zod"
 
 export const getTableQuery = z.object({
   tableId: tableId,

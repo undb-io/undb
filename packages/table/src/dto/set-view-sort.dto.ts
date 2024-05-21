@@ -1,4 +1,4 @@
-import { z } from "zod"
+import { z } from "@undb/zod"
 import { viewId } from "../modules"
 import { viewSort } from "../modules/views/view/view-sort"
 import { tableId } from "../table-id.vo"

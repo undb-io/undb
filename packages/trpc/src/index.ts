@@ -21,7 +21,7 @@ import type { ICommandBus, IQueryBus } from "@undb/domain"
 import { createLogger } from "@undb/logger"
 import { GetRecordsQuery, GetTableQuery, GetTablesQuery, getRecordsQuery, getTableQuery } from "@undb/queries"
 import { tableDTO } from "@undb/table"
-import { ZodError, z } from "zod"
+import { ZodError, z } from "@undb/zod"
 import { fromError } from "zod-validation-error"
 import pkg from "../package.json"
 
