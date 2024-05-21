@@ -29,7 +29,7 @@
 
   const getRecords = createQuery(
     derived([t, perPage, currentPage], ([$table, $perPage, $currentPage]) => ({
-      queryKey: [$table?.id.value, view?.id.value, "records"],
+      queryKey: [$table?.id.value, $table.views.getViewById()?.id.value, "records"],
       queryFn: () =>
         trpc.record.list.query({
           tableId: $table?.id.value,
@@ -38,7 +38,6 @@
     })),
   )
 
-  $: console.log($getRecords)
   $: colorSpec = view.color.into(undefined)?.getSpec($t.schema).into(undefined)
 
   // TODO: record type
