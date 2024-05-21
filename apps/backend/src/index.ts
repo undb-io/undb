@@ -17,6 +17,11 @@ import { auth, authStore } from "./routes/auth.route"
 import { web } from "./routes/web.route"
 
 const app = new Elysia()
+  .trace(async ({ handle, set }) => {
+    const { time, end } = await handle
+
+    set.headers["Server-Timing"] = `handle;dur=${(await end) - time}`
+  })
   .use(cors())
   .use(html())
   .derive(authStore)
