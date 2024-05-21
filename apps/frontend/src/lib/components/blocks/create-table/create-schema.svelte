@@ -6,34 +6,58 @@
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
   import { getFormField } from "formsnap"
-  import { BetweenHorizonalEnd } from "lucide-svelte"
+  import { BetweenHorizonalEnd, Settings2Icon, SettingsIcon } from "lucide-svelte"
   import FieldIcon from "../field-icon/field-icon.svelte"
+  import * as Accordion from "$lib/components/ui/accordion"
+  import FieldOptions from "../field-options/field-options.svelte"
+  import type { Infer } from "sveltekit-superforms"
+  import type { createTableCommand } from "@undb/commands"
 
-  const { form } = getFormField<any, "schema">()
+  const { form } = getFormField<Infer<typeof createTableCommand>, "schema">()
 
   const { form: formData } = form
 
   let open = false
 
   const addField = (type: string) => {
-    $formData.schema = [...$formData.schema, { type, name: "field" + ($formData.schema.length + 1) }]
+    $formData.schema = [
+      ...$formData.schema,
+      {
+        type,
+        name: "field" + ($formData.schema.length + 1),
+        constraint: {},
+      },
+    ]
 
     open = false
   }
 </script>
 
 <Form.Legend>Schema</Form.Legend>
-{#each $formData.schema as _, i}
-  <Form.ElementField {form} name="">
-    <Form.Control let:attrs>
-      <Form.Label class="flex items-center gap-2">
-        <FieldIcon class="h-4 w-4" type={$formData.schema[i].type} />
-        <Input {...attrs} bind:value={$formData.schema[i].name} />
-      </Form.Label>
-    </Form.Control>
-    <Form.FieldErrors />
-  </Form.ElementField>
-{/each}
+<Accordion.Root>
+  {#each $formData.schema as _, i}
+    <Form.ElementField {form} name="schema">
+      <Form.Control let:attrs>
+        <Accordion.Item class="w-full border-b-0" value={$formData.schema[i].name}>
+          <div class="mr-2 flex items-center gap-2">
+            <Form.Label class="flex flex-1 items-center gap-2">
+              <FieldIcon class="h-4 w-4" type={$formData.schema[i].type} />
+              <Input {...attrs} class="no-underline" bind:value={$formData.schema[i].name} />
+            </Form.Label>
+            <Accordion.Trigger>
+              <SettingsIcon class="text-muted-foreground h-4 w-4 shrink-0 transition-transform duration-200" />
+            </Accordion.Trigger>
+          </div>
+          <Accordion.Content class="bg-muted rounded-sm border px-3 pt-1.5">
+            <FieldOptions type={$formData.schema[i].type} bind:constraint={$formData.schema[i].constraint} />
+          </Accordion.Content>
+        </Accordion.Item>
+      </Form.Control>
+      <Form.FieldErrors />
+    </Form.ElementField>
+  {/each}
+</Accordion.Root>
+
 <Form.FieldErrors />
 
 <Collapsible.Root bind:open>

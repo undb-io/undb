@@ -6,6 +6,7 @@ query GetTableQuery($tableId: ID!) {
       id
       name
       type
+      constraint
     }
     views {
       id

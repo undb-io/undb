@@ -6,7 +6,7 @@ import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { NumberEqual } from "../abstractions"
 import { createAbstractNumberFieldMather } from "../abstractions/abstract-number-field.condition"
-import { NumberFieldConstraint } from "./number-field-constraint.vo"
+import { NumberFieldConstraint, numberFieldConstraint } from "./number-field-constraint.vo"
 import { NumberFieldValue } from "./number-field-value.vo"
 import {
   createNumberFieldCondition,
@@ -18,12 +18,14 @@ export const NUMBER_TYPE = "number" as const
 
 export const createNumberFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(NUMBER_TYPE),
+  constraint: numberFieldConstraint.optional(),
 })
 
 export type ICreateNumberFieldDTO = z.infer<typeof createNumberFieldDTO>
 
 export const numberFieldDTO = baseFieldDTO.extend({
   type: z.literal(NUMBER_TYPE),
+  constraint: numberFieldConstraint.optional(),
 })
 
 export type INumberFieldDTO = z.infer<typeof numberFieldDTO>
@@ -31,6 +33,9 @@ export type INumberFieldDTO = z.infer<typeof numberFieldDTO>
 export class NumberField extends AbstractField<NumberFieldValue, NumberFieldConstraint> {
   constructor(dto: INumberFieldDTO) {
     super(dto)
+    if (dto.constraint) {
+      this.constraint = Some(new NumberFieldConstraint(dto.constraint))
+    }
   }
 
   static create(dto: ICreateNumberFieldDTO) {

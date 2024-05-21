@@ -5,7 +5,7 @@ import type { RecordComositeSpecification } from "../../../../records"
 import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
-import { StringFieldConstraint } from "./string-field-constraint.vo"
+import { StringFieldConstraint, stringFieldConstraint } from "./string-field-constraint.vo"
 import {
   StringContains,
   StringEmpty,
@@ -26,12 +26,14 @@ export const STRING_TYPE = "string" as const
 
 export const createStringFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(STRING_TYPE),
+  constraint: stringFieldConstraint.optional(),
 })
 
 export type ICreateStringFieldDTO = z.infer<typeof createStringFieldDTO>
 
 export const stringFieldDTO = baseFieldDTO.extend({
   type: z.literal(STRING_TYPE),
+  constraint: stringFieldConstraint.optional(),
 })
 
 export type IStringFieldDTO = z.infer<typeof stringFieldDTO>
@@ -39,6 +41,9 @@ export type IStringFieldDTO = z.infer<typeof stringFieldDTO>
 export class StringField extends AbstractField<StringFieldValue, StringFieldConstraint> {
   constructor(dto: IStringFieldDTO) {
     super(dto)
+    if (dto.constraint) {
+      this.constraint = Some(new StringFieldConstraint(dto.constraint))
+    }
   }
 
   static create(dto: ICreateStringFieldDTO) {

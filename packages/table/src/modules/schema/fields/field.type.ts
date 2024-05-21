@@ -1,8 +1,9 @@
 import { z } from "zod"
-import type { UPDATED_AT_TYPE, UpdatedAtField, UpdatedAtFieldValue } from ".."
+import type { IStringFieldConstraint, UPDATED_AT_TYPE, UpdatedAtField, UpdatedAtFieldValue } from ".."
 import { AUTO_INCREMENT_TYPE, AutoIncrementField, AutoIncrementFieldValue } from "./variants/autoincrement-field"
 import type { CREATED_AT_TYPE, CreatedAtField, CreatedAtFieldValue } from "./variants/created-at-field"
 import type { ID_TYPE, IdField, IdFieldValue } from "./variants/id-field"
+import type { INumberFieldConstraint } from "./variants/number-field/number-field-constraint.vo"
 import type { NumberFieldValue } from "./variants/number-field/number-field-value.vo"
 import { createNumberFieldDTO, type NUMBER_TYPE, type NumberField } from "./variants/number-field/number-field.vo"
 import type { StringFieldValue } from "./variants/string-field/string-field-value.vo"
@@ -29,6 +30,11 @@ export type FieldType =
   | typeof AUTO_INCREMENT_TYPE
   | typeof UPDATED_AT_TYPE
 
+export type NoneSystemFieldType = Exclude<
+  FieldType,
+  typeof ID_TYPE | typeof CREATED_AT_TYPE | typeof AUTO_INCREMENT_TYPE | typeof UPDATED_AT_TYPE
+>
+
 export const createFieldDTO = z.discriminatedUnion("type", [createStringFieldDTO, createNumberFieldDTO])
 export type ICreateFieldDTO = z.infer<typeof createFieldDTO>
 
@@ -38,3 +44,5 @@ export const inferCreateFieldDTO = z.discriminatedUnion("type", [
 ])
 
 export type IInferCreateFieldDTO = z.infer<typeof inferCreateFieldDTO>
+
+export type IFieldConstraint = IStringFieldConstraint | INumberFieldConstraint

@@ -54,6 +54,7 @@
     this={map[field.type]}
     bind:value
     {index}
+    class="text-xs"
     onValueChange={(v) => {
       value = v
     }}

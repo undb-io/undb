@@ -1,4 +1,5 @@
 type Field {
+  constraint: JSON
   id: ID!
   name: String!
   type: FieldType!

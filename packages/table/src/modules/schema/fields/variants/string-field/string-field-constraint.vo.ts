@@ -8,6 +8,9 @@ export const stringFieldConstraint = z
   })
   .merge(baseFieldConstraint)
   .partial()
+  .refine((v) => v.min === undefined || v.max === undefined || v.min <= v.max, {
+    message: "min should be less than or equal to max",
+  })
 
 export type IStringFieldConstraint = z.infer<typeof stringFieldConstraint>
 

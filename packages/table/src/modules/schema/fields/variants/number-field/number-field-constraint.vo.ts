@@ -9,6 +9,9 @@ export const numberFieldConstraint = z
   })
   .merge(baseFieldConstraint)
   .partial()
+  .refine((v) => v.min === undefined || v.max === undefined || v.min <= v.max, {
+    message: "min should be less than or equal to max",
+  })
 
 export type INumberFieldConstraint = z.infer<typeof numberFieldConstraint>
 

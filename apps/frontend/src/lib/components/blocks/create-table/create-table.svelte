@@ -2,7 +2,7 @@
   import * as Form from "$lib/components/ui/form"
   import { trpc } from "$lib/trpc/client.js"
   import { createMutation } from "@tanstack/svelte-query"
-  import { superForm, defaults } from "sveltekit-superforms"
+  import SuperDebug, { superForm, defaults } from "sveltekit-superforms"
   import { createTableCommand } from "@undb/commands"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { Input } from "$lib/components/ui/input"
@@ -26,15 +26,20 @@
   })
 
   const form = superForm(
-    defaults({ name: "table", schema: [{ type: "string", name: "field1" }] }, zodClient(createTableCommand)),
+    defaults(
+      { name: "table", schema: [{ type: "string", name: "field1", constraint: {} }] },
+      zodClient(createTableCommand),
+    ),
     {
       SPA: true,
       dataType: "json",
       validators: zodClient(createTableCommand),
       resetForm: false,
       invalidateAll: true,
-      onSubmit() {
-        $mutation.mutate($formData)
+      onUpdate(event) {
+        if (!event.form.valid) return
+
+        $mutation.mutate(event.form.data)
       },
     },
   )
@@ -56,4 +61,6 @@
   </Form.Fieldset>
 </form>
 
-<!-- <SuperDebug data={$formData} /> -->
+<!-- <div class="mt-2">
+  <SuperDebug data={$formData} />
+</div> -->

@@ -3,6 +3,8 @@
   import CreateRecord from "./create-record.svelte"
   import Button from "$lib/components/ui/button/button.svelte"
   import { createRecordSheetOpen } from "./create-record.store"
+
+  let disabled = false
 </script>
 
 <Sheet.Root bind:open={$createRecordSheetOpen}>
@@ -12,12 +14,12 @@
     </Sheet.Header>
 
     <div class="flex-1">
-      <CreateRecord />
+      <CreateRecord bind:disabled />
     </div>
 
     <Sheet.Footer>
       <Button variant="outline" type="button" on:click={() => ($createRecordSheetOpen = false)}>Cancel</Button>
-      <Button type="submit" form="createRecord">Create</Button>
+      <Button type="submit" form="createRecord" {disabled}>Create</Button>
     </Sheet.Footer>
   </Sheet.Content>
 </Sheet.Root>

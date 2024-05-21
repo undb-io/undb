@@ -1,3 +1,4 @@
+export * from "./number-field-constraint.vo"
 export * from "./number-field-value.visitor"
 export * from "./number-field-value.vo"
 export * from "./number-field.condition"

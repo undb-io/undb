@@ -30,7 +30,6 @@ export type ICreateBaseFieldDTO = z.infer<typeof createBaseFieldDTO>
 export const baseFieldDTO = z.object({
   id: fieldId,
   name: fieldName,
-  required: z.boolean().optional(),
 })
 
 export type IBaseFieldDTO = z.infer<typeof baseFieldDTO>
@@ -43,7 +42,6 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
   constructor(dto: IBaseFieldDTO) {
     this.id = new FieldIdVo(dto.id)
     this.name = new FieldNameVo(dto.name)
-    this.required = dto.required
   }
 
   abstract type: FieldType
@@ -59,18 +57,6 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
     return !this.isSystem
   }
 
-  #required: boolean | undefined = undefined
-  get required() {
-    return this.system ? false : this.#required
-  }
-  set required(value: boolean | undefined) {
-    if (this.system) {
-      return
-    }
-
-    this.#required = value
-  }
-
   protected abstract get valueSchema(): ZodSchema
   validate(value: V) {
     return this.valueSchema.safeParse(value.unpack())
@@ -79,6 +65,10 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
   abstract getSpec(condition: IFieldCondition): Option<IRecordComositeSpecification | INotRecordComositeSpecification>
 
   abstract accept(visitor: IFieldVisitor): void
+
+  get required(): boolean {
+    return this.constraint.mapOr(false, (c) => !!c.required)
+  }
 
   protected abstract getConditionSchema<OptionType extends z.ZodTypeAny>(
     optionType: OptionType,
@@ -126,7 +116,7 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
       id: this.id.value,
       name: this.name.value,
       type: this.type,
-      required: this.required,
+      constraint: this.constraint.into(undefined)?.value,
     }
   }
 }
