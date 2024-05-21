@@ -21,7 +21,8 @@ import type { ICommandBus, IQueryBus } from "@undb/domain"
 import { createLogger } from "@undb/logger"
 import { GetRecordsQuery, GetTableQuery, GetTablesQuery, getRecordsQuery, getTableQuery } from "@undb/queries"
 import { tableDTO } from "@undb/table"
-import { z } from "zod"
+import { ZodError, z } from "zod"
+import { fromError } from "zod-validation-error"
 import pkg from "../package.json"
 
 const log = createLogger(pkg.name)
@@ -29,7 +30,15 @@ const log = createLogger(pkg.name)
 const commandBus = container.resolve<ICommandBus>(CommandBus)
 const queryBus = container.resolve<IQueryBus>(QueryBus)
 
-const t = initTRPC.create()
+const t = initTRPC.create({
+  errorFormatter(opts) {
+    const { shape, error } = opts
+    return {
+      ...shape,
+      message: error.cause instanceof ZodError ? fromError(error.cause).toString() : error.message,
+    }
+  },
+})
 
 const p = t.procedure.use(async ({ type, input, path, next }) => {
   const startTime = performance.now()
