@@ -10,11 +10,21 @@
   import { createRecordSheetOpen } from "./create-record.store"
   import { toast } from "svelte-sonner"
   import { ShieldCheckIcon } from "lucide-svelte"
+  import { beforeNavigate } from "$app/navigation"
+
+  beforeNavigate(({ cancel }) => {
+    if ($tainted) {
+      if (!confirm("Are you sure you want to leave this page? You have unsaved changes that will be lost.")) {
+        cancel()
+      }
+    }
+  })
 
   const table = getTable()
   const schema = $table.schema.mutableSchema
 
   export let disabled: boolean = false
+  export let dirty = false
 
   const client = useQueryClient()
 
@@ -51,6 +61,7 @@
 
   const { form: formData, enhance, allErrors, tainted } = form
 
+  $: dirty = !!$tainted
   $: disabled = !$tainted || !!$allErrors.length
 
   $: fields = $table.getOrderedFields().filter((f) => f.isMutable)

@@ -5,16 +5,26 @@
   import { createRecordSheetOpen } from "./create-record.store"
 
   let disabled = false
+  let dirty = false
 </script>
 
-<Sheet.Root bind:open={$createRecordSheetOpen}>
+<Sheet.Root
+  bind:open={$createRecordSheetOpen}
+  onOpenChange={(open) => {
+    if (!open && dirty) {
+      if (confirm("Are you sure you want to leave this page? You have unsaved changes that will be lost.")) {
+        $createRecordSheetOpen = false
+      }
+    }
+  }}
+>
   <Sheet.Content class="flex flex-col sm:max-w-lg" transitionConfig={{ duration: 50 }}>
     <Sheet.Header>
       <Sheet.Title>Create Record</Sheet.Title>
     </Sheet.Header>
 
     <div class="flex-1">
-      <CreateRecord bind:disabled />
+      <CreateRecord bind:disabled bind:dirty />
     </div>
 
     <Sheet.Footer>
