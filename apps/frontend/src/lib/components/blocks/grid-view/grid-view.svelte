@@ -24,16 +24,16 @@
   $: view = $t.views.getViewById()
   $: viewFilter = view.filter.into(undefined)
   $: hasFilterFieldIds = viewFilter?.fieldIds
-  let perPage = 50
-  let currentPage = 1
+  const perPage = writable(50)
+  const currentPage = writable(1)
 
   const getRecords = createQuery(
-    derived([t], ([$table]) => ({
+    derived([t, perPage, currentPage], ([$table, $perPage, $currentPage]) => ({
       queryKey: [$table?.id.value, view?.id.value, "records"],
       queryFn: () =>
         trpc.record.list.query({
           tableId: $table?.id.value,
-          // pagination: { limit: perPage, page: currentPage },
+          pagination: { limit: $perPage, page: $currentPage },
         }),
     })),
   )
@@ -207,18 +207,18 @@
     </div>
 
     <div class="flex flex-1 flex-row items-center">
-      <GridViewPagination {perPage} bind:currentPage count={$getRecords.data?.total} />
+      <GridViewPagination perPage={$perPage} bind:currentPage={$currentPage} count={$getRecords.data?.total} />
       <div class="flex items-center gap-2 text-sm">
         <Select.Root
-          selected={{ value: perPage, label: String(perPage) }}
+          selected={{ value: $perPage, label: String($perPage) }}
           onSelectedChange={(value) => {
             if (value) {
-              perPage = value.value
+              $perPage = value.value
             }
-            currentPage = 1
+            $currentPage = 1
           }}
         >
-          <Select.Trigger value={perPage} class="min-w-16">
+          <Select.Trigger value={$perPage} class="min-w-16">
             <Select.Value placeholder="page" />
           </Select.Trigger>
           <Select.Content>

@@ -11,6 +11,7 @@
   import { toast } from "svelte-sonner"
   import { ShieldCheckIcon } from "lucide-svelte"
   import { beforeNavigate } from "$app/navigation"
+  import { derived } from "svelte/store"
 
   beforeNavigate(({ cancel }) => {
     if ($tainted) {
@@ -28,17 +29,21 @@
 
   const client = useQueryClient()
 
-  const createRecordMutation = createMutation({
-    mutationFn: trpc.record.create.mutate,
-    onSettled: () => {
-      $createRecordSheetOpen = false
-      client.invalidateQueries({ queryKey: ["records", $table.id.value] })
-      toast.success("Record has been created!")
-    },
-    onError: (error) => {
-      toast.error(error.message)
-    },
-  })
+  const createRecordMutation = createMutation(
+    derived([table], ([$table]) => ({
+      mutationFn: trpc.record.create.mutate,
+      onSettled: () => {
+        $createRecordSheetOpen = false
+        client.invalidateQueries({
+          queryKey: [$table.id.value, $table.views.getViewById().id.value, "records"],
+        })
+        toast.success("Record has been created!")
+      },
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    })),
+  )
 
   const createRecord = (values: any) => {
     $createRecordMutation.mutate({
