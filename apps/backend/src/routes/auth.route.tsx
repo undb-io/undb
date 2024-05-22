@@ -74,7 +74,7 @@ export const auth = () => {
     .get("/api/me", (ctx) => {
       const user = executionContext.getStore()?.user
       if (!user?.userId) {
-        return (ctx.set.redirect = "/signup")
+        return (ctx.set.redirect = `/signup`)
       }
 
       return user

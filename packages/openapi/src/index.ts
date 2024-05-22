@@ -3,39 +3,16 @@ import { z } from "@undb/zod"
 
 extendZodWithOpenApi(z)
 
-import type { TableDo } from "@undb/table"
-import { RECORD_COMPONENT, createRecordComponent } from "./components/record"
+import type { RecordDO, TableDo } from "@undb/table"
+import { RECORD_COMPONENT, createRecordComponent, getRecords } from "./openapi/record.openapi"
 
-export const createOpenApiSpec = (table: TableDo) => {
+export const createOpenApiSpec = (table: TableDo, record?: RecordDO) => {
   const registry = new OpenAPIRegistry()
 
   const recordSchema = createRecordComponent(table)
   registry.register(RECORD_COMPONENT, recordSchema)
 
-  registry.registerPath({
-    method: "get",
-    path: "/users/{id}",
-    description: "Get user data by its id",
-    summary: "Get a single user",
-    request: {
-      params: z.object({
-        id: z.string().openapi({ example: "1212121" }),
-      }),
-    },
-    responses: {
-      200: {
-        description: "Object with user data.",
-        content: {
-          "application/json": {
-            schema: recordSchema,
-          },
-        },
-      },
-      204: {
-        description: "No content - successful operation",
-      },
-    },
-  })
+  registry.registerPath(getRecords(table, recordSchema))
 
   const generator = new OpenApiGeneratorV3(registry.definitions)
 
