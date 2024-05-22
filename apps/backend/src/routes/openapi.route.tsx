@@ -26,8 +26,7 @@ export class OpenAPI {
 
           const spec = createOpenApiSpec(table)
 
-          return (
-            <html>
+          return `<html>
               <head>
                 <title>Scalar API Reference</title>
                 <meta charset="utf-8" />
@@ -35,13 +34,21 @@ export class OpenAPI {
               </head>
               <body>
                 <script id="api-reference" type="application/json">
-                  {JSON.stringify(spec)}
+                  ${JSON.stringify(spec)}
+                </script>
+                <script>
+                  var configuration = {
+                    theme: 'default',
+                    layout: 'classic',
+                  }
+
+                  document.getElementById('api-reference').dataset.configuration =
+                    JSON.stringify(configuration)
                 </script>
 
                 <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
               </body>
-            </html>
-          )
+            </html>`
         },
         {
           params: t.Object({

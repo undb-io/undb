@@ -15,6 +15,7 @@ export const getRecords = (table: TableDo, recordSchema: ZodTypeAny): RouteConfi
     path: `/tables/${table.id.value}/records`,
     description: `Get ${table.name.value} records`,
     summary: `Get ${table.name.value} records`,
+    tags: [RECORD_COMPONENT],
     responses: {
       200: {
         description: "record data",
