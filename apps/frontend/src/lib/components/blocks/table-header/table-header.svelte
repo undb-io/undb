@@ -7,6 +7,7 @@
   import Menu from "lucide-svelte/icons/menu"
   import Users from "lucide-svelte/icons/users"
   import { Badge } from "$lib/components/ui/badge/index.js"
+  import * as Tabs from "$lib/components/ui/tabs"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js"
   import * as Sheet from "$lib/components/ui/sheet/index.js"
   import { Button } from "$lib/components/ui/button/index.js"
@@ -14,6 +15,9 @@
   import CreateTableButton from "../create-table/create-table-button.svelte"
   import * as Breadcrumb from "$lib/components/ui/breadcrumb/index.js"
   import { getTable } from "$lib/store/table.store"
+  import { queryParam, ssp } from "sveltekit-search-params"
+
+  const detail = queryParam("detail", ssp.boolean())
 
   const table = getTable()
   $: view = $table.views.getViewById()
@@ -75,7 +79,7 @@
       </div>
     </Sheet.Content>
   </Sheet.Root>
-  <div class="w-full flex-1">
+  <div class="flex w-full flex-1 items-center justify-between">
     <div class="relative">
       <Breadcrumb.Root>
         <Breadcrumb.List>
@@ -92,21 +96,39 @@
         </Breadcrumb.List>
       </Breadcrumb.Root>
     </div>
+
+    <Tabs.Root
+      value={$detail ? "detail" : "data"}
+      onValueChange={(value) => {
+        if (!$detail && value === "data") {
+          return
+        }
+
+        detail.set(value === "detail")
+      }}
+      class="w-[200px]"
+    >
+      <Tabs.List>
+        <Tabs.Trigger value="data">Data</Tabs.Trigger>
+        <Tabs.Trigger value="detail">Detail</Tabs.Trigger>
+      </Tabs.List>
+    </Tabs.Root>
+
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger asChild let:builder>
+        <Button builders={[builder]} variant="secondary" size="icon" class="rounded-full">
+          <CircleUser class="h-5 w-5" />
+          <span class="sr-only">Toggle user menu</span>
+        </Button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content align="end">
+        <DropdownMenu.Label>My Account</DropdownMenu.Label>
+        <DropdownMenu.Separator />
+        <DropdownMenu.Item>Settings</DropdownMenu.Item>
+        <DropdownMenu.Item>Support</DropdownMenu.Item>
+        <DropdownMenu.Separator />
+        <DropdownMenu.Item>Logout</DropdownMenu.Item>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
   </div>
-  <DropdownMenu.Root>
-    <DropdownMenu.Trigger asChild let:builder>
-      <Button builders={[builder]} variant="secondary" size="icon" class="rounded-full">
-        <CircleUser class="h-5 w-5" />
-        <span class="sr-only">Toggle user menu</span>
-      </Button>
-    </DropdownMenu.Trigger>
-    <DropdownMenu.Content align="end">
-      <DropdownMenu.Label>My Account</DropdownMenu.Label>
-      <DropdownMenu.Separator />
-      <DropdownMenu.Item>Settings</DropdownMenu.Item>
-      <DropdownMenu.Item>Support</DropdownMenu.Item>
-      <DropdownMenu.Separator />
-      <DropdownMenu.Item>Logout</DropdownMenu.Item>
-    </DropdownMenu.Content>
-  </DropdownMenu.Root>
 </header>

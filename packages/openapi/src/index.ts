@@ -22,6 +22,6 @@ export const createOpenApiSpec = (table: TableDo, record?: RecordDO) => {
       version: "1.0.0",
       title: table.name.value,
     },
-    servers: [{ url: "/" }],
+    servers: [{ url: "/api" }],
   })
 }

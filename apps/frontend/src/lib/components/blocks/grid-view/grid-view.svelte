@@ -128,11 +128,11 @@
   $: selectedDataIds = $viewModel.pluginStates.select.selectedDataIds
 </script>
 
-<div class="w-full">
+<div class="flex h-full w-full flex-col">
   <TableTools />
-  <div class="rounded-md border">
+  <div class="flex-1 overflow-auto rounded-md border">
     <Table.Root {...$tableAttrs}>
-      <Table.Header>
+      <Table.Header class="sticky top-0">
         {#each $headerRows as headerRow}
           <Subscribe rowAttrs={headerRow.attrs()}>
             <Table.Row class="text-xs transition-none hover:bg-inherit">
