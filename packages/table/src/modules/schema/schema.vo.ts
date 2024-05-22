@@ -68,6 +68,16 @@ export class Schema extends ValueObject<Field[]> {
     return z.object(schema)
   }
 
+  get readableSchema() {
+    const schema = objectify(
+      this.fields,
+      (f) => f.name.value,
+      (f) => f.valueSchema,
+    )
+
+    return z.object(schema)
+  }
+
   toJSON(): ISchemaDTO {
     return this.fields.map((field) => field.toJSON())
   }

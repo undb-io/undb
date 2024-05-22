@@ -3,13 +3,20 @@ import type { Option, PaginatedDTO } from "@undb/domain"
 import type { ITableRepository } from "../../../table.repository"
 import { injectTableRepository } from "../../../table.repository.provider"
 import type { IGetRecordByIdDTO, IGetRecordsDTO } from "../dto"
-import { injectRecordQueryRepository, type IRecordDTO, type IRecordQueryRepository } from "../record"
+import {
+  injectRecordQueryRepository,
+  type IRecordDTO,
+  type IRecordQueryRepository,
+  type IRecordReadableDTO,
+} from "../record"
+import { getReadableRecords } from "./methods/get-readable-records.method"
 import { getRecordById } from "./methods/get-record-by-id.method"
 import { getRecords } from "./methods/get-records.method"
 
 export interface IRecordsQueryService {
   getRecords(query: IGetRecordsDTO): Promise<PaginatedDTO<IRecordDTO>>
   getRecordById(query: IGetRecordByIdDTO): Promise<Option<IRecordDTO>>
+  getReadableRecords(query: IGetRecordsDTO): Promise<PaginatedDTO<IRecordReadableDTO>>
 }
 
 @singleton()
@@ -23,4 +30,5 @@ export class RecordsQueryService implements IRecordsQueryService {
 
   getRecords = getRecords
   getRecordById = getRecordById
+  getReadableRecords = getReadableRecords
 }

@@ -1,6 +1,6 @@
 import { AggregateRoot, andOptions, type Option } from "@undb/domain"
 import type { TableDo } from "../../../table.do"
-import type { FieldValue } from "../../schema"
+import { ID_TYPE, type FieldValue } from "../../schema"
 import { FieldIdVo, type FieldId } from "../../schema/fields/field-id.vo"
 import { FieldValueFactory } from "../../schema/fields/field-value.factory"
 import { RecordCreatedEvent, type IRecordEvent } from "../events"
@@ -65,6 +65,15 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
     }
 
     return andOptions(...specs) as Option<RecordComositeSpecification>
+  }
+
+  toReadable(table: TableDo) {
+    const schema = table.schema.fieldMapById
+    const values = this.values.toReadable(table)
+    return {
+      [schema.get(ID_TYPE)!.name.value]: this.id.value,
+      ...values,
+    }
   }
 }
 

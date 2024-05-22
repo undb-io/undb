@@ -4,7 +4,7 @@ import { inject, singleton } from "@undb/di"
 import { type ITableRepository, injectTableRepository, TableIdVo } from "@undb/table"
 import { type IQueryBus } from "@undb/domain"
 import { QueryBus } from "@undb/cqrs"
-import { GetRecordsQuery } from "@undb/queries"
+import { GetReadableRecordsQuery, GetRecordsQuery } from "@undb/queries"
 
 @singleton()
 export class OpenAPI {
@@ -51,7 +51,7 @@ export class OpenAPI {
       )
       .get(
         "/api/tables/:tableId/records",
-        async (ctx) => this.queryBus.execute(new GetRecordsQuery({ tableId: ctx.params.tableId })),
+        async (ctx) => this.queryBus.execute(new GetReadableRecordsQuery({ tableId: ctx.params.tableId })),
         { params: t.Object({ tableId: t.String() }) },
       )
   }

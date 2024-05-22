@@ -4,6 +4,7 @@ import type { TableDo } from "../../../table.do"
 import type { FieldValue } from "../../schema"
 import { FieldIdVo, fieldId, type FieldId, type IFieldId } from "../../schema/fields/field-id.vo"
 import { FieldValueFactory } from "../../schema/fields/field-value.factory"
+import type { IRecordReadableDTO } from "./dto"
 
 export const recordValues = z.record(fieldId, z.any())
 
@@ -58,6 +59,22 @@ export class RecordValuesVO extends ValueObject {
 
     for (const [id, value] of Object.entries(this.values)) {
       values[id] = value.value
+    }
+
+    return values
+  }
+
+  public toReadable(table: TableDo): IRecordReadableDTO {
+    const schema = table.schema.fieldMapById
+
+    const values: IRecordReadableDTO = {}
+
+    for (const [id, value] of Object.entries(this.values)) {
+      const field = schema.get(id)
+      if (!field) continue
+
+      // TODO: value.toReadable()
+      values[field.name.value] = value.value
     }
 
     return values

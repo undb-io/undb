@@ -61,6 +61,9 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
   validate(value: V) {
     return this.valueSchema.safeParse(value.unpack())
   }
+  get readableSchema(): ZodSchema {
+    return this.valueSchema
+  }
 
   abstract getSpec(condition: IFieldCondition): Option<IRecordComositeSpecification | INotRecordComositeSpecification>
 

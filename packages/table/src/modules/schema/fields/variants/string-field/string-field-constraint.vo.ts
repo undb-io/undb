@@ -18,7 +18,7 @@ export class StringFieldConstraint extends FieldConstraintVO<IStringFieldConstra
   override get schema() {
     let base: z.ZodTypeAny = z.string()
     if (!this.props.required) {
-      base = base.optional()
+      base = base.optional().nullable()
     }
     if (this.props.min) {
       base = base.and(z.string().min(this.props.min))
