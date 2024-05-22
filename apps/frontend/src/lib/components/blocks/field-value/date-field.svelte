@@ -6,4 +6,4 @@
   $: internalValue = isDate(value) ? value.toISOString() : value
 </script>
 
-<span>{internalValue || ""}</span>
+<span class={$$restProps.class}>{internalValue || ""}</span>

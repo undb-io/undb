@@ -2,4 +2,4 @@
   export let value: number | undefined = undefined
 </script>
 
-<span>{value}</span>
+<span class={$$restProps.class}>{value}</span>

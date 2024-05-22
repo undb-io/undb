@@ -10,6 +10,7 @@
   import IdField from "../field-value/id-field.svelte"
   import DateField from "../field-value/date-field.svelte"
   import NumberField from "../field-value/number-field.svelte"
+  import { cn } from "$lib/utils"
 
   const table = getTable()
 
@@ -55,7 +56,7 @@
     this={map[field.type]}
     bind:value
     {index}
-    class="text-xs"
+    class={cn("text-xs", !field.isMutable && "px-2")}
     onValueChange={(v) => {
       value = v
     }}
