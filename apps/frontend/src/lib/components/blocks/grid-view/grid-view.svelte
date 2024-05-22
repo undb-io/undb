@@ -180,6 +180,7 @@
                       (idx === 0 || idx === 1) && "border-r-0",
                       idx === 0 && match && "border-l-4",
                       idx === 0 && condition && getBorder(condition.option.color),
+                      idx === 2 && "pl-2",
                       hasFilter && "bg-orange-50",
                     )}
                     {...attrs}

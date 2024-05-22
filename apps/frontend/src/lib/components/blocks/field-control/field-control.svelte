@@ -29,4 +29,4 @@
   }
 </script>
 
-<svelte:component this={map[field.type]} bind:value {...$$restProps} />
+<svelte:component this={map[field.type]} {...$$restProps} bind:value />

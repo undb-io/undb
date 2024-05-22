@@ -19,7 +19,15 @@ import { CommandBus, QueryBus } from "@undb/cqrs"
 import { container } from "@undb/di"
 import type { ICommandBus, IQueryBus } from "@undb/domain"
 import { createLogger } from "@undb/logger"
-import { GetRecordsQuery, GetTableQuery, GetTablesQuery, getRecordsQuery, getTableQuery } from "@undb/queries"
+import {
+  GetRecordByIdQuery,
+  GetRecordsQuery,
+  GetTableQuery,
+  GetTablesQuery,
+  getRecordByIdQuery,
+  getRecordsQuery,
+  getTableQuery,
+} from "@undb/queries"
 import { tableDTO } from "@undb/table"
 import { ZodError, z } from "@undb/zod"
 import { fromError } from "zod-validation-error"
@@ -91,6 +99,7 @@ const tableRouter = t.router({
 
 export const recordRouter = t.router({
   list: p.input(getRecordsQuery).query(({ input }) => queryBus.execute(new GetRecordsQuery(input))),
+  get: p.input(getRecordByIdQuery).query(({ input }) => queryBus.execute(new GetRecordByIdQuery(input))),
   create: p.input(createRecordCommand).mutation(({ input }) => commandBus.execute(new CreateRecordCommand(input))),
   update: p.input(updateRecordCommand).mutation(({ input }) => commandBus.execute(new UpdateRecordCommand(input))),
 })

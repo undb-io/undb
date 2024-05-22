@@ -30,7 +30,7 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
     return new RecordDO(new RecordIdVO(dto.id), RecordValuesVO.fromJSON(table, dto.values))
   }
 
-  public flatten() {
+  public flatten(): Record<string, any> {
     return {
       id: this.id.value,
       ...this.values.toJSON(),

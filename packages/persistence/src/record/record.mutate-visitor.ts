@@ -17,12 +17,20 @@ import type {
   StringEmpty,
   StringEndsWith,
   StringEqual,
+  StringMax,
+  StringMin,
   StringStartsWith,
 } from "@undb/table"
 import type { ExpressionBuilder } from "kysely"
 
 export class RecordMutateVisitor implements IRecordVisitor {
   constructor(private readonly eb: ExpressionBuilder<any, any>) {}
+  stringMin(spec: StringMin): void {
+    throw new Error("Method not implemented.")
+  }
+  stringMax(spec: StringMax): void {
+    throw new Error("Method not implemented.")
+  }
   // TODO: data type
   #data: Record<string, any> = {}
   public get data(): Readonly<Record<string, any>> {

@@ -3,12 +3,13 @@
   import type { ComponentType } from "svelte"
   import StringCell from "./editable-cell/string-cell.svelte"
   import NumberCell from "./editable-cell/number-cell.svelte"
-  import TextCell from "./editable-cell/text-cell.svelte"
-  import IdCell from "./editable-cell/id-cell.svelte"
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
   import { toast } from "svelte-sonner"
+  import IdField from "../field-value/id-field.svelte"
+  import DateField from "../field-value/date-field.svelte"
+  import NumberField from "../field-value/number-field.svelte"
 
   const table = getTable()
 
@@ -20,10 +21,10 @@
   const map: Record<FieldType, ComponentType> = {
     string: StringCell,
     number: NumberCell,
-    id: IdCell,
-    createdAt: TextCell,
-    updatedAt: TextCell,
-    autoIncrement: TextCell,
+    id: IdField,
+    createdAt: DateField,
+    updatedAt: DateField,
+    autoIncrement: NumberField,
   }
 
   let form: HTMLFormElement

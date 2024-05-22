@@ -1,6 +1,15 @@
 import { inject, singleton } from "@undb/di"
-import { Option, andOptions, type PaginatedDTO } from "@undb/domain"
-import type { IRecordDTO, IRecordQueryRepository, Query, TableDo, TableId, ViewId } from "@undb/table"
+import { None, Option, Some, andOptions, type PaginatedDTO } from "@undb/domain"
+import {
+  ID_TYPE,
+  type IRecordDTO,
+  type IRecordQueryRepository,
+  type Query,
+  type RecordId,
+  type TableDo,
+  type TableId,
+  type ViewId,
+} from "@undb/table"
 import type { ExpressionBuilder, SelectQueryBuilder } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
@@ -24,6 +33,13 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       .executeTakeFirstOrThrow()
 
     return Number(total)
+  }
+
+  async findOneById(table: TableDo, id: RecordId): Promise<Option<IRecordDTO>> {
+    const t = new UnderlyingTable(table)
+    const result = await this.qb.selectFrom(t.name).selectAll().where(ID_TYPE, "=", id.value).executeTakeFirst()
+
+    return result ? Some(this.mapper.toDTO(result)) : None
   }
 
   async find(table: TableDo, viewId: Option<ViewId>, query: Option<Query>): Promise<PaginatedDTO<IRecordDTO>> {

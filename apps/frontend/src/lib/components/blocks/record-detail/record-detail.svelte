@@ -1,17 +1,18 @@
 <script lang="ts">
+  import { RecordDO } from "@undb/table"
   import * as Form from "$lib/components/ui/form"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import FieldControl from "../field-control/field-control.svelte"
+  import FieldValue from "../field-value/field-value.svelte"
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { toast } from "svelte-sonner"
   import { beforeNavigate } from "$app/navigation"
-  import { queryParam, ssp } from "sveltekit-search-params"
 
-  const r = queryParam("r", ssp.string(), { pushHistory: false })
+  export let record: RecordDO
 
   beforeNavigate(({ cancel }) => {
     if ($tainted) {
@@ -22,7 +23,8 @@
   })
 
   const table = getTable()
-  const schema = $table.schema.mutableSchema
+  $: schema = $table.schema.mutableSchema
+  $: fields = $table.getOrderedFields()
 
   export let disabled: boolean = false
   export let dirty = false
@@ -32,7 +34,7 @@
   const updateRecordMutation = createMutation({
     mutationFn: trpc.record.update.mutate,
     onSettled: () => {
-      $r = ""
+      toast.success("Record updated")
       client.invalidateQueries({ queryKey: ["records", $table.id.value] })
     },
     onError: (error) => {
@@ -40,15 +42,19 @@
     },
   })
 
+  const values = record.flatten()
+
   const updateRecord = (values: any) => {
+    const recordId = record.id.value
+
     $updateRecordMutation.mutate({
       tableId: $table.id.value,
-      id: $r,
+      id: recordId,
       values,
     })
   }
 
-  const form = superForm(defaults({}, zodClient(schema)), {
+  const form = superForm(defaults(values, zodClient(schema)), {
     SPA: true,
     dataType: "json",
     validators: zodClient(schema),
@@ -61,15 +67,15 @@
     },
   })
 
-  const { form: formData, enhance, allErrors, tainted } = form
+  const { form: formData, enhance, allErrors, tainted } = form ?? {}
 
   $: dirty = !!$tainted
   $: disabled = !$tainted || !!$allErrors.length
 
-  $: fields = $table.getOrderedFields()
+  $: console.log(values, fields)
 </script>
 
-<form method="POST" use:enhance id="createRecord">
+<form method="POST" use:enhance id="createRecord" class="space-y-4">
   {#each fields as field}
     <Form.Field {form} name={field.id.value}>
       <Form.Control let:attrs>
@@ -82,7 +88,13 @@
             {/if}
           </div>
         </Form.Label>
-        <FieldControl {...attrs} bind:value={$formData[field.id.value]} {field} disabled={field.isSystem} />
+        {#if field.isSystem}
+          <div class="py-3 text-sm">
+            <FieldValue value={values[field.id.value]} type={field.type} />
+          </div>
+        {:else}
+          <FieldControl {...attrs} bind:value={$formData[field.id.value]} {field} />
+        {/if}
       </Form.Control>
       <Form.FieldErrors />
     </Form.Field>
