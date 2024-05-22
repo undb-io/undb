@@ -22,6 +22,10 @@ export default defineConfig({
         target: "http://0.0.0.0:4000",
         xfwd: true,
       },
+      "/openapi": {
+        target: "http://0.0.0.0:4000",
+        xfwd: true,
+      },
       "/trpc": {
         target: "http://0.0.0.0:4000",
         xfwd: true,

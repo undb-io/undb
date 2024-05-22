@@ -8,12 +8,14 @@ import cors from "@elysiajs/cors"
 import { html } from "@elysiajs/html"
 import { trpc } from "@elysiajs/trpc"
 import { executionContext } from "@undb/context/server"
+import { container } from "@undb/di"
 import { graphql } from "@undb/graphql"
 import { route } from "@undb/trpc"
 import { Elysia } from "elysia"
 import { requestID } from "elysia-requestid"
 import { loggerPlugin } from "./plugins/logging"
 import { auth, authStore } from "./routes/auth.route"
+import { OpenAPI } from "./routes/openapi.route"
 import { web } from "./routes/web.route"
 
 const app = new Elysia()
@@ -32,9 +34,20 @@ const app = new Elysia()
   })
   .use(auth())
   .use(loggerPlugin())
-  .use(trpc(route))
-  .use(graphql().yoga)
-  .use(web())
+  .guard(
+    {
+      beforeHandle(context) {
+        const user = context.user
+        if (!user) {
+          return context.redirect("/signup", 301)
+        }
+      },
+    },
+    (app) => {
+      const openapi = container.resolve(OpenAPI)
+      return app.use(trpc(route)).use(graphql().yoga).use(web()).use(openapi.route())
+    },
+  )
 
 export type App = typeof app
 
