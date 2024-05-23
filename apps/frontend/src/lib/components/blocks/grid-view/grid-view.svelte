@@ -201,6 +201,7 @@
       </Table.Body>
     </Table.Root>
   </div>
+
   <div class="flex items-center justify-between space-x-2 px-4 py-2">
     <div class="text-muted-foreground flex-1 text-sm">
       {Object.keys($selectedDataIds).length} of {$rows.length} row(s) selected.

@@ -1,10 +1,11 @@
 import { Ok, Option, WontImplementException, type Result } from "@undb/domain"
 import type { IRootViewFilter, ViewId } from "../modules"
+import type { IViewAggregate } from "../modules/views/view/view-aggregate/view-aggregate.vo"
 import type { IRootViewColor } from "../modules/views/view/view-color"
+import type { IViewSort } from "../modules/views/view/view-sort"
 import type { TableDo } from "../table.do"
 import type { ITableSpecVisitor } from "./table-visitor.interface"
 import { TableComositeSpecification } from "./table.composite-specification"
-import type { IViewSort } from "../modules/views/view/view-sort"
 
 export class WithViewFilter extends TableComositeSpecification {
   constructor(
@@ -68,6 +69,28 @@ export class WithViewSort extends TableComositeSpecification {
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
     v.withViewSort(this)
+    return Ok(undefined)
+  }
+}
+
+export class WithViewAggregates extends TableComositeSpecification {
+  constructor(
+    public readonly viewId: ViewId,
+    public readonly previous: Option<IViewAggregate>,
+    public readonly aggregates: IViewAggregate,
+  ) {
+    super()
+  }
+  isSatisfiedBy(t: TableDo): boolean {
+    throw new WontImplementException(WithViewColor.name + ".isSatisfiedBy")
+  }
+  mutate(t: TableDo): Result<TableDo, string> {
+    const view = t.views.getViewById(this.viewId)
+    view.setAggregate(this.aggregates)
+    return Ok(t)
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withViewAggregates(this)
     return Ok(undefined)
   }
 }

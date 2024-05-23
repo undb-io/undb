@@ -1,5 +1,5 @@
 import { None, NotImplementException, Option, ValueObject } from "@undb/domain"
-import { ZodUndefined, z, type ZodSchema } from "@undb/zod"
+import { ZodUndefined, z, type ZodSchema, type ZodTypeAny } from "@undb/zod"
 import type {
   INotRecordComositeSpecification,
   IRecordComositeSpecification,
@@ -117,6 +117,8 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
   get sortable(): boolean {
     return isFieldSortable(this.type)
   }
+
+  abstract get aggregates(): ZodTypeAny
 
   toJSON(): IFieldDTO {
     return {

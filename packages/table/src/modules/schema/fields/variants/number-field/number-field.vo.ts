@@ -6,6 +6,7 @@ import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { NumberEqual } from "../abstractions"
 import { createAbstractNumberFieldMather } from "../abstractions/abstract-number-field.condition"
+import { abstractNumberAggregate } from "../abstractions/abstract-number.aggregate"
 import { NumberFieldConstraint, numberFieldConstraint } from "./number-field-constraint.vo"
 import { NumberFieldValue } from "./number-field-value.vo"
 import {
@@ -64,5 +65,9 @@ export class NumberField extends AbstractField<NumberFieldValue, NumberFieldCons
 
   protected override getConditionSchema(optionType: z.ZodTypeAny): INumberFieldConditionSchema {
     return createNumberFieldCondition(optionType)
+  }
+
+  override get aggregates() {
+    return abstractNumberAggregate
   }
 }

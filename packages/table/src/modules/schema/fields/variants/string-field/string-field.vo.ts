@@ -16,6 +16,7 @@ import {
   StringStartsWith,
 } from "./string-field-value.specification"
 import { StringFieldValue } from "./string-field-value.vo"
+import { stringFieldAggregate } from "./string-field.aggregate"
 import {
   createStringFieldCondition,
   type IStringFieldCondition,
@@ -87,5 +88,9 @@ export class StringField extends AbstractField<StringFieldValue, StringFieldCons
 
   protected override getConditionSchema(optionType: z.ZodTypeAny): IStringFieldConditionSchema {
     return createStringFieldCondition(optionType)
+  }
+
+  override get aggregates() {
+    return stringFieldAggregate
   }
 }

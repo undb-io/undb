@@ -4,6 +4,7 @@ import { createAbstractDateConditionMather } from "../.."
 import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
+import { abstractDateAggregate } from "../abstractions/abstract-date.aggregate"
 import { CreatedAtFieldValue } from "./created-at-field-value.vo"
 import {
   createCreatedAtFieldCondition,
@@ -54,5 +55,9 @@ export class CreatedAtField extends AbstractField<CreatedAtFieldValue> {
 
   protected override getConditionSchema(optionType: z.ZodTypeAny): ICreatedAtFieldConditionSchema {
     return createCreatedAtFieldCondition(optionType)
+  }
+
+  override get aggregates() {
+    return abstractDateAggregate
   }
 }

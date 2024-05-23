@@ -55,4 +55,8 @@ export class AutoIncrementField extends AbstractField<AutoIncrementFieldValue> {
   protected override getConditionSchema(optionType: z.ZodTypeAny): IAutoIncrementFieldConditionSchema {
     return createAutoIncrementFieldCondition(optionType)
   }
+
+  override get aggregates() {
+    return z.any()
+  }
 }

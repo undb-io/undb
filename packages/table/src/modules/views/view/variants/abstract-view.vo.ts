@@ -1,7 +1,13 @@
 import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
-import { WithViewColor, WithViewFilter, WithViewSort } from "../../../../specifications/table-view.specification"
+import {
+  WithViewAggregates,
+  WithViewColor,
+  WithViewFilter,
+  WithViewSort,
+} from "../../../../specifications/table-view.specification"
 import type { IViewDTO } from "../dto"
+import { ViewAggregateVO, viewAggregate, type IViewAggregate } from "../view-aggregate/view-aggregate.vo"
 import { ViewColor, viewColorGroup, type IRootViewColor } from "../view-color"
 import { ViewFilter, viewFilterGroup, type IRootViewFilter } from "../view-filter/view-filter.vo"
 import { ViewIdVo, viewId, type ViewId } from "../view-id.vo"
@@ -22,6 +28,7 @@ export const baseViewDTO = z.object({
   filter: viewFilterGroup.optional(),
   color: viewColorGroup.optional(),
   sort: viewSort.optional(),
+  aggregates: viewAggregate.optional(),
 })
 
 export type IBaseViewDTO = z.infer<typeof baseViewDTO>
@@ -32,6 +39,7 @@ export abstract class AbstractView {
   filter: Option<ViewFilter> = None
   color: Option<ViewColor> = None
   sort: Option<ViewSort> = None
+  aggregate: Option<ViewAggregateVO> = None
 
   abstract type: ViewType
 
@@ -46,6 +54,9 @@ export abstract class AbstractView {
     }
     if (dto.sort) {
       this.setSort(dto.sort)
+    }
+    if (dto.aggregates) {
+      this.setAggregate(dto.aggregates)
     }
   }
 
@@ -92,6 +103,19 @@ export abstract class AbstractView {
 
     const previous = this.sort.into(null)?.value
     return Some(new WithViewSort(this.id, Option(previous), sort))
+  }
+
+  setAggregate(aggregate: IViewAggregate) {
+    this.aggregate = Some(new ViewAggregateVO(aggregate))
+  }
+
+  $setAggregateSpec(aggregate: IViewAggregate): Option<WithViewAggregates> {
+    if (this.aggregate.mapOr(false, (f) => f.equals(new ViewAggregateVO(aggregate)))) {
+      return None
+    }
+
+    const previous = this.aggregate.into(null)?.value
+    return Some(new WithViewAggregates(this.id, Option(previous), aggregate))
   }
 
   toJSON(): IViewDTO {

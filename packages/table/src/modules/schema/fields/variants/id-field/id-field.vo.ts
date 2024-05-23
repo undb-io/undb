@@ -57,4 +57,9 @@ export class IdField extends AbstractField<IdFieldValue> {
   ): IIdFieldConditionSchema {
     return createIdFieldCondition(optionType)
   }
+
+  override get aggregates() {
+    // TODO: implement
+    return z.any()
+  }
 }

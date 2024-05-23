@@ -6,18 +6,22 @@ import type {
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
+  WithViewAggregates,
   WithViewColor,
   WithViewFilter,
   WithViewSort,
 } from "@undb/table"
+import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
 import type { SQLiteUpdateSetSource } from "drizzle-orm/sqlite-core"
 import type { tables } from "../tables"
-import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
 
 type Source = SQLiteUpdateSetSource<typeof tables>
 
 export class TableMutationVisitor implements ITableSpecVisitor {
   constructor(public readonly table: TableDo) {}
+  withViewAggregates(viewColor: WithViewAggregates): void {
+    this.#updates = { ...this.#updates, views: this.table.views.toJSON() }
+  }
   withTableRLS(rls: WithTableRLS): void {
     throw new NotImplementException(TableMutationVisitor.name + ".withTableRLS")
   }
