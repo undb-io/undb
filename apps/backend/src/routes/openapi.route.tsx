@@ -1,16 +1,25 @@
 import Elysia, { t } from "elysia"
 import { createOpenApiSpec } from "@undb/openapi"
 import { inject, singleton } from "@undb/di"
-import { type ITableRepository, injectTableRepository, TableIdVo, IRecordReadableDTO } from "@undb/table"
-import { PaginatedDTO, type IQueryBus } from "@undb/domain"
+import {
+  type ITableRepository,
+  injectTableRepository,
+  TableIdVo,
+  type IRecordReadableDTO,
+  injectRecordRepository,
+  type IRecordRepository,
+} from "@undb/table"
+import { None, PaginatedDTO, type IQueryBus } from "@undb/domain"
 import { QueryBus } from "@undb/cqrs"
-import { GetReadableRecordsQuery, GetRecordsQuery } from "@undb/queries"
+import { GetReadableRecordsQuery } from "@undb/queries"
 
 @singleton()
 export class OpenAPI {
   constructor(
     @injectTableRepository()
     private readonly repo: ITableRepository,
+    @injectRecordRepository()
+    private readonly recordRepo: IRecordRepository,
 
     @inject(QueryBus)
     private readonly queryBus: IQueryBus,
@@ -23,8 +32,9 @@ export class OpenAPI {
         async (ctx) => {
           const tableId = ctx.params.tableId
           const table = (await this.repo.findOneById(new TableIdVo(tableId))).unwrap()
+          const record = (await this.recordRepo.findOne(table, None)).into(undefined)
 
-          const spec = createOpenApiSpec(table)
+          const spec = createOpenApiSpec(table, record)
 
           return `<html>
               <head>

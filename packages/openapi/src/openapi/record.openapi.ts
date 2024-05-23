@@ -1,12 +1,21 @@
 import type { RouteConfig } from "@asteasolutions/zod-to-openapi"
 import { RecordDO, type TableDo } from "@undb/table"
 import { z, type ZodTypeAny } from "@undb/zod"
+import { objectify } from "radash"
 
 export const RECORD_COMPONENT = "Record"
 
 export const createRecordComponent = (table: TableDo, record?: RecordDO) => {
   const schema = table.schema.readableSchema
-  return schema.openapi(RECORD_COMPONENT)
+
+  const example = record
+    ? objectify(
+        table.schema.fields,
+        (f) => f.name.value,
+        (f) => record?.getValue(f.id).into(undefined)?.value,
+      )
+    : undefined
+  return schema.openapi(RECORD_COMPONENT, { example })
 }
 
 export const getRecords = (table: TableDo, recordSchema: ZodTypeAny): RouteConfig => {

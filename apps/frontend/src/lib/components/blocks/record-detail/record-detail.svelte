@@ -67,7 +67,6 @@
     resetForm: false,
     invalidateAll: false,
     onUpdate(event) {
-      console.log(event)
       if (!event.form.valid) return
 
       const data = event.form.data

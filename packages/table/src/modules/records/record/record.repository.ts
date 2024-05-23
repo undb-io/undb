@@ -17,6 +17,7 @@ export interface Query {
 
 export interface IRecordRepository {
   insert(table: TableDo, record: RecordDO): Promise<void>
+  findOne(table: TableDo, spec: Option<RecordComositeSpecification>): Promise<Option<RecordDO>>
   findOneById(table: TableDo, id: RecordId): Promise<Option<RecordDO>>
   updateOneById(table: TableDo, record: RecordDO, spec: Option<RecordComositeSpecification>): Promise<void>
 }

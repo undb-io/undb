@@ -4,8 +4,8 @@ import { RecordDO, type IRecordDTO } from "@undb/table"
 
 @singleton()
 export class RecordMapper implements Mapper<RecordDO, any, IRecordDTO> {
-  toDo(entity: any): RecordDO {
-    throw new Error("Method not implemented.")
+  toDo({ id, ...values }: any): RecordDO {
+    return RecordDO.create(id, values)
   }
   toEntity(domain: RecordDO) {
     return {

@@ -9,7 +9,7 @@ import { RECORD_COMPONENT, createRecordComponent, getRecords } from "./openapi/r
 export const createOpenApiSpec = (table: TableDo, record?: RecordDO) => {
   const registry = new OpenAPIRegistry()
 
-  const recordSchema = createRecordComponent(table)
+  const recordSchema = createRecordComponent(table, record)
   registry.register(RECORD_COMPONENT, recordSchema)
 
   registry.registerPath(getRecords(table, recordSchema))

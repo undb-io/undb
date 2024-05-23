@@ -40,6 +40,13 @@ export class RecordRepository implements IRecordRepository {
     await this.outboxService.save(record)
   }
 
+  async findOne(table: TableDo, spec: Option<RecordComositeSpecification>): Promise<Option<RecordDO>> {
+    const t = new UnderlyingTable(table)
+
+    const record = await this.qb.selectFrom(t.name).selectAll().limit(1).executeTakeFirst()
+    return record ? Some(RecordDO.fromJSON(table, { id: record.id, values: record })) : None
+  }
+
   async findOneById(table: TableDo, recordId: RecordId): Promise<Option<RecordDO>> {
     const t = new UnderlyingTable(table)
     const records = await this.qb.selectFrom(t.name).selectAll().where(ID_TYPE, "=", recordId.value).limit(1).execute()
