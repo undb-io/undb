@@ -17,7 +17,7 @@
   import { getTable } from "$lib/store/table.store"
   import { queryParam, ssp } from "sveltekit-search-params"
 
-  const detail = queryParam("detail", ssp.boolean())
+  const tab = queryParam("tab", ssp.string())
 
   const table = getTable()
   $: view = $table.views.getViewById()
@@ -98,13 +98,12 @@
     </div>
 
     <Tabs.Root
-      value={$detail ? "detail" : "data"}
+      value={$tab === "data" || !$tab ? "data" : "detail"}
       onValueChange={(value) => {
-        if (!$detail && value === "data") {
+        if (!$tab && value === "data") {
           return
         }
-
-        detail.set(value === "detail")
+        tab.set(value === "data" ? "" : value ?? "")
       }}
       class="w-[200px] -translate-x-1/2"
     >

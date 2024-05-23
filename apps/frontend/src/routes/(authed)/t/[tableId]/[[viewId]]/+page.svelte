@@ -9,7 +9,7 @@
   import Openapi from "$lib/components/blocks/openapi/openapi.svelte"
   import { queryParam, ssp } from "sveltekit-search-params"
 
-  const detail = queryParam("detail", ssp.boolean())
+  const tab = queryParam("tab", ssp.string())
 
   function handleR() {
     $createRecordSheetOpen = true
@@ -19,7 +19,7 @@
 <TableHeader />
 
 <main class="h-full flex-1 overflow-auto">
-  {#if !$detail}
+  {#if !$tab || $tab === "data"}
     <GridView />
   {:else}
     <Openapi />

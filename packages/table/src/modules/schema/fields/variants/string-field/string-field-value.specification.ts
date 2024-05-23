@@ -17,6 +17,7 @@ export class StringEqual extends RecordComositeSpecification {
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
     t.values.setValue(this.fieldId, this.values)
+    return Ok(t)
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.stringEqual(this)
