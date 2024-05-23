@@ -18,8 +18,11 @@
   import * as Select from "$lib/components/ui/select"
   import { getBorder } from "./grid-view.util"
   import GridViewOpen from "./grid-view-open.svelte"
+  import { queryParam } from "sveltekit-search-params"
 
   const t = getTable()
+
+  const q = queryParam("q")
 
   $: view = $t.views.getViewById()
   $: viewFilter = view.filter.into(undefined)
@@ -28,15 +31,18 @@
   const currentPage = writable(1)
 
   const getRecords = createQuery(
-    derived([t, perPage, currentPage], ([$table, $perPage, $currentPage]) => ({
+    derived([t, perPage, currentPage, q], ([$table, $perPage, $currentPage, $q]) => ({
       queryKey: [$table?.id.value, $table.views.getViewById()?.id.value, "records"],
       queryFn: () =>
         trpc.record.list.query({
           tableId: $table?.id.value,
+          q: $q ?? undefined,
           pagination: { limit: $perPage, page: $currentPage },
         }),
     })),
   )
+
+  $: q, $getRecords.refetch()
 
   $: colorSpec = view.color.into(undefined)?.getSpec($t.schema).into(undefined)
 

@@ -73,6 +73,10 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
     return this.constraint.mapOr(false, (c) => !!c.required)
   }
 
+  get searchable(): boolean {
+    return false
+  }
+
   protected abstract getConditionSchema<OptionType extends z.ZodTypeAny>(
     optionType: OptionType,
   ):

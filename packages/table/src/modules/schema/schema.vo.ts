@@ -78,6 +78,10 @@ export class Schema extends ValueObject<Field[]> {
     return z.object(schema)
   }
 
+  get searchableFields(): Field[] {
+    return this.fields.filter((f) => f.searchable)
+  }
+
   toJSON(): ISchemaDTO {
     return this.fields.map((field) => field.toJSON())
   }

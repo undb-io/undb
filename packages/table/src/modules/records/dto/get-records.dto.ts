@@ -6,6 +6,7 @@ import { viewId } from "../../views"
 export const getRecordsDTO = z.object({
   tableId: tableId,
   viewId: viewId.optional(),
+  q: z.string().optional(),
   pagination: pagniationSchema.optional(),
 })
 

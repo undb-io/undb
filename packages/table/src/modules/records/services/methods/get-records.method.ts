@@ -10,6 +10,6 @@ export async function getRecords(this: RecordsQueryService, dto: IGetRecordsDTO)
   const table = (await this.tableRepository.findOneById(tableId)).expect("Table not found")
   const viewId = dto.viewId ? Some(new ViewIdVo(dto.viewId)) : None
 
-  const query = buildQuery(dto)
+  const query = buildQuery(table, dto)
   return this.repo.find(table, viewId, query)
 }

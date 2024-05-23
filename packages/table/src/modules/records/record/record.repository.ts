@@ -3,6 +3,7 @@ import type { TableId } from "../../../table-id.vo"
 import type { TableDo } from "../../../table.do"
 import type { ViewId } from "../../views"
 import type { IGetRecordsDTO } from "../dto"
+import { withQ } from "../specification/with-q.specification"
 import type { IRecordDTO } from "./dto"
 import type { RecordId } from "./record-id.vo"
 import type { RecordComositeSpecification } from "./record.composite-specification"
@@ -26,7 +27,7 @@ export interface IRecordQueryRepository {
   count(tableId: TableId): Promise<number>
 }
 
-export function buildQuery(dto: IGetRecordsDTO) {
+export function buildQuery(table: TableDo, dto: IGetRecordsDTO) {
   const query: Query = {
     filter: None,
     select: None,
@@ -35,6 +36,9 @@ export function buildQuery(dto: IGetRecordsDTO) {
 
   if (dto.pagination) {
     query.pagination = Some(dto.pagination)
+  }
+  if (dto.q) {
+    query.filter = withQ(table, dto.q)
   }
   return Some(query)
 }

@@ -52,6 +52,10 @@ export class StringField extends AbstractField<StringFieldValue, StringFieldCons
 
   override type = STRING_TYPE
 
+  override get searchable() {
+    return true
+  }
+
   override get valueSchema() {
     return this.constraint.unwrapOrElse(() => new StringFieldConstraint({})).schema
   }

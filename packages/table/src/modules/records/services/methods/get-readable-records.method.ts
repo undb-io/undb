@@ -14,7 +14,7 @@ export async function getReadableRecords(
   const table = (await this.tableRepository.findOneById(tableId)).expect("Table not found")
   const viewId = dto.viewId ? Some(new ViewIdVo(dto.viewId)) : None
 
-  const query = buildQuery(dto)
+  const query = buildQuery(table, dto)
   const data = await this.repo.find(table, viewId, query)
   return {
     total: data.total,
