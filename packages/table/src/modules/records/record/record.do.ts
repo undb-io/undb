@@ -45,7 +45,7 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
     return spec.isSatisfiedBy(this)
   }
 
-  update(table: TableDo, dto: IUpdateRecordDTO): Option<RecordComositeSpecification> {
+  update(table: TableDo, dto: IUpdateRecordDTO["values"]): Option<RecordComositeSpecification> {
     const specs: Option<RecordComositeSpecification>[] = []
 
     for (const [fieldId, value] of Object.entries(dto)) {
@@ -64,7 +64,11 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
       specs.push(spec)
     }
 
-    return andOptions(...specs) as Option<RecordComositeSpecification>
+    const spec = andOptions(...specs) as Option<RecordComositeSpecification>
+    if (spec.isSome()) {
+      spec.unwrap().mutate(this)
+    }
+    return spec
   }
 
   toReadable(table: TableDo) {

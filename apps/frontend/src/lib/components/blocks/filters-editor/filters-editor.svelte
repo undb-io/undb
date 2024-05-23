@@ -146,7 +146,7 @@
       {/each}
     </SortableList>
   {/if}
-  <div class={cn("flex justify-between border-t px-4", value?.children.length ? "py-2" : "py-4")}>
+  <div class={cn("flex justify-between px-4", value?.children.length ? "py-2" : "py-4")}>
     <div class="flex items-center gap-2">
       <Button variant="ghost" size="xs" on:click={addCondition}>
         <PlusIcon class="mr-2 h-3 w-3" />

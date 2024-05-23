@@ -11,7 +11,7 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js"
   import * as Sheet from "$lib/components/ui/sheet/index.js"
   import { Button } from "$lib/components/ui/button/index.js"
-  import { DatabaseIcon, Package2 } from "lucide-svelte"
+  import { DatabaseIcon, FileSlidersIcon, Package2, SheetIcon } from "lucide-svelte"
   import CreateTableButton from "../create-table/create-table-button.svelte"
   import * as Breadcrumb from "$lib/components/ui/breadcrumb/index.js"
   import { getTable } from "$lib/store/table.store"
@@ -106,11 +106,17 @@
 
         detail.set(value === "detail")
       }}
-      class="w-[200px]"
+      class="w-[200px] -translate-x-1/2"
     >
       <Tabs.List>
-        <Tabs.Trigger value="data">Data</Tabs.Trigger>
-        <Tabs.Trigger value="detail">Detail</Tabs.Trigger>
+        <Tabs.Trigger value="data">
+          <SheetIcon class="mr-2 h-4 w-4" />
+          Data
+        </Tabs.Trigger>
+        <Tabs.Trigger value="detail">
+          <FileSlidersIcon class="mr-2 h-4 w-4" />
+          Detail
+        </Tabs.Trigger>
       </Tabs.List>
     </Tabs.Root>
 

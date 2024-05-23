@@ -5,7 +5,7 @@
   export let field: Field
 </script>
 
-<div class="flex items-center gap-1">
+<div data-field-id={field.id.value} data-field-type={field.type} class="flex items-center gap-1">
   <FieldIcon type={field.type} class="h-4 w-4" />
   <span>
     {field.name.value}

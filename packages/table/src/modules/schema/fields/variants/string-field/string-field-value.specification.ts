@@ -16,7 +16,7 @@ export class StringEqual extends RecordComositeSpecification {
     return value.mapOr(false, (v) => v instanceof StringFieldValue && v.equals(this.values))
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
-    throw new Error("Method not implemented.")
+    t.values.setValue(this.fieldId, this.values)
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.stringEqual(this)

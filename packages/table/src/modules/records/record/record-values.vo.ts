@@ -83,4 +83,8 @@ export class RecordValuesVO extends ValueObject {
   public getValue(fieldId: FieldId): Option<FieldValue> {
     return Option(this.#map.get(fieldId.value))
   }
+
+  public setValue(fieldId: FieldId, value: FieldValue) {
+    this.#map.set(fieldId.value, value)
+  }
 }
