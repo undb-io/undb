@@ -68,7 +68,7 @@
   const { form: formData, enhance, allErrors, tainted } = form
 
   $: dirty = !!$tainted
-  $: disabled = !!$allErrors.length
+  $: disabled = !!$allErrors.length || !dirty
 
   $: fields = $table.getOrderedFields().filter((f) => f.isMutable)
 </script>

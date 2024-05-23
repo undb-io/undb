@@ -7,10 +7,14 @@
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import FieldControl from "../field-control/field-control.svelte"
   import FieldValue from "../field-value/field-value.svelte"
-  import { defaults, superForm } from "sveltekit-superforms"
+  import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { toast } from "svelte-sonner"
   import { beforeNavigate } from "$app/navigation"
+  import { keys, pick } from "radash"
+  import { queryParam } from "sveltekit-search-params"
+
+  const r = queryParam("r")
 
   export let record: RecordDO
 
@@ -23,7 +27,7 @@
   })
 
   const table = getTable()
-  $: schema = $table.schema.mutableSchema
+  const schema = $table.schema.mutableSchema
   $: fields = $table.getOrderedFields()
 
   export let disabled: boolean = false
@@ -33,9 +37,11 @@
 
   const updateRecordMutation = createMutation({
     mutationFn: trpc.record.update.mutate,
-    onSettled: () => {
+    onSuccess: async () => {
       toast.success("Record updated")
-      client.invalidateQueries({ queryKey: ["records", $table.id.value] })
+      $r = ""
+      reset()
+      await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
     },
     onError: (error) => {
       toast.error(error.message)
@@ -61,30 +67,40 @@
     resetForm: false,
     invalidateAll: false,
     onUpdate(event) {
+      console.log(event)
       if (!event.form.valid) return
 
-      updateRecord(event.form.data)
+      const data = event.form.data
+      const values = $tainted ? pick(data, keys($tainted)) : undefined
+      if (values) {
+        updateRecord(values)
+      }
     },
   })
 
-  const { form: formData, enhance, allErrors, tainted } = form ?? {}
+  const { form: formData, enhance, allErrors, tainted, reset } = form
 
   $: dirty = !!$tainted
   $: disabled = !$tainted || !!$allErrors.length
-
-  $: console.log(values, fields)
 </script>
 
-<form method="POST" use:enhance id="createRecord" class="space-y-4">
+<form method="POST" use:enhance id="updateRecord" class="space-y-4">
   {#each fields as field}
+    {@const dirty = $tainted && $tainted[field.id.value]}
     <Form.Field {form} name={field.id.value}>
       <Form.Control let:attrs>
-        <Form.Label class="flex items-center justify-between gap-2">
+        <Form.Label class="flex h-4 items-center justify-between gap-2">
           <div class="flex items-center gap-2">
             <FieldIcon type={field.type} class="h-4 w-4" />
             <span>{field.name.value}</span>
             {#if field.required}
               <span class="text-red-500">*</span>
+            {/if}
+            {#if dirty}
+              <span
+                class="me-2 rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300"
+                >updated</span
+              >
             {/if}
           </div>
         </Form.Label>

@@ -5,6 +5,7 @@ import type { FieldValue } from "../../schema"
 import { FieldIdVo, fieldId, type FieldId, type IFieldId } from "../../schema/fields/field-id.vo"
 import { FieldValueFactory } from "../../schema/fields/field-value.factory"
 import type { IRecordReadableDTO } from "./dto"
+import type { SchemaMap } from "../../schema/schema.type"
 
 export const recordValues = z.record(fieldId, z.any())
 
@@ -82,6 +83,20 @@ export class RecordValuesVO extends ValueObject {
 
   public getValue(fieldId: FieldId): Option<FieldValue> {
     return Option(this.#map.get(fieldId.value))
+  }
+
+  public getMuttableValues(schema: SchemaMap) {
+    const values: Record<string, any> = {}
+
+    for (const [id, value] of Object.entries(this.values)) {
+      const field = schema.get(id)
+      if (!field) continue
+      if (!field.isMutable) continue
+
+      values[field.id.value] = value.value
+    }
+
+    return values
   }
 
   public setValue(fieldId: FieldId, value: FieldValue) {

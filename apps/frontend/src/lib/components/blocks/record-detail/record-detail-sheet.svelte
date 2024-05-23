@@ -29,7 +29,6 @@
   $: recordDo = $record.data?.record ? RecordDO.fromJSON($table, $record.data?.record) : undefined
 
   let disabled = false
-  let dirty = false
 </script>
 
 <Sheet.Root
@@ -56,13 +55,13 @@
         </div>
       {/if}
       {#if recordDo}
-        <RecordDetail record={recordDo} />
+        <RecordDetail record={recordDo} bind:disabled />
       {/if}
     </div>
 
     <Sheet.Footer>
       <Button variant="outline" type="button" on:click={() => ($r = "")}>Cancel</Button>
-      <Button type="submit" form="createRecord" {disabled}>Create</Button>
+      <Button type="submit" form="updateRecord" {disabled}>Update</Button>
     </Sheet.Footer>
   </Sheet.Content>
 </Sheet.Root>

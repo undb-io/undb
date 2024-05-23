@@ -8,6 +8,7 @@ import type { ICreateRecordDTO, IRecordDTO, IUpdateRecordDTO } from "./dto"
 import { RecordIdVO, type RecordId } from "./record-id.vo"
 import { RecordValuesVO } from "./record-values.vo"
 import type { IRecordComositeSpecification, RecordComositeSpecification } from "./record.composite-specification"
+import type { SchemaMap } from "../../schema/schema.type"
 
 export class RecordDO extends AggregateRoot<IRecordEvent> {
   constructor(
@@ -35,6 +36,10 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
       id: this.id.value,
       ...this.values.toJSON(),
     }
+  }
+
+  getMuttableValues(schema: SchemaMap) {
+    return this.values.getMuttableValues(schema)
   }
 
   getValue(fieldId: FieldId): Option<FieldValue> {
