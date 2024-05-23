@@ -11,6 +11,7 @@
   import DateField from "../field-value/date-field.svelte"
   import NumberField from "../field-value/number-field.svelte"
   import { cn } from "$lib/utils"
+  import { derived } from "svelte/store"
 
   const table = getTable()
 
@@ -29,18 +30,21 @@
   }
 
   let form: HTMLFormElement
-  const updateRecord = createMutation({
-    mutationKey: [field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
-    onSuccess(data, variables, context) {
-      form.querySelectorAll("input").forEach((input) => {
-        input.blur()
-      })
-    },
-    onError(error, variables, context) {
-      toast.error(error.message)
-    },
-  })
+
+  const updateRecord = createMutation(
+    derived([table], ([$table]) => ({
+      mutationKey: ["record", $table.id.value, field.id.value, recordId],
+      mutationFn: trpc.record.update.mutate,
+      onSuccess(data, variables, context) {
+        form.querySelectorAll("input").forEach((input) => {
+          input.blur()
+        })
+      },
+      onError(error, variables, context) {
+        toast.error(error.message)
+      },
+    })),
+  )
 
   function handleSubmit() {
     $updateRecord.mutate({

@@ -16,6 +16,7 @@
   import * as Breadcrumb from "$lib/components/ui/breadcrumb/index.js"
   import { getTable } from "$lib/store/table.store"
   import { queryParam, ssp } from "sveltekit-search-params"
+  import RecordUpdating from "../record-updating/record-updating.svelte"
 
   const tab = queryParam("tab", ssp.string())
 
@@ -80,7 +81,7 @@
     </Sheet.Content>
   </Sheet.Root>
   <div class="flex w-full flex-1 items-center justify-between">
-    <div class="relative">
+    <div class="relative flex items-center gap-4">
       <Breadcrumb.Root>
         <Breadcrumb.List>
           <Breadcrumb.Item>
@@ -95,6 +96,8 @@
           </Breadcrumb.Item>
         </Breadcrumb.List>
       </Breadcrumb.Root>
+
+      <RecordUpdating />
     </div>
 
     <Tabs.Root
