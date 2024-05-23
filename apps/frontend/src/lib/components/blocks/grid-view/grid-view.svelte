@@ -31,18 +31,18 @@
   const currentPage = writable(1)
 
   const getRecords = createQuery(
-    derived([t, perPage, currentPage, q], ([$table, $perPage, $currentPage, $q]) => ({
-      queryKey: [$table?.id.value, $table.views.getViewById()?.id.value, "records"],
-      queryFn: () =>
-        trpc.record.list.query({
-          tableId: $table?.id.value,
-          q: $q ?? undefined,
-          pagination: { limit: $perPage, page: $currentPage },
-        }),
-    })),
+    derived([t, perPage, currentPage, q], ([$table, $perPage, $currentPage, $q]) => {
+      return {
+        queryKey: [$table?.id.value, $table.views.getViewById()?.id.value, "records", $q, $currentPage, $perPage],
+        queryFn: () =>
+          trpc.record.list.query({
+            tableId: $table?.id.value,
+            q: $q ?? undefined,
+            pagination: { limit: $perPage, page: $currentPage },
+          }),
+      }
+    }),
   )
-
-  $: q, $getRecords.refetch()
 
   $: colorSpec = view.color.into(undefined)?.getSpec($t.schema).into(undefined)
 
@@ -88,9 +88,7 @@
       table.column({
         accessor: "open",
         header: () => "",
-        cell: ({ row }) => {
-          return createRender(GridViewOpen, { recordId: row.original.id })
-        },
+        cell: ({ row }) => createRender(GridViewOpen, { recordId: row.original.id }),
         plugins: {
           resize: {
             initialWidth: 30,
@@ -98,21 +96,18 @@
           },
         },
       }),
-      ...($t.getOrderedFields() ?? []).map((field, index) => {
-        return table.column({
+      ...($t.getOrderedFields() ?? []).map((field, index) =>
+        table.column({
           header: () => createRender(GridViewHeader, { field }),
           accessor: field.id.value,
-          cell: (item) => {
-            return createRender(GridViewCell, { index, value: item.value, field, recordId: item.row.original.id })
-          },
-        })
-      }),
+          cell: (item) =>
+            createRender(GridViewCell, { index, value: item.value, field, recordId: item.row.original.id }),
+        }),
+      ),
       table.column({
         header: "",
         accessor: ({ id }) => id,
-        cell: (item) => {
-          return createRender(GridViewActions, { id: item.value })
-        },
+        cell: (item) => createRender(GridViewActions, { id: item.value }),
         plugins: {
           resize: {
             initialWidth: 50,
