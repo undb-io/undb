@@ -1,8 +1,8 @@
 import Elysia, { t } from "elysia"
 import { createOpenApiSpec } from "@undb/openapi"
 import { inject, singleton } from "@undb/di"
-import { type ITableRepository, injectTableRepository, TableIdVo } from "@undb/table"
-import { type IQueryBus } from "@undb/domain"
+import { type ITableRepository, injectTableRepository, TableIdVo, IRecordReadableDTO } from "@undb/table"
+import { PaginatedDTO, type IQueryBus } from "@undb/domain"
 import { QueryBus } from "@undb/cqrs"
 import { GetReadableRecordsQuery, GetRecordsQuery } from "@undb/queries"
 
@@ -58,7 +58,15 @@ export class OpenAPI {
       )
       .get(
         "/api/tables/:tableId/records",
-        async (ctx) => this.queryBus.execute(new GetReadableRecordsQuery({ tableId: ctx.params.tableId })),
+        async (ctx) => {
+          const result = (await this.queryBus.execute(
+            new GetReadableRecordsQuery({ tableId: ctx.params.tableId }),
+          )) as PaginatedDTO<IRecordReadableDTO>
+          return {
+            total: result.total,
+            records: result.values,
+          }
+        },
         { params: t.Object({ tableId: t.String() }) },
       )
   }

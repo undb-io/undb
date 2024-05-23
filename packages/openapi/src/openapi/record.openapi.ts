@@ -23,7 +23,7 @@ export const getRecords = (table: TableDo, recordSchema: ZodTypeAny): RouteConfi
           "application/json": {
             schema: z.object({
               total: z.number().int().positive(),
-              values: z.array(recordSchema),
+              records: z.array(recordSchema),
             }),
           },
         },
