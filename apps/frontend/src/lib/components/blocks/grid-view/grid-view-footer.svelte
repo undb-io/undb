@@ -14,7 +14,7 @@
 </script>
 
 <Select.Root>
-  <Select.Trigger class="border-none">
+  <Select.Trigger class="h-7 rounded-none border-none py-0 text-xs focus:ring-0">
     <Select.Value placeholder="Select a fruit" />
   </Select.Trigger>
   <Select.Content>
