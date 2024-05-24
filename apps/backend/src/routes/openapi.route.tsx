@@ -12,9 +12,13 @@ import {
 import { None, PaginatedDTO, type IQueryBus } from "@undb/domain"
 import { QueryBus } from "@undb/cqrs"
 import { GetReadableRecordsQuery } from "@undb/queries"
+import { createLogger } from "@undb/logger"
+import { executionContext } from "@undb/context/server"
 
 @singleton()
 export class OpenAPI {
+  private readonly logger = createLogger(OpenAPI.name)
+
   constructor(
     @injectTableRepository()
     private readonly repo: ITableRepository,
@@ -27,6 +31,19 @@ export class OpenAPI {
 
   public route() {
     return new Elysia()
+      .onResponse((ctx) => {
+        const requestId = executionContext.getStore()?.requestId
+        this.logger.info(
+          {
+            method: ctx.request.method,
+            params: ctx.params,
+            query: ctx.query,
+            path: ctx.path,
+            requestId,
+          },
+          "openapi request",
+        )
+      })
       .get(
         "/openapi/tables/:tableId",
         async (ctx) => {
