@@ -84,6 +84,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const { total } = await this.qb
       .selectFrom(t.name)
       .select((eb) => eb.fn.countAll().as("total"))
+      .where(handleQuery)
       .executeTakeFirstOrThrow()
 
     const records = result.map((r) => this.mapper.toDTO(r))
