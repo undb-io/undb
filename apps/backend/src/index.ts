@@ -37,6 +37,9 @@ const app = new Elysia()
   .guard(
     {
       beforeHandle(context) {
+        if (context.path === "/graphql") {
+          return
+        }
         const user = context.user
         if (!user) {
           return context.redirect(`/signup?redirect=${context.path}`, 301)
