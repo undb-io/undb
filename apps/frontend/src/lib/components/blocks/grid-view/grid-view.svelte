@@ -19,6 +19,7 @@
   import { getBorder } from "./grid-view.util"
   import GridViewOpen from "./grid-view-open.svelte"
   import { queryParam } from "sveltekit-search-params"
+  import { isFunction } from "radash"
 
   const t = getTable()
 
@@ -102,6 +103,11 @@
           accessor: field.id.value,
           cell: (item) =>
             createRender(GridViewCell, { index, value: item.value, field, recordId: item.row.original.id }),
+          plugins: {
+            resize: {
+              initialWidth: 200,
+            },
+          },
         }),
       ),
       table.column({
@@ -120,20 +126,24 @@
   const viewModel = writable(table.createViewModel(columns ?? []))
   $: columns, viewModel.set(table.createViewModel(columns))
 
+  $: visibleColumns = $viewModel.visibleColumns
   $: headerRows = $viewModel.headerRows
   $: pageRows = $viewModel.pageRows
   $: tableAttrs = $viewModel.tableAttrs
+  $: tableHeaderAttrs = $viewModel.tableHeadAttrs
   $: tableBodyAttrs = $viewModel.tableBodyAttrs
   $: rows = $viewModel.rows
 
   $: selectedDataIds = $viewModel.pluginStates.select.selectedDataIds
+
+  $: resize = $viewModel.pluginStates.resize.columnWidths
 </script>
 
 <div class="flex h-full w-full flex-col">
   <TableTools />
   <div class="flex-1 overflow-auto rounded-md border">
-    <Table.Root {...$tableAttrs}>
-      <Table.Header class="sticky top-0">
+    <table {...$tableAttrs} class="flex h-full flex-col">
+      <Table.Header {...$tableHeaderAttrs} class="sticky top-0 bg-white">
         {#each $headerRows as headerRow}
           <Subscribe rowAttrs={headerRow.attrs()}>
             <Table.Row class="text-xs transition-none hover:bg-inherit">
@@ -160,7 +170,7 @@
           </Subscribe>
         {/each}
       </Table.Header>
-      <Table.Body {...$tableBodyAttrs}>
+      <Table.Body {...$tableBodyAttrs} class="flex-1">
         {#each $pageRows as row (row.id)}
           <Subscribe rowAttrs={row.attrs()} let:rowAttrs>
             <Table.Row
@@ -199,7 +209,19 @@
           </Subscribe>
         {/each}
       </Table.Body>
-    </Table.Root>
+
+      <tfooter class="text-muted-foreground sticky bottom-0 border-t bg-white text-sm">
+        <Table.Row>
+          {#each $visibleColumns as column}
+            <td style={`width: ${$resize[column.id]}px`} class="overflow-hidden py-2">
+              {#if column.footer && !isFunction(column.footer)}
+                <Render of={column.footer} />
+              {/if}
+            </td>
+          {/each}
+        </Table.Row>
+      </tfooter>
+    </table>
   </div>
 
   <div class="flex items-center justify-between space-x-2 px-4 py-2">
