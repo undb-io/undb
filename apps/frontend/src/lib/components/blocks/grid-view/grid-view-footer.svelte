@@ -4,12 +4,14 @@
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import type { Field, IFieldAggregate, IViewAggregate } from "@undb/table"
+  import type { Selected } from "bits-ui"
   import { derived } from "svelte/store"
 
   const table = getTable()
   export let field: Field
 
   $: options = field.aggregate.options?.map((value) => ({ value, label: value })) ?? []
+  $: value = $table.views.getViewById().aggregate.into(undefined)?.value?.[field.id.value]
 
   const setViewAggregateMutation = createMutation(
     derived([table], ([$table]) => ({
@@ -29,15 +31,16 @@
     })
   }
 
-  const onSelectedChange = (selected: Selected<undefined> | undefined) => {
+  const onSelectedChange = (selected: Selected<IFieldAggregate> | undefined) => {
     if (selected?.value) {
+      value = selected.value
       setViewAggregate(selected.value as IFieldAggregate)
     }
   }
 </script>
 
 {#if options.length}
-  <Select.Root {onSelectedChange}>
+  <Select.Root {onSelectedChange} selected={{ value: value, label: value }}>
     <Select.Trigger class="hover:bg-muted/50 h-7 rounded-none border-none py-0 text-xs focus:ring-0">
       <Select.Value />
     </Select.Trigger>
