@@ -10,7 +10,7 @@
   import { getTable } from "$lib/store/table.store"
   import { type IViewSort, isFieldSortable } from "@undb/table"
   import FieldPicker from "../field-picker/field-picker.svelte"
-  import { createMutation } from "@tanstack/svelte-query"
+  import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { invalidate } from "$app/navigation"
   import { isNumber } from "radash"
@@ -38,11 +38,13 @@
     value = [...value, { fieldId: availableFields[0].id.value, direction: "asc" }]
   }
 
+  const client = useQueryClient()
   const setViewSortMutation = createMutation({
     mutationKey: [$table.id.value, "setSort"],
     mutationFn: trpc.table.view.setSort.mutate,
     async onSettled() {
       await invalidate(`table:${$table.id.value}`)
+      await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
       open = false
     },
   })

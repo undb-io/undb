@@ -35,7 +35,7 @@
   const getRecords = createQuery(
     derived([t, perPage, currentPage, q], ([$table, $perPage, $currentPage, $q]) => {
       return {
-        queryKey: [$table?.id.value, $table.views.getViewById()?.id.value, "records", $q, $currentPage, $perPage],
+        queryKey: ["records", $table?.id.value, $table.views.getViewById()?.id.value, $q, $currentPage, $perPage],
         queryFn: () =>
           trpc.record.list.query({
             tableId: $table?.id.value,
