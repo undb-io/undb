@@ -20,6 +20,7 @@
   import GridViewOpen from "./grid-view-open.svelte"
   import { queryParam } from "sveltekit-search-params"
   import { isFunction } from "radash"
+  import GridViewFooter from "./grid-view-footer.svelte"
 
   const t = getTable()
 
@@ -103,6 +104,7 @@
           accessor: field.id.value,
           cell: (item) =>
             createRender(GridViewCell, { index, value: item.value, field, recordId: item.row.original.id }),
+          footer: createRender(GridViewFooter, { field }),
           plugins: {
             resize: {
               initialWidth: 200,
@@ -213,7 +215,7 @@
       <tfooter class="text-muted-foreground sticky bottom-0 border-t bg-white text-sm">
         <Table.Row>
           {#each $visibleColumns as column}
-            <td style={`width: ${$resize[column.id]}px`} class="overflow-hidden py-2">
+            <td style={`width: ${$resize[column.id]}px`} class="overflow-hidden">
               {#if column.footer && !isFunction(column.footer)}
                 <Render of={column.footer} />
               {/if}
