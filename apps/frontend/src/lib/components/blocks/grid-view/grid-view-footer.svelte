@@ -3,15 +3,13 @@
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
-  import type { Field, IViewAggregate } from "@undb/table"
-  import type { IFieldAggregate } from "@undb/table/src/modules/schema/fields/field.aggregate"
-  import type { Selected } from "bits-ui"
+  import type { Field, IFieldAggregate, IViewAggregate } from "@undb/table"
   import { derived } from "svelte/store"
 
   const table = getTable()
   export let field: Field
 
-  $: aggregate = field.aggregate.options?.map((value) => ({ value, label: value })) ?? []
+  $: options = field.aggregate.options?.map((value) => ({ value, label: value })) ?? []
 
   const setViewAggregateMutation = createMutation(
     derived([table], ([$table]) => ({
@@ -38,15 +36,15 @@
   }
 </script>
 
-{#if aggregate.length}
+{#if options.length}
   <Select.Root {onSelectedChange}>
     <Select.Trigger class="hover:bg-muted/50 h-7 rounded-none border-none py-0 text-xs focus:ring-0">
       <Select.Value />
     </Select.Trigger>
     <Select.Content>
       <Select.Group>
-        {#each aggregate as aggregate}
-          <Select.Item value={aggregate.value} label={aggregate.label}>{aggregate.label}</Select.Item>
+        {#each options as option}
+          <Select.Item value={option.value} label={option.label}>{option.label}</Select.Item>
         {/each}
       </Select.Group>
     </Select.Content>
