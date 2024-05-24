@@ -2,6 +2,8 @@ import { inject, singleton } from "@undb/di"
 import { None, Option, Some, andOptions, type PaginatedDTO } from "@undb/domain"
 import {
   ID_TYPE,
+  RecordComositeSpecification,
+  type AggregateResult,
   type IRecordDTO,
   type IRecordQueryRepository,
   type Query,
@@ -10,10 +12,11 @@ import {
   type TableId,
   type ViewId,
 } from "@undb/table"
-import type { ExpressionBuilder, SelectQueryBuilder } from "kysely"
+import type { AliasedExpression, ExpressionBuilder, SelectQueryBuilder } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
+import { RecordAggregateVisitor } from "./record.aggregate-visitor"
 import { RecordFilterVisitor } from "./record.filter-visitor"
 import { RecordMapper } from "./record.mapper"
 
@@ -42,6 +45,14 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return result ? Some(this.mapper.toDTO(result)) : None
   }
 
+  private handleQuery(eb: ExpressionBuilder<any, any>, spec: Option<RecordComositeSpecification>) {
+    const visitor = new RecordFilterVisitor(eb)
+    if (spec?.isSome()) {
+      spec.unwrap().accept(visitor)
+    }
+    return visitor.cond
+  }
+
   async find(table: TableDo, viewId: Option<ViewId>, query: Option<Query>): Promise<PaginatedDTO<IRecordDTO>> {
     const t = new UnderlyingTable(table)
     const view = table.views.getViewById(viewId.into(undefined))
@@ -52,16 +63,8 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const filter = query.into(undefined)?.filter.into(undefined)
     const sort = view.sort.into(undefined)?.value
 
-    const spec = andOptions(Option(viewSpec), Option(filter))
+    const spec = andOptions(Option(viewSpec), Option(filter)) as Option<RecordComositeSpecification>
     const pagination = query.into(undefined)?.pagination.into(undefined)
-
-    function handleQuery(eb: ExpressionBuilder<any, any>) {
-      const visitor = new RecordFilterVisitor(eb)
-      if (spec?.isSome()) {
-        spec.unwrap().accept(visitor)
-      }
-      return visitor.cond
-    }
 
     const handlePagination = (qb: SelectQueryBuilder<any, any, any>) => {
       const limit = pagination!.limit as number
@@ -78,16 +81,53 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       .selectAll()
       .$if(!!pagination?.limit, handlePagination)
       .$if(!!sort, handleSort)
-      .where(handleQuery)
+      .where((eb) => this.handleQuery(eb, spec))
       .execute()
 
+    // TODO: move total to aggregate result
     const { total } = await this.qb
       .selectFrom(t.name)
       .select((eb) => eb.fn.countAll().as("total"))
-      .where(handleQuery)
+      .where((eb) => this.handleQuery(eb, spec))
       .executeTakeFirstOrThrow()
 
     const records = result.map((r) => this.mapper.toDTO(r))
     return { values: records, total: Number(total) }
+  }
+
+  async aggregate(table: TableDo, viewId: Option<ViewId>): Promise<Record<string, AggregateResult>> {
+    const t = new UnderlyingTable(table)
+    const view = table.views.getViewById(viewId.into(undefined))
+    const aggregates = view.aggregate
+    if (aggregates.isNone()) {
+      return {}
+    }
+
+    const viewSpec = Option(
+      view.filter.into(undefined)?.getSpec(table.schema).into(undefined),
+    ) as Option<RecordComositeSpecification>
+
+    const result = await this.qb
+      .selectFrom(t.name)
+      .select((eb) => {
+        const ebs: AliasedExpression<any, any>[] = []
+
+        for (const [fieldId, fieldAggregate] of aggregates.unwrap()) {
+          const field = table.schema.fieldMapById.get(fieldId)
+          const visitor = new RecordAggregateVisitor(eb, fieldAggregate)
+          if (!field) {
+            continue
+          }
+
+          field.accept(visitor)
+
+          ebs.push(...visitor.ebs)
+        }
+        return ebs
+      })
+      .where((eb) => this.handleQuery(eb, viewSpec))
+      .executeTakeFirst()
+
+    return result ?? {}
   }
 }

@@ -11,5 +11,6 @@ export async function getRecords(this: RecordsQueryService, dto: IGetRecordsDTO)
   const viewId = dto.viewId ? Some(new ViewIdVo(dto.viewId)) : None
 
   const query = buildQuery(table, dto)
+
   return this.repo.find(table, viewId, query)
 }

@@ -25,4 +25,8 @@ export class ViewAggregateVO extends ValueObject<IViewAggregate> {
   public toJSON() {
     return { ...this.value }
   }
+
+  *[Symbol.iterator]() {
+    yield* Object.entries(this.value)
+  }
 }

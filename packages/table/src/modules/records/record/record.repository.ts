@@ -22,10 +22,14 @@ export interface IRecordRepository {
   updateOneById(table: TableDo, record: RecordDO, spec: Option<RecordComositeSpecification>): Promise<void>
 }
 
+export type AggregateResult = number
+
 export interface IRecordQueryRepository {
   find(table: TableDo, viewId: Option<ViewId>, query: Option<Query>): Promise<PaginatedDTO<IRecordDTO>>
   findOneById(table: TableDo, id: RecordId): Promise<Option<IRecordDTO>>
   count(tableId: TableId): Promise<number>
+
+  aggregate(table: TableDo, viewId: Option<ViewId>): Promise<Record<string, AggregateResult>>
 }
 
 export function buildQuery(table: TableDo, dto: IGetRecordsDTO) {
