@@ -1,7 +1,7 @@
 import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import {
-  WithViewAggregates,
+  WithViewAggregate,
   WithViewColor,
   WithViewFilter,
   WithViewSort,
@@ -28,7 +28,7 @@ export const baseViewDTO = z.object({
   filter: viewFilterGroup.optional(),
   color: viewColorGroup.optional(),
   sort: viewSort.optional(),
-  aggregates: viewAggregate.optional(),
+  aggregate: viewAggregate.optional(),
 })
 
 export type IBaseViewDTO = z.infer<typeof baseViewDTO>
@@ -55,8 +55,8 @@ export abstract class AbstractView {
     if (dto.sort) {
       this.setSort(dto.sort)
     }
-    if (dto.aggregates) {
-      this.setAggregate(dto.aggregates)
+    if (dto.aggregate) {
+      this.setAggregate(dto.aggregate)
     }
   }
 
@@ -109,13 +109,13 @@ export abstract class AbstractView {
     this.aggregate = Some(new ViewAggregateVO(aggregate))
   }
 
-  $setAggregateSpec(aggregate: IViewAggregate): Option<WithViewAggregates> {
+  $setAggregateSpec(aggregate: IViewAggregate): Option<WithViewAggregate> {
     if (this.aggregate.mapOr(false, (f) => f.equals(new ViewAggregateVO(aggregate)))) {
       return None
     }
 
     const previous = this.aggregate.into(null)?.value
-    return Some(new WithViewAggregates(this.id, Option(previous), aggregate))
+    return Some(new WithViewAggregate(this.id, Option(previous), aggregate))
   }
 
   toJSON(): IViewDTO {
@@ -126,6 +126,7 @@ export abstract class AbstractView {
       filter: this.filter.into(null)?.toJSON(),
       color: this.color.into(null)?.toJSON(),
       sort: this.sort.into(null)?.toJSON(),
+      aggregate: this.aggregate.into(null)?.toJSON(),
     }
   }
 }

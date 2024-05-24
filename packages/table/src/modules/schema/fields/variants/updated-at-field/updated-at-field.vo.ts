@@ -53,7 +53,7 @@ export class UpdatedAtField extends AbstractField<UpdatedAtFieldValue> {
     return createUpdatedAtFieldCondition(optionType)
   }
 
-  override get aggregates() {
+  override get aggregate() {
     return abstractDateAggregate
   }
 }

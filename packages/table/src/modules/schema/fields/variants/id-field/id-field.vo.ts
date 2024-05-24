@@ -58,7 +58,7 @@ export class IdField extends AbstractField<IdFieldValue> {
     return createIdFieldCondition(optionType)
   }
 
-  override get aggregates() {
+  override get aggregate() {
     // TODO: implement
     return z.enum()
   }

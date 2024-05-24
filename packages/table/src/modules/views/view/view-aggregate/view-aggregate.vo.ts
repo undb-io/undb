@@ -2,7 +2,7 @@ import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { TableDo } from "../../../../table.do"
 import { fieldId } from "../../../schema"
-import { fieldAggregate } from "../../../schema/fields/field.aggregate"
+import { fieldAggregate, type IFieldAggregate } from "../../../schema/fields/field.aggregate"
 
 export const viewAggregate = z.record(fieldId, fieldAggregate)
 
@@ -17,8 +17,12 @@ export class ViewAggregateVO extends ValueObject<IViewAggregate> {
         continue
       }
 
-      parsed[fieldId] = field.aggregates.parse(fieldAggregate)
+      parsed[fieldId] = field.aggregate.parse(fieldAggregate) as IFieldAggregate
     }
     return new ViewAggregateVO(parsed)
+  }
+
+  public toJSON() {
+    return { ...this.value }
   }
 }

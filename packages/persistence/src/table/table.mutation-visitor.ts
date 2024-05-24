@@ -6,7 +6,7 @@ import type {
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
-  WithViewAggregates,
+  WithViewAggregate,
   WithViewColor,
   WithViewFilter,
   WithViewSort,
@@ -19,7 +19,7 @@ type Source = SQLiteUpdateSetSource<typeof tables>
 
 export class TableMutationVisitor implements ITableSpecVisitor {
   constructor(public readonly table: TableDo) {}
-  withViewAggregates(viewColor: WithViewAggregates): void {
+  withViewAggregate(viewColor: WithViewAggregate): void {
     this.#updates = { ...this.#updates, views: this.table.views.toJSON() }
   }
   withTableRLS(rls: WithTableRLS): void {

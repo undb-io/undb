@@ -73,11 +73,11 @@ export class WithViewSort extends TableComositeSpecification {
   }
 }
 
-export class WithViewAggregates extends TableComositeSpecification {
+export class WithViewAggregate extends TableComositeSpecification {
   constructor(
     public readonly viewId: ViewId,
     public readonly previous: Option<IViewAggregate>,
-    public readonly aggregates: IViewAggregate,
+    public readonly aggregate: IViewAggregate,
   ) {
     super()
   }
@@ -86,11 +86,11 @@ export class WithViewAggregates extends TableComositeSpecification {
   }
   mutate(t: TableDo): Result<TableDo, string> {
     const view = t.views.getViewById(this.viewId)
-    view.setAggregate(this.aggregates)
+    view.setAggregate(this.aggregate)
     return Ok(t)
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
-    v.withViewAggregates(this)
+    v.withViewAggregate(this)
     return Ok(undefined)
   }
 }

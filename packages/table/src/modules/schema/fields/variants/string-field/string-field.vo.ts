@@ -90,7 +90,7 @@ export class StringField extends AbstractField<StringFieldValue, StringFieldCons
     return createStringFieldCondition(optionType)
   }
 
-  override get aggregates() {
+  override get aggregate() {
     return stringFieldAggregate
   }
 }

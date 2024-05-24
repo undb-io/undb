@@ -3,7 +3,7 @@ import {
   CreateRecordCommand,
   CreateTableCommand,
   SetTableRLSCommand,
-  SetViewAggregatesCommand,
+  SetViewAggregateCommand,
   SetViewColorCommand,
   SetViewFilterCommand,
   SetViewSortCommand,
@@ -11,7 +11,7 @@ import {
   createRecordCommand,
   createTableCommand,
   setTableRLSCommand,
-  setViewAggregatesCommand,
+  setViewAggregateCommand,
   setViewColorCommand,
   setViewFilterCommand,
   setViewSortCommand,
@@ -76,9 +76,9 @@ const viewRouter = t.router({
   setFilter: p.input(setViewFilterCommand).mutation(({ input }) => commandBus.execute(new SetViewFilterCommand(input))),
   setColor: p.input(setViewColorCommand).mutation(({ input }) => commandBus.execute(new SetViewColorCommand(input))),
   setSort: p.input(setViewSortCommand).mutation(({ input }) => commandBus.execute(new SetViewSortCommand(input))),
-  setAggregates: p
-    .input(setViewAggregatesCommand)
-    .mutation(({ input }) => commandBus.execute(new SetViewAggregatesCommand(input))),
+  setAggregate: p
+    .input(setViewAggregateCommand)
+    .mutation(({ input }) => commandBus.execute(new SetViewAggregateCommand(input))),
 })
 
 const rlsRouter = t.router({

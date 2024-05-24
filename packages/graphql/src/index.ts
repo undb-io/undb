@@ -45,6 +45,7 @@ export class Graphql {
         filter: JSON
         color: JSON
         sort: JSON
+        aggregate: JSON
       }
 
       type Table {

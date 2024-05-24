@@ -56,7 +56,7 @@ export class AutoIncrementField extends AbstractField<AutoIncrementFieldValue> {
     return createAutoIncrementFieldCondition(optionType)
   }
 
-  override get aggregates() {
-    return z.enum()
+  override get aggregate() {
+    return z.enum([])
   }
 }

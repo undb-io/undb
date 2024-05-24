@@ -6,7 +6,7 @@ import type {
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
-  WithViewAggregates,
+  WithViewAggregate,
   WithViewColor,
   WithViewFilter,
   WithViewSort,
@@ -17,7 +17,7 @@ import { AbstractDBFilterVisitor } from "../abstract-db.visitor"
 import { tables } from "../tables"
 
 export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> implements ITableSpecVisitor {
-  withViewAggregates(viewColor: WithViewAggregates): void {
+  withViewAggregate(viewColor: WithViewAggregate): void {
     throw new Error("Method not implemented.")
   }
   withTableRLS(rls: WithTableRLS): void {

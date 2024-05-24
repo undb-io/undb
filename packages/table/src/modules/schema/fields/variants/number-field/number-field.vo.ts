@@ -67,7 +67,7 @@ export class NumberField extends AbstractField<NumberFieldValue, NumberFieldCons
     return createNumberFieldCondition(optionType)
   }
 
-  override get aggregates() {
+  override get aggregate() {
     return abstractNumberAggregate
   }
 }
