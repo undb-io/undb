@@ -145,7 +145,7 @@
   <TableTools />
   <div class="flex-1 overflow-auto rounded-md border">
     <table {...$tableAttrs} class="flex h-full flex-col">
-      <Table.Header {...$tableHeaderAttrs} class="sticky top-0 bg-white">
+      <Table.Header {...$tableHeaderAttrs} class="sticky top-0 z-50 bg-white">
         {#each $headerRows as headerRow}
           <Subscribe rowAttrs={headerRow.attrs()}>
             <Table.Row class="text-xs transition-none hover:bg-inherit">

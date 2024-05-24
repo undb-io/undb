@@ -32,7 +32,7 @@
   })
 </script>
 
-<div role="status" class={cn($loading ? "opacity-100" : "opacity-0")}>
+<div role="status" class={cn($loading ? "opacity-100" : "opacity-0", "flex items-center gap-2")}>
   <svg
     aria-hidden="true"
     class="h-4 w-4 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
@@ -50,4 +50,5 @@
     />
   </svg>
   <span class="sr-only">Loading...</span>
+  <span class="text-muted-foreground text-xs font-thin">Saving...</span>
 </div>
