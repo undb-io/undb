@@ -213,7 +213,7 @@
       </Table.Body>
 
       <tfooter class="text-muted-foreground sticky bottom-0 border-t bg-white text-sm">
-        <Table.Row>
+        <tr>
           {#each $visibleColumns as column}
             <td style={`width: ${$resize[column.id]}px`} class="overflow-hidden">
               {#if column.footer && !isFunction(column.footer)}
@@ -221,7 +221,7 @@
               {/if}
             </td>
           {/each}
-        </Table.Row>
+        </tr>
       </tfooter>
     </table>
   </div>
