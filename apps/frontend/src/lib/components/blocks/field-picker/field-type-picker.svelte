@@ -6,33 +6,14 @@
   import * as Popover from "$lib/components/ui/popover/index.js"
   import { Button } from "$lib/components/ui/button/index.js"
   import { cn } from "$lib/utils.js"
-  import { getTable } from "$lib/store/table.store"
   import FieldIcon from "../field-icon/field-icon.svelte"
-  import type { FieldType } from "@undb/table"
-
-  const table = getTable()
-
-  interface IField {
-    value: string
-    label: string
-    type: FieldType
-  }
-
-  $: fields =
-    $table.getOrderedFields().map<IField>((f) => ({
-      value: f.id.value,
-      label: f.name.value,
-      type: f.type,
-    })) ?? []
+  import { fieldTypes, type FieldType } from "@undb/table"
 
   let open = false
-  export let value: string | undefined = undefined
-  export let filter: ((field: IField) => boolean) | undefined = undefined
+  export let value: FieldType | undefined = undefined
 
-  $: filteredFields = filter ? fields.filter(filter) : fields
-
-  $: selected = fields.find((f) => f.value === value)
-  $: selectedValue = selected?.label ?? "Select a field..."
+  $: selected = fieldTypes.find((f) => f === value)
+  $: selectedValue = selected ?? "Select a field type..."
 
   function closeAndFocusTrigger(triggerId: string) {
     open = false
@@ -50,13 +31,13 @@
       variant="outline"
       role="combobox"
       aria-expanded={open}
+      {...$$restProps}
       class={cn("justify-between", $$restProps.class)}
     >
       <span class="flex items-center overflow-hidden text-ellipsis" title={selectedValue}>
         {#if selected}
-          <FieldIcon type={selected.type} class="mr-2 h-3 w-3" />
+          <FieldIcon type={selected} class="mr-2 h-3 w-3" />
         {/if}
-        {selectedValue}
       </span>
       <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
     </Button>
@@ -64,26 +45,26 @@
   <Popover.Content class="w-[200px] p-0">
     <Command.Root
       filter={(value, search) => {
-        const label = filteredFields.find((f) => f.value === value)?.label ?? ""
+        const label = fieldTypes.find((f) => f === value) ?? ""
         return label.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
       }}
     >
       <Command.Input placeholder="Search field..." class="h-9" />
       <Command.Empty>No field found.</Command.Empty>
       <Command.Group>
-        {#each filteredFields as field}
+        {#each fieldTypes as type}
           <Command.Item
-            value={field.value}
+            value={type}
             onSelect={(currentValue) => {
               value = currentValue
               closeAndFocusTrigger(ids.trigger)
             }}
           >
-            <Check class={cn("mr-2 h-4 w-4", value !== field.value && "text-transparent")} />
+            <Check class={cn("mr-2 h-4 w-4", value !== type && "text-transparent")} />
             <div class="flex items-center gap-2">
-              <FieldIcon type={field.type} class="h-4 w-4" />
+              <FieldIcon {type} class="h-4 w-4" />
               <span>
-                {field.label}
+                {type}
               </span>
             </div>
           </Command.Item>

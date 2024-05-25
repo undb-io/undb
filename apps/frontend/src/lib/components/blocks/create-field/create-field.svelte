@@ -13,6 +13,7 @@
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import FieldOptions from "../field-options/field-options.svelte"
+  import FieldTypePicker from "../field-picker/field-type-picker.svelte"
 
   const table = getTable()
 
@@ -59,14 +60,23 @@
 </script>
 
 <form method="POST" use:enhance>
-  <Form.Field {form} name="name">
-    <Form.Control let:attrs>
-      <Form.Label>Name</Form.Label>
-      <Input {...attrs} bind:value={$formData.name} />
-    </Form.Control>
-    <Form.Description />
-    <Form.FieldErrors />
-  </Form.Field>
+  <div class="flex items-center gap-2">
+    <Form.Field {form} name="type" class="h-10">
+      <Form.Control let:attrs>
+        <FieldTypePicker {...attrs} bind:value={$formData.type} />
+      </Form.Control>
+      <Form.Description />
+      <Form.FieldErrors />
+    </Form.Field>
+
+    <Form.Field {form} name="name" class="h-10 flex-1">
+      <Form.Control let:attrs>
+        <Input {...attrs} bind:value={$formData.name} />
+      </Form.Control>
+      <Form.Description />
+      <Form.FieldErrors />
+    </Form.Field>
+  </div>
 
   <Form.Field {form} name="constraint">
     <Form.Control let:attrs>
