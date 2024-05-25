@@ -1,5 +1,6 @@
 import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
+import { isEmpty } from "radash"
 import type { TableDo } from "../../../../table.do"
 import { fieldId } from "../../../schema"
 import { fieldAggregate, type IFieldAggregate } from "../../../schema/fields/field.aggregate"
@@ -24,6 +25,10 @@ export class ViewAggregateVO extends ValueObject<IViewAggregate> {
 
   public toJSON() {
     return { ...this.value }
+  }
+
+  public isEmpty() {
+    return isEmpty(this.value)
   }
 
   *[Symbol.iterator]() {

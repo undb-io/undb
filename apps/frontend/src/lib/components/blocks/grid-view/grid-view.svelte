@@ -21,10 +21,16 @@
   import { queryParam } from "sveltekit-search-params"
   import { isFunction } from "radash"
   import GridViewFooter from "./grid-view-footer.svelte"
+  import { page } from "$app/stores"
+  import type { LayoutData } from "../../../../routes/(authed)/t/[tableId]/$types"
 
   const t = getTable()
 
   const q = queryParam("q")
+
+  $: pageData = $page.data as LayoutData
+  $: tableStore = pageData.tableStore
+  $: aggregate = $tableStore.data?.table?.viewData?.aggregate
 
   $: view = $t.views.getViewById()
   $: viewFilter = view.filter.into(undefined)
@@ -104,7 +110,7 @@
           accessor: field.id.value,
           cell: (item) =>
             createRender(GridViewCell, { index, value: item.value, field, recordId: item.row.original.id }),
-          footer: createRender(GridViewFooter, { field }),
+          footer: createRender(GridViewFooter, { field, aggregateResult: aggregate?.[field.id.value] }),
           plugins: {
             resize: {
               initialWidth: 200,
@@ -212,10 +218,10 @@
         {/each}
       </Table.Body>
 
-      <tfooter class="text-muted-foreground sticky bottom-0 border-t bg-white text-sm">
-        <tr>
+      <tfooter class="text-muted-foreground sticky bottom-0 h-8 border-t bg-white text-sm">
+        <tr class="flex h-8">
           {#each $visibleColumns as column}
-            <td style={`width: ${$resize[column.id]}px`} class="overflow-hidden">
+            <td style={`width: ${$resize[column.id]}px`} class="h-full overflow-hidden">
               {#if column.footer && !isFunction(column.footer)}
                 <Render of={column.footer} />
               {/if}

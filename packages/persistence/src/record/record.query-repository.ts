@@ -102,6 +102,9 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     if (aggregates.isNone()) {
       return {}
     }
+    if (aggregates.unwrap().isEmpty()) {
+      return {}
+    }
 
     const viewSpec = Option(
       view.filter.into(undefined)?.getSpec(table.schema).into(undefined),

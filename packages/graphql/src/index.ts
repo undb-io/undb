@@ -1,7 +1,7 @@
 import { yoga } from "@elysiajs/graphql-yoga"
 import { QueryBus } from "@undb/cqrs"
 import { container, inject, singleton } from "@undb/di"
-import { GetTableQuery, GetTablesQuery } from "@undb/queries"
+import { GetAggregatesQuery, GetTableQuery, GetTablesQuery } from "@undb/queries"
 import { TableIdVo, injectRecordQueryRepository, type IRecordQueryRepository } from "@undb/table"
 
 @singleton()
@@ -48,11 +48,17 @@ export class Graphql {
         aggregate: JSON
       }
 
+      type ViewData {
+        aggregate: JSON
+      }
+
       type Table {
         id: ID!
         name: String!
         schema: [Field!]!
         views: [View!]!
+
+        viewData(viewId: ID): ViewData
 
         recordsCount: Int!
       }
@@ -75,6 +81,14 @@ export class Graphql {
         Table: {
           // @ts-ignore
           recordsCount: async (table) => this.repo.count(new TableIdVo(table.id)),
+          // @ts-ignore
+          viewData: () => ({}),
+        },
+        ViewData: {
+          // @ts-ignore
+          aggregate: async (_, { viewId }, __, info) => {
+            return this.queryBus.execute(new GetAggregatesQuery({ tableId: info.variableValues.tableId, viewId }))
+          },
         },
       },
       batching: true,

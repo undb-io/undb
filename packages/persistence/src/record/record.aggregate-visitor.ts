@@ -79,5 +79,7 @@ export class RecordAggregateVisitor implements IFieldVisitor {
       )
       .with("percent_uniq", () => sql`COUNT(DISTINCT ${sql.ref(field.id.value)}) * 1.0 / COUNT(*)`.as(field.id.value))
       .exhaustive()
+
+    this.#ebs.push(eb)
   }
 }

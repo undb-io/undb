@@ -1,4 +1,4 @@
-query GetTableQuery($tableId: ID!) {
+query GetTableQuery($tableId: ID!, $viewId: ID) {
   table(id: $tableId) {
     id
     name
@@ -8,6 +8,7 @@ query GetTableQuery($tableId: ID!) {
       type
       constraint
     }
+
     views {
       id
       name
@@ -17,6 +18,11 @@ query GetTableQuery($tableId: ID!) {
       sort
       aggregate
     }
+
+    viewData(viewId: $viewId) {
+      aggregate
+    }
+
     recordsCount
   }
 }

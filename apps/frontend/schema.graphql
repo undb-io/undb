@@ -26,6 +26,7 @@ type Table {
   name: String!
   recordsCount: Int!
   schema: [Field!]!
+  viewData(viewId: ID): ViewData
   views: [View!]!
 }
 
@@ -37,6 +38,10 @@ type View {
   name: String!
   sort: JSON
   type: ViewType!
+}
+
+type ViewData {
+  aggregate: JSON
 }
 
 enum ViewType {
