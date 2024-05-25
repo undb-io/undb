@@ -6,5 +6,7 @@ import type { TableDo } from "../table.do"
 export function createFieldMethod(this: TableDo, dto: ICreateFieldDTO): Option<TableComositeSpecification> {
   const spec = this.schema.$createField(dto)
 
+  spec.mutate(this)
+
   return Some(spec)
 }

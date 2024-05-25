@@ -6,6 +6,7 @@ import type {
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
+  WithNewFieldSpecification,
   WithViewAggregate,
   WithViewColor,
   WithViewFilter,
@@ -19,6 +20,15 @@ type Source = SQLiteUpdateSetSource<typeof tables>
 
 export class TableMutationVisitor implements ITableSpecVisitor {
   constructor(public readonly table: TableDo) {}
+  #updates: Source = {}
+
+  public get updates(): Source {
+    return this.#updates
+  }
+
+  withNewField(schema: WithNewFieldSpecification): void {
+    this.#updates = { ...this.#updates, schema: this.table.schema.toJSON() }
+  }
   withViewAggregate(viewColor: WithViewAggregate): void {
     this.#updates = { ...this.#updates, views: this.table.views.toJSON() }
   }
@@ -30,12 +40,6 @@ export class TableMutationVisitor implements ITableSpecVisitor {
   }
   withViewColor(viewFilter: WithViewColor): void {
     this.#updates = { ...this.#updates, views: this.table.views.toJSON() }
-  }
-
-  #updates: Source = {}
-
-  public get updates(): Source {
-    return this.#updates
   }
 
   withId(id: TableIdSpecification): void {

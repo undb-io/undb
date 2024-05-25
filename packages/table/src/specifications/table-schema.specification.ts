@@ -30,7 +30,7 @@ export class WithNewFieldSpecification extends TableComositeSpecification {
     throw new WontImplementException(WithNewFieldSpecification.name + ".isSatisfiedBy")
   }
   mutate(t: TableDo): Result<TableDo, string> {
-    t.schema.createField(this.field)
+    t.schema = t.schema.createField(this.field)
     return Ok(t)
   }
   accept(v: ITableSpecVisitor): Result<void, string> {

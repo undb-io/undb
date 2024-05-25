@@ -1,8 +1,13 @@
 <script lang="ts">
+  import { invalidate } from "$app/navigation"
+  import * as Form from "$lib/components/ui/form"
+  import { Input } from "$lib/components/ui/input"
+  import { CREATE_FIELD_MODAL, closeModal, toggleModal } from "$lib/store/modal.store"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { createFieldDTO } from "@undb/table"
+  import { toast } from "svelte-sonner"
   import { derived } from "svelte/store"
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
@@ -13,6 +18,12 @@
     derived([table], ([$table]) => ({
       mutationKey: ["createField", $table.id.value],
       mutationFn: trpc.field.create.mutate,
+      async onSuccess() {
+        closeModal(CREATE_FIELD_MODAL)
+        toast.success("Create field success")
+        reset()
+        await invalidate(`table:${$table.id.value}`)
+      },
     })),
   )
 
@@ -30,7 +41,7 @@
       dataType: "json",
       validators: zodClient(createFieldDTO),
       resetForm: false,
-      invalidateAll: true,
+      invalidateAll: false,
       onUpdate(event) {
         if (!event.form.valid) return
 
@@ -41,4 +52,17 @@
       },
     },
   )
+
+  const { enhance, form: formData, reset } = form
 </script>
+
+<form method="POST" use:enhance>
+  <Form.Field {form} name="name">
+    <Form.Control let:attrs>
+      <Form.Label>Name</Form.Label>
+      <Input {...attrs} bind:value={$formData.name} />
+    </Form.Control>
+    <Form.Description />
+    <Form.FieldErrors />
+  </Form.Field>
+</form>

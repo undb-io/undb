@@ -13,3 +13,9 @@ export const toggleModal = (type: ModalType) => {
     return isEmpty(modal) ? null : modal
   })
 }
+
+export const closeModal = (type: ModalType) => {
+  modal.update(($modal) => {
+    return $modal?.filter((m) => m !== type) ?? null
+  })
+}

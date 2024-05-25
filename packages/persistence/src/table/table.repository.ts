@@ -51,6 +51,7 @@ export class TableRepository implements ITableRepository {
       .update(tables)
       .set({ ...visitor.updates, updatedBy: userId })
       .where(eq(tables.id, table.id.value))
+    await this.underlyingTableService.update(table, spec.unwrap())
     await this.outboxService.save(table)
   }
 

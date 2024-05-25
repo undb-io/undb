@@ -1,12 +1,13 @@
 import { singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
-import type { TableDo } from "@undb/table"
+import type { TableComositeSpecification, TableDo } from "@undb/table"
 import { Database } from "bun:sqlite"
 import { injectSqlite } from "../db.provider"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "./underlying-table"
 import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
+import { UnderlyingTableSpecVisitor } from "./underlying-table-spec.visitor"
 
 @singleton()
 export class UnderlyingTableService {
@@ -38,5 +39,14 @@ export class UnderlyingTableService {
       this.sqlite.query(query).run()
       this.logger.debug({ query })
     }
+  }
+
+  async update(table: TableDo, spec: TableComositeSpecification) {
+    const t = new UnderlyingTable(table)
+    const tb = this.qb.schema.alterTable(t.name)
+    const visitor = new UnderlyingTableSpecVisitor(t, tb)
+    spec.accept(visitor)
+
+    await visitor.tb.execute?.()
   }
 }
