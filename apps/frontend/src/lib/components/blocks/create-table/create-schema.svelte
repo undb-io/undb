@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
-  import { fieldTypes } from "@undb/table"
+  import { fieldTypes, type FieldType, type NoneSystemFieldType } from "@undb/table"
   import * as Collapsible from "$lib/components/ui/collapsible"
   import * as Card from "$lib/components/ui/card"
   import * as Form from "$lib/components/ui/form"
@@ -19,7 +19,7 @@
 
   let open = false
 
-  const addField = (type: string) => {
+  const addField = (type: NoneSystemFieldType) => {
     $formData.schema = [
       ...$formData.schema,
       {

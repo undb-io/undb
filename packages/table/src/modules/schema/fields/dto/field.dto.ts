@@ -6,7 +6,7 @@ import { createNumberFieldDTO, numberFieldDTO } from "../variants/number-field/n
 import { createStringFieldDTO, stringFieldDTO } from "../variants/string-field/string-field.vo"
 import { updatedAtFieldDTO } from "../variants/updated-at-field/updated-at-field.vo"
 
-export const fieldDTO = z.union([
+export const fieldDTO = z.discriminatedUnion("type", [
   stringFieldDTO,
   numberFieldDTO,
   idFieldDTO,

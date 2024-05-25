@@ -6,5 +6,5 @@
 
 <Button size="sm" variant="outline" on:click={() => toggleModal(CREATE_FIELD_MODAL)}>
   <BetweenVerticalStartIcon class="mr-1 h-4 w-4" />
-  Create Field</Button
->
+  Create Field
+</Button>
