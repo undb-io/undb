@@ -46,8 +46,12 @@ export class RecordAggregateVisitor implements IFieldVisitor {
         ),
       )
       .with("percent_empty", () =>
-        sql`(COUNT(*) - COUNT(NULLIF(${sql.ref(field.id.value)}, ''))) * 100.0 / COUNT(*)`.as(field.id.value),
+        sql`(COUNT(*) - COUNT(NULLIF(${sql.ref(field.id.value)}, ''))) * 1.0 / COUNT(*)`.as(field.id.value),
       )
+      .with("percent_not_empty", () =>
+        sql`COUNT(NULLIF(${sql.ref(field.id.value)}, '')) * 1.0 / COUNT(*)`.as(field.id.value),
+      )
+      .with("percent_uniq", () => sql`COUNT(DISTINCT ${sql.ref(field.id.value)}) * 1.0 / COUNT(*)`.as(field.id.value))
       .exhaustive()
 
     this.#ebs.push(eb)
