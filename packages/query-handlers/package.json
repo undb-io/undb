@@ -10,10 +10,10 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@undb/queries": "workspace:*",
-    "@undb/table": "workspace:*",
-    "@undb/di": "workspace:*",
     "@undb/cqrs": "workspace:*",
-    "@undb/logger": "workspace:*"
+    "@undb/di": "workspace:*",
+    "@undb/logger": "workspace:*",
+    "@undb/queries": "workspace:*",
+    "@undb/table": "workspace:*"
   }
 }

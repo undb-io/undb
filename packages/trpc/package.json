@@ -11,13 +11,13 @@
   },
   "dependencies": {
     "@trpc/server": "^10.45.2",
+    "@undb/commands": "workspace:*",
     "@undb/cqrs": "workspace:*",
     "@undb/di": "workspace:*",
     "@undb/persistence": "workspace:*",
-    "@undb/commands": "workspace:*",
     "@undb/queries": "workspace:*",
     "@undb/table": "workspace:*",
-    "zod-validation-error": "^3.3.0",
-    "@undb/zod": "workspace:*"
+    "@undb/zod": "workspace:*",
+    "zod-validation-error": "^3.3.0"
   }
 }

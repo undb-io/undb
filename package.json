@@ -18,11 +18,11 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "better-sqlite3": "^9.6.0",
-    "drizzle-kit": "^0.21.1",
+    "better-sqlite3": "^10.0.0",
+    "drizzle-kit": "^0.21.4",
     "husky": "^9.0.11",
-    "lint-staged": "^15.2.2",
-    "npm-run-all2": "^6.1.2",
+    "lint-staged": "^15.2.4",
+    "npm-run-all2": "^6.2.0",
     "prettier": "^3.2.5",
     "turbo": "latest"
   },
@@ -32,7 +32,7 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "bun@1.1.6",
+  "packageManager": "bun@1.1.9",
   "workspaces": [
     "apps/*",
     "packages/*"
