@@ -23,48 +23,30 @@ export class UnderlyingTableSpecVisitor<TB extends CreateTableBuilder<any, any> 
     public readonly table: UnderlyingTable,
     public tb: TB,
   ) {}
-  withId(id: TableIdSpecification): void {
-    throw new Error("Method not implemented.")
-  }
-  withName(name: TableNameSpecification): void {
-    throw new Error("Method not implemented.")
-  }
-  withSchema(schema: TableSchemaSpecification): void {
-    throw new Error("Method not implemented.")
-  }
+  withId(id: TableIdSpecification): void {}
+  withName(name: TableNameSpecification): void {}
+  withSchema(schema: TableSchemaSpecification): void {}
   withNewField(schema: WithNewFieldSpecification): void {
     const fieldVisitor = new UnderlyingTableFieldVisitor(this.table, this.tb)
     schema.field.accept(fieldVisitor)
     this.tb = fieldVisitor.tb
   }
-  withTableRLS(rls: WithTableRLS): void {
-    throw new Error("Method not implemented.")
-  }
-  withViews(views: TableViewsSpecification): void {
-    throw new Error("Method not implemented.")
-  }
-  withViewFilter(viewFilter: WithViewFilter): void {
-    throw new Error("Method not implemented.")
-  }
-  withViewColor(viewColor: WithViewColor): void {
-    throw new Error("Method not implemented.")
-  }
-  withViewSort(viewSort: WithViewSort): void {
-    throw new Error("Method not implemented.")
-  }
-  withViewAggregate(viewColor: WithViewAggregate): void {
-    throw new Error("Method not implemented.")
-  }
+  withTableRLS(rls: WithTableRLS): void {}
+  withViews(views: TableViewsSpecification): void {}
+  withViewFilter(viewFilter: WithViewFilter): void {}
+  withViewColor(viewColor: WithViewColor): void {}
+  withViewSort(viewSort: WithViewSort): void {}
+  withViewAggregate(viewColor: WithViewAggregate): void {}
   and(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
-    throw new Error("Method not implemented.")
+    return this
   }
   or(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
-    throw new Error("Method not implemented.")
+    return this
   }
   not(spec: ISpecification<any, ISpecVisitor>): this {
-    throw new Error("Method not implemented.")
+    return this
   }
   clone(): this {
-    throw new Error("Method not implemented.")
+    return this
   }
 }

@@ -16,7 +16,7 @@
   import TableTools from "../table-tools/table-tools.svelte"
   import GridViewHeader from "./grid-view-header.svelte"
   import * as Select from "$lib/components/ui/select"
-  import { getBorder } from "./grid-view.util"
+  import { getColor } from "./grid-view.util"
   import GridViewOpen from "./grid-view-open.svelte"
   import { queryParam } from "sveltekit-search-params"
   import { isFunction } from "radash"
@@ -195,14 +195,18 @@
                 <Subscribe attrs={cell.attrs()} let:attrs>
                   <Table.Cell
                     class={cn(
-                      "border-border border-r p-0 [&:has([role=checkbox])]:pl-3",
+                      "border-border relative border-r p-0 [&:has([role=checkbox])]:pl-3",
                       (idx === 0 || idx === 1) && "border-r-0",
-                      idx === 0 && match && "border-l-4",
-                      idx === 0 && condition && getBorder(condition.option.color),
                       hasFilter && "bg-orange-50",
                     )}
                     {...attrs}
                   >
+                    {#if idx === 0 && match && condition && "border-l-4"}
+                      <div
+                        class={cn("absolute bottom-0 left-0 top-0 h-full w-1", getColor(condition.option.color))}
+                      ></div>
+                      <!-- content here -->
+                    {/if}
                     {#if cell.id === "amount"}
                       <div class="text-right font-medium">
                         <Render of={cell.render()} />
