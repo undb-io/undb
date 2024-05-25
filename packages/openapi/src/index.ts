@@ -4,7 +4,7 @@ import { z } from "@undb/zod"
 extendZodWithOpenApi(z)
 
 import type { RecordDO, TableDo } from "@undb/table"
-import { RECORD_COMPONENT, createRecordComponent, getRecords } from "./openapi/record.openapi"
+import { RECORD_COMPONENT, createRecordComponent, getRecordById, getRecords } from "./openapi/record.openapi"
 
 export const createOpenApiSpec = (table: TableDo, record?: RecordDO) => {
   const registry = new OpenAPIRegistry()
@@ -13,6 +13,7 @@ export const createOpenApiSpec = (table: TableDo, record?: RecordDO) => {
   registry.register(RECORD_COMPONENT, recordSchema)
 
   registry.registerPath(getRecords(table, recordSchema))
+  registry.registerPath(getRecordById(table, recordSchema))
 
   const generator = new OpenApiGeneratorV3(registry.definitions)
 

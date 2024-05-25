@@ -11,9 +11,16 @@ import {
 } from "@undb/table"
 import { None, PaginatedDTO, type IQueryBus } from "@undb/domain"
 import { QueryBus } from "@undb/cqrs"
-import { GetReadableRecordsQuery } from "@undb/queries"
+import {
+  GetReadableRecordByIdQuery,
+  GetReadableRecordsQuery,
+  GetRecordByIdQuery,
+  IGetReadableRecordByIdOutput,
+  IGetRecordByIdOutput,
+} from "@undb/queries"
 import { createLogger } from "@undb/logger"
 import { executionContext } from "@undb/context/server"
+import { GetReadableRecordByIdHandler } from "@undb/query-handlers/src/handlers/get-readable-record-by-id.query-handler"
 
 @singleton()
 export class OpenAPI {
@@ -95,6 +102,18 @@ export class OpenAPI {
           }
         },
         { params: t.Object({ tableId: t.String() }) },
+      )
+      .get(
+        "/api/tables/:tableId/records/:recordId",
+        async (ctx) => {
+          const result = await this.queryBus.execute(
+            new GetReadableRecordByIdQuery({ tableId: ctx.params.tableId, id: ctx.params.recordId }),
+          )
+          return {
+            data: result,
+          }
+        },
+        { params: t.Object({ tableId: t.String(), recordId: t.String() }) },
       )
   }
 }

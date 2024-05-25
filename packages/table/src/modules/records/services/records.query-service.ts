@@ -10,6 +10,7 @@ import {
   type IRecordReadableDTO,
 } from "../record"
 import { getAggregates } from "./methods/get-aggregates.method"
+import { getReadableRecordById } from "./methods/get-readable-record-by-id.method"
 import { getReadableRecords } from "./methods/get-readable-records.method"
 import { getRecordById } from "./methods/get-record-by-id.method"
 import { getRecords } from "./methods/get-records.method"
@@ -18,6 +19,7 @@ export interface IRecordsQueryService {
   getRecords(query: IGetRecordsDTO): Promise<PaginatedDTO<IRecordDTO>>
   getRecordById(query: IGetRecordByIdDTO): Promise<Option<IRecordDTO>>
   getReadableRecords(query: IGetRecordsDTO): Promise<PaginatedDTO<IRecordReadableDTO>>
+  getReadableRecordById(query: IGetRecordByIdDTO): Promise<Option<IRecordReadableDTO>>
   getAggregates(query: IGetAggregatesDTO): Promise<Record<string, AggregateResult>>
 }
 
@@ -33,5 +35,6 @@ export class RecordsQueryService implements IRecordsQueryService {
   getRecords = getRecords
   getRecordById = getRecordById
   getReadableRecords = getReadableRecords
+  getReadableRecordById = getReadableRecordById
   getAggregates = getAggregates
 }

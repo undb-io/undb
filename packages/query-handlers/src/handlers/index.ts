@@ -1,4 +1,5 @@
 import { GetAggregatesQueryHandler } from "./get-aggregates.query-handler"
+import { GetReadableRecordByIdHandler } from "./get-readable-record-by-id.query-handler"
 import { GetReadableRecordsHandler } from "./get-readable-records.query-handler"
 import { GetRecordByIdQueryHandler } from "./get-record-by-id.query-handler"
 import { GetRecordsQueryHandler } from "./get-records.query-handler"
@@ -12,4 +13,5 @@ export const queryHandlers = [
   GetRecordByIdQueryHandler,
   GetReadableRecordsHandler,
   GetAggregatesQueryHandler,
+  GetReadableRecordByIdHandler,
 ]

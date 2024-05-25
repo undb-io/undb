@@ -7,7 +7,7 @@ export const getRecordByIdQuery = getRecordByIdDTO
 export type IGetRecordByIdQuery = z.infer<typeof getRecordByIdQuery>
 
 export const getRecordByIdOutput = z.object({
-  record: recordDTO,
+  record: recordDTO.nullable(),
 })
 
 export type IGetRecordByIdOutput = z.infer<typeof getRecordByIdOutput>
