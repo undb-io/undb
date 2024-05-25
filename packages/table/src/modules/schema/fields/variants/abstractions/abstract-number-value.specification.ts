@@ -3,6 +3,7 @@ import { isNumber } from "radash"
 import type { IRecordVisitor, RecordDO } from "../../../../records"
 import { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import type { FieldId } from "../../field-id.vo"
+import { NumberFieldValue } from "../number-field"
 
 export class NumberEqual extends RecordComositeSpecification {
   constructor(
@@ -16,7 +17,8 @@ export class NumberEqual extends RecordComositeSpecification {
     return value.mapOr(false, (v) => isNumber(v.value) && v.value == this.value)
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
-    throw new Error("Method not implemented.")
+    t.values.setValue(this.fieldId, new NumberFieldValue(this.value))
+    return Ok(t)
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.numberEqual(this)

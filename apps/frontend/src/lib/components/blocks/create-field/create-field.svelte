@@ -1,5 +1,6 @@
 <script lang="ts">
   import { invalidate } from "$app/navigation"
+  import { Button } from "$lib/components/ui/button"
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
   import { CREATE_FIELD_MODAL, closeModal, toggleModal } from "$lib/store/modal.store"
@@ -11,6 +12,7 @@
   import { derived } from "svelte/store"
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
+  import FieldOptions from "../field-options/field-options.svelte"
 
   const table = getTable()
 
@@ -65,4 +67,17 @@
     <Form.Description />
     <Form.FieldErrors />
   </Form.Field>
+
+  <Form.Field {form} name="constraint">
+    <Form.Control let:attrs>
+      <Form.Label>Constraint</Form.Label>
+      <FieldOptions type={$formData.type} bind:constraint={$formData.constraint} />
+    </Form.Control>
+    <Form.Description />
+    <Form.FieldErrors />
+  </Form.Field>
+
+  <div class="flex w-full justify-end">
+    <Button type="submit">Submit</Button>
+  </div>
 </form>
