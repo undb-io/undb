@@ -1,6 +1,7 @@
 import type {
   AutoIncrementField,
   CreatedAtField,
+  Field,
   IFieldAggregate,
   IFieldVisitor,
   IdField,
@@ -29,7 +30,14 @@ export class RecordAggregateVisitor implements IFieldVisitor {
     // throw new Error("Method not implemented.")
   }
   createdAt(field: CreatedAtField): void {
-    // throw new Error("Method not implemented.")
+    const aggregate = field.aggregate.parse(this.aggregate)
+    const eb = match(aggregate)
+      .returnType<AliasedExpression<any, any>>()
+      .with("min", () => this.eb.fn.min(field.id.value).as(field.id.value))
+      .with("max", () => this.eb.fn.max(field.id.value).as(field.id.value))
+      .exhaustive()
+
+    this.#ebs.push(eb)
   }
   updatedAt(field: UpdatedAtField): void {
     // throw new Error("Method not implemented.")
@@ -81,5 +89,42 @@ export class RecordAggregateVisitor implements IFieldVisitor {
       .exhaustive()
 
     this.#ebs.push(eb)
+  }
+}
+
+export class AggregateFnBuiler {
+  constructor(
+    private readonly eb: ExpressionBuilder<any, any>,
+    private readonly field: Field,
+    private readonly aggregate: IFieldAggregate,
+  ) {}
+
+  public build(): AliasedExpression<any, any> {
+    return match(this.aggregate)
+      .returnType<AliasedExpression<any, any>>()
+      .with("sum", () => this.eb.fn.sum(this.field.id.value).as(this.field.id.value))
+      .with("avg", () => this.eb.fn.avg(this.field.id.value).as(this.field.id.value))
+      .with("min", () => this.eb.fn.min(this.field.id.value).as(this.field.id.value))
+      .with("max", () => this.eb.fn.max(this.field.id.value).as(this.field.id.value))
+      .with("count_uniq", () => this.eb.fn.count(this.field.id.value).distinct().as(this.field.id.value))
+      .with("count_empty", () =>
+        sql`COUNT(*) - COUNT(NULLIF(${sql.ref(this.field.id.value)}, 0))`.as(this.field.id.value),
+      )
+      .with("count_not_empty", () =>
+        sql`COUNT(CASE WHEN ${sql.ref(this.field.id.value)} IS NOT NULL AND ${sql.ref(this.field.id.value)} != 0 THEN 1 END)`.as(
+          this.field.id.value,
+        ),
+      )
+      .with("percent_empty", () =>
+        sql`(COUNT(*) - COUNT(NULLIF(${sql.ref(this.field.id.value)}, 0))) * 1.0 / COUNT(*)`.as(this.field.id.value),
+      )
+      .with("percent_not_empty", () =>
+        sql`COUNT(NULLIF(${sql.ref(this.field.id.value)}, 0)) * 1.0 / COUNT(*)`.as(this.field.id.value),
+      )
+      .with("percent_uniq", () =>
+        sql`COUNT(DISTINCT ${sql.ref(this.field.id.value)}) * 1.0 / COUNT(*)`.as(this.field.id.value),
+      )
+
+      .exhaustive()
   }
 }

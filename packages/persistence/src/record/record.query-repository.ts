@@ -16,7 +16,7 @@ import type { AliasedExpression, ExpressionBuilder, SelectQueryBuilder } from "k
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
-import { RecordAggregateVisitor } from "./record.aggregate-visitor"
+import { AggregateFnBuiler } from "./record.aggregate-visitor"
 import { RecordFilterVisitor } from "./record.filter-visitor"
 import { RecordMapper } from "./record.mapper"
 
@@ -117,14 +117,11 @@ export class RecordQueryRepository implements IRecordQueryRepository {
 
         for (const [fieldId, fieldAggregate] of aggregates.unwrap()) {
           const field = table.schema.fieldMapById.get(fieldId)
-          const visitor = new RecordAggregateVisitor(eb, fieldAggregate)
           if (!field) {
             continue
           }
-
-          field.accept(visitor)
-
-          ebs.push(...visitor.ebs)
+          const builder = new AggregateFnBuiler(eb, field, fieldAggregate)
+          ebs.push(builder.build())
         }
         return ebs
       })
