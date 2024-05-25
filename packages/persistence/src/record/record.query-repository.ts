@@ -116,6 +116,9 @@ export class RecordQueryRepository implements IRecordQueryRepository {
         const ebs: AliasedExpression<any, any>[] = []
 
         for (const [fieldId, fieldAggregate] of aggregates.unwrap()) {
+          if (!fieldAggregate) {
+            continue
+          }
           const field = table.schema.fieldMapById.get(fieldId)
           if (!field) {
             continue

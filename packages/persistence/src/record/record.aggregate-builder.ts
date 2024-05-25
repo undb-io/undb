@@ -34,7 +34,6 @@ export class AggregateFnBuiler {
       .with("percent_uniq", () =>
         sql`COUNT(DISTINCT ${sql.ref(this.field.id.value)}) * 1.0 / COUNT(*)`.as(this.field.id.value),
       )
-
       .exhaustive()
   }
 }
