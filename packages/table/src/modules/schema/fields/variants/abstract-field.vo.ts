@@ -118,7 +118,7 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
     return isFieldSortable(this.type)
   }
 
-  abstract get aggregate(): ZodEnum
+  abstract get aggregate(): ZodEnum<[string, ...string[]]> | ZodUndefined
 
   toJSON(): IFieldDTO {
     return {

@@ -1,12 +1,13 @@
 import { Option, ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import { objectify } from "radash"
+import { WithNewFieldSpecification } from "../../specifications"
 import type { ICreateSchemaDTO } from "./dto"
 import type { ISchemaDTO } from "./dto/schema.dto"
 import { IdField, UpdatedAtField } from "./fields"
 import type { FieldId } from "./fields/field-id.vo"
 import { FieldFactory } from "./fields/field.factory"
-import type { Field, NoneSystemField, SystemField } from "./fields/field.type"
+import type { Field, ICreateFieldDTO, NoneSystemField, SystemField } from "./fields/field.type"
 import { AutoIncrementField } from "./fields/variants/autoincrement-field"
 import { CreatedAtField } from "./fields/variants/created-at-field"
 import type { SchemaMap } from "./schema.type"
@@ -34,6 +35,16 @@ export class Schema extends ValueObject<Field[]> {
 
   *[Symbol.iterator]() {
     yield* this.fields
+  }
+
+  $createField(dto: ICreateFieldDTO): WithNewFieldSpecification {
+    const field = FieldFactory.create(dto)
+
+    return new WithNewFieldSpecification(field)
+  }
+
+  createField(field: Field) {
+    this.fields.push(field)
   }
 
   get fieldMapById(): SchemaMap {

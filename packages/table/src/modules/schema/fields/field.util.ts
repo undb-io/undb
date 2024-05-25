@@ -1,5 +1,6 @@
 import { P, match } from "ts-pattern"
-import type { FieldType, IInferCreateFieldDTO } from "./field.type"
+import type { IInferCreateFieldDTO } from "./dto/field.dto"
+import type { FieldType } from "./field.type"
 
 export const inferCreateFieldType = (values: (string | number | null | object | boolean)[]): IInferCreateFieldDTO => {
   return match(values)

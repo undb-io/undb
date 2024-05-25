@@ -1,4 +1,5 @@
 export * from "./create-record.command"
+export * from "./create-table-field.command"
 export * from "./create-table.command"
 export * from "./set-table-rls.command"
 export * from "./set-view-aggregate.command"

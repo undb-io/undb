@@ -1,12 +1,16 @@
 import { Option } from "@undb/domain"
 import { z } from "@undb/zod"
-import { createAbstractDateConditionMather, createUpdatedAtFieldCondition } from "../.."
 import { FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
+import { createAbstractDateConditionMather } from "../abstractions/abstract-date-field.condition"
 import { abstractDateAggregate } from "../abstractions/abstract-date.aggregate"
 import { UpdatedAtFieldValue } from "./updated-at-field-value.vo"
-import { type IUpdatedAtFieldCondition, type IUpdatedAtFieldConditionSchema } from "./updated-at-field.condition"
+import {
+  createUpdatedAtFieldCondition,
+  type IUpdatedAtFieldCondition,
+  type IUpdatedAtFieldConditionSchema,
+} from "./updated-at-field.condition"
 
 export const UPDATED_AT_TYPE = "updatedAt" as const
 

@@ -8,6 +8,7 @@
   import RecordDetailSheet from "$lib/components/blocks/record-detail/record-detail-sheet.svelte"
   import Openapi from "$lib/components/blocks/openapi/openapi.svelte"
   import { queryParam, ssp } from "sveltekit-search-params"
+  import CreateFieldDialog from "$lib/components/blocks/create-field/create-field-dialog.svelte"
 
   const tab = queryParam("tab", ssp.string())
 
@@ -29,6 +30,7 @@
 <CreateRecordSheet />
 <RecordDetailSheet />
 <ConfirmDeleteRecord />
+<CreateFieldDialog />
 
 <svelte:window
   use:shortcut={{

@@ -1,6 +1,7 @@
 import { AggregateRoot } from "@undb/domain"
 import type { ITableDTO } from "./dto"
 import type { ITableEvents } from "./events"
+import { createFieldMethod } from "./methods/create-field.method"
 import { setTableRLS } from "./methods/set-table-rls.method"
 import { setViewAggregate } from "./methods/set-view-aggregate.method"
 import { setViewColor } from "./methods/set-view-color.method"
@@ -24,6 +25,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   $setViewSort = setViewSort
   $setTableRLS = setTableRLS
   $setViewAggregate = setViewAggregate
+  $createField = createFieldMethod
 
   getOrderedFields() {
     return this.schema.fields

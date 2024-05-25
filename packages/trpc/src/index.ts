@@ -2,6 +2,7 @@ import { initTRPC } from "@trpc/server"
 import {
   CreateRecordCommand,
   CreateTableCommand,
+  CreateTableFieldCommand,
   SetTableRLSCommand,
   SetViewAggregateCommand,
   SetViewColorCommand,
@@ -10,6 +11,7 @@ import {
   UpdateRecordCommand,
   createRecordCommand,
   createTableCommand,
+  createTableFieldCommand,
   setTableRLSCommand,
   setViewAggregateCommand,
   setViewColorCommand,
@@ -109,9 +111,16 @@ export const recordRouter = t.router({
   update: p.input(updateRecordCommand).mutation(({ input }) => commandBus.execute(new UpdateRecordCommand(input))),
 })
 
+export const fieldRouter = t.router({
+  create: p
+    .input(createTableFieldCommand)
+    .mutation(({ input }) => commandBus.execute(new CreateTableFieldCommand(input))),
+})
+
 export const route = t.router({
   table: tableRouter,
   record: recordRouter,
+  field: fieldRouter,
 })
 
 export type AppRouter = typeof route
