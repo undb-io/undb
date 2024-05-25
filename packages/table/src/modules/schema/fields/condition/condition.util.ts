@@ -159,3 +159,38 @@ export function isEmptyConditionGroup<OptionType extends z.ZodTypeAny>(
 ): boolean {
   return condition.children.length === 0
 }
+
+/**
+ * Removes field conditions from a condition group recursively, based on the provided field IDs.
+ * If a child condition is a field condition and its field ID is not in the provided set of field IDs,
+ * it will be removed from the condition group. If a child condition is a group, the function will be
+ * called recursively to remove field conditions from the child group as well.
+ *
+ *
+ * @template OptionType - The type of the options for the condition group.
+ * @param value - The condition group to remove field conditions from.
+ * @param fieldIds - The set of field IDs to check against for removing field conditions.
+ * @returns The condition group with field conditions removed.
+ */
+export function conditionWithoutFields<OptionType extends z.ZodTypeAny>(
+  value: IConditionGroup<OptionType>,
+  fieldIds: Set<string>,
+): IConditionGroup<OptionType> {
+  const children: IConditionGroupChildren<OptionType> = []
+
+  for (const child of value.children) {
+    if (isFieldCondition(child) && !fieldIds.has(child.fieldId)) {
+      children.push(child)
+    } else if (isGroup(child)) {
+      const newChild = conditionWithoutFields(child, fieldIds)
+      if (!isEmptyConditionGroup(newChild)) {
+        children.push(newChild)
+      }
+    }
+  }
+
+  return {
+    conjunction: value.conjunction,
+    children,
+  }
+}

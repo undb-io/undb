@@ -1,4 +1,4 @@
-import { Filter, Schema, type IFilterGroup } from "@undb/table"
+import { Schema, ViewFilter, type IConditionGroup } from "@undb/table"
 import Database from "bun:sqlite"
 import { describe, expect, test } from "bun:test"
 import { Kysely } from "kysely"
@@ -19,7 +19,7 @@ const qb = new Kysely({
 }) satisfies IQueryBuilder
 
 describe("record.filter-visitor", () => {
-  test.each<IFilterGroup>([
+  test.each<IConditionGroup>([
     {
       conjunction: "and",
       children: [
@@ -93,7 +93,7 @@ describe("record.filter-visitor", () => {
       children: [{ fieldId: "field2", op: "is_not_empty" }],
     },
   ])("should get query", (filter) => {
-    const f = new Filter(filter)
+    const f = new ViewFilter(filter)
     const spec = f.getSpec(schema)
 
     const query = qb
