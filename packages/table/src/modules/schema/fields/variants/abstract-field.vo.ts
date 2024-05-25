@@ -102,7 +102,7 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
     return hasValue
   }
 
-  updateValue(value: V): Option<RecordComositeSpecification> {
+  $updateValue(value: V): Option<RecordComositeSpecification> {
     if (this.isSystem) {
       return None
     }

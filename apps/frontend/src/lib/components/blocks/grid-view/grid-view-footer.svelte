@@ -56,9 +56,11 @@
     >
       <div class="flex items-center gap-2">
         <Select.Value />
-        {#if aggregateResult !== undefined && aggregateResult !== null}
-          {aggregateResult}
-        {/if}
+        <span class="text-foreground">
+          {#if aggregateResult !== undefined && aggregateResult !== null}
+            {aggregateResult}
+          {/if}
+        </span>
       </div>
     </Select.Trigger>
     <Select.Content>

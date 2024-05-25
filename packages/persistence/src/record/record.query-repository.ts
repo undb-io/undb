@@ -16,7 +16,7 @@ import type { AliasedExpression, ExpressionBuilder, SelectQueryBuilder } from "k
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
-import { AggregateFnBuiler } from "./record.aggregate-visitor"
+import { AggregateFnBuiler } from "./record.aggregate-builder"
 import { RecordFilterVisitor } from "./record.filter-visitor"
 import { RecordMapper } from "./record.mapper"
 

@@ -59,7 +59,7 @@ export class NumberField extends AbstractField<NumberFieldValue, NumberFieldCons
     return Option(spec)
   }
 
-  override updateValue(value: NumberFieldValue): Option<RecordComositeSpecification> {
+  override $updateValue(value: NumberFieldValue): Option<RecordComositeSpecification> {
     return Some(new NumberEqual(value.value, this.id))
   }
 

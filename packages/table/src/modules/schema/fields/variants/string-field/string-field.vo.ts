@@ -82,7 +82,7 @@ export class StringField extends AbstractField<StringFieldValue, StringFieldCons
     return Option(spec)
   }
 
-  updateValue(value: StringFieldValue): Option<RecordComositeSpecification> {
+  $updateValue(value: StringFieldValue): Option<RecordComositeSpecification> {
     return Some(new StringEqual(value, this.id))
   }
 

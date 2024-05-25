@@ -3,12 +3,12 @@ import type { TableDo } from "../../../table.do"
 import { ID_TYPE, type FieldValue } from "../../schema"
 import { FieldIdVo, type FieldId } from "../../schema/fields/field-id.vo"
 import { FieldValueFactory } from "../../schema/fields/field-value.factory"
+import type { SchemaMap } from "../../schema/schema.type"
 import { RecordCreatedEvent, type IRecordEvent } from "../events"
 import type { ICreateRecordDTO, IRecordDTO, IUpdateRecordDTO } from "./dto"
 import { RecordIdVO, type RecordId } from "./record-id.vo"
 import { RecordValuesVO } from "./record-values.vo"
 import type { IRecordComositeSpecification, RecordComositeSpecification } from "./record.composite-specification"
-import type { SchemaMap } from "../../schema/schema.type"
 
 export class RecordDO extends AggregateRoot<IRecordEvent> {
   constructor(
@@ -65,7 +65,7 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
       const fieldValue = FieldValueFactory.fromJSON(field.unwrap(), parsed).expect(
         `invalid field value ${value} for ${field.unwrap().id.value}`,
       )
-      const spec = field.unwrap().updateValue(fieldValue as any)
+      const spec = field.unwrap().$updateValue(fieldValue as any)
       specs.push(spec)
     }
 
