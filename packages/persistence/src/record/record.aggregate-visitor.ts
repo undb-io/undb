@@ -57,6 +57,27 @@ export class RecordAggregateVisitor implements IFieldVisitor {
     this.#ebs.push(eb)
   }
   number(field: NumberField): void {
-    // throw new Error("Method not implemented.")
+    const aggregate = field.aggregate.parse(this.aggregate)
+    const eb = match(aggregate)
+      .returnType<AliasedExpression<any, any>>()
+      .with("sum", () => this.eb.fn.sum(field.id.value).as(field.id.value))
+      .with("avg", () => this.eb.fn.avg(field.id.value).as(field.id.value))
+      .with("min", () => this.eb.fn.min(field.id.value).as(field.id.value))
+      .with("max", () => this.eb.fn.max(field.id.value).as(field.id.value))
+      .with("count_uniq", () => this.eb.fn.count(field.id.value).distinct().as(field.id.value))
+      .with("count_empty", () => sql`COUNT(*) - COUNT(NULLIF(${sql.ref(field.id.value)}, 0))`.as(field.id.value))
+      .with("count_not_empty", () =>
+        sql`COUNT(CASE WHEN ${sql.ref(field.id.value)} IS NOT NULL AND ${sql.ref(field.id.value)} != 0 THEN 1 END)`.as(
+          field.id.value,
+        ),
+      )
+      .with("percent_empty", () =>
+        sql`(COUNT(*) - COUNT(NULLIF(${sql.ref(field.id.value)}, 0))) * 1.0 / COUNT(*)`.as(field.id.value),
+      )
+      .with("percent_not_empty", () =>
+        sql`COUNT(NULLIF(${sql.ref(field.id.value)}, 0)) * 1.0 / COUNT(*)`.as(field.id.value),
+      )
+      .with("percent_uniq", () => sql`COUNT(DISTINCT ${sql.ref(field.id.value)}) * 1.0 / COUNT(*)`.as(field.id.value))
+      .exhaustive()
   }
 }

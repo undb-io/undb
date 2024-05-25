@@ -35,7 +35,7 @@
       onSettled: () => {
         $createRecordSheetOpen = false
         client.invalidateQueries({
-          queryKey: [$table.id.value, $table.views.getViewById().id.value, "records"],
+          queryKey: ["records", $table.id.value],
         })
         toast.success("Record has been created!")
       },
