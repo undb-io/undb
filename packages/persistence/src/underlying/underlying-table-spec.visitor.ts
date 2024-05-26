@@ -15,6 +15,10 @@ import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.spec
 import type { AlterTableBuilder, CreateTableBuilder } from "kysely"
 import type { UnderlyingTable } from "./underlying-table"
 import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
+import type {
+  TableFormsSpecification,
+  WithNewFormSpecification,
+} from "@undb/table/src/specifications/table-forms.specification"
 
 export class UnderlyingTableSpecVisitor<TB extends CreateTableBuilder<any, any> | AlterTableBuilder>
   implements ITableSpecVisitor
@@ -23,6 +27,8 @@ export class UnderlyingTableSpecVisitor<TB extends CreateTableBuilder<any, any> 
     public readonly table: UnderlyingTable,
     public tb: TB,
   ) {}
+  withForms(views: TableFormsSpecification): void {}
+  withNewForm(views: WithNewFormSpecification): void {}
   withId(id: TableIdSpecification): void {}
   withName(name: TableNameSpecification): void {}
   withSchema(schema: TableSchemaSpecification): void {}

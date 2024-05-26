@@ -6,6 +6,7 @@ import type {
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
+  WithNewFieldSpecification,
   WithViewAggregate,
   WithViewColor,
   WithViewFilter,
@@ -15,8 +16,21 @@ import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.spec
 import { eq } from "drizzle-orm"
 import { AbstractDBFilterVisitor } from "../abstract-db.visitor"
 import { tables } from "../tables"
+import type {
+  TableFormsSpecification,
+  WithNewFormSpecification,
+} from "@undb/table/src/specifications/table-forms.specification"
 
 export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> implements ITableSpecVisitor {
+  withNewField(schema: WithNewFieldSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withForms(views: TableFormsSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withNewForm(views: WithNewFormSpecification): void {
+    throw new Error("Method not implemented.")
+  }
   withViewAggregate(viewColor: WithViewAggregate): void {
     throw new Error("Method not implemented.")
   }

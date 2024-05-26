@@ -4,11 +4,11 @@ import type { TableDo } from "../../../table.do"
 
 export class FormFieldsVO extends ValueObject<FormFieldVO[]> {
   static create(table: TableDo) {
-    const fields = table.getOrderedFields()
+    const fields = table.getOrderedMutableFields()
     return new FormFieldsVO(fields.map((field) => FormFieldVO.create(field)))
   }
 
   toJSON() {
-    return this.value.map((field) => field.toJSON())
+    return this.props.map((field) => field.toJSON())
   }
 }

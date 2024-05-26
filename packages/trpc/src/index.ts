@@ -3,6 +3,7 @@ import {
   CreateRecordCommand,
   CreateTableCommand,
   CreateTableFieldCommand,
+  CreateTableFormCommand,
   SetTableRLSCommand,
   SetViewAggregateCommand,
   SetViewColorCommand,
@@ -12,6 +13,7 @@ import {
   createRecordCommand,
   createTableCommand,
   createTableFieldCommand,
+  createTableFormCommand,
   setTableRLSCommand,
   setViewAggregateCommand,
   setViewColorCommand,
@@ -74,6 +76,12 @@ const p = t.procedure.use(async ({ type, input, path, next }) => {
   return result
 })
 
+const formRouter = t.router({
+  create: p
+    .input(createTableFormCommand)
+    .mutation(({ input }) => commandBus.execute(new CreateTableFormCommand(input))),
+})
+
 const viewRouter = t.router({
   setFilter: p.input(setViewFilterCommand).mutation(({ input }) => commandBus.execute(new SetViewFilterCommand(input))),
   setColor: p.input(setViewColorCommand).mutation(({ input }) => commandBus.execute(new SetViewColorCommand(input))),
@@ -102,6 +110,7 @@ const tableRouter = t.router({
     .mutation(({ input }) => commandBus.execute(new CreateTableCommand(input))),
   rls: rlsRouter,
   view: viewRouter,
+  form: formRouter,
 })
 
 export const recordRouter = t.router({

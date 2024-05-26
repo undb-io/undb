@@ -1,9 +1,70 @@
 <script lang="ts">
+  import { invalidate } from "$app/navigation"
+  import * as Form from "$lib/components/ui/form"
   import { Button } from "$lib/components/ui/button"
+  import * as Popover from "$lib/components/ui/popover"
+  import { getTable } from "$lib/store/table.store"
+  import { trpc } from "$lib/trpc/client"
+  import { createMutation } from "@tanstack/svelte-query"
+  import { createFormDTO } from "@undb/table"
   import { PlusCircleIcon } from "lucide-svelte"
+  import { toast } from "svelte-sonner"
+  import { defaults, superForm } from "sveltekit-superforms"
+  import { zodClient } from "sveltekit-superforms/adapters"
+  import { Input } from "$lib/components/ui/input"
+
+  let open = false
+
+  const table = getTable()
+
+  const createFormMutation = createMutation({
+    mutationFn: trpc.table.form.create.mutate,
+    mutationKey: ["form", "create", $table.id.value],
+    onSuccess() {
+      toast.success("create form successfully")
+      invalidate(`table:${$table.id.value}`)
+    },
+    onError(e) {
+      toast.error(e.message)
+    },
+    onSettled() {
+      open = false
+    },
+  })
+
+  const form = superForm(defaults({ name: "form" }, zodClient(createFormDTO)), {
+    SPA: true,
+    dataType: "json",
+    validators: zodClient(createFormDTO),
+    resetForm: false,
+    invalidateAll: false,
+    onUpdate(event) {
+      if (!event.form.valid) return
+
+      $createFormMutation.mutate({ tableId: $table.id.value, ...event.form.data })
+    },
+  })
+
+  const { enhance, form: formData } = form
 </script>
 
-<Button class="mt-4">
-  <PlusCircleIcon class="mr-2 h-4 w-4" />
-  Create Form</Button
->
+<Popover.Root bind:open>
+  <Popover.Trigger asChild let:builder>
+    <Button class="mt-4" builders={[builder]}>
+      <PlusCircleIcon class="mr-2 h-4 w-4" />
+      Create Form
+    </Button>
+  </Popover.Trigger>
+  <Popover.Content>
+    <form method="POST" use:enhance>
+      <Form.Field {form} name="name">
+        <Form.Control let:attrs>
+          <Form.Label>Name</Form.Label>
+          <Input {...attrs} bind:value={$formData.name} />
+        </Form.Control>
+        <Form.Description />
+        <Form.FieldErrors />
+      </Form.Field>
+    </form>
+  </Popover.Content>
+</Popover.Root>

@@ -8,7 +8,7 @@ export interface DomainPrimitive<T extends Primitives | Date> {
 type ValueObjectProps<T> = T extends Primitives | Date ? DomainPrimitive<T> : T
 
 export abstract class ValueObject<T = any> {
-  constructor(protected readonly props: ValueObjectProps<T>) {}
+  constructor(public readonly props: ValueObjectProps<T>) {}
 
   public equals(vo?: ValueObject<T>): boolean {
     if (vo === null || vo === undefined) {

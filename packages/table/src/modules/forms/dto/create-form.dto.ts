@@ -1,13 +1,15 @@
 import { z } from "@undb/zod"
 import { formId } from "../form/form-id.vo"
 import { formName } from "../form/form-name.vo"
-import { formField } from "../form"
 import { tableId } from "../../../table-id.vo"
 
 export const createFormDTO = z.object({
   id: formId.optional(),
   name: formName,
-  fields: formField,
+  // TODO: should create table accept fields?
+  // now it's not used
+  // just using table fields
+  // fields: formField.optional(),
 })
 export type ICreateFormDTO = z.infer<typeof createFormDTO>
 

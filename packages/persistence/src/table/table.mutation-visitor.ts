@@ -15,6 +15,10 @@ import type {
 import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
 import type { SQLiteUpdateSetSource } from "drizzle-orm/sqlite-core"
 import type { tables } from "../tables"
+import type {
+  TableFormsSpecification,
+  WithNewFormSpecification,
+} from "@undb/table/src/specifications/table-forms.specification"
 
 type Source = SQLiteUpdateSetSource<typeof tables>
 
@@ -24,6 +28,13 @@ export class TableMutationVisitor implements ITableSpecVisitor {
 
   public get updates(): Source {
     return this.#updates
+  }
+
+  withForms(forms: TableFormsSpecification): void {
+    this.#updates = { ...this.#updates, forms: this.table.forms?.toJSON() }
+  }
+  withNewForm(form: WithNewFormSpecification): void {
+    this.#updates = { ...this.#updates, forms: this.table.forms?.toJSON() }
   }
 
   withNewField(schema: WithNewFieldSpecification): void {

@@ -52,11 +52,18 @@ export class Graphql {
         aggregate: JSON
       }
 
+      type Form {
+        id: ID!
+        name: String!
+        fields: JSON
+      }
+
       type Table {
         id: ID!
         name: String!
         schema: [Field!]!
         views: [View!]!
+        forms: [Form]
 
         viewData(viewId: ID): ViewData
 

@@ -35,6 +35,10 @@ export class TableDo extends AggregateRoot<ITableEvents> {
     return this.schema.fields
   }
 
+  getOrderedMutableFields() {
+    return this.getOrderedFields().filter((field) => field.isMutable)
+  }
+
   toJSON(): ITableDTO {
     return {
       id: this.id.value,

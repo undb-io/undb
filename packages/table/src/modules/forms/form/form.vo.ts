@@ -29,6 +29,7 @@ export class FormVO extends ValueObject<IForm> {
       fields: FormFieldsVO.create(table),
     })
   }
+
   static fromJSON(dto: IFormDTO) {
     return new FormVO({
       id: new FormIdVO(dto.id),
@@ -38,10 +39,11 @@ export class FormVO extends ValueObject<IForm> {
   }
 
   toJSON() {
+    const props = this.props
     return {
-      id: this.value.id.value,
-      name: this.value.name.value,
-      fields: this.value.fields.toJSON(),
+      id: props.id.value,
+      name: props.name.value,
+      fields: props.fields.toJSON(),
     }
   }
 }

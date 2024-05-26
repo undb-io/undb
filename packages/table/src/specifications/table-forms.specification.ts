@@ -30,7 +30,7 @@ export class WithNewFormSpecification extends TableComositeSpecification {
     throw new WontImplementException(TableComositeSpecification.name + ".isSatisfiedBy")
   }
   mutate(t: TableDo): Result<TableDo, string> {
-    const forms = t.forms?.value ?? []
+    const forms = t.forms?.props ?? []
     t.forms = new FormsVO([...forms, this.form])
     return Ok(t)
   }

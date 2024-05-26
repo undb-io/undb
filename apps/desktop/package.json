@@ -4,7 +4,6 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "dev:desktop": "bun tauri dev",
     "build:desktop": "bun tauri build",
     "preview": "vite preview",

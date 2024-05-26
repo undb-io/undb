@@ -19,6 +19,12 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
       aggregate
     }
 
+    forms {
+      id
+      name
+      fields
+    }
+
     viewData(viewId: $viewId) {
       aggregate
     }

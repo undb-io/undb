@@ -10,10 +10,10 @@ export class FormsVO extends ValueObject<FormVO[]> {
   }
 
   *[Symbol.iterator]() {
-    yield* this.value
+    yield* this.props
   }
 
   toJSON() {
-    return this.value.map((form) => form.toJSON())
+    return this.props.map((form) => form.toJSON())
   }
 }

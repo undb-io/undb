@@ -8,4 +8,4 @@
 
 {#if !forms?.value.length}
   <EmptyForms />
-{/if}
+{:else}{/if}
