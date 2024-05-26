@@ -22,6 +22,14 @@ interface IForm {
 }
 
 export class FormVO extends ValueObject<IForm> {
+  public get name() {
+    return this.props.name.value
+  }
+
+  public get fields() {
+    return this.props.fields
+  }
+
   static create(table: TableDo, dto: ICreateFormDTO) {
     return new FormVO({
       id: FormIdVO.create(),

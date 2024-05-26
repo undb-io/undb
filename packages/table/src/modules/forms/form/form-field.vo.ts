@@ -17,6 +17,33 @@ export const formField = z.object({
 export type IFormField = z.infer<typeof formField>
 
 export class FormFieldVO extends ValueObject<IFormField> {
+  public get fieldId() {
+    return this.props.fieldId
+  }
+
+  public get hidden() {
+    return this.props.hidden
+  }
+
+  public get required() {
+    return this.props.required ?? false
+  }
+
+  public set required(value: boolean) {
+    this.props.required = value
+  }
+
+  public getRequired(field: Field) {
+    if (field.required) {
+      return true
+    }
+    return this.props.required
+  }
+
+  public get condtion() {
+    return this.props.condtion
+  }
+
   static create(field: Field) {
     return new FormFieldVO({
       fieldId: field.id.value,
