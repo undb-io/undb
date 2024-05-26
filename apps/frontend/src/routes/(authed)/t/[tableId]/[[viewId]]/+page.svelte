@@ -5,12 +5,11 @@
   import { createRecordSheetOpen } from "$lib/components/blocks/create-record/create-record.store.ts"
   import { shortcut } from "@svelte-put/shortcut"
   import TableHeader from "$lib/components/blocks/table-header/table-header.svelte"
+  import Forms from "$lib/components/blocks/forms/forms.svelte"
   import RecordDetailSheet from "$lib/components/blocks/record-detail/record-detail-sheet.svelte"
   import Openapi from "$lib/components/blocks/openapi/openapi.svelte"
-  import { queryParam, ssp } from "sveltekit-search-params"
   import CreateFieldDialog from "$lib/components/blocks/create-field/create-field-dialog.svelte"
-
-  const tab = queryParam("tab", ssp.string())
+  import { tab } from "$lib/store/tab.store"
 
   function handleR() {
     $createRecordSheetOpen = true
@@ -22,6 +21,8 @@
 <main class="h-full flex-1 overflow-auto">
   {#if !$tab || $tab === "data"}
     <GridView />
+  {:else if $tab === "form"}
+    <Forms />
   {:else}
     <Openapi />
   {/if}

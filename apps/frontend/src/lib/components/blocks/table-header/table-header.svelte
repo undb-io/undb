@@ -11,14 +11,12 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js"
   import * as Sheet from "$lib/components/ui/sheet/index.js"
   import { Button } from "$lib/components/ui/button/index.js"
-  import { DatabaseIcon, FileSlidersIcon, Package2, SheetIcon } from "lucide-svelte"
+  import { DatabaseIcon, FileSlidersIcon, Package2, SheetIcon, TextCursorInputIcon } from "lucide-svelte"
   import CreateTableButton from "../create-table/create-table-button.svelte"
   import * as Breadcrumb from "$lib/components/ui/breadcrumb/index.js"
   import { getTable } from "$lib/store/table.store"
-  import { queryParam, ssp } from "sveltekit-search-params"
+  import { tab } from "$lib/store/tab.store"
   import RecordUpdating from "../record-updating/record-updating.svelte"
-
-  const tab = queryParam("tab", ssp.string())
 
   const table = getTable()
   $: view = $table.views.getViewById()
@@ -101,7 +99,7 @@
     </div>
 
     <Tabs.Root
-      value={$tab === "data" || !$tab ? "data" : "detail"}
+      value={$tab === "data" || !$tab ? "data" : $tab}
       onValueChange={(value) => {
         if (!$tab && value === "data") {
           return
@@ -114,6 +112,10 @@
         <Tabs.Trigger value="data">
           <SheetIcon class="mr-2 h-4 w-4" />
           Data
+        </Tabs.Trigger>
+        <Tabs.Trigger value="form">
+          <TextCursorInputIcon class="mr-2 h-4 w-4" />
+          Forms
         </Tabs.Trigger>
         <Tabs.Trigger value="detail">
           <FileSlidersIcon class="mr-2 h-4 w-4" />
