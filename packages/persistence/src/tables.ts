@@ -1,4 +1,4 @@
-import type { ISchemaDTO, IViewsDTO } from "@undb/table"
+import type { IFormsDTO, ISchemaDTO, IViewsDTO } from "@undb/table"
 import { sql } from "drizzle-orm"
 import { integer, sqliteTableCreator, text } from "drizzle-orm/sqlite-core"
 
@@ -9,6 +9,7 @@ export const tables = sqliteTable("table", {
   name: text("name").notNull(),
   schema: text("schema", { mode: "json" }).$type<ISchemaDTO>(),
   views: text("views", { mode: "json" }).$type<IViewsDTO>(),
+  forms: text("forms", { mode: "json" }).$type<IFormsDTO>(),
 
   createdAt: text("created_at")
     .notNull()

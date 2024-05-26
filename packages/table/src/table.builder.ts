@@ -13,6 +13,8 @@ import { TableSchemaSpecification } from "./specifications/table-schema.specific
 import { TableIdVo } from "./table-id.vo"
 import { TableNameVo } from "./table-name.vo"
 import { TableDo } from "./table.do"
+import type { IConditionGroup, ICreateFormDTO } from "./modules"
+import type { ZodUndefined } from "@undb/zod"
 
 export interface ITableBuilder {
   reset(): void
@@ -21,6 +23,7 @@ export interface ITableBuilder {
   createSchema(dto: ICreateSchemaDTO): ITableBuilder
   setSchema(dto: ISchemaDTO): ITableBuilder
   createViews(): ITableBuilder
+  createForms(dto: ICreateFormDTO[]): ITableBuilder
   setViews(dto: IViewsDTO): ITableBuilder
   build(): TableDo
 }
@@ -60,6 +63,10 @@ export class TableBuilder implements ITableBuilder {
   createViews(): ITableBuilder {
     new TableViewsSpecification(Views.create()).mutate(this.table)
     return this
+  }
+
+  createForms(dto: ICreateFormDTO[]): ITableBuilder {
+    throw new Error("Method not implemented.")
   }
 
   setViews(dto: IViewsDTO): ITableBuilder {

@@ -12,12 +12,15 @@ import type { Schema } from "./modules/schema/schema.vo"
 import type { Views } from "./modules/views/views.vo"
 import type { TableId } from "./table-id.vo"
 import type { TableNameVo } from "./table-name.vo"
+import type { FormsVO } from "./modules/forms/forms.vo"
+import { createFormMethod } from "./methods/create-form.method"
 
 export class TableDo extends AggregateRoot<ITableEvents> {
   public id!: TableId
   public name!: TableNameVo
   public schema!: Schema
   public views!: Views
+  public forms?: FormsVO
   public rls!: TableRSL
 
   $setViewFilter = setViewFilter
@@ -26,6 +29,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   $setTableRLS = setTableRLS
   $setViewAggregate = setViewAggregate
   $createField = createFieldMethod
+  $createForm = createFormMethod
 
   getOrderedFields() {
     return this.schema.fields
@@ -38,6 +42,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
       schema: this.schema.toJSON(),
       views: this.views.toJSON(),
       rls: this.rls?.toJSON(),
+      forms: this.forms?.toJSON(),
     }
   }
 }
