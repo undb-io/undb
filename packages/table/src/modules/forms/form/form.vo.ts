@@ -1,15 +1,19 @@
 import { ValueObject } from "@undb/domain"
-import type { FormFieldsVO } from "./form-fields.vo"
-import { formField } from "./form-field.vo"
+import { FormFieldsVO } from "./form-fields.vo"
+import { FormFieldVO, formField } from "./form-field.vo"
 import { z } from "@undb/zod"
 import { FormNameVo, formName } from "./form-name.vo"
-import { formId, type FormId } from "./form-id.vo"
+import { FormIdVO, formId, type FormId } from "./form-id.vo"
+import type { TableDo } from "../../../table.do"
+import type { ICreateFormDTO } from "../dto"
 
 export const formDTO = z.object({
   id: formId,
   name: formName,
   fields: formField.array(),
 })
+
+export type IFormDTO = z.infer<typeof formDTO>
 
 interface IForm {
   id: FormId
@@ -18,6 +22,21 @@ interface IForm {
 }
 
 export class FormVO extends ValueObject<IForm> {
+  static create(table: TableDo, dto: ICreateFormDTO) {
+    return new FormVO({
+      id: FormIdVO.create(),
+      name: new FormNameVo(dto.name),
+      fields: FormFieldsVO.create(table),
+    })
+  }
+  static fromJSON(dto: IFormDTO) {
+    return new FormVO({
+      id: new FormIdVO(dto.id),
+      name: new FormNameVo(dto.name),
+      fields: new FormFieldsVO(dto.fields.map((field) => new FormFieldVO(field))),
+    })
+  }
+
   toJSON() {
     return {
       id: this.value.id.value,

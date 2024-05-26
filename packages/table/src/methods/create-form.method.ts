@@ -1,13 +1,14 @@
 import { Some, type Option } from "@undb/domain"
-import { type ICreateFormDTO } from "../modules"
+import { FormVO, type ICreateFormDTO } from "../modules"
 import type { TableComositeSpecification } from "../specifications"
 import type { TableDo } from "../table.do"
+import { WithNewFormSpecification } from "../specifications/table-forms.specification"
 
 export function createFormMethod(this: TableDo, dto: ICreateFormDTO): Option<TableComositeSpecification> {
-  throw new Error("Not implemented")
-  // const spec = this.schema.$createForm(dto)
+  const form = FormVO.create(this, dto)
+  const spec = new WithNewFormSpecification(form)
 
-  // spec.mutate(this)
+  spec.mutate(this)
 
   // const event = new FormCreatedEvent({
   //   tableId: this.id.value,
@@ -15,5 +16,5 @@ export function createFormMethod(this: TableDo, dto: ICreateFormDTO): Option<Tab
   // })
   // this.addDomainEvent(event)
 
-  // return Some(spec)
+  return Some(spec)
 }

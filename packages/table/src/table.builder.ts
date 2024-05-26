@@ -1,20 +1,21 @@
 import { container, inject, injectable, singleton } from "@undb/di"
 import { createTableDTO, type ICreateTableDTO, type ITableDTO } from "./dto"
 import { TableCreatedEvent } from "./events"
+import type { ICreateFormDTO, IFormsDTO } from "./modules"
 import type { ICreateSchemaDTO } from "./modules/schema/dto/create-schema.dto"
 import type { ISchemaDTO } from "./modules/schema/dto/schema.dto"
 import { Schema } from "./modules/schema/schema.vo"
 import type { IViewsDTO } from "./modules/views/dto"
 import { Views } from "./modules/views/views.vo"
+import { FormsVO } from "./modules/forms/forms.vo"
 import { TableViewsSpecification } from "./specifications"
+import { TableFormsSpecification } from "./specifications/table-forms.specification"
 import { TableIdSpecification } from "./specifications/table-id.specification"
 import { TableNameSpecification } from "./specifications/table-name.specification"
 import { TableSchemaSpecification } from "./specifications/table-schema.specification"
 import { TableIdVo } from "./table-id.vo"
 import { TableNameVo } from "./table-name.vo"
 import { TableDo } from "./table.do"
-import type { IConditionGroup, ICreateFormDTO } from "./modules"
-import type { ZodUndefined } from "@undb/zod"
 
 export interface ITableBuilder {
   reset(): void
@@ -25,6 +26,7 @@ export interface ITableBuilder {
   createViews(): ITableBuilder
   createForms(dto: ICreateFormDTO[]): ITableBuilder
   setViews(dto: IViewsDTO): ITableBuilder
+  setForms(dto?: IFormsDTO): ITableBuilder
   build(): TableDo
 }
 
@@ -65,12 +67,17 @@ export class TableBuilder implements ITableBuilder {
     return this
   }
 
+  setViews(dto: IViewsDTO): ITableBuilder {
+    new TableViewsSpecification(Views.fromJSON(dto)).mutate(this.table)
+    return this
+  }
+
   createForms(dto: ICreateFormDTO[]): ITableBuilder {
     throw new Error("Method not implemented.")
   }
 
-  setViews(dto: IViewsDTO): ITableBuilder {
-    new TableViewsSpecification(Views.fromJSON(dto)).mutate(this.table)
+  setForms(dto: IFormsDTO = []): ITableBuilder {
+    new TableFormsSpecification(FormsVO.fromJSON(dto)).mutate(this.table)
     return this
   }
 
@@ -100,7 +107,13 @@ export class TableCreator {
   }
 
   fromJSON(dto: ITableDTO): TableDo {
-    return this.builder.setId(dto.id).setName(dto.name).setSchema(dto.schema).setViews(dto.views).build()
+    return this.builder
+      .setId(dto.id)
+      .setName(dto.name)
+      .setSchema(dto.schema)
+      .setViews(dto.views)
+      .setForms(dto.forms)
+      .build()
   }
 }
 
