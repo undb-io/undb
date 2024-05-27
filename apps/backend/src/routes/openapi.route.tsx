@@ -1,26 +1,20 @@
-import Elysia, { t } from "elysia"
-import { createOpenApiSpec } from "@undb/openapi"
-import { inject, singleton } from "@undb/di"
-import {
-  type ITableRepository,
-  injectTableRepository,
-  TableIdVo,
-  type IRecordReadableDTO,
-  injectRecordRepository,
-  type IRecordRepository,
-} from "@undb/table"
-import { None, PaginatedDTO, type IQueryBus } from "@undb/domain"
-import { QueryBus } from "@undb/cqrs"
-import {
-  GetReadableRecordByIdQuery,
-  GetReadableRecordsQuery,
-  GetRecordByIdQuery,
-  IGetReadableRecordByIdOutput,
-  IGetRecordByIdOutput,
-} from "@undb/queries"
-import { createLogger } from "@undb/logger"
+import { DeleteRecordCommand } from "@undb/commands"
 import { executionContext } from "@undb/context/server"
-import { GetReadableRecordByIdHandler } from "@undb/query-handlers/src/handlers/get-readable-record-by-id.query-handler"
+import { CommandBus, QueryBus } from "@undb/cqrs"
+import { inject, singleton } from "@undb/di"
+import { type ICommandBus, None, PaginatedDTO, type IQueryBus } from "@undb/domain"
+import { createLogger } from "@undb/logger"
+import { createOpenApiSpec } from "@undb/openapi"
+import { GetReadableRecordByIdQuery, GetReadableRecordsQuery } from "@undb/queries"
+import {
+  TableIdVo,
+  injectRecordRepository,
+  injectTableRepository,
+  type IRecordReadableDTO,
+  type IRecordRepository,
+  type ITableRepository,
+} from "@undb/table"
+import Elysia, { t } from "elysia"
 
 @singleton()
 export class OpenAPI {
@@ -34,6 +28,9 @@ export class OpenAPI {
 
     @inject(QueryBus)
     private readonly queryBus: IQueryBus,
+
+    @inject(CommandBus)
+    private readonly commandBus: ICommandBus,
   ) {}
 
   public route() {
@@ -112,6 +109,15 @@ export class OpenAPI {
           return {
             data: result,
           }
+        },
+        { params: t.Object({ tableId: t.String(), recordId: t.String() }) },
+      )
+      .delete(
+        "/api/tables/:tableId/records/:recordId",
+        async (ctx) => {
+          return this.commandBus.execute(
+            new DeleteRecordCommand({ tableId: ctx.params.tableId, id: ctx.params.recordId }),
+          )
         },
         { params: t.Object({ tableId: t.String(), recordId: t.String() }) },
       )

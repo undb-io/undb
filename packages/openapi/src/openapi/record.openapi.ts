@@ -67,3 +67,23 @@ export const getRecordById = (table: TableDo, recordSchema: ZodTypeAny): RouteCo
     },
   }
 }
+
+export const deleteRecordById = (table: TableDo): RouteConfig => {
+  return {
+    method: "delete",
+    path: `/tables/${table.id.value}/records/{recordId}`,
+    description: `delete ${table.name.value} record by id`,
+    summary: `delete ${table.name.value} record by id`,
+    tags: [RECORD_COMPONENT],
+    request: {
+      params: z.object({
+        recordId: recordId,
+      }),
+    },
+    responses: {
+      200: {
+        description: "record data",
+      },
+    },
+  }
+}
