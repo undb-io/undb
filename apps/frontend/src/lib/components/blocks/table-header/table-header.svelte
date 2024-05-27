@@ -106,7 +106,7 @@
         }
         tab.set(value === "data" ? "" : value ?? "")
       }}
-      class="w-[200px] -translate-x-1/2"
+      class="w-[200px] -translate-x-full"
     >
       <Tabs.List>
         <Tabs.Trigger value="data">

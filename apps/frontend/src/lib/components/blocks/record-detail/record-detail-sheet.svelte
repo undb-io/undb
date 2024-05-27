@@ -60,7 +60,7 @@
     </div>
 
     <Sheet.Footer>
-      <Button variant="outline" type="button" on:click={() => ($r = "")}>Cancel</Button>
+      <Button variant="outline" type="button" on:click={() => ($r = null)}>Cancel</Button>
       <Button type="submit" form="updateRecord" {disabled}>Update</Button>
     </Sheet.Footer>
   </Sheet.Content>

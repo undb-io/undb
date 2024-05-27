@@ -39,7 +39,7 @@
     mutationFn: trpc.record.update.mutate,
     onSuccess: async () => {
       toast.success("Record updated")
-      $r = ""
+      $r = null
       reset({})
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
       await client.invalidateQueries({ queryKey: [record.id.value, "get"] })

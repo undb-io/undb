@@ -22,7 +22,14 @@ export class FormFieldVO extends ValueObject<IFormField> {
   }
 
   public get hidden() {
-    return this.props.hidden
+    if (this.required) {
+      return false
+    }
+    return this.props.hidden ?? false
+  }
+
+  public set hidden(value: boolean) {
+    this.props.hidden = value
   }
 
   public get required() {

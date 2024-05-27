@@ -56,6 +56,7 @@
   "type": "module",
   "dependencies": {
     "@internationalized/date": "^3.5.4",
+    "@svelte-put/clickoutside": "^3.0.2",
     "@tanstack/svelte-query": "^5.37.1",
     "@trpc/client": "^10.45.2",
     "@undb/zod": "workspace:*",

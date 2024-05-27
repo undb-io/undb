@@ -1,7 +1,9 @@
 import { RecordCreatedEvent } from "./record-created.event"
+import { RecordDeletedEvent } from "./record-deleted.event"
 
 export * from "./record-created.event"
+export * from "./record-deleted.event"
 
-export type IRecordEvent = RecordCreatedEvent
+export type IRecordEvent = RecordDeletedEvent | RecordCreatedEvent
 
-export const RecordEvents = [RecordCreatedEvent]
+export const RecordEvents = [RecordDeletedEvent, RecordCreatedEvent]

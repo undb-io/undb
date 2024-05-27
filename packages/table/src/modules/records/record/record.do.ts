@@ -4,7 +4,7 @@ import { ID_TYPE, type FieldValue } from "../../schema"
 import { FieldIdVo, type FieldId } from "../../schema/fields/field-id.vo"
 import { FieldValueFactory } from "../../schema/fields/field-value.factory"
 import type { SchemaMap } from "../../schema/schema.type"
-import { RecordCreatedEvent, type IRecordEvent } from "../events"
+import { RecordDeletedEvent, type IRecordEvent } from "../events"
 import type { ICreateRecordDTO, IRecordDTO, IUpdateRecordDTO } from "./dto"
 import { RecordIdVO, type RecordId } from "./record-id.vo"
 import { RecordValuesVO } from "./record-values.vo"
@@ -21,7 +21,7 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
   static create(table: TableDo, dto: ICreateRecordDTO) {
     const record = new RecordDO(RecordIdVO.create(dto.id), RecordValuesVO.create(table, dto.values))
 
-    const event = new RecordCreatedEvent(table, record)
+    const event = new RecordDeletedEvent(table, record)
     record.addDomainEvent(event)
 
     return record
@@ -73,7 +73,13 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
     if (spec.isSome()) {
       spec.unwrap().mutate(this)
     }
+
     return spec
+  }
+
+  delete(table: TableDo) {
+    const event = new RecordDeletedEvent(table, this)
+    this.addDomainEvent(event)
   }
 
   toReadable(table: TableDo) {

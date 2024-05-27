@@ -13,8 +13,11 @@ import { CreatedAtField } from "./fields/variants/created-at-field"
 import type { SchemaMap } from "./schema.type"
 
 export class Schema extends ValueObject<Field[]> {
+  public fieldMapById: SchemaMap
+
   private constructor(public fields: Field[]) {
     super(fields)
+    this.fieldMapById = new Map(this.fields.map((field) => [field.id.value, field]))
   }
 
   static create(dto: ICreateSchemaDTO): Schema {
@@ -46,10 +49,6 @@ export class Schema extends ValueObject<Field[]> {
   createField(field: Field) {
     this.fields = [...this.fields, field]
     return this
-  }
-
-  get fieldMapById(): SchemaMap {
-    return new Map(this.fields.map((field) => [field.id.value, field]))
   }
 
   get systemFields(): SystemField[] {

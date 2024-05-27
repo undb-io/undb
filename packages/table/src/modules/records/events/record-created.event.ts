@@ -6,13 +6,13 @@ import { RecordDO, recordId, recordValues } from "../record"
 
 export const RECORD_CREATED_EVENT = "record.created" as const
 
-export const recordCreatedEent = z.object({
+export const recordCreatedEvent = z.object({
   id: recordId,
   tableId: tableId,
   values: recordValues,
 })
 
-export type IRecordCreatedEvent = z.infer<typeof recordCreatedEent>
+export type IRecordCreatedEvent = z.infer<typeof recordCreatedEvent>
 
 export class RecordCreatedEvent extends BaseEvent<IRecordCreatedEvent, typeof RECORD_CREATED_EVENT> {
   name = RECORD_CREATED_EVENT

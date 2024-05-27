@@ -4,7 +4,10 @@
   import { Button } from "$lib/components/ui/button"
   import { copyToClipboard } from "@svelte-put/copy"
   import { toast } from "svelte-sonner"
-  import { confirmDeleteRecordOpen } from "$lib/store/record.store"
+  import { DELETE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
+  import { queryParam } from "sveltekit-search-params"
+
+  const deleteRecordId = queryParam("deleteRecordId")
 
   export let id: string
 
@@ -28,7 +31,10 @@
     </DropdownMenu.Group>
     <DropdownMenu.Separator />
     <DropdownMenu.Item
-      on:click={() => ($confirmDeleteRecordOpen = true)}
+      on:click={() => {
+        toggleModal(DELETE_RECORD_MODAL)
+        $deleteRecordId = id
+      }}
       class="text-red-500 data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500"
     >
       Delete Record

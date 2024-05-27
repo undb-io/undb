@@ -77,4 +77,12 @@ export class RecordRepository implements IRecordRepository {
 
     await this.outboxService.save(record)
   }
+
+  @transactional()
+  async deleteOneById(table: TableDo, record: RecordDO): Promise<void> {
+    const t = new UnderlyingTable(table)
+    // TODO: use deleted at
+    await this.qb.deleteFrom(t.name).where(ID_TYPE, "=", record.id.value).executeTakeFirst()
+    await this.outboxService.save(record)
+  }
 }
