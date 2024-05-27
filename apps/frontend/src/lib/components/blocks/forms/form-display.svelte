@@ -5,6 +5,7 @@
   import FormFieldOptions from "./form-field-options.svelte"
   import { cn } from "$lib/utils"
   import { clickoutside } from "@svelte-put/clickoutside"
+  import * as Collapsible from "$lib/components/ui/collapsible"
 
   const table = getTable()
 
@@ -17,9 +18,14 @@
   $: formFields = form.fields.props
 </script>
 
-<div class="h-full w-full p-6">
-  <div class="mx-auto max-w-[600px] space-y-2" use:clickoutside on:clickoutside={() => (selectedFieldId = undefined)}>
-    <h2 class="px-4 text-4xl font-extrabold tracking-tight">
+<div class="h-full w-full bg-gray-50 p-6">
+  <div
+    class="bg-background mx-auto max-w-[600px] space-y-2 rounded-md p-4"
+    data-form-id={form.id}
+    use:clickoutside
+    on:clickoutside={() => (selectedFieldId = undefined)}
+  >
+    <h2 class="px-4 text-4xl font-extrabold tracking-tight" contenteditable="true">
       {form.name}
     </h2>
     <div class="space-y-2">
@@ -29,13 +35,19 @@
           {@const isSelected = selectedFieldId === field.id.value}
           <label class="block">
             <input type="radio" class="hidden" bind:group={selectedFieldId} value={field.id.value} />
-            <div
+            <Collapsible.Root
+              open={isSelected}
+              onOpenChange={(open) => {
+                if (!open) {
+                  selectedFieldId = undefined
+                }
+              }}
               class={cn(
                 "space-y-2 rounded-md border-2 border-transparent p-0 transition-all",
                 isSelected ? "border-neutral-200 shadow-sm" : "hover:bg-muted/50",
               )}
             >
-              <div class="space-y-2 p-4">
+              <div class="cursor-pointer space-y-2 p-4">
                 <div class="flex items-center gap-2 text-xl font-semibold">
                   {field.name.value}
                   {#if formField.getRequired(field)}
@@ -44,10 +56,21 @@
                 </div>
                 <FieldControl {field} value={undefined} class="bg-background" />
               </div>
+              <Collapsible.Content>
+                <FormFieldOptions {field} bind:formField />
+              </Collapsible.Content>
+            </Collapsible.Root>
+
+            <!-- <div
+              class={cn(
+                "space-y-2 rounded-md border-2 border-transparent p-0 transition-all",
+                isSelected ? "border-neutral-200 shadow-sm" : "hover:bg-muted/50",
+              )}
+            >
               {#if isSelected}
                 <FormFieldOptions {field} bind:formField />
               {/if}
-            </div>
+            </div> -->
           </label>
         {/if}
       {/each}

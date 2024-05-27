@@ -22,6 +22,9 @@ interface IForm {
 }
 
 export class FormVO extends ValueObject<IForm> {
+  public get id() {
+    return this.props.id.value
+  }
   public get name() {
     return this.props.name.value
   }

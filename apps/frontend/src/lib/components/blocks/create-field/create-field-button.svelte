@@ -4,7 +4,7 @@
   import { BetweenVerticalStartIcon } from "lucide-svelte"
 </script>
 
-<Button size="sm" variant="outline" on:click={() => toggleModal(CREATE_FIELD_MODAL)}>
+<Button size="sm" variant="outline" on:click={() => toggleModal(CREATE_FIELD_MODAL)} {...$$restProps}>
   <BetweenVerticalStartIcon class="mr-1 h-4 w-4" />
   Create Field
 </Button>

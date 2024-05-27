@@ -2,7 +2,7 @@
   import type { FormFieldVO, Field } from "@undb/table"
   import { Switch } from "$lib/components/ui/switch"
   import { Label } from "$lib/components/ui/label"
-  import { Trash2Icon, TrashIcon } from "lucide-svelte"
+  import { Trash2Icon } from "lucide-svelte"
 
   export let formField: FormFieldVO
   export let field: Field

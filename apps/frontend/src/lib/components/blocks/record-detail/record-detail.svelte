@@ -49,6 +49,7 @@
     },
   })
 
+  $: record, reset({ newState: record.flatten() })
   const values = record.flatten()
 
   const updateRecord = (values: any) => {

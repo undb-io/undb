@@ -3,6 +3,7 @@
   import type { FormVO } from "@undb/table"
   import FieldIcon from "../field-icon/field-icon.svelte"
   import { Switch } from "$lib/components/ui/switch"
+  import CreateFieldButton from "../create-field/create-field-button.svelte"
 
   const table = getTable()
 
@@ -11,7 +12,7 @@
   export let form: FormVO
 </script>
 
-<div class="h-full w-full px-8 py-6">
+<div class="h-full w-full space-y-3 px-8 py-6">
   <div class="divide-y rounded-sm border">
     {#each form.fields.props as formField}
       {@const field = schema.get(formField.fieldId)}
@@ -33,4 +34,6 @@
       {/if}
     {/each}
   </div>
+
+  <CreateFieldButton class="w-full" />
 </div>
