@@ -29,6 +29,10 @@ export class FormVO extends ValueObject<IForm> {
     return this.props.name.value
   }
 
+  public set name(name: string) {
+    this.props.name = new FormNameVo(name)
+  }
+
   public get fields() {
     return this.props.fields
   }

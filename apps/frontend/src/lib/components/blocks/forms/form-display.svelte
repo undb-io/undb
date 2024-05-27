@@ -3,19 +3,36 @@
   import type { FormVO } from "@undb/table"
   import FieldControl from "../field-control/field-control.svelte"
   import FormFieldOptions from "./form-field-options.svelte"
+  import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
   import { cn } from "$lib/utils"
   import { clickoutside } from "@svelte-put/clickoutside"
   import * as Collapsible from "$lib/components/ui/collapsible"
+  import { createMutation } from "@tanstack/svelte-query"
+  import { trpc } from "$lib/trpc/client"
+  import { tick } from "svelte"
+  import { queryParam } from "sveltekit-search-params"
+
+  const selectedFieldId = queryParam("formField")
 
   const table = getTable()
 
   $: schema = $table.schema.fieldMapById
 
-  let selectedFieldId: string | undefined = undefined
-
   export let form: FormVO
 
   $: formFields = form.fields.props
+
+  const setFormMutation = createMutation({
+    mutationFn: trpc.table.form.set.mutate,
+  })
+
+  const setForm = async () => {
+    await tick()
+    $setFormMutation.mutate({
+      tableId: $table.id.value,
+      form: form.toJSON(),
+    })
+  }
 </script>
 
 <div class="h-full w-full bg-gray-50 p-6">
@@ -23,23 +40,28 @@
     class="bg-background mx-auto max-w-[600px] space-y-2 rounded-md p-4"
     data-form-id={form.id}
     use:clickoutside
-    on:clickoutside={() => (selectedFieldId = undefined)}
+    on:clickoutside={() => ($selectedFieldId = null)}
   >
-    <h2 class="px-4 text-4xl font-extrabold tracking-tight" contenteditable="true">
+    <h2
+      class="px-4 text-4xl font-extrabold tracking-tight"
+      contenteditable="true"
+      bind:innerHTML={form.name}
+      on:blur={setForm}
+    >
       {form.name}
     </h2>
     <div class="space-y-2">
       {#each formFields as formField}
         {@const field = schema.get(formField.fieldId)}
         {#if field}
-          {@const isSelected = selectedFieldId === field.id.value}
+          {@const isSelected = $selectedFieldId === field.id.value}
           <label class="block">
-            <input type="radio" class="hidden" bind:group={selectedFieldId} value={field.id.value} />
+            <input type="radio" class="hidden" bind:group={$selectedFieldId} value={field.id.value} />
             <Collapsible.Root
               open={isSelected}
               onOpenChange={(open) => {
                 if (!open) {
-                  selectedFieldId = undefined
+                  $selectedFieldId = null
                 }
               }}
               class={cn(
@@ -49,7 +71,10 @@
             >
               <div class="cursor-pointer space-y-2 p-4">
                 <div class="flex items-center gap-2 text-xl font-semibold">
-                  {field.name.value}
+                  <FieldIcon type={field.type} class="h-5 w-5" />
+                  <span>
+                    {field.name.value}
+                  </span>
                   {#if formField.getRequired(field)}
                     <span class="text-red-500">*</span>
                   {/if}
@@ -60,17 +85,6 @@
                 <FormFieldOptions {field} bind:formField bind:form />
               </Collapsible.Content>
             </Collapsible.Root>
-
-            <!-- <div
-              class={cn(
-                "space-y-2 rounded-md border-2 border-transparent p-0 transition-all",
-                isSelected ? "border-neutral-200 shadow-sm" : "hover:bg-muted/50",
-              )}
-            >
-              {#if isSelected}
-                <FormFieldOptions {field} bind:formField />
-              {/if}
-            </div> -->
           </label>
         {/if}
       {/each}

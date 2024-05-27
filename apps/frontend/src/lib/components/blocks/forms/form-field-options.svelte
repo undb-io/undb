@@ -8,6 +8,7 @@
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
   import { tick } from "svelte"
+  import { EyeClosed, EyeOpen } from "svelte-radix"
 
   const table = getTable()
 
@@ -42,8 +43,19 @@
       <span>required</span>
     </Label>
 
-    <button>
-      <Trash2Icon class="text-muted-foreground h-4 w-4" />
-    </button>
+    <label class="cursor-pointer">
+      <input
+        type="checkbox"
+        class="hidden"
+        bind:checked={formField.hidden}
+        disabled={formField.required}
+        on:change={setForm}
+      />
+      {#if formField.hidden}
+        <EyeOpen class="h-4 w-4" />
+      {:else}
+        <EyeClosed class="h-4 w-4" />
+      {/if}
+    </label>
   </div>
 </div>

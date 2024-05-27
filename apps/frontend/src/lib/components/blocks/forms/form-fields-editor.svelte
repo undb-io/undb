@@ -4,12 +4,32 @@
   import FieldIcon from "../field-icon/field-icon.svelte"
   import { Switch } from "$lib/components/ui/switch"
   import CreateFieldButton from "../create-field/create-field-button.svelte"
+  import { GripVerticalIcon } from "lucide-svelte"
+  import { queryParam } from "sveltekit-search-params"
+  import { createMutation } from "@tanstack/svelte-query"
+  import { trpc } from "$lib/trpc/client"
+  import { tick } from "svelte"
+  import { EyeClosed, EyeOpen } from "svelte-radix"
+
+  const selectedFieldId = queryParam("formField")
 
   const table = getTable()
 
   $: schema = $table.schema.fieldMapById
 
   export let form: FormVO
+
+  const setFormMutation = createMutation({
+    mutationFn: trpc.table.form.set.mutate,
+  })
+
+  const setForm = async () => {
+    await tick()
+    $setFormMutation.mutate({
+      tableId: $table.id.value,
+      form: form.toJSON(),
+    })
+  }
 </script>
 
 <div class="h-full w-full space-y-3 px-8 py-6">
@@ -18,8 +38,15 @@
       {@const field = schema.get(formField.fieldId)}
       {#if field}
         {@const disabled = formField.getRequired(field)}
-        <div class="flex items-center justify-between p-2">
+        <button
+          class="flex w-full items-center justify-between text-pretty p-2 text-sm"
+          on:click={(e) => {
+            e.stopPropagation()
+            $selectedFieldId = field.id.value
+          }}
+        >
           <div class="flex items-center gap-2">
+            <GripVerticalIcon class="h-3 w-3" />
             <FieldIcon class="text-muted-foreground h-4 w-4" type={field.type} />
             <span>{field.name.value}</span>
             {#if formField.getRequired(field)}
@@ -28,9 +55,23 @@
           </div>
 
           <div class="flex items-center gap-2">
-            <Switch checked={!formField.hidden} {disabled} />
+            <Switch bind:checked={formField.required} on:click={setForm} disabled={field.required} />
+            <label class="cursor-pointer">
+              <input
+                type="checkbox"
+                class="hidden"
+                bind:checked={formField.hidden}
+                disabled={formField.required}
+                on:change={setForm}
+              />
+              {#if formField.hidden}
+                <EyeOpen class="h-4 w-4" />
+              {:else}
+                <EyeClosed class="h-4 w-4" />
+              {/if}
+            </label>
           </div>
-        </div>
+        </button>
       {/if}
     {/each}
   </div>
