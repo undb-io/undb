@@ -1,9 +1,12 @@
 <script lang="ts">
+  import * as ContextMenu from "$lib/components/ui/context-menu"
   import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
   import { derived, writable } from "svelte/store"
   import GridViewCheckbox from "./grid-view-checkbox.svelte"
   import * as Table from "$lib/components/ui/table/index.js"
   import { addResizedColumns, addSelectedRows } from "svelte-headless-table/plugins"
+  import { copyToClipboard } from "@svelte-put/copy"
+  import { toast } from "svelte-sonner"
   import { cn } from "$lib/utils.js"
   import { Records, type IRecordsDTO } from "@undb/table"
   import { createQuery } from "@tanstack/svelte-query"
@@ -22,11 +25,19 @@
   import { isFunction } from "radash"
   import GridViewFooter from "./grid-view-footer.svelte"
   import { page } from "$app/stores"
+  import { DELETE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import type { LayoutData } from "../../../../routes/(authed)/t/[tableId]/$types"
 
   const t = getTable()
 
   const q = queryParam("q")
+  const r = queryParam("r")
+  const deleteRecordId = queryParam("deleteRecordId")
+
+  const copy = async (id: string) => {
+    await copyToClipboard(id)
+    toast.success("Copied record ID to clipboard")
+  }
 
   $: pageData = $page.data as LayoutData
   $: tableStore = pageData.tableStore
@@ -180,44 +191,62 @@
       </Table.Header>
       <Table.Body {...$tableBodyAttrs} class="flex-1">
         {#each $pageRows as row (row.id)}
+          {@const recordId = row.original.id}
           <Subscribe rowAttrs={row.attrs()} let:rowAttrs>
-            <Table.Row
-              {...rowAttrs}
-              data-state={$selectedDataIds[row.id] && "selected"}
-              class="text-foreground group text-xs transition-none"
-            >
-              {@const record = dos.get(row.original.id)}
-              {@const match = colorSpec && record ? record.match(colorSpec) : false}
-              {@const condition =
-                match && record ? view.color.into(undefined)?.getMatchedFieldConditions($t, record)[0] : undefined}
-              {#each row.cells as cell, idx (cell.id)}
-                {@const hasFilter = hasFilterFieldIds?.has(cell.id) ?? false}
-                <Subscribe attrs={cell.attrs()} let:attrs>
-                  <Table.Cell
-                    class={cn(
-                      "border-border relative border-r p-0 [&:has([role=checkbox])]:pl-3",
-                      (idx === 0 || idx === 1) && "border-r-0",
-                      hasFilter && "bg-orange-50",
-                    )}
-                    {...attrs}
-                  >
-                    {#if idx === 0 && match && condition && "border-l-4"}
-                      <div
-                        class={cn("absolute bottom-0 left-0 top-0 h-full w-1", getColor(condition.option.color))}
-                      ></div>
-                      <!-- content here -->
-                    {/if}
-                    {#if cell.id === "amount"}
-                      <div class="text-right font-medium">
-                        <Render of={cell.render()} />
-                      </div>
-                    {:else}
-                      <Render of={cell.render()} />
-                    {/if}
-                  </Table.Cell>
-                </Subscribe>
-              {/each}
-            </Table.Row>
+            <ContextMenu.Root>
+              <ContextMenu.Trigger>
+                <Table.Row
+                  {...rowAttrs}
+                  data-state={$selectedDataIds[row.id] && "selected"}
+                  class="text-foreground group text-xs transition-none"
+                >
+                  {@const record = dos.get(recordId)}
+                  {@const match = colorSpec && record ? record.match(colorSpec) : false}
+                  {@const condition =
+                    match && record ? view.color.into(undefined)?.getMatchedFieldConditions($t, record)[0] : undefined}
+                  {#each row.cells as cell, idx (cell.id)}
+                    {@const hasFilter = hasFilterFieldIds?.has(cell.id) ?? false}
+                    <Subscribe attrs={cell.attrs()} let:attrs>
+                      <Table.Cell
+                        class={cn(
+                          "border-border relative border-r p-0 [&:has([role=checkbox])]:pl-3",
+                          (idx === 0 || idx === 1) && "border-r-0",
+                          hasFilter && "bg-orange-50",
+                        )}
+                        {...attrs}
+                      >
+                        {#if idx === 0 && match && condition && "border-l-4"}
+                          <div
+                            class={cn("absolute bottom-0 left-0 top-0 h-full w-1", getColor(condition.option.color))}
+                          ></div>
+                          <!-- content here -->
+                        {/if}
+                        {#if cell.id === "amount"}
+                          <div class="text-right font-medium">
+                            <Render of={cell.render()} />
+                          </div>
+                        {:else}
+                          <Render of={cell.render()} />
+                        {/if}
+                      </Table.Cell>
+                    </Subscribe>
+                  {/each}
+                </Table.Row>
+              </ContextMenu.Trigger>
+              <ContextMenu.Content>
+                <ContextMenu.Item on:click={() => ($r = recordId)}>View record details</ContextMenu.Item>
+                <ContextMenu.Item on:click={() => copy(recordId)}>Copy record ID</ContextMenu.Item>
+                <ContextMenu.Item
+                  on:click={() => {
+                    toggleModal(DELETE_RECORD_MODAL)
+                    $deleteRecordId = recordId
+                  }}
+                  class="text-red-500 data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500"
+                >
+                  Delete Record
+                </ContextMenu.Item>
+              </ContextMenu.Content>
+            </ContextMenu.Root>
           </Subscribe>
         {/each}
       </Table.Body>

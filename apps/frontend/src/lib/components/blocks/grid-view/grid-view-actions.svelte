@@ -8,6 +8,7 @@
   import { queryParam } from "sveltekit-search-params"
 
   const deleteRecordId = queryParam("deleteRecordId")
+  const r = queryParam("r")
 
   export let id: string
 
@@ -26,7 +27,8 @@
   </DropdownMenu.Trigger>
   <DropdownMenu.Content>
     <DropdownMenu.Group>
-      <DropdownMenu.Label>Actions</DropdownMenu.Label>
+      <DropdownMenu.Label>Record</DropdownMenu.Label>
+      <DropdownMenu.Item on:click={() => ($r = id)}>View record details</DropdownMenu.Item>
       <DropdownMenu.Item on:click={copy}>Copy record ID</DropdownMenu.Item>
     </DropdownMenu.Group>
     <DropdownMenu.Separator />
@@ -39,6 +41,5 @@
     >
       Delete Record
     </DropdownMenu.Item>
-    <DropdownMenu.Item>View payment details</DropdownMenu.Item>
   </DropdownMenu.Content>
 </DropdownMenu.Root>
