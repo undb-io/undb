@@ -10,6 +10,7 @@ import type { ICreateFormDTO } from "../dto"
 export const formDTO = z.object({
   id: formId,
   name: formName,
+  description: z.string().optional(),
   fields: formField.array(),
 })
 
@@ -17,6 +18,7 @@ export type IFormDTO = z.infer<typeof formDTO>
 
 interface IForm {
   id: FormId
+  description?: string
   name: FormNameVo
   fields: FormFieldsVO
 }
@@ -25,6 +27,15 @@ export class FormVO extends ValueObject<IForm> {
   public get id() {
     return this.props.id.value
   }
+
+  public get description() {
+    return this.props.description
+  }
+
+  public set description(description: string | undefined) {
+    this.props.description = description
+  }
+
   public get name() {
     return this.props.name.value
   }
@@ -49,6 +60,7 @@ export class FormVO extends ValueObject<IForm> {
     return new FormVO({
       id: new FormIdVO(dto.id),
       name: new FormNameVo(dto.name),
+      description: dto.description,
       fields: new FormFieldsVO(dto.fields.map((field) => new FormFieldVO(field))),
     })
   }
@@ -58,6 +70,7 @@ export class FormVO extends ValueObject<IForm> {
     return {
       id: props.id.value,
       name: props.name.value,
+      description: props.description,
       fields: props.fields.toJSON(),
     }
   }

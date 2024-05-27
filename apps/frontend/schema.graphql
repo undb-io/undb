@@ -15,6 +15,7 @@ enum FieldType {
 }
 
 type Form {
+  description: String
   fields: JSON
   id: ID!
   name: String!

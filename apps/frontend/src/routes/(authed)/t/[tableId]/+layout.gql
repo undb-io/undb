@@ -22,6 +22,7 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
     forms {
       id
       name
+      description
       fields
     }
 

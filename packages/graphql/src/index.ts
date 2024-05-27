@@ -55,6 +55,7 @@ export class Graphql {
       type Form {
         id: ID!
         name: String!
+        description: String
         fields: JSON
       }
 

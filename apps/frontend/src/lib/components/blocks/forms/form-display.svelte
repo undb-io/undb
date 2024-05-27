@@ -11,6 +11,8 @@
   import { trpc } from "$lib/trpc/client"
   import { tick } from "svelte"
   import { queryParam } from "sveltekit-search-params"
+  import { Input } from "$lib/components/ui/input"
+  import { Label } from "$lib/components/ui/label"
 
   const selectedFieldId = queryParam("formField")
 
@@ -50,6 +52,12 @@
     >
       {form.name}
     </h2>
+
+    <div class="px-4">
+      <Label>Description</Label>
+      <Input class="text-sm" bind:value={form.description} on:change={setForm}></Input>
+    </div>
+
     <div class="space-y-2">
       {#each formFields as formField}
         {@const field = schema.get(formField.fieldId)}
@@ -70,8 +78,8 @@
               )}
             >
               <div class="cursor-pointer space-y-2 p-4">
-                <div class="flex items-center gap-2 text-xl font-semibold">
-                  <FieldIcon type={field.type} class="h-5 w-5" />
+                <div class="text-md flex items-center gap-2 font-medium">
+                  <FieldIcon type={field.type} class="h-4 w-4" />
                   <span>
                     {field.name.value}
                   </span>
