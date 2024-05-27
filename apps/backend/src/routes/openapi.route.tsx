@@ -1,4 +1,4 @@
-import { DeleteRecordCommand } from "@undb/commands"
+import { DeleteRecordCommand, DuplicateRecordCommand } from "@undb/commands"
 import { executionContext } from "@undb/context/server"
 import { CommandBus, QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
@@ -109,6 +109,15 @@ export class OpenAPI {
           return {
             data: result,
           }
+        },
+        { params: t.Object({ tableId: t.String(), recordId: t.String() }) },
+      )
+      .post(
+        "/api/tables/:tableId/records/:recordId/duplicate",
+        async (ctx) => {
+          return this.commandBus.execute(
+            new DuplicateRecordCommand({ tableId: ctx.params.tableId, id: ctx.params.recordId }),
+          )
         },
         { params: t.Object({ tableId: t.String(), recordId: t.String() }) },
       )

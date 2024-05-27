@@ -68,6 +68,33 @@ export const getRecordById = (table: TableDo, recordSchema: ZodTypeAny): RouteCo
   }
 }
 
+export const duplicateRecordById = (table: TableDo): RouteConfig => {
+  return {
+    method: "post",
+    path: `/tables/${table.id.value}/records/{recordId}/duplicate`,
+    description: `Duplicate ${table.name.value} record by id`,
+    summary: `Duplicate ${table.name.value} record by id`,
+    tags: [RECORD_COMPONENT],
+    request: {
+      params: z.object({
+        recordId: recordId,
+      }),
+    },
+    responses: {
+      200: {
+        description: "record data",
+        content: {
+          "application/json": {
+            schema: z.object({
+              recordId: recordId,
+            }),
+          },
+        },
+      },
+    },
+  }
+}
+
 export const deleteRecordById = (table: TableDo): RouteConfig => {
   return {
     method: "delete",

@@ -14,5 +14,5 @@ export async function duplicateRecordMethod(
   const duplicated = record.duplicate(table)
   await this.repo.insert(table, duplicated)
 
-  return record
+  return duplicated
 }
