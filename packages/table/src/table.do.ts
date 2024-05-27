@@ -14,6 +14,7 @@ import type { TableId } from "./table-id.vo"
 import type { TableNameVo } from "./table-name.vo"
 import type { FormsVO } from "./modules/forms/forms.vo"
 import { createFormMethod } from "./methods/create-form.method"
+import { setTableForm } from "./methods/set-table-form.method"
 
 export class TableDo extends AggregateRoot<ITableEvents> {
   public id!: TableId
@@ -30,6 +31,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   $setViewAggregate = setViewAggregate
   $createField = createFieldMethod
   $createForm = createFormMethod
+  $setTableForm = setTableForm
 
   getOrderedFields() {
     return this.schema.fields

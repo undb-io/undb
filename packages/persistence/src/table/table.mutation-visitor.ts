@@ -17,6 +17,7 @@ import type { SQLiteUpdateSetSource } from "drizzle-orm/sqlite-core"
 import type { tables } from "../tables"
 import type {
   TableFormsSpecification,
+  WithFormSpecification,
   WithNewFormSpecification,
 } from "@undb/table/src/specifications/table-forms.specification"
 
@@ -30,6 +31,9 @@ export class TableMutationVisitor implements ITableSpecVisitor {
     return this.#updates
   }
 
+  withForm(views: WithFormSpecification): void {
+    this.#updates = { ...this.#updates, forms: this.table.forms?.toJSON() }
+  }
   withForms(forms: TableFormsSpecification): void {
     this.#updates = { ...this.#updates, forms: this.table.forms?.toJSON() }
   }

@@ -57,7 +57,7 @@
                 <FieldControl {field} value={undefined} class="bg-background" />
               </div>
               <Collapsible.Content>
-                <FormFieldOptions {field} bind:formField />
+                <FormFieldOptions {field} bind:formField bind:form />
               </Collapsible.Content>
             </Collapsible.Root>
 

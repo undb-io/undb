@@ -17,6 +17,7 @@ import type { UnderlyingTable } from "./underlying-table"
 import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
 import type {
   TableFormsSpecification,
+  WithFormSpecification,
   WithNewFormSpecification,
 } from "@undb/table/src/specifications/table-forms.specification"
 
@@ -27,6 +28,7 @@ export class UnderlyingTableSpecVisitor<TB extends CreateTableBuilder<any, any> 
     public readonly table: UnderlyingTable,
     public tb: TB,
   ) {}
+  withForm(views: WithFormSpecification): void {}
   withForms(views: TableFormsSpecification): void {}
   withNewForm(views: WithNewFormSpecification): void {}
   withId(id: TableIdSpecification): void {}

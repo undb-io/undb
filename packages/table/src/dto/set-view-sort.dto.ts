@@ -1,12 +1,10 @@
 import { z } from "@undb/zod"
-import { viewId } from "../modules"
-import { viewSort } from "../modules/views/view/view-sort"
+import { formDTO } from "../modules"
 import { tableId } from "../table-id.vo"
 
-export const setViewSortDTO = z.object({
+export const setTableFormDTO = z.object({
   tableId: tableId,
-  viewId: viewId.optional(),
-  sort: viewSort,
+  form: formDTO,
 })
 
-export type ISetViewSortDTO = z.infer<typeof setViewSortDTO>
+export type ISetTableFormDTO = z.infer<typeof setTableFormDTO>

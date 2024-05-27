@@ -1,4 +1,5 @@
 import type { FieldCreatedEvent } from "./field-created.event"
+import type { SetTableFormEvent } from "./set-table-form.event"
 import type { SetViewAggregateEvent } from "./set-view-aggregate.event"
 import type { SetViewColorEvent } from "./set-view-color.event"
 import type { SetViewFilterEvent } from "./set-view-filter.event"
@@ -12,6 +13,7 @@ export * from "./set-view-color.event"
 export * from "./set-view-filter.event"
 export * from "./set-view-sort.event"
 export * from "./table-created.event"
+export * from "./set-table-form.event"
 
 export type ITableEvents =
   | SetViewFilterEvent
@@ -20,3 +22,4 @@ export type ITableEvents =
   | SetViewSortEvent
   | SetViewAggregateEvent
   | FieldCreatedEvent
+  | SetTableFormEvent

@@ -18,10 +18,14 @@ import { AbstractDBFilterVisitor } from "../abstract-db.visitor"
 import { tables } from "../tables"
 import type {
   TableFormsSpecification,
+  WithFormSpecification,
   WithNewFormSpecification,
 } from "@undb/table/src/specifications/table-forms.specification"
 
 export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> implements ITableSpecVisitor {
+  withForm(views: WithFormSpecification): void {
+    throw new Error("Method not implemented.")
+  }
   withNewField(schema: WithNewFieldSpecification): void {
     throw new Error("Method not implemented.")
   }

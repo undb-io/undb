@@ -1,6 +1,7 @@
 import { ValueObject } from "@undb/domain"
 import type { IFormsDTO } from "./dto"
-import { FormVO } from "./form/form.vo"
+import { FormVO, type IFormDTO } from "./form/form.vo"
+import { WithFormSpecification } from "../../specifications/table-forms.specification"
 
 export class FormsVO extends ValueObject<FormVO[]> {
   static fromJSON(forms: IFormsDTO) {
@@ -9,6 +10,11 @@ export class FormsVO extends ValueObject<FormVO[]> {
 
   *[Symbol.iterator]() {
     yield* this.props
+  }
+
+  $setForm(dto: IFormDTO): WithFormSpecification {
+    const previous = this.props.find((form) => form.id === dto.id)?.toJSON()
+    return new WithFormSpecification(previous, FormVO.fromJSON(dto))
   }
 
   toJSON() {

@@ -6,6 +6,7 @@ import {
   CreateTableFormCommand,
   DeleteRecordCommand,
   DuplicateRecordCommand,
+  SetTableFormCommand,
   SetTableRLSCommand,
   SetViewAggregateCommand,
   SetViewColorCommand,
@@ -18,6 +19,7 @@ import {
   createTableFormCommand,
   deleteRecordCommand,
   duplicateRecordCommand,
+  setTableFormCommand,
   setTableRLSCommand,
   setViewAggregateCommand,
   setViewColorCommand,
@@ -84,6 +86,7 @@ const formRouter = t.router({
   create: p
     .input(createTableFormCommand)
     .mutation(({ input }) => commandBus.execute(new CreateTableFormCommand(input))),
+  set: p.input(setTableFormCommand).mutation(({ input }) => commandBus.execute(new SetTableFormCommand(input))),
 })
 
 const viewRouter = t.router({
