@@ -5,6 +5,7 @@ import {
   CreateTableFieldCommand,
   CreateTableFormCommand,
   DeleteRecordCommand,
+  DuplicateRecordCommand,
   SetTableRLSCommand,
   SetViewAggregateCommand,
   SetViewColorCommand,
@@ -16,6 +17,7 @@ import {
   createTableFieldCommand,
   createTableFormCommand,
   deleteRecordCommand,
+  duplicateRecordCommand,
   setTableRLSCommand,
   setViewAggregateCommand,
   setViewColorCommand,
@@ -121,6 +123,9 @@ export const recordRouter = t.router({
   create: p.input(createRecordCommand).mutation(({ input }) => commandBus.execute(new CreateRecordCommand(input))),
   update: p.input(updateRecordCommand).mutation(({ input }) => commandBus.execute(new UpdateRecordCommand(input))),
   delete: p.input(deleteRecordCommand).mutation(({ input }) => commandBus.execute(new DeleteRecordCommand(input))),
+  duplicate: p
+    .input(duplicateRecordCommand)
+    .mutation(({ input }) => commandBus.execute(new DuplicateRecordCommand(input))),
 })
 
 export const fieldRouter = t.router({

@@ -3,6 +3,7 @@ import { CreateTableFieldCommandHandler } from "./create-table-field.command-han
 import { CreateTableFormCommandHandler } from "./create-table-form.command-handler"
 import { CreateTableCommandHandler } from "./create-table.command-handler"
 import { DeleteRecordCommandHandler } from "./delete-record.command-handler"
+import { DuplicateRecordCommandHandler } from "./duplicate-record.command-handler"
 import { SetTableRLSCommandHandler } from "./set-table-rls.command-handler"
 import { SetViewAggregateCommandHandler } from "./set-view-aggregate.command-handler"
 import { SetViewColorCommandHandler } from "./set-view-color.command-handler"
@@ -19,6 +20,7 @@ export const commandHandlers = [
   SetTableRLSCommandHandler,
   SetViewSortCommandHandler,
   UpdateRecordCommandHandler,
+  DuplicateRecordCommandHandler,
   DeleteRecordCommandHandler,
   SetViewAggregateCommandHandler,
   CreateTableFormCommandHandler,

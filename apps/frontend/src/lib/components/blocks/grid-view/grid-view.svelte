@@ -25,7 +25,7 @@
   import { isFunction } from "radash"
   import GridViewFooter from "./grid-view-footer.svelte"
   import { page } from "$app/stores"
-  import { DELETE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
+  import { DELETE_RECORD_MODAL, DUPLICATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import type { LayoutData } from "../../../../routes/(authed)/t/[tableId]/$types"
 
   const t = getTable()
@@ -33,6 +33,7 @@
   const q = queryParam("q")
   const r = queryParam("r")
   const deleteRecordId = queryParam("deleteRecordId")
+  const duplicateRecordId = queryParam("duplicateRecordId")
 
   const copy = async (id: string) => {
     await copyToClipboard(id)
@@ -236,6 +237,14 @@
               <ContextMenu.Content>
                 <ContextMenu.Item on:click={() => ($r = recordId)}>View record details</ContextMenu.Item>
                 <ContextMenu.Item on:click={() => copy(recordId)}>Copy record ID</ContextMenu.Item>
+                <ContextMenu.Item
+                  on:click={() => {
+                    toggleModal(DUPLICATE_RECORD_MODAL)
+                    $duplicateRecordId = recordId
+                  }}
+                >
+                  Duplicate Record
+                </ContextMenu.Item>
                 <ContextMenu.Item
                   on:click={() => {
                     toggleModal(DELETE_RECORD_MODAL)

@@ -1,6 +1,7 @@
 <script lang="ts">
   import CreateRecordSheet from "$lib/components/blocks/create-record/create-record-sheet.svelte"
   import ConfirmDeleteRecord from "$lib/components/blocks/delete-record/confirm-delete-record.svelte"
+  import ConfirmDuplicateRecord from "$lib/components/blocks/duplicate-record/confirm-duplicate-record.svelte"
   import GridView from "$lib/components/blocks/grid-view/grid-view.svelte"
   import { createRecordSheetOpen } from "$lib/components/blocks/create-record/create-record.store.ts"
   import { shortcut } from "@svelte-put/shortcut"
@@ -31,6 +32,7 @@
 <CreateRecordSheet />
 <RecordDetailSheet />
 <ConfirmDeleteRecord />
+<ConfirmDuplicateRecord />
 <CreateFieldDialog />
 
 <svelte:window

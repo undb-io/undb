@@ -4,6 +4,8 @@ import { injectTableRepository } from "../../../table.repository.provider"
 import {
   injectRecordRepository,
   type ICreateRecordDTO,
+  type IDeleteRecordDTO,
+  type IDuplicateRecordDTO,
   type IRecordRepository,
   type IUpdateRecordDTO,
   type RecordDO,
@@ -11,11 +13,13 @@ import {
 import { createRecordMethod } from "./methods/create-record.method"
 import { updateRecordMethod } from "./methods/update-record.method"
 import { deleteRecordMethod } from "./methods/delete-record.method"
+import { duplicateRecordMethod } from "./methods/duplicate-record.method"
 
 export interface IRecordsService {
   createRecord(tableId: string, dto: ICreateRecordDTO): Promise<RecordDO>
   updateRecord(tableId: string, dto: IUpdateRecordDTO): Promise<RecordDO>
   deleteRecord(tableId: string, dto: IDeleteRecordDTO): Promise<RecordDO>
+  duplicateRecord(tableId: string, dto: IDuplicateRecordDTO): Promise<RecordDO>
 }
 
 @singleton()
@@ -30,4 +34,5 @@ export class RecordsService implements IRecordsService {
   createRecord = createRecordMethod
   updateRecord = updateRecordMethod
   deleteRecord = deleteRecordMethod
+  duplicateRecord = duplicateRecordMethod
 }

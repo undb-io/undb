@@ -46,7 +46,8 @@
 
       // The URL of the WebSocket inspector to attach to.
       // This value can be retrieved by using `bun --inspect`.
-      "url": "ws://localhost:6499/"
+
+      "url": "ws://localhost:6499/jtmv8rahte"
     }
   ]
 }

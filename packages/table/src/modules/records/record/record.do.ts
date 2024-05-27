@@ -4,7 +4,7 @@ import { ID_TYPE, type FieldValue } from "../../schema"
 import { FieldIdVo, type FieldId } from "../../schema/fields/field-id.vo"
 import { FieldValueFactory } from "../../schema/fields/field-value.factory"
 import type { SchemaMap } from "../../schema/schema.type"
-import { RecordDeletedEvent, type IRecordEvent } from "../events"
+import { RecordCreatedEvent, RecordDeletedEvent, type IRecordEvent } from "../events"
 import type { ICreateRecordDTO, IRecordDTO, IUpdateRecordDTO } from "./dto"
 import { RecordIdVO, type RecordId } from "./record-id.vo"
 import { RecordValuesVO } from "./record-values.vo"
@@ -48,6 +48,12 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
 
   match(spec: IRecordComositeSpecification): boolean {
     return spec.isSatisfiedBy(this)
+  }
+
+  duplicate(table: TableDo): RecordDO {
+    const record = new RecordDO(RecordIdVO.create(), this.values.duplicate(table.schema.fieldMapById))
+    record.addDomainEvent(new RecordCreatedEvent(table, record))
+    return record
   }
 
   update(table: TableDo, dto: IUpdateRecordDTO["values"]): Option<RecordComositeSpecification> {

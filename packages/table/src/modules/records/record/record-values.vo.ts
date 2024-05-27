@@ -4,8 +4,8 @@ import type { TableDo } from "../../../table.do"
 import type { FieldValue } from "../../schema"
 import { FieldIdVo, fieldId, type FieldId, type IFieldId } from "../../schema/fields/field-id.vo"
 import { FieldValueFactory } from "../../schema/fields/field-value.factory"
-import type { IRecordReadableDTO } from "./dto"
 import type { SchemaMap } from "../../schema/schema.type"
+import type { IRecordReadableDTO } from "./dto"
 
 export const recordValues = z.record(fieldId, z.any())
 
@@ -79,6 +79,19 @@ export class RecordValuesVO extends ValueObject {
     }
 
     return values
+  }
+
+  public duplicate(schema: SchemaMap): RecordValuesVO {
+    const values: RecordValues = {}
+
+    for (const [id, value] of Object.entries(this.values)) {
+      const field = schema.get(id)
+      if (!field || !field.isMutable) continue
+      // TODO: every value should have a duplicate method
+      values[id] = value
+    }
+
+    return new RecordValuesVO(values)
   }
 
   public getValue(fieldId: FieldId): Option<FieldValue> {

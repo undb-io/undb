@@ -4,10 +4,11 @@
   import { Button } from "$lib/components/ui/button"
   import { copyToClipboard } from "@svelte-put/copy"
   import { toast } from "svelte-sonner"
-  import { DELETE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
+  import { DELETE_RECORD_MODAL, DUPLICATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import { queryParam } from "sveltekit-search-params"
 
   const deleteRecordId = queryParam("deleteRecordId")
+  const duplicateRecordId = queryParam("duplicateRecordId")
   const r = queryParam("r")
 
   export let id: string
@@ -30,6 +31,14 @@
       <DropdownMenu.Label>Record</DropdownMenu.Label>
       <DropdownMenu.Item on:click={() => ($r = id)}>View record details</DropdownMenu.Item>
       <DropdownMenu.Item on:click={copy}>Copy record ID</DropdownMenu.Item>
+      <DropdownMenu.Item
+        on:click={() => {
+          toggleModal(DUPLICATE_RECORD_MODAL)
+          $duplicateRecordId = id
+        }}
+      >
+        Duplicate Record
+      </DropdownMenu.Item>
     </DropdownMenu.Group>
     <DropdownMenu.Separator />
     <DropdownMenu.Item
