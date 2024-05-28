@@ -12,7 +12,7 @@
   $: conditionOps = field?.conditionOps ?? []
   $: ops = conditionOps.map((op) => ({ value: op, label: op })) ?? []
 
-  $: if (field && !conditionOps.includes(value)) {
+  $: if (field && !!value && !conditionOps.includes(value)) {
     value = ops[0]?.value
   }
 

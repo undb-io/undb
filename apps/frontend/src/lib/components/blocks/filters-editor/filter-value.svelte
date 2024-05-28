@@ -8,10 +8,10 @@
   export let field: Field | undefined
   export let op: string | undefined
   export let value: any | undefined = undefined
-  let hasValue = writable(false)
+  let hasValue = writable(true)
 
   function updateHasValue() {
-    hasValue.set(op ? (field?.isOpHasValue(op) ? true : false) : false)
+    hasValue.set(!!op && !!field?.isOpHasValue(op))
   }
   $: op, field, updateHasValue()
 
