@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
-  import { fieldTypes, type FieldType, type NoneSystemFieldType } from "@undb/table"
+  import { fieldTypes, getNextName, type FieldType, type NoneSystemFieldType } from "@undb/table"
   import * as Collapsible from "$lib/components/ui/collapsible"
   import * as Card from "$lib/components/ui/card"
   import * as Form from "$lib/components/ui/form"
@@ -25,7 +25,7 @@
       ...$formData.schema,
       {
         type,
-        name: "field" + ($formData.schema.length + 1),
+        name: getNextName($formData.schema.map((field) => field.name)),
         constraint: {},
       },
     ]

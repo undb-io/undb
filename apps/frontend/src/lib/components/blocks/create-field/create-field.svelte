@@ -37,7 +37,7 @@
     defaults(
       {
         type: "string",
-        name: "",
+        name: $table.schema.nextFieldName,
         constraint: {},
       },
       zodClient(createFieldDTO),

@@ -4,13 +4,14 @@ import { objectify } from "radash"
 import { WithNewFieldSpecification } from "../../specifications"
 import type { ICreateSchemaDTO } from "./dto"
 import type { ISchemaDTO } from "./dto/schema.dto"
-import { IdField, UpdatedAtField, type ICreateFieldDTO } from "./fields"
+import { FieldNameVo, IdField, UpdatedAtField, type ICreateFieldDTO } from "./fields"
 import type { FieldId } from "./fields/field-id.vo"
 import { FieldFactory } from "./fields/field.factory"
 import type { Field, NoneSystemField, SystemField } from "./fields/field.type"
 import { AutoIncrementField } from "./fields/variants/autoincrement-field"
 import { CreatedAtField } from "./fields/variants/created-at-field"
 import type { SchemaMap } from "./schema.type"
+import { getNextName } from "./schema.util"
 
 export class Schema extends ValueObject<Field[]> {
   public fieldMapById: SchemaMap
@@ -91,6 +92,10 @@ export class Schema extends ValueObject<Field[]> {
 
   get searchableFields(): Field[] {
     return this.fields.filter((f) => f.searchable)
+  }
+
+  get nextFieldName(): FieldNameVo {
+    return new FieldNameVo(getNextName(this.fields.map((f) => f.name.value))).value
   }
 
   toJSON(): ISchemaDTO {
