@@ -7,21 +7,24 @@
 
   const table = getTable()
 
-  const isMutating = useIsMutating({ mutationKey: ["record", $table.id.value] })
+  const isMutatingRecord = useIsMutating({ mutationKey: ["record", $table.id.value] })
+  const isMutatingTable = useIsMutating({ mutationKey: ["table", $table.id.value] })
+
+  $: isMutating = $isMutatingRecord || $isMutatingTable
 
   const loading = writable(false)
   let timer: any | undefined
-  $: if ($isMutating > 0) {
+  $: if (isMutating > 0) {
     loading.set(true)
     timer = setTimeout(() => {
-      if (!$isMutating) {
+      if (!isMutating) {
         loading.set(false)
         timer = undefined
       }
     }, 500)
   }
 
-  $: if (!$isMutating && $loading && !timer) {
+  $: if (!isMutating && $loading && !timer) {
     loading.set(false)
   }
 

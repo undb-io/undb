@@ -47,9 +47,9 @@
     onCollapse={() => (collapsed = true)}
     onExpand={() => (collapsed = false)}
     class="bg-muted/40 hidden border-r md:block"
-    defaultSize={20}
-    minSize={15}
-    maxSize={30}
+    defaultSize={15}
+    minSize={10}
+    maxSize={20}
     collapsedSize={5}
     collapsible={true}
   >
@@ -73,7 +73,7 @@
     </div>
   </Resizable.Pane>
   <Resizable.Handle />
-  <Resizable.Pane class="grid h-screen" defaultSize={80}>
+  <Resizable.Pane class="grid h-screen" defaultSize={85}>
     <slot />
   </Resizable.Pane>
 </Resizable.PaneGroup>

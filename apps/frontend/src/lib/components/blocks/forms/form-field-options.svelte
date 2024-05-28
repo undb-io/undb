@@ -9,6 +9,7 @@
   import { getTable } from "$lib/store/table.store"
   import { tick } from "svelte"
   import { EyeClosed, EyeOpen } from "svelte-radix"
+  import { cn } from "$lib/utils"
 
   const table = getTable()
 
@@ -29,7 +30,12 @@
   }
 </script>
 
-<div class="flex items-center justify-between rounded-b-md border-t bg-neutral-50 px-4 py-2 text-xs">
+<div
+  class={cn(
+    "flex items-center justify-between rounded-b-md border-t bg-neutral-50 px-4 py-2 text-xs",
+    $$restProps.class,
+  )}
+>
   <div class="text-muted-foreground flex items-center gap-2 text-xs">
     <FieldIcon type={field.type} class="h-3 w-3" />
     <span>

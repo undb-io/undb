@@ -25,6 +25,7 @@
   $: formFields = form.fields.props
 
   const setFormMutation = createMutation({
+    mutationKey: ["table", $table.id.value, "setForm"],
     mutationFn: trpc.table.form.set.mutate,
   })
 
@@ -35,25 +36,33 @@
       form: form.toJSON(),
     })
   }
+
+  let isEditingFormName = false
 </script>
 
 <div class="h-full w-full bg-gray-50 p-6">
   <div
-    class="bg-background mx-auto max-w-[600px] space-y-2 rounded-md p-4"
+    class="bg-background mx-auto max-w-[600px] space-y-2 rounded-md px-8 py-4"
     data-form-id={form.id}
     use:clickoutside
     on:clickoutside={() => ($selectedFieldId = null)}
   >
-    <h2
-      class="px-4 text-4xl font-extrabold tracking-tight"
-      contenteditable="true"
-      bind:innerHTML={form.name}
-      on:blur={setForm}
-    >
-      {form.name}
-    </h2>
+    {#if isEditingFormName}
+      <input
+        class="text-4xl font-extrabold tracking-tight"
+        bind:value={form.name}
+        on:change={() => {
+          setForm()
+          isEditingFormName = false
+        }}
+      />
+    {:else}
+      <h2 class="text-4xl font-extrabold tracking-tight" on:click={() => (isEditingFormName = true)}>
+        {form.name}
+      </h2>
+    {/if}
 
-    <div class="px-4">
+    <div>
       <Label>Description</Label>
       <Input class="text-sm" bind:value={form.description} on:change={setForm}></Input>
     </div>
@@ -73,11 +82,11 @@
                 }
               }}
               class={cn(
-                "space-y-2 rounded-md border-2 border-transparent p-0 transition-all",
+                "-mx-4 space-y-2 rounded-md border-2 border-transparent p-0 px-4 transition-all",
                 isSelected ? "border-neutral-200 shadow-sm" : "hover:bg-muted/50",
               )}
             >
-              <div class="cursor-pointer space-y-2 p-4">
+              <div class={cn("cursor-pointer space-y-2 py-4")}>
                 <div class="text-md flex items-center gap-2 font-medium">
                   <FieldIcon type={field.type} class="h-4 w-4" />
                   <span>
@@ -90,7 +99,7 @@
                 <FieldControl {field} value={undefined} class="bg-background" />
               </div>
               <Collapsible.Content>
-                <FormFieldOptions {field} bind:formField bind:form />
+                <FormFieldOptions {field} bind:formField bind:form class="-mx-4" />
               </Collapsible.Content>
             </Collapsible.Root>
           </label>
