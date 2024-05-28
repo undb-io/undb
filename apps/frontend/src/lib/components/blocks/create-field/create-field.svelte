@@ -59,19 +59,19 @@
   const { enhance, form: formData, reset } = form
 </script>
 
-<form method="POST" use:enhance>
-  <div class="flex items-center gap-2">
-    <Form.Field {form} name="type" class="h-10">
+<form method="POST" use:enhance class="space-y-2">
+  <div class="flex h-8 items-center gap-2">
+    <Form.Field {form} name="type" class="h-full">
       <Form.Control let:attrs>
-        <FieldTypePicker {...attrs} bind:value={$formData.type} />
+        <FieldTypePicker {...attrs} bind:value={$formData.type} tabIndex={-1} class="h-full" />
       </Form.Control>
       <Form.Description />
       <Form.FieldErrors />
     </Form.Field>
 
-    <Form.Field {form} name="name" class="h-10 flex-1">
+    <Form.Field {form} name="name" class="h-full flex-1">
       <Form.Control let:attrs>
-        <Input {...attrs} bind:value={$formData.name} />
+        <Input {...attrs} bind:value={$formData.name} autofocus class="h-full" />
       </Form.Control>
       <Form.Description />
       <Form.FieldErrors />
