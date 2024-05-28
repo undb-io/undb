@@ -41,6 +41,10 @@
         <button
           class="flex w-full items-center justify-between text-pretty p-2 text-sm"
           on:click={(e) => {
+            if (formField.hidden) {
+              return
+            }
+
             e.stopPropagation()
             if ($selectedFieldId === field.id.value) {
               $selectedFieldId = null
