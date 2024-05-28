@@ -11,7 +11,7 @@
   import { toast } from "svelte-sonner"
   import { invalidate } from "$app/navigation"
   import { goto } from "$app/navigation"
-  import { getNextName } from "@undb/table"
+  import { FieldIdVo, getNextName } from "@undb/table"
 
   const mutation = createMutation({
     mutationFn: trpc.table.create.mutate,
@@ -28,7 +28,17 @@
 
   const form = superForm(
     defaults(
-      { name: "table", schema: [{ type: "string", name: getNextName([]), constraint: {} }] },
+      {
+        name: "table",
+        schema: [
+          {
+            id: FieldIdVo.create().value,
+            type: "string",
+            name: getNextName(),
+            constraint: {},
+          },
+        ],
+      },
       zodClient(createTableCommand),
     ),
     {

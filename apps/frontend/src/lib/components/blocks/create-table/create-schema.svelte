@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
-  import { fieldTypes, getNextName, type FieldType, type NoneSystemFieldType } from "@undb/table"
+  import { FieldIdVo, fieldTypes, getNextName, type FieldType, type NoneSystemFieldType } from "@undb/table"
   import * as Collapsible from "$lib/components/ui/collapsible"
   import * as Card from "$lib/components/ui/card"
   import * as Form from "$lib/components/ui/form"
@@ -13,6 +13,7 @@
   import type { Infer } from "sveltekit-superforms"
   import type { createTableCommand } from "@undb/commands"
   import FieldTypePicker from "../field-picker/field-type-picker.svelte"
+  import { tick } from "svelte"
 
   const { form } = getFormField<Infer<typeof createTableCommand>, "schema">()
 
@@ -20,10 +21,12 @@
 
   let open = false
 
-  const addField = (type: NoneSystemFieldType) => {
+  const addField = async (type: NoneSystemFieldType) => {
+    const fieldId = FieldIdVo.create().value
     $formData.schema = [
       ...$formData.schema,
       {
+        id: fieldId,
         type,
         name: getNextName($formData.schema.map((field) => field.name)),
         constraint: {},
@@ -31,19 +34,34 @@
     ]
 
     open = false
+    activeFieldId = undefined
+
+    await tick()
+    const el = document.querySelector(`[data-field-id="${fieldId}"]`) as HTMLInputElement
+    if (el.tagName === "INPUT") {
+      el.focus()
+      el.select()
+    }
   }
+
+  let activeFieldId: string | undefined
 </script>
 
 <Form.Legend>Schema</Form.Legend>
-<Accordion.Root>
-  {#each $formData.schema as _, i}
+<Accordion.Root bind:value={activeFieldId}>
+  {#each $formData.schema as field, i (field.id)}
     <Form.ElementField {form} name="schema">
       <Form.Control let:attrs>
-        <Accordion.Item class="w-full border-b-0" value={$formData.schema[i].name}>
+        <Accordion.Item class="w-full border-b-0" value={$formData.schema[i].id}>
           <div class="mr-2 flex items-center gap-2">
             <Form.Label class="flex h-9 flex-1 items-center gap-1">
               <FieldTypePicker class="h-full w-20" bind:value={$formData.schema[i].type} />
-              <Input {...attrs} class="no-underline" bind:value={$formData.schema[i].name} />
+              <Input
+                {...attrs}
+                class="bg-background no-underline"
+                bind:value={$formData.schema[i].name}
+                data-field-id={field.id}
+              />
             </Form.Label>
             <Accordion.Trigger>
               <SettingsIcon class="text-muted-foreground h-4 w-4 shrink-0 transition-transform duration-200" />
