@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getTable } from "$lib/store/table.store"
-  import type { FormVO } from "@undb/table"
+  import type { FormVO, formField } from "@undb/table"
   import FieldControl from "../field-control/field-control.svelte"
   import FormFieldOptions from "./form-field-options.svelte"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
@@ -94,6 +94,13 @@
                   </span>
                   {#if formField.getRequired(field)}
                     <span class="text-red-500">*</span>
+                  {/if}
+                  {#if formField.conditionEnabled && formField.hasCondition}
+                    <span
+                      class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
+                    >
+                      condition
+                    </span>
                   {/if}
                 </div>
                 <FieldControl {field} value={undefined} class="bg-background" />
