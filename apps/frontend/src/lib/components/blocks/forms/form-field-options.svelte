@@ -101,7 +101,7 @@
           <span>required</span>
         </Label>
 
-        <label class="cursor-pointer">
+        <label class={cn(formField.required ? "cursor-not-allowed" : "cursor-pointer")}>
           <input
             type="checkbox"
             class="hidden"

@@ -9,6 +9,7 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { tick } from "svelte"
+  import { cn } from "$lib/utils"
   import { EyeClosed, EyeOpen } from "svelte-radix"
 
   const selectedFieldId = queryParam("formField")
@@ -39,7 +40,9 @@
       {#if field}
         {@const disabled = formField.getRequired(field)}
         <button
-          class="flex w-full items-center justify-between text-pretty p-2 text-sm"
+          class={cn("flex w-full items-center justify-between text-pretty p-2 text-sm transition-all", {
+            "bg-gray-50 shadow-inner": formField.fieldId === $selectedFieldId,
+          })}
           on:click={(e) => {
             if (formField.hidden) {
               return
@@ -64,14 +67,8 @@
 
           <div class="flex items-center gap-2">
             <Switch bind:checked={formField.required} on:click={setForm} disabled={field.required} />
-            <label class="cursor-pointer">
-              <input
-                type="checkbox"
-                class="hidden"
-                bind:checked={formField.hidden}
-                disabled={formField.required}
-                on:change={setForm}
-              />
+            <label class={cn(disabled ? "cursor-not-allowed" : "cursor-pointer")}>
+              <input type="checkbox" class="hidden" bind:checked={formField.hidden} {disabled} on:change={setForm} />
               {#if formField.hidden}
                 <EyeClosed class="h-4 w-4" />
               {:else}

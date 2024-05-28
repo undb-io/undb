@@ -83,7 +83,7 @@
               }}
               class={cn(
                 "-mx-4 space-y-2 rounded-md border-2 border-transparent p-0 px-4 transition-all",
-                isSelected ? "border-neutral-200 shadow-sm" : "hover:bg-muted/50",
+                isSelected ? "border-neutral-200 shadow-md" : "hover:bg-muted/50",
               )}
             >
               <div class={cn("cursor-pointer space-y-2 py-4")}>
