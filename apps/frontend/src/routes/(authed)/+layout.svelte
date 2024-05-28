@@ -1,7 +1,6 @@
 <script lang="ts">
   import Bell from "lucide-svelte/icons/bell"
   import Package2 from "lucide-svelte/icons/package-2"
-
   import * as Resizable from "$lib/components/ui/resizable"
   import { type PaneAPI } from "paneforge"
   import { Button } from "$lib/components/ui/button/index.js"

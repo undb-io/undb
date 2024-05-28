@@ -58,7 +58,7 @@
   const { form: formData, enhance } = form
 </script>
 
-<form id="createTable" method="POST" use:enhance>
+<form id="createTable" class="px-1" method="POST" use:enhance>
   <Form.Field {form} name="name">
     <Form.Control let:attrs>
       <Form.Label>Name</Form.Label>

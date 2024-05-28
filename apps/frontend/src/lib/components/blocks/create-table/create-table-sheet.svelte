@@ -3,6 +3,7 @@
   import CreateTable from "./create-table.svelte"
   import { createTableOpened } from "./create-table.store"
   import { Button } from "$lib/components/ui/button"
+  import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
 </script>
 
 <Sheet.Root bind:open={$createTableOpened}>
@@ -11,9 +12,9 @@
       <Sheet.Title>Create Table</Sheet.Title>
     </Sheet.Header>
 
-    <div class="flex-1">
+    <ScrollArea class="flex-1">
       <CreateTable />
-    </div>
+    </ScrollArea>
 
     <Sheet.Footer>
       <Button variant="outline" type="button" on:click={() => ($createTableOpened = false)}>Cancel</Button>
