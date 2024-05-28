@@ -34,9 +34,10 @@
     ]
 
     open = false
-    activeFieldId = undefined
 
     await tick()
+
+    activeFieldId = fieldId
     const el = document.querySelector(`[data-field-id="${fieldId}"]`) as HTMLInputElement
     if (el.tagName === "INPUT") {
       el.focus()
