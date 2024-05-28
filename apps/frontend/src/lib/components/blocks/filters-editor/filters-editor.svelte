@@ -18,17 +18,25 @@
   import ConjunctionPicker from "./conjunction-picker.svelte"
   import { isNumber, uid } from "radash"
 
+  interface IField {
+    id: string
+  }
+
   export let table: TableDo
   export let value: MaybeConditionGroup<any> | undefined = undefined
   export let level = 1
   export let defaultConjunction: Conjunction = "and"
+  export let filter: (field: IField) => boolean = () => true
 
+  $: filteredFields = table.getOrderedFields().filter((f) => filter({ id: f.id.value }))
   export let disableGroup = false
 
   $: isEven = level % 2 === 0
 
   function addCondition() {
-    const field = table.getOrderedFields().at(0)
+    const field = filteredFields.at(0)
+    if (!field) return
+
     const conditionOps = field?.conditionOps ?? []
     const filter: MaybeFieldCondition = {
       id: uid(10),
@@ -73,7 +81,7 @@
   }
 </script>
 
-<div class={cn("space-y-2", isEven ? "bg-muted" : "bg-popover")} data-level={level}>
+<div class={cn("space-y-2", isEven ? "bg-muted" : "bg-popover", $$restProps.class)} data-level={level}>
   {#if value?.children.length}
     <SortableList
       class={cn("space-y-1.5", level > 1 ? "p-4 pb-2" : "px-4 py-2")}
@@ -104,6 +112,7 @@
             {/if}
             <div class="col-span-9 grid grid-cols-12 items-center">
               <FilterField
+                {filter}
                 bind:value={child.fieldId}
                 class={cn(!!child.fieldId && "col-span-4 rounded-r-none border-r-0")}
               />
@@ -116,10 +125,10 @@
               />
             </div>
             <div class="col-span-1 flex items-center gap-2">
-              <button on:click={() => removeFilter(i)}>
+              <button type="button" on:click={() => removeFilter(i)}>
                 <Trash2Icon class="text-muted-foreground h-3 w-3" />
               </button>
-              <button class="handler">
+              <button type="button" class="handler">
                 <GripVertical class="text-muted-foreground h-3 w-3" />
               </button>
             </div>
@@ -134,10 +143,16 @@
               />
               <div class="col-span-9"></div>
               <div class="col-span-1 flex items-center gap-2">
-                <button on:click={() => removeFilter(i)}>
+                <button
+                  type="button"
+                  on:click={(e) => {
+                    e.stopPropagation()
+                    removeFilter(i)
+                  }}
+                >
                   <Trash2Icon class="text-muted-foreground h-3 w-3" />
                 </button>
-                <button class="handler">
+                <button type="button" class="handler">
                   <GripVertical class="text-muted-foreground h-3 w-3" />
                 </button>
               </div>
@@ -150,13 +165,19 @@
   {/if}
   <div class={cn("flex justify-between px-4", value?.children.length ? "py-2" : "py-4")}>
     <div class="flex items-center gap-2">
-      <Button variant="ghost" size="xs" on:click={addCondition}>
+      <Button disabled={!filteredFields.length} variant="ghost" size="xs" on:click={addCondition}>
         <PlusIcon class="mr-2 h-3 w-3" />
         Add Condition
       </Button>
       {#if !disableGroup}
         {#if level < 3}
-          <Button variant="ghost" class="text-muted-foreground" size="xs" on:click={addConditionGroup}>
+          <Button
+            disabled={!filteredFields.length}
+            variant="ghost"
+            class="text-muted-foreground"
+            size="xs"
+            on:click={addConditionGroup}
+          >
             <PlusIcon class="mr-2 h-3 w-3" />
             Add Condition Group
           </Button>

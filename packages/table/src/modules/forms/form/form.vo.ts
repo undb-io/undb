@@ -1,4 +1,4 @@
-import { ValueObject } from "@undb/domain"
+import { ValueObject, Option } from "@undb/domain"
 import { FormFieldsVO } from "./form-fields.vo"
 import { FormFieldVO, formField } from "./form-field.vo"
 import { z } from "@undb/zod"
@@ -84,5 +84,9 @@ export class FormVO extends ValueObject<IForm> {
       description: props.description,
       fields: props.fields.toJSON(),
     }
+  }
+
+  getPreviousFields(fieldId: string): FormFieldVO[] {
+    return this.props.fields.getPreviousFields(fieldId)
   }
 }

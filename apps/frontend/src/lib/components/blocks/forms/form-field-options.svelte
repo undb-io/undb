@@ -1,15 +1,26 @@
 <script lang="ts">
-  import type { FormFieldVO, Field, FormVO } from "@undb/table"
+  import {
+    type FormFieldVO,
+    type Field,
+    type FormVO,
+    type MaybeConditionGroup,
+    toMaybeConditionGroup,
+    parseValidViewFilter,
+  } from "@undb/table"
   import { Switch } from "$lib/components/ui/switch"
   import { Label } from "$lib/components/ui/label"
-  import { Trash2Icon } from "lucide-svelte"
+  import * as Collapsible from "$lib/components/ui/collapsible"
   import FieldIcon from "../field-icon/field-icon.svelte"
+  import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
   import { tick } from "svelte"
   import { EyeClosed, EyeOpen } from "svelte-radix"
   import { cn } from "$lib/utils"
+  import type { ZodUndefined } from "@undb/zod"
+  import { writable } from "svelte/store"
+  import { Button } from "$lib/components/ui/button"
 
   const table = getTable()
 
@@ -28,6 +39,22 @@
       form: form.toJSON(),
     })
   }
+
+  const condition = writable<MaybeConditionGroup<ZodUndefined> | undefined>()
+  $: validCondition = $condition ? parseValidViewFilter($table.schema.fieldMapById, $condition) : undefined
+
+  $: form, condition.set(formField.condition && toMaybeConditionGroup(formField.condition))
+
+  const updateCondition = () => {
+    if (!validCondition) {
+      return
+    }
+
+    formField.condition = validCondition
+    setForm()
+  }
+
+  $: previousFields = form.getPreviousFields(field.id.value) ?? []
 </script>
 
 <div
@@ -36,32 +63,68 @@
     $$restProps.class,
   )}
 >
-  <div class="text-muted-foreground flex items-center gap-2 text-xs">
-    <FieldIcon type={field.type} class="h-3 w-3" />
-    <span>
-      {field.name.value}
-    </span>
-  </div>
+  <Collapsible.Root
+    class="w-full"
+    open={formField.conditionEnabled && !!previousFields.length}
+    onOpenChange={(open) => {
+      if (!open) {
+        formField.conditionEnabled = false
+      }
+    }}
+  >
+    <div class="flex items-center justify-between">
+      <div class="text-muted-foreground flex items-center gap-2 text-xs">
+        <FieldIcon type={field.type} class="h-3 w-3" />
+        <span>
+          {field.name.value}
+        </span>
+      </div>
 
-  <div class="flex items-center gap-3">
-    <Label class="flex items-center gap-2 text-xs">
-      <Switch class="text-sm" bind:checked={formField.required} disabled={field.required} on:click={() => setForm()} />
-      <span>required</span>
-    </Label>
+      <div class="flex items-center gap-3">
+        <Label class="flex items-center gap-2 text-xs">
+          {#if !previousFields.length}
+            <Switch disabled class="text-sm" checked={false} />
+          {:else}
+            <Switch class="text-sm" bind:checked={formField.conditionEnabled} on:click={setForm} />
+          {/if}
+          <span>enable condition</span>
+        </Label>
+        <Label class="flex items-center gap-2 text-xs">
+          <Switch
+            class="text-sm"
+            bind:checked={formField.required}
+            disabled={field.required}
+            on:click={() => setForm()}
+          />
+          <span>required</span>
+        </Label>
 
-    <label class="cursor-pointer">
-      <input
-        type="checkbox"
-        class="hidden"
-        bind:checked={formField.hidden}
-        disabled={formField.required}
-        on:change={setForm}
-      />
-      {#if formField.hidden}
-        <EyeOpen class="h-4 w-4" />
-      {:else}
-        <EyeClosed class="h-4 w-4" />
-      {/if}
-    </label>
-  </div>
+        <label class="cursor-pointer">
+          <input
+            type="checkbox"
+            class="hidden"
+            bind:checked={formField.hidden}
+            disabled={formField.required}
+            on:change={setForm}
+          />
+          {#if formField.hidden}
+            <EyeOpen class="h-4 w-4" />
+          {:else}
+            <EyeClosed class="h-4 w-4" />
+          {/if}
+        </label>
+      </div>
+    </div>
+    <Collapsible.Content class="mt-4">
+      <FiltersEditor
+        filter={(field) => previousFields.map((f) => f.fieldId).includes(field.id)}
+        bind:value={$condition}
+        table={$table}
+        class="rounded-sm border"
+        on:submit={updateCondition}
+      >
+        <Button size="xs" slot="footer" on:click={updateCondition}>Submit</Button>
+      </FiltersEditor>
+    </Collapsible.Content>
+  </Collapsible.Root>
 </div>

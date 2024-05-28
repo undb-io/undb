@@ -13,6 +13,7 @@
   const table = getTable()
 
   interface IField {
+    id: string
     value: string
     label: string
     type: FieldType
@@ -20,6 +21,7 @@
 
   $: fields =
     $table.getOrderedFields().map<IField>((f) => ({
+      id: f.id.value,
       value: f.id.value,
       label: f.name.value,
       type: f.type,

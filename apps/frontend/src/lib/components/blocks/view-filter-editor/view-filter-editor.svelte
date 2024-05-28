@@ -15,7 +15,6 @@
     type IViewFilterOptionSchema,
     type MaybeConditionGroup,
   } from "@undb/table"
-  import { cn } from "$lib/utils"
 
   const table = getTable()
   $: filter = $table.views.getViewById().filter.into(undefined)

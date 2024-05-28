@@ -2,6 +2,7 @@
   import FieldPicker from "../field-picker/field-picker.svelte"
 
   export let value: string | undefined
+  export let filter: ((field: any) => boolean) | undefined = undefined
 </script>
 
-<FieldPicker bind:value {...$$restProps} />
+<FieldPicker bind:value {...$$restProps} {filter} />

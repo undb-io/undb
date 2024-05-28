@@ -1,7 +1,7 @@
 import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import { fieldId, type Field } from "../../schema"
-import { createConditionGroup } from "../../schema/fields/condition"
+import { createConditionGroup, isEmptyConditionGroup } from "../../schema/fields/condition"
 
 const formFieldConditionOption = z.undefined()
 
@@ -11,7 +11,8 @@ export const formField = z.object({
   fieldId,
   hidden: z.boolean().optional(),
   required: z.boolean().optional(),
-  condtion: formFieldCondition.optional(),
+  conditionEnabled: z.boolean().optional(),
+  condition: formFieldCondition.optional(),
 })
 
 export type IFormField = z.infer<typeof formField>
@@ -47,8 +48,24 @@ export class FormFieldVO extends ValueObject<IFormField> {
     return this.props.required
   }
 
-  public get condtion() {
-    return this.props.condtion
+  public get conditionEnabled() {
+    return this.props.conditionEnabled ?? false
+  }
+
+  public set conditionEnabled(value: boolean) {
+    this.props.conditionEnabled = value
+  }
+
+  public get condition() {
+    return this.props.condition
+  }
+
+  public set condition(value: IFormField["condition"]) {
+    this.props.condition = value
+  }
+
+  public get hasCondition() {
+    return !!this.condition && !isEmptyConditionGroup(this.condition)
   }
 
   static create(field: Field) {
@@ -56,16 +73,19 @@ export class FormFieldVO extends ValueObject<IFormField> {
       fieldId: field.id.value,
       hidden: false,
       required: field.required ?? false,
-      condtion: undefined,
+      conditionEnabled: false,
+      condition: undefined,
     })
   }
 
   toJSON() {
+    const props = this.props
     return {
-      fieldId: this.value.fieldId,
-      hidden: this.value.hidden,
-      required: this.value.required,
-      condtion: this.value.condtion,
+      fieldId: props.fieldId,
+      hidden: props.hidden,
+      required: props.required,
+      conditionEnabled: props.conditionEnabled,
+      condition: props.condition,
     }
   }
 }
