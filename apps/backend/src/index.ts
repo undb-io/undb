@@ -17,7 +17,9 @@ import { loggerPlugin } from "./plugins/logging"
 import { auth, authStore } from "./routes/auth.route"
 import { OpenAPI } from "./routes/openapi.route"
 import { web } from "./routes/web.route"
+import { RealtimeRoute } from "./routes/realtime.route"
 
+const realtime = container.resolve(RealtimeRoute)
 const app = new Elysia()
   .trace(async ({ handle, set }) => {
     const { time, end } = await handle
@@ -32,6 +34,7 @@ const app = new Elysia()
     const requestId = ctx.set.headers["X-Request-ID"]
     executionContext.enterWith({ requestId, user: { userId: ctx.user?.id ?? null } })
   })
+  .use(realtime.create())
   .use(auth())
   .use(loggerPlugin())
   .guard(

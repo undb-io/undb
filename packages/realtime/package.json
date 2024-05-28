@@ -1,0 +1,17 @@
+{
+  "name": "@undb/realtime",
+  "module": "src/index.ts",
+  "types": "src/index.d.ts",
+  "type": "module",
+  "dependencies": {
+    "@undb/di": "workspace:*",
+    "@undb/table": "workspace:*",
+    "@undb/persistence": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

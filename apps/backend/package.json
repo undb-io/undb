@@ -8,8 +8,10 @@
   },
   "dependencies": {
     "@elysiajs/cors": "^1.0.2",
+    "@elysiajs/cron": "^1.0.3",
     "@elysiajs/html": "^1.0.2",
     "@elysiajs/static": "^1.0.3",
+    "@elysiajs/stream": "^1.0.2",
     "@elysiajs/trpc": "^1.0.2",
     "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@undb/command-handlers": "workspace:*",
@@ -20,6 +22,7 @@
     "@undb/openapi": "workspace:*",
     "@undb/persistence": "workspace:*",
     "@undb/query-handlers": "workspace:*",
+    "@undb/realtime": "workspace:*",
     "@undb/trpc": "workspace:*",
     "bun": "^1.1.9",
     "core-js": "^3.37.1",
