@@ -49,7 +49,7 @@
 
 <Popover.Root bind:open>
   <Popover.Trigger asChild let:builder>
-    <Button variant="ghost" builders={[builder]} size="sm" class={cn(count && "bg-sky-100 hover:bg-sky-200")}>
+    <Button variant={count || open ? "secondary" : "ghost"} builders={[builder]} size="sm">
       <PaintBucketIcon class="mr-2 h-4 w-4" />
       Color
       {#if count}

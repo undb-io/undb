@@ -51,12 +51,7 @@
 
 <Popover.Root bind:open>
   <Popover.Trigger asChild let:builder>
-    <Button
-      variant="ghost"
-      builders={[builder]}
-      size="sm"
-      class={cn(count && "text-foreground bg-orange-100 hover:bg-orange-200")}
-    >
+    <Button variant={count || open ? "secondary" : "ghost"} builders={[builder]} size="sm">
       <FilterIcon class="mr-2 h-4 w-4" />
       Filters
       {#if count}

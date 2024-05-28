@@ -73,7 +73,7 @@
 
 <Popover.Root bind:open>
   <Popover.Trigger asChild let:builder>
-    <Button variant="ghost" builders={[builder]} size="sm" class={cn(count && "bg-rose-100 hover:bg-rose-200")}>
+    <Button variant={count || open ? "secondary" : "ghost"} builders={[builder]} size="sm">
       <ArrowUpDownIcon class="mr-2 h-4 w-4" />
       Sorts
       {#if count}
@@ -81,9 +81,9 @@
       {/if}
     </Button>
   </Popover.Trigger>
-  <Popover.Content class="w-[330px] p-0 shadow-2xl" align="start">
+  <Popover.Content class="w-[400px] p-0 shadow-2xl" align="start">
     {#if value?.length}
-      <div class="space-y-2 border-b px-4 pb-2 pt-0.5">
+      <div class="space-y-2 border-b px-4 pb-2 pt-1.5">
         <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Sorts</div>
         <SortableList
           class={cn("space-y-1.5")}
