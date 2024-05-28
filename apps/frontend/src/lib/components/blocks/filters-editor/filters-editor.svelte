@@ -17,7 +17,6 @@
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
   import ConjunctionPicker from "./conjunction-picker.svelte"
   import { isNumber, uid } from "radash"
-  import autoAnimate from "@formkit/auto-animate"
 
   export let table: TableDo
   export let value: MaybeConditionGroup<any> | undefined = undefined
@@ -74,7 +73,7 @@
   }
 </script>
 
-<div class={cn("space-y-2", isEven ? "bg-muted" : "bg-popover")} data-level={level} use:autoAnimate>
+<div class={cn("space-y-2", isEven ? "bg-muted" : "bg-popover")} data-level={level}>
   {#if value?.children.length}
     <SortableList
       class={cn("space-y-1.5", level > 1 ? "p-4 pb-2" : "px-4 py-2")}
