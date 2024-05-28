@@ -11,21 +11,34 @@
   <div class="grid grid-cols-3 gap-2">
     <div class="col-span-1 flex items-center gap-1.5">
       <Label for="min">Min</Label>
-      <NumberInput min={0} max={constraint.max} step={1} bind:value={constraint.min} placeholder="min" />
+      <NumberInput
+        min={0}
+        max={constraint.max}
+        step={1}
+        bind:value={constraint.min}
+        placeholder="min"
+        class="bg-background"
+      />
     </div>
     <div class="col-span-1 flex items-center gap-1.5">
       <Label for="max">Max</Label>
-      <NumberInput min={constraint.min || 0} step={1} bind:value={constraint.max} placeholder="max" />
+      <NumberInput
+        min={constraint.min || 0}
+        step={1}
+        bind:value={constraint.max}
+        placeholder="max"
+        class="bg-background"
+      />
     </div>
     <div class="col-span-1 flex items-center gap-1.5">
-      <Label for="isInt">Is Int</Label>
       <Switch id="isInt" bind:checked={constraint.isInt} />
+      <Label for="isInt">Is Int</Label>
     </div>
   </div>
-  <div class="mt-2">
+  <div class="mt-4">
     <div class="flex items-center space-x-2">
-      <Label for="required">Required</Label>
       <Switch id="required" bind:checked={constraint.required} />
+      <Label for="required">Required</Label>
     </div>
   </div>
 {/if}

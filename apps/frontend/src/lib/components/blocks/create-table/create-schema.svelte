@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
-  import { FieldIdVo, fieldTypes, getNextName, type FieldType, type NoneSystemFieldType } from "@undb/table"
+  import { FieldIdVo, fieldTypes, getNextName, type ICreateSchemaDTO, type NoneSystemFieldType } from "@undb/table"
   import * as Collapsible from "$lib/components/ui/collapsible"
   import * as Card from "$lib/components/ui/card"
   import * as Form from "$lib/components/ui/form"
@@ -14,6 +14,8 @@
   import type { createTableCommand } from "@undb/commands"
   import FieldTypePicker from "../field-picker/field-type-picker.svelte"
   import { tick } from "svelte"
+  import { DotsHorizontal } from "svelte-radix"
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
 
   const { form } = getFormField<Infer<typeof createTableCommand>, "schema">()
 
@@ -37,12 +39,19 @@
 
     await tick()
 
-    activeFieldId = fieldId
+    if (activeFieldId !== undefined) {
+      activeFieldId = fieldId
+    }
     const el = document.querySelector(`[data-field-id="${fieldId}"]`) as HTMLInputElement
     if (el.tagName === "INPUT") {
       el.focus()
       el.select()
     }
+  }
+
+  const removeField = (fieldId?: string) => {
+    $formData.schema = $formData.schema.filter((field) => field.id !== fieldId) as ICreateSchemaDTO
+    console.log($formData.schema)
   }
 
   let activeFieldId: string | undefined
@@ -53,23 +62,35 @@
   {#each $formData.schema as field, i (field.id)}
     <Form.ElementField {form} name="schema">
       <Form.Control let:attrs>
-        <Accordion.Item class="w-full border-b-0" value={$formData.schema[i].id}>
+        <Accordion.Item class="w-full border-b-0" value={field.id}>
           <div class="mr-2 flex items-center gap-2">
             <Form.Label class="flex h-9 flex-1 items-center gap-1">
-              <FieldTypePicker class="h-full w-20" bind:value={$formData.schema[i].type} />
-              <Input
-                {...attrs}
-                class="bg-background no-underline"
-                bind:value={$formData.schema[i].name}
-                data-field-id={field.id}
-              />
+              <FieldTypePicker class="h-full w-20" bind:value={field.type} />
+              <Input {...attrs} class="bg-background no-underline" bind:value={field.name} data-field-id={field.id} />
             </Form.Label>
             <Accordion.Trigger>
               <SettingsIcon class="text-muted-foreground h-4 w-4 shrink-0 transition-transform duration-200" />
             </Accordion.Trigger>
+
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger>
+                <button type="button">
+                  <DotsHorizontal class="text-muted-foreground h-3 w-3 shrink-0" />
+                </button>
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content>
+                <DropdownMenu.Item
+                  class="text-xs text-red-500 data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500"
+                  disabled={$formData.schema.length === 1}
+                  on:click={() => removeField(field.id)}
+                >
+                  Remove
+                </DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
           </div>
-          <Accordion.Content class="bg-muted rounded-sm border px-3 pt-1.5">
-            <FieldOptions type={$formData.schema[i].type} bind:constraint={$formData.schema[i].constraint} />
+          <Accordion.Content class="rounded-sm border bg-gray-50 px-3 pt-1.5">
+            <FieldOptions type={field.type} bind:constraint={field.constraint} />
           </Accordion.Content>
         </Accordion.Item>
       </Form.Control>

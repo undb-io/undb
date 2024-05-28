@@ -32,10 +32,10 @@
       />
     </div>
   </div>
-  <div class="mt-2">
+  <div class="mt-4">
     <div class="flex items-center space-x-2">
-      <Label for="required">Required</Label>
       <Switch id="required" bind:checked={constraint.required} />
+      <Label for="required">Required</Label>
     </div>
   </div>
 {/if}
