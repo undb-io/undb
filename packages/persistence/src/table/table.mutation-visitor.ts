@@ -74,7 +74,9 @@ export class TableMutationVisitor implements ITableSpecVisitor {
   }
   // TODO: abstraction
   and(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
-    throw new NotImplementException(TableMutationVisitor.name + ".and")
+    left.accept(this)
+    right.accept(this)
+    return this
   }
   or(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
     throw new WontImplementException(TableMutationVisitor.name + ".or")

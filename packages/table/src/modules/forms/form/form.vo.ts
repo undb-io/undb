@@ -6,6 +6,7 @@ import { FormNameVo, formName } from "./form-name.vo"
 import { FormIdVO, formId, type FormId } from "./form-id.vo"
 import type { TableDo } from "../../../table.do"
 import type { ICreateFormDTO } from "../dto"
+import type { Field } from "../.."
 
 export const formDTO = z.object({
   id: formId,
@@ -46,6 +47,16 @@ export class FormVO extends ValueObject<IForm> {
 
   public get fields() {
     return this.props.fields
+  }
+
+  public addField(field: Field) {
+    const formFields = this.props.fields.addField(field)
+    return new FormVO({
+      id: this.props.id,
+      name: this.props.name,
+      description: this.description,
+      fields: formFields,
+    })
   }
 
   static create(table: TableDo, dto: ICreateFormDTO) {
