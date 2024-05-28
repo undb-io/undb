@@ -49,6 +49,10 @@ export class FormVO extends ValueObject<IForm> {
     return this.props.fields
   }
 
+  public get visibleFields() {
+    return this.fields.props.filter((field) => !field.hidden)
+  }
+
   public addField(field: Field) {
     const formFields = this.props.fields.addField(field)
     return new FormVO({

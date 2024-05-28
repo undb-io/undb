@@ -30,6 +30,7 @@
 
   const setFormMutation = createMutation({
     mutationFn: trpc.table.form.set.mutate,
+    mutationKey: ["table", $table.id.value, "setForm"],
   })
 
   const setForm = async () => {
@@ -61,6 +62,7 @@
   class={cn(
     "flex items-center justify-between rounded-b-md border-t bg-neutral-50 px-4 py-2 text-xs",
     $$restProps.class,
+    formField.conditionEnabled && !!previousFields.length && "pb-4",
   )}
 >
   <Collapsible.Root
@@ -108,9 +110,9 @@
             on:change={setForm}
           />
           {#if formField.hidden}
-            <EyeOpen class="h-4 w-4" />
-          {:else}
             <EyeClosed class="h-4 w-4" />
+          {:else}
+            <EyeOpen class="h-4 w-4" />
           {/if}
         </label>
       </div>

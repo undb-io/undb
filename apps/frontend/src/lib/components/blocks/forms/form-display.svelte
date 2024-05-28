@@ -1,11 +1,10 @@
 <script lang="ts">
   import { getTable } from "$lib/store/table.store"
-  import type { FormVO, formField } from "@undb/table"
+  import type { FormVO } from "@undb/table"
   import FieldControl from "../field-control/field-control.svelte"
   import FormFieldOptions from "./form-field-options.svelte"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
   import { cn } from "$lib/utils"
-  import { clickoutside } from "@svelte-put/clickoutside"
   import * as Collapsible from "$lib/components/ui/collapsible"
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
@@ -13,6 +12,7 @@
   import { queryParam } from "sveltekit-search-params"
   import { Input } from "$lib/components/ui/input"
   import { Label } from "$lib/components/ui/label"
+  import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
 
   const selectedFieldId = queryParam("formField")
 
@@ -22,7 +22,7 @@
 
   export let form: FormVO
 
-  $: formFields = form.fields.props
+  $: formFields = form.visibleFields
 
   const setFormMutation = createMutation({
     mutationKey: ["table", $table.id.value, "setForm"],
@@ -38,15 +38,15 @@
   }
 
   let isEditingFormName = false
+
+  let el: HTMLDivElement
+  $: if ($selectedFieldId) {
+    el?.querySelector(`[data-field-id="${$selectedFieldId}"]`)?.scrollIntoView({ behavior: "smooth" })
+  }
 </script>
 
-<div class="h-full w-full bg-gray-50 p-6">
-  <div
-    class="bg-background mx-auto max-w-[600px] space-y-2 rounded-md px-8 py-4"
-    data-form-id={form.id}
-    use:clickoutside
-    on:clickoutside={() => ($selectedFieldId = null)}
-  >
+<ScrollArea class="h-full w-full bg-gray-50 p-6">
+  <div class="bg-background mx-auto max-w-[600px] space-y-2 rounded-md px-8 py-4" data-form-id={form.id}>
     {#if isEditingFormName}
       <input
         class="text-4xl font-extrabold tracking-tight"
@@ -67,12 +67,12 @@
       <Input class="text-sm" bind:value={form.description} on:change={setForm}></Input>
     </div>
 
-    <div class="space-y-2">
+    <div class="space-y-2" bind:this={el}>
       {#each formFields as formField}
         {@const field = schema.get(formField.fieldId)}
         {#if field}
           {@const isSelected = $selectedFieldId === field.id.value}
-          <label class="block">
+          <label class="block" data-field-id={formField.fieldId}>
             <input type="radio" class="hidden" bind:group={$selectedFieldId} value={field.id.value} />
             <Collapsible.Root
               open={isSelected}
@@ -114,4 +114,4 @@
       {/each}
     </div>
   </div>
-</div>
+</ScrollArea>

@@ -69,9 +69,9 @@
                 on:change={setForm}
               />
               {#if formField.hidden}
-                <EyeOpen class="h-4 w-4" />
-              {:else}
                 <EyeClosed class="h-4 w-4" />
+              {:else}
+                <EyeOpen class="h-4 w-4" />
               {/if}
             </label>
           </div>

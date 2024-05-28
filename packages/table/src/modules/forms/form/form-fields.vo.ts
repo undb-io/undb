@@ -14,11 +14,12 @@ export class FormFieldsVO extends ValueObject<FormFieldVO[]> {
   }
 
   public getPreviousFields(fieldId: string): FormFieldVO[] {
-    const index = this.props.findIndex((field) => field.fieldId === fieldId)
+    const fields = this.props.filter((f) => !f.hidden)
+    const index = fields.findIndex((field) => field.fieldId === fieldId)
     if (index === -1 || index === 0) {
       return []
     }
-    return this.props.slice(0, index)
+    return fields.slice(0, index)
   }
 
   toJSON() {
