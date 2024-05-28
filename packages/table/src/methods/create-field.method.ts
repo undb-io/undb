@@ -1,8 +1,9 @@
-import { None, Option, Some, andOptions } from "@undb/domain"
+import { None, Option, Some, andOptions, applyRules } from "@undb/domain"
 import { FieldCreatedEvent } from "../events"
 import { type ICreateFieldDTO } from "../modules"
 import type { TableComositeSpecification } from "../specifications"
 import type { TableDo } from "../table.do"
+import { FieldNameShouldBeUnique } from "../modules/schema/rules/field-name-should-be-unique.rule"
 
 export function createFieldMethod(this: TableDo, dto: ICreateFieldDTO): Option<TableComositeSpecification> {
   const createFieldSpec = this.schema.$createField(dto)
@@ -10,6 +11,8 @@ export function createFieldMethod(this: TableDo, dto: ICreateFieldDTO): Option<T
 
   const spec = andOptions(Some(createFieldSpec), formAddFieldSpec ? Some(formAddFieldSpec) : None).unwrap()
   spec.mutate(this)
+
+  applyRules(new FieldNameShouldBeUnique(this.schema))
 
   const event = new FieldCreatedEvent({
     tableId: this.id.value,

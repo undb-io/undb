@@ -16,6 +16,8 @@ import { TableSchemaSpecification } from "./specifications/table-schema.specific
 import { TableIdVo } from "./table-id.vo"
 import { TableNameVo } from "./table-name.vo"
 import { TableDo } from "./table.do"
+import { applyRules } from "@undb/domain"
+import { FieldNameShouldBeUnique } from "./modules/schema/rules"
 
 export interface ITableBuilder {
   reset(): void
@@ -100,6 +102,8 @@ export class TableCreator {
   create(dto: ICreateTableDTO): TableDo {
     dto = createTableDTO.parse(dto)
     const table = this.builder.setId(dto.id).setName(dto.name).createSchema(dto.schema).createViews().build()
+
+    applyRules(new FieldNameShouldBeUnique(table.schema))
 
     // @ts-ignore - TODO: fix this
     table.addDomainEvent(new TableCreatedEvent({ table: table.toJSON() }))

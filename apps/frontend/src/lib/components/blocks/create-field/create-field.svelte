@@ -27,6 +27,9 @@
         reset()
         await invalidate(`table:${$table.id.value}`)
       },
+      onError(error: Error) {
+        toast.error(error.message)
+      },
     })),
   )
 
