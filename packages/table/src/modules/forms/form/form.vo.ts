@@ -34,7 +34,7 @@ export class FormVO extends ValueObject<IForm> {
     return this.props.description
   }
 
-  public set description(description: string | undefined) {
+  public set description(description: string | undefined | null) {
     this.props.description = description
   }
 
@@ -48,6 +48,10 @@ export class FormVO extends ValueObject<IForm> {
 
   public get fields() {
     return this.props.fields
+  }
+
+  public set fields(fields: FormFieldsVO) {
+    this.props.fields = fields
   }
 
   public get visibleFields() {
