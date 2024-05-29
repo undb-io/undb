@@ -114,3 +114,26 @@ export const deleteRecordById = (table: TableDo): RouteConfig => {
     },
   }
 }
+
+export const recordSubscription = (table: TableDo): RouteConfig => {
+  return {
+    method: "get",
+    path: `/tables/${table.id.value}/subscription`,
+    description: `Subscribe ${table.name.value} record events`,
+    summary: `Subscribe ${table.name.value} record events`,
+    tags: [RECORD_COMPONENT, "Subscription"],
+    responses: {
+      200: {
+        description: "subscription event schema",
+        content: {
+          "text/event-stream": {
+            schema: z.object({
+              // TODO: get event type
+              event: z.any(),
+            }),
+          },
+        },
+      },
+    },
+  }
+}

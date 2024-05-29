@@ -11,6 +11,7 @@ import {
   duplicateRecordById,
   getRecordById,
   getRecords,
+  recordSubscription,
 } from "./openapi/record.openapi"
 
 export const createOpenApiSpec = (table: TableDo, record?: RecordDO) => {
@@ -23,6 +24,7 @@ export const createOpenApiSpec = (table: TableDo, record?: RecordDO) => {
   registry.registerPath(getRecordById(table, recordSchema))
   registry.registerPath(duplicateRecordById(table))
   registry.registerPath(deleteRecordById(table))
+  registry.registerPath(recordSubscription(table))
 
   const generator = new OpenApiGeneratorV3(registry.definitions)
 

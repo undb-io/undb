@@ -162,21 +162,21 @@
 
   let evtSource: EventSource
 
-  onMount(() => {
-    evtSource = new EventSource(`/api/tables/${$t.id.value}/subscription`, { withCredentials: true })
-    evtSource.onmessage = (event) => {
-      const data = JSON.parse(event.data)
-      const recordEvent = RecordEventFactory.fromJSON(data)
-      if (recordEvent.isNone()) return
+  // onMount(() => {
+  //   evtSource = new EventSource(`/api/tables/${$t.id.value}/subscription`, { withCredentials: true })
+  //   evtSource.onmessage = (event) => {
+  //     const data = JSON.parse(event.data)
+  //     const recordEvent = RecordEventFactory.fromJSON(data)
+  //     if (recordEvent.isNone()) return
 
-      // TODO: use event
-      const evt = recordEvent.unwrap()
-    }
-  })
+  //     // TODO: use event
+  //     const evt = recordEvent.unwrap()
+  //   }
+  // })
 
-  onDestroy(() => {
-    evtSource.close()
-  })
+  // onDestroy(() => {
+  //   evtSource.close()
+  // })
 </script>
 
 <div class="flex h-full w-full flex-col">
