@@ -21,7 +21,7 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
   static create(table: TableDo, dto: ICreateRecordDTO) {
     const record = new RecordDO(RecordIdVO.create(dto.id), RecordValuesVO.create(table, dto.values))
 
-    const event = new RecordDeletedEvent(table, record)
+    const event = new RecordCreatedEvent(table, record)
     record.addDomainEvent(event)
 
     return record

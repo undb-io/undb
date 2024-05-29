@@ -5,8 +5,9 @@
   "type": "module",
   "dependencies": {
     "@undb/di": "workspace:*",
+    "@undb/persistence": "workspace:*",
     "@undb/table": "workspace:*",
-    "@undb/persistence": "workspace:*"
+    "drizzle-orm": "^0.30.10"
   },
   "devDependencies": {
     "@types/bun": "latest"
