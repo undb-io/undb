@@ -1,4 +1,4 @@
-import { ValueObject, Option } from "@undb/domain"
+import { ValueObject } from "@undb/domain"
 import { FormFieldsVO } from "./form-fields.vo"
 import { FormFieldVO, formField } from "./form-field.vo"
 import { z } from "@undb/zod"
@@ -6,12 +6,13 @@ import { FormNameVo, formName } from "./form-name.vo"
 import { FormIdVO, formId, type FormId } from "./form-id.vo"
 import type { TableDo } from "../../../table.do"
 import type { ICreateFormDTO } from "../dto"
-import type { Field } from "../.."
+import { conditionContainsFields } from "../../schema/fields/condition/condition.util"
+import type { Field } from "../../schema/fields/field.type"
 
 export const formDTO = z.object({
   id: formId,
   name: formName,
-  description: z.string().optional(),
+  description: z.string().optional().nullable(),
   fields: formField.array(),
 })
 
@@ -19,7 +20,7 @@ export type IFormDTO = z.infer<typeof formDTO>
 
 interface IForm {
   id: FormId
-  description?: string
+  description?: string | null
   name: FormNameVo
   fields: FormFieldsVO
 }
@@ -92,5 +93,26 @@ export class FormVO extends ValueObject<IForm> {
 
   getPreviousFields(fieldId: string): FormFieldVO[] {
     return this.props.fields.getPreviousFields(fieldId)
+  }
+
+  getNextFields(fieldId: string): FormFieldVO[] {
+    return this.props.fields.getNextFields(fieldId)
+  }
+
+  getIsFormFieldContionInValid(fieldId: string): boolean {
+    const target = this.fields.props.find((f) => f.fieldId === fieldId)
+    if (!target) return false
+
+    const condition = target.condition
+    if (!condition) return false
+
+    console.log(fieldId, this.getPreviousFields(fieldId))
+    const previousFields = this.getPreviousFields(fieldId).filter((field) => field.hidden)
+    console.log(previousFields)
+    const nextFields = this.getNextFields(fieldId)
+
+    const ids = new Set([...previousFields, ...nextFields].map((field) => field.fieldId))
+
+    return conditionContainsFields(condition, ids)
   }
 }

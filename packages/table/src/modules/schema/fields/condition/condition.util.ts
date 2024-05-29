@@ -1,5 +1,5 @@
 import { None, andOptions, orOptions, type Option } from "@undb/domain"
-import type { z } from "@undb/zod"
+import type { ZodTypeAny, z } from "@undb/zod"
 import { isObject, uid } from "radash"
 import type {
   INotRecordComositeSpecification,
@@ -193,4 +193,19 @@ export function conditionWithoutFields<OptionType extends z.ZodTypeAny>(
     conjunction: value.conjunction,
     children,
   }
+}
+
+export function conditionContainsFields<OptionType extends ZodTypeAny>(
+  value: IConditionGroup<OptionType>,
+  fieldIds: Set<string>,
+): boolean {
+  for (const child of value.children) {
+    if (isFieldCondition(child) && fieldIds.has(child.fieldId)) {
+      return true
+    } else if (isGroup(child) && conditionContainsFields(child, fieldIds)) {
+      return true
+    }
+  }
+
+  return false
 }
