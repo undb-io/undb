@@ -8,9 +8,9 @@ import Elysia from "elysia"
 export class RealtimeRoute {
   constructor(
     @inject(PubSubContext)
-    private readonly pubsub: PubSubContext<string>,
+    private readonly pubsub: PubSubContext,
     @inject(RxJSPubSub)
-    rxjsPubSub: RxJSPubSub<string>,
+    rxjsPubSub: RxJSPubSub,
     @inject(ReplyService)
     private readonly reply: ReplyService,
   ) {
@@ -28,14 +28,6 @@ export class RealtimeRoute {
           },
         }),
       )
-      .get(
-        "/sse",
-        () =>
-          new Stream(async (stream) => {
-            this.pubsub.subscribe((message) => {
-              stream.send(message)
-            })
-          }),
-      )
+      .get("/sse", () => new Stream(this.pubsub.subscribe("record.*")))
   }
 }

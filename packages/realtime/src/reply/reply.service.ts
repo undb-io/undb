@@ -9,15 +9,14 @@ export class ReplyService {
     @injectDb()
     private readonly db: Database,
     @inject(PubSubContext)
-    private readonly pubsub: PubSubContext<string>,
+    private readonly pubsub: PubSubContext,
   ) {}
 
   public async scan() {
-    const outboxList = await this.db.select().from(outbox).limit(1)
+    const outboxList = await this.db.select().from(outbox).limit(10)
 
     for (const outbox of outboxList) {
-      // TODO: outbox type
-      this.pubsub.publish(JSON.stringify(outbox))
+      this.pubsub.publish(outbox.name, JSON.stringify(outbox))
     }
   }
 }
