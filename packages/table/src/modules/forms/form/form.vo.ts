@@ -106,9 +106,7 @@ export class FormVO extends ValueObject<IForm> {
     const condition = target.condition
     if (!condition) return false
 
-    console.log(fieldId, this.getPreviousFields(fieldId))
     const previousFields = this.getPreviousFields(fieldId).filter((field) => field.hidden)
-    console.log(previousFields)
     const nextFields = this.getNextFields(fieldId)
 
     const ids = new Set([...previousFields, ...nextFields].map((field) => field.fieldId))
