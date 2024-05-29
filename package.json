@@ -21,7 +21,7 @@
     "better-sqlite3": "^10.0.0",
     "drizzle-kit": "^0.21.4",
     "husky": "^9.0.11",
-    "lint-staged": "^15.2.4",
+    "lint-staged": "^15.2.5",
     "npm-run-all2": "^6.2.0",
     "prettier": "^3.2.5",
     "turbo": "latest"
@@ -32,7 +32,7 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "bun@1.1.9",
+  "packageManager": "bun@1.1.10",
   "workspaces": [
     "apps/*",
     "packages/*"

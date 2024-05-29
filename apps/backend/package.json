@@ -24,7 +24,7 @@
     "@undb/query-handlers": "workspace:*",
     "@undb/realtime": "workspace:*",
     "@undb/trpc": "workspace:*",
-    "bun": "^1.1.9",
+    "bun": "^1.1.10",
     "core-js": "^3.37.1",
     "elysia": "^1.0.22",
     "elysia-requestid": "^1.0.9",
