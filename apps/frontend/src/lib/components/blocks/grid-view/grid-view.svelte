@@ -27,6 +27,7 @@
   import { page } from "$app/stores"
   import { DELETE_RECORD_MODAL, DUPLICATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import type { LayoutData } from "../../../../routes/(authed)/t/[tableId]/$types"
+  import { ScrollArea } from "$lib/components/ui/scroll-area"
 
   const t = getTable()
 
@@ -161,7 +162,7 @@
 
 <div class="flex h-full w-full flex-col">
   <TableTools />
-  <div class="flex-1 overflow-auto rounded-md border">
+  <ScrollArea orientation="both" class="flex-1 overflow-auto rounded-md border">
     <table {...$tableAttrs} class="flex h-full flex-col">
       <Table.Header {...$tableHeaderAttrs} class="sticky top-0 z-50 bg-white">
         {#each $headerRows as headerRow}
@@ -276,7 +277,7 @@
         </tr>
       </tfooter>
     </table>
-  </div>
+  </ScrollArea>
 
   <div class="flex items-center justify-between space-x-2 px-4 py-2">
     <div class="text-muted-foreground flex-1 text-sm">
