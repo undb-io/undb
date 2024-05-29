@@ -1,4 +1,4 @@
-import { Subject, filter, map, type Observable } from "rxjs"
+import { Subject, filter, tap, map, type Observable } from "rxjs"
 import { type Message, type PubSub } from "./pubsub.context"
 import { singleton } from "@undb/di"
 import { Glob } from "bun"

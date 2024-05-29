@@ -19,7 +19,6 @@ import { OpenAPI } from "./routes/openapi.route"
 import { web } from "./routes/web.route"
 import { RealtimeRoute } from "./routes/realtime.route"
 
-const realtime = container.resolve(RealtimeRoute)
 const app = new Elysia()
   .trace(async ({ handle, set }) => {
     const { time, end } = await handle
@@ -34,7 +33,6 @@ const app = new Elysia()
     const requestId = ctx.set.headers["X-Request-ID"]
     executionContext.enterWith({ requestId, user: { userId: ctx.user?.id ?? null } })
   })
-  .use(realtime.create())
   .use(auth())
   .use(loggerPlugin())
   .guard(
@@ -51,7 +49,8 @@ const app = new Elysia()
     },
     (app) => {
       const openapi = container.resolve(OpenAPI)
-      return app.use(trpc(route)).use(graphql().yoga).use(web()).use(openapi.route())
+      const realtime = container.resolve(RealtimeRoute)
+      return app.use(trpc(route)).use(graphql().route()).use(web()).use(openapi.route()).use(realtime.route())
     },
   )
 

@@ -20,27 +20,27 @@ export default defineConfig({
     proxy: {
       "/api": {
         target: "http://0.0.0.0:4000",
-        xfwd: true,
+        changeOrigin: true,
       },
       "/openapi": {
         target: "http://0.0.0.0:4000",
-        xfwd: true,
+        changeOrigin: true,
       },
       "/trpc": {
         target: "http://0.0.0.0:4000",
-        xfwd: true,
+        changeOrigin: true,
       },
       "/graphql": {
         target: "http://0.0.0.0:4000",
-        xfwd: true,
+        changeOrigin: true,
       },
       "/signup": {
         target: "http://0.0.0.0:4000",
-        xfwd: true,
+        changeOrigin: true,
       },
       "/login": {
         target: "http://0.0.0.0:4000",
-        xfwd: true,
+        changeOrigin: true,
       },
     },
   },

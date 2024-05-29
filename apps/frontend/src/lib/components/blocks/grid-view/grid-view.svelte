@@ -8,7 +8,7 @@
   import { copyToClipboard } from "@svelte-put/copy"
   import { toast } from "svelte-sonner"
   import { cn } from "$lib/utils.js"
-  import { Records, type IRecordsDTO } from "@undb/table"
+  import { RecordEventFactory, Records, type IRecordsDTO } from "@undb/table"
   import { createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
@@ -28,6 +28,7 @@
   import { DELETE_RECORD_MODAL, DUPLICATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import type { LayoutData } from "../../../../routes/(authed)/t/[tableId]/$types"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
+  import { onDestroy, onMount } from "svelte"
 
   const t = getTable()
 
@@ -158,6 +159,24 @@
   $: selectedDataIds = $viewModel.pluginStates.select.selectedDataIds
 
   $: resize = $viewModel.pluginStates.resize.columnWidths
+
+  let evtSource: EventSource
+
+  onMount(() => {
+    evtSource = new EventSource(`/api/tables/${$t.id.value}/subscription`, { withCredentials: true })
+    evtSource.onmessage = (event) => {
+      const data = JSON.parse(event.data)
+      const recordEvent = RecordEventFactory.fromJSON(data)
+      if (recordEvent.isNone()) return
+
+      // TODO: use event
+      const evt = recordEvent.unwrap()
+    }
+  })
+
+  onDestroy(() => {
+    evtSource.close()
+  })
 </script>
 
 <div class="flex h-full w-full flex-col">

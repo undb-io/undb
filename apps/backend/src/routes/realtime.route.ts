@@ -18,7 +18,7 @@ export class RealtimeRoute {
     pubsub.setPubSub(rxjsPubSub)
   }
 
-  create() {
+  route() {
     return new Elysia()
       .use(
         cron({

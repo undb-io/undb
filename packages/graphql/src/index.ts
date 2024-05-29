@@ -13,7 +13,7 @@ export class Graphql {
     public readonly repo: IRecordQueryRepository,
   ) {}
 
-  public get yoga() {
+  public route() {
     return yoga({
       typeDefs: `
       scalar JSON
