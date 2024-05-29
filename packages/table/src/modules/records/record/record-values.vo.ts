@@ -55,7 +55,7 @@ export class RecordValuesVO extends ValueObject {
     return new RecordValuesVO(values)
   }
 
-  public toJSON() {
+  public toJSON(): IRecordValues {
     const values: IRecordValues = {}
 
     for (const [id, value] of Object.entries(this.values)) {

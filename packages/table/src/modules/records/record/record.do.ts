@@ -38,6 +38,13 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
     }
   }
 
+  public toJSON(): IRecordDTO {
+    return {
+      id: this.id.value,
+      values: this.values.toJSON(),
+    }
+  }
+
   getMuttableValues(schema: SchemaMap) {
     return this.values.getMuttableValues(schema)
   }
