@@ -7,3 +7,5 @@ export * from "./record-deleted.event"
 export type IRecordEvent = RecordDeletedEvent | RecordCreatedEvent
 
 export const RecordEvents = [RecordDeletedEvent, RecordCreatedEvent]
+
+export * from "./record-event.factory"

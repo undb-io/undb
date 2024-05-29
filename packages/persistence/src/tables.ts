@@ -32,7 +32,7 @@ export const outbox = sqliteTable("outbox", {
   id: text("id").notNull().primaryKey(),
   payload: text("payload", { mode: "json" }).notNull(),
   meta: text("meta", { mode: "json" }),
-  timestamp: integer("timestamp", { mode: "timestamp" }).notNull(),
+  timestamp: integer("timestamp", { mode: "timestamp_ms" }).notNull(),
   operatorId: text("operator_id").notNull(),
   name: text("name").notNull(),
 })

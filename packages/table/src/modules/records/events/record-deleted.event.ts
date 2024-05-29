@@ -1,4 +1,4 @@
-import { BaseEvent } from "@undb/domain"
+import { BaseEvent, type IEventJSON } from "@undb/domain"
 import { z } from "@undb/zod"
 import { tableId } from "../../../table-id.vo"
 import type { TableDo } from "../../../table.do"
@@ -16,8 +16,8 @@ export type IRecordDeletedEvent = z.infer<typeof recordDeletedEvent>
 export class RecordDeletedEvent extends BaseEvent<IRecordDeletedEvent, typeof RECORD_DELETED_EVENT> {
   name = RECORD_DELETED_EVENT
 
-  constructor(table: TableDo, record: RecordDO) {
-    super(
+  static create(table: TableDo, record: RecordDO) {
+    return new this(
       {
         id: record.id.value,
         tableId: table.id.value,

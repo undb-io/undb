@@ -2,29 +2,30 @@ import { Subject, filter, map, type Observable } from "rxjs"
 import { type Message, type PubSub } from "./pubsub.context"
 import { singleton } from "@undb/di"
 import { Glob } from "bun"
+import type { Topic } from "../reply/topic"
 
 @singleton()
-export class RxJSPubSub implements PubSub {
-  private subject: Subject<Message>
+export class RxJSPubSub<T> implements PubSub<T> {
+  private subject: Subject<Message<T>>
 
   constructor() {
-    this.subject = new Subject<Message>()
+    this.subject = new Subject<Message<T>>()
   }
 
-  publish(topic: string, message: string): void {
+  publish(topic: Topic, message: T): void {
     this.subject.next({ topic, message })
   }
 
-  subscribe(topic: string): AsyncIterable<string> {
+  subscribe(topic: Topic): AsyncIterable<T> {
     const observable = this.subject.asObservable().pipe(
-      filter((msg: Message) => this.matchTopic(topic, msg)),
-      map((msg: Message) => msg.message),
+      filter((msg: Message<T>) => this.matchTopic(topic, msg)),
+      map((msg: Message<T>) => msg.message),
     )
 
     return this.toAsyncIterable(observable)
   }
 
-  private matchTopic(topic: string, msg: Message) {
+  private matchTopic(topic: string, msg: Message<T>) {
     return topic === "*" || new Glob(topic).match(msg.topic)
   }
 

@@ -46,7 +46,7 @@
 </script>
 
 <ScrollArea class="h-full w-full bg-gray-100 p-6 shadow-inner">
-  <div class="bg-background mx-auto max-w-[600px] space-y-2 rounded-md px-8 py-4 shadow-md" data-form-id={form.id}>
+  <div class="bg-background mx-auto max-w-[660px] space-y-2 rounded-md px-8 py-4 shadow-md" data-form-id={form.id}>
     {#if isEditingFormName}
       <input
         class="text-4xl font-extrabold tracking-tight"

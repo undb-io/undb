@@ -3,6 +3,9 @@ import { injectDb, type Database } from "@undb/persistence"
 import { outbox } from "@undb/persistence"
 import { PubSubContext } from "../pubsub/pubsub.context"
 import { inArray } from "drizzle-orm"
+import { ReplyEventFactory } from "./reply-event.factory"
+import type { BaseEvent } from "@undb/domain"
+import { getTopic } from "./topic"
 
 @singleton()
 export class ReplyService {
@@ -10,14 +13,22 @@ export class ReplyService {
     @injectDb()
     private readonly db: Database,
     @inject(PubSubContext)
-    private readonly pubsub: PubSubContext,
+    private readonly pubsub: PubSubContext<BaseEvent>,
   ) {}
 
   public async scan() {
     const outboxList = await this.db.select().from(outbox).limit(10)
 
     for (const item of outboxList) {
-      this.pubsub.publish(item.name, JSON.stringify(item))
+      const event = ReplyEventFactory.from(item)
+      if (event.isNone()) continue
+
+      const evt = event.unwrap()
+
+      const topic = getTopic(evt)
+      if (topic.isNone()) continue
+
+      this.pubsub.publish(topic.unwrap(), evt)
     }
 
     if (outboxList.length > 0) {

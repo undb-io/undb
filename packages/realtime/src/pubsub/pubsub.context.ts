@@ -1,28 +1,29 @@
 import { singleton } from "@undb/di"
+import type { Topic } from "../reply/topic"
 
-export interface Message {
-  topic: string
-  message: string
+export interface Message<T> {
+  topic: Topic
+  message: T
 }
 
-export interface PubSub {
-  publish(topic: string, message: string): void
-  subscribe(topic: string): AsyncIterable<string>
+export interface PubSub<T> {
+  publish(topic: Topic, message: T): void
+  subscribe(topic: Topic): AsyncIterable<T>
 }
 
 @singleton()
-export class PubSubContext {
-  private pubSub!: PubSub
+export class PubSubContext<T> {
+  private pubSub!: PubSub<T>
 
-  setPubSub(pubSub: PubSub): void {
+  setPubSub(pubSub: PubSub<T>): void {
     this.pubSub = pubSub
   }
 
-  publish(topic: string, message: string): void {
+  publish(topic: Topic, message: T): void {
     this.pubSub.publish(topic, message)
   }
 
-  subscribe(topic: string): AsyncIterable<string> {
+  subscribe(topic: Topic): AsyncIterable<T> {
     return this.pubSub.subscribe(topic)
   }
 }

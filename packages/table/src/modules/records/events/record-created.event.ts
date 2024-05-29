@@ -17,8 +17,8 @@ export type IRecordCreatedEvent = z.infer<typeof recordCreatedEvent>
 export class RecordCreatedEvent extends BaseEvent<IRecordCreatedEvent, typeof RECORD_CREATED_EVENT> {
   name = RECORD_CREATED_EVENT
 
-  constructor(table: TableDo, record: RecordDO) {
-    super(
+  static create(table: TableDo, record: RecordDO) {
+    return new this(
       {
         id: record.id.value,
         tableId: table.id.value,
