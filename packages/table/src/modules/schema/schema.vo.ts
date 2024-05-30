@@ -60,6 +60,10 @@ export class Schema extends ValueObject<Field[]> {
     return this.fields.filter((f) => !f.isSystem) as NoneSystemField[]
   }
 
+  get displayFields(): Field[] {
+    return this.fields.filter((f) => f.display)
+  }
+
   get mutableSchema() {
     const schema = objectify(
       this.fields.filter((f) => f.isMutable),

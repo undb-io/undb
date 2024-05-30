@@ -103,6 +103,14 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
       ...values,
     }
   }
+
+  getDisplayValue(table: TableDo): string {
+    const fields = table.schema.displayFields
+    if (fields.length === 0) return this.id.value
+
+    const values = this.flatten()
+    return fields.map((field) => values[field.id.value]).join(", ")
+  }
 }
 
 export type IRecordDO = InstanceType<typeof RecordDO>
