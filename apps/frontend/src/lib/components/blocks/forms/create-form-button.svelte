@@ -12,6 +12,7 @@
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { Input } from "$lib/components/ui/input"
+  import { cn } from "$lib/utils"
 
   let open = false
 
@@ -50,9 +51,11 @@
 
 <Popover.Root bind:open>
   <Popover.Trigger asChild let:builder>
-    <Button class="mt-4" builders={[builder]}>
-      <PlusCircleIcon class="mr-2 h-4 w-4" />
-      Create Form
+    <Button class={cn("mt-4", $$restProps.class)} builders={[builder]} {...$$restProps}>
+      <slot>
+        <PlusCircleIcon class="mr-2 h-4 w-4" />
+        Create Form
+      </slot>
     </Button>
   </Popover.Trigger>
   <Popover.Content>

@@ -11,6 +11,7 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js"
   import * as Sheet from "$lib/components/ui/sheet/index.js"
   import { Button } from "$lib/components/ui/button/index.js"
+  import * as Tooltip from "$lib/components/ui/tooltip"
   import {
     DatabaseIcon,
     FileSlidersIcon,
@@ -25,6 +26,7 @@
   import { tab, isFormTab, formId } from "$lib/store/tab.store"
   import RecordUpdating from "../record-updating/record-updating.svelte"
   import Separator from "$lib/components/ui/separator/separator.svelte"
+  import CreateFormButton from "../forms/create-form-button.svelte"
 
   const table = getTable()
   $: view = $table.views.getViewById()
@@ -102,28 +104,39 @@
           </Breadcrumb.Item>
           <Breadcrumb.Separator />
           {#if $isFormTab}
-            <DropdownMenu.Root>
-              <DropdownMenu.Trigger asChild let:builder>
-                <Button size="sm" variant="link" class="pl-0" builders={[builder]}>{currentForm?.name}</Button>
-              </DropdownMenu.Trigger>
-              <DropdownMenu.Content class="w-[200px]">
-                <DropdownMenu.Group>
-                  <DropdownMenu.Label>Forms</DropdownMenu.Label>
-                  <DropdownMenu.RadioGroup bind:value={currentFormId}>
-                    {#each forms as form}
-                      <DropdownMenu.RadioItem value={form.id}>{form.name}</DropdownMenu.RadioItem>
-                    {/each}
-                  </DropdownMenu.RadioGroup>
-                </DropdownMenu.Group>
-                <DropdownMenu.Separator></DropdownMenu.Separator>
-                <DropdownMenu.Item>
-                  <PlusCircleIcon class="mr-2 h-4 w-4" />
-                  Create Form</DropdownMenu.Item
-                >
-              </DropdownMenu.Content>
-            </DropdownMenu.Root>
+            {#if forms.length}
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger asChild let:builder>
+                  <Button size="sm" variant="link" class="pl-0" builders={[builder]}>{currentForm?.name}</Button>
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content class="w-[200px]">
+                  <DropdownMenu.Group>
+                    <DropdownMenu.Label>Forms</DropdownMenu.Label>
+                    <DropdownMenu.RadioGroup
+                      bind:value={currentFormId}
+                      onValueChange={(value) => ($formId = value ?? null)}
+                    >
+                      {#each forms as form}
+                        <DropdownMenu.RadioItem value={form.id}>{form.name}</DropdownMenu.RadioItem>
+                      {/each}
+                    </DropdownMenu.RadioGroup>
+                  </DropdownMenu.Group>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
+            {/if}
+
+            <Tooltip.Root>
+              <Tooltip.Trigger>
+                <CreateFormButton class="mt-0" size="icon" variant="ghost">
+                  <PlusCircleIcon class="h-4 w-4" />
+                </CreateFormButton>
+              </Tooltip.Trigger>
+              <Tooltip.Content>
+                <p>Create Form</p>
+              </Tooltip.Content>
+            </Tooltip.Root>
           {:else}
-            <Breadcrumb.Item>
+            <Breadcrumb.Item class="text-xs">
               <Breadcrumb.Page>{view.name.value}</Breadcrumb.Page>
             </Breadcrumb.Item>
           {/if}

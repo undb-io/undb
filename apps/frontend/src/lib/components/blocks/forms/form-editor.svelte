@@ -5,10 +5,11 @@
   import FormFieldsEditor from "./form-fields-editor.svelte"
   import { getTable } from "$lib/store/table.store"
   import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
+  import { formId } from "$lib/store/tab.store"
 
   const table = getTable()
   $: forms = $table.forms
-  $: form = forms?.props?.[0]
+  $: form = $formId ? forms?.props.find((f) => f.id === $formId) : forms?.props?.[0]
 </script>
 
 <Resizable.PaneGroup direction="horizontal">
