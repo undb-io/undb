@@ -49,8 +49,6 @@
     defaultSize={15}
     minSize={10}
     maxSize={20}
-    collapsedSize={5}
-    collapsible={true}
   >
     <div class="flex h-full max-h-screen flex-col gap-2">
       <div class="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">

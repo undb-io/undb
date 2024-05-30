@@ -8,7 +8,7 @@
   import { copyToClipboard } from "@svelte-put/copy"
   import { toast } from "svelte-sonner"
   import { cn } from "$lib/utils.js"
-  import { RecordEventFactory, Records, type IRecordsDTO } from "@undb/table"
+  import { Records, type IRecordsDTO } from "@undb/table"
   import { createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
@@ -29,7 +29,7 @@
   import { DELETE_RECORD_MODAL, DUPLICATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import type { LayoutData } from "../../../../routes/(authed)/t/[tableId]/$types"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
-  import { onDestroy, onMount } from "svelte"
+  import { ClipboardCopyIcon, CopyIcon, Maximize2Icon, Trash2Icon } from "lucide-svelte"
 
   const t = getTable()
 
@@ -259,23 +259,33 @@
                   </Table.Row>
                 </ContextMenu.Trigger>
                 <ContextMenu.Content>
-                  <ContextMenu.Item on:click={() => ($r = recordId)}>View record details</ContextMenu.Item>
-                  <ContextMenu.Item on:click={() => copy(recordId)}>Copy record ID</ContextMenu.Item>
+                  <ContextMenu.Item class="text-xs" on:click={() => ($r = recordId)}>
+                    <Maximize2Icon class="mr-2 h-4 w-4" />
+                    View record details
+                  </ContextMenu.Item>
+                  <ContextMenu.Item class="text-xs" on:click={() => copy(recordId)}>
+                    <ClipboardCopyIcon class="mr-2 h-4 w-4" />
+                    Copy record ID
+                  </ContextMenu.Item>
                   <ContextMenu.Item
+                    class="text-xs"
                     on:click={() => {
                       toggleModal(DUPLICATE_RECORD_MODAL)
                       $duplicateRecordId = recordId
                     }}
                   >
+                    <CopyIcon class="mr-2 h-4 w-4" />
                     Duplicate Record
                   </ContextMenu.Item>
+                  <ContextMenu.Separator />
                   <ContextMenu.Item
                     on:click={() => {
                       toggleModal(DELETE_RECORD_MODAL)
                       $deleteRecordId = recordId
                     }}
-                    class="text-red-500 data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500"
+                    class="text-xs text-red-500 data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500"
                   >
+                    <Trash2Icon class="mr-2 h-4 w-4" />
                     Delete Record
                   </ContextMenu.Item>
                 </ContextMenu.Content>
