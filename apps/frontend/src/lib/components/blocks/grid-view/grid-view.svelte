@@ -280,21 +280,23 @@
         {/each}
       </Table.Body>
 
-      <tfooter class="text-muted-foreground sticky bottom-0 h-8 w-full border-t bg-white text-sm">
-        <tr class="flex h-8 w-full">
-          {#each $visibleColumns as column}
-            {@const width = $resize[column.id]}
-            <td
-              style={`width: ${width}px; min-width: ${width}px; max-width: ${width}px`}
-              class="h-full overflow-hidden"
-            >
-              {#if column.footer && !isFunction(column.footer)}
-                <Render of={column.footer} />
-              {/if}
-            </td>
-          {/each}
-        </tr>
-      </tfooter>
+      {#if records.length}
+        <tfooter class="text-muted-foreground sticky bottom-0 h-8 w-full border-t bg-white text-sm">
+          <tr class="flex h-8 w-full">
+            {#each $visibleColumns as column}
+              {@const width = $resize[column.id]}
+              <td
+                style={`width: ${width}px; min-width: ${width}px; max-width: ${width}px`}
+                class="h-full overflow-hidden"
+              >
+                {#if column.footer && !isFunction(column.footer)}
+                  <Render of={column.footer} />
+                {/if}
+              </td>
+            {/each}
+          </tr>
+        </tfooter>
+      {/if}
     </table>
   </ScrollArea>
 
