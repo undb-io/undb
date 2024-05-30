@@ -1,4 +1,4 @@
-import type { ISpecification, ISpecVisitor } from "@undb/domain"
+import { WontImplementException, type ISpecification, type ISpecVisitor } from "@undb/domain"
 import type {
   ITableSpecVisitor,
   TableIdSpecification,
@@ -46,13 +46,15 @@ export class UnderlyingTableSpecVisitor<TB extends CreateTableBuilder<any, any> 
   withViewSort(viewSort: WithViewSort): void {}
   withViewAggregate(viewColor: WithViewAggregate): void {}
   and(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
+    left.accept(this)
+    right.accept(this)
     return this
   }
   or(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
-    return this
+    throw new WontImplementException(UnderlyingTableSpecVisitor.name + ".or")
   }
   not(spec: ISpecification<any, ISpecVisitor>): this {
-    return this
+    throw new WontImplementException(UnderlyingTableSpecVisitor.name + ".not")
   }
   clone(): this {
     return this

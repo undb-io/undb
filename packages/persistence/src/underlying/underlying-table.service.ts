@@ -44,9 +44,11 @@ export class UnderlyingTableService {
   async update(table: TableDo, spec: TableComositeSpecification) {
     const t = new UnderlyingTable(table)
     const tb = this.qb.schema.alterTable(t.name)
+
     const visitor = new UnderlyingTableSpecVisitor(t, tb)
     spec.accept(visitor)
 
+    // @ts-expect-error should imporve generic
     await visitor.tb.execute?.()
   }
 }
