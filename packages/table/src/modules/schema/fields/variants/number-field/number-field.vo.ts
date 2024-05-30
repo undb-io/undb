@@ -20,6 +20,7 @@ export const NUMBER_TYPE = "number" as const
 export const createNumberFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(NUMBER_TYPE),
   constraint: numberFieldConstraint.optional(),
+  defaultValue: z.number().optional(),
 })
 
 export type ICreateNumberFieldDTO = z.infer<typeof createNumberFieldDTO>
@@ -27,6 +28,7 @@ export type ICreateNumberFieldDTO = z.infer<typeof createNumberFieldDTO>
 export const numberFieldDTO = baseFieldDTO.extend({
   type: z.literal(NUMBER_TYPE),
   constraint: numberFieldConstraint.optional(),
+  defaultValue: z.number().optional(),
 })
 
 export type INumberFieldDTO = z.infer<typeof numberFieldDTO>
@@ -37,10 +39,17 @@ export class NumberField extends AbstractField<NumberFieldValue, NumberFieldCons
     if (dto.constraint) {
       this.constraint = Some(new NumberFieldConstraint(dto.constraint))
     }
+    if (dto.defaultValue) {
+      this.defaultValue = new NumberFieldValue(dto.defaultValue)
+    }
   }
 
   static create(dto: ICreateNumberFieldDTO) {
-    return new NumberField({ ...dto, id: FieldIdVo.fromStringOrCreate(dto.id).value })
+    const field = new NumberField({ ...dto, id: FieldIdVo.fromStringOrCreate(dto.id).value })
+    if (dto.defaultValue) {
+      field.defaultValue = new NumberFieldValue(dto.defaultValue)
+    }
+    return field
   }
 
   override type = NUMBER_TYPE

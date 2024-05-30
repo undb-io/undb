@@ -6,6 +6,7 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
       id
       name
       type
+      defaultValue
       constraint
     }
 

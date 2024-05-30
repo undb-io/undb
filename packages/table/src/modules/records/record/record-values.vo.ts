@@ -1,7 +1,7 @@
-import { Option, ValueObject } from "@undb/domain"
+import { None, Option, ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { TableDo } from "../../../table.do"
-import type { FieldValue } from "../../schema"
+import type { FieldValue, MutableFieldValue } from "../../schema"
 import { FieldIdVo, fieldId, type FieldId, type IFieldId } from "../../schema/fields/field-id.vo"
 import { FieldValueFactory } from "../../schema/fields/field-value.factory"
 import type { SchemaMap } from "../../schema/schema.type"
@@ -21,17 +21,31 @@ export class RecordValuesVO extends ValueObject {
   }
 
   static create(table: TableDo, dto: IRecordValues) {
-    const schema = table.schema.mutableSchema
-    const parsed = schema.parse(dto)
+    // TODO: validate value
+    // const schema = table.schema.mutableSchema
+    const fields = table.schema.mutableFields
 
     const values: RecordValues = {}
 
-    for (const [id, value] of Object.entries(parsed)) {
-      const fieldId = new FieldIdVo(id)
-      const field = table.schema.getFieldById(fieldId).expect("Field not found")
-      const fieldValue = FieldValueFactory.create(field, value)
+    for (const field of fields) {
+      const value = dto[field.id.value]
+      const fieldValue: Option<MutableFieldValue> = value === undefined ? None : FieldValueFactory.create(field, value)
+
+      let v: MutableFieldValue | undefined = undefined
+
       if (fieldValue.isSome()) {
-        Reflect.set(values, fieldId.value, fieldValue.unwrap())
+        v = fieldValue.unwrap()
+      }
+
+      if ((!!v && v.isEmpty()) || fieldValue.isNone()) {
+        const defaultValue = field.defaultValue as Option<MutableFieldValue>
+        if (defaultValue.isSome() && field.isDefaultValueValid && !defaultValue.unwrap().isEmpty()) {
+          v = defaultValue.unwrap()
+        }
+      }
+
+      if (v) {
+        Reflect.set(values, field.id.value, v)
       }
     }
 

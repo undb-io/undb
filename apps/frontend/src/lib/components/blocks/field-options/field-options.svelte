@@ -6,6 +6,7 @@
 
   export let constraint: IFieldConstraint | undefined
   export let display: boolean | undefined
+  export let defaultValue: any | undefined
 
   const map: Record<NoneSystemFieldType, ComponentType> = {
     string: StringFieldOption,
@@ -15,4 +16,4 @@
   export let type: NoneSystemFieldType
 </script>
 
-<svelte:component this={map[type]} bind:constraint bind:display />
+<svelte:component this={map[type]} bind:constraint bind:display bind:defaultValue />

@@ -21,6 +21,8 @@ export type FieldValue =
   | AutoIncrementFieldValue
   | UpdatedAtFieldValue
 
+export type MutableFieldValue = StringFieldValue | NumberFieldValue
+
 export type FieldType =
   | typeof STRING_TYPE
   | typeof NUMBER_TYPE

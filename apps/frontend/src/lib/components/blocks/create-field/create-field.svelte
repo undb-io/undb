@@ -37,7 +37,8 @@
     defaults(
       {
         type: "string",
-        name: $table.schema.nextFieldName,
+        name: $table.schema.nextFieldName.value,
+        display: false,
         constraint: {},
       },
       zodClient(createFieldDTO),
@@ -84,7 +85,12 @@
   <Form.Field {form} name="constraint">
     <Form.Control let:attrs>
       <Form.Label>Constraint</Form.Label>
-      <FieldOptions type={$formData.type} bind:constraint={$formData.constraint} />
+      <FieldOptions
+        type={$formData.type}
+        bind:constraint={$formData.constraint}
+        bind:display={$formData.display}
+        bind:defaultValue={$formData.defaultValue}
+      />
     </Form.Control>
     <Form.Description />
     <Form.FieldErrors />

@@ -34,7 +34,7 @@
   const createRecordMutation = createMutation(
     derived([table], ([$table]) => ({
       mutationFn: trpc.record.create.mutate,
-      onSettled: () => {
+      onSuccess: () => {
         closeModal(CREATE_RECORD_MODAL)
         client.invalidateQueries({
           queryKey: ["records", $table.id.value],
@@ -54,7 +54,10 @@
     })
   }
 
-  const form = superForm(defaults({}, zodClient(schema)), {
+  const defaultValue = $table.schema.getDefaultValues()
+  $: $table, form.reset({ data: $table.schema.getDefaultValues() })
+
+  const form = superForm(defaults(defaultValue, zodClient(schema)), {
     SPA: true,
     dataType: "json",
     validators: zodClient(schema),
@@ -70,7 +73,7 @@
   const { form: formData, enhance, allErrors, tainted } = form
 
   $: dirty = !!$tainted
-  $: disabled = !!$allErrors.length || !dirty
+  $: disabled = !!$allErrors.length
 
   $: fields = $table.getOrderedMutableFields(formId ? new FormIdVO(formId) : undefined)
 </script>

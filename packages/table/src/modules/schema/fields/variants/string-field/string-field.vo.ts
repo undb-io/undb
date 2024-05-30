@@ -28,6 +28,7 @@ export const STRING_TYPE = "string" as const
 export const createStringFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(STRING_TYPE),
   constraint: stringFieldConstraint.optional(),
+  defaultValue: z.string().optional(),
 })
 
 export type ICreateStringFieldDTO = z.infer<typeof createStringFieldDTO>
@@ -35,6 +36,7 @@ export type ICreateStringFieldDTO = z.infer<typeof createStringFieldDTO>
 export const stringFieldDTO = baseFieldDTO.extend({
   type: z.literal(STRING_TYPE),
   constraint: stringFieldConstraint.optional(),
+  defaultValue: z.string().optional(),
 })
 
 export type IStringFieldDTO = z.infer<typeof stringFieldDTO>
@@ -45,10 +47,17 @@ export class StringField extends AbstractField<StringFieldValue, StringFieldCons
     if (dto.constraint) {
       this.constraint = Some(new StringFieldConstraint(dto.constraint))
     }
+    if (dto.defaultValue) {
+      this.defaultValue = new StringFieldValue(dto.defaultValue)
+    }
   }
 
   static create(dto: ICreateStringFieldDTO) {
-    return new StringField({ ...dto, id: FieldIdVo.fromStringOrCreate(dto.id).value })
+    const field = new StringField({ ...dto, id: FieldIdVo.fromStringOrCreate(dto.id).value })
+    if (dto.defaultValue) {
+      field.defaultValue = new StringFieldValue(dto.defaultValue)
+    }
+    return field
   }
 
   override type = STRING_TYPE

@@ -90,7 +90,12 @@
             </DropdownMenu.Root>
           </div>
           <Accordion.Content class="rounded-sm border bg-gray-50 px-3 pt-1.5">
-            <FieldOptions type={field.type} bind:constraint={field.constraint} bind:display={field.display} />
+            <FieldOptions
+              type={field.type}
+              bind:constraint={field.constraint}
+              bind:display={field.display}
+              bind:defaultValue={field.defaultValue}
+            />
           </Accordion.Content>
         </Accordion.Item>
       </Form.Control>

@@ -23,4 +23,8 @@ export class StringFieldValue extends ValueObject<string> {
   constructor(value: string) {
     super({ value })
   }
+
+  isEmpty() {
+    return this.props.value === "" || this.props.value === null || this.props.value === undefined
+  }
 }

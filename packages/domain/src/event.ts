@@ -18,11 +18,8 @@ export interface IEventJSON<TPayload extends object = object, TMeta = any> {
   meta: TMeta
 }
 
-export abstract class BaseEvent<
-  TPayload extends object = object,
-  TName extends string = string,
-  TMeta extends object | undefined = undefined,
-> implements IEvent<TPayload>
+export abstract class BaseEvent<TPayload extends object = object, TName extends string = string, TMeta = any>
+  implements IEvent<TPayload>
 {
   abstract name: TName
   #operatorId?: string | undefined

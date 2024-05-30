@@ -1,4 +1,4 @@
-import { None, NotImplementException, Option, ValueObject } from "@undb/domain"
+import { None, NotImplementException, Option, Some, ValueObject } from "@undb/domain"
 import { ZodEnum, ZodUndefined, z, type ZodSchema } from "@undb/zod"
 import type {
   INotRecordComositeSpecification,
@@ -41,6 +41,7 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
   name!: FieldNameVo
   display = false
   constraint: Option<C> = None
+  #defaultValue: Option<V> = None
 
   constructor(dto: IBaseFieldDTO) {
     this.id = new FieldIdVo(dto.id)
@@ -124,12 +125,34 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
 
   abstract get aggregate(): ZodEnum<[string, ...string[]]> | ZodUndefined
 
+  get defaultValue(): Option<V> {
+    if (this.isSystem) {
+      return None
+    }
+
+    return this.#defaultValue
+  }
+
+  set defaultValue(value: V) {
+    if (this.isSystem) {
+      return
+    }
+
+    this.#defaultValue = Some(value)
+  }
+
+  get isDefaultValueValid(): boolean {
+    if (this.defaultValue.isNone()) return true
+    return this.validate(this.defaultValue.unwrap()).success
+  }
+
   toJSON(): IFieldDTO {
     return {
       id: this.id.value,
       name: this.name.value,
       type: this.type,
       display: this.display,
+      defaultValue: this.defaultValue.into(undefined)?.value,
       constraint: this.constraint.into(undefined)?.value,
     }
   }

@@ -7,7 +7,7 @@ import type { ISchemaDTO } from "./dto/schema.dto"
 import { FieldNameVo, IdField, UpdatedAtField, type ICreateFieldDTO } from "./fields"
 import type { FieldId } from "./fields/field-id.vo"
 import { FieldFactory } from "./fields/field.factory"
-import type { Field, NoneSystemField, SystemField } from "./fields/field.type"
+import type { Field, MutableFieldValue, NoneSystemField, SystemField } from "./fields/field.type"
 import { AutoIncrementField } from "./fields/variants/autoincrement-field"
 import { CreatedAtField } from "./fields/variants/created-at-field"
 import type { SchemaMap } from "./schema.type"
@@ -64,9 +64,13 @@ export class Schema extends ValueObject<Field[]> {
     return this.fields.filter((f) => f.display)
   }
 
+  get mutableFields(): Field[] {
+    return this.fields.filter((f) => f.isMutable)
+  }
+
   get mutableSchema() {
     const schema = objectify(
-      this.fields.filter((f) => f.isMutable),
+      this.mutableFields,
       (f) => f.id.value,
       (f) => f.valueSchema,
     )
@@ -109,5 +113,20 @@ export class Schema extends ValueObject<Field[]> {
   getFieldById(fieldId: FieldId): Option<Field> {
     const field = this.fields.find((f) => f.id.equals(fieldId))
     return Option(field)
+  }
+
+  public getDefaultValues() {
+    const values: Record<string, any> = {}
+
+    for (const field of this.mutableFields) {
+      if (!field) continue
+      if (!field.isDefaultValueValid) continue
+      const defaultValue = field.defaultValue as Option<MutableFieldValue>
+      if (defaultValue.isNone()) continue
+
+      values[field.id.value] = defaultValue.unwrap().value
+    }
+
+    return values
   }
 }

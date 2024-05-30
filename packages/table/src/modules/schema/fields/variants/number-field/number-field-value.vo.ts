@@ -23,4 +23,8 @@ export class NumberFieldValue extends ValueObject<number> {
   constructor(value: number) {
     super({ value })
   }
+
+  isEmpty() {
+    return this.props.value === null || this.props.value === undefined
+  }
 }

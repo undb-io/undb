@@ -1,6 +1,6 @@
 import { None, Option, Some } from "@undb/domain"
 import { match } from "ts-pattern"
-import type { Field, FieldValue } from "./field.type"
+import type { Field, FieldValue, MutableFieldValue } from "./field.type"
 import {
   AutoIncrementFieldValue,
   CreatedAtFieldValue,
@@ -11,7 +11,7 @@ import {
 } from "./variants"
 
 export class FieldValueFactory {
-  static create(field: Field, value: any): Option<FieldValue> {
+  static create(field: Field, value: any): Option<MutableFieldValue> {
     return match(field)
       .with({ type: "number" }, (field) => Some(new NumberFieldValue(field.valueSchema.parse(value))))
       .with({ type: "string" }, (field) => Some(new StringFieldValue(field.valueSchema.parse(value))))

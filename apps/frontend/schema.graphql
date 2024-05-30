@@ -1,5 +1,6 @@
 type Field {
   constraint: JSON
+  defaultValue: JSON
   id: ID!
   name: String!
   type: FieldType!
