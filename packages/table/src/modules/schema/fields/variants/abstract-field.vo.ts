@@ -23,6 +23,7 @@ import type { IUpdatedAtFieldConditionSchema } from "./updated-at-field"
 export const createBaseFieldDTO = z.object({
   id: fieldId.optional(),
   name: fieldName,
+  display: z.boolean().optional(),
 })
 
 export type ICreateBaseFieldDTO = z.infer<typeof createBaseFieldDTO>
@@ -30,6 +31,7 @@ export type ICreateBaseFieldDTO = z.infer<typeof createBaseFieldDTO>
 export const baseFieldDTO = z.object({
   id: fieldId,
   name: fieldName,
+  display: z.boolean().optional(),
 })
 
 export type IBaseFieldDTO = z.infer<typeof baseFieldDTO>
@@ -37,11 +39,13 @@ export type IBaseFieldDTO = z.infer<typeof baseFieldDTO>
 export abstract class AbstractField<V extends ValueObject, C extends FieldConstraintVO = any> {
   id!: FieldId
   name!: FieldNameVo
+  display = false
   constraint: Option<C> = None
 
   constructor(dto: IBaseFieldDTO) {
     this.id = new FieldIdVo(dto.id)
     this.name = new FieldNameVo(dto.name)
+    this.display = dto.display ?? false
   }
 
   abstract type: FieldType
@@ -125,6 +129,7 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
       id: this.id.value,
       name: this.name.value,
       type: this.type,
+      display: this.display,
       constraint: this.constraint.into(undefined)?.value,
     }
   }

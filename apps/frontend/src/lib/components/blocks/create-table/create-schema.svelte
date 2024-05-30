@@ -32,6 +32,7 @@
         id: fieldId,
         type,
         name: getNextName($formData.schema.map((field) => field.name)),
+        display: false,
         constraint: {},
       },
     ]
@@ -89,7 +90,7 @@
             </DropdownMenu.Root>
           </div>
           <Accordion.Content class="rounded-sm border bg-gray-50 px-3 pt-1.5">
-            <FieldOptions type={field.type} bind:constraint={field.constraint} />
+            <FieldOptions type={field.type} bind:constraint={field.constraint} bind:display={field.display} />
           </Accordion.Content>
         </Accordion.Item>
       </Form.Control>

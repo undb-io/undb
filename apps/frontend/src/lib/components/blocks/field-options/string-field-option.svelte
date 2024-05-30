@@ -6,6 +6,7 @@
   import type { IStringFieldConstraint } from "@undb/table"
 
   export let constraint: IStringFieldConstraint | undefined
+  export let display: boolean | undefined
 </script>
 
 {#if constraint}
@@ -32,10 +33,15 @@
       />
     </div>
   </div>
-  <div class="mt-4">
+  <div class="mt-4 flex items-center justify-between">
     <div class="flex items-center space-x-2">
       <Switch id="required" bind:checked={constraint.required} />
       <Label for="required">Required</Label>
+    </div>
+
+    <div class="flex items-center space-x-2">
+      <Switch id="display" bind:checked={display} />
+      <Label for="display">Display</Label>
     </div>
   </div>
 {/if}

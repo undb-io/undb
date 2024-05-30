@@ -5,6 +5,7 @@
   import NumberFieldOption from "./number-field-option.svelte"
 
   export let constraint: IFieldConstraint | undefined
+  export let display: boolean | undefined
 
   const map: Record<NoneSystemFieldType, ComponentType> = {
     string: StringFieldOption,
@@ -14,4 +15,4 @@
   export let type: NoneSystemFieldType
 </script>
 
-<svelte:component this={map[type]} bind:constraint />
+<svelte:component this={map[type]} bind:constraint bind:display />

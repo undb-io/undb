@@ -1,4 +1,4 @@
-export * from "./create-field.dto"
+export * from "./create-table-field.dto"
 export * from "./create-table.dto"
 export * from "./set-table-rls.dto"
 export * from "./set-view-aggregate.dto"
