@@ -9,8 +9,7 @@ export function transactional() {
     const logger = createLogger(target + "." + originalMethod.name)
 
     descriptor.value = async function (...args: any[]) {
-      // FIXME: always undefined
-      let uow = target.uow as IUnitOfWork | undefined
+      let uow = (this as any).uow as IUnitOfWork | undefined
       if (!uow) {
         logger.warn('No unit of work found, you should inject a unit of work in the repository constructor named "uow"')
         uow = container.resolve<IUnitOfWork>(DB_UNIT_OF_WORK_PROVIDER)
