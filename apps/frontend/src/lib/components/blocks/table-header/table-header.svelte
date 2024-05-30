@@ -11,15 +11,27 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js"
   import * as Sheet from "$lib/components/ui/sheet/index.js"
   import { Button } from "$lib/components/ui/button/index.js"
-  import { DatabaseIcon, FileSlidersIcon, Package2, SheetIcon, TextCursorInputIcon } from "lucide-svelte"
+  import {
+    DatabaseIcon,
+    FileSlidersIcon,
+    Package2,
+    PlusCircleIcon,
+    SheetIcon,
+    TextCursorInputIcon,
+  } from "lucide-svelte"
   import CreateTableButton from "../create-table/create-table-button.svelte"
   import * as Breadcrumb from "$lib/components/ui/breadcrumb/index.js"
   import { getTable } from "$lib/store/table.store"
-  import { tab } from "$lib/store/tab.store"
+  import { tab, isFormTab, formId } from "$lib/store/tab.store"
   import RecordUpdating from "../record-updating/record-updating.svelte"
+  import Separator from "$lib/components/ui/separator/separator.svelte"
 
   const table = getTable()
   $: view = $table.views.getViewById()
+  $: forms = $table.forms?.props ?? []
+
+  $: currentFormId = $formId ? $formId : forms[0]?.id
+  $: currentForm = forms.find((form) => form.id === currentFormId)
 </script>
 
 <header class="bg-muted/40 flex h-12 items-center gap-4 border-b px-4 lg:px-6">
@@ -89,9 +101,32 @@
             </Breadcrumb.Link>
           </Breadcrumb.Item>
           <Breadcrumb.Separator />
-          <Breadcrumb.Item>
-            <Breadcrumb.Page>{view.name.value}</Breadcrumb.Page>
-          </Breadcrumb.Item>
+          {#if $isFormTab}
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger asChild let:builder>
+                <Button size="sm" variant="link" class="pl-0" builders={[builder]}>{currentForm?.name}</Button>
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content class="w-[200px]">
+                <DropdownMenu.Group>
+                  <DropdownMenu.Label>Forms</DropdownMenu.Label>
+                  <DropdownMenu.RadioGroup bind:value={currentFormId}>
+                    {#each forms as form}
+                      <DropdownMenu.RadioItem value={form.id}>{form.name}</DropdownMenu.RadioItem>
+                    {/each}
+                  </DropdownMenu.RadioGroup>
+                </DropdownMenu.Group>
+                <DropdownMenu.Separator></DropdownMenu.Separator>
+                <DropdownMenu.Item>
+                  <PlusCircleIcon class="mr-2 h-4 w-4" />
+                  Create Form</DropdownMenu.Item
+                >
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
+          {:else}
+            <Breadcrumb.Item>
+              <Breadcrumb.Page>{view.name.value}</Breadcrumb.Page>
+            </Breadcrumb.Item>
+          {/if}
         </Breadcrumb.List>
       </Breadcrumb.Root>
 
