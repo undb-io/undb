@@ -4,7 +4,7 @@
   import { createRecordSheetOpen } from "./create-record.store"
 </script>
 
-<Button size="sm" variant="outline" on:click={() => ($createRecordSheetOpen = true)}>
+<Button size="sm" variant="outline" on:click={() => ($createRecordSheetOpen = true)} {...$$restProps}>
   <BetweenHorizonalEnd class="mr-1 h-4 w-4" />
   Create Record
 </Button>

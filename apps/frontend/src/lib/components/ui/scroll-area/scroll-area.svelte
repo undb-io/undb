@@ -18,7 +18,7 @@
 
 <ScrollAreaPrimitive.Root {...$$restProps} class={cn("relative overflow-hidden", className)}>
   <ScrollAreaPrimitive.Viewport class="h-full w-full rounded-[inherit]">
-    <ScrollAreaPrimitive.Content>
+    <ScrollAreaPrimitive.Content class="h-full">
       <slot />
     </ScrollAreaPrimitive.Content>
   </ScrollAreaPrimitive.Viewport>

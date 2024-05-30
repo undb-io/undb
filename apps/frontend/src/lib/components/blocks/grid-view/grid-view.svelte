@@ -14,6 +14,7 @@
   import { getTable } from "$lib/store/table.store"
   import GridViewActions from "./grid-view-actions.svelte"
   import GridViewCell from "./grid-view-cell.svelte"
+  import GridViewEmpty from "./grid-view-empty.svelte"
   import GridViewPagination from "./grid-view-pagination.svelte"
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
   import TableTools from "../table-tools/table-tools.svelte"
@@ -181,7 +182,7 @@
 
 <div class="flex h-full w-full flex-col">
   <TableTools />
-  <ScrollArea orientation="both" class="flex-1 overflow-auto rounded-md border">
+  <ScrollArea orientation="both" class="h-full flex-1 overflow-auto rounded-md border">
     <table {...$tableAttrs} class="flex h-full flex-col">
       <Table.Header {...$tableHeaderAttrs} class="sticky top-0 z-50 bg-white">
         {#each $headerRows as headerRow}
@@ -210,77 +211,79 @@
           </Subscribe>
         {/each}
       </Table.Header>
-      <Table.Body {...$tableBodyAttrs} class="flex-1">
-        {#each $pageRows as row (row.id)}
-          {@const recordId = row.original.id}
-          <Subscribe rowAttrs={row.attrs()} let:rowAttrs>
-            <ContextMenu.Root>
-              <ContextMenu.Trigger>
-                <Table.Row
-                  {...rowAttrs}
-                  data-state={$selectedDataIds[row.id] && "selected"}
-                  class="text-foreground group text-xs transition-none"
-                >
-                  {@const record = dos.get(recordId)}
-                  {@const match = colorSpec && record ? record.match(colorSpec) : false}
-                  {@const condition =
-                    match && record ? view.color.into(undefined)?.getMatchedFieldConditions($t, record)[0] : undefined}
-                  {#each row.cells as cell, idx (cell.id)}
-                    {@const hasFilter = hasFilterFieldIds?.has(cell.id) ?? false}
-                    <Subscribe attrs={cell.attrs()} let:attrs>
-                      <Table.Cell
-                        class={cn(
-                          "border-border relative border-r p-0 [&:has([role=checkbox])]:pl-3",
-                          (idx === 0 || idx === 1) && "border-r-0",
-                          hasFilter && "bg-orange-50",
-                        )}
-                        {...attrs}
-                      >
-                        {#if idx === 0 && match && condition && "border-l-4"}
-                          <div
-                            class={cn("absolute bottom-0 left-0 top-0 h-full w-1", getColor(condition.option.color))}
-                          ></div>
-                          <!-- content here -->
-                        {/if}
-                        {#if cell.id === "amount"}
-                          <div class="text-right font-medium">
-                            <Render of={cell.render()} />
-                          </div>
-                        {:else}
-                          <Render of={cell.render()} />
-                        {/if}
-                      </Table.Cell>
-                    </Subscribe>
-                  {/each}
-                </Table.Row>
-              </ContextMenu.Trigger>
-              <ContextMenu.Content>
-                <ContextMenu.Item on:click={() => ($r = recordId)}>View record details</ContextMenu.Item>
-                <ContextMenu.Item on:click={() => copy(recordId)}>Copy record ID</ContextMenu.Item>
-                <ContextMenu.Item
-                  on:click={() => {
-                    toggleModal(DUPLICATE_RECORD_MODAL)
-                    $duplicateRecordId = recordId
-                  }}
-                >
-                  Duplicate Record
-                </ContextMenu.Item>
-                <ContextMenu.Item
-                  on:click={() => {
-                    toggleModal(DELETE_RECORD_MODAL)
-                    $deleteRecordId = recordId
-                  }}
-                  class="text-red-500 data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500"
-                >
-                  Delete Record
-                </ContextMenu.Item>
-              </ContextMenu.Content>
-            </ContextMenu.Root>
-          </Subscribe>
-        {/each}
-      </Table.Body>
-
       {#if records.length}
+        <Table.Body {...$tableBodyAttrs} class="flex-1">
+          {#each $pageRows as row (row.id)}
+            {@const recordId = row.original.id}
+            <Subscribe rowAttrs={row.attrs()} let:rowAttrs>
+              <ContextMenu.Root>
+                <ContextMenu.Trigger>
+                  <Table.Row
+                    {...rowAttrs}
+                    data-state={$selectedDataIds[row.id] && "selected"}
+                    class="text-foreground group text-xs transition-none"
+                  >
+                    {@const record = dos.get(recordId)}
+                    {@const match = colorSpec && record ? record.match(colorSpec) : false}
+                    {@const condition =
+                      match && record
+                        ? view.color.into(undefined)?.getMatchedFieldConditions($t, record)[0]
+                        : undefined}
+                    {#each row.cells as cell, idx (cell.id)}
+                      {@const hasFilter = hasFilterFieldIds?.has(cell.id) ?? false}
+                      <Subscribe attrs={cell.attrs()} let:attrs>
+                        <Table.Cell
+                          class={cn(
+                            "border-border relative border-r p-0 [&:has([role=checkbox])]:pl-3",
+                            (idx === 0 || idx === 1) && "border-r-0",
+                            hasFilter && "bg-orange-50",
+                          )}
+                          {...attrs}
+                        >
+                          {#if idx === 0 && match && condition && "border-l-4"}
+                            <div
+                              class={cn("absolute bottom-0 left-0 top-0 h-full w-1", getColor(condition.option.color))}
+                            ></div>
+                            <!-- content here -->
+                          {/if}
+                          {#if cell.id === "amount"}
+                            <div class="text-right font-medium">
+                              <Render of={cell.render()} />
+                            </div>
+                          {:else}
+                            <Render of={cell.render()} />
+                          {/if}
+                        </Table.Cell>
+                      </Subscribe>
+                    {/each}
+                  </Table.Row>
+                </ContextMenu.Trigger>
+                <ContextMenu.Content>
+                  <ContextMenu.Item on:click={() => ($r = recordId)}>View record details</ContextMenu.Item>
+                  <ContextMenu.Item on:click={() => copy(recordId)}>Copy record ID</ContextMenu.Item>
+                  <ContextMenu.Item
+                    on:click={() => {
+                      toggleModal(DUPLICATE_RECORD_MODAL)
+                      $duplicateRecordId = recordId
+                    }}
+                  >
+                    Duplicate Record
+                  </ContextMenu.Item>
+                  <ContextMenu.Item
+                    on:click={() => {
+                      toggleModal(DELETE_RECORD_MODAL)
+                      $deleteRecordId = recordId
+                    }}
+                    class="text-red-500 data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500"
+                  >
+                    Delete Record
+                  </ContextMenu.Item>
+                </ContextMenu.Content>
+              </ContextMenu.Root>
+            </Subscribe>
+          {/each}
+        </Table.Body>
+
         <tfooter class="text-muted-foreground sticky bottom-0 h-8 w-full border-t bg-white text-sm">
           <tr class="flex h-8 w-full">
             {#each $visibleColumns as column}
@@ -296,6 +299,8 @@
             {/each}
           </tr>
         </tfooter>
+      {:else if !$getRecords.isLoading}
+        <GridViewEmpty />
       {/if}
     </table>
   </ScrollArea>
