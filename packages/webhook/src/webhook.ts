@@ -19,8 +19,9 @@ import type { IUpdateWebhookSchema, IWebhookEventSchema } from "./webhook.schema
 import { RecordComositeSpecification, refineRecordEvents, type IRecordEvent, type TableDo } from "@undb/table"
 import { isObject, isString } from "radash"
 import type { WebhookCondition } from "./webhook.condition"
+import type { IWebhookDTO } from "./dto"
 
-export class Webhook {
+export class WebhookDo {
   public id!: WebhookId
   public name!: string
   public url!: WebhookURL
@@ -30,8 +31,8 @@ export class Webhook {
   public headers!: WebhookHeaders
   public condition!: Option<WebhookCondition>
 
-  static empty(): Webhook {
-    return new Webhook()
+  static empty(): WebhookDo {
+    return new WebhookDo()
   }
 
   public constructEvent(event: IRecordEvent): IWebhookEventSchema {
@@ -73,6 +74,19 @@ export class Webhook {
     }
 
     return and(...specs)
+  }
+
+  public toJSON(): IWebhookDTO {
+    return {
+      id: this.id.value,
+      name: this.name,
+      url: this.url.value,
+      method: this.method.value,
+      enabled: this.enabled,
+      target: this.target?.toJSON() ?? null,
+      headers: this.headers.toJSON(),
+      condition: this.condition.into(undefined)?.toJSON(),
+    }
   }
 
   public refineEvent(table: TableDo, event: IRecordEvent): Option<IEvent> {

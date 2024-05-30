@@ -1,9 +1,9 @@
 import { CompositeSpecification } from "@undb/domain"
 import { Ok, type Result } from "oxide.ts"
-import type { Webhook } from "../webhook.js"
+import type { WebhookDo } from "../webhook.js"
 import type { IWebhookSpecVisitor } from "./interface.js"
 
-export class WithWebhookEnabled extends CompositeSpecification<Webhook, IWebhookSpecVisitor> {
+export class WithWebhookEnabled extends CompositeSpecification<WebhookDo, IWebhookSpecVisitor> {
   constructor(public readonly enabled: boolean) {
     super()
   }
@@ -12,10 +12,10 @@ export class WithWebhookEnabled extends CompositeSpecification<Webhook, IWebhook
     return new WithWebhookEnabled(true)
   }
 
-  isSatisfiedBy(t: Webhook): boolean {
+  isSatisfiedBy(t: WebhookDo): boolean {
     return this.enabled === t.enabled
   }
-  mutate(t: Webhook): Result<Webhook, string> {
+  mutate(t: WebhookDo): Result<WebhookDo, string> {
     t.enabled = this.enabled
     return Ok(t)
   }

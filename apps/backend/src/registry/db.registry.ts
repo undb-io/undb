@@ -8,6 +8,7 @@ import {
   TableOutboxService,
   TableQueryRepository,
   TableRepository,
+  WebhookRepository,
 } from "@undb/persistence"
 import {
   RECORD_OUTBOX_SERVICE,
@@ -17,6 +18,7 @@ import {
   TABLE_QUERY_REPOSITORY,
   TABLE_REPOSITORY,
 } from "@undb/table"
+import { WEBHOOK_REPOSITORY } from "@undb/webhook"
 
 export const registerDb = () => {
   container.register(TABLE_REPOSITORY, TableRepository)
@@ -26,4 +28,5 @@ export const registerDb = () => {
   container.register(RECORD_OUTBOX_SERVICE, RecordOutboxService)
   container.register(TABLE_OUTBOX_SERVICE, TableOutboxService)
   container.register(DB_UNIT_OF_WORK_PROVIDER, DatabaseUnitOfWork)
+  container.register(WEBHOOK_REPOSITORY, WebhookRepository)
 }

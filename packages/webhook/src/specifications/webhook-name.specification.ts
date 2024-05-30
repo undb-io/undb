@@ -1,19 +1,19 @@
 import { CompositeSpecification } from "@undb/domain"
 import type { Result } from "oxide.ts"
 import { Ok } from "oxide.ts"
-import type { Webhook } from "../webhook.js"
+import type { WebhookDo } from "../webhook.js"
 import type { IWebhookSpecVisitor } from "./interface.js"
 
-export class WithWebhookName extends CompositeSpecification<Webhook, IWebhookSpecVisitor> {
+export class WithWebhookName extends CompositeSpecification<WebhookDo, IWebhookSpecVisitor> {
   constructor(public readonly name: string) {
     super()
   }
 
-  isSatisfiedBy(w: Webhook): boolean {
+  isSatisfiedBy(w: WebhookDo): boolean {
     return this.name === w.name
   }
 
-  mutate(w: Webhook): Result<Webhook, string> {
+  mutate(w: WebhookDo): Result<WebhookDo, string> {
     w.name = this.name
     return Ok(w)
   }

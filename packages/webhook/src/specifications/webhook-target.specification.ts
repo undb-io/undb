@@ -1,14 +1,14 @@
-import { EVT_RECORD_ALL } from "@undb/core"
 import { CompositeSpecification } from "@undb/domain"
 import type { Result } from "oxide.ts"
 import { Ok } from "oxide.ts"
 import type { IWebhookTarget } from "../webhook-target.vo.js"
 import { WebhookTarget } from "../webhook-target.vo.js"
-import type { Webhook } from "../webhook.js"
+import type { WebhookDo } from "../webhook.js"
 import type { IWebhookSpecVisitor } from "./interface.js"
 import { WithWebhookEnabled } from "./webhook-enabled.specification.js"
+import { recordEvents } from "@undb/table"
 
-export class WithWebhookTarget extends CompositeSpecification<Webhook, IWebhookSpecVisitor> {
+export class WithWebhookTarget extends CompositeSpecification<WebhookDo, IWebhookSpecVisitor> {
   constructor(public readonly webhookTarget: WebhookTarget | null) {
     super()
   }
@@ -17,13 +17,13 @@ export class WithWebhookTarget extends CompositeSpecification<Webhook, IWebhookS
     return new WithWebhookTarget(new WebhookTarget(target ? target : { value: null }))
   }
 
-  isSatisfiedBy(w: Webhook): boolean {
+  isSatisfiedBy(w: WebhookDo): boolean {
     if (!this.webhookTarget && !w.target) return true
     if (!w.target) return false
     return this.webhookTarget?.equals(w.target) ?? false
   }
 
-  mutate(w: Webhook): Result<Webhook, string> {
+  mutate(w: WebhookDo): Result<WebhookDo, string> {
     w.target = this.webhookTarget
     return Ok(w)
   }
@@ -34,16 +34,16 @@ export class WithWebhookTarget extends CompositeSpecification<Webhook, IWebhookS
   }
 }
 
-export class WithWebhookTable extends CompositeSpecification<Webhook, IWebhookSpecVisitor> {
+export class WithWebhookTable extends CompositeSpecification<WebhookDo, IWebhookSpecVisitor> {
   constructor(public readonly tableId: string) {
     super()
   }
 
-  isSatisfiedBy(w: Webhook): boolean {
+  isSatisfiedBy(w: WebhookDo): boolean {
     throw new Error("Method not implemented.")
   }
 
-  mutate(w: Webhook): Result<Webhook, string> {
+  mutate(w: WebhookDo): Result<WebhookDo, string> {
     throw new Error("Method not implemented.")
   }
 
@@ -53,16 +53,16 @@ export class WithWebhookTable extends CompositeSpecification<Webhook, IWebhookSp
   }
 }
 
-export class WebhookEventsIn extends CompositeSpecification<Webhook, IWebhookSpecVisitor> {
+export class WebhookEventsIn extends CompositeSpecification<WebhookDo, IWebhookSpecVisitor> {
   // TODO: typing events
   constructor(public readonly events: string[]) {
     super()
   }
 
-  isSatisfiedBy(t: Webhook): boolean {
+  isSatisfiedBy(t: WebhookDo): boolean {
     throw new Error("Method not implemented.")
   }
-  mutate(t: Webhook): Result<Webhook, string> {
+  mutate(t: WebhookDo): Result<WebhookDo, string> {
     throw new Error("Method not implemented.")
   }
   accept(v: IWebhookSpecVisitor): Result<void, string> {
@@ -71,16 +71,16 @@ export class WebhookEventsIn extends CompositeSpecification<Webhook, IWebhookSpe
   }
 }
 
-export class WithWebhookEvent extends CompositeSpecification<Webhook, IWebhookSpecVisitor> {
+export class WithWebhookEvent extends CompositeSpecification<WebhookDo, IWebhookSpecVisitor> {
   // TODO: typing events
   constructor(public readonly event: string) {
     super()
   }
 
-  isSatisfiedBy(t: Webhook): boolean {
+  isSatisfiedBy(t: WebhookDo): boolean {
     throw new Error("Method not implemented.")
   }
-  mutate(t: Webhook): Result<Webhook, string> {
+  mutate(t: WebhookDo): Result<WebhookDo, string> {
     throw new Error("Method not implemented.")
   }
   accept(v: IWebhookSpecVisitor): Result<void, string> {
@@ -91,6 +91,6 @@ export class WithWebhookEvent extends CompositeSpecification<Webhook, IWebhookSp
 
 export const withTableEvents = (tableId: string, events: string[]) => {
   return new WithWebhookTable(tableId)
-    .and(new WebhookEventsIn([EVT_RECORD_ALL, ...events]))
+    .and(new WebhookEventsIn([...recordEvents, ...events]))
     .and(WithWebhookEnabled.enabled())
 }

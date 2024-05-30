@@ -6,3 +6,5 @@ export const tab = queryParam("tab", ssp.string())
 export const isFormTab = derived(tab, ($tab) => $tab === "form")
 
 export const formId = queryParam("formId", ssp.string())
+
+export const developerTab = queryParam("dev", ssp.string())

@@ -89,7 +89,7 @@
               </DropdownMenu.Content>
             </DropdownMenu.Root>
           </div>
-          <Accordion.Content class="rounded-sm border bg-gray-50 px-3 pt-1.5">
+          <Accordion.Content class="mt-2 rounded-sm border bg-gray-50 p-3 shadow-inner">
             <FieldOptions
               type={field.type}
               bind:constraint={field.constraint}

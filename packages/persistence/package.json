@@ -13,6 +13,7 @@
   "dependencies": {
     "@undb/context": "workspace:*",
     "@undb/di": "workspace:*",
+    "@undb/webhook": "workspace:*",
     "@undb/domain": "workspace:*",
     "@undb/logger": "workspace:*",
     "@undb/table": "workspace:*",

@@ -2,10 +2,10 @@ import { CompositeSpecification } from "@undb/domain"
 import type { Result } from "oxide.ts"
 import { Ok } from "oxide.ts"
 import { WebhookMethod, webhookMethodSchema } from "../webhook-method.vo.js"
-import type { Webhook } from "../webhook.js"
+import type { WebhookDo } from "../webhook.js"
 import type { IWebhookSpecVisitor } from "./interface.js"
 
-export class WithWebhookMethod extends CompositeSpecification<Webhook, IWebhookSpecVisitor> {
+export class WithWebhookMethod extends CompositeSpecification<WebhookDo, IWebhookSpecVisitor> {
   constructor(public readonly webhookMethod: WebhookMethod) {
     super()
   }
@@ -14,11 +14,11 @@ export class WithWebhookMethod extends CompositeSpecification<Webhook, IWebhookS
     return new WithWebhookMethod(new WebhookMethod({ value: webhookMethodSchema.parse(method) }))
   }
 
-  isSatisfiedBy(w: Webhook): boolean {
+  isSatisfiedBy(w: WebhookDo): boolean {
     return this.webhookMethod.equals(w.method)
   }
 
-  mutate(w: Webhook): Result<Webhook, string> {
+  mutate(w: WebhookDo): Result<WebhookDo, string> {
     w.method = this.webhookMethod
     return Ok(w)
   }

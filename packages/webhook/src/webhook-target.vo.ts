@@ -14,14 +14,22 @@ export type IWebhookTarget = z.infer<typeof webhookTargetSchema>
 
 export class WebhookTarget extends ValueObject<IWebhookTarget> {
   public get id() {
-    return this.unpack()?.id
+    return this.unpack()!.id
   }
 
   public get type() {
-    return this.unpack()?.type
+    return this.value!.type
   }
 
   public get event() {
-    return this.unpack()?.event
+    return this.unpack()!.event
+  }
+
+  toJSON(): IWebhookTarget {
+    return {
+      type: this.type,
+      id: this.id,
+      event: this.event,
+    }
   }
 }

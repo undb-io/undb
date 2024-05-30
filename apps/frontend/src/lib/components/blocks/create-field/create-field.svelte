@@ -20,7 +20,7 @@
   const createFieldMutation = createMutation(
     derived([table], ([$table]) => ({
       mutationKey: ["createField", $table.id.value],
-      mutationFn: trpc.field.create.mutate,
+      mutationFn: trpc.table.field.create.mutate,
       async onSuccess() {
         closeModal(CREATE_FIELD_MODAL)
         toast.success("Create field success")
@@ -63,7 +63,7 @@
   const { enhance, form: formData, reset } = form
 </script>
 
-<form method="POST" use:enhance class="space-y-2">
+<form method="POST" use:enhance class="space-y-4">
   <div class="flex h-8 items-center gap-2">
     <Form.Field {form} name="type" class="h-full">
       <Form.Control let:attrs>
@@ -84,7 +84,6 @@
 
   <Form.Field {form} name="constraint">
     <Form.Control let:attrs>
-      <Form.Label>Constraint</Form.Label>
       <FieldOptions
         type={$formData.type}
         bind:constraint={$formData.constraint}

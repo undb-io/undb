@@ -17,6 +17,7 @@
     "@undb/command-handlers": "workspace:*",
     "@undb/context": "workspace:*",
     "@undb/cqrs": "workspace:*",
+    "@undb/webhook": "workspace:*",
     "@undb/graphql": "workspace:*",
     "@undb/logger": "workspace:*",
     "@undb/openapi": "workspace:*",

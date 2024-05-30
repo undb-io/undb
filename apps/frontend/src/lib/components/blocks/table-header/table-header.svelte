@@ -23,7 +23,7 @@
   import CreateTableButton from "../create-table/create-table-button.svelte"
   import * as Breadcrumb from "$lib/components/ui/breadcrumb/index.js"
   import { getTable } from "$lib/store/table.store"
-  import { tab, isFormTab, formId } from "$lib/store/tab.store"
+  import { tab, isFormTab, formId, developerTab } from "$lib/store/tab.store"
   import RecordUpdating from "../record-updating/record-updating.svelte"
   import Separator from "$lib/components/ui/separator/separator.svelte"
   import CreateFormButton from "../forms/create-form-button.svelte"
@@ -152,7 +152,11 @@
         if (!$tab && value === "data") {
           return
         }
+
         tab.set(value === "data" ? "" : value ?? "")
+        if (value === "developer" && !$developerTab) {
+          $developerTab = "openapi"
+        }
       }}
       class="w-[200px] -translate-x-full"
     >
@@ -165,9 +169,9 @@
           <TextCursorInputIcon class="mr-2 h-4 w-4" />
           Forms
         </Tabs.Trigger>
-        <Tabs.Trigger value="detail">
+        <Tabs.Trigger value="developer">
           <FileSlidersIcon class="mr-2 h-4 w-4" />
-          Detail
+          Developer
         </Tabs.Trigger>
       </Tabs.List>
     </Tabs.Root>

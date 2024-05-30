@@ -13,14 +13,15 @@
 
 {#if constraint}
   <div class="space-y-4">
-    <div class="flex items-center gap-1">
+    <div class="grid gap-3">
       <Label for="defaultValue">Default</Label>
-      <Input class="bg-background flex-1" bind:value={defaultValue} />
+      <Input id="defaultValue" class="bg-background flex-1" placeholder="default value" bind:value={defaultValue} />
     </div>
-    <div class="grid grid-cols-3 gap-2">
-      <div class="col-span-1 flex items-center gap-1.5">
+    <div class="grid grid-cols-2 gap-3">
+      <div class="grid gap-3">
         <Label for="min">Min</Label>
         <NumberInput
+          id="min"
           min={0}
           max={constraint.max}
           step={1}
@@ -29,9 +30,10 @@
           class="bg-background"
         />
       </div>
-      <div class="col-span-1 flex items-center gap-1.5">
+      <div class="grid gap-3">
         <Label for="max">Max</Label>
         <NumberInput
+          id="max"
           min={constraint.min || 0}
           step={1}
           bind:value={constraint.max}
@@ -40,15 +42,15 @@
         />
       </div>
     </div>
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-end gap-3">
       <div class="flex items-center space-x-2">
         <Switch id="required" bind:checked={constraint.required} />
-        <Label for="required">Required</Label>
+        <Label for="required" class="text-xs">Required</Label>
       </div>
 
       <div class="flex items-center space-x-2">
         <Switch id="display" bind:checked={display} />
-        <Label for="display">Display</Label>
+        <Label for="display" class="text-xs">Display</Label>
       </div>
     </div>
   </div>

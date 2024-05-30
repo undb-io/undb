@@ -4,6 +4,15 @@ import { RecordDO, type RecordComositeSpecification } from "../.."
 import type { TableDo } from "../../../table.do"
 import { match } from "ts-pattern"
 
+/**
+ * Refine record events based on the given specification.
+ *
+ * @param table The table to refine the record event.
+ * @param event The record event to refine.
+ * @param spec The specification to refine the record event.
+ * @returns {Option<IRecordEvent>} The refined record event.
+ *  If the event is not satisfied by the specification, it will return None.
+ */
 export function refineRecordEvents(
   table: TableDo,
   event: IRecordEvent,

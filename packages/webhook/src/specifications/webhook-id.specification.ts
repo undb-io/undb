@@ -1,32 +1,32 @@
 import { CompositeSpecification } from "@undb/domain"
 import type { Result } from "oxide.ts"
 import { Ok } from "oxide.ts"
-import { WebhookId } from "../webhook-id.vo.js"
-import type { Webhook } from "../webhook.js"
+import { type WebhookId, WebhookIdVO } from "../webhook-id.vo.js"
+import type { WebhookDo } from "../webhook.js"
 import type { IWebhookSpecVisitor } from "./interface.js"
 
-export class WithWebhookId extends CompositeSpecification<Webhook, IWebhookSpecVisitor> {
+export class WithWebhookId extends CompositeSpecification<WebhookDo, IWebhookSpecVisitor> {
   constructor(public readonly webhookId: WebhookId) {
     super()
   }
 
   static fromString(id: string): WithWebhookId {
-    return new WithWebhookId(WebhookId.from(id).unwrap())
+    return new WithWebhookId(new WebhookIdVO(id))
   }
 
   static fromNullableString(id?: string): WithWebhookId {
-    return new WithWebhookId(WebhookId.fromOrCreate(id))
+    return new WithWebhookId(id ? new WebhookIdVO(id) : WebhookIdVO.create())
   }
 
   static create(): WithWebhookId {
-    return new WithWebhookId(WebhookId.create())
+    return new WithWebhookId(WebhookIdVO.create())
   }
 
-  isSatisfiedBy(w: Webhook): boolean {
+  isSatisfiedBy(w: WebhookDo): boolean {
     return this.webhookId.equals(w.id)
   }
 
-  mutate(w: Webhook): Result<Webhook, string> {
+  mutate(w: WebhookDo): Result<WebhookDo, string> {
     w.id = this.webhookId
     return Ok(w)
   }

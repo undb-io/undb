@@ -7,7 +7,7 @@
   import TableHeader from "$lib/components/blocks/table-header/table-header.svelte"
   import Forms from "$lib/components/blocks/forms/forms.svelte"
   import RecordDetailSheet from "$lib/components/blocks/record-detail/record-detail-sheet.svelte"
-  import Openapi from "$lib/components/blocks/openapi/openapi.svelte"
+  import Developer from "$lib/components/blocks/developer/developer.svelte"
   import CreateFieldDialog from "$lib/components/blocks/create-field/create-field-dialog.svelte"
   import { tab } from "$lib/store/tab.store"
   import { CREATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
@@ -25,7 +25,7 @@
   {:else if $tab === "form"}
     <Forms />
   {:else}
-    <Openapi />
+    <Developer />
   {/if}
 </main>
 

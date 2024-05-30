@@ -1,5 +1,5 @@
 import type { CompositeSpecification } from "@undb/domain"
-import type { Webhook } from "../webhook.js"
+import type { WebhookDo } from "../webhook.js"
 import type { WithWebhookEnabled } from "./webhook-enabled.specification.js"
 import type { WithWebhookCondition } from "./webhook-condition.specification.js"
 import type { WithWebhookHeaders } from "./webhook-headers.specification.js"
@@ -33,4 +33,4 @@ export interface IWebhookSpecVisitor {
   clone(): IWebhookSpecVisitor
 }
 
-export type WebhookSpecification = CompositeSpecification<Webhook, IWebhookSpecVisitor>
+export type WebhookSpecification = CompositeSpecification<WebhookDo, IWebhookSpecVisitor>

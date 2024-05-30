@@ -1,4 +1,6 @@
 import type { IFormsDTO, ISchemaDTO, IViewsDTO } from "@undb/table"
+import type { IWebhookEventSchema, IWebhookHeaders, IWebhookMethod, IWebhookTarget } from "@undb/webhook"
+import type { IRootWebhookCondition } from "@undb/webhook/src/webhook.condition"
 import { sql } from "drizzle-orm"
 import { integer, sqliteTableCreator, text } from "drizzle-orm/sqlite-core"
 
@@ -53,3 +55,18 @@ export const sessionTable = sqliteTable("session", {
     .references(() => users.id),
   expiresAt: integer("expires_at").notNull(),
 })
+
+export const webhook = sqliteTable("webhook", {
+  id: text("id").notNull().primaryKey(),
+  name: text("name").notNull(),
+  url: text("url").notNull(),
+  method: text("method").notNull().$type<IWebhookMethod>(),
+  enabled: integer("enabled", { mode: "boolean" }).notNull(),
+  target: text("target", { mode: "json" }).$type<IWebhookTarget>(),
+  headers: text("headers", { mode: "json" }).notNull().$type<IWebhookHeaders>(),
+  condition: text("condition", { mode: "json" }).$type<IRootWebhookCondition>(),
+  event: text("event", { mode: "json" }).$type<IWebhookEventSchema>(),
+})
+
+export type Webhook = typeof webhook.$inferSelect
+export type NewWebhook = typeof webhook.$inferInsert

@@ -4,6 +4,7 @@ import {
   CreateTableCommand,
   CreateTableFieldCommand,
   CreateTableFormCommand,
+  CreateWebhookCommand,
   DeleteRecordCommand,
   DuplicateRecordCommand,
   SetTableFormCommand,
@@ -17,6 +18,7 @@ import {
   createTableCommand,
   createTableFieldCommand,
   createTableFormCommand,
+  createWebhookCommand,
   deleteRecordCommand,
   duplicateRecordCommand,
   setTableFormCommand,
@@ -102,6 +104,12 @@ const rlsRouter = t.router({
   set: p.input(setTableRLSCommand).mutation(({ input }) => commandBus.execute(new SetTableRLSCommand(input))),
 })
 
+export const fieldRouter = t.router({
+  create: p
+    .input(createTableFieldCommand)
+    .mutation(({ input }) => commandBus.execute(new CreateTableFieldCommand(input))),
+})
+
 const tableRouter = t.router({
   list: p
     .input(z.void())
@@ -115,6 +123,7 @@ const tableRouter = t.router({
     .input(createTableCommand)
     .output(z.string())
     .mutation(({ input }) => commandBus.execute(new CreateTableCommand(input))),
+  field: fieldRouter,
   rls: rlsRouter,
   view: viewRouter,
   form: formRouter,
@@ -131,16 +140,14 @@ export const recordRouter = t.router({
     .mutation(({ input }) => commandBus.execute(new DuplicateRecordCommand(input))),
 })
 
-export const fieldRouter = t.router({
-  create: p
-    .input(createTableFieldCommand)
-    .mutation(({ input }) => commandBus.execute(new CreateTableFieldCommand(input))),
+const webhookRouter = t.router({
+  create: p.input(createWebhookCommand).mutation(({ input }) => commandBus.execute(new CreateWebhookCommand(input))),
 })
 
 export const route = t.router({
   table: tableRouter,
   record: recordRouter,
-  field: fieldRouter,
+  webhook: webhookRouter,
 })
 
 export type AppRouter = typeof route

@@ -11,25 +11,25 @@ import {
   WithWebhookURL,
   newWebhookSpec,
 } from "./specifications"
-import { Webhook } from "./webhook.js"
+import { WebhookDo } from "./webhook.js"
 import type { ICreateWebhookSchema } from "./webhook.schema.js"
 import type { IUnsafeCreateWebhook } from "./webhook.type.js"
 
 export class WebhookFactory {
-  static create(...specs: WebhookSpecification[]): Webhook {
+  static create(...specs: WebhookSpecification[]): WebhookDo {
     return and(...specs)
       .unwrap()
-      .mutate(Webhook.empty())
+      .mutate(WebhookDo.empty())
       .unwrap()
   }
 
-  static from(input: ICreateWebhookSchema): Webhook {
+  static from(input: ICreateWebhookSchema): WebhookDo {
     const spec = newWebhookSpec(input)
 
     return this.create(spec)
   }
 
-  static unsafeCreate(input: IUnsafeCreateWebhook): Webhook {
+  static unsafeCreate(input: IUnsafeCreateWebhook): WebhookDo {
     return this.create(
       WithWebhookId.fromString(input.id),
       WithWebhookURL.fromString(input.url),
