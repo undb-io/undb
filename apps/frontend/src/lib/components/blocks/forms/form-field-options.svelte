@@ -107,7 +107,7 @@
             class="hidden"
             bind:checked={formField.hidden}
             disabled={formField.required}
-            on:change={setForm}
+            on:click={setForm}
           />
           {#if formField.hidden}
             <EyeClosed class="h-4 w-4" />

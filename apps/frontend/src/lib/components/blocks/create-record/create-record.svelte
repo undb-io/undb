@@ -12,6 +12,7 @@
   import { ShieldCheckIcon } from "lucide-svelte"
   import { beforeNavigate } from "$app/navigation"
   import { derived } from "svelte/store"
+  import { FormIdVO } from "@undb/table"
 
   beforeNavigate(({ cancel }) => {
     if ($tainted) {
@@ -26,6 +27,7 @@
 
   export let disabled: boolean = false
   export let dirty = false
+  export let formId: string | undefined = undefined
 
   const client = useQueryClient()
 
@@ -70,7 +72,7 @@
   $: dirty = !!$tainted
   $: disabled = !!$allErrors.length || !dirty
 
-  $: fields = $table.getOrderedFields().filter((f) => f.isMutable)
+  $: fields = $table.getOrderedMutableFields(formId ? new FormIdVO(formId) : undefined)
 </script>
 
 <form method="POST" use:enhance id="createRecord">

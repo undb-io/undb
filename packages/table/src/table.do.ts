@@ -7,7 +7,7 @@ import { setViewAggregate } from "./methods/set-view-aggregate.method"
 import { setViewColor } from "./methods/set-view-color.method"
 import { setViewFilter } from "./methods/set-view-filter.method"
 import { setViewSort } from "./methods/set-view-sort.method"
-import type { TableRSL } from "./modules"
+import type { Field, FormId, TableRSL } from "./modules"
 import type { Schema } from "./modules/schema/schema.vo"
 import type { Views } from "./modules/views/views.vo"
 import type { TableId } from "./table-id.vo"
@@ -33,12 +33,21 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   $createForm = createFormMethod
   $setTableForm = setTableForm
 
-  getOrderedFields() {
-    return this.schema.fields
+  getOrderedFields(formId?: FormId): Field[] {
+    const fields = this.schema.fields
+    if (formId) {
+      const form = this.forms?.props.find((form) => form.id === formId.value)
+      if (form) {
+        const formFields = form.visibleFields
+        const formFieldsIds = new Set(formFields.map((field) => field.fieldId))
+        return fields.filter((field) => formFieldsIds.has(field.id.value))
+      }
+    }
+    return fields
   }
 
-  getOrderedMutableFields() {
-    return this.getOrderedFields().filter((field) => field.isMutable)
+  getOrderedMutableFields(formId?: FormId): Field[] {
+    return this.getOrderedFields(formId).filter((field) => field.isMutable)
   }
 
   toJSON(): ITableDTO {

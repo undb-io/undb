@@ -3,6 +3,7 @@
   import CreateRecord from "./create-record.svelte"
   import Button from "$lib/components/ui/button/button.svelte"
   import { createRecordSheetOpen } from "./create-record.store"
+  import { formId } from "$lib/store/tab.store"
 
   let disabled = false
   let dirty = false
@@ -24,7 +25,7 @@
     </Sheet.Header>
 
     <div class="flex-1">
-      <CreateRecord bind:disabled bind:dirty />
+      <CreateRecord bind:disabled bind:dirty formId={$formId ?? undefined} />
     </div>
 
     <Sheet.Footer>
