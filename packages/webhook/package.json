@@ -1,0 +1,16 @@
+{
+  "name": "@undb/webhook",
+  "module": "src/index.ts",
+  "type": "module",
+  "dependencies": {
+    "@undb/table": "workspace:*",
+    "@undb/di": "workspace:*",
+    "radash": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
