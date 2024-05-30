@@ -2,10 +2,10 @@
   import { Button } from "$lib/components/ui/button"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { BetweenHorizonalEnd, ChevronDownIcon } from "lucide-svelte"
-  import { createRecordSheetOpen } from "./create-record.store"
   import { getTable } from "$lib/store/table.store"
   import { formId } from "$lib/store/tab.store"
   import { cn } from "$lib/utils"
+  import { CREATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
 
   const table = getTable()
 
@@ -19,7 +19,7 @@
     variant="outline"
     on:click={() => {
       $formId = null
-      $createRecordSheetOpen = true
+      toggleModal(CREATE_RECORD_MODAL)
     }}
     {...$$restProps}
     class={cn(hasForms && "rounded-r-none border-r-0", $$restProps.class)}
@@ -43,7 +43,7 @@
             <DropdownMenu.Item
               on:click={() => {
                 $formId = form.id
-                $createRecordSheetOpen = true
+                toggleModal(CREATE_RECORD_MODAL)
               }}
             >
               {form.name}

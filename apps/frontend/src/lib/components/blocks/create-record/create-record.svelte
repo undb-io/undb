@@ -7,12 +7,12 @@
   import FieldControl from "../field-control/field-control.svelte"
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
-  import { createRecordSheetOpen } from "./create-record.store"
   import { toast } from "svelte-sonner"
   import { ShieldCheckIcon } from "lucide-svelte"
   import { beforeNavigate } from "$app/navigation"
   import { derived } from "svelte/store"
   import { FormIdVO } from "@undb/table"
+  import { CREATE_RECORD_MODAL, closeModal } from "$lib/store/modal.store"
 
   beforeNavigate(({ cancel }) => {
     if ($tainted) {
@@ -35,7 +35,7 @@
     derived([table], ([$table]) => ({
       mutationFn: trpc.record.create.mutate,
       onSettled: () => {
-        $createRecordSheetOpen = false
+        closeModal(CREATE_RECORD_MODAL)
         client.invalidateQueries({
           queryKey: ["records", $table.id.value],
         })

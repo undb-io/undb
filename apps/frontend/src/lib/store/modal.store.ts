@@ -3,11 +3,16 @@ import { queryParam, ssp } from "sveltekit-search-params"
 
 export const modal = queryParam("modal", ssp.array<string>())
 
+export const CREATE_RECORD_MODAL = "createRecord" as const
 export const CREATE_FIELD_MODAL = "createField" as const
 export const DELETE_RECORD_MODAL = "deleteRecord" as const
 export const DUPLICATE_RECORD_MODAL = "duplicateRecord" as const
 
-type ModalType = typeof CREATE_FIELD_MODAL | typeof DELETE_RECORD_MODAL | typeof DUPLICATE_RECORD_MODAL
+type ModalType =
+  | typeof CREATE_FIELD_MODAL
+  | typeof DELETE_RECORD_MODAL
+  | typeof DUPLICATE_RECORD_MODAL
+  | typeof CREATE_RECORD_MODAL
 
 export const toggleModal = (type: ModalType) => {
   modal.update(($modal) => {

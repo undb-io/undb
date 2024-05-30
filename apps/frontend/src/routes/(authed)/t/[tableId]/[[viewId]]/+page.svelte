@@ -3,7 +3,6 @@
   import ConfirmDeleteRecord from "$lib/components/blocks/delete-record/confirm-delete-record.svelte"
   import ConfirmDuplicateRecord from "$lib/components/blocks/duplicate-record/confirm-duplicate-record.svelte"
   import GridView from "$lib/components/blocks/grid-view/grid-view.svelte"
-  import { createRecordSheetOpen } from "$lib/components/blocks/create-record/create-record.store.ts"
   import { shortcut } from "@svelte-put/shortcut"
   import TableHeader from "$lib/components/blocks/table-header/table-header.svelte"
   import Forms from "$lib/components/blocks/forms/forms.svelte"
@@ -11,9 +10,10 @@
   import Openapi from "$lib/components/blocks/openapi/openapi.svelte"
   import CreateFieldDialog from "$lib/components/blocks/create-field/create-field-dialog.svelte"
   import { tab } from "$lib/store/tab.store"
+  import { CREATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
 
   function handleR() {
-    $createRecordSheetOpen = true
+    toggleModal(CREATE_RECORD_MODAL)
   }
 </script>
 

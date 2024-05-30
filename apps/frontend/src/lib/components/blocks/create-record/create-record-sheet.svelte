@@ -2,19 +2,22 @@
   import * as Sheet from "$lib/components/ui/sheet"
   import CreateRecord from "./create-record.svelte"
   import Button from "$lib/components/ui/button/button.svelte"
-  import { createRecordSheetOpen } from "./create-record.store"
   import { formId } from "$lib/store/tab.store"
+  import { modal, CREATE_RECORD_MODAL, closeModal } from "$lib/store/modal.store"
 
   let disabled = false
   let dirty = false
 </script>
 
 <Sheet.Root
-  bind:open={$createRecordSheetOpen}
+  open={$modal?.includes(CREATE_RECORD_MODAL) ?? false}
   onOpenChange={(open) => {
+    if (!open) {
+      closeModal(CREATE_RECORD_MODAL)
+    }
     if (!open && dirty) {
       if (confirm("Are you sure you want to leave this page? You have unsaved changes that will be lost.")) {
-        $createRecordSheetOpen = false
+        closeModal(CREATE_RECORD_MODAL)
       }
     }
   }}
@@ -29,7 +32,7 @@
     </div>
 
     <Sheet.Footer>
-      <Button variant="outline" type="button" on:click={() => ($createRecordSheetOpen = false)}>Cancel</Button>
+      <Button variant="outline" type="button" on:click={() => closeModal(CREATE_RECORD_MODAL)}>Cancel</Button>
       <Button type="submit" form="createRecord" {disabled}>Create</Button>
     </Sheet.Footer>
   </Sheet.Content>
