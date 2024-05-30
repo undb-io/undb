@@ -92,7 +92,7 @@
       </div>
     </Sheet.Content>
   </Sheet.Root>
-  <div class="flex w-full flex-1 items-center justify-between">
+  <div class="relative flex w-full flex-1 items-center justify-between">
     <div class="relative flex items-center gap-4">
       <Breadcrumb.Root>
         <Breadcrumb.List>
@@ -158,7 +158,7 @@
           $developerTab = "openapi"
         }
       }}
-      class="w-[200px] -translate-x-full"
+      class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform"
     >
       <Tabs.List>
         <Tabs.Trigger value="data">

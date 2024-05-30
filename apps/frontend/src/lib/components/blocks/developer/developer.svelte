@@ -13,8 +13,8 @@
   }}
   class="flex h-full w-full flex-col"
 >
-  <div class="bg-background flex h-12 w-full items-center justify-center border-b">
-    <Tabs.List class="-translate-x-1/3">
+  <div class="bg-background relative flex h-12 w-full items-center justify-center border-b">
+    <Tabs.List class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform">
       <Tabs.Trigger value="openapi">
         <Code2Icon class="text-muted-foreground mr-2 h-4 w-4" />
         OpenAPI
