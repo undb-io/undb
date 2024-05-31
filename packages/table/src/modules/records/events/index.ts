@@ -12,3 +12,5 @@ export * from "./record-event.factory"
 export * from "./refine-record-events"
 
 export const recordEvents = [RECORD_CREATED_EVENT, RECORD_DELETED_EVENT] as const
+
+export type RECORD_EVENTS = (typeof recordEvents)[number]

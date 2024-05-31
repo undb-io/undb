@@ -1,19 +1,19 @@
 import { and } from "@undb/domain"
+import { TableIdVo } from "@undb/table"
+import type { IWebhookDTO } from "./dto/webhook.dto.js"
 import type { WebhookSpecification } from "./specifications"
 import {
-  WithWebhookEnabled,
   WithWebhookCondition,
+  WithWebhookEnabled,
+  WithWebhookEvent,
   WithWebhookHeaders,
   WithWebhookId,
   WithWebhookMethod,
   WithWebhookName,
-  WithWebhookTarget,
+  WithWebhookTableId,
   WithWebhookURL,
-  newWebhookSpec,
 } from "./specifications"
 import { WebhookDo } from "./webhook.js"
-import type { ICreateWebhookSchema } from "./webhook.schema.js"
-import type { IUnsafeCreateWebhook } from "./webhook.type.js"
 
 export class WebhookFactory {
   static create(...specs: WebhookSpecification[]): WebhookDo {
@@ -23,21 +23,16 @@ export class WebhookFactory {
       .unwrap()
   }
 
-  static from(input: ICreateWebhookSchema): WebhookDo {
-    const spec = newWebhookSpec(input)
-
-    return this.create(spec)
-  }
-
-  static unsafeCreate(input: IUnsafeCreateWebhook): WebhookDo {
+  static fromJSON(input: IWebhookDTO): WebhookDo {
     return this.create(
       WithWebhookId.fromString(input.id),
       WithWebhookURL.fromString(input.url),
-      WithWebhookTarget.from(input.target),
+      new WithWebhookTableId(new TableIdVo(input.tableId)),
       new WithWebhookEnabled(input.enabled),
       WithWebhookMethod.fromString(input.method),
       new WithWebhookName(input.name),
       WithWebhookHeaders.from(input.headers),
+      new WithWebhookEvent(input.event),
       new WithWebhookCondition(input.condition),
     )
   }

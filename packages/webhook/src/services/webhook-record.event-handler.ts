@@ -1,11 +1,11 @@
+import { singleton } from "@undb/di"
 import type { IEventHandler } from "@undb/domain"
 import { createLogger } from "@undb/logger"
 import { TableIdVo, injectTableRepository, type IRecordEvent, type ITableRepository } from "@undb/table"
-import { injectWebhookHttpService, type IWebhookHttpService } from "./webhook.http-service"
-import { injectWebhookRepository, type IWebhookRepository } from "../webhook.repository"
-import { withTableEvents } from "../specifications/webhook-target.specification"
 import { parallel } from "radash"
-import { singleton } from "@undb/di"
+import { withTableEvents } from "../specifications/webhook-tableId.specification"
+import { injectWebhookRepository, type IWebhookRepository } from "../webhook.repository"
+import { injectWebhookHttpService, type IWebhookHttpService } from "./webhook.http-service"
 
 @singleton()
 export class WebhookEventsHandler implements IEventHandler<IRecordEvent> {

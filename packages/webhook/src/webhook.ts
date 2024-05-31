@@ -1,25 +1,31 @@
 import type { IEvent } from "@undb/domain"
 import { and } from "@undb/domain"
+import {
+  RecordComositeSpecification,
+  refineRecordEvents,
+  type IRecordEvent,
+  type RECORD_EVENTS,
+  type TableDo,
+  type TableId,
+} from "@undb/table"
 import { Some, type Option } from "oxide.ts"
+import { isObject, isString } from "radash"
+import type { IWebhookDTO } from "./dto"
+import type { IUpdateWebhookDTO } from "./dto/update-webhook.dto"
 import type { WebhookSpecification } from "./specifications/interface"
-import { WithWebhookEnabled } from "./specifications/webhook-enabled.specification"
 import { WithWebhookCondition } from "./specifications/webhook-condition.specification"
+import { WithWebhookEnabled } from "./specifications/webhook-enabled.specification"
 import { WithWebhookHeaders } from "./specifications/webhook-headers.specification"
 import { WithWebhookMethod } from "./specifications/webhook-method.specification"
 import { WithWebhookName } from "./specifications/webhook-name.specification"
-import { WithWebhookEvent } from "./specifications/webhook-target.specification"
+import { WithWebhookEvent } from "./specifications/webhook-tableId.specification"
 import { WithWebhookURL } from "./specifications/webhook-url.specification"
 import type { IWebhookHeaders, WebhookHeaders } from "./webhook-headers.vo"
 import type { WebhookId } from "./webhook-id.vo"
 import type { WebhookMethod } from "./webhook-method.vo"
-import type { WebhookTarget } from "./webhook-target.vo"
 import type { WebhookURL } from "./webhook-url.vo"
-import { UNDB_SIGNATURE_HEADER_NAME } from "./webhook.constants"
-import type { IUpdateWebhookSchema, IWebhookEventSchema } from "./webhook.schema"
-import { RecordComositeSpecification, refineRecordEvents, type IRecordEvent, type TableDo } from "@undb/table"
-import { isObject, isString } from "radash"
 import type { WebhookCondition } from "./webhook.condition"
-import type { IWebhookDTO } from "./dto"
+import { UNDB_SIGNATURE_HEADER_NAME } from "./webhook.constants"
 
 export class WebhookDo {
   public id!: WebhookId
@@ -27,7 +33,8 @@ export class WebhookDo {
   public url!: WebhookURL
   public method!: WebhookMethod
   public enabled!: boolean
-  public target!: WebhookTarget | null
+  public tableId!: TableId
+  public event!: RECORD_EVENTS
   public headers!: WebhookHeaders
   public condition!: Option<WebhookCondition>
 
@@ -35,20 +42,7 @@ export class WebhookDo {
     return new WebhookDo()
   }
 
-  public constructEvent(event: IRecordEvent): IWebhookEventSchema {
-    return {
-      id: event.id,
-      operatorId: event.operatorId!,
-      timestamp: event.timestamp,
-      event: {
-        name: event.name,
-        payload: event.payload,
-        meta: event.meta,
-      },
-    }
-  }
-
-  public updateWebhook(input: IUpdateWebhookSchema): Option<WebhookSpecification> {
+  public updateWebhook(input: IUpdateWebhookDTO): Option<WebhookSpecification> {
     const specs: WebhookSpecification[] = []
 
     if (isString(input.name)) {
@@ -83,7 +77,8 @@ export class WebhookDo {
       url: this.url.value,
       method: this.method.value,
       enabled: this.enabled,
-      target: this.target?.toJSON() ?? null,
+      event: this.event,
+      tableId: this.tableId.value,
       headers: this.headers.toJSON(),
       condition: this.condition.into(undefined)?.toJSON(),
     }

@@ -1,12 +1,23 @@
 <script lang="ts">
   import * as Form from "$lib/components/ui/form"
+  import * as Select from "$lib/components/ui/select/index.js"
+  import * as Collapsible from "$lib/components/ui/collapsible"
+  import { Switch } from "$lib/components/ui/switch"
+  import { Label } from "$lib/components/ui/label"
   import { trpc } from "$lib/trpc/client.js"
   import { createMutation } from "@tanstack/svelte-query"
   import SuperDebug, { superForm, defaults } from "sveltekit-superforms"
-  import { createWebhookCommand } from "@undb/commands"
+  import { createWebhookCommand, type ICreateWebhookCommand } from "@undb/commands"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { Input } from "$lib/components/ui/input"
   import { toast } from "svelte-sonner"
+  import { getTable } from "$lib/store/table.store"
+  import FiltersEditor from "../filters-editor/filters-editor.svelte"
+  import { type MaybeConditionGroup, parseValidViewFilter } from "@undb/table"
+  import { writable } from "svelte/store"
+  import type { IWebhookConditionOptionSchema } from "@undb/webhook/src/webhook.condition"
+
+  const table = getTable()
 
   const createWebhookMutation = createMutation({
     mutationFn: trpc.webhook.create.mutate,
@@ -18,10 +29,16 @@
     },
   })
 
-  const form = superForm(
+  const form = superForm<ICreateWebhookCommand>(
     defaults(
       {
         name: "webhook",
+        method: "POST",
+        url: "",
+        tableId: $table.id.value,
+        enabled: true,
+        headers: {},
+        event: "record.created",
       },
       zodClient(createWebhookCommand),
     ),
@@ -34,24 +51,81 @@
       onUpdate(event) {
         if (!event.form.valid) return
 
-        // $mutation.mutate(event.form.data)
+        $createWebhookMutation.mutate(event.form.data)
       },
     },
   )
 
   const { form: formData, enhance } = form
+
+  const condition = writable<MaybeConditionGroup<IWebhookConditionOptionSchema> | undefined>()
+  $: validCondition = $condition ? parseValidViewFilter($table.schema.fieldMapById, $condition) : undefined
+  $: validCondition,
+    formData.update(($form) => {
+      $form.condition = validCondition
+      return $form
+    })
+
+  $: selectedMethod = $formData.method
+    ? {
+        label: $formData.method,
+        value: $formData.method,
+      }
+    : undefined
+
+  let enableCondition = false
 </script>
 
-<form id="createTable" class="px-1" method="POST" use:enhance>
-  <Form.Field {form} name="name">
-    <Form.Control let:attrs class="grid gap-3">
+<form id="createTable" class="grid gap-3 px-1" method="POST" use:enhance>
+  <Form.Field {form} name="name" class="grid gap-3">
+    <Form.Control let:attrs>
       <Form.Label>Name</Form.Label>
       <Input {...attrs} bind:value={$formData.name} />
     </Form.Control>
     <Form.FieldErrors />
   </Form.Field>
+
+  <div class="flex w-full items-center justify-center gap-2">
+    <Form.Field {form} name="method">
+      <Form.Control let:attrs>
+        <Select.Root
+          selected={selectedMethod}
+          onSelectedChange={(v) => {
+            v && ($formData.method = v.value)
+          }}
+        >
+          <Select.Trigger {...attrs}>
+            <Select.Value placeholder="Select a method" />
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Item value="POST" label="POST" />
+            <Select.Item value="PATCH" label="PATCH" />
+          </Select.Content>
+        </Select.Root>
+        <input hidden bind:value={$formData.method} name={attrs.name} />
+      </Form.Control>
+      <Form.FieldErrors />
+    </Form.Field>
+
+    <Form.Field {form} name="url" class="flex-1">
+      <Form.Control let:attrs>
+        <Input {...attrs} bind:value={$formData.url} type="url" />
+      </Form.Control>
+      <Form.FieldErrors />
+    </Form.Field>
+  </div>
+
+  <Collapsible.Root open={enableCondition}>
+    <div class="flex items-center gap-2">
+      <Label for="enableCondition">Enable Condtion</Label>
+      <Switch id="enableCondition" bind:checked={enableCondition} />
+    </div>
+    <Collapsible.Content>
+      <FiltersEditor bind:value={$condition} table={$table} />
+    </Collapsible.Content>
+  </Collapsible.Root>
 </form>
 
-<!-- <div class="mt-2">
+<div class="mt-2">
   <SuperDebug data={$formData} />
-</div> -->
+</div>

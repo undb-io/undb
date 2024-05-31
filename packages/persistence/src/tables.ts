@@ -1,5 +1,5 @@
-import type { IFormsDTO, ISchemaDTO, IViewsDTO } from "@undb/table"
-import type { IWebhookEventSchema, IWebhookHeaders, IWebhookMethod, IWebhookTarget } from "@undb/webhook"
+import type { IFormsDTO, ISchemaDTO, IViewsDTO, RECORD_EVENTS } from "@undb/table"
+import type { IWebhookHeaders, IWebhookMethod } from "@undb/webhook"
 import type { IRootWebhookCondition } from "@undb/webhook/src/webhook.condition"
 import { sql } from "drizzle-orm"
 import { integer, sqliteTableCreator, text } from "drizzle-orm/sqlite-core"
@@ -62,10 +62,12 @@ export const webhook = sqliteTable("webhook", {
   url: text("url").notNull(),
   method: text("method").notNull().$type<IWebhookMethod>(),
   enabled: integer("enabled", { mode: "boolean" }).notNull(),
-  target: text("target", { mode: "json" }).$type<IWebhookTarget>(),
+  tableId: text("target")
+    .notNull()
+    .references(() => tables.id),
   headers: text("headers", { mode: "json" }).notNull().$type<IWebhookHeaders>(),
   condition: text("condition", { mode: "json" }).$type<IRootWebhookCondition>(),
-  event: text("event", { mode: "json" }).$type<IWebhookEventSchema>(),
+  event: text("event").$type<RECORD_EVENTS>(),
 })
 
 export type Webhook = typeof webhook.$inferSelect
