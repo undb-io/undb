@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
-  import { BetweenHorizonalEnd, ChevronDownIcon } from "lucide-svelte"
+  import { BetweenHorizonalEnd, ChevronDownIcon, FormInputIcon } from "lucide-svelte"
   import { getTable } from "$lib/store/table.store"
   import { formId } from "$lib/store/tab.store"
   import { cn } from "$lib/utils"
@@ -41,7 +41,10 @@
       </DropdownMenu.Trigger>
       <DropdownMenu.Content class="w-[200px]">
         <DropdownMenu.Group>
-          <DropdownMenu.Label>Create By Form</DropdownMenu.Label>
+          <DropdownMenu.Label class="flex items-center gap-2 text-xs">
+            <FormInputIcon class="text-muted-foreground h-4 w-4" />
+            Create By Form</DropdownMenu.Label
+          >
           <DropdownMenu.Separator />
           {#each forms as form}
             <DropdownMenu.Item
