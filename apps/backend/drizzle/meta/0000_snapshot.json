@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "7d35e616-3611-4a63-887d-c387f68ca008",
+  "id": "33a5c7d7-938e-43cb-a00f-0b48ffcc0f6d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_outbox": {
@@ -261,8 +261,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "target": {
-          "name": "target",
+        "tableId": {
+          "name": "tableId",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -286,17 +286,17 @@
           "name": "event",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "undb_webhook_target_undb_table_id_fk": {
-          "name": "undb_webhook_target_undb_table_id_fk",
+        "undb_webhook_tableId_undb_table_id_fk": {
+          "name": "undb_webhook_tableId_undb_table_id_fk",
           "tableFrom": "undb_webhook",
           "tableTo": "undb_table",
-          "columnsFrom": ["target"],
+          "columnsFrom": ["tableId"],
           "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"

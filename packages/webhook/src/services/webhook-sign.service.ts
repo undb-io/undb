@@ -1,9 +1,8 @@
-import type { IEvent } from "@undb/domain"
-import type { WebhookDo } from "../webhook.js"
 import { inject } from "@undb/di"
+import type { IWebhookMessageBody } from "../webhook.message.js"
 
 export interface IWebhookSignService {
-  sign(webhook: WebhookDo, event: IEvent): string
+  sign(body: IWebhookMessageBody): string
 }
 
 export const WEBHOOK_SIGN_SERVICE = Symbol("WEBHOOK_SIGN_SERVICE")

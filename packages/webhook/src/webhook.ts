@@ -25,7 +25,7 @@ import type { WebhookMethod } from "./webhook-method.vo"
 import type { WebhookURL } from "./webhook-url.vo"
 import type { WebhookCondition } from "./webhook.condition"
 import { UNDB_SIGNATURE_HEADER_NAME } from "./webhook.constants"
-import type { IWebhookMessage } from "./webhook.message"
+import type { IWebhookMessage, IWebhookMessageBody } from "./webhook.message"
 
 export class WebhookDo {
   public id!: WebhookId
@@ -96,15 +96,18 @@ export class WebhookDo {
     return refineRecordEvents(table, event, spec)
   }
 
-  public constructMessage(signature: string, event: IRecordEvent): IWebhookMessage {
+  public constructBody(event: IRecordEvent): IWebhookMessageBody {
+    return {
+      id: event.id,
+      operatorId: event.operatorId!,
+      timestamp: event.timestamp,
+      event: event,
+    }
+  }
+  public constructMessage(signature: string, body: IWebhookMessageBody): IWebhookMessage {
     return {
       headers: this.mergedHeaders(signature),
-      body: {
-        id: event.id,
-        operatorId: event.operatorId!,
-        timestamp: event.timestamp,
-        event: event,
-      },
+      body,
     }
   }
 

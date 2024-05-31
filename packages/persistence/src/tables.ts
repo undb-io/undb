@@ -62,7 +62,7 @@ export const webhook = sqliteTable("webhook", {
   url: text("url").notNull(),
   method: text("method").notNull().$type<IWebhookMethod>(),
   enabled: integer("enabled", { mode: "boolean" }).notNull(),
-  tableId: text("target")
+  tableId: text("tableId")
     .notNull()
     .references(() => tables.id),
   headers: text("headers", { mode: "json" }).notNull().$type<IWebhookHeaders>(),

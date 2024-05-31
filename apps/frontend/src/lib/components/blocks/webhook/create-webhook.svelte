@@ -27,7 +27,7 @@
       form.reset()
       closeModal(CREATE_WEBHOOK_MODAL)
       await client.invalidateQueries({
-        queryKey: ["tables", table.id.value, "webhooks"],
+        queryKey: ["tables", $table.id.value, "webhooks"],
       })
     },
     onError(error) {

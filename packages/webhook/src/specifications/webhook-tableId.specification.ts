@@ -61,7 +61,7 @@ export class WithWebhookEvent extends CompositeSpecification<WebhookDo, IWebhook
   }
 }
 
-export const withTableEvents = (tableId: string, events: string[]) => {
+export const withTableEvents = (tableId: string, events: RECORD_EVENTS[]) => {
   return new WithWebhookTableId(new TableIdVo(tableId))
     .and(new WebhookEventsIn([...recordEvents, ...events]))
     .and(WithWebhookEnabled.enabled())

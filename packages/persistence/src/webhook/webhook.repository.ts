@@ -32,23 +32,35 @@ export class WebhookRepository implements IWebhookRepository {
 
     return wb.length ? Some(this.mapper.toDo(wb[0])) : None
   }
+
   findOne(spec: WebhookSpecification): Promise<Option<WebhookDo>> {
     throw new Error("Method not implemented.")
   }
-  find(spec: WebhookSpecification): Promise<WebhookDo[]> {
-    throw new Error("Method not implemented.")
+
+  async find(spec: WebhookSpecification): Promise<WebhookDo[]> {
+    const qb = this.db.select().from(webhookTable).$dynamic()
+
+    const visitor = new WebhookFilterVisitor()
+    spec.accept(visitor)
+
+    const wb = await qb.where(visitor.cond)
+
+    return wb.map((w) => this.mapper.toDo(w))
   }
+
   async insert(webhook: WebhookDo): Promise<void> {
     const values = this.mapper.toEntity(webhook)
 
     await this.db.insert(webhookTable).values(values)
   }
+
   async updateOneById(webhook: WebhookDo, spec: WebhookSpecification): Promise<void> {
     const visitor = new WebhookMutationVisitor(webhook)
     spec.accept(visitor)
 
     await this.db.update(webhookTable).set(visitor.updates).where(eq(webhookTable.id, webhook.id.value))
   }
+
   deleteOneById(id: string): Promise<void> {
     throw new Error("Method not implemented.")
   }

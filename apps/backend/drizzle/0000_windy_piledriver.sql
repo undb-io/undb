@@ -40,11 +40,11 @@ CREATE TABLE `undb_webhook` (
 	`url` text NOT NULL,
 	`method` text NOT NULL,
 	`enabled` integer NOT NULL,
-	`target` text NOT NULL,
+	`tableId` text NOT NULL,
 	`headers` text NOT NULL,
 	`condition` text,
-	`event` text,
-	FOREIGN KEY (`target`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action
+	`event` text NOT NULL,
+	FOREIGN KEY (`tableId`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `undb_user_email_unique` ON `undb_user` (`email`);

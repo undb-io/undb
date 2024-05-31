@@ -30,18 +30,22 @@ export class WebhookEventsHandler implements IEventHandler<IRecordEvent> {
       const spec = withTableEvents(tableId, [event.name])
       const webhooks = await this.repo.find(spec)
 
+      this.logger.debug({ tableId, webhooks }, "found webhooks")
+
       await parallel(100, webhooks, async (webhook) => {
         const refinedEvent = webhook.refineEvent(table, event)
         if (refinedEvent.isNone()) {
-          this.logger.info("skipping webhook sending")
+          this.logger.debug("skipping webhook sending")
           return
         }
 
         const evt = refinedEvent.unwrap()
-        const signature = this.signService.sign(webhook, evt)
-        const message = webhook.constructMessage(signature, evt)
+        const body = webhook.constructBody(evt)
+        const signature = this.signService.sign(body)
+        const message = webhook.constructMessage(signature, body)
 
-        await this.httpService.send(message)
+        this.logger.debug({ message }, "sending webhook message")
+        await this.httpService.send(webhook, message)
       })
     } catch (error) {
       this.logger.error(error)

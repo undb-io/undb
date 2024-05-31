@@ -10,20 +10,31 @@ import { trpc } from "@elysiajs/trpc"
 import { executionContext } from "@undb/context/server"
 import { container } from "@undb/di"
 import { graphql } from "@undb/graphql"
+import { PubSubContext } from "@undb/realtime"
+import { IRecordEvent } from "@undb/table"
 import { route } from "@undb/trpc"
+import { WebhookEventsHandler } from "@undb/webhook"
 import { Elysia } from "elysia"
 import { requestID } from "elysia-requestid"
 import { loggerPlugin } from "./plugins/logging"
 import { auth, authStore } from "./routes/auth.route"
 import { OpenAPI } from "./routes/openapi.route"
-import { web } from "./routes/web.route"
 import { RealtimeRoute } from "./routes/realtime.route"
+import { web } from "./routes/web.route"
 
 const app = new Elysia()
   .trace(async ({ handle, set }) => {
     const { time, end } = await handle
 
     set.headers["Server-Timing"] = `handle;dur=${(await end) - time}`
+  })
+  .onStart(async () => {
+    const pubsub = container.resolve(PubSubContext)
+    const webhookEventHandler = container.resolve(WebhookEventsHandler)
+    const messages = pubsub.subscribe("tenant.*.record.*")
+    for await (const message of messages) {
+      await webhookEventHandler.handle(message as IRecordEvent)
+    }
   })
   .use(cors())
   .use(html())
