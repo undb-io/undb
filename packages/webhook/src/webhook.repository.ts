@@ -21,7 +21,6 @@ export const injectWebhookRepository = () => inject(WEBHOOK_REPOSITORY)
 
 export interface IWebhookQueryRepository {
   findOneById: (id: string) => Promise<Option<IWebhookDTO>>
-  findOne: (spec: WebhookSpecification) => Promise<Option<IWebhookDTO>>
   find: (spec: Option<WebhookSpecification>, pagination: Option<IPagination>) => Promise<IWebhookDTO[]>
 }
 

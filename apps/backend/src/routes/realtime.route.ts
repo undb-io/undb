@@ -3,6 +3,8 @@ import Stream from "@elysiajs/stream"
 import { inject, singleton } from "@undb/di"
 import { BaseEvent } from "@undb/domain"
 import { PubSubContext, ReplyService, RxJSPubSub } from "@undb/realtime"
+import { IRecordEvent } from "@undb/table"
+import { WebhookEventsHandler } from "@undb/webhook"
 import Elysia, { t } from "elysia"
 
 @singleton()
@@ -14,12 +16,20 @@ export class RealtimeRoute {
     rxjsPubSub: RxJSPubSub<BaseEvent>,
     @inject(ReplyService)
     private readonly reply: ReplyService,
+    @inject(WebhookEventsHandler)
+    private readonly webhookEventHandler: WebhookEventsHandler,
   ) {
     pubsub.setPubSub(rxjsPubSub)
   }
 
   route() {
     return new Elysia()
+      .onStart(async () => {
+        const messages = this.pubsub.subscribe("tenant.*.record.*")
+        for await (const message of messages) {
+          await this.webhookEventHandler.handle(message as IRecordEvent)
+        }
+      })
       .use(
         cron({
           name: "realtime",

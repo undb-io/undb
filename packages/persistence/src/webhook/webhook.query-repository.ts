@@ -1,6 +1,7 @@
 import { inject, singleton } from "@undb/di"
-import type { IPagination, IUnitOfWork, Option } from "@undb/domain"
+import { None, Some, type IPagination, type IUnitOfWork, type Option } from "@undb/domain"
 import type { IWebhookDTO, IWebhookQueryRepository, WebhookSpecification } from "@undb/webhook"
+import { eq } from "drizzle-orm"
 import type { Database } from "../db"
 import { injectDb } from "../db.provider"
 import { webhook } from "../tables"
@@ -18,6 +19,12 @@ export class WebhookQueryRepository implements IWebhookQueryRepository {
     @injectDbUnitOfWork()
     public readonly uow: IUnitOfWork,
   ) {}
+
+  async findOneById(id: string): Promise<Option<IWebhookDTO>> {
+    const wb = await this.db.select().from(webhook).where(eq(webhook.id, id)).limit(1)
+
+    return wb.length ? Some(this.mapper.toDTO(wb[0])) : None
+  }
 
   async find(spec: Option<WebhookSpecification>, pagination: Option<IPagination>): Promise<IWebhookDTO[]> {
     const qb = this.db.select().from(webhook).$dynamic()
