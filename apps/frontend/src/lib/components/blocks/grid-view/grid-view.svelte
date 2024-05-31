@@ -182,7 +182,7 @@
 
 <div class="flex h-full w-full flex-col">
   <TableTools />
-  <ScrollArea orientation="both" class="h-full flex-1 overflow-auto rounded-md border">
+  <ScrollArea orientation="both" class="h-full flex-1 overflow-auto">
     <table {...$tableAttrs} class="flex h-full flex-col">
       <Table.Header {...$tableHeaderAttrs} class="sticky top-0 z-50 bg-white">
         {#each $headerRows as headerRow}
