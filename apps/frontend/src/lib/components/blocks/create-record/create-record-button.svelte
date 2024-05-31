@@ -31,7 +31,11 @@
   {#if hasForms}
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
-        <Button size="sm" variant="outline" class="rounded-l-none border-l px-2">
+        <Button
+          size={$$restProps.size ?? "sm"}
+          variant={$$restProps.variant ?? "outline"}
+          class="rounded-l-none border-l px-2"
+        >
           <ChevronDownIcon class="h-3 w-3 text-sm font-light" />
         </Button>
       </DropdownMenu.Trigger>
