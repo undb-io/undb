@@ -9,6 +9,7 @@ const formFieldCondition = createConditionGroup(formFieldConditionOption, formFi
 
 export const formField = z.object({
   fieldId,
+  defaultValue: z.any().optional(),
   hidden: z.boolean().optional(),
   required: z.boolean().optional(),
   conditionEnabled: z.boolean().optional(),
@@ -27,6 +28,14 @@ export class FormFieldVO extends ValueObject<IFormField> {
       return false
     }
     return this.props.hidden ?? false
+  }
+
+  public get defaultValue() {
+    return this.props.defaultValue
+  }
+
+  public set defaultValue(value: any) {
+    this.props.defaultValue = value
   }
 
   public set hidden(value: boolean) {
@@ -84,6 +93,7 @@ export class FormFieldVO extends ValueObject<IFormField> {
       fieldId: props.fieldId,
       hidden: props.hidden,
       required: props.required,
+      defaultValue: props.defaultValue,
       conditionEnabled: props.conditionEnabled,
       condition: props.condition,
     }

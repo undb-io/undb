@@ -1,5 +1,6 @@
 import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
+import { objectify } from "radash"
 import type { TableDo } from "../../../table.do"
 import type { RecordDO } from "../../records"
 import { conditionContainsFields, getSpec } from "../../schema/fields/condition/condition.util"
@@ -136,5 +137,13 @@ export class FormVO extends ValueObject<IForm> {
     const isSatisfied = spec.unwrap().isSatisfiedBy(record)
 
     return isSatisfied
+  }
+
+  getDefaultValues() {
+    return objectify(
+      this.fields.props,
+      (f) => f.fieldId,
+      (f) => f.defaultValue,
+    )
   }
 }

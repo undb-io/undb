@@ -57,8 +57,8 @@
     })
   }
 
-  const defaultValue = $table.schema.getDefaultValues()
-  $: $table, form.reset({ data: $table.schema.getDefaultValues() })
+  const defaultValue = $table.getDefaultValues(formId ? new FormIdVO(formId) : undefined)
+  $: $table, form.reset({ data: $table.getDefaultValues(formId ? new FormIdVO(formId) : undefined) })
 
   const form = superForm(defaults(defaultValue, zodClient(schema)), {
     SPA: true,

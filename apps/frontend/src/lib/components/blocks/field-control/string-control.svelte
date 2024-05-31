@@ -4,4 +4,4 @@
   export let value: string
 </script>
 
-<Input bind:value {...$$restProps} />
+<Input bind:value {...$$restProps} on:change />

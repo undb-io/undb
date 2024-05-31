@@ -7,4 +7,4 @@
   }
 </script>
 
-<Input {...$$restProps} {value} on:input={onInput} type="number" />
+<Input {...$$restProps} {value} on:input={onInput} type="number" on:change />

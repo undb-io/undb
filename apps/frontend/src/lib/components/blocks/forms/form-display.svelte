@@ -110,7 +110,13 @@
                     </span>
                   {/if}
                 </div>
-                <FieldControl {field} value={undefined} class="bg-background" />
+                <FieldControl
+                  {field}
+                  bind:value={formField.defaultValue}
+                  class="bg-background"
+                  on:change={setForm}
+                  placeholder={`set default value for ${field.name.value}`}
+                />
               </div>
               <Collapsible.Content>
                 <FormFieldOptions {field} bind:formField bind:form class="-mx-4" />

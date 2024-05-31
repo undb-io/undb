@@ -2,19 +2,19 @@ import { AggregateRoot } from "@undb/domain"
 import type { ITableDTO } from "./dto"
 import type { ITableEvents } from "./events"
 import { createFieldMethod } from "./methods/create-field.method"
+import { createFormMethod } from "./methods/create-form.method"
+import { setTableForm } from "./methods/set-table-form.method"
 import { setTableRLS } from "./methods/set-table-rls.method"
 import { setViewAggregate } from "./methods/set-view-aggregate.method"
 import { setViewColor } from "./methods/set-view-color.method"
 import { setViewFilter } from "./methods/set-view-filter.method"
 import { setViewSort } from "./methods/set-view-sort.method"
 import type { Field, FormId, TableRSL } from "./modules"
+import type { FormsVO } from "./modules/forms/forms.vo"
 import type { Schema } from "./modules/schema/schema.vo"
 import type { Views } from "./modules/views/views.vo"
 import type { TableId } from "./table-id.vo"
 import type { TableNameVo } from "./table-name.vo"
-import type { FormsVO } from "./modules/forms/forms.vo"
-import { createFormMethod } from "./methods/create-form.method"
-import { setTableForm } from "./methods/set-table-form.method"
 
 export class TableDo extends AggregateRoot<ITableEvents> {
   public id!: TableId
@@ -48,6 +48,17 @@ export class TableDo extends AggregateRoot<ITableEvents> {
 
   getOrderedMutableFields(formId?: FormId): Field[] {
     return this.getOrderedFields(formId).filter((field) => field.isMutable)
+  }
+
+  getDefaultValues(formId?: FormId) {
+    const schemaDefaultValues = this.schema.getDefaultValues()
+
+    const form = this.forms?.props.find((form) => form.id === formId?.value)
+    if (form) {
+      const formDefaultValues = form.getDefaultValues()
+      return { ...schemaDefaultValues, ...formDefaultValues }
+    }
+    return schemaDefaultValues
   }
 
   toJSON(): ITableDTO {
