@@ -11,8 +11,9 @@
   import { ShieldCheckIcon } from "lucide-svelte"
   import { beforeNavigate } from "$app/navigation"
   import { derived } from "svelte/store"
-  import { FormIdVO } from "@undb/table"
+  import { FormIdVO, RecordDO, RecordIdVO } from "@undb/table"
   import { CREATE_RECORD_MODAL, closeModal } from "$lib/store/modal.store"
+  import autoAnimate from "@formkit/auto-animate"
 
   beforeNavigate(({ cancel }) => {
     if ($tainted) {
@@ -28,6 +29,8 @@
   export let disabled: boolean = false
   export let dirty = false
   export let formId: string | undefined = undefined
+
+  $: tableForm = formId ? $table.forms?.getFormById(formId) : undefined
 
   const client = useQueryClient()
 
@@ -76,27 +79,35 @@
   $: disabled = !!$allErrors.length
 
   $: fields = $table.getOrderedMutableFields(formId ? new FormIdVO(formId) : undefined)
+
+  $: tempRecord = RecordDO.fromJSON($table, { id: RecordIdVO.create().value, values: $formData })
 </script>
 
 <form method="POST" use:enhance id="createRecord">
-  {#each fields as field}
-    <Form.Field {form} name={field.id.value}>
-      <Form.Control let:attrs>
-        <Form.Label class="flex items-center justify-between gap-2">
-          <div class="flex items-center gap-2">
-            <FieldIcon type={field.type} class="h-4 w-4" />
-            <span>{field.name.value}</span>
-            {#if field.required}
-              <span class="text-red-500">*</span>
-            {/if}
-          </div>
-          <ShieldCheckIcon class="text-muted-foreground h-4 w-4" />
-        </Form.Label>
-        <FieldControl {...attrs} bind:value={$formData[field.id.value]} {field} disabled={field.isSystem} />
-      </Form.Control>
-      <Form.FieldErrors />
-    </Form.Field>
-  {/each}
+  <ul use:autoAnimate class="grid gap-3">
+    {#each fields as field}
+      {@const shouldShow =
+        !tableForm || tableForm.getShouldShowField(field.id.value, $table.schema.fieldMapById, tempRecord)}
+      {#if shouldShow}
+        <Form.Field {form} name={field.id.value}>
+          <Form.Control let:attrs>
+            <Form.Label class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <FieldIcon type={field.type} class="h-4 w-4" />
+                <span>{field.name.value}</span>
+                {#if field.required}
+                  <span class="text-red-500">*</span>
+                {/if}
+              </div>
+              <ShieldCheckIcon class="text-muted-foreground h-4 w-4" />
+            </Form.Label>
+            <FieldControl {...attrs} bind:value={$formData[field.id.value]} {field} disabled={field.isSystem} />
+          </Form.Control>
+          <Form.FieldErrors />
+        </Form.Field>
+      {/if}
+    {/each}
+  </ul>
 </form>
 
 <!-- <SuperDebug data={$formData} /> -->

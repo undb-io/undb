@@ -91,7 +91,7 @@ export class StringEmpty extends RecordComositeSpecification {
   }
   isSatisfiedBy(t: RecordDO): boolean {
     const value = t.getValue(this.fieldId)
-    return value.mapOr(false, (v) => v instanceof StringFieldValue && !v.value)
+    return value.mapOr(true, (v) => v instanceof StringFieldValue && !v.value)
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
     throw new Error("Method not implemented.")

@@ -1,13 +1,15 @@
 import { ValueObject } from "@undb/domain"
-import { FormFieldsVO } from "./form-fields.vo"
-import { FormFieldVO, formField } from "./form-field.vo"
 import { z } from "@undb/zod"
-import { FormNameVo, formName } from "./form-name.vo"
-import { FormIdVO, formId, type FormId } from "./form-id.vo"
 import type { TableDo } from "../../../table.do"
-import type { ICreateFormDTO } from "../dto"
-import { conditionContainsFields } from "../../schema/fields/condition/condition.util"
+import type { RecordDO } from "../../records"
+import { conditionContainsFields, getSpec } from "../../schema/fields/condition/condition.util"
 import type { Field } from "../../schema/fields/field.type"
+import type { SchemaMap } from "../../schema/schema.type"
+import type { ICreateFormDTO } from "../dto"
+import { FormFieldVO, formField } from "./form-field.vo"
+import { FormFieldsVO } from "./form-fields.vo"
+import { FormIdVO, formId, type FormId } from "./form-id.vo"
+import { FormNameVo, formName } from "./form-name.vo"
 
 export const formDTO = z.object({
   id: formId,
@@ -116,5 +118,23 @@ export class FormVO extends ValueObject<IForm> {
     const ids = new Set([...previousFields, ...nextFields].map((field) => field.fieldId))
 
     return conditionContainsFields(condition, ids)
+  }
+
+  getShouldShowField(fieldId: string, schemaMap: SchemaMap, record: RecordDO): boolean {
+    const target = this.fields.props.find((f) => f.fieldId === fieldId)
+    if (!target) return true
+
+    const condition = target.condition
+    if (!condition) return true
+
+    const isInValidCondition = this.getIsFormFieldContionInValid(fieldId)
+    if (isInValidCondition) return true
+
+    const spec = getSpec(schemaMap, condition)
+    if (spec.isNone()) return true
+
+    const isSatisfied = spec.unwrap().isSatisfiedBy(record)
+
+    return isSatisfied
   }
 }
