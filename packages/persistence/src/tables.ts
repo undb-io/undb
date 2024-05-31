@@ -67,7 +67,7 @@ export const webhook = sqliteTable("webhook", {
     .references(() => tables.id),
   headers: text("headers", { mode: "json" }).notNull().$type<IWebhookHeaders>(),
   condition: text("condition", { mode: "json" }).$type<IRootWebhookCondition>(),
-  event: text("event").$type<RECORD_EVENTS>(),
+  event: text("event").notNull().$type<RECORD_EVENTS>(),
 })
 
 export type Webhook = typeof webhook.$inferSelect

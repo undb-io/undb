@@ -1,11 +1,12 @@
-import type { ISpecVisitor, ISpecification } from "@undb/domain"
+import { WontImplementException, type ISpecVisitor, type ISpecification } from "@undb/domain"
 import { and, not, or, type SQL } from "drizzle-orm"
+import type { SQLiteTable, SQLiteUpdateSetSource } from "drizzle-orm/sqlite-core"
 
-export interface IAbastractDBVisitor {
+export interface IAbastractDBFilterVisitor {
   get cond(): SQL | undefined
 }
 
-export abstract class AbstractDBFilterVisitor<T> implements IAbastractDBVisitor, ISpecVisitor {
+export abstract class AbstractDBFilterVisitor<T> implements IAbastractDBFilterVisitor, ISpecVisitor {
   #conds: (SQL | undefined)[] = []
 
   protected addCond(cond: SQL | undefined) {
@@ -67,5 +68,38 @@ export abstract class AbstractDBFilterVisitor<T> implements IAbastractDBVisitor,
   clone(): this {
     const Visitor = Object.getPrototypeOf(this).constructor as new () => AbstractDBFilterVisitor<T>
     return new Visitor() as this
+  }
+}
+
+type Source<T extends SQLiteTable> = SQLiteUpdateSetSource<T>
+
+export interface IAbastractDBMutationVisitor<T extends SQLiteTable> {
+  get updates(): Source<T>
+}
+
+export abstract class AbstractDBMutationVisitor<T, S extends SQLiteTable>
+  implements IAbastractDBMutationVisitor<S>, ISpecVisitor
+{
+  #updates: Source<S> = {}
+  get updates(): Source<S> {
+    return this.#updates
+  }
+
+  addUpdates(update: Source<S>) {
+    this.#updates = { ...this.#updates, ...update }
+  }
+  and(left: ISpecification<T, ISpecVisitor>, right: ISpecification<T, ISpecVisitor>): this {
+    left.accept(this)
+    right.accept(this)
+    return this
+  }
+  or(left: ISpecification<T, ISpecVisitor>, right: ISpecification<T, ISpecVisitor>): this {
+    throw new WontImplementException(AbstractDBMutationVisitor.name + ".or")
+  }
+  not(spec: ISpecification<T, ISpecVisitor>): this {
+    throw new WontImplementException(AbstractDBMutationVisitor.name + ".not")
+  }
+  clone(): this {
+    throw new Error("Method not implemented.")
   }
 }

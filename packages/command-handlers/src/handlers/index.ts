@@ -12,12 +12,14 @@ import { SetViewColorCommandHandler } from "./set-view-color.command-handler"
 import { SetViewFilterCommandHandler } from "./set-view-filter.command-handler"
 import { SetViewSortCommandHandler } from "./set-view-sort.command-handler"
 import { UpdateRecordCommandHandler } from "./update-record.command-handler"
+import { UpdateWebhookCommandHandler } from "./update-webhook.command-handler"
 
 export const commandHandlers = [
   CreateTableCommandHandler,
   CreateRecordCommandHandler,
   CreateTableFieldCommandHandler,
   CreateWebhookCommandHandler,
+  UpdateWebhookCommandHandler,
   SetViewFilterCommandHandler,
   SetViewColorCommandHandler,
   SetTableRLSCommandHandler,

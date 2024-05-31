@@ -14,6 +14,7 @@ import {
   SetViewFilterCommand,
   SetViewSortCommand,
   UpdateRecordCommand,
+  UpdateWebhookCommand,
   createRecordCommand,
   createTableCommand,
   createTableFieldCommand,
@@ -28,6 +29,7 @@ import {
   setViewFilterCommand,
   setViewSortCommand,
   updateRecordCommand,
+  updateWebhookCommand,
 } from "@undb/commands"
 import { CommandBus, QueryBus } from "@undb/cqrs"
 import { container } from "@undb/di"
@@ -146,6 +148,7 @@ const webhookRouter = t.router({
   list: p.input(getWebhooksQuery).query(({ input }) => queryBus.execute(new GetWebhooksQuery(input))),
 
   create: p.input(createWebhookCommand).mutation(({ input }) => commandBus.execute(new CreateWebhookCommand(input))),
+  update: p.input(updateWebhookCommand).mutation(({ input }) => commandBus.execute(new UpdateWebhookCommand(input))),
 })
 
 export const route = t.router({

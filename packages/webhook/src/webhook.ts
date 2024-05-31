@@ -42,7 +42,7 @@ export class WebhookDo {
     return new WebhookDo()
   }
 
-  public updateWebhook(input: IUpdateWebhookDTO): Option<WebhookSpecification> {
+  public $updateWebhook(input: IUpdateWebhookDTO): Option<WebhookSpecification> {
     const specs: WebhookSpecification[] = []
 
     if (isString(input.name)) {

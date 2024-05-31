@@ -1,4 +1,4 @@
-import { NotImplementException, WontImplementException, type ISpecification, type ISpecVisitor } from "@undb/domain"
+import { NotImplementException, WontImplementException } from "@undb/domain"
 import type {
   ITableSpecVisitor,
   TableDo,
@@ -12,49 +12,47 @@ import type {
   WithViewFilter,
   WithViewSort,
 } from "@undb/table"
-import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
-import type { SQLiteUpdateSetSource } from "drizzle-orm/sqlite-core"
-import type { tables } from "../tables"
 import type {
   TableFormsSpecification,
   WithFormSpecification,
   WithNewFormSpecification,
 } from "@undb/table/src/specifications/table-forms.specification"
+import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
+import { AbstractDBMutationVisitor } from "../abstract-db.visitor"
+import type { tables } from "../tables"
 
-type Source = SQLiteUpdateSetSource<typeof tables>
-
-export class TableMutationVisitor implements ITableSpecVisitor {
-  constructor(public readonly table: TableDo) {}
-  #updates: Source = {}
-
-  public get updates(): Source {
-    return this.#updates
+export class TableMutationVisitor
+  extends AbstractDBMutationVisitor<TableDo, typeof tables>
+  implements ITableSpecVisitor
+{
+  constructor(public readonly table: TableDo) {
+    super()
   }
 
   withForm(views: WithFormSpecification): void {
-    this.#updates = { ...this.#updates, forms: this.table.forms?.toJSON() }
+    this.addUpdates({ forms: this.table.forms?.toJSON() })
   }
   withForms(forms: TableFormsSpecification): void {
-    this.#updates = { ...this.#updates, forms: this.table.forms?.toJSON() }
+    this.addUpdates({ forms: this.table.forms?.toJSON() })
   }
   withNewForm(form: WithNewFormSpecification): void {
-    this.#updates = { ...this.#updates, forms: this.table.forms?.toJSON() }
+    this.addUpdates({ forms: this.table.forms?.toJSON() })
   }
 
   withNewField(schema: WithNewFieldSpecification): void {
-    this.#updates = { ...this.#updates, schema: this.table.schema.toJSON() }
+    this.addUpdates({ schema: this.table.schema?.toJSON() })
   }
   withViewAggregate(viewColor: WithViewAggregate): void {
-    this.#updates = { ...this.#updates, views: this.table.views.toJSON() }
+    this.addUpdates({ views: this.table.views?.toJSON() })
   }
   withTableRLS(rls: WithTableRLS): void {
     throw new NotImplementException(TableMutationVisitor.name + ".withTableRLS")
   }
   withViewSort(viewSort: WithViewSort): void {
-    this.#updates = { ...this.#updates, views: this.table.views.toJSON() }
+    this.addUpdates({ views: this.table.views?.toJSON() })
   }
   withViewColor(viewFilter: WithViewColor): void {
-    this.#updates = { ...this.#updates, views: this.table.views.toJSON() }
+    this.addUpdates({ views: this.table.views?.toJSON() })
   }
 
   withId(id: TableIdSpecification): void {
@@ -70,22 +68,6 @@ export class TableMutationVisitor implements ITableSpecVisitor {
     throw new NotImplementException(TableMutationVisitor.name + ".withSchema")
   }
   withViewFilter(viewFilter: WithViewFilter): void {
-    this.#updates = { ...this.#updates, views: this.table.views.toJSON() }
-  }
-  // TODO: abstraction
-  and(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
-    left.accept(this)
-    right.accept(this)
-    return this
-  }
-  or(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
-    throw new WontImplementException(TableMutationVisitor.name + ".or")
-  }
-  not(spec: ISpecification<any, ISpecVisitor>): this {
-    throw new WontImplementException(TableMutationVisitor.name + ".not")
-  }
-  clone(): this {
-    const visitor = new TableMutationVisitor(this.table)
-    return visitor as this
+    this.addUpdates({ views: this.table.views?.toJSON() })
   }
 }

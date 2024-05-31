@@ -1,10 +1,10 @@
 <script lang="ts">
   import { createQuery } from "@tanstack/svelte-query"
-  import * as Card from "$lib/components/ui/card"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import type { IWebhookDTO } from "@undb/webhook"
   import EmptyWebhook from "./empty-webhook.svelte"
+  import WebhookCard from "./webhook-card.svelte"
   import CreateWebhookDialog from "./create-webhook-dialog.svelte"
 
   const table = getTable()
@@ -18,14 +18,12 @@
 </script>
 
 {#if webhooks.length}
-  {#each webhooks as webhook}
-    <Card.Root>
-      <Card.Content>
-        <p>{webhook.name}</p>
-      </Card.Content>
-    </Card.Root>
-  {/each}
-{:else}
+  <div class="mx-auto max-w-4xl">
+    {#each webhooks as webhook}
+      <WebhookCard {webhook} />
+    {/each}
+  </div>
+{:else if !$getWebhooks.isLoading}
   <EmptyWebhook />
 {/if}
 

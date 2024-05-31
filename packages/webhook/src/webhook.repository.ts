@@ -11,7 +11,7 @@ export interface IWebhookRepository {
   find(spec: WebhookSpecification): Promise<WebhookDo[]>
 
   insert(webhook: WebhookDo): Promise<void>
-  updateOneById(id: string, spec: WebhookSpecification): Promise<void>
+  updateOneById(webhook: WebhookDo, spec: WebhookSpecification): Promise<void>
   deleteOneById(id: string): Promise<void>
 }
 
