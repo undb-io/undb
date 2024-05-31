@@ -57,6 +57,26 @@ export class FormVO extends ValueObject<IForm> {
     this.props.fields = fields
   }
 
+  public getHiddenFields() {
+    return this.fields.props.filter((field) => field.hidden)
+  }
+
+  public getHiddenFieldsCount() {
+    return this.getHiddenFields().length
+  }
+
+  public getFieldsCount() {
+    return this.fields.props.length
+  }
+
+  public getVisibleFields() {
+    return this.fields.props.filter((field) => !field.hidden)
+  }
+
+  public getVisibleFieldsCount() {
+    return this.getVisibleFields().length
+  }
+
   public get visibleFields() {
     return this.fields.props.filter((field) => !field.hidden)
   }
@@ -96,6 +116,10 @@ export class FormVO extends ValueObject<IForm> {
       description: props.description,
       fields: props.fields.toJSON(),
     }
+  }
+
+  getAllSelected(): boolean {
+    return this.fields.props.every((field) => !field.hidden)
   }
 
   getPreviousFields(fieldId: string): FormFieldVO[] {

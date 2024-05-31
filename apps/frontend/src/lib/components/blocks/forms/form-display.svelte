@@ -13,6 +13,7 @@
   import { Input } from "$lib/components/ui/input"
   import { Label } from "$lib/components/ui/label"
   import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
+  import autoAnimate from "@formkit/auto-animate"
 
   const selectedFieldId = queryParam("formField")
 
@@ -67,7 +68,7 @@
       <Input class="text-sm" bind:value={form.description} on:change={setForm}></Input>
     </div>
 
-    <div class="space-y-2" bind:this={el}>
+    <div class="space-y-2" bind:this={el} use:autoAnimate>
       {#each formFields as formField}
         {@const field = schema.get(formField.fieldId)}
         {#if field}

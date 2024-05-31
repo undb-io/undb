@@ -13,6 +13,8 @@
   import { EyeClosed, EyeOpen } from "svelte-radix"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
   import { isNumber } from "radash"
+  import { Label } from "$lib/components/ui/label"
+  import { Input } from "$lib/components/ui/input"
 
   const selectedFieldId = queryParam("formField")
 
@@ -42,10 +44,52 @@
     form.fields = new FormFieldsVO(fields)
     setForm()
   }
+
+  let selectAll = form.getAllSelected()
+
+  function handleSelectAll(selectAll: boolean) {
+    form.fields = new FormFieldsVO(
+      form.fields.props.map((formField) => {
+        formField.hidden = !selectAll
+        return formField
+      }),
+    )
+    setForm()
+  }
+
+  $: selectAll, handleSelectAll(selectAll)
+
+  let q = ""
+
+  $: filteredFields = q
+    ? form.fields.props.filter((formField) => {
+        const field = schema.get(formField.fieldId)
+        if (!field) {
+          return false
+        }
+
+        return field.name.value.toLowerCase().includes(q.toLowerCase())
+      })
+    : form.fields.props
 </script>
 
 <div class="h-full w-full space-y-3 px-8 py-6">
+  <div class="text-md flex items-center gap-2 font-semibold">
+    <span> Form Fields </span>
+    <span
+      class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
+    >
+      ({form.getVisibleFieldsCount()} / {form.getFieldsCount()} fields selected)
+    </span>
+  </div>
+
+  <Input bind:value={q} placeholder="Search form field" />
+
   <div class="divide-y rounded-sm border">
+    <div class="text-muted-foreground flex items-center justify-between bg-gray-50 p-2 text-xs font-normal">
+      <Label for="selectAll">Select all fields</Label>
+      <Switch id="selectAll" bind:checked={selectAll} />
+    </div>
     <SortableList
       class=""
       animation={200}
@@ -55,7 +99,7 @@
         }
       }}
     >
-      {#each form.fields.props as formField (formField.fieldId)}
+      {#each filteredFields as formField (formField.fieldId)}
         {@const field = schema.get(formField.fieldId)}
         {#if field}
           {@const disabled = formField.getRequired(field)}
@@ -99,6 +143,12 @@
           </button>
         {/if}
       {/each}
+
+      {#if q && !filteredFields.length}
+        <p class="text-muted-foreground flex items-center self-center p-2 text-center text-sm">
+          No fields found with title `{q}`
+        </p>
+      {/if}
     </SortableList>
   </div>
 
