@@ -27,8 +27,7 @@ export class WithWebhookTableId extends CompositeSpecification<WebhookDo, IWebho
 }
 
 export class WebhookEventsIn extends CompositeSpecification<WebhookDo, IWebhookSpecVisitor> {
-  // TODO: typing events
-  constructor(public readonly events: string[]) {
+  constructor(public readonly events: RECORD_EVENTS[]) {
     super()
   }
 

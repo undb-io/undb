@@ -5,6 +5,7 @@ import { GetRecordByIdQueryHandler } from "./get-record-by-id.query-handler"
 import { GetRecordsQueryHandler } from "./get-records.query-handler"
 import { GetTableQueryHandler } from "./get-table.query-handler"
 import { GetTablesQueryHandler } from "./get-tables.query-handler"
+import { GetWebhooksQueryHandler } from "./get-webhooks.query-handler"
 
 export const queryHandlers = [
   GetTablesQueryHandler,
@@ -14,4 +15,5 @@ export const queryHandlers = [
   GetReadableRecordsHandler,
   GetAggregatesQueryHandler,
   GetReadableRecordByIdHandler,
+  GetWebhooksQueryHandler,
 ]

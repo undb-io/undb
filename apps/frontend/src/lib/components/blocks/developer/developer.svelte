@@ -26,9 +26,13 @@
     </Tabs.List>
   </div>
   <Tabs.Content value="openapi" class="flex-1">
-    <Openapi />
+    {#if $developerTab === "openapi"}
+      <Openapi />
+    {/if}
   </Tabs.Content>
   <Tabs.Content value="webhook" class="flex-1">
-    <Webhook />
+    {#if $developerTab === "webhook"}
+      <Webhook />
+    {/if}
   </Tabs.Content>
 </Tabs.Root>

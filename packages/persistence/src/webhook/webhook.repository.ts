@@ -1,12 +1,12 @@
+import { inject, singleton } from "@undb/di"
 import { None, Some, type IUnitOfWork, type Option } from "@undb/domain"
 import { WithWebhookId, type IWebhookRepository, type WebhookDo, type WebhookSpecification } from "@undb/webhook"
-import { webhook } from "../tables"
-import { inject, singleton } from "@undb/di"
-import { WebhookMapper } from "./webhook.mapper"
-import { injectDbUnitOfWork } from "../uow"
 import type { Database } from "../db"
 import { injectDb } from "../db.provider"
+import { webhook as webhookTable } from "../tables"
+import { injectDbUnitOfWork } from "../uow"
 import { WebhookFilterVisitor } from "./webhook.filter-visitor"
+import { WebhookMapper } from "./webhook.mapper"
 
 @singleton()
 export class WebhookRepository implements IWebhookRepository {
@@ -20,7 +20,7 @@ export class WebhookRepository implements IWebhookRepository {
   ) {}
 
   async findOneById(id: string): Promise<Option<WebhookDo>> {
-    const qb = this.db.select().from(webhook).$dynamic()
+    const qb = this.db.select().from(webhookTable).$dynamic()
 
     const spec = WithWebhookId.fromString(id)
     const visitor = new WebhookFilterVisitor()
@@ -36,8 +36,10 @@ export class WebhookRepository implements IWebhookRepository {
   find(spec: WebhookSpecification): Promise<WebhookDo[]> {
     throw new Error("Method not implemented.")
   }
-  insert(webhook: WebhookDo): Promise<void> {
-    throw new Error("Method not implemented.")
+  async insert(webhook: WebhookDo): Promise<void> {
+    const values = this.mapper.toEntity(webhook)
+
+    await this.db.insert(webhookTable).values(values)
   }
   updateOneById(id: string, spec: WebhookSpecification): Promise<void> {
     throw new Error("Method not implemented.")

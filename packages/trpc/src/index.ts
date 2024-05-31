@@ -38,9 +38,11 @@ import {
   GetRecordsQuery,
   GetTableQuery,
   GetTablesQuery,
+  GetWebhooksQuery,
   getRecordByIdQuery,
   getRecordsQuery,
   getTableQuery,
+  getWebhooksQuery,
 } from "@undb/queries"
 import { tableDTO } from "@undb/table"
 import { ZodError, z } from "@undb/zod"
@@ -141,6 +143,8 @@ export const recordRouter = t.router({
 })
 
 const webhookRouter = t.router({
+  list: p.input(getWebhooksQuery).query(({ input }) => queryBus.execute(new GetWebhooksQuery(input))),
+
   create: p.input(createWebhookCommand).mutation(({ input }) => commandBus.execute(new CreateWebhookCommand(input))),
 })
 

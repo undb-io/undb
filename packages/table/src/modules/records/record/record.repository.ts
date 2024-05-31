@@ -9,7 +9,7 @@ import type { RecordId } from "./record-id.vo"
 import type { RecordComositeSpecification } from "./record.composite-specification"
 import type { RecordDO } from "./record.do"
 
-export interface Query {
+export interface QueryArgs {
   select: Option<RecordComositeSpecification>
   filter: Option<RecordComositeSpecification>
   pagination: Option<IPagination>
@@ -24,7 +24,7 @@ export interface IRecordRepository {
 }
 
 export interface IRecordQueryRepository {
-  find(table: TableDo, viewId: Option<ViewId>, query: Option<Query>): Promise<PaginatedDTO<IRecordDTO>>
+  find(table: TableDo, viewId: Option<ViewId>, query: Option<QueryArgs>): Promise<PaginatedDTO<IRecordDTO>>
   findOneById(table: TableDo, id: RecordId): Promise<Option<IRecordDTO>>
   count(tableId: TableId): Promise<number>
 
@@ -32,7 +32,7 @@ export interface IRecordQueryRepository {
 }
 
 export function buildQuery(table: TableDo, dto: IGetRecordsDTO) {
-  const query: Query = {
+  const query: QueryArgs = {
     filter: None,
     select: None,
     pagination: None,

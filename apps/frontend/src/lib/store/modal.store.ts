@@ -1,4 +1,5 @@
 import { isEmpty, toggle } from "radash"
+import { derived } from "svelte/store"
 import { queryParam, ssp } from "sveltekit-search-params"
 
 export const modal = queryParam("modal", ssp.array<string>())
@@ -7,12 +8,14 @@ export const CREATE_RECORD_MODAL = "createRecord" as const
 export const CREATE_FIELD_MODAL = "createField" as const
 export const DELETE_RECORD_MODAL = "deleteRecord" as const
 export const DUPLICATE_RECORD_MODAL = "duplicateRecord" as const
+export const CREATE_WEBHOOK_MODAL = "createWebhook" as const
 
 type ModalType =
   | typeof CREATE_FIELD_MODAL
   | typeof DELETE_RECORD_MODAL
   | typeof DUPLICATE_RECORD_MODAL
   | typeof CREATE_RECORD_MODAL
+  | typeof CREATE_WEBHOOK_MODAL
 
 export const toggleModal = (type: ModalType) => {
   modal.update(($modal) => {
@@ -20,6 +23,10 @@ export const toggleModal = (type: ModalType) => {
     return isEmpty(modal) ? null : modal
   })
 }
+
+export const isModalOpen = derived(modal, ($modal) => {
+  return (type: ModalType) => $modal?.includes(type) ?? false
+})
 
 export const closeModal = (type: ModalType) => {
   modal.update(($modal) => {

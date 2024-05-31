@@ -6,7 +6,7 @@ import {
   type AggregateResult,
   type IRecordDTO,
   type IRecordQueryRepository,
-  type Query,
+  type QueryArgs,
   type RecordId,
   type TableDo,
   type TableId,
@@ -53,7 +53,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return visitor.cond
   }
 
-  async find(table: TableDo, viewId: Option<ViewId>, query: Option<Query>): Promise<PaginatedDTO<IRecordDTO>> {
+  async find(table: TableDo, viewId: Option<ViewId>, query: Option<QueryArgs>): Promise<PaginatedDTO<IRecordDTO>> {
     const t = new UnderlyingTable(table)
     const view = table.views.getViewById(viewId.into(undefined))
     const schema = table.schema

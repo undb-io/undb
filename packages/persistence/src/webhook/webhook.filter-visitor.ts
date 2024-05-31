@@ -1,3 +1,4 @@
+import { WontImplementException } from "@undb/domain"
 import type {
   IWebhookSpecVisitor,
   WebhookDo,
@@ -12,37 +13,37 @@ import type {
   WithWebhookTableId,
   WithWebhookURL,
 } from "@undb/webhook"
-import { eq } from "drizzle-orm"
+import { eq, inArray } from "drizzle-orm"
 import { AbstractDBFilterVisitor } from "../abstract-db.visitor"
 import { webhook } from "../tables"
 
 export class WebhookFilterVisitor extends AbstractDBFilterVisitor<WebhookDo> implements IWebhookSpecVisitor {
   nameEqual(s: WithWebhookName): void {
-    throw new Error("Method not implemented.")
+    this.addCond(eq(webhook.name, s.name))
   }
   urlEqual(s: WithWebhookURL): void {
-    throw new Error("Method not implemented.")
+    this.addCond(eq(webhook.url, s.webhookURL.value))
   }
   headersEqual(s: WithWebhookHeaders): void {
     throw new Error("Method not implemented.")
   }
   withTableId(s: WithWebhookTableId): void {
-    throw new Error("Method not implemented.")
+    this.addCond(eq(webhook.tableId, s.tableId.value))
   }
   enabled(s: WithWebhookEnabled): void {
-    throw new Error("Method not implemented.")
+    this.addCond(eq(webhook.enabled, s.enabled))
   }
   methodEqual(s: WithWebhookMethod): void {
-    throw new Error("Method not implemented.")
+    this.addCond(eq(webhook.method, s.webhookMethod.value))
   }
   eventEqual(s: WithWebhookEvent): void {
-    throw new Error("Method not implemented.")
+    this.addCond(eq(webhook.event, s.event))
   }
   eventsIn(s: WebhookEventsIn): void {
-    throw new Error("Method not implemented.")
+    this.addCond(inArray(webhook.event, s.events))
   }
   conditionEqual(s: WithWebhookCondition): void {
-    throw new Error("Method not implemented.")
+    throw new WontImplementException(WebhookFilterVisitor.name + ".conditionEqual")
   }
   idEqual(s: WithWebhookId): void {
     this.addCond(eq(webhook.id, s.webhookId.value))

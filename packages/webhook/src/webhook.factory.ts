@@ -1,5 +1,6 @@
 import { and } from "@undb/domain"
 import { TableIdVo } from "@undb/table"
+import type { ICreateWebhookDTO } from "./dto/create-webhook.dto.js"
 import type { IWebhookDTO } from "./dto/webhook.dto.js"
 import type { WebhookSpecification } from "./specifications"
 import {
@@ -21,6 +22,20 @@ export class WebhookFactory {
       .unwrap()
       .mutate(WebhookDo.empty())
       .unwrap()
+  }
+
+  static from(input: ICreateWebhookDTO): WebhookDo {
+    return this.create(
+      WithWebhookId.create(),
+      WithWebhookURL.fromString(input.url),
+      new WithWebhookTableId(new TableIdVo(input.tableId)),
+      new WithWebhookEnabled(input.enabled),
+      WithWebhookMethod.fromString(input.method),
+      new WithWebhookName(input.name),
+      WithWebhookHeaders.from(input.headers),
+      new WithWebhookEvent(input.event),
+      new WithWebhookCondition(input.condition),
+    )
   }
 
   static fromJSON(input: IWebhookDTO): WebhookDo {

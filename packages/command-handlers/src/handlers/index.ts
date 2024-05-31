@@ -2,6 +2,7 @@ import { CreateRecordCommandHandler } from "./create-record.command-handler"
 import { CreateTableFieldCommandHandler } from "./create-table-field.command-handler"
 import { CreateTableFormCommandHandler } from "./create-table-form.command-handler"
 import { CreateTableCommandHandler } from "./create-table.command-handler"
+import { CreateWebhookCommandHandler } from "./create-webhook.command-handler"
 import { DeleteRecordCommandHandler } from "./delete-record.command-handler"
 import { DuplicateRecordCommandHandler } from "./duplicate-record.command-handler"
 import { SetTableFormCommandHandler } from "./set-table-form.command-handler"
@@ -16,6 +17,7 @@ export const commandHandlers = [
   CreateTableCommandHandler,
   CreateRecordCommandHandler,
   CreateTableFieldCommandHandler,
+  CreateWebhookCommandHandler,
   SetViewFilterCommandHandler,
   SetViewColorCommandHandler,
   SetTableRLSCommandHandler,

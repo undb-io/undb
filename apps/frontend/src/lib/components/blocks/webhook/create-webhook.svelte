@@ -5,7 +5,7 @@
   import { Switch } from "$lib/components/ui/switch"
   import { Label } from "$lib/components/ui/label"
   import { trpc } from "$lib/trpc/client.js"
-  import { createMutation } from "@tanstack/svelte-query"
+  import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import SuperDebug, { superForm, defaults } from "sveltekit-superforms"
   import { createWebhookCommand, type ICreateWebhookCommand } from "@undb/commands"
   import { zodClient } from "sveltekit-superforms/adapters"
@@ -16,13 +16,19 @@
   import { type MaybeConditionGroup, parseValidViewFilter } from "@undb/table"
   import { writable } from "svelte/store"
   import type { IWebhookConditionOptionSchema } from "@undb/webhook/src/webhook.condition"
+  import { closeModal, CREATE_WEBHOOK_MODAL } from "$lib/store/modal.store"
 
   const table = getTable()
 
+  const client = useQueryClient()
   const createWebhookMutation = createMutation({
     mutationFn: trpc.webhook.create.mutate,
     async onSuccess(data) {
       form.reset()
+      closeModal(CREATE_WEBHOOK_MODAL)
+      await client.invalidateQueries({
+        queryKey: ["tables", table.id.value, "webhooks"],
+      })
     },
     onError(error) {
       toast.error(error.message)
@@ -56,7 +62,7 @@
     },
   )
 
-  const { form: formData, enhance } = form
+  const { form: formData, enhance, allErrors } = form
 
   const condition = writable<MaybeConditionGroup<IWebhookConditionOptionSchema> | undefined>()
   $: validCondition = $condition ? parseValidViewFilter($table.schema.fieldMapById, $condition) : undefined
@@ -74,17 +80,20 @@
     : undefined
 
   let enableCondition = false
+
+  $: disabled = !!$allErrors.length
 </script>
 
 <form id="createTable" class="grid gap-3 px-1" method="POST" use:enhance>
-  <Form.Field {form} name="name" class="grid gap-3">
+  <Form.Field {form} name="name">
     <Form.Control let:attrs>
       <Form.Label>Name</Form.Label>
-      <Input {...attrs} bind:value={$formData.name} />
+      <Input {...attrs} bind:value={$formData.name} placeholder="webhook name" />
     </Form.Control>
     <Form.FieldErrors />
   </Form.Field>
 
+  <Label>URL</Label>
   <div class="flex w-full items-center justify-center gap-2">
     <Form.Field {form} name="method">
       <Form.Control let:attrs>
@@ -104,12 +113,11 @@
         </Select.Root>
         <input hidden bind:value={$formData.method} name={attrs.name} />
       </Form.Control>
-      <Form.FieldErrors />
     </Form.Field>
 
-    <Form.Field {form} name="url" class="flex-1">
+    <Form.Field {form} name="url" class="flex flex-1 items-center">
       <Form.Control let:attrs>
-        <Input {...attrs} bind:value={$formData.url} type="url" />
+        <Input {...attrs} bind:value={$formData.url} type="url" placeholder="http://example.com/webhook" />
       </Form.Control>
       <Form.FieldErrors />
     </Form.Field>
@@ -124,6 +132,8 @@
       <FiltersEditor bind:value={$condition} table={$table} />
     </Collapsible.Content>
   </Collapsible.Root>
+
+  <Form.Button {disabled}>Submit</Form.Button>
 </form>
 
 <div class="mt-2">
