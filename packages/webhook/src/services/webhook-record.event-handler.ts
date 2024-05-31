@@ -5,6 +5,7 @@ import { TableIdVo, injectTableRepository, type IRecordEvent, type ITableReposit
 import { parallel } from "radash"
 import { withTableEvents } from "../specifications/webhook-tableId.specification"
 import { injectWebhookRepository, type IWebhookRepository } from "../webhook.repository"
+import { injectWebhookSignService, type IWebhookSignService } from "./webhook-sign.service"
 import { injectWebhookHttpService, type IWebhookHttpService } from "./webhook.http-service"
 
 @singleton()
@@ -12,11 +13,13 @@ export class WebhookEventsHandler implements IEventHandler<IRecordEvent> {
   private readonly logger = createLogger(WebhookEventsHandler.name)
   constructor(
     @injectWebhookHttpService()
-    protected readonly httpService: IWebhookHttpService,
+    private readonly httpService: IWebhookHttpService,
+    @injectWebhookSignService()
+    private readonly signService: IWebhookSignService,
     @injectWebhookRepository()
-    protected readonly repo: IWebhookRepository,
+    private readonly repo: IWebhookRepository,
     @injectTableRepository()
-    protected readonly tableRepo: ITableRepository,
+    private readonly tableRepo: ITableRepository,
   ) {}
 
   async handle(event: IRecordEvent): Promise<void> {
@@ -34,7 +37,11 @@ export class WebhookEventsHandler implements IEventHandler<IRecordEvent> {
           return
         }
 
-        await this.httpService.send(webhook, refinedEvent.unwrap())
+        const evt = refinedEvent.unwrap()
+        const signature = this.signService.sign(webhook, evt)
+        const message = webhook.constructMessage(signature, evt)
+
+        await this.httpService.send(message)
       })
     } catch (error) {
       this.logger.error(error)

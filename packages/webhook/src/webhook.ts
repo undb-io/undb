@@ -1,4 +1,3 @@
-import type { IEvent } from "@undb/domain"
 import { and } from "@undb/domain"
 import {
   RecordComositeSpecification,
@@ -26,6 +25,7 @@ import type { WebhookMethod } from "./webhook-method.vo"
 import type { WebhookURL } from "./webhook-url.vo"
 import type { WebhookCondition } from "./webhook.condition"
 import { UNDB_SIGNATURE_HEADER_NAME } from "./webhook.constants"
+import type { IWebhookMessage } from "./webhook.message"
 
 export class WebhookDo {
   public id!: WebhookId
@@ -84,7 +84,7 @@ export class WebhookDo {
     }
   }
 
-  public refineEvent(table: TableDo, event: IRecordEvent): Option<IEvent> {
+  public refineEvent(table: TableDo, event: IRecordEvent): Option<IRecordEvent> {
     if (this.condition.isNone()) {
       return Some(event)
     }
@@ -94,6 +94,18 @@ export class WebhookDo {
     const spec = condition.getSpec(schema) as Option<RecordComositeSpecification>
 
     return refineRecordEvents(table, event, spec)
+  }
+
+  public constructMessage(signature: string, event: IRecordEvent): IWebhookMessage {
+    return {
+      headers: this.mergedHeaders(signature),
+      body: {
+        id: event.id,
+        operatorId: event.operatorId!,
+        timestamp: event.timestamp,
+        event: event,
+      },
+    }
   }
 
   public mergedHeaders(sign: string): IWebhookHeaders {
