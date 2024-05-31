@@ -79,6 +79,13 @@
       }
     : undefined
 
+  $: selectedEvent = $formData.event
+    ? {
+        label: $formData.event,
+        value: $formData.event,
+      }
+    : undefined
+
   let enableCondition = false
 
   $: disabled = !!$allErrors.length
@@ -123,6 +130,27 @@
     </Form.Field>
   </div>
 
+  <Form.Field {form} name="event" class="w-full">
+    <Form.Control let:attrs>
+      <Form.Label>Event</Form.Label>
+      <Select.Root
+        selected={selectedEvent}
+        onSelectedChange={(v) => {
+          v && ($formData.event = v.value)
+        }}
+      >
+        <Select.Trigger {...attrs}>
+          <Select.Value placeholder="Select a event" />
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Item value="record.created" label="Record Created" />
+          <Select.Item value="record.deleted" label="Record Deleted" />
+        </Select.Content>
+      </Select.Root>
+      <input hidden bind:value={$formData.event} name={attrs.name} />
+    </Form.Control>
+  </Form.Field>
+
   <Collapsible.Root open={enableCondition}>
     <div class="flex items-center gap-2">
       <Label for="enableCondition">Enable Condtion</Label>
@@ -136,6 +164,6 @@
   <Form.Button {disabled}>Submit</Form.Button>
 </form>
 
-<div class="mt-2">
+<!-- <div class="mt-2">
   <SuperDebug data={$formData} />
-</div>
+</div> -->

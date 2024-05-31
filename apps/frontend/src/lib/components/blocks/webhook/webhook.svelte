@@ -6,6 +6,7 @@
   import EmptyWebhook from "./empty-webhook.svelte"
   import WebhookCard from "./webhook-card.svelte"
   import CreateWebhookDialog from "./create-webhook-dialog.svelte"
+  import CreateWebhookButton from "./create-webhook-button.svelte"
 
   const table = getTable()
 
@@ -18,10 +19,15 @@
 </script>
 
 {#if webhooks.length}
-  <div class="mx-auto max-w-4xl">
-    {#each webhooks as webhook}
-      <WebhookCard {webhook} />
-    {/each}
+  <div class="mx-auto grid max-w-4xl gap-6 pt-6">
+    <nav class="flex justify-end">
+      <CreateWebhookButton variant="link" size="sm" />
+    </nav>
+    <div class="grid gap-3">
+      {#each webhooks as webhook}
+        <WebhookCard {webhook} />
+      {/each}
+    </div>
   </div>
 {:else if !$getWebhooks.isLoading}
   <EmptyWebhook />

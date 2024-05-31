@@ -38,6 +38,11 @@
         >
           {webhook.method}
         </span>
+        <span
+          class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-blue-700/10"
+        >
+          {webhook.event}
+        </span>
       </div>
 
       <div class="flex items-center gap-2">

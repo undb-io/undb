@@ -30,7 +30,7 @@ export class WebhookEventsHandler implements IEventHandler<IRecordEvent> {
       const spec = withTableEvents(tableId, [event.name])
       const webhooks = await this.repo.find(spec)
 
-      this.logger.debug({ tableId, webhooks }, "found webhooks")
+      this.logger.debug({ tableId, webhooks, event }, "found webhooks")
 
       await parallel(100, webhooks, async (webhook) => {
         const refinedEvent = webhook.refineEvent(table, event)

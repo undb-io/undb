@@ -4,7 +4,7 @@
   import { WebhookIcon } from "lucide-svelte"
 </script>
 
-<Button on:click={() => toggleModal(CREATE_WEBHOOK_MODAL)}>
+<Button {...$$restProps} on:click={() => toggleModal(CREATE_WEBHOOK_MODAL)}>
   <WebhookIcon class="mr-2 h-4 w-4" />
   Create Webhook
 </Button>
