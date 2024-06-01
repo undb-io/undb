@@ -19,6 +19,8 @@ export const createCreatedAtFieldDTO = createBaseFieldDTO.extend({
 })
 
 export type ICreateCreatedAtFieldDTO = z.infer<typeof createCreatedAtFieldDTO>
+export const updateCreatedAtFieldDTO = createCreatedAtFieldDTO
+export type IUpdateCreatedAtFieldDTO = ICreateCreatedAtFieldDTO
 
 export const createdAtFieldDTO = baseFieldDTO.extend({
   type: z.literal(CREATED_AT_TYPE),

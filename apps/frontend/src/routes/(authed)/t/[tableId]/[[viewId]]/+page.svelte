@@ -11,6 +11,7 @@
   import CreateFieldDialog from "$lib/components/blocks/create-field/create-field-dialog.svelte"
   import { tab } from "$lib/store/tab.store"
   import { CREATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
+  import UpdateFieldDialog from "$lib/components/blocks/update-field/update-field-dialog.svelte"
 
   function handleR() {
     toggleModal(CREATE_RECORD_MODAL)
@@ -34,6 +35,7 @@
 <ConfirmDeleteRecord />
 <ConfirmDuplicateRecord />
 <CreateFieldDialog />
+<UpdateFieldDialog />
 
 <svelte:window
   use:shortcut={{

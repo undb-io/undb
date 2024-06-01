@@ -7,12 +7,12 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import { cn } from "$lib/utils.js"
   import FieldIcon from "../field-icon/field-icon.svelte"
-  import { fieldTypes, type FieldType } from "@undb/table"
+  import { allFieldTypes, fieldTypes, type FieldType } from "@undb/table"
 
   let open = false
   export let value: FieldType | undefined = undefined
 
-  $: selected = fieldTypes.find((f) => f === value)
+  $: selected = allFieldTypes.find((f) => f === value)
   $: selectedValue = selected ?? "Select a field type..."
 
   function closeAndFocusTrigger(triggerId: string) {

@@ -16,6 +16,9 @@ export const createIdFieldDTO = createBaseFieldDTO.extend({
 
 export type ICreateIdFieldDTO = z.infer<typeof createIdFieldDTO>
 
+export const updateIdFieldDTO = createIdFieldDTO
+export type IUpdateIdFieldDTO = ICreateIdFieldDTO
+
 export const idFieldDTO = baseFieldDTO.extend({
   type: z.literal(ID_TYPE),
 })
@@ -60,6 +63,6 @@ export class IdField extends AbstractField<IdFieldValue> {
 
   override get aggregate() {
     // TODO: implement
-    return z.enum()
+    return z.enum([])
   }
 }

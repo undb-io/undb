@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { IFieldCondition, IFieldConstraint, NoneSystemFieldType } from "@undb/table"
+  import type { IFieldConstraint, NoneSystemFieldType } from "@undb/table"
   import type { ComponentType } from "svelte"
   import StringFieldOption from "./string-field-option.svelte"
   import NumberFieldOption from "./number-field-option.svelte"

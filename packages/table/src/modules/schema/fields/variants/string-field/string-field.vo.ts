@@ -33,6 +33,9 @@ export const createStringFieldDTO = createBaseFieldDTO.extend({
 
 export type ICreateStringFieldDTO = z.infer<typeof createStringFieldDTO>
 
+export const updateStringFieldDTO = createStringFieldDTO
+export type IUpdateStringFieldDTO = z.infer<typeof updateStringFieldDTO>
+
 export const stringFieldDTO = baseFieldDTO.extend({
   type: z.literal(STRING_TYPE),
   constraint: stringFieldConstraint.optional(),

@@ -1,4 +1,4 @@
-import type { NoneSystemFieldType } from "./field.type"
+import type { FieldType, NoneSystemFieldType } from "./field.type"
 
 export * from "./condition/field-condition.type"
 export * from "./dto"
@@ -12,3 +12,4 @@ export * from "./field.visitor"
 export * from "./variants"
 
 export const fieldTypes: NoneSystemFieldType[] = ["string", "number"] as const
+export const allFieldTypes: FieldType[] = ["string", "number", "autoIncrement", "createdAt", "updatedAt", "id"] as const

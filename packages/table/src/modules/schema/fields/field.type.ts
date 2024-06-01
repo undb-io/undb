@@ -36,4 +36,6 @@ export type NoneSystemFieldType = Exclude<
   typeof ID_TYPE | typeof CREATED_AT_TYPE | typeof AUTO_INCREMENT_TYPE | typeof UPDATED_AT_TYPE
 >
 
+export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
+
 export type IFieldConstraint = IStringFieldConstraint | INumberFieldConstraint

@@ -14,6 +14,7 @@ import {
   SetViewFilterCommand,
   SetViewSortCommand,
   UpdateRecordCommand,
+  UpdateTableFieldCommand,
   UpdateWebhookCommand,
   createRecordCommand,
   createTableCommand,
@@ -29,6 +30,7 @@ import {
   setViewFilterCommand,
   setViewSortCommand,
   updateRecordCommand,
+  updateTableFieldCommand,
   updateWebhookCommand,
 } from "@undb/commands"
 import { CommandBus, QueryBus } from "@undb/cqrs"
@@ -112,6 +114,9 @@ export const fieldRouter = t.router({
   create: p
     .input(createTableFieldCommand)
     .mutation(({ input }) => commandBus.execute(new CreateTableFieldCommand(input))),
+  update: p
+    .input(updateTableFieldCommand)
+    .mutation(({ input }) => commandBus.execute(new UpdateTableFieldCommand(input))),
 })
 
 const tableRouter = t.router({

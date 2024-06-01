@@ -6,6 +6,7 @@ export const modal = queryParam("modal", ssp.array<string>())
 
 export const CREATE_RECORD_MODAL = "createRecord" as const
 export const CREATE_FIELD_MODAL = "createField" as const
+export const UPDATE_FIELD_MODAL = "updateField" as const
 export const DELETE_RECORD_MODAL = "deleteRecord" as const
 export const DUPLICATE_RECORD_MODAL = "duplicateRecord" as const
 export const CREATE_WEBHOOK_MODAL = "createWebhook" as const
@@ -16,6 +17,7 @@ type ModalType =
   | typeof DUPLICATE_RECORD_MODAL
   | typeof CREATE_RECORD_MODAL
   | typeof CREATE_WEBHOOK_MODAL
+  | typeof UPDATE_FIELD_MODAL
 
 export const toggleModal = (type: ModalType) => {
   modal.update(($modal) => {

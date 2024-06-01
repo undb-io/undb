@@ -18,6 +18,8 @@ export const createAutoIncrementFieldDTO = createBaseFieldDTO.extend({
 })
 
 export type ICreateAutoIncrementFieldDTO = z.infer<typeof createAutoIncrementFieldDTO>
+export const updateAutoIncrementFieldDTO = createAutoIncrementFieldDTO
+export type IUpdateAutoIncrementFieldDTO = ICreateAutoIncrementFieldDTO
 
 export const autoIncrementFieldDTO = baseFieldDTO.extend({
   type: z.literal(AUTO_INCREMENT_TYPE),
