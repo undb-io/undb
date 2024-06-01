@@ -30,8 +30,6 @@ export class TableMutationVisitor
     super()
   }
   withUpdatedField(spec: WithUpdatedFieldSpecification): void {
-    const typeChanged = spec.field.type !== spec.previous.type
-    console.log("typeChanged", typeChanged)
     this.addUpdates({ schema: this.table.schema?.toJSON() })
   }
 

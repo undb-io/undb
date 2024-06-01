@@ -18,18 +18,39 @@ import type {
   WithNewFormSpecification,
 } from "@undb/table/src/specifications/table-forms.specification"
 import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
-import type { AlterTableBuilder, CreateTableBuilder } from "kysely"
+import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CreateTableBuilder } from "kysely"
+import type { IQueryBuilder } from "../qb"
+import { ConversionContext } from "./conversion/conversion.context"
+import { ConversionFactory } from "./conversion/conversion.factory"
 import type { UnderlyingTable } from "./underlying-table"
 import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
 
-export class UnderlyingTableSpecVisitor<TB extends CreateTableBuilder<any, any> | AlterTableBuilder>
-  implements ITableSpecVisitor
-{
+export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
+  private tb: AlterTableBuilder
   constructor(
     public readonly table: UnderlyingTable,
-    public tb: TB,
-  ) {}
-  withUpdatedField(spec: WithUpdatedFieldSpecification): void {}
+    public readonly qb: IQueryBuilder,
+  ) {
+    this.tb = qb.schema.alterTable(table.name)
+  }
+
+  atb: AlterTableColumnAlteringBuilder | CreateTableBuilder<any, any> | null = null
+
+  execute() {
+    this.atb?.execute()
+  }
+
+  withUpdatedField(spec: WithUpdatedFieldSpecification): void {
+    const typeChanged = spec.getIsTypeChanged()
+    if (!typeChanged) {
+      return
+    }
+
+    const strategy = ConversionFactory.create(this.tb as AlterTableBuilder, spec.previous.type, spec.field.type)
+    const context = new ConversionContext(strategy)
+
+    context.convert(spec.field)
+  }
   withForm(views: WithFormSpecification): void {}
   withForms(views: TableFormsSpecification): void {}
   withNewForm(views: WithNewFormSpecification): void {}
@@ -39,7 +60,7 @@ export class UnderlyingTableSpecVisitor<TB extends CreateTableBuilder<any, any> 
   withNewField(schema: WithNewFieldSpecification): void {
     const fieldVisitor = new UnderlyingTableFieldVisitor(this.table, this.tb)
     schema.field.accept(fieldVisitor)
-    this.tb = fieldVisitor.tb
+    this.atb = fieldVisitor.atb
   }
   withTableRLS(rls: WithTableRLS): void {}
   withViews(views: TableViewsSpecification): void {}

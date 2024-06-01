@@ -46,6 +46,10 @@ export class WithUpdatedFieldSpecification extends TableComositeSpecification {
   ) {
     super()
   }
+  public getIsTypeChanged(): boolean {
+    return this.previous.type !== this.field.type
+  }
+
   isSatisfiedBy(t: TableDo): boolean {
     throw new WontImplementException(WithUpdatedFieldSpecification.name + ".isSatisfiedBy")
   }
