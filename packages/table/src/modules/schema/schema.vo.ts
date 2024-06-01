@@ -1,10 +1,10 @@
-import { Option, ValueObject } from "@undb/domain"
+import { NotImplementException, Option, ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import { objectify } from "radash"
 import { WithNewFieldSpecification } from "../../specifications"
 import type { ICreateSchemaDTO } from "./dto"
 import type { ISchemaDTO } from "./dto/schema.dto"
-import { FieldNameVo, IdField, UpdatedAtField, type ICreateFieldDTO } from "./fields"
+import { FieldNameVo, IdField, UpdatedAtField, type ICreateFieldDTO, type IUpdateFieldDTO } from "./fields"
 import type { FieldId } from "./fields/field-id.vo"
 import { FieldFactory } from "./fields/field.factory"
 import type { Field, MutableFieldValue, NoneSystemField, SystemField } from "./fields/field.type"
@@ -45,6 +45,10 @@ export class Schema extends ValueObject<Field[]> {
     const field = FieldFactory.create(dto)
 
     return new WithNewFieldSpecification(field)
+  }
+
+  $updateField(dto: IUpdateFieldDTO) {
+    throw new NotImplementException(Schema.name + ".$updateField")
   }
 
   createField(field: Field) {
@@ -111,7 +115,7 @@ export class Schema extends ValueObject<Field[]> {
   }
 
   getFieldById(fieldId: FieldId): Option<Field> {
-    const field = this.fields.find((f) => f.id.equals(fieldId))
+    const field = this.fieldMapById.get(fieldId.value)
     return Option(field)
   }
 

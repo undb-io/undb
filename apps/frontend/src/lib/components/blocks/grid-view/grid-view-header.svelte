@@ -24,6 +24,7 @@
     </DropdownMenu.Trigger>
     <DropdownMenu.Content class="w-[250px]">
       <DropdownMenu.Item
+        class="text-xs"
         on:click={async () => {
           $fieldId = field.id.value
           await tick()

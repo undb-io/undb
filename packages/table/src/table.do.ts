@@ -9,6 +9,7 @@ import { setViewAggregate } from "./methods/set-view-aggregate.method"
 import { setViewColor } from "./methods/set-view-color.method"
 import { setViewFilter } from "./methods/set-view-filter.method"
 import { setViewSort } from "./methods/set-view-sort.method"
+import { updateFieldMethod } from "./methods/update-field.method"
 import type { Field, FormId, TableRSL } from "./modules"
 import type { FormsVO } from "./modules/forms/forms.vo"
 import type { Schema } from "./modules/schema/schema.vo"
@@ -30,6 +31,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   $setTableRLS = setTableRLS
   $setViewAggregate = setViewAggregate
   $createField = createFieldMethod
+  $updateField = updateFieldMethod
   $createForm = createFormMethod
   $setTableForm = setTableForm
 

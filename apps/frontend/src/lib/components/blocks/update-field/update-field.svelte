@@ -40,7 +40,7 @@
     return {
       type: field.type,
       name: field.name.value,
-      display: field.display,
+      display: !!field.display,
       constraint: field.constraint.into(),
     }
   }
@@ -49,34 +49,23 @@
     form.reset({ data: getDefaultValue() })
   }
 
-  $: field, setDefaultValue()
+  // $: field, setDefaultValue()
 
-  const form = superForm(
-    defaults(
-      {
-        type: field.type,
-        name: field.name.value,
-        display: field.display,
-        constraint: field.constraint.into(),
-      },
-      zodClient(updateFieldDTO),
-    ),
-    {
-      SPA: true,
-      dataType: "json",
-      validators: zodClient(updateFieldDTO),
-      resetForm: false,
-      invalidateAll: false,
-      onUpdate(event) {
-        if (!event.form.valid) return
+  const form = superForm(defaults(getDefaultValue(), zodClient(updateFieldDTO)), {
+    SPA: true,
+    dataType: "json",
+    validators: zodClient(updateFieldDTO),
+    resetForm: false,
+    invalidateAll: false,
+    onUpdate(event) {
+      if (!event.form.valid) return
 
-        $updateFieldMutation.mutate({
-          tableId: $table.id.value,
-          field: event.form.data,
-        })
-      },
+      $updateFieldMutation.mutate({
+        tableId: $table.id.value,
+        field: event.form.data,
+      })
     },
-  )
+  })
 
   const { enhance, form: formData, reset } = form
 </script>

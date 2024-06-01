@@ -3,7 +3,7 @@
   import { Button } from "$lib/components/ui/button"
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
-  import { CREATE_FIELD_MODAL, closeModal, toggleModal } from "$lib/store/modal.store"
+  import { CREATE_FIELD_MODAL, closeModal } from "$lib/store/modal.store"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"

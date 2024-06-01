@@ -9,8 +9,6 @@
   const table = getTable()
 
   $: field = $fieldId ? $table.schema.getFieldById(new FieldIdVo($fieldId)).into(null) : null
-  $: console.log($fieldId)
-  $: console.log(field)
 </script>
 
 <Dialog.Root
