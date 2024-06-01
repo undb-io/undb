@@ -19,7 +19,7 @@
 
   const createFieldMutation = createMutation(
     derived([table], ([$table]) => ({
-      mutationKey: ["createField", $table.id.value],
+      mutationKey: ["table", $table.id.value, "createField"],
       mutationFn: trpc.table.field.create.mutate,
       async onSuccess() {
         closeModal(CREATE_FIELD_MODAL)

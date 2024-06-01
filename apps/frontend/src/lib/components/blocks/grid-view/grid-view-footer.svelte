@@ -19,7 +19,7 @@
 
   const setViewAggregateMutation = createMutation(
     derived([table], ([$table]) => ({
-      mutationKey: ["setViewAggregate", $table.id.value],
+      mutationKey: ["table", $table.id.value, "setViewAggregate"],
       mutationFn: trpc.table.view.setAggregate.mutate,
       async onSuccess() {
         await invalidate(`table:${$table.id.value}`)

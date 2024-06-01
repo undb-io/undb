@@ -40,7 +40,7 @@
 
   const client = useQueryClient()
   const setViewSortMutation = createMutation({
-    mutationKey: [$table.id.value, "setSort"],
+    mutationKey: ["table", $table.id.value, "setSort"],
     mutationFn: trpc.table.view.setSort.mutate,
     async onSettled() {
       await invalidate(`table:${$table.id.value}`)

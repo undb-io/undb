@@ -13,7 +13,7 @@
   export let webhook: IWebhookDTO
 
   const updateWebhookMutation = createMutation({
-    mutationKey: ["tables", $table.id.value, "updateWebhook"],
+    mutationKey: ["table", $table.id.value, "updateWebhook"],
     mutationFn: trpc.webhook.update.mutate,
   })
 

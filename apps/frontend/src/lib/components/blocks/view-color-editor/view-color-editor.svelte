@@ -30,7 +30,7 @@
   let open = false
 
   const mutation = createMutation({
-    mutationKey: [$table.id.value, "setColor"],
+    mutationKey: ["table", $table.id.value, "setColor"],
     mutationFn: trpc.table.view.setColor.mutate,
     onSuccess: async () => {
       await invalidate(`table:${$table.id.value}`)

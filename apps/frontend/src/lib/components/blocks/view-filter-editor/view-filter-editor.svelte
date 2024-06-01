@@ -30,7 +30,7 @@
   const client = useQueryClient()
 
   const mutation = createMutation({
-    mutationKey: [$table.id.value, "setFilters"],
+    mutationKey: ["table", $table.id.value, "setFilters"],
     mutationFn: trpc.table.view.setFilter.mutate,
     onSuccess: async () => {
       await invalidate(`table:${$table.id.value}`)

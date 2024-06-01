@@ -20,7 +20,7 @@
 
   const createFormMutation = createMutation({
     mutationFn: trpc.table.form.create.mutate,
-    mutationKey: ["form", "create", $table.id.value],
+    mutationKey: ["table", $table.id.value, "createForm"],
     onSuccess() {
       toast.success("create form successfully")
       invalidate(`table:${$table.id.value}`)
