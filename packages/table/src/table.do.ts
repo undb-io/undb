@@ -10,7 +10,7 @@ import { setViewColor } from "./methods/set-view-color.method"
 import { setViewFilter } from "./methods/set-view-filter.method"
 import { setViewSort } from "./methods/set-view-sort.method"
 import { updateFieldMethod } from "./methods/update-field.method"
-import type { Field, FormId, TableRSL } from "./modules"
+import type { Field, FormId, TableRLSGroup } from "./modules"
 import type { FormsVO } from "./modules/forms/forms.vo"
 import type { Schema } from "./modules/schema/schema.vo"
 import type { Views } from "./modules/views/views.vo"
@@ -23,7 +23,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   public schema!: Schema
   public views!: Views
   public forms?: FormsVO
-  public rls!: TableRSL
+  public rls!: TableRLSGroup
 
   $setViewFilter = setViewFilter
   $setViewColor = setViewColor

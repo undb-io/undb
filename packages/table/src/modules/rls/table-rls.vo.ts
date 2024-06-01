@@ -1,31 +1,17 @@
 import { ValueObject } from "@undb/domain"
-import { z } from "@undb/zod"
-import { Condition, createConditionGroup, parseValidCondition, type IRootCondition } from "../schema/fields/condition"
+import type { TableRLSAction } from "./table-rls-action.vo"
+import type { TableRLSCondition } from "./table-rls-condition.vo"
 
-export const tableRLSOption = z
-  .object({
-    // TODO: use real user id schema
-    action: z.enum(["list", "single", "write", "delete", "update", "all"]),
-    subject: z.string().array().optional().or(z.literal("all")).default("all"),
-  })
-  .optional()
+export interface ITableRLS {
+  action: TableRLSAction
+  conditon: TableRLSCondition
+}
 
-export type ITableRLSOptionSchema = typeof tableRLSOption
-
-export type ITableRLSOption = z.infer<typeof tableRLSOption>
-
-const singleTableRLS = createConditionGroup(tableRLSOption, tableRLSOption)
-
-class SingleTableRLS extends Condition<ITableRLSOptionSchema> {}
-
-export const tableRLS = singleTableRLS.array()
-export type ITableRLS = z.infer<typeof tableRLS>
-export type IRootTableRLS = IRootCondition<ITableRLSOptionSchema>[]
-
-export const parseValidTableRLS = parseValidCondition(tableRLSOption)
-
-export class TableRSL extends ValueObject<SingleTableRLS[]> {
+export class TableRSL extends ValueObject<ITableRLS> {
   toJSON() {
-    return this.value.map((v) => v.toJSON())
+    return {
+      action: this.value.action.value,
+      condition: this.value.conditon.toJSON(),
+    }
   }
 }

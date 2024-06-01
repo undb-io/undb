@@ -96,7 +96,9 @@ export class RecordMutateVisitor implements IRecordVisitor {
     throw new Error("Method not implemented.")
   }
   and(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
-    throw new Error("Method not implemented.")
+    left.accept(this)
+    right.accept(this)
+    return this
   }
   or(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
     throw new Error("Method not implemented.")
