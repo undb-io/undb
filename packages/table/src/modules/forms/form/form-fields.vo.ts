@@ -1,7 +1,8 @@
-import { None, Option, Some, ValueObject } from "@undb/domain"
-import { FormFieldVO } from "./form-field.vo"
-import type { TableDo } from "../../../table.do"
+import { ValueObject } from "@undb/domain"
 import type { Field } from "../.."
+import type { TableDo } from "../../../table.do"
+import type { SchemaMap } from "../../schema/schema.type"
+import { FormFieldVO } from "./form-field.vo"
 
 export class FormFieldsVO extends ValueObject<FormFieldVO[]> {
   static create(table: TableDo) {
@@ -29,6 +30,15 @@ export class FormFieldsVO extends ValueObject<FormFieldVO[]> {
       return []
     }
     return fields.slice(index + 1)
+  }
+
+  public toggleFieldVisibility(schema: SchemaMap): FormFieldsVO {
+    return new FormFieldsVO(
+      this.props.map((formField) => {
+        const field = schema.get(formField.fieldId)
+        return field ? formField.toggleVisibility(field) : formField
+      }),
+    )
   }
 
   toJSON() {

@@ -77,6 +77,16 @@ export class FormFieldVO extends ValueObject<IFormField> {
     return !!this.condition && !isEmptyConditionGroup(this.condition)
   }
 
+  public toggleVisibility(field: Field): FormFieldVO {
+    let hidden = this.hidden
+    if (!this.getRequired(field)) {
+      hidden = !hidden
+    } else {
+      hidden = false
+    }
+    return new FormFieldVO({ ...this.props, hidden })
+  }
+
   static create(field: Field) {
     return new FormFieldVO({
       fieldId: field.id.value,

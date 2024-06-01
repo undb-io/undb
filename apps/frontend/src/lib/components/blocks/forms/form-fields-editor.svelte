@@ -47,17 +47,12 @@
 
   let selectAll = form.getAllSelected()
 
-  function handleSelectAll(selectAll: boolean) {
-    form.fields = new FormFieldsVO(
-      form.fields.props.map((formField) => {
-        formField.hidden = !selectAll
-        return formField
-      }),
-    )
+  function toggleVisibility() {
+    form.fields = form.fields.toggleFieldVisibility(schema)
     setForm()
   }
 
-  $: selectAll, handleSelectAll(selectAll)
+  $: selectAll, toggleVisibility()
 
   let q = ""
 
