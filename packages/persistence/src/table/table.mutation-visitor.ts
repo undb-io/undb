@@ -7,6 +7,7 @@ import type {
   TableSchemaSpecification,
   TableViewsSpecification,
   WithNewFieldSpecification,
+  WithUpdatedFieldSpecification,
   WithViewAggregate,
   WithViewColor,
   WithViewFilter,
@@ -27,6 +28,11 @@ export class TableMutationVisitor
 {
   constructor(public readonly table: TableDo) {
     super()
+  }
+  withUpdatedField(spec: WithUpdatedFieldSpecification): void {
+    const typeChanged = spec.field.type !== spec.previous.type
+    console.log("typeChanged", typeChanged)
+    this.addUpdates({ schema: this.table.schema?.toJSON() })
   }
 
   withForm(views: WithFormSpecification): void {

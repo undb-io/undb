@@ -38,3 +38,23 @@ export class WithNewFieldSpecification extends TableComositeSpecification {
     return Ok(undefined)
   }
 }
+
+export class WithUpdatedFieldSpecification extends TableComositeSpecification {
+  constructor(
+    public readonly previous: Field,
+    public readonly field: Field,
+  ) {
+    super()
+  }
+  isSatisfiedBy(t: TableDo): boolean {
+    throw new WontImplementException(WithUpdatedFieldSpecification.name + ".isSatisfiedBy")
+  }
+  mutate(t: TableDo): Result<TableDo, string> {
+    t.schema = t.schema.updateField(this.field)
+    return Ok(t)
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withUpdatedField(this)
+    return Ok(undefined)
+  }
+}

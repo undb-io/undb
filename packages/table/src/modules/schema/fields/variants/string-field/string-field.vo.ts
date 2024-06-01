@@ -1,8 +1,9 @@
 import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
+import { isString } from "radash"
 import { match } from "ts-pattern"
 import type { RecordComositeSpecification } from "../../../../records"
-import { FieldIdVo } from "../../field-id.vo"
+import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { StringFieldConstraint, stringFieldConstraint } from "./string-field-constraint.vo"
@@ -33,7 +34,7 @@ export const createStringFieldDTO = createBaseFieldDTO.extend({
 
 export type ICreateStringFieldDTO = z.infer<typeof createStringFieldDTO>
 
-export const updateStringFieldDTO = createStringFieldDTO
+export const updateStringFieldDTO = createStringFieldDTO.setKey("id", fieldId)
 export type IUpdateStringFieldDTO = z.infer<typeof updateStringFieldDTO>
 
 export const stringFieldDTO = baseFieldDTO.extend({
@@ -50,7 +51,7 @@ export class StringField extends AbstractField<StringFieldValue, StringFieldCons
     if (dto.constraint) {
       this.constraint = Some(new StringFieldConstraint(dto.constraint))
     }
-    if (dto.defaultValue) {
+    if (isString(dto.defaultValue)) {
       this.defaultValue = new StringFieldValue(dto.defaultValue)
     }
   }

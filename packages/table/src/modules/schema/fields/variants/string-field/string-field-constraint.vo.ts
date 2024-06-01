@@ -15,6 +15,13 @@ export const stringFieldConstraint = z
 export type IStringFieldConstraint = z.infer<typeof stringFieldConstraint>
 
 export class StringFieldConstraint extends FieldConstraintVO<IStringFieldConstraint> {
+  constructor(dto: IStringFieldConstraint) {
+    super({
+      max: dto.max,
+      min: dto.min,
+      required: dto.required,
+    })
+  }
   override get schema() {
     let base: z.ZodTypeAny = z.string()
     if (!this.props.required) {

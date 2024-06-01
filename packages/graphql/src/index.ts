@@ -32,6 +32,7 @@ export class Graphql {
         name: String!
         type: FieldType!
         defaultValue: JSON
+        display: Boolean
         constraint: JSON
       }
 

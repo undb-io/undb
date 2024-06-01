@@ -1,10 +1,10 @@
-import { NotImplementException, Option, ValueObject } from "@undb/domain"
+import { Option, ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import { objectify } from "radash"
-import { WithNewFieldSpecification } from "../../specifications"
+import { WithNewFieldSpecification, WithUpdatedFieldSpecification } from "../../specifications"
 import type { ICreateSchemaDTO } from "./dto"
 import type { ISchemaDTO } from "./dto/schema.dto"
-import { FieldNameVo, IdField, UpdatedAtField, type ICreateFieldDTO, type IUpdateFieldDTO } from "./fields"
+import { FieldIdVo, FieldNameVo, IdField, UpdatedAtField, type ICreateFieldDTO, type IUpdateFieldDTO } from "./fields"
 import type { FieldId } from "./fields/field-id.vo"
 import { FieldFactory } from "./fields/field.factory"
 import type { Field, MutableFieldValue, NoneSystemField, SystemField } from "./fields/field.type"
@@ -47,13 +47,19 @@ export class Schema extends ValueObject<Field[]> {
     return new WithNewFieldSpecification(field)
   }
 
-  $updateField(dto: IUpdateFieldDTO) {
-    throw new NotImplementException(Schema.name + ".$updateField")
-  }
-
   createField(field: Field) {
     this.fields = [...this.fields, field]
     return this
+  }
+
+  $updateField(dto: IUpdateFieldDTO) {
+    const field = this.getFieldById(new FieldIdVo(dto.id)).expect("Field not found")
+    const updated = FieldFactory.fromJSON(dto)
+    return new WithUpdatedFieldSpecification(field, updated)
+  }
+
+  updateField(field: Field): Schema {
+    return new Schema(this.fields.map((f) => (f.id.equals(field.id) ? field : f)))
   }
 
   get systemFields(): SystemField[] {

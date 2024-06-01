@@ -1,7 +1,7 @@
 import { Option } from "@undb/domain"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
-import { FieldIdVo } from "../../field-id.vo"
+import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { IdEqual } from "./id-field-value.specification"
@@ -16,8 +16,8 @@ export const createIdFieldDTO = createBaseFieldDTO.extend({
 
 export type ICreateIdFieldDTO = z.infer<typeof createIdFieldDTO>
 
-export const updateIdFieldDTO = createIdFieldDTO
-export type IUpdateIdFieldDTO = ICreateIdFieldDTO
+export const updateIdFieldDTO = createIdFieldDTO.setKey("id", fieldId)
+export type IUpdateIdFieldDTO = z.infer<typeof updateIdFieldDTO>
 
 export const idFieldDTO = baseFieldDTO.extend({
   type: z.literal(ID_TYPE),

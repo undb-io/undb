@@ -32,6 +32,7 @@ export class TableQueryRepository implements ITableQueryRepository {
   }
 
   async findOneById(id: TableId): Promise<Option<ITableDTO>> {
+    const tbs = await this.db.select().from(tables)
     const qb = this.db.select().from(tables).$dynamic()
 
     const spec = Some(new TableIdSpecification(id))

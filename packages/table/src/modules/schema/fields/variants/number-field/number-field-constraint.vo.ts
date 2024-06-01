@@ -16,6 +16,14 @@ export const numberFieldConstraint = z
 export type INumberFieldConstraint = z.infer<typeof numberFieldConstraint>
 
 export class NumberFieldConstraint extends FieldConstraintVO<INumberFieldConstraint> {
+  constructor(dto: INumberFieldConstraint) {
+    super({
+      max: dto.max,
+      min: dto.min,
+      required: dto.required,
+      isInt: dto.isInt,
+    })
+  }
   override get schema() {
     let base: z.ZodTypeAny = z.number()
     if (!this.props.required) {

@@ -6,20 +6,21 @@ import type {
   TableSchemaSpecification,
   TableViewsSpecification,
   WithNewFieldSpecification,
+  WithUpdatedFieldSpecification,
   WithViewAggregate,
   WithViewColor,
   WithViewFilter,
   WithViewSort,
 } from "@undb/table"
-import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
-import type { AlterTableBuilder, CreateTableBuilder } from "kysely"
-import type { UnderlyingTable } from "./underlying-table"
-import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
 import type {
   TableFormsSpecification,
   WithFormSpecification,
   WithNewFormSpecification,
 } from "@undb/table/src/specifications/table-forms.specification"
+import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
+import type { AlterTableBuilder, CreateTableBuilder } from "kysely"
+import type { UnderlyingTable } from "./underlying-table"
+import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
 
 export class UnderlyingTableSpecVisitor<TB extends CreateTableBuilder<any, any> | AlterTableBuilder>
   implements ITableSpecVisitor
@@ -28,6 +29,7 @@ export class UnderlyingTableSpecVisitor<TB extends CreateTableBuilder<any, any> 
     public readonly table: UnderlyingTable,
     public tb: TB,
   ) {}
+  withUpdatedField(spec: WithUpdatedFieldSpecification): void {}
   withForm(views: WithFormSpecification): void {}
   withForms(views: TableFormsSpecification): void {}
   withNewForm(views: WithNewFormSpecification): void {}

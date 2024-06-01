@@ -3,18 +3,20 @@
   import { Button } from "$lib/components/ui/button"
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
-  import { CREATE_FIELD_MODAL, closeModal } from "$lib/store/modal.store"
+  import { UPDATE_FIELD_MODAL, closeModal } from "$lib/store/modal.store"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
-  import { getIsSystemFieldType, updateFieldDTO, type Field } from "@undb/table"
+  import { getIsSystemFieldType, updateFieldDTO, type Field, type FieldValue, type IUpdateFieldDTO } from "@undb/table"
   import { toast } from "svelte-sonner"
   import { derived } from "svelte/store"
+  import { Option } from "@undb/domain"
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import FieldOptions from "../field-options/field-options.svelte"
   import FieldTypePicker from "../field-picker/field-type-picker.svelte"
   import autoAnimate from "@formkit/auto-animate"
+  import { FieldFactory } from "@undb/table/src/modules/schema/fields/field.factory"
 
   const table = getTable()
 
@@ -25,8 +27,8 @@
       mutationKey: ["table", $table.id.value, "updateField"],
       mutationFn: trpc.table.field.update.mutate,
       async onSuccess() {
-        closeModal(CREATE_FIELD_MODAL)
-        toast.success("Create field success")
+        closeModal(UPDATE_FIELD_MODAL)
+        toast.success("Update field success")
         reset()
         await invalidate(`table:${$table.id.value}`)
       },
@@ -36,22 +38,24 @@
     })),
   )
 
-  function getDefaultValue() {
+  function getDefaultValue(): IUpdateFieldDTO {
     return {
+      id: field.id.value,
       type: field.type,
       name: field.name.value,
       display: !!field.display,
-      constraint: field.constraint.into(),
+      defaultValue: (field.defaultValue as Option<FieldValue>)?.unwrapUnchecked()?.value as any,
+      constraint: field.constraint.unwrapUnchecked()?.value,
     }
   }
 
   function setDefaultValue() {
-    form.reset({ data: getDefaultValue() })
+    form.reset({ newState: getDefaultValue() })
   }
 
-  // $: field, setDefaultValue()
+  $: field, setDefaultValue()
 
-  const form = superForm(defaults(getDefaultValue(), zodClient(updateFieldDTO)), {
+  const form = superForm<IUpdateFieldDTO>(defaults<IUpdateFieldDTO>(getDefaultValue(), zodClient(updateFieldDTO)), {
     SPA: true,
     dataType: "json",
     validators: zodClient(updateFieldDTO),
@@ -59,10 +63,12 @@
     invalidateAll: false,
     onUpdate(event) {
       if (!event.form.valid) return
+      const data = event.form.data
+      const field = FieldFactory.fromJSON(data).toJSON()
 
       $updateFieldMutation.mutate({
         tableId: $table.id.value,
-        field: event.form.data,
+        field,
       })
     },
   })

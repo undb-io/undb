@@ -1,7 +1,7 @@
 import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
-import { FieldIdVo } from "../../field-id.vo"
+import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { NumberEqual } from "../abstractions"
@@ -25,7 +25,7 @@ export const createNumberFieldDTO = createBaseFieldDTO.extend({
 
 export type ICreateNumberFieldDTO = z.infer<typeof createNumberFieldDTO>
 
-export const updateNumberFieldDTO = createNumberFieldDTO
+export const updateNumberFieldDTO = createNumberFieldDTO.setKey("id", fieldId)
 export type IUpdateNumberFieldDTO = z.infer<typeof updateNumberFieldDTO>
 
 export const numberFieldDTO = baseFieldDTO.extend({

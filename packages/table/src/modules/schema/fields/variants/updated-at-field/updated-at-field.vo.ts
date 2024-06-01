@@ -1,6 +1,6 @@
 import { Option } from "@undb/domain"
 import { z } from "@undb/zod"
-import { FieldIdVo } from "../../field-id.vo"
+import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { createAbstractDateConditionMather } from "../abstractions/abstract-date-field.condition"
@@ -20,8 +20,8 @@ export const createUpdatedAtFieldDTO = createBaseFieldDTO.extend({
 
 export type ICreateUpdatedAtFieldDTO = z.infer<typeof createUpdatedAtFieldDTO>
 
-export const updateUpdatedAtFieldDTO = createUpdatedAtFieldDTO
-export type IUpdateUpdatedAtFieldDTO = ICreateUpdatedAtFieldDTO
+export const updateUpdatedAtFieldDTO = createUpdatedAtFieldDTO.setKey("id", fieldId)
+export type IUpdateUpdatedAtFieldDTO = z.infer<typeof updateUpdatedAtFieldDTO>
 
 export const updatedAtFieldDTO = baseFieldDTO.extend({
   type: z.literal(UPDATED_AT_TYPE),

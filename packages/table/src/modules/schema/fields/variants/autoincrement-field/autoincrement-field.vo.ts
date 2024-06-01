@@ -1,6 +1,6 @@
 import { Option } from "@undb/domain"
 import { z } from "@undb/zod"
-import { FieldIdVo } from "../../field-id.vo"
+import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { createAbstractNumberFieldMather } from "../abstractions"
@@ -18,8 +18,8 @@ export const createAutoIncrementFieldDTO = createBaseFieldDTO.extend({
 })
 
 export type ICreateAutoIncrementFieldDTO = z.infer<typeof createAutoIncrementFieldDTO>
-export const updateAutoIncrementFieldDTO = createAutoIncrementFieldDTO
-export type IUpdateAutoIncrementFieldDTO = ICreateAutoIncrementFieldDTO
+export const updateAutoIncrementFieldDTO = createAutoIncrementFieldDTO.setKey("id", fieldId)
+export type IUpdateAutoIncrementFieldDTO = z.infer<typeof updateAutoIncrementFieldDTO>
 
 export const autoIncrementFieldDTO = baseFieldDTO.extend({
   type: z.literal(AUTO_INCREMENT_TYPE),
