@@ -4,14 +4,14 @@ import type { TableRLSCondition } from "./table-rls-condition.vo"
 
 export interface ITableRLS {
   action: TableRLSAction
-  conditon: TableRLSCondition
+  condition: TableRLSCondition
 }
 
 export class TableRSL extends ValueObject<ITableRLS> {
   toJSON() {
     return {
       action: this.value.action.value,
-      condition: this.value.conditon.toJSON(),
+      condition: this.value.condition.toJSON(),
     }
   }
 }

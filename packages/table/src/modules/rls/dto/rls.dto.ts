@@ -5,7 +5,7 @@ import { tableRLSCondition } from "../table-rls-condition.vo"
 export const rlsDTO = z
   .object({
     action: tableRLSAction,
-    conditon: tableRLSCondition,
+    condition: tableRLSCondition,
   })
   .array()
 
