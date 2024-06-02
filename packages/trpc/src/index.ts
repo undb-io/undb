@@ -68,7 +68,7 @@ const t = initTRPC.create({
   },
 })
 
-const p = t.procedure.use(async ({ type, input, path, next }) => {
+const p = t.procedure.use(async ({ type, input, path, next, rawInput }) => {
   const startTime = performance.now()
 
   const result = await next()
@@ -79,6 +79,7 @@ const p = t.procedure.use(async ({ type, input, path, next }) => {
     responseTime,
     type,
     input,
+    rawInput,
     path,
   }
   if (result.ok) {
