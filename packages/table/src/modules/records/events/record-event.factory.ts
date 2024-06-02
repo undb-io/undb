@@ -1,12 +1,14 @@
 import { Option, type IEventJSON } from "@undb/domain"
+import { match } from "ts-pattern"
 import {
   RecordCreatedEvent,
   RecordDeletedEvent,
+  RecordUpdatedEvent,
   type IRecordCreatedEvent,
   type IRecordDeletedEvent,
   type IRecordEvent,
+  type IRecordUpdatedEvent,
 } from "."
-import { match } from "ts-pattern"
 
 export class RecordEventFactory {
   static fromJSON(event: IEventJSON): Option<IRecordEvent> {
@@ -16,6 +18,11 @@ export class RecordEventFactory {
         { name: "record.created" },
         (event) =>
           new RecordCreatedEvent(event.payload as IRecordCreatedEvent, event.meta, event.id, new Date(event.timestamp)),
+      )
+      .with(
+        { name: "record.updated" },
+        (event) =>
+          new RecordUpdatedEvent(event.payload as IRecordUpdatedEvent, event.meta, event.id, new Date(event.timestamp)),
       )
       .with(
         { name: "record.deleted" },

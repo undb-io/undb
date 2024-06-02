@@ -4,7 +4,7 @@ import { ID_TYPE, type FieldValue } from "../../schema"
 import { FieldIdVo, type FieldId } from "../../schema/fields/field-id.vo"
 import { FieldValueFactory } from "../../schema/fields/field-value.factory"
 import type { SchemaMap } from "../../schema/schema.type"
-import { RecordCreatedEvent, RecordDeletedEvent, type IRecordEvent } from "../events"
+import { RecordCreatedEvent, RecordDeletedEvent, RecordUpdatedEvent, type IRecordEvent } from "../events"
 import type { ICreateRecordDTO, IRecordDTO, IUpdateRecordDTO } from "./dto"
 import { RecordIdVO, type RecordId } from "./record-id.vo"
 import { RecordValuesVO } from "./record-values.vo"
@@ -66,6 +66,8 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
   update(table: TableDo, dto: IUpdateRecordDTO["values"]): Option<RecordComositeSpecification> {
     const specs: Option<RecordComositeSpecification>[] = []
 
+    const updatedFields = new Set<string>()
+
     for (const [fieldId, value] of Object.entries(dto)) {
       const field = table.schema.getFieldById(new FieldIdVo(fieldId))
 
@@ -79,12 +81,20 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
         `invalid field value ${value} for ${field.unwrap().id.value}`,
       )
       const spec = field.unwrap().$updateValue(fieldValue as any)
-      specs.push(spec)
+      if (spec.isSome()) {
+        updatedFields.add(fieldId)
+        specs.push(spec)
+      }
     }
 
     const spec = andOptions(...specs) as Option<RecordComositeSpecification>
     if (spec.isSome()) {
+      const previousValues = this.values.getValues(updatedFields)
       spec.unwrap().mutate(this)
+      const values = this.values.getValues(updatedFields)
+
+      const event = RecordUpdatedEvent.create(table, previousValues, values, this)
+      this.addDomainEvent(event)
     }
 
     return spec

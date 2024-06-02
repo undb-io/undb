@@ -144,6 +144,7 @@
         </Select.Trigger>
         <Select.Content>
           <Select.Item value="record.created" label="Record Created" />
+          <Select.Item value="record.updated" label="Record Updated" />
           <Select.Item value="record.deleted" label="Record Deleted" />
         </Select.Content>
       </Select.Root>

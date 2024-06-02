@@ -15,7 +15,7 @@ type RecordValues = Record<IFieldId, FieldValue>
 
 export class RecordValuesVO extends ValueObject {
   #map: Map<IFieldId, FieldValue>
-  constructor(private readonly values: RecordValues) {
+  constructor(private values: RecordValues) {
     super(values)
     this.#map = new Map(Object.entries(values))
   }
@@ -108,6 +108,18 @@ export class RecordValuesVO extends ValueObject {
     return new RecordValuesVO(values)
   }
 
+  public getValues(fieldIds: Set<string>): RecordValuesVO {
+    const values: RecordValues = {}
+
+    for (const [id, value] of Object.entries(this.values)) {
+      if (fieldIds.has(id)) {
+        values[id] = value
+      }
+    }
+
+    return new RecordValuesVO(values)
+  }
+
   public getValue(fieldId: FieldId): Option<FieldValue> {
     return Option(this.#map.get(fieldId.value))
   }
@@ -128,5 +140,6 @@ export class RecordValuesVO extends ValueObject {
 
   public setValue(fieldId: FieldId, value: FieldValue) {
     this.#map.set(fieldId.value, value)
+    this.values = Object.fromEntries(this.#map)
   }
 }
