@@ -26,9 +26,15 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     return this.#rawSQL
   }
 
+  private addColumn(c: AlterTableColumnAlteringBuilder | CreateTableBuilder<any, any>) {
+    this.atb = c
+    this.tb = c as TB
+  }
+
   updatedAt(field: UpdatedAtField): void {
     const tableName = this.t.name
-    this.atb = this.tb.addColumn(field.id.value, "timestamp", (b) => b.defaultTo(sql`(CURRENT_TIMESTAMP)`).notNull())
+    const c = this.tb.addColumn(field.id.value, "timestamp", (b) => b.defaultTo(sql`(CURRENT_TIMESTAMP)`).notNull())
+    this.addColumn(c)
 
     // TODO: better solution
     const query = `
@@ -40,18 +46,23 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     this.#rawSQL.push(query)
   }
   autoIncrement(field: AutoIncrementField): void {
-    this.atb = this.tb.addColumn(field.id.value, "integer", (b) => b.autoIncrement().primaryKey())
+    const c = this.tb.addColumn(field.id.value, "integer", (b) => b.autoIncrement().primaryKey())
+    this.addColumn(c)
   }
   createdAt(field: CreatedAtField): void {
-    this.atb = this.tb.addColumn(field.id.value, "timestamp", (b) => b.defaultTo(sql`CURRENT_TIMESTAMP`).notNull())
+    const c = this.tb.addColumn(field.id.value, "timestamp", (b) => b.defaultTo(sql`CURRENT_TIMESTAMP`).notNull())
+    this.addColumn(c)
   }
   id(field: IdField): void {
-    this.atb = this.tb.addColumn(field.id.value, "varchar(50)", (b) => b.notNull().unique())
+    const c = this.tb.addColumn(field.id.value, "varchar(50)", (b) => b.notNull().unique())
+    this.addColumn(c)
   }
   string(field: StringField): void {
-    this.atb = this.tb.addColumn(field.id.value, "varchar(255)")
+    const c = this.tb.addColumn(field.id.value, "varchar(255)")
+    this.addColumn(c)
   }
   number(field: NumberField): void {
-    this.atb = this.tb.addColumn(field.id.value, "real")
+    const c = this.tb.addColumn(field.id.value, "real")
+    this.addColumn(c)
   }
 }

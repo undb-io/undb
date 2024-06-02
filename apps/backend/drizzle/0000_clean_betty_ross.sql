@@ -20,6 +20,7 @@ CREATE TABLE `undb_table` (
 	`schema` text,
 	`views` text,
 	`forms` text,
+	`rls` text,
 	`created_at` text DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
 	`created_by` text NOT NULL,
 	`updated_at` text NOT NULL,

@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "9e5ffb15-9ca9-424e-8ec2-32683d58da89",
+  "id": "dedb2aac-e5a1-43b1-8c25-67705ddc9b7b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_outbox": {
@@ -128,6 +128,13 @@
         },
         "forms": {
           "name": "forms",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "rls": {
+          "name": "rls",
           "type": "text",
           "primaryKey": false,
           "notNull": false,

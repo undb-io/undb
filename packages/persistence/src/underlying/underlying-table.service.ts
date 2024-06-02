@@ -31,7 +31,7 @@ export class UnderlyingTableService {
           field.accept(visitor)
         }
         queies.push(...visitor.rawSQL)
-        return visitor.atb!
+        return visitor.tb
       })
       .execute()
 
