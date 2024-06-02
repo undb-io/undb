@@ -33,6 +33,7 @@ import {
   updateTableFieldCommand,
   updateWebhookCommand,
 } from "@undb/commands"
+import { executionContext } from "@undb/context/server"
 import { CommandBus, QueryBus } from "@undb/cqrs"
 import { container } from "@undb/di"
 import type { ICommandBus, IQueryBus } from "@undb/domain"
@@ -69,6 +70,7 @@ const t = initTRPC.create({
 })
 
 const p = t.procedure.use(async ({ type, input, path, next, rawInput }) => {
+  const requestId = executionContext.getStore()?.requestId
   const startTime = performance.now()
 
   const result = await next()
@@ -76,6 +78,7 @@ const p = t.procedure.use(async ({ type, input, path, next, rawInput }) => {
   const responseTime = performance.now() - startTime
 
   const meta = {
+    requestId,
     responseTime,
     type,
     input,
