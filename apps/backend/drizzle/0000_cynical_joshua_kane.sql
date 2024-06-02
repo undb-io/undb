@@ -1,3 +1,13 @@
+CREATE TABLE `undb_audit` (
+	`id` text PRIMARY KEY NOT NULL,
+	`timestamp` integer NOT NULL,
+	`detail` text,
+	`op` text NOT NULL,
+	`table_id` text NOT NULL,
+	`record_id` text NOT NULL,
+	`operator_id` text NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE `undb_outbox` (
 	`id` text PRIMARY KEY NOT NULL,
 	`payload` text NOT NULL,
@@ -48,4 +58,9 @@ CREATE TABLE `undb_webhook` (
 	FOREIGN KEY (`tableId`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `undb_user_email_unique` ON `undb_user` (`email`);
+CREATE INDEX `audit_table_id_idx` ON `undb_audit` (`table_id`);--> statement-breakpoint
+CREATE INDEX `audit_record_id_idx` ON `undb_audit` (`record_id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `undb_user_email_unique` ON `undb_user` (`email`);--> statement-breakpoint
+CREATE INDEX `user_email_idx` ON `undb_user` (`email`);--> statement-breakpoint
+CREATE INDEX `webhook_table_id_idx` ON `undb_webhook` (`tableId`);--> statement-breakpoint
+CREATE INDEX `webhook_url_idx` ON `undb_webhook` (`url`);

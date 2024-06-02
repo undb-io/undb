@@ -1,9 +1,78 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "dedb2aac-e5a1-43b1-8c25-67705ddc9b7b",
+  "id": "86cda602-9e76-4c94-a4f4-e3bc784112f4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "undb_audit": {
+      "name": "undb_audit",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "timestamp": {
+          "name": "timestamp",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "detail": {
+          "name": "detail",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "op": {
+          "name": "op",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "table_id": {
+          "name": "table_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "record_id": {
+          "name": "record_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "operator_id": {
+          "name": "operator_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "audit_table_id_idx": {
+          "name": "audit_table_id_idx",
+          "columns": ["table_id"],
+          "isUnique": false
+        },
+        "audit_record_id_idx": {
+          "name": "audit_record_id_idx",
+          "columns": ["record_id"],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "undb_outbox": {
       "name": "undb_outbox",
       "columns": {
@@ -224,6 +293,11 @@
           "name": "undb_user_email_unique",
           "columns": ["email"],
           "isUnique": true
+        },
+        "user_email_idx": {
+          "name": "user_email_idx",
+          "columns": ["email"],
+          "isUnique": false
         }
       },
       "foreignKeys": {},
@@ -297,7 +371,18 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "webhook_table_id_idx": {
+          "name": "webhook_table_id_idx",
+          "columns": ["tableId"],
+          "isUnique": false
+        },
+        "webhook_url_idx": {
+          "name": "webhook_url_idx",
+          "columns": ["url"],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "undb_webhook_tableId_undb_table_id_fk": {
           "name": "undb_webhook_tableId_undb_table_id_fk",
@@ -318,5 +403,8 @@
     "schemas": {},
     "tables": {},
     "columns": {}
+  },
+  "internal": {
+    "indexes": {}
   }
 }

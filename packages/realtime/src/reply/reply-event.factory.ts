@@ -1,4 +1,4 @@
-import type { BaseEvent, Option, IEventJSON } from "@undb/domain"
+import type { BaseEvent, IEventJSON, Option } from "@undb/domain"
 import type { Outbox } from "@undb/persistence"
 import { RecordEventFactory } from "@undb/table"
 

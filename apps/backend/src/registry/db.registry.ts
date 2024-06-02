@@ -1,5 +1,7 @@
+import { AUDIT_REPOSITORY } from "@undb/audit"
 import { container } from "@undb/di"
 import {
+  AuditRepository,
   DB_UNIT_OF_WORK_PROVIDER,
   DatabaseUnitOfWork,
   RecordOutboxService,
@@ -31,4 +33,5 @@ export const registerDb = () => {
   container.register(DB_UNIT_OF_WORK_PROVIDER, DatabaseUnitOfWork)
   container.register(WEBHOOK_REPOSITORY, WebhookRepository)
   container.register(WEBHOOK_QUERY_REPOSITORY, WebhookQueryRepository)
+  container.register(AUDIT_REPOSITORY, AuditRepository)
 }

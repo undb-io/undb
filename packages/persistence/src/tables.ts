@@ -1,8 +1,9 @@
+import type { IAuditDetail } from "@undb/audit"
 import type { IFormsDTO, IRLSGroupDTO, ISchemaDTO, IViewsDTO, RECORD_EVENTS } from "@undb/table"
 import type { IWebhookHeaders, IWebhookMethod } from "@undb/webhook"
 import type { IRootWebhookCondition } from "@undb/webhook/src/webhook.condition"
 import { sql } from "drizzle-orm"
-import { integer, sqliteTableCreator, text } from "drizzle-orm/sqlite-core"
+import { index, integer, sqliteTableCreator, text } from "drizzle-orm/sqlite-core"
 
 const sqliteTable = sqliteTableCreator((name) => `undb_${name}`)
 
@@ -43,11 +44,19 @@ export const outbox = sqliteTable("outbox", {
 export type Outbox = typeof outbox.$inferSelect
 export type NewOutbox = typeof outbox.$inferInsert
 
-export const users = sqliteTable("user", {
-  id: text("id").notNull().primaryKey(),
-  email: text("email").notNull().unique(),
-  password: text("password").notNull(),
-})
+export const users = sqliteTable(
+  "user",
+  {
+    id: text("id").notNull().primaryKey(),
+    email: text("email").notNull().unique(),
+    password: text("password").notNull(),
+  },
+  (table) => {
+    return {
+      emailIdx: index("user_email_idx").on(table.email),
+    }
+  },
+)
 
 export const sessionTable = sqliteTable("session", {
   id: text("id").notNull().primaryKey(),
@@ -57,19 +66,50 @@ export const sessionTable = sqliteTable("session", {
   expiresAt: integer("expires_at").notNull(),
 })
 
-export const webhook = sqliteTable("webhook", {
-  id: text("id").notNull().primaryKey(),
-  name: text("name").notNull(),
-  url: text("url").notNull(),
-  method: text("method").notNull().$type<IWebhookMethod>(),
-  enabled: integer("enabled", { mode: "boolean" }).notNull(),
-  tableId: text("tableId")
-    .notNull()
-    .references(() => tables.id),
-  headers: text("headers", { mode: "json" }).notNull().$type<IWebhookHeaders>(),
-  condition: text("condition", { mode: "json" }).$type<IRootWebhookCondition>(),
-  event: text("event").notNull().$type<RECORD_EVENTS>(),
-})
+export const webhook = sqliteTable(
+  "webhook",
+  {
+    id: text("id").notNull().primaryKey(),
+    name: text("name").notNull(),
+    url: text("url").notNull(),
+    method: text("method").notNull().$type<IWebhookMethod>(),
+    enabled: integer("enabled", { mode: "boolean" }).notNull(),
+    tableId: text("tableId")
+      .notNull()
+      .references(() => tables.id),
+    headers: text("headers", { mode: "json" }).notNull().$type<IWebhookHeaders>(),
+    condition: text("condition", { mode: "json" }).$type<IRootWebhookCondition>(),
+    event: text("event").notNull().$type<RECORD_EVENTS>(),
+  },
+  (table) => {
+    return {
+      tableIdIdx: index("webhook_table_id_idx").on(table.tableId),
+      urlIdx: index("webhook_url_idx").on(table.url),
+    }
+  },
+)
 
 export type Webhook = typeof webhook.$inferSelect
 export type NewWebhook = typeof webhook.$inferInsert
+
+export const audit = sqliteTable(
+  "audit",
+  {
+    id: text("id").notNull().primaryKey(),
+    timestamp: integer("timestamp", { mode: "timestamp_ms" }).notNull(),
+    detail: text("detail", { mode: "json" }).$type<IAuditDetail>(),
+    op: text("op").notNull().$type<RECORD_EVENTS>(),
+    tableId: text("table_id").notNull(),
+    recordId: text("record_id").notNull(),
+    operatorId: text("operator_id").notNull(),
+  },
+  (table) => {
+    return {
+      tableIdIdx: index("audit_table_id_idx").on(table.tableId),
+      recordIdIdx: index("audit_record_id_idx").on(table.recordId),
+    }
+  },
+)
+
+export type Audit = typeof audit.$inferSelect
+export type NewAudit = typeof audit.$inferInsert

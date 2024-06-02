@@ -17,6 +17,7 @@
     "@undb/logger": "workspace:*",
     "@undb/table": "workspace:*",
     "@undb/webhook": "workspace:*",
+    "@undb/audit": "workspace:*",
     "date-fns": "^3.6.0",
     "drizzle-orm": "^0.31.0",
     "kysely": "^0.27.3",

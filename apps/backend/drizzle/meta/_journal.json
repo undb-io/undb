@@ -1,12 +1,12 @@
 {
-  "version": "6",
+  "version": "7",
   "dialect": "sqlite",
   "entries": [
     {
       "idx": 0,
       "version": "6",
-      "when": 1717294171308,
-      "tag": "0000_clean_betty_ross",
+      "when": 1717310924160,
+      "tag": "0000_cynical_joshua_kane",
       "breakpoints": true
     }
   ]

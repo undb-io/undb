@@ -7,6 +7,7 @@ register()
 import cors from "@elysiajs/cors"
 import { html } from "@elysiajs/html"
 import { trpc } from "@elysiajs/trpc"
+import { AuditEventHandler } from "@undb/audit"
 import { executionContext } from "@undb/context/server"
 import { container } from "@undb/di"
 import { graphql } from "@undb/graphql"
@@ -16,6 +17,7 @@ import { route } from "@undb/trpc"
 import { WebhookEventsHandler } from "@undb/webhook"
 import { Elysia } from "elysia"
 import { requestID } from "elysia-requestid"
+import { all } from "radash"
 import { loggerPlugin } from "./plugins/logging"
 import { auth, authStore } from "./routes/auth.route"
 import { OpenAPI } from "./routes/openapi.route"
@@ -31,9 +33,19 @@ const app = new Elysia()
   .onStart(async () => {
     const pubsub = container.resolve(PubSubContext)
     const webhookEventHandler = container.resolve(WebhookEventsHandler)
+    const auditEventHandler = container.resolve(AuditEventHandler)
     const messages = pubsub.subscribe("tenant.*.record.*")
     for await (const message of messages) {
-      await webhookEventHandler.handle(message as IRecordEvent)
+      const event = message as IRecordEvent
+      const operatorId = event.operatorId!
+
+      // TODO: request id
+      executionContext.enterWith({ requestId: "", user: { userId: operatorId } })
+      await all([
+        //
+        webhookEventHandler.handle(event),
+        auditEventHandler.handle(event),
+      ])
     }
   })
   .use(cors())

@@ -31,6 +31,9 @@ export class RecordEventFactory {
       )
       .otherwise(() => null)
 
+    if (evt) {
+      evt.operatorId = event.operatorId!
+    }
     return Option(evt)
   }
 }
