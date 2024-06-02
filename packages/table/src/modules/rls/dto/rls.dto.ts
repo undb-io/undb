@@ -1,9 +1,13 @@
 import { z } from "@undb/zod"
 import { tableRLSAction } from "../table-rls-action.vo"
 import { tableRLSCondition } from "../table-rls-condition.vo"
+import { rlsId } from "../table-rls-id.vo"
+import { tableRLSSubject } from "../table-rls-subject.vo"
 
 export const rlsDTO = z.object({
+  id: rlsId,
   action: tableRLSAction,
+  subject: tableRLSSubject,
   condition: tableRLSCondition,
 })
 
