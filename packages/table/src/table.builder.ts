@@ -1,23 +1,24 @@
 import { container, inject, injectable, singleton } from "@undb/di"
+import { None, Some, applyRules } from "@undb/domain"
 import { createTableDTO, type ICreateTableDTO, type ITableDTO } from "./dto"
 import { TableCreatedEvent } from "./events"
-import type { ICreateFormDTO, IFormsDTO } from "./modules"
+import { TableRLSGroup, type ICreateFormDTO, type IFormsDTO, type IRLSGroupDTO } from "./modules"
+import { FormsVO } from "./modules/forms/forms.vo"
 import type { ICreateSchemaDTO } from "./modules/schema/dto/create-schema.dto"
 import type { ISchemaDTO } from "./modules/schema/dto/schema.dto"
+import { FieldNameShouldBeUnique } from "./modules/schema/rules"
 import { Schema } from "./modules/schema/schema.vo"
 import type { IViewsDTO } from "./modules/views/dto"
 import { Views } from "./modules/views/views.vo"
-import { FormsVO } from "./modules/forms/forms.vo"
 import { TableViewsSpecification } from "./specifications"
 import { TableFormsSpecification } from "./specifications/table-forms.specification"
 import { TableIdSpecification } from "./specifications/table-id.specification"
 import { TableNameSpecification } from "./specifications/table-name.specification"
+import { WithTableRLS } from "./specifications/table-rls.specification"
 import { TableSchemaSpecification } from "./specifications/table-schema.specification"
 import { TableIdVo } from "./table-id.vo"
 import { TableNameVo } from "./table-name.vo"
 import { TableDo } from "./table.do"
-import { applyRules } from "@undb/domain"
-import { FieldNameShouldBeUnique } from "./modules/schema/rules"
 
 export interface ITableBuilder {
   reset(): void
@@ -29,6 +30,7 @@ export interface ITableBuilder {
   createForms(dto: ICreateFormDTO[]): ITableBuilder
   setViews(dto: IViewsDTO): ITableBuilder
   setForms(dto?: IFormsDTO): ITableBuilder
+  setRLS(dto?: IRLSGroupDTO): ITableBuilder
   build(): TableDo
 }
 
@@ -80,6 +82,11 @@ export class TableBuilder implements ITableBuilder {
 
   setForms(dto: IFormsDTO = []): ITableBuilder {
     new TableFormsSpecification(FormsVO.fromJSON(dto)).mutate(this.table)
+    return this
+  }
+
+  setRLS(dto?: IRLSGroupDTO): ITableBuilder {
+    new WithTableRLS(None, dto ? Some(TableRLSGroup.fromJSON(dto)) : None).mutate(this.table)
     return this
   }
 

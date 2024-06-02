@@ -1,4 +1,4 @@
-import type { IFormsDTO, ISchemaDTO, IViewsDTO, RECORD_EVENTS } from "@undb/table"
+import type { IFormsDTO, IRLSGroupDTO, ISchemaDTO, IViewsDTO, RECORD_EVENTS } from "@undb/table"
 import type { IWebhookHeaders, IWebhookMethod } from "@undb/webhook"
 import type { IRootWebhookCondition } from "@undb/webhook/src/webhook.condition"
 import { sql } from "drizzle-orm"
@@ -12,6 +12,7 @@ export const tables = sqliteTable("table", {
   schema: text("schema", { mode: "json" }).$type<ISchemaDTO>(),
   views: text("views", { mode: "json" }).$type<IViewsDTO>(),
   forms: text("forms", { mode: "json" }).$type<IFormsDTO>(),
+  rls: text("rls", { mode: "json" }).$type<IRLSGroupDTO>(),
 
   createdAt: text("created_at")
     .notNull()

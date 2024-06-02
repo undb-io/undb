@@ -30,11 +30,25 @@ type Query {
   tables: [Table!]
 }
 
+type RLS {
+  action: RLSAction!
+  condition: JSON!
+}
+
+enum RLSAction {
+  create
+  delete
+  list
+  update
+  view
+}
+
 type Table {
   forms: [Form]
   id: ID!
   name: String!
   recordsCount: Int!
+  rls: [RLS]
   schema: [Field!]!
   viewData(viewId: ID): ViewData
   views: [View!]!

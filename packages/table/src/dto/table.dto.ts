@@ -1,5 +1,5 @@
 import { z } from "@undb/zod"
-import { formsDTO, rlsDTO } from "../modules"
+import { formsDTO, rlsGroupDTO } from "../modules"
 import { schemaDTO } from "../modules/schema/dto/schema.dto"
 import { viewsDTO } from "../modules/views/dto"
 import { tableId } from "../table-id.vo"
@@ -10,7 +10,7 @@ export const tableDTO = z.object({
   name: tableName,
   schema: schemaDTO,
   views: viewsDTO,
-  rls: rlsDTO.optional(),
+  rls: rlsGroupDTO.optional(),
   forms: formsDTO.optional(),
 })
 

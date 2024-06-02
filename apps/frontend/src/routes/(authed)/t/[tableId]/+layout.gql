@@ -32,6 +32,11 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
       aggregate
     }
 
+    rls {
+      action
+      condition
+    }
+
     recordsCount
   }
 }

@@ -61,12 +61,26 @@ export class Graphql {
         fields: JSON
       }
 
+      enum RLSAction {
+        list
+        create
+        update
+        delete
+        view
+      }
+
+      type RLS {
+        action: RLSAction!
+        condition: JSON!
+      }
+
       type Table {
         id: ID!
         name: String!
         schema: [Field!]!
         views: [View!]!
         forms: [Form]
+        rls: [RLS]
 
         viewData(viewId: ID): ViewData
 

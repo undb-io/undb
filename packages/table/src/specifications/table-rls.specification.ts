@@ -1,14 +1,13 @@
-import { NotImplementException, Ok, Option, WontImplementException, type Result } from "@undb/domain"
-import type { IRootTableRLS, ViewId } from "../modules"
+import { Ok, Option, WontImplementException, type Result } from "@undb/domain"
+import type { TableRLSGroup } from "../modules"
 import type { TableDo } from "../table.do"
 import type { ITableSpecVisitor } from "./table-visitor.interface"
 import { TableComositeSpecification } from "./table.composite-specification"
 
 export class WithTableRLS extends TableComositeSpecification {
   constructor(
-    public readonly viewId: ViewId,
-    public readonly previous: Option<IRootTableRLS>,
-    public readonly rls: IRootTableRLS,
+    public readonly previous: Option<TableRLSGroup>,
+    public readonly rls: Option<TableRLSGroup>,
   ) {
     super()
   }
@@ -16,7 +15,8 @@ export class WithTableRLS extends TableComositeSpecification {
     throw new WontImplementException(WithTableRLS.name + ".isSatisfiedBy")
   }
   mutate(t: TableDo): Result<TableDo, string> {
-    throw new NotImplementException(WithTableRLS.name + ".mutate")
+    t.rls = this.rls
+    return Ok(t)
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
     v.withTableRLS(this)

@@ -1,6 +1,7 @@
 import { ValueObject } from "@undb/domain"
-import type { TableRLSAction } from "./table-rls-action.vo"
-import type { TableRLSCondition } from "./table-rls-condition.vo"
+import type { IRLSDTO } from "./dto"
+import { TableRLSAction } from "./table-rls-action.vo"
+import { TableRLSCondition } from "./table-rls-condition.vo"
 
 export interface ITableRLS {
   action: TableRLSAction
@@ -8,6 +9,13 @@ export interface ITableRLS {
 }
 
 export class TableRSL extends ValueObject<ITableRLS> {
+  static fromJSON(dto: IRLSDTO): TableRSL {
+    return new TableRSL({
+      action: new TableRLSAction(dto.action),
+      condition: new TableRLSCondition(dto.condition),
+    })
+  }
+
   toJSON() {
     return {
       action: this.value.action.value,

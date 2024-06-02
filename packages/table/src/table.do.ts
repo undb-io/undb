@@ -1,4 +1,4 @@
-import { AggregateRoot } from "@undb/domain"
+import { AggregateRoot, None, Option } from "@undb/domain"
 import type { ITableDTO } from "./dto"
 import type { ITableEvents } from "./events"
 import { createFieldMethod } from "./methods/create-field.method"
@@ -23,7 +23,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   public schema!: Schema
   public views!: Views
   public forms?: FormsVO
-  public rls!: TableRLSGroup
+  public rls: Option<TableRLSGroup> = None
 
   $setViewFilter = setViewFilter
   $setViewColor = setViewColor
@@ -69,7 +69,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
       name: this.name.value,
       schema: this.schema.toJSON(),
       views: this.views.toJSON(),
-      rls: this.rls?.toJSON(),
+      rls: this.rls.into(undefined)?.toJSON(),
       forms: this.forms?.toJSON(),
     }
   }

@@ -1,14 +1,14 @@
 import { BaseEvent } from "@undb/domain"
 import { z } from "@undb/zod"
-import { rlsDTO } from "../modules"
+import { rlsGroupDTO } from "../modules"
 import { tableId } from "../table-id.vo"
 
 const EVT_SET_TABLE_RLS = "table.rls.set" as const
 
 export const setTableRLSEventPayload = z.object({
   tableId: tableId,
-  previous: rlsDTO.nullable(),
-  rls: rlsDTO.nullable(),
+  previous: rlsGroupDTO.nullable(),
+  rls: rlsGroupDTO.nullable(),
 })
 
 export type ISetTableRLSEventPayload = z.infer<typeof setTableRLSEventPayload>

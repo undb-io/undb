@@ -50,7 +50,7 @@ export class TableMutationVisitor
     this.addUpdates({ views: this.table.views?.toJSON() })
   }
   withTableRLS(rls: WithTableRLS): void {
-    throw new NotImplementException(TableMutationVisitor.name + ".withTableRLS")
+    this.addUpdates({ rls: this.table.rls.into(undefined)?.toJSON() })
   }
   withViewSort(viewSort: WithViewSort): void {
     this.addUpdates({ views: this.table.views?.toJSON() })
