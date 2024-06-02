@@ -25,7 +25,7 @@
     "@undb/realtime": "workspace:*",
     "@undb/trpc": "workspace:*",
     "@undb/webhook": "workspace:*",
-    "bun": "^1.1.10",
+    "bun": "^1.1.12",
     "core-js": "^3.37.1",
     "elysia": "^1.0.22",
     "elysia-requestid": "^1.0.9",

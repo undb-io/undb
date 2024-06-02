@@ -4,8 +4,8 @@
   "types": "src/index.d.ts",
   "type": "module",
   "dependencies": {
-    "@undb/table": "workspace:*",
     "@undb/di": "workspace:*",
+    "@undb/table": "workspace:*",
     "@undb/zod": "workspace:*",
     "radash": "^12.1.0"
   },

@@ -23,7 +23,7 @@ export class RealtimeRoute {
       .use(
         cron({
           name: "realtime",
-          pattern: Patterns.everyHours(),
+          pattern: Patterns.everySecond(),
           run: async () => {
             await this.reply.scan()
           },
