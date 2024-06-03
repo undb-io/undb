@@ -39,13 +39,11 @@ import { container } from "@undb/di"
 import type { ICommandBus, IQueryBus } from "@undb/domain"
 import { createLogger } from "@undb/logger"
 import {
-  GetRecordAuditsQuery,
   GetRecordByIdQuery,
   GetRecordsQuery,
   GetTableQuery,
   GetTablesQuery,
   GetWebhooksQuery,
-  getRecordAuditsQuery,
   getRecordByIdQuery,
   getRecordsQuery,
   getTableQuery,
@@ -144,10 +142,6 @@ const tableRouter = t.router({
   form: formRouter,
 })
 
-const auditsRouter = t.router({
-  list: p.input(getRecordAuditsQuery).query(({ input }) => queryBus.execute(new GetRecordAuditsQuery(input))),
-})
-
 export const recordRouter = t.router({
   list: p.input(getRecordsQuery).query(({ input }) => queryBus.execute(new GetRecordsQuery(input))),
   get: p.input(getRecordByIdQuery).query(({ input }) => queryBus.execute(new GetRecordByIdQuery(input))),
@@ -157,7 +151,6 @@ export const recordRouter = t.router({
   duplicate: p
     .input(duplicateRecordCommand)
     .mutation(({ input }) => commandBus.execute(new DuplicateRecordCommand(input))),
-  audits: auditsRouter,
 })
 
 const webhookRouter = t.router({

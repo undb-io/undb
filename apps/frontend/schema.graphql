@@ -1,3 +1,13 @@
+type Audit {
+  detail: JSON
+  id: ID!
+  op: String!
+  operatorId: ID!
+  recordId: ID!
+  tableId: ID!
+  timestamp: String!
+}
+
 type Field {
   constraint: JSON
   defaultValue: JSON
@@ -26,6 +36,7 @@ type Form {
 scalar JSON
 
 type Query {
+  recordAudits(recordId: ID!): [Audit]
   table(id: ID!): Table
   tables: [Table!]
 }

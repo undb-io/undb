@@ -1,7 +1,7 @@
 import { yoga } from "@elysiajs/graphql-yoga"
 import { QueryBus } from "@undb/cqrs"
 import { container, inject, singleton } from "@undb/di"
-import { GetAggregatesQuery, GetTableQuery, GetTablesQuery } from "@undb/queries"
+import { GetAggregatesQuery, GetRecordAuditsQuery, GetTableQuery, GetTablesQuery } from "@undb/queries"
 import { TableIdVo, injectRecordQueryRepository, type IRecordQueryRepository } from "@undb/table"
 
 @singleton()
@@ -87,9 +87,21 @@ export class Graphql {
         recordsCount: Int!
       }
 
+      type Audit {
+        id: ID!
+        timestamp: String!
+        operatorId: ID!
+        tableId: ID!
+        recordId: ID!
+        op: String!
+        detail: JSON
+      }
+
       type Query {
         tables: [Table!]
         table(id: ID!): Table
+
+        recordAudits(recordId: ID!): [Audit]
       }
       `,
       resolvers: {
@@ -100,6 +112,10 @@ export class Graphql {
           },
           tables: async () => {
             return this.queryBus.execute(new GetTablesQuery())
+          },
+          recordAudits: async (_, { recordId }) => {
+            const { audits } = await this.queryBus.execute(new GetRecordAuditsQuery({ recordId }))
+            return audits
           },
         },
         Table: {

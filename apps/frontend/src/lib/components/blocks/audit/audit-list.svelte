@@ -1,27 +1,24 @@
 <script lang="ts">
   import { getTable } from "$lib/store/table.store"
-  import { trpc } from "$lib/trpc/client"
-  import { createQuery } from "@tanstack/svelte-query"
   import type { IAuditDTO } from "@undb/audit"
   import { FieldIdVo } from "@undb/table"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
   import { format } from "timeago.js"
+  import { GetRecordAuditsStore } from "$houdini"
+  import { browser } from "$app/environment"
 
   const table = getTable()
 
   export let recordId: string
 
-  const getAudits = createQuery({
-    queryKey: ["table", $table.id.value, "record", recordId, "audits"],
-    queryFn: () => trpc.record.audits.list.query({ recordId }),
-  })
+  $: store = new GetRecordAuditsStore()
+  $: browser && store.fetch({ variables: { recordId } })
 
-  // @ts-expect-error ignore audits type
-  $: audits = ($getAudits.data?.audits ?? []) as IAuditDTO[]
+  $: audits = ($store.data?.recordAudits ?? []) as IAuditDTO[]
 </script>
 
 <div class="px-2">
-  {#if $getAudits.isLoading}
+  {#if $store.fetching}
     <!-- TODO -->
   {:else if !audits.length}
     <!-- TODO -->
