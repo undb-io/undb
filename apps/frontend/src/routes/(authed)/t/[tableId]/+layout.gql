@@ -35,6 +35,7 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
     rls {
       action
       condition
+      updateCondition
     }
 
     recordsCount

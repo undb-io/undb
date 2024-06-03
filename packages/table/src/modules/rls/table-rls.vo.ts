@@ -11,6 +11,7 @@ export interface ITableRLS {
   allow: boolean
   action: TableRLSAction
   condition: Option<TableRLSCondition>
+  updateCondition: Option<TableRLSCondition>
 }
 
 export class TableRLS extends ValueObject<ITableRLS> {
@@ -25,16 +26,18 @@ export class TableRLS extends ValueObject<ITableRLS> {
       allow: dto.allow,
       subject: new TableRLSSubject(dto.subject),
       condition: dto.condition ? Some(new TableRLSCondition(dto.condition)) : None,
+      updateCondition: dto.updateCondition ? Some(new TableRLSCondition(dto.updateCondition)) : None,
     })
   }
 
   toJSON(): IRLSDTO {
     return {
-      id: this.value.id.value,
-      action: this.value.action.value,
-      allow: this.value.allow,
-      subject: this.value.subject.value,
-      condition: this.value.condition.into(undefined)?.toJSON(),
+      id: this.props.id.value,
+      action: this.props.action.value,
+      allow: this.props.allow,
+      subject: this.props.subject.value,
+      condition: this.props.condition.into(undefined)?.toJSON(),
+      updateCondition: this.props.updateCondition.into(undefined)?.toJSON(),
     }
   }
 }

@@ -8,13 +8,26 @@
   import { browser } from "$app/environment"
   import * as Form from "$lib/components/ui/form/index.js"
   import * as Select from "$lib/components/ui/select/index.js"
-  import { RLSIdVO, rlsDTO } from "@undb/table"
+  import { RLSIdVO, rlsDTO, type MaybeConditionGroup, parseValidViewFilter } from "@undb/table"
+  import { Switch } from "$lib/components/ui/switch"
+  import FiltersEditor from "../filters-editor/filters-editor.svelte"
+  import { writable } from "svelte/store"
+  import type { ZodUndefined } from "@undb/zod"
+  import { toast } from "svelte-sonner"
+  import { CREATE_RLS_MODAL, closeModal } from "$lib/store/modal.store"
 
   const table = getTable()
 
-  const createRLSMutation = createMutation({
+  const setTableRLSMutation = createMutation({
     mutationKey: ["table", $table.id.value, "rls", "create"],
     mutationFn: trpc.table.rls.set.mutate,
+    onSuccess(data, variables, context) {
+      toast.success("RLS created")
+      closeModal(CREATE_RLS_MODAL)
+    },
+    onError(error, variables, context) {
+      toast.error("Failed to create RLS")
+    },
   })
 
   const form = superForm(
@@ -32,7 +45,12 @@
       SPA: true,
       validators: zodClient(rlsDTO),
       onUpdate(event) {
-        console.log(event)
+        const data = event.form.data
+
+        $setTableRLSMutation.mutate({
+          tableId: $table.id.value,
+          rls: data,
+        })
       },
     },
   )
@@ -52,6 +70,13 @@
         value: $formData.action,
       }
     : undefined
+
+  let enableContion = false
+
+  const condition = writable<MaybeConditionGroup<ZodUndefined> | undefined>()
+  $: validCondition = $condition ? parseValidViewFilter($table.schema.fieldMapById, $condition) : undefined
+
+  $: validCondition, ($formData.condition = validCondition)
 </script>
 
 <form method="POST" class="w-full space-y-6" use:enhance>
@@ -109,6 +134,21 @@
     </Form.Field>
   </div>
 
+  <Form.Field {form} name="action">
+    <Form.Control let:attrs>
+      <Form.Label class="flex items-center gap-2" for="enableCondition">
+        Enable condition
+        <Switch bind:checked={enableContion} id="enableCondition" />
+      </Form.Label>
+      {#if enableContion}
+        <FiltersEditor
+          class="rounded-sm border-gray-100 bg-gray-50 shadow-inner"
+          table={$table}
+          bind:value={$condition}
+        />
+      {/if}
+    </Form.Control>
+  </Form.Field>
   <Form.Button class="w-full">Submit</Form.Button>
 
   {#if browser}

@@ -4,12 +4,12 @@ import { TableRLS } from "./table-rls.vo"
 
 export class TableRLSGroup extends ValueObject<TableRLS[]> {
   static fromJSON(dto: IRLSGroupDTO) {
-    return new TableRLSGroup(dto.map((rsl) => TableRLS.fromJSON(rsl)))
+    return new TableRLSGroup(dto.map((rls) => TableRLS.fromJSON(rls)))
   }
 
   setRLS(rls: TableRLS) {
-    const values = [...this.value]
-    const index = values.findIndex((rsl) => rsl.id.equals(rls.id))
+    const values = [...this.props]
+    const index = values.findIndex((r) => r.id.equals(rls.id))
     if (index === -1) {
       values.push(rls)
     } else {
@@ -20,6 +20,6 @@ export class TableRLSGroup extends ValueObject<TableRLS[]> {
   }
 
   toJSON() {
-    return this.value.map((rsl) => rsl.toJSON())
+    return this.props.map((rls) => rls.toJSON())
   }
 }

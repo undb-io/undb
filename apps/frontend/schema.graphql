@@ -43,7 +43,8 @@ type Query {
 
 type RLS {
   action: RLSAction!
-  condition: JSON!
+  condition: JSON
+  updateCondition: JSON
 }
 
 enum RLSAction {

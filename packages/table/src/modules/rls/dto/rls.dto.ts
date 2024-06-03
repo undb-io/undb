@@ -10,6 +10,7 @@ export const rlsDTO = z.object({
   allow: z.boolean(),
   subject: tableRLSSubject,
   condition: tableRLSCondition.optional(),
+  updateCondition: tableRLSCondition.optional(),
 })
 
 export type IRLSDTO = z.infer<typeof rlsDTO>

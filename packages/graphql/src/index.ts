@@ -70,7 +70,8 @@ export class Graphql {
 
       type RLS {
         action: RLSAction!
-        condition: JSON!
+        condition: JSON
+        updateCondition: JSON
       }
 
       type Table {
