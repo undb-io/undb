@@ -12,6 +12,7 @@
   import { cn } from "$lib/utils"
   import AuditList from "../audit/audit-list.svelte"
   import { HistoryIcon } from "lucide-svelte"
+  import { preferences } from "$lib/store/persisted.store"
 
   const r = queryParam("r", ssp.string(), { pushHistory: false })
 
@@ -32,8 +33,6 @@
   $: recordDo = $record.data?.record ? RecordDO.fromJSON($table, $record.data?.record) : undefined
 
   let disabled = false
-
-  let showAudit = false
 </script>
 
 <Sheet.Root
@@ -45,13 +44,13 @@
   }}
 >
   <Sheet.Content
-    class={cn("sm:max-w-1/2 flex w-1/2 flex-col gap-0 pt-4 transition-all", showAudit && "w-2/3")}
+    class={cn("sm:max-w-1/2 flex w-1/2 flex-col gap-0 pt-4 transition-all", $preferences.showAudit && "w-2/3")}
     transitionConfig={{ duration: 50 }}
   >
     <Sheet.Header class="-mx-6 border-b px-6 pb-2">
       <Sheet.Title class="flex items-center justify-between">
         <span> Record Detail </span>
-        <button class="mr-6" on:click={() => (showAudit = !showAudit)}>
+        <button class="mr-6" on:click={() => ($preferences.showAudit = !$preferences.showAudit)}>
           <HistoryIcon class="text-muted-foreground h-4 w-4" />
         </button>
       </Sheet.Title>
@@ -69,11 +68,11 @@
       {/if}
       <div class="grid h-full grid-cols-4">
         {#if recordDo}
-          <div class={cn("pt-4", showAudit && $r ? "col-span-3 pr-4" : "col-span-4")}>
+          <div class={cn("pt-4", $preferences.showAudit && $r ? "col-span-3 pr-4" : "col-span-4")}>
             <RecordDetail record={recordDo} bind:disabled />
           </div>
         {/if}
-        {#if showAudit && $r}
+        {#if $preferences.showAudit && $r}
           <div class="col-span-1 border-l pl-2 pt-4">
             <AuditList recordId={$r} />
           </div>
