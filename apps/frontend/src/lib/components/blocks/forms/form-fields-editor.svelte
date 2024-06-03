@@ -47,13 +47,6 @@
 
   let selectAll = form.getAllSelected()
 
-  function toggleVisibility() {
-    form.fields = form.fields.toggleFieldVisibility(schema)
-    setForm()
-  }
-
-  $: selectAll, toggleVisibility()
-
   let q = ""
 
   $: filteredFields = q
@@ -83,7 +76,14 @@
   <div class="divide-y rounded-sm border">
     <div class="text-muted-foreground flex items-center justify-between bg-gray-50 p-2 text-xs font-normal">
       <Label for="selectAll">Select all fields</Label>
-      <Switch id="selectAll" bind:checked={selectAll} />
+      <Switch
+        id="selectAll"
+        checked={selectAll}
+        onCheckedChange={(checked) => {
+          form.fields = form.fields.toggleFieldVisibility(schema)
+          setForm()
+        }}
+      />
     </div>
     <SortableList
       class=""
