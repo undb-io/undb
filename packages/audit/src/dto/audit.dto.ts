@@ -1,18 +1,39 @@
-import { recordId, tableId } from "@undb/table"
+import { RECORD_CREATED_EVENT, RECORD_DELETED_EVENT, RECORD_UPDATED_EVENT, recordId, tableId } from "@undb/table"
 import { z } from "@undb/zod"
-import { auditDetail } from "../audit-detail.vo"
+import { recordDeletedAuditDetail, recordUpdatedAuditDetail } from "../audit-detail.vo"
 import { auditIdSchema } from "../audit-id.vo"
 
-export const auditDTO = z.object({
+const baseAuditDTO = z.object({
   id: auditIdSchema,
 
   tableId,
   recordId,
 
-  op: z.string(),
   operatorId: z.string(),
   timestamp: z.string(),
-  detail: auditDetail,
 })
+
+const recordCreatedAudit = baseAuditDTO.merge(
+  z.object({
+    op: z.literal(RECORD_CREATED_EVENT),
+    detail: z.null(),
+  }),
+)
+
+const recordUpdatedAudit = baseAuditDTO.merge(
+  z.object({
+    op: z.literal(RECORD_UPDATED_EVENT),
+    detail: recordUpdatedAuditDetail,
+  }),
+)
+
+const recordDeletedAudit = baseAuditDTO.merge(
+  z.object({
+    op: z.literal(RECORD_DELETED_EVENT),
+    detail: recordDeletedAuditDetail,
+  }),
+)
+
+export const auditDTO = z.discriminatedUnion("op", [recordCreatedAudit, recordUpdatedAudit, recordDeletedAudit])
 
 export type IAuditDTO = z.infer<typeof auditDTO>

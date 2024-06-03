@@ -49,6 +49,7 @@
     "svelte-headless-table": "^0.18.2",
     "sveltekit-search-params": "^2.1.2",
     "tailwindcss": "^3.4.3",
+    "timeago.js": "^4.0.2",
     "tslib": "^2.6.2",
     "typescript": "^5.4.5",
     "vite": "^5.2.12",
