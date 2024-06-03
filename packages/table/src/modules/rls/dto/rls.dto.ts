@@ -7,8 +7,9 @@ import { tableRLSSubject } from "../table-rls-subject.vo"
 export const rlsDTO = z.object({
   id: rlsId,
   action: tableRLSAction,
+  allow: z.boolean(),
   subject: tableRLSSubject,
-  condition: tableRLSCondition,
+  condition: tableRLSCondition.optional(),
 })
 
 export type IRLSDTO = z.infer<typeof rlsDTO>
