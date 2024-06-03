@@ -1,7 +1,7 @@
 import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 
-export const tableRLSAction = z.enum(["list", "create", "update", "delete", "view"])
+export const tableRLSAction = z.enum(["read", "create", "update", "delete"])
 
 export type ITableRLSActionSchema = z.infer<typeof tableRLSAction>
 

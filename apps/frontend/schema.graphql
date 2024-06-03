@@ -49,9 +49,8 @@ type RLS {
 enum RLSAction {
   create
   delete
-  list
+  read
   update
-  view
 }
 
 type Table {

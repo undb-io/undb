@@ -2,7 +2,7 @@
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
-  import { setTableRLSCommand } from "@undb/commands"
+  import { Toggle } from "$lib/components/ui/toggle/index.js"
   import { zodClient } from "sveltekit-superforms/adapters"
   import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
   import { browser } from "$app/environment"
@@ -22,7 +22,7 @@
       {
         id: RLSIdVO.create().value,
         allow: true,
-        action: "list",
+        action: "read",
         subject: "any",
         condition: undefined,
       },
@@ -55,8 +55,8 @@
 </script>
 
 <form method="POST" class="w-full space-y-6" use:enhance>
-  <div class="grid grid-cols-2 gap-2">
-    <Form.Field {form} name="subject">
+  <div class="flex items-end gap-2">
+    <Form.Field {form} name="subject" class="flex-1">
       <Form.Control let:attrs>
         <Form.Label>Subject</Form.Label>
         <Select.Root
@@ -75,9 +75,17 @@
         </Select.Root>
         <input hidden bind:value={$formData.subject} name={attrs.name} />
       </Form.Control>
-      <Form.FieldErrors />
     </Form.Field>
-    <Form.Field {form} name="action">
+
+    <Form.Field {form} name="allow">
+      <Form.Control let:attrs>
+        <Toggle aria-label="toggle bold" class="text-xs" on:click={() => ($formData.allow = !$formData.allow)}>
+          {$formData.allow ? "allow" : "deny"}
+        </Toggle>
+      </Form.Control>
+    </Form.Field>
+
+    <Form.Field {form} name="action" class="flex-1">
       <Form.Control let:attrs>
         <Form.Label>Action</Form.Label>
         <Select.Root
@@ -90,16 +98,14 @@
             <Select.Value placeholder="Select a verified email to display" />
           </Select.Trigger>
           <Select.Content>
-            <Select.Item value="list" label="list" />
+            <Select.Item value="read" label="read" />
             <Select.Item value="create" label="create" />
             <Select.Item value="update" label="update" />
             <Select.Item value="delete" label="delete" />
-            <Select.Item value="view" label="view" />
           </Select.Content>
         </Select.Root>
         <input hidden bind:value={$formData.action} name={attrs.name} />
       </Form.Control>
-      <Form.FieldErrors />
     </Form.Field>
   </div>
 

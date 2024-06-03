@@ -62,11 +62,10 @@ export class Graphql {
       }
 
       enum RLSAction {
-        list
+        read
         create
         update
         delete
-        view
       }
 
       type RLS {
