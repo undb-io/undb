@@ -6,6 +6,7 @@
   import { shortcut } from "@svelte-put/shortcut"
   import TableHeader from "$lib/components/blocks/table-header/table-header.svelte"
   import Forms from "$lib/components/blocks/forms/forms.svelte"
+  import Auth from "$lib/components/blocks/auth/auth.svelte"
   import RecordDetailSheet from "$lib/components/blocks/record-detail/record-detail-sheet.svelte"
   import Developer from "$lib/components/blocks/developer/developer.svelte"
   import CreateFieldDialog from "$lib/components/blocks/create-field/create-field-dialog.svelte"
@@ -25,6 +26,8 @@
     <GridView />
   {:else if $tab === "form"}
     <Forms />
+  {:else if $tab === "auth"}
+    <Auth />
   {:else}
     <Developer />
   {/if}

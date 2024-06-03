@@ -15,6 +15,7 @@
   import {
     DatabaseIcon,
     FileSlidersIcon,
+    FingerprintIcon,
     Package2,
     PlusCircleIcon,
     SheetIcon,
@@ -168,6 +169,10 @@
         <Tabs.Trigger value="form">
           <TextCursorInputIcon class="mr-2 h-4 w-4" />
           Forms
+        </Tabs.Trigger>
+        <Tabs.Trigger value="auth">
+          <FingerprintIcon class="mr-2 h-4 w-4" />
+          Auth
         </Tabs.Trigger>
         <Tabs.Trigger value="developer">
           <FileSlidersIcon class="mr-2 h-4 w-4" />
