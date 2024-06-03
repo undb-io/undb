@@ -15,6 +15,7 @@
   import type { ZodUndefined } from "@undb/zod"
   import { toast } from "svelte-sonner"
   import { CREATE_RLS_MODAL, closeModal } from "$lib/store/modal.store"
+  import Input from "$lib/components/ui/input/input.svelte"
 
   const table = getTable()
 
@@ -34,6 +35,8 @@
     defaults(
       {
         id: RLSIdVO.create().value,
+        name: "",
+        enabled: true,
         allow: true,
         action: "read",
         subject: "any",
@@ -80,6 +83,12 @@
 </script>
 
 <form method="POST" class="w-full space-y-6" use:enhance>
+  <Form.Field {form} name="name">
+    <Form.Control let:attrs>
+      <Form.Label>Name</Form.Label>
+      <Input {...attrs} bind:value={$formData.name} placeholder="record level security name" />
+    </Form.Control>
+  </Form.Field>
   <div class="flex items-end gap-2">
     <Form.Field {form} name="subject" class="flex-1">
       <Form.Control let:attrs>
@@ -151,7 +160,7 @@
   </Form.Field>
   <Form.Button class="w-full">Submit</Form.Button>
 
-  {#if browser}
+  <!-- {#if browser}
     <SuperDebug data={$formData} />
-  {/if}
+  {/if} -->
 </form>

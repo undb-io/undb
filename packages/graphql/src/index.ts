@@ -69,6 +69,11 @@ export class Graphql {
       }
 
       type RLS {
+        id: ID!
+        name: String!
+        enabled: Boolean!
+        subject: JSON
+        allow: Boolean!
         action: RLSAction!
         condition: JSON
         updateCondition: JSON

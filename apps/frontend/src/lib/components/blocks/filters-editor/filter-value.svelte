@@ -24,7 +24,7 @@
 
 {#if $hasValue}
   {#if field}
-    <FieldControl bind:value {field} class={className} />
+    <FieldControl bind:value {field} {...$$restProps} class={cn(className, $$restProps.class)} />
   {:else if $hasValue}
     <Input disabled class={className} placeholder="select a field" />
   {/if}

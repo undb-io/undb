@@ -63,6 +63,10 @@ export class TableDo extends AggregateRoot<ITableEvents> {
     return schemaDefaultValues
   }
 
+  getHasRLS() {
+    return !!this.rls.into(undefined)?.props.length
+  }
+
   toJSON(): ITableDTO {
     return {
       id: this.id.value,

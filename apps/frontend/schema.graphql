@@ -43,7 +43,12 @@ type Query {
 
 type RLS {
   action: RLSAction!
+  allow: Boolean!
   condition: JSON
+  enabled: Boolean!
+  id: ID!
+  name: String!
+  subject: JSON
   updateCondition: JSON
 }
 

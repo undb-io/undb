@@ -33,6 +33,11 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
     }
 
     rls {
+      id
+      name
+      allow
+      enabled
+      subject
       action
       condition
       updateCondition

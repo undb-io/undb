@@ -124,6 +124,7 @@ export class TableCreator {
       .setSchema(dto.schema)
       .setViews(dto.views)
       .setForms(dto.forms)
+      .setRLS(dto.rls)
       .build()
   }
 }

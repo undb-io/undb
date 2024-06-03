@@ -40,6 +40,7 @@
       role="combobox"
       aria-expanded={open}
       class={cn("justify-between", "rounded-r-none", !hasValue && "rounded-r-md", $$restProps.class)}
+      {...$$restProps}
     >
       <span class="overflow-hidden text-ellipsis" title={selectedValue}>
         {selectedValue}
