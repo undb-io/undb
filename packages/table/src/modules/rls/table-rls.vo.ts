@@ -5,7 +5,10 @@ import { TableRLSCondition } from "./table-rls-condition.vo"
 import { RLSIdVO, type RLSId } from "./table-rls-id.vo"
 import { TableRLSSubject } from "./table-rls-subject.vo"
 import type { Schema } from "../schema/schema.vo"
-import type { RecordComositeSpecification } from "../records/record/record.composite-specification"
+import type {
+  IRecordComositeSpecification,
+  RecordComositeSpecification,
+} from "../records/record/record.composite-specification"
 
 export interface ITableRLS {
   id: RLSId
@@ -72,7 +75,12 @@ export class TableRLS extends ValueObject<ITableRLS> {
       return None
     }
 
-    return this.condition.map((c) => c.getSpec(schema) as Option<RecordComositeSpecification>).flatten()
+    const spec = this.condition.map((c) => c.getSpec(schema) as Option<RecordComositeSpecification>).flatten()
+    if (!this.props.allow && spec.isSome()) {
+      return Some(spec.unwrap().not() as unknown as RecordComositeSpecification)
+    }
+
+    return spec
   }
 
   static fromJSON(dto: IRLSDTO): TableRLS {
