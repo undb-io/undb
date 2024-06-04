@@ -19,6 +19,7 @@ import { UnderlyingTable } from "../underlying/underlying-table"
 import { AggregateFnBuiler } from "./record.aggregate-builder"
 import { RecordFilterVisitor } from "./record.filter-visitor"
 import { RecordMapper } from "./record.mapper"
+import { executionContext } from "@undb/context/server"
 
 @singleton()
 export class RecordQueryRepository implements IRecordQueryRepository {
@@ -54,16 +55,20 @@ export class RecordQueryRepository implements IRecordQueryRepository {
   }
 
   async find(table: TableDo, viewId: Option<ViewId>, query: Option<QueryArgs>): Promise<PaginatedDTO<IRecordDTO>> {
+    const context = executionContext.getStore()
+    const userId = context?.user?.userId!
+
     const t = new UnderlyingTable(table)
     const view = table.views.getViewById(viewId.into(undefined))
     const schema = table.schema
 
-    const viewSpec = view.filter.into(undefined)?.getSpec(schema).into(undefined)
+    const viewSpec = view.filter.map((f) => f.getSpec(schema)).flatten()
+    const rlsSpec = table.rls.map((r) => r.getSpec(schema, "read", userId)).flatten()
 
     const filter = query.into(undefined)?.filter.into(undefined)
     const sort = view.sort.into(undefined)?.value
 
-    const spec = andOptions(Option(viewSpec), Option(filter)) as Option<RecordComositeSpecification>
+    const spec = andOptions(rlsSpec, viewSpec, Option(filter)) as Option<RecordComositeSpecification>
     const pagination = query.into(undefined)?.pagination.into(undefined)
 
     const handlePagination = (qb: SelectQueryBuilder<any, any, any>) => {

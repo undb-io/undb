@@ -1,9 +1,11 @@
 import { None, Option, Some, ValueObject } from "@undb/domain"
 import type { IRLSDTO } from "./dto"
-import { TableRLSAction } from "./table-rls-action.vo"
+import { TableRLSAction, type ITableRLSActionSchema } from "./table-rls-action.vo"
 import { TableRLSCondition } from "./table-rls-condition.vo"
 import { RLSIdVO, type RLSId } from "./table-rls-id.vo"
 import { TableRLSSubject } from "./table-rls-subject.vo"
+import type { Schema } from "../schema/schema.vo"
+import type { RecordComositeSpecification } from "../records/record/record.composite-specification"
 
 export interface ITableRLS {
   id: RLSId
@@ -48,6 +50,29 @@ export class TableRLS extends ValueObject<ITableRLS> {
 
   public get condition() {
     return this.props.condition
+  }
+
+  private getIsUserMatch(userId: string): boolean {
+    // TODO: implement
+    return true
+  }
+
+  private getIsActionMatch(action: ITableRLSActionSchema): boolean {
+    return this.props.action.value === action
+  }
+
+  public getSpec(schema: Schema, action: ITableRLSActionSchema, userId: string): Option<RecordComositeSpecification> {
+    if (!this.getIsUserMatch(userId)) {
+      return None
+    }
+    if (!this.props.enabled) {
+      return None
+    }
+    if (!this.getIsActionMatch(action)) {
+      return None
+    }
+
+    return this.condition.map((c) => c.getSpec(schema) as Option<RecordComositeSpecification>).flatten()
   }
 
   static fromJSON(dto: IRLSDTO): TableRLS {

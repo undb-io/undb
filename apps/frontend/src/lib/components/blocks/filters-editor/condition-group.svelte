@@ -32,7 +32,12 @@
                 value={child.fieldId}
                 class={cn(!!child.fieldId && "col-span-4 rounded-r-none border-r-0")}
               />
-              <OpPicker disabled {field} value={child.op} class="col-span-3 rounded-l-none" />
+              <OpPicker
+                disabled
+                {field}
+                value={child.op}
+                class={cn("col-span-3 rounded-l-none", !!child.value && "rounded-r-none")}
+              />
               <FilterValue
                 disabled
                 {field}
