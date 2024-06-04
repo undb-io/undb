@@ -1,6 +1,7 @@
 import { z } from "@undb/zod"
 import { autoIncrementFieldDTO } from "../variants/autoincrement-field"
 import { createdAtFieldDTO } from "../variants/created-at-field"
+import { createdByFieldDTO } from "../variants/created-by-field"
 import { idFieldDTO } from "../variants/id-field/id-field.vo"
 import { createNumberFieldDTO, numberFieldDTO } from "../variants/number-field/number-field.vo"
 import { createStringFieldDTO, stringFieldDTO } from "../variants/string-field/string-field.vo"
@@ -13,6 +14,7 @@ export const fieldDTO = z.discriminatedUnion("type", [
   createdAtFieldDTO,
   autoIncrementFieldDTO,
   updatedAtFieldDTO,
+  createdByFieldDTO,
 ])
 
 export type IFieldDTO = z.infer<typeof fieldDTO>

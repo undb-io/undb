@@ -1,3 +1,4 @@
+import { executionContext } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import { None, Some, type IUnitOfWork, type Option } from "@undb/domain"
 import {
@@ -32,11 +33,17 @@ export class RecordRepository implements IRecordRepository {
 
   @transactional()
   async insert(table: TableDo, record: RecordDO): Promise<void> {
+    const context = executionContext.getStore()
+    const userId = context?.user?.userId!
+
     const t = new UnderlyingTable(table)
 
     const values = this.mapper.toEntity(record)
 
-    await this.qb.insertInto(t.name).values(values).executeTakeFirst()
+    await this.qb
+      .insertInto(t.name)
+      .values({ ...values, createdBy: userId })
+      .executeTakeFirst()
     await this.outboxService.save(record)
   }
 

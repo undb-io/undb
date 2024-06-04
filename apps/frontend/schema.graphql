@@ -20,6 +20,7 @@ type Field {
 enum FieldType {
   autoIncrement
   createdAt
+  createdBy
   id
   number
   string

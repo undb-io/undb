@@ -9,6 +9,7 @@ import {
   StringFieldValue,
   UpdatedAtFieldValue,
 } from "./variants"
+import { CreatedByFieldValue } from "./variants/created-by-field"
 
 export class FieldValueFactory {
   static create(field: Field, value: any): Option<MutableFieldValue> {
@@ -25,6 +26,7 @@ export class FieldValueFactory {
       .with("autoIncrement", () => Some(new AutoIncrementFieldValue(value as number)))
       .with("id", () => Some(new IdFieldValue(value as string)))
       .with("createdAt", () => Some(new CreatedAtFieldValue(new Date(value))))
+      .with("createdBy", () => Some(new CreatedByFieldValue(value as string)))
       .with("updatedAt", () => Some(new UpdatedAtFieldValue(new Date(value))))
       .exhaustive()
   }

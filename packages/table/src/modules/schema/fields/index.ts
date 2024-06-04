@@ -12,4 +12,12 @@ export * from "./field.visitor"
 export * from "./variants"
 
 export const fieldTypes: NoneSystemFieldType[] = ["string", "number"] as const
-export const allFieldTypes: FieldType[] = ["string", "number", "autoIncrement", "createdAt", "updatedAt", "id"] as const
+export const allFieldTypes: FieldType[] = [
+  "string",
+  "number",
+  "autoIncrement",
+  "createdAt",
+  "createdBy",
+  "updatedAt",
+  "id",
+] as const

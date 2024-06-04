@@ -1,4 +1,5 @@
 import {
+  CreatedByField,
   ID_TYPE,
   type AutoIncrementField,
   type CreatedAtField,
@@ -8,7 +9,9 @@ import {
   type StringField,
   type UpdatedAtField,
 } from "@undb/table"
+import { getTableName } from "drizzle-orm"
 import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CreateTableBuilder, sql } from "kysely"
+import { users } from "../tables"
 import type { UnderlyingTable } from "./underlying-table"
 
 export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any> | AlterTableBuilder>
@@ -18,7 +21,6 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     private readonly t: UnderlyingTable,
     public tb: TB,
   ) {}
-
   public atb: AlterTableColumnAlteringBuilder | CreateTableBuilder<any, any> | null = null
   #rawSQL: string[] = []
 
@@ -53,6 +55,14 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     const c = this.tb.addColumn(field.id.value, "timestamp", (b) => b.defaultTo(sql`CURRENT_TIMESTAMP`).notNull())
     this.addColumn(c)
   }
+  createdBy(field: CreatedByField): void {
+    const user = getTableName(users)
+    const c = this.tb.addColumn(field.id.value, "text", (b) =>
+      b.references(`${user}.${users.id.name}`).notNull().onDelete("restrict"),
+    )
+    this.addColumn(c)
+  }
+
   id(field: IdField): void {
     const c = this.tb.addColumn(field.id.value, "varchar(50)", (b) => b.notNull().unique())
     this.addColumn(c)

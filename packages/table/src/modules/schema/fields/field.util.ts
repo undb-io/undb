@@ -10,13 +10,20 @@ export const inferCreateFieldType = (values: (string | number | null | object | 
     .otherwise(() => ({ type: "string" }))
 }
 
-const sortableFieldTypes: FieldType[] = ["string", "id", "createdAt", "updatedAt", "autoIncrement"] as const
+const sortableFieldTypes: FieldType[] = [
+  "string",
+  "id",
+  "createdAt",
+  "updatedAt",
+  "autoIncrement",
+  "createdBy",
+] as const
 
 export function isFieldSortable(type: FieldType): boolean {
   return sortableFieldTypes.includes(type)
 }
 
-const systemFieldTyeps: Set<FieldType> = new Set(["id", "createdAt", "updatedAt", "autoIncrement"])
+const systemFieldTyeps: Set<FieldType> = new Set(["id", "createdAt", "createdBy", "updatedAt", "autoIncrement"])
 export function getIsSystemFieldType(type: FieldType): type is SystemFieldType {
   return systemFieldTyeps.has(type)
 }

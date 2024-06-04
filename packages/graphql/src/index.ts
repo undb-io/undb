@@ -23,6 +23,7 @@ export class Graphql {
         number
         id
         createdAt
+        createdBy
         updatedAt
         autoIncrement
       }

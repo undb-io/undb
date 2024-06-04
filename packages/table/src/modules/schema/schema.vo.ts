@@ -4,7 +4,15 @@ import { objectify } from "radash"
 import { WithNewFieldSpecification, WithUpdatedFieldSpecification } from "../../specifications"
 import type { ICreateSchemaDTO } from "./dto"
 import type { ISchemaDTO } from "./dto/schema.dto"
-import { FieldIdVo, FieldNameVo, IdField, UpdatedAtField, type ICreateFieldDTO, type IUpdateFieldDTO } from "./fields"
+import {
+  CreatedByField,
+  FieldIdVo,
+  FieldNameVo,
+  IdField,
+  UpdatedAtField,
+  type ICreateFieldDTO,
+  type IUpdateFieldDTO,
+} from "./fields"
 import type { FieldId } from "./fields/field-id.vo"
 import { FieldFactory } from "./fields/field.factory"
 import type { Field, MutableFieldValue, NoneSystemField, SystemField } from "./fields/field.type"
@@ -27,6 +35,7 @@ export class Schema extends ValueObject<Field[]> {
       IdField.create({ name: "id", type: "id" }),
       ...fields,
       CreatedAtField.create({ name: "createdAt", type: "createdAt" }),
+      CreatedByField.create({ name: "ceatedBy", type: "createdBy" }),
       UpdatedAtField.create({ name: "updatedAt", type: "updatedAt" }),
       AutoIncrementField.create({ name: "autoIncrement", type: "autoIncrement" }),
     ])
