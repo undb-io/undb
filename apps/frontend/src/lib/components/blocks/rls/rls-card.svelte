@@ -9,6 +9,8 @@
   import { tick } from "svelte"
   import type { TableRLS } from "@undb/table"
   import ConditionGroup from "../filters-editor/condition-group.svelte"
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
+  import { Trash2Icon } from "lucide-svelte"
 
   const table = getTable()
   export let rls: TableRLS
@@ -52,9 +54,21 @@
           <Label for="enabled">Enabled</Label>
         </div>
 
-        <button>
-          <DotsHorizontal class="text-muted-foreground h-4 w-4" />
-        </button>
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            <button>
+              <DotsHorizontal class="text-muted-foreground h-4 w-4" />
+            </button>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content class="w-[200px]">
+            <DropdownMenu.Item
+              class="hover:text-500 flex items-center text-xs text-red-500 transition-colors hover:bg-red-100"
+            >
+              <Trash2Icon class="mr-2 h-3 w-3" />
+              Delete Policy
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
       </div>
     </div>
 
