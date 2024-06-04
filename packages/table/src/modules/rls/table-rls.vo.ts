@@ -55,6 +55,10 @@ export class TableRLS extends ValueObject<ITableRLS> {
     return this.props.condition
   }
 
+  public get updateCondition() {
+    return this.props.updateCondition
+  }
+
   private getIsUserMatch(userId: string): boolean {
     // TODO: implement
     return true

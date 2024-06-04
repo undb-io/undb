@@ -72,9 +72,18 @@
       </div>
     </div>
 
-    <div>
+    <div class="space-y-2">
       {#if rls.condition.isSome()}
-        <ConditionGroup table={$table} value={rls.condition.unwrap().props} />
+        <div class="rounded-sm bg-gray-50 px-3 py-3 pt-1 shadow-inner">
+          <span class="text-sm font-semibold">Condition</span>
+          <ConditionGroup table={$table} value={rls.condition.unwrap().props} />
+        </div>
+      {/if}
+      {#if rls.updateCondition.isSome()}
+        <div class="rounded-sm bg-gray-50 px-3 py-3 pt-1 shadow-inner">
+          <span class="text-sm font-semibold">Update Condition</span>
+          <ConditionGroup table={$table} value={rls.updateCondition.unwrap().props} />
+        </div>
       {/if}
     </div>
   </Card.Content>
