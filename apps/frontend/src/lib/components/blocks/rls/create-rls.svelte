@@ -16,6 +16,7 @@
   import { toast } from "svelte-sonner"
   import { CREATE_RLS_MODAL, closeModal } from "$lib/store/modal.store"
   import Input from "$lib/components/ui/input/input.svelte"
+  import { updated } from "$app/stores"
 
   const table = getTable()
 
@@ -77,11 +78,18 @@
     : undefined
 
   let enableContion = false
+  let enableUpdateCondition = false
 
   const condition = writable<MaybeConditionGroup<ZodUndefined> | undefined>()
   $: validCondition = $condition ? parseValidViewFilter($table.schema.fieldMapById, $condition) : undefined
-
   $: validCondition, ($formData.condition = validCondition)
+
+  const updateCondition = writable<MaybeConditionGroup<ZodUndefined> | undefined>()
+  $: validUpdateCondition = $updateCondition
+    ? parseValidViewFilter($table.schema.fieldMapById, $updateCondition)
+    : undefined
+  $: validUpdateCondition, ($formData.updateCondition = validUpdateCondition)
+
   $: dirty = !!$tainted
 </script>
 
@@ -148,7 +156,7 @@
     </Form.Field>
   </div>
 
-  <Form.Field {form} name="action">
+  <Form.Field {form} name="condition">
     <Form.Control let:attrs>
       <Form.Label class="flex items-center gap-2" for="enableCondition">
         Enable condition
@@ -163,6 +171,23 @@
       {/if}
     </Form.Control>
   </Form.Field>
+  {#if $formData.action === "update"}
+    <Form.Field {form} name="updateCondition">
+      <Form.Control let:attrs>
+        <Form.Label class="flex items-center gap-2" for="updateCondition">
+          Enable update condition
+          <Switch bind:checked={enableUpdateCondition} id="updateCondition" />
+        </Form.Label>
+        {#if enableUpdateCondition}
+          <FiltersEditor
+            class="rounded-sm border-gray-100 bg-gray-50 shadow-inner"
+            table={$table}
+            bind:value={$updateCondition}
+          />
+        {/if}
+      </Form.Control>
+    </Form.Field>
+  {/if}
   <Form.Button class="w-full" disabled={!!$allErrors.length || !dirty}>Submit</Form.Button>
 
   <!-- {#if browser}
