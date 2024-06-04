@@ -6,7 +6,7 @@ import { tableRLSSubject } from "../table-rls-subject.vo"
 
 export const rlsDTO = z.object({
   id: rlsId,
-  name: z.string(),
+  name: z.string().min(2),
   enabled: z.boolean(),
   action: tableRLSAction,
   allow: z.boolean(),

@@ -46,6 +46,8 @@
     ),
     {
       SPA: true,
+      dataType: "json",
+      validationMethod: "auto",
       validators: zodClient(rlsDTO),
       onUpdate(event) {
         const data = event.form.data
@@ -58,7 +60,7 @@
     },
   )
 
-  const { form: formData, enhance } = form
+  const { form: formData, enhance, allErrors, tainted } = form
 
   $: selectedSubject = $formData.subject
     ? {
@@ -80,14 +82,17 @@
   $: validCondition = $condition ? parseValidViewFilter($table.schema.fieldMapById, $condition) : undefined
 
   $: validCondition, ($formData.condition = validCondition)
+  $: dirty = !!$tainted
 </script>
 
-<form method="POST" class="w-full space-y-6" use:enhance>
+<form method="POST" class="w-full space-y-3" use:enhance>
   <Form.Field {form} name="name">
     <Form.Control let:attrs>
       <Form.Label>Name</Form.Label>
       <Input {...attrs} bind:value={$formData.name} placeholder="record level security name" />
     </Form.Control>
+    <Form.Description>Give your RLS a name</Form.Description>
+    <Form.FieldErrors />
   </Form.Field>
   <div class="flex items-end gap-2">
     <Form.Field {form} name="subject" class="flex-1">
@@ -158,7 +163,7 @@
       {/if}
     </Form.Control>
   </Form.Field>
-  <Form.Button class="w-full">Submit</Form.Button>
+  <Form.Button class="w-full" disabled={!!$allErrors.length || !dirty}>Submit</Form.Button>
 
   <!-- {#if browser}
     <SuperDebug data={$formData} />
