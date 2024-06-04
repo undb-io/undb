@@ -12,7 +12,7 @@
   export let recordId: string
 
   $: store = new GetRecordAuditsStore()
-  $: browser && store.fetch({ variables: { recordId } })
+  $: browser && store.fetch({ variables: { recordId }, policy: "NetworkOnly" })
 
   $: audits = ($store.data?.recordAudits ?? []) as IAuditDTO[]
 </script>

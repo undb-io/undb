@@ -13,9 +13,11 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import * as Tooltip from "$lib/components/ui/tooltip"
   import {
+    CodeIcon,
     DatabaseIcon,
     FileSlidersIcon,
     FingerprintIcon,
+    FormInputIcon,
     Package2,
     PlusCircleIcon,
     SheetIcon,
@@ -24,7 +26,7 @@
   import CreateTableButton from "../create-table/create-table-button.svelte"
   import * as Breadcrumb from "$lib/components/ui/breadcrumb/index.js"
   import { getTable } from "$lib/store/table.store"
-  import { tab, isFormTab, formId, developerTab } from "$lib/store/tab.store"
+  import { tab, isFormTab, formId, developerTab, isAuthTab, isDeveloperTab } from "$lib/store/tab.store"
   import RecordUpdating from "../record-updating/record-updating.svelte"
   import Separator from "$lib/components/ui/separator/separator.svelte"
   import CreateFormButton from "../forms/create-form-button.svelte"
@@ -106,9 +108,14 @@
           <Breadcrumb.Separator />
           {#if $isFormTab}
             {#if forms.length}
+              <Breadcrumb.Item>
+                <FormInputIcon class="h-3 w-3" />
+                Forms
+              </Breadcrumb.Item>
+              <Breadcrumb.Separator />
               <DropdownMenu.Root>
                 <DropdownMenu.Trigger asChild let:builder>
-                  <Button size="sm" variant="link" class="pl-0" builders={[builder]}>{currentForm?.name}</Button>
+                  <Button size="sm" variant="link" class="pl-0 pr-0" builders={[builder]}>{currentForm?.name}</Button>
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content class="w-[200px]">
                   <DropdownMenu.Group>
@@ -136,6 +143,16 @@
                 <p>Create Form</p>
               </Tooltip.Content>
             </Tooltip.Root>
+          {:else if $isAuthTab}
+            <Breadcrumb.Item>
+              <FingerprintIcon class="h-3 w-3" />
+              Auth
+            </Breadcrumb.Item>
+          {:else if $isDeveloperTab}
+            <Breadcrumb.Item>
+              <CodeIcon class="h-3 w-3" />
+              Developer
+            </Breadcrumb.Item>
           {:else}
             <Breadcrumb.Item class="text-xs">
               <Breadcrumb.Page>{view.name.value}</Breadcrumb.Page>

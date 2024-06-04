@@ -9,6 +9,7 @@ import {
 } from "../audit.repository.js"
 import type { IAuditDTO } from "../dto/audit.dto.js"
 import { WithAuditRecordId } from "../specifications/audit-record-id.specification.js"
+import { createLogger } from "@undb/logger"
 
 export interface IAuditService {
   saveAudit(audit: Audit): Promise<void>
@@ -17,6 +18,7 @@ export interface IAuditService {
 
 @singleton()
 export class AuditService implements IAuditService {
+  private logger = createLogger(AuditService.name)
   constructor(
     @injectAuditRepository()
     private readonly repo: IAuditRepository,
@@ -25,6 +27,7 @@ export class AuditService implements IAuditService {
   ) {}
 
   async saveAudit(audit: Audit) {
+    this.logger.debug("Saving audit", audit)
     await this.repo.insert(audit)
   }
 
