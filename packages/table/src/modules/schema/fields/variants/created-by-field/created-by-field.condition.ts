@@ -1,7 +1,7 @@
 import { z } from "@undb/zod"
-import { createAbstractDateFieldCondition } from "../abstractions/abstract-date-field.condition"
+import { createAbstractUserFieldCondition } from "../abstractions"
 
-export const createCreatedByFieldCondition = createAbstractDateFieldCondition
+export const createCreatedByFieldCondition = createAbstractUserFieldCondition
 
 export type ICreatedByFieldConditionSchema = ReturnType<typeof createCreatedByFieldCondition>
 export type ICreatedByFieldCondition = z.infer<ICreatedByFieldConditionSchema>

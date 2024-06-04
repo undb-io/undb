@@ -3,8 +3,8 @@ import { z } from "@undb/zod"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
-import { createAbstractDateConditionMather } from "../abstractions/abstract-date-field.condition"
-import { abstractDateAggregate } from "../abstractions/abstract-date.aggregate"
+import { createAbstractUserFieldMather } from "../abstractions"
+import { abstractUserAggregate } from "../abstractions/abstract-user.aggregate"
 import { CreatedByFieldValue } from "./created-by-field-value.vo"
 import {
   createCreatedByFieldCondition,
@@ -50,7 +50,7 @@ export class CreatedByField extends AbstractField<CreatedByFieldValue> {
   }
 
   override getSpec(condition: ICreatedByFieldCondition) {
-    const spec = createAbstractDateConditionMather(condition, this.id).exhaustive()
+    const spec = createAbstractUserFieldMather(condition, this.id).exhaustive()
 
     return Option(spec)
   }
@@ -60,6 +60,6 @@ export class CreatedByField extends AbstractField<CreatedByFieldValue> {
   }
 
   override get aggregate() {
-    return abstractDateAggregate
+    return abstractUserAggregate
   }
 }

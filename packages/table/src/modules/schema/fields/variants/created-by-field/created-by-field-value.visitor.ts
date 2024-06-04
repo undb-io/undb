@@ -1,3 +1,3 @@
-import type { IAbstractDateFieldValueVisitor } from "../abstractions/abstract-date-value.visitor"
+import type { IAbstractUserFieldValueVisitor } from "../abstractions/abstract-user-value.visitor"
 
-export interface ICreatedByFieldValueVisitor extends IAbstractDateFieldValueVisitor {}
+export interface ICreatedByFieldValueVisitor extends IAbstractUserFieldValueVisitor {}

@@ -15,6 +15,7 @@ import { isFieldSortable } from "../field.util"
 import type { IFieldVisitor } from "../field.visitor"
 import type { IAutoIncrementFieldConditionSchema } from "./autoincrement-field/autoincrement-field.condition"
 import type { ICreatedAtFieldConditionSchema } from "./created-at-field"
+import type { ICreatedByFieldConditionSchema } from "./created-by-field"
 import type { IIdFieldConditionSchema } from "./id-field/id-field.condition"
 import type { INumberFieldConditionSchema } from "./number-field"
 import type { IStringFieldConditionSchema } from "./string-field"
@@ -89,6 +90,7 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
     | IStringFieldConditionSchema
     | INumberFieldConditionSchema
     | ICreatedAtFieldConditionSchema
+    | ICreatedByFieldConditionSchema
     | IUpdatedAtFieldConditionSchema
     | IAutoIncrementFieldConditionSchema
 
