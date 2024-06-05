@@ -6,6 +6,7 @@ extendZodWithOpenApi(z)
 import type { RecordDO, TableDo } from "@undb/table"
 import {
   RECORD_COMPONENT,
+  createRecord,
   createRecordComponent,
   deleteRecordById,
   duplicateRecordById,
@@ -22,6 +23,7 @@ export const createOpenApiSpec = (table: TableDo, record?: RecordDO) => {
 
   registry.registerPath(getRecords(table, recordSchema))
   registry.registerPath(getRecordById(table, recordSchema))
+  registry.registerPath(createRecord(table))
   registry.registerPath(duplicateRecordById(table))
   registry.registerPath(deleteRecordById(table))
   registry.registerPath(recordSubscription(table))

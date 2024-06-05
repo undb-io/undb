@@ -84,6 +84,14 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
     return false
   }
 
+  get mutateSchema(): Option<ZodSchema> {
+    if (!this.isMutable) {
+      return None
+    }
+
+    throw new Error("Method not implemented.")
+  }
+
   protected abstract getConditionSchema<OptionType extends z.ZodTypeAny>(
     optionType: OptionType,
   ):

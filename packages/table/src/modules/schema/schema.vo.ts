@@ -1,5 +1,5 @@
 import { Option, ValueObject } from "@undb/domain"
-import { z } from "@undb/zod"
+import { ZodSchema, z } from "@undb/zod"
 import { objectify } from "radash"
 import { WithNewFieldSpecification, WithUpdatedFieldSpecification } from "../../specifications"
 import type { ICreateSchemaDTO } from "./dto"
@@ -114,6 +114,16 @@ export class Schema extends ValueObject<Field[]> {
       this.fields,
       (f) => f.name.value,
       (f) => f.valueSchema,
+    )
+
+    return z.object(schema)
+  }
+
+  get mutateSchema() {
+    const schema = objectify(
+      this.mutableFields,
+      (f) => f.name.value,
+      (f) => (f.mutateSchema as Option<ZodSchema>).unwrap(),
     )
 
     return z.object(schema)

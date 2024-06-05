@@ -8,7 +8,7 @@ import { NumberEqual } from "../abstractions"
 import { createAbstractNumberFieldMather } from "../abstractions/abstract-number-field.condition"
 import { abstractNumberAggregate } from "../abstractions/abstract-number.aggregate"
 import { NumberFieldConstraint, numberFieldConstraint } from "./number-field-constraint.vo"
-import { NumberFieldValue } from "./number-field-value.vo"
+import { NumberFieldValue, mutateNumberFieldValueSchema } from "./number-field-value.vo"
 import {
   createNumberFieldCondition,
   type INumberFieldCondition,
@@ -59,6 +59,10 @@ export class NumberField extends AbstractField<NumberFieldValue, NumberFieldCons
 
   override get valueSchema() {
     return this.constraint.unwrapOrElse(() => new NumberFieldConstraint({})).schema
+  }
+
+  override get mutateSchema() {
+    return Some(mutateNumberFieldValueSchema)
   }
 
   override accept(visitor: IFieldVisitor): void {

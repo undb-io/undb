@@ -2,7 +2,7 @@ import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 
 export const mutateStringFieldValueSchema = z.union([
-  z.string().optional(),
+  z.string().optional().nullable(),
   z.object({
     type: z.literal("set"),
     value: z.string(),
