@@ -3,6 +3,7 @@
   import { shortcut, type ShortcutEventDetail } from "@svelte-put/shortcut"
   import { DatabaseIcon } from "lucide-svelte"
   import { commandOpen } from "./command.store"
+  import { goto } from "$app/navigation"
 
   function handleK(e: ShortcutEventDetail) {
     $commandOpen = !$commandOpen
@@ -16,13 +17,18 @@
   export let tables: Table[] = []
 </script>
 
-<Command.Dialog bind:open={$commandOpen}>
+<Command.Dialog bind:open={$commandOpen} closeOnEscape closeOnOutsideClick>
   <Command.Input placeholder="Search for tables..." />
   <Command.List>
     <Command.Empty>No results found.</Command.Empty>
     <Command.Group heading="Tables">
       {#each tables as table}
-        <Command.Item>
+        <Command.Item
+          onSelect={() => {
+            goto(`/t/${table.id}`)
+            $commandOpen = false
+          }}
+        >
           <DatabaseIcon class="mr-2 h-4 w-4" />
           {table.name}
         </Command.Item>

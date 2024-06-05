@@ -66,7 +66,7 @@
             Search
           </span>
           <span>
-            <code> Ctrl + K </code>
+            <code class="bg-muted relative rounded px-[0.3rem] py-[0.2rem] font-mono text-xs"> Ctrl + K </code>
           </span>
         </Button>
       </div>
