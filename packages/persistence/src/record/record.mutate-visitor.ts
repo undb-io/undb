@@ -20,11 +20,19 @@ import type {
   StringMax,
   StringMin,
   StringStartsWith,
+  UserEmpty,
+  UserEqual,
 } from "@undb/table"
 import type { ExpressionBuilder } from "kysely"
 
 export class RecordMutateVisitor implements IRecordVisitor {
   constructor(private readonly eb: ExpressionBuilder<any, any>) {}
+  userEqual(spec: UserEqual): void {
+    this.setData(spec.fieldId.value, spec.value)
+  }
+  userEmpty(spec: UserEmpty): void {
+    this.setData(spec.fieldId.value, null)
+  }
   stringMin(spec: StringMin): void {
     throw new Error("Method not implemented.")
   }
