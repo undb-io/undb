@@ -5,6 +5,7 @@
   import NumberControl from "./number-control.svelte"
   import type { ComponentType } from "svelte"
   import DateControl from "./date-control.svelte"
+  import UserControl from "./user-control.svelte"
 
   export let field: Field
 
@@ -26,6 +27,7 @@
     autoIncrement: NumberControl,
     createdAt: DateControl,
     updatedAt: DateControl,
+    createdBy: UserControl,
   }
 </script>
 

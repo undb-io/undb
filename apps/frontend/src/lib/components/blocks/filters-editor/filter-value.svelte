@@ -8,6 +8,7 @@
   export let field: Field | undefined
   export let op: string | undefined
   export let value: any | undefined = undefined
+  export let displayValue: any | undefined = undefined
   let hasValue = writable(true)
 
   function updateHasValue() {
@@ -24,7 +25,7 @@
 
 {#if $hasValue}
   {#if field}
-    <FieldControl bind:value {field} {...$$restProps} class={cn(className, $$restProps.class)} />
+    <FieldControl bind:value {displayValue} {field} {...$$restProps} class={cn(className, $$restProps.class)} />
   {:else if $hasValue}
     <Input disabled class={className} placeholder="select a field" />
   {/if}

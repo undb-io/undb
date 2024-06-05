@@ -51,6 +51,7 @@
 
   $: record, reset({ newState: record.flatten() })
   const values = record.flatten()
+  $: displayValues = record.displayValues?.toJSON() ?? {}
 
   const updateRecord = (values: any) => {
     const recordId = record.id.value
@@ -107,10 +108,15 @@
         </Form.Label>
         {#if field.isSystem}
           <div class="py-3 text-sm">
-            <FieldValue value={values[field.id.value]} type={field.type} />
+            <FieldValue value={values[field.id.value]} type={field.type} displayValue={displayValues[field.id.value]} />
           </div>
         {:else}
-          <FieldControl {...attrs} bind:value={$formData[field.id.value]} {field} />
+          <FieldControl
+            {...attrs}
+            bind:value={$formData[field.id.value]}
+            {field}
+            displayValue={displayValues[field.id.value]}
+          />
         {/if}
       </Form.Control>
       <Form.FieldErrors />

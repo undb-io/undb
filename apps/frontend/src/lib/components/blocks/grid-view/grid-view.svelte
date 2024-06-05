@@ -123,8 +123,17 @@
         table.column({
           header: () => createRender(GridViewHeader, { field }),
           accessor: field.id.value,
-          cell: (item) =>
-            createRender(GridViewCell, { index, value: item.value, field, recordId: item.row.original.id }),
+          cell: (item) => {
+            const record = dos.get(item.row.original.id)
+            const displayValue = record?.displayValues?.toJSON()?.[field.id.value]
+            return createRender(GridViewCell, {
+              index,
+              value: item.value,
+              field,
+              recordId: item.row.original.id,
+              displayValue,
+            })
+          },
           footer: createRender(GridViewFooter, { field, aggregateResult: aggregate?.[field.id.value] }),
           plugins: {
             resize: {

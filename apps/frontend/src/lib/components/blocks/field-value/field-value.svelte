@@ -5,9 +5,11 @@
   import NumberField from "./number-field.svelte"
   import DateField from "./date-field.svelte"
   import IdField from "./id-field.svelte"
+  import UserField from "./user-field.svelte"
 
   export let type: FieldType
   export let value: any
+  export let displayValue: any
 
   const map: Record<FieldType, ComponentType> = {
     id: IdField,
@@ -16,7 +18,8 @@
     createdAt: DateField,
     updatedAt: DateField,
     autoIncrement: NumberField,
+    createdBy: UserField,
   }
 </script>
 
-<svelte:component this={map[type]} {...$$restProps} {value} />
+<svelte:component this={map[type]} {...$$restProps} {value} {displayValue} />

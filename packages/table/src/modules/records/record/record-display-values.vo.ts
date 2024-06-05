@@ -35,7 +35,7 @@ export class RecordDisplayValuesVO extends ValueObject {
     const values: IRecordDisplayValues = {}
 
     for (const [id, value] of Object.entries(this.values)) {
-      values[id] = value.value
+      values[id] = value
     }
 
     return values

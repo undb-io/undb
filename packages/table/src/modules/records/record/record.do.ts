@@ -6,6 +6,7 @@ import { FieldValueFactory } from "../../schema/fields/field-value.factory"
 import type { SchemaMap } from "../../schema/schema.type"
 import { RecordCreatedEvent, RecordDeletedEvent, RecordUpdatedEvent, type IRecordEvent } from "../events"
 import type { ICreateRecordDTO, IRecordDTO, IUpdateRecordDTO } from "./dto"
+import { RecordDisplayValuesVO } from "./record-display-values.vo"
 import { RecordIdVO, type RecordId } from "./record-id.vo"
 import { RecordValuesVO } from "./record-values.vo"
 import type { IRecordComositeSpecification, RecordComositeSpecification } from "./record.composite-specification"
@@ -14,6 +15,7 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
   constructor(
     readonly id: RecordId,
     readonly values: RecordValuesVO,
+    readonly displayValues: RecordDisplayValuesVO | undefined = undefined,
   ) {
     super()
   }
@@ -28,7 +30,11 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
   }
 
   static fromJSON(table: TableDo, dto: IRecordDTO): RecordDO {
-    return new RecordDO(new RecordIdVO(dto.id), RecordValuesVO.fromJSON(table, dto.values))
+    return new RecordDO(
+      new RecordIdVO(dto.id),
+      RecordValuesVO.fromJSON(table, dto.values),
+      dto.displayValues ? RecordDisplayValuesVO.fromJSON(table, dto.displayValues) : undefined,
+    )
   }
 
   public flatten(): Record<string, any> {

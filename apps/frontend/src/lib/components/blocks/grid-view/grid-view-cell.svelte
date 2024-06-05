@@ -12,10 +12,12 @@
   import NumberField from "../field-value/number-field.svelte"
   import { cn } from "$lib/utils"
   import { derived } from "svelte/store"
+  import UserField from "../field-value/user-field.svelte"
 
   const table = getTable()
 
   export let value: any
+  export let displayValue: any
   export let index: number
   export let field: Field
   export let recordId: string
@@ -27,6 +29,7 @@
     createdAt: DateField,
     updatedAt: DateField,
     autoIncrement: NumberField,
+    createdBy: UserField,
   }
 
   let form: HTMLFormElement
@@ -55,12 +58,16 @@
   }
 </script>
 
-<form on:submit|preventDefault|stopPropagation={handleSubmit} bind:this={form}>
+<form
+  on:submit|preventDefault|stopPropagation={handleSubmit}
+  bind:this={form}
+  class={cn("text-xs", !field.isMutable && "px-2")}
+>
   <svelte:component
     this={map[field.type]}
     bind:value
+    {displayValue}
     {index}
-    class={cn("text-xs", !field.isMutable && "px-2")}
     onValueChange={(v) => {
       value = v
     }}
