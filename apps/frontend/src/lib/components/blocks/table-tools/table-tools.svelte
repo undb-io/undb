@@ -5,6 +5,7 @@
   import ViewSort from "../view-sort/view-sort.svelte"
   import RecordsSearch from "../search/records-search.svelte"
   import CreateFieldButton from "../create-field/create-field-button.svelte"
+  import ViewFields from "../view-fields/view-fields.svelte"
 </script>
 
 <div class="flex items-center justify-between gap-2 border-b px-4 py-2">
@@ -13,6 +14,7 @@
     <ViewFilterEditor />
     <ViewColorEditor />
     <ViewSort />
+    <ViewFields />
   </div>
 
   <div class="flex items-center gap-2">

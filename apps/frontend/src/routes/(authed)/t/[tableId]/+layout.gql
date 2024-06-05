@@ -19,6 +19,7 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
       color
       sort
       aggregate
+      fields
     }
 
     forms {

@@ -119,7 +119,7 @@
           },
         },
       }),
-      ...($t.getOrderedFields() ?? []).map((field, index) =>
+      ...($t.getOrderedVisibleFields() ?? []).map((field, index) =>
         table.column({
           header: () => createRender(GridViewHeader, { field }),
           accessor: field.id.value,

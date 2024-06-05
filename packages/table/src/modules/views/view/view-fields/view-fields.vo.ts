@@ -1,6 +1,7 @@
 import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import { isEqual } from "radash"
+import type { TableDo } from "../../../../table.do"
 import { fieldId } from "../../../schema"
 
 export const viewField = z.object({
@@ -17,6 +18,15 @@ export class ViewFields extends ValueObject<IViewFields> {
     super(props)
   }
 
+  static default(table: TableDo): ViewFields {
+    return new ViewFields(
+      table.schema.fields.map((field) => ({
+        fieldId: field.id.value,
+        hidden: false,
+      })),
+    )
+  }
+
   public isEqual(sort: IViewFields): boolean {
     return isEqual(sort, this.props)
   }
@@ -27,5 +37,9 @@ export class ViewFields extends ValueObject<IViewFields> {
 
   public fieldIds(): Set<string> {
     return this.props.reduce((acc, { fieldId }) => acc.add(fieldId), new Set<string>())
+  }
+
+  public getVisibleFields(): string[] {
+    return this.props.filter(({ hidden }) => !hidden).map(({ fieldId }) => fieldId)
   }
 }

@@ -75,6 +75,7 @@ type Table {
 type View {
   aggregate: JSON
   color: JSON
+  fields: JSON
   filter: JSON
   id: ID!
   name: String!

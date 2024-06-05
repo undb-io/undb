@@ -4,7 +4,7 @@ import { None, Option, Some, andOptions, type PaginatedDTO } from "@undb/domain"
 import {
   ID_TYPE,
   RecordComositeSpecification,
-  Schema,
+  ViewIdVo,
   type AggregateResult,
   type IRecordDTO,
   type IRecordQueryRepository,
@@ -45,7 +45,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const t = new UnderlyingTable(table)
     const result = await this.qb
       .selectFrom(t.name)
-      .select(this.handleSelect(table.schema))
+      .select(this.handleSelect(table))
       .where(ID_TYPE, "=", id.value)
       .executeTakeFirst()
 
@@ -88,7 +88,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       return sort!.reduce((qb, s) => qb.orderBy(`${s.fieldId} ${s.direction}`), qb)
     }
 
-    const handleSelect = this.handleSelect(schema)
+    const handleSelect = this.handleSelect(table, viewId.into(undefined)?.value)
 
     const result = await this.qb
       .selectFrom(t.name)
@@ -109,10 +109,11 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return { values: records, total: Number(total) }
   }
 
-  private handleSelect(schema: Schema) {
+  private handleSelect(table: TableDo, viewId?: string) {
+    const fields = table.getOrderedVisibleFields(viewId ? new ViewIdVo(viewId) : undefined)
     return (sb: ExpressionBuilder<any, any>) => {
       const visitor = new RecordSelectFieldVisitor(sb)
-      for (const field of schema.fields) {
+      for (const field of fields) {
         field.accept(visitor)
       }
       return visitor.select()

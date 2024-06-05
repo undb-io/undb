@@ -50,6 +50,7 @@ export class Graphql {
         color: JSON
         sort: JSON
         aggregate: JSON
+        fields: JSON
       }
 
       type ViewData {

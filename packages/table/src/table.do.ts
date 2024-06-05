@@ -11,7 +11,7 @@ import { setViewFields } from "./methods/set-view-fields.method"
 import { setViewFilter } from "./methods/set-view-filter.method"
 import { setViewSort } from "./methods/set-view-sort.method"
 import { updateFieldMethod } from "./methods/update-field.method"
-import type { Field, FormId, TableRLSGroup } from "./modules"
+import { FieldIdVo, ViewFields, type Field, type FormId, type TableRLSGroup, type ViewId } from "./modules"
 import type { FormsVO } from "./modules/forms/forms.vo"
 import type { Schema } from "./modules/schema/schema.vo"
 import type { Views } from "./modules/views/views.vo"
@@ -67,6 +67,16 @@ export class TableDo extends AggregateRoot<ITableEvents> {
 
   getHasRLS() {
     return !!this.rls.into(undefined)?.props.length
+  }
+
+  getViewFields(viewId?: ViewId) {
+    return this.views.getViewById(viewId).fields.unwrapOrElse(() => ViewFields.default(this))
+  }
+
+  getOrderedVisibleFields(viewId?: ViewId): Field[] {
+    return this.getViewFields(viewId)
+      .getVisibleFields()
+      .map((fieldId) => this.schema.getFieldById(new FieldIdVo(fieldId)).unwrap())
   }
 
   toJSON(): ITableDTO {
