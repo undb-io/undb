@@ -28,7 +28,7 @@
 
   const table = getTable()
   const schema = $table.schema.mutableSchema
-  $: fields = $table.getOrderedFields()
+  $: fields = $table.getOrderedVisibleFields()
 
   export let disabled: boolean = false
   export let dirty = false
