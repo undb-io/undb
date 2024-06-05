@@ -1,6 +1,13 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
-  import { FieldIdVo, fieldTypes, getNextName, type ICreateSchemaDTO, type NoneSystemFieldType } from "@undb/table"
+  import {
+    FieldIdVo,
+    fieldTypes,
+    getNextName,
+    systemFieldTypes,
+    type ICreateSchemaDTO,
+    type NoneSystemFieldType,
+  } from "@undb/table"
   import * as Collapsible from "$lib/components/ui/collapsible"
   import * as Card from "$lib/components/ui/card"
   import * as Form from "$lib/components/ui/form"
@@ -17,6 +24,7 @@
   import { DotsHorizontal } from "svelte-radix"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { clickoutside } from "@svelte-put/clickoutside"
+  import { Description } from "$lib/components/ui/alert"
 
   const { form } = getFormField<Infer<typeof createTableCommand>, "schema">()
 
@@ -58,6 +66,18 @@
 </script>
 
 <Form.Legend>Schema</Form.Legend>
+<Form.Description>
+  System Fields:
+  <div class="mt-2 flex flex-wrap items-center gap-2">
+    {#each systemFieldTypes as type}
+      <span
+        class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
+      >
+        {type}
+      </span>
+    {/each}
+  </div>
+</Form.Description>
 <Accordion.Root bind:value={activeFieldId}>
   {#each $formData.schema as field, i (field.id)}
     <Form.ElementField {form} name="schema">

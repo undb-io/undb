@@ -37,7 +37,7 @@
     defaults(
       {
         type: "string",
-        name: $table.schema.nextFieldName.value,
+        name: $table.schema.getNextFieldName(),
         display: false,
         constraint: {},
       },

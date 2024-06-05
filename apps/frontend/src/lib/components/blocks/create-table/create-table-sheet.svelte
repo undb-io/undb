@@ -12,7 +12,7 @@
     toggleModal(CREATE_TABLE_MODAL)
   }}
 >
-  <Sheet.Content side="left" class="flex flex-col sm:max-w-lg">
+  <Sheet.Content side="left" class="sm:max-w-1/2 flex w-1/3 flex-col">
     <Sheet.Header>
       <Sheet.Title>Create Table</Sheet.Title>
     </Sheet.Header>

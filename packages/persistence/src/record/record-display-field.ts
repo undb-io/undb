@@ -29,6 +29,11 @@ export function getRawFieldName(displayFieldName: DisplayFieldName): string {
   return displayFieldName.slice(1)
 }
 
+/**
+ * Get the record DTO from an entity. The record DTO is the DTO that is returned to the client. It contains the values and display values of the record.
+ * @param entity The entity to get the record DTO from.
+ * @returns The record DTO.
+ */
 export function getRecordDTOFromEntity(entity: any): IRecordDTO {
   const id = entity.id
   const values: IRecordValues = {}

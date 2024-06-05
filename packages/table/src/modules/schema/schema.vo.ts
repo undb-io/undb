@@ -123,7 +123,7 @@ export class Schema extends ValueObject<Field[]> {
     return this.fields.filter((f) => f.searchable)
   }
 
-  get nextFieldName(): FieldNameVo {
+  getNextFieldName(): string {
     return new FieldNameVo(getNextName(this.fields.map((f) => f.name.value))).value
   }
 

@@ -13,7 +13,9 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import * as Tooltip from "$lib/components/ui/tooltip"
   import {
+    Code2Icon,
     CodeIcon,
+    CodeXml,
     DatabaseIcon,
     FileSlidersIcon,
     FingerprintIcon,
@@ -192,7 +194,7 @@
           Auth
         </Tabs.Trigger>
         <Tabs.Trigger value="developer">
-          <FileSlidersIcon class="mr-2 h-4 w-4" />
+          <CodeXml class="mr-2 h-4 w-4" />
           Developer
         </Tabs.Trigger>
       </Tabs.List>
