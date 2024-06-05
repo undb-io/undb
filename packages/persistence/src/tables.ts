@@ -48,11 +48,13 @@ export const users = sqliteTable(
   "user",
   {
     id: text("id").notNull().primaryKey(),
+    username: text("name").notNull(),
     email: text("email").notNull().unique(),
     password: text("password").notNull(),
   },
   (table) => {
     return {
+      usernameIdx: index("user_username_idx").on(table.username),
       emailIdx: index("user_email_idx").on(table.email),
     }
   },

@@ -1,3 +1,4 @@
+import { executionContext } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import { None, Option, Some, andOptions, type PaginatedDTO } from "@undb/domain"
 import {
@@ -16,10 +17,10 @@ import type { AliasedExpression, ExpressionBuilder, SelectQueryBuilder } from "k
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
+import { RecordSelectFieldVisitor } from "./record-select-field-visitor"
 import { AggregateFnBuiler } from "./record.aggregate-builder"
 import { RecordFilterVisitor } from "./record.filter-visitor"
 import { RecordMapper } from "./record.mapper"
-import { executionContext } from "@undb/context/server"
 
 @singleton()
 export class RecordQueryRepository implements IRecordQueryRepository {
@@ -80,10 +81,17 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       return sort!.reduce((qb, s) => qb.orderBy(`${s.fieldId} ${s.direction}`), qb)
     }
 
+    const handleSelect = (sb: ExpressionBuilder<any, any>) => {
+      const visitor = new RecordSelectFieldVisitor(sb)
+      for (const field of schema.fields) {
+        field.accept(visitor)
+      }
+      return visitor.select()
+    }
+
     const result = await this.qb
       .selectFrom(t.name)
-      // TODO: select spec
-      .selectAll()
+      .select(handleSelect)
       .$if(!!pagination?.limit, handlePagination)
       .$if(!!sort, handleSort)
       .where((eb) => this.handleQuery(eb, spec))

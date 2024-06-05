@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "86cda602-9e76-4c94-a4f4-e3bc784112f4",
+  "id": "007b0bd1-162b-49a5-8a8a-ec101eb86003",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_audit": {
@@ -273,6 +273,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "email": {
           "name": "email",
           "type": "text",
@@ -293,6 +300,11 @@
           "name": "undb_user_email_unique",
           "columns": ["email"],
           "isUnique": true
+        },
+        "user_username_idx": {
+          "name": "user_username_idx",
+          "columns": ["name"],
+          "isUnique": false
         },
         "user_email_idx": {
           "name": "user_email_idx",

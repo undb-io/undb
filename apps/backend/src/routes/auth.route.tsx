@@ -9,6 +9,10 @@ import { executionContext } from "@undb/context/server"
 
 const adapter = new DrizzleSQLiteAdapter(db, sessionTable, users)
 
+const getUsernameFromEmail = (email: string): string => {
+  return email.split("@")[0]
+}
+
 export const lucia = new Lucia(adapter, {
   sessionCookie: {
     attributes: {
@@ -18,6 +22,7 @@ export const lucia = new Lucia(adapter, {
   getUserAttributes: (attributes) => {
     return {
       email: attributes.email,
+      username: attributes.username,
     }
   },
 })
@@ -27,6 +32,7 @@ declare module "lucia" {
     Lucia: typeof lucia
     DatabaseUserAttributes: {
       email: string
+      username: string
     }
   }
 }
@@ -102,8 +108,10 @@ export const auth = () => {
           userId = generateIdFromEntropySize(10) // 16 characters long
 
           const passwordHash = await Bun.password.hash(password)
+          const username = getUsernameFromEmail(email)
           await db.insert(users).values({
             email,
+            username,
             id: userId,
             password: passwordHash,
           })

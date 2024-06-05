@@ -8,7 +8,10 @@ import type {
   StringField,
   UpdatedAtField,
 } from "@undb/table"
+import { getTableName } from "drizzle-orm"
 import { type ExpressionBuilder, type SelectExpression } from "kysely"
+import { users } from "../tables"
+import { createDisplayFieldName } from "./record-display-field"
 
 export class RecordSelectFieldVisitor implements IFieldVisitor {
   #select: SelectExpression<any, any>[] = []
@@ -33,13 +36,16 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   }
   createdBy(field: CreatedByField): void {
     this.addSelect(field.id.value)
+    const user = getTableName(users)
+    const as = createDisplayFieldName(field)
+
     const name = this.eb
-      .selectFrom("undb_user")
-      .select("undb_user.email")
-      .whereRef(field.id.value, "=", "undb_user.id")
+      .selectFrom(user)
+      .select(`${user}.${users.username.name}`)
+      .whereRef(field.id.value, "=", `${user}.${users.id.name}`)
       .limit(1)
-      // TODO: name
-      .as("createdBy_name")
+      .as(as)
+
     this.addSelect(name)
   }
   updatedAt(field: UpdatedAtField): void {
