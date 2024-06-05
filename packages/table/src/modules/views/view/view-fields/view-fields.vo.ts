@@ -42,4 +42,12 @@ export class ViewFields extends ValueObject<IViewFields> {
   public getVisibleFields(): string[] {
     return this.props.filter(({ hidden }) => !hidden).map(({ fieldId }) => fieldId)
   }
+
+  public getHiddenFields(): string[] {
+    return this.props.filter(({ hidden }) => hidden).map(({ fieldId }) => fieldId)
+  }
+
+  public getHiddenFieldsCount(): number {
+    return this.getHiddenFields().length
+  }
 }

@@ -15,7 +15,9 @@
   import { isNumber } from "radash"
 
   const table = getTable()
-  $: viewFields = $table.getViewFields().props
+  $: viewFieldsVo = $table.getViewFields()
+  $: viewFields = viewFieldsVo.props
+  $: hiddenCount = viewFieldsVo.getHiddenFieldsCount()
 
   let open = false
 
@@ -50,9 +52,13 @@
 
 <Popover.Root bind:open>
   <Popover.Trigger asChild let:builder>
-    <Button variant={open ? "secondary" : "ghost"} builders={[builder]} size="sm">
+    <Button variant={open || !!hiddenCount ? "secondary" : "ghost"} builders={[builder]} size="sm">
       <ListIcon class="mr-2 h-4 w-4" />
-      Fields
+      {#if !!hiddenCount}
+        {hiddenCount} Fields hidden
+      {:else}
+        Fields
+      {/if}
     </Button>
   </Popover.Trigger>
   <Popover.Content class="p-2">
