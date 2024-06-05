@@ -19,6 +19,7 @@
     updatedAt: DateField,
     autoIncrement: NumberField,
     createdBy: UserField,
+    updatedBy: UserField,
   }
 </script>
 

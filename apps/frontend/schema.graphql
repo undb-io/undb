@@ -25,6 +25,7 @@ enum FieldType {
   number
   string
   updatedAt
+  updatedBy
 }
 
 type Form {

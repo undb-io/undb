@@ -48,7 +48,7 @@ export const users = sqliteTable(
   "user",
   {
     id: text("id").notNull().primaryKey(),
-    username: text("name").notNull(),
+    username: text("username").notNull(),
     email: text("email").notNull().unique(),
     password: text("password").notNull(),
   },

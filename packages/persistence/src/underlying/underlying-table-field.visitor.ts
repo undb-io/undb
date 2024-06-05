@@ -1,6 +1,7 @@
 import {
   CreatedByField,
   ID_TYPE,
+  UpdatedByField,
   type AutoIncrementField,
   type CreatedAtField,
   type IFieldVisitor,
@@ -62,7 +63,13 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     )
     this.addColumn(c)
   }
-
+  updatedBy(field: UpdatedByField): void {
+    const user = getTableName(users)
+    const c = this.tb.addColumn(field.id.value, "text", (b) =>
+      b.references(`${user}.${users.id.name}`).notNull().onDelete("restrict"),
+    )
+    this.addColumn(c)
+  }
   id(field: IdField): void {
     const c = this.tb.addColumn(field.id.value, "varchar(50)", (b) => b.notNull().unique())
     this.addColumn(c)

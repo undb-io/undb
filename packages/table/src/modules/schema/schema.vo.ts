@@ -10,6 +10,7 @@ import {
   FieldNameVo,
   IdField,
   UpdatedAtField,
+  UpdatedByField,
   type ICreateFieldDTO,
   type IUpdateFieldDTO,
 } from "./fields"
@@ -35,8 +36,9 @@ export class Schema extends ValueObject<Field[]> {
       IdField.create({ name: "id", type: "id" }),
       ...fields,
       CreatedAtField.create({ name: "createdAt", type: "createdAt" }),
-      CreatedByField.create({ name: "ceatedBy", type: "createdBy" }),
+      CreatedByField.create({ name: "createdBy", type: "createdBy" }),
       UpdatedAtField.create({ name: "updatedAt", type: "updatedAt" }),
+      UpdatedByField.create({ name: "updatedBy", type: "updatedBy" }),
       AutoIncrementField.create({ name: "autoIncrement", type: "autoIncrement" }),
     ])
   }

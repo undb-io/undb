@@ -20,6 +20,7 @@ import type { IIdFieldConditionSchema } from "./id-field/id-field.condition"
 import type { INumberFieldConditionSchema } from "./number-field"
 import type { IStringFieldConditionSchema } from "./string-field"
 import type { IUpdatedAtFieldConditionSchema } from "./updated-at-field"
+import type { IUpdatedByFieldConditionSchema } from "./updated-by-field"
 
 export const createBaseFieldDTO = z.object({
   id: fieldId.optional(),
@@ -91,6 +92,7 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
     | INumberFieldConditionSchema
     | ICreatedAtFieldConditionSchema
     | ICreatedByFieldConditionSchema
+    | IUpdatedByFieldConditionSchema
     | IUpdatedAtFieldConditionSchema
     | IAutoIncrementFieldConditionSchema
 

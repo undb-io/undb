@@ -1,4 +1,12 @@
-import type { IStringFieldConstraint, UPDATED_AT_TYPE, UpdatedAtField, UpdatedAtFieldValue } from ".."
+import type {
+  IStringFieldConstraint,
+  UPDATED_AT_TYPE,
+  UPDATED_BY_TYPE,
+  UpdatedAtField,
+  UpdatedAtFieldValue,
+  UpdatedByField,
+  UpdatedByFieldValue,
+} from ".."
 import type { AUTO_INCREMENT_TYPE, AutoIncrementField, AutoIncrementFieldValue } from "./variants/autoincrement-field"
 import type { CREATED_AT_TYPE, CreatedAtField, CreatedAtFieldValue } from "./variants/created-at-field"
 import type { CREATED_BY_TYPE, CreatedByField, CreatedByFieldValue } from "./variants/created-by-field"
@@ -17,6 +25,7 @@ export type Field =
   | AutoIncrementField
   | UpdatedAtField
   | CreatedByField
+  | UpdatedByField
 
 export type NoneSystemField = Field & { isSystem: false }
 export type SystemField = Field & { isSystem: true }
@@ -29,6 +38,7 @@ export type FieldValue =
   | AutoIncrementFieldValue
   | UpdatedAtFieldValue
   | CreatedByFieldValue
+  | UpdatedByFieldValue
 
 export type MutableFieldValue = StringFieldValue | NumberFieldValue
 
@@ -40,10 +50,16 @@ export type FieldType =
   | typeof AUTO_INCREMENT_TYPE
   | typeof UPDATED_AT_TYPE
   | typeof CREATED_BY_TYPE
+  | typeof UPDATED_BY_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
-  typeof ID_TYPE | typeof CREATED_AT_TYPE | typeof AUTO_INCREMENT_TYPE | typeof UPDATED_AT_TYPE | typeof CREATED_BY_TYPE
+  | typeof ID_TYPE
+  | typeof CREATED_AT_TYPE
+  | typeof AUTO_INCREMENT_TYPE
+  | typeof UPDATED_AT_TYPE
+  | typeof CREATED_BY_TYPE
+  | typeof UPDATED_BY_TYPE
 >
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>

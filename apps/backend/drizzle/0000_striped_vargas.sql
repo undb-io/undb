@@ -41,7 +41,7 @@ CREATE TABLE `undb_table` (
 --> statement-breakpoint
 CREATE TABLE `undb_user` (
 	`id` text PRIMARY KEY NOT NULL,
-	`name` text NOT NULL,
+	`username` text NOT NULL,
 	`email` text NOT NULL,
 	`password` text NOT NULL
 );
@@ -62,7 +62,7 @@ CREATE TABLE `undb_webhook` (
 CREATE INDEX `audit_table_id_idx` ON `undb_audit` (`table_id`);--> statement-breakpoint
 CREATE INDEX `audit_record_id_idx` ON `undb_audit` (`record_id`);--> statement-breakpoint
 CREATE UNIQUE INDEX `undb_user_email_unique` ON `undb_user` (`email`);--> statement-breakpoint
-CREATE INDEX `user_username_idx` ON `undb_user` (`name`);--> statement-breakpoint
+CREATE INDEX `user_username_idx` ON `undb_user` (`username`);--> statement-breakpoint
 CREATE INDEX `user_email_idx` ON `undb_user` (`email`);--> statement-breakpoint
 CREATE INDEX `webhook_table_id_idx` ON `undb_webhook` (`tableId`);--> statement-breakpoint
 CREATE INDEX `webhook_url_idx` ON `undb_webhook` (`url`);

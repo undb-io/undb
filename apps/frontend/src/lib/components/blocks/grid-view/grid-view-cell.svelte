@@ -30,6 +30,7 @@
     updatedAt: DateField,
     autoIncrement: NumberField,
     createdBy: UserField,
+    updatedBy: UserField,
   }
 
   let form: HTMLFormElement

@@ -2,9 +2,11 @@ import { executionContext } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import { None, Some, type IUnitOfWork, type Option } from "@undb/domain"
 import {
+  CREATED_BY_TYPE,
   ID_TYPE,
   RecordComositeSpecification,
   RecordDO,
+  UPDATED_BY_TYPE,
   injectRecordOutboxService,
   type IRecordOutboxService,
   type IRecordRepository,
@@ -15,6 +17,7 @@ import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { injectDbUnitOfWork, transactional } from "../uow"
+import { getRecordDTOFromEntity } from "./record-display-field"
 import { RecordMapper } from "./record.mapper"
 import { RecordMutateVisitor } from "./record.mutate-visitor"
 
@@ -42,7 +45,7 @@ export class RecordRepository implements IRecordRepository {
 
     await this.qb
       .insertInto(t.name)
-      .values({ ...values, createdBy: userId })
+      .values({ ...values, [CREATED_BY_TYPE]: userId, [UPDATED_BY_TYPE]: userId })
       .executeTakeFirst()
     await this.outboxService.save(record)
   }
@@ -51,7 +54,8 @@ export class RecordRepository implements IRecordRepository {
     const t = new UnderlyingTable(table)
 
     const record = await this.qb.selectFrom(t.name).selectAll().limit(1).executeTakeFirst()
-    return record ? Some(RecordDO.fromJSON(table, { id: record.id, values: record })) : None
+    const dto = getRecordDTOFromEntity(record)
+    return record ? Some(RecordDO.fromJSON(table, dto)) : None
   }
 
   async findOneById(table: TableDo, recordId: RecordId): Promise<Option<RecordDO>> {
@@ -62,13 +66,16 @@ export class RecordRepository implements IRecordRepository {
       return None
     }
 
-    const { id, ...values } = records[0] as Record<string, any>
-    return Some(RecordDO.fromJSON(table, { id, values }))
+    const dto = getRecordDTOFromEntity(records[0])
+    return Some(RecordDO.fromJSON(table, dto))
   }
 
   @transactional()
   async updateOneById(table: TableDo, record: RecordDO, spec: Option<RecordComositeSpecification>): Promise<void> {
     if (spec.isNone()) return
+
+    const context = executionContext.getStore()
+    const userId = context?.user?.userId!
 
     const t = new UnderlyingTable(table)
 
@@ -77,7 +84,7 @@ export class RecordRepository implements IRecordRepository {
       .set((eb) => {
         const visitor = new RecordMutateVisitor(eb)
         spec.unwrap().accept(visitor)
-        return visitor.data
+        return { ...visitor.data, [UPDATED_BY_TYPE]: userId }
       })
       .where(ID_TYPE, "=", record.id.value)
       .executeTakeFirst()

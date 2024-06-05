@@ -3,7 +3,14 @@
   import NumberIcon from "./number-icon.svelte"
   import StringIcon from "./string-icon.svelte"
   import type { FieldType } from "@undb/table"
-  import { KeyRoundIcon, CalendarPlus2Icon, ArrowDown01Icon, CalendarClockIcon, UserRoundPlus } from "lucide-svelte"
+  import {
+    KeyRoundIcon,
+    CalendarPlus2Icon,
+    ArrowDown01Icon,
+    CalendarClockIcon,
+    UserRoundPlus,
+    UserRoundCheck,
+  } from "lucide-svelte"
 
   export let type: FieldType
 
@@ -15,6 +22,7 @@
     createdAt: CalendarPlus2Icon,
     createdBy: UserRoundPlus,
     updatedAt: CalendarClockIcon,
+    updatedBy: UserRoundCheck,
   }
 </script>
 

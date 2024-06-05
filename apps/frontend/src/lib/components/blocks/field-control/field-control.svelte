@@ -28,6 +28,7 @@
     createdAt: DateControl,
     updatedAt: DateControl,
     createdBy: UserControl,
+    updatedBy: UserControl,
   }
 </script>
 

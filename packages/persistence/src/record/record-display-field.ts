@@ -1,4 +1,4 @@
-import type { Field } from "@undb/table"
+import type { Field, IRecordDTO, IRecordDisplayValues, IRecordValues } from "@undb/table"
 
 export type DisplayFieldName = `$${string}`
 
@@ -27,4 +27,26 @@ export function isDisplayerFieldName(name: string): name is DisplayFieldName {
  */
 export function getRawFieldName(displayFieldName: DisplayFieldName): string {
   return displayFieldName.slice(1)
+}
+
+export function getRecordDTOFromEntity(entity: any): IRecordDTO {
+  const id = entity.id
+  const values: IRecordValues = {}
+  const displayValues: IRecordDisplayValues = {}
+  for (const [key, value] of Object.entries(entity)) {
+    if (key === "id") continue
+
+    if (isDisplayerFieldName(key)) {
+      displayValues[getRawFieldName(key)] = value
+      continue
+    }
+
+    values[key] = value
+  }
+
+  return {
+    id,
+    values,
+    displayValues,
+  }
 }

@@ -25,6 +25,7 @@ export class Graphql {
         createdAt
         createdBy
         updatedAt
+        updatedBy
         autoIncrement
       }
 

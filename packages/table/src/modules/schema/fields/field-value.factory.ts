@@ -8,6 +8,7 @@ import {
   NumberFieldValue,
   StringFieldValue,
   UpdatedAtFieldValue,
+  UpdatedByFieldValue,
 } from "./variants"
 import { CreatedByFieldValue } from "./variants/created-by-field"
 
@@ -28,6 +29,7 @@ export class FieldValueFactory {
       .with("createdAt", () => Some(new CreatedAtFieldValue(new Date(value))))
       .with("createdBy", () => Some(new CreatedByFieldValue(value as string)))
       .with("updatedAt", () => Some(new UpdatedAtFieldValue(new Date(value))))
+      .with("updatedBy", () => Some(new UpdatedByFieldValue(value as string)))
       .exhaustive()
   }
 }
