@@ -2,11 +2,10 @@
   import * as Command from "$lib/components/ui/command"
   import { shortcut, type ShortcutEventDetail } from "@svelte-put/shortcut"
   import { DatabaseIcon } from "lucide-svelte"
+  import { commandOpen } from "./command.store"
 
-  let open = false
   function handleK(e: ShortcutEventDetail) {
-    console.log(e)
-    open = !open
+    $commandOpen = !$commandOpen
   }
 
   interface Table {
@@ -17,7 +16,7 @@
   export let tables: Table[] = []
 </script>
 
-<Command.Dialog bind:open>
+<Command.Dialog bind:open={$commandOpen}>
   <Command.Input placeholder="Search for tables..." />
   <Command.List>
     <Command.Empty>No results found.</Command.Empty>

@@ -15,6 +15,8 @@
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.js"
   import { CREATE_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
   import Command from "$lib/components/blocks/command/command.svelte"
+  import { commandOpen } from "$lib/components/blocks/command/command.store"
+  import { SearchIcon } from "lucide-svelte"
 
   export let data: LayoutData
 
@@ -52,14 +54,20 @@
     maxSize={20}
   >
     <div class="flex h-full max-h-screen flex-col gap-2">
-      <div class="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-        <a href="/" class="flex items-center gap-2 font-semibold">
-          <Package2 class="h-6 w-6" />
-          <span class="">Acme Inc</span>
-        </a>
-        <Button variant="outline" size="icon" class="ml-auto h-8 w-8">
-          <Bell class="h-4 w-4" />
-          <span class="sr-only">Toggle notifications</span>
+      <div class="flex h-14 items-center border-b px-4 lg:h-[60px]">
+        <Button
+          variant="outline"
+          size="sm"
+          class="flex w-full items-center justify-between"
+          on:click={() => ($commandOpen = true)}
+        >
+          <span class="inline-flex items-center">
+            <SearchIcon class="text-muted-foreground mr-2 h-3 w-3" />
+            Search
+          </span>
+          <span>
+            <code> Ctrl + K </code>
+          </span>
         </Button>
       </div>
       <ScrollArea class={cn(tables.length ? "flex-1" : "")}>
