@@ -4,6 +4,7 @@ import { queryParam, ssp } from "sveltekit-search-params"
 
 export const modal = queryParam("modal", ssp.array<string>())
 
+export const CREATE_TABLE_MODAL = "createTable" as const
 export const CREATE_RECORD_MODAL = "createRecord" as const
 export const CREATE_FIELD_MODAL = "createField" as const
 export const UPDATE_FIELD_MODAL = "updateField" as const
@@ -13,6 +14,7 @@ export const CREATE_WEBHOOK_MODAL = "createWebhook" as const
 export const CREATE_RLS_MODAL = "createRLS" as const
 
 type ModalType =
+  | typeof CREATE_TABLE_MODAL
   | typeof CREATE_FIELD_MODAL
   | typeof DELETE_RECORD_MODAL
   | typeof DUPLICATE_RECORD_MODAL

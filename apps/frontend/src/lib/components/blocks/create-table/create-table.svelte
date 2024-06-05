@@ -6,19 +6,19 @@
   import { createTableCommand } from "@undb/commands"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { Input } from "$lib/components/ui/input"
-  import { createTableOpened } from "./create-table.store"
   import CreateSchema from "./create-schema.svelte"
   import { toast } from "svelte-sonner"
   import { invalidate } from "$app/navigation"
   import { goto } from "$app/navigation"
   import { FieldIdVo, getNextName } from "@undb/table"
+  import { CREATE_TABLE_MODAL, closeModal } from "$lib/store/modal.store"
 
   const mutation = createMutation({
     mutationFn: trpc.table.create.mutate,
     async onSuccess(data) {
       await invalidate("undb:tables")
       await goto(`/t/${data}`)
-      createTableOpened.set(false)
+      closeModal(CREATE_TABLE_MODAL)
       form.reset()
     },
     onError(error) {

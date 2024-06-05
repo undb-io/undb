@@ -11,14 +11,14 @@
   import { goto } from "$app/navigation"
   import { page } from "$app/stores"
   import { shortcut, type ShortcutEventDetail } from "@svelte-put/shortcut"
-  import { createTableOpened } from "$lib/components/blocks/create-table/create-table.store"
   import { cn } from "$lib/utils"
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.js"
+  import { CREATE_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
 
   export let data: LayoutData
 
   function handleT(detail: ShortcutEventDetail) {
-    $createTableOpened = true
+    toggleModal(CREATE_TABLE_MODAL)
   }
 
   let panelLeft: PaneAPI
