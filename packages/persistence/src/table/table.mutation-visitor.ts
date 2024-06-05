@@ -10,6 +10,7 @@ import type {
   WithUpdatedFieldSpecification,
   WithViewAggregate,
   WithViewColor,
+  WithViewFields,
   WithViewFilter,
   WithViewSort,
 } from "@undb/table"
@@ -28,6 +29,9 @@ export class TableMutationVisitor
 {
   constructor(public readonly table: TableDo) {
     super()
+  }
+  withViewFields(fields: WithViewFields): void {
+    this.addUpdates({ views: this.table.views?.toJSON() })
   }
   withUpdatedField(spec: WithUpdatedFieldSpecification): void {
     this.addUpdates({ schema: this.table.schema?.toJSON() })

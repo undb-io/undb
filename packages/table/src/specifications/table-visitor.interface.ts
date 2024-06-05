@@ -12,7 +12,13 @@ import type {
   WithNewFieldSpecification,
   WithUpdatedFieldSpecification,
 } from "./table-schema.specification"
-import type { WithViewAggregate, WithViewColor, WithViewFilter, WithViewSort } from "./table-view.specification"
+import type {
+  WithViewAggregate,
+  WithViewColor,
+  WithViewFields,
+  WithViewFilter,
+  WithViewSort,
+} from "./table-view.specification"
 import type { TableViewsSpecification } from "./table-views.specification"
 
 export interface ITableSpecVisitor extends ISpecVisitor {
@@ -27,6 +33,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withViewColor(viewColor: WithViewColor): void
   withViewSort(viewSort: WithViewSort): void
   withViewAggregate(viewColor: WithViewAggregate): void
+  withViewFields(fields: WithViewFields): void
   withForms(views: TableFormsSpecification): void
   withNewForm(views: WithNewFormSpecification): void
   withForm(views: WithFormSpecification): void

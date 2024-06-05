@@ -9,6 +9,7 @@ import { SetTableFormCommandHandler } from "./set-table-form.command-handler"
 import { SetTableRLSCommandHandler } from "./set-table-rls.command-handler"
 import { SetViewAggregateCommandHandler } from "./set-view-aggregate.command-handler"
 import { SetViewColorCommandHandler } from "./set-view-color.command-handler"
+import { SetViewFieldsCommandHandler } from "./set-view-fields.command-handler"
 import { SetViewFilterCommandHandler } from "./set-view-filter.command-handler"
 import { SetViewSortCommandHandler } from "./set-view-sort.command-handler"
 import { UpdateRecordCommandHandler } from "./update-record.command-handler"
@@ -23,6 +24,7 @@ export const commandHandlers = [
   UpdateWebhookCommandHandler,
   SetViewFilterCommandHandler,
   SetViewColorCommandHandler,
+  SetViewFieldsCommandHandler,
   SetTableRLSCommandHandler,
   SetViewSortCommandHandler,
   UpdateRecordCommandHandler,

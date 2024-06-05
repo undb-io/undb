@@ -10,6 +10,7 @@ import type {
   WithUpdatedFieldSpecification,
   WithViewAggregate,
   WithViewColor,
+  WithViewFields,
   WithViewFilter,
   WithViewSort,
 } from "@undb/table"
@@ -24,6 +25,9 @@ import { AbstractDBFilterVisitor } from "../abstract-db.visitor"
 import { tables } from "../tables"
 
 export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> implements ITableSpecVisitor {
+  withViewFields(fields: WithViewFields): void {
+    throw new Error("Method not implemented.")
+  }
   withUpdatedField(spec: WithUpdatedFieldSpecification): void {
     throw new Error("Method not implemented.")
   }

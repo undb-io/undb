@@ -11,6 +11,7 @@ import {
   SetTableRLSCommand,
   SetViewAggregateCommand,
   SetViewColorCommand,
+  SetViewFieldsCommand,
   SetViewFilterCommand,
   SetViewSortCommand,
   UpdateRecordCommand,
@@ -27,6 +28,7 @@ import {
   setTableRLSCommand,
   setViewAggregateCommand,
   setViewColorCommand,
+  setViewFieldsCommand,
   setViewFilterCommand,
   setViewSortCommand,
   updateRecordCommand,
@@ -108,6 +110,7 @@ const viewRouter = t.router({
   setAggregate: p
     .input(setViewAggregateCommand)
     .mutation(({ input }) => commandBus.execute(new SetViewAggregateCommand(input))),
+  setFields: p.input(setViewFieldsCommand).mutation(({ input }) => commandBus.execute(new SetViewFieldsCommand(input))),
 })
 
 const rlsRouter = t.router({

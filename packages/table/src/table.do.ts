@@ -7,6 +7,7 @@ import { setTableForm } from "./methods/set-table-form.method"
 import { setTableRLS } from "./methods/set-table-rls.method"
 import { setViewAggregate } from "./methods/set-view-aggregate.method"
 import { setViewColor } from "./methods/set-view-color.method"
+import { setViewFields } from "./methods/set-view-fields.method"
 import { setViewFilter } from "./methods/set-view-filter.method"
 import { setViewSort } from "./methods/set-view-sort.method"
 import { updateFieldMethod } from "./methods/update-field.method"
@@ -27,6 +28,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
 
   $setViewFilter = setViewFilter
   $setViewColor = setViewColor
+  $setViewFields = setViewFields
   $setViewSort = setViewSort
   $setTableRLS = setTableRLS
   $setViewAggregate = setViewAggregate

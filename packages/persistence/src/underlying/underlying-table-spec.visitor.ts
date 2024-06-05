@@ -9,6 +9,7 @@ import type {
   WithUpdatedFieldSpecification,
   WithViewAggregate,
   WithViewColor,
+  WithViewFields,
   WithViewFilter,
   WithViewSort,
 } from "@undb/table"
@@ -51,6 +52,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
 
     context.convert(spec.field)
   }
+  withViewFields(fields: WithViewFields): void {}
   withForm(views: WithFormSpecification): void {}
   withForms(views: TableFormsSpecification): void {}
   withNewForm(views: WithNewFormSpecification): void {}

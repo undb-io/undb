@@ -3,12 +3,14 @@ import { z } from "@undb/zod"
 import {
   WithViewAggregate,
   WithViewColor,
+  WithViewFields,
   WithViewFilter,
   WithViewSort,
 } from "../../../../specifications/table-view.specification"
 import type { IViewDTO } from "../dto"
 import { ViewAggregateVO, viewAggregate, type IViewAggregate } from "../view-aggregate/view-aggregate.vo"
 import { ViewColor, viewColorGroup, type IRootViewColor } from "../view-color"
+import { ViewFields, viewFields, type IViewFields } from "../view-fields"
 import { ViewFilter, viewFilterGroup, type IRootViewFilter } from "../view-filter/view-filter.vo"
 import { ViewIdVo, viewId, type ViewId } from "../view-id.vo"
 import { ViewNameVo, viewName } from "../view-name.vo"
@@ -29,6 +31,7 @@ export const baseViewDTO = z.object({
   color: viewColorGroup.optional(),
   sort: viewSort.optional(),
   aggregate: viewAggregate.optional(),
+  fields: viewFields.optional(),
 })
 
 export type IBaseViewDTO = z.infer<typeof baseViewDTO>
@@ -40,6 +43,7 @@ export abstract class AbstractView {
   color: Option<ViewColor> = None
   sort: Option<ViewSort> = None
   aggregate: Option<ViewAggregateVO> = None
+  fields: Option<ViewFields> = None
 
   abstract type: ViewType
 
@@ -57,6 +61,9 @@ export abstract class AbstractView {
     }
     if (dto.aggregate) {
       this.setAggregate(dto.aggregate)
+    }
+    if (dto.fields) {
+      this.setFields(dto.fields)
     }
   }
 
@@ -118,6 +125,19 @@ export abstract class AbstractView {
     return Some(new WithViewAggregate(this.id, Option(previous), aggregate))
   }
 
+  setFields(fields: IViewFields) {
+    this.fields = Some(new ViewFields(fields))
+  }
+
+  $setFieldsSpec(fields: IViewFields): Option<WithViewFields> {
+    if (this.fields.mapOr(false, (f) => f.isEqual(fields))) {
+      return None
+    }
+
+    const previous = this.fields.into(null)?.value
+    return Some(new WithViewFields(this.id, Option(previous), fields))
+  }
+
   toJSON(): IViewDTO {
     return {
       id: this.id.value,
@@ -127,6 +147,7 @@ export abstract class AbstractView {
       color: this.color.into(null)?.toJSON(),
       sort: this.sort.into(null)?.toJSON(),
       aggregate: this.aggregate.into(null)?.toJSON(),
+      fields: this.fields.into(null)?.toJSON(),
     }
   }
 }
