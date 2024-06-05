@@ -14,6 +14,7 @@
   import { cn } from "$lib/utils"
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.js"
   import { CREATE_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
+  import Command from "$lib/components/blocks/command/command.svelte"
 
   export let data: LayoutData
 
@@ -76,6 +77,7 @@
 </Resizable.PaneGroup>
 
 <CreateTableSheet />
+<Command {tables} />
 
 <svelte:window
   use:shortcut={{
