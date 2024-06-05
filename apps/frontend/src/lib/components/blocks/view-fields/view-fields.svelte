@@ -34,7 +34,7 @@
     $setViewFieldsMutation.mutate({
       tableId: $table.id.value,
       viewId: $table.views.getViewById().id.value,
-      fields: viewFields,
+      fields: [...viewFields],
     })
   }
 
@@ -60,7 +60,6 @@
       class=""
       animation={200}
       onEnd={(event) => {
-        console.log(event.oldIndex, event.newIndex)
         if (isNumber(event.oldIndex) && isNumber(event.newIndex)) {
           swapFields(event.oldIndex, event.newIndex)
         }

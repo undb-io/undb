@@ -12,10 +12,10 @@
   "dependencies": {
     "@trpc/server": "^10.45.2",
     "@undb/commands": "workspace:*",
+    "@undb/context": "workspace:*",
     "@undb/cqrs": "workspace:*",
     "@undb/di": "workspace:*",
     "@undb/persistence": "workspace:*",
-    "@undb/context": "workspace:*",
     "@undb/queries": "workspace:*",
     "@undb/table": "workspace:*",
     "@undb/zod": "workspace:*",
