@@ -10,6 +10,9 @@
   import { trpc } from "$lib/trpc/client"
   import { tick } from "svelte"
   import { invalidate } from "$app/navigation"
+  import { SortableList } from "@jhubbardsf/svelte-sortablejs"
+  import { cn } from "$lib/utils"
+  import { isNumber } from "radash"
 
   const table = getTable()
   $: viewFields = $table.getViewFields().props
@@ -34,6 +37,15 @@
       fields: viewFields,
     })
   }
+
+  function swapFields(oldIndex: number, newIndex: number) {
+    const fields = [...viewFields]
+    const [removed] = fields.splice(oldIndex, 1)
+    fields.splice(newIndex, 0, removed)
+    viewFields = [...fields]
+
+    setViewFields()
+  }
 </script>
 
 <Popover.Root bind:open>
@@ -44,28 +56,39 @@
     </Button>
   </Popover.Trigger>
   <Popover.Content class="p-2">
-    {#each viewFields as viewField}
-      {@const field = $table.schema.getFieldById(new FieldIdVo(viewField.fieldId)).into(undefined)}
-      {#if field}
-        <div class="hover:bg-muted flex items-center justify-between rounded-sm p-2 transition-colors">
-          <div class="flex items-center gap-2">
-            <Switch
-              checked={!viewField.hidden}
-              onCheckedChange={(checked) => {
-                viewField.hidden = !checked
-                setViewFields()
-              }}
-            />
-            <div class="flex items-center gap-2 text-sm text-gray-600">
-              <FieldIcon type={field.type} class="h-3 w-3" />
-              {field.name.value}
+    <SortableList
+      class=""
+      animation={200}
+      onEnd={(event) => {
+        console.log(event.oldIndex, event.newIndex)
+        if (isNumber(event.oldIndex) && isNumber(event.newIndex)) {
+          swapFields(event.oldIndex, event.newIndex)
+        }
+      }}
+    >
+      {#each viewFields as viewField}
+        {@const field = $table.schema.getFieldById(new FieldIdVo(viewField.fieldId)).into(undefined)}
+        {#if field}
+          <div class="hover:bg-muted flex items-center justify-between rounded-sm p-2 transition-colors">
+            <div class="flex items-center gap-2">
+              <Switch
+                checked={!viewField.hidden}
+                onCheckedChange={(checked) => {
+                  viewField.hidden = !checked
+                  setViewFields()
+                }}
+              />
+              <div class="flex items-center gap-2 text-sm text-gray-600">
+                <FieldIcon type={field.type} class="h-3 w-3" />
+                {field.name.value}
+              </div>
             </div>
+            <button class="text-muted-foreground">
+              <GripVerticalIcon class="h-3 w-3" />
+            </button>
           </div>
-          <button class="text-muted-foreground">
-            <GripVerticalIcon class="h-3 w-3" />
-          </button>
-        </div>
-      {/if}
-    {/each}
+        {/if}
+      {/each}
+    </SortableList>
   </Popover.Content>
 </Popover.Root>
