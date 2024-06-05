@@ -1,13 +1,14 @@
-import type {
-  AutoIncrementField,
-  CreatedAtField,
-  CreatedByField,
-  IFieldVisitor,
-  IdField,
-  NumberField,
-  StringField,
-  UpdatedAtField,
-  UpdatedByField,
+import {
+  ID_TYPE,
+  type AutoIncrementField,
+  type CreatedAtField,
+  type CreatedByField,
+  type IFieldVisitor,
+  type IdField,
+  type NumberField,
+  type StringField,
+  type UpdatedAtField,
+  type UpdatedByField,
 } from "@undb/table"
 import { getTableName } from "drizzle-orm"
 import { type ExpressionBuilder, type SelectExpression } from "kysely"
@@ -25,9 +26,11 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     return this.#select
   }
 
-  constructor(private readonly eb: ExpressionBuilder<any, string>) {}
+  constructor(private readonly eb: ExpressionBuilder<any, string>) {
+    this.addSelect(ID_TYPE)
+  }
   id(field: IdField): void {
-    this.addSelect(field.id.value)
+    // this.addSelect(field.id.value)
   }
   autoIncrement(field: AutoIncrementField): void {
     this.addSelect(field.id.value)
