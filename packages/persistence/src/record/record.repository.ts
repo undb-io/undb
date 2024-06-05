@@ -54,8 +54,8 @@ export class RecordRepository implements IRecordRepository {
     const t = new UnderlyingTable(table)
 
     const record = await this.qb.selectFrom(t.name).selectAll().limit(1).executeTakeFirst()
-    const dto = getRecordDTOFromEntity(record)
-    return record ? Some(RecordDO.fromJSON(table, dto)) : None
+    const dto = record ? getRecordDTOFromEntity(record) : undefined
+    return dto ? Some(RecordDO.fromJSON(table, dto)) : None
   }
 
   async findOneById(table: TableDo, recordId: RecordId): Promise<Option<RecordDO>> {
