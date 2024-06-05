@@ -24,7 +24,7 @@
   import { DotsHorizontal } from "svelte-radix"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { clickoutside } from "@svelte-put/clickoutside"
-  import { Description } from "$lib/components/ui/alert"
+  import autoAnimate from "@formkit/auto-animate"
 
   const { form } = getFormField<Infer<typeof createTableCommand>, "schema">()
 
@@ -84,9 +84,25 @@
       <Form.Control let:attrs>
         <Accordion.Item class="w-full border-b-0" value={field.id}>
           <div class="mr-2 flex items-center gap-2">
-            <Form.Label class="flex h-9 flex-1 items-center gap-1">
+            <Form.Label class="flex h-9 flex-1 items-center gap-2">
               <FieldTypePicker class="h-full w-20" bind:value={field.type} />
               <Input {...attrs} class="bg-background no-underline" bind:value={field.name} data-field-id={field.id} />
+              <div class="flex items-center gap-1" use:autoAnimate={{ duration: 100 }}>
+                {#if field.constraint?.required}
+                  <span
+                    class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-700/10"
+                  >
+                    Required
+                  </span>
+                {/if}
+                {#if field.display}
+                  <span
+                    class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10"
+                  >
+                    Display
+                  </span>
+                {/if}
+              </div>
             </Form.Label>
             <Accordion.Trigger>
               <SettingsIcon class="text-muted-foreground h-4 w-4 shrink-0 transition-transform duration-200" />

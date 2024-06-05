@@ -35,6 +35,7 @@
             id: FieldIdVo.create().value,
             type: "string",
             name: getNextName(),
+            display: true,
             constraint: {},
           },
         ],
