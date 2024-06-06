@@ -46,7 +46,6 @@ export class TableMutationVisitor
   withNewForm(form: WithNewFormSpecification): void {
     this.addUpdates({ forms: this.table.forms?.toJSON() })
   }
-
   withNewField(schema: WithNewFieldSpecification): void {
     this.addUpdates({ schema: this.table.schema?.toJSON() })
   }
@@ -62,7 +61,6 @@ export class TableMutationVisitor
   withViewColor(viewFilter: WithViewColor): void {
     this.addUpdates({ views: this.table.views?.toJSON() })
   }
-
   withId(id: TableIdSpecification): void {
     throw new WontImplementException(TableMutationVisitor.name + ".withId")
   }

@@ -2,6 +2,8 @@ import { singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
 import type { TableComositeSpecification, TableDo } from "@undb/table"
 import { Database } from "bun:sqlite"
+import type { CompiledQuery } from "kysely"
+import { all } from "radash"
 import { injectSqlite } from "../db.provider"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
@@ -23,14 +25,16 @@ export class UnderlyingTableService {
   async create(table: TableDo) {
     const t = new UnderlyingTable(table)
     const queies: string[] = []
+    const sql: CompiledQuery[] = []
     await this.qb.schema
       .createTable(t.name)
       .$call((tb) => {
-        const visitor = new UnderlyingTableFieldVisitor(t, tb)
+        const visitor = new UnderlyingTableFieldVisitor(this.qb, t, tb)
         for (const field of table.schema) {
           field.accept(visitor)
         }
         queies.push(...visitor.rawSQL)
+        sql.push(...visitor.sql)
         return visitor.tb
       })
       .execute()
@@ -39,6 +43,8 @@ export class UnderlyingTableService {
       this.sqlite.query(query).run()
       this.logger.debug({ query })
     }
+
+    await all(sql.map((query) => this.qb.executeQuery(query)))
   }
 
   async update(table: TableDo, spec: TableComositeSpecification) {

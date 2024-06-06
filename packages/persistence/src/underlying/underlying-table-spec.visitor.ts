@@ -19,7 +19,8 @@ import type {
   WithNewFormSpecification,
 } from "@undb/table/src/specifications/table-forms.specification"
 import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
-import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CreateTableBuilder } from "kysely"
+import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, CreateTableBuilder } from "kysely"
+import { all } from "radash"
 import type { IQueryBuilder } from "../qb"
 import { ConversionContext } from "./conversion/conversion.context"
 import { ConversionFactory } from "./conversion/conversion.factory"
@@ -37,8 +38,17 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
 
   atb: AlterTableColumnAlteringBuilder | CreateTableBuilder<any, any> | null = null
 
-  execute() {
-    this.atb?.execute()
+  async execute() {
+    await this.atb?.execute()
+    await all(this.sql.map((query) => this.qb.executeQuery(query)))
+  }
+
+  #sql: CompiledQuery[] = []
+  get sql() {
+    return this.#sql
+  }
+  addSql(...sql: CompiledQuery[]) {
+    this.#sql.push(...sql)
   }
 
   withUpdatedField(spec: WithUpdatedFieldSpecification): void {
@@ -60,8 +70,9 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
   withName(name: TableNameSpecification): void {}
   withSchema(schema: TableSchemaSpecification): void {}
   withNewField(schema: WithNewFieldSpecification): void {
-    const fieldVisitor = new UnderlyingTableFieldVisitor(this.table, this.tb)
+    const fieldVisitor = new UnderlyingTableFieldVisitor(this.qb, this.table, this.tb)
     schema.field.accept(fieldVisitor)
+    this.addSql(...fieldVisitor.sql)
     this.atb = fieldVisitor.atb
   }
   withTableRLS(rls: WithTableRLS): void {}

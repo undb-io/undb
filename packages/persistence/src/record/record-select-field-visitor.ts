@@ -6,6 +6,7 @@ import {
   type IFieldVisitor,
   type IdField,
   type NumberField,
+  type ReferenceField,
   type StringField,
   type UpdatedAtField,
   type UpdatedByField,
@@ -75,5 +76,8 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   }
   number(field: NumberField): void {
     this.addSelect(field.id.value)
+  }
+  reference(field: ReferenceField): void {
+    // throw new Error("Method not implemented.")
   }
 }

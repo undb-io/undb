@@ -1,6 +1,7 @@
 import {
   CreatedByField,
   ID_TYPE,
+  ReferenceField,
   UpdatedByField,
   type AutoIncrementField,
   type CreatedAtField,
@@ -11,20 +12,22 @@ import {
   type UpdatedAtField,
 } from "@undb/table"
 import { getTableName } from "drizzle-orm"
-import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CreateTableBuilder, sql } from "kysely"
+import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, CreateTableBuilder, sql } from "kysely"
+import type { IQueryBuilder } from "../qb"
 import { users } from "../tables"
+import { JoinTable } from "./reference/join-table"
 import type { UnderlyingTable } from "./underlying-table"
 
 export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any> | AlterTableBuilder>
   implements IFieldVisitor
 {
   constructor(
+    private readonly qb: IQueryBuilder,
     private readonly t: UnderlyingTable,
     public tb: TB,
   ) {}
   public atb: AlterTableColumnAlteringBuilder | CreateTableBuilder<any, any> | null = null
   #rawSQL: string[] = []
-
   get rawSQL() {
     return this.#rawSQL
   }
@@ -32,6 +35,14 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
   private addColumn(c: AlterTableColumnAlteringBuilder | CreateTableBuilder<any, any>) {
     this.atb = c
     this.tb = c as TB
+  }
+
+  #sql: CompiledQuery[] = []
+  get sql() {
+    return this.#sql
+  }
+  addSql(sql: CompiledQuery) {
+    this.#sql.push(sql)
   }
 
   updatedAt(field: UpdatedAtField): void {
@@ -81,5 +92,20 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
   number(field: NumberField): void {
     const c = this.tb.addColumn(field.id.value, "real")
     this.addColumn(c)
+  }
+
+  reference(field: ReferenceField): void {
+    const joinTable = new JoinTable(this.t.table, field)
+    const sql = this.qb.schema
+      .createTable(joinTable.getName())
+      .ifNotExists()
+      .addColumn(JoinTable.FROM_ID, "varchar(10)", (b) =>
+        b.references(`${this.t.name}.${ID_TYPE}`).notNull().onDelete("cascade"),
+      )
+      .addColumn(JoinTable.TO_ID, "varchar(10)", (b) =>
+        b.references(`${field.foreignTableId.value}.${ID_TYPE}`).notNull().onDelete("cascade"),
+      )
+      .compile()
+    this.addSql(sql)
   }
 }

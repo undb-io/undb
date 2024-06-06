@@ -57,11 +57,7 @@ export class StringField extends AbstractField<StringFieldValue, StringFieldCons
   }
 
   static create(dto: ICreateStringFieldDTO) {
-    const field = new StringField({ ...dto, id: FieldIdVo.fromStringOrCreate(dto.id).value })
-    if (dto.defaultValue) {
-      field.defaultValue = new StringFieldValue(dto.defaultValue)
-    }
-    return field
+    return new StringField({ ...dto, id: FieldIdVo.fromStringOrCreate(dto.id).value })
   }
 
   override type = STRING_TYPE
