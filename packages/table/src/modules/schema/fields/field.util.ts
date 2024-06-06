@@ -1,6 +1,6 @@
 import { P, match } from "ts-pattern"
 import type { IInferCreateFieldDTO } from "./dto/field.dto"
-import type { FieldType, SystemFieldType } from "./field.type"
+import type { FieldType, NoneSystemFieldType, SystemFieldType } from "./field.type"
 
 export const inferCreateFieldType = (values: (string | number | null | object | boolean)[]): IInferCreateFieldDTO => {
   return match(values)
@@ -27,3 +27,15 @@ const systemFieldTyeps: Set<FieldType> = new Set(["id", "createdAt", "createdBy"
 export function getIsSystemFieldType(type: FieldType): type is SystemFieldType {
   return systemFieldTyeps.has(type)
 }
+
+export const fieldTypes: NoneSystemFieldType[] = ["string", "number"] as const
+export const systemFieldTypes: SystemFieldType[] = [
+  "id",
+  "autoIncrement",
+  "createdAt",
+  "createdBy",
+  "updatedAt",
+  "updatedBy",
+] as const
+
+export const allFieldTypes: FieldType[] = [...systemFieldTypes, ...fieldTypes] as const

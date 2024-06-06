@@ -8,3 +8,5 @@ export * from "./number-field"
 export * from "./string-field"
 export * from "./updated-at-field"
 export * from "./updated-by-field"
+
+export * from "./reference-field"

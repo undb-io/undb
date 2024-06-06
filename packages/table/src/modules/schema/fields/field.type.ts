@@ -1,5 +1,8 @@
 import type {
   IStringFieldConstraint,
+  REFERENCE_TYPE,
+  ReferenceField,
+  ReferenceFieldValue,
   UPDATED_AT_TYPE,
   UPDATED_BY_TYPE,
   UpdatedAtField,
@@ -26,6 +29,7 @@ export type Field =
   | UpdatedAtField
   | CreatedByField
   | UpdatedByField
+  | ReferenceField
 
 export type NoneSystemField = Field & { isSystem: false }
 export type SystemField = Field & { isSystem: true }
@@ -39,8 +43,9 @@ export type FieldValue =
   | UpdatedAtFieldValue
   | CreatedByFieldValue
   | UpdatedByFieldValue
+  | ReferenceFieldValue
 
-export type MutableFieldValue = StringFieldValue | NumberFieldValue
+export type MutableFieldValue = StringFieldValue | NumberFieldValue | ReferenceFieldValue
 
 export type FieldType =
   | typeof STRING_TYPE
@@ -51,6 +56,7 @@ export type FieldType =
   | typeof UPDATED_AT_TYPE
   | typeof CREATED_BY_TYPE
   | typeof UPDATED_BY_TYPE
+  | typeof REFERENCE_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,

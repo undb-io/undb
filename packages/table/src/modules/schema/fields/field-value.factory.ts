@@ -6,6 +6,7 @@ import {
   CreatedAtFieldValue,
   IdFieldValue,
   NumberFieldValue,
+  ReferenceFieldValue,
   StringFieldValue,
   UpdatedAtFieldValue,
   UpdatedByFieldValue,
@@ -17,6 +18,7 @@ export class FieldValueFactory {
     return match(field)
       .with({ type: "number" }, (field) => Some(new NumberFieldValue(field.valueSchema.parse(value))))
       .with({ type: "string" }, (field) => Some(new StringFieldValue(field.valueSchema.parse(value))))
+      .with({ type: "reference" }, (field) => Some(new ReferenceFieldValue(field.valueSchema.parse(value))))
       .otherwise(() => None)
   }
 
@@ -30,6 +32,7 @@ export class FieldValueFactory {
       .with("createdBy", () => Some(new CreatedByFieldValue(value as string)))
       .with("updatedAt", () => Some(new UpdatedAtFieldValue(new Date(value))))
       .with("updatedBy", () => Some(new UpdatedByFieldValue(value as string)))
+      .with("reference", () => Some(new ReferenceFieldValue(value as string[])))
       .exhaustive()
   }
 }

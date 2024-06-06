@@ -1,4 +1,5 @@
 import { match } from "ts-pattern"
+import { ReferenceField } from "."
 import type { ICreateFieldDTO } from "./dto/create-field.dto"
 import type { IFieldDTO } from "./dto/field.dto"
 import type { Field } from "./field.type"
@@ -22,6 +23,7 @@ export class FieldFactory {
       .with({ type: "autoIncrement" }, (dto) => new AutoIncrementField(dto))
       .with({ type: "updatedAt" }, (dto) => new UpdatedAtField(dto))
       .with({ type: "updatedBy" }, (dto) => new UpdatedByField(dto))
+      .with({ type: "reference" }, (dto) => new ReferenceField(dto))
       .exhaustive()
   }
 
@@ -29,6 +31,7 @@ export class FieldFactory {
     return match(dto)
       .with({ type: "string" }, (dto) => StringField.create(dto))
       .with({ type: "number" }, (dto) => NumberField.create(dto))
+      .with({ type: "reference" }, (dto) => ReferenceField.create(dto))
       .otherwise(() => {
         throw new Error("Field type creation not supported")
       })
