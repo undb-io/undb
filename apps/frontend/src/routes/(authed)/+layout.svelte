@@ -67,7 +67,7 @@
           </span>
           <span>
             <code class="bg-muted relative rounded border border-gray-300 px-[0.3rem] py-[0.2rem] font-mono text-xs">
-              Ctrl + K
+              ⌘ + K
             </code>
           </span>
         </Button>
