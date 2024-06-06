@@ -1,0 +1,11 @@
+query GetForeignTables {
+  tables {
+    id
+    name
+    schema {
+      id
+      name
+      type
+    }
+  }
+}

@@ -1,3 +1,4 @@
+export * from "./reference-field-constraint.vo"
 export * from "./reference-field-value.visitor"
 export * from "./reference-field-value.vo"
 export * from "./reference-field.aggregate"

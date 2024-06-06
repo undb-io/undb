@@ -103,7 +103,7 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
         b.references(`${this.t.name}.${ID_TYPE}`).notNull().onDelete("cascade"),
       )
       .addColumn(JoinTable.TO_ID, "varchar(10)", (b) =>
-        b.references(`${field.foreignTableId.value}.${ID_TYPE}`).notNull().onDelete("cascade"),
+        b.references(`${field.option.foreignTableId}.${ID_TYPE}`).notNull().onDelete("cascade"),
       )
       .compile()
     this.addSql(sql)

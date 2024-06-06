@@ -10,6 +10,7 @@
     CalendarClockIcon,
     UserRoundPlus,
     UserRoundCheck,
+    SquareArrowOutUpRightIcon,
   } from "lucide-svelte"
 
   export let type: FieldType
@@ -23,6 +24,7 @@
     createdBy: UserRoundPlus,
     updatedAt: CalendarClockIcon,
     updatedBy: UserRoundCheck,
+    reference: SquareArrowOutUpRightIcon,
   }
 </script>
 

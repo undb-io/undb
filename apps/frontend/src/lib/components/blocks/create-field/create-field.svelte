@@ -10,7 +10,7 @@
   import { createFieldDTO } from "@undb/table"
   import { toast } from "svelte-sonner"
   import { derived } from "svelte/store"
-  import { defaults, superForm } from "sveltekit-superforms"
+  import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import FieldOptions from "../field-options/field-options.svelte"
   import FieldTypePicker from "../field-picker/field-type-picker.svelte"
@@ -86,6 +86,7 @@
     <Form.Control let:attrs>
       <FieldOptions
         type={$formData.type}
+        bind:option={$formData.option}
         bind:constraint={$formData.constraint}
         bind:display={$formData.display}
         bind:defaultValue={$formData.defaultValue}
@@ -99,3 +100,5 @@
     <Button type="submit">Submit</Button>
   </div>
 </form>
+
+<SuperDebug data={$formData} />
