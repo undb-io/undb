@@ -17,13 +17,24 @@
   export let tables: Table[] = []
 </script>
 
-<Command.Dialog bind:open={$commandOpen} closeOnEscape closeOnOutsideClick>
+<Command.Dialog
+  filter={(value, search) => {
+    const teamName = tables?.find((item) => item.id === value)?.name?.toLowerCase() || ""
+    if (teamName.includes(search)) return 1
+    return 0
+  }}
+  bind:open={$commandOpen}
+  closeOnEscape
+  closeOnOutsideClick
+>
   <Command.Input placeholder="Search for tables..." />
   <Command.List>
     <Command.Empty>No results found.</Command.Empty>
     <Command.Group heading="Tables">
       {#each tables as table}
         <Command.Item
+          id={table.id}
+          value={table.id}
           onSelect={() => {
             goto(`/t/${table.id}`)
             $commandOpen = false
