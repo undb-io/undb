@@ -52,7 +52,7 @@
   use:shortcut={{
     trigger: {
       key: "k",
-      modifier: ["alt", "ctrl"],
+      modifier: ["meta", "ctrl"],
       callback: handleK,
     },
   }}
