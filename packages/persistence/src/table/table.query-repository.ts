@@ -11,17 +11,18 @@ import type { Database } from "../db"
 import { injectDb } from "../db.provider"
 import { tables } from "../tables"
 import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
-import type { TableMapper } from "./table.mapper"
-import { injectTableMapper } from "./table.mapper.provider"
+import { TableMapper } from "./table.mapper"
 
 @singleton()
 export class TableQueryRepository implements ITableQueryRepository {
   constructor(
     @injectDb()
     private readonly db: Database,
-    @injectTableMapper()
-    private readonly mapper: TableMapper,
   ) {}
+
+  public get mapper() {
+    return new TableMapper()
+  }
 
   async find(spec: Option<TableComositeSpecification>): Promise<ITableDTO[]> {
     const qb = this.db.select().from(tables).$dynamic()

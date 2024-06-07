@@ -1,6 +1,7 @@
-import { Option } from "@undb/domain"
+import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { tableId } from "../../../../../table-id.vo"
+import type { TableDo } from "../../../../../table.do"
 import { recordId } from "../../../../records/record/record-id.vo"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
@@ -26,6 +27,7 @@ export const createReferenceFieldDTO = createBaseFieldDTO
     type: z.literal(REFERENCE_TYPE),
     option: z.object({
       foreignTableId: tableId,
+      createSymmetricField: z.boolean(),
     }),
   })
   .omit({ display: true })
@@ -41,17 +43,17 @@ export const referenceFieldDTO = baseFieldDTO.extend({
 
 export type IReferenceFieldDTO = z.infer<typeof referenceFieldDTO>
 
-export class ReferenceField extends AbstractField<ReferenceFieldValue> {
-  public readonly option: IReferenceFieldOption
+export class ReferenceField extends AbstractField<ReferenceFieldValue, undefined, IReferenceFieldOption> {
+  public readonly option: Option<IReferenceFieldOption>
 
   constructor(dto: IReferenceFieldDTO) {
     super(dto)
 
-    this.option = {
+    this.option = Some({
       isOwner: dto.option.isOwner,
       foreignTableId: dto.option.foreignTableId,
       symmetricFieldId: dto.option.symmetricFieldId,
-    }
+    })
 
     this.display = false
   }
@@ -60,10 +62,24 @@ export class ReferenceField extends AbstractField<ReferenceFieldValue> {
 
   static create(dto: ICreateReferenceFieldDTO) {
     return new ReferenceField({
-      ...dto,
-      option: { ...dto.option, isOwner: true },
+      type: "reference",
+      name: dto.name,
+      option: { foreignTableId: dto.option.foreignTableId, isOwner: true },
       id: FieldIdVo.fromStringOrCreate(dto.id).value,
     })
+  }
+
+  static createSymmetricField(foreignTable: TableDo, table: TableDo, field: ReferenceField) {
+    return new ReferenceField({
+      type: "reference",
+      name: table.schema.getNextFieldName(field.name.value),
+      option: { isOwner: false, foreignTableId: foreignTable.id.value, symmetricFieldId: field.id.value },
+      id: FieldIdVo.create().value,
+    })
+  }
+
+  connect(field: ReferenceField) {
+    this.option.expect("no reference field option").symmetricFieldId = field.id.value
   }
 
   override type = REFERENCE_TYPE

@@ -1,5 +1,10 @@
 import type {
+  INumberFieldConditionSchema,
+  IReferenceFieldOption,
+  IStringFieldConditionSchema,
   IStringFieldConstraint,
+  IUpdatedAtFieldConditionSchema,
+  IUpdatedByFieldConditionSchema,
   REFERENCE_TYPE,
   ReferenceField,
   ReferenceFieldValue,
@@ -10,10 +15,25 @@ import type {
   UpdatedByField,
   UpdatedByFieldValue,
 } from ".."
-import type { AUTO_INCREMENT_TYPE, AutoIncrementField, AutoIncrementFieldValue } from "./variants/autoincrement-field"
-import type { CREATED_AT_TYPE, CreatedAtField, CreatedAtFieldValue } from "./variants/created-at-field"
-import type { CREATED_BY_TYPE, CreatedByField, CreatedByFieldValue } from "./variants/created-by-field"
-import type { ID_TYPE, IdField, IdFieldValue } from "./variants/id-field"
+import type {
+  AUTO_INCREMENT_TYPE,
+  AutoIncrementField,
+  AutoIncrementFieldValue,
+  IAutoIncrementFieldConditionSchema,
+} from "./variants/autoincrement-field"
+import type {
+  CREATED_AT_TYPE,
+  CreatedAtField,
+  CreatedAtFieldValue,
+  ICreatedAtFieldConditionSchema,
+} from "./variants/created-at-field"
+import type {
+  CREATED_BY_TYPE,
+  CreatedByField,
+  CreatedByFieldValue,
+  ICreatedByFieldConditionSchema,
+} from "./variants/created-by-field"
+import type { ID_TYPE, IIdFieldConditionSchema, IdField, IdFieldValue } from "./variants/id-field"
 import type { INumberFieldConstraint } from "./variants/number-field/number-field-constraint.vo"
 import type { NumberFieldValue } from "./variants/number-field/number-field-value.vo"
 import type { NUMBER_TYPE, NumberField } from "./variants/number-field/number-field.vo"
@@ -68,6 +88,18 @@ export type NoneSystemFieldType = Exclude<
   | typeof UPDATED_BY_TYPE
 >
 
+export type IFieldConditionSchema =
+  | IIdFieldConditionSchema
+  | IStringFieldConditionSchema
+  | INumberFieldConditionSchema
+  | ICreatedAtFieldConditionSchema
+  | ICreatedByFieldConditionSchema
+  | IUpdatedByFieldConditionSchema
+  | IUpdatedAtFieldConditionSchema
+  | IAutoIncrementFieldConditionSchema
+
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
 
 export type IFieldConstraint = IStringFieldConstraint | INumberFieldConstraint
+
+export type IFieldOption = IReferenceFieldOption

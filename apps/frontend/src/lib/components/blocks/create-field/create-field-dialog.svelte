@@ -1,7 +1,10 @@
 <script lang="ts">
   import * as Dialog from "$lib/components/ui/dialog"
   import { CREATE_FIELD_MODAL, modal, toggleModal } from "$lib/store/modal.store"
+  import { getTable } from "$lib/store/table.store"
   import CreateField from "./create-field.svelte"
+
+  const table = getTable()
 </script>
 
 <Dialog.Root
@@ -12,7 +15,7 @@
 >
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Create Field</Dialog.Title>
+      <Dialog.Title>Create Field for {$table.name.value}</Dialog.Title>
     </Dialog.Header>
 
     <CreateField />

@@ -7,6 +7,7 @@
 
   export let constraint: IReferenceFieldConstraint | undefined
   export let option: Partial<ICreateReferenceFieldDTO["option"]> = {}
+  export let isNew: boolean
 </script>
 
 {#if constraint}
@@ -15,6 +16,12 @@
       <Label>Foreign Table</Label>
       <ForeignTablePicker bind:value={option.foreignTableId} />
     </div>
+    {#if isNew}
+      <div class="flex items-center space-x-2">
+        <Switch id="createSymmetricField" bind:checked={option.createSymmetricField} />
+        <Label for="createSymmetricField" class="text-xs">create symmetric field</Label>
+      </div>
+    {/if}
     <div class="grid grid-cols-2 gap-3">
       <div class="grid gap-3">
         <Label for="min">Min</Label>

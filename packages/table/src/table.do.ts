@@ -1,7 +1,7 @@
 import { AggregateRoot, None, Option } from "@undb/domain"
 import type { ITableDTO } from "./dto"
 import type { ITableEvents } from "./events"
-import { createFieldMethod } from "./methods/create-field.method"
+import { $createFieldSpec, createFieldMethod } from "./methods/create-field.method"
 import { createFormMethod } from "./methods/create-form.method"
 import { setTableForm } from "./methods/set-table-form.method"
 import { setTableRLS } from "./methods/set-table-rls.method"
@@ -32,6 +32,8 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   $setViewSort = setViewSort
   $setTableRLS = setTableRLS
   $setViewAggregate = setViewAggregate
+
+  $createFieldSpec = $createFieldSpec
   $createField = createFieldMethod
   $updateField = updateFieldMethod
   $createForm = createFormMethod

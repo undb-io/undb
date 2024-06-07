@@ -10,7 +10,7 @@ import type { IFieldDTO } from "../dto/field.dto"
 import type { FieldConstraintVO } from "../field-constraint.vo"
 import { FieldIdVo, fieldId, type FieldId } from "../field-id.vo"
 import { FieldNameVo, fieldName } from "../field-name.vo"
-import type { FieldType } from "../field.type"
+import type { FieldType, IFieldConditionSchema, IFieldOption } from "../field.type"
 import { isFieldSortable } from "../field.util"
 import type { IFieldVisitor } from "../field.visitor"
 import type { IAutoIncrementFieldConditionSchema } from "./autoincrement-field/autoincrement-field.condition"
@@ -38,11 +38,16 @@ export const baseFieldDTO = z.object({
 
 export type IBaseFieldDTO = z.infer<typeof baseFieldDTO>
 
-export abstract class AbstractField<V extends ValueObject, C extends FieldConstraintVO = any> {
+export abstract class AbstractField<
+  V extends ValueObject,
+  C extends FieldConstraintVO | undefined = any,
+  O extends IFieldOption = any,
+> {
   id!: FieldId
   name!: FieldNameVo
   display = false
   constraint: Option<C> = None
+  option: Option<O> = None
   #defaultValue: Option<V> = None
 
   constructor(dto: IBaseFieldDTO) {
@@ -77,7 +82,7 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
   abstract accept(visitor: IFieldVisitor): void
 
   get required(): boolean {
-    return this.constraint.mapOr(false, (c) => !!c.required)
+    return this.constraint.mapOr(false, (c) => !!c?.required)
   }
 
   get searchable(): boolean {
@@ -92,17 +97,7 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
     throw new Error("Method not implemented.")
   }
 
-  protected abstract getConditionSchema<OptionType extends z.ZodTypeAny>(
-    optionType: OptionType,
-  ):
-    | IIdFieldConditionSchema
-    | IStringFieldConditionSchema
-    | INumberFieldConditionSchema
-    | ICreatedAtFieldConditionSchema
-    | ICreatedByFieldConditionSchema
-    | IUpdatedByFieldConditionSchema
-    | IUpdatedAtFieldConditionSchema
-    | IAutoIncrementFieldConditionSchema
+  protected abstract getConditionSchema<OptionType extends z.ZodTypeAny>(optionType: OptionType): IFieldConditionSchema
 
   validateCondition<OptionType extends z.ZodTypeAny>(
     condition: MaybeFieldConditionWithFieldId,
@@ -166,6 +161,7 @@ export abstract class AbstractField<V extends ValueObject, C extends FieldConstr
       display: this.display,
       defaultValue: this.defaultValue.into(undefined)?.value,
       constraint: this.constraint.into(undefined)?.value,
+      option: this.option.into(undefined) as IFieldOption,
     }
   }
 }

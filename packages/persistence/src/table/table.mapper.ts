@@ -1,14 +1,11 @@
-import { singleton } from "@undb/di"
 import type { Mapper } from "@undb/domain"
-import { injectTableBuilder, type ITableBuilder, type ITableDTO, type TableDo } from "@undb/table"
+import { TableBuilder, type ITableDTO, type TableDo } from "@undb/table"
 import type { NewTable, Table } from "../tables"
 
-@singleton()
 export class TableMapper implements Mapper<TableDo, NewTable, ITableDTO> {
-  constructor(
-    @injectTableBuilder()
-    private readonly builder: ITableBuilder,
-  ) {}
+  public get builder() {
+    return new TableBuilder()
+  }
 
   toDo(entity: Table): TableDo {
     return this.builder

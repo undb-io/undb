@@ -96,16 +96,22 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
 
   reference(field: ReferenceField): void {
     const joinTable = new JoinTable(this.t.table, field)
-    const sql = this.qb.schema
-      .createTable(joinTable.getName())
-      .ifNotExists()
-      .addColumn(JoinTable.FROM_ID, "varchar(10)", (b) =>
-        b.references(`${this.t.name}.${ID_TYPE}`).notNull().onDelete("cascade"),
-      )
-      .addColumn(JoinTable.TO_ID, "varchar(10)", (b) =>
-        b.references(`${field.option.foreignTableId}.${ID_TYPE}`).notNull().onDelete("cascade"),
-      )
-      .compile()
-    this.addSql(sql)
+    const option = field.option.expect("expect reference option")
+
+    const isOwner = option.isOwner
+
+    if (isOwner) {
+      const sql = this.qb.schema
+        .createTable(joinTable.getName())
+        .ifNotExists()
+        .addColumn(JoinTable.FROM_ID, "varchar(10)", (b) =>
+          b.references(`${this.t.name}.${ID_TYPE}`).notNull().onDelete("cascade"),
+        )
+        .addColumn(JoinTable.TO_ID, "varchar(10)", (b) =>
+          b.references(`${option.foreignTableId}.${ID_TYPE}`).notNull().onDelete("cascade"),
+        )
+        .compile()
+      this.addSql(sql)
+    }
   }
 }

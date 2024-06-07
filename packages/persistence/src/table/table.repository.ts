@@ -11,6 +11,7 @@ import {
   type TableId,
 } from "@undb/table"
 import { eq } from "drizzle-orm"
+import { all } from "radash"
 import type { Database } from "../db"
 import { injectDb } from "../db.provider"
 import { tables } from "../tables"
@@ -18,7 +19,6 @@ import { UnderlyingTableService } from "../underlying/underlying-table.service"
 import { injectDbUnitOfWork, transactional } from "../uow"
 import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
 import { TableMapper } from "./table.mapper"
-import { injectTableMapper } from "./table.mapper.provider"
 import { TableMutationVisitor } from "./table.mutation-visitor"
 
 @singleton()
@@ -26,8 +26,6 @@ export class TableRepository implements ITableRepository {
   constructor(
     @injectDb()
     private readonly db: Database,
-    @injectTableMapper()
-    private readonly mapper: TableMapper,
     @inject(UnderlyingTableService)
     private readonly underlyingTableService: UnderlyingTableService,
     @injectTableOutboxService()
@@ -36,8 +34,16 @@ export class TableRepository implements ITableRepository {
     public readonly uow: IUnitOfWork,
   ) {}
 
+  get mapper() {
+    return new TableMapper()
+  }
+
   @transactional()
   async updateOneById(table: TableDo, spec: Option<TableComositeSpecification>): Promise<void> {
+    return this.#updateOneById(table, spec)
+  }
+
+  async #updateOneById(table: TableDo, spec: Option<TableComositeSpecification>): Promise<void> {
     if (spec.isNone()) {
       return
     }
@@ -66,6 +72,11 @@ export class TableRepository implements ITableRepository {
     await this.db.insert(tables).values({ ...values, createdBy: userId, updatedBy: userId })
     await this.underlyingTableService.create(table)
     await this.outboxService.save(table)
+  }
+
+  @transactional()
+  async bulkUpdate(updates: { table: TableDo; spec: Option<TableComositeSpecification> }[]): Promise<void> {
+    await all(updates.map((update) => this.#updateOneById(update.table, update.spec)))
   }
 
   async findOneById(id: TableId): Promise<Option<TableDo>> {

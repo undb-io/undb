@@ -11,7 +11,6 @@ import {
   IdField,
   UpdatedAtField,
   UpdatedByField,
-  type ICreateFieldDTO,
   type IUpdateFieldDTO,
 } from "./fields"
 import type { FieldId } from "./fields/field-id.vo"
@@ -52,9 +51,7 @@ export class Schema extends ValueObject<Field[]> {
     yield* this.fields
   }
 
-  $createField(dto: ICreateFieldDTO): WithNewFieldSpecification {
-    const field = FieldFactory.create(dto)
-
+  $createField(field: Field): WithNewFieldSpecification {
     return new WithNewFieldSpecification(field)
   }
 
@@ -133,8 +130,13 @@ export class Schema extends ValueObject<Field[]> {
     return this.fields.filter((f) => f.searchable)
   }
 
-  getNextFieldName(): string {
-    return new FieldNameVo(getNextName(this.fields.map((f) => f.name.value))).value
+  getNextFieldName(defaultName?: string): string {
+    return new FieldNameVo(
+      getNextName(
+        this.fields.map((f) => f.name.value),
+        defaultName,
+      ),
+    ).value
   }
 
   toJSON(): ISchemaDTO {

@@ -27,6 +27,7 @@ export class Graphql {
         updatedAt
         updatedBy
         autoIncrement
+        reference
       }
 
       type Field {
@@ -36,6 +37,7 @@ export class Graphql {
         defaultValue: JSON
         display: Boolean
         constraint: JSON
+        option: JSON
       }
 
       enum ViewType {

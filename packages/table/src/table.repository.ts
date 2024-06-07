@@ -7,6 +7,7 @@ import type { TableDo } from "./table.do"
 export interface ITableRepository {
   insert(table: TableDo): Promise<void>
   updateOneById(table: TableDo, spec: Option<TableComositeSpecification>): Promise<void>
+  bulkUpdate(updates: { table: TableDo; spec: Option<TableComositeSpecification> }[]): Promise<void>
 
   findOneById(id: TableId): Promise<Option<TableDo>>
 }

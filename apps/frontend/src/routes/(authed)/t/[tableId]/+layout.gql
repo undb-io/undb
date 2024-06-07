@@ -9,6 +9,7 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
       defaultValue
       display
       constraint
+      option
     }
 
     views {

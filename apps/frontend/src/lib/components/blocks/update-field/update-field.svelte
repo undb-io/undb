@@ -107,6 +107,7 @@
         <Form.Control let:attrs>
           <FieldOptions
             type={$formData.type}
+            bind:option={$formData.option}
             bind:constraint={$formData.constraint}
             bind:display={$formData.display}
             bind:defaultValue={$formData.defaultValue}

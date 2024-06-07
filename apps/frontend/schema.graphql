@@ -14,6 +14,7 @@ type Field {
   display: Boolean
   id: ID!
   name: String!
+  option: JSON
   type: FieldType!
 }
 
@@ -23,6 +24,7 @@ enum FieldType {
   createdBy
   id
   number
+  reference
   string
   updatedAt
   updatedBy
