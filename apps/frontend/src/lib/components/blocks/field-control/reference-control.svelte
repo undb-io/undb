@@ -1,13 +1,10 @@
 <script lang="ts">
-  import Button from "$lib/components/ui/button/button.svelte"
   import type { ReferenceField } from "@undb/table"
-  import { foreignTableId } from "../reference/foreign-table-picker.store"
+  import ForeignRecordsPickerDropdown from "../reference/foreign-records-picker-dropdown.svelte"
 
   export let field: ReferenceField
-
-  const onClick = () => {
-    $foreignTableId = field.foreignTableId
-  }
+  export let value: string[]
 </script>
 
-<Button on:click={onClick} size="icon">+</Button>
+{value}
+<ForeignRecordsPickerDropdown foreignTableId={field.foreignTableId} bind:value />

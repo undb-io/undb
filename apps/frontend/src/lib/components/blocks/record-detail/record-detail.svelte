@@ -11,7 +11,7 @@
   import { zodClient } from "sveltekit-superforms/adapters"
   import { toast } from "svelte-sonner"
   import { beforeNavigate } from "$app/navigation"
-  import { keys, pick } from "radash"
+  import { pick } from "radash"
   import { queryParam } from "sveltekit-search-params"
 
   const r = queryParam("r")
@@ -73,7 +73,7 @@
       if (!event.form.valid) return
 
       const data = event.form.data
-      const values = $tainted ? pick(data, keys($tainted)) : undefined
+      const values = $tainted ? pick(data, Object.keys($tainted)) : undefined
       if (values) {
         updateRecord(values)
       }

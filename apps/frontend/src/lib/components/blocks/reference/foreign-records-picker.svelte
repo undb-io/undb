@@ -77,13 +77,16 @@
   const viewModel = writable(table.createViewModel(columns ?? []))
   $: columns, viewModel.set(table.createViewModel(columns))
 
-  $: visibleColumns = $viewModel.visibleColumns
   $: headerRows = $viewModel.headerRows
   $: pageRows = $viewModel.pageRows
   $: tableAttrs = $viewModel.tableAttrs
-  $: tableHeaderAttrs = $viewModel.tableHeadAttrs
   $: tableBodyAttrs = $viewModel.tableBodyAttrs
-  $: rows = $viewModel.rows
+
+  export let selected: string[] = []
+  $: selectedDataIds = $viewModel.pluginStates.select.selectedDataIds
+  $: selected = Object.entries($selectedDataIds)
+    .filter(([, isSelected]) => isSelected)
+    .map(([id]) => records[Number(id)].id)
 </script>
 
 <ScrollArea orientation="both" class="h-full flex-1 overflow-auto">

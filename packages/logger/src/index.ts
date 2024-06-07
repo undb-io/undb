@@ -3,7 +3,7 @@ import pino, { type LoggerOptions } from "pino"
 export * from "./logger.provider"
 
 export const loggerOptions: LoggerOptions = {
-  level: import.meta.env.LOG_LEVEL ?? "debug",
+  level: import.meta.env.LOG_LEVEL ?? "info",
   transport:
     import.meta.env.NODE_ENV === "production"
       ? undefined

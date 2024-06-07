@@ -1,5 +1,6 @@
 import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
+import { isEmpty } from "radash"
 import { recordId } from "../../../../records/record/record-id.vo"
 
 const referenceFieldValueItem = recordId
@@ -25,5 +26,9 @@ export type IMutateReferenceFieldValueSchema = z.infer<typeof mutateReferenceFie
 export class ReferenceFieldValue extends ValueObject<string[]> {
   constructor(value: string[]) {
     super(value)
+  }
+
+  isEmpty() {
+    return isEmpty(this.props)
   }
 }
