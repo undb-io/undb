@@ -34,7 +34,6 @@ export interface ITableBuilder {
   build(): TableDo
 }
 
-@injectable()
 export class TableBuilder implements ITableBuilder {
   private table!: TableDo
 
@@ -99,12 +98,10 @@ export interface ITableCreator {
   create(dto: ICreateTableDTO): TableDo
 }
 
-@singleton()
 export class TableCreator {
-  constructor(
-    @inject(TableBuilder)
-    private readonly builder: ITableBuilder,
-  ) {}
+  private get builder() {
+    return new TableBuilder()
+  }
 
   create(dto: ICreateTableDTO): TableDo {
     dto = createTableDTO.parse(dto)
@@ -128,5 +125,3 @@ export class TableCreator {
       .build()
   }
 }
-
-export const tableCreator = container.resolve(TableCreator)

@@ -13,6 +13,7 @@
   import { tab } from "$lib/store/tab.store"
   import { CREATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import UpdateFieldDialog from "$lib/components/blocks/update-field/update-field-dialog.svelte"
+  import ForeignRecordsPickerDialog from "$lib/components/blocks/reference/foreign-records-picker-dialog.svelte"
 
   function handleR() {
     toggleModal(CREATE_RECORD_MODAL)
@@ -39,6 +40,7 @@
 <ConfirmDuplicateRecord />
 <CreateFieldDialog />
 <UpdateFieldDialog />
+<ForeignRecordsPickerDialog />
 
 <svelte:window
   use:shortcut={{

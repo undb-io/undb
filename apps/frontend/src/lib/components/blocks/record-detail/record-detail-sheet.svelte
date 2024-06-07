@@ -13,6 +13,7 @@
   import AuditList from "../audit/audit-list.svelte"
   import { HistoryIcon } from "lucide-svelte"
   import { preferences } from "$lib/store/persisted.store"
+  import { ScrollArea } from "$lib/components/ui/scroll-area"
 
   const r = queryParam("r", ssp.string(), { pushHistory: false })
 
@@ -56,7 +57,7 @@
       </Sheet.Title>
     </Sheet.Header>
 
-    <div class="flex-1">
+    <ScrollArea class="flex-1 overflow-auto" orientation="vertical">
       {#if $record.isLoading}
         <div class="space-y-4">
           <Skeleton class="h-10 w-full" />
@@ -78,7 +79,7 @@
           </div>
         {/if}
       </div>
-    </div>
+    </ScrollArea>
 
     <Sheet.Footer class="-mx-6 border-t px-6 pt-4">
       <Button variant="outline" type="button" on:click={() => ($r = null)}>Cancel</Button>

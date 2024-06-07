@@ -58,8 +58,6 @@ export class ReferenceField extends AbstractField<ReferenceFieldValue, undefined
     this.display = false
   }
 
-  protected override system: boolean = true
-
   static create(dto: ICreateReferenceFieldDTO) {
     return new ReferenceField({
       type: "reference",
@@ -85,7 +83,7 @@ export class ReferenceField extends AbstractField<ReferenceFieldValue, undefined
   override type = REFERENCE_TYPE
 
   override get valueSchema() {
-    return recordId.array()
+    return recordId.array().optional().nullable()
   }
 
   override accept(visitor: IFieldVisitor): void {
@@ -104,5 +102,9 @@ export class ReferenceField extends AbstractField<ReferenceFieldValue, undefined
 
   override get aggregate() {
     return referenceFieldAggregate
+  }
+
+  public get foreignTableId(): string {
+    return this.option.unwrap().foreignTableId
   }
 }

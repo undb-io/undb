@@ -6,6 +6,7 @@
   import type { ComponentType } from "svelte"
   import DateControl from "./date-control.svelte"
   import UserControl from "./user-control.svelte"
+  import ReferenceControl from "./reference-control.svelte"
 
   export let field: Field
 
@@ -29,7 +30,8 @@
     updatedAt: DateControl,
     createdBy: UserControl,
     updatedBy: UserControl,
+    reference: ReferenceControl,
   }
 </script>
 
-<svelte:component this={map[field.type]} on:change {...$$restProps} bind:value />
+<svelte:component this={map[field.type]} on:change {...$$restProps} bind:value {field} />
