@@ -148,7 +148,7 @@ export class Schema extends ValueObject<Field[]> {
     return Option(field)
   }
 
-  public getDefaultValues() {
+  getDefaultValues() {
     const values: Record<string, any> = {}
 
     for (const field of this.mutableFields) {
@@ -161,5 +161,9 @@ export class Schema extends ValueObject<Field[]> {
     }
 
     return values
+  }
+
+  getDisplayFields(fieldIds?: Set<string>) {
+    return this.fields.filter((f) => (fieldIds ? fieldIds.has(f.id.value) : true) && f.display)
   }
 }

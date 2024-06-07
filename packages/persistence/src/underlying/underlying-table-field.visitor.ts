@@ -104,10 +104,10 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
       const sql = this.qb.schema
         .createTable(joinTable.getTableName())
         .ifNotExists()
-        .addColumn(field.foreignTableId, "varchar(10)", (b) =>
+        .addColumn(joinTable.getSymmetricFieldId(), "varchar(10)", (b) =>
           b.references(`${field.foreignTableId}.${ID_TYPE}`).notNull().onDelete("cascade"),
         )
-        .addColumn(field.id.value, "varchar(10)", (b) =>
+        .addColumn(joinTable.getFieldId(), "varchar(10)", (b) =>
           b.references(`${this.t.table.id.value}.${ID_TYPE}`).notNull().onDelete("cascade"),
         )
         .compile()

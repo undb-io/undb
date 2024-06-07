@@ -7,18 +7,16 @@ export class JoinTable {
   ) {}
 
   getFieldId(): string {
-    return this.field.isOwner ? this.field.id.value : this.field.foreignTableId
+    return this.field.isOwner ? this.field.id.value : this.field.symmetricFieldId!
   }
 
   getSymmetricFieldId(): string {
-    return this.field.isOwner ? this.table.id.value : this.field.symmetricFieldId!
+    return this.field.isOwner ? this.field.foreignTableId : this.table.id.value
   }
 
   getTableName() {
-    if (this.field.isOwner) {
-      return `$${this.table.id.value}_${this.getFieldId()}_${this.field.foreignTableId}_join_table`
-    }
-
-    return `$${this.field.foreignTableId}_${this.getSymmetricFieldId()}_${this.table.id.value}_join_table`
+    const { field } = this
+    const { isOwner, foreignTableId } = field
+    return `$${isOwner ? foreignTableId : this.table.id.value}_${this.getFieldId()}_join_table`
   }
 }
