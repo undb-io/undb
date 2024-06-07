@@ -61,32 +61,20 @@ export class RecordMutateVisitor implements IRecordVisitor {
     const field = this.table.schema.getFieldById(spec.fieldId).unwrap() as ReferenceField
     const joinTable = new JoinTable(this.table, field)
 
-    const name = joinTable.getName()
+    const name = joinTable.getTableName()
 
-    const deleteRecords = field.isOwner
-      ? this.qb
-          .deleteFrom(name)
-          .where(this.eb.eb(spec.fieldId.value, "=", this.record.id.value))
-          .compile()
-      : this.qb
-          .deleteFrom(name)
-          .where(this.eb.eb(this.table.id.value, "=", this.record.id.value))
-          .compile()
+    const deleteRecords = this.qb
+      .deleteFrom(name)
+      .where(this.eb.eb(joinTable.getFieldId(), "=", this.record.id.value))
+      .compile()
 
     const insert = this.qb
       .insertInto(name)
       .values(
-        spec.values.props.map((recordId) => {
-          return field.isOwner
-            ? {
-                [field.id.value]: this.record.id.value,
-                [field.foreignTableId]: recordId,
-              }
-            : {
-                [field.symmetricFieldId!]: recordId,
-                [this.table.id.value]: this.record.id.value,
-              }
-        }),
+        spec.values.props.map((recordId) => ({
+          [joinTable.getFieldId()]: this.record.id.value,
+          [joinTable.getSymmetricFieldId()]: recordId,
+        })),
       )
       .compile()
 

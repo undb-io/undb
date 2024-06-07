@@ -102,7 +102,7 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
 
     if (isOwner) {
       const sql = this.qb.schema
-        .createTable(joinTable.getName())
+        .createTable(joinTable.getTableName())
         .ifNotExists()
         .addColumn(field.foreignTableId, "varchar(10)", (b) =>
           b.references(`${field.foreignTableId}.${ID_TYPE}`).notNull().onDelete("cascade"),

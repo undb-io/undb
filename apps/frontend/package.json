@@ -53,7 +53,7 @@
     "timeago.js": "^4.0.2",
     "tslib": "^2.6.3",
     "typescript": "^5.4.5",
-    "vite": "^5.2.12",
+    "vite": "^5.2.13",
     "vitest": "^1.6.0"
   },
   "type": "module",

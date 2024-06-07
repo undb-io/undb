@@ -6,19 +6,19 @@ export class JoinTable {
     public readonly field: ReferenceField,
   ) {}
 
-  get #option() {
-    return this.field.option.expect("option is not found")
+  getFieldId(): string {
+    return this.field.isOwner ? this.field.id.value : this.field.foreignTableId
   }
 
-  get #isOwner() {
-    return this.#option.isOwner
+  getSymmetricFieldId(): string {
+    return this.field.isOwner ? this.table.id.value : this.field.symmetricFieldId!
   }
 
-  public getName() {
-    if (this.#isOwner) {
-      return `$${this.table.id.value}_${this.field.id.value}_${this.#option.foreignTableId}_join_table`
+  getTableName() {
+    if (this.field.isOwner) {
+      return `$${this.table.id.value}_${this.getFieldId()}_${this.field.foreignTableId}_join_table`
     }
 
-    return `$${this.#option.foreignTableId}_${this.#option.symmetricFieldId}_${this.table.id.value}_join_table`
+    return `$${this.field.foreignTableId}_${this.getSymmetricFieldId()}_${this.table.id.value}_join_table`
   }
 }
