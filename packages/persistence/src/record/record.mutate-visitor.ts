@@ -13,6 +13,9 @@ import type {
   NumberGTE,
   NumberLT,
   NumberLTE,
+  RecordDO,
+  ReferenceEqual,
+  ReferenceField,
   StringContains,
   StringEmpty,
   StringEndsWith,
@@ -20,13 +23,75 @@ import type {
   StringMax,
   StringMin,
   StringStartsWith,
+  TableDo,
   UserEmpty,
   UserEqual,
 } from "@undb/table"
-import type { ExpressionBuilder } from "kysely"
+import type { CompiledQuery, ExpressionBuilder } from "kysely"
+import type { IQueryBuilder } from "../qb"
+import { JoinTable } from "../underlying/reference/join-table"
 
 export class RecordMutateVisitor implements IRecordVisitor {
-  constructor(private readonly eb: ExpressionBuilder<any, any>) {}
+  constructor(
+    private readonly table: TableDo,
+    private readonly record: RecordDO,
+    private readonly qb: IQueryBuilder,
+    private readonly eb: ExpressionBuilder<any, any>,
+  ) {}
+  // TODO: data type
+  #data: Record<string, any> = {}
+  public get data(): Readonly<Record<string, any>> {
+    return this.#data
+  }
+
+  private setData(key: string, value: any): void {
+    this.#data[key] = value
+  }
+
+  #sql: CompiledQuery[] = []
+  get sql() {
+    return this.#sql
+  }
+
+  addSql(...sql: CompiledQuery[]) {
+    this.#sql.push(...sql)
+  }
+
+  referenceEqual(spec: ReferenceEqual): void {
+    const field = this.table.schema.getFieldById(spec.fieldId).unwrap() as ReferenceField
+    const joinTable = new JoinTable(this.table, field)
+
+    const name = joinTable.getName()
+
+    const deleteRecords = field.isOwner
+      ? this.qb
+          .deleteFrom(name)
+          .where(this.eb.eb(spec.fieldId.value, "=", this.record.id.value))
+          .compile()
+      : this.qb
+          .deleteFrom(name)
+          .where(this.eb.eb(this.table.id.value, "=", this.record.id.value))
+          .compile()
+
+    const insert = this.qb
+      .insertInto(name)
+      .values(
+        spec.values.props.map((recordId) => {
+          return field.isOwner
+            ? {
+                [field.id.value]: this.record.id.value,
+                [field.foreignTableId]: recordId,
+              }
+            : {
+                [field.symmetricFieldId!]: recordId,
+                [this.table.id.value]: this.record.id.value,
+              }
+        }),
+      )
+      .compile()
+
+    this.addSql(deleteRecords, insert)
+  }
   userEqual(spec: UserEqual): void {
     this.setData(spec.fieldId.value, spec.value)
   }
@@ -39,16 +104,6 @@ export class RecordMutateVisitor implements IRecordVisitor {
   stringMax(spec: StringMax): void {
     throw new Error("Method not implemented.")
   }
-  // TODO: data type
-  #data: Record<string, any> = {}
-  public get data(): Readonly<Record<string, any>> {
-    return this.#data
-  }
-
-  private setData(key: string, value: any): void {
-    this.#data[key] = value
-  }
-
   stringEqual(spec: StringEqual): void {
     this.setData(spec.fieldId.value, spec.values.value)
   }

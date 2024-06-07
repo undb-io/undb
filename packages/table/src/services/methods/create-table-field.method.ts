@@ -1,7 +1,10 @@
 import type { Option } from "@undb/domain"
 import { match } from "ts-pattern"
 import type { ICreateTableFieldDTO } from "../../dto"
-import { ReferenceField, type ICreateReferenceFieldDTO } from "../../modules"
+import {
+  ReferenceField,
+  type ICreateReferenceFieldDTO,
+} from "../../modules/schema/fields/variants/reference-field/reference-field.vo"
 import type { TableComositeSpecification } from "../../specifications"
 import { TableIdVo } from "../../table-id.vo"
 import type { TableDo } from "../../table.do"

@@ -1,3 +1,4 @@
+import { NotImplementException } from "@undb/domain"
 import type {
   DateIsAfter,
   DateIsBefore,
@@ -13,6 +14,7 @@ import type {
   NumberLT,
   NumberLTE,
   RecordDO,
+  ReferenceEqual,
   StringContains,
   StringEmpty,
   StringEndsWith,
@@ -36,6 +38,9 @@ import {
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 
 export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements IRecordVisitor {
+  referenceEqual(spec: ReferenceEqual): void {
+    throw new NotImplementException(RecordFilterVisitor.name + ".referenceEqual")
+  }
   userEqual(spec: UserEqual): void {
     const cond = this.eb.eb(spec.fieldId.value, "=", spec.value)
     this.addCond(cond)

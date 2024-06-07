@@ -13,6 +13,8 @@ import {
   type RecordId,
   type TableDo,
 } from "@undb/table"
+import type { CompiledQuery } from "kysely"
+import { all } from "radash"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
@@ -78,16 +80,20 @@ export class RecordRepository implements IRecordRepository {
     const userId = context?.user?.userId!
 
     const t = new UnderlyingTable(table)
+    const sql: CompiledQuery[] = []
 
     await this.qb
       .updateTable(t.name)
       .set((eb) => {
-        const visitor = new RecordMutateVisitor(eb)
+        const visitor = new RecordMutateVisitor(table, record, this.qb, eb)
         spec.unwrap().accept(visitor)
+        sql.push(...visitor.sql)
         return { ...visitor.data, [UPDATED_BY_TYPE]: userId }
       })
       .where(ID_TYPE, "=", record.id.value)
       .executeTakeFirst()
+
+    await all(sql.map((sql) => this.qb.executeQuery(sql)))
 
     await this.outboxService.save(record)
   }

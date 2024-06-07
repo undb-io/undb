@@ -1,5 +1,6 @@
 import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
+import type { RecordComositeSpecification } from "../../../.."
 import { tableId } from "../../../../../table-id.vo"
 import type { TableDo } from "../../../../../table.do"
 import { recordId } from "../../../../records/record/record-id.vo"
@@ -8,6 +9,7 @@ import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { createAbstractNumberFieldMather } from "../abstractions"
 import type { INumberFieldCondition } from "../number-field"
+import { ReferenceEqual } from "./reference-field-value.specification"
 import { ReferenceFieldValue } from "./reference-field-value.vo"
 import { referenceFieldAggregate } from "./reference-field.aggregate"
 import { createReferenceFieldCondition, type IReferenceFieldConditionSchema } from "./reference-field.condition"
@@ -80,6 +82,10 @@ export class ReferenceField extends AbstractField<ReferenceFieldValue, undefined
     this.option.expect("no reference field option").symmetricFieldId = field.id.value
   }
 
+  override $updateValue(value: ReferenceFieldValue): Option<RecordComositeSpecification> {
+    return Some(new ReferenceEqual(value, this.id))
+  }
+
   override type = REFERENCE_TYPE
 
   override get valueSchema() {
@@ -104,7 +110,15 @@ export class ReferenceField extends AbstractField<ReferenceFieldValue, undefined
     return referenceFieldAggregate
   }
 
+  public get isOwner() {
+    return this.option.unwrap().isOwner
+  }
+
   public get foreignTableId(): string {
     return this.option.unwrap().foreignTableId
+  }
+
+  public get symmetricFieldId() {
+    return this.option.unwrap().symmetricFieldId
   }
 }

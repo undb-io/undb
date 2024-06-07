@@ -1,9 +1,6 @@
 import type { ReferenceField, TableDo } from "@undb/table"
 
 export class JoinTable {
-  static FROM_ID = "from_id"
-  static TO_ID = "to_id"
-
   constructor(
     public readonly table: TableDo,
     public readonly field: ReferenceField,
