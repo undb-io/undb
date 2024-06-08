@@ -14,6 +14,14 @@ export class JoinTable {
     return this.field.isOwner ? this.field.foreignTableId : this.table.id.value
   }
 
+  getValueFieldId(): string {
+    return this.field.isOwner ? this.field.id.value : this.table.id.value
+  }
+
+  getSymmetricValueFieldId(): string {
+    return this.field.isOwner ? this.field.foreignTableId : this.field.symmetricFieldId!
+  }
+
   getTableName() {
     const { field } = this
     const { isOwner, foreignTableId } = field

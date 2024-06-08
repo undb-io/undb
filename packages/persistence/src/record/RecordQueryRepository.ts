@@ -14,7 +14,7 @@ import {
   type TableId,
   type ViewId,
 } from "@undb/table"
-import { QueryCreator, type AliasedExpression, type ExpressionBuilder, type SelectQueryBuilder } from "kysely"
+import { type AliasedExpression, type ExpressionBuilder, type SelectQueryBuilder } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { JoinTable } from "../underlying/reference/join-table"
@@ -54,7 +54,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return result ? Some(this.mapper.toDTO(result)) : None
   }
 
-  private handleWhere(spec: Option<RecordComositeSpecification>) {
+  private handleQuery(spec: Option<RecordComositeSpecification>) {
     return (eb: ExpressionBuilder<any, any>) => {
       const visitor = new RecordFilterVisitor(eb)
       if (spec?.isSome()) {
@@ -96,24 +96,22 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const referenceFields = schema.getReferenceFields(fields)
 
     // TODO: move to other file or method
-    const qb = referenceFields.reduce<QueryCreator<any>>((qb, field) => {
+    const qb = referenceFields.reduce((qb, field) => {
       const joinTable = new JoinTable(table, field)
-      return qb.with(field.id.value, (db) =>
-        db
+      return qb.with(field.id.value, (db) => {
+        return db
           .selectFrom(joinTable.getTableName())
           .innerJoin(
             field.foreignTableId,
-            `${joinTable.getTableName()}.${joinTable.getSymmetricValueFieldId()}`,
+            `${joinTable.getTableName()}.${joinTable.getSymmetricFieldId()}`,
             `${field.foreignTableId}.id`,
           )
           .select((sb) => [
-            `${joinTable.getTableName()}.${joinTable.getValueFieldId()} as ${ID_TYPE}`,
-            sb
-              .fn("json_group_array", [sb.ref(`${joinTable.getTableName()}.${joinTable.getSymmetricValueFieldId()}`)])
-              .as(field.id.value),
+            `${joinTable.getTableName()}.${joinTable.getFieldId()} as ${ID_TYPE}`,
+            sb.fn("json_group_array", [sb.ref(`${joinTable.getTableName()}.${joinTable.getFieldId()}`)]).as("ids"),
           ])
-          .groupBy(`${joinTable.getTableName()}.${joinTable.getValueFieldId()}`),
-      )
+          .groupBy(`${joinTable.getTableName()}.${joinTable.getFieldId()}`)
+      })
     }, this.qb)
 
     const result = await qb
@@ -124,14 +122,14 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       .select(handleSelect)
       .$if(!!pagination?.limit, handlePagination)
       .$if(!!sort, handleSort)
-      .where(this.handleWhere(spec))
+      .where(this.handleQuery(spec))
       .execute()
 
     // TODO: move total to aggregate result
     const { total } = await this.qb
       .selectFrom(t.name)
       .select((eb) => eb.fn.countAll().as("total"))
-      .where(this.handleWhere(spec))
+      .where(this.handleQuery(spec))
       .executeTakeFirstOrThrow()
 
     console.log(result)
@@ -183,7 +181,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
         }
         return ebs
       })
-      .where(this.handleWhere(viewSpec))
+      .where(this.handleQuery(viewSpec))
       .executeTakeFirst()
 
     return result ?? {}

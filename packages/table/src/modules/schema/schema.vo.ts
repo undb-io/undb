@@ -9,6 +9,7 @@ import {
   FieldIdVo,
   FieldNameVo,
   IdField,
+  ReferenceField,
   UpdatedAtField,
   UpdatedByField,
   type IUpdateFieldDTO,
@@ -165,5 +166,9 @@ export class Schema extends ValueObject<Field[]> {
 
   getDisplayFields(fieldIds?: Set<string>) {
     return this.fields.filter((f) => (fieldIds ? fieldIds.has(f.id.value) : true) && f.display)
+  }
+
+  getReferenceFields(fields: Field[] = this.fields): ReferenceField[] {
+    return fields.filter((f) => f instanceof ReferenceField) as ReferenceField[]
   }
 }

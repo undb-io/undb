@@ -13,7 +13,9 @@ import {
 } from "@undb/table"
 import { getTableName } from "drizzle-orm"
 import { type ExpressionBuilder, type SelectExpression } from "kysely"
+import type { IQueryBuilder } from "../qb"
 import { users } from "../tables"
+import type { UnderlyingTable } from "../underlying/underlying-table"
 import { createDisplayFieldName } from "./record-display-field"
 
 export class RecordSelectFieldVisitor implements IFieldVisitor {
@@ -27,20 +29,29 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     return this.#select
   }
 
-  constructor(private readonly eb: ExpressionBuilder<any, string>) {
-    this.addSelect(ID_TYPE)
+  private getField(field: string) {
+    return `${this.table.name}.${field} as ${field}`
   }
+
+  constructor(
+    private readonly table: UnderlyingTable,
+    private readonly qb: IQueryBuilder,
+    private readonly eb: ExpressionBuilder<any, string>,
+  ) {
+    this.addSelect(this.getField(ID_TYPE))
+  }
+
   id(field: IdField): void {
-    // this.addSelect(field.id.value)
+    // this.addSelect(this.getField(field.id.value))
   }
   autoIncrement(field: AutoIncrementField): void {
-    this.addSelect(field.id.value)
+    this.addSelect(this.getField(field.id.value))
   }
   createdAt(field: CreatedAtField): void {
-    this.addSelect(field.id.value)
+    this.addSelect(this.getField(field.id.value))
   }
   createdBy(field: CreatedByField): void {
-    this.addSelect(field.id.value)
+    this.addSelect(this.getField(field.id.value))
     const user = getTableName(users)
     const as = createDisplayFieldName(field)
 
@@ -55,7 +66,7 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   }
 
   updatedBy(field: UpdatedByField): void {
-    this.addSelect(field.id.value)
+    this.addSelect(this.getField(field.id.value))
     const user = getTableName(users)
     const as = createDisplayFieldName(field)
 
@@ -69,15 +80,16 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     this.addSelect(name)
   }
   updatedAt(field: UpdatedAtField): void {
-    this.addSelect(field.id.value)
+    this.addSelect(this.getField(field.id.value))
   }
   string(field: StringField): void {
-    this.addSelect(field.id.value)
+    this.addSelect(this.getField(field.id.value))
   }
   number(field: NumberField): void {
-    this.addSelect(field.id.value)
+    this.addSelect(this.getField(field.id.value))
   }
   reference(field: ReferenceField): void {
-    // throw new Error("Method not implemented.")
+    const select = `${field.id.value}.${field.id.value} as ${field.id.value}`
+    this.addSelect(select)
   }
 }
