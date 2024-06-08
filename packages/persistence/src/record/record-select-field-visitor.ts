@@ -16,7 +16,7 @@ import { type ExpressionBuilder, type SelectExpression } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { users } from "../tables"
 import type { UnderlyingTable } from "../underlying/underlying-table"
-import { createDisplayFieldName } from "./record-display-field"
+import { createDisplayFieldName } from "./record-utils"
 
 export class RecordSelectFieldVisitor implements IFieldVisitor {
   #select: SelectExpression<any, any>[] = []

@@ -23,6 +23,7 @@ import { injectQueryBuilder } from "../qb.provider"
 import { JoinTable } from "../underlying/reference/join-table"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { RecordSelectFieldVisitor } from "./record-select-field-visitor"
+import { getRecordDTOFromEntity } from "./record-utils"
 import { AggregateFnBuiler } from "./record.aggregate-builder"
 import { RecordFilterVisitor } from "./record.filter-visitor"
 import { RecordMapper } from "./record.mapper"
@@ -89,7 +90,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
 
     const result = await qb.where(`${table.id.value}.${ID_TYPE}`, "=", id.value).executeTakeFirst()
 
-    return result ? Some(this.mapper.toDTO(result)) : None
+    return result ? Some(getRecordDTOFromEntity(table, result)) : None
   }
 
   private handleWhere(spec: Option<RecordComositeSpecification>) {
@@ -143,7 +144,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       .where(this.handleWhere(spec))
       .executeTakeFirstOrThrow()
 
-    const records = result.map((r) => this.mapper.toDTO(r))
+    const records = result.map((r) => getRecordDTOFromEntity(table, r))
     return { values: records, total: Number(total) }
   }
 

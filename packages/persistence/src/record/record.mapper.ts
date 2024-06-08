@@ -1,7 +1,6 @@
 import { singleton } from "@undb/di"
-import type { Mapper } from "@undb/domain"
+import { WontImplementException, type Mapper } from "@undb/domain"
 import { RecordDO, type IRecordDTO } from "@undb/table"
-import { getRecordDTOFromEntity } from "./record-display-field"
 
 @singleton()
 export class RecordMapper implements Mapper<RecordDO, any, IRecordDTO> {
@@ -15,6 +14,6 @@ export class RecordMapper implements Mapper<RecordDO, any, IRecordDTO> {
     }
   }
   toDTO(entity: any): IRecordDTO {
-    return getRecordDTOFromEntity(entity)
+    throw new WontImplementException(RecordMapper.name + ".toDTO")
   }
 }

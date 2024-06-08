@@ -1,4 +1,13 @@
-import type { Field, IRecordDTO, IRecordDisplayValues, IRecordValues } from "@undb/table"
+import {
+  FieldIdVo,
+  ID_TYPE,
+  type Field,
+  type IRecordDTO,
+  type IRecordDisplayValues,
+  type IRecordValues,
+  type TableDo,
+} from "@undb/table"
+import { isString } from "radash"
 
 export type DisplayFieldName = `$${string}`
 
@@ -34,15 +43,24 @@ export function getRawFieldName(displayFieldName: DisplayFieldName): string {
  * @param entity The entity to get the record DTO from.
  * @returns The record DTO.
  */
-export function getRecordDTOFromEntity(entity: any): IRecordDTO {
+export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO {
   const id = entity.id
   const values: IRecordValues = {}
   const displayValues: IRecordDisplayValues = {}
+  const schema = table.schema
   for (const [key, value] of Object.entries(entity)) {
-    if (key === "id") continue
+    if (key === ID_TYPE) continue
 
     if (isDisplayerFieldName(key)) {
       displayValues[getRawFieldName(key)] = value
+      continue
+    }
+
+    const field = schema.getFieldById(new FieldIdVo(key)).into(undefined)
+    if (!field) continue
+
+    if (field.type === "reference" && isString(value)) {
+      values[key] = JSON.parse(value)
       continue
     }
 

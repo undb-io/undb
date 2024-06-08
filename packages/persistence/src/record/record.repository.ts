@@ -19,7 +19,7 @@ import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { injectDbUnitOfWork, transactional } from "../uow"
-import { getRecordDTOFromEntity } from "./record-display-field"
+import { getRecordDTOFromEntity } from "./record-utils"
 import { RecordMapper } from "./record.mapper"
 import { RecordMutateVisitor } from "./record.mutate-visitor"
 
@@ -56,7 +56,7 @@ export class RecordRepository implements IRecordRepository {
     const t = new UnderlyingTable(table)
 
     const record = await this.qb.selectFrom(t.name).selectAll().limit(1).executeTakeFirst()
-    const dto = record ? getRecordDTOFromEntity(record) : undefined
+    const dto = record ? getRecordDTOFromEntity(table, record) : undefined
     return dto ? Some(RecordDO.fromJSON(table, dto)) : None
   }
 
@@ -68,7 +68,7 @@ export class RecordRepository implements IRecordRepository {
       return None
     }
 
-    const dto = getRecordDTOFromEntity(records[0])
+    const dto = getRecordDTOFromEntity(table, records[0])
     return Some(RecordDO.fromJSON(table, dto))
   }
 
