@@ -68,17 +68,24 @@ export class RecordMutateVisitor implements IRecordVisitor {
       .where(this.eb.eb(joinTable.getValueFieldId(), "=", this.record.id.value))
       .compile()
 
-    const insert = this.qb
-      .insertInto(name)
-      .values(
-        spec.values.props.map((recordId) => ({
-          [joinTable.getValueFieldId()]: this.record.id.value,
-          [joinTable.getSymmetricValueFieldId()]: recordId,
-        })),
-      )
-      .compile()
+    this.addSql(deleteRecords)
 
-    this.addSql(deleteRecords, insert)
+    const values = spec.values.props
+    if (Array.isArray(values) && values.length) {
+      const fieldId = joinTable.getValueFieldId()
+      const symmetricFieldId = joinTable.getSymmetricValueFieldId()
+      const insert = this.qb
+        .insertInto(name)
+        .values(
+          values.map((recordId) => ({
+            [fieldId]: this.record.id.value,
+            [symmetricFieldId]: recordId,
+          })),
+        )
+        .onConflict((bd) => bd.columns([fieldId, symmetricFieldId]).doNothing())
+        .compile()
+      this.addSql(insert)
+    }
   }
   userEqual(spec: UserEqual): void {
     this.setData(spec.fieldId.value, spec.value)

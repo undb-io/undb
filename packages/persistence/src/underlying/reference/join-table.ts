@@ -6,14 +6,6 @@ export class JoinTable {
     public readonly field: ReferenceField,
   ) {}
 
-  getFieldId(): string {
-    return this.field.isOwner ? this.field.id.value : this.field.symmetricFieldId!
-  }
-
-  getSymmetricFieldId(): string {
-    return this.field.isOwner ? this.field.foreignTableId : this.table.id.value
-  }
-
   getValueFieldId(): string {
     return this.field.isOwner ? this.field.id.value : this.table.id.value
   }
@@ -25,6 +17,6 @@ export class JoinTable {
   getTableName() {
     const { field } = this
     const { isOwner, foreignTableId } = field
-    return `$${isOwner ? foreignTableId : this.table.id.value}_${this.getFieldId()}_join_table`
+    return `$${isOwner ? foreignTableId : this.table.id.value}_${isOwner ? field.id.value : field.symmetricFieldId!}_join_table`
   }
 }

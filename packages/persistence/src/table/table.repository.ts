@@ -4,6 +4,7 @@ import { None, Option, Some, type IUnitOfWork } from "@undb/domain"
 import {
   TableComositeSpecification,
   TableIdSpecification,
+  TableIdsSpecification,
   injectTableOutboxService,
   type ITableOutboxService,
   type ITableRepository,
@@ -86,5 +87,14 @@ export class TableRepository implements ITableRepository {
     const tb = await new TableDbQuerySpecHandler(qb).handle(spec).limit(1)
 
     return tb.length ? Some(this.mapper.toDo(tb[0])) : None
+  }
+
+  async findManyByIds(ids: TableId[]): Promise<TableDo[]> {
+    const qb = this.db.select().from(tables).$dynamic()
+
+    const spec = Some(new TableIdsSpecification(ids))
+    const tb = await new TableDbQuerySpecHandler(qb).handle(spec)
+
+    return tb.map((t) => this.mapper.toDo(t))
   }
 }

@@ -10,6 +10,7 @@ export interface ITableRepository {
   bulkUpdate(updates: { table: TableDo; spec: Option<TableComositeSpecification> }[]): Promise<void>
 
   findOneById(id: TableId): Promise<Option<TableDo>>
+  findManyByIds(ids: TableId[]): Promise<TableDo[]>
 }
 
 export interface ITableQueryRepository {

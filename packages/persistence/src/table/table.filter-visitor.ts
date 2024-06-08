@@ -3,6 +3,7 @@ import type {
   ITableSpecVisitor,
   TableDo,
   TableIdSpecification,
+  TableIdsSpecification,
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
@@ -20,7 +21,7 @@ import type {
   WithNewFormSpecification,
 } from "@undb/table/src/specifications/table-forms.specification"
 import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
-import { eq } from "drizzle-orm"
+import { eq, inArray } from "drizzle-orm"
 import { AbstractDBFilterVisitor } from "../abstract-db.visitor"
 import { tables } from "../tables"
 
@@ -63,6 +64,14 @@ export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> impleme
   }
   withId(id: TableIdSpecification): void {
     this.addCond(eq(tables.id, id.id.value))
+  }
+  idsIn(ids: TableIdsSpecification): void {
+    this.addCond(
+      inArray(
+        tables.id,
+        ids.ids.map((id) => id.value),
+      ),
+    )
   }
   withName(name: TableNameSpecification): void {
     this.addCond(eq(tables.name, name.name.value))

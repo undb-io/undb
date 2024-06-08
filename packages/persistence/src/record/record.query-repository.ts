@@ -4,10 +4,13 @@ import { None, Option, Some, andOptions, type PaginatedDTO } from "@undb/domain"
 import {
   ID_TYPE,
   RecordComositeSpecification,
+  ViewIdVo,
+  injectTableRepository,
   type AggregateResult,
   type Field,
   type IRecordDTO,
   type IRecordQueryRepository,
+  type ITableRepository,
   type QueryArgs,
   type RecordId,
   type TableDo,
@@ -31,6 +34,8 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     private readonly qb: IQueryBuilder,
     @inject(RecordMapper)
     private readonly mapper: RecordMapper,
+    @injectTableRepository()
+    private readonly tableRepo: ITableRepository,
   ) {}
 
   async count(tableId: TableId): Promise<number> {
@@ -42,14 +47,47 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return Number(total)
   }
 
+  // TODO: move to new file
+  private createQuery(table: TableDo, viewId: string | undefined) {
+    const fields = table.getOrderedVisibleFields(viewId ? new ViewIdVo(viewId) : undefined)
+    const referenceFields = table.schema.getReferenceFields(fields)
+
+    const handleSelect = this.handleSelect(table, fields)
+
+    // create cte for selection
+    const qb = referenceFields.reduce<QueryCreator<any>>((qb, field) => {
+      const joinTable = new JoinTable(table, field)
+      const name = joinTable.getTableName()
+      const valueField = joinTable.getValueFieldId()
+      const symmetricField = joinTable.getSymmetricValueFieldId()
+
+      return qb.with(field.id.value, (db) =>
+        db
+          .selectFrom(name)
+          .innerJoin(field.foreignTableId, `${name}.${symmetricField}`, `${field.foreignTableId}.${ID_TYPE}`)
+          .select((sb) => [
+            `${name}.${valueField} as ${ID_TYPE}`,
+            sb.fn("json_group_array", [sb.ref(`${name}.${symmetricField}`)]).as(field.id.value),
+          ])
+          .groupBy(`${name}.${valueField}`),
+      )
+    }, this.qb)
+
+    return qb
+      .selectFrom(table.id.value)
+      .$call((qb) =>
+        referenceFields.reduce(
+          (qb, field) => qb.leftJoin(field.id.value, `${table.id.value}.${ID_TYPE}`, `${field.id.value}.${ID_TYPE}`),
+          qb,
+        ),
+      )
+      .select(handleSelect)
+  }
+
   async findOneById(table: TableDo, id: RecordId): Promise<Option<IRecordDTO>> {
-    const t = new UnderlyingTable(table)
-    const fields = table.getOrderedVisibleFields()
-    const result = await this.qb
-      .selectFrom(t.name)
-      .select(this.handleSelect(table, fields))
-      .where(ID_TYPE, "=", id.value)
-      .executeTakeFirst()
+    const qb = this.createQuery(table, undefined)
+
+    const result = await qb.where(`${table.id.value}.${ID_TYPE}`, "=", id.value).executeTakeFirst()
 
     return result ? Some(this.mapper.toDTO(result)) : None
   }
@@ -71,7 +109,6 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const t = new UnderlyingTable(table)
     const view = table.views.getViewById(viewId.into(undefined))
     const schema = table.schema
-    const fields = table.getOrderedVisibleFields(view.id)
 
     const viewSpec = view.filter.map((f) => f.getSpec(schema)).flatten()
     const rlsSpec = table.rls.map((r) => r.getSpec(schema, "read", userId)).flatten()
@@ -91,37 +128,9 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       return sort!.reduce((qb, s) => qb.orderBy(`${s.fieldId} ${s.direction}`), qb)
     }
 
-    const handleSelect = this.handleSelect(table, fields)
-
-    const referenceFields = schema.getReferenceFields(fields)
-
-    // TODO: move to other file or method
-    const qb = referenceFields.reduce<QueryCreator<any>>((qb, field) => {
-      const joinTable = new JoinTable(table, field)
-      return qb.with(field.id.value, (db) =>
-        db
-          .selectFrom(joinTable.getTableName())
-          .innerJoin(
-            field.foreignTableId,
-            `${joinTable.getTableName()}.${joinTable.getSymmetricValueFieldId()}`,
-            `${field.foreignTableId}.id`,
-          )
-          .select((sb) => [
-            `${joinTable.getTableName()}.${joinTable.getValueFieldId()} as ${ID_TYPE}`,
-            sb
-              .fn("json_group_array", [sb.ref(`${joinTable.getTableName()}.${joinTable.getSymmetricValueFieldId()}`)])
-              .as(field.id.value),
-          ])
-          .groupBy(`${joinTable.getTableName()}.${joinTable.getValueFieldId()}`),
-      )
-    }, this.qb)
+    const qb = this.createQuery(table, viewId.into(undefined)?.value)
 
     const result = await qb
-      .selectFrom(t.name)
-      .$call((qb) =>
-        referenceFields.reduce((qb, field) => qb.leftJoin(field.id.value, `${t.name}.id`, `${field.id.value}.id`), qb),
-      )
-      .select(handleSelect)
       .$if(!!pagination?.limit, handlePagination)
       .$if(!!sort, handleSort)
       .where(this.handleWhere(spec))
@@ -133,8 +142,6 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       .select((eb) => eb.fn.countAll().as("total"))
       .where(this.handleWhere(spec))
       .executeTakeFirstOrThrow()
-
-    console.log(result)
 
     const records = result.map((r) => this.mapper.toDTO(r))
     return { values: records, total: Number(total) }

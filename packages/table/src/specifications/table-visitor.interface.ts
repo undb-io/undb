@@ -4,7 +4,7 @@ import type {
   WithFormSpecification,
   WithNewFormSpecification,
 } from "./table-forms.specification"
-import type { TableIdSpecification } from "./table-id.specification"
+import type { TableIdSpecification, TableIdsSpecification } from "./table-id.specification"
 import type { TableNameSpecification } from "./table-name.specification"
 import type { WithTableRLS } from "./table-rls.specification"
 import type {
@@ -23,6 +23,7 @@ import type { TableViewsSpecification } from "./table-views.specification"
 
 export interface ITableSpecVisitor extends ISpecVisitor {
   withId(id: TableIdSpecification): void
+  idsIn(ids: TableIdsSpecification): void
   withName(name: TableNameSpecification): void
   withSchema(schema: TableSchemaSpecification): void
   withNewField(schema: WithNewFieldSpecification): void

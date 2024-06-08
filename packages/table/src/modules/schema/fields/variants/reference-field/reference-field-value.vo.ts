@@ -23,9 +23,9 @@ export const mutateReferenceFieldValueSchema = z.union([
 
 export type IMutateReferenceFieldValueSchema = z.infer<typeof mutateReferenceFieldValueSchema>
 
-export class ReferenceFieldValue extends ValueObject<string[]> {
-  constructor(value: string[]) {
-    super(value)
+export class ReferenceFieldValue extends ValueObject<string[] | null | undefined> {
+  constructor(value: string[] | null | undefined) {
+    super(!value ? { value: null } : value)
   }
 
   isEmpty() {

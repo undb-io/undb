@@ -171,4 +171,10 @@ export class Schema extends ValueObject<Field[]> {
   getReferenceFields(fields: Field[] = this.fields): ReferenceField[] {
     return fields.filter((f) => f instanceof ReferenceField) as ReferenceField[]
   }
+
+  getForeignTableIds(fields: Field[] = this.fields): Set<string> {
+    const referenceFields = this.getReferenceFields(fields)
+
+    return new Set(referenceFields.map((f) => f.foreignTableId))
+  }
 }

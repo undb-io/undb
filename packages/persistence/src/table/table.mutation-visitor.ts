@@ -3,6 +3,7 @@ import type {
   ITableSpecVisitor,
   TableDo,
   TableIdSpecification,
+  TableIdsSpecification,
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
@@ -76,4 +77,5 @@ export class TableMutationVisitor
   withViewFilter(viewFilter: WithViewFilter): void {
     this.addUpdates({ views: this.table.views?.toJSON() })
   }
+  idsIn(ids: TableIdsSpecification): void {}
 }
