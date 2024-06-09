@@ -73,6 +73,10 @@ export abstract class AbstractView {
     }
   }
 
+  get showSystemFields() {
+    return this.option.mapOr(false, (f) => !!f.props.showSystemFields)
+  }
+
   setOption(option: IViewOption) {
     const vo = new ViewOption(option)
 

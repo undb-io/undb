@@ -78,9 +78,11 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   }
 
   getOrderedVisibleFields(viewId?: ViewId): Field[] {
+    const view = this.views.getViewById(viewId)
     return this.getViewFields(viewId)
       .getVisibleFields()
       .map((fieldId) => this.schema.getFieldById(new FieldIdVo(fieldId)).unwrap())
+      .filter((field) => (view.showSystemFields ? true : !field.isSystem))
   }
 
   toJSON(): ITableDTO {
