@@ -79,7 +79,7 @@ export abstract class AbstractView {
     this.option = Some(vo)
   }
 
-  $setOptionSpec(option: IViewOption) {
+  $setOptionSpec(option: IViewOption): Option<WithViewOption> {
     if (this.option.mapOr(false, (f) => f.equals(new ViewOption(option)))) {
       return None
     }

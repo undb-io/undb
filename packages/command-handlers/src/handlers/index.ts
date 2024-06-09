@@ -11,6 +11,7 @@ import { SetViewAggregateCommandHandler } from "./set-view-aggregate.command-han
 import { SetViewColorCommandHandler } from "./set-view-color.command-handler"
 import { SetViewFieldsCommandHandler } from "./set-view-fields.command-handler"
 import { SetViewFilterCommandHandler } from "./set-view-filter.command-handler"
+import { SetViewOptionCommandHandler } from "./set-view-option.command-handler"
 import { SetViewSortCommandHandler } from "./set-view-sort.command-handler"
 import { UpdateRecordCommandHandler } from "./update-record.command-handler"
 import { UpdateTableFieldCommandHandler } from "./update-table-field.command-handler"
@@ -23,6 +24,7 @@ export const commandHandlers = [
   CreateWebhookCommandHandler,
   UpdateWebhookCommandHandler,
   SetViewFilterCommandHandler,
+  SetViewOptionCommandHandler,
   SetViewColorCommandHandler,
   SetViewFieldsCommandHandler,
   SetTableRLSCommandHandler,

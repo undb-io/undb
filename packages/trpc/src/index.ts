@@ -13,6 +13,7 @@ import {
   SetViewColorCommand,
   SetViewFieldsCommand,
   SetViewFilterCommand,
+  SetViewOptionCommand,
   SetViewSortCommand,
   UpdateRecordCommand,
   UpdateTableFieldCommand,
@@ -30,6 +31,7 @@ import {
   setViewColorCommand,
   setViewFieldsCommand,
   setViewFilterCommand,
+  setViewOptionCommand,
   setViewSortCommand,
   updateRecordCommand,
   updateTableFieldCommand,
@@ -105,6 +107,7 @@ const formRouter = t.router({
 
 const viewRouter = t.router({
   setFilter: p.input(setViewFilterCommand).mutation(({ input }) => commandBus.execute(new SetViewFilterCommand(input))),
+  setOption: p.input(setViewOptionCommand).mutation(({ input }) => commandBus.execute(new SetViewOptionCommand(input))),
   setColor: p.input(setViewColorCommand).mutation(({ input }) => commandBus.execute(new SetViewColorCommand(input))),
   setSort: p.input(setViewSortCommand).mutation(({ input }) => commandBus.execute(new SetViewSortCommand(input))),
   setAggregate: p
