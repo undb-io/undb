@@ -12,7 +12,7 @@ import { setViewFilter } from "./methods/set-view-filter.method"
 import { setViewOption } from "./methods/set-view-option.method"
 import { setViewSort } from "./methods/set-view-sort.method"
 import { updateFieldMethod } from "./methods/update-field.method"
-import { FieldIdVo, ViewFields, type Field, type FormId, type TableRLSGroup, type ViewId } from "./modules"
+import { FieldIdVo, ViewFields, ViewOption, type Field, type FormId, type TableRLSGroup, type ViewId } from "./modules"
 import type { FormsVO } from "./modules/forms/forms.vo"
 import type { Schema } from "./modules/schema/schema.vo"
 import type { Views } from "./modules/views/views.vo"
@@ -83,6 +83,10 @@ export class TableDo extends AggregateRoot<ITableEvents> {
       .getVisibleFields()
       .map((fieldId) => this.schema.getFieldById(new FieldIdVo(fieldId)).unwrap())
       .filter((field) => (view.showSystemFields ? true : !field.isSystem))
+  }
+
+  getViewOption(viewId?: ViewId) {
+    return this.views.getViewById(viewId).option.unwrapOrElse(() => ViewOption.default())
   }
 
   toJSON(): ITableDTO {

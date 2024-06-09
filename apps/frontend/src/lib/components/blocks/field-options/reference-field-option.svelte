@@ -6,7 +6,9 @@
   import ForeignTablePicker from "../reference/foreign-table-picker.svelte"
 
   export let constraint: IReferenceFieldConstraint | undefined
-  export let option: Partial<ICreateReferenceFieldDTO["option"]> = {}
+  export let option: Partial<ICreateReferenceFieldDTO["option"]> = {
+    createSymmetricField: true,
+  }
   export let isNew: boolean
 </script>
 
@@ -19,7 +21,7 @@
     {#if isNew}
       <div class="flex items-center space-x-2">
         <Switch id="createSymmetricField" bind:checked={option.createSymmetricField} />
-        <Label for="createSymmetricField" class="text-xs">create symmetric field</Label>
+        <Label for="createSymmetricField" class="text-xs">Create symmetric field</Label>
       </div>
     {/if}
     <div class="grid grid-cols-2 gap-3">

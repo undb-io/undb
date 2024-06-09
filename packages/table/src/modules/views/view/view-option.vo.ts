@@ -11,4 +11,16 @@ export class ViewOption extends ValueObject<IViewOption> {
   toJSON() {
     return this.props
   }
+
+  get showSystemFields() {
+    return this.props.showSystemFields ?? false
+  }
+
+  set showSystemFields(value: boolean) {
+    this.props.showSystemFields = value
+  }
+
+  static default() {
+    return new ViewOption({ showSystemFields: false })
+  }
 }

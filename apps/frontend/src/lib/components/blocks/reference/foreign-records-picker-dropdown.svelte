@@ -10,14 +10,16 @@
 
   const foreignTableStore = new GetForeignTableStore()
 
-  foreignTableStore.fetch({ variables: { tableId: foreignTableId } })
+  let open = false
+
+  $: if (open) foreignTableStore.fetch({ variables: { tableId: foreignTableId } })
 
   $: table = $foreignTableStore.data?.table
 
   $: foreignTable = table ? readable(new TableCreator().fromJSON(table)) : null
 </script>
 
-<Popover.Root>
+<Popover.Root bind:open>
   <Popover.Trigger>
     <button
       type="button"

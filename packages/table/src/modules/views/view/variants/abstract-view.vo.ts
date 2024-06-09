@@ -71,6 +71,9 @@ export abstract class AbstractView {
     if (dto.fields) {
       this.setFields(dto.fields)
     }
+    if (dto.option) {
+      this.setOption(dto.option)
+    }
   }
 
   get showSystemFields() {
