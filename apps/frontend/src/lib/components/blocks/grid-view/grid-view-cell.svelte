@@ -13,6 +13,7 @@
   import { cn } from "$lib/utils"
   import { derived } from "svelte/store"
   import UserField from "../field-value/user-field.svelte"
+  import ReferenceControl from "../field-control/reference-control.svelte"
 
   const table = getTable()
 
@@ -31,6 +32,7 @@
     autoIncrement: NumberField,
     createdBy: UserField,
     updatedBy: UserField,
+    reference: ReferenceControl,
   }
 
   let form: HTMLFormElement
@@ -68,6 +70,7 @@
     this={map[field.type]}
     bind:value
     {displayValue}
+    {field}
     {index}
     onValueChange={(v) => {
       value = v
