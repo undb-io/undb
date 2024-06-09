@@ -16,6 +16,9 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
       id
       name
       type
+      option {
+        showSystemFields
+      }
       filter
       color
       sort

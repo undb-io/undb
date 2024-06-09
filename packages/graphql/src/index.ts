@@ -44,9 +44,14 @@ export class Graphql {
         grid
       }
 
+      type ViewOption {
+        showSystemFields: Boolean
+      }
+
       type View {
         id: ID!
         name: String!
+        option: ViewOption
         type: ViewType!
         filter: JSON
         color: JSON

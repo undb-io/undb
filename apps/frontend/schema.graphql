@@ -81,12 +81,17 @@ type View {
   filter: JSON
   id: ID!
   name: String!
+  option: ViewOption
   sort: JSON
   type: ViewType!
 }
 
 type ViewData {
   aggregate: JSON
+}
+
+type ViewOption {
+  showSystemFields: Boolean
 }
 
 enum ViewType {

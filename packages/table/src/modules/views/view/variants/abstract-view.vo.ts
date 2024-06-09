@@ -5,6 +5,7 @@ import {
   WithViewColor,
   WithViewFields,
   WithViewFilter,
+  WithViewOption,
   WithViewSort,
 } from "../../../../specifications/table-view.specification"
 import type { IViewDTO } from "../dto"
@@ -14,6 +15,7 @@ import { ViewFields, viewFields, type IViewFields } from "../view-fields"
 import { ViewFilter, viewFilterGroup, type IRootViewFilter } from "../view-filter/view-filter.vo"
 import { ViewIdVo, viewId, type ViewId } from "../view-id.vo"
 import { ViewNameVo, viewName } from "../view-name.vo"
+import { ViewOption, viewOption, type IViewOption } from "../view-option.vo"
 import { ViewSort, viewSort, type IViewSort } from "../view-sort"
 import type { ViewType } from "../view.type"
 
@@ -27,6 +29,8 @@ export type ICreateBaseViewDTO = z.infer<typeof createBaseViewDTO>
 export const baseViewDTO = z.object({
   id: viewId,
   name: viewName,
+  option: viewOption.optional(),
+
   filter: viewFilterGroup.optional(),
   color: viewColorGroup.optional(),
   sort: viewSort.optional(),
@@ -39,6 +43,8 @@ export type IBaseViewDTO = z.infer<typeof baseViewDTO>
 export abstract class AbstractView {
   id!: ViewId
   name!: ViewNameVo
+  option: Option<ViewOption> = None
+
   filter: Option<ViewFilter> = None
   color: Option<ViewColor> = None
   sort: Option<ViewSort> = None
@@ -65,6 +71,21 @@ export abstract class AbstractView {
     if (dto.fields) {
       this.setFields(dto.fields)
     }
+  }
+
+  setOption(option: IViewOption) {
+    const vo = new ViewOption(option)
+
+    this.option = Some(vo)
+  }
+
+  $setOptionSpec(option: IViewOption) {
+    if (this.option.mapOr(false, (f) => f.equals(new ViewOption(option)))) {
+      return None
+    }
+
+    const previous = this.option.into(null)?.value
+    return Some(new WithViewOption(this.id, Option(previous), option))
   }
 
   setFilter(filter: IRootViewFilter) {
@@ -143,6 +164,7 @@ export abstract class AbstractView {
       id: this.id.value,
       name: this.name.value,
       type: this.type,
+      option: this.option.into(null)?.toJSON(),
       filter: this.filter.into(null)?.toJSON(),
       color: this.color.into(null)?.toJSON(),
       sort: this.sort.into(null)?.toJSON(),

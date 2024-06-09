@@ -13,6 +13,7 @@ import type {
   WithViewColor,
   WithViewFields,
   WithViewFilter,
+  WithViewOption,
   WithViewSort,
 } from "@undb/table"
 import type {
@@ -30,6 +31,9 @@ export class TableMutationVisitor
 {
   constructor(public readonly table: TableDo) {
     super()
+  }
+  withViewOption(viewOption: WithViewOption): void {
+    this.addUpdates({ views: this.table.views?.toJSON() })
   }
   withViewFields(fields: WithViewFields): void {
     this.addUpdates({ views: this.table.views?.toJSON() })

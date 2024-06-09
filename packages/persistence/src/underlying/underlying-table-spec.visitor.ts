@@ -2,6 +2,7 @@ import { WontImplementException, type ISpecification, type ISpecVisitor } from "
 import type {
   ITableSpecVisitor,
   TableIdSpecification,
+  TableIdsSpecification,
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
@@ -11,6 +12,7 @@ import type {
   WithViewColor,
   WithViewFields,
   WithViewFilter,
+  WithViewOption,
   WithViewSort,
 } from "@undb/table"
 import type {
@@ -51,6 +53,8 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
     this.#sql.push(...sql)
   }
 
+  idsIn(ids: TableIdsSpecification): void {}
+  withViewOption(viewOption: WithViewOption): void {}
   withUpdatedField(spec: WithUpdatedFieldSpecification): void {
     const typeChanged = spec.getIsTypeChanged()
     if (!typeChanged) {

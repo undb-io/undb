@@ -17,6 +17,7 @@ import type {
   WithViewColor,
   WithViewFields,
   WithViewFilter,
+  WithViewOption,
   WithViewSort,
 } from "./table-view.specification"
 import type { TableViewsSpecification } from "./table-views.specification"
@@ -31,6 +32,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withTableRLS(rls: WithTableRLS): void
   withViews(views: TableViewsSpecification): void
   withViewFilter(viewFilter: WithViewFilter): void
+  withViewOption(viewOption: WithViewOption): void
   withViewColor(viewColor: WithViewColor): void
   withViewSort(viewSort: WithViewSort): void
   withViewAggregate(viewColor: WithViewAggregate): void

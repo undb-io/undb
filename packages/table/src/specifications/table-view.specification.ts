@@ -3,11 +3,33 @@ import type { IRootViewFilter, ViewId } from "../modules"
 import type { IViewAggregate } from "../modules/views/view/view-aggregate/view-aggregate.vo"
 import type { IRootViewColor } from "../modules/views/view/view-color"
 import type { IViewFields } from "../modules/views/view/view-fields"
+import type { IViewOption } from "../modules/views/view/view-option.vo"
 import type { IViewSort } from "../modules/views/view/view-sort"
 import type { TableDo } from "../table.do"
 import type { ITableSpecVisitor } from "./table-visitor.interface"
 import { TableComositeSpecification } from "./table.composite-specification"
 
+export class WithViewOption extends TableComositeSpecification {
+  constructor(
+    public readonly viewId: ViewId,
+    public readonly previous: Option<IViewOption>,
+    public readonly option: IViewOption,
+  ) {
+    super()
+  }
+  isSatisfiedBy(t: TableDo): boolean {
+    throw new WontImplementException(WithViewFilter.name + ".isSatisfiedBy")
+  }
+  mutate(t: TableDo): Result<TableDo, string> {
+    const view = t.views.getViewById(this.viewId)
+    view.setOption(this.option)
+    return Ok(t)
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withViewOption(this)
+    return Ok(undefined)
+  }
+}
 export class WithViewFilter extends TableComositeSpecification {
   constructor(
     public readonly viewId: ViewId,
