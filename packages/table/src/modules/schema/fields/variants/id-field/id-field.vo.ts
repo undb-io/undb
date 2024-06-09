@@ -61,6 +61,10 @@ export class IdField extends AbstractField<IdFieldValue> {
     return createIdFieldCondition(optionType)
   }
 
+  override getMutationSpec(value: IdFieldValue) {
+    return new IdEqual(value, this.id)
+  }
+
   override get aggregate() {
     // TODO: implement
     return z.enum([])

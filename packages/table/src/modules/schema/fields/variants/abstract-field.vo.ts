@@ -1,4 +1,4 @@
-import { None, NotImplementException, Option, Some, ValueObject } from "@undb/domain"
+import { None, Option, Some } from "@undb/domain"
 import { ZodEnum, ZodUndefined, z, type ZodSchema } from "@undb/zod"
 import type {
   INotRecordComositeSpecification,
@@ -10,17 +10,9 @@ import type { IFieldDTO } from "../dto/field.dto"
 import type { FieldConstraintVO } from "../field-constraint.vo"
 import { FieldIdVo, fieldId, type FieldId } from "../field-id.vo"
 import { FieldNameVo, fieldName } from "../field-name.vo"
-import type { FieldType, IFieldConditionSchema, IFieldOption } from "../field.type"
+import type { FieldType, FieldValue, IFieldConditionSchema, IFieldOption } from "../field.type"
 import { isFieldSortable } from "../field.util"
 import type { IFieldVisitor } from "../field.visitor"
-import type { IAutoIncrementFieldConditionSchema } from "./autoincrement-field/autoincrement-field.condition"
-import type { ICreatedAtFieldConditionSchema } from "./created-at-field"
-import type { ICreatedByFieldConditionSchema } from "./created-by-field"
-import type { IIdFieldConditionSchema } from "./id-field/id-field.condition"
-import type { INumberFieldConditionSchema } from "./number-field"
-import type { IStringFieldConditionSchema } from "./string-field"
-import type { IUpdatedAtFieldConditionSchema } from "./updated-at-field"
-import type { IUpdatedByFieldConditionSchema } from "./updated-by-field"
 
 export const createBaseFieldDTO = z.object({
   id: fieldId.optional(),
@@ -39,7 +31,7 @@ export const baseFieldDTO = z.object({
 export type IBaseFieldDTO = z.infer<typeof baseFieldDTO>
 
 export abstract class AbstractField<
-  V extends ValueObject,
+  V extends FieldValue,
   C extends FieldConstraintVO | undefined = any,
   O extends IFieldOption = any,
 > {
@@ -114,12 +106,14 @@ export abstract class AbstractField<
     return hasValue
   }
 
+  abstract getMutationSpec(value: V): RecordComositeSpecification
+
   $updateValue(value: V): Option<RecordComositeSpecification> {
     if (this.isSystem) {
       return None
     }
 
-    throw new NotImplementException(this.type + ".updateValue")
+    return Some(this.getMutationSpec(value))
   }
 
   get conditionOps() {
@@ -159,7 +153,7 @@ export abstract class AbstractField<
       name: this.name.value,
       type: this.type,
       display: this.display,
-      defaultValue: this.defaultValue.into(undefined)?.value,
+      defaultValue: (this.defaultValue.into(undefined)?.value ?? undefined) as any,
       constraint: this.constraint.into(undefined)?.value,
       option: this.option.into(undefined) as IFieldOption,
     }

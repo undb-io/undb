@@ -110,6 +110,7 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
         .addColumn(joinTable.getValueFieldId(), "varchar(10)", (b) =>
           b.references(`${this.t.table.id.value}.${ID_TYPE}`).notNull().onDelete("cascade"),
         )
+        .addPrimaryKeyConstraint("primary_key", [joinTable.getSymmetricValueFieldId(), joinTable.getValueFieldId()])
         .compile()
       this.addSql(sql)
     }

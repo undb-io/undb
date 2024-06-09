@@ -95,8 +95,8 @@ export class StringField extends AbstractField<StringFieldValue, StringFieldCons
     return Option(spec)
   }
 
-  override $updateValue(value: StringFieldValue): Option<RecordComositeSpecification> {
-    return Some(new StringEqual(value, this.id))
+  override getMutationSpec(value: StringFieldValue): RecordComositeSpecification {
+    return new StringEqual(value, this.id)
   }
 
   protected override getConditionSchema(optionType: z.ZodTypeAny): IStringFieldConditionSchema {

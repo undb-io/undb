@@ -133,7 +133,7 @@ export class RecordMutateVisitor implements IRecordVisitor {
     throw new Error("Method not implemented.")
   }
   idEqual(spec: IdEqual): void {
-    throw new Error("Method not implemented.")
+    this.setData(spec.fieldId.value, spec.values.value)
   }
   dateIsSameDate(spec: DateIsSameDay): void {
     throw new Error("Method not implemented.")

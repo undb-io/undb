@@ -8,6 +8,7 @@ import {
   CreatedByField,
   FieldIdVo,
   FieldNameVo,
+  ID_TYPE,
   IdField,
   ReferenceField,
   UpdatedAtField,
@@ -147,6 +148,10 @@ export class Schema extends ValueObject<Field[]> {
   getFieldById(fieldId: FieldId): Option<Field> {
     const field = this.fieldMapById.get(fieldId.value)
     return Option(field)
+  }
+
+  getIdField(): IdField {
+    return this.getFieldById(new FieldIdVo(ID_TYPE)).expect("Id field not found") as IdField
   }
 
   getDefaultValues() {

@@ -1,5 +1,6 @@
-import { None, Option, ValueObject } from "@undb/domain"
+import { None, Option, ValueObject, and } from "@undb/domain"
 import { z } from "@undb/zod"
+import type { RecordComositeSpecification } from "../.."
 import type { TableDo } from "../../../table.do"
 import type { FieldValue, MutableFieldValue } from "../../schema"
 import { FieldIdVo, fieldId, type FieldId, type IFieldId } from "../../schema/fields/field-id.vo"
@@ -69,7 +70,7 @@ export class RecordValuesVO extends ValueObject {
     return new RecordValuesVO(values)
   }
 
-  public toJSON(): IRecordValues {
+  toJSON(): IRecordValues {
     const values: IRecordValues = {}
 
     for (const [id, value] of Object.entries(this.values)) {
@@ -79,7 +80,7 @@ export class RecordValuesVO extends ValueObject {
     return values
   }
 
-  public toReadable(table: TableDo): IRecordReadableDTO {
+  toReadable(table: TableDo): IRecordReadableDTO {
     const schema = table.schema.fieldMapById
 
     const values: IRecordReadableDTO = {}
@@ -95,7 +96,7 @@ export class RecordValuesVO extends ValueObject {
     return values
   }
 
-  public duplicate(schema: SchemaMap): RecordValuesVO {
+  duplicate(schema: SchemaMap): RecordValuesVO {
     const values: RecordValues = {}
 
     for (const [id, value] of Object.entries(this.values)) {
@@ -108,7 +109,7 @@ export class RecordValuesVO extends ValueObject {
     return new RecordValuesVO(values)
   }
 
-  public getValues(fieldIds: Set<string>): RecordValuesVO {
+  getValues(fieldIds: Set<string>): RecordValuesVO {
     const values: RecordValues = {}
 
     for (const [id, value] of Object.entries(this.values)) {
@@ -120,11 +121,11 @@ export class RecordValuesVO extends ValueObject {
     return new RecordValuesVO(values)
   }
 
-  public getValue(fieldId: FieldId): Option<FieldValue> {
+  getValue(fieldId: FieldId): Option<FieldValue> {
     return Option(this.#map.get(fieldId.value))
   }
 
-  public getMuttableValues(schema: SchemaMap) {
+  getMuttableValues(schema: SchemaMap) {
     const values: Record<string, any> = {}
 
     for (const [id, value] of Object.entries(this.values)) {
@@ -138,8 +139,21 @@ export class RecordValuesVO extends ValueObject {
     return values
   }
 
-  public setValue(fieldId: FieldId, value: FieldValue) {
+  setValue(fieldId: FieldId, value: FieldValue) {
     this.#map.set(fieldId.value, value)
     this.values = Object.fromEntries(this.#map)
+  }
+
+  toInsertSpec(table: TableDo): RecordComositeSpecification {
+    const specs: RecordComositeSpecification[] = []
+    for (const [id, value] of this.#map) {
+      const field = table.schema.getFieldById(new FieldIdVo(id)).into(undefined)
+      if (!field || field.isSystem) continue
+
+      const spec = field.getMutationSpec(value as any)
+      specs.push(spec)
+    }
+
+    return and(...specs).unwrap() as RecordComositeSpecification
   }
 }

@@ -82,10 +82,6 @@ export class ReferenceField extends AbstractField<ReferenceFieldValue, undefined
     this.option.expect("no reference field option").symmetricFieldId = field.id.value
   }
 
-  override $updateValue(value: ReferenceFieldValue): Option<RecordComositeSpecification> {
-    return Some(new ReferenceEqual(value, this.id))
-  }
-
   override type = REFERENCE_TYPE
 
   override get valueSchema() {
@@ -108,6 +104,10 @@ export class ReferenceField extends AbstractField<ReferenceFieldValue, undefined
 
   override get aggregate() {
     return referenceFieldAggregate
+  }
+
+  override getMutationSpec(value: ReferenceFieldValue): RecordComositeSpecification {
+    return new ReferenceEqual(value, this.id)
   }
 
   public get isOwner() {

@@ -19,7 +19,7 @@ export class IdEqual extends RecordComositeSpecification {
     throw new Error("Method not implemented.")
   }
   accept(v: IRecordVisitor): Result<void, string> {
-    v.stringEqual(this)
+    v.idEqual(this)
     return Ok(undefined)
   }
 }

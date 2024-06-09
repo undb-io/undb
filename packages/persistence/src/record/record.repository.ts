@@ -43,12 +43,22 @@ export class RecordRepository implements IRecordRepository {
 
     const t = new UnderlyingTable(table)
 
-    const values = this.mapper.toEntity(record)
+    const spec = record.toInsertSpec(table)
+
+    const sql: CompiledQuery[] = []
 
     await this.qb
       .insertInto(t.name)
-      .values({ ...values, [CREATED_BY_TYPE]: userId, [UPDATED_BY_TYPE]: userId })
+      .values((eb) => {
+        const visitor = new RecordMutateVisitor(table, record, this.qb, eb)
+        spec.accept(visitor)
+
+        sql.push(...visitor.sql)
+
+        return { ...visitor.data, [CREATED_BY_TYPE]: userId, [UPDATED_BY_TYPE]: userId }
+      })
       .executeTakeFirst()
+    await all(sql.map((s) => this.qb.executeQuery(s)))
     await this.outboxService.save(record)
   }
 

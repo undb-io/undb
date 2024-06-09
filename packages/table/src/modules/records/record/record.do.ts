@@ -1,4 +1,4 @@
-import { AggregateRoot, andOptions, type Option } from "@undb/domain"
+import { AggregateRoot, and, andOptions, type Option } from "@undb/domain"
 import type { TableDo } from "../../../table.do"
 import { ID_TYPE, type FieldValue } from "../../schema"
 import { FieldIdVo, type FieldId } from "../../schema/fields/field-id.vo"
@@ -126,6 +126,13 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
 
     const values = this.flatten()
     return fields.map((field) => values[field.id.value]).join(", ")
+  }
+
+  toInsertSpec(table: TableDo): RecordComositeSpecification {
+    const spec = this.values.toInsertSpec(table)
+
+    const id = table.schema.getIdField()
+    return and(id.getMutationSpec(this.id), spec).unwrap() as RecordComositeSpecification
   }
 }
 
