@@ -41,7 +41,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   $createForm = createFormMethod
   $setTableForm = setTableForm
 
-  getOrderedFields(formId?: FormId): Field[] {
+  getOrderedFields(formId?: FormId, viewId?: ViewId): Field[] {
     const fields = this.schema.fields
     if (formId) {
       const form = this.forms?.props.find((form) => form.id === formId.value)
@@ -51,7 +51,8 @@ export class TableDo extends AggregateRoot<ITableEvents> {
         return fields.filter((field) => formFieldsIds.has(field.id.value))
       }
     }
-    return fields
+    const showSystemFields = this.views.getViewById(viewId).showSystemFields
+    return fields.filter((f) => (showSystemFields ? true : !f.isSystem))
   }
 
   getOrderedMutableFields(formId?: FormId): Field[] {

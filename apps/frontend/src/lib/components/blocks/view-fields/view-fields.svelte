@@ -15,7 +15,7 @@
   import { isNumber } from "radash"
 
   const table = getTable()
-  $: fields = $table.getOrderedVisibleFields()
+  $: fields = $table.getOrderedFields()
   $: viewFieldsVo = $table.getViewFields()
   $: viewFields = viewFieldsVo.props.filter((viewField) => fields.some((field) => field.id.value === viewField.fieldId))
   $: hiddenCount = viewFieldsVo.getHiddenFieldsCount()
