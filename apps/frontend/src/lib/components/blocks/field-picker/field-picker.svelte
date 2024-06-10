@@ -10,7 +10,7 @@
   import FieldIcon from "../field-icon/field-icon.svelte"
   import type { FieldType } from "@undb/table"
 
-  const table = getTable()
+  export let table = getTable()
 
   interface IField {
     id: string

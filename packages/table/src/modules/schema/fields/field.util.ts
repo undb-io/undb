@@ -40,3 +40,9 @@ export const systemFieldTypes: SystemFieldType[] = [
 ] as const
 
 export const allFieldTypes: FieldType[] = [...systemFieldTypes, ...fieldTypes] as const
+
+export const fieldsCanBeRollup: FieldType[] = ["number"] as const
+
+export const getIsFieldCanBeRollup = (type: FieldType): type is "number" => {
+  return fieldsCanBeRollup.includes(type)
+}
