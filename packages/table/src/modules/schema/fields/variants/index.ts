@@ -10,3 +10,4 @@ export * from "./updated-at-field"
 export * from "./updated-by-field"
 
 export * from "./reference-field"
+export * from "./rollup-field"

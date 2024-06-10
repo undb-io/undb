@@ -106,8 +106,8 @@ export class ReferenceField extends AbstractField<ReferenceFieldValue, undefined
     return referenceFieldAggregate
   }
 
-  override getMutationSpec(value: ReferenceFieldValue): RecordComositeSpecification {
-    return new ReferenceEqual(value, this.id)
+  override getMutationSpec(value: ReferenceFieldValue): Option<RecordComositeSpecification> {
+    return Some(new ReferenceEqual(value, this.id))
   }
 
   public get isOwner() {

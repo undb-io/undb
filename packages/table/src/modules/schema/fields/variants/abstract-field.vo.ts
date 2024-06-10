@@ -48,6 +48,12 @@ export abstract class AbstractField<
     this.display = dto.display ?? false
   }
 
+  protected computed = false
+
+  public get isComputed() {
+    return this.computed
+  }
+
   abstract type: FieldType
   /**
    * whether the field value is controlled by system
@@ -58,7 +64,7 @@ export abstract class AbstractField<
   }
 
   public get isMutable() {
-    return !this.isSystem
+    return !this.isSystem && !this.computed
   }
 
   protected abstract get valueSchema(): ZodSchema
@@ -106,14 +112,16 @@ export abstract class AbstractField<
     return hasValue
   }
 
-  abstract getMutationSpec(value: V): RecordComositeSpecification
+  getMutationSpec(value: V): Option<RecordComositeSpecification> {
+    return None
+  }
 
   $updateValue(value: V): Option<RecordComositeSpecification> {
-    if (this.isSystem) {
+    if (this.isSystem || this.computed) {
       return None
     }
 
-    return Some(this.getMutationSpec(value))
+    return this.getMutationSpec(value)
   }
 
   get conditionOps() {
@@ -151,7 +159,7 @@ export abstract class AbstractField<
     return {
       id: this.id.value,
       name: this.name.value,
-      type: this.type,
+      type: this.type as any,
       display: this.display,
       defaultValue: (this.defaultValue.into(undefined)?.value ?? undefined) as any,
       constraint: this.constraint.into(undefined)?.value,

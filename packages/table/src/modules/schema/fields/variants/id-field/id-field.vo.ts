@@ -1,6 +1,7 @@
-import { Option } from "@undb/domain"
+import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
+import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
@@ -61,8 +62,8 @@ export class IdField extends AbstractField<IdFieldValue> {
     return createIdFieldCondition(optionType)
   }
 
-  override getMutationSpec(value: IdFieldValue) {
-    return new IdEqual(value, this.id)
+  override getMutationSpec(value: IdFieldValue): Option<RecordComositeSpecification> {
+    return Some(new IdEqual(value, this.id))
   }
 
   override get aggregate() {

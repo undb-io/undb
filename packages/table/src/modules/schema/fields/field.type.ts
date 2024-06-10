@@ -1,13 +1,19 @@
 import type {
   INumberFieldConditionSchema,
+  IReferenceFieldConstraint,
   IReferenceFieldOption,
+  IRollupFieldConditionSchema,
+  IRollupFieldOption,
   IStringFieldConditionSchema,
   IStringFieldConstraint,
   IUpdatedAtFieldConditionSchema,
   IUpdatedByFieldConditionSchema,
   REFERENCE_TYPE,
+  ROLLUP_TYPE,
   ReferenceField,
   ReferenceFieldValue,
+  RollupField,
+  RollupFieldValue,
   UPDATED_AT_TYPE,
   UPDATED_BY_TYPE,
   UpdatedAtField,
@@ -50,6 +56,7 @@ export type Field =
   | CreatedByField
   | UpdatedByField
   | ReferenceField
+  | RollupField
 
 export type NoneSystemField = Field & { isSystem: false }
 export type SystemField = Field & { isSystem: true }
@@ -64,6 +71,7 @@ export type FieldValue =
   | CreatedByFieldValue
   | UpdatedByFieldValue
   | ReferenceFieldValue
+  | RollupFieldValue
 
 export type MutableFieldValue = StringFieldValue | NumberFieldValue | ReferenceFieldValue
 
@@ -77,6 +85,7 @@ export type FieldType =
   | typeof CREATED_BY_TYPE
   | typeof UPDATED_BY_TYPE
   | typeof REFERENCE_TYPE
+  | typeof ROLLUP_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
@@ -97,9 +106,10 @@ export type IFieldConditionSchema =
   | IUpdatedByFieldConditionSchema
   | IUpdatedAtFieldConditionSchema
   | IAutoIncrementFieldConditionSchema
+  | IRollupFieldConditionSchema
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
 
-export type IFieldConstraint = IStringFieldConstraint | INumberFieldConstraint
+export type IFieldConstraint = IStringFieldConstraint | INumberFieldConstraint | IReferenceFieldConstraint
 
-export type IFieldOption = IReferenceFieldOption
+export type IFieldOption = IReferenceFieldOption | IRollupFieldOption

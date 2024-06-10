@@ -1,6 +1,5 @@
-import { Option, WontImplementException } from "@undb/domain"
+import { Option } from "@undb/domain"
 import { z } from "@undb/zod"
-import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
@@ -63,9 +62,5 @@ export class UpdatedAtField extends AbstractField<UpdatedAtFieldValue> {
 
   override get aggregate() {
     return abstractDateAggregate
-  }
-
-  override getMutationSpec(value: UpdatedAtFieldValue): RecordComositeSpecification {
-    throw new WontImplementException(UpdatedAtField.name + ".getMutationSpec")
   }
 }

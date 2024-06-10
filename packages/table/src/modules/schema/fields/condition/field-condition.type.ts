@@ -20,12 +20,12 @@ export function createConditionSchema<OptionType extends z.ZodTypeAny>(optionTyp
   ])
 }
 
-export type IFieldConditionSchema<OptionType extends z.ZodTypeAny = z.ZodUndefined> = ReturnType<
+export type IFieldConditionSchemaType<OptionType extends z.ZodTypeAny = z.ZodUndefined> = ReturnType<
   typeof createConditionSchema<OptionType>
 >
 
 export type IFieldCondition<OptionType extends z.ZodTypeAny = z.ZodUndefined> = z.infer<
-  IFieldConditionSchema<OptionType>
+  IFieldConditionSchemaType<OptionType>
 >
 
 export type IOpType = IFieldCondition["op"]

@@ -79,8 +79,8 @@ export class NumberField extends AbstractField<NumberFieldValue, NumberFieldCons
     return createNumberFieldCondition(optionType)
   }
 
-  override getMutationSpec(value: NumberFieldValue): RecordComositeSpecification {
-    return new NumberEqual(value.value, this.id)
+  override getMutationSpec(value: NumberFieldValue): Option<RecordComositeSpecification> {
+    return Some(new NumberEqual(value.value, this.id))
   }
 
   override get aggregate() {

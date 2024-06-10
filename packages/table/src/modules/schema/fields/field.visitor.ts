@@ -4,6 +4,7 @@ import type { CreatedAtField } from "./variants/created-at-field"
 import type { CreatedByField } from "./variants/created-by-field"
 import type { IdField } from "./variants/id-field"
 import type { NumberField } from "./variants/number-field/number-field.vo"
+import type { RollupField } from "./variants/rollup-field"
 import type { StringField } from "./variants/string-field/string-field.vo"
 
 export interface IFieldVisitor {
@@ -17,4 +18,5 @@ export interface IFieldVisitor {
   number(field: NumberField): void
 
   reference(field: ReferenceField): void
+  rollup(field: RollupField): void
 }
