@@ -1,0 +1,20 @@
+query GetForeignTableQuery($tableId: ID!) {
+  table(id: $tableId) {
+    id
+    name
+    schema {
+      id
+      name
+      type
+      defaultValue
+      display
+      constraint
+      option
+    }
+    views {
+      id
+      name
+      type
+    }
+  }
+}
