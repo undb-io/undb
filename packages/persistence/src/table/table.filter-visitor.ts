@@ -70,6 +70,8 @@ export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> impleme
     this.addCond(eq(tables.id, id.id.value))
   }
   idsIn(ids: TableIdsSpecification): void {
+    if (!ids.ids.length) return
+
     this.addCond(
       inArray(
         tables.id,

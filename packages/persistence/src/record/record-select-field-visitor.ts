@@ -1,5 +1,6 @@
 import {
   ID_TYPE,
+  TableDo,
   type AutoIncrementField,
   type CreatedAtField,
   type CreatedByField,
@@ -12,7 +13,7 @@ import {
   type UpdatedByField,
 } from "@undb/table"
 import { getTableName } from "drizzle-orm"
-import { type ExpressionBuilder, type SelectExpression } from "kysely"
+import { sql, type ExpressionBuilder, type SelectExpression } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { users } from "../tables"
 import type { UnderlyingTable } from "../underlying/underlying-table"
@@ -35,6 +36,7 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
 
   constructor(
     private readonly table: UnderlyingTable,
+    private readonly foreignTables: Map<string, TableDo>,
     private readonly qb: IQueryBuilder,
     private readonly eb: ExpressionBuilder<any, string>,
   ) {
@@ -91,5 +93,23 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   reference(field: ReferenceField): void {
     const select = `${field.id.value}.${field.id.value} as ${field.id.value}`
     this.addSelect(select)
+
+    const name = createDisplayFieldName(field)
+
+    const foreignTable = this.foreignTables.get(field.foreignTableId)
+    if (foreignTable) {
+      const displayFields = foreignTable.schema.getDisplayFields()
+      const select = this.eb
+        .fn(
+          "json_object",
+          displayFields.flatMap((displayField) => [
+            sql.raw(`'${displayField.id.value}'`),
+            `${field.id.value}.${displayField.id.value}`,
+          ]),
+        )
+        .as(name)
+
+      this.addSelect(select)
+    }
   }
 }

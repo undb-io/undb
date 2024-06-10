@@ -1,7 +1,7 @@
 import { z } from "@undb/zod"
 import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.vo"
 
-export const stringFieldConstraint = z
+export const referenceFieldConstraint = z
   .object({
     min: z.number().int().positive(),
     max: z.number().int().positive(),
@@ -12,7 +12,7 @@ export const stringFieldConstraint = z
     message: "min should be less than or equal to max",
   })
 
-export type IReferenceFieldConstraint = z.infer<typeof stringFieldConstraint>
+export type IReferenceFieldConstraint = z.infer<typeof referenceFieldConstraint>
 
 export class ReferenceFieldConstraint extends FieldConstraintVO<IReferenceFieldConstraint> {
   constructor(dto: IReferenceFieldConstraint) {

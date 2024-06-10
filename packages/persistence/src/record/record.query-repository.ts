@@ -4,7 +4,7 @@ import { None, Option, Some, andOptions, type PaginatedDTO } from "@undb/domain"
 import {
   ID_TYPE,
   RecordComositeSpecification,
-  ViewIdVo,
+  TableIdVo,
   injectTableRepository,
   type AggregateResult,
   type Field,
@@ -48,15 +48,35 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return Number(total)
   }
 
+  private async getForeignTables(table: TableDo, fields: Field[]): Promise<Map<string, TableDo>> {
+    const map = new Map<string, TableDo>()
+
+    const foriengTableIds = table.schema.getForeignTableIds(fields)
+    const foreignTables = await this.tableRepo.findManyByIds([...foriengTableIds].map((id) => new TableIdVo(id)))
+    for (const foreignTable of foreignTables) {
+      map.set(foreignTable.id.value, foreignTable)
+    }
+
+    return map
+  }
+
   // TODO: move to new file
-  private createQuery(table: TableDo, viewId: string | undefined) {
-    const fields = table.getOrderedVisibleFields(viewId ? new ViewIdVo(viewId) : undefined)
+  private createQuery(table: TableDo, foreignTables: Map<string, TableDo>, fields: Field[]) {
     const referenceFields = table.schema.getReferenceFields(fields)
 
-    const handleSelect = this.handleSelect(table, fields)
+    const handleSelect = this.handleSelect(table, foreignTables, fields)
 
     // create cte for selection
     const qb = referenceFields.reduce<QueryCreator<any>>((qb, field) => {
+      const foreignTable = foreignTables.get(field.foreignTableId)
+      if (!foreignTable) {
+        return qb
+      }
+
+      const displayFields = foreignTable.schema.getDisplayFields()
+
+      const underlyingForiegnTable = new UnderlyingTable(foreignTable)
+
       const joinTable = new JoinTable(table, field)
       const name = joinTable.getTableName()
       const valueField = joinTable.getValueFieldId()
@@ -65,10 +85,18 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       return qb.with(field.id.value, (db) =>
         db
           .selectFrom(name)
-          .innerJoin(field.foreignTableId, `${name}.${symmetricField}`, `${field.foreignTableId}.${ID_TYPE}`)
+          .innerJoin(
+            underlyingForiegnTable.name,
+            `${name}.${symmetricField}`,
+            `${underlyingForiegnTable.name}.${ID_TYPE}`,
+          )
           .select((sb) => [
             `${name}.${valueField} as ${ID_TYPE}`,
             sb.fn("json_group_array", [sb.ref(`${name}.${symmetricField}`)]).as(field.id.value),
+            // select display fields for reference
+            ...displayFields.map((f) =>
+              sb.fn("json_group_array", [sb.ref(`${underlyingForiegnTable.name}.${f.id.value}`)]).as(f.id.value),
+            ),
           ])
           .groupBy(`${name}.${valueField}`),
       )
@@ -86,7 +114,9 @@ export class RecordQueryRepository implements IRecordQueryRepository {
   }
 
   async findOneById(table: TableDo, id: RecordId): Promise<Option<IRecordDTO>> {
-    const qb = this.createQuery(table, undefined)
+    const fields = table.getOrderedVisibleFields()
+    const foreignTables = await this.getForeignTables(table, fields)
+    const qb = this.createQuery(table, foreignTables, fields)
 
     const result = await qb.where(`${table.id.value}.${ID_TYPE}`, "=", id.value).executeTakeFirst()
 
@@ -129,7 +159,9 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       return sort!.reduce((qb, s) => qb.orderBy(`${s.fieldId} ${s.direction}`), qb)
     }
 
-    const qb = this.createQuery(table, viewId.into(undefined)?.value)
+    const fields = table.getOrderedVisibleFields(view.id)
+    const foreignTables = await this.getForeignTables(table, fields)
+    const qb = this.createQuery(table, foreignTables, fields)
 
     const result = await qb
       .$if(!!pagination?.limit, handlePagination)
@@ -148,9 +180,9 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return { values: records, total: Number(total) }
   }
 
-  private handleSelect(table: TableDo, fields: Field[]) {
+  private handleSelect(table: TableDo, foreignTables: Map<string, TableDo>, fields: Field[]) {
     return (sb: ExpressionBuilder<any, any>) => {
-      const visitor = new RecordSelectFieldVisitor(new UnderlyingTable(table), this.qb, sb)
+      const visitor = new RecordSelectFieldVisitor(new UnderlyingTable(table), foreignTables, this.qb, sb)
       for (const field of fields) {
         field.accept(visitor)
       }

@@ -80,10 +80,6 @@ export class Schema extends ValueObject<Field[]> {
     return this.fields.filter((f) => !f.isSystem) as NoneSystemField[]
   }
 
-  get displayFields(): Field[] {
-    return this.fields.filter((f) => f.display)
-  }
-
   get mutableFields(): Field[] {
     return this.fields.filter((f) => f.isMutable)
   }
@@ -174,7 +170,7 @@ export class Schema extends ValueObject<Field[]> {
   }
 
   getReferenceFields(fields: Field[] = this.fields): ReferenceField[] {
-    return fields.filter((f) => f instanceof ReferenceField) as ReferenceField[]
+    return fields.filter((f) => f.type === "reference") as ReferenceField[]
   }
 
   getForeignTableIds(fields: Field[] = this.fields): Set<string> {

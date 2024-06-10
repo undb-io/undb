@@ -48,23 +48,35 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO 
   const values: IRecordValues = {}
   const displayValues: IRecordDisplayValues = {}
   const schema = table.schema
-  for (const [key, value] of Object.entries(entity)) {
+  for (let [key, value] of Object.entries(entity)) {
     if (key === ID_TYPE) continue
-
-    if (isDisplayerFieldName(key)) {
-      displayValues[getRawFieldName(key)] = value
-      continue
+    const isDisplay = isDisplayerFieldName(key)
+    if (isDisplay) {
+      key = getRawFieldName(key as DisplayFieldName)
     }
 
     const field = schema.getFieldById(new FieldIdVo(key)).into(undefined)
     if (!field) continue
 
-    if (field.type === "reference" && isString(value)) {
-      values[key] = JSON.parse(value)
+    if (isDisplay) {
+      if (field.type === "reference" && isString(value)) {
+        const parsed = JSON.parse(value)
+        for (let [key, value] of Object.entries(parsed)) {
+          parsed[key] = JSON.parse(value as string)
+        }
+        displayValues[key] = parsed
+      } else {
+        displayValues[key] = value
+      }
       continue
-    }
+    } else {
+      if (field.type === "reference" && isString(value)) {
+        values[key] = JSON.parse(value)
+        continue
+      }
 
-    values[key] = value
+      values[key] = value
+    }
   }
 
   return {
