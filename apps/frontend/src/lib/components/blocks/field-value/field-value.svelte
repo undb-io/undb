@@ -6,6 +6,8 @@
   import DateField from "./date-field.svelte"
   import IdField from "./id-field.svelte"
   import UserField from "./user-field.svelte"
+  import RollupField from "./rollup-field.svelte"
+  import ReferenceField from "./reference-field.svelte"
 
   export let type: FieldType
   export let value: any
@@ -20,6 +22,8 @@
     autoIncrement: NumberField,
     createdBy: UserField,
     updatedBy: UserField,
+    reference: ReferenceField,
+    rollup: RollupField,
   }
 </script>
 

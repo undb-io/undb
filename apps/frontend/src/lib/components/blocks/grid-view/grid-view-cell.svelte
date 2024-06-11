@@ -14,6 +14,7 @@
   import { derived } from "svelte/store"
   import UserField from "../field-value/user-field.svelte"
   import ReferenceControl from "../field-control/reference-control.svelte"
+  import RollupField from "../field-value/rollup-field.svelte"
 
   const table = getTable()
 
@@ -33,6 +34,7 @@
     createdBy: UserField,
     updatedBy: UserField,
     reference: ReferenceControl,
+    rollup: RollupField,
   }
 
   let form: HTMLFormElement
