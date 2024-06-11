@@ -11,6 +11,7 @@ import {
   ID_TYPE,
   IdField,
   ReferenceField,
+  RollupField,
   UpdatedAtField,
   UpdatedByField,
   type IUpdateFieldDTO,
@@ -170,7 +171,23 @@ export class Schema extends ValueObject<Field[]> {
   }
 
   getReferenceFields(fields: Field[] = this.fields): ReferenceField[] {
-    return fields.filter((f) => f.type === "reference") as ReferenceField[]
+    const references = fields.filter((f) => f.type === "reference") as ReferenceField[]
+    const ids = new Set(references.map((f) => f.id.value))
+
+    const rollupFields = fields.filter((field) => field.type === "rollup") as RollupField[]
+    for (const rollup of rollupFields) {
+      if (!rollup.referenceFieldId || ids.has(rollup.referenceFieldId)) {
+        continue
+      }
+
+      const reference = this.getFieldById(new FieldIdVo(rollup.referenceFieldId)).into(undefined)
+      if (reference) {
+        references.push(reference as ReferenceField)
+        ids.add(reference.id.value)
+      }
+    }
+
+    return references
   }
 
   getForeignTableIds(fields: Field[] = this.fields): Set<string> {
