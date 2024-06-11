@@ -39,7 +39,7 @@ export class WithNewView extends TableComositeSpecification {
     throw new WontImplementException(TableComositeSpecification.name + ".isSatisfiedBy")
   }
   mutate(t: TableDo): Result<TableDo, string> {
-    t.views.addView(this.view)
+    t.views = t.views.addView(this.view)
     return Ok(t)
   }
   accept(v: ITableSpecVisitor): Result<void, string> {

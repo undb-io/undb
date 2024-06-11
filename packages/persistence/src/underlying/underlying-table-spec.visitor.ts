@@ -7,6 +7,7 @@ import type {
   TableSchemaSpecification,
   TableViewsSpecification,
   WithNewFieldSpecification,
+  WithNewView,
   WithUpdatedFieldSpecification,
   WithViewAggregate,
   WithViewColor,
@@ -54,6 +55,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
   }
 
   idsIn(ids: TableIdsSpecification): void {}
+  withNewView(views: WithNewView): void {}
   withViewOption(viewOption: WithViewOption): void {}
   withUpdatedField(spec: WithUpdatedFieldSpecification): void {
     const typeChanged = spec.getIsTypeChanged()

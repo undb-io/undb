@@ -8,6 +8,7 @@ import type {
   TableSchemaSpecification,
   TableViewsSpecification,
   WithNewFieldSpecification,
+  WithNewView,
   WithUpdatedFieldSpecification,
   WithViewAggregate,
   WithViewColor,
@@ -27,6 +28,9 @@ import { AbstractDBFilterVisitor } from "../abstract-db.visitor"
 import { tables } from "../tables"
 
 export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> implements ITableSpecVisitor {
+  withNewView(views: WithNewView): void {
+    throw new Error("Method not implemented.")
+  }
   withViewOption(viewOption: WithViewOption): void {
     throw new Error("Method not implemented.")
   }

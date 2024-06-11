@@ -32,6 +32,7 @@
   import RecordUpdating from "../record-updating/record-updating.svelte"
   import Separator from "$lib/components/ui/separator/separator.svelte"
   import CreateFormButton from "../forms/create-form-button.svelte"
+  import CreateViewButton from "../view/create-view-button.svelte"
 
   const table = getTable()
   $: view = $table.views.getViewById()
@@ -159,6 +160,9 @@
             <Breadcrumb.Item class="text-xs">
               <Breadcrumb.Page>{view.name.value}</Breadcrumb.Page>
             </Breadcrumb.Item>
+            <CreateViewButton class="mt-0" size="icon" variant="ghost">
+              <PlusCircleIcon class="h-4 w-4" />
+            </CreateViewButton>
           {/if}
         </Breadcrumb.List>
       </Breadcrumb.Root>
