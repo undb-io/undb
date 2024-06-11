@@ -123,6 +123,6 @@ export class ReferenceField extends AbstractField<ReferenceFieldValue, undefined
   }
 
   getRollupFields(fields: Field[]): RollupField[] {
-    return fields.filter((f) => f.type === "rollup" && f.referenceFieldId) as RollupField[]
+    return fields.filter((f) => f.type === "rollup" && f.referenceFieldId === this.id.value) as RollupField[]
   }
 }

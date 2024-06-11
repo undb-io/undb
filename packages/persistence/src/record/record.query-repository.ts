@@ -61,21 +61,21 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return map
   }
 
-  private createQuery(table: TableDo, foreignTables: Map<string, TableDo>, fields: Field[]) {
+  private createQuery(table: TableDo, foreignTables: Map<string, TableDo>, visibleFields: Field[]) {
     const t = new UnderlyingTable(table)
-    const referenceFields = table.schema.getReferenceFields(fields)
-    const qb = new RecordQueryCreatorVisitor(this.qb, table, foreignTables, fields).create()
+    const referenceFields = table.schema.getReferenceFields(visibleFields)
+    const qb = new RecordQueryCreatorVisitor(this.qb, table, foreignTables, visibleFields).create()
 
     return qb
       .selectFrom(table.id.value)
       .$call((qb) => new RecordReferenceVisitor(qb, table).join(referenceFields))
-      .select((sb) => new RecordSelectFieldVisitor(t, foreignTables, sb).select(fields))
+      .select((sb) => new RecordSelectFieldVisitor(t, foreignTables, sb).select(visibleFields))
   }
 
   async findOneById(table: TableDo, id: RecordId): Promise<Option<IRecordDTO>> {
-    const fields = table.getOrderedVisibleFields()
-    const foreignTables = await this.getForeignTables(table, fields)
-    const qb = this.createQuery(table, foreignTables, fields)
+    const visibleFields = table.getOrderedVisibleFields()
+    const foreignTables = await this.getForeignTables(table, visibleFields)
+    const qb = this.createQuery(table, foreignTables, visibleFields)
 
     const result = await qb.where(`${table.id.value}.${ID_TYPE}`, "=", id.value).executeTakeFirst()
 
@@ -118,9 +118,9 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       return sort!.reduce((qb, s) => qb.orderBy(`${s.fieldId} ${s.direction}`), qb)
     }
 
-    const fields = table.getOrderedVisibleFields(view.id)
-    const foreignTables = await this.getForeignTables(table, fields)
-    const qb = this.createQuery(table, foreignTables, fields)
+    const visibleFields = table.getOrderedVisibleFields(view.id)
+    const foreignTables = await this.getForeignTables(table, visibleFields)
+    const qb = this.createQuery(table, foreignTables, visibleFields)
 
     const result = await qb
       .$if(!!pagination?.limit, handlePagination)
