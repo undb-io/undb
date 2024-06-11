@@ -22,6 +22,7 @@ import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { RecordQueryCreatorVisitor } from "./record-query-creator-visitor"
+import { RecordReferenceVisitor } from "./record-reference-visitor"
 import { RecordSelectFieldVisitor } from "./record-select-field-visitor"
 import { getRecordDTOFromEntity } from "./record-utils"
 import { AggregateFnBuiler } from "./record.aggregate-builder"
@@ -60,22 +61,15 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return map
   }
 
-  // TODO: move to new file
   private createQuery(table: TableDo, foreignTables: Map<string, TableDo>, fields: Field[]) {
+    const t = new UnderlyingTable(table)
     const referenceFields = table.schema.getReferenceFields(fields)
     const qb = new RecordQueryCreatorVisitor(this.qb, table, foreignTables, fields).create()
 
-    const handleSelect = this.handleSelect(table, foreignTables, fields)
-
     return qb
       .selectFrom(table.id.value)
-      .$call((qb) =>
-        referenceFields.reduce(
-          (qb, field) => qb.leftJoin(field.id.value, `${table.id.value}.${ID_TYPE}`, `${field.id.value}.${ID_TYPE}`),
-          qb,
-        ),
-      )
-      .select(handleSelect)
+      .$call((qb) => new RecordReferenceVisitor(qb, table).join(referenceFields))
+      .select((sb) => new RecordSelectFieldVisitor(t, foreignTables, sb).select(fields))
   }
 
   async findOneById(table: TableDo, id: RecordId): Promise<Option<IRecordDTO>> {
@@ -143,16 +137,6 @@ export class RecordQueryRepository implements IRecordQueryRepository {
 
     const records = result.map((r) => getRecordDTOFromEntity(table, r))
     return { values: records, total: Number(total) }
-  }
-
-  private handleSelect(table: TableDo, foreignTables: Map<string, TableDo>, fields: Field[]) {
-    return (sb: ExpressionBuilder<any, any>) => {
-      const visitor = new RecordSelectFieldVisitor(new UnderlyingTable(table), foreignTables, this.qb, sb)
-      for (const field of fields) {
-        field.accept(visitor)
-      }
-      return visitor.select()
-    }
   }
 
   async aggregate(table: TableDo, viewId: Option<ViewId>): Promise<Record<string, AggregateResult>> {

@@ -3,6 +3,7 @@ import {
   type AutoIncrementField,
   type CreatedAtField,
   type CreatedByField,
+  type Field,
   type IFieldVisitor,
   type IdField,
   type NumberField,
@@ -15,7 +16,6 @@ import {
 } from "@undb/table"
 import { getTableName } from "drizzle-orm"
 import { sql, type ExpressionBuilder, type SelectExpression } from "kysely"
-import type { IQueryBuilder } from "../qb"
 import { users } from "../tables"
 import type { UnderlyingTable } from "../underlying/underlying-table"
 import { createDisplayFieldName } from "./record-utils"
@@ -27,7 +27,10 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     this.#select.push(select)
   }
 
-  public select() {
+  public select(fields: Field[]): SelectExpression<any, any>[] {
+    for (const field of fields) {
+      field.accept(this)
+    }
     return this.#select
   }
 
@@ -38,7 +41,6 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   constructor(
     private readonly table: UnderlyingTable,
     private readonly foreignTables: Map<string, TableDo>,
-    private readonly qb: IQueryBuilder,
     private readonly eb: ExpressionBuilder<any, string>,
   ) {
     this.addSelect(this.getField(ID_TYPE))
