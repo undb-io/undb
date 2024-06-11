@@ -1,6 +1,7 @@
 import { singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
 import type { ICreateTableDTO, ICreateTableFieldDTO, IUpdateTableFieldDTO } from "../dto"
+import type { ICreateTableViewDTO } from "../modules"
 import type { ICreateTableFormDTO } from "../modules/forms/dto/create-form.dto"
 import { TableCreator } from "../table.builder"
 import type { TableDo } from "../table.do"
@@ -8,6 +9,7 @@ import type { ITableRepository } from "../table.repository"
 import { injectTableRepository } from "../table.repository.provider"
 import { createTableFieldMethod } from "./methods/create-table-field.method"
 import { createTableFormMethod } from "./methods/create-table-form.method"
+import { createTableViewMethod } from "./methods/create-table-view.method"
 import { createTableMethod } from "./methods/create-table.method"
 import { updateTableFieldMethod } from "./methods/update-table-field.method"
 
@@ -16,6 +18,7 @@ export interface ITableService {
   createTableField(dto: ICreateTableFieldDTO): Promise<TableDo>
   updateTableField(dto: IUpdateTableFieldDTO): Promise<TableDo>
   createTableForm(dto: ICreateTableFormDTO): Promise<TableDo>
+  createTableView(dto: ICreateTableViewDTO): Promise<TableDo>
 }
 
 @singleton()
@@ -32,4 +35,5 @@ export class TableService implements ITableService {
   createTableField = createTableFieldMethod
   updateTableField = updateTableFieldMethod
   createTableForm = createTableFormMethod
+  createTableView = createTableViewMethod
 }

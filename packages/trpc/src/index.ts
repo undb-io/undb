@@ -4,6 +4,7 @@ import {
   CreateTableCommand,
   CreateTableFieldCommand,
   CreateTableFormCommand,
+  CreateTableViewCommand,
   CreateWebhookCommand,
   DeleteRecordCommand,
   DuplicateRecordCommand,
@@ -22,6 +23,7 @@ import {
   createTableCommand,
   createTableFieldCommand,
   createTableFormCommand,
+  createTableViewCommand,
   createWebhookCommand,
   deleteRecordCommand,
   duplicateRecordCommand,
@@ -106,6 +108,9 @@ const formRouter = t.router({
 })
 
 const viewRouter = t.router({
+  create: p
+    .input(createTableViewCommand)
+    .mutation(({ input }) => commandBus.execute(new CreateTableViewCommand(input))),
   setFilter: p.input(setViewFilterCommand).mutation(({ input }) => commandBus.execute(new SetViewFilterCommand(input))),
   setOption: p.input(setViewOptionCommand).mutation(({ input }) => commandBus.execute(new SetViewOptionCommand(input))),
   setColor: p.input(setViewColorCommand).mutation(({ input }) => commandBus.execute(new SetViewColorCommand(input))),

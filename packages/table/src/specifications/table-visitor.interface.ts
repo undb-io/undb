@@ -13,6 +13,7 @@ import type {
   WithUpdatedFieldSpecification,
 } from "./table-schema.specification"
 import type {
+  WithNewView,
   WithViewAggregate,
   WithViewColor,
   WithViewFields,
@@ -31,6 +32,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withUpdatedField(spec: WithUpdatedFieldSpecification): void
   withTableRLS(rls: WithTableRLS): void
   withViews(views: TableViewsSpecification): void
+  withNewView(views: WithNewView): void
   withViewFilter(viewFilter: WithViewFilter): void
   withViewOption(viewOption: WithViewOption): void
   withViewColor(viewColor: WithViewColor): void

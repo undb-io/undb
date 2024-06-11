@@ -22,6 +22,10 @@ export class Views extends ValueObject {
     return new this(views)
   }
 
+  addView(view: View) {
+    return new Views([...this.views, view])
+  }
+
   getViewById(id?: ViewId): View {
     let view: View | undefined
     if (!id) {

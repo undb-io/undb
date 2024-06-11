@@ -1,6 +1,7 @@
 import { CreateRecordCommandHandler } from "./create-record.command-handler"
 import { CreateTableFieldCommandHandler } from "./create-table-field.command-handler"
 import { CreateTableFormCommandHandler } from "./create-table-form.command-handler"
+import { CreateTableViewCommandHandler } from "./create-table-view.command-handler"
 import { CreateTableCommandHandler } from "./create-table.command-handler"
 import { CreateWebhookCommandHandler } from "./create-webhook.command-handler"
 import { DeleteRecordCommandHandler } from "./delete-record.command-handler"
@@ -36,4 +37,5 @@ export const commandHandlers = [
   CreateTableFormCommandHandler,
   SetTableFormCommandHandler,
   UpdateTableFieldCommandHandler,
+  CreateTableViewCommandHandler,
 ]

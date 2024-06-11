@@ -1,6 +1,7 @@
 export * from "./create-record.command"
 export * from "./create-table-field.command"
 export * from "./create-table-form.command"
+export * from "./create-table-view.command"
 export * from "./create-table.command"
 export * from "./create-webhook.command"
 export * from "./delete-record.command"

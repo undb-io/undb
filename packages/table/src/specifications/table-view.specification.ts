@@ -1,5 +1,5 @@
 import { Ok, Option, WontImplementException, type Result } from "@undb/domain"
-import type { IRootViewFilter, ViewId } from "../modules"
+import type { IRootViewFilter, View, ViewId } from "../modules"
 import type { IViewAggregate } from "../modules/views/view/view-aggregate/view-aggregate.vo"
 import type { IRootViewColor } from "../modules/views/view/view-color"
 import type { IViewFields } from "../modules/views/view/view-fields"
@@ -30,6 +30,24 @@ export class WithViewOption extends TableComositeSpecification {
     return Ok(undefined)
   }
 }
+
+export class WithNewView extends TableComositeSpecification {
+  constructor(public readonly view: View) {
+    super()
+  }
+  isSatisfiedBy(t: TableDo): boolean {
+    throw new WontImplementException(TableComositeSpecification.name + ".isSatisfiedBy")
+  }
+  mutate(t: TableDo): Result<TableDo, string> {
+    t.views.addView(this.view)
+    return Ok(t)
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withNewView(this)
+    return Ok(undefined)
+  }
+}
+
 export class WithViewFilter extends TableComositeSpecification {
   constructor(
     public readonly viewId: ViewId,

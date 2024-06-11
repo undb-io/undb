@@ -8,6 +8,7 @@ import type { SetViewFilterEvent } from "./set-view-filter.event"
 import type { SetViewOptionEvent } from "./set-view-option.event"
 import type { SetViewSortEvent } from "./set-view-sort.event"
 import type { TableCreatedEvent } from "./table-created.event"
+import type { ViewCreatedEvent } from "./view-created.event"
 
 export * from "./field-created.event"
 export * from "./field-updated.event"
@@ -20,6 +21,7 @@ export * from "./set-view-filter.event"
 export * from "./set-view-option.event"
 export * from "./set-view-sort.event"
 export * from "./table-created.event"
+export * from "./view-created.event"
 
 export type ITableEvents =
   | SetViewFilterEvent
@@ -32,3 +34,4 @@ export type ITableEvents =
   | FieldCreatedEvent
   | SetTableFormEvent
   | FieldUpdatedEvent
+  | ViewCreatedEvent
