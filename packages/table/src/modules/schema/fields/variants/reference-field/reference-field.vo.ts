@@ -1,6 +1,6 @@
 import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
-import type { RecordComositeSpecification } from "../../../.."
+import type { Field, RecordComositeSpecification, RollupField } from "../../../.."
 import { tableId } from "../../../../../table-id.vo"
 import type { TableDo } from "../../../../../table.do"
 import { recordId } from "../../../../records/record/record-id.vo"
@@ -120,5 +120,9 @@ export class ReferenceField extends AbstractField<ReferenceFieldValue, undefined
 
   public get symmetricFieldId() {
     return this.option.unwrap().symmetricFieldId
+  }
+
+  getRollupFields(fields: Field[]): RollupField[] {
+    return fields.filter((f) => f.type === "rollup" && f.referenceFieldId) as RollupField[]
   }
 }

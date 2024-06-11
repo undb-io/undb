@@ -1,6 +1,5 @@
 import {
   ID_TYPE,
-  TableDo,
   type AutoIncrementField,
   type CreatedAtField,
   type CreatedByField,
@@ -8,7 +7,9 @@ import {
   type IdField,
   type NumberField,
   type ReferenceField,
+  type RollupField,
   type StringField,
+  type TableDo,
   type UpdatedAtField,
   type UpdatedByField,
 } from "@undb/table"
@@ -112,4 +113,5 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
       this.addSelect(select)
     }
   }
+  rollup(field: RollupField): void {}
 }

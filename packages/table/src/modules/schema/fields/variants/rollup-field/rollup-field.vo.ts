@@ -93,4 +93,8 @@ export class RollupField extends AbstractField<RollupFieldValue, undefined, IRol
   override get aggregate() {
     return rollupFieldAggregate
   }
+
+  get referenceFieldId() {
+    return this.option.mapOr(undefined, (o) => o.referenceFieldId)
+  }
 }

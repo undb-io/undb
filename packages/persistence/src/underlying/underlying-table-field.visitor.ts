@@ -2,6 +2,7 @@ import {
   CreatedByField,
   ID_TYPE,
   ReferenceField,
+  RollupField,
   UpdatedByField,
   type AutoIncrementField,
   type CreatedAtField,
@@ -115,4 +116,5 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
       this.addSql(sql)
     }
   }
+  rollup(field: RollupField): void {}
 }
