@@ -28,7 +28,7 @@
     "@undb/webhook": "workspace:*",
     "bun": "^1.1.12",
     "core-js": "^3.37.1",
-    "elysia": "^1.0.22",
+    "elysia": "^1.0.23",
     "elysia-requestid": "^1.0.9",
     "got": "^14.4.1",
     "lucia": "^3.2.0",

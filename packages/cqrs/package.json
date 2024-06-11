@@ -16,6 +16,6 @@
     "@undb/domain": "workspace:*",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "uuid": "^9.0.1"
+    "uuid": "^10.0.0"
   }
 }
