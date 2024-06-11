@@ -1,6 +1,7 @@
 import { P, match } from "ts-pattern"
 import type { IInferCreateFieldDTO } from "./dto/field.dto"
 import type { FieldType, NoneSystemFieldType, SystemFieldType } from "./field.type"
+import type { IRollupFn } from "./variants"
 
 export const inferCreateFieldType = (values: (string | number | null | object | boolean)[]): IInferCreateFieldDTO => {
   return match(values)
@@ -45,4 +46,12 @@ export const fieldsCanBeRollup: FieldType[] = ["number"] as const
 
 export const getIsFieldCanBeRollup = (type: FieldType): type is "number" => {
   return fieldsCanBeRollup.includes(type)
+}
+
+export function getRollupFnByType(type: FieldType): IRollupFn[] {
+  return match(type)
+    .returnType<IRollupFn[]>()
+    .with("number", () => ["sum", "average", "max", "min", "count", "lookup"])
+    .with("string", () => ["count", "lookup"])
+    .otherwise(() => [])
 }

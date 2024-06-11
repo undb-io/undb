@@ -14,6 +14,8 @@ export const ROLLUP_TYPE = "rollup" as const
 
 export const rollupFn = z.enum(["sum", "average", "count", "min", "max", "lookup"])
 
+export type IRollupFn = z.infer<typeof rollupFn>
+
 const rollupFieldOption = z.object({
   referenceFieldId: fieldId,
   rollupFieldId: fieldId,
@@ -96,5 +98,13 @@ export class RollupField extends AbstractField<RollupFieldValue, undefined, IRol
 
   get referenceFieldId() {
     return this.option.mapOr(undefined, (o) => o.referenceFieldId)
+  }
+
+  get rollupFieldId() {
+    return this.option.mapOr(undefined, (o) => o.rollupFieldId)
+  }
+
+  get fn() {
+    return this.option.mapOr("lookup", (o) => o.fn)
   }
 }

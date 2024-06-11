@@ -7,6 +7,7 @@ import {
   IdFieldValue,
   NumberFieldValue,
   ReferenceFieldValue,
+  RollupFieldValue,
   StringFieldValue,
   UpdatedAtFieldValue,
   UpdatedByFieldValue,
@@ -33,6 +34,7 @@ export class FieldValueFactory {
       .with("updatedAt", () => Some(new UpdatedAtFieldValue(new Date(value))))
       .with("updatedBy", () => Some(new UpdatedByFieldValue(value as string)))
       .with("reference", () => Some(new ReferenceFieldValue(value as string[])))
+      .with("rollup", () => Some(new RollupFieldValue(value as number | Date)))
       .exhaustive()
   }
 }

@@ -11,6 +11,7 @@
   import FieldPicker from "../field-picker/field-picker.svelte"
   import { GetForeignTableQueryStore } from "$houdini"
   import { writable } from "svelte/store"
+  import RollupFnPicker from "../rollup/rollup-fn-picker.svelte"
 
   const table = getTable()
 
@@ -44,7 +45,7 @@
     filter={(f) => f.type === "reference"}
   />
 
-  {#if foreignTableDo && fields?.length}
+  {#if $foreignTableDo && fields?.length}
     <FieldPicker
       class="w-full"
       {...$$restProps}
@@ -52,5 +53,9 @@
       table={foreignTableDo}
       filter={(f) => fields.some((field) => field.id === f.id)}
     />
+  {/if}
+
+  {#if $foreignTableDo && option.rollupFieldId}
+    <RollupFnPicker foreignTable={$foreignTableDo} rollupFieldId={option.rollupFieldId} bind:value={option.fn} />
   {/if}
 </div>

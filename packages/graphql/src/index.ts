@@ -28,6 +28,7 @@ export class Graphql {
         updatedBy
         autoIncrement
         reference
+        rollup
       }
 
       type Field {

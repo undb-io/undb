@@ -113,5 +113,8 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
       this.addSelect(select)
     }
   }
-  rollup(field: RollupField): void {}
+  rollup(field: RollupField): void {
+    const select = `${field.referenceFieldId}.${field.id.value} as ${field.id.value}`
+    this.addSelect(select)
+  }
 }

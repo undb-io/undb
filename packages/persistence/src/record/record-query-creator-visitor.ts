@@ -18,6 +18,7 @@ import type { QueryCreator } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { JoinTable } from "../underlying/reference/join-table"
 import { UnderlyingTable } from "../underlying/underlying-table"
+import { getRollupFn } from "../underlying/underlying-table.util"
 
 export class RecordQueryCreatorVisitor implements IFieldVisitor {
   constructor(
@@ -76,6 +77,11 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
           // select display fields for reference
           ...displayFields.map((f) =>
             sb.fn("json_group_array", [sb.ref(`${underlyingForiegnTable.name}.${f.id.value}`)]).as(f.id.value),
+          ),
+          ...rollupFields.map((rollupField) =>
+            sb
+              .fn(getRollupFn(rollupField.fn), [sb.ref(`${underlyingForiegnTable.name}.${rollupField.rollupFieldId}`)])
+              .as(rollupField.id.value),
           ),
         ])
         .groupBy(`${name}.${valueField}`),

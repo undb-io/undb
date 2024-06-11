@@ -17,11 +17,11 @@ import {
   type TableId,
   type ViewId,
 } from "@undb/table"
-import { QueryCreator, type AliasedExpression, type ExpressionBuilder, type SelectQueryBuilder } from "kysely"
+import { type AliasedExpression, type ExpressionBuilder, type SelectQueryBuilder } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
-import { JoinTable } from "../underlying/reference/join-table"
 import { UnderlyingTable } from "../underlying/underlying-table"
+import { RecordQueryCreatorVisitor } from "./record-query-creator-visitor"
 import { RecordSelectFieldVisitor } from "./record-select-field-visitor"
 import { getRecordDTOFromEntity } from "./record-utils"
 import { AggregateFnBuiler } from "./record.aggregate-builder"
@@ -63,44 +63,9 @@ export class RecordQueryRepository implements IRecordQueryRepository {
   // TODO: move to new file
   private createQuery(table: TableDo, foreignTables: Map<string, TableDo>, fields: Field[]) {
     const referenceFields = table.schema.getReferenceFields(fields)
+    const qb = new RecordQueryCreatorVisitor(this.qb, table, foreignTables, fields).create()
 
     const handleSelect = this.handleSelect(table, foreignTables, fields)
-
-    // create cte for selection
-    const qb = referenceFields.reduce<QueryCreator<any>>((qb, field) => {
-      const foreignTable = foreignTables.get(field.foreignTableId)
-      if (!foreignTable) {
-        return qb
-      }
-
-      const displayFields = foreignTable.schema.getDisplayFields()
-
-      const underlyingForiegnTable = new UnderlyingTable(foreignTable)
-
-      const joinTable = new JoinTable(table, field)
-      const name = joinTable.getTableName()
-      const valueField = joinTable.getValueFieldId()
-      const symmetricField = joinTable.getSymmetricValueFieldId()
-
-      return qb.with(field.id.value, (db) =>
-        db
-          .selectFrom(name)
-          .innerJoin(
-            underlyingForiegnTable.name,
-            `${name}.${symmetricField}`,
-            `${underlyingForiegnTable.name}.${ID_TYPE}`,
-          )
-          .select((sb) => [
-            `${name}.${valueField} as ${ID_TYPE}`,
-            sb.fn("json_group_array", [sb.ref(`${name}.${symmetricField}`)]).as(field.id.value),
-            // select display fields for reference
-            ...displayFields.map((f) =>
-              sb.fn("json_group_array", [sb.ref(`${underlyingForiegnTable.name}.${f.id.value}`)]).as(f.id.value),
-            ),
-          ])
-          .groupBy(`${name}.${valueField}`),
-      )
-    }, this.qb)
 
     return qb
       .selectFrom(table.id.value)

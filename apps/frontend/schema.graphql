@@ -25,6 +25,7 @@ enum FieldType {
   id
   number
   reference
+  rollup
   string
   updatedAt
   updatedBy
