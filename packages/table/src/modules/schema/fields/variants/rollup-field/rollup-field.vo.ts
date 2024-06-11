@@ -1,6 +1,5 @@
 import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
-import { recordId } from "../../../../records/record/record-id.vo"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
@@ -75,7 +74,7 @@ export class RollupField extends AbstractField<RollupFieldValue, undefined, IRol
   override type = ROLLUP_TYPE
 
   override get valueSchema() {
-    return recordId.array().optional().nullable()
+    return z.union([z.number(), z.date(), z.null(), z.undefined()])
   }
 
   override accept(visitor: IFieldVisitor): void {

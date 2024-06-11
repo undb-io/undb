@@ -7,7 +7,6 @@
   import DateControl from "./date-control.svelte"
   import UserControl from "./user-control.svelte"
   import ReferenceControl from "./reference-control.svelte"
-  import RollupControl from "./rollup-control.svelte"
 
   export let field: Field
 
@@ -32,7 +31,7 @@
     createdBy: UserControl,
     updatedBy: UserControl,
     reference: ReferenceControl,
-    rollup: RollupControl,
+    rollup: NumberControl,
   }
 </script>
 

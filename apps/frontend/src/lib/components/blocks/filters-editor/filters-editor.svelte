@@ -28,7 +28,7 @@
   export let defaultConjunction: Conjunction = "and"
   export let filter: (field: IField) => boolean = () => true
 
-  $: filteredFields = table.getOrderedFields().filter((f) => filter({ id: f.id.value }))
+  $: filteredFields = table.getOrderedVisibleFields().filter((f) => filter({ id: f.id.value }))
   export let disableGroup = false
 
   $: isEven = level % 2 === 0

@@ -25,6 +25,7 @@
 
   $: $table, value.set(filter?.toMaybeConditionGroup())
 
+  $: visibleFields = $table.getOrderedVisibleFields()
   let open = false
 
   const client = useQueryClient()
@@ -62,7 +63,12 @@
     {#if $value?.children.length}
       <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Filters</div>
     {/if}
-    <FiltersEditor bind:value={$value} table={$table} on:submit={(e) => handleSubmit(e.detail)}>
+    <FiltersEditor
+      bind:value={$value}
+      table={$table}
+      on:submit={(e) => handleSubmit(e.detail)}
+      filter={(field) => visibleFields.some((f) => f.id.value === field.id)}
+    >
       <Button size="xs" on:click={() => handleSubmit(validValue)} slot="footer">Submit</Button>
     </FiltersEditor>
   </Popover.Content>
