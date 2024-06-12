@@ -64,7 +64,7 @@ export class CreatedByField extends AbstractField<CreatedByFieldValue> {
     return abstractUserAggregate
   }
 
-  override getMutationSpec(value: CreatedByFieldValue): RecordComositeSpecification {
+  override getMutationSpec(value: CreatedByFieldValue): Option<RecordComositeSpecification> {
     throw new WontImplementException(CreatedByField.name + ".getMutationSpec")
   }
 }

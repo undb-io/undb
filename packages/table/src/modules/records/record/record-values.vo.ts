@@ -1,4 +1,4 @@
-import { None, Option, ValueObject, and } from "@undb/domain"
+import { None, Option, ValueObject, and, andOptions } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { RecordComositeSpecification } from "../.."
 import type { TableDo } from "../../../table.do"
@@ -144,8 +144,8 @@ export class RecordValuesVO extends ValueObject {
     this.values = Object.fromEntries(this.#map)
   }
 
-  toInsertSpec(table: TableDo): RecordComositeSpecification {
-    const specs: RecordComositeSpecification[] = []
+  toInsertSpec(table: TableDo): Option<RecordComositeSpecification> {
+    const specs: Option<RecordComositeSpecification>[] = []
     for (const [id, value] of this.#map) {
       const field = table.schema.getFieldById(new FieldIdVo(id)).into(undefined)
       if (!field || field.isSystem) continue
@@ -154,6 +154,6 @@ export class RecordValuesVO extends ValueObject {
       specs.push(spec)
     }
 
-    return and(...specs).unwrap() as RecordComositeSpecification
+    return andOptions(...specs) as Option<RecordComositeSpecification>
   }
 }

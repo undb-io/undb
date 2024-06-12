@@ -132,7 +132,7 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
     const spec = this.values.toInsertSpec(table)
 
     const id = table.schema.getIdField()
-    return andOptions(id.getMutationSpec(this.id), Some(spec)).unwrap() as RecordComositeSpecification
+    return andOptions(id.getMutationSpec(this.id), spec).unwrap() as RecordComositeSpecification
   }
 }
 
