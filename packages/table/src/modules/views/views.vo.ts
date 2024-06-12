@@ -1,7 +1,7 @@
 import { Option, ValueObject } from "@undb/domain"
 import type { IViewsDTO } from "./dto"
 import { GridView } from "./view/variants/grid-view.vo"
-import type { ViewId } from "./view/view-id.vo"
+import { ViewIdVo } from "./view/view-id.vo"
 import type { View } from "./view/view.type"
 
 export class Views extends ValueObject {
@@ -26,13 +26,18 @@ export class Views extends ValueObject {
     return new Views([...this.views, view])
   }
 
-  getViewById(id?: ViewId): View {
+  getViewById(id: string | undefined): View {
     let view: View | undefined
     if (!id) {
       view = this.views.at(0)
     } else {
-      view = this.views.find((view) => view.id.equals(id)) ?? this.views.at(0)
+      const viewId = new ViewIdVo(id)
+      view = this.views.find((view) => view.id.equals(viewId)) ?? this.views.at(0)
     }
     return Option(view).expect("View not found")
+  }
+
+  getDefaultView() {
+    return this.views.find((view) => view.isDefault) ?? this.views.at(0)!
   }
 }

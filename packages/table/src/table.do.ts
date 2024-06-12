@@ -43,7 +43,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   $createView = createViewMethod
   $setTableForm = setTableForm
 
-  getOrderedFields(formId?: FormId, viewId?: ViewId): Field[] {
+  getOrderedFields(formId?: FormId, viewId?: string): Field[] {
     const fields = this.schema.fields
     if (formId) {
       const form = this.forms?.props.find((form) => form.id === formId.value)
@@ -76,11 +76,11 @@ export class TableDo extends AggregateRoot<ITableEvents> {
     return !!this.rls.into(undefined)?.props.length
   }
 
-  getViewFields(viewId?: ViewId) {
+  getViewFields(viewId?: string) {
     return this.views.getViewById(viewId).fields.unwrapOrElse(() => ViewFields.default(this))
   }
 
-  getOrderedVisibleFields(viewId?: ViewId): Field[] {
+  getOrderedVisibleFields(viewId?: string): Field[] {
     const view = this.views.getViewById(viewId)
     return this.getViewFields(viewId)
       .getVisibleFields()
@@ -89,7 +89,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   }
 
   getViewOption(viewId?: ViewId) {
-    return this.views.getViewById(viewId).option.unwrapOrElse(() => ViewOption.default())
+    return this.views.getViewById(viewId?.value).option.unwrapOrElse(() => ViewOption.default())
   }
 
   toJSON(): ITableDTO {

@@ -6,8 +6,7 @@ import type { TableComositeSpecification } from "../specifications"
 import type { TableDo } from "../table.do"
 
 export function setViewColor(this: TableDo, dto: ISetViewColorDTO): Option<TableComositeSpecification> {
-  const viewId = dto.viewId ? new ViewIdVo(dto.viewId) : undefined
-  const view = this.views.getViewById(viewId)
+  const view = this.views.getViewById(dto.viewId)
 
   const spec = view.$setColorSpec(dto.color)
   if (spec.isSome()) {

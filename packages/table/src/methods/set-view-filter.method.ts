@@ -6,8 +6,7 @@ import type { TableComositeSpecification } from "../specifications"
 import type { TableDo } from "../table.do"
 
 export function setViewFilter(this: TableDo, dto: ISetViewFilterDTO): Option<TableComositeSpecification> {
-  const viewId = dto.viewId ? new ViewIdVo(dto.viewId) : undefined
-  const view = this.views.getViewById(viewId)
+  const view = this.views.getViewById(dto.viewId)
 
   const spec = view.$setFilterSpec(dto.filter)
   if (spec.isSome()) {

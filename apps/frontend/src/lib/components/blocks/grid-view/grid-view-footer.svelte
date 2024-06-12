@@ -1,7 +1,7 @@
 <script lang="ts">
   import { invalidate } from "$app/navigation"
   import * as Select from "$lib/components/ui/select/index.js"
-  import { getTable } from "$lib/store/table.store"
+  import { getTable, viewId } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { cn } from "$lib/utils"
   import { createMutation } from "@tanstack/svelte-query"
@@ -15,7 +15,7 @@
   export let aggregateResult: AggregateResult | undefined = undefined
 
   $: options = field.aggregate.options?.map((value) => ({ value, label: value })) ?? []
-  $: value = $table.views.getViewById().aggregate.into(undefined)?.value?.[field.id.value]
+  $: value = $table.views.getViewById($viewId).aggregate.into(undefined)?.value?.[field.id.value]
 
   const setViewAggregateMutation = createMutation(
     derived([table], ([$table]) => ({
@@ -28,12 +28,12 @@
   )
 
   const setViewAggregate = (value: IFieldAggregate) => {
-    const aggregate = $table.views.getViewById().aggregate.into(undefined)?.value
+    const aggregate = $table.views.getViewById($viewId).aggregate.into(undefined)?.value
     const newAggregate: IViewAggregate = { ...aggregate, [field.id.value]: value }
 
     $setViewAggregateMutation.mutate({
       tableId: $table.id.value,
-      viewId: $table.views.getViewById().id.value,
+      viewId: $viewId,
       aggregate: newAggregate,
     })
   }

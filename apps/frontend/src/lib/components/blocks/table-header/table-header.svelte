@@ -13,11 +13,9 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import * as Tooltip from "$lib/components/ui/tooltip"
   import {
-    Code2Icon,
     CodeIcon,
     CodeXml,
     DatabaseIcon,
-    FileSlidersIcon,
     FingerprintIcon,
     FormInputIcon,
     Package2,
@@ -30,12 +28,17 @@
   import { getTable } from "$lib/store/table.store"
   import { tab, isFormTab, formId, developerTab, isAuthTab, isDeveloperTab } from "$lib/store/tab.store"
   import RecordUpdating from "../record-updating/record-updating.svelte"
-  import Separator from "$lib/components/ui/separator/separator.svelte"
   import CreateFormButton from "../forms/create-form-button.svelte"
   import CreateViewButton from "../view/create-view-button.svelte"
+  import { derived } from "svelte/store"
+  import { page } from "$app/stores"
 
   const table = getTable()
-  $: view = $table.views.getViewById()
+
+  $: viewId = derived([page], ([$page]) => {
+    return $page.params.viewId
+  })
+  $: view = $table.views.getViewById($viewId)
   $: forms = $table.forms?.props ?? []
 
   $: currentFormId = $formId ? $formId : forms[0]?.id

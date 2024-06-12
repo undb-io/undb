@@ -45,6 +45,7 @@ export type IBaseViewDTO = z.infer<typeof baseViewDTO>
 export abstract class AbstractView {
   id!: ViewId
   name!: ViewNameVo
+  isDefault: boolean
   option: Option<ViewOption> = None
 
   filter: Option<ViewFilter> = None

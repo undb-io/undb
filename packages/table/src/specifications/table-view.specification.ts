@@ -21,7 +21,7 @@ export class WithViewOption extends TableComositeSpecification {
     throw new WontImplementException(WithViewFilter.name + ".isSatisfiedBy")
   }
   mutate(t: TableDo): Result<TableDo, string> {
-    const view = t.views.getViewById(this.viewId)
+    const view = t.views.getViewById(this.viewId.value)
     view.setOption(this.option)
     return Ok(t)
   }
@@ -60,7 +60,7 @@ export class WithViewFilter extends TableComositeSpecification {
     throw new WontImplementException(WithViewFilter.name + ".isSatisfiedBy")
   }
   mutate(t: TableDo): Result<TableDo, string> {
-    const view = t.views.getViewById(this.viewId)
+    const view = t.views.getViewById(this.viewId.value)
     view.setFilter(this.filter)
     return Ok(t)
   }
@@ -82,7 +82,7 @@ export class WithViewColor extends TableComositeSpecification {
     throw new WontImplementException(WithViewColor.name + ".isSatisfiedBy")
   }
   mutate(t: TableDo): Result<TableDo, string> {
-    const view = t.views.getViewById(this.viewId)
+    const view = t.views.getViewById(this.viewId.value)
     view.setColor(this.color)
     return Ok(t)
   }
@@ -104,7 +104,7 @@ export class WithViewSort extends TableComositeSpecification {
     throw new WontImplementException(WithViewColor.name + ".isSatisfiedBy")
   }
   mutate(t: TableDo): Result<TableDo, string> {
-    const view = t.views.getViewById(this.viewId)
+    const view = t.views.getViewById(this.viewId.value)
     view.setSort(this.sort)
     return Ok(t)
   }
@@ -126,7 +126,7 @@ export class WithViewAggregate extends TableComositeSpecification {
     throw new WontImplementException(WithViewColor.name + ".isSatisfiedBy")
   }
   mutate(t: TableDo): Result<TableDo, string> {
-    const view = t.views.getViewById(this.viewId)
+    const view = t.views.getViewById(this.viewId.value)
     view.setAggregate(this.aggregate)
     return Ok(t)
   }
@@ -148,7 +148,7 @@ export class WithViewFields extends TableComositeSpecification {
     throw new WontImplementException(WithViewColor.name + ".isSatisfiedBy")
   }
   mutate(t: TableDo): Result<TableDo, string> {
-    const view = t.views.getViewById(this.viewId)
+    const view = t.views.getViewById(this.viewId.value)
     view.setFields(this.fields)
     return Ok(t)
   }

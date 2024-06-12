@@ -97,7 +97,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const userId = context?.user?.userId!
 
     const t = new UnderlyingTable(table)
-    const view = table.views.getViewById(viewId.into(undefined))
+    const view = table.views.getViewById(viewId.into(undefined)?.value)
     const schema = table.schema
 
     const viewSpec = view.filter.map((f) => f.getSpec(schema)).flatten()
@@ -141,7 +141,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
 
   async aggregate(table: TableDo, viewId: Option<ViewId>): Promise<Record<string, AggregateResult>> {
     const t = new UnderlyingTable(table)
-    const view = table.views.getViewById(viewId.into(undefined))
+    const view = table.views.getViewById(viewId.into(undefined)?.value)
     const aggregates = view.aggregate
     if (aggregates.isNone()) {
       return {}

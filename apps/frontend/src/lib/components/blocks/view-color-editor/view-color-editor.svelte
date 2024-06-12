@@ -3,7 +3,7 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import { PaintBucketIcon } from "lucide-svelte"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
-  import { getTable } from "$lib/store/table.store"
+  import { getTable, viewId } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { invalidate } from "$app/navigation"
@@ -19,7 +19,7 @@
   import ColorPicker from "$lib/components/ui/color-picker/color-picker.svelte"
 
   const table = getTable()
-  $: color = $table.views.getViewById().color.into(undefined)
+  $: color = $table.views.getViewById($viewId).color.into(undefined)
   $: count = color?.count ?? 0
 
   const value = writable<MaybeConditionGroup<IViewColorOptionSchema> | undefined>()

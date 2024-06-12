@@ -7,7 +7,7 @@
   import { cn } from "$lib/utils"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
 
-  import { getTable } from "$lib/store/table.store"
+  import { getTable, viewId } from "$lib/store/table.store"
   import { type IViewSort, isFieldSortable } from "@undb/table"
   import FieldPicker from "../field-picker/field-picker.svelte"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
@@ -16,7 +16,7 @@
   import { isNumber } from "radash"
 
   const table = getTable()
-  $: view = $table.views.getViewById()
+  $: view = $table.views.getViewById($viewId)
   $: sort = view.sort.into(undefined)
   $: fields = $table.getOrderedFields()
 

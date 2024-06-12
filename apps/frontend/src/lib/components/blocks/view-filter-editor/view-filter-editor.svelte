@@ -3,7 +3,7 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import { FilterIcon } from "lucide-svelte"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
-  import { getTable } from "$lib/store/table.store"
+  import { getTable, viewId } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { invalidate } from "$app/navigation"
@@ -17,7 +17,7 @@
   } from "@undb/table"
 
   const table = getTable()
-  $: filter = $table.views.getViewById().filter.into(undefined)
+  $: filter = $table.views.getViewById($viewId).filter.into(undefined)
   $: count = filter?.count ?? 0
 
   const value = writable<MaybeConditionGroup<IViewFilterOptionSchema> | undefined>()

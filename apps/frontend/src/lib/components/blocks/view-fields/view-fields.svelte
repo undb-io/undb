@@ -3,7 +3,7 @@
   import { Switch } from "$lib/components/ui/switch"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
   import * as Popover from "$lib/components/ui/popover"
-  import { getTable } from "$lib/store/table.store"
+  import { getTable, viewId } from "$lib/store/table.store"
   import { FieldIdVo } from "@undb/table"
   import { ListIcon, GripVerticalIcon } from "lucide-svelte"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
@@ -15,8 +15,8 @@
   import { isNumber } from "radash"
 
   const table = getTable()
-  $: fields = $table.getOrderedFields()
-  $: viewFieldsVo = $table.getViewFields()
+  $: fields = $table.getOrderedFields(undefined, $viewId)
+  $: viewFieldsVo = $table.getViewFields($viewId)
   $: viewFields = viewFieldsVo.props.filter((viewField) => fields.some((field) => field.id.value === viewField.fieldId))
   $: hiddenCount = viewFieldsVo.getHiddenFieldsCount()
 
@@ -36,7 +36,7 @@
     await tick()
     $setViewFieldsMutation.mutate({
       tableId: $table.id.value,
-      viewId: $table.views.getViewById().id.value,
+      viewId: $viewId,
       fields: [...viewFields],
     })
   }
@@ -65,7 +65,7 @@
     await tick()
     $setViewOptionMutation.mutate({
       tableId: $table.id.value,
-      viewId: $table.views.getViewById().id.value,
+      viewId: $table.views.getViewById($viewId).id.value,
       option: viewOption.toJSON(),
     })
   }

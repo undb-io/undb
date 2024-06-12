@@ -13,8 +13,7 @@ export function setViewSort(this: TableDo, dto: ISetViewSortDTO): Option<TableCo
     new ViewSortShouldNotDuplicated(dto.sort),
   )
 
-  const viewId = dto.viewId ? new ViewIdVo(dto.viewId) : undefined
-  const view = this.views.getViewById(viewId)
+  const view = this.views.getViewById(dto.viewId)
 
   const spec = view.$setSortSpec(dto.sort)
   if (spec.isSome()) {

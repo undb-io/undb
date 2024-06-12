@@ -48,7 +48,7 @@
   $: tableStore = pageData.tableStore
   $: aggregate = $tableStore.data?.table?.viewData?.aggregate
 
-  $: view = $t.views.getViewById()
+  $: view = $t.views.getViewById($viewId)
   $: viewFilter = view.filter.into(undefined)
   $: hasFilterFieldIds = viewFilter?.fieldIds
   const perPage = writable(50)
