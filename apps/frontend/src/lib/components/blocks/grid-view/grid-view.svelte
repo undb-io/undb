@@ -32,7 +32,7 @@
   import { ClipboardCopyIcon, CopyIcon, Maximize2Icon, Trash2Icon } from "lucide-svelte"
 
   const t = getTable()
-  const viewId = derived([page], ([$page]) => $page.params.viewId)
+  const viewId = derived([page, t], ([$page, $table]) => $page.params.viewId ?? $table.views.getDefaultView().id.value)
 
   const q = queryParam("q")
   const r = queryParam("r")
