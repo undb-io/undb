@@ -15,12 +15,14 @@ export type IGetRecordsOutput = z.infer<typeof getRecordsOutput>
 
 export class GetRecordsQuery extends Query implements IGetRecordsQuery {
   public readonly tableId: string
+  public readonly viewId?: string
   public readonly q?: string
   public readonly pagination?: IPagination
 
   constructor(props: QueryProps<IGetRecordsQuery>) {
     super()
     this.tableId = props.tableId
+    this.viewId = props.viewId
     this.q = props.q
     this.pagination = props.pagination
   }

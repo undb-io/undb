@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as ContextMenu from "$lib/components/ui/context-menu"
   import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
-  import { derived, writable } from "svelte/store"
+  import { derived, readable, writable } from "svelte/store"
   import GridViewCheckbox from "./grid-view-checkbox.svelte"
   import * as Table from "$lib/components/ui/table/index.js"
   import { addResizedColumns, addSelectedRows } from "svelte-headless-table/plugins"
@@ -32,6 +32,7 @@
   import { ClipboardCopyIcon, CopyIcon, Maximize2Icon, Trash2Icon } from "lucide-svelte"
 
   const t = getTable()
+  const viewId = derived([page], ([$page]) => $page.params.viewId)
 
   const q = queryParam("q")
   const r = queryParam("r")
@@ -54,12 +55,13 @@
   const currentPage = writable(1)
 
   const getRecords = createQuery(
-    derived([t, perPage, currentPage, q], ([$table, $perPage, $currentPage, $q]) => {
+    derived([t, viewId, perPage, currentPage, q], ([$table, $viewId, $perPage, $currentPage, $q]) => {
       return {
-        queryKey: ["records", $table?.id.value, $table.views.getViewById()?.id.value, $q, $currentPage, $perPage],
+        queryKey: ["records", $table?.id.value, $viewId, $q, $currentPage, $perPage],
         queryFn: () =>
           trpc.record.list.query({
             tableId: $table?.id.value,
+            viewId: $viewId,
             q: $q ?? undefined,
             pagination: { limit: $perPage, page: $currentPage },
           }),
