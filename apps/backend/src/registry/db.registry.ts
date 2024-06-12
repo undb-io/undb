@@ -1,4 +1,5 @@
 import { AUDIT_QUERY_REPOSITORY, AUDIT_REPOSITORY } from "@undb/audit"
+import { WORKSPACE_MEMBER_REPOSITORY } from "@undb/authz"
 import { container } from "@undb/di"
 import {
   AuditQueryRepository,
@@ -13,6 +14,7 @@ import {
   TableRepository,
   WebhookQueryRepository,
   WebhookRepository,
+  WorkspaceMemberRepository,
 } from "@undb/persistence"
 import {
   RECORD_OUTBOX_SERVICE,
@@ -36,4 +38,5 @@ export const registerDb = () => {
   container.register(WEBHOOK_QUERY_REPOSITORY, WebhookQueryRepository)
   container.register(AUDIT_REPOSITORY, AuditRepository)
   container.register(AUDIT_QUERY_REPOSITORY, AuditQueryRepository)
+  container.register(WORKSPACE_MEMBER_REPOSITORY, WorkspaceMemberRepository)
 }

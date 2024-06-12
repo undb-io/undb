@@ -115,3 +115,14 @@ export const audit = sqliteTable(
 
 export type Audit = typeof audit.$inferSelect
 export type NewAudit = typeof audit.$inferInsert
+
+export const workspaceMember = sqliteTable("workspace_member", {
+  id: text("id").notNull().primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id),
+  role: text("role").notNull(),
+})
+
+export type WorkspaceMember = typeof workspaceMember.$inferSelect
+export type NewWorkspaceMember = typeof workspaceMember.$inferInsert

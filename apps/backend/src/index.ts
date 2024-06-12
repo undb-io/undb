@@ -19,10 +19,12 @@ import { Elysia } from "elysia"
 import { requestID } from "elysia-requestid"
 import { all } from "radash"
 import { loggerPlugin } from "./plugins/logging"
-import { OpenAPI } from "./routes/OpenAPI"
-import { auth, authStore } from "./routes/auth.route"
+import { OpenAPI } from "./routes/openapi.route"
+import { AuthRoute, authStore } from "./routes/auth.route"
 import { RealtimeRoute } from "./routes/realtime.route"
 import { web } from "./routes/web.route"
+
+const auth = container.resolve(AuthRoute)
 
 const app = new Elysia()
   .trace(async ({ handle, set }) => {
@@ -56,7 +58,7 @@ const app = new Elysia()
     const requestId = ctx.set.headers["X-Request-ID"]
     executionContext.enterWith({ requestId, user: { userId: ctx.user?.id ?? null } })
   })
-  .use(auth())
+  .use(auth.route())
   .use(loggerPlugin())
   .guard(
     {

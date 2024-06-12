@@ -5,6 +5,7 @@ export { injectDb } from "./db.provider"
 export * from "./record"
 export * from "./table"
 export * from "./tables"
+export * from "./member"
 export * from "./webhook"
 
 export * from "./uow"

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@undb/audit": "workspace:*",
+    "@undb/authz": "workspace:*",
     "@undb/context": "workspace:*",
     "@undb/di": "workspace:*",
     "@undb/domain": "workspace:*",
