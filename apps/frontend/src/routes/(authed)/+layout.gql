@@ -3,6 +3,12 @@ query GetTablesQuery {
     id
     name
 
+    views {
+      id
+      name
+      type
+    }
+
     recordsCount
   }
 }

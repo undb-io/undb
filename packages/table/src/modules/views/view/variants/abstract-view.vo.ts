@@ -22,6 +22,7 @@ import type { ViewType } from "../view.type"
 export const createBaseViewDTO = z.object({
   id: viewId.optional(),
   name: viewName,
+  isDefault: z.boolean().optional(),
 })
 
 export type ICreateBaseViewDTO = z.infer<typeof createBaseViewDTO>
@@ -30,6 +31,7 @@ export const baseViewDTO = z.object({
   id: viewId,
   name: viewName,
   option: viewOption.optional(),
+  isDefault: z.boolean().optional(),
 
   filter: viewFilterGroup.optional(),
   color: viewColorGroup.optional(),
@@ -56,6 +58,7 @@ export abstract class AbstractView {
   constructor(dto: IBaseViewDTO) {
     this.id = new ViewIdVo(dto.id)
     this.name = new ViewNameVo(dto.name)
+    this.isDefault = dto.isDefault ?? false
     if (dto.filter) {
       this.setFilter(dto.filter)
     }

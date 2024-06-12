@@ -10,7 +10,7 @@ export class Views extends ValueObject {
   }
 
   static create() {
-    return new Views([GridView.create({ name: "Grid View", type: "grid" })])
+    return new Views([GridView.create({ name: "Grid View", type: "grid", isDefault: true })])
   }
 
   toJSON(): IViewsDTO {
