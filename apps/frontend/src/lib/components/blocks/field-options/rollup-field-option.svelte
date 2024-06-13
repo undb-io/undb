@@ -34,7 +34,6 @@
   $: schema = foreignTable?.schema
 
   $: fields = schema?.filter((f) => getIsFieldCanBeRollup(f.type))
-  $: console.log(fields)
 </script>
 
 <div class="space-y-2">

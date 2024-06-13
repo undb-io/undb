@@ -82,9 +82,9 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return result ? Some(getRecordDTOFromEntity(table, result)) : None
   }
 
-  private handleWhere(spec: Option<RecordComositeSpecification>) {
+  private handleWhere(table: TableDo, spec: Option<RecordComositeSpecification>) {
     return (eb: ExpressionBuilder<any, any>) => {
-      const visitor = new RecordFilterVisitor(eb)
+      const visitor = new RecordFilterVisitor(eb, table)
       if (spec?.isSome()) {
         spec.unwrap().accept(visitor)
       }
@@ -118,21 +118,21 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       return sort!.reduce((qb, s) => qb.orderBy(`${s.fieldId} ${s.direction}`), qb)
     }
 
-    const visibleFields = table.getOrderedVisibleFields(view.id)
+    const visibleFields = table.getOrderedVisibleFields(view.id.value)
     const foreignTables = await this.getForeignTables(table, visibleFields)
     const qb = this.createQuery(table, foreignTables, visibleFields)
 
     const result = await qb
       .$if(!!pagination?.limit, handlePagination)
       .$if(!!sort, handleSort)
-      .where(this.handleWhere(spec))
+      .where(this.handleWhere(table, spec))
       .execute()
 
     // TODO: move total to aggregate result
     const { total } = await this.qb
       .selectFrom(t.name)
       .select((eb) => eb.fn.countAll().as("total"))
-      .where(this.handleWhere(spec))
+      .where(this.handleWhere(table, spec))
       .executeTakeFirstOrThrow()
 
     const records = result.map((r) => getRecordDTOFromEntity(table, r))
@@ -172,7 +172,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
         }
         return ebs
       })
-      .where(this.handleWhere(viewSpec))
+      .where(this.handleWhere(table, viewSpec))
       .executeTakeFirst()
 
     return result ?? {}
