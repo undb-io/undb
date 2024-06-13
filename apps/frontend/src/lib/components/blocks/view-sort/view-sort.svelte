@@ -92,7 +92,7 @@
   <Popover.Content class="w-[400px] p-0 shadow-2xl" align="start">
     {#if value?.length}
       <div class="space-y-2 border-b px-4 py-3">
-        <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Sorts</div>
+        <div class="text-muted-foreground text-xs">Sorts</div>
         <SortableList
           class={cn("space-y-1.5")}
           animation={200}
@@ -102,12 +102,11 @@
             }
           }}
         >
-          {#each value as item, i (JSON.stringify(item))}
+          {#each value as item, i (item.fieldId)}
             <div class="grid w-full grid-cols-12 items-center gap-2">
               <div class="col-span-10 grid grid-cols-8">
                 <FieldPicker
                   filter={(field) => !selectedFieldIds.has(field.value) && isFieldSortable(field.value)}
-                  }
                   bind:value={item.fieldId}
                   class="col-span-5 rounded-r-none border-r-0"
                 />
@@ -160,12 +159,10 @@
       </div>
     {/if}
     <div class="flex w-full items-center justify-between px-4 py-3">
-      {#if !disabled}
-        <Button variant="ghost" size="sm" on:click={addSort}>
-          <PlusIcon class="mr-2 h-3 w-3" />
-          Add Sort
-        </Button>
-      {/if}
+      <Button {disabled} variant="ghost" size="sm" on:click={addSort}>
+        <PlusIcon class="mr-2 h-3 w-3" />
+        Add Sort
+      </Button>
       <Button variant="outline" size="xs" on:click={submit}>submit</Button>
     </div>
   </Popover.Content>
