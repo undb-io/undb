@@ -3,7 +3,14 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import * as Select from "$lib/components/ui/select"
   import Badge from "$lib/components/ui/badge/badge.svelte"
-  import { ArrowDownAzIcon, ArrowUpDownIcon, ArrowUpZaIcon, GripVerticalIcon, Trash2Icon } from "lucide-svelte"
+  import {
+    ArrowDownAzIcon,
+    ArrowUpDownIcon,
+    ArrowUpZaIcon,
+    GripVerticalIcon,
+    Trash2Icon,
+    PlusIcon,
+  } from "lucide-svelte"
   import { cn } from "$lib/utils"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
 
@@ -28,11 +35,12 @@
   }
   $: selectedFieldIds = value.reduce((acc, item) => acc.add(item.fieldId), new Set<string>())
   $: availableFields = fields.filter((f) => !selectedFieldIds.has(f.id.value))
+  $: disabled = availableFields.length === 0
 
   let open = false
 
   function addSort() {
-    if (!availableFields.length) {
+    if (disabled) {
       return
     }
     value = [...value, { fieldId: availableFields[0].id.value, direction: "asc" }]
@@ -83,7 +91,7 @@
   </Popover.Trigger>
   <Popover.Content class="w-[400px] p-0 shadow-2xl" align="start">
     {#if value?.length}
-      <div class="space-y-2 border-b px-4 pb-2 pt-1.5">
+      <div class="space-y-2 border-b px-4 py-3">
         <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Sorts</div>
         <SortableList
           class={cn("space-y-1.5")}
@@ -151,9 +159,12 @@
         </SortableList>
       </div>
     {/if}
-    <div class="flex w-full items-center justify-between px-4 py-1">
-      {#if availableFields.length}
-        <Button variant="ghost" size="sm" on:click={addSort}>Add Sort</Button>
+    <div class="flex w-full items-center justify-between px-4 py-3">
+      {#if !disabled}
+        <Button variant="ghost" size="sm" on:click={addSort}>
+          <PlusIcon class="mr-2 h-3 w-3" />
+          Add Sort
+        </Button>
       {/if}
       <Button variant="outline" size="xs" on:click={submit}>submit</Button>
     </div>
