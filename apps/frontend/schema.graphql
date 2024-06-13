@@ -81,6 +81,7 @@ type View {
   fields: JSON
   filter: JSON
   id: ID!
+  isDefault: Boolean
   name: String!
   option: ViewOption
   sort: JSON

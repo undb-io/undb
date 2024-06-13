@@ -7,6 +7,7 @@ query GetTablesQuery {
       id
       name
       type
+      isDefault
     }
 
     recordsCount

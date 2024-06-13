@@ -40,4 +40,8 @@ export class Views extends ValueObject {
   getDefaultView() {
     return this.views.find((view) => view.isDefault) ?? this.views.at(0)!
   }
+
+  getNoneDefaultViews() {
+    return this.views.filter((view) => !view.isDefault)
+  }
 }

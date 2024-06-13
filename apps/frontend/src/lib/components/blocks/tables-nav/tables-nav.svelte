@@ -19,6 +19,7 @@
     <Accordion.Root value={$page.params.tableId}>
       {#each tables as table}
         {@const active = table.id === $page.params.tableId && !viewId}
+        {@const views = table.views.filter((v) => v.isDefault)}
         <Accordion.Item value={table.id} class="w-full border-0">
           <Accordion.Trigger asChild class="w-full">
             <a
@@ -38,7 +39,7 @@
             </a>
           </Accordion.Trigger>
           <Accordion.Content>
-            {#each table.views as view}
+            {#each views as view}
               {@const activeView = view.id === $page.params.viewId}
               <a
                 href={`/t/${table.id}/${view.id}`}

@@ -54,6 +54,7 @@ export class Graphql {
         name: String!
         option: ViewOption
         type: ViewType!
+        isDefault: Boolean
         filter: JSON
         color: JSON
         sort: JSON
