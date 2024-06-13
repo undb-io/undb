@@ -20,45 +20,47 @@
   }
 </script>
 
-<DropdownMenu.Root>
-  <DropdownMenu.Trigger asChild let:builder>
-    <Button variant="ghost" builders={[builder]} size="icon" class="relative h-8 w-8 p-0">
-      <span class="sr-only">Open menu</span>
-      <Ellipsis class="h-4 w-4" />
-    </Button>
-  </DropdownMenu.Trigger>
-  <DropdownMenu.Content>
-    <DropdownMenu.Group>
-      <DropdownMenu.Label>Record</DropdownMenu.Label>
-      <DropdownMenu.Item class="text-xs" on:click={() => ($r = id)}>
-        <Maximize2Icon class="mr-2 h-4 w-4" />
-        View record details</DropdownMenu.Item
-      >
-      <DropdownMenu.Item class="text-xs" on:click={copy}>
-        <ClipboardCopyIcon class="mr-2 h-4 w-4" />
-        Copy record ID</DropdownMenu.Item
-      >
+<div class="pl-1">
+  <DropdownMenu.Root>
+    <DropdownMenu.Trigger asChild let:builder>
+      <Button variant="ghost" builders={[builder]} size="icon" class="relative h-6 w-6 p-0">
+        <span class="sr-only">Open menu</span>
+        <Ellipsis class="h-4 w-4" />
+      </Button>
+    </DropdownMenu.Trigger>
+    <DropdownMenu.Content>
+      <DropdownMenu.Group>
+        <DropdownMenu.Label>Record</DropdownMenu.Label>
+        <DropdownMenu.Item class="text-xs" on:click={() => ($r = id)}>
+          <Maximize2Icon class="mr-2 h-4 w-4" />
+          View record details</DropdownMenu.Item
+        >
+        <DropdownMenu.Item class="text-xs" on:click={copy}>
+          <ClipboardCopyIcon class="mr-2 h-4 w-4" />
+          Copy record ID</DropdownMenu.Item
+        >
+        <DropdownMenu.Item
+          class="text-xs"
+          on:click={() => {
+            toggleModal(DUPLICATE_RECORD_MODAL)
+            $duplicateRecordId = id
+          }}
+        >
+          <CopyIcon class="mr-2 h-4 w-4" />
+          Duplicate Record
+        </DropdownMenu.Item>
+      </DropdownMenu.Group>
+      <DropdownMenu.Separator />
       <DropdownMenu.Item
-        class="text-xs"
         on:click={() => {
-          toggleModal(DUPLICATE_RECORD_MODAL)
-          $duplicateRecordId = id
+          toggleModal(DELETE_RECORD_MODAL)
+          $deleteRecordId = id
         }}
+        class="text-xs text-red-500 data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500"
       >
-        <CopyIcon class="mr-2 h-4 w-4" />
-        Duplicate Record
+        <Trash2Icon class="mr-2 h-4 w-4" />
+        Delete Record
       </DropdownMenu.Item>
-    </DropdownMenu.Group>
-    <DropdownMenu.Separator />
-    <DropdownMenu.Item
-      on:click={() => {
-        toggleModal(DELETE_RECORD_MODAL)
-        $deleteRecordId = id
-      }}
-      class="text-xs text-red-500 data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500"
-    >
-      <Trash2Icon class="mr-2 h-4 w-4" />
-      Delete Record
-    </DropdownMenu.Item>
-  </DropdownMenu.Content>
-</DropdownMenu.Root>
+    </DropdownMenu.Content>
+  </DropdownMenu.Root>
+</div>
