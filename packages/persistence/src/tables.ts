@@ -1,4 +1,5 @@
 import type { IAuditDetail } from "@undb/audit"
+import type { IWorkspaceMemberRole } from "@undb/authz"
 import type { IFormsDTO, IRLSGroupDTO, ISchemaDTO, IViewsDTO, RECORD_EVENTS } from "@undb/table"
 import type { IWebhookHeaders, IWebhookMethod } from "@undb/webhook"
 import type { IRootWebhookCondition } from "@undb/webhook/src/webhook.condition"
@@ -118,10 +119,11 @@ export type NewAudit = typeof audit.$inferInsert
 
 export const workspaceMember = sqliteTable("workspace_member", {
   id: text("id").notNull().primaryKey(),
+  workspaceId: text("workspace_id").notNull(),
   userId: text("user_id")
     .notNull()
     .references(() => users.id),
-  role: text("role").notNull(),
+  role: text("role").notNull().$type<IWorkspaceMemberRole>(),
 })
 
 export type WorkspaceMember = typeof workspaceMember.$inferSelect

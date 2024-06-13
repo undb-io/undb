@@ -18,6 +18,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@undb/authz": "workspace:*",
     "@undb/di": "workspace:*"
   }
 }

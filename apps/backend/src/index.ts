@@ -16,11 +16,11 @@ import { IRecordEvent } from "@undb/table"
 import { route } from "@undb/trpc"
 import { WebhookEventsHandler } from "@undb/webhook"
 import { Elysia } from "elysia"
-import { requestID } from "elysia-requestid"
 import { all } from "radash"
+import { v4 } from "uuid"
 import { loggerPlugin } from "./plugins/logging"
+import { AuthRoute } from "./routes/auth.route"
 import { OpenAPI } from "./routes/openapi.route"
-import { AuthRoute, authStore } from "./routes/auth.route"
 import { RealtimeRoute } from "./routes/realtime.route"
 import { web } from "./routes/web.route"
 
@@ -52,11 +52,16 @@ const app = new Elysia()
   })
   .use(cors())
   .use(html())
-  .derive(authStore)
-  .use(requestID())
+  .derive(auth.store())
+  // .use(requestID())
   .onBeforeHandle((ctx) => {
-    const requestId = ctx.set.headers["X-Request-ID"]
-    executionContext.enterWith({ requestId, user: { userId: ctx.user?.id ?? null } })
+    const requestId = ctx.headers["X-Request-ID"] ?? v4()
+
+    executionContext.enterWith({
+      requestId,
+      user: { userId: ctx.user?.id ?? null },
+      member: { role: ctx.member?.role ?? null } ?? null,
+    })
   })
   .use(auth.route())
   .use(loggerPlugin())

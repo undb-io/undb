@@ -1,9 +1,10 @@
 import { inject } from "@undb/di"
+import { Option } from "@undb/domain"
 import { WorkspaceMember } from "./workspace-member"
 
 export interface IWorkspaceMemberRepository {
   findOneById(id: string): Promise<WorkspaceMember>
-  findOneByUserId(userId: string): Promise<WorkspaceMember>
+  findOneByUserIdAndWorkspaceId(userId: string, workspaceId: string): Promise<Option<WorkspaceMember>>
 
   insert(member: WorkspaceMember): Promise<void>
 }

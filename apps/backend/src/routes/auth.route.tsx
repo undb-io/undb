@@ -6,6 +6,7 @@ import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize } from "lucia"
 import { Login, SignUp } from "@undb/ui"
 import { executionContext } from "@undb/context/server"
+import type { ContextMember } from "@undb/context"
 import { type IWorkspaceMemberService, WorkspaceMemberService } from "@undb/authz"
 import { singleton } from "tsyringe"
 import { inject } from "@undb/di"
@@ -40,50 +41,59 @@ declare module "lucia" {
   }
 }
 
-export const authStore = async (
-  context: Context,
-): Promise<{
-  user: User | null
-  session: Session | null
-}> => {
-  // use headers instead of Cookie API to prevent type coercion
-  const cookieHeader = context.request.headers.get("Cookie") ?? ""
-  const sessionId = lucia.readSessionCookie(cookieHeader)
-
-  if (!sessionId) {
-    return {
-      user: null,
-      session: null,
-    }
-  }
-
-  const { session, user } = await lucia.validateSession(sessionId)
-  if (session && session.fresh) {
-    const sessionCookie = lucia.createSessionCookie(session.id)
-    context.cookie[sessionCookie.name].set({
-      value: sessionCookie.value,
-      ...sessionCookie.attributes,
-    })
-  }
-  if (!session) {
-    const sessionCookie = lucia.createBlankSessionCookie()
-    context.cookie[sessionCookie.name].set({
-      value: sessionCookie.value,
-      ...sessionCookie.attributes,
-    })
-  }
-  return {
-    user,
-    session,
-  }
-}
-
 @singleton()
 export class AuthRoute {
   constructor(
     @inject(WorkspaceMemberService)
     private workspaceMemberService: IWorkspaceMemberService,
   ) {}
+
+  store() {
+    return async (
+      context: Context,
+    ): Promise<{
+      user: User | null
+      session: Session | null
+      member: ContextMember | null
+    }> => {
+      // use headers instead of Cookie API to prevent type coercion
+      const cookieHeader = context.request.headers.get("Cookie") ?? ""
+      const sessionId = lucia.readSessionCookie(cookieHeader)
+
+      if (!sessionId) {
+        return {
+          user: null,
+          session: null,
+          member: null,
+        }
+      }
+
+      const { session, user } = await lucia.validateSession(sessionId)
+      if (session && session.fresh) {
+        const sessionCookie = lucia.createSessionCookie(session.id)
+        context.cookie[sessionCookie.name].set({
+          value: sessionCookie.value,
+          ...sessionCookie.attributes,
+        })
+      }
+      if (!session) {
+        const sessionCookie = lucia.createBlankSessionCookie()
+        context.cookie[sessionCookie.name].set({
+          value: sessionCookie.value,
+          ...sessionCookie.attributes,
+        })
+      }
+
+      const userId = user?.id!
+      const member = (await this.workspaceMemberService.getWorkspaceMember(userId, userId)).into(null)?.toJSON()
+
+      return {
+        user,
+        session,
+        member: member ? { role: member.role } : null,
+      }
+    }
+  }
 
   route() {
     return new Elysia()
@@ -125,7 +135,8 @@ export class AuthRoute {
               id: userId,
               password: passwordHash,
             })
-            await this.workspaceMemberService.createMember(userId, "admin")
+            // TODO: create a default workspace
+            await this.workspaceMemberService.createMember(userId, userId, "owner")
           }
 
           const session = await lucia.createSession(userId, {})

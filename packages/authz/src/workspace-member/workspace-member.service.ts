@@ -1,10 +1,12 @@
 import { inject, singleton } from "@undb/di"
+import { Option } from "@undb/domain"
 import { injectWorkspaceMemberRepository, type IWorkspaceMemberRepository } from "./workspace-member.repository"
 import { WorkspaceMember, type IWorkspaceMemberRole } from "./workspace-member"
 import { MemberIdVO } from "../member/member-id.vo"
 
 export interface IWorkspaceMemberService {
-  createMember(userId: string, role: IWorkspaceMemberRole): Promise<void>
+  createMember(userId: string, workspaceId: string, role: IWorkspaceMemberRole): Promise<void>
+  getWorkspaceMember(userId: string, workspaceId: string): Promise<Option<WorkspaceMember>>
 }
 
 export const WORKSPACE_MEMBER_SERVICE = Symbol("IWorkspaceMemberService")
@@ -18,9 +20,13 @@ export class WorkspaceMemberService implements IWorkspaceMemberService {
     private readonly workspaceMemberRepository: IWorkspaceMemberRepository,
   ) {}
 
-  async createMember(userId: string, role: IWorkspaceMemberRole): Promise<void> {
-    const member = new WorkspaceMember({ id: MemberIdVO.create().value, userId, role })
+  async createMember(userId: string, workspaceId: string, role: IWorkspaceMemberRole): Promise<void> {
+    const member = new WorkspaceMember({ id: MemberIdVO.create().value, workspaceId, userId, role })
 
     await this.workspaceMemberRepository.insert(member)
+  }
+
+  async getWorkspaceMember(userId: string, workspaceId: string): Promise<Option<WorkspaceMember>> {
+    return this.workspaceMemberRepository.findOneByUserIdAndWorkspaceId(userId, workspaceId)
   }
 }

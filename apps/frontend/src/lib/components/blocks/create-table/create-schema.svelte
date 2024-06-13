@@ -83,7 +83,7 @@
     <Form.ElementField {form} name="schema">
       <Form.Control let:attrs>
         <Accordion.Item class="w-full border-b-0" value={field.id}>
-          <div class="mr-2 flex items-center gap-2">
+          <div class="flex w-full items-center gap-2">
             <Form.Label class="flex h-9 flex-1 items-center gap-2">
               <FieldTypePicker class="h-full w-20" bind:value={field.type} />
               <Input {...attrs} class="bg-background no-underline" bind:value={field.name} data-field-id={field.id} />

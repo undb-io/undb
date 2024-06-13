@@ -16,10 +16,10 @@
     "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@undb/audit": "workspace:*",
     "@undb/authz": "workspace:*",
-    "@undb/di": "workspace:*",
     "@undb/command-handlers": "workspace:*",
     "@undb/context": "workspace:*",
     "@undb/cqrs": "workspace:*",
+    "@undb/di": "workspace:*",
     "@undb/graphql": "workspace:*",
     "@undb/logger": "workspace:*",
     "@undb/openapi": "workspace:*",
@@ -35,9 +35,11 @@
     "got": "^14.4.1",
     "lucia": "^3.2.0",
     "radash": "^12.1.0",
-    "reflect-metadata": "^0.2.2"
+    "reflect-metadata": "^0.2.2",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "@types/uuid": "^9.0.8",
     "bun-types": "latest"
   },
   "module": "src/index.js"
