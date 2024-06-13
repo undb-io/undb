@@ -52,7 +52,7 @@
   function submit() {
     $setViewSortMutation.mutate({
       tableId: $table.id.value,
-      viewId: view.id.value,
+      viewId: $viewId,
       sort: value,
     })
   }

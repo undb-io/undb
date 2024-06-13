@@ -175,6 +175,7 @@ export abstract class AbstractView {
       id: this.id.value,
       name: this.name.value,
       type: this.type,
+      isDefault: this.isDefault ?? undefined,
       option: this.option.into(null)?.toJSON(),
       filter: this.filter.into(null)?.toJSON(),
       color: this.color.into(null)?.toJSON(),

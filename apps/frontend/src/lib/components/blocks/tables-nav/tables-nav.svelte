@@ -19,7 +19,7 @@
     <Accordion.Root value={$page.params.tableId}>
       {#each tables as table}
         {@const active = table.id === $page.params.tableId && !viewId}
-        {@const views = table.views.filter((v) => v.isDefault)}
+        {@const views = table.views.filter((v) => !v.isDefault)}
         <Accordion.Item value={table.id} class="w-full border-0">
           <Accordion.Trigger asChild class="w-full">
             <a

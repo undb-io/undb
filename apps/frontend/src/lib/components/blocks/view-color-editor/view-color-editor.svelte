@@ -42,6 +42,7 @@
     if (!color) return
     $mutation.mutate({
       color,
+      viewId: $viewId,
       tableId: $table.id.value,
     })
   }

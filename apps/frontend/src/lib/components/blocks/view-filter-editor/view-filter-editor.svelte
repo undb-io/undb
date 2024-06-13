@@ -44,6 +44,7 @@
     if (!filter) return
     $mutation.mutate({
       filter,
+      viewId: $viewId,
       tableId: $table.id.value,
     })
   }
