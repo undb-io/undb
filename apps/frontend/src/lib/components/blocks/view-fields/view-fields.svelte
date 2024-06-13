@@ -19,6 +19,7 @@
   $: viewFieldsVo = $table.getViewFields($viewId)
   $: viewFields = viewFieldsVo.props.filter((viewField) => fields.some((field) => field.id.value === viewField.fieldId))
   $: hiddenCount = viewFieldsVo.getHiddenFieldsCount()
+  $: visibleCount = viewFieldsVo.getVisibleFieldsCount()
 
   let open = false
 
@@ -85,8 +86,9 @@
   <Popover.Content class="p-2">
     <div>
       <SortableList
-        class=""
+        class="pb-2"
         animation={200}
+        handle=".handler"
         onEnd={(event) => {
           if (isNumber(event.oldIndex) && isNumber(event.newIndex)) {
             swapFields(event.oldIndex, event.newIndex)
@@ -99,6 +101,7 @@
             <div class="hover:bg-muted flex items-center justify-between rounded-sm p-2 transition-colors">
               <div class="flex items-center gap-2">
                 <Switch
+                  disabled={visibleCount === 1}
                   checked={!viewField.hidden}
                   onCheckedChange={(checked) => {
                     viewField.hidden = !checked
@@ -110,7 +113,7 @@
                   {field.name.value}
                 </div>
               </div>
-              <button class="text-muted-foreground">
+              <button class="text-muted-foreground handler">
                 <GripVerticalIcon class="h-3 w-3" />
               </button>
             </div>
