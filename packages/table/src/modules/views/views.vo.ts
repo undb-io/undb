@@ -44,4 +44,8 @@ export class Views extends ValueObject {
   getNoneDefaultViews() {
     return this.views.filter((view) => !view.isDefault)
   }
+
+  update(view: View) {
+    return new Views(this.views.map((v) => (v.id.equals(view.id) ? view : v)))
+  }
 }

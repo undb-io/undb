@@ -1,4 +1,7 @@
+import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
+import type { IUpdateViewDTO } from "../../../../dto"
+import { WithView } from "../../../../specifications/table-view.specification"
 import { ViewIdVo } from "../view-id.vo"
 import { AbstractView, baseViewDTO, createBaseViewDTO } from "./abstract-view.vo"
 
@@ -26,4 +29,11 @@ export class GridView extends AbstractView {
   }
 
   override type = GRID_TYPE
+
+  override $update(input: IUpdateViewDTO): Option<WithView> {
+    const json = this.toJSON()
+    const view = new GridView({ ...json, id: this.id.value })
+
+    return Some(new WithView(this, view))
+  }
 }

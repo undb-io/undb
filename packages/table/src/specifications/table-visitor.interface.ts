@@ -14,6 +14,7 @@ import type {
 } from "./table-schema.specification"
 import type {
   WithNewView,
+  WithView,
   WithViewAggregate,
   WithViewColor,
   WithViewFields,
@@ -32,6 +33,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withUpdatedField(spec: WithUpdatedFieldSpecification): void
   withTableRLS(rls: WithTableRLS): void
   withViews(views: TableViewsSpecification): void
+  withView(views: WithView): void
   withNewView(views: WithNewView): void
   withViewFilter(viewFilter: WithViewFilter): void
   withViewOption(viewOption: WithViewOption): void

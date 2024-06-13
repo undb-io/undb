@@ -31,6 +31,26 @@ export class WithViewOption extends TableComositeSpecification {
   }
 }
 
+export class WithView extends TableComositeSpecification {
+  constructor(
+    public readonly previous: View,
+    public readonly view: View,
+  ) {
+    super()
+  }
+  isSatisfiedBy(t: TableDo): boolean {
+    throw new WontImplementException(TableComositeSpecification.name + ".isSatisfiedBy")
+  }
+  mutate(t: TableDo): Result<TableDo, string> {
+    t.views = t.views.update(this.view)
+    return Ok(t)
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withView(this)
+    return Ok(undefined)
+  }
+}
+
 export class WithNewView extends TableComositeSpecification {
   constructor(public readonly view: View) {
     super()

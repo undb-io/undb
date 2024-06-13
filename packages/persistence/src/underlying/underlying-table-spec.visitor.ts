@@ -9,6 +9,7 @@ import type {
   WithNewFieldSpecification,
   WithNewView,
   WithUpdatedFieldSpecification,
+  WithView,
   WithViewAggregate,
   WithViewColor,
   WithViewFields,
@@ -38,7 +39,6 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
   ) {
     this.tb = qb.schema.alterTable(table.name)
   }
-
   atb: AlterTableColumnAlteringBuilder | CreateTableBuilder<any, any> | null = null
 
   async execute() {
@@ -56,6 +56,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
 
   idsIn(ids: TableIdsSpecification): void {}
   withNewView(views: WithNewView): void {}
+  withView(views: WithView): void {}
   withViewOption(viewOption: WithViewOption): void {}
   withUpdatedField(spec: WithUpdatedFieldSpecification): void {
     const typeChanged = spec.getIsTypeChanged()

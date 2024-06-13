@@ -16,6 +16,7 @@ import { SetViewOptionCommandHandler } from "./set-view-option.command-handler"
 import { SetViewSortCommandHandler } from "./set-view-sort.command-handler"
 import { UpdateRecordCommandHandler } from "./update-record.command-handler"
 import { UpdateTableFieldCommandHandler } from "./update-table-field.command-handler"
+import { UpdateViewCommandHandler } from "./update-view.command-handler"
 import { UpdateWebhookCommandHandler } from "./update-webhook.command-handler"
 
 export const commandHandlers = [
@@ -23,6 +24,7 @@ export const commandHandlers = [
   CreateRecordCommandHandler,
   CreateTableFieldCommandHandler,
   CreateWebhookCommandHandler,
+  UpdateViewCommandHandler,
   UpdateWebhookCommandHandler,
   SetViewFilterCommandHandler,
   SetViewOptionCommandHandler,

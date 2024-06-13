@@ -10,6 +10,7 @@ import type {
   WithNewFieldSpecification,
   WithNewView,
   WithUpdatedFieldSpecification,
+  WithView,
   WithViewAggregate,
   WithViewColor,
   WithViewFields,
@@ -32,6 +33,9 @@ export class TableMutationVisitor
 {
   constructor(public readonly table: TableDo) {
     super()
+  }
+  withView(views: WithView): void {
+    this.addUpdates({ views: this.table.views?.toJSON() })
   }
   withNewView(views: WithNewView): void {
     this.addUpdates({ views: this.table.views?.toJSON() })

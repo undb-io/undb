@@ -1,6 +1,8 @@
 import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
+import type { IUpdateViewDTO } from "../../../../dto"
 import {
+  WithView,
   WithViewAggregate,
   WithViewColor,
   WithViewFields,
@@ -98,6 +100,8 @@ export abstract class AbstractView {
     const previous = this.option.into(null)?.value
     return Some(new WithViewOption(this.id, Option(previous), option))
   }
+
+  abstract $update(input: IUpdateViewDTO): Option<WithView>
 
   setFilter(filter: IRootViewFilter) {
     const filterVO = new ViewFilter(filter)

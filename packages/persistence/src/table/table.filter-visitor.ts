@@ -10,6 +10,7 @@ import type {
   WithNewFieldSpecification,
   WithNewView,
   WithUpdatedFieldSpecification,
+  WithView,
   WithViewAggregate,
   WithViewColor,
   WithViewFields,
@@ -29,6 +30,9 @@ import { tables } from "../tables"
 
 export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> implements ITableSpecVisitor {
   withNewView(views: WithNewView): void {
+    throw new Error("Method not implemented.")
+  }
+  withView(views: WithView): void {
     throw new Error("Method not implemented.")
   }
   withViewOption(viewOption: WithViewOption): void {

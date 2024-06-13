@@ -13,6 +13,7 @@ import { setViewFilter } from "./methods/set-view-filter.method"
 import { setViewOption } from "./methods/set-view-option.method"
 import { setViewSort } from "./methods/set-view-sort.method"
 import { updateFieldMethod } from "./methods/update-field.method"
+import { updateView } from "./methods/update-view.method"
 import { FieldIdVo, ViewFields, ViewOption, type Field, type FormId, type TableRLSGroup, type ViewId } from "./modules"
 import type { FormsVO } from "./modules/forms/forms.vo"
 import type { Schema } from "./modules/schema/schema.vo"
@@ -28,6 +29,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   public forms?: FormsVO
   public rls: Option<TableRLSGroup> = None
 
+  $updateView = updateView
   $setViewFilter = setViewFilter
   $setViewOption = setViewOption
   $setViewColor = setViewColor

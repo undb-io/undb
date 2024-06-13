@@ -17,6 +17,7 @@ import {
   SetViewSortCommand,
   UpdateRecordCommand,
   UpdateTableFieldCommand,
+  UpdateViewCommand,
   UpdateWebhookCommand,
   createRecordCommand,
   createTableCommand,
@@ -36,8 +37,12 @@ import {
   setViewSortCommand,
   updateRecordCommand,
   updateTableFieldCommand,
+  updateViewCommand,
   updateWebhookCommand,
 } from "@undb/commands"
+import { CommandBus, QueryBus } from "@undb/cqrs"
+import { container } from "@undb/di"
+import type { ICommandBus, IQueryBus } from "@undb/domain"
 import {
   GetRecordByIdQuery,
   GetRecordsQuery,
@@ -51,11 +56,8 @@ import {
 } from "@undb/queries"
 import { tableDTO } from "@undb/table"
 import { z } from "@undb/zod"
-import { p, t } from "./trpc"
-import { CommandBus, QueryBus } from "@undb/cqrs"
-import { container } from "@undb/di"
-import type { ICommandBus, IQueryBus } from "@undb/domain"
 import { authz } from "./authz.middleware"
+import { p, t } from "./trpc"
 
 const commandBus = container.resolve<ICommandBus>(CommandBus)
 const queryBus = container.resolve<IQueryBus>(QueryBus)
@@ -71,6 +73,7 @@ const viewRouter = t.router({
   create: p
     .input(createTableViewCommand)
     .mutation(({ input }) => commandBus.execute(new CreateTableViewCommand(input))),
+  update: p.input(updateViewCommand).mutation(({ input }) => commandBus.execute(new UpdateViewCommand(input))),
   setFilter: p.input(setViewFilterCommand).mutation(({ input }) => commandBus.execute(new SetViewFilterCommand(input))),
   setOption: p.input(setViewOptionCommand).mutation(({ input }) => commandBus.execute(new SetViewOptionCommand(input))),
   setColor: p.input(setViewColorCommand).mutation(({ input }) => commandBus.execute(new SetViewColorCommand(input))),
