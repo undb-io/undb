@@ -119,7 +119,7 @@
               <OpPicker
                 {field}
                 bind:value={child.op}
-                class={cn("col-span-3 rounded-l-none", !!child.value && "rounded-r-non")}
+                class={cn("col-span-3 rounded-l-none", !!child.value && "rounded-r-none")}
               />
               <FilterValue
                 {field}

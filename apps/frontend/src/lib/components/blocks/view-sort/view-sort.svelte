@@ -163,7 +163,7 @@
         <PlusIcon class="mr-2 h-3 w-3" />
         Add Sort
       </Button>
-      <Button variant="outline" size="xs" on:click={submit}>submit</Button>
+      <Button variant="outline" size="sm" on:click={submit}>Submit</Button>
     </div>
   </Popover.Content>
 </Popover.Root>
