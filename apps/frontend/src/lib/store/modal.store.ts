@@ -14,6 +14,7 @@ export const CREATE_WEBHOOK_MODAL = "createWebhook" as const
 export const CREATE_RLS_MODAL = "createRLS" as const
 export const UPDATE_VIEW = "updateView" as const
 export const DUPLICATE_VIEW = "duplicateView" as const
+export const DELETE_VIEW = "deleteView" as const
 
 type ModalType =
   | typeof CREATE_TABLE_MODAL
@@ -26,6 +27,7 @@ type ModalType =
   | typeof CREATE_RLS_MODAL
   | typeof UPDATE_VIEW
   | typeof DUPLICATE_VIEW
+  | typeof DELETE_VIEW
 
 export const toggleModal = (type: ModalType) => {
   modal.update(($modal) => {

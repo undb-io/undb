@@ -6,6 +6,10 @@ import type { TableDo } from "../table.do"
 
 export function deleteViewMethod(this: TableDo, dto: IDeleteViewDTO): Option<TableComositeSpecification> {
   const view = this.views.getViewById(dto.viewId)
+  if (view.isDefault) {
+    throw new Error("Cannot delete default view")
+  }
+
   const spec = view.$delete()
 
   if (spec.isSome()) {

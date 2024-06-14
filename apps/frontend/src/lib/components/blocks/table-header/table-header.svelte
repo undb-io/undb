@@ -35,7 +35,7 @@
   import CreateViewButton from "../view/create-view-button.svelte"
   import { derived } from "svelte/store"
   import { page } from "$app/stores"
-  import { DUPLICATE_VIEW, UPDATE_VIEW, toggleModal } from "$lib/store/modal.store"
+  import { DELETE_VIEW, DUPLICATE_VIEW, UPDATE_VIEW, toggleModal } from "$lib/store/modal.store"
 
   const table = getTable()
 
@@ -182,6 +182,15 @@
                   <CopyPlusIcon class="mr-2 h-3 w-3" />
                   Duplicate View
                 </DropdownMenu.Item>
+                {#if !view.isDefault}
+                  <DropdownMenu.Item
+                    class="text-xs text-red-500 hover:bg-red-200 hover:text-red-500"
+                    on:click={() => toggleModal(DELETE_VIEW)}
+                  >
+                    <CopyPlusIcon class="mr-2 h-3 w-3" />
+                    Delete View
+                  </DropdownMenu.Item>
+                {/if}
               </DropdownMenu.Content>
             </DropdownMenu.Root>
 

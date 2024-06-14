@@ -17,6 +17,7 @@ import type {
   WithViewFilter,
   WithViewOption,
   WithViewSort,
+  WithoutView,
 } from "@undb/table"
 import type {
   TableFormsSpecification,
@@ -30,6 +31,9 @@ import { tables } from "../tables"
 
 export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> implements ITableSpecVisitor {
   withNewView(views: WithNewView): void {
+    throw new Error("Method not implemented.")
+  }
+  withoutView(view: WithoutView): void {
     throw new Error("Method not implemented.")
   }
   withView(views: WithView): void {

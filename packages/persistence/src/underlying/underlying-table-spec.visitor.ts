@@ -8,6 +8,7 @@ import type {
   TableViewsSpecification,
   WithNewFieldSpecification,
   WithNewView,
+  WithoutView,
   WithUpdatedFieldSpecification,
   WithView,
   WithViewAggregate,
@@ -56,6 +57,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
 
   idsIn(ids: TableIdsSpecification): void {}
   withNewView(views: WithNewView): void {}
+  withoutView(view: WithoutView): void {}
   withView(views: WithView): void {}
   withViewOption(viewOption: WithViewOption): void {}
   withUpdatedField(spec: WithUpdatedFieldSpecification): void {

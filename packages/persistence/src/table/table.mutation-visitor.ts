@@ -17,6 +17,7 @@ import type {
   WithViewFilter,
   WithViewOption,
   WithViewSort,
+  WithoutView,
 } from "@undb/table"
 import type {
   TableFormsSpecification,
@@ -35,6 +36,9 @@ export class TableMutationVisitor
     super()
   }
   withView(views: WithView): void {
+    this.addUpdates({ views: this.table.views?.toJSON() })
+  }
+  withoutView(view: WithoutView): void {
     this.addUpdates({ views: this.table.views?.toJSON() })
   }
   withNewView(views: WithNewView): void {
