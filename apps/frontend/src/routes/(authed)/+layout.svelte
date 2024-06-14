@@ -17,6 +17,8 @@
   import Command from "$lib/components/blocks/command/command.svelte"
   import { commandOpen } from "$lib/components/blocks/command/command.store"
   import { SearchIcon } from "lucide-svelte"
+  import { workspaceMember } from "@undb/authz"
+  import { role } from "$lib/store/workspace-member.store"
 
   export let data: LayoutData
 
@@ -37,6 +39,10 @@
 
   $: authedDataStore = data.authedDataStore
   $: tables = $authedDataStore.data?.tables?.filter(Boolean) ?? []
+
+  $: member = $authedDataStore.data?.member
+
+  $: role.set(member?.role ?? null)
 
   $: if (tables && tables?.length !== 0 && !$page.params.tableId) {
     goto(`/t/${tables[0].id}`, { replaceState: true })

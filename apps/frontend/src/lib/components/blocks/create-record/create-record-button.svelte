@@ -6,6 +6,7 @@
   import { formId } from "$lib/store/tab.store"
   import { cn } from "$lib/utils"
   import { CREATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
+  import { hasPermission } from "$lib/store/workspace-member.store"
 
   const table = getTable()
 
@@ -13,51 +14,53 @@
   $: hasForms = forms.length > 0
 </script>
 
-<div class="flex items-center gap-0">
-  <Button
-    size="sm"
-    variant="outline"
-    on:click={() => {
-      $formId = null
-      toggleModal(CREATE_RECORD_MODAL)
-    }}
-    {...$$restProps}
-    class={cn(hasForms && "rounded-r-none border-r-0", $$restProps.class)}
-  >
-    <BetweenHorizonalEnd class="mr-1 h-4 w-4" />
-    Create Record
-  </Button>
+{#if $hasPermission("record:create")}
+  <div class="flex items-center gap-0">
+    <Button
+      size="sm"
+      variant="outline"
+      on:click={() => {
+        $formId = null
+        toggleModal(CREATE_RECORD_MODAL)
+      }}
+      {...$$restProps}
+      class={cn(hasForms && "rounded-r-none border-r-0", $$restProps.class)}
+    >
+      <BetweenHorizonalEnd class="mr-1 h-4 w-4" />
+      Create Record
+    </Button>
 
-  {#if hasForms}
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger>
-        <Button
-          size={$$restProps.size ?? "sm"}
-          variant={$$restProps.variant ?? "outline"}
-          class="rounded-l-none border-l px-2"
-        >
-          <ChevronDownIcon class="h-3 w-3 text-sm font-light" />
-        </Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content class="w-[200px]">
-        <DropdownMenu.Group>
-          <DropdownMenu.Label class="flex items-center gap-2 text-xs">
-            <FormInputIcon class="text-muted-foreground h-4 w-4" />
-            Create By Form</DropdownMenu.Label
+    {#if hasForms}
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger>
+          <Button
+            size={$$restProps.size ?? "sm"}
+            variant={$$restProps.variant ?? "outline"}
+            class="rounded-l-none border-l px-2"
           >
-          <DropdownMenu.Separator />
-          {#each forms as form}
-            <DropdownMenu.Item
-              on:click={() => {
-                $formId = form.id
-                toggleModal(CREATE_RECORD_MODAL)
-              }}
+            <ChevronDownIcon class="h-3 w-3 text-sm font-light" />
+          </Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content class="w-[200px]">
+          <DropdownMenu.Group>
+            <DropdownMenu.Label class="flex items-center gap-2 text-xs">
+              <FormInputIcon class="text-muted-foreground h-4 w-4" />
+              Create By Form</DropdownMenu.Label
             >
-              {form.name}
-            </DropdownMenu.Item>
-          {/each}
-        </DropdownMenu.Group>
-      </DropdownMenu.Content>
-    </DropdownMenu.Root>
-  {/if}
-</div>
+            <DropdownMenu.Separator />
+            {#each forms as form}
+              <DropdownMenu.Item
+                on:click={() => {
+                  $formId = form.id
+                  toggleModal(CREATE_RECORD_MODAL)
+                }}
+              >
+                {form.name}
+              </DropdownMenu.Item>
+            {/each}
+          </DropdownMenu.Group>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+    {/if}
+  </div>
+{/if}

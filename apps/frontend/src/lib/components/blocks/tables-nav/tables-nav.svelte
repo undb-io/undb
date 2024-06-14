@@ -1,11 +1,11 @@
 <script lang="ts">
   import { page } from "$app/stores"
-  import { type GetTablesQuery$result } from "$houdini"
+  import { type GetAuthedData$result } from "$houdini"
   import * as Accordion from "$lib/components/ui/accordion"
   import { Database, TableIcon } from "lucide-svelte"
   import { cn } from "$lib/utils"
 
-  export let tables: GetTablesQuery$result["tables"] = []
+  export let tables: GetAuthedData$result["tables"] = []
 
   let el: HTMLElement
   $: tables, el?.querySelector('[data-active="true"]')?.scrollIntoView()
@@ -16,9 +16,9 @@
 
 <nav bind:this={el} class="grid items-start px-2 text-sm font-medium lg:px-4">
   {#if tables}
-    <Accordion.Root value={$page.params.tableId}>
+    <Accordion.Root value={tableId}>
       {#each tables as table}
-        {@const active = table.id === $page.params.tableId && !viewId}
+        {@const active = table.id === tableId && !viewId}
         {@const views = table.views.filter((v) => !v.isDefault)}
         <Accordion.Item value={table.id} class="w-full border-0">
           <Accordion.Trigger asChild class="w-full">
@@ -40,7 +40,7 @@
           </Accordion.Trigger>
           <Accordion.Content>
             {#each views as view}
-              {@const activeView = view.id === $page.params.viewId}
+              {@const activeView = view.id === viewId}
               <a
                 href={`/t/${table.id}/${view.id}`}
                 data-active={activeView}
