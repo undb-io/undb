@@ -16,6 +16,7 @@
     ChevronDownIcon,
     CodeIcon,
     CodeXml,
+    CopyPlusIcon,
     DatabaseIcon,
     FingerprintIcon,
     FormInputIcon,
@@ -34,7 +35,7 @@
   import CreateViewButton from "../view/create-view-button.svelte"
   import { derived } from "svelte/store"
   import { page } from "$app/stores"
-  import { UPDATE_VIEW, toggleModal } from "$lib/store/modal.store"
+  import { DUPLICATE_VIEW, UPDATE_VIEW, toggleModal } from "$lib/store/modal.store"
 
   const table = getTable()
 
@@ -176,6 +177,10 @@
                 <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_VIEW)}>
                   <PencilIcon class="mr-2 h-3 w-3" />
                   Update View Name
+                </DropdownMenu.Item>
+                <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(DUPLICATE_VIEW)}>
+                  <CopyPlusIcon class="mr-2 h-3 w-3" />
+                  Duplicate View
                 </DropdownMenu.Item>
               </DropdownMenu.Content>
             </DropdownMenu.Root>

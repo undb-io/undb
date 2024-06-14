@@ -14,6 +14,7 @@
   import { CREATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import UpdateFieldDialog from "$lib/components/blocks/update-field/update-field-dialog.svelte"
   import UpdateViewDialog from "$lib/components/blocks/view/update-view-dialog.svelte"
+  import DuplicateViewDialog from "$lib/components/blocks/view/duplicate-view-dialog.svelte"
 
   function handleR() {
     toggleModal(CREATE_RECORD_MODAL)
@@ -41,6 +42,7 @@
 <CreateFieldDialog />
 <UpdateFieldDialog />
 <UpdateViewDialog />
+<DuplicateViewDialog />
 
 <svelte:window
   use:shortcut={{

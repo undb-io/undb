@@ -1,7 +1,7 @@
 import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { IUpdateViewDTO } from "../../../../dto"
-import { WithView } from "../../../../specifications/table-view.specification"
+import { WithNewView, WithView } from "../../../../specifications/table-view.specification"
 import { ViewIdVo } from "../view-id.vo"
 import { AbstractView, baseViewDTO, createBaseViewDTO } from "./abstract-view.vo"
 
@@ -35,5 +35,11 @@ export class GridView extends AbstractView {
     const view = new GridView({ ...json, name: input.name, id: this.id.value })
 
     return Some(new WithView(this, view))
+  }
+
+  override $duplicate(): Option<WithNewView> {
+    const json = this.toJSON()
+
+    return Some(new WithNewView(new GridView({ ...json, isDefault: false, id: ViewIdVo.create().value })))
   }
 }

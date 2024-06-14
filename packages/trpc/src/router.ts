@@ -7,6 +7,7 @@ import {
   CreateWebhookCommand,
   DeleteRecordCommand,
   DuplicateRecordCommand,
+  DuplicateViewCommand,
   SetTableFormCommand,
   SetTableRLSCommand,
   SetViewAggregateCommand,
@@ -27,6 +28,7 @@ import {
   createWebhookCommand,
   deleteRecordCommand,
   duplicateRecordCommand,
+  duplicateViewCommand,
   setTableFormCommand,
   setTableRLSCommand,
   setViewAggregateCommand,
@@ -74,6 +76,7 @@ const viewRouter = t.router({
     .input(createTableViewCommand)
     .mutation(({ input }) => commandBus.execute(new CreateTableViewCommand(input))),
   update: p.input(updateViewCommand).mutation(({ input }) => commandBus.execute(new UpdateViewCommand(input))),
+  duplicate: p.input(duplicateViewCommand).mutation(({ input }) => commandBus.execute(new DuplicateViewCommand(input))),
   setFilter: p.input(setViewFilterCommand).mutation(({ input }) => commandBus.execute(new SetViewFilterCommand(input))),
   setOption: p.input(setViewOptionCommand).mutation(({ input }) => commandBus.execute(new SetViewOptionCommand(input))),
   setColor: p.input(setViewColorCommand).mutation(({ input }) => commandBus.execute(new SetViewColorCommand(input))),

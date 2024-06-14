@@ -2,6 +2,7 @@ import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { IUpdateViewDTO } from "../../../../dto"
 import {
+  WithNewView,
   WithView,
   WithViewAggregate,
   WithViewColor,
@@ -102,6 +103,7 @@ export abstract class AbstractView {
   }
 
   abstract $update(input: IUpdateViewDTO): Option<WithView>
+  abstract $duplicate(): Option<WithNewView>
 
   setFilter(filter: IRootViewFilter) {
     const filterVO = new ViewFilter(filter)
