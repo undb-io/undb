@@ -1,4 +1,4 @@
-query GetTablesQuery {
+query GetAuthedData {
   tables {
     id
     name
@@ -11,5 +11,9 @@ query GetTablesQuery {
     }
 
     recordsCount
+  }
+
+  member {
+    role
   }
 }

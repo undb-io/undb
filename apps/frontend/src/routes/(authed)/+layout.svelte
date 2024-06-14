@@ -35,8 +35,8 @@
     }
   }
 
-  $: tablesStore = data.tablesStore
-  $: tables = $tablesStore.data?.tables?.filter(Boolean) ?? []
+  $: authedDataStore = data.authedDataStore
+  $: tables = $authedDataStore.data?.tables?.filter(Boolean) ?? []
 
   $: if (tables && tables?.length !== 0 && !$page.params.tableId) {
     goto(`/t/${tables[0].id}`, { replaceState: true })

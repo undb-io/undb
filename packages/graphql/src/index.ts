@@ -1,4 +1,5 @@
 import { yoga } from "@elysiajs/graphql-yoga"
+import { executionContext } from "@undb/context/server"
 import { QueryBus } from "@undb/cqrs"
 import { container, inject, singleton } from "@undb/di"
 import { GetAggregatesQuery, GetRecordAuditsQuery, GetTableQuery, GetTablesQuery } from "@undb/queries"
@@ -17,6 +18,12 @@ export class Graphql {
     return yoga({
       typeDefs: `
       scalar JSON
+
+      enum WorkspaceRole {
+        owner
+        admin
+        viewer
+      }
 
       enum FieldType {
         string
@@ -114,7 +121,13 @@ export class Graphql {
         detail: JSON
       }
 
+      type WorkspaceMember {
+        role: WorkspaceRole!
+      }
+
       type Query {
+        member: WorkspaceMember
+
         tables: [Table!]
         table(id: ID!): Table
 
@@ -123,6 +136,13 @@ export class Graphql {
       `,
       resolvers: {
         Query: {
+          member: () => {
+            const member = executionContext.getStore()?.member
+            if (!member?.role) {
+              throw new Error("Unauthorized")
+            }
+            return { role: member.role }
+          },
           table: async (_, args) => {
             const table = await this.queryBus.execute(new GetTableQuery({ tableId: args.id }))
             return table

@@ -41,6 +41,7 @@ type Form {
 scalar JSON
 
 type Query {
+  member: WorkspaceMember
   recordAudits(recordId: ID!): [Audit]
   table(id: ID!): Table
   tables: [Table!]
@@ -98,4 +99,14 @@ type ViewOption {
 
 enum ViewType {
   grid
+}
+
+type WorkspaceMember {
+  role: WorkspaceRole!
+}
+
+enum WorkspaceRole {
+  admin
+  owner
+  viewer
 }

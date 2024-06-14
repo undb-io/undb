@@ -98,12 +98,15 @@ export class AuthRoute {
   route() {
     return new Elysia()
       .get("/api/me", (ctx) => {
-        const user = executionContext.getStore()?.user
+        const store = executionContext.getStore()
+        const user = store?.user
         if (!user?.userId) {
           return (ctx.set.redirect = `/signup`)
         }
 
-        return user
+        const member = store?.member
+
+        return { user, member }
       })
       .get("/signup", () => <SignUp />)
       .post(
