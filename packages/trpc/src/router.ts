@@ -104,6 +104,7 @@ const tableRouter = t.router({
     .output(tableDTO.array())
     .query(() => queryBus.execute(new GetTablesQuery())),
   get: p
+    .use(authz("table:read"))
     .input(getTableQuery)
     .output(tableDTO)
     .query(({ input }) => queryBus.execute(new GetTableQuery(input))),
@@ -119,12 +120,28 @@ const tableRouter = t.router({
 })
 
 const recordRouter = t.router({
-  list: p.input(getRecordsQuery).query(({ input }) => queryBus.execute(new GetRecordsQuery(input))),
-  get: p.input(getRecordByIdQuery).query(({ input }) => queryBus.execute(new GetRecordByIdQuery(input))),
-  create: p.input(createRecordCommand).mutation(({ input }) => commandBus.execute(new CreateRecordCommand(input))),
-  update: p.input(updateRecordCommand).mutation(({ input }) => commandBus.execute(new UpdateRecordCommand(input))),
-  delete: p.input(deleteRecordCommand).mutation(({ input }) => commandBus.execute(new DeleteRecordCommand(input))),
+  list: p
+    .use(authz("record:list"))
+    .input(getRecordsQuery)
+    .query(({ input }) => queryBus.execute(new GetRecordsQuery(input))),
+  get: p
+    .use(authz("record:read"))
+    .input(getRecordByIdQuery)
+    .query(({ input }) => queryBus.execute(new GetRecordByIdQuery(input))),
+  create: p
+    .use(authz("record:create"))
+    .input(createRecordCommand)
+    .mutation(({ input }) => commandBus.execute(new CreateRecordCommand(input))),
+  update: p
+    .use(authz("record:update"))
+    .input(updateRecordCommand)
+    .mutation(({ input }) => commandBus.execute(new UpdateRecordCommand(input))),
+  delete: p
+    .use(authz("record:delete"))
+    .input(deleteRecordCommand)
+    .mutation(({ input }) => commandBus.execute(new DeleteRecordCommand(input))),
   duplicate: p
+    .use(authz("record:create"))
     .input(duplicateRecordCommand)
     .mutation(({ input }) => commandBus.execute(new DuplicateRecordCommand(input))),
 })

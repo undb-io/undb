@@ -2,7 +2,7 @@ import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import { memberId } from "../member/member-id.vo"
 
-export const workspaceMemberRole = z.enum(["owner", "admin", "member"])
+export const workspaceMemberRole = z.enum(["owner", "admin", "viewer"])
 
 export type IWorkspaceMemberRole = z.infer<typeof workspaceMemberRole>
 
