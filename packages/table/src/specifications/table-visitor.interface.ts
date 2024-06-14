@@ -21,6 +21,7 @@ import type {
   WithViewFilter,
   WithViewOption,
   WithViewSort,
+  WithoutView,
 } from "./table-view.specification"
 import type { TableViewsSpecification } from "./table-views.specification"
 
@@ -35,6 +36,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withViews(views: TableViewsSpecification): void
   withView(views: WithView): void
   withNewView(views: WithNewView): void
+  withoutView(view: WithoutView): void
   withViewFilter(viewFilter: WithViewFilter): void
   withViewOption(viewOption: WithViewOption): void
   withViewColor(viewColor: WithViewColor): void

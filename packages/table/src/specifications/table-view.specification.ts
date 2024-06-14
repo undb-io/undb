@@ -68,6 +68,23 @@ export class WithNewView extends TableComositeSpecification {
   }
 }
 
+export class WithoutView extends TableComositeSpecification {
+  constructor(public readonly view: View) {
+    super()
+  }
+  isSatisfiedBy(t: TableDo): boolean {
+    throw new WontImplementException(TableComositeSpecification.name + ".isSatisfiedBy")
+  }
+  mutate(t: TableDo): Result<TableDo, string> {
+    t.views = t.views.deleteView(this.view)
+    return Ok(t)
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withoutView(this)
+    return Ok(undefined)
+  }
+}
+
 export class WithViewFilter extends TableComositeSpecification {
   constructor(
     public readonly viewId: ViewId,

@@ -4,6 +4,7 @@ import type { ITableEvents } from "./events"
 import { $createFieldSpec, createFieldMethod } from "./methods/create-field.method"
 import { createFormMethod } from "./methods/create-form.method"
 import { createViewMethod } from "./methods/create-view.method"
+import { deleteViewMethod } from "./methods/delete-view.method"
 import { duplicateViewMethod } from "./methods/duplicate-view.method"
 import { setTableForm } from "./methods/set-table-form.method"
 import { setTableRLS } from "./methods/set-table-rls.method"
@@ -45,6 +46,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   $createForm = createFormMethod
   $createView = createViewMethod
   $duplicateView = duplicateViewMethod
+  $deleteView = deleteViewMethod
   $setTableForm = setTableForm
 
   getOrderedFields(formId?: FormId, viewId?: string): Field[] {

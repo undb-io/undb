@@ -48,4 +48,8 @@ export class Views extends ValueObject {
   update(view: View) {
     return new Views(this.views.map((v) => (v.id.equals(view.id) ? view : v)))
   }
+
+  deleteView(view: View) {
+    return new Views(this.views.filter((v) => !v.id.equals(view.id)))
+  }
 }

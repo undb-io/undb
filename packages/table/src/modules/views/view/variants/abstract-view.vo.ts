@@ -10,6 +10,7 @@ import {
   WithViewFilter,
   WithViewOption,
   WithViewSort,
+  WithoutView,
 } from "../../../../specifications/table-view.specification"
 import type { IViewDTO } from "../dto"
 import { ViewAggregateVO, viewAggregate, type IViewAggregate } from "../view-aggregate/view-aggregate.vo"
@@ -104,6 +105,10 @@ export abstract class AbstractView {
 
   abstract $update(input: IUpdateViewDTO): Option<WithView>
   abstract $duplicate(): Option<WithNewView>
+
+  $delete(): Option<WithoutView> {
+    return Some(new WithoutView(this))
+  }
 
   setFilter(filter: IRootViewFilter) {
     const filterVO = new ViewFilter(filter)
