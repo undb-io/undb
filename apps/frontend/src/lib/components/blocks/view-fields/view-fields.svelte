@@ -101,7 +101,7 @@
             <div class="hover:bg-muted flex items-center justify-between rounded-sm p-2 transition-colors">
               <div class="flex items-center gap-2">
                 <Switch
-                  disabled={visibleCount === 1}
+                  disabled={visibleCount === 1 && viewFields.length === 1}
                   checked={!viewField.hidden}
                   onCheckedChange={(checked) => {
                     viewField.hidden = !checked
