@@ -1,4 +1,4 @@
-query GetAuthedData {
+query GetIndexQuery {
   tables {
     id
     name

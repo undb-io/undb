@@ -12,6 +12,7 @@ export const DELETE_RECORD_MODAL = "deleteRecord" as const
 export const DUPLICATE_RECORD_MODAL = "duplicateRecord" as const
 export const CREATE_WEBHOOK_MODAL = "createWebhook" as const
 export const CREATE_RLS_MODAL = "createRLS" as const
+export const UPDATE_VIEW = "updateView" as const
 
 type ModalType =
   | typeof CREATE_TABLE_MODAL
@@ -22,6 +23,7 @@ type ModalType =
   | typeof CREATE_WEBHOOK_MODAL
   | typeof UPDATE_FIELD_MODAL
   | typeof CREATE_RLS_MODAL
+  | typeof UPDATE_VIEW
 
 export const toggleModal = (type: ModalType) => {
   modal.update(($modal) => {

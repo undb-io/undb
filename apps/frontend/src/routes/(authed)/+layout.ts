@@ -1,4 +1,4 @@
-import { GetAuthedDataStore } from "$houdini"
+import { GetIndexQueryStore } from "$houdini"
 import { redirect } from "@sveltejs/kit"
 import type { LayoutLoad } from "./$types"
 
@@ -12,7 +12,7 @@ export const load: LayoutLoad = async (event) => {
 
   event.depends("undb:tables")
 
-  const authedDataStore = new GetAuthedDataStore()
+  const authedDataStore = new GetIndexQueryStore()
   await authedDataStore.fetch({ event, policy: "NetworkOnly" })
 
   return {

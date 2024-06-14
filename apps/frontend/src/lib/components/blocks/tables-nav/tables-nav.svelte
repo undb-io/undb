@@ -1,11 +1,11 @@
 <script lang="ts">
   import { page } from "$app/stores"
-  import { type GetAuthedData$result } from "$houdini"
+  import { type GetIndexQuery$result } from "$houdini"
   import * as Accordion from "$lib/components/ui/accordion"
   import { Database, TableIcon } from "lucide-svelte"
   import { cn } from "$lib/utils"
 
-  export let tables: GetAuthedData$result["tables"] = []
+  export let tables: GetIndexQuery$result["tables"] = []
 
   let el: HTMLElement
   $: tables, el?.querySelector('[data-active="true"]')?.scrollIntoView()

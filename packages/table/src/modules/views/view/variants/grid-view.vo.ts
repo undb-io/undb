@@ -32,7 +32,7 @@ export class GridView extends AbstractView {
 
   override $update(input: IUpdateViewDTO): Option<WithView> {
     const json = this.toJSON()
-    const view = new GridView({ ...json, id: this.id.value })
+    const view = new GridView({ ...json, name: input.name, id: this.id.value })
 
     return Some(new WithView(this, view))
   }

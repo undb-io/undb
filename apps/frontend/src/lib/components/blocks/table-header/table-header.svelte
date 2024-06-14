@@ -13,12 +13,14 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import * as Tooltip from "$lib/components/ui/tooltip"
   import {
+    ChevronDownIcon,
     CodeIcon,
     CodeXml,
     DatabaseIcon,
     FingerprintIcon,
     FormInputIcon,
     Package2,
+    PencilIcon,
     PlusCircleIcon,
     SheetIcon,
     TextCursorInputIcon,
@@ -32,6 +34,7 @@
   import CreateViewButton from "../view/create-view-button.svelte"
   import { derived } from "svelte/store"
   import { page } from "$app/stores"
+  import { UPDATE_VIEW, toggleModal } from "$lib/store/modal.store"
 
   const table = getTable()
 
@@ -160,9 +163,23 @@
               Developer
             </Breadcrumb.Item>
           {:else}
-            <Breadcrumb.Item class="text-xs">
-              <Breadcrumb.Page>{view.name.value}</Breadcrumb.Page>
-            </Breadcrumb.Item>
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger>
+                <Breadcrumb.Item class="text-xs">
+                  <Breadcrumb.Page class="flex items-center gap-1">
+                    {view.name.value}
+                    <ChevronDownIcon class="text-muted-foreground h-4 w-4" />
+                  </Breadcrumb.Page>
+                </Breadcrumb.Item>
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content>
+                <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_VIEW)}>
+                  <PencilIcon class="mr-2 h-3 w-3" />
+                  Update View Name
+                </DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
+
             <CreateViewButton class="mt-0" size="icon" variant="ghost">
               <PlusCircleIcon class="h-4 w-4" />
             </CreateViewButton>
