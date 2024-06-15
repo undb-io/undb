@@ -20,18 +20,18 @@ export function getColor(color: IColors): string {
 
 export function getTextColor(color: IColors): string {
   const map: Record<IColors, string> = {
-    black: "text-black",
-    red: "text-red-500",
-    green: "text-green-500",
-    blue: "text-blue-500",
-    yellow: "text-yellow-500",
-    purple: "text-purple-500",
-    gray: "text-gray-500",
-    orange: "text-orange-500",
-    pink: "text-pink-500",
-    cyan: "text-cyan-500",
-    teal: "text-teal-500",
-    indigo: "text-indigo-500",
+    black: "text-white",
+    red: "text-white",
+    green: "text-white",
+    blue: "text-white",
+    yellow: "text-white",
+    purple: "text-white",
+    gray: "text-white",
+    orange: "text-white",
+    pink: "text-white",
+    cyan: "text-white",
+    teal: "text-white",
+    indigo: "text-white",
   }
   return map[color]
 }
