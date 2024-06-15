@@ -27,7 +27,10 @@ import type {
   UserEmpty,
   UserEqual,
 } from "@undb/table"
-import type { SelectEqual } from "@undb/table/src/modules/schema/fields/variants/select-field/select-field-specification"
+import type {
+  SelectEmpty,
+  SelectEqual,
+} from "@undb/table/src/modules/schema/fields/variants/select-field/select-field-specification"
 import {
   endOfDay,
   endOfToday,
@@ -113,6 +116,10 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
   }
   selectEqual(spec: SelectEqual): void {
     const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value)
+    this.addCond(cond)
+  }
+  selectEmpty(spec: SelectEmpty): void {
+    const cond = this.eb.eb(this.getFieldId(spec), "=", null)
     this.addCond(cond)
   }
   stringEmpty(spec: StringEmpty): void {

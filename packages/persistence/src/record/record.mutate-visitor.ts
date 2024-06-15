@@ -27,6 +27,10 @@ import type {
   UserEmpty,
   UserEqual,
 } from "@undb/table"
+import type {
+  SelectEmpty,
+  SelectEqual,
+} from "@undb/table/src/modules/schema/fields/variants/select-field/select-field-specification"
 import type { CompiledQuery, ExpressionBuilder } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { JoinTable } from "../underlying/reference/join-table"
@@ -113,6 +117,12 @@ export class RecordMutateVisitor implements IRecordVisitor {
   }
   stringEmpty(spec: StringEmpty): void {
     throw new Error("Method not implemented.")
+  }
+  selectEqual(spec: SelectEqual): void {
+    this.setData(spec.fieldId.value, spec.value)
+  }
+  selectEmpty(spec: SelectEmpty): void {
+    this.setData(spec.fieldId.value, null)
   }
   numberEqual(spec: NumberEqual): void {
     this.setData(spec.fieldId.value, spec.value)

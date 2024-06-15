@@ -105,4 +105,8 @@ export class SelectField extends AbstractField<SelectFieldValue, SelectFieldCons
   override get aggregate() {
     return selectFieldAggregate
   }
+
+  get options() {
+    return this.option.into(undefined)?.options ?? []
+  }
 }
