@@ -27,6 +27,7 @@ export class FieldFactory {
       .with({ type: "updatedBy" }, (dto) => new UpdatedByField(dto))
       .with({ type: "reference" }, (dto) => new ReferenceField(dto))
       .with({ type: "rollup" }, (dto) => new RollupField(dto))
+      .with({ type: "select" }, (dto) => new SelectField(dto))
       .exhaustive()
   }
 

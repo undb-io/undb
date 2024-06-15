@@ -11,6 +11,7 @@ import { match } from "ts-pattern"
 import { SelectFieldConstraint, selectFieldConstraint } from "./select-field-constraint.vo"
 import { SelectEmpty, SelectEqual } from "./select-field-specification"
 import { SelectFieldValue, mutateSelectFieldValueSchema } from "./select-field-value.vo"
+import { selectFieldAggregate } from "./select-field.aggregate"
 import {
   createSelectFieldCondition,
   type ISelectFieldCondition,
@@ -102,6 +103,6 @@ export class SelectField extends AbstractField<SelectFieldValue, SelectFieldCons
   }
 
   override get aggregate() {
-    return z.enum([])
+    return selectFieldAggregate
   }
 }

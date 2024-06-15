@@ -88,7 +88,7 @@
   $: columns =
     table.createColumns([
       table.column({
-        accessor: "select",
+        accessor: "$select",
         header: (_, { pluginStates }) => {
           const { allPageRowsSelected } = pluginStates.select
           return createRender(GridViewCheckbox, {
@@ -210,7 +210,7 @@
                       hasFilter && "bg-orange-50",
                     )}
                   >
-                    {#if cell.id === "select" && !$data.length}
+                    {#if cell.id === "$select" && !$data.length}
                       <Checkbox checked={false} disabled />
                     {:else}
                       <Render of={cell.render()} />
