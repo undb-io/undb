@@ -108,7 +108,12 @@
         </Form.Label>
         {#if field.isSystem}
           <div class="py-3 text-sm">
-            <FieldValue value={values[field.id.value]} type={field.type} displayValue={displayValues[field.id.value]} />
+            <FieldValue
+              {field}
+              value={values[field.id.value]}
+              type={field.type}
+              displayValue={displayValues[field.id.value]}
+            />
           </div>
         {:else}
           <FieldControl

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { FieldType } from "@undb/table"
+  import type { Field, FieldType } from "@undb/table"
   import type { ComponentType } from "svelte"
   import StringField from "./string-field.svelte"
   import NumberField from "./number-field.svelte"
@@ -8,10 +8,12 @@
   import UserField from "./user-field.svelte"
   import RollupField from "./rollup-field.svelte"
   import ReferenceField from "./reference-field.svelte"
+  import SelectField from "./select-field.svelte"
 
   export let type: FieldType
   export let value: any
   export let displayValue: any
+  export let field: Field
 
   const map: Record<FieldType, ComponentType> = {
     id: IdField,
@@ -24,7 +26,8 @@
     updatedBy: UserField,
     reference: ReferenceField,
     rollup: RollupField,
+    select: SelectField,
   }
 </script>
 
-<svelte:component this={map[type]} {...$$restProps} {value} {displayValue} />
+<svelte:component this={map[type]} {...$$restProps} {field} {value} {displayValue} />

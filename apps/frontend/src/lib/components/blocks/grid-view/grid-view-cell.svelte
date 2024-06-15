@@ -15,6 +15,7 @@
   import UserField from "../field-value/user-field.svelte"
   import ReferenceControl from "../field-control/reference-control.svelte"
   import RollupField from "../field-value/rollup-field.svelte"
+  import SelectControl from "../field-control/select-control.svelte"
 
   const table = getTable()
 
@@ -35,6 +36,7 @@
     updatedBy: UserField,
     reference: ReferenceControl,
     rollup: RollupField,
+    select: SelectControl,
   }
 
   let form: HTMLFormElement
