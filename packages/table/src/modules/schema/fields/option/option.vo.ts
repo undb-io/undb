@@ -15,4 +15,12 @@ export const option = z.object({
 
 export type IOption = z.infer<typeof option>
 
-export class Option extends ValueObject<IOption> {}
+export class Option extends ValueObject<IOption> {
+  toJSON() {
+    return {
+      id: this.value.id,
+      name: this.value.name,
+      color: this.value.color,
+    }
+  }
+}

@@ -1,5 +1,4 @@
 import { match } from "ts-pattern"
-import { ReferenceField, RollupField } from "."
 import type { ICreateFieldDTO } from "./dto/create-field.dto"
 import type { IFieldDTO } from "./dto/field.dto"
 import type { Field } from "./field.type"
@@ -8,6 +7,9 @@ import { CreatedAtField } from "./variants/created-at-field"
 import { CreatedByField } from "./variants/created-by-field"
 import { IdField } from "./variants/id-field"
 import { NumberField } from "./variants/number-field/number-field.vo"
+import { ReferenceField } from "./variants/reference-field/reference-field.vo"
+import { RollupField } from "./variants/rollup-field/rollup-field.vo"
+import { SelectField } from "./variants/select-field/select-field.vo"
 import { StringField } from "./variants/string-field/string-field.vo"
 import { UpdatedAtField } from "./variants/updated-at-field/updated-at-field.vo"
 import { UpdatedByField } from "./variants/updated-by-field/updated-by-field.vo"
@@ -34,6 +36,7 @@ export class FieldFactory {
       .with({ type: "number" }, (dto) => NumberField.create(dto))
       .with({ type: "reference" }, (dto) => ReferenceField.create(dto))
       .with({ type: "rollup" }, (dto) => RollupField.create(dto))
+      .with({ type: "select" }, (dto) => SelectField.create(dto))
       .otherwise(() => {
         throw new Error("Field type creation not supported")
       })

@@ -1,8 +1,8 @@
 import { None, Some, type Option } from "@undb/domain"
+import { match } from "ts-pattern"
 import { type IRecordEvent } from "."
 import { RecordDO, type RecordComositeSpecification } from "../.."
 import type { TableDo } from "../../../table.do"
-import { match } from "ts-pattern"
 
 /**
  * Refine record events based on the given specification.
@@ -30,6 +30,11 @@ export function refineRecordEvents(
       return isSatisfied ? Some(event) : None
     })
     .with({ name: "record.created" }, (event) => {
+      const record = RecordDO.fromJSON(table, event.payload)
+      const isSatisfied = spec.unwrap().isSatisfiedBy(record)
+      return isSatisfied ? Some(event) : None
+    })
+    .with({ name: "record.updated" }, (event) => {
       const record = RecordDO.fromJSON(table, event.payload)
       const isSatisfied = spec.unwrap().isSatisfiedBy(record)
       return isSatisfied ? Some(event) : None

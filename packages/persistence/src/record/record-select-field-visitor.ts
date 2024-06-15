@@ -1,5 +1,6 @@
 import {
   ID_TYPE,
+  SelectField,
   type AutoIncrementField,
   type CreatedAtField,
   type CreatedByField,
@@ -27,7 +28,7 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     this.#select.push(select)
   }
 
-  public select(fields: Field[]): SelectExpression<any, any>[] {
+  public $select(fields: Field[]): SelectExpression<any, any>[] {
     for (const field of fields) {
       field.accept(this)
     }
@@ -44,6 +45,9 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     private readonly eb: ExpressionBuilder<any, string>,
   ) {
     this.addSelect(this.getField(ID_TYPE))
+  }
+  select(field: SelectField): void {
+    this.addSelect(this.getField(field.id.value))
   }
 
   id(field: IdField): void {

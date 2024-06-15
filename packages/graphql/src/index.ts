@@ -34,6 +34,7 @@ export class Graphql {
         updatedAt
         updatedBy
         autoIncrement
+        select
         reference
         rollup
       }

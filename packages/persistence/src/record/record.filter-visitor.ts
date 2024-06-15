@@ -27,6 +27,7 @@ import type {
   UserEmpty,
   UserEqual,
 } from "@undb/table"
+import type { SelectEqual } from "@undb/table/src/modules/schema/fields/variants/select-field/select-field-specification"
 import {
   endOfDay,
   endOfToday,
@@ -37,8 +38,8 @@ import {
   startOfTomorrow,
   startOfYesterday,
 } from "date-fns"
-import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { ExpressionBuilder } from "kysely"
+import { AbstractQBVisitor } from "../abstract-qb.visitor"
 
 export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements IRecordVisitor {
   constructor(
@@ -108,6 +109,10 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
   }
   numberEmpty(spec: NumberEmpty): void {
     const cond = this.eb.eb(this.getFieldId(spec), "is", null)
+    this.addCond(cond)
+  }
+  selectEqual(spec: SelectEqual): void {
+    const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value)
     this.addCond(cond)
   }
   stringEmpty(spec: StringEmpty): void {

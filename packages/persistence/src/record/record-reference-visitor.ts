@@ -1,5 +1,6 @@
 import {
   ID_TYPE,
+  SelectField,
   type AutoIncrementField,
   type CreatedAtField,
   type CreatedByField,
@@ -51,6 +52,9 @@ export class RecordReferenceVisitor implements IFieldVisitor {
     throw new Error("Method not implemented.")
   }
   number(field: NumberField): void {
+    throw new Error("Method not implemented.")
+  }
+  select(field: SelectField): void {
     throw new Error("Method not implemented.")
   }
   reference(field: ReferenceField): void {

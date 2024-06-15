@@ -69,7 +69,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return qb
       .selectFrom(table.id.value)
       .$call((qb) => new RecordReferenceVisitor(qb, table).join(referenceFields))
-      .select((sb) => new RecordSelectFieldVisitor(t, foreignTables, sb).select(visibleFields))
+      .select((sb) => new RecordSelectFieldVisitor(t, foreignTables, sb).$select(visibleFields))
   }
 
   async findOneById(table: TableDo, id: RecordId): Promise<Option<IRecordDTO>> {

@@ -7,8 +7,8 @@ export const mutateSelectFieldValueSchema = optionName.nullable()
 
 export type IMutateSelectFieldValueSchema = z.infer<typeof mutateSelectFieldValueSchema>
 
-export class SelectFieldValue extends ValueObject<IOptionId> {
-  constructor(option: IOptionId) {
+export class SelectFieldValue extends ValueObject<IOptionId | null> {
+  constructor(option: IOptionId | null) {
     super({ value: option })
   }
   isEmpty() {

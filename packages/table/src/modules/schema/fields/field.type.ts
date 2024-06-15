@@ -46,6 +46,7 @@ import type { NUMBER_TYPE, NumberField } from "./variants/number-field/number-fi
 import type {
   ISelectFieldConditionSchema,
   ISelectFieldConstraint,
+  ISelectFieldOption,
   SELECT_TYPE,
   SelectField,
   SelectFieldValue,
@@ -127,4 +128,4 @@ export type IFieldConstraint =
   | IReferenceFieldConstraint
   | ISelectFieldConstraint
 
-export type IFieldOption = IReferenceFieldOption | IRollupFieldOption
+export type IFieldOption = IReferenceFieldOption | IRollupFieldOption | ISelectFieldOption

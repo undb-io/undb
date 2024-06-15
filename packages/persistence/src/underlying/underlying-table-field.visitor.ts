@@ -3,6 +3,7 @@ import {
   ID_TYPE,
   ReferenceField,
   RollupField,
+  SelectField,
   UpdatedByField,
   type AutoIncrementField,
   type CreatedAtField,
@@ -87,6 +88,10 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     this.addColumn(c)
   }
   string(field: StringField): void {
+    const c = this.tb.addColumn(field.id.value, "varchar(255)")
+    this.addColumn(c)
+  }
+  select(field: SelectField): void {
     const c = this.tb.addColumn(field.id.value, "varchar(255)")
     this.addColumn(c)
   }

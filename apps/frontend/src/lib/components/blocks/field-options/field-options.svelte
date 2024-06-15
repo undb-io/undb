@@ -5,6 +5,7 @@
   import NumberFieldOption from "./number-field-option.svelte"
   import ReferenceFieldOption from "./reference-field-option.svelte"
   import RollupFieldOption from "./rollup-field-option.svelte"
+  import SelectFieldOption from "./select-field-option.svelte"
 
   export let constraint: IFieldConstraint | undefined
   export let option: any | undefined
@@ -17,6 +18,7 @@
     number: NumberFieldOption,
     reference: ReferenceFieldOption,
     rollup: RollupFieldOption,
+    select: SelectFieldOption,
   }
 
   export let type: NoneSystemFieldType
