@@ -43,6 +43,13 @@ import type { ID_TYPE, IIdFieldConditionSchema, IdField, IdFieldValue } from "./
 import type { INumberFieldConstraint } from "./variants/number-field/number-field-constraint.vo"
 import type { NumberFieldValue } from "./variants/number-field/number-field-value.vo"
 import type { NUMBER_TYPE, NumberField } from "./variants/number-field/number-field.vo"
+import type {
+  ISelectFieldConditionSchema,
+  ISelectFieldConstraint,
+  SELECT_TYPE,
+  SelectField,
+  SelectFieldValue,
+} from "./variants/select-field"
 import type { StringFieldValue } from "./variants/string-field/string-field-value.vo"
 import type { STRING_TYPE, StringField } from "./variants/string-field/string-field.vo"
 
@@ -57,6 +64,7 @@ export type Field =
   | UpdatedByField
   | ReferenceField
   | RollupField
+  | SelectField
 
 export type NoneSystemField = Field & { isSystem: false }
 export type SystemField = Field & { isSystem: true }
@@ -72,8 +80,9 @@ export type FieldValue =
   | UpdatedByFieldValue
   | ReferenceFieldValue
   | RollupFieldValue
+  | SelectFieldValue
 
-export type MutableFieldValue = StringFieldValue | NumberFieldValue | ReferenceFieldValue
+export type MutableFieldValue = StringFieldValue | NumberFieldValue | ReferenceFieldValue | SelectField
 
 export type FieldType =
   | typeof STRING_TYPE
@@ -86,6 +95,7 @@ export type FieldType =
   | typeof UPDATED_BY_TYPE
   | typeof REFERENCE_TYPE
   | typeof ROLLUP_TYPE
+  | typeof SELECT_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
@@ -107,9 +117,14 @@ export type IFieldConditionSchema =
   | IUpdatedAtFieldConditionSchema
   | IAutoIncrementFieldConditionSchema
   | IRollupFieldConditionSchema
+  | ISelectFieldConditionSchema
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
 
-export type IFieldConstraint = IStringFieldConstraint | INumberFieldConstraint | IReferenceFieldConstraint
+export type IFieldConstraint =
+  | IStringFieldConstraint
+  | INumberFieldConstraint
+  | IReferenceFieldConstraint
+  | ISelectFieldConstraint
 
 export type IFieldOption = IReferenceFieldOption | IRollupFieldOption

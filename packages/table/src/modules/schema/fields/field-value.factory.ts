@@ -1,6 +1,7 @@
 import { None, Option, Some } from "@undb/domain"
 import { match } from "ts-pattern"
 import type { Field, FieldValue, MutableFieldValue } from "./field.type"
+import type { IOptionId } from "./option/option-id.vo"
 import {
   AutoIncrementFieldValue,
   CreatedAtFieldValue,
@@ -13,12 +14,14 @@ import {
   UpdatedByFieldValue,
 } from "./variants"
 import { CreatedByFieldValue } from "./variants/created-by-field"
+import { SelectFieldValue } from "./variants/select-field"
 
 export class FieldValueFactory {
   static create(field: Field, value: any): Option<MutableFieldValue> {
     return match(field)
       .with({ type: "number" }, (field) => Some(new NumberFieldValue(field.valueSchema.parse(value))))
       .with({ type: "string" }, (field) => Some(new StringFieldValue(field.valueSchema.parse(value))))
+      .with({ type: "select" }, (field) => Some(new SelectFieldValue(field.valueSchema.parse(value))))
       .with({ type: "reference" }, (field) => Some(new ReferenceFieldValue(field.valueSchema.parse(value))))
       .otherwise(() => None)
   }
@@ -35,6 +38,7 @@ export class FieldValueFactory {
       .with("updatedBy", () => Some(new UpdatedByFieldValue(value as string)))
       .with("reference", () => Some(new ReferenceFieldValue(value as string[])))
       .with("rollup", () => Some(new RollupFieldValue(value as number | Date)))
+      .with("select", () => Some(new SelectFieldValue(value as IOptionId)))
       .exhaustive()
   }
 }

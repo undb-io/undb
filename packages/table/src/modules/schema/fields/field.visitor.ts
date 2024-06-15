@@ -1,12 +1,14 @@
-import type { ReferenceField, UpdatedAtField, UpdatedByField } from ".."
 import type { AutoIncrementField } from "./variants/autoincrement-field"
 import type { CreatedAtField } from "./variants/created-at-field"
 import type { CreatedByField } from "./variants/created-by-field"
-import type { IdField } from "./variants/id-field"
+import type { IdField } from "./variants/id-field/id-field.vo"
 import type { NumberField } from "./variants/number-field/number-field.vo"
+import type { ReferenceField } from "./variants/reference-field/reference-field.vo"
 import type { RollupField } from "./variants/rollup-field"
 import type { SelectField } from "./variants/select-field"
 import type { StringField } from "./variants/string-field/string-field.vo"
+import type { UpdatedAtField } from "./variants/updated-at-field/updated-at-field.vo"
+import type { UpdatedByField } from "./variants/updated-by-field/updated-by-field.vo"
 
 export interface IFieldVisitor {
   id(field: IdField): void

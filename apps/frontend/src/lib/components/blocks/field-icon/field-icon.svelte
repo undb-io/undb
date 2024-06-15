@@ -12,6 +12,7 @@
     UserRoundCheck,
     SquareArrowOutUpRightIcon,
     CalculatorIcon,
+    ListIcon,
   } from "lucide-svelte"
 
   export let type: FieldType
@@ -27,6 +28,7 @@
     updatedBy: UserRoundCheck,
     reference: SquareArrowOutUpRightIcon,
     rollup: CalculatorIcon,
+    select: ListIcon,
   }
 </script>
 
