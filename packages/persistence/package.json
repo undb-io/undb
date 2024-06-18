@@ -24,6 +24,6 @@
     "kysely": "^0.27.3",
     "kysely-bun-sqlite": "^0.3.2",
     "radash": "^12.1.0",
-    "ts-pattern": "^5.1.2"
+    "ts-pattern": "^5.2.0"
   }
 }

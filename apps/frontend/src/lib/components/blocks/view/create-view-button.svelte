@@ -22,7 +22,7 @@
     mutationFn: trpc.table.view.create.mutate,
     mutationKey: ["table", $table.id.value, "createView"],
     onSuccess() {
-      toast.success("create form successfully")
+      toast.success("created view successfully")
       invalidate(`table:${$table.id.value}`)
     },
     onError(e) {
