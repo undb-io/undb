@@ -16,6 +16,7 @@
     "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@undb/audit": "workspace:*",
     "@undb/authz": "workspace:*",
+    "@undb/base": "workspace:*",
     "@undb/command-handlers": "workspace:*",
     "@undb/context": "workspace:*",
     "@undb/cqrs": "workspace:*",

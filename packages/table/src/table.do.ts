@@ -26,6 +26,9 @@ import type { TableNameVo } from "./table-name.vo"
 export class TableDo extends AggregateRoot<ITableEvents> {
   public id!: TableId
   public name!: TableNameVo
+
+  public baseId: Option<string> = None
+
   public schema!: Schema
   public views!: Views
   public forms?: FormsVO

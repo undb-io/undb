@@ -1,9 +1,12 @@
 import { AUDIT_QUERY_REPOSITORY, AUDIT_REPOSITORY } from "@undb/audit"
 import { WORKSPACE_MEMBER_REPOSITORY } from "@undb/authz"
+import { BASE_QUERY_REPOSITORY, BASE_REPOSITORY } from "@undb/base"
 import { container } from "@undb/di"
 import {
   AuditQueryRepository,
   AuditRepository,
+  BaseQueryRepository,
+  BaseRepository,
   DB_UNIT_OF_WORK_PROVIDER,
   DatabaseUnitOfWork,
   RecordOutboxService,
@@ -39,4 +42,6 @@ export const registerDb = () => {
   container.register(AUDIT_REPOSITORY, AuditRepository)
   container.register(AUDIT_QUERY_REPOSITORY, AuditQueryRepository)
   container.register(WORKSPACE_MEMBER_REPOSITORY, WorkspaceMemberRepository)
+  container.register(BASE_REPOSITORY, BaseRepository)
+  container.register(BASE_QUERY_REPOSITORY, BaseQueryRepository)
 }
