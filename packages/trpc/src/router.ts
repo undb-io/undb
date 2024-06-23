@@ -1,4 +1,5 @@
 import {
+  CreateBaseCommand,
   CreateRecordCommand,
   CreateTableCommand,
   CreateTableFieldCommand,
@@ -21,6 +22,7 @@ import {
   UpdateTableFieldCommand,
   UpdateViewCommand,
   UpdateWebhookCommand,
+  createBaseCommand,
   createRecordCommand,
   createTableCommand,
   createTableFieldCommand,
@@ -159,10 +161,18 @@ const webhookRouter = t.router({
   update: p.input(updateWebhookCommand).mutation(({ input }) => commandBus.execute(new UpdateWebhookCommand(input))),
 })
 
+const baseRouter = t.router({
+  create: p
+    .use(authz("base:create"))
+    .input(createBaseCommand)
+    .mutation(({ input }) => commandBus.execute(new CreateBaseCommand(input))),
+})
+
 export const route = t.router({
   table: tableRouter,
   record: recordRouter,
   webhook: webhookRouter,
+  base: baseRouter,
 })
 
 export type AppRouter = typeof route

@@ -1,3 +1,4 @@
+import { CreateBaseCommandHandler } from "./create-base.command-handler«"
 import { CreateRecordCommandHandler } from "./create-record.command-handler"
 import { CreateTableFieldCommandHandler } from "./create-table-field.command-handler"
 import { CreateTableFormCommandHandler } from "./create-table-form.command-handler"
@@ -44,4 +45,5 @@ export const commandHandlers = [
   CreateTableViewCommandHandler,
   DuplicateViewCommandHandler,
   DeleteViewCommandHandler,
+  CreateBaseCommandHandler,
 ]

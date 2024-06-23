@@ -19,6 +19,8 @@
   import { SearchIcon } from "lucide-svelte"
   import { workspaceMember } from "@undb/authz"
   import { role } from "$lib/store/workspace-member.store"
+  import NavTools from "$lib/components/blocks/nav/nav-tools.svelte"
+  import CreateBaseDialog from "$lib/components/blocks/create-base/create-base-dialog.svelte"
 
   export let data: LayoutData
 
@@ -60,23 +62,8 @@
     maxSize={20}
   >
     <div class="flex h-full max-h-screen flex-col gap-2">
-      <div class="flex h-14 items-center border-b px-4 lg:h-[60px]">
-        <Button
-          variant="outline"
-          size="sm"
-          class="flex w-full items-center justify-between"
-          on:click={() => ($commandOpen = true)}
-        >
-          <span class="inline-flex items-center">
-            <SearchIcon class="text-muted-foreground mr-2 h-3 w-3" />
-            Search
-          </span>
-          <span>
-            <code class="bg-muted relative rounded border border-gray-300 px-[0.3rem] py-[0.2rem] font-mono text-xs">
-              ⌘ + K
-            </code>
-          </span>
-        </Button>
+      <div class="border-b p-4 pb-2">
+        <NavTools />
       </div>
       <ScrollArea class={cn(tables.length ? "flex-1" : "")}>
         <TablesNav {tables} />
@@ -93,6 +80,7 @@
 </Resizable.PaneGroup>
 
 <CreateTableSheet />
+<CreateBaseDialog />
 <Command {tables} />
 
 <svelte:window
