@@ -1,6 +1,7 @@
 import { GetAggregatesQueryHandler } from "./get-aggregates.query-handler"
 import { GetBaseQueryHandler } from "./get-base.query-handler"
 import { GetBasesQueryHandler } from "./get-bases.query-handler"
+import { GetMembersQueryHandler } from "./get-members.query-handler"
 import { GetReadableRecordByIdHandler } from "./get-readable-record-by-id.query-handler"
 import { GetReadableRecordsHandler } from "./get-readable-records.query-handler"
 import { GetRecordAuditsQueryHandler } from "./get-record-audits.query-handler"
@@ -24,4 +25,5 @@ export const queryHandlers = [
   GetBasesQueryHandler,
   GetBaseQueryHandler,
   GetTablesByBaseIdQueryHandler,
+  GetMembersQueryHandler,
 ]

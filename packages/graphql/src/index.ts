@@ -133,8 +133,16 @@ export class Graphql {
         detail: JSON
       }
 
+      type User {
+        id: ID!
+        usename: String!
+        email: String!
+      }
+
       type WorkspaceMember {
         role: WorkspaceRole!
+
+        user: User!
       }
 
       type Base {
@@ -146,6 +154,7 @@ export class Graphql {
 
       type Query {
         member: WorkspaceMember
+        members: [WorkspaceMember]!
 
         tables: [Table]!
         table(id: ID!): Table
@@ -158,6 +167,9 @@ export class Graphql {
       `,
       resolvers: {
         Query: {
+          members: async () => {
+            return []
+          },
           member: () => {
             const member = executionContext.getStore()?.member
             if (!member?.role) {
@@ -200,6 +212,12 @@ export class Graphql {
           // @ts-ignore
           aggregate: async (_, { viewId }, __, info) => {
             return this.queryBus.execute(new GetAggregatesQuery({ tableId: info.variableValues.tableId, viewId }))
+          },
+        },
+        WorkspaceMember: {
+          // @ts-ignore
+          user: async () => {
+            return { id: "1", username: "test", email: "" }
           },
         },
       },

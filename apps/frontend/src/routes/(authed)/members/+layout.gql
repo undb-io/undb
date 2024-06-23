@@ -1,0 +1,11 @@
+query GetMembers {
+  members {
+    role
+
+    user {
+      id
+      email
+      usename
+    }
+  }
+}

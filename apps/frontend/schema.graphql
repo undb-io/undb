@@ -51,6 +51,7 @@ type Query {
   base(id: ID!): Base!
   bases: [Base]
   member: WorkspaceMember
+  members: [WorkspaceMember]!
   recordAudits(recordId: ID!): [Audit]
   table(id: ID!): Table
   tables: [Table]!
@@ -86,6 +87,12 @@ type Table {
   views: [View!]!
 }
 
+type User {
+  email: String!
+  id: ID!
+  usename: String!
+}
+
 type View {
   aggregate: JSON
   color: JSON
@@ -113,6 +120,7 @@ enum ViewType {
 
 type WorkspaceMember {
   role: WorkspaceRole!
+  user: User!
 }
 
 enum WorkspaceRole {
