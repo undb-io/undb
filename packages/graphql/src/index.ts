@@ -103,7 +103,7 @@ export class Graphql {
         id: ID!
         name: String!
 
-        baseId: String
+        baseId: String!
 
         schema: [Field!]!
         views: [View!]!

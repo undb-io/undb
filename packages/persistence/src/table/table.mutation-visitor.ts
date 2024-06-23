@@ -1,14 +1,19 @@
 import { NotImplementException, WontImplementException } from "@undb/domain"
 import type {
   ITableSpecVisitor,
+  TableBaseIdSpecification,
   TableDo,
+  TableFormsSpecification,
   TableIdSpecification,
   TableIdsSpecification,
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
+  WithFormSpecification,
   WithNewFieldSpecification,
+  WithNewFormSpecification,
   WithNewView,
+  WithTableRLS,
   WithUpdatedFieldSpecification,
   WithView,
   WithViewAggregate,
@@ -19,12 +24,6 @@ import type {
   WithViewSort,
   WithoutView,
 } from "@undb/table"
-import type {
-  TableFormsSpecification,
-  WithFormSpecification,
-  WithNewFormSpecification,
-} from "@undb/table/src/specifications/table-forms.specification"
-import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
 import { AbstractDBMutationVisitor } from "../abstract-db.visitor"
 import type { tables } from "../tables"
 
@@ -34,6 +33,9 @@ export class TableMutationVisitor
 {
   constructor(public readonly table: TableDo) {
     super()
+  }
+  withBaseId(id: TableBaseIdSpecification): void {
+    this.addUpdates({ baseId: id.baseId })
   }
   withView(views: WithView): void {
     this.addUpdates({ views: this.table.views?.toJSON() })

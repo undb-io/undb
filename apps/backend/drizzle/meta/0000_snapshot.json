@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "d37ec169-51c3-4772-9d9f-bad1d9a8d92b",
+  "id": "ec0480fb-a1ab-463d-b85a-cbbcf0ef0c02",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_audit": {
@@ -252,6 +252,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "base_id": {
+          "name": "base_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "schema": {
           "name": "schema",
           "type": "text",
@@ -310,8 +317,23 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "table_base_id_idx": {
+          "name": "table_base_id_idx",
+          "columns": ["base_id"],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
+        "undb_table_base_id_undb_base_id_fk": {
+          "name": "undb_table_base_id_undb_base_id_fk",
+          "tableFrom": "undb_table",
+          "tableTo": "undb_base",
+          "columnsFrom": ["base_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
         "undb_table_created_by_undb_user_id_fk": {
           "name": "undb_table_created_by_undb_user_id_fk",
           "tableFrom": "undb_table",

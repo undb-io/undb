@@ -11,6 +11,7 @@ export class TableMapper implements Mapper<TableDo, NewTable, ITableDTO> {
     return this.builder
       .setId(entity.id)
       .setName(entity.name)
+      .setBaseId(entity.baseId)
       .setSchema(entity.schema ?? [])
       .setViews(entity.views ?? [])
       .setForms(entity.forms ?? [])
@@ -26,6 +27,7 @@ export class TableMapper implements Mapper<TableDo, NewTable, ITableDTO> {
     return {
       id: entity.id,
       name: entity.name,
+      baseId: entity.baseId,
       schema: entity.schema ?? [],
       views: entity.views ?? [],
       forms: entity.forms ?? [],

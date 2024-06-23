@@ -1,3 +1,4 @@
+import { baseIdSchema } from "@undb/base"
 import { z } from "@undb/zod"
 import { formsDTO, rlsGroupDTO } from "../modules"
 import { schemaDTO } from "../modules/schema/dto/schema.dto"
@@ -8,6 +9,7 @@ import { tableName } from "../table-name.vo"
 export const tableDTO = z.object({
   id: tableId,
   name: tableName,
+  baseId: baseIdSchema,
   schema: schemaDTO,
   views: viewsDTO,
   rls: rlsGroupDTO.optional(),

@@ -8,27 +8,39 @@ import { index, integer, sqliteTableCreator, text } from "drizzle-orm/sqlite-cor
 
 const sqliteTable = sqliteTableCreator((name) => `undb_${name}`)
 
-export const tables = sqliteTable("table", {
-  id: text("id").notNull().primaryKey(),
-  name: text("name").notNull(),
-  schema: text("schema", { mode: "json" }).$type<ISchemaDTO>(),
-  views: text("views", { mode: "json" }).$type<IViewsDTO>(),
-  forms: text("forms", { mode: "json" }).$type<IFormsDTO>(),
-  rls: text("rls", { mode: "json" }).$type<IRLSGroupDTO>(),
+export const tables = sqliteTable(
+  "table",
+  {
+    id: text("id").notNull().primaryKey(),
+    name: text("name").notNull(),
+    baseId: text("base_id")
+      .notNull()
+      .references(() => baseTable.id),
 
-  createdAt: text("created_at")
-    .notNull()
-    .default(sql`(CURRENT_TIMESTAMP)`),
-  createdBy: text("created_by")
-    .notNull()
-    .references(() => users.id),
-  updateAt: text("updated_at")
-    .notNull()
-    .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
-  updatedBy: text("updated_by")
-    .notNull()
-    .references(() => users.id),
-})
+    schema: text("schema", { mode: "json" }).$type<ISchemaDTO>(),
+    views: text("views", { mode: "json" }).$type<IViewsDTO>(),
+    forms: text("forms", { mode: "json" }).$type<IFormsDTO>(),
+    rls: text("rls", { mode: "json" }).$type<IRLSGroupDTO>(),
+
+    createdAt: text("created_at")
+      .notNull()
+      .default(sql`(CURRENT_TIMESTAMP)`),
+    createdBy: text("created_by")
+      .notNull()
+      .references(() => users.id),
+    updateAt: text("updated_at")
+      .notNull()
+      .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
+    updatedBy: text("updated_by")
+      .notNull()
+      .references(() => users.id),
+  },
+  (table) => {
+    return {
+      baseIdIdx: index("table_base_id_idx").on(table.baseId),
+    }
+  },
+)
 
 export type Table = typeof tables.$inferSelect
 export type NewTable = typeof tables.$inferInsert

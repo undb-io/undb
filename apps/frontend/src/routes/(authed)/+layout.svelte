@@ -13,6 +13,7 @@
   import { CREATE_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
   import Command from "$lib/components/blocks/command/command.svelte"
   import { role } from "$lib/store/workspace-member.store"
+  import { bases as basesStore } from "$lib/store/base.store"
   import NavTools from "$lib/components/blocks/nav/nav-tools.svelte"
   import CreateBaseDialog from "$lib/components/blocks/create-base/create-base-dialog.svelte"
 
@@ -36,6 +37,12 @@
   $: indexDataStore = data.indexDataStore
   $: tables = $indexDataStore.data?.tables?.filter(Boolean) ?? []
   $: bases = $indexDataStore.data?.bases?.filter(Boolean) ?? []
+
+  function setBases() {
+    basesStore.set(bases)
+  }
+
+  $: bases, setBases()
 
   $: member = $indexDataStore.data?.member
 

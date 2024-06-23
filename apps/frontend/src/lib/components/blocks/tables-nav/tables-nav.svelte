@@ -5,6 +5,7 @@
   import { EllipsisIcon, HardDriveIcon, PlusIcon } from "lucide-svelte"
   import TablesNavItem from "./tables-nav-item.svelte"
   import { CREATE_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
+  import { baseId } from "$lib/store/base.store"
 
   export let tables: GetIndexQuery$result["tables"] = []
   export let bases: GetIndexQuery$result["bases"] = []
@@ -14,7 +15,10 @@
 
   $: tableId = $page.params.tableId
 
-  $: tablesWithoutBase = tables.filter((t) => !t?.baseId)
+  function onCreateBaseTable(id: string) {
+    baseId.set(id)
+    toggleModal(CREATE_TABLE_MODAL)
+  }
 </script>
 
 <nav bind:this={el} class="grid items-start px-2 text-sm font-medium lg:px-4">
@@ -25,29 +29,28 @@
         {#if base}
           <div
             data-base-id={base.id}
-            class="text-muted-foreground group flex items-center justify-between gap-3 px-3 py-2"
+            class="text-muted-foreground group flex items-center justify-between gap-3 px-3 py-2 pr-0"
           >
             <span class="flex items-center gap-3">
               <HardDriveIcon class="h-4 w-4" />
               {base.name}
             </span>
-            <span class="hidden items-center gap-1 group-hover:flex">
-              <EllipsisIcon class="h-4 w-4" />
-              <button on:click={() => toggleModal(CREATE_TABLE_MODAL)}>
+            <span class="hidden items-center gap-2 group-hover:flex">
+              <button type="button">
+                <EllipsisIcon class="h-4 w-4" />
+              </button>
+              <button type="button" on:click={() => onCreateBaseTable(base.id)}>
                 <PlusIcon class="h-4 w-4" />
               </button>
             </span>
           </div>
           {#each baseTables as table}
-            <div class="pl-2">
+            <div class="pl-4">
               <TablesNavItem {table} />
             </div>
           {/each}
         {/if}
       {/each}
     {/if}
-    {#each tablesWithoutBase as table}
-      <TablesNavItem {table} />
-    {/each}
   </Accordion.Root>
 </nav>

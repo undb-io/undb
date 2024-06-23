@@ -1,4 +1,3 @@
-import { container, inject, injectable, singleton } from "@undb/di"
 import { None, Some, applyRules } from "@undb/domain"
 import { createTableDTO, type ICreateTableDTO, type ITableDTO } from "./dto"
 import { TableCreatedEvent } from "./events"
@@ -10,7 +9,7 @@ import { FieldNameShouldBeUnique } from "./modules/schema/rules"
 import { Schema } from "./modules/schema/schema.vo"
 import type { IViewsDTO } from "./modules/views/dto"
 import { Views } from "./modules/views/views.vo"
-import { TableViewsSpecification } from "./specifications"
+import { TableBaseIdSpecification, TableViewsSpecification } from "./specifications"
 import { TableFormsSpecification } from "./specifications/table-forms.specification"
 import { TableIdSpecification } from "./specifications/table-id.specification"
 import { TableNameSpecification } from "./specifications/table-name.specification"
@@ -23,6 +22,7 @@ import { TableDo } from "./table.do"
 export interface ITableBuilder {
   reset(): void
   setId(id?: string): ITableBuilder
+  setBaseId(id: string): ITableBuilder
   setName(name: string): ITableBuilder
   createSchema(dto: ICreateSchemaDTO): ITableBuilder
   setSchema(dto: ISchemaDTO): ITableBuilder
@@ -47,6 +47,11 @@ export class TableBuilder implements ITableBuilder {
 
   setId(id?: string): ITableBuilder {
     new TableIdSpecification(TableIdVo.fromStringOrCreate(id)).mutate(this.table)
+    return this
+  }
+
+  setBaseId(id: string): ITableBuilder {
+    new TableBaseIdSpecification(id).mutate(this.table)
     return this
   }
 
@@ -105,7 +110,13 @@ export class TableCreator {
 
   create(dto: ICreateTableDTO): TableDo {
     dto = createTableDTO.parse(dto)
-    const table = this.builder.setId(dto.id).setName(dto.name).createSchema(dto.schema).createViews().build()
+    const table = this.builder
+      .setId(dto.id)
+      .setBaseId(dto.baseId)
+      .setName(dto.name)
+      .createSchema(dto.schema)
+      .createViews()
+      .build()
 
     applyRules(new FieldNameShouldBeUnique(table.schema))
 
@@ -117,6 +128,7 @@ export class TableCreator {
   fromJSON(dto: ITableDTO): TableDo {
     return this.builder
       .setId(dto.id)
+      .setBaseId(dto.baseId)
       .setName(dto.name)
       .setSchema(dto.schema)
       .setViews(dto.views)

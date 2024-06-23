@@ -1,4 +1,5 @@
 import type { ISpecVisitor } from "@undb/domain"
+import type { TableBaseIdSpecification } from "./table-base-id.specification"
 import type {
   TableFormsSpecification,
   WithFormSpecification,
@@ -27,6 +28,7 @@ import type { TableViewsSpecification } from "./table-views.specification"
 
 export interface ITableSpecVisitor extends ISpecVisitor {
   withId(id: TableIdSpecification): void
+  withBaseId(id: TableBaseIdSpecification): void
   idsIn(ids: TableIdsSpecification): void
   withName(name: TableNameSpecification): void
   withSchema(schema: TableSchemaSpecification): void

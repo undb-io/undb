@@ -1,6 +1,7 @@
 import { WontImplementException, type ISpecification, type ISpecVisitor } from "@undb/domain"
 import type {
   ITableSpecVisitor,
+  TableBaseIdSpecification,
   TableIdSpecification,
   TableIdsSpecification,
   TableNameSpecification,
@@ -55,6 +56,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
     this.#sql.push(...sql)
   }
 
+  withBaseId(id: TableBaseIdSpecification): void {}
   idsIn(ids: TableIdsSpecification): void {}
   withNewView(views: WithNewView): void {}
   withoutView(view: WithoutView): void {}

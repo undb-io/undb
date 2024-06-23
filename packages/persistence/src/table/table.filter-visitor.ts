@@ -1,14 +1,19 @@
 import { WontImplementException } from "@undb/domain"
 import type {
   ITableSpecVisitor,
+  TableBaseIdSpecification,
   TableDo,
+  TableFormsSpecification,
   TableIdSpecification,
   TableIdsSpecification,
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
+  WithFormSpecification,
   WithNewFieldSpecification,
+  WithNewFormSpecification,
   WithNewView,
+  WithTableRLS,
   WithUpdatedFieldSpecification,
   WithView,
   WithViewAggregate,
@@ -19,17 +24,14 @@ import type {
   WithViewSort,
   WithoutView,
 } from "@undb/table"
-import type {
-  TableFormsSpecification,
-  WithFormSpecification,
-  WithNewFormSpecification,
-} from "@undb/table/src/specifications/table-forms.specification"
-import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
 import { eq, inArray } from "drizzle-orm"
 import { AbstractDBFilterVisitor } from "../abstract-db.visitor"
 import { tables } from "../tables"
 
 export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> implements ITableSpecVisitor {
+  withBaseId(id: TableBaseIdSpecification): void {
+    this.addCond(eq(tables.baseId, id.baseId))
+  }
   withNewView(views: WithNewView): void {
     throw new Error("Method not implemented.")
   }

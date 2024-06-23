@@ -27,7 +27,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   public id!: TableId
   public name!: TableNameVo
 
-  public baseId: Option<string> = None
+  public baseId!: string
 
   public schema!: Schema
   public views!: Views
@@ -113,6 +113,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
     return {
       id: this.id.value,
       name: this.name.value,
+      baseId: this.baseId,
       schema: this.schema.toJSON(),
       views: this.views.toJSON(),
       rls: this.rls.into(undefined)?.toJSON(),

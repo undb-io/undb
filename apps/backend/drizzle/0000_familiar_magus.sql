@@ -38,6 +38,7 @@ CREATE TABLE `undb_session` (
 CREATE TABLE `undb_table` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
+	`base_id` text NOT NULL,
 	`schema` text,
 	`views` text,
 	`forms` text,
@@ -46,6 +47,7 @@ CREATE TABLE `undb_table` (
 	`created_by` text NOT NULL,
 	`updated_at` text NOT NULL,
 	`updated_by` text NOT NULL,
+	FOREIGN KEY (`base_id`) REFERENCES `undb_base`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`created_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action,
 	FOREIGN KEY (`updated_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action
 );
@@ -80,6 +82,7 @@ CREATE TABLE `undb_workspace_member` (
 --> statement-breakpoint
 CREATE INDEX `audit_table_id_idx` ON `undb_audit` (`table_id`);--> statement-breakpoint
 CREATE INDEX `audit_record_id_idx` ON `undb_audit` (`record_id`);--> statement-breakpoint
+CREATE INDEX `table_base_id_idx` ON `undb_table` (`base_id`);--> statement-breakpoint
 CREATE UNIQUE INDEX `undb_user_email_unique` ON `undb_user` (`email`);--> statement-breakpoint
 CREATE INDEX `user_username_idx` ON `undb_user` (`username`);--> statement-breakpoint
 CREATE INDEX `user_email_idx` ON `undb_user` (`email`);--> statement-breakpoint

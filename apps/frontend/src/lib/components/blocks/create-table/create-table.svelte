@@ -12,6 +12,9 @@
   import { goto } from "$app/navigation"
   import { FieldIdVo, getNextName } from "@undb/table"
   import { CREATE_TABLE_MODAL, closeModal } from "$lib/store/modal.store"
+  import { baseId } from "$lib/store/base.store"
+
+  const schema = createTableCommand.omit({ baseId: true })
 
   const mutation = createMutation({
     mutationFn: trpc.table.create.mutate,
@@ -19,6 +22,7 @@
       await invalidate("undb:tables")
       await goto(`/t/${data}`)
       closeModal(CREATE_TABLE_MODAL)
+      baseId.set(null)
       form.reset()
     },
     onError(error) {
@@ -40,18 +44,22 @@
           },
         ],
       },
-      zodClient(createTableCommand),
+      zodClient(schema),
     ),
     {
       SPA: true,
       dataType: "json",
-      validators: zodClient(createTableCommand),
+      validators: zodClient(schema),
       resetForm: false,
       invalidateAll: true,
       onUpdate(event) {
         if (!event.form.valid) return
+        if (!$baseId) return
 
-        $mutation.mutate(event.form.data)
+        $mutation.mutate({
+          ...event.form.data,
+          baseId: $baseId,
+        })
       },
     },
   )
