@@ -1,4 +1,5 @@
 import { GetAggregatesQueryHandler } from "./get-aggregates.query-handler"
+import { GetBasesQueryHandler } from "./get-bases.query-handler"
 import { GetReadableRecordByIdHandler } from "./get-readable-record-by-id.query-handler"
 import { GetReadableRecordsHandler } from "./get-readable-records.query-handler"
 import { GetRecordAuditsQueryHandler } from "./get-record-audits.query-handler"
@@ -18,4 +19,5 @@ export const queryHandlers = [
   GetReadableRecordByIdHandler,
   GetWebhooksQueryHandler,
   GetRecordAuditsQueryHandler,
+  GetBasesQueryHandler,
 ]

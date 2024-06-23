@@ -8,6 +8,11 @@ type Audit {
   timestamp: String!
 }
 
+type Base {
+  id: ID!
+  name: String!
+}
+
 type Field {
   constraint: JSON
   defaultValue: JSON
@@ -42,10 +47,11 @@ type Form {
 scalar JSON
 
 type Query {
+  bases: [Base]
   member: WorkspaceMember
   recordAudits(recordId: ID!): [Audit]
   table(id: ID!): Table
-  tables: [Table!]
+  tables: [Table]!
 }
 
 type RLS {
@@ -67,6 +73,7 @@ enum RLSAction {
 }
 
 type Table {
+  baseId: String
   forms: [Form]
   id: ID!
   name: String!

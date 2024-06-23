@@ -2,6 +2,7 @@ query GetIndexQuery {
   tables {
     id
     name
+    baseId
 
     views {
       id
@@ -11,6 +12,11 @@ query GetIndexQuery {
     }
 
     recordsCount
+  }
+
+  bases {
+    id
+    name
   }
 
   member {
