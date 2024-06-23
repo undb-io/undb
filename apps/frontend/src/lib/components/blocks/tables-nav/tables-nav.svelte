@@ -26,10 +26,13 @@
     {#if bases}
       {#each bases as base}
         {@const baseTables = tables.filter((t) => t?.baseId === base?.id)}
+        {@const active = base?.id === $page.params.baseId}
         {#if base}
-          <div
+          <a
+            href={`/bases/${base.id}`}
+            data-active={active}
             data-base-id={base.id}
-            class="text-muted-foreground group flex items-center justify-between gap-3 px-3 py-2 pr-0"
+            class="text-muted-foreground data-[active=true]:bg-muted data-[active=true]:text-muted-foreground group flex items-center justify-between gap-3 px-3 py-2 pr-0"
           >
             <span class="flex items-center gap-3">
               <HardDriveIcon class="h-4 w-4" />
@@ -43,7 +46,7 @@
                 <PlusIcon class="h-4 w-4" />
               </button>
             </span>
-          </div>
+          </a>
           {#each baseTables as table}
             <div class="pl-4">
               <TablesNavItem {table} />

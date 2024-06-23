@@ -5,7 +5,7 @@ import { baseTable } from "../tables"
 
 export class BaseFilterVisitor extends AbstractDBFilterVisitor<Base> implements IBaseSpecVisitor {
   withId(v: WithBaseId): void {
-    this.addCond(eq(baseTable.name, v.id.value))
+    this.addCond(eq(baseTable.id, v.id.value))
   }
   withName(v: WithBaseName): void {
     this.addCond(eq(baseTable.name, v.name.value))

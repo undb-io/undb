@@ -20,6 +20,7 @@
     DatabaseIcon,
     FingerprintIcon,
     FormInputIcon,
+    HardDriveIcon,
     Package2,
     PencilIcon,
     PlusCircleIcon,
@@ -36,8 +37,10 @@
   import { derived } from "svelte/store"
   import { page } from "$app/stores"
   import { DELETE_VIEW, DUPLICATE_VIEW, UPDATE_VIEW, toggleModal } from "$lib/store/modal.store"
+  import { getBaseById } from "$lib/store/base.store"
 
   const table = getTable()
+  $: base = $getBaseById($table.baseId)
 
   $: viewId = derived([page], ([$page]) => {
     return $page.params.viewId
@@ -109,6 +112,15 @@
     <div class="relative flex items-center gap-4">
       <Breadcrumb.Root>
         <Breadcrumb.List>
+          {#if base}
+            <Breadcrumb.Item>
+              <Breadcrumb.Link class="flex items-center gap-2" href={`/bases/${$table.baseId}`}>
+                <HardDriveIcon class="h-3 w-3" />
+                {base.name}
+              </Breadcrumb.Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Separator />
+          {/if}
           <Breadcrumb.Item>
             <Breadcrumb.Link class="flex items-center gap-2" href={`/t/${$table.id.value}`}>
               <DatabaseIcon class="h-3 w-3" />

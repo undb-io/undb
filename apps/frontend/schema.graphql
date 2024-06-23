@@ -11,6 +11,7 @@ type Audit {
 type Base {
   id: ID!
   name: String!
+  tables: [Table]!
 }
 
 type Field {
@@ -47,6 +48,7 @@ type Form {
 scalar JSON
 
 type Query {
+  base(id: ID!): Base!
   bases: [Base]
   member: WorkspaceMember
   recordAudits(recordId: ID!): [Audit]

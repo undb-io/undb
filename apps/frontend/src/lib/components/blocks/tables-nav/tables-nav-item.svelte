@@ -20,6 +20,7 @@
       <a
         href={`/t/${table.id}`}
         data-active={active}
+        data-table-id={table.id}
         class="text-muted-foreground hover:text-primary data-[active=true]:bg-muted data-[active=true]:text-muted-foreground flex w-full items-center gap-3 rounded-lg px-3 py-2 transition-all"
       >
         <Database class="h-4 w-4" />

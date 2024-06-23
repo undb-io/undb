@@ -2,6 +2,7 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
   table(id: $tableId) {
     id
     name
+    baseId
     schema {
       id
       name

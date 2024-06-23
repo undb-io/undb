@@ -48,7 +48,7 @@
 
   $: role.set(member?.role ?? null)
 
-  $: if (tables && tables?.length !== 0 && !$page.params.tableId) {
+  $: if (tables && tables?.length !== 0 && !$page.params.tableId && $page.route.id !== "/(authed)/bases/[baseId]") {
     goto(`/t/${tables[0]?.id}`, { replaceState: true })
   }
 </script>

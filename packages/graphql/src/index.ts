@@ -2,7 +2,15 @@ import { yoga } from "@elysiajs/graphql-yoga"
 import { executionContext } from "@undb/context/server"
 import { QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
-import { GetAggregatesQuery, GetBasesQuery, GetRecordAuditsQuery, GetTableQuery, GetTablesQuery } from "@undb/queries"
+import {
+  GetAggregatesQuery,
+  GetBaseQuery,
+  GetBasesQuery,
+  GetRecordAuditsQuery,
+  GetTableQuery,
+  GetTablesByBaseIdQuery,
+  GetTablesQuery,
+} from "@undb/queries"
 import { TableIdVo, injectRecordQueryRepository, type IRecordQueryRepository } from "@undb/table"
 
 @singleton()
@@ -132,6 +140,8 @@ export class Graphql {
       type Base {
         id: ID!
         name: String!
+
+        tables: [Table]!
       }
 
       type Query {
@@ -141,6 +151,7 @@ export class Graphql {
         table(id: ID!): Table
 
         bases: [Base]
+        base(id: ID!): Base!
 
         recordAudits(recordId: ID!): [Audit]
       }
@@ -164,9 +175,19 @@ export class Graphql {
           bases: async () => {
             return this.queryBus.execute(new GetBasesQuery())
           },
+          base: async (_, { id }) => {
+            const base = await this.queryBus.execute(new GetBaseQuery({ baseId: id }))
+            return base
+          },
           recordAudits: async (_, { recordId }) => {
             const { audits } = await this.queryBus.execute(new GetRecordAuditsQuery({ recordId }))
             return audits
+          },
+        },
+        Base: {
+          // @ts-ignore
+          tables: async (base) => {
+            return this.queryBus.execute(new GetTablesByBaseIdQuery({ baseId: base.id }))
           },
         },
         Table: {
