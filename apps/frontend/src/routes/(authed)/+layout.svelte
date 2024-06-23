@@ -13,9 +13,10 @@
   import { CREATE_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
   import Command from "$lib/components/blocks/command/command.svelte"
   import { role } from "$lib/store/workspace-member.store"
-  import { bases as basesStore } from "$lib/store/base.store"
+  import { baseId, bases as basesStore } from "$lib/store/base.store"
   import NavTools from "$lib/components/blocks/nav/nav-tools.svelte"
   import CreateBaseDialog from "$lib/components/blocks/create-base/create-base-dialog.svelte"
+  import { getTable } from "$lib/store/table.store"
 
   export let data: LayoutData
 
