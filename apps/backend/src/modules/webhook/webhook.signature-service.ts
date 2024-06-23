@@ -1,6 +1,5 @@
 import { singleton } from "@undb/di"
-import { IWebhookSignService } from "@undb/webhook"
-import { IWebhookMessageBody } from "@undb/webhook/src/webhook.message"
+import { IWebhookMessageBody, IWebhookSignService } from "@undb/webhook"
 
 @singleton()
 export class WebhookSignatureService implements IWebhookSignService {
