@@ -53,7 +53,6 @@ const app = new Elysia()
   .use(cors())
   .use(html())
   .derive(auth.store())
-  // .use(requestID())
   .onBeforeHandle((ctx) => {
     const requestId = ctx.headers["X-Request-ID"] ?? v4()
 
