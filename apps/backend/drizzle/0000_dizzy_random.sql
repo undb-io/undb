@@ -8,6 +8,17 @@ CREATE TABLE `undb_audit` (
 	`operator_id` text NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE `undb_base` (
+	`id` text PRIMARY KEY NOT NULL,
+	`name` text NOT NULL,
+	`created_at` text DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
+	`created_by` text NOT NULL,
+	`updated_at` text NOT NULL,
+	`updated_by` text NOT NULL,
+	FOREIGN KEY (`created_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`updated_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
 CREATE TABLE `undb_outbox` (
 	`id` text PRIMARY KEY NOT NULL,
 	`payload` text NOT NULL,

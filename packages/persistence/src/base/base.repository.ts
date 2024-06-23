@@ -1,4 +1,5 @@
 import type { Base, IBaseRepository, IBaseSpecification } from "@undb/base"
+import { executionContext } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import type { IUnitOfWork, Option } from "@undb/domain"
 import type { Database } from "../db"
@@ -25,9 +26,10 @@ export class BaseRepository implements IBaseRepository {
     throw new Error("Method not implemented.")
   }
   async insert(base: Base): Promise<void> {
+    const user = executionContext.getStore()?.user?.userId!
     const values = this.mapper.toEntity(base)
 
-    await this.db.insert(baseTable).values(values)
+    await this.db.insert(baseTable).values({ ...values, createdBy: user, updatedBy: user })
   }
   updateOneById(id: string, spec: IBaseSpecification): Promise<void> {
     throw new Error("Method not implemented.")
