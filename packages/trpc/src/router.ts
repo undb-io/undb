@@ -18,6 +18,7 @@ import {
   SetViewFilterCommand,
   SetViewOptionCommand,
   SetViewSortCommand,
+  UpdateBaseCommand,
   UpdateRecordCommand,
   UpdateTableFieldCommand,
   UpdateViewCommand,
@@ -41,6 +42,7 @@ import {
   setViewFilterCommand,
   setViewOptionCommand,
   setViewSortCommand,
+  updateBaseCommand,
   updateRecordCommand,
   updateTableFieldCommand,
   updateViewCommand,
@@ -166,6 +168,10 @@ const baseRouter = t.router({
     .use(authz("base:create"))
     .input(createBaseCommand)
     .mutation(({ input }) => commandBus.execute(new CreateBaseCommand(input))),
+  update: p
+    .use(authz("base:update"))
+    .input(updateBaseCommand)
+    .mutation(({ input }) => commandBus.execute(new UpdateBaseCommand(input))),
 })
 
 export const route = t.router({

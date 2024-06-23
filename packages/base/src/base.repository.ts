@@ -9,7 +9,7 @@ export interface IBaseRepository {
   findOneById(id: string): Promise<Option<Base>>
 
   insert(base: Base): Promise<void>
-  updateOneById(id: string, spec: IBaseSpecification): Promise<void>
+  updateOneById(base: Base, spec: IBaseSpecification): Promise<void>
   deleteOneById(id: string): Promise<void>
 }
 

@@ -1,4 +1,4 @@
-import { CreateBaseCommandHandler } from "./create-base.command-handler«"
+import { CreateBaseCommandHandler } from "./create-base.command-handler"
 import { CreateRecordCommandHandler } from "./create-record.command-handler"
 import { CreateTableFieldCommandHandler } from "./create-table-field.command-handler"
 import { CreateTableFormCommandHandler } from "./create-table-form.command-handler"
@@ -17,6 +17,7 @@ import { SetViewFieldsCommandHandler } from "./set-view-fields.command-handler"
 import { SetViewFilterCommandHandler } from "./set-view-filter.command-handler"
 import { SetViewOptionCommandHandler } from "./set-view-option.command-handler"
 import { SetViewSortCommandHandler } from "./set-view-sort.command-handler"
+import { UpdateBaseCommandHandler } from "./update-base.command-handler"
 import { UpdateRecordCommandHandler } from "./update-record.command-handler"
 import { UpdateTableFieldCommandHandler } from "./update-table-field.command-handler"
 import { UpdateViewCommandHandler } from "./update-view.command-handler"
@@ -46,4 +47,5 @@ export const commandHandlers = [
   DuplicateViewCommandHandler,
   DeleteViewCommandHandler,
   CreateBaseCommandHandler,
+  UpdateBaseCommandHandler,
 ]

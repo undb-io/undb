@@ -1,5 +1,6 @@
 export * from "./base.factory.js"
 export * from "./base.js"
+export * from "./base.outbox.js"
 export * from "./base.repository.js"
 export * from "./dto/index.js"
 export * from "./interface.js"
