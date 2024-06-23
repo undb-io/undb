@@ -1,9 +1,6 @@
 <script lang="ts">
-  import Bell from "lucide-svelte/icons/bell"
-  import Package2 from "lucide-svelte/icons/package-2"
   import * as Resizable from "$lib/components/ui/resizable"
   import { type PaneAPI } from "paneforge"
-  import { Button } from "$lib/components/ui/button/index.js"
   import CreateTableButton from "$lib/components/blocks/create-table/create-table-button.svelte"
   import TablesNav from "$lib/components/blocks/tables-nav/tables-nav.svelte"
   import type { LayoutData } from "./$types"
@@ -15,9 +12,6 @@
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.js"
   import { CREATE_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
   import Command from "$lib/components/blocks/command/command.svelte"
-  import { commandOpen } from "$lib/components/blocks/command/command.store"
-  import { SearchIcon } from "lucide-svelte"
-  import { workspaceMember } from "@undb/authz"
   import { role } from "$lib/store/workspace-member.store"
   import NavTools from "$lib/components/blocks/nav/nav-tools.svelte"
   import CreateBaseDialog from "$lib/components/blocks/create-base/create-base-dialog.svelte"
@@ -39,15 +33,16 @@
     }
   }
 
-  $: authedDataStore = data.authedDataStore
-  $: tables = $authedDataStore.data?.tables?.filter(Boolean) ?? []
+  $: indexDataStore = data.indexDataStore
+  $: tables = $indexDataStore.data?.tables?.filter(Boolean) ?? []
+  $: bases = $indexDataStore.data?.bases?.filter(Boolean) ?? []
 
-  $: member = $authedDataStore.data?.member
+  $: member = $indexDataStore.data?.member
 
   $: role.set(member?.role ?? null)
 
   $: if (tables && tables?.length !== 0 && !$page.params.tableId) {
-    goto(`/t/${tables[0].id}`, { replaceState: true })
+    goto(`/t/${tables[0]?.id}`, { replaceState: true })
   }
 </script>
 
@@ -66,7 +61,7 @@
         <NavTools />
       </div>
       <ScrollArea class={cn(tables.length ? "flex-1" : "")}>
-        <TablesNav {tables} />
+        <TablesNav {tables} {bases} />
       </ScrollArea>
       <div class={cn("p-4", tables.length ? "mt-auto" : "")}>
         <CreateTableButton variant={tables.length ? "outline" : "default"} />

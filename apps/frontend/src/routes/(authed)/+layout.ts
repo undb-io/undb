@@ -12,10 +12,10 @@ export const load: LayoutLoad = async (event) => {
 
   event.depends("undb:tables")
 
-  const authedDataStore = new GetIndexQueryStore()
-  await authedDataStore.fetch({ event, policy: "NetworkOnly" })
+  const indexDataStore = new GetIndexQueryStore()
+  await indexDataStore.fetch({ event, policy: "NetworkOnly" })
 
   return {
-    authedDataStore,
+    indexDataStore,
   }
 }
