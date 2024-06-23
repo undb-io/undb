@@ -10,6 +10,11 @@ const config = {
       static: true,
     },
   },
+  scalars: {
+    JSON: {
+      type: "object",
+    },
+  },
 }
 
 export default config

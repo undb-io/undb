@@ -1,5 +1,5 @@
 {
-  "name": "@undb/logger",
+  "name": "@undb/env",
   "module": "src/index.ts",
   "types": "src/index.d.ts",
   "type": "module",
@@ -10,8 +10,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@undb/env": "workspace:*",
-    "pino": "^9.2.0",
-    "pino-pretty": "^11.2.1"
+    "@t3-oss/env-core": "^0.10.1",
+    "@undb/zod": "workspace:*"
   }
 }
