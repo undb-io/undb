@@ -128,3 +128,23 @@ export const workspaceMember = sqliteTable("workspace_member", {
 
 export type WorkspaceMember = typeof workspaceMember.$inferSelect
 export type NewWorkspaceMember = typeof workspaceMember.$inferInsert
+
+export const baseTable = sqliteTable("base", {
+  id: text("id").notNull().primaryKey(),
+  name: text("name").notNull(),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`(CURRENT_TIMESTAMP)`),
+  createdBy: text("created_by")
+    .notNull()
+    .references(() => users.id),
+  updateAt: text("updated_at")
+    .notNull()
+    .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
+  updatedBy: text("updated_by")
+    .notNull()
+    .references(() => users.id),
+})
+
+export type Base = typeof baseTable.$inferSelect
+export type NewBase = typeof baseTable.$inferInsert

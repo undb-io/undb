@@ -11,6 +11,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@undb/base": "workspace:*",
     "@undb/context": "workspace:*",
     "@undb/di": "workspace:*",
     "@undb/domain": "workspace:*",

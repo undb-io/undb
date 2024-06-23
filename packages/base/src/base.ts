@@ -1,7 +1,7 @@
 import { and } from "@undb/domain"
 import type { Option } from "oxide.ts"
 import type { IUpdateBaseSchema } from "./base.schema.js"
-import type { BaseSpecification } from "./interface.js"
+import type { IBaseSpecification } from "./interface.js"
 import { WithBaseName } from "./specifications/base-name.specification.js"
 import type { BaseId, BaseName } from "./value-objects/index.js"
 
@@ -13,8 +13,8 @@ export class Base {
     return new this()
   }
 
-  public update(schema: IUpdateBaseSchema): Option<BaseSpecification> {
-    const specs: BaseSpecification[] = []
+  public update(schema: IUpdateBaseSchema): Option<IBaseSpecification> {
+    const specs: IBaseSpecification[] = []
 
     if (schema.name) {
       specs.push(WithBaseName.fromString(schema.name))

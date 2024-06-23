@@ -10,4 +10,4 @@ export interface IBaseSpecVisitor extends ISpecVisitor {
   withQ(v: WithBaseQ): void
 }
 
-export type BaseSpecification = CompositeSpecification<Base, IBaseSpecVisitor>
+export type IBaseSpecification = CompositeSpecification<Base, IBaseSpecVisitor>
