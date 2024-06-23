@@ -10,7 +10,7 @@ import { trpc } from "@elysiajs/trpc"
 import { AuditEventHandler } from "@undb/audit"
 import { executionContext } from "@undb/context/server"
 import { container } from "@undb/di"
-import { graphql } from "@undb/graphql"
+import { Graphql } from "@undb/graphql"
 import { PubSubContext } from "@undb/realtime"
 import { IRecordEvent } from "@undb/table"
 import { route } from "@undb/trpc"
@@ -18,13 +18,10 @@ import { WebhookEventsHandler } from "@undb/webhook"
 import { Elysia } from "elysia"
 import { all } from "radash"
 import { v4 } from "uuid"
-import { OpenAPI } from "./modules"
+import { Auth, OpenAPI, Realtime, Web } from "./modules"
 import { loggerPlugin } from "./plugins/logging"
-import { AuthRoute } from "./routes/auth.route"
-import { RealtimeRoute } from "./routes/realtime.route"
-import { web } from "./routes/web.route"
 
-const auth = container.resolve(AuthRoute)
+const auth = container.resolve(Auth)
 
 const app = new Elysia()
   .trace(async ({ handle, set }) => {
@@ -78,8 +75,10 @@ const app = new Elysia()
     },
     (app) => {
       const openapi = container.resolve(OpenAPI)
-      const realtime = container.resolve(RealtimeRoute)
-      return app.use(trpc(route)).use(graphql().route()).use(web()).use(openapi.route()).use(realtime.route())
+      const realtime = container.resolve(Realtime)
+      const graphql = container.resolve(Graphql)
+      const web = container.resolve(Web)
+      return app.use(trpc(route)).use(graphql.route()).use(web.route()).use(openapi.route()).use(realtime.route())
     },
   )
 

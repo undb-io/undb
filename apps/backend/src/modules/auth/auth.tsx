@@ -42,7 +42,7 @@ declare module "lucia" {
 }
 
 @singleton()
-export class AuthRoute {
+export class Auth {
   constructor(
     @inject(WorkspaceMemberService)
     private workspaceMemberService: IWorkspaceMemberService,

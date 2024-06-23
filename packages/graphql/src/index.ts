@@ -1,7 +1,7 @@
 import { yoga } from "@elysiajs/graphql-yoga"
 import { executionContext } from "@undb/context/server"
 import { QueryBus } from "@undb/cqrs"
-import { container, inject, singleton } from "@undb/di"
+import { inject, singleton } from "@undb/di"
 import { GetAggregatesQuery, GetRecordAuditsQuery, GetTableQuery, GetTablesQuery } from "@undb/queries"
 import { TableIdVo, injectRecordQueryRepository, type IRecordQueryRepository } from "@undb/table"
 
@@ -173,5 +173,3 @@ export class Graphql {
     })
   }
 }
-
-export const graphql = () => container.resolve(Graphql)

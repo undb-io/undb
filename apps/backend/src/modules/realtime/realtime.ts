@@ -6,7 +6,7 @@ import { PubSubContext, ReplyService, RxJSPubSub } from "@undb/realtime"
 import Elysia, { t } from "elysia"
 
 @singleton()
-export class RealtimeRoute {
+export class Realtime {
   constructor(
     @inject(PubSubContext)
     private readonly pubsub: PubSubContext<BaseEvent>,
