@@ -13,6 +13,7 @@
   import { FieldIdVo, getNextName } from "@undb/table"
   import { CREATE_TABLE_MODAL, closeModal } from "$lib/store/modal.store"
   import { baseId, currentBase } from "$lib/store/base.store"
+  import { getTable } from "$lib/store/table.store"
 
   const schema = createTableCommand.omit({ baseId: true })
 
@@ -54,12 +55,12 @@
       invalidateAll: true,
       onUpdate(event) {
         if (!event.form.valid) return
-        const base = $currentBase
-        if (!base) return
+        const baseId = $currentBase?.id
+        if (!baseId) return
 
         $mutation.mutate({
           ...event.form.data,
-          baseId: base.id,
+          baseId: baseId,
         })
       },
     },

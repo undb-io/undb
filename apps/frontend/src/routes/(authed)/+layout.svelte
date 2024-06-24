@@ -1,7 +1,6 @@
 <script lang="ts">
   import * as Resizable from "$lib/components/ui/resizable"
   import { type PaneAPI } from "paneforge"
-  import CreateTableButton from "$lib/components/blocks/create-table/create-table-button.svelte"
   import TablesNav from "$lib/components/blocks/tables-nav/tables-nav.svelte"
   import type { LayoutData } from "./$types"
   import CreateTableSheet from "$lib/components/blocks/create-table/create-table-sheet.svelte"
@@ -71,9 +70,6 @@
       <ScrollArea class={cn(tables.length ? "flex-1" : "")}>
         <TablesNav {tables} {bases} />
       </ScrollArea>
-      <div class={cn("p-4", tables.length ? "mt-auto" : "")}>
-        <CreateTableButton variant={tables.length ? "outline" : "default"} />
-      </div>
     </div>
   </Resizable.Pane>
   <Resizable.Handle />

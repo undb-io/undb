@@ -28,25 +28,32 @@
         {@const baseTables = tables.filter((t) => t?.baseId === base?.id)}
         {@const active = base?.id === $page.params.baseId}
         {#if base}
-          <a
-            href={`/bases/${base.id}`}
+          <div
             data-active={active}
             data-base-id={base.id}
-            class="text-muted-foreground data-[active=true]:bg-muted data-[active=true]:text-muted-foreground group flex items-center justify-between gap-3 px-3 py-2 pr-0"
+            class="text-muted-foreground data-[active=true]:bg-muted data-[active=true]:text-muted-foreground group flex items-center justify-between gap-3 px-3 py-2"
           >
-            <span class="flex items-center gap-3">
-              <HardDriveIcon class="h-4 w-4" />
-              {base.name}
-            </span>
+            <a class="flex" href={`/bases/${base.id}`}>
+              <span class="flex items-center gap-3">
+                <HardDriveIcon class="h-4 w-4" />
+                {base.name}
+              </span>
+            </a>
             <span class="hidden items-center gap-2 group-hover:flex">
               <button type="button">
                 <EllipsisIcon class="h-4 w-4" />
               </button>
-              <button type="button" on:click={() => onCreateBaseTable(base.id)}>
+              <button
+                type="button"
+                on:click={(e) => {
+                  // e.stopPropagation()
+                  onCreateBaseTable(base.id)
+                }}
+              >
                 <PlusIcon class="h-4 w-4" />
               </button>
             </span>
-          </a>
+          </div>
           {#each baseTables as table}
             <div class="pl-4">
               <TablesNavItem {table} />

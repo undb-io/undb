@@ -15,9 +15,12 @@ export async function createReferenceField(
   table: TableDo,
   field: ICreateReferenceFieldDTO,
 ): Promise<{ table: TableDo; spec: Option<TableComositeSpecification> }[]> {
-  const foreignTable = (await this.repository.findOneById(new TableIdVo(field.option.foreignTableId))).expect(
-    "not found foreign table",
-  )
+  const foreignTable =
+    field.option.foreignTableId === table.id.value
+      ? table
+      : (await this.repository.findOneById(new TableIdVo(field.option.foreignTableId))).expect(
+          "not found foreign table",
+        )
 
   const referenceField = ReferenceField.create(field)
   const symmetricField = ReferenceField.createSymmetricField(table, foreignTable, referenceField)
@@ -25,6 +28,13 @@ export async function createReferenceField(
 
   const spec = table.$createFieldSpec(referenceField)
   const foreignSpec = foreignTable.$createFieldSpec(symmetricField)
+
+  if (spec.isSome()) {
+    spec.unwrap().mutate(table)
+  }
+  if (foreignSpec.isSome()) {
+    foreignSpec.unwrap().mutate(foreignTable)
+  }
 
   return [
     { table, spec },

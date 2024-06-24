@@ -12,7 +12,6 @@ import {
   type TableId,
 } from "@undb/table"
 import { eq } from "drizzle-orm"
-import { all } from "radash"
 import type { Database } from "../db"
 import { injectDb } from "../db.provider"
 import { tables } from "../tables"
@@ -77,7 +76,9 @@ export class TableRepository implements ITableRepository {
 
   @transactional()
   async bulkUpdate(updates: { table: TableDo; spec: Option<TableComositeSpecification> }[]): Promise<void> {
-    await all(updates.map((update) => this.#updateOneById(update.table, update.spec)))
+    for (const update of updates) {
+      await this.#updateOneById(update.table, update.spec)
+    }
   }
 
   async findOneById(id: TableId): Promise<Option<TableDo>> {
