@@ -5,6 +5,7 @@ import { createdAtFieldDTO } from "../variants/created-at-field"
 import { createdByFieldDTO } from "../variants/created-by-field"
 import { idFieldDTO } from "../variants/id-field/id-field.vo"
 import { createNumberFieldDTO, numberFieldDTO } from "../variants/number-field/number-field.vo"
+import { ratingFieldDTO } from "../variants/rating-field"
 import { createStringFieldDTO, stringFieldDTO } from "../variants/string-field/string-field.vo"
 import { updatedAtFieldDTO } from "../variants/updated-at-field/updated-at-field.vo"
 
@@ -20,6 +21,7 @@ export const fieldDTO = z.discriminatedUnion("type", [
   referenceFieldDTO,
   rollupFieldDTO,
   selectFieldDTO,
+  ratingFieldDTO,
 ])
 
 export type IFieldDTO = z.infer<typeof fieldDTO>

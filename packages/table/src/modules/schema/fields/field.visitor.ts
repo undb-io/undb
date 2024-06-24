@@ -3,6 +3,7 @@ import type { CreatedAtField } from "./variants/created-at-field"
 import type { CreatedByField } from "./variants/created-by-field"
 import type { IdField } from "./variants/id-field/id-field.vo"
 import type { NumberField } from "./variants/number-field/number-field.vo"
+import type { RatingField } from "./variants/rating-field"
 import type { ReferenceField } from "./variants/reference-field/reference-field.vo"
 import type { RollupField } from "./variants/rollup-field"
 import type { SelectField } from "./variants/select-field"
@@ -19,6 +20,7 @@ export interface IFieldVisitor {
   updatedBy(field: UpdatedByField): void
   string(field: StringField): void
   number(field: NumberField): void
+  rating(field: RatingField): void
   select(field: SelectField): void
 
   reference(field: ReferenceField): void

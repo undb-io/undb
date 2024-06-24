@@ -1,5 +1,6 @@
 import { z } from "@undb/zod"
 import { createNumberFieldDTO } from "../variants/number-field/number-field.vo"
+import { createRatingFieldDTO } from "../variants/rating-field"
 import { createReferenceFieldDTO } from "../variants/reference-field/reference-field.vo"
 import { createRollupFieldDTO } from "../variants/rollup-field/rollup-field.vo"
 import { createSelectFieldDTO } from "../variants/select-field/select-field.vo"
@@ -11,6 +12,7 @@ export const createFieldDTO = z.discriminatedUnion("type", [
   createReferenceFieldDTO,
   createRollupFieldDTO,
   createSelectFieldDTO,
+  createRatingFieldDTO,
 ])
 
 export type ICreateFieldDTO = z.infer<typeof createFieldDTO>

@@ -44,6 +44,13 @@ import type { INumberFieldConstraint } from "./variants/number-field/number-fiel
 import type { NumberFieldValue } from "./variants/number-field/number-field-value.vo"
 import type { NUMBER_TYPE, NumberField } from "./variants/number-field/number-field.vo"
 import type {
+  IRatingFieldConditionSchema,
+  IRatingFieldConstraint,
+  RATING_TYPE,
+  RatingField,
+  RatingFieldValue,
+} from "./variants/rating-field"
+import type {
   ISelectFieldConditionSchema,
   ISelectFieldConstraint,
   ISelectFieldOption,
@@ -66,6 +73,7 @@ export type Field =
   | ReferenceField
   | RollupField
   | SelectField
+  | RatingField
 
 export type NoneSystemField = Field & { isSystem: false }
 export type SystemField = Field & { isSystem: true }
@@ -82,8 +90,14 @@ export type FieldValue =
   | ReferenceFieldValue
   | RollupFieldValue
   | SelectFieldValue
+  | RatingFieldValue
 
-export type MutableFieldValue = StringFieldValue | NumberFieldValue | ReferenceFieldValue | SelectField
+export type MutableFieldValue =
+  | StringFieldValue
+  | NumberFieldValue
+  | ReferenceFieldValue
+  | SelectFieldValue
+  | RatingFieldValue
 
 export type FieldType =
   | typeof STRING_TYPE
@@ -97,6 +111,7 @@ export type FieldType =
   | typeof REFERENCE_TYPE
   | typeof ROLLUP_TYPE
   | typeof SELECT_TYPE
+  | typeof RATING_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
@@ -119,6 +134,7 @@ export type IFieldConditionSchema =
   | IAutoIncrementFieldConditionSchema
   | IRollupFieldConditionSchema
   | ISelectFieldConditionSchema
+  | IRatingFieldConditionSchema
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
 
@@ -127,5 +143,6 @@ export type IFieldConstraint =
   | INumberFieldConstraint
   | IReferenceFieldConstraint
   | ISelectFieldConstraint
+  | IRatingFieldConstraint
 
 export type IFieldOption = IReferenceFieldOption | IRollupFieldOption | ISelectFieldOption

@@ -7,6 +7,7 @@ import { CreatedAtField } from "./variants/created-at-field"
 import { CreatedByField } from "./variants/created-by-field"
 import { IdField } from "./variants/id-field"
 import { NumberField } from "./variants/number-field/number-field.vo"
+import { RatingField } from "./variants/rating-field"
 import { ReferenceField } from "./variants/reference-field/reference-field.vo"
 import { RollupField } from "./variants/rollup-field/rollup-field.vo"
 import { SelectField } from "./variants/select-field/select-field.vo"
@@ -19,6 +20,7 @@ export class FieldFactory {
     return match(dto)
       .with({ type: "string" }, (dto) => new StringField(dto))
       .with({ type: "number" }, (dto) => new NumberField(dto))
+      .with({ type: "rating" }, (dto) => new RatingField(dto))
       .with({ type: "id" }, (dto) => new IdField(dto))
       .with({ type: "createdAt" }, (dto) => new CreatedAtField(dto))
       .with({ type: "createdBy" }, (dto) => new CreatedByField(dto))
@@ -35,6 +37,7 @@ export class FieldFactory {
     return match(dto)
       .with({ type: "string" }, (dto) => StringField.create(dto))
       .with({ type: "number" }, (dto) => NumberField.create(dto))
+      .with({ type: "rating" }, (dto) => RatingField.create(dto))
       .with({ type: "reference" }, (dto) => ReferenceField.create(dto))
       .with({ type: "rollup" }, (dto) => RollupField.create(dto))
       .with({ type: "select" }, (dto) => SelectField.create(dto))

@@ -20,6 +20,7 @@ const sortableFieldTypes: FieldType[] = [
   "createdBy",
   "rollup",
   "select",
+  "rating",
 ] as const
 
 export function isFieldSortable(type: FieldType): boolean {
@@ -31,7 +32,14 @@ export function getIsSystemFieldType(type: FieldType): type is SystemFieldType {
   return systemFieldTyeps.has(type)
 }
 
-export const fieldTypes: NoneSystemFieldType[] = ["string", "number", "reference", "rollup", "select"] as const
+export const fieldTypes: NoneSystemFieldType[] = [
+  "string",
+  "number",
+  "reference",
+  "rollup",
+  "select",
+  "rating",
+] as const
 export const systemFieldTypes: SystemFieldType[] = [
   "id",
   "autoIncrement",
@@ -43,7 +51,7 @@ export const systemFieldTypes: SystemFieldType[] = [
 
 export const allFieldTypes: FieldType[] = [...systemFieldTypes, ...fieldTypes] as const
 
-export const fieldsCanBeRollup: FieldType[] = ["number", "string"] as const
+export const fieldsCanBeRollup: FieldType[] = ["number", "string", "rating"] as const
 
 export const getIsFieldCanBeRollup = (type: FieldType): type is "number" => {
   return fieldsCanBeRollup.includes(type)
