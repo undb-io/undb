@@ -24,6 +24,7 @@ export const workspaceActions = z.enum([
   "record:update",
 
   "share:enable",
+  "share:disable",
 ])
 
 export type IWorkspaceAction = z.infer<typeof workspaceActions>

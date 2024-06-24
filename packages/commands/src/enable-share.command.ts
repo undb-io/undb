@@ -8,11 +8,9 @@ export type IEnableShareCommand = z.infer<typeof enableShareCommand>
 
 export class EnableShareCommand extends Command implements IEnableShareCommand {
   public readonly target: IShareTarget
-  public readonly enabled: boolean
 
   constructor(props: CommandProps<IEnableShareCommand>) {
     super(props)
-    this.enabled = props.enabled
     this.target = props.target
   }
 }

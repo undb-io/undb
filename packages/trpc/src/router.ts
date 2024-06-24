@@ -8,6 +8,7 @@ import {
   CreateWebhookCommand,
   DeleteRecordCommand,
   DeleteViewCommand,
+  DisableShareCommand,
   DuplicateRecordCommand,
   DuplicateViewCommand,
   EnableShareCommand,
@@ -33,6 +34,7 @@ import {
   createWebhookCommand,
   deleteRecordCommand,
   deleteViewCommand,
+  disableShareCommand,
   duplicateRecordCommand,
   duplicateViewCommand,
   enableShareCommand,
@@ -181,6 +183,10 @@ const shareRouter = t.router({
     .use(authz("share:enable"))
     .input(enableShareCommand)
     .mutation(({ input }) => commandBus.execute(new EnableShareCommand(input))),
+  disable: p
+    .use(authz("share:disable"))
+    .input(disableShareCommand)
+    .mutation(({ input }) => commandBus.execute(new DisableShareCommand(input))),
 })
 
 export const route = t.router({

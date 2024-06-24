@@ -1,6 +1,6 @@
 import { inject, singleton } from "@undb/di"
 import { Option } from "@undb/domain"
-import type { IEnableShareDTO, IShareDTO } from "../dto"
+import type { IDisableShareDTO, IEnableShareDTO, IShareDTO } from "../dto"
 import type { IShareTarget } from "../share-target.vo"
 import { ShareFactory } from "../share.factory"
 import {
@@ -13,6 +13,7 @@ import { WithShareId, withShare } from "../specifications"
 
 export interface IShareService {
   enableShare(dto: IEnableShareDTO): Promise<void>
+  disableShare(dto: IDisableShareDTO): Promise<void>
   getShareByTarget(target: IShareTarget): Promise<Option<IShareDTO>>
 }
 
@@ -37,6 +38,21 @@ export class ShareService implements IShareService {
     }
 
     const s = share.$enable(dto)
+
+    if (s.isSome()) {
+      await this.repo.updateOneById(share, s.unwrap())
+    }
+  }
+
+  async disableShare(dto: IEnableShareDTO): Promise<void> {
+    const spec = withShare(dto.target.type, dto.target.id)
+
+    let share = (await this.repo.findOne(spec)).into(undefined)
+    if (!share) {
+      return
+    }
+
+    const s = share.$disable(dto)
 
     if (s.isSome()) {
       await this.repo.updateOneById(share, s.unwrap())

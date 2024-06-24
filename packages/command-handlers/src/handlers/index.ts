@@ -7,6 +7,7 @@ import { CreateTableCommandHandler } from "./create-table.command-handler"
 import { CreateWebhookCommandHandler } from "./create-webhook.command-handler"
 import { DeleteRecordCommandHandler } from "./delete-record.command-handler"
 import { DeleteViewCommandHandler } from "./delete-view.command-handler"
+import { DisableShareCommandHandler } from "./disable-share.command-handler"
 import { DuplicateRecordCommandHandler } from "./duplicate-record.command-handler"
 import { DuplicateViewCommandHandler } from "./duplicate-view.command-handler"
 import { EnableShareCommandHandler } from "./enable-share.command-handler"
@@ -50,4 +51,5 @@ export const commandHandlers = [
   CreateBaseCommandHandler,
   UpdateBaseCommandHandler,
   EnableShareCommandHandler,
+  DisableShareCommandHandler,
 ]

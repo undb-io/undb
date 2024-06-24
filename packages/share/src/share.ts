@@ -1,5 +1,6 @@
 import { AggregateRoot, and } from "@undb/domain"
 import type { Option } from "oxide.ts"
+import type { IDisableShareDTO } from "./dto/disable-share.dto.js"
 import type { IEnableShareDTO } from "./dto/enable-share.dto.js"
 import type { IShareDTO } from "./dto/share.dto.js"
 import type { ShareId } from "./share-id.vo.js"
@@ -19,9 +20,21 @@ export class Share extends AggregateRoot<any> {
   public $enable(input: IEnableShareDTO): Option<ShareSpecification> {
     const specs: ShareSpecification[] = []
 
-    if (typeof input.enabled === "boolean") {
-      specs.push(new WithShareEnabled(input.enabled))
+    specs.push(new WithShareEnabled(true))
+
+    const spec = and(...specs)
+
+    if (spec.isSome()) {
+      spec.unwrap().mutate(this)
     }
+
+    return spec
+  }
+
+  public $disable(input: IDisableShareDTO): Option<ShareSpecification> {
+    const specs: ShareSpecification[] = []
+
+    specs.push(new WithShareEnabled(false))
 
     const spec = and(...specs)
 

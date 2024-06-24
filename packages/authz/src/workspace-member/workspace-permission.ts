@@ -26,6 +26,7 @@ export const workspacePermission: Record<IWorkspaceMemberRole, Record<IWorkspace
     "record:update": true,
 
     "share:enable": true,
+    "share:disable": true,
   },
   admin: {
     "workspace:list": true,
@@ -51,6 +52,7 @@ export const workspacePermission: Record<IWorkspaceMemberRole, Record<IWorkspace
     "record:update": true,
 
     "share:enable": true,
+    "share:disable": true,
   },
   viewer: {
     "workspace:list": true,
@@ -76,5 +78,6 @@ export const workspacePermission: Record<IWorkspaceMemberRole, Record<IWorkspace
     "record:update": false,
 
     "share:enable": false,
+    "share:disable": false,
   },
 }
