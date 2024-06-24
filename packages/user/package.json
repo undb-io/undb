@@ -4,8 +4,8 @@
   "types": "src/index.d.ts",
   "type": "module",
   "dependencies": {
-    "@undb/domain": "workspace:*",
-    "@undb/di": "workspace:*"
+    "@undb/di": "workspace:*",
+    "@undb/domain": "workspace:*"
   },
   "devDependencies": {
     "@types/bun": "latest"

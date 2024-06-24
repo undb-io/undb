@@ -10,9 +10,9 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@undb/di": "workspace:*",
     "@undb/table": "workspace:*",
     "@undb/zod": "workspace:*",
-    "@undb/di": "workspace:*",
     "radash": "^12.1.0"
   }
 }

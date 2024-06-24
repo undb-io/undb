@@ -34,7 +34,7 @@
     "autoprefixer": "^10.4.19",
     "eslint": "^9.5.0",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-svelte": "^2.40.0",
+    "eslint-plugin-svelte": "^2.41.0",
     "houdini": "^1.2.47",
     "houdini-svelte": "^1.2.47",
     "papaparse": "^5.4.1",
