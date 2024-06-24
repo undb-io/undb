@@ -12,6 +12,7 @@ import {
   GetTablesByBaseIdQuery,
   GetTablesQuery,
 } from "@undb/queries"
+import { injectShareService, type IShareService } from "@undb/share"
 import { TableIdVo, injectRecordQueryRepository, type IRecordQueryRepository } from "@undb/table"
 import { injectUserQueryRepository, type IUserQueryRepository } from "@undb/user"
 
@@ -24,6 +25,8 @@ export class Graphql {
     public readonly repo: IRecordQueryRepository,
     @injectUserQueryRepository()
     public readonly userRepo: IUserQueryRepository,
+    @injectShareService()
+    public readonly shareService: IShareService,
   ) {}
 
   public route() {
@@ -233,6 +236,18 @@ export class Graphql {
           // @ts-ignore
           user: async (member) => {
             return (await this.userRepo.findOneById(member.userId)).unwrap()
+          },
+        },
+        View: {
+          // @ts-ignore
+          share: async (view) => {
+            return this.shareService.getShareByTarget({ type: "view", id: view.id })
+          },
+        },
+        Form: {
+          // @ts-ignore
+          share: async (form) => {
+            return this.shareService.getShareByTarget({ type: "form", id: form.id })
           },
         },
       },

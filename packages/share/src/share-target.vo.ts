@@ -27,4 +27,11 @@ export class ShareTarget extends ValueObject<IShareTarget> {
   public get type() {
     return this.unpack()?.type
   }
+
+  public toJSON() {
+    return {
+      id: this.id,
+      type: this.type,
+    }
+  }
 }

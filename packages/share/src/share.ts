@@ -1,6 +1,7 @@
 import { AggregateRoot, and } from "@undb/domain"
 import type { Option } from "oxide.ts"
 import type { IEnableShareDTO } from "./dto/enable-share.dto.js"
+import type { IShareDTO } from "./dto/share.dto.js"
 import type { ShareId } from "./share-id.vo.js"
 import type { ShareTarget } from "./share-target.vo.js"
 import type { ShareSpecification } from "./specifications/interface.js"
@@ -23,5 +24,13 @@ export class Share extends AggregateRoot<any> {
     }
 
     return and(...specs)
+  }
+
+  public toJSON(): IShareDTO {
+    return {
+      id: this.id.value,
+      target: this.target.toJSON(),
+      enabled: this.enabled,
+    }
   }
 }

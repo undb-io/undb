@@ -4,7 +4,7 @@ import type { IFormsDTO, IRLSGroupDTO, ISchemaDTO, IViewsDTO, RECORD_EVENTS } fr
 import type { IWebhookHeaders, IWebhookMethod } from "@undb/webhook"
 import type { IRootWebhookCondition } from "@undb/webhook/src/webhook.condition"
 import { sql } from "drizzle-orm"
-import { index, integer, sqliteTableCreator, text } from "drizzle-orm/sqlite-core"
+import { index, integer, sqliteTableCreator, text, unique } from "drizzle-orm/sqlite-core"
 
 const sqliteTable = sqliteTableCreator((name) => `undb_${name}`)
 
@@ -160,3 +160,21 @@ export const baseTable = sqliteTable("base", {
 
 export type Base = typeof baseTable.$inferSelect
 export type NewBase = typeof baseTable.$inferInsert
+
+export const shareTable = sqliteTable(
+  "share",
+  {
+    id: text("id").notNull().primaryKey(),
+    targetType: text("target").notNull(),
+    targetId: text("target_id").notNull(),
+    enabled: integer("enabled", { mode: "boolean" }).notNull(),
+  },
+  (table) => {
+    return {
+      uniqueIdx: unique("share_unique_idx").on(table.targetType, table.targetId),
+    }
+  },
+)
+
+export type Share = typeof shareTable.$inferSelect
+export type NewShare = typeof shareTable.$inferInsert

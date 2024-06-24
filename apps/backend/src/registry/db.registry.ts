@@ -18,6 +18,8 @@ import {
   RecordOutboxService,
   RecordQueryRepository,
   RecordRepository,
+  ShareQueryRepository,
+  ShareRepository,
   TableOutboxService,
   TableQueryRepository,
   TableRepository,
@@ -27,6 +29,7 @@ import {
   WorkspaceMemberQueryRepository,
   WorkspaceMemberRepository,
 } from "@undb/persistence"
+import { SHARE_QUERY_REPOSITORY, SHARE_REPOSITORY, SHARE_SERVICE, ShareService } from "@undb/share"
 import {
   RECORD_OUTBOX_SERVICE,
   RECORD_QUERY_REPOSITORY,
@@ -57,4 +60,7 @@ export const registerDb = () => {
   container.register(BASE_REPOSITORY, BaseRepository)
   container.register(BASE_QUERY_REPOSITORY, BaseQueryRepository)
   container.register(BASE_OUTBOX_SERVICE, BaseOutboxService)
+  container.register(SHARE_SERVICE, ShareService)
+  container.register(SHARE_REPOSITORY, ShareRepository)
+  container.register(SHARE_QUERY_REPOSITORY, ShareQueryRepository)
 }

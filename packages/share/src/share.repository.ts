@@ -6,7 +6,7 @@ import type { ShareSpecification } from "./specifications/interface.js"
 
 export interface IShareRepository {
   insert(share: Share): Promise<void>
-  updateOneById(id: string, spec: ShareSpecification): Promise<void>
+  updateOneById(share: Share, spec: ShareSpecification): Promise<void>
   findOneById(id: string): Promise<Option<Share>>
   findOne(spec: ShareSpecification): Promise<Option<Share>>
   find(spec: ShareSpecification): Promise<Share[]>
@@ -17,9 +17,9 @@ export const SHARE_REPOSITORY = Symbol("SHARE_REPOSITORY")
 export const injectShareRepository = () => inject(SHARE_REPOSITORY)
 
 export interface IShareQueryRepository {
-  findOneById: (id: string) => Promise<Option<IShareDTO>>
-  findOne: (spec: ShareSpecification) => Promise<Option<IShareDTO>>
-  find: (spec: ShareSpecification | null) => Promise<IShareDTO[]>
+  findOneById(id: string): Promise<Option<IShareDTO>>
+  findOne(spec: ShareSpecification): Promise<Option<IShareDTO>>
+  find(spec: ShareSpecification | null): Promise<IShareDTO[]>
 }
 
 export const SHARE_QUERY_REPOSITORY = Symbol("SHARE_QUERY_REPOSITORY")
