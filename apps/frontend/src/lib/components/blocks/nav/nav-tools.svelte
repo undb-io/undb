@@ -26,8 +26,8 @@
 
   <a
     href="/members"
-    data-active={$page.route.id === "/members"}
-    class=" focus-visible:ring-ring hover:bg-accent hover:text-accent-foreground flex h-8 items-center justify-start gap-2 whitespace-nowrap rounded-md px-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
+    data-active={$page.route.id === "/(authed)/members"}
+    class=" focus-visible:ring-ring hover:bg-accent hover:text-accent-foreground data-[active=true]:bg-primary data-[active=true]:text-primary-foreground flex h-8 items-center justify-start gap-2 whitespace-nowrap rounded-md px-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
   >
     <Users2Icon class="h-4 w-4" />
     Members
