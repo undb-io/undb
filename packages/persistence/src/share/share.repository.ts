@@ -1,9 +1,10 @@
 import { inject, singleton } from "@undb/di"
-import type { Option } from "@undb/domain"
+import { None, Some, type Option } from "@undb/domain"
 import type { IShareRepository, Share, ShareSpecification } from "@undb/share"
 import type { Database } from "../db"
 import { injectDb } from "../db.provider"
 import { shareTable } from "../tables"
+import { ShareFilterVisitor } from "./share.filter-visitor"
 import { ShareMapper } from "./share.mapper"
 
 @singleton()
@@ -27,8 +28,22 @@ export class ShareRepository implements IShareRepository {
   findOneById(id: string): Promise<Option<Share>> {
     throw new Error("Method not implemented.")
   }
-  findOne(spec: ShareSpecification): Promise<Option<Share>> {
-    throw new Error("Method not implemented.")
+  async findOne(spec: ShareSpecification): Promise<Option<Share>> {
+    const qb = this.db.select().from(shareTable).$dynamic()
+    const visitor = new ShareFilterVisitor()
+    spec.accept(visitor)
+
+    const results = await qb.where(visitor.cond).limit(1)
+    if (results.length === 0) {
+      return None
+    }
+
+    const [share] = results
+    if (!share) {
+      return None
+    }
+
+    return Some(this.mapper.toDo(share))
   }
   find(spec: ShareSpecification): Promise<Share[]> {
     throw new Error("Method not implemented.")

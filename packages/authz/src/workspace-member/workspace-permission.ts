@@ -24,6 +24,8 @@ export const workspacePermission: Record<IWorkspaceMemberRole, Record<IWorkspace
     "record:delete": true,
     "record:read": true,
     "record:update": true,
+
+    "share:enable": true,
   },
   admin: {
     "workspace:list": true,
@@ -47,6 +49,8 @@ export const workspacePermission: Record<IWorkspaceMemberRole, Record<IWorkspace
     "record:delete": true,
     "record:read": true,
     "record:update": true,
+
+    "share:enable": true,
   },
   viewer: {
     "workspace:list": true,
@@ -70,5 +74,7 @@ export const workspacePermission: Record<IWorkspaceMemberRole, Record<IWorkspace
     "record:delete": false,
     "record:read": true,
     "record:update": false,
+
+    "share:enable": false,
   },
 }

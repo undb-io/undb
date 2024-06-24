@@ -10,6 +10,7 @@ import {
   DeleteViewCommand,
   DuplicateRecordCommand,
   DuplicateViewCommand,
+  EnableShareCommand,
   SetTableFormCommand,
   SetTableRLSCommand,
   SetViewAggregateCommand,
@@ -34,6 +35,7 @@ import {
   deleteViewCommand,
   duplicateRecordCommand,
   duplicateViewCommand,
+  enableShareCommand,
   setTableFormCommand,
   setTableRLSCommand,
   setViewAggregateCommand,
@@ -174,11 +176,19 @@ const baseRouter = t.router({
     .mutation(({ input }) => commandBus.execute(new UpdateBaseCommand(input))),
 })
 
+const shareRouter = t.router({
+  enable: p
+    .use(authz("share:enable"))
+    .input(enableShareCommand)
+    .mutation(({ input }) => commandBus.execute(new EnableShareCommand(input))),
+})
+
 export const route = t.router({
   table: tableRouter,
   record: recordRouter,
   webhook: webhookRouter,
   base: baseRouter,
+  share: shareRouter,
 })
 
 export type AppRouter = typeof route

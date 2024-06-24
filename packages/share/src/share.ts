@@ -23,7 +23,13 @@ export class Share extends AggregateRoot<any> {
       specs.push(new WithShareEnabled(input.enabled))
     }
 
-    return and(...specs)
+    const spec = and(...specs)
+
+    if (spec.isSome()) {
+      spec.unwrap().mutate(this)
+    }
+
+    return spec
   }
 
   public toJSON(): IShareDTO {

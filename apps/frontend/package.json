@@ -28,6 +28,7 @@
     "@undb/commands": "workspace:*",
     "@undb/domain": "workspace:*",
     "@undb/queries": "workspace:*",
+    "@undb/share": "workspace:*",
     "@undb/table": "workspace:*",
     "@undb/trpc": "workspace:*",
     "autoprefixer": "^10.4.19",
