@@ -1,5 +1,7 @@
 export * from "./dto"
+export * from "./specifications"
 export * from "./workspace-action"
 export * from "./workspace-member"
+export * from "./workspace-member.composite-specification"
 export * from "./workspace-member.repository"
 export * from "./workspace-member.service"

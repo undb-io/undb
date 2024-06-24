@@ -7,6 +7,7 @@ export * from "./member"
 export * from "./record"
 export * from "./table"
 export * from "./tables"
+export * from "./user"
 export * from "./webhook"
 
 export * from "./uow"

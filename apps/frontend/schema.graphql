@@ -51,7 +51,7 @@ type Query {
   base(id: ID!): Base!
   bases: [Base]
   member: WorkspaceMember
-  members: [WorkspaceMember]!
+  members(q: String): [WorkspaceMember]!
   recordAudits(recordId: ID!): [Audit]
   table(id: ID!): Table
   tables: [Table]!

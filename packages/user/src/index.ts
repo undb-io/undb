@@ -1,5 +1,2 @@
-export interface IUser {
-  id: string
-  email: string
-  username: string
-}
+export * from "./user.repository"
+export * from "./user.type"

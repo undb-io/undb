@@ -1,8 +1,8 @@
 import { inject } from "@undb/di"
 import { Option } from "@undb/domain"
-import type { IUser } from "@undb/user"
 import type { IWorkspaceMemberDTO } from "./dto"
 import { WorkspaceMember } from "./workspace-member"
+import type { WorkspaceMemberComositeSpecification } from "./workspace-member.composite-specification"
 
 export interface IWorkspaceMemberRepository {
   findOneById(id: string): Promise<WorkspaceMember>
@@ -15,8 +15,7 @@ export const WORKSPACE_MEMBER_REPOSITORY = Symbol("IWorkspaceMemberRepository")
 export const injectWorkspaceMemberRepository = () => inject(WORKSPACE_MEMBER_REPOSITORY)
 
 export interface IWorkspaceMemberQueryRepository {
-  find(): Promise<IWorkspaceMemberDTO[]>
-  findUserByMemberId(memberId: string): Promise<Option<IUser>>
+  find(spec: Option<WorkspaceMemberComositeSpecification>): Promise<IWorkspaceMemberDTO[]>
 }
 
 export const WORKSPQACE_MEMBER_QUERY_REPOSITORY = Symbol("IWorkspaceMemberQueryRepository")

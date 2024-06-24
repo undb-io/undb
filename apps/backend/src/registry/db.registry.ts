@@ -21,6 +21,7 @@ import {
   TableOutboxService,
   TableQueryRepository,
   TableRepository,
+  UserQueryRepository,
   WebhookQueryRepository,
   WebhookRepository,
   WorkspaceMemberQueryRepository,
@@ -34,6 +35,7 @@ import {
   TABLE_QUERY_REPOSITORY,
   TABLE_REPOSITORY,
 } from "@undb/table"
+import { USER_QUERY_REPOSITORY } from "@undb/user"
 import { WEBHOOK_QUERY_REPOSITORY, WEBHOOK_REPOSITORY } from "@undb/webhook"
 
 export const registerDb = () => {
@@ -51,6 +53,7 @@ export const registerDb = () => {
   container.register(WORKSPACE_MEMBER_REPOSITORY, WorkspaceMemberRepository)
   container.register(WORKSPQACE_MEMBER_QUERY_REPOSITORY, WorkspaceMemberQueryRepository)
   container.register(WORKSPACE_MEMBER_SERVICE, WorkspaceMemberService)
+  container.register(USER_QUERY_REPOSITORY, UserQueryRepository)
   container.register(BASE_REPOSITORY, BaseRepository)
   container.register(BASE_QUERY_REPOSITORY, BaseQueryRepository)
   container.register(BASE_OUTBOX_SERVICE, BaseOutboxService)

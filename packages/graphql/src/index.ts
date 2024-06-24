@@ -1,5 +1,4 @@
 import { yoga } from "@elysiajs/graphql-yoga"
-import { injectWorkspaceMemberService, type IWorkspaceMemberService } from "@undb/authz"
 import { executionContext } from "@undb/context/server"
 import { QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
@@ -14,6 +13,7 @@ import {
   GetTablesQuery,
 } from "@undb/queries"
 import { TableIdVo, injectRecordQueryRepository, type IRecordQueryRepository } from "@undb/table"
+import { injectUserQueryRepository, type IUserQueryRepository } from "@undb/user"
 
 @singleton()
 export class Graphql {
@@ -22,8 +22,8 @@ export class Graphql {
     public readonly queryBus: QueryBus,
     @injectRecordQueryRepository()
     public readonly repo: IRecordQueryRepository,
-    @injectWorkspaceMemberService()
-    public readonly workspaceMemberService: IWorkspaceMemberService,
+    @injectUserQueryRepository()
+    public readonly userRepo: IUserQueryRepository,
   ) {}
 
   public route() {
@@ -158,7 +158,7 @@ export class Graphql {
 
       type Query {
         member: WorkspaceMember
-        members: [WorkspaceMember]!
+        members(q: String): [WorkspaceMember]!
 
         tables: [Table]!
         table(id: ID!): Table
@@ -171,8 +171,8 @@ export class Graphql {
       `,
       resolvers: {
         Query: {
-          members: async () => {
-            return this.queryBus.execute(new GetMembersQuery())
+          members: async (_, args) => {
+            return this.queryBus.execute(new GetMembersQuery({ q: args?.q }))
           },
           member: () => {
             const member = executionContext.getStore()?.member
@@ -221,7 +221,7 @@ export class Graphql {
         WorkspaceMember: {
           // @ts-ignore
           user: async (member) => {
-            return (await this.workspaceMemberService.getUserByMemberId(member.id)).unwrap()
+            return (await this.userRepo.findOneById(member.userId)).unwrap()
           },
         },
       },

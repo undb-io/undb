@@ -10,6 +10,7 @@
     "@undb/di": "workspace:*",
     "@undb/context": "workspace:*",
     "@undb/cqrs": "workspace:*",
+    "@undb/user": "workspace:*",
     "@undb/queries": "workspace:*",
     "@elysiajs/graphql-yoga": "^1.0.3",
     "typescript": "^5.0.0"

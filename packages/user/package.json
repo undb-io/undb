@@ -3,6 +3,10 @@
   "module": "src/index.ts",
   "types": "src/index.d.ts",
   "type": "module",
+  "dependencies": {
+    "@undb/domain": "workspace:*",
+    "@undb/di": "workspace:*"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
