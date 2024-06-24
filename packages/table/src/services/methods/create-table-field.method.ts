@@ -29,13 +29,6 @@ export async function createReferenceField(
   const spec = table.$createFieldSpec(referenceField)
   const foreignSpec = foreignTable.$createFieldSpec(symmetricField)
 
-  if (spec.isSome()) {
-    spec.unwrap().mutate(table)
-  }
-  if (foreignSpec.isSome()) {
-    foreignSpec.unwrap().mutate(foreignTable)
-  }
-
   return [
     { table, spec },
     { table: foreignTable, spec: foreignSpec },
