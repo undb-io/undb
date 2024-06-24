@@ -9,6 +9,7 @@ import { DeleteRecordCommandHandler } from "./delete-record.command-handler"
 import { DeleteViewCommandHandler } from "./delete-view.command-handler"
 import { DuplicateRecordCommandHandler } from "./duplicate-record.command-handler"
 import { DuplicateViewCommandHandler } from "./duplicate-view.command-handler"
+import { EnableShareCommandHandler } from "./enable-share.command-handler"
 import { SetTableFormCommandHandler } from "./set-table-form.command-handler"
 import { SetTableRLSCommandHandler } from "./set-table-rls.command-handler"
 import { SetViewAggregateCommandHandler } from "./set-view-aggregate.command-handler"
@@ -48,4 +49,5 @@ export const commandHandlers = [
   DeleteViewCommandHandler,
   CreateBaseCommandHandler,
   UpdateBaseCommandHandler,
+  EnableShareCommandHandler,
 ]

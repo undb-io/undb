@@ -15,6 +15,7 @@
     "@elysiajs/trpc": "^1.0.2",
     "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@undb/audit": "workspace:*",
+    "@undb/share": "workspace:*",
     "@undb/authz": "workspace:*",
     "@undb/base": "workspace:*",
     "@undb/command-handlers": "workspace:*",

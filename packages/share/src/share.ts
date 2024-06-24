@@ -15,7 +15,7 @@ export class Share extends AggregateRoot<any> {
     return new Share()
   }
 
-  public enable(input: IEnableShareDTO): Option<ShareSpecification> {
+  public $enable(input: IEnableShareDTO): Option<ShareSpecification> {
     const specs: ShareSpecification[] = []
 
     if (typeof input.enabled === "boolean") {
