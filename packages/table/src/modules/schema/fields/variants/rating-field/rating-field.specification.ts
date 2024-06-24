@@ -1,9 +1,9 @@
 import { Ok, type Result } from "@undb/domain"
 import { isNumber } from "radash"
-import { type FieldId, type IRecordVisitor } from "../../../.."
-import type { RecordDO } from "../../../../records"
+import type { IRecordVisitor, RecordDO } from "../../../../records"
 import { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import { RatingFieldValue } from "./rating-field-value.vo"
+import type { FieldId } from "../../field-id.vo"
 
 export class RatingEqual extends RecordComositeSpecification {
   constructor(

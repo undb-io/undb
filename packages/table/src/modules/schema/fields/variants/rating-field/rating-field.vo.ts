@@ -3,8 +3,6 @@ import { z } from "@undb/zod"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
-import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
-import { abstractDateAggregate } from "../abstractions/abstract-date.aggregate"
 import { createAbstractNumberFieldMather } from "../abstractions/abstract-number-field.condition"
 import { RatingFieldConstraint, ratingFieldConstraint } from "./rating-field-constraint.vo"
 import { RatingFieldValue, mutateRatingFieldValueSchema } from "./rating-field-value.vo"
@@ -14,6 +12,7 @@ import {
   type IRatingFieldConditionSchema,
 } from "./rating-field.condition"
 import { RatingEqual } from "./rating-field.specification"
+import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 
 export const RATING_TYPE = "rating" as const
 
@@ -84,6 +83,6 @@ export class RatingField extends AbstractField<RatingFieldValue, RatingFieldCons
   }
 
   override get aggregate() {
-    return abstractDateAggregate
+    return abstractNumberAggregate
   }
 }
