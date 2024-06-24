@@ -35,6 +35,13 @@ CREATE TABLE `undb_session` (
 	FOREIGN KEY (`user_id`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
+CREATE TABLE `undb_share` (
+	`id` text PRIMARY KEY NOT NULL,
+	`target` text NOT NULL,
+	`target_id` text NOT NULL,
+	`enabled` integer NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE `undb_table` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
@@ -82,6 +89,7 @@ CREATE TABLE `undb_workspace_member` (
 --> statement-breakpoint
 CREATE INDEX `audit_table_id_idx` ON `undb_audit` (`table_id`);--> statement-breakpoint
 CREATE INDEX `audit_record_id_idx` ON `undb_audit` (`record_id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `share_unique_idx` ON `undb_share` (`target`,`target_id`);--> statement-breakpoint
 CREATE INDEX `table_base_id_idx` ON `undb_table` (`base_id`);--> statement-breakpoint
 CREATE UNIQUE INDEX `undb_user_email_unique` ON `undb_user` (`email`);--> statement-breakpoint
 CREATE INDEX `user_username_idx` ON `undb_user` (`username`);--> statement-breakpoint

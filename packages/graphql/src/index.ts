@@ -241,13 +241,13 @@ export class Graphql {
         View: {
           // @ts-ignore
           share: async (view) => {
-            return this.shareService.getShareByTarget({ type: "view", id: view.id })
+            return (await this.shareService.getShareByTarget({ type: "view", id: view.id })).into(null)
           },
         },
         Form: {
           // @ts-ignore
           share: async (form) => {
-            return this.shareService.getShareByTarget({ type: "form", id: form.id })
+            return (await this.shareService.getShareByTarget({ type: "form", id: form.id })).into(null)
           },
         },
       },
