@@ -5,7 +5,7 @@ query GetMembers {
     user {
       id
       email
-      usename
+      username
     }
   }
 }

@@ -90,7 +90,7 @@ type Table {
 type User {
   email: String!
   id: ID!
-  usename: String!
+  username: String!
 }
 
 type View {

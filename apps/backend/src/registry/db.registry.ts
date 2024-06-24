@@ -1,5 +1,10 @@
 import { AUDIT_QUERY_REPOSITORY, AUDIT_REPOSITORY } from "@undb/audit"
-import { WORKSPACE_MEMBER_REPOSITORY } from "@undb/authz"
+import {
+  WORKSPACE_MEMBER_REPOSITORY,
+  WORKSPACE_MEMBER_SERVICE,
+  WORKSPQACE_MEMBER_QUERY_REPOSITORY,
+  WorkspaceMemberService,
+} from "@undb/authz"
 import { BASE_OUTBOX_SERVICE, BASE_QUERY_REPOSITORY, BASE_REPOSITORY } from "@undb/base"
 import { container } from "@undb/di"
 import {
@@ -18,6 +23,7 @@ import {
   TableRepository,
   WebhookQueryRepository,
   WebhookRepository,
+  WorkspaceMemberQueryRepository,
   WorkspaceMemberRepository,
 } from "@undb/persistence"
 import {
@@ -43,6 +49,8 @@ export const registerDb = () => {
   container.register(AUDIT_REPOSITORY, AuditRepository)
   container.register(AUDIT_QUERY_REPOSITORY, AuditQueryRepository)
   container.register(WORKSPACE_MEMBER_REPOSITORY, WorkspaceMemberRepository)
+  container.register(WORKSPQACE_MEMBER_QUERY_REPOSITORY, WorkspaceMemberQueryRepository)
+  container.register(WORKSPACE_MEMBER_SERVICE, WorkspaceMemberService)
   container.register(BASE_REPOSITORY, BaseRepository)
   container.register(BASE_QUERY_REPOSITORY, BaseQueryRepository)
   container.register(BASE_OUTBOX_SERVICE, BaseOutboxService)

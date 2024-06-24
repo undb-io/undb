@@ -7,7 +7,7 @@ import { Lucia, generateIdFromEntropySize } from "lucia"
 import { Login, SignUp } from "@undb/ui"
 import { executionContext } from "@undb/context/server"
 import type { ContextMember } from "@undb/context"
-import { type IWorkspaceMemberService, WorkspaceMemberService } from "@undb/authz"
+import { type IWorkspaceMemberService, WorkspaceMemberService, injectWorkspaceMemberService } from "@undb/authz"
 import { singleton } from "tsyringe"
 import { inject } from "@undb/di"
 
@@ -44,7 +44,7 @@ declare module "lucia" {
 @singleton()
 export class Auth {
   constructor(
-    @inject(WorkspaceMemberService)
+    @injectWorkspaceMemberService()
     private workspaceMemberService: IWorkspaceMemberService,
   ) {}
 

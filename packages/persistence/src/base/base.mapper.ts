@@ -1,5 +1,4 @@
-import { BaseFactory, type Base as BaseDo } from "@undb/base"
-import type { IBaseDTO } from "@undb/base/src/dto/base.dto"
+import { BaseFactory, type Base as BaseDo, type IBaseDTO } from "@undb/base"
 import { singleton } from "@undb/di"
 import type { Mapper } from "@undb/domain"
 import type { Base } from "../tables"

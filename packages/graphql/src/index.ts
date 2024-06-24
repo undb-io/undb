@@ -1,4 +1,5 @@
 import { yoga } from "@elysiajs/graphql-yoga"
+import { injectWorkspaceMemberService, type IWorkspaceMemberService } from "@undb/authz"
 import { executionContext } from "@undb/context/server"
 import { QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
@@ -6,6 +7,7 @@ import {
   GetAggregatesQuery,
   GetBaseQuery,
   GetBasesQuery,
+  GetMembersQuery,
   GetRecordAuditsQuery,
   GetTableQuery,
   GetTablesByBaseIdQuery,
@@ -20,6 +22,8 @@ export class Graphql {
     public readonly queryBus: QueryBus,
     @injectRecordQueryRepository()
     public readonly repo: IRecordQueryRepository,
+    @injectWorkspaceMemberService()
+    public readonly workspaceMemberService: IWorkspaceMemberService,
   ) {}
 
   public route() {
@@ -135,8 +139,8 @@ export class Graphql {
 
       type User {
         id: ID!
-        usename: String!
         email: String!
+        username: String!
       }
 
       type WorkspaceMember {
@@ -168,7 +172,7 @@ export class Graphql {
       resolvers: {
         Query: {
           members: async () => {
-            return []
+            return this.queryBus.execute(new GetMembersQuery())
           },
           member: () => {
             const member = executionContext.getStore()?.member
@@ -216,8 +220,8 @@ export class Graphql {
         },
         WorkspaceMember: {
           // @ts-ignore
-          user: async () => {
-            return { id: "1", username: "test", email: "" }
+          user: async (member) => {
+            return (await this.workspaceMemberService.getUserByMemberId(member.id)).unwrap()
           },
         },
       },
