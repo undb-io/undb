@@ -39,7 +39,7 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.8",
+    "@types/uuid": "^10.0.0",
     "bun-types": "latest"
   },
   "module": "src/index.js"

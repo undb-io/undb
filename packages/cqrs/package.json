@@ -5,7 +5,7 @@
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/uuid": "^9.0.8",
+    "@types/uuid": "^10.0.0",
     "type-fest": "^4.20.1"
   },
   "peerDependencies": {

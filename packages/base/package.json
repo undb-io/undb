@@ -10,8 +10,8 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@undb/domain": "workspace:*",
     "@undb/di": "workspace:*",
+    "@undb/domain": "workspace:*",
     "@undb/zod": "workspace:*"
   }
 }
