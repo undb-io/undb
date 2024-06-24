@@ -31,6 +31,11 @@ export class Graphql {
       typeDefs: `
       scalar JSON
 
+      type Share {
+        id: ID!
+        enabled: Boolean!
+      }
+
       enum WorkspaceRole {
         owner
         admin
@@ -80,6 +85,9 @@ export class Graphql {
         sort: JSON
         aggregate: JSON
         fields: JSON
+
+        shareId: ID
+        share: Share
       }
 
       type ViewData {
@@ -91,6 +99,9 @@ export class Graphql {
         name: String!
         description: String
         fields: JSON
+
+        shareId: ID
+        share: Share
       }
 
       enum RLSAction {

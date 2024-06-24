@@ -13,6 +13,7 @@ import {
 } from "./rating-field.condition"
 import { RatingEqual } from "./rating-field.specification"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
+import { abstractNumberAggregate } from "../abstractions/abstract-number.aggregate"
 
 export const RATING_TYPE = "rating" as const
 

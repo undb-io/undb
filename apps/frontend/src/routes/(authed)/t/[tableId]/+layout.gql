@@ -26,6 +26,11 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
       sort
       aggregate
       fields
+
+      share {
+        enabled
+        id
+      }
     }
 
     forms {
@@ -33,6 +38,11 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
       name
       description
       fields
+
+      share {
+        enabled
+        id
+      }
     }
 
     viewData(viewId: $viewId) {

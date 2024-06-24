@@ -43,6 +43,8 @@ type Form {
   fields: JSON
   id: ID!
   name: String!
+  share: Share
+  shareId: ID
 }
 
 scalar JSON
@@ -75,6 +77,11 @@ enum RLSAction {
   update
 }
 
+type Share {
+  enabled: Boolean!
+  id: ID!
+}
+
 type Table {
   baseId: String!
   forms: [Form]
@@ -102,6 +109,8 @@ type View {
   isDefault: Boolean
   name: String!
   option: ViewOption
+  share: Share
+  shareId: ID
   sort: JSON
   type: ViewType!
 }
