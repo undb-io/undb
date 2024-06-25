@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getTable } from "$lib/store/table.store"
   import type { FormVO } from "@undb/table"
+  import { FormFieldsVO } from "@undb/table"
   import FieldControl from "../field-control/field-control.svelte"
   import FormFieldOptions from "./form-field-options.svelte"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
@@ -14,6 +15,10 @@
   import { Label } from "$lib/components/ui/label"
   import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
   import autoAnimate from "@formkit/auto-animate"
+  import Button from "$lib/components/ui/button/button.svelte"
+  import { PlusIcon, GripVerticalIcon } from "lucide-svelte"
+  import { SortableList } from "@jhubbardsf/svelte-sortablejs"
+  import { isNumber } from "radash"
 
   const selectedFieldId = queryParam("formField")
 
@@ -44,10 +49,24 @@
   $: if ($selectedFieldId) {
     el?.querySelector(`[data-field-id="${$selectedFieldId}"]`)?.scrollIntoView({ behavior: "smooth" })
   }
+
+  let isAddingDescription = false
+  const addDescription = () => {
+    isAddingDescription = true
+  }
+
+  const swap = async (oldIndex: number, newIndex: number) => {
+    const newFormFields = [...formFields]
+    const [removed] = newFormFields.splice(oldIndex, 1)
+    newFormFields.splice(newIndex, 0, removed)
+    form.fields = new FormFieldsVO(newFormFields)
+    await tick()
+    setForm()
+  }
 </script>
 
 <ScrollArea class="h-full w-full bg-gray-50 p-6 pt-20 shadow-inner">
-  <div class="bg-background mx-auto max-w-[660px] space-y-2 rounded-md px-8 py-4 shadow-xl" data-form-id={form.id}>
+  <div class="bg-background mx-auto max-w-[660px] space-y-2 rounded-md px-10 py-6 shadow-xl" data-form-id={form.id}>
     {#if isEditingFormName}
       <input
         class="text-4xl font-extrabold tracking-tight"
@@ -63,69 +82,97 @@
       </h2>
     {/if}
 
-    <div>
-      <Label>Description</Label>
-      <Input class="text-sm" bind:value={form.description} on:change={setForm}></Input>
-    </div>
+    {#if form.description || isAddingDescription}
+      <div class="my-2">
+        <Label>Description</Label>
+        <Input class="text-sm" bind:value={form.description} on:change={setForm}></Input>
+      </div>
+    {:else}
+      <Button variant="link" size="sm" class="-mx-4" on:click={addDescription}>
+        <PlusIcon class="mr-2 h-4 w-4" />
+        Add description
+      </Button>
+    {/if}
 
     <div class="space-y-2" bind:this={el} use:autoAnimate>
-      {#each formFields as formField}
-        {@const field = schema.get(formField.fieldId)}
-        {#if field}
-          {@const isSelected = $selectedFieldId === field.id.value}
-          <label class="block" data-field-id={formField.fieldId}>
-            <input type="radio" class="hidden" bind:group={$selectedFieldId} value={field.id.value} />
-            <Collapsible.Root
-              open={isSelected}
-              onOpenChange={(open) => {
-                if (!open) {
-                  $selectedFieldId = null
-                }
-              }}
-              class={cn(
-                "-mx-4 space-y-2 rounded-md border-2 border-transparent p-0 px-4 transition-all",
-                isSelected ? "border-gray-50 shadow-lg" : "hover:bg-muted/50",
-              )}
-            >
-              <div class={cn("cursor-pointer space-y-2 py-4")}>
-                <div class="text-md flex items-center gap-2 font-medium">
-                  <FieldIcon type={field.type} class="h-4 w-4" />
-                  <span>
-                    {field.name.value}
-                  </span>
-                  {#if formField.getRequired(field)}
-                    <span class="text-red-500">*</span>
-                  {/if}
-                  {#if formField.conditionEnabled && formField.hasCondition}
-                    <span
-                      class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
-                    >
-                      condition
+      <SortableList
+        class="pb-2"
+        handle=".handler"
+        animation={200}
+        onEnd={(event) => {
+          if (isNumber(event.oldIndex) && isNumber(event.newIndex)) {
+            swap(event.oldIndex, event.newIndex)
+          }
+        }}
+      >
+        {#each formFields as formField (formField.fieldId)}
+          {@const field = schema.get(formField.fieldId)}
+          {#if field}
+            {@const isSelected = $selectedFieldId === field.id.value}
+            <label class={cn("block")} data-field-id={formField.fieldId}>
+              <input type="radio" class="hidden" bind:group={$selectedFieldId} value={field.id.value} />
+              <Collapsible.Root
+                open={isSelected}
+                onOpenChange={(open) => {
+                  if (!open) {
+                    $selectedFieldId = null
+                  }
+                }}
+                class={cn(
+                  "relative -mx-4 space-y-2 rounded-md border-2 border-transparent p-0 px-4 transition-all",
+                  isSelected ? "border-primary shadow-lg" : "hover:bg-muted/50",
+                )}
+              >
+                {#if isSelected}
+                  <button type="button" class="handler bg-primary absolute -left-2 top-2 rounded-sm py-2">
+                    <GripVerticalIcon class="h-4 w-4 text-white" />
+                  </button>
+                {/if}
+                <div class={cn("cursor-pointer space-y-2 py-4")}>
+                  <div class="text-md flex items-center gap-2 font-medium">
+                    <FieldIcon type={field.type} class="h-4 w-4" />
+                    <span>
+                      {field.name.value}
                     </span>
-                  {/if}
-                  {#if form.getIsFormFieldContionInValid(formField.fieldId)}
-                    <span
-                      class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"
-                    >
-                      invalid condition
-                    </span>
-                  {/if}
+                    {#if formField.getRequired(field)}
+                      <span class="text-red-500">*</span>
+                    {/if}
+                    {#if formField.conditionEnabled && formField.hasCondition}
+                      <span
+                        class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
+                      >
+                        condition
+                      </span>
+                    {/if}
+                    {#if form.getIsFormFieldContionInValid(formField.fieldId)}
+                      <span
+                        class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"
+                      >
+                        invalid condition
+                      </span>
+                    {/if}
+                  </div>
+                  <FieldControl
+                    {field}
+                    bind:value={formField.defaultValue}
+                    class="bg-background"
+                    on:change={setForm}
+                    placeholder={`set default value for ${field.name.value}`}
+                  />
                 </div>
-                <FieldControl
-                  {field}
-                  bind:value={formField.defaultValue}
-                  class="bg-background"
-                  on:change={setForm}
-                  placeholder={`set default value for ${field.name.value}`}
-                />
-              </div>
-              <Collapsible.Content>
-                <FormFieldOptions {field} bind:formField bind:form class="-mx-4" />
-              </Collapsible.Content>
-            </Collapsible.Root>
-          </label>
-        {/if}
-      {/each}
+                <Collapsible.Content>
+                  <FormFieldOptions {field} bind:formField bind:form class="-mx-4" />
+                </Collapsible.Content>
+              </Collapsible.Root>
+            </label>
+          {/if}
+        {/each}
+      </SortableList>
+
+      <div class="flex justify-between">
+        <div></div>
+        <Button>Submit</Button>
+      </div>
     </div>
   </div>
 </ScrollArea>

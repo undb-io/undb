@@ -4,7 +4,7 @@
   import FieldIcon from "../field-icon/field-icon.svelte"
   import { Switch } from "$lib/components/ui/switch"
   import CreateFieldButton from "../create-field/create-field-button.svelte"
-  import { GripVerticalIcon } from "lucide-svelte"
+  import { GripVerticalIcon, SearchIcon } from "lucide-svelte"
   import { queryParam } from "sveltekit-search-params"
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
@@ -71,7 +71,10 @@
     </span>
   </div>
 
-  <Input bind:value={q} placeholder="Search form field" />
+  <div class="flex items-center gap-2">
+    <SearchIcon class="text-muted-foreground h-4 w-4" />
+    <Input class="flex-1" bind:value={q} placeholder="Search form field..." />
+  </div>
 
   <div class="divide-y rounded-sm border">
     <div class="text-muted-foreground flex items-center justify-between bg-gray-50 p-2 text-xs font-normal">
