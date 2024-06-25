@@ -24,7 +24,7 @@
     "lint-staged": "^15.2.7",
     "npm-run-all2": "^6.2.0",
     "prettier": "^3.3.2",
-    "turbo": "^2.0.4"
+    "turbo": "^2.0.5"
   },
   "lint-staged": {
     "**/*": "bunx --bun prettier --write --ignore-unknown"
@@ -32,7 +32,7 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "bun@1.1.16",
+  "packageManager": "bun@1.1.17",
   "workspaces": [
     "apps/*",
     "packages/*"
