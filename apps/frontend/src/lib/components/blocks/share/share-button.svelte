@@ -60,7 +60,7 @@
   $: enabled = share?.enabled
   let open = false
 
-  $: url = getShareUrl(type, window.location.origin, id)
+  $: url = share ? getShareUrl(type, window.location.origin, share.id) : ""
   let copied = false
   const copy = () => {
     copyToClipboard(url)

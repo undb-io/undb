@@ -1,7 +1,7 @@
 import type { IShareType } from "./share-target.vo"
 
-export const getShareViewUrl = (origin: string, viewId: string) => origin + "/s/v/" + viewId
-export const getShareFormUrl = (origin: string, formId: string) => origin + "/s/f/" + formId
+export const getShareViewUrl = (origin: string, shareId: string) => origin + "/s/v/" + shareId
+export const getShareFormUrl = (origin: string, shareId: string) => origin + "/s/f/" + shareId
 
 export const getShareUrl = (type: IShareType, origin: string, id: string) => {
   switch (type) {
