@@ -44,7 +44,7 @@
         })
         toast.success("Record has been created!")
       },
-      onError: (error) => {
+      onError: (error: Error) => {
         toast.error(error.message)
       },
     })),

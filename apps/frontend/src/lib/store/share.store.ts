@@ -1,8 +1,10 @@
+import type { IShareTarget } from "@undb/share"
 import { writable } from "svelte/store"
 
 export interface IShare {
   enabled: boolean
   id: string
+  target: IShareTarget
 }
 
 export const createShareStore = () => {
