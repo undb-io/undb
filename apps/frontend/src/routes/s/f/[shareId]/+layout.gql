@@ -1,4 +1,13 @@
 query GetFormShareData($shareId: ID!) {
+  member {
+    role
+    user {
+      email
+      id
+      username
+    }
+  }
+
   share(id: $shareId) {
     enabled
     id
