@@ -53,6 +53,10 @@ export class TableMutationVisitor
   }
   withNewView(views: WithNewView): void {
     this.addUpdates({ views: this.table.views?.toJSON() })
+    const insert = this.db
+      .insert(tableIdMapping)
+      .values({ tableId: this.table.id.value, subjectId: views.view.id.value })
+    this.addSql(insert)
   }
   withViewOption(viewOption: WithViewOption): void {
     this.addUpdates({ views: this.table.views?.toJSON() })
@@ -77,6 +81,10 @@ export class TableMutationVisitor
   }
   withNewField(schema: WithNewFieldSpecification): void {
     this.addUpdates({ schema: this.table.schema?.toJSON() })
+    const insert = this.db
+      .insert(tableIdMapping)
+      .values({ tableId: this.table.id.value, subjectId: schema.field.id.value })
+    this.addSql(insert)
   }
   withViewAggregate(viewColor: WithViewAggregate): void {
     this.addUpdates({ views: this.table.views?.toJSON() })

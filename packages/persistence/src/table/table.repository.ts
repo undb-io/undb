@@ -14,7 +14,7 @@ import {
 import { eq } from "drizzle-orm"
 import type { Database } from "../db"
 import { injectDb } from "../db.provider"
-import { tables } from "../tables"
+import { tableIdMapping, tables } from "../tables"
 import { UnderlyingTableService } from "../underlying/underlying-table.service"
 import { injectDbUnitOfWork, transactional } from "../uow"
 import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
@@ -71,6 +71,16 @@ export class TableRepository implements ITableRepository {
     const values = this.mapper.toEntity(table)
 
     await this.db.insert(tables).values({ ...values, createdBy: userId, updatedBy: userId })
+
+    const viewIds = table.views.views.map((v) => v.id.value)
+    const formIds = table.forms?.props.map((v) => v.id) ?? []
+    const fieldsIds = table.schema.fields.map((f) => f.id.value)
+    const mapping = viewIds
+      .concat(formIds)
+      .concat(fieldsIds)
+      .map((id) => ({ tableId: table.id.value, subjectId: id }))
+    await this.db.insert(tableIdMapping).values(mapping)
+
     await this.underlyingTableService.create(table)
     await this.outboxService.save(table)
   }

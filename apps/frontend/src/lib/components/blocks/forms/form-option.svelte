@@ -3,17 +3,19 @@
   import { trpc } from "$lib/trpc/client"
   import { cn } from "$lib/utils"
   import { createMutation } from "@tanstack/svelte-query"
-  import type { FormVO } from "@undb/table"
+  import type { FormVO, IColors } from "@undb/table"
   import { COLORS, FormOptionVO } from "@undb/table"
   import { tick } from "svelte"
   import { getFormBgColor, getFormBorderColor, getFormSelectedColor } from "./form-bg-color"
+  import { invalidate } from "$app/navigation"
 
   const table = getTable()
   export let form: FormVO
 
   $: formOption = form.option ?? FormOptionVO.default()
 
-  const onChangeBackgroundColor = async () => {
+  const onChangeBackgroundColor = async (color: IColors) => {
+    formOption.backgroundColor = color
     form.option = formOption
     await setForm()
   }
@@ -21,6 +23,9 @@
   const setFormMutation = createMutation({
     mutationKey: ["table", $table.id.value, "setForm"],
     mutationFn: trpc.table.form.set.mutate,
+    async onSuccess() {
+      await invalidate(`table:${$table.id.value}`)
+    },
   })
 
   const setForm = async () => {
@@ -44,7 +49,7 @@
           hidden
           type="radio"
           bind:group={formOption.backgroundColor}
-          on:change={onChangeBackgroundColor}
+          on:change={() => onChangeBackgroundColor(color)}
           value={color}
         />
         <div
