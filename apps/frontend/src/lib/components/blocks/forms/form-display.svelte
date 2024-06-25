@@ -107,7 +107,7 @@
 
     <div class="space-y-2" bind:this={el} use:autoAnimate>
       <SortableList
-        class="pb-2"
+        class="space-y-4 pb-2"
         handle=".handler"
         animation={200}
         onEnd={(event) => {
@@ -139,7 +139,7 @@
                     <GripVerticalIcon class="h-4 w-4 text-white" />
                   </button>
                 {/if}
-                <div class={cn("cursor-pointer space-y-2 py-4")}>
+                <div class={cn("cursor-pointer space-y-2 py-2 pb-4")}>
                   <div class="text-md flex items-center gap-2 font-medium">
                     <FieldIcon type={field.type} class="h-4 w-4" />
                     <span>
