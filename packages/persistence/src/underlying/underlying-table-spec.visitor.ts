@@ -21,6 +21,7 @@ import type {
 } from "@undb/table"
 import type {
   TableFormsSpecification,
+  WithFormIdSpecification,
   WithFormSpecification,
   WithNewFormSpecification,
 } from "@undb/table/src/specifications/table-forms.specification"
@@ -56,6 +57,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
     this.#sql.push(...sql)
   }
 
+  withFormId(spec: WithFormIdSpecification): void {}
   withBaseId(id: TableBaseIdSpecification): void {}
   idsIn(ids: TableIdsSpecification): void {}
   withNewView(views: WithNewView): void {}

@@ -5,7 +5,7 @@ import { shareTable } from "../tables"
 
 export class ShareFilterVisitor extends AbstractDBFilterVisitor<Share> implements IShareSpecVisitor {
   idEqual(s: WithShareId): void {
-    throw new Error("Method not implemented.")
+    this.addCond(eq(shareTable.id, s.shareId.value))
   }
   targetView(s: WithShareView): void {
     this.addCond(and(eq(shareTable.targetType, "view"), eq(shareTable.targetId, s.viewId)))
@@ -14,6 +14,6 @@ export class ShareFilterVisitor extends AbstractDBFilterVisitor<Share> implement
     this.addCond(and(eq(shareTable.targetType, "form"), eq(shareTable.targetId, s.formId)))
   }
   enabled(s: WithShareEnabled): void {
-    throw new Error("Method not implemented.")
+    this.addCond(eq(shareTable.enabled, s.enabled))
   }
 }

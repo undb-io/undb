@@ -15,5 +15,6 @@ export interface ITableRepository {
 
 export interface ITableQueryRepository {
   findOneById(id: TableId): Promise<Option<ITableDTO>>
+  findOne(spec: TableComositeSpecification): Promise<Option<ITableDTO>>
   find(spec: Option<TableComositeSpecification>): Promise<ITableDTO[]>
 }

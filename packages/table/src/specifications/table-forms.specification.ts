@@ -1,9 +1,9 @@
 import { Ok, WontImplementException, type Result } from "@undb/domain"
+import type { FormVO, IFormDTO } from "../modules"
 import { FormsVO } from "../modules/forms/forms.vo"
 import type { TableDo } from "../table.do"
 import type { ITableSpecVisitor } from "./table-visitor.interface"
 import { TableComositeSpecification } from "./table.composite-specification"
-import type { FormVO, IFormDTO } from "../modules"
 
 export class TableFormsSpecification extends TableComositeSpecification {
   constructor(public readonly forms: FormsVO) {
@@ -18,6 +18,22 @@ export class TableFormsSpecification extends TableComositeSpecification {
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
     v.withForms(this)
+    return Ok(undefined)
+  }
+}
+
+export class WithFormIdSpecification extends TableComositeSpecification {
+  constructor(public readonly formId: string) {
+    super()
+  }
+  isSatisfiedBy(t: TableDo): boolean {
+    throw new WontImplementException(WithNewFormSpecification.name + ".isSatisfiedBy")
+  }
+  mutate(t: TableDo): Result<TableDo, string> {
+    throw new WontImplementException(WithFormIdSpecification.name + ".mutate")
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withFormId(this)
     return Ok(undefined)
   }
 }

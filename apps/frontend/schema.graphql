@@ -60,7 +60,9 @@ type Query {
   member: WorkspaceMember
   members(q: String): [WorkspaceMember]!
   recordAudits(recordId: ID!): [Audit]
+  share(id: ID!): Share
   table(id: ID!): Table
+  tableByShare(shareId: ID!): Table
   tables: [Table]!
 }
 
@@ -85,6 +87,17 @@ enum RLSAction {
 type Share {
   enabled: Boolean!
   id: ID!
+  target: ShareTarget!
+}
+
+type ShareTarget {
+  id: ID!
+  type: ShareTargetType!
+}
+
+enum ShareTargetType {
+  form
+  view
 }
 
 type Table {

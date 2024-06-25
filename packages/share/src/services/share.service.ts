@@ -1,5 +1,13 @@
 import { inject, singleton } from "@undb/di"
 import { Option } from "@undb/domain"
+import {
+  TableComositeSpecification,
+  WithFormIdSpecification,
+  injectTableQueryRepository,
+  type ITableDTO,
+  type ITableQueryRepository,
+} from "@undb/table"
+import { match } from "ts-pattern"
 import type { IDisableShareDTO, IEnableShareDTO, IShareDTO } from "../dto"
 import type { IShareTarget } from "../share-target.vo"
 import { ShareFactory } from "../share.factory"
@@ -14,7 +22,9 @@ import { WithShareId, withShare } from "../specifications"
 export interface IShareService {
   enableShare(dto: IEnableShareDTO): Promise<void>
   disableShare(dto: IDisableShareDTO): Promise<void>
+  getShare(id: string): Promise<Option<IShareDTO>>
   getShareByTarget(target: IShareTarget): Promise<Option<IShareDTO>>
+  getTableByShare(id: string): Promise<ITableDTO>
 }
 
 export const SHARE_SERVICE = Symbol.for("SHARE_SERVICE")
@@ -27,6 +37,8 @@ export class ShareService implements IShareService {
     private readonly repo: IShareRepository,
     @injectShareQueryRepository()
     private readonly queryRepo: IShareQueryRepository,
+    @injectTableQueryRepository()
+    private readonly tableRepo: ITableQueryRepository,
   ) {}
 
   async enableShare(dto: IEnableShareDTO): Promise<void> {
@@ -59,9 +71,26 @@ export class ShareService implements IShareService {
     }
   }
 
+  async getShare(id: string): Promise<Option<IShareDTO>> {
+    return this.queryRepo.findOne(WithShareId.fromString(id))
+  }
+
   async getShareByTarget(target: IShareTarget): Promise<Option<IShareDTO>> {
     const spec = withShare(target.type, target.id)
 
     return this.queryRepo.findOne(spec)
+  }
+
+  async getTableByShare(id: string): Promise<ITableDTO> {
+    const share = (await this.repo.findOneById(id)).expect("share not found")
+
+    const spec = match(share.target.type)
+      .returnType<TableComositeSpecification>()
+      .with("form", () => new WithFormIdSpecification(share.target.id))
+      .otherwise(() => {
+        throw new Error("Not implemented")
+      })
+
+    return (await this.tableRepo.findOne(spec)).expect("table not found")
   }
 }

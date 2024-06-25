@@ -13,6 +13,7 @@
     "@undb/di": "workspace:*",
     "@undb/table": "workspace:*",
     "@undb/zod": "workspace:*",
-    "radash": "^12.1.0"
+    "radash": "^12.1.0",
+    "ts-pattern": "^5.2.0"
   }
 }

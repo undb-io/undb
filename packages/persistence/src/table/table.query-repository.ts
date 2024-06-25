@@ -32,8 +32,15 @@ export class TableQueryRepository implements ITableQueryRepository {
     return result.map((r) => this.mapper.toDTO(r))
   }
 
+  async findOne(spec: TableComositeSpecification): Promise<Option<ITableDTO>> {
+    const qb = this.db.select().from(tables).$dynamic()
+
+    const tb = await new TableDbQuerySpecHandler(qb).handle(Some(spec)).limit(1)
+
+    return tb.length ? Some(this.mapper.toDTO(tb[0])) : None
+  }
+
   async findOneById(id: TableId): Promise<Option<ITableDTO>> {
-    const tbs = await this.db.select().from(tables)
     const qb = this.db.select().from(tables).$dynamic()
 
     const spec = Some(new TableIdSpecification(id))

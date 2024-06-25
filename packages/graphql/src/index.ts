@@ -8,6 +8,8 @@ import {
   GetBasesQuery,
   GetMembersQuery,
   GetRecordAuditsQuery,
+  GetShareQuery,
+  GetTableByShareQuery,
   GetTableQuery,
   GetTablesByBaseIdQuery,
   GetTablesQuery,
@@ -34,9 +36,20 @@ export class Graphql {
       typeDefs: `
       scalar JSON
 
+      enum ShareTargetType {
+        view
+        form
+      }
+
+      type ShareTarget {
+        id: ID!
+        type: ShareTargetType!
+      }
+
       type Share {
         id: ID!
         enabled: Boolean!
+        target: ShareTarget!
       }
 
       enum WorkspaceRole {
@@ -186,6 +199,9 @@ export class Graphql {
         base(id: ID!): Base!
 
         recordAudits(recordId: ID!): [Audit]
+
+        share(id: ID!): Share
+        tableByShare(shareId: ID!): Table
       }
       `,
       resolvers: {
@@ -204,6 +220,10 @@ export class Graphql {
             const table = await this.queryBus.execute(new GetTableQuery({ tableId: args.id }))
             return table
           },
+          tableByShare: async (_, args) => {
+            const table = await this.queryBus.execute(new GetTableByShareQuery({ shareId: args.shareId }))
+            return table
+          },
           tables: async () => {
             return this.queryBus.execute(new GetTablesQuery())
           },
@@ -217,6 +237,10 @@ export class Graphql {
           recordAudits: async (_, { recordId }) => {
             const { audits } = await this.queryBus.execute(new GetRecordAuditsQuery({ recordId }))
             return audits
+          },
+          share: async (_, { id }) => {
+            const share = await this.queryBus.execute(new GetShareQuery({ shareId: id }))
+            return share
           },
         },
         Base: {

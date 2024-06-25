@@ -2,6 +2,7 @@ import type { ISpecVisitor } from "@undb/domain"
 import type { TableBaseIdSpecification } from "./table-base-id.specification"
 import type {
   TableFormsSpecification,
+  WithFormIdSpecification,
   WithFormSpecification,
   WithNewFormSpecification,
 } from "./table-forms.specification"
@@ -46,6 +47,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withViewAggregate(viewColor: WithViewAggregate): void
   withViewFields(fields: WithViewFields): void
   withForms(views: TableFormsSpecification): void
+  withFormId(spec: WithFormIdSpecification): void
   withNewForm(views: WithNewFormSpecification): void
   withForm(views: WithFormSpecification): void
 }

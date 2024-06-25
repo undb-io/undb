@@ -1,6 +1,6 @@
 import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
-import type { IShareRepository, Share, ShareSpecification } from "@undb/share"
+import { WithShareId, type IShareRepository, type Share, type ShareSpecification } from "@undb/share"
 import type { Database } from "../db"
 import { injectDb } from "../db.provider"
 import { shareTable } from "../tables"
@@ -23,10 +23,29 @@ export class ShareRepository implements IShareRepository {
     await this.db
       .insert(shareTable)
       .values(entity)
-      .onConflictDoUpdate({ target: [shareTable.targetId, shareTable.targetType], set: { enabled: share.enabled } })
+      .onConflictDoUpdate({
+        target: [shareTable.targetId, shareTable.targetType],
+        set: { enabled: share.enabled },
+      })
   }
-  findOneById(id: string): Promise<Option<Share>> {
-    throw new Error("Method not implemented.")
+  async findOneById(id: string): Promise<Option<Share>> {
+    const qb = this.db.select().from(shareTable).$dynamic()
+    const visitor = new ShareFilterVisitor()
+
+    const spec = WithShareId.fromString(id)
+    spec.accept(visitor)
+
+    const results = await qb.where(visitor.cond).limit(1)
+    if (results.length === 0) {
+      return None
+    }
+
+    const [share] = results
+    if (!share) {
+      return None
+    }
+
+    return Some(this.mapper.toDo(share))
   }
   async findOne(spec: ShareSpecification): Promise<Option<Share>> {
     const qb = this.db.select().from(shareTable).$dynamic()

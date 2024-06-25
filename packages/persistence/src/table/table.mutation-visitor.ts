@@ -9,6 +9,7 @@ import type {
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
+  WithFormIdSpecification,
   WithFormSpecification,
   WithNewFieldSpecification,
   WithNewFormSpecification,
@@ -33,6 +34,9 @@ export class TableMutationVisitor
 {
   constructor(public readonly table: TableDo) {
     super()
+  }
+  withFormId(spec: WithFormIdSpecification): void {
+    throw new Error("Method not implemented.")
   }
   withBaseId(id: TableBaseIdSpecification): void {
     this.addUpdates({ baseId: id.baseId })

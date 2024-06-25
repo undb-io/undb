@@ -9,6 +9,7 @@ import type {
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
+  WithFormIdSpecification,
   WithFormSpecification,
   WithNewFieldSpecification,
   WithNewFormSpecification,
@@ -98,5 +99,8 @@ export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> impleme
   }
   withSchema(schema: TableSchemaSpecification): void {
     throw new WontImplementException(TableFilterVisitor.name + ".withSchema")
+  }
+  withFormId(spec: WithFormIdSpecification): void {
+    throw new Error("wtf")
   }
 }
