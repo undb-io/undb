@@ -13,6 +13,7 @@
     SquareArrowOutUpRightIcon,
     CalculatorIcon,
     ListIcon,
+    StarIcon,
   } from "lucide-svelte"
 
   export let type: FieldType
@@ -29,6 +30,7 @@
     reference: SquareArrowOutUpRightIcon,
     rollup: CalculatorIcon,
     select: ListIcon,
+    rating: StarIcon,
   }
 </script>
 
