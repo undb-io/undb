@@ -41,6 +41,24 @@ export class FormFieldsVO extends ValueObject<FormFieldVO[]> {
     )
   }
 
+  public show(schema: SchemaMap): FormFieldsVO {
+    return new FormFieldsVO(
+      this.props.map((formField) => {
+        const field = schema.get(formField.fieldId)
+        return field ? formField.show(field) : formField
+      }),
+    )
+  }
+
+  public hide(schema: SchemaMap): FormFieldsVO {
+    return new FormFieldsVO(
+      this.props.map((formField) => {
+        const field = schema.get(formField.fieldId)
+        return field ? formField.hide(field) : formField
+      }),
+    )
+  }
+
   toJSON() {
     return this.props.map((field) => field.toJSON())
   }

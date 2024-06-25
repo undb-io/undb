@@ -119,7 +119,7 @@
                   }
                 }}
                 class={cn(
-                  "relative -mx-4 space-y-2 rounded-md border-2 border-transparent p-0 px-4 transition-all",
+                  "bg-background relative -mx-4 space-y-2 rounded-md border-2 border-transparent p-0 px-4 transition-all",
                   isSelected ? "border-primary shadow-lg" : "hover:bg-muted/50",
                 )}
               >

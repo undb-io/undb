@@ -83,7 +83,11 @@
         id="selectAll"
         checked={selectAll}
         onCheckedChange={(checked) => {
-          form.fields = form.fields.toggleFieldVisibility(schema)
+          if (checked) {
+            form.fields = form.fields.show(schema)
+          } else {
+            form.fields = form.fields.hide(schema)
+          }
           setForm()
         }}
       />
@@ -128,7 +132,14 @@
             </div>
 
             <div class="flex items-center gap-2">
-              <Switch bind:checked={formField.required} on:click={setForm} disabled={field.required} />
+              <Switch
+                bind:checked={formField.required}
+                on:click={(e) => {
+                  e.stopPropagation()
+                  setForm()
+                }}
+                disabled={field.required}
+              />
               <label class={cn(disabled ? "cursor-not-allowed" : "cursor-pointer")}>
                 <input type="checkbox" class="hidden" bind:checked={formField.hidden} {disabled} on:change={setForm} />
                 {#if formField.hidden}
