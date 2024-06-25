@@ -11,12 +11,14 @@ import { FormFieldVO, formField } from "./form-field.vo"
 import { FormFieldsVO } from "./form-fields.vo"
 import { FormIdVO, formId, type FormId } from "./form-id.vo"
 import { FormNameVo, formName } from "./form-name.vo"
+import { FormOptionVO, formOption } from "./form-option.vo"
 
 export const formDTO = z.object({
   id: formId,
   name: formName,
   description: z.string().optional().nullable(),
   fields: formField.array(),
+  option: formOption.optional(),
 })
 
 export type IFormDTO = z.infer<typeof formDTO>
@@ -26,6 +28,7 @@ interface IForm {
   description?: string | null
   name: FormNameVo
   fields: FormFieldsVO
+  option?: FormOptionVO | null
 }
 
 export class FormVO extends ValueObject<IForm> {
@@ -39,6 +42,14 @@ export class FormVO extends ValueObject<IForm> {
 
   public set description(description: string | undefined | null) {
     this.props.description = description
+  }
+
+  public get option() {
+    return this.props.option
+  }
+
+  public set option(option: FormOptionVO | undefined | null) {
+    this.props.option = option
   }
 
   public get name() {
@@ -88,6 +99,7 @@ export class FormVO extends ValueObject<IForm> {
       name: this.props.name,
       description: this.description,
       fields: formFields,
+      option: this.props.option,
     })
   }
 
@@ -105,16 +117,18 @@ export class FormVO extends ValueObject<IForm> {
       name: new FormNameVo(dto.name),
       description: dto.description,
       fields: new FormFieldsVO(dto.fields.map((field) => new FormFieldVO(field))),
+      option: dto.option ? new FormOptionVO(dto.option) : null,
     })
   }
 
-  toJSON() {
+  toJSON(): IFormDTO {
     const props = this.props
     return {
       id: props.id.value,
       name: props.name.value,
       description: props.description,
       fields: props.fields.toJSON(),
+      option: props.option?.toJSON(),
     }
   }
 

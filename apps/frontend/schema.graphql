@@ -43,8 +43,13 @@ type Form {
   fields: JSON
   id: ID!
   name: String!
+  option: FormOption
   share: Share
   shareId: ID
+}
+
+type FormOption {
+  backgroundColor: String
 }
 
 scalar JSON

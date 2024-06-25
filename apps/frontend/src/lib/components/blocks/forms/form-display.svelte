@@ -19,6 +19,7 @@
   import { PlusIcon, GripVerticalIcon } from "lucide-svelte"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
   import { isNumber } from "radash"
+  import { getFormBgColor } from "./form-bg-color"
 
   const selectedFieldId = queryParam("formField")
 
@@ -63,10 +64,20 @@
     await tick()
     setForm()
   }
+
+  $: backgroundColor = form.option?.backgroundColor
 </script>
 
-<ScrollArea class="h-full w-full bg-gray-50 p-6 pt-20 shadow-inner">
-  <div class="bg-background mx-auto max-w-[660px] space-y-2 rounded-md px-10 py-6 shadow-xl" data-form-id={form.id}>
+<ScrollArea
+  class={cn(
+    "h-full w-full bg-gray-50 p-6 pt-20 shadow-inner transition-colors",
+    backgroundColor && getFormBgColor(backgroundColor),
+  )}
+>
+  <div
+    class={cn("bg-background mx-auto max-w-[660px] space-y-2 rounded-md px-10 py-6 shadow-xl")}
+    data-form-id={form.id}
+  >
     {#if isEditingFormName}
       <input
         class="text-4xl font-extrabold tracking-tight"

@@ -38,6 +38,9 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
       name
       description
       fields
+      option {
+        backgroundColor
+      }
 
       share {
         enabled

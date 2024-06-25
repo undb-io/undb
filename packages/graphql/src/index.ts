@@ -97,11 +97,16 @@ export class Graphql {
         aggregate: JSON
       }
 
+      type FormOption {
+        backgroundColor: String
+      }
+
       type Form {
         id: ID!
         name: String!
         description: String
         fields: JSON
+        option: FormOption
 
         shareId: ID
         share: Share

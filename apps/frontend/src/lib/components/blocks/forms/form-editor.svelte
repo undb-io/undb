@@ -6,6 +6,7 @@
   import { getTable } from "$lib/store/table.store"
   import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
   import { formId } from "$lib/store/tab.store"
+  import FormOption from "./form-option.svelte"
 
   const table = getTable()
   $: forms = $table.forms
@@ -30,9 +31,7 @@
       </Resizable.Pane>
       <Resizable.Handle withHandle />
       <Resizable.Pane defaultSize={50}>
-        <div class="flex h-full items-center justify-center p-6">
-          <span class="font-semibold">Three</span>
-        </div>
+        <FormOption bind:form />
       </Resizable.Pane>
     </Resizable.PaneGroup>
   </Resizable.Pane>
