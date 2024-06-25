@@ -13,20 +13,21 @@
   import { getShareUrl, type IShareTarget } from "@undb/share"
   import { copyToClipboard } from "@svelte-put/copy"
   import { toast } from "svelte-sonner"
+  import { derived } from "svelte/store"
 
   export let type: IShareTarget["type"]
   export let id: IShareTarget["id"]
 
   const enableShareMutation = createMutation({
     mutationFn: trpc.share.enable.mutate,
-    onSuccess(data, variables, context) {
-      invalidate(`table:${$t.id.value}`)
+    async onSuccess(data, variables, context) {
+      await invalidate(`table:${$t.id.value}`)
     },
   })
 
   const enableShare = async () => {
     if (share) {
-      share.enabled = true
+      shareStore.set(id, { ...$share!, enabled: true })
     }
     $enableShareMutation.mutate({
       target: {
@@ -39,14 +40,14 @@
   const t = getTable()
   const disableShareMutation = createMutation({
     mutationFn: trpc.share.disable.mutate,
-    onSuccess(data, variables, context) {
-      invalidate(`table:${$t.id.value}`)
+    async onSuccess(data, variables, context) {
+      await invalidate(`table:${$t.id.value}`)
     },
   })
 
   const disableShare = async () => {
     if (share) {
-      share.enabled = false
+      shareStore.set(id, { ...$share!, enabled: false })
     }
     $disableShareMutation.mutate({
       target: {
@@ -56,11 +57,11 @@
     })
   }
 
-  $: share = $shareStore.get(id)
-  $: enabled = share?.enabled
+  const share = derived(shareStore, ($shareStore) => $shareStore.get(id))
+  const enabled = derived(share, (share) => share?.enabled ?? false)
   let open = false
 
-  $: url = share ? getShareUrl(type, window.location.origin, share.id) : ""
+  $: url = $share ? getShareUrl(type, window.location.origin, $share.id) : ""
   let copied = false
   const copy = () => {
     copyToClipboard(url)
@@ -77,7 +78,7 @@
     <Button
       disabled={$enableShareMutation.isPending || $disableShareMutation.isPending}
       builders={[builder]}
-      variant={open || enabled ? "secondary" : "ghost"}
+      variant={open || $enabled ? "secondary" : "ghost"}
       size="sm"
     >
       <ShareIcon class="mr-1 h-4 w-4" />
@@ -89,7 +90,7 @@
       <h3 class="text-sm font-semibold">Share</h3>
       <Label class="flex items-center gap-2">
         <Switch
-          checked={enabled}
+          checked={$enabled}
           onCheckedChange={(checked) => {
             if (checked) {
               enableShare()
@@ -98,11 +99,11 @@
             }
           }}
         />
-        {enabled ? "enable" : "disable"}
+        {$enabled ? "enable" : "disable"}
       </Label>
     </div>
 
-    {#if enabled}
+    {#if $enabled}
       <div class="-mx-4 border-t px-4 pt-2">
         <div class="flex items-center gap-2">
           <Input

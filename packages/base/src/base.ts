@@ -36,8 +36,8 @@ export class Base extends AggregateRoot<any> {
 
   public toJSON(): IBaseDTO {
     return {
-      id: this.id.toString(),
-      name: this.name.toString(),
+      id: this.id.value,
+      name: this.name.value,
     }
   }
 }
