@@ -21,6 +21,7 @@
 </script>
 
 <button
+  type="button"
   on:click
   class={cn(
     "flex h-6 w-6 items-center justify-center rounded-sm bg-white",

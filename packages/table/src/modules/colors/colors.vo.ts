@@ -2,9 +2,9 @@ import { ValueObject } from "@undb/domain"
 import { series } from "radash"
 import { COLORS, type IColors } from "./colors"
 
-export class ColorsVO extends ValueObject<ReturnType<typeof series<string>>> {
+export class ColorsVO extends ValueObject<ReturnType<typeof series<(typeof COLORS)[number]>>> {
   constructor() {
-    super(series(COLORS as string[]))
+    super(series(COLORS))
   }
 
   next(color: IColors = "red") {
