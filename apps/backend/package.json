@@ -30,7 +30,7 @@
     "@undb/share": "workspace:*",
     "@undb/trpc": "workspace:*",
     "@undb/webhook": "workspace:*",
-    "bun": "^1.1.16",
+    "bun": "^1.1.17",
     "core-js": "^3.37.1",
     "elysia": "^1.0.25",
     "got": "^14.4.1",
