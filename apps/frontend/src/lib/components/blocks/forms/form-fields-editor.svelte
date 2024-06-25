@@ -3,6 +3,7 @@
   import { FormFieldsVO, type FormVO } from "@undb/table"
   import FieldIcon from "../field-icon/field-icon.svelte"
   import { Switch } from "$lib/components/ui/switch"
+  import ShareFormButton from "$lib/components/blocks/share/share-form-button.svelte"
   import CreateFieldButton from "../create-field/create-field-button.svelte"
   import { GripVerticalIcon, SearchIcon } from "lucide-svelte"
   import { queryParam } from "sveltekit-search-params"
@@ -62,13 +63,16 @@
 </script>
 
 <div class="h-full w-full space-y-3 px-8 py-6">
-  <div class="text-md flex items-center gap-2 font-semibold">
-    <span> Form Fields </span>
-    <span
-      class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
-    >
-      ({form.getVisibleFieldsCount()} / {form.getFieldsCount()} fields selected)
-    </span>
+  <div class="text-md flex items-center justify-between gap-2 font-semibold">
+    <div>
+      <span> Form Fields </span>
+      <span
+        class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
+      >
+        ({form.getVisibleFieldsCount()} / {form.getFieldsCount()} fields selected)
+      </span>
+    </div>
+    <ShareFormButton formId={form.id} />
   </div>
 
   <div class="flex items-center gap-2">
