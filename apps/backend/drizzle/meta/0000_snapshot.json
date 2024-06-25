@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "6f846150-d033-4586-a4ee-64b7fad81240",
+  "id": "ee72e0b9-e2e4-4968-9bcd-86c6f813cdfe",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_audit": {
@@ -276,6 +276,44 @@
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "undb_table_id_mapping": {
+      "name": "undb_table_id_mapping",
+      "columns": {
+        "table_id": {
+          "name": "table_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "subject_id": {
+          "name": "subject_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "undb_table_id_mapping_table_id_undb_table_id_fk": {
+          "name": "undb_table_id_mapping_table_id_undb_table_id_fk",
+          "tableFrom": "undb_table_id_mapping",
+          "tableTo": "undb_table",
+          "columnsFrom": ["table_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "undb_table_id_mapping_table_id_subject_id_pk": {
+          "columns": ["subject_id", "table_id"],
+          "name": "undb_table_id_mapping_table_id_subject_id_pk"
+        }
+      },
       "uniqueConstraints": {}
     },
     "undb_table": {

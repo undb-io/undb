@@ -1,12 +1,15 @@
 import { WontImplementException, type ISpecVisitor, type ISpecification } from "@undb/domain"
-import { and, not, or, type SQL } from "drizzle-orm"
-import type { SQLiteTable, SQLiteUpdateSetSource } from "drizzle-orm/sqlite-core"
+import { and, not, or, type SQL, type SQLWrapper } from "drizzle-orm"
+import type { SQLiteSelectQueryBuilder, SQLiteTable, SQLiteUpdateSetSource } from "drizzle-orm/sqlite-core"
+import type { Database } from "./db"
 
 export interface IAbastractDBFilterVisitor {
   get cond(): SQL | undefined
 }
 
 export abstract class AbstractDBFilterVisitor<T> implements IAbastractDBFilterVisitor, ISpecVisitor {
+  constructor(public qb?: SQLiteSelectQueryBuilder) {}
+
   #conds: (SQL | undefined)[] = []
 
   protected addCond(cond: SQL | undefined) {
@@ -80,6 +83,7 @@ export interface IAbastractDBMutationVisitor<T extends SQLiteTable> {
 export abstract class AbstractDBMutationVisitor<T, S extends SQLiteTable>
   implements IAbastractDBMutationVisitor<S>, ISpecVisitor
 {
+  constructor(protected readonly db: Database) {}
   #updates: Source<S> = {}
   get updates(): Source<S> {
     return this.#updates
@@ -88,6 +92,22 @@ export abstract class AbstractDBMutationVisitor<T, S extends SQLiteTable>
   addUpdates(update: Source<S>) {
     this.#updates = { ...this.#updates, ...update }
   }
+
+  #sql: SQLWrapper[] = []
+  get sql() {
+    return this.#sql
+  }
+
+  addSql(...sql: SQLWrapper[]) {
+    this.#sql.push(...sql)
+  }
+
+  async execute() {
+    for (const sql of this.#sql) {
+      await this.db.run(sql)
+    }
+  }
+
   and(left: ISpecification<T, ISpecVisitor>, right: ISpecification<T, ISpecVisitor>): this {
     left.accept(this)
     right.accept(this)

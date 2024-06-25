@@ -4,7 +4,7 @@ import type { IFormsDTO, IRLSGroupDTO, ISchemaDTO, IViewsDTO, RECORD_EVENTS } fr
 import type { IWebhookHeaders, IWebhookMethod } from "@undb/webhook"
 import type { IRootWebhookCondition } from "@undb/webhook/src/webhook.condition"
 import { sql } from "drizzle-orm"
-import { index, integer, sqliteTableCreator, text, unique } from "drizzle-orm/sqlite-core"
+import { index, integer, primaryKey, sqliteTableCreator, text, unique } from "drizzle-orm/sqlite-core"
 
 const sqliteTable = sqliteTableCreator((name) => `undb_${name}`)
 
@@ -38,6 +38,21 @@ export const tables = sqliteTable(
   (table) => {
     return {
       baseIdIdx: index("table_base_id_idx").on(table.baseId),
+    }
+  },
+)
+
+export const tableIdMapping = sqliteTable(
+  "table_id_mapping",
+  {
+    tableId: text("table_id")
+      .notNull()
+      .references(() => tables.id),
+    subjectId: text("subject_id").notNull(),
+  },
+  (table) => {
+    return {
+      pk: primaryKey({ columns: [table.tableId, table.subjectId] }),
     }
   },
 )

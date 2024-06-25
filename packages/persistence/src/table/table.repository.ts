@@ -51,13 +51,14 @@ export class TableRepository implements ITableRepository {
     const ctx = executionContext.getStore()
     const userId = ctx!.user!.userId!
 
-    const visitor = new TableMutationVisitor(table)
+    const visitor = new TableMutationVisitor(table, this.db)
     spec.unwrap().accept(visitor)
 
     await this.db
       .update(tables)
       .set({ ...visitor.updates, updatedBy: userId })
       .where(eq(tables.id, table.id.value))
+    await visitor.execute()
     await this.underlyingTableService.update(table, spec.unwrap())
     await this.outboxService.save(table)
   }

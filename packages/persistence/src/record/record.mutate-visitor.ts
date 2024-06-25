@@ -27,6 +27,7 @@ import type {
   UserEmpty,
   UserEqual,
 } from "@undb/table"
+import type { RatingEqual } from "@undb/table/src/modules/schema/fields/variants/rating-field/rating-field.specification"
 import type {
   SelectEmpty,
   SelectEqual,
@@ -161,6 +162,9 @@ export class RecordMutateVisitor implements IRecordVisitor {
     throw new Error("Method not implemented.")
   }
   dateIsAfter(spec: DateIsAfter): void {
+    throw new Error("Method not implemented.")
+  }
+  ratingEqual(s: RatingEqual): void {
     throw new Error("Method not implemented.")
   }
   and(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {

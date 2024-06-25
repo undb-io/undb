@@ -26,14 +26,18 @@ import type {
   WithoutView,
 } from "@undb/table"
 import { AbstractDBMutationVisitor } from "../abstract-db.visitor"
-import type { tables } from "../tables"
+import type { Database } from "../db"
+import { tableIdMapping, type tables } from "../tables"
 
 export class TableMutationVisitor
   extends AbstractDBMutationVisitor<TableDo, typeof tables>
   implements ITableSpecVisitor
 {
-  constructor(public readonly table: TableDo) {
-    super()
+  constructor(
+    public readonly table: TableDo,
+    db: Database,
+  ) {
+    super(db)
   }
   withFormId(spec: WithFormIdSpecification): void {
     throw new Error("Method not implemented.")
@@ -68,6 +72,8 @@ export class TableMutationVisitor
   }
   withNewForm(form: WithNewFormSpecification): void {
     this.addUpdates({ forms: this.table.forms?.toJSON() })
+    const insert = this.db.insert(tableIdMapping).values({ tableId: this.table.id.value, subjectId: form.form.id })
+    this.addSql(insert)
   }
   withNewField(schema: WithNewFieldSpecification): void {
     this.addUpdates({ schema: this.table.schema?.toJSON() })

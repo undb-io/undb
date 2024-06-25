@@ -27,7 +27,7 @@ import type {
 } from "@undb/table"
 import { eq, inArray } from "drizzle-orm"
 import { AbstractDBFilterVisitor } from "../abstract-db.visitor"
-import { tables } from "../tables"
+import { tableIdMapping, tables } from "../tables"
 
 export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> implements ITableSpecVisitor {
   withBaseId(id: TableBaseIdSpecification): void {
@@ -101,6 +101,8 @@ export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> impleme
     throw new WontImplementException(TableFilterVisitor.name + ".withSchema")
   }
   withFormId(spec: WithFormIdSpecification): void {
-    throw new Error("wtf")
+    this.qb ??= this.qb!.leftJoin(tableIdMapping, eq(tableIdMapping.tableId, tables.id)).where(
+      eq(tableIdMapping.subjectId, spec.formId),
+    )
   }
 }

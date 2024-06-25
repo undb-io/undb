@@ -42,6 +42,13 @@ CREATE TABLE `undb_share` (
 	`enabled` integer NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE `undb_table_id_mapping` (
+	`table_id` text NOT NULL,
+	`subject_id` text NOT NULL,
+	PRIMARY KEY(`subject_id`, `table_id`),
+	FOREIGN KEY (`table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
 CREATE TABLE `undb_table` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
