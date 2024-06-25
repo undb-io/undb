@@ -106,7 +106,15 @@
     {#if enabled}
       <div class="-mx-4 border-t px-4 pt-2">
         <div class="flex items-center gap-2">
-          <Input value={url} readonly class="flex-1 cursor-pointer" on:click={copy} />
+          <Input
+            value={url}
+            readonly
+            class="flex-1 cursor-pointer"
+            on:click={(e) => {
+              copy()
+              e.target.select()
+            }}
+          />
           <button type="button" on:click={copy}>
             {#if copied}
               <CopyCheckIcon class="h-4 w-4" />
