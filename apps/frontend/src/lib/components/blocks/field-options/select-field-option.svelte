@@ -5,6 +5,9 @@
   import OptionEditor from "$lib/components/blocks/option/option-editor.svelte"
   import { OptionIdVo } from "@undb/table/src/modules/schema/fields/option/option-id.vo"
   import Button from "$lib/components/ui/button/button.svelte"
+  import { isNumber } from "radash"
+  import { SortableList } from "@jhubbardsf/svelte-sortablejs"
+  import { GripVerticalIcon } from "lucide-svelte"
 
   export let constraint: ISelectFieldConstraint | undefined
   const colors = new ColorsVO()
@@ -28,14 +31,37 @@
       },
     ]
   }
+
+  const swap = (oldIndex: number, newIndex: number) => {
+    const options = [...option.options]
+    const [removed] = options.splice(oldIndex, 1)
+    options.splice(newIndex, 0, removed)
+    option.options = [...options]
+  }
 </script>
 
 {#if constraint}
   <div class="space-y-4">
     <div class="space-y-2">
-      {#each option.options as o}
-        <OptionEditor bind:color={o.color} bind:name={o.name} />
-      {/each}
+      <SortableList
+        animation={200}
+        handle=".handler"
+        class="space-y-2"
+        onEnd={(event) => {
+          if (isNumber(event.oldIndex) && isNumber(event.newIndex)) {
+            swap(event.oldIndex, event.newIndex)
+          }
+        }}
+      >
+        {#each option.options as o (o.id)}
+          <div class="flex gap-1">
+            <OptionEditor bind:color={o.color} bind:name={o.name} />
+            <button type="button" class="handler">
+              <GripVerticalIcon class="text-muted-foreground h-4 w-4" />
+            </button>
+          </div>
+        {/each}
+      </SortableList>
 
       <Button on:click={addOption} class="w-full" size="xs" variant="outline">Add Option</Button>
     </div>

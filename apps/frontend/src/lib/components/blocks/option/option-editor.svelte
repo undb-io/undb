@@ -7,7 +7,7 @@
   export let name: IOptionName
 </script>
 
-<div class="flex items-center gap-2">
+<div class="flex flex-1 items-center gap-2">
   <ColorPicker bind:value={color} onColorChange={(value) => (color = value)} />
   <Input class="h-7 text-xs" bind:value={name} />
 </div>
