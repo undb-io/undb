@@ -22,6 +22,7 @@ import { Auth, OpenAPI, Realtime, Web } from "./modules"
 import { loggerPlugin } from "./plugins/logging"
 
 const auth = container.resolve(Auth)
+const web = container.resolve(Web)
 
 export const app = new Elysia()
   .trace(async ({ handle, set }) => {
@@ -61,6 +62,7 @@ export const app = new Elysia()
   })
   .use(auth.route())
   .use(loggerPlugin())
+  .use(web.route())
   .guard(
     {
       beforeHandle(context) {
@@ -77,8 +79,7 @@ export const app = new Elysia()
       const openapi = container.resolve(OpenAPI)
       const realtime = container.resolve(Realtime)
       const graphql = container.resolve(Graphql)
-      const web = container.resolve(Web)
-      return app.use(trpc(route)).use(graphql.route()).use(web.route()).use(openapi.route()).use(realtime.route())
+      return app.use(trpc(route)).use(graphql.route()).use(openapi.route()).use(realtime.route())
     },
   )
 

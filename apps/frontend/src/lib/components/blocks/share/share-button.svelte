@@ -5,7 +5,7 @@
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
-  import { CopyIcon, ShareIcon, CopyCheckIcon } from "lucide-svelte"
+  import { CopyIcon, ShareIcon, CopyCheckIcon, ExternalLinkIcon } from "lucide-svelte"
   import * as Popover from "$lib/components/ui/popover"
   import { shareStore } from "$lib/store/share.store"
   import { invalidate } from "$app/navigation"
@@ -115,6 +115,9 @@
               e.target.select()
             }}
           />
+          <a role="button" href={url} target="_blank">
+            <ExternalLinkIcon class="h-4 w-4" />
+          </a>
           <button type="button" on:click={copy}>
             {#if copied}
               <CopyCheckIcon class="h-4 w-4" />
