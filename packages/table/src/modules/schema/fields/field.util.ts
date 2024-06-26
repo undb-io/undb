@@ -8,6 +8,7 @@ export const inferCreateFieldType = (values: (string | number | null | object | 
     .returnType<IInferCreateFieldDTO>()
     .with(P.array(P.string), () => ({ type: "string" }))
     .with(P.array(P.number), () => ({ type: "number" }))
+    .with(P.array(P.string.regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)), () => ({ type: "email" }))
     .otherwise(() => ({ type: "string" }))
 }
 
@@ -21,6 +22,7 @@ const sortableFieldTypes: FieldType[] = [
   "rollup",
   "select",
   "rating",
+  "email",
 ] as const
 
 export function isFieldSortable(type: FieldType): boolean {
@@ -39,6 +41,7 @@ export const fieldTypes: NoneSystemFieldType[] = [
   "rollup",
   "select",
   "rating",
+  "email",
 ] as const
 export const systemFieldTypes: SystemFieldType[] = [
   "id",
@@ -51,7 +54,7 @@ export const systemFieldTypes: SystemFieldType[] = [
 
 export const allFieldTypes: FieldType[] = [...systemFieldTypes, ...fieldTypes] as const
 
-export const fieldsCanBeRollup: FieldType[] = ["number", "string", "rating"] as const
+export const fieldsCanBeRollup: FieldType[] = ["number", "string", "rating", "email"] as const
 
 export const getIsFieldCanBeRollup = (type: FieldType): type is "number" => {
   return fieldsCanBeRollup.includes(type)

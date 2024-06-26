@@ -1,6 +1,7 @@
 import type { AutoIncrementField } from "./variants/autoincrement-field"
 import type { CreatedAtField } from "./variants/created-at-field"
 import type { CreatedByField } from "./variants/created-by-field"
+import type { EmailField } from "./variants/email-field"
 import type { IdField } from "./variants/id-field/id-field.vo"
 import type { NumberField } from "./variants/number-field/number-field.vo"
 import type { RatingField } from "./variants/rating-field"
@@ -22,6 +23,7 @@ export interface IFieldVisitor {
   number(field: NumberField): void
   rating(field: RatingField): void
   select(field: SelectField): void
+  email(field: EmailField): void
 
   reference(field: ReferenceField): void
   rollup(field: RollupField): void

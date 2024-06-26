@@ -3,6 +3,7 @@ import { referenceFieldDTO, rollupFieldDTO, selectFieldDTO, updatedByFieldDTO } 
 import { autoIncrementFieldDTO } from "../variants/autoincrement-field"
 import { createdAtFieldDTO } from "../variants/created-at-field"
 import { createdByFieldDTO } from "../variants/created-by-field"
+import { createEmailFieldDTO, emailFieldDTO } from "../variants/email-field"
 import { idFieldDTO } from "../variants/id-field/id-field.vo"
 import { createNumberFieldDTO, numberFieldDTO } from "../variants/number-field/number-field.vo"
 import { ratingFieldDTO } from "../variants/rating-field"
@@ -22,6 +23,7 @@ export const fieldDTO = z.discriminatedUnion("type", [
   rollupFieldDTO,
   selectFieldDTO,
   ratingFieldDTO,
+  emailFieldDTO,
 ])
 
 export type IFieldDTO = z.infer<typeof fieldDTO>
@@ -29,6 +31,7 @@ export type IFieldDTO = z.infer<typeof fieldDTO>
 export const inferCreateFieldDTO = z.discriminatedUnion("type", [
   createStringFieldDTO.omit({ id: true, name: true }),
   createNumberFieldDTO.omit({ id: true, name: true }),
+  createEmailFieldDTO.omit({ id: true, name: true }),
 ])
 
 export type IInferCreateFieldDTO = z.infer<typeof inferCreateFieldDTO>

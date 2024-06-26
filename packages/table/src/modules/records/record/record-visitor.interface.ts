@@ -6,6 +6,7 @@ import type {
   IUpdatedAtFieldValueVisitor,
 } from "../../schema"
 import type { ICreatedAtFieldValueVisitor } from "../../schema/fields/variants/created-at-field"
+import type { IEmailFieldValueVisitor } from "../../schema/fields/variants/email-field"
 import type { IIdFieldValueVisitor } from "../../schema/fields/variants/id-field"
 import type { IRatingFieldValueVisitor } from "../../schema/fields/variants/rating-field"
 import type { ISelectFieldValueVisitor } from "../../schema/fields/variants/select-field"
@@ -20,4 +21,5 @@ export type IRecordVisitor = IStringFieldValueVisitor &
   IReferenceFieldValueVisitor &
   ISelectFieldValueVisitor &
   IRatingFieldValueVisitor &
+  IEmailFieldValueVisitor &
   ISpecVisitor

@@ -14,6 +14,7 @@
     CalculatorIcon,
     ListIcon,
     StarIcon,
+    MailIcon,
   } from "lucide-svelte"
 
   export let type: FieldType
@@ -31,6 +32,7 @@
     rollup: CalculatorIcon,
     select: ListIcon,
     rating: StarIcon,
+    email: MailIcon,
   }
 </script>
 

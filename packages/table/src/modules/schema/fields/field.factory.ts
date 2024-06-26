@@ -5,6 +5,7 @@ import type { Field } from "./field.type"
 import { AutoIncrementField } from "./variants/autoincrement-field"
 import { CreatedAtField } from "./variants/created-at-field"
 import { CreatedByField } from "./variants/created-by-field"
+import { EmailField } from "./variants/email-field"
 import { IdField } from "./variants/id-field"
 import { NumberField } from "./variants/number-field/number-field.vo"
 import { RatingField } from "./variants/rating-field/rating-field.vo"
@@ -30,6 +31,7 @@ export class FieldFactory {
       .with({ type: "reference" }, (dto) => new ReferenceField(dto))
       .with({ type: "rollup" }, (dto) => new RollupField(dto))
       .with({ type: "select" }, (dto) => new SelectField(dto))
+      .with({ type: "email" }, (dto) => new EmailField(dto))
       .exhaustive()
   }
 
@@ -41,6 +43,7 @@ export class FieldFactory {
       .with({ type: "reference" }, (dto) => ReferenceField.create(dto))
       .with({ type: "rollup" }, (dto) => RollupField.create(dto))
       .with({ type: "select" }, (dto) => SelectField.create(dto))
+      .with({ type: "email" }, (dto) => EmailField.create(dto))
       .otherwise(() => {
         throw new Error("Field type creation not supported")
       })

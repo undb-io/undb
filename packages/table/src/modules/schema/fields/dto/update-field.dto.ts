@@ -7,6 +7,7 @@ import {
   updateUpdatedByFieldDTO,
 } from "../variants"
 import { updateCreatedAtFieldDTO } from "../variants/created-at-field/created-at-field.vo"
+import { updateEmailFieldDTO } from "../variants/email-field"
 import { updateIdFieldDTO } from "../variants/id-field/id-field.vo"
 import { updateNumberFieldDTO } from "../variants/number-field/number-field.vo"
 import { updateStringFieldDTO } from "../variants/string-field/string-field.vo"
@@ -23,6 +24,7 @@ export const updateFieldDTO = z.discriminatedUnion("type", [
   updateAutoIncrementFieldDTO,
   updateReferenceFieldDTO,
   updateRatingFieldDTO,
+  updateEmailFieldDTO,
 ])
 
 export type IUpdateFieldDTO = z.infer<typeof updateFieldDTO>

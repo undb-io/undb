@@ -39,6 +39,13 @@ import type {
   CreatedByFieldValue,
   ICreatedByFieldConditionSchema,
 } from "./variants/created-by-field"
+import type {
+  EMAIL_TYPE,
+  EmailField,
+  EmailFieldValue,
+  IEmailFieldConditionSchema,
+  IEmailFieldConstraint,
+} from "./variants/email-field"
 import type { ID_TYPE, IIdFieldConditionSchema, IdField, IdFieldValue } from "./variants/id-field"
 import type { INumberFieldConstraint } from "./variants/number-field/number-field-constraint.vo"
 import type { NumberFieldValue } from "./variants/number-field/number-field-value.vo"
@@ -74,6 +81,7 @@ export type Field =
   | RollupField
   | SelectField
   | RatingField
+  | EmailField
 
 export type NoneSystemField = Field & { isSystem: false }
 export type SystemField = Field & { isSystem: true }
@@ -91,6 +99,7 @@ export type FieldValue =
   | RollupFieldValue
   | SelectFieldValue
   | RatingFieldValue
+  | EmailFieldValue
 
 export type MutableFieldValue =
   | StringFieldValue
@@ -98,6 +107,7 @@ export type MutableFieldValue =
   | ReferenceFieldValue
   | SelectFieldValue
   | RatingFieldValue
+  | EmailFieldValue
 
 export type FieldType =
   | typeof STRING_TYPE
@@ -112,6 +122,7 @@ export type FieldType =
   | typeof ROLLUP_TYPE
   | typeof SELECT_TYPE
   | typeof RATING_TYPE
+  | typeof EMAIL_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
@@ -135,6 +146,7 @@ export type IFieldConditionSchema =
   | IRollupFieldConditionSchema
   | ISelectFieldConditionSchema
   | IRatingFieldConditionSchema
+  | IEmailFieldConditionSchema
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
 
@@ -144,5 +156,6 @@ export type IFieldConstraint =
   | IReferenceFieldConstraint
   | ISelectFieldConstraint
   | IRatingFieldConstraint
+  | IEmailFieldConstraint
 
 export type IFieldOption = IReferenceFieldOption | IRollupFieldOption | ISelectFieldOption

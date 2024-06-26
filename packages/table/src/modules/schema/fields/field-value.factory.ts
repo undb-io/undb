@@ -14,6 +14,7 @@ import {
   UpdatedByFieldValue,
 } from "./variants"
 import { CreatedByFieldValue } from "./variants/created-by-field"
+import { EmailFieldValue } from "./variants/email-field"
 import { RatingFieldValue } from "./variants/rating-field"
 import { SelectFieldValue } from "./variants/select-field"
 
@@ -25,6 +26,7 @@ export class FieldValueFactory {
       .with({ type: "string" }, (field) => Some(new StringFieldValue(field.valueSchema.parse(value))))
       .with({ type: "select" }, (field) => Some(new SelectFieldValue(field.valueSchema.parse(value))))
       .with({ type: "reference" }, (field) => Some(new ReferenceFieldValue(field.valueSchema.parse(value))))
+      .with({ type: "email" }, (field) => Some(new EmailFieldValue(field.valueSchema.parse(value))))
       .otherwise(() => None)
   }
 
@@ -42,6 +44,7 @@ export class FieldValueFactory {
       .with("reference", () => Some(new ReferenceFieldValue(value as string[])))
       .with("rollup", () => Some(new RollupFieldValue(value as number | Date)))
       .with("select", () => Some(new SelectFieldValue(value as IOptionId)))
+      .with("email", () => Some(new EmailFieldValue(value as string)))
       .exhaustive()
   }
 }
