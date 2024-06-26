@@ -29,6 +29,7 @@
     rollup: RollupField,
     select: SelectField,
     rating: RatingField,
+    email: StringField,
   }
 </script>
 

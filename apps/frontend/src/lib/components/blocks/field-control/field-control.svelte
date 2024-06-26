@@ -9,6 +9,7 @@
   import ReferenceControl from "./reference-control.svelte"
   import SelectControl from "./select-control.svelte"
   import RatingControl from "./rating-control.svelte"
+  import EmailControl from "./email-control.svelte"
 
   export let readonly = false
   export let field: Field
@@ -37,6 +38,7 @@
     rollup: NumberControl,
     select: SelectControl,
     rating: RatingControl,
+    email: EmailControl,
   }
 </script>
 

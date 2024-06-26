@@ -17,6 +17,7 @@
   import RollupField from "../field-value/rollup-field.svelte"
   import SelectControl from "../field-control/select-control.svelte"
   import RatingControl from "../field-control/rating-control.svelte"
+  import EmailControl from "../field-control/email-control.svelte"
 
   const table = getTable()
 
@@ -39,6 +40,7 @@
     rollup: RollupField,
     select: SelectControl,
     rating: RatingControl,
+    email: EmailControl,
   }
 
   let form: HTMLFormElement
