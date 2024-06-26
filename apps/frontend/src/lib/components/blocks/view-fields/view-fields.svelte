@@ -26,9 +26,9 @@
   const setViewFieldsMutation = createMutation({
     mutationFn: trpc.table.view.setFields.mutate,
     mutationKey: ["table", $table.id.value, "setFields"],
-    onSuccess(data, variables, context) {
-      invalidate(`table:${$table.id.value}`)
-      client.invalidateQueries({ queryKey: ["records", $table.id.value] })
+    async onSuccess(data, variables, context) {
+      await invalidate(`table:${$table.id.value}`)
+      await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
     },
   })
 
@@ -50,7 +50,7 @@
     setViewFields()
   }
 
-  $: viewOption = $table.getViewOption()
+  $: viewOption = $table.getViewOption($viewId)
 
   const setViewOptionMutation = createMutation({
     mutationFn: trpc.table.view.setOption.mutate,
@@ -61,7 +61,8 @@
     },
   })
 
-  const setViewOption = async () => {
+  const setViewOption = async (value: boolean) => {
+    viewOption.showSystemFields = value
     await tick()
     $setViewOptionMutation.mutate({
       tableId: $table.id.value,
@@ -122,7 +123,7 @@
 
       <div class="-mx-2 border-t px-4 pt-2">
         <div class="flex items-center gap-2">
-          <Switch bind:checked={viewOption.showSystemFields} on:click={setViewOption} />
+          <Switch bind:checked={viewOption.showSystemFields} onCheckedChange={setViewOption} />
           <span class="text-muted-foreground text-xs"> Show system fields </span>
         </div>
       </div>
