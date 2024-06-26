@@ -11,7 +11,6 @@
   import { tick } from "svelte"
   import { invalidate } from "$app/navigation"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
-  import { cn } from "$lib/utils"
   import { isNumber } from "radash"
 
   const table = getTable()
@@ -56,8 +55,8 @@
   const setViewOptionMutation = createMutation({
     mutationFn: trpc.table.view.setOption.mutate,
     mutationKey: ["table", $table.id.value, "setOption"],
-    onSuccess(data, variables, context) {
-      invalidate(`table:${$table.id.value}`)
+    async onSuccess(data, variables, context) {
+      await invalidate(`table:${$table.id.value}`)
       client.invalidateQueries({ queryKey: ["records", $table.id.value] })
     },
   })

@@ -106,7 +106,7 @@
             <div class="grid w-full grid-cols-12 items-center gap-2">
               <div class="col-span-10 grid grid-cols-8">
                 <FieldPicker
-                  filter={(field) => !selectedFieldIds.has(field.value) && isFieldSortable(field.value)}
+                  filter={(field) => !selectedFieldIds.has(field.value) && isFieldSortable(field.type)}
                   bind:value={item.fieldId}
                   class="col-span-5 rounded-r-none border-r-0"
                 />
