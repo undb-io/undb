@@ -16,6 +16,7 @@
   import { isNumber } from "radash"
   import { Label } from "$lib/components/ui/label"
   import { Input } from "$lib/components/ui/input"
+  import { invalidate } from "$app/navigation"
 
   const selectedFieldId = queryParam("formField")
 

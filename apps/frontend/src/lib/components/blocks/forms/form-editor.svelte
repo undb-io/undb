@@ -31,7 +31,9 @@
       </Resizable.Pane>
       <Resizable.Handle withHandle />
       <Resizable.Pane defaultSize={50}>
-        <FormOption bind:form />
+        {#if form}
+          <FormOption bind:form />
+        {/if}
       </Resizable.Pane>
     </Resizable.PaneGroup>
   </Resizable.Pane>

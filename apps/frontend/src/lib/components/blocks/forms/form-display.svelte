@@ -20,6 +20,7 @@
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
   import { isNumber } from "radash"
   import { getFormBgColor } from "./form-bg-color"
+  import { invalidate } from "$app/navigation"
 
   const selectedFieldId = queryParam("formField")
 
@@ -34,6 +35,9 @@
   const setFormMutation = createMutation({
     mutationKey: ["table", $table.id.value, "setForm"],
     mutationFn: trpc.table.form.set.mutate,
+    async onSuccess() {
+      await invalidate(`table:${$table.id.value}`)
+    },
   })
 
   const setForm = async () => {
@@ -57,12 +61,12 @@
   }
 
   const swap = async (oldIndex: number, newIndex: number) => {
-    const newFormFields = [...formFields]
+    const newFormFields = [...form.fields.props]
     const [removed] = newFormFields.splice(oldIndex, 1)
     newFormFields.splice(newIndex, 0, removed)
     form.fields = new FormFieldsVO(newFormFields)
     await tick()
-    setForm()
+    await setForm()
   }
 
   $: backgroundColor = form.option?.backgroundColor

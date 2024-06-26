@@ -57,9 +57,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
     if (formId) {
       const form = this.forms?.props.find((form) => form.id === formId.value)
       if (form) {
-        const formFields = form.visibleFields
-        const formFieldsIds = new Set(formFields.map((field) => field.fieldId))
-        return fields.filter((field) => formFieldsIds.has(field.id.value))
+        return form.visibleFields.map((f) => this.schema.getFieldById(new FieldIdVo(f.fieldId)).unwrap())
       }
     }
     const showSystemFields = this.views.getViewById(viewId).showSystemFields

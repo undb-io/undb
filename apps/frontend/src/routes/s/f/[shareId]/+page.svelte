@@ -27,7 +27,7 @@
   const table = getTable()
 
   $: form = formId ? $table.forms?.getFormById(formId) : undefined
-  const schema = $table.schema.mutableSchema
+  $: schema = $table.schema.mutableSchema
 
   $: backgroundColor = form?.option?.backgroundColor
 
@@ -88,49 +88,51 @@
       backgroundColor && getFormBgColor(backgroundColor),
     )}
   >
-    <div
-      class={cn("bg-background mx-auto max-w-[660px] space-y-2 rounded-md px-10 py-6 shadow-xl")}
-      data-form-id={form.id}
-    >
-      <h2 class="text-4xl font-extrabold tracking-tight">
-        {form.name}
-      </h2>
+    <form method="POST" use:enhance>
+      <div
+        class={cn("bg-background mx-auto max-w-[660px] space-y-2 rounded-md px-10 py-6 shadow-xl")}
+        data-form-id={form.id}
+      >
+        <h2 class="text-4xl font-extrabold tracking-tight">
+          {form.name}
+        </h2>
 
-      {#if form.description}
-        <div class="my-2">
-          <div>Description</div>
-          <p class="text-sm">{form.description}</p>
-        </div>
-      {/if}
+        {#if form.description}
+          <div class="my-2">
+            <div>Description</div>
+            <p class="text-sm">{form.description}</p>
+          </div>
+        {/if}
 
-      <div class="space-y-2" use:autoAnimate>
-        {#each fields as field}
-          {@const shouldShow = !form || form.getShouldShowField(field.id.value, $table.schema.fieldMapById, tempRecord)}
-          {#if shouldShow}
-            <Form.Field form={f} name={field.id.value}>
-              <Form.Control let:attrs>
-                <Form.Label class="flex items-center justify-between gap-2">
-                  <div class="flex items-center gap-2">
-                    <FieldIcon type={field.type} class="h-4 w-4" />
-                    <span>{field.name.value}</span>
-                    {#if field.required}
-                      <span class="text-red-500">*</span>
-                    {/if}
-                  </div>
-                  <ShieldCheckIcon class="text-muted-foreground h-4 w-4" />
-                </Form.Label>
-                <FieldControl {...attrs} bind:value={$formData[field.id.value]} {field} disabled={field.isSystem} />
-              </Form.Control>
-              <Form.FieldErrors />
-            </Form.Field>
-          {/if}
-        {/each}
+        <div class="space-y-4" use:autoAnimate>
+          {#each fields as field}
+            {@const shouldShow =
+              !form || form.getShouldShowField(field.id.value, $table.schema.fieldMapById, tempRecord)}
+            {#if shouldShow}
+              <Form.Field form={f} name={field.id.value}>
+                <Form.Control let:attrs>
+                  <Form.Label class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2" data-field-id={field.id.value}>
+                      <FieldIcon type={field.type} class="h-4 w-4" />
+                      <span>{field.name.value}</span>
+                      {#if field.required}
+                        <span class="text-red-500">*</span>
+                      {/if}
+                    </div>
+                  </Form.Label>
+                  <FieldControl {...attrs} bind:value={$formData[field.id.value]} {field} disabled={field.isSystem} />
+                </Form.Control>
+                <Form.FieldErrors />
+              </Form.Field>
+            {/if}
+          {/each}
 
-        <div class="flex justify-between">
-          <div></div>
-          <Button>Submit</Button>
+          <div class="flex justify-between">
+            <div></div>
+            <Button>Submit</Button>
+          </div>
         </div>
       </div>
-    </div>
+    </form>
   </ScrollArea>
 {/if}
