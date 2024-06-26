@@ -6,6 +6,7 @@
   import ReferenceFieldOption from "./reference-field-option.svelte"
   import RollupFieldOption from "./rollup-field-option.svelte"
   import SelectFieldOption from "./select-field-option.svelte"
+  import RatingFieldOption from "./rating-field-option.svelte"
 
   export let constraint: IFieldConstraint | undefined
   export let option: any | undefined
@@ -19,6 +20,7 @@
     reference: ReferenceFieldOption,
     rollup: RollupFieldOption,
     select: SelectFieldOption,
+    rating: RatingFieldOption,
   }
 
   export let type: NoneSystemFieldType
