@@ -16,6 +16,7 @@
   import ReferenceControl from "../field-control/reference-control.svelte"
   import RollupField from "../field-value/rollup-field.svelte"
   import SelectControl from "../field-control/select-control.svelte"
+  import RatingControl from "../field-control/rating-control.svelte"
 
   const table = getTable()
 
@@ -37,6 +38,7 @@
     reference: ReferenceControl,
     rollup: RollupField,
     select: SelectControl,
+    rating: RatingControl,
   }
 
   let form: HTMLFormElement

@@ -61,6 +61,7 @@ export class Graphql {
       enum FieldType {
         string
         number
+        rating
         id
         createdAt
         createdBy

@@ -3,7 +3,9 @@ import { z } from "@undb/zod"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
+import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { createAbstractNumberFieldMather } from "../abstractions/abstract-number-field.condition"
+import { abstractNumberAggregate } from "../abstractions/abstract-number.aggregate"
 import { RatingFieldConstraint, ratingFieldConstraint } from "./rating-field-constraint.vo"
 import { RatingFieldValue, mutateRatingFieldValueSchema } from "./rating-field-value.vo"
 import {
@@ -12,8 +14,8 @@ import {
   type IRatingFieldConditionSchema,
 } from "./rating-field.condition"
 import { RatingEqual } from "./rating-field.specification"
-import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
-import { abstractNumberAggregate } from "../abstractions/abstract-number.aggregate"
+
+const DEFAULT_RATING_MAX = 5
 
 export const RATING_TYPE = "rating" as const
 
@@ -85,5 +87,9 @@ export class RatingField extends AbstractField<RatingFieldValue, RatingFieldCons
 
   override get aggregate() {
     return abstractNumberAggregate
+  }
+
+  public get max() {
+    return this.constraint.mapOr(DEFAULT_RATING_MAX, (c) => c.props.max || DEFAULT_RATING_MAX)
   }
 }

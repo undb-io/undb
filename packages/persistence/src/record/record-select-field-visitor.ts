@@ -1,5 +1,6 @@
 import {
   ID_TYPE,
+  RatingField,
   SelectField,
   type AutoIncrementField,
   type CreatedAtField,
@@ -95,6 +96,9 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     this.addSelect(this.getField(field.id.value))
   }
   number(field: NumberField): void {
+    this.addSelect(this.getField(field.id.value))
+  }
+  rating(field: RatingField): void {
     this.addSelect(this.getField(field.id.value))
   }
   reference(field: ReferenceField): void {

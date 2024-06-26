@@ -8,6 +8,7 @@
   import UserControl from "./user-control.svelte"
   import ReferenceControl from "./reference-control.svelte"
   import SelectControl from "./select-control.svelte"
+  import RatingControl from "./rating-control.svelte"
 
   export let field: Field
 
@@ -34,6 +35,7 @@
     reference: ReferenceControl,
     rollup: NumberControl,
     select: SelectControl,
+    rating: RatingControl,
   }
 </script>
 

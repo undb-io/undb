@@ -1,6 +1,7 @@
 import {
   CreatedByField,
   ID_TYPE,
+  RatingField,
   ReferenceField,
   RollupField,
   SelectField,
@@ -96,6 +97,11 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     this.addColumn(c)
   }
   number(field: NumberField): void {
+    const c = this.tb.addColumn(field.id.value, "real")
+    this.addColumn(c)
+  }
+
+  rating(field: RatingField): void {
     const c = this.tb.addColumn(field.id.value, "real")
     this.addColumn(c)
   }

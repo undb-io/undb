@@ -27,6 +27,7 @@ import type {
   UserEmpty,
   UserEqual,
 } from "@undb/table"
+import type { RatingEqual } from "@undb/table/src/modules/schema/fields/variants/rating-field/rating-field.specification"
 import type {
   SelectEmpty,
   SelectEqual,
@@ -156,6 +157,10 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
   }
   numberEqual(spec: NumberEqual): void {
     const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value)
+    this.addCond(cond)
+  }
+  ratingEqual(s: RatingEqual): void {
+    const cond = this.eb.eb(this.getFieldId(s), "=", s.value)
     this.addCond(cond)
   }
   stringEqual(spec: StringEqual): void {

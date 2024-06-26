@@ -1,5 +1,6 @@
 import {
   ID_TYPE,
+  RatingField,
   SelectField,
   type AutoIncrementField,
   type CreatedAtField,
@@ -48,6 +49,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
   updatedBy(field: UpdatedByField): void {}
   string(field: StringField): void {}
   number(field: NumberField): void {}
+  rating(field: RatingField): void {}
   select(field: SelectField): void {}
   reference(field: ReferenceField): void {
     const foreignTable = this.foreignTables.get(field.foreignTableId)

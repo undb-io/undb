@@ -165,7 +165,7 @@ export class RecordMutateVisitor implements IRecordVisitor {
     throw new Error("Method not implemented.")
   }
   ratingEqual(s: RatingEqual): void {
-    throw new Error("Method not implemented.")
+    this.setData(s.fieldId.value, s.value)
   }
   and(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
     left.accept(this)

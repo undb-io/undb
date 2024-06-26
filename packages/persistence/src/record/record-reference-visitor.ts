@@ -1,5 +1,6 @@
 import {
   ID_TYPE,
+  RatingField,
   SelectField,
   type AutoIncrementField,
   type CreatedAtField,
@@ -52,6 +53,9 @@ export class RecordReferenceVisitor implements IFieldVisitor {
     throw new Error("Method not implemented.")
   }
   number(field: NumberField): void {
+    throw new Error("Method not implemented.")
+  }
+  rating(field: RatingField): void {
     throw new Error("Method not implemented.")
   }
   select(field: SelectField): void {

@@ -9,6 +9,7 @@
   import RollupField from "./rollup-field.svelte"
   import ReferenceField from "./reference-field.svelte"
   import SelectField from "./select-field.svelte"
+  import RatingField from "./rating-field.svelte"
 
   export let type: FieldType
   export let value: any
@@ -27,6 +28,7 @@
     reference: ReferenceField,
     rollup: RollupField,
     select: SelectField,
+    rating: RatingField,
   }
 </script>
 

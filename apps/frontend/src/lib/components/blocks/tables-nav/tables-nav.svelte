@@ -33,7 +33,7 @@
             data-base-id={base.id}
             class="text-muted-foreground data-[active=true]:bg-muted data-[active=true]:text-muted-foreground group flex items-center justify-between gap-3 px-3 py-2"
           >
-            <a class="flex" href={`/bases/${base.id}`}>
+            <a class="flex w-full flex-1" href={`/bases/${base.id}`}>
               <span class="flex items-center gap-3">
                 <HardDriveIcon class="h-4 w-4" />
                 {base.name}
