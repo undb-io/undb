@@ -47,12 +47,12 @@
     derived([table], ([$table]) => ({
       mutationKey: ["record", $table.id.value, field.id.value, recordId],
       mutationFn: trpc.record.update.mutate,
-      onSuccess(data, variables, context) {
+      onSuccess() {
         form.querySelectorAll("input").forEach((input) => {
           input.blur()
         })
       },
-      onError(error, variables, context) {
+      onError(error: Error) {
         toast.error(error.message)
       },
     })),
