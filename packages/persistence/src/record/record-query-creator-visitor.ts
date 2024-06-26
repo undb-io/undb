@@ -16,6 +16,7 @@ import {
   type UpdatedAtField,
   type UpdatedByField,
 } from "@undb/table"
+import type { EmailField } from "@undb/table/src/modules/schema/fields/variants/email-field"
 import type { QueryCreator, SelectExpression } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { JoinTable } from "../underlying/reference/join-table"
@@ -51,6 +52,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
   number(field: NumberField): void {}
   rating(field: RatingField): void {}
   select(field: SelectField): void {}
+  email(field: EmailField): void {}
   reference(field: ReferenceField): void {
     const foreignTable = this.foreignTables.get(field.foreignTableId)
     if (!foreignTable) {

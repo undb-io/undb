@@ -1,4 +1,4 @@
-query GetFormShareData($shareId: ID!) {
+query GetViewShareData($shareId: ID!) {
   member {
     role
     user {

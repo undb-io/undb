@@ -28,6 +28,7 @@ enum FieldType {
   autoIncrement
   createdAt
   createdBy
+  email
   id
   number
   rating

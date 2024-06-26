@@ -16,6 +16,7 @@ import {
   type UpdatedAtField,
   type UpdatedByField,
 } from "@undb/table"
+import type { EmailField } from "@undb/table/src/modules/schema/fields/variants/email-field"
 import type { SelectQueryBuilder } from "kysely"
 
 export class RecordReferenceVisitor implements IFieldVisitor {
@@ -65,6 +66,9 @@ export class RecordReferenceVisitor implements IFieldVisitor {
     this.qb = this.qb.leftJoin(field.id.value, `${this.table.id.value}.${ID_TYPE}`, `${field.id.value}.${ID_TYPE}`)
   }
   rollup(field: RollupField): void {
+    throw new Error("Method not implemented.")
+  }
+  email(field: EmailField): void {
     throw new Error("Method not implemented.")
   }
 }

@@ -7,7 +7,7 @@
   import { shareStore } from "$lib/store/share.store"
 
   export let data: LayoutData
-  $: tableStore = data.getFormShareData
+  $: tableStore = data.getViewShareData
 
   $: fetching = $tableStore.fetching
   $: tableDTO = $tableStore.data?.tableByShare

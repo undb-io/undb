@@ -27,6 +27,7 @@ import type {
   UserEmpty,
   UserEqual,
 } from "@undb/table"
+import type { EmailEqual } from "@undb/table/src/modules/schema/fields/variants/email-field/email-field.specification"
 import type { RatingEqual } from "@undb/table/src/modules/schema/fields/variants/rating-field/rating-field.specification"
 import type {
   SelectEmpty,
@@ -165,6 +166,9 @@ export class RecordMutateVisitor implements IRecordVisitor {
     throw new Error("Method not implemented.")
   }
   ratingEqual(s: RatingEqual): void {
+    this.setData(s.fieldId.value, s.value)
+  }
+  emailEqual(s: EmailEqual): void {
     this.setData(s.fieldId.value, s.value)
   }
   and(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {

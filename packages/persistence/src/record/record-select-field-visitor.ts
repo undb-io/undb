@@ -16,6 +16,7 @@ import {
   type UpdatedAtField,
   type UpdatedByField,
 } from "@undb/table"
+import type { EmailField } from "@undb/table/src/modules/schema/fields/variants/email-field"
 import { getTableName } from "drizzle-orm"
 import { sql, type ExpressionBuilder, type SelectExpression } from "kysely"
 import { users } from "../tables"
@@ -99,6 +100,9 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     this.addSelect(this.getField(field.id.value))
   }
   rating(field: RatingField): void {
+    this.addSelect(this.getField(field.id.value))
+  }
+  email(field: EmailField): void {
     this.addSelect(this.getField(field.id.value))
   }
   reference(field: ReferenceField): void {

@@ -27,6 +27,7 @@ import type {
   UserEmpty,
   UserEqual,
 } from "@undb/table"
+import type { EmailEqual } from "@undb/table/src/modules/schema/fields/variants/email-field/email-field.specification"
 import type { RatingEqual } from "@undb/table/src/modules/schema/fields/variants/rating-field/rating-field.specification"
 import type {
   SelectEmpty,
@@ -165,6 +166,10 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
   }
   stringEqual(spec: StringEqual): void {
     const cond = this.eb.eb(this.getFieldId(spec), "=", spec.values.value)
+    this.addCond(cond)
+  }
+  emailEqual(s: EmailEqual): void {
+    const cond = this.eb.eb(this.getFieldId(s), "=", s.value)
     this.addCond(cond)
   }
 }

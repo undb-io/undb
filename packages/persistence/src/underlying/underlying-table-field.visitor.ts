@@ -14,6 +14,7 @@ import {
   type StringField,
   type UpdatedAtField,
 } from "@undb/table"
+import type { EmailField } from "@undb/table/src/modules/schema/fields/variants/email-field"
 import { getTableName } from "drizzle-orm"
 import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, CreateTableBuilder, sql } from "kysely"
 import type { IQueryBuilder } from "../qb"
@@ -100,7 +101,10 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     const c = this.tb.addColumn(field.id.value, "real")
     this.addColumn(c)
   }
-
+  email(field: EmailField): void {
+    const c = this.tb.addColumn(field.id.value, "varchar(255)")
+    this.addColumn(c)
+  }
   rating(field: RatingField): void {
     const c = this.tb.addColumn(field.id.value, "real")
     this.addColumn(c)

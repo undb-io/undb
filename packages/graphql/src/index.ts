@@ -62,6 +62,7 @@ export class Graphql {
         string
         number
         rating
+        email
         id
         createdAt
         createdBy
