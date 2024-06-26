@@ -12,10 +12,10 @@
   import { CREATE_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
   import Command from "$lib/components/blocks/command/command.svelte"
   import { role } from "$lib/store/workspace-member.store"
-  import { baseId, bases as basesStore } from "$lib/store/base.store"
+  import { bases as basesStore } from "$lib/store/base.store"
   import NavTools from "$lib/components/blocks/nav/nav-tools.svelte"
-  import CreateBaseDialog from "$lib/components/blocks/create-base/create-base-dialog.svelte"
-  import { getTable } from "$lib/store/table.store"
+  import { onMount } from "svelte"
+  import type { ComponentType } from "svelte"
 
   export let data: LayoutData
 
@@ -51,6 +51,11 @@
   $: if (tables && tables?.length !== 0 && !$page.params.tableId && $page.route.id === "/(authed)") {
     goto(`/t/${tables[0]?.id}`, { replaceState: true })
   }
+
+  let CreateBaseDialog: ComponentType
+  onMount(async () => {
+    CreateBaseDialog = (await import("$lib/components/blocks/create-base/create-base-dialog.svelte")).default
+  })
 </script>
 
 <Resizable.PaneGroup direction="horizontal">
@@ -79,7 +84,9 @@
 </Resizable.PaneGroup>
 
 <CreateTableSheet />
-<CreateBaseDialog />
+{#if CreateBaseDialog}
+  <CreateBaseDialog />
+{/if}
 <Command {tables} />
 
 <svelte:window
