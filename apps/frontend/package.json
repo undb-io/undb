@@ -63,7 +63,7 @@
     "@formkit/auto-animate": "^0.8.2",
     "@internationalized/date": "^3.5.4",
     "@svelte-put/clickoutside": "^3.0.2",
-    "@tanstack/svelte-query": "^5.47.0",
+    "@tanstack/svelte-query": "^5.48.0",
     "@trpc/client": "^10.45.2",
     "@undb/zod": "workspace:*",
     "bits-ui": "^0.21.10",
