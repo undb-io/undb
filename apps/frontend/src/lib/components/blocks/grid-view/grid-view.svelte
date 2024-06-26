@@ -28,6 +28,7 @@
   import { DELETE_RECORD_MODAL, DUPLICATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
   import { ClipboardCopyIcon, CopyIcon, Maximize2Icon, Trash2Icon } from "lucide-svelte"
+  import { createGridViewStore, gridViewStore, isRowSelected, isSelected } from "./grid-view.store"
 
   export let readonly = false
 
@@ -216,7 +217,7 @@
                 <ContextMenu.Trigger>
                   <Table.Row
                     {...rowAttrs}
-                    data-state={$selectedDataIds[row.id] && "selected"}
+                    data-state={($selectedDataIds[row.id] || $isRowSelected(recordId)) && "selected"}
                     class="text-foreground group text-xs transition-none"
                   >
                     {@const record = dos.get(recordId)}
@@ -233,8 +234,16 @@
                             "border-border relative border-r p-0 [&:has([role=checkbox])]:pl-3",
                             (idx === 0 || idx === 1) && "border-r-0",
                             hasFilter && "bg-orange-50",
+                            $isSelected(recordId, cell.column.id) && "bg-gray-100",
                           )}
                           {...attrs}
+                          on:click={() => {
+                            if (cell.id === "$select") {
+                              return
+                            }
+
+                            gridViewStore.select(recordId, cell.column.id)
+                          }}
                         >
                           {#if idx === 0 && match && condition && "border-l-4"}
                             <div

@@ -69,19 +69,13 @@
   }
 </script>
 
-<form
-  on:submit|preventDefault|stopPropagation={handleSubmit}
-  bind:this={form}
-  class={cn("text-xs", !field.isMutable && "px-2")}
->
-  <svelte:component
-    this={map[field.type]}
-    bind:value
-    {displayValue}
-    {field}
-    {index}
-    onValueChange={(v) => {
-      value = v
-    }}
-  />
-</form>
+<svelte:component
+  this={map[field.type]}
+  bind:value
+  {displayValue}
+  {field}
+  {index}
+  onValueChange={(v) => {
+    value = v
+  }}
+/>
