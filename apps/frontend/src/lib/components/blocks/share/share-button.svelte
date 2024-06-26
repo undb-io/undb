@@ -13,7 +13,7 @@
   import { getShareUrl, type IShareTarget } from "@undb/share"
   import { copyToClipboard } from "@svelte-put/copy"
   import { toast } from "svelte-sonner"
-  import { derived } from "svelte/store"
+  import { cn } from "$lib/utils"
 
   export let type: IShareTarget["type"]
   export let id: IShareTarget["id"]
@@ -26,9 +26,6 @@
   })
 
   const enableShare = async () => {
-    if (share) {
-      shareStore.set(id, { ...$share!, enabled: true })
-    }
     $enableShareMutation.mutate({
       target: {
         type,
@@ -46,9 +43,6 @@
   })
 
   const disableShare = async () => {
-    if (share) {
-      shareStore.set(id, { ...$share!, enabled: false })
-    }
     $disableShareMutation.mutate({
       target: {
         type,
@@ -57,11 +51,12 @@
     })
   }
 
-  const share = derived(shareStore, ($shareStore) => $shareStore.get(id))
-  const enabled = derived(share, (share) => share?.enabled ?? false)
+  $: share = $shareStore.get(id)
+  $: console.log($t)
+  $: enabled = share?.enabled
   let open = false
 
-  $: url = $share ? getShareUrl(type, window.location.origin, $share.id) : ""
+  $: url = share?.id ? getShareUrl(type, window.location.origin, share.id) : ""
   let copied = false
   const copy = () => {
     copyToClipboard(url)
@@ -78,7 +73,7 @@
     <Button
       disabled={$enableShareMutation.isPending || $disableShareMutation.isPending}
       builders={[builder]}
-      variant={open || $enabled ? "secondary" : "ghost"}
+      variant={open || enabled ? "secondary" : "ghost"}
       size="sm"
     >
       <ShareIcon class="mr-1 h-4 w-4" />
@@ -86,11 +81,11 @@
     </Button>
   </Popover.Trigger>
   <Popover.Content class="w-[400px]">
-    <div class="-mx-4 flex items-center justify-between px-4 pb-2">
+    <div class={cn("-mx-4 flex items-center justify-between px-4", enabled && "pb-2")}>
       <h3 class="text-sm font-semibold">Share</h3>
       <Label class="flex items-center gap-2">
         <Switch
-          checked={$enabled}
+          checked={enabled}
           onCheckedChange={(checked) => {
             if (checked) {
               enableShare()
@@ -99,11 +94,11 @@
             }
           }}
         />
-        {$enabled ? "enable" : "disable"}
+        {enabled ? "enable" : "disable"}
       </Label>
     </div>
 
-    {#if $enabled}
+    {#if enabled && share?.id}
       <div class="-mx-4 border-t px-4 pt-2">
         <div class="flex items-center gap-2">
           <Input

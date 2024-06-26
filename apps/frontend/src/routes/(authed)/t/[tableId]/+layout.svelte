@@ -23,13 +23,13 @@
   $: if (tableDTO) {
     for (const view of tableDTO.views) {
       if (view.share) {
-        $shareStore.set(view.id, { ...view.share, target: { type: "view", id: view.id } })
+        shareStore.set(view.id, { ...view.share, target: { type: "view", id: view.id } })
       }
     }
 
     for (const form of tableDTO.forms ?? []) {
       if (form?.share) {
-        $shareStore.set(form.id, { ...form.share, target: { type: "form", id: form.id } })
+        shareStore.set(form.id, { ...form.share, target: { type: "form", id: form.id } })
       }
     }
   }
