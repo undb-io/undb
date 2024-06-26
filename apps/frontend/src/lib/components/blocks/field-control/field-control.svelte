@@ -10,6 +10,7 @@
   import SelectControl from "./select-control.svelte"
   import RatingControl from "./rating-control.svelte"
 
+  export let readonly = false
   export let field: Field
 
   export let value: any
@@ -39,4 +40,4 @@
   }
 </script>
 
-<svelte:component this={map[field.type]} on:change {...$$restProps} bind:value {field} />
+<svelte:component this={map[field.type]} {readonly} on:change {...$$restProps} bind:value {field} />

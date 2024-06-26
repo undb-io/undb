@@ -52,7 +52,6 @@
   }
 
   $: share = $shareStore.get(id)
-  $: console.log($t)
   $: enabled = share?.enabled
   let open = false
 

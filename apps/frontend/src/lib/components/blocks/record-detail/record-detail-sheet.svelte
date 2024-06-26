@@ -72,7 +72,7 @@
       <div class="grid h-full grid-cols-4">
         {#if recordDo}
           <div class={cn("pt-4", $preferences.showAudit && $r ? "col-span-3 pr-4" : "col-span-4")}>
-            <RecordDetail readonly record={recordDo} bind:disabled />
+            <RecordDetail {readonly} record={recordDo} bind:disabled />
           </div>
         {/if}
         {#if $preferences.showAudit && $r}
