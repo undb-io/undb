@@ -4,7 +4,7 @@
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
   import * as Popover from "$lib/components/ui/popover"
   import { getTable, viewId } from "$lib/store/table.store"
-  import { FieldIdVo } from "@undb/table"
+  import { FieldIdVo, viewField } from "@undb/table"
   import { ListIcon, GripVerticalIcon } from "lucide-svelte"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
@@ -95,7 +95,7 @@
           }
         }}
       >
-        {#each viewFields as viewField}
+        {#each viewFields as viewField (viewField.fieldId)}
           {@const field = $table.schema.getFieldById(new FieldIdVo(viewField.fieldId)).into(undefined)}
           {#if field}
             <div class="hover:bg-muted flex items-center justify-between rounded-sm p-2 transition-colors">
