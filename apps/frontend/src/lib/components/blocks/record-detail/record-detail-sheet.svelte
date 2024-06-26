@@ -15,6 +15,8 @@
   import { preferences } from "$lib/store/persisted.store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
 
+  export let readonly = false
+
   const r = queryParam("r", ssp.string(), { pushHistory: false })
 
   const table = getTable()
@@ -70,7 +72,7 @@
       <div class="grid h-full grid-cols-4">
         {#if recordDo}
           <div class={cn("pt-4", $preferences.showAudit && $r ? "col-span-3 pr-4" : "col-span-4")}>
-            <RecordDetail record={recordDo} bind:disabled />
+            <RecordDetail readonly record={recordDo} bind:disabled />
           </div>
         {/if}
         {#if $preferences.showAudit && $r}
@@ -81,9 +83,11 @@
       </div>
     </ScrollArea>
 
-    <Sheet.Footer class="-mx-6 border-t px-6 pt-4">
-      <Button variant="outline" type="button" on:click={() => ($r = null)}>Cancel</Button>
-      <Button type="submit" form="updateRecord" {disabled}>Update</Button>
-    </Sheet.Footer>
+    {#if !readonly}
+      <Sheet.Footer class="-mx-6 border-t px-6 pt-4">
+        <Button variant="outline" type="button" on:click={() => ($r = null)}>Cancel</Button>
+        <Button type="submit" form="updateRecord" {disabled}>Update</Button>
+      </Sheet.Footer>
+    {/if}
   </Sheet.Content>
 </Sheet.Root>

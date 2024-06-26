@@ -21,6 +21,7 @@ import type {
   WithViewColor,
   WithViewFields,
   WithViewFilter,
+  WithViewIdSpecification,
   WithViewOption,
   WithViewSort,
   WithoutView,
@@ -103,6 +104,11 @@ export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> impleme
   withFormId(spec: WithFormIdSpecification): void {
     this.qb ??= this.qb!.leftJoin(tableIdMapping, eq(tableIdMapping.tableId, tables.id)).where(
       eq(tableIdMapping.subjectId, spec.formId),
+    )
+  }
+  withViewId(spec: WithViewIdSpecification): void {
+    this.qb ??= this.qb!.leftJoin(tableIdMapping, eq(tableIdMapping.tableId, tables.id)).where(
+      eq(tableIdMapping.subjectId, spec.viewId),
     )
   }
 }

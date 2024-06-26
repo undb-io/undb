@@ -4,6 +4,8 @@
   import type { SelectField } from "@undb/table"
   import Option from "../option/option.svelte"
 
+  export let readonly = false
+
   export let field: SelectField
   export let value: string
 
@@ -12,6 +14,7 @@
 </script>
 
 <Select.Root
+  disabled={readonly}
   selected={selectedOption}
   onSelectedChange={(s) => {
     if (s) {

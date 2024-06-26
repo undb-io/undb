@@ -14,6 +14,8 @@
 
   export let id: string
 
+  export let readonly = false
+
   const copy = async () => {
     await copyToClipboard(id)
     toast.success("Copied record ID to clipboard")
@@ -39,28 +41,32 @@
           <ClipboardCopyIcon class="mr-2 h-4 w-4" />
           Copy record ID</DropdownMenu.Item
         >
-        <DropdownMenu.Item
-          class="text-xs"
-          on:click={() => {
-            toggleModal(DUPLICATE_RECORD_MODAL)
-            $duplicateRecordId = id
-          }}
-        >
-          <CopyIcon class="mr-2 h-4 w-4" />
-          Duplicate Record
-        </DropdownMenu.Item>
+        {#if !readonly}
+          <DropdownMenu.Item
+            class="text-xs"
+            on:click={() => {
+              toggleModal(DUPLICATE_RECORD_MODAL)
+              $duplicateRecordId = id
+            }}
+          >
+            <CopyIcon class="mr-2 h-4 w-4" />
+            Duplicate Record
+          </DropdownMenu.Item>
+        {/if}
       </DropdownMenu.Group>
-      <DropdownMenu.Separator />
-      <DropdownMenu.Item
-        on:click={() => {
-          toggleModal(DELETE_RECORD_MODAL)
-          $deleteRecordId = id
-        }}
-        class="text-xs text-red-500 data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500"
-      >
-        <Trash2Icon class="mr-2 h-4 w-4" />
-        Delete Record
-      </DropdownMenu.Item>
+      {#if !readonly}
+        <DropdownMenu.Separator />
+        <DropdownMenu.Item
+          on:click={() => {
+            toggleModal(DELETE_RECORD_MODAL)
+            $deleteRecordId = id
+          }}
+          class="text-xs text-red-500 data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500"
+        >
+          <Trash2Icon class="mr-2 h-4 w-4" />
+          Delete Record
+        </DropdownMenu.Item>
+      {/if}
     </DropdownMenu.Content>
   </DropdownMenu.Root>
 </div>

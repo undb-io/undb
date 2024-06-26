@@ -16,6 +16,7 @@ import type {
   WithViewColor,
   WithViewFields,
   WithViewFilter,
+  WithViewIdSpecification,
   WithViewOption,
   WithViewSort,
 } from "@undb/table"
@@ -62,6 +63,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
   idsIn(ids: TableIdsSpecification): void {}
   withNewView(views: WithNewView): void {}
   withoutView(view: WithoutView): void {}
+  withViewId(spec: WithViewIdSpecification): void {}
   withView(views: WithView): void {}
   withViewOption(viewOption: WithViewOption): void {}
   withUpdatedField(spec: WithUpdatedFieldSpecification): void {

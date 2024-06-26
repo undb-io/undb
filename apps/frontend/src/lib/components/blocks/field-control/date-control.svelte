@@ -7,6 +7,8 @@
   import * as Popover from "$lib/components/ui/popover"
   import { isDate, isString } from "radash"
 
+  export let readonly = false
+
   const df = new DateFormatter("en-US", {
     dateStyle: "long",
   })
@@ -18,6 +20,7 @@
 <Popover.Root openFocus>
   <Popover.Trigger asChild let:builder>
     <Button
+      disabled={readonly}
       variant="outline"
       {...$$restProps}
       class={cn("w-full justify-start text-left font-normal", !value && "text-muted-foreground", $$restProps.class)}

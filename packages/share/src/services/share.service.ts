@@ -3,6 +3,7 @@ import { Option } from "@undb/domain"
 import {
   TableComositeSpecification,
   WithFormIdSpecification,
+  WithViewIdSpecification,
   injectTableQueryRepository,
   type ITableDTO,
   type ITableQueryRepository,
@@ -87,9 +88,8 @@ export class ShareService implements IShareService {
     const spec = match(share.target.type)
       .returnType<TableComositeSpecification>()
       .with("form", () => new WithFormIdSpecification(share.target.id))
-      .otherwise(() => {
-        throw new Error("Not implemented")
-      })
+      .with("view", () => new WithViewIdSpecification(share.target.id))
+      .exhaustive()
 
     return (await this.tableRepo.findOne(spec)).expect("table not found")
   }

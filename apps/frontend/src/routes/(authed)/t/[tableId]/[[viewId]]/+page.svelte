@@ -16,17 +16,26 @@
   import UpdateViewDialog from "$lib/components/blocks/view/update-view-dialog.svelte"
   import DuplicateViewDialog from "$lib/components/blocks/view/duplicate-view-dialog.svelte"
   import DeleteViewDialog from "$lib/components/blocks/view/delete-view-dialog.svelte"
+  import { getTable } from "$lib/store/table.store"
+  import { page } from "$app/stores"
+  import { derived } from "svelte/store"
 
   function handleR() {
     toggleModal(CREATE_RECORD_MODAL)
   }
+
+  const table = getTable()
+  const viewId = derived(
+    [page, table],
+    ([$page, $table]) => $page.params.viewId ?? $table.views.getDefaultView().id.value,
+  )
 </script>
 
 <TableHeader />
 
 <main class="h-full flex-1 overflow-auto">
   {#if !$tab || $tab === "data"}
-    <GridView />
+    <GridView {viewId} />
   {:else if $tab === "form"}
     <Forms />
   {:else if $tab === "auth"}

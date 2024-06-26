@@ -21,6 +21,7 @@ import type {
   WithViewColor,
   WithViewFields,
   WithViewFilter,
+  WithViewIdSpecification,
   WithViewOption,
   WithViewSort,
   WithoutView,
@@ -38,6 +39,9 @@ export class TableMutationVisitor
     db: Database,
   ) {
     super(db)
+  }
+  withViewId(spec: WithViewIdSpecification): void {
+    throw new Error("Method not implemented.")
   }
   withFormId(spec: WithFormIdSpecification): void {
     throw new Error("Method not implemented.")

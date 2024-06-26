@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as ContextMenu from "$lib/components/ui/context-menu"
   import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
-  import { derived, readable, writable } from "svelte/store"
+  import { derived, writable, type Readable } from "svelte/store"
   import GridViewCheckbox from "./grid-view-checkbox.svelte"
   import * as Table from "$lib/components/ui/table/index.js"
   import { addResizedColumns, addSelectedRows } from "svelte-headless-table/plugins"
@@ -25,14 +25,14 @@
   import { queryParam } from "sveltekit-search-params"
   import { isFunction } from "radash"
   import GridViewFooter from "./grid-view-footer.svelte"
-  import { page } from "$app/stores"
   import { DELETE_RECORD_MODAL, DUPLICATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
-  import type { LayoutData } from "../../../../routes/(authed)/t/[tableId]/$types"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
   import { ClipboardCopyIcon, CopyIcon, Maximize2Icon, Trash2Icon } from "lucide-svelte"
 
+  export let readonly = false
+
   const t = getTable()
-  const viewId = derived([page, t], ([$page, $table]) => $page.params.viewId ?? $table.views.getDefaultView().id.value)
+  export let viewId: Readable<string>
 
   const q = queryParam("q")
   const r = queryParam("r")
@@ -43,10 +43,6 @@
     await copyToClipboard(id)
     toast.success("Copied record ID to clipboard")
   }
-
-  $: pageData = $page.data as LayoutData
-  $: tableStore = pageData.tableStore
-  $: aggregate = $tableStore.data?.table?.viewData?.aggregate
 
   $: view = $t.views.getViewById($viewId)
   $: viewFilter = view.filter.into(undefined)
@@ -93,6 +89,7 @@
           const { allPageRowsSelected } = pluginStates.select
           return createRender(GridViewCheckbox, {
             checked: allPageRowsSelected,
+            disabled: readonly,
           })
         },
         cell: ({ row }, { pluginStates }) => {
@@ -101,6 +98,7 @@
 
           return createRender(GridViewCheckbox, {
             checked: isSelected,
+            disabled: readonly,
           })
         },
         plugins: {
@@ -136,7 +134,10 @@
               displayValue,
             })
           },
-          footer: createRender(GridViewFooter, { field, aggregateResult: aggregate?.[field.id.value] }),
+          footer: createRender(GridViewFooter, {
+            field,
+            aggregateResult: null,
+          }),
           plugins: {
             resize: {
               initialWidth: 200,
@@ -147,7 +148,7 @@
       table.column({
         header: "",
         accessor: ({ id }) => id,
-        cell: (item) => createRender(GridViewActions, { id: item.value }),
+        cell: (item) => createRender(GridViewActions, { id: item.value, readonly }),
         plugins: {
           resize: {
             initialWidth: 50,
@@ -171,28 +172,12 @@
   $: selectedDataIds = $viewModel.pluginStates.select.selectedDataIds
 
   $: resize = $viewModel.pluginStates.resize.columnWidths
-
-  let evtSource: EventSource
-
-  // onMount(() => {
-  //   evtSource = new EventSource(`/api/tables/${$t.id.value}/subscription`, { withCredentials: true })
-  //   evtSource.onmessage = (event) => {
-  //     const data = JSON.parse(event.data)
-  //     const recordEvent = RecordEventFactory.fromJSON(data)
-  //     if (recordEvent.isNone()) return
-
-  //     // TODO: use event
-  //     const evt = recordEvent.unwrap()
-  //   }
-  // })
-
-  // onDestroy(() => {
-  //   evtSource.close()
-  // })
 </script>
 
 <div class="flex h-full w-full flex-col">
-  <TableTools />
+  {#if !readonly}
+    <TableTools />
+  {/if}
   <ScrollArea orientation="both" class="h-full flex-1 overflow-auto">
     <table {...$tableAttrs} class="flex h-full flex-col">
       <Table.Header {...$tableHeaderAttrs} class="sticky top-0 z-50 bg-white">

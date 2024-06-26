@@ -21,6 +21,7 @@ import type {
   WithViewColor,
   WithViewFields,
   WithViewFilter,
+  WithViewIdSpecification,
   WithViewOption,
   WithViewSort,
   WithoutView,
@@ -40,6 +41,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withView(views: WithView): void
   withNewView(views: WithNewView): void
   withoutView(view: WithoutView): void
+  withViewId(spec: WithViewIdSpecification): void
   withViewFilter(viewFilter: WithViewFilter): void
   withViewOption(viewOption: WithViewOption): void
   withViewColor(viewColor: WithViewColor): void

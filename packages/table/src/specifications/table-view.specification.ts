@@ -194,3 +194,19 @@ export class WithViewFields extends TableComositeSpecification {
     return Ok(undefined)
   }
 }
+
+export class WithViewIdSpecification extends TableComositeSpecification {
+  constructor(public readonly viewId: string) {
+    super()
+  }
+  isSatisfiedBy(t: TableDo): boolean {
+    throw new WontImplementException(WithViewIdSpecification.name + ".isSatisfiedBy")
+  }
+  mutate(t: TableDo): Result<TableDo, string> {
+    throw new WontImplementException(WithViewIdSpecification.name + ".mutate")
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withViewId(this)
+    return Ok(undefined)
+  }
+}

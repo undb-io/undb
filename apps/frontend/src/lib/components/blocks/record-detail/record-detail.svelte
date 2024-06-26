@@ -14,6 +14,8 @@
   import { pick } from "radash"
   import { queryParam } from "sveltekit-search-params"
 
+  export let readonly = false
+
   const r = queryParam("r")
 
   export let record: RecordDO
@@ -54,6 +56,7 @@
   $: displayValues = record.displayValues?.toJSON() ?? {}
 
   const updateRecord = (values: any) => {
+    if (readonly) return
     const recordId = record.id.value
 
     $updateRecordMutation.mutate({
@@ -121,6 +124,7 @@
             bind:value={$formData[field.id.value]}
             {field}
             displayValue={displayValues[field.id.value]}
+            {readonly}
           />
         {/if}
       </Form.Control>

@@ -5,6 +5,7 @@
   import { readable } from "svelte/store"
   import { TableCreator } from "@undb/table"
 
+  export let readonly = false
   export let foreignTableId: string
   export let value: string[] = []
 
@@ -22,6 +23,7 @@
 <Popover.Root bind:open>
   <Popover.Trigger>
     <button
+      disabled={readonly}
       type="button"
       class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
     >

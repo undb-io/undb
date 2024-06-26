@@ -215,7 +215,8 @@ export class Graphql {
             if (!member?.role) {
               throw new Error("Unauthorized")
             }
-            return { role: member.role }
+            const user = executionContext.getStore()?.user
+            return { role: member.role, userId: user?.userId }
           },
           table: async (_, args) => {
             const table = await this.queryBus.execute(new GetTableQuery({ tableId: args.id }))
