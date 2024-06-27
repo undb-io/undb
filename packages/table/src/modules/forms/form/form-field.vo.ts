@@ -1,14 +1,16 @@
 import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
-import { fieldId, type Field } from "../../schema"
-import { createConditionGroup, isEmptyConditionGroup } from "../../schema/fields/condition"
+import { createConditionGroup } from "../../schema/fields/condition/condition.type"
+import { isEmptyConditionGroup } from "../../schema/fields/condition/condition.util"
+import { fieldId } from "../../schema/fields/field-id.vo"
+import type { Field } from "../../schema/fields/field.type"
 
 const formFieldConditionOption = z.undefined()
 
 const formFieldCondition = createConditionGroup(formFieldConditionOption, formFieldConditionOption)
 
 export const formField = z.object({
-  fieldId,
+  fieldId: fieldId,
   defaultValue: z.any().optional(),
   hidden: z.boolean().optional(),
   required: z.boolean().optional(),

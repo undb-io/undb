@@ -12,6 +12,7 @@
     "@elysiajs/html": "^1.0.2",
     "@elysiajs/static": "^1.0.3",
     "@elysiajs/stream": "^1.0.2",
+    "@elysiajs/swagger": "^1.0.5",
     "@elysiajs/trpc": "^1.0.2",
     "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@undb/audit": "workspace:*",
@@ -43,5 +44,14 @@
     "@types/uuid": "^10.0.0",
     "bun-types": "latest"
   },
-  "module": "src/index.js"
+  "types": "./src/app.d.ts",
+  "exports": {
+    ".": "./src/index.js",
+    "./app": {
+      "import": "./src/app.ts",
+      "default": "./src/app.ts",
+      "require": "./src/app.ts",
+      "types": "./src/app.d.ts"
+    }
+  }
 }
