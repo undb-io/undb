@@ -75,6 +75,7 @@
 
   const { form: formData, enhance, allErrors, tainted } = form
 
+  $: console.log({ $allErrors, $tainted })
   $: dirty = !!$tainted
   $: disabled = !!$allErrors.length
 

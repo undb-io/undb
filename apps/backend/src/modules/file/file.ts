@@ -31,7 +31,6 @@ export class FileService {
 
         const responses: IPutObject[] = []
         for (const file of ctx.body.files) {
-          console.log(file.type)
           const arrayBuffer = await file.arrayBuffer()
           const response = await this.#uploadFile(
             Buffer.from(arrayBuffer),

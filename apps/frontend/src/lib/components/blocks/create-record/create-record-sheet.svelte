@@ -33,7 +33,7 @@
 
     <Sheet.Footer>
       <Button variant="outline" type="button" on:click={() => closeModal(CREATE_RECORD_MODAL)}>Cancel</Button>
-      <Button type="submit" form="createRecord" {disabled}>Create</Button>
+      <Button type="submit" form="createRecord">Create</Button>
     </Sheet.Footer>
   </Sheet.Content>
 </Sheet.Root>

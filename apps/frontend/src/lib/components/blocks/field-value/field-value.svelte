@@ -10,6 +10,7 @@
   import ReferenceField from "./reference-field.svelte"
   import SelectField from "./select-field.svelte"
   import RatingField from "./rating-field.svelte"
+  import AttachmentField from "./attachment-field.svelte"
 
   export let type: FieldType
   export let value: any
@@ -30,6 +31,7 @@
     select: SelectField,
     rating: RatingField,
     email: StringField,
+    attachment: AttachmentField,
   }
 </script>
 

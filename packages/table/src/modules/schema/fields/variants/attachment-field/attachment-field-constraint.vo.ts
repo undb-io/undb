@@ -13,9 +13,11 @@ export class AttachmentFieldConstraint extends FieldConstraintVO<IAttachmentFiel
     })
   }
   override get schema() {
-    let base: z.ZodTypeAny = attachmentFieldValue.array()
+    let base = attachmentFieldValue
     if (!this.props.required) {
-      base = base.optional().nullable()
+      base = base.min(0)
+    } else {
+      base = base.min(1)
     }
 
     return base
