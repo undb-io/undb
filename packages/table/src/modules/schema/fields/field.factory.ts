@@ -2,6 +2,7 @@ import { match } from "ts-pattern"
 import type { ICreateFieldDTO } from "./dto/create-field.dto"
 import type { IFieldDTO } from "./dto/field.dto"
 import type { Field } from "./field.type"
+import { AttachmentField } from "./variants/attachment-field"
 import { AutoIncrementField } from "./variants/autoincrement-field"
 import { CreatedAtField } from "./variants/created-at-field"
 import { CreatedByField } from "./variants/created-by-field"
@@ -32,6 +33,7 @@ export class FieldFactory {
       .with({ type: "rollup" }, (dto) => new RollupField(dto))
       .with({ type: "select" }, (dto) => new SelectField(dto))
       .with({ type: "email" }, (dto) => new EmailField(dto))
+      .with({ type: "attachment" }, (dto) => new AttachmentField(dto))
       .exhaustive()
   }
 
@@ -44,6 +46,7 @@ export class FieldFactory {
       .with({ type: "rollup" }, (dto) => RollupField.create(dto))
       .with({ type: "select" }, (dto) => SelectField.create(dto))
       .with({ type: "email" }, (dto) => EmailField.create(dto))
+      .with({ type: "attachment" }, (dto) => AttachmentField.create(dto))
       .otherwise(() => {
         throw new Error("Field type creation not supported")
       })

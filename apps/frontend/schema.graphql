@@ -25,6 +25,7 @@ type Field {
 }
 
 enum FieldType {
+  attachment
   autoIncrement
   createdAt
   createdBy

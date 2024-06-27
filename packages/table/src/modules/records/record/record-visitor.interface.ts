@@ -5,6 +5,7 @@ import type {
   IReferenceFieldValueVisitor,
   IUpdatedAtFieldValueVisitor,
 } from "../../schema"
+import type { IAttachmentFieldValueVisitor } from "../../schema/fields/variants/attachment-field"
 import type { ICreatedAtFieldValueVisitor } from "../../schema/fields/variants/created-at-field"
 import type { IEmailFieldValueVisitor } from "../../schema/fields/variants/email-field"
 import type { IIdFieldValueVisitor } from "../../schema/fields/variants/id-field"
@@ -22,4 +23,5 @@ export type IRecordVisitor = IStringFieldValueVisitor &
   ISelectFieldValueVisitor &
   IRatingFieldValueVisitor &
   IEmailFieldValueVisitor &
+  IAttachmentFieldValueVisitor &
   ISpecVisitor

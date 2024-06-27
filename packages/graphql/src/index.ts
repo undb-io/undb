@@ -72,6 +72,7 @@ export class Graphql {
         select
         reference
         rollup
+        attachment
       }
 
       type Field {

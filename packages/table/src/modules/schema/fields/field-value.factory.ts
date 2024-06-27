@@ -13,6 +13,7 @@ import {
   UpdatedAtFieldValue,
   UpdatedByFieldValue,
 } from "./variants"
+import { AttachmentFieldValue, type IAttachmentFieldValue } from "./variants/attachment-field"
 import { CreatedByFieldValue } from "./variants/created-by-field"
 import { EmailFieldValue } from "./variants/email-field"
 import { RatingFieldValue } from "./variants/rating-field"
@@ -27,6 +28,7 @@ export class FieldValueFactory {
       .with({ type: "select" }, (field) => Some(new SelectFieldValue(field.valueSchema.parse(value))))
       .with({ type: "reference" }, (field) => Some(new ReferenceFieldValue(field.valueSchema.parse(value))))
       .with({ type: "email" }, (field) => Some(new EmailFieldValue(field.valueSchema.parse(value))))
+      .with({ type: "attachment" }, (field) => Some(new AttachmentFieldValue(field.valueSchema.parse(value))))
       .otherwise(() => None)
   }
 
@@ -45,6 +47,7 @@ export class FieldValueFactory {
       .with("rollup", () => Some(new RollupFieldValue(value as number | Date)))
       .with("select", () => Some(new SelectFieldValue(value as IOptionId)))
       .with("email", () => Some(new EmailFieldValue(value as string)))
+      .with("attachment", () => Some(new AttachmentFieldValue(value as IAttachmentFieldValue[])))
       .exhaustive()
   }
 }

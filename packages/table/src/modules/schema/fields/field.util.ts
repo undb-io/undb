@@ -42,6 +42,7 @@ export const fieldTypes: NoneSystemFieldType[] = [
   "select",
   "rating",
   "email",
+  "attachment",
 ] as const
 export const systemFieldTypes: SystemFieldType[] = [
   "id",

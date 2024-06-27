@@ -1,5 +1,6 @@
 import { z } from "@undb/zod"
 import { referenceFieldDTO, rollupFieldDTO, selectFieldDTO, updatedByFieldDTO } from "../variants"
+import { attachmentFieldDTO } from "../variants/attachment-field"
 import { autoIncrementFieldDTO } from "../variants/autoincrement-field"
 import { createdAtFieldDTO } from "../variants/created-at-field"
 import { createdByFieldDTO } from "../variants/created-by-field"
@@ -24,6 +25,7 @@ export const fieldDTO = z.discriminatedUnion("type", [
   selectFieldDTO,
   ratingFieldDTO,
   emailFieldDTO,
+  attachmentFieldDTO,
 ])
 
 export type IFieldDTO = z.infer<typeof fieldDTO>

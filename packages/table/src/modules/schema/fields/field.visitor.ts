@@ -1,3 +1,4 @@
+import type { AttachmentField } from "./variants/attachment-field"
 import type { AutoIncrementField } from "./variants/autoincrement-field"
 import type { CreatedAtField } from "./variants/created-at-field"
 import type { CreatedByField } from "./variants/created-by-field"
@@ -24,6 +25,7 @@ export interface IFieldVisitor {
   rating(field: RatingField): void
   select(field: SelectField): void
   email(field: EmailField): void
+  attachment(field: AttachmentField): void
 
   reference(field: ReferenceField): void
   rollup(field: RollupField): void

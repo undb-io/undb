@@ -1,8 +1,10 @@
 export * from "./abstractions"
 
+export * from "./attachment-field"
 export * from "./autoincrement-field"
 export * from "./created-at-field"
 export * from "./created-by-field"
+export * from "./email-field"
 export * from "./id-field"
 export * from "./number-field"
 export * from "./rating-field"

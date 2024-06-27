@@ -22,6 +22,13 @@ import type {
   UpdatedByFieldValue,
 } from ".."
 import type {
+  ATTACHMENT_TYPE,
+  AttachmentField,
+  AttachmentFieldValue,
+  IAttachmentFieldConditionSchema,
+  IAttachmentFieldConstraint,
+} from "./variants/attachment-field"
+import type {
   AUTO_INCREMENT_TYPE,
   AutoIncrementField,
   AutoIncrementFieldValue,
@@ -82,6 +89,7 @@ export type Field =
   | SelectField
   | RatingField
   | EmailField
+  | AttachmentField
 
 export type NoneSystemField = Field & { isSystem: false }
 export type SystemField = Field & { isSystem: true }
@@ -100,6 +108,7 @@ export type FieldValue =
   | SelectFieldValue
   | RatingFieldValue
   | EmailFieldValue
+  | AttachmentFieldValue
 
 export type MutableFieldValue =
   | StringFieldValue
@@ -108,6 +117,7 @@ export type MutableFieldValue =
   | SelectFieldValue
   | RatingFieldValue
   | EmailFieldValue
+  | AttachmentFieldValue
 
 export type FieldType =
   | typeof STRING_TYPE
@@ -123,6 +133,7 @@ export type FieldType =
   | typeof SELECT_TYPE
   | typeof RATING_TYPE
   | typeof EMAIL_TYPE
+  | typeof ATTACHMENT_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
@@ -147,6 +158,7 @@ export type IFieldConditionSchema =
   | ISelectFieldConditionSchema
   | IRatingFieldConditionSchema
   | IEmailFieldConditionSchema
+  | IAttachmentFieldConditionSchema
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
 
@@ -157,5 +169,6 @@ export type IFieldConstraint =
   | ISelectFieldConstraint
   | IRatingFieldConstraint
   | IEmailFieldConstraint
+  | IAttachmentFieldConstraint
 
 export type IFieldOption = IReferenceFieldOption | IRollupFieldOption | ISelectFieldOption
