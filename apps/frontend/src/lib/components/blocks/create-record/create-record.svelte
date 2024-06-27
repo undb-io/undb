@@ -5,7 +5,7 @@
   import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import FieldControl from "../field-control/field-control.svelte"
-  import { defaults, superForm } from "sveltekit-superforms"
+  import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { toast } from "svelte-sonner"
   import { ShieldCheckIcon } from "lucide-svelte"
@@ -110,4 +110,4 @@
   </ul>
 </form>
 
-<!-- <SuperDebug data={$formData} /> -->
+<SuperDebug data={$formData} />

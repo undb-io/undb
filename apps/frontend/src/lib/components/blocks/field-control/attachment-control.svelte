@@ -5,7 +5,7 @@
 
   const table = getTable()
 
-  export let value: IAttachmentFieldValue[]
+  export let value: IAttachmentFieldValue = []
   export let readonly = false
 
   async function onChange(e: Event) {
@@ -22,7 +22,27 @@
       method: "POST",
       body: formData,
     })
+
+    const json: { id: string; url: string; mimeType: string }[] = await response.json()
+    if (json.length) {
+      const [data] = json
+
+      value = [
+        ...value,
+        {
+          id: data.id,
+          url: data.url,
+          type: data.mimeType,
+          name: file.name,
+          size: file.size,
+        },
+      ]
+    }
   }
 </script>
 
+{#each value as v}
+  {v.id}
+  {v.name}
+{/each}
 <Input {...$$restProps} type="file" on:change={onChange} disabled={readonly} />

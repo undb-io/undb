@@ -8,7 +8,6 @@ import {
   type ITableRepository,
 } from "@undb/table"
 import Elysia, { t } from "elysia"
-import { v4 } from "uuid"
 
 @singleton()
 export class FileService {
@@ -19,12 +18,8 @@ export class FileService {
     private readonly tableRepository: ITableRepository,
   ) {}
 
-  async #uploadFile(buffer: Buffer, originalname: string, mimeType: string) {
-    return this.objectStorage.put(buffer, originalname, mimeType)
-  }
-
-  async #downloadFile(id: string) {
-    return this.objectStorage.get(id)
+  async #uploadFile(buffer: Buffer, path: string, originalname: string, mimeType: string) {
+    return this.objectStorage.put(buffer, path, originalname, mimeType)
   }
 
   route() {
@@ -36,10 +31,12 @@ export class FileService {
 
         const responses: IPutObject[] = []
         for (const file of ctx.body.files) {
+          console.log(file.type)
           const arrayBuffer = await file.arrayBuffer()
           const response = await this.#uploadFile(
             Buffer.from(arrayBuffer),
-            `${table.baseId}/${table.id.value}/${v4()}-${file.name}`,
+            `${table.baseId}/${table.id.value}`,
+            file.name,
             file.type,
           )
 
