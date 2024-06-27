@@ -20,7 +20,6 @@ import { Elysia } from "elysia"
 import { all } from "radash"
 import { v4 } from "uuid"
 import { Auth, OpenAPI, Realtime, Web } from "./modules"
-import { FileService } from "./modules/file/file"
 import { loggerPlugin } from "./plugins/logging"
 
 const auth = container.resolve(Auth)
@@ -82,11 +81,9 @@ export const app = new Elysia()
       const openapi = container.resolve(OpenAPI)
       const realtime = container.resolve(Realtime)
       const graphql = container.resolve(Graphql)
-      const file = container.resolve(FileService)
       return (
         app
           //
-          .use(file.route())
           .use(trpc(route))
           .use(graphql.route())
           .use(openapi.route())

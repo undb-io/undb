@@ -15,7 +15,13 @@ import {
   GetTablesQuery,
 } from "@undb/queries"
 import { injectShareService, type IShareService } from "@undb/share"
-import { TableIdVo, injectRecordQueryRepository, type IRecordQueryRepository } from "@undb/table"
+import {
+  TableIdVo,
+  injectObjectStorage,
+  injectRecordQueryRepository,
+  type IObjectStorage,
+  type IRecordQueryRepository,
+} from "@undb/table"
 import { injectUserQueryRepository, type IUserQueryRepository } from "@undb/user"
 
 @singleton()
@@ -29,12 +35,15 @@ export class Graphql {
     public readonly userRepo: IUserQueryRepository,
     @injectShareService()
     public readonly shareService: IShareService,
+    @injectObjectStorage()
+    public readonly objectStorage: IObjectStorage,
   ) {}
 
   public route() {
     return yoga({
       typeDefs: `
       scalar JSON
+      scalar File
 
       enum ShareTargetType {
         view
@@ -206,6 +215,10 @@ export class Graphql {
         share(id: ID!): Share
         tableByShare(shareId: ID!): Table
       }
+
+      type Mutation {
+        saveFile(file: File!): Boolean!
+      }
       `,
       resolvers: {
         Query: {
@@ -245,6 +258,18 @@ export class Graphql {
           share: async (_, { id }) => {
             const share = await this.queryBus.execute(new GetShareQuery({ shareId: id }))
             return share
+          },
+        },
+        Mutation: {
+          // @ts-ignore
+          saveFile: async (_, { file }: { file: File }) => {
+            try {
+              const fileArrayBuffer = await file.arrayBuffer()
+              await this.objectStorage.put(Buffer.from(fileArrayBuffer), file.name, file.type)
+            } catch (e) {
+              return false
+            }
+            return true
           },
         },
         Base: {

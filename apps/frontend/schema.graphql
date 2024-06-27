@@ -41,6 +41,8 @@ enum FieldType {
   updatedBy
 }
 
+scalar File
+
 type Form {
   description: String
   fields: JSON
@@ -56,6 +58,10 @@ type FormOption {
 }
 
 scalar JSON
+
+type Mutation {
+  saveFile(file: File!): Boolean!
+}
 
 type Query {
   base(id: ID!): Base!
