@@ -3,6 +3,9 @@ import type {
   DateField,
   DateFieldValue,
   IDateFieldConditionSchema,
+  IDateFieldConstraint,
+  IJsonFieldConditionSchema,
+  IJsonFieldConstraint,
   INumberFieldConditionSchema,
   IReferenceFieldConstraint,
   IReferenceFieldOption,
@@ -12,6 +15,9 @@ import type {
   IStringFieldConstraint,
   IUpdatedAtFieldConditionSchema,
   IUpdatedByFieldConditionSchema,
+  JSON_TYPE,
+  JsonField,
+  JsonFieldValue,
   REFERENCE_TYPE,
   ROLLUP_TYPE,
   ReferenceField,
@@ -95,6 +101,7 @@ export type Field =
   | EmailField
   | AttachmentField
   | DateField
+  | JsonField
 
 export type NoneSystemField = Field & { isSystem: false }
 export type SystemField = Field & { isSystem: true }
@@ -115,6 +122,7 @@ export type FieldValue =
   | EmailFieldValue
   | AttachmentFieldValue
   | DateFieldValue
+  | JsonFieldValue
 
 export type MutableFieldValue =
   | StringFieldValue
@@ -125,6 +133,7 @@ export type MutableFieldValue =
   | EmailFieldValue
   | AttachmentFieldValue
   | DateFieldValue
+  | JsonFieldValue
 
 export type FieldType =
   | typeof STRING_TYPE
@@ -142,6 +151,7 @@ export type FieldType =
   | typeof EMAIL_TYPE
   | typeof ATTACHMENT_TYPE
   | typeof DATE_TYPE
+  | typeof JSON_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
@@ -168,6 +178,7 @@ export type IFieldConditionSchema =
   | IEmailFieldConditionSchema
   | IAttachmentFieldConditionSchema
   | IDateFieldConditionSchema
+  | IJsonFieldConditionSchema
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
 
@@ -179,5 +190,7 @@ export type IFieldConstraint =
   | IRatingFieldConstraint
   | IEmailFieldConstraint
   | IAttachmentFieldConstraint
+  | IDateFieldConstraint
+  | IJsonFieldConstraint
 
 export type IFieldOption = IReferenceFieldOption | IRollupFieldOption | ISelectFieldOption

@@ -5,6 +5,7 @@ import type { CreatedByField } from "./variants/created-by-field"
 import type { DateField } from "./variants/date-field"
 import type { EmailField } from "./variants/email-field"
 import type { IdField } from "./variants/id-field/id-field.vo"
+import type { JsonField } from "./variants/json-field"
 import type { NumberField } from "./variants/number-field/number-field.vo"
 import type { RatingField } from "./variants/rating-field"
 import type { ReferenceField } from "./variants/reference-field/reference-field.vo"
@@ -28,6 +29,7 @@ export interface IFieldVisitor {
   email(field: EmailField): void
   attachment(field: AttachmentField): void
   date(field: DateField): void
+  json(field: JsonField): void
 
   reference(field: ReferenceField): void
   rollup(field: RollupField): void

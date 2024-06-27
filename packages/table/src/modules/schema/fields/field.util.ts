@@ -24,6 +24,7 @@ const sortableFieldTypes: FieldType[] = [
   "rating",
   "email",
   "date",
+  "json",
 ] as const
 
 export function isFieldSortable(type: FieldType): boolean {
@@ -45,6 +46,7 @@ export const fieldTypes: NoneSystemFieldType[] = [
   "email",
   "attachment",
   "date",
+  "json",
 ] as const
 export const systemFieldTypes: SystemFieldType[] = [
   "id",

@@ -11,6 +11,8 @@ import type {
   EmailEqual,
   IRecordVisitor,
   IdEqual,
+  JsonEmpty,
+  JsonEqual,
   NumberEmpty,
   NumberEqual,
   NumberGT,
@@ -56,6 +58,12 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     private readonly table: TableDo,
   ) {
     super(eb)
+  }
+  jsonEqual(spec: JsonEqual): void {
+    throw new Error("Method not implemented.")
+  }
+  jsonEmpty(spec: JsonEmpty): void {
+    this.addCond(this.eb.eb(this.getFieldId(spec), "is", null))
   }
   dateEqual(spec: DateEqual): void {
     this.addCond(this.eb.eb(this.getFieldId(spec), "=", spec.date.toISOString()))

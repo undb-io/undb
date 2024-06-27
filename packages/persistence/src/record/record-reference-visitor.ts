@@ -2,6 +2,7 @@ import {
   AttachmentField,
   DateField,
   ID_TYPE,
+  JsonField,
   RatingField,
   SelectField,
   type AutoIncrementField,
@@ -77,6 +78,9 @@ export class RecordReferenceVisitor implements IFieldVisitor {
     throw new Error("Method not implemented.")
   }
   date(field: DateField): void {
+    throw new Error("Method not implemented.")
+  }
+  json(field: JsonField): void {
     throw new Error("Method not implemented.")
   }
 }

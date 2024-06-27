@@ -2,6 +2,7 @@ import {
   AttachmentField,
   DateField,
   ID_TYPE,
+  JsonField,
   RatingField,
   SelectField,
   type AutoIncrementField,
@@ -105,6 +106,9 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     this.addSelect(this.getField(field.id.value))
   }
   email(field: EmailField): void {
+    this.addSelect(this.getField(field.id.value))
+  }
+  json(field: JsonField): void {
     this.addSelect(this.getField(field.id.value))
   }
   reference(field: ReferenceField): void {

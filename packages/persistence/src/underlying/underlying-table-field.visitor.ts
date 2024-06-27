@@ -3,6 +3,7 @@ import {
   CreatedByField,
   DateField,
   ID_TYPE,
+  JsonField,
   RatingField,
   ReferenceField,
   RollupField,
@@ -117,6 +118,10 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
   }
   date(field: DateField): void {
     const c = this.tb.addColumn(field.id.value, "datetime")
+    this.addColumn(c)
+  }
+  json(field: JsonField): void {
+    const c = this.tb.addColumn(field.id.value, "json")
     this.addColumn(c)
   }
   reference(field: ReferenceField): void {

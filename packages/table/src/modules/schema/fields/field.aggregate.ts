@@ -4,6 +4,7 @@ import { abstractDateAggregate } from "./variants/abstractions/abstract-date.agg
 import { abstractNumberAggregate } from "./variants/abstractions/abstract-number.aggregate"
 import { abstractUserAggregate } from "./variants/abstractions/abstract-user.aggregate"
 import { emailFieldAggregate } from "./variants/email-field/email-field.aggregate"
+import { jsonFieldAggregate } from "./variants/json-field/json-field.aggregate"
 import { stringFieldAggregate } from "./variants/string-field/string-field.aggregate"
 
 export const fieldAggregate = stringFieldAggregate
@@ -13,5 +14,6 @@ export const fieldAggregate = stringFieldAggregate
   .or(abstractDateAggregate)
   .or(abstractUserAggregate)
   .or(emailFieldAggregate)
+  .or(jsonFieldAggregate)
 
 export type IFieldAggregate = z.infer<typeof fieldAggregate>

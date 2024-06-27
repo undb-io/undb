@@ -1,5 +1,6 @@
 import { None, Option, Some } from "@undb/domain"
 import { match } from "ts-pattern"
+import type { JsonValue } from "type-fest"
 import type { Field, FieldValue, MutableFieldValue } from "./field.type"
 import type { IOptionId } from "./option/option-id.vo"
 import {
@@ -7,6 +8,7 @@ import {
   CreatedAtFieldValue,
   DateFieldValue,
   IdFieldValue,
+  JsonFieldValue,
   NumberFieldValue,
   ReferenceFieldValue,
   RollupFieldValue,
@@ -31,6 +33,7 @@ export class FieldValueFactory {
       .with({ type: "email" }, (field) => Some(new EmailFieldValue(field.valueSchema.parse(value))))
       .with({ type: "attachment" }, (field) => Some(new AttachmentFieldValue(field.valueSchema.parse(value))))
       .with({ type: "date" }, (field) => Some(new DateFieldValue(field.valueSchema.parse(value))))
+      .with({ type: "json" }, (field) => Some(new JsonFieldValue(field.valueSchema.parse(value))))
       .otherwise(() => None)
   }
 
@@ -51,6 +54,7 @@ export class FieldValueFactory {
       .with("email", () => Some(new EmailFieldValue(value as string)))
       .with("attachment", () => Some(new AttachmentFieldValue(value as IAttachmentFieldValue)))
       .with("date", () => Some(new DateFieldValue(value as Date)))
+      .with("json", () => Some(new JsonFieldValue(value as JsonValue)))
       .exhaustive()
   }
 }

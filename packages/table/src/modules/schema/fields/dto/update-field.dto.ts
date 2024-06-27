@@ -3,6 +3,7 @@ import {
   updateAutoIncrementFieldDTO,
   updateCreatedByFieldDTO,
   updateDateFieldDTO,
+  updateJsonFieldDTO,
   updateRatingFieldDTO,
   updateReferenceFieldDTO,
   updateUpdatedByFieldDTO,
@@ -29,6 +30,7 @@ export const updateFieldDTO = z.discriminatedUnion("type", [
   updateEmailFieldDTO,
   updateAttachmentFieldDTO,
   updateDateFieldDTO,
+  updateJsonFieldDTO,
 ])
 
 export type IUpdateFieldDTO = z.infer<typeof updateFieldDTO>
