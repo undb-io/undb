@@ -2,6 +2,7 @@ import { NotImplementException } from "@undb/domain"
 import type {
   AttachmentEmpty,
   AttachmentEqual,
+  DateEqual,
   DateIsAfter,
   DateIsBefore,
   DateIsSameDay,
@@ -55,6 +56,9 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     private readonly table: TableDo,
   ) {
     super(eb)
+  }
+  dateEqual(spec: DateEqual): void {
+    this.addCond(this.eb.eb(this.getFieldId(spec), "=", spec.date.toISOString()))
   }
   attachmentEqual(s: AttachmentEqual): void {
     throw new Error("Method not implemented.")

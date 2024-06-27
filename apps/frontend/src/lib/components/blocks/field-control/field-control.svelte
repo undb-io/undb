@@ -41,6 +41,7 @@
     rating: RatingControl,
     email: EmailControl,
     attachment: AttachmentControl,
+    date: DateControl,
   }
 </script>
 

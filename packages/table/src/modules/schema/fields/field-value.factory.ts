@@ -5,6 +5,7 @@ import type { IOptionId } from "./option/option-id.vo"
 import {
   AutoIncrementFieldValue,
   CreatedAtFieldValue,
+  DateFieldValue,
   IdFieldValue,
   NumberFieldValue,
   ReferenceFieldValue,
@@ -29,6 +30,7 @@ export class FieldValueFactory {
       .with({ type: "reference" }, (field) => Some(new ReferenceFieldValue(field.valueSchema.parse(value))))
       .with({ type: "email" }, (field) => Some(new EmailFieldValue(field.valueSchema.parse(value))))
       .with({ type: "attachment" }, (field) => Some(new AttachmentFieldValue(field.valueSchema.parse(value))))
+      .with({ type: "date" }, (field) => Some(new DateFieldValue(field.valueSchema.parse(value))))
       .otherwise(() => None)
   }
 
@@ -47,7 +49,8 @@ export class FieldValueFactory {
       .with("rollup", () => Some(new RollupFieldValue(value as number | Date)))
       .with("select", () => Some(new SelectFieldValue(value as IOptionId)))
       .with("email", () => Some(new EmailFieldValue(value as string)))
-      .with("attachment", () => Some(new AttachmentFieldValue(value as IAttachmentFieldValue[])))
+      .with("attachment", () => Some(new AttachmentFieldValue(value as IAttachmentFieldValue)))
+      .with("date", () => Some(new DateFieldValue(value as Date)))
       .exhaustive()
   }
 }

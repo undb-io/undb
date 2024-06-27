@@ -1,4 +1,5 @@
 import { match } from "ts-pattern"
+import { DateField } from "."
 import type { ICreateFieldDTO } from "./dto/create-field.dto"
 import type { IFieldDTO } from "./dto/field.dto"
 import type { Field } from "./field.type"
@@ -34,6 +35,7 @@ export class FieldFactory {
       .with({ type: "select" }, (dto) => new SelectField(dto))
       .with({ type: "email" }, (dto) => new EmailField(dto))
       .with({ type: "attachment" }, (dto) => new AttachmentField(dto))
+      .with({ type: "date" }, (dto) => new DateField(dto))
       .exhaustive()
   }
 
@@ -47,6 +49,7 @@ export class FieldFactory {
       .with({ type: "select" }, (dto) => SelectField.create(dto))
       .with({ type: "email" }, (dto) => EmailField.create(dto))
       .with({ type: "attachment" }, (dto) => AttachmentField.create(dto))
+      .with({ type: "date" }, (dto) => DateField.create(dto))
       .otherwise(() => {
         throw new Error("Field type creation not supported")
       })

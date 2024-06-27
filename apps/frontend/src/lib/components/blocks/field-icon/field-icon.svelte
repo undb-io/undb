@@ -17,6 +17,7 @@
     MailIcon,
     FileIcon,
     FileTextIcon,
+    CalendarIcon,
   } from "lucide-svelte"
 
   export let type: FieldType
@@ -36,6 +37,7 @@
     rating: StarIcon,
     email: MailIcon,
     attachment: FileTextIcon,
+    date: CalendarIcon,
   }
 </script>
 

@@ -8,7 +8,7 @@
   import { copyToClipboard } from "@svelte-put/copy"
   import { toast } from "svelte-sonner"
   import { cn } from "$lib/utils.js"
-  import { Records, type IRecordsDTO } from "@undb/table"
+  import { Records, type Field, type IRecordsDTO } from "@undb/table"
   import { createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
@@ -81,6 +81,7 @@
     select: addSelectedRows(),
     resize: addResizedColumns(),
   })
+  $: fields = $t?.getOrderedVisibleFields($viewId) ?? ([] as Field[])
 
   $: columns =
     table.createColumns([
@@ -120,7 +121,7 @@
           },
         },
       }),
-      ...($t.getOrderedVisibleFields() ?? []).map((field, index) =>
+      ...fields.map((field, index) =>
         table.column({
           header: () => createRender(GridViewHeader, { field }),
           accessor: field.id.value,

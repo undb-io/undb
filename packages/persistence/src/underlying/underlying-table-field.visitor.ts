@@ -1,6 +1,7 @@
 import {
   AttachmentField,
   CreatedByField,
+  DateField,
   ID_TYPE,
   RatingField,
   ReferenceField,
@@ -112,6 +113,10 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
   }
   attachment(field: AttachmentField): void {
     const c = this.tb.addColumn(field.id.value, "json")
+    this.addColumn(c)
+  }
+  date(field: DateField): void {
+    const c = this.tb.addColumn(field.id.value, "datetime")
     this.addColumn(c)
   }
   reference(field: ReferenceField): void {

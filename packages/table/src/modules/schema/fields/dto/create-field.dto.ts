@@ -1,4 +1,5 @@
 import { z } from "@undb/zod"
+import { createDateFieldDTO } from "../variants"
 import { createAttachmentFieldDTO } from "../variants/attachment-field"
 import { createEmailFieldDTO } from "../variants/email-field"
 import { createNumberFieldDTO } from "../variants/number-field/number-field.vo"
@@ -17,6 +18,7 @@ export const createFieldDTO = z.discriminatedUnion("type", [
   createRatingFieldDTO,
   createEmailFieldDTO,
   createAttachmentFieldDTO,
+  createDateFieldDTO,
 ])
 
 export type ICreateFieldDTO = z.infer<typeof createFieldDTO>

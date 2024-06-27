@@ -2,6 +2,7 @@ import type { ISpecification, ISpecVisitor } from "@undb/domain"
 import type {
   AttachmentEmpty,
   AttachmentEqual,
+  DateEqual,
   DateIsAfter,
   DateIsBefore,
   DateIsSameDay,
@@ -63,6 +64,9 @@ export class RecordMutateVisitor implements IRecordVisitor {
     this.#sql.push(...sql)
   }
 
+  dateEqual(spec: DateEqual): void {
+    this.setData(spec.fieldId.value, spec.date)
+  }
   attachmentEqual(s: AttachmentEqual): void {
     this.setData(s.fieldId.value, JSON.stringify(s.value))
   }

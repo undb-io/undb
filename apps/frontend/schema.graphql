@@ -29,6 +29,7 @@ enum FieldType {
   autoIncrement
   createdAt
   createdBy
+  date
   email
   id
   number

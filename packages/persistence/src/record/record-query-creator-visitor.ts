@@ -1,4 +1,5 @@
 import {
+  DateField,
   ID_TYPE,
   type AttachmentField,
   type AutoIncrementField,
@@ -54,6 +55,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
   rating(field: RatingField): void {}
   select(field: SelectField): void {}
   email(field: EmailField): void {}
+  date(field: DateField): void {}
   attachment(field: AttachmentField): void {}
   reference(field: ReferenceField): void {
     const foreignTable = this.foreignTables.get(field.foreignTableId)

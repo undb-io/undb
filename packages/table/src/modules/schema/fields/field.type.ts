@@ -1,4 +1,8 @@
 import type {
+  DATE_TYPE,
+  DateField,
+  DateFieldValue,
+  IDateFieldConditionSchema,
   INumberFieldConditionSchema,
   IReferenceFieldConstraint,
   IReferenceFieldOption,
@@ -90,6 +94,7 @@ export type Field =
   | RatingField
   | EmailField
   | AttachmentField
+  | DateField
 
 export type NoneSystemField = Field & { isSystem: false }
 export type SystemField = Field & { isSystem: true }
@@ -109,6 +114,7 @@ export type FieldValue =
   | RatingFieldValue
   | EmailFieldValue
   | AttachmentFieldValue
+  | DateFieldValue
 
 export type MutableFieldValue =
   | StringFieldValue
@@ -118,6 +124,7 @@ export type MutableFieldValue =
   | RatingFieldValue
   | EmailFieldValue
   | AttachmentFieldValue
+  | DateFieldValue
 
 export type FieldType =
   | typeof STRING_TYPE
@@ -134,6 +141,7 @@ export type FieldType =
   | typeof RATING_TYPE
   | typeof EMAIL_TYPE
   | typeof ATTACHMENT_TYPE
+  | typeof DATE_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
@@ -159,6 +167,7 @@ export type IFieldConditionSchema =
   | IRatingFieldConditionSchema
   | IEmailFieldConditionSchema
   | IAttachmentFieldConditionSchema
+  | IDateFieldConditionSchema
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
 

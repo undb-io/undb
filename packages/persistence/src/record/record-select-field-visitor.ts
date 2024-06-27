@@ -1,5 +1,6 @@
 import {
   AttachmentField,
+  DateField,
   ID_TYPE,
   RatingField,
   SelectField,
@@ -133,6 +134,9 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     this.addSelect(select)
   }
   attachment(field: AttachmentField): void {
+    this.addSelect(this.getField(field.id.value))
+  }
+  date(field: DateField): void {
     this.addSelect(this.getField(field.id.value))
   }
 }

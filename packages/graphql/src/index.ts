@@ -82,6 +82,7 @@ export class Graphql {
         reference
         rollup
         attachment
+        date
       }
 
       type Field {

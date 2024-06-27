@@ -1,5 +1,6 @@
 import {
   AttachmentField,
+  DateField,
   ID_TYPE,
   RatingField,
   SelectField,
@@ -73,6 +74,9 @@ export class RecordReferenceVisitor implements IFieldVisitor {
     throw new Error("Method not implemented.")
   }
   email(field: EmailField): void {
+    throw new Error("Method not implemented.")
+  }
+  date(field: DateField): void {
     throw new Error("Method not implemented.")
   }
 }
