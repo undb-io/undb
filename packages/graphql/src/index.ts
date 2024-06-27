@@ -217,7 +217,7 @@ export class Graphql {
       }
 
       type Mutation {
-        saveFile(file: File!): Boolean!
+        uploadFile(file: File!): Boolean!
       }
       `,
       resolvers: {
@@ -262,7 +262,7 @@ export class Graphql {
         },
         Mutation: {
           // @ts-ignore
-          saveFile: async (_, { file }: { file: File }) => {
+          uploadFile: async (_, { file }: { file: File }) => {
             try {
               const fileArrayBuffer = await file.arrayBuffer()
               await this.objectStorage.put(Buffer.from(fileArrayBuffer), file.name, file.type)

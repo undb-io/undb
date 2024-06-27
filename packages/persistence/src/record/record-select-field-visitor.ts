@@ -1,4 +1,5 @@
 import {
+  AttachmentField,
   ID_TYPE,
   RatingField,
   SelectField,
@@ -130,5 +131,8 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   rollup(field: RollupField): void {
     const select = `${field.referenceFieldId}.${field.id.value} as ${field.id.value}`
     this.addSelect(select)
+  }
+  attachment(field: AttachmentField): void {
+    this.addSelect(this.getField(field.id.value))
   }
 }

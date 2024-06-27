@@ -14,6 +14,9 @@ const config = {
     JSON: {
       type: "object",
     },
+    File: {
+      type: "object",
+    },
   },
 }
 

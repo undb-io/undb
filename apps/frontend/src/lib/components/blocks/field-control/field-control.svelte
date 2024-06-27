@@ -10,6 +10,7 @@
   import SelectControl from "./select-control.svelte"
   import RatingControl from "./rating-control.svelte"
   import EmailControl from "./email-control.svelte"
+  import AttachmentControl from "./attachment-control.svelte"
 
   export let readonly = false
   export let field: Field
@@ -39,6 +40,7 @@
     select: SelectControl,
     rating: RatingControl,
     email: EmailControl,
+    attachment: AttachmentControl,
   }
 </script>
 

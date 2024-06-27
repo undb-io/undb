@@ -60,7 +60,7 @@ type FormOption {
 scalar JSON
 
 type Mutation {
-  saveFile(file: File!): Boolean!
+  uploadFile(file: File!): Boolean!
 }
 
 type Query {

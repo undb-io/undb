@@ -1,7 +1,6 @@
 import {
   ID_TYPE,
-  RatingField,
-  SelectField,
+  type AttachmentField,
   type AutoIncrementField,
   type CreatedAtField,
   type CreatedByField,
@@ -9,8 +8,10 @@ import {
   type IFieldVisitor,
   type IdField,
   type NumberField,
+  type RatingField,
   type ReferenceField,
   type RollupField,
+  type SelectField,
   type StringField,
   type TableDo,
   type UpdatedAtField,
@@ -53,6 +54,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
   rating(field: RatingField): void {}
   select(field: SelectField): void {}
   email(field: EmailField): void {}
+  attachment(field: AttachmentField): void {}
   reference(field: ReferenceField): void {
     const foreignTable = this.foreignTables.get(field.foreignTableId)
     if (!foreignTable) {

@@ -1,10 +1,13 @@
 import type { ISpecification, ISpecVisitor } from "@undb/domain"
 import type {
+  AttachmentEmpty,
+  AttachmentEqual,
   DateIsAfter,
   DateIsBefore,
   DateIsSameDay,
   DateIsToday,
   DateIsTomorrow,
+  EmailEqual,
   IdEqual,
   IRecordVisitor,
   NumberEmpty,
@@ -13,9 +16,12 @@ import type {
   NumberGTE,
   NumberLT,
   NumberLTE,
+  RatingEqual,
   RecordDO,
   ReferenceEqual,
   ReferenceField,
+  SelectEmpty,
+  SelectEqual,
   StringContains,
   StringEmpty,
   StringEndsWith,
@@ -27,12 +33,6 @@ import type {
   UserEmpty,
   UserEqual,
 } from "@undb/table"
-import type { EmailEqual } from "@undb/table/src/modules/schema/fields/variants/email-field/email-field.specification"
-import type { RatingEqual } from "@undb/table/src/modules/schema/fields/variants/rating-field/rating-field.specification"
-import type {
-  SelectEmpty,
-  SelectEqual,
-} from "@undb/table/src/modules/schema/fields/variants/select-field/select-field-specification"
 import type { CompiledQuery, ExpressionBuilder } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { JoinTable } from "../underlying/reference/join-table"
@@ -63,6 +63,12 @@ export class RecordMutateVisitor implements IRecordVisitor {
     this.#sql.push(...sql)
   }
 
+  attachmentEqual(s: AttachmentEqual): void {
+    this.setData(s.fieldId.value, s.value)
+  }
+  attachmentEmpty(s: AttachmentEmpty): void {
+    this.setData(s.fieldId.value, null)
+  }
   referenceEqual(spec: ReferenceEqual): void {
     const field = this.table.schema.getFieldById(spec.fieldId).unwrap() as ReferenceField
 

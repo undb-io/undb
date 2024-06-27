@@ -1,4 +1,5 @@
 import {
+  AttachmentField,
   CreatedByField,
   ID_TYPE,
   RatingField,
@@ -109,7 +110,10 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     const c = this.tb.addColumn(field.id.value, "real")
     this.addColumn(c)
   }
-
+  attachment(field: AttachmentField): void {
+    const c = this.tb.addColumn(field.id.value, "json")
+    this.addColumn(c)
+  }
   reference(field: ReferenceField): void {
     const joinTable = new JoinTable(this.t.table, field)
     const option = field.option.expect("expect reference option")

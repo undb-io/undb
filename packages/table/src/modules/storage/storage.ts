@@ -1,7 +1,7 @@
 export interface IPutObject {
   url: string
-  token: string
-  id: string
+  // token: string
+  // id: string
 }
 
 export interface IObjectStorage {

@@ -1,4 +1,5 @@
 import {
+  AttachmentField,
   ID_TYPE,
   RatingField,
   SelectField,
@@ -64,6 +65,9 @@ export class RecordReferenceVisitor implements IFieldVisitor {
   }
   reference(field: ReferenceField): void {
     this.qb = this.qb.leftJoin(field.id.value, `${this.table.id.value}.${ID_TYPE}`, `${field.id.value}.${ID_TYPE}`)
+  }
+  attachment(field: AttachmentField): void {
+    throw new Error("Method not implemented.")
   }
   rollup(field: RollupField): void {
     throw new Error("Method not implemented.")

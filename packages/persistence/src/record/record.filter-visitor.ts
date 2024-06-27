@@ -1,10 +1,13 @@
 import { NotImplementException } from "@undb/domain"
 import type {
+  AttachmentEmpty,
+  AttachmentEqual,
   DateIsAfter,
   DateIsBefore,
   DateIsSameDay,
   DateIsToday,
   DateIsTomorrow,
+  EmailEqual,
   IRecordVisitor,
   IdEqual,
   NumberEmpty,
@@ -13,9 +16,12 @@ import type {
   NumberGTE,
   NumberLT,
   NumberLTE,
+  RatingEqual,
   RecordComositeSpecification,
   RecordDO,
   ReferenceEqual,
+  SelectEmpty,
+  SelectEqual,
   StringContains,
   StringEmpty,
   StringEndsWith,
@@ -27,12 +33,6 @@ import type {
   UserEmpty,
   UserEqual,
 } from "@undb/table"
-import type { EmailEqual } from "@undb/table/src/modules/schema/fields/variants/email-field/email-field.specification"
-import type { RatingEqual } from "@undb/table/src/modules/schema/fields/variants/rating-field/rating-field.specification"
-import type {
-  SelectEmpty,
-  SelectEqual,
-} from "@undb/table/src/modules/schema/fields/variants/select-field/select-field-specification"
 import {
   endOfDay,
   endOfToday,
@@ -47,16 +47,22 @@ import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 
 export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements IRecordVisitor {
+  private getFieldId(spec: RecordComositeSpecification) {
+    return `${this.table.id.value}.${spec.fieldId.value}`
+  }
   constructor(
     eb: ExpressionBuilder<any, any>,
     private readonly table: TableDo,
   ) {
     super(eb)
   }
-
-  private getFieldId(spec: RecordComositeSpecification) {
-    return `${this.table.id.value}.${spec.fieldId.value}`
+  attachmentEqual(s: AttachmentEqual): void {
+    throw new Error("Method not implemented.")
   }
+  attachmentEmpty(s: AttachmentEmpty): void {
+    throw new Error("Method not implemented.")
+  }
+
   referenceEqual(spec: ReferenceEqual): void {
     throw new NotImplementException(RecordFilterVisitor.name + ".referenceEqual")
   }

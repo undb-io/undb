@@ -6,6 +6,7 @@ register()
 
 import cors from "@elysiajs/cors"
 import { html } from "@elysiajs/html"
+import staticPlugin from "@elysiajs/static"
 import { swagger } from "@elysiajs/swagger"
 import { trpc } from "@elysiajs/trpc"
 import { AuditEventHandler } from "@undb/audit"
@@ -20,6 +21,7 @@ import { Elysia } from "elysia"
 import { all } from "radash"
 import { v4 } from "uuid"
 import { Auth, OpenAPI, Realtime, Web } from "./modules"
+import { FileService } from "./modules/file/file"
 import { loggerPlugin } from "./plugins/logging"
 
 const auth = container.resolve(Auth)
@@ -49,6 +51,12 @@ export const app = new Elysia()
       ])
     }
   })
+  .use(
+    staticPlugin({
+      assets: "./.undb/storage",
+      prefix: "/public",
+    }),
+  )
   .use(cors())
   .use(html())
   .use(swagger())
@@ -81,10 +89,12 @@ export const app = new Elysia()
       const openapi = container.resolve(OpenAPI)
       const realtime = container.resolve(Realtime)
       const graphql = container.resolve(Graphql)
+      const file = container.resolve(FileService)
       return (
         app
           //
           .use(trpc(route))
+          .use(file.route())
           .use(graphql.route())
           .use(openapi.route())
           .use(realtime.route())
