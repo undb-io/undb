@@ -74,6 +74,10 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO 
         values[key] = JSON.parse(value)
         continue
       }
+      if (field.type === "attachment" && isString(value)) {
+        values[key] = JSON.parse(value)
+        continue
+      }
 
       values[key] = value
     }

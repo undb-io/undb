@@ -64,7 +64,7 @@ export class RecordMutateVisitor implements IRecordVisitor {
   }
 
   attachmentEqual(s: AttachmentEqual): void {
-    this.setData(s.fieldId.value, s.value)
+    this.setData(s.fieldId.value, JSON.stringify(s.value))
   }
   attachmentEmpty(s: AttachmentEmpty): void {
     this.setData(s.fieldId.value, null)

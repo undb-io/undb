@@ -63,7 +63,7 @@
   const form = superForm(defaults(defaultValue, zodClient(schema)), {
     SPA: true,
     dataType: "json",
-    validators: zodClient(schema),
+    // validators: zodClient(schema),
     resetForm: false,
     invalidateAll: false,
     onUpdate(event) {
@@ -75,7 +75,6 @@
 
   const { form: formData, enhance, allErrors, tainted } = form
 
-  $: console.log({ $allErrors, $tainted })
   $: dirty = !!$tainted
   $: disabled = !!$allErrors.length
 
@@ -84,7 +83,7 @@
   $: tempRecord = RecordDO.fromJSON($table, { id: RecordIdVO.create().value, values: $formData })
 </script>
 
-<form method="POST" use:enhance id="createRecord">
+<form method="POST" use:enhance id="createRecord" enctype="multipart/form-data">
   <ul use:autoAnimate class="grid gap-3">
     {#each fields as field}
       {@const shouldShow =

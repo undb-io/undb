@@ -28,7 +28,7 @@
       const [data] = json
 
       value = [
-        ...value,
+        ...(value ?? []),
         {
           id: data.id,
           url: data.url,
@@ -41,8 +41,10 @@
   }
 </script>
 
-{#each value as v}
-  {v.id}
-  {v.name}
-{/each}
+{#if Array.isArray(value)}
+  {#each value as v}
+    {v.id}
+    {v.name}
+  {/each}
+{/if}
 <Input {...$$restProps} type="file" on:change={onChange} disabled={readonly} />
