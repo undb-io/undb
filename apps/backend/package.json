@@ -11,7 +11,7 @@
     "@elysiajs/cron": "^1.0.3",
     "@elysiajs/html": "^1.0.2",
     "@elysiajs/static": "^1.0.3",
-    "@elysiajs/stream": "^1.0.2",
+    "@elysiajs/stream": "^1.0.3",
     "@elysiajs/swagger": "^1.0.5",
     "@elysiajs/trpc": "^1.0.2",
     "@lucia-auth/adapter-drizzle": "^1.0.7",
