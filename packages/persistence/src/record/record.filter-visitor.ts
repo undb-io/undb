@@ -60,7 +60,10 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     throw new Error("Method not implemented.")
   }
   attachmentEmpty(s: AttachmentEmpty): void {
-    throw new Error("Method not implemented.")
+    const cond = this.eb
+      .eb(this.eb.fn("json_array_length", [this.getFieldId(s)]), "=", 0)
+      .or(this.eb.eb(this.getFieldId(s), "is", null))
+    this.addCond(cond)
   }
 
   referenceEqual(spec: ReferenceEqual): void {
@@ -177,5 +180,8 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
   emailEqual(s: EmailEqual): void {
     const cond = this.eb.eb(this.getFieldId(s), "=", s.value)
     this.addCond(cond)
+  }
+  clone(): this {
+    return new RecordFilterVisitor(this.eb, this.table) as this
   }
 }
