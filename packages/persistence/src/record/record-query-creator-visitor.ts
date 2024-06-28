@@ -1,4 +1,5 @@
 import {
+  CheckboxField,
   DateField,
   ID_TYPE,
   JsonField,
@@ -59,6 +60,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
   date(field: DateField): void {}
   attachment(field: AttachmentField): void {}
   json(field: JsonField): void {}
+  checkbox(field: CheckboxField): void {}
   reference(field: ReferenceField): void {
     const foreignTable = this.foreignTables.get(field.foreignTableId)
     if (!foreignTable) {

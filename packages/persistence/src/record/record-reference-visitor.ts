@@ -1,5 +1,6 @@
 import {
   AttachmentField,
+  CheckboxField,
   DateField,
   ID_TYPE,
   JsonField,
@@ -81,6 +82,9 @@ export class RecordReferenceVisitor implements IFieldVisitor {
     throw new Error("Method not implemented.")
   }
   json(field: JsonField): void {
+    throw new Error("Method not implemented.")
+  }
+  checkbox(field: CheckboxField): void {
     throw new Error("Method not implemented.")
   }
 }

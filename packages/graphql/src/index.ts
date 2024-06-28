@@ -84,6 +84,7 @@ export class Graphql {
         attachment
         date
         json
+        checkbox
       }
 
       type Field {

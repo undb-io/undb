@@ -1,5 +1,6 @@
 import {
   AttachmentField,
+  CheckboxField,
   DateField,
   ID_TYPE,
   JsonField,
@@ -141,6 +142,9 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     this.addSelect(this.getField(field.id.value))
   }
   date(field: DateField): void {
+    this.addSelect(this.getField(field.id.value))
+  }
+  checkbox(field: CheckboxField): void {
     this.addSelect(this.getField(field.id.value))
   }
 }

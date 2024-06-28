@@ -1,5 +1,6 @@
 import type { AttachmentField } from "./variants/attachment-field"
 import type { AutoIncrementField } from "./variants/autoincrement-field"
+import type { CheckboxField } from "./variants/checkbox-field"
 import type { CreatedAtField } from "./variants/created-at-field"
 import type { CreatedByField } from "./variants/created-by-field"
 import type { DateField } from "./variants/date-field"
@@ -30,6 +31,7 @@ export interface IFieldVisitor {
   attachment(field: AttachmentField): void
   date(field: DateField): void
   json(field: JsonField): void
+  checkbox(field: CheckboxField): void
 
   reference(field: ReferenceField): void
   rollup(field: RollupField): void

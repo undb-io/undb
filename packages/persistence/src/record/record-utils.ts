@@ -75,6 +75,10 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO 
         continue
       }
 
+      if (field.type === "checkbox") {
+        values[key] = Boolean(value)
+        continue
+      }
       values[key] = value
     }
   }

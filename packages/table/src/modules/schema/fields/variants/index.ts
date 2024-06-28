@@ -2,6 +2,7 @@ export * from "./abstractions"
 
 export * from "./attachment-field"
 export * from "./autoincrement-field"
+export * from "./checkbox-field"
 export * from "./created-at-field"
 export * from "./created-by-field"
 export * from "./date-field"

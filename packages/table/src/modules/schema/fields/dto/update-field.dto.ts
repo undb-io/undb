@@ -9,6 +9,7 @@ import {
   updateUpdatedByFieldDTO,
 } from "../variants"
 import { updateAttachmentFieldDTO } from "../variants/attachment-field"
+import { updateCheckboxFieldDTO } from "../variants/checkbox-field"
 import { updateCreatedAtFieldDTO } from "../variants/created-at-field/created-at-field.vo"
 import { updateEmailFieldDTO } from "../variants/email-field"
 import { updateIdFieldDTO } from "../variants/id-field/id-field.vo"
@@ -31,6 +32,7 @@ export const updateFieldDTO = z.discriminatedUnion("type", [
   updateAttachmentFieldDTO,
   updateDateFieldDTO,
   updateJsonFieldDTO,
+  updateCheckboxFieldDTO,
 ])
 
 export type IUpdateFieldDTO = z.infer<typeof updateFieldDTO>

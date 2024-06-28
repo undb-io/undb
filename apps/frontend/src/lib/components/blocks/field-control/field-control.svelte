@@ -12,6 +12,7 @@
   import EmailControl from "./email-control.svelte"
   import AttachmentControl from "./attachment-control.svelte"
   import JsonControl from "./json-control.svelte"
+  import CheckboxControl from "./checkbox-control.svelte"
 
   export let readonly = false
   export let field: Field
@@ -44,6 +45,7 @@
     attachment: AttachmentControl,
     date: DateControl,
     json: JsonControl,
+    checkbox: CheckboxControl,
   }
 </script>
 

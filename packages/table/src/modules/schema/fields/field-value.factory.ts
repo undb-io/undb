@@ -17,6 +17,7 @@ import {
   UpdatedByFieldValue,
 } from "./variants"
 import { AttachmentFieldValue, type IAttachmentFieldValue } from "./variants/attachment-field"
+import { CheckboxFieldValue } from "./variants/checkbox-field"
 import { CreatedByFieldValue } from "./variants/created-by-field"
 import { EmailFieldValue } from "./variants/email-field"
 import { RatingFieldValue } from "./variants/rating-field"
@@ -34,6 +35,7 @@ export class FieldValueFactory {
       .with({ type: "attachment" }, (field) => Some(new AttachmentFieldValue(field.valueSchema.parse(value))))
       .with({ type: "date" }, (field) => Some(new DateFieldValue(field.valueSchema.parse(value))))
       .with({ type: "json" }, (field) => Some(new JsonFieldValue(field.valueSchema.parse(value))))
+      .with({ type: "checkbox" }, (field) => Some(new CheckboxFieldValue(field.valueSchema.parse(value))))
       .otherwise(() => None)
   }
 
@@ -55,6 +57,7 @@ export class FieldValueFactory {
       .with("attachment", () => Some(new AttachmentFieldValue(value as IAttachmentFieldValue)))
       .with("date", () => Some(new DateFieldValue(value as Date)))
       .with("json", () => Some(new JsonFieldValue(value as JsonValue)))
+      .with("checkbox", () => Some(new CheckboxFieldValue(value as boolean)))
       .exhaustive()
   }
 }

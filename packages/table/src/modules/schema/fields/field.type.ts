@@ -45,6 +45,13 @@ import type {
   IAutoIncrementFieldConditionSchema,
 } from "./variants/autoincrement-field"
 import type {
+  CHECKBOX_TYPE,
+  CheckboxField,
+  CheckboxFieldValue,
+  ICheckboxFieldConditionSchema,
+  ICheckboxFieldConstraint,
+} from "./variants/checkbox-field"
+import type {
   CREATED_AT_TYPE,
   CreatedAtField,
   CreatedAtFieldValue,
@@ -102,6 +109,7 @@ export type Field =
   | AttachmentField
   | DateField
   | JsonField
+  | CheckboxField
 
 export type NoneSystemField = Field & { isSystem: false }
 export type SystemField = Field & { isSystem: true }
@@ -123,6 +131,7 @@ export type FieldValue =
   | AttachmentFieldValue
   | DateFieldValue
   | JsonFieldValue
+  | CheckboxFieldValue
 
 export type MutableFieldValue =
   | StringFieldValue
@@ -134,6 +143,7 @@ export type MutableFieldValue =
   | AttachmentFieldValue
   | DateFieldValue
   | JsonFieldValue
+  | CheckboxFieldValue
 
 export type FieldType =
   | typeof STRING_TYPE
@@ -152,6 +162,7 @@ export type FieldType =
   | typeof ATTACHMENT_TYPE
   | typeof DATE_TYPE
   | typeof JSON_TYPE
+  | typeof CHECKBOX_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
@@ -179,6 +190,7 @@ export type IFieldConditionSchema =
   | IAttachmentFieldConditionSchema
   | IDateFieldConditionSchema
   | IJsonFieldConditionSchema
+  | ICheckboxFieldConditionSchema
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
 
@@ -192,5 +204,6 @@ export type IFieldConstraint =
   | IAttachmentFieldConstraint
   | IDateFieldConstraint
   | IJsonFieldConstraint
+  | ICheckboxFieldConstraint
 
 export type IFieldOption = IReferenceFieldOption | IRollupFieldOption | ISelectFieldOption

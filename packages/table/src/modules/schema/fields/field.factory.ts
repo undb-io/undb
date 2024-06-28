@@ -5,6 +5,7 @@ import type { IFieldDTO } from "./dto/field.dto"
 import type { Field } from "./field.type"
 import { AttachmentField } from "./variants/attachment-field"
 import { AutoIncrementField } from "./variants/autoincrement-field"
+import { CheckboxField } from "./variants/checkbox-field"
 import { CreatedAtField } from "./variants/created-at-field"
 import { CreatedByField } from "./variants/created-by-field"
 import { EmailField } from "./variants/email-field"
@@ -37,6 +38,7 @@ export class FieldFactory {
       .with({ type: "attachment" }, (dto) => new AttachmentField(dto))
       .with({ type: "date" }, (dto) => new DateField(dto))
       .with({ type: "json" }, (dto) => new JsonField(dto))
+      .with({ type: "checkbox" }, (dto) => new CheckboxField(dto))
       .exhaustive()
   }
 
@@ -52,6 +54,7 @@ export class FieldFactory {
       .with({ type: "attachment" }, (dto) => AttachmentField.create(dto))
       .with({ type: "date" }, (dto) => DateField.create(dto))
       .with({ type: "json" }, (dto) => JsonField.create(dto))
+      .with({ type: "checkbox" }, (dto) => CheckboxField.create(dto))
       .otherwise(() => {
         throw new Error("Field type creation not supported")
       })

@@ -11,6 +11,7 @@ import {
 } from "../variants"
 import { attachmentFieldDTO } from "../variants/attachment-field"
 import { autoIncrementFieldDTO } from "../variants/autoincrement-field"
+import { checkboxFieldDTO, createCheckboxFieldDTO } from "../variants/checkbox-field"
 import { createdAtFieldDTO } from "../variants/created-at-field"
 import { createdByFieldDTO } from "../variants/created-by-field"
 import { createEmailFieldDTO, emailFieldDTO } from "../variants/email-field"
@@ -37,6 +38,7 @@ export const fieldDTO = z.discriminatedUnion("type", [
   attachmentFieldDTO,
   dateFieldDTO,
   jsonFieldDTO,
+  checkboxFieldDTO,
 ])
 
 export type IFieldDTO = z.infer<typeof fieldDTO>
@@ -47,6 +49,7 @@ export const inferCreateFieldDTO = z.discriminatedUnion("type", [
   createEmailFieldDTO.omit({ id: true, name: true }),
   createDateFieldDTO.omit({ id: true, name: true }),
   createJsonFieldDTO.omit({ id: true, name: true }),
+  createCheckboxFieldDTO.omit({ id: true, name: true }),
 ])
 
 export type IInferCreateFieldDTO = z.infer<typeof inferCreateFieldDTO>

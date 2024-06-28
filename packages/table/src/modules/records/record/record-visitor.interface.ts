@@ -1,5 +1,6 @@
 import type { ISpecVisitor } from "@undb/domain"
 import type {
+  ICheckboxFieldValueVisitor,
   ICreatedByFieldValueVisitor,
   IDateFieldValueVisitor,
   IJsonFieldValueVisitor,
@@ -28,4 +29,5 @@ export type IRecordVisitor = IStringFieldValueVisitor &
   IAttachmentFieldValueVisitor &
   IDateFieldValueVisitor &
   IJsonFieldValueVisitor &
+  ICheckboxFieldValueVisitor &
   ISpecVisitor

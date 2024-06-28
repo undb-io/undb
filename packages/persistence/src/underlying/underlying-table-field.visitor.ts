@@ -1,5 +1,6 @@
 import {
   AttachmentField,
+  CheckboxField,
   CreatedByField,
   DateField,
   ID_TYPE,
@@ -146,4 +147,8 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     }
   }
   rollup(field: RollupField): void {}
+  checkbox(field: CheckboxField): void {
+    const c = this.tb.addColumn(field.id.value, "boolean")
+    this.addColumn(c)
+  }
 }

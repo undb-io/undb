@@ -2,6 +2,7 @@ import { NotImplementException } from "@undb/domain"
 import type {
   AttachmentEmpty,
   AttachmentEqual,
+  CheckboxEqual,
   DateEqual,
   DateIsAfter,
   DateIsBefore,
@@ -58,6 +59,10 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     private readonly table: TableDo,
   ) {
     super(eb)
+  }
+  checkboxEqual(spec: CheckboxEqual): void {
+    const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value)
+    this.addCond(cond)
   }
   jsonEqual(spec: JsonEqual): void {
     throw new Error("Method not implemented.")

@@ -1,3 +1,4 @@
+import { isString } from "radash"
 import { P, match } from "ts-pattern"
 import type { IInferCreateFieldDTO } from "./dto/field.dto"
 import type { FieldType, NoneSystemFieldType, SystemFieldType } from "./field.type"
@@ -9,6 +10,10 @@ export const inferCreateFieldType = (values: (string | number | null | object | 
     .with(P.array(P.string), () => ({ type: "string" }))
     .with(P.array(P.number), () => ({ type: "number" }))
     .with(P.array(P.string.regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)), () => ({ type: "email" }))
+    .with(
+      P.array(P.when((v) => isString(v) && (v.toLocaleLowerCase() === "true" || v.toLocaleLowerCase() === "false"))),
+      () => ({ type: "checkbox" }),
+    )
     .otherwise(() => ({ type: "string" }))
 }
 
@@ -25,6 +30,7 @@ const sortableFieldTypes: FieldType[] = [
   "email",
   "date",
   "json",
+  "checkbox",
 ] as const
 
 export function isFieldSortable(type: FieldType): boolean {
@@ -47,6 +53,7 @@ export const fieldTypes: NoneSystemFieldType[] = [
   "attachment",
   "date",
   "json",
+  "checkbox",
 ] as const
 export const systemFieldTypes: SystemFieldType[] = [
   "id",
@@ -59,7 +66,7 @@ export const systemFieldTypes: SystemFieldType[] = [
 
 export const allFieldTypes: FieldType[] = [...systemFieldTypes, ...fieldTypes] as const
 
-export const fieldsCanBeRollup: FieldType[] = ["number", "string", "rating", "email", "date"] as const
+export const fieldsCanBeRollup: FieldType[] = ["number", "string", "rating", "email", "date", "checkbox"] as const
 
 export const getIsFieldCanBeRollup = (type: FieldType): type is "number" => {
   return fieldsCanBeRollup.includes(type)

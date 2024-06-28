@@ -19,6 +19,7 @@
     FileTextIcon,
     CalendarIcon,
     FileJsonIcon,
+    SquareCheckIcon,
   } from "lucide-svelte"
 
   export let type: FieldType
@@ -40,6 +41,7 @@
     attachment: FileTextIcon,
     date: CalendarIcon,
     json: FileJsonIcon,
+    checkbox: SquareCheckIcon,
   }
 </script>
 

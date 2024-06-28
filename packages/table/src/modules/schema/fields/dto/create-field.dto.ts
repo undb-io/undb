@@ -8,6 +8,7 @@ import { createReferenceFieldDTO } from "../variants/reference-field/reference-f
 import { createRollupFieldDTO } from "../variants/rollup-field/rollup-field.vo"
 import { createSelectFieldDTO } from "../variants/select-field/select-field.vo"
 import { createStringFieldDTO } from "../variants/string-field/string-field.vo"
+import { createCheckboxFieldDTO } from "../variants/checkbox-field"
 
 export const createFieldDTO = z.discriminatedUnion("type", [
   createStringFieldDTO,
@@ -20,6 +21,7 @@ export const createFieldDTO = z.discriminatedUnion("type", [
   createAttachmentFieldDTO,
   createDateFieldDTO,
   createJsonFieldDTO,
+  createCheckboxFieldDTO,
 ])
 
 export type ICreateFieldDTO = z.infer<typeof createFieldDTO>
