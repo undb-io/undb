@@ -33,6 +33,7 @@
     rating: RatingField,
     email: StringField,
     attachment: AttachmentField,
+    date: DateField,
     json: JsonField,
   }
 </script>

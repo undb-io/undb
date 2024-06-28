@@ -10,6 +10,7 @@
   import IdField from "../field-value/id-field.svelte"
   import DateField from "../field-value/date-field.svelte"
   import NumberField from "../field-value/number-field.svelte"
+  import CheckboxField from "../field-value/checkbox-field.svelte"
   import { cn } from "$lib/utils"
   import { derived } from "svelte/store"
   import UserField from "../field-value/user-field.svelte"
@@ -42,7 +43,9 @@
     select: SelectControl,
     rating: RatingControl,
     email: EmailControl,
+    date: DateField,
     json: JsonField,
+    checkbox: CheckboxField,
   }
 
   let form: HTMLFormElement
