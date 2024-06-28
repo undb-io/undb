@@ -7,6 +7,7 @@
   import RollupFieldOption from "./rollup-field-option.svelte"
   import SelectFieldOption from "./select-field-option.svelte"
   import RatingFieldOption from "./rating-field-option.svelte"
+  import AttachmentFieldOption from "./attachment-field-option.svelte"
 
   export let constraint: IFieldConstraint | undefined
   export let option: any | undefined
@@ -21,6 +22,7 @@
     rollup: RollupFieldOption,
     select: SelectFieldOption,
     rating: RatingFieldOption,
+    attachment: AttachmentFieldOption,
   }
 
   export let type: NoneSystemFieldType

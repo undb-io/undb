@@ -81,4 +81,8 @@ export class AttachmentField extends AbstractField<AttachmentFieldValue, Attachm
   override get aggregate() {
     return attachmentFieldAggregate
   }
+
+  public get max() {
+    return this.constraint.mapOr(Infinity, (c) => c.props.max ?? Infinity)
+  }
 }

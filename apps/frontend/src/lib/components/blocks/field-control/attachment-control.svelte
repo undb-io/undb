@@ -13,6 +13,9 @@
   export let value: IAttachmentFieldValue = []
   export let readonly = false
 
+  $: max = field.max
+  $: disabled = value?.length >= max
+
   async function onChange(e: Event) {
     const target = e.target as HTMLInputElement
     const files = target.files
@@ -90,4 +93,4 @@
     </SortableList>
   </div>
 {/if}
-<Input {...$$restProps} type="file" on:change={onChange} disabled={readonly} />
+<Input {...$$restProps} type="file" on:change={onChange} disabled={readonly || disabled} />

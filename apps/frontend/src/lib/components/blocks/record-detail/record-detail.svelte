@@ -89,7 +89,7 @@
   $: disabled = !$tainted || !!$allErrors.length
 </script>
 
-<form method="POST" use:enhance id="updateRecord" class="space-y-4">
+<form method="POST" use:enhance id="updateRecord" class="space-y-4" enctype="multipart/form-data">
   {#each fields as field}
     {@const dirty = $tainted && $tainted[field.id.value]}
     <Form.Field class="rounded-sm border p-2" {form} name={field.id.value}>
