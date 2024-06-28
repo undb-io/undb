@@ -79,7 +79,7 @@
   )}
 >
   <div
-    class={cn("bg-background mx-auto max-w-[660px] space-y-2 rounded-md px-10 py-6 shadow-xl")}
+    class={cn("bg-background mx-auto max-w-[800px] space-y-2 rounded-md px-10 py-6 shadow-xl")}
     data-form-id={form.id}
   >
     {#if isEditingFormName}

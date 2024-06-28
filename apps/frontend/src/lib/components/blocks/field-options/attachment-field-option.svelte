@@ -5,7 +5,7 @@
   import type { IAttachmentFieldConstraint } from "@undb/table"
 
   export let constraint: IAttachmentFieldConstraint | undefined
-  let single = true
+  let single = !constraint || constraint.max === 1
 
   $: if (constraint) {
     if (single) {
