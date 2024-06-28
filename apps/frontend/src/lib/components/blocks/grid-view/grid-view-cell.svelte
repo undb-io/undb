@@ -18,6 +18,7 @@
   import SelectControl from "../field-control/select-control.svelte"
   import RatingControl from "../field-control/rating-control.svelte"
   import EmailControl from "../field-control/email-control.svelte"
+  import JsonField from "../field-value/json-field.svelte"
 
   const table = getTable()
 
@@ -41,6 +42,7 @@
     select: SelectControl,
     rating: RatingControl,
     email: EmailControl,
+    json: JsonField,
   }
 
   let form: HTMLFormElement
