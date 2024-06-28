@@ -20,6 +20,7 @@
   import RatingControl from "../field-control/rating-control.svelte"
   import EmailControl from "../field-control/email-control.svelte"
   import JsonField from "../field-value/json-field.svelte"
+  import AttachmentField from "../field-value/attachment-field.svelte"
 
   const table = getTable()
 
@@ -46,6 +47,7 @@
     date: DateField,
     json: JsonField,
     checkbox: CheckboxField,
+    attachment: AttachmentField,
   }
 
   let form: HTMLFormElement
