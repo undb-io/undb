@@ -18,6 +18,7 @@
     FileIcon,
     FileTextIcon,
     CalendarIcon,
+    FileJsonIcon,
   } from "lucide-svelte"
 
   export let type: FieldType
@@ -38,6 +39,7 @@
     email: MailIcon,
     attachment: FileTextIcon,
     date: CalendarIcon,
+    json: FileJsonIcon,
   }
 </script>
 

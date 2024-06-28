@@ -83,6 +83,7 @@ export class Graphql {
         rollup
         attachment
         date
+        json
       }
 
       type Field {

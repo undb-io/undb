@@ -2,6 +2,8 @@ import { ValueObject } from "@undb/domain"
 import { isEmpty } from "radash"
 import type { JsonValue } from "type-fest"
 
+export type { JsonValue } from "type-fest"
+
 export class JsonFieldValue extends ValueObject<JsonValue> {
   constructor(value: JsonValue) {
     super({ value })

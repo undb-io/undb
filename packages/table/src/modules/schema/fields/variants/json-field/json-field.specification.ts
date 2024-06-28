@@ -5,6 +5,7 @@ import type { IRecordVisitor } from "../../../../records/record/record-visitor.i
 import { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import type { RecordDO } from "../../../../records/record/record.do"
 import type { FieldId } from "../../field-id.vo"
+import { JsonFieldValue } from "./json-field-value.vo"
 
 export class JsonEqual extends RecordComositeSpecification {
   constructor(
@@ -18,7 +19,8 @@ export class JsonEqual extends RecordComositeSpecification {
     return value.mapOr(false, (v) => isEqual(v.value, this.json))
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
-    throw new Error("Method not implemented.")
+    t.values.setValue(this.fieldId, new JsonFieldValue(this.json))
+    return Ok(t)
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.jsonEqual(this)

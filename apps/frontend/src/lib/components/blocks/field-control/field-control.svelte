@@ -11,6 +11,7 @@
   import RatingControl from "./rating-control.svelte"
   import EmailControl from "./email-control.svelte"
   import AttachmentControl from "./attachment-control.svelte"
+  import JsonControl from "./json-control.svelte"
 
   export let readonly = false
   export let field: Field
@@ -42,6 +43,7 @@
     email: EmailControl,
     attachment: AttachmentControl,
     date: DateControl,
+    json: JsonControl,
   }
 </script>
 

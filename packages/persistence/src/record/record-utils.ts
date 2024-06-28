@@ -70,11 +70,7 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO 
       }
       continue
     } else {
-      if (field.type === "reference" && isString(value)) {
-        values[key] = JSON.parse(value)
-        continue
-      }
-      if (field.type === "attachment" && isString(value)) {
+      if ((field.type === "reference" || field.type === "attachment" || field.type === "json") && isString(value)) {
         values[key] = JSON.parse(value)
         continue
       }

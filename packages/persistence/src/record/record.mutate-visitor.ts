@@ -11,6 +11,8 @@ import type {
   EmailEqual,
   IdEqual,
   IRecordVisitor,
+  JsonEmpty,
+  JsonEqual,
   NumberEmpty,
   NumberEqual,
   NumberGT,
@@ -64,6 +66,12 @@ export class RecordMutateVisitor implements IRecordVisitor {
     this.#sql.push(...sql)
   }
 
+  jsonEqual(spec: JsonEqual): void {
+    this.setData(spec.fieldId.value, JSON.stringify(spec.json))
+  }
+  jsonEmpty(spec: JsonEmpty): void {
+    this.setData(spec.fieldId.value, null)
+  }
   dateEqual(spec: DateEqual): void {
     this.setData(spec.fieldId.value, spec.date)
   }
