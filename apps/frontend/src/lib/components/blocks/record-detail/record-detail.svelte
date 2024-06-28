@@ -92,7 +92,7 @@
 <form method="POST" use:enhance id="updateRecord" class="space-y-4">
   {#each fields as field}
     {@const dirty = $tainted && $tainted[field.id.value]}
-    <Form.Field {form} name={field.id.value}>
+    <Form.Field class="rounded-sm border p-2" {form} name={field.id.value}>
       <Form.Control let:attrs>
         <Form.Label class="flex h-4 items-center justify-between gap-2">
           <div class="flex items-center gap-2">

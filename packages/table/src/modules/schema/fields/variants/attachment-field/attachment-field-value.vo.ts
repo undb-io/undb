@@ -23,12 +23,12 @@ export const mutateAttachmentFieldValueSchema = z.union([
 
 export type IMutateAttachmentFieldValueSchema = z.infer<typeof mutateAttachmentFieldValueSchema>
 
-export class AttachmentFieldValue extends ValueObject<IAttachmentFieldValue> {
-  constructor(value: IAttachmentFieldValue) {
-    super(value)
+export class AttachmentFieldValue extends ValueObject<IAttachmentFieldValue | null> {
+  constructor(value: IAttachmentFieldValue | null) {
+    super(value === null ? { value } : value)
   }
 
   isEmpty() {
-    return this.props === null || this.props === undefined || this.props.length === 0
+    return this.props === null || this.props === undefined || (Array.isArray(this.props) && this.props.length === 0)
   }
 }

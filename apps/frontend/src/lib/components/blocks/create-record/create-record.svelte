@@ -89,7 +89,7 @@
       {@const shouldShow =
         !tableForm || tableForm.getShouldShowField(field.id.value, $table.schema.fieldMapById, tempRecord)}
       {#if shouldShow}
-        <Form.Field {form} name={field.id.value}>
+        <Form.Field class="rounded-sm border p-2" {form} name={field.id.value}>
           <Form.Control let:attrs>
             <Form.Label class="flex items-center justify-between gap-2">
               <div class="flex items-center gap-2">
@@ -99,7 +99,6 @@
                   <span class="text-red-500">*</span>
                 {/if}
               </div>
-              <ShieldCheckIcon class="text-muted-foreground h-4 w-4" />
             </Form.Label>
             <FieldControl {...attrs} bind:value={$formData[field.id.value]} {field} disabled={field.isSystem} />
           </Form.Control>

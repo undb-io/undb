@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
+  import Switch from "$lib/components/ui/switch/switch.svelte"
 
   export let readonly = false
   export let value: boolean
 </script>
 
-<Checkbox {...$$restProps} disabled={readonly} bind:checked={value} />
+<Switch {...$$restProps} disabled={readonly} bind:checked={value} />
