@@ -75,7 +75,7 @@ export class AttachmentField extends AbstractField<AttachmentFieldValue, Attachm
   }
 
   override getMutationSpec(value: AttachmentFieldValue): Option<RecordComositeSpecification> {
-    return Some(new AttachmentEqual(value.props, this.id))
+    return Some(new AttachmentEqual(value.value, this.id))
   }
 
   override get aggregate() {

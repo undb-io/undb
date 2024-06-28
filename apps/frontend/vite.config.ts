@@ -22,6 +22,10 @@ export default defineConfig({
         target: "http://0.0.0.0:4000",
         changeOrigin: true,
       },
+      "/public": {
+        target: "http://0.0.0.0:4000",
+        changeOrigin: true,
+      },
       "/openapi": {
         target: "http://0.0.0.0:4000",
         changeOrigin: true,

@@ -9,6 +9,8 @@ export const attachmentFieldValueItem = z.object({
   type: z.string(),
 })
 
+export type IAttachmentFieldValueItem = z.infer<typeof attachmentFieldValueItem>
+
 export const attachmentFieldValue = attachmentFieldValueItem.array()
 
 export type IAttachmentFieldValue = z.infer<typeof attachmentFieldValue>
@@ -31,4 +33,8 @@ export class AttachmentFieldValue extends ValueObject<IAttachmentFieldValue | nu
   isEmpty() {
     return this.props === null || this.props === undefined || (Array.isArray(this.props) && this.props.length === 0)
   }
+}
+
+export function isImage(item: IAttachmentFieldValueItem) {
+  return item.type.startsWith("image")
 }

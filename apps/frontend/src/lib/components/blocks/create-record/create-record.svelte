@@ -8,7 +8,6 @@
   import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { toast } from "svelte-sonner"
-  import { ShieldCheckIcon } from "lucide-svelte"
   import { beforeNavigate } from "$app/navigation"
   import { derived } from "svelte/store"
   import { FormIdVO, RecordDO, RecordIdVO } from "@undb/table"

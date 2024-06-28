@@ -6,7 +6,7 @@ import { AttachmentFieldValue, type IAttachmentFieldValue } from "./attachment-f
 
 export class AttachmentEqual extends RecordComositeSpecification {
   constructor(
-    readonly value: IAttachmentFieldValue,
+    readonly value: IAttachmentFieldValue | null,
     readonly fieldId: FieldId,
   ) {
     super(fieldId)

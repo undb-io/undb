@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import "../app.pcss"
 
   import { browser } from "$app/environment"
@@ -6,6 +6,7 @@
   import { ModeWatcher } from "mode-watcher"
 
   import { QueryClient, QueryClientProvider } from "@tanstack/svelte-query"
+  import ImagePreview from "$lib/components/blocks/attachment/image-preview.svelte"
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -24,3 +25,5 @@
     </QueryClientProvider>
   </main>
 </div>
+
+<ImagePreview />

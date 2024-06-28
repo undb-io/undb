@@ -1,10 +1,11 @@
 <script lang="ts">
   import Input from "$lib/components/ui/input/input.svelte"
   import { getTable } from "$lib/store/table.store"
-  import type { AttachmentField, IAttachmentFieldValue } from "@undb/table"
+  import { isImage, type AttachmentField, type IAttachmentFieldValue } from "@undb/table"
   import { FileIcon, XIcon } from "lucide-svelte"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
   import { isNumber } from "radash"
+  import { selectedAttachment } from "$lib/store/attachment.store"
 
   export let field: AttachmentField
   const table = getTable()
@@ -68,8 +69,16 @@
       }}
     >
       {#each value as v, i (v.id)}
-        <div class="flex items-center" data-attachment-id={v.id} data-field-id={field.id.value}>
-          <FileIcon class="text-muted-foreground mr-2 h-5 w-5" />
+        <div class="flex items-center gap-2" data-attachment-id={v.id} data-field-id={field.id.value}>
+          <div class="bg-muted flex h-5 w-5 items-center justify-center">
+            {#if isImage(v)}
+              <button on:click={() => ($selectedAttachment = v)}>
+                <img src={v.url} alt={v.name} />
+              </button>
+            {:else}
+              <FileIcon class="text-muted-foreground h-5 w-5" />
+            {/if}
+          </div>
           <span class="flex-1">
             {v.name}
           </span>
