@@ -1,5 +1,6 @@
 export * from "./create-base.command"
 export * from "./create-record.command"
+export * from "./create-records.command"
 export * from "./create-table-field.command"
 export * from "./create-table-form.command"
 export * from "./create-table-view.command"

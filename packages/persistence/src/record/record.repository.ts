@@ -62,6 +62,32 @@ export class RecordRepository implements IRecordRepository {
     await this.outboxService.save(record)
   }
 
+  async buldInsert(table: TableDo, records: RecordDO[]): Promise<void> {
+    const context = executionContext.getStore()
+    const userId = context?.user?.userId!
+
+    const t = new UnderlyingTable(table)
+
+    const sql: CompiledQuery[] = []
+
+    await this.qb
+      .insertInto(t.name)
+      .values((eb) =>
+        records.map((record) => {
+          const spec = record.toInsertSpec(table)
+          const visitor = new RecordMutateVisitor(table, record, this.qb, eb)
+          spec.accept(visitor)
+
+          sql.push(...visitor.sql)
+
+          return { ...visitor.data, [CREATED_BY_TYPE]: userId, [UPDATED_BY_TYPE]: userId }
+        }),
+      )
+      .executeTakeFirst()
+    await all(sql.map((s) => this.qb.executeQuery(s)))
+    await this.outboxService.saveMany(records)
+  }
+
   async findOne(table: TableDo, spec: Option<RecordComositeSpecification>): Promise<Option<RecordDO>> {
     const t = new UnderlyingTable(table)
 

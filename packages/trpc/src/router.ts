@@ -1,6 +1,7 @@
 import {
   CreateBaseCommand,
   CreateRecordCommand,
+  CreateRecordsCommand,
   CreateTableCommand,
   CreateTableFieldCommand,
   CreateTableFormCommand,
@@ -27,6 +28,7 @@ import {
   UpdateWebhookCommand,
   createBaseCommand,
   createRecordCommand,
+  createRecordsCommand,
   createTableCommand,
   createTableFieldCommand,
   createTableFormCommand,
@@ -146,6 +148,10 @@ const recordRouter = t.router({
     .use(authz("record:create"))
     .input(createRecordCommand)
     .mutation(({ input }) => commandBus.execute(new CreateRecordCommand(input))),
+  bulkCreate: p
+    .use(authz("record:create"))
+    .input(createRecordsCommand)
+    .mutation(({ input }) => commandBus.execute(new CreateRecordsCommand(input))),
   update: p
     .use(authz("record:update"))
     .input(updateRecordCommand)

@@ -6,15 +6,69 @@
   import { parse, type ImportDataExtensions, type SheetData } from "$lib/import/import.helper"
   import { FileIcon, XIcon } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
+  import { invalidate, goto } from "$app/navigation"
+  import { baseId, currentBase } from "$lib/store/base.store"
+  import { closeModal, CREATE_TABLE_MODAL, IMPORT_TABLE_MODAL } from "$lib/store/modal.store"
+  import { trpc } from "$lib/trpc/client"
+  import { createMutation } from "@tanstack/svelte-query"
+  import { toast } from "svelte-sonner"
+  import { FieldIdVo, TableIdVo, type ICreateRecordDTO, type ICreateSchemaDTO } from "@undb/table"
+
+  const createRecords = createMutation({
+    mutationKey: ["table", "import", "records"],
+    mutationFn: trpc.record.bulkCreate.mutate,
+    async onSuccess() {
+      await invalidate(`table:${tableId}`)
+      closeModal(IMPORT_TABLE_MODAL)
+      baseId.set(null)
+    },
+    onError(error) {
+      toast.error(error.message)
+    },
+  })
+
+  const createTable = createMutation({
+    mutationKey: ["table", "import"],
+    mutationFn: trpc.table.create.mutate,
+    async onSuccess(data) {
+      if (importData && rs.length) {
+        debugger
+        const records = rs.map((r, i) => {
+          const record: ICreateRecordDTO = { values: {} }
+
+          for (let j = 0; j < r.length; j++) {
+            record.values[schema[j].id!] = r[j]
+          }
+
+          return record
+        })
+
+        $createRecords.mutate({
+          tableId: data,
+          records,
+        })
+      } else {
+        await invalidate("undb:tables")
+        await goto(`/t/${data}`)
+        closeModal(IMPORT_TABLE_MODAL)
+        baseId.set(null)
+      }
+    },
+    onError(error) {
+      toast.error(error.message)
+    },
+  })
 
   let file: File | undefined
   let data: { name: string; extension: ImportDataExtensions; data: SheetData } | undefined
+  let tableId: string | undefined
   async function onChange(e: Event) {
     const target = e.target as HTMLInputElement
     const files = target.files
     if (!files?.length) return
 
     const [f] = files
+    tableId = TableIdVo.create().value
     file = f
     data = await parse(file)
   }
@@ -30,6 +84,17 @@
     }
 
     if (step === 1) {
+      if (!file || !data) return
+      const baseId = $currentBase?.id
+      if (!baseId) return
+
+      $createTable.mutate({
+        id: tableId,
+        name: file.name,
+        baseId,
+        schema,
+      })
+
       return
     }
   }
@@ -44,6 +109,14 @@
   let firstRowAsHeader = true
   let importData = true
   let headers: string[] = []
+  let rs: string[][] = []
+
+  $: schema = headers.map((header, i) => ({
+    name: header,
+    type: "string",
+    id: FieldIdVo.create().value,
+    display: i === 0,
+  })) as ICreateSchemaDTO
 
   $: if (data) {
     if (firstRowAsHeader) {
@@ -51,6 +124,8 @@
     } else {
       headers = Array.from({ length: data.data[0].length }, (_, i) => `field ${i + 1}`)
     }
+
+    rs = firstRowAsHeader ? data.data.slice(1).map((s) => s.map(String)) : data.data.map((s) => s.map(String))
   }
 </script>
 

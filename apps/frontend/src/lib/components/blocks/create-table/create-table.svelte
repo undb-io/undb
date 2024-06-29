@@ -13,7 +13,6 @@
   import { FieldIdVo, getNextName } from "@undb/table"
   import { CREATE_TABLE_MODAL, closeModal } from "$lib/store/modal.store"
   import { baseId, currentBase } from "$lib/store/base.store"
-  import { getTable } from "$lib/store/table.store"
 
   const schema = createTableCommand.omit({ baseId: true })
 

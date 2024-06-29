@@ -2,10 +2,11 @@
   import { page } from "$app/stores"
   import { type GetIndexQuery$result } from "$houdini"
   import * as Accordion from "$lib/components/ui/accordion"
-  import { EllipsisIcon, HardDriveIcon, PlusIcon } from "lucide-svelte"
+  import { EllipsisIcon, HardDriveIcon, ImportIcon, PlusIcon } from "lucide-svelte"
   import TablesNavItem from "./tables-nav-item.svelte"
-  import { CREATE_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
+  import { CREATE_TABLE_MODAL, IMPORT_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
   import { baseId } from "$lib/store/base.store"
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
 
   export let tables: GetIndexQuery$result["tables"] = []
   export let bases: GetIndexQuery$result["bases"] = []
@@ -39,10 +40,19 @@
                 {base.name}
               </span>
             </a>
-            <span class="hidden items-center gap-2 group-hover:flex">
-              <button type="button">
-                <EllipsisIcon class="h-4 w-4" />
-              </button>
+            <span class="items-center gap-2 opacity-0 group-hover:opacity-100">
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger>
+                  <EllipsisIcon class="h-4 w-4" />
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content class="w-[200px]">
+                  <DropdownMenu.Item on:click={() => toggleModal(IMPORT_TABLE_MODAL)}>
+                    <ImportIcon class="text-muted-foreground mr-2 h-3 w-3" />
+                    Import Data
+                  </DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
+
               <button
                 type="button"
                 on:click={(e) => {
