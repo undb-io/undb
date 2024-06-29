@@ -34,6 +34,19 @@ export class AggregateFnBuiler {
       .with("percent_uniq", () =>
         sql`COUNT(DISTINCT ${sql.ref(this.field.id.value)}) * 1.0 / COUNT(*)`.as(this.field.id.value),
       )
+      .with("count_true", () =>
+        sql`COUNT(CASE WHEN ${sql.ref(this.field.id.value)} THEN 1 END)`.as(this.field.id.value),
+      )
+      .with("count_false", () =>
+        sql`COUNT(CASE WHEN NOT ${sql.ref(this.field.id.value)} THEN 1 END)`.as(this.field.id.value),
+      )
+      .with("percent_true", () =>
+        sql`COUNT(CASE WHEN ${sql.ref(this.field.id.value)} THEN 1 END) * 1.0 / COUNT(*)`.as(this.field.id.value),
+      )
+      .with("percent_false", () =>
+        sql`COUNT(CASE WHEN NOT ${sql.ref(this.field.id.value)} THEN 1 END) * 1.0 / COUNT(*)`.as(this.field.id.value),
+      )
+
       .exhaustive()
   }
 }

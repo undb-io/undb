@@ -7,10 +7,11 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import { cn } from "$lib/utils.js"
   import type { Field, IOpType } from "@undb/table"
+  import { LL } from "@undb/i18n/client"
 
   export let field: Field | undefined
   $: conditionOps = field?.conditionOps ?? []
-  $: ops = conditionOps.map((op) => ({ value: op, label: op })) ?? []
+  $: ops = conditionOps.map((op) => ({ value: op, label: $LL.table.ops[op]() })) ?? []
 
   $: if (field && !!value && !conditionOps.includes(value)) {
     value = ops[0]?.value
@@ -50,8 +51,8 @@
   </Popover.Trigger>
   <Popover.Content class="w-[200px] p-0">
     <Command.Root>
-      <Command.Input placeholder="Search framework..." class="h-9" />
-      <Command.Empty>No framework found.</Command.Empty>
+      <Command.Input placeholder="Search op..." class="h-9" />
+      <Command.Empty>No oprator found.</Command.Empty>
       <Command.Group>
         {#each ops as framework}
           <Command.Item

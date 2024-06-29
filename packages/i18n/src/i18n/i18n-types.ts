@@ -17,6 +17,146 @@ type RootTranslation = {
    * @param {string} name
    */
   HI: RequiredParams<"name">
+  table: {
+    ops: {
+      /**
+       * =
+       */
+      eq: string
+      /**
+       * !​=
+       */
+      neq: string
+      /**
+       * c​o​n​t​a​i​n​s
+       */
+      contains: string
+      /**
+       * n​o​t​ ​c​o​n​t​a​i​n​s
+       */
+      does_not_contain: string
+      /**
+       * s​t​a​r​t​s​ ​w​i​t​h
+       */
+      starts_with: string
+      /**
+       * e​n​d​s​ ​w​i​t​h
+       */
+      ends_with: string
+      /**
+       * i​s​ ​e​m​p​t​y
+       */
+      is_empty: string
+      /**
+       * i​s​ ​n​o​t​ ​e​m​p​t​y
+       */
+      is_not_empty: string
+      /**
+       * m​i​n
+       */
+      min: string
+      /**
+       * m​a​x
+       */
+      max: string
+      /**
+       * >
+       */
+      gt: string
+      /**
+       * >​=
+       */
+      gte: string
+      /**
+       * <
+       */
+      lt: string
+      /**
+       * <​=
+       */
+      lte: string
+      /**
+       * i​s​ ​s​a​m​e​ ​d​a​y
+       */
+      is_same_day: string
+      /**
+       * i​s​ ​n​o​t​ ​s​a​m​e​ ​d​a​y
+       */
+      is_not_same_day: string
+      /**
+       * i​s​ ​t​o​d​a​y
+       */
+      is_tody: string
+      /**
+       * i​s​ ​n​o​t​ ​t​o​d​a​y
+       */
+      is_not_today: string
+      /**
+       * i​s​ ​a​f​t​e​r​ ​t​o​d​a​y
+       */
+      is_after_today: string
+      /**
+       * i​s​ ​b​e​f​o​r​e​ ​t​o​d​a​y
+       */
+      is_before_today: string
+      /**
+       * i​s​ ​t​o​m​o​r​r​o​w
+       */
+      is_tomorrow: string
+      /**
+       * i​s​ ​n​o​t​ ​t​o​m​o​r​r​o​w
+       */
+      is_not_tomorrow: string
+      /**
+       * i​s​ ​a​f​t​e​r​ ​t​o​m​o​r​r​o​w
+       */
+      is_after_tomorrow: string
+      /**
+       * i​s​ ​b​e​f​o​r​e​ ​t​o​m​o​r​r​o​w
+       */
+      is_before_tommorow: string
+      /**
+       * i​s​ ​y​e​s​t​e​r​d​a​y
+       */
+      is_yesterday: string
+      /**
+       * i​s​ ​n​o​t​ ​y​e​s​t​e​r​d​a​y
+       */
+      is_not_yesterday: string
+      /**
+       * i​s​ ​a​f​t​e​r​ ​y​e​s​t​e​r​d​a​y
+       */
+      is_after_yesterday: string
+      /**
+       * i​s​ ​b​e​f​o​r​e​ ​y​e​s​t​e​r​d​a​y
+       */
+      is_before_yesterday: string
+      /**
+       * i​s​ ​b​e​f​o​r​e
+       */
+      is_before: string
+      /**
+       * i​s​ ​n​o​t​ ​b​e​f​o​r​e
+       */
+      is_not_before: string
+      /**
+       * i​s​ ​a​f​t​e​r
+       */
+      is_after: string
+      /**
+       * i​s​ ​n​o​t​ ​a​f​t​e​r
+       */
+      is_not_after: string
+      /**
+       * i​s​ ​t​r​u​e
+       */
+      is_true: string
+      /**
+       * i​s​ ​f​a​l​s​e
+       */
+      is_false: string
+    }
+  }
 }
 
 export type TranslationFunctions = {
@@ -24,6 +164,146 @@ export type TranslationFunctions = {
    * Hi {name}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n
    */
   HI: (arg: { name: string }) => LocalizedString
+  table: {
+    ops: {
+      /**
+       * =
+       */
+      eq: () => LocalizedString
+      /**
+       * !=
+       */
+      neq: () => LocalizedString
+      /**
+       * contains
+       */
+      contains: () => LocalizedString
+      /**
+       * not contains
+       */
+      does_not_contain: () => LocalizedString
+      /**
+       * starts with
+       */
+      starts_with: () => LocalizedString
+      /**
+       * ends with
+       */
+      ends_with: () => LocalizedString
+      /**
+       * is empty
+       */
+      is_empty: () => LocalizedString
+      /**
+       * is not empty
+       */
+      is_not_empty: () => LocalizedString
+      /**
+       * min
+       */
+      min: () => LocalizedString
+      /**
+       * max
+       */
+      max: () => LocalizedString
+      /**
+       * >
+       */
+      gt: () => LocalizedString
+      /**
+       * >=
+       */
+      gte: () => LocalizedString
+      /**
+       * <
+       */
+      lt: () => LocalizedString
+      /**
+       * <=
+       */
+      lte: () => LocalizedString
+      /**
+       * is same day
+       */
+      is_same_day: () => LocalizedString
+      /**
+       * is not same day
+       */
+      is_not_same_day: () => LocalizedString
+      /**
+       * is today
+       */
+      is_tody: () => LocalizedString
+      /**
+       * is not today
+       */
+      is_not_today: () => LocalizedString
+      /**
+       * is after today
+       */
+      is_after_today: () => LocalizedString
+      /**
+       * is before today
+       */
+      is_before_today: () => LocalizedString
+      /**
+       * is tomorrow
+       */
+      is_tomorrow: () => LocalizedString
+      /**
+       * is not tomorrow
+       */
+      is_not_tomorrow: () => LocalizedString
+      /**
+       * is after tomorrow
+       */
+      is_after_tomorrow: () => LocalizedString
+      /**
+       * is before tomorrow
+       */
+      is_before_tommorow: () => LocalizedString
+      /**
+       * is yesterday
+       */
+      is_yesterday: () => LocalizedString
+      /**
+       * is not yesterday
+       */
+      is_not_yesterday: () => LocalizedString
+      /**
+       * is after yesterday
+       */
+      is_after_yesterday: () => LocalizedString
+      /**
+       * is before yesterday
+       */
+      is_before_yesterday: () => LocalizedString
+      /**
+       * is before
+       */
+      is_before: () => LocalizedString
+      /**
+       * is not before
+       */
+      is_not_before: () => LocalizedString
+      /**
+       * is after
+       */
+      is_after: () => LocalizedString
+      /**
+       * is not after
+       */
+      is_not_after: () => LocalizedString
+      /**
+       * is true
+       */
+      is_true: () => LocalizedString
+      /**
+       * is false
+       */
+      is_false: () => LocalizedString
+    }
+  }
 }
 
 export type Formatters = {}

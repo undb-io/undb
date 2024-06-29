@@ -22,6 +22,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@undb/table": "workspace:*",
     "typesafe-i18n": "^5.26.2"
   }
 }

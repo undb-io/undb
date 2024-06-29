@@ -2,9 +2,14 @@ import { z } from "@undb/zod"
 import type { PartialDeep, SetFieldType, SetRequired } from "type-fest"
 import {
   createAutoIncrementFieldCondition,
+  createCheckboxFieldCondition,
   createCreatedAtFieldCondition,
+  createDateFieldCondition,
+  createEmailFieldCondition,
   createIdFieldCondition,
+  createJsonFieldCondition,
   createNumberFieldCondition,
+  createSelectFieldCondition,
   createStringFieldCondition,
   createUpdatedAtFieldCondition,
 } from "../variants"
@@ -17,6 +22,11 @@ export function createConditionSchema<OptionType extends z.ZodTypeAny>(optionTyp
     ...createCreatedAtFieldCondition(optionType).options,
     ...createUpdatedAtFieldCondition(optionType).options,
     ...createAutoIncrementFieldCondition(optionType).options,
+    ...createJsonFieldCondition(optionType).options,
+    ...createDateFieldCondition(optionType).options,
+    ...createEmailFieldCondition(optionType).options,
+    ...createSelectFieldCondition(optionType).options,
+    ...createCheckboxFieldCondition(optionType).options,
   ])
 }
 

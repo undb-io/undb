@@ -10,10 +10,9 @@
   import { toast } from "svelte-sonner"
   import { beforeNavigate } from "$app/navigation"
   import { derived } from "svelte/store"
-  import { conditionContainsFields, FormIdVO, RecordDO, RecordIdVO } from "@undb/table"
+  import { FormIdVO, RecordDO, RecordIdVO } from "@undb/table"
   import { CREATE_RECORD_MODAL, closeModal } from "$lib/store/modal.store"
   import autoAnimate from "@formkit/auto-animate"
-  import { LL } from "@undb/i18n/client"
 
   beforeNavigate(({ cancel }) => {
     if ($tainted) {
