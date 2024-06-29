@@ -12,7 +12,15 @@
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
-  import { FieldIdVo, TableIdVo, type ICreateRecordDTO, type ICreateSchemaDTO } from "@undb/table"
+  import {
+    castFieldValue,
+    FieldIdVo,
+    inferCreateFieldType,
+    TableIdVo,
+    type ICreateRecordDTO,
+    type ICreateSchemaDTO,
+  } from "@undb/table"
+  import unzip from "lodash.unzip"
 
   const createRecords = createMutation({
     mutationKey: ["table", "import", "records"],
@@ -37,7 +45,10 @@
           const record: ICreateRecordDTO = { values: {} }
 
           for (let j = 0; j < r.length; j++) {
-            record.values[schema[j].id!] = r[j]
+            const field = schema[j]
+            const type = field.type
+            const value = castFieldValue(type, r[j])
+            record.values[field.id!] = value
           }
 
           return record
@@ -105,6 +116,12 @@
     headers = headers.filter((_, i) => i !== index)
   }
 
+  let inferFieldTypeCount = 200
+
+  $: transposed = firstRowAsHeader
+    ? unzip(data?.data.slice(1)).slice(0, inferFieldTypeCount)
+    : unzip(data?.data).slice(0, inferFieldTypeCount)
+
   let step = 0
   let firstRowAsHeader = true
   let importData = true
@@ -112,8 +129,8 @@
   let rs: string[][] = []
 
   $: schema = headers.map((header, i) => ({
+    ...inferCreateFieldType(transposed[i]),
     name: header,
-    type: "string",
     id: FieldIdVo.create().value,
     display: i === 0,
   })) as ICreateSchemaDTO

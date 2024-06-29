@@ -1,19 +1,63 @@
-import { isString } from "radash"
+import { isNumber, isObject, isString } from "radash"
 import { P, match } from "ts-pattern"
 import type { IInferCreateFieldDTO } from "./dto/field.dto"
 import type { FieldType, NoneSystemFieldType, SystemFieldType } from "./field.type"
-import type { IRollupFn } from "./variants"
+import { Options } from "./option/options.vo"
+import type { ICreateSelectFieldDTO, IRollupFn } from "./variants"
+
+const EMAIL_REGEXP = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+function isDateValue(value: unknown): boolean {
+  if (typeof value === "string") {
+    const timestamp = Date.parse(value)
+    return !isNaN(timestamp)
+  }
+  return false
+}
+
+function isJsonValue(value: unknown): boolean {
+  return isObject(value)
+}
+
+function isNumberValue(value: unknown): boolean {
+  return match(value)
+    .returnType<boolean>()
+    .when(isNumber, () => true)
+    .when(isString, (v) => /^-?\d+$/.test(v))
+    .otherwise(() => false)
+}
 
 export const inferCreateFieldType = (values: (string | number | null | object | boolean)[]): IInferCreateFieldDTO => {
+  const distinctValues = Array.from(new Set(values))
+    .map((s) => (isString(s) ? s.trim() : s))
+    .filter(Boolean) as (string | number)[]
+
   return match(values)
     .returnType<IInferCreateFieldDTO>()
-    .with(P.array(P.string), () => ({ type: "string" }))
-    .with(P.array(P.number), () => ({ type: "number" }))
-    .with(P.array(P.string.regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)), () => ({ type: "email" }))
+    .with(P.array(P.string.regex(EMAIL_REGEXP)), () => ({ type: "email" }))
+    .with(P.array(P.boolean), () => ({ type: "checkbox" }))
+    .with(P.array(P.when(isNumberValue)), () => ({ type: "number" }))
+    .with(P.array(P.when(isDateValue)), () => ({ type: "date" }))
+    .with(P.array(P.when(isJsonValue)), () => ({ type: "json" }))
     .with(
       P.array(P.when((v) => isString(v) && (v.toLocaleLowerCase() === "true" || v.toLocaleLowerCase() === "false"))),
       () => ({ type: "checkbox" }),
     )
+    .when(
+      (distinctValues) => {
+        const distinctValuesCount = distinctValues.length
+        const valuesCount = values.length
+        return distinctValuesCount / valuesCount < 0.5 && valuesCount > 10 && distinctValuesCount < 100
+      },
+      () =>
+        ({
+          option: {
+            options: Options.fromStrings(distinctValues.map((value) => value.toString() ?? "")).toJSON(),
+          },
+          type: "select",
+        }) as Omit<ICreateSelectFieldDTO, "id" | "name">,
+    )
+    .with(P.array(P.string), () => ({ type: "string" }))
     .otherwise(() => ({ type: "string" }))
 }
 
@@ -78,4 +122,21 @@ export function getRollupFnByType(type: FieldType): IRollupFn[] {
     .with("number", () => ["sum", "average", "max", "min", "count", "lookup"])
     .with("string", () => ["count", "lookup"])
     .otherwise(() => [])
+}
+
+export const castFieldValue = (type: FieldType, value: string | number | null | object | boolean) => {
+  return match(type)
+    .with("number", () => {
+      if (isNumber(value)) return value
+      return value ? Number(value) : null
+    })
+    .with("checkbox", () =>
+      match(value)
+        .returnType<boolean>()
+        .with(["true", "TRUE"], () => true)
+        .with(["false", "FALSE"], () => false)
+        .otherwise(Boolean),
+    )
+    .with("select", () => value || null)
+    .otherwise(() => value)
 }

@@ -2,6 +2,7 @@ import { z } from "@undb/zod"
 import {
   createDateFieldDTO,
   createJsonFieldDTO,
+  createSelectFieldDTO,
   dateFieldDTO,
   jsonFieldDTO,
   referenceFieldDTO,
@@ -50,6 +51,7 @@ export const inferCreateFieldDTO = z.discriminatedUnion("type", [
   createDateFieldDTO.omit({ id: true, name: true }),
   createJsonFieldDTO.omit({ id: true, name: true }),
   createCheckboxFieldDTO.omit({ id: true, name: true }),
+  createSelectFieldDTO.omit({ id: true, name: true }),
 ])
 
 export type IInferCreateFieldDTO = z.infer<typeof inferCreateFieldDTO>
