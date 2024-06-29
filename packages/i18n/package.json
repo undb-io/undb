@@ -1,0 +1,27 @@
+{
+  "name": "@undb/i18n",
+  "exports": {
+    "./server": {
+      "import": "./src/server.ts",
+      "types": "./src/server.d.ts"
+    },
+    "./client": {
+      "import": "./src/client.ts",
+      "types": "./src/client.d.ts"
+    }
+  },
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "scripts": {
+    "dev": "typesafe-i18n",
+    "typesafe-i18n": "typesafe-i18n"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "typesafe-i18n": "^5.26.2"
+  }
+}
