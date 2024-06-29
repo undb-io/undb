@@ -46,7 +46,12 @@
                   <EllipsisIcon class="h-4 w-4" />
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content class="w-[200px]">
-                  <DropdownMenu.Item on:click={() => toggleModal(IMPORT_TABLE_MODAL)}>
+                  <DropdownMenu.Item
+                    on:click={() => {
+                      baseId.set(base.id)
+                      toggleModal(IMPORT_TABLE_MODAL)
+                    }}
+                  >
                     <ImportIcon class="text-muted-foreground mr-2 h-3 w-3" />
                     Import Data
                   </DropdownMenu.Item>

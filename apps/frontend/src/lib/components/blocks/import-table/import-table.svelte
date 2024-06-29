@@ -147,7 +147,13 @@
 </script>
 
 {#if step === 0}
-  <Input disabled={!!file} type="file" placeholder="import csv file..." on:change={onChange} />
+  <Input
+    disabled={!!file}
+    type="file"
+    placeholder="import csv file..."
+    on:change={onChange}
+    accept=".csv, .json, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+  />
   {#if file}
     <div class="flex items-center justify-between gap-2 rounded-sm border p-3">
       <div class="flex items-center gap-2">
@@ -210,6 +216,9 @@
 {/if}
 
 <div class="flex justify-end">
+  {#if step === 1}
+    <Button variant="outline" on:click={() => (step = 0)} size="sm">back</Button>
+  {/if}
   <Button disabled={(step === 0 && !file) || (step === 1 && headers.length < 1)} on:click={handleClickImport} size="sm">
     import
   </Button>
