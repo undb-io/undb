@@ -11,14 +11,18 @@
 
   export let constraint: ISelectFieldConstraint | undefined
   const colors = new ColorsVO()
-  export let option: ISelectFieldOption = {
-    options: [
-      {
-        color: COLORS[0],
-        name: "option1",
-        id: OptionIdVo.create().value,
-      },
-    ],
+  export let option: ISelectFieldOption
+
+  $: if (!option) {
+    option = {
+      options: [
+        {
+          color: COLORS[0],
+          name: "option1",
+          id: OptionIdVo.create().value,
+        },
+      ],
+    }
   }
 
   const addOption = () => {

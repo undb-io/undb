@@ -131,6 +131,7 @@
               bind:constraint={field.constraint}
               bind:display={field.display}
               bind:defaultValue={field.defaultValue}
+              bind:option={field.option}
             />
           </Accordion.Content>
         </Accordion.Item>

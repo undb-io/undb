@@ -8,7 +8,7 @@
   import * as Table from "$lib/components/ui/table"
   import { invalidate, goto } from "$app/navigation"
   import { baseId, currentBase } from "$lib/store/base.store"
-  import { closeModal, CREATE_TABLE_MODAL, IMPORT_TABLE_MODAL } from "$lib/store/modal.store"
+  import { closeModal, IMPORT_TABLE_MODAL } from "$lib/store/modal.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
