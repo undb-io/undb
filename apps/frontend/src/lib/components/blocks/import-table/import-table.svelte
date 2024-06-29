@@ -114,6 +114,9 @@
     if (headers.length <= 1) return
 
     headers = headers.filter((_, i) => i !== index)
+    if (data) {
+      data.data = data.data.map((r) => r.filter((_, i) => i !== index))
+    }
   }
 
   let inferFieldTypeCount = 200
@@ -150,7 +153,7 @@
   <Input
     disabled={!!file}
     type="file"
-    placeholder="import csv file..."
+    placeholder="import file..."
     on:change={onChange}
     accept=".csv, .json, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
   />

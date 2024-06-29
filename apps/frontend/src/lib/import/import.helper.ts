@@ -3,7 +3,7 @@ import Papa from "papaparse"
 import { isArray, isObject } from "radash"
 import { flatten } from "safe-flat"
 import { match } from "ts-pattern"
-// import { read, utils } from 'xlsx'
+import { read, utils } from "xlsx"
 import { z } from "zod"
 
 type CellDataType = string | number | boolean | null
@@ -13,7 +13,7 @@ export type ParseDataOption = {
   flatten?: boolean
 }
 
-const importDataExtensions = z.enum(["csv", "json"])
+const importDataExtensions = z.enum(["csv", "xlsx", "xls", "json"])
 
 export type ImportDataExtensions = z.infer<typeof importDataExtensions>
 
@@ -29,11 +29,11 @@ const parseCsv = async (file: File, options?: ParseDataOption): Promise<SheetDat
   })
 }
 
-// const parseExcel = async (file: File, options?: ParseDataOption): Promise<SheetData> => {
-//   const wb = read(await file.arrayBuffer())
-//   const data = utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1 })
-//   return data as SheetData
-// }
+const parseExcel = async (file: File, options?: ParseDataOption): Promise<SheetData> => {
+  const wb = read(await file.arrayBuffer())
+  const data = utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1 })
+  return data as SheetData
+}
 
 const parseJSON = async (file: File, options?: ParseDataOption): Promise<SheetData> => {
   const text = await file.text()
@@ -83,7 +83,7 @@ export const parse = async (
 
   const data = await match(ext)
     .with("csv", () => parseCsv(file, options))
-    // .with("xlsx", "xls", () => parseExcel(file, options))
+    .with("xlsx", "xls", () => parseExcel(file, options))
     .with("json", () => parseJSON(file, options))
     .exhaustive()
 
