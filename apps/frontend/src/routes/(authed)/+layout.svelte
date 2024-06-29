@@ -16,6 +16,7 @@
   import NavTools from "$lib/components/blocks/nav/nav-tools.svelte"
   import { onMount } from "svelte"
   import type { ComponentType } from "svelte"
+  import ImportTableDialog from "$lib/components/blocks/import-table/import-table-dialog.svelte"
 
   export let data: LayoutData
 
@@ -84,6 +85,7 @@
 </Resizable.PaneGroup>
 
 <CreateTableSheet />
+<ImportTableDialog />
 {#if CreateBaseDialog}
   <CreateBaseDialog />
 {/if}

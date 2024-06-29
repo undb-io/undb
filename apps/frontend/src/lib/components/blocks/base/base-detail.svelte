@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { GetBaseQuery$result } from "$houdini"
-  import { CREATE_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
-  import { PlusIcon } from "lucide-svelte"
+  import { CREATE_TABLE_MODAL, IMPORT_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
+  import { ImportIcon, PlusCircleIcon, PlusIcon } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
   import { goto } from "$app/navigation"
 
@@ -9,7 +9,7 @@
 </script>
 
 <main class="h-full flex-1 px-4 py-4">
-  <div class="flex">
+  <div class="flex items-center gap-4">
     <button
       type="button"
       class="flex h-32 w-80 flex-col justify-between rounded-lg bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
@@ -17,9 +17,20 @@
         toggleModal(CREATE_TABLE_MODAL)
       }}
     >
-      <PlusIcon />
+      <PlusCircleIcon class="text-muted-foreground" />
 
       Create New Table
+    </button>
+    <button
+      type="button"
+      class="flex h-32 w-80 flex-col justify-between rounded-lg bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
+      on:click={() => {
+        toggleModal(IMPORT_TABLE_MODAL)
+      }}
+    >
+      <ImportIcon class="text-muted-foreground" />
+
+      Import Table
     </button>
   </div>
 
