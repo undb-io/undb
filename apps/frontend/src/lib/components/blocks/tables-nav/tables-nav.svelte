@@ -47,6 +47,7 @@
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content class="w-[200px]">
                   <DropdownMenu.Item
+                    class="text-xs"
                     on:click={() => {
                       baseId.set(base.id)
                       toggleModal(IMPORT_TABLE_MODAL)

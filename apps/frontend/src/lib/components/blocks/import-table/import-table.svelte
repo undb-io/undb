@@ -14,6 +14,7 @@
   import { toast } from "svelte-sonner"
   import {
     castFieldValue,
+    fieldAggregate,
     FieldIdVo,
     inferCreateFieldType,
     TableIdVo,
@@ -21,11 +22,14 @@
     type ICreateSchemaDTO,
   } from "@undb/table"
   import unzip from "lodash.unzip"
+  import FieldIcon from "../field-icon/field-icon.svelte"
 
   const createRecords = createMutation({
     mutationKey: ["table", "import", "records"],
     mutationFn: trpc.record.bulkCreate.mutate,
     async onSuccess() {
+      await invalidate("undb:tables")
+      await goto(`/t/${tableId}`)
       await invalidate(`table:${tableId}`)
       closeModal(IMPORT_TABLE_MODAL)
       baseId.set(null)
@@ -131,6 +135,8 @@
   let headers: string[] = []
   let rs: string[][] = []
 
+  $: tableName = file?.name
+
   $: schema = headers.map((header, i) => ({
     ...inferCreateFieldType(transposed[i]),
     name: header,
@@ -162,7 +168,7 @@
       <div class="flex items-center gap-2">
         <FileIcon class="text-muted-foreground h-4 w-4" />
         <p>
-          {file.name}
+          {tableName}
         </p>
       </div>
 
@@ -183,7 +189,10 @@
   {#if data && file}
     <div class="rounded-sm border">
       <div class="border-b p-3">
-        {file.name}
+        <Label class="flex items-center gap-2">
+          <div>Name</div>
+          <Input class="text-sm" bind:value={tableName} />
+        </Label>
       </div>
       <div>
         <Table.Root>
@@ -196,9 +205,15 @@
           </Table.Header>
           <Table.Body>
             {#each headers as header, idx}
+              {@const field = schema[idx]}
               <Table.Row class="group">
                 <Table.Cell class="font-medium">{header}</Table.Cell>
-                <Table.Cell>string</Table.Cell>
+                <Table.Cell>
+                  <div class="flex items-center">
+                    <FieldIcon type={field.type} class="mr-2 h-4 w-4" />
+                    {field.type}
+                  </div>
+                </Table.Cell>
                 <Table.Cell class="text-right">
                   {#if headers.length > 1}
                     <button
