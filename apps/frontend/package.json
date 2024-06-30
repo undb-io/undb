@@ -18,7 +18,7 @@
     "@svelte-put/copy": "^3.0.2",
     "@svelte-put/shortcut": "^3.1.1",
     "@sveltejs/adapter-static": "^3.0.2",
-    "@sveltejs/kit": "^2.5.17",
+    "@sveltejs/kit": "^2.5.18",
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
     "@types/eslint": "^8.56.10",
     "@types/lodash.unzip": "^3.4.9",
@@ -41,7 +41,7 @@
     "houdini-svelte": "^1.2.47",
     "lodash.unzip": "^3.4.0",
     "papaparse": "^5.4.1",
-    "postcss": "^8.4.38",
+    "postcss": "^8.4.39",
     "postcss-load-config": "^6.0.1",
     "prettier": "^3.3.2",
     "prettier-plugin-svelte": "^3.2.5",
@@ -86,6 +86,6 @@
     "tailwind-merge": "^2.3.0",
     "tailwind-variants": "^0.2.1",
     "trpc-svelte-query-adapter": "^2.3.4",
-    "vaul-svelte": "^0.3.1"
+    "vaul-svelte": "^0.3.2"
   }
 }

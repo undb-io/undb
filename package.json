@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "better-sqlite3": "^11.1.1",
-    "drizzle-kit": "^0.22.7",
+    "drizzle-kit": "^0.22.8",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.7",
     "npm-run-all2": "^6.2.0",

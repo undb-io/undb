@@ -18,6 +18,6 @@
   },
   "dependencies": {
     "graphql": "16.8.1",
-    "graphql-yoga": "^5.4.0"
+    "graphql-yoga": "^5.5.0"
   }
 }
