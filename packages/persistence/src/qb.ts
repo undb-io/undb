@@ -1,15 +1,15 @@
+import { LibsqlDialect } from "@libsql/kysely-libsql"
 import { createLogger } from "@undb/logger"
-import type Database from "bun:sqlite"
 import { Kysely } from "kysely"
-import { BunSqliteDialect } from "kysely-bun-sqlite"
 
-export function createQueryBuilder(db: Database): Kysely<unknown> {
+export function createQueryBuilder(): Kysely<unknown> {
   const logger = createLogger("qb")
 
   return new Kysely({
-    dialect: new BunSqliteDialect({
-      database: db,
+    dialect: new LibsqlDialect({
+      url: "http://localhost:8080",
     }),
+
     log: (event) => {
       if (event.level == "query") {
         logger.debug(

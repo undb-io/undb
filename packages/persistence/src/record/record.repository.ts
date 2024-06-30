@@ -18,7 +18,7 @@ import { all } from "radash"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
-import { injectDbUnitOfWork, transactional } from "../uow"
+import { injectDbUnitOfWork } from "../uow"
 import { getRecordDTOFromEntity } from "./record-utils"
 import { RecordMapper } from "./record.mapper"
 import { RecordMutateVisitor } from "./record.mutate-visitor"
@@ -36,7 +36,7 @@ export class RecordRepository implements IRecordRepository {
     public readonly mapper: RecordMapper,
   ) {}
 
-  @transactional()
+  // @transactional()
   async insert(table: TableDo, record: RecordDO): Promise<void> {
     const context = executionContext.getStore()
     const userId = context?.user?.userId!
@@ -108,7 +108,7 @@ export class RecordRepository implements IRecordRepository {
     return Some(RecordDO.fromJSON(table, dto))
   }
 
-  @transactional()
+  // @transactional()
   async updateOneById(table: TableDo, record: RecordDO, spec: Option<RecordComositeSpecification>): Promise<void> {
     if (spec.isNone()) return
 
@@ -134,7 +134,7 @@ export class RecordRepository implements IRecordRepository {
     await this.outboxService.save(record)
   }
 
-  @transactional()
+  // @transactional()
   async deleteOneById(table: TableDo, record: RecordDO): Promise<void> {
     const t = new UnderlyingTable(table)
     // TODO: use deleted at

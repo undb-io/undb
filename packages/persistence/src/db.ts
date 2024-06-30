@@ -1,14 +1,18 @@
-import { Database as SqliteDatabase } from "bun:sqlite"
-import { drizzle } from "drizzle-orm/bun-sqlite"
-import { migrate } from "drizzle-orm/bun-sqlite/migrator"
+import { createClient } from "@libsql/client"
+import { drizzle } from "drizzle-orm/libsql"
+import { migrate } from "drizzle-orm/libsql/migrator"
 import { DrizzleLogger } from "./db.logger"
 
-export const sqlite = new SqliteDatabase("./.undb/undb.db")
+export const sqlite = createClient({
+  url: "http://127.0.0.1:8080",
+})
+
+sqlite.transaction
 
 export const db = drizzle(sqlite, {
   logger: new DrizzleLogger(),
 })
 
-migrate(db, { migrationsFolder: "./drizzle" })
+await migrate(db, { migrationsFolder: "./drizzle" })
 
 export type Database = typeof db

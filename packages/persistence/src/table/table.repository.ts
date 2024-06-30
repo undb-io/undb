@@ -16,7 +16,7 @@ import type { Database } from "../db"
 import { injectDb } from "../db.provider"
 import { tableIdMapping, tables } from "../tables"
 import { UnderlyingTableService } from "../underlying/underlying-table.service"
-import { injectDbUnitOfWork, transactional } from "../uow"
+import { injectDbUnitOfWork } from "../uow"
 import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
 import { TableMapper } from "./table.mapper"
 import { TableMutationVisitor } from "./table.mutation-visitor"
@@ -38,7 +38,7 @@ export class TableRepository implements ITableRepository {
     return new TableMapper()
   }
 
-  @transactional()
+  // @transactional()
   async updateOneById(table: TableDo, spec: Option<TableComositeSpecification>): Promise<void> {
     return this.#updateOneById(table, spec)
   }
@@ -63,7 +63,7 @@ export class TableRepository implements ITableRepository {
     await this.outboxService.save(table)
   }
 
-  @transactional()
+  // @transactional()
   async insert(table: TableDo): Promise<void> {
     const ctx = executionContext.getStore()
     const userId = ctx!.user!.userId!
@@ -85,7 +85,7 @@ export class TableRepository implements ITableRepository {
     await this.outboxService.save(table)
   }
 
-  @transactional()
+  // @transactional()
   async bulkUpdate(updates: { table: TableDo; spec: Option<TableComositeSpecification> }[]): Promise<void> {
     for (const update of updates) {
       await this.#updateOneById(update.table, update.spec)

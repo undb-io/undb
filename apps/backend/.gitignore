@@ -44,6 +44,7 @@ package-lock.json
 
 undb
 .undb/undb.db
+.undb/undb.db-*
 .undb/storage/*
 !.undb/storage/.gitkeep
 !.undb/.gitkeep

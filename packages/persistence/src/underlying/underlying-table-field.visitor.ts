@@ -35,10 +35,6 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     public tb: TB,
   ) {}
   public atb: AlterTableColumnAlteringBuilder | CreateTableBuilder<any, any> | null = null
-  #rawSQL: string[] = []
-  get rawSQL() {
-    return this.#rawSQL
-  }
 
   private addColumn(c: AlterTableColumnAlteringBuilder | CreateTableBuilder<any, any>) {
     this.atb = c
@@ -58,14 +54,18 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     const c = this.tb.addColumn(field.id.value, "timestamp", (b) => b.defaultTo(sql`(CURRENT_TIMESTAMP)`).notNull())
     this.addColumn(c)
 
-    // TODO: better solution
-    const query = `
-    CREATE TRIGGER IF NOT EXISTS update_at_update_${tableName} AFTER UPDATE ON \`${tableName}\`
-    BEGIN
-    	update \`${tableName}\` SET ${field.id.value} = datetime('now') WHERE ${ID_TYPE} = NEW.${ID_TYPE};
-    END;
+    const query = sql
+      .raw(
         `
-    this.#rawSQL.push(query)
+      CREATE TRIGGER IF NOT EXISTS update_at_update_${tableName} AFTER UPDATE ON \`${tableName}\`
+      BEGIN
+        update \`${tableName}\` SET ${field.id.value} = datetime('now') WHERE ${ID_TYPE} = NEW.${ID_TYPE};
+      END;
+    `,
+      )
+      .compile(this.qb)
+
+    this.#sql.push(query)
   }
   autoIncrement(field: AutoIncrementField): void {
     const c = this.tb.addColumn(field.id.value, "integer", (b) => b.autoIncrement().primaryKey())
