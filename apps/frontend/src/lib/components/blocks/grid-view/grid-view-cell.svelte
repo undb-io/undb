@@ -20,6 +20,7 @@
   import DateCell from "./editable-cell/date-cell.svelte"
   import CheckboxCell from "./editable-cell/checkbox-cell.svelte"
   import RatingCell from "./editable-cell/rating-cell.svelte"
+  import EmailCell from "./editable-cell/email-cell.svelte"
 
   const table = getTable()
 
@@ -45,7 +46,7 @@
     rollup: RollupField,
     select: SelectCell,
     rating: RatingCell,
-    email: EmailControl,
+    email: EmailCell,
     date: DateCell,
     json: JsonField,
     checkbox: CheckboxCell,
