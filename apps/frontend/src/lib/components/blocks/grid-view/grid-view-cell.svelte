@@ -6,7 +6,6 @@
   import IdField from "../field-value/id-field.svelte"
   import DateField from "../field-value/date-field.svelte"
   import NumberField from "../field-value/number-field.svelte"
-  import CheckboxField from "../field-value/checkbox-field.svelte"
   import { cn } from "$lib/utils"
   import UserField from "../field-value/user-field.svelte"
   import ReferenceControl from "../field-control/reference-control.svelte"
@@ -20,6 +19,7 @@
   import { getTable } from "$lib/store/table.store"
   import DateCell from "./editable-cell/date-cell.svelte"
   import CheckboxCell from "./editable-cell/checkbox-cell.svelte"
+  import RatingCell from "./editable-cell/rating-cell.svelte"
 
   const table = getTable()
 
@@ -44,7 +44,7 @@
     reference: ReferenceControl,
     rollup: RollupField,
     select: SelectCell,
-    rating: RatingControl,
+    rating: RatingCell,
     email: EmailControl,
     date: DateCell,
     json: JsonField,
@@ -60,6 +60,7 @@
   {field}
   {index}
   {isEditing}
+  {isSelected}
   {recordId}
   tableId={$table.id.value}
   class={cn(

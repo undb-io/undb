@@ -7,12 +7,14 @@
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
+  import { ChevronDownIcon } from "lucide-svelte"
 
   export let tableId: string
   export let field: SelectField
   export let value: string
   export let recordId: string
   export let isEditing: boolean
+  export let isSelected: boolean
 
   $: selected = field.options.find((option) => option.id === value)
 
@@ -57,9 +59,12 @@
     </DropdownMenu.Content>
   </DropdownMenu.Root>
 {:else}
-  <div class={$$restProps.class}>
+  <div class={cn($$restProps.class, "flex justify-between", (isSelected || isEditing) && !selected && "justify-end")}>
     {#if selected}
       <Option option={selected} />
+    {/if}
+    {#if isSelected || isEditing || open}
+      <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
     {/if}
   </div>
 {/if}
