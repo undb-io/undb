@@ -13,7 +13,6 @@
   import { zodClient } from "sveltekit-superforms/adapters"
   import { Input } from "$lib/components/ui/input"
   import { cn } from "$lib/utils"
-  import FormButton from "$lib/components/ui/form/form-button.svelte"
 
   let open = false
 

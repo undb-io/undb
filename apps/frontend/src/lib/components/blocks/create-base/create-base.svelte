@@ -8,12 +8,14 @@
   import { Input } from "$lib/components/ui/input"
   import { toast } from "svelte-sonner"
   import { CREATE_BASE_MODAL, closeModal } from "$lib/store/modal.store"
+  import { goto } from "$app/navigation"
 
   const mutation = createMutation({
     mutationFn: trpc.base.create.mutate,
     async onSuccess(data) {
       closeModal(CREATE_BASE_MODAL)
       form.reset()
+      await goto(`/bases/${data}`)
     },
     onError(error) {
       toast.error(error.message)

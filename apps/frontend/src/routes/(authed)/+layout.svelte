@@ -52,6 +52,9 @@
   $: if (tables && tables?.length !== 0 && !$page.params.tableId && $page.route.id === "/(authed)") {
     goto(`/t/${tables[0]?.id}`, { replaceState: true })
   }
+  $: if (!tables.length && bases.length) {
+    goto(`/bases/${bases[0]?.id}`, { replaceState: true })
+  }
 
   let CreateBaseDialog: ComponentType
   onMount(async () => {
