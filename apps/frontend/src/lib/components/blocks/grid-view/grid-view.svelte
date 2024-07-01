@@ -28,7 +28,7 @@
   import { DELETE_RECORD_MODAL, DUPLICATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
   import { ClipboardCopyIcon, CopyIcon, Maximize2Icon, Trash2Icon } from "lucide-svelte"
-  import { createGridViewStore, gridViewStore, isRowSelected, isSelected } from "./grid-view.store"
+  import { createGridViewStore, gridViewStore, isRowSelected, isSelectedCell } from "./grid-view.store"
 
   export let readonly = false
 
@@ -219,7 +219,7 @@
                   <Table.Row
                     {...rowAttrs}
                     data-state={($selectedDataIds[row.id] || $isRowSelected(recordId)) && "selected"}
-                    class="text-foreground group text-xs transition-none"
+                    class="text-foreground group cursor-pointer text-xs transition-none"
                   >
                     {@const record = dos.get(recordId)}
                     {@const match = colorSpec && record ? record.match(colorSpec) : false}
@@ -235,7 +235,7 @@
                             "border-border relative border-r p-0 [&:has([role=checkbox])]:pl-3",
                             (idx === 0 || idx === 1) && "border-r-0",
                             hasFilter && "bg-orange-50",
-                            $isSelected(recordId, cell.column.id) && "bg-gray-100",
+                            $isSelectedCell(recordId, cell.column.id) && "bg-gray-100",
                           )}
                           {...attrs}
                           on:click={() => {

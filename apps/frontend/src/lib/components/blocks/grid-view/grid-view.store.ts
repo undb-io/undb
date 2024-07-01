@@ -40,7 +40,7 @@ export const isRowSelected = derived(gridViewStore, ($store) => {
   }
 })
 
-export const isSelected = derived(gridViewStore, ($store) => {
+export const isSelectedCell = derived(gridViewStore, ($store) => {
   return ($recordId: string, $fieldId: string) => {
     return !!$store.cell && $store.cell.recordId === $recordId && $store.cell.fieldId === $fieldId && $store.count > 0
   }
