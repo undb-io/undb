@@ -4,6 +4,7 @@ import type { IRecordVisitor } from "../../../../records/record/record-visitor.i
 import { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import type { RecordDO } from "../../../../records/record/record.do"
 import type { FieldId } from "../../field-id.vo"
+import { DateFieldValue } from "./date-field-value.vo"
 
 export class DateEqual extends RecordComositeSpecification {
   constructor(
@@ -17,7 +18,8 @@ export class DateEqual extends RecordComositeSpecification {
     return value.mapOr(false, (v) => v.value instanceof Date && isEqual(v.value, this.date))
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
-    throw new Error("Method not implemented.")
+    t.values.setValue(this.fieldId, new DateFieldValue(this.date))
+    return Ok(t)
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.dateEqual(this)

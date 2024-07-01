@@ -18,6 +18,7 @@
   import { isEditingCell, isSelectedCell } from "./grid-view.store"
   import SelectCell from "./editable-cell/select-cell.svelte"
   import { getTable } from "$lib/store/table.store"
+  import DateCell from "./editable-cell/date-cell.svelte"
 
   const table = getTable()
 
@@ -44,7 +45,7 @@
     select: SelectCell,
     rating: RatingControl,
     email: EmailControl,
-    date: DateField,
+    date: DateCell,
     json: JsonField,
     checkbox: CheckboxField,
     attachment: AttachmentField,

@@ -1,6 +1,6 @@
 <script lang="ts">
   import CalendarIcon from "lucide-svelte/icons/calendar"
-  import { type DateValue, DateFormatter, getLocalTimeZone, parseDate, fromDate } from "@internationalized/date"
+  import { DateFormatter, getLocalTimeZone, parseDate, fromDate } from "@internationalized/date"
   import { cn } from "$lib/utils.js"
   import { Button } from "$lib/components/ui/button"
   import { Calendar } from "$lib/components/ui/calendar"
