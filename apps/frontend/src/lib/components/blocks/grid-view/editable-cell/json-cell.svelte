@@ -1,0 +1,73 @@
+<script lang="ts">
+  import { cn } from "$lib/utils"
+  import type { JsonField, JsonValue } from "@undb/table"
+  import { Maximize2Icon } from "lucide-svelte"
+  import * as Dialog from "$lib/components/ui/dialog"
+  import { type OnChange, type Content, JSONEditor, Mode } from "svelte-jsoneditor"
+  import { trpc } from "$lib/trpc/client"
+  import { createMutation } from "@tanstack/svelte-query"
+  import { toast } from "svelte-sonner"
+
+  export let tableId: string
+  export let value: JsonValue | undefined = undefined
+  export let isSelected: boolean
+  export let field: JsonField
+  export let recordId: string
+
+  const updateCell = createMutation({
+    mutationKey: ["record", tableId, field.id.value, recordId],
+    mutationFn: trpc.record.update.mutate,
+    onError(error: Error) {
+      toast.error(error.message)
+    },
+  })
+
+  let content: Content = {
+    text: undefined,
+    json: value ?? {},
+  }
+
+  const handleChange: OnChange = (updatedContent, previousContent, { contentErrors, patchResult }) => {
+    content = updatedContent
+    // @ts-ignore
+    if (!contentErrors) value = JSON.parse(content.text)
+
+    $updateCell.mutate({
+      tableId,
+      id: recordId,
+      values: { [field.id.value]: value },
+    })
+  }
+</script>
+
+<div class={cn($$restProps.class, "flex justify-between", !value && "justify-end")}>
+  {#if value}
+    <span>{JSON.stringify(value)}</span>
+  {/if}
+
+  {#if isSelected}
+    <Dialog.Root
+      onOpenChange={(open) => {
+        if (!open) {
+        }
+      }}
+    >
+      <Dialog.Trigger>
+        <button>
+          <Maximize2Icon class="text-muted-foreground h-3 w-3" />
+        </button>
+      </Dialog.Trigger>
+      <Dialog.Content class="p-2">
+        <JSONEditor
+          {content}
+          onChange={handleChange}
+          mode={Mode.text}
+          mainMenuBar={false}
+          navigationBar={false}
+          statusBar={false}
+          askToFormat={false}
+        />
+      </Dialog.Content>
+    </Dialog.Root>
+  {/if}
+</div>

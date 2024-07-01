@@ -21,6 +21,7 @@
   import CheckboxCell from "./editable-cell/checkbox-cell.svelte"
   import RatingCell from "./editable-cell/rating-cell.svelte"
   import EmailCell from "./editable-cell/email-cell.svelte"
+  import JsonCell from "./editable-cell/json-cell.svelte"
 
   const table = getTable()
 
@@ -48,7 +49,7 @@
     rating: RatingCell,
     email: EmailCell,
     date: DateCell,
-    json: JsonField,
+    json: JsonCell,
     checkbox: CheckboxCell,
     attachment: AttachmentField,
   }
