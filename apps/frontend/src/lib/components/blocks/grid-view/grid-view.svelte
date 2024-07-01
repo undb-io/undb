@@ -13,6 +13,7 @@
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
   import GridViewActions from "./grid-view-actions.svelte"
+  import GridViewActionHeader from "./grid-view-action-header.svelte"
   import GridViewCell from "./grid-view-cell.svelte"
   import GridViewEmpty from "./grid-view-empty.svelte"
   import GridViewPagination from "./grid-view-pagination.svelte"
@@ -27,7 +28,7 @@
   import GridViewFooter from "./grid-view-footer.svelte"
   import { DELETE_RECORD_MODAL, DUPLICATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
-  import { ClipboardCopyIcon, CopyIcon, Maximize2Icon, Trash2Icon } from "lucide-svelte"
+  import { ClipboardCopyIcon, CopyIcon, Maximize2Icon, PlusIcon, Trash2Icon } from "lucide-svelte"
   import { createGridViewStore, gridViewStore, isRowSelected, isSelectedCell } from "./grid-view.store"
 
   export let readonly = false
@@ -148,7 +149,9 @@
         }),
       ),
       table.column({
-        header: "",
+        header: () => {
+          return createRender(GridViewActionHeader)
+        },
         accessor: ({ id }) => id,
         cell: (item) => createRender(GridViewActions, { id: item.value, readonly }),
         plugins: {
@@ -232,7 +235,7 @@
                       <Subscribe attrs={cell.attrs()} let:attrs>
                         <Table.Cell
                           class={cn(
-                            "border-border relative border-r p-0 [&:has([role=checkbox])]:pl-3",
+                            "border-border relative border-r p-0",
                             (idx === 0 || idx === 1) && "border-r-0",
                             hasFilter && "bg-orange-50",
                             $isSelectedCell(recordId, cell.column.id) && "bg-gray-100",

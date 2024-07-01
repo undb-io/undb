@@ -19,6 +19,7 @@
   import SelectCell from "./editable-cell/select-cell.svelte"
   import { getTable } from "$lib/store/table.store"
   import DateCell from "./editable-cell/date-cell.svelte"
+  import CheckboxCell from "./editable-cell/checkbox-cell.svelte"
 
   const table = getTable()
 
@@ -47,7 +48,7 @@
     email: EmailControl,
     date: DateCell,
     json: JsonField,
-    checkbox: CheckboxField,
+    checkbox: CheckboxCell,
     attachment: AttachmentField,
   }
 </script>
@@ -61,7 +62,10 @@
   {isEditing}
   {recordId}
   tableId={$table.id.value}
-  class={cn("flex h-8 items-center px-2 py-1 text-xs", (isSelected || isEditing) && "border-primary border")}
+  class={cn(
+    "flex h-8 items-center border border-transparent px-2 py-1 text-xs",
+    (isSelected || isEditing) && "border-primary",
+  )}
   onValueChange={(v) => {
     value = v
   }}
