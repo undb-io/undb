@@ -1,18 +1,24 @@
 <script lang="ts">
-  import { cn } from "$lib/utils"
-  import type { JsonField, JsonValue } from "@undb/table"
-  import { Maximize2Icon } from "lucide-svelte"
-  import * as Dialog from "$lib/components/ui/dialog"
-  import { type OnChange, type Content, JSONEditor, Mode } from "svelte-jsoneditor"
+  import { Button } from "$lib/components/ui/button"
+  import { isImage, type AttachmentField, type IAttachmentFieldValue } from "@undb/table"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
+  import Label from "$lib/components/ui/label/label.svelte"
+  import { Maximize2Icon, PaperclipIcon, FileIcon, XIcon } from "lucide-svelte"
+  import { selectedAttachment } from "$lib/store/attachment.store"
+  import { cn } from "$lib/utils"
+  import * as Dialog from "$lib/components/ui/dialog"
+  import { AspectRatio } from "$lib/components/ui/aspect-ratio"
 
   export let tableId: string
-  export let value: JsonValue | undefined = undefined
+  export let value: IAttachmentFieldValue | undefined = undefined
   export let isSelected: boolean
-  export let field: JsonField
+  export let field: AttachmentField
   export let recordId: string
+
+  $: max = field.max
+  $: disabled = value?.length ?? 0 >= max
 
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
@@ -22,52 +28,147 @@
     },
   })
 
-  let content: Content = {
-    text: undefined,
-    json: value ?? {},
+  let open = false
+
+  async function onChange(e: Event) {
+    const target = e.target as HTMLInputElement
+    const files = target.files
+    if (!files?.length) return
+
+    const [file] = files
+
+    const formData = new FormData()
+    formData.append("files", file)
+
+    const response = await fetch(`/api/upload/${tableId}`, {
+      method: "POST",
+      body: formData,
+    })
+
+    const json: { id: string; url: string; mimeType: string }[] = await response.json()
+    if (json.length) {
+      const [data] = json
+
+      value = [
+        ...(value ?? []),
+        {
+          id: data.id,
+          url: data.url,
+          type: data.mimeType,
+          name: file.name,
+          size: file.size,
+        },
+      ]
+
+      $updateCell.mutate({
+        tableId,
+        id: recordId,
+        values: { [field.id.value]: value },
+      })
+    }
   }
 
-  const handleChange: OnChange = (updatedContent, previousContent, { contentErrors, patchResult }) => {
-    content = updatedContent
-    // @ts-ignore
-    if (!contentErrors) value = JSON.parse(content.text)
+  function removeFile(i: number): any {
+    value = value?.filter((_, index) => index !== i)
 
     $updateCell.mutate({
       tableId,
       id: recordId,
-      values: { [field.id.value]: value },
+      values: { [field.id.value]: value ?? [] },
     })
   }
 </script>
 
-<div class={cn($$restProps.class, "flex justify-between", !value && "justify-end")}>
-  {#if value}
-    <span>{JSON.stringify(value)}</span>
-  {/if}
-
-  {#if isSelected}
-    <Dialog.Root
-      onOpenChange={(open) => {
-        if (!open) {
-        }
-      }}
+<div class={cn($$restProps.class, "flex items-center justify-center")}>
+  {#if !value}
+    <Label
+      role="button"
+      class="hover:bg-primary/10 flex items-center gap-1 rounded-sm px-4 py-1 text-xs transition-colors"
     >
-      <Dialog.Trigger>
-        <button>
-          <Maximize2Icon class="text-muted-foreground h-3 w-3" />
-        </button>
-      </Dialog.Trigger>
-      <Dialog.Content class="p-2">
-        <JSONEditor
-          {content}
-          onChange={handleChange}
-          mode={Mode.text}
-          mainMenuBar={false}
-          navigationBar={false}
-          statusBar={false}
-          askToFormat={false}
-        />
-      </Dialog.Content>
-    </Dialog.Root>
+      <PaperclipIcon class="text-muted-foreground h-3 w-3" />
+      Add File(s)
+      <input type="file" hidden on:change={onChange} />
+    </Label>
+  {:else}
+    <div class="flex w-full items-center justify-between gap-1 overflow-hidden">
+      <div class="flex flex-1 items-center gap-1 overflow-hidden">
+        {#if isSelected}
+          <Label role="button" class="hover:bg-primary/10 cursor-pointer rounded-sm p-1 transition-colors">
+            <PaperclipIcon class="text-muted-foreground h-3 w-3" />
+            <input type="file" hidden on:change={onChange} />
+          </Label>
+        {/if}
+        {#each value as v}
+          <div class="flex h-5 w-5 items-center justify-center">
+            {#if isImage(v)}
+              <button on:click={() => ($selectedAttachment = v)}>
+                <img src={v.url} alt={v.name} />
+              </button>
+            {:else}
+              <FileIcon class="text-muted-foreground h-5 w-5" />
+            {/if}
+          </div>
+        {/each}
+      </div>
+      {#if isSelected}
+        <Dialog.Root
+          bind:open
+          onOpenChange={(open) => {
+            if (!open) {
+            }
+          }}
+        >
+          <Dialog.Trigger>
+            <button>
+              <Maximize2Icon class="text-muted-foreground h-3 w-3" />
+            </button>
+          </Dialog.Trigger>
+          <Dialog.Content class="max-h-[calc(100vh-40px)] max-w-3xl overflow-y-auto p-4 md:w-[700px]">
+            <Dialog.Header class="flex flex-row items-center gap-2">
+              <Label
+                role="button"
+                class="flex cursor-pointer items-center gap-2 rounded-sm border px-4 py-2 transition-colors hover:bg-gray-50"
+              >
+                <PaperclipIcon class="h-4 w-4" />
+                Add File(s)
+                <input type="file" hidden on:change={onChange} />
+              </Label>
+
+              Viewing Attachments of {field.name.value}
+            </Dialog.Header>
+
+            <div class="grid grid-cols-6 gap-2">
+              {#each value as v, i}
+                <div>
+                  <AspectRatio
+                    ratio={1}
+                    class="group relative col-span-1 flex w-full items-center justify-center rounded-sm border"
+                  >
+                    {#if isImage(v)}
+                      <button class="h-10 w-10" on:click={() => ($selectedAttachment = v)}>
+                        <img src={v.url} alt={v.name} />
+                      </button>
+                    {:else}
+                      <FileIcon class="text-muted-foreground h-10 w-10" />
+                    {/if}
+
+                    <button
+                      class="absolute right-0 top-1 hidden -translate-y-1/2 translate-x-1/2 group-hover:block"
+                      on:click={() => removeFile(i)}
+                    >
+                      <XIcon class="text-muted-foreground h-5 w-5"></XIcon>
+                    </button>
+                  </AspectRatio>
+
+                  <p title={v.name} class="mt-2 w-full truncate text-xs">
+                    {v.name}
+                  </p>
+                </div>
+              {/each}
+            </div>
+          </Dialog.Content>
+        </Dialog.Root>
+      {/if}
+    </div>
   {/if}
 </div>

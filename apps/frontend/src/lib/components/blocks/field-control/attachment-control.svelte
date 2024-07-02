@@ -73,7 +73,7 @@
     >
       {#each value as v, i (v.id)}
         <div class="flex items-center gap-2" data-attachment-id={v.id} data-field-id={field.id.value}>
-          <div class="bg-muted flex h-5 w-5 items-center justify-center">
+          <div class="flex h-5 w-5 items-center justify-center">
             {#if isImage(v)}
               <button on:click={() => ($selectedAttachment = v)}>
                 <img src={v.url} alt={v.name} />

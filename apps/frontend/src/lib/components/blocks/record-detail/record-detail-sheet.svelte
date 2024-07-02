@@ -92,7 +92,7 @@
     </div>
 
     {#if !readonly}
-      <Sheet.Footer class="-mx-6 border-t px-6 pt-4">
+      <Sheet.Footer class="border-t px-6 pt-4">
         <Button variant="outline" type="button" on:click={() => ($r = null)}>Cancel</Button>
         <Button type="submit" form="updateRecord" {disabled}>Update</Button>
       </Sheet.Footer>

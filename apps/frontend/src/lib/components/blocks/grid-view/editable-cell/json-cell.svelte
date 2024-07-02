@@ -39,9 +39,23 @@
       values: { [field.id.value]: value },
     })
   }
+
+  let open = false
+  function onDbClick() {
+    if (!isSelected) {
+      return
+    }
+
+    open = true
+  }
 </script>
 
-<div class={cn($$restProps.class, "flex justify-between", !value && "justify-end")}>
+<!-- svelte-ignore a11y-interactive-supports-focus -->
+<div
+  role="button"
+  on:dblclick={onDbClick}
+  class={cn($$restProps.class, "flex justify-between", !value && "justify-end")}
+>
   <div class="truncate">
     {#if value}
       <span>{JSON.stringify(value)}</span>
@@ -50,6 +64,7 @@
 
   {#if isSelected}
     <Dialog.Root
+      bind:open
       onOpenChange={(open) => {
         if (!open) {
         }

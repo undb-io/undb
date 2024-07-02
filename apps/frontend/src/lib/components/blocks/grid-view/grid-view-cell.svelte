@@ -10,10 +10,6 @@
   import UserField from "../field-value/user-field.svelte"
   import ReferenceControl from "../field-control/reference-control.svelte"
   import RollupField from "../field-value/rollup-field.svelte"
-  import RatingControl from "../field-control/rating-control.svelte"
-  import EmailControl from "../field-control/email-control.svelte"
-  import JsonField from "../field-value/json-field.svelte"
-  import AttachmentField from "../field-value/attachment-field.svelte"
   import { isEditingCell, isSelectedCell } from "./grid-view.store"
   import SelectCell from "./editable-cell/select-cell.svelte"
   import { getTable } from "$lib/store/table.store"
@@ -22,6 +18,7 @@
   import RatingCell from "./editable-cell/rating-cell.svelte"
   import EmailCell from "./editable-cell/email-cell.svelte"
   import JsonCell from "./editable-cell/json-cell.svelte"
+  import AttachmentCell from "./editable-cell/attachment-cell.svelte"
 
   const table = getTable()
 
@@ -51,7 +48,7 @@
     date: DateCell,
     json: JsonCell,
     checkbox: CheckboxCell,
-    attachment: AttachmentField,
+    attachment: AttachmentCell,
   }
 </script>
 
