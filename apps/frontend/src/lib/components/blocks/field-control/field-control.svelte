@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Field, FieldType } from "@undb/table"
+  import type { Field, FieldType, NoneSystemField, NoneSystemFieldType } from "@undb/table"
   import IdControl from "./id-control.svelte"
   import StringControl from "./string-control.svelte"
   import NumberControl from "./number-control.svelte"
@@ -15,7 +15,7 @@
   import CheckboxControl from "./checkbox-control.svelte"
 
   export let readonly = false
-  export let field: Field
+  export let field: NoneSystemField
 
   export let value: any
 
@@ -28,15 +28,9 @@
 
   $: field, handleValue()
 
-  const map: Record<FieldType, ComponentType> = {
-    id: IdControl,
+  const map: Record<NoneSystemFieldType, ComponentType> = {
     string: StringControl,
     number: NumberControl,
-    autoIncrement: NumberControl,
-    createdAt: DateControl,
-    updatedAt: DateControl,
-    createdBy: UserControl,
-    updatedBy: UserControl,
     reference: ReferenceControl,
     rollup: NumberControl,
     select: SelectControl,

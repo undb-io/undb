@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { Button } from "$lib/components/ui/button"
   import { isImage, type AttachmentField, type IAttachmentFieldValue } from "@undb/table"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
@@ -9,6 +8,7 @@
   import { selectedAttachment } from "$lib/store/attachment.store"
   import { cn } from "$lib/utils"
   import * as Dialog from "$lib/components/ui/dialog"
+  import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import { AspectRatio } from "$lib/components/ui/aspect-ratio"
 
   export let tableId: string
@@ -152,12 +152,33 @@
                       <FileIcon class="text-muted-foreground h-10 w-10" />
                     {/if}
 
-                    <button
-                      class="absolute right-0 top-1 hidden -translate-y-1/2 translate-x-1/2 group-hover:block"
-                      on:click={() => removeFile(i)}
-                    >
-                      <XIcon class="text-muted-foreground h-5 w-5"></XIcon>
-                    </button>
+                    <AlertDialog.Root>
+                      <AlertDialog.Trigger>
+                        <button
+                          class="absolute right-0 top-1 hidden -translate-y-1/2 translate-x-1/2 group-hover:block"
+                        >
+                          <XIcon class="text-muted-foreground h-5 w-5"></XIcon>
+                        </button>
+                      </AlertDialog.Trigger>
+                      <AlertDialog.Content>
+                        <AlertDialog.Header>
+                          <AlertDialog.Title>Delete File</AlertDialog.Title>
+                          <AlertDialog.Description>
+                            Are you sure you want to delete the following file?
+                            <div class="mt-2 rounded-sm border p-2">
+                              {value[i].name}
+                            </div>
+                          </AlertDialog.Description>
+                        </AlertDialog.Header>
+                        <AlertDialog.Footer>
+                          <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+                          <AlertDialog.Action
+                            on:click={() => removeFile(i)}
+                            class="bg-red-500 text-white hover:bg-red-600">Delete</AlertDialog.Action
+                          >
+                        </AlertDialog.Footer>
+                      </AlertDialog.Content>
+                    </AlertDialog.Root>
                   </AspectRatio>
 
                   <p title={v.name} class="mt-2 w-full truncate text-xs">

@@ -111,8 +111,15 @@ export type Field =
   | JsonField
   | CheckboxField
 
-export type NoneSystemField = Field & { isSystem: false }
-export type SystemField = Field & { isSystem: true }
+export type SystemField =
+  | IdField
+  | AutoIncrementField
+  | UpdatedAtField
+  | UpdatedByField
+  | CreatedAtField
+  | CreatedByField
+
+export type NoneSystemField = Exclude<Field, SystemField>
 
 export type FieldValue =
   | StringFieldValue

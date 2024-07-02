@@ -64,7 +64,7 @@
 
     <div class="flex-1 overflow-hidden">
       {#if $record.isLoading}
-        <div class="space-y-4">
+        <div class="space-y-4 px-6 py-4">
           <Skeleton class="h-10 w-full" />
           <Skeleton class="h-10 w-full" />
           <Skeleton class="h-10 w-full" />
