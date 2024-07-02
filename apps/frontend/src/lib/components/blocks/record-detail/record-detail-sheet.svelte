@@ -47,10 +47,13 @@
   }}
 >
   <Sheet.Content
-    class={cn("sm:max-w-1/2 flex w-1/2 flex-col gap-0 pt-4 transition-all", $preferences.showAudit && "w-2/3")}
+    class={cn(
+      "sm:max-w-1/2 flex h-full w-1/2 flex-col gap-0 px-0 pt-4 transition-all",
+      $preferences.showAudit && "w-2/3",
+    )}
     transitionConfig={{ duration: 50 }}
   >
-    <Sheet.Header class="-mx-6 border-b px-6 pb-2">
+    <Sheet.Header class="border-b px-6 pb-2">
       <Sheet.Title class="flex items-center justify-between">
         <span> Record Detail </span>
         <button class="mr-6" on:click={() => ($preferences.showAudit = !$preferences.showAudit)}>
@@ -59,7 +62,7 @@
       </Sheet.Title>
     </Sheet.Header>
 
-    <ScrollArea class="flex-1 overflow-auto" orientation="vertical">
+    <div class="flex-1 overflow-hidden">
       {#if $record.isLoading}
         <div class="space-y-4">
           <Skeleton class="h-10 w-full" />
@@ -68,20 +71,25 @@
           <Skeleton class="h-10 w-full" />
           <Skeleton class="h-10 w-full" />
         </div>
+      {:else}
+        <div class="grid h-full grid-cols-4 overflow-hidden">
+          {#if recordDo}
+            <div class={cn("overflow-hidden", $preferences.showAudit && $r ? "col-span-3" : "col-span-4")}>
+              <ScrollArea class="h-full overflow-auto px-4">
+                <RecordDetail {readonly} record={recordDo} bind:disabled />
+              </ScrollArea>
+            </div>
+          {/if}
+          {#if $preferences.showAudit && $r}
+            <div class="col-span-1 overflow-hidden border-l px-2">
+              <ScrollArea class="h-full overflow-auto">
+                <AuditList recordId={$r} />
+              </ScrollArea>
+            </div>
+          {/if}
+        </div>
       {/if}
-      <div class="grid h-full grid-cols-4">
-        {#if recordDo}
-          <div class={cn("pt-4", $preferences.showAudit && $r ? "col-span-3 pr-4" : "col-span-4")}>
-            <RecordDetail {readonly} record={recordDo} bind:disabled />
-          </div>
-        {/if}
-        {#if $preferences.showAudit && $r}
-          <div class="col-span-1 border-l pl-2 pt-4">
-            <AuditList recordId={$r} />
-          </div>
-        {/if}
-      </div>
-    </ScrollArea>
+    </div>
 
     {#if !readonly}
       <Sheet.Footer class="-mx-6 border-t px-6 pt-4">

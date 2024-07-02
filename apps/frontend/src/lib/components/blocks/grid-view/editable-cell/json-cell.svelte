@@ -7,6 +7,7 @@
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
+  import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
 
   export let tableId: string
   export let value: JsonValue | undefined = undefined
@@ -41,9 +42,11 @@
 </script>
 
 <div class={cn($$restProps.class, "flex justify-between", !value && "justify-end")}>
-  {#if value}
-    <span>{JSON.stringify(value)}</span>
-  {/if}
+  <div class="truncate">
+    {#if value}
+      <span>{JSON.stringify(value)}</span>
+    {/if}
+  </div>
 
   {#if isSelected}
     <Dialog.Root
@@ -57,7 +60,7 @@
           <Maximize2Icon class="text-muted-foreground h-3 w-3" />
         </button>
       </Dialog.Trigger>
-      <Dialog.Content class="p-2">
+      <Dialog.Content class="max-h-[calc(100vh-40px)] max-w-3xl overflow-y-auto p-2 md:w-[700px]">
         <JSONEditor
           {content}
           onChange={handleChange}

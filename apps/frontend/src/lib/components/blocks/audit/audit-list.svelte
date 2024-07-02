@@ -17,7 +17,7 @@
   $: audits = ($store.data?.recordAudits ?? []) as IAuditDTO[]
 </script>
 
-<div class="px-2">
+<div class="my-4 px-2">
   {#if $store.fetching}
     <!-- TODO -->
   {:else if !audits.length}
