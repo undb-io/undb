@@ -169,6 +169,7 @@
                   </div>
                   <FieldControl
                     {field}
+                    tableId={$table.id.value}
                     bind:value={formField.defaultValue}
                     class="bg-background"
                     on:change={setForm}

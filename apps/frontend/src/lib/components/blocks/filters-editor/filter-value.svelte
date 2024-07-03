@@ -4,8 +4,12 @@
   import Input from "$lib/components/ui/input/input.svelte"
   import { cn } from "$lib/utils"
   import { writable } from "svelte/store"
+  import { getTable } from "$lib/store/table.store"
+
+  const table = getTable()
 
   export let field: Field | undefined
+  export let recordId: string
   export let op: string | undefined
   export let value: any | undefined = undefined
   export let displayValue: any | undefined = undefined
@@ -25,7 +29,15 @@
 
 {#if $hasValue}
   {#if field}
-    <FieldControl bind:value {displayValue} {field} {...$$restProps} class={cn(className, $$restProps.class)} />
+    <FieldControl
+      bind:value
+      {displayValue}
+      {field}
+      tableId={$table.id.value}
+      {recordId}
+      {...$$restProps}
+      class={cn(className, $$restProps.class)}
+    />
   {:else if $hasValue}
     <Input disabled class={className} placeholder="select a field" />
   {/if}

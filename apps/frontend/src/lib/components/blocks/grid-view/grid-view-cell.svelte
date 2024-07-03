@@ -19,6 +19,7 @@
   import EmailCell from "./editable-cell/email-cell.svelte"
   import JsonCell from "./editable-cell/json-cell.svelte"
   import AttachmentCell from "./editable-cell/attachment-cell.svelte"
+  import ReferenceCell from "./editable-cell/reference-cell.svelte"
 
   const table = getTable()
 
@@ -40,7 +41,7 @@
     autoIncrement: NumberField,
     createdBy: UserField,
     updatedBy: UserField,
-    reference: ReferenceControl,
+    reference: ReferenceCell,
     rollup: RollupField,
     select: SelectCell,
     rating: RatingCell,

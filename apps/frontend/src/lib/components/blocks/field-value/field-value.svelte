@@ -12,11 +12,14 @@
   import RatingField from "./rating-field.svelte"
   import AttachmentField from "./attachment-field.svelte"
   import JsonField from "./json-field.svelte"
+  import CheckboxField from "./checkbox-field.svelte"
 
   export let type: FieldType
   export let value: any
   export let displayValue: any
   export let field: Field
+  export let tableId: string
+  export let recordId: string | undefined
 
   const map: Record<FieldType, ComponentType> = {
     id: IdField,
@@ -35,6 +38,7 @@
     attachment: AttachmentField,
     date: DateField,
     json: JsonField,
+    checkbox: CheckboxField,
   }
 </script>
 

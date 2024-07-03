@@ -3,10 +3,16 @@
   import * as Popover from "$lib/components/ui/popover"
   import ForeignRecordsPicker from "./foreign-records-picker.svelte"
   import { readable } from "svelte/store"
-  import { TableCreator } from "@undb/table"
+  import { ReferenceField, TableCreator } from "@undb/table"
+  import Button from "$lib/components/ui/button/button.svelte"
+  import { PlusIcon } from "lucide-svelte"
+  import { Skeleton } from "$lib/components/ui/skeleton"
 
   export let readonly = false
-  export let foreignTableId: string
+  export let tableId: string
+  export let recordId: string | undefined
+  export let field: ReferenceField
+  $: foreignTableId = field.foreignTableId
   export let value: string[] = []
 
   const foreignTableStore = new GetForeignTableStore()
@@ -22,17 +28,24 @@
 
 <Popover.Root bind:open>
   <Popover.Trigger>
-    <button
-      disabled={readonly}
-      type="button"
-      class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
-    >
-      +
-    </button>
+    <slot>
+      <Button size="sm" disabled={readonly} variant="link" type="button">
+        <PlusIcon class="mr-2 h-4 w-4" />
+        Link Records
+      </Button>
+    </slot>
   </Popover.Trigger>
-  <Popover.Content class="w-1/2 lg:max-w-4xl">
+  <Popover.Content class="w-[500px] p-0 lg:max-w-4xl">
+    {#if $foreignTableStore.fetching}
+      <!-- content here -->
+      <div class="space-y-2 p-4">
+        <Skeleton class="h-[20px] w-full rounded-sm" />
+        <Skeleton class="h-[20px] w-full rounded-sm" />
+        <Skeleton class="h-[20px] w-full rounded-sm" />
+      </div>
+    {/if}
     {#if foreignTable}
-      <ForeignRecordsPicker {foreignTable} bind:selected={value} />
+      <ForeignRecordsPicker {field} {tableId} {recordId} {foreignTable} bind:selected={value} />
     {/if}
   </Popover.Content>
 </Popover.Root>

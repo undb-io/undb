@@ -36,7 +36,7 @@
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
-<div class={cn("flex h-full items-center", $$restProps.class)} on:mouseleave={onMouseLeave}>
+<div class={cn("flex h-full items-center gap-1", $$restProps.class)} on:mouseleave={onMouseLeave}>
   <!-- svelte-ignore a11y-interactive-supports-focus -->
   {#each Array(max) as _, i}
     <Label class="group items-center">
@@ -46,10 +46,10 @@
       <span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
+          viewBox="0 0 20 20"
           fill="currentColor"
           class={cn(
-            "h-5 w-5 cursor-pointer transition-colors",
+            "h-4 w-4 cursor-pointer transition-colors",
             (overIndex === undefined && value > i) || (overIndex !== undefined && overIndex >= i)
               ? "text-yellow-400"
               : "text-gray-300",

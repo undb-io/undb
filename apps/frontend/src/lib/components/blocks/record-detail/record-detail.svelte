@@ -113,6 +113,8 @@
           <div class="py-3 text-sm">
             <FieldValue
               {field}
+              tableId={$table.id.value}
+              recordId={record.id.value}
               value={values[field.id.value]}
               type={field.type}
               displayValue={displayValues[field.id.value]}
@@ -123,6 +125,8 @@
             {...attrs}
             bind:value={$formData[field.id.value]}
             {field}
+            tableId={$table.id.value}
+            recordId={$r}
             displayValue={displayValues[field.id.value]}
             {readonly}
           />

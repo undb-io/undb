@@ -1,10 +1,9 @@
 <script lang="ts">
   import { getTable } from "$lib/store/table.store"
-  import { FormIdVO, RecordDO, RecordIdVO, type FormVO } from "@undb/table"
+  import { FormIdVO, RecordDO, RecordIdVO } from "@undb/table"
   import * as Form from "$lib/components/ui/form"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
   import { cn } from "$lib/utils"
-  import { queryParam } from "sveltekit-search-params"
   import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
   import autoAnimate from "@formkit/auto-animate"
   import Button from "$lib/components/ui/button/button.svelte"
@@ -15,7 +14,6 @@
   import { closeModal, CREATE_RECORD_MODAL } from "$lib/store/modal.store"
   import { trpc } from "$lib/trpc/client"
   import { useQueryClient, createMutation } from "@tanstack/svelte-query"
-  import { ShieldCheckIcon } from "lucide-svelte"
   import { toast } from "svelte-sonner"
   import { derived } from "svelte/store"
   import { superForm, defaults } from "sveltekit-superforms"
@@ -120,7 +118,13 @@
                       {/if}
                     </div>
                   </Form.Label>
-                  <FieldControl {...attrs} bind:value={$formData[field.id.value]} {field} disabled={field.isSystem} />
+                  <FieldControl
+                    {...attrs}
+                    bind:value={$formData[field.id.value]}
+                    {field}
+                    disabled={field.isSystem}
+                    tableId={$table.id.value}
+                  />
                 </Form.Control>
                 <Form.FieldErrors />
               </Form.Field>

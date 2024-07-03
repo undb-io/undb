@@ -16,6 +16,8 @@
 
   export let readonly = false
   export let field: NoneSystemField
+  export let tableId: string
+  export let recordId: string | undefined
 
   export let value: any
 
@@ -43,4 +45,13 @@
   }
 </script>
 
-<svelte:component this={map[field.type]} {readonly} on:change {...$$restProps} bind:value {field} />
+<svelte:component
+  this={map[field.type]}
+  {readonly}
+  on:change
+  {...$$restProps}
+  bind:value
+  {field}
+  {tableId}
+  {recordId}
+/>

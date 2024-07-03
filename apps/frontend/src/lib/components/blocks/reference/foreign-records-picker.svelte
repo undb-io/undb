@@ -1,125 +1,155 @@
 <script lang="ts">
-  import { createQuery } from "@tanstack/svelte-query"
+  import { createMutation, createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
-  import { Records, TableDo, type IRecordsDTO } from "@undb/table"
-  import { createRender, createTable, Render, Subscribe } from "svelte-headless-table"
-  import { addSelectedRows } from "svelte-headless-table/plugins"
+  import { Records, ReferenceField, TableDo, type IRecordsDTO } from "@undb/table"
   import { derived, writable, type Readable } from "svelte/store"
-  import GridViewCheckbox from "$lib/components/blocks/grid-view/grid-view-checkbox.svelte"
-  import GridViewHeader from "$lib/components/blocks/grid-view/grid-view-header.svelte"
-  import GridViewCell from "$lib/components/blocks/grid-view/grid-view-cell.svelte"
-  import * as Table from "$lib/components/ui/table"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
+  import FieldValue from "../field-value/field-value.svelte"
+  import { Skeleton } from "$lib/components/ui/skeleton"
+  import * as Tooltip from "$lib/components/ui/tooltip"
+  import { builderActions, getAttrs } from "bits-ui"
+  import FieldIcon from "../field-icon/field-icon.svelte"
+  import { PlusIcon } from "lucide-svelte"
+  import { Button } from "$lib/components/ui/button"
+  import { Input } from "$lib/components/ui/input"
+  import { toast } from "svelte-sonner"
+  import { unique } from "radash"
 
   export let foreignTable: Readable<TableDo>
 
+  export let tableId: string
+  export let recordId: string | undefined = undefined
+  export let field: ReferenceField
+
+  export let selected: string[] = []
+
+  const q = writable("")
+
   const getForeignTableRecords = createQuery(
-    derived([foreignTable], ([$table]) => ({
-      queryKey: ["records", $table.id.value],
+    derived([foreignTable, q], ([$table, $q]) => ({
+      queryKey: ["records", $table.id.value, $q],
       enabled: !!$table,
       queryFn: () =>
         trpc.record.list.query({
           tableId: $table.id.value,
+          q: $q || undefined,
           pagination: { limit: 50, page: 1 },
         }),
     })),
   )
 
+  $: fields = $foreignTable.schema.noneSystemFields.slice(0, 4)
+
   $: records = (($getForeignTableRecords.data as any)?.records as IRecordsDTO) ?? []
   $: dos = Records.fromJSON($foreignTable, records).map
 
-  // TODO: record type
-  let data = writable<any[]>([])
-  $: records, data.set(records.map((r) => ({ id: r.id, ...r.values })))
-
-  const table = createTable(data, {
-    select: addSelectedRows(),
+  const updateCell = createMutation({
+    mutationKey: ["record", tableId, field.id.value, recordId],
+    mutationFn: trpc.record.update.mutate,
+    onError(error: Error) {
+      toast.error(error.message)
+    },
   })
 
-  $: columns =
-    table.createColumns([
-      table.column({
-        accessor: "select",
-        header: (_, { pluginStates }) => {
-          const { allPageRowsSelected } = pluginStates.select
-          return createRender(GridViewCheckbox, {
-            checked: allPageRowsSelected,
-          })
-        },
-        cell: ({ row }, { pluginStates }) => {
-          const { getRowState } = pluginStates.select
-          const { isSelected } = getRowState(row)
-
-          return createRender(GridViewCheckbox, {
-            checked: isSelected,
-          })
-        },
-      }),
-      ...($foreignTable.getOrderedVisibleFields() ?? []).map((field, index) =>
-        table.column({
-          header: () => createRender(GridViewHeader, { field }),
-          accessor: field.id.value,
-          cell: (item) => {
-            const record = dos.get(item.row.original.id)
-            const displayValue = record?.displayValues?.toJSON()?.[field.id.value]
-            return createRender(GridViewCell, {
-              index,
-              value: item.value,
-              field,
-              recordId: item.row.original.id,
-              displayValue,
-            })
-          },
-        }),
-      ),
-    ]) ?? []
-
-  const viewModel = writable(table.createViewModel(columns ?? []))
-  $: columns, viewModel.set(table.createViewModel(columns))
-
-  $: headerRows = $viewModel.headerRows
-  $: pageRows = $viewModel.pageRows
-  $: tableAttrs = $viewModel.tableAttrs
-  $: tableBodyAttrs = $viewModel.tableBodyAttrs
-
-  export let selected: string[] = []
-  $: selectedDataIds = $viewModel.pluginStates.select.selectedDataIds
-  $: selected = Object.entries($selectedDataIds)
-    .filter(([, isSelected]) => isSelected)
-    .map(([id]) => records[Number(id)].id)
+  function addRecord(id: string) {
+    selected = unique([...(selected ?? []), id])
+    if (recordId) {
+      $updateCell.mutate({
+        tableId,
+        id: recordId,
+        values: { [field.id.value]: selected },
+      })
+    }
+  }
 </script>
 
-<ScrollArea orientation="both" class="h-full flex-1 overflow-auto">
-  <Table.Root {...$tableAttrs}>
-    <Table.Header>
-      {#each $headerRows as headerRow}
-        <Subscribe rowAttrs={headerRow.attrs()}>
-          <Table.Row>
-            {#each headerRow.cells as cell (cell.id)}
-              <Subscribe attrs={cell.attrs()} let:attrs props={cell.props()}>
-                <Table.Head {...attrs}>
-                  <Render of={cell.render()} />
-                </Table.Head>
-              </Subscribe>
-            {/each}
-          </Table.Row>
-        </Subscribe>
+<ScrollArea orientation="both" class="h-full flex-1  overflow-auto">
+  <div class="divide-y">
+    <Input
+      class="rounded-none border-0"
+      placeholder={`Search ${$foreignTable.name.value} records...`}
+      bind:value={$q}
+    />
+    {#if $getForeignTableRecords.isFetching}
+      <div class="space-y-2 p-4">
+        <Skeleton class="h-[20px] w-full rounded-sm" />
+        <Skeleton class="h-[20px] w-full rounded-sm" />
+        <Skeleton class="h-[20px] w-full rounded-sm" />
+      </div>
+    {:else}
+      {#each records as record}
+        {@const r = dos.get(record.id)}
+        <div class="space-y-2">
+          {#if r}
+            {@const values = r.flatten()}
+            {@const displayValues = r.displayValues?.toJSON() ?? {}}
+            <div class="flex items-center gap-2">
+              {#if fields.length}
+                {@const field = fields[0]}
+                <div class="flex-1 space-y-2">
+                  <Tooltip.Root>
+                    <Tooltip.Trigger asChild let:builder>
+                      <div
+                        class="flex items-center px-3 pt-2"
+                        use:builderActions={{ builders: [builder] }}
+                        {...getAttrs([builder])}
+                      >
+                        <FieldValue
+                          {tableId}
+                          recordId={record.id}
+                          {field}
+                          value={values[field.id.value]}
+                          type={field.type}
+                          displayValue={displayValues[field.id.value]}
+                        />
+                      </div>
+                    </Tooltip.Trigger>
+                    <Tooltip.Content transitionConfig={{ duration: 10 }}>
+                      <div class="flex items-center gap-2">
+                        <FieldIcon class="h-3 w-3" type={field.type} />
+                        <p>{field.name.value}</p>
+                      </div>
+                    </Tooltip.Content>
+                  </Tooltip.Root>
+                  <div class="grid grid-cols-3 px-3 pb-2" data-record-id={record.id}>
+                    {#each fields.slice(1) as field}
+                      <Tooltip.Root>
+                        <Tooltip.Trigger asChild let:builder>
+                          <div
+                            class="flex items-center"
+                            use:builderActions={{ builders: [builder] }}
+                            {...getAttrs([builder])}
+                          >
+                            <FieldValue
+                              {field}
+                              value={values[field.id.value]}
+                              type={field.type}
+                              displayValue={displayValues[field.id.value]}
+                              class="text-xs"
+                            />
+                          </div>
+                        </Tooltip.Trigger>
+                        <Tooltip.Content transitionConfig={{ duration: 10 }}>
+                          <div class="flex items-center gap-2">
+                            <FieldIcon class="h-3 w-3" type={field.type} />
+                            <p>{field.name.value}</p>
+                          </div>
+                        </Tooltip.Content>
+                      </Tooltip.Root>
+                    {/each}
+                  </div>
+                </div>
+
+                <div class="pr-4">
+                  <Button size="icon" class="h-7 w-7" on:click={() => addRecord(record.id)}>
+                    <PlusIcon class="h-5 w-5 font-semibold" />
+                  </Button>
+                </div>
+              {/if}
+            </div>
+          {/if}
+        </div>
       {/each}
-    </Table.Header>
-    <Table.Body {...$tableBodyAttrs}>
-      {#each $pageRows as row (row.id)}
-        <Subscribe rowAttrs={row.attrs()} let:rowAttrs>
-          <Table.Row {...rowAttrs}>
-            {#each row.cells as cell (cell.id)}
-              <Subscribe attrs={cell.attrs()} let:attrs>
-                <Table.Cell {...attrs}>
-                  <Render of={cell.render()} />
-                </Table.Cell>
-              </Subscribe>
-            {/each}
-          </Table.Row>
-        </Subscribe>
-      {/each}
-    </Table.Body>
-  </Table.Root>
+    {/if}
+  </div>
 </ScrollArea>

@@ -99,7 +99,13 @@
                 {/if}
               </div>
             </Form.Label>
-            <FieldControl {...attrs} bind:value={$formData[field.id.value]} {field} disabled={field.isSystem} />
+            <FieldControl
+              {...attrs}
+              bind:value={$formData[field.id.value]}
+              tableId={$table.id.value}
+              {field}
+              disabled={field.isSystem}
+            />
           </Form.Control>
           <Form.FieldErrors />
         </Form.Field>

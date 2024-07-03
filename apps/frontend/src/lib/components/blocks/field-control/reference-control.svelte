@@ -3,6 +3,8 @@
   import ForeignRecordsPickerDropdown from "../reference/foreign-records-picker-dropdown.svelte"
   import IdField from "../field-value/id-field.svelte"
 
+  export let tableId: string
+  export let recordId: string | undefined
   export let readonly = false
   export let field: ReferenceField
   export let value: string[]
@@ -16,5 +18,5 @@
       </div>
     {/each}
   {/if}
-  <ForeignRecordsPickerDropdown {readonly} foreignTableId={field.foreignTableId} bind:value />
+  <ForeignRecordsPickerDropdown {readonly} {field} {tableId} {recordId} bind:value />
 </div>
