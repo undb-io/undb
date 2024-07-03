@@ -71,6 +71,18 @@
         bind:group={value}
         class="hidden"
         readonly={$$restProps.readonly}
+        on:click={async () => {
+          if (overIndex === i) {
+            value = 0
+            await $updateCell.mutateAsync({
+              tableId,
+              id: recordId,
+              values: { [field.id.value]: value },
+            })
+
+            overIndex = undefined
+          }
+        }}
         on:change={() => {
           $updateCell.mutate({
             tableId,
