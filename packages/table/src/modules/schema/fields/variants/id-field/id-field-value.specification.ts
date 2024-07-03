@@ -23,3 +23,22 @@ export class IdEqual extends RecordComositeSpecification {
     return Ok(undefined)
   }
 }
+
+export class IdIn extends RecordComositeSpecification {
+  constructor(
+    readonly values: string[],
+    readonly fieldId: FieldId,
+  ) {
+    super(fieldId)
+  }
+  isSatisfiedBy(t: RecordDO): boolean {
+    throw new Error("Method not implemented.")
+  }
+  mutate(t: RecordDO): Result<RecordDO, string> {
+    throw new Error("Method not implemented.")
+  }
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.idIn(this)
+    return Ok(undefined)
+  }
+}

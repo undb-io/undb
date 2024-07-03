@@ -12,6 +12,7 @@ import type {
   EmailEqual,
   IRecordVisitor,
   IdEqual,
+  IdIn,
   JsonEmpty,
   JsonEqual,
   NumberEmpty,
@@ -59,6 +60,9 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     private readonly table: TableDo,
   ) {
     super(eb)
+  }
+  idIn(spec: IdIn): void {
+    this.addCond(this.eb.eb(this.getFieldId(spec), "in", spec.values))
   }
   checkboxEqual(spec: CheckboxEqual): void {
     const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value)

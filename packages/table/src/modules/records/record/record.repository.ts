@@ -1,6 +1,7 @@
-import { None, Some, type IPagination, type Option, type PaginatedDTO } from "@undb/domain"
+import { None, Some, andOptions, type IPagination, type Option, type PaginatedDTO } from "@undb/domain"
 import type { TableId } from "../../../table-id.vo"
 import type { TableDo } from "../../../table.do"
+import { getSpec } from "../../schema/fields/condition"
 import type { ViewId } from "../../views"
 import type { AggregateResult, IGetRecordsDTO } from "../dto"
 import { withQ } from "../specification/with-q.specification"
@@ -44,6 +45,14 @@ export function buildQuery(table: TableDo, dto: IGetRecordsDTO) {
   }
   if (dto.q) {
     query.filter = withQ(table, dto.q)
+  }
+  if (dto.filters) {
+    const spec = getSpec(table.schema.fieldMapById, dto.filters) as Option<RecordComositeSpecification>
+    if (query.filter) {
+      query.filter = andOptions(query.filter, spec) as Option<RecordComositeSpecification>
+    } else {
+      query.filter = spec
+    }
   }
   return Some(query)
 }

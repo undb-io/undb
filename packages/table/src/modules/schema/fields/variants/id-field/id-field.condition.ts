@@ -6,6 +6,8 @@ export function createIdFieldCondition<ItemType extends z.ZodTypeAny>(itemType: 
   return z.union([
     z.object({ op: z.literal("eq"), value: z.string().min(1) }).merge(base),
     z.object({ op: z.literal("neq"), value: z.string().min(1) }).merge(base),
+    z.object({ op: z.literal("in"), value: z.string().min(1).array() }).merge(base),
+    z.object({ op: z.literal("nin"), value: z.string().min(1).array() }).merge(base),
   ])
 }
 

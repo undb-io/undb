@@ -11,6 +11,7 @@ import type {
   DateIsTomorrow,
   EmailEqual,
   IdEqual,
+  IdIn,
   IRecordVisitor,
   JsonEmpty,
   JsonEqual,
@@ -67,6 +68,9 @@ export class RecordMutateVisitor implements IRecordVisitor {
     this.#sql.push(...sql)
   }
 
+  idIn(spec: IdIn): void {
+    throw new Error("Method not implemented.")
+  }
   checkboxEqual(spec: CheckboxEqual): void {
     this.setData(spec.fieldId.value, spec.value)
   }

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createMutation, createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
-  import { Records, ReferenceField, TableDo, type IRecordsDTO } from "@undb/table"
+  import { ID_TYPE, Records, ReferenceField, TableDo, type IRecordsDTO } from "@undb/table"
   import { derived, writable, type Readable } from "svelte/store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
   import FieldValue from "../field-value/field-value.svelte"
@@ -33,6 +33,16 @@
         trpc.record.list.query({
           tableId: $table.id.value,
           q: $q || undefined,
+          filters: {
+            conjunction: "and",
+            children: [
+              {
+                fieldId: ID_TYPE,
+                op: "nin",
+                value: selected,
+              },
+            ],
+          },
           pagination: { limit: 50, page: 1 },
         }),
     })),
