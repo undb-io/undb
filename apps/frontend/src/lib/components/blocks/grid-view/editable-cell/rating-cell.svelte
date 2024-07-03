@@ -49,7 +49,7 @@
           viewBox="0 0 20 20"
           fill="currentColor"
           class={cn(
-            "h-4 w-4 cursor-pointer transition-colors",
+            "h-3 w-3 cursor-pointer transition-colors",
             (overIndex === undefined && value > i) || (overIndex !== undefined && overIndex >= i)
               ? "text-yellow-400"
               : "text-gray-300",
