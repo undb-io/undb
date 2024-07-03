@@ -9,7 +9,7 @@
   import * as Tooltip from "$lib/components/ui/tooltip"
   import { builderActions, getAttrs } from "bits-ui"
   import FieldIcon from "../field-icon/field-icon.svelte"
-  import { PlusIcon } from "lucide-svelte"
+  import { InboxIcon, PlusIcon } from "lucide-svelte"
   import { Button } from "$lib/components/ui/button"
   import { Input } from "$lib/components/ui/input"
   import { toast } from "svelte-sonner"
@@ -33,16 +33,18 @@
         trpc.record.list.query({
           tableId: $table.id.value,
           q: $q || undefined,
-          filters: {
-            conjunction: "and",
-            children: [
-              {
-                fieldId: ID_TYPE,
-                op: "nin",
-                value: selected,
-              },
-            ],
-          },
+          filters: selected?.length
+            ? {
+                conjunction: "and",
+                children: [
+                  {
+                    fieldId: ID_TYPE,
+                    op: "nin",
+                    value: selected,
+                  },
+                ],
+              }
+            : undefined,
           pagination: { limit: 50, page: 1 },
         }),
     })),
@@ -85,6 +87,11 @@
         <Skeleton class="h-[20px] w-full rounded-sm" />
         <Skeleton class="h-[20px] w-full rounded-sm" />
         <Skeleton class="h-[20px] w-full rounded-sm" />
+      </div>
+    {:else if !records.length}
+      <div class="flex flex-col items-center justify-center space-y-2 py-8">
+        <InboxIcon class="h-12 w-12" />
+        <p class="text-muted-foreground text-sm">No available records to link in table {$foreignTable.name.value}</p>
       </div>
     {:else}
       {#each records as record}
@@ -131,6 +138,8 @@
                             {...getAttrs([builder])}
                           >
                             <FieldValue
+                              {tableId}
+                              {recordId}
                               {field}
                               value={values[field.id.value]}
                               type={field.type}

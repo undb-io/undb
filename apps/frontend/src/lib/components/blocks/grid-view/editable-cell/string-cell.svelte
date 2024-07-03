@@ -44,6 +44,8 @@
   />
 {:else}
   <div class={$$restProps.class}>
-    {value}
+    {#if value}
+      {value}
+    {/if}
   </div>
 {/if}

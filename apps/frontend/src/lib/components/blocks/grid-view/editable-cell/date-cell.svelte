@@ -50,7 +50,9 @@
   <Popover.Root bind:open openFocus>
     <Popover.Trigger class="w-full">
       <div class={$$restProps.class}>
-        {value}
+        {#if value}
+          {value}
+        {/if}
       </div>
     </Popover.Trigger>
     <Popover.Content class="w-auto p-0">
@@ -73,6 +75,8 @@
   </Popover.Root>
 {:else}
   <div class={$$restProps.class}>
-    {value}
+    {#if value}
+      {value}
+    {/if}
   </div>
 {/if}
