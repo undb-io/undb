@@ -82,7 +82,7 @@
   $: tempRecord = RecordDO.fromJSON($table, { id: RecordIdVO.create().value, values: $formData })
 </script>
 
-<form method="POST" use:enhance id="createRecord" enctype="multipart/form-data">
+<form method="POST" use:enhance id="createRecord" enctype="multipart/form-data" class="my-4 space-y-4">
   <ul use:autoAnimate class="space-y-2">
     {#each fields as field}
       {@const shouldShow =
