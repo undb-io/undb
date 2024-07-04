@@ -80,7 +80,7 @@
 </script>
 
 <div class={cn($$restProps.class, "flex items-center justify-center")}>
-  {#if !value}
+  {#if !value?.length}
     <Label
       role="button"
       class="hover:bg-primary/10 flex items-center gap-1 rounded-sm px-4 py-1 text-xs transition-colors"
