@@ -26,7 +26,7 @@
   $: foreignTable = table ? readable(new TableCreator().fromJSON(table)) : null
 </script>
 
-<Popover.Root bind:open>
+<Popover.Root bind:open portal="body">
   <Popover.Trigger>
     <slot>
       <Button size="sm" disabled={readonly} variant="link" type="button">
@@ -35,7 +35,7 @@
       </Button>
     </slot>
   </Popover.Trigger>
-  <Popover.Content class="w-[500px] p-0 lg:max-w-4xl">
+  <Popover.Content class="h-[400px] max-h-[700px] w-[500px] p-0 lg:max-w-4xl">
     {#if $foreignTableStore.fetching}
       <!-- content here -->
       <div class="space-y-2 p-4">

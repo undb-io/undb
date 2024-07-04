@@ -1,6 +1,5 @@
 <script lang="ts">
   import * as Pagination from "$lib/components/ui/pagination"
-  import { getTable } from "$lib/store/table.store"
 
   export let perPage: number
   export let currentPage: number = 1

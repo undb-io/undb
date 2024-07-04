@@ -44,7 +44,6 @@
     mutationFn: trpc.table.create.mutate,
     async onSuccess(data) {
       if (importData && rs.length) {
-        debugger
         const records = rs.map((r, i) => {
           const record: ICreateRecordDTO = { values: {} }
 

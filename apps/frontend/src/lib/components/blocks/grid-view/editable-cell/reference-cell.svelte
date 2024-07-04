@@ -42,7 +42,7 @@
 
 <div class={$$restProps.class}>
   {#if Array.isArray(value) && value?.length}
-    <div class="flex w-full items-center justify-between">
+    <div class="flex w-full items-center justify-between gap-1">
       <div class="flex flex-1 items-center gap-1">
         {#each value as v, i}
           {@const displayValue = displayValues[i]}
