@@ -113,6 +113,17 @@
         {selected.length} selected records
       </button>
     {/if}
+    {#if isSelected}
+      <button
+        on:click={() => {
+          isSelected = false
+          $getForeignTableRecords.refetch()
+        }}
+        class="inline-flex items-center bg-gray-100 px-4 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
+      >
+        + Link {$foreignTable.name.value} records
+      </button>
+    {/if}
   </div>
   {#if !records.length && !$getForeignTableRecords.isLoading}
     <div class="flex flex-1 flex-col items-center justify-center space-y-2 py-8">
