@@ -17,7 +17,6 @@
   import CreateForeignRecordButton from "./create-foreign-record-button.svelte"
   import Label from "$lib/components/ui/label/label.svelte"
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
-  import { tick } from "svelte"
 
   export let foreignTable: Readable<TableDo>
   export let isSelected = false
@@ -38,7 +37,7 @@
   const getForeignTableRecords = createQuery(
     derived([foreignTable, q, perPage, currentPage, selected], ([$table, $q, $perPage, $currentPage, $selected]) => {
       return {
-        queryKey: ["records", $table.id.value, $q, $currentPage],
+        queryKey: ["records", $table.id.value, $q, $currentPage, $selected?.length],
         enabled: !!$table,
         queryFn: () =>
           trpc.record.list.query({
