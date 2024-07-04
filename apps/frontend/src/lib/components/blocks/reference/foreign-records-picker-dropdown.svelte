@@ -9,6 +9,7 @@
 
   export let isSelected = false
 
+  export let shouldUpdate = false
   export let readonly = false
   export let tableId: string
   export let recordId: string | undefined
@@ -45,7 +46,7 @@
       </div>
     {/if}
     {#if foreignTable}
-      <ForeignRecordsPicker bind:isSelected {field} {tableId} {recordId} {foreignTable} bind:selected />
+      <ForeignRecordsPicker {shouldUpdate} bind:isSelected {field} {tableId} {recordId} {foreignTable} bind:selected />
     {/if}
   </Popover.Content>
 </Popover.Root>

@@ -20,6 +20,7 @@
 
   export let foreignTable: Readable<TableDo>
   export let isSelected = false
+  export let shouldUpdate = false
 
   export let tableId: string
   export let recordId: string | undefined = undefined
@@ -87,14 +88,16 @@
     } else {
       $selected = unique([...($selected ?? []), id])
     }
-    if (recordId) {
-      await $updateCell.mutateAsync({
-        tableId,
-        id: recordId,
-        values: { [field.id.value]: $selected },
-      })
+    if (shouldUpdate) {
+      if (recordId) {
+        await $updateCell.mutateAsync({
+          tableId,
+          id: recordId,
+          values: { [field.id.value]: $selected },
+        })
 
-      $getForeignTableRecords.refetch()
+        $getForeignTableRecords.refetch()
+      }
     }
   }
 </script>
@@ -116,7 +119,7 @@
           isSelected = true
           $getForeignTableRecords.refetch()
         }}
-        class="inline-flex items-center bg-gray-100 px-4 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
+        class="inline-flex items-center border-l border-none border-gray-500 bg-gray-100 px-4 py-1 text-xs font-medium text-gray-600 ring-0 ring-inset ring-gray-500/10"
       >
         {$selected.length} selected records
       </button>
@@ -127,7 +130,7 @@
           isSelected = false
           $getForeignTableRecords.refetch()
         }}
-        class="inline-flex items-center bg-gray-100 px-4 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
+        class="inline-flex items-center border-l border-none border-gray-500 bg-gray-100 px-4 py-1 text-xs font-medium text-gray-600 ring-0 ring-inset ring-gray-500/10"
       >
         + Link {$foreignTable.name.value} records
       </button>

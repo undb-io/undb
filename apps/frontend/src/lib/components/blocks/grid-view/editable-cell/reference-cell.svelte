@@ -30,6 +30,7 @@
   <div class="flex w-full items-center justify-between gap-1">
     <div class="flex flex-1 items-center gap-1">
       <ForeignRecordsPickerDropdown
+        shouldUpdate
         onOpenChange={(open) => {
           if (!open) {
             hasValue = hasValueReactive
@@ -52,7 +53,7 @@
     </div>
 
     {#if (isSelected || isEditing) && hasValueReactive}
-      <ForeignRecordsPickerDropdown {field} {tableId} {recordId} bind:selected isSelected={false}>
+      <ForeignRecordsPickerDropdown shouldUpdate {field} {tableId} {recordId} bind:selected isSelected={false}>
         <Button variant="link" class="px-2">+</Button>
       </ForeignRecordsPickerDropdown>
     {/if}
