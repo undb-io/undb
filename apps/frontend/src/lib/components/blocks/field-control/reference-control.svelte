@@ -35,8 +35,8 @@
       <Button size="xs" variant="link" type="button">+ Link Records</Button>
     {/if}
   </ForeignRecordsPickerDropdown>
-  {#if hasValue}
-    <ForeignRecordsPickerDropdown {field} {tableId} {recordId} bind:selected bind:isSelected={hasValue}>
+  {#if hasValueReactive}
+    <ForeignRecordsPickerDropdown {field} {tableId} {recordId} bind:selected isSelected={false}>
       <Button variant="link" class="px-2" size="xs">+ Link Records</Button>
     </ForeignRecordsPickerDropdown>
   {/if}
