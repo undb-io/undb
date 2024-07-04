@@ -30,10 +30,10 @@
             hasValue = hasValueReactive
           }
         }}
-        bind:isSelected={hasValue}
         {field}
         {tableId}
         {recordId}
+        bind:isSelected={hasValue}
         bind:selected
       >
         {#if hasValueReactive}
@@ -47,7 +47,7 @@
     </div>
 
     {#if (isSelected || isEditing) && hasValueReactive}
-      <ForeignRecordsPickerDropdown {field} {tableId} {recordId} bind:selected>
+      <ForeignRecordsPickerDropdown {field} {tableId} {recordId} bind:selected bind:isSelected={hasValue}>
         <Button variant="link" class="px-2">+</Button>
       </ForeignRecordsPickerDropdown>
     {/if}
