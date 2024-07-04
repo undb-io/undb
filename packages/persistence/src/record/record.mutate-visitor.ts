@@ -103,6 +103,7 @@ export class RecordMutateVisitor implements IRecordVisitor {
     this.addSql(deleteRecords)
 
     const values = spec.values.props
+
     if (Array.isArray(values) && values.length) {
       const fieldId = joinTable.getValueFieldId()
       const symmetricFieldId = joinTable.getSymmetricValueFieldId()

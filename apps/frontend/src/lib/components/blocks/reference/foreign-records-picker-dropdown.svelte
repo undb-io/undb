@@ -29,7 +29,7 @@
   $: foreignTable = table ? readable(new TableCreator().fromJSON(table)) : null
 </script>
 
-<Popover.Root bind:open portal="body" {onOpenChange}>
+<Popover.Root bind:open {onOpenChange}>
   <Popover.Trigger>
     <slot>
       <Button size="xs" disabled={readonly} variant="link" type="button">+ Link Records</Button>

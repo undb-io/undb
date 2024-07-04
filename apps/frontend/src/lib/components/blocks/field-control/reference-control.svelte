@@ -1,9 +1,9 @@
 <script lang="ts">
   import type { ReferenceField } from "@undb/table"
   import ForeignRecordsPickerDropdown from "../reference/foreign-records-picker-dropdown.svelte"
-  import IdField from "../field-value/id-field.svelte"
   import { writable } from "svelte/store"
   import { Button } from "$lib/components/ui/button"
+  import { onMount } from "svelte"
 
   export let tableId: string
   export let recordId: string | undefined
@@ -12,6 +12,11 @@
   export let value: string[]
 
   let selected = writable<string[]>(value)
+
+  onMount(() => {
+    selected.set(value)
+  })
+  $: $selected, (value = $selected)
 
   let hasValue = Array.isArray($selected) && $selected.length > 0
   $: hasValueReactive = Array.isArray($selected) && $selected.length > 0

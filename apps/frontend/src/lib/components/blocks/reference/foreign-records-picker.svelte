@@ -81,6 +81,7 @@
   })
 
   async function handleToggleRecord(id: string, isAdd: boolean) {
+    if (!$selected) return
     if (!isAdd) {
       $selected = $selected?.filter((s) => s !== id) ?? []
     } else {
@@ -143,6 +144,10 @@
         }}
         {foreignTable}
       />
+      <Label class="text-muted-foreground flex items-center gap-2 text-xs">
+        <Checkbox bind:checked={linkAfterCreate} />
+        Link After Create
+      </Label>
     </div>
   {:else}
     <div class="flex flex-1 flex-col overflow-hidden">

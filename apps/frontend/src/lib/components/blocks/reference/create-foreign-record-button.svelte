@@ -28,7 +28,17 @@
     transitionConfig={{ duration: 50 }}
   >
     <Sheet.Header class="border-b px-6 pb-2">
-      <Sheet.Title>Create Record for {$foreignTable.name.value}</Sheet.Title>
+      <Sheet.Title class="flex items-center gap-1">
+        <span>
+          Create Record for {$foreignTable.name.value}
+        </span>
+
+        <span
+          class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20"
+        >
+          Foreign Table
+        </span>
+      </Sheet.Title>
     </Sheet.Header>
 
     <div class="flex-1 overflow-hidden">

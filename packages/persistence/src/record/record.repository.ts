@@ -14,7 +14,6 @@ import {
   type TableDo,
 } from "@undb/table"
 import type { CompiledQuery } from "kysely"
-import { all } from "radash"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
@@ -58,7 +57,9 @@ export class RecordRepository implements IRecordRepository {
         return { ...visitor.data, [CREATED_BY_TYPE]: userId, [UPDATED_BY_TYPE]: userId }
       })
       .executeTakeFirst()
-    await all(sql.map((s) => this.qb.executeQuery(s)))
+    for (const s of sql) {
+      await this.qb.executeQuery(s)
+    }
     await this.outboxService.save(record)
   }
 
@@ -84,7 +85,9 @@ export class RecordRepository implements IRecordRepository {
         }),
       )
       .executeTakeFirst()
-    await all(sql.map((s) => this.qb.executeQuery(s)))
+    for (const s of sql) {
+      await this.qb.executeQuery(s)
+    }
     await this.outboxService.saveMany(records)
   }
 
@@ -129,7 +132,9 @@ export class RecordRepository implements IRecordRepository {
       .where(ID_TYPE, "=", record.id.value)
       .executeTakeFirst()
 
-    await all(sql.map((sql) => this.qb.executeQuery(sql)))
+    for (const s of sql) {
+      await this.qb.executeQuery(s)
+    }
 
     await this.outboxService.save(record)
   }
