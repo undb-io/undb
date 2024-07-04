@@ -56,6 +56,12 @@
         value={i + 1}
         bind:group={value}
         class="hidden"
+        on:click={async () => {
+          if (value && overIndex === value - 1) {
+            value = 0
+            overIndex = undefined
+          }
+        }}
         readonly={$$restProps.readonly}
       />
     </Label>

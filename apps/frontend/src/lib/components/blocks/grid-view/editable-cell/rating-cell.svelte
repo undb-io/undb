@@ -72,7 +72,7 @@
         class="hidden"
         readonly={$$restProps.readonly}
         on:click={async () => {
-          if (overIndex === i) {
+          if (value && overIndex === value - 1) {
             value = 0
             await $updateCell.mutateAsync({
               tableId,
