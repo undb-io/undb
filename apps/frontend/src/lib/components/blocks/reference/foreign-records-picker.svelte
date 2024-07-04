@@ -2,7 +2,7 @@
   import { createMutation, createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { ID_TYPE, Records, ReferenceField, TableDo, type IRecordsDTO } from "@undb/table"
-  import { derived, writable, type Readable, type Writable } from "svelte/store"
+  import { derived, readable, writable, type Readable, type Writable } from "svelte/store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
   import FieldValue from "../field-value/field-value.svelte"
   import { Skeleton } from "$lib/components/ui/skeleton"
@@ -17,6 +17,7 @@
   import CreateForeignRecordButton from "./create-foreign-record-button.svelte"
   import Label from "$lib/components/ui/label/label.svelte"
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
+  import ForeignRecordDetailButton from "./foreign-record-detail-button.svelte"
 
   export let foreignTable: Readable<TableDo>
   export let isSelected = false
@@ -182,7 +183,7 @@
           <div class="divide-y">
             {#each records as record}
               {@const r = dos.get(record.id)}
-              <div class="flex-1 space-y-2">
+              <div class="group flex-1 space-y-2">
                 {#if r}
                   {@const values = r.flatten()}
                   {@const displayValues = r.displayValues?.toJSON() ?? {}}
@@ -248,7 +249,12 @@
                         </div>
                       </div>
 
-                      <div class="pr-4">
+                      <div class="flex items-center gap-1 pr-2">
+                        <ForeignRecordDetailButton
+                          class="opacity-0 group-hover:opacity-100"
+                          {foreignTable}
+                          recordId={readable(record.id)}
+                        />
                         {#if isSelected}
                           <Button
                             size="icon"

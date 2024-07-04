@@ -76,7 +76,7 @@
           {#if recordDo}
             <div class={cn("overflow-hidden", $preferences.showAudit && $r ? "col-span-3" : "col-span-4")}>
               <ScrollArea class="h-full overflow-auto px-4">
-                <RecordDetail {readonly} record={recordDo} bind:disabled />
+                <RecordDetail {table} {readonly} record={recordDo} bind:disabled />
               </ScrollArea>
             </div>
           {/if}

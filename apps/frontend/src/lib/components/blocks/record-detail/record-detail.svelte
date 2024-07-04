@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { RecordDO } from "@undb/table"
+  import { RecordDO, TableDo } from "@undb/table"
   import * as Form from "$lib/components/ui/form"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
   import { getTable } from "$lib/store/table.store"
@@ -13,6 +13,7 @@
   import { beforeNavigate } from "$app/navigation"
   import { pick } from "radash"
   import { queryParam } from "sveltekit-search-params"
+  import type { Readable } from "svelte/store"
 
   export let readonly = false
 
@@ -28,7 +29,7 @@
     }
   })
 
-  const table = getTable()
+  export let table: Readable<TableDo>
   const schema = $table.schema.mutableSchema
   $: fields = $table.getOrderedVisibleFields()
 
