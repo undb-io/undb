@@ -2,7 +2,7 @@
   import { GetForeignTableStore } from "$houdini"
   import * as Popover from "$lib/components/ui/popover"
   import ForeignRecordsPicker from "./foreign-records-picker.svelte"
-  import { readable } from "svelte/store"
+  import { readable, writable } from "svelte/store"
   import { ReferenceField, TableCreator } from "@undb/table"
   import Button from "$lib/components/ui/button/button.svelte"
   import { Skeleton } from "$lib/components/ui/skeleton"
@@ -14,7 +14,8 @@
   export let recordId: string | undefined
   export let field: ReferenceField
   $: foreignTableId = field.foreignTableId
-  export let value: string[] = []
+  export let selected = writable<string[]>()
+
   export let onOpenChange: (open: boolean) => void = () => {}
 
   const foreignTableStore = new GetForeignTableStore()
@@ -44,7 +45,7 @@
       </div>
     {/if}
     {#if foreignTable}
-      <ForeignRecordsPicker bind:isSelected {field} {tableId} {recordId} {foreignTable} bind:selected={value} />
+      <ForeignRecordsPicker bind:isSelected {field} {tableId} {recordId} {foreignTable} bind:selected />
     {/if}
   </Popover.Content>
 </Popover.Root>

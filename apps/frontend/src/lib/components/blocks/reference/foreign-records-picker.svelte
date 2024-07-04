@@ -2,7 +2,7 @@
   import { createMutation, createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { ID_TYPE, Records, ReferenceField, TableDo, type IRecordsDTO } from "@undb/table"
-  import { derived, writable, type Readable } from "svelte/store"
+  import { derived, writable, type Readable, type Writable } from "svelte/store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
   import FieldValue from "../field-value/field-value.svelte"
   import { Skeleton } from "$lib/components/ui/skeleton"
@@ -14,6 +14,10 @@
   import { Input } from "$lib/components/ui/input"
   import { toast } from "svelte-sonner"
   import { unique } from "radash"
+  import CreateForeignRecordButton from "./create-foreign-record-button.svelte"
+  import Label from "$lib/components/ui/label/label.svelte"
+  import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
+  import { tick } from "svelte"
 
   export let foreignTable: Readable<TableDo>
   export let isSelected = false
@@ -22,36 +26,40 @@
   export let recordId: string | undefined = undefined
   export let field: ReferenceField
 
+  let linkAfterCreate = true
+
   const perPage = writable(20)
   const currentPage = writable(1)
 
-  export let selected: string[] = []
+  export let selected: Writable<string[]>
 
   const q = writable("")
 
   const getForeignTableRecords = createQuery(
-    derived([foreignTable, q, perPage, currentPage], ([$table, $q, $perPage, $currentPage]) => ({
-      queryKey: ["records", $table.id.value, $q, $currentPage],
-      enabled: !!$table,
-      queryFn: () =>
-        trpc.record.list.query({
-          tableId: $table.id.value,
-          q: $q || undefined,
-          filters: selected?.length
-            ? {
-                conjunction: "and",
-                children: [
-                  {
-                    fieldId: ID_TYPE,
-                    op: isSelected ? "in" : "nin",
-                    value: selected,
-                  },
-                ],
-              }
-            : undefined,
-          pagination: { limit: $perPage, page: $currentPage },
-        }),
-    })),
+    derived([foreignTable, q, perPage, currentPage, selected], ([$table, $q, $perPage, $currentPage, $selected]) => {
+      return {
+        queryKey: ["records", $table.id.value, $q, $currentPage],
+        enabled: !!$table,
+        queryFn: () =>
+          trpc.record.list.query({
+            tableId: $table.id.value,
+            q: $q || undefined,
+            filters: $selected?.length
+              ? {
+                  conjunction: "and",
+                  children: [
+                    {
+                      fieldId: ID_TYPE,
+                      op: isSelected ? "in" : "nin",
+                      value: $selected,
+                    },
+                  ],
+                }
+              : undefined,
+            pagination: { limit: $perPage, page: $currentPage },
+          }),
+      }
+    }),
   )
   let total = 0
   $: if ($getForeignTableRecords.data) {
@@ -73,17 +81,17 @@
     },
   })
 
-  async function handleClickRecord(id: string) {
-    if (isSelected) {
-      selected = selected?.filter((s) => s !== id) ?? []
+  async function handleToggleRecord(id: string, isAdd: boolean) {
+    if (!isAdd) {
+      $selected = $selected?.filter((s) => s !== id) ?? []
     } else {
-      selected = unique([...(selected ?? []), id])
+      $selected = unique([...($selected ?? []), id])
     }
     if (recordId) {
       await $updateCell.mutateAsync({
         tableId,
         id: recordId,
-        values: { [field.id.value]: selected },
+        values: { [field.id.value]: $selected },
       })
 
       $getForeignTableRecords.refetch()
@@ -102,7 +110,7 @@
       placeholder={`Search ${$foreignTable.name.value} records...`}
       bind:value={$q}
     />
-    {#if selected?.length && !isSelected}
+    {#if $selected?.length && !isSelected}
       <button
         on:click={() => {
           isSelected = true
@@ -110,7 +118,7 @@
         }}
         class="inline-flex items-center bg-gray-100 px-4 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
       >
-        {selected.length} selected records
+        {$selected.length} selected records
       </button>
     {/if}
     {#if isSelected}
@@ -129,6 +137,13 @@
     <div class="flex flex-1 flex-col items-center justify-center space-y-2 py-8">
       <InboxIcon class="h-12 w-12" />
       <p class="text-muted-foreground text-sm">No available records to link in table {$foreignTable.name.value}</p>
+      <CreateForeignRecordButton
+        onSuccess={(id) => {
+          isSelected = true
+          handleToggleRecord(id, true)
+        }}
+        {foreignTable}
+      />
     </div>
   {:else}
     <div class="flex flex-1 flex-col overflow-hidden">
@@ -232,12 +247,12 @@
                             size="icon"
                             class="h-7 w-7"
                             variant="outline"
-                            on:click={() => handleClickRecord(record.id)}
+                            on:click={() => handleToggleRecord(record.id, false)}
                           >
                             <MinusIcon class="h-5 w-5 font-semibold" />
                           </Button>
                         {:else}
-                          <Button size="icon" class="h-7 w-7" on:click={() => handleClickRecord(record.id)}>
+                          <Button size="icon" class="h-7 w-7" on:click={() => handleToggleRecord(record.id, true)}>
                             <PlusIcon class="h-5 w-5 font-semibold" />
                           </Button>
                         {/if}
@@ -251,7 +266,20 @@
         </ScrollArea>
       {/if}
       <div class="flex h-10 items-center justify-between border-t bg-gray-50 px-4">
-        <div class="h-full flex-1"></div>
+        <div class="flex h-full flex-1 items-center gap-1">
+          <CreateForeignRecordButton
+            onSuccess={(id) => {
+              if (linkAfterCreate) {
+                handleToggleRecord(id, true)
+              }
+            }}
+            {foreignTable}
+          />
+          <Label class="inline-flex items-center gap-1 text-xs">
+            <Checkbox bind:checked={linkAfterCreate} />
+            Link After Create
+          </Label>
+        </div>
         <div class="flex h-full items-center justify-end gap-1">
           <Button
             disabled={$currentPage <= 1}

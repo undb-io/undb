@@ -2,6 +2,7 @@
   import type { ReferenceField } from "@undb/table"
   import ForeignRecordsPickerDropdown from "../../reference/foreign-records-picker-dropdown.svelte"
   import { Button } from "$lib/components/ui/button"
+  import { writable } from "svelte/store"
 
   export let tableId: string
   export let field: ReferenceField
@@ -11,8 +12,10 @@
   export let isSelected: boolean
   export let recordId: string
 
-  let hasValue = Array.isArray(value) && value.length > 0
-  $: hasValueReactive = Array.isArray(value) && value.length > 0
+  let selected = writable<string[]>(value)
+
+  let hasValue = Array.isArray($selected) && $selected.length > 0
+  $: hasValueReactive = Array.isArray($selected) && $selected.length > 0
   $: if (hasValue && !hasValueReactive) {
     hasValue = hasValueReactive
   }
@@ -31,11 +34,11 @@
         {field}
         {tableId}
         {recordId}
-        bind:value
+        bind:selected
       >
         {#if hasValueReactive}
           <Button size="xs" variant="link">
-            {value.length} Linked Records
+            {$selected.length} Linked Records
           </Button>
         {:else}
           <Button size="xs" variant="link" type="button">+ Link Records</Button>
@@ -44,7 +47,7 @@
     </div>
 
     {#if (isSelected || isEditing) && hasValueReactive}
-      <ForeignRecordsPickerDropdown {field} {tableId} {recordId} bind:value>
+      <ForeignRecordsPickerDropdown {field} {tableId} {recordId} bind:selected>
         <Button variant="link" class="px-2">+</Button>
       </ForeignRecordsPickerDropdown>
     {/if}

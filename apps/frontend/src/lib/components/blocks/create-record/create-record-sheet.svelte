@@ -5,9 +5,12 @@
   import { formId } from "$lib/store/tab.store"
   import { modal, CREATE_RECORD_MODAL, closeModal } from "$lib/store/modal.store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
+  import { getTable } from "$lib/store/table.store"
 
   let disabled = false
   let dirty = false
+
+  const table = getTable()
 </script>
 
 <Sheet.Root
@@ -33,7 +36,7 @@
 
     <div class="flex-1 overflow-hidden">
       <ScrollArea class="h-full overflow-auto px-4">
-        <CreateRecord bind:disabled bind:dirty formId={$formId ?? undefined} />
+        <CreateRecord {table} bind:disabled bind:dirty formId={$formId ?? undefined} />
       </ScrollArea>
     </div>
 

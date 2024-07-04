@@ -9,25 +9,26 @@
   import { zodClient } from "sveltekit-superforms/adapters"
   import { toast } from "svelte-sonner"
   import { beforeNavigate } from "$app/navigation"
-  import { derived } from "svelte/store"
-  import { FormIdVO, RecordDO, RecordIdVO } from "@undb/table"
+  import { derived, type Readable, type Writable } from "svelte/store"
+  import { FormIdVO, RecordDO, RecordIdVO, TableDo } from "@undb/table"
   import { CREATE_RECORD_MODAL, closeModal } from "$lib/store/modal.store"
   import autoAnimate from "@formkit/auto-animate"
 
-  beforeNavigate(({ cancel }) => {
-    if ($tainted) {
-      if (!confirm("Are you sure you want to leave this page? You have unsaved changes that will be lost.")) {
-        cancel()
-      }
-    }
-  })
+  // beforeNavigate(({ cancel }) => {
+  //   if ($tainted) {
+  //     if (!confirm("Are you sure you want to leave this page? You have unsaved changes that will be lost.")) {
+  //       cancel()
+  //     }
+  //   }
+  // })
 
-  const table = getTable()
+  export let table: Readable<TableDo>
   const schema = $table.schema.mutableSchema
 
   export let disabled: boolean = false
   export let dirty = false
   export let formId: string | undefined = undefined
+  export let onSuccess: (id: string) => void = () => {}
 
   $: tableForm = formId ? $table.forms?.getFormById(formId) : undefined
 
@@ -36,12 +37,13 @@
   const createRecordMutation = createMutation(
     derived([table], ([$table]) => ({
       mutationFn: trpc.record.create.mutate,
-      onSuccess: () => {
+      onSuccess: (data) => {
         closeModal(CREATE_RECORD_MODAL)
         client.invalidateQueries({
           queryKey: ["records", $table.id.value],
         })
         toast.success("Record has been created!")
+        onSuccess?.(data)
       },
       onError: (error: Error) => {
         toast.error(error.message)
