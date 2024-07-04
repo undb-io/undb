@@ -259,6 +259,10 @@
                             <div class="text-right font-medium">
                               <Render of={cell.render()} />
                             </div>
+                          {:else if cell.id === "$select"}
+                            <div class="flex items-center justify-center">
+                              <Render of={cell.render()} />
+                            </div>
                           {:else}
                             <Render of={cell.render()} />
                           {/if}

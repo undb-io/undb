@@ -3,9 +3,14 @@
   import type { SelectField } from "@undb/table"
 
   export let value: string | undefined = undefined
+  export let placeholder: string | undefined = undefined
   export let field: SelectField
 
   $: option = field.options.find((option) => option.id === value)
 </script>
 
-<Option {option} />
+{#if option}
+  <Option {option} />
+{:else}
+  {placeholder}
+{/if}

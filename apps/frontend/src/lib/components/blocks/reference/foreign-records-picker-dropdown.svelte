@@ -5,8 +5,9 @@
   import { readable } from "svelte/store"
   import { ReferenceField, TableCreator } from "@undb/table"
   import Button from "$lib/components/ui/button/button.svelte"
-  import { PlusIcon } from "lucide-svelte"
   import { Skeleton } from "$lib/components/ui/skeleton"
+
+  export let isSelected = false
 
   export let readonly = false
   export let tableId: string
@@ -14,6 +15,7 @@
   export let field: ReferenceField
   $: foreignTableId = field.foreignTableId
   export let value: string[] = []
+  export let onOpenChange: (open: boolean) => void = () => {}
 
   const foreignTableStore = new GetForeignTableStore()
 
@@ -26,13 +28,10 @@
   $: foreignTable = table ? readable(new TableCreator().fromJSON(table)) : null
 </script>
 
-<Popover.Root bind:open portal="body">
+<Popover.Root bind:open portal="body" {onOpenChange}>
   <Popover.Trigger>
     <slot>
-      <Button size="sm" disabled={readonly} variant="link" type="button">
-        <PlusIcon class="mr-2 h-4 w-4" />
-        Link Records
-      </Button>
+      <Button size="xs" disabled={readonly} variant="link" type="button">+ Link Records</Button>
     </slot>
   </Popover.Trigger>
   <Popover.Content class="h-[400px] max-h-[700px] w-[500px] p-0 lg:max-w-4xl">
@@ -45,7 +44,7 @@
       </div>
     {/if}
     {#if foreignTable}
-      <ForeignRecordsPicker {field} {tableId} {recordId} {foreignTable} bind:selected={value} />
+      <ForeignRecordsPicker {isSelected} {field} {tableId} {recordId} {foreignTable} bind:selected={value} />
     {/if}
   </Popover.Content>
 </Popover.Root>

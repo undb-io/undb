@@ -14,6 +14,9 @@
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
     mutationFn: trpc.record.update.mutate,
+    onSuccess(data, variables, context) {
+      el?.blur()
+    },
     onError(error: Error) {
       toast.error(error.message)
     },

@@ -9,13 +9,14 @@
   import * as Tooltip from "$lib/components/ui/tooltip"
   import { builderActions, getAttrs } from "bits-ui"
   import FieldIcon from "../field-icon/field-icon.svelte"
-  import { ChevronLeftIcon, ChevronRightIcon, InboxIcon, PlusIcon, SearchIcon } from "lucide-svelte"
+  import { ChevronLeftIcon, ChevronRightIcon, InboxIcon, PlusIcon, SearchIcon, MinusIcon } from "lucide-svelte"
   import { Button } from "$lib/components/ui/button"
   import { Input } from "$lib/components/ui/input"
   import { toast } from "svelte-sonner"
   import { unique } from "radash"
 
   export let foreignTable: Readable<TableDo>
+  export let isSelected = false
 
   export let tableId: string
   export let recordId: string | undefined = undefined
@@ -42,7 +43,7 @@
                 children: [
                   {
                     fieldId: ID_TYPE,
-                    op: "nin",
+                    op: isSelected ? "in" : "nin",
                     value: selected,
                   },
                 ],
@@ -72,14 +73,22 @@
     },
   })
 
-  function addRecord(id: string) {
-    selected = unique([...(selected ?? []), id])
+  $: console.log(isSelected)
+
+  async function handleClickRecord(id: string) {
+    if (isSelected) {
+      selected = selected?.filter((s) => s !== id) ?? []
+    } else {
+      selected = unique([...(selected ?? []), id])
+    }
     if (recordId) {
-      $updateCell.mutate({
+      await $updateCell.mutateAsync({
         tableId,
         id: recordId,
         values: { [field.id.value]: selected },
       })
+
+      $getForeignTableRecords.refetch()
     }
   }
 </script>
@@ -160,6 +169,8 @@
                                 value={values[field.id.value]}
                                 type={field.type}
                                 displayValue={displayValues[field.id.value]}
+                                class="font-semibold"
+                                placeholder="-"
                               />
                             </span>
                           </Tooltip.Trigger>
@@ -181,12 +192,13 @@
                                 >
                                   <FieldValue
                                     {tableId}
-                                    {recordId}
+                                    recordId={record.id}
                                     {field}
                                     value={values[field.id.value]}
                                     type={field.type}
                                     displayValue={displayValues[field.id.value]}
                                     class="text-xs"
+                                    placeholder="-"
                                   />
                                 </span>
                               </Tooltip.Trigger>
@@ -202,9 +214,20 @@
                       </div>
 
                       <div class="pr-4">
-                        <Button size="icon" class="h-7 w-7" on:click={() => addRecord(record.id)}>
-                          <PlusIcon class="h-5 w-5 font-semibold" />
-                        </Button>
+                        {#if isSelected}
+                          <Button
+                            size="icon"
+                            class="h-7 w-7"
+                            variant="outline"
+                            on:click={() => handleClickRecord(record.id)}
+                          >
+                            <MinusIcon class="h-5 w-5 font-semibold" />
+                          </Button>
+                        {:else}
+                          <Button size="icon" class="h-7 w-7" on:click={() => handleClickRecord(record.id)}>
+                            <PlusIcon class="h-5 w-5 font-semibold" />
+                          </Button>
+                        {/if}
                       </div>
                     {/if}
                   </div>
@@ -228,6 +251,8 @@
           </Button>
           <Input
             min="1"
+            max={totalPage}
+            step={1}
             class="bg-background h-7 w-7 px-1 text-center text-xs"
             value={$currentPage}
             on:change={(e) => {

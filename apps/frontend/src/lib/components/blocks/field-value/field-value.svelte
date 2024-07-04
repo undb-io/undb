@@ -20,6 +20,7 @@
   export let field: Field
   export let tableId: string
   export let recordId: string | undefined
+  export let placeholder: string | undefined = undefined
 
   const map: Record<FieldType, ComponentType> = {
     id: IdField,
@@ -42,4 +43,4 @@
   }
 </script>
 
-<svelte:component this={map[type]} {...$$restProps} {field} {value} {displayValue} />
+<svelte:component this={map[type]} {...$$restProps} {field} {value} {displayValue} {placeholder} />
