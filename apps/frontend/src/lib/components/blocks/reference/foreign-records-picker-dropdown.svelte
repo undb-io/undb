@@ -44,7 +44,7 @@
       </div>
     {/if}
     {#if foreignTable}
-      <ForeignRecordsPicker {isSelected} {field} {tableId} {recordId} {foreignTable} bind:selected={value} />
+      <ForeignRecordsPicker bind:isSelected {field} {tableId} {recordId} {foreignTable} bind:selected={value} />
     {/if}
   </Popover.Content>
 </Popover.Root>

@@ -73,8 +73,6 @@
     },
   })
 
-  $: console.log(isSelected)
-
   async function handleClickRecord(id: string) {
     if (isSelected) {
       selected = selected?.filter((s) => s !== id) ?? []
@@ -104,12 +102,16 @@
       placeholder={`Search ${$foreignTable.name.value} records...`}
       bind:value={$q}
     />
-    {#if selected?.length}
-      <span
+    {#if selected?.length && !isSelected}
+      <button
+        on:click={() => {
+          isSelected = true
+          $getForeignTableRecords.refetch()
+        }}
         class="inline-flex items-center bg-gray-100 px-4 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
       >
         {selected.length} selected records
-      </span>
+      </button>
     {/if}
   </div>
   {#if !records.length && !$getForeignTableRecords.isLoading}

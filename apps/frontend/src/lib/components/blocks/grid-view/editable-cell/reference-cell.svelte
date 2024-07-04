@@ -27,7 +27,7 @@
             hasValue = hasValueReactive
           }
         }}
-        isSelected={hasValue}
+        bind:isSelected={hasValue}
         {field}
         {tableId}
         {recordId}
