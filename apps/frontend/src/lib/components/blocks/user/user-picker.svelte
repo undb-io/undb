@@ -47,8 +47,8 @@
       </Button>
     </slot>
   </Popover.Trigger>
-  <Popover.Content class="max-h-[400px] min-w-[300px] p-0">
-    <Command.Root filter={() => 1}>
+  <Popover.Content class="max-h-[400px] p-0">
+    <Command.Root shouldFilter={false}>
       <Command.Input bind:value={q} placeholder="Search user by email or username..." class="h-9" />
       {#if !$store.fetching}
         <Command.Empty>No User found.</Command.Empty>

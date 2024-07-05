@@ -70,7 +70,7 @@
   }
   $: totalPage = Math.ceil(total / $perPage)
 
-  $: fields = $foreignTable.schema.noneSystemFields.slice(0, 4)
+  $: fields = $foreignTable.getOrderedVisibleFields().slice(0, 4)
 
   $: records = (($getForeignTableRecords.data as any)?.records as IRecordsDTO) ?? []
   $: dos = Records.fromJSON($foreignTable, records).map

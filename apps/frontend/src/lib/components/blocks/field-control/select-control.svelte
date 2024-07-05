@@ -1,39 +1,18 @@
 <script lang="ts">
-  import * as Select from "$lib/components/ui/select"
-
-  import type { SelectField } from "@undb/table"
-  import Option from "../option/option.svelte"
+  import type { IOptionId, SelectField } from "@undb/table"
+  import OptionPicker from "../option/option-picker.svelte"
+  import OptionsPicker from "../option/options-picker.svelte"
 
   export let readonly = false
 
   export let field: SelectField
-  export let value: string
-
-  $: selected = field.options.find((option) => option.id === value)
-  $: selectedOption = selected ? { value: selected.id, label: selected.name } : undefined
+  export let value: IOptionId | IOptionId[] | null = null
 </script>
 
-<Select.Root
-  disabled={readonly}
-  selected={selectedOption}
-  onSelectedChange={(s) => {
-    if (s) {
-      value = s.value
-    }
-  }}
->
-  <Select.Trigger class="w-full">
-    {#if selected}
-      <Option option={selected} />
-    {:else}
-      <span>select a option</span>
-    {/if}
-  </Select.Trigger>
-  <Select.Content>
-    {#each field.options as option}
-      <Select.Item value={option.id}>
-        <Option {option} />
-      </Select.Item>
-    {/each}
-  </Select.Content>
-</Select.Root>
+{#if field.isSingle}
+  {#if !Array.isArray(value)}
+    <OptionPicker {field} bind:value />
+  {/if}
+{:else if Array.isArray(value) || value === null}
+  <OptionsPicker {field} bind:value />
+{/if}
