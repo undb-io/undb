@@ -5,6 +5,8 @@
 
   export let value: string | undefined = undefined
   export let displayValue: string | undefined = undefined
+
+  export let disableHoverCard = false
 </script>
 
 <div class={$$restProps.class}>
@@ -20,7 +22,7 @@
       </span>
     </HoverCard.Trigger>
 
-    {#if value}
+    {#if value && !disableHoverCard}
       <UserCard userId={value} />
     {/if}
   </HoverCard.Root>

@@ -40,6 +40,7 @@
     date: DateField,
     json: JsonField,
     checkbox: CheckboxField,
+    user: UserField,
   }
 </script>
 

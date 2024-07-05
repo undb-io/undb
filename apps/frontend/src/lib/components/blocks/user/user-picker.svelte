@@ -7,15 +7,19 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import { cn } from "$lib/utils.js"
   import { GetUsersStore } from "$houdini"
+  import { Skeleton } from "$lib/components/ui/skeleton"
+  import * as Avatar from "$lib/components/ui/avatar"
 
+  let q = ""
   $: store = new GetUsersStore()
-  $: open && store.fetch({ policy: "NetworkOnly" })
-  $: users = $store.data?.members.map((m) => ({ value: m?.user.id, label: m?.user.username })) ?? []
+  $: open && store.fetch({ variables: { q } })
+  $: users =
+    $store.data?.members.map((m) => ({ value: m?.user.id, label: m?.user.username, email: m?.user.email })) ?? []
 
   let open = false
   export let value: string | undefined
 
-  $: selectedValue = users.find((f) => f.value === value)?.label ?? "Select a framework..."
+  $: selectedValue = users.find((f) => f.value === value)?.label ?? "Select a User..."
 
   // We want to refocus the trigger button when the user selects
   // an item from the list so users can continue navigating the
@@ -30,24 +34,34 @@
 
 <Popover.Root bind:open let:ids>
   <Popover.Trigger asChild let:builder>
-    <slot {builder}>
+    <slot name="trigger" {builder}>
       <Button
         builders={[builder]}
         variant="outline"
         role="combobox"
         aria-expanded={open}
-        class="w-[200px] justify-between"
+        class="w-full justify-between"
       >
         {selectedValue}
         <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>
     </slot>
   </Popover.Trigger>
-  <Popover.Content class="w-[200px] p-0">
-    <Command.Root>
-      <Command.Input placeholder="Search framework..." class="h-9" />
-      <Command.Empty>No framework found.</Command.Empty>
+  <Popover.Content class="max-h-[400px] min-w-[300px] p-0">
+    <Command.Root filter={() => 1}>
+      <Command.Input bind:value={q} placeholder="Search user by email or username..." class="h-9" />
+      <Command.Empty>No User found.</Command.Empty>
       <Command.Group>
+        {#if $store.fetching}
+          <div class="space-y-2">
+            <Skeleton class="h-[20px]" />
+            <Skeleton class="h-[20px]" />
+            <Skeleton class="h-[20px]" />
+            <Skeleton class="h-[20px]" />
+            <Skeleton class="h-[20px]" />
+            <Skeleton class="h-[20px]" />
+          </div>
+        {/if}
         {#each users as user}
           <Command.Item
             value={user.value}
@@ -57,7 +71,20 @@
             }}
           >
             <Check class={cn("mr-2 h-4 w-4", value !== user.value && "text-transparent")} />
-            {user.label}
+            <div class="flex items-center gap-1">
+              <Avatar.Root>
+                <Avatar.Image src="" alt={user.label} />
+                <Avatar.Fallback>{user.label?.slice(0, 2)}</Avatar.Fallback>
+              </Avatar.Root>
+              <div>
+                <div class="font-semibold">
+                  {user.label}
+                </div>
+                <div class="text-muted-foreground text-xs">
+                  {user.email}
+                </div>
+              </div>
+            </div>
           </Command.Item>
         {/each}
       </Command.Group>

@@ -1,5 +1,5 @@
-query GetUsers {
-  members {
+query GetUsers($q: String) {
+  members(q: $q) {
     role
     user {
       id

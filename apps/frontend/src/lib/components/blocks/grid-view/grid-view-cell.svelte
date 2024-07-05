@@ -15,6 +15,7 @@
   import { getTable } from "$lib/store/table.store"
   import DateCell from "./editable-cell/date-cell.svelte"
   import CheckboxCell from "./editable-cell/checkbox-cell.svelte"
+  import UserCell from "./editable-cell/user-cell.svelte"
   import RatingCell from "./editable-cell/rating-cell.svelte"
   import EmailCell from "./editable-cell/email-cell.svelte"
   import JsonCell from "./editable-cell/json-cell.svelte"
@@ -50,6 +51,7 @@
     json: JsonCell,
     checkbox: CheckboxCell,
     attachment: AttachmentCell,
+    user: UserCell,
   }
 </script>
 
