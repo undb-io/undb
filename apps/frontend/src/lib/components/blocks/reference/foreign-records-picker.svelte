@@ -84,6 +84,7 @@
   })
 
   async function handleToggleRecord(id: string, isAdd: boolean) {
+    if (readonly) return
     if (!isAdd) {
       $selected = $selected?.filter((s) => s !== id) ?? []
     } else {
@@ -141,17 +142,19 @@
     <div class="flex flex-1 flex-col items-center justify-center space-y-2 py-8">
       <InboxIcon class="h-12 w-12" />
       <p class="text-muted-foreground text-sm">No available records to link in table {$foreignTable.name.value}</p>
-      <CreateForeignRecordButton
-        onSuccess={(id) => {
-          isSelected = true
-          handleToggleRecord(id, true)
-        }}
-        {foreignTable}
-      />
-      <Label class="text-muted-foreground flex items-center gap-2 text-xs">
-        <Checkbox bind:checked={linkAfterCreate} />
-        Link After Create
-      </Label>
+      {#if !readonly}
+        <CreateForeignRecordButton
+          onSuccess={(id) => {
+            isSelected = true
+            handleToggleRecord(id, true)
+          }}
+          {foreignTable}
+        />
+        <Label class="text-muted-foreground flex items-center gap-2 text-xs">
+          <Checkbox bind:checked={linkAfterCreate} />
+          Link After Create
+        </Label>
+      {/if}
     </div>
   {:else}
     <div class="flex flex-1 flex-col overflow-hidden">
@@ -190,7 +193,7 @@
                   <div class="flex items-center gap-2">
                     {#if fields.length}
                       {@const field = fields[0]}
-                      <div class="flex-1 space-y-2">
+                      <div class="flex-1 space-y-1">
                         <Tooltip.Root>
                           <Tooltip.Trigger asChild let:builder>
                             <span
@@ -255,19 +258,21 @@
                           {foreignTable}
                           recordId={readable(record.id)}
                         />
-                        {#if isSelected}
-                          <Button
-                            size="icon"
-                            class="h-7 w-7"
-                            variant="outline"
-                            on:click={() => handleToggleRecord(record.id, false)}
-                          >
-                            <MinusIcon class="h-5 w-5 font-semibold" />
-                          </Button>
-                        {:else}
-                          <Button size="icon" class="h-7 w-7" on:click={() => handleToggleRecord(record.id, true)}>
-                            <PlusIcon class="h-5 w-5 font-semibold" />
-                          </Button>
+                        {#if !readonly}
+                          {#if isSelected}
+                            <Button
+                              size="icon"
+                              class="h-7 w-7"
+                              variant="outline"
+                              on:click={() => handleToggleRecord(record.id, false)}
+                            >
+                              <MinusIcon class="h-5 w-5 font-semibold" />
+                            </Button>
+                          {:else}
+                            <Button size="icon" class="h-7 w-7" on:click={() => handleToggleRecord(record.id, true)}>
+                              <PlusIcon class="h-5 w-5 font-semibold" />
+                            </Button>
+                          {/if}
                         {/if}
                       </div>
                     {/if}
@@ -279,20 +284,22 @@
         </ScrollArea>
       {/if}
       <div class="flex h-10 items-center justify-between border-t bg-gray-50 px-4">
-        <div class="flex h-full flex-1 items-center gap-1">
-          <CreateForeignRecordButton
-            onSuccess={(id) => {
-              if (linkAfterCreate) {
-                handleToggleRecord(id, true)
-              }
-            }}
-            {foreignTable}
-          />
-          <Label class="inline-flex items-center gap-1 text-xs">
-            <Checkbox bind:checked={linkAfterCreate} />
-            Link After Create
-          </Label>
-        </div>
+        {#if !readonly}
+          <div class="flex h-full flex-1 items-center gap-1">
+            <CreateForeignRecordButton
+              onSuccess={(id) => {
+                if (linkAfterCreate) {
+                  handleToggleRecord(id, true)
+                }
+              }}
+              {foreignTable}
+            />
+            <Label class="inline-flex items-center gap-1 text-xs">
+              <Checkbox bind:checked={linkAfterCreate} />
+              Link After Create
+            </Label>
+          </div>
+        {/if}
         {#if total > 20}
           <div class="flex h-full items-center justify-end gap-1">
             <Button

@@ -46,37 +46,33 @@
   }
 </script>
 
-{#if isEditing}
-  <Popover.Root bind:open openFocus>
-    <Popover.Trigger class="w-full">
-      <div class={$$restProps.class}>
+<div class={$$restProps.class}>
+  {#if isEditing}
+    <Popover.Root bind:open openFocus>
+      <Popover.Trigger class="h-full w-full text-left outline-none ring-0">
         {#if value}
           {value}
         {/if}
-      </div>
-    </Popover.Trigger>
-    <Popover.Content class="w-auto p-0">
-      <Calendar
-        value={internalDate}
-        onValueChange={(v) => {
-          if (v) {
-            value = v.toString()
-          } else {
-            value = undefined
-          }
-          $updateCell.mutate({
-            tableId,
-            id: recordId,
-            values: { [field.id.value]: value },
-          })
-        }}
-      />
-    </Popover.Content>
-  </Popover.Root>
-{:else}
-  <div class={$$restProps.class}>
-    {#if value}
-      {value}
-    {/if}
-  </div>
-{/if}
+      </Popover.Trigger>
+      <Popover.Content class="w-auto p-0">
+        <Calendar
+          value={internalDate}
+          onValueChange={(v) => {
+            if (v) {
+              value = v.toString()
+            } else {
+              value = undefined
+            }
+            $updateCell.mutate({
+              tableId,
+              id: recordId,
+              values: { [field.id.value]: value },
+            })
+          }}
+        />
+      </Popover.Content>
+    </Popover.Root>
+  {:else if value}
+    {value}
+  {/if}
+</div>

@@ -43,11 +43,11 @@
         bind:selected
       >
         {#if hasValueReactive}
-          <Button size="xs" variant="link">
+          <Button size="xs" variant="link" class="px-0">
             {$selected.length} Linked Records
           </Button>
         {:else}
-          <Button size="xs" variant="link" type="button">+ Link Records</Button>
+          <Button size="xs" variant="link" type="button" class="px-0">+ Link Records</Button>
         {/if}
       </ForeignRecordsPickerDropdown>
     </div>

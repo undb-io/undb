@@ -13,12 +13,13 @@
   import RecordDetail from "../record-detail/record-detail.svelte"
   import { cn } from "$lib/utils"
   import { trpc } from "$lib/trpc/client"
-  import { createQuery } from "@tanstack/svelte-query"
+  import { createQuery, useQueryClient } from "@tanstack/svelte-query"
 
   export let foreignTable: Readable<TableDo>
 
   export let recordId: Readable<string>
 
+  const client = useQueryClient()
   const record = createQuery(
     derived([foreignTable, recordId], ([$table, $recordId]) => ({
       queryKey: [$recordId, "get"],
@@ -84,7 +85,18 @@
           {#if recordDo}
             <div class={cn("overflow-hidden", $preferences.showAudit && $recordId ? "col-span-3" : "col-span-4")}>
               <ScrollArea class="h-full overflow-auto px-4">
-                <RecordDetail onSuccess={() => (open = false)} table={foreignTable} record={recordDo} bind:disabled />
+                <RecordDetail
+                  onSuccess={async () => {
+                    open = false
+
+                    await client.invalidateQueries({
+                      queryKey: ["records", $foreignTable.id.value],
+                    })
+                  }}
+                  table={foreignTable}
+                  record={recordDo}
+                  bind:disabled
+                />
               </ScrollArea>
             </div>
           {/if}
