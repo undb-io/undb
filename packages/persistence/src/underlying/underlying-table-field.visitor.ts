@@ -99,7 +99,7 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     this.addColumn(c)
   }
   select(field: SelectField): void {
-    const c = this.tb.addColumn(field.id.value, "varchar(255)")
+    const c = this.tb.addColumn(field.id.value, field.isSingle ? "varchar(255)" : "json")
     this.addColumn(c)
   }
   number(field: NumberField): void {

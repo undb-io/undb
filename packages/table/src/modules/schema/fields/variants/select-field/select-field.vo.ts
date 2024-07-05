@@ -1,13 +1,11 @@
 import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
+import { match } from "ts-pattern"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { Options, option, optionName } from "../../option"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
-// import { createAbstractSelectFieldMather } from "../abstractions/abstract-select-field.condition"
-// import { abstractSelectAggregate } from "../abstractions/abstract-select.aggregate"
-import { match } from "ts-pattern"
 import { SelectFieldConstraint, selectFieldConstraint } from "./select-field-constraint.vo"
 import { SelectEmpty, SelectEqual } from "./select-field-specification"
 import { SelectFieldValue, mutateSelectFieldValueSchema } from "./select-field-value.vo"
@@ -71,8 +69,20 @@ export class SelectField extends AbstractField<SelectFieldValue, SelectFieldCons
 
   override type = SELECT_TYPE
 
+  get #constraint() {
+    return this.constraint.unwrapOrElse(() => new SelectFieldConstraint({}))
+  }
+
   override get valueSchema() {
-    return this.constraint.unwrapOrElse(() => new SelectFieldConstraint({})).schema
+    return this.#constraint.schema
+  }
+
+  get isSingle() {
+    return this.#constraint.isSingle
+  }
+
+  get isMultiple() {
+    return !this.isSingle
   }
 
   override get mutateSchema() {

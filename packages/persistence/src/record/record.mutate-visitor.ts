@@ -1,42 +1,44 @@
 import type { ISpecification, ISpecVisitor } from "@undb/domain"
-import type {
-  AttachmentEmpty,
-  AttachmentEqual,
-  CheckboxEqual,
-  DateEqual,
-  DateIsAfter,
-  DateIsBefore,
-  DateIsSameDay,
-  DateIsToday,
-  DateIsTomorrow,
-  EmailEqual,
-  IdEqual,
-  IdIn,
-  IRecordVisitor,
-  JsonEmpty,
-  JsonEqual,
-  NumberEmpty,
-  NumberEqual,
-  NumberGT,
-  NumberGTE,
-  NumberLT,
-  NumberLTE,
-  RatingEqual,
-  RecordDO,
-  ReferenceEqual,
-  ReferenceField,
-  SelectEmpty,
-  SelectEqual,
-  StringContains,
-  StringEmpty,
-  StringEndsWith,
-  StringEqual,
-  StringMax,
-  StringMin,
-  StringStartsWith,
-  TableDo,
-  UserEmpty,
-  UserEqual,
+import {
+  SelectField,
+  SelectFieldValue,
+  type AttachmentEmpty,
+  type AttachmentEqual,
+  type CheckboxEqual,
+  type DateEqual,
+  type DateIsAfter,
+  type DateIsBefore,
+  type DateIsSameDay,
+  type DateIsToday,
+  type DateIsTomorrow,
+  type EmailEqual,
+  type IdEqual,
+  type IdIn,
+  type IRecordVisitor,
+  type JsonEmpty,
+  type JsonEqual,
+  type NumberEmpty,
+  type NumberEqual,
+  type NumberGT,
+  type NumberGTE,
+  type NumberLT,
+  type NumberLTE,
+  type RatingEqual,
+  type RecordDO,
+  type ReferenceEqual,
+  type ReferenceField,
+  type SelectEmpty,
+  type SelectEqual,
+  type StringContains,
+  type StringEmpty,
+  type StringEndsWith,
+  type StringEqual,
+  type StringMax,
+  type StringMin,
+  type StringStartsWith,
+  type TableDo,
+  type UserEmpty,
+  type UserEqual,
 } from "@undb/table"
 import type { CompiledQuery, ExpressionBuilder } from "kysely"
 import type { IQueryBuilder } from "../qb"
@@ -148,7 +150,11 @@ export class RecordMutateVisitor implements IRecordVisitor {
     throw new Error("Method not implemented.")
   }
   selectEqual(spec: SelectEqual): void {
-    this.setData(spec.fieldId.value, spec.value)
+    const field = this.table.schema.getFieldById(spec.fieldId).expect("No field found") as SelectField
+    const fieldValue = new SelectFieldValue(spec.value)
+    const value = fieldValue.getValue(field)
+
+    this.setData(spec.fieldId.value, Array.isArray(value) ? JSON.stringify(value) : value)
   }
   selectEmpty(spec: SelectEmpty): void {
     this.setData(spec.fieldId.value, null)

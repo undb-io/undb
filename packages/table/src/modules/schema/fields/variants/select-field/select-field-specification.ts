@@ -8,7 +8,7 @@ import { SelectFieldValue } from "./select-field-value.vo"
 
 export class SelectEqual extends RecordComositeSpecification {
   constructor(
-    readonly value: IOptionId | null,
+    readonly value: IOptionId | IOptionId[] | null,
     readonly fieldId: FieldId,
   ) {
     super(fieldId)

@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { type IOption, type SelectField } from "@undb/table"
-  import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
+  import { type SelectField } from "@undb/table"
 
   import Option from "../../option/option.svelte"
   import { cn } from "$lib/utils"
@@ -8,15 +7,20 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
   import { ChevronDownIcon } from "lucide-svelte"
+  import OptionsPicker from "../../option/options-picker.svelte"
+  import type { IOptionId } from "@undb/table/src/modules/schema/fields/option/option-id.vo"
+  import OptionPicker from "../../option/option-picker.svelte"
 
   export let tableId: string
   export let field: SelectField
-  export let value: string
+  export let value: string | string[] | null = null
   export let recordId: string
   export let isEditing: boolean
   export let isSelected: boolean
 
-  $: selected = field.options.find((option) => option.id === value)
+  $: selected = Array.isArray(value)
+    ? value.map((v) => field.options.find((o) => o.id === v)).filter((v) => !!v)
+    : field.options.find((option) => option.id === value)
 
   let open = false
   $: if (isEditing) {
@@ -31,8 +35,7 @@
     },
   })
 
-  function onSelect(option: IOption) {
-    value = option.id
+  function onSelect(id: IOptionId | IOptionId[] | null) {
     $updateCell.mutate({
       tableId,
       id: recordId,
@@ -42,26 +45,23 @@
 </script>
 
 {#if isEditing}
-  <DropdownMenu.Root bind:open>
-    <DropdownMenu.Trigger class={cn($$restProps.class, "w-full")}>
-      {#if selected}
-        <Option option={selected} />
-      {/if}
-    </DropdownMenu.Trigger>
-    <DropdownMenu.Content>
-      <DropdownMenu.Group>
-        {#each field.options as option}
-          <DropdownMenu.Item on:click={() => onSelect(option)}>
-            <Option {option} />
-          </DropdownMenu.Item>
-        {/each}
-      </DropdownMenu.Group>
-    </DropdownMenu.Content>
-  </DropdownMenu.Root>
+  {#if field.isSingle}
+    {#if !Array.isArray(value)}
+      <OptionPicker bind:open onValueChange={(value) => onSelect(value)} {field} bind:value />
+    {/if}
+  {:else if Array.isArray(value) || value === null}
+    <OptionsPicker bind:open onValueChange={(value) => onSelect(value)} {field} bind:value />
+  {/if}
 {:else}
   <div class={cn($$restProps.class, "flex justify-between", (isSelected || isEditing) && !selected && "justify-end")}>
     {#if selected}
-      <Option option={selected} />
+      {#if Array.isArray(selected)}
+        {#each selected as option}
+          <Option {option} />
+        {/each}
+      {:else}
+        <Option option={selected} />
+      {/if}
     {/if}
     {#if isSelected || isEditing || open}
       <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
