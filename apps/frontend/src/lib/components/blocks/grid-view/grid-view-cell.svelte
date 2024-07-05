@@ -8,7 +8,6 @@
   import NumberField from "../field-value/number-field.svelte"
   import { cn } from "$lib/utils"
   import UserField from "../field-value/user-field.svelte"
-  import ReferenceControl from "../field-control/reference-control.svelte"
   import RollupField from "../field-value/rollup-field.svelte"
   import { isEditingCell, isSelectedCell } from "./grid-view.store"
   import SelectCell from "./editable-cell/select-cell.svelte"

@@ -1,8 +1,5 @@
 <script lang="ts">
   import { UserField, type IOption, type SelectField } from "@undb/table"
-  import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
-
-  import { cn } from "$lib/utils"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
@@ -44,7 +41,7 @@
 
 <div class={$$restProps.class}>
   {#if isEditing}
-    <UserPicker bind:value>
+    <UserPicker bind:open bind:value>
       <div
         slot="trigger"
         let:builder
@@ -57,6 +54,12 @@
       </div>
     </UserPicker>
   {:else}
-    <UserFieldComponent disableHoverCard={!isSelected || isEditing} {value} {displayValue} />
+    <div class="flex w-full items-center justify-between">
+      <UserFieldComponent disableHoverCard={!isSelected || isEditing} {value} {displayValue} />
+
+      {#if isSelected}
+        <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
+      {/if}
+    </div>
   {/if}
 </div>

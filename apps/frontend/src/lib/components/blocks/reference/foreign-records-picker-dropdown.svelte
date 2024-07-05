@@ -30,7 +30,7 @@
   $: foreignTable = table ? readable(new TableCreator().fromJSON(table)) : null
 </script>
 
-<Popover.Root bind:open {onOpenChange}>
+<Popover.Root portal="body" bind:open {onOpenChange}>
   <Popover.Trigger>
     <slot>
       <Button size="xs" disabled={readonly} variant="link" type="button">+ Link Records</Button>
@@ -46,7 +46,16 @@
       </div>
     {/if}
     {#if foreignTable}
-      <ForeignRecordsPicker {shouldUpdate} bind:isSelected {field} {tableId} {recordId} {foreignTable} bind:selected />
+      <ForeignRecordsPicker
+        {readonly}
+        {shouldUpdate}
+        bind:isSelected
+        {field}
+        {tableId}
+        {recordId}
+        {foreignTable}
+        bind:selected
+      />
     {/if}
   </Popover.Content>
 </Popover.Root>

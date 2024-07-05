@@ -44,7 +44,7 @@
       >
         {#if hasValueReactive}
           <Button size="xs" variant="link">
-            {value.length} Linked Records
+            {$selected.length} Linked Records
           </Button>
         {:else}
           <Button size="xs" variant="link" type="button">+ Link Records</Button>

@@ -22,6 +22,7 @@
   export let foreignTable: Readable<TableDo>
   export let isSelected = false
   export let shouldUpdate = false
+  export let readonly = false
 
   export let tableId: string
   export let recordId: string | undefined = undefined

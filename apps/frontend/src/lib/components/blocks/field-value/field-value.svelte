@@ -44,4 +44,4 @@
   }
 </script>
 
-<svelte:component this={map[type]} {...$$restProps} {field} {value} {displayValue} {placeholder} />
+<svelte:component this={map[type]} {tableId} {recordId} {...$$restProps} {field} {value} {displayValue} {placeholder} />

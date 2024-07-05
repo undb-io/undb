@@ -16,7 +16,7 @@
   $: users =
     $store.data?.members.map((m) => ({ value: m?.user.id, label: m?.user.username, email: m?.user.email })) ?? []
 
-  let open = false
+  export let open = false
   export let value: string | undefined
 
   $: selectedValue = users.find((f) => f.value === value)?.label ?? "Select a User..."
@@ -50,7 +50,9 @@
   <Popover.Content class="max-h-[400px] min-w-[300px] p-0">
     <Command.Root filter={() => 1}>
       <Command.Input bind:value={q} placeholder="Search user by email or username..." class="h-9" />
-      <Command.Empty>No User found.</Command.Empty>
+      {#if !$store.fetching}
+        <Command.Empty>No User found.</Command.Empty>
+      {/if}
       <Command.Group>
         {#if $store.fetching}
           <div class="space-y-2">
