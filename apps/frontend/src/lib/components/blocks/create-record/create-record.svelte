@@ -38,7 +38,6 @@
     derived([table], ([$table]) => ({
       mutationFn: trpc.record.create.mutate,
       onSuccess: (data) => {
-        closeModal(CREATE_RECORD_MODAL)
         client.invalidateQueries({
           queryKey: ["records", $table.id.value],
         })

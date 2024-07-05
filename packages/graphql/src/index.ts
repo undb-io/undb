@@ -6,6 +6,7 @@ import {
   GetAggregatesQuery,
   GetBaseQuery,
   GetBasesQuery,
+  GetMemberByIdQuery,
   GetMembersQuery,
   GetRecordAuditsQuery,
   GetShareQuery,
@@ -205,6 +206,7 @@ export class Graphql {
 
       type Query {
         member: WorkspaceMember
+        memberById(id: ID!): WorkspaceMember
         members(q: String): [WorkspaceMember]!
 
         tables: [Table]!
@@ -219,14 +221,15 @@ export class Graphql {
         tableByShare(shareId: ID!): Table
       }
 
-      type Mutation {
-        uploadFile(file: File!): Boolean!
-      }
       `,
       resolvers: {
         Query: {
           members: async (_, args) => {
             return this.queryBus.execute(new GetMembersQuery({ q: args?.q }))
+          },
+          memberById: async (_, args) => {
+            const member = await this.queryBus.execute(new GetMemberByIdQuery({ id: args.id }))
+            return member
           },
           member: () => {
             const member = executionContext.getStore()?.member
@@ -261,18 +264,6 @@ export class Graphql {
           share: async (_, { id }) => {
             const share = await this.queryBus.execute(new GetShareQuery({ shareId: id }))
             return share
-          },
-        },
-        Mutation: {
-          // @ts-ignore
-          uploadFile: async (_, { file }: { file: File }) => {
-            try {
-              const fileArrayBuffer = await file.arrayBuffer()
-              await this.objectStorage.put(Buffer.from(fileArrayBuffer), file.name, file.type)
-            } catch (e) {
-              return false
-            }
-            return true
           },
         },
         Base: {

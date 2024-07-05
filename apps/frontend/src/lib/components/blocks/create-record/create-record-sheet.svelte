@@ -36,7 +36,15 @@
 
     <div class="flex-1 overflow-hidden">
       <ScrollArea class="h-full overflow-auto px-4">
-        <CreateRecord {table} bind:disabled bind:dirty formId={$formId ?? undefined} />
+        <CreateRecord
+          onSuccess={() => {
+            closeModal(CREATE_RECORD_MODAL)
+          }}
+          {table}
+          bind:disabled
+          bind:dirty
+          formId={$formId ?? undefined}
+        />
       </ScrollArea>
     </div>
 

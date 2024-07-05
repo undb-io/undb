@@ -62,14 +62,11 @@ type FormOption {
 
 scalar JSON
 
-type Mutation {
-  uploadFile(file: File!): Boolean!
-}
-
 type Query {
   base(id: ID!): Base!
   bases: [Base]
   member: WorkspaceMember
+  memberById(id: ID!): WorkspaceMember
   members(q: String): [WorkspaceMember]!
   recordAudits(recordId: ID!): [Audit]
   share(id: ID!): Share

@@ -1,7 +1,7 @@
 import { type IWorkspaceMemberDTO, type IWorkspaceMemberQueryRepository } from "@undb/authz"
 import type { WorkspaceMemberComositeSpecification } from "@undb/authz/src/workspace-member/workspace-member.composite-specification"
 import { inject, singleton } from "@undb/di"
-import { Option, type IUnitOfWork } from "@undb/domain"
+import { None, Option, Some, type IUnitOfWork } from "@undb/domain"
 import { eq } from "drizzle-orm"
 import type { Database } from "../db"
 import { injectDb } from "../db.provider"
@@ -20,6 +20,20 @@ export class WorkspaceMemberQueryRepository implements IWorkspaceMemberQueryRepo
     @inject(MemberMapper)
     private readonly mapper: MemberMapper,
   ) {}
+
+  async findOneById(id: string): Promise<Option<IWorkspaceMemberDTO>> {
+    const members = await this.db
+      .select()
+      .from(workspaceMember)
+      .leftJoin(users, eq(users.id, workspaceMember.userId))
+      .where(eq(users.id, id))
+
+    if (members.length === 0) {
+      return None
+    }
+
+    return Some(this.mapper.toDTO(members[0].workspace_member))
+  }
 
   async find(spec: Option<WorkspaceMemberComositeSpecification>): Promise<IWorkspaceMemberDTO[]> {
     const visitor = new WorkspaceMemberFilterVisitor()

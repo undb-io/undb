@@ -84,7 +84,7 @@
           {#if recordDo}
             <div class={cn("overflow-hidden", $preferences.showAudit && $recordId ? "col-span-3" : "col-span-4")}>
               <ScrollArea class="h-full overflow-auto px-4">
-                <RecordDetail table={foreignTable} record={recordDo} bind:disabled />
+                <RecordDetail onSuccess={() => (open = false)} table={foreignTable} record={recordDo} bind:disabled />
               </ScrollArea>
             </div>
           {/if}
@@ -99,11 +99,9 @@
       {/if}
     </div>
 
-    {#if !readonly}
-      <Sheet.Footer class="border-t px-6 pt-4">
-        <Button variant="outline" type="button">Cancel</Button>
-        <Button type="submit" form="updateRecord" {disabled}>Update</Button>
-      </Sheet.Footer>
-    {/if}
+    <Sheet.Footer class="border-t px-6 pt-4">
+      <Button variant="outline" type="button">Cancel</Button>
+      <Button type="submit" form={`${$foreignTable.id.value}:updateRecord`} {disabled}>Update</Button>
+    </Sheet.Footer>
   </Sheet.Content>
 </Sheet.Root>

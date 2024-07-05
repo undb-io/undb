@@ -76,7 +76,7 @@
           {#if recordDo}
             <div class={cn("overflow-hidden", $preferences.showAudit && $r ? "col-span-3" : "col-span-4")}>
               <ScrollArea class="h-full overflow-auto px-4">
-                <RecordDetail {table} {readonly} record={recordDo} bind:disabled />
+                <RecordDetail onSuccess={() => ($r = null)} {table} {readonly} record={recordDo} bind:disabled />
               </ScrollArea>
             </div>
           {/if}
@@ -94,7 +94,7 @@
     {#if !readonly}
       <Sheet.Footer class="border-t px-6 pt-4">
         <Button variant="outline" type="button" on:click={() => ($r = null)}>Cancel</Button>
-        <Button type="submit" form="updateRecord" {disabled}>Update</Button>
+        <Button type="submit" form={`${$table.id.value}:updateRecord`} {disabled}>Update</Button>
       </Sheet.Footer>
     {/if}
   </Sheet.Content>

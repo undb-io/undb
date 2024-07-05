@@ -15,6 +15,7 @@ export const WORKSPACE_MEMBER_REPOSITORY = Symbol("IWorkspaceMemberRepository")
 export const injectWorkspaceMemberRepository = () => inject(WORKSPACE_MEMBER_REPOSITORY)
 
 export interface IWorkspaceMemberQueryRepository {
+  findOneById(id: string): Promise<Option<IWorkspaceMemberDTO>>
   find(spec: Option<WorkspaceMemberComositeSpecification>): Promise<IWorkspaceMemberDTO[]>
 }
 

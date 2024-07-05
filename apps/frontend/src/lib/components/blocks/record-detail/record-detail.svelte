@@ -2,7 +2,6 @@
   import { RecordDO, TableDo } from "@undb/table"
   import * as Form from "$lib/components/ui/form"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
-  import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import FieldControl from "../field-control/field-control.svelte"
@@ -29,6 +28,8 @@
     }
   })
 
+  export let onSuccess: () => void = () => {}
+
   export let table: Readable<TableDo>
   const schema = $table.schema.mutableSchema
   $: fields = $table.getOrderedVisibleFields()
@@ -42,7 +43,7 @@
     mutationFn: trpc.record.update.mutate,
     onSuccess: async () => {
       toast.success("Record updated")
-      $r = null
+      onSuccess()
       reset({})
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
       await client.invalidateQueries({ queryKey: [record.id.value, "get"] })
@@ -90,7 +91,13 @@
   $: disabled = !$tainted || !!$allErrors.length
 </script>
 
-<form method="POST" use:enhance id="updateRecord" class="my-4 space-y-4" enctype="multipart/form-data">
+<form
+  method="POST"
+  use:enhance
+  id={`${$table.id.value}:updateRecord`}
+  class="my-4 space-y-4"
+  enctype="multipart/form-data"
+>
   {#each fields as field}
     {@const dirty = $tainted && $tainted[field.id.value]}
     <Form.Field class="rounded-sm border p-2" {form} name={field.id.value}>
