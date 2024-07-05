@@ -45,7 +45,6 @@
       toast.success("Record updated")
       onSuccess()
       reset({})
-      await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
       await client.invalidateQueries({ queryKey: [record.id.value, "get"] })
     },
     onError: (error) => {

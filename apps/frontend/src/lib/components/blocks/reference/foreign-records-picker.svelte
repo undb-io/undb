@@ -83,7 +83,6 @@
   })
 
   async function handleToggleRecord(id: string, isAdd: boolean) {
-    if (!$selected) return
     if (!isAdd) {
       $selected = $selected?.filter((s) => s !== id) ?? []
     } else {
@@ -249,7 +248,7 @@
                         </div>
                       </div>
 
-                      <div class="flex items-center gap-1 pr-2">
+                      <div class="flex items-center gap-1 pr-4">
                         <ForeignRecordDetailButton
                           class="opacity-0 group-hover:opacity-100"
                           {foreignTable}

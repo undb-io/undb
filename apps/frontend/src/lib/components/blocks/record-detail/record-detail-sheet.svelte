@@ -5,7 +5,7 @@
   import { queryParam, ssp } from "sveltekit-search-params"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
-  import { createQuery } from "@tanstack/svelte-query"
+  import { createQuery, useQueryClient } from "@tanstack/svelte-query"
   import { RecordDO } from "@undb/table"
   import { derived } from "svelte/store"
   import Skeleton from "$lib/components/ui/skeleton/skeleton.svelte"
@@ -32,6 +32,8 @@
       enabled: !!$recordId,
     })),
   )
+
+  const client = useQueryClient()
 
   $: recordDo = $record.data?.record ? RecordDO.fromJSON($table, $record.data?.record) : undefined
 
@@ -76,7 +78,16 @@
           {#if recordDo}
             <div class={cn("overflow-hidden", $preferences.showAudit && $r ? "col-span-3" : "col-span-4")}>
               <ScrollArea class="h-full overflow-auto px-4">
-                <RecordDetail onSuccess={() => ($r = null)} {table} {readonly} record={recordDo} bind:disabled />
+                <RecordDetail
+                  onSuccess={async () => {
+                    $r = null
+                    await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
+                  }}
+                  {table}
+                  {readonly}
+                  record={recordDo}
+                  bind:disabled
+                />
               </ScrollArea>
             </div>
           {/if}
