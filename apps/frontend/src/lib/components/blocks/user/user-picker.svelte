@@ -30,7 +30,7 @@
 
 <Popover.Root bind:open let:ids>
   <Popover.Trigger asChild let:builder>
-    <slot>
+    <slot {builder}>
       <Button
         builders={[builder]}
         variant="outline"
