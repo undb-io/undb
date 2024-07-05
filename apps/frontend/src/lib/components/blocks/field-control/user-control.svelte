@@ -1,8 +1,6 @@
 <script lang="ts">
-  export let value: string
-  export let displayValue: string | undefined
+  import UserPicker from "../user/user-picker.svelte"
+  export let value: string | undefined
 </script>
 
-<span data-field-value={value} class={$$restProps.class}>
-  {displayValue}
-</span>
+<UserPicker bind:value />

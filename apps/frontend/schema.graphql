@@ -42,6 +42,7 @@ enum FieldType {
   string
   updatedAt
   updatedBy
+  user
 }
 
 scalar File

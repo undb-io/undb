@@ -6,6 +6,7 @@ import {
   JsonField,
   RatingField,
   SelectField,
+  UserField,
   type AutoIncrementField,
   type CreatedAtField,
   type CreatedByField,
@@ -85,6 +86,9 @@ export class RecordReferenceVisitor implements IFieldVisitor {
     throw new Error("Method not implemented.")
   }
   checkbox(field: CheckboxField): void {
+    throw new Error("Method not implemented.")
+  }
+  user(field: UserField): void {
     throw new Error("Method not implemented.")
   }
 }

@@ -73,7 +73,6 @@ const sortableFieldTypes: FieldType[] = [
   "rating",
   "email",
   "date",
-  "json",
   "checkbox",
 ] as const
 
@@ -98,6 +97,7 @@ export const fieldTypes: NoneSystemFieldType[] = [
   "date",
   "json",
   "checkbox",
+  "user",
 ] as const
 export const systemFieldTypes: SystemFieldType[] = [
   "id",

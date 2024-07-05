@@ -7,6 +7,7 @@ import { checkboxFieldAggregate } from "./variants/checkbox-field/checkbox-field
 import { emailFieldAggregate } from "./variants/email-field/email-field.aggregate"
 import { jsonFieldAggregate } from "./variants/json-field/json-field.aggregate"
 import { stringFieldAggregate } from "./variants/string-field/string-field.aggregate"
+import { userFieldAggregate } from "./variants/user-field/user-field.aggregate"
 
 export const fieldAggregate = stringFieldAggregate
   .or(rollupFieldAggregate)
@@ -17,5 +18,6 @@ export const fieldAggregate = stringFieldAggregate
   .or(emailFieldAggregate)
   .or(jsonFieldAggregate)
   .or(checkboxFieldAggregate)
+  .or(userFieldAggregate)
 
 export type IFieldAggregate = z.infer<typeof fieldAggregate>

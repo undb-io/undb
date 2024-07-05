@@ -3,6 +3,7 @@ import { isString } from "radash"
 import type { IRecordVisitor, RecordDO } from "../../../../records"
 import { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import type { FieldId } from "../../field-id.vo"
+import { UserFieldValue } from "../user-field"
 
 export class UserEqual extends RecordComositeSpecification {
   constructor(
@@ -16,7 +17,8 @@ export class UserEqual extends RecordComositeSpecification {
     return value.mapOr(false, (v) => isString(v.value) && v.value == this.value)
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
-    throw new Error("not implemented")
+    t.values.setValue(this.fieldId, new UserFieldValue(this.value))
+    return Ok(t)
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.userEqual(this)

@@ -91,6 +91,13 @@ import type {
 } from "./variants/select-field"
 import type { StringFieldValue } from "./variants/string-field/string-field-value.vo"
 import type { STRING_TYPE, StringField } from "./variants/string-field/string-field.vo"
+import type {
+  IUserFieldConditionSchema,
+  IUserFieldConstraint,
+  USER_TYPE,
+  UserField,
+  UserFieldValue,
+} from "./variants/user-field"
 
 export type Field =
   | StringField
@@ -110,6 +117,7 @@ export type Field =
   | DateField
   | JsonField
   | CheckboxField
+  | UserField
 
 export type SystemField =
   | IdField
@@ -139,6 +147,7 @@ export type FieldValue =
   | DateFieldValue
   | JsonFieldValue
   | CheckboxFieldValue
+  | UserFieldValue
 
 export type MutableFieldValue =
   | StringFieldValue
@@ -151,6 +160,7 @@ export type MutableFieldValue =
   | DateFieldValue
   | JsonFieldValue
   | CheckboxFieldValue
+  | UserFieldValue
 
 export type FieldType =
   | typeof STRING_TYPE
@@ -170,6 +180,7 @@ export type FieldType =
   | typeof DATE_TYPE
   | typeof JSON_TYPE
   | typeof CHECKBOX_TYPE
+  | typeof USER_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
@@ -198,6 +209,7 @@ export type IFieldConditionSchema =
   | IDateFieldConditionSchema
   | IJsonFieldConditionSchema
   | ICheckboxFieldConditionSchema
+  | IUserFieldConditionSchema
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
 
@@ -212,5 +224,6 @@ export type IFieldConstraint =
   | IDateFieldConstraint
   | IJsonFieldConstraint
   | ICheckboxFieldConstraint
+  | IUserFieldConstraint
 
 export type IFieldOption = IReferenceFieldOption | IRollupFieldOption | ISelectFieldOption

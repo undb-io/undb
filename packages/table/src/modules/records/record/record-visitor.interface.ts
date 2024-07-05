@@ -7,6 +7,7 @@ import type {
   INumberFieldValueVisitor,
   IReferenceFieldValueVisitor,
   IUpdatedAtFieldValueVisitor,
+  IUserFieldValueVisitor,
 } from "../../schema"
 import type { IAttachmentFieldValueVisitor } from "../../schema/fields/variants/attachment-field"
 import type { ICreatedAtFieldValueVisitor } from "../../schema/fields/variants/created-at-field"
@@ -30,4 +31,5 @@ export type IRecordVisitor = IStringFieldValueVisitor &
   IDateFieldValueVisitor &
   IJsonFieldValueVisitor &
   ICheckboxFieldValueVisitor &
+  IUserFieldValueVisitor &
   ISpecVisitor

@@ -9,6 +9,7 @@ import { createRollupFieldDTO } from "../variants/rollup-field/rollup-field.vo"
 import { createSelectFieldDTO } from "../variants/select-field/select-field.vo"
 import { createStringFieldDTO } from "../variants/string-field/string-field.vo"
 import { createCheckboxFieldDTO } from "../variants/checkbox-field"
+import { createUserFieldDTO } from "../variants/user-field"
 
 export const createFieldDTO = z.discriminatedUnion("type", [
   createStringFieldDTO,
@@ -22,6 +23,7 @@ export const createFieldDTO = z.discriminatedUnion("type", [
   createDateFieldDTO,
   createJsonFieldDTO,
   createCheckboxFieldDTO,
+  createUserFieldDTO,
 ])
 
 export type ICreateFieldDTO = z.infer<typeof createFieldDTO>

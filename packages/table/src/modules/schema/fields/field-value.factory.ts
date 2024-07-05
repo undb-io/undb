@@ -22,6 +22,7 @@ import { CreatedByFieldValue } from "./variants/created-by-field"
 import { EmailFieldValue } from "./variants/email-field"
 import { RatingFieldValue } from "./variants/rating-field"
 import { SelectFieldValue } from "./variants/select-field"
+import { UserFieldValue } from "./variants/user-field"
 
 export class FieldValueFactory {
   static create(field: Field, value: any): Option<MutableFieldValue> {
@@ -36,6 +37,7 @@ export class FieldValueFactory {
       .with({ type: "date" }, (field) => Some(new DateFieldValue(field.valueSchema.parse(value))))
       .with({ type: "json" }, (field) => Some(new JsonFieldValue(field.valueSchema.parse(value))))
       .with({ type: "checkbox" }, (field) => Some(new CheckboxFieldValue(field.valueSchema.parse(value))))
+      .with({ type: "user" }, (field) => Some(new UserFieldValue(field.valueSchema.parse(value))))
       .otherwise(() => None)
   }
 
@@ -58,6 +60,7 @@ export class FieldValueFactory {
       .with("date", () => Some(new DateFieldValue(value as Date)))
       .with("json", () => Some(new JsonFieldValue(value as JsonValue)))
       .with("checkbox", () => Some(new CheckboxFieldValue(value as boolean)))
+      .with("user", () => Some(new UserFieldValue(value as string)))
       .exhaustive()
   }
 }

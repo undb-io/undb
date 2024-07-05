@@ -15,6 +15,7 @@ import type { SelectField } from "./variants/select-field"
 import type { StringField } from "./variants/string-field/string-field.vo"
 import type { UpdatedAtField } from "./variants/updated-at-field/updated-at-field.vo"
 import type { UpdatedByField } from "./variants/updated-by-field/updated-by-field.vo"
+import type { UserField } from "./variants/user-field"
 
 export interface IFieldVisitor {
   id(field: IdField): void
@@ -32,6 +33,7 @@ export interface IFieldVisitor {
   date(field: DateField): void
   json(field: JsonField): void
   checkbox(field: CheckboxField): void
+  user(field: UserField): void
 
   reference(field: ReferenceField): void
   rollup(field: RollupField): void

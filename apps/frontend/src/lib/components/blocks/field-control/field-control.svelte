@@ -42,6 +42,7 @@
     date: DateControl,
     json: JsonControl,
     checkbox: CheckboxControl,
+    user: UserControl,
   }
 </script>
 

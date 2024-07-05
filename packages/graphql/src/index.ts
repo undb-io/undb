@@ -86,6 +86,7 @@ export class Graphql {
         date
         json
         checkbox
+        user
       }
 
       type Field {

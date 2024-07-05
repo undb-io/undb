@@ -16,6 +16,7 @@ import { updateIdFieldDTO } from "../variants/id-field/id-field.vo"
 import { updateNumberFieldDTO } from "../variants/number-field/number-field.vo"
 import { updateStringFieldDTO } from "../variants/string-field/string-field.vo"
 import { updateUpdatedAtFieldDTO } from "../variants/updated-at-field/updated-at-field.vo"
+import { updateUserFieldDTO } from "../variants/user-field"
 
 export const updateFieldDTO = z.discriminatedUnion("type", [
   updateIdFieldDTO,
@@ -33,6 +34,7 @@ export const updateFieldDTO = z.discriminatedUnion("type", [
   updateDateFieldDTO,
   updateJsonFieldDTO,
   updateCheckboxFieldDTO,
+  updateUserFieldDTO,
 ])
 
 export type IUpdateFieldDTO = z.infer<typeof updateFieldDTO>

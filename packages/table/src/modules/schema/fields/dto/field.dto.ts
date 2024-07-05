@@ -21,6 +21,7 @@ import { createNumberFieldDTO, numberFieldDTO } from "../variants/number-field/n
 import { ratingFieldDTO } from "../variants/rating-field"
 import { createStringFieldDTO, stringFieldDTO } from "../variants/string-field/string-field.vo"
 import { updatedAtFieldDTO } from "../variants/updated-at-field/updated-at-field.vo"
+import { userFieldDTO } from "../variants/user-field"
 
 export const fieldDTO = z.discriminatedUnion("type", [
   stringFieldDTO,
@@ -40,6 +41,7 @@ export const fieldDTO = z.discriminatedUnion("type", [
   dateFieldDTO,
   jsonFieldDTO,
   checkboxFieldDTO,
+  userFieldDTO,
 ])
 
 export type IFieldDTO = z.infer<typeof fieldDTO>

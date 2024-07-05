@@ -6,6 +6,7 @@ import {
   JsonField,
   RatingField,
   SelectField,
+  UserField,
   type AutoIncrementField,
   type CreatedAtField,
   type CreatedByField,
@@ -146,5 +147,20 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   }
   checkbox(field: CheckboxField): void {
     this.addSelect(this.getField(field.id.value))
+  }
+  user(field: UserField): void {
+    this.addSelect(this.getField(field.id.value))
+
+    const user = getTableName(users)
+    const as = createDisplayFieldName(field)
+
+    const name = this.eb
+      .selectFrom(user)
+      .select(`${user}.${users.username.name}`)
+      .whereRef(field.id.value, "=", `${user}.${users.id.name}`)
+      .limit(1)
+      .as(as)
+
+    this.addSelect(name)
   }
 }

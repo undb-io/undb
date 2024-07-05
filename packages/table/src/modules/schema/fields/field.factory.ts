@@ -18,6 +18,7 @@ import { SelectField } from "./variants/select-field/select-field.vo"
 import { StringField } from "./variants/string-field/string-field.vo"
 import { UpdatedAtField } from "./variants/updated-at-field/updated-at-field.vo"
 import { UpdatedByField } from "./variants/updated-by-field/updated-by-field.vo"
+import { UserField } from "./variants/user-field"
 
 export class FieldFactory {
   static fromJSON(dto: IFieldDTO): Field {
@@ -39,6 +40,7 @@ export class FieldFactory {
       .with({ type: "date" }, (dto) => new DateField(dto))
       .with({ type: "json" }, (dto) => new JsonField(dto))
       .with({ type: "checkbox" }, (dto) => new CheckboxField(dto))
+      .with({ type: "user" }, (dto) => new UserField(dto))
       .exhaustive()
   }
 
@@ -55,6 +57,7 @@ export class FieldFactory {
       .with({ type: "date" }, (dto) => DateField.create(dto))
       .with({ type: "json" }, (dto) => JsonField.create(dto))
       .with({ type: "checkbox" }, (dto) => CheckboxField.create(dto))
+      .with({ type: "user" }, (dto) => UserField.create(dto))
       .otherwise(() => {
         throw new Error("Field type creation not supported")
       })
