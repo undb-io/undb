@@ -1,33 +1,65 @@
 <script lang="ts">
-  import { type SelectField } from "@undb/table"
-  import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
-
+  import Check from "lucide-svelte/icons/check"
+  import * as Command from "$lib/components/ui/command"
+  import * as Popover from "$lib/components/ui/popover/index.js"
+  import { cn } from "$lib/utils.js"
+  import { Button } from "$lib/components/ui/button"
+  import type { IOptionId, SelectField } from "@undb/table"
   import Option from "./option.svelte"
-  import { cn } from "$lib/utils"
+  import { tick } from "svelte"
 
   export let field: SelectField
-  export let value: string | string[] | null = null
-
-  export let onValueChange = (value: string | null) => {}
-
-  $: selected = field.options.find((option) => option.id === value)
+  $: options = field.options
 
   export let open = false
+  let search = ""
+  export let value: IOptionId | null = null
+  export let onValueChange: (value: IOptionId | null) => void = () => {}
+
+  $: selectedValue = options.find((option) => option.id === value)
+  $: filteredOptions = options.filter((option) => option.name.toLowerCase().includes(search.toLowerCase()))
+
+  function closeAndFocusTrigger(triggerId: string) {
+    open = false
+    tick().then(() => {
+      document.getElementById(triggerId)?.focus()
+    })
+  }
 </script>
 
-<DropdownMenu.Root bind:open>
-  <DropdownMenu.Trigger class={cn($$restProps.class, "w-full")}>
-    {#if selected}
-      <Option option={selected} />
-    {/if}
-  </DropdownMenu.Trigger>
-  <DropdownMenu.Content>
-    <DropdownMenu.Group>
-      {#each field.options as option}
-        <DropdownMenu.Item on:click={() => onValueChange(option.id === value ? null : option.id)}>
-          <Option {option} />
-        </DropdownMenu.Item>
-      {/each}
-    </DropdownMenu.Group>
-  </DropdownMenu.Content>
-</DropdownMenu.Root>
+<Popover.Root bind:open let:ids>
+  <Popover.Trigger asChild let:builder>
+    <Button
+      builders={[builder]}
+      variant="outline"
+      role="combobox"
+      aria-expanded={open}
+      class={cn("w-full justify-between overflow-hidden", $$restProps.class)}
+    >
+      {#if selectedValue}
+        <Option option={selectedValue} />
+      {/if}
+    </Button>
+  </Popover.Trigger>
+  <Popover.Content class="p-0">
+    <Command.Root shouldFilter={false}>
+      <Command.Input bind:value={search} placeholder="Search option..." />
+      <Command.Empty>No Option found.</Command.Empty>
+      <Command.Group>
+        {#each filteredOptions as option}
+          <Command.Item
+            value={option.id}
+            onSelect={(currentValue) => {
+              value = value === currentValue ? null : currentValue
+              onValueChange(value)
+              closeAndFocusTrigger(ids.trigger)
+            }}
+          >
+            <Check class={cn("text-primary mr-2 h-4 w-4", !value?.includes(option.id) && "text-transparent")} />
+            <Option {option} />
+          </Command.Item>
+        {/each}
+      </Command.Group>
+    </Command.Root>
+  </Popover.Content>
+</Popover.Root>

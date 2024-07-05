@@ -21,7 +21,7 @@
   import TableTools from "../table-tools/table-tools.svelte"
   import GridViewHeader from "./grid-view-header.svelte"
   import * as Select from "$lib/components/ui/select"
-  import { getColor } from "./grid-view.util"
+  import { getBgColor } from "./grid-view.util"
   import GridViewOpen from "./grid-view-open.svelte"
   import { queryParam } from "sveltekit-search-params"
   import { isFunction } from "radash"
@@ -251,7 +251,10 @@
                         >
                           {#if idx === 0 && match && condition && "border-l-4"}
                             <div
-                              class={cn("absolute bottom-0 left-0 top-0 h-full w-1", getColor(condition.option.color))}
+                              class={cn(
+                                "absolute bottom-0 left-0 top-0 h-full w-1",
+                                getBgColor(condition.option.color),
+                              )}
                             ></div>
                             <!-- content here -->
                           {/if}

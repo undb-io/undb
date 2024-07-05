@@ -12,10 +12,12 @@
   $: options = field.options
 
   export let open = false
+  let search = ""
   export let value: string[] | null = []
   export let onValueChange: (value: string[] | null) => void = () => {}
 
   $: selectedValue = value?.map((v) => options.find((o) => o.id === v)).filter((v) => !!v) ?? []
+  $: filteredOptions = options.filter((option) => option.name.toLowerCase().includes(search.toLowerCase()))
 </script>
 
 <Popover.Root bind:open let:ids>
@@ -25,22 +27,21 @@
       variant="outline"
       role="combobox"
       aria-expanded={open}
-      class="w-[200px] justify-between  overflow-hidden"
+      class={cn("w-full justify-between  overflow-hidden", $$restProps.class)}
     >
       <div class="flex flex-1 items-center gap-1">
         {#each selectedValue as option}
           <Option {option} />
         {/each}
       </div>
-      <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
     </Button>
   </Popover.Trigger>
-  <Popover.Content class="w-[200px] p-0">
-    <Command.Root>
-      <Command.Input placeholder="Search framework..." />
+  <Popover.Content class="p-0">
+    <Command.Root shouldFilter={false}>
+      <Command.Input bind:value={search} placeholder="Search framework..." />
       <Command.Empty>No framework found.</Command.Empty>
       <Command.Group>
-        {#each options as option}
+        {#each filteredOptions as option}
           <Command.Item
             value={option.id}
             onSelect={(currentValue) => {
@@ -50,8 +51,8 @@
               onValueChange(value ?? [])
             }}
           >
-            <Check class={cn("mr-2 h-4 w-4", !value?.includes(option.id) && "text-transparent")} />
-            {option.name}
+            <Check class={cn("text-primary mr-2 h-4 w-4", !value?.includes(option.id) && "text-transparent")} />
+            <Option {option} />
           </Command.Item>
         {/each}
       </Command.Group>

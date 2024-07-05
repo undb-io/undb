@@ -45,25 +45,44 @@
 </script>
 
 {#if isEditing}
-  {#if field.isSingle}
-    {#if !Array.isArray(value)}
-      <OptionPicker bind:open onValueChange={(value) => onSelect(value)} {field} bind:value />
+  <div class={cn($$restProps.class, "flex items-center justify-between py-0")}>
+    {#if field.isSingle}
+      {#if !Array.isArray(value)}
+        <OptionPicker
+          class="h-full flex-1 rounded-none border-none bg-transparent p-0 text-left ring-0 focus-visible:ring-0"
+          bind:open
+          onValueChange={(value) => onSelect(value)}
+          {field}
+          bind:value
+        />
+      {/if}
+    {:else if Array.isArray(value) || value === null}
+      <OptionsPicker
+        class="h-full flex-1 rounded-none border-none bg-transparent p-0 text-left ring-0 focus-visible:ring-0"
+        bind:open
+        onValueChange={(value) => onSelect(value)}
+        {field}
+        bind:value
+      />
     {/if}
-  {:else if Array.isArray(value) || value === null}
-    <OptionsPicker bind:open onValueChange={(value) => onSelect(value)} {field} bind:value />
-  {/if}
+    {#if open}
+      <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
+    {/if}
+  </div>
 {:else}
   <div class={cn($$restProps.class, "flex justify-between", (isSelected || isEditing) && !selected && "justify-end")}>
     {#if selected}
       {#if Array.isArray(selected)}
-        {#each selected as option}
-          <Option {option} />
-        {/each}
+        <div class="flex items-center gap-1 overflow-hidden">
+          {#each selected as option}
+            <Option {option} />
+          {/each}
+        </div>
       {:else}
         <Option option={selected} />
       {/if}
     {/if}
-    {#if isSelected || isEditing || open}
+    {#if isSelected || open}
       <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
     {/if}
   </div>
