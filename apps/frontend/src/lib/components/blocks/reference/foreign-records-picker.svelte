@@ -293,40 +293,42 @@
             Link After Create
           </Label>
         </div>
-        <div class="flex h-full items-center justify-end gap-1">
-          <Button
-            disabled={$currentPage <= 1}
-            on:click={() => $currentPage--}
-            variant="outline"
-            size="xs"
-            class="h-7 w-7"
-          >
-            <ChevronLeftIcon class="h-5 w-5" />
-          </Button>
-          <Input
-            min="1"
-            max={totalPage}
-            step={1}
-            class="bg-background h-7 w-7 px-1 text-center text-xs"
-            value={$currentPage}
-            on:change={(e) => {
-              currentPage.set(Number(e.target.value))
-            }}
-          />
-          <div class="px-1 text-xs">/</div>
-          <div class="px-1 text-xs">
-            {totalPage}
+        {#if total > 20}
+          <div class="flex h-full items-center justify-end gap-1">
+            <Button
+              disabled={$currentPage <= 1}
+              on:click={() => $currentPage--}
+              variant="outline"
+              size="xs"
+              class="h-7 w-7"
+            >
+              <ChevronLeftIcon class="h-5 w-5" />
+            </Button>
+            <Input
+              min="1"
+              max={totalPage}
+              step={1}
+              class="bg-background h-7 w-7 px-1 text-center text-xs"
+              value={$currentPage}
+              on:change={(e) => {
+                currentPage.set(Number(e.target.value))
+              }}
+            />
+            <div class="px-1 text-xs">/</div>
+            <div class="px-1 text-xs">
+              {totalPage}
+            </div>
+            <Button
+              disabled={$currentPage >= totalPage}
+              variant="outline"
+              size="xs"
+              class="h-7 w-7"
+              on:click={() => $currentPage++}
+            >
+              <ChevronRightIcon class="h-5 w-5" />
+            </Button>
           </div>
-          <Button
-            disabled={$currentPage >= totalPage}
-            variant="outline"
-            size="xs"
-            class="h-7 w-7"
-            on:click={() => $currentPage++}
-          >
-            <ChevronRightIcon class="h-5 w-5" />
-          </Button>
-        </div>
+        {/if}
       </div>
     </div>
   {/if}
