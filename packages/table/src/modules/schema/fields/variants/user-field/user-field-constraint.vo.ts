@@ -44,6 +44,6 @@ export class UserFieldConstraint extends FieldConstraintVO<IUserFieldConstraint>
       base = base.max(this.props.max)
     }
 
-    return base
+    return this.props.required ? base : base.optional().nullable()
   }
 }

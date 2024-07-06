@@ -17,7 +17,6 @@ import {
   UserField,
   type IUpdateFieldDTO,
 } from "./fields"
-import type { FieldId } from "./fields/field-id.vo"
 import { FieldFactory } from "./fields/field.factory"
 import type { Field, MutableFieldValue, NoneSystemField, SystemField } from "./fields/field.type"
 import { AutoIncrementField } from "./fields/variants/autoincrement-field"
@@ -86,9 +85,9 @@ export class Schema extends ValueObject<Field[]> {
     return this.fields.filter((f) => f.isMutable)
   }
 
-  get mutableSchema() {
+  getMutableSchema(fields = this.mutableFields) {
     const schema = objectify(
-      this.mutableFields,
+      fields.filter((f) => f.isMutable),
       (f) => f.id.value,
       (f) => f.valueSchema,
     )

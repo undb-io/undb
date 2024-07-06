@@ -14,7 +14,6 @@
   export let open = false
   let search = ""
   export let value: string[] | null = []
-  $: console.log({ value })
   export let onValueChange: (value: string[] | null) => void = () => {}
 
   $: selectedValue = value?.map((v) => options.find((o) => o.id === v)).filter((v) => !!v) ?? []

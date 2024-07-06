@@ -31,8 +31,8 @@
   export let onSuccess: () => void = () => {}
 
   export let table: Readable<TableDo>
-  const schema = $table.schema.mutableSchema
-  $: fields = $table.getOrderedVisibleFields()
+  const fields = $table.getOrderedVisibleFields()
+  const schema = $table.schema.getMutableSchema(fields)
 
   export let disabled: boolean = false
   export let dirty = false
@@ -74,7 +74,9 @@
     resetForm: false,
     invalidateAll: false,
     onUpdate(event) {
-      if (!event.form.valid) return
+      if (!event.form.valid) {
+        return
+      }
 
       const data = event.form.data
       const values = $tainted ? pick(data, Object.keys($tainted)) : undefined

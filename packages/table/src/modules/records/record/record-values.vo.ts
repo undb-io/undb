@@ -1,4 +1,4 @@
-import { None, Option, ValueObject, and, andOptions } from "@undb/domain"
+import { None, Option, ValueObject, andOptions } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { RecordComositeSpecification } from "../.."
 import type { TableDo } from "../../../table.do"
@@ -23,7 +23,7 @@ export class RecordValuesVO extends ValueObject {
 
   static create(table: TableDo, dto: IRecordValues) {
     // TODO: validate value
-    // const schema = table.schema.mutableSchema
+    // const schema = table.schema.getMutableSchema()
     const fields = table.schema.mutableFields
 
     const values: RecordValues = {}

@@ -40,7 +40,7 @@ export class SelectFieldConstraint extends FieldConstraintVO<ISelectFieldConstra
         base = base.max(this.props.max)
       }
 
-      return base
+      return this.props.required ? base : base.optional().nullable()
     }
   }
 }

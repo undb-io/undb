@@ -25,7 +25,7 @@
   const table = getTable()
 
   $: form = formId ? $table.forms?.getFormById(formId) : undefined
-  $: schema = $table.schema.mutableSchema
+  $: schema = $table.schema.getMutableSchema()
 
   $: backgroundColor = form?.option?.backgroundColor
 

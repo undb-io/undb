@@ -23,7 +23,7 @@
   // })
 
   export let table: Readable<TableDo>
-  const schema = $table.schema.mutableSchema
+  const schema = $table.schema.getMutableSchema()
 
   export let disabled: boolean = false
   export let dirty = false
