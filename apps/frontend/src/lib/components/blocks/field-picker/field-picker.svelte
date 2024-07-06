@@ -57,7 +57,7 @@
     >
       <span class="flex items-center overflow-hidden text-ellipsis" title={selectedValue}>
         {#if selected}
-          <FieldIcon type={selected.type} class="mr-2 h-3 w-3" />
+          <FieldIcon field={selected} type={selected.type} class="mr-2 h-3 w-3" />
         {/if}
         {selectedValue}
       </span>
@@ -84,7 +84,7 @@
           >
             <Check class={cn("mr-2 h-4 w-4", value !== field.value && "text-transparent")} />
             <div class="flex items-center gap-2">
-              <FieldIcon type={field.type} class="h-4 w-4" />
+              <FieldIcon {field} type={field.type} class="h-4 w-4" />
               <span>
                 {field.label}
               </span>

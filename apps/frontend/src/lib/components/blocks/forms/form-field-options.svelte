@@ -76,7 +76,7 @@
   >
     <div class="flex items-center justify-between">
       <div class="text-muted-foreground flex items-center gap-2 text-xs">
-        <FieldIcon type={field.type} class="h-3 w-3" />
+        <FieldIcon {field} type={field.type} class="h-3 w-3" />
         <span>
           {field.name.value}
         </span>

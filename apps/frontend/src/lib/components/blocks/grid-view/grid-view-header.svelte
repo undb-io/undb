@@ -12,7 +12,7 @@
 
 <div data-field-id={field.id.value} data-field-type={field.type} class="flex items-center justify-between gap-1">
   <div class="flex items-center gap-1">
-    <FieldIcon type={field.type} class="h-4 w-4" />
+    <FieldIcon {field} type={field.type} class="h-4 w-4" />
     <span>
       {field.name.value}
     </span>

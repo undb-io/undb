@@ -109,7 +109,7 @@
                   }}
                 />
                 <div class="flex items-center gap-2 text-sm text-gray-600">
-                  <FieldIcon type={field.type} class="h-3 w-3" />
+                  <FieldIcon {field} type={field.type} class="h-3 w-3" />
                   {field.name.value}
                 </div>
               </div>

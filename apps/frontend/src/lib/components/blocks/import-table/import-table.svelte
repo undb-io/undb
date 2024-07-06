@@ -209,7 +209,7 @@
                 <Table.Cell class="font-medium">{header}</Table.Cell>
                 <Table.Cell>
                   <div class="flex items-center">
-                    <FieldIcon type={field.type} class="mr-2 h-4 w-4" />
+                    <FieldIcon {field} type={field.type} class="mr-2 h-4 w-4" />
                     {field.type}
                   </div>
                 </Table.Cell>

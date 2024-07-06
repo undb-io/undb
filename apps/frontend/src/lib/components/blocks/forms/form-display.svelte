@@ -145,7 +145,7 @@
                 {/if}
                 <div class={cn("cursor-pointer space-y-2 py-2 pb-4")}>
                   <div class="text-md flex items-center gap-2 font-medium">
-                    <FieldIcon type={field.type} class="h-4 w-4" />
+                    <FieldIcon {field} type={field.type} class="h-4 w-4" />
                     <span>
                       {field.name.value}
                     </span>

@@ -111,7 +111,7 @@
                 <Form.Control let:attrs>
                   <Form.Label class="flex items-center justify-between gap-2">
                     <div class="flex items-center gap-2" data-field-id={field.id.value}>
-                      <FieldIcon type={field.type} class="h-4 w-4" />
+                      <FieldIcon {field} type={field.type} class="h-4 w-4" />
                       <span>{field.name.value}</span>
                       {#if field.required}
                         <span class="text-red-500">*</span>

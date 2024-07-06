@@ -216,7 +216,7 @@
                           </Tooltip.Trigger>
                           <Tooltip.Content transition={() => ({ duration: 10 })}>
                             <div class="flex items-center gap-2">
-                              <FieldIcon class="h-3 w-3" type={field.type} />
+                              <FieldIcon {field} class="h-3 w-3" type={field.type} />
                               <p>{field.name.value}</p>
                             </div>
                           </Tooltip.Content>
@@ -244,7 +244,7 @@
                               </Tooltip.Trigger>
                               <Tooltip.Content transitionConfig={{ duration: 10 }}>
                                 <div class="flex items-center gap-2">
-                                  <FieldIcon class="h-3 w-3" type={field.type} />
+                                  <FieldIcon {field} class="h-3 w-3" type={field.type} />
                                   <p>{field.name.value}</p>
                                 </div>
                               </Tooltip.Content>

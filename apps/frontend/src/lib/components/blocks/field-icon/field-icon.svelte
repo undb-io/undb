@@ -2,7 +2,7 @@
   import type { ComponentType } from "svelte"
   import NumberIcon from "./number-icon.svelte"
   import StringIcon from "./string-icon.svelte"
-  import type { FieldType } from "@undb/table"
+  import type { Field, FieldType } from "@undb/table"
   import {
     KeyRoundIcon,
     CalendarPlus2Icon,
@@ -12,18 +12,20 @@
     UserRoundCheck,
     SquareArrowOutUpRightIcon,
     CalculatorIcon,
-    ListIcon,
     StarIcon,
     MailIcon,
-    FileIcon,
     FileTextIcon,
     CalendarIcon,
     FileJsonIcon,
     SquareCheckIcon,
     UserIcon,
+    UsersIcon,
+    ListChecksIcon,
+    ListTodoIcon,
   } from "lucide-svelte"
 
   export let type: FieldType
+  export let field: Field | undefined = undefined
 
   const map: Record<FieldType, ComponentType> = {
     id: KeyRoundIcon,
@@ -36,14 +38,14 @@
     updatedBy: UserRoundCheck,
     reference: SquareArrowOutUpRightIcon,
     rollup: CalculatorIcon,
-    select: ListIcon,
+    select: field?.type === "select" && field.isMultiple ? ListChecksIcon : ListTodoIcon,
     rating: StarIcon,
     email: MailIcon,
     attachment: FileTextIcon,
     date: CalendarIcon,
     json: FileJsonIcon,
     checkbox: SquareCheckIcon,
-    user: UserIcon,
+    user: field?.type === "user" && field.isMultiple ? UsersIcon : UserIcon,
   }
 </script>
 

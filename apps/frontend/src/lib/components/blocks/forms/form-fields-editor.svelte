@@ -132,7 +132,7 @@
           >
             <div class="flex items-center gap-2">
               <GripVerticalIcon class="h-3 w-3" />
-              <FieldIcon class="text-muted-foreground h-4 w-4" type={field.type} />
+              <FieldIcon {field} class="text-muted-foreground h-4 w-4" type={field.type} />
               <span>{field.name.value}</span>
               {#if formField.getRequired(field)}
                 <span class="text-red-500">*</span>

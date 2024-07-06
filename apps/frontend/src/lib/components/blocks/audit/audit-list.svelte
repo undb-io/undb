@@ -53,7 +53,7 @@
                 {#if field}
                   {@const previousValue = previousValues[fieldId]}
                   <div class="text-muted-foreground flex items-center gap-2">
-                    <FieldIcon type={field.type} class="h-3 w-3" />
+                    <FieldIcon {field} type={field.type} class="h-3 w-3" />
                     {field.name.value}
                   </div>
                   {#if previousValue}
