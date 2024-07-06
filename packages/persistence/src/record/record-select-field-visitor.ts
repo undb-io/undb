@@ -162,9 +162,9 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
           this.eb
             .fn("json_object", [
               sql.raw("'username'"),
-              this.eb.fn.coalesce(`${field.id.value}.${users.username.name}`, sql`NULL`),
+              this.eb.fn.coalesce(`${user}.${users.username.name}`, sql`NULL`),
               sql.raw("'email'"),
-              this.eb.fn.coalesce(`${field.id.value}.${users.email.name}`, sql`NULL`),
+              this.eb.fn.coalesce(`${user}.${users.email.name}`, sql`NULL`),
             ])
             .as(as),
         )

@@ -93,8 +93,10 @@ export class RecordReferenceVisitor implements IFieldVisitor {
     throw new Error("Method not implemented.")
   }
   user(field: UserField): void {
-    this.qb = this.qb
-      .leftJoin(field.id.value, `${this.table.id.value}.${ID_TYPE}`, `${field.id.value}.${ID_TYPE}`)
-      .groupBy(`${this.table.id.value}.${ID_TYPE}`)
+    if (field.isMultiple) {
+      this.qb = this.qb
+        .leftJoin(field.id.value, `${this.table.id.value}.${ID_TYPE}`, `${field.id.value}.${ID_TYPE}`)
+        .groupBy(`${this.table.id.value}.${ID_TYPE}`)
+    }
   }
 }

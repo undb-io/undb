@@ -159,9 +159,9 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
         b.references(`${user}.${users.id.name}`).onDelete("restrict"),
       )
       this.addColumn(c)
+    } else {
+      const c = this.tb.addColumn(field.id.value, "json")
+      this.addColumn(c)
     }
-
-    const c = this.tb.addColumn(field.id.value, "json")
-    this.addColumn(c)
   }
 }

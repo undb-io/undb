@@ -37,6 +37,8 @@
 
   const q = writable("")
 
+  $: fields = $foreignTable.getOrderedVisibleFields().slice(0, 4)
+
   const getForeignTableRecords = createQuery(
     derived([foreignTable, q, perPage, currentPage, selected], ([$table, $q, $perPage, $currentPage, $selected]) => {
       return {
@@ -69,8 +71,6 @@
     total = $getForeignTableRecords.data.total
   }
   $: totalPage = Math.ceil(total / $perPage)
-
-  $: fields = $foreignTable.getOrderedVisibleFields().slice(0, 4)
 
   $: records = (($getForeignTableRecords.data as any)?.records as IRecordsDTO) ?? []
   $: dos = Records.fromJSON($foreignTable, records).map
