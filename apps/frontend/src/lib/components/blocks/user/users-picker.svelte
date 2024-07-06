@@ -1,7 +1,6 @@
 <script lang="ts">
   import Check from "svelte-radix/Check.svelte"
   import CaretSort from "svelte-radix/CaretSort.svelte"
-  import { tick } from "svelte"
   import * as Command from "$lib/components/ui/command/index.js"
   import * as Popover from "$lib/components/ui/popover/index.js"
   import { Button } from "$lib/components/ui/button/index.js"
@@ -32,11 +31,13 @@
         variant="outline"
         role="combobox"
         aria-expanded={open}
-        class="w-full justify-between"
+        class={cn("w-full justify-between", $$restProps.class)}
       >
-        {#each selectedValue as user}
-          {user.label}
-        {/each}
+        <div class="flex flex-1 items-center gap-1 overflow-hidden">
+          {#each selectedValue as user}
+            {user.label}
+          {/each}
+        </div>
         <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>
     </slot>

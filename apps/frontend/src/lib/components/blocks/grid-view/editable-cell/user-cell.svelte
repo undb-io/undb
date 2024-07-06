@@ -57,7 +57,22 @@
         </UserPicker>
       {/if}
     {:else if Array.isArray(value) || value === null}
-      <UsersPicker bind:value bind:open onValueChange={onSelect} />
+      <UsersPicker bind:value bind:open onValueChange={onSelect}>
+        <div
+          slot="trigger"
+          let:builder
+          use:builderActions={{ builders: [builder] }}
+          {...getAttrs([builder])}
+          class="flex w-full flex-nowrap items-center justify-between overflow-hidden"
+        >
+          <div class="flex flex-1 items-center gap-1 overflow-hidden">
+            {#each value ?? [] as user, i}
+              <UserFieldComponent disableHoverCard value={user} displayValue={displayValue?.[i]} />
+            {/each}
+          </div>
+          <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
+        </div>
+      </UsersPicker>
     {/if}
   {:else}
     <div class="flex w-full items-center justify-between">
