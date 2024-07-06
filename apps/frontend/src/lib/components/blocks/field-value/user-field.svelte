@@ -2,9 +2,10 @@
   import { cn } from "$lib/utils"
   import * as HoverCard from "$lib/components/ui/hover-card"
   import UserCard from "../user/user-card.svelte"
+  import type { ISingleUserFieldValue, IUserFieldDisplayValue } from "@undb/table"
 
-  export let value: string | undefined = undefined
-  export let displayValue: string | undefined = undefined
+  export let value: ISingleUserFieldValue = null
+  export let displayValue: IUserFieldDisplayValue = null
 
   export let disableHoverCard = false
 </script>
@@ -18,7 +19,7 @@
           "inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10",
         )}
       >
-        {displayValue}
+        {displayValue?.username}
       </span>
     </HoverCard.Trigger>
 

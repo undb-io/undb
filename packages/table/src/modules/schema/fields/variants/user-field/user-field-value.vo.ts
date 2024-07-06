@@ -7,7 +7,22 @@ const userId = z.string()
 
 export const userFieldValue = z.union([userId, userId.array()]).nullable()
 
+export const singleUserFieldValue = userId.nullable()
+export type ISingleUserFieldValue = z.infer<typeof singleUserFieldValue>
+
+export const multipleUserFieldValue = userId.array().nullable()
+export type IMultipleUserFieldValue = z.infer<typeof multipleUserFieldValue>
+
 export type IUserFieldValue = z.infer<typeof userFieldValue>
+
+export let userFieldDisplayValue = z
+  .object({
+    username: z.string(),
+    email: z.string().email(),
+  })
+  .nullable()
+
+export type IUserFieldDisplayValue = z.infer<typeof userFieldDisplayValue>
 
 export class UserFieldValue extends ValueObject<IUserFieldValue> {
   constructor(value: IUserFieldValue) {

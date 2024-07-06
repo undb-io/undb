@@ -9,6 +9,7 @@
   import { GetUsersStore } from "$houdini"
   import { Skeleton } from "$lib/components/ui/skeleton"
   import * as Avatar from "$lib/components/ui/avatar"
+  import type { ISingleUserFieldValue } from "@undb/table"
 
   let q = ""
   $: store = new GetUsersStore()
@@ -17,7 +18,7 @@
     $store.data?.members.map((m) => ({ value: m?.user.id, label: m?.user.username, email: m?.user.email })) ?? []
 
   export let open = false
-  export let value: string | undefined
+  export let value: ISingleUserFieldValue
 
   $: selectedValue = users.find((f) => f.value === value)?.label ?? "Select a User..."
 

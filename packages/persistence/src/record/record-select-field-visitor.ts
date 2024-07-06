@@ -158,11 +158,16 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
       const name = this.eb
         .selectFrom(user)
         // .select(`${user}.${users.username.name}`)
-        .select((sb) => [
-          sql`json_object(username, ${user}.${users.username.name}, email ${user}.${users.email.name})`.as(
-            "json_result",
-          ),
-        ])
+        .select(
+          this.eb
+            .fn("json_object", [
+              sql.raw("'username'"),
+              this.eb.fn.coalesce(`${field.id.value}.${users.username.name}`, sql`NULL`),
+              sql.raw("'email'"),
+              this.eb.fn.coalesce(`${field.id.value}.${users.email.name}`, sql`NULL`),
+            ])
+            .as(as),
+        )
         .whereRef(field.id.value, "=", `${user}.${users.id.name}`)
         .limit(1)
         .as(as)
