@@ -8,6 +8,7 @@
   import SelectFieldOption from "./select-field-option.svelte"
   import RatingFieldOption from "./rating-field-option.svelte"
   import AttachmentFieldOption from "./attachment-field-option.svelte"
+  import UserFieldOption from "./user-field-option.svelte"
 
   export let constraint: IFieldConstraint | undefined
   export let option: any | undefined
@@ -23,6 +24,7 @@
     select: SelectFieldOption,
     rating: RatingFieldOption,
     attachment: AttachmentFieldOption,
+    user: UserFieldOption,
   }
 
   export let type: NoneSystemFieldType

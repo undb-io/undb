@@ -52,8 +52,12 @@
   let single = "single"
   $: isSingle = "single" === single
 
-  $: if (isSingle && constraint) {
-    constraint.max = 1
+  $: if (constraint) {
+    if (isSingle) {
+      constraint.max = 1
+    } else {
+      constraint.max = undefined
+    }
   }
 
   $: selected = isSingle

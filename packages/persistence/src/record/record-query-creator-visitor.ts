@@ -22,11 +22,14 @@ import {
   type UpdatedByField,
 } from "@undb/table"
 import type { EmailField } from "@undb/table/src/modules/schema/fields/variants/email-field"
-import type { QueryCreator, SelectExpression } from "kysely"
+import { getTableName } from "drizzle-orm"
+import { sql, type QueryCreator, type SelectExpression } from "kysely"
 import type { IQueryBuilder } from "../qb"
+import { users } from "../tables"
 import { JoinTable } from "../underlying/reference/join-table"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { getRollupFn } from "../underlying/underlying-table.util"
+import { getJsonExpandedFieldName } from "./record-utils"
 
 export class RecordQueryCreatorVisitor implements IFieldVisitor {
   constructor(
@@ -44,6 +47,12 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
     for (const referenceField of referenceFields) {
       referenceField.accept(this)
     }
+
+    const userFields = this.table.schema.getUserFields(this.visibleFields)
+    for (const userField of userFields) {
+      userField.accept(this)
+    }
+
     return this.creator ?? this.qb
   }
 
@@ -61,7 +70,32 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
   date(field: DateField): void {}
   attachment(field: AttachmentField): void {}
   json(field: JsonField): void {}
-  user(field: UserField): void {}
+  user(field: UserField): void {
+    if (field.isMultiple) {
+      const usersTable = getTableName(users)
+      const tableName = this.table.id.value
+      const expandedName = getJsonExpandedFieldName(field)
+      this.creator = (this.creator || this.qb)
+        .with(expandedName, (db) =>
+          db
+            .selectFrom([
+              tableName,
+              sql.raw(`json_each(COALESCE(${tableName}.${field.id.value}, '[]'))`).as("json_each"),
+            ])
+            .select([`${tableName}.${ID_TYPE}`, `json_each.value as ${field.id.value}`]),
+        )
+        .with(field.id.value, (db) =>
+          db
+            .selectFrom(expandedName)
+            .select([
+              `${expandedName}.${ID_TYPE}`,
+              `${usersTable}.${users.username.name} as ${users.username.name}`,
+              `${usersTable}.${users.email.name} as ${users.email.name}`,
+            ])
+            .innerJoin(usersTable, `${expandedName}.${field.id.value}`, `${usersTable}.${users.id.name}`),
+        )
+    }
+  }
   checkbox(field: CheckboxField): void {}
   reference(field: ReferenceField): void {
     const foreignTable = this.foreignTables.get(field.foreignTableId)

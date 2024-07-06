@@ -153,10 +153,15 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     this.addColumn(c)
   }
   user(field: UserField): void {
-    const user = getTableName(users)
-    const c = this.tb.addColumn(field.id.value, "text", (b) =>
-      b.references(`${user}.${users.id.name}`).onDelete("restrict"),
-    )
+    if (field.isSingle) {
+      const user = getTableName(users)
+      const c = this.tb.addColumn(field.id.value, "text", (b) =>
+        b.references(`${user}.${users.id.name}`).onDelete("restrict"),
+      )
+      this.addColumn(c)
+    }
+
+    const c = this.tb.addColumn(field.id.value, "json")
     this.addColumn(c)
   }
 }

@@ -63,12 +63,11 @@ export class RecordQueryRepository implements IRecordQueryRepository {
 
   private createQuery(table: TableDo, foreignTables: Map<string, TableDo>, visibleFields: Field[]) {
     const t = new UnderlyingTable(table)
-    const referenceFields = table.schema.getReferenceFields(visibleFields)
     const qb = new RecordQueryCreatorVisitor(this.qb, table, foreignTables, visibleFields).create()
 
     return qb
       .selectFrom(table.id.value)
-      .$call((qb) => new RecordReferenceVisitor(qb, table).join(referenceFields))
+      .$call((qb) => new RecordReferenceVisitor(qb, table).join(visibleFields))
       .select((sb) => new RecordSelectFieldVisitor(t, foreignTables, sb).$select(visibleFields))
   }
 

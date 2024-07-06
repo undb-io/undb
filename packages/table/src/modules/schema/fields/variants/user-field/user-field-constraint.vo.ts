@@ -4,7 +4,7 @@ import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.v
 export const userFieldConstraint = z
   .object({
     // min: z.number().int().positive(),
-    // max: z.number().int().positive(),
+    max: z.number().int().positive(),
   })
   .merge(baseFieldConstraint)
   .partial()
@@ -15,13 +15,33 @@ export class UserFieldConstraint extends FieldConstraintVO<IUserFieldConstraint>
   constructor(dto: IUserFieldConstraint) {
     super({
       required: dto.required,
+      max: dto.max,
     })
   }
-  override get schema() {
-    let base: ZodTypeAny = z.string()
 
-    if (!this.props.required) {
-      base = base.optional().nullable()
+  public get isSingle() {
+    return this.props.max === 1
+  }
+
+  override get schema() {
+    if (this.isSingle) {
+      let base: ZodTypeAny = z.string()
+
+      if (!this.props.required) {
+        base = base.optional().nullable()
+      }
+
+      return base
+    }
+
+    let base = z.string().array()
+
+    if (this.props.required) {
+      base = base.min(1)
+    }
+
+    if (this.props.max) {
+      base = base.max(this.props.max)
     }
 
     return base

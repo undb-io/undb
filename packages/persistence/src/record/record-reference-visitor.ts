@@ -30,7 +30,11 @@ export class RecordReferenceVisitor implements IFieldVisitor {
     private readonly table: TableDo,
   ) {}
 
-  join(fields: Field[]) {
+  join(visibleFields: Field[]): SelectQueryBuilder<any, any, any> {
+    const referenceFields = this.table.schema.getReferenceFields(visibleFields)
+    const userFields = this.table.schema.getUserFields(visibleFields)
+    const fields = [...referenceFields, ...userFields]
+
     for (const field of fields) {
       field.accept(this)
     }
@@ -89,6 +93,8 @@ export class RecordReferenceVisitor implements IFieldVisitor {
     throw new Error("Method not implemented.")
   }
   user(field: UserField): void {
-    throw new Error("Method not implemented.")
+    this.qb = this.qb
+      .leftJoin(field.id.value, `${this.table.id.value}.${ID_TYPE}`, `${field.id.value}.${ID_TYPE}`)
+      .groupBy(`${this.table.id.value}.${ID_TYPE}`)
   }
 }

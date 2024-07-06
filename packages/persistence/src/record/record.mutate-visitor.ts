@@ -2,6 +2,8 @@ import type { ISpecification, ISpecVisitor } from "@undb/domain"
 import {
   SelectField,
   SelectFieldValue,
+  UserField,
+  UserFieldValue,
   type AttachmentEmpty,
   type AttachmentEqual,
   type CheckboxEqual,
@@ -123,7 +125,11 @@ export class RecordMutateVisitor implements IRecordVisitor {
     }
   }
   userEqual(spec: UserEqual): void {
-    this.setData(spec.fieldId.value, spec.value)
+    const field = this.table.schema.getFieldById(spec.fieldId).expect("No field found") as UserField
+    const fieldValue = new UserFieldValue(spec.value)
+    const value = fieldValue.getValue(field)
+
+    this.setData(spec.fieldId.value, Array.isArray(value) ? JSON.stringify(value) : value)
   }
   userEmpty(spec: UserEmpty): void {
     this.setData(spec.fieldId.value, null)

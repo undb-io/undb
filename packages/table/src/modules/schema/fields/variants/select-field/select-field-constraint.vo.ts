@@ -32,7 +32,7 @@ export class SelectFieldConstraint extends FieldConstraintVO<ISelectFieldConstra
     } else {
       let base = optionId.array()
 
-      if (!this.props.required) {
+      if (this.props.required) {
         base = base.min(1)
       }
 

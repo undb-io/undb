@@ -14,6 +14,7 @@ import {
   RollupField,
   UpdatedAtField,
   UpdatedByField,
+  UserField,
   type IUpdateFieldDTO,
 } from "./fields"
 import type { FieldId } from "./fields/field-id.vo"
@@ -188,6 +189,10 @@ export class Schema extends ValueObject<Field[]> {
     }
 
     return references
+  }
+
+  getUserFields(fields: Field[] = this.fields): UserField[] {
+    return fields.filter((f) => f.type === "user") as UserField[]
   }
 
   getForeignTableIds(fields: Field[] = this.fields): Set<string> {

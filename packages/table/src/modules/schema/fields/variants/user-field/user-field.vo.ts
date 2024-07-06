@@ -46,6 +46,14 @@ export class UserField extends AbstractField<UserFieldValue> {
     return this.constraint.unwrapOrElse(() => new UserFieldConstraint({})).schema
   }
 
+  public get isSingle() {
+    return this.constraint.unwrapOrElse(() => new UserFieldConstraint({})).isSingle
+  }
+
+  public get isMultiple() {
+    return !this.isSingle
+  }
+
   override accept(visitor: IFieldVisitor): void {
     visitor.user(this)
   }

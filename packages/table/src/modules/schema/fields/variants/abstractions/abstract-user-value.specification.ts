@@ -3,11 +3,11 @@ import { isString } from "radash"
 import type { IRecordVisitor, RecordDO } from "../../../../records"
 import { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import type { FieldId } from "../../field-id.vo"
-import { UserFieldValue } from "../user-field"
+import { UserFieldValue, type IUserFieldValue } from "../user-field"
 
 export class UserEqual extends RecordComositeSpecification {
   constructor(
-    readonly value: string,
+    readonly value: IUserFieldValue,
     readonly fieldId: FieldId,
   ) {
     super(fieldId)

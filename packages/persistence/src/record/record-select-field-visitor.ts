@@ -149,18 +149,45 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     this.addSelect(this.getField(field.id.value))
   }
   user(field: UserField): void {
-    this.addSelect(this.getField(field.id.value))
-
-    const user = getTableName(users)
     const as = createDisplayFieldName(field)
+    if (field.isSingle) {
+      this.addSelect(this.getField(field.id.value))
 
-    const name = this.eb
-      .selectFrom(user)
-      .select(`${user}.${users.username.name}`)
-      .whereRef(field.id.value, "=", `${user}.${users.id.name}`)
-      .limit(1)
-      .as(as)
+      const user = getTableName(users)
 
-    this.addSelect(name)
+      const name = this.eb
+        .selectFrom(user)
+        // .select(`${user}.${users.username.name}`)
+        .select((sb) => [
+          sql`json_object(username, ${user}.${users.username.name}, email ${user}.${users.email.name})`.as(
+            "json_result",
+          ),
+        ])
+        .whereRef(field.id.value, "=", `${user}.${users.id.name}`)
+        .limit(1)
+        .as(as)
+
+      this.addSelect(name)
+    } else {
+      this.addSelect(this.getField(field.id.value))
+      this.addSelect(
+        this.eb
+          .case()
+          .when(`${this.table.name}.${field.id.value}`, "is", null)
+          .then(null)
+          .else(
+            this.eb.fn("json_group_array", [
+              this.eb.fn("json_object", [
+                sql.raw("'username'"),
+                this.eb.fn.coalesce(`${field.id.value}.${users.username.name}`, sql`NULL`),
+                sql.raw("'email'"),
+                this.eb.fn.coalesce(`${field.id.value}.${users.email.name}`, sql`NULL`),
+              ]),
+            ]),
+          )
+          .end()
+          .as(as),
+      )
+    }
   }
 }

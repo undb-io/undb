@@ -39,6 +39,16 @@ export function getRawFieldName(displayFieldName: DisplayFieldName): string {
 }
 
 /**
+ * Returns the expanded field name for a given field.
+ *
+ * @param field - The field object.
+ * @returns The expanded field name.
+ */
+export function getJsonExpandedFieldName(field: Field): string {
+  return `${field.id.value}_expanded`
+}
+
+/**
  * Get the record DTO from an entity. The record DTO is the DTO that is returned to the client. It contains the values and display values of the record.
  * @param entity The entity to get the record DTO from.
  * @returns The record DTO.
@@ -74,7 +84,7 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO 
         (field.type === "reference" ||
           field.type === "attachment" ||
           field.type === "json" ||
-          (field.type === "select" && field.isMultiple)) &&
+          ((field.type === "select" || field.type === "user") && field.isMultiple)) &&
         isString(value)
       ) {
         values[key] = JSON.parse(value)
