@@ -2,6 +2,7 @@ import { executionContext } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import { None, Option, Some, andOptions, type PaginatedDTO } from "@undb/domain"
 import {
+  FieldIdVo,
   ID_TYPE,
   RecordComositeSpecification,
   TableIdVo,
@@ -107,6 +108,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
 
     const spec = andOptions(rlsSpec, viewSpec, Option(filter)) as Option<RecordComositeSpecification>
     const pagination = query.into(undefined)?.pagination.into(undefined)
+    const select = query.into(undefined)?.select.into(undefined)
 
     const handlePagination = (qb: SelectQueryBuilder<any, any, any>) => {
       const limit = pagination!.limit as number
@@ -117,9 +119,11 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       return sort!.reduce((qb, s) => qb.orderBy(`${s.fieldId} ${s.direction}`), qb)
     }
 
-    const visibleFields = table.getOrderedVisibleFields(view.id.value)
-    const foreignTables = await this.getForeignTables(table, visibleFields)
-    const qb = this.createQuery(table, foreignTables, visibleFields)
+    const selectFields = select
+      ? select.map((f) => table.schema.getFieldById(new FieldIdVo(f)).into(undefined)).filter((f) => !!f)
+      : table.getOrderedVisibleFields(view.id.value)
+    const foreignTables = await this.getForeignTables(table, selectFields)
+    const qb = this.createQuery(table, foreignTables, selectFields)
 
     const result = await qb
       .$if(!!pagination?.limit, handlePagination)

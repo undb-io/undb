@@ -11,7 +11,7 @@ import type { RecordComositeSpecification } from "./record.composite-specificati
 import type { RecordDO } from "./record.do"
 
 export interface QueryArgs {
-  select: Option<RecordComositeSpecification>
+  select: Option<string[]>
   filter: Option<RecordComositeSpecification>
   pagination: Option<IPagination>
 }
@@ -33,7 +33,7 @@ export interface IRecordQueryRepository {
   aggregate(table: TableDo, viewId: Option<ViewId>): Promise<Record<string, AggregateResult>>
 }
 
-export function buildQuery(table: TableDo, dto: IGetRecordsDTO) {
+export function buildQuery(table: TableDo, dto: IGetRecordsDTO): Option<QueryArgs> {
   const query: QueryArgs = {
     filter: None,
     select: None,
@@ -53,6 +53,9 @@ export function buildQuery(table: TableDo, dto: IGetRecordsDTO) {
     } else {
       query.filter = spec
     }
+  }
+  if (dto.select) {
+    query.select = Some(dto.select)
   }
   return Some(query)
 }

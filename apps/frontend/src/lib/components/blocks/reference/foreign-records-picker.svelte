@@ -60,6 +60,7 @@
                   ],
                 }
               : undefined,
+            select: fields.map((f) => f.id.value),
             pagination: { limit: $perPage, page: $currentPage },
           }),
       }

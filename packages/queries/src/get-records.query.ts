@@ -1,5 +1,5 @@
 import { Query, type IPagination, type QueryProps } from "@undb/domain"
-import { getRecordsDTO, recordsDTO, viewFilterGroup, type IViewFilterGroup } from "@undb/table"
+import { getRecordsDTO, recordsDTO, type IViewFilterGroup } from "@undb/table"
 import { z } from "@undb/zod"
 
 export const getRecordsQuery = getRecordsDTO
@@ -9,7 +9,6 @@ export type IGetRecordsQuery = z.infer<typeof getRecordsQuery>
 export const getRecordsOutput = z.object({
   total: z.number(),
   records: recordsDTO,
-  filters: viewFilterGroup.optional(),
 })
 
 export type IGetRecordsOutput = z.infer<typeof getRecordsOutput>
@@ -20,6 +19,7 @@ export class GetRecordsQuery extends Query implements IGetRecordsQuery {
   public readonly filters?: IViewFilterGroup
   public readonly q?: string
   public readonly pagination?: IPagination
+  public readonly select?: string[]
 
   constructor(props: QueryProps<IGetRecordsQuery>) {
     super()
@@ -28,5 +28,6 @@ export class GetRecordsQuery extends Query implements IGetRecordsQuery {
     this.filters = props.filters
     this.q = props.q
     this.pagination = props.pagination
+    this.select = props.select
   }
 }
