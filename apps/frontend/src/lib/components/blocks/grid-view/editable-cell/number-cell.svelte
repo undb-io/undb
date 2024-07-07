@@ -4,6 +4,7 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { NumberField } from "@undb/table"
   import { toast } from "svelte-sonner"
+  import { debounce } from "radash"
 
   export let tableId: string
   export let field: NumberField
@@ -39,10 +40,9 @@
 {#if isEditing}
   <input
     bind:this={el}
-    {...$$restProps}
     class={cn($$restProps.class, "focus-visible:ring-ring w-full rounded-none border-none outline-none focus:bg-white")}
     {value}
-    on:change={onChange}
+    on:change={debounce({ delay: 100 }, onChange)}
     type="number"
   />
 {:else}

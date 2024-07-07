@@ -8,4 +8,4 @@
   }
 </script>
 
-<Input {...$$restProps} disabled={readonly} {value} on:input={onInput} type="number" on:change />
+<Input class={$$restProps.class} disabled={readonly} {value} on:input={onInput} type="number" on:change />
