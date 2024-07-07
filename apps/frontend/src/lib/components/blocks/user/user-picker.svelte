@@ -14,13 +14,13 @@
   let q = ""
   $: store = new GetUsersStore()
   $: open && store.fetch({ variables: { q } })
-  $: users =
-    $store.data?.members.map((m) => ({ value: m?.user.id, label: m?.user.username, email: m?.user.email })) ?? []
+  $: users = $store.data?.members ?? []
 
   export let open = false
   export let value: ISingleUserFieldValue
+  export let onValueChange: (value: ISingleUserFieldValue) => void = () => {}
 
-  $: selectedValue = users.find((f) => f.value === value)?.label ?? "Select a User..."
+  $: selectedValue = users.find((f) => f?.user.id === value)
 
   // We want to refocus the trigger button when the user selects
   // an item from the list so users can continue navigating the
@@ -35,7 +35,7 @@
 
 <Popover.Root bind:open let:ids>
   <Popover.Trigger asChild let:builder>
-    <slot name="trigger" {builder}>
+    <slot name="trigger" {builder} selected={selectedValue}>
       <Button
         builders={[builder]}
         variant="outline"
@@ -67,24 +67,25 @@
         {/if}
         {#each users as user}
           <Command.Item
-            value={user.value}
+            value={user?.user.id}
             onSelect={(currentValue) => {
-              value = currentValue
+              value = currentValue === value ? null : currentValue
               closeAndFocusTrigger(ids.trigger)
+              onValueChange(value)
             }}
           >
-            <Check class={cn("mr-2 h-4 w-4", value !== user.value && "text-transparent")} />
+            <Check class={cn("mr-2 h-4 w-4", value !== user?.user.id && "text-transparent")} />
             <div class="flex items-center gap-1">
               <Avatar.Root>
-                <Avatar.Image src="" alt={user.label} />
-                <Avatar.Fallback>{user.label?.slice(0, 2)}</Avatar.Fallback>
+                <Avatar.Image src="" alt={user?.user.username} />
+                <Avatar.Fallback>{user?.user.username?.slice(0, 2)}</Avatar.Fallback>
               </Avatar.Root>
               <div>
                 <div class="font-semibold">
-                  {user.label}
+                  {user?.user.username}
                 </div>
                 <div class="text-muted-foreground text-xs">
-                  {user.email}
+                  {user?.user.email}
                 </div>
               </div>
             </div>

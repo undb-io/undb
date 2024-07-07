@@ -13,19 +13,18 @@
   let q = ""
   $: store = new GetUsersStore()
   $: open && store.fetch({ variables: { q } })
-  $: users =
-    $store.data?.members.map((m) => ({ value: m?.user.id, label: m?.user.username, email: m?.user.email })) ?? []
+  $: users = $store.data?.members ?? []
 
   export let open = false
   export let value: IMultipleUserFieldValue
   export let onValueChange: (value: IMultipleUserFieldValue) => void = () => {}
 
-  $: selectedValue = value?.map((v) => users.find((f) => f.value === v)).filter((v) => !!v) ?? []
+  $: selectedValue = value?.map((v) => users.find((f) => f?.user.id === v)).filter((v) => !!v) ?? []
 </script>
 
 <Popover.Root bind:open let:ids>
   <Popover.Trigger asChild let:builder>
-    <slot name="trigger" {builder}>
+    <slot name="trigger" {builder} selected={selectedValue}>
       <Button
         builders={[builder]}
         variant="outline"
@@ -35,7 +34,7 @@
       >
         <div class="flex flex-1 items-center gap-1 overflow-hidden">
           {#each selectedValue as user}
-            {user.label}
+            {user?.user.username}
           {/each}
         </div>
         <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -61,7 +60,7 @@
         {/if}
         {#each users as user}
           <Command.Item
-            value={user.value}
+            value={user?.user.id}
             onSelect={(currentValue) => {
               value = value?.includes(currentValue)
                 ? value?.filter((v) => v !== currentValue)
@@ -70,18 +69,18 @@
               onValueChange(value ?? [])
             }}
           >
-            <Check class={cn("mr-2 h-4 w-4", !value?.includes(user.value ?? "") && "text-transparent")} />
+            <Check class={cn("mr-2 h-4 w-4", !value?.includes(user?.user.id ?? "") && "text-transparent")} />
             <div class="flex items-center gap-1">
               <Avatar.Root>
-                <Avatar.Image src="" alt={user.label} />
-                <Avatar.Fallback>{user.label?.slice(0, 2)}</Avatar.Fallback>
+                <Avatar.Image src="" alt={user?.user.username} />
+                <Avatar.Fallback>{user?.user.username?.slice(0, 2)}</Avatar.Fallback>
               </Avatar.Root>
               <div>
                 <div class="font-semibold">
-                  {user.label}
+                  {user?.user.username}
                 </div>
                 <div class="text-muted-foreground text-xs">
-                  {user.email}
+                  {user?.user.email}
                 </div>
               </div>
             </div>
