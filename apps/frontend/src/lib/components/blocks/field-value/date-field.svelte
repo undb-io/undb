@@ -8,7 +8,7 @@
 </script>
 
 {#if internalValue}
-  <span class={$$restProps.class}>{internalValue || ""}</span>
+  <div class={$$restProps.class}>{internalValue || ""}</div>
 {:else}
-  <span class={$$restProps.class}>{placeholder}</span>
+  <div class={$$restProps.class}>{placeholder}</div>
 {/if}

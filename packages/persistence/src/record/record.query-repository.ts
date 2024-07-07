@@ -74,9 +74,8 @@ export class RecordQueryRepository implements IRecordQueryRepository {
   }
 
   async findOneById(table: TableDo, id: RecordId): Promise<Option<IRecordDTO>> {
-    const visibleFields = table.getOrderedVisibleFields()
-    const foreignTables = await this.getForeignTables(table, visibleFields)
-    const qb = this.createQuery(table, foreignTables, visibleFields)
+    const foreignTables = await this.getForeignTables(table, table.schema.fields)
+    const qb = this.createQuery(table, foreignTables, table.schema.fields)
 
     const result = await qb.where(`${table.id.value}.${ID_TYPE}`, "=", id.value).executeTakeFirst()
 

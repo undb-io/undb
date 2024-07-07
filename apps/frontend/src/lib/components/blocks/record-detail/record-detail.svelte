@@ -13,6 +13,10 @@
   import { pick } from "radash"
   import { queryParam } from "sveltekit-search-params"
   import type { Readable } from "svelte/store"
+  import * as Collapsible from "$lib/components/ui/collapsible"
+  import { builderActions, getAttrs } from "bits-ui"
+  import Button from "$lib/components/ui/button/button.svelte"
+  import { preferences } from "$lib/store/persisted.store"
 
   export let readonly = false
 
@@ -90,36 +94,39 @@
 
   $: dirty = !!$tainted
   $: disabled = !$tainted || !!$allErrors.length
+
+  $: hiddenFields = $table.getOrderedHiddenFields()
 </script>
 
 <form
   method="POST"
   use:enhance
   id={`${$table.id.value}:updateRecord`}
-  class="my-4 space-y-4"
+  class="my-4 space-y-8"
   enctype="multipart/form-data"
 >
   {#each fields as field}
     {@const dirty = $tainted && $tainted[field.id.value]}
-    <Form.Field class="rounded-sm border p-2" {form} name={field.id.value}>
+    <Form.Field class="flex gap-4 space-y-0" {form} name={field.id.value}>
       <Form.Control let:attrs>
-        <Form.Label class="flex h-4 items-center justify-between gap-2">
+        <Form.Label class="pt-2jjjj flex h-4 w-48 items-center justify-between gap-2">
           <div class="flex items-center gap-2">
             <FieldIcon {field} type={field.type} class="h-4 w-4" />
-            <span>{field.name.value}</span>
+            <span class="flex-1 truncate">{field.name.value}</span>
             {#if field.required}
               <span class="text-red-500">*</span>
             {/if}
             {#if dirty}
               <span
                 class="me-2 rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300"
-                >updated</span
               >
+                updated
+              </span>
             {/if}
           </div>
         </Form.Label>
-        {#if field.isSystem}
-          <div class="py-3 text-sm">
+        <div class="flex-1">
+          {#if field.isSystem}
             <FieldValue
               {field}
               tableId={$table.id.value}
@@ -127,23 +134,87 @@
               value={values[field.id.value]}
               type={field.type}
               displayValue={displayValues[field.id.value]}
+              class="text-xs"
             />
-          </div>
-        {:else}
-          <FieldControl
-            {...attrs}
-            bind:value={$formData[field.id.value]}
-            {field}
-            tableId={$table.id.value}
-            recordId={$r}
-            displayValue={displayValues[field.id.value]}
-            {readonly}
-          />
-        {/if}
+          {:else}
+            <FieldControl
+              {...attrs}
+              bind:value={$formData[field.id.value]}
+              {field}
+              tableId={$table.id.value}
+              recordId={$r}
+              displayValue={displayValues[field.id.value]}
+              {readonly}
+            />
+          {/if}
+        </div>
       </Form.Control>
       <Form.FieldErrors />
     </Form.Field>
   {/each}
+
+  {#if hiddenFields.length}
+    <Collapsible.Root bind:open={$preferences.showHiddenFields} class="my-4">
+      <div class="flex w-full items-center gap-1">
+        <div class="h-[1px] flex-1 bg-gray-100"></div>
+        <Collapsible.Trigger asChild let:builder>
+          <Button builders={[builder]} variant="outline" size="sm" class="text-muted-foreground">
+            Show {hiddenFields.length} hidden fields
+          </Button>
+        </Collapsible.Trigger>
+        <div class="h-[1px] flex-1 bg-gray-100"></div>
+      </div>
+      <Collapsible.Content class="mt-4 space-y-8">
+        {#each hiddenFields as field}
+          {@const dirty = $tainted && $tainted[field.id.value]}
+          <Form.Field class="flex gap-4 space-y-0" {form} name={field.id.value}>
+            <Form.Control let:attrs>
+              <Form.Label class="pt-2jjjj flex h-4 w-48 items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <FieldIcon {field} type={field.type} class="h-4 w-4" />
+                  <span class="flex-1 truncate">{field.name.value}</span>
+                  {#if field.required}
+                    <span class="text-red-500">*</span>
+                  {/if}
+                  {#if dirty}
+                    <span
+                      class="me-2 rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300"
+                    >
+                      updated
+                    </span>
+                  {/if}
+                </div>
+              </Form.Label>
+              <div class="flex-1">
+                {#if field.isSystem}
+                  <FieldValue
+                    {field}
+                    tableId={$table.id.value}
+                    recordId={record.id.value}
+                    value={values[field.id.value]}
+                    type={field.type}
+                    displayValue={displayValues[field.id.value]}
+                    class="text-xs"
+                  />
+                {:else}
+                  <FieldControl
+                    {...attrs}
+                    bind:value={$formData[field.id.value]}
+                    {field}
+                    tableId={$table.id.value}
+                    recordId={$r}
+                    displayValue={displayValues[field.id.value]}
+                    {readonly}
+                  />
+                {/if}
+              </div>
+            </Form.Control>
+            <Form.FieldErrors />
+          </Form.Field>
+        {/each}
+      </Collapsible.Content>
+    </Collapsible.Root>
+  {/if}
 </form>
 
 <!-- <SuperDebug data={$formData} /> -->

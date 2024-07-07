@@ -4,7 +4,9 @@
 </script>
 
 {#if !value}
-  {placeholder || ""}
+  <div>
+    {placeholder || ""}
+  </div>
 {:else}
-  <span class={$$restProps.class}>{value}</span>
+  <div class={$$restProps.class}>{value}</div>
 {/if}

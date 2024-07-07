@@ -37,10 +37,12 @@
       builders={[builder]}
       class="flex w-full items-center justify-between"
     >
-      {#each value ?? [] as user, i}
-        {@const value = selected.find((u) => u.user.id === user)?.user ?? displayValue?.[i]}
-        <UserFieldComponent disableHoverCard value={user} displayValue={value} />
-      {/each}
+      <div class="flex flex-1 items-center gap-2">
+        {#each value ?? [] as user, i}
+          {@const value = selected.find((u) => u.user.id === user)?.user ?? displayValue?.[i]}
+          <UserFieldComponent disableHoverCard value={user} displayValue={value} />
+        {/each}
+      </div>
       <ChevronsUpDownIcon class="text-muted-foreground h-3 w-3" />
     </Button>
   </UsersPicker>

@@ -97,6 +97,16 @@ export class TableDo extends AggregateRoot<ITableEvents> {
       .filter((field) => (view.showSystemFields ? true : !field.isSystem))
   }
 
+  getOrderedHiddenFields(viewId?: string): Field[] {
+    const view = this.views.getViewById(viewId)
+
+    const hiddenFields = this.getViewFields(viewId).getHiddenFields()
+
+    return hiddenFields
+      .map((fieldId) => this.schema.getFieldById(new FieldIdVo(fieldId)).unwrap())
+      .filter((field) => (view.showSystemFields ? true : !field.isSystem))
+  }
+
   getViewOption(viewId?: string) {
     return this.views.getViewById(viewId).option.unwrapOrElse(() => ViewOption.default())
   }
