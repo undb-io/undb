@@ -10,7 +10,7 @@
 
   export let open: boolean
 
-  $: browser && open && store.fetch({ variables: { id: userId }, policy: "NetworkOnly" })
+  $: browser && open && store.fetch({ variables: { id: userId } })
   $: member = $store.data?.memberById
 </script>
 

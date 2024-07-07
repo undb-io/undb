@@ -4,6 +4,7 @@
   import { createMutation } from "@tanstack/svelte-query"
   import type { StringField } from "@undb/table"
   import { toast } from "svelte-sonner"
+  import { gridViewStore } from "../grid-view.store"
 
   export let tableId: string
   export let field: StringField
@@ -16,6 +17,7 @@
     mutationFn: trpc.record.update.mutate,
     onSuccess(data, variables, context) {
       el?.blur()
+      gridViewStore.deselect()
     },
     onError(error: Error) {
       toast.error(error.message)
