@@ -75,7 +75,10 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO 
           parsed[key] = JSON.parse(value as string)
         }
         displayValues[key] = parsed
-      } else if (field.type === "user" && isString(value)) {
+      } else if (
+        (field.type === "user" || field.type === "createdBy" || field.type === "updatedBy") &&
+        isString(value)
+      ) {
         displayValues[key] = JSON.parse(value)
       } else if (value) {
         displayValues[key] = value

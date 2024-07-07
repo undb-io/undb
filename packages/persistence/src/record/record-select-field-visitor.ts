@@ -53,6 +53,30 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   ) {
     this.addSelect(this.getField(ID_TYPE))
   }
+
+  #selectSingelUser(field: UserField | CreatedByField | UpdatedByField) {
+    const as = createDisplayFieldName(field)
+    const user = getTableName(users)
+
+    const name = this.eb
+      .selectFrom(user)
+      .select(
+        this.eb
+          .fn("json_object", [
+            sql.raw("'username'"),
+            this.eb.fn.coalesce(`${user}.${users.username.name}`, sql`NULL`),
+            sql.raw("'email'"),
+            this.eb.fn.coalesce(`${user}.${users.email.name}`, sql`NULL`),
+          ])
+          .as(as),
+      )
+      .whereRef(field.id.value, "=", `${user}.${users.id.name}`)
+      .limit(1)
+      .as(as)
+
+    this.addSelect(name)
+  }
+
   select(field: SelectField): void {
     this.addSelect(this.getField(field.id.value))
   }
@@ -68,32 +92,12 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   }
   createdBy(field: CreatedByField): void {
     this.addSelect(this.getField(field.id.value))
-    const user = getTableName(users)
-    const as = createDisplayFieldName(field)
-
-    const name = this.eb
-      .selectFrom(user)
-      .select(`${user}.${users.username.name}`)
-      .whereRef(field.id.value, "=", `${user}.${users.id.name}`)
-      .limit(1)
-      .as(as)
-
-    this.addSelect(name)
+    this.#selectSingelUser(field)
   }
 
   updatedBy(field: UpdatedByField): void {
     this.addSelect(this.getField(field.id.value))
-    const user = getTableName(users)
-    const as = createDisplayFieldName(field)
-
-    const name = this.eb
-      .selectFrom(user)
-      .select(`${user}.${users.username.name}`)
-      .whereRef(field.id.value, "=", `${user}.${users.id.name}`)
-      .limit(1)
-      .as(as)
-
-    this.addSelect(name)
+    this.#selectSingelUser(field)
   }
   updatedAt(field: UpdatedAtField): void {
     this.addSelect(this.getField(field.id.value))
@@ -152,27 +156,7 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     const as = createDisplayFieldName(field)
     if (field.isSingle) {
       this.addSelect(this.getField(field.id.value))
-
-      const user = getTableName(users)
-
-      const name = this.eb
-        .selectFrom(user)
-        // .select(`${user}.${users.username.name}`)
-        .select(
-          this.eb
-            .fn("json_object", [
-              sql.raw("'username'"),
-              this.eb.fn.coalesce(`${user}.${users.username.name}`, sql`NULL`),
-              sql.raw("'email'"),
-              this.eb.fn.coalesce(`${user}.${users.email.name}`, sql`NULL`),
-            ])
-            .as(as),
-        )
-        .whereRef(field.id.value, "=", `${user}.${users.id.name}`)
-        .limit(1)
-        .as(as)
-
-      this.addSelect(name)
+      this.#selectSingelUser(field)
     } else {
       this.addSelect(this.getField(field.id.value))
       this.addSelect(

@@ -8,10 +8,11 @@
   export let displayValue: IUserFieldDisplayValue = null
 
   export let disableHoverCard = false
+  let open = false
 </script>
 
 <div class={$$restProps.class}>
-  <HoverCard.Root>
+  <HoverCard.Root bind:open>
     <HoverCard.Trigger>
       {#if displayValue}
         <span
@@ -26,7 +27,7 @@
     </HoverCard.Trigger>
 
     {#if value && !disableHoverCard}
-      <UserCard userId={value} />
+      <UserCard {open} userId={value} />
     {/if}
   </HoverCard.Root>
 </div>

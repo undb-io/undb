@@ -20,6 +20,7 @@
   import JsonCell from "./editable-cell/json-cell.svelte"
   import AttachmentCell from "./editable-cell/attachment-cell.svelte"
   import ReferenceCell from "./editable-cell/reference-cell.svelte"
+  import ReadonlyUserCell from "./editable-cell/readonly-user-cell.svelte"
 
   const table = getTable()
 
@@ -39,8 +40,8 @@
     createdAt: DateField,
     updatedAt: DateField,
     autoIncrement: NumberField,
-    createdBy: UserField,
-    updatedBy: UserField,
+    createdBy: ReadonlyUserCell,
+    updatedBy: ReadonlyUserCell,
     reference: ReferenceCell,
     rollup: RollupField,
     select: SelectCell,
@@ -63,6 +64,7 @@
   {isEditing}
   {isSelected}
   {recordId}
+  readonly={field.isSystem}
   tableId={$table.id.value}
   class={cn(
     "flex h-8 items-center border border-transparent px-2 py-1 text-xs",

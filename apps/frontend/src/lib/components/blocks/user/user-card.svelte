@@ -8,7 +8,9 @@
 
   $: store = new GetMemberStore()
 
-  $: browser && store.fetch({ variables: { id: userId }, policy: "NetworkOnly" })
+  export let open: boolean
+
+  $: browser && open && store.fetch({ variables: { id: userId }, policy: "NetworkOnly" })
   $: member = $store.data?.memberById
 </script>
 
