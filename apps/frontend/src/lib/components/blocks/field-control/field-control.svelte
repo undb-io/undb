@@ -1,6 +1,5 @@
 <script lang="ts">
-  import type { Field, FieldType, NoneSystemField, NoneSystemFieldType } from "@undb/table"
-  import IdControl from "./id-control.svelte"
+  import type { NoneSystemField, NoneSystemFieldType } from "@undb/table"
   import StringControl from "./string-control.svelte"
   import NumberControl from "./number-control.svelte"
   import type { ComponentType } from "svelte"
@@ -20,6 +19,7 @@
   export let recordId: string | undefined
 
   export let value: any
+  export let displayValue: any
 
   function handleValue() {
     const { success } = field.valueSchema.safeParse(value)
@@ -52,6 +52,7 @@
   on:change
   {...$$restProps}
   bind:value
+  {displayValue}
   {field}
   {tableId}
   {recordId}

@@ -42,7 +42,7 @@
 <div class={$$restProps.class}>
   {#if isEditing}
     {#if field.isSingle}
-      {#if !Array.isArray(value)}
+      {#if !Array.isArray(value) && !Array.isArray(displayValue)}
         <UserPicker bind:open bind:value onValueChange={onSelect}>
           <div
             slot="trigger"
@@ -80,12 +80,12 @@
   {:else}
     <div class="flex w-full items-center justify-between">
       {#if field.isSingle}
-        {#if !Array.isArray(value)}
+        {#if !Array.isArray(value) && !Array.isArray(displayValue)}
           <UserFieldComponent disableHoverCard={!isSelected || isEditing} {value} {displayValue} />
         {/if}
       {:else}
         <div class="flex items-center gap-1 overflow-hidden">
-          {#if Array.isArray(value)}
+          {#if Array.isArray(value) && (Array.isArray(displayValue) || !displayValue)}
             {#each value as id, i}
               <UserFieldComponent
                 disableHoverCard={!isSelected || isEditing}
