@@ -3,7 +3,7 @@
   import Button from "$lib/components/ui/button/button.svelte"
   import RecordDetail from "./record-detail.svelte"
   import { queryParam, ssp } from "sveltekit-search-params"
-  import { getTable } from "$lib/store/table.store"
+  import { getTable, viewId } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createQuery, useQueryClient } from "@tanstack/svelte-query"
   import { RecordDO } from "@undb/table"
@@ -22,12 +22,15 @@
   const table = getTable()
 
   const record = createQuery(
-    derived([table, r], ([$table, $recordId]) => ({
-      queryKey: [$recordId, "get"],
+    derived([table, r, preferences], ([$table, $recordId, $preferences]) => ({
+      queryKey: [$recordId, "get", $preferences.showHiddenFields],
       queryFn: () =>
         trpc.record.get.query({
           tableId: $table?.id.value,
           id: $recordId!,
+          select: $preferences.showHiddenFields
+            ? undefined
+            : $table?.getOrderedVisibleFields($viewId).map((f) => f.id.value),
         }),
       enabled: !!$recordId,
     })),

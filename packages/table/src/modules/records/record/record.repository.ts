@@ -10,6 +10,10 @@ import type { RecordId } from "./record-id.vo"
 import type { RecordComositeSpecification } from "./record.composite-specification"
 import type { RecordDO } from "./record.do"
 
+export interface SingleQueryArgs {
+  select: Option<string[]>
+}
+
 export interface QueryArgs {
   select: Option<string[]>
   filter: Option<RecordComositeSpecification>
@@ -27,7 +31,7 @@ export interface IRecordRepository {
 
 export interface IRecordQueryRepository {
   find(table: TableDo, viewId: Option<ViewId>, query: Option<QueryArgs>): Promise<PaginatedDTO<IRecordDTO>>
-  findOneById(table: TableDo, id: RecordId): Promise<Option<IRecordDTO>>
+  findOneById(table: TableDo, id: RecordId, query: Option<SingleQueryArgs>): Promise<Option<IRecordDTO>>
   count(tableId: TableId): Promise<number>
 
   aggregate(table: TableDo, viewId: Option<ViewId>): Promise<Record<string, AggregateResult>>

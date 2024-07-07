@@ -15,6 +15,7 @@ import {
   type ITableRepository,
   type QueryArgs,
   type RecordId,
+  type SingleQueryArgs,
   type TableDo,
   type TableId,
   type ViewId,
@@ -73,9 +74,15 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       .select((sb) => new RecordSelectFieldVisitor(t, foreignTables, sb).$select(visibleFields))
   }
 
-  async findOneById(table: TableDo, id: RecordId): Promise<Option<IRecordDTO>> {
-    const foreignTables = await this.getForeignTables(table, table.schema.fields)
-    const qb = this.createQuery(table, foreignTables, table.schema.fields)
+  async findOneById(table: TableDo, id: RecordId, query: Option<SingleQueryArgs>): Promise<Option<IRecordDTO>> {
+    const select = query.into(undefined)?.select.into(undefined)
+
+    const selectFields = select
+      ? select.map((f) => table.schema.getFieldById(new FieldIdVo(f)).into(undefined)).filter((f) => !!f)
+      : table.schema.fields
+
+    const foreignTables = await this.getForeignTables(table, selectFields)
+    const qb = this.createQuery(table, foreignTables, selectFields)
 
     const result = await qb.where(`${table.id.value}.${ID_TYPE}`, "=", id.value).executeTakeFirst()
 

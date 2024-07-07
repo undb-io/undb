@@ -15,10 +15,12 @@ export type IGetRecordByIdOutput = z.infer<typeof getRecordByIdOutput>
 export class GetRecordByIdQuery extends Query implements IGetRecordByIdQuery {
   public readonly tableId: string
   public readonly id: string
+  public readonly select?: string[]
 
   constructor(props: QueryProps<IGetRecordByIdQuery>) {
     super()
     this.tableId = props.tableId
     this.id = props.id
+    this.select = props.select
   }
 }

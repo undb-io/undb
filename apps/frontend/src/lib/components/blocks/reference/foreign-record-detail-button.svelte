@@ -1,12 +1,10 @@
 <script lang="ts">
-  import { HistoryIcon, Maximize2Icon, PlusIcon } from "lucide-svelte"
+  import { HistoryIcon, Maximize2Icon } from "lucide-svelte"
   import * as Sheet from "$lib/components/ui/sheet"
-  import { derived, readonly, type Readable } from "svelte/store"
+  import { derived, writable, type Readable } from "svelte/store"
   import { RecordDO, type TableDo } from "@undb/table"
   import { Button } from "$lib/components/ui/button"
-  import CreateRecord from "../create-record/create-record.svelte"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
-  import { formId } from "$lib/store/tab.store"
   import { Skeleton } from "$lib/components/ui/skeleton"
   import { preferences } from "$lib/store/persisted.store"
   import AuditList from "../audit/audit-list.svelte"
@@ -20,25 +18,27 @@
   export let recordId: Readable<string>
 
   const client = useQueryClient()
+
+  const open = writable(false)
+  let disabled = false
+
   const record = createQuery(
-    derived([foreignTable, recordId], ([$table, $recordId]) => ({
-      queryKey: [$recordId, "get"],
+    derived([foreignTable, recordId, preferences, open], ([$table, $recordId, $preferences, $open]) => ({
+      queryKey: [$recordId, "get", $preferences.showHiddenFields, $open],
       queryFn: () =>
         trpc.record.get.query({
           tableId: $table?.id.value,
           id: $recordId!,
+          select: $preferences.showHiddenFields ? undefined : $table?.getOrderedVisibleFields().map((f) => f.id.value),
         }),
-      enabled: !!$recordId,
+      enabled: !!$recordId && !!$open,
     })),
   )
 
   $: recordDo = $record.data?.record ? RecordDO.fromJSON($foreignTable, $record.data?.record) : undefined
-
-  let open = false
-  let disabled = false
 </script>
 
-<Sheet.Root bind:open>
+<Sheet.Root bind:open={$open}>
   <Sheet.Trigger asChild let:builder>
     <Button variant="outline" size="xs" class={cn("h-7 w-7", $$restProps.class)} builders={[builder]}>
       <Maximize2Icon class="h-4 w-4" />
@@ -87,7 +87,7 @@
               <ScrollArea class="h-full overflow-auto px-4">
                 <RecordDetail
                   onSuccess={async () => {
-                    open = false
+                    $open = false
 
                     await client.invalidateQueries({
                       queryKey: ["records", $foreignTable.id.value],

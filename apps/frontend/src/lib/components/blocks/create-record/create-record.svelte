@@ -1,17 +1,14 @@
 <script lang="ts">
   import * as Form from "$lib/components/ui/form"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
-  import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import FieldControl from "../field-control/field-control.svelte"
-  import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
+  import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { toast } from "svelte-sonner"
-  import { beforeNavigate } from "$app/navigation"
-  import { derived, type Readable, type Writable } from "svelte/store"
+  import { derived, type Readable } from "svelte/store"
   import { FormIdVO, RecordDO, RecordIdVO, TableDo } from "@undb/table"
-  import { CREATE_RECORD_MODAL, closeModal } from "$lib/store/modal.store"
   import autoAnimate from "@formkit/auto-animate"
 
   // beforeNavigate(({ cancel }) => {
@@ -84,14 +81,14 @@
 </script>
 
 <form method="POST" use:enhance id="createRecord" enctype="multipart/form-data" class="my-4 space-y-4">
-  <ul use:autoAnimate class="space-y-2">
+  <ul use:autoAnimate class="space-y-8">
     {#each fields as field}
       {@const shouldShow =
         !tableForm || tableForm.getShouldShowField(field.id.value, $table.schema.fieldMapById, tempRecord)}
       {#if shouldShow}
-        <Form.Field class="rounded-sm border p-2" {form} name={field.id.value}>
+        <Form.Field class="text-muted-foreground flex gap-4 space-y-0" {form} name={field.id.value}>
           <Form.Control let:attrs>
-            <Form.Label class="flex items-center justify-between gap-2">
+            <Form.Label class="flex h-4 w-48 items-center justify-between gap-2 pt-2">
               <div class="flex items-center gap-2">
                 <FieldIcon {field} type={field.type} class="h-4 w-4" />
                 <span>{field.name.value}</span>
@@ -100,13 +97,15 @@
                 {/if}
               </div>
             </Form.Label>
-            <FieldControl
-              {...attrs}
-              bind:value={$formData[field.id.value]}
-              tableId={$table.id.value}
-              {field}
-              disabled={field.isSystem}
-            />
+            <div class="flex-1">
+              <FieldControl
+                {...attrs}
+                bind:value={$formData[field.id.value]}
+                tableId={$table.id.value}
+                {field}
+                disabled={field.isSystem}
+              />
+            </div>
           </Form.Control>
           <Form.FieldErrors />
         </Form.Field>

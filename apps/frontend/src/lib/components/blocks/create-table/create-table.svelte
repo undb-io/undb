@@ -19,9 +19,9 @@
   const mutation = createMutation({
     mutationFn: trpc.table.create.mutate,
     async onSuccess(data) {
+      closeModal(CREATE_TABLE_MODAL)
       await invalidate("undb:tables")
       await goto(`/t/${data}`)
-      closeModal(CREATE_TABLE_MODAL)
       baseId.set(null)
       form.reset()
     },
@@ -53,7 +53,10 @@
       resetForm: false,
       invalidateAll: true,
       onUpdate(event) {
-        if (!event.form.valid) return
+        if (!event.form.valid) {
+          console.log(event.form.errors)
+          return
+        }
         const baseId = $currentBase?.id
         if (!baseId) return
 
@@ -82,6 +85,6 @@
   </Form.Fieldset>
 </form>
 
-<!-- <div class="mt-2">
+<div class="mt-2">
   <SuperDebug data={$formData} />
-</div> -->
+</div>
