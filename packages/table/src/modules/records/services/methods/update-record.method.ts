@@ -10,7 +10,7 @@ export async function updateRecordMethod(
   const id = new TableIdVo(tableId)
   const table = (await this.tableRepository.findOneById(id)).expect("Table not found")
 
-  const record = (await this.repo.findOneById(table, new RecordIdVO(dto.id))).unwrap()
+  const record = (await this.repo.findOneById(table, new RecordIdVO(dto.id))).expect("Record not found: " + dto.id)
 
   const spec = record.update(table, dto.values)
   await this.repo.updateOneById(table, record, spec)

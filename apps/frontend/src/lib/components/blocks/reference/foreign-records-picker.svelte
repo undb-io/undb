@@ -98,7 +98,6 @@
           id: recordId,
           values: { [field.id.value]: $selected },
         })
-
         $getForeignTableRecords.refetch()
       }
     }
@@ -203,7 +202,7 @@
                               {...getAttrs([builder])}
                             >
                               <FieldValue
-                                {tableId}
+                                tableId={$foreignTable.id.value}
                                 recordId={record.id}
                                 {field}
                                 value={values[field.id.value]}
@@ -231,7 +230,7 @@
                                   {...getAttrs([builder])}
                                 >
                                   <FieldValue
-                                    {tableId}
+                                    tableId={$foreignTable.id.value}
                                     recordId={record.id}
                                     {field}
                                     value={values[field.id.value]}

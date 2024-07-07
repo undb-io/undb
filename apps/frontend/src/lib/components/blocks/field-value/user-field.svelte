@@ -24,7 +24,7 @@
         >
           <Avatar.Root class="absolute left-0 h-6 w-6 border">
             <Avatar.Image src="" alt={displayValue.username} />
-            <Avatar.Fallback>{displayValue.username.slice(0, 2)}</Avatar.Fallback>
+            <Avatar.Fallback>{displayValue.username?.slice(0, 2)}</Avatar.Fallback>
           </Avatar.Root>
 
           <span class="ml-5">
