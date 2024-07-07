@@ -7,6 +7,7 @@
     type MaybeConditionGroup,
     FieldIdVo,
     type Conjunction,
+    type FieldType,
   } from "@undb/table"
   import FilterField from "./filter-field.svelte"
   import OpPicker from "./op-picker.svelte"
@@ -21,6 +22,7 @@
 
   interface IField {
     id: string
+    type: FieldType
   }
 
   export let table: TableDo
@@ -29,7 +31,7 @@
   export let defaultConjunction: Conjunction = "and"
   export let filter: (field: IField) => boolean = () => true
 
-  $: filteredFields = table.getOrderedVisibleFields().filter((f) => filter({ id: f.id.value }))
+  $: filteredFields = table.getOrderedVisibleFields().filter((f) => filter({ id: f.id.value, type: f.type }))
   export let disableGroup = false
 
   $: isEven = level % 2 === 0

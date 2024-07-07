@@ -15,3 +15,5 @@ export function createCheckboxFieldCondition<ItemType extends z.ZodTypeAny>(item
 
 export type ICheckboxFieldConditionSchema = ReturnType<typeof createCheckboxFieldCondition>
 export type ICheckboxFieldCondition = z.infer<ICheckboxFieldConditionSchema>
+
+export type ICheckboxFieldConditionOp = ICheckboxFieldCondition["op"]

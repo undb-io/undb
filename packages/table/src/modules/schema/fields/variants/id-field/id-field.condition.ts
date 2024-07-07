@@ -13,3 +13,5 @@ export function createIdFieldCondition<ItemType extends z.ZodTypeAny>(itemType: 
 
 export type IIdFieldConditionSchema = ReturnType<typeof createIdFieldCondition>
 export type IIdFieldCondition = z.infer<IIdFieldConditionSchema>
+
+export type IIdFieldConditionOp = IIdFieldCondition["op"]

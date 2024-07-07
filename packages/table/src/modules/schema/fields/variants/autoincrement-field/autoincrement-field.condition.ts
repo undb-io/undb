@@ -5,3 +5,5 @@ export const createAutoIncrementFieldCondition = createAbstractNumberFieldCondit
 
 export type IAutoIncrementFieldConditionSchema = ReturnType<typeof createAutoIncrementFieldCondition>
 export type IAutoIncrementFieldCondition = z.infer<IAutoIncrementFieldConditionSchema>
+
+export type IAutoIncrementFieldConditionOp = IAutoIncrementFieldCondition["op"]

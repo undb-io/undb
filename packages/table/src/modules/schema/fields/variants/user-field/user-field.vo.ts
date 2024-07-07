@@ -65,8 +65,8 @@ export class UserField extends AbstractField<UserFieldValue> {
 
   override getSpec(condition: IUserFieldCondition) {
     const spec = match(condition)
-      // .with({ op: "eq" }, ({ value }) => new UserEqual(value, this.id))
-      // .with({ op: "neq" }, ({ value }) => new UserEqual(value, this.id).not())
+      .with({ op: "eq" }, ({ value }) => new UserEqual(value, this.id))
+      .with({ op: "neq" }, ({ value }) => new UserEqual(value, this.id).not())
       .with({ op: "is_empty" }, () => new UserEmpty(this.id))
       .with({ op: "is_not_empty" }, () => new UserEmpty(this.id).not())
       .exhaustive()

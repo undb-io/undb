@@ -19,3 +19,5 @@ export function createStringFieldCondition<ItemType extends z.ZodTypeAny>(itemTy
 
 export type IStringFieldConditionSchema = ReturnType<typeof createStringFieldCondition>
 export type IStringFieldCondition = z.infer<IStringFieldConditionSchema>
+
+export type IStringFieldConditionOp = IStringFieldCondition["op"]

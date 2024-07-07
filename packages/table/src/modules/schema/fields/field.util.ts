@@ -1,7 +1,7 @@
 import { isNumber, isObject, isString } from "radash"
 import { P, match } from "ts-pattern"
 import type { IInferCreateFieldDTO } from "./dto/field.dto"
-import type { FieldType, NoneSystemFieldType, SystemFieldType } from "./field.type"
+import type { FieldType, IFilterableFieldType, NoneSystemFieldType, SystemFieldType } from "./field.type"
 import { Options } from "./option/options.vo"
 import type { ICreateSelectFieldDTO, IRollupFn } from "./variants"
 
@@ -99,6 +99,7 @@ export const fieldTypes: NoneSystemFieldType[] = [
   "checkbox",
   "user",
 ] as const
+
 export const systemFieldTypes: SystemFieldType[] = [
   "id",
   "autoIncrement",
@@ -107,6 +108,28 @@ export const systemFieldTypes: SystemFieldType[] = [
   "updatedAt",
   "updatedBy",
 ] as const
+
+export const filterableFieldTypes = [
+  "string",
+  "number",
+  "autoIncrement",
+  "checkbox",
+  "createdAt",
+  "createdBy",
+  "date",
+  "email",
+  "id",
+  "number",
+  "rating",
+  "select",
+  "updatedAt",
+  "updatedBy",
+  "user",
+] as const
+
+export const getIsFilterableFieldType = (type: FieldType): type is IFilterableFieldType => {
+  return filterableFieldTypes.includes(type)
+}
 
 export const allFieldTypes: FieldType[] = [...systemFieldTypes, ...fieldTypes] as const
 

@@ -14,3 +14,5 @@ export function createSelectFieldCondition<OptionType extends z.ZodTypeAny>(opti
 
 export type ISelectFieldConditionSchema = ReturnType<typeof createSelectFieldCondition>
 export type ISelectFieldCondition = z.infer<ISelectFieldConditionSchema>
+
+export type ISelectFieldConditionOp = ISelectFieldCondition["op"]

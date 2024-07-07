@@ -22,6 +22,6 @@
 <div class="col-span-8 flex flex-1 items-center gap-0">
   <OpPicker {field} bind:value={op} class={cn("rounded-l-none", hasValue && "rounded-r-none")} />
   {#if hasValue}
-    <FilterInput class="w-full flex-1" {field} bind:value />
+    <FilterInput class="w-full flex-1" {field} bind:value {op} />
   {/if}
 </div>

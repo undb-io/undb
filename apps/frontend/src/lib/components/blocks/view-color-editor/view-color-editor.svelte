@@ -11,6 +11,7 @@
   import Badge from "$lib/components/ui/badge/badge.svelte"
   import { cn } from "$lib/utils.js"
   import {
+    getIsFilterableFieldType,
     parseValidViewColor,
     type IConditionGroup,
     type IViewColorOptionSchema,
@@ -62,7 +63,13 @@
     {#if $value?.children.length}
       <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Color</div>
     {/if}
-    <FiltersEditor bind:value={$value} table={$table} disableGroup defaultConjunction="or">
+    <FiltersEditor
+      bind:value={$value}
+      table={$table}
+      disableGroup
+      defaultConjunction="or"
+      filter={(f) => getIsFilterableFieldType(f.type)}
+    >
       <div slot="option" class="flex items-center justify-center" let:index let:option let:onChange>
         <ColorPicker
           value={option.option?.color}

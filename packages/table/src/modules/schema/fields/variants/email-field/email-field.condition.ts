@@ -17,3 +17,5 @@ export function createEmailFieldCondition<ItemType extends z.ZodTypeAny>(itemTyp
 
 export type IEmailFieldConditionSchema = ReturnType<typeof createEmailFieldCondition>
 export type IEmailFieldCondition = z.infer<IEmailFieldConditionSchema>
+
+export type IEmailFieldConditionOp = IEmailFieldCondition["op"]

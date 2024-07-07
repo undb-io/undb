@@ -5,3 +5,5 @@ export const createCreatedAtFieldCondition = createAbstractDateFieldCondition
 
 export type ICreatedAtFieldConditionSchema = ReturnType<typeof createCreatedAtFieldCondition>
 export type ICreatedAtFieldCondition = z.infer<ICreatedAtFieldConditionSchema>
+
+export type ICreatedAtFieldConditionOp = ICreatedAtFieldCondition["op"]

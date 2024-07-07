@@ -10,6 +10,7 @@
   import { writable } from "svelte/store"
   import Badge from "$lib/components/ui/badge/badge.svelte"
   import {
+    getIsFilterableFieldType,
     parseValidViewFilter,
     type IViewFilterGroup,
     type IViewFilterOptionSchema,
@@ -68,7 +69,7 @@
       bind:value={$value}
       table={$table}
       on:submit={(e) => handleSubmit(e.detail)}
-      filter={(field) => visibleFields.some((f) => f.id.value === field.id)}
+      filter={(field) => visibleFields.some((f) => f.id.value === field.id) && getIsFilterableFieldType(field.type)}
     >
       <Button size="sm" on:click={() => handleSubmit(validValue)} slot="footer">Submit</Button>
     </FiltersEditor>

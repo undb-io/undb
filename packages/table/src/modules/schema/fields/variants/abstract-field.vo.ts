@@ -11,7 +11,7 @@ import type { FieldConstraintVO } from "../field-constraint.vo"
 import { FieldIdVo, fieldId, type FieldId } from "../field-id.vo"
 import { FieldNameVo, fieldName } from "../field-name.vo"
 import type { FieldType, FieldValue, IFieldConditionSchema, IFieldOption } from "../field.type"
-import { isFieldSortable } from "../field.util"
+import { getIsFilterableFieldType, isFieldSortable } from "../field.util"
 import type { IFieldVisitor } from "../field.visitor"
 
 export const createBaseFieldDTO = z.object({
@@ -96,6 +96,10 @@ export abstract class AbstractField<
   }
 
   protected abstract getConditionSchema<OptionType extends z.ZodTypeAny>(optionType: OptionType): IFieldConditionSchema
+
+  get filterable(): boolean {
+    return getIsFilterableFieldType(this.type)
+  }
 
   validateCondition<OptionType extends z.ZodTypeAny>(
     condition: MaybeFieldConditionWithFieldId,

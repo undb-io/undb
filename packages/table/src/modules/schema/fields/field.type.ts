@@ -213,6 +213,8 @@ export type IFieldConditionSchema =
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
 
+export type IFilterableFieldType = Exclude<FieldType, "json" | "reference" | "rollup" | "attachment">
+
 export type IFieldConstraint =
   | IStringFieldConstraint
   | INumberFieldConstraint
