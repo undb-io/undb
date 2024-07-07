@@ -13,16 +13,10 @@
   $: conditionOps = field?.conditionOps ?? []
   $: ops = conditionOps.map((op) => ({ value: op, label: $LL.table.ops[op]() })) ?? []
 
-  $: if (field && !!value && !conditionOps.includes(value)) {
-    value = ops[0]?.value
-  }
-
   let open = false
   export let value: IOpType | undefined = undefined
 
-  $: selectedValue = ops.find((f) => f.value === value)?.label ?? "op..."
-
-  $: hasValue = selectedValue ? field?.isOpHasValue(selectedValue) ?? false : false
+  $: selectedValue = ops.find((f) => f.value === value)?.label
 
   function closeAndFocusTrigger(triggerId: string) {
     open = false
@@ -40,11 +34,11 @@
       variant="outline"
       role="combobox"
       aria-expanded={open}
-      class={cn("justify-between", "rounded-r-none", !hasValue && "rounded-r-md", $$restProps.class)}
+      class={cn("justify-between", "rounded-r-none", $$restProps.class)}
       {...$$restProps}
     >
       <span class="overflow-hidden text-ellipsis" title={selectedValue}>
-        {selectedValue}
+        {selectedValue ?? "op..."}
       </span>
       <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
     </Button>

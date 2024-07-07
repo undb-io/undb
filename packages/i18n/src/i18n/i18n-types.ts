@@ -77,6 +77,14 @@ type RootTranslation = {
 			 */
 			lte: string
 			/**
+			 * i​n
+			 */
+			'in': string
+			/**
+			 * n​o​t​ ​i​n
+			 */
+			nin: string
+			/**
 			 * i​s​ ​s​a​m​e​ ​d​a​y
 			 */
 			is_same_day: string
@@ -223,6 +231,14 @@ export type TranslationFunctions = {
 			 * <=
 			 */
 			lte: () => LocalizedString
+			/**
+			 * in
+			 */
+			'in': () => LocalizedString
+			/**
+			 * not in
+			 */
+			nin: () => LocalizedString
 			/**
 			 * is same day
 			 */

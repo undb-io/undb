@@ -2,7 +2,7 @@
   import { TableDo, FieldIdVo, type IConditionGroup, isFieldCondition, isGroup } from "@undb/table"
   import FilterField from "./filter-field.svelte"
   import OpPicker from "./op-picker.svelte"
-  import FilterValue from "./filter-value.svelte"
+  import FilterInput from "./filter-input.svelte"
   import { cn } from "$lib/utils"
   import ConjunctionPicker from "./conjunction-picker.svelte"
 
@@ -38,7 +38,7 @@
                 value={child.op}
                 class={cn("col-span-3 rounded-l-none", !!child.value && "rounded-r-none")}
               />
-              <FilterValue
+              <FilterInput
                 disabled
                 {field}
                 value={child.value}

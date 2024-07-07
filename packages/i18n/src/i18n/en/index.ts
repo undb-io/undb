@@ -16,6 +16,8 @@ const ops: Record<IOpType, string> = {
   gte: ">=",
   lt: "<",
   lte: "<=",
+  in: 'in',
+  nin: 'not in',
   is_same_day: "is same day",
   is_not_same_day: "is not same day",
   is_tody: "is today",

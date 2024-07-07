@@ -10,13 +10,14 @@
   } from "@undb/table"
   import FilterField from "./filter-field.svelte"
   import OpPicker from "./op-picker.svelte"
-  import FilterValue from "./filter-value.svelte"
+  import FilterInput from "./filter-input.svelte"
   import Button from "$lib/components/ui/button/button.svelte"
   import { cn } from "$lib/utils"
   import { GripVertical, PlusIcon, Trash2Icon } from "lucide-svelte"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
   import ConjunctionPicker from "./conjunction-picker.svelte"
   import { isNumber, uid } from "radash"
+  import FieldFilterControl from "./field-filter-control.svelte"
 
   interface IField {
     id: string
@@ -111,22 +112,8 @@
               />
             {/if}
             <div class="col-span-9 grid grid-cols-12 items-center">
-              <FilterField
-                {filter}
-                bind:value={child.fieldId}
-                class={cn(!!child.fieldId && "col-span-4 rounded-r-none border-r-0")}
-              />
-              <OpPicker
-                {field}
-                bind:value={child.op}
-                class={cn("col-span-3 rounded-l-none", !!child.value && "rounded-r-none")}
-              />
-              <FilterValue
-                {field}
-                bind:value={child.value}
-                bind:op={child.op}
-                class="col-span-5 bg-white text-xs font-medium"
-              />
+              <FilterField {filter} bind:value={child.fieldId} class={cn("col-span-4 rounded-r-none border-r-0")} />
+              <FieldFilterControl {field} bind:op={child.op} bind:value={child.value} />
             </div>
             <div class="col-span-1 flex items-center gap-2">
               <button type="button" on:click={() => removeFilter(i)}>
