@@ -2,6 +2,7 @@ import { executionContext } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import { None, Option, Some, andOptions, type PaginatedDTO } from "@undb/domain"
 import {
+  AUTO_INCREMENT_TYPE,
   FieldIdVo,
   ID_TYPE,
   RecordComositeSpecification,
@@ -104,7 +105,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const rlsSpec = table.rls.map((r) => r.getSpec(schema, "read", userId)).flatten()
 
     const filter = query.into(undefined)?.filter.into(undefined)
-    const sort = view.sort.into(undefined)?.value
+    const sort = view.sort.into(undefined)?.value ?? [{ fieldId: AUTO_INCREMENT_TYPE, direction: "asc" }]
 
     const spec = andOptions(rlsSpec, viewSpec, Option(filter)) as Option<RecordComositeSpecification>
     const pagination = query.into(undefined)?.pagination.into(undefined)
