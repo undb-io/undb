@@ -1,11 +1,11 @@
 import { TableIdVo } from "../../../../table-id.vo"
-import { RecordDO, RecordIdVO, type IBulkDeleteRecordsDTO } from "../../record"
+import { RecordDO, RecordIdVO, type IBulkDuplicateRecordsDTO } from "../../record"
 import type { RecordsService } from "../records.service"
 
-export async function bulkdeleteRecordsMethod(
+export async function bulkduplicateRecordsMethod(
   this: RecordsService,
   tableId: string,
-  dto: IBulkDeleteRecordsDTO,
+  dto: IBulkDuplicateRecordsDTO,
 ): Promise<RecordDO[]> {
   const id = new TableIdVo(tableId)
   const table = (await this.tableRepository.findOneById(id)).expect("Table not found")
@@ -14,10 +14,11 @@ export async function bulkdeleteRecordsMethod(
   const records = await this.repo.findByIds(table, recordIds)
 
   for (const record of records) {
-    record.delete(table)
+    record.duplicate(table)
   }
 
-  await this.repo.deleteByIds(table, records)
+  const duplicated = records.map((r) => r.duplicate(table))
+  await this.repo.buldInsert(table, duplicated)
 
-  return records
+  return duplicated
 }

@@ -1,4 +1,5 @@
 import { BulkDeleteRecordsCommandHandler } from "./bulk-delete-records.command-handler"
+import { BulkDuplicateRecordsCommandHandler } from "./bulk-duplicate-records.command-handler"
 import { CreateBaseCommandHandler } from "./create-base.command-handler"
 import { CreateRecordCommandHandler } from "./create-record.command-handler"
 import { CreateRecordsCommandHandler } from "./create-records.command-handler"
@@ -43,6 +44,7 @@ export const commandHandlers = [
   SetViewSortCommandHandler,
   UpdateRecordCommandHandler,
   DuplicateRecordCommandHandler,
+  BulkDuplicateRecordsCommandHandler,
   DeleteRecordCommandHandler,
   BulkDeleteRecordsCommandHandler,
   SetViewAggregateCommandHandler,

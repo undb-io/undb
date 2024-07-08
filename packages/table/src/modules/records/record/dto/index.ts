@@ -1,4 +1,5 @@
 export * from "./bulk-delete-records.dto"
+export * from "./bulk-duplicate-records.dto"
 export * from "./create-record.dto"
 export * from "./delete-record.dto"
 export * from "./duplicate-record.dto"

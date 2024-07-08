@@ -4,6 +4,7 @@ import { injectTableRepository } from "../../../table.repository.provider"
 import {
   injectRecordRepository,
   type IBulkDeleteRecordsDTO,
+  type IBulkDuplicateRecordsDTO,
   type ICreateRecordDTO,
   type IDeleteRecordDTO,
   type IDuplicateRecordDTO,
@@ -12,6 +13,7 @@ import {
   type RecordDO,
 } from "../record"
 import { bulkdeleteRecordsMethod } from "./methods/bulk-delete-records.method"
+import { bulkduplicateRecordsMethod } from "./methods/bulk-duplicate-records.method"
 import { createRecordMethod } from "./methods/create-record.method"
 import { createRecordsMethod } from "./methods/create-records.method"
 import { deleteRecordMethod } from "./methods/delete-record.method"
@@ -25,6 +27,7 @@ export interface IRecordsService {
   deleteRecord(tableId: string, dto: IDeleteRecordDTO): Promise<RecordDO>
   bulkDeleteRecords(tableId: string, dto: IBulkDeleteRecordsDTO): Promise<RecordDO[]>
   duplicateRecord(tableId: string, dto: IDuplicateRecordDTO): Promise<RecordDO>
+  bulkDuplicateRecords(tableId: string, dto: IBulkDuplicateRecordsDTO): Promise<RecordDO[]>
 }
 
 @singleton()
@@ -42,4 +45,5 @@ export class RecordsService implements IRecordsService {
   deleteRecord = deleteRecordMethod
   bulkDeleteRecords = bulkdeleteRecordsMethod
   duplicateRecord = duplicateRecordMethod
+  bulkDuplicateRecords = bulkduplicateRecordsMethod
 }
