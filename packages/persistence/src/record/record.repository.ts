@@ -13,12 +13,13 @@ import {
   type RecordId,
   type TableDo,
 } from "@undb/table"
-import type { CompiledQuery } from "kysely"
+import type { CompiledQuery, ExpressionBuilder } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { injectDbUnitOfWork } from "../uow"
 import { getRecordDTOFromEntity } from "./record-utils"
+import { RecordFilterVisitor } from "./record.filter-visitor"
 import { RecordMapper } from "./record.mapper"
 import { RecordMutateVisitor } from "./record.mutate-visitor"
 
@@ -63,7 +64,7 @@ export class RecordRepository implements IRecordRepository {
     await this.outboxService.save(record)
   }
 
-  async buldInsert(table: TableDo, records: RecordDO[]): Promise<void> {
+  async bulkInsert(table: TableDo, records: RecordDO[]): Promise<void> {
     const context = executionContext.getStore()
     const userId = context?.user?.userId!
 
@@ -97,6 +98,21 @@ export class RecordRepository implements IRecordRepository {
     const record = await this.qb.selectFrom(t.name).selectAll().limit(1).executeTakeFirst()
     const dto = record ? getRecordDTOFromEntity(table, record) : undefined
     return dto ? Some(RecordDO.fromJSON(table, dto)) : None
+  }
+
+  async find(table: TableDo, spec: RecordComositeSpecification): Promise<RecordDO[]> {
+    const t = new UnderlyingTable(table)
+    const records = await this.qb
+      .selectFrom(t.name)
+      .selectAll()
+      .where(this.#handleWhere(table, spec))
+      .limit(1)
+      .execute()
+
+    return records.map((record) => {
+      const dto = getRecordDTOFromEntity(table, record)
+      return RecordDO.fromJSON(table, dto)
+    })
   }
 
   async findOneById(table: TableDo, recordId: RecordId): Promise<Option<RecordDO>> {
@@ -155,6 +171,50 @@ export class RecordRepository implements IRecordRepository {
     }
 
     await this.outboxService.save(record)
+  }
+
+  #handleWhere(table: TableDo, spec: RecordComositeSpecification) {
+    return (eb: ExpressionBuilder<any, any>) => {
+      const visitor = new RecordFilterVisitor(eb, table)
+      spec.accept(visitor)
+      return visitor.cond
+    }
+  }
+
+  async bulkUpdate(
+    table: TableDo,
+    spec: RecordComositeSpecification,
+    update: RecordComositeSpecification,
+    records: RecordDO[],
+  ): Promise<void> {
+    const context = executionContext.getStore()
+    const userId = context?.user?.userId!
+
+    const t = new UnderlyingTable(table)
+    const sql: CompiledQuery[] = []
+
+    const qb = this.qb
+    function handleUpdate() {
+      return (eb: ExpressionBuilder<any, any>) => {
+        let data = {}
+        for (const record of records) {
+          const visitor = new RecordMutateVisitor(table, record, qb, eb)
+          spec.accept(visitor)
+          sql.push(...visitor.sql)
+          data = { ...data, ...visitor.data }
+        }
+
+        return { ...data, [UPDATED_BY_TYPE]: userId }
+      }
+    }
+
+    await this.qb.updateTable(t.name).set(handleUpdate()).where(this.#handleWhere(table, update)).execute()
+
+    for (const s of sql) {
+      await this.qb.executeQuery(s)
+    }
+
+    await this.outboxService.saveMany(records)
   }
 
   // @transactional()

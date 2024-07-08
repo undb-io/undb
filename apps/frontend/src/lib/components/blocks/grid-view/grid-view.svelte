@@ -339,11 +339,7 @@
     </table>
   </ScrollArea>
 
-  <div class="flex items-center justify-between space-x-2 px-4 py-2">
-    <div class="text-muted-foreground flex-1 text-sm">
-      {Object.keys($selectedDataIds).length} of {$rows.length} row(s) selected.
-    </div>
-
+  <div class="flex items-center justify-center px-4 py-2">
     <div class="flex flex-1 flex-row items-center">
       <GridViewPagination perPage={$perPage} bind:currentPage={$currentPage} count={$getRecords.data?.total} />
       <div class="flex items-center gap-2 text-sm">

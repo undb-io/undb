@@ -22,11 +22,18 @@ export interface QueryArgs {
 
 export interface IRecordRepository {
   insert(table: TableDo, record: RecordDO): Promise<void>
-  buldInsert(table: TableDo, records: RecordDO[]): Promise<void>
+  bulkInsert(table: TableDo, records: RecordDO[]): Promise<void>
   findOne(table: TableDo, spec: Option<RecordComositeSpecification>): Promise<Option<RecordDO>>
   findOneById(table: TableDo, id: RecordId): Promise<Option<RecordDO>>
   findByIds(table: TableDo, ids: RecordId[]): Promise<RecordDO[]>
+  find(table: TableDo, spec: RecordComositeSpecification): Promise<RecordDO[]>
   updateOneById(table: TableDo, record: RecordDO, spec: Option<RecordComositeSpecification>): Promise<void>
+  bulkUpdate(
+    table: TableDo,
+    spec: RecordComositeSpecification,
+    update: RecordComositeSpecification,
+    records: RecordDO[],
+  ): Promise<void>
   deleteOneById(table: TableDo, record: RecordDO): Promise<void>
   deleteByIds(table: TableDo, records: RecordDO[]): Promise<void>
 }

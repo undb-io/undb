@@ -5,6 +5,7 @@ import {
   injectRecordRepository,
   type IBulkDeleteRecordsDTO,
   type IBulkDuplicateRecordsDTO,
+  type IBulkUpdateRecordsDTO,
   type ICreateRecordDTO,
   type IDeleteRecordDTO,
   type IDuplicateRecordDTO,
@@ -14,6 +15,7 @@ import {
 } from "../record"
 import { bulkdeleteRecordsMethod } from "./methods/bulk-delete-records.method"
 import { bulkduplicateRecordsMethod } from "./methods/bulk-duplicate-records.method"
+import { bulkUpdateRecordsMethod } from "./methods/bulk-update-records.method"
 import { createRecordMethod } from "./methods/create-record.method"
 import { createRecordsMethod } from "./methods/create-records.method"
 import { deleteRecordMethod } from "./methods/delete-record.method"
@@ -24,6 +26,7 @@ export interface IRecordsService {
   createRecord(tableId: string, dto: ICreateRecordDTO): Promise<RecordDO>
   createRecords(tableId: string, dto: ICreateRecordDTO[]): Promise<RecordDO[]>
   updateRecord(tableId: string, dto: IUpdateRecordDTO): Promise<RecordDO>
+  bulkUpdateRecords(tableId: string, dto: IBulkUpdateRecordsDTO): Promise<RecordDO[]>
   deleteRecord(tableId: string, dto: IDeleteRecordDTO): Promise<RecordDO>
   bulkDeleteRecords(tableId: string, dto: IBulkDeleteRecordsDTO): Promise<RecordDO[]>
   duplicateRecord(tableId: string, dto: IDuplicateRecordDTO): Promise<RecordDO>
@@ -42,6 +45,7 @@ export class RecordsService implements IRecordsService {
   createRecord = createRecordMethod
   createRecords = createRecordsMethod
   updateRecord = updateRecordMethod
+  bulkUpdateRecords = bulkUpdateRecordsMethod
   deleteRecord = deleteRecordMethod
   bulkDeleteRecords = bulkdeleteRecordsMethod
   duplicateRecord = duplicateRecordMethod

@@ -18,7 +18,7 @@ export async function bulkduplicateRecordsMethod(
   }
 
   const duplicated = records.map((r) => r.duplicate(table))
-  await this.repo.buldInsert(table, duplicated)
+  await this.repo.bulkInsert(table, duplicated)
 
   return duplicated
 }

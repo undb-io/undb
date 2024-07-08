@@ -1,8 +1,8 @@
 import { Command, type CommandProps } from "@undb/domain"
-import { bulkduplicateRecordsDTO, tableId } from "@undb/table"
+import { bulkDuplicateRecordsDTO, tableId } from "@undb/table"
 import { z } from "@undb/zod"
 
-export const bulkduplicateRecordsCommand = bulkduplicateRecordsDTO.extend({
+export const bulkduplicateRecordsCommand = bulkDuplicateRecordsDTO.extend({
   tableId,
 })
 
