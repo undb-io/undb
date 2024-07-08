@@ -7,6 +7,8 @@
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import { ChevronDownIcon, LoaderCircleIcon } from "lucide-svelte"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
+  import * as Sheet from "$lib/components/ui/sheet"
+  import BulkUpdateRecords from "../bulk-update-records/bulk-update-records.svelte"
 
   const table = getTable()
 
@@ -72,13 +74,36 @@
         </DropdownMenu.Trigger>
         <DropdownMenu.Content class="w-[200px] p-0">
           <DropdownMenu.Group>
+            <Sheet.Root>
+              <Sheet.Trigger asChild let:builder>
+                <DropdownMenu.Item asChild class="p-0">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    class="text-foreground w-full justify-start rounded-none border-0 text-xs font-normal"
+                    builders={[builder]}
+                  >
+                    Update Record{ids.length > 1 ? "s" : ""}
+                  </Button>
+                </DropdownMenu.Item>
+              </Sheet.Trigger>
+              <Sheet.Content class="sm:max-w-1/2 flex h-full w-1/2 flex-col gap-0 px-0 py-4 transition-all">
+                <Sheet.Header class="border-b px-6 pb-4">
+                  <Sheet.Title>Bulk update {ids.length} Records</Sheet.Title>
+                </Sheet.Header>
+
+                <BulkUpdateRecords />
+              </Sheet.Content>
+            </Sheet.Root>
+
+            <DropdownMenu.Separator class="my-0" />
             <AlertDialog.Root bind:open>
               <AlertDialog.Trigger asChild let:builder>
                 <DropdownMenu.Item asChild class="p-0">
                   <Button
                     size="sm"
                     variant="destructive"
-                    class="text-foreground w-full rounded-none border-0 bg-red-50 hover:bg-red-100"
+                    class="bg-background w-full justify-start rounded-none border-0 text-xs font-normal text-red-500 hover:bg-red-50"
                     builders={[builder]}
                   >
                     Delete {ids.length} Record{ids.length > 1 ? "s" : ""}
