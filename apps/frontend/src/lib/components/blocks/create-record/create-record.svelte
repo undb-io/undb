@@ -60,7 +60,7 @@
   const form = superForm(defaults(defaultValue, zodClient(schema)), {
     SPA: true,
     dataType: "json",
-    // validators: zodClient(schema),
+    validators: zodClient(schema),
     resetForm: false,
     invalidateAll: false,
     onUpdate(event) {
@@ -70,7 +70,7 @@
     },
   })
 
-  const { form: formData, enhance, allErrors, tainted } = form
+  const { form: formData, enhance, allErrors, tainted, errors } = form
 
   $: dirty = !!$tainted
   $: disabled = !!$allErrors.length
@@ -104,10 +104,11 @@
                 tableId={$table.id.value}
                 {field}
                 disabled={field.isSystem}
+                class={cn($errors[field.id.value] && "border-red-500 focus-visible:ring-0")}
               />
+              <Form.FieldErrors class="mt-2" />
             </div>
           </Form.Control>
-          <Form.FieldErrors />
         </Form.Field>
       {/if}
     {/each}

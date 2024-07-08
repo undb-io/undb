@@ -17,6 +17,7 @@
   import { builderActions, getAttrs } from "bits-ui"
   import Button from "$lib/components/ui/button/button.svelte"
   import { preferences } from "$lib/store/persisted.store"
+  import { cn } from "$lib/utils"
 
   export let readonly = false
 
@@ -90,7 +91,7 @@
     },
   })
 
-  const { form: formData, enhance, allErrors, tainted, reset } = form
+  const { form: formData, enhance, allErrors, tainted, reset, errors } = form
 
   $: dirty = !!$tainted
   $: disabled = !$tainted || !!$allErrors.length
@@ -145,11 +146,12 @@
               recordId={$r}
               displayValue={displayValues[field.id.value]}
               {readonly}
+              class={cn($errors[field.id.value] && "border-red-500 focus-visible:ring-0")}
             />
+            <Form.FieldErrors class="mt-2" />
           {/if}
         </div>
       </Form.Control>
-      <Form.FieldErrors />
     </Form.Field>
   {/each}
 
