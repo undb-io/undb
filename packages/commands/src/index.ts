@@ -1,3 +1,4 @@
+export * from "./bulk-delete-records.command"
 export * from "./create-base.command"
 export * from "./create-record.command"
 export * from "./create-records.command"

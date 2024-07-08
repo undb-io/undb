@@ -25,8 +25,10 @@ export interface IRecordRepository {
   buldInsert(table: TableDo, records: RecordDO[]): Promise<void>
   findOne(table: TableDo, spec: Option<RecordComositeSpecification>): Promise<Option<RecordDO>>
   findOneById(table: TableDo, id: RecordId): Promise<Option<RecordDO>>
+  findByIds(table: TableDo, ids: RecordId[]): Promise<RecordDO[]>
   updateOneById(table: TableDo, record: RecordDO, spec: Option<RecordComositeSpecification>): Promise<void>
   deleteOneById(table: TableDo, record: RecordDO): Promise<void>
+  deleteByIds(table: TableDo, records: RecordDO[]): Promise<void>
 }
 
 export interface IRecordQueryRepository {

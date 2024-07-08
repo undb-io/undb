@@ -111,6 +111,24 @@ export class RecordRepository implements IRecordRepository {
     return Some(RecordDO.fromJSON(table, dto))
   }
 
+  async findByIds(table: TableDo, ids: RecordId[]): Promise<RecordDO[]> {
+    const t = new UnderlyingTable(table)
+    const records = await this.qb
+      .selectFrom(t.name)
+      .selectAll()
+      .where(
+        ID_TYPE,
+        "in",
+        ids.map((id) => id.value),
+      )
+      .execute()
+
+    return records.map((record) => {
+      const dto = getRecordDTOFromEntity(table, record)
+      return RecordDO.fromJSON(table, dto)
+    })
+  }
+
   // @transactional()
   async updateOneById(table: TableDo, record: RecordDO, spec: Option<RecordComositeSpecification>): Promise<void> {
     if (spec.isNone()) return
@@ -145,5 +163,12 @@ export class RecordRepository implements IRecordRepository {
     // TODO: use deleted at
     await this.qb.deleteFrom(t.name).where(ID_TYPE, "=", record.id.value).executeTakeFirst()
     await this.outboxService.save(record)
+  }
+
+  async deleteByIds(table: TableDo, records: RecordDO[]): Promise<void> {
+    const t = new UnderlyingTable(table)
+    const ids = records.map((r) => r.id.value)
+    await this.qb.deleteFrom(t.name).where(ID_TYPE, "in", ids).executeTakeFirst()
+    await this.outboxService.saveMany(records)
   }
 }

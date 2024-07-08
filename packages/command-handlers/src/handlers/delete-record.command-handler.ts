@@ -13,6 +13,6 @@ export class DeleteRecordCommandHandler implements ICommandHandler<DeleteRecordC
   ) {}
 
   async execute(command: DeleteRecordCommand): Promise<any> {
-    await this.service.deleteRecord(command.tableId, { id: command.id, values: command.values })
+    await this.service.deleteRecord(command.tableId, { id: command.id })
   }
 }

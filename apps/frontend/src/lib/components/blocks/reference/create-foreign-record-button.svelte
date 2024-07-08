@@ -42,7 +42,7 @@
     </Sheet.Header>
 
     <div class="flex-1 overflow-hidden">
-      <ScrollArea class="h-full overflow-auto px-4">
+      <ScrollArea class="h-full overflow-auto px-6">
         <CreateRecord
           onSuccess={(id) => {
             open = false

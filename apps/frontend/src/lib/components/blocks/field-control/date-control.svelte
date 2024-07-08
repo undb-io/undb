@@ -15,9 +15,11 @@
 
   export let value: string | Date | undefined = undefined
   $: internalDate = isString(value) ? parseDate(value) : isDate(value) ? parseDate(value.toISOString()) : undefined
+
+  let open = false
 </script>
 
-<Popover.Root openFocus>
+<Popover.Root bind:open openFocus>
   <Popover.Trigger asChild let:builder>
     <Button
       disabled={readonly}
@@ -39,6 +41,7 @@
         } else {
           value = undefined
         }
+        open = false
       }}
       initialFocus
     />

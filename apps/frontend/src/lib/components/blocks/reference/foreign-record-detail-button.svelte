@@ -84,7 +84,7 @@
         <div class="grid h-full grid-cols-4 overflow-hidden">
           {#if recordDo}
             <div class={cn("overflow-hidden", $preferences.showAudit && $recordId ? "col-span-3" : "col-span-4")}>
-              <ScrollArea class="h-full overflow-auto px-4">
+              <ScrollArea class="h-full overflow-auto px-6">
                 <RecordDetail
                   onSuccess={async () => {
                     $open = false

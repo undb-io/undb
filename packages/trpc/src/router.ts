@@ -1,4 +1,5 @@
 import {
+  BulkDeleteRecordsCommand,
   CreateBaseCommand,
   CreateRecordCommand,
   CreateRecordsCommand,
@@ -26,6 +27,7 @@ import {
   UpdateTableFieldCommand,
   UpdateViewCommand,
   UpdateWebhookCommand,
+  bulkdeleteRecordsCommand,
   createBaseCommand,
   createRecordCommand,
   createRecordsCommand,
@@ -160,6 +162,10 @@ const recordRouter = t.router({
     .use(authz("record:delete"))
     .input(deleteRecordCommand)
     .mutation(({ input }) => commandBus.execute(new DeleteRecordCommand(input))),
+  bulkDelete: p
+    .use(authz("record:delete"))
+    .input(bulkdeleteRecordsCommand)
+    .mutation(({ input }) => commandBus.execute(new BulkDeleteRecordsCommand(input))),
   duplicate: p
     .use(authz("record:create"))
     .input(duplicateRecordCommand)
