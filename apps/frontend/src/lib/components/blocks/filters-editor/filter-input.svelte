@@ -9,6 +9,7 @@
     IEmailFieldConditionOp,
     IFilterableFieldType,
     IIdFieldConditionOp,
+    IJsonFieldConditionOp,
     INumberFieldConditionOp,
     IOpType,
     IRatingFieldConditionOp,
@@ -25,6 +26,7 @@
   import DateControl from "$lib/components/blocks/field-control/date-control.svelte"
   import OptionPicker from "$lib/components/blocks/option/option-picker.svelte"
   import UserPicker from "../user/user-picker.svelte"
+  import JsonDropdown from "../json/json-dropdown.svelte"
 
   export let field: Field | undefined
   export let recordId: string | undefined = undefined
@@ -194,6 +196,13 @@
     is_not_empty: null,
   }
 
+  const json: Record<IJsonFieldConditionOp, ComponentType | null> = {
+    eq: JsonDropdown,
+    neq: JsonDropdown,
+    is_empty: null,
+    is_not_empty: null,
+  }
+
   const filterFieldInput: Record<IFilterableFieldType, Record<any, ComponentType | null>> = {
     string,
     number,
@@ -209,6 +218,7 @@
     email,
     checkbox,
     user,
+    json,
   }
 </script>
 

@@ -125,6 +125,7 @@ export const filterableFieldTypes = [
   "updatedAt",
   "updatedBy",
   "user",
+  "json",
 ] as const
 
 export const getIsFilterableFieldType = (type: FieldType): type is IFilterableFieldType => {

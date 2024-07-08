@@ -50,6 +50,7 @@ import {
 } from "date-fns"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
+import { isString } from "radash"
 
 export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements IRecordVisitor {
   private getFieldId(spec: RecordComositeSpecification) {
@@ -69,7 +70,9 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     this.addCond(cond)
   }
   jsonEqual(spec: JsonEqual): void {
-    throw new Error("Method not implemented.")
+    const json = isString(spec.json) ? spec.json : JSON.stringify(spec.json)
+    const cond = this.eb.eb(this.getFieldId(spec), "=", json)
+    this.addCond(cond)
   }
   jsonEmpty(spec: JsonEmpty): void {
     this.addCond(this.eb.eb(this.getFieldId(spec), "is", null))

@@ -52,8 +52,8 @@ export class JsonField extends AbstractField<JsonFieldValue> {
 
   override getSpec(condition: IJsonFieldCondition) {
     const spec = match(condition)
-      // .with({ op: "eq" }, ({ value }) => new JsonEqual(value, this.id))
-      // .with({ op: "neq" }, ({ value }) => new JsonEqual(value, this.id).not())
+      .with({ op: "eq" }, ({ value }) => new JsonEqual(value, this.id))
+      .with({ op: "neq" }, ({ value }) => new JsonEqual(value, this.id).not())
       .with({ op: "is_empty" }, () => new JsonEmpty(this.id))
       .with({ op: "is_not_empty" }, () => new JsonEmpty(this.id).not())
       .exhaustive()
