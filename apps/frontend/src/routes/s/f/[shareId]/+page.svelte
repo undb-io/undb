@@ -83,7 +83,7 @@
   {#if form}
     <form method="POST" use:enhance class="h-full rounded-md p-6 pt-20 shadow-inner">
       <div
-        class={cn("bg-background mx-auto max-w-[800px] space-y-2 overflow-hidden rounded-md px-10 py-6 shadow-2xl")}
+        class={cn("bg-background mx-auto max-w-[800px] space-y-2 overflow-hidden rounded-2xl px-10 py-6 shadow-2xl")}
         data-form-id={form.id}
       >
         <h2 class="text-4xl font-extrabold tracking-tight">

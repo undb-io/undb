@@ -67,7 +67,7 @@
     : form.fields.props
 </script>
 
-<div class="h-full w-full space-y-3 px-4 py-2">
+<div class="py-a h-full w-full space-y-3 px-4 py-3">
   <div class="text-md flex items-center justify-between gap-2 font-semibold">
     <div>
       <span> Form Fields </span>

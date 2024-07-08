@@ -74,12 +74,12 @@
 
 <div
   class={cn(
-    "h-full w-full space-y-2 overflow-y-auto rounded-md bg-gray-50 shadow-inner transition-colors",
+    "h-full w-full space-y-2 overflow-y-auto bg-gray-50 shadow-inner transition-colors",
     backgroundColor && getFormBgColor(backgroundColor),
   )}
   data-form-id={form.id}
 >
-  <div class="bg-background mx-auto mb-6 mt-12 max-w-[800px] rounded-md px-10 py-6 shadow-2xl">
+  <div class="bg-background mx-auto mb-6 mt-12 max-w-[800px] rounded-2xl px-10 py-6 shadow-2xl">
     {#if isEditingFormName}
       <input
         class="block w-full text-4xl font-extrabold tracking-tight"
