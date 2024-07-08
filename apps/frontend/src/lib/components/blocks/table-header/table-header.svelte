@@ -6,6 +6,7 @@
   import * as Tooltip from "$lib/components/ui/tooltip"
   import {
     ChevronDownIcon,
+    ChevronsUpDownIcon,
     Code2Icon,
     CodeIcon,
     CopyPlusIcon,
@@ -73,6 +74,7 @@
               <DropdownMenu.Root>
                 <DropdownMenu.Trigger asChild let:builder>
                   <Button size="sm" variant="link" class="pl-0 pr-0" builders={[builder]}>{currentForm?.name}</Button>
+                  <ChevronsUpDownIcon class="h-3 w-3" />
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content class="w-[200px]">
                   <DropdownMenu.Group>

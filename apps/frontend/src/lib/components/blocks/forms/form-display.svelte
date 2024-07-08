@@ -82,7 +82,7 @@
   <div class="bg-background mx-auto mb-6 mt-12 max-w-[800px] rounded-md px-10 py-6 shadow-2xl">
     {#if isEditingFormName}
       <input
-        class="text-4xl font-extrabold tracking-tight"
+        class="block w-full text-4xl font-extrabold tracking-tight"
         bind:value={form.name}
         on:change={() => {
           setForm()
