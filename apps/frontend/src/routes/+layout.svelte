@@ -25,8 +25,8 @@
 
 <ModeWatcher defaultMode="light" />
 <Toaster richColors position="bottom-center" />
-<div class="app">
-  <main>
+<div class="app h-full">
+  <main class="h-full">
     <QueryClientProvider client={queryClient}>
       <slot></slot>
     </QueryClientProvider>

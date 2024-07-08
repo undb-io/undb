@@ -29,3 +29,12 @@
 {#if $table}
   <slot />
 {/if}
+
+<style>
+  :global(html) {
+    height: 100vh;
+  }
+  :global(body) {
+    height: 100vh;
+  }
+</style>
