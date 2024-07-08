@@ -26,6 +26,14 @@ export function createGridViewStore() {
         return { cell: { recordId, fieldId }, count: 1 }
       })
     },
+    exitEditing: () => {
+      return update((select) => {
+        if (select.count === 2) {
+          return { cell: select.cell, count: 1 }
+        }
+        return select
+      })
+    },
     deselect: () => {
       return set({ cell: null, count: 0 })
     },

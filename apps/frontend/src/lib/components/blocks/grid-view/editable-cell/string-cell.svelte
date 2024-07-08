@@ -17,7 +17,7 @@
     mutationFn: trpc.record.update.mutate,
     onSuccess(data, variables, context) {
       el?.blur()
-      gridViewStore.deselect()
+      gridViewStore.exitEditing()
     },
     onError(error: Error) {
       toast.error(error.message)

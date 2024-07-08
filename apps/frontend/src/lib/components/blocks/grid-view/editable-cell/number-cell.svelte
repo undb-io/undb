@@ -4,7 +4,8 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { NumberField } from "@undb/table"
   import { toast } from "svelte-sonner"
-  import { debounce } from "radash"
+  import { debounce, isNumber } from "radash"
+  import { gridViewStore } from "../grid-view.store"
 
   export let tableId: string
   export let field: NumberField
@@ -15,6 +16,10 @@
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
     mutationFn: trpc.record.update.mutate,
+    onSuccess(data, variables, context) {
+      el?.blur()
+      gridViewStore.exitEditing()
+    },
     onError(error: Error) {
       toast.error(error.message)
     },
@@ -47,6 +52,8 @@
   />
 {:else}
   <div class={$$restProps.class}>
-    {value}
+    {#if isNumber(value)}
+      {value}
+    {/if}
   </div>
 {/if}
