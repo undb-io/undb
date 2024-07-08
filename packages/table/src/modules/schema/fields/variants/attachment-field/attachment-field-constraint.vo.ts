@@ -31,6 +31,6 @@ export class AttachmentFieldConstraint extends FieldConstraintVO<IAttachmentFiel
       base = base.max(max)
     }
 
-    return base
+    return required ? base : base.optional().nullable()
   }
 }

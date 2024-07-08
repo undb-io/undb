@@ -10,6 +10,7 @@
   import { derived, type Readable } from "svelte/store"
   import { FormIdVO, RecordDO, RecordIdVO, TableDo } from "@undb/table"
   import autoAnimate from "@formkit/auto-animate"
+  import { cn } from "$lib/utils"
 
   // beforeNavigate(({ cancel }) => {
   //   if ($tainted) {
@@ -64,7 +65,10 @@
     resetForm: false,
     invalidateAll: false,
     onUpdate(event) {
-      if (!event.form.valid) return
+      if (!event.form.valid) {
+        console.log(event.form.errors)
+        return
+      }
 
       createRecord(event.form.data)
     },
@@ -89,7 +93,7 @@
         <Form.Field class="text-muted-foreground flex gap-4 space-y-0" {form} name={field.id.value}>
           <Form.Control let:attrs>
             <Form.Label class="flex h-4 w-48 items-center justify-between gap-2 pt-2">
-              <div class="flex items-center gap-2">
+              <div data-field-id={field.id.value} class="flex items-center gap-2">
                 <FieldIcon {field} type={field.type} class="h-4 w-4" />
                 <span>{field.name.value}</span>
                 {#if field.required}

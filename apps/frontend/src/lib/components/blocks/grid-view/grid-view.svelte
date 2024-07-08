@@ -28,8 +28,9 @@
   import GridViewFooter from "./grid-view-footer.svelte"
   import { DELETE_RECORD_MODAL, DUPLICATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
-  import { ClipboardCopyIcon, CopyIcon, Maximize2Icon, PlusIcon, Trash2Icon } from "lucide-svelte"
-  import { createGridViewStore, gridViewStore, isRowSelected, isSelectedCell } from "./grid-view.store"
+  import { ClipboardCopyIcon, CopyIcon, Maximize2Icon, Trash2Icon } from "lucide-svelte"
+  import { gridViewStore, isRowSelected, isSelectedCell } from "./grid-view.store"
+  import SelectedRecordsButton from "./selected-records-button.svelte"
 
   export let readonly = false
 
@@ -175,13 +176,20 @@
   $: rows = $viewModel.rows
 
   $: selectedDataIds = $viewModel.pluginStates.select.selectedDataIds
+  $: selectedRecordIds = Object.keys($selectedDataIds)
+    .map(Number)
+    .map((index) => records[index].id)
 
   $: resize = $viewModel.pluginStates.resize.columnWidths
 </script>
 
 <div class="flex h-full w-full flex-col">
   {#if !readonly}
-    <TableTools />
+    <TableTools>
+      {#if selectedRecordIds.length}
+        <SelectedRecordsButton ids={selectedRecordIds} />
+      {/if}
+    </TableTools>
   {/if}
   <ScrollArea orientation="both" class="h-full flex-1 overflow-auto">
     <table {...$tableAttrs} class="flex h-full flex-col">
