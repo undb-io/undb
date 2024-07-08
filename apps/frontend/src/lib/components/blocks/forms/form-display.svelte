@@ -72,16 +72,14 @@
   $: backgroundColor = form.option?.backgroundColor
 </script>
 
-<ScrollArea
+<div
   class={cn(
-    "h-full w-full bg-gray-50 p-6 pt-20 shadow-inner transition-colors",
+    "h-full w-full space-y-2 overflow-y-auto rounded-md bg-gray-50 shadow-inner transition-colors",
     backgroundColor && getFormBgColor(backgroundColor),
   )}
+  data-form-id={form.id}
 >
-  <div
-    class={cn("bg-background mx-auto max-w-[800px] space-y-2 rounded-md px-10 py-6 shadow-xl")}
-    data-form-id={form.id}
-  >
+  <div class="bg-background mx-auto mb-6 mt-12 max-w-[800px] rounded-md px-10 py-6 shadow-2xl">
     {#if isEditingFormName}
       <input
         class="text-4xl font-extrabold tracking-tight"
@@ -191,4 +189,4 @@
       </div>
     </div>
   </div>
-</ScrollArea>
+</div>

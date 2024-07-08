@@ -79,16 +79,11 @@
   $: tempRecord = RecordDO.fromJSON($table, { id: RecordIdVO.create().value, values: $formData })
 </script>
 
-{#if form}
-  <ScrollArea
-    class={cn(
-      "h-full w-full bg-gray-50 p-6 pt-20 shadow-inner transition-colors",
-      backgroundColor && getFormBgColor(backgroundColor),
-    )}
-  >
-    <form method="POST" use:enhance>
+<main class={cn("w-full bg-gray-50  transition-colors", backgroundColor && getFormBgColor(backgroundColor))}>
+  {#if form}
+    <form method="POST" use:enhance class="h-full rounded-md p-6 pt-20 shadow-inner">
       <div
-        class={cn("bg-background mx-auto max-w-[800px] space-y-2 rounded-md px-10 py-6 shadow-xl")}
+        class={cn("bg-background mx-auto max-w-[800px] space-y-2 overflow-hidden rounded-md px-10 py-6 shadow-2xl")}
         data-form-id={form.id}
       >
         <h2 class="text-4xl font-extrabold tracking-tight">
@@ -138,5 +133,5 @@
         </div>
       </div>
     </form>
-  </ScrollArea>
-{/if}
+  {/if}
+</main>
