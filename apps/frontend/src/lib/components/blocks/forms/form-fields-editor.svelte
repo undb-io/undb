@@ -17,6 +17,7 @@
   import { Label } from "$lib/components/ui/label"
   import { Input } from "$lib/components/ui/input"
   import { invalidate } from "$app/navigation"
+  import * as Tooltip from "$lib/components/ui/tooltip"
 
   const selectedFieldId = queryParam("formField")
 
@@ -87,18 +88,25 @@
   <div class="divide-y rounded-sm border">
     <div class="text-muted-foreground flex items-center justify-between bg-gray-50 p-2 text-xs font-normal">
       <Label for="selectAll">Select all fields</Label>
-      <Switch
-        id="selectAll"
-        checked={selectAll}
-        onCheckedChange={(checked) => {
-          if (checked) {
-            form.fields = form.fields.show(schema)
-          } else {
-            form.fields = form.fields.hide(schema)
-          }
-          setForm()
-        }}
-      />
+      <Tooltip.Root>
+        <Tooltip.Trigger>
+          <Switch
+            id="selectAll"
+            bind:checked={selectAll}
+            onCheckedChange={(checked) => {
+              if (checked) {
+                form.fields = form.fields.show(schema)
+              } else {
+                form.fields = form.fields.hide(schema)
+              }
+              setForm()
+            }}
+          />
+        </Tooltip.Trigger>
+        <Tooltip.Content>
+          <p>{selectAll ? "Hide Fields" : "Show Fields"}</p>
+        </Tooltip.Content>
+      </Tooltip.Root>
     </div>
     <SortableList
       class=""
@@ -140,14 +148,21 @@
             </div>
 
             <div class="flex items-center gap-2">
-              <Switch
-                bind:checked={formField.required}
-                on:click={(e) => {
-                  e.stopPropagation()
-                  setForm()
-                }}
-                disabled={field.required}
-              />
+              <Tooltip.Root>
+                <Tooltip.Trigger>
+                  <Switch
+                    bind:checked={formField.required}
+                    on:click={(e) => {
+                      e.stopPropagation()
+                      setForm()
+                    }}
+                    disabled={field.required}
+                  />
+                </Tooltip.Trigger>
+                <Tooltip.Content>
+                  <p>Required</p>
+                </Tooltip.Content>
+              </Tooltip.Root>
               <label class={cn(disabled ? "cursor-not-allowed" : "cursor-pointer")}>
                 <input type="checkbox" class="hidden" bind:checked={formField.hidden} {disabled} on:change={setForm} />
                 {#if formField.hidden}
