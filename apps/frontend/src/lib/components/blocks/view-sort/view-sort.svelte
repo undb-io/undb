@@ -91,7 +91,7 @@
   </Popover.Trigger>
   <Popover.Content class="w-[400px] p-0 shadow-2xl" align="start">
     {#if value?.length}
-      <div class="space-y-2 border-b px-4 py-3">
+      <div class="space-y-2 border-b px-4 py-2">
         <div class="text-muted-foreground text-xs">Sorts</div>
         <SortableList
           class={cn("space-y-1.5")}

@@ -78,7 +78,7 @@
           }}
         />
       </div>
-      <Button size="sm" on:click={() => handleSubmit(validValue)} slot="footer">Submit</Button>
+      <Button size="sm" variant="outline" on:click={() => handleSubmit(validValue)} slot="footer">Submit</Button>
     </FiltersEditor>
   </Popover.Content>
 </Popover.Root>

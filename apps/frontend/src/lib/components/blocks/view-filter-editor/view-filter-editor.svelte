@@ -71,7 +71,7 @@
       on:submit={(e) => handleSubmit(e.detail)}
       filter={(field) => visibleFields.some((f) => f.id.value === field.id) && getIsFilterableFieldType(field.type)}
     >
-      <Button size="sm" on:click={() => handleSubmit(validValue)} slot="footer">Submit</Button>
+      <Button size="sm" variant="outline" on:click={() => handleSubmit(validValue)} slot="footer">Submit</Button>
     </FiltersEditor>
   </Popover.Content>
 </Popover.Root>
