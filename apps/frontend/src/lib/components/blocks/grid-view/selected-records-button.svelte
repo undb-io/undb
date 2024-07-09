@@ -5,7 +5,7 @@
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
-  import { ChevronDownIcon, LoaderCircleIcon } from "lucide-svelte"
+  import { ChevronDownIcon, CopyPlusIcon, LoaderCircleIcon, PencilIcon, Trash2Icon } from "lucide-svelte"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import * as Sheet from "$lib/components/ui/sheet"
   import BulkUpdateRecords from "../bulk-update-records/bulk-update-records.svelte"
@@ -67,6 +67,7 @@
   <AlertDialog.Root bind:open>
     <AlertDialog.Trigger asChild let:builder>
       <Button size="sm" variant="outline" builders={[builder]} class="rounded-r-none border-r-0">
+        <CopyPlusIcon class="mr-2 h-3 w-3" />
         Duplicate {ids.length} Record{ids.length > 1 ? "s" : ""}
       </Button>
 
@@ -87,6 +88,7 @@
                     class="text-foreground w-full justify-start rounded-none border-0 text-xs font-normal"
                     builders={[builder]}
                   >
+                    <PencilIcon class="mr-2 h-3 w-3" />
                     Update Record{ids.length > 1 ? "s" : ""}
                   </Button>
                 </DropdownMenu.Item>
@@ -120,6 +122,7 @@
                     class="bg-background w-full justify-start rounded-none border-0 text-xs font-normal text-red-500 hover:bg-red-50"
                     builders={[builder]}
                   >
+                    <Trash2Icon class="mr-2 h-3 w-3" />
                     Delete {ids.length} Record{ids.length > 1 ? "s" : ""}
                   </Button>
                 </DropdownMenu.Item>

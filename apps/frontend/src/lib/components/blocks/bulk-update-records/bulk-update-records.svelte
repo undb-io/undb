@@ -2,7 +2,13 @@
   import { Button } from "$lib/components/ui/button"
   import { getTable } from "$lib/store/table.store"
   import { cn } from "$lib/utils"
-  import { FieldIdVo, type IViewFilterGroup } from "@undb/table"
+  import {
+    FieldIdVo,
+    parseValidViewFilter,
+    type IViewFilterGroup,
+    type IViewFilterOptionSchema,
+    type MaybeConditionGroup,
+  } from "@undb/table"
   import FieldIcon from "../field-icon/field-icon.svelte"
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.js"
   import FieldControl from "../field-control/field-control.svelte"
@@ -17,6 +23,8 @@
   import { PencilIcon } from "lucide-svelte"
   import type { IBulkUpdateRecordsCommandOutput } from "@undb/commands"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
+  import FiltersEditor from "../filters-editor/filters-editor.svelte"
+  import { writable } from "svelte/store"
 
   const table = getTable()
   const mutableFields = $table.schema.mutableFields
@@ -86,11 +94,20 @@
         selectedFieldIds,
       )
     : undefined
+
+  const value = writable<MaybeConditionGroup<IViewFilterOptionSchema> | undefined>()
+  $: validValue = $value ? parseValidViewFilter($table.schema.fieldMapById, $value) : undefined
+  $: validValue, (filter = validValue)
 </script>
 
 <div class="grid h-full grid-cols-4">
-  <div class="col-span-3 h-full border-r px-4 py-3">
-    <div class="my-4 flex h-full flex-col space-y-8">
+  <div class="col-span-3 flex h-full flex-col border-r px-4 py-3">
+    <div class="space-y-2">
+      <p class="font-semibold">Update records with the following condition</p>
+      <FiltersEditor bind:value={$value} table={$table} class="rounded-md border"></FiltersEditor>
+    </div>
+
+    <div class="my-4 flex h-full flex-1 flex-col space-y-8">
       {#if !selectedFields.length}
         <Alert.Root>
           <PencilIcon class="h-4 w-4" />
