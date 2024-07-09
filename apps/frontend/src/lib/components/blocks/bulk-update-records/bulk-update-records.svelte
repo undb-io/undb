@@ -27,7 +27,7 @@
   export let filter: IViewFilterGroup | undefined = undefined
   export let onSuccess: (data: IBulkUpdateRecordsCommandOutput) => void = () => {}
 
-  let selectedFieldIds: string[] = mutableFields.length ? [mutableFields[0].id.value] : []
+  let selectedFieldIds: string[] = []
   $: selectedFields = selectedFieldIds.map((id) => $table.schema.getFieldById(new FieldIdVo(id)).unwrap())
 
   const client = useQueryClient()
