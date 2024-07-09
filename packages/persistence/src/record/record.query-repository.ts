@@ -25,8 +25,10 @@ import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { RecordQueryCreatorVisitor } from "./record-query-creator-visitor"
+import { RecordQuerySpecCreatorVisitor } from "./record-query-spec-creator-visitor"
 import { RecordReferenceVisitor } from "./record-reference-visitor"
 import { RecordSelectFieldVisitor } from "./record-select-field-visitor"
+import { RecordSpecReferenceVisitor } from "./record-spec-reference-visitor"
 import { getRecordDTOFromEntity } from "./record-utils"
 import { AggregateFnBuiler } from "./record.aggregate-builder"
 import { RecordFilterVisitor } from "./record.filter-visitor"
@@ -64,13 +66,30 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return map
   }
 
-  private createQuery(table: TableDo, foreignTables: Map<string, TableDo>, visibleFields: Field[]) {
+  private createQuery(
+    table: TableDo,
+    foreignTables: Map<string, TableDo>,
+    visibleFields: Field[],
+    spec: Option<RecordComositeSpecification>,
+  ) {
     const t = new UnderlyingTable(table)
-    const qb = new RecordQueryCreatorVisitor(this.qb, table, foreignTables, visibleFields).create()
+    let qb = new RecordQueryCreatorVisitor(this.qb, table, foreignTables, visibleFields).create()
+    const visitor = new RecordQuerySpecCreatorVisitor(this.qb, qb, table)
+    if (spec.isSome()) {
+      spec.unwrap().accept(visitor)
+    }
+    qb = visitor.creator
 
     return qb
       .selectFrom(table.id.value)
       .$call((qb) => new RecordReferenceVisitor(qb, table).join(visibleFields))
+      .$call((qb) => {
+        const visitor = new RecordSpecReferenceVisitor(qb, table)
+        if (spec.isSome()) {
+          spec.unwrap().accept(visitor)
+        }
+        return visitor.join()
+      })
       .select((sb) => new RecordSelectFieldVisitor(t, foreignTables, sb).$select(visibleFields))
   }
 
@@ -82,7 +101,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       : table.schema.fields
 
     const foreignTables = await this.getForeignTables(table, selectFields)
-    const qb = this.createQuery(table, foreignTables, selectFields)
+    const qb = this.createQuery(table, foreignTables, selectFields, None)
 
     const result = await qb.where(`${table.id.value}.${ID_TYPE}`, "=", id.value).executeTakeFirst()
 
@@ -130,7 +149,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       ? select.map((f) => table.schema.getFieldById(new FieldIdVo(f)).into(undefined)).filter((f) => !!f)
       : table.getOrderedVisibleFields(view.id.value)
     const foreignTables = await this.getForeignTables(table, selectFields)
-    const qb = this.createQuery(table, foreignTables, selectFields)
+    const qb = this.createQuery(table, foreignTables, selectFields, spec)
 
     const result = await qb
       .$if(!!pagination?.limit, handlePagination)
@@ -142,7 +161,6 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const { total } = await this.qb
       .selectFrom(t.name)
       .select((eb) => eb.fn.countAll().as("total"))
-      .where(this.handleWhere(table, spec))
       .executeTakeFirstOrThrow()
 
     const records = result.map((r) => getRecordDTOFromEntity(table, r))

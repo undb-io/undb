@@ -39,7 +39,11 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
     private readonly visibleFields: Field[],
   ) {}
 
-  private creator: QueryCreator<any> | null = null
+  #creator: QueryCreator<any> | null = null
+
+  get creator() {
+    return this.#creator
+  }
 
   create() {
     // handle select fields
@@ -53,7 +57,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
       userField.accept(this)
     }
 
-    return this.creator ?? this.qb
+    return this.#creator ?? this.qb
   }
 
   id(field: IdField): void {}
@@ -75,7 +79,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
       const usersTable = getTableName(users)
       const tableName = this.table.id.value
       const expandedName = getJsonExpandedFieldName(field)
-      this.creator = (this.creator || this.qb)
+      this.#creator = (this.#creator || this.qb)
         .with(expandedName, (db) =>
           db
             .selectFrom([
@@ -115,7 +119,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
     const visible = this.visibleFields.some((f) => f.id.equals(field.id))
     const displayFields = visible ? foreignTable.schema.getDisplayFields() : []
 
-    this.creator = (this.creator || this.qb).with(field.id.value, (db) =>
+    this.#creator = (this.#creator || this.qb).with(field.id.value, (db) =>
       db
         .selectFrom(name)
         .innerJoin(

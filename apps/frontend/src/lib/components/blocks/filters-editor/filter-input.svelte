@@ -27,6 +27,7 @@
   import OptionPicker from "$lib/components/blocks/option/option-picker.svelte"
   import UserPicker from "../user/user-picker.svelte"
   import JsonDropdown from "../json/json-dropdown.svelte"
+  import OptionsPicker from "../option/options-picker.svelte"
 
   export let field: Field | undefined
   export let recordId: string | undefined = undefined
@@ -171,6 +172,8 @@
   const select: Record<ISelectFieldConditionOp, ComponentType | null> = {
     eq: OptionPicker,
     neq: OptionPicker,
+    any_of: OptionsPicker,
+    not_any_of: OptionsPicker,
     is_empty: null,
     is_not_empty: null,
   }

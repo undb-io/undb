@@ -54,7 +54,6 @@
       invalidateAll: true,
       onUpdate(event) {
         if (!event.form.valid) {
-          console.log(event.form.errors)
           return
         }
         const baseId = $currentBase?.id

@@ -44,7 +44,6 @@ export interface IRecordRepository {
 
 export interface IRecordQueryRepository {
   find(table: TableDo, viewId: Option<ViewId>, query: Option<QueryArgs>): Promise<PaginatedDTO<IRecordDTO>>
-  count(table: TableDo, viewId: Option<ViewId>, query: Option<CountQueryArgs>): Promise<number>
   findOneById(table: TableDo, id: RecordId, query: Option<SingleQueryArgs>): Promise<Option<IRecordDTO>>
   count(tableId: TableId): Promise<number>
 

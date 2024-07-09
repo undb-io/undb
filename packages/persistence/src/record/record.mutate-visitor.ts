@@ -1,5 +1,6 @@
 import type { ISpecification, ISpecVisitor } from "@undb/domain"
 import {
+  SelectContainsAnyOf,
   SelectField,
   SelectFieldValue,
   UserField,
@@ -161,6 +162,9 @@ export class RecordMutateVisitor implements IRecordVisitor {
     const value = fieldValue.getValue(field)
 
     this.setData(spec.fieldId.value, Array.isArray(value) ? JSON.stringify(value) : value)
+  }
+  selectContainsAnyOf(spec: SelectContainsAnyOf): void {
+    throw new Error("Method not implemented.")
   }
   selectEmpty(spec: SelectEmpty): void {
     this.setData(spec.fieldId.value, null)

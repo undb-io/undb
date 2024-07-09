@@ -15,41 +15,39 @@
   const colors = new ColorsVO()
   export let option: ISelectFieldOption = { options: [] }
 
-  $: console.log(option)
+  $: if (!option.options.length) {
+    option = {
+      options: [
+        {
+          color: COLORS[0],
+          name: "option1",
+          id: OptionIdVo.create().value,
+        },
+      ],
+    }
+  }
 
-  // $: if (!option) {
-  //   option = {
-  //     options: [
-  //       {
-  //         color: COLORS[0],
-  //         name: "option1",
-  //         id: OptionIdVo.create().value,
-  //       },
-  //     ],
-  //   }
-  // }
+  const addOption = () => {
+    option.options = [
+      ...option.options,
+      {
+        color: colors.next(option.options[option.options.length - 1]?.color),
+        name: `option${option.options.length + 1}`,
+        id: OptionIdVo.create().value,
+      },
+    ]
+  }
 
-  // const addOption = () => {
-  //   option.options = [
-  //     ...option.options,
-  //     {
-  //       color: colors.next(option.options[option.options.length - 1]?.color),
-  //       name: `option${option.options.length + 1}`,
-  //       id: OptionIdVo.create().value,
-  //     },
-  //   ]
-  // }
+  const swap = (oldIndex: number, newIndex: number) => {
+    const options = [...option.options]
+    const [removed] = options.splice(oldIndex, 1)
+    options.splice(newIndex, 0, removed)
+    option.options = [...options]
+  }
 
-  // const swap = (oldIndex: number, newIndex: number) => {
-  //   const options = [...option.options]
-  //   const [removed] = options.splice(oldIndex, 1)
-  //   options.splice(newIndex, 0, removed)
-  //   option.options = [...options]
-  // }
-
-  // const removeOption = (id: string) => {
-  //   option.options = option.options.filter((o) => o.id !== id)
-  // }
+  const removeOption = (id: string) => {
+    option.options = option.options.filter((o) => o.id !== id)
+  }
 
   let single = "single"
   $: isSingle = "single" === single
@@ -129,7 +127,7 @@
           {/each}
         </SortableList>
 
-        <Button on:click={() => {}} class="w-full" size="sm" variant="outline">+ Add Option</Button>
+        <Button on:click={addOption} class="w-full" size="sm" variant="outline">+ Add Option</Button>
       </div>
     </div>
     <div class="mt-4 flex items-center justify-end gap-3">

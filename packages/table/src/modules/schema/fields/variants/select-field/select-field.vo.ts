@@ -7,7 +7,7 @@ import type { IFieldVisitor } from "../../field.visitor"
 import { Options, option, optionName } from "../../option"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { SelectFieldConstraint, selectFieldConstraint } from "./select-field-constraint.vo"
-import { SelectEmpty, SelectEqual } from "./select-field-specification"
+import { SelectContainsAnyOf, SelectEmpty, SelectEqual } from "./select-field-specification"
 import { SelectFieldValue, mutateSelectFieldValueSchema } from "./select-field-value.vo"
 import { selectFieldAggregate } from "./select-field.aggregate"
 import {
@@ -97,6 +97,8 @@ export class SelectField extends AbstractField<SelectFieldValue, SelectFieldCons
     const spec = match(condition)
       .with({ op: "eq" }, ({ value }) => new SelectEqual(value, this.id))
       .with({ op: "neq" }, ({ value }) => new SelectEqual(value, this.id).not())
+      .with({ op: "any_of" }, ({ value }) => new SelectContainsAnyOf(value, this.id))
+      .with({ op: "not_any_of" }, ({ value }) => new SelectContainsAnyOf(value, this.id).not())
       .with({ op: "is_empty" }, ({ value }) => new SelectEmpty(this.id))
       .with({ op: "is_not_empty" }, ({ value }) => new SelectEmpty(this.id).not())
       .exhaustive()

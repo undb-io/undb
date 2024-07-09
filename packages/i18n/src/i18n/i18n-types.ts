@@ -85,6 +85,14 @@ type RootTranslation = {
 			 */
 			nin: string
 			/**
+			 * a​n​y​ ​o​f
+			 */
+			any_of: string
+			/**
+			 * n​o​t​ ​a​n​y​ ​o​f
+			 */
+			not_any_of: string
+			/**
 			 * i​s​ ​s​a​m​e​ ​d​a​y
 			 */
 			is_same_day: string
@@ -239,6 +247,14 @@ export type TranslationFunctions = {
 			 * not in
 			 */
 			nin: () => LocalizedString
+			/**
+			 * any of
+			 */
+			any_of: () => LocalizedString
+			/**
+			 * not any of
+			 */
+			not_any_of: () => LocalizedString
 			/**
 			 * is same day
 			 */

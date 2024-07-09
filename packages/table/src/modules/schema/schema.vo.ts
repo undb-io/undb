@@ -15,6 +15,7 @@ import {
   UpdatedAtField,
   UpdatedByField,
   UserField,
+  type FieldId,
   type IUpdateFieldDTO,
 } from "./fields"
 import { FieldFactory } from "./fields/field.factory"

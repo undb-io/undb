@@ -18,6 +18,8 @@ const ops: Record<IOpType, string> = {
   lte: "<=",
   in: 'in',
   nin: 'not in',
+  any_of: 'any of',
+  not_any_of: 'not any of',
   is_same_day: "is same day",
   is_not_same_day: "is not same day",
   is_tody: "is today",
