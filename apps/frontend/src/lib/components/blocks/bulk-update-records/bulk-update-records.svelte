@@ -15,12 +15,14 @@
   import * as Form from "$lib/components/ui/form"
   import * as Alert from "$lib/components/ui/alert/index.js"
   import { PencilIcon } from "lucide-svelte"
+  import type { IBulkUpdateRecordsCommandOutput } from "@undb/commands"
 
   const table = getTable()
   const mutableFields = $table.schema.mutableFields
   const schema = $table.schema.getMutableSchema()
 
   export let filter: IViewFilterGroup | undefined = undefined
+  export let onSuccess: (data: IBulkUpdateRecordsCommandOutput) => void = () => {}
 
   let selectedFieldIds: string[] = mutableFields.length ? [mutableFields[0].id.value] : []
   $: selectedFields = selectedFieldIds.map((id) => $table.schema.getFieldById(new FieldIdVo(id)).unwrap())
@@ -29,10 +31,11 @@
 
   const updateRecordMutation = createMutation({
     mutationFn: trpc.record.bulkUpdate.mutate,
-    onSuccess: async () => {
-      toast.success("Record updated")
+    onSuccess: async (data) => {
+      toast.success(`${data.modifiedCount} records updated successfully`)
       reset({})
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
+      onSuccess(data)
     },
     onError: (error) => {
       toast.error(error.message)

@@ -8,6 +8,12 @@ export const bulkUpdateRecordsCommand = bulkUpdateRecordsDTO.extend({
 
 export type IBulkUpdateRecordsCommand = z.infer<typeof bulkUpdateRecordsCommand>
 
+export const bulkUpdateRecordsCommandOutput = z.object({
+  modifiedCount: z.number(),
+})
+
+export type IBulkUpdateRecordsCommandOutput = z.infer<typeof bulkUpdateRecordsCommandOutput>
+
 export class BulkUpdateRecordsCommand extends Command implements IBulkUpdateRecordsCommand {
   public readonly tableId: string
   public readonly filter: IViewFilterGroup

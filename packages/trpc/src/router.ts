@@ -30,6 +30,7 @@ import {
   UpdateViewCommand,
   UpdateWebhookCommand,
   bulkUpdateRecordsCommand,
+  bulkUpdateRecordsCommandOutput,
   bulkdeleteRecordsCommand,
   bulkduplicateRecordsCommand,
   createBaseCommand,
@@ -165,6 +166,7 @@ const recordRouter = t.router({
   bulkUpdate: p
     .use(authz("record:update"))
     .input(bulkUpdateRecordsCommand)
+    .output(bulkUpdateRecordsCommandOutput)
     .mutation(({ input }) => commandBus.execute(new BulkUpdateRecordsCommand(input))),
   delete: p
     .use(authz("record:delete"))
