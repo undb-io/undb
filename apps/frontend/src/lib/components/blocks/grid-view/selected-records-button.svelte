@@ -100,6 +100,7 @@
                 </Sheet.Header>
 
                 <BulkUpdateRecords
+                  disableCustomFilter
                   onSuccess={() => {
                     updateOpen = false
                     dropdownOpen = false

@@ -32,6 +32,7 @@
 
   let open = false
 
+  export let disableCustomFilter = false
   export let filter: IViewFilterGroup | undefined = undefined
   export let onSuccess: (data: IBulkUpdateRecordsCommandOutput) => void = () => {}
 
@@ -102,10 +103,12 @@
 
 <div class="grid h-full grid-cols-4">
   <div class="col-span-3 flex h-full flex-col border-r px-4 py-3">
-    <div class="space-y-2">
-      <p class="font-semibold">Update records with the following condition</p>
-      <FiltersEditor bind:value={$value} table={$table} class="rounded-md border"></FiltersEditor>
-    </div>
+    {#if !disableCustomFilter}
+      <div class="space-y-2">
+        <p class="font-semibold">Update records with the following condition</p>
+        <FiltersEditor bind:value={$value} table={$table} class="rounded-md border"></FiltersEditor>
+      </div>
+    {/if}
 
     <div class="my-4 flex h-full flex-1 flex-col space-y-8">
       {#if !selectedFields.length}
