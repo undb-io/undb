@@ -102,12 +102,7 @@ export class RecordRepository implements IRecordRepository {
 
   async find(table: TableDo, spec: RecordComositeSpecification): Promise<RecordDO[]> {
     const t = new UnderlyingTable(table)
-    const records = await this.qb
-      .selectFrom(t.name)
-      .selectAll()
-      .where(this.#handleWhere(table, spec))
-      .limit(1)
-      .execute()
+    const records = await this.qb.selectFrom(t.name).selectAll().where(this.#handleWhere(table, spec)).execute()
 
     return records.map((record) => {
       const dto = getRecordDTOFromEntity(table, record)

@@ -173,7 +173,6 @@
   $: tableAttrs = $viewModel.tableAttrs
   $: tableHeaderAttrs = $viewModel.tableHeadAttrs
   $: tableBodyAttrs = $viewModel.tableBodyAttrs
-  $: rows = $viewModel.rows
 
   $: selectedDataIds = $viewModel.pluginStates.select.selectedDataIds
   $: selectedRecordIds = Object.keys($selectedDataIds)
@@ -186,9 +185,7 @@
 <div class="flex h-full w-full flex-col">
   {#if !readonly}
     <TableTools>
-      {#if selectedRecordIds.length}
-        <SelectedRecordsButton ids={selectedRecordIds} />
-      {/if}
+      <SelectedRecordsButton class={selectedRecordIds.length && "opacity-100"} ids={selectedRecordIds} />
     </TableTools>
   {/if}
   <ScrollArea orientation="both" class="h-full flex-1 overflow-auto">

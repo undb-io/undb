@@ -7,7 +7,7 @@ import { EmailFieldValue } from "./email-field-value.vo"
 
 export class EmailEqual extends RecordComositeSpecification {
   constructor(
-    readonly value: string,
+    readonly value: string | null,
     readonly fieldId: FieldId,
   ) {
     super(fieldId)

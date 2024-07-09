@@ -1,4 +1,5 @@
-import { AggregateRoot, Some, andOptions, type Option } from "@undb/domain"
+import { AggregateRoot, andOptions, None, type Option } from "@undb/domain"
+import { isEmpty } from "radash"
 import type { TableDo } from "../../../table.do"
 import { ID_TYPE, type FieldValue } from "../../schema"
 import { FieldIdVo, type FieldId } from "../../schema/fields/field-id.vo"
@@ -70,6 +71,8 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
   }
 
   update(table: TableDo, dto: IUpdateRecordDTO["values"]): Option<RecordComositeSpecification> {
+    if (isEmpty(dto)) return None
+
     const specs: Option<RecordComositeSpecification>[] = []
 
     const updatedFields = new Set<string>()

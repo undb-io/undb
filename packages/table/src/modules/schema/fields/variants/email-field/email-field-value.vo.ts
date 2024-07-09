@@ -2,17 +2,17 @@ import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 
 export const mutateEmailFieldValueSchema = z.union([
-  z.number().optional(),
+  z.string().email().optional().nullable(),
   z.object({
     type: z.literal("set"),
-    value: z.number(),
+    value: z.string().email(),
   }),
 ])
 
 export type IMutateEmailFieldValueSchema = z.infer<typeof mutateEmailFieldValueSchema>
 
-export class EmailFieldValue extends ValueObject<string> {
-  constructor(value: string) {
+export class EmailFieldValue extends ValueObject<string | null> {
+  constructor(value: string | null) {
     super({ value })
   }
 

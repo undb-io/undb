@@ -10,12 +10,15 @@
   import * as Sheet from "$lib/components/ui/sheet"
   import BulkUpdateRecords from "../bulk-update-records/bulk-update-records.svelte"
   import { ID_TYPE } from "@undb/table"
+  import { cn } from "$lib/utils"
 
   const table = getTable()
 
   export let ids: string[]
 
   let open = false
+  let dropdownOpen = false
+  let updateOpen = false
 
   const client = useQueryClient()
   const deleteRecordsMutation = createMutation({
@@ -60,14 +63,14 @@
   }
 </script>
 
-<div class="flex items-center gap-0">
+<div class={cn("flex items-center gap-0 opacity-0", $$restProps.class)}>
   <AlertDialog.Root bind:open>
     <AlertDialog.Trigger asChild let:builder>
       <Button size="sm" variant="outline" builders={[builder]} class="rounded-r-none border-r-0">
         Duplicate {ids.length} Record{ids.length > 1 ? "s" : ""}
       </Button>
 
-      <DropdownMenu.Root>
+      <DropdownMenu.Root bind:open={dropdownOpen}>
         <DropdownMenu.Trigger>
           <Button variant="outline" size="sm" class="rounded-l-none px-2">
             <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
@@ -75,7 +78,7 @@
         </DropdownMenu.Trigger>
         <DropdownMenu.Content class="w-[200px] p-0">
           <DropdownMenu.Group>
-            <Sheet.Root>
+            <Sheet.Root bind:open={updateOpen}>
               <Sheet.Trigger asChild let:builder>
                 <DropdownMenu.Item asChild class="p-0">
                   <Button
@@ -89,11 +92,16 @@
                 </DropdownMenu.Item>
               </Sheet.Trigger>
               <Sheet.Content class="sm:max-w-1/2 flex h-full w-1/2 flex-col gap-0 px-0 py-4 transition-all">
-                <Sheet.Header class="border-b px-6 pb-4">
-                  <Sheet.Title>Bulk update {ids.length} Records</Sheet.Title>
+                <Sheet.Header class="flex flex-row items-center justify-between border-b px-6 pb-4">
+                  <Sheet.Title class="flex-1">Bulk update {ids.length} Records</Sheet.Title>
+                  <!-- <Button size="sm" class="mr-5" type="submit" form="bulkUpdateRecords">Bulk Update</Button> -->
                 </Sheet.Header>
 
                 <BulkUpdateRecords
+                  onSuccess={() => {
+                    updateOpen = false
+                    dropdownOpen = false
+                  }}
                   filter={{
                     conjunction: "and",
                     children: [{ fieldId: ID_TYPE, op: "in", value: ids }],
