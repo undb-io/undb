@@ -12,6 +12,7 @@ import {
   WithViewSort,
   WithoutView,
 } from "../../../../specifications/table-view.specification"
+import type { Field } from "../../../schema"
 import type { IViewDTO } from "../dto"
 import { ViewAggregateVO, viewAggregate, type IViewAggregate } from "../view-aggregate/view-aggregate.vo"
 import { ViewColor, viewColorGroup, type IRootViewColor } from "../view-color"
@@ -179,6 +180,17 @@ export abstract class AbstractView {
 
     const previous = this.fields.into(null)?.value
     return Some(new WithViewFields(this.id, Option(previous), fields))
+  }
+
+  $addField(field: Field): Option<WithViewFields> {
+    if (this.fields.isNone()) {
+      return None
+    }
+
+    const previous = this.fields.into(null)?.value
+    const fields = this.fields.unwrap().addField(field)
+
+    return Some(new WithViewFields(this.id, Option(previous), fields.toJSON()))
   }
 
   toJSON(): IViewDTO {

@@ -11,12 +11,12 @@
   export let defaultValue: string | undefined
 </script>
 
-{#if constraint}
-  <div class="space-y-4">
-    <div class="grid gap-3">
-      <Label for="defaultValue">Default</Label>
-      <Input id="defaultValue" class="bg-background flex-1" placeholder="default value" bind:value={defaultValue} />
-    </div>
+<div class="space-y-4">
+  <div class="grid gap-3">
+    <Label for="defaultValue">Default</Label>
+    <Input id="defaultValue" class="bg-background flex-1" placeholder="default value" bind:value={defaultValue} />
+  </div>
+  {#if constraint}
     <div class="grid grid-cols-2 gap-3">
       <div class="grid gap-3">
         <Label for="min">Min</Label>
@@ -53,5 +53,5 @@
         <Label for="display" class="text-xs">Display</Label>
       </div>
     </div>
-  </div>
-{/if}
+  {/if}
+</div>

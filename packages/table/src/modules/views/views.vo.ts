@@ -1,4 +1,5 @@
-import { Option, ValueObject } from "@undb/domain"
+import { andOptions, Option, ValueObject } from "@undb/domain"
+import type { Field } from "../schema"
 import type { IViewsDTO } from "./dto"
 import { GridView } from "./view/variants/grid-view.vo"
 import { ViewIdVo } from "./view/view-id.vo"
@@ -51,5 +52,11 @@ export class Views extends ValueObject {
 
   deleteView(view: View) {
     return new Views(this.views.filter((v) => !v.id.equals(view.id)))
+  }
+
+  $addField(field: Field) {
+    const specs = this.views.map((view) => view.$addField(field))
+
+    return andOptions(...specs)
   }
 }

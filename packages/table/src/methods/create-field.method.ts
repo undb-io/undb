@@ -9,8 +9,13 @@ import type { TableDo } from "../table.do"
 export function $createFieldSpec(this: TableDo, field: Field): Option<TableComositeSpecification> {
   const createFieldSpec = this.schema.$createField(field)
   const formAddFieldSpec = this.forms?.$addField(field)
+  const viewAddFieldSpec = this.views.$addField(field)
 
-  const spec = andOptions(Some(createFieldSpec), formAddFieldSpec ? Some(formAddFieldSpec) : None).unwrap()
+  const spec = andOptions(
+    Some(createFieldSpec),
+    formAddFieldSpec ? Some(formAddFieldSpec) : None,
+    viewAddFieldSpec,
+  ).unwrap()
   spec.mutate(this)
 
   applyRules(new FieldNameShouldBeUnique(this.schema))
@@ -18,6 +23,7 @@ export function $createFieldSpec(this: TableDo, field: Field): Option<TableComos
   const event = new FieldCreatedEvent({
     tableId: this.id.value,
     field: createFieldSpec.field.toJSON(),
+    views: this.views.toJSON(),
     forms: formAddFieldSpec?.forms.toJSON(),
   })
   this.addDomainEvent(event)

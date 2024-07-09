@@ -86,6 +86,7 @@
     "tailwind-merge": "^2.3.0",
     "tailwind-variants": "^0.2.1",
     "trpc-svelte-query-adapter": "^2.3.4",
+    "ts-pattern": "^5.2.0",
     "vaul-svelte": "^0.3.2"
   }
 }

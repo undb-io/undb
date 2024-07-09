@@ -2,7 +2,7 @@ import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import { isEqual } from "radash"
 import type { TableDo } from "../../../../table.do"
-import { fieldId } from "../../../schema"
+import { fieldId, type Field } from "../../../schema"
 
 export const viewField = z.object({
   fieldId,
@@ -53,5 +53,9 @@ export class ViewFields extends ValueObject<IViewFields> {
 
   public getHiddenFieldsCount(): number {
     return this.getHiddenFields().length
+  }
+
+  public addField(field: Field): ViewFields {
+    return new ViewFields([...this.props, { fieldId: field.id.value, hidden: false }])
   }
 }

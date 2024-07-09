@@ -4,6 +4,7 @@
     FieldIdVo,
     fieldTypes,
     getNextName,
+    OptionIdVo,
     systemFieldTypes,
     type ICreateSchemaDTO,
     type NoneSystemFieldType,
@@ -13,7 +14,7 @@
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
   import { getFormField } from "formsnap"
-  import { BetweenHorizonalEnd, Settings2Icon, SettingsIcon } from "lucide-svelte"
+  import { BetweenHorizonalEnd, SettingsIcon } from "lucide-svelte"
   import FieldIcon from "../field-icon/field-icon.svelte"
   import * as Accordion from "$lib/components/ui/accordion"
   import FieldOptions from "../field-options/field-options.svelte"
@@ -25,6 +26,7 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { clickoutside } from "@svelte-put/clickoutside"
   import autoAnimate from "@formkit/auto-animate"
+  import { match } from "ts-pattern"
 
   const { form } = getFormField<Infer<typeof createTableCommand>, "schema">()
 
@@ -34,21 +36,32 @@
 
   const addField = async (type: NoneSystemFieldType) => {
     const fieldId = FieldIdVo.create().value
-    $formData.schema = [
-      ...$formData.schema,
-      {
+
+    const newField = match(type)
+      .with("select", () => ({
         id: fieldId,
         type,
         name: getNextName($formData.schema.map((field) => field.name)),
         display: false,
         constraint: {},
-      },
-    ]
+        option: {
+          options: [],
+        },
+      }))
+      .otherwise(() => ({
+        id: fieldId,
+        type,
+        name: getNextName($formData.schema.map((field) => field.name)),
+        display: false,
+        constraint: {},
+      }))
+
+    $formData.schema = [...$formData.schema, newField]
 
     await tick()
     open = false
 
-    if (activeFieldId !== undefined) {
+    if (type === "select") {
       activeFieldId = fieldId
     }
     const el = document.querySelector(`[data-field-id="${fieldId}"]`) as HTMLInputElement

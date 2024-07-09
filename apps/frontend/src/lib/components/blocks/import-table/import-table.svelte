@@ -190,7 +190,7 @@
       <div class="border-b p-3">
         <Label class="flex items-center gap-2">
           <div>Name</div>
-          <Input class="text-sm" bind:value={tableName} />
+          <Input class="text-sm" value={tableName} on:change={(e) => (tableName = e.target.value)} />
         </Label>
       </div>
       <div>
@@ -232,7 +232,7 @@
   {/if}
 {/if}
 
-<div class="flex justify-end">
+<div class="flex justify-end gap-2">
   {#if step === 1}
     <Button variant="outline" on:click={() => (step = 0)} size="sm">back</Button>
   {/if}

@@ -15,7 +15,7 @@
   const colors = new ColorsVO()
   export let option: ISelectFieldOption
 
-  $: if (!option) {
+  $: if (!option?.options.length) {
     option = {
       options: [
         {

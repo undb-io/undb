@@ -2,6 +2,7 @@
   import type { IFieldConstraint, NoneSystemFieldType } from "@undb/table"
   import type { ComponentType } from "svelte"
   import StringFieldOption from "./string-field-option.svelte"
+  import EmailFieldOption from "./email-field-option.svelte"
   import NumberFieldOption from "./number-field-option.svelte"
   import ReferenceFieldOption from "./reference-field-option.svelte"
   import RollupFieldOption from "./rollup-field-option.svelte"
@@ -25,6 +26,7 @@
     rating: RatingFieldOption,
     attachment: AttachmentFieldOption,
     user: UserFieldOption,
+    email: EmailFieldOption,
   }
 
   export let type: NoneSystemFieldType
