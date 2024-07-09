@@ -64,10 +64,19 @@
 
   function updateType(type: FieldType) {
     if (type === "select") {
+      form.reset({
+        data: {
+          type: "select",
+          name: $formData.name,
+          option: {
+            options: [],
+          },
+        },
+      })
     }
   }
 
-  $: $formData.type, {}
+  $: $formData.type, updateType($formData.type)
 </script>
 
 <form method="POST" use:enhance class="space-y-4">
