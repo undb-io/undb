@@ -185,7 +185,9 @@
 <div class="flex h-full w-full flex-col">
   {#if !readonly}
     <TableTools>
-      <SelectedRecordsButton class={selectedRecordIds.length && "opacity-100"} ids={selectedRecordIds} />
+      {#if selectedRecordIds.length}
+        <SelectedRecordsButton class={selectedRecordIds.length && "opacity-100"} ids={selectedRecordIds} />
+      {/if}
     </TableTools>
   {/if}
   <ScrollArea orientation="both" class="h-full flex-1 overflow-auto">
