@@ -7,7 +7,7 @@
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
-  import { createFieldDTO } from "@undb/table"
+  import { createFieldDTO, type FieldType } from "@undb/table"
   import { toast } from "svelte-sonner"
   import { derived } from "svelte/store"
   import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
@@ -61,6 +61,13 @@
   )
 
   const { enhance, form: formData, reset } = form
+
+  function updateType(type: FieldType) {
+    if (type === "select") {
+    }
+  }
+
+  $: $formData.type, {}
 </script>
 
 <form method="POST" use:enhance class="space-y-4">
@@ -82,19 +89,13 @@
     </Form.Field>
   </div>
 
-  <Form.Field {form} name="constraint">
-    <Form.Control let:attrs>
-      <FieldOptions
-        type={$formData.type}
-        bind:option={$formData.option}
-        bind:constraint={$formData.constraint}
-        bind:display={$formData.display}
-        bind:defaultValue={$formData.defaultValue}
-      />
-    </Form.Control>
-    <Form.Description />
-    <Form.FieldErrors />
-  </Form.Field>
+  <FieldOptions
+    type={$formData.type}
+    bind:option={$formData.option}
+    bind:constraint={$formData.constraint}
+    bind:display={$formData.display}
+    bind:defaultValue={$formData.defaultValue}
+  />
 
   <div class="flex w-full justify-end">
     <Button type="submit">Submit</Button>

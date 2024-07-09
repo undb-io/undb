@@ -34,7 +34,7 @@
   export let displayValue: any | undefined = undefined
   export let op: IOpType | undefined = undefined
 
-  const className = cn("h-8 rounded-l-none border-l-0 py-0 text-xs", $$restProps.class)
+  const className = cn("h-8 rounded-l-none border-l-0 py-0 text-xs bg-background", $$restProps.class)
 
   const string: Record<IStringFieldConditionOp, ComponentType | null> = {
     eq: Input,

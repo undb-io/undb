@@ -13,7 +13,7 @@
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.js"
   import FieldControl from "../field-control/field-control.svelte"
   import { defaults, superForm } from "sveltekit-superforms"
-  import { zodClient } from "sveltekit-superforms/adapters"
+  import { zod, zodClient } from "sveltekit-superforms/adapters"
   import { trpc } from "$lib/trpc/client"
   import { createMutation, createQuery, useQueryClient } from "@tanstack/svelte-query"
   import { objectify, pick } from "radash"
@@ -32,7 +32,7 @@
 
   let open = false
 
-  export let disableCustomFilter = false
+  export let customFilter = false
   export let filter: IViewFilterGroup | undefined = undefined
   export let onSuccess: (data: IBulkUpdateRecordsCommandOutput) => void = () => {}
 
@@ -58,22 +58,31 @@
     },
   })
 
-  const updateRecords = (values: any) => {
+  const updateRecords = async (values: any) => {
     if (!filter) {
       return
     }
 
-    $updateRecordMutation.mutate({
-      tableId: $table.id.value,
-      filter,
-      values,
+    const selectedSchema = $table.schema.getMutableSchema(selectedFields)
+    const validated = await form.validateForm({
+      update: true,
+      schema: zod(selectedSchema),
+      focusOnError: true,
     })
+
+    if (validated.valid) {
+      $updateRecordMutation.mutate({
+        tableId: $table.id.value,
+        filter,
+        values,
+      })
+    }
   }
 
   const form = superForm(defaults({}, zodClient(schema)), {
     SPA: true,
     dataType: "json",
-    validators: zodClient(schema),
+    // validators: zodClient(schema),
     resetForm: false,
     invalidateAll: false,
     onUpdate(event) {
@@ -102,26 +111,32 @@
 
   const value = writable<MaybeConditionGroup<IViewFilterOptionSchema> | undefined>()
   $: validValue = $value ? parseValidViewFilter($table.schema.fieldMapById, $value) : undefined
-  $: validValue, (filter = validValue)
+  $: if (validValue && !customFilter) {
+    filter = validValue
+  }
 
   const countRecords = createQuery({
-    queryKey: ["table", $table.id.value, "countRecords"],
+    queryKey: ["table", $table.id.value, "countRecords", JSON.stringify(filter)],
     queryFn: () =>
       trpc.record.count.query({
         tableId: $table.id.value,
         viewId: $viewId,
         filters: filter,
       }),
-    enabled: !!filter && !disableCustomFilter,
+    enabled: !!filter,
   })
 </script>
 
 <div class="grid h-full grid-cols-4">
   <div class="col-span-3 flex h-full flex-col border-r px-4 py-3">
-    {#if !disableCustomFilter}
+    {#if !customFilter}
       <div class="space-y-2">
         <p class="font-semibold">Update records with the following condition</p>
-        <FiltersEditor bind:value={$value} table={$table} class="rounded-md border"></FiltersEditor>
+        <FiltersEditor
+          bind:value={$value}
+          table={$table}
+          class={cn("rounded-md border bg-gray-50 shadow-inner", filter && "pt-4")}
+        ></FiltersEditor>
       </div>
     {/if}
 
@@ -171,7 +186,7 @@
       <div class="-mx-4 flex justify-end border-t py-2 pt-4">
         <Button
           size="sm"
-          disabled={!filter || !selectedFields.length || $countRecords.isFetching || $countRecords.isError}
+          disabled={!filter || !selectedFields.length}
           class="mr-5"
           on:click={() => {
             open = true
