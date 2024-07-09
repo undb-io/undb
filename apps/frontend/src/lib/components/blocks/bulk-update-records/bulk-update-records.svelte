@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
-  import { getTable } from "$lib/store/table.store"
+  import { getTable, viewId } from "$lib/store/table.store"
   import { cn } from "$lib/utils"
   import {
     FieldIdVo,
@@ -15,7 +15,7 @@
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { trpc } from "$lib/trpc/client"
-  import { createMutation, useQueryClient } from "@tanstack/svelte-query"
+  import { createMutation, createQuery, useQueryClient } from "@tanstack/svelte-query"
   import { objectify, pick } from "radash"
   import { toast } from "svelte-sonner"
   import * as Form from "$lib/components/ui/form"
@@ -44,7 +44,11 @@
   const updateRecordMutation = createMutation({
     mutationFn: trpc.record.bulkUpdate.mutate,
     onSuccess: async (data) => {
-      toast.success(`${data.modifiedCount} records updated successfully`)
+      if (!data.modifiedCount) {
+        toast.warning("No records updated")
+      } else {
+        toast.success(`${data.modifiedCount} records updated successfully`)
+      }
       reset({})
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
       onSuccess(data)
@@ -99,6 +103,17 @@
   const value = writable<MaybeConditionGroup<IViewFilterOptionSchema> | undefined>()
   $: validValue = $value ? parseValidViewFilter($table.schema.fieldMapById, $value) : undefined
   $: validValue, (filter = validValue)
+
+  const countRecords = createQuery({
+    queryKey: ["table", $table.id.value, "countRecords"],
+    queryFn: () =>
+      trpc.record.count.query({
+        tableId: $table.id.value,
+        viewId: $viewId,
+        filters: filter,
+      }),
+    enabled: !!filter && !disableCustomFilter,
+  })
 </script>
 
 <div class="grid h-full grid-cols-4">
@@ -156,11 +171,13 @@
       <div class="-mx-4 flex justify-end border-t py-2 pt-4">
         <Button
           size="sm"
+          disabled={!filter || !selectedFields.length || $countRecords.isFetching || $countRecords.isError}
           class="mr-5"
           on:click={() => {
             open = true
           }}
         >
+          <PencilIcon class="mr-2 h-4 w-4" />
           Bulk Update
         </Button>
       </div>

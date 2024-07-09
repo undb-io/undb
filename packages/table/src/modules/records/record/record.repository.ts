@@ -3,7 +3,7 @@ import type { TableId } from "../../../table-id.vo"
 import type { TableDo } from "../../../table.do"
 import { getSpec } from "../../schema/fields/condition"
 import type { ViewId } from "../../views"
-import type { AggregateResult, IGetRecordsDTO } from "../dto"
+import type { AggregateResult, ICountRecordsDTO, IGetRecordsDTO } from "../dto"
 import { withQ } from "../specification/with-q.specification"
 import type { IRecordDTO } from "./dto"
 import type { RecordId } from "./record-id.vo"
@@ -12,6 +12,10 @@ import type { RecordDO } from "./record.do"
 
 export interface SingleQueryArgs {
   select: Option<string[]>
+}
+
+export interface CountQueryArgs {
+  filter: Option<RecordComositeSpecification>
 }
 
 export interface QueryArgs {
@@ -40,6 +44,7 @@ export interface IRecordRepository {
 
 export interface IRecordQueryRepository {
   find(table: TableDo, viewId: Option<ViewId>, query: Option<QueryArgs>): Promise<PaginatedDTO<IRecordDTO>>
+  count(table: TableDo, viewId: Option<ViewId>, query: Option<CountQueryArgs>): Promise<number>
   findOneById(table: TableDo, id: RecordId, query: Option<SingleQueryArgs>): Promise<Option<IRecordDTO>>
   count(tableId: TableId): Promise<number>
 
@@ -69,6 +74,25 @@ export function buildQuery(table: TableDo, dto: IGetRecordsDTO): Option<QueryArg
   }
   if (dto.select) {
     query.select = Some(dto.select)
+  }
+  return Some(query)
+}
+
+export function buildCountQuery(table: TableDo, dto: ICountRecordsDTO): Option<CountQueryArgs> {
+  const query: CountQueryArgs = {
+    filter: None,
+  }
+
+  if (dto.q) {
+    query.filter = withQ(table, dto.q)
+  }
+  if (dto.filters) {
+    const spec = getSpec(table.schema.fieldMapById, dto.filters) as Option<RecordComositeSpecification>
+    if (query.filter) {
+      query.filter = andOptions(query.filter, spec) as Option<RecordComositeSpecification>
+    } else {
+      query.filter = spec
+    }
   }
   return Some(query)
 }

@@ -1,3 +1,4 @@
+export * from "./count-records.dto"
 export * from "./get-record-by-id.dto"
 export * from "./get-records.dto"
 export * from "./record-aggregate.dto"

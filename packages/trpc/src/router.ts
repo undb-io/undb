@@ -65,11 +65,14 @@ import { CommandBus, QueryBus } from "@undb/cqrs"
 import { container } from "@undb/di"
 import type { ICommandBus, IQueryBus } from "@undb/domain"
 import {
+  CountRecordsQuery,
   GetRecordByIdQuery,
   GetRecordsQuery,
   GetTableQuery,
   GetTablesQuery,
   GetWebhooksQuery,
+  countRecordsOutput,
+  countRecordsQuery,
   getRecordByIdQuery,
   getRecordsQuery,
   getTableQuery,
@@ -151,6 +154,11 @@ const recordRouter = t.router({
     .use(authz("record:read"))
     .input(getRecordByIdQuery)
     .query(({ input }) => queryBus.execute(new GetRecordByIdQuery(input))),
+  count: p
+    .use(authz("record:read"))
+    .input(countRecordsQuery)
+    .output(countRecordsOutput)
+    .query(({ input }) => queryBus.execute(new CountRecordsQuery(input))),
   create: p
     .use(authz("record:create"))
     .input(createRecordCommand)

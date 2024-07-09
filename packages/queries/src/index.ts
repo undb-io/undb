@@ -1,3 +1,4 @@
+export * from "./count-records.query"
 export * from "./get-aggregates.query"
 export * from "./get-base.query"
 export * from "./get-bases.query"
