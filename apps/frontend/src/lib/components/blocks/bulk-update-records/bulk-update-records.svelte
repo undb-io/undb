@@ -2,7 +2,7 @@
   import { Button } from "$lib/components/ui/button"
   import { getTable } from "$lib/store/table.store"
   import { cn } from "$lib/utils"
-  import { FieldIdVo } from "@undb/table"
+  import { FieldIdVo, type IViewFilterGroup } from "@undb/table"
   import FieldIcon from "../field-icon/field-icon.svelte"
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.js"
   import FieldControl from "../field-control/field-control.svelte"
@@ -19,6 +19,8 @@
   const table = getTable()
   const mutableFields = $table.schema.mutableFields
   const schema = $table.schema.getMutableSchema()
+
+  export let filter: IViewFilterGroup | undefined = undefined
 
   let selectedFieldIds: string[] = mutableFields.length ? [mutableFields[0].id.value] : []
   $: selectedFields = selectedFieldIds.map((id) => $table.schema.getFieldById(new FieldIdVo(id)).unwrap())
@@ -38,13 +40,15 @@
   })
 
   const updateRecord = (values: any) => {
-    // if (readonly) return
-    // const recordId = record.id.value
-    // $updateRecordMutation.mutate({
-    //   tableId: $table.id.value,
-    //   id: recordId,
-    //   values,
-    // })
+    if (!filter) {
+      return
+    }
+
+    $updateRecordMutation.mutate({
+      tableId: $table.id.value,
+      filter,
+      values,
+    })
   }
 
   const form = superForm(defaults({}, zodClient(schema)), {

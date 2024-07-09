@@ -26,7 +26,7 @@ export async function bulkUpdateRecordsMethod(
   const updates = records.map((record) => record.update(table, dto.values)).map((spec) => spec.unwrap())
   const update = updates[0]
 
-  await this.repo.bulkUpdate(table, spec.unwrap(), update)
+  await this.repo.bulkUpdate(table, spec.unwrap(), update, records)
 
   return records
 }

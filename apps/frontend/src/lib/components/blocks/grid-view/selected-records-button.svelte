@@ -9,6 +9,7 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import * as Sheet from "$lib/components/ui/sheet"
   import BulkUpdateRecords from "../bulk-update-records/bulk-update-records.svelte"
+  import { ID_TYPE } from "@undb/table"
 
   const table = getTable()
 
@@ -92,7 +93,12 @@
                   <Sheet.Title>Bulk update {ids.length} Records</Sheet.Title>
                 </Sheet.Header>
 
-                <BulkUpdateRecords />
+                <BulkUpdateRecords
+                  filter={{
+                    conjunction: "and",
+                    children: [{ fieldId: ID_TYPE, op: "in", value: ids }],
+                  }}
+                />
               </Sheet.Content>
             </Sheet.Root>
 

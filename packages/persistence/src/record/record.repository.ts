@@ -199,7 +199,7 @@ export class RecordRepository implements IRecordRepository {
         let data = {}
         for (const record of records) {
           const visitor = new RecordMutateVisitor(table, record, qb, eb)
-          spec.accept(visitor)
+          update.accept(visitor)
           sql.push(...visitor.sql)
           data = { ...data, ...visitor.data }
         }
@@ -208,7 +208,7 @@ export class RecordRepository implements IRecordRepository {
       }
     }
 
-    await this.qb.updateTable(t.name).set(handleUpdate()).where(this.#handleWhere(table, update)).execute()
+    await this.qb.updateTable(t.name).set(handleUpdate()).where(this.#handleWhere(table, spec)).execute()
 
     for (const s of sql) {
       await this.qb.executeQuery(s)
