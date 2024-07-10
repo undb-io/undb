@@ -20,7 +20,7 @@ import {
   type TableId,
   type ViewId,
 } from "@undb/table"
-import { type AliasedExpression, type ExpressionBuilder, type SelectQueryBuilder } from "kysely"
+import { sql, type AliasedExpression, type ExpressionBuilder, type SelectQueryBuilder } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
@@ -142,7 +142,37 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     }
 
     const handleSort = (qb: SelectQueryBuilder<any, any, any>) => {
-      return sort!.reduce((qb, s) => qb.orderBy(`${s.fieldId} ${s.direction}`), qb)
+      return sort!.reduce((qb, s) => {
+        const field = table.schema.getFieldById(new FieldIdVo(s.fieldId)).into(undefined)
+        if (!field) {
+          return qb
+        }
+
+        if (field.type === "select") {
+          const order = s.direction === "asc" ? field.options : field.options.slice().reverse()
+          if (field.isSingle) {
+            return qb.orderBy(
+              sql.raw(
+                `CASE ${table.id.value}.${field.id.value}
+                    ${order.map((option, index) => `WHEN '${option.id}' THEN ${index} `).join("\n")}
+                    ELSE ${s.direction === "asc" ? -1 : order.length}
+                  END`,
+              ),
+            )
+          } else {
+            return qb.orderBy(
+              sql.raw(
+                `CASE json_extract(${table.id.value}.${field.id.value}, '$[0]')
+                    ${order.map((option, index) => `WHEN '${option.id}' THEN ${index} `).join("\n")}
+                    ELSE ${s.direction === "asc" ? -1 : order.length}
+                  END`,
+              ),
+            )
+          }
+        }
+
+        return qb.orderBy(`${s.fieldId} ${s.direction}`)
+      }, qb)
     }
 
     const selectFields = select

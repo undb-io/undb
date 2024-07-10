@@ -71,6 +71,11 @@
         onSelectedChange={(selected) => {
           if (selected) {
             single = selected.value
+            if (selected.value === "single") {
+              constraint.max = 1
+            } else {
+              constraint.max = undefined
+            }
           }
         }}
       >

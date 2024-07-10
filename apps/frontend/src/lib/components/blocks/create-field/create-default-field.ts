@@ -8,7 +8,7 @@ export const createDefaultField = (table: TableDo, type: FieldType) =>
       type: "select" as const,
       name: table.schema.getNextFieldName(),
       constraint: {
-        max: undefined,
+        max: 1,
       },
       option: {
         options: [],

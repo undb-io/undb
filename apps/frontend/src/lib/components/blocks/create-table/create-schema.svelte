@@ -43,7 +43,9 @@
         type,
         name: getNextName($formData.schema.map((field) => field.name)),
         display: false,
-        constraint: {},
+        constraint: {
+          max: 1,
+        },
         option: {
           options: [],
         },
