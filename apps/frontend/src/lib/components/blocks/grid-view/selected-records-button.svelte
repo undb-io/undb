@@ -89,7 +89,7 @@
                     builders={[builder]}
                   >
                     <PencilIcon class="mr-2 h-3 w-3" />
-                    Update Record{ids.length > 1 ? "s" : ""}
+                    Update {ids.length} Record{ids.length > 1 ? "s" : ""}
                   </Button>
                 </DropdownMenu.Item>
               </Sheet.Trigger>
