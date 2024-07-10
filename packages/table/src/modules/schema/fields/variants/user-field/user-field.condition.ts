@@ -17,3 +17,4 @@ export type IUserFieldConditionSchema = ReturnType<typeof createUserFieldConditi
 export type IUserFieldCondition = z.infer<IUserFieldConditionSchema>
 
 export type IUserFieldConditionOp = IUserFieldCondition["op"]
+export type IUserFieldConditionValue = IUserFieldCondition["value"]

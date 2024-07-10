@@ -7,6 +7,7 @@ import {
   GetBaseQuery,
   GetBasesQuery,
   GetMemberByIdQuery,
+  GetMembersByIdsQuery,
   GetMembersQuery,
   GetRecordAuditsQuery,
   GetShareQuery,
@@ -208,6 +209,7 @@ export class Graphql {
       type Query {
         member: WorkspaceMember
         memberById(id: ID!): WorkspaceMember
+        membersByIds(ids: [ID!]!): [WorkspaceMember!]!
         members(q: String): [WorkspaceMember]!
 
         tables: [Table]!
@@ -231,6 +233,9 @@ export class Graphql {
           memberById: async (_, args) => {
             const member = await this.queryBus.execute(new GetMemberByIdQuery({ id: args.id }))
             return member
+          },
+          membersByIds: async (_, args) => {
+            return this.queryBus.execute(new GetMembersByIdsQuery({ ids: args.ids as [string, ...string[]] }))
           },
           member: () => {
             const member = executionContext.getStore()?.member

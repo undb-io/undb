@@ -2,7 +2,7 @@ import { type IWorkspaceMemberDTO, type IWorkspaceMemberQueryRepository } from "
 import type { WorkspaceMemberComositeSpecification } from "@undb/authz/src/workspace-member/workspace-member.composite-specification"
 import { inject, singleton } from "@undb/di"
 import { None, Option, Some, type IUnitOfWork } from "@undb/domain"
-import { eq } from "drizzle-orm"
+import { eq, inArray } from "drizzle-orm"
 import type { Database } from "../db"
 import { injectDb } from "../db.provider"
 import { users, workspaceMember } from "../tables"
@@ -33,6 +33,16 @@ export class WorkspaceMemberQueryRepository implements IWorkspaceMemberQueryRepo
     }
 
     return Some(this.mapper.toDTO(members[0].workspace_member))
+  }
+
+  async findByIds(ids: [string, ...string[]]): Promise<IWorkspaceMemberDTO[]> {
+    const members = await this.db
+      .select()
+      .from(workspaceMember)
+      .leftJoin(users, eq(users.id, workspaceMember.userId))
+      .where(inArray(users.id, ids))
+
+    return members.map((m) => this.mapper.toDTO(m.workspace_member))
   }
 
   async find(spec: Option<WorkspaceMemberComositeSpecification>): Promise<IWorkspaceMemberDTO[]> {

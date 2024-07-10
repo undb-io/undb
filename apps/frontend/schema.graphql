@@ -69,6 +69,7 @@ type Query {
   member: WorkspaceMember
   memberById(id: ID!): WorkspaceMember
   members(q: String): [WorkspaceMember]!
+  membersByIds(ids: [ID!]!): [WorkspaceMember!]!
   recordAudits(recordId: ID!): [Audit]
   share(id: ID!): Share
   table(id: ID!): Table

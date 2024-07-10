@@ -10,8 +10,6 @@
     type FieldType,
   } from "@undb/table"
   import FilterField from "./filter-field.svelte"
-  import OpPicker from "./op-picker.svelte"
-  import FilterInput from "./filter-input.svelte"
   import Button from "$lib/components/ui/button/button.svelte"
   import { cn } from "$lib/utils"
   import { GripVertical, PlusIcon, Trash2Icon } from "lucide-svelte"

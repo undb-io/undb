@@ -16,6 +16,7 @@ export const injectWorkspaceMemberRepository = () => inject(WORKSPACE_MEMBER_REP
 
 export interface IWorkspaceMemberQueryRepository {
   findOneById(id: string): Promise<Option<IWorkspaceMemberDTO>>
+  findByIds(ids: [string, ...string[]]): Promise<IWorkspaceMemberDTO[]>
   find(spec: Option<WorkspaceMemberComositeSpecification>): Promise<IWorkspaceMemberDTO[]>
 }
 

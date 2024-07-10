@@ -1,9 +1,11 @@
 import { ValueObject } from "@undb/domain"
 import type { z } from "@undb/zod"
 import { isEqual } from "radash"
-import type { IFieldCondition, Schema } from "../.."
 import type { TableDo } from "../../../../table.do"
 import type { RecordDO } from "../../../records/record/record.do"
+import type { Schema } from "../../schema.vo"
+import { FieldIdVo } from "../field-id.vo"
+import type { IUserFieldConditionValue } from "../variants/user-field/user-field.condition"
 import type { IRootCondition, MaybeConditionGroup } from "./condition.type"
 import {
   getFieldSpec,
@@ -12,6 +14,7 @@ import {
   isEmptyConditionGroup,
   toMaybeConditionGroup,
 } from "./condition.util"
+import type { IFieldCondition } from "./field-condition.type"
 
 export abstract class Condition<OptionType extends z.ZodTypeAny> extends ValueObject<IRootCondition<OptionType>> {
   constructor(value: IRootCondition<OptionType>) {
@@ -79,6 +82,23 @@ export abstract class Condition<OptionType extends z.ZodTypeAny> extends ValueOb
     const result = new Set<string>()
     for (const condition of this.fieldConditiosIter) {
       result.add(condition.fieldId)
+    }
+
+    return result
+  }
+
+  getUserIds(table: TableDo): Set<string> {
+    const result = new Set<string>()
+    for (const condition of this.fieldConditiosIter) {
+      const field = table.schema.getFieldById(new FieldIdVo(condition.fieldId))
+      if (field.isNone()) continue
+
+      if (field.unwrap().type === "user") {
+        const value = condition.value as IUserFieldConditionValue
+        if (value) {
+          result.add(value)
+        }
+      }
     }
 
     return result
