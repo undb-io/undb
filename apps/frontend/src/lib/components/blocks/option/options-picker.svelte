@@ -16,7 +16,10 @@
   export let value: string[] | null = []
   export let onValueChange: (value: string[] | null) => void = () => {}
 
-  $: selectedValue = value?.map((v) => options.find((o) => o.id === v)).filter((v) => !!v) ?? []
+  $: selectedValue =
+    ((Array.isArray(value) || value === null) &&
+      value?.map((v) => options.find((o) => o.id === v)).filter((v) => !!v)) ||
+    []
   $: filteredOptions = options.filter((option) => option.name.toLowerCase().includes(search.toLowerCase()))
 </script>
 

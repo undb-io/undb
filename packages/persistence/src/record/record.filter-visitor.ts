@@ -152,8 +152,17 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     this.addCond(cond)
   }
   selectEqual(spec: SelectEqual): void {
-    const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value)
-    this.addCond(cond)
+    if (spec.value === null) {
+      const cond = this.eb.eb(this.getFieldId(spec), "=", null)
+      this.addCond(cond)
+    } else {
+      const cond = this.eb.eb(
+        this.getFieldId(spec),
+        "=",
+        isString(spec.value) ? spec.value : JSON.stringify(spec.value),
+      )
+      this.addCond(cond)
+    }
   }
   selectEmpty(spec: SelectEmpty): void {
     const cond = this.eb.eb(this.getFieldId(spec), "=", null)

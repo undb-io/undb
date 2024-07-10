@@ -38,9 +38,20 @@
         variant="outline"
         role="combobox"
         aria-expanded={open}
-        class="w-full justify-between"
+        class={cn("w-full justify-between", $$restProps.class)}
       >
-        {selectedValue}
+        <div class="flex flex-1 items-center justify-start">
+          {#if selectedValue}
+            <Avatar.Root class="h-6 w-6 border">
+              <Avatar.Image src="" alt={selectedValue.user.username} />
+              <Avatar.Fallback>{selectedValue.user.username?.slice(0, 2)}</Avatar.Fallback>
+            </Avatar.Root>
+
+            <span class="ml-2">
+              {selectedValue.user.username}
+            </span>
+          {/if}
+        </div>
         <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>
     </slot>

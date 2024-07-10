@@ -1,23 +1,24 @@
 <script lang="ts">
-  import type {
-    Field,
-    IAutoIncrementFieldConditionOp,
-    ICheckboxFieldConditionOp,
-    ICreatedAtFieldConditionOp,
-    ICreatedByFieldConditionOp,
-    IDateFieldConditionOp,
-    IEmailFieldConditionOp,
-    IFilterableFieldType,
-    IIdFieldConditionOp,
-    IJsonFieldConditionOp,
-    INumberFieldConditionOp,
-    IOpType,
-    IRatingFieldConditionOp,
-    ISelectFieldConditionOp,
-    IStringFieldConditionOp,
-    IUpdatedAtFieldConditionOp,
-    IUpdatedByFieldConditionOp,
-    IUserFieldConditionOp,
+  import {
+    SelectField,
+    type Field,
+    type IAutoIncrementFieldConditionOp,
+    type ICheckboxFieldConditionOp,
+    type ICreatedAtFieldConditionOp,
+    type ICreatedByFieldConditionOp,
+    type IDateFieldConditionOp,
+    type IEmailFieldConditionOp,
+    type IFilterableFieldType,
+    type IIdFieldConditionOp,
+    type IJsonFieldConditionOp,
+    type INumberFieldConditionOp,
+    type IOpType,
+    type IRatingFieldConditionOp,
+    type ISelectFieldConditionOp,
+    type IStringFieldConditionOp,
+    type IUpdatedAtFieldConditionOp,
+    type IUpdatedByFieldConditionOp,
+    type IUserFieldConditionOp,
   } from "@undb/table"
   import Input from "$lib/components/ui/input/input.svelte"
   import { cn } from "$lib/utils"
@@ -169,14 +170,14 @@
     nin: null,
   }
 
-  const select: Record<ISelectFieldConditionOp, ComponentType | null> = {
-    eq: OptionPicker,
-    neq: OptionPicker,
+  $: select = {
+    eq: (field?.type === "select" && (field.isSingle ? OptionPicker : OptionsPicker)) || null,
+    neq: (field?.type === "select" && (field.isSingle ? OptionPicker : OptionsPicker)) || null,
     any_of: OptionsPicker,
     not_any_of: OptionsPicker,
     is_empty: null,
     is_not_empty: null,
-  }
+  } as Record<ISelectFieldConditionOp, ComponentType | null>
 
   const user: Record<IUserFieldConditionOp, ComponentType | null> = {
     eq: UserPicker,
@@ -206,7 +207,7 @@
     is_not_empty: null,
   }
 
-  const filterFieldInput: Record<IFilterableFieldType, Record<any, ComponentType | null>> = {
+  $: filterFieldInput = {
     string,
     number,
     date,
@@ -216,7 +217,7 @@
     updatedAt,
     createdBy,
     updatedBy,
-    select: select,
+    select,
     rating,
     email,
     checkbox,
