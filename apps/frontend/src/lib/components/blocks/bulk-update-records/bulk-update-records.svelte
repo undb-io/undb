@@ -2,13 +2,7 @@
   import { Button } from "$lib/components/ui/button"
   import { getTable, viewId } from "$lib/store/table.store"
   import { cn } from "$lib/utils"
-  import {
-    FieldIdVo,
-    parseValidViewFilter,
-    type IViewFilterGroup,
-    type IViewFilterOptionSchema,
-    type MaybeConditionGroup,
-  } from "@undb/table"
+  import { FieldIdVo, parseValidViewFilter, type IViewFilterGroup } from "@undb/table"
   import FieldIcon from "../field-icon/field-icon.svelte"
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.js"
   import FieldControl from "../field-control/field-control.svelte"
@@ -24,8 +18,8 @@
   import type { IBulkUpdateRecordsCommandOutput } from "@undb/commands"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
-  import { writable } from "svelte/store"
   import { createConditionGroupStore } from "../filters-editor/filters-editor.store"
+  import BulkUpdateRecordsPreview from "./bulk-update-records-preview.svelte"
 
   const table = getTable()
   const mutableFields = $table.schema.mutableFields
@@ -131,8 +125,13 @@
 <div class="grid h-full grid-cols-4">
   <div class="col-span-3 flex h-full flex-col border-r px-4 py-3">
     {#if !customFilter}
-      <div class="space-y-2">
-        <p class="font-semibold">Update records with the following condition</p>
+      <div class="w-full space-y-2">
+        <div class="flex w-full justify-between">
+          <p class="flex-1 font-semibold">Update records with the following condition</p>
+          {#if filter}
+            <BulkUpdateRecordsPreview {filter} />
+          {/if}
+        </div>
         <FiltersEditor
           store={value}
           table={$table}

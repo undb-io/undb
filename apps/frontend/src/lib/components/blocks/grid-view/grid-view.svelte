@@ -8,7 +8,7 @@
   import { copyToClipboard } from "@svelte-put/copy"
   import { toast } from "svelte-sonner"
   import { cn } from "$lib/utils.js"
-  import { Records, type Field, type IRecordsDTO } from "@undb/table"
+  import { Records, type Field, type IRecordsDTO, type IViewFilterGroup } from "@undb/table"
   import { createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
@@ -41,6 +41,7 @@
   const r = queryParam("r")
   const deleteRecordId = queryParam("deleteRecordId")
   const duplicateRecordId = queryParam("duplicateRecordId")
+  export let filter: IViewFilterGroup | undefined = undefined
 
   const copy = async (id: string) => {
     await copyToClipboard(id)
@@ -62,6 +63,7 @@
             tableId: $table?.id.value,
             viewId: $viewId,
             q: $q ?? undefined,
+            filters: filter,
             pagination: { limit: $perPage, page: $currentPage },
           }),
       }
@@ -191,7 +193,7 @@
     </TableTools>
   {/if}
   <ScrollArea orientation="both" class="h-full flex-1 overflow-auto">
-    <table {...$tableAttrs} class="flex h-full flex-col">
+    <table {...$tableAttrs} class={cn("flex h-full flex-col", $$restProps.class)}>
       <Table.Header {...$tableHeaderAttrs} class="sticky top-0 z-50 bg-white">
         {#each $headerRows as headerRow}
           <Subscribe rowAttrs={headerRow.attrs()}>
@@ -333,7 +335,7 @@
           </tr>
         </tfooter>
       {:else if !$getRecords.isLoading}
-        <GridViewEmpty />
+        <GridViewEmpty {readonly} />
       {/if}
     </table>
   </ScrollArea>
