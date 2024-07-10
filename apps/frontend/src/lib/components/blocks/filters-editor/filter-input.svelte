@@ -8,7 +8,6 @@
     type ICreatedByFieldConditionOp,
     type IDateFieldConditionOp,
     type IEmailFieldConditionOp,
-    type IFilterableFieldType,
     type IIdFieldConditionOp,
     type IJsonFieldConditionOp,
     type INumberFieldConditionOp,
@@ -30,6 +29,7 @@
   import JsonDropdown from "../json/json-dropdown.svelte"
   import OptionsPicker from "../option/options-picker.svelte"
   import UserFilterInput from "./variants/user-filter-input.svelte"
+  import IdFilterInput from "./variants/id-filter-input.svelte"
 
   export let field: Field | undefined
   export let recordId: string | undefined = undefined
@@ -165,8 +165,8 @@
   }
 
   const id: Record<IIdFieldConditionOp, ComponentType | null> = {
-    eq: Input,
-    neq: Input,
+    eq: IdFilterInput,
+    neq: IdFilterInput,
     in: null,
     nin: null,
   }
