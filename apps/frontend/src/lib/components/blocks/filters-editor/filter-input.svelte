@@ -29,6 +29,7 @@
   import UserPicker from "../user/user-picker.svelte"
   import JsonDropdown from "../json/json-dropdown.svelte"
   import OptionsPicker from "../option/options-picker.svelte"
+  import UserFilterInput from "./variants/user-filter-input.svelte"
 
   export let field: Field | undefined
   export let recordId: string | undefined = undefined
@@ -180,22 +181,22 @@
   } as Record<ISelectFieldConditionOp, ComponentType | null>
 
   const user: Record<IUserFieldConditionOp, ComponentType | null> = {
-    eq: UserPicker,
-    neq: UserPicker,
+    eq: UserFilterInput,
+    neq: UserFilterInput,
     is_empty: null,
     is_not_empty: null,
   }
 
   const createdBy: Record<ICreatedByFieldConditionOp, ComponentType | null> = {
-    eq: UserPicker,
-    neq: UserPicker,
+    eq: UserFilterInput,
+    neq: UserFilterInput,
     is_empty: null,
     is_not_empty: null,
   }
 
   const updatedBy: Record<IUpdatedByFieldConditionOp, ComponentType | null> = {
-    eq: UserPicker,
-    neq: UserPicker,
+    eq: UserFilterInput,
+    neq: UserFilterInput,
     is_empty: null,
     is_not_empty: null,
   }

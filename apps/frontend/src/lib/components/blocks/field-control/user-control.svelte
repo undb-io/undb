@@ -5,6 +5,7 @@
   import { Button } from "$lib/components/ui/button"
   import { ChevronsUpDownIcon } from "lucide-svelte"
   import UserFieldComponent from "$lib/components/blocks/field-value/user-field.svelte"
+  import { cn } from "$lib/utils"
 
   export let field: UserField
   export let value: IUserFieldValue
@@ -20,7 +21,7 @@
         let:selected
         variant="outline"
         builders={[builder]}
-        class="flex w-full items-center justify-between"
+        class={cn("flex w-full items-center justify-between", $$restProps.class)}
       >
         <UserFieldComponent disableHoverCard {value} displayValue={selected?.user ?? displayValue} />
         <ChevronsUpDownIcon class="text-muted-foreground h-3 w-3" />
@@ -35,7 +36,7 @@
       let:selected
       variant="outline"
       builders={[builder]}
-      class="flex w-full items-center justify-between"
+      class={cn("flex w-full items-center justify-between", $$restProps.class)}
     >
       <div class="flex flex-1 items-center gap-2">
         {#each value ?? [] as user, i}

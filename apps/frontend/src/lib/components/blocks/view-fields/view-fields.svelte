@@ -143,11 +143,11 @@
         </SortableList>
       </ScrollArea>
 
-      <div class="-mx-2 flex items-center gap-2 border-t px-2 pt-2">
+      <div class="-mx-2 flex items-center gap-2 border-t bg-gray-50 px-2 pt-2 shadow-inner">
         {#if hiddenCount > 0}
           <Button
             variant="outline"
-            class="flex-1"
+            class="flex-1 shadow-sm"
             size="sm"
             on:click={() => {
               viewFields = viewFieldsVo.showAllFields().toJSON()
@@ -159,7 +159,7 @@
         {:else}
           <Button
             variant="outline"
-            class="flex-1"
+            class="flex-1 shadow-sm"
             size="sm"
             on:click={() => {
               viewFields = viewFieldsVo.hideAllFields().toJSON()
@@ -172,7 +172,7 @@
 
         <Button
           variant="outline"
-          class="flex-1"
+          class="flex-1 shadow-sm"
           size="sm"
           on:click={() => {
             viewOption.showSystemFields = !viewOption.showSystemFields

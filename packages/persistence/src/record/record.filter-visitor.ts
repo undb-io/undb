@@ -96,8 +96,17 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     throw new NotImplementException(RecordFilterVisitor.name + ".referenceEqual")
   }
   userEqual(spec: UserEqual): void {
-    const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value)
-    this.addCond(cond)
+    if (spec.value === null) {
+      const cond = this.eb.eb(this.getFieldId(spec), "=", null)
+      this.addCond(cond)
+    } else {
+      const cond = this.eb.eb(
+        this.getFieldId(spec),
+        "=",
+        isString(spec.value) ? spec.value : JSON.stringify(spec.value),
+      )
+      this.addCond(cond)
+    }
   }
   userEmpty(spec: UserEmpty): void {
     const cond = this.eb.eb(this.getFieldId(spec), "=", "").or(this.getFieldId(spec), "is", null)

@@ -5,7 +5,7 @@
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { getTable, viewId } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
-  import { createMutation, createQuery, useQueryClient } from "@tanstack/svelte-query"
+  import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { invalidate } from "$app/navigation"
   import { writable } from "svelte/store"
   import Badge from "$lib/components/ui/badge/badge.svelte"
