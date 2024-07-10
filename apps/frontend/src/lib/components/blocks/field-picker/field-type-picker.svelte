@@ -11,6 +11,7 @@
 
   let open = false
   export let value: FieldType | undefined = undefined
+  export let onValueChange: (value: FieldType) => void = () => {}
 
   $: selected = allFieldTypes.find((f) => f === value)
   $: selectedValue = selected ?? "Select a field type..."
@@ -57,6 +58,9 @@
             value={type}
             onSelect={(currentValue) => {
               value = currentValue
+              if (value) {
+                onValueChange(value)
+              }
               closeAndFocusTrigger(ids.trigger)
             }}
           >

@@ -7,13 +7,14 @@
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
-  import { createFieldDTO, type FieldType } from "@undb/table"
+  import { createFieldDTO, FieldIdVo, type FieldType } from "@undb/table"
   import { toast } from "svelte-sonner"
   import { derived } from "svelte/store"
   import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import FieldOptions from "../field-options/field-options.svelte"
   import FieldTypePicker from "../field-picker/field-type-picker.svelte"
+  import { createDefaultField } from "./create-default-field"
 
   const table = getTable()
 
@@ -63,27 +64,19 @@
   const { enhance, form: formData, reset } = form
 
   function updateType(type: FieldType) {
-    if (type === "select") {
-      form.reset({
-        data: {
-          type: "select",
-          name: $formData.name,
-          option: {
-            options: [],
-          },
-        },
-      })
-    }
+    $formData = createDefaultField($table, type)
   }
 
-  $: $formData.type, updateType($formData.type)
+  function onTypeChange(type: FieldType) {
+    updateType(type)
+  }
 </script>
 
 <form method="POST" use:enhance class="space-y-4">
   <div class="flex h-8 items-center gap-2">
     <Form.Field {form} name="type" class="h-full">
       <Form.Control let:attrs>
-        <FieldTypePicker {...attrs} bind:value={$formData.type} tabIndex={-1} class="h-full" />
+        <FieldTypePicker {...attrs} value={$formData.type} onValueChange={onTypeChange} tabIndex={-1} class="h-full" />
       </Form.Control>
       <Form.Description />
       <Form.FieldErrors />

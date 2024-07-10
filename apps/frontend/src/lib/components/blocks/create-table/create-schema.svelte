@@ -61,7 +61,7 @@
     await tick()
     open = false
 
-    if (type === "select") {
+    if (type === "select" || type === "reference") {
       activeFieldId = fieldId
     }
     const el = document.querySelector(`[data-field-id="${fieldId}"]`) as HTMLInputElement

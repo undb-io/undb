@@ -54,6 +54,7 @@
       invalidateAll: true,
       onUpdate(event) {
         if (!event.form.valid) {
+          console.log(event.form.errors)
           return
         }
         const baseId = $currentBase?.id
@@ -84,6 +85,6 @@
   </Form.Fieldset>
 </form>
 
-<!-- <div class="mt-2">
+<div class="mt-2">
   <SuperDebug data={$formData} />
-</div> -->
+</div>

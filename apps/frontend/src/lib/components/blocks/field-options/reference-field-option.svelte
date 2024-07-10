@@ -7,16 +7,19 @@
 
   export let constraint: IReferenceFieldConstraint | undefined
   export let option: Partial<ICreateReferenceFieldDTO["option"]> = {
+    foreignTableId: undefined,
     createSymmetricField: true,
   }
   export let isNew: boolean
 </script>
 
 <div class="space-y-4">
-  <div class="space-y-2">
-    <Label>Foreign Table</Label>
-    <ForeignTablePicker bind:value={option.foreignTableId} />
-  </div>
+  {#if option}
+    <div class="space-y-2">
+      <Label>Foreign Table</Label>
+      <ForeignTablePicker bind:value={option.foreignTableId} />
+    </div>
+  {/if}
   {#if isNew}
     <div class="flex items-center space-x-2">
       <Switch id="createSymmetricField" bind:checked={option.createSymmetricField} />

@@ -52,14 +52,6 @@
   let single = "single"
   $: isSingle = "single" === single
 
-  $: if (constraint) {
-    if (isSingle) {
-      constraint.max = 1
-    } else {
-      constraint.max = undefined
-    }
-  }
-
   $: selected = isSingle
     ? {
         label: "Single",
