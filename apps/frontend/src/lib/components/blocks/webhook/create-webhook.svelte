@@ -64,7 +64,7 @@
 
   const { form: formData, enhance, allErrors } = form
 
-  const condition = writable<MaybeConditionGroup<IWebhookConditionOptionSchema> | undefined>()
+  const condition = createConditionGroupStore("and")
   $: validCondition = $condition ? parseValidViewFilter($table.schema.fieldMapById, $condition) : undefined
   $: validCondition,
     formData.update(($form) => {
@@ -158,7 +158,7 @@
       <Switch id="enableCondition" bind:checked={enableCondition} />
     </div>
     <Collapsible.Content>
-      <FiltersEditor bind:value={$condition} table={$table} />
+      <FiltersEditor store={condition} table={$table} />
     </Collapsible.Content>
   </Collapsible.Root>
 

@@ -7,27 +7,20 @@
   import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { invalidate } from "$app/navigation"
-  import { writable } from "svelte/store"
   import Badge from "$lib/components/ui/badge/badge.svelte"
-  import {
-    getIsFilterableFieldType,
-    parseValidViewFilter,
-    type IViewFilterGroup,
-    type IViewFilterOptionSchema,
-    type MaybeConditionGroup,
-  } from "@undb/table"
+  import { getIsFilterableFieldType, parseValidViewFilter, type IViewFilterGroup } from "@undb/table"
+  import { viewConditionEditorStore, viewConditionEditorOpen } from "./view-filter-editor.store"
 
   const table = getTable()
   $: filter = $table.views.getViewById($viewId).filter.into(undefined)
   $: count = filter?.count ?? 0
 
-  const value = writable<MaybeConditionGroup<IViewFilterOptionSchema> | undefined>()
-  $: validValue = $value ? parseValidViewFilter($table.schema.fieldMapById, $value) : undefined
+  const store = viewConditionEditorStore
+  $: validValue = $store ? parseValidViewFilter($table.schema.fieldMapById, $store) : undefined
 
-  $: $table, value.set(filter?.toMaybeConditionGroup())
+  $: $table, store.set(filter?.toMaybeConditionGroup())
 
   $: visibleFields = $table.getOrderedVisibleFields()
-  let open = false
 
   const client = useQueryClient()
 
@@ -37,7 +30,7 @@
     onSuccess: async () => {
       await invalidate(`table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
-      open = false
+      $viewConditionEditorOpen = false
     },
   })
 
@@ -51,9 +44,9 @@
   }
 </script>
 
-<Popover.Root bind:open>
+<Popover.Root bind:open={$viewConditionEditorOpen}>
   <Popover.Trigger asChild let:builder>
-    <Button variant={count || open ? "secondary" : "ghost"} builders={[builder]} size="sm">
+    <Button variant={count || $viewConditionEditorOpen ? "secondary" : "ghost"} builders={[builder]} size="sm">
       <FilterIcon class="mr-2 h-4 w-4" />
       Filters
       {#if count}
@@ -62,11 +55,11 @@
     </Button>
   </Popover.Trigger>
   <Popover.Content class="w-[630px] space-y-2 p-0 shadow-2xl" align="start">
-    {#if $value?.children.length}
+    {#if $store?.children.length}
       <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Filters</div>
     {/if}
     <FiltersEditor
-      bind:value={$value}
+      {store}
       table={$table}
       on:submit={(e) => handleSubmit(e.detail)}
       filter={(field) => visibleFields.some((f) => f.id.value === field.id) && getIsFilterableFieldType(field.type)}

@@ -17,6 +17,7 @@
   import { CREATE_RLS_MODAL, closeModal } from "$lib/store/modal.store"
   import Input from "$lib/components/ui/input/input.svelte"
   import { updated } from "$app/stores"
+  import { createConditionGroupStore } from "../filters-editor/filters-editor.store"
 
   const table = getTable()
 
@@ -80,11 +81,11 @@
   let enableContion = false
   let enableUpdateCondition = false
 
-  const condition = writable<MaybeConditionGroup<ZodUndefined> | undefined>()
+  const condition = createConditionGroupStore("and")
   $: validCondition = $condition ? parseValidViewFilter($table.schema.fieldMapById, $condition) : undefined
   $: validCondition, ($formData.condition = validCondition)
 
-  const updateCondition = writable<MaybeConditionGroup<ZodUndefined> | undefined>()
+  const updateCondition = createConditionGroupStore("and")
   $: validUpdateCondition = $updateCondition
     ? parseValidViewFilter($table.schema.fieldMapById, $updateCondition)
     : undefined
@@ -163,11 +164,7 @@
         <Switch bind:checked={enableContion} id="enableCondition" />
       </Form.Label>
       {#if enableContion}
-        <FiltersEditor
-          class="rounded-sm border-gray-100 bg-gray-50 shadow-inner"
-          table={$table}
-          bind:value={$condition}
-        />
+        <FiltersEditor class="rounded-sm border-gray-100 bg-gray-50 shadow-inner" table={$table} store={condition} />
       {/if}
     </Form.Control>
   </Form.Field>
@@ -182,7 +179,7 @@
           <FiltersEditor
             class="rounded-sm border-gray-100 bg-gray-50 shadow-inner"
             table={$table}
-            bind:value={$updateCondition}
+            store={updateCondition}
           />
         {/if}
       </Form.Control>

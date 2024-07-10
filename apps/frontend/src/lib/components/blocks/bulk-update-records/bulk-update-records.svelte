@@ -25,6 +25,7 @@
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { writable } from "svelte/store"
+  import { createConditionGroupStore } from "../filters-editor/filters-editor.store"
 
   const table = getTable()
   const mutableFields = $table.schema.mutableFields
@@ -109,7 +110,7 @@
       )
     : undefined
 
-  const value = writable<MaybeConditionGroup<IViewFilterOptionSchema> | undefined>()
+  const value = createConditionGroupStore("and")
   $: validValue = $value ? parseValidViewFilter($table.schema.fieldMapById, $value) : undefined
   $: if (validValue && !customFilter) {
     filter = validValue
@@ -133,7 +134,7 @@
       <div class="space-y-2">
         <p class="font-semibold">Update records with the following condition</p>
         <FiltersEditor
-          bind:value={$value}
+          store={value}
           table={$table}
           class={cn("rounded-md border bg-gray-50 shadow-inner", filter && "pt-4")}
         ></FiltersEditor>
