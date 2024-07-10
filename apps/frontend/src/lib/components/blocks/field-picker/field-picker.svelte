@@ -9,6 +9,7 @@
   import { getTable } from "$lib/store/table.store"
   import FieldIcon from "../field-icon/field-icon.svelte"
   import type { FieldType } from "@undb/table"
+  import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
 
   export let table = getTable()
 
@@ -74,23 +75,25 @@
       <Command.Input placeholder="Search field..." class="h-9" />
       <Command.Empty>No field found.</Command.Empty>
       <Command.Group>
-        {#each filteredFields as field}
-          <Command.Item
-            value={field.value}
-            onSelect={(currentValue) => {
-              value = currentValue
-              closeAndFocusTrigger(ids.trigger)
-            }}
-          >
-            <Check class={cn("mr-2 h-4 w-4", value !== field.value && "text-transparent")} />
-            <div class="flex items-center gap-2">
-              <FieldIcon {field} type={field.type} class="h-4 w-4" />
-              <span>
-                {field.label}
-              </span>
-            </div>
-          </Command.Item>
-        {/each}
+        <ScrollArea class="-mx-1 h-[300px]">
+          {#each filteredFields as field}
+            <Command.Item
+              value={field.value}
+              onSelect={(currentValue) => {
+                value = currentValue
+                closeAndFocusTrigger(ids.trigger)
+              }}
+            >
+              <Check class={cn("mr-2 h-4 w-4", value !== field.value && "text-transparent")} />
+              <div class="flex items-center gap-2 text-xs">
+                <FieldIcon {field} type={field.type} class="h-3 w-3" />
+                <span>
+                  {field.label}
+                </span>
+              </div>
+            </Command.Item>
+          {/each}
+        </ScrollArea>
       </Command.Group>
     </Command.Root>
   </Popover.Content>
