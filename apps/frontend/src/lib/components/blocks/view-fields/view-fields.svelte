@@ -14,6 +14,7 @@
   import { isNumber } from "radash"
   import { Input } from "$lib/components/ui/input"
   import { writable } from "svelte/store"
+  import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
 
   const table = getTable()
   $: fields = $table.getOrderedFields(undefined, $viewId)
@@ -104,41 +105,43 @@
       />
     </div>
     <div>
-      <SortableList
-        class="py-2"
-        animation={200}
-        handle=".handler"
-        onEnd={(event) => {
-          if (isNumber(event.oldIndex) && isNumber(event.newIndex)) {
-            swapFields(event.oldIndex, event.newIndex)
-          }
-        }}
-      >
-        {#each filteredViewFields as viewField (viewField.fieldId)}
-          {@const field = $table.schema.getFieldById(new FieldIdVo(viewField.fieldId)).into(undefined)}
-          {#if field}
-            <div class="hover:bg-muted flex items-center justify-between rounded-sm p-2 transition-colors">
-              <div class="flex items-center gap-2">
-                <Switch
-                  disabled={visibleCount === 1 && viewFields.length === 1}
-                  checked={!viewField.hidden}
-                  onCheckedChange={(checked) => {
-                    viewField.hidden = !checked
-                    setViewFields()
-                  }}
-                />
-                <div class="flex items-center gap-2 text-sm text-gray-600">
-                  <FieldIcon {field} type={field.type} class="h-3 w-3" />
-                  {field.name.value}
+      <ScrollArea class="-mx-2 h-[400px]">
+        <SortableList
+          class="h-full p-2"
+          animation={200}
+          handle=".handler"
+          onEnd={(event) => {
+            if (isNumber(event.oldIndex) && isNumber(event.newIndex)) {
+              swapFields(event.oldIndex, event.newIndex)
+            }
+          }}
+        >
+          {#each filteredViewFields as viewField (viewField.fieldId)}
+            {@const field = $table.schema.getFieldById(new FieldIdVo(viewField.fieldId)).into(undefined)}
+            {#if field}
+              <div class="hover:bg-muted flex items-center justify-between rounded-sm p-2 transition-colors">
+                <div class="flex items-center gap-2">
+                  <Switch
+                    disabled={visibleCount === 1 && viewFields.length === 1}
+                    checked={!viewField.hidden}
+                    onCheckedChange={(checked) => {
+                      viewField.hidden = !checked
+                      setViewFields()
+                    }}
+                  />
+                  <div class="flex items-center gap-2 text-sm text-gray-600">
+                    <FieldIcon {field} type={field.type} class="h-3 w-3" />
+                    {field.name.value}
+                  </div>
                 </div>
+                <button class="text-muted-foreground handler">
+                  <GripVerticalIcon class="h-3 w-3" />
+                </button>
               </div>
-              <button class="text-muted-foreground handler">
-                <GripVerticalIcon class="h-3 w-3" />
-              </button>
-            </div>
-          {/if}
-        {/each}
-      </SortableList>
+            {/if}
+          {/each}
+        </SortableList>
+      </ScrollArea>
 
       <div class="-mx-2 flex items-center gap-2 border-t px-2 pt-2">
         {#if hiddenCount > 0}
