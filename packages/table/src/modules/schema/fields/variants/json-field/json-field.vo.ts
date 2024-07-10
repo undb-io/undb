@@ -13,7 +13,7 @@ import {
   type IJsonFieldCondition,
   type IJsonFieldConditionSchema,
 } from "./json-field.condition"
-import { JsonEmpty, JsonEqual } from "./json-field.specification"
+import { JsonContains, JsonEmpty, JsonEqual } from "./json-field.specification"
 
 export const JSON_TYPE = "json" as const
 
@@ -54,6 +54,8 @@ export class JsonField extends AbstractField<JsonFieldValue> {
     const spec = match(condition)
       .with({ op: "eq" }, ({ value }) => new JsonEqual(value, this.id))
       .with({ op: "neq" }, ({ value }) => new JsonEqual(value, this.id).not())
+      .with({ op: "contains" }, ({ value }) => new JsonContains(value, this.id))
+      .with({ op: "does_not_contain" }, ({ value }) => new JsonContains(value, this.id).not())
       .with({ op: "is_empty" }, () => new JsonEmpty(this.id))
       .with({ op: "is_not_empty" }, () => new JsonEmpty(this.id).not())
       .exhaustive()

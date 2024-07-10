@@ -32,9 +32,6 @@ type RootTranslation = {
 			 * c​o​n​t​a​i​n​s
 			 */
 			contains: string
-			/**
-			 * n​o​t​ ​c​o​n​t​a​i​n​s
-			 */
 			does_not_contain: string
 			/**
 			 * s​t​a​r​t​s​ ​w​i​t​h
@@ -195,9 +192,6 @@ export type TranslationFunctions = {
 			 * contains
 			 */
 			contains: () => LocalizedString
-			/**
-			 * not contains
-			 */
 			does_not_contain: () => LocalizedString
 			/**
 			 * starts with

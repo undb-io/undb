@@ -1,5 +1,6 @@
 import type { ISpecification, ISpecVisitor } from "@undb/domain"
 import {
+  JsonContains,
   SelectContainsAnyOf,
   SelectField,
   SelectFieldValue,
@@ -81,6 +82,9 @@ export class RecordMutateVisitor implements IRecordVisitor {
   }
   jsonEqual(spec: JsonEqual): void {
     this.setData(spec.fieldId.value, JSON.stringify(spec.json))
+  }
+  jsonContains(spec: JsonContains): void {
+    throw new Error("Method not implemented.")
   }
   jsonEmpty(spec: JsonEmpty): void {
     this.setData(spec.fieldId.value, null)

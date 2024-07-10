@@ -12,6 +12,7 @@ import {
   ID_TYPE,
   IdEqual,
   IdIn,
+  JsonContains,
   JsonEmpty,
   JsonEqual,
   NumberEmpty,
@@ -89,6 +90,7 @@ export class RecordSpecReferenceVisitor implements IRecordVisitor {
   attachmentEmpty(s: AttachmentEmpty): void {}
   dateEqual(spec: DateEqual): void {}
   jsonEqual(spec: JsonEqual): void {}
+  jsonContains(spec: JsonContains): void {}
   jsonEmpty(spec: JsonEmpty): void {}
   checkboxEqual(spec: CheckboxEqual): void {}
   and(left: ISpecification, right: ISpecification): this {

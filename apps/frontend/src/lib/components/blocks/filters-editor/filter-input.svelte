@@ -204,6 +204,8 @@
   const json: Record<IJsonFieldConditionOp, ComponentType | null> = {
     eq: JsonDropdown,
     neq: JsonDropdown,
+    contains: Input,
+    does_not_contain: Input,
     is_empty: null,
     is_not_empty: null,
   }

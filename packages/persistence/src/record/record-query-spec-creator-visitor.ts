@@ -1,5 +1,6 @@
 import {
   ID_TYPE,
+  JsonContains,
   type AttachmentEmpty,
   type AttachmentEqual,
   type CheckboxEqual,
@@ -103,6 +104,7 @@ export class RecordQuerySpecCreatorVisitor implements IRecordVisitor {
   attachmentEmpty(s: AttachmentEmpty): void {}
   dateEqual(spec: DateEqual): void {}
   jsonEqual(spec: JsonEqual): void {}
+  jsonContains(spec: JsonContains): void {}
   jsonEmpty(spec: JsonEmpty): void {}
   checkboxEqual(spec: CheckboxEqual): void {}
 

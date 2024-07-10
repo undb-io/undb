@@ -28,6 +28,26 @@ export class JsonEqual extends RecordComositeSpecification {
   }
 }
 
+export class JsonContains extends RecordComositeSpecification {
+  constructor(
+    readonly value: string,
+    readonly fieldId: FieldId,
+  ) {
+    super(fieldId)
+  }
+  isSatisfiedBy(t: RecordDO): boolean {
+    const value = t.getValue(this.fieldId)
+    return value.mapOr(false, (v) => String(v.value).includes(this.value))
+  }
+  mutate(t: RecordDO): Result<RecordDO, string> {
+    throw new Error("Method not implemented.")
+  }
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.jsonContains(this)
+    return Ok(undefined)
+  }
+}
+
 export class JsonEmpty extends RecordComositeSpecification {
   constructor(readonly fieldId: FieldId) {
     super(fieldId)

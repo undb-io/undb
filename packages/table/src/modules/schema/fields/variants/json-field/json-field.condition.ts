@@ -6,6 +6,8 @@ export function createJsonFieldCondition<ItemType extends z.ZodTypeAny>(itemType
   return z.union([
     z.object({ op: z.literal("eq"), value: z.any() }).merge(base),
     z.object({ op: z.literal("neq"), value: z.any() }).merge(base),
+    z.object({ op: z.literal("contains"), value: z.string().min(1) }).merge(base),
+    z.object({ op: z.literal("does_not_contain"), value: z.string().min(1) }).merge(base),
     z.object({ op: z.literal("is_empty"), value: z.undefined() }).merge(base),
     z.object({ op: z.literal("is_not_empty"), value: z.undefined() }).merge(base),
   ])

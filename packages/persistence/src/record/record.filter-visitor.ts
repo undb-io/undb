@@ -1,5 +1,6 @@
 import { NotImplementException } from "@undb/domain"
 import {
+  JsonContains,
   SelectField,
   type AttachmentEmpty,
   type AttachmentEqual,
@@ -74,6 +75,10 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
   jsonEqual(spec: JsonEqual): void {
     const json = isString(spec.json) ? spec.json : JSON.stringify(spec.json)
     const cond = this.eb.eb(this.getFieldId(spec), "=", json)
+    this.addCond(cond)
+  }
+  jsonContains(spec: JsonContains): void {
+    const cond = this.eb.eb(this.getFieldId(spec), "like", `%${spec.value}%`)
     this.addCond(cond)
   }
   jsonEmpty(spec: JsonEmpty): void {
