@@ -58,4 +58,12 @@ export class ViewFields extends ValueObject<IViewFields> {
   public addField(field: Field): ViewFields {
     return new ViewFields([...this.props, { fieldId: field.id.value, hidden: false }])
   }
+
+  public showAllFields(): ViewFields {
+    return new ViewFields(this.props.map((field) => ({ ...field, hidden: false })))
+  }
+
+  public hideAllFields(): ViewFields {
+    return new ViewFields(this.props.map((field) => ({ ...field, hidden: true })))
+  }
 }

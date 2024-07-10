@@ -148,10 +148,10 @@
           <Alert.Description>SELECT COLUMNS TO EDIT</Alert.Description>
         </Alert.Root>
       {/if}
-      <div class="flex-1">
+      <div class="flex-1 space-y-4">
         {#each selectedFields as field}
           {@const dirty = $tainted && $tainted[field.id.value]}
-          <Form.Field class="flex gap-4 space-y-0" {form} name={field.id.value}>
+          <Form.Field class="flex gap-2" {form} name={field.id.value}>
             <Form.Control let:attrs>
               <Form.Label class="text-muted-foreground flex h-4 w-48 items-center justify-between gap-2 pt-2">
                 <div class="flex items-center gap-2">

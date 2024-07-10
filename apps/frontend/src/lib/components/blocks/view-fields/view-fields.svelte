@@ -4,14 +4,16 @@
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
   import * as Popover from "$lib/components/ui/popover"
   import { getTable, viewId } from "$lib/store/table.store"
-  import { FieldIdVo, viewField } from "@undb/table"
-  import { ListIcon, GripVerticalIcon } from "lucide-svelte"
+  import { FieldIdVo } from "@undb/table"
+  import { ListIcon, GripVerticalIcon, SearchIcon } from "lucide-svelte"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { tick } from "svelte"
   import { invalidate } from "$app/navigation"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
   import { isNumber } from "radash"
+  import { Input } from "$lib/components/ui/input"
+  import { writable } from "svelte/store"
 
   const table = getTable()
   $: fields = $table.getOrderedFields(undefined, $viewId)
@@ -21,6 +23,12 @@
   $: visibleCount = viewFieldsVo.getVisibleFieldsCount()
 
   let open = false
+  const q = writable("")
+
+  $: filteredViewFields = viewFields.filter((viewField) => {
+    const field = $table.schema.getFieldById(new FieldIdVo(viewField.fieldId)).into(undefined)
+    return field && field.name.value.toLowerCase().includes($q.toLowerCase())
+  })
 
   const client = useQueryClient()
   const setViewFieldsMutation = createMutation({
@@ -84,9 +92,20 @@
     </Button>
   </Popover.Trigger>
   <Popover.Content class="p-2">
+    <div class="-mx-2 flex items-center gap-0 border-b pb-2">
+      <div class="flex h-full w-9 items-center justify-center">
+        <SearchIcon class="text-muted-foreground h-4 w-4" />
+      </div>
+      <Input
+        autofocus
+        class="h-full flex-1 rounded-none border-0 border-none pl-0 shadow-none focus-visible:ring-0"
+        placeholder={`Search ${$table.name.value} fields...`}
+        bind:value={$q}
+      />
+    </div>
     <div>
       <SortableList
-        class="pb-2"
+        class="py-2"
         animation={200}
         handle=".handler"
         onEnd={(event) => {
@@ -95,7 +114,7 @@
           }
         }}
       >
-        {#each viewFields as viewField (viewField.fieldId)}
+        {#each filteredViewFields as viewField (viewField.fieldId)}
           {@const field = $table.schema.getFieldById(new FieldIdVo(viewField.fieldId)).into(undefined)}
           {#if field}
             <div class="hover:bg-muted flex items-center justify-between rounded-sm p-2 transition-colors">
@@ -121,11 +140,44 @@
         {/each}
       </SortableList>
 
-      <div class="-mx-2 border-t px-4 pt-2">
-        <div class="flex items-center gap-2">
-          <Switch bind:checked={viewOption.showSystemFields} onCheckedChange={setViewOption} />
-          <span class="text-muted-foreground text-xs"> Show system fields </span>
-        </div>
+      <div class="-mx-2 flex items-center gap-2 border-t px-2 pt-2">
+        {#if hiddenCount > 0}
+          <Button
+            variant="outline"
+            class="flex-1"
+            size="sm"
+            on:click={() => {
+              viewFields = viewFieldsVo.showAllFields().toJSON()
+              setViewFields()
+            }}
+          >
+            Show all fields
+          </Button>
+        {:else}
+          <Button
+            variant="outline"
+            class="flex-1"
+            size="sm"
+            on:click={() => {
+              viewFields = viewFieldsVo.hideAllFields().toJSON()
+              setViewFields()
+            }}
+          >
+            Hide all fields
+          </Button>
+        {/if}
+
+        <Button
+          variant="outline"
+          class="flex-1"
+          size="sm"
+          on:click={() => {
+            viewOption.showSystemFields = !viewOption.showSystemFields
+            setViewOption(viewOption.showSystemFields)
+          }}
+        >
+          {viewOption.showSystemFields ? "Hide" : "Show"} system fields
+        </Button>
       </div>
     </div>
   </Popover.Content>

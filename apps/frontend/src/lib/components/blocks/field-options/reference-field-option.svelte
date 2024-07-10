@@ -12,18 +12,18 @@
   export let isNew: boolean
 </script>
 
-{#if constraint}
-  <div class="space-y-4">
-    <div class="space-y-2">
-      <Label>Foreign Table</Label>
-      <ForeignTablePicker bind:value={option.foreignTableId} />
+<div class="space-y-4">
+  <div class="space-y-2">
+    <Label>Foreign Table</Label>
+    <ForeignTablePicker bind:value={option.foreignTableId} />
+  </div>
+  {#if isNew}
+    <div class="flex items-center space-x-2">
+      <Switch id="createSymmetricField" bind:checked={option.createSymmetricField} />
+      <Label for="createSymmetricField" class="text-xs">Create symmetric field</Label>
     </div>
-    {#if isNew}
-      <div class="flex items-center space-x-2">
-        <Switch id="createSymmetricField" bind:checked={option.createSymmetricField} />
-        <Label for="createSymmetricField" class="text-xs">Create symmetric field</Label>
-      </div>
-    {/if}
+  {/if}
+  {#if constraint}
     <div class="grid grid-cols-2 gap-3">
       <div class="grid gap-3">
         <Label for="min">Min</Label>
@@ -55,5 +55,5 @@
         <Label for="required" class="text-xs">Required</Label>
       </div>
     </div>
-  </div>
-{/if}
+  {/if}
+</div>

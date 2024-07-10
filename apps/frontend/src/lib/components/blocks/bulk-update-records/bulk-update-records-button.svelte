@@ -14,7 +14,7 @@
       Bulk Update
     </Button>
   </Sheet.Trigger>
-  <Sheet.Content class="sm:max-w-1/2 flex h-full w-1/2 flex-col gap-0 px-0 pb-0 pt-4 transition-all">
+  <Sheet.Content class="sm:max-w-1/2 flex h-full w-2/3 flex-col gap-0 px-0 pb-0 pt-4 transition-all">
     <Sheet.Header class="border-b px-4 pb-4">
       <Sheet.Title>Bulk Update Records</Sheet.Title>
     </Sheet.Header>

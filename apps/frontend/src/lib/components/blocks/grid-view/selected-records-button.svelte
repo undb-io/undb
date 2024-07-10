@@ -93,7 +93,7 @@
                   </Button>
                 </DropdownMenu.Item>
               </Sheet.Trigger>
-              <Sheet.Content class="sm:max-w-1/2 flex h-full w-1/2 flex-col gap-0 px-0 py-4 transition-all">
+              <Sheet.Content class="sm:max-w-1/2 flex h-full w-2/3 flex-col gap-0 px-0 py-4 transition-all">
                 <Sheet.Header class="flex flex-row items-center justify-between border-b px-6 pb-4">
                   <Sheet.Title class="flex-1">Bulk update {ids.length} Records</Sheet.Title>
                   <!-- <Button size="sm" class="mr-5" type="submit" form="bulkUpdateRecords">Bulk Update</Button> -->
