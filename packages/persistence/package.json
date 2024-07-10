@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@libsql/client": "^0.7.0",
-    "@libsql/kysely-libsql": "^0.3.0",
+    "@libsql/kysely-libsql": "^0.4.0",
     "@undb/audit": "workspace:*",
     "@undb/authz": "workspace:*",
     "@undb/base": "workspace:*",

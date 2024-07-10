@@ -7,7 +7,7 @@
     "build": "bun build --compile src/index.ts --target=bun --sourcemap --outfile undb"
   },
   "dependencies": {
-    "@elysiajs/cors": "^1.0.2",
+    "@elysiajs/cors": "^1.0.4",
     "@elysiajs/cron": "^1.0.3",
     "@elysiajs/html": "^1.0.2",
     "@elysiajs/static": "^1.0.3",
