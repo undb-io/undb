@@ -112,7 +112,18 @@
               />
             {/if}
             <div class="col-span-9 grid grid-cols-12 items-center">
-              <FilterField {filter} bind:value={child.fieldId} class={cn("col-span-4 rounded-r-none border-r-0")} />
+              <FilterField
+                onValueChange={(type, prev) => {
+                  if (type !== prev) {
+                    if (isMaybeFieldCondition(child)) {
+                      child.value = undefined
+                    }
+                  }
+                }}
+                {filter}
+                bind:value={child.fieldId}
+                class={cn("col-span-4 rounded-r-none border-r-0")}
+              />
               <FieldFilterControl {field} bind:op={child.op} bind:value={child.value} />
             </div>
             <div class="col-span-1 flex items-center gap-2">

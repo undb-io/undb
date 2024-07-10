@@ -10,6 +10,7 @@
   import FieldIcon from "../field-icon/field-icon.svelte"
   import type { FieldType } from "@undb/table"
   import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
+  import FieldTypePicker from "./field-type-picker.svelte"
 
   export let table = getTable()
 
@@ -31,6 +32,7 @@
   let open = false
   export let value: string | undefined = undefined
   export let filter: ((field: IField) => boolean) | undefined = undefined
+  export let onValueChange: ((value: FieldType | undefined, prev: FieldType) => void) | undefined = undefined
 
   $: filteredFields = filter ? fields.filter(filter) : fields
 
@@ -80,6 +82,7 @@
             <Command.Item
               value={field.value}
               onSelect={(currentValue) => {
+                onValueChange?.(value, currentValue)
                 value = currentValue
                 closeAndFocusTrigger(ids.trigger)
               }}

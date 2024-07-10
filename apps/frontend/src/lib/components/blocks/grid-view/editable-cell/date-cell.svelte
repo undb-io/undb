@@ -18,7 +18,14 @@
   export let tableId: string
   export let field: DateField
   export let value: string | Date | undefined = undefined
-  $: internalDate = isString(value) ? parseDate(value) : isDate(value) ? parseDate(value.toISOString()) : undefined
+  function parse(value: string) {
+    try {
+      return parseDate(value)
+    } catch {
+      return undefined
+    }
+  }
+  $: internalDate = isString(value) ? parse(value) : isDate(value) ? parseDate(value.toISOString()) : undefined
   export let recordId: string
   export let isEditing: boolean
 

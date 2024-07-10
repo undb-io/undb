@@ -1,6 +1,6 @@
 <script lang="ts">
   import CalendarIcon from "lucide-svelte/icons/calendar"
-  import { DateFormatter, getLocalTimeZone, parseDate, fromDate } from "@internationalized/date"
+  import { DateFormatter, getLocalTimeZone, parseDate } from "@internationalized/date"
   import { cn } from "$lib/utils.js"
   import { Button } from "$lib/components/ui/button"
   import { Calendar } from "$lib/components/ui/calendar"
@@ -14,7 +14,14 @@
   })
 
   export let value: string | Date | undefined = undefined
-  $: internalDate = isString(value) ? parseDate(value) : isDate(value) ? parseDate(value.toISOString()) : undefined
+  function parse(value: string) {
+    try {
+      return parseDate(value)
+    } catch {
+      return undefined
+    }
+  }
+  $: internalDate = isString(value) ? parse(value) : isDate(value) ? parseDate(value.toISOString()) : undefined
 
   let open = false
 </script>

@@ -11,7 +11,6 @@
 
   export let field: UserField | CreatedByField | UpdatedByField
   export let value: IUserFieldConditionValue
-  $: console.log({ field, value })
 </script>
 
 {#if field.type === "createdBy" || field.type === "updatedBy" || (field.type === "user" && field.isSingle && !Array.isArray(value))}
