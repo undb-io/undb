@@ -41,8 +41,8 @@
   </Popover.Trigger>
   <Popover.Content class="p-0">
     <Command.Root shouldFilter={false}>
-      <Command.Input bind:value={search} placeholder="Search framework..." />
-      <Command.Empty>No framework found.</Command.Empty>
+      <Command.Input bind:value={search} placeholder="Search option..." />
+      <Command.Empty>No option found.</Command.Empty>
       <Command.Group>
         {#each filteredOptions as option}
           <Command.Item
