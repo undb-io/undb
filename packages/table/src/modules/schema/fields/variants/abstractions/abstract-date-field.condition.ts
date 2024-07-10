@@ -17,6 +17,21 @@ import {
   DateIsYesterday,
 } from "./abstract-date-value.specification"
 
+type DateMacrosPattern = `@${string}`
+export const dateMacros = z.enum<DateMacrosPattern, [DateMacrosPattern, ...DateMacrosPattern[]]>([
+  "@now",
+  "@todayStart",
+  "@todayEnd",
+  "@tomorrowStart",
+  "@tomorrowEnd",
+  "@yesterdayStart",
+  "@yesterdayEnd",
+])
+
+export type IDateMacros = z.infer<typeof dateMacros>
+
+const dateValue = z.string().date().or(dateMacros)
+
 export function createAbstractDateFieldCondition<ItemType extends z.ZodTypeAny>(itemType: ItemType) {
   const base = createBaseConditionSchema(itemType)
   return z.union([
@@ -34,10 +49,11 @@ export function createAbstractDateFieldCondition<ItemType extends z.ZodTypeAny>(
     z.object({ op: z.literal("is_not_yesterday"), value: z.undefined() }).merge(base),
     z.object({ op: z.literal("is_after_yesterday"), value: z.undefined() }).merge(base),
     z.object({ op: z.literal("is_before_yesterday"), value: z.undefined() }).merge(base),
-    z.object({ op: z.literal("is_before"), value: z.string().date() }).merge(base),
-    z.object({ op: z.literal("is_not_before"), value: z.string().date() }).merge(base),
-    z.object({ op: z.literal("is_after"), value: z.string().date() }).merge(base),
-    z.object({ op: z.literal("is_not_after"), value: z.string().date() }).merge(base),
+
+    z.object({ op: z.literal("is_before"), value: dateValue }).merge(base),
+    z.object({ op: z.literal("is_not_before"), value: dateValue }).merge(base),
+    z.object({ op: z.literal("is_after"), value: dateValue }).merge(base),
+    z.object({ op: z.literal("is_not_after"), value: dateValue }).merge(base),
   ])
 }
 
