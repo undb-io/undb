@@ -6,7 +6,7 @@
   import { CREATE_FIELD_MODAL, closeModal } from "$lib/store/modal.store"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
-  import { createMutation } from "@tanstack/svelte-query"
+  import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { createFieldDTO, FieldIdVo, type FieldType } from "@undb/table"
   import { toast } from "svelte-sonner"
   import { derived } from "svelte/store"
@@ -18,6 +18,7 @@
 
   const table = getTable()
 
+  const client = useQueryClient()
   const createFieldMutation = createMutation(
     derived([table], ([$table]) => ({
       mutationKey: ["table", $table.id.value, "createField"],
@@ -27,6 +28,7 @@
         toast.success("Create field success")
         reset()
         await invalidate(`table:${$table.id.value}`)
+        await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
       },
       onError(error: Error) {
         toast.error(error.message)

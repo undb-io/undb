@@ -196,7 +196,7 @@ export class RecordRepository implements IRecordRepository {
 
   async bulkUpdate(
     table: TableDo,
-    spec: RecordComositeSpecification,
+    spec: Option<RecordComositeSpecification>,
     update: RecordComositeSpecification,
     records: RecordDO[],
   ): Promise<void> {
@@ -210,22 +210,24 @@ export class RecordRepository implements IRecordRepository {
     function handleUpdate() {
       return (eb: ExpressionBuilder<any, any>) => {
         let data = {}
-        for (const record of records) {
-          const visitor = new RecordMutateVisitor(table, record, qb, eb)
+        if (records.length) {
+          for (const record of records) {
+            const visitor = new RecordMutateVisitor(table, record, qb, eb)
+            update.accept(visitor)
+            sql.push(...visitor.sql)
+            data = { ...data, ...visitor.data }
+          }
+        } else {
+          const visitor = new RecordMutateVisitor(table, null, qb, eb)
           update.accept(visitor)
           sql.push(...visitor.sql)
-          data = { ...data, ...visitor.data }
+          data = visitor.data
         }
-
         return { ...data, [UPDATED_BY_TYPE]: userId }
       }
     }
 
-    await this.qb
-      .updateTable(t.name)
-      .set(handleUpdate())
-      .where(this.helper.handleWhere(table, Some(spec)))
-      .execute()
+    await this.qb.updateTable(t.name).set(handleUpdate()).where(this.helper.handleWhere(table, spec)).execute()
 
     for (const s of sql) {
       await this.qb.executeQuery(s)

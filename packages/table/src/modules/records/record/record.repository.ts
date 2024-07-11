@@ -34,7 +34,7 @@ export interface IRecordRepository {
   updateOneById(table: TableDo, record: RecordDO, spec: Option<RecordComositeSpecification>): Promise<void>
   bulkUpdate(
     table: TableDo,
-    spec: RecordComositeSpecification,
+    spec: Option<RecordComositeSpecification>,
     update: RecordComositeSpecification,
     records: RecordDO[],
   ): Promise<void>

@@ -167,7 +167,7 @@ export abstract class AbstractField<
       display: this.display,
       defaultValue: (this.defaultValue.into(undefined)?.value ?? undefined) as any,
       constraint: this.constraint.into(undefined)?.value,
-      option: this.option.into(undefined) as IFieldOption,
+      option: this.option.into(undefined) as any,
     }
   }
 }

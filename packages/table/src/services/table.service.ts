@@ -1,7 +1,7 @@
 import { singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
 import type { ICreateTableDTO, ICreateTableFieldDTO, IUpdateTableFieldDTO } from "../dto"
-import type { ICreateTableViewDTO } from "../modules"
+import { injectRecordRepository, type ICreateTableViewDTO, type IRecordRepository } from "../modules"
 import type { ICreateTableFormDTO } from "../modules/forms/dto/create-form.dto"
 import { TableCreator } from "../table.builder"
 import type { TableDo } from "../table.do"
@@ -29,7 +29,10 @@ export class TableService implements ITableService {
     return new TableCreator()
   }
 
-  constructor(@injectTableRepository() readonly repository: ITableRepository) {}
+  constructor(
+    @injectTableRepository() readonly repository: ITableRepository,
+    @injectRecordRepository() readonly recordRepository: IRecordRepository,
+  ) {}
 
   createTable = createTableMethod
   createTableField = createTableFieldMethod

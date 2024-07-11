@@ -33,7 +33,7 @@ export async function bulkUpdateRecordsMethod(
 
   const update = updates[0]
 
-  await this.repo.bulkUpdate(table, spec.unwrap(), update, records)
+  await this.repo.bulkUpdate(table, spec, update, records)
 
   return records
 }

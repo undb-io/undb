@@ -51,7 +51,7 @@ import { JoinTable } from "../underlying/reference/join-table"
 export class RecordMutateVisitor implements IRecordVisitor {
   constructor(
     private readonly table: TableDo,
-    private readonly record: RecordDO,
+    private readonly record: RecordDO | null,
     private readonly qb: IQueryBuilder,
     private readonly eb: ExpressionBuilder<any, any>,
   ) {}
@@ -99,6 +99,11 @@ export class RecordMutateVisitor implements IRecordVisitor {
     this.setData(s.fieldId.value, null)
   }
   referenceEqual(spec: ReferenceEqual): void {
+    const record = this.record
+    if (!record) {
+      throw new Error("No record available to update referece field")
+    }
+
     const field = this.table.schema.getFieldById(spec.fieldId).unwrap() as ReferenceField
 
     const joinTable = new JoinTable(this.table, field)
@@ -106,7 +111,7 @@ export class RecordMutateVisitor implements IRecordVisitor {
 
     const deleteRecords = this.qb
       .deleteFrom(name)
-      .where(this.eb.eb(joinTable.getValueFieldId(), "=", this.record.id.value))
+      .where(this.eb.eb(joinTable.getValueFieldId(), "=", record.id.value))
       .compile()
 
     this.addSql(deleteRecords)
@@ -120,7 +125,7 @@ export class RecordMutateVisitor implements IRecordVisitor {
         .insertInto(name)
         .values(
           values.map((recordId) => ({
-            [fieldId]: this.record.id.value,
+            [fieldId]: record.id.value,
             [symmetricFieldId]: recordId,
           })),
         )
