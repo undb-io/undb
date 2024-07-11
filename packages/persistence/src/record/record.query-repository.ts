@@ -9,6 +9,7 @@ import {
   TableIdVo,
   injectTableRepository,
   type AggregateResult,
+  type CountQueryArgs,
   type Field,
   type IRecordDTO,
   type IRecordQueryRepository,
@@ -49,6 +50,20 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const { total } = await this.qb
       .selectFrom(tableId.value)
       .select((eb) => eb.fn.countAll().as("total"))
+      .executeTakeFirstOrThrow()
+
+    return Number(total)
+  }
+
+  async countWhere(table: TableDo, query: Option<CountQueryArgs>): Promise<number> {
+    const t = new UnderlyingTable(table)
+
+    const spec = Option(query.into(undefined)?.filter.into(undefined))
+
+    const { total } = await this.qb
+      .selectFrom(t.name)
+      .select((eb) => eb.fn.countAll().as("total"))
+      .where(this.handleWhere(table, spec))
       .executeTakeFirstOrThrow()
 
     return Number(total)

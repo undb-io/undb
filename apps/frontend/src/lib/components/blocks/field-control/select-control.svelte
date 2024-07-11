@@ -13,6 +13,6 @@
   {#if !Array.isArray(value)}
     <OptionPicker {field} bind:value />
   {/if}
-{:else if Array.isArray(value) || value === null}
+{:else if Array.isArray(value) || value === null || value === undefined}
   <OptionsPicker {field} bind:value />
 {/if}

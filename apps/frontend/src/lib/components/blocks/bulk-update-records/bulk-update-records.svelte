@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
-  import { getTable, viewId } from "$lib/store/table.store"
+  import { getTable } from "$lib/store/table.store"
   import { cn } from "$lib/utils"
   import { FieldIdVo, parseValidViewFilter, type IViewFilterGroup } from "@undb/table"
   import FieldIcon from "../field-icon/field-icon.svelte"
@@ -109,17 +109,6 @@
   $: if (validValue && !customFilter) {
     filter = validValue
   }
-
-  const countRecords = createQuery({
-    queryKey: ["table", $table.id.value, "countRecords", JSON.stringify(filter)],
-    queryFn: () =>
-      trpc.record.count.query({
-        tableId: $table.id.value,
-        viewId: $viewId,
-        filters: filter,
-      }),
-    enabled: !!filter,
-  })
 </script>
 
 <div class="grid h-full grid-cols-4">
@@ -136,7 +125,7 @@
           store={value}
           table={$table}
           class={cn("rounded-md border bg-gray-50 shadow-inner", filter && "pt-4")}
-        ></FiltersEditor>
+        />
       </div>
     {/if}
 

@@ -1,3 +1,4 @@
+import { CountRecordsQueryHandler } from "./count-records.query-handler"
 import { GetAggregatesQueryHandler } from "./get-aggregates.query-handler"
 import { GetBaseQueryHandler } from "./get-base.query-handler"
 import { GetBasesQueryHandler } from "./get-bases.query-handler"
@@ -34,4 +35,5 @@ export const queryHandlers = [
   GetMembersByIdsQueryHandler,
   GetShareQueryHandler,
   GetTableByShareQueryHandler,
+  CountRecordsQueryHandler,
 ]

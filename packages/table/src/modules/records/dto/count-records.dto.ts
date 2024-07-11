@@ -1,10 +1,9 @@
 import { z } from "@undb/zod"
 import { tableId } from "../../../table-id.vo"
-import { viewFilterGroup, viewId } from "../../views"
+import { viewFilterGroup } from "../../views"
 
 export const countRecordsDTO = z.object({
   tableId: tableId,
-  viewId: viewId.optional(),
   q: z.string().optional(),
   filters: viewFilterGroup.optional(),
 })
