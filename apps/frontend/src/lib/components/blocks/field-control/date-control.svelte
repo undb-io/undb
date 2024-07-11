@@ -21,7 +21,7 @@
       return undefined
     }
   }
-  $: internalDate = isString(value) ? parse(value) : isDate(value) ? parseDate(value.toISOString()) : undefined
+  $: internalDate = isString(value) ? parse(value) : isDate(value) ? parse(value.toISOString()) : undefined
 
   let open = false
 </script>

@@ -19,6 +19,7 @@ export const DATE_TYPE = "date" as const
 
 export const createDateFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(DATE_TYPE),
+  defaultValue: z.date().or(z.string().date()).optional(),
 })
 
 export type ICreateDateFieldDTO = z.infer<typeof createDateFieldDTO>
@@ -27,6 +28,7 @@ export type IUpdateDateFieldDTO = z.infer<typeof updateDateFieldDTO>
 
 export const dateFieldDTO = baseFieldDTO.extend({
   type: z.literal(DATE_TYPE),
+  defaultValue: z.date().or(z.string().date()).optional(),
 })
 
 export type IDateFieldDTO = z.infer<typeof dateFieldDTO>
@@ -34,6 +36,9 @@ export type IDateFieldDTO = z.infer<typeof dateFieldDTO>
 export class DateField extends AbstractField<DateFieldValue> {
   constructor(dto: IDateFieldDTO) {
     super(dto)
+    if (dto.defaultValue) {
+      this.defaultValue = new DateFieldValue(dto.defaultValue)
+    }
   }
 
   static create(dto: ICreateDateFieldDTO) {

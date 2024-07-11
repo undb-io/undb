@@ -12,6 +12,7 @@
   import UserFieldOption from "./user-field-option.svelte"
   import CheckboxFieldOption from "./checkbox-field-option.svelte"
   import JsonFieldOption from "./json-field-option.svelte"
+  import DateFieldOption from "./date-field-option.svelte"
 
   export let constraint: IFieldConstraint | undefined
   export let option: any | undefined
@@ -31,6 +32,7 @@
     email: EmailFieldOption,
     checkbox: CheckboxFieldOption,
     json: JsonFieldOption,
+    date: DateFieldOption,
   }
 
   export let type: NoneSystemFieldType

@@ -7,7 +7,7 @@ import {
   type IRecordValues,
   type TableDo,
 } from "@undb/table"
-import { isString } from "radash"
+import { isNumber, isString } from "radash"
 
 export type DisplayFieldName = `$${string}`
 
@@ -98,6 +98,10 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO 
 
       if (field.type === "checkbox") {
         values[key] = Boolean(value)
+        continue
+      }
+      if (field.type === "date" && (isString(value) || isNumber(value))) {
+        values[key] = new Date(value).toISOString()
         continue
       }
       values[key] = value

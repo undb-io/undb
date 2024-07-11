@@ -119,7 +119,7 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     this.addColumn(c)
   }
   date(field: DateField): void {
-    const c = this.tb.addColumn(field.id.value, "datetime")
+    const c = this.tb.addColumn(field.id.value, "timestamp")
     this.addColumn(c)
   }
   json(field: JsonField): void {

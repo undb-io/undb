@@ -18,7 +18,7 @@ export class DateFieldConstraint extends FieldConstraintVO<IDateFieldConstraint>
     })
   }
   override get schema() {
-    let base: z.ZodTypeAny = z.string().date().or(z.string().datetime())
+    let base: z.ZodTypeAny = z.string().date().or(z.string().datetime()).or(z.string().date()).or(z.date())
     if (!this.props.required) {
       base = base.optional().nullable()
     }
