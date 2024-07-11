@@ -10,6 +10,7 @@
   import RatingFieldOption from "./rating-field-option.svelte"
   import AttachmentFieldOption from "./attachment-field-option.svelte"
   import UserFieldOption from "./user-field-option.svelte"
+  import CheckboxFieldOption from "./checkbox-field-option.svelte"
 
   export let constraint: IFieldConstraint | undefined
   export let option: any | undefined
@@ -27,6 +28,7 @@
     attachment: AttachmentFieldOption,
     user: UserFieldOption,
     email: EmailFieldOption,
+    checkbox: CheckboxFieldOption,
   }
 
   export let type: NoneSystemFieldType
