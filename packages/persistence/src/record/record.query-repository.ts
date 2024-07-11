@@ -21,18 +21,13 @@ import {
   type TableId,
   type ViewId,
 } from "@undb/table"
-import { sql, type AliasedExpression, type ExpressionBuilder, type SelectQueryBuilder } from "kysely"
+import { type AliasedExpression } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
-import { RecordQueryCreatorVisitor } from "./record-query-creator-visitor"
-import { RecordQuerySpecCreatorVisitor } from "./record-query-spec-creator-visitor"
-import { RecordReferenceVisitor } from "./record-reference-visitor"
-import { RecordSelectFieldVisitor } from "./record-select-field-visitor"
-import { RecordSpecReferenceVisitor } from "./record-spec-reference-visitor"
+import { RecordQueryHelper } from "./record-query.helper"
 import { getRecordDTOFromEntity } from "./record-utils"
 import { AggregateFnBuiler } from "./record.aggregate-builder"
-import { RecordFilterVisitor } from "./record.filter-visitor"
 import { RecordMapper } from "./record.mapper"
 
 @singleton()
@@ -44,6 +39,8 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     private readonly mapper: RecordMapper,
     @injectTableRepository()
     private readonly tableRepo: ITableRepository,
+    @inject(RecordQueryHelper)
+    private readonly helper: RecordQueryHelper,
   ) {}
 
   async count(tableId: TableId): Promise<number> {
@@ -63,7 +60,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const { total } = await this.qb
       .selectFrom(t.name)
       .select((eb) => eb.fn.countAll().as("total"))
-      .where(this.handleWhere(table, spec))
+      .where(this.helper.handleWhere(table, spec))
       .executeTakeFirstOrThrow()
 
     return Number(total)
@@ -81,33 +78,6 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return map
   }
 
-  private createQuery(
-    table: TableDo,
-    foreignTables: Map<string, TableDo>,
-    visibleFields: Field[],
-    spec: Option<RecordComositeSpecification>,
-  ) {
-    const t = new UnderlyingTable(table)
-    let qb = new RecordQueryCreatorVisitor(this.qb, table, foreignTables, visibleFields).create()
-    const visitor = new RecordQuerySpecCreatorVisitor(this.qb, qb, table)
-    if (spec.isSome()) {
-      spec.unwrap().accept(visitor)
-    }
-    qb = visitor.creator
-
-    return qb
-      .selectFrom(table.id.value)
-      .$call((qb) => new RecordReferenceVisitor(qb, table).join(visibleFields))
-      .$call((qb) => {
-        const visitor = new RecordSpecReferenceVisitor(qb, table)
-        if (spec.isSome()) {
-          spec.unwrap().accept(visitor)
-        }
-        return visitor.join()
-      })
-      .select((sb) => new RecordSelectFieldVisitor(t, foreignTables, sb).$select(visibleFields))
-  }
-
   async findOneById(table: TableDo, id: RecordId, query: Option<SingleQueryArgs>): Promise<Option<IRecordDTO>> {
     const select = query.into(undefined)?.select.into(undefined)
 
@@ -116,21 +86,11 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       : table.schema.fields
 
     const foreignTables = await this.getForeignTables(table, selectFields)
-    const qb = this.createQuery(table, foreignTables, selectFields, None)
+    const qb = this.helper.createQuery(table, foreignTables, selectFields, None)
 
     const result = await qb.where(`${table.id.value}.${ID_TYPE}`, "=", id.value).executeTakeFirst()
 
     return result ? Some(getRecordDTOFromEntity(table, result)) : None
-  }
-
-  private handleWhere(table: TableDo, spec: Option<RecordComositeSpecification>) {
-    return (eb: ExpressionBuilder<any, any>) => {
-      const visitor = new RecordFilterVisitor(eb, table)
-      if (spec?.isSome()) {
-        spec.unwrap().accept(visitor)
-      }
-      return visitor.cond
-    }
   }
 
   async find(table: TableDo, viewId: Option<ViewId>, query: Option<QueryArgs>): Promise<PaginatedDTO<IRecordDTO>> {
@@ -151,55 +111,16 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const pagination = query.into(undefined)?.pagination.into(undefined)
     const select = query.into(undefined)?.select.into(undefined)
 
-    const handlePagination = (qb: SelectQueryBuilder<any, any, any>) => {
-      const limit = pagination!.limit as number
-      return qb.limit(limit).offset(((pagination?.page ?? 1) - 1) * limit)
-    }
-
-    const handleSort = (qb: SelectQueryBuilder<any, any, any>) => {
-      return sort!.reduce((qb, s) => {
-        const field = table.schema.getFieldById(new FieldIdVo(s.fieldId)).into(undefined)
-        if (!field) {
-          return qb
-        }
-
-        if (field.type === "select") {
-          const order = s.direction === "asc" ? field.options : field.options.slice().reverse()
-          if (field.isSingle) {
-            return qb.orderBy(
-              sql.raw(
-                `CASE ${table.id.value}.${field.id.value}
-                    ${order.map((option, index) => `WHEN '${option.id}' THEN ${index} `).join("\n")}
-                    ELSE ${s.direction === "asc" ? -1 : order.length}
-                  END`,
-              ),
-            )
-          } else {
-            return qb.orderBy(
-              sql.raw(
-                `CASE json_extract(${table.id.value}.${field.id.value}, '$[0]')
-                    ${order.map((option, index) => `WHEN '${option.id}' THEN ${index} `).join("\n")}
-                    ELSE ${s.direction === "asc" ? -1 : order.length}
-                  END`,
-              ),
-            )
-          }
-        }
-
-        return qb.orderBy(`${s.fieldId} ${s.direction}`)
-      }, qb)
-    }
-
     const selectFields = select
       ? select.map((f) => table.schema.getFieldById(new FieldIdVo(f)).into(undefined)).filter((f) => !!f)
       : table.getOrderedVisibleFields(view.id.value)
     const foreignTables = await this.getForeignTables(table, selectFields)
-    const qb = this.createQuery(table, foreignTables, selectFields, spec)
+    const qb = this.helper.createQuery(table, foreignTables, selectFields, spec)
 
     const result = await qb
-      .$if(!!pagination?.limit, handlePagination)
-      .$if(!!sort, handleSort)
-      .where(this.handleWhere(table, spec))
+      .$if(!!pagination?.limit, this.helper.handlePagination(pagination!))
+      .$if(!!sort, this.helper.handleSort(table, sort))
+      .where(this.helper.handleWhere(table, spec))
       .execute()
 
     // TODO: move total to aggregate result
@@ -245,7 +166,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
         }
         return ebs
       })
-      .where(this.handleWhere(table, viewSpec))
+      .where(this.helper.handleWhere(table, viewSpec))
       .executeTakeFirst()
 
     return result ?? {}

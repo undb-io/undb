@@ -13,10 +13,6 @@ export async function bulkduplicateRecordsMethod(
   const recordIds = dto.ids.map((id) => new RecordIdVO(id))
   const records = await this.repo.findByIds(table, recordIds)
 
-  for (const record of records) {
-    record.duplicate(table)
-  }
-
   const duplicated = records.map((r) => r.duplicate(table))
   await this.repo.bulkInsert(table, duplicated)
 

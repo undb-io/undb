@@ -6,10 +6,14 @@ import {
   ID_TYPE,
   RecordComositeSpecification,
   RecordDO,
+  TableIdVo,
   UPDATED_BY_TYPE,
   injectRecordOutboxService,
+  injectTableRepository,
+  type Field,
   type IRecordOutboxService,
   type IRecordRepository,
+  type ITableRepository,
   type RecordId,
   type TableDo,
 } from "@undb/table"
@@ -18,8 +22,8 @@ import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { injectDbUnitOfWork } from "../uow"
+import { RecordQueryHelper } from "./record-query.helper"
 import { getRecordDTOFromEntity } from "./record-utils"
-import { RecordFilterVisitor } from "./record.filter-visitor"
 import { RecordMapper } from "./record.mapper"
 import { RecordMutateVisitor } from "./record.mutate-visitor"
 
@@ -34,7 +38,23 @@ export class RecordRepository implements IRecordRepository {
     public readonly uow: IUnitOfWork,
     @inject(RecordMapper)
     public readonly mapper: RecordMapper,
+    @injectTableRepository()
+    private readonly tableRepo: ITableRepository,
+    @inject(RecordQueryHelper)
+    private readonly helper: RecordQueryHelper,
   ) {}
+
+  private async getForeignTables(table: TableDo, fields: Field[]): Promise<Map<string, TableDo>> {
+    const map = new Map<string, TableDo>()
+
+    const foriengTableIds = table.schema.getForeignTableIds(fields)
+    const foreignTables = await this.tableRepo.findManyByIds([...foriengTableIds].map((id) => new TableIdVo(id)))
+    for (const foreignTable of foreignTables) {
+      map.set(foreignTable.id.value, foreignTable)
+    }
+
+    return map
+  }
 
   // @transactional()
   async insert(table: TableDo, record: RecordDO): Promise<void> {
@@ -93,16 +113,19 @@ export class RecordRepository implements IRecordRepository {
   }
 
   async findOne(table: TableDo, spec: Option<RecordComositeSpecification>): Promise<Option<RecordDO>> {
-    const t = new UnderlyingTable(table)
+    const foreignTables = await this.getForeignTables(table, table.schema.fields)
+    const qb = this.helper.createQuery(table, foreignTables, table.schema.fields, spec)
 
-    const record = await this.qb.selectFrom(t.name).selectAll().limit(1).executeTakeFirst()
+    const record = await qb.limit(1).executeTakeFirst()
     const dto = record ? getRecordDTOFromEntity(table, record) : undefined
     return dto ? Some(RecordDO.fromJSON(table, dto)) : None
   }
 
   async find(table: TableDo, spec: RecordComositeSpecification): Promise<RecordDO[]> {
     const t = new UnderlyingTable(table)
-    const records = await this.qb.selectFrom(t.name).selectAll().where(this.#handleWhere(table, spec)).execute()
+    const foreignTables = await this.getForeignTables(table, table.schema.fields)
+    const qb = this.helper.createQuery(table, foreignTables, table.schema.fields, Some(spec))
+    const records = await qb.where(this.helper.handleWhere(table, Some(spec))).execute()
 
     return records.map((record) => {
       const dto = getRecordDTOFromEntity(table, record)
@@ -111,8 +134,10 @@ export class RecordRepository implements IRecordRepository {
   }
 
   async findOneById(table: TableDo, recordId: RecordId): Promise<Option<RecordDO>> {
-    const t = new UnderlyingTable(table)
-    const records = await this.qb.selectFrom(t.name).selectAll().where(ID_TYPE, "=", recordId.value).limit(1).execute()
+    const foreignTables = await this.getForeignTables(table, table.schema.fields)
+    const qb = this.helper.createQuery(table, foreignTables, table.schema.fields, None)
+
+    const records = await qb.where(`${table.id.value}.${ID_TYPE}`, "=", recordId.value).limit(1).execute()
 
     if (!records.length) {
       return None
@@ -124,11 +149,12 @@ export class RecordRepository implements IRecordRepository {
 
   async findByIds(table: TableDo, ids: RecordId[]): Promise<RecordDO[]> {
     const t = new UnderlyingTable(table)
-    const records = await this.qb
-      .selectFrom(t.name)
-      .selectAll()
+    const foreignTables = await this.getForeignTables(table, table.schema.fields)
+    const qb = this.helper.createQuery(table, foreignTables, table.schema.fields, None)
+
+    const records = await qb
       .where(
-        ID_TYPE,
+        `${table.id.value}.${ID_TYPE}`,
         "in",
         ids.map((id) => id.value),
       )
@@ -158,7 +184,7 @@ export class RecordRepository implements IRecordRepository {
         sql.push(...visitor.sql)
         return { ...visitor.data, [UPDATED_BY_TYPE]: userId }
       })
-      .where(ID_TYPE, "=", record.id.value)
+      .where(`${table.id.value}.${ID_TYPE}`, "=", record.id.value)
       .executeTakeFirst()
 
     for (const s of sql) {
@@ -166,14 +192,6 @@ export class RecordRepository implements IRecordRepository {
     }
 
     await this.outboxService.save(record)
-  }
-
-  #handleWhere(table: TableDo, spec: RecordComositeSpecification) {
-    return (eb: ExpressionBuilder<any, any>) => {
-      const visitor = new RecordFilterVisitor(eb, table)
-      spec.accept(visitor)
-      return visitor.cond
-    }
   }
 
   async bulkUpdate(
@@ -203,7 +221,11 @@ export class RecordRepository implements IRecordRepository {
       }
     }
 
-    await this.qb.updateTable(t.name).set(handleUpdate()).where(this.#handleWhere(table, spec)).execute()
+    await this.qb
+      .updateTable(t.name)
+      .set(handleUpdate())
+      .where(this.helper.handleWhere(table, Some(spec)))
+      .execute()
 
     for (const s of sql) {
       await this.qb.executeQuery(s)
