@@ -1,7 +1,8 @@
 <script lang="ts">
+  import { Checkbox } from "$lib/components/ui/checkbox"
   import Input from "$lib/components/ui/input/input.svelte"
   import { Label } from "$lib/components/ui/label/index.js"
-  import { Switch } from "$lib/components/ui/switch/index.js"
+  import { Separator } from "$lib/components/ui/separator"
 
   import type { IEmailFieldConstraint } from "@undb/table"
 
@@ -10,28 +11,29 @@
   export let defaultValue: string | undefined
 </script>
 
-<div class="space-y-4">
-  <div class="grid gap-3">
-    <Label for="defaultValue">Default</Label>
+<div class="space-y-2">
+  <div class="space-y-1">
+    <Label for="defaultValue" class="text-xs font-normal">Default value</Label>
     <Input
-      type="email"
       id="defaultValue"
-      class="bg-background flex-1"
-      placeholder="default value"
+      class="bg-background flex-1 text-xs"
+      placeholder="Default value..."
       bind:value={defaultValue}
     />
   </div>
   {#if constraint}
-    <div class="flex items-center justify-end gap-3">
-      <div class="flex items-center space-x-2">
-        <Switch id="required" bind:checked={constraint.required} />
-        <Label for="required" class="text-xs">Required</Label>
-      </div>
+    <div class="pt-2">
+      <Separator />
+    </div>
 
-      <div class="flex items-center space-x-2">
-        <Switch id="display" bind:checked={display} />
-        <Label for="display" class="text-xs">Display</Label>
-      </div>
+    <div class="flex items-center space-x-2">
+      <Checkbox id="required" bind:checked={constraint.required} />
+      <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
+    </div>
+
+    <div class="flex items-center space-x-2">
+      <Checkbox id="display" bind:checked={display} />
+      <Label for="display" class="text-xs font-normal">Mark as display field.</Label>
     </div>
   {/if}
 </div>

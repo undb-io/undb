@@ -9,7 +9,6 @@
   import Auth from "$lib/components/blocks/auth/auth.svelte"
   import RecordDetailSheet from "$lib/components/blocks/record-detail/record-detail-sheet.svelte"
   import Developer from "$lib/components/blocks/developer/developer.svelte"
-  import CreateFieldDialog from "$lib/components/blocks/create-field/create-field-dialog.svelte"
   import { tab } from "$lib/store/tab.store"
   import { CREATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import UpdateFieldDialog from "$lib/components/blocks/update-field/update-field-dialog.svelte"
@@ -49,7 +48,6 @@
 <RecordDetailSheet />
 <ConfirmDeleteRecord />
 <ConfirmDuplicateRecord />
-<CreateFieldDialog />
 <UpdateFieldDialog />
 <UpdateViewDialog />
 <DuplicateViewDialog />

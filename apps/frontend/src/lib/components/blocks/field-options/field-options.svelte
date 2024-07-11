@@ -18,7 +18,7 @@
   export let defaultValue: any | undefined
   export let isNew = true
 
-  const map: Partial<Record<NoneSystemFieldType, ComponentType>> = {
+  const map: Record<NoneSystemFieldType, ComponentType> = {
     string: StringFieldOption,
     number: NumberFieldOption,
     reference: ReferenceFieldOption,

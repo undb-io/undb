@@ -3,7 +3,7 @@
   import { Button } from "$lib/components/ui/button"
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
-  import { CREATE_FIELD_MODAL, closeModal } from "$lib/store/modal.store"
+  import { closeModal } from "$lib/store/modal.store"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
@@ -24,7 +24,6 @@
       mutationKey: ["table", $table.id.value, "createField"],
       mutationFn: trpc.table.field.create.mutate,
       async onSuccess() {
-        closeModal(CREATE_FIELD_MODAL)
         toast.success("Create field success")
         reset()
         await invalidate(`table:${$table.id.value}`)
@@ -74,24 +73,24 @@
   }
 </script>
 
-<form method="POST" use:enhance class="space-y-4">
-  <div class="flex h-8 items-center gap-2">
-    <Form.Field {form} name="type" class="h-full">
-      <Form.Control let:attrs>
-        <FieldTypePicker {...attrs} value={$formData.type} onValueChange={onTypeChange} tabIndex={-1} class="h-full" />
-      </Form.Control>
-      <Form.Description />
-      <Form.FieldErrors />
-    </Form.Field>
+<form method="POST" use:enhance class="space-y-2">
+  <Form.Field {form} name="name" class="w-full">
+    <Form.Control let:attrs>
+      <Input placeholder="field name..." {...attrs} bind:value={$formData.name} autofocus class="w-full" />
+    </Form.Control>
+    <Form.Description />
+    <Form.FieldErrors />
+  </Form.Field>
 
-    <Form.Field {form} name="name" class="h-full flex-1">
-      <Form.Control let:attrs>
-        <Input {...attrs} bind:value={$formData.name} autofocus class="h-full" />
-      </Form.Control>
-      <Form.Description />
-      <Form.FieldErrors />
-    </Form.Field>
-  </div>
+  <Form.Field {form} name="type" class="w-full">
+    <Form.Control let:attrs>
+      <FieldTypePicker {...attrs} value={$formData.type} onValueChange={onTypeChange} tabIndex={-1} class="h-9 w-full">
+        {$formData.type}
+      </FieldTypePicker>
+    </Form.Control>
+    <Form.Description />
+    <Form.FieldErrors />
+  </Form.Field>
 
   <FieldOptions
     type={$formData.type}
@@ -101,8 +100,8 @@
     bind:defaultValue={$formData.defaultValue}
   />
 
-  <div class="flex w-full justify-end">
-    <Button type="submit">Submit</Button>
+  <div class="flex w-full border-t pt-3">
+    <Button type="submit" class="w-full" size="sm" variant="outline">Create field</Button>
   </div>
 </form>
 

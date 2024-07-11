@@ -1,12 +1,9 @@
 <script lang="ts">
-  import { CREATE_FIELD_MODAL, toggleModal } from "$lib/store/modal.store"
+  import { toggleModal } from "$lib/store/modal.store"
   import { PlusIcon } from "lucide-svelte"
+  import CreateFieldButton from "../create-field/create-field-button.svelte"
 </script>
 
-<button
-  on:click={() => {
-    toggleModal(CREATE_FIELD_MODAL)
-  }}
->
+<CreateFieldButton variant="ghost">
   <PlusIcon class="h-3 w-3" />
-</button>
+</CreateFieldButton>

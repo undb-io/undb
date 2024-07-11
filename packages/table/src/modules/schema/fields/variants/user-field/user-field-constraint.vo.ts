@@ -3,11 +3,14 @@ import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.v
 
 export const userFieldConstraint = z
   .object({
-    // min: z.number().int().positive(),
+    min: z.number().int().positive(),
     max: z.number().int().positive(),
   })
   .merge(baseFieldConstraint)
   .partial()
+  .refine((v) => v.min === undefined || v.max === undefined || v.min <= v.max, {
+    message: "min should be less than or equal to max",
+  })
 
 export type IUserFieldConstraint = z.infer<typeof userFieldConstraint>
 
@@ -38,6 +41,10 @@ export class UserFieldConstraint extends FieldConstraintVO<IUserFieldConstraint>
 
     if (this.props.required) {
       base = base.min(1)
+    }
+
+    if (this.props.min) {
+      base = base.min(this.props.min)
     }
 
     if (this.props.max) {

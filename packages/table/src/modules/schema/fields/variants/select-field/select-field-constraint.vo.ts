@@ -4,10 +4,14 @@ import { optionId } from "../../option/option-id.vo"
 
 export const selectFieldConstraint = z
   .object({
+    min: z.number().int().positive(),
     max: z.number().int().positive(),
   })
   .merge(baseFieldConstraint)
   .partial()
+  .refine((v) => v.min === undefined || v.max === undefined || v.min <= v.max, {
+    message: "min should be less than or equal to max",
+  })
 
 export type ISelectFieldConstraint = z.infer<typeof selectFieldConstraint>
 
@@ -34,6 +38,9 @@ export class SelectFieldConstraint extends FieldConstraintVO<ISelectFieldConstra
 
       if (this.props.required) {
         base = base.min(1)
+      }
+      if (this.props.min) {
+        base = base.min(this.props.min)
       }
 
       if (this.props.max) {

@@ -38,19 +38,20 @@
       <span class="flex items-center overflow-hidden text-ellipsis" title={selectedValue}>
         {#if selected}
           <FieldIcon type={selected} class="mr-2 h-3 w-3" />
+          <slot />
         {/if}
       </span>
       <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
     </Button>
   </Popover.Trigger>
-  <Popover.Content class="w-[200px] p-0">
+  <Popover.Content class="p-0">
     <Command.Root
       filter={(value, search) => {
         const label = fieldTypes.find((f) => f === value) ?? ""
         return label.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
       }}
     >
-      <Command.Input placeholder="Search field..." class="h-9" />
+      <Command.Input placeholder="Search field type..." class="h-9" />
       <Command.Empty>No field found.</Command.Empty>
       <Command.Group>
         {#each fieldTypes as type}

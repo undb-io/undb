@@ -8,8 +8,10 @@
   import Button from "$lib/components/ui/button/button.svelte"
   import { isNumber } from "radash"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
-  import { GripVerticalIcon, XIcon } from "lucide-svelte"
-  import * as Select from "$lib/components/ui/select"
+  import { GripVerticalIcon, PlusSquareIcon, XIcon } from "lucide-svelte"
+  import { Separator } from "$lib/components/ui/separator"
+  import { Checkbox } from "$lib/components/ui/checkbox"
+  import autoAnimate from "@formkit/auto-animate"
 
   export let constraint: ISelectFieldConstraint | undefined
   const colors = new ColorsVO()
@@ -49,54 +51,56 @@
     option.options = option.options.filter((o) => o.id !== id)
   }
 
-  let single = "single"
-  $: isSingle = "single" === single
-
-  $: selected = isSingle
-    ? {
-        label: "Single",
-        value: "single",
-      }
-    : {
-        label: "Multiple",
-        value: "multiple",
-      }
+  let multiple = false
 </script>
 
 {#if constraint}
-  <div class="space-y-4">
+  <div class="space-y-2 pt-2">
     <div class="flex items-center gap-2">
-      <Select.Root
-        {selected}
-        onSelectedChange={(selected) => {
-          if (selected) {
-            single = selected.value
-            if (selected.value === "single") {
-              constraint.max = 1
-            } else {
-              constraint.max = undefined
-            }
+      <Switch
+        id="single"
+        bind:checked={multiple}
+        onCheckedChange={(multiple) => {
+          if (!multiple) {
+            constraint.max = 1
+          } else {
+            constraint.max = undefined
           }
         }}
-      >
-        <Select.Trigger class="w-[140px]">
-          <Select.Value />
-        </Select.Trigger>
-        <Select.Content>
-          <Select.Item value="single">Single</Select.Item>
-          <Select.Item value="multiple">Multiple</Select.Item>
-        </Select.Content>
-      </Select.Root>
+      />
+      <Label for="single" class="text-xs font-normal">Allow adding multiple options</Label>
+    </div>
 
-      {#if !isSingle}
-        <Label class="flex flex-1 items-center gap-2">
-          Max
-          <NumberInput bind:value={constraint.max} />
-        </Label>
+    <div class="grid grid-cols-2 gap-2" use:autoAnimate>
+      {#if multiple}
+        <div class="space-y-1">
+          <Label for="min" class="text-xs font-normal">Min items</Label>
+          <NumberInput
+            id="min"
+            min={0}
+            max={constraint.max}
+            step={1}
+            bind:value={constraint.min}
+            placeholder="Min items..."
+            class="bg-background text-xs"
+          />
+        </div>
+        <div class="space-y-1">
+          <Label for="max" class="text-xs font-normal">Max items</Label>
+          <NumberInput
+            id="max"
+            min={constraint.min || 0}
+            step={1}
+            bind:value={constraint.max}
+            placeholder="Max items..."
+            class="bg-background text-xs"
+          />
+        </div>
       {/if}
     </div>
+
     <div class="space-y-1">
-      <p class="text-sm font-semibold">Options</p>
+      <p class="text-xs font-normal">Options</p>
       <div class="space-y-2">
         <SortableList
           animation={200}
@@ -124,14 +128,19 @@
           {/each}
         </SortableList>
 
-        <Button on:click={addOption} class="w-full" size="sm" variant="outline">+ Add Option</Button>
+        <Button on:click={addOption} class="w-full text-xs" size="sm" variant="outline">
+          <PlusSquareIcon class="mr-2 h-3 w-3" />
+          Add Option
+        </Button>
       </div>
     </div>
-    <div class="mt-4 flex items-center justify-end gap-3">
-      <div class="flex items-center space-x-2">
-        <Switch id="required" bind:checked={constraint.required} />
-        <Label for="required" class="text-xs">Required</Label>
-      </div>
+
+    <div class="pb-2">
+      <Separator />
+    </div>
+    <div class="flex items-center space-x-2">
+      <Checkbox id="required" bind:checked={constraint.required} />
+      <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
     </div>
   </div>
 {/if}

@@ -4,10 +4,14 @@ import { attachmentFieldValue } from "./attachment-field-value.vo"
 
 export const attachmentFieldConstraint = z
   .object({
+    min: z.number().int().positive(),
     max: z.number().int().positive(),
   })
   .merge(baseFieldConstraint)
   .partial()
+  .refine((v) => v.min === undefined || v.max === undefined || v.min <= v.max, {
+    message: "min should be less than or equal to max",
+  })
 
 export type IAttachmentFieldConstraint = z.infer<typeof attachmentFieldConstraint>
 
@@ -25,6 +29,10 @@ export class AttachmentFieldConstraint extends FieldConstraintVO<IAttachmentFiel
       base = base.min(0)
     } else {
       base = base.min(1)
+    }
+
+    if (this.props.min) {
+      base = base.min(this.props.min)
     }
 
     if (max) {
