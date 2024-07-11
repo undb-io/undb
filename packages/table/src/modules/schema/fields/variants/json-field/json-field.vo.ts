@@ -19,6 +19,7 @@ export const JSON_TYPE = "json" as const
 
 export const createJsonFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(JSON_TYPE),
+  defaultValue: z.any().optional(),
 })
 
 export type ICreateJsonFieldDTO = z.infer<typeof createJsonFieldDTO>
@@ -27,6 +28,7 @@ export type IUpjsonJsonFieldDTO = z.infer<typeof updateJsonFieldDTO>
 
 export const jsonFieldDTO = baseFieldDTO.extend({
   type: z.literal(JSON_TYPE),
+  defaultValue: z.any().optional(),
 })
 
 export type IJsonFieldDTO = z.infer<typeof jsonFieldDTO>
@@ -34,6 +36,9 @@ export type IJsonFieldDTO = z.infer<typeof jsonFieldDTO>
 export class JsonField extends AbstractField<JsonFieldValue> {
   constructor(dto: IJsonFieldDTO) {
     super(dto)
+    if (dto.defaultValue) {
+      this.defaultValue = new JsonFieldValue(dto.defaultValue)
+    }
   }
 
   static create(dto: ICreateJsonFieldDTO) {

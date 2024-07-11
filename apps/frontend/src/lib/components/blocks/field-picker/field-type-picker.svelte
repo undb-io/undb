@@ -53,7 +53,7 @@
     >
       <Command.Input placeholder="Search field type..." class="h-9" />
       <Command.Empty>No field found.</Command.Empty>
-      <Command.Group>
+      <Command.Group class="max-h-[300px] overflow-y-auto">
         {#each fieldTypes as type}
           <Command.Item
             value={type}

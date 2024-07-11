@@ -11,6 +11,7 @@
   import AttachmentFieldOption from "./attachment-field-option.svelte"
   import UserFieldOption from "./user-field-option.svelte"
   import CheckboxFieldOption from "./checkbox-field-option.svelte"
+  import JsonFieldOption from "./json-field-option.svelte"
 
   export let constraint: IFieldConstraint | undefined
   export let option: any | undefined
@@ -29,6 +30,7 @@
     user: UserFieldOption,
     email: EmailFieldOption,
     checkbox: CheckboxFieldOption,
+    json: JsonFieldOption,
   }
 
   export let type: NoneSystemFieldType
