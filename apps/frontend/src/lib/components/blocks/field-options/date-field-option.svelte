@@ -54,7 +54,7 @@
           {internalDate ? df.format(internalDate.toDate(getLocalTimeZone())) : ""}
         </Button>
       </Popover.Trigger>
-      <Popover.Content class="w-auto p-0">
+      <Popover.Content class="p-0" sameWidth>
         <Calendar
           value={internalDate}
           onValueChange={(v) => {

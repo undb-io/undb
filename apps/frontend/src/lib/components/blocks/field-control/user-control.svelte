@@ -14,7 +14,7 @@
 
 {#if field.isSingle}
   {#if !Array.isArray(value) && !Array.isArray(displayValue)}
-    <UserPicker bind:value>
+    <UserPicker sameWidth bind:value>
       <Button
         slot="trigger"
         let:builder
@@ -29,7 +29,7 @@
     </UserPicker>
   {/if}
 {:else if (Array.isArray(value) || value === undefined || value === null) && (Array.isArray(displayValue) || !displayValue)}
-  <UsersPicker bind:value>
+  <UsersPicker sameWidth bind:value>
     <Button
       slot="trigger"
       let:builder

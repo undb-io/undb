@@ -20,6 +20,8 @@
   export let onValueChange: (value: IMultipleUserFieldValue) => void = () => {}
 
   $: selectedValue = value?.map((v) => users.find((f) => f?.user.id === v)).filter((v) => !!v) ?? []
+
+  export let sameWidth = false
 </script>
 
 <Popover.Root bind:open let:ids>
@@ -42,7 +44,7 @@
       </Button>
     </slot>
   </Popover.Trigger>
-  <Popover.Content class="max-h-[400px] p-0">
+  <Popover.Content class="max-h-[400px] p-0" {sameWidth}>
     <Command.Root shouldFilter={false}>
       <Command.Input bind:value={q} placeholder="Search user by email or username..." class="h-9" />
       {#if !$store.fetching}

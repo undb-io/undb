@@ -91,6 +91,7 @@
       <Tooltip.Root>
         <Tooltip.Trigger>
           <Switch
+            size="sm"
             id="selectAll"
             bind:checked={selectAll}
             onCheckedChange={(checked) => {
@@ -151,6 +152,7 @@
               <Tooltip.Root>
                 <Tooltip.Trigger>
                   <Switch
+                    size="sm"
                     bind:checked={formField.required}
                     on:click={(e) => {
                       e.stopPropagation()

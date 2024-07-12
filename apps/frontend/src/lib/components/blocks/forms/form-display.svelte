@@ -109,7 +109,7 @@
 
     <div class="space-y-2" bind:this={el} use:autoAnimate>
       <SortableList
-        class="space-y-4 pb-2"
+        class="space-y-2 pb-2"
         handle=".handler"
         animation={200}
         onEnd={(event) => {

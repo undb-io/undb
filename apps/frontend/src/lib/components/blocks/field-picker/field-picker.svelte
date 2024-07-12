@@ -47,7 +47,7 @@
   }
 </script>
 
-<Popover.Root bind:open let:ids>
+<Popover.Root bind:open let:ids portal="body">
   <Popover.Trigger asChild let:builder>
     <Button
       size="sm"
@@ -67,7 +67,7 @@
       <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
     </Button>
   </Popover.Trigger>
-  <Popover.Content class="w-[200px] p-0">
+  <Popover.Content class="p-0" sameWidth>
     <Command.Root
       filter={(value, search) => {
         const label = filteredFields.find((f) => f.value === value)?.label ?? ""

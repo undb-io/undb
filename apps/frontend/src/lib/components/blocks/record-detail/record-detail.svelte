@@ -160,7 +160,8 @@
         <div class="h-[1px] flex-1 bg-gray-100"></div>
         <Collapsible.Trigger asChild let:builder>
           <Button builders={[builder]} variant="outline" size="sm" class="text-muted-foreground">
-            Show {hiddenFields.length} hidden fields
+            {$preferences.showHiddenFields ? "Hide" : "Show"}
+            {hiddenFields.length} hidden fields
           </Button>
         </Collapsible.Trigger>
         <div class="h-[1px] flex-1 bg-gray-100"></div>

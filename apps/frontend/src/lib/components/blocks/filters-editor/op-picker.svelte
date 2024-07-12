@@ -26,7 +26,7 @@
   }
 </script>
 
-<Popover.Root bind:open let:ids>
+<Popover.Root bind:open let:ids portal="body">
   <Popover.Trigger asChild let:builder>
     <Button
       builders={[builder]}

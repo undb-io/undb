@@ -88,16 +88,16 @@ export function getIsSystemFieldType(type: FieldType): type is SystemFieldType {
 export const fieldTypes: NoneSystemFieldType[] = [
   "string",
   "number",
+  "select",
+  "email",
+  "rating",
+  "date",
+  "checkbox",
+  "attachment",
+  "json",
+  "user",
   "reference",
   "rollup",
-  "select",
-  "rating",
-  "email",
-  "attachment",
-  "date",
-  "json",
-  "checkbox",
-  "user",
 ] as const
 
 export const systemFieldTypes: SystemFieldType[] = [
@@ -129,7 +129,7 @@ export const filterableFieldTypes = [
 ] as const
 
 export const getIsFilterableFieldType = (type: FieldType): type is IFilterableFieldType => {
-  return filterableFieldTypes.includes(type)
+  return filterableFieldTypes.includes(type as any)
 }
 
 export const allFieldTypes: FieldType[] = [...systemFieldTypes, ...fieldTypes] as const

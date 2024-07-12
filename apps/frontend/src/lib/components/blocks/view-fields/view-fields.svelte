@@ -119,9 +119,10 @@
           {#each filteredViewFields as viewField (viewField.fieldId)}
             {@const field = $table.schema.getFieldById(new FieldIdVo(viewField.fieldId)).into(undefined)}
             {#if field}
-              <div class="hover:bg-muted flex items-center justify-between rounded-sm p-2 transition-colors">
+              <div class="hover:bg-muted flex items-center justify-between rounded-sm p-1.5 transition-colors">
                 <div class="flex items-center gap-2">
                   <Switch
+                    size="sm"
                     disabled={visibleCount === 1 && viewFields.length === 1}
                     checked={!viewField.hidden}
                     onCheckedChange={(checked) => {

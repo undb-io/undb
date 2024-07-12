@@ -25,6 +25,8 @@
       document.getElementById(triggerId)?.focus()
     })
   }
+
+  export let sameWidth = false
 </script>
 
 <Popover.Root bind:open let:ids>
@@ -41,7 +43,7 @@
       {/if}
     </Button>
   </Popover.Trigger>
-  <Popover.Content class="p-0">
+  <Popover.Content class="p-0" {sameWidth}>
     <Command.Root shouldFilter={false}>
       <Command.Input bind:value={search} placeholder="Search option..." />
       <Command.Empty>No Option found.</Command.Empty>

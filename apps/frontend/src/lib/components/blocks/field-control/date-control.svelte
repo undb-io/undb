@@ -41,7 +41,7 @@
       {/if}
     </Button>
   </Popover.Trigger>
-  <Popover.Content class="w-auto p-0">
+  <Popover.Content class="p-0" side="bottom" align="start">
     <Calendar
       value={internalDate}
       onValueChange={(v) => {

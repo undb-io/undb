@@ -21,6 +21,8 @@
       value?.map((v) => options.find((o) => o.id === v)).filter((v) => !!v)) ||
     []
   $: filteredOptions = options.filter((option) => option.name.toLowerCase().includes(search.toLowerCase()))
+
+  export let sameWidth = false
 </script>
 
 <Popover.Root bind:open let:ids>
@@ -39,7 +41,7 @@
       </div>
     </Button>
   </Popover.Trigger>
-  <Popover.Content class="p-0">
+  <Popover.Content class="p-0" sameWidth>
     <Command.Root shouldFilter={false}>
       <Command.Input bind:value={search} placeholder="Search option..." />
       <Command.Empty>No option found.</Command.Empty>
