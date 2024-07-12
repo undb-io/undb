@@ -39,6 +39,7 @@
         role="combobox"
         aria-expanded={open}
         class={cn("w-full justify-between", $$restProps.class)}
+        {...$$restProps}
       >
         <div class="flex flex-1 items-center justify-start">
           {#if selectedValue}

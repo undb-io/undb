@@ -38,7 +38,7 @@
 <div class="space-y-2">
   <div class="space-y-1">
     <Label for="defaultValue" class="text-xs font-normal">Default value</Label>
-    <Popover.Root bind:open openFocus>
+    <Popover.Root portal="body" bind:open openFocus>
       <Popover.Trigger asChild let:builder>
         <Button
           variant="outline"

@@ -18,6 +18,8 @@
 
   const table = getTable()
 
+  export let onSuccess: () => void = () => {}
+
   const client = useQueryClient()
   const createFieldMutation = createMutation(
     derived([table], ([$table]) => ({
@@ -28,6 +30,7 @@
         reset()
         await invalidate(`table:${$table.id.value}`)
         await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
+        onSuccess()
       },
       onError(error: Error) {
         toast.error(error.message)

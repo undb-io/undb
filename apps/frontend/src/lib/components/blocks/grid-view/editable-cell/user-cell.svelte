@@ -40,66 +40,44 @@
 </script>
 
 <div class={$$restProps.class}>
-  {#if isEditing}
-    {#if field.isSingle}
-      {#if !Array.isArray(value) && !Array.isArray(displayValue)}
-        <UserPicker bind:open bind:value onValueChange={onSelect}>
-          <div
-            slot="trigger"
-            let:builder
-            let:selected
-            use:builderActions={{ builders: [builder] }}
-            {...getAttrs([builder])}
-            class="flex w-full items-center justify-between"
-          >
-            <UserFieldComponent disableHoverCard {value} displayValue={selected?.user ?? displayValue} />
-            <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
-          </div>
-        </UserPicker>
-      {/if}
-    {:else if (Array.isArray(value) || value === null) && (Array.isArray(displayValue) || !displayValue)}
-      <UsersPicker bind:value bind:open onValueChange={onSelect}>
+  {#if field.isSingle}
+    {#if !Array.isArray(value) && !Array.isArray(displayValue)}
+      <UserPicker bind:open bind:value onValueChange={onSelect}>
         <div
           slot="trigger"
           let:builder
           let:selected
           use:builderActions={{ builders: [builder] }}
           {...getAttrs([builder])}
-          class="flex w-full flex-nowrap items-center justify-between overflow-hidden"
+          class="flex w-full items-center justify-between"
         >
-          <div class="flex flex-1 items-center gap-1 overflow-hidden">
-            {#each value ?? [] as user, i}
-              {@const value = selected.find((u) => u.user.id === user)?.user ?? displayValue?.[i]}
-              <UserFieldComponent disableHoverCard value={user} displayValue={value} />
-            {/each}
-          </div>
-          <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
-        </div>
-      </UsersPicker>
-    {/if}
-  {:else}
-    <div class="flex w-full items-center justify-between">
-      {#if field.isSingle}
-        {#if !Array.isArray(value) && !Array.isArray(displayValue)}
-          <UserFieldComponent disableHoverCard={!isSelected || isEditing} {value} {displayValue} />
-        {/if}
-      {:else}
-        <div class="flex items-center gap-1 overflow-hidden">
-          {#if Array.isArray(value) && (Array.isArray(displayValue) || !displayValue)}
-            {#each value as id, i}
-              <UserFieldComponent
-                disableHoverCard={!isSelected || isEditing}
-                value={id}
-                displayValue={displayValue?.[i]}
-              />
-            {/each}
+          <UserFieldComponent disableHoverCard {value} displayValue={selected?.user ?? displayValue} />
+          {#if isEditing}
+            <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
           {/if}
         </div>
-      {/if}
-
-      {#if isSelected}
-        <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
-      {/if}
-    </div>
+      </UserPicker>
+    {/if}
+  {:else if (Array.isArray(value) || value === null) && (Array.isArray(displayValue) || !displayValue)}
+    <UsersPicker disabled={!isSelected} bind:value bind:open onValueChange={onSelect}>
+      <div
+        slot="trigger"
+        let:builder
+        let:selected
+        use:builderActions={{ builders: [builder] }}
+        {...getAttrs([builder])}
+        class="flex w-full flex-nowrap items-center justify-between overflow-hidden"
+      >
+        <div class="flex flex-1 items-center gap-1 overflow-hidden">
+          {#each value ?? [] as user, i}
+            {@const value = selected.find((u) => u.user.id === user)?.user ?? displayValue?.[i]}
+            <UserFieldComponent disableHoverCard value={user} displayValue={value} />
+          {/each}
+        </div>
+        {#if isEditing}
+          <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
+        {/if}
+      </div>
+    </UsersPicker>
   {/if}
 </div>
