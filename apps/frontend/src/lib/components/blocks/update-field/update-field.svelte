@@ -48,14 +48,9 @@
       display: !!field.display,
       defaultValue: (field.defaultValue as Option<FieldValue>)?.unwrapUnchecked()?.value as any,
       constraint: field.constraint.unwrapUnchecked()?.value,
+      option: field.option.unwrapUnchecked(),
     }
   }
-
-  function setDefaultValue() {
-    form.reset({ newState: getDefaultValue() })
-  }
-
-  $: field, setDefaultValue()
 
   const form = superForm<IUpdateFieldDTO>(defaults<IUpdateFieldDTO>(getDefaultValue(), zodClient(updateFieldDTO)), {
     SPA: true,
@@ -64,7 +59,10 @@
     resetForm: false,
     invalidateAll: false,
     onUpdate(event) {
-      if (!event.form.valid) return
+      if (!event.form.valid) {
+        console.log(event.form.errors, event.form.data)
+        return
+      }
       const data = event.form.data
       const field = FieldFactory.fromJSON(data).toJSON()
 
@@ -102,6 +100,7 @@
       <Form.Field {form} name="constraint">
         <Form.Control let:attrs>
           <FieldOptions
+            isNew={false}
             type={$formData.type}
             bind:option={$formData.option}
             bind:constraint={$formData.constraint}
@@ -119,4 +118,4 @@
   </div>
 </form>
 
-<SuperDebug data={$formData} />
+<!-- <SuperDebug data={$formData} /> -->

@@ -6,6 +6,7 @@ import {
   updateJsonFieldDTO,
   updateRatingFieldDTO,
   updateReferenceFieldDTO,
+  updateSelectFieldDTO,
   updateUpdatedByFieldDTO,
 } from "../variants"
 import { updateAttachmentFieldDTO } from "../variants/attachment-field"
@@ -35,6 +36,7 @@ export const updateFieldDTO = z.discriminatedUnion("type", [
   updateJsonFieldDTO,
   updateCheckboxFieldDTO,
   updateUserFieldDTO,
+  updateSelectFieldDTO,
 ])
 
 export type IUpdateFieldDTO = z.infer<typeof updateFieldDTO>

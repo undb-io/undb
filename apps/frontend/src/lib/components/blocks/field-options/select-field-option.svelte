@@ -5,11 +5,9 @@
   import {
     COLORS,
     ColorsVO,
-    Options,
     type IMutateSelectFieldValueSchema,
     type ISelectFieldConstraint,
     type ISelectFieldOption,
-    type ISingleUserFieldValue,
   } from "@undb/table"
   import OptionEditor from "$lib/components/blocks/option/option-editor.svelte"
   import { OptionIdVo } from "@undb/table/src/modules/schema/fields/option/option-id.vo"
@@ -25,10 +23,11 @@
 
   export let constraint: ISelectFieldConstraint | undefined
   const colors = new ColorsVO()
+  export let isNew = true
   export let option: ISelectFieldOption = { options: [] }
   export let defaultValue: IMutateSelectFieldValueSchema | undefined
 
-  $: if (!option.options.length) {
+  $: if (!option.options.length && isNew) {
     option = {
       options: [
         {

@@ -19,7 +19,7 @@
 <div class="space-y-2">
   {#if option}
     <div class="space-y-1">
-      <Label class="flex items-center text-xs font-normal">
+      <Label class="text-muted-foreground flex items-center text-xs font-normal">
         <ExternalLinkIcon class="mr-2 h-3 w-3" />
         Foreign table
       </Label>

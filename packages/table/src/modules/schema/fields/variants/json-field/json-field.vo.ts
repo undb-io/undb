@@ -20,7 +20,7 @@ export const JSON_TYPE = "json" as const
 export const createJsonFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(JSON_TYPE),
   constraint: jsonFieldConstraint.optional(),
-  defaultValue: z.any().optional(),
+  defaultValue: z.any().optional().nullable(),
 })
 
 export type ICreateJsonFieldDTO = z.infer<typeof createJsonFieldDTO>
@@ -30,7 +30,7 @@ export type IUpjsonJsonFieldDTO = z.infer<typeof updateJsonFieldDTO>
 export const jsonFieldDTO = baseFieldDTO.extend({
   type: z.literal(JSON_TYPE),
   constraint: jsonFieldConstraint.optional(),
-  defaultValue: z.any().optional(),
+  defaultValue: z.any().optional().nullable(),
 })
 
 export type IJsonFieldDTO = z.infer<typeof jsonFieldDTO>

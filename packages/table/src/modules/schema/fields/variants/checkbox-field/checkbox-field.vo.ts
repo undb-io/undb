@@ -19,7 +19,7 @@ export const CHECKBOX_TYPE = "checkbox" as const
 
 export const createCheckboxFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(CHECKBOX_TYPE),
-  defaultValue: z.boolean().optional(),
+  defaultValue: z.boolean().optional().nullable(),
 })
 
 export type ICreateCheckboxFieldDTO = z.infer<typeof createCheckboxFieldDTO>
@@ -28,7 +28,7 @@ export type IUpcheckboxCheckboxFieldDTO = z.infer<typeof updateCheckboxFieldDTO>
 
 export const checkboxFieldDTO = baseFieldDTO.extend({
   type: z.literal(CHECKBOX_TYPE),
-  defaultValue: z.boolean().optional(),
+  defaultValue: z.boolean().optional().nullable(),
 })
 
 export type ICheckboxFieldDTO = z.infer<typeof checkboxFieldDTO>

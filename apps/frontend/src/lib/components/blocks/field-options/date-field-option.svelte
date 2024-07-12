@@ -19,6 +19,7 @@
   export let constraint: IDateFieldConstraint | undefined
   export let display: boolean | undefined
   export let defaultValue: string | Date | undefined
+  export let placeholder: string | undefined = "Default value..."
 
   function parse(value: string) {
     try {
@@ -51,7 +52,13 @@
           builders={[builder]}
         >
           <CalendarIcon class="mr-2 h-4 w-4" />
-          {internalDate ? df.format(internalDate.toDate(getLocalTimeZone())) : ""}
+          {#if internalDate}
+            {df.format(internalDate.toDate(getLocalTimeZone()))}
+          {:else}
+            <span class="text-muted-foreground text-xs">
+              {placeholder}
+            </span>
+          {/if}
         </Button>
       </Popover.Trigger>
       <Popover.Content class="p-0" sameWidth>

@@ -55,7 +55,10 @@
       resetForm: false,
       invalidateAll: false,
       onUpdate(event) {
-        if (!event.form.valid) return
+        if (!event.form.valid) {
+          console.log(event.form.data, event.form.errors)
+          return
+        }
 
         $createFieldMutation.mutate({
           tableId: $table.id.value,

@@ -22,7 +22,7 @@ export const RATING_TYPE = "rating" as const
 export const createRatingFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(RATING_TYPE),
   constraint: ratingFieldConstraint.optional(),
-  defaultValue: z.number().optional(),
+  defaultValue: z.number().optional().nullable(),
 })
 
 export type ICreateRatingFieldDTO = z.infer<typeof createRatingFieldDTO>
@@ -33,7 +33,7 @@ export type IUpdateRatingFieldDTO = z.infer<typeof updateRatingFieldDTO>
 export const ratingFieldDTO = baseFieldDTO.extend({
   type: z.literal(RATING_TYPE),
   constraint: ratingFieldConstraint.optional(),
-  defaultValue: z.number().optional(),
+  defaultValue: z.number().optional().nullable(),
 })
 
 export type IRatingFieldDTO = z.infer<typeof ratingFieldDTO>

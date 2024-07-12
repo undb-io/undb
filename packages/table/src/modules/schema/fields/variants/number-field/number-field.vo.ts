@@ -20,7 +20,7 @@ export const NUMBER_TYPE = "number" as const
 export const createNumberFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(NUMBER_TYPE),
   constraint: numberFieldConstraint.optional(),
-  defaultValue: z.number().optional(),
+  defaultValue: z.number().optional().nullable(),
 })
 
 export type ICreateNumberFieldDTO = z.infer<typeof createNumberFieldDTO>
@@ -31,7 +31,7 @@ export type IUpdateNumberFieldDTO = z.infer<typeof updateNumberFieldDTO>
 export const numberFieldDTO = baseFieldDTO.extend({
   type: z.literal(NUMBER_TYPE),
   constraint: numberFieldConstraint.optional(),
-  defaultValue: z.number().optional(),
+  defaultValue: z.number().optional().nullable(),
 })
 
 export type INumberFieldDTO = z.infer<typeof numberFieldDTO>

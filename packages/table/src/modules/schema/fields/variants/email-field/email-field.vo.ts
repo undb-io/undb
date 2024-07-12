@@ -21,7 +21,7 @@ export const EMAIL_TYPE = "email" as const
 export const createEmailFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(EMAIL_TYPE),
   constraint: emailFieldConstraint.optional(),
-  defaultValue: z.string().email().optional(),
+  defaultValue: z.string().email().optional().nullable(),
 })
 
 export type ICreateEmailFieldDTO = z.infer<typeof createEmailFieldDTO>
@@ -32,7 +32,7 @@ export type IUpdateEmailFieldDTO = z.infer<typeof updateEmailFieldDTO>
 export const emailFieldDTO = baseFieldDTO.extend({
   type: z.literal(EMAIL_TYPE),
   constraint: emailFieldConstraint.optional(),
-  defaultValue: z.string().email().optional(),
+  defaultValue: z.string().email().optional().nullable(),
 })
 
 export type IEmailFieldDTO = z.infer<typeof emailFieldDTO>

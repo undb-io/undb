@@ -2,17 +2,17 @@ import { z } from "@undb/zod"
 
 export const colors = z.enum([
   //
-  "red",
-  "green",
   "blue",
-  "yellow",
+  "green",
   "purple",
-  "black",
-  "gray",
   "orange",
+  "yellow",
+  "red",
+  "black",
   "pink",
   "cyan",
   "teal",
+  "gray",
   "indigo",
 ])
 

@@ -29,7 +29,7 @@
   export let sameWidth = false
 </script>
 
-<Popover.Root bind:open let:ids>
+<Popover.Root bind:open let:ids portal="body">
   <Popover.Trigger asChild let:builder>
     <slot name="trigger">
       <Button

@@ -29,7 +29,7 @@ export const STRING_TYPE = "string" as const
 export const createStringFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(STRING_TYPE),
   constraint: stringFieldConstraint.optional(),
-  defaultValue: z.string().optional(),
+  defaultValue: z.string().optional().nullable(),
 })
 
 export type ICreateStringFieldDTO = z.infer<typeof createStringFieldDTO>
@@ -40,7 +40,7 @@ export type IUpdateStringFieldDTO = z.infer<typeof updateStringFieldDTO>
 export const stringFieldDTO = baseFieldDTO.extend({
   type: z.literal(STRING_TYPE),
   constraint: stringFieldConstraint.optional(),
-  defaultValue: z.string().optional(),
+  defaultValue: z.string().optional().nullable(),
 })
 
 export type IStringFieldDTO = z.infer<typeof stringFieldDTO>

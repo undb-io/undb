@@ -4,7 +4,7 @@ import { match } from "ts-pattern"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
-import { Options, option, optionName } from "../../option"
+import { Options, option, optionId } from "../../option"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { SelectFieldConstraint, selectFieldConstraint } from "./select-field-constraint.vo"
 import { SelectContainsAnyOf, SelectEmpty, SelectEqual } from "./select-field-specification"
@@ -27,7 +27,7 @@ export type ISelectFieldOption = z.infer<typeof selectFieldOption>
 export const createSelectFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(SELECT_TYPE),
   constraint: selectFieldConstraint.optional(),
-  defaultValue: optionName.optional(),
+  defaultValue: optionId.or(optionId.array()).optional().nullable(),
   option: selectFieldOption,
 })
 
@@ -39,13 +39,15 @@ export type IUpdateSelectFieldDTO = z.infer<typeof updateSelectFieldDTO>
 export const selectFieldDTO = baseFieldDTO.extend({
   type: z.literal(SELECT_TYPE),
   constraint: selectFieldConstraint.optional(),
-  defaultValue: optionName.optional(),
+  defaultValue: optionId.or(optionId.array()).optional().nullable(),
   option: selectFieldOption,
 })
 
 export type ISelectFieldDTO = z.infer<typeof selectFieldDTO>
 
 export class SelectField extends AbstractField<SelectFieldValue, SelectFieldConstraint, ISelectFieldOption> {
+  public readonly option: Option<ISelectFieldOption>
+
   constructor(dto: ISelectFieldDTO) {
     super(dto)
     this.option = Some({
