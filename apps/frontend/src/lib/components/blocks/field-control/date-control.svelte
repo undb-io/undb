@@ -36,7 +36,9 @@
       builders={[builder]}
     >
       <CalendarIcon class="mr-2 h-4 w-4" />
-      {internalDate ? df.format(internalDate.toDate(getLocalTimeZone())) : ""}
+      {#if value}
+        {isString(value) ? df.format(new Date(value)) : df.format(value)}
+      {/if}
     </Button>
   </Popover.Trigger>
   <Popover.Content class="w-auto p-0">

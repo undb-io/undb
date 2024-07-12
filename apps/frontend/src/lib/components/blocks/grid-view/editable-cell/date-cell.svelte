@@ -55,7 +55,8 @@
     <Popover.Root bind:open openFocus>
       <Popover.Trigger class="h-full w-full text-left outline-none ring-0">
         {#if value}
-          {value}
+          {@const date = isString(value) ? new Date(value) : value}
+          {df.format(date)}
         {/if}
       </Popover.Trigger>
       <Popover.Content class="w-auto p-0">
@@ -77,6 +78,7 @@
       </Popover.Content>
     </Popover.Root>
   {:else if value}
-    {value}
+    {@const date = isString(value) ? new Date(value) : value}
+    {df.format(date)}
   {/if}
 </div>
