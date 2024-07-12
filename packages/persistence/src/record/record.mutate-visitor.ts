@@ -135,7 +135,9 @@ export class RecordMutateVisitor implements IRecordVisitor {
     }
   }
   userEqual(spec: UserEqual): void {
-    const field = this.table.schema.getFieldById(spec.fieldId).expect("No field found") as UserField
+    const field = this.table.schema
+      .getFieldById(spec.fieldId)
+      .expect("No field found: " + spec.fieldId.value) as UserField
     const fieldValue = new UserFieldValue(spec.value)
     const value = fieldValue.getValue(field)
 

@@ -14,6 +14,14 @@ export const createDefaultField = (table: TableDo, type: FieldType) =>
         options: [],
       },
     }))
+    .with("user", () => ({
+      id: FieldIdVo.create().value,
+      type: "user" as const,
+      name: table.schema.getNextFieldName(),
+      constraint: {
+        max: 1,
+      },
+    }))
     .otherwise(
       () =>
         ({

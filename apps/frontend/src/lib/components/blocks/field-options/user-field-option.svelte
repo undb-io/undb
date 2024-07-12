@@ -13,7 +13,7 @@
   import { builderActions, getAttrs } from "bits-ui"
   import { Button } from "$lib/components/ui/button"
 
-  export let constraint: IUserFieldConstraint | undefined
+  export let constraint: IUserFieldConstraint | undefined = { required: false, max: 1 }
   export let defaultValue: IUserFieldValue | undefined
 
   let multiple = false
@@ -40,7 +40,7 @@
           }
         }}
       />
-      <Label for="single" class="text-xs font-normal">Allow adding multiple options</Label>
+      <Label for="single" class="text-xs font-normal">Allow adding multiple users</Label>
     </div>
 
     <div class="w-full space-y-1">

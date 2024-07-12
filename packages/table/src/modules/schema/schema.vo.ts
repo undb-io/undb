@@ -61,6 +61,7 @@ export class Schema extends ValueObject<Field[]> {
 
   createField(field: Field) {
     this.fields = [...this.fields, field]
+    this.fieldMapById.set(field.id.value, field)
     return this
   }
 
