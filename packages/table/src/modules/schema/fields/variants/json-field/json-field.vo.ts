@@ -2,10 +2,10 @@ import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
-import { FieldIdVo, fieldId } from "../../field-id.vo"
+import { fieldId, FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
-import { JsonFieldConstraint } from "./json-field-constraint.vo"
+import { jsonFieldConstraint, JsonFieldConstraint } from "./json-field-constraint.vo"
 import { JsonFieldValue } from "./json-field-value.vo"
 import { jsonFieldAggregate } from "./json-field.aggregate"
 import {
@@ -19,6 +19,7 @@ export const JSON_TYPE = "json" as const
 
 export const createJsonFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(JSON_TYPE),
+  constraint: jsonFieldConstraint.optional(),
   defaultValue: z.any().optional(),
 })
 
@@ -28,6 +29,7 @@ export type IUpjsonJsonFieldDTO = z.infer<typeof updateJsonFieldDTO>
 
 export const jsonFieldDTO = baseFieldDTO.extend({
   type: z.literal(JSON_TYPE),
+  constraint: jsonFieldConstraint.optional(),
   defaultValue: z.any().optional(),
 })
 
@@ -38,6 +40,9 @@ export class JsonField extends AbstractField<JsonFieldValue> {
     super(dto)
     if (dto.defaultValue) {
       this.defaultValue = new JsonFieldValue(dto.defaultValue)
+    }
+    if (dto.constraint) {
+      this.constraint = Some(new JsonFieldConstraint(dto.constraint))
     }
   }
 

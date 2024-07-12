@@ -6,7 +6,7 @@
   import { Separator } from "$lib/components/ui/separator"
   import type { IJsonFieldConstraint } from "@undb/table"
 
-  export let constraint: IJsonFieldConstraint | undefined
+  export let constraint: IJsonFieldConstraint | undefined = { required: false }
   export let defaultValue: Json | undefined
 
   let content: Content = {
@@ -39,7 +39,7 @@
       <Separator />
     </div>
 
-    <div class="flex items-center space-x-2">
+    <div class="flex items-center space-x-2 pt-2">
       <Checkbox id="required" bind:checked={constraint.required} />
       <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
     </div>

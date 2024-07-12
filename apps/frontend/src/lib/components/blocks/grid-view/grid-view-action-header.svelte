@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { toggleModal } from "$lib/store/modal.store"
   import { PlusIcon } from "lucide-svelte"
   import CreateFieldButton from "../create-field/create-field-button.svelte"
 </script>

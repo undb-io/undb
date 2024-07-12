@@ -21,6 +21,7 @@
   import { trpc } from "$lib/trpc/client"
   import { invalidate } from "$app/navigation"
   import { isNumber } from "radash"
+  import { onMount } from "svelte"
 
   const table = getTable()
   $: view = $table.views.getViewById($viewId)
@@ -30,9 +31,11 @@
   $: count = sort?.count ?? 0
 
   let value: IViewSort = sort?.value ?? []
-  $: if (!value.length && sort?.value.length) {
-    value = sort.value
-  }
+  onMount(() => {
+    if (!value.length && sort?.value.length) {
+      value = sort.value
+    }
+  })
   $: selectedFieldIds = value.reduce((acc, item) => acc.add(item.fieldId), new Set<string>())
   $: availableFields = fields.filter((f) => !selectedFieldIds.has(f.id.value))
   $: disabled = availableFields.length === 0
@@ -65,8 +68,8 @@
     })
   }
 
-  function removeSort(i: number): void {
-    value = value.filter((_, index) => index !== i)
+  function removeSort(fieldId: string): void {
+    value = value.filter((item) => item.fieldId !== fieldId)
   }
 
   function swapSort(oldIndex: number, newIndex: number) {
@@ -146,10 +149,10 @@
                 </Select.Root>
               </div>
               <div class="text-muted-foreground col-span-2 flex justify-end gap-2">
-                <button on:click={() => removeSort(i)}>
+                <button on:click={() => removeSort(item.fieldId)}>
                   <Trash2Icon class="h-3 w-3" />
                 </button>
-                <button class=".handler" on:click={() => removeSort(i)}>
+                <button class=".handler" on:click={() => removeSort(item.fieldId)}>
                   <GripVerticalIcon class="h-3 w-3" />
                 </button>
               </div>

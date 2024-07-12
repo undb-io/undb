@@ -11,7 +11,6 @@
   import Developer from "$lib/components/blocks/developer/developer.svelte"
   import { tab } from "$lib/store/tab.store"
   import { CREATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
-  import UpdateFieldDialog from "$lib/components/blocks/update-field/update-field-dialog.svelte"
   import UpdateViewDialog from "$lib/components/blocks/view/update-view-dialog.svelte"
   import DuplicateViewDialog from "$lib/components/blocks/view/duplicate-view-dialog.svelte"
   import DeleteViewDialog from "$lib/components/blocks/view/delete-view-dialog.svelte"
@@ -44,14 +43,15 @@
   {/if}
 </main>
 
-<CreateRecordSheet />
-<RecordDetailSheet />
-<ConfirmDeleteRecord />
-<ConfirmDuplicateRecord />
-<UpdateFieldDialog />
-<UpdateViewDialog />
-<DuplicateViewDialog />
-<DeleteViewDialog />
+{#key $table.id.value}
+  <CreateRecordSheet />
+  <RecordDetailSheet />
+  <ConfirmDeleteRecord />
+  <ConfirmDuplicateRecord />
+  <UpdateViewDialog />
+  <DuplicateViewDialog />
+  <DeleteViewDialog />
+{/key}
 
 <svelte:window
   use:shortcut={{

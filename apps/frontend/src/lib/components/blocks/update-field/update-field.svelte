@@ -3,7 +3,7 @@
   import { Button } from "$lib/components/ui/button"
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
-  import { UPDATE_FIELD_MODAL, closeModal } from "$lib/store/modal.store"
+  import { closeModal } from "$lib/store/modal.store"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
@@ -11,7 +11,7 @@
   import { toast } from "svelte-sonner"
   import { derived } from "svelte/store"
   import { Option } from "@undb/domain"
-  import { defaults, superForm } from "sveltekit-superforms"
+  import SuperDebug, { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import FieldOptions from "../field-options/field-options.svelte"
   import FieldTypePicker from "../field-picker/field-type-picker.svelte"
@@ -22,15 +22,17 @@
 
   export let field: Field
 
+  export let onSuccess: () => void = () => {}
+
   const updateFieldMutation = createMutation(
     derived([table], ([$table]) => ({
       mutationKey: ["table", $table.id.value, "updateField"],
       mutationFn: trpc.table.field.update.mutate,
       async onSuccess() {
-        closeModal(UPDATE_FIELD_MODAL)
         toast.success("Update field success")
         reset()
         await invalidate(`table:${$table.id.value}`)
+        onSuccess()
       },
       onError(error: Error) {
         toast.error(error.message)
@@ -80,13 +82,7 @@
   <div class="flex h-8 items-center gap-2">
     <Form.Field {form} name="type" class="h-full">
       <Form.Control let:attrs>
-        <FieldTypePicker
-          {...attrs}
-          bind:value={$formData.type}
-          tabIndex={-1}
-          class="h-full"
-          disabled={getIsSystemFieldType($formData.type)}
-        />
+        <FieldTypePicker {...attrs} bind:value={$formData.type} tabIndex={-1} class="h-full" disabled />
       </Form.Control>
       <Form.Description />
       <Form.FieldErrors />
@@ -118,7 +114,9 @@
       </Form.Field>
     {/if}
   </div>
-  <div class="flex w-full justify-end">
-    <Button type="submit">Submit</Button>
+  <div class="flex w-full justify-end border-t pt-4">
+    <Button type="submit" variant="outline" class="w-full" size="sm">Submit</Button>
   </div>
 </form>
+
+<SuperDebug data={$formData} />

@@ -6,7 +6,7 @@
   export let readonly = false
 
   let content: Content = {
-    text: undefined,
+    text: "{}",
     json: value ?? {},
   }
 

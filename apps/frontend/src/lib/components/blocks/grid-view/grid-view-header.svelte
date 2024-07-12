@@ -1,11 +1,9 @@
 <script lang="ts">
   import type { Field } from "@undb/table"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
-  import { ChevronDownIcon, FilterIcon, PaintBucketIcon, SettingsIcon } from "lucide-svelte"
+  import { ChevronDownIcon, SettingsIcon } from "lucide-svelte"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
-  import { UPDATE_FIELD_MODAL, toggleModal } from "$lib/store/modal.store"
-  import { fieldId } from "$lib/store/field.store"
-  import { tick } from "svelte"
+  import UpdateFieldButton from "../update-field/update-field-button.svelte"
 
   export let field: Field
 </script>
@@ -22,17 +20,9 @@
     <DropdownMenu.Trigger>
       <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
     </DropdownMenu.Trigger>
-    <DropdownMenu.Content class="w-[250px]">
-      <DropdownMenu.Item
-        class="text-xs"
-        on:click={async () => {
-          $fieldId = field.id.value
-          await tick()
-          toggleModal(UPDATE_FIELD_MODAL)
-        }}
-      >
-        <SettingsIcon class="text-muted-foreground mr-2 h-4 w-4" />
-        Update Field
+    <DropdownMenu.Content class="w-[250px] p-0">
+      <DropdownMenu.Item asChild>
+        <UpdateFieldButton {field} class="w-full justify-start rounded-none border-none text-xs" />
       </DropdownMenu.Item>
     </DropdownMenu.Content>
   </DropdownMenu.Root>

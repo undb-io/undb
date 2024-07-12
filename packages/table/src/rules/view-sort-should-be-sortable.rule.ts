@@ -21,6 +21,6 @@ export class ViewSortShouldBeSortable extends DomainRules<ViewSortShouldBeSortab
   override err = new ViewSortShouldBeSortableError()
 
   override isBroken(): boolean {
-    return !this.sort.some((sort) => this.schema.get(sort.fieldId)?.sortable)
+    return !!this.sort.length && !this.sort.some((sort) => this.schema.get(sort.fieldId)?.sortable)
   }
 }
