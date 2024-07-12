@@ -21,7 +21,6 @@
   import type { ZodUndefined } from "@undb/zod"
   import { writable } from "svelte/store"
   import { Button } from "$lib/components/ui/button"
-  import { createConditionGroupStore } from "../filters-editor/filters-editor.store"
 
   const table = getTable()
 
@@ -42,7 +41,7 @@
     })
   }
 
-  const condition = createConditionGroupStore("and")
+  const condition = writable<MaybeConditionGroup<ZodUndefined> | undefined>()
   $: validCondition = $condition ? parseValidViewFilter($table.schema.fieldMapById, $condition) : undefined
 
   $: form, condition.set(formField.condition && toMaybeConditionGroup(formField.condition))
@@ -121,7 +120,7 @@
     <Collapsible.Content class="mt-4">
       <FiltersEditor
         filter={(field) => previousFields.map((f) => f.fieldId).includes(field.id)}
-        store={condition}
+        bind:value={$condition}
         table={$table}
         class="rounded-sm border"
         on:submit={updateCondition}

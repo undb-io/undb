@@ -24,6 +24,8 @@ export interface MaybeConditionGroup<OptionType extends z.ZodTypeAny> {
   option?: z.infer<OptionType>
 }
 
+export type MaybeConditionGroupChildren<OptionType extends z.ZodTypeAny> = MaybeConditionGroup<OptionType>["children"]
+
 export function createConditionGroup<OptionType extends ZodTypeAny, FieldOptionType extends ZodTypeAny = OptionType>(
   optionType: OptionType,
   fieldType: FieldOptionType,

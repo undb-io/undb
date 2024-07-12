@@ -7,31 +7,34 @@
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { invalidate } from "$app/navigation"
+  import { writable } from "svelte/store"
   import Badge from "$lib/components/ui/badge/badge.svelte"
   import {
     getIsFilterableFieldType,
     parseValidViewColor,
     type IConditionGroup,
     type IViewColorOptionSchema,
+    type MaybeConditionGroup,
   } from "@undb/table"
   import ColorPicker from "$lib/components/ui/color-picker/color-picker.svelte"
-  import { viewColorEditorOpen, viewColorEditorStore } from "./view-color-editor.store"
 
   const table = getTable()
   $: color = $table.views.getViewById($viewId).color.into(undefined)
   $: count = color?.count ?? 0
 
-  const store = viewColorEditorStore
-  $: validValue = $store ? parseValidViewColor($table.schema.fieldMapById, $store) : undefined
+  const value = writable<MaybeConditionGroup<IViewColorOptionSchema> | undefined>()
+  $: validValue = $value ? parseValidViewColor($table.schema.fieldMapById, $value) : undefined
 
-  $: $table, store.set(color?.toMaybeConditionGroup())
+  $: $table, value.set(color?.toMaybeConditionGroup())
+
+  let open = false
 
   const mutation = createMutation({
     mutationKey: ["table", $table.id.value, "setColor"],
     mutationFn: trpc.table.view.setColor.mutate,
     onSuccess: async () => {
       await invalidate(`table:${$table.id.value}`)
-      $viewColorEditorOpen = false
+      open = false
     },
   })
 
@@ -45,9 +48,9 @@
   }
 </script>
 
-<Popover.Root bind:open={$viewColorEditorOpen}>
+<Popover.Root bind:open>
   <Popover.Trigger asChild let:builder>
-    <Button variant={count || $viewColorEditorOpen ? "secondary" : "ghost"} builders={[builder]} size="sm">
+    <Button variant={count || open ? "secondary" : "ghost"} builders={[builder]} size="sm">
       <PaintBucketIcon class="mr-2 h-4 w-4" />
       Color
       {#if count}
@@ -56,11 +59,11 @@
     </Button>
   </Popover.Trigger>
   <Popover.Content class="w-[630px] space-y-2 p-0 shadow-2xl" align="start">
-    {#if $store?.children.length}
+    {#if $value?.children.length}
       <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Color</div>
     {/if}
     <FiltersEditor
-      {store}
+      bind:value={$value}
       table={$table}
       disableGroup
       defaultConjunction="or"
