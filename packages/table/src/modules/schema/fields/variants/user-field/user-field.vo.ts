@@ -20,6 +20,7 @@ export const USER_TYPE = "user" as const
 export const createUserFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(USER_TYPE),
   constraint: userFieldConstraint.optional(),
+  defaultValue: z.string().or(z.string().array()).optional(),
 })
 
 export type ICreateUserFieldDTO = z.infer<typeof createUserFieldDTO>
@@ -29,6 +30,7 @@ export type IUpuserUserFieldDTO = z.infer<typeof updateUserFieldDTO>
 export const userFieldDTO = baseFieldDTO.extend({
   type: z.literal(USER_TYPE),
   constraint: userFieldConstraint.optional(),
+  defaultValue: z.string().or(z.string().array()).optional(),
 })
 
 export type IUserFieldDTO = z.infer<typeof userFieldDTO>
@@ -38,6 +40,9 @@ export class UserField extends AbstractField<UserFieldValue> {
     super(dto)
     if (dto.constraint) {
       this.constraint = Some(new UserFieldConstraint(dto.constraint))
+    }
+    if (dto.defaultValue) {
+      this.defaultValue = new UserFieldValue(dto.defaultValue)
     }
   }
 

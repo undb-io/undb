@@ -58,6 +58,7 @@
   <div class="space-y-2 pt-2">
     <div class="flex items-center gap-2">
       <Switch
+        size="sm"
         id="single"
         bind:checked={multiple}
         onCheckedChange={(multiple) => {
