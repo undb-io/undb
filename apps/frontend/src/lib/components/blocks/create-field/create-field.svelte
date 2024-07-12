@@ -87,9 +87,13 @@
 
   <Form.Field {form} name="type" class="w-full">
     <Form.Control let:attrs>
-      <FieldTypePicker {...attrs} value={$formData.type} onValueChange={onTypeChange} tabIndex={-1} class="h-9 w-full">
-        {$formData.type}
-      </FieldTypePicker>
+      <FieldTypePicker
+        {...attrs}
+        value={$formData.type}
+        onValueChange={onTypeChange}
+        tabIndex={-1}
+        class="h-9 w-full"
+      />
     </Form.Control>
     <Form.Description />
     <Form.FieldErrors />

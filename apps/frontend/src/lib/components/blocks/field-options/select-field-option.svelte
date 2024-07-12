@@ -2,7 +2,15 @@
   import { Label } from "$lib/components/ui/label/index.js"
   import NumberInput from "$lib/components/ui/input/number-input.svelte"
   import { Switch } from "$lib/components/ui/switch/index.js"
-  import { COLORS, ColorsVO, Options, type ISelectFieldConstraint, type ISelectFieldOption } from "@undb/table"
+  import {
+    COLORS,
+    ColorsVO,
+    Options,
+    type IMutateSelectFieldValueSchema,
+    type ISelectFieldConstraint,
+    type ISelectFieldOption,
+    type ISingleUserFieldValue,
+  } from "@undb/table"
   import OptionEditor from "$lib/components/blocks/option/option-editor.svelte"
   import { OptionIdVo } from "@undb/table/src/modules/schema/fields/option/option-id.vo"
   import Button from "$lib/components/ui/button/button.svelte"
@@ -12,10 +20,13 @@
   import { Separator } from "$lib/components/ui/separator"
   import { Checkbox } from "$lib/components/ui/checkbox"
   import autoAnimate from "@formkit/auto-animate"
+  import OptionsPicker from "../option/options-picker.svelte"
+  import OptionPicker from "../option/option-picker.svelte"
 
   export let constraint: ISelectFieldConstraint | undefined
   const colors = new ColorsVO()
   export let option: ISelectFieldOption = { options: [] }
+  export let defaultValue: IMutateSelectFieldValueSchema | undefined
 
   $: if (!option.options.length) {
     option = {
@@ -28,6 +39,20 @@
       ],
     }
   }
+
+  function handleDefaultValue() {
+    if (Array.isArray(defaultValue)) {
+      if (option.options.some((option) => !defaultValue?.includes(option.id))) {
+        defaultValue = defaultValue.filter((id) => option.options.some((option) => option.id === id))
+      }
+    } else if (defaultValue) {
+      if (!option.options.some((option) => option.id === defaultValue)) {
+        defaultValue = undefined
+      }
+    }
+  }
+
+  $: option.options, handleDefaultValue()
 
   const addOption = () => {
     option.options = [
@@ -51,55 +76,11 @@
     option.options = option.options.filter((o) => o.id !== id)
   }
 
-  let multiple = false
+  let multiple = constraint?.max !== 1
 </script>
 
 {#if constraint}
   <div class="space-y-2 pt-2">
-    <div class="flex items-center gap-2">
-      <Switch
-        size="sm"
-        id="single"
-        bind:checked={multiple}
-        onCheckedChange={(multiple) => {
-          if (!multiple) {
-            constraint.max = 1
-          } else {
-            constraint.max = undefined
-          }
-        }}
-      />
-      <Label for="single" class="text-xs font-normal">Allow adding multiple options</Label>
-    </div>
-
-    <div class="grid grid-cols-2 gap-2" use:autoAnimate>
-      {#if multiple}
-        <div class="space-y-1">
-          <Label for="min" class="text-xs font-normal">Min items</Label>
-          <NumberInput
-            id="min"
-            min={0}
-            max={constraint.max}
-            step={1}
-            bind:value={constraint.min}
-            placeholder="Min items..."
-            class="bg-background text-xs"
-          />
-        </div>
-        <div class="space-y-1">
-          <Label for="max" class="text-xs font-normal">Max items</Label>
-          <NumberInput
-            id="max"
-            min={constraint.min || 0}
-            step={1}
-            bind:value={constraint.max}
-            placeholder="Max items..."
-            class="bg-background text-xs"
-          />
-        </div>
-      {/if}
-    </div>
-
     <div class="space-y-1">
       <p class="text-xs font-normal">Options</p>
       <div class="space-y-2">
@@ -136,7 +117,83 @@
       </div>
     </div>
 
-    <div class="pb-2">
+    <div class="flex items-center gap-2">
+      <Switch
+        size="sm"
+        id="single"
+        bind:checked={multiple}
+        onCheckedChange={(multiple) => {
+          if (!multiple) {
+            constraint.max = 1
+            if (defaultValue && Array.isArray(defaultValue)) {
+              defaultValue = defaultValue[0]
+            }
+          } else {
+            constraint.max = undefined
+            if (defaultValue && !Array.isArray(defaultValue)) {
+              defaultValue = [defaultValue]
+            }
+          }
+        }}
+      />
+      <Label for="single" class="text-xs font-normal">Allow adding multiple options</Label>
+    </div>
+
+    <div class="w-full space-y-1">
+      {#if multiple}
+        {#if Array.isArray(defaultValue) || defaultValue === undefined || defaultValue === null}
+          <Label for="defaultValue" class="block text-xs font-normal">Default value</Label>
+          <OptionsPicker
+            sameWidth
+            id="defaultValue"
+            class="bg-background w-full flex-1 text-xs"
+            placeholder="Select default options..."
+            options={option.options}
+            bind:value={defaultValue}
+          />
+        {/if}
+      {:else if !Array.isArray(defaultValue)}
+        <Label for="defaultValue" class="block text-xs font-normal">Default value</Label>
+        <OptionPicker
+          sameWidth
+          id="defaultValue"
+          class="bg-background w-full flex-1 text-xs"
+          placeholder="Select default options..."
+          options={option.options}
+          bind:value={defaultValue}
+        />
+      {/if}
+    </div>
+
+    <div class="grid grid-cols-2 gap-2" use:autoAnimate>
+      {#if multiple}
+        <div class="space-y-1">
+          <Label for="min" class="text-xs font-normal">Min items</Label>
+          <NumberInput
+            id="min"
+            min={0}
+            max={constraint.max}
+            step={1}
+            bind:value={constraint.min}
+            placeholder="Min items..."
+            class="bg-background text-xs"
+          />
+        </div>
+        <div class="space-y-1">
+          <Label for="max" class="text-xs font-normal">Max items</Label>
+          <NumberInput
+            id="max"
+            min={constraint.min || 0}
+            step={1}
+            bind:value={constraint.max}
+            placeholder="Max items..."
+            class="bg-background text-xs"
+          />
+        </div>
+      {/if}
+    </div>
+
+    <div>
       <Separator />
     </div>
     <div class="flex items-center space-x-2">

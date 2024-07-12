@@ -173,6 +173,80 @@ type RootTranslation = {
 			 */
 			is_false: string
 		}
+		fieldTypes: {
+			/**
+			 * S​t​r​i​n​g
+			 */
+			string: string
+			/**
+			 * N​u​m​b​e​r
+			 */
+			number: string
+			/**
+			 * D​a​t​e
+			 */
+			date: string
+			/**
+			 * I​D
+			 */
+			id: string
+			/**
+			 * C​r​e​a​t​e​d​ ​A​t
+			 */
+			createdAt: string
+			/**
+			 * A​u​t​o​ ​I​n​c​r​e​m​e​n​t
+			 */
+			autoIncrement: string
+			/**
+			 * U​p​d​a​t​e​d​ ​A​t
+			 */
+			updatedAt: string
+			/**
+			 * C​r​e​a​t​e​d​ ​B​y
+			 */
+			createdBy: string
+			/**
+			 * U​p​d​a​t​e​d​ ​B​y
+			 */
+			updatedBy: string
+			/**
+			 * R​e​f​e​r​e​n​c​e
+			 */
+			reference: string
+			/**
+			 * R​o​l​l​u​p
+			 */
+			rollup: string
+			/**
+			 * S​e​l​e​c​t
+			 */
+			select: string
+			/**
+			 * R​a​t​i​n​g
+			 */
+			rating: string
+			/**
+			 * E​m​a​i​l
+			 */
+			email: string
+			/**
+			 * A​t​t​a​c​h​m​e​n​t
+			 */
+			attachment: string
+			/**
+			 * J​S​O​N
+			 */
+			json: string
+			/**
+			 * C​h​e​c​k​b​o​x
+			 */
+			checkbox: string
+			/**
+			 * U​s​e​r
+			 */
+			user: string
+		}
 	}
 }
 
@@ -335,6 +409,80 @@ export type TranslationFunctions = {
 			 * is false
 			 */
 			is_false: () => LocalizedString
+		}
+		fieldTypes: {
+			/**
+			 * String
+			 */
+			string: () => LocalizedString
+			/**
+			 * Number
+			 */
+			number: () => LocalizedString
+			/**
+			 * Date
+			 */
+			date: () => LocalizedString
+			/**
+			 * ID
+			 */
+			id: () => LocalizedString
+			/**
+			 * Created At
+			 */
+			createdAt: () => LocalizedString
+			/**
+			 * Auto Increment
+			 */
+			autoIncrement: () => LocalizedString
+			/**
+			 * Updated At
+			 */
+			updatedAt: () => LocalizedString
+			/**
+			 * Created By
+			 */
+			createdBy: () => LocalizedString
+			/**
+			 * Updated By
+			 */
+			updatedBy: () => LocalizedString
+			/**
+			 * Reference
+			 */
+			reference: () => LocalizedString
+			/**
+			 * Rollup
+			 */
+			rollup: () => LocalizedString
+			/**
+			 * Select
+			 */
+			select: () => LocalizedString
+			/**
+			 * Rating
+			 */
+			rating: () => LocalizedString
+			/**
+			 * Email
+			 */
+			email: () => LocalizedString
+			/**
+			 * Attachment
+			 */
+			attachment: () => LocalizedString
+			/**
+			 * JSON
+			 */
+			json: () => LocalizedString
+			/**
+			 * Checkbox
+			 */
+			checkbox: () => LocalizedString
+			/**
+			 * User
+			 */
+			user: () => LocalizedString
 		}
 	}
 }

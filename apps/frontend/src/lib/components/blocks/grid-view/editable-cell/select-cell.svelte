@@ -52,8 +52,8 @@
           class="h-full flex-1 rounded-none border-none bg-transparent p-0 text-left ring-0 focus-visible:ring-0"
           bind:open
           onValueChange={(value) => onSelect(value)}
-          {field}
           bind:value
+          options={field.options}
         />
       {/if}
     {:else if Array.isArray(value) || value === null}
@@ -61,7 +61,7 @@
         class="h-full flex-1 rounded-none border-none bg-transparent p-0 text-left ring-0 focus-visible:ring-0"
         bind:open
         onValueChange={(value) => onSelect(value)}
-        {field}
+        options={field.options}
         bind:value
       />
     {/if}

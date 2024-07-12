@@ -13,7 +13,7 @@
   <Popover.Trigger asChild let:builder>
     <Button builders={[builder]} size="sm" variant="outline" {...$$restProps}>
       <slot>
-        <SettingsIcon class="mr-2 h-4 w-4" />
+        <SettingsIcon class="mr-2 h-3 w-3" />
         Update Field
       </slot>
     </Button>

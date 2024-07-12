@@ -8,6 +8,7 @@
   import { cn } from "$lib/utils.js"
   import FieldIcon from "../field-icon/field-icon.svelte"
   import { allFieldTypes, fieldTypes, type FieldType } from "@undb/table"
+  import { LL } from "@undb/i18n/client"
 
   let open = false
   export let value: FieldType | undefined = undefined
@@ -40,7 +41,9 @@
       <span class="flex items-center overflow-hidden text-ellipsis" title={selectedValue}>
         {#if selected}
           <FieldIcon type={selected} class="mr-2 h-3 w-3" />
-          <slot />
+          <slot>
+            {$LL.table.fieldTypes[selected]()}
+          </slot>
         {/if}
       </span>
       <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -69,9 +72,9 @@
           >
             <Check class={cn("mr-2 h-4 w-4", value !== type && "text-transparent")} />
             <div class="flex items-center gap-2">
-              <FieldIcon {type} class="h-4 w-4" />
-              <span>
-                {type}
+              <FieldIcon {type} class="h-3 w-3" />
+              <span class="text-xs">
+                {$LL.table.fieldTypes[type]()}
               </span>
             </div>
           </Command.Item>

@@ -4,17 +4,17 @@
   import * as Popover from "$lib/components/ui/popover/index.js"
   import { cn } from "$lib/utils.js"
   import { Button } from "$lib/components/ui/button"
-  import type { IOptionId, SelectField } from "@undb/table"
+  import type { IOption, IOptionId } from "@undb/table"
   import Option from "./option.svelte"
   import { tick } from "svelte"
 
-  export let field: SelectField
-  $: options = field.options
+  export let options: IOption[] = []
 
   export let open = false
   let search = ""
   export let value: IOptionId | null = null
   export let onValueChange: (value: IOptionId | null) => void = () => {}
+  export let placeholder: string | undefined = undefined
 
   $: selectedValue = options.find((option) => option.id === value)
   $: filteredOptions = options.filter((option) => option.name.toLowerCase().includes(search.toLowerCase()))
@@ -31,17 +31,23 @@
 
 <Popover.Root bind:open let:ids>
   <Popover.Trigger asChild let:builder>
-    <Button
-      builders={[builder]}
-      variant="outline"
-      role="combobox"
-      aria-expanded={open}
-      class={cn("w-full justify-between overflow-hidden", $$restProps.class)}
-    >
-      {#if selectedValue}
-        <Option option={selectedValue} />
-      {/if}
-    </Button>
+    <slot name="trigger">
+      <Button
+        builders={[builder]}
+        variant="outline"
+        role="combobox"
+        aria-expanded={open}
+        class={cn("w-full justify-between overflow-hidden", $$restProps.class)}
+      >
+        {#if selectedValue}
+          <Option option={selectedValue} />
+        {:else if placeholder}
+          <span class="text-muted-foreground">
+            {placeholder}
+          </span>
+        {/if}
+      </Button>
+    </slot>
   </Popover.Trigger>
   <Popover.Content class="p-0" {sameWidth}>
     <Command.Root shouldFilter={false}>

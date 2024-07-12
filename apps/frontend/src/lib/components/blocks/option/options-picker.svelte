@@ -1,20 +1,19 @@
 <script lang="ts">
   import Check from "lucide-svelte/icons/check"
-  import ChevronsUpDown from "lucide-svelte/icons/chevrons-up-down"
   import * as Command from "$lib/components/ui/command"
   import * as Popover from "$lib/components/ui/popover/index.js"
   import { cn } from "$lib/utils.js"
   import { Button } from "$lib/components/ui/button"
-  import type { SelectField } from "@undb/table"
+  import type { IOption } from "@undb/table"
   import Option from "./option.svelte"
 
-  export let field: SelectField
-  $: options = field.options
+  export let options: IOption[] = []
 
   export let open = false
   let search = ""
   export let value: string[] | null = []
   export let onValueChange: (value: string[] | null) => void = () => {}
+  export let placeholder: string | undefined = undefined
 
   $: selectedValue =
     ((Array.isArray(value) || value === null) &&
@@ -27,21 +26,29 @@
 
 <Popover.Root bind:open let:ids>
   <Popover.Trigger asChild let:builder>
-    <Button
-      builders={[builder]}
-      variant="outline"
-      role="combobox"
-      aria-expanded={open}
-      class={cn("w-full justify-between  overflow-hidden", $$restProps.class)}
-    >
-      <div class="flex flex-1 items-center gap-1">
-        {#each selectedValue as option}
-          <Option {option} />
-        {/each}
-      </div>
-    </Button>
+    <slot>
+      <Button
+        builders={[builder]}
+        variant="outline"
+        role="combobox"
+        aria-expanded={open}
+        class={cn("w-full justify-between  overflow-hidden", $$restProps.class)}
+      >
+        <div class="flex flex-1 items-center gap-1">
+          {#if selectedValue.length}
+            {#each selectedValue as option}
+              <Option {option} />
+            {/each}
+          {:else if placeholder}
+            <span class="text-muted-foreground">
+              {placeholder}
+            </span>
+          {/if}
+        </div>
+      </Button>
+    </slot>
   </Popover.Trigger>
-  <Popover.Content class="p-0" sameWidth>
+  <Popover.Content class="p-0" {sameWidth}>
     <Command.Root shouldFilter={false}>
       <Command.Input bind:value={search} placeholder="Search option..." />
       <Command.Empty>No option found.</Command.Empty>

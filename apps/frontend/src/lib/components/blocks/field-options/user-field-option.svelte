@@ -16,7 +16,7 @@
   export let constraint: IUserFieldConstraint | undefined = { required: false, max: 1 }
   export let defaultValue: IUserFieldValue | undefined
 
-  let multiple = false
+  let multiple = constraint?.max !== 1
 </script>
 
 {#if constraint}
@@ -62,12 +62,16 @@
               builders={[builder]}
               class="flex w-full flex-nowrap items-center justify-between overflow-hidden"
             >
-              <div class="flex flex-1 items-center gap-1 overflow-hidden">
-                {#each defaultValue ?? [] as user, i}
-                  {@const value = selected.find((u) => u.user.id === user)?.user}
-                  <UserFieldComponent disableHoverCard value={user} displayValue={value} />
-                {/each}
-              </div>
+              {#if defaultValue?.length}
+                <div class="flex flex-1 items-center gap-1 overflow-hidden">
+                  {#each defaultValue ?? [] as user, i}
+                    {@const value = selected.find((u) => u.user.id === user)?.user}
+                    <UserFieldComponent disableHoverCard value={user} displayValue={value} />
+                  {/each}
+                </div>
+              {:else}
+                <span class="text-muted-foreground"> Select default users... </span>
+              {/if}
               <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
             </Button>
             <ChevronsUpDownIcon class="text-muted-foreground h-3 w-3" />
@@ -90,7 +94,11 @@
             builders={[builder]}
             class="flex w-full flex-nowrap items-center justify-between overflow-hidden"
           >
-            <UserFieldComponent disableHoverCard value={defaultValue} displayValue={selected?.user} />
+            {#if defaultValue}
+              <UserFieldComponent disableHoverCard value={defaultValue} displayValue={selected?.user} />
+            {:else}
+              <span class="text-muted-foreground"> Select default user... </span>
+            {/if}
             <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
           </Button>
         </UserPicker>
@@ -124,7 +132,7 @@
       {/if}
     </div>
 
-    <div class="pb-2">
+    <div>
       <Separator />
     </div>
     <div class="flex items-center space-x-2">

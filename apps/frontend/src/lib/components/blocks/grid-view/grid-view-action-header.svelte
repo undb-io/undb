@@ -3,6 +3,6 @@
   import CreateFieldButton from "../create-field/create-field-button.svelte"
 </script>
 
-<CreateFieldButton variant="ghost">
+<CreateFieldButton variant="ghost" size="xs">
   <PlusIcon class="h-3 w-3" />
 </CreateFieldButton>
