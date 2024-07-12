@@ -27,7 +27,7 @@
   export let option: ISelectFieldOption = { options: [] }
   export let defaultValue: IMutateSelectFieldValueSchema | undefined
 
-  $: if (!option.options.length && isNew) {
+  $: if (!option?.options.length && isNew) {
     option = {
       options: [
         {
@@ -51,7 +51,7 @@
     }
   }
 
-  $: option.options, handleDefaultValue()
+  $: option?.options, handleDefaultValue()
 
   const addOption = () => {
     option.options = [

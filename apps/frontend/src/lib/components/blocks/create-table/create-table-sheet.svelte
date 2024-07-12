@@ -10,8 +10,8 @@
 <Sheet.Root
   open={$isModalOpen(CREATE_TABLE_MODAL)}
   onOpenChange={(open) => {
-    toggleModal(CREATE_TABLE_MODAL)
     if (!open) {
+      closeModal(CREATE_TABLE_MODAL)
       baseId.set(null)
     }
   }}
