@@ -114,17 +114,6 @@
   $: if (validValue && !customFilter) {
     filter = validValue
   }
-
-  const countRecords = createQuery({
-    queryKey: ["table", $table.id.value, "countRecords", JSON.stringify(filter)],
-    queryFn: () =>
-      trpc.record.count.query({
-        tableId: $table.id.value,
-        viewId: $viewId,
-        filters: filter,
-      }),
-    enabled: !!filter,
-  })
 </script>
 
 <div class="grid h-full grid-cols-4">
@@ -140,7 +129,7 @@
       </div>
     {/if}
 
-    <div class="my-4 flex h-full flex-1 flex-col space-y-8">
+    <div class="my-4 flex h-full flex-1 flex-col space-y-4">
       {#if !selectedFields.length}
         <Alert.Root>
           <PencilIcon class="h-4 w-4" />

@@ -4,7 +4,7 @@
   export let readonly = false
 </script>
 
-<div class="flex w-screen flex-1 items-center justify-center shadow-sm">
+<div class="flex max-w-full flex-1 items-center justify-center shadow-sm">
   <div class="flex flex-col items-center gap-1 space-y-2 text-center">
     <h3 class="text-2xl font-bold tracking-tight">You have no records</h3>
     {#if !readonly}

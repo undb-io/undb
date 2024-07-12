@@ -77,7 +77,7 @@
       <Command.Input placeholder="Search field..." class="h-9" />
       <Command.Empty>No field found.</Command.Empty>
       <Command.Group>
-        <ScrollArea class="-mx-1 h-[300px]">
+        <div class="-mx-1 max-h-[300px] overflow-y-auto">
           {#each filteredFields as field}
             <Command.Item
               value={field.value}
@@ -96,7 +96,7 @@
               </div>
             </Command.Item>
           {/each}
-        </ScrollArea>
+        </div>
       </Command.Group>
     </Command.Root>
   </Popover.Content>

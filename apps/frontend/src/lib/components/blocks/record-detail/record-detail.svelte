@@ -102,14 +102,14 @@
   method="POST"
   use:enhance
   id={`${$table.id.value}:updateRecord`}
-  class="my-4 space-y-8"
+  class="my-4 space-y-4"
   enctype="multipart/form-data"
 >
   {#each fields as field}
     {@const dirty = $tainted && $tainted[field.id.value]}
     <Form.Field class="flex gap-4 space-y-0" {form} name={field.id.value}>
       <Form.Control let:attrs>
-        <Form.Label class="text-muted-foreground flex h-4 w-48 items-center justify-between gap-2 pt-2">
+        <Form.Label class="text-muted-foreground flex h-4 w-48 items-center justify-between gap-2 pt-4">
           <div class="flex items-center gap-2">
             <FieldIcon {field} type={field.type} class="h-4 w-4" />
             <span class="flex-1 truncate">{field.name.value}</span>
@@ -165,7 +165,7 @@
         </Collapsible.Trigger>
         <div class="h-[1px] flex-1 bg-gray-100"></div>
       </div>
-      <Collapsible.Content class="mt-4 space-y-8">
+      <Collapsible.Content class="mt-4 space-y-4">
         {#each hiddenFields as field}
           {@const dirty = $tainted && $tainted[field.id.value]}
           <Form.Field class="flex gap-4 space-y-0" {form} name={field.id.value}>

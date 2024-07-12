@@ -84,7 +84,7 @@
 </script>
 
 <form method="POST" use:enhance id="createRecord" enctype="multipart/form-data" class="my-4 space-y-4">
-  <ul use:autoAnimate class="space-y-8">
+  <ul use:autoAnimate class="space-y-4">
     {#each fields as field}
       {@const shouldShow =
         !tableForm || tableForm.getShouldShowField(field.id.value, $table.schema.fieldMapById, tempRecord)}

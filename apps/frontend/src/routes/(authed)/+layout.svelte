@@ -68,9 +68,9 @@
     onCollapse={() => (collapsed = true)}
     onExpand={() => (collapsed = false)}
     class="bg-muted/40 hidden border-r md:block"
-    defaultSize={15}
-    minSize={10}
-    maxSize={20}
+    defaultSize={20}
+    minSize={20}
+    maxSize={30}
   >
     <div class="flex h-full max-h-screen flex-col gap-2">
       <div class="border-b p-4 pb-2">
