@@ -1,3 +1,4 @@
+import { createLogger } from "@undb/logger"
 import {
   FieldIdVo,
   ID_TYPE,
@@ -48,6 +49,8 @@ export function getJsonExpandedFieldName(field: Field): string {
   return `${field.id.value}_expanded`
 }
 
+const logger = createLogger("record-utils")
+
 /**
  * Get the record DTO from an entity. The record DTO is the DTO that is returned to the client. It contains the values and display values of the record.
  * @param entity The entity to get the record DTO from.
@@ -92,7 +95,12 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO 
           ((field.type === "select" || field.type === "user") && field.isMultiple)) &&
         isString(value)
       ) {
-        values[key] = JSON.parse(value)
+        try {
+          values[key] = JSON.parse(value)
+        } catch (error) {
+          logger.error({ error, value }, "Error parsing JSON")
+          values[key] = [value]
+        }
         continue
       }
 
