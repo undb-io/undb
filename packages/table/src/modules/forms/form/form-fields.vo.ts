@@ -15,7 +15,11 @@ export class FormFieldsVO extends ValueObject<FormFieldVO[]> {
   }
 
   public deleteField(field: Field) {
-    return new FormFieldsVO(this.props.filter((formField) => formField.fieldId !== field.id.value))
+    return new FormFieldsVO(
+      this.props
+        .filter((formField) => formField.fieldId !== field.id.value)
+        .map((formField) => formField.deleteField(field)),
+    )
   }
 
   public getPreviousFields(fieldId: string): FormFieldVO[] {

@@ -1,6 +1,8 @@
 import { z } from "@undb/zod"
+import type { Field } from "../../../schema"
 import {
   Condition,
+  conditionWithoutFields,
   createConditionGroup,
   parseValidCondition,
   type IRootCondition,
@@ -18,6 +20,10 @@ export const viewFilterGroup = createConditionGroup(viewFilterOption, viewFilter
 
 export type IViewFilterGroup = z.infer<typeof viewFilterGroup>
 
-export class ViewFilter extends Condition<IViewFilterOptionSchema> {}
+export class ViewFilter extends Condition<IViewFilterOptionSchema> {
+  deleteField(field: Field): ViewFilter {
+    return new ViewFilter(conditionWithoutFields(this.value, new Set([field.id.value])))
+  }
+}
 
 export const parseValidViewFilter = parseValidCondition(viewFilterOption)

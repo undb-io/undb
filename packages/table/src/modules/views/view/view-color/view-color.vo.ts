@@ -2,10 +2,12 @@ import { z } from "@undb/zod"
 import { colors } from "../../../colors"
 import {
   Condition,
+  conditionWithoutFields,
   createConditionGroup,
   parseValidCondition,
   type IRootCondition,
 } from "../../../schema/fields/condition"
+import type { Field } from "../../../schema/fields/field.type"
 
 export const viewColorOption = z.object({
   color: colors,
@@ -21,6 +23,10 @@ export const viewColorGroup = createConditionGroup(viewColorOption.optional(), v
 
 export type IViewColorGroup = z.infer<typeof viewColorGroup>
 
-export class ViewColor extends Condition<IViewColorOptionSchema> {}
+export class ViewColor extends Condition<IViewColorOptionSchema> {
+  deleteField(field: Field): ViewColor {
+    return new ViewColor(conditionWithoutFields(this.value, new Set([field.id.value])))
+  }
+}
 
 export const parseValidViewColor = parseValidCondition(viewColorOption)

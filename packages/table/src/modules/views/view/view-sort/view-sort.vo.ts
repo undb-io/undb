@@ -1,7 +1,7 @@
 import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import { isEqual } from "radash"
-import { fieldId } from "../../../schema"
+import { fieldId, type Field } from "../../../schema"
 
 export const viewSortOption = z.object({
   fieldId,
@@ -27,6 +27,10 @@ export class ViewSort extends ValueObject<IViewSort> {
 
   public fieldIds(): Set<string> {
     return this.props.reduce((acc, { fieldId }) => acc.add(fieldId), new Set<string>())
+  }
+
+  public deleteField(field: Field): ViewSort {
+    return new ViewSort(this.props.filter((sort) => sort.fieldId !== field.id.value))
   }
 
   public get count() {

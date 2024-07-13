@@ -1,6 +1,7 @@
-import { None, Option, Some } from "@undb/domain"
+import { None, Option, Some, and } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { IUpdateViewDTO } from "../../../../dto"
+import type { TableComositeSpecification } from "../../../../specifications"
 import {
   WithNewView,
   WithView,
@@ -193,15 +194,37 @@ export abstract class AbstractView {
     return Some(new WithViewFields(this.id, Option(previous), fields.toJSON()))
   }
 
-  $deleteField(field: Field): Option<WithViewFields> {
-    if (this.fields.isNone()) {
-      return None
+  $deleteField(field: Field): Option<TableComositeSpecification> {
+    let specs: TableComositeSpecification[] = []
+    if (this.fields.isSome()) {
+      const previous = this.fields.into(null)?.value
+      const fields = this.fields.unwrap().deleteField(field)
+
+      specs.push(new WithViewFields(this.id, Option(previous), fields.toJSON()))
     }
 
-    const previous = this.fields.into(null)?.value
-    const fields = this.fields.unwrap().deleteField(field)
+    if (this.filter.isSome()) {
+      const previous = this.filter.into(null)?.value
+      const filter = this.filter.unwrap().deleteField(field)
 
-    return Some(new WithViewFields(this.id, Option(previous), fields.toJSON()))
+      specs.push(new WithViewFilter(this.id, Option(previous), filter.toJSON()))
+    }
+
+    if (this.color.isSome()) {
+      const previous = this.color.into(null)?.value
+      const color = this.color.unwrap().deleteField(field)
+
+      specs.push(new WithViewColor(this.id, Option(previous), color.toJSON()))
+    }
+
+    if (this.sort.isSome()) {
+      const previous = this.sort.into(null)?.value
+      const sort = this.sort.unwrap().deleteField(field)
+
+      specs.push(new WithViewSort(this.id, Option(previous), sort.toJSON()))
+    }
+
+    return and(...specs)
   }
 
   toJSON(): IViewDTO {

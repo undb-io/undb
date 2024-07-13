@@ -1,7 +1,7 @@
 import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import { createConditionGroup } from "../../schema/fields/condition/condition.type"
-import { isEmptyConditionGroup } from "../../schema/fields/condition/condition.util"
+import { conditionWithoutFields, isEmptyConditionGroup } from "../../schema/fields/condition/condition.util"
 import { fieldId } from "../../schema/fields/field-id.vo"
 import type { Field } from "../../schema/fields/field.type"
 
@@ -85,6 +85,16 @@ export class FormFieldVO extends ValueObject<IFormField> {
 
   public hide(field: Field): FormFieldVO {
     return new FormFieldVO({ ...this.props, hidden: true })
+  }
+
+  public deleteField(field: Field): FormFieldVO {
+    if (this.condition) {
+      return new FormFieldVO({
+        ...this.props,
+        condition: conditionWithoutFields(this.condition, new Set([field.id.value])),
+      })
+    }
+    return this
   }
 
   public toggleVisibility(field: Field): FormFieldVO {
