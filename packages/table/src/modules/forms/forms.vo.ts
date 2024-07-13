@@ -23,6 +23,11 @@ export class FormsVO extends ValueObject<FormVO[]> {
     return new TableFormsSpecification(forms)
   }
 
+  $deleteField(field: Field): TableFormsSpecification {
+    const forms = new FormsVO(this.props.map((form) => form.deleteField(field)))
+    return new TableFormsSpecification(forms)
+  }
+
   getFormById(formId: string) {
     return this.props.find((form) => form.id === formId)
   }

@@ -24,8 +24,10 @@ import type {
   WithViewIdSpecification,
   WithViewOption,
   WithViewSort,
+  WithoutFieldSpecification,
   WithoutView,
 } from "@undb/table"
+import { eq } from "drizzle-orm"
 import { AbstractDBMutationVisitor } from "../abstract-db.visitor"
 import type { Database } from "../db"
 import { tableIdMapping, type tables } from "../tables"
@@ -89,6 +91,12 @@ export class TableMutationVisitor
       .insert(tableIdMapping)
       .values({ tableId: this.table.id.value, subjectId: schema.field.id.value })
     this.addSql(insert)
+  }
+  withoutField(schema: WithoutFieldSpecification): void {
+    this.addUpdates({ schema: this.table.schema?.toJSON() })
+
+    const deleteQuery = this.db.delete(tableIdMapping).where(eq(tableIdMapping.subjectId, schema.field.id.value))
+    this.addSql(deleteQuery)
   }
   withViewAggregate(viewColor: WithViewAggregate): void {
     this.addUpdates({ views: this.table.views?.toJSON() })

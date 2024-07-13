@@ -40,6 +40,24 @@ export class WithNewFieldSpecification extends TableComositeSpecification {
   }
 }
 
+export class WithoutFieldSpecification extends TableComositeSpecification {
+  constructor(public readonly field: Field) {
+    super()
+  }
+
+  isSatisfiedBy(t: TableDo): boolean {
+    throw new Error("Method not implemented.")
+  }
+  mutate(t: TableDo): Result<TableDo, string> {
+    t.schema = t.schema.deleteField(this.field)
+    return Ok(t)
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withoutField(this)
+    return Ok(undefined)
+  }
+}
+
 export class WithUpdatedFieldSpecification extends TableComositeSpecification {
   constructor(
     public readonly previous: Field,

@@ -14,6 +14,10 @@ export class FormFieldsVO extends ValueObject<FormFieldVO[]> {
     return new FormFieldsVO([...this.props, FormFieldVO.create(field)])
   }
 
+  public deleteField(field: Field) {
+    return new FormFieldsVO(this.props.filter((formField) => formField.fieldId !== field.id.value))
+  }
+
   public getPreviousFields(fieldId: string): FormFieldVO[] {
     const fields = this.props
     const index = fields.findIndex((field) => field.fieldId === fieldId)

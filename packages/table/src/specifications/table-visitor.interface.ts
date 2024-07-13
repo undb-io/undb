@@ -12,10 +12,12 @@ import type { WithTableRLS } from "./table-rls.specification"
 import type {
   TableSchemaSpecification,
   WithNewFieldSpecification,
+  WithoutFieldSpecification,
   WithUpdatedFieldSpecification,
 } from "./table-schema.specification"
 import type {
   WithNewView,
+  WithoutView,
   WithView,
   WithViewAggregate,
   WithViewColor,
@@ -24,7 +26,6 @@ import type {
   WithViewIdSpecification,
   WithViewOption,
   WithViewSort,
-  WithoutView,
 } from "./table-view.specification"
 import type { TableViewsSpecification } from "./table-views.specification"
 
@@ -35,6 +36,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withName(name: TableNameSpecification): void
   withSchema(schema: TableSchemaSpecification): void
   withNewField(schema: WithNewFieldSpecification): void
+  withoutField(schema: WithoutFieldSpecification): void
   withUpdatedField(spec: WithUpdatedFieldSpecification): void
   withTableRLS(rls: WithTableRLS): void
   withViews(views: TableViewsSpecification): void

@@ -193,6 +193,17 @@ export abstract class AbstractView {
     return Some(new WithViewFields(this.id, Option(previous), fields.toJSON()))
   }
 
+  $deleteField(field: Field): Option<WithViewFields> {
+    if (this.fields.isNone()) {
+      return None
+    }
+
+    const previous = this.fields.into(null)?.value
+    const fields = this.fields.unwrap().deleteField(field)
+
+    return Some(new WithViewFields(this.id, Option(previous), fields.toJSON()))
+  }
+
   toJSON(): IViewDTO {
     return {
       id: this.id.value,

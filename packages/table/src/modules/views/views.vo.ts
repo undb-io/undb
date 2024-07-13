@@ -59,4 +59,10 @@ export class Views extends ValueObject {
 
     return andOptions(...specs)
   }
+
+  $deleteField(field: Field) {
+    const specs = this.views.map((view) => view.$deleteField(field))
+
+    return andOptions(...specs)
+  }
 }

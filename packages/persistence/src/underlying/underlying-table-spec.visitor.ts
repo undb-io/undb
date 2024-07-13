@@ -11,6 +11,7 @@ import type {
   UserField,
   WithNewFieldSpecification,
   WithNewView,
+  WithoutFieldSpecification,
   WithoutView,
   WithUpdatedFieldSpecification,
   WithView,
@@ -120,6 +121,14 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
     schema.field.accept(fieldVisitor)
     this.addSql(...fieldVisitor.sql)
     this.atb = fieldVisitor.atb
+  }
+  withoutField(schema: WithoutFieldSpecification): void {
+    if (schema.field.type !== "reference") {
+      const query = this.tb.dropColumn(schema.field.id.value).compile()
+      this.addSql(query)
+    } else {
+      throw new Error("Not implemented to delete reference")
+    }
   }
   withTableRLS(rls: WithTableRLS): void {}
   withViews(views: TableViewsSpecification): void {}

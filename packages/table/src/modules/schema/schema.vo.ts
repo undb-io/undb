@@ -1,7 +1,11 @@
 import { Option, ValueObject } from "@undb/domain"
-import { ZodSchema, z } from "@undb/zod"
+import { z, ZodSchema } from "@undb/zod"
 import { objectify } from "radash"
-import { WithNewFieldSpecification, WithUpdatedFieldSpecification } from "../../specifications"
+import {
+  WithNewFieldSpecification,
+  WithoutFieldSpecification,
+  WithUpdatedFieldSpecification,
+} from "../../specifications"
 import type { ICreateSchemaDTO } from "./dto"
 import type { ISchemaDTO } from "./dto/schema.dto"
 import {
@@ -16,6 +20,7 @@ import {
   UpdatedByField,
   UserField,
   type FieldId,
+  type IDeleteFieldDTO,
   type IUpdateFieldDTO,
 } from "./fields"
 import { FieldFactory } from "./fields/field.factory"
@@ -73,6 +78,15 @@ export class Schema extends ValueObject<Field[]> {
 
   updateField(field: Field): Schema {
     return new Schema(this.fields.map((f) => (f.id.equals(field.id) ? field : f)))
+  }
+
+  $deleteField(dto: IDeleteFieldDTO) {
+    const field = this.getFieldById(new FieldIdVo(dto.id)).expect("Field not found")
+    return new WithoutFieldSpecification(field)
+  }
+
+  deleteField(field: Field) {
+    return new Schema(this.fields.filter((f) => !f.id.equals(field.id)))
   }
 
   get systemFields(): SystemField[] {

@@ -59,6 +59,10 @@ export class ViewFields extends ValueObject<IViewFields> {
     return new ViewFields([...this.props, { fieldId: field.id.value, hidden: false }])
   }
 
+  public deleteField(field: Field): ViewFields {
+    return new ViewFields(this.props.filter((f) => f.fieldId !== field.id.value))
+  }
+
   public showAllFields(): ViewFields {
     return new ViewFields(this.props.map((field) => ({ ...field, hidden: false })))
   }

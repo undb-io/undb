@@ -6,7 +6,7 @@ import type { RecordDO } from "../../records"
 import { conditionContainsFields, getSpec } from "../../schema/fields/condition/condition.util"
 import type { Field } from "../../schema/fields/field.type"
 import type { SchemaMap } from "../../schema/schema.type"
-import type { ICreateFormDTO } from "../dto"
+import type { ICreateFormDTO } from "../dto/create-form.dto"
 import { FormFieldVO, formField } from "./form-field.vo"
 import { FormFieldsVO } from "./form-fields.vo"
 import { FormIdVO, formId, type FormId } from "./form-id.vo"
@@ -94,6 +94,17 @@ export class FormVO extends ValueObject<IForm> {
 
   public addField(field: Field) {
     const formFields = this.props.fields.addField(field)
+    return new FormVO({
+      id: this.props.id,
+      name: this.props.name,
+      description: this.description,
+      fields: formFields,
+      option: this.props.option,
+    })
+  }
+
+  public deleteField(field: Field) {
+    const formFields = this.props.fields.deleteField(field)
     return new FormVO({
       id: this.props.id,
       name: this.props.name,

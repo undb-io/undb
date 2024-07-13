@@ -1,4 +1,5 @@
 import type { FieldCreatedEvent } from "./field-created.event"
+import type { FieldDeletedEvent } from "./field-deleted.event"
 import type { FieldUpdatedEvent } from "./field-updated.event"
 import type { SetTableFormEvent } from "./set-table-form.event"
 import type { SetViewAggregateEvent } from "./set-view-aggregate.event"
@@ -13,6 +14,7 @@ import type { ViewDeletedEvent } from "./view-deleted.event"
 import type { ViewUpdatedEvent } from "./view-updated.event"
 
 export * from "./field-created.event"
+export * from "./field-deleted.event"
 export * from "./field-updated.event"
 export * from "./set-table-form.event"
 export * from "./set-table-rls.event"
@@ -38,6 +40,7 @@ export type ITableEvents =
   | FieldCreatedEvent
   | SetTableFormEvent
   | FieldUpdatedEvent
+  | FieldDeletedEvent
   | ViewCreatedEvent
   | ViewUpdatedEvent
   | ViewDeletedEvent

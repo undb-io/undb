@@ -24,6 +24,7 @@ import type {
   WithViewIdSpecification,
   WithViewOption,
   WithViewSort,
+  WithoutFieldSpecification,
   WithoutView,
 } from "@undb/table"
 import { eq, inArray } from "drizzle-orm"
@@ -56,6 +57,9 @@ export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> impleme
     throw new Error("Method not implemented.")
   }
   withNewField(schema: WithNewFieldSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withoutField(schema: WithoutFieldSpecification): void {
     throw new Error("Method not implemented.")
   }
   withForms(views: TableFormsSpecification): void {
