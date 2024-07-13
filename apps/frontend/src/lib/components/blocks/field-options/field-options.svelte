@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { IFieldConstraint, NoneSystemFieldType } from "@undb/table"
+  import type { Field, IFieldConstraint, NoneSystemFieldType } from "@undb/table"
   import type { ComponentType } from "svelte"
   import StringFieldOption from "./string-field-option.svelte"
   import EmailFieldOption from "./email-field-option.svelte"
@@ -19,6 +19,7 @@
   export let display: boolean | undefined
   export let defaultValue: any | undefined
   export let isNew = true
+  export let field: Field | undefined = undefined
 
   const map: Record<NoneSystemFieldType, ComponentType> = {
     string: StringFieldOption,
@@ -38,4 +39,4 @@
   export let type: NoneSystemFieldType
 </script>
 
-<svelte:component this={map[type]} bind:constraint bind:display bind:defaultValue bind:option {isNew} />
+<svelte:component this={map[type]} bind:constraint bind:display bind:defaultValue bind:option {isNew} {field} />

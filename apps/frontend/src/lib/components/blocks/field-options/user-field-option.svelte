@@ -2,7 +2,7 @@
   import { Label } from "$lib/components/ui/label/index.js"
   import NumberInput from "$lib/components/ui/input/number-input.svelte"
   import { Switch } from "$lib/components/ui/switch/index.js"
-  import { type IUserFieldConstraint, type IUserFieldValue } from "@undb/table"
+  import { UserField, type IUserFieldConstraint, type IUserFieldValue } from "@undb/table"
   import autoAnimate from "@formkit/auto-animate"
   import { Separator } from "$lib/components/ui/separator"
   import { Checkbox } from "$lib/components/ui/checkbox"
@@ -10,12 +10,15 @@
   import UserPicker from "../user/user-picker.svelte"
   import UserFieldComponent from "$lib/components/blocks/field-value/user-field.svelte"
   import { ChevronDownIcon, ChevronsUpDownIcon } from "lucide-svelte"
-  import { builderActions, getAttrs } from "bits-ui"
   import { Button } from "$lib/components/ui/button"
+  import * as Alert from "$lib/components/ui/alert/index.js"
 
   export let constraint: IUserFieldConstraint | undefined = { required: false, max: 1 }
   export let defaultValue: IUserFieldValue | undefined
+  export let field: UserField | undefined
+  export let isNew = true
 
+  let initialMultiple = !isNew && field?.isMultiple
   let multiple = constraint?.max !== 1
 </script>
 
@@ -41,6 +44,17 @@
         }}
       />
       <Label for="single" class="text-xs font-normal">Allow adding multiple users</Label>
+    </div>
+
+    <div use:autoAnimate>
+      {#if !isNew}
+        {#if initialMultiple && !multiple}
+          <Alert.Root class="border-yellow-500 bg-yellow-50">
+            <Alert.Title>Change from multiple options to single option!</Alert.Title>
+            <Alert.Description class="text-xs">Only first option will be remained.</Alert.Description>
+          </Alert.Root>
+        {/if}
+      {/if}
     </div>
 
     <div class="w-full space-y-1">

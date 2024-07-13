@@ -104,6 +104,7 @@
           <FieldOptions
             isNew={false}
             type={$formData.type}
+            {field}
             bind:option={$formData.option}
             bind:constraint={$formData.constraint}
             bind:display={$formData.display}

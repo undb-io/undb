@@ -5,6 +5,7 @@
   import {
     COLORS,
     ColorsVO,
+    SelectField,
     type IMutateSelectFieldValueSchema,
     type ISelectFieldConstraint,
     type ISelectFieldOption,
@@ -20,10 +21,12 @@
   import autoAnimate from "@formkit/auto-animate"
   import OptionsPicker from "../option/options-picker.svelte"
   import OptionPicker from "../option/option-picker.svelte"
+  import * as Alert from "$lib/components/ui/alert/index.js"
 
   export let constraint: ISelectFieldConstraint | undefined
   const colors = new ColorsVO()
   export let isNew = true
+  export let field: SelectField | undefined
   export let option: ISelectFieldOption = { options: [] }
   export let defaultValue: IMutateSelectFieldValueSchema | undefined
 
@@ -75,6 +78,7 @@
     option.options = option.options.filter((o) => o.id !== id)
   }
 
+  let initialMultiple = !isNew && field?.isMultiple
   let multiple = constraint?.max !== 1
 </script>
 
@@ -121,8 +125,8 @@
         size="sm"
         id="single"
         bind:checked={multiple}
-        onCheckedChange={(multiple) => {
-          if (!multiple) {
+        onCheckedChange={(newValue) => {
+          if (!newValue) {
             constraint.max = 1
             if (defaultValue && Array.isArray(defaultValue)) {
               defaultValue = defaultValue[0]
@@ -136,6 +140,17 @@
         }}
       />
       <Label for="single" class="text-xs font-normal">Allow adding multiple options</Label>
+    </div>
+
+    <div use:autoAnimate>
+      {#if !isNew}
+        {#if initialMultiple && !multiple}
+          <Alert.Root class="border-yellow-500 bg-yellow-50">
+            <Alert.Title>Change from multiple options to single option!</Alert.Title>
+            <Alert.Description class="text-xs">Only first option will be remained.</Alert.Description>
+          </Alert.Root>
+        {/if}
+      {/if}
     </div>
 
     <div class="w-full space-y-1">
