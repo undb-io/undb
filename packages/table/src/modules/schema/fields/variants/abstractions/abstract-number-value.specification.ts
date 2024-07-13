@@ -7,7 +7,7 @@ import { NumberFieldValue } from "../number-field"
 
 export class NumberEqual extends RecordComositeSpecification {
   constructor(
-    readonly value: number,
+    readonly value: number | null,
     readonly fieldId: FieldId,
   ) {
     super(fieldId)

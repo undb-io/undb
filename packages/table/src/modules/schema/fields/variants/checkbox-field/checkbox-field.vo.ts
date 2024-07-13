@@ -2,11 +2,11 @@ import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
-import { FieldIdVo, fieldId } from "../../field-id.vo"
+import { fieldId, FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { CheckboxFieldConstraint } from "./checkbox-field-constraint.vo"
-import { CheckboxFieldValue } from "./checkbox-field-value.vo"
+import { checkboxFieldValue, CheckboxFieldValue } from "./checkbox-field-value.vo"
 import { checkboxFieldAggregate } from "./checkbox-field.aggregate"
 import {
   createCheckboxFieldCondition,
@@ -19,7 +19,7 @@ export const CHECKBOX_TYPE = "checkbox" as const
 
 export const createCheckboxFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(CHECKBOX_TYPE),
-  defaultValue: z.boolean().optional().nullable(),
+  defaultValue: checkboxFieldValue.optional().nullable(),
 })
 
 export type ICreateCheckboxFieldDTO = z.infer<typeof createCheckboxFieldDTO>
@@ -28,7 +28,7 @@ export type IUpcheckboxCheckboxFieldDTO = z.infer<typeof updateCheckboxFieldDTO>
 
 export const checkboxFieldDTO = baseFieldDTO.extend({
   type: z.literal(CHECKBOX_TYPE),
-  defaultValue: z.boolean().optional().nullable(),
+  defaultValue: checkboxFieldValue.optional().nullable(),
 })
 
 export type ICheckboxFieldDTO = z.infer<typeof checkboxFieldDTO>

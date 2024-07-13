@@ -1,9 +1,11 @@
-import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import { isEmpty } from "radash"
 import { recordId } from "../../../../records/record/record-id.vo"
+import { FieldValueObject } from "../../field-value"
 
 const referenceFieldValueItem = recordId
+export const referenceFieldValue = referenceFieldValueItem.array().nullable().optional()
+export type IReferenceFieldValue = z.infer<typeof referenceFieldValue>
 
 export const mutateReferenceFieldValueSchema = z.union([
   referenceFieldValueItem.array().optional().nullable(),
@@ -23,8 +25,8 @@ export const mutateReferenceFieldValueSchema = z.union([
 
 export type IMutateReferenceFieldValueSchema = z.infer<typeof mutateReferenceFieldValueSchema>
 
-export class ReferenceFieldValue extends ValueObject<string[] | null | undefined> {
-  constructor(value: string[] | null | undefined) {
+export class ReferenceFieldValue extends FieldValueObject<IReferenceFieldValue> {
+  constructor(value: IReferenceFieldValue) {
     super(!value ? { value: null } : value)
   }
 

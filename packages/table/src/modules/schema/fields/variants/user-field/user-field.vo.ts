@@ -7,7 +7,7 @@ import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { UserEmpty, UserEqual } from "../abstractions/abstract-user-value.specification"
 import { userFieldConstraint, UserFieldConstraint } from "./user-field-constraint.vo"
-import { UserFieldValue } from "./user-field-value.vo"
+import { userFieldValue, UserFieldValue } from "./user-field-value.vo"
 import { userFieldAggregate } from "./user-field.aggregate"
 import {
   createUserFieldCondition,
@@ -20,7 +20,7 @@ export const USER_TYPE = "user" as const
 export const createUserFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(USER_TYPE),
   constraint: userFieldConstraint.optional(),
-  defaultValue: z.string().or(z.string().array()).optional().nullable(),
+  defaultValue: userFieldValue,
 })
 
 export type ICreateUserFieldDTO = z.infer<typeof createUserFieldDTO>
@@ -30,7 +30,7 @@ export type IUpuserUserFieldDTO = z.infer<typeof updateUserFieldDTO>
 export const userFieldDTO = baseFieldDTO.extend({
   type: z.literal(USER_TYPE),
   constraint: userFieldConstraint.optional(),
-  defaultValue: z.string().or(z.string().array()).optional().nullable(),
+  defaultValue: userFieldValue,
 })
 
 export type IUserFieldDTO = z.infer<typeof userFieldDTO>

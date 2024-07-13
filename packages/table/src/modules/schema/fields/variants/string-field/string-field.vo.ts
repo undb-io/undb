@@ -16,7 +16,7 @@ import {
   StringMin,
   StringStartsWith,
 } from "./string-field-value.specification"
-import { StringFieldValue, mutateStringFieldValueSchema } from "./string-field-value.vo"
+import { StringFieldValue, mutateStringFieldValueSchema, stringFieldValue } from "./string-field-value.vo"
 import { stringFieldAggregate } from "./string-field.aggregate"
 import {
   createStringFieldCondition,
@@ -29,7 +29,7 @@ export const STRING_TYPE = "string" as const
 export const createStringFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(STRING_TYPE),
   constraint: stringFieldConstraint.optional(),
-  defaultValue: z.string().optional().nullable(),
+  defaultValue: stringFieldValue,
 })
 
 export type ICreateStringFieldDTO = z.infer<typeof createStringFieldDTO>
@@ -40,7 +40,7 @@ export type IUpdateStringFieldDTO = z.infer<typeof updateStringFieldDTO>
 export const stringFieldDTO = baseFieldDTO.extend({
   type: z.literal(STRING_TYPE),
   constraint: stringFieldConstraint.optional(),
-  defaultValue: z.string().optional().nullable(),
+  defaultValue: stringFieldValue,
 })
 
 export type IStringFieldDTO = z.infer<typeof stringFieldDTO>

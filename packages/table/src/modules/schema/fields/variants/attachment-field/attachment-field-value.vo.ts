@@ -1,5 +1,5 @@
-import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
+import { FieldValueObject } from "../../field-value"
 
 export const attachmentFieldValueItem = z.object({
   url: z.string(),
@@ -11,7 +11,7 @@ export const attachmentFieldValueItem = z.object({
 
 export type IAttachmentFieldValueItem = z.infer<typeof attachmentFieldValueItem>
 
-export const attachmentFieldValue = attachmentFieldValueItem.array()
+export const attachmentFieldValue = attachmentFieldValueItem.array().nullable()
 
 export type IAttachmentFieldValue = z.infer<typeof attachmentFieldValue>
 
@@ -25,8 +25,8 @@ export const mutateAttachmentFieldValueSchema = z.union([
 
 export type IMutateAttachmentFieldValueSchema = z.infer<typeof mutateAttachmentFieldValueSchema>
 
-export class AttachmentFieldValue extends ValueObject<IAttachmentFieldValue | null> {
-  constructor(value: IAttachmentFieldValue | null) {
+export class AttachmentFieldValue extends FieldValueObject<IAttachmentFieldValue> {
+  constructor(value: IAttachmentFieldValue) {
     super(value === null ? { value } : value)
   }
 

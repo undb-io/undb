@@ -8,14 +8,14 @@ import { DateFieldValue } from "./date-field-value.vo"
 
 export class DateEqual extends RecordComositeSpecification {
   constructor(
-    readonly date: Date,
+    readonly date: Date | null,
     readonly fieldId: FieldId,
   ) {
     super(fieldId)
   }
   isSatisfiedBy(t: RecordDO): boolean {
     const value = t.getValue(this.fieldId)
-    return value.mapOr(false, (v) => v.value instanceof Date && isEqual(v.value, this.date))
+    return value.mapOr(false, (v) => v.value instanceof Date && this.date !== null && isEqual(v.value, this.date))
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
     t.values.setValue(this.fieldId, new DateFieldValue(this.date))

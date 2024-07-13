@@ -1,7 +1,12 @@
-import { ValueObject } from "@undb/domain"
+import { z } from "@undb/zod"
+import { FieldValueObject } from "../../field-value"
 
-export class CheckboxFieldValue extends ValueObject<boolean> {
-  constructor(value: boolean) {
+export const checkboxFieldValue = z.boolean()
+
+type ICheckboxFieldValue = z.infer<typeof checkboxFieldValue>
+
+export class CheckboxFieldValue extends FieldValueObject<ICheckboxFieldValue> {
+  constructor(value: ICheckboxFieldValue) {
     super({ value })
   }
 

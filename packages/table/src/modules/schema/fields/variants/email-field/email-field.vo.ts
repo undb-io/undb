@@ -2,12 +2,12 @@ import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
-import { FieldIdVo, fieldId } from "../../field-id.vo"
+import { fieldId, FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { StringContains, StringEmpty, StringEndsWith, StringStartsWith } from "../string-field"
 import { EmailFieldConstraint, emailFieldConstraint } from "./email-field-constraint.vo"
-import { EmailFieldValue, mutateEmailFieldValueSchema } from "./email-field-value.vo"
+import { emailFieldValue, EmailFieldValue, mutateEmailFieldValueSchema } from "./email-field-value.vo"
 import { emailFieldAggregate } from "./email-field.aggregate"
 import {
   createEmailFieldCondition,
@@ -21,7 +21,7 @@ export const EMAIL_TYPE = "email" as const
 export const createEmailFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(EMAIL_TYPE),
   constraint: emailFieldConstraint.optional(),
-  defaultValue: z.string().email().optional().nullable(),
+  defaultValue: emailFieldValue,
 })
 
 export type ICreateEmailFieldDTO = z.infer<typeof createEmailFieldDTO>
@@ -32,7 +32,7 @@ export type IUpdateEmailFieldDTO = z.infer<typeof updateEmailFieldDTO>
 export const emailFieldDTO = baseFieldDTO.extend({
   type: z.literal(EMAIL_TYPE),
   constraint: emailFieldConstraint.optional(),
-  defaultValue: z.string().email().optional().nullable(),
+  defaultValue: emailFieldValue,
 })
 
 export type IEmailFieldDTO = z.infer<typeof emailFieldDTO>
@@ -90,7 +90,7 @@ export class EmailField extends AbstractField<EmailFieldValue, EmailFieldConstra
   }
 
   override getMutationSpec(value: EmailFieldValue): Option<RecordComositeSpecification> {
-    return Some(new EmailEqual(value.value, this.id))
+    return Some(new EmailEqual(value.value ?? null, this.id))
   }
 
   override get aggregate() {

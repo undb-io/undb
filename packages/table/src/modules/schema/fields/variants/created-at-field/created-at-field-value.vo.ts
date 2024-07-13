@@ -1,7 +1,16 @@
-import { ValueObject } from "@undb/domain"
+import { z } from "@undb/zod"
+import { FieldValueObject } from "../../field-value"
 
-export class CreatedAtFieldValue extends ValueObject<Date> {
-  constructor(value: Date) {
+export const createdAtFieldValue = z.date()
+
+export type ICreatedAtFieldValue = z.infer<typeof createdAtFieldValue>
+
+export class CreatedAtFieldValue extends FieldValueObject<ICreatedAtFieldValue> {
+  isEmpty(): boolean {
+    return false
+  }
+
+  constructor(value: ICreatedAtFieldValue) {
     super({ value })
   }
 }

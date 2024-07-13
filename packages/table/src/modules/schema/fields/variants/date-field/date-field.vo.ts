@@ -1,13 +1,14 @@
 import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
+import { isString } from "radash"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
-import { FieldIdVo, fieldId } from "../../field-id.vo"
+import { fieldId, FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { createAbstractDateConditionMather } from "../abstractions/abstract-date-field.condition"
 import { abstractDateAggregate } from "../abstractions/abstract-date.aggregate"
 import { DateFieldConstraint } from "./date-field-constraint.vo"
-import { DateFieldValue } from "./date-field-value.vo"
+import { dateFieldValue, DateFieldValue } from "./date-field-value.vo"
 import {
   createDateFieldCondition,
   type IDateFieldCondition,
@@ -19,7 +20,7 @@ export const DATE_TYPE = "date" as const
 
 export const createDateFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(DATE_TYPE),
-  defaultValue: z.date().or(z.string().date()).optional().nullable(),
+  defaultValue: dateFieldValue,
 })
 
 export type ICreateDateFieldDTO = z.infer<typeof createDateFieldDTO>
@@ -28,7 +29,7 @@ export type IUpdateDateFieldDTO = z.infer<typeof updateDateFieldDTO>
 
 export const dateFieldDTO = baseFieldDTO.extend({
   type: z.literal(DATE_TYPE),
-  defaultValue: z.date().or(z.string().date()).optional().nullable(),
+  defaultValue: dateFieldValue,
 })
 
 export type IDateFieldDTO = z.infer<typeof dateFieldDTO>
@@ -70,6 +71,6 @@ export class DateField extends AbstractField<DateFieldValue> {
   }
 
   override getMutationSpec(value: DateFieldValue): Option<RecordComositeSpecification> {
-    return Some(new DateEqual(value.value, this.id))
+    return Some(new DateEqual(isString(value.value) ? new Date(value.value) : value.value ?? null, this.id))
   }
 }

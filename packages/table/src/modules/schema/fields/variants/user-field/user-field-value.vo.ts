@@ -1,11 +1,11 @@
-import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import { isEmpty } from "radash"
+import { FieldValueObject } from "../../field-value"
 import type { UserField } from "./user-field.vo"
 
 const userId = z.string()
 
-export const userFieldValue = z.union([userId, userId.array()]).nullable()
+export const userFieldValue = z.union([userId, userId.array()]).nullable().optional()
 
 export const singleUserFieldValue = userId.nullable()
 export type ISingleUserFieldValue = z.infer<typeof singleUserFieldValue>
@@ -24,9 +24,9 @@ export let userFieldDisplayValue = z
 
 export type IUserFieldDisplayValue = z.infer<typeof userFieldDisplayValue>
 
-export class UserFieldValue extends ValueObject<IUserFieldValue> {
+export class UserFieldValue extends FieldValueObject<IUserFieldValue> {
   constructor(value: IUserFieldValue) {
-    super(Array.isArray(value) ? value : { value })
+    super(Array.isArray(value) ? value : { value: value ?? null })
   }
 
   isEmpty() {
@@ -35,14 +35,14 @@ export class UserFieldValue extends ValueObject<IUserFieldValue> {
 
   getValue(field: UserField): IUserFieldValue {
     if (field.isSingle) {
-      return Array.isArray(this.props) ? this.props[0] || null : this.props.value
+      return Array.isArray(this.props) ? this.props[0] || null : this.props?.value
     }
 
     return Array.isArray(this.props)
       ? this.props.length
         ? this.props
         : null
-      : this.props.value
+      : this.props?.value
         ? [this.props.value]
         : []
   }

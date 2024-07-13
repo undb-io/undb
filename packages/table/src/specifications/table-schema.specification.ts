@@ -1,5 +1,6 @@
-import { Ok, WontImplementException, type Result } from "@undb/domain"
+import { Ok, Option, WontImplementException, type Result } from "@undb/domain"
 import type { Field } from "../modules"
+import type { FieldValueObject } from "../modules/schema/fields/field-value"
 import type { Schema } from "../modules/schema/schema.vo"
 import type { TableDo } from "../table.do"
 import type { ITableSpecVisitor } from "./table-visitor.interface"
@@ -48,6 +49,25 @@ export class WithUpdatedFieldSpecification extends TableComositeSpecification {
   }
   public getIsTypeChanged(): boolean {
     return this.previous.type !== this.field.type
+  }
+
+  public getShouldSetNewDefaultValue(): boolean {
+    const previousValue = (this.previous.defaultValue as Option<FieldValueObject<any>>).into(undefined)
+    const newValue = (this.field.defaultValue as Option<FieldValueObject<any>>).into(undefined)
+
+    if (!newValue || newValue.isEmpty()) {
+      return false
+    }
+
+    if (!previousValue && newValue) {
+      return true
+    }
+
+    if (previousValue && newValue && !previousValue.equals(newValue)) {
+      return true
+    }
+
+    return false
   }
 
   isSatisfiedBy(t: TableDo): boolean {

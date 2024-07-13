@@ -1,5 +1,8 @@
-import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
+import { FieldValueObject } from "../../field-value"
+
+export const numberFieldValueSchema = z.number().optional().nullable()
+export type INumberFieldValue = z.infer<typeof numberFieldValueSchema>
 
 export const mutateNumberFieldValueSchema = z.union([
   z.number().optional(),
@@ -19,12 +22,12 @@ export const mutateNumberFieldValueSchema = z.union([
 
 export type IMutateNumberFieldValueSchema = z.infer<typeof mutateNumberFieldValueSchema>
 
-export class NumberFieldValue extends ValueObject<number> {
-  constructor(value: number) {
-    super({ value })
+export class NumberFieldValue extends FieldValueObject<INumberFieldValue> {
+  constructor(value: INumberFieldValue) {
+    super({ value: value ?? null })
   }
 
   isEmpty() {
-    return this.props.value === null || this.props.value === undefined
+    return this.props?.value === null || this.props?.value === undefined
   }
 }

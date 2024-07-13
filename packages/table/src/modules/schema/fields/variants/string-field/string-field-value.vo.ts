@@ -1,5 +1,8 @@
-import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
+import { FieldValueObject } from "../../field-value"
+
+export const stringFieldValue = z.string().nullable().optional()
+export type IStringFieldValue = z.infer<typeof stringFieldValue>
 
 export const mutateStringFieldValueSchema = z.union([
   z.string().optional().nullable(),
@@ -19,12 +22,12 @@ export const mutateStringFieldValueSchema = z.union([
 
 export type IMutateStringFieldValueSchema = z.infer<typeof mutateStringFieldValueSchema>
 
-export class StringFieldValue extends ValueObject<string> {
-  constructor(value: string) {
-    super({ value })
+export class StringFieldValue extends FieldValueObject<IStringFieldValue> {
+  constructor(value: IStringFieldValue) {
+    super({ value: value ?? null })
   }
 
   isEmpty() {
-    return this.props.value === "" || this.props.value === null || this.props.value === undefined
+    return this.props?.value === "" || this.props?.value === null || this.props?.value === undefined
   }
 }

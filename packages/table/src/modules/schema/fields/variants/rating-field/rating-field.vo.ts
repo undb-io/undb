@@ -7,7 +7,7 @@ import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-fie
 import { createAbstractNumberFieldMather } from "../abstractions/abstract-number-field.condition"
 import { abstractNumberAggregate } from "../abstractions/abstract-number.aggregate"
 import { RatingFieldConstraint, ratingFieldConstraint } from "./rating-field-constraint.vo"
-import { RatingFieldValue, mutateRatingFieldValueSchema } from "./rating-field-value.vo"
+import { RatingFieldValue, mutateRatingFieldValueSchema, ratingFieldValueSchema } from "./rating-field-value.vo"
 import {
   createRatingFieldCondition,
   type IRatingFieldCondition,
@@ -22,7 +22,7 @@ export const RATING_TYPE = "rating" as const
 export const createRatingFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(RATING_TYPE),
   constraint: ratingFieldConstraint.optional(),
-  defaultValue: z.number().optional().nullable(),
+  defaultValue: ratingFieldValueSchema,
 })
 
 export type ICreateRatingFieldDTO = z.infer<typeof createRatingFieldDTO>
@@ -33,7 +33,7 @@ export type IUpdateRatingFieldDTO = z.infer<typeof updateRatingFieldDTO>
 export const ratingFieldDTO = baseFieldDTO.extend({
   type: z.literal(RATING_TYPE),
   constraint: ratingFieldConstraint.optional(),
-  defaultValue: z.number().optional().nullable(),
+  defaultValue: ratingFieldValueSchema,
 })
 
 export type IRatingFieldDTO = z.infer<typeof ratingFieldDTO>
@@ -82,7 +82,7 @@ export class RatingField extends AbstractField<RatingFieldValue, RatingFieldCons
   }
 
   override getMutationSpec(value: RatingFieldValue): Option<RecordComositeSpecification> {
-    return Some(new RatingEqual(value.value, this.id))
+    return Some(new RatingEqual(value.value ?? null, this.id))
   }
 
   override get aggregate() {

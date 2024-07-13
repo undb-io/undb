@@ -98,7 +98,7 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO 
         try {
           values[key] = JSON.parse(value)
         } catch (error) {
-          logger.error({ error, value }, "Error parsing JSON")
+          logger.warn({ error, value }, "Error parsing JSON")
           values[key] = [value]
         }
         continue

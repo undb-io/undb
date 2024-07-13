@@ -1,16 +1,19 @@
-import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
+import { FieldValueObject } from "../../field-value"
 import { optionId, type IOptionId } from "../../option/option-id.vo"
 import type { SelectField } from "./select-field.vo"
 
-export const mutateSelectFieldValueSchema = optionId.nullable().or(z.array(optionId)).nullable()
+export const selectFieldValue = optionId.nullable().or(z.array(optionId)).nullable()
+export type ISelectFieldValue = z.infer<typeof selectFieldValue>
 
+export const mutateSelectFieldValueSchema = selectFieldValue
 export type IMutateSelectFieldValueSchema = z.infer<typeof mutateSelectFieldValueSchema>
 
-export class SelectFieldValue extends ValueObject<IOptionId | IOptionId[] | null> {
-  constructor(option: IOptionId | IOptionId[] | null) {
+export class SelectFieldValue extends FieldValueObject<ISelectFieldValue> {
+  constructor(option: ISelectFieldValue) {
     super(Array.isArray(option) ? option : { value: option })
   }
+
   isEmpty() {
     if (Array.isArray(this.props)) {
       return this.props.length === 0

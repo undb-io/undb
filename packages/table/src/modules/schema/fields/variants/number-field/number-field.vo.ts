@@ -8,7 +8,7 @@ import { NumberEqual } from "../abstractions"
 import { createAbstractNumberFieldMather } from "../abstractions/abstract-number-field.condition"
 import { abstractNumberAggregate } from "../abstractions/abstract-number.aggregate"
 import { NumberFieldConstraint, numberFieldConstraint } from "./number-field-constraint.vo"
-import { NumberFieldValue, mutateNumberFieldValueSchema } from "./number-field-value.vo"
+import { NumberFieldValue, mutateNumberFieldValueSchema, numberFieldValueSchema } from "./number-field-value.vo"
 import {
   createNumberFieldCondition,
   type INumberFieldCondition,
@@ -20,7 +20,7 @@ export const NUMBER_TYPE = "number" as const
 export const createNumberFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(NUMBER_TYPE),
   constraint: numberFieldConstraint.optional(),
-  defaultValue: z.number().optional().nullable(),
+  defaultValue: numberFieldValueSchema,
 })
 
 export type ICreateNumberFieldDTO = z.infer<typeof createNumberFieldDTO>
@@ -31,7 +31,7 @@ export type IUpdateNumberFieldDTO = z.infer<typeof updateNumberFieldDTO>
 export const numberFieldDTO = baseFieldDTO.extend({
   type: z.literal(NUMBER_TYPE),
   constraint: numberFieldConstraint.optional(),
-  defaultValue: z.number().optional().nullable(),
+  defaultValue: numberFieldValueSchema,
 })
 
 export type INumberFieldDTO = z.infer<typeof numberFieldDTO>
@@ -80,7 +80,7 @@ export class NumberField extends AbstractField<NumberFieldValue, NumberFieldCons
   }
 
   override getMutationSpec(value: NumberFieldValue): Option<RecordComositeSpecification> {
-    return Some(new NumberEqual(value.value, this.id))
+    return Some(new NumberEqual(value.value ?? null, this.id))
   }
 
   override get aggregate() {

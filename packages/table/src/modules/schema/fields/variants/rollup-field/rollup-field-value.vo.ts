@@ -1,8 +1,12 @@
-import { ValueObject } from "@undb/domain"
+import { z } from "@undb/zod"
 import { isEmpty } from "radash"
+import { FieldValueObject } from "../../field-value"
 
-export class RollupFieldValue extends ValueObject<number | Date | null | undefined> {
-  constructor(value: number | Date | null | undefined) {
+export const rollupFieldValue = z.union([z.number(), z.date(), z.null(), z.undefined()])
+export type IRollupFieldValue = z.infer<typeof rollupFieldValue>
+
+export class RollupFieldValue extends FieldValueObject<IRollupFieldValue> {
+  constructor(value: IRollupFieldValue) {
     super({ value: value ?? null })
   }
 

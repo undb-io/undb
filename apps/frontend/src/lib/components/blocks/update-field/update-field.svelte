@@ -3,7 +3,6 @@
   import { Button } from "$lib/components/ui/button"
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
-  import { closeModal } from "$lib/store/modal.store"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
@@ -17,6 +16,7 @@
   import FieldTypePicker from "../field-picker/field-type-picker.svelte"
   import autoAnimate from "@formkit/auto-animate"
   import { FieldFactory } from "@undb/table/src/modules/schema/fields/field.factory"
+  import { cn } from "$lib/utils"
 
   const table = getTable()
 
@@ -76,7 +76,7 @@
   const { enhance, form: formData, reset } = form
 </script>
 
-<form method="POST" use:enhance class="space-y-4">
+<form method="POST" use:enhance class={cn("space-y-4", $$restProps.class)}>
   <div class="flex h-8 items-center gap-2">
     <Form.Field {form} name="type" class="h-full">
       <Form.Control let:attrs>

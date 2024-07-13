@@ -1,5 +1,8 @@
-import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
+import { FieldValueObject } from "../../field-value"
+
+export const ratingFieldValueSchema = z.number().optional().nullable()
+export type IRatingFieldValue = z.infer<typeof ratingFieldValueSchema>
 
 export const mutateRatingFieldValueSchema = z.union([
   z.number().optional(),
@@ -19,12 +22,12 @@ export const mutateRatingFieldValueSchema = z.union([
 
 export type IMutateRatingFieldValueSchema = z.infer<typeof mutateRatingFieldValueSchema>
 
-export class RatingFieldValue extends ValueObject<number> {
-  constructor(value: number) {
-    super({ value })
+export class RatingFieldValue extends FieldValueObject<IRatingFieldValue> {
+  constructor(value: IRatingFieldValue) {
+    super({ value: value ?? null })
   }
 
   isEmpty() {
-    return this.props.value === null || this.props.value === undefined
+    return this.props?.value === null || this.props?.value === undefined
   }
 }
