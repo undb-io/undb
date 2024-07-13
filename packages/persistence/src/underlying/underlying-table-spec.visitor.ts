@@ -90,6 +90,20 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
             .compile()
 
           this.addSql(query)
+        } else {
+          const query = this.qb
+            .updateTable(this.table.name)
+            .where((eb) =>
+              eb.not(
+                eb.or([eb(field.id.value, "is", null), eb(field.id.value, "=", ""), eb(field.id.value, "=", "[]")]),
+              ),
+            )
+            .set((eb) => ({
+              [field.id.value]: eb.fn(`json_extract`, [sql.raw(field.id.value), sql.raw("'$[0]'")]),
+            }))
+            .compile()
+
+          this.addSql(query)
         }
       }
     }
