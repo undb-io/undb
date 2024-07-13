@@ -11,6 +11,7 @@ import {
   CreateTableViewCommand,
   CreateWebhookCommand,
   DeleteRecordCommand,
+  DeleteTableFieldCommand,
   DeleteViewCommand,
   DisableShareCommand,
   DuplicateRecordCommand,
@@ -42,6 +43,7 @@ import {
   createTableViewCommand,
   createWebhookCommand,
   deleteRecordCommand,
+  deleteTableFieldCommand,
   deleteViewCommand,
   disableShareCommand,
   duplicateRecordCommand,
@@ -121,6 +123,9 @@ const fieldRouter = t.router({
   update: p
     .input(updateTableFieldCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateTableFieldCommand(input))),
+  delete: p
+    .input(deleteTableFieldCommand)
+    .mutation(({ input }) => commandBus.execute(new DeleteTableFieldCommand(input))),
 })
 
 const tableRouter = t.router({
