@@ -1,5 +1,5 @@
 import { Ok, Option, WontImplementException, type Result } from "@undb/domain"
-import type { Field } from "../modules"
+import { SelectField, UserField, type Field } from "../modules"
 import type { FieldValueObject } from "../modules/schema/fields/field-value"
 import type { Schema } from "../modules/schema/schema.vo"
 import type { TableDo } from "../table.do"
@@ -65,6 +65,22 @@ export class WithUpdatedFieldSpecification extends TableComositeSpecification {
 
     if (previousValue && newValue && !previousValue.equals(newValue)) {
       return true
+    }
+
+    return false
+  }
+
+  public getIsChangeItemSize(): boolean {
+    if (this.getIsTypeChanged()) {
+      return false
+    }
+
+    const { previous, field } = this
+    if (
+      (field instanceof SelectField && previous instanceof SelectField) ||
+      (field instanceof UserField && previous instanceof UserField)
+    ) {
+      return (field.isSingle && !previous.isSingle) || (!field.isSingle && previous.isSingle)
     }
 
     return false

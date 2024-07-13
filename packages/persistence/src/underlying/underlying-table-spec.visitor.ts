@@ -1,12 +1,14 @@
 import { WontImplementException, type ISpecification, type ISpecVisitor } from "@undb/domain"
 import type {
   ITableSpecVisitor,
+  SelectField,
   TableBaseIdSpecification,
   TableIdSpecification,
   TableIdsSpecification,
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
+  UserField,
   WithNewFieldSpecification,
   WithNewView,
   WithoutView,
@@ -27,7 +29,7 @@ import type {
   WithNewFormSpecification,
 } from "@undb/table/src/specifications/table-forms.specification"
 import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
-import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, CreateTableBuilder } from "kysely"
+import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, CreateTableBuilder, sql } from "kysely"
 import { all } from "radash"
 import type { IQueryBuilder } from "../qb"
 import { ConversionContext } from "./conversion/conversion.context"
@@ -68,14 +70,29 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
   withViewOption(viewOption: WithViewOption): void {}
   withUpdatedField(spec: WithUpdatedFieldSpecification): void {
     const typeChanged = spec.getIsTypeChanged()
-    if (!typeChanged) {
-      return
+    if (typeChanged) {
+      const strategy = ConversionFactory.create(this.tb as AlterTableBuilder, spec.previous.type, spec.field.type)
+      const context = new ConversionContext(strategy)
+
+      context.convert(spec.field)
+    } else {
+      if (spec.getIsChangeItemSize()) {
+        const previous = spec.previous as SelectField | UserField
+        const field = spec.field as SelectField | UserField
+
+        if (previous.isSingle) {
+          const query = this.qb
+            .updateTable(this.table.name)
+            .where((eb) => eb.not(eb.or([eb(field.id.value, "is", null), eb(field.id.value, "=", "")])))
+            .set((eb) => ({
+              [field.id.value]: eb.fn(`json_array`, [sql.raw(field.id.value)]),
+            }))
+            .compile()
+
+          this.addSql(query)
+        }
+      }
     }
-
-    const strategy = ConversionFactory.create(this.tb as AlterTableBuilder, spec.previous.type, spec.field.type)
-    const context = new ConversionContext(strategy)
-
-    context.convert(spec.field)
   }
   withViewFields(fields: WithViewFields): void {}
   withForm(views: WithFormSpecification): void {}
