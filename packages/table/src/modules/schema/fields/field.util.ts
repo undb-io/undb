@@ -164,3 +164,19 @@ export const castFieldValue = (type: FieldType, value: string | number | null | 
     .with("select", () => value || null)
     .otherwise(() => value)
 }
+
+export const displayFieldTypes: FieldType[] = [
+  "string",
+  "number",
+  "select",
+  "user",
+  "autoIncrement",
+  "date",
+  "email",
+  "id",
+  "rating",
+] as const
+
+export const getIsDisplayFieldType = (type: FieldType): type is (typeof displayFieldTypes)[number] => {
+  return displayFieldTypes.includes(type)
+}

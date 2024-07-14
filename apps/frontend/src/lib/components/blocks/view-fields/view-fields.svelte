@@ -5,7 +5,7 @@
   import * as Popover from "$lib/components/ui/popover"
   import { getTable, viewId } from "$lib/store/table.store"
   import { FieldIdVo } from "@undb/table"
-  import { ListIcon, GripVerticalIcon, SearchIcon } from "lucide-svelte"
+  import { ListIcon, GripVerticalIcon, SearchIcon, ChevronDownIcon } from "lucide-svelte"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { tick } from "svelte"
@@ -15,6 +15,7 @@
   import { Input } from "$lib/components/ui/input"
   import { writable } from "svelte/store"
   import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
+  import FieldMenu from "../field/field-menu.svelte"
 
   const table = getTable()
   $: fields = $table.getOrderedFields(undefined, $viewId)
@@ -24,6 +25,9 @@
   $: visibleCount = viewFieldsVo.getVisibleFieldsCount()
 
   let open = false
+  let menuOpen = false
+  let update = false
+
   const q = writable("")
 
   $: filteredViewFields = viewFields.filter((viewField) => {
@@ -138,6 +142,22 @@
                 <button class="text-muted-foreground handler">
                   <GripVerticalIcon class="h-3 w-3" />
                 </button>
+
+                <Popover.Root
+                  bind:open={menuOpen}
+                  portal="body"
+                  onOpenChange={(open) => {
+                    if (!open) {
+                      update = false
+                    }
+                  }}
+                >
+                  <Popover.Trigger>
+                    <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
+                  </Popover.Trigger>
+
+                  <FieldMenu bind:update bind:open={menuOpen} {field} />
+                </Popover.Root>
               </div>
             {/if}
           {/each}

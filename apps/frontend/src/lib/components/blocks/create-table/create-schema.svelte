@@ -3,6 +3,7 @@
   import {
     FieldIdVo,
     fieldTypes,
+    getIsDisplayFieldType,
     getNextName,
     OptionIdVo,
     systemFieldTypes,
@@ -100,7 +101,17 @@
         <Accordion.Item class="w-full border-b-0" value={field.id}>
           <div class="flex w-full items-center gap-2">
             <Form.Label class="flex h-9 flex-1 items-center gap-2">
-              <FieldTypePicker sameWidth={false} class="h-full w-40" bind:value={field.type} />
+              <FieldTypePicker
+                sameWidth={false}
+                class="h-full w-40"
+                bind:value={field.type}
+                onValueChange={(type) => {
+                  $formData.schema[i].display = getIsDisplayFieldType(type)
+                  if (type === "select" || type === "reference") {
+                    activeFieldId = field.id
+                  }
+                }}
+              />
               <Input {...attrs} class="bg-background no-underline" bind:value={field.name} data-field-id={field.id} />
               <div class="flex items-center gap-1" use:autoAnimate={{ duration: 100 }}>
                 {#if field.constraint?.required}
