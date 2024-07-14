@@ -4,8 +4,10 @@ import { isEqual } from "radash"
 import type { TableDo } from "../../../../table.do"
 import type { RecordDO } from "../../../records/record/record.do"
 import type { Schema } from "../../schema.vo"
+import type { Field } from "../field.type"
 import type { IRootCondition, MaybeConditionGroup } from "./condition.type"
 import {
+  conditionsWithField,
   getFieldSpec,
   getFlattenFieldConditions,
   getSpec,
@@ -83,5 +85,9 @@ export abstract class Condition<OptionType extends z.ZodTypeAny> extends ValueOb
     }
 
     return result
+  }
+
+  conditionsWithField(field: Field) {
+    return conditionsWithField(this.value, field.id.value)
   }
 }

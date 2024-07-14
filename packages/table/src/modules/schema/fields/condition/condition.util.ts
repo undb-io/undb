@@ -209,3 +209,20 @@ export function conditionContainsFields<OptionType extends ZodTypeAny>(
 
   return false
 }
+
+export function conditionsWithField<OptionType extends ZodTypeAny>(
+  value: IConditionGroup<OptionType>,
+  fieldId: string,
+): IFieldCondition<OptionType>[] {
+  const results: IFieldCondition<OptionType>[] = []
+
+  for (const child of value.children) {
+    if (isFieldCondition(child) && child.fieldId === fieldId) {
+      results.push(child)
+    } else if (isGroup(child)) {
+      results.push(...conditionsWithField(child, fieldId))
+    }
+  }
+
+  return results
+}
