@@ -28,6 +28,7 @@
   import { clickoutside } from "@svelte-put/clickoutside"
   import autoAnimate from "@formkit/auto-animate"
   import { match } from "ts-pattern"
+  import { LL } from "@undb/i18n/client"
 
   const { form } = getFormField<Infer<typeof createTableCommand>, "schema">()
 
@@ -39,10 +40,13 @@
     const fieldId = FieldIdVo.create().value
 
     const newField = match(type)
-      .with("select", () => ({
+      .with("select", (type) => ({
         id: fieldId,
         type,
-        name: getNextName($formData.schema.map((field) => field.name)),
+        name: getNextName(
+          $formData.schema.map((field) => field.name),
+          $LL.table.fieldTypes[type](),
+        ),
         display: false,
         constraint: {
           max: 1,
@@ -51,10 +55,13 @@
           options: [],
         },
       }))
-      .otherwise(() => ({
+      .otherwise((type) => ({
         id: fieldId,
         type,
-        name: getNextName($formData.schema.map((field) => field.name)),
+        name: getNextName(
+          $formData.schema.map((field) => field.name),
+          $LL.table.fieldTypes[type](),
+        ),
         display: false,
         constraint: {},
       }))
@@ -100,7 +107,7 @@
       <Form.Control let:attrs>
         <Accordion.Item class="w-full border-b-0" value={field.id}>
           <div class="flex w-full items-center gap-2">
-            <Form.Label class="flex h-9 flex-1 items-center gap-2">
+            <Form.Label class="flex h-9 w-40 flex-1 items-center gap-2">
               <FieldTypePicker
                 sameWidth={false}
                 class="h-full w-40"

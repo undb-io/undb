@@ -15,6 +15,7 @@
   import FieldOptions from "../field-options/field-options.svelte"
   import FieldTypePicker from "../field-picker/field-type-picker.svelte"
   import { createDefaultField } from "./create-default-field"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
 
@@ -42,7 +43,7 @@
     defaults(
       {
         type: "string",
-        name: $table.schema.getNextFieldName(),
+        name: $table.schema.getNextFieldName($LL.table.fieldTypes.string()),
         display: false,
         constraint: {},
       },
@@ -71,7 +72,7 @@
   const { enhance, form: formData, reset } = form
 
   function updateType(type: FieldType) {
-    $formData = createDefaultField($table, type)
+    $formData = createDefaultField($table, type, $LL.table.fieldTypes[type]())
   }
 
   function onTypeChange(type: FieldType) {

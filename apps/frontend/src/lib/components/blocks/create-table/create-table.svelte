@@ -13,6 +13,7 @@
   import { FieldIdVo, getNextName } from "@undb/table"
   import { CREATE_TABLE_MODAL, closeModal } from "$lib/store/modal.store"
   import { baseId, currentBase } from "$lib/store/base.store"
+  import { LL } from "@undb/i18n/client"
 
   const schema = createTableCommand.omit({ baseId: true })
 
@@ -38,7 +39,7 @@
           {
             id: FieldIdVo.create().value,
             type: "string",
-            name: getNextName(),
+            name: getNextName([], $LL.table.fieldTypes.string()),
             display: true,
             constraint: {},
           },
