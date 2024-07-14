@@ -21,6 +21,7 @@ import {
   UserField,
   type FieldId,
   type IDeleteFieldDTO,
+  type IDuplicateFieldDTO,
   type IUpdateFieldDTO,
 } from "./fields"
 import { FieldFactory } from "./fields/field.factory"
@@ -87,6 +88,16 @@ export class Schema extends ValueObject<Field[]> {
 
   deleteField(field: Field) {
     return new Schema(this.fields.filter((f) => !f.id.equals(field.id)))
+  }
+
+  duplicateField(dto: IDuplicateFieldDTO): Field {
+    const field = this.getFieldById(new FieldIdVo(dto.id)).expect("Field not found")
+    if (field.isSystem) {
+      throw new Error("Can't duplicate system field")
+    }
+
+    const json = { ...field.toJSON(), id: FieldIdVo.create().value, name: this.getNextFieldName(field.name.value) }
+    return FieldFactory.fromJSON(json)
   }
 
   get systemFields(): SystemField[] {

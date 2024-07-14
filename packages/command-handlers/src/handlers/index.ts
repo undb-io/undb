@@ -14,6 +14,7 @@ import { DeleteTableFieldCommandHandler } from "./delete-table-field.command-han
 import { DeleteViewCommandHandler } from "./delete-view.command-handler"
 import { DisableShareCommandHandler } from "./disable-share.command-handler"
 import { DuplicateRecordCommandHandler } from "./duplicate-record.command-handler"
+import { DuplicateTableFieldCommandHandler } from "./duplicate-table-field.command-handler"
 import { DuplicateViewCommandHandler } from "./duplicate-view.command-handler"
 import { EnableShareCommandHandler } from "./enable-share.command-handler"
 import { SetTableFormCommandHandler } from "./set-table-form.command-handler"
@@ -62,4 +63,5 @@ export const commandHandlers = [
   UpdateBaseCommandHandler,
   EnableShareCommandHandler,
   DisableShareCommandHandler,
+  DuplicateTableFieldCommandHandler,
 ]

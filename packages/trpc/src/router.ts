@@ -15,6 +15,7 @@ import {
   DeleteViewCommand,
   DisableShareCommand,
   DuplicateRecordCommand,
+  DuplicateTableFieldCommand,
   DuplicateViewCommand,
   EnableShareCommand,
   SetTableFormCommand,
@@ -47,6 +48,7 @@ import {
   deleteViewCommand,
   disableShareCommand,
   duplicateRecordCommand,
+  duplicateTableFieldCommand,
   duplicateViewCommand,
   enableShareCommand,
   setTableFormCommand,
@@ -123,6 +125,9 @@ const fieldRouter = t.router({
   update: p
     .input(updateTableFieldCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateTableFieldCommand(input))),
+  duplicate: p
+    .input(duplicateTableFieldCommand)
+    .mutation(({ input }) => commandBus.execute(new DuplicateTableFieldCommand(input))),
   delete: p
     .input(deleteTableFieldCommand)
     .mutation(({ input }) => commandBus.execute(new DeleteTableFieldCommand(input))),

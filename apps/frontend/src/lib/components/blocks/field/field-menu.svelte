@@ -28,6 +28,15 @@
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
     },
   })
+
+  const duplicateField = createMutation({
+    mutationFn: trpc.table.field.duplicate.mutate,
+    async onSuccess() {
+      toast.success("Duplicate field success")
+      await invalidate(`table:${$table.id.value}`)
+      await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
+    },
+  })
 </script>
 
 <Popover.Content class={cn("p-0 transition-all", update ? "w-[400px]" : "w-[250px]")}>
@@ -52,6 +61,45 @@
       </Button>
 
       {#if !field.isSystem}
+        <AlertDialog.Root>
+          <AlertDialog.Trigger asChild let:builder>
+            <Button
+              builders={[builder]}
+              class="w-full justify-start rounded-none border-none text-xs"
+              variant="outline"
+            >
+              <TrashIcon class="mr-2 h-3 w-3" />
+              Duplicate Field
+            </Button>
+          </AlertDialog.Trigger>
+          <AlertDialog.Content>
+            <AlertDialog.Header>
+              <AlertDialog.Title>Duplicate field</AlertDialog.Title>
+              <AlertDialog.Description>Are you sure to duplicate the following field?</AlertDialog.Description>
+            </AlertDialog.Header>
+
+            <div
+              class="text-muted-foreground inline-flex items-center gap-2 rounded-sm border bg-gray-50 p-2 text-xs shadow-sm"
+            >
+              <FieldIcon {field} type={field.type} class="h-4 w-4" />
+              {field.name.value}
+            </div>
+
+            <AlertDialog.Footer>
+              <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+              <AlertDialog.Action
+                on:click={() => {
+                  $duplicateField.mutate({
+                    tableId: $table.id.value,
+                    id: field.id.value,
+                  })
+                }}
+              >
+                Duplicate field
+              </AlertDialog.Action>
+            </AlertDialog.Footer>
+          </AlertDialog.Content>
+        </AlertDialog.Root>
         <AlertDialog.Root>
           <AlertDialog.Trigger asChild let:builder>
             <Button
