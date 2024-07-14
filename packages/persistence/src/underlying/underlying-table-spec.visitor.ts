@@ -9,6 +9,7 @@ import type {
   TableSchemaSpecification,
   TableViewsSpecification,
   UserField,
+  WithDuplicatedFieldSpecification,
   WithNewFieldSpecification,
   WithNewView,
   WithoutFieldSpecification,
@@ -121,6 +122,19 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
     schema.field.accept(fieldVisitor)
     this.addSql(...fieldVisitor.sql)
     this.atb = fieldVisitor.atb
+  }
+  withDuplicateField(schema: WithDuplicatedFieldSpecification): void {
+    if (schema.field.type !== "reference") {
+      const query = this.qb
+        .updateTable(this.table.name)
+        .set((eb) => ({
+          [schema.field.id.value]: eb.ref(schema.originalField.id.value),
+        }))
+        .compile()
+      this.addSql(query)
+    } else {
+      throw new Error("Not implemented to duplicate reference")
+    }
   }
   withoutField(schema: WithoutFieldSpecification): void {
     if (schema.field.type !== "reference") {

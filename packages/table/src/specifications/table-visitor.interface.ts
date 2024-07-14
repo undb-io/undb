@@ -11,6 +11,7 @@ import type { TableNameSpecification } from "./table-name.specification"
 import type { WithTableRLS } from "./table-rls.specification"
 import type {
   TableSchemaSpecification,
+  WithDuplicatedFieldSpecification,
   WithNewFieldSpecification,
   WithoutFieldSpecification,
   WithUpdatedFieldSpecification,
@@ -36,6 +37,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withName(name: TableNameSpecification): void
   withSchema(schema: TableSchemaSpecification): void
   withNewField(schema: WithNewFieldSpecification): void
+  withDuplicateField(schema: WithDuplicatedFieldSpecification): void
   withoutField(schema: WithoutFieldSpecification): void
   withUpdatedField(spec: WithUpdatedFieldSpecification): void
   withTableRLS(rls: WithTableRLS): void

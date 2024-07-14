@@ -12,12 +12,16 @@
   import { getTable } from "$lib/store/table.store"
   import { toast } from "svelte-sonner"
   import { invalidate } from "$app/navigation"
+  import Label from "$lib/components/ui/label/label.svelte"
+  import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
 
   export let field: Field
   const table = getTable()
 
   export let update = false
   export let open = false
+
+  let includeData = true
 
   const client = useQueryClient()
   const deleteField = createMutation({
@@ -26,6 +30,7 @@
       toast.success("Delete field success")
       await invalidate(`table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
+      open = false
     },
   })
 
@@ -35,6 +40,7 @@
       toast.success("Duplicate field success")
       await invalidate(`table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
+      open = false
     },
   })
 </script>
@@ -85,6 +91,11 @@
               {field.name.value}
             </div>
 
+            <Label class="flex items-center gap-2">
+              <Checkbox bind:checked={includeData} />
+              Include data
+            </Label>
+
             <AlertDialog.Footer>
               <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
               <AlertDialog.Action
@@ -92,6 +103,7 @@
                   $duplicateField.mutate({
                     tableId: $table.id.value,
                     id: field.id.value,
+                    includeData,
                   })
                 }}
               >

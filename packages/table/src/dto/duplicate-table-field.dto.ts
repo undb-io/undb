@@ -5,6 +5,7 @@ import { tableId } from "../table-id.vo"
 export const duplicateTableFieldDTO = duplicateFieldDTO.merge(
   z.object({
     tableId,
+    includeData: z.boolean(),
   }),
 )
 

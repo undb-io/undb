@@ -9,6 +9,7 @@ import type {
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
+  WithDuplicatedFieldSpecification,
   WithFormIdSpecification,
   WithFormSpecification,
   WithNewFieldSpecification,
@@ -57,6 +58,9 @@ export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> impleme
     throw new Error("Method not implemented.")
   }
   withNewField(schema: WithNewFieldSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withDuplicateField(schema: WithDuplicatedFieldSpecification): void {
     throw new Error("Method not implemented.")
   }
   withoutField(schema: WithoutFieldSpecification): void {

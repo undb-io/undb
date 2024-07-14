@@ -9,6 +9,7 @@ import type {
   TableNameSpecification,
   TableSchemaSpecification,
   TableViewsSpecification,
+  WithDuplicatedFieldSpecification,
   WithFormIdSpecification,
   WithFormSpecification,
   WithNewFieldSpecification,
@@ -92,6 +93,7 @@ export class TableMutationVisitor
       .values({ tableId: this.table.id.value, subjectId: schema.field.id.value })
     this.addSql(insert)
   }
+  withDuplicateField(schema: WithDuplicatedFieldSpecification): void {}
   withoutField(schema: WithoutFieldSpecification): void {
     this.addUpdates({ schema: this.table.schema?.toJSON() })
 

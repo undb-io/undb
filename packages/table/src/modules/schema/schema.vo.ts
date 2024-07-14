@@ -2,6 +2,7 @@ import { Option, ValueObject } from "@undb/domain"
 import { z, ZodSchema } from "@undb/zod"
 import { objectify } from "radash"
 import {
+  WithDuplicatedFieldSpecification,
   WithNewFieldSpecification,
   WithoutFieldSpecification,
   WithUpdatedFieldSpecification,
@@ -90,14 +91,16 @@ export class Schema extends ValueObject<Field[]> {
     return new Schema(this.fields.filter((f) => !f.id.equals(field.id)))
   }
 
-  duplicateField(dto: IDuplicateFieldDTO): Field {
+  $duplicateField(dto: IDuplicateFieldDTO): WithDuplicatedFieldSpecification {
     const field = this.getFieldById(new FieldIdVo(dto.id)).expect("Field not found")
     if (field.isSystem) {
       throw new Error("Can't duplicate system field")
     }
 
     const json = { ...field.toJSON(), id: FieldIdVo.create().value, name: this.getNextFieldName(field.name.value) }
-    return FieldFactory.fromJSON(json)
+    const duplicated = FieldFactory.fromJSON(json)
+
+    return new WithDuplicatedFieldSpecification(field, duplicated)
   }
 
   get systemFields(): SystemField[] {

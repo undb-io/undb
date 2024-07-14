@@ -40,6 +40,25 @@ export class WithNewFieldSpecification extends TableComositeSpecification {
   }
 }
 
+export class WithDuplicatedFieldSpecification extends TableComositeSpecification {
+  constructor(
+    public readonly originalField: Field,
+    public readonly field: Field,
+  ) {
+    super()
+  }
+  isSatisfiedBy(t: TableDo): boolean {
+    throw new WontImplementException(WithNewFieldSpecification.name + ".isSatisfiedBy")
+  }
+  mutate(t: TableDo): Result<TableDo, string> {
+    t.schema = t.schema.createField(this.field)
+    return Ok(t)
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withDuplicateField(this)
+    return Ok(undefined)
+  }
+}
 export class WithoutFieldSpecification extends TableComositeSpecification {
   constructor(public readonly field: Field) {
     super()
