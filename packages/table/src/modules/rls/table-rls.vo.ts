@@ -1,14 +1,13 @@
 import { None, Option, Some, ValueObject } from "@undb/domain"
+import type { RecordComositeSpecification } from "../records/record/record.composite-specification"
+import { conditionWithoutFields } from "../schema/fields/condition"
+import type { Field } from "../schema/fields/field.type"
+import type { Schema } from "../schema/schema.vo"
 import type { IRLSDTO } from "./dto"
 import { TableRLSAction, type ITableRLSActionSchema } from "./table-rls-action.vo"
 import { TableRLSCondition } from "./table-rls-condition.vo"
 import { RLSIdVO, type RLSId } from "./table-rls-id.vo"
 import { TableRLSSubject } from "./table-rls-subject.vo"
-import type { Schema } from "../schema/schema.vo"
-import type {
-  IRecordComositeSpecification,
-  RecordComositeSpecification,
-} from "../records/record/record.composite-specification"
 
 export interface ITableRLS {
   id: RLSId
@@ -85,6 +84,16 @@ export class TableRLS extends ValueObject<ITableRLS> {
     }
 
     return spec
+  }
+
+  public deleteField(field: Field): TableRLS {
+    if (this.props.condition.isNone()) {
+      return this
+    }
+    return TableRLS.fromJSON({
+      ...this.toJSON(),
+      condition: conditionWithoutFields(this.props.condition.unwrap().toJSON(), new Set([field.id.value])),
+    })
   }
 
   static fromJSON(dto: IRLSDTO): TableRLS {

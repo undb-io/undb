@@ -164,6 +164,7 @@
       </Form.Label>
       {#if enableContion}
         <FiltersEditor
+          samewWidth={false}
           class="rounded-sm border-gray-100 bg-gray-50 shadow-inner"
           table={$table}
           bind:value={$condition}
@@ -180,6 +181,7 @@
         </Form.Label>
         {#if enableUpdateCondition}
           <FiltersEditor
+            samewWidth={false}
             class="rounded-sm border-gray-100 bg-gray-50 shadow-inner"
             table={$table}
             bind:value={$updateCondition}

@@ -23,7 +23,7 @@ export class AttachmentFieldConstraint extends FieldConstraintVO<IAttachmentFiel
     })
   }
   override get schema() {
-    let base = attachmentFieldValue
+    let base = attachmentFieldValue.unwrap()
     const { required, max } = this.props
     if (!required) {
       base = base.min(0)

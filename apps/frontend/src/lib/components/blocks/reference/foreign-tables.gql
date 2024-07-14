@@ -1,26 +1,16 @@
-query GetForeignTable($tableId: ID!) {
-  table(id: $tableId) {
+query GetForeignTables {
+  tables {
     id
     name
     schema {
       id
       name
       type
-      defaultValue
-      display
-      constraint
-      option
     }
 
-    views {
+    base {
       id
       name
-      type
-      filter
-      color
-      sort
-      aggregate
-      fields
     }
   }
 }

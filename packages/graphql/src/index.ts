@@ -167,6 +167,8 @@ export class Graphql {
 
         baseId: String!
 
+        base: Base!
+
         schema: [Field!]!
         views: [View!]!
         forms: [Form]
@@ -283,6 +285,10 @@ export class Graphql {
           recordsCount: async (table) => this.repo.count(new TableIdVo(table.id)),
           // @ts-ignore
           viewData: () => ({}),
+          // @ts-ignore
+          base: async (table) => {
+            return this.queryBus.execute(new GetBaseQuery({ baseId: table.baseId }))
+          },
         },
         ViewData: {
           // @ts-ignore

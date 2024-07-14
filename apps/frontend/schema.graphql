@@ -112,6 +112,7 @@ enum ShareTargetType {
 }
 
 type Table {
+  base: Base!
   baseId: String!
   forms: [Form]
   id: ID!

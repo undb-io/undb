@@ -45,6 +45,7 @@
       document.getElementById(triggerId)?.focus()
     })
   }
+  export let sameWidth = true
 </script>
 
 <Popover.Root bind:open let:ids portal="body">
@@ -67,7 +68,7 @@
       <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
     </Button>
   </Popover.Trigger>
-  <Popover.Content class="p-0" sameWidth>
+  <Popover.Content class="p-0" {sameWidth}>
     <Command.Root
       filter={(value, search) => {
         const label = filteredFields.find((f) => f.value === value)?.label ?? ""

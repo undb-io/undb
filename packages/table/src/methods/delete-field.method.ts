@@ -8,12 +8,14 @@ export function deleteFieldMethod(this: TableDo, dto: IDeleteFieldDTO): Option<T
   const deleteFieldSpec = this.schema.$deleteField(dto)
   const formDeleteFieldSpec = this.forms?.$deleteField(deleteFieldSpec.field)
   const viewDeleteFieldSpec = this.views.$deleteField(deleteFieldSpec.field)
+  const rlsDeleteFieldSpec = this.rls.into(undefined)?.$deleteField(deleteFieldSpec.field)
 
   const spec = andOptions(
     //
     Some(deleteFieldSpec),
     formDeleteFieldSpec ? Some(formDeleteFieldSpec) : None,
     viewDeleteFieldSpec,
+    rlsDeleteFieldSpec ? rlsDeleteFieldSpec : None,
   ).unwrap()
 
   spec.mutate(this)

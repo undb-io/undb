@@ -80,6 +80,8 @@
       value.children = [...filters]
     }
   }
+
+  export let sameWidth = true
 </script>
 
 <div class={cn("space-y-2", isEven ? "bg-muted" : "bg-popover", $$restProps.class)} data-level={level}>
@@ -113,6 +115,7 @@
             {/if}
             <div class="col-span-9 grid grid-cols-12 items-center">
               <FilterField
+                {sameWidth}
                 onValueChange={(type, prev) => {
                   if (type !== prev) {
                     if (isMaybeFieldCondition(child)) {

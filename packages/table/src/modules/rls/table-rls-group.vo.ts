@@ -1,8 +1,9 @@
-import { ValueObject, andOptions } from "@undb/domain"
+import { Option, Some, ValueObject, andOptions } from "@undb/domain"
+import { WithTableRLS } from "../../specifications"
+import type { Field, Schema } from "../schema"
 import type { IRLSGroupDTO } from "./dto"
-import { TableRLS } from "./table-rls.vo"
-import type { Schema } from "../schema"
 import type { ITableRLSActionSchema } from "./table-rls-action.vo"
+import { TableRLS } from "./table-rls.vo"
 
 export class TableRLSGroup extends ValueObject<TableRLS[]> {
   static fromJSON(dto: IRLSGroupDTO) {
@@ -26,7 +27,15 @@ export class TableRLSGroup extends ValueObject<TableRLS[]> {
     return new TableRLSGroup(values)
   }
 
-  toJSON() {
+  $deleteField(field: Field): Option<WithTableRLS> {
+    const previous = TableRLSGroup.fromJSON(this.toJSON())
+    const newRls = new TableRLSGroup(this.props.map((rls) => rls.deleteField(field)))
+
+    const spec = new WithTableRLS(Some(previous), Some(newRls))
+    return Some(spec)
+  }
+
+  toJSON(): IRLSGroupDTO {
     return this.props.map((rls) => rls.toJSON())
   }
 }
