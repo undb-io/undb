@@ -17,7 +17,7 @@ import {
   type RecordId,
   type TableDo,
 } from "@undb/table"
-import type { CompiledQuery, ExpressionBuilder } from "kysely"
+import { sql, type CompiledQuery, type ExpressionBuilder } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
@@ -122,7 +122,6 @@ export class RecordRepository implements IRecordRepository {
   }
 
   async find(table: TableDo, spec: RecordComositeSpecification): Promise<RecordDO[]> {
-    const t = new UnderlyingTable(table)
     const foreignTables = await this.getForeignTables(table, table.schema.fields)
     const qb = this.helper.createQuery(table, foreignTables, table.schema.fields, Some(spec))
     const records = await qb.where(this.helper.handleWhere(table, Some(spec))).execute()
@@ -204,32 +203,45 @@ export class RecordRepository implements IRecordRepository {
     const userId = context?.user?.userId!
 
     const t = new UnderlyingTable(table)
-    const sql: CompiledQuery[] = []
+    const queries: CompiledQuery[] = []
 
-    const qb = this.qb
-    function handleUpdate() {
+    const handleUpdate = () => {
       return (eb: ExpressionBuilder<any, any>) => {
         let data = {}
         if (records.length) {
           for (const record of records) {
-            const visitor = new RecordMutateVisitor(table, record, qb, eb)
+            const visitor = new RecordMutateVisitor(table, record, this.qb, eb)
             update.accept(visitor)
-            sql.push(...visitor.sql)
+            queries.push(...visitor.sql)
             data = { ...data, ...visitor.data }
           }
         } else {
-          const visitor = new RecordMutateVisitor(table, null, qb, eb)
+          const visitor = new RecordMutateVisitor(table, null, this.qb, eb)
           update.accept(visitor)
-          sql.push(...visitor.sql)
+          queries.push(...visitor.sql)
           data = visitor.data
         }
         return { ...data, [UPDATED_BY_TYPE]: userId }
       }
     }
 
-    await this.qb.updateTable(t.name).set(handleUpdate()).where(this.helper.handleWhere(table, spec)).execute()
+    await this.qb
+      .updateTable(t.name)
+      .where((eb) => {
+        if (records.length) {
+          return eb.eb(
+            ID_TYPE,
+            "in",
+            records.map((r) => r.id.value),
+          )
+        }
 
-    for (const s of sql) {
+        return eb.eb(sql.raw("1"), "=", sql.raw("1"))
+      })
+      .set(handleUpdate())
+      .execute()
+
+    for (const s of queries) {
       await this.qb.executeQuery(s)
     }
 

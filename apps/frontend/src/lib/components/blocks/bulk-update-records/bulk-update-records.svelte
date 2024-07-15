@@ -204,8 +204,9 @@
         {#each mutableFields as field}
           {@const selected = selectedFieldIds.includes(field.id.value)}
           <Button
+            disabled={field.type === "reference"}
             variant={selected ? "default" : "outline"}
-            class={cn("w-full shadow-sm")}
+            class={cn("w-full justify-start shadow-sm")}
             on:click={() => {
               selectedFieldIds.includes(field.id.value)
                 ? (selectedFieldIds = selectedFieldIds.filter((f) => f !== field.id.value))

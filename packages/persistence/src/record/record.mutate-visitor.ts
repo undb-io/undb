@@ -1,5 +1,6 @@
 import type { ISpecification, ISpecVisitor } from "@undb/domain"
 import {
+  ID_TYPE,
   JsonContains,
   SelectContainsAnyOf,
   SelectField,
@@ -44,13 +45,16 @@ import {
   type UserEmpty,
   type UserEqual,
 } from "@undb/table"
-import type { CompiledQuery, ExpressionBuilder } from "kysely"
+import { sql, type CompiledQuery, type ExpressionBuilder } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { JoinTable } from "../underlying/reference/join-table"
 
 export class RecordMutateVisitor implements IRecordVisitor {
   constructor(
     private readonly table: TableDo,
+    /**
+     * if record is null it means we are mutating all records
+     */
     private readonly record: RecordDO | null,
     private readonly qb: IQueryBuilder,
     private readonly eb: ExpressionBuilder<any, any>,
@@ -100,14 +104,38 @@ export class RecordMutateVisitor implements IRecordVisitor {
   }
   referenceEqual(spec: ReferenceEqual): void {
     const record = this.record
-    if (!record) {
-      throw new Error("No record available to update referece field")
-    }
-
     const field = this.table.schema.getFieldById(spec.fieldId).unwrap() as ReferenceField
 
     const joinTable = new JoinTable(this.table, field)
     const name = joinTable.getTableName()
+
+    if (!record) {
+      const deleteRecords = this.qb.deleteFrom(name).compile()
+
+      this.addSql(deleteRecords)
+
+      const values = spec.values.props
+
+      if (Array.isArray(values) && values.length) {
+        const fieldId = joinTable.getValueFieldId()
+        const symmetricFieldId = joinTable.getSymmetricValueFieldId()
+        const insert = this.qb
+          .insertInto(name)
+          .columns([fieldId, symmetricFieldId])
+          .expression((eb) => {
+            const expression = (v: string) =>
+              // FIXME: incorrect! should filter by bulk update condition
+              eb.selectFrom(this.table.id.value).select([sql.ref(ID_TYPE).as(fieldId), sql.raw(v).as(symmetricFieldId)])
+
+            return values.reduce((prev, value) => prev.unionAll(expression(value)), expression(values[0]))
+          })
+          .onConflict((bd) => bd.columns([fieldId, symmetricFieldId]).doNothing())
+          .compile()
+        this.addSql(insert)
+      }
+
+      return
+    }
 
     const deleteRecords = this.qb
       .deleteFrom(name)

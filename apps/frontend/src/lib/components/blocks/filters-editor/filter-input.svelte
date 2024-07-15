@@ -24,12 +24,11 @@
   import type { ComponentType } from "svelte"
   import NumberInput from "$lib/components/ui/input/number-input.svelte"
   import DateControl from "$lib/components/blocks/field-control/date-control.svelte"
-  import OptionPicker from "$lib/components/blocks/option/option-picker.svelte"
-  import UserPicker from "../user/user-picker.svelte"
   import JsonDropdown from "../json/json-dropdown.svelte"
-  import OptionsPicker from "../option/options-picker.svelte"
   import UserFilterInput from "./variants/user-filter-input.svelte"
   import IdFilterInput from "./variants/id-filter-input.svelte"
+  import OptionFilterInput from "./variants/option-filter-input.svelte"
+  import OptionsFilterInput from "./variants/options-filter-input.svelte"
 
   export let field: Field | undefined
   export let recordId: string | undefined = undefined
@@ -172,10 +171,10 @@
   }
 
   $: select = {
-    eq: (field?.type === "select" && (field.isSingle ? OptionPicker : OptionsPicker)) || null,
-    neq: (field?.type === "select" && (field.isSingle ? OptionPicker : OptionsPicker)) || null,
-    any_of: OptionsPicker,
-    not_any_of: OptionsPicker,
+    eq: (field?.type === "select" && (field.isSingle ? OptionFilterInput : OptionsFilterInput)) || null,
+    neq: (field?.type === "select" && (field.isSingle ? OptionFilterInput : OptionsFilterInput)) || null,
+    any_of: OptionsFilterInput,
+    not_any_of: OptionsFilterInput,
     is_empty: null,
     is_not_empty: null,
   } as Record<ISelectFieldConditionOp, ComponentType | null>

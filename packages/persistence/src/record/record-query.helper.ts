@@ -19,6 +19,22 @@ export class RecordQueryHelper {
     public readonly qb: IQueryBuilder,
   ) {}
 
+  createQueryCreator(
+    table: TableDo,
+    foreignTables: Map<string, TableDo>,
+    visibleFields: Field[],
+    spec: Option<RecordComositeSpecification>,
+  ) {
+    let qb = new RecordQueryCreatorVisitor(this.qb, table, foreignTables, visibleFields).create()
+    const visitor = new RecordQuerySpecCreatorVisitor(this.qb, qb, table)
+    if (spec.isSome()) {
+      spec.unwrap().accept(visitor)
+    }
+    qb = visitor.creator
+
+    return qb
+  }
+
   createQuery(
     table: TableDo,
     foreignTables: Map<string, TableDo>,
@@ -26,12 +42,7 @@ export class RecordQueryHelper {
     spec: Option<RecordComositeSpecification>,
   ) {
     const t = new UnderlyingTable(table)
-    let qb = new RecordQueryCreatorVisitor(this.qb, table, foreignTables, visibleFields).create()
-    const visitor = new RecordQuerySpecCreatorVisitor(this.qb, qb, table)
-    if (spec.isSome()) {
-      spec.unwrap().accept(visitor)
-    }
-    qb = visitor.creator
+    const qb = this.createQueryCreator(table, foreignTables, visibleFields, spec)
 
     return qb
       .selectFrom(table.id.value)

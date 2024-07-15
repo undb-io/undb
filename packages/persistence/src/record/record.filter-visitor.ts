@@ -85,7 +85,7 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     this.addCond(this.eb.eb(this.getFieldId(spec), "is", null))
   }
   dateEqual(spec: DateEqual): void {
-    this.addCond(this.eb.eb(this.getFieldId(spec), "=", spec.date.toISOString()))
+    this.addCond(this.eb.eb(this.getFieldId(spec), "=", spec.date?.toISOString() ?? null))
   }
   attachmentEqual(s: AttachmentEqual): void {
     throw new Error("Method not implemented.")
