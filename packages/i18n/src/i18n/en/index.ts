@@ -1,4 +1,4 @@
-import type { FieldType,IOpType } from "@undb/table"
+import type { FieldType,IOpType,IRollupFn } from "@undb/table"
 import type { BaseTranslation } from "../i18n-types.js"
 
 const ops: Record<IOpType, string> = {
@@ -63,12 +63,22 @@ const fieldTypes: Record<FieldType, string> = {
   user: "User"
 }
 
+const rollupFns: Record<IRollupFn, string> = {
+  min: "Min",
+  max: "Max",
+  sum: "Sum",
+  average: "Average",
+  count: "Count",
+  lookup: "Lookup"
+}
+
 const en = {
   // TODO: your translations go here
   HI: "Hi {name:string}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n",
   table: {
     ops,
-    fieldTypes
+    fieldTypes,
+    rollupFns,
   },
 } satisfies BaseTranslation
 

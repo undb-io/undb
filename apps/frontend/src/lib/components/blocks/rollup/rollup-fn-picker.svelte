@@ -1,6 +1,7 @@
 <script lang="ts">
   import { FieldIdVo, getRollupFnByType, type IRollupFn, type TableDo } from "@undb/table"
   import * as Select from "$lib/components/ui/select/index.js"
+  import { LL } from "@undb/i18n/client"
 
   export let foreignTable: TableDo
   export let rollupFieldId: string
@@ -12,11 +13,11 @@
   $: fns = rollupField ? getRollupFnByType(rollupField.type) : undefined
   $: fns, (value = fns?.includes(value as any) ? value : fns?.[0])
 
-  $: fnOptions = fns?.map((fn) => ({ value: fn, label: fn }))
+  $: fnOptions = fns?.map((fn) => ({ value: fn, label: $LL.table.rollupFns[fn]() }))
 
   export let value: IRollupFn | undefined = undefined
 
-  $: selected = value ? { value: value, label: value } : undefined
+  $: selected = value ? { value: value, label: $LL.table.rollupFns[value]() } : undefined
 </script>
 
 {#if fnOptions?.length}

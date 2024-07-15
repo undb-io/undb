@@ -247,6 +247,32 @@ type RootTranslation = {
 			 */
 			user: string
 		}
+		rollupFns: {
+			/**
+			 * M​i​n
+			 */
+			min: string
+			/**
+			 * M​a​x
+			 */
+			max: string
+			/**
+			 * S​u​m
+			 */
+			sum: string
+			/**
+			 * A​v​e​r​a​g​e
+			 */
+			average: string
+			/**
+			 * C​o​u​n​t
+			 */
+			count: string
+			/**
+			 * L​o​o​k​u​p
+			 */
+			lookup: string
+		}
 	}
 }
 
@@ -483,6 +509,32 @@ export type TranslationFunctions = {
 			 * User
 			 */
 			user: () => LocalizedString
+		}
+		rollupFns: {
+			/**
+			 * Min
+			 */
+			min: () => LocalizedString
+			/**
+			 * Max
+			 */
+			max: () => LocalizedString
+			/**
+			 * Sum
+			 */
+			sum: () => LocalizedString
+			/**
+			 * Average
+			 */
+			average: () => LocalizedString
+			/**
+			 * Count
+			 */
+			count: () => LocalizedString
+			/**
+			 * Lookup
+			 */
+			lookup: () => LocalizedString
 		}
 	}
 }

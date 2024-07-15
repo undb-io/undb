@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Field, IReferenceFieldOption, ReferenceField } from "@undb/table"
+  import { FieldIdVo, type Field, type IReferenceFieldOption, type ReferenceField } from "@undb/table"
   import { Button } from "$lib/components/ui/button"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
   import { PencilIcon, TrashIcon } from "lucide-svelte"
@@ -70,6 +70,19 @@
     />
   {:else}
     <div class="w-full">
+      {#if field.type === "rollup" && field.referenceFieldId}
+        {@const referenceField = $table.schema.getFieldById(new FieldIdVo(field.referenceFieldId)).into(undefined)}
+        {#if referenceField}
+          <div class="space-y-0.5 border-b px-4 py-2 text-xs">
+            <div class="text-muted-foreground">Reference field</div>
+            <div class="flex items-center gap-2">
+              <FieldIcon type="reference" class="text-muted-foreground h-3 w-3" />
+              {referenceField.name.value}
+            </div>
+          </div>
+        {/if}
+      {/if}
+
       <Button
         class="w-full justify-start rounded-none border-none text-xs focus-visible:ring-0"
         variant="outline"
