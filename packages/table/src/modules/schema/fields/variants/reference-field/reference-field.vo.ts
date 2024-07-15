@@ -126,6 +126,15 @@ export class ReferenceField extends AbstractField<ReferenceFieldValue, undefined
     return this.option.unwrap().symmetricFieldId
   }
 
+  public override duplicate(name: string) {
+    return new ReferenceField({
+      type: "reference",
+      name,
+      option: { ...this.option.unwrap(), isOwner: true },
+      id: FieldIdVo.create().value,
+    })
+  }
+
   getRollupFields(fields: Field[]): RollupField[] {
     return fields.filter((f) => f.type === "rollup" && f.referenceFieldId === this.id.value) as RollupField[]
   }

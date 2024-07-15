@@ -32,10 +32,10 @@ import type {
 } from "@undb/table/src/specifications/table-forms.specification"
 import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
 import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, CreateTableBuilder, sql } from "kysely"
-import { all } from "radash"
 import type { IQueryBuilder } from "../qb"
 import { ConversionContext } from "./conversion/conversion.context"
 import { ConversionFactory } from "./conversion/conversion.factory"
+import { JoinTable } from "./reference/join-table"
 import type { UnderlyingTable } from "./underlying-table"
 import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
 
@@ -51,7 +51,9 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
 
   async execute() {
     await this.atb?.execute()
-    await all(this.sql.map((query) => this.qb.executeQuery(query)))
+    for (const query of this.sql) {
+      await this.qb.executeQuery(query)
+    }
   }
 
   #sql: CompiledQuery[] = []
@@ -133,7 +135,24 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
         .compile()
       this.addSql(query)
     } else {
-      // throw new Error("Not implemented to duplicate reference")
+      const { originalField, field } = schema
+      if (originalField.type !== "reference") {
+        throw new Error("Not implemented to duplicate reference when original field is not reference")
+      }
+      const joinTable = new JoinTable(this.table.table, field)
+      const originalJoinTable = new JoinTable(this.table.table, originalField)
+
+      const query = this.qb
+        .insertInto(joinTable.getTableName())
+        .columns([joinTable.getValueFieldId(), joinTable.getSymmetricValueFieldId()])
+        .expression((eb) =>
+          eb
+            .selectFrom(originalJoinTable.getTableName())
+            .select((eb) => [originalJoinTable.getValueFieldId(), originalJoinTable.getSymmetricValueFieldId()]),
+        )
+        .compile()
+
+      this.addSql(query)
     }
   }
   withoutField(schema: WithoutFieldSpecification): void {

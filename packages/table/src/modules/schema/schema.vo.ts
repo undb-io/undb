@@ -97,8 +97,7 @@ export class Schema extends ValueObject<Field[]> {
       throw new Error("Can't duplicate system field")
     }
 
-    const json = { ...field.toJSON(), id: FieldIdVo.create().value, name: this.getNextFieldName(field.name.value) }
-    const duplicated = FieldFactory.fromJSON(json)
+    const duplicated = field.duplicate(this.getNextFieldName(field.name.value))
 
     return new WithDuplicatedFieldSpecification(field, duplicated)
   }

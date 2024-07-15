@@ -10,5 +10,5 @@ export function duplicateFieldMethod(
   const spec = this.schema.$duplicateField(dto)
   const field = spec.field
 
-  return [field, andOptions(Some(spec), this.$createFieldSpec(field))]
+  return [field, andOptions(this.$createFieldSpec(field), Some(spec))]
 }

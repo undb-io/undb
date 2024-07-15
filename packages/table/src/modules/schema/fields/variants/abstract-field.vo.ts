@@ -159,6 +159,12 @@ export abstract class AbstractField<
     return this.validate(this.defaultValue.unwrap()).success
   }
 
+  duplicate(name: string) {
+    const json = { ...this.toJSON(), id: FieldIdVo.create().value, name }
+    const duplicated = new (Object.getPrototypeOf(this) as any).constructor(json)
+    return duplicated
+  }
+
   toJSON(): IFieldDTO {
     return {
       id: this.id.value,
