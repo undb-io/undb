@@ -10,6 +10,7 @@
     : undefined
 
   $: fns = rollupField ? getRollupFnByType(rollupField.type) : undefined
+  $: fns, (value = fns?.includes(value as any) ? value : fns?.[0])
 
   $: fnOptions = fns?.map((fn) => ({ value: fn, label: fn }))
 
@@ -28,12 +29,12 @@
     }}
   >
     <Select.Trigger class="w-full">
-      <Select.Value placeholder="Select a fn" />
+      <Select.Value class="text-xs" placeholder="Select a rollup function..." />
     </Select.Trigger>
-    <Select.Content>
+    <Select.Content sameWidth>
       <Select.Group>
         {#each fnOptions as option}
-          <Select.Item value={option.value} label={option.label}>
+          <Select.Item class="text-xs" value={option.value} label={option.label}>
             {option.label}
           </Select.Item>
         {/each}

@@ -144,7 +144,7 @@ export function getRollupFnByType(type: FieldType): IRollupFn[] {
   return match(type)
     .returnType<IRollupFn[]>()
     .with("number", () => ["sum", "average", "max", "min", "count", "lookup"])
-    .with("string", () => ["count", "lookup"])
+    .with("string", () => ["lookup", "count"])
     .otherwise(() => [])
 }
 

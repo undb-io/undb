@@ -7,21 +7,29 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import { cn } from "$lib/utils.js"
   import { getTable } from "$lib/store/table.store"
-  import { GetForeignTablesStore } from "$houdini"
+  import { GetForeignTablesStore, GetForeignTableStore } from "$houdini"
   import { group } from "radash"
 
   const table = getTable()
 
-  const foreignTableStore = new GetForeignTablesStore()
+  const getForeignTablesStore = new GetForeignTablesStore()
+  const getForeignTableStore = new GetForeignTableStore()
 
-  $: open && foreignTableStore.fetch()
-  $: foreignTables = $foreignTableStore.data?.tables.filter((t) => !!t) ?? []
+  $: open && getForeignTablesStore.fetch()
+  $: foreignTables = $getForeignTablesStore.data?.tables.filter((t) => !!t) ?? []
   $: groupTables = group(foreignTables, (t) => t.base.id)
 
   let open = false
   export let value: string | undefined = undefined
+  export let disabled: boolean = false
 
-  $: selectedValue = foreignTables.find((f) => f.id === value)?.name
+  $: selectedValue = foreignTables.find((f) => f.id === value)?.name ?? $getForeignTableStore.data?.table?.name ?? ""
+  let fetched = false
+  $: if (value && !selectedValue && !fetched) {
+    getForeignTableStore.fetch({ variables: { tableId: value } }).then(() => {
+      fetched = true
+    })
+  }
 
   // We want to refocus the trigger button when the user selects
   // an item from the list so users can continue navigating the
@@ -43,6 +51,7 @@
       size="sm"
       aria-expanded={open}
       class={cn("w-full justify-between", $$restProps.class)}
+      {disabled}
     >
       {#if selectedValue}
         {selectedValue}

@@ -90,6 +90,7 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO 
     } else {
       if (
         (field.type === "reference" ||
+          (field.type === "rollup" && field.fn === "lookup") ||
           field.type === "attachment" ||
           field.type === "json" ||
           ((field.type === "select" || field.type === "user") && field.isMultiple)) &&

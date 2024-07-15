@@ -2,13 +2,14 @@
   import type { ICreateReferenceFieldDTO, IReferenceFieldConstraint } from "@undb/table"
   import NumberInput from "$lib/components/ui/input/number-input.svelte"
   import { Label } from "$lib/components/ui/label/index.js"
-  import { Switch } from "$lib/components/ui/switch/index.js"
   import ForeignTablePicker from "../reference/foreign-table-picker.svelte"
   import { ExternalLinkIcon } from "lucide-svelte"
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
   import { Separator } from "$lib/components/ui/separator"
 
-  export let constraint: IReferenceFieldConstraint | undefined
+  export let constraint: IReferenceFieldConstraint | undefined = {
+    required: false,
+  }
   export let option: Partial<ICreateReferenceFieldDTO["option"]> = {
     foreignTableId: undefined,
     createSymmetricField: true,
@@ -23,7 +24,7 @@
         <ExternalLinkIcon class="mr-2 h-3 w-3" />
         Foreign table
       </Label>
-      <ForeignTablePicker bind:value={option.foreignTableId} class="text-xs" />
+      <ForeignTablePicker disabled={!isNew} bind:value={option.foreignTableId} class="text-xs" />
     </div>
   {/if}
   {#if isNew}

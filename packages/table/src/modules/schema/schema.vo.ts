@@ -74,7 +74,7 @@ export class Schema extends ValueObject<Field[]> {
 
   $updateField(dto: IUpdateFieldDTO) {
     const field = this.getFieldById(new FieldIdVo(dto.id)).expect("Field not found")
-    const updated = FieldFactory.fromJSON(dto)
+    const updated = field.update(dto)
     return new WithUpdatedFieldSpecification(field, updated)
   }
 

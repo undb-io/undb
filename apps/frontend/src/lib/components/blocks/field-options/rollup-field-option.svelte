@@ -12,6 +12,8 @@
   import { GetForeignTableQueryStore } from "$houdini"
   import { writable } from "svelte/store"
   import RollupFnPicker from "../rollup/rollup-fn-picker.svelte"
+  import Label from "$lib/components/ui/label/label.svelte"
+  import autoAnimate from "@formkit/auto-animate"
 
   const table = getTable()
 
@@ -37,24 +39,36 @@
 </script>
 
 <div class="space-y-2">
-  <FieldPicker
-    class="w-full"
-    {...$$restProps}
-    bind:value={option.referenceFieldId}
-    filter={(f) => f.type === "reference"}
-  />
-
-  {#if $foreignTableDo && fields?.length}
+  <div class="space-y-1">
+    <Label class="text-xs font-normal">Reference field</Label>
     <FieldPicker
-      class="w-full"
+      placeholder="Select a reference field..."
+      class="w-full justify-start"
       {...$$restProps}
-      bind:value={option.rollupFieldId}
-      table={foreignTableDo}
-      filter={(f) => fields.some((field) => field.id === f.id)}
+      bind:value={option.referenceFieldId}
+      filter={(f) => f.type === "reference"}
     />
-  {/if}
+  </div>
 
-  {#if $foreignTableDo && option.rollupFieldId}
-    <RollupFnPicker foreignTable={$foreignTableDo} rollupFieldId={option.rollupFieldId} bind:value={option.fn} />
-  {/if}
+  <div class="space-y-2" use:autoAnimate>
+    {#if $foreignTableDo && fields?.length}
+      <div class="space-y-1">
+        <Label class="text-xs font-normal">Foreign rollup field</Label>
+        <FieldPicker
+          class="w-full"
+          {...$$restProps}
+          bind:value={option.rollupFieldId}
+          table={foreignTableDo}
+          filter={(f) => fields.some((field) => field.id === f.id)}
+        />
+      </div>
+    {/if}
+
+    {#if $foreignTableDo && option.rollupFieldId}
+      <div class="space-y-1">
+        <Label class="text-xs font-normal">Aggregate function</Label>
+        <RollupFnPicker foreignTable={$foreignTableDo} rollupFieldId={option.rollupFieldId} bind:value={option.fn} />
+      </div>
+    {/if}
+  </div>
 </div>

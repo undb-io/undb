@@ -6,11 +6,12 @@ import type {
   RecordComositeSpecification,
 } from "../../../records/record/record.composite-specification"
 import type { IFieldCondition, MaybeFieldConditionWithFieldId } from "../condition/field-condition.type"
+import type { IUpdateFieldDTO } from "../dto"
 import type { IFieldDTO } from "../dto/field.dto"
 import type { FieldConstraintVO } from "../field-constraint.vo"
 import { FieldIdVo, fieldId, type FieldId } from "../field-id.vo"
 import { FieldNameVo, fieldName } from "../field-name.vo"
-import type { FieldType, FieldValue, IFieldConditionSchema, IFieldOption } from "../field.type"
+import type { Field, FieldType, FieldValue, IFieldConditionSchema, IFieldOption } from "../field.type"
 import { getIsFilterableFieldType, isFieldSortable } from "../field.util"
 import type { IFieldVisitor } from "../field.visitor"
 
@@ -157,6 +158,13 @@ export abstract class AbstractField<
   get isDefaultValueValid(): boolean {
     if (this.defaultValue.isNone()) return true
     return this.validate(this.defaultValue.unwrap()).success
+  }
+
+  update(dto: IUpdateFieldDTO): Field {
+    const json = { ...this.toJSON(), ...dto, type: this.type, id: this.id.value }
+    const updated = new (Object.getPrototypeOf(this) as any).constructor(json)
+
+    return updated
   }
 
   duplicate(name: string) {

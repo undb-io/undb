@@ -33,11 +33,12 @@
   export let value: string | undefined = undefined
   export let filter: ((field: IField) => boolean) | undefined = undefined
   export let onValueChange: ((value: FieldType | undefined, prev: FieldType) => void) | undefined = undefined
+  export let placeholder = "Select field..."
 
   $: filteredFields = filter ? fields.filter(filter) : fields
 
   $: selected = fields.find((f) => f.value === value)
-  $: selectedValue = selected?.label ?? "Select a field..."
+  $: selectedValue = selected?.label
 
   function closeAndFocusTrigger(triggerId: string) {
     open = false
@@ -59,11 +60,15 @@
       class={cn("justify-between", $$restProps.class)}
       {...$$restProps}
     >
-      <span class="flex items-center overflow-hidden text-ellipsis" title={selectedValue}>
+      <span class="flex flex-1 items-center overflow-hidden text-ellipsis" title={selectedValue}>
         {#if selected}
           <FieldIcon field={selected} type={selected.type} class="mr-2 h-3 w-3" />
         {/if}
-        {selectedValue}
+        {#if selectedValue}
+          {selectedValue}
+        {:else}
+          <span class="text-muted-foreground">{placeholder}</span>
+        {/if}
       </span>
       <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
     </Button>
@@ -75,7 +80,7 @@
         return label.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
       }}
     >
-      <Command.Input placeholder="Search field..." class="h-9" />
+      <Command.Input {placeholder} class="h-9 text-xs" />
       <Command.Empty>No field found.</Command.Empty>
       <Command.Group>
         <div class="-mx-1 max-h-[300px] overflow-y-auto">
