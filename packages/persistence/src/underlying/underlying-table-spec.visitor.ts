@@ -133,7 +133,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
         .compile()
       this.addSql(query)
     } else {
-      throw new Error("Not implemented to duplicate reference")
+      // throw new Error("Not implemented to duplicate reference")
     }
   }
   withoutField(schema: WithoutFieldSpecification): void {

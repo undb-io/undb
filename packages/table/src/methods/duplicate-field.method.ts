@@ -1,10 +1,14 @@
 import { andOptions, Option, Some } from "@undb/domain"
-import { type IDuplicateFieldDTO } from "../modules"
+import { type Field, type IDuplicateFieldDTO } from "../modules"
 import type { TableComositeSpecification } from "../specifications"
 import type { TableDo } from "../table.do"
 
-export function duplicateFieldMethod(this: TableDo, dto: IDuplicateFieldDTO): Option<TableComositeSpecification> {
+export function duplicateFieldMethod(
+  this: TableDo,
+  dto: IDuplicateFieldDTO,
+): [Field, Option<TableComositeSpecification>] {
   const spec = this.schema.$duplicateField(dto)
+  const field = spec.field
 
-  return andOptions(Some(spec), this.$createFieldSpec(spec.field))
+  return [field, andOptions(Some(spec), this.$createFieldSpec(field))]
 }

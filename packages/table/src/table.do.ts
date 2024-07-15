@@ -22,6 +22,7 @@ import { FieldIdVo, ViewFields, ViewOption, type Field, type FormId, type TableR
 import type { FormsVO } from "./modules/forms/forms.vo"
 import type { Schema } from "./modules/schema/schema.vo"
 import type { Views } from "./modules/views/views.vo"
+import { createReferenceField } from "./services/methods/create-table-field.method"
 import type { TableId } from "./table-id.vo"
 import type { TableNameVo } from "./table-name.vo"
 
@@ -55,6 +56,8 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   $duplicateView = duplicateViewMethod
   $deleteView = deleteViewMethod
   $setTableForm = setTableForm
+
+  #createReferenceField = createReferenceField
 
   getOrderedFields(formId?: FormId, viewId?: string): Field[] {
     const fields = this.schema.fields

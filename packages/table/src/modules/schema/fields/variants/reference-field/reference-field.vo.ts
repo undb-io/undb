@@ -70,12 +70,16 @@ export class ReferenceField extends AbstractField<ReferenceFieldValue, undefined
   }
 
   static createSymmetricField(foreignTable: TableDo, table: TableDo, field: ReferenceField) {
-    return new ReferenceField({
+    const symmetricField = new ReferenceField({
       type: "reference",
-      name: table.schema.getNextFieldName(field.name.value),
+      name: table.schema.getNextFieldName(foreignTable.name.value),
       option: { isOwner: false, foreignTableId: foreignTable.id.value, symmetricFieldId: field.id.value },
       id: FieldIdVo.create().value,
     })
+
+    symmetricField.connect(field)
+
+    return symmetricField
   }
 
   connect(field: ReferenceField) {
