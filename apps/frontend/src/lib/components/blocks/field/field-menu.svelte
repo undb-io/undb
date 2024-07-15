@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Field } from "@undb/table"
+  import type { Field, IReferenceFieldOption, ReferenceField } from "@undb/table"
   import { Button } from "$lib/components/ui/button"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
   import { PencilIcon, TrashIcon } from "lucide-svelte"
@@ -14,6 +14,9 @@
   import { invalidate } from "$app/navigation"
   import Label from "$lib/components/ui/label/label.svelte"
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
+  import { GetForeignTableStore } from "$houdini"
+  import * as Alert from "$lib/components/ui/alert"
+  import { preferences } from "$lib/store/persisted.store"
 
   export let field: Field
   const table = getTable()
@@ -21,9 +24,19 @@
   export let update = false
   export let open = false
 
-  let includeData = true
-
   const client = useQueryClient()
+
+  const foreignTableStore = new GetForeignTableStore()
+
+  let deleteAlertOpen = false
+  $: deleteAlertOpen &&
+    field.type === "reference" &&
+    foreignTableStore.fetch({ variables: { tableId: field.foreignTableId } })
+
+  $: symmetricField = $foreignTableStore.data?.table?.schema.find(
+    (f) => f.type === "reference" && f.id === (field as ReferenceField).symmetricFieldId,
+  )
+
   const deleteField = createMutation({
     mutationFn: trpc.table.field.delete.mutate,
     async onSuccess() {
@@ -58,7 +71,7 @@
   {:else}
     <div class="w-full">
       <Button
-        class="w-full justify-start rounded-none border-none text-xs"
+        class="w-full justify-start rounded-none border-none text-xs focus-visible:ring-0"
         variant="outline"
         on:click={() => (update = true)}
       >
@@ -71,7 +84,7 @@
           <AlertDialog.Trigger asChild let:builder>
             <Button
               builders={[builder]}
-              class="w-full justify-start rounded-none border-none text-xs"
+              class="w-full justify-start rounded-none border-none text-xs focus-visible:ring-0"
               variant="outline"
             >
               <TrashIcon class="mr-2 h-3 w-3" />
@@ -92,7 +105,7 @@
             </div>
 
             <Label class="flex items-center gap-2">
-              <Checkbox bind:checked={includeData} />
+              <Checkbox bind:checked={$preferences.duplicateFieldIncludeData} />
               Include data
             </Label>
 
@@ -103,7 +116,7 @@
                   $duplicateField.mutate({
                     tableId: $table.id.value,
                     id: field.id.value,
-                    includeData,
+                    includeData: $preferences.duplicateFieldIncludeData,
                   })
                 }}
               >
@@ -112,11 +125,11 @@
             </AlertDialog.Footer>
           </AlertDialog.Content>
         </AlertDialog.Root>
-        <AlertDialog.Root>
+        <AlertDialog.Root bind:open={deleteAlertOpen}>
           <AlertDialog.Trigger asChild let:builder>
             <Button
               builders={[builder]}
-              class="w-full justify-start rounded-none border-none text-xs text-red-500 hover:bg-red-50 hover:text-red-500"
+              class="w-full justify-start rounded-none border-none text-xs text-red-500 hover:bg-red-50 hover:text-red-500 focus-visible:ring-0"
               variant="outline"
             >
               <TrashIcon class="mr-2 h-3 w-3" />
@@ -125,10 +138,13 @@
           </AlertDialog.Trigger>
           <AlertDialog.Content>
             <AlertDialog.Header>
-              <AlertDialog.Title>Delete field</AlertDialog.Title>
+              <AlertDialog.Title class="flex items-center">
+                <TrashIcon class="mr-2 h-4 w-4" />
+                Delete field
+              </AlertDialog.Title>
               <AlertDialog.Description>
                 Are you sure you want to delete the following field? All data associated with this field will be delete
-                perminently from server.
+                perminently from table.
               </AlertDialog.Description>
             </AlertDialog.Header>
 
@@ -138,6 +154,27 @@
               <FieldIcon {field} type={field.type} class="h-4 w-4" />
               {field.name.value}
             </div>
+
+            {#if field.type === "reference"}
+              <Alert.Root class="border-yellow-500 bg-yellow-50">
+                <Alert.Title>Deleting reference field</Alert.Title>
+                <Alert.Description>
+                  The following symmetric field
+                  <span
+                    class="text-muted-foreground inline-flex items-center gap-1 rounded-sm border bg-gray-50 p-1 text-xs shadow-sm"
+                  >
+                    <FieldIcon {field} type={field.type} class="h-3 w-3" />
+                    {field.name.value}
+                  </span>
+
+                  of
+                  <span class="font-bold">
+                    {$foreignTableStore.data?.table?.name}
+                  </span>
+                  will also be deleted.
+                </Alert.Description>
+              </Alert.Root>
+            {/if}
 
             <AlertDialog.Footer>
               <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
@@ -150,6 +187,7 @@
                   })
                 }}
               >
+                <TrashIcon class="mr-2 h-4 w-4" />
                 Delete field
               </AlertDialog.Action>
             </AlertDialog.Footer>

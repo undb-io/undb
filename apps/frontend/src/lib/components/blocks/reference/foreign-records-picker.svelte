@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createMutation, createQuery } from "@tanstack/svelte-query"
+  import { createMutation, createQuery, useQueryClient } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { ID_TYPE, Records, ReferenceField, TableDo, type IRecordsDTO } from "@undb/table"
   import { derived, readable, writable, type Readable, type Writable } from "svelte/store"
@@ -18,6 +18,7 @@
   import Label from "$lib/components/ui/label/label.svelte"
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
   import ForeignRecordDetailButton from "./foreign-record-detail-button.svelte"
+  import { invalidate } from "$app/navigation"
 
   export let foreignTable: Readable<TableDo>
   export let isSelected = false
@@ -76,9 +77,13 @@
   $: records = (($getForeignTableRecords.data as any)?.records as IRecordsDTO) ?? []
   $: dos = Records.fromJSON($foreignTable, records).map
 
+  const client = useQueryClient()
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
     mutationFn: trpc.record.update.mutate,
+    async onSuccess(data, variables, context) {
+      await client.invalidateQueries({ queryKey: ["records", field.foreignTableId] })
+    },
     onError(error: Error) {
       toast.error(error.message)
     },

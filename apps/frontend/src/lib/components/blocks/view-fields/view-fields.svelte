@@ -139,25 +139,27 @@
                     {field.name.value}
                   </div>
                 </div>
-                <button class="text-muted-foreground handler">
-                  <GripVerticalIcon class="h-3 w-3" />
-                </button>
+                <div class="inline-flex items-center gap-1">
+                  <button class="text-muted-foreground handler">
+                    <GripVerticalIcon class="h-3 w-3" />
+                  </button>
 
-                <Popover.Root
-                  bind:open={menuOpen}
-                  portal="body"
-                  onOpenChange={(open) => {
-                    if (!open) {
-                      update = false
-                    }
-                  }}
-                >
-                  <Popover.Trigger>
-                    <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
-                  </Popover.Trigger>
+                  <Popover.Root
+                    bind:open={menuOpen}
+                    portal="body"
+                    onOpenChange={(open) => {
+                      if (!open) {
+                        update = false
+                      }
+                    }}
+                  >
+                    <Popover.Trigger>
+                      <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
+                    </Popover.Trigger>
 
-                  <FieldMenu bind:update bind:open={menuOpen} {field} />
-                </Popover.Root>
+                    <FieldMenu bind:update bind:open={menuOpen} {field} />
+                  </Popover.Root>
+                </div>
               </div>
             {/if}
           {/each}

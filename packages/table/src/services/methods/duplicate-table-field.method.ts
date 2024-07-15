@@ -8,12 +8,11 @@ export async function duplicateTableFieldMethod(this: TableService, dto: IDuplic
   const table = (await this.repository.findOneById(new TableIdVo(dto.tableId))).expect("Not found table")
 
   const [field, spec] = table.$duplicateField(dto)
-  await this.repository.updateOneById(table, spec)
 
   if (field.type === "reference") {
-    const foreignTable = await (
-      await this.repository.findOneById(new TableIdVo(field.foreignTableId))
-    ).expect("Not found foreign table")
+    const foreignTable = (await this.repository.findOneById(new TableIdVo(field.foreignTableId))).expect(
+      "Not found foreign table",
+    )
 
     const symmetricField = ReferenceField.createSymmetricField(table, foreignTable, field)
 
@@ -21,6 +20,8 @@ export async function duplicateTableFieldMethod(this: TableService, dto: IDuplic
 
     await this.repository.updateOneById(foreignTable, foreignSpec)
   }
+
+  await this.repository.updateOneById(table, spec)
 
   return table
 }

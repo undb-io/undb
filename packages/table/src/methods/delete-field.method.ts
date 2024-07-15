@@ -1,14 +1,15 @@
 import { andOptions, None, Option, Some } from "@undb/domain"
 import { FieldDeletedEvent } from "../events"
-import { type IDeleteFieldDTO } from "../modules"
+import { type Field, type IDeleteFieldDTO } from "../modules"
 import type { TableComositeSpecification } from "../specifications"
 import type { TableDo } from "../table.do"
 
-export function deleteFieldMethod(this: TableDo, dto: IDeleteFieldDTO): Option<TableComositeSpecification> {
+export function deleteFieldMethod(this: TableDo, dto: IDeleteFieldDTO): [Field, Option<TableComositeSpecification>] {
   const deleteFieldSpec = this.schema.$deleteField(dto)
-  const formDeleteFieldSpec = this.forms?.$deleteField(deleteFieldSpec.field)
-  const viewDeleteFieldSpec = this.views.$deleteField(deleteFieldSpec.field)
-  const rlsDeleteFieldSpec = this.rls.into(undefined)?.$deleteField(deleteFieldSpec.field)
+  const field = deleteFieldSpec.field
+  const formDeleteFieldSpec = this.forms?.$deleteField(field)
+  const viewDeleteFieldSpec = this.views.$deleteField(field)
+  const rlsDeleteFieldSpec = this.rls.into(undefined)?.$deleteField(field)
 
   const spec = andOptions(
     //
@@ -22,9 +23,9 @@ export function deleteFieldMethod(this: TableDo, dto: IDeleteFieldDTO): Option<T
 
   const event = new FieldDeletedEvent({
     tableId: this.id.value,
-    field: deleteFieldSpec.field.toJSON(),
+    field: field.toJSON(),
   })
   this.addDomainEvent(event)
 
-  return Some(spec)
+  return [deleteFieldSpec.field, Some(spec)]
 }

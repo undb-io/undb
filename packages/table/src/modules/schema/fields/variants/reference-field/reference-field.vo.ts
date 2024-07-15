@@ -82,8 +82,9 @@ export class ReferenceField extends AbstractField<ReferenceFieldValue, undefined
     return symmetricField
   }
 
-  connect(field: ReferenceField) {
-    this.option.expect("no reference field option").symmetricFieldId = field.id.value
+  connect(symmetricField: ReferenceField) {
+    this.option.expect("no reference field option").symmetricFieldId = symmetricField.id.value
+    symmetricField.option.expect("no reference field option").symmetricFieldId = this.id.value
   }
 
   override type = REFERENCE_TYPE
@@ -130,7 +131,11 @@ export class ReferenceField extends AbstractField<ReferenceFieldValue, undefined
     return new ReferenceField({
       type: "reference",
       name,
-      option: { ...this.option.unwrap(), isOwner: true },
+      option: {
+        isOwner: true,
+        foreignTableId: this.foreignTableId,
+        symmetricFieldId: undefined,
+      },
       id: FieldIdVo.create().value,
     })
   }

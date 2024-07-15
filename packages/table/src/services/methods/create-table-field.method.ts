@@ -26,7 +26,6 @@ export async function createReferenceField(
 
   const referenceField = ReferenceField.create(field)
   const symmetricField = ReferenceField.createSymmetricField(table, foreignTable, referenceField)
-  referenceField.connect(symmetricField)
 
   const spec = table.$createFieldSpec(referenceField)
   const foreignSpec = foreignTable.$createFieldSpec(symmetricField)

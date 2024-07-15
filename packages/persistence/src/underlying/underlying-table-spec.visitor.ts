@@ -160,7 +160,12 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
       const query = this.tb.dropColumn(schema.field.id.value).compile()
       this.addSql(query)
     } else {
-      throw new Error("Not implemented to delete reference")
+      const field = schema.field
+      if (field.isOwner) {
+        const joinTable = new JoinTable(this.table.table, field)
+        const query = this.qb.schema.dropTable(joinTable.getTableName()).compile()
+        this.addSql(query)
+      }
     }
   }
   withTableRLS(rls: WithTableRLS): void {}
