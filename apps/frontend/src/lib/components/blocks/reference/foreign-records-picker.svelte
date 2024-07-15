@@ -143,7 +143,7 @@
       </button>
     {/if}
   </div>
-  {#if !records.length && $getForeignTableRecords.isFetched}
+  {#if !records.length && !$getForeignTableRecords.isLoading}
     <div class="flex flex-1 flex-col items-center justify-center space-y-2 py-8">
       <InboxIcon class="h-12 w-12" />
       <p class="text-muted-foreground text-sm">No available records to link in table {$foreignTable.name.value}</p>

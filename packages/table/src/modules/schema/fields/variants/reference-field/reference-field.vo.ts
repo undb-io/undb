@@ -2,7 +2,6 @@ import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { tableId } from "../../../../../table-id.vo"
 import type { TableDo } from "../../../../../table.do"
-import { recordId } from "../../../../records/record/record-id.vo"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { Field } from "../../field.type"
@@ -102,7 +101,7 @@ export class ReferenceField extends AbstractField<
   override type = REFERENCE_TYPE
 
   override get valueSchema() {
-    return recordId.array().optional().nullable()
+    return this.constraint.unwrapOrElse(() => new ReferenceFieldConstraint({})).schema
   }
 
   override accept(visitor: IFieldVisitor): void {
