@@ -135,3 +135,20 @@ export class WithUpdatedFieldSpecification extends TableComositeSpecification {
     return Ok(undefined)
   }
 }
+
+export class WithForeignRollupFieldSpec extends TableComositeSpecification {
+  constructor(public readonly fieldId: string) {
+    super()
+  }
+
+  isSatisfiedBy(t: TableDo): boolean {
+    throw new Error("Method not implemented.")
+  }
+  mutate(t: TableDo): Result<TableDo, string> {
+    throw new Error("Method not implemented.")
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withForeignRollupField(this)
+    return Ok(undefined)
+  }
+}

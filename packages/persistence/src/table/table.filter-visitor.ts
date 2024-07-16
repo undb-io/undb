@@ -10,11 +10,14 @@ import type {
   TableSchemaSpecification,
   TableViewsSpecification,
   WithDuplicatedFieldSpecification,
+  WithForeignRollupFieldSpec,
   WithFormIdSpecification,
   WithFormSpecification,
   WithNewFieldSpecification,
   WithNewFormSpecification,
   WithNewView,
+  WithoutFieldSpecification,
+  WithoutView,
   WithTableRLS,
   WithUpdatedFieldSpecification,
   WithView,
@@ -25,14 +28,20 @@ import type {
   WithViewIdSpecification,
   WithViewOption,
   WithViewSort,
-  WithoutFieldSpecification,
-  WithoutView,
 } from "@undb/table"
 import { eq, inArray } from "drizzle-orm"
+import type { SQLiteSelectQueryBuilder } from "drizzle-orm/sqlite-core"
 import { AbstractDBFilterVisitor } from "../abstract-db.visitor"
-import { tableIdMapping, tables } from "../tables"
+import type { Database } from "../db"
+import { rollupIdMapping, tableIdMapping, tables } from "../tables"
 
 export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> implements ITableSpecVisitor {
+  constructor(
+    private readonly db: Database,
+    sb: SQLiteSelectQueryBuilder<any, any, any>,
+  ) {
+    super(sb)
+  }
   withBaseId(id: TableBaseIdSpecification): void {
     this.addCond(eq(tables.baseId, id.baseId))
   }
@@ -110,13 +119,22 @@ export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> impleme
     throw new WontImplementException(TableFilterVisitor.name + ".withSchema")
   }
   withFormId(spec: WithFormIdSpecification): void {
-    this.qb = this.qb!.leftJoin(tableIdMapping, eq(tableIdMapping.tableId, tables.id))
+    this.sb = this.sb!.leftJoin(tableIdMapping, eq(tableIdMapping.tableId, tables.id))
 
     this.addCond(eq(tableIdMapping.subjectId, spec.formId))
   }
   withViewId(spec: WithViewIdSpecification): void {
-    this.qb = this.qb!.leftJoin(tableIdMapping, eq(tableIdMapping.tableId, tables.id))
+    this.sb = this.sb!.leftJoin(tableIdMapping, eq(tableIdMapping.tableId, tables.id))
 
     this.addCond(eq(tableIdMapping.subjectId, spec.viewId))
+  }
+  withForeignRollupField(spec: WithForeignRollupFieldSpec): void {
+    const subQuery = this.db
+      .select({ tableId: rollupIdMapping.rollupTableId })
+      .from(rollupIdMapping)
+      .where(eq(rollupIdMapping.fieldId, spec.fieldId))
+
+    const cond = inArray(tables.id, subQuery)
+    this.addCond(cond)
   }
 }

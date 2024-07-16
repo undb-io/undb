@@ -8,7 +8,7 @@ export interface IAbastractDBFilterVisitor {
 }
 
 export abstract class AbstractDBFilterVisitor<T> implements IAbastractDBFilterVisitor, ISpecVisitor {
-  constructor(public qb?: SQLiteSelectQueryBuilder) {}
+  constructor(public sb?: SQLiteSelectQueryBuilder) {}
 
   #conds: (SQL | undefined)[] = []
 

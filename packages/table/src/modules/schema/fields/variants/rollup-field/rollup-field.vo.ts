@@ -1,10 +1,12 @@
 import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
+import type { TableDo } from "../../../../../table.do"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { createAbstractNumberFieldMather } from "../abstractions"
 import type { INumberFieldCondition } from "../number-field"
+import type { ReferenceField } from "../reference-field"
 import { RollupFieldValue } from "./rollup-field-value.vo"
 import { rollupFieldAggregate } from "./rollup-field.aggregate"
 import { createRollupFieldCondition, type IRollupFieldConditionSchema } from "./rollup-field.condition"
@@ -101,6 +103,15 @@ export class RollupField extends AbstractField<RollupFieldValue, undefined, IRol
 
   get rollupFieldId() {
     return this.option.mapOr(undefined, (o) => o.rollupFieldId)
+  }
+
+  getReferenceField(table: TableDo) {
+    if (!this.referenceFieldId) {
+      throw new Error("reference field not found")
+    }
+    return table.schema
+      .getFieldById(new FieldIdVo(this.referenceFieldId))
+      .expect("reference field not found") as ReferenceField
   }
 
   get fn() {

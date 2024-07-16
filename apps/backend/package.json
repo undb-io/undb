@@ -7,7 +7,7 @@
     "build": "bun build --compile src/index.ts --target=bun --sourcemap --outfile undb"
   },
   "dependencies": {
-    "@elysiajs/cors": "^1.0.4",
+    "@elysiajs/cors": "^1.0.5",
     "@elysiajs/cron": "^1.0.3",
     "@elysiajs/html": "^1.0.2",
     "@elysiajs/static": "^1.0.3",
@@ -31,7 +31,7 @@
     "@undb/share": "workspace:*",
     "@undb/trpc": "workspace:*",
     "@undb/webhook": "workspace:*",
-    "bun": "^1.1.18",
+    "bun": "^1.1.20",
     "core-js": "^3.37.1",
     "elysia": "^1.0.27",
     "got": "^14.4.1",

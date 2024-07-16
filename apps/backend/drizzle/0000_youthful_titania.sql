@@ -28,6 +28,16 @@ CREATE TABLE `undb_outbox` (
 	`name` text NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE `undb_rollup_id_mapping` (
+	`field_id` text NOT NULL,
+	`table_id` text NOT NULL,
+	`rollup_id` text NOT NULL,
+	`rollup_table_id` text NOT NULL,
+	PRIMARY KEY(`field_id`, `rollup_id`),
+	FOREIGN KEY (`table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`rollup_table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
 CREATE TABLE `undb_session` (
 	`id` text PRIMARY KEY NOT NULL,
 	`user_id` text NOT NULL,

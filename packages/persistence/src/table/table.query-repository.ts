@@ -25,26 +25,26 @@ export class TableQueryRepository implements ITableQueryRepository {
   }
 
   async find(spec: Option<TableComositeSpecification>): Promise<ITableDTO[]> {
-    const qb = this.db.select({ table: tables }).from(tables).$dynamic()
+    const sb = this.db.select({ table: tables }).from(tables).$dynamic()
 
-    const result = await new TableDbQuerySpecHandler(qb).handle(spec)
+    const result = await new TableDbQuerySpecHandler(this.db, sb).handle(spec)
 
     return result.map((r) => this.mapper.toDTO(r.table))
   }
 
   async findOne(spec: TableComositeSpecification): Promise<Option<ITableDTO>> {
-    const qb = this.db.select({ table: tables }).from(tables).$dynamic()
+    const sb = this.db.select({ table: tables }).from(tables).$dynamic()
 
-    const tb = await new TableDbQuerySpecHandler(qb).handle(Some(spec)).limit(1)
+    const tb = await new TableDbQuerySpecHandler(this.db, sb).handle(Some(spec)).limit(1)
 
     return tb.length ? Some(this.mapper.toDTO(tb[0].table)) : None
   }
 
   async findOneById(id: TableId): Promise<Option<ITableDTO>> {
-    const qb = this.db.select({ table: tables }).from(tables).$dynamic()
+    const sb = this.db.select({ table: tables }).from(tables).$dynamic()
 
     const spec = Some(new TableIdSpecification(id))
-    const tb = await new TableDbQuerySpecHandler(qb).handle(spec).limit(1)
+    const tb = await new TableDbQuerySpecHandler(this.db, sb).handle(spec).limit(1)
 
     return tb.length ? Some(this.mapper.toDTO(tb[0].table)) : None
   }

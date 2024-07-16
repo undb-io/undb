@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "6ff6d5ef-636b-4818-99fa-09e207254c9d",
+  "id": "11ce75fd-339e-4f7a-bc33-f358dabb5608",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_audit": {
@@ -193,6 +193,67 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "undb_rollup_id_mapping": {
+      "name": "undb_rollup_id_mapping",
+      "columns": {
+        "field_id": {
+          "name": "field_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "table_id": {
+          "name": "table_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "rollup_id": {
+          "name": "rollup_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "rollup_table_id": {
+          "name": "rollup_table_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "undb_rollup_id_mapping_table_id_undb_table_id_fk": {
+          "name": "undb_rollup_id_mapping_table_id_undb_table_id_fk",
+          "tableFrom": "undb_rollup_id_mapping",
+          "tableTo": "undb_table",
+          "columnsFrom": ["table_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "undb_rollup_id_mapping_rollup_table_id_undb_table_id_fk": {
+          "name": "undb_rollup_id_mapping_rollup_table_id_undb_table_id_fk",
+          "tableFrom": "undb_rollup_id_mapping",
+          "tableTo": "undb_table",
+          "columnsFrom": ["rollup_table_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "undb_rollup_id_mapping_field_id_rollup_id_pk": {
+          "columns": ["field_id", "rollup_id"],
+          "name": "undb_rollup_id_mapping_field_id_rollup_id_pk"
+        }
+      },
       "uniqueConstraints": {}
     },
     "undb_session": {

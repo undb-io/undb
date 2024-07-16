@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@undb/env": "workspace:*",
-    "pino": "^9.2.0",
+    "pino": "^9.3.1",
     "pino-pretty": "^11.2.1"
   }
 }

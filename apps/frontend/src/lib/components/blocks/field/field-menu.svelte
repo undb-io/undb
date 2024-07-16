@@ -1,5 +1,11 @@
 <script lang="ts">
-  import { FieldIdVo, type Field, type IReferenceFieldOption, type ReferenceField } from "@undb/table"
+  import {
+    FieldIdVo,
+    getIsFieldCanBeRollup,
+    type Field,
+    type IReferenceFieldOption,
+    type ReferenceField,
+  } from "@undb/table"
   import { Button } from "$lib/components/ui/button"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
   import { PencilIcon, TrashIcon } from "lucide-svelte"
@@ -14,7 +20,7 @@
   import { invalidate } from "$app/navigation"
   import Label from "$lib/components/ui/label/label.svelte"
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
-  import { GetForeignTableStore } from "$houdini"
+  import { GetForeignTableStore, GetRollupForeignTablesStore } from "$houdini"
   import * as Alert from "$lib/components/ui/alert"
   import { preferences } from "$lib/store/persisted.store"
 
@@ -36,6 +42,14 @@
   $: symmetricField = $foreignTableStore.data?.table?.schema.find(
     (f) => f.type === "reference" && f.id === (field as ReferenceField).symmetricFieldId,
   )
+
+  const getRollupForeignTablesStore = new GetRollupForeignTablesStore()
+
+  $: deleteAlertOpen &&
+    getIsFieldCanBeRollup(field.type) &&
+    getRollupForeignTablesStore.fetch({
+      variables: { tableId: $table.id.value, fieldId: field.id.value },
+    })
 
   const deleteField = createMutation({
     mutationFn: trpc.table.field.delete.mutate,
@@ -170,7 +184,7 @@
 
             {#if field.type === "reference"}
               <Alert.Root class="border-yellow-500 bg-yellow-50">
-                <Alert.Title>Deleting reference field</Alert.Title>
+                <Alert.Title>Deleting symmetric fields</Alert.Title>
                 <Alert.Description>
                   The following symmetric field
                   <span

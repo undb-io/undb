@@ -57,6 +57,25 @@ export const tableIdMapping = sqliteTable(
   },
 )
 
+export const rollupIdMapping = sqliteTable(
+  "rollup_id_mapping",
+  {
+    fieldId: text("field_id").notNull(),
+    tableId: text("table_id")
+      .notNull()
+      .references(() => tables.id),
+    rollupId: text("rollup_id").notNull(),
+    rollupTableId: text("rollup_table_id")
+      .notNull()
+      .references(() => tables.id),
+  },
+  (table) => {
+    return {
+      pk: primaryKey({ columns: [table.fieldId, table.rollupId] }),
+    }
+  },
+)
+
 export type Table = typeof tables.$inferSelect
 export type NewTable = typeof tables.$inferInsert
 

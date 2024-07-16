@@ -10,6 +10,7 @@ import type {
   TableSchemaSpecification,
   TableViewsSpecification,
   WithDuplicatedFieldSpecification,
+  WithForeignRollupFieldSpec,
   WithFormIdSpecification,
   WithFormSpecification,
   WithNewFieldSpecification,
@@ -28,10 +29,10 @@ import type {
   WithoutFieldSpecification,
   WithoutView,
 } from "@undb/table"
-import { eq } from "drizzle-orm"
+import { eq, or } from "drizzle-orm"
 import { AbstractDBMutationVisitor } from "../abstract-db.visitor"
 import type { Database } from "../db"
-import { tableIdMapping, type tables } from "../tables"
+import { rollupIdMapping, tableIdMapping, type tables } from "../tables"
 
 export class TableMutationVisitor
   extends AbstractDBMutationVisitor<TableDo, typeof tables>
@@ -47,6 +48,9 @@ export class TableMutationVisitor
     throw new Error("Method not implemented.")
   }
   withFormId(spec: WithFormIdSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withForeignRollupField(spec: WithForeignRollupFieldSpec): void {
     throw new Error("Method not implemented.")
   }
   withBaseId(id: TableBaseIdSpecification): void {
@@ -87,11 +91,26 @@ export class TableMutationVisitor
     this.addSql(insert)
   }
   withNewField(schema: WithNewFieldSpecification): void {
+    const field = schema.field
+
     this.addUpdates({ schema: this.table.schema?.toJSON() })
-    const insert = this.db
-      .insert(tableIdMapping)
-      .values({ tableId: this.table.id.value, subjectId: schema.field.id.value })
+    const insert = this.db.insert(tableIdMapping).values({ tableId: this.table.id.value, subjectId: field.id.value })
     this.addSql(insert)
+
+    if (field.type === "rollup") {
+      const referenceField = field.getReferenceField(this.table)
+      const option = field.option.unwrap()
+      const insertRollup = this.db
+        .insert(rollupIdMapping)
+        .values({
+          fieldId: option.rollupFieldId,
+          tableId: referenceField.foreignTableId,
+          rollupId: field.id.value,
+          rollupTableId: this.table.id.value,
+        })
+        .onConflictDoNothing()
+      this.addSql(insertRollup)
+    }
   }
   withDuplicateField(schema: WithDuplicatedFieldSpecification): void {}
   withoutField(schema: WithoutFieldSpecification): void {
@@ -99,6 +118,13 @@ export class TableMutationVisitor
 
     const deleteQuery = this.db.delete(tableIdMapping).where(eq(tableIdMapping.subjectId, schema.field.id.value))
     this.addSql(deleteQuery)
+
+    const deleteRollup = this.db
+      .delete(rollupIdMapping)
+      .where(
+        or(eq(rollupIdMapping.fieldId, schema.field.id.value), eq(rollupIdMapping.rollupId, schema.field.id.value)),
+      )
+    this.addSql(deleteRollup)
   }
   withViewAggregate(viewColor: WithViewAggregate): void {
     this.addUpdates({ views: this.table.views?.toJSON() })

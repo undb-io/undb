@@ -93,19 +93,19 @@ export class TableRepository implements ITableRepository {
   }
 
   async findOneById(id: TableId): Promise<Option<TableDo>> {
-    const qb = this.db.select({ table: tables }).from(tables).$dynamic()
+    const sb = this.db.select({ table: tables }).from(tables).$dynamic()
 
     const spec = Some(new TableIdSpecification(id))
-    const tb = await new TableDbQuerySpecHandler(qb).handle(spec).limit(1)
+    const tb = await new TableDbQuerySpecHandler(this.db, sb).handle(spec).limit(1)
 
     return tb.length ? Some(this.mapper.toDo(tb[0].table)) : None
   }
 
   async findManyByIds(ids: TableId[]): Promise<TableDo[]> {
-    const qb = this.db.select({ table: tables }).from(tables).$dynamic()
+    const sb = this.db.select({ table: tables }).from(tables).$dynamic()
 
     const spec = Some(new TableIdsSpecification(ids))
-    const tb = await new TableDbQuerySpecHandler(qb).handle(spec)
+    const tb = await new TableDbQuerySpecHandler(this.db, sb).handle(spec)
 
     return tb.map((t) => this.mapper.toDo(t.table))
   }

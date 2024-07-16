@@ -10,6 +10,7 @@ import {
   GetMembersByIdsQuery,
   GetMembersQuery,
   GetRecordAuditsQuery,
+  GetRollupForeignTablesQuery,
   GetShareQuery,
   GetTableByShareQuery,
   GetTableQuery,
@@ -216,6 +217,7 @@ export class Graphql {
 
         tables: [Table]!
         table(id: ID!): Table
+        rollupForeignTables(tableId: ID!, fieldId: ID!): [Table!]!
 
         bases: [Base]
         base(id: ID!): Base!
@@ -257,6 +259,14 @@ export class Graphql {
           },
           tables: async () => {
             return this.queryBus.execute(new GetTablesQuery())
+          },
+          rollupForeignTables: async (_, args) => {
+            return this.queryBus.execute(
+              new GetRollupForeignTablesQuery({
+                tableId: args.tableId,
+                fieldId: args.fieldId,
+              }),
+            )
           },
           bases: async () => {
             return this.queryBus.execute(new GetBasesQuery())

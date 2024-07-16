@@ -10,6 +10,7 @@ import type {
   TableViewsSpecification,
   UserField,
   WithDuplicatedFieldSpecification,
+  WithForeignRollupFieldSpec,
   WithNewFieldSpecification,
   WithNewView,
   WithoutFieldSpecification,
@@ -65,6 +66,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
   }
 
   withFormId(spec: WithFormIdSpecification): void {}
+  withForeignRollupField(spec: WithForeignRollupFieldSpec): void {}
   withBaseId(id: TableBaseIdSpecification): void {}
   idsIn(ids: TableIdsSpecification): void {}
   withNewView(views: WithNewView): void {}

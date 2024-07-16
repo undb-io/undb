@@ -71,6 +71,7 @@ type Query {
   members(q: String): [WorkspaceMember]!
   membersByIds(ids: [ID!]!): [WorkspaceMember!]!
   recordAudits(recordId: ID!): [Audit]
+  rollupForeignTables(fieldId: ID!, tableId: ID!): [Table!]!
   share(id: ID!): Share
   table(id: ID!): Table
   tableByShare(shareId: ID!): Table

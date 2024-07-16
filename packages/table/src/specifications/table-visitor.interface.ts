@@ -12,6 +12,7 @@ import type { WithTableRLS } from "./table-rls.specification"
 import type {
   TableSchemaSpecification,
   WithDuplicatedFieldSpecification,
+  WithForeignRollupFieldSpec,
   WithNewFieldSpecification,
   WithoutFieldSpecification,
   WithUpdatedFieldSpecification,
@@ -56,4 +57,5 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withFormId(spec: WithFormIdSpecification): void
   withNewForm(views: WithNewFormSpecification): void
   withForm(views: WithFormSpecification): void
+  withForeignRollupField(spec: WithForeignRollupFieldSpec): void
 }
