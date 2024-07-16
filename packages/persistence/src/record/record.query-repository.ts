@@ -1,11 +1,10 @@
 import { executionContext } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
-import { None, Option, Some, andOptions, type PaginatedDTO } from "@undb/domain"
+import { None, Option, Some, type PaginatedDTO } from "@undb/domain"
 import {
   AUTO_INCREMENT_TYPE,
   FieldIdVo,
   ID_TYPE,
-  RecordComositeSpecification,
   TableIdVo,
   injectTableRepository,
   type AggregateResult,
@@ -26,6 +25,8 @@ import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { RecordQueryHelper } from "./record-query.helper"
+import { RecordReferenceVisitor } from "./record-reference-visitor"
+import { RecordSpecReferenceVisitor } from "./record-spec-reference-visitor"
 import { getRecordDTOFromEntity } from "./record-utils"
 import { AggregateFnBuiler } from "./record.aggregate-builder"
 import { RecordMapper } from "./record.mapper"
@@ -99,15 +100,11 @@ export class RecordQueryRepository implements IRecordQueryRepository {
 
     const t = new UnderlyingTable(table)
     const view = table.views.getViewById(viewId.into(undefined)?.value)
-    const schema = table.schema
-
-    const viewSpec = view.filter.map((f) => f.getSpec(schema)).flatten()
-    const rlsSpec = table.rls.map((r) => r.getSpec(schema, "read", userId)).flatten()
 
     const filter = query.into(undefined)?.filter.into(undefined)
     const sort = view.sort.into(undefined)?.value ?? [{ fieldId: AUTO_INCREMENT_TYPE, direction: "asc" }]
 
-    const spec = andOptions(rlsSpec, viewSpec, Option(filter)) as Option<RecordComositeSpecification>
+    const spec = table.getQuerySpec({ viewId: view.id.value, userId, filter })
     const pagination = query.into(undefined)?.pagination.into(undefined)
     const select = query.into(undefined)?.select.into(undefined)
 
@@ -133,7 +130,14 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return { values: records, total: Number(total) }
   }
 
-  async aggregate(table: TableDo, viewId: Option<ViewId>): Promise<Record<string, AggregateResult>> {
+  async aggregate(
+    table: TableDo,
+    viewId: Option<ViewId>,
+    query: Option<QueryArgs>,
+  ): Promise<Record<string, AggregateResult>> {
+    const context = executionContext.getStore()
+    const userId = context?.user?.userId!
+
     const t = new UnderlyingTable(table)
     const view = table.views.getViewById(viewId.into(undefined)?.value)
     const aggregates = view.aggregate
@@ -144,12 +148,27 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       return {}
     }
 
-    const viewSpec = Option(
-      view.filter.into(undefined)?.getSpec(table.schema).into(undefined),
-    ) as Option<RecordComositeSpecification>
+    const filter = query.into(undefined)?.filter.into(undefined)
+    const spec = table.getQuerySpec({ viewId: view.id.value, userId, filter })
 
-    const result = await this.qb
+    const select = query.into(undefined)?.select.into(undefined)
+    const selectFields = select
+      ? select.map((f) => table.schema.getFieldById(new FieldIdVo(f)).into(undefined)).filter((f) => !!f)
+      : table.getOrderedVisibleFields(view.id.value)
+
+    const foreignTables = await this.getForeignTables(table, selectFields)
+    const qb = this.helper.createQueryCreator(table, foreignTables, selectFields, spec)
+
+    const result = await qb
       .selectFrom(t.name)
+      .$call((qb) => new RecordReferenceVisitor(qb, table).join(selectFields))
+      .$call((qb) => {
+        const visitor = new RecordSpecReferenceVisitor(qb, table)
+        if (spec.isSome()) {
+          spec.unwrap().accept(visitor)
+        }
+        return visitor.join()
+      })
       .select((eb) => {
         const ebs: AliasedExpression<any, any>[] = []
 
@@ -161,12 +180,12 @@ export class RecordQueryRepository implements IRecordQueryRepository {
           if (!field) {
             continue
           }
-          const builder = new AggregateFnBuiler(eb, field, fieldAggregate)
+          const builder = new AggregateFnBuiler(t, eb, field, fieldAggregate)
           ebs.push(builder.build())
         }
         return ebs
       })
-      .where(this.helper.handleWhere(table, viewSpec))
+      .where(this.helper.handleWhere(table, spec))
       .executeTakeFirst()
 
     return result ?? {}

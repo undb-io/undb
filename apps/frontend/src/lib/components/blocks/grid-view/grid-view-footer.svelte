@@ -5,6 +5,7 @@
   import { trpc } from "$lib/trpc/client"
   import { cn } from "$lib/utils"
   import { createMutation } from "@tanstack/svelte-query"
+  import { LL } from "@undb/i18n/client"
   import type { AggregateResult, Field, IFieldAggregate, IViewAggregate } from "@undb/table"
   import type { Selected } from "bits-ui"
   import { derived } from "svelte/store"
@@ -14,7 +15,9 @@
 
   export let aggregateResult: AggregateResult | undefined = undefined
 
-  $: options = field.aggregate.options?.map((value) => ({ value, label: value })) ?? []
+  $: options =
+    field.aggregate.options?.map((value) => ({ value, label: $LL.table.aggregateFns[value as IFieldAggregate]() })) ??
+    []
   $: value = $table.views.getViewById($viewId).aggregate.into(undefined)?.value?.[field.id.value]
 
   const setViewAggregateMutation = createMutation(
@@ -47,7 +50,7 @@
 </script>
 
 {#if options.length}
-  <Select.Root {onSelectedChange} selected={{ value: value, label: value }}>
+  <Select.Root {onSelectedChange} selected={{ value: value, label: $LL.table.aggregateFns[value]() }}>
     <Select.Trigger
       class={cn(
         "hover:bg-muted/50 h-full rounded-none border-none py-0 text-xs shadow-none hover:opacity-100 focus:ring-0",
@@ -55,8 +58,8 @@
       )}
     >
       <div class="flex items-center gap-2">
-        <Select.Value />
-        <span class="text-foreground">
+        <Select.Value class="text-muted-foreground text-xs" />
+        <span class="text-foreground font-semibold">
           {#if aggregateResult !== undefined && aggregateResult !== null}
             {aggregateResult}
           {/if}
@@ -66,7 +69,7 @@
     <Select.Content>
       <Select.Group>
         {#each options as option}
-          <Select.Item value={option.value} label={option.label}>{option.label}</Select.Item>
+          <Select.Item class="text-xs" value={option.value} label={option.label}>{option.label}</Select.Item>
         {/each}
       </Select.Group>
     </Select.Content>

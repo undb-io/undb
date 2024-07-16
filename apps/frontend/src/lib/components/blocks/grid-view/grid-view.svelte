@@ -31,6 +31,7 @@
   import { ClipboardCopyIcon, CopyIcon, Maximize2Icon, Trash2Icon } from "lucide-svelte"
   import { gridViewStore, isRowSelected, isSelectedCell } from "./grid-view.store"
   import SelectedRecordsButton from "./selected-records-button.svelte"
+  import { aggregatesStore } from "$lib/store/aggregates.store"
 
   export let readonly = false
 
@@ -76,6 +77,8 @@
   $: records = (($getRecords.data as any)?.records as IRecordsDTO) ?? []
   $: dos = Records.fromJSON($t, records).map
   $: total = ($getRecords.data as any)?.total ?? 0
+  $: getTableAggregates = aggregatesStore.getTableAggregates
+  $: aggregates = $getTableAggregates($t.id.value)
 
   // TODO: record type
   let data = writable<any[]>([])
@@ -142,7 +145,7 @@
           },
           footer: createRender(GridViewFooter, {
             field,
-            aggregateResult: null,
+            aggregateResult: aggregates?.[field.id.value],
           }),
           plugins: {
             resize: {

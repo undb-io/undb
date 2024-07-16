@@ -273,6 +273,68 @@ type RootTranslation = {
 			 */
 			lookup: string
 		}
+		aggregateFns: {
+			/**
+			 * M​i​n
+			 */
+			min: string
+			/**
+			 * M​a​x
+			 */
+			max: string
+			/**
+			 * S​u​m
+			 */
+			sum: string
+			/**
+			 * C​o​u​n​t
+			 */
+			count: string
+			/**
+			 * E​m​p​t​y
+			 */
+			count_empty: string
+			/**
+			 * U​n​i​q​u​e
+			 */
+			count_uniq: string
+			/**
+			 * F​i​l​l​e​d
+			 */
+			count_not_empty: string
+			/**
+			 * P​e​r​c​e​n​t​ ​E​m​p​t​y
+			 */
+			percent_empty: string
+			/**
+			 * P​e​r​c​e​n​t​ ​F​i​l​l​e​d
+			 */
+			percent_not_empty: string
+			/**
+			 * P​e​r​c​e​n​t​ ​U​n​i​q​u​e
+			 */
+			percent_uniq: string
+			/**
+			 * A​v​e​r​a​g​e
+			 */
+			avg: string
+			/**
+			 * T​r​u​e
+			 */
+			count_true: string
+			/**
+			 * F​a​l​s​e
+			 */
+			count_false: string
+			/**
+			 * P​e​r​c​e​n​t​ ​T​r​u​e
+			 */
+			percent_true: string
+			/**
+			 * P​e​r​c​e​n​t​ ​F​a​l​s​e
+			 */
+			percent_false: string
+		}
 	}
 }
 
@@ -535,6 +597,68 @@ export type TranslationFunctions = {
 			 * Lookup
 			 */
 			lookup: () => LocalizedString
+		}
+		aggregateFns: {
+			/**
+			 * Min
+			 */
+			min: () => LocalizedString
+			/**
+			 * Max
+			 */
+			max: () => LocalizedString
+			/**
+			 * Sum
+			 */
+			sum: () => LocalizedString
+			/**
+			 * Count
+			 */
+			count: () => LocalizedString
+			/**
+			 * Empty
+			 */
+			count_empty: () => LocalizedString
+			/**
+			 * Unique
+			 */
+			count_uniq: () => LocalizedString
+			/**
+			 * Filled
+			 */
+			count_not_empty: () => LocalizedString
+			/**
+			 * Percent Empty
+			 */
+			percent_empty: () => LocalizedString
+			/**
+			 * Percent Filled
+			 */
+			percent_not_empty: () => LocalizedString
+			/**
+			 * Percent Unique
+			 */
+			percent_uniq: () => LocalizedString
+			/**
+			 * Average
+			 */
+			avg: () => LocalizedString
+			/**
+			 * True
+			 */
+			count_true: () => LocalizedString
+			/**
+			 * False
+			 */
+			count_false: () => LocalizedString
+			/**
+			 * Percent True
+			 */
+			percent_true: () => LocalizedString
+			/**
+			 * Percent False
+			 */
+			percent_false: () => LocalizedString
 		}
 	}
 }

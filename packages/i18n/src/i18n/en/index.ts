@@ -1,4 +1,4 @@
-import type { FieldType,IOpType,IRollupFn } from "@undb/table"
+import type { FieldType,IFieldAggregate,IOpType,IRollupFn } from "@undb/table"
 import type { BaseTranslation } from "../i18n-types.js"
 
 const ops: Record<IOpType, string> = {
@@ -72,6 +72,24 @@ const rollupFns: Record<IRollupFn, string> = {
   lookup: "Lookup"
 }
 
+const aggregateFns: Record<IFieldAggregate, string> = {
+  min: "Min",
+  max: "Max",
+  sum: "Sum",
+  count: "Count",
+  count_empty: "Empty",
+  count_uniq: "Unique",
+  count_not_empty: "Filled",
+  percent_empty: "Percent Empty",
+  percent_not_empty: "Percent Filled",
+  percent_uniq: "Percent Unique",
+  avg: "Average",
+  count_true: "True",
+  count_false: "False",
+  percent_true: "Percent True",
+  percent_false: "Percent False",
+}
+
 const en = {
   // TODO: your translations go here
   HI: "Hi {name:string}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n",
@@ -79,6 +97,7 @@ const en = {
     ops,
     fieldTypes,
     rollupFns,
+    aggregateFns,
   },
 } satisfies BaseTranslation
 

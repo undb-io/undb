@@ -48,7 +48,7 @@ export interface IRecordQueryRepository {
   count(tableId: TableId): Promise<number>
   countWhere(table: TableDo, spec: Option<CountQueryArgs>): Promise<number>
 
-  aggregate(table: TableDo, viewId: Option<ViewId>): Promise<Record<string, AggregateResult>>
+  aggregate(table: TableDo, viewId: Option<ViewId>, query: Option<QueryArgs>): Promise<Record<string, AggregateResult>>
 }
 
 export function buildQuery(table: TableDo, dto: IGetRecordsDTO): Option<QueryArgs> {

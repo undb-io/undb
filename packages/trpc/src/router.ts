@@ -70,6 +70,7 @@ import { container } from "@undb/di"
 import type { ICommandBus, IQueryBus } from "@undb/domain"
 import {
   CountRecordsQuery,
+  GetAggregatesQuery,
   GetRecordByIdQuery,
   GetRecordsQuery,
   GetTableQuery,
@@ -77,6 +78,7 @@ import {
   GetWebhooksQuery,
   countRecordsOutput,
   countRecordsQuery,
+  getAggregatesQuery,
   getRecordByIdQuery,
   getRecordsQuery,
   getTableQuery,
@@ -202,6 +204,10 @@ const recordRouter = t.router({
     .use(authz("record:create"))
     .input(bulkduplicateRecordsCommand)
     .mutation(({ input }) => commandBus.execute(new BulkDuplicateRecordsCommand(input))),
+  aggregate: p
+    .use(authz("record:read"))
+    .input(getAggregatesQuery)
+    .query(({ input }) => queryBus.execute(new GetAggregatesQuery(input))),
 })
 
 const webhookRouter = t.router({

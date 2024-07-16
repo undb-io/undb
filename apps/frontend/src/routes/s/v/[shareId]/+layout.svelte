@@ -5,6 +5,9 @@
   import type { LayoutData } from "./$types"
   import { writable } from "svelte/store"
   import { shareStore } from "$lib/store/share.store"
+  import { aggregatesStore } from "$lib/store/aggregates.store"
+  import { createQuery } from "@tanstack/svelte-query"
+  import { trpc } from "$lib/trpc/client"
 
   export let data: LayoutData
   $: tableStore = data.getViewShareData
@@ -23,6 +26,16 @@
 
   $: if (share) {
     $shareStore.set(share.id, share)
+  }
+
+  const getAggregates = createQuery({
+    queryKey: [share?.id, "aggregates", tableDTO?.id],
+    queryFn: () => trpc.record.aggregate.query({ tableId: tableDTO!.id, viewId: share!.target.id }),
+    enabled: !!share && !!tableDTO,
+  })
+
+  if ($getAggregates.data && tableDTO) {
+    aggregatesStore.updateTableAggregates(tableDTO.id, $getAggregates.data)
   }
 </script>
 

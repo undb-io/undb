@@ -5,6 +5,7 @@
   import type { LayoutData } from "./$types"
   import { writable } from "svelte/store"
   import { shareStore } from "$lib/store/share.store"
+  import { aggregatesStore } from "$lib/store/aggregates.store"
 
   export let data: LayoutData
   $: tableStore = data.tableStore
@@ -32,6 +33,8 @@
         shareStore.set(form.id, { ...form.share, target: { type: "form", id: form.id } })
       }
     }
+
+    aggregatesStore.updateTableAggregates(tableDTO.id, tableDTO.viewData?.aggregate ?? {})
   }
 </script>
 

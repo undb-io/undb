@@ -6,4 +6,8 @@ export class UnderlyingTable {
   public get name() {
     return this.table.id.value
   }
+
+  public getFieldName(fieldId: string) {
+    return `${this.name}.${fieldId}`
+  }
 }

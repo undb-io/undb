@@ -12,5 +12,5 @@ export async function getAggregates(
   const table = (await this.tableRepository.findOneById(tableId)).expect("Table not found")
   const viewId = dto.viewId ? Some(new ViewIdVo(dto.viewId)) : None
 
-  return this.repo.aggregate(table, viewId)
+  return this.repo.aggregate(table, viewId, None)
 }

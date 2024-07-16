@@ -292,7 +292,7 @@ export class Graphql {
         },
         ViewData: {
           // @ts-ignore
-          aggregate: async (_, { viewId }, __, info) => {
+          aggregate: async (table, { viewId }, __, info) => {
             return this.queryBus.execute(new GetAggregatesQuery({ tableId: info.variableValues.tableId, viewId }))
           },
         },

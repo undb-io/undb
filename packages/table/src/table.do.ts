@@ -1,4 +1,4 @@
-import { AggregateRoot, None, Option } from "@undb/domain"
+import { AggregateRoot, andOptions, None, Option } from "@undb/domain"
 import type { ITableDTO } from "./dto"
 import type { ITableEvents } from "./events"
 import { $createFieldSpec, createFieldMethod } from "./methods/create-field.method"
@@ -18,7 +18,15 @@ import { setViewOption } from "./methods/set-view-option.method"
 import { setViewSort } from "./methods/set-view-sort.method"
 import { updateFieldMethod } from "./methods/update-field.method"
 import { updateView } from "./methods/update-view.method"
-import { FieldIdVo, ViewFields, ViewOption, type Field, type FormId, type TableRLSGroup } from "./modules"
+import {
+  FieldIdVo,
+  RecordComositeSpecification,
+  ViewFields,
+  ViewOption,
+  type Field,
+  type FormId,
+  type TableRLSGroup,
+} from "./modules"
 import type { FormsVO } from "./modules/forms/forms.vo"
 import type { Schema } from "./modules/schema/schema.vo"
 import type { Views } from "./modules/views/views.vo"
@@ -116,6 +124,14 @@ export class TableDo extends AggregateRoot<ITableEvents> {
 
   getViewOption(viewId?: string) {
     return this.views.getViewById(viewId).option.unwrapOrElse(() => ViewOption.default())
+  }
+
+  getQuerySpec({ viewId, userId, filter }: { filter?: RecordComositeSpecification; viewId?: string; userId: string }) {
+    const view = this.views.getViewById(viewId)
+    const viewSpec = view.filter.map((f) => f.getSpec(this.schema)).flatten()
+    const rlsSpec = this.rls.map((r) => r.getSpec(this.schema, "read", userId)).flatten()
+
+    return andOptions(rlsSpec, viewSpec, Option(filter)) as Option<RecordComositeSpecification>
   }
 
   toJSON(): ITableDTO {
