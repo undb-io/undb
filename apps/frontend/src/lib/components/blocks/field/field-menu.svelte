@@ -167,7 +167,17 @@
             <AlertDialog.Header>
               <AlertDialog.Title class="flex items-center">
                 <TrashIcon class="mr-2 h-4 w-4" />
-                Delete field
+                <div class="flex items-center gap-2">
+                  Delete field
+
+                  <span
+                    data-field-id={field.id.value}
+                    class="text-muted-foreground inline-flex items-center gap-1 rounded-sm border bg-gray-50 px-2.5 py-1 text-xs shadow-sm"
+                  >
+                    <FieldIcon {field} type={field.type} class="h-3 w-3" />
+                    {field.name.value}
+                  </span>
+                </div>
               </AlertDialog.Title>
               <AlertDialog.Description>
                 Are you sure you want to delete the following field? All data associated with this field will be delete
@@ -234,6 +244,30 @@
                   </Alert.Description>
                 </Alert.Root>
               {/if}
+            {/if}
+
+            {#if getIsFieldCanBeRollup(field.type)}
+              {@const foreignRollupFields =
+                $getRollupForeignTablesStore.data?.rollupForeignTables.flatMap(
+                  (table) =>
+                    table?.schema.filter((f) => f.type === "rollup" && f.option?.rollupFieldId === field.id.value) ??
+                    [],
+                ) ?? []}
+              <Alert.Root class="border-yellow-500 bg-yellow-50">
+                <Alert.Title>Deleting foreign table rollup fields</Alert.Title>
+                <Alert.Description>
+                  The following rollup fields
+                  {#each foreignRollupFields as field}
+                    <span
+                      class="text-muted-foreground inline-flex items-center gap-1 rounded-sm border bg-gray-50 p-1 text-xs shadow-sm"
+                    >
+                      <FieldIcon type={field.type} class="h-3 w-3" />
+                      {field.name}
+                    </span>
+                  {/each}
+                  will also be deleted.
+                </Alert.Description>
+              </Alert.Root>
             {/if}
 
             <AlertDialog.Footer>
