@@ -79,9 +79,13 @@
       Share
     </Button>
   </Popover.Trigger>
-  <Popover.Content class="w-[400px]">
+  <Popover.Content class="w-[500px]">
     <div class={cn("-mx-4 flex items-center justify-between px-4", enabled && "pb-2")}>
-      <h3 class="text-sm font-semibold">Share</h3>
+      <h3 class="flex items-center text-sm font-semibold">
+        <ShareIcon class="mr-2 h-4 w-4" />
+
+        Share
+      </h3>
       <Label class="flex items-center gap-2">
         <Switch
           checked={enabled}
