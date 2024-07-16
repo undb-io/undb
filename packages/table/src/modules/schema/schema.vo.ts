@@ -228,4 +228,8 @@ export class Schema extends ValueObject<Field[]> {
 
     return new Set(referenceFields.map((f) => f.foreignTableId))
   }
+
+  getRollupFields(fieldId: string): RollupField[] {
+    return this.fields.filter((f) => f.type === "rollup" && f.rollupFieldId === fieldId) as RollupField[]
+  }
 }

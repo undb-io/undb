@@ -183,24 +183,57 @@
             </div>
 
             {#if field.type === "reference"}
-              <Alert.Root class="border-yellow-500 bg-yellow-50">
-                <Alert.Title>Deleting symmetric fields</Alert.Title>
-                <Alert.Description>
-                  The following symmetric field
-                  <span
-                    class="text-muted-foreground inline-flex items-center gap-1 rounded-sm border bg-gray-50 p-1 text-xs shadow-sm"
-                  >
-                    <FieldIcon {field} type={field.type} class="h-3 w-3" />
-                    {field.name.value}
-                  </span>
+              {@const rollupFields = field.getRollupFields($table.schema.fields)}
+              {#if rollupFields.length}
+                <Alert.Root class="border-yellow-500 bg-yellow-50">
+                  <Alert.Title>Deleting rollup fields</Alert.Title>
+                  <Alert.Description>
+                    The following rollup field
+                    {#each rollupFields as field}
+                      <span
+                        class="text-muted-foreground inline-flex items-center gap-1 rounded-sm border bg-gray-50 p-1 text-xs shadow-sm"
+                      >
+                        <FieldIcon {field} type={field.type} class="h-3 w-3" />
+                        {field.name.value}
+                      </span>
+                    {/each}
 
-                  of
-                  <span class="font-bold">
-                    {$foreignTableStore.data?.table?.name}
-                  </span>
-                  will also be deleted.
-                </Alert.Description>
-              </Alert.Root>
+                    will also be deleted.
+                  </Alert.Description>
+                </Alert.Root>
+              {/if}
+              {#if symmetricField}
+                {@const foreignRollupFields =
+                  $foreignTableStore.data?.table?.schema.filter(
+                    (f) => f.type === "rollup" && f.option?.referenceFieldId === symmetricField.id,
+                  ) ?? []}
+                <Alert.Root class="border-yellow-500 bg-yellow-50">
+                  <Alert.Title>Deleting symmetric fields</Alert.Title>
+                  <Alert.Description>
+                    The following symmetric field
+                    <span
+                      class="text-muted-foreground inline-flex items-center gap-1 rounded-sm border bg-gray-50 p-1 text-xs shadow-sm"
+                    >
+                      <FieldIcon type={symmetricField.type} class="h-3 w-3" />
+                      {symmetricField.name}
+                    </span>
+                    {#each foreignRollupFields as field}
+                      <span
+                        class="text-muted-foreground inline-flex items-center gap-1 rounded-sm border bg-gray-50 p-1 text-xs shadow-sm"
+                      >
+                        <FieldIcon type={field.type} class="h-3 w-3" />
+                        {field.name}
+                      </span>
+                    {/each}
+
+                    of
+                    <span class="font-bold">
+                      {$foreignTableStore.data?.table?.name}
+                    </span>
+                    will also be deleted.
+                  </Alert.Description>
+                </Alert.Root>
+              {/if}
             {/if}
 
             <AlertDialog.Footer>

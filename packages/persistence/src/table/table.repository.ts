@@ -92,6 +92,14 @@ export class TableRepository implements ITableRepository {
     }
   }
 
+  async find(spec: Option<TableComositeSpecification>): Promise<TableDo[]> {
+    const sb = this.db.select({ table: tables }).from(tables).$dynamic()
+
+    const tb = await new TableDbQuerySpecHandler(this.db, sb).handle(spec)
+
+    return tb.map((t) => this.mapper.toDo(t.table))
+  }
+
   async findOneById(id: TableId): Promise<Option<TableDo>> {
     const sb = this.db.select({ table: tables }).from(tables).$dynamic()
 

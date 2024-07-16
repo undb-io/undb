@@ -158,16 +158,19 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
     }
   }
   withoutField(schema: WithoutFieldSpecification): void {
-    if (schema.field.type !== "reference") {
-      const query = this.tb.dropColumn(schema.field.id.value).compile()
-      this.addSql(query)
-    } else {
+    if (schema.field.type === "reference") {
       const field = schema.field
       if (field.isOwner) {
         const joinTable = new JoinTable(this.table.table, field)
         const query = this.qb.schema.dropTable(joinTable.getTableName()).compile()
         this.addSql(query)
       }
+      return
+    }
+
+    if (schema.field.type !== "rollup") {
+      const query = this.tb.dropColumn(schema.field.id.value).compile()
+      this.addSql(query)
     }
   }
   withTableRLS(rls: WithTableRLS): void {}
