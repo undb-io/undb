@@ -20,7 +20,7 @@ import {
   type TableId,
   type ViewId,
 } from "@undb/table"
-import { type AliasedExpression } from "kysely"
+import { type AliasedExpression, type Expression } from "kysely"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
@@ -144,7 +144,9 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     if (aggregates.isNone()) {
       return {}
     }
-    if (aggregates.unwrap().isEmpty()) {
+
+    const aggs = aggregates.unwrap()
+    if (aggs.isEmpty()) {
       return {}
     }
 
@@ -172,7 +174,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       .select((eb) => {
         const ebs: AliasedExpression<any, any>[] = []
 
-        for (const [fieldId, fieldAggregate] of aggregates.unwrap()) {
+        for (const [fieldId, fieldAggregate] of aggs) {
           if (!fieldAggregate) {
             continue
           }
@@ -186,6 +188,27 @@ export class RecordQueryRepository implements IRecordQueryRepository {
         return ebs
       })
       .where(this.helper.handleWhere(table, spec))
+      .where((eb) => {
+        const ebs: Expression<any>[] = []
+
+        for (const [fieldId, fieldAggregate] of aggs) {
+          if (!fieldAggregate) {
+            continue
+          }
+
+          const field = table.schema.fieldMapById.get(fieldId)
+          if (!field) {
+            continue
+          }
+          const builder = new AggregateFnBuiler(t, eb, field, fieldAggregate)
+          const expr = builder.handleWhere()
+          if (expr.isSome()) {
+            ebs.push(expr.unwrap())
+          }
+        }
+
+        return eb.and(ebs)
+      })
       .executeTakeFirst()
 
     return result ?? {}
