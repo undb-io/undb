@@ -142,13 +142,10 @@
           {@const dirty = $tainted && $tainted[field.id.value]}
           <Form.Field class="flex gap-2" {form} name={field.id.value}>
             <Form.Control let:attrs>
-              <Form.Label class="text-muted-foreground flex h-4 w-48 items-center justify-between gap-2 pt-2">
-                <div class="flex items-center gap-2">
+              <Form.Label class="text-muted-foreground flex h-4 w-48 items-center justify-between gap-2">
+                <div class="flex items-center gap-2 pt-6">
                   <FieldIcon {field} type={field.type} class="h-4 w-4" />
                   <span class="flex-1 truncate">{field.name.value}</span>
-                  {#if field.required}
-                    <span class="text-red-500">*</span>
-                  {/if}
                   {#if dirty}
                     <span
                       class="me-2 rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300"
@@ -204,7 +201,6 @@
         {#each mutableFields as field}
           {@const selected = selectedFieldIds.includes(field.id.value)}
           <Button
-            disabled={field.type === "reference"}
             variant={selected ? "default" : "outline"}
             class={cn("w-full justify-start shadow-sm")}
             on:click={() => {
