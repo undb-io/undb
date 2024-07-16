@@ -43,7 +43,7 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   }
 
   private getField(field: string) {
-    return `${this.table.name}.${field} as ${field}`
+    return this.table.getFieldName(field)
   }
 
   constructor(

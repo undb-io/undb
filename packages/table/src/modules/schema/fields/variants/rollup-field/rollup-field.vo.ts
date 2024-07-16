@@ -8,7 +8,7 @@ import { createAbstractNumberFieldMather } from "../abstractions"
 import type { INumberFieldCondition } from "../number-field"
 import type { ReferenceField } from "../reference-field"
 import { RollupFieldValue } from "./rollup-field-value.vo"
-import { rollupFieldAggregate } from "./rollup-field.aggregate"
+import { lookupFieldAggregate, rollupFieldAggregate } from "./rollup-field.aggregate"
 import { createRollupFieldCondition, type IRollupFieldConditionSchema } from "./rollup-field.condition"
 
 export const ROLLUP_TYPE = "rollup" as const
@@ -94,7 +94,7 @@ export class RollupField extends AbstractField<RollupFieldValue, undefined, IRol
   }
 
   override get aggregate() {
-    return rollupFieldAggregate
+    return this.fn === "lookup" ? lookupFieldAggregate : rollupFieldAggregate
   }
 
   get referenceFieldId() {

@@ -17,25 +17,34 @@ export class AggregateFnBuiler {
     const alias = field.id.value
     const fieldId = this.table.getFieldName(alias)
 
+    const getRef = (field: Field) => {
+      if (field.type === "rollup") {
+        return `${field.getReferenceField(this.table.table).id.value}.${field.id.value}`
+      }
+      return this.table.getFieldName(field.id.value)
+    }
+
     return match(this.aggregate)
       .returnType<AliasedExpression<any, any>>()
-      .with("sum", () => this.eb.fn.sum(fieldId).as(alias))
-      .with("avg", () => this.eb.fn.avg(fieldId).as(alias))
-      .with("min", () => this.eb.fn.min(fieldId).as(alias))
-      .with("max", () => this.eb.fn.max(fieldId).as(alias))
+      .with("sum", () => this.eb.fn.sum(getRef(field)).as(alias))
+      .with("avg", () => this.eb.fn.avg(getRef(field)).as(alias))
+      .with("min", () => this.eb.fn.min(getRef(field)).as(alias))
+      .with("max", () => this.eb.fn.max(getRef(field)).as(alias))
       .with("count", () => this.eb.fn.countAll().as(alias))
       .with("count_uniq", () => this.eb.fn.count(fieldId).distinct().as(alias))
       .with("count_empty", () => {
         if (field.type === "reference") {
           return sql`COUNT(*)`.as(alias)
         }
-        return sql`COUNT(*) - COUNT(NULLIF(${sql.ref(fieldId)}, ''))`.as(alias)
+        return sql`COUNT(*) - COUNT(NULLIF(${sql.ref(getRef(field))}, ''))`.as(alias)
       })
       .with("count_not_empty", () => {
         if (field.type === "reference") {
           return sql`COUNT(*)`.as(alias)
         }
-        return sql`COUNT(CASE WHEN ${sql.ref(fieldId)} IS NOT NULL AND ${sql.ref(fieldId)} != 0 THEN 1 END)`.as(alias)
+        return sql`COUNT(CASE WHEN ${sql.ref(getRef(field))} IS NOT NULL AND ${sql.ref(getRef(field))} != 0 THEN 1 END)`.as(
+          alias,
+        )
       })
       .with("percent_empty", () => sql`(COUNT(*) - COUNT(NULLIF(${sql.ref(fieldId)}, ''))) * 1.0 / COUNT(*)`.as(alias))
       .with("percent_not_empty", () => sql`COUNT(NULLIF(${sql.ref(fieldId)}, '')) * 1.0 / COUNT(*)`.as(alias))
