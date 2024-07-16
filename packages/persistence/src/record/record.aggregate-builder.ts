@@ -26,10 +26,10 @@ export class AggregateFnBuiler {
 
     return match(this.aggregate)
       .returnType<AliasedExpression<any, any>>()
-      .with("sum", () => this.eb.fn.sum(getRef(field)).as(alias))
-      .with("avg", () => this.eb.fn.avg(getRef(field)).as(alias))
-      .with("min", () => this.eb.fn.min(getRef(field)).as(alias))
-      .with("max", () => this.eb.fn.max(getRef(field)).as(alias))
+      .with("sum", () => this.eb.fn.coalesce(this.eb.fn.sum(getRef(field)), sql`0`).as(alias))
+      .with("avg", () => this.eb.fn.coalesce(this.eb.fn.avg(getRef(field)), sql`0`).as(alias))
+      .with("min", () => this.eb.fn.coalesce(this.eb.fn.min(getRef(field)), sql`0`).as(alias))
+      .with("max", () => this.eb.fn.coalesce(this.eb.fn.max(getRef(field)), sql`0`).as(alias))
       .with("count", () => this.eb.fn.countAll().as(alias))
       .with("count_uniq", () => this.eb.fn.count(fieldId).distinct().as(alias))
       .with("count_empty", () => {
