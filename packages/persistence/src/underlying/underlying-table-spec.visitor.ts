@@ -128,6 +128,10 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
     this.atb = fieldVisitor.atb
   }
   withDuplicateField(schema: WithDuplicatedFieldSpecification): void {
+    if (!schema.includeData) {
+      return
+    }
+
     if (schema.field.type !== "reference") {
       const query = this.qb
         .updateTable(this.table.name)

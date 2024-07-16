@@ -99,7 +99,7 @@ export class Schema extends ValueObject<Field[]> {
 
     const duplicated = field.duplicate(this.getNextFieldName(field.name.value))
 
-    return new WithDuplicatedFieldSpecification(field, duplicated)
+    return new WithDuplicatedFieldSpecification(field, duplicated, dto.includeData)
   }
 
   get systemFields(): SystemField[] {

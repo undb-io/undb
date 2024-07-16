@@ -44,6 +44,7 @@ export class WithDuplicatedFieldSpecification extends TableComositeSpecification
   constructor(
     public readonly originalField: Field,
     public readonly field: Field,
+    public readonly includeData: boolean,
   ) {
     super()
   }

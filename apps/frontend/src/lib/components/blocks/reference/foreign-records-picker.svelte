@@ -225,12 +225,12 @@
                             </div>
                           </Tooltip.Content>
                         </Tooltip.Root>
-                        <div class="grid grid-cols-3 px-3 pb-2" data-record-id={record.id}>
+                        <div class="grid grid-cols-3 gap-1.5 overflow-hidden px-3 pb-2" data-record-id={record.id}>
                           {#each fields.slice(1) as field}
                             <Tooltip.Root>
                               <Tooltip.Trigger asChild let:builder>
                                 <span
-                                  class="inline-flex items-center"
+                                  class="inline-flex items-center overflow-hidden"
                                   use:builderActions={{ builders: [builder] }}
                                   {...getAttrs([builder])}
                                 >
