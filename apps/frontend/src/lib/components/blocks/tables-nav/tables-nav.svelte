@@ -48,6 +48,9 @@
   }
 
   $: tableId, viewId, tables, handleActive()
+  $: if (paramBaseId) {
+    open[paramBaseId] = true
+  }
 
   let open: Record<string, boolean> = {}
 </script>
