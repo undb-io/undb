@@ -1,13 +1,23 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import { type GetIndexQuery$result } from "$houdini"
-  import { ChevronRightIcon, DatabaseIcon, HardDriveIcon, SheetIcon, PlusIcon } from "lucide-svelte"
-  import { CREATE_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
+  import {
+    ChevronRightIcon,
+    DatabaseIcon,
+    HardDriveIcon,
+    SheetIcon,
+    PlusIcon,
+    EllipsisIcon,
+    PencilIcon,
+    CopyPlusIcon,
+  } from "lucide-svelte"
+  import { CREATE_TABLE_MODAL, DELETE_VIEW, DUPLICATE_VIEW, toggleModal, UPDATE_VIEW } from "$lib/store/modal.store"
   import { baseId } from "$lib/store/base.store"
   import * as Collapsible from "$lib/components/ui/collapsible"
   import { cn } from "$lib/utils"
   import CreateViewButton from "../view/create-view-button.svelte"
   import { onMount } from "svelte"
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js"
 
   export let tables: GetIndexQuery$result["tables"] = []
   export let bases: GetIndexQuery$result["bases"] = []
@@ -131,7 +141,7 @@
                         {@const active = view.id === viewId}
                         <div
                           class={cn(
-                            "flex h-8 items-center justify-between pl-14",
+                            "group flex h-8 items-center justify-between pl-14 pr-2",
                             active ? "bg-sky-100/80 hover:bg-sky-100" : "hover:bg-gray-100",
                           )}
                         >
@@ -145,6 +155,37 @@
                             <SheetIcon class="mr-1 h-4 w-4" />
                             {view.name}
                           </a>
+
+                          <div>
+                            {#if active}
+                              <DropdownMenu.Root>
+                                <DropdownMenu.Trigger
+                                  class="flex items-center justify-center opacity-0 transition-all group-hover:opacity-100"
+                                >
+                                  <EllipsisIcon class="text-muted-foreground h-4 w-4" />
+                                </DropdownMenu.Trigger>
+                                <DropdownMenu.Content>
+                                  <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_VIEW)}>
+                                    <PencilIcon class="mr-2 h-3 w-3" />
+                                    Update View Name
+                                  </DropdownMenu.Item>
+                                  <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(DUPLICATE_VIEW)}>
+                                    <CopyPlusIcon class="mr-2 h-3 w-3" />
+                                    Duplicate View
+                                  </DropdownMenu.Item>
+                                  {#if !view.isDefault}
+                                    <DropdownMenu.Item
+                                      class="text-xs text-red-500 hover:bg-red-200 hover:text-red-500"
+                                      on:click={() => toggleModal(DELETE_VIEW)}
+                                    >
+                                      <CopyPlusIcon class="mr-2 h-3 w-3" />
+                                      Delete View
+                                    </DropdownMenu.Item>
+                                  {/if}
+                                </DropdownMenu.Content>
+                              </DropdownMenu.Root>
+                            {/if}
+                          </div>
                         </div>
                       {/each}
                     </Collapsible.Content>
