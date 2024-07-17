@@ -6,9 +6,12 @@ register()
 
 import cors from "@elysiajs/cors"
 import { html } from "@elysiajs/html"
+import { opentelemetry } from "@elysiajs/opentelemetry"
 import staticPlugin from "@elysiajs/static"
 import { swagger } from "@elysiajs/swagger"
 import { trpc } from "@elysiajs/trpc"
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-proto"
+import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-node"
 import { AuditEventHandler } from "@undb/audit"
 import { executionContext } from "@undb/context/server"
 import { container } from "@undb/di"
@@ -28,10 +31,25 @@ const auth = container.resolve(Auth)
 const web = container.resolve(Web)
 
 export const app = new Elysia()
-  .trace(async ({ handle, set }) => {
-    const { time, end } = await handle
+  .use(
+    opentelemetry({
+      spanProcessors: [
+        new BatchSpanProcessor(
+          new OTLPTraceExporter({
+            url: "https://api.axiom.co/v1/traces",
+            headers: {
+              Authorization: `Bearer ${Bun.env.AXIOM_TOKEN}`,
+              "X-Axiom-Dataset": Bun.env.AXIOM_DATASET,
+            },
+          }),
+        ),
+      ],
+    }),
+  )
+  .trace(async ({ set, onHandle }) => {
+    const { begin, end } = await onHandle()
 
-    set.headers["Server-Timing"] = `handle;dur=${(await end) - time}`
+    set.headers["Server-Timing"] = `handle;dur=${(await end) - begin}`
   })
   .onStart(async () => {
     const pubsub = container.resolve(PubSubContext)

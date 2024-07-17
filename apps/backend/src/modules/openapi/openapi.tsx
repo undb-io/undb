@@ -35,7 +35,7 @@ export class OpenAPI {
 
   public route() {
     return new Elysia()
-      .onResponse((ctx) => {
+      .onAfterResponse((ctx) => {
         const requestId = executionContext.getStore()?.requestId
         this.logger.info(
           {

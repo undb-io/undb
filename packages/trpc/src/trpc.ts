@@ -1,9 +1,10 @@
+import { tracing } from "@baselime/node-opentelemetry/trpc"
 import { initTRPC } from "@trpc/server"
 import { executionContext } from "@undb/context/server"
+import { createLogger } from "@undb/logger"
 import { ZodError } from "@undb/zod"
 import { fromError } from "zod-validation-error"
 import pkg from "../package.json"
-import { createLogger } from "@undb/logger"
 
 const log = createLogger(pkg.name)
 
@@ -17,29 +18,31 @@ export const t = initTRPC.create({
   },
 })
 
-export const p = t.procedure.use(async ({ type, input, path, next, rawInput }) => {
-  const requestId = executionContext.getStore()?.requestId
-  const startTime = performance.now()
+export const p = t.procedure
+  .use(async ({ type, input, path, next, rawInput }) => {
+    const requestId = executionContext.getStore()?.requestId
+    const startTime = performance.now()
 
-  const result = await next()
+    const result = await next()
 
-  const responseTime = performance.now() - startTime
+    const responseTime = performance.now() - startTime
 
-  const meta = {
-    requestId,
-    responseTime,
-    type,
-    input,
-    rawInput,
-    path,
-  }
-  if (result.ok) {
-    log.info(meta, `trpc.${type}: ${path}`)
-  } else {
-    log.error({ ...meta, error: result.error }, `trpc.error: ${result.error.message}`)
-  }
+    const meta = {
+      requestId,
+      responseTime,
+      type,
+      input,
+      rawInput,
+      path,
+    }
+    if (result.ok) {
+      log.info(meta, `trpc.${type}: ${path}`)
+    } else {
+      log.error({ ...meta, error: result.error }, `trpc.error: ${result.error.message}`)
+    }
 
-  return result
-})
+    return result
+  })
+  .use(tracing({ collectInput: true }))
 
 export const middleware = t.middleware

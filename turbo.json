@@ -2,7 +2,7 @@
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local", ".env"],
   "ui": "stream",
-  "globalEnv": ["LOG_LEVEL"],
+  "globalEnv": ["LOG_LEVEL", "AXIOM_TOKEN", "AXIOM_DATASET"],
   "tasks": {
     "build": {
       "cache": false,
