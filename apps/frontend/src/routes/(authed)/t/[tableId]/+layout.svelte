@@ -43,3 +43,7 @@
     <slot />
   {/if}
 </main>
+
+<svelte:head>
+  <title>{$table?.name.value || "undb"}</title>
+</svelte:head>

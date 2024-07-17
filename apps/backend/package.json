@@ -32,6 +32,7 @@
     "@undb/share": "workspace:*",
     "@undb/trpc": "workspace:*",
     "@undb/webhook": "workspace:*",
+    "@kitajs/ts-html-plugin": "latest",
     "bun": "^1.1.20",
     "core-js": "^3.37.1",
     "elysia": "^1.1.2",

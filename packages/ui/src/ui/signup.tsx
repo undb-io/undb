@@ -1,9 +1,18 @@
-import Layout from "../layout"
-
 export const SignUp = () => {
-  return (
-    <Layout>
-      <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+  return `
+      <html lang="en">
+    <head>
+      <meta charset="UTF-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>Document</title>
+      <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+      <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+      <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
+    </head>
+    <body>
+      <main>
+     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             class="mx-auto h-10 w-auto"
@@ -74,6 +83,9 @@ export const SignUp = () => {
           </p>
         </div>
       </div>
-    </Layout>
-  )
+
+      </main>
+    </body>
+  </html>
+    `
 }
