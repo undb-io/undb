@@ -12,6 +12,7 @@
   import AttachmentControl from "./attachment-control.svelte"
   import JsonControl from "./json-control.svelte"
   import CheckboxControl from "./checkbox-control.svelte"
+  import RollupControl from "./rollup-control.svelte"
 
   export let readonly = false
   export let field: NoneSystemField
@@ -34,7 +35,7 @@
     string: StringControl,
     number: NumberControl,
     reference: ReferenceControl,
-    rollup: NumberControl,
+    rollup: RollupControl,
     select: SelectControl,
     rating: RatingControl,
     email: EmailControl,
