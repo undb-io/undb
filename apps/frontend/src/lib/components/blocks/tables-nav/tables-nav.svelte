@@ -47,7 +47,7 @@
     }
   }
 
-  $: tableId, viewId, handleActive()
+  $: tableId, viewId, tables, handleActive()
 
   let open: Record<string, boolean> = {}
 </script>

@@ -38,6 +38,7 @@ export const tables = sqliteTable(
   (table) => {
     return {
       baseIdIdx: index("table_base_id_idx").on(table.baseId),
+      uniqueOnName: unique("table_name_unique_idx").on(table.name, table.baseId),
     }
   },
 )
