@@ -16,7 +16,7 @@
   let open = false
 
   export let tableId: string
-  export let viewNames: stirng[]
+  export let viewNames: string[]
 
   const createViewMutation = createMutation({
     mutationFn: trpc.table.view.create.mutate,

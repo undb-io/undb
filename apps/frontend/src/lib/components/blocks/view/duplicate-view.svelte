@@ -8,6 +8,7 @@
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
   import { toggleModal, DUPLICATE_VIEW } from "$lib/store/modal.store"
+  import { getNextName } from "@undb/table"
 
   const table = getTable()
 
@@ -26,7 +27,10 @@
       {
         tableId: $table.id.value,
         viewId: $viewId,
-        name: view.name.value,
+        name: getNextName(
+          $table.views.views.map((view) => view.name.value),
+          `${view.name.value} Copy`,
+        ),
       },
       zodClient(duplicateViewCommand),
     ),
