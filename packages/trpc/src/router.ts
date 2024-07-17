@@ -28,6 +28,7 @@ import {
   SetViewSortCommand,
   UpdateBaseCommand,
   UpdateRecordCommand,
+  UpdateTableCommand,
   UpdateTableFieldCommand,
   UpdateViewCommand,
   UpdateWebhookCommand,
@@ -61,6 +62,7 @@ import {
   setViewSortCommand,
   updateBaseCommand,
   updateRecordCommand,
+  updateTableCommand,
   updateTableFieldCommand,
   updateViewCommand,
   updateWebhookCommand,
@@ -151,6 +153,10 @@ const tableRouter = t.router({
     .input(createTableCommand)
     .output(z.string())
     .mutation(({ input }) => commandBus.execute(new CreateTableCommand(input))),
+  update: p
+    .use(authz("table:update"))
+    .input(updateTableCommand)
+    .mutation(({ input }) => commandBus.execute(new UpdateTableCommand(input))),
   field: fieldRouter,
   rls: rlsRouter,
   view: viewRouter,

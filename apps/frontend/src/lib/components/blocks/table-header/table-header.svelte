@@ -4,6 +4,7 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js"
   import { Button } from "$lib/components/ui/button/index.js"
   import * as Tooltip from "$lib/components/ui/tooltip"
+  import * as Dialog from "$lib/components/ui/dialog"
   import {
     ChevronDownIcon,
     ChevronsUpDownIcon,
@@ -59,8 +60,18 @@
           {/if}
           <Breadcrumb.Item>
             <Breadcrumb.Link class="flex items-center gap-2" href={`/t/${$table.id.value}`}>
-              <DatabaseIcon class="h-3 w-3" />
-              {$table.name.value}
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger class="flex items-center gap-2">
+                  <DatabaseIcon class="h-3 w-3" />
+                  {$table.name.value}
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                  <DropdownMenu.Item>
+                    <PencilIcon class="mr-2 h-3 w-3" />
+                    Update table name
+                  </DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
             </Breadcrumb.Link>
           </Breadcrumb.Item>
           <Breadcrumb.Separator />

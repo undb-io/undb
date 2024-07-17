@@ -17,6 +17,7 @@ import { setViewFilter } from "./methods/set-view-filter.method"
 import { setViewOption } from "./methods/set-view-option.method"
 import { setViewSort } from "./methods/set-view-sort.method"
 import { updateFieldMethod } from "./methods/update-field.method"
+import { updateTable } from "./methods/update-table.method"
 import { updateView } from "./methods/update-view.method"
 import {
   FieldIdVo,
@@ -45,6 +46,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   public forms?: FormsVO
   public rls: Option<TableRLSGroup> = None
 
+  $update = updateTable
   $updateView = updateView
   $setViewFilter = setViewFilter
   $setViewOption = setViewOption

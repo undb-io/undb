@@ -13,6 +13,7 @@ export const workspaceActions = z.enum([
   "base:update",
 
   "table:create",
+  "table:update",
   "table:read",
   "table:list",
   "table:delete",

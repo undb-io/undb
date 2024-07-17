@@ -15,6 +15,7 @@ export const workspacePermission: Record<IWorkspaceMemberRole, Record<IWorkspace
     "base:update": true,
 
     "table:create": true,
+    "table:update": true,
     "table:list": true,
     "table:delete": true,
     "table:read": true,
@@ -41,6 +42,7 @@ export const workspacePermission: Record<IWorkspaceMemberRole, Record<IWorkspace
     "base:update": true,
 
     "table:create": true,
+    "table:update": true,
     "table:list": true,
     "table:delete": true,
     "table:read": true,
@@ -67,6 +69,7 @@ export const workspacePermission: Record<IWorkspaceMemberRole, Record<IWorkspace
     "base:update": false,
 
     "table:create": false,
+    "table:update": false,
     "table:list": true,
     "table:delete": false,
     "table:read": true,

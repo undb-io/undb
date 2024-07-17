@@ -28,6 +28,7 @@ import { SetViewSortCommandHandler } from "./set-view-sort.command-handler"
 import { UpdateBaseCommandHandler } from "./update-base.command-handler"
 import { UpdateRecordCommandHandler } from "./update-record.command-handler"
 import { UpdateTableFieldCommandHandler } from "./update-table-field.command-handler"
+import { UpdateTableCommandHandler } from "./update-table.command-handler"
 import { UpdateViewCommandHandler } from "./update-view.command-handler"
 import { UpdateWebhookCommandHandler } from "./update-webhook.command-handler"
 
@@ -64,4 +65,5 @@ export const commandHandlers = [
   EnableShareCommandHandler,
   DisableShareCommandHandler,
   DuplicateTableFieldCommandHandler,
+  UpdateTableCommandHandler,
 ]

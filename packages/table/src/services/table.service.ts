@@ -5,6 +5,7 @@ import type {
   ICreateTableFieldDTO,
   IDeleteTableFieldDTO,
   IDuplicateTableFieldDTO,
+  IUpdateTableDTO,
   IUpdateTableFieldDTO,
 } from "../dto"
 import { injectRecordRepository, type ICreateTableViewDTO, type IRecordRepository } from "../modules"
@@ -20,9 +21,11 @@ import { createTableMethod } from "./methods/create-table.method"
 import { deleteTableFieldMethod } from "./methods/delete-table-field.method"
 import { duplicateTableFieldMethod } from "./methods/duplicate-table-field.method"
 import { updateTableFieldMethod } from "./methods/update-table-field.method"
+import { updateTableMethod } from "./methods/update-table.method"
 
 export interface ITableService {
   createTable(dto: ICreateTableDTO): Promise<TableDo>
+  updateTable(dto: IUpdateTableDTO): Promise<TableDo>
   createTableField(dto: ICreateTableFieldDTO): Promise<TableDo>
   updateTableField(dto: IUpdateTableFieldDTO): Promise<TableDo>
   deleteTableField(dto: IDeleteTableFieldDTO): Promise<TableDo>
@@ -45,6 +48,7 @@ export class TableService implements ITableService {
   ) {}
 
   createTable = createTableMethod
+  updateTable = updateTableMethod
   createTableField = createTableFieldMethod
   deleteTableField = deleteTableFieldMethod
   duplicateTableField = duplicateTableFieldMethod
