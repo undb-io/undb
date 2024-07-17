@@ -78,7 +78,7 @@
   const { enhance, form: formData, reset } = form
 </script>
 
-<form method="POST" use:enhance class={cn("space-y-4", $$restProps.class)}>
+<form method="POST" use:enhance class={cn($$restProps.class)}>
   <div class="flex h-8 items-center gap-2">
     <Form.Field {form} name="type" class="h-full">
       <Form.Control let:attrs>
