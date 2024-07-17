@@ -71,9 +71,7 @@
     await tick()
     open = false
 
-    if (type === "select" || type === "reference") {
-      activeFieldId = fieldId
-    }
+    activeFieldId = fieldId
     const el = document.querySelector(`[data-field-id="${fieldId}"]`) as HTMLInputElement
     if (el.tagName === "INPUT") {
       el.focus()

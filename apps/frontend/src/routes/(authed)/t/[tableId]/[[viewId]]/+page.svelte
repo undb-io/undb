@@ -17,6 +17,7 @@
   import { getTable } from "$lib/store/table.store"
   import { page } from "$app/stores"
   import { derived } from "svelte/store"
+  import UpdateTableDialog from "$lib/components/blocks/update-table/update-table-dialog.svelte"
 
   function handleR() {
     toggleModal(CREATE_RECORD_MODAL)
@@ -49,6 +50,7 @@
   <ConfirmDeleteRecord />
   <ConfirmDuplicateRecord />
   <UpdateViewDialog />
+  <UpdateTableDialog />
   <DuplicateViewDialog />
   <DeleteViewDialog />
 {/key}

@@ -142,7 +142,7 @@ export class TableMutationVisitor
     throw new WontImplementException(TableMutationVisitor.name + ".withId")
   }
   withName(name: TableNameSpecification): void {
-    throw new NotImplementException(TableMutationVisitor.name + ".withName")
+    this.addUpdates({ name: name.name.value })
   }
   withSchema(schema: TableSchemaSpecification): void {
     throw new NotImplementException(TableMutationVisitor.name + ".withSchema")

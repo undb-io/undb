@@ -111,7 +111,7 @@
                         href={`/t/${table.id}`}
                         class={cn("flex h-full flex-1 items-center font-light", active && "text-primary font-medium")}
                       >
-                        <DatabaseIcon class="mr-1 h-4 w-4" />
+                        <DatabaseIcon class="mr-2 h-4 w-4" />
                         {table.name}
                       </a>
                       <div class="flex items-center gap-2 opacity-0 transition-all group-hover:opacity-100">
@@ -152,7 +152,7 @@
                             )}
                             href={`/t/${table.id}/${view.id}`}
                           >
-                            <SheetIcon class="mr-1 h-4 w-4" />
+                            <SheetIcon class="mr-2 h-4 w-4" />
                             {view.name}
                           </a>
 

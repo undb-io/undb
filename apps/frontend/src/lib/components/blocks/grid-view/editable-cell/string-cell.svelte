@@ -48,7 +48,7 @@
       })}
   />
 {:else}
-  <div class={$$restProps.class}>
+  <div class={cn("truncate", $$restProps.class)}>
     {#if value}
       {value}
     {/if}

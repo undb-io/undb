@@ -28,7 +28,7 @@
   import CreateViewButton from "../view/create-view-button.svelte"
   import { derived } from "svelte/store"
   import { page } from "$app/stores"
-  import { DELETE_VIEW, DUPLICATE_VIEW, UPDATE_VIEW, toggleModal } from "$lib/store/modal.store"
+  import { DELETE_VIEW, DUPLICATE_VIEW, UPDATE_TABLE_MODAL, UPDATE_VIEW, toggleModal } from "$lib/store/modal.store"
   import { getBaseById } from "$lib/store/base.store"
 
   const table = getTable()
@@ -65,8 +65,8 @@
                   <DatabaseIcon class="h-3 w-3" />
                   {$table.name.value}
                 </DropdownMenu.Trigger>
-                <DropdownMenu.Content>
-                  <DropdownMenu.Item>
+                <DropdownMenu.Content class="w-[200px]">
+                  <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_TABLE_MODAL)}>
                     <PencilIcon class="mr-2 h-3 w-3" />
                     Update table name
                   </DropdownMenu.Item>
