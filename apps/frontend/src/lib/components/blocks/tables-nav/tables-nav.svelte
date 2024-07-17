@@ -133,7 +133,12 @@
                       </div>
                     </div>
                     <Collapsible.Content>
-                      <CreateViewButton tableId={table.id} variant="link" class="mt-0 h-8 p-0 pl-14 text-xs">
+                      <CreateViewButton
+                        tableId={table.id}
+                        viewNames={table.views.map((v) => v.name)}
+                        variant="link"
+                        class="mt-0 h-8 p-0 pl-14 text-xs"
+                      >
                         <span class="text-xs font-light">+ Create View</span>
                       </CreateViewButton>
 

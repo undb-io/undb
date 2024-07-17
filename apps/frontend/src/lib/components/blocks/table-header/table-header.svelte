@@ -154,7 +154,13 @@
               </DropdownMenu.Content>
             </DropdownMenu.Root>
 
-            <CreateViewButton tableId={$table.id.value} class="mt-0" size="icon" variant="ghost">
+            <CreateViewButton
+              tableId={$table.id.value}
+              viewNames={$table.views.views.map((v) => v.name.value)}
+              class="mt-0"
+              size="icon"
+              variant="ghost"
+            >
               <PlusCircleIcon class="h-4 w-4" />
             </CreateViewButton>
           {/if}

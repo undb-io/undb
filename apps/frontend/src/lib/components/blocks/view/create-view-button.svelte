@@ -5,7 +5,7 @@
   import * as Popover from "$lib/components/ui/popover"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
-  import { createViewDTO } from "@undb/table"
+  import { createViewDTO, getNextName } from "@undb/table"
   import { PlusCircleIcon } from "lucide-svelte"
   import { toast } from "svelte-sonner"
   import { defaults, superForm } from "sveltekit-superforms"
@@ -16,6 +16,7 @@
   let open = false
 
   export let tableId: string
+  export let viewNames: stirng[]
 
   const createViewMutation = createMutation({
     mutationFn: trpc.table.view.create.mutate,
@@ -35,7 +36,7 @@
   const form = superForm(
     defaults(
       {
-        name: "view",
+        name: getNextName(viewNames, "Grid View"),
         type: "grid",
       },
       zodClient(createViewDTO),
