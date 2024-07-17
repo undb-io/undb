@@ -143,7 +143,7 @@
               </DropdownMenu.Content>
             </DropdownMenu.Root>
 
-            <CreateViewButton class="mt-0" size="icon" variant="ghost">
+            <CreateViewButton tableId={$table.id.value} class="mt-0" size="icon" variant="ghost">
               <PlusCircleIcon class="h-4 w-4" />
             </CreateViewButton>
           {/if}
@@ -160,7 +160,7 @@
           return
         }
 
-        tab.set(value === "data" ? "" : value ?? "")
+        tab.set(value === "data" ? "" : (value ?? ""))
         if (value === "developer" && !$developerTab) {
           $developerTab = "openapi"
         }

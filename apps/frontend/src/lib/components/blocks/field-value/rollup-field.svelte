@@ -8,8 +8,8 @@
   $: fn = field.fn
 </script>
 
-{#if value !== null}
-  <span class={$$restProps.class}>
+<span class={$$restProps.class}>
+  {#if value !== null}
     {#if fn === "lookup" && Array.isArray(value)}
       <div class="flex overflow-hidden">
         {#each value as item}
@@ -33,5 +33,5 @@
         {value}
       </span>
     {/if}
-  </span>
-{/if}
+  {/if}
+</span>

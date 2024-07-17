@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { GetBaseQuery$result } from "$houdini"
   import { CREATE_TABLE_MODAL, IMPORT_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
-  import { ImportIcon, PlusCircleIcon, PlusIcon } from "lucide-svelte"
+  import { DatabaseIcon, ImportIcon, PlusCircleIcon, PlusIcon } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
   import { goto } from "$app/navigation"
 
@@ -47,7 +47,10 @@
         {#each base.tables as table}
           {#if table}
             <Table.Row class="cursor-pointer" on:click={() => goto(`/t/${table.id}`)}>
-              <Table.Cell class="font-medium">{table.name}</Table.Cell>
+              <Table.Cell class="flex items-center font-medium">
+                <DatabaseIcon class="mr-2 h-4 w-4" />
+                {table.name}
+              </Table.Cell>
             </Table.Row>
           {/if}
         {/each}

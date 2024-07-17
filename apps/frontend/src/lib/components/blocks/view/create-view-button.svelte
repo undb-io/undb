@@ -3,28 +3,26 @@
   import * as Form from "$lib/components/ui/form"
   import { Button } from "$lib/components/ui/button"
   import * as Popover from "$lib/components/ui/popover"
-  import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
-  import { createFormDTO, createViewDTO } from "@undb/table"
+  import { createViewDTO } from "@undb/table"
   import { PlusCircleIcon } from "lucide-svelte"
   import { toast } from "svelte-sonner"
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { Input } from "$lib/components/ui/input"
   import { cn } from "$lib/utils"
-  import FormButton from "$lib/components/ui/form/form-button.svelte"
 
   let open = false
 
-  const table = getTable()
+  export let tableId: string
 
   const createViewMutation = createMutation({
     mutationFn: trpc.table.view.create.mutate,
-    mutationKey: ["table", $table.id.value, "createView"],
+    mutationKey: ["table", tableId, "createView"],
     onSuccess() {
       toast.success("created view successfully")
-      invalidate(`table:${$table.id.value}`)
+      invalidate(`table:${tableId}`)
     },
     onError(e) {
       toast.error(e.message)
@@ -51,7 +49,7 @@
       onUpdate(event) {
         if (!event.form.valid) return
 
-        $createViewMutation.mutate({ tableId: $table.id.value, ...event.form.data })
+        $createViewMutation.mutate({ tableId, ...event.form.data })
       },
     },
   )
