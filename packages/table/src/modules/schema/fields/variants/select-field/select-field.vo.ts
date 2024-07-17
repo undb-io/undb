@@ -1,10 +1,11 @@
-import { Option, Some } from "@undb/domain"
+import { Option, Some, applyRules } from "@undb/domain"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { Options, option, optionId } from "../../option"
+import { OptionNameShouldBeUnique } from "../../rules/option-name-should-be-unique.rule"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { SelectFieldConstraint, selectFieldConstraint } from "./select-field-constraint.vo"
 import { SelectContainsAnyOf, SelectEmpty, SelectEqual } from "./select-field-specification"
@@ -66,6 +67,18 @@ export class SelectField extends AbstractField<SelectFieldValue, SelectFieldCons
     if (dto.defaultValue) {
       field.defaultValue = new SelectFieldValue(dto.defaultValue)
     }
+    const options = field.options.map((o) => o.name)
+    applyRules(new OptionNameShouldBeUnique(options))
+
+    return field
+  }
+
+  override update(dto: IUpdateSelectFieldDTO): SelectField {
+    const field = super.update(dto) as SelectField
+
+    const options = field.options.map((o) => o.name)
+    applyRules(new OptionNameShouldBeUnique(options))
+
     return field
   }
 

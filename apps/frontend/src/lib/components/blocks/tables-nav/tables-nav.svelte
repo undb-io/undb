@@ -63,7 +63,7 @@
             <div
               class={cn(
                 "group flex h-8 items-center justify-between pl-4 pr-2",
-                active && !tableId && !viewId ? "rounded-md bg-sky-100/80 hover:bg-sky-100" : "hover:bg-gray-100",
+                active && !tableId && !viewId ? "rounded-md bg-blue-100/50 hover:bg-blue-100" : "hover:bg-gray-100",
               )}
             >
               <a
@@ -104,7 +104,7 @@
                     <div
                       class={cn(
                         "group flex h-8 cursor-pointer items-center justify-between rounded-md pl-8 pr-2",
-                        active && !viewId ? "bg-sky-100/80 hover:bg-sky-100" : "hover:bg-gray-100",
+                        active && !viewId ? "bg-blue-100/50 hover:bg-blue-100" : "hover:bg-gray-100",
                       )}
                     >
                       <a
@@ -123,7 +123,7 @@
                           }}
                           class={cn(
                             "flex h-5 w-5 items-center justify-center rounded-md hover:bg-gray-200",
-                            active && !viewId && "hover:bg-sky-200",
+                            active && !viewId && "hover:bg-blue-200",
                           )}
                         >
                           <ChevronRightIcon
@@ -142,7 +142,7 @@
                         <div
                           class={cn(
                             "group flex h-8 items-center justify-between pl-14 pr-2",
-                            active ? "bg-sky-100/80 hover:bg-sky-100" : "hover:bg-gray-100",
+                            active ? "bg-blue-100/50 hover:bg-blue-100" : "hover:bg-gray-100",
                           )}
                         >
                           <a
