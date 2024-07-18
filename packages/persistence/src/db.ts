@@ -7,8 +7,6 @@ export const sqlite = createClient({
   url: "http://127.0.0.1:8080",
 })
 
-sqlite.transaction
-
 export const db = drizzle(sqlite, {
   logger: new DrizzleLogger(),
 })
