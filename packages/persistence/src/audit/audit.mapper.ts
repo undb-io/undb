@@ -14,12 +14,12 @@ export class AuditMapper implements Mapper<AuditDo, Audit, IAuditDTO> {
     const detail = domain.detail.into(null)
     return {
       id: domain.id.value,
-      timestamp: domain.timestamp.value,
+      timestamp: domain.timestamp.value.toISOString(),
       detail: detail ? json(detail.value) : null,
       op: domain.op,
       table_id: domain.tableId.value,
       record_id: domain.recordId.value,
-      operator_id: domain.operatorId!,
+      operator_id: domain.operatorId! ?? "123",
     }
   }
   toDTO(entity: Audit): IAuditDTO {

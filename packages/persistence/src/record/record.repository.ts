@@ -18,7 +18,8 @@ import {
   type TableDo,
 } from "@undb/table"
 import { sql, type CompiledQuery, type ExpressionBuilder } from "kysely"
-import type { IQueryBuilder } from "../qb"
+import { getAnonymousTransaction, getCurrentTransaction } from "../ctx"
+import type { IRecordQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { injectDbUnitOfWork } from "../uow"
@@ -31,7 +32,7 @@ import { RecordMutateVisitor } from "./record.mutate-visitor"
 export class RecordRepository implements IRecordRepository {
   constructor(
     @injectQueryBuilder()
-    private readonly qb: IQueryBuilder,
+    private readonly qb: IRecordQueryBuilder,
     @injectRecordOutboxService()
     private readonly outboxService: IRecordOutboxService,
     @injectDbUnitOfWork()
@@ -56,8 +57,8 @@ export class RecordRepository implements IRecordRepository {
     return map
   }
 
-  // @transactional()
   async insert(table: TableDo, record: RecordDO): Promise<void> {
+    const trx = getAnonymousTransaction()
     const context = executionContext.getStore()
     const userId = context?.user?.userId!
 
@@ -67,10 +68,10 @@ export class RecordRepository implements IRecordRepository {
 
     const sql: CompiledQuery[] = []
 
-    await this.qb
+    await trx
       .insertInto(t.name)
       .values((eb) => {
-        const visitor = new RecordMutateVisitor(table, record, this.qb, eb)
+        const visitor = new RecordMutateVisitor(table, record, trx, eb)
         spec.accept(visitor)
 
         sql.push(...visitor.sql)
@@ -79,12 +80,13 @@ export class RecordRepository implements IRecordRepository {
       })
       .executeTakeFirst()
     for (const s of sql) {
-      await this.qb.executeQuery(s)
+      await trx.executeQuery(s)
     }
     await this.outboxService.save(record)
   }
 
   async bulkInsert(table: TableDo, records: RecordDO[]): Promise<void> {
+    const trx = getAnonymousTransaction()
     const context = executionContext.getStore()
     const userId = context?.user?.userId!
 
@@ -92,12 +94,12 @@ export class RecordRepository implements IRecordRepository {
 
     const sql: CompiledQuery[] = []
 
-    await this.qb
+    await trx
       .insertInto(t.name)
       .values((eb) =>
         records.map((record) => {
           const spec = record.toInsertSpec(table)
-          const visitor = new RecordMutateVisitor(table, record, this.qb, eb)
+          const visitor = new RecordMutateVisitor(table, record, trx, eb)
           spec.accept(visitor)
 
           sql.push(...visitor.sql)
@@ -107,7 +109,7 @@ export class RecordRepository implements IRecordRepository {
       )
       .executeTakeFirst()
     for (const s of sql) {
-      await this.qb.executeQuery(s)
+      await trx.executeQuery(s)
     }
     await this.outboxService.saveMany(records)
   }
@@ -165,9 +167,9 @@ export class RecordRepository implements IRecordRepository {
     })
   }
 
-  // @transactional()
   async updateOneById(table: TableDo, record: RecordDO, spec: Option<RecordComositeSpecification>): Promise<void> {
     if (spec.isNone()) return
+    const trx = getAnonymousTransaction()
 
     const context = executionContext.getStore()
     const userId = context?.user?.userId!
@@ -175,10 +177,10 @@ export class RecordRepository implements IRecordRepository {
     const t = new UnderlyingTable(table)
     const sql: CompiledQuery[] = []
 
-    await this.qb
+    await trx
       .updateTable(t.name)
       .set((eb) => {
-        const visitor = new RecordMutateVisitor(table, record, this.qb, eb)
+        const visitor = new RecordMutateVisitor(table, record, trx, eb)
         spec.unwrap().accept(visitor)
         sql.push(...visitor.sql)
         return { ...visitor.data, [UPDATED_BY_TYPE]: userId }
@@ -187,7 +189,7 @@ export class RecordRepository implements IRecordRepository {
       .executeTakeFirst()
 
     for (const s of sql) {
-      await this.qb.executeQuery(s)
+      await trx.executeQuery(s)
     }
 
     await this.outboxService.save(record)
@@ -199,6 +201,7 @@ export class RecordRepository implements IRecordRepository {
     update: RecordComositeSpecification,
     records: RecordDO[],
   ): Promise<void> {
+    const trx = getCurrentTransaction()
     const context = executionContext.getStore()
     const userId = context?.user?.userId!
 
@@ -210,13 +213,13 @@ export class RecordRepository implements IRecordRepository {
         let data = {}
         if (records.length) {
           for (const record of records) {
-            const visitor = new RecordMutateVisitor(table, record, this.qb, eb)
+            const visitor = new RecordMutateVisitor(table, record, trx, eb)
             update.accept(visitor)
             queries.push(...visitor.sql)
             data = { ...data, ...visitor.data }
           }
         } else {
-          const visitor = new RecordMutateVisitor(table, null, this.qb, eb)
+          const visitor = new RecordMutateVisitor(table, null, trx, eb)
           update.accept(visitor)
           queries.push(...visitor.sql)
           data = visitor.data
@@ -225,7 +228,7 @@ export class RecordRepository implements IRecordRepository {
       }
     }
 
-    await this.qb
+    await trx
       .updateTable(t.name)
       .where((eb) => {
         if (records.length) {
@@ -242,7 +245,7 @@ export class RecordRepository implements IRecordRepository {
       .execute()
 
     for (const s of queries) {
-      await this.qb.executeQuery(s)
+      await trx.executeQuery(s)
     }
 
     await this.outboxService.saveMany(records)
@@ -251,15 +254,17 @@ export class RecordRepository implements IRecordRepository {
   // @transactional()
   async deleteOneById(table: TableDo, record: RecordDO): Promise<void> {
     const t = new UnderlyingTable(table)
-    // TODO: use deleted at
-    await this.qb.deleteFrom(t.name).where(ID_TYPE, "=", record.id.value).executeTakeFirst()
+
+    const trx = getAnonymousTransaction()
+    await trx.deleteFrom(t.name).where(ID_TYPE, "=", record.id.value).executeTakeFirst()
     await this.outboxService.save(record)
   }
 
   async deleteByIds(table: TableDo, records: RecordDO[]): Promise<void> {
     const t = new UnderlyingTable(table)
+    const trx = getAnonymousTransaction()
     const ids = records.map((r) => r.id.value)
-    await this.qb.deleteFrom(t.name).where(ID_TYPE, "in", ids).executeTakeFirst()
+    await trx.deleteFrom(t.name).where(ID_TYPE, "in", ids).executeTakeFirst()
     await this.outboxService.saveMany(records)
   }
 }

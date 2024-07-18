@@ -1,6 +1,6 @@
 import { LibsqlDialect } from "@libsql/kysely-libsql"
 import { createLogger } from "@undb/logger"
-import { Kysely, ParseJSONResultsPlugin, sql, type RawBuilder } from "kysely"
+import { Kysely, ParseJSONResultsPlugin, sql, Transaction, type RawBuilder } from "kysely"
 import { sqlite } from "./client"
 import { type Database } from "./db"
 
@@ -39,6 +39,9 @@ export function createQueryBuilder(): Kysely<Database> {
 
 export type IQueryBuilder = ReturnType<typeof createQueryBuilder>
 export type IRecordQueryBuilder = Kysely<any>
+
+export type Tx = Transaction<Database>
+export type AnonymousTx = Transaction<any>
 
 export function json<T>(value: T): RawBuilder<T> {
   return sql`${JSON.stringify(value)}`

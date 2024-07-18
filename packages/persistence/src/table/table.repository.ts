@@ -11,6 +11,7 @@ import {
   type TableDo,
   type TableId,
 } from "@undb/table"
+import { getCurrentTransaction } from "../ctx"
 import type { InsertTable, InsertTableIdMapping } from "../db"
 import { json, type IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
@@ -47,25 +48,28 @@ export class TableRepository implements ITableRepository {
       return
     }
 
+    const trx = getCurrentTransaction()
+
     const ctx = executionContext.getStore()
     const userId = ctx!.user!.userId!
 
-    const visitor = new TableMutationVisitor(table, this.qb)
+    const visitor = new TableMutationVisitor(table, trx)
     spec.unwrap().accept(visitor)
 
-    await this.qb
+    await trx
       .updateTable("undb_table")
       .set({ ...visitor.data, updated_by: userId, updated_at: new Date().toISOString() })
       .where((eb) => eb.eb("id", "=", table.id.value))
       .execute()
     for (const sql of visitor.sql) {
-      await this.qb.executeQuery(sql)
+      await trx.executeQuery(sql)
     }
     await this.underlyingTableService.update(table, spec.unwrap())
     await this.outboxService.save(table)
   }
 
   async insert(table: TableDo): Promise<void> {
+    const trx = getCurrentTransaction()
     const ctx = executionContext.getStore()
     const userId = ctx!.user!.userId!
 
@@ -84,7 +88,7 @@ export class TableRepository implements ITableRepository {
       updated_at: new Date().toISOString(),
     }
 
-    await this.qb.insertInto("undb_table").values(values).execute()
+    await trx.insertInto("undb_table").values(values).execute()
 
     const viewIds = table.views.views.map((v) => v.id.value)
     const formIds = table.forms?.props.map((v) => v.id) ?? []
@@ -93,7 +97,7 @@ export class TableRepository implements ITableRepository {
       .concat(formIds)
       .concat(fieldsIds)
       .map((id) => ({ table_id: table.id.value, subject_id: id }))
-    await this.qb.insertInto("undb_table_id_mapping").values(mapping).execute()
+    await trx.insertInto("undb_table_id_mapping").values(mapping).execute()
 
     await this.underlyingTableService.create(table)
     await this.outboxService.save(table)

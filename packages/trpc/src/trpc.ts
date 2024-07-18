@@ -1,7 +1,9 @@
 import { tracing } from "@baselime/node-opentelemetry/trpc"
 import { initTRPC } from "@trpc/server"
 import { executionContext } from "@undb/context/server"
+import { container } from "@undb/di"
 import { createLogger } from "@undb/logger"
+import { QUERY_BUILDER, startTransaction, type IQueryBuilder } from "@undb/persistence"
 import { ZodError } from "@undb/zod"
 import { fromError } from "zod-validation-error"
 import pkg from "../package.json"
@@ -17,6 +19,8 @@ export const t = initTRPC.create({
     }
   },
 })
+
+const qb = container.resolve<IQueryBuilder>(QUERY_BUILDER)
 
 export const p = t.procedure
   .use(async ({ type, input, path, next, rawInput }) => {
@@ -42,6 +46,16 @@ export const p = t.procedure
     }
 
     return result
+  })
+  .use(async (ctx) => {
+    if (ctx.type === "mutation") {
+      return await qb.transaction().execute(async (tx) => {
+        startTransaction(tx)
+        return await ctx.next()
+      })
+    } else {
+      return await ctx.next()
+    }
   })
   .use(tracing({ collectInput: true }))
 
