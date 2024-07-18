@@ -17,6 +17,7 @@
   import ConjunctionPicker from "./conjunction-picker.svelte"
   import { isNumber, uid } from "radash"
   import FieldFilterControl from "./field-filter-control.svelte"
+  import autoAnimate from "@formkit/auto-animate"
 
   interface IField {
     id: string
@@ -84,7 +85,7 @@
   export let sameWidth = true
 </script>
 
-<div class={cn("space-y-2", isEven ? "bg-muted" : "bg-popover", $$restProps.class)} data-level={level}>
+<div use:autoAnimate class={cn("space-y-2", isEven ? "bg-muted" : "bg-popover", $$restProps.class)} data-level={level}>
   {#if value?.children.length}
     <SortableList
       class={cn("space-y-1.5", level > 1 ? "p-4 pb-2" : "px-4 py-2")}

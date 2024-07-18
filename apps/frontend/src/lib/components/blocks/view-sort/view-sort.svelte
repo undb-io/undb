@@ -22,6 +22,7 @@
   import { invalidate } from "$app/navigation"
   import { isNumber } from "radash"
   import { onMount } from "svelte"
+  import autoAnimate from "@formkit/auto-animate"
 
   const table = getTable()
   $: view = $table.views.getViewById($viewId)
@@ -93,80 +94,82 @@
     </Button>
   </Popover.Trigger>
   <Popover.Content class="w-[400px] p-0 shadow-2xl" align="start">
-    {#if value?.length}
-      <div class="space-y-2 border-b px-4 py-2">
-        <div class="text-muted-foreground text-xs">Sorts</div>
-        <SortableList
-          class={cn("space-y-1.5")}
-          animation={200}
-          onEnd={(event) => {
-            if (isNumber(event.oldIndex) && isNumber(event.newIndex)) {
-              swapSort(event.oldIndex, event.newIndex)
-            }
-          }}
-        >
-          {#each value as item, i (item.fieldId)}
-            <div class="grid w-full grid-cols-12 items-center gap-2">
-              <div class="col-span-10 grid grid-cols-8">
-                <FieldPicker
-                  filter={(field) => !selectedFieldIds.has(field.value) && isFieldSortable(field.type)}
-                  bind:value={item.fieldId}
-                  class="col-span-5 rounded-r-none border-r-0"
-                />
+    <div use:autoAnimate class="h-full w-full">
+      {#if value?.length}
+        <div class="space-y-2 border-b px-4 py-2">
+          <div class="text-muted-foreground text-xs">Sorts</div>
+          <SortableList
+            class={cn("space-y-1.5")}
+            animation={200}
+            onEnd={(event) => {
+              if (isNumber(event.oldIndex) && isNumber(event.newIndex)) {
+                swapSort(event.oldIndex, event.newIndex)
+              }
+            }}
+          >
+            {#each value as item, i (item.fieldId)}
+              <div class="grid w-full grid-cols-12 items-center gap-2">
+                <div class="col-span-10 grid grid-cols-8">
+                  <FieldPicker
+                    filter={(field) => !selectedFieldIds.has(field.value) && isFieldSortable(field.type)}
+                    bind:value={item.fieldId}
+                    class="col-span-5 rounded-r-none border-r-0"
+                  />
 
-                <Select.Root
-                  selected={{ value: item.direction, label: item.direction }}
-                  onSelectedChange={(value) => {
-                    if (value) {
-                      item.direction = value.value
-                    }
-                  }}
-                >
-                  <Select.Trigger class="col-span-3 h-8 rounded-l-none">
-                    <Select.Value asChild let:label>
-                      <div class="flex items-center gap-2">
-                        {#if label === "asc"}
-                          <ArrowDownAzIcon class="mr-1 h-3 w-3" />
-                        {:else}
-                          <ArrowUpZaIcon class="mr-1 h-4 w-4" />
-                        {/if}
-                        <span>
-                          {label}
-                        </span>
-                      </div>
-                    </Select.Value>
-                  </Select.Trigger>
-                  <Select.Content class="text-sm">
-                    <Select.Item value="asc">
-                      <ArrowDownAzIcon class="mr-1 h-3 w-3" />
-                      asc
-                    </Select.Item>
-                    <Select.Item value="desc">
-                      <ArrowUpZaIcon class="mr-1 h-4 w-4" />
-                      desc
-                    </Select.Item>
-                  </Select.Content>
-                </Select.Root>
+                  <Select.Root
+                    selected={{ value: item.direction, label: item.direction }}
+                    onSelectedChange={(value) => {
+                      if (value) {
+                        item.direction = value.value
+                      }
+                    }}
+                  >
+                    <Select.Trigger class="col-span-3 h-8 rounded-l-none">
+                      <Select.Value asChild let:label>
+                        <div class="flex items-center gap-2">
+                          {#if label === "asc"}
+                            <ArrowDownAzIcon class="mr-1 h-3 w-3" />
+                          {:else}
+                            <ArrowUpZaIcon class="mr-1 h-4 w-4" />
+                          {/if}
+                          <span>
+                            {label}
+                          </span>
+                        </div>
+                      </Select.Value>
+                    </Select.Trigger>
+                    <Select.Content class="text-sm">
+                      <Select.Item value="asc">
+                        <ArrowDownAzIcon class="mr-1 h-3 w-3" />
+                        asc
+                      </Select.Item>
+                      <Select.Item value="desc">
+                        <ArrowUpZaIcon class="mr-1 h-4 w-4" />
+                        desc
+                      </Select.Item>
+                    </Select.Content>
+                  </Select.Root>
+                </div>
+                <div class="text-muted-foreground col-span-2 flex justify-end gap-2">
+                  <button on:click={() => removeSort(item.fieldId)}>
+                    <Trash2Icon class="h-3 w-3" />
+                  </button>
+                  <button class=".handler" on:click={() => removeSort(item.fieldId)}>
+                    <GripVerticalIcon class="h-3 w-3" />
+                  </button>
+                </div>
               </div>
-              <div class="text-muted-foreground col-span-2 flex justify-end gap-2">
-                <button on:click={() => removeSort(item.fieldId)}>
-                  <Trash2Icon class="h-3 w-3" />
-                </button>
-                <button class=".handler" on:click={() => removeSort(item.fieldId)}>
-                  <GripVerticalIcon class="h-3 w-3" />
-                </button>
-              </div>
-            </div>
-          {/each}
-        </SortableList>
+            {/each}
+          </SortableList>
+        </div>
+      {/if}
+      <div class="flex w-full items-center justify-between px-4 py-3">
+        <Button {disabled} variant="ghost" size="sm" on:click={addSort}>
+          <PlusIcon class="mr-2 h-3 w-3" />
+          Add Sort
+        </Button>
+        <Button variant="outline" size="sm" on:click={submit}>Submit</Button>
       </div>
-    {/if}
-    <div class="flex w-full items-center justify-between px-4 py-3">
-      <Button {disabled} variant="ghost" size="sm" on:click={addSort}>
-        <PlusIcon class="mr-2 h-3 w-3" />
-        Add Sort
-      </Button>
-      <Button variant="outline" size="sm" on:click={submit}>Submit</Button>
     </div>
   </Popover.Content>
 </Popover.Root>
