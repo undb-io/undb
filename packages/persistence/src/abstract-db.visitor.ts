@@ -1,7 +1,6 @@
-import { WontImplementException, type ISpecVisitor, type ISpecification } from "@undb/domain"
-import { and, not, or, type SQL, type SQLWrapper } from "drizzle-orm"
+import { type ISpecVisitor, type ISpecification } from "@undb/domain"
+import { and, not, or, type SQL } from "drizzle-orm"
 import type { SQLiteSelectQueryBuilder, SQLiteTable, SQLiteUpdateSetSource } from "drizzle-orm/sqlite-core"
-import type { Database } from "./db"
 
 export interface IAbastractDBFilterVisitor {
   get cond(): SQL | undefined
@@ -78,48 +77,4 @@ type Source<T extends SQLiteTable> = SQLiteUpdateSetSource<T>
 
 export interface IAbastractDBMutationVisitor<T extends SQLiteTable> {
   get updates(): Source<T>
-}
-
-export abstract class AbstractDBMutationVisitor<T, S extends SQLiteTable>
-  implements IAbastractDBMutationVisitor<S>, ISpecVisitor
-{
-  constructor(protected readonly db: Database) {}
-  #updates: Source<S> = {}
-  get updates(): Source<S> {
-    return this.#updates
-  }
-
-  addUpdates(update: Source<S>) {
-    this.#updates = { ...this.#updates, ...update }
-  }
-
-  #sql: SQLWrapper[] = []
-  get sql() {
-    return this.#sql
-  }
-
-  addSql(...sql: SQLWrapper[]) {
-    this.#sql.push(...sql)
-  }
-
-  async execute() {
-    for (const sql of this.#sql) {
-      await this.db.run(sql)
-    }
-  }
-
-  and(left: ISpecification<T, ISpecVisitor>, right: ISpecification<T, ISpecVisitor>): this {
-    left.accept(this)
-    right.accept(this)
-    return this
-  }
-  or(left: ISpecification<T, ISpecVisitor>, right: ISpecification<T, ISpecVisitor>): this {
-    throw new WontImplementException(AbstractDBMutationVisitor.name + ".or")
-  }
-  not(spec: ISpecification<T, ISpecVisitor>): this {
-    throw new WontImplementException(AbstractDBMutationVisitor.name + ".not")
-  }
-  clone(): this {
-    throw new Error("Method not implemented.")
-  }
 }

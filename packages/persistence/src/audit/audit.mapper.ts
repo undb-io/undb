@@ -2,7 +2,8 @@ import type { Audit as AuditDo } from "@undb/audit"
 import type { IAuditDTO } from "@undb/audit/src/dto/audit.dto"
 import { singleton } from "@undb/di"
 import type { Mapper } from "@undb/domain"
-import type { Audit } from "../tables"
+import type { Audit } from "../db"
+import { json } from "../qb"
 
 @singleton()
 export class AuditMapper implements Mapper<AuditDo, Audit, IAuditDTO> {
@@ -10,25 +11,26 @@ export class AuditMapper implements Mapper<AuditDo, Audit, IAuditDTO> {
     throw new Error("Method not implemented.")
   }
   toEntity(domain: AuditDo): Audit {
+    const detail = domain.detail.into(null)
     return {
       id: domain.id.value,
       timestamp: domain.timestamp.value,
-      detail: domain.detail.into(null)?.value ?? null,
+      detail: detail ? json(detail.value) : null,
       op: domain.op,
-      tableId: domain.tableId.value,
-      recordId: domain.recordId.value,
-      operatorId: domain.operatorId!,
+      table_id: domain.tableId.value,
+      record_id: domain.recordId.value,
+      operator_id: domain.operatorId!,
     }
   }
   toDTO(entity: Audit): IAuditDTO {
     return {
       id: entity.id,
-      timestamp: entity.timestamp.toISOString(),
+      timestamp: entity.timestamp,
       detail: entity.detail,
       op: entity.op,
-      tableId: entity.tableId,
-      recordId: entity.recordId,
-      operatorId: entity.operatorId,
+      tableId: entity.table_id,
+      recordId: entity.record_id,
+      operatorId: entity.operator_id,
     }
   }
 }

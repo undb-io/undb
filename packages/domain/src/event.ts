@@ -44,7 +44,7 @@ export abstract class BaseEvent<TPayload extends object = object, TName extends 
       id: this.id,
       name: this.name,
       operatorId: this.operatorId,
-      timestamp: this.timestamp.toISOString(),
+      timestamp: this.timestamp,
       payload: this.payload,
       meta: this.meta,
     }

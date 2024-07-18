@@ -1,6 +1,5 @@
 import type {
   IWebhookSpecVisitor,
-  WebhookDo,
   WebhookEventsIn,
   WithWebhookCondition,
   WithWebhookEnabled,
@@ -12,44 +11,37 @@ import type {
   WithWebhookTableId,
   WithWebhookURL,
 } from "@undb/webhook"
-import { AbstractDBMutationVisitor } from "../abstract-db.visitor"
-import type { webhook } from "../tables"
+import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
 
-export class WebhookMutationVisitor
-  extends AbstractDBMutationVisitor<WebhookDo, typeof webhook>
-  implements IWebhookSpecVisitor
-{
-  constructor(public readonly webhook: WebhookDo) {
-    super()
-  }
+export class WebhookMutationVisitor extends AbstractQBMutationVisitor implements IWebhookSpecVisitor {
   idEqual(s: WithWebhookId): void {
     throw new Error("Method not implemented.")
   }
   nameEqual(s: WithWebhookName): void {
-    this.addUpdates({ url: s.name })
+    this.setData("name", s.name)
   }
   urlEqual(s: WithWebhookURL): void {
-    this.addUpdates({ url: s.webhookURL.value })
+    this.setData("url", s.webhookURL)
   }
   headersEqual(s: WithWebhookHeaders): void {
-    this.addUpdates({ headers: s.webhookHeaders.toJSON() })
+    this.setData("headers", s.webhookHeaders.toJSON())
   }
   withTableId(s: WithWebhookTableId): void {
     throw new Error("Method not implemented.")
   }
   enabled(s: WithWebhookEnabled): void {
-    this.addUpdates({ enabled: s.enabled })
+    this.setData("enabled", s.enabled)
   }
   methodEqual(s: WithWebhookMethod): void {
-    this.addUpdates({ method: s.webhookMethod.value })
+    this.setData("method", s.webhookMethod.value)
   }
   eventEqual(s: WithWebhookEvent): void {
-    this.addUpdates({ event: s.event })
+    this.setData("event", s.event)
   }
   eventsIn(s: WebhookEventsIn): void {
     throw new Error("Method not implemented.")
   }
   conditionEqual(s: WithWebhookCondition): void {
-    this.addUpdates({ condition: s.condition })
+    this.setData("condition", s.condition)
   }
 }

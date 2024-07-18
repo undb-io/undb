@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "11ce75fd-339e-4f7a-bc33-f358dabb5608",
+  "id": "6f79a748-dc8c-4693-b12b-302a657e0c0d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_audit": {
@@ -306,8 +306,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "target": {
-          "name": "target",
+        "target_type": {
+          "name": "target_type",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -331,7 +331,7 @@
       "indexes": {
         "share_unique_idx": {
           "name": "share_unique_idx",
-          "columns": ["target", "target_id"],
+          "columns": ["target_type", "target_id"],
           "isUnique": true
         }
       },
@@ -464,6 +464,11 @@
           "name": "table_base_id_idx",
           "columns": ["base_id"],
           "isUnique": false
+        },
+        "table_name_unique_idx": {
+          "name": "table_name_unique_idx",
+          "columns": ["name", "base_id"],
+          "isUnique": true
         }
       },
       "foreignKeys": {
@@ -589,8 +594,8 @@
           "notNull": true,
           "autoincrement": false
         },
-        "tableId": {
-          "name": "tableId",
+        "table_id": {
+          "name": "table_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -621,7 +626,7 @@
       "indexes": {
         "webhook_table_id_idx": {
           "name": "webhook_table_id_idx",
-          "columns": ["tableId"],
+          "columns": ["table_id"],
           "isUnique": false
         },
         "webhook_url_idx": {
@@ -631,11 +636,11 @@
         }
       },
       "foreignKeys": {
-        "undb_webhook_tableId_undb_table_id_fk": {
-          "name": "undb_webhook_tableId_undb_table_id_fk",
+        "undb_webhook_table_id_undb_table_id_fk": {
+          "name": "undb_webhook_table_id_undb_table_id_fk",
           "tableFrom": "undb_webhook",
           "tableTo": "undb_table",
-          "columnsFrom": ["tableId"],
+          "columnsFrom": ["table_id"],
           "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"

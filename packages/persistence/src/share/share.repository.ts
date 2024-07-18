@@ -1,46 +1,44 @@
 import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import { WithShareId, type IShareRepository, type Share, type ShareSpecification } from "@undb/share"
-import type { Database } from "../db"
-import { injectDb } from "../db.provider"
-import { shareTable } from "../tables"
+import type { IQueryBuilder } from "../qb"
+import { injectQueryBuilder } from "../qb.provider"
 import { ShareFilterVisitor } from "./share.filter-visitor"
 import { ShareMapper } from "./share.mapper"
 
 @singleton()
 export class ShareRepository implements IShareRepository {
   constructor(
-    @injectDb()
-    private readonly db: Database,
     @inject(ShareMapper)
     private readonly mapper: ShareMapper,
+    @injectQueryBuilder()
+    private readonly qb: IQueryBuilder,
   ) {}
   insert(share: Share): Promise<void> {
     throw new Error("Method not implemented.")
   }
   async updateOneById(share: Share, spec: ShareSpecification): Promise<void> {
     const entity = this.mapper.toEntity(share)
-    await this.db
-      .insert(shareTable)
+
+    await this.qb
+      .insertInto("undb_share")
       .values(entity)
-      .onConflictDoUpdate({
-        target: [shareTable.targetId, shareTable.targetType],
-        set: { enabled: share.enabled },
-      })
+      .onConflict((ob) => ob.columns(["target_id", "target_type"]).doUpdateSet({ enabled: share.enabled }))
+      .execute()
   }
   async findOneById(id: string): Promise<Option<Share>> {
-    const qb = this.db.select().from(shareTable).$dynamic()
-    const visitor = new ShareFilterVisitor()
-
     const spec = WithShareId.fromString(id)
-    spec.accept(visitor)
 
-    const results = await qb.where(visitor.cond).limit(1)
-    if (results.length === 0) {
-      return None
-    }
+    const share = await this.qb
+      .selectFrom("undb_share")
+      .selectAll()
+      .where((eb) => {
+        const visitor = new ShareFilterVisitor(eb)
+        spec.accept(visitor)
+        return visitor.cond
+      })
+      .executeTakeFirst()
 
-    const [share] = results
     if (!share) {
       return None
     }
@@ -48,16 +46,16 @@ export class ShareRepository implements IShareRepository {
     return Some(this.mapper.toDo(share))
   }
   async findOne(spec: ShareSpecification): Promise<Option<Share>> {
-    const qb = this.db.select().from(shareTable).$dynamic()
-    const visitor = new ShareFilterVisitor()
-    spec.accept(visitor)
+    const share = await this.qb
+      .selectFrom("undb_share")
+      .selectAll()
+      .where((eb) => {
+        const visitor = new ShareFilterVisitor(eb)
+        spec.accept(visitor)
+        return visitor.cond
+      })
+      .executeTakeFirst()
 
-    const results = await qb.where(visitor.cond).limit(1)
-    if (results.length === 0) {
-      return None
-    }
-
-    const [share] = results
     if (!share) {
       return None
     }

@@ -1,4 +1,3 @@
-import { WontImplementException } from "@undb/domain"
 import type {
   ITableSpecVisitor,
   TableBaseIdSpecification,
@@ -29,137 +28,37 @@ import type {
   WithViewOption,
   WithViewSort,
 } from "@undb/table"
-import { eq, inArray } from "drizzle-orm"
-import type { SQLiteSelectQueryBuilder } from "drizzle-orm/sqlite-core"
-import { AbstractDBFilterVisitor } from "../abstract-db.visitor"
+import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
-import type { Database } from "../db"
-import { rollupIdMapping, tableIdMapping, tables } from "../tables"
+import type { Database2 } from "../db"
+import type { IQueryBuilder } from "../qb"
 
-export class TableFilterVisitor extends AbstractDBFilterVisitor<TableDo> implements ITableSpecVisitor {
+export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements ITableSpecVisitor {
   constructor(
-    private readonly db: Database,
-    sb: SQLiteSelectQueryBuilder<any, any, any>,
+    private readonly qb: IQueryBuilder,
+    protected readonly eb: ExpressionBuilder<Database2, "undb_table">,
   ) {
-    super(sb)
-  }
-  withBaseId(id: TableBaseIdSpecification): void {
-    this.addCond(eq(tables.baseId, id.baseId))
-  }
-  withNewView(views: WithNewView): void {
-    throw new Error("Method not implemented.")
-  }
-  withoutView(view: WithoutView): void {
-    throw new Error("Method not implemented.")
-  }
-  withView(views: WithView): void {
-    throw new Error("Method not implemented.")
-  }
-  withViewOption(viewOption: WithViewOption): void {
-    throw new Error("Method not implemented.")
-  }
-  withViewFields(fields: WithViewFields): void {
-    throw new Error("Method not implemented.")
-  }
-  withUpdatedField(spec: WithUpdatedFieldSpecification): void {
-    throw new Error("Method not implemented.")
-  }
-  withForm(views: WithFormSpecification): void {
-    throw new Error("Method not implemented.")
-  }
-  withNewField(schema: WithNewFieldSpecification): void {
-    throw new Error("Method not implemented.")
-  }
-  withDuplicateField(schema: WithDuplicatedFieldSpecification): void {
-    throw new Error("Method not implemented.")
-  }
-  withoutField(schema: WithoutFieldSpecification): void {
-    throw new Error("Method not implemented.")
-  }
-  withForms(views: TableFormsSpecification): void {
-    throw new Error("Method not implemented.")
-  }
-  withNewForm(views: WithNewFormSpecification): void {
-    throw new Error("Method not implemented.")
-  }
-  withViewAggregate(viewColor: WithViewAggregate): void {
-    throw new Error("Method not implemented.")
-  }
-  withTableRLS(rls: WithTableRLS): void {
-    throw new WontImplementException(TableFilterVisitor.name + ".withTableRLS")
-  }
-  withViewColor(viewColor: WithViewColor): void {
-    throw new WontImplementException(TableFilterVisitor.name + ".withViewColor")
-  }
-  withViewSort(viewSort: WithViewSort): void {
-    throw new WontImplementException(TableFilterVisitor.name + ".withViewSort")
-  }
-  withViewFilter(viewFilter: WithViewFilter): void {
-    throw new WontImplementException(TableFilterVisitor.name + ".withViewFilter")
-  }
-  withViews(views: TableViewsSpecification): void {
-    throw new WontImplementException(TableFilterVisitor.name + ".withViews")
+    super(eb)
   }
   withId(id: TableIdSpecification): void {
-    this.addCond(eq(tables.id, id.id.value))
-  }
-  idsIn(ids: TableIdsSpecification): void {
-    if (!ids.ids.length) return
-
-    this.addCond(
-      inArray(
-        tables.id,
-        ids.ids.map((id) => id.value),
-      ),
-    )
-  }
-  withName(name: TableNameSpecification): void {
-    this.addCond(eq(tables.name, name.name.value))
-  }
-  withSchema(schema: TableSchemaSpecification): void {
-    throw new WontImplementException(TableFilterVisitor.name + ".withSchema")
-  }
-  withFormId(spec: WithFormIdSpecification): void {
-    this.sb = this.sb!.leftJoin(tableIdMapping, eq(tableIdMapping.tableId, tables.id))
-
-    this.addCond(eq(tableIdMapping.subjectId, spec.formId))
-  }
-  withViewId(spec: WithViewIdSpecification): void {
-    this.sb = this.sb!.leftJoin(tableIdMapping, eq(tableIdMapping.tableId, tables.id))
-
-    this.addCond(eq(tableIdMapping.subjectId, spec.viewId))
-  }
-  withForeignRollupField(spec: WithForeignRollupFieldSpec): void {
-    const subQuery = this.db
-      .select({ tableId: rollupIdMapping.rollupTableId })
-      .from(rollupIdMapping)
-      .where(eq(rollupIdMapping.fieldId, spec.fieldId))
-
-    const cond = inArray(tables.id, subQuery)
-    this.addCond(cond)
-  }
-}
-
-export class TableFilterVisitor2 extends AbstractQBVisitor<TableDo> implements ITableSpecVisitor {
-  withId(id: TableIdSpecification): void {
-    this.addCond(this.eb.eb(tables.id.name, "=", id.id.value))
+    this.addCond(this.eb.eb("id", "=", id.id.value))
   }
   withBaseId(id: TableBaseIdSpecification): void {
-    this.addCond(this.eb.eb(tables.baseId.name, "=", id.baseId))
+    this.addCond(this.eb.eb("base_id", "=", id.baseId))
   }
   idsIn(ids: TableIdsSpecification): void {
     if (!ids.ids.length) return
 
     this.addCond(
       this.eb.eb(
-        tables.id.name,
+        "id",
         "in",
         ids.ids.map((id) => id.value),
       ),
     )
   }
   withName(name: TableNameSpecification): void {
-    throw new Error("Method not implemented.")
+    this.addCond(this.eb.eb("name", "=", name.name.value))
   }
   withSchema(schema: TableSchemaSpecification): void {
     throw new Error("Method not implemented.")
@@ -225,6 +124,11 @@ export class TableFilterVisitor2 extends AbstractQBVisitor<TableDo> implements I
     throw new Error("Method not implemented.")
   }
   withForeignRollupField(spec: WithForeignRollupFieldSpec): void {
-    throw new Error("Method not implemented.")
+    const subQuery = this.qb
+      .selectFrom("undb_rollup_id_mapping")
+      .select(["rollup_table_id"])
+      .where((eb) => eb.eb("undb_rollup_id_mapping.field_id", "=", spec.fieldId))
+    const cond = this.eb.eb("id", "in", subQuery)
+    this.addCond(cond)
   }
 }

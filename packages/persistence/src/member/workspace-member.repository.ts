@@ -1,40 +1,40 @@
 import { WorkspaceMember, type IWorkspaceMemberRepository } from "@undb/authz"
 import { singleton } from "@undb/di"
 import { None, Some, type IUnitOfWork, type Option } from "@undb/domain"
-import { and, eq } from "drizzle-orm"
-import type { Database } from "../db"
-import { injectDb } from "../db.provider"
-import { workspaceMember } from "../tables"
+import type { IQueryBuilder } from "../qb"
+import { injectQueryBuilder } from "../qb.provider"
 import { injectDbUnitOfWork } from "../uow/db.unit-of-work.provider"
 
 @singleton()
 export class WorkspaceMemberRepository implements IWorkspaceMemberRepository {
   constructor(
-    @injectDb()
-    private readonly db: Database,
     @injectDbUnitOfWork()
     public readonly uow: IUnitOfWork,
+    @injectQueryBuilder()
+    private readonly qb: IQueryBuilder,
   ) {}
   async findOneByUserIdAndWorkspaceId(userId: string, workspaceId: string): Promise<Option<WorkspaceMember>> {
-    const members = await this.db
-      .select()
-      .from(workspaceMember)
-      .where(and(eq(workspaceMember.userId, userId), eq(workspaceMember.workspaceId, workspaceId)))
-      .limit(1)
-      .execute()
+    const member = await this.qb
+      .selectFrom("undb_workspace_member")
+      .selectAll()
+      .where((eb) =>
+        eb.and([
+          eb.eb("undb_workspace_member.user_id", "=", userId),
+          eb.eb("undb_workspace_member.workspace_id", "=", workspaceId),
+        ]),
+      )
+      .executeTakeFirst()
 
-    if (members.length === 0) {
+    if (!member) {
       return None
     }
-
-    const member = members[0]
 
     return Some(
       new WorkspaceMember({
         id: member.id,
         role: member.role,
-        userId: member.userId,
-        workspaceId: member.workspaceId,
+        userId: member.user_id,
+        workspaceId: member.workspace_id,
       }),
     )
   }
@@ -42,6 +42,15 @@ export class WorkspaceMemberRepository implements IWorkspaceMemberRepository {
     throw new Error("Method not implemented.")
   }
   async insert(member: WorkspaceMember): Promise<void> {
-    await this.db.insert(workspaceMember).values(member.toJSON())
+    const json = member.toJSON()
+    await this.qb
+      .insertInto("undb_workspace_member")
+      .values({
+        id: json.id,
+        role: json.role,
+        user_id: json.userId,
+        workspace_id: json.workspaceId,
+      })
+      .execute()
   }
 }

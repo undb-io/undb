@@ -1,7 +1,7 @@
 import { BaseFactory, type Base as BaseDo, type IBaseDTO } from "@undb/base"
 import { singleton } from "@undb/di"
 import type { Mapper } from "@undb/domain"
-import type { Base } from "../tables"
+import type { Base } from "../db"
 
 @singleton()
 export class BaseMapper implements Mapper<BaseDo, Base, IBaseDTO> {

@@ -7,18 +7,15 @@ import {
   type TableComositeSpecification,
   type TableId,
 } from "@undb/table"
-import type { Database } from "../db"
-import { injectDb } from "../db.provider"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
-import { TableDbQuerySpecHandler2 } from "./table-db.query-spec-handler"
+import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
 import { TableMapper } from "./table.mapper"
+import { TableReferenceVisitor } from "./table.reference-visitor"
 
 @singleton()
 export class TableQueryRepository implements ITableQueryRepository {
   constructor(
-    @injectDb()
-    private readonly db: Database,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
   ) {}
@@ -31,7 +28,8 @@ export class TableQueryRepository implements ITableQueryRepository {
     const tbs = await this.qb
       .selectFrom("undb_table")
       .selectAll()
-      .where((eb) => new TableDbQuerySpecHandler2(eb).handle(spec))
+      .$if(spec.isSome(), (qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
+      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb).handle(spec))
       .execute()
 
     return tbs.map((r) => this.mapper.toDTO(r))
@@ -41,7 +39,8 @@ export class TableQueryRepository implements ITableQueryRepository {
     const tb = await this.qb
       .selectFrom("undb_table")
       .selectAll()
-      .where((eb) => new TableDbQuerySpecHandler2(eb).handle(Some(spec)))
+      .$call((qb) => new TableReferenceVisitor(qb).call(spec))
+      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb).handle(Some(spec)))
       .executeTakeFirst()
 
     return tb ? Some(this.mapper.toDTO(tb)) : None
@@ -52,7 +51,8 @@ export class TableQueryRepository implements ITableQueryRepository {
     const tb = await this.qb
       .selectFrom("undb_table")
       .selectAll()
-      .where((eb) => new TableDbQuerySpecHandler2(eb).handle(spec))
+      .$call((qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
+      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb).handle(spec))
       .executeTakeFirst()
 
     return tb ? Some(this.mapper.toDTO(tb)) : None

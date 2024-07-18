@@ -25,7 +25,7 @@ export class TableMapper implements Mapper<TableDo, Table, ITableDTO> {
       id: json.id,
       name: json.name,
       base_id: json.baseId,
-      schema: json.schema,
+      schema: json.schema ?? [],
       views: json.views,
       forms: json.forms ?? null,
       rls: json.rls ?? null,

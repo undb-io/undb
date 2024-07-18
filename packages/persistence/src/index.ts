@@ -1,7 +1,6 @@
 export * from "./audit"
 export * from "./base"
-export { db } from "./db"
-export type { Database } from "./db"
+export { db, type Base, type Outbox, type Table } from "./db"
 export { injectDb } from "./db.provider"
 export * from "./member"
 export * from "./record"

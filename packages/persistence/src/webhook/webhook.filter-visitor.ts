@@ -13,39 +13,50 @@ import type {
   WithWebhookTableId,
   WithWebhookURL,
 } from "@undb/webhook"
-import { eq, inArray } from "drizzle-orm"
-import { AbstractDBFilterVisitor } from "../abstract-db.visitor"
-import { webhook } from "../tables"
+import type { ExpressionBuilder } from "kysely"
+import { AbstractQBVisitor } from "../abstract-qb.visitor"
+import type { Database2 } from "../db"
 
-export class WebhookFilterVisitor extends AbstractDBFilterVisitor<WebhookDo> implements IWebhookSpecVisitor {
+export class WebhookFilterVisitor extends AbstractQBVisitor<WebhookDo> implements IWebhookSpecVisitor {
+  constructor(protected readonly eb: ExpressionBuilder<Database2, "undb_webhook">) {
+    super(eb)
+  }
   nameEqual(s: WithWebhookName): void {
-    this.addCond(eq(webhook.name, s.name))
+    const cond = this.eb.eb("name", "=", s.name)
+    this.addCond(cond)
   }
   urlEqual(s: WithWebhookURL): void {
-    this.addCond(eq(webhook.url, s.webhookURL.value))
+    const cond = this.eb.eb("url", "=", s.webhookURL.value)
+    this.addCond(cond)
   }
   headersEqual(s: WithWebhookHeaders): void {
     throw new Error("Method not implemented.")
   }
   withTableId(s: WithWebhookTableId): void {
-    this.addCond(eq(webhook.tableId, s.tableId.value))
+    const cond = this.eb.eb("table_id", "=", s.tableId.value)
+    this.addCond(cond)
   }
   enabled(s: WithWebhookEnabled): void {
-    this.addCond(eq(webhook.enabled, s.enabled))
+    const cond = this.eb.eb("enabled", "=", s.enabled)
+    this.addCond(cond)
   }
   methodEqual(s: WithWebhookMethod): void {
-    this.addCond(eq(webhook.method, s.webhookMethod.value))
+    const cond = this.eb.eb("method", "=", s.webhookMethod.value)
+    this.addCond(cond)
   }
   eventEqual(s: WithWebhookEvent): void {
-    this.addCond(eq(webhook.event, s.event))
+    const cond = this.eb.eb("event", "=", s.event)
+    this.addCond(cond)
   }
   eventsIn(s: WebhookEventsIn): void {
-    this.addCond(inArray(webhook.event, s.events))
+    const cond = this.eb.eb("event", "in", s.events)
+    this.addCond(cond)
   }
   conditionEqual(s: WithWebhookCondition): void {
     throw new WontImplementException(WebhookFilterVisitor.name + ".conditionEqual")
   }
   idEqual(s: WithWebhookId): void {
-    this.addCond(eq(webhook.id, s.webhookId.value))
+    const cond = this.eb.eb("id", "=", s.webhookId.value)
+    this.addCond(cond)
   }
 }

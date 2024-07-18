@@ -11,14 +11,15 @@ import {
   type TableDo,
   type TableId,
 } from "@undb/table"
-import type { InsertTableIdMapping } from "../db"
-import type { IQueryBuilder } from "../qb"
+import type { InsertTable, InsertTableIdMapping } from "../db"
+import { json, type IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTableService } from "../underlying/underlying-table.service"
 import { injectDbUnitOfWork } from "../uow"
-import { TableDbQuerySpecHandler2 } from "./table-db.query-spec-handler"
+import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
 import { TableMapper } from "./table.mapper"
-import { TableMutationVisitor2 } from "./table.mutation-visitor"
+import { TableMutationVisitor } from "./table.mutation-visitor"
+import { TableReferenceVisitor } from "./table.reference-visitor"
 
 @singleton()
 export class TableRepository implements ITableRepository {
@@ -37,7 +38,6 @@ export class TableRepository implements ITableRepository {
     return new TableMapper()
   }
 
-  // @transactional()
   async updateOneById(table: TableDo, spec: Option<TableComositeSpecification>): Promise<void> {
     return this.#updateOneById(table, spec)
   }
@@ -50,33 +50,38 @@ export class TableRepository implements ITableRepository {
     const ctx = executionContext.getStore()
     const userId = ctx!.user!.userId!
 
-    const visitor = new TableMutationVisitor2(table, this.qb)
+    const visitor = new TableMutationVisitor(table, this.qb)
     spec.unwrap().accept(visitor)
 
     await this.qb
       .updateTable("undb_table")
-      .set({ ...visitor.data, updated_by: userId })
+      .set({ ...visitor.data, updated_by: userId, updated_at: new Date().toISOString() })
       .where((eb) => eb.eb("id", "=", table.id.value))
       .execute()
     await this.underlyingTableService.update(table, spec.unwrap())
     await this.outboxService.save(table)
   }
 
-  // @transactional()
   async insert(table: TableDo): Promise<void> {
     const ctx = executionContext.getStore()
     const userId = ctx!.user!.userId!
 
-    const values = this.mapper.toEntity(table)
+    const rls = table.rls.into(undefined)
+    const values: InsertTable = {
+      id: table.id.value,
+      name: table.name.value,
+      base_id: table.baseId,
+      created_by: userId,
+      created_at: new Date().toISOString(),
+      schema: json(table.schema.toJSON()),
+      views: json(table.views.toJSON()),
+      forms: table.forms ? json(table.forms?.toJSON()) : null,
+      rls: rls ? json(rls.toJSON()) : null,
+      updated_by: userId,
+      updated_at: new Date().toISOString(),
+    }
 
-    await this.qb
-      .insertInto("undb_table")
-      .values({
-        ...values,
-        created_by: userId,
-        updated_by: userId,
-      })
-      .execute()
+    await this.qb.insertInto("undb_table").values(values).execute()
 
     const viewIds = table.views.views.map((v) => v.id.value)
     const formIds = table.forms?.props.map((v) => v.id) ?? []
@@ -91,7 +96,6 @@ export class TableRepository implements ITableRepository {
     await this.outboxService.save(table)
   }
 
-  // @transactional()
   async bulkUpdate(updates: { table: TableDo; spec: Option<TableComositeSpecification> }[]): Promise<void> {
     for (const update of updates) {
       await this.#updateOneById(update.table, update.spec)
@@ -102,7 +106,8 @@ export class TableRepository implements ITableRepository {
     const tbs = await this.qb
       .selectFrom("undb_table")
       .selectAll()
-      .where((eb) => new TableDbQuerySpecHandler2(eb).handle(spec))
+      .$if(spec.isSome(), (qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
+      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb).handle(spec))
       .execute()
 
     return tbs.map((t) => this.mapper.toDo(t))
@@ -113,7 +118,8 @@ export class TableRepository implements ITableRepository {
     const tb = await this.qb
       .selectFrom("undb_table")
       .selectAll()
-      .where((eb) => new TableDbQuerySpecHandler2(eb).handle(spec))
+      .$call((qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
+      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb).handle(spec))
       .executeTakeFirst()
 
     return tb ? Some(this.mapper.toDo(tb)) : None
@@ -124,7 +130,8 @@ export class TableRepository implements ITableRepository {
     const tbs = await this.qb
       .selectFrom("undb_table")
       .selectAll()
-      .where((eb) => new TableDbQuerySpecHandler2(eb).handle(spec))
+      .$call((qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
+      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb).handle(spec))
       .execute()
 
     return tbs.map((t) => this.mapper.toDo(t))

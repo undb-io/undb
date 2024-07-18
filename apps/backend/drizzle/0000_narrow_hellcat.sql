@@ -47,7 +47,7 @@ CREATE TABLE `undb_session` (
 --> statement-breakpoint
 CREATE TABLE `undb_share` (
 	`id` text PRIMARY KEY NOT NULL,
-	`target` text NOT NULL,
+	`target_type` text NOT NULL,
 	`target_id` text NOT NULL,
 	`enabled` integer NOT NULL
 );
@@ -89,11 +89,11 @@ CREATE TABLE `undb_webhook` (
 	`url` text NOT NULL,
 	`method` text NOT NULL,
 	`enabled` integer NOT NULL,
-	`tableId` text NOT NULL,
+	`table_id` text NOT NULL,
 	`headers` text NOT NULL,
 	`condition` text,
 	`event` text NOT NULL,
-	FOREIGN KEY (`tableId`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE TABLE `undb_workspace_member` (
@@ -106,10 +106,11 @@ CREATE TABLE `undb_workspace_member` (
 --> statement-breakpoint
 CREATE INDEX `audit_table_id_idx` ON `undb_audit` (`table_id`);--> statement-breakpoint
 CREATE INDEX `audit_record_id_idx` ON `undb_audit` (`record_id`);--> statement-breakpoint
-CREATE UNIQUE INDEX `share_unique_idx` ON `undb_share` (`target`,`target_id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `share_unique_idx` ON `undb_share` (`target_type`,`target_id`);--> statement-breakpoint
 CREATE INDEX `table_base_id_idx` ON `undb_table` (`base_id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `table_name_unique_idx` ON `undb_table` (`name`,`base_id`);--> statement-breakpoint
 CREATE UNIQUE INDEX `undb_user_email_unique` ON `undb_user` (`email`);--> statement-breakpoint
 CREATE INDEX `user_username_idx` ON `undb_user` (`username`);--> statement-breakpoint
 CREATE INDEX `user_email_idx` ON `undb_user` (`email`);--> statement-breakpoint
-CREATE INDEX `webhook_table_id_idx` ON `undb_webhook` (`tableId`);--> statement-breakpoint
+CREATE INDEX `webhook_table_id_idx` ON `undb_webhook` (`table_id`);--> statement-breakpoint
 CREATE INDEX `webhook_url_idx` ON `undb_webhook` (`url`);

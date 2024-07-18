@@ -1,31 +1,30 @@
 import { singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import type { IUser, IUserQueryRepository } from "@undb/user"
-import { eq } from "drizzle-orm"
-import type { Database } from "../db"
-import { injectDb } from "../db.provider"
-import { users } from "../tables"
+import type { IQueryBuilder } from "../qb"
+import { injectQueryBuilder } from "../qb.provider"
 
 @singleton()
 export class UserQueryRepository implements IUserQueryRepository {
   constructor(
-    @injectDb()
-    private readonly db: Database,
+    @injectQueryBuilder()
+    private readonly qb: IQueryBuilder,
   ) {}
 
   async findOneById(userId: string): Promise<Option<IUser>> {
-    const results = await this.db.select().from(users).where(eq(users.id, userId)).limit(1)
-    if (results.length === 0) {
-      return None
-    }
-    const result = results[0]
-    if (!result) {
+    const user = await this.qb
+      .selectFrom("undb_user")
+      .selectAll()
+      .where((eb) => eb.eb("undb_user.id", "=", userId))
+      .executeTakeFirst()
+
+    if (!user) {
       return None
     }
     return Some({
-      id: result.id,
-      email: result.email,
-      username: result.username,
+      id: user.id,
+      email: user.email,
+      username: user.username,
     })
   }
 }

@@ -1,7 +1,7 @@
 import { singleton } from "@undb/di"
 import type { Mapper } from "@undb/domain"
 import { ShareFactory, type IShareDTO, type IShareTarget, type Share as ShareDo } from "@undb/share"
-import type { Share } from "../tables"
+import type { Share } from "../db"
 
 @singleton()
 export class ShareMapper implements Mapper<ShareDo, Share, IShareDTO> {
@@ -9,8 +9,8 @@ export class ShareMapper implements Mapper<ShareDo, Share, IShareDTO> {
     return ShareFactory.fromJSON({
       id: entity.id,
       target: {
-        type: entity.targetType,
-        id: entity.targetId,
+        type: entity.target_type,
+        id: entity.target_id,
       } as IShareTarget,
       enabled: entity.enabled,
     })
@@ -18,8 +18,8 @@ export class ShareMapper implements Mapper<ShareDo, Share, IShareDTO> {
   toEntity(domain: ShareDo): Share {
     return {
       id: domain.id.value,
-      targetId: domain.target.id,
-      targetType: domain.target.type,
+      target_id: domain.target.id,
+      target_type: domain.target.type,
       enabled: domain.enabled,
     }
   }
@@ -27,8 +27,8 @@ export class ShareMapper implements Mapper<ShareDo, Share, IShareDTO> {
     return {
       id: entity.id,
       target: {
-        id: entity.targetId,
-        type: entity.targetType,
+        id: entity.target_id,
+        type: entity.target_type,
       } as IShareTarget,
       enabled: entity.enabled,
     }

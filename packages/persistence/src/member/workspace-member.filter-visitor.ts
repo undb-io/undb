@@ -1,19 +1,24 @@
 import type { WithWorkspaceMemberId, WithWorkspaceMemberQ, WorkspaceMember } from "@undb/authz"
 import type { IWorkspaceMemberVisitor } from "@undb/authz/src/workspace-member/workspace-member.visitor"
 import type { ISpecVisitor, ISpecification } from "@undb/domain"
-import { eq, like } from "drizzle-orm"
-import { AbstractDBFilterVisitor } from "../abstract-db.visitor"
-import { users } from "../tables"
+import type { ExpressionBuilder } from "kysely"
+import { AbstractQBVisitor } from "../abstract-qb.visitor"
+import type { Database2 } from "../db"
 
 export class WorkspaceMemberFilterVisitor
-  extends AbstractDBFilterVisitor<WorkspaceMember>
+  extends AbstractQBVisitor<WorkspaceMember>
   implements IWorkspaceMemberVisitor
 {
+  constructor(protected readonly eb: ExpressionBuilder<Database2, "undb_workspace_member" | "undb_user">) {
+    super(eb)
+  }
   withQ(q: WithWorkspaceMemberQ): void {
-    this.addCond(like(users.username, `%${q.q}%`))
+    const cond = this.eb.eb("undb_user.username", "like", `%${q.q}%`)
+    this.addCond(cond)
   }
   withId(q: WithWorkspaceMemberId): void {
-    this.addCond(eq(users.id, q.id))
+    const cond = this.eb.eb("undb_user.id", "=", q.id)
+    this.addCond(cond)
   }
   and(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
     throw new Error("Method not implemented.")

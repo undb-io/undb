@@ -1,16 +1,20 @@
 import type { Base, IBaseSpecVisitor, WithBaseId, WithBaseName, WithBaseQ } from "@undb/base"
-import { eq, like } from "drizzle-orm"
-import { AbstractDBFilterVisitor } from "../abstract-db.visitor"
-import { baseTable } from "../tables"
+import type { ExpressionBuilder } from "kysely"
+import { AbstractQBVisitor } from "../abstract-qb.visitor"
+import type { Database2 } from "../db"
 
-export class BaseFilterVisitor extends AbstractDBFilterVisitor<Base> implements IBaseSpecVisitor {
+export class BaseFilterVisitor extends AbstractQBVisitor<Base> implements IBaseSpecVisitor {
+  constructor(protected readonly eb: ExpressionBuilder<Database2, "undb_base">) {
+    super(eb)
+  }
+
   withId(v: WithBaseId): void {
-    this.addCond(eq(baseTable.id, v.id.value))
+    this.addCond(this.eb.eb("id", "=", v.id.value))
   }
   withName(v: WithBaseName): void {
-    this.addCond(eq(baseTable.name, v.name.value))
+    this.addCond(this.eb.eb("name", "=", v.name.value))
   }
   withQ(v: WithBaseQ): void {
-    this.addCond(like(baseTable.name, `%${v.q}%`))
+    this.addCond(this.eb.eb("name", "like", `%${v.q}%`))
   }
 }

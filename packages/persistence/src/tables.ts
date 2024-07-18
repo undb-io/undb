@@ -1,8 +1,6 @@
-import type { IAuditDetail } from "@undb/audit"
 import type { IWorkspaceMemberRole } from "@undb/authz"
-import type { IFormsDTO, IRLSGroupDTO, ISchemaDTO, IViewsDTO, RECORD_EVENTS } from "@undb/table"
-import type { IWebhookHeaders, IWebhookMethod } from "@undb/webhook"
-import type { IRootWebhookCondition } from "@undb/webhook/src/webhook.condition"
+import type { RECORD_EVENTS } from "@undb/table"
+import type { IWebhookMethod } from "@undb/webhook"
 import { sql } from "drizzle-orm"
 import { index, integer, primaryKey, sqliteTableCreator, text, unique } from "drizzle-orm/sqlite-core"
 
@@ -17,10 +15,10 @@ export const tables = sqliteTable(
       .notNull()
       .references(() => baseTable.id),
 
-    schema: text("schema", { mode: "json" }).$type<ISchemaDTO>(),
-    views: text("views", { mode: "json" }).$type<IViewsDTO>(),
-    forms: text("forms", { mode: "json" }).$type<IFormsDTO>(),
-    rls: text("rls", { mode: "json" }).$type<IRLSGroupDTO>(),
+    schema: text("schema", { mode: "json" }).notNull(),
+    views: text("views", { mode: "json" }).notNull(),
+    forms: text("forms", { mode: "json" }),
+    rls: text("rls", { mode: "json" }),
 
     createdAt: text("created_at")
       .notNull()
@@ -89,7 +87,7 @@ export const outbox = sqliteTable("outbox", {
   name: text("name").notNull(),
 })
 
-export type Outbox = typeof outbox.$inferSelect
+// export type Outbox = typeof outbox.$inferSelect
 export type NewOutbox = typeof outbox.$inferInsert
 
 export const users = sqliteTable(
@@ -124,11 +122,11 @@ export const webhook = sqliteTable(
     url: text("url").notNull(),
     method: text("method").notNull().$type<IWebhookMethod>(),
     enabled: integer("enabled", { mode: "boolean" }).notNull(),
-    tableId: text("tableId")
+    tableId: text("table_id")
       .notNull()
       .references(() => tables.id),
-    headers: text("headers", { mode: "json" }).notNull().$type<IWebhookHeaders>(),
-    condition: text("condition", { mode: "json" }).$type<IRootWebhookCondition>(),
+    headers: text("headers", { mode: "json" }).notNull(),
+    condition: text("condition", { mode: "json" }),
     event: text("event").notNull().$type<RECORD_EVENTS>(),
   },
   (table) => {
@@ -147,7 +145,7 @@ export const audit = sqliteTable(
   {
     id: text("id").notNull().primaryKey(),
     timestamp: integer("timestamp", { mode: "timestamp_ms" }).notNull(),
-    detail: text("detail", { mode: "json" }).$type<IAuditDetail>(),
+    detail: text("detail", { mode: "json" }),
     op: text("op").notNull().$type<RECORD_EVENTS>(),
     tableId: text("table_id").notNull(),
     recordId: text("record_id").notNull(),
@@ -200,7 +198,7 @@ export const shareTable = sqliteTable(
   "share",
   {
     id: text("id").notNull().primaryKey(),
-    targetType: text("target").notNull(),
+    targetType: text("target_type").notNull(),
     targetId: text("target_id").notNull(),
     enabled: integer("enabled", { mode: "boolean" }).notNull(),
   },

@@ -1,14 +1,15 @@
 import type { BaseEvent } from "@undb/domain"
-import type { Outbox } from "./tables"
+import type { InsertOutbox } from "./db"
+import { json } from "./qb"
 
 export class OutboxMapper {
-  static fromEvent(event: BaseEvent): Outbox {
+  static fromEvent(event: BaseEvent): InsertOutbox {
     return {
       id: event.id,
       name: event.name,
-      payload: event.payload,
-      meta: event.meta,
-      operatorId: event.operatorId ?? "123",
+      payload: json(event.payload),
+      meta: event.meta ? json(event.meta) : null,
+      operator_id: event.operatorId ?? "123",
       timestamp: event.timestamp,
     }
   }

@@ -1,4 +1,3 @@
-import { NotImplementException, WontImplementException } from "@undb/domain"
 import type {
   ITableSpecVisitor,
   TableBaseIdSpecification,
@@ -29,136 +28,11 @@ import type {
   WithoutFieldSpecification,
   WithoutView,
 } from "@undb/table"
-import { eq, or } from "drizzle-orm"
-import { AbstractDBMutationVisitor } from "../abstract-db.visitor"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
-import type { Database } from "../db"
-import type { IQueryBuilder } from "../qb"
-import { rollupIdMapping, tableIdMapping, tables } from "../tables"
+import { json, type IQueryBuilder } from "../qb"
+import { tables } from "../tables"
 
-export class TableMutationVisitor
-  extends AbstractDBMutationVisitor<TableDo, typeof tables>
-  implements ITableSpecVisitor
-{
-  constructor(
-    public readonly table: TableDo,
-    db: Database,
-  ) {
-    super(db)
-  }
-  withViewId(spec: WithViewIdSpecification): void {
-    throw new Error("Method not implemented.")
-  }
-  withFormId(spec: WithFormIdSpecification): void {
-    throw new Error("Method not implemented.")
-  }
-  withForeignRollupField(spec: WithForeignRollupFieldSpec): void {
-    throw new Error("Method not implemented.")
-  }
-  withBaseId(id: TableBaseIdSpecification): void {
-    this.addUpdates({ baseId: id.baseId })
-  }
-  withView(views: WithView): void {
-    this.addUpdates({ views: this.table.views?.toJSON() })
-  }
-  withoutView(view: WithoutView): void {
-    this.addUpdates({ views: this.table.views?.toJSON() })
-  }
-  withNewView(views: WithNewView): void {
-    this.addUpdates({ views: this.table.views?.toJSON() })
-    const insert = this.db
-      .insert(tableIdMapping)
-      .values({ tableId: this.table.id.value, subjectId: views.view.id.value })
-    this.addSql(insert)
-  }
-  withViewOption(viewOption: WithViewOption): void {
-    this.addUpdates({ views: this.table.views?.toJSON() })
-  }
-  withViewFields(fields: WithViewFields): void {
-    this.addUpdates({ views: this.table.views?.toJSON() })
-  }
-  withUpdatedField(spec: WithUpdatedFieldSpecification): void {
-    this.addUpdates({ schema: this.table.schema?.toJSON() })
-  }
-
-  withForm(views: WithFormSpecification): void {
-    this.addUpdates({ forms: this.table.forms?.toJSON() })
-  }
-  withForms(forms: TableFormsSpecification): void {
-    this.addUpdates({ forms: this.table.forms?.toJSON() })
-  }
-  withNewForm(form: WithNewFormSpecification): void {
-    this.addUpdates({ forms: this.table.forms?.toJSON() })
-    const insert = this.db.insert(tableIdMapping).values({ tableId: this.table.id.value, subjectId: form.form.id })
-    this.addSql(insert)
-  }
-  withNewField(schema: WithNewFieldSpecification): void {
-    const field = schema.field
-
-    this.addUpdates({ schema: this.table.schema?.toJSON() })
-    const insert = this.db.insert(tableIdMapping).values({ tableId: this.table.id.value, subjectId: field.id.value })
-    this.addSql(insert)
-
-    if (field.type === "rollup") {
-      const referenceField = field.getReferenceField(this.table)
-      const option = field.option.unwrap()
-      const insertRollup = this.db
-        .insert(rollupIdMapping)
-        .values({
-          fieldId: option.rollupFieldId,
-          tableId: referenceField.foreignTableId,
-          rollupId: field.id.value,
-          rollupTableId: this.table.id.value,
-        })
-        .onConflictDoNothing()
-      this.addSql(insertRollup)
-    }
-  }
-  withDuplicateField(schema: WithDuplicatedFieldSpecification): void {}
-  withoutField(schema: WithoutFieldSpecification): void {
-    this.addUpdates({ schema: this.table.schema?.toJSON() })
-
-    const deleteQuery = this.db.delete(tableIdMapping).where(eq(tableIdMapping.subjectId, schema.field.id.value))
-    this.addSql(deleteQuery)
-
-    const deleteRollup = this.db
-      .delete(rollupIdMapping)
-      .where(
-        or(eq(rollupIdMapping.fieldId, schema.field.id.value), eq(rollupIdMapping.rollupId, schema.field.id.value)),
-      )
-    this.addSql(deleteRollup)
-  }
-  withViewAggregate(viewColor: WithViewAggregate): void {
-    this.addUpdates({ views: this.table.views?.toJSON() })
-  }
-  withTableRLS(rls: WithTableRLS): void {
-    this.addUpdates({ rls: this.table.rls.into(undefined)?.toJSON() })
-  }
-  withViewSort(viewSort: WithViewSort): void {
-    this.addUpdates({ views: this.table.views?.toJSON() })
-  }
-  withViewColor(viewFilter: WithViewColor): void {
-    this.addUpdates({ views: this.table.views?.toJSON() })
-  }
-  withId(id: TableIdSpecification): void {
-    throw new WontImplementException(TableMutationVisitor.name + ".withId")
-  }
-  withName(name: TableNameSpecification): void {
-    this.addUpdates({ name: name.name.value })
-  }
-  withSchema(schema: TableSchemaSpecification): void {
-    throw new NotImplementException(TableMutationVisitor.name + ".withSchema")
-  }
-  withViews(views: TableViewsSpecification): void {
-    throw new NotImplementException(TableMutationVisitor.name + ".withSchema")
-  }
-  withViewFilter(viewFilter: WithViewFilter): void {
-    this.addUpdates({ views: this.table.views?.toJSON() })
-  }
-  idsIn(ids: TableIdsSpecification): void {}
-}
-
-export class TableMutationVisitor2 extends AbstractQBMutationVisitor implements ITableSpecVisitor {
+export class TableMutationVisitor extends AbstractQBMutationVisitor implements ITableSpecVisitor {
   constructor(
     private readonly table: TableDo,
     private readonly qb: IQueryBuilder,
@@ -181,64 +55,132 @@ export class TableMutationVisitor2 extends AbstractQBMutationVisitor implements 
     throw new Error("Method not implemented.")
   }
   withNewField(schema: WithNewFieldSpecification): void {
-    throw new Error("Method not implemented.")
+    const field = schema.field
+
+    this.setData(tables.schema.name, json(this.table.schema.toJSON()))
+
+    const sql = this.qb
+      .insertInto("undb_table_id_mapping")
+      .values({
+        table_id: this.table.id.value,
+        subject_id: field.id.value,
+      })
+      .compile()
+    this.addSql(sql)
+
+    if (field.type === "rollup") {
+      const referenceField = field.getReferenceField(this.table)
+      const option = field.option.unwrap()
+      const sql = this.qb
+        .insertInto("undb_rollup_id_mapping")
+        .values({
+          field_id: option.rollupFieldId,
+          table_id: referenceField.foreignTableId,
+          rollup_id: field.id.value,
+          rollup_table_id: this.table.id.value,
+        })
+        .onConflict((ob) => ob.doNothing())
+        .compile()
+      this.addSql(sql)
+    }
   }
   withDuplicateField(schema: WithDuplicatedFieldSpecification): void {
     throw new Error("Method not implemented.")
   }
   withoutField(schema: WithoutFieldSpecification): void {
-    throw new Error("Method not implemented.")
+    this.setData(tables.schema.name, json(this.table.schema.toJSON()))
+
+    const deleteQuery = this.qb
+      .deleteFrom("undb_table_id_mapping")
+      .where((eb) => eb.eb("subject_id", "=", schema.field.id.value))
+      .compile()
+    this.addSql(deleteQuery)
+
+    const deleteRollup = this.qb
+      .deleteFrom("undb_rollup_id_mapping")
+      .where((eb) =>
+        eb.or([eb.eb("field_id", "=", schema.field.id.value), eb.eb("rollup_id", "=", schema.field.id.value)]),
+      )
+      .compile()
+    this.addSql(deleteRollup)
   }
   withUpdatedField(spec: WithUpdatedFieldSpecification): void {
-    throw new Error("Method not implemented.")
+    this.setData(tables.schema.name, json(this.table.schema.toJSON()))
   }
   withTableRLS(rls: WithTableRLS): void {
-    throw new Error("Method not implemented.")
+    const data = this.table.rls?.into(undefined)
+
+    this.setData(tables.rls.name, data ? json(data) : null)
   }
   withViews(views: TableViewsSpecification): void {
     throw new Error("Method not implemented.")
   }
   withView(views: WithView): void {
-    this.setData(tables.views.name, this.table.views?.toJSON())
+    this.setData(tables.views.name, json(this.table.views.toJSON()))
   }
   withNewView(views: WithNewView): void {
-    throw new Error("Method not implemented.")
+    this.setData(tables.views.name, json(this.table.views.toJSON()))
+
+    const sql = this.qb
+      .insertInto("undb_table_id_mapping")
+      .values({
+        table_id: this.table.id.value,
+        subject_id: views.view.id.value,
+      })
+      .compile()
+
+    this.addSql(sql)
   }
   withoutView(view: WithoutView): void {
-    throw new Error("Method not implemented.")
+    this.setData(tables.views.name, json(this.table.views.toJSON()))
+    const deleteQuery = this.qb
+      .deleteFrom("undb_table_id_mapping")
+      .where((eb) => eb.eb("subject_id", "=", view.view.id.value))
+      .compile()
+    this.addSql(deleteQuery)
   }
   withViewId(spec: WithViewIdSpecification): void {
     throw new Error("Method not implemented.")
   }
   withViewFilter(viewFilter: WithViewFilter): void {
-    throw new Error("Method not implemented.")
+    this.setData(tables.views.name, json(this.table.views.toJSON()))
   }
   withViewOption(viewOption: WithViewOption): void {
-    throw new Error("Method not implemented.")
+    this.setData(tables.views.name, json(this.table.views.toJSON()))
   }
   withViewColor(viewColor: WithViewColor): void {
-    throw new Error("Method not implemented.")
+    this.setData(tables.views.name, json(this.table.views.toJSON()))
   }
   withViewSort(viewSort: WithViewSort): void {
-    throw new Error("Method not implemented.")
+    this.setData(tables.views.name, json(this.table.views.toJSON()))
   }
   withViewAggregate(viewColor: WithViewAggregate): void {
-    throw new Error("Method not implemented.")
+    this.setData(tables.views.name, json(this.table.views.toJSON()))
   }
   withViewFields(fields: WithViewFields): void {
-    throw new Error("Method not implemented.")
+    this.setData(tables.views.name, json(this.table.views.toJSON()))
   }
   withForms(views: TableFormsSpecification): void {
-    throw new Error("Method not implemented.")
+    this.setData(tables.forms.name, this.table.forms ? json(this.table.forms?.toJSON()) : null)
   }
   withFormId(spec: WithFormIdSpecification): void {
     throw new Error("Method not implemented.")
   }
   withNewForm(views: WithNewFormSpecification): void {
-    throw new Error("Method not implemented.")
+    this.setData(tables.forms.name, this.table.forms ? json(this.table.forms?.toJSON()) : null)
+
+    const sql = this.qb
+      .insertInto("undb_table_id_mapping")
+      .values({
+        table_id: this.table.id.value,
+        subject_id: views.form.id,
+      })
+      .compile()
+
+    this.addSql(sql)
   }
   withForm(views: WithFormSpecification): void {
-    throw new Error("Method not implemented.")
+    this.setData(tables.forms.name, this.table.forms ? json(this.table.forms?.toJSON()) : null)
   }
   withForeignRollupField(spec: WithForeignRollupFieldSpec): void {
     throw new Error("Method not implemented.")

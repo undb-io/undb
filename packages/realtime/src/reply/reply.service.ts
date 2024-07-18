@@ -1,24 +1,22 @@
 import { inject, singleton } from "@undb/di"
-import { injectDb, type Database } from "@undb/persistence"
-import { outbox } from "@undb/persistence"
-import { PubSubContext } from "../pubsub/pubsub.context"
-import { inArray } from "drizzle-orm"
-import { ReplyEventFactory } from "./reply-event.factory"
 import type { BaseEvent } from "@undb/domain"
+import type { IQueryBuilder } from "@undb/persistence/src/qb"
+import { injectQueryBuilder } from "@undb/persistence/src/qb.provider"
+import { PubSubContext } from "../pubsub/pubsub.context"
+import { ReplyEventFactory } from "./reply-event.factory"
 import { getTopic } from "./topic"
 
 @singleton()
 export class ReplyService {
   constructor(
-    @injectDb()
-    private readonly db: Database,
     @inject(PubSubContext)
     private readonly pubsub: PubSubContext<BaseEvent>,
+    @injectQueryBuilder()
+    private readonly qb: IQueryBuilder,
   ) {}
 
   public async scan() {
-    const outboxList = await this.db.select().from(outbox).limit(10)
-
+    const outboxList = await this.qb.selectFrom("undb_outbox").selectAll().limit(10).execute()
     for (const item of outboxList) {
       const event = ReplyEventFactory.from(item)
       if (event.isNone()) continue
@@ -32,12 +30,16 @@ export class ReplyService {
     }
 
     if (outboxList.length > 0) {
-      await this.db.delete(outbox).where(
-        inArray(
-          outbox.id,
-          outboxList.map((o) => o.id),
-        ),
-      )
+      await this.qb
+        .deleteFrom("undb_outbox")
+        .where((eb) =>
+          eb.eb(
+            "id",
+            "in",
+            outboxList.map((o) => o.id),
+          ),
+        )
+        .execute()
     }
   }
 }

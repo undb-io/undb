@@ -1,13 +1,12 @@
-import type { Base, IBaseSpecVisitor, WithBaseId, WithBaseName, WithBaseQ } from "@undb/base"
-import { AbstractDBMutationVisitor } from "../abstract-db.visitor"
-import { baseTable } from "../tables"
+import type { IBaseSpecVisitor, WithBaseId, WithBaseName, WithBaseQ } from "@undb/base"
+import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
 
-export class BaseMutateVisitor extends AbstractDBMutationVisitor<Base, typeof baseTable> implements IBaseSpecVisitor {
+export class BaseMutateVisitor extends AbstractQBMutationVisitor implements IBaseSpecVisitor {
   withId(v: WithBaseId): void {
     throw new Error("Method not implemented.")
   }
   withName(v: WithBaseName): void {
-    this.addUpdates({ name: v.name.value })
+    this.setData("name", v.name.value)
   }
   withQ(v: WithBaseQ): void {
     throw new Error("Method not implemented.")
