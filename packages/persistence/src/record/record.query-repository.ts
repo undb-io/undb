@@ -21,7 +21,7 @@ import {
   type ViewId,
 } from "@undb/table"
 import { type AliasedExpression, type Expression } from "kysely"
-import type { IQueryBuilder } from "../qb"
+import type { IRecordQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { RecordQueryHelper } from "./record-query.helper"
@@ -35,7 +35,7 @@ import { RecordMapper } from "./record.mapper"
 export class RecordQueryRepository implements IRecordQueryRepository {
   constructor(
     @injectQueryBuilder()
-    private readonly qb: IQueryBuilder,
+    private readonly qb: IRecordQueryBuilder,
     @inject(RecordMapper)
     private readonly mapper: RecordMapper,
     @injectTableRepository()

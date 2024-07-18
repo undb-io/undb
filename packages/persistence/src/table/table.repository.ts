@@ -11,27 +11,26 @@ import {
   type TableDo,
   type TableId,
 } from "@undb/table"
-import { eq } from "drizzle-orm"
-import type { Database } from "../db"
-import { injectDb } from "../db.provider"
-import { tableIdMapping, tables } from "../tables"
+import type { InsertTableIdMapping } from "../db"
+import type { IQueryBuilder } from "../qb"
+import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTableService } from "../underlying/underlying-table.service"
 import { injectDbUnitOfWork } from "../uow"
-import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
+import { TableDbQuerySpecHandler2 } from "./table-db.query-spec-handler"
 import { TableMapper } from "./table.mapper"
-import { TableMutationVisitor } from "./table.mutation-visitor"
+import { TableMutationVisitor2 } from "./table.mutation-visitor"
 
 @singleton()
 export class TableRepository implements ITableRepository {
   constructor(
-    @injectDb()
-    private readonly db: Database,
     @inject(UnderlyingTableService)
     private readonly underlyingTableService: UnderlyingTableService,
     @injectTableOutboxService()
     private readonly outboxService: ITableOutboxService,
     @injectDbUnitOfWork()
     public readonly uow: IUnitOfWork,
+    @injectQueryBuilder()
+    private readonly qb: IQueryBuilder,
   ) {}
 
   get mapper() {
@@ -51,14 +50,14 @@ export class TableRepository implements ITableRepository {
     const ctx = executionContext.getStore()
     const userId = ctx!.user!.userId!
 
-    const visitor = new TableMutationVisitor(table, this.db)
+    const visitor = new TableMutationVisitor2(table, this.qb)
     spec.unwrap().accept(visitor)
 
-    await this.db
-      .update(tables)
-      .set({ ...visitor.updates, updatedBy: userId })
-      .where(eq(tables.id, table.id.value))
-    await visitor.execute()
+    await this.qb
+      .updateTable("undb_table")
+      .set({ ...visitor.data, updated_by: userId })
+      .where((eb) => eb.eb("id", "=", table.id.value))
+      .execute()
     await this.underlyingTableService.update(table, spec.unwrap())
     await this.outboxService.save(table)
   }
@@ -70,16 +69,23 @@ export class TableRepository implements ITableRepository {
 
     const values = this.mapper.toEntity(table)
 
-    await this.db.insert(tables).values({ ...values, createdBy: userId, updatedBy: userId })
+    await this.qb
+      .insertInto("undb_table")
+      .values({
+        ...values,
+        created_by: userId,
+        updated_by: userId,
+      })
+      .execute()
 
     const viewIds = table.views.views.map((v) => v.id.value)
     const formIds = table.forms?.props.map((v) => v.id) ?? []
     const fieldsIds = table.schema.noneSystemFields.map((f) => f.id.value)
-    const mapping = viewIds
+    const mapping: InsertTableIdMapping[] = viewIds
       .concat(formIds)
       .concat(fieldsIds)
-      .map((id) => ({ tableId: table.id.value, subjectId: id }))
-    await this.db.insert(tableIdMapping).values(mapping)
+      .map((id) => ({ table_id: table.id.value, subject_id: id }))
+    await this.qb.insertInto("undb_table_id_mapping").values(mapping).execute()
 
     await this.underlyingTableService.create(table)
     await this.outboxService.save(table)
@@ -93,28 +99,34 @@ export class TableRepository implements ITableRepository {
   }
 
   async find(spec: Option<TableComositeSpecification>): Promise<TableDo[]> {
-    const sb = this.db.select({ table: tables }).from(tables).$dynamic()
+    const tbs = await this.qb
+      .selectFrom("undb_table")
+      .selectAll()
+      .where((eb) => new TableDbQuerySpecHandler2(eb).handle(spec))
+      .execute()
 
-    const tb = await new TableDbQuerySpecHandler(this.db, sb).handle(spec)
-
-    return tb.map((t) => this.mapper.toDo(t.table))
+    return tbs.map((t) => this.mapper.toDo(t))
   }
 
   async findOneById(id: TableId): Promise<Option<TableDo>> {
-    const sb = this.db.select({ table: tables }).from(tables).$dynamic()
-
     const spec = Some(new TableIdSpecification(id))
-    const tb = await new TableDbQuerySpecHandler(this.db, sb).handle(spec).limit(1)
+    const tb = await this.qb
+      .selectFrom("undb_table")
+      .selectAll()
+      .where((eb) => new TableDbQuerySpecHandler2(eb).handle(spec))
+      .executeTakeFirst()
 
-    return tb.length ? Some(this.mapper.toDo(tb[0].table)) : None
+    return tb ? Some(this.mapper.toDo(tb)) : None
   }
 
   async findManyByIds(ids: TableId[]): Promise<TableDo[]> {
-    const sb = this.db.select({ table: tables }).from(tables).$dynamic()
-
     const spec = Some(new TableIdsSpecification(ids))
-    const tb = await new TableDbQuerySpecHandler(this.db, sb).handle(spec)
+    const tbs = await this.qb
+      .selectFrom("undb_table")
+      .selectAll()
+      .where((eb) => new TableDbQuerySpecHandler2(eb).handle(spec))
+      .execute()
 
-    return tb.map((t) => this.mapper.toDo(t.table))
+    return tbs.map((t) => this.mapper.toDo(t))
   }
 }

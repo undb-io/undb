@@ -45,37 +45,22 @@ import {
   type UserEmpty,
   type UserEqual,
 } from "@undb/table"
-import { sql, type CompiledQuery, type ExpressionBuilder } from "kysely"
-import type { IQueryBuilder } from "../qb"
+import { sql, type ExpressionBuilder } from "kysely"
+import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
+import type { IRecordQueryBuilder } from "../qb"
 import { JoinTable } from "../underlying/reference/join-table"
 
-export class RecordMutateVisitor implements IRecordVisitor {
+export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IRecordVisitor {
   constructor(
     private readonly table: TableDo,
     /**
      * if record is null it means we are mutating all records
      */
     private readonly record: RecordDO | null,
-    private readonly qb: IQueryBuilder,
+    private readonly qb: IRecordQueryBuilder,
     private readonly eb: ExpressionBuilder<any, any>,
-  ) {}
-  // TODO: data type
-  #data: Record<string, any> = {}
-  public get data(): Readonly<Record<string, any>> {
-    return this.#data
-  }
-
-  private setData(key: string, value: any): void {
-    this.#data[key] = value
-  }
-
-  #sql: CompiledQuery[] = []
-  get sql() {
-    return this.#sql
-  }
-
-  addSql(...sql: CompiledQuery[]) {
-    this.#sql.push(...sql)
+  ) {
+    super()
   }
 
   idIn(spec: IdIn): void {

@@ -1,15 +1,16 @@
 import { LibsqlDialect } from "@libsql/kysely-libsql"
 import { createLogger } from "@undb/logger"
-import { Kysely } from "kysely"
+import { Kysely, ParseJSONResultsPlugin } from "kysely"
+import { sqlite, type Database2 } from "./db"
 
-export function createQueryBuilder(): Kysely<unknown> {
+export function createQueryBuilder(): Kysely<Database2> {
   const logger = createLogger("qb")
 
-  return new Kysely({
+  return new Kysely<Database2>({
     dialect: new LibsqlDialect({
-      url: "http://localhost:8080",
+      client: sqlite,
     }),
-
+    plugins: [new ParseJSONResultsPlugin()],
     log: (event) => {
       if (event.level == "query") {
         logger.debug(
@@ -35,4 +36,5 @@ export function createQueryBuilder(): Kysely<unknown> {
   })
 }
 
-export type IQueryBuilder = Kysely<any>
+export type IQueryBuilder = ReturnType<typeof createQueryBuilder>
+export type IRecordQueryBuilder = Kysely<any>

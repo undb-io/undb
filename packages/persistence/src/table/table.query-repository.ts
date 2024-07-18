@@ -9,8 +9,9 @@ import {
 } from "@undb/table"
 import type { Database } from "../db"
 import { injectDb } from "../db.provider"
-import { tables } from "../tables"
-import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
+import type { IQueryBuilder } from "../qb"
+import { injectQueryBuilder } from "../qb.provider"
+import { TableDbQuerySpecHandler2 } from "./table-db.query-spec-handler"
 import { TableMapper } from "./table.mapper"
 
 @singleton()
@@ -18,6 +19,8 @@ export class TableQueryRepository implements ITableQueryRepository {
   constructor(
     @injectDb()
     private readonly db: Database,
+    @injectQueryBuilder()
+    private readonly qb: IQueryBuilder,
   ) {}
 
   public get mapper() {
@@ -25,27 +28,33 @@ export class TableQueryRepository implements ITableQueryRepository {
   }
 
   async find(spec: Option<TableComositeSpecification>): Promise<ITableDTO[]> {
-    const sb = this.db.select({ table: tables }).from(tables).$dynamic()
+    const tbs = await this.qb
+      .selectFrom("undb_table")
+      .selectAll()
+      .where((eb) => new TableDbQuerySpecHandler2(eb).handle(spec))
+      .execute()
 
-    const result = await new TableDbQuerySpecHandler(this.db, sb).handle(spec)
-
-    return result.map((r) => this.mapper.toDTO(r.table))
+    return tbs.map((r) => this.mapper.toDTO(r))
   }
 
   async findOne(spec: TableComositeSpecification): Promise<Option<ITableDTO>> {
-    const sb = this.db.select({ table: tables }).from(tables).$dynamic()
+    const tb = await this.qb
+      .selectFrom("undb_table")
+      .selectAll()
+      .where((eb) => new TableDbQuerySpecHandler2(eb).handle(Some(spec)))
+      .executeTakeFirst()
 
-    const tb = await new TableDbQuerySpecHandler(this.db, sb).handle(Some(spec)).limit(1)
-
-    return tb.length ? Some(this.mapper.toDTO(tb[0].table)) : None
+    return tb ? Some(this.mapper.toDTO(tb)) : None
   }
 
   async findOneById(id: TableId): Promise<Option<ITableDTO>> {
-    const sb = this.db.select({ table: tables }).from(tables).$dynamic()
-
     const spec = Some(new TableIdSpecification(id))
-    const tb = await new TableDbQuerySpecHandler(this.db, sb).handle(spec).limit(1)
+    const tb = await this.qb
+      .selectFrom("undb_table")
+      .selectAll()
+      .where((eb) => new TableDbQuerySpecHandler2(eb).handle(spec))
+      .executeTakeFirst()
 
-    return tb.length ? Some(this.mapper.toDTO(tb[0].table)) : None
+    return tb ? Some(this.mapper.toDTO(tb)) : None
   }
 }

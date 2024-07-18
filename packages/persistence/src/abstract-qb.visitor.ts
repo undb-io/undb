@@ -1,5 +1,5 @@
 import type { ISpecVisitor, ISpecification } from "@undb/domain"
-import type { Expression, ExpressionBuilder } from "kysely"
+import type { CompiledQuery, Expression, ExpressionBuilder } from "kysely"
 
 type TExpression = Expression<any>
 
@@ -77,5 +77,40 @@ export abstract class AbstractQBVisitor<T> implements IAbastractQBVisitor, ISpec
   clone(): this {
     const Visitor = Object.getPrototypeOf(this).constructor
     return new Visitor(this.eb)
+  }
+}
+
+export abstract class AbstractQBMutationVisitor implements ISpecVisitor {
+  #data: Record<string, any> = {}
+  public get data(): Readonly<Record<string, any>> {
+    return this.#data
+  }
+
+  protected setData(key: string, value: any): void {
+    this.#data[key] = value
+  }
+
+  #sql: CompiledQuery[] = []
+  get sql() {
+    return this.#sql
+  }
+
+  addSql(...sql: CompiledQuery[]) {
+    this.#sql.push(...sql)
+  }
+
+  and(left: ISpecification, right: ISpecification): this {
+    left.accept(this)
+    right.accept(this)
+    return this
+  }
+  or(left: ISpecification, right: ISpecification): this {
+    throw new Error("Method not implemented.")
+  }
+  not(spec: ISpecification): this {
+    throw new Error("Method not implemented.")
+  }
+  clone(): this {
+    throw new Error("Method not implemented.")
   }
 }

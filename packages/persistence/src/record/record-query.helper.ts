@@ -2,7 +2,7 @@ import { singleton } from "@undb/di"
 import type { IPagination, Option } from "@undb/domain"
 import { FieldIdVo, type Field, type IViewSort, type RecordComositeSpecification, type TableDo } from "@undb/table"
 import { sql, type ExpressionBuilder, type SelectQueryBuilder } from "kysely"
-import type { IQueryBuilder } from "../qb"
+import type { IRecordQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { RecordQueryCreatorVisitor } from "./record-query-creator-visitor"
@@ -16,7 +16,7 @@ import { RecordFilterVisitor } from "./record.filter-visitor"
 export class RecordQueryHelper {
   constructor(
     @injectQueryBuilder()
-    public readonly qb: IQueryBuilder,
+    public readonly qb: IRecordQueryBuilder,
   ) {}
 
   createQueryCreator(

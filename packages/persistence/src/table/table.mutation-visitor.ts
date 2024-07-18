@@ -31,8 +31,10 @@ import type {
 } from "@undb/table"
 import { eq, or } from "drizzle-orm"
 import { AbstractDBMutationVisitor } from "../abstract-db.visitor"
+import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
-import { rollupIdMapping, tableIdMapping, type tables } from "../tables"
+import type { IQueryBuilder } from "../qb"
+import { rollupIdMapping, tableIdMapping, tables } from "../tables"
 
 export class TableMutationVisitor
   extends AbstractDBMutationVisitor<TableDo, typeof tables>
@@ -154,4 +156,91 @@ export class TableMutationVisitor
     this.addUpdates({ views: this.table.views?.toJSON() })
   }
   idsIn(ids: TableIdsSpecification): void {}
+}
+
+export class TableMutationVisitor2 extends AbstractQBMutationVisitor implements ITableSpecVisitor {
+  constructor(
+    private readonly table: TableDo,
+    private readonly qb: IQueryBuilder,
+  ) {
+    super()
+  }
+  withId(id: TableIdSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withBaseId(id: TableBaseIdSpecification): void {
+    this.setData(tables.baseId.name, id.baseId)
+  }
+  idsIn(ids: TableIdsSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withName(name: TableNameSpecification): void {
+    this.setData(tables.name.name, name.name.value)
+  }
+  withSchema(schema: TableSchemaSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withNewField(schema: WithNewFieldSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withDuplicateField(schema: WithDuplicatedFieldSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withoutField(schema: WithoutFieldSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withUpdatedField(spec: WithUpdatedFieldSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withTableRLS(rls: WithTableRLS): void {
+    throw new Error("Method not implemented.")
+  }
+  withViews(views: TableViewsSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withView(views: WithView): void {
+    this.setData(tables.views.name, this.table.views?.toJSON())
+  }
+  withNewView(views: WithNewView): void {
+    throw new Error("Method not implemented.")
+  }
+  withoutView(view: WithoutView): void {
+    throw new Error("Method not implemented.")
+  }
+  withViewId(spec: WithViewIdSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withViewFilter(viewFilter: WithViewFilter): void {
+    throw new Error("Method not implemented.")
+  }
+  withViewOption(viewOption: WithViewOption): void {
+    throw new Error("Method not implemented.")
+  }
+  withViewColor(viewColor: WithViewColor): void {
+    throw new Error("Method not implemented.")
+  }
+  withViewSort(viewSort: WithViewSort): void {
+    throw new Error("Method not implemented.")
+  }
+  withViewAggregate(viewColor: WithViewAggregate): void {
+    throw new Error("Method not implemented.")
+  }
+  withViewFields(fields: WithViewFields): void {
+    throw new Error("Method not implemented.")
+  }
+  withForms(views: TableFormsSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withFormId(spec: WithFormIdSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withNewForm(views: WithNewFormSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withForm(views: WithFormSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withForeignRollupField(spec: WithForeignRollupFieldSpec): void {
+    throw new Error("Method not implemented.")
+  }
 }

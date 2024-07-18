@@ -24,7 +24,7 @@ import {
 import type { EmailField } from "@undb/table/src/modules/schema/fields/variants/email-field"
 import { getTableName } from "drizzle-orm"
 import { sql, type QueryCreator, type SelectExpression } from "kysely"
-import type { IQueryBuilder } from "../qb"
+import type { IRecordQueryBuilder } from "../qb"
 import { users } from "../tables"
 import { JoinTable } from "../underlying/reference/join-table"
 import { UnderlyingTable } from "../underlying/underlying-table"
@@ -33,7 +33,7 @@ import { getJsonExpandedFieldName } from "./record-utils"
 
 export class RecordQueryCreatorVisitor implements IFieldVisitor {
   constructor(
-    private readonly qb: IQueryBuilder,
+    private readonly qb: IRecordQueryBuilder,
     private readonly table: TableDo,
     private readonly foreignTables: Map<string, TableDo>,
     private readonly visibleFields: Field[],
