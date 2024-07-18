@@ -10,6 +10,7 @@
     EllipsisIcon,
     PencilIcon,
     CopyPlusIcon,
+    InboxIcon,
   } from "lucide-svelte"
   import { CREATE_TABLE_MODAL, DELETE_VIEW, DUPLICATE_VIEW, toggleModal, UPDATE_VIEW } from "$lib/store/modal.store"
   import { baseId } from "$lib/store/base.store"
@@ -205,5 +206,10 @@
         {/if}
       {/each}
     </ul>
+  {:else}
+    <div class="flex flex-col items-center space-y-4 pt-12">
+      <InboxIcon class="text-muted-foreground h-16 w-16" />
+      <p class="text-muted-foreground">No bases</p>
+    </div>
   {/if}
 </nav>
