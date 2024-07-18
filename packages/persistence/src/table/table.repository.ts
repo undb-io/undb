@@ -58,6 +58,9 @@ export class TableRepository implements ITableRepository {
       .set({ ...visitor.data, updated_by: userId, updated_at: new Date().toISOString() })
       .where((eb) => eb.eb("id", "=", table.id.value))
       .execute()
+    for (const sql of visitor.sql) {
+      await this.qb.executeQuery(sql)
+    }
     await this.underlyingTableService.update(table, spec.unwrap())
     await this.outboxService.save(table)
   }

@@ -36,7 +36,7 @@ import type { IQueryBuilder } from "../qb"
 export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements ITableSpecVisitor {
   constructor(
     private readonly qb: IQueryBuilder,
-    protected readonly eb: ExpressionBuilder<Database2, "undb_table">,
+    protected readonly eb: ExpressionBuilder<Database2, "undb_table" | "undb_table_id_mapping">,
   ) {
     super(eb)
   }
@@ -91,7 +91,8 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
     throw new Error("Method not implemented.")
   }
   withViewId(spec: WithViewIdSpecification): void {
-    throw new Error("Method not implemented.")
+    const cond = this.eb.eb("undb_table_id_mapping.subject_id", "=", spec.viewId)
+    this.addCond(cond)
   }
   withViewFilter(viewFilter: WithViewFilter): void {
     throw new Error("Method not implemented.")
@@ -115,7 +116,8 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
     throw new Error("Method not implemented.")
   }
   withFormId(spec: WithFormIdSpecification): void {
-    throw new Error("Method not implemented.")
+    const cond = this.eb.eb("undb_table_id_mapping.subject_id", "=", spec.formId)
+    this.addCond(cond)
   }
   withNewForm(views: WithNewFormSpecification): void {
     throw new Error("Method not implemented.")
