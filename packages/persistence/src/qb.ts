@@ -2,12 +2,12 @@ import { LibsqlDialect } from "@libsql/kysely-libsql"
 import { createLogger } from "@undb/logger"
 import { Kysely, ParseJSONResultsPlugin, sql, type RawBuilder } from "kysely"
 import { sqlite } from "./client"
-import { type Database2 } from "./db"
+import { type Database } from "./db"
 
-export function createQueryBuilder(): Kysely<Database2> {
+export function createQueryBuilder(): Kysely<Database> {
   const logger = createLogger("qb")
 
-  return new Kysely<Database2>({
+  return new Kysely<Database>({
     dialect: new LibsqlDialect({
       client: sqlite,
     }),

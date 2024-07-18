@@ -15,10 +15,10 @@ import type {
 } from "@undb/webhook"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
-import type { Database2 } from "../db"
+import type { Database } from "../db"
 
 export class WebhookFilterVisitor extends AbstractQBVisitor<WebhookDo> implements IWebhookSpecVisitor {
-  constructor(protected readonly eb: ExpressionBuilder<Database2, "undb_webhook">) {
+  constructor(protected readonly eb: ExpressionBuilder<Database, "undb_webhook">) {
     super(eb)
   }
   nameEqual(s: WithWebhookName): void {

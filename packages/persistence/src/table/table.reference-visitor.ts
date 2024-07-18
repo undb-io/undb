@@ -30,10 +30,10 @@ import type {
   WithViewSort,
 } from "@undb/table"
 import type { SelectQueryBuilder } from "kysely"
-import type { Database2, Table } from "../db"
+import type { Database, Table } from "../db"
 
 export class TableReferenceVisitor implements ITableSpecVisitor {
-  constructor(private sqb: SelectQueryBuilder<Database2, "undb_table", Table>) {}
+  constructor(private sqb: SelectQueryBuilder<Database, "undb_table", Table>) {}
 
   call(spec: TableComositeSpecification) {
     spec.accept(this)

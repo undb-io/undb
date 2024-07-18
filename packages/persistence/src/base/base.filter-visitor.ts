@@ -1,10 +1,10 @@
 import type { Base, IBaseSpecVisitor, WithBaseId, WithBaseName, WithBaseQ } from "@undb/base"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
-import type { Database2 } from "../db"
+import type { Database } from "../db"
 
 export class BaseFilterVisitor extends AbstractQBVisitor<Base> implements IBaseSpecVisitor {
-  constructor(protected readonly eb: ExpressionBuilder<Database2, "undb_base">) {
+  constructor(protected readonly eb: ExpressionBuilder<Database, "undb_base">) {
     super(eb)
   }
 

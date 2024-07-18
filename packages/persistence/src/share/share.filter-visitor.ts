@@ -1,10 +1,10 @@
 import type { IShareSpecVisitor, Share, WithShareEnabled, WithShareForm, WithShareId, WithShareView } from "@undb/share"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
-import type { Database2 } from "../db"
+import type { Database } from "../db"
 
 export class ShareFilterVisitor extends AbstractQBVisitor<Share> implements IShareSpecVisitor {
-  constructor(protected readonly eb: ExpressionBuilder<Database2, "undb_share">) {
+  constructor(protected readonly eb: ExpressionBuilder<Database, "undb_share">) {
     super(eb)
   }
   idEqual(s: WithShareId): void {

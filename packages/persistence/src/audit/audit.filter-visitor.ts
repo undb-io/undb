@@ -12,10 +12,10 @@ import type {
 import type { WithAuditRecordId } from "@undb/audit/src/specifications/audit-record-id.specification"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
-import type { Database2 } from "../db"
+import type { Database } from "../db"
 
 export class AuditFilterVisitor extends AbstractQBVisitor<Audit> implements IAuditSpecVisitor {
-  constructor(protected readonly eb: ExpressionBuilder<Database2, "undb_audit">) {
+  constructor(protected readonly eb: ExpressionBuilder<Database, "undb_audit">) {
     super(eb)
   }
   idEqual(s: WithAuditId): void {

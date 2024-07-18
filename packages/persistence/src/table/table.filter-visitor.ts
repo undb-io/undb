@@ -30,13 +30,13 @@ import type {
 } from "@undb/table"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
-import type { Database2 } from "../db"
+import type { Database } from "../db"
 import type { IQueryBuilder } from "../qb"
 
 export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements ITableSpecVisitor {
   constructor(
     private readonly qb: IQueryBuilder,
-    protected readonly eb: ExpressionBuilder<Database2, "undb_table" | "undb_table_id_mapping">,
+    protected readonly eb: ExpressionBuilder<Database, "undb_table" | "undb_table_id_mapping">,
   ) {
     super(eb)
   }

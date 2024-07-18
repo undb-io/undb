@@ -34,7 +34,7 @@ type WebhookTable = Kyselify<typeof webhook>
 type UserTable = Kyselify<typeof users>
 type WorkspaceMemberTable = Kyselify<typeof workspaceMember>
 
-export interface Database2 {
+export interface Database {
   undb_table: TableTable
   undb_base: BaseTable
   undb_audit: AuditTable

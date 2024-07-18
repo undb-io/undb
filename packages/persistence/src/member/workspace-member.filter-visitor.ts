@@ -3,13 +3,13 @@ import type { IWorkspaceMemberVisitor } from "@undb/authz/src/workspace-member/w
 import type { ISpecVisitor, ISpecification } from "@undb/domain"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
-import type { Database2 } from "../db"
+import type { Database } from "../db"
 
 export class WorkspaceMemberFilterVisitor
   extends AbstractQBVisitor<WorkspaceMember>
   implements IWorkspaceMemberVisitor
 {
-  constructor(protected readonly eb: ExpressionBuilder<Database2, "undb_workspace_member" | "undb_user">) {
+  constructor(protected readonly eb: ExpressionBuilder<Database, "undb_workspace_member" | "undb_user">) {
     super(eb)
   }
   withQ(q: WithWorkspaceMemberQ): void {
