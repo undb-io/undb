@@ -143,8 +143,9 @@ export const getIsFieldCanBeRollup = (type: FieldType): type is "number" => {
 export function getRollupFnByType(type: FieldType): IRollupFn[] {
   return match(type)
     .returnType<IRollupFn[]>()
-    .with("number", () => ["sum", "average", "max", "min", "count", "lookup"])
-    .with("string", () => ["lookup", "count"])
+    .with("number", "rating", () => ["sum", "average", "max", "min", "count", "lookup"])
+    .with("date", () => ["max", "min", "count", "lookup"])
+    .with("string", "email", () => ["lookup", "count"])
     .otherwise(() => [])
 }
 
