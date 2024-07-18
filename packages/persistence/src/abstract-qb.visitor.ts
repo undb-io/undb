@@ -75,8 +75,7 @@ export abstract class AbstractQBVisitor<T> implements IAbastractQBVisitor, ISpec
   }
 
   clone(): this {
-    const Visitor = Object.getPrototypeOf(this).constructor
-    return new Visitor(this.eb)
+    return this
   }
 }
 
