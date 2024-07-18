@@ -17,4 +17,5 @@ z.setErrorMap(zodI18nMap)
 // export configured zod instance
 
 export * from "zod"
+export { fromError } from "zod-validation-error"
 export { z }

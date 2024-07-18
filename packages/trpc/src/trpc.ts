@@ -5,7 +5,7 @@ import { container } from "@undb/di"
 import { createLogger } from "@undb/logger"
 import { QUERY_BUILDER, startTransaction, type IQueryBuilder } from "@undb/persistence"
 import { ZodError } from "@undb/zod"
-import { fromError } from "zod-validation-error"
+import { fromZodError } from "zod-validation-error"
 import pkg from "../package.json"
 
 const log = createLogger(pkg.name)
@@ -13,9 +13,11 @@ const log = createLogger(pkg.name)
 export const t = initTRPC.create({
   errorFormatter(opts) {
     const { shape, error } = opts
+    const message = error.cause instanceof ZodError ? fromZodError(error.cause).toString() : error.message
+
     return {
       ...shape,
-      message: error.cause instanceof ZodError ? fromError(error.cause).toString() : error.message,
+      message,
     }
   },
 })

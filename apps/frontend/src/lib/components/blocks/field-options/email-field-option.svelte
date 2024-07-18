@@ -3,12 +3,16 @@
   import Input from "$lib/components/ui/input/input.svelte"
   import { Label } from "$lib/components/ui/label/index.js"
   import { Separator } from "$lib/components/ui/separator"
+  import * as Alert from "$lib/components/ui/alert/index.js"
 
-  import type { IEmailFieldConstraint } from "@undb/table"
+  import { EmailFieldConstraint, type IEmailFieldConstraint } from "@undb/table"
 
   export let constraint: IEmailFieldConstraint | undefined
   export let display: boolean | undefined
   export let defaultValue: string | undefined
+
+  $: c = constraint ? new EmailFieldConstraint(constraint) : undefined
+  $: isDefaultValueValid = c && defaultValue ? c.schema.safeParse(defaultValue).success : true
 </script>
 
 <div class="space-y-2">
@@ -16,11 +20,19 @@
     <Label for="defaultValue" class="text-xs font-normal">Default value</Label>
     <Input
       id="defaultValue"
+      type="email"
       class="bg-background flex-1 text-xs"
       placeholder="Default value..."
       bind:value={defaultValue}
     />
   </div>
+
+  {#if !isDefaultValueValid}
+    <Alert.Root class="border-yellow-500 bg-yellow-50">
+      <Alert.Title>Invalid default value</Alert.Title>
+      <Alert.Description>Your default value is invalid. Default value will not be saved.</Alert.Description>
+    </Alert.Root>
+  {/if}
   {#if constraint}
     <div class="pt-2">
       <Separator />

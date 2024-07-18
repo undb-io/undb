@@ -4,12 +4,16 @@
   import NumberInput from "$lib/components/ui/input/number-input.svelte"
   import { Label } from "$lib/components/ui/label/index.js"
   import Separator from "$lib/components/ui/separator/separator.svelte"
+  import * as Alert from "$lib/components/ui/alert/index.js"
 
-  import type { IStringFieldConstraint } from "@undb/table"
+  import { StringFieldConstraint, type IStringFieldConstraint } from "@undb/table"
 
   export let constraint: IStringFieldConstraint | undefined
   export let display: boolean | undefined
   export let defaultValue: string | undefined
+
+  $: c = constraint ? new StringFieldConstraint(constraint) : undefined
+  $: isDefaultValueValid = c && defaultValue ? c.schema.safeParse(defaultValue).success : true
 </script>
 
 <div class="space-y-2">
@@ -22,6 +26,12 @@
       bind:value={defaultValue}
     />
   </div>
+  {#if !isDefaultValueValid}
+    <Alert.Root class="mt-2 border-yellow-500 bg-yellow-50">
+      <Alert.Title>Invalid default value</Alert.Title>
+      <Alert.Description>Your default value is invalid. Default value will not be saved.</Alert.Description>
+    </Alert.Root>
+  {/if}
   {#if constraint}
     <div class="grid grid-cols-2 gap-2">
       <div class="space-y-1">

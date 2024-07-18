@@ -16,7 +16,7 @@
       </slot>
     </Button>
   </Popover.Trigger>
-  <Popover.Content class="w-[400px]">
+  <Popover.Content class="w-[400px] shadow-2xl">
     <CreateField
       onSuccess={() => {
         open = false
