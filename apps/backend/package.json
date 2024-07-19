@@ -35,7 +35,7 @@
     "@undb/webhook": "workspace:*",
     "bun": "^1.1.20",
     "core-js": "^3.37.1",
-    "elysia": "^1.1.2",
+    "elysia": "^1.1.3",
     "got": "^14.4.1",
     "lucia": "^3.2.0",
     "nodemailer": "^6.9.14",
