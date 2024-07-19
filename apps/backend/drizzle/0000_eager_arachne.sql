@@ -19,6 +19,13 @@ CREATE TABLE `undb_base` (
 	FOREIGN KEY (`updated_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
+CREATE TABLE `undb_invitation` (
+	`id` text PRIMARY KEY NOT NULL,
+	`email` text NOT NULL,
+	`role` text NOT NULL,
+	`status` text NOT NULL
+);
+--> statement-breakpoint
 CREATE TABLE `undb_outbox` (
 	`id` text PRIMARY KEY NOT NULL,
 	`payload` text NOT NULL,
@@ -63,8 +70,8 @@ CREATE TABLE `undb_table` (
 	`id` text PRIMARY KEY NOT NULL,
 	`name` text NOT NULL,
 	`base_id` text NOT NULL,
-	`schema` text,
-	`views` text,
+	`schema` text NOT NULL,
+	`views` text NOT NULL,
 	`forms` text,
 	`rls` text,
 	`created_at` text DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
@@ -106,6 +113,7 @@ CREATE TABLE `undb_workspace_member` (
 --> statement-breakpoint
 CREATE INDEX `audit_table_id_idx` ON `undb_audit` (`table_id`);--> statement-breakpoint
 CREATE INDEX `audit_record_id_idx` ON `undb_audit` (`record_id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `undb_invitation_email_unique` ON `undb_invitation` (`email`);--> statement-breakpoint
 CREATE UNIQUE INDEX `share_unique_idx` ON `undb_share` (`target_type`,`target_id`);--> statement-breakpoint
 CREATE INDEX `table_base_id_idx` ON `undb_table` (`base_id`);--> statement-breakpoint
 CREATE UNIQUE INDEX `table_name_unique_idx` ON `undb_table` (`name`,`base_id`);--> statement-breakpoint

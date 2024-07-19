@@ -1,4 +1,4 @@
-import type { IWorkspaceMemberRole } from "@undb/authz"
+import type { IInvitationStatus, IWorkspaceMemberRole } from "@undb/authz"
 import type { RECORD_EVENTS } from "@undb/table"
 import type { IWebhookMethod } from "@undb/webhook"
 import { sql } from "drizzle-orm"
@@ -195,4 +195,5 @@ export const invitations = sqliteTable("invitation", {
   id: text("id").notNull().primaryKey(),
   email: text("email").notNull().unique(),
   role: text("role").notNull().$type<IWorkspaceMemberRole>(),
+  status: text("status").notNull().$type<IInvitationStatus>(),
 })
