@@ -3,6 +3,7 @@ import { env } from "@undb/env"
 import { createLogger } from "@undb/logger"
 import { IMailService } from "@undb/mail"
 import { createTransport } from "nodemailer"
+import { compile } from "./compile"
 
 function createMailerTransport() {
   return createTransport({
@@ -21,7 +22,7 @@ export class NodemailerService implements IMailService {
       from: '"undb" <no-reply@undb.xyz>',
       to: "nichenqin@hotmail.com",
       subject: "hello",
-      text: "world",
+      html: await compile("invite"),
     })
   }
 }
