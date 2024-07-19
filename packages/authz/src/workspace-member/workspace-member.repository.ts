@@ -9,6 +9,7 @@ export interface IWorkspaceMemberRepository {
   findOneByUserIdAndWorkspaceId(userId: string, workspaceId: string): Promise<Option<WorkspaceMember>>
 
   insert(member: WorkspaceMember): Promise<void>
+  exists(email: string): Promise<boolean>
 }
 
 export const WORKSPACE_MEMBER_REPOSITORY = Symbol("IWorkspaceMemberRepository")

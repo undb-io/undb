@@ -1,4 +1,6 @@
 export * from "./dto"
+export * from "./invitation.do"
+export * from "./invitation.repository"
 export * from "./specifications"
 export * from "./workspace-action"
 export * from "./workspace-member"

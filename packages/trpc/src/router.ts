@@ -18,6 +18,7 @@ import {
   DuplicateTableFieldCommand,
   DuplicateViewCommand,
   EnableShareCommand,
+  InviteCommand,
   SetTableFormCommand,
   SetTableRLSCommand,
   SetViewAggregateCommand,
@@ -52,6 +53,7 @@ import {
   duplicateTableFieldCommand,
   duplicateViewCommand,
   enableShareCommand,
+  inviteCommand,
   setTableFormCommand,
   setTableRLSCommand,
   setViewAggregateCommand,
@@ -245,12 +247,17 @@ const shareRouter = t.router({
     .mutation(({ input }) => commandBus.execute(new DisableShareCommand(input))),
 })
 
+const authzRouter = t.router({
+  invite: p.input(inviteCommand).mutation(({ input }) => commandBus.execute(new InviteCommand(input))),
+})
+
 export const route = t.router({
   table: tableRouter,
   record: recordRouter,
   webhook: webhookRouter,
   base: baseRouter,
   share: shareRouter,
+  authz: authzRouter,
 })
 
 export type AppRouter = typeof route

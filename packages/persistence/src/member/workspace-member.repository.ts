@@ -13,6 +13,15 @@ export class WorkspaceMemberRepository implements IWorkspaceMemberRepository {
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
   ) {}
+
+  async exists(email: string): Promise<boolean> {
+    const user = await this.qb
+      .selectFrom("undb_user")
+      .selectAll()
+      .where((eb) => eb.eb("undb_user.email", "=", email))
+      .executeTakeFirst()
+    return !!user
+  }
   async findOneByUserIdAndWorkspaceId(userId: string, workspaceId: string): Promise<Option<WorkspaceMember>> {
     const member = await this.qb
       .selectFrom("undb_workspace_member")

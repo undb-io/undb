@@ -75,9 +75,6 @@ export const rollupIdMapping = sqliteTable(
   },
 )
 
-export type Table = typeof tables.$inferSelect
-export type NewTable = typeof tables.$inferInsert
-
 export const outbox = sqliteTable("outbox", {
   id: text("id").notNull().primaryKey(),
   payload: text("payload", { mode: "json" }).notNull(),
@@ -86,9 +83,6 @@ export const outbox = sqliteTable("outbox", {
   operatorId: text("operator_id").notNull(),
   name: text("name").notNull(),
 })
-
-// export type Outbox = typeof outbox.$inferSelect
-export type NewOutbox = typeof outbox.$inferInsert
 
 export const users = sqliteTable(
   "user",
@@ -137,9 +131,6 @@ export const webhook = sqliteTable(
   },
 )
 
-export type Webhook = typeof webhook.$inferSelect
-export type NewWebhook = typeof webhook.$inferInsert
-
 export const audit = sqliteTable(
   "audit",
   {
@@ -159,9 +150,6 @@ export const audit = sqliteTable(
   },
 )
 
-export type Audit = typeof audit.$inferSelect
-export type NewAudit = typeof audit.$inferInsert
-
 export const workspaceMember = sqliteTable("workspace_member", {
   id: text("id").notNull().primaryKey(),
   workspaceId: text("workspace_id").notNull(),
@@ -170,9 +158,6 @@ export const workspaceMember = sqliteTable("workspace_member", {
     .references(() => users.id),
   role: text("role").notNull().$type<IWorkspaceMemberRole>(),
 })
-
-export type WorkspaceMember = typeof workspaceMember.$inferSelect
-export type NewWorkspaceMember = typeof workspaceMember.$inferInsert
 
 export const baseTable = sqliteTable("base", {
   id: text("id").notNull().primaryKey(),
@@ -191,9 +176,6 @@ export const baseTable = sqliteTable("base", {
     .references(() => users.id),
 })
 
-export type Base = typeof baseTable.$inferSelect
-export type NewBase = typeof baseTable.$inferInsert
-
 export const shareTable = sqliteTable(
   "share",
   {
@@ -209,5 +191,8 @@ export const shareTable = sqliteTable(
   },
 )
 
-export type Share = typeof shareTable.$inferSelect
-export type NewShare = typeof shareTable.$inferInsert
+export const invitations = sqliteTable("invitation", {
+  id: text("id").notNull().primaryKey(),
+  email: text("email").notNull().unique(),
+  role: text("role").notNull().$type<IWorkspaceMemberRole>(),
+})

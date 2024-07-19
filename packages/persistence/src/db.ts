@@ -7,6 +7,7 @@ import { DrizzleLogger } from "./db.logger"
 import type {
   audit,
   baseTable,
+  invitations,
   outbox,
   rollupIdMapping,
   shareTable,
@@ -33,6 +34,7 @@ type ShareTable = Kyselify<typeof shareTable>
 type WebhookTable = Kyselify<typeof webhook>
 type UserTable = Kyselify<typeof users>
 type WorkspaceMemberTable = Kyselify<typeof workspaceMember>
+type InvitationTable = Kyselify<typeof invitations>
 
 export interface Database {
   undb_table: TableTable
@@ -45,6 +47,7 @@ export interface Database {
   undb_webhook: WebhookTable
   undb_user: UserTable
   undb_workspace_member: WorkspaceMemberTable
+  undb_invitation: InvitationTable
 }
 
 export type Table = Selectable<TableTable>
@@ -59,6 +62,7 @@ export type Webhook = Selectable<WebhookTable>
 export type InsertWebhook = Insertable<WebhookTable>
 export type User = Selectable<UserTable>
 export type WorkspaceMember = Selectable<WorkspaceMemberTable>
+export type Invitation = Selectable<InvitationTable>
 
 export type InsertTableIdMapping = Insertable<TableIdMappingTable>
 export type InsertRollupIdMapping = Insertable<RollupIdMappingTable>
