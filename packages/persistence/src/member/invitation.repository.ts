@@ -13,6 +13,7 @@ export class InvitationRepository implements IInvitationRepository {
         id: invitation.id.value,
         email: invitation.email,
         role: invitation.role,
+        status: invitation.status,
       })
       .execute()
   }

@@ -15,6 +15,7 @@
     "@elysiajs/stream": "^1.1.0",
     "@elysiajs/swagger": "^1.1.0",
     "@elysiajs/trpc": "^1.1.0",
+    "@kitajs/ts-html-plugin": "latest",
     "@lucia-auth/adapter-drizzle": "^1.0.7",
     "@undb/audit": "workspace:*",
     "@undb/authz": "workspace:*",
@@ -32,17 +33,18 @@
     "@undb/share": "workspace:*",
     "@undb/trpc": "workspace:*",
     "@undb/webhook": "workspace:*",
-    "@kitajs/ts-html-plugin": "latest",
     "bun": "^1.1.20",
     "core-js": "^3.37.1",
     "elysia": "^1.1.2",
     "got": "^14.4.1",
     "lucia": "^3.2.0",
+    "nodemailer": "^6.9.14",
     "radash": "^12.1.0",
     "reflect-metadata": "^0.2.2",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "@types/nodemailer": "^6.4.15",
     "@types/uuid": "^10.0.0",
     "bun-types": "latest"
   },

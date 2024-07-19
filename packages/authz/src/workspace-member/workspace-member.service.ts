@@ -4,6 +4,7 @@ import { MemberIdVO } from "../member/member-id.vo"
 import type { InviteDTO } from "./dto"
 import { InvitationDo } from "./invitation.do"
 import { injectInvitationRepository, type IInvitationRepository } from "./invitation.repository"
+import { InvitationMailService, type IInvitationMailService } from "./invitation.service"
 import { WorkspaceMember, type IWorkspaceMemberRole } from "./workspace-member"
 import { injectWorkspaceMemberRepository, type IWorkspaceMemberRepository } from "./workspace-member.repository"
 
@@ -24,6 +25,8 @@ export class WorkspaceMemberService implements IWorkspaceMemberService {
     private readonly workspaceMemberRepository: IWorkspaceMemberRepository,
     @injectInvitationRepository()
     private readonly invitationRepository: IInvitationRepository,
+    @inject(InvitationMailService)
+    private readonly invitationMailService: IInvitationMailService,
   ) {}
 
   async createMember(userId: string, workspaceId: string, role: IWorkspaceMemberRole): Promise<void> {
@@ -44,5 +47,6 @@ export class WorkspaceMemberService implements IWorkspaceMemberService {
 
     const invitation = new InvitationDo(dto)
     await this.invitationRepository.insert(invitation)
+    await this.invitationMailService.send(invitation)
   }
 }
