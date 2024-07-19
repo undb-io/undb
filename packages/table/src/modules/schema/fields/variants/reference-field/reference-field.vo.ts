@@ -3,6 +3,7 @@ import { z } from "@undb/zod"
 import { tableId } from "../../../../../table-id.vo"
 import type { TableDo } from "../../../../../table.do"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
+import { viewFilterGroup, type IViewFilterGroup } from "../../../../views/view/view-filter/view-filter.vo"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { Field } from "../../field.type"
 import type { IFieldVisitor } from "../../field.visitor"
@@ -22,6 +23,7 @@ const referenceFieldOption = z.object({
   isOwner: z.boolean(),
   foreignTableId: tableId,
   symmetricFieldId: fieldId.optional(),
+  condition: viewFilterGroup.optional(),
 })
 
 export type IReferenceFieldOption = z.infer<typeof referenceFieldOption>
@@ -32,13 +34,21 @@ export const createReferenceFieldDTO = createBaseFieldDTO
     option: z.object({
       foreignTableId: tableId,
       createSymmetricField: z.boolean(),
+      condition: viewFilterGroup.optional(),
     }),
     constraint: referenceFieldConstraint.optional(),
   })
   .omit({ display: true })
 
 export type ICreateReferenceFieldDTO = z.infer<typeof createReferenceFieldDTO>
-export const updateReferenceFieldDTO = createReferenceFieldDTO.setKey("id", fieldId).omit({ option: true })
+export const updateReferenceFieldDTO = createReferenceFieldDTO
+  .setKey("id", fieldId)
+  .omit({ option: true })
+  .merge(
+    z.object({
+      option: referenceFieldOption,
+    }),
+  )
 export type IUpdateReferenceFieldDTO = z.infer<typeof updateReferenceFieldDTO>
 
 export const referenceFieldDTO = baseFieldDTO.extend({
@@ -59,10 +69,13 @@ export class ReferenceField extends AbstractField<
   constructor(dto: IReferenceFieldDTO) {
     super(dto)
 
+    const { isOwner, foreignTableId, symmetricFieldId, condition } = dto.option
+
     this.option = Some({
-      isOwner: dto.option.isOwner,
-      foreignTableId: dto.option.foreignTableId,
-      symmetricFieldId: dto.option.symmetricFieldId,
+      isOwner,
+      foreignTableId,
+      symmetricFieldId,
+      condition,
     })
     if (dto.constraint) {
       this.constraint = Some(new ReferenceFieldConstraint(dto.constraint))
@@ -72,10 +85,11 @@ export class ReferenceField extends AbstractField<
   }
 
   static create(dto: ICreateReferenceFieldDTO) {
+    const { foreignTableId, condition } = dto.option
     return new ReferenceField({
       type: "reference",
       name: dto.name,
-      option: { foreignTableId: dto.option.foreignTableId, isOwner: true },
+      option: { foreignTableId, condition, isOwner: true },
       id: FieldIdVo.fromStringOrCreate(dto.id).value,
     })
   }
@@ -134,6 +148,10 @@ export class ReferenceField extends AbstractField<
     return this.option.unwrap().foreignTableId
   }
 
+  public get condition(): IViewFilterGroup | undefined {
+    return this.option.unwrap().condition
+  }
+
   public get symmetricFieldId() {
     return this.option.unwrap().symmetricFieldId
   }
@@ -146,6 +164,7 @@ export class ReferenceField extends AbstractField<
         isOwner: true,
         foreignTableId: this.foreignTableId,
         symmetricFieldId: undefined,
+        condition: this.condition,
       },
       id: FieldIdVo.create().value,
     })
@@ -159,6 +178,7 @@ export class ReferenceField extends AbstractField<
         isOwner: this.isOwner,
         foreignTableId: this.foreignTableId,
         symmetricFieldId: this.symmetricFieldId,
+        condition: dto.option.condition,
       },
       constraint: dto.constraint,
       id: this.id.value,

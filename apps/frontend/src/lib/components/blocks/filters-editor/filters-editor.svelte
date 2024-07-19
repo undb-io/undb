@@ -18,6 +18,7 @@
   import { isNumber, uid } from "radash"
   import FieldFilterControl from "./field-filter-control.svelte"
   import autoAnimate from "@formkit/auto-animate"
+  import { writable } from "svelte/store"
 
   interface IField {
     id: string
@@ -116,6 +117,7 @@
             {/if}
             <div class="col-span-9 grid grid-cols-12 items-center">
               <FilterField
+                table={writable(table)}
                 {sameWidth}
                 onValueChange={(type, prev) => {
                   if (type !== prev) {

@@ -9,8 +9,6 @@
   import { getTable } from "$lib/store/table.store"
   import FieldIcon from "../field-icon/field-icon.svelte"
   import type { FieldType } from "@undb/table"
-  import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
-  import FieldTypePicker from "./field-type-picker.svelte"
 
   export let table = getTable()
 

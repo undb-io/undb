@@ -24,14 +24,14 @@ export class ReferenceFieldConstraint extends FieldConstraintVO<IReferenceFieldC
   }
   override get schema() {
     let base: z.ZodTypeAny = z.string().array()
-    if (!this.props.required) {
-      base = base.optional().nullable()
-    }
     if (this.props.min) {
       base = base.and(z.string().array().min(this.props.min))
     }
     if (this.props.max) {
       base = base.and(z.string().array().max(this.props.max))
+    }
+    if (!this.props.required) {
+      base = base.optional().nullable()
     }
 
     return base

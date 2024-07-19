@@ -18,7 +18,6 @@
   import Label from "$lib/components/ui/label/label.svelte"
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
   import ForeignRecordDetailButton from "./foreign-record-detail-button.svelte"
-  import { invalidate } from "$app/navigation"
 
   export let foreignTable: Readable<TableDo>
   export let isSelected = false
@@ -52,15 +51,24 @@
             filters: $selected?.length
               ? {
                   conjunction: "and",
-                  children: [
-                    {
-                      fieldId: ID_TYPE,
-                      op: isSelected ? "in" : "nin",
-                      value: $selected,
-                    },
-                  ],
+                  children: isSelected
+                    ? [
+                        {
+                          fieldId: ID_TYPE,
+                          op: "in" as const,
+                          value: $selected,
+                        },
+                      ]
+                    : [
+                        {
+                          fieldId: ID_TYPE,
+                          op: "nin" as const,
+                          value: $selected,
+                        },
+                        field.condition,
+                      ].filter((c) => !!c),
                 }
-              : undefined,
+              : field.condition,
             select: fields.map((f) => f.id.value),
             pagination: { limit: $perPage, page: $currentPage },
           }),

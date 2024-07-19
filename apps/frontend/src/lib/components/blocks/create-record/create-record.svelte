@@ -65,6 +65,7 @@
     invalidateAll: false,
     onUpdate(event) {
       if (!event.form.valid) {
+        console.log(event.form.errors, event.form.data)
         return
       }
 
