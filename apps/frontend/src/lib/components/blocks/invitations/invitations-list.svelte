@@ -13,7 +13,7 @@
   const store = new GetInvitationsStore()
 
   onMount(() => {
-    store.fetch({ policy: "NetworkOnly" })
+    store.fetch({ variables: { status: "pending" }, policy: "NetworkOnly" })
   })
 
   $: invitations = $store.data?.invitations ?? []
@@ -21,7 +21,7 @@
   const deleteInvitationMutation = createMutation({
     mutationFn: trpc.authz.deleteInvitation.mutate,
     onSuccess(data, variables, context) {
-      store.fetch({ policy: "NetworkOnly" })
+      store.fetch({ variables: { status: "pending" }, policy: "NetworkOnly" })
     },
   })
 
@@ -37,6 +37,7 @@
       <Table.Head>Email</Table.Head>
       <Table.Head>Status</Table.Head>
       <Table.Head>Role</Table.Head>
+      <Table.Head>Invited At</Table.Head>
       <Table.Head>Action</Table.Head>
     </Table.Row>
   </Table.Header>
@@ -51,6 +52,9 @@
         </Table.Cell>
         <Table.Cell>
           <Role role={invitation.role} />
+        </Table.Cell>
+        <Table.Cell>
+          {invitation.invitedAt}
         </Table.Cell>
         <Table.Cell>
           <DropdownMenu.Root>

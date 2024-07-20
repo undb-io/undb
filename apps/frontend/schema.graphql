@@ -64,6 +64,7 @@ type FormOption {
 type Invitation {
   email: String!
   id: ID!
+  invitedAt: String!
   role: WorkspaceRole!
   status: InvitationStatus!
 }
@@ -79,7 +80,7 @@ scalar JSON
 type Query {
   base(id: ID!): Base!
   bases: [Base]
-  invitations: [Invitation!]!
+  invitations(status: InvitationStatus): [Invitation!]!
   member: WorkspaceMember
   memberById(id: ID!): WorkspaceMember
   members(q: String): [WorkspaceMember]!

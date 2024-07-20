@@ -4,6 +4,7 @@
   import { commandOpen } from "../command/command.store"
   import { CREATE_BASE_MODAL, toggleModal } from "$lib/store/modal.store"
   import { page } from "$app/stores"
+  import { hasPermission } from "$lib/store/workspace-member.store"
 </script>
 
 <div class="w-full space-y-1">
@@ -33,13 +34,15 @@
     Members
   </a>
 
-  <Button
-    class="w-full justify-start text-left"
-    on:click={() => toggleModal(CREATE_BASE_MODAL)}
-    variant="link"
-    size="sm"
-  >
-    <PlusIcon class="mr-2 h-3 w-3" />
-    Create New Base
-  </Button>
+  {#if $hasPermission("base:create")}
+    <Button
+      class="w-full justify-start text-left"
+      on:click={() => toggleModal(CREATE_BASE_MODAL)}
+      variant="link"
+      size="sm"
+    >
+      <PlusIcon class="mr-2 h-3 w-3" />
+      Create New Base
+    </Button>
+  {/if}
 </div>

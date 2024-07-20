@@ -82,7 +82,7 @@
               </a>
 
               <div
-                class="itemce text-muted-foreground flex justify-center gap-2 opacity-0 transition-all group-hover:opacity-100"
+                class="item-center text-muted-foreground flex justify-center gap-2 opacity-0 transition-all group-hover:opacity-100"
               >
                 <button
                   class="h-full"

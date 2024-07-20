@@ -221,6 +221,7 @@ export class Graphql {
         email: String!
         role: WorkspaceRole!
         status: InvitationStatus!
+        invitedAt: String!
       }
 
       type Query {
@@ -229,7 +230,7 @@ export class Graphql {
         membersByIds(ids: [ID!]!): [WorkspaceMember!]!
         members(q: String): [WorkspaceMember]!
 
-        invitations: [Invitation!]!
+        invitations(status: InvitationStatus): [Invitation!]!
 
         tables: [Table]!
         table(id: ID!): Table
@@ -299,8 +300,8 @@ export class Graphql {
             const share = await this.queryBus.execute(new GetShareQuery({ shareId: id }))
             return share
           },
-          invitations: async () => {
-            return await this.queryBus.execute(new GetInivitationsQuery({ q: undefined }))
+          invitations: async (_, args) => {
+            return await this.queryBus.execute(new GetInivitationsQuery({ status: args?.status }))
           },
         },
         Base: {

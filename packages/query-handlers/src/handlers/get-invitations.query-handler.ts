@@ -25,6 +25,8 @@ export class GetInivitationsQueryHandler implements IQueryHandler<GetInivitation
     }
 
     const spec = and(...specs)
-    return this.repo.find(spec)
+    const invitations = await this.repo.find(spec)
+
+    return invitations
   }
 }
