@@ -1,13 +1,22 @@
 import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle"
-import { db, sessionTable, users } from "@undb/persistence"
+import {
+  type IInvitationQueryRepository,
+  IWorkspaceMemberRole,
+  type IWorkspaceMemberService,
+  injectInvitationQueryRepository,
+  injectWorkspaceMemberService,
+} from "@undb/authz"
+import { AcceptInvitationCommand } from "@undb/commands"
+import type { ContextMember } from "@undb/context"
+import { executionContext } from "@undb/context/server"
+import { CommandBus } from "@undb/cqrs"
+import { inject } from "@undb/di"
+import { type IQueryBuilder, db, injectQueryBuilder, sessionTable, startTransaction, users } from "@undb/persistence"
+import { SignUp } from "@undb/ui"
 import { eq } from "drizzle-orm"
 import { Context, Elysia, t } from "elysia"
 import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize } from "lucia"
-import { Login, SignUp } from "@undb/ui"
-import { executionContext } from "@undb/context/server"
-import type { ContextMember } from "@undb/context"
-import { type IWorkspaceMemberService, WorkspaceMemberService, injectWorkspaceMemberService } from "@undb/authz"
 import { singleton } from "tsyringe"
 
 const adapter = new DrizzleSQLiteAdapter(db, sessionTable, users)
@@ -45,6 +54,12 @@ export class Auth {
   constructor(
     @injectWorkspaceMemberService()
     private workspaceMemberService: IWorkspaceMemberService,
+    @inject(CommandBus)
+    private readonly commandBus: CommandBus,
+    @injectInvitationQueryRepository()
+    private readonly invitationRepository: IInvitationQueryRepository,
+    @injectQueryBuilder()
+    private readonly queryBuilder: IQueryBuilder,
   ) {}
 
   store() {
@@ -108,12 +123,50 @@ export class Auth {
 
           return { user, member }
         })
-        .get("/signup", () => SignUp())
+        .get(
+          "/signup",
+          async (ctx) => {
+            const { invitationId } = ctx.query
+            if (invitationId) {
+              const invitation = await this.invitationRepository.findOneById(invitationId)
+              if (!invitation.isSome()) {
+                // TODO: error page
+                throw new Error("Invitation not found")
+              }
+
+              return SignUp({
+                email: invitation.unwrap().email,
+                invitationId,
+              })
+            }
+            return SignUp()
+          },
+          {
+            query: t.Object({
+              invitationId: t.Optional(t.String()),
+            }),
+          },
+        )
         .post(
           "/signup",
           async (ctx) => {
-            const email = ctx.body.email
-            const password = ctx.body.password
+            const { email, password, invitationId } = ctx.body
+            const count = (await db.select().from(users).limit(1)).length
+            let role: IWorkspaceMemberRole = "owner"
+            if (invitationId) {
+              const invitation = await this.invitationRepository.findOneById(invitationId)
+              if (invitation.isNone()) {
+                throw new Error("Invitation not found")
+              }
+
+              if (invitation.unwrap().email !== email) {
+                throw new Error("Invalid email")
+              }
+
+              role = invitation.unwrap().role
+            } else {
+              role = count === 0 ? "owner" : "admin"
+            }
 
             let userId: string
 
@@ -138,8 +191,8 @@ export class Auth {
                 id: userId,
                 password: passwordHash,
               })
-              // TODO: create a default workspace
-              await this.workspaceMemberService.createMember(userId, userId, "owner")
+
+              await this.workspaceMemberService.createMember(userId, userId, role)
             }
 
             const session = await lucia.createSession(userId, {})
@@ -154,6 +207,7 @@ export class Auth {
             body: t.Object({
               email: t.String({ format: "email" }),
               password: t.String(),
+              invitationId: t.Optional(t.String()),
             }),
           },
         )
@@ -193,6 +247,26 @@ export class Auth {
             body: t.Object({
               email: t.String({ format: "email" }),
               password: t.String(),
+            }),
+          },
+        )
+        .get(
+          "/invitation/:invitationId/accept",
+          async (ctx) => {
+            return new Promise(async (resolve) => {
+              return this.queryBuilder.transaction().execute(async (trx) => {
+                startTransaction(trx)
+                const { invitationId } = ctx.params
+                await this.commandBus.execute(new AcceptInvitationCommand({ id: invitationId }))
+
+                const response = ctx.redirect("/signup?invitationId=" + invitationId)
+                resolve(response)
+              })
+            })
+          },
+          {
+            params: t.Object({
+              invitationId: t.String(),
             }),
           },
         )

@@ -28,6 +28,7 @@ export const workspaceActions = z.enum([
   "share:disable",
 
   "authz:invite",
+  "authz:listInvitation",
   "authz:deleteInvitation",
 ])
 

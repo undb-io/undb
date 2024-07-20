@@ -6,11 +6,15 @@ import type { InvitationCompositeSpecification } from "./invitation.specificatio
 
 export interface IInvitationRepository {
   insert(invitation: InvitationDo): Promise<void>
+  upsert(invitation: InvitationDo): Promise<void>
+  updateOneById(id: string, spec: InvitationCompositeSpecification): Promise<void>
   deleteOneById(id: string): Promise<void>
 }
 
 export interface IInvitationQueryRepository {
   find(spec: Option<InvitationCompositeSpecification>): Promise<InvitationDTO[]>
+  findOneById(id: string): Promise<Option<InvitationDTO>>
+  findOne(spec: InvitationCompositeSpecification): Promise<Option<InvitationDTO>>
 }
 
 export const INVITATION_REPOSITORY = Symbol("IInvitationRepository")

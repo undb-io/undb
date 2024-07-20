@@ -2,6 +2,8 @@ import type { IWorkspaceMemberRole } from "@undb/authz"
 
 interface ContextUser {
   userId: string | null
+  username?: string
+  email?: string
 }
 
 export interface ContextMember {

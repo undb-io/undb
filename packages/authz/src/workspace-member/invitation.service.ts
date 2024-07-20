@@ -1,10 +1,11 @@
 import { singleton } from "@undb/di"
+import { env } from "@undb/env"
 import { createLogger } from "@undb/logger"
 import { injectMailService, type IMailService } from "@undb/mail"
-import type { InvitationDo } from "./invitation.do"
+import type { InvitationDTO } from "./dto"
 
 export interface IInvitationMailService {
-  send(invitation: InvitationDo): Promise<void>
+  invite(invitation: InvitationDTO, username: string): Promise<void>
 }
 
 @singleton()
@@ -15,7 +16,7 @@ export class InvitationMailService implements IInvitationMailService {
     private readonly svc: IMailService,
   ) {}
 
-  async send(invitation: InvitationDo): Promise<void> {
+  async invite(invitation: InvitationDTO, username: string): Promise<void> {
     this.logger.info(invitation, "sending invitation mail...")
 
     await this.svc.send({
@@ -23,7 +24,10 @@ export class InvitationMailService implements IInvitationMailService {
       to: invitation.email,
       subject: "You have been invited to join the workspace",
       data: {
+        invite_sender_name: username,
         email: invitation.email,
+        action_url: new URL(`/invitation/${invitation.id}/accept`, env.UNDB_BASE_URL).toString(),
+        help_url: "",
       },
     })
   }

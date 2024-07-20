@@ -7,6 +7,8 @@ export const invitationDTO = z.object({
   email: z.string().email(),
   role: workspaceMemberWithoutOwner,
   status: invitationStatus,
+  invitedAt: z.date(),
+  inviterId: z.string(),
 })
 
 export type InvitationDTO = z.infer<typeof invitationDTO>

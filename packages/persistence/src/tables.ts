@@ -196,4 +196,8 @@ export const invitations = sqliteTable("invitation", {
   email: text("email").notNull().unique(),
   role: text("role").notNull().$type<IWorkspaceMemberWithoutOwner>(),
   status: text("status").notNull().$type<IInvitationStatus>(),
+  invitedAt: integer("invited_at", { mode: "timestamp_ms" }).notNull(),
+  inviterId: text("inviter_id")
+    .notNull()
+    .references(() => users.id),
 })

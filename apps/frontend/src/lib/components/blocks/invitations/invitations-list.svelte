@@ -53,9 +53,6 @@
           <Role role={invitation.role} />
         </Table.Cell>
         <Table.Cell>
-          <Role role={invitation.role} />
-        </Table.Cell>
-        <Table.Cell>
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <EllipsisIcon class="h-3 w-3" />

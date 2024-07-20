@@ -30,6 +30,7 @@ export const workspacePermission: Record<IWorkspaceMemberRole, Record<IWorkspace
     "share:disable": true,
 
     "authz:invite": true,
+    "authz:listInvitation": true,
     "authz:deleteInvitation": true,
   },
   admin: {
@@ -60,6 +61,7 @@ export const workspacePermission: Record<IWorkspaceMemberRole, Record<IWorkspace
     "share:disable": true,
 
     "authz:invite": true,
+    "authz:listInvitation": true,
     "authz:deleteInvitation": true,
   },
   viewer: {
@@ -90,6 +92,7 @@ export const workspacePermission: Record<IWorkspaceMemberRole, Record<IWorkspace
     "share:disable": false,
 
     "authz:invite": true,
+    "authz:listInvitation": true,
     "authz:deleteInvitation": false,
   },
 }

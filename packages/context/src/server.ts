@@ -7,3 +7,7 @@ export const executionContext = new AsyncLocalStorage<ExecuteContext>() satisfie
 export const getCurrentUser = () => {
   return executionContext.getStore()?.user!
 }
+
+export const getCurrentUserId = () => {
+  return executionContext.getStore()?.user!.userId!
+}

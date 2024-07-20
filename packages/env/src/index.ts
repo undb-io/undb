@@ -8,6 +8,7 @@ export const env = createEnv({
   clientPrefix: "UNDB_PUBLIC_",
   client: {},
   server: {
+    UNDB_BASE_URL: z.string(),
     UNDB_MAIL_HOST: z.string(),
     UNDB_MAIL_PORT: z.string(),
     UNDB_MAIL_DEFAULT_FROM: z.string(),

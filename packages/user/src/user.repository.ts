@@ -7,5 +7,11 @@ export interface IUserQueryRepository {
 }
 
 export const USER_QUERY_REPOSITORY = Symbol("USER_QUERY_REPOSITORY")
-
 export const injectUserQueryRepository = () => inject(USER_QUERY_REPOSITORY)
+
+export interface IUserRepository {
+  insert(user: IUser): Promise<void>
+}
+
+export const USER_REPOSITORY = Symbol("USER_REPOSITORY")
+export const injectUserRepository = () => inject(USER_REPOSITORY)

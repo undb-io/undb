@@ -78,18 +78,21 @@ export const app = new Elysia()
   .use(cors())
   .use(html())
   .use(swagger())
+  .use(loggerPlugin())
   .derive(auth.store())
+  .onError((ctx) => {
+    ctx.logger.error(ctx.error)
+  })
   .onBeforeHandle((ctx) => {
     const requestId = ctx.headers["X-Request-ID"] ?? v4()
 
     executionContext.enterWith({
       requestId,
-      user: { userId: ctx.user?.id ?? null },
+      user: { userId: ctx.user?.id ?? null, email: ctx.user?.email, username: ctx.user?.username },
       member: { role: ctx.member?.role ?? null } ?? null,
     })
   })
   .use(auth.route())
-  .use(loggerPlugin())
   .use(web.route())
   .guard(
     {

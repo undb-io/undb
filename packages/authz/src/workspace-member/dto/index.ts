@@ -1,3 +1,4 @@
+export * from "./accept-invitation.dto"
 export * from "./delete-invitation.dto"
 export * from "./invitation.dto"
 export * from "./invite.dto"

@@ -1,5 +1,6 @@
 import { injectWorkspaceMemberService, type IWorkspaceMemberService } from "@undb/authz"
 import { InviteCommand } from "@undb/commands"
+import { getCurrentUser } from "@undb/context/server"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import type { ICommandHandler } from "@undb/domain"
@@ -15,6 +16,8 @@ export class InviteCommandHandler implements ICommandHandler<InviteCommand, any>
   ) {}
 
   async execute(command: InviteCommand): Promise<any> {
-    await this.service.invite(command)
+    const user = getCurrentUser()
+
+    await this.service.invite({ ...command, inviterId: user.userId! }, user.username!)
   }
 }

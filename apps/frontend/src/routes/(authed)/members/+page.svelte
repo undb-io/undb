@@ -6,6 +6,7 @@
   import type { LayoutData } from "./$types"
   import { queryParam } from "sveltekit-search-params"
   import InvitationsListButton from "$lib/components/blocks/invitations/invitations-list-button.svelte"
+  import { hasPermission } from "$lib/store/workspace-member.store"
 
   const mq = queryParam("mq")
 
@@ -31,8 +32,12 @@
     </div>
 
     <div class="flex items-center gap-2">
-      <InviteButton />
-      <InvitationsListButton />
+      {#if $hasPermission("authz:invite")}
+        <InviteButton />
+      {/if}
+      {#if $hasPermission("authz:listInvitation")}
+        <InvitationsListButton />
+      {/if}
     </div>
   </div>
 

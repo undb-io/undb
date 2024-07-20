@@ -1,3 +1,4 @@
+export * from "./accept-invitation.command"
 export * from "./bulk-delete-records.command"
 export * from "./bulk-duplicate-records.command"
 export * from "./bulk-update-records.command"

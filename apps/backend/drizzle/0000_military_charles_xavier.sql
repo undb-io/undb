@@ -23,7 +23,10 @@ CREATE TABLE `undb_invitation` (
 	`id` text PRIMARY KEY NOT NULL,
 	`email` text NOT NULL,
 	`role` text NOT NULL,
-	`status` text NOT NULL
+	`status` text NOT NULL,
+	`invited_at` integer NOT NULL,
+	`inviter_id` text NOT NULL,
+	FOREIGN KEY (`inviter_id`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE TABLE `undb_outbox` (
