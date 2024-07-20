@@ -24,7 +24,7 @@ ENV TINI_VERSION v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static /tini
 RUN chmod +x /tini
 
-FROM gcr.io/distroless/base:nonroot AS release
+FROM alpine AS release
 
 ENV NODE_ENV=production
 ENV PORT=3000

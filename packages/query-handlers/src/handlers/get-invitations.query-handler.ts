@@ -1,7 +1,13 @@
-import { injectInvitationQueryRepository, type IInvitationQueryRepository, type InvitationDTO } from "@undb/authz"
+import {
+  injectInvitationQueryRepository,
+  InvitationCompositeSpecification,
+  WithStatus,
+  type IInvitationQueryRepository,
+  type InvitationDTO,
+} from "@undb/authz"
 import { queryHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
-import { type IQueryHandler } from "@undb/domain"
+import { and, type IQueryHandler } from "@undb/domain"
 import { GetInivitationsQuery } from "@undb/queries"
 
 @queryHandler(GetInivitationsQuery)
@@ -13,6 +19,12 @@ export class GetInivitationsQueryHandler implements IQueryHandler<GetInivitation
   ) {}
 
   async execute(query: GetInivitationsQuery): Promise<InvitationDTO[]> {
-    return this.repo.find()
+    const specs: InvitationCompositeSpecification[] = []
+    if (query.status) {
+      specs.push(new WithStatus(query.status))
+    }
+
+    const spec = and(...specs)
+    return this.repo.find(spec)
   }
 }

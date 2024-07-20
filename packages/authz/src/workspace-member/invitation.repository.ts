@@ -1,13 +1,15 @@
 import { inject } from "@undb/di"
+import type { Option } from "@undb/domain"
 import type { InvitationDTO } from "./dto"
 import type { InvitationDo } from "./invitation.do"
+import type { InvitationCompositeSpecification } from "./invitation.specification"
 
 export interface IInvitationRepository {
   insert(invitation: InvitationDo): Promise<void>
 }
 
 export interface IInvitationQueryRepository {
-  find(): Promise<InvitationDTO[]>
+  find(spec: Option<InvitationCompositeSpecification>): Promise<InvitationDTO[]>
 }
 
 export const INVITATION_REPOSITORY = Symbol("IInvitationRepository")

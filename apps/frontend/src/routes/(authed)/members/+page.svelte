@@ -5,6 +5,7 @@
   import { Users } from "lucide-svelte"
   import type { LayoutData } from "./$types"
   import { queryParam } from "sveltekit-search-params"
+  import InvitationsListButton from "$lib/components/blocks/invitations/invitations-list-button.svelte"
 
   const mq = queryParam("mq")
 
@@ -29,7 +30,10 @@
       <Input bind:value={$mq} on:change={fetchMembers} placeholder="Search Members..." class="max-w-xs" />
     </div>
 
-    <InviteButton />
+    <div class="flex items-center gap-2">
+      <InviteButton />
+      <InvitationsListButton />
+    </div>
   </div>
 
   <MembersTable {members} />

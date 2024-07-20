@@ -1,7 +1,9 @@
 <script lang="ts">
   import { GetInvitationsStore } from "$houdini"
   import { onMount } from "svelte"
+  import { Badge } from "$lib/components/ui/badge"
   import * as Table from "$lib/components/ui/table"
+  import Role from "../member/role.svelte"
 
   const store = new GetInvitationsStore()
 
@@ -13,7 +15,7 @@
 </script>
 
 <Table.Root>
-  <Table.Caption>A list of your recent invoices.</Table.Caption>
+  <Table.Caption>A list of pending invatations.</Table.Caption>
   <Table.Header>
     <Table.Row>
       <Table.Head>Email</Table.Head>
@@ -25,8 +27,14 @@
     {#each invitations as invitation (invitation.id)}
       <Table.Row>
         <Table.Cell class="font-medium">{invitation.email}</Table.Cell>
-        <Table.Cell>{invitation.status}</Table.Cell>
-        <Table.Cell>{invitation.role}</Table.Cell>
+        <Table.Cell>
+          <Badge>
+            {invitation.status}
+          </Badge>
+        </Table.Cell>
+        <Table.Cell>
+          <Role role={invitation.role} />
+        </Table.Cell>
       </Table.Row>
     {/each}
   </Table.Body>
