@@ -1,5 +1,6 @@
 import { AUDIT_QUERY_REPOSITORY, AUDIT_REPOSITORY } from "@undb/audit"
 import {
+  INVITATION_QUERY_REPOSITORY,
   INVITATION_REPOSITORY,
   WORKSPACE_MEMBER_REPOSITORY,
   WORKSPACE_MEMBER_SERVICE,
@@ -16,6 +17,7 @@ import {
   BaseRepository,
   DB_UNIT_OF_WORK_PROVIDER,
   DatabaseUnitOfWork,
+  InvitationQueryRepository,
   InvitationRepository,
   RecordOutboxService,
   RecordQueryRepository,
@@ -57,6 +59,7 @@ export const registerDb = () => {
   container.register(AUDIT_QUERY_REPOSITORY, AuditQueryRepository)
   container.register(WORKSPACE_MEMBER_REPOSITORY, WorkspaceMemberRepository)
   container.register(INVITATION_REPOSITORY, InvitationRepository)
+  container.register(INVITATION_QUERY_REPOSITORY, InvitationQueryRepository)
   container.register(WORKSPQACE_MEMBER_QUERY_REPOSITORY, WorkspaceMemberQueryRepository)
   container.register(WORKSPACE_MEMBER_SERVICE, WorkspaceMemberService)
   container.register(USER_QUERY_REPOSITORY, UserQueryRepository)

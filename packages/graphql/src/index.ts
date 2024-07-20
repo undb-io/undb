@@ -6,6 +6,7 @@ import {
   GetAggregatesQuery,
   GetBaseQuery,
   GetBasesQuery,
+  GetInivitationsQuery,
   GetMemberByIdQuery,
   GetMembersByIdsQuery,
   GetMembersQuery,
@@ -209,11 +210,26 @@ export class Graphql {
         tables: [Table]!
       }
 
+      enum InvitationStatus {
+        pending
+        accepted
+        rejected
+      }
+
+      type Invitation {
+        id: ID!
+        email: String!
+        role: WorkspaceRole!
+        status: InvitationStatus!
+      }
+
       type Query {
         member: WorkspaceMember
         memberById(id: ID!): WorkspaceMember
         membersByIds(ids: [ID!]!): [WorkspaceMember!]!
         members(q: String): [WorkspaceMember]!
+
+        invitations: [Invitation!]!
 
         tables: [Table]!
         table(id: ID!): Table
@@ -282,6 +298,9 @@ export class Graphql {
           share: async (_, { id }) => {
             const share = await this.queryBus.execute(new GetShareQuery({ shareId: id }))
             return share
+          },
+          invitations: async () => {
+            return await this.queryBus.execute(new GetInivitationsQuery({ q: undefined }))
           },
         },
         Base: {

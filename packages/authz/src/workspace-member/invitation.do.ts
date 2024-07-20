@@ -1,7 +1,7 @@
 import { AggregateRoot, IdFactory } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { InviteDTO } from "./dto"
-import type { IWorkspaceMemberRole } from "./workspace-member"
+import type { IWorkspaceMemberWithoutOwner } from "./workspace-member"
 
 const prefix = "ivt"
 const size = 10
@@ -18,7 +18,7 @@ export type IInvitationStatus = z.infer<typeof invitationStatus>
 export class InvitationDo extends AggregateRoot<any> {
   public readonly id: InvitationId
   public readonly email: string
-  public readonly role: IWorkspaceMemberRole
+  public readonly role: IWorkspaceMemberWithoutOwner
   public readonly status: IInvitationStatus
 
   constructor(props: InviteDTO) {

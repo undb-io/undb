@@ -2,6 +2,7 @@ import { CountRecordsQueryHandler } from "./count-records.query-handler"
 import { GetAggregatesQueryHandler } from "./get-aggregates.query-handler"
 import { GetBaseQueryHandler } from "./get-base.query-handler"
 import { GetBasesQueryHandler } from "./get-bases.query-handler"
+import { GetInivitationsQueryHandler } from "./get-invitations.query-handler"
 import { GetMemberByIdQueryHandler } from "./get-member-by-id.query-handler"
 import { GetMembersByIdsQueryHandler } from "./get-members-by-ids.query-handler"
 import { GetMembersQueryHandler } from "./get-members.query-handler"
@@ -38,4 +39,5 @@ export const queryHandlers = [
   GetTableByShareQueryHandler,
   CountRecordsQueryHandler,
   GetRollupForeignTablesTablesQueryHandler,
+  GetInivitationsQueryHandler,
 ]

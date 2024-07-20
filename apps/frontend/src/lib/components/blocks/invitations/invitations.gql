@@ -1,0 +1,8 @@
+query GetInvitations {
+  invitations {
+    id
+    email
+    role
+    status
+  }
+}

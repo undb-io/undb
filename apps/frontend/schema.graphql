@@ -61,11 +61,25 @@ type FormOption {
   backgroundColor: String
 }
 
+type Invitation {
+  email: String!
+  id: ID!
+  role: WorkspaceRole!
+  status: InvitationStatus!
+}
+
+enum InvitationStatus {
+  accepted
+  pending
+  rejected
+}
+
 scalar JSON
 
 type Query {
   base(id: ID!): Base!
   bases: [Base]
+  invitations: [Invitation!]!
   member: WorkspaceMember
   memberById(id: ID!): WorkspaceMember
   members(q: String): [WorkspaceMember]!
