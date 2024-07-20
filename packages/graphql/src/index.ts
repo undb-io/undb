@@ -1,4 +1,6 @@
 import { yoga } from "@elysiajs/graphql-yoga"
+import { useOpenTelemetry } from "@envelop/opentelemetry"
+import * as otel from "@opentelemetry/api"
 import { executionContext } from "@undb/context/server"
 import { QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
@@ -246,6 +248,18 @@ export class Graphql {
       }
 
       `,
+      plugins: [
+        useOpenTelemetry(
+          {
+            resolvers: true, // Tracks resolvers calls, and tracks resolvers thrown errors
+            variables: true, // Includes the operation variables values as part of the metadata collected
+            result: false, // Includes execution result object as part of the metadata collected
+            document: false, // Includes the operation document as part of the metadata collected
+          },
+          otel.trace.getTracerProvider(),
+        ),
+      ],
+
       resolvers: {
         Query: {
           members: async (_, args) => {

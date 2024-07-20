@@ -10,7 +10,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@baselime/node-opentelemetry": "^0.5.8",
+    "@baselime/trpc-opentelemetry-middleware": "^0.1.2",
     "@trpc/server": "^10.45.2",
     "@undb/authz": "workspace:*",
     "@undb/commands": "workspace:*",

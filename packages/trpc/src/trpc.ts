@@ -1,4 +1,5 @@
-import { tracing } from "@baselime/node-opentelemetry/trpc"
+import { tracing } from "@baselime/trpc-opentelemetry-middleware"
+
 import { initTRPC } from "@trpc/server"
 import { executionContext } from "@undb/context/server"
 import { container } from "@undb/di"
