@@ -18,6 +18,13 @@ export class InvitationMailService implements IInvitationMailService {
   async send(invitation: InvitationDo): Promise<void> {
     this.logger.info(invitation, "sending invitation mail...")
 
-    await this.svc.send()
+    await this.svc.send({
+      template: "invite",
+      to: invitation.email,
+      subject: "You have been invited to join the workspace",
+      data: {
+        email: invitation.email,
+      },
+    })
   }
 }

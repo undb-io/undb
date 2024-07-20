@@ -6,12 +6,11 @@ export const env = createEnv({
     LOG_LEVEL: z.enum(["info", "debug", "error"]).default("info"),
   },
   clientPrefix: "UNDB_PUBLIC_",
-  client: {
-    // UNDB_LOG_LEVEL: z.enum(["info", "debug", "error"]),
-  },
+  client: {},
   server: {
     UNDB_MAIL_HOST: z.string(),
     UNDB_MAIL_PORT: z.string(),
+    UNDB_MAIL_DEFAULT_FROM: z.string(),
   },
   runtimeEnv: import.meta.env,
   emptyStringAsUndefined: true,

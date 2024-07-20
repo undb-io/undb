@@ -1,9 +1,9 @@
 import { singleton } from "@undb/di"
 import { env } from "@undb/env"
 import { createLogger } from "@undb/logger"
-import { IMailService } from "@undb/mail"
+import { IMailService, ISendInput } from "@undb/mail"
 import { createTransport } from "nodemailer"
-import { compile } from "./compile"
+import { compile } from "./templates/compile"
 
 function createMailerTransport() {
   return createTransport({
@@ -17,12 +17,12 @@ export class NodemailerService implements IMailService {
   logger = createLogger(NodemailerService.name)
   private readonly transport = createMailerTransport()
 
-  async send(): Promise<void> {
+  async send(input: ISendInput): Promise<void> {
     await this.transport.sendMail({
-      from: '"undb" <no-reply@undb.xyz>',
-      to: "nichenqin@hotmail.com",
-      subject: "hello",
-      html: await compile("invite"),
+      from: input.from || env.UNDB_MAIL_DEFAULT_FROM,
+      to: input.to,
+      subject: input.subject,
+      html: await compile(input.template, input.data),
     })
   }
 }

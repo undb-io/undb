@@ -7,7 +7,8 @@
     "@types/bun": "latest"
   },
   "dependencies": {
-    "@undb/di": "workspace:*"
+    "@undb/di": "workspace:*",
+    "@undb/zod": "workspace:*"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
