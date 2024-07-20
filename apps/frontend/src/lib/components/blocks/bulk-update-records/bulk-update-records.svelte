@@ -25,6 +25,7 @@
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { writable } from "svelte/store"
+  import autoAnimate from "@formkit/auto-animate"
 
   const table = getTable()
   const mutableFields = $table.schema.mutableFields
@@ -129,46 +130,49 @@
       </div>
     {/if}
 
-    <div class="my-4 flex h-full flex-1 flex-col space-y-4">
+    <div use:autoAnimate class="my-4 flex h-full flex-1 flex-col space-y-4">
       {#if !selectedFields.length}
-        <Alert.Root>
-          <PencilIcon class="h-4 w-4" />
-          <Alert.Title>Add Update Field</Alert.Title>
-          <Alert.Description>SELECT COLUMNS TO EDIT</Alert.Description>
-        </Alert.Root>
-      {/if}
-      <div class="flex-1 space-y-4">
-        {#each selectedFields as field}
-          {@const dirty = $tainted && $tainted[field.id.value]}
-          <Form.Field class="flex gap-2" {form} name={field.id.value}>
-            <Form.Control let:attrs>
-              <Form.Label class="text-muted-foreground flex h-4 w-48 items-center justify-between gap-2">
-                <div class="flex items-center gap-2 pt-6">
-                  <FieldIcon {field} type={field.type} class="h-4 w-4" />
-                  <span class="flex-1 truncate">{field.name.value}</span>
-                  {#if dirty}
-                    <span
-                      class="me-2 rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300"
-                    >
-                      updated
-                    </span>
-                  {/if}
+        <div class="flex-1">
+          <Alert.Root>
+            <PencilIcon class="h-4 w-4" />
+            <Alert.Title>Add Update Field</Alert.Title>
+            <Alert.Description>SELECT COLUMNS TO EDIT</Alert.Description>
+          </Alert.Root>
+        </div>
+      {:else}
+        <div use:autoAnimate class="flex-1 space-y-4">
+          {#each selectedFields as field}
+            {@const dirty = $tainted && $tainted[field.id.value]}
+            <Form.Field class="flex gap-2" {form} name={field.id.value}>
+              <Form.Control let:attrs>
+                <Form.Label class="text-muted-foreground flex h-4 w-48 items-center justify-between gap-2">
+                  <div class="flex items-center gap-2 pt-6">
+                    <FieldIcon {field} type={field.type} class="h-4 w-4" />
+                    <span class="flex-1 truncate">{field.name.value}</span>
+                    {#if dirty}
+                      <span
+                        class="me-2 rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300"
+                      >
+                        updated
+                      </span>
+                    {/if}
+                  </div>
+                </Form.Label>
+                <div class="flex-1">
+                  <FieldControl
+                    {...attrs}
+                    bind:value={$formData[field.id.value]}
+                    {field}
+                    tableId={$table.id.value}
+                    class={cn($errors[field.id.value] && "border-red-500 focus-visible:ring-0")}
+                  />
+                  <Form.FieldErrors class="mt-2" />
                 </div>
-              </Form.Label>
-              <div class="flex-1">
-                <FieldControl
-                  {...attrs}
-                  bind:value={$formData[field.id.value]}
-                  {field}
-                  tableId={$table.id.value}
-                  class={cn($errors[field.id.value] && "border-red-500 focus-visible:ring-0")}
-                />
-                <Form.FieldErrors class="mt-2" />
-              </div>
-            </Form.Control>
-          </Form.Field>
-        {/each}
-      </div>
+              </Form.Control>
+            </Form.Field>
+          {/each}
+        </div>
+      {/if}
       <div class="-mx-4 flex justify-end border-t py-2 pt-4">
         <Button
           size="sm"
