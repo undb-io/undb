@@ -6,6 +6,7 @@ import type { InvitationCompositeSpecification } from "./invitation.specificatio
 
 export interface IInvitationRepository {
   insert(invitation: InvitationDo): Promise<void>
+  deleteOneById(id: string): Promise<void>
 }
 
 export interface IInvitationQueryRepository {

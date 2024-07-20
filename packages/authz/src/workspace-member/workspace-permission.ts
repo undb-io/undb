@@ -28,6 +28,9 @@ export const workspacePermission: Record<IWorkspaceMemberRole, Record<IWorkspace
 
     "share:enable": true,
     "share:disable": true,
+
+    "authz:invite": true,
+    "authz:deleteInvitation": true,
   },
   admin: {
     "workspace:list": true,
@@ -55,6 +58,9 @@ export const workspacePermission: Record<IWorkspaceMemberRole, Record<IWorkspace
 
     "share:enable": true,
     "share:disable": true,
+
+    "authz:invite": true,
+    "authz:deleteInvitation": true,
   },
   viewer: {
     "workspace:list": true,
@@ -82,5 +88,8 @@ export const workspacePermission: Record<IWorkspaceMemberRole, Record<IWorkspace
 
     "share:enable": false,
     "share:disable": false,
+
+    "authz:invite": true,
+    "authz:deleteInvitation": false,
   },
 }

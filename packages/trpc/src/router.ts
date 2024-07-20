@@ -10,6 +10,7 @@ import {
   CreateTableFormCommand,
   CreateTableViewCommand,
   CreateWebhookCommand,
+  DeleteInvitationCommand,
   DeleteRecordCommand,
   DeleteTableFieldCommand,
   DeleteViewCommand,
@@ -45,6 +46,7 @@ import {
   createTableFormCommand,
   createTableViewCommand,
   createWebhookCommand,
+  deleteInvitationCommand,
   deleteRecordCommand,
   deleteTableFieldCommand,
   deleteViewCommand,
@@ -248,7 +250,14 @@ const shareRouter = t.router({
 })
 
 const authzRouter = t.router({
-  invite: p.input(inviteCommand).mutation(({ input }) => commandBus.execute(new InviteCommand(input))),
+  invite: p
+    .use(authz("authz:invite"))
+    .input(inviteCommand)
+    .mutation(({ input }) => commandBus.execute(new InviteCommand(input))),
+  deleteInvitation: p
+    .use(authz("authz:deleteInvitation"))
+    .input(deleteInvitationCommand)
+    .mutation(({ input }) => commandBus.execute(new DeleteInvitationCommand(input))),
 })
 
 export const route = t.router({

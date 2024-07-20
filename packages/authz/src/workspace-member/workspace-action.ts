@@ -26,6 +26,9 @@ export const workspaceActions = z.enum([
 
   "share:enable",
   "share:disable",
+
+  "authz:invite",
+  "authz:deleteInvitation",
 ])
 
 export type IWorkspaceAction = z.infer<typeof workspaceActions>

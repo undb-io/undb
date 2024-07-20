@@ -4,6 +4,11 @@ import { getCurrentTransaction } from "../ctx"
 
 @singleton()
 export class InvitationRepository implements IInvitationRepository {
+  async deleteOneById(id: string): Promise<void> {
+    const trx = getCurrentTransaction()
+
+    await trx.deleteFrom("undb_invitation").where("id", "=", id).execute()
+  }
   async insert(invitation: InvitationDo): Promise<void> {
     const trx = getCurrentTransaction()
 
