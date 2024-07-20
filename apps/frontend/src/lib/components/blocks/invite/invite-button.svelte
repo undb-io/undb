@@ -10,6 +10,7 @@
   import * as Form from "$lib/components/ui/form/index.js"
   import { trpc } from "$lib/trpc/client"
   import { toast } from "svelte-sonner"
+  import RolePicker from "../role/role-picker.svelte"
 
   const form = superForm(
     defaults(
@@ -22,7 +23,7 @@
     {
       SPA: true,
       dataType: "json",
-      // validators: zodClient(schema),
+      validators: zodClient(inviteCommand),
       resetForm: false,
       invalidateAll: false,
       onUpdate(event) {
@@ -71,12 +72,21 @@
       <Form.Field {form} name="email">
         <Form.Control let:attrs>
           <Form.Label>Email</Form.Label>
-          <Input {...attrs} bind:value={$formData.email} />
+          <Input {...attrs} bind:value={$formData.email} placeholder="invitee@example.com" />
         </Form.Control>
         <Form.FieldErrors />
       </Form.Field>
 
-      <Form.Button>Submit</Form.Button>
+      <Form.Field {form} name="role">
+        <Form.Control let:attrs>
+          <Form.Label>Role</Form.Label>
+          <RolePicker bind:role={$formData.role} />
+          <input hidden bind:value={$formData.role} name={attrs.name} />
+        </Form.Control>
+        <Form.FieldErrors />
+      </Form.Field>
+
+      <Form.Button class="mt-4">Inivte</Form.Button>
     </form>
   </Dialog.Content>
 </Dialog.Root>

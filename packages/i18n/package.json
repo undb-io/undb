@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@undb/table": "workspace:*",
+    "@undb/authz": "workspace:*",
     "typesafe-i18n": "^5.26.2"
   }
 }

@@ -1,3 +1,4 @@
+import type { IWorkspaceMemberRole } from "@undb/authz"
 import type { FieldType,IFieldAggregate,IOpType,IRollupFn } from "@undb/table"
 import type { BaseTranslation } from "../i18n-types.js"
 
@@ -90,14 +91,19 @@ const aggregateFns: Record<IFieldAggregate, string> = {
   percent_false: "Percent False",
 }
 
+const workspaceRoles: Record<IWorkspaceMemberRole, string> = {
+  owner: "Owner",
+  admin: "Admin",
+  viewer: "Viewer"
+}
+
 const en = {
-  // TODO: your translations go here
-  HI: "Hi {name:string}! Please leave a star if you like this project: https://github.com/ivanhofer/typesafe-i18n",
   table: {
     ops,
     fieldTypes,
     rollupFns,
     aggregateFns,
+    workspaceRoles,
   },
 } satisfies BaseTranslation
 
