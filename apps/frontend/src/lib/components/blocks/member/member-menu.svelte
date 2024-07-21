@@ -40,7 +40,7 @@
         <LogOutIcon class="mr-2 h-4 w-4" />
         Log Out
       </DropdownMenu.Item>
-      <DropdownMenu.Item>
+      <DropdownMenu.Item href="/account/profile">
         <SettingsIcon class="mr-2 h-4 w-4" />
         Account Settings
       </DropdownMenu.Item>
