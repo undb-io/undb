@@ -16,6 +16,7 @@ export const load: LayoutLoad = async (event) => {
   await indexDataStore.fetch({ event, policy: "NetworkOnly" })
 
   return {
+    me: await me.json(),
     indexDataStore,
   }
 }

@@ -250,6 +250,12 @@ export class Auth {
             }),
           },
         )
+        .post("/logout", (ctx) => {
+          const sessionCookie = lucia.createBlankSessionCookie()
+          const response = new Response()
+          response.headers.set("Set-Cookie", sessionCookie.serialize())
+          return response
+        })
         .get(
           "/invitation/:invitationId/accept",
           async (ctx) => {

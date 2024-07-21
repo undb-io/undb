@@ -46,6 +46,10 @@ export default defineConfig({
         target: "http://0.0.0.0:4000",
         changeOrigin: true,
       },
+      "/logout": {
+        target: "http://0.0.0.0:4000",
+        changeOrigin: true,
+      },
     },
   },
   test: {

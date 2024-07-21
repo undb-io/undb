@@ -17,6 +17,7 @@
   import { onMount } from "svelte"
   import type { ComponentType } from "svelte"
   import ImportTableDialog from "$lib/components/blocks/import-table/import-table-dialog.svelte"
+  import MemberMenu from "$lib/components/blocks/member/member-menu.svelte"
 
   export let data: LayoutData
 
@@ -79,6 +80,10 @@
       <ScrollArea class={cn(tables.length ? "flex-1" : "")}>
         <TablesNav {tables} {bases} />
       </ScrollArea>
+
+      <div class="border-t px-4 py-2">
+        <MemberMenu user={data.me.user} />
+      </div>
     </div>
   </Resizable.Pane>
   <Resizable.Handle />
