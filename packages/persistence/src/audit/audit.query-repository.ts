@@ -1,9 +1,7 @@
 import type { AuditSpecification, IAuditDTO, IAuditQueryRepository } from "@undb/audit"
 import { inject, singleton } from "@undb/di"
-import type { IUnitOfWork } from "@undb/domain"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
-import { injectDbUnitOfWork } from "../uow"
 import { AuditFilterVisitor } from "./audit.filter-visitor"
 import { AuditMapper } from "./audit.mapper"
 
@@ -12,8 +10,6 @@ export class AuditQueryRepository implements IAuditQueryRepository {
   constructor(
     @inject(AuditMapper)
     private readonly mapper: AuditMapper,
-    @injectDbUnitOfWork()
-    public readonly uow: IUnitOfWork,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
   ) {}

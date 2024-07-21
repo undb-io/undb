@@ -1,18 +1,15 @@
 import { type IWorkspaceMemberDTO, type IWorkspaceMemberQueryRepository } from "@undb/authz"
 import type { WorkspaceMemberComositeSpecification } from "@undb/authz/src/workspace-member/workspace-member.composite-specification"
 import { inject, singleton } from "@undb/di"
-import { None, Option, Some, type IUnitOfWork } from "@undb/domain"
+import { None, Option, Some } from "@undb/domain"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
-import { injectDbUnitOfWork } from "../uow/db.unit-of-work.provider"
 import { MemberMapper } from "./member.mapper"
 import { WorkspaceMemberFilterVisitor } from "./workspace-member.filter-visitor"
 
 @singleton()
 export class WorkspaceMemberQueryRepository implements IWorkspaceMemberQueryRepository {
   constructor(
-    @injectDbUnitOfWork()
-    public readonly uow: IUnitOfWork,
     @inject(MemberMapper)
     private readonly mapper: MemberMapper,
     @injectQueryBuilder()

@@ -1,15 +1,12 @@
 import { WorkspaceMember, type IWorkspaceMemberRepository } from "@undb/authz"
 import { singleton } from "@undb/di"
-import { None, Some, type IUnitOfWork, type Option } from "@undb/domain"
+import { None, Some, type Option } from "@undb/domain"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
-import { injectDbUnitOfWork } from "../uow/db.unit-of-work.provider"
 
 @singleton()
 export class WorkspaceMemberRepository implements IWorkspaceMemberRepository {
   constructor(
-    @injectDbUnitOfWork()
-    public readonly uow: IUnitOfWork,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
   ) {}

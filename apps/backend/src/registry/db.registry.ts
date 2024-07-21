@@ -15,8 +15,6 @@ import {
   BaseOutboxService,
   BaseQueryRepository,
   BaseRepository,
-  DB_UNIT_OF_WORK_PROVIDER,
-  DatabaseUnitOfWork,
   InvitationQueryRepository,
   InvitationRepository,
   RecordOutboxService,
@@ -52,7 +50,6 @@ export const registerDb = () => {
   container.register(RECORD_REPOSITORY, RecordRepository)
   container.register(RECORD_OUTBOX_SERVICE, RecordOutboxService)
   container.register(TABLE_OUTBOX_SERVICE, TableOutboxService)
-  container.register(DB_UNIT_OF_WORK_PROVIDER, DatabaseUnitOfWork)
   container.register(WEBHOOK_REPOSITORY, WebhookRepository)
   container.register(WEBHOOK_QUERY_REPOSITORY, WebhookQueryRepository)
   container.register(AUDIT_REPOSITORY, AuditRepository)

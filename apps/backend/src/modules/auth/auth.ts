@@ -1,4 +1,4 @@
-import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle"
+import { LibSQLAdapter } from "@lucia-auth/adapter-sqlite"
 import {
   type IInvitationQueryRepository,
   IWorkspaceMemberRole,
@@ -11,15 +11,17 @@ import type { ContextMember } from "@undb/context"
 import { executionContext } from "@undb/context/server"
 import { CommandBus } from "@undb/cqrs"
 import { inject } from "@undb/di"
-import { type IQueryBuilder, db, injectQueryBuilder, sessionTable, startTransaction, users } from "@undb/persistence"
+import { type IQueryBuilder, injectQueryBuilder, sqlite, startTransaction } from "@undb/persistence"
 import { SignUp } from "@undb/ui"
-import { eq } from "drizzle-orm"
 import { Context, Elysia, t } from "elysia"
 import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize } from "lucia"
 import { singleton } from "tsyringe"
 
-const adapter = new DrizzleSQLiteAdapter(db, sessionTable, users)
+const adapter = new LibSQLAdapter(sqlite, {
+  user: "undb_user",
+  session: "undb_session",
+})
 
 const getUsernameFromEmail = (email: string): string => {
   return email.split("@")[0]
@@ -151,7 +153,7 @@ export class Auth {
           "/signup",
           async (ctx) => {
             const { email, password, invitationId } = ctx.body
-            const count = (await db.select().from(users).limit(1)).length
+            const hasUser = !!(await this.queryBuilder.selectFrom("undb_user").selectAll().executeTakeFirst())
             let role: IWorkspaceMemberRole = "owner"
             if (invitationId) {
               const invitation = await this.invitationRepository.findOneById(invitationId)
@@ -165,12 +167,16 @@ export class Auth {
 
               role = invitation.unwrap().role
             } else {
-              role = count === 0 ? "owner" : "admin"
+              role = !hasUser ? "owner" : "admin"
             }
 
             let userId: string
 
-            const user = (await db.select().from(users).where(eq(users.email, email)).limit(1)).at(0)
+            const user = await this.queryBuilder
+              .selectFrom("undb_user")
+              .selectAll()
+              .where((eb) => eb.eb("email", "=", email))
+              .executeTakeFirst()
             if (user) {
               const validPassword = await Bun.password.verify(password, user.password)
               if (!validPassword) {
@@ -185,12 +191,15 @@ export class Auth {
 
               const passwordHash = await Bun.password.hash(password)
               const username = getUsernameFromEmail(email)
-              await db.insert(users).values({
-                email,
-                username,
-                id: userId,
-                password: passwordHash,
-              })
+              await this.queryBuilder
+                .insertInto("undb_user")
+                .values({
+                  email,
+                  username,
+                  id: userId,
+                  password: passwordHash,
+                })
+                .execute()
 
               await this.workspaceMemberService.createMember(userId, userId, role)
             }
@@ -212,44 +221,44 @@ export class Auth {
           },
         )
         // .get("/login", () => <Login />)
-        .post(
-          "/login",
-          async (ctx) => {
-            const email = ctx.body.email
-            const password = ctx.body.password
+        // .post(
+        //   "/login",
+        //   async (ctx) => {
+        //     const email = ctx.body.email
+        //     const password = ctx.body.password
 
-            const user = (await db.select().from(users).where(eq(users.email, email)).limit(1)).at(0)
+        //     const user = (await db.select().from(users).where(eq(users.email, email)).limit(1)).at(0)
 
-            if (!user) {
-              return new Response("Invalid email or password", {
-                status: 400,
-              })
-            }
+        //     if (!user) {
+        //       return new Response("Invalid email or password", {
+        //         status: 400,
+        //       })
+        //     }
 
-            const validPassword = await Bun.password.verify(password, user.password)
-            if (!validPassword) {
-              return new Response("Invalid email or password", {
-                status: 400,
-              })
-            }
+        //     const validPassword = await Bun.password.verify(password, user.password)
+        //     if (!validPassword) {
+        //       return new Response("Invalid email or password", {
+        //         status: 400,
+        //       })
+        //     }
 
-            const session = await lucia.createSession(user.id, {})
-            const sessionCookie = lucia.createSessionCookie(session.id)
-            return new Response(null, {
-              status: 302,
-              headers: {
-                Location: "/",
-                "Set-Cookie": sessionCookie.serialize(),
-              },
-            })
-          },
-          {
-            body: t.Object({
-              email: t.String({ format: "email" }),
-              password: t.String(),
-            }),
-          },
-        )
+        //     const session = await lucia.createSession(user.id, {})
+        //     const sessionCookie = lucia.createSessionCookie(session.id)
+        //     return new Response(null, {
+        //       status: 302,
+        //       headers: {
+        //         Location: "/",
+        //         "Set-Cookie": sessionCookie.serialize(),
+        //       },
+        //     })
+        //   },
+        //   {
+        //     body: t.Object({
+        //       email: t.String({ format: "email" }),
+        //       password: t.String(),
+        //     }),
+        //   },
+        // )
         .post("/logout", (ctx) => {
           const sessionCookie = lucia.createBlankSessionCookie()
           const response = new Response()

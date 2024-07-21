@@ -1,9 +1,8 @@
 import { WithBaseId, type IBaseDTO, type IBaseQueryRepository, type IBaseSpecification } from "@undb/base"
 import { inject, singleton } from "@undb/di"
-import { None, Some, type IUnitOfWork, type Option } from "@undb/domain"
+import { None, Some, type Option } from "@undb/domain"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
-import { injectDbUnitOfWork } from "../uow"
 import { BaseFilterVisitor } from "./base.filter-visitor"
 import { BaseMapper } from "./base.mapper"
 
@@ -12,8 +11,6 @@ export class BaseQueryRepository implements IBaseQueryRepository {
   constructor(
     @inject(BaseMapper)
     private readonly mapper: BaseMapper,
-    @injectDbUnitOfWork()
-    public readonly uow: IUnitOfWork,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
   ) {}

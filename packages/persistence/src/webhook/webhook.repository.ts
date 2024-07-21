@@ -1,9 +1,8 @@
 import { inject, singleton } from "@undb/di"
-import { None, Some, type IUnitOfWork, type Option } from "@undb/domain"
+import { None, Some, type Option } from "@undb/domain"
 import { type IWebhookRepository, type WebhookDo, type WebhookSpecification } from "@undb/webhook"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
-import { injectDbUnitOfWork } from "../uow"
 import { WebhookFilterVisitor } from "./webhook.filter-visitor"
 import { WebhookMapper } from "./webhook.mapper"
 import { WebhookMutationVisitor } from "./webhook.mutation-visitor"
@@ -13,8 +12,6 @@ export class WebhookRepository implements IWebhookRepository {
   constructor(
     @inject(WebhookMapper)
     private readonly mapper: WebhookMapper,
-    @injectDbUnitOfWork()
-    public readonly uow: IUnitOfWork,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
   ) {}

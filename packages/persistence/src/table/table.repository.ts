@@ -1,6 +1,6 @@
 import { executionContext } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
-import { None, Option, Some, type IUnitOfWork } from "@undb/domain"
+import { None, Option, Some } from "@undb/domain"
 import {
   TableComositeSpecification,
   TableIdSpecification,
@@ -16,7 +16,6 @@ import type { InsertTable, InsertTableIdMapping } from "../db"
 import { json, type IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTableService } from "../underlying/underlying-table.service"
-import { injectDbUnitOfWork } from "../uow"
 import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
 import { TableMapper } from "./table.mapper"
 import { TableMutationVisitor } from "./table.mutation-visitor"
@@ -29,8 +28,6 @@ export class TableRepository implements ITableRepository {
     private readonly underlyingTableService: UnderlyingTableService,
     @injectTableOutboxService()
     private readonly outboxService: ITableOutboxService,
-    @injectDbUnitOfWork()
-    public readonly uow: IUnitOfWork,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
   ) {}

@@ -25,7 +25,6 @@ export * from "./query-publisher.js"
 export * from "./query.js"
 export * from "./rule.js"
 export * from "./specification.js"
-export * from "./uow.js"
 export * from "./value-object.js"
 
 export { Err, None, Ok, Option, Result, Some } from "oxide.ts"

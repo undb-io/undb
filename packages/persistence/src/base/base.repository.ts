@@ -8,10 +8,9 @@ import {
 } from "@undb/base"
 import { executionContext } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
-import { None, Some, type IUnitOfWork, type Option } from "@undb/domain"
+import { None, Some, type Option } from "@undb/domain"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
-import { injectDbUnitOfWork } from "../uow"
 import { BaseFilterVisitor } from "./base.filter-visitor"
 import { BaseMapper } from "./base.mapper"
 import { BaseMutateVisitor } from "./base.mutate-visitor"
@@ -21,8 +20,6 @@ export class BaseRepository implements IBaseRepository {
   constructor(
     @inject(BaseMapper)
     private readonly mapper: BaseMapper,
-    @injectDbUnitOfWork()
-    public readonly uow: IUnitOfWork,
     @injectBaseOutboxService()
     private readonly outboxService: IBaseOutboxService,
     @injectQueryBuilder()

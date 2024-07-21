@@ -16,7 +16,7 @@
     "@elysiajs/swagger": "^1.1.0",
     "@elysiajs/trpc": "^1.1.0",
     "@kitajs/ts-html-plugin": "latest",
-    "@lucia-auth/adapter-drizzle": "^1.0.7",
+    "@lucia-auth/adapter-sqlite": "^3.0.2",
     "@undb/audit": "workspace:*",
     "@undb/authz": "workspace:*",
     "@undb/base": "workspace:*",

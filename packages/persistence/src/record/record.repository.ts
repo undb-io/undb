@@ -1,6 +1,6 @@
 import { executionContext } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
-import { None, Some, type IUnitOfWork, type Option } from "@undb/domain"
+import { None, Some, type Option } from "@undb/domain"
 import {
   CREATED_BY_TYPE,
   ID_TYPE,
@@ -22,7 +22,6 @@ import { getAnonymousTransaction, getCurrentTransaction } from "../ctx"
 import type { IRecordQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
-import { injectDbUnitOfWork } from "../uow"
 import { RecordQueryHelper } from "./record-query.helper"
 import { getRecordDTOFromEntity } from "./record-utils"
 import { RecordMapper } from "./record.mapper"
@@ -35,8 +34,6 @@ export class RecordRepository implements IRecordRepository {
     private readonly qb: IRecordQueryBuilder,
     @injectRecordOutboxService()
     private readonly outboxService: IRecordOutboxService,
-    @injectDbUnitOfWork()
-    public readonly uow: IUnitOfWork,
     @inject(RecordMapper)
     public readonly mapper: RecordMapper,
     @injectTableRepository()
