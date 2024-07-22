@@ -28,6 +28,7 @@ import { SetViewFieldsCommandHandler } from "./set-view-fields.command-handler"
 import { SetViewFilterCommandHandler } from "./set-view-filter.command-handler"
 import { SetViewOptionCommandHandler } from "./set-view-option.command-handler"
 import { SetViewSortCommandHandler } from "./set-view-sort.command-handler"
+import { UpdateAccountCommandHandler } from "./update-account.command-handler"
 import { UpdateBaseCommandHandler } from "./update-base.command-handler"
 import { UpdateRecordCommandHandler } from "./update-record.command-handler"
 import { UpdateTableFieldCommandHandler } from "./update-table-field.command-handler"
@@ -72,4 +73,5 @@ export const commandHandlers = [
   InviteCommandHandler,
   DeleteInvitationCommandHandler,
   AcceptInvitationCommandHandler,
+  UpdateAccountCommandHandler,
 ]

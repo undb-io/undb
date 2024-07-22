@@ -28,6 +28,7 @@ import {
   SetViewFilterCommand,
   SetViewOptionCommand,
   SetViewSortCommand,
+  UpdateAccountCommand,
   UpdateBaseCommand,
   UpdateRecordCommand,
   UpdateTableCommand,
@@ -70,6 +71,7 @@ import {
   updateTableFieldCommand,
   updateViewCommand,
   updateWebhookCommand,
+  updateaccountCommand,
 } from "@undb/commands"
 import { CommandBus, QueryBus } from "@undb/cqrs"
 import { container } from "@undb/di"
@@ -260,6 +262,12 @@ const authzRouter = t.router({
     .mutation(({ input }) => commandBus.execute(new DeleteInvitationCommand(input))),
 })
 
+const userRouter = t.router({
+  updateAccount: p
+    .input(updateaccountCommand)
+    .mutation(({ input }) => commandBus.execute(new UpdateAccountCommand(input))),
+})
+
 export const route = t.router({
   table: tableRouter,
   record: recordRouter,
@@ -267,6 +275,7 @@ export const route = t.router({
   base: baseRouter,
   share: shareRouter,
   authz: authzRouter,
+  user: userRouter,
 })
 
 export type AppRouter = typeof route

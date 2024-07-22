@@ -11,6 +11,7 @@ export const injectUserQueryRepository = () => inject(USER_QUERY_REPOSITORY)
 
 export interface IUserRepository {
   insert(user: IUser): Promise<void>
+  updateOneById(userId: string, user: IUser): Promise<void>
 }
 
 export const USER_REPOSITORY = Symbol("USER_REPOSITORY")

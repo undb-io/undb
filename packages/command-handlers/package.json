@@ -15,6 +15,7 @@
     "@undb/context": "workspace:*",
     "@undb/cqrs": "workspace:*",
     "@undb/di": "workspace:*",
+    "@undb/user": "workspace:*",
     "@undb/logger": "workspace:*"
   }
 }

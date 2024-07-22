@@ -2,19 +2,65 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import * as Card from "$lib/components/ui/card/index.js"
   import { Input } from "$lib/components/ui/input/index.js"
+  import { trpc } from "$lib/trpc/client"
+  import { createMutation } from "@tanstack/svelte-query"
+  import { updateaccountCommand } from "@undb/commands"
+  import { defaults, superForm } from "sveltekit-superforms"
+  import { zodClient } from "sveltekit-superforms/adapters"
+  import type { PageData } from "./$types"
+  import * as Form from "$lib/components/ui/form/index.js"
+  import Label from "$lib/components/ui/label/label.svelte"
+
+  export let data: PageData
+
+  const form = superForm(
+    defaults(
+      {
+        userId: data.me.user.userId,
+        username: data.me.user.username,
+      },
+      zodClient(updateaccountCommand),
+    ),
+    {
+      SPA: true,
+      dataType: "json",
+      validators: zodClient(updateaccountCommand),
+      resetForm: false,
+      invalidateAll: false,
+      onUpdate(event) {
+        if (!event.form.valid) return
+
+        $updateAccountMutation.mutate(event.form.data)
+      },
+    },
+  )
+  const { enhance, form: formData } = form
+
+  const updateAccountMutation = createMutation({
+    mutationFn: trpc.user.updateAccount.mutate,
+    mutationKey: ["updateAccount"],
+  })
 </script>
 
 <Card.Root>
   <Card.Header>
-    <Card.Title>Store Name</Card.Title>
-    <Card.Description>Used to identify your store in the marketplace.</Card.Description>
+    <Card.Title>User Name</Card.Title>
   </Card.Header>
   <Card.Content>
-    <form>
-      <Input placeholder="Store Name" />
+    <form method="POST" use:enhance class="space-y-2">
+      <Form.Field {form} name="username">
+        <Form.Control let:attrs>
+          <Form.Label>Username</Form.Label>
+          <Input {...attrs} bind:value={$formData.username} />
+        </Form.Control>
+        <Form.Description>This is your public display name.</Form.Description>
+        <Form.FieldErrors />
+      </Form.Field>
+
+      <Label>Email</Label>
+      <Input disabled bind:value={data.me.user.email} />
+
+      <Form.Button>Save</Form.Button>
     </form>
   </Card.Content>
-  <Card.Footer class="border-t px-6 py-4">
-    <Button>Save</Button>
-  </Card.Footer>
 </Card.Root>
