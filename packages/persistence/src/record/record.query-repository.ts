@@ -120,7 +120,6 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       .where(this.helper.handleWhere(table, spec))
       .execute()
 
-    // TODO: move total to aggregate result
     const { total } = await this.qb
       .selectFrom(t.name)
       .select((eb) => eb.fn.countAll().as("total"))
