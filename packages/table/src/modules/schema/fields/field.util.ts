@@ -181,3 +181,9 @@ export const displayFieldTypes: FieldType[] = [
 export const getIsDisplayFieldType = (type: FieldType): type is (typeof displayFieldTypes)[number] => {
   return displayFieldTypes.includes(type)
 }
+
+const fieldTypesHasDisplayValue = new Set<FieldType>(["select", "user", "createdBy", "updatedBy", "reference"])
+
+export const getIsFieldHasDisplayValue = (type: FieldType): boolean => {
+  return fieldTypesHasDisplayValue.has(type)
+}

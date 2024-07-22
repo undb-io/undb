@@ -13,6 +13,7 @@ import {
   CreatedByField,
   FieldIdVo,
   FieldNameVo,
+  getIsFieldHasDisplayValue,
   ID_TYPE,
   IdField,
   ReferenceField,
@@ -136,6 +137,21 @@ export class Schema extends ValueObject<Field[]> {
       this.fields,
       (f) => f.id.value,
       (f) => f.valueSchema,
+    )
+
+    return z.object(schema)
+  }
+
+  getFieldsHasDisplayValue() {
+    return this.fields.filter((f) => getIsFieldHasDisplayValue(f.type))
+  }
+
+  get displayValuesSchema() {
+    const schema = objectify(
+      this.getFieldsHasDisplayValue(),
+      (f) => f.name.value,
+      // TODO: specify display value schema
+      (f) => z.any(),
     )
 
     return z.object(schema)

@@ -31,6 +31,19 @@ export class RecordDisplayValuesVO extends ValueObject {
     return new RecordDisplayValuesVO(values)
   }
 
+  public toReadable(table: TableDo) {
+    const readable: Record<string, any> = {}
+
+    for (const [id, value] of Object.entries(this.values)) {
+      const field = table.schema.getFieldById(new FieldIdVo(id)).into(null)
+      if (!field) continue
+
+      readable[field.name.value] = value
+    }
+
+    return readable
+  }
+
   public toJSON(): IRecordDisplayValues {
     const values: IRecordDisplayValues = {}
 

@@ -76,7 +76,10 @@ export class RollupField extends AbstractField<RollupFieldValue, undefined, IRol
   override type = ROLLUP_TYPE
 
   override get valueSchema() {
-    return z.union([z.number(), z.date(), z.null(), z.undefined()])
+    if (this.fn === "lookup") {
+      return z.union([z.string(), z.number()]).array().nullable().optional()
+    }
+    return z.number().nullable().optional()
   }
 
   override accept(visitor: IFieldVisitor): void {

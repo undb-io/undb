@@ -1,4 +1,4 @@
-import { ValueObject } from "@undb/domain"
+import { Option as O, ValueObject } from "@undb/domain"
 import { ColorsVO } from "../../../colors"
 import { OptionIdVo } from "./option-id.vo"
 import { Option, type IOption } from "./option.vo"
@@ -23,6 +23,10 @@ export class Options extends ValueObject<Option[]> {
           }),
       ),
     )
+  }
+
+  getOptionById(id: string) {
+    return O(this.props.find((o) => o.value.id === id))
   }
 
   toJSON() {

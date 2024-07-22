@@ -1,7 +1,7 @@
 import { AggregateRoot, andOptions, None, type Option } from "@undb/domain"
 import { isEmpty } from "radash"
 import type { TableDo } from "../../../table.do"
-import { ID_TYPE, IdFieldValue, type FieldValue } from "../../schema"
+import { IdFieldValue, type FieldValue } from "../../schema"
 import { FieldIdVo, type FieldId } from "../../schema/fields/field-id.vo"
 import { FieldValueFactory } from "../../schema/fields/field-value.factory"
 import type { SchemaIdMap } from "../../schema/schema.type"
@@ -115,12 +115,16 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
   }
 
   toReadable(table: TableDo) {
-    const schema = table.schema.fieldMapById
     const values = this.values.toReadable(table)
+    const displayValues = this.displayValues?.toReadable(table)
     return {
-      [schema.get(ID_TYPE)!.name.value]: this.id.value,
-      ...values,
+      values,
+      displayValues,
     }
+  }
+
+  getDisplayValueByField(fieldId: FieldId) {
+    return this.displayValues?.getValue(fieldId)
   }
 
   getDisplayValue(table: TableDo): string {

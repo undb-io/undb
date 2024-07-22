@@ -16,8 +16,9 @@ export async function getReadableRecords(
 
   const query = buildQuery(table, dto)
   const data = await this.repo.find(table, viewId, query)
+  const readable = recordsToReadable(table, data.values)
   return {
     total: data.total,
-    values: recordsToReadable(table, data.values),
+    values: readable,
   }
 }

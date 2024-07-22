@@ -88,6 +88,20 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO 
       }
       continue
     } else {
+      if (field.type === "select") {
+        if (field.isSingle) {
+          const optionId = value
+          const option = field.options.find((o) => o.id === optionId)
+          displayValues[key] = option?.name
+        } else if (Array.isArray(value)) {
+          const optionIds = value
+          displayValues[key] = optionIds.map((optionId) => {
+            const option = field.options.find((o) => o.id === optionId)
+            return option?.name
+          })
+        }
+      }
+
       if (
         (field.type === "reference" ||
           (field.type === "rollup" && field.fn === "lookup") ||

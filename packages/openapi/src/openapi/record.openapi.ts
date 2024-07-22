@@ -4,18 +4,36 @@ import { z, type ZodTypeAny } from "@undb/zod"
 import { objectify } from "radash"
 
 export const RECORD_COMPONENT = "Record"
+export const RECORD_VALUES_COMPONENT = "RecordValues"
+export const RECORD_DISPLAY_VALUES_COMPONENT = "RecordDisplayValues"
 
 export const createRecordComponent = (table: TableDo, record?: RecordDO) => {
+  const fields = table.schema.fields
+  const displayFields = table.schema.getFieldsHasDisplayValue()
   const schema = table.schema.readableSchema
+  const displayScheam = table.schema.displayValuesSchema
 
   const example = record
     ? objectify(
-        table.schema.fields,
+        fields,
         (f) => f.name.value,
         (f) => record?.getValue(f.id).into(undefined)?.value,
       )
     : undefined
-  return schema.openapi(RECORD_COMPONENT, { example })
+
+  const displayExample = record
+    ? objectify(
+        displayFields,
+        (f) => f.name.value,
+        (f) => record.getDisplayValueByField(f.id)?.into(undefined),
+      )
+    : undefined
+  return z
+    .object({
+      values: schema.openapi(RECORD_VALUES_COMPONENT, { example }),
+      displayValues: displayScheam.openapi(RECORD_DISPLAY_VALUES_COMPONENT, { example: displayExample }),
+    })
+    .openapi(RECORD_COMPONENT)
 }
 
 export const getRecords = (table: TableDo, recordSchema: ZodTypeAny): RouteConfig => {
