@@ -6,6 +6,7 @@ extendZodWithOpenApi(z)
 import type { RecordDO, TableDo } from "@undb/table"
 import {
   RECORD_COMPONENT,
+  bulkDeleteRecords,
   createRecord,
   createRecordComponent,
   deleteRecordById,
@@ -28,6 +29,7 @@ export const createOpenApiSpec = (table: TableDo, record?: RecordDO) => {
   registry.registerPath(updateRecord(table))
   registry.registerPath(duplicateRecordById(table))
   registry.registerPath(deleteRecordById(table))
+  registry.registerPath(bulkDeleteRecords(table))
   registry.registerPath(recordSubscription(table))
 
   const generator = new OpenApiGeneratorV3(registry.definitions)

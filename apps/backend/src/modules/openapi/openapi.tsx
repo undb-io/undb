@@ -1,4 +1,10 @@
-import { CreateRecordCommand, DeleteRecordCommand, DuplicateRecordCommand, UpdateRecordCommand } from "@undb/commands"
+import {
+  BulkDeleteRecordsCommand,
+  CreateRecordCommand,
+  DeleteRecordCommand,
+  DuplicateRecordCommand,
+  UpdateRecordCommand,
+} from "@undb/commands"
 import { executionContext } from "@undb/context/server"
 import { CommandBus, QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
@@ -166,6 +172,20 @@ export class OpenAPI {
           })
         },
         { params: t.Object({ tableId: t.String(), recordId: t.String() }) },
+      )
+      .delete(
+        "/api/tables/:tableId/records",
+        async (ctx) => {
+          return withTransaction(this.qb)(() => {
+            return this.commandBus.execute(
+              new BulkDeleteRecordsCommand({ tableId: ctx.params.tableId, ids: ctx.body.ids as [string, ...string[]] }),
+            )
+          })
+        },
+        {
+          params: t.Object({ tableId: t.String() }),
+          body: t.Object({ ids: t.Optional(t.Array(t.String(), { minItems: 1 })) }),
+        },
       )
   }
 }

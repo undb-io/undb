@@ -190,6 +190,32 @@ export const deleteRecordById = (table: TableDo): RouteConfig => {
   }
 }
 
+export const bulkDeleteRecords = (table: TableDo): RouteConfig => {
+  return {
+    method: "delete",
+    path: `/tables/${table.id.value}/records`,
+    description: `bulk delete ${table.name.value} records`,
+    summary: `bulk delete ${table.name.value} records`,
+    tags: [RECORD_COMPONENT],
+    request: {
+      body: {
+        content: {
+          "application/json": {
+            schema: z.object({
+              ids: z.array(recordId).nonempty(),
+            }),
+          },
+        },
+      },
+    },
+    responses: {
+      200: {
+        description: "record data",
+      },
+    },
+  }
+}
+
 export const recordSubscription = (table: TableDo): RouteConfig => {
   return {
     method: "get",
