@@ -4,7 +4,7 @@ import { tableId } from "../../../../../table-id.vo"
 import type { TableDo } from "../../../../../table.do"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import { viewFilterGroup, type IViewFilterGroup } from "../../../../views/view/view-filter/view-filter.vo"
-import { FieldIdVo, fieldId } from "../../field-id.vo"
+import { fieldId, FieldIdVo } from "../../field-id.vo"
 import type { Field } from "../../field.type"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
@@ -114,8 +114,16 @@ export class ReferenceField extends AbstractField<
 
   override type = REFERENCE_TYPE
 
+  get #constraint(): ReferenceFieldConstraint {
+    return this.constraint.unwrapOrElse(() => new ReferenceFieldConstraint({}))
+  }
+
   override get valueSchema() {
-    return this.constraint.unwrapOrElse(() => new ReferenceFieldConstraint({})).schema
+    return this.#constraint.schema
+  }
+
+  override get mutateSchema() {
+    return this.#constraint.mutateSchema
   }
 
   override accept(visitor: IFieldVisitor): void {

@@ -98,7 +98,7 @@ export const createRecord = (table: TableDo): RouteConfig => {
         content: {
           "application/json": {
             schema: z.object({
-              values: table.schema.getMutableSchema(),
+              values: table.schema.getMutableSchema(table.schema.mutableFields, false),
             }),
           },
         },

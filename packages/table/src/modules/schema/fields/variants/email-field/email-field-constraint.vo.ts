@@ -1,3 +1,4 @@
+import { Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.vo"
 
@@ -18,5 +19,9 @@ export class EmailFieldConstraint extends FieldConstraintVO<IEmailFieldConstrain
     }
 
     return base
+  }
+
+  override get mutateSchema() {
+    return Some(this.schema)
   }
 }

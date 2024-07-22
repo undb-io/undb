@@ -52,8 +52,16 @@ export class JsonField extends AbstractField<JsonFieldValue> {
 
   override type = JSON_TYPE
 
+  get #constraint(): JsonFieldConstraint {
+    return this.constraint.unwrapOrElse(() => new JsonFieldConstraint({}))
+  }
+
   override get valueSchema() {
-    return this.constraint.unwrapOrElse(() => new JsonFieldConstraint({})).schema
+    return this.#constraint.schema
+  }
+
+  override get mutateSchema() {
+    return this.#constraint.mutateSchema
   }
 
   override accept(visitor: IFieldVisitor): void {

@@ -1,3 +1,4 @@
+import { Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { FieldConstraintVO } from "../../field-constraint.vo"
 
@@ -13,5 +14,9 @@ export class CheckboxFieldConstraint extends FieldConstraintVO<ICheckboxFieldCon
     let base: z.ZodTypeAny = z.boolean().optional()
 
     return base
+  }
+
+  override get mutateSchema() {
+    return Some(this.schema)
   }
 }

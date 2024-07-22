@@ -9,7 +9,7 @@ import { OptionNameShouldBeUnique } from "../../rules/option-name-should-be-uniq
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { SelectFieldConstraint, selectFieldConstraint } from "./select-field-constraint.vo"
 import { SelectContainsAnyOf, SelectEmpty, SelectEqual } from "./select-field-specification"
-import { SelectFieldValue, mutateSelectFieldValueSchema } from "./select-field-value.vo"
+import { SelectFieldValue } from "./select-field-value.vo"
 import { selectFieldAggregate } from "./select-field.aggregate"
 import {
   createSelectFieldCondition,
@@ -92,16 +92,16 @@ export class SelectField extends AbstractField<SelectFieldValue, SelectFieldCons
     return this.#constraint.schema
   }
 
+  override get mutateSchema() {
+    return this.#constraint.mutateSchema
+  }
+
   get isSingle() {
     return this.#constraint.isSingle
   }
 
   get isMultiple() {
     return !this.isSingle
-  }
-
-  override get mutateSchema() {
-    return Some(mutateSelectFieldValueSchema)
   }
 
   override accept(visitor: IFieldVisitor): void {

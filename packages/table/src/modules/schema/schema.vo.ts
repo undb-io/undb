@@ -122,11 +122,11 @@ export class Schema extends ValueObject<Field[]> {
     return this.fields.filter((f) => f.isMutable)
   }
 
-  getMutableSchema(fields = this.mutableFields) {
+  getMutableSchema(fields = this.mutableFields, useId = true) {
     const schema = objectify(
       fields.filter((f) => f.isMutable),
-      (f) => f.id.value,
-      (f) => f.valueSchema,
+      (f) => (useId ? f.id.value : f.name.value),
+      (f) => (f.mutateSchema as Option<ZodSchema>).unwrapOr(z.undefined()),
     )
 
     return z.object(schema)

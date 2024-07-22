@@ -7,7 +7,7 @@ import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { StringContains, StringEmpty, StringEndsWith, StringStartsWith } from "../string-field"
 import { EmailFieldConstraint, emailFieldConstraint } from "./email-field-constraint.vo"
-import { emailFieldValue, EmailFieldValue, mutateEmailFieldValueSchema } from "./email-field-value.vo"
+import { emailFieldValue, EmailFieldValue } from "./email-field-value.vo"
 import { emailFieldAggregate } from "./email-field.aggregate"
 import {
   createEmailFieldCondition,
@@ -58,12 +58,16 @@ export class EmailField extends AbstractField<EmailFieldValue, EmailFieldConstra
 
   override type = EMAIL_TYPE
 
+  override get #constraint(): EmailFieldConstraint {
+    return this.constraint.unwrapOrElse(() => new EmailFieldConstraint({}))
+  }
+
   override get valueSchema() {
-    return this.constraint.unwrapOrElse(() => new EmailFieldConstraint({})).schema
+    return this.#constraint.schema
   }
 
   override get mutateSchema() {
-    return Some(mutateEmailFieldValueSchema)
+    return this.#constraint.mutateSchema
   }
 
   override accept(visitor: IFieldVisitor): void {

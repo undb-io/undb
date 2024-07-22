@@ -1,3 +1,4 @@
+import { Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.vo"
 
@@ -35,5 +36,9 @@ export class ReferenceFieldConstraint extends FieldConstraintVO<IReferenceFieldC
     }
 
     return base
+  }
+
+  get mutateSchema() {
+    return Some(this.schema)
   }
 }

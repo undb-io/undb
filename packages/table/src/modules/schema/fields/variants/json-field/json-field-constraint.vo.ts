@@ -1,3 +1,4 @@
+import { Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.vo"
 
@@ -26,5 +27,9 @@ export class JsonFieldConstraint extends FieldConstraintVO<IJsonFieldConstraint>
     }
 
     return base
+  }
+
+  override get mutateSchema() {
+    return Some(this.schema)
   }
 }

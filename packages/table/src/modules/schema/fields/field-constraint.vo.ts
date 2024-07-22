@@ -1,4 +1,4 @@
-import { ValueObject } from "@undb/domain"
+import { Option, ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 
 export const baseFieldConstraint = z.object({
@@ -13,4 +13,5 @@ export abstract class FieldConstraintVO<C extends IBaseFieldConstraint = any> ex
   }
 
   abstract get schema(): z.ZodTypeAny
+  abstract get mutateSchema(): Option<z.ZodTypeAny>
 }

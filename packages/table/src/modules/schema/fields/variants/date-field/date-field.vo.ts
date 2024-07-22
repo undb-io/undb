@@ -48,8 +48,16 @@ export class DateField extends AbstractField<DateFieldValue> {
 
   override type = DATE_TYPE
 
+  override get #constraint(): DateFieldConstraint {
+    return this.constraint.unwrapOrElse(() => new DateFieldConstraint({}))
+  }
+
   override get valueSchema() {
-    return this.constraint.unwrapOrElse(() => new DateFieldConstraint({})).schema
+    return this.#constraint.schema
+  }
+
+  override get mutateSchema() {
+    return this.#constraint.mutateSchema
   }
 
   override accept(visitor: IFieldVisitor): void {
@@ -71,6 +79,6 @@ export class DateField extends AbstractField<DateFieldValue> {
   }
 
   override getMutationSpec(value: DateFieldValue): Option<RecordComositeSpecification> {
-    return Some(new DateEqual(isString(value.value) ? new Date(value.value) : value.value ?? null, this.id))
+    return Some(new DateEqual(isString(value.value) ? new Date(value.value) : (value.value ?? null), this.id))
   }
 }

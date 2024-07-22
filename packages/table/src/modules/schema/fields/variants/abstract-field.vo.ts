@@ -93,7 +93,7 @@ export abstract class AbstractField<
       return None
     }
 
-    throw new Error("Method not implemented.")
+    throw new Error("Field.mutateSchema is not implemented, field type:" + this.type)
   }
 
   protected abstract getConditionSchema<OptionType extends z.ZodTypeAny>(optionType: OptionType): IFieldConditionSchema

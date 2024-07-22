@@ -16,7 +16,7 @@ import {
   StringMin,
   StringStartsWith,
 } from "./string-field-value.specification"
-import { StringFieldValue, mutateStringFieldValueSchema, stringFieldValue } from "./string-field-value.vo"
+import { StringFieldValue, stringFieldValue } from "./string-field-value.vo"
 import { stringFieldAggregate } from "./string-field.aggregate"
 import {
   createStringFieldCondition,
@@ -66,16 +66,20 @@ export class StringField extends AbstractField<StringFieldValue, StringFieldCons
     return true
   }
 
-  override get valueSchema() {
-    return this.constraint.unwrapOrElse(() => new StringFieldConstraint({})).schema
-  }
-
   override accept(visitor: IFieldVisitor): void {
     visitor.string(this)
   }
 
+  get #constraint(): StringFieldConstraint {
+    return this.constraint.unwrapOrElse(() => new StringFieldConstraint({}))
+  }
+
+  override get valueSchema() {
+    return this.#constraint.schema
+  }
+
   override get mutateSchema() {
-    return Some(mutateStringFieldValueSchema)
+    return this.#constraint.mutateSchema
   }
 
   override getSpec(condition: IStringFieldCondition) {

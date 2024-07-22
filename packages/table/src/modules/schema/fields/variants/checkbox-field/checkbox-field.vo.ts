@@ -47,8 +47,16 @@ export class CheckboxField extends AbstractField<CheckboxFieldValue> {
 
   override type = CHECKBOX_TYPE
 
+  get #constraint(): CheckboxFieldConstraint {
+    return this.constraint.unwrapOrElse(() => new CheckboxFieldConstraint({}))
+  }
+
   override get valueSchema() {
-    return this.constraint.unwrapOrElse(() => new CheckboxFieldConstraint({})).schema
+    return this.#constraint.schema
+  }
+
+  override get mutateSchema() {
+    return this.#constraint.mutateSchema
   }
 
   override accept(visitor: IFieldVisitor): void {

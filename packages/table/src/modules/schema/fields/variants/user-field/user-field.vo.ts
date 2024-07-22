@@ -52,12 +52,20 @@ export class UserField extends AbstractField<UserFieldValue> {
 
   override type = USER_TYPE
 
+  get #constraint(): UserFieldConstraint {
+    return this.constraint.unwrapOrElse(() => new UserFieldConstraint({}))
+  }
+
   override get valueSchema() {
-    return this.constraint.unwrapOrElse(() => new UserFieldConstraint({})).schema
+    return this.#constraint.schema
+  }
+
+  override get mutateSchema() {
+    return this.#constraint.mutateSchema
   }
 
   public get isSingle() {
-    return this.constraint.unwrapOrElse(() => new UserFieldConstraint({})).isSingle
+    return this.#constraint.isSingle
   }
 
   public get isMultiple() {

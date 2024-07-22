@@ -1,3 +1,4 @@
+import { Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.vo"
 import { attachmentFieldValue } from "./attachment-field-value.vo"
@@ -40,5 +41,9 @@ export class AttachmentFieldConstraint extends FieldConstraintVO<IAttachmentFiel
     }
 
     return required ? base : base.optional().nullable()
+  }
+
+  get mutateSchema() {
+    return Some(this.schema)
   }
 }

@@ -6,9 +6,6 @@ import type { SelectField } from "./select-field.vo"
 export const selectFieldValue = optionId.nullable().or(z.array(optionId)).nullable()
 export type ISelectFieldValue = z.infer<typeof selectFieldValue>
 
-export const mutateSelectFieldValueSchema = selectFieldValue
-export type IMutateSelectFieldValueSchema = z.infer<typeof mutateSelectFieldValueSchema>
-
 export class SelectFieldValue extends FieldValueObject<ISelectFieldValue> {
   constructor(option: ISelectFieldValue) {
     super(Array.isArray(option) ? option : { value: option })

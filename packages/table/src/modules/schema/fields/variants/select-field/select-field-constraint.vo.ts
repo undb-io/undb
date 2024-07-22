@@ -1,3 +1,4 @@
+import { Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.vo"
 import { optionId } from "../../option/option-id.vo"
@@ -49,5 +50,9 @@ export class SelectFieldConstraint extends FieldConstraintVO<ISelectFieldConstra
 
       return this.props.required ? base : base.optional().nullable()
     }
+  }
+
+  get mutateSchema() {
+    return Some(this.schema)
   }
 }

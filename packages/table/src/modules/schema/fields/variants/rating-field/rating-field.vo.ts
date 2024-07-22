@@ -7,7 +7,7 @@ import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-fie
 import { createAbstractNumberFieldMather } from "../abstractions/abstract-number-field.condition"
 import { abstractNumberAggregate } from "../abstractions/abstract-number.aggregate"
 import { RatingFieldConstraint, ratingFieldConstraint } from "./rating-field-constraint.vo"
-import { RatingFieldValue, mutateRatingFieldValueSchema, ratingFieldValueSchema } from "./rating-field-value.vo"
+import { RatingFieldValue, ratingFieldValueSchema } from "./rating-field-value.vo"
 import {
   createRatingFieldCondition,
   type IRatingFieldCondition,
@@ -59,12 +59,16 @@ export class RatingField extends AbstractField<RatingFieldValue, RatingFieldCons
 
   override type = RATING_TYPE
 
+  get #constraint(): RatingFieldConstraint {
+    return this.constraint.unwrapOrElse(() => new RatingFieldConstraint({}))
+  }
+
   override get valueSchema() {
-    return this.constraint.unwrapOrElse(() => new RatingFieldConstraint({})).schema
+    return this.#constraint.schema
   }
 
   override get mutateSchema() {
-    return Some(mutateRatingFieldValueSchema)
+    return this.#constraint.mutateSchema
   }
 
   override accept(visitor: IFieldVisitor): void {
