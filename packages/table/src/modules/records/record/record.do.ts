@@ -1,10 +1,10 @@
 import { AggregateRoot, andOptions, None, type Option } from "@undb/domain"
 import { isEmpty } from "radash"
 import type { TableDo } from "../../../table.do"
-import { ID_TYPE, type FieldValue } from "../../schema"
+import { ID_TYPE, IdFieldValue, type FieldValue } from "../../schema"
 import { FieldIdVo, type FieldId } from "../../schema/fields/field-id.vo"
 import { FieldValueFactory } from "../../schema/fields/field-value.factory"
-import type { SchemaMap } from "../../schema/schema.type"
+import type { SchemaIdMap } from "../../schema/schema.type"
 import { RecordCreatedEvent, RecordDeletedEvent, RecordUpdatedEvent, type IRecordEvent } from "../events"
 import type { ICreateRecordDTO, IRecordDTO, IUpdateRecordDTO } from "./dto"
 import { RecordDisplayValuesVO } from "./record-display-values.vo"
@@ -52,7 +52,7 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
     }
   }
 
-  getMuttableValues(schema: SchemaMap) {
+  getMuttableValues(schema: SchemaIdMap) {
     return this.values.getMuttableValues(schema)
   }
 
@@ -135,7 +135,7 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
     const spec = this.values.toInsertSpec(table)
 
     const id = table.schema.getIdField()
-    return andOptions(id.getMutationSpec(this.id), spec).unwrap() as RecordComositeSpecification
+    return andOptions(id.getMutationSpec(new IdFieldValue(this.id.value)), spec).unwrap() as RecordComositeSpecification
   }
 }
 

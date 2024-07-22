@@ -29,15 +29,24 @@ import { FieldFactory } from "./fields/field.factory"
 import type { Field, MutableFieldValue, NoneSystemField, SystemField } from "./fields/field.type"
 import { AutoIncrementField } from "./fields/variants/autoincrement-field"
 import { CreatedAtField } from "./fields/variants/created-at-field"
-import type { SchemaMap } from "./schema.type"
+import type { SchemaIdMap, SchemaNameMap } from "./schema.type"
 import { getNextName } from "./schema.util"
 
 export class Schema extends ValueObject<Field[]> {
-  public fieldMapById: SchemaMap
+  public fieldMapById: SchemaIdMap
+  public fieldMapByName: SchemaNameMap
 
   private constructor(public fields: Field[]) {
     super(fields)
-    this.fieldMapById = new Map(this.fields.map((field) => [field.id.value, field]))
+    const fieldMapById = new Map<string, Field>()
+    const fieldMapByName = new Map<string, Field>()
+    for (const field of fields) {
+      fieldMapById.set(field.id.value, field)
+      fieldMapByName.set(field.name.value, field)
+    }
+
+    this.fieldMapById = fieldMapById
+    this.fieldMapByName = fieldMapByName
   }
 
   static create(dto: ICreateSchemaDTO): Schema {
@@ -67,14 +76,12 @@ export class Schema extends ValueObject<Field[]> {
   }
 
   createField(field: Field) {
-    this.fields = [...this.fields, field]
-    this.fieldMapById.set(field.id.value, field)
-    return this
+    return new Schema([...this.fields, field])
   }
 
   $updateField(dto: IUpdateFieldDTO) {
     const field = this.getFieldById(new FieldIdVo(dto.id)).expect("Field not found")
-    const updated = field.update(dto)
+    const updated = field.update(dto as any)
     return new WithUpdatedFieldSpecification(field, updated)
   }
 

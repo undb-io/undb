@@ -1,5 +1,5 @@
 import { DomainRules, ExceptionBase } from "@undb/domain"
-import type { SchemaMap } from "../modules/schema/schema.type"
+import type { SchemaIdMap } from "../modules/schema/schema.type"
 import type { IViewSort } from "../modules/views/view/view-sort/view-sort.vo"
 
 class ViewSortShouldBeSortableError extends ExceptionBase {
@@ -12,7 +12,7 @@ class ViewSortShouldBeSortableError extends ExceptionBase {
 
 export class ViewSortShouldBeSortable extends DomainRules<ViewSortShouldBeSortableError> {
   constructor(
-    private readonly schema: SchemaMap,
+    private readonly schema: SchemaIdMap,
     private readonly sort: IViewSort,
   ) {
     super()

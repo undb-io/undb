@@ -1,3 +1,4 @@
 import type { Field } from "./fields"
 
-export type SchemaMap = Map<string, Field>
+export type SchemaIdMap = Map<string, Field>
+export type SchemaNameMap = Map<string, Field>

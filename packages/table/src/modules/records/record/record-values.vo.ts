@@ -5,7 +5,7 @@ import type { TableDo } from "../../../table.do"
 import type { FieldValue, MutableFieldValue } from "../../schema"
 import { FieldIdVo, fieldId, type FieldId, type IFieldId } from "../../schema/fields/field-id.vo"
 import { FieldValueFactory } from "../../schema/fields/field-value.factory"
-import type { SchemaMap } from "../../schema/schema.type"
+import type { SchemaIdMap } from "../../schema/schema.type"
 import type { IRecordReadableDTO } from "./dto"
 
 export const recordValues = z.record(fieldId, z.any())
@@ -81,22 +81,22 @@ export class RecordValuesVO extends ValueObject {
   }
 
   toReadable(table: TableDo): IRecordReadableDTO {
-    const schema = table.schema.fieldMapById
+    const schema = table.schema
 
     const values: IRecordReadableDTO = {}
 
     for (const [id, value] of Object.entries(this.values)) {
-      const field = schema.get(id)
-      if (!field) continue
+      const field = schema.getFieldById(new FieldIdVo(id))
+      if (field.isNone()) continue
 
       // TODO: value.toReadable()
-      values[field.name.value] = value.value
+      values[field.unwrap().name.value] = value.value
     }
 
     return values
   }
 
-  duplicate(schema: SchemaMap): RecordValuesVO {
+  duplicate(schema: SchemaIdMap): RecordValuesVO {
     const values: RecordValues = {}
 
     for (const [id, value] of Object.entries(this.values)) {
@@ -125,7 +125,7 @@ export class RecordValuesVO extends ValueObject {
     return Option(this.#map.get(fieldId.value))
   }
 
-  getMuttableValues(schema: SchemaMap) {
+  getMuttableValues(schema: SchemaIdMap) {
     const values: Record<string, any> = {}
 
     for (const [id, value] of Object.entries(this.values)) {

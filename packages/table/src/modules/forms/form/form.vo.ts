@@ -5,7 +5,7 @@ import type { TableDo } from "../../../table.do"
 import type { RecordDO } from "../../records"
 import { conditionContainsFields, getSpec } from "../../schema/fields/condition/condition.util"
 import type { Field } from "../../schema/fields/field.type"
-import type { SchemaMap } from "../../schema/schema.type"
+import type { SchemaIdMap } from "../../schema/schema.type"
 import type { ICreateFormDTO } from "../dto/create-form.dto"
 import { FormFieldVO, formField } from "./form-field.vo"
 import { FormFieldsVO } from "./form-fields.vo"
@@ -170,7 +170,7 @@ export class FormVO extends ValueObject<IForm> {
     return conditionContainsFields(condition, ids)
   }
 
-  getShouldShowField(fieldId: string, schemaMap: SchemaMap, record: RecordDO): boolean {
+  getShouldShowField(fieldId: string, schemaMap: SchemaIdMap, record: RecordDO): boolean {
     const target = this.fields.props.find((f) => f.fieldId === fieldId)
     if (!target) return true
 

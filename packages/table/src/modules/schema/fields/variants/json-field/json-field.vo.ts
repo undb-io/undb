@@ -1,4 +1,4 @@
-import { Option, Some } from "@undb/domain"
+import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
@@ -82,6 +82,6 @@ export class JsonField extends AbstractField<JsonFieldValue> {
   }
 
   override getMutationSpec(value: JsonFieldValue): Option<RecordComositeSpecification> {
-    return Some(new JsonEqual(value.value, this.id))
+    return value.value ? Some(new JsonEqual(value.value, this.id)) : None
   }
 }

@@ -1,7 +1,7 @@
 import { ValueObject } from "@undb/domain"
 import type { Field } from "../.."
 import type { TableDo } from "../../../table.do"
-import type { SchemaMap } from "../../schema/schema.type"
+import type { SchemaIdMap } from "../../schema/schema.type"
 import { FormFieldVO } from "./form-field.vo"
 
 export class FormFieldsVO extends ValueObject<FormFieldVO[]> {
@@ -40,7 +40,7 @@ export class FormFieldsVO extends ValueObject<FormFieldVO[]> {
     return fields.slice(index + 1)
   }
 
-  public toggleFieldVisibility(schema: SchemaMap): FormFieldsVO {
+  public toggleFieldVisibility(schema: SchemaIdMap): FormFieldsVO {
     return new FormFieldsVO(
       this.props.map((formField) => {
         const field = schema.get(formField.fieldId)
@@ -49,7 +49,7 @@ export class FormFieldsVO extends ValueObject<FormFieldVO[]> {
     )
   }
 
-  public show(schema: SchemaMap): FormFieldsVO {
+  public show(schema: SchemaIdMap): FormFieldsVO {
     return new FormFieldsVO(
       this.props.map((formField) => {
         const field = schema.get(formField.fieldId)
@@ -58,7 +58,7 @@ export class FormFieldsVO extends ValueObject<FormFieldVO[]> {
     )
   }
 
-  public hide(schema: SchemaMap): FormFieldsVO {
+  public hide(schema: SchemaIdMap): FormFieldsVO {
     return new FormFieldsVO(
       this.props.map((formField) => {
         const field = schema.get(formField.fieldId)

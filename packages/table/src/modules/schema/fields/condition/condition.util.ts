@@ -5,7 +5,7 @@ import type {
   INotRecordComositeSpecification,
   IRecordComositeSpecification,
 } from "../../../records/record/record.composite-specification"
-import type { SchemaMap } from "../../schema.type"
+import type { SchemaIdMap } from "../../schema.type"
 import type { AbstractField } from "../variants/abstract-field.vo"
 import type { IConditionGroup, IConditionGroupChildren, MaybeConditionGroup } from "./condition.type"
 import type { IFieldCondition, MaybeFieldCondition, MaybeFieldConditionWithFieldId } from "./field-condition.type"
@@ -28,7 +28,7 @@ export const isMaybeFieldCondition = (condition: any): condition is MaybeFieldCo
   isObject(condition) && !Reflect.has(condition, "conjunction")
 
 export function getFieldSpec<OptionType extends z.ZodTypeAny>(
-  schema: SchemaMap,
+  schema: SchemaIdMap,
   condition: IFieldCondition<OptionType>,
 ): Spec {
   const field = schema.get(condition.fieldId) as AbstractField<any> | undefined
@@ -40,7 +40,7 @@ export function getFieldSpec<OptionType extends z.ZodTypeAny>(
 }
 
 function getGroupOrFieldSpec<OptionType extends z.ZodTypeAny>(
-  schema: SchemaMap,
+  schema: SchemaIdMap,
   condition: IConditionGroup<OptionType> | IFieldCondition<OptionType>,
 ): Spec {
   if (isGroup(condition)) {
@@ -53,7 +53,7 @@ function getGroupOrFieldSpec<OptionType extends z.ZodTypeAny>(
 }
 
 function getGroupSpec<OptionType extends z.ZodTypeAny>(
-  schema: SchemaMap,
+  schema: SchemaIdMap,
   condition: IConditionGroup<OptionType>,
 ): Spec {
   if (condition.conjunction === "and") {
@@ -67,14 +67,14 @@ function getGroupSpec<OptionType extends z.ZodTypeAny>(
 }
 
 export function getSpec<OptionType extends z.ZodTypeAny>(
-  schema: SchemaMap,
+  schema: SchemaIdMap,
   condition: IConditionGroup<OptionType>,
 ): Spec {
   return getGroupSpec(schema, condition)
 }
 
 function isValidFieldCondition<OptionType extends z.ZodTypeAny>(
-  schema: SchemaMap,
+  schema: SchemaIdMap,
   condition: MaybeFieldCondition,
   optionType: OptionType,
 ) {
@@ -130,7 +130,7 @@ export function getFlattenFieldConditions<OptionType extends z.ZodTypeAny>(
 }
 
 export function parseValidCondition<OptionType extends z.ZodTypeAny>(optionType: OptionType) {
-  function validate(schema: SchemaMap, condition: MaybeConditionGroup<OptionType>): IConditionGroup<OptionType> {
+  function validate(schema: SchemaIdMap, condition: MaybeConditionGroup<OptionType>): IConditionGroup<OptionType> {
     const children: IConditionGroupChildren<OptionType> = []
 
     for (const child of condition.children) {

@@ -69,7 +69,6 @@ export class IdField extends AbstractField<IdFieldValue> {
   }
 
   override get aggregate() {
-    // TODO: implement
-    return z.enum([])
+    return z.undefined()
   }
 }

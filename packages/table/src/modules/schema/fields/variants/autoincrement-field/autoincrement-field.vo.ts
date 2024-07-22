@@ -59,6 +59,6 @@ export class AutoIncrementField extends AbstractField<AutoIncrementFieldValue> {
   }
 
   override get aggregate() {
-    return z.enum([])
+    return z.undefined()
   }
 }
