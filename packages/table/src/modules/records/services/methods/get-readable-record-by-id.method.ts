@@ -12,6 +12,6 @@ export async function getReadableRecordById(
   const tableId = new TableIdVo(dto.tableId)
   const table = (await this.tableRepository.findOneById(tableId)).expect("Table not found")
 
-  const record = (await this.repo.findOneById(table, new RecordIdVO(dto.id))).into(undefined)
+  const record = (await this.repo.findOneById(table, new RecordIdVO(dto.id), None)).into(undefined)
   return record ? Some(recordToReadable(table, record)) : None
 }
