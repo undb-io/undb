@@ -5,6 +5,7 @@ import { inject, singleton } from "@undb/di"
 import { type ICommandBus, None, PaginatedDTO, type IQueryBus } from "@undb/domain"
 import { createLogger } from "@undb/logger"
 import { createOpenApiSpec } from "@undb/openapi"
+import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
 import { GetReadableRecordByIdQuery, GetReadableRecordsQuery } from "@undb/queries"
 import {
   TableIdVo,
@@ -15,6 +16,7 @@ import {
   type ITableRepository,
 } from "@undb/table"
 import Elysia, { t } from "elysia"
+import { withTransaction } from "../../db"
 
 @singleton()
 export class OpenAPI {
@@ -31,6 +33,8 @@ export class OpenAPI {
 
     @inject(CommandBus)
     private readonly commandBus: ICommandBus,
+    @injectQueryBuilder()
+    private readonly qb: IQueryBuilder,
   ) {}
 
   public route() {
@@ -114,20 +118,35 @@ export class OpenAPI {
       )
       .post(
         "/api/tables/:tableId/records",
-        async (ctx) =>
-          this.commandBus.execute(new CreateRecordCommand({ tableId: ctx.params.tableId, values: ctx.body.values })),
-        { params: t.Object({ tableId: t.String() }), body: t.Object({ values: t.Object({}) }) },
+        async (ctx) => {
+          return withTransaction(this.qb)(() => {
+            return this.commandBus.execute(
+              new CreateRecordCommand({ tableId: ctx.params.tableId, values: ctx.body.values }),
+            )
+          })
+        },
+        { params: t.Object({ tableId: t.String() }), body: t.Object({ values: t.Record(t.String(), t.Any()) }) },
       )
       .post(
         "/api/tables/:tableId/records/:recordId/duplicate",
-        async (ctx) =>
-          this.commandBus.execute(new DuplicateRecordCommand({ tableId: ctx.params.tableId, id: ctx.params.recordId })),
+        async (ctx) => {
+          return withTransaction(this.qb)(() => {
+            return this.commandBus.execute(
+              new DuplicateRecordCommand({ tableId: ctx.params.tableId, id: ctx.params.recordId }),
+            )
+          })
+        },
         { params: t.Object({ tableId: t.String(), recordId: t.String() }) },
       )
       .delete(
         "/api/tables/:tableId/records/:recordId",
-        async (ctx) =>
-          this.commandBus.execute(new DeleteRecordCommand({ tableId: ctx.params.tableId, id: ctx.params.recordId })),
+        async (ctx) => {
+          return withTransaction(this.qb)(() => {
+            return this.commandBus.execute(
+              new DeleteRecordCommand({ tableId: ctx.params.tableId, id: ctx.params.recordId }),
+            )
+          })
+        },
         { params: t.Object({ tableId: t.String(), recordId: t.String() }) },
       )
   }

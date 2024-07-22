@@ -11,12 +11,13 @@ import type { ContextMember } from "@undb/context"
 import { executionContext } from "@undb/context/server"
 import { CommandBus } from "@undb/cqrs"
 import { inject } from "@undb/di"
-import { type IQueryBuilder, injectQueryBuilder, sqlite, startTransaction } from "@undb/persistence"
+import { type IQueryBuilder, injectQueryBuilder, sqlite } from "@undb/persistence"
 import { SignUp } from "@undb/ui"
 import { Context, Elysia, t } from "elysia"
 import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize } from "lucia"
 import { singleton } from "tsyringe"
+import { withTransaction } from "../../db"
 
 const adapter = new LibSQLAdapter(sqlite, {
   user: "undb_user",
@@ -268,15 +269,12 @@ export class Auth {
         .get(
           "/invitation/:invitationId/accept",
           async (ctx) => {
-            return new Promise(async (resolve) => {
-              return this.queryBuilder.transaction().execute(async (trx) => {
-                startTransaction(trx)
-                const { invitationId } = ctx.params
-                await this.commandBus.execute(new AcceptInvitationCommand({ id: invitationId }))
+            return withTransaction(this.queryBuilder)(async () => {
+              const { invitationId } = ctx.params
+              await this.commandBus.execute(new AcceptInvitationCommand({ id: invitationId }))
 
-                const response = ctx.redirect("/signup?invitationId=" + invitationId)
-                resolve(response)
-              })
+              const response = ctx.redirect("/signup?invitationId=" + invitationId)
+              return response
             })
           },
           {
