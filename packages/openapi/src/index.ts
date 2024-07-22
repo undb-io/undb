@@ -13,6 +13,7 @@ import {
   getRecordById,
   getRecords,
   recordSubscription,
+  updateRecord,
 } from "./openapi/record.openapi"
 
 export const createOpenApiSpec = (table: TableDo, record?: RecordDO) => {
@@ -24,6 +25,7 @@ export const createOpenApiSpec = (table: TableDo, record?: RecordDO) => {
   registry.registerPath(getRecords(table, recordSchema))
   registry.registerPath(getRecordById(table, recordSchema))
   registry.registerPath(createRecord(table))
+  registry.registerPath(updateRecord(table))
   registry.registerPath(duplicateRecordById(table))
   registry.registerPath(deleteRecordById(table))
   registry.registerPath(recordSubscription(table))

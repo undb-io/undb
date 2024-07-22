@@ -113,6 +113,36 @@ export const createRecord = (table: TableDo): RouteConfig => {
   }
 }
 
+export const updateRecord = (table: TableDo): RouteConfig => {
+  return {
+    method: "patch",
+    path: `/tables/${table.id.value}/records/{recordId}`,
+    description: `Update ${table.name.value} record`,
+    summary: `Update ${table.name.value} record`,
+    tags: [RECORD_COMPONENT],
+    request: {
+      params: z.object({
+        recordId: recordId,
+      }),
+      body: {
+        content: {
+          "application/json": {
+            schema: z.object({
+              values: table.schema.getMutableSchema(table.schema.mutableFields, false).partial(),
+            }),
+          },
+        },
+        required: true,
+      },
+    },
+    responses: {
+      201: {
+        description: "Record Updated",
+      },
+    },
+  }
+}
+
 export const duplicateRecordById = (table: TableDo): RouteConfig => {
   return {
     method: "post",

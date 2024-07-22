@@ -2,7 +2,7 @@ import { AggregateRoot, andOptions, None, type Option } from "@undb/domain"
 import { isEmpty } from "radash"
 import type { TableDo } from "../../../table.do"
 import { IdFieldValue, type FieldValue } from "../../schema"
-import { FieldIdVo, type FieldId } from "../../schema/fields/field-id.vo"
+import { type FieldId } from "../../schema/fields/field-id.vo"
 import { FieldValueFactory } from "../../schema/fields/field-value.factory"
 import type { SchemaIdMap } from "../../schema/schema.type"
 import { RecordCreatedEvent, RecordDeletedEvent, RecordUpdatedEvent, type IRecordEvent } from "../events"
@@ -77,8 +77,8 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
 
     const updatedFields = new Set<string>()
 
-    for (const [fieldId, value] of Object.entries(dto)) {
-      const field = table.schema.getFieldById(new FieldIdVo(fieldId))
+    for (const [idOrName, value] of Object.entries(dto)) {
+      const field = table.schema.getFieldByIdOrName(idOrName)
 
       if (field.isNone()) continue
       if (!field.unwrap().isMutable) continue
@@ -91,7 +91,7 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
       )
       const spec = field.unwrap().$updateValue(fieldValue as any)
       if (spec.isSome()) {
-        updatedFields.add(fieldId)
+        updatedFields.add(field.unwrap().id.value)
         specs.push(spec)
       }
     }

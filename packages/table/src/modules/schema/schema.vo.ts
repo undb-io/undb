@@ -199,6 +199,11 @@ export class Schema extends ValueObject<Field[]> {
     return Option(field)
   }
 
+  getFieldByIdOrName(idOrName: string): Option<Field> {
+    const field = this.fieldMapById.get(idOrName) || this.fieldMapByName.get(idOrName)
+    return Option(field)
+  }
+
   getIdField(): IdField {
     return this.getFieldById(new FieldIdVo(ID_TYPE)).expect("Id field not found") as IdField
   }
