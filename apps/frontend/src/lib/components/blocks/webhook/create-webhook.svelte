@@ -65,7 +65,7 @@
   const { form: formData, enhance, allErrors } = form
 
   const condition = writable<MaybeConditionGroup<IWebhookConditionOptionSchema> | undefined>()
-  $: validCondition = $condition ? parseValidViewFilter($table.schema.fieldMapById, $condition) : undefined
+  $: validCondition = $condition ? parseValidViewFilter($table.schema, $condition) : undefined
   $: validCondition,
     formData.update(($form) => {
       $form.condition = validCondition

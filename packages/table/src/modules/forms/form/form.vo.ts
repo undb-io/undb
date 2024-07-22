@@ -3,9 +3,9 @@ import { z } from "@undb/zod"
 import { objectify } from "radash"
 import type { TableDo } from "../../../table.do"
 import type { RecordDO } from "../../records"
+import type { Schema } from "../../schema"
 import { conditionContainsFields, getSpec } from "../../schema/fields/condition/condition.util"
 import type { Field } from "../../schema/fields/field.type"
-import type { SchemaIdMap } from "../../schema/schema.type"
 import type { ICreateFormDTO } from "../dto/create-form.dto"
 import { FormFieldVO, formField } from "./form-field.vo"
 import { FormFieldsVO } from "./form-fields.vo"
@@ -170,7 +170,7 @@ export class FormVO extends ValueObject<IForm> {
     return conditionContainsFields(condition, ids)
   }
 
-  getShouldShowField(fieldId: string, schemaMap: SchemaIdMap, record: RecordDO): boolean {
+  getShouldShowField(fieldId: string, schema: Schema, record: RecordDO): boolean {
     const target = this.fields.props.find((f) => f.fieldId === fieldId)
     if (!target) return true
 
@@ -180,7 +180,7 @@ export class FormVO extends ValueObject<IForm> {
     const isInValidCondition = this.getIsFormFieldContionInValid(fieldId)
     if (isInValidCondition) return true
 
-    const spec = getSpec(schemaMap, condition)
+    const spec = getSpec(schema, condition)
     if (spec.isNone()) return true
 
     const isSatisfied = spec.unwrap().isSatisfiedBy(record)

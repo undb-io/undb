@@ -12,7 +12,7 @@ export async function bulkUpdateRecordsMethod(
   const id = new TableIdVo(tableId)
   const table = (await this.tableRepository.findOneById(id)).expect("Table not found")
 
-  const spec = getSpec(table.schema.fieldMapById, dto.filter) as Option<RecordComositeSpecification>
+  const spec = getSpec(table.schema, dto.filter) as Option<RecordComositeSpecification>
 
   if (spec.isNone()) {
     throw new Error("Invalid filter")

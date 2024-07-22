@@ -81,13 +81,11 @@
   let enableUpdateCondition = false
 
   const condition = writable<MaybeConditionGroup<ZodUndefined> | undefined>()
-  $: validCondition = $condition ? parseValidViewFilter($table.schema.fieldMapById, $condition) : undefined
+  $: validCondition = $condition ? parseValidViewFilter($table.schema, $condition) : undefined
   $: validCondition, ($formData.condition = validCondition)
 
   const updateCondition = writable<MaybeConditionGroup<ZodUndefined> | undefined>()
-  $: validUpdateCondition = $updateCondition
-    ? parseValidViewFilter($table.schema.fieldMapById, $updateCondition)
-    : undefined
+  $: validUpdateCondition = $updateCondition ? parseValidViewFilter($table.schema, $updateCondition) : undefined
   $: validUpdateCondition, ($formData.updateCondition = validUpdateCondition)
 
   $: dirty = !!$tainted

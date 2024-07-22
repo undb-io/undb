@@ -42,7 +42,7 @@
   }
 
   const condition = writable<MaybeConditionGroup<ZodUndefined> | undefined>()
-  $: validCondition = $condition ? parseValidViewFilter($table.schema.fieldMapById, $condition) : undefined
+  $: validCondition = $condition ? parseValidViewFilter($table.schema, $condition) : undefined
 
   $: form, condition.set(formField.condition && toMaybeConditionGroup(formField.condition))
 

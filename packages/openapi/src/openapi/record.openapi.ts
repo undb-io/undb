@@ -143,6 +143,32 @@ export const updateRecord = (table: TableDo): RouteConfig => {
   }
 }
 
+export const bulkUpdateRecords = (table: TableDo): RouteConfig => {
+  return {
+    method: "patch",
+    path: `/tables/${table.id.value}/records`,
+    description: `bulk update ${table.name.value} records`,
+    summary: `bulk update ${table.name.value} records`,
+    tags: [RECORD_COMPONENT],
+    request: {
+      body: {
+        content: {
+          "application/json": {
+            schema: z.object({
+              filter: z.object({}),
+            }),
+          },
+        },
+      },
+    },
+    responses: {
+      201: {
+        description: "records updated",
+      },
+    },
+  }
+}
+
 export const duplicateRecordById = (table: TableDo): RouteConfig => {
   return {
     method: "post",

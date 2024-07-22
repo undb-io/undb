@@ -22,7 +22,7 @@
   $: count = filter?.count ?? 0
 
   const value = writable<MaybeConditionGroup<IViewFilterOptionSchema> | undefined>()
-  $: validValue = $value ? parseValidViewFilter($table.schema.fieldMapById, $value) : undefined
+  $: validValue = $value ? parseValidViewFilter($table.schema, $value) : undefined
 
   $: $table, value.set(filter?.toMaybeConditionGroup())
 

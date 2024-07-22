@@ -39,7 +39,7 @@ describe("condition.util", () => {
       ],
     },
   ])("should get correct spec", (condition) => {
-    const spec = getSpec(schema.fieldMapById, condition)
+    const spec = getSpec(schema, condition)
     expect(spec).toMatchSnapshot()
   })
 

@@ -131,8 +131,7 @@
 
           <div class="space-y-4" use:autoAnimate>
             {#each fields as field}
-              {@const shouldShow =
-                !form || form.getShouldShowField(field.id.value, $table.schema.fieldMapById, tempRecord)}
+              {@const shouldShow = !form || form.getShouldShowField(field.id.value, $table.schema, tempRecord)}
               {#if shouldShow}
                 <Form.Field form={f} name={field.id.value}>
                   <Form.Control let:attrs>

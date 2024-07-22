@@ -51,7 +51,7 @@
     }
   })
   $: if ($value && foreignTable) {
-    const validValue = parseValidViewFilter(foreignTable.schema.fieldMapById, $value)
+    const validValue = parseValidViewFilter(foreignTable.schema, $value)
     if (!isEqual(validValue, option.condition)) {
       option.condition = validValue
     }

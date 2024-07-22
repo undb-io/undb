@@ -65,7 +65,7 @@ export function buildQuery(table: TableDo, dto: IGetRecordsDTO): Option<QueryArg
     query.filter = withQ(table, dto.q)
   }
   if (dto.filters) {
-    const spec = getSpec(table.schema.fieldMapById, dto.filters) as Option<RecordComositeSpecification>
+    const spec = getSpec(table.schema, dto.filters) as Option<RecordComositeSpecification>
     if (query.filter) {
       query.filter = andOptions(query.filter, spec) as Option<RecordComositeSpecification>
     } else {
@@ -87,7 +87,7 @@ export function buildCountQuery(table: TableDo, dto: ICountRecordsDTO): Option<C
     query.filter = withQ(table, dto.q)
   }
   if (dto.filters) {
-    const spec = getSpec(table.schema.fieldMapById, dto.filters) as Option<RecordComositeSpecification>
+    const spec = getSpec(table.schema, dto.filters) as Option<RecordComositeSpecification>
     if (query.filter) {
       query.filter = andOptions(query.filter, spec) as Option<RecordComositeSpecification>
     } else {

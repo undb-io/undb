@@ -86,8 +86,7 @@
 <form method="POST" use:enhance id="createRecord" enctype="multipart/form-data" class="my-4 space-y-4">
   <ul use:autoAnimate class="space-y-4">
     {#each fields as field}
-      {@const shouldShow =
-        !tableForm || tableForm.getShouldShowField(field.id.value, $table.schema.fieldMapById, tempRecord)}
+      {@const shouldShow = !tableForm || tableForm.getShouldShowField(field.id.value, $table.schema, tempRecord)}
       {#if shouldShow}
         <Form.Field class="text-muted-foreground flex gap-4 space-y-0" {form} name={field.id.value}>
           <Form.Control let:attrs>

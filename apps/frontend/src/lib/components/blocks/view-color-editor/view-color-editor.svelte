@@ -23,7 +23,7 @@
   $: count = color?.count ?? 0
 
   const value = writable<MaybeConditionGroup<IViewColorOptionSchema> | undefined>()
-  $: validValue = $value ? parseValidViewColor($table.schema.fieldMapById, $value) : undefined
+  $: validValue = $value ? parseValidViewColor($table.schema, $value) : undefined
 
   $: $table, value.set(color?.toMaybeConditionGroup())
 

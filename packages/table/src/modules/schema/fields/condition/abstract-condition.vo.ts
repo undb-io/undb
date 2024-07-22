@@ -30,9 +30,7 @@ export abstract class Condition<OptionType extends z.ZodTypeAny> extends ValueOb
   }
 
   getSpec(schema: Schema) {
-    const fieldMap = schema.fieldMapById
-
-    return getSpec(fieldMap, this.value)
+    return getSpec(schema, this.value)
   }
 
   toJSON(): IRootCondition<OptionType> {
@@ -48,7 +46,7 @@ export abstract class Condition<OptionType extends z.ZodTypeAny> extends ValueOb
   }
 
   getMatchedFieldConditions(table: TableDo, record: RecordDO) {
-    const schema = table.schema.fieldMapById
+    const schema = table.schema
     const conditions = this.flattenFieldConditions
 
     const returnValue: IFieldCondition<OptionType>[] = []
