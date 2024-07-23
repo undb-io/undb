@@ -77,7 +77,7 @@
       <div class="border-b p-4 pb-2">
         <NavTools />
       </div>
-      <ScrollArea class={cn(tables.length ? "flex-1" : "")}>
+      <ScrollArea class="flex-1">
         <TablesNav {tables} {bases} />
       </ScrollArea>
 

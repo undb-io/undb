@@ -107,7 +107,7 @@
                   }}
                   filter={{
                     conjunction: "and",
-                    children: [{ fieldId: ID_TYPE, op: "in", value: ids }],
+                    children: [{ field: ID_TYPE, op: "in", value: ids }],
                   }}
                 />
               </Sheet.Content>

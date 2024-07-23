@@ -1,6 +1,6 @@
 import type { Option } from "@undb/domain"
 import { TableIdVo } from "../../../../table-id.vo"
-import { getSpec } from "../../../schema/fields/condition"
+import { getSpec, replaceCondtionFieldNameWithFieldId } from "../../../schema/fields/condition"
 import { RecordComositeSpecification, RecordDO, type IBulkUpdateRecordsDTO } from "../../record"
 import type { RecordsService } from "../records.service"
 
@@ -12,10 +12,15 @@ export async function bulkUpdateRecordsMethod(
   const id = new TableIdVo(tableId)
   const table = (await this.tableRepository.findOneById(id)).expect("Table not found")
 
-  const spec = getSpec(table.schema, dto.filter) as Option<RecordComositeSpecification>
+  let filter = dto.filter
+  if (dto.isOpenapi) {
+    filter = replaceCondtionFieldNameWithFieldId(filter, table.schema)
+  }
+
+  const spec = getSpec(table.schema, filter) as Option<RecordComositeSpecification>
 
   if (spec.isNone()) {
-    throw new Error("Invalid filter")
+    throw new Error("Invalid fjjilter")
   }
 
   const records = await this.repo.find(table, spec.unwrap())

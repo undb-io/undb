@@ -54,14 +54,14 @@
                   children: isSelected
                     ? [
                         {
-                          fieldId: ID_TYPE,
+                          field: ID_TYPE,
                           op: "in" as const,
                           value: $selected,
                         },
                       ]
                     : [
                         {
-                          fieldId: ID_TYPE,
+                          field: ID_TYPE,
                           op: "nin" as const,
                           value: $selected,
                         },

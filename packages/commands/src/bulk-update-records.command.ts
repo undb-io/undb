@@ -4,6 +4,7 @@ import { z } from "@undb/zod"
 
 export const bulkUpdateRecordsCommand = bulkUpdateRecordsDTO.extend({
   tableId,
+  isOpenapi: z.boolean().optional(),
 })
 
 export type IBulkUpdateRecordsCommand = z.infer<typeof bulkUpdateRecordsCommand>
@@ -18,11 +19,13 @@ export class BulkUpdateRecordsCommand extends Command implements IBulkUpdateReco
   public readonly tableId: string
   public readonly filter: IViewFilterGroup
   public readonly values: IRecordValues
+  public readonly isOpenapi?: boolean
 
   constructor(props: CommandProps<IBulkUpdateRecordsCommand>) {
     super(props)
     this.tableId = props.tableId
     this.filter = props.filter
     this.values = props.values
+    this.isOpenapi = props.isOpenapi
   }
 }

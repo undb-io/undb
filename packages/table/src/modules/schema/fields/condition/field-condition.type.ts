@@ -41,4 +41,4 @@ export type IFieldCondition<OptionType extends z.ZodTypeAny = z.ZodUndefined> = 
 export type IOpType = IFieldCondition["op"]
 
 export type MaybeFieldCondition = SetFieldType<PartialDeep<IFieldCondition>, "value", any> & { id: string }
-export type MaybeFieldConditionWithFieldId = SetRequired<MaybeFieldCondition, "fieldId">
+export type MaybeFieldConditionWithFieldId = SetRequired<MaybeFieldCondition, "field">

@@ -15,8 +15,8 @@
     <div class={cn("space-y-1.5")}>
       {#each value.children as child, i}
         {#if isFieldCondition(child)}
-          {@const field = child.fieldId
-            ? table.schema.getFieldById(new FieldIdVo(child.fieldId)).into(undefined)
+          {@const field = child.field
+            ? table.schema.getFieldById(new FieldIdVo(child.field)).into(undefined)
             : undefined}
           <div class="grid grid-cols-12 items-center gap-2">
             {#if i === 0}
@@ -29,8 +29,8 @@
             <div class="col-span-9 grid grid-cols-12 items-center">
               <FilterField
                 disabled
-                value={child.fieldId}
-                class={cn(!!child.fieldId && "col-span-4 rounded-r-none border-r-0")}
+                value={child.field}
+                class={cn(!!child.field && "col-span-4 rounded-r-none border-r-0")}
               />
               <OpPicker
                 disabled

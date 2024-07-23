@@ -156,14 +156,24 @@ export const bulkUpdateRecords = (table: TableDo): RouteConfig => {
           "application/json": {
             schema: z.object({
               filter: z.object({}),
+              values: table.schema.getMutableSchema(table.schema.mutableFields, false).partial(),
             }),
           },
         },
       },
     },
     responses: {
-      201: {
+      200: {
         description: "records updated",
+        content: {
+          "application/json": {
+            schema: z
+              .object({
+                modifiedCount: z.number().nonnegative().int(),
+              })
+              .openapi("BulkUpdateRecordsOutput", { description: "records count that has been updated" }),
+          },
+        },
       },
     },
   }

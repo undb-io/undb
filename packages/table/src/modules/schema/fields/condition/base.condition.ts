@@ -3,7 +3,7 @@ import { fieldId } from "../field-id.vo"
 
 export function createBaseConditionSchema<OptionType extends z.ZodTypeAny>(optionType: OptionType) {
   return z.object({
-    fieldId: fieldId,
+    field: fieldId,
     disabled: z.boolean().optional(),
     option: optionType,
   })

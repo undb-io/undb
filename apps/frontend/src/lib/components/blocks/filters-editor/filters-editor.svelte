@@ -43,7 +43,7 @@
     const conditionOps = field?.conditionOps ?? []
     const filter: MaybeFieldCondition = {
       id: uid(10),
-      fieldId: field?.id.value,
+      field: field?.id.value,
       op: conditionOps?.[0] as any,
       value: undefined,
     }
@@ -99,8 +99,8 @@
     >
       {#each value.children as child, i (child.id)}
         {#if isMaybeFieldCondition(child)}
-          {@const field = child.fieldId
-            ? table.schema.getFieldById(new FieldIdVo(child.fieldId)).into(undefined)
+          {@const field = child.field
+            ? table.schema.getFieldById(new FieldIdVo(child.field)).into(undefined)
             : undefined}
           <div class="grid grid-cols-12 items-center gap-2">
             {#if i === 0 || disableGroup}
@@ -127,7 +127,7 @@
                   }
                 }}
                 {filter}
-                bind:value={child.fieldId}
+                bind:value={child.field}
                 class={cn("col-span-4 rounded-r-none border-r-0")}
               />
               <FieldFilterControl {field} bind:op={child.op} bind:value={child.value} />

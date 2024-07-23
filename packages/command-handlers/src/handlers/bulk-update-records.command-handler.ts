@@ -18,6 +18,7 @@ export class BulkUpdateRecordsCommandHandler
     const records = await this.service.bulkUpdateRecords(command.tableId, {
       filter: command.filter,
       values: command.values,
+      isOpenapi: command.isOpenapi,
     })
 
     return { modifiedCount: records.length }

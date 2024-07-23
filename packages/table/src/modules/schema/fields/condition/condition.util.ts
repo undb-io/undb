@@ -23,7 +23,7 @@ export const isMaybeGroup = <OptionType extends z.ZodTypeAny>(
 
 export const isFieldCondition = <OptionType extends z.ZodTypeAny>(
   condition: IConditionGroup<OptionType> | IFieldCondition<OptionType>,
-): condition is IFieldCondition<OptionType> => Reflect.has(condition, "fieldId") && Reflect.has(condition, "op")
+): condition is IFieldCondition<OptionType> => Reflect.has(condition, "field") && Reflect.has(condition, "op")
 
 export const isMaybeFieldCondition = (condition: any): condition is MaybeFieldCondition =>
   isObject(condition) && !Reflect.has(condition, "conjunction")
@@ -32,7 +32,7 @@ export function getFieldSpec<OptionType extends z.ZodTypeAny>(
   schema: Schema,
   condition: IFieldCondition<OptionType>,
 ): Spec {
-  const field = schema.getFieldById(new FieldIdVo(condition.fieldId)) as Option<AbstractField<any>>
+  const field = schema.getFieldById(new FieldIdVo(condition.field)) as Option<AbstractField<any>>
   if (field.isNone()) {
     return None
   }
@@ -73,8 +73,8 @@ function isValidFieldCondition<OptionType extends z.ZodTypeAny>(
   condition: MaybeFieldCondition,
   optionType: OptionType,
 ) {
-  if (!condition.fieldId) return false
-  const field = schema.getFieldById(new FieldIdVo(condition.fieldId))
+  if (!condition.field) return false
+  const field = schema.getFieldById(new FieldIdVo(condition.field))
   if (field.isNone()) return false
 
   const parsed = field.unwrap().validateCondition(condition as MaybeFieldConditionWithFieldId, optionType)
@@ -174,7 +174,7 @@ export function conditionWithoutFields<OptionType extends z.ZodTypeAny>(
   const children: IConditionGroupChildren<OptionType> = []
 
   for (const child of value.children) {
-    if (isFieldCondition(child) && !fieldIds.has(child.fieldId)) {
+    if (isFieldCondition(child) && !fieldIds.has(child.field)) {
       children.push(child)
     } else if (isGroup(child)) {
       const newChild = conditionWithoutFields(child, fieldIds)
@@ -195,7 +195,7 @@ export function conditionContainsFields<OptionType extends ZodTypeAny>(
   fieldIds: Set<string>,
 ): boolean {
   for (const child of value.children) {
-    if (isFieldCondition(child) && fieldIds.has(child.fieldId)) {
+    if (isFieldCondition(child) && fieldIds.has(child.field)) {
       return true
     } else if (isGroup(child) && conditionContainsFields(child, fieldIds)) {
       return true
@@ -212,7 +212,7 @@ export function conditionsWithField<OptionType extends ZodTypeAny>(
   const results: IFieldCondition<OptionType>[] = []
 
   for (const child of value.children) {
-    if (isFieldCondition(child) && child.fieldId === fieldId) {
+    if (isFieldCondition(child) && child.field === fieldId) {
       results.push(child)
     } else if (isGroup(child)) {
       results.push(...conditionsWithField(child, fieldId))
@@ -220,4 +220,38 @@ export function conditionsWithField<OptionType extends ZodTypeAny>(
   }
 
   return results
+}
+
+/**
+ * Replaces the condition field name with the field ID in the given condition group.
+ *
+ * @param value - The condition group to modify.
+ * @param schema - The schema containing the fields.
+ * @returns The modified condition group with field IDs.
+ */
+export function replaceCondtionFieldNameWithFieldId<OptionType extends z.ZodTypeAny>(
+  value: IConditionGroup<OptionType>,
+  schema: Schema,
+): IConditionGroup<OptionType> {
+  const children: IConditionGroupChildren<OptionType> = []
+
+  for (const child of value.children) {
+    if (isFieldCondition(child)) {
+      const field = schema.getFieldByIdOrName(child.field)
+      if (field.isSome()) {
+        const f = field.unwrap()
+        children.push({ ...child, field: f.id.value })
+      }
+    } else if (isGroup(child)) {
+      const newChild = replaceCondtionFieldNameWithFieldId(child, schema)
+      if (!isEmptyConditionGroup(newChild)) {
+        children.push(newChild)
+      }
+    }
+  }
+
+  return {
+    conjunction: value.conjunction,
+    children,
+  }
 }

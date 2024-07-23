@@ -88,7 +88,7 @@ export class OpenAPI {
                     JSON.stringify(configuration)
                 </script>
 
-                <script src="https://cdn.jsdelivr.net/npm/@scalar/api-reference"></script>
+                <script src="/assets/api-reference.js"></script>
               </body>
             </html>`
         },
@@ -161,6 +161,7 @@ export class OpenAPI {
                 tableId: ctx.params.tableId,
                 filter: ctx.body.filter,
                 values: ctx.body.values,
+                isOpenapi: true,
               }),
             )
           })
@@ -168,7 +169,6 @@ export class OpenAPI {
         {
           params: t.Object({ tableId: t.String() }),
           body: t.Object({
-            ids: t.Optional(t.Array(t.String())),
             filter: t.Any(),
             values: t.Record(t.String(), t.Any()),
           }),
