@@ -11,6 +11,7 @@ import {
   bulkUpdateRecords,
   createRecord,
   createRecordComponent,
+  createRecords,
   deleteRecordById,
   duplicateRecordById,
   getRecordById,
@@ -28,6 +29,7 @@ export const createOpenApiSpec = (table: TableDo, record?: RecordDO) => {
   registry.registerPath(getRecords(table, recordSchema))
   registry.registerPath(getRecordById(table, recordSchema))
   registry.registerPath(createRecord(table))
+  registry.registerPath(createRecords(table))
   registry.registerPath(updateRecord(table))
   registry.registerPath(bulkUpdateRecords(table))
   registry.registerPath(duplicateRecordById(table))

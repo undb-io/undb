@@ -113,6 +113,45 @@ export const createRecord = (table: TableDo): RouteConfig => {
   }
 }
 
+export const createRecords = (table: TableDo): RouteConfig => {
+  return {
+    method: "post",
+    path: `/tables/${table.id.value}/records/bulk`,
+    description: `bulk create ${table.name.value} record`,
+    summary: `bulk create ${table.name.value} record`,
+    tags: [RECORD_COMPONENT],
+    request: {
+      body: {
+        content: {
+          "application/json": {
+            schema: z.object({
+              records: z
+                .object({
+                  id: recordId.optional(),
+                  values: table.schema.getMutableSchema(table.schema.mutableFields, false),
+                })
+                .array(),
+            }),
+          },
+        },
+        required: true,
+      },
+    },
+    responses: {
+      200: {
+        description: "Record Created",
+        content: {
+          "application/json": {
+            schema: z.object({
+              createdCount: z.number().int().nonnegative(),
+            }),
+          },
+        },
+      },
+    },
+  }
+}
+
 export const updateRecord = (table: TableDo): RouteConfig => {
   return {
     method: "patch",

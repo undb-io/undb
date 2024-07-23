@@ -4,6 +4,7 @@ import {
   bulkduplicateRecordsCommand,
   BulkUpdateRecordsCommand,
   CreateRecordCommand,
+  CreateRecordsCommand,
   DeleteRecordCommand,
   DuplicateRecordCommand,
   UpdateRecordCommand,
@@ -135,6 +136,20 @@ export class OpenAPI {
           })
         },
         { params: t.Object({ tableId: t.String() }), body: t.Object({ values: t.Record(t.String(), t.Any()) }) },
+      )
+      .post(
+        "/api/tables/:tableId/records/bulk",
+        async (ctx) => {
+          return withTransaction(this.qb)(() => {
+            return this.commandBus.execute(
+              new CreateRecordsCommand({ tableId: ctx.params.tableId, records: ctx.body.records }),
+            )
+          })
+        },
+        {
+          params: t.Object({ tableId: t.String() }),
+          body: t.Object({ records: t.Array(t.Object({ id: t.Optional(t.String()), values: t.Any() })) }),
+        },
       )
       .patch(
         "/api/tables/:tableId/records/:recordId",
