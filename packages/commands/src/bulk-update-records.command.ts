@@ -4,7 +4,6 @@ import { z } from "@undb/zod"
 
 export const bulkUpdateRecordsCommand = bulkUpdateRecordsDTO.extend({
   tableId,
-  isOpenapi: z.boolean().optional(),
 })
 
 export type IBulkUpdateRecordsCommand = z.infer<typeof bulkUpdateRecordsCommand>
