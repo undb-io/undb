@@ -152,13 +152,13 @@
     </Form.Control>
   </Form.Field>
 
-  <Collapsible.Root open={enableCondition}>
+  <Collapsible.Root class="space-y-2" open={enableCondition}>
     <div class="flex items-center gap-2">
       <Label for="enableCondition">Enable Condtion</Label>
       <Switch id="enableCondition" bind:checked={enableCondition} />
     </div>
     <Collapsible.Content>
-      <FiltersEditor bind:value={$condition} table={$table} />
+      <FiltersEditor class="rounded-sm border" bind:value={$condition} table={$table} />
     </Collapsible.Content>
   </Collapsible.Root>
 
