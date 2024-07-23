@@ -117,8 +117,8 @@ export const createRecords = (table: TableDo): RouteConfig => {
   return {
     method: "post",
     path: `/tables/${table.id.value}/records/bulk`,
-    description: `bulk create ${table.name.value} record`,
-    summary: `bulk create ${table.name.value} record`,
+    description: `Bulk create ${table.name.value} record`,
+    summary: `Bulk create ${table.name.value} record`,
     tags: [RECORD_COMPONENT],
     request: {
       body: {
@@ -186,8 +186,8 @@ export const bulkUpdateRecords = (table: TableDo): RouteConfig => {
   return {
     method: "patch",
     path: `/tables/${table.id.value}/records`,
-    description: `bulk update ${table.name.value} records`,
-    summary: `bulk update ${table.name.value} records`,
+    description: `Bulk update ${table.name.value} records`,
+    summary: `Bulk update ${table.name.value} records`,
     tags: [RECORD_COMPONENT],
     request: {
       body: {
@@ -249,8 +249,8 @@ export const deleteRecordById = (table: TableDo): RouteConfig => {
   return {
     method: "delete",
     path: `/tables/${table.id.value}/records/{recordId}`,
-    description: `delete ${table.name.value} record by id`,
-    summary: `delete ${table.name.value} record by id`,
+    description: `Delete ${table.name.value} record by id`,
+    summary: `Delete ${table.name.value} record by id`,
     tags: [RECORD_COMPONENT],
     request: {
       params: z.object({
@@ -269,8 +269,8 @@ export const bulkDeleteRecords = (table: TableDo): RouteConfig => {
   return {
     method: "delete",
     path: `/tables/${table.id.value}/records`,
-    description: `bulk delete ${table.name.value} records`,
-    summary: `bulk delete ${table.name.value} records`,
+    description: `Bulk delete ${table.name.value} records`,
+    summary: `Bulk delete ${table.name.value} records`,
     tags: [RECORD_COMPONENT],
     request: {
       body: {
@@ -325,8 +325,8 @@ export const bulkDuplicateRecords = (table: TableDo): RouteConfig => {
   return {
     method: "post",
     path: `/tables/${table.id.value}/records/duplicate`,
-    description: `bulk duplicate ${table.name.value} records`,
-    summary: `bulk duplicate ${table.name.value} records`,
+    description: `Bulk duplicate ${table.name.value} records`,
+    summary: `Bulk duplicate ${table.name.value} records`,
     tags: [RECORD_COMPONENT],
     request: {
       body: {
