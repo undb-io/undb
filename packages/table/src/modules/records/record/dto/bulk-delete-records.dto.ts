@@ -1,8 +1,9 @@
 import { z } from "@undb/zod"
-import { recordId } from "../record-id.vo"
+import { viewFilterGroup } from "../../../views"
 
 export const bulkDeleteRecordsDTO = z.object({
-  ids: recordId.array().nonempty(),
+  filter: viewFilterGroup,
+  isOpenapi: z.boolean().optional(),
 })
 
 export type IBulkDeleteRecordsDTO = z.infer<typeof bulkDeleteRecordsDTO>

@@ -38,7 +38,10 @@
 
     $deleteRecordsMutation.mutate({
       tableId: $table.id.value,
-      ids: ids as [string, ...string[]],
+      filter: {
+        conjunction: "and",
+        children: [{ field: ID_TYPE, op: "in", value: ids }],
+      },
     })
   }
 
@@ -58,7 +61,10 @@
 
     $duplicateRecordsMutation.mutate({
       tableId: $table.id.value,
-      ids: ids as [string, ...string[]],
+      filter: {
+        conjunction: "and",
+        children: [{ field: ID_TYPE, op: "in", value: ids }],
+      },
     })
   }
 </script>

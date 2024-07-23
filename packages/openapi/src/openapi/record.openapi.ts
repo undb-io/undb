@@ -238,7 +238,7 @@ export const bulkDeleteRecords = (table: TableDo): RouteConfig => {
         content: {
           "application/json": {
             schema: z.object({
-              ids: z.array(recordId).nonempty(),
+              filter: z.object({}),
             }),
           },
         },
@@ -247,6 +247,13 @@ export const bulkDeleteRecords = (table: TableDo): RouteConfig => {
     responses: {
       200: {
         description: "record data",
+        content: {
+          "application/json": {
+            schema: z.object({
+              deletedCount: z.number().int().nonnegative(),
+            }),
+          },
+        },
       },
     },
   }
@@ -268,6 +275,41 @@ export const recordSubscription = (table: TableDo): RouteConfig => {
               // TODO: get event type
               event: z.any(),
             }),
+          },
+        },
+      },
+    },
+  }
+}
+
+export const bulkDuplicateRecords = (table: TableDo): RouteConfig => {
+  return {
+    method: "post",
+    path: `/tables/${table.id.value}/records/duplicate`,
+    description: `bulk duplicate ${table.name.value} records`,
+    summary: `bulk duplicate ${table.name.value} records`,
+    tags: [RECORD_COMPONENT],
+    request: {
+      body: {
+        content: {
+          "application/json": {
+            schema: z.object({
+              filter: z.object({}),
+            }),
+          },
+        },
+      },
+    },
+    responses: {
+      200: {
+        description: "records updated",
+        content: {
+          "application/json": {
+            schema: z
+              .object({
+                count: z.number().nonnegative().int(),
+              })
+              .openapi("BulkDuplicateRecordsOutput", { description: "records count that has been updated" }),
           },
         },
       },

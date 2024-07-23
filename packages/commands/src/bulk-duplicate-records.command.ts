@@ -1,5 +1,5 @@
 import { Command, type CommandProps } from "@undb/domain"
-import { bulkDuplicateRecordsDTO, tableId } from "@undb/table"
+import { bulkDuplicateRecordsDTO, tableId, type IViewFilterGroup } from "@undb/table"
 import { z } from "@undb/zod"
 
 export const bulkduplicateRecordsCommand = bulkDuplicateRecordsDTO.extend({
@@ -10,11 +10,13 @@ export type IBulkDuplicateRecordsCommand = z.infer<typeof bulkduplicateRecordsCo
 
 export class BulkDuplicateRecordsCommand extends Command implements IBulkDuplicateRecordsCommand {
   public readonly tableId: string
-  public readonly ids: [string, ...string[]]
+  public readonly filter: IViewFilterGroup
+  public readonly isOpenapi?: boolean
 
   constructor(props: CommandProps<IBulkDuplicateRecordsCommand>) {
     super(props)
     this.tableId = props.tableId
-    this.ids = props.ids
+    this.filter = props.filter
+    this.isOpenapi = props.isOpenapi
   }
 }

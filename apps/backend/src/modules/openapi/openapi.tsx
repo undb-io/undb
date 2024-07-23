@@ -1,5 +1,7 @@
 import {
   BulkDeleteRecordsCommand,
+  BulkDuplicateRecordsCommand,
+  bulkduplicateRecordsCommand,
   BulkUpdateRecordsCommand,
   CreateRecordCommand,
   DeleteRecordCommand,
@@ -185,6 +187,24 @@ export class OpenAPI {
         },
         { params: t.Object({ tableId: t.String(), recordId: t.String() }) },
       )
+      .post(
+        "/api/tables/:tableId/records/duplicate",
+        async (ctx) => {
+          return withTransaction(this.qb)(() => {
+            return this.commandBus.execute(
+              new BulkDuplicateRecordsCommand({
+                tableId: ctx.params.tableId,
+                filter: ctx.body.filter,
+                isOpenapi: true,
+              }),
+            )
+          })
+        },
+        {
+          params: t.Object({ tableId: t.String() }),
+          body: t.Object({ filter: t.Any() }),
+        },
+      )
       .delete(
         "/api/tables/:tableId/records/:recordId",
         async (ctx) => {
@@ -201,13 +221,17 @@ export class OpenAPI {
         async (ctx) => {
           return withTransaction(this.qb)(() => {
             return this.commandBus.execute(
-              new BulkDeleteRecordsCommand({ tableId: ctx.params.tableId, ids: ctx.body.ids as [string, ...string[]] }),
+              new BulkDeleteRecordsCommand({
+                tableId: ctx.params.tableId,
+                filter: ctx.body.filter,
+                isOpenapi: true,
+              }),
             )
           })
         },
         {
           params: t.Object({ tableId: t.String() }),
-          body: t.Object({ ids: t.Optional(t.Array(t.String(), { minItems: 1 })) }),
+          body: t.Object({ filter: t.Any() }),
         },
       )
   }

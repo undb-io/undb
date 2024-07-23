@@ -7,6 +7,7 @@ import type { RecordDO, TableDo } from "@undb/table"
 import {
   RECORD_COMPONENT,
   bulkDeleteRecords,
+  bulkDuplicateRecords,
   bulkUpdateRecords,
   createRecord,
   createRecordComponent,
@@ -30,6 +31,7 @@ export const createOpenApiSpec = (table: TableDo, record?: RecordDO) => {
   registry.registerPath(updateRecord(table))
   registry.registerPath(bulkUpdateRecords(table))
   registry.registerPath(duplicateRecordById(table))
+  registry.registerPath(bulkDuplicateRecords(table))
   registry.registerPath(deleteRecordById(table))
   registry.registerPath(bulkDeleteRecords(table))
   registry.registerPath(recordSubscription(table))

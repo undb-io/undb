@@ -13,6 +13,10 @@ export class BulkDeleteRecordsCommandHandler implements ICommandHandler<BulkDele
   ) {}
 
   async execute(command: BulkDeleteRecordsCommand): Promise<any> {
-    await this.service.bulkDeleteRecords(command.tableId, { ids: command.ids })
+    const records = await this.service.bulkDeleteRecords(command.tableId, {
+      filter: command.filter,
+      isOpenapi: command.isOpenapi,
+    })
+    return { deletedCount: records.length }
   }
 }

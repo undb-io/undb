@@ -13,6 +13,11 @@ export class BulkDuplicateRecordsCommandHandler implements ICommandHandler<BulkD
   ) {}
 
   async execute(command: BulkDuplicateRecordsCommand): Promise<any> {
-    await this.service.bulkDuplicateRecords(command.tableId, { ids: command.ids })
+    const records = await this.service.bulkDuplicateRecords(command.tableId, {
+      filter: command.filter,
+      isOpenapi: command.isOpenapi,
+    })
+
+    return { count: records.length }
   }
 }
