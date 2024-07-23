@@ -11,6 +11,7 @@
   export let value: string
   export let recordId: string
   export let isEditing: boolean
+  export let onValueChange: (value: string) => void
 
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
@@ -40,12 +41,13 @@
       $$restProps.class,
       "focus-visible:ring-ring w-full rounded-none border-none px-2  text-xs outline-none focus:bg-white",
     )}
-    on:change={() =>
+    on:change={() => {
       $updateCell.mutate({
         tableId,
         id: recordId,
         values: { [field.id.value]: value },
-      })}
+      })
+    }}
   />
 {:else}
   <div class={cn("truncate", $$restProps.class)}>

@@ -14,6 +14,7 @@
   export let isSelected: boolean
   export let field: JsonField
   export let recordId: string
+  export let onValueChange: (value: JsonValue) => void
 
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
@@ -32,6 +33,8 @@
     content = updatedContent
     // @ts-ignore
     if (!contentErrors) value = JSON.parse(content.text)
+
+    onValueChange(value)
 
     $updateCell.mutate({
       tableId,

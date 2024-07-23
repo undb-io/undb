@@ -17,6 +17,7 @@
   export let recordId: string
   export let isEditing: boolean
   export let isSelected: boolean
+  export let onValueChange: (id: IOptionId | IOptionId[] | null) => void
 
   $: selected = Array.isArray(value)
     ? value.map((v) => field.options.find((o) => o.id === v)).filter((v) => !!v)
@@ -36,6 +37,7 @@
   })
 
   function onSelect(id: IOptionId | IOptionId[] | null) {
+    onValueChange(id)
     $updateCell.mutate({
       tableId,
       id: recordId,

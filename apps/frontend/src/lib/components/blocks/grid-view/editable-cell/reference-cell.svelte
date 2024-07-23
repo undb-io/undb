@@ -12,6 +12,7 @@
   export let isEditing: boolean
   export let isSelected: boolean
   export let recordId: string
+  export let onValueChange = (value: string[]) => {}
 
   let selected = writable<string[]>(value)
 

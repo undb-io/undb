@@ -15,4 +15,8 @@ export class Records extends ValueObject {
   get map() {
     return new Map(this.records.map((record) => [record.id.value, record]))
   }
+
+  *[Symbol.iterator]() {
+    yield* this.records
+  }
 }

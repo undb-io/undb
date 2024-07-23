@@ -1,14 +1,15 @@
 <script lang="ts">
   import * as ContextMenu from "$lib/components/ui/context-menu"
   import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
-  import { derived, writable, type Readable } from "svelte/store"
+  import { derived, readable, writable, type Readable } from "svelte/store"
   import GridViewCheckbox from "./grid-view-checkbox.svelte"
   import * as Table from "$lib/components/ui/table/index.js"
   import { addResizedColumns, addSelectedRows } from "svelte-headless-table/plugins"
   import { copyToClipboard } from "@svelte-put/copy"
   import { toast } from "svelte-sonner"
   import { cn } from "$lib/utils.js"
-  import { Records, type Field, type IRecordsDTO, type IViewFilterGroup } from "@undb/table"
+  import { recordsStore } from "$lib/store/records.store"
+  import { Records, type Field, type IRecordDTO, type IRecordsDTO, type IViewFilterGroup } from "@undb/table"
   import { createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
@@ -75,16 +76,17 @@
 
   // TODO: record type
   $: records = (($getRecords.data as any)?.records as IRecordsDTO) ?? []
-  $: dos = Records.fromJSON($t, records).map
   $: total = ($getRecords.data as any)?.total ?? 0
   $: getTableAggregates = aggregatesStore.getTableAggregates
   $: aggregates = $getTableAggregates($t.id.value)
 
-  // TODO: record type
-  let data = writable<any[]>([])
-  $: records, data.set(records.map((r) => ({ id: r.id, ...r.values })))
+  let store = recordsStore
+  $: if ($getRecords.isSuccess) {
+    store.set(Records.fromJSON($t, records), $getRecords.dataUpdatedAt)
+  }
+  let hasRecord = store.hasRecord
 
-  const table = createTable(data, {
+  const table = createTable(store.data, {
     select: addSelectedRows(),
     resize: addResizedColumns(),
   })
@@ -133,7 +135,7 @@
           header: () => createRender(GridViewHeader, { field }),
           accessor: field.id.value,
           cell: (item) => {
-            const record = dos.get(item.row.original.id)
+            const record = $store.records.get(item.row.original.id)
             const displayValue = record?.displayValues?.toJSON()?.[field.id.value]
             return createRender(GridViewCell, {
               index,
@@ -212,7 +214,7 @@
                       hasFilter && "bg-orange-50",
                     )}
                   >
-                    {#if cell.id === "$select" && !$data.length}
+                    {#if cell.id === "$select" && !$hasRecord}
                       <Checkbox checked={false} disabled />
                     {:else}
                       <Render of={cell.render()} />
@@ -236,7 +238,7 @@
                     data-state={($selectedDataIds[row.id] || $isRowSelected(recordId)) && "selected"}
                     class="text-foreground group cursor-pointer text-xs transition-none"
                   >
-                    {@const record = dos.get(recordId)}
+                    {@const record = $store.records.get(recordId)}
                     {@const match = colorSpec && record ? record.match(colorSpec) : false}
                     {@const condition =
                       match && record

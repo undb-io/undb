@@ -16,6 +16,7 @@
   export let isSelected: boolean
   export let field: AttachmentField
   export let recordId: string
+  export let onValueChange: (value: IAttachmentFieldValue) => void
 
   $: max = field.max
   $: disabled = value?.length ?? 0 >= max
@@ -59,6 +60,8 @@
           size: file.size,
         },
       ]
+
+      onValueChange(value)
 
       $updateCell.mutate({
         tableId,

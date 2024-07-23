@@ -16,6 +16,7 @@
   export let recordId: string
   export let isEditing: boolean
   export let isSelected: boolean
+  export let onValueChange = (value: IUserFieldValue) => {}
 
   let open = false
   $: if (isEditing) {
@@ -31,6 +32,7 @@
   })
 
   function onSelect(value: IUserFieldValue) {
+    onValueChange(value)
     $updateCell.mutate({
       tableId,
       id: recordId,

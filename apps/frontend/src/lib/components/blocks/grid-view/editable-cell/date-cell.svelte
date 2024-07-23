@@ -25,6 +25,7 @@
   $: internalDate = isString(value) ? parse(value) : isDate(value) ? parseDate(value.toISOString()) : undefined
   export let recordId: string
   export let isEditing: boolean
+  export let onValueChange = (value: string) => {}
 
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
@@ -68,6 +69,7 @@
             } else {
               value = undefined
             }
+            onValueChange(value)
             $updateCell.mutate({
               tableId,
               id: recordId,

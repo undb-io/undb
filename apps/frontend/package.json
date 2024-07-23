@@ -20,6 +20,7 @@
     "@sveltejs/adapter-static": "^3.0.2",
     "@sveltejs/kit": "^2.5.18",
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
+    "@tanstack/eslint-plugin-query": "^5.51.12",
     "@types/eslint": "^8.56.10",
     "@types/lodash.unzip": "^3.4.9",
     "@types/papaparse": "^5.3.14",

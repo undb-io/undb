@@ -12,6 +12,7 @@
   export let value: number
   export let isEditing: boolean
   export let recordId: string
+  export let onValueChange: (value: number) => void
 
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
@@ -34,6 +35,7 @@
 
   const onChange = (event: Event) => {
     value = +(event.target as HTMLInputElement).value
+    onValueChange(value)
     $updateCell.mutate({
       tableId,
       id: recordId,

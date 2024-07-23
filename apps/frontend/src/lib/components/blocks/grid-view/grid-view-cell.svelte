@@ -21,6 +21,8 @@
   import AttachmentCell from "./editable-cell/attachment-cell.svelte"
   import ReferenceCell from "./editable-cell/reference-cell.svelte"
   import ReadonlyUserCell from "./editable-cell/readonly-user-cell.svelte"
+  import { Store } from "lucide-svelte"
+  import { recordsStore } from "$lib/store/records.store"
 
   const table = getTable()
 
@@ -72,5 +74,6 @@
   )}
   onValueChange={(v) => {
     value = v
+    recordsStore.setRecordValue(recordId, field.id.value, v)
   }}
 />
