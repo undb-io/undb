@@ -23,7 +23,7 @@ import { WebhookEventsHandler } from "@undb/webhook"
 import { Elysia } from "elysia"
 import { all } from "radash"
 import { v4 } from "uuid"
-import { Auth, OpenAPI, Realtime, Web } from "./modules"
+import { Auth, OpenAPI, Realtime, TableModule, Web } from "./modules"
 import { FileService } from "./modules/file/file"
 import { loggerPlugin } from "./plugins/logging"
 
@@ -111,6 +111,8 @@ export const app = new Elysia()
       const realtime = container.resolve(Realtime)
       const graphql = container.resolve(Graphql)
       const file = container.resolve(FileService)
+      const table = container.resolve(TableModule)
+
       return (
         app
           //
@@ -119,6 +121,7 @@ export const app = new Elysia()
           .use(graphql.route())
           .use(openapi.route())
           .use(realtime.route())
+          .use(table.route())
       )
     },
   )

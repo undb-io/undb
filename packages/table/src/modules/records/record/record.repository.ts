@@ -30,7 +30,7 @@ export interface IRecordRepository {
   findOne(table: TableDo, spec: Option<RecordComositeSpecification>): Promise<Option<RecordDO>>
   findOneById(table: TableDo, id: RecordId): Promise<Option<RecordDO>>
   findByIds(table: TableDo, ids: RecordId[]): Promise<RecordDO[]>
-  find(table: TableDo, spec: RecordComositeSpecification): Promise<RecordDO[]>
+  find(table: TableDo, spec: Option<RecordComositeSpecification>): Promise<RecordDO[]>
   updateOneById(table: TableDo, record: RecordDO, spec: Option<RecordComositeSpecification>): Promise<void>
   bulkUpdate(
     table: TableDo,

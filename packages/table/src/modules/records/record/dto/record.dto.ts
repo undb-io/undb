@@ -12,6 +12,13 @@ export const recordDTO = z.object({
 
 export type IRecordDTO = z.infer<typeof recordDTO>
 
-export const recordReadableDTO = z.record(fieldName, z.any())
+export const recordReadableValueDTO = z.record(fieldName, z.any())
+export type IRecordReadableValueDTO = z.infer<typeof recordReadableValueDTO>
 
-export type IRecordReadableDTO = z.infer<typeof recordReadableDTO>
+export const recordReadableDisplayValueDTO = z.record(fieldName, z.any())
+export type IRecordReadableDisplayValueDTO = z.infer<typeof recordReadableDisplayValueDTO>
+
+export type IReadableRecordDTO = {
+  values: IRecordReadableValueDTO
+  displayValues?: IRecordReadableDisplayValueDTO
+}

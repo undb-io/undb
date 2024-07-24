@@ -1,11 +1,15 @@
 import { z } from "@undb/zod"
 import { isEmpty } from "radash"
 import { recordId } from "../../../../records/record/record-id.vo"
+import { fieldId } from "../../field-id.vo"
 import { FieldValueObject } from "../../field-value"
 
 const referenceFieldValueItem = recordId
 export const referenceFieldValue = referenceFieldValueItem.array().nullable().optional()
 export type IReferenceFieldValue = z.infer<typeof referenceFieldValue>
+
+const referenceFieldDisplayValue = z.record(fieldId, z.string().array().nullable())
+export type IReferenceFieldDisplayValue = z.infer<typeof referenceFieldDisplayValue>
 
 export const mutateReferenceFieldValueSchema = z.union([
   referenceFieldValueItem.array().optional().nullable(),

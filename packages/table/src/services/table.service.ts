@@ -8,7 +8,15 @@ import type {
   IUpdateTableDTO,
   IUpdateTableFieldDTO,
 } from "../dto"
-import { injectRecordRepository, type ICreateTableViewDTO, type IRecordRepository } from "../modules"
+import {
+  injectRecordQueryRepository,
+  injectRecordRepository,
+  type ICreateTableViewDTO,
+  type IExportViewDTO,
+  type IReadableRecordDTO,
+  type IRecordQueryRepository,
+  type IRecordRepository,
+} from "../modules"
 import type { ICreateTableFormDTO } from "../modules/forms/dto/create-form.dto"
 import { TableCreator } from "../table.builder"
 import type { TableDo } from "../table.do"
@@ -20,6 +28,7 @@ import { createTableViewMethod } from "./methods/create-table-view.method"
 import { createTableMethod } from "./methods/create-table.method"
 import { deleteTableFieldMethod } from "./methods/delete-table-field.method"
 import { duplicateTableFieldMethod } from "./methods/duplicate-table-field.method"
+import { exportViewMethod } from "./methods/export-view.method"
 import { updateTableFieldMethod } from "./methods/update-table-field.method"
 import { updateTableMethod } from "./methods/update-table.method"
 
@@ -32,6 +41,8 @@ export interface ITableService {
   duplicateTableField(dto: IDuplicateTableFieldDTO): Promise<TableDo>
   createTableForm(dto: ICreateTableFormDTO): Promise<TableDo>
   createTableView(dto: ICreateTableViewDTO): Promise<TableDo>
+
+  exportView(tableId: string, dto: IExportViewDTO): Promise<{ table: TableDo; records: IReadableRecordDTO[] }>
 }
 
 @singleton()
@@ -43,8 +54,12 @@ export class TableService implements ITableService {
   }
 
   constructor(
-    @injectTableRepository() readonly repository: ITableRepository,
-    @injectRecordRepository() readonly recordRepository: IRecordRepository,
+    @injectTableRepository()
+    public readonly repository: ITableRepository,
+    @injectRecordRepository()
+    public readonly recordRepository: IRecordRepository,
+    @injectRecordQueryRepository()
+    public readonly recordQueryRepository: IRecordQueryRepository,
   ) {}
 
   createTable = createTableMethod
@@ -55,4 +70,5 @@ export class TableService implements ITableService {
   updateTableField = updateTableFieldMethod
   createTableForm = createTableFormMethod
   createTableView = createTableViewMethod
+  exportView = exportViewMethod
 }

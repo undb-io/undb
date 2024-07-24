@@ -117,6 +117,7 @@
                   />
 
                   <Select.Root
+                    portal="body"
                     selected={{ value: item.direction, label: item.direction }}
                     onSelectedChange={(value) => {
                       if (value) {

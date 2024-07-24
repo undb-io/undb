@@ -3,6 +3,7 @@ import { z } from "@undb/zod"
 import type { TableDo } from "../../../table.do"
 import type { FieldValue } from "../../schema"
 import { FieldIdVo, fieldId, type FieldId, type IFieldId } from "../../schema/fields/field-id.vo"
+import type { IRecordReadableDisplayValueDTO } from "./dto"
 
 export const recordDisplayValues = z.record(fieldId, z.any())
 
@@ -31,8 +32,8 @@ export class RecordDisplayValuesVO extends ValueObject {
     return new RecordDisplayValuesVO(values)
   }
 
-  public toReadable(table: TableDo) {
-    const readable: Record<string, any> = {}
+  public toReadable(table: TableDo): IRecordReadableDisplayValueDTO {
+    const readable: IRecordReadableDisplayValueDTO = {}
 
     for (const [id, value] of Object.entries(this.values)) {
       const field = table.schema.getFieldById(new FieldIdVo(id)).into(null)

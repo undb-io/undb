@@ -12,6 +12,7 @@
     CodeIcon,
     CopyPlusIcon,
     DatabaseIcon,
+    DownloadIcon,
     FingerprintIcon,
     FormInputIcon,
     HardDriveIcon,
@@ -42,6 +43,16 @@
 
   $: currentFormId = $formId ? $formId : forms[0]?.id
   $: currentForm = forms.find((form) => form.id === currentFormId)
+
+  const downloadView = async () => {
+    const res = await fetch(`/api/tables/${$table.id.value}/views/${view.id.value}/export`)
+    const blob = await res.blob()
+    const a = document.createElement("a")
+    a.href = window.URL.createObjectURL(blob)
+    a.download = $table.name.value + " - " + view.name.value
+    a.click()
+    a.remove()
+  }
 </script>
 
 <header class="bg-muted/40 flex h-12 items-center gap-4 border-b px-4 lg:px-6">
@@ -141,6 +152,10 @@
                 <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(DUPLICATE_VIEW)}>
                   <CopyPlusIcon class="mr-2 h-3 w-3" />
                   Duplicate View
+                </DropdownMenu.Item>
+                <DropdownMenu.Item class="text-xs" on:click={() => downloadView()}>
+                  <DownloadIcon class="mr-2 h-3 w-3" />
+                  Download View
                 </DropdownMenu.Item>
                 {#if !view.isDefault}
                   <DropdownMenu.Item

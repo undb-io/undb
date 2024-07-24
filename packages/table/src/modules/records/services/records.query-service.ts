@@ -7,7 +7,7 @@ import {
   injectRecordQueryRepository,
   type IRecordDTO,
   type IRecordQueryRepository,
-  type IRecordReadableDTO,
+  type IRecordReadableValueDTO,
 } from "../record"
 import { countRecords } from "./methods/count-records.method"
 import { getAggregates } from "./methods/get-aggregates.method"
@@ -20,8 +20,8 @@ export interface IRecordsQueryService {
   getRecords(query: IGetRecordsDTO): Promise<PaginatedDTO<IRecordDTO>>
   countRecords(query: ICountRecordsDTO): Promise<number>
   getRecordById(query: IGetRecordByIdDTO): Promise<Option<IRecordDTO>>
-  getReadableRecords(query: IGetRecordsDTO): Promise<PaginatedDTO<IRecordReadableDTO>>
-  getReadableRecordById(query: IGetRecordByIdDTO): Promise<Option<IRecordReadableDTO>>
+  getReadableRecords(query: IGetRecordsDTO): Promise<PaginatedDTO<IRecordReadableValueDTO>>
+  getReadableRecordById(query: IGetRecordByIdDTO): Promise<Option<IRecordReadableValueDTO>>
   getAggregates(query: IGetAggregatesDTO): Promise<Record<string, AggregateResult>>
 }
 

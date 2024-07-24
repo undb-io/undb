@@ -1,5 +1,5 @@
 import { Query, type QueryProps } from "@undb/domain"
-import { getRecordByIdDTO, recordReadableDTO } from "@undb/table"
+import { getRecordByIdDTO, recordReadableValueDTO } from "@undb/table"
 import { z } from "@undb/zod"
 
 export const getReadableRecordByIdQuery = getRecordByIdDTO
@@ -7,7 +7,7 @@ export const getReadableRecordByIdQuery = getRecordByIdDTO
 export type IGetReadableRecordByIdQuery = z.infer<typeof getReadableRecordByIdQuery>
 
 export const getReadableRecordByIdOutput = z.object({
-  record: recordReadableDTO.nullable(),
+  record: recordReadableValueDTO.nullable(),
 })
 
 export type IGetReadableRecordByIdOutput = z.infer<typeof getReadableRecordByIdOutput>

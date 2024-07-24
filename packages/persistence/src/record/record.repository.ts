@@ -18,7 +18,7 @@ import {
   type TableDo,
 } from "@undb/table"
 import { sql, type CompiledQuery, type ExpressionBuilder } from "kysely"
-import { getAnonymousTransaction, getCurrentTransaction } from "../ctx"
+import { getAnonymousTransaction } from "../ctx"
 import type { IRecordQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
@@ -120,10 +120,10 @@ export class RecordRepository implements IRecordRepository {
     return dto ? Some(RecordDO.fromJSON(table, dto)) : None
   }
 
-  async find(table: TableDo, spec: RecordComositeSpecification): Promise<RecordDO[]> {
+  async find(table: TableDo, spec: Option<RecordComositeSpecification>): Promise<RecordDO[]> {
     const foreignTables = await this.getForeignTables(table, table.schema.fields)
-    const qb = this.helper.createQuery(table, foreignTables, table.schema.fields, Some(spec))
-    const records = await qb.where(this.helper.handleWhere(table, Some(spec))).execute()
+    const qb = this.helper.createQuery(table, foreignTables, table.schema.fields, spec)
+    const records = await qb.where(this.helper.handleWhere(table, spec)).execute()
 
     return records.map((record) => {
       const dto = getRecordDTOFromEntity(table, record)
@@ -198,7 +198,7 @@ export class RecordRepository implements IRecordRepository {
     update: RecordComositeSpecification,
     records: RecordDO[],
   ): Promise<void> {
-    const trx = getCurrentTransaction()
+    const trx = getAnonymousTransaction()
     const context = executionContext.getStore()
     const userId = context?.user?.userId!
 

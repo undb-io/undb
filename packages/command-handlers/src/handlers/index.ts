@@ -19,6 +19,7 @@ import { DuplicateRecordCommandHandler } from "./duplicate-record.command-handle
 import { DuplicateTableFieldCommandHandler } from "./duplicate-table-field.command-handler"
 import { DuplicateViewCommandHandler } from "./duplicate-view.command-handler"
 import { EnableShareCommandHandler } from "./enable-share.command-handler"
+import { ExportViewCommandHandler } from "./export-view.command-handler"
 import { InviteCommandHandler } from "./invite.command-handler"
 import { SetTableFormCommandHandler } from "./set-table-form.command-handler"
 import { SetTableRLSCommandHandler } from "./set-table-rls.command-handler"
@@ -74,4 +75,5 @@ export const commandHandlers = [
   DeleteInvitationCommandHandler,
   AcceptInvitationCommandHandler,
   UpdateAccountCommandHandler,
+  ExportViewCommandHandler,
 ]

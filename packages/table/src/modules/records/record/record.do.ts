@@ -6,7 +6,7 @@ import { type FieldId } from "../../schema/fields/field-id.vo"
 import { FieldValueFactory } from "../../schema/fields/field-value.factory"
 import type { SchemaIdMap } from "../../schema/schema.type"
 import { RecordCreatedEvent, RecordDeletedEvent, RecordUpdatedEvent, type IRecordEvent } from "../events"
-import type { ICreateRecordDTO, IRecordDTO, IUpdateRecordDTO } from "./dto"
+import type { ICreateRecordDTO, IReadableRecordDTO, IRecordDTO, IUpdateRecordDTO } from "./dto"
 import { RecordDisplayValuesVO } from "./record-display-values.vo"
 import { RecordIdVO, type RecordId } from "./record-id.vo"
 import { RecordValuesVO } from "./record-values.vo"
@@ -114,7 +114,7 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
     this.addDomainEvent(event)
   }
 
-  toReadable(table: TableDo) {
+  toReadable(table: TableDo): IReadableRecordDTO {
     const values = this.values.toReadable(table)
     const displayValues = this.displayValues?.toReadable(table)
     return {
