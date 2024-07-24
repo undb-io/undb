@@ -14,6 +14,7 @@ import { GetRecordsQueryHandler } from "./get-records.query-handler"
 import { GetRollupForeignTablesTablesQueryHandler } from "./get-rollup-foreign-tables.query-handler"
 import { GetShareQueryHandler } from "./get-share.query-handler"
 import { GetTableByShareQueryHandler } from "./get-table-by-share.query-handler"
+import { GetTableForeignTablesQueryHandler } from "./get-table-foreign-tables.query-handler"
 import { GetTableQueryHandler } from "./get-table.query-handler"
 import { GetTablesByBaseIdQueryHandler } from "./get-tables-by-base-id.query-handler"
 import { GetTablesQueryHandler } from "./get-tables.query-handler"
@@ -32,6 +33,7 @@ export const queryHandlers = [
   GetBasesQueryHandler,
   GetBaseQueryHandler,
   GetTablesByBaseIdQueryHandler,
+  GetTableForeignTablesQueryHandler,
   GetMembersQueryHandler,
   GetMemberByIdQueryHandler,
   GetMembersByIdsQueryHandler,

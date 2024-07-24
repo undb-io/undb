@@ -16,6 +16,7 @@ import {
   GetRollupForeignTablesQuery,
   GetShareQuery,
   GetTableByShareQuery,
+  GetTableForeignTablesQuery,
   GetTableQuery,
   GetTablesByBaseIdQuery,
   GetTablesQuery,
@@ -293,7 +294,7 @@ export class Graphql {
             return this.queryBus.execute(new GetTablesQuery())
           },
           tableForeignTables: async (_, args) => {
-            throw new Error("Not implemented")
+            return this.queryBus.execute(new GetTableForeignTablesQuery({ tableId: args.tableId }))
           },
           rollupForeignTables: async (_, args) => {
             return this.queryBus.execute(

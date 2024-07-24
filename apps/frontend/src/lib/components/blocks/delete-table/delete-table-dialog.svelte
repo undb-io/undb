@@ -12,13 +12,13 @@
 
   export let table = getTable()
 
-  const foreignTableStore = new GetTableForeignTablesStore()
-  $: $isModalOpen(DELETE_TABLE_MODAL) &&
-    foreignTableStore.fetch({
-      variables: { tableId: $table.id.value },
-    })
+  // const foreignTableStore = new GetTableForeignTablesStore()
+  // $: $isModalOpen(DELETE_TABLE_MODAL) &&
+  //   foreignTableStore.fetch({
+  //     variables: { tableId: $table.id.value },
+  //   })
 
-  $: foreignTables = $foreignTableStore.data?.tableForeignTables ?? []
+  // $: foreignTables = $foreignTableStore.data?.tableForeignTables ?? []
 
   const deleteTableMutation = createMutation({
     mutationFn: trpc.table.delete.mutate,
@@ -52,17 +52,14 @@
       </AlertDialog.Description>
     </AlertDialog.Header>
 
-    {#if foreignTables.length}
+    <!-- {#if foreignTables.length}
       <Alert.Root class="border-yellow-500 bg-yellow-50">
         <Alert.Title>Deleting foreign table fields</Alert.Title>
         <Alert.Description>
-          <p>The following rollup field</p>
-          {#each foreignTables as table}{/each}
-
-          <p>will also be deleted.</p>
+          <p>All the foreign table reference and rollup fields will also be deleted</p>
         </Alert.Description>
       </Alert.Root>
-    {/if}
+    {/if} -->
 
     <AlertDialog.Footer>
       <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
