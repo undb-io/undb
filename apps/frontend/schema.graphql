@@ -90,6 +90,7 @@ type Query {
   share(id: ID!): Share
   table(id: ID!): Table
   tableByShare(shareId: ID!): Table
+  tableForeignTables(tableId: ID!): [Table!]!
   tables: [Table]!
 }
 

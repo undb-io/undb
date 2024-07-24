@@ -1,15 +1,12 @@
 <script lang="ts">
-  import CircleUser from "lucide-svelte/icons/circle-user"
   import * as Tabs from "$lib/components/ui/tabs"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js"
   import { Button } from "$lib/components/ui/button/index.js"
   import * as Tooltip from "$lib/components/ui/tooltip"
-  import * as Dialog from "$lib/components/ui/dialog"
   import {
     ChevronDownIcon,
     ChevronsUpDownIcon,
     Code2Icon,
-    CodeIcon,
     CopyPlusIcon,
     DatabaseIcon,
     DownloadIcon,
@@ -32,7 +29,14 @@
   import CreateViewButton from "../view/create-view-button.svelte"
   import { derived } from "svelte/store"
   import { page } from "$app/stores"
-  import { DELETE_VIEW, DUPLICATE_VIEW, UPDATE_TABLE_MODAL, UPDATE_VIEW, toggleModal } from "$lib/store/modal.store"
+  import {
+    DELETE_TABLE_MODAL,
+    DELETE_VIEW,
+    DUPLICATE_VIEW,
+    UPDATE_TABLE_MODAL,
+    UPDATE_VIEW,
+    toggleModal,
+  } from "$lib/store/modal.store"
   import { getBaseById } from "$lib/store/base.store"
 
   const table = getTable()
@@ -83,6 +87,13 @@
                   <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_TABLE_MODAL)}>
                     <PencilIcon class="mr-2 h-3 w-3" />
                     Update table name
+                  </DropdownMenu.Item>
+                  <DropdownMenu.Item
+                    on:click={() => toggleModal(DELETE_TABLE_MODAL)}
+                    class="text-xs text-red-500 hover:bg-red-50 hover:text-red-500"
+                  >
+                    <PencilIcon class="mr-2 h-3 w-3" />
+                    Delete table
                   </DropdownMenu.Item>
                 </DropdownMenu.Content>
               </DropdownMenu.Root>

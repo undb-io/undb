@@ -3,6 +3,7 @@ import { createLogger } from "@undb/logger"
 import type {
   ICreateTableDTO,
   ICreateTableFieldDTO,
+  IDeleteTableDTO,
   IDeleteTableFieldDTO,
   IDuplicateTableFieldDTO,
   IUpdateTableDTO,
@@ -27,6 +28,7 @@ import { createTableFormMethod } from "./methods/create-table-form.method"
 import { createTableViewMethod } from "./methods/create-table-view.method"
 import { createTableMethod } from "./methods/create-table.method"
 import { deleteTableFieldMethod } from "./methods/delete-table-field.method"
+import { deleteTableMethod } from "./methods/delete-table.method"
 import { duplicateTableFieldMethod } from "./methods/duplicate-table-field.method"
 import { exportViewMethod } from "./methods/export-view.method"
 import { updateTableFieldMethod } from "./methods/update-table-field.method"
@@ -35,10 +37,13 @@ import { updateTableMethod } from "./methods/update-table.method"
 export interface ITableService {
   createTable(dto: ICreateTableDTO): Promise<TableDo>
   updateTable(dto: IUpdateTableDTO): Promise<TableDo>
+  deleteTable(dto: IDeleteTableDTO): Promise<TableDo>
+
   createTableField(dto: ICreateTableFieldDTO): Promise<TableDo>
   updateTableField(dto: IUpdateTableFieldDTO): Promise<TableDo>
   deleteTableField(dto: IDeleteTableFieldDTO): Promise<TableDo>
   duplicateTableField(dto: IDuplicateTableFieldDTO): Promise<TableDo>
+
   createTableForm(dto: ICreateTableFormDTO): Promise<TableDo>
   createTableView(dto: ICreateTableViewDTO): Promise<TableDo>
 
@@ -64,11 +69,15 @@ export class TableService implements ITableService {
 
   createTable = createTableMethod
   updateTable = updateTableMethod
+  deleteTable = deleteTableMethod
+
   createTableField = createTableFieldMethod
   deleteTableField = deleteTableFieldMethod
   duplicateTableField = duplicateTableFieldMethod
   updateTableField = updateTableFieldMethod
+
   createTableForm = createTableFormMethod
   createTableView = createTableViewMethod
+
   exportView = exportViewMethod
 }

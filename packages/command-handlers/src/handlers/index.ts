@@ -13,6 +13,7 @@ import { CreateWebhookCommandHandler } from "./create-webhook.command-handler"
 import { DeleteInvitationCommandHandler } from "./delete-invitation.command-handler"
 import { DeleteRecordCommandHandler } from "./delete-record.command-handler"
 import { DeleteTableFieldCommandHandler } from "./delete-table-field.command-handler"
+import { DeleteTableCommandHandler } from "./delete-table.command-handler"
 import { DeleteViewCommandHandler } from "./delete-view.command-handler"
 import { DisableShareCommandHandler } from "./disable-share.command-handler"
 import { DuplicateRecordCommandHandler } from "./duplicate-record.command-handler"
@@ -76,4 +77,5 @@ export const commandHandlers = [
   AcceptInvitationCommandHandler,
   UpdateAccountCommandHandler,
   ExportViewCommandHandler,
+  DeleteTableCommandHandler,
 ]

@@ -12,6 +12,7 @@ import {
   CreateWebhookCommand,
   DeleteInvitationCommand,
   DeleteRecordCommand,
+  DeleteTableCommand,
   DeleteTableFieldCommand,
   DeleteViewCommand,
   DisableShareCommand,
@@ -49,6 +50,7 @@ import {
   createWebhookCommand,
   deleteInvitationCommand,
   deleteRecordCommand,
+  deleteTableCommand,
   deleteTableFieldCommand,
   deleteViewCommand,
   disableShareCommand,
@@ -163,6 +165,10 @@ const tableRouter = t.router({
     .use(authz("table:update"))
     .input(updateTableCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateTableCommand(input))),
+  delete: p
+    .use(authz("table:delete"))
+    .input(deleteTableCommand)
+    .mutation(({ input }) => commandBus.execute(new DeleteTableCommand(input))),
   field: fieldRouter,
   rls: rlsRouter,
   view: viewRouter,

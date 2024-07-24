@@ -140,4 +140,24 @@ export class TableRepository implements ITableRepository {
 
     return tbs.map((t) => this.mapper.toDo(t))
   }
+
+  async deleteOneById(table: TableDo): Promise<void> {
+    const trx = getCurrentTransaction()
+    await trx
+      .deleteFrom("undb_table_id_mapping")
+      .where((eb) => eb.eb("table_id", "=", table.id.value))
+      .execute()
+
+    await trx
+      .deleteFrom("undb_rollup_id_mapping")
+      .where((eb) => eb.eb("table_id", "=", table.id.value).or(eb.eb("rollup_table_id", "=", table.id.value)))
+      .execute()
+
+    await trx
+      .deleteFrom("undb_table")
+      .where((eb) => eb.eb("id", "=", table.id.value))
+      .execute()
+
+    await this.underlyingTableService.delete(table)
+  }
 }

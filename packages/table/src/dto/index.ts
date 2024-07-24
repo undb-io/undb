@@ -1,6 +1,7 @@
 export * from "./create-table-field.dto"
 export * from "./create-table.dto"
 export * from "./delete-table-field.dto"
+export * from "./delete-table.dto"
 export * from "./delete-view.dto"
 export * from "./duplicate-table-field.dto"
 export * from "./duplicate-view.dto"

@@ -2,7 +2,6 @@ import { singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
 import type { TableComositeSpecification, TableDo } from "@undb/table"
 import type { CompiledQuery } from "kysely"
-import { all } from "radash"
 import { getCurrentTransaction } from "../ctx"
 import { UnderlyingTable } from "./underlying-table"
 import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
@@ -28,7 +27,9 @@ export class UnderlyingTableService {
       })
       .execute()
 
-    await all(sql.map((query) => trx.executeQuery(query)))
+    for (const query of sql) {
+      await trx.executeQuery(query)
+    }
   }
 
   async update(table: TableDo, spec: TableComositeSpecification) {
@@ -39,5 +40,11 @@ export class UnderlyingTableService {
     spec.accept(visitor)
 
     await visitor.execute()
+  }
+
+  async delete(table: TableDo) {
+    const t = new UnderlyingTable(table)
+    const trx = getCurrentTransaction()
+    await trx.schema.dropTable(t.name).execute()
   }
 }

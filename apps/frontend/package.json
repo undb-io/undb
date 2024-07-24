@@ -35,6 +35,7 @@
     "@undb/table": "workspace:*",
     "@undb/trpc": "workspace:*",
     "autoprefixer": "^10.4.19",
+    "date-fns": "^3.6.0",
     "eslint": "^9.7.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte": "^2.43.0",

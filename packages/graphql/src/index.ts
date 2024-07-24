@@ -236,6 +236,7 @@ export class Graphql {
 
         tables: [Table]!
         table(id: ID!): Table
+        tableForeignTables(tableId: ID!): [Table!]!
         rollupForeignTables(tableId: ID!, fieldId: ID!): [Table!]!
 
         bases: [Base]
@@ -290,6 +291,9 @@ export class Graphql {
           },
           tables: async () => {
             return this.queryBus.execute(new GetTablesQuery())
+          },
+          tableForeignTables: async (_, args) => {
+            throw new Error("Not implemented")
           },
           rollupForeignTables: async (_, args) => {
             return this.queryBus.execute(

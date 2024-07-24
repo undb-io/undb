@@ -17,6 +17,7 @@ export const DUPLICATE_VIEW = "duplicateView" as const
 export const DELETE_VIEW = "deleteView" as const
 export const CREATE_BASE_MODAL = "createBase" as const
 export const UPDATE_BASE_MODAL = "updateBase" as const
+export const DELETE_TABLE_MODAL = "deleteTable" as const
 
 type ModalType =
   | typeof CREATE_TABLE_MODAL
@@ -32,6 +33,7 @@ type ModalType =
   | typeof DELETE_VIEW
   | typeof CREATE_BASE_MODAL
   | typeof UPDATE_BASE_MODAL
+  | typeof DELETE_TABLE_MODAL
 
 export const toggleModal = (type: ModalType) => {
   modal.update(($modal) => {
