@@ -9,6 +9,8 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { TrashIcon } from "lucide-svelte"
   import { toast } from "svelte-sonner"
+  import { Input } from "$lib/components/ui/input"
+  import { Label } from "$lib/components/ui/label"
 
   export let table = getTable()
 
@@ -34,6 +36,9 @@
   const deleteTable = () => {
     $deleteTableMutation.mutate({ tableId: $table.id.value })
   }
+
+  let tableName: string = ""
+  $: disabled = tableName !== $table.name.value
 </script>
 
 <AlertDialog.Root
@@ -52,6 +57,11 @@
       </AlertDialog.Description>
     </AlertDialog.Header>
 
+    <Label class="text-muted-foreground space-y-2">
+      <span> Input table name to confirm deletion </span>
+      <Input bind:value={tableName} placeholder={$table.name.value} />
+    </Label>
+
     <!-- {#if foreignTables.length}
       <Alert.Root class="border-yellow-500 bg-yellow-50">
         <Alert.Title>Deleting foreign table fields</Alert.Title>
@@ -63,7 +73,11 @@
 
     <AlertDialog.Footer>
       <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-      <AlertDialog.Action on:click={() => deleteTable()} class="text-background bg-red-500 hover:bg-red-600">
+      <AlertDialog.Action
+        {disabled}
+        on:click={() => deleteTable()}
+        class="text-background bg-red-500 transition-colors hover:bg-red-600"
+      >
         <TrashIcon class="mr-2 h-4 w-4" />
         Delete
       </AlertDialog.Action>
