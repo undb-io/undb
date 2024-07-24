@@ -20,6 +20,9 @@
     PlusCircleIcon,
     SheetIcon,
     TextCursorInputIcon,
+    FileJsonIcon,
+    FileTextIcon,
+    FileSpreadsheet,
   } from "lucide-svelte"
   import * as Breadcrumb from "$lib/components/ui/breadcrumb/index.js"
   import { getTable } from "$lib/store/table.store"
@@ -44,7 +47,7 @@
   $: currentFormId = $formId ? $formId : forms[0]?.id
   $: currentForm = forms.find((form) => form.id === currentFormId)
 
-  const downloadView = async (type: "excel" | "csv") => {
+  const downloadView = async (type: "excel" | "csv" | "json") => {
     const res = await fetch(`/api/tables/${$table.id.value}/views/${view.id.value}/export?type=${type}`)
     const blob = await res.blob()
     const a = document.createElement("a")
@@ -160,12 +163,16 @@
                   </DropdownMenu.SubTrigger>
                   <DropdownMenu.SubContent class="w-[200px]">
                     <DropdownMenu.Item class="text-xs" on:click={() => downloadView("excel")}>
-                      <DownloadIcon class="mr-2 h-4 w-4" />
+                      <FileSpreadsheet class="mr-2 h-4 w-4" />
                       Download as Excel
                     </DropdownMenu.Item>
                     <DropdownMenu.Item class="text-xs" on:click={() => downloadView("csv")}>
-                      <DownloadIcon class="mr-2 h-4 w-4" />
+                      <FileTextIcon class="mr-2 h-4 w-4" />
                       Download as CSV
+                    </DropdownMenu.Item>
+                    <DropdownMenu.Item class="text-xs" on:click={() => downloadView("json")}>
+                      <FileJsonIcon class="mr-2 h-4 w-4" />
+                      Download as JSON
                     </DropdownMenu.Item>
                   </DropdownMenu.SubContent>
                 </DropdownMenu.Sub>

@@ -86,11 +86,20 @@ export class TableModule {
           response.headers.set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
           return response
+        } else if (type === "json") {
+          const response = new Response(JSON.stringify(values))
+
+          const fileName = `${table.name.value}.json`
+
+          response.headers.set("Content-Disposition", "attachment; filename=" + fileName)
+          response.headers.set("Content-Type", "application/json")
+
+          return response
         }
       },
       {
         params: t.Object({ tableId: t.String(), viewId: t.String() }),
-        query: t.Object({ type: t.Enum({ excel: "excel", csv: "csv" }) }),
+        query: t.Object({ type: t.Enum({ excel: "excel", csv: "csv", json: "json" }) }),
       },
     )
   }
