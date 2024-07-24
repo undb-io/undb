@@ -1,3 +1,4 @@
+import Parser from "@json2csv/plainjs/Parser.js"
 import { ExportViewCommand } from "@undb/commands"
 import { CommandBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
@@ -45,6 +46,7 @@ export class TableModule {
     return new Elysia().get(
       "/api/tables/:tableId/views/:viewId/export",
       async (ctx) => {
+        const type = ctx.query.type
         const { tableId, viewId } = ctx.params
         const { table, records } = await this.commandBus.execute<
           ExportViewCommand,
@@ -57,24 +59,38 @@ export class TableModule {
         const values = records.map((r) => mapRecord(table, r))
         const keys = Object.keys(values[0])
 
-        const wb = XLSX.utils.book_new()
-        const xlsxData = XLSX.utils.json_to_sheet(values, {
-          header: keys,
-        })
-        XLSX.utils.book_append_sheet(wb, xlsxData, table.name.value)
-        const buffer: Buffer = XLSX.write(wb, { type: "buffer", bookType: "xlsx" })
+        if (type === "csv") {
+          const parser = new Parser()
+          const csv = parser.parse(values)
 
-        const response = new Response(buffer)
+          const response = new Response(csv)
 
-        const fileName = `${table.name.value}.xlsx`
+          const fileName = `${table.name.value}.csv`
+          response.headers.set("Content-Disposition", "attachment; filename=" + fileName)
+          response.headers.set("Content-Type", "text/csv")
 
-        response.headers.set("Content-Disposition", "attachment; filename=" + fileName)
-        response.headers.set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+          return response
+        } else if (type === "excel") {
+          const wb = XLSX.utils.book_new()
+          const xlsxData = XLSX.utils.json_to_sheet(values, {
+            header: keys,
+          })
+          XLSX.utils.book_append_sheet(wb, xlsxData, table.name.value)
+          const buffer: Buffer = XLSX.write(wb, { type: "buffer", bookType: "xlsx" })
 
-        return response
+          const response = new Response(buffer)
+
+          const fileName = `${table.name.value}.xlsx`
+
+          response.headers.set("Content-Disposition", "attachment; filename=" + fileName)
+          response.headers.set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+
+          return response
+        }
       },
       {
         params: t.Object({ tableId: t.String(), viewId: t.String() }),
+        query: t.Object({ type: t.Enum({ excel: "excel", csv: "csv" }) }),
       },
     )
   }

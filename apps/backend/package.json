@@ -15,6 +15,7 @@
     "@elysiajs/stream": "^1.1.0",
     "@elysiajs/swagger": "^1.1.0",
     "@elysiajs/trpc": "^1.1.0",
+    "@json2csv/plainjs": "^7.0.6",
     "@kitajs/ts-html-plugin": "latest",
     "@lucia-auth/adapter-sqlite": "^3.0.2",
     "@undb/audit": "workspace:*",

@@ -44,8 +44,8 @@
   $: currentFormId = $formId ? $formId : forms[0]?.id
   $: currentForm = forms.find((form) => form.id === currentFormId)
 
-  const downloadView = async () => {
-    const res = await fetch(`/api/tables/${$table.id.value}/views/${view.id.value}/export`)
+  const downloadView = async (type: "excel" | "csv") => {
+    const res = await fetch(`/api/tables/${$table.id.value}/views/${view.id.value}/export?type=${type}`)
     const blob = await res.blob()
     const a = document.createElement("a")
     a.href = window.URL.createObjectURL(blob)
@@ -144,7 +144,7 @@
                   </Breadcrumb.Page>
                 </Breadcrumb.Item>
               </DropdownMenu.Trigger>
-              <DropdownMenu.Content>
+              <DropdownMenu.Content class="w-[200px]">
                 <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_VIEW)}>
                   <PencilIcon class="mr-2 h-3 w-3" />
                   Update View Name
@@ -153,10 +153,22 @@
                   <CopyPlusIcon class="mr-2 h-3 w-3" />
                   Duplicate View
                 </DropdownMenu.Item>
-                <DropdownMenu.Item class="text-xs" on:click={() => downloadView()}>
-                  <DownloadIcon class="mr-2 h-3 w-3" />
-                  Download View
-                </DropdownMenu.Item>
+                <DropdownMenu.Sub>
+                  <DropdownMenu.SubTrigger class="text-xs">
+                    <DownloadIcon class="mr-2 h-3 w-3" />
+                    Download View
+                  </DropdownMenu.SubTrigger>
+                  <DropdownMenu.SubContent class="w-[200px]">
+                    <DropdownMenu.Item class="text-xs" on:click={() => downloadView("excel")}>
+                      <DownloadIcon class="mr-2 h-4 w-4" />
+                      Download as Excel
+                    </DropdownMenu.Item>
+                    <DropdownMenu.Item class="text-xs" on:click={() => downloadView("csv")}>
+                      <DownloadIcon class="mr-2 h-4 w-4" />
+                      Download as CSV
+                    </DropdownMenu.Item>
+                  </DropdownMenu.SubContent>
+                </DropdownMenu.Sub>
                 {#if !view.isDefault}
                   <DropdownMenu.Item
                     class="text-xs text-red-500 hover:bg-red-200 hover:text-red-500"
