@@ -18,6 +18,7 @@ import type {
   WithNewView,
   WithoutFieldSpecification,
   WithoutView,
+  WithTableForeignTablesSpec,
   WithTableRLS,
   WithUpdatedFieldSpecification,
   WithView,
@@ -70,6 +71,7 @@ export class TableReferenceVisitor implements ITableSpecVisitor {
   withNewForm(views: WithNewFormSpecification): void {}
   withForm(views: WithFormSpecification): void {}
   withForeignRollupField(spec: WithForeignRollupFieldSpec): void {}
+  withTableForeignTables(spec: WithTableForeignTablesSpec): void {}
   and(left: ISpecification, right: ISpecification): this {
     left.accept(this)
     right.accept(this)

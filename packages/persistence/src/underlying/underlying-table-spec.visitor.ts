@@ -15,6 +15,7 @@ import type {
   WithNewView,
   WithoutFieldSpecification,
   WithoutView,
+  WithTableForeignTablesSpec,
   WithUpdatedFieldSpecification,
   WithView,
   WithViewAggregate,
@@ -33,7 +34,7 @@ import type {
 } from "@undb/table/src/specifications/table-forms.specification"
 import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
 import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, CreateTableBuilder, sql } from "kysely"
-import type { IQueryBuilder } from "../qb"
+import type { IRecordQueryBuilder } from "../qb"
 import { ConversionContext } from "./conversion/conversion.context"
 import { ConversionFactory } from "./conversion/conversion.factory"
 import { JoinTable } from "./reference/join-table"
@@ -44,7 +45,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
   private tb: AlterTableBuilder
   constructor(
     public readonly table: UnderlyingTable,
-    public readonly qb: IQueryBuilder,
+    public readonly qb: IRecordQueryBuilder,
   ) {
     this.tb = qb.schema.alterTable(table.name)
   }
@@ -67,6 +68,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
 
   withFormId(spec: WithFormIdSpecification): void {}
   withForeignRollupField(spec: WithForeignRollupFieldSpec): void {}
+  withTableForeignTables(spec: WithTableForeignTablesSpec): void {}
   withBaseId(id: TableBaseIdSpecification): void {}
   idsIn(ids: TableIdsSpecification): void {}
   withNewView(views: WithNewView): void {}

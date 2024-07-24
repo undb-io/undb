@@ -154,6 +154,11 @@ export class TableRepository implements ITableRepository {
       .execute()
 
     await trx
+      .deleteFrom("undb_reference_id_mapping")
+      .where((eb) => eb.or([eb.eb("table_id", "=", table.id.value), eb.eb("foreign_table_id", "=", table.id.value)]))
+      .execute()
+
+    await trx
       .deleteFrom("undb_table")
       .where((eb) => eb.eb("id", "=", table.id.value))
       .execute()

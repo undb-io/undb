@@ -56,6 +56,30 @@ export const tableIdMapping = sqliteTable(
   },
 )
 
+export const referenceIdMapping = sqliteTable(
+  "reference_id_mapping",
+  {
+    fieldId: text("field_id").notNull(),
+    tableId: text("table_id")
+      .notNull()
+      .references(() => tables.id),
+    rollupId: text("symmetric_field_id").notNull(),
+    rollupTableId: text("foreign_table_id")
+      .notNull()
+      .references(() => tables.id),
+  },
+  (table) => {
+    return {
+      uniqueIndex: unique("reference_id_mapping_unique_idx").on(
+        table.fieldId,
+        table.tableId,
+        table.rollupId,
+        table.rollupTableId,
+      ),
+    }
+  },
+)
+
 export const rollupIdMapping = sqliteTable(
   "rollup_id_mapping",
   {

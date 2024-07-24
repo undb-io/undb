@@ -3,7 +3,7 @@
   import { GetTableForeignTablesStore } from "$houdini"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import * as Alert from "$lib/components/ui/alert"
-  import { DELETE_TABLE_MODAL, isModalOpen } from "$lib/store/modal.store"
+  import { closeModal, DELETE_TABLE_MODAL, isModalOpen } from "$lib/store/modal.store"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
@@ -36,7 +36,14 @@
   }
 </script>
 
-<AlertDialog.Root open={$isModalOpen(DELETE_TABLE_MODAL)}>
+<AlertDialog.Root
+  open={$isModalOpen(DELETE_TABLE_MODAL)}
+  onOpenChange={(open) => {
+    if (!open) {
+      closeModal(DELETE_TABLE_MODAL)
+    }
+  }}
+>
   <AlertDialog.Content>
     <AlertDialog.Header>
       <AlertDialog.Title>Are you sure to delete table {$table.name.value}?</AlertDialog.Title>

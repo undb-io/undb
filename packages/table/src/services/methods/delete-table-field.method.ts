@@ -21,12 +21,12 @@ async function deleteOtherFields(
     }
   } else {
     const spec = new WithForeignRollupFieldSpec(field.id.value)
-    const tables = await this.repository.find(Some(spec))
-    for (const table of tables) {
-      const rollupFields = table.schema.getRollupFields(field.id.value)
+    const foreignTables = await this.repository.find(Some(spec))
+    for (const foreignTable of foreignTables) {
+      const rollupFields = foreignTable.schema.getRollupFields(field.id.value)
       for (const rollupField of rollupFields) {
-        const [, spec] = table.$deleteField({ id: rollupField.id.value })
-        results.push({ table, spec })
+        const [, spec] = foreignTable.$deleteField({ id: rollupField.id.value })
+        results.push({ table: foreignTable, spec })
       }
     }
   }

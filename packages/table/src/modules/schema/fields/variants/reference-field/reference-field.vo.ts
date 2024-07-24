@@ -1,5 +1,6 @@
-import { Option, Some } from "@undb/domain"
+import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
+import type { TableComositeSpecification } from "../../../../../specifications"
 import { tableId } from "../../../../../table-id.vo"
 import type { TableDo } from "../../../../../table.do"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
@@ -195,5 +196,19 @@ export class ReferenceField extends AbstractField<
 
   getRollupFields(fields: Field[]): RollupField[] {
     return fields.filter((f) => f.type === "rollup" && f.referenceFieldId === this.id.value) as RollupField[]
+  }
+
+  getSymmetricField(foreignTable: TableDo): Option<ReferenceField> {
+    if (!this.symmetricFieldId) {
+      return None
+    }
+    return foreignTable.schema.getFieldById(new FieldIdVo(this.symmetricFieldId)) as Option<ReferenceField>
+  }
+
+  $deleteSymmetricField(foreignTable: TableDo) {
+    if (!this.symmetricFieldId) {
+      return [null, None] as [null, Option<TableComositeSpecification>]
+    }
+    return foreignTable.$deleteField({ id: this.symmetricFieldId })
   }
 }

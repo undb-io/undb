@@ -17,6 +17,7 @@ import type {
   WithNewView,
   WithoutFieldSpecification,
   WithoutView,
+  WithTableForeignTablesSpec,
   WithTableRLS,
   WithUpdatedFieldSpecification,
   WithView,
@@ -130,6 +131,14 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
       .selectFrom("undb_rollup_id_mapping")
       .select(["rollup_table_id"])
       .where((eb) => eb.eb("undb_rollup_id_mapping.field_id", "=", spec.fieldId))
+    const cond = this.eb.eb("id", "in", subQuery)
+    this.addCond(cond)
+  }
+  withTableForeignTables(spec: WithTableForeignTablesSpec): void {
+    const subQuery = this.qb
+      .selectFrom("undb_reference_id_mapping")
+      .select(["foreign_table_id"])
+      .where((eb) => eb.eb("table_id", "=", spec.tableId.value))
     const cond = this.eb.eb("id", "in", subQuery)
     this.addCond(cond)
   }

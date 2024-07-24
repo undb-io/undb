@@ -15,6 +15,7 @@ import type {
   WithNewFieldSpecification,
   WithNewFormSpecification,
   WithNewView,
+  WithTableForeignTablesSpec,
   WithTableRLS,
   WithUpdatedFieldSpecification,
   WithView,
@@ -82,6 +83,21 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
         .onConflict((ob) => ob.doNothing())
         .compile()
       this.addSql(sql)
+    } else if (field.type === "reference") {
+      if (field.symmetricFieldId) {
+        const sql = this.qb
+          .insertInto("undb_reference_id_mapping")
+          .values({
+            field_id: field.id.value,
+            table_id: this.table.id.value,
+            symmetric_field_id: field.symmetricFieldId,
+            foreign_table_id: field.foreignTableId,
+          })
+          .onConflict((ob) => ob.doNothing())
+          .compile()
+
+        this.addSql(sql)
+      }
     }
   }
   withDuplicateField(schema: WithDuplicatedFieldSpecification): void {
@@ -103,6 +119,15 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
       )
       .compile()
     this.addSql(deleteRollup)
+
+    const deleteReference = this.qb
+      .deleteFrom("undb_reference_id_mapping")
+      .where((eb) =>
+        eb.or([eb.eb("field_id", "=", schema.field.id.value), eb.eb("symmetric_field_id", "=", schema.field.id.value)]),
+      )
+      .compile()
+
+    this.addSql(deleteReference)
   }
   withUpdatedField(spec: WithUpdatedFieldSpecification): void {
     this.setData(tables.schema.name, json(this.table.schema.toJSON()))
@@ -183,6 +208,9 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
     this.setData(tables.forms.name, this.table.forms ? json(this.table.forms?.toJSON()) : null)
   }
   withForeignRollupField(spec: WithForeignRollupFieldSpec): void {
+    throw new Error("Method not implemented.")
+  }
+  withTableForeignTables(spec: WithTableForeignTablesSpec): void {
     throw new Error("Method not implemented.")
   }
 }

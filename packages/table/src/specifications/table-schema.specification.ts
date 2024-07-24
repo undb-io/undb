@@ -2,6 +2,7 @@ import { Ok, Option, WontImplementException, type Result } from "@undb/domain"
 import { SelectField, UserField, type Field } from "../modules"
 import type { FieldValueObject } from "../modules/schema/fields/field-value"
 import type { Schema } from "../modules/schema/schema.vo"
+import type { TableId } from "../table-id.vo"
 import type { TableDo } from "../table.do"
 import type { ITableSpecVisitor } from "./table-visitor.interface"
 import { TableComositeSpecification } from "./table.composite-specification"
@@ -150,6 +151,23 @@ export class WithForeignRollupFieldSpec extends TableComositeSpecification {
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
     v.withForeignRollupField(this)
+    return Ok(undefined)
+  }
+}
+
+export class WithTableForeignTablesSpec extends TableComositeSpecification {
+  constructor(public readonly tableId: TableId) {
+    super()
+  }
+
+  isSatisfiedBy(t: TableDo): boolean {
+    throw new Error("Method not implemented.")
+  }
+  mutate(t: TableDo): Result<TableDo, string> {
+    throw new Error("Method not implemented.")
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withTableForeignTables(this)
     return Ok(undefined)
   }
 }

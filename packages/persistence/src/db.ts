@@ -9,6 +9,7 @@ import type {
   baseTable,
   invitations,
   outbox,
+  referenceIdMapping,
   rollupIdMapping,
   shareTable,
   tableIdMapping,
@@ -35,6 +36,7 @@ type WebhookTable = Kyselify<typeof webhook>
 type UserTable = Kyselify<typeof users>
 type WorkspaceMemberTable = Kyselify<typeof workspaceMember>
 type InvitationTable = Kyselify<typeof invitations>
+type ReferenceIdMappingTable = Kyselify<typeof referenceIdMapping>
 
 export interface Database {
   undb_table: TableTable
@@ -48,6 +50,7 @@ export interface Database {
   undb_user: UserTable
   undb_workspace_member: WorkspaceMemberTable
   undb_invitation: InvitationTable
+  undb_reference_id_mapping: ReferenceIdMappingTable
 }
 
 export type Table = Selectable<TableTable>
@@ -66,3 +69,4 @@ export type Invitation = Selectable<InvitationTable>
 
 export type InsertTableIdMapping = Insertable<TableIdMappingTable>
 export type InsertRollupIdMapping = Insertable<RollupIdMappingTable>
+export type InsertReferenceIdMapping = Insertable<ReferenceIdMappingTable>

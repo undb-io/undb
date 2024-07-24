@@ -38,6 +38,15 @@ CREATE TABLE `undb_outbox` (
 	`name` text NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE `undb_reference_id_mapping` (
+	`field_id` text NOT NULL,
+	`table_id` text NOT NULL,
+	`symmetric_field_id` text NOT NULL,
+	`foreign_table_id` text NOT NULL,
+	FOREIGN KEY (`table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`foreign_table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
 CREATE TABLE `undb_rollup_id_mapping` (
 	`field_id` text NOT NULL,
 	`table_id` text NOT NULL,
@@ -117,6 +126,7 @@ CREATE TABLE `undb_workspace_member` (
 CREATE INDEX `audit_table_id_idx` ON `undb_audit` (`table_id`);--> statement-breakpoint
 CREATE INDEX `audit_record_id_idx` ON `undb_audit` (`record_id`);--> statement-breakpoint
 CREATE UNIQUE INDEX `undb_invitation_email_unique` ON `undb_invitation` (`email`);--> statement-breakpoint
+CREATE UNIQUE INDEX `reference_id_mapping_unique_idx` ON `undb_reference_id_mapping` (`field_id`,`table_id`,`symmetric_field_id`,`foreign_table_id`);--> statement-breakpoint
 CREATE UNIQUE INDEX `share_unique_idx` ON `undb_share` (`target_type`,`target_id`);--> statement-breakpoint
 CREATE INDEX `table_base_id_idx` ON `undb_table` (`base_id`);--> statement-breakpoint
 CREATE UNIQUE INDEX `table_name_unique_idx` ON `undb_table` (`name`,`base_id`);--> statement-breakpoint

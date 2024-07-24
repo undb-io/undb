@@ -15,6 +15,7 @@ import type {
   WithForeignRollupFieldSpec,
   WithNewFieldSpecification,
   WithoutFieldSpecification,
+  WithTableForeignTablesSpec,
   WithUpdatedFieldSpecification,
 } from "./table-schema.specification"
 import type {
@@ -58,4 +59,5 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withNewForm(views: WithNewFormSpecification): void
   withForm(views: WithFormSpecification): void
   withForeignRollupField(spec: WithForeignRollupFieldSpec): void
+  withTableForeignTables(spec: WithTableForeignTablesSpec): void
 }
