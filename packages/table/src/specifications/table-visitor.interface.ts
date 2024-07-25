@@ -7,7 +7,7 @@ import type {
   WithNewFormSpecification,
 } from "./table-forms.specification"
 import type { TableIdSpecification, TableIdsSpecification } from "./table-id.specification"
-import type { TableNameSpecification } from "./table-name.specification"
+import type { TableNameSpecification, TableUniqueNameSpecification } from "./table-name.specification"
 import type { WithTableRLS } from "./table-rls.specification"
 import type {
   TableSchemaSpecification,
@@ -60,4 +60,5 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withForm(views: WithFormSpecification): void
   withForeignRollupField(spec: WithForeignRollupFieldSpec): void
   withTableForeignTables(spec: WithTableForeignTablesSpec): void
+  withTableUnqueName(spec: TableUniqueNameSpecification): void
 }

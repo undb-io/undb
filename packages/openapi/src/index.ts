@@ -3,6 +3,7 @@ import { z } from "@undb/zod"
 
 extendZodWithOpenApi(z)
 
+import type { Base } from "@undb/base"
 import type { RecordDO, TableDo } from "@undb/table"
 import {
   RECORD_COMPONENT,
@@ -20,23 +21,23 @@ import {
   updateRecord,
 } from "./openapi/record.openapi"
 
-export const createOpenApiSpec = (table: TableDo, record?: RecordDO) => {
+export const createOpenApiSpec = (base: Base, table: TableDo, record?: RecordDO) => {
   const registry = new OpenAPIRegistry()
 
   const recordSchema = createRecordComponent(table, record)
   registry.register(RECORD_COMPONENT, recordSchema)
 
-  registry.registerPath(getRecords(table, recordSchema))
-  registry.registerPath(getRecordById(table, recordSchema))
-  registry.registerPath(createRecord(table))
-  registry.registerPath(createRecords(table))
-  registry.registerPath(updateRecord(table))
-  registry.registerPath(bulkUpdateRecords(table))
-  registry.registerPath(duplicateRecordById(table))
-  registry.registerPath(bulkDuplicateRecords(table))
-  registry.registerPath(deleteRecordById(table))
-  registry.registerPath(bulkDeleteRecords(table))
-  registry.registerPath(recordSubscription(table))
+  registry.registerPath(getRecords(base, table, recordSchema))
+  registry.registerPath(getRecordById(base, table, recordSchema))
+  registry.registerPath(createRecord(base, table))
+  registry.registerPath(createRecords(base, table))
+  registry.registerPath(updateRecord(base, table))
+  registry.registerPath(bulkUpdateRecords(base, table))
+  registry.registerPath(duplicateRecordById(base, table))
+  registry.registerPath(bulkDuplicateRecords(base, table))
+  registry.registerPath(deleteRecordById(base, table))
+  registry.registerPath(bulkDeleteRecords(base, table))
+  registry.registerPath(recordSubscription(base, table))
 
   const generator = new OpenApiGeneratorV3(registry.definitions)
 

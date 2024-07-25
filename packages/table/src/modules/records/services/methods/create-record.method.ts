@@ -1,14 +1,16 @@
-import { TableIdVo } from "../../../../table-id.vo"
+import { Some } from "@undb/domain"
+import type { IUniqueTableDTO } from "../../../../dto"
+import { withUniqueTable } from "../../../../specifications"
 import { RecordDO, type ICreateRecordDTO } from "../../record"
 import type { RecordsService } from "../records.service"
 
 export async function createRecordMethod(
   this: RecordsService,
-  tableId: string,
+  t: IUniqueTableDTO,
   dto: ICreateRecordDTO,
 ): Promise<RecordDO> {
-  const id = new TableIdVo(tableId)
-  const table = (await this.tableRepository.findOneById(id)).expect("Table not found")
+  const spec = withUniqueTable(t).unwrap()
+  const table = (await this.tableRepository.findOne(Some(spec))).expect("Table not found")
 
   const record = RecordDO.create(table, dto)
   await this.repo.insert(table, record)

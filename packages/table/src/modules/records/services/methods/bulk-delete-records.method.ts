@@ -1,15 +1,17 @@
-import { TableIdVo } from "../../../../table-id.vo"
+import { Some } from "@undb/domain"
+import type { IUniqueTableDTO } from "../../../../dto"
+import { withUniqueTable } from "../../../../specifications"
 import { getSpec, replaceCondtionFieldNameWithFieldId } from "../../../schema/fields/condition"
 import { RecordComositeSpecification, RecordDO, type IBulkDeleteRecordsDTO } from "../../record"
 import type { RecordsService } from "../records.service"
 
 export async function bulkdeleteRecordsMethod(
   this: RecordsService,
-  tableId: string,
+  t: IUniqueTableDTO,
   dto: IBulkDeleteRecordsDTO,
 ): Promise<RecordDO[]> {
-  const id = new TableIdVo(tableId)
-  const table = (await this.tableRepository.findOneById(id)).expect("Table not found")
+  const ts = withUniqueTable(t).unwrap()
+  const table = (await this.tableRepository.findOne(Some(ts))).expect("Table not found")
 
   let filter = dto.filter
   if (dto.isOpenapi) {
@@ -18,7 +20,7 @@ export async function bulkdeleteRecordsMethod(
 
   const spec = getSpec(table.schema, filter).expect("Invalid filter") as RecordComositeSpecification
 
-  const records = await this.repo.find(table, spec)
+  const records = await this.repo.find(table, Some(spec))
 
   for (const record of records) {
     record.delete(table)

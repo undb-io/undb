@@ -7,6 +7,7 @@ import type {
   TableIdsSpecification,
   TableNameSpecification,
   TableSchemaSpecification,
+  TableUniqueNameSpecification,
   TableViewsSpecification,
   WithDuplicatedFieldSpecification,
   WithForeignRollupFieldSpec,
@@ -211,6 +212,9 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
     throw new Error("Method not implemented.")
   }
   withTableForeignTables(spec: WithTableForeignTablesSpec): void {
+    throw new Error("Method not implemented.")
+  }
+  withTableUnqueName(spec: TableUniqueNameSpecification): void {
     throw new Error("Method not implemented.")
   }
 }

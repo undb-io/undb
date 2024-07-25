@@ -8,6 +8,7 @@ import type {
   TableIdsSpecification,
   TableNameSpecification,
   TableSchemaSpecification,
+  TableUniqueNameSpecification,
   TableViewsSpecification,
   WithDuplicatedFieldSpecification,
   WithForeignRollupFieldSpec,
@@ -72,6 +73,13 @@ export class TableReferenceVisitor implements ITableSpecVisitor {
   withForm(views: WithFormSpecification): void {}
   withForeignRollupField(spec: WithForeignRollupFieldSpec): void {}
   withTableForeignTables(spec: WithTableForeignTablesSpec): void {}
+  withTableUnqueName(spec: TableUniqueNameSpecification): void {
+    this.sqb = this.sqb
+      .innerJoin("undb_base", "undb_table.base_id", "undb_base.id")
+      .where((eb) =>
+        eb.and([eb.eb("undb_base.name", "=", spec.baseName), eb.eb("undb_table.name", "=", spec.tableName)]),
+      )
+  }
   and(left: ISpecification, right: ISpecification): this {
     left.accept(this)
     right.accept(this)

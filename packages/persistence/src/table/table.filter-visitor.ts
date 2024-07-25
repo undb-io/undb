@@ -7,6 +7,7 @@ import type {
   TableIdsSpecification,
   TableNameSpecification,
   TableSchemaSpecification,
+  TableUniqueNameSpecification,
   TableViewsSpecification,
   WithDuplicatedFieldSpecification,
   WithForeignRollupFieldSpec,
@@ -142,4 +143,5 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
     const cond = this.eb.eb("id", "in", subQuery)
     this.addCond(cond)
   }
+  withTableUnqueName(spec: TableUniqueNameSpecification): void {}
 }

@@ -15,12 +15,12 @@
     "generate:db": "drizzle-kit generate --config drizzle.config.ts",
     "migrate:db": "drizzle-kit push --config drizzle.config.ts",
     "move-assets": "bun run ./scripts/move-assets.ts",
-    "prepare": "husky"
+    "prepare": "husky || echo 1"
   },
   "devDependencies": {
     "better-sqlite3": "^11.1.2",
-    "drizzle-kit": "^0.23.0",
     "husky": "^9.1.1",
+    "drizzle-kit": "^0.23.0",
     "lint-staged": "^15.2.7",
     "npm-run-all2": "^6.2.2",
     "prettier": "^3.3.3",

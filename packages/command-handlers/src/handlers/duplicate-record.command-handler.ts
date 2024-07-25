@@ -13,7 +13,7 @@ export class DuplicateRecordCommandHandler implements ICommandHandler<DuplicateR
   ) {}
 
   async execute(command: DuplicateRecordCommand): Promise<any> {
-    const record = await this.service.duplicateRecord(command.tableId, { id: command.id })
+    const record = await this.service.duplicateRecord(command, { id: command.id })
     return {
       recordId: record.id.value,
     }

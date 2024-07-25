@@ -13,6 +13,6 @@ export class CreateRecordsCommandHandler implements ICommandHandler<CreateRecord
   ) {}
 
   async execute(command: CreateRecordsCommand): Promise<any> {
-    await this.service.createRecords(command.tableId, command.records)
+    await this.service.createRecords(command, command.records)
   }
 }

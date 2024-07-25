@@ -117,6 +117,21 @@ export class TableRepository implements ITableRepository {
     return tbs.map((t) => this.mapper.toDo(t))
   }
 
+  async findOne(spec: Option<TableComositeSpecification>): Promise<Option<TableDo>> {
+    const tb = await this.qb
+      .selectFrom("undb_table")
+      .selectAll()
+      .$if(spec.isSome(), (qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
+      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb).handle(spec))
+      .executeTakeFirst()
+
+    if (!tb) {
+      return None
+    }
+
+    return Some(this.mapper.toDo(tb))
+  }
+
   async findOneById(id: TableId): Promise<Option<TableDo>> {
     const spec = Some(new TableIdSpecification(id))
     const tb = await this.qb

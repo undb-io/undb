@@ -14,7 +14,9 @@ export const getRecordsOutput = z.object({
 export type IGetRecordsOutput = z.infer<typeof getRecordsOutput>
 
 export class GetRecordsQuery extends Query implements IGetRecordsQuery {
-  public readonly tableId: string
+  public readonly tableId?: string
+  public readonly baseName?: string
+  public readonly tableName?: string
   public readonly viewId?: string
   public readonly filters?: IViewFilterGroup
   public readonly q?: string
@@ -24,6 +26,8 @@ export class GetRecordsQuery extends Query implements IGetRecordsQuery {
   constructor(props: QueryProps<IGetRecordsQuery>) {
     super()
     this.tableId = props.tableId
+    this.baseName = props.baseName
+    this.tableName = props.tableName
     this.viewId = props.viewId
     this.filters = props.filters
     this.q = props.q

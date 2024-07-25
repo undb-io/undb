@@ -15,7 +15,7 @@ export class BulkUpdateRecordsCommandHandler
   ) {}
 
   async execute(command: BulkUpdateRecordsCommand): Promise<IBulkUpdateRecordsCommandOutput> {
-    const records = await this.service.bulkUpdateRecords(command.tableId, {
+    const records = await this.service.bulkUpdateRecords(command, {
       filter: command.filter,
       values: command.values,
       isOpenapi: command.isOpenapi,

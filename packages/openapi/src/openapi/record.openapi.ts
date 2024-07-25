@@ -1,4 +1,5 @@
 import type { RouteConfig } from "@asteasolutions/zod-to-openapi"
+import type { Base } from "@undb/base"
 import { RecordDO, recordId, type TableDo } from "@undb/table"
 import { z, type ZodTypeAny } from "@undb/zod"
 import { objectify } from "radash"
@@ -36,10 +37,10 @@ export const createRecordComponent = (table: TableDo, record?: RecordDO) => {
     .openapi(RECORD_COMPONENT)
 }
 
-export const getRecords = (table: TableDo, recordSchema: ZodTypeAny): RouteConfig => {
+export const getRecords = (base: Base, table: TableDo, recordSchema: ZodTypeAny): RouteConfig => {
   return {
     method: "get",
-    path: `/tables/${table.id.value}/records`,
+    path: `/bases/${base.name.value}/tables/${table.name.value}/records`,
     description: `Get ${table.name.value} records`,
     summary: `Get ${table.name.value} records`,
     tags: [RECORD_COMPONENT],
@@ -59,10 +60,10 @@ export const getRecords = (table: TableDo, recordSchema: ZodTypeAny): RouteConfi
   }
 }
 
-export const getRecordById = (table: TableDo, recordSchema: ZodTypeAny): RouteConfig => {
+export const getRecordById = (base: Base, table: TableDo, recordSchema: ZodTypeAny): RouteConfig => {
   return {
     method: "get",
-    path: `/tables/${table.id.value}/records/{recordId}`,
+    path: `/bases/${base.name.value}/tables/${table.name.value}/records/{recordId}`,
     description: `Get ${table.name.value} record by id`,
     summary: `Get ${table.name.value} record by id`,
     tags: [RECORD_COMPONENT],
@@ -86,10 +87,10 @@ export const getRecordById = (table: TableDo, recordSchema: ZodTypeAny): RouteCo
   }
 }
 
-export const createRecord = (table: TableDo): RouteConfig => {
+export const createRecord = (base: Base, table: TableDo): RouteConfig => {
   return {
     method: "post",
-    path: `/tables/${table.id.value}/records`,
+    path: `/bases/${base.name.value}/tables/${table.name.value}/records`,
     description: `Create ${table.name.value} record`,
     summary: `Create ${table.name.value} record`,
     tags: [RECORD_COMPONENT],
@@ -113,10 +114,10 @@ export const createRecord = (table: TableDo): RouteConfig => {
   }
 }
 
-export const createRecords = (table: TableDo): RouteConfig => {
+export const createRecords = (base: Base, table: TableDo): RouteConfig => {
   return {
     method: "post",
-    path: `/tables/${table.id.value}/records/bulk`,
+    path: `/bases/${base.name.value}/tables/${table.name.value}/records/bulk`,
     description: `Bulk create ${table.name.value} record`,
     summary: `Bulk create ${table.name.value} record`,
     tags: [RECORD_COMPONENT],
@@ -152,10 +153,10 @@ export const createRecords = (table: TableDo): RouteConfig => {
   }
 }
 
-export const updateRecord = (table: TableDo): RouteConfig => {
+export const updateRecord = (base: Base, table: TableDo): RouteConfig => {
   return {
     method: "patch",
-    path: `/tables/${table.id.value}/records/{recordId}`,
+    path: `/bases/${base.name.value}/tables/${table.name.value}/records/{recordId}`,
     description: `Update ${table.name.value} record`,
     summary: `Update ${table.name.value} record`,
     tags: [RECORD_COMPONENT],
@@ -182,10 +183,10 @@ export const updateRecord = (table: TableDo): RouteConfig => {
   }
 }
 
-export const bulkUpdateRecords = (table: TableDo): RouteConfig => {
+export const bulkUpdateRecords = (base: Base, table: TableDo): RouteConfig => {
   return {
     method: "patch",
-    path: `/tables/${table.id.value}/records`,
+    path: `/bases/${base.name.value}/tables/${table.name.value}/records`,
     description: `Bulk update ${table.name.value} records`,
     summary: `Bulk update ${table.name.value} records`,
     tags: [RECORD_COMPONENT],
@@ -218,10 +219,10 @@ export const bulkUpdateRecords = (table: TableDo): RouteConfig => {
   }
 }
 
-export const duplicateRecordById = (table: TableDo): RouteConfig => {
+export const duplicateRecordById = (base: Base, table: TableDo): RouteConfig => {
   return {
     method: "post",
-    path: `/tables/${table.id.value}/records/{recordId}/duplicate`,
+    path: `/bases/${base.name.value}/tables/${table.name.value}/records/{recordId}/duplicate`,
     description: `Duplicate ${table.name.value} record by id`,
     summary: `Duplicate ${table.name.value} record by id`,
     tags: [RECORD_COMPONENT],
@@ -245,10 +246,10 @@ export const duplicateRecordById = (table: TableDo): RouteConfig => {
   }
 }
 
-export const deleteRecordById = (table: TableDo): RouteConfig => {
+export const deleteRecordById = (base: Base, table: TableDo): RouteConfig => {
   return {
     method: "delete",
-    path: `/tables/${table.id.value}/records/{recordId}`,
+    path: `/bases/${base.name.value}/tables/${table.name.value}/records/{recordId}`,
     description: `Delete ${table.name.value} record by id`,
     summary: `Delete ${table.name.value} record by id`,
     tags: [RECORD_COMPONENT],
@@ -265,10 +266,10 @@ export const deleteRecordById = (table: TableDo): RouteConfig => {
   }
 }
 
-export const bulkDeleteRecords = (table: TableDo): RouteConfig => {
+export const bulkDeleteRecords = (base: Base, table: TableDo): RouteConfig => {
   return {
     method: "delete",
-    path: `/tables/${table.id.value}/records`,
+    path: `/bases/${base.name.value}/tables/${table.name.value}/records`,
     description: `Bulk delete ${table.name.value} records`,
     summary: `Bulk delete ${table.name.value} records`,
     tags: [RECORD_COMPONENT],
@@ -298,10 +299,10 @@ export const bulkDeleteRecords = (table: TableDo): RouteConfig => {
   }
 }
 
-export const recordSubscription = (table: TableDo): RouteConfig => {
+export const recordSubscription = (base: Base, table: TableDo): RouteConfig => {
   return {
     method: "get",
-    path: `/tables/${table.id.value}/subscription`,
+    path: `/bases/${base.name.value}/tables/${table.name.value}/subscription`,
     description: `Subscribe ${table.name.value} record events`,
     summary: `Subscribe ${table.name.value} record events`,
     tags: [RECORD_COMPONENT, "Subscription"],
@@ -321,10 +322,10 @@ export const recordSubscription = (table: TableDo): RouteConfig => {
   }
 }
 
-export const bulkDuplicateRecords = (table: TableDo): RouteConfig => {
+export const bulkDuplicateRecords = (base: Base, table: TableDo): RouteConfig => {
   return {
     method: "post",
-    path: `/tables/${table.id.value}/records/duplicate`,
+    path: `/bases/${base.name.value}/tables/${table.name.value}/records/duplicate`,
     description: `Bulk duplicate ${table.name.value} records`,
     summary: `Bulk duplicate ${table.name.value} records`,
     tags: [RECORD_COMPONENT],

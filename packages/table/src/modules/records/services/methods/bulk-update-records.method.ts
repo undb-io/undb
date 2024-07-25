@@ -1,16 +1,17 @@
-import type { Option } from "@undb/domain"
-import { TableIdVo } from "../../../../table-id.vo"
+import { Some, type Option } from "@undb/domain"
+import type { IUniqueTableDTO } from "../../../../dto"
+import { withUniqueTable } from "../../../../specifications"
 import { getSpec, replaceCondtionFieldNameWithFieldId } from "../../../schema/fields/condition"
 import { RecordComositeSpecification, RecordDO, type IBulkUpdateRecordsDTO } from "../../record"
 import type { RecordsService } from "../records.service"
 
 export async function bulkUpdateRecordsMethod(
   this: RecordsService,
-  tableId: string,
+  t: IUniqueTableDTO,
   dto: IBulkUpdateRecordsDTO,
 ): Promise<RecordDO[]> {
-  const id = new TableIdVo(tableId)
-  const table = (await this.tableRepository.findOneById(id)).expect("Table not found")
+  const ts = withUniqueTable(t).unwrap()
+  const table = (await this.tableRepository.findOne(Some(ts))).expect("Table not found")
 
   let filter = dto.filter
   if (dto.isOpenapi) {
@@ -23,7 +24,7 @@ export async function bulkUpdateRecordsMethod(
     throw new Error("Invalid fjjilter")
   }
 
-  const records = await this.repo.find(table, spec.unwrap())
+  const records = await this.repo.find(table, spec)
   if (records.length === 0) {
     return []
   }

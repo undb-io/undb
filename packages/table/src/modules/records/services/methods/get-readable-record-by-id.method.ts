@@ -1,5 +1,5 @@
 import { None, Option, Some } from "@undb/domain"
-import { TableIdVo } from "../../../../table-id.vo"
+import { withUniqueTable } from "../../../../specifications"
 import type { IGetRecordByIdDTO } from "../../dto"
 import { RecordIdVO, type IRecordReadableValueDTO } from "../../record"
 import { recordToReadable } from "../../record.util"
@@ -9,8 +9,8 @@ export async function getReadableRecordById(
   this: RecordsQueryService,
   dto: IGetRecordByIdDTO,
 ): Promise<Option<IRecordReadableValueDTO>> {
-  const tableId = new TableIdVo(dto.tableId)
-  const table = (await this.tableRepository.findOneById(tableId)).expect("Table not found")
+  const spec = withUniqueTable(dto).unwrap()
+  const table = (await this.tableRepository.findOne(Some(spec))).expect("Table not found")
 
   const record = (await this.repo.findOneById(table, new RecordIdVO(dto.id), None)).into(undefined)
   return record ? Some(recordToReadable(table, record)) : None

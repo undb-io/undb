@@ -13,6 +13,6 @@ export class UpdateRecordCommandHandler implements ICommandHandler<UpdateRecordC
   ) {}
 
   async execute(command: UpdateRecordCommand): Promise<any> {
-    await this.service.updateRecord(command.tableId, { id: command.id, values: command.values })
+    await this.service.updateRecord(command, { id: command.id, values: command.values })
   }
 }

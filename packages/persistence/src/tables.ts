@@ -185,7 +185,7 @@ export const workspaceMember = sqliteTable("workspace_member", {
 
 export const baseTable = sqliteTable("base", {
   id: text("id").notNull().primaryKey(),
-  name: text("name").notNull(),
+  name: text("name").notNull().unique(),
   createdAt: text("created_at")
     .notNull()
     .default(sql`(CURRENT_TIMESTAMP)`),

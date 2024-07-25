@@ -1,5 +1,5 @@
 import { None, Some, type PaginatedDTO } from "@undb/domain"
-import { TableIdVo } from "../../../../table-id.vo"
+import { withUniqueTable } from "../../../../specifications/table-name.specification"
 import { ViewIdVo } from "../../../views"
 import type { IGetRecordsDTO } from "../../dto"
 import { buildQuery, type IRecordReadableValueDTO } from "../../record"
@@ -10,8 +10,8 @@ export async function getReadableRecords(
   this: RecordsQueryService,
   dto: IGetRecordsDTO,
 ): Promise<PaginatedDTO<IRecordReadableValueDTO>> {
-  const tableId = new TableIdVo(dto.tableId)
-  const table = (await this.tableRepository.findOneById(tableId)).expect("Table not found")
+  const spec = withUniqueTable(dto).expect("Invalid unique table specification")
+  const table = (await this.tableRepository.findOne(Some(spec))).expect("Table not found")
   const viewId = dto.viewId ? Some(new ViewIdVo(dto.viewId)) : None
 
   const query = buildQuery(table, dto)

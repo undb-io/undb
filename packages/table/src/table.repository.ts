@@ -11,6 +11,7 @@ export interface ITableRepository {
   deleteOneById(table: TableDo): Promise<void>
 
   find(spec: Option<TableComositeSpecification>): Promise<TableDo[]>
+  findOne(spec: Option<TableComositeSpecification>): Promise<Option<TableDo>>
   findOneById(id: TableId): Promise<Option<TableDo>>
   findManyByIds(ids: TableId[]): Promise<TableDo[]>
 }

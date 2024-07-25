@@ -1,4 +1,5 @@
 import { singleton } from "@undb/di"
+import type { IUniqueTableDTO } from "../../../dto"
 import type { ITableRepository } from "../../../table.repository"
 import { injectTableRepository } from "../../../table.repository.provider"
 import {
@@ -23,14 +24,14 @@ import { duplicateRecordMethod } from "./methods/duplicate-record.method"
 import { updateRecordMethod } from "./methods/update-record.method"
 
 export interface IRecordsService {
-  createRecord(tableId: string, dto: ICreateRecordDTO): Promise<RecordDO>
-  createRecords(tableId: string, dto: ICreateRecordDTO[]): Promise<RecordDO[]>
-  updateRecord(tableId: string, dto: IUpdateRecordDTO): Promise<RecordDO>
-  bulkUpdateRecords(tableId: string, dto: IBulkUpdateRecordsDTO): Promise<RecordDO[]>
-  deleteRecord(tableId: string, dto: IDeleteRecordDTO): Promise<RecordDO>
-  bulkDeleteRecords(tableId: string, dto: IBulkDeleteRecordsDTO): Promise<RecordDO[]>
-  duplicateRecord(tableId: string, dto: IDuplicateRecordDTO): Promise<RecordDO>
-  bulkDuplicateRecords(tableId: string, dto: IBulkDuplicateRecordsDTO): Promise<RecordDO[]>
+  createRecord(table: IUniqueTableDTO, dto: ICreateRecordDTO): Promise<RecordDO>
+  createRecords(table: IUniqueTableDTO, dto: ICreateRecordDTO[]): Promise<RecordDO[]>
+  updateRecord(table: IUniqueTableDTO, dto: IUpdateRecordDTO): Promise<RecordDO>
+  bulkUpdateRecords(table: IUniqueTableDTO, dto: IBulkUpdateRecordsDTO): Promise<RecordDO[]>
+  deleteRecord(table: IUniqueTableDTO, dto: IDeleteRecordDTO): Promise<RecordDO>
+  bulkDeleteRecords(table: IUniqueTableDTO, dto: IBulkDeleteRecordsDTO): Promise<RecordDO[]>
+  duplicateRecord(table: IUniqueTableDTO, dto: IDuplicateRecordDTO): Promise<RecordDO>
+  bulkDuplicateRecords(table: IUniqueTableDTO, dto: IBulkDuplicateRecordsDTO): Promise<RecordDO[]>
 }
 
 @singleton()

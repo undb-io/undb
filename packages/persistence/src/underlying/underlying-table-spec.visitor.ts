@@ -7,6 +7,7 @@ import type {
   TableIdsSpecification,
   TableNameSpecification,
   TableSchemaSpecification,
+  TableUniqueNameSpecification,
   TableViewsSpecification,
   UserField,
   WithDuplicatedFieldSpecification,
@@ -185,6 +186,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
   withViewColor(viewColor: WithViewColor): void {}
   withViewSort(viewSort: WithViewSort): void {}
   withViewAggregate(viewColor: WithViewAggregate): void {}
+  withTableUnqueName(spec: TableUniqueNameSpecification): void {}
   and(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
     left.accept(this)
     right.accept(this)
