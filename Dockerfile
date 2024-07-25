@@ -19,9 +19,6 @@ ENV NODE_ENV=production
 ENV PORT=3000
 RUN bun run build
 
-RUN rm -rf node_modules
-RUN bun install --production
-
 # Add Tini init-system
 ENV TINI_VERSION v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static /tini
@@ -34,7 +31,6 @@ ENV PORT=3000
 
 WORKDIR /usr/src/app
 COPY --from=prerelease /usr/src/app/apps/backend/undb .
-COPY --from=prerelease /usr/src/app/node_modules node_modules
 COPY --from=prerelease /usr/src/app/apps/backend/drizzle ./drizzle
 COPY --from=prerelease /usr/src/app/apps/frontend/dist ./dist
 COPY --from=prerelease /tini /tini
@@ -42,5 +38,5 @@ COPY --from=prerelease /tini /tini
 # run the app
 EXPOSE 3000/tcp
 ENTRYPOINT ["/tini", "--"]
-CMD [ "./bun", "apps/backend/src/index.ts" ]
+CMD [ "./undb" ]
 
