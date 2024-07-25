@@ -57,6 +57,7 @@
     "svelte-jsoneditor": "^0.23.7",
     "svelte-persisted-store": "^0.11.0",
     "sveltekit-search-params": "^2.1.2",
+    "svelvet": "^10.0.2",
     "tailwindcss": "^3.4.6",
     "timeago.js": "^4.0.2",
     "tslib": "^2.6.3",
