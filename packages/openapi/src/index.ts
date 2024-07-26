@@ -1,4 +1,9 @@
-import { OpenAPIRegistry, OpenApiGeneratorV3, extendZodWithOpenApi } from "@asteasolutions/zod-to-openapi"
+import {
+  OpenAPIRegistry,
+  OpenApiGeneratorV3,
+  extendZodWithOpenApi,
+  type RouteConfig,
+} from "@asteasolutions/zod-to-openapi"
 import { z } from "@undb/zod"
 
 extendZodWithOpenApi(z)
@@ -21,23 +26,44 @@ import {
   updateRecord,
 } from "./openapi/record.openapi"
 
+export const API_TOKEN_HEADER_NAME = "x-undb-api-token"
+
 export const createOpenApiSpec = (base: Base, table: TableDo, record?: RecordDO) => {
   const registry = new OpenAPIRegistry()
 
   const recordSchema = createRecordComponent(table, record)
   registry.register(RECORD_COMPONENT, recordSchema)
 
-  registry.registerPath(getRecords(base, table, recordSchema))
-  registry.registerPath(getRecordById(base, table, recordSchema))
-  registry.registerPath(createRecord(base, table))
-  registry.registerPath(createRecords(base, table))
-  registry.registerPath(updateRecord(base, table))
-  registry.registerPath(bulkUpdateRecords(base, table))
-  registry.registerPath(duplicateRecordById(base, table))
-  registry.registerPath(bulkDuplicateRecords(base, table))
-  registry.registerPath(deleteRecordById(base, table))
-  registry.registerPath(bulkDeleteRecords(base, table))
-  registry.registerPath(recordSubscription(base, table))
+  const routes: RouteConfig[] = [
+    getRecords(base, table, recordSchema),
+    getRecordById(base, table, recordSchema),
+    createRecord(base, table),
+    createRecords(base, table),
+    updateRecord(base, table),
+    bulkUpdateRecords(base, table),
+    duplicateRecordById(base, table),
+    bulkDuplicateRecords(base, table),
+    deleteRecordById(base, table),
+    bulkDeleteRecords(base, table),
+    recordSubscription(base, table),
+  ]
+
+  const bearerAuth = registry.registerComponent("securitySchemes", "bearerAuth", {
+    type: "http",
+    scheme: "bearer",
+    bearerFormat: "JWT",
+  })
+
+  const apiKeyAuth = registry.registerComponent("securitySchemes", "apiKeyAuth", {
+    type: "apiKey",
+    in: "header",
+    name: API_TOKEN_HEADER_NAME,
+  })
+
+  for (const route of routes) {
+    registry.registerPath(route)
+    route.security = [{ [bearerAuth.name]: [] }, { [apiKeyAuth.name]: [] }]
+  }
 
   const generator = new OpenApiGeneratorV3(registry.definitions)
 
