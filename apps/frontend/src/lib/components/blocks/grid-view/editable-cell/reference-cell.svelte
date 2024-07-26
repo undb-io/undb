@@ -3,7 +3,6 @@
   import ForeignRecordsPickerDropdown from "../../reference/foreign-records-picker-dropdown.svelte"
   import { Button } from "$lib/components/ui/button"
   import { writable } from "svelte/store"
-  import { onMount } from "svelte"
 
   export let tableId: string
   export let field: ReferenceField
@@ -14,11 +13,7 @@
   export let recordId: string
   export let onValueChange = (value: string[]) => {}
 
-  let selected = writable<string[]>(value)
-
-  onMount(() => {
-    selected.set(value ?? [])
-  })
+  $: selected = writable<string[]>(value)
 
   let hasValue = Array.isArray(value) && value.length > 0
   $: hasValueReactive = Array.isArray($selected) && $selected.length > 0

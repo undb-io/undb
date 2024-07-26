@@ -33,19 +33,19 @@
 
 <TableHeader />
 
-<main class="h-full flex-1 overflow-auto">
-  {#if !$tab || $tab === "data"}
-    <GridView {viewId} />
-  {:else if $tab === "form"}
-    <Forms />
-  {:else if $tab === "auth"}
-    <Auth />
-  {:else}
-    <Developer />
-  {/if}
-</main>
-
 {#key $table.id.value}
+  <main class="h-full flex-1 overflow-auto">
+    {#if !$tab || $tab === "data"}
+      <GridView {viewId} />
+    {:else if $tab === "form"}
+      <Forms />
+    {:else if $tab === "auth"}
+      <Auth />
+    {:else}
+      <Developer />
+    {/if}
+  </main>
+
   <CreateRecordSheet />
   <RecordDetailSheet />
   <ConfirmDeleteRecord />
