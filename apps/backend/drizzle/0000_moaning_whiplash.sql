@@ -1,3 +1,10 @@
+CREATE TABLE `undb_api_token` (
+	`id` text PRIMARY KEY NOT NULL,
+	`user_id` text NOT NULL,
+	`token` text NOT NULL,
+	FOREIGN KEY (`user_id`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
 CREATE TABLE `undb_audit` (
 	`id` text PRIMARY KEY NOT NULL,
 	`timestamp` integer NOT NULL,
@@ -123,8 +130,10 @@ CREATE TABLE `undb_workspace_member` (
 	FOREIGN KEY (`user_id`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `undb_api_token_user_id_unique` ON `undb_api_token` (`user_id`);--> statement-breakpoint
 CREATE INDEX `audit_table_id_idx` ON `undb_audit` (`table_id`);--> statement-breakpoint
 CREATE INDEX `audit_record_id_idx` ON `undb_audit` (`record_id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `undb_base_name_unique` ON `undb_base` (`name`);--> statement-breakpoint
 CREATE UNIQUE INDEX `undb_invitation_email_unique` ON `undb_invitation` (`email`);--> statement-breakpoint
 CREATE UNIQUE INDEX `reference_id_mapping_unique_idx` ON `undb_reference_id_mapping` (`field_id`,`table_id`,`symmetric_field_id`,`foreign_table_id`);--> statement-breakpoint
 CREATE UNIQUE INDEX `share_unique_idx` ON `undb_share` (`target_type`,`target_id`);--> statement-breakpoint

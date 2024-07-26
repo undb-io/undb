@@ -76,3 +76,5 @@ export const createOpenApiSpec = (base: Base, table: TableDo, record?: RecordDO)
     servers: [{ url: "/api" }],
   })
 }
+
+export * from "./api-token"

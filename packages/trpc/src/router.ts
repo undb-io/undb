@@ -2,6 +2,7 @@ import {
   BulkDeleteRecordsCommand,
   BulkDuplicateRecordsCommand,
   BulkUpdateRecordsCommand,
+  CreateApiTokenCommand,
   CreateBaseCommand,
   CreateRecordCommand,
   CreateRecordsCommand,
@@ -40,6 +41,7 @@ import {
   bulkUpdateRecordsCommandOutput,
   bulkdeleteRecordsCommand,
   bulkduplicateRecordsCommand,
+  createApiTokenCommand,
   createBaseCommand,
   createRecordCommand,
   createRecordsCommand,
@@ -274,6 +276,10 @@ const userRouter = t.router({
     .mutation(({ input }) => commandBus.execute(new UpdateAccountCommand(input))),
 })
 
+const apiTokenRouter = t.router({
+  create: p.input(createApiTokenCommand).mutation(({ input }) => commandBus.execute(new CreateApiTokenCommand(input))),
+})
+
 export const route = t.router({
   table: tableRouter,
   record: recordRouter,
@@ -282,6 +288,7 @@ export const route = t.router({
   share: shareRouter,
   authz: authzRouter,
   user: userRouter,
+  apiToken: apiTokenRouter,
 })
 
 export type AppRouter = typeof route

@@ -1,9 +1,55 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "23882a60-012e-40ac-9506-2b64ddf55445",
+  "id": "a774f0fa-eb76-486d-a19c-08e1ab3adf02",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "undb_api_token": {
+      "name": "undb_api_token",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "undb_api_token_user_id_unique": {
+          "name": "undb_api_token_user_id_unique",
+          "columns": ["user_id"],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "undb_api_token_user_id_undb_user_id_fk": {
+          "name": "undb_api_token_user_id_undb_user_id_fk",
+          "tableFrom": "undb_api_token",
+          "tableTo": "undb_user",
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "undb_audit": {
       "name": "undb_audit",
       "columns": {
@@ -120,7 +166,13 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "undb_base_name_unique": {
+          "name": "undb_base_name_unique",
+          "columns": ["name"],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {
         "undb_base_created_by_undb_user_id_fk": {
           "name": "undb_base_created_by_undb_user_id_fk",

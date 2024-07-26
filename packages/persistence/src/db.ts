@@ -5,6 +5,7 @@ import type { Insertable, Selectable } from "kysely"
 import { sqlite } from "./client"
 import { DrizzleLogger } from "./db.logger"
 import type {
+  apiTokenTable,
   audit,
   baseTable,
   invitations,
@@ -37,6 +38,7 @@ type UserTable = Kyselify<typeof users>
 type WorkspaceMemberTable = Kyselify<typeof workspaceMember>
 type InvitationTable = Kyselify<typeof invitations>
 type ReferenceIdMappingTable = Kyselify<typeof referenceIdMapping>
+type ApiTokenTable = Kyselify<typeof apiTokenTable>
 
 export interface Database {
   undb_table: TableTable
@@ -51,6 +53,7 @@ export interface Database {
   undb_workspace_member: WorkspaceMemberTable
   undb_invitation: InvitationTable
   undb_reference_id_mapping: ReferenceIdMappingTable
+  undb_api_token: ApiTokenTable
 }
 
 export type Table = Selectable<TableTable>
@@ -66,6 +69,7 @@ export type InsertWebhook = Insertable<WebhookTable>
 export type User = Selectable<UserTable>
 export type WorkspaceMember = Selectable<WorkspaceMemberTable>
 export type Invitation = Selectable<InvitationTable>
+export type ApiToken = Selectable<ApiTokenTable>
 
 export type InsertTableIdMapping = Insertable<TableIdMappingTable>
 export type InsertRollupIdMapping = Insertable<RollupIdMappingTable>

@@ -2,7 +2,7 @@
   import Button from "$lib/components/ui/button/button.svelte"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import * as Avatar from "$lib/components/ui/avatar"
-  import { LogOutIcon, SettingsIcon } from "lucide-svelte"
+  import { KeyIcon, LogOutIcon, SettingsIcon } from "lucide-svelte"
   import { createMutation } from "@tanstack/svelte-query"
 
   export let user: { username: string; userId: string }
@@ -43,6 +43,10 @@
       <DropdownMenu.Item href="/account/profile">
         <SettingsIcon class="mr-2 h-4 w-4" />
         Account Settings
+      </DropdownMenu.Item>
+      <DropdownMenu.Item href="/account/token">
+        <KeyIcon class="mr-2 h-4 w-4" />
+        Api Token
       </DropdownMenu.Item>
     </DropdownMenu.Group>
   </DropdownMenu.Content>
