@@ -18,21 +18,21 @@
     <Tabs.List class="bg-background absolute bottom-0 left-1/2 -translate-x-1/2 transform pb-0">
       <Tabs.Trigger
         value="openapi"
-        class="data-[state=active]:border-primary shadow-none data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:shadow-none"
+        class="data-[state=active]:border-primary pb-2 shadow-none data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:shadow-none"
       >
         <Code2Icon class="text-muted-foreground mr-2 h-4 w-4" />
         OpenAPI
       </Tabs.Trigger>
       <Tabs.Trigger
         value="webhook"
-        class="data-[state=active]:border-primary shadow-none data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:shadow-none"
+        class="data-[state=active]:border-primary pb-2 shadow-none data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:shadow-none"
       >
         <WebhookIcon class="text-muted-foreground mr-2 h-4 w-4" />
         Webhook
       </Tabs.Trigger>
       <Tabs.Trigger
         value="relations"
-        class="data-[state=active]:border-primary shadow-none data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:shadow-none"
+        class="data-[state=active]:border-primary pb-2 shadow-none data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:shadow-none"
       >
         <WaypointsIcon class="text-muted-foreground mr-2 h-4 w-4" />
         Relations

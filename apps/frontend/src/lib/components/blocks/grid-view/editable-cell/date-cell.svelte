@@ -67,7 +67,7 @@
           value={internalDate}
           onValueChange={(v) => {
             if (v) {
-              value = v.toString()
+              value = v.toDate("UTC").toISOString()
             } else {
               value = undefined
             }
