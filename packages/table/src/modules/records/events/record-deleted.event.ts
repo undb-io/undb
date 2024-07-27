@@ -3,6 +3,8 @@ import { z } from "@undb/zod"
 import { tableId } from "../../../table-id.vo"
 import type { TableDo } from "../../../table.do"
 import { RecordDO, recordDTO, recordId } from "../record"
+import { getTableMeta } from "./record-event.service"
+import { recordEventTableMeta } from "./record-events-meta"
 
 export const RECORD_DELETED_EVENT = "record.deleted" as const
 
@@ -12,6 +14,7 @@ export const recordDeletedEvent = z.object({
 })
 
 export const recordDeletedMeta = z.object({
+  table: recordEventTableMeta,
   record: recordDTO,
 })
 
@@ -33,6 +36,7 @@ export class RecordDeletedEvent extends BaseEvent<
         tableId: table.id.value,
       },
       {
+        table: getTableMeta(table),
         record: record.toJSON(),
       },
     )

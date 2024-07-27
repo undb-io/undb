@@ -3,6 +3,7 @@ import { z } from "@undb/zod"
 import { tableId } from "../../../table-id.vo"
 import type { TableDo } from "../../../table.do"
 import { readableRecordDTO, RecordDO, recordDTO, recordId } from "../record"
+import { getTableMeta } from "./record-event.service"
 import { recordEventTableMeta } from "./record-events-meta"
 
 export const RECORD_CREATED_EVENT = "record.created" as const
@@ -37,9 +38,7 @@ export class RecordCreatedEvent extends BaseEvent<
         record: record.toReadable(table),
       },
       {
-        table: {
-          name: table.name.value,
-        },
+        table: getTableMeta(table),
         record: record.toJSON(),
       },
     )
@@ -53,9 +52,7 @@ export class RecordCreatedEvent extends BaseEvent<
         record: record.toReadable(table),
       },
       {
-        table: {
-          name: this.meta.table.name,
-        },
+        table: getTableMeta(table),
         record: record.toJSON(),
       },
     )

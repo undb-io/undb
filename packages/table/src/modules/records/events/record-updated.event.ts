@@ -3,6 +3,7 @@ import { z } from "@undb/zod"
 import { tableId } from "../../../table-id.vo"
 import type { TableDo } from "../../../table.do"
 import { RecordDO, readableRecordDTO, recordDTO, recordId, type IReadableRecordDTO } from "../record"
+import { getTableMeta } from "./record-event.service"
 import { recordEventTableMeta } from "./record-events-meta"
 
 export const RECORD_UPDATED_EVENT = "record.updated" as const
@@ -39,9 +40,7 @@ export class RecordUpdatedEvent extends BaseEvent<
         record,
       },
       {
-        table: {
-          name: table.name.value,
-        },
+        table: getTableMeta(table),
         record: recordDo.toJSON(),
       },
     )
@@ -49,7 +48,8 @@ export class RecordUpdatedEvent extends BaseEvent<
 
   enrich(table: TableDo, record: RecordDO): RecordUpdatedEvent {
     const fieldNames = Object.keys(this.payload.record.values)
-    const fieldIds = fieldNames.map((name) => table.schema.getFieldByName(name).unwrap().id.value)
+    const fields = fieldNames.map((name) => table.schema.getFieldByName(name).unwrap())
+    const fieldIds = fields.map((field) => field.id.value)
 
     return new RecordUpdatedEvent(
       {
@@ -59,9 +59,7 @@ export class RecordUpdatedEvent extends BaseEvent<
         record: record.toReadable(table, new Set(fieldIds)),
       },
       {
-        table: {
-          name: this.meta.table.name,
-        },
+        table: getTableMeta(table, fields),
         record: { ...record.toJSON(), id: this.payload.id },
       },
     )
