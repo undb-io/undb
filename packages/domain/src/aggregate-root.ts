@@ -7,6 +7,10 @@ export abstract class AggregateRoot<E extends BaseEvent> {
     return this.#domainEvents
   }
 
+  set domainEvents(events: E[]) {
+    this.#domainEvents = events
+  }
+
   protected addDomainEvent(event: E) {
     this.#domainEvents.push(event)
   }

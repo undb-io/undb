@@ -8,6 +8,7 @@ import {
   RecordDO,
   TableIdVo,
   UPDATED_BY_TYPE,
+  enrichRecord,
   injectRecordOutboxService,
   injectTableRepository,
   type Field,
@@ -79,6 +80,10 @@ export class RecordRepository implements IRecordRepository {
     for (const s of sql) {
       await trx.executeQuery(s)
     }
+
+    const inserted = (await this.findOneById(table, record.id)).expect("Record not found after insert")
+    enrichRecord(table, record, inserted)
+
     await this.outboxService.save(record)
   }
 
@@ -108,6 +113,27 @@ export class RecordRepository implements IRecordRepository {
     for (const s of sql) {
       await trx.executeQuery(s)
     }
+
+    const inserted = await this.findByIds(
+      table,
+      records.map((r) => r.id),
+    ).then((records) => {
+      const map = new Map<string, RecordDO>()
+      for (const record of records) {
+        map.set(record.id.value, record)
+      }
+      return map
+    })
+
+    for (const record of records) {
+      const insertedRecord = inserted.get(record.id.value)
+      if (!insertedRecord) {
+        continue
+      }
+
+      enrichRecord(table, record, insertedRecord)
+    }
+
     await this.outboxService.saveMany(records)
   }
 
@@ -189,6 +215,9 @@ export class RecordRepository implements IRecordRepository {
       await trx.executeQuery(s)
     }
 
+    const updated = (await this.findOneById(table, record.id)).expect("Record not found after update")
+    enrichRecord(table, record, updated)
+
     await this.outboxService.save(record)
   }
 
@@ -225,7 +254,7 @@ export class RecordRepository implements IRecordRepository {
       }
     }
 
-    await trx
+    const updated = await trx
       .updateTable(t.name)
       .where((eb) => {
         if (records.length) {
@@ -245,6 +274,12 @@ export class RecordRepository implements IRecordRepository {
       await trx.executeQuery(s)
     }
 
+    if (records.length) {
+      const updated = (await this.findOneById(table, records[0].id)).expect("Record not found after update")
+      for (const record of records) {
+        enrichRecord(table, record, updated)
+      }
+    }
     await this.outboxService.saveMany(records)
   }
 

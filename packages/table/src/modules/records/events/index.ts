@@ -16,3 +16,5 @@ export * from "./refine-record-events"
 export const recordEvents = [RECORD_CREATED_EVENT, RECORD_DELETED_EVENT, RECORD_UPDATED_EVENT] as const
 
 export type RECORD_EVENTS = (typeof recordEvents)[number]
+
+export * from "./record-event.service"

@@ -32,10 +32,13 @@ export class RecordDisplayValuesVO extends ValueObject {
     return new RecordDisplayValuesVO(values)
   }
 
-  public toReadable(table: TableDo): IRecordReadableDisplayValueDTO {
+  public toReadable(table: TableDo, fields: Set<string>): IRecordReadableDisplayValueDTO {
     const readable: IRecordReadableDisplayValueDTO = {}
 
     for (const [id, value] of Object.entries(this.values)) {
+      if (!fields.has(id)) {
+        continue
+      }
       const field = table.schema.getFieldById(new FieldIdVo(id)).into(null)
       if (!field) continue
 

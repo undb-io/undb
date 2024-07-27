@@ -80,12 +80,15 @@ export class RecordValuesVO extends ValueObject {
     return values
   }
 
-  toReadable(table: TableDo): IRecordReadableValueDTO {
+  toReadable(table: TableDo, fieldIds: Set<string>): IRecordReadableValueDTO {
     const schema = table.schema
 
     const values: IRecordReadableValueDTO = {}
 
     for (const [id, value] of Object.entries(this.values)) {
+      if (!fieldIds.has(id)) {
+        continue
+      }
       const field = schema.getFieldById(new FieldIdVo(id))
       if (field.isNone()) continue
 

@@ -98,11 +98,11 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
 
     const spec = andOptions(...specs) as Option<RecordComositeSpecification>
     if (spec.isSome()) {
-      const previousValues = this.values.getValues(updatedFields)
+      const previous = this.toReadable(table, updatedFields)
       spec.unwrap().mutate(this)
-      const values = this.values.getValues(updatedFields)
+      const record = this.toReadable(table, updatedFields)
 
-      const event = RecordUpdatedEvent.create(table, previousValues, values, this)
+      const event = RecordUpdatedEvent.create(table, previous, record, this)
       this.addDomainEvent(event)
     }
 
@@ -114,9 +114,9 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
     this.addDomainEvent(event)
   }
 
-  toReadable(table: TableDo): IReadableRecordDTO {
-    const values = this.values.toReadable(table)
-    const displayValues = this.displayValues?.toReadable(table)
+  toReadable(table: TableDo, fields = new Set(table.schema.fields.map((f) => f.id.value))): IReadableRecordDTO {
+    const values = this.values.toReadable(table, fields)
+    const displayValues = this.displayValues?.toReadable(table, fields)
     return {
       values,
       displayValues,

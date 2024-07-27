@@ -47,8 +47,8 @@
 
       <div class="flex items-center gap-2">
         <div class="flex items-center space-x-2">
-          <Switch id="enabled" bind:checked={webhook.enabled} on:click={updateWebhook} />
-          <Label for="enabled">Enabled</Label>
+          <Switch size="sm" id={"enabled" + webhook.id} bind:checked={webhook.enabled} on:click={updateWebhook} />
+          <Label class="text-xs" for={"enabled" + webhook.id}>Enabled</Label>
         </div>
 
         <button>

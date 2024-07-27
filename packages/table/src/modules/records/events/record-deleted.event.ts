@@ -1,4 +1,4 @@
-import { BaseEvent, type IEventJSON } from "@undb/domain"
+import { BaseEvent } from "@undb/domain"
 import { z } from "@undb/zod"
 import { tableId } from "../../../table-id.vo"
 import type { TableDo } from "../../../table.do"
@@ -36,5 +36,9 @@ export class RecordDeletedEvent extends BaseEvent<
         record: record.toJSON(),
       },
     )
+  }
+
+  enrich(table: TableDo, record: RecordDO): RecordDeletedEvent {
+    throw new Error("Method not implemented.")
   }
 }

@@ -2,18 +2,20 @@ import { BaseEvent } from "@undb/domain"
 import { z } from "@undb/zod"
 import { tableId } from "../../../table-id.vo"
 import type { TableDo } from "../../../table.do"
-import { RecordDO, RecordValuesVO, recordDTO, recordId, recordValues } from "../record"
+import { RecordDO, readableRecordDTO, recordDTO, recordId, type IReadableRecordDTO } from "../record"
+import { recordEventTableMeta } from "./record-events-meta"
 
 export const RECORD_UPDATED_EVENT = "record.updated" as const
 
 export const recordUpdatedEvent = z.object({
   id: recordId,
   tableId: tableId,
-  previousValues: recordValues,
-  values: recordValues,
+  previous: readableRecordDTO,
+  record: readableRecordDTO,
 })
 
 export const recordUpdatedMeta = z.object({
+  table: recordEventTableMeta,
   record: recordDTO,
 })
 
@@ -28,16 +30,39 @@ export class RecordUpdatedEvent extends BaseEvent<
 > {
   name = RECORD_UPDATED_EVENT
 
-  static create(table: TableDo, previousValues: RecordValuesVO, values: RecordValuesVO, record: RecordDO) {
+  static create(table: TableDo, previous: IReadableRecordDTO, record: IReadableRecordDTO, recordDo: RecordDO) {
     return new this(
       {
-        id: record.id.value,
+        id: recordDo.id.value,
         tableId: table.id.value,
-        previousValues: previousValues.toJSON(),
-        values: values.toJSON(),
+        previous,
+        record,
       },
       {
-        record: record.toJSON(),
+        table: {
+          name: table.name.value,
+        },
+        record: recordDo.toJSON(),
+      },
+    )
+  }
+
+  enrich(table: TableDo, record: RecordDO): RecordUpdatedEvent {
+    const fieldNames = Object.keys(this.payload.record.values)
+    const fieldIds = fieldNames.map((name) => table.schema.getFieldByName(name).unwrap().id.value)
+
+    return new RecordUpdatedEvent(
+      {
+        id: this.payload.id,
+        tableId: table.id.value,
+        previous: this.payload.previous,
+        record: record.toReadable(table, new Set(fieldIds)),
+      },
+      {
+        table: {
+          name: this.meta.table.name,
+        },
+        record: { ...record.toJSON(), id: this.payload.id },
       },
     )
   }

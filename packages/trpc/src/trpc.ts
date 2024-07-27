@@ -52,10 +52,13 @@ export const p = t.procedure
   })
   .use(async (ctx) => {
     if (ctx.type === "mutation") {
-      return await qb.transaction().execute(async (tx) => {
-        startTransaction(tx)
-        return await ctx.next()
-      })
+      return await qb
+        .transaction()
+        .setIsolationLevel("read committed")
+        .execute(async (tx) => {
+          startTransaction(tx)
+          return await ctx.next()
+        })
     } else {
       return await ctx.next()
     }

@@ -18,7 +18,9 @@ export type IRecordReadableValueDTO = z.infer<typeof recordReadableValueDTO>
 export const recordReadableDisplayValueDTO = z.record(fieldName, z.any())
 export type IRecordReadableDisplayValueDTO = z.infer<typeof recordReadableDisplayValueDTO>
 
-export type IReadableRecordDTO = {
-  values: IRecordReadableValueDTO
-  displayValues?: IRecordReadableDisplayValueDTO
-}
+export const readableRecordDTO = z.object({
+  values: recordReadableValueDTO,
+  displayValues: recordReadableDisplayValueDTO.optional(),
+})
+
+export type IReadableRecordDTO = z.infer<typeof readableRecordDTO>

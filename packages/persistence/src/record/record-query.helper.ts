@@ -2,6 +2,7 @@ import { singleton } from "@undb/di"
 import type { IPagination, Option } from "@undb/domain"
 import { FieldIdVo, type Field, type IViewSort, type RecordComositeSpecification, type TableDo } from "@undb/table"
 import { sql, type ExpressionBuilder, type SelectQueryBuilder } from "kysely"
+import { getAnonymousTransaction } from "../ctx"
 import type { IRecordQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
@@ -25,8 +26,10 @@ export class RecordQueryHelper {
     visibleFields: Field[],
     spec: Option<RecordComositeSpecification>,
   ) {
-    let qb = new RecordQueryCreatorVisitor(this.qb, table, foreignTables, visibleFields).create()
-    const visitor = new RecordQuerySpecCreatorVisitor(this.qb, qb, table)
+    const trx = getAnonymousTransaction() ?? this.qb
+
+    let qb = new RecordQueryCreatorVisitor(trx, table, foreignTables, visibleFields).create()
+    const visitor = new RecordQuerySpecCreatorVisitor(trx, qb, table)
     if (spec.isSome()) {
       spec.unwrap().accept(visitor)
     }

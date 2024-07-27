@@ -23,7 +23,7 @@ export class Realtime {
       .use(
         cron({
           name: "realtime",
-          pattern: Patterns.EVERY_10_HOURS,
+          pattern: Patterns.EVERY_5_SECONDS,
           run: async () => {
             await this.reply.scan()
           },

@@ -30,12 +30,12 @@ export function refineRecordEvents(
       return isSatisfied ? Some(event) : None
     })
     .with({ name: "record.created" }, (event) => {
-      const record = RecordDO.fromJSON(table, event.payload)
+      const record = RecordDO.fromJSON(table, event.meta.record)
       const isSatisfied = spec.unwrap().isSatisfiedBy(record)
       return isSatisfied ? Some(event) : None
     })
     .with({ name: "record.updated" }, (event) => {
-      const record = RecordDO.fromJSON(table, event.payload)
+      const record = RecordDO.fromJSON(table, event.meta.record)
       const isSatisfied = spec.unwrap().isSatisfiedBy(record)
       return isSatisfied ? Some(event) : None
     })

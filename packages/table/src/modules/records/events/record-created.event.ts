@@ -2,19 +2,31 @@ import { BaseEvent } from "@undb/domain"
 import { z } from "@undb/zod"
 import { tableId } from "../../../table-id.vo"
 import type { TableDo } from "../../../table.do"
-import { RecordDO, recordId, recordValues } from "../record"
+import { readableRecordDTO, RecordDO, recordDTO, recordId } from "../record"
+import { recordEventTableMeta } from "./record-events-meta"
 
 export const RECORD_CREATED_EVENT = "record.created" as const
 
 export const recordCreatedEvent = z.object({
   id: recordId,
   tableId: tableId,
-  values: recordValues,
+  record: readableRecordDTO,
 })
+
+export const recordCreatedMeta = z.object({
+  table: recordEventTableMeta,
+  record: recordDTO,
+})
+
+export type IRecordCreatedMeta = z.infer<typeof recordCreatedMeta>
 
 export type IRecordCreatedEvent = z.infer<typeof recordCreatedEvent>
 
-export class RecordCreatedEvent extends BaseEvent<IRecordCreatedEvent, typeof RECORD_CREATED_EVENT> {
+export class RecordCreatedEvent extends BaseEvent<
+  IRecordCreatedEvent,
+  typeof RECORD_CREATED_EVENT,
+  IRecordCreatedMeta
+> {
   name = RECORD_CREATED_EVENT
 
   static create(table: TableDo, record: RecordDO) {
@@ -22,9 +34,30 @@ export class RecordCreatedEvent extends BaseEvent<IRecordCreatedEvent, typeof RE
       {
         id: record.id.value,
         tableId: table.id.value,
-        values: record.values.toJSON(),
+        record: record.toReadable(table),
       },
-      undefined,
+      {
+        table: {
+          name: table.name.value,
+        },
+        record: record.toJSON(),
+      },
+    )
+  }
+
+  enrich(table: TableDo, record: RecordDO): RecordCreatedEvent {
+    return new RecordCreatedEvent(
+      {
+        id: record.id.value,
+        tableId: table.id.value,
+        record: record.toReadable(table),
+      },
+      {
+        table: {
+          name: this.meta.table.name,
+        },
+        record: record.toJSON(),
+      },
     )
   }
 }
