@@ -7,7 +7,7 @@
   import { defaults, superForm } from "sveltekit-superforms"
   import * as Form from "$lib/components/ui/form/index.js"
   import * as Select from "$lib/components/ui/select/index.js"
-  import { RLSIdVO, rlsDTO, type MaybeConditionGroup, parseValidViewFilter } from "@undb/table"
+  import { RLSIdVO, rlsDTO, type MaybeConditionGroup, parseValidViewFilter, TableRLS } from "@undb/table"
   import { Switch } from "$lib/components/ui/switch"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { writable } from "svelte/store"
@@ -18,8 +18,10 @@
 
   const table = getTable()
 
+  export let rls: TableRLS
+
   const setTableRLSMutation = createMutation({
-    mutationKey: ["table", $table.id.value, "rls", "create"],
+    mutationKey: ["table", $table.id.value, "rls", "update"],
     mutationFn: trpc.table.rls.set.mutate,
     onSuccess(data, variables, context) {
       toast.success("RLS created")
@@ -33,13 +35,13 @@
   const form = superForm(
     defaults(
       {
-        id: RLSIdVO.create().value,
-        name: "",
-        enabled: true,
-        allow: true,
-        action: "read",
-        subject: "any",
-        condition: undefined,
+        id: rls.id.value,
+        name: rls.name,
+        enabled: rls.enabled,
+        allow: rls.allow,
+        action: rls.action.value,
+        subject: rls.subject.value,
+        condition: rls.condition.into(undefined)?.toJSON(),
       },
       zodClient(rlsDTO),
     ),
@@ -75,10 +77,12 @@
       }
     : undefined
 
-  let enableContion = false
+  let enableContion = rls.condition.isSome()
   let enableUpdateCondition = false
 
-  const condition = writable<MaybeConditionGroup<ZodUndefined> | undefined>()
+  const condition = writable<MaybeConditionGroup<ZodUndefined> | undefined>(
+    rls.condition.into(undefined)?.toMaybeConditionGroup(),
+  )
   $: validCondition = $condition ? parseValidViewFilter($table.schema, $condition) : undefined
   $: validCondition, ($formData.condition = validCondition)
 
