@@ -23,7 +23,33 @@ export class ApiTokenQueryRepository implements IApiTokenQueryRepository {
       })
       .execute()
 
-    return tokens.map((token) => ({ id: token.id, userId: token.user_id, token: token.token }))
+    return tokens.map((token) => ({
+      id: token.id,
+      userId: token.user_id,
+      name: token.name,
+      token: token.token,
+    }))
+  }
+
+  async findOne(spec: ApiTokenSpecification): Promise<Option<IApiTokenDTO>> {
+    const token = await this.qb
+      .selectFrom("undb_api_token")
+      .selectAll()
+      .where((eb) => {
+        const visitor = new ApiTokenFilterVisitor(eb)
+        spec.accept(visitor)
+        return visitor.cond
+      })
+      .executeTakeFirst()
+
+    return token
+      ? Some({
+          id: token.id,
+          userId: token.user_id,
+          name: token.name,
+          token: token.token,
+        })
+      : None
   }
   async findOneById(id: string): Promise<Option<IApiTokenDTO>> {
     const token = await this.qb
@@ -36,6 +62,11 @@ export class ApiTokenQueryRepository implements IApiTokenQueryRepository {
       return None
     }
 
-    return Some({ id: token.id, userId: token.user_id, token: token.token })
+    return Some({
+      id: token.id,
+      name: token.name,
+      userId: token.user_id,
+      token: token.token,
+    })
   }
 }

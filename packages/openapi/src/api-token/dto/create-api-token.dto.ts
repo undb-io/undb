@@ -1,6 +1,7 @@
 import { z } from "@undb/zod"
 
 export const createApiTokenDTO = z.object({
+  name: z.string(),
   userId: z.string(),
 })
 

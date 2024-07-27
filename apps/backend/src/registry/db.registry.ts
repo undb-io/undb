@@ -9,7 +9,7 @@ import {
 } from "@undb/authz"
 import { BASE_OUTBOX_SERVICE, BASE_QUERY_REPOSITORY, BASE_REPOSITORY } from "@undb/base"
 import { container } from "@undb/di"
-import { API_TOKEN_QUERY_REPOSITORY, API_TOKEN_REPOSITORY } from "@undb/openapi"
+import { API_TOKEN_QUERY_REPOSITORY, API_TOKEN_REPOSITORY, API_TOKEN_SERVICE, ApiTokenService } from "@undb/openapi"
 import {
   ApiTokenQueryRepository,
   ApiTokenRepository,
@@ -74,4 +74,5 @@ export const registerDb = () => {
   container.register(SHARE_QUERY_REPOSITORY, ShareQueryRepository)
   container.register(API_TOKEN_REPOSITORY, ApiTokenRepository)
   container.register(API_TOKEN_QUERY_REPOSITORY, ApiTokenQueryRepository)
+  container.register(API_TOKEN_SERVICE, ApiTokenService)
 }

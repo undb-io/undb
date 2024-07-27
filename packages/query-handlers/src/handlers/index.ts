@@ -1,5 +1,6 @@
 import { CountRecordsQueryHandler } from "./count-records.query-handler"
 import { GetAggregatesQueryHandler } from "./get-aggregates.query-handler"
+import { GetApiTokensQueryHandler } from "./get-api-tokens.query-handler"
 import { GetBaseQueryHandler } from "./get-base.query-handler"
 import { GetBasesQueryHandler } from "./get-bases.query-handler"
 import { GetInivitationsQueryHandler } from "./get-invitations.query-handler"
@@ -42,4 +43,5 @@ export const queryHandlers = [
   CountRecordsQueryHandler,
   GetRollupForeignTablesTablesQueryHandler,
   GetInivitationsQueryHandler,
+  GetApiTokensQueryHandler,
 ]

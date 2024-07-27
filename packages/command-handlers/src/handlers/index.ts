@@ -2,6 +2,7 @@ import { AcceptInvitationCommandHandler } from "./accept-invitation.command-hand
 import { BulkDeleteRecordsCommandHandler } from "./bulk-delete-records.command-handler"
 import { BulkDuplicateRecordsCommandHandler } from "./bulk-duplicate-records.command-handler"
 import { BulkUpdateRecordsCommandHandler } from "./bulk-update-records.command-handler"
+import { CreateApiTokenCommandHandler } from "./create-api-token.command-handler"
 import { CreateBaseCommandHandler } from "./create-base.command-handler"
 import { CreateRecordCommandHandler } from "./create-record.command-handler"
 import { CreateRecordsCommandHandler } from "./create-records.command-handler"
@@ -78,4 +79,5 @@ export const commandHandlers = [
   UpdateAccountCommandHandler,
   ExportViewCommandHandler,
   DeleteTableCommandHandler,
+  CreateApiTokenCommandHandler,
 ]

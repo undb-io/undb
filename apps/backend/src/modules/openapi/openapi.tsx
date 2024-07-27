@@ -8,16 +8,15 @@ import {
   DuplicateRecordCommand,
   UpdateRecordCommand,
 } from "@undb/commands"
-import { executionContext } from "@undb/context/server"
+import { executionContext, getCurrentUser } from "@undb/context/server"
 import { CommandBus, QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import { type ICommandBus, None, PaginatedDTO, type IQueryBus, Some } from "@undb/domain"
 import { createLogger } from "@undb/logger"
-import { createOpenApiSpec } from "@undb/openapi"
+import { createOpenApiSpec, type IApiTokenService, injectApiTokenService } from "@undb/openapi"
 import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
 import { GetReadableRecordByIdQuery, GetReadableRecordsQuery } from "@undb/queries"
 import {
-  TableIdVo,
   injectRecordRepository,
   injectTableRepository,
   withUniqueTable,
@@ -28,6 +27,8 @@ import {
 import Elysia, { t } from "elysia"
 import { withTransaction } from "../../db"
 import { type IBaseRepository, injectBaseRepository } from "@undb/base"
+import { injectUserService, type IUserService } from "@undb/user"
+import { injectWorkspaceMemberService, type IWorkspaceMemberService } from "@undb/authz"
 
 @singleton()
 export class OpenAPI {
@@ -48,6 +49,12 @@ export class OpenAPI {
     private readonly commandBus: ICommandBus,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
+    @injectApiTokenService()
+    private readonly apiTokenService: IApiTokenService,
+    @injectUserService()
+    private readonly userService: IUserService,
+    @injectWorkspaceMemberService()
+    private workspaceMemberService: IWorkspaceMemberService,
   ) {}
 
   public route() {
@@ -104,162 +111,197 @@ export class OpenAPI {
           params: t.Object({ baseName: t.String(), tableName: t.String() }),
         },
       )
-      .get(
-        "/records",
-        async (ctx) => {
-          const { baseName, tableName } = ctx.params
-          const result = (await this.queryBus.execute(
-            new GetReadableRecordsQuery({ baseName, tableName }),
-          )) as PaginatedDTO<IRecordReadableValueDTO>
-          return {
-            total: result.total,
-            records: result.values,
-          }
-        },
-        { params: t.Object({ baseName: t.String(), tableName: t.String() }) },
-      )
-      .get(
-        "/records/:recordId",
-        async (ctx) => {
-          const { baseName, tableName } = ctx.params
-          const result = await this.queryBus.execute(
-            new GetReadableRecordByIdQuery({ baseName, tableName, id: ctx.params.recordId }),
+      .group("/records", (app) => {
+        return app
+          .guard({
+            beforeHandle: async (context) => {
+              const user = getCurrentUser()
+              if (user.userId) {
+                return
+              } else {
+                const authorization = context.headers["Authorization"] ?? context.headers["authorization"]
+                const token = authorization?.replace("Bearer ", "")
+
+                this.logger.debug({ token }, "Checking Authorization token in openapi")
+
+                if (token) {
+                  const userId = await this.apiTokenService.verify(token)
+                  if (userId.isSome()) {
+                    const user = (await this.userService.findOneById(userId.unwrap())).unwrap()
+                    const member = (await this.workspaceMemberService.getWorkspaceMember(user.id, user.id)).unwrap()
+
+                    executionContext.enterWith({
+                      requestId: context.headers["x-request-id"] ?? context.headers["X-Request-ID"] ?? "",
+                      user: { userId: user?.id ?? null, email: user?.email, username: user?.username },
+                      member: { role: member?.value.role ?? null } ?? null,
+                    })
+                    return
+                  }
+                }
+              }
+
+              // throw 401 openapi error
+              context.set.status = 401
+              throw new Error("Unauthorized")
+            },
+          })
+          .get(
+            "/",
+            async (ctx) => {
+              const { baseName, tableName } = ctx.params
+              const result = (await this.queryBus.execute(
+                new GetReadableRecordsQuery({ baseName, tableName }),
+              )) as PaginatedDTO<IRecordReadableValueDTO>
+              return {
+                total: result.total,
+                records: result.values,
+              }
+            },
+            { params: t.Object({ baseName: t.String(), tableName: t.String() }) },
           )
-          return {
-            data: result,
-          }
-        },
-        { params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String() }) },
-      )
-      .post(
-        "/records",
-        async (ctx) => {
-          const { baseName, tableName } = ctx.params
-          return withTransaction(this.qb)(() => {
-            return this.commandBus.execute(new CreateRecordCommand({ baseName, tableName, values: ctx.body.values }))
-          })
-        },
-        {
-          params: t.Object({ baseName: t.String(), tableName: t.String() }),
-          body: t.Object({ values: t.Record(t.String(), t.Any()) }),
-        },
-      )
-      .post(
-        "/records/bulk",
-        async (ctx) => {
-          const { baseName, tableName } = ctx.params
-          return withTransaction(this.qb)(() => {
-            return this.commandBus.execute(new CreateRecordsCommand({ baseName, tableName, records: ctx.body.records }))
-          })
-        },
-        {
-          params: t.Object({ baseName: t.String(), tableName: t.String() }),
-          body: t.Object({ records: t.Array(t.Object({ id: t.Optional(t.String()), values: t.Any() })) }),
-        },
-      )
-      .patch(
-        "/records/:recordId",
-        async (ctx) => {
-          const { baseName, tableName } = ctx.params
-          return withTransaction(this.qb)(() => {
-            return this.commandBus.execute(
-              new UpdateRecordCommand({
-                tableName,
-                baseName,
-                id: ctx.params.recordId,
-                values: ctx.body.values,
+          .get(
+            "/:recordId",
+            async (ctx) => {
+              const { baseName, tableName } = ctx.params
+              const result = await this.queryBus.execute(
+                new GetReadableRecordByIdQuery({ baseName, tableName, id: ctx.params.recordId }),
+              )
+              return {
+                data: result,
+              }
+            },
+            { params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String() }) },
+          )
+          .post(
+            "/",
+            async (ctx) => {
+              const { baseName, tableName } = ctx.params
+              return withTransaction(this.qb)(() =>
+                this.commandBus.execute(new CreateRecordCommand({ baseName, tableName, values: ctx.body.values })),
+              )
+            },
+            {
+              params: t.Object({ baseName: t.String(), tableName: t.String() }),
+              body: t.Object({ values: t.Record(t.String(), t.Any()) }),
+            },
+          )
+          .post(
+            "/bulk",
+            async (ctx) => {
+              const { baseName, tableName } = ctx.params
+              return withTransaction(this.qb)(() =>
+                this.commandBus.execute(new CreateRecordsCommand({ baseName, tableName, records: ctx.body.records })),
+              )
+            },
+            {
+              params: t.Object({ baseName: t.String(), tableName: t.String() }),
+              body: t.Object({ records: t.Array(t.Object({ id: t.Optional(t.String()), values: t.Any() })) }),
+            },
+          )
+          .patch(
+            "/:recordId",
+            async (ctx) => {
+              const { baseName, tableName } = ctx.params
+              return withTransaction(this.qb)(() =>
+                this.commandBus.execute(
+                  new UpdateRecordCommand({
+                    tableName,
+                    baseName,
+                    id: ctx.params.recordId,
+                    values: ctx.body.values,
+                  }),
+                ),
+              )
+            },
+            {
+              params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String() }),
+              body: t.Object({ values: t.Record(t.String(), t.Any()) }),
+            },
+          )
+          .patch(
+            "/records",
+            async (ctx) => {
+              const { tableName, baseName } = ctx.params
+              return withTransaction(this.qb)(() =>
+                this.commandBus.execute(
+                  new BulkUpdateRecordsCommand({
+                    tableName,
+                    baseName,
+                    filter: ctx.body.filter,
+                    values: ctx.body.values,
+                    isOpenapi: true,
+                  }),
+                ),
+              )
+            },
+            {
+              params: t.Object({ baseName: t.String(), tableName: t.String() }),
+              body: t.Object({
+                filter: t.Any(),
+                values: t.Record(t.String(), t.Any()),
               }),
-            )
-          })
-        },
-        {
-          params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String() }),
-          body: t.Object({ values: t.Record(t.String(), t.Any()) }),
-        },
-      )
-      .patch(
-        "/records",
-        async (ctx) => {
-          const { tableName, baseName } = ctx.params
-          return withTransaction(this.qb)(() => {
-            return this.commandBus.execute(
-              new BulkUpdateRecordsCommand({
-                tableName,
-                baseName,
-                filter: ctx.body.filter,
-                values: ctx.body.values,
-                isOpenapi: true,
-              }),
-            )
-          })
-        },
-        {
-          params: t.Object({ baseName: t.String(), tableName: t.String() }),
-          body: t.Object({
-            filter: t.Any(),
-            values: t.Record(t.String(), t.Any()),
-          }),
-        },
-      )
-      .post(
-        "/records/:recordId/duplicate",
-        async (ctx) => {
-          const { baseName, tableName } = ctx.params
-          return withTransaction(this.qb)(() => {
-            return this.commandBus.execute(new DuplicateRecordCommand({ baseName, tableName, id: ctx.params.recordId }))
-          })
-        },
-        { params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String() }) },
-      )
-      .post(
-        "/records/duplicate",
-        async (ctx) => {
-          const { baseName, tableName } = ctx.params
-          return withTransaction(this.qb)(() => {
-            return this.commandBus.execute(
-              new BulkDuplicateRecordsCommand({
-                baseName,
-                tableName,
-                filter: ctx.body.filter,
-                isOpenapi: true,
-              }),
-            )
-          })
-        },
-        {
-          params: t.Object({ baseName: t.String(), tableName: t.String() }),
-          body: t.Object({ filter: t.Any() }),
-        },
-      )
-      .delete(
-        "/records/:recordId",
-        async (ctx) => {
-          const { baseName, tableName } = ctx.params
-          return withTransaction(this.qb)(() => {
-            return this.commandBus.execute(new DeleteRecordCommand({ baseName, tableName, id: ctx.params.recordId }))
-          })
-        },
-        { params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String() }) },
-      )
-      .delete(
-        "/records",
-        async (ctx) => {
-          const { baseName, tableName } = ctx.params
-          return withTransaction(this.qb)(() => {
-            return this.commandBus.execute(
-              new BulkDeleteRecordsCommand({
-                baseName,
-                tableName,
-                filter: ctx.body.filter,
-                isOpenapi: true,
-              }),
-            )
-          })
-        },
-        {
-          params: t.Object({ baseName: t.String(), tableName: t.String() }),
-          body: t.Object({ filter: t.Any() }),
-        },
-      )
+            },
+          )
+          .post(
+            "/:recordId/duplicate",
+            async (ctx) => {
+              const { baseName, tableName } = ctx.params
+              return withTransaction(this.qb)(() =>
+                this.commandBus.execute(new DuplicateRecordCommand({ baseName, tableName, id: ctx.params.recordId })),
+              )
+            },
+            { params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String() }) },
+          )
+          .post(
+            "/records/duplicate",
+            async (ctx) => {
+              const { baseName, tableName } = ctx.params
+              return withTransaction(this.qb)(() =>
+                this.commandBus.execute(
+                  new BulkDuplicateRecordsCommand({
+                    baseName,
+                    tableName,
+                    filter: ctx.body.filter,
+                    isOpenapi: true,
+                  }),
+                ),
+              )
+            },
+            {
+              params: t.Object({ baseName: t.String(), tableName: t.String() }),
+              body: t.Object({ filter: t.Any() }),
+            },
+          )
+          .delete(
+            "/:recordId",
+            async (ctx) => {
+              const { baseName, tableName } = ctx.params
+              return withTransaction(this.qb)(() =>
+                this.commandBus.execute(new DeleteRecordCommand({ baseName, tableName, id: ctx.params.recordId })),
+              )
+            },
+            { params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String() }) },
+          )
+          .delete(
+            "/",
+            async (ctx) => {
+              const { baseName, tableName } = ctx.params
+              return withTransaction(this.qb)(() =>
+                this.commandBus.execute(
+                  new BulkDeleteRecordsCommand({
+                    baseName,
+                    tableName,
+                    filter: ctx.body.filter,
+                    isOpenapi: true,
+                  }),
+                ),
+              )
+            },
+            {
+              params: t.Object({ baseName: t.String(), tableName: t.String() }),
+              body: t.Object({ filter: t.Any() }),
+            },
+          )
+      })
   }
 }

@@ -29,6 +29,7 @@ import { loggerPlugin } from "./plugins/logging"
 
 const auth = container.resolve(Auth)
 const web = container.resolve(Web)
+const openapi = container.resolve(OpenAPI)
 
 export const app = new Elysia()
   .use(
@@ -94,6 +95,7 @@ export const app = new Elysia()
   })
   .use(auth.route())
   .use(web.route())
+  .use(openapi.route())
   .guard(
     {
       beforeHandle(context) {
@@ -107,7 +109,6 @@ export const app = new Elysia()
       },
     },
     (app) => {
-      const openapi = container.resolve(OpenAPI)
       const realtime = container.resolve(Realtime)
       const graphql = container.resolve(Graphql)
       const file = container.resolve(FileService)
@@ -119,7 +120,6 @@ export const app = new Elysia()
           .use(trpc(route))
           .use(file.route())
           .use(graphql.route())
-          .use(openapi.route())
           .use(realtime.route())
           .use(table.route())
       )

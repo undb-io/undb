@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "a774f0fa-eb76-486d-a19c-08e1ab3adf02",
+  "id": "2c0243df-53f4-4aa4-bd52-17857ac6d208",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_api_token": {
@@ -11,6 +11,13 @@
           "name": "id",
           "type": "text",
           "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
           "notNull": true,
           "autoincrement": false
         },

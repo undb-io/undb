@@ -14,6 +14,7 @@ export const injectApiTokenRepository = () => inject(API_TOKEN_REPOSITORY)
 
 export interface IApiTokenQueryRepository {
   find(spec: ApiTokenSpecification): Promise<IApiTokenDTO[]>
+  findOne(spec: ApiTokenSpecification): Promise<Option<IApiTokenDTO>>
   findOneById(id: string): Promise<Option<IApiTokenDTO>>
 }
 

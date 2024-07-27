@@ -83,6 +83,7 @@ import type { ICommandBus, IQueryBus } from "@undb/domain"
 import {
   CountRecordsQuery,
   GetAggregatesQuery,
+  GetApiTokensQuery,
   GetRecordByIdQuery,
   GetRecordsQuery,
   GetTableQuery,
@@ -91,6 +92,7 @@ import {
   countRecordsOutput,
   countRecordsQuery,
   getAggregatesQuery,
+  getApiTokensQuery,
   getRecordByIdQuery,
   getRecordsQuery,
   getTableQuery,
@@ -278,6 +280,7 @@ const userRouter = t.router({
 
 const apiTokenRouter = t.router({
   create: p.input(createApiTokenCommand).mutation(({ input }) => commandBus.execute(new CreateApiTokenCommand(input))),
+  list: p.input(getApiTokensQuery).query(({ input }) => queryBus.execute(new GetApiTokensQuery(input))),
 })
 
 export const route = t.router({

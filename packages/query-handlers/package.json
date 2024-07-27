@@ -12,6 +12,7 @@
   "dependencies": {
     "@undb/authz": "workspace:*",
     "@undb/base": "workspace:*",
+    "@undb/openapi": "workspace:*",
     "@undb/cqrs": "workspace:*",
     "@undb/di": "workspace:*",
     "@undb/logger": "workspace:*",

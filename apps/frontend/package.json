@@ -31,6 +31,7 @@
     "@undb/domain": "workspace:*",
     "@undb/i18n": "workspace:*",
     "@undb/queries": "workspace:*",
+    "@undb/openapi": "workspace:*",
     "@undb/share": "workspace:*",
     "@undb/table": "workspace:*",
     "@undb/trpc": "workspace:*",

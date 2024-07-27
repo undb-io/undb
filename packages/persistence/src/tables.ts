@@ -228,9 +228,10 @@ export const invitations = sqliteTable("invitation", {
 
 export const apiTokenTable = sqliteTable("api_token", {
   id: text("id").notNull().primaryKey(),
+  name: text("name").notNull(),
   userId: text("user_id")
     .notNull()
     .references(() => users.id)
     .unique(),
-  token: text("token").notNull(),
+  token: text("token").notNull().unique(),
 })

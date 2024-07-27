@@ -21,6 +21,7 @@
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^7.1.1",
     "@undb/di": "workspace:*",
+    "@undb/domain": "workspace:*",
     "@undb/table": "workspace:*",
     "@undb/zod": "workspace:*",
     "radash": "^12.1.0"

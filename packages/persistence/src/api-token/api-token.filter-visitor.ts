@@ -12,7 +12,8 @@ export class ApiTokenFilterVisitor extends AbstractQBVisitor<ApiTokenDo> impleme
     this.addCond(cond)
   }
   withToken(s: WithApiTokenToken): void {
-    throw new Error("Method not implemented.")
+    const cond = this.eb.eb("undb_api_token.token", "=", s.token.value)
+    this.addCond(cond)
   }
   withUserId(s: WithApiTokenUserId): void {
     const cond = this.eb.eb("undb_api_token.user_id", "=", s.userId)

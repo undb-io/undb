@@ -15,6 +15,7 @@ export class ApiTokenRepository implements IApiTokenRepository {
       .values({
         id: token.id.value,
         user_id: token.userId,
+        name: token.name,
         token: token.token.value,
       })
       .execute()

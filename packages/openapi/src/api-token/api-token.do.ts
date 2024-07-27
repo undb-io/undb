@@ -5,6 +5,7 @@ import type { ICreateApiTokenDTO } from "./dto"
 
 export class ApiTokenDo extends AggregateRoot<any> {
   id!: ApiTokenId
+  name!: string
   userId!: string
   token!: ApiTokenToken
 
@@ -12,6 +13,7 @@ export class ApiTokenDo extends AggregateRoot<any> {
     const token = new ApiTokenDo()
 
     token.id = ApiTokenId.create()
+    token.name = dto.name
     token.userId = dto.userId
     token.token = ApiTokenToken.create()
 
