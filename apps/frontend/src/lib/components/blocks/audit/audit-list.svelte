@@ -48,7 +48,7 @@
             {@const previousValues = audit.detail.previousValues}
             {@const newValues = audit.detail.values}
             <div class="bg-muted space-y-1 rounded-sm p-2 text-sm shadow-inner">
-              {#each Object.entries(newValues) as [fieldId, value]}
+              {#each Object.entries(newValues ?? {}) as [fieldId, value]}
                 {@const field = $table.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined)}
                 {#if field}
                   {@const previousValue = previousValues[fieldId]}

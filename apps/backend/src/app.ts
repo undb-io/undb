@@ -16,6 +16,7 @@ import { AuditEventHandler } from "@undb/audit"
 import { executionContext } from "@undb/context/server"
 import { container } from "@undb/di"
 import { Graphql } from "@undb/graphql"
+import { createLogger } from "@undb/logger"
 import { PubSubContext } from "@undb/realtime"
 import { IRecordEvent } from "@undb/table"
 import { route } from "@undb/trpc"
@@ -53,6 +54,7 @@ export const app = new Elysia()
     set.headers["Server-Timing"] = `handle;dur=${(await end) - begin}`
   })
   .onStart(async () => {
+    const logger = createLogger("app onstart")
     const pubsub = container.resolve(PubSubContext)
     const webhookEventHandler = container.resolve(WebhookEventsHandler)
     const auditEventHandler = container.resolve(AuditEventHandler)
@@ -63,11 +65,15 @@ export const app = new Elysia()
 
       // TODO: request id
       executionContext.enterWith({ requestId: "", user: { userId: operatorId } })
-      await all([
-        //
-        webhookEventHandler.handle(event),
-        auditEventHandler.handle(event),
-      ])
+      try {
+        await all([
+          //
+          webhookEventHandler.handle(event),
+          auditEventHandler.handle(event),
+        ])
+      } catch (error) {
+        logger.error(error)
+      }
     }
   })
   .use(

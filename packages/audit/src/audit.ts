@@ -8,6 +8,7 @@ export class Audit {
   public id!: AuditId
   public timestamp!: DateVO
   public detail!: Option<AuditDetail>
+  public meta!: Option<Record<string, unknown>>
   public op!: RECORD_EVENTS
   public tableId!: TableId
   public recordId!: RecordId

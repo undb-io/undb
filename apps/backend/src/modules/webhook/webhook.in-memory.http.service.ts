@@ -13,6 +13,10 @@ export class WebhookInMemoryHttpService implements IWebhookHttpService {
       method: webhook.method.unpack(),
       json: mesasge.body,
       headers: mesasge.headers,
+      retry: {
+        limit: 10,
+        backoffLimit: 1000,
+      },
     })
   }
 }

@@ -161,6 +161,7 @@ export const audit = sqliteTable(
     id: text("id").notNull().primaryKey(),
     timestamp: integer("timestamp", { mode: "timestamp_ms" }).notNull(),
     detail: text("detail", { mode: "json" }),
+    meta: text("meta", { mode: "json" }),
     op: text("op").notNull().$type<RECORD_EVENTS>(),
     tableId: text("table_id").notNull(),
     recordId: text("record_id").notNull(),
