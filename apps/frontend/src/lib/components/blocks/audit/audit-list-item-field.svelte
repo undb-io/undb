@@ -18,13 +18,13 @@
 {#if !getIsFieldHasDisplayValue(field.type)}
   {#if previousValue}
     <div>
-      <span class="border border-red-200 bg-red-100 px-1">
+      <span class="rounded-sm border border-red-400 bg-red-100 px-1.5">
         {previousValue}
       </span>
     </div>
   {/if}
   <div>
-    <span class="border border-green-200 bg-green-100 px-1">
+    <span class="rounded-sm border border-green-400 bg-green-100 px-1.5">
       {value}
     </span>
   </div>
