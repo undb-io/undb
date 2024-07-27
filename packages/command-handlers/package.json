@@ -11,12 +11,12 @@
   },
   "dependencies": {
     "@undb/base": "workspace:*",
-    "@undb/openapi": "workspace:*",
     "@undb/commands": "workspace:*",
     "@undb/context": "workspace:*",
     "@undb/cqrs": "workspace:*",
     "@undb/di": "workspace:*",
-    "@undb/user": "workspace:*",
-    "@undb/logger": "workspace:*"
+    "@undb/logger": "workspace:*",
+    "@undb/openapi": "workspace:*",
+    "@undb/user": "workspace:*"
   }
 }

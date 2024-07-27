@@ -10,8 +10,8 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@undb/domain": "workspace:*",
     "@undb/base": "workspace:*",
+    "@undb/domain": "workspace:*",
     "@undb/openapi": "workspace:*",
     "@undb/share": "workspace:*",
     "@undb/table": "workspace:*",
