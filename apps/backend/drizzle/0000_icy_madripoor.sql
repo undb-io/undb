@@ -10,6 +10,7 @@ CREATE TABLE `undb_audit` (
 	`id` text PRIMARY KEY NOT NULL,
 	`timestamp` integer NOT NULL,
 	`detail` text,
+	`meta` text,
 	`op` text NOT NULL,
 	`table_id` text NOT NULL,
 	`record_id` text NOT NULL,
@@ -132,6 +133,7 @@ CREATE TABLE `undb_workspace_member` (
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `undb_api_token_user_id_unique` ON `undb_api_token` (`user_id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `undb_api_token_token_unique` ON `undb_api_token` (`token`);--> statement-breakpoint
 CREATE INDEX `audit_table_id_idx` ON `undb_audit` (`table_id`);--> statement-breakpoint
 CREATE INDEX `audit_record_id_idx` ON `undb_audit` (`record_id`);--> statement-breakpoint
 CREATE UNIQUE INDEX `undb_base_name_unique` ON `undb_base` (`name`);--> statement-breakpoint

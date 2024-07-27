@@ -192,6 +192,7 @@ export class Graphql {
         recordId: ID!
         op: String!
         detail: JSON
+        meta: JSON
       }
 
       type User {

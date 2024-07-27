@@ -1,13 +1,9 @@
 <script lang="ts">
-  import { getTable } from "$lib/store/table.store"
   import type { IAuditDTO } from "@undb/audit"
-  import { FieldIdVo } from "@undb/table"
-  import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
   import { format } from "timeago.js"
   import { GetRecordAuditsStore } from "$houdini"
   import { browser } from "$app/environment"
-
-  const table = getTable()
+  import AuditListItem from "./audit-list-item.svelte"
 
   export let recordId: string
 
@@ -45,32 +41,7 @@
           </div>
 
           {#if audit.detail}
-            {@const previousValues = audit.detail.previousValues}
-            {@const newValues = audit.detail.values}
-            <div class="bg-muted space-y-1 rounded-sm p-2 text-sm shadow-inner">
-              {#each Object.entries(newValues ?? {}) as [fieldId, value]}
-                {@const field = $table.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined)}
-                {#if field}
-                  {@const previousValue = previousValues[fieldId]}
-                  <div class="text-muted-foreground flex items-center gap-2">
-                    <FieldIcon {field} type={field.type} class="h-3 w-3" />
-                    {field.name.value}
-                  </div>
-                  {#if previousValue}
-                    <div>
-                      <span class="border border-red-200 bg-red-100 px-1">
-                        {previousValue}
-                      </span>
-                    </div>
-                  {/if}
-                  <div>
-                    <span class="border border-green-200 bg-green-100 px-1">
-                      {value}
-                    </span>
-                  </div>
-                {/if}
-              {/each}
-            </div>
+            <AuditListItem {audit} />
           {/if}
         {/if}
       {/each}

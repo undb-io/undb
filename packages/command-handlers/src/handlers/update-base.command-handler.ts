@@ -1,8 +1,8 @@
-import { injectBaseRepository, type IBaseRepository } from "@undb/base"
+import { BaseName, BaseNameShouldBeUnique, injectBaseRepository, WithBaseName, type IBaseRepository } from "@undb/base"
 import { UpdateBaseCommand } from "@undb/commands"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
-import type { ICommandHandler } from "@undb/domain"
+import { applyRules, type ICommandHandler } from "@undb/domain"
 import { createLogger } from "@undb/logger"
 
 @commandHandler(UpdateBaseCommand)
@@ -19,6 +19,11 @@ export class UpdateBaseCommandHandler implements ICommandHandler<UpdateBaseComma
     this.logger.debug(command)
 
     const base = (await this.repository.findOneById(command.id)).unwrap()
+
+    const nameSpec = new WithBaseName(BaseName.from(command.name))
+    const exists = await this.repository.findOne(nameSpec)
+
+    applyRules(new BaseNameShouldBeUnique(!!exists))
 
     const spec = base.$update(command)
 

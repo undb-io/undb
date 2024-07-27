@@ -6,6 +6,7 @@ import type { IBaseSpecification } from "./interface.js"
 
 export interface IBaseRepository {
   find(spec: IBaseSpecification): Promise<Base[]>
+  findOne(spec: IBaseSpecification): Promise<Option<Base>>
   findOneById(id: string): Promise<Option<Base>>
 
   insert(base: Base): Promise<void>

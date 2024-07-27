@@ -1,5 +1,5 @@
 import { createClient } from "@libsql/client"
 
 export const sqlite = createClient({
-  url: "libsql://localhost:8080?tls=0",
+  url: "http://127.0.0.1:8080",
 })

@@ -1,6 +1,7 @@
 type Audit {
   detail: JSON
   id: ID!
+  meta: JSON
   op: String!
   operatorId: ID!
   recordId: ID!

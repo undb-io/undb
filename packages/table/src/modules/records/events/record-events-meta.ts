@@ -5,9 +5,9 @@ import { fieldId, fieldName } from "../../schema"
 export const recordEventTableMeta = z.object({
   name: tableName,
   fields: z.record(
-    fieldId,
+    fieldName,
     z.object({
-      name: fieldName,
+      id: fieldId,
       type: z.string(),
     }),
   ),

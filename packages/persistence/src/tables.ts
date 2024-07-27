@@ -1,3 +1,4 @@
+import type { IAuditDetail } from "@undb/audit"
 import type { IInvitationStatus, IWorkspaceMemberRole, IWorkspaceMemberWithoutOwner } from "@undb/authz"
 import type { RECORD_EVENTS } from "@undb/table"
 import type { IWebhookMethod } from "@undb/webhook"
@@ -160,7 +161,7 @@ export const audit = sqliteTable(
   {
     id: text("id").notNull().primaryKey(),
     timestamp: integer("timestamp", { mode: "timestamp_ms" }).notNull(),
-    detail: text("detail", { mode: "json" }),
+    detail: text("detail", { mode: "json" }).$type<IAuditDetail>(),
     meta: text("meta", { mode: "json" }),
     op: text("op").notNull().$type<RECORD_EVENTS>(),
     tableId: text("table_id").notNull(),

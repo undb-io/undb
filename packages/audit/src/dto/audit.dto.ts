@@ -11,6 +11,7 @@ const baseAuditDTO = z.object({
 
   operatorId: z.string(),
   timestamp: z.string(),
+  meta: z.any(),
 })
 
 const recordCreatedAudit = baseAuditDTO.merge(
@@ -26,6 +27,8 @@ const recordUpdatedAudit = baseAuditDTO.merge(
     detail: recordUpdatedAuditDetail,
   }),
 )
+
+export type IRecordUpdatedAudit = z.infer<typeof recordUpdatedAudit>
 
 const recordDeletedAudit = baseAuditDTO.merge(
   z.object({

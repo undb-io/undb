@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "2c0243df-53f4-4aa4-bd52-17857ac6d208",
+  "id": "edabd687-cee9-498c-877c-41cf1f7afc67",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_api_token": {
@@ -41,6 +41,11 @@
           "name": "undb_api_token_user_id_unique",
           "columns": ["user_id"],
           "isUnique": true
+        },
+        "undb_api_token_token_unique": {
+          "name": "undb_api_token_token_unique",
+          "columns": ["token"],
+          "isUnique": true
         }
       },
       "foreignKeys": {
@@ -76,6 +81,13 @@
         },
         "detail": {
           "name": "detail",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "meta": {
+          "name": "meta",
           "type": "text",
           "primaryKey": false,
           "notNull": false,

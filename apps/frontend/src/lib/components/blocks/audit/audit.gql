@@ -7,5 +7,6 @@ query GetRecordAudits($recordId: ID!) {
     recordId
     op
     detail
+    meta
   }
 }

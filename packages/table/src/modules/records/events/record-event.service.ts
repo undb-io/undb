@@ -16,9 +16,9 @@ export function getTableMeta(table: TableDo, fields = table.schema.fields): IRec
     name: table.name.value,
     fields: objectify(
       fields,
-      (field) => field.id.value,
+      (field) => field.name.value,
       (field) => ({
-        name: field.name.value,
+        id: field.id.value,
         type: field.type,
       }),
     ),

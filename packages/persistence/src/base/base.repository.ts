@@ -29,6 +29,19 @@ export class BaseRepository implements IBaseRepository {
   find(spec: IBaseSpecification): Promise<Base[]> {
     throw new Error("Method not implemented.")
   }
+  async findOne(spec: IBaseSpecification): Promise<Option<Base>> {
+    const base = await this.qb
+      .selectFrom("undb_base")
+      .selectAll()
+      .where((eb) => {
+        const visitor = new BaseFilterVisitor(eb)
+        spec.accept(visitor)
+        return visitor.cond
+      })
+      .executeTakeFirst()
+
+    return base ? Some(this.mapper.toDo(base)) : None
+  }
   async findOneById(id: string): Promise<Option<Base>> {
     const spec = WithBaseId.fromString(id)
 

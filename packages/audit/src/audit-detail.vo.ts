@@ -1,10 +1,10 @@
 import { ValueObject } from "@undb/domain"
-import { recordValues } from "@undb/table"
+import { readableRecordDTO } from "@undb/table"
 import { z } from "zod"
 
 export const recordUpdatedAuditDetail = z.object({
-  previousValues: recordValues,
-  values: recordValues,
+  previous: readableRecordDTO,
+  record: readableRecordDTO,
 })
 
 export type IRecordUpdatedAuditDetail = z.infer<typeof recordUpdatedAuditDetail>
