@@ -20,11 +20,11 @@
   const mutation = createMutation({
     mutationFn: trpc.table.create.mutate,
     async onSuccess(data) {
-      closeModal(CREATE_TABLE_MODAL)
       await invalidate("undb:tables")
       await goto(`/t/${data}`)
       baseId.set(null)
       form.reset()
+      closeModal(CREATE_TABLE_MODAL)
     },
     onError(error) {
       toast.error(error.message)
