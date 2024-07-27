@@ -1,5 +1,4 @@
 <script lang="ts">
-  import type { IAuditDTO } from "@undb/audit"
   import { format } from "timeago.js"
   import { GetRecordAuditsStore } from "$houdini"
   import { browser } from "$app/environment"
@@ -10,7 +9,7 @@
   $: store = new GetRecordAuditsStore()
   $: browser && store.fetch({ variables: { recordId }, policy: "NetworkOnly" })
 
-  $: audits = ($store.data?.recordAudits ?? []) as IAuditDTO[]
+  $: audits = ($store.data?.recordAudits ?? []).filter((a) => !!a)
 </script>
 
 <div class="my-4 px-2">
@@ -24,7 +23,7 @@
         {#if audit.op === "record.created"}
           <div class="text-muted-foreground flex items-center justify-between text-xs">
             <span>
-              Record created by {audit.operatorId} on
+              Record created by {audit.operator.username} on
             </span>
             <span>
               {format(audit.timestamp)}
@@ -33,7 +32,7 @@
         {:else if audit.op === "record.updated"}
           <div class="text-muted-foreground flex items-center justify-between text-xs">
             <span>
-              Record updated by {audit.operatorId} on
+              Record updated by {audit.operator.username} on
             </span>
             <span>
               {format(audit.timestamp)}

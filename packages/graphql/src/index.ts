@@ -188,6 +188,7 @@ export class Graphql {
         id: ID!
         timestamp: String!
         operatorId: ID!
+        operator: User!
         tableId: ID!
         recordId: ID!
         op: String!
@@ -362,6 +363,12 @@ export class Graphql {
           // @ts-ignore
           share: async (form) => {
             return (await this.shareService.getShareByTarget({ type: "form", id: form.id })).into(null)
+          },
+        },
+        Audit: {
+          // @ts-ignore
+          operator: async (audit) => {
+            return (await this.userRepo.findOneById(audit.operatorId)).unwrap()
           },
         },
       },

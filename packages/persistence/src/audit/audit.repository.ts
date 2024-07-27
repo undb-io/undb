@@ -1,4 +1,5 @@
 import type { Audit, AuditSpecification, IAuditRepository } from "@undb/audit"
+import { getCurrentUserId } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import type { Option } from "@undb/domain"
 import type { IQueryBuilder } from "../qb"
@@ -17,9 +18,13 @@ export class AuditRepository implements IAuditRepository {
     throw new Error("Method not implemented.")
   }
   async insert(audit: Audit): Promise<void> {
+    const user = getCurrentUserId()
     const values = this.mapper.toEntity(audit)
 
-    await this.qb.insertInto("undb_audit").values(values).execute()
+    await this.qb
+      .insertInto("undb_audit")
+      .values({ ...values, operator_id: user })
+      .execute()
   }
   updateOneById(id: string, spec: AuditSpecification): Promise<void> {
     throw new Error("Method not implemented.")

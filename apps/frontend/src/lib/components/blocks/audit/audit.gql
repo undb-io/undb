@@ -3,6 +3,10 @@ query GetRecordAudits($recordId: ID!) {
     id
     timestamp
     operatorId
+    operator {
+      username
+      email
+    }
     tableId
     recordId
     op

@@ -5,6 +5,10 @@ import { RecordEventFactory } from "@undb/table"
 export class ReplyEventFactory {
   static from(outbox: Outbox): Option<BaseEvent> {
     // TODO: just use date time timestamp
-    return RecordEventFactory.fromJSON({ ...outbox, timestamp: outbox.timestamp } as IEventJSON)
+    return RecordEventFactory.fromJSON({
+      ...outbox,
+      operatorId: outbox.operator_id,
+      timestamp: outbox.timestamp,
+    } as IEventJSON)
   }
 }

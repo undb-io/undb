@@ -22,7 +22,7 @@ export class AuditMapper implements Mapper<AuditDo, Audit, IAuditDTO> {
       op: domain.op,
       table_id: domain.tableId.value,
       record_id: domain.recordId.value,
-      operator_id: domain.operatorId! ?? "123",
+      operator_id: domain.operatorId!,
     }
   }
   toDTO(entity: Audit): IAuditDTO {

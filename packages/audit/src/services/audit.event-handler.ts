@@ -1,10 +1,10 @@
 import { inject, singleton } from "@undb/di"
 import type { IEventHandler } from "@undb/domain"
+import { createLogger } from "@undb/logger"
 import type { IRecordEvent } from "@undb/table"
 import { map } from "radash"
 import { AuditFactory } from "../audit.factory"
 import { AuditService } from "./audit.service"
-import { createLogger } from "@undb/logger"
 
 @singleton()
 export class AuditEventHandler implements IEventHandler<IRecordEvent> {

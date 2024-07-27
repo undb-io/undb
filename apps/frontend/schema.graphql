@@ -3,6 +3,7 @@ type Audit {
   id: ID!
   meta: JSON
   op: String!
+  operator: User!
   operatorId: ID!
   recordId: ID!
   tableId: ID!
