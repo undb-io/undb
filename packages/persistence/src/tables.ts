@@ -178,7 +178,6 @@ export const audit = sqliteTable(
 
 export const workspaceMember = sqliteTable("workspace_member", {
   id: text("id").notNull().primaryKey(),
-  workspaceId: text("workspace_id").notNull(),
   userId: text("user_id")
     .notNull()
     .references(() => users.id),

@@ -128,7 +128,7 @@ export class OpenAPI {
                   const userId = await this.apiTokenService.verify(token)
                   if (userId.isSome()) {
                     const user = (await this.userService.findOneById(userId.unwrap())).unwrap()
-                    const member = (await this.workspaceMemberService.getWorkspaceMember(user.id, user.id)).unwrap()
+                    const member = (await this.workspaceMemberService.getWorkspaceMember(user.id)).unwrap()
 
                     executionContext.enterWith({
                       requestId: context.headers["x-request-id"] ?? context.headers["X-Request-ID"] ?? "",

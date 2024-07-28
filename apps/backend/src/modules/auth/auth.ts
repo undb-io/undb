@@ -102,7 +102,7 @@ export class Auth {
       }
 
       const userId = user?.id!
-      const member = (await this.workspaceMemberService.getWorkspaceMember(userId, userId)).into(null)?.toJSON()
+      const member = (await this.workspaceMemberService.getWorkspaceMember(userId)).into(null)?.toJSON()
 
       return {
         user,
@@ -202,7 +202,7 @@ export class Auth {
                 })
                 .execute()
 
-              await this.workspaceMemberService.createMember(userId, userId, role)
+              await this.workspaceMemberService.createMember(userId, role)
             }
 
             const session = await lucia.createSession(userId, {})
@@ -210,7 +210,7 @@ export class Auth {
 
             const response = new Response()
             response.headers.set("Set-Cookie", sessionCookie.serialize())
-            response.headers.set("HX-Redirect", "/")
+            response.headers.set("HsX-Redirect", "/")
             return response
           },
           {

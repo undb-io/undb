@@ -126,7 +126,6 @@ CREATE TABLE `undb_webhook` (
 --> statement-breakpoint
 CREATE TABLE `undb_workspace_member` (
 	`id` text PRIMARY KEY NOT NULL,
-	`workspace_id` text NOT NULL,
 	`user_id` text NOT NULL,
 	`role` text NOT NULL,
 	FOREIGN KEY (`user_id`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action

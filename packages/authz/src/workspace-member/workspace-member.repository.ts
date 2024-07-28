@@ -6,7 +6,7 @@ import type { WorkspaceMemberComositeSpecification } from "./workspace-member.co
 
 export interface IWorkspaceMemberRepository {
   findOneById(id: string): Promise<WorkspaceMember>
-  findOneByUserIdAndWorkspaceId(userId: string, workspaceId: string): Promise<Option<WorkspaceMember>>
+  findOneByUserId(userId: string): Promise<Option<WorkspaceMember>>
 
   insert(member: WorkspaceMember): Promise<void>
   exists(email: string): Promise<boolean>

@@ -26,7 +26,7 @@ export class CreateBaseCommandHandler implements ICommandHandler<CreateBaseComma
     this.logger.debug(command)
 
     const nameSpec = new WithBaseName(BaseName.from(command.name))
-    const exists = await this.repository.findOne(nameSpec)
+    const exists = (await this.repository.findOne(nameSpec)).into(null)
 
     applyRules(new BaseNameShouldBeUnique(!!exists))
 

@@ -19,16 +19,11 @@ export class WorkspaceMemberRepository implements IWorkspaceMemberRepository {
       .executeTakeFirst()
     return !!user
   }
-  async findOneByUserIdAndWorkspaceId(userId: string, workspaceId: string): Promise<Option<WorkspaceMember>> {
+  async findOneByUserId(userId: string): Promise<Option<WorkspaceMember>> {
     const member = await this.qb
       .selectFrom("undb_workspace_member")
       .selectAll()
-      .where((eb) =>
-        eb.and([
-          eb.eb("undb_workspace_member.user_id", "=", userId),
-          eb.eb("undb_workspace_member.workspace_id", "=", workspaceId),
-        ]),
-      )
+      .where((eb) => eb.eb("undb_workspace_member.user_id", "=", userId))
       .executeTakeFirst()
 
     if (!member) {
@@ -40,7 +35,6 @@ export class WorkspaceMemberRepository implements IWorkspaceMemberRepository {
         id: member.id,
         role: member.role,
         userId: member.user_id,
-        workspaceId: member.workspace_id,
       }),
     )
   }
@@ -55,7 +49,6 @@ export class WorkspaceMemberRepository implements IWorkspaceMemberRepository {
         id: json.id,
         role: json.role,
         user_id: json.userId,
-        workspace_id: json.workspaceId,
       })
       .execute()
   }

@@ -12,7 +12,6 @@ export class MemberMapper implements Mapper<WorkspaceMemberDo, WorkspaceMember, 
     return {
       id: domain.props.id,
       role: domain.props.role,
-      workspace_id: domain.props.workspaceId,
       user_id: domain.props.userId,
     }
   }
@@ -20,7 +19,6 @@ export class MemberMapper implements Mapper<WorkspaceMemberDo, WorkspaceMember, 
     return {
       id: entity.id,
       role: entity.role,
-      workspaceId: entity.workspace_id,
       userId: entity.user_id,
     }
   }

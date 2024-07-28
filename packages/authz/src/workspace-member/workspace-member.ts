@@ -11,7 +11,6 @@ export type IWorkspaceMemberWithoutOwner = z.infer<typeof workspaceMemberWithout
 export const workspaceMember = z.object({
   id: memberId,
   userId: z.string(),
-  workspaceId: z.string(),
   role: workspaceMemberRole,
 })
 
@@ -22,7 +21,6 @@ export class WorkspaceMember extends ValueObject<IWorkspaceMember> {
     return {
       id: this.props.id,
       role: this.props.role,
-      workspaceId: this.props.workspaceId,
       userId: this.props.userId,
     }
   }

@@ -15,10 +15,10 @@ import { WorkspaceMember, type IWorkspaceMemberRole } from "./workspace-member"
 import { injectWorkspaceMemberRepository, type IWorkspaceMemberRepository } from "./workspace-member.repository"
 
 export interface IWorkspaceMemberService {
-  createMember(userId: string, workspaceId: string, role: IWorkspaceMemberRole): Promise<void>
+  createMember(userId: string, role: IWorkspaceMemberRole): Promise<void>
   invite(dto: InviteDTO, username: string): Promise<void>
   acceptinvitation(id: string): Promise<void>
-  getWorkspaceMember(userId: string, workspaceId: string): Promise<Option<WorkspaceMember>>
+  getWorkspaceMember(userId: string): Promise<Option<WorkspaceMember>>
 }
 
 export const WORKSPACE_MEMBER_SERVICE = Symbol("IWorkspaceMemberService")
@@ -38,14 +38,14 @@ export class WorkspaceMemberService implements IWorkspaceMemberService {
     private readonly invitationMailService: IInvitationMailService,
   ) {}
 
-  async createMember(userId: string, workspaceId: string, role: IWorkspaceMemberRole): Promise<void> {
-    const member = new WorkspaceMember({ id: MemberIdVO.create().value, workspaceId, userId, role })
+  async createMember(userId: string, role: IWorkspaceMemberRole): Promise<void> {
+    const member = new WorkspaceMember({ id: MemberIdVO.create().value, userId, role })
 
     await this.workspaceMemberRepository.insert(member)
   }
 
-  async getWorkspaceMember(userId: string, workspaceId: string): Promise<Option<WorkspaceMember>> {
-    return this.workspaceMemberRepository.findOneByUserIdAndWorkspaceId(userId, workspaceId)
+  async getWorkspaceMember(userId: string): Promise<Option<WorkspaceMember>> {
+    return this.workspaceMemberRepository.findOneByUserId(userId)
   }
 
   async invite(dto: InviteDTO, username: string): Promise<void> {

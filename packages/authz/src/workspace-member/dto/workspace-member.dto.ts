@@ -5,7 +5,6 @@ import { workspaceMemberRole } from "../workspace-member"
 export const workspaceMemberDTO = z.object({
   id: memberId,
   userId: z.string(),
-  workspaceId: z.string(),
   role: workspaceMemberRole,
 })
 
