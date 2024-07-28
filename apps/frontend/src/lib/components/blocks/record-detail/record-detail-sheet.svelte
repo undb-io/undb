@@ -61,9 +61,9 @@
     <Sheet.Header class="border-b px-6 pb-2">
       <Sheet.Title class="flex items-center justify-between">
         <span> Record Detail </span>
-        <button class="mr-6" on:click={() => ($preferences.showAudit = !$preferences.showAudit)}>
+        <!-- <button disabled class="mr-6" on:click={() => ($preferences.showAudit = !$preferences.showAudit)}>
           <HistoryIcon class="text-muted-foreground h-4 w-4" />
-        </button>
+        </button> -->
       </Sheet.Title>
     </Sheet.Header>
 

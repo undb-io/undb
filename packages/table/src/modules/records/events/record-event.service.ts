@@ -1,7 +1,7 @@
 import { objectify } from "radash"
 import type { TableDo } from "../../../table.do"
 import type { RecordDO } from "../record/record.do"
-import type { IReceventTableMeta } from "./record-events-meta"
+import type { IRecordTableMeta } from "./record-events-meta"
 
 export function enrichRecord(table: TableDo, record: RecordDO, data: RecordDO): RecordDO {
   const events = record.domainEvents.map((event) => event.enrich(table, data))
@@ -11,7 +11,7 @@ export function enrichRecord(table: TableDo, record: RecordDO, data: RecordDO): 
   return record
 }
 
-export function getTableMeta(table: TableDo, fields = table.schema.fields): IReceventTableMeta {
+export function getTableMeta(table: TableDo, fields = table.schema.fields): IRecordTableMeta {
   return {
     name: table.name.value,
     fields: objectify(

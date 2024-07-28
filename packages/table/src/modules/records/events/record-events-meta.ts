@@ -13,4 +13,4 @@ export const recordEventTableMeta = z.object({
   ),
 })
 
-export type IReceventTableMeta = z.infer<typeof recordEventTableMeta>
+export type IRecordTableMeta = z.infer<typeof recordEventTableMeta>

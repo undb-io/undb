@@ -23,7 +23,7 @@
         {#if audit.op === "record.created"}
           <div class="text-muted-foreground flex items-center justify-between text-xs">
             <span>
-              Record created by {audit.operator.username} on
+              created by {audit.operator.username}
             </span>
             <span>
               {format(audit.timestamp)}
@@ -32,7 +32,7 @@
         {:else if audit.op === "record.updated"}
           <div class="text-muted-foreground flex items-center justify-between text-xs">
             <span>
-              Record updated by {audit.operator.username} on
+              updated by {audit.operator.username}
             </span>
             <span>
               {format(audit.timestamp)}

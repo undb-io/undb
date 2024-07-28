@@ -1,24 +1,27 @@
 <script lang="ts">
-  import { getIsFieldHasDisplayValue, type Field, type IReadableRecordDTO } from "@undb/table"
+  import { getIsFieldHasDisplayValue, type Field, type FieldType, type IReadableRecordDTO } from "@undb/table"
   import FieldIcon from "../field-icon/field-icon.svelte"
+  import type { IRecordTableMeta } from "@undb/table/src/modules/records/events/record-events-meta"
 
-  export let field: Field
   export let fieldName: string
   export let record: IReadableRecordDTO
   export let previous: IReadableRecordDTO
+  export let meta: { table: IRecordTableMeta }
+
+  $: type = meta.table.fields[fieldName]?.type as FieldType
 
   $: previousValue = previous.values[fieldName]
   $: value = record.values[fieldName]
 </script>
 
 <div class="text-muted-foreground flex items-center gap-2">
-  <FieldIcon {field} type={field.type} class="h-3 w-3" />
-  {field.name.value}
+  <FieldIcon {type} class="h-3 w-3" />
+  {fieldName}
 </div>
-{#if !getIsFieldHasDisplayValue(field.type)}
+{#if !getIsFieldHasDisplayValue(type)}
   {#if previousValue}
     <div>
-      <span class="rounded-sm border border-red-400 bg-red-100 px-1.5">
+      <span class="text-muted-foreground rounded-sm border border-red-400 bg-red-100 px-1.5">
         {previousValue}
       </span>
     </div>
