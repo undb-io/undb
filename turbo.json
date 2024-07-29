@@ -10,6 +10,12 @@
       "outputs": [".next/**", "!.next/cache/**"],
       "inputs": ["$TURBO_DEFAULT$", ".env"]
     },
+    "build:docker": {
+      "cache": false,
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"],
+      "inputs": ["$TURBO_DEFAULT$", ".env"]
+    },
     "lint": {
       "dependsOn": ["^lint"]
     },

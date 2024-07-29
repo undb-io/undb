@@ -1,6 +1,15 @@
 import { createEnv } from "@t3-oss/env-core"
 import { z } from "@undb/zod"
 
+const dbEnv = createEnv({
+  server: {
+    UNDB_DB_PROVIDER: z.enum(["sqlite", "turso"]).default("sqlite"),
+    UNDB_DB_TURSO_URL: z.string().optional(),
+  },
+  runtimeEnv: import.meta.env,
+  emptyStringAsUndefined: true,
+})
+
 export const env = createEnv({
   shared: {
     LOG_LEVEL: z.enum(["info", "debug", "error"]).default("info"),
@@ -15,4 +24,5 @@ export const env = createEnv({
   },
   runtimeEnv: import.meta.env,
   emptyStringAsUndefined: true,
+  extends: [dbEnv],
 })

@@ -1,4 +1,5 @@
 import { LibsqlDialect } from "@libsql/kysely-libsql"
+import { env } from "@undb/env"
 import { createLogger } from "@undb/logger"
 import { Kysely, ParseJSONResultsPlugin, sql, Transaction, type RawBuilder } from "kysely"
 import { type Database } from "./db"
@@ -8,7 +9,7 @@ export function createQueryBuilder(): Kysely<Database> {
 
   return new Kysely<Database>({
     dialect: new LibsqlDialect({
-      url: "http://127.0.0.1:8080",
+      url: env.UNDB_DB_TURSO_URL!,
     }),
     plugins: [new ParseJSONResultsPlugin()],
     log: (event) => {

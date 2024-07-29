@@ -4,7 +4,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun --watch src/index.ts",
-    "build": "bun build --compile src/index.ts --target=bun --sourcemap --outfile undb"
+    "build": "bun build --compile src/index.ts --target=bun --sourcemap --outfile undb",
+    "build:docker": "bun build --compile src/index.ts --target=bun --packages=external --sourcemap --outfile undb"
   },
   "dependencies": {
     "@elysiajs/cors": "^1.1.0",

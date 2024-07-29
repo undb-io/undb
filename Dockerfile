@@ -17,21 +17,31 @@ RUN mkdir .undb
 
 ENV NODE_ENV=production
 ENV PORT=3000
-RUN bun run build
+RUN bun run build:docker
+
+RUN rm -rf node_modules
+RUN bun install --production
 
 # Add Tini init-system
 ENV TINI_VERSION v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static /tini
 RUN chmod +x /tini
 
-FROM gcr.io/distroless/base:nonroot AS release
+FROM oven/bun AS release
 
 ENV NODE_ENV=production
 ENV PORT=3000
 
 WORKDIR /usr/src/app
+
+RUN mkdir .undb
+RUN mkdir .undb/storage
+
 COPY --from=prerelease /usr/src/app/apps/backend/undb .
+COPY --from=prerelease /usr/src/app/node_modules ./node_modules
 COPY --from=prerelease /usr/src/app/apps/backend/drizzle ./drizzle
+COPY --from=prerelease /usr/src/app/packages ./packages
+COPY --from=prerelease /usr/src/app/package.json .
 COPY --from=prerelease /usr/src/app/apps/frontend/dist ./dist
 COPY --from=prerelease /tini /tini
 
