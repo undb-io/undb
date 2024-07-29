@@ -10,6 +10,7 @@ export function createQueryBuilder(): Kysely<Database> {
   return new Kysely<Database>({
     dialect: new LibsqlDialect({
       url: env.UNDB_DB_TURSO_URL!,
+      authToken: env.UNDB_DB_TURSO_AUTH_TOKEN,
     }),
     plugins: [new ParseJSONResultsPlugin()],
     log: (event) => {
