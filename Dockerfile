@@ -13,9 +13,7 @@ RUN cd /temp/dev && bun install
 FROM builder AS prerelease
 COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
-
 RUN mkdir .undb
-RUN mkdir .undb/storage
 
 ENV NODE_ENV=production
 ENV PORT=3000
@@ -29,15 +27,17 @@ ENV TINI_VERSION v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static /tini
 RUN chmod +x /tini
 
-FROM oven/bun:distroless AS release
+FROM oven/bun AS release
 
 ENV NODE_ENV=production
 ENV PORT=3000
 
 WORKDIR /usr/src/app
 
+RUN mkdir .undb
+RUN mkdir .undb/storage
+
 COPY --from=prerelease /usr/src/app/apps/backend/undb .
-COPY --from=prerelease /usr/src/app/.undb .
 COPY --from=prerelease /usr/src/app/node_modules ./node_modules
 COPY --from=prerelease /usr/src/app/apps/backend/drizzle ./drizzle
 COPY --from=prerelease /usr/src/app/apps/backend/assets ./assets
