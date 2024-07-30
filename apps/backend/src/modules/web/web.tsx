@@ -5,14 +5,17 @@ import Elysia from "elysia"
 @singleton()
 export class Web {
   route() {
+    const index = Bun.file("dist/index.html")
     return new Elysia()
       .use(staticPlugin({ prefix: "/", assets: "dist" }))
       .use(staticPlugin({ prefix: "/assets", assets: "assets" }))
-      .get("/", () => Bun.file("dist/index.html"))
-      .get("/t/*", () => Bun.file("dist/index.html"))
-      .get("/s/*", () => Bun.file("dist/index.html"))
-      .get("/bases/*", () => Bun.file("dist/index.html"))
-      .get("/account/*", () => Bun.file("dist/index.html"))
-      .get("/members/*", () => Bun.file("dist/index.html"))
+      .get("/", () => index)
+      .get("/t/*", () => index)
+      .get("/s/*", () => index)
+      .get("/bases/*", () => index)
+      .get("/account/*", () => index)
+      .get("/members/*", () => index)
+      .get("/login", () => index)
+      .get("/signup", () => index)
   }
 }

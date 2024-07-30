@@ -188,6 +188,7 @@ export class Auth {
           return response
         },
         {
+          type: "json",
           body: t.Object({
             email: t.String({ format: "email" }),
             password: t.String(),
@@ -232,8 +233,9 @@ export class Auth {
           })
         },
         {
+          type: "json",
           body: t.Object({
-            email: t.String({ format: "email" }),
+            email: t.String({ format: "email", default: "" }),
             password: t.String(),
           }),
         },
