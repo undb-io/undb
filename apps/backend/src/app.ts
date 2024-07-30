@@ -99,6 +99,9 @@ export const app = new Elysia()
       member: { role: ctx.member?.role ?? null } ?? null,
     })
   })
+  .get("/healthy", () => {
+    return { status: "ok" }
+  })
   .use(auth.route())
   .use(web.route())
   .use(openapi.route())

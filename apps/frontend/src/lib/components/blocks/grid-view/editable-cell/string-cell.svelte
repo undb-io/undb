@@ -11,6 +11,7 @@
   export let value: string
   export let recordId: string
   export let isEditing: boolean
+  export let readonly: boolean
   export let onValueChange: (value: string) => void
 
   const updateCell = createMutation({

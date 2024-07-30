@@ -21,7 +21,6 @@
   import AttachmentCell from "./editable-cell/attachment-cell.svelte"
   import ReferenceCell from "./editable-cell/reference-cell.svelte"
   import ReadonlyUserCell from "./editable-cell/readonly-user-cell.svelte"
-  import { Store } from "lucide-svelte"
   import { recordsStore } from "$lib/store/records.store"
 
   const table = getTable()
@@ -31,6 +30,7 @@
   export let index: number
   export let field: Field
   export let recordId: string
+  export let readonly: boolean
 
   $: isEditing = $isEditingCell(recordId, field.id.value)
   $: isSelected = $isSelectedCell(recordId, field.id.value)
@@ -66,7 +66,7 @@
   {isEditing}
   {isSelected}
   {recordId}
-  readonly={field.isSystem}
+  readonly={field.isSystem || readonly}
   tableId={$table.id.value}
   class={cn(
     "flex h-8 items-center border border-transparent px-2 py-1 text-xs",

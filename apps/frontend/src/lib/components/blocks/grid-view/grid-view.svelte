@@ -143,11 +143,13 @@
               field,
               recordId: item.row.original.id,
               displayValue,
+              readonly,
             })
           },
           footer: createRender(GridViewFooter, {
             field,
             aggregateResult: aggregates?.[field.id.value],
+            readonly,
           }),
           plugins: {
             resize: {
@@ -158,7 +160,7 @@
       ),
       table.column({
         header: () => {
-          return createRender(GridViewActionHeader)
+          return createRender(GridViewActionHeader, { readonly })
         },
         accessor: ({ id }) => id,
         cell: (item) => createRender(GridViewActions, { id: item.value, readonly }),
@@ -260,7 +262,7 @@
                               return
                             }
 
-                            gridViewStore.select(recordId, cell.column.id)
+                            gridViewStore.select(readonly, recordId, cell.column.id)
                           }}
                         >
                           {#if idx === 0 && match && condition && "border-l-4"}

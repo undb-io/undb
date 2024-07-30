@@ -13,13 +13,13 @@ export function createGridViewStore() {
 
   return {
     subscribe,
-    select: (recordId: string, fieldId: string) => {
+    select: (readonly: boolean, recordId: string, fieldId: string) => {
       return update((select) => {
         if (!select.cell) {
           return { cell: { recordId, fieldId }, count: 1 }
         }
 
-        if (select.cell.recordId === recordId && select.cell.fieldId === fieldId) {
+        if (select.cell.recordId === recordId && select.cell.fieldId === fieldId && !readonly) {
           return { cell: { recordId, fieldId }, count: 2 }
         }
 

@@ -13,6 +13,8 @@
   const table = getTable()
   export let field: Field
 
+  export let readonly: boolean
+
   export let aggregateResult: AggregateResult | undefined = undefined
 
   $: options =
@@ -50,7 +52,11 @@
 </script>
 
 {#if options.length}
-  <Select.Root {onSelectedChange} selected={{ value: value, label: $LL.table.aggregateFns[value]() }}>
+  <Select.Root
+    disabled={readonly}
+    {onSelectedChange}
+    selected={{ value: value, label: $LL.table.aggregateFns[value]() }}
+  >
     <Select.Trigger
       class={cn(
         "hover:bg-muted/50 h-full rounded-none border-none py-0 text-xs shadow-none hover:opacity-100 focus:ring-0",
