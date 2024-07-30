@@ -197,7 +197,7 @@ export class Auth {
         },
       )
       .post(
-        "/login",
+        "/api/login",
         async (ctx) => {
           const email = ctx.body.email
           const password = ctx.body.password

@@ -22,6 +22,9 @@
     async onSuccess(data, variables, context) {
       await goto("/")
     },
+    onError(error, variables, context) {
+      goto("/signup")
+    },
   })
 
   const form = superForm(
