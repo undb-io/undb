@@ -16,7 +16,7 @@ COPY . .
 RUN mkdir .undb
 
 ENV NODE_ENV=production
-ENV PORT=3000
+ENV PORT=3721
 RUN bun run build:docker
 
 RUN rm -rf node_modules
@@ -30,7 +30,7 @@ RUN chmod +x /tini
 FROM oven/bun AS release
 
 ENV NODE_ENV=production
-ENV PORT=3000
+ENV PORT=3721
 
 WORKDIR /usr/src/app
 
@@ -47,7 +47,7 @@ COPY --from=prerelease /usr/src/app/apps/frontend/dist ./dist
 COPY --from=prerelease /tini /tini
 
 # run the app
-EXPOSE 3000/tcp
+EXPOSE 3721/tcp
 ENTRYPOINT ["/tini", "--"]
 CMD [ "./undb" ]
 

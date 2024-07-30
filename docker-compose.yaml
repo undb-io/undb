@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     container_name: undb
     ports:
-      - 3000:3000
+      - 3721:3721
     environment:
       - UNDB_DB_TURSO_URL=${UNDB_DB_TURSO_URL}
       - UNDB_DB_TURSO_AUTH_TOKEN=${UNDB_DB_TURSO_AUTH_TOKEN}

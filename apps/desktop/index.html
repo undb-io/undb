@@ -21,33 +21,33 @@
     </div>
     <script>
       function addMessage(div, message) {
-        const p = document.createElement('p')
+        const p = document.createElement("p")
         p.innerText = message
         div.appendChild(p)
       }
 
-      const backendDiv = document.getElementById('backend')
+      const backendDiv = document.getElementById("backend")
 
-      const frontendDiv = document.getElementById('frontend')
+      const frontendDiv = document.getElementById("frontend")
       const { Command } = window.__TAURI__.shell
       const { listen } = window.__TAURI__.event
 
-      const command = Command.sidecar('binaries/app', [], { NODE_ENV: 'production' })
-      command.on('close', (data) => {
+      const command = Command.sidecar("binaries/app", [], { NODE_ENV: "production" })
+      command.on("close", (data) => {
         addMessage(frontendDiv, `command finished with code ${data.code} and signal ${data.signal}`)
       })
-      command.on('error', (error) => addMessage(frontendDiv, `command error: "${error}"`))
-      command.stdout.on('data', (line) => addMessage(frontendDiv, `command stdout: "${line}"`))
-      command.stderr.on('data', (line) => addMessage(frontendDiv, `command stderr: "${line}"`))
+      command.on("error", (error) => addMessage(frontendDiv, `command error: "${error}"`))
+      command.stdout.on("data", (line) => addMessage(frontendDiv, `command stdout: "${line}"`))
+      command.stderr.on("data", (line) => addMessage(frontendDiv, `command stderr: "${line}"`))
       command.spawn()
 
-      listen('message', (event) => {
+      listen("message", (event) => {
         addMessage(backendDiv, event.payload)
       })
 
       setTimeout(() => {
         // TODO: dynamic
-        globalThis.location.replace('http://localhost:4000')
+        globalThis.location.replace("http://localhost:4728")
       }, 5000)
     </script>
   </body>
