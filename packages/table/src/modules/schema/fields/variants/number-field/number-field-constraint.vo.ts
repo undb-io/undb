@@ -4,8 +4,8 @@ import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.v
 
 export const numberFieldConstraint = z
   .object({
-    min: z.number().int().positive(),
-    max: z.number().int().positive(),
+    min: z.number(),
+    max: z.number(),
     isInt: z.boolean(),
   })
   .merge(baseFieldConstraint)

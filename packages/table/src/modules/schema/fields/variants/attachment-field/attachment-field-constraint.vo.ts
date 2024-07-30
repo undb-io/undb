@@ -5,7 +5,7 @@ import { attachmentFieldValue } from "./attachment-field-value.vo"
 
 export const attachmentFieldConstraint = z
   .object({
-    min: z.number().int().positive(),
+    min: z.number().int().nonnegative(),
     max: z.number().int().positive(),
   })
   .merge(baseFieldConstraint)

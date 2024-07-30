@@ -4,7 +4,7 @@ import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.v
 
 export const ratingFieldConstraint = z
   .object({
-    min: z.number().int().positive(),
+    min: z.number().int().nonnegative(),
     max: z.number().int().positive(),
   })
   .merge(baseFieldConstraint)
