@@ -193,7 +193,7 @@ export class Auth {
             email: t.String({ format: "email" }),
             password: t.String(),
             username: t.Optional(t.String()),
-            invitationId: t.Optional(t.String()),
+            invitationId: t.Nullable(t.Optional(t.String())),
           }),
         },
       )
