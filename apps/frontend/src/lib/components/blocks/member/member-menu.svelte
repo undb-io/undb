@@ -4,13 +4,14 @@
   import * as Avatar from "$lib/components/ui/avatar"
   import { KeyIcon, LogOutIcon, SettingsIcon } from "lucide-svelte"
   import { createMutation } from "@tanstack/svelte-query"
+  import { goto } from "$app/navigation"
 
   export let user: { username: string; userId: string }
 
   const logoutMutation = createMutation({
-    mutationFn: () => fetch("/logout", { method: "POST" }),
+    mutationFn: () => fetch("/api/logout", { method: "POST" }),
     onSuccess(data, variables, context) {
-      window.location.href = "/signup"
+      goto("/signup")
     },
   })
 

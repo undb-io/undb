@@ -42,18 +42,6 @@ export default defineConfig({
         target: "http://0.0.0.0:4000",
         changeOrigin: true,
       },
-      "/signup": {
-        target: "http://0.0.0.0:4000",
-        changeOrigin: true,
-      },
-      "/login": {
-        target: "http://0.0.0.0:4000",
-        changeOrigin: true,
-      },
-      "/logout": {
-        target: "http://0.0.0.0:4000",
-        changeOrigin: true,
-      },
     },
   },
   test: {

@@ -12,7 +12,6 @@ import { executionContext } from "@undb/context/server"
 import { CommandBus } from "@undb/cqrs"
 import { inject } from "@undb/di"
 import { type IQueryBuilder, injectQueryBuilder, sqlite } from "@undb/persistence"
-import { SignUp } from "@undb/ui"
 import { Context, Elysia, t } from "elysia"
 import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize } from "lucia"
@@ -113,176 +112,154 @@ export class Auth {
   }
 
   route() {
-    return (
-      new Elysia()
-        .get("/api/me", (ctx) => {
-          const store = executionContext.getStore()
-          const user = store?.user
-          if (!user?.userId) {
-            return ctx.redirect("/signup")
+    return new Elysia()
+      .get("/api/me", (ctx) => {
+        const store = executionContext.getStore()
+        const user = store?.user
+        if (!user?.userId) {
+          return ctx.redirect("/signup")
+        }
+
+        const member = store?.member
+
+        return { user, member }
+      })
+      .post(
+        "/api/signup",
+        async (ctx) => {
+          const { email, password, invitationId, username } = ctx.body
+          const hasUser = !!(await this.queryBuilder.selectFrom("undb_user").selectAll().executeTakeFirst())
+          let role: IWorkspaceMemberRole = "owner"
+          if (invitationId) {
+            const invitation = await this.invitationRepository.findOneById(invitationId)
+            if (invitation.isNone()) {
+              throw new Error("Invitation not found")
+            }
+
+            if (invitation.unwrap().email !== email) {
+              throw new Error("Invalid email")
+            }
+
+            role = invitation.unwrap().role
+          } else {
+            role = !hasUser ? "owner" : "admin"
           }
 
-          const member = store?.member
+          let userId: string
 
-          return { user, member }
-        })
-        .get(
-          "/signup",
-          async (ctx) => {
-            const { invitationId } = ctx.query
-            if (invitationId) {
-              const invitation = await this.invitationRepository.findOneById(invitationId)
-              if (!invitation.isSome()) {
-                // TODO: error page
-                throw new Error("Invitation not found")
-              }
+          const user = await this.queryBuilder
+            .selectFrom("undb_user")
+            .selectAll()
+            .where((eb) => eb.eb("email", "=", email))
+            .executeTakeFirst()
 
-              return SignUp({
-                email: invitation.unwrap().email,
-                invitationId,
+          if (user) {
+            const validPassword = await Bun.password.verify(password, user.password)
+            if (!validPassword) {
+              return new Response("Invalid email or password", {
+                status: 400,
               })
             }
-            return SignUp()
-          },
-          {
-            query: t.Object({
-              invitationId: t.Optional(t.String()),
-            }),
-          },
-        )
-        .post(
-          "/signup",
-          async (ctx) => {
-            const { email, password, invitationId } = ctx.body
-            const hasUser = !!(await this.queryBuilder.selectFrom("undb_user").selectAll().executeTakeFirst())
-            let role: IWorkspaceMemberRole = "owner"
-            if (invitationId) {
-              const invitation = await this.invitationRepository.findOneById(invitationId)
-              if (invitation.isNone()) {
-                throw new Error("Invitation not found")
-              }
 
-              if (invitation.unwrap().email !== email) {
-                throw new Error("Invalid email")
-              }
+            userId = user.id
+          } else {
+            userId = generateIdFromEntropySize(10) // 16 characters long
 
-              role = invitation.unwrap().role
-            } else {
-              role = !hasUser ? "owner" : "admin"
-            }
+            const passwordHash = await Bun.password.hash(password)
+            await this.queryBuilder
+              .insertInto("undb_user")
+              .values({
+                email,
+                username: username ?? getUsernameFromEmail(email),
+                id: userId,
+                password: passwordHash,
+              })
+              .execute()
 
-            let userId: string
+            await this.workspaceMemberService.createMember(userId, role)
+          }
 
-            const user = await this.queryBuilder
-              .selectFrom("undb_user")
-              .selectAll()
-              .where((eb) => eb.eb("email", "=", email))
-              .executeTakeFirst()
-            if (user) {
-              const validPassword = await Bun.password.verify(password, user.password)
-              if (!validPassword) {
-                return new Response("Invalid email or password", {
-                  status: 400,
-                })
-              }
+          const session = await lucia.createSession(userId, {})
+          const sessionCookie = lucia.createSessionCookie(session.id)
 
-              userId = user.id
-            } else {
-              userId = generateIdFromEntropySize(10) // 16 characters long
-
-              const passwordHash = await Bun.password.hash(password)
-              const username = getUsernameFromEmail(email)
-              await this.queryBuilder
-                .insertInto("undb_user")
-                .values({
-                  email,
-                  username,
-                  id: userId,
-                  password: passwordHash,
-                })
-                .execute()
-
-              await this.workspaceMemberService.createMember(userId, role)
-            }
-
-            const session = await lucia.createSession(userId, {})
-            const sessionCookie = lucia.createSessionCookie(session.id)
-
-            const response = new Response()
-            response.headers.set("Set-Cookie", sessionCookie.serialize())
-            response.headers.set("HsX-Redirect", "/")
-            return response
-          },
-          {
-            body: t.Object({
-              email: t.String({ format: "email" }),
-              password: t.String(),
-              invitationId: t.Optional(t.String()),
-            }),
-          },
-        )
-        // .get("/login", () => <Login />)
-        // .post(
-        //   "/login",
-        //   async (ctx) => {
-        //     const email = ctx.body.email
-        //     const password = ctx.body.password
-
-        //     const user = (await db.select().from(users).where(eq(users.email, email)).limit(1)).at(0)
-
-        //     if (!user) {
-        //       return new Response("Invalid email or password", {
-        //         status: 400,
-        //       })
-        //     }
-
-        //     const validPassword = await Bun.password.verify(password, user.password)
-        //     if (!validPassword) {
-        //       return new Response("Invalid email or password", {
-        //         status: 400,
-        //       })
-        //     }
-
-        //     const session = await lucia.createSession(user.id, {})
-        //     const sessionCookie = lucia.createSessionCookie(session.id)
-        //     return new Response(null, {
-        //       status: 302,
-        //       headers: {
-        //         Location: "/",
-        //         "Set-Cookie": sessionCookie.serialize(),
-        //       },
-        //     })
-        //   },
-        //   {
-        //     body: t.Object({
-        //       email: t.String({ format: "email" }),
-        //       password: t.String(),
-        //     }),
-        //   },
-        // )
-        .post("/logout", (ctx) => {
-          const sessionCookie = lucia.createBlankSessionCookie()
           const response = new Response()
           response.headers.set("Set-Cookie", sessionCookie.serialize())
+          response.headers.set("HsX-Redirect", "/")
           return response
-        })
-        .get(
-          "/invitation/:invitationId/accept",
-          async (ctx) => {
-            return withTransaction(this.queryBuilder)(async () => {
-              const { invitationId } = ctx.params
-              await this.commandBus.execute(new AcceptInvitationCommand({ id: invitationId }))
+        },
+        {
+          body: t.Object({
+            email: t.String({ format: "email" }),
+            password: t.String(),
+            username: t.Optional(t.String()),
+            invitationId: t.Optional(t.String()),
+          }),
+        },
+      )
+      .post(
+        "/login",
+        async (ctx) => {
+          const email = ctx.body.email
+          const password = ctx.body.password
 
-              const response = ctx.redirect("/signup?invitationId=" + invitationId)
-              return response
+          const user = await this.queryBuilder
+            .selectFrom("undb_user")
+            .selectAll()
+            .where("email", "=", email)
+            .executeTakeFirst()
+
+          if (!user) {
+            return new Response("Invalid email or password", {
+              status: 400,
             })
-          },
-          {
-            params: t.Object({
-              invitationId: t.String(),
-            }),
-          },
-        )
-    )
+          }
+
+          const validPassword = await Bun.password.verify(password, user.password)
+          if (!validPassword) {
+            return new Response("Invalid email or password", {
+              status: 400,
+            })
+          }
+
+          const session = await lucia.createSession(user.id, {})
+          const sessionCookie = lucia.createSessionCookie(session.id)
+          return new Response(null, {
+            status: 302,
+            headers: {
+              Location: "/",
+              "Set-Cookie": sessionCookie.serialize(),
+            },
+          })
+        },
+        {
+          body: t.Object({
+            email: t.String({ format: "email" }),
+            password: t.String(),
+          }),
+        },
+      )
+      .post("/api/logout", (ctx) => {
+        const sessionCookie = lucia.createBlankSessionCookie()
+        const response = new Response()
+        response.headers.set("Set-Cookie", sessionCookie.serialize())
+        return response
+      })
+      .get(
+        "/invitation/:invitationId/accept",
+        async (ctx) => {
+          return withTransaction(this.queryBuilder)(async () => {
+            const { invitationId } = ctx.params
+            await this.commandBus.execute(new AcceptInvitationCommand({ id: invitationId }))
+
+            const response = ctx.redirect("/signup?invitationId=" + invitationId)
+            return response
+          })
+        },
+        {
+          params: t.Object({
+            invitationId: t.String(),
+          }),
+        },
+      )
   }
 }
