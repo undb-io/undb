@@ -11,7 +11,7 @@
   const logoutMutation = createMutation({
     mutationFn: () => fetch("/api/logout", { method: "POST" }),
     onSuccess(data, variables, context) {
-      goto("/signup")
+      goto("/login")
     },
   })
 

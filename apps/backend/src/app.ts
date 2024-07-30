@@ -113,7 +113,7 @@ export const app = new Elysia()
         }
         const user = context.user
         if (!user) {
-          return context.redirect(`/signup?redirect=${context.path}`, 301)
+          return context.redirect(`/login?redirect=${context.path}`, 301)
         }
       },
     },

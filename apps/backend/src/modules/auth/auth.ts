@@ -117,7 +117,7 @@ export class Auth {
         const store = executionContext.getStore()
         const user = store?.user
         if (!user?.userId) {
-          return ctx.redirect("/signup")
+          return ctx.redirect("/login")
         }
 
         const member = store?.member
