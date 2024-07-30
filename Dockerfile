@@ -27,7 +27,7 @@ ENV TINI_VERSION v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static /tini
 RUN chmod +x /tini
 
-FROM oven/bun AS release
+FROM oven/bun:distroless AS release
 
 ENV NODE_ENV=production
 ENV PORT=3000
