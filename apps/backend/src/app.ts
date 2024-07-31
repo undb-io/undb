@@ -6,12 +6,9 @@ register()
 
 import cors from "@elysiajs/cors"
 import { html } from "@elysiajs/html"
-import { opentelemetry } from "@elysiajs/opentelemetry"
 import staticPlugin from "@elysiajs/static"
 import { swagger } from "@elysiajs/swagger"
 import { trpc } from "@elysiajs/trpc"
-import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-proto"
-import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-node"
 import { AuditEventHandler } from "@undb/audit"
 import { executionContext } from "@undb/context/server"
 import { container } from "@undb/di"
@@ -33,21 +30,37 @@ const web = container.resolve(Web)
 const openapi = container.resolve(OpenAPI)
 
 export const app = new Elysia()
-  .use(
-    opentelemetry({
-      spanProcessors: [
-        new BatchSpanProcessor(
-          new OTLPTraceExporter({
-            url: "https://api.axiom.co/v1/traces",
-            headers: {
-              Authorization: `Bearer ${Bun.env.AXIOM_TOKEN}`,
-              "X-Axiom-Dataset": Bun.env.AXIOM_DATASET,
-            },
-          }),
-        ),
-      ],
-    }),
-  )
+  // .use(
+  //   opentelemetry({
+  //     spanProcessors: [
+  //       new BatchSpanProcessor(
+  //         new OTLPTraceExporter({
+  //           url: "https://api.axiom.co/v1/traces",
+  //           headers: {
+  //             Authorization: `Bearer ${Bun.env.AXIOM_TOKEN}`,
+  //             "X-Axiom-Dataset": Bun.env.AXIOM_DATASET,
+  //           },
+  //         }),
+  //       ),
+  //     ],
+  //   }),
+  // )
+  .use(loggerPlugin())
+  .onError((ctx) => {
+    if (ctx.code === "NOT_FOUND") {
+      ctx.set.status = 404
+      ctx.logger.error(
+        {
+          error: ctx.error,
+          path: ctx.path,
+          headers: ctx.headers,
+        },
+        "Not Found",
+      )
+
+      return "Not Found :("
+    }
+  })
   .trace(async ({ set, onHandle }) => {
     const { begin, end } = await onHandle()
 
@@ -85,7 +98,6 @@ export const app = new Elysia()
   .use(cors())
   .use(html())
   .use(swagger())
-  .use(loggerPlugin())
   .derive(auth.store())
   .onError((ctx) => {
     ctx.logger.error(ctx.error)
