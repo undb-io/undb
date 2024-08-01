@@ -26,7 +26,7 @@ jobs:
 
       - name: Setup bun environment
         uses: oven-sh/setup-bun@v2
-        i
+
       - name: changelogen
         run: |
           bunx changelogen@latest --bump --${{ inputs.semver }}
