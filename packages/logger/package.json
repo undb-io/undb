@@ -1,0 +1,17 @@
+{
+  "name": "@undb/logger",
+  "module": "src/index.ts",
+  "types": "src/index.d.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@undb/env": "workspace:*",
+    "pino": "^9.3.2",
+    "pino-pretty": "^11.2.2"
+  }
+}

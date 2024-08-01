@@ -1,0 +1,65 @@
+{
+  "name": "@undb/backend",
+  "version": "1.0.50",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun --watch src/index.ts",
+    "build": "bun build --compile src/index.ts --target=bun --sourcemap --outfile undb",
+    "build:docker": "bun build --compile src/index.ts --target=bun --packages=external --sourcemap --outfile undb"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "^1.1.0",
+    "@elysiajs/cron": "^1.1.0",
+    "@elysiajs/html": "^1.1.0",
+    "@elysiajs/opentelemetry": "^1.1.1",
+    "@elysiajs/static": "^1.1.0",
+    "@elysiajs/stream": "^1.1.0",
+    "@elysiajs/swagger": "^1.1.0",
+    "@elysiajs/trpc": "^1.1.0",
+    "@json2csv/plainjs": "^7.0.6",
+    "@kitajs/ts-html-plugin": "latest",
+    "@lucia-auth/adapter-sqlite": "^3.0.2",
+    "@undb/audit": "workspace:*",
+    "@undb/authz": "workspace:*",
+    "@undb/base": "workspace:*",
+    "@undb/command-handlers": "workspace:*",
+    "@undb/context": "workspace:*",
+    "@undb/cqrs": "workspace:*",
+    "@undb/di": "workspace:*",
+    "@undb/graphql": "workspace:*",
+    "@undb/logger": "workspace:*",
+    "@undb/openapi": "workspace:*",
+    "@undb/persistence": "workspace:*",
+    "@undb/query-handlers": "workspace:*",
+    "@undb/realtime": "workspace:*",
+    "@undb/share": "workspace:*",
+    "@undb/trpc": "workspace:*",
+    "@undb/webhook": "workspace:*",
+    "bun": "^1.1.21",
+    "core-js": "^3.37.1",
+    "elysia": "^1.1.4",
+    "got": "^14.4.2",
+    "handlebars": "^4.7.8",
+    "lucia": "^3.2.0",
+    "nodemailer": "^6.9.14",
+    "radash": "^12.1.0",
+    "reflect-metadata": "^0.2.2",
+    "uuid": "^10.0.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^6.4.15",
+    "@types/uuid": "^10.0.0",
+    "bun-types": "latest"
+  },
+  "types": "./src/app.d.ts",
+  "exports": {
+    ".": "./src/index.js",
+    "./app": {
+      "import": "./src/app.ts",
+      "default": "./src/app.ts",
+      "require": "./src/app.ts",
+      "types": "./src/app.d.ts"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+query GetIndexQuery {
+  tables {
+    id
+    name
+    baseId
+
+    views {
+      id
+      name
+      type
+      isDefault
+    }
+
+    recordsCount
+  }
+
+  bases {
+    id
+    name
+  }
+
+  member {
+    role
+  }
+}

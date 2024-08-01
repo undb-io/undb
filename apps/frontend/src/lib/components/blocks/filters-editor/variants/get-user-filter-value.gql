@@ -1,0 +1,10 @@
+query GetUserFilterValue($ids: [ID!]!) {
+  membersByIds(ids: $ids) {
+    role
+    user {
+      email
+      id
+      username
+    }
+  }
+}

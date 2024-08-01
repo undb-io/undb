@@ -1,0 +1,27 @@
+<script lang="ts">
+  import { type Field, type IOpType } from "@undb/table"
+  import { LL } from "@undb/i18n/client"
+  import OpPicker from "./op-picker.svelte"
+  import { cn } from "$lib/utils"
+  import FilterInput from "./filter-input.svelte"
+
+  export let field: Field | undefined
+  export let op: IOpType | undefined
+  export let value: any | undefined = undefined
+
+  $: conditionOps = field?.conditionOps ?? []
+  $: ops = conditionOps.map((op) => ({ value: op, label: $LL.table.ops[op]() })) ?? []
+
+  $: if (field && !!op && !conditionOps.includes(op)) {
+    op = ops[0]?.value
+  }
+
+  $: hasValue = op ? field?.isOpHasValue(op) ?? false : false
+</script>
+
+<div class="col-span-8 flex flex-1 items-center gap-0">
+  <OpPicker {field} bind:value={op} class={cn("rounded-l-none", hasValue && "rounded-r-none")} />
+  {#if hasValue}
+    <FilterInput class="w-full flex-1" {field} bind:value {op} />
+  {/if}
+</div>

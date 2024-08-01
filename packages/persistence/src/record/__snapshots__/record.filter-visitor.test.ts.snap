@@ -1,0 +1,93 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`record.filter-visitor should get query 1`] = `"select * from "table" where ("field1" = ? and "field2" > ?)"`;
+
+exports[`record.filter-visitor should get query 2`] = `
+[
+  "value1",
+  1,
+]
+`;
+
+exports[`record.filter-visitor should get query 3`] = `"select * from "table" where (("field1" = ? or ("field1" = ? and "field2" > ?)) or ("field1" = ? or "field2" < ?))"`;
+
+exports[`record.filter-visitor should get query 4`] = `
+[
+  "value1",
+  "value1",
+  1,
+  "value2",
+  2,
+]
+`;
+
+exports[`record.filter-visitor should get query 5`] = `"select * from "table" where ((((((("field1" like ? and "field1" like ?) and "field1" like ?) and "field2" = ?) and "field2" > ?) and "field2" >= ?) and "field2" < ?) and "field2" <= ?)"`;
+
+exports[`record.filter-visitor should get query 6`] = `
+[
+  "value1%",
+  "%value2",
+  "%value3%",
+  1,
+  2,
+  3,
+  4,
+  5,
+]
+`;
+
+exports[`record.filter-visitor should get query 7`] = `"select * from "table" where ("field1" = ? or "field1" is null)"`;
+
+exports[`record.filter-visitor should get query 8`] = `
+[
+  "",
+]
+`;
+
+exports[`record.filter-visitor should get query 9`] = `"select * from "table" where not ("field1" = ? or "field1" is null)"`;
+
+exports[`record.filter-visitor should get query 10`] = `
+[
+  "",
+]
+`;
+
+exports[`record.filter-visitor should get query 11`] = `"select * from "table" where "field1" like ?"`;
+
+exports[`record.filter-visitor should get query 12`] = `
+[
+  "hello%",
+]
+`;
+
+exports[`record.filter-visitor should get query 13`] = `"select * from "table" where "field1" like ?"`;
+
+exports[`record.filter-visitor should get query 14`] = `
+[
+  "%hello%",
+]
+`;
+
+exports[`record.filter-visitor should get query 15`] = `"select * from "table" where not "field1" like ?"`;
+
+exports[`record.filter-visitor should get query 16`] = `
+[
+  "%hello%",
+]
+`;
+
+exports[`record.filter-visitor should get query 17`] = `"select * from "table" where "field1" like ?"`;
+
+exports[`record.filter-visitor should get query 18`] = `
+[
+  "%hello",
+]
+`;
+
+exports[`record.filter-visitor should get query 19`] = `"select * from "table" where "field2" is null"`;
+
+exports[`record.filter-visitor should get query 20`] = `[]`;
+
+exports[`record.filter-visitor should get query 21`] = `"select * from "table" where not "field2" is null"`;
+
+exports[`record.filter-visitor should get query 22`] = `[]`;

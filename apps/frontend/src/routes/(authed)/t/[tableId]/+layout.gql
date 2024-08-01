@@ -1,0 +1,68 @@
+query GetTableQuery($tableId: ID!, $viewId: ID) {
+  table(id: $tableId) {
+    id
+    name
+    baseId
+    schema {
+      id
+      name
+      type
+      defaultValue
+      display
+      constraint
+      option
+    }
+
+    views {
+      id
+      name
+      type
+      isDefault
+      option {
+        showSystemFields
+      }
+      filter
+      color
+      sort
+      aggregate
+      fields
+
+      share {
+        enabled
+        id
+      }
+    }
+
+    forms {
+      id
+      name
+      description
+      fields
+      option {
+        backgroundColor
+      }
+
+      share {
+        enabled
+        id
+      }
+    }
+
+    viewData(viewId: $viewId) {
+      aggregate
+    }
+
+    rls {
+      id
+      name
+      allow
+      enabled
+      subject
+      action
+      condition
+      updateCondition
+    }
+
+    recordsCount
+  }
+}

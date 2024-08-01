@@ -1,0 +1,14 @@
+fragment TableDTO on Table {
+  id
+  name
+  schema {
+    id
+    name
+    type
+  }
+  views {
+    id
+    name
+    type
+  }
+}

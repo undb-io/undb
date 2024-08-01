@@ -1,0 +1,21 @@
+{
+  "name": "@undb/audit",
+  "module": "src/index.ts",
+  "types": "src/index.d.ts",
+  "type": "module",
+  "dependencies": {
+    "@undb/context": "workspace:*",
+    "@undb/di": "workspace:*",
+    "@undb/domain": "workspace:*",
+    "@undb/table": "workspace:*",
+    "@undb/zod": "workspace:*",
+    "date-fns": "^3.6.0",
+    "radash": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,0 +1,16 @@
+query GetRecordAudits($recordId: ID!) {
+  recordAudits(recordId: $recordId) {
+    id
+    timestamp
+    operatorId
+    operator {
+      username
+      email
+    }
+    tableId
+    recordId
+    op
+    detail
+    meta
+  }
+}

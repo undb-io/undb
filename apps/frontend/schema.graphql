@@ -1,0 +1,188 @@
+type Audit {
+  detail: JSON
+  id: ID!
+  meta: JSON
+  op: String!
+  operator: User!
+  operatorId: ID!
+  recordId: ID!
+  tableId: ID!
+  timestamp: String!
+}
+
+type Base {
+  id: ID!
+  name: String!
+  tables: [Table]!
+}
+
+type Field {
+  constraint: JSON
+  defaultValue: JSON
+  display: Boolean
+  id: ID!
+  name: String!
+  option: JSON
+  type: FieldType!
+}
+
+enum FieldType {
+  attachment
+  autoIncrement
+  checkbox
+  createdAt
+  createdBy
+  date
+  email
+  id
+  json
+  number
+  rating
+  reference
+  rollup
+  select
+  string
+  updatedAt
+  updatedBy
+  user
+}
+
+scalar File
+
+type Form {
+  description: String
+  fields: JSON
+  id: ID!
+  name: String!
+  option: FormOption
+  share: Share
+  shareId: ID
+}
+
+type FormOption {
+  backgroundColor: String
+}
+
+type Invitation {
+  email: String!
+  id: ID!
+  invitedAt: String!
+  role: WorkspaceRole!
+  status: InvitationStatus!
+}
+
+enum InvitationStatus {
+  accepted
+  pending
+  rejected
+}
+
+scalar JSON
+
+type Query {
+  base(id: ID!): Base!
+  bases: [Base]
+  invitations(status: InvitationStatus): [Invitation!]!
+  member: WorkspaceMember
+  memberById(id: ID!): WorkspaceMember
+  members(q: String): [WorkspaceMember]!
+  membersByIds(ids: [ID!]!): [WorkspaceMember!]!
+  recordAudits(recordId: ID!): [Audit]
+  rollupForeignTables(fieldId: ID!, tableId: ID!): [Table!]!
+  share(id: ID!): Share
+  table(id: ID!): Table
+  tableByShare(shareId: ID!): Table
+  tableForeignTables(tableId: ID!): [Table!]!
+  tables: [Table]!
+}
+
+type RLS {
+  action: RLSAction!
+  allow: Boolean!
+  condition: JSON
+  enabled: Boolean!
+  id: ID!
+  name: String!
+  subject: JSON
+  updateCondition: JSON
+}
+
+enum RLSAction {
+  create
+  delete
+  read
+  update
+}
+
+type Share {
+  enabled: Boolean!
+  id: ID!
+  target: ShareTarget!
+}
+
+type ShareTarget {
+  id: ID!
+  type: ShareTargetType!
+}
+
+enum ShareTargetType {
+  form
+  view
+}
+
+type Table {
+  base: Base!
+  baseId: String!
+  forms: [Form]
+  id: ID!
+  name: String!
+  recordsCount: Int!
+  rls: [RLS]
+  schema: [Field!]!
+  viewData(viewId: ID): ViewData
+  views: [View!]!
+}
+
+type User {
+  email: String!
+  id: ID!
+  username: String!
+}
+
+type View {
+  aggregate: JSON
+  color: JSON
+  fields: JSON
+  filter: JSON
+  id: ID!
+  isDefault: Boolean
+  name: String!
+  option: ViewOption
+  share: Share
+  shareId: ID
+  sort: JSON
+  type: ViewType!
+}
+
+type ViewData {
+  aggregate: JSON
+}
+
+type ViewOption {
+  showSystemFields: Boolean
+}
+
+enum ViewType {
+  grid
+}
+
+type WorkspaceMember {
+  role: WorkspaceRole!
+  user: User!
+}
+
+enum WorkspaceRole {
+  admin
+  owner
+  viewer
+}

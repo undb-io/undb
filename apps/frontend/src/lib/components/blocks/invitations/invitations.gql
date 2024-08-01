@@ -1,0 +1,9 @@
+query GetInvitations($status: InvitationStatus) {
+  invitations(status: $status) {
+    id
+    email
+    role
+    status
+    invitedAt
+  }
+}

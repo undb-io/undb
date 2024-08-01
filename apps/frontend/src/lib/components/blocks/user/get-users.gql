@@ -1,0 +1,10 @@
+query GetUsers($q: String) {
+  members(q: $q) {
+    role
+    user {
+      id
+      email
+      username
+    }
+  }
+}

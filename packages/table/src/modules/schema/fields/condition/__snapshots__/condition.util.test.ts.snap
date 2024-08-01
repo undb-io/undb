@@ -1,0 +1,95 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`condition.util should get correct spec 1`] = `
+OptionType {
+  [Symbol(T)]: true,
+  [Symbol(Val)]: And {
+    "left": StringEqual {
+      "fieldId": {
+        "props": {
+          "value": "fld_1",
+        },
+      },
+      "values": StringFieldValue {
+        "props": {
+          "value": "value1",
+        },
+      },
+    },
+    "right": NumberGT {
+      "fieldId": {
+        "props": {
+          "value": "fld_2",
+        },
+      },
+      "value": 1,
+    },
+  },
+}
+`;
+
+exports[`condition.util should get correct spec 2`] = `
+OptionType {
+  [Symbol(T)]: true,
+  [Symbol(Val)]: Or {
+    "left": Or {
+      "left": StringEqual {
+        "fieldId": {
+          "props": {
+            "value": "fld_1",
+          },
+        },
+        "values": StringFieldValue {
+          "props": {
+            "value": "value1",
+          },
+        },
+      },
+      "right": And {
+        "left": StringEqual {
+          "fieldId": {
+            "props": {
+              "value": "fld_1",
+            },
+          },
+          "values": StringFieldValue {
+            "props": {
+              "value": "value1",
+            },
+          },
+        },
+        "right": NumberGT {
+          "fieldId": {
+            "props": {
+              "value": "fld_2",
+            },
+          },
+          "value": 1,
+        },
+      },
+    },
+    "right": Or {
+      "left": StringEqual {
+        "fieldId": {
+          "props": {
+            "value": "fld_1",
+          },
+        },
+        "values": StringFieldValue {
+          "props": {
+            "value": "value2",
+          },
+        },
+      },
+      "right": NumberLT {
+        "fieldId": {
+          "props": {
+            "value": "fld_2",
+          },
+        },
+        "value": 2,
+      },
+    },
+  },
+}
+`;

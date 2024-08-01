@@ -1,0 +1,16 @@
+{
+  "name": "@undb/mail",
+  "module": "src/index.ts",
+  "types": "src/index.d.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "dependencies": {
+    "@undb/di": "workspace:*",
+    "@undb/zod": "workspace:*"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

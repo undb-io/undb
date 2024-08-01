@@ -1,0 +1,33 @@
+{
+  "name": "@undb/persistence",
+  "module": "src/index.ts",
+  "types": "src/index.d.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "drizzle-kit": "^0.23.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.7.0",
+    "@libsql/kysely-libsql": "^0.4.0",
+    "@undb/audit": "workspace:*",
+    "@undb/authz": "workspace:*",
+    "@undb/base": "workspace:*",
+    "@undb/context": "workspace:*",
+    "@undb/di": "workspace:*",
+    "@undb/domain": "workspace:*",
+    "@undb/logger": "workspace:*",
+    "@undb/openapi": "workspace:*",
+    "@undb/table": "workspace:*",
+    "@undb/user": "workspace:*",
+    "@undb/webhook": "workspace:*",
+    "date-fns": "^3.6.0",
+    "drizzle-orm": "^0.32.1",
+    "kysely": "^0.27.4",
+    "radash": "^12.1.0",
+    "ts-pattern": "^5.2.0"
+  }
+}

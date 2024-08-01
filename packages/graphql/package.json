@@ -1,0 +1,25 @@
+{
+  "name": "@undb/graphql",
+  "module": "src/index.ts",
+  "types": "src/index.d.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "@undb/di": "workspace:*",
+    "@undb/context": "workspace:*",
+    "@undb/cqrs": "workspace:*",
+    "@undb/share": "workspace:*",
+    "@undb/user": "workspace:*",
+    "@undb/queries": "workspace:*",
+    "@elysiajs/graphql-yoga": "^1.0.3",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@envelop/opentelemetry": "^6.3.1",
+    "@opentelemetry/api": "^1.9.0",
+    "graphql": "16.8.1",
+    "graphql-yoga": "^5.6.2"
+  }
+}

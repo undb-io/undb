@@ -1,0 +1,10 @@
+query GetMember($id: ID!) {
+  memberById(id: $id) {
+    role
+    user {
+      id
+      username
+      email
+    }
+  }
+}

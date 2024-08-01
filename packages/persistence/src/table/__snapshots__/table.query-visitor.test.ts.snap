@@ -1,0 +1,48 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableQueryVisitor should get correct query 1`] = `
+{
+  "params": [
+    "1",
+  ],
+  "sql": "select "id", "name", "schema", "views", "created_at", "created_by", "updated_at", "updated_by" from "undb_table" where "undb_table"."id" = ?",
+}
+`;
+
+exports[`TableQueryVisitor should get correct query 2`] = `
+{
+  "params": [
+    "table",
+  ],
+  "sql": "select "id", "name", "schema", "views", "created_at", "created_by", "updated_at", "updated_by" from "undb_table" where "undb_table"."name" = ?",
+}
+`;
+
+exports[`TableQueryVisitor should get correct query 3`] = `
+{
+  "params": [
+    "1",
+    "table",
+  ],
+  "sql": "select "id", "name", "schema", "views", "created_at", "created_by", "updated_at", "updated_by" from "undb_table" where ("undb_table"."id" = ? or "undb_table"."name" = ?)",
+}
+`;
+
+exports[`TableQueryVisitor should get correct query 4`] = `
+{
+  "params": [
+    "1",
+  ],
+  "sql": "select "id", "name", "schema", "views", "created_at", "created_by", "updated_at", "updated_by" from "undb_table" where not "undb_table"."id" = ?",
+}
+`;
+
+exports[`TableQueryVisitor should get correct query 5`] = `
+{
+  "params": [
+    "1",
+    "table",
+  ],
+  "sql": "select "id", "name", "schema", "views", "created_at", "created_by", "updated_at", "updated_by" from "undb_table" where (not "undb_table"."id" = ? or "undb_table"."name" = ?)",
+}
+`;

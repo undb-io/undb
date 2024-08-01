@@ -1,0 +1,19 @@
+{
+  "name": "@undb/share",
+  "module": "src/index.ts",
+  "types": "src/index.d.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@undb/di": "workspace:*",
+    "@undb/table": "workspace:*",
+    "@undb/zod": "workspace:*",
+    "radash": "^12.1.0",
+    "ts-pattern": "^5.2.0"
+  }
+}
