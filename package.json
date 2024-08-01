@@ -1,5 +1,6 @@
 {
   "name": "undb",
+  "version": "0.11.0",
   "private": true,
   "scripts": {
     "build": "NODE_ENV=production turbo build",
