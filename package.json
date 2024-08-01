@@ -3,7 +3,7 @@
   "version": "0.11.0",
   "private": true,
   "scripts": {
-    "build": "NODE_ENV=production turbo build",
+    "build": "NODE_ENV=production bun --bun turbo build",
     "prebuild:desktop": "run-s build move-assets",
     "build:desktop": "NODE_ENV=production bun --cwd=apps/desktop run build:desktop",
     "build:docker": "bun --bun turbo build:docker",
