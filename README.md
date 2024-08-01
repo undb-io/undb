@@ -1,81 +1,69 @@
-# Turborepo starter
+# UNDB
 
-This is an official starter Turborepo.
+UNDB is a no-code platform that can also serve as a Backend as a Service (BaaS). It is based on SQLite and can be packaged into a binary file using Bun for backend service. Additionally, it can be deployed as a service via Docker, offering a UI for table management.
 
-## Using this example
+## Features
 
-Run the following command:
+- No-code platform, easy to use
+- Based on SQLite, a lightweight database
+- Can be packaged into a binary file using Bun
+- Supports Docker deployment
+- Provides a UI for table management
 
-```sh
-npx create-turbo@latest
+## Quick start
+
+```bash
+docker run -p 3721:3721 ghcr.io/undb-io/undb:v1.0.0-1
 ```
 
-## What's inside?
+## Installation and Usage
 
-This Turborepo includes the following packages/apps:
+### Prerequisites
 
-### Apps and Packages
+- [Bun](https://bun.sh) - Bun is a fast JavaScript runtime and package manager
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@undb/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@undb/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@undb/typescript-config`: `tsconfig.json`s used throughout the monorepo
+### Local Development
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+1. **Install Bun**
 
-### Utilities
+   Refer to [Bun's official documentation](https://bun.sh/docs) for installation instructions.
 
-This Turborepo has some additional tools already setup for you:
+2. **Clone the repository**
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+   ```bash
+   git clone https://github.com/undb-io/undb.git
+   cd undb
+   ```
 
-### Build
+3. **Install dependencies**
 
-To build all apps and packages, run the following command:
+   ```bash
+   bun install
+   ```
 
-```
-cd my-turborepo
-pnpm build
-```
+4. **Start the development server**
 
-### Develop
+   ```bash
+   bun run dev
+   ```
 
-To develop all apps and packages, run the following command:
+### Packaging into a Binary File
 
-```
-cd my-turborepo
-pnpm dev
-```
+1. **Build**
+   ```bash
+   bun run build
+   ```
 
-### Remote Caching
+### Docker Deployment
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+1. **Build the Docker image**
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+   ```bash
+   docker build -t undb .
+   ```
 
-```
-cd my-turborepo
-npx turbo login
-```
+2. **Run the Docker container**
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+   ```bash
+   docker run -d -p 3721:3721 undb
+   ```
