@@ -1,5 +1,0 @@
-export * from './get-bases.query.handler.js'
-export * from './get-bases.query.input.js'
-export * from './get-bases.query.interface.js'
-export * from './get-bases.query.js'
-export * from './get-bases.query.output.js'

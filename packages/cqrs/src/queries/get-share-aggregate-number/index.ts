@@ -1,5 +1,0 @@
-export * from './get-share-aggregate-number.query.handler.js'
-export * from './get-share-aggregate-number.query.interface.js'
-export * from './get-share-aggregate-number.query.js'
-export * from './get-share-aggregate-number.query.output.js'
-export * from './get-share-aggregate-number.query.schema.js'

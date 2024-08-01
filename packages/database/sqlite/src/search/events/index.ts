@@ -1,6 +1,0 @@
-export * from './search-on-record-bulk-created.event-handler.js'
-export * from './search-on-record-bulk-deleted.event-handler.js'
-export * from './search-on-record-bulk-updated.event-handler.js'
-export * from './search-on-record-created.event-handler.js'
-export * from './search-on-record-deleted.event-handler.js'
-export * from './search-on-record-updated.event-handler.js'

@@ -1,9 +1,0 @@
-{
-  "extends": "tsconfig/lib.json",
-  "include": ["."],
-  "exclude": ["dist", "build", "node_modules"],
-  "compilerOptions": {
-    "resolveJsonModule": true,
-    "outDir": "./dist"
-  }
-}

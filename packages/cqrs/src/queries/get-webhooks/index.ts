@@ -1,5 +1,0 @@
-export * from './get-webhooks.query.handler.js'
-export * from './get-webhooks.query.input.js'
-export * from './get-webhooks.query.interface.js'
-export * from './get-webhooks.query.js'
-export * from './get-webhooks.query.output.js'

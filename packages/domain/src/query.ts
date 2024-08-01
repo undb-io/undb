@@ -1,1 +1,0 @@
-export abstract class Query {}
