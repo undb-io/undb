@@ -49,3 +49,5 @@ undb
 !.undb/storage/.gitkeep
 !.undb/.gitkeep
 !drizzle/*
+
+!dist/

@@ -27,6 +27,14 @@ docker run -p 3721:3721 ghcr.io/undb-io/undb:v1.0.0-1
 
 ## Installation and Usage
 
+### Docker compose development
+
+```bash
+docker compose up -d
+```
+
+then visit `http://localhost:3721`
+
 ### Prerequisites
 
 - [Bun](https://bun.sh) - Bun is a fast JavaScript runtime and package manager

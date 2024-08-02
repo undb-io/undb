@@ -15,11 +15,11 @@
     on:click={() => ($commandOpen = true)}
   >
     <span class="inline-flex items-center">
-      <SearchIcon class="text-muted-foreground mr-2 h-3 w-3" />
+      <SearchIcon class="mr-2 h-3 w-3 text-muted-foreground" />
       Search
     </span>
     <span>
-      <code class="bg-muted relative rounded border border-gray-300 px-[0.3rem] py-[0.2rem] font-mono text-xs">
+      <code class="relative rounded border border-gray-300 bg-muted px-[0.3rem] py-[0.2rem] font-mono text-xs">
         ⌘ + K
       </code>
     </span>
@@ -28,7 +28,7 @@
   <a
     href="/members"
     data-active={$page.route.id === "/(authed)/members"}
-    class=" focus-visible:ring-ring hover:bg-accent hover:text-accent-foreground data-[active=true]:bg-primary data-[active=true]:text-primary-foreground flex h-8 items-center justify-start gap-2 whitespace-nowrap rounded-md px-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
+    class=" flex h-8 items-center justify-start gap-2 whitespace-nowrap rounded-md px-3 text-xs font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[active=true]:bg-primary data-[active=true]:text-primary-foreground"
   >
     <Users2Icon class="h-4 w-4" />
     Members

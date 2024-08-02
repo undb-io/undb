@@ -1,0 +1,16 @@
+FROM oven/bun:latest
+
+WORKDIR /app
+
+ENV TINI_VERSION v0.19.0
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-static /tini
+RUN chmod +x /tini
+
+COPY . .
+
+RUN bun install
+
+EXPOSE 5173
+
+ENTRYPOINT ["/tini", "--"]
+CMD ["bun", "run", "dev"]
