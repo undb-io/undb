@@ -1,0 +1,7 @@
+export * from "./dto"
+export * from "./space.do"
+export * from "./space.factory"
+export * from "./space.outbox"
+export * from "./space.repository"
+export * from "./space.service"
+export * from "./value-objects"

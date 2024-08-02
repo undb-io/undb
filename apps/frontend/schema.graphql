@@ -83,10 +83,10 @@ type Query {
   base(id: ID!): Base!
   bases: [Base]
   invitations(status: InvitationStatus): [Invitation!]!
-  member: WorkspaceMember
-  memberById(id: ID!): WorkspaceMember
-  members(q: String): [WorkspaceMember]!
-  membersByIds(ids: [ID!]!): [WorkspaceMember!]!
+  member: SpaceMember
+  memberById(id: ID!): SpaceMember
+  members(q: String): [SpaceMember]!
+  membersByIds(ids: [ID!]!): [SpaceMember!]!
   recordAudits(recordId: ID!): [Audit]
   rollupForeignTables(fieldId: ID!, tableId: ID!): [Table!]!
   share(id: ID!): Share
@@ -128,6 +128,11 @@ type ShareTarget {
 enum ShareTargetType {
   form
   view
+}
+
+type SpaceMember {
+  role: WorkspaceRole!
+  user: User!
 }
 
 type Table {
@@ -174,11 +179,6 @@ type ViewOption {
 
 enum ViewType {
   grid
-}
-
-type WorkspaceMember {
-  role: WorkspaceRole!
-  user: User!
 }
 
 enum WorkspaceRole {

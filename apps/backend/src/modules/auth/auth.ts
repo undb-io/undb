@@ -1,17 +1,18 @@
 import { LibSQLAdapter } from "@lucia-auth/adapter-sqlite"
 import {
   type IInvitationQueryRepository,
-  IWorkspaceMemberRole,
-  type IWorkspaceMemberService,
+  ISpaceMemberRole,
+  type ISpaceMemberService,
   injectInvitationQueryRepository,
-  injectWorkspaceMemberService,
+  injectSpaceMemberService,
 } from "@undb/authz"
 import { AcceptInvitationCommand } from "@undb/commands"
 import type { ContextMember } from "@undb/context"
 import { executionContext } from "@undb/context/server"
 import { CommandBus } from "@undb/cqrs"
 import { inject } from "@undb/di"
-import { type IQueryBuilder, injectQueryBuilder, sqlite } from "@undb/persistence"
+import { type IQueryBuilder, getCurrentTransaction, injectQueryBuilder, sqlite } from "@undb/persistence"
+import { type ISpaceService, injectSpaceService } from "@undb/space"
 import { Context, Elysia, t } from "elysia"
 import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize } from "lucia"
@@ -54,14 +55,16 @@ declare module "lucia" {
 @singleton()
 export class Auth {
   constructor(
-    @injectWorkspaceMemberService()
-    private workspaceMemberService: IWorkspaceMemberService,
+    @injectSpaceMemberService()
+    private spaceMemberService: ISpaceMemberService,
     @inject(CommandBus)
     private readonly commandBus: CommandBus,
     @injectInvitationQueryRepository()
     private readonly invitationRepository: IInvitationQueryRepository,
     @injectQueryBuilder()
     private readonly queryBuilder: IQueryBuilder,
+    @injectSpaceService()
+    private readonly spaceService: ISpaceService,
   ) {}
 
   store() {
@@ -101,7 +104,7 @@ export class Auth {
       }
 
       const userId = user?.id!
-      const member = (await this.workspaceMemberService.getWorkspaceMember(userId)).into(null)?.toJSON()
+      const member = (await this.spaceMemberService.getSpaceMember(userId)).into(null)?.toJSON()
 
       return {
         user,
@@ -129,7 +132,7 @@ export class Auth {
         async (ctx) => {
           const { email, password, invitationId, username } = ctx.body
           const hasUser = !!(await this.queryBuilder.selectFrom("undb_user").selectAll().executeTakeFirst())
-          let role: IWorkspaceMemberRole = "owner"
+          let role: ISpaceMemberRole = "owner"
           if (invitationId) {
             const invitation = await this.invitationRepository.findOneById(invitationId)
             if (invitation.isNone()) {
@@ -166,7 +169,8 @@ export class Auth {
             userId = generateIdFromEntropySize(10) // 16 characters long
 
             const passwordHash = await Bun.password.hash(password)
-            await this.queryBuilder
+            const tx = getCurrentTransaction()
+            await tx
               .insertInto("undb_user")
               .values({
                 email,
@@ -176,7 +180,8 @@ export class Auth {
               })
               .execute()
 
-            await this.workspaceMemberService.createMember(userId, role)
+            const space = await this.spaceService.createPersonalSpace()
+            await this.spaceMemberService.createMember(userId, space.id.value, role)
           }
 
           const session = await lucia.createSession(userId, {})

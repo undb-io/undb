@@ -28,7 +28,7 @@ import Elysia, { t } from "elysia"
 import { withTransaction } from "../../db"
 import { type IBaseRepository, injectBaseRepository } from "@undb/base"
 import { injectUserService, type IUserService } from "@undb/user"
-import { injectWorkspaceMemberService, type IWorkspaceMemberService } from "@undb/authz"
+import { injectSpaceMemberService, type ISpaceMemberService } from "@undb/authz"
 
 @singleton()
 export class OpenAPI {
@@ -53,8 +53,8 @@ export class OpenAPI {
     private readonly apiTokenService: IApiTokenService,
     @injectUserService()
     private readonly userService: IUserService,
-    @injectWorkspaceMemberService()
-    private workspaceMemberService: IWorkspaceMemberService,
+    @injectSpaceMemberService()
+    private spaceMemberService: ISpaceMemberService,
   ) {}
 
   public route() {
@@ -128,7 +128,7 @@ export class OpenAPI {
                   const userId = await this.apiTokenService.verify(token)
                   if (userId.isSome()) {
                     const user = (await this.userService.findOneById(userId.unwrap())).unwrap()
-                    const member = (await this.workspaceMemberService.getWorkspaceMember(user.id)).unwrap()
+                    const member = (await this.spaceMemberService.getSpaceMember(user.id)).unwrap()
 
                     executionContext.enterWith({
                       requestId: context.headers["x-request-id"] ?? context.headers["X-Request-ID"] ?? "",

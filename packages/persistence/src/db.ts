@@ -13,11 +13,12 @@ import type {
   referenceIdMapping,
   rollupIdMapping,
   shareTable,
+  space,
+  spaceMember,
   tableIdMapping,
   tables,
   users,
   webhook,
-  workspaceMember,
 } from "./tables"
 
 export const db = drizzle(sqlite, {
@@ -26,6 +27,7 @@ export const db = drizzle(sqlite, {
 
 await migrate(db, { migrationsFolder: "./drizzle" })
 
+type SpaceTable = Kyselify<typeof space>
 type TableTable = Kyselify<typeof tables>
 type TableIdMappingTable = Kyselify<typeof tableIdMapping>
 type RollupIdMappingTable = Kyselify<typeof rollupIdMapping>
@@ -35,14 +37,15 @@ type OutboxTable = Kyselify<typeof outbox>
 type ShareTable = Kyselify<typeof shareTable>
 type WebhookTable = Kyselify<typeof webhook>
 type UserTable = Kyselify<typeof users>
-type WorkspaceMemberTable = Kyselify<typeof workspaceMember>
+type SpaceMemberTable = Kyselify<typeof spaceMember>
 type InvitationTable = Kyselify<typeof invitations>
 type ReferenceIdMappingTable = Kyselify<typeof referenceIdMapping>
 type ApiTokenTable = Kyselify<typeof apiTokenTable>
 
 export interface Database {
-  undb_table: TableTable
+  undb_space: SpaceTable
   undb_base: BaseTable
+  undb_table: TableTable
   undb_audit: AuditTable
   undb_table_id_mapping: TableIdMappingTable
   undb_rollup_id_mapping: RollupIdMappingTable
@@ -50,12 +53,13 @@ export interface Database {
   undb_share: ShareTable
   undb_webhook: WebhookTable
   undb_user: UserTable
-  undb_workspace_member: WorkspaceMemberTable
+  undb_space_member: SpaceMemberTable
   undb_invitation: InvitationTable
   undb_reference_id_mapping: ReferenceIdMappingTable
   undb_api_token: ApiTokenTable
 }
 
+export type Space = Selectable<SpaceTable>
 export type Table = Selectable<TableTable>
 export type InsertTable = Insertable<TableTable>
 export type Base = Selectable<BaseTable>
@@ -67,7 +71,7 @@ export type Share = Selectable<ShareTable>
 export type Webhook = Selectable<WebhookTable>
 export type InsertWebhook = Insertable<WebhookTable>
 export type User = Selectable<UserTable>
-export type WorkspaceMember = Selectable<WorkspaceMemberTable>
+export type SpaceMember = Selectable<SpaceMemberTable>
 export type Invitation = Selectable<InvitationTable>
 export type ApiToken = Selectable<ApiTokenTable>
 

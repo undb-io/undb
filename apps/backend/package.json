@@ -33,6 +33,7 @@
     "@undb/query-handlers": "workspace:*",
     "@undb/realtime": "workspace:*",
     "@undb/share": "workspace:*",
+    "@undb/space": "workspace:*",
     "@undb/trpc": "workspace:*",
     "@undb/webhook": "workspace:*",
     "bun": "^1.1.21",

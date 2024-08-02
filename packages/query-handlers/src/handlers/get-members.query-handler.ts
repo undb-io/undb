@@ -1,9 +1,9 @@
 import {
-  WithWorkspaceMemberQ,
-  WorkspaceMemberComositeSpecification,
-  injectWorkspaceMemberQueryRepository,
-  type IWorkspaceMemberDTO,
-  type IWorkspaceMemberQueryRepository,
+  SpaceMemberComositeSpecification,
+  WithSpaceMemberQ,
+  injectSpaceMemberQueryRepository,
+  type ISpaceMemberDTO,
+  type ISpaceMemberQueryRepository,
 } from "@undb/authz"
 import { queryHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
@@ -14,14 +14,14 @@ import { GetMembersQuery } from "@undb/queries"
 @singleton()
 export class GetMembersQueryHandler implements IQueryHandler<GetMembersQuery, any> {
   constructor(
-    @injectWorkspaceMemberQueryRepository()
-    private readonly repo: IWorkspaceMemberQueryRepository,
+    @injectSpaceMemberQueryRepository()
+    private readonly repo: ISpaceMemberQueryRepository,
   ) {}
 
-  async execute(query: GetMembersQuery): Promise<IWorkspaceMemberDTO[]> {
-    let spec: Option<WorkspaceMemberComositeSpecification> = None
+  async execute(query: GetMembersQuery): Promise<ISpaceMemberDTO[]> {
+    let spec: Option<SpaceMemberComositeSpecification> = None
     if (query.q) {
-      spec = Some(new WithWorkspaceMemberQ(query.q))
+      spec = Some(new WithSpaceMemberQ(query.q))
     }
 
     return this.repo.find(spec)

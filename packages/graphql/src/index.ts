@@ -202,7 +202,7 @@ export class Graphql {
         username: String!
       }
 
-      type WorkspaceMember {
+      type SpaceMember {
         role: WorkspaceRole!
 
         user: User!
@@ -230,10 +230,10 @@ export class Graphql {
       }
 
       type Query {
-        member: WorkspaceMember
-        memberById(id: ID!): WorkspaceMember
-        membersByIds(ids: [ID!]!): [WorkspaceMember!]!
-        members(q: String): [WorkspaceMember]!
+        member: SpaceMember
+        memberById(id: ID!): SpaceMember
+        membersByIds(ids: [ID!]!): [SpaceMember!]!
+        members(q: String): [SpaceMember]!
 
         invitations(status: InvitationStatus): [Invitation!]!
 
@@ -347,7 +347,7 @@ export class Graphql {
             return this.queryBus.execute(new GetAggregatesQuery({ tableId: info.variableValues.tableId, viewId }))
           },
         },
-        WorkspaceMember: {
+        SpaceMember: {
           // @ts-ignore
           user: async (member) => {
             return (await this.userRepo.findOneById(member.userId)).unwrap()

@@ -2,10 +2,10 @@ import { AUDIT_QUERY_REPOSITORY, AUDIT_REPOSITORY } from "@undb/audit"
 import {
   INVITATION_QUERY_REPOSITORY,
   INVITATION_REPOSITORY,
-  WORKSPACE_MEMBER_REPOSITORY,
-  WORKSPACE_MEMBER_SERVICE,
+  SPACE_MEMBER_REPOSITORY,
+  SPACE_MEMBER_SERVICE,
+  SpaceMemberService,
   WORKSPQACE_MEMBER_QUERY_REPOSITORY,
-  WorkspaceMemberService,
 } from "@undb/authz"
 import { BASE_OUTBOX_SERVICE, BASE_QUERY_REPOSITORY, BASE_REPOSITORY } from "@undb/base"
 import { container } from "@undb/di"
@@ -25,6 +25,9 @@ import {
   RecordRepository,
   ShareQueryRepository,
   ShareRepository,
+  SpaceMemberQueryRepository,
+  SpaceMemberRepository,
+  SpaceRepostitory,
   TableOutboxService,
   TableQueryRepository,
   TableRepository,
@@ -32,10 +35,9 @@ import {
   UserRepository,
   WebhookQueryRepository,
   WebhookRepository,
-  WorkspaceMemberQueryRepository,
-  WorkspaceMemberRepository,
 } from "@undb/persistence"
 import { SHARE_QUERY_REPOSITORY, SHARE_REPOSITORY, SHARE_SERVICE, ShareService } from "@undb/share"
+import { SPACE_REPOSITORY, SPACE_SERVICE, SpaceService } from "@undb/space"
 import {
   RECORD_OUTBOX_SERVICE,
   RECORD_QUERY_REPOSITORY,
@@ -48,6 +50,8 @@ import { USER_QUERY_REPOSITORY, USER_REPOSITORY, USER_SERVICE, UserService } fro
 import { WEBHOOK_QUERY_REPOSITORY, WEBHOOK_REPOSITORY } from "@undb/webhook"
 
 export const registerDb = () => {
+  container.register(SPACE_REPOSITORY, SpaceRepostitory)
+  container.register(SPACE_SERVICE, SpaceService)
   container.register(TABLE_REPOSITORY, TableRepository)
   container.register(TABLE_QUERY_REPOSITORY, TableQueryRepository)
   container.register(RECORD_QUERY_REPOSITORY, RecordQueryRepository)
@@ -58,11 +62,11 @@ export const registerDb = () => {
   container.register(WEBHOOK_QUERY_REPOSITORY, WebhookQueryRepository)
   container.register(AUDIT_REPOSITORY, AuditRepository)
   container.register(AUDIT_QUERY_REPOSITORY, AuditQueryRepository)
-  container.register(WORKSPACE_MEMBER_REPOSITORY, WorkspaceMemberRepository)
+  container.register(SPACE_MEMBER_REPOSITORY, SpaceMemberRepository)
   container.register(INVITATION_REPOSITORY, InvitationRepository)
   container.register(INVITATION_QUERY_REPOSITORY, InvitationQueryRepository)
-  container.register(WORKSPQACE_MEMBER_QUERY_REPOSITORY, WorkspaceMemberQueryRepository)
-  container.register(WORKSPACE_MEMBER_SERVICE, WorkspaceMemberService)
+  container.register(WORKSPQACE_MEMBER_QUERY_REPOSITORY, SpaceMemberQueryRepository)
+  container.register(SPACE_MEMBER_SERVICE, SpaceMemberService)
   container.register(USER_QUERY_REPOSITORY, UserQueryRepository)
   container.register(USER_REPOSITORY, UserRepository)
   container.register(USER_SERVICE, UserService)

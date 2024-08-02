@@ -7,7 +7,6 @@
   import { goto } from "$app/navigation"
   import { page } from "$app/stores"
   import { shortcut, type ShortcutEventDetail } from "@svelte-put/shortcut"
-  import { cn } from "$lib/utils"
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.js"
   import { CREATE_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
   import Command from "$lib/components/blocks/command/command.svelte"
@@ -68,7 +67,7 @@
     bind:pane={panelLeft}
     onCollapse={() => (collapsed = true)}
     onExpand={() => (collapsed = false)}
-    class="bg-muted/40 hidden border-r md:block"
+    class="hidden border-r bg-muted/40 md:block"
     defaultSize={20}
     minSize={15}
     maxSize={30}

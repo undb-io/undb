@@ -1,8 +1,11 @@
-import type { IBaseSpecVisitor, WithBaseId, WithBaseName, WithBaseQ } from "@undb/base"
+import type { IBaseSpecVisitor, WithBaseId, WithBaseName, WithBaseQ, WithBaseSpaceId } from "@undb/base"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
 
 export class BaseMutateVisitor extends AbstractQBMutationVisitor implements IBaseSpecVisitor {
   withId(v: WithBaseId): void {
+    throw new Error("Method not implemented.")
+  }
+  withBaseSpaceId(v: WithBaseSpaceId): void {
     throw new Error("Method not implemented.")
   }
   withName(v: WithBaseName): void {
