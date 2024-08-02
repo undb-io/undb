@@ -13,11 +13,11 @@ UNDB is a no-code platform that can also serve as a Backend as a Service (BaaS).
 
 ## Features
 
-- No-code platform, easy to use
-- Based on SQLite, a lightweight database
-- Can be packaged into a binary file using Bun
-- Supports Docker deployment
-- Provides a UI for table management
+- ⚡ No-code platform, easy to use
+- 🗄️ Based on SQLite, a lightweight database
+- 📦 Can be packaged into a binary file using Bun
+- 🐳 Supports Docker deployment
+- 🛠️ Provides a UI for table management
 
 ## Quick start
 
