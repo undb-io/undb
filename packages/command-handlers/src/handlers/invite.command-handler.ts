@@ -1,4 +1,4 @@
-import { injectWorkspaceMemberService, type IWorkspaceMemberService } from "@undb/authz"
+import { injectSpaceMemberService, type ISpaceMemberService } from "@undb/authz"
 import { InviteCommand } from "@undb/commands"
 import { getCurrentUser } from "@undb/context/server"
 import { commandHandler } from "@undb/cqrs"
@@ -11,8 +11,8 @@ import { createLogger } from "@undb/logger"
 export class InviteCommandHandler implements ICommandHandler<InviteCommand, any> {
   public readonly logger = createLogger(InviteCommandHandler.name)
   constructor(
-    @injectWorkspaceMemberService()
-    private readonly service: IWorkspaceMemberService,
+    @injectSpaceMemberService()
+    private readonly service: ISpaceMemberService,
   ) {}
 
   async execute(command: InviteCommand): Promise<any> {

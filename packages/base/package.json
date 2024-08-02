@@ -12,6 +12,7 @@
   "dependencies": {
     "@undb/di": "workspace:*",
     "@undb/domain": "workspace:*",
+    "@undb/space": "workspace:*",
     "@undb/zod": "workspace:*"
   }
 }

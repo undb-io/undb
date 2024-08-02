@@ -1,10 +1,10 @@
 <script lang="ts">
   import * as Select from "$lib/components/ui/select"
-  import type { IWorkspaceMemberWithoutOwner } from "@undb/authz"
+  import type { ISpaceMemberWithoutOwner } from "@undb/authz"
   import { LL } from "@undb/i18n/client"
   import Role from "../member/role.svelte"
 
-  export let role: IWorkspaceMemberWithoutOwner = "viewer"
+  export let role: ISpaceMemberWithoutOwner = "viewer"
 
   $: selectedRole = role
     ? {

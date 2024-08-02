@@ -1,2 +1,2 @@
-export * from "./workspace-member"
 export * from "./rbac"
+export * from "./space-member"
