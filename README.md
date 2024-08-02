@@ -1,4 +1,13 @@
-# UNDB
+<h1 align="center" style="border-bottom: none">
+    <div>
+        <a href="https://www.undb.io">
+            <img src="/docs/images/logo.png" width="80" />
+            <br>
+            undb
+        </a>
+    </div>
+    The Open Source no code database / BaaS <br>
+</h1>
 
 UNDB is a no-code platform that can also serve as a Backend as a Service (BaaS). It is based on SQLite and can be packaged into a binary file using Bun for backend service. Additionally, it can be deployed as a service via Docker, offering a UI for table management.
 
