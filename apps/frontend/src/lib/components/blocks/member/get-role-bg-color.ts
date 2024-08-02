@@ -1,6 +1,6 @@
-import type { IWorkspaceMemberRole } from "@undb/authz"
+import type { ISpaceMemberRole } from "@undb/authz"
 
-export const getRoleBgColor = (role: IWorkspaceMemberRole) => {
+export const getRoleBgColor = (role: ISpaceMemberRole) => {
   switch (role) {
     case "owner":
       return "bg-blue-500"

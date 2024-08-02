@@ -1,21 +1,21 @@
-import type { IWorkspaceMemberDTO, WorkspaceMember as WorkspaceMemberDo } from "@undb/authz"
+import type { ISpaceMemberDTO, SpaceMember as SpaceMemberDo } from "@undb/authz"
 import { singleton } from "@undb/di"
 import type { Mapper } from "@undb/domain"
-import type { WorkspaceMember } from "../db"
+import type { SpaceMember } from "../db"
 
 @singleton()
-export class MemberMapper implements Mapper<WorkspaceMemberDo, WorkspaceMember, IWorkspaceMemberDTO> {
-  toDo(entity: WorkspaceMember): WorkspaceMemberDo {
+export class MemberMapper implements Mapper<SpaceMemberDo, SpaceMember, ISpaceMemberDTO> {
+  toDo(entity: SpaceMember): SpaceMemberDo {
     throw new Error("Method not implemented.")
   }
-  toEntity(domain: WorkspaceMemberDo): WorkspaceMember {
+  toEntity(domain: SpaceMemberDo): SpaceMember {
     return {
       id: domain.props.id,
       role: domain.props.role,
       user_id: domain.props.userId,
     }
   }
-  toDTO(entity: WorkspaceMember): IWorkspaceMemberDTO {
+  toDTO(entity: SpaceMember): ISpaceMemberDTO {
     return {
       id: entity.id,
       role: entity.role,

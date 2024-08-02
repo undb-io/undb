@@ -1,11 +1,37 @@
 import type { IAuditDetail } from "@undb/audit"
-import type { IInvitationStatus, IWorkspaceMemberRole, IWorkspaceMemberWithoutOwner } from "@undb/authz"
+import type { IInvitationStatus, ISpaceMemberRole, ISpaceMemberWithoutOwner } from "@undb/authz"
 import type { RECORD_EVENTS } from "@undb/table"
 import type { IWebhookMethod } from "@undb/webhook"
 import { sql } from "drizzle-orm"
 import { index, integer, primaryKey, sqliteTableCreator, text, unique } from "drizzle-orm/sqlite-core"
 
 const sqliteTable = sqliteTableCreator((name) => `undb_${name}`)
+
+export const space = sqliteTable(
+  "space",
+  {
+    id: text("id").notNull().primaryKey(),
+    name: text("name").notNull(),
+    isPersonal: integer("is_personal", { mode: "boolean" }).notNull(),
+    createdAt: text("created_at")
+      .notNull()
+      .default(sql`(CURRENT_TIMESTAMP)`),
+    createdBy: text("created_by")
+      .notNull()
+      .references(() => users.id),
+    updateAt: text("updated_at")
+      .notNull()
+      .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
+    updatedBy: text("updated_by")
+      .notNull()
+      .references(() => users.id),
+  },
+  (table) => {
+    return {
+      nameIdx: index("space_name_idx").on(table.name),
+    }
+  },
+)
 
 export const tables = sqliteTable(
   "table",
@@ -176,17 +202,23 @@ export const audit = sqliteTable(
   },
 )
 
-export const workspaceMember = sqliteTable("workspace_member", {
+export const spaceMember = sqliteTable("space_member", {
   id: text("id").notNull().primaryKey(),
   userId: text("user_id")
     .notNull()
     .references(() => users.id),
-  role: text("role").notNull().$type<IWorkspaceMemberRole>(),
+  role: text("role").notNull().$type<ISpaceMemberRole>(),
+  spaceId: text("space_id")
+    .references(() => space.id)
+    .notNull(),
 })
 
 export const baseTable = sqliteTable("base", {
   id: text("id").notNull().primaryKey(),
   name: text("name").notNull().unique(),
+  spaceId: text("space_id")
+    .references(() => space.id)
+    .notNull(),
   createdAt: text("created_at")
     .notNull()
     .default(sql`(CURRENT_TIMESTAMP)`),
@@ -219,8 +251,11 @@ export const shareTable = sqliteTable(
 export const invitations = sqliteTable("invitation", {
   id: text("id").notNull().primaryKey(),
   email: text("email").notNull().unique(),
-  role: text("role").notNull().$type<IWorkspaceMemberWithoutOwner>(),
+  role: text("role").notNull().$type<ISpaceMemberWithoutOwner>(),
   status: text("status").notNull().$type<IInvitationStatus>(),
+  spaceId: text("space_id")
+    .references(() => space.id)
+    .notNull(),
   invitedAt: integer("invited_at", { mode: "timestamp_ms" }).notNull(),
   inviterId: text("inviter_id")
     .notNull()
@@ -234,5 +269,8 @@ export const apiTokenTable = sqliteTable("api_token", {
     .notNull()
     .references(() => users.id)
     .unique(),
+  spaceId: text("space_id")
+    .references(() => space.id)
+    .notNull(),
   token: text("token").notNull().unique(),
 })

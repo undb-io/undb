@@ -1,11 +1,11 @@
-import { WorkspaceMember, type IWorkspaceMemberRepository } from "@undb/authz"
+import { SpaceMember, type ISpaceMemberRepository } from "@undb/authz"
 import { singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 
 @singleton()
-export class WorkspaceMemberRepository implements IWorkspaceMemberRepository {
+export class SpaceMemberRepository implements ISpaceMemberRepository {
   constructor(
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
@@ -19,11 +19,11 @@ export class WorkspaceMemberRepository implements IWorkspaceMemberRepository {
       .executeTakeFirst()
     return !!user
   }
-  async findOneByUserId(userId: string): Promise<Option<WorkspaceMember>> {
+  async findOneByUserId(userId: string): Promise<Option<SpaceMember>> {
     const member = await this.qb
-      .selectFrom("undb_workspace_member")
+      .selectFrom("undb_space_member")
       .selectAll()
-      .where((eb) => eb.eb("undb_workspace_member.user_id", "=", userId))
+      .where((eb) => eb.eb("undb_space_member.user_id", "=", userId))
       .executeTakeFirst()
 
     if (!member) {
@@ -31,20 +31,20 @@ export class WorkspaceMemberRepository implements IWorkspaceMemberRepository {
     }
 
     return Some(
-      new WorkspaceMember({
+      new SpaceMember({
         id: member.id,
         role: member.role,
         userId: member.user_id,
       }),
     )
   }
-  findOneById(id: string): Promise<WorkspaceMember> {
+  findOneById(id: string): Promise<SpaceMember> {
     throw new Error("Method not implemented.")
   }
-  async insert(member: WorkspaceMember): Promise<void> {
+  async insert(member: SpaceMember): Promise<void> {
     const json = member.toJSON()
     await this.qb
-      .insertInto("undb_workspace_member")
+      .insertInto("undb_space_member")
       .values({
         id: json.id,
         role: json.role,

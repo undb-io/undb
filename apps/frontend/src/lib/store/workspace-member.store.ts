@@ -1,7 +1,7 @@
-import { getHasPermission, type IWorkspaceAction, type IWorkspaceMemberRole } from "@undb/authz"
+import { getHasPermission, type ISpaceMemberRole, type IWorkspaceAction } from "@undb/authz"
 import { derived, writable } from "svelte/store"
 
-export const role = writable<IWorkspaceMemberRole | null>(null)
+export const role = writable<ISpaceMemberRole | null>(null)
 
 export const hasPermission = derived(
   role,

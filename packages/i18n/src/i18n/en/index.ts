@@ -1,4 +1,4 @@
-import type { IWorkspaceMemberRole } from "@undb/authz"
+import type { ISpaceMemberRole } from "@undb/authz"
 import type { FieldType,IFieldAggregate,IOpType,IRollupFn } from "@undb/table"
 import type { BaseTranslation } from "../i18n-types.js"
 
@@ -91,7 +91,7 @@ const aggregateFns: Record<IFieldAggregate, string> = {
   percent_false: "Percent False",
 }
 
-const workspaceRoles: Record<IWorkspaceMemberRole, string> = {
+const workspaceRoles: Record<ISpaceMemberRole, string> = {
   owner: "Owner",
   admin: "Admin",
   viewer: "Viewer"

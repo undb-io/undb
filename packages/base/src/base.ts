@@ -1,4 +1,5 @@
 import { AggregateRoot, and } from "@undb/domain"
+import type { ISpaceId } from "@undb/space"
 import type { Option } from "oxide.ts"
 import type { IBaseDTO } from "./dto/base.dto.js"
 import type { IUpdateBaseDTO } from "./dto/update-base.dto.js"
@@ -10,6 +11,7 @@ import type { BaseId, BaseName } from "./value-objects/index.js"
 export class Base extends AggregateRoot<any> {
   id!: BaseId
   name!: BaseName
+  spaceId!: ISpaceId
 
   static empty() {
     return new Base()
@@ -37,6 +39,7 @@ export class Base extends AggregateRoot<any> {
   public toJSON(): IBaseDTO {
     return {
       id: this.id.value,
+      spaceId: this.spaceId,
       name: this.name.value,
     }
   }

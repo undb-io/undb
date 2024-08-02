@@ -1,4 +1,4 @@
-import type { IWorkspaceMemberRole } from "@undb/authz"
+import type { ISpaceMemberRole } from "@undb/authz"
 
 interface ContextUser {
   userId: string | null
@@ -7,7 +7,7 @@ interface ContextUser {
 }
 
 export interface ContextMember {
-  role: IWorkspaceMemberRole | null
+  role: ISpaceMemberRole | null
 }
 
 export interface ExecuteContext {
