@@ -7,7 +7,7 @@ export const ssr = false
 export const load: LayoutLoad = async (event) => {
   const me = await event.fetch("/api/me")
   if (me.redirected) {
-    redirect(301, me.url)
+    throw redirect(301, me.url)
   }
 
   event.depends("undb:tables")

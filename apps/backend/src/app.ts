@@ -60,6 +60,8 @@ export const app = new Elysia()
 
       return "Not Found :("
     }
+
+    return new Response(ctx.error.toString())
   })
   .trace(async ({ set, onHandle }) => {
     const { begin, end } = await onHandle()

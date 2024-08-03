@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "b961f1f6-0851-4a05-bee8-3fd69149062a",
+  "id": "b08f6ceb-ed1f-4fe9-8834-df2b7446d2b8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_api_token": {
@@ -28,6 +28,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "space_id": {
+          "name": "space_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "token": {
           "name": "token",
           "type": "text",
@@ -39,12 +46,16 @@
       "indexes": {
         "undb_api_token_user_id_unique": {
           "name": "undb_api_token_user_id_unique",
-          "columns": ["user_id"],
+          "columns": [
+            "user_id"
+          ],
           "isUnique": true
         },
         "undb_api_token_token_unique": {
           "name": "undb_api_token_token_unique",
-          "columns": ["token"],
+          "columns": [
+            "token"
+          ],
           "isUnique": true
         }
       },
@@ -53,8 +64,25 @@
           "name": "undb_api_token_user_id_undb_user_id_fk",
           "tableFrom": "undb_api_token",
           "tableTo": "undb_user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "undb_api_token_space_id_undb_space_id_fk": {
+          "name": "undb_api_token_space_id_undb_space_id_fk",
+          "tableFrom": "undb_api_token",
+          "tableTo": "undb_space",
+          "columnsFrom": [
+            "space_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -125,12 +153,16 @@
       "indexes": {
         "audit_table_id_idx": {
           "name": "audit_table_id_idx",
-          "columns": ["table_id"],
+          "columns": [
+            "table_id"
+          ],
           "isUnique": false
         },
         "audit_record_id_idx": {
           "name": "audit_record_id_idx",
-          "columns": ["record_id"],
+          "columns": [
+            "record_id"
+          ],
           "isUnique": false
         }
       },
@@ -150,6 +182,13 @@
         },
         "name": {
           "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "space_id": {
+          "name": "space_id",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -188,17 +227,36 @@
       "indexes": {
         "undb_base_name_unique": {
           "name": "undb_base_name_unique",
-          "columns": ["name"],
+          "columns": [
+            "name"
+          ],
           "isUnique": true
         }
       },
       "foreignKeys": {
+        "undb_base_space_id_undb_space_id_fk": {
+          "name": "undb_base_space_id_undb_space_id_fk",
+          "tableFrom": "undb_base",
+          "tableTo": "undb_space",
+          "columnsFrom": [
+            "space_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
         "undb_base_created_by_undb_user_id_fk": {
           "name": "undb_base_created_by_undb_user_id_fk",
           "tableFrom": "undb_base",
           "tableTo": "undb_user",
-          "columnsFrom": ["created_by"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -206,8 +264,12 @@
           "name": "undb_base_updated_by_undb_user_id_fk",
           "tableFrom": "undb_base",
           "tableTo": "undb_user",
-          "columnsFrom": ["updated_by"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "updated_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -246,6 +308,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "space_id": {
+          "name": "space_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "invited_at": {
           "name": "invited_at",
           "type": "integer",
@@ -264,17 +333,36 @@
       "indexes": {
         "undb_invitation_email_unique": {
           "name": "undb_invitation_email_unique",
-          "columns": ["email"],
+          "columns": [
+            "email"
+          ],
           "isUnique": true
         }
       },
       "foreignKeys": {
+        "undb_invitation_space_id_undb_space_id_fk": {
+          "name": "undb_invitation_space_id_undb_space_id_fk",
+          "tableFrom": "undb_invitation",
+          "tableTo": "undb_space",
+          "columnsFrom": [
+            "space_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
         "undb_invitation_inviter_id_undb_user_id_fk": {
           "name": "undb_invitation_inviter_id_undb_user_id_fk",
           "tableFrom": "undb_invitation",
           "tableTo": "undb_user",
-          "columnsFrom": ["inviter_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "inviter_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -368,7 +456,12 @@
       "indexes": {
         "reference_id_mapping_unique_idx": {
           "name": "reference_id_mapping_unique_idx",
-          "columns": ["field_id", "table_id", "symmetric_field_id", "foreign_table_id"],
+          "columns": [
+            "field_id",
+            "table_id",
+            "symmetric_field_id",
+            "foreign_table_id"
+          ],
           "isUnique": true
         }
       },
@@ -377,8 +470,12 @@
           "name": "undb_reference_id_mapping_table_id_undb_table_id_fk",
           "tableFrom": "undb_reference_id_mapping",
           "tableTo": "undb_table",
-          "columnsFrom": ["table_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "table_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -386,8 +483,12 @@
           "name": "undb_reference_id_mapping_foreign_table_id_undb_table_id_fk",
           "tableFrom": "undb_reference_id_mapping",
           "tableTo": "undb_table",
-          "columnsFrom": ["foreign_table_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "foreign_table_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -433,8 +534,12 @@
           "name": "undb_rollup_id_mapping_table_id_undb_table_id_fk",
           "tableFrom": "undb_rollup_id_mapping",
           "tableTo": "undb_table",
-          "columnsFrom": ["table_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "table_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -442,15 +547,22 @@
           "name": "undb_rollup_id_mapping_rollup_table_id_undb_table_id_fk",
           "tableFrom": "undb_rollup_id_mapping",
           "tableTo": "undb_table",
-          "columnsFrom": ["rollup_table_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "rollup_table_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
         "undb_rollup_id_mapping_field_id_rollup_id_pk": {
-          "columns": ["field_id", "rollup_id"],
+          "columns": [
+            "field_id",
+            "rollup_id"
+          ],
           "name": "undb_rollup_id_mapping_field_id_rollup_id_pk"
         }
       },
@@ -487,8 +599,12 @@
           "name": "undb_session_user_id_undb_user_id_fk",
           "tableFrom": "undb_session",
           "tableTo": "undb_user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -531,11 +647,172 @@
       "indexes": {
         "share_unique_idx": {
           "name": "share_unique_idx",
-          "columns": ["target_type", "target_id"],
+          "columns": [
+            "target_type",
+            "target_id"
+          ],
           "isUnique": true
         }
       },
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "undb_space": {
+      "name": "undb_space",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "is_personal": {
+          "name": "is_personal",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(CURRENT_TIMESTAMP)"
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updated_by": {
+          "name": "updated_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "space_name_idx": {
+          "name": "space_name_idx",
+          "columns": [
+            "name"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "undb_space_created_by_undb_user_id_fk": {
+          "name": "undb_space_created_by_undb_user_id_fk",
+          "tableFrom": "undb_space",
+          "tableTo": "undb_user",
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "undb_space_updated_by_undb_user_id_fk": {
+          "name": "undb_space_updated_by_undb_user_id_fk",
+          "tableFrom": "undb_space",
+          "tableTo": "undb_user",
+          "columnsFrom": [
+            "updated_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "undb_space_member": {
+      "name": "undb_space_member",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "role": {
+          "name": "role",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "space_id": {
+          "name": "space_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "undb_space_member_user_id_undb_user_id_fk": {
+          "name": "undb_space_member_user_id_undb_user_id_fk",
+          "tableFrom": "undb_space_member",
+          "tableTo": "undb_user",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "undb_space_member_space_id_undb_space_id_fk": {
+          "name": "undb_space_member_space_id_undb_space_id_fk",
+          "tableFrom": "undb_space_member",
+          "tableTo": "undb_space",
+          "columnsFrom": [
+            "space_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -563,15 +840,22 @@
           "name": "undb_table_id_mapping_table_id_undb_table_id_fk",
           "tableFrom": "undb_table_id_mapping",
           "tableTo": "undb_table",
-          "columnsFrom": ["table_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "table_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
         "undb_table_id_mapping_table_id_subject_id_pk": {
-          "columns": ["subject_id", "table_id"],
+          "columns": [
+            "subject_id",
+            "table_id"
+          ],
           "name": "undb_table_id_mapping_table_id_subject_id_pk"
         }
       },
@@ -662,12 +946,17 @@
       "indexes": {
         "table_base_id_idx": {
           "name": "table_base_id_idx",
-          "columns": ["base_id"],
+          "columns": [
+            "base_id"
+          ],
           "isUnique": false
         },
         "table_name_unique_idx": {
           "name": "table_name_unique_idx",
-          "columns": ["name", "base_id"],
+          "columns": [
+            "name",
+            "base_id"
+          ],
           "isUnique": true
         }
       },
@@ -676,8 +965,12 @@
           "name": "undb_table_base_id_undb_base_id_fk",
           "tableFrom": "undb_table",
           "tableTo": "undb_base",
-          "columnsFrom": ["base_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "base_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -685,8 +978,12 @@
           "name": "undb_table_created_by_undb_user_id_fk",
           "tableFrom": "undb_table",
           "tableTo": "undb_user",
-          "columnsFrom": ["created_by"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -694,8 +991,12 @@
           "name": "undb_table_updated_by_undb_user_id_fk",
           "tableFrom": "undb_table",
           "tableTo": "undb_user",
-          "columnsFrom": ["updated_by"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "updated_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -738,17 +1039,23 @@
       "indexes": {
         "undb_user_email_unique": {
           "name": "undb_user_email_unique",
-          "columns": ["email"],
+          "columns": [
+            "email"
+          ],
           "isUnique": true
         },
         "user_username_idx": {
           "name": "user_username_idx",
-          "columns": ["username"],
+          "columns": [
+            "username"
+          ],
           "isUnique": false
         },
         "user_email_idx": {
           "name": "user_email_idx",
-          "columns": ["email"],
+          "columns": [
+            "email"
+          ],
           "isUnique": false
         }
       },
@@ -826,12 +1133,16 @@
       "indexes": {
         "webhook_table_id_idx": {
           "name": "webhook_table_id_idx",
-          "columns": ["table_id"],
+          "columns": [
+            "table_id"
+          ],
           "isUnique": false
         },
         "webhook_url_idx": {
           "name": "webhook_url_idx",
-          "columns": ["url"],
+          "columns": [
+            "url"
+          ],
           "isUnique": false
         }
       },
@@ -840,48 +1151,12 @@
           "name": "undb_webhook_table_id_undb_table_id_fk",
           "tableFrom": "undb_webhook",
           "tableTo": "undb_table",
-          "columnsFrom": ["table_id"],
-          "columnsTo": ["id"],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "undb_workspace_member": {
-      "name": "undb_workspace_member",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "user_id": {
-          "name": "user_id",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "role": {
-          "name": "role",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "undb_workspace_member_user_id_undb_user_id_fk": {
-          "name": "undb_workspace_member_user_id_undb_user_id_fk",
-          "tableFrom": "undb_workspace_member",
-          "tableTo": "undb_user",
-          "columnsFrom": ["user_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "table_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
