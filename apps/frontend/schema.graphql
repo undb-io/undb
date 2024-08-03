@@ -85,7 +85,7 @@ type Query {
   invitations(status: InvitationStatus): [Invitation!]!
   member: SpaceMember
   memberById(id: ID!): SpaceMember
-  members(q: String): [SpaceMember]!
+  members(q: String, spaceId: String!): [SpaceMember]!
   membersByIds(ids: [ID!]!): [SpaceMember!]!
   recordAudits(recordId: ID!): [Audit]
   rollupForeignTables(fieldId: ID!, tableId: ID!): [Table!]!

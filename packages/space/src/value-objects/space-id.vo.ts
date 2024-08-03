@@ -7,7 +7,7 @@ export type ISpaceId = z.infer<typeof spaceIdSchema>
 
 export class SpaceId extends NanoID {
   private static SPACE_ID_PREFIX = "spa"
-  private static SPACE_ID_SIZE = 8
+  private static SPACE_ID_SIZE = 5
 
   static create(): SpaceId {
     const id = NanoID.createId(SpaceId.SPACE_ID_PREFIX, SpaceId.SPACE_ID_SIZE)

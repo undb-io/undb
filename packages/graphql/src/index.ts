@@ -233,7 +233,7 @@ export class Graphql {
         member: SpaceMember
         memberById(id: ID!): SpaceMember
         membersByIds(ids: [ID!]!): [SpaceMember!]!
-        members(q: String): [SpaceMember]!
+        members(spaceId: String!, q: String): [SpaceMember]!
 
         invitations(status: InvitationStatus): [Invitation!]!
 
@@ -267,7 +267,7 @@ export class Graphql {
       resolvers: {
         Query: {
           members: async (_, args) => {
-            return this.queryBus.execute(new GetMembersQuery({ q: args?.q }))
+            return this.queryBus.execute(new GetMembersQuery({ spaceId: args.spaceId, q: args?.q }))
           },
           memberById: async (_, args) => {
             const member = await this.queryBus.execute(new GetMemberByIdQuery({ id: args.id }))
