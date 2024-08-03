@@ -4,19 +4,21 @@
   import Input from "$lib/components/ui/input/input.svelte"
   import { createMutation } from "@tanstack/svelte-query"
   import { inviteCommand } from "@undb/commands"
-  import { PlusIcon, UserPlus } from "lucide-svelte"
+  import { UserPlus } from "lucide-svelte"
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import * as Form from "$lib/components/ui/form/index.js"
   import { trpc } from "$lib/trpc/client"
   import { toast } from "svelte-sonner"
   import RolePicker from "../role/role-picker.svelte"
+  import { page } from "$app/stores"
 
   const form = superForm(
     defaults(
       {
         email: "",
         role: "viewer",
+        spaceId: $page.params.spaceId,
       },
       zodClient(inviteCommand),
     ),
@@ -34,6 +36,7 @@
         $invite.mutate({
           email: event.form.data.email,
           role: event.form.data.role,
+          spaceId: $page.params.spaceId,
         })
       },
     },

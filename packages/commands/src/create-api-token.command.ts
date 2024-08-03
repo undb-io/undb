@@ -9,10 +9,12 @@ export type ICreateApiTokenCommand = z.infer<typeof createApiTokenCommand>
 export class CreateApiTokenCommand extends Command implements ICreateApiTokenCommand {
   public readonly userId: string
   public readonly name: string
+  public readonly spaceId: string
 
   constructor(props: CommandProps<ICreateApiTokenCommand>) {
     super(props)
     this.userId = props.userId
+    this.spaceId = props.spaceId
     this.name = props.name
   }
 }

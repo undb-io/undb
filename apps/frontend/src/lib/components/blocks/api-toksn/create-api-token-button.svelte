@@ -9,6 +9,7 @@
   import * as Form from "$lib/components/ui/form/index.js"
   import { PlusIcon } from "lucide-svelte"
   import * as Dialog from "$lib/components/ui/dialog"
+  import { page } from "$app/stores"
 
   export let userId: string
   const form = superForm(
@@ -16,6 +17,7 @@
       {
         userId,
         name: "",
+        spaceId: $page.params.spaceId,
       },
       zodClient(createApiTokenCommand),
     ),
