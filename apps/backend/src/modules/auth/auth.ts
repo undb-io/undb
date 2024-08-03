@@ -204,7 +204,6 @@ export class Auth {
 
           const response = new Response()
           response.headers.set("Set-Cookie", sessionCookie.serialize())
-          response.headers.set("HsX-Redirect", "/")
           return response
         },
         {

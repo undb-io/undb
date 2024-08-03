@@ -14,6 +14,7 @@
   import { CREATE_TABLE_MODAL, closeModal } from "$lib/store/modal.store"
   import { baseId, currentBase } from "$lib/store/base.store"
   import { LL } from "@undb/i18n/client"
+    import { page } from "$app/stores"
 
   const schema = createTableCommand.omit({ baseId: true })
 
@@ -21,7 +22,7 @@
     mutationFn: trpc.table.create.mutate,
     async onSuccess(data) {
       await invalidate("undb:tables")
-      await goto(`/t/${data}`)
+      await goto(`/${$page.params.spaceId}/t/${data}`)
       baseId.set(null)
       form.reset()
       closeModal(CREATE_TABLE_MODAL)

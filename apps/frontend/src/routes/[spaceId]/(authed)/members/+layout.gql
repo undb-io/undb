@@ -1,6 +1,7 @@
-query GetUsers($spaceId: String!, $q: String) {
+query GetMembers($spaceId: String!, $q: String) {
   members(spaceId: $spaceId, q: $q) {
     role
+
     user {
       id
       email

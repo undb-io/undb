@@ -9,13 +9,14 @@
   import { toast } from "svelte-sonner"
   import { CREATE_BASE_MODAL, closeModal } from "$lib/store/modal.store"
   import { goto } from "$app/navigation"
+  import { page } from "$app/stores"
 
   const mutation = createMutation({
     mutationFn: trpc.base.create.mutate,
     async onSuccess(data) {
       closeModal(CREATE_BASE_MODAL)
       form.reset()
-      await goto(`/bases/${data}`)
+      await goto(`/${$page.params.spaceId}/bases/${data}`)
     },
     onError(error) {
       toast.error(error.message)
@@ -26,6 +27,7 @@
     defaults(
       {
         name: "base",
+        spaceId: $page.params.spaceId,
       },
       zodClient(createBaseCommand),
     ),

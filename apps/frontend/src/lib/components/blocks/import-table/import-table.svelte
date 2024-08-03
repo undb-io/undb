@@ -23,13 +23,14 @@
   } from "@undb/table"
   import unzip from "lodash.unzip"
   import FieldIcon from "../field-icon/field-icon.svelte"
+  import { page } from "$app/stores"
 
   const createRecords = createMutation({
     mutationKey: ["table", "import", "records"],
     mutationFn: trpc.record.bulkCreate.mutate,
     async onSuccess() {
       await invalidate("undb:tables")
-      await goto(`/t/${tableId}`)
+      await goto(`/${$page.params.spaceId}/t/${tableId}`)
       await invalidate(`table:${tableId}`)
       closeModal(IMPORT_TABLE_MODAL)
       baseId.set(null)
@@ -63,7 +64,7 @@
         })
       } else {
         await invalidate("undb:tables")
-        await goto(`/t/${data}`)
+        await goto(`/${$page.params.spaceId}/t/${data}`)
         closeModal(IMPORT_TABLE_MODAL)
         baseId.set(null)
       }

@@ -1,5 +1,10 @@
-import type { ISpaceMemberVisitor, SpaceMember, WithSpaceMemberId, WithSpaceMemberQ } from "@undb/authz"
-import type { ISpecVisitor, ISpecification } from "@undb/domain"
+import type {
+  ISpaceMemberVisitor,
+  SpaceMember,
+  WithSpaceMemberId,
+  WithSpaceMemberQ,
+  WithSpaceMemberSpaceId,
+} from "@undb/authz"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
@@ -9,6 +14,9 @@ export class SpaceMemberFilterVisitor extends AbstractQBVisitor<SpaceMember> imp
     super(eb)
   }
   withQ(q: WithSpaceMemberQ): void {
+    if (!q.q) {
+      return
+    }
     const cond = this.eb.eb("undb_user.username", "like", `%${q.q}%`)
     this.addCond(cond)
   }
@@ -16,16 +24,8 @@ export class SpaceMemberFilterVisitor extends AbstractQBVisitor<SpaceMember> imp
     const cond = this.eb.eb("undb_user.id", "=", q.id)
     this.addCond(cond)
   }
-  and(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
-    throw new Error("Method not implemented.")
-  }
-  or(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
-    throw new Error("Method not implemented.")
-  }
-  not(spec: ISpecification<any, ISpecVisitor>): this {
-    throw new Error("Method not implemented.")
-  }
-  clone(): this {
-    throw new Error("Method not implemented.")
+  withSpaceId(s: WithSpaceMemberSpaceId): void {
+    const cond = this.eb.eb("undb_space_member.space_id", "=", s.spaceId)
+    this.addCond(cond)
   }
 }
