@@ -5,7 +5,9 @@ export const load: LayoutLoad = async (event) => {
   const getMembersStore = new GetMembersStore()
   const q = event.url.searchParams.get("mq")
 
-  await getMembersStore.fetch({ event, variables: { q } })
+  const spaceId = event.params.spaceId
+
+  await getMembersStore.fetch({ event, variables: { spaceId, q } })
 
   return {
     getMembersStore,

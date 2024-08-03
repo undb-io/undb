@@ -1,13 +1,14 @@
 import {
   SpaceMemberComositeSpecification,
   WithSpaceMemberQ,
+  WithSpaceMemberSpaceId,
   injectSpaceMemberQueryRepository,
   type ISpaceMemberDTO,
   type ISpaceMemberQueryRepository,
 } from "@undb/authz"
 import { queryHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
-import { None, Option, Some, type IQueryHandler } from "@undb/domain"
+import { and, type IQueryHandler } from "@undb/domain"
 import { GetMembersQuery } from "@undb/queries"
 
 @queryHandler(GetMembersQuery)
@@ -19,11 +20,13 @@ export class GetMembersQueryHandler implements IQueryHandler<GetMembersQuery, an
   ) {}
 
   async execute(query: GetMembersQuery): Promise<ISpaceMemberDTO[]> {
-    let spec: Option<SpaceMemberComositeSpecification> = None
+    let specs: SpaceMemberComositeSpecification[] = []
+
+    specs.push(new WithSpaceMemberSpaceId(query.spaceId))
     if (query.q) {
-      spec = Some(new WithSpaceMemberQ(query.q))
+      specs.push(new WithSpaceMemberQ(query.q))
     }
 
-    return this.repo.find(spec)
+    return this.repo.find(and(...specs))
   }
 }

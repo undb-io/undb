@@ -8,9 +8,11 @@ export type ICreateBaseCommand = z.infer<typeof createBaseCommand>
 
 export class CreateBaseCommand extends Command implements ICreateBaseCommand {
   public readonly name: string
+  public readonly spaceId: string
 
   constructor(props: CommandProps<ICreateBaseCommand>) {
     super(props)
     this.name = props.name
+    this.spaceId = props.spaceId
   }
 }

@@ -4,6 +4,7 @@
   import { DatabaseIcon } from "lucide-svelte"
   import { commandOpen } from "./command.store"
   import { goto } from "$app/navigation"
+  import { page } from "$app/stores"
 
   function handleK(e: ShortcutEventDetail) {
     $commandOpen = !$commandOpen
@@ -36,7 +37,7 @@
           id={table.id}
           value={table.id}
           onSelect={() => {
-            goto(`/t/${table.id}`)
+            goto(`/${$page.params.spaceId}/t/${table.id}`)
             $commandOpen = false
           }}
         >

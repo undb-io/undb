@@ -49,11 +49,11 @@
 
   $: role.set(member?.role ?? null)
 
-  $: if (tables && tables?.length !== 0 && !$page.params.tableId && $page.route.id === "/(authed)") {
-    goto(`/t/${tables[0]?.id}`, { replaceState: true })
+  $: if (tables && tables?.length !== 0 && !$page.params.tableId && $page.route.id === "/[spaceId]/(authed)") {
+    goto(`/${$page.params.spaceId}/t/${tables[0]?.id}`, { replaceState: true })
   }
   $: if (!tables.length && bases.length) {
-    goto(`/bases/${bases[0]?.id}`, { replaceState: true })
+    // goto(`/${$page.params.spaceId}/bases/${bases[0]?.id}`, { replaceState: true })
   }
 
   let CreateBaseDialog: ComponentType
@@ -67,7 +67,7 @@
     bind:pane={panelLeft}
     onCollapse={() => (collapsed = true)}
     onExpand={() => (collapsed = false)}
-    class="hidden border-r bg-muted/40 md:block"
+    class="bg-muted/40 hidden border-r md:block"
     defaultSize={20}
     minSize={15}
     maxSize={30}

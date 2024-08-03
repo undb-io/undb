@@ -11,6 +11,7 @@
   import { toast } from "svelte-sonner"
   import { Input } from "$lib/components/ui/input"
   import { Label } from "$lib/components/ui/label"
+  import { page } from "$app/stores"
 
   export let table = getTable()
 
@@ -26,7 +27,7 @@
     mutationFn: trpc.table.delete.mutate,
     async onSuccess(data, variables, context) {
       await invalidateAll()
-      await goto("/")
+      await goto("/" + $page.params.spaceId)
     },
     onError(error, variables, context) {
       toast.error(error.message)
