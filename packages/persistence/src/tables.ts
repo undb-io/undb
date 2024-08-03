@@ -11,7 +11,7 @@ export const space = sqliteTable(
   "space",
   {
     id: text("id").notNull().primaryKey(),
-    name: text("name").notNull(),
+    name: text("name"),
     isPersonal: integer("is_personal", { mode: "boolean" }).notNull(),
     createdAt: text("created_at")
       .notNull()
@@ -209,8 +209,8 @@ export const spaceMember = sqliteTable("space_member", {
     .references(() => users.id),
   role: text("role").notNull().$type<ISpaceMemberRole>(),
   spaceId: text("space_id")
-    .references(() => space.id)
-    .notNull(),
+    .notNull()
+    .references(() => space.id),
 })
 
 export const baseTable = sqliteTable("base", {

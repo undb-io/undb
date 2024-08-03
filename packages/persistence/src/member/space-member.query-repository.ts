@@ -1,11 +1,10 @@
-import { type ISpaceMemberDTO, type ISpaceMemberQueryRepository } from "@undb/authz"
-import type { SpaceMemberComositeSpecification } from "@undb/authz/src/workspace-member/workspace-member.composite-specification"
+import { SpaceMemberComositeSpecification, type ISpaceMemberDTO, type ISpaceMemberQueryRepository } from "@undb/authz"
 import { inject, singleton } from "@undb/di"
 import { None, Option, Some } from "@undb/domain"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { MemberMapper } from "./member.mapper"
-import { SpaceMemberFilterVisitor } from "./workspace-member.filter-visitor"
+import { SpaceMemberFilterVisitor } from "./space-member.filter-visitor"
 
 @singleton()
 export class SpaceMemberQueryRepository implements ISpaceMemberQueryRepository {

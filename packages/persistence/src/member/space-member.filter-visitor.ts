@@ -1,5 +1,4 @@
-import type { SpaceMember, WithSpaceMemberId, WithSpaceMemberQ } from "@undb/authz"
-import type { ISpaceMemberVisitor } from "@undb/authz/src/workspace-member/workspace-member.visitor"
+import type { ISpaceMemberVisitor, SpaceMember, WithSpaceMemberId, WithSpaceMemberQ } from "@undb/authz"
 import type { ISpecVisitor, ISpecification } from "@undb/domain"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"

@@ -11,6 +11,7 @@
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import * as Form from "$lib/components/ui/form"
+  import { toast } from "svelte-sonner"
 
   const schema = z.object({
     email: z.string().email(),
@@ -18,18 +19,21 @@
     username: z.string().min(2).optional(),
   })
 
-  type LoginSchema = z.infer<typeof schema>
+  type SignupSchema = z.infer<typeof schema>
 
   $: invitationId = $page.url.searchParams.get("invitationId")
 
   const signupMutation = createMutation({
-    mutationFn: (input: LoginSchema) =>
+    mutationFn: (input: SignupSchema) =>
       fetch("/api/signup", {
         method: "POST",
         body: JSON.stringify({ ...input, invitationId }),
       }),
     async onSuccess(data, variables, context) {
       await goto("/")
+    },
+    onError(error, variables, context) {
+      toast.error(error.message)
     },
   })
 
