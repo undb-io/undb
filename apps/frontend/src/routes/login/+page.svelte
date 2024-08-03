@@ -9,6 +9,7 @@
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import * as Form from "$lib/components/ui/form"
+  import { toast } from "svelte-sonner"
 
   const schema = z.object({
     email: z.string().email(),
@@ -22,8 +23,13 @@
     async onSuccess(data, variables, context) {
       await goto("/")
     },
-    onError(error, variables, context) {
-      goto("/signup")
+    async onError(error, variables, context) {
+      toast.error(error.message)
+      await goto("/signup")
+    },
+    onSettled(data, error, variables, context) {
+      console.log(data)
+      console.log(error)
     },
   })
 
@@ -41,13 +47,13 @@
       validators: zodClient(schema),
       resetForm: false,
       invalidateAll: false,
-      onUpdate(event) {
+      async onUpdate(event) {
         if (!event.form.valid) {
           console.log(event.form.errors)
           return
         }
 
-        $loginMutation.mutate(event.form.data)
+        await $loginMutation.mutateAsync(event.form.data)
       },
     },
   )

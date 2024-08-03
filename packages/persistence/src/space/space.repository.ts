@@ -4,15 +4,9 @@ import type { Option } from "@undb/domain"
 import type { ISpaceRepository, Space } from "@undb/space"
 import type { ISpaceSpecification } from "@undb/space/src/interface"
 import { getCurrentTransaction } from "../ctx"
-import type { IQueryBuilder } from "../qb"
-import { injectQueryBuilder } from "../qb.provider"
 
 @singleton()
 export class SpaceRepostitory implements ISpaceRepository {
-  constructor(
-    @injectQueryBuilder()
-    private readonly qb: IQueryBuilder,
-  ) {}
   find(spec: ISpaceSpecification): Promise<Space[]> {
     throw new Error("Method not implemented.")
   }
@@ -30,6 +24,7 @@ export class SpaceRepostitory implements ISpaceRepository {
       .values({
         id: space.id.value,
         name: space.name.value,
+        is_personal: space.isPersonal,
         created_by: userId,
         updated_by: userId,
         created_at: new Date().toISOString(),

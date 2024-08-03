@@ -17,6 +17,7 @@ import { Context, Elysia, t } from "elysia"
 import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize } from "lucia"
 import { singleton } from "tsyringe"
+import { v7 } from "uuid"
 import { withTransaction } from "../../db"
 
 const adapter = new LibSQLAdapter(sqlite, {
@@ -130,7 +131,7 @@ export class Auth {
       .post(
         "/api/signup",
         async (ctx) => {
-          const { email, password, invitationId, username } = ctx.body
+          let { email, password, invitationId, username } = ctx.body
           const hasUser = !!(await this.queryBuilder.selectFrom("undb_user").selectAll().executeTakeFirst())
           let role: ISpaceMemberRole = "owner"
           if (invitationId) {
@@ -167,21 +168,35 @@ export class Auth {
             userId = user.id
           } else {
             userId = generateIdFromEntropySize(10) // 16 characters long
-
             const passwordHash = await Bun.password.hash(password)
-            const tx = getCurrentTransaction()
-            await tx
-              .insertInto("undb_user")
-              .values({
-                email,
-                username: username ?? getUsernameFromEmail(email),
-                id: userId,
-                password: passwordHash,
-              })
-              .execute()
+            username = username ?? getUsernameFromEmail(email)
 
-            const space = await this.spaceService.createPersonalSpace()
-            await this.spaceMemberService.createMember(userId, space.id.value, role)
+            executionContext.enterWith({
+              requestId: ctx.headers["x-request-id"] ?? ctx.headers["X-Request-Id"] ?? v7(),
+              user: {
+                userId,
+                username,
+                email,
+              },
+            })
+
+            await withTransaction(
+              this.queryBuilder,
+              "read uncommitted",
+            )(async () => {
+              await getCurrentTransaction()
+                .insertInto("undb_user")
+                .values({
+                  email,
+                  username: username!,
+                  id: userId,
+                  password: passwordHash,
+                })
+                .execute()
+
+              const space = await this.spaceService.createPersonalSpace()
+              await this.spaceMemberService.createMember(userId, space.id.value, role)
+            })
           }
 
           const session = await lucia.createSession(userId, {})
@@ -215,7 +230,7 @@ export class Auth {
             .executeTakeFirst()
 
           if (!user) {
-            return new Response("Invalid email or password", {
+            return new Response("No user with this email", {
               status: 400,
             })
           }

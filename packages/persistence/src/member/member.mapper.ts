@@ -12,6 +12,7 @@ export class MemberMapper implements Mapper<SpaceMemberDo, SpaceMember, ISpaceMe
     return {
       id: domain.props.id,
       role: domain.props.role,
+      space_id: domain.props.spaceId,
       user_id: domain.props.userId,
     }
   }
@@ -19,6 +20,7 @@ export class MemberMapper implements Mapper<SpaceMemberDo, SpaceMember, ISpaceMe
     return {
       id: entity.id,
       role: entity.role,
+      spaceId: entity.space_id,
       userId: entity.user_id,
     }
   }

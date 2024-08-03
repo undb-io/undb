@@ -1,6 +1,7 @@
 import { SpaceMember, type ISpaceMemberRepository } from "@undb/authz"
 import { singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
+import { getCurrentTransaction } from "../ctx"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 
@@ -35,6 +36,7 @@ export class SpaceMemberRepository implements ISpaceMemberRepository {
         id: member.id,
         role: member.role,
         userId: member.user_id,
+        spaceId: member.space_id,
       }),
     )
   }
@@ -43,11 +45,12 @@ export class SpaceMemberRepository implements ISpaceMemberRepository {
   }
   async insert(member: SpaceMember): Promise<void> {
     const json = member.toJSON()
-    await this.qb
+    await getCurrentTransaction()
       .insertInto("undb_space_member")
       .values({
         id: json.id,
         role: json.role,
+        space_id: json.spaceId,
         user_id: json.userId,
       })
       .execute()

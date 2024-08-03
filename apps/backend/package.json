@@ -51,7 +51,8 @@
   "devDependencies": {
     "@types/nodemailer": "^6.4.15",
     "@types/uuid": "^10.0.0",
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "kysely": "^0.27.4"
   },
   "types": "./src/app.d.ts",
   "exports": {
