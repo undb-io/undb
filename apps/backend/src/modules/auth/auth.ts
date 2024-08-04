@@ -8,7 +8,7 @@ import {
 } from "@undb/authz"
 import { AcceptInvitationCommand } from "@undb/commands"
 import type { ContextMember } from "@undb/context"
-import { executionContext } from "@undb/context/server"
+import { executionContext, setContextValue } from "@undb/context/server"
 import { CommandBus } from "@undb/cqrs"
 import { inject } from "@undb/di"
 import { type IQueryBuilder, getCurrentTransaction, injectQueryBuilder, sqlite } from "@undb/persistence"
@@ -108,12 +108,15 @@ export class Auth {
       const userId = user?.id!
       // TODO: move to other file
       const spaceId = context.cookie[SPACE_ID_COOKIE_NAME]?.value
-      const space = await this.spaceService.getSpace({ spaceId })
+      const space = await this.spaceService.setSpaceContext(setContextValue, { spaceId })
 
-      const member = space.isSome()
-        ? (await this.spaceMemberService.getSpaceMember(userId, space.unwrap().id.value)).into(null)?.toJSON()
+      const member = space
+        ? (await this.spaceMemberService.setSpaceMemberContext(setContextValue, space.id.value, userId))
+            .into(null)
+            ?.toJSON()
         : undefined
 
+      setContextValue("user", { userId, username: user!.username, email: user!.email })
       return {
         user,
         session,

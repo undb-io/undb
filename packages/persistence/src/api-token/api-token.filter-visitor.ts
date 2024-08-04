@@ -1,4 +1,12 @@
-import type { ApiTokenDo, IApiTokenVisitor, WithApiTokenId, WithApiTokenToken, WithApiTokenUserId } from "@undb/openapi"
+import { mustGetCurrentSpaceId } from "@undb/context/server"
+import type {
+  ApiTokenDo,
+  IApiTokenVisitor,
+  WithApiTokenId,
+  WithApiTokenSpaceId,
+  WithApiTokenToken,
+  WithApiTokenUserId,
+} from "@undb/openapi"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
@@ -6,6 +14,12 @@ import type { Database } from "../db"
 export class ApiTokenFilterVisitor extends AbstractQBVisitor<ApiTokenDo> implements IApiTokenVisitor {
   constructor(protected readonly eb: ExpressionBuilder<Database, "undb_api_token">) {
     super(eb)
+    const spaceId = mustGetCurrentSpaceId()
+    this.addCond(this.eb.eb("space_id", "=", spaceId))
+  }
+  withSpaceId(s: WithApiTokenSpaceId): void {
+    const cond = this.eb.eb("undb_api_token.space_id", "=", s.spaceId)
+    this.addCond(cond)
   }
   withId(s: WithApiTokenId): void {
     const cond = this.eb.eb("undb_api_token.id", "=", s.id.value)

@@ -1,3 +1,4 @@
+import { mustGetCurrentSpaceId } from "@undb/context/server"
 import type { IShareSpecVisitor, Share, WithShareEnabled, WithShareForm, WithShareId, WithShareView } from "@undb/share"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
@@ -6,6 +7,8 @@ import type { Database } from "../db"
 export class ShareFilterVisitor extends AbstractQBVisitor<Share> implements IShareSpecVisitor {
   constructor(protected readonly eb: ExpressionBuilder<Database, "undb_share">) {
     super(eb)
+    const spaceId = mustGetCurrentSpaceId()
+    this.addCond(this.eb.eb("space_id", "=", spaceId))
   }
   idEqual(s: WithShareId): void {
     this.addCond(this.eb.eb("id", "=", s.shareId.value))

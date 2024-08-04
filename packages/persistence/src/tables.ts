@@ -68,6 +68,7 @@ export const tables = sqliteTable(
     return {
       baseIdIdx: index("table_base_id_idx").on(table.baseId),
       uniqueOnName: unique("table_name_unique_idx").on(table.name, table.baseId),
+      spaceIdIdx: index("table_space_id_idx").on(table.spaceId),
     }
   },
 )
@@ -130,17 +131,25 @@ export const rollupIdMapping = sqliteTable(
   },
 )
 
-export const outbox = sqliteTable("outbox", {
-  id: text("id").notNull().primaryKey(),
-  payload: text("payload", { mode: "json" }).notNull(),
-  meta: text("meta", { mode: "json" }),
-  timestamp: integer("timestamp", { mode: "timestamp_ms" }).notNull(),
-  operatorId: text("operator_id").notNull(),
-  name: text("name").notNull(),
-  spaceId: text("space_id")
-    .notNull()
-    .references(() => space.id),
-})
+export const outbox = sqliteTable(
+  "outbox",
+  {
+    id: text("id").notNull().primaryKey(),
+    payload: text("payload", { mode: "json" }).notNull(),
+    meta: text("meta", { mode: "json" }),
+    timestamp: integer("timestamp", { mode: "timestamp_ms" }).notNull(),
+    operatorId: text("operator_id").notNull(),
+    name: text("name").notNull(),
+    spaceId: text("space_id")
+      .notNull()
+      .references(() => space.id),
+  },
+  (table) => {
+    return {
+      spaceIdIdx: index("outbox_space_id_idx").on(table.spaceId),
+    }
+  },
+)
 
 export const users = sqliteTable(
   "user",
@@ -187,6 +196,7 @@ export const webhook = sqliteTable(
   (table) => {
     return {
       tableIdIdx: index("webhook_table_id_idx").on(table.tableId),
+      spaceIdIdx: index("webhook_space_id_idx").on(table.spaceId),
       urlIdx: index("webhook_url_idx").on(table.url),
     }
   },
@@ -210,21 +220,30 @@ export const audit = sqliteTable(
   (table) => {
     return {
       tableIdIdx: index("audit_table_id_idx").on(table.tableId),
+      spaceIdIdx: index("audit_space_id_idx").on(table.spaceId),
       recordIdIdx: index("audit_record_id_idx").on(table.recordId),
     }
   },
 )
 
-export const spaceMember = sqliteTable("space_member", {
-  id: text("id").notNull().primaryKey(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => users.id),
-  role: text("role").notNull().$type<ISpaceMemberRole>(),
-  spaceId: text("space_id")
-    .notNull()
-    .references(() => space.id),
-})
+export const spaceMember = sqliteTable(
+  "space_member",
+  {
+    id: text("id").notNull().primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id),
+    role: text("role").notNull().$type<ISpaceMemberRole>(),
+    spaceId: text("space_id")
+      .notNull()
+      .references(() => space.id),
+  },
+  (table) => {
+    return {
+      uniqueIdx: unique("space_member_unique_idx").on(table.userId, table.spaceId),
+    }
+  },
+)
 
 export const baseTable = sqliteTable(
   "base",
@@ -249,6 +268,7 @@ export const baseTable = sqliteTable(
   },
   (base) => ({
     uniqueNameIndex: unique("base_name_unique_idx").on(base.name, base.spaceId),
+    spaceIdIdx: index("base_space_id_idx").on(base.spaceId),
   }),
 )
 
@@ -266,33 +286,51 @@ export const shareTable = sqliteTable(
   (table) => {
     return {
       uniqueIdx: unique("share_unique_idx").on(table.targetType, table.targetId),
+      spaceIdIdx: index("share_space_id_idx").on(table.spaceId),
     }
   },
 )
 
-export const invitations = sqliteTable("invitation", {
-  id: text("id").notNull().primaryKey(),
-  email: text("email").notNull().unique(),
-  role: text("role").notNull().$type<ISpaceMemberWithoutOwner>(),
-  status: text("status").notNull().$type<IInvitationStatus>(),
-  spaceId: text("space_id")
-    .references(() => space.id)
-    .notNull(),
-  invitedAt: integer("invited_at", { mode: "timestamp_ms" }).notNull(),
-  inviterId: text("inviter_id")
-    .notNull()
-    .references(() => users.id),
-})
+export const invitations = sqliteTable(
+  "invitation",
+  {
+    id: text("id").notNull().primaryKey(),
+    email: text("email").notNull().unique(),
+    role: text("role").notNull().$type<ISpaceMemberWithoutOwner>(),
+    status: text("status").notNull().$type<IInvitationStatus>(),
+    spaceId: text("space_id")
+      .references(() => space.id)
+      .notNull(),
+    invitedAt: integer("invited_at", { mode: "timestamp_ms" }).notNull(),
+    inviterId: text("inviter_id")
+      .notNull()
+      .references(() => users.id),
+  },
+  (table) => {
+    return {
+      spaceIdIdx: index("invitation_space_id_idx").on(table.spaceId),
+    }
+  },
+)
 
-export const apiTokenTable = sqliteTable("api_token", {
-  id: text("id").notNull().primaryKey(),
-  name: text("name").notNull(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => users.id)
-    .unique(),
-  spaceId: text("space_id")
-    .references(() => space.id)
-    .notNull(),
-  token: text("token").notNull().unique(),
-})
+export const apiTokenTable = sqliteTable(
+  "api_token",
+  {
+    id: text("id").notNull().primaryKey(),
+    name: text("name").notNull(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id)
+      .unique(),
+    spaceId: text("space_id")
+      .references(() => space.id)
+      .notNull(),
+    token: text("token").notNull().unique(),
+  },
+  (table) => {
+    return {
+      spaceIdIdx: index("api_token_space_id_idx").on(table.spaceId),
+      userIdIdx: index("api_token_user_id_idx").on(table.userId),
+    }
+  },
+)
