@@ -14,6 +14,7 @@ import { GetRecordByIdQueryHandler } from "./get-record-by-id.query-handler"
 import { GetRecordsQueryHandler } from "./get-records.query-handler"
 import { GetRollupForeignTablesTablesQueryHandler } from "./get-rollup-foreign-tables.query-handler"
 import { GetShareQueryHandler } from "./get-share.query-handler"
+import { GetSpaceByIdQueryHandler } from "./get-space-by-id.query-handler"
 import { GetTableByShareQueryHandler } from "./get-table-by-share.query-handler"
 import { GetTableForeignTablesQueryHandler } from "./get-table-foreign-tables.query-handler"
 import { GetTableQueryHandler } from "./get-table.query-handler"
@@ -44,4 +45,5 @@ export const queryHandlers = [
   GetRollupForeignTablesTablesQueryHandler,
   GetInivitationsQueryHandler,
   GetApiTokensQueryHandler,
+  GetSpaceByIdQueryHandler,
 ]

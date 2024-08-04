@@ -67,7 +67,7 @@ type Invitation {
   email: String!
   id: ID!
   invitedAt: String!
-  role: WorkspaceRole!
+  role: SpaceRole!
   status: InvitationStatus!
 }
 
@@ -90,6 +90,7 @@ type Query {
   recordAudits(recordId: ID!): [Audit]
   rollupForeignTables(fieldId: ID!, tableId: ID!): [Table!]!
   share(id: ID!): Share
+  space: Space
   table(id: ID!): Table
   tableByShare(shareId: ID!): Table
   tableForeignTables(tableId: ID!): [Table!]!
@@ -130,9 +131,21 @@ enum ShareTargetType {
   view
 }
 
+type Space {
+  id: ID!
+  name: String!
+}
+
 type SpaceMember {
-  role: WorkspaceRole!
+  role: SpaceRole!
+  spaceId: String!
   user: User!
+}
+
+enum SpaceRole {
+  admin
+  owner
+  viewer
 }
 
 type Table {
@@ -179,10 +192,4 @@ type ViewOption {
 
 enum ViewType {
   grid
-}
-
-enum WorkspaceRole {
-  admin
-  owner
-  viewer
 }

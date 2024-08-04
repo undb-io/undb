@@ -1,8 +1,8 @@
+import { getHasPermission, type ISpaceAction } from "@undb/authz"
 import { executionContext } from "@undb/context/server"
 import { middleware } from "./trpc"
-import { getHasPermission, type IWorkspaceAction } from "@undb/authz"
 
-export const authz = (...actions: IWorkspaceAction[]) =>
+export const authz = (...actions: ISpaceAction[]) =>
   middleware(({ next }) => {
     const member = executionContext.getStore()?.member
     const role = member?.role

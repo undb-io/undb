@@ -27,6 +27,7 @@ import {
   ShareRepository,
   SpaceMemberQueryRepository,
   SpaceMemberRepository,
+  SpaceQueryRepository,
   SpaceRepostitory,
   TableOutboxService,
   TableQueryRepository,
@@ -37,7 +38,7 @@ import {
   WebhookRepository,
 } from "@undb/persistence"
 import { SHARE_QUERY_REPOSITORY, SHARE_REPOSITORY, SHARE_SERVICE, ShareService } from "@undb/share"
-import { SPACE_REPOSITORY, SPACE_SERVICE, SpaceService } from "@undb/space"
+import { SPACE_QUERY_REPOSITORY, SPACE_REPOSITORY, SPACE_SERVICE, SpaceService } from "@undb/space"
 import {
   RECORD_OUTBOX_SERVICE,
   RECORD_QUERY_REPOSITORY,
@@ -51,6 +52,7 @@ import { WEBHOOK_QUERY_REPOSITORY, WEBHOOK_REPOSITORY } from "@undb/webhook"
 
 export const registerDb = () => {
   container.register(SPACE_REPOSITORY, SpaceRepostitory)
+  container.register(SPACE_QUERY_REPOSITORY, SpaceQueryRepository)
   container.register(SPACE_SERVICE, SpaceService)
   container.register(TABLE_REPOSITORY, TableRepository)
   container.register(TABLE_QUERY_REPOSITORY, TableQueryRepository)

@@ -14,12 +14,13 @@ import { InvitationMailService, type IInvitationMailService } from "./invitation
 import { WithEmail, WithInvitedAt, WithRole, WithStatus } from "./invitation.specification"
 import { SpaceMember, type ISpaceMemberRole } from "./space-member"
 import { injectSpaceMemberRepository, type ISpaceMemberRepository } from "./space-member.repository"
+import { WithSpaceMemberId, WithSpaceMemberSpaceId } from "./specifications"
 
 export interface ISpaceMemberService {
   createMember(userId: string, spaceId: ISpaceId, role: ISpaceMemberRole): Promise<void>
   invite(dto: InviteDTO, username: string): Promise<void>
   acceptinvitation(id: string): Promise<void>
-  getSpaceMember(userId: string): Promise<Option<SpaceMember>>
+  getSpaceMember(userId: string, spaceId: ISpaceId): Promise<Option<SpaceMember>>
 }
 
 export const SPACE_MEMBER_SERVICE = Symbol("ISpaceMemberService")
@@ -45,8 +46,9 @@ export class SpaceMemberService implements ISpaceMemberService {
     await this.spaceMemberRepository.insert(member)
   }
 
-  async getSpaceMember(userId: string): Promise<Option<SpaceMember>> {
-    return this.spaceMemberRepository.findOneByUserId(userId)
+  async getSpaceMember(userId: string, spaceId: ISpaceId): Promise<Option<SpaceMember>> {
+    const spec = and(new WithSpaceMemberId(userId), new WithSpaceMemberSpaceId(spaceId))
+    return this.spaceMemberRepository.findOne(spec.unwrap())
   }
 
   async invite(dto: InviteDTO, username: string): Promise<void> {

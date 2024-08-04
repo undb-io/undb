@@ -1,4 +1,5 @@
 export * from "./dto"
+export * from "./interface"
 export * from "./space.do"
 export * from "./space.factory"
 export * from "./space.outbox"

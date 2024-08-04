@@ -1,11 +1,10 @@
 import { Ok, type Result } from "@undb/domain"
-import type { ISpaceId } from "@undb/space"
 import type { SpaceMember } from "../space-member"
 import { SpaceMemberComositeSpecification } from "../space-member.composite-specification"
 import type { ISpaceMemberVisitor } from "../space-member.visitor"
 
-export class WithSpaceMemberSpaceId extends SpaceMemberComositeSpecification {
-  constructor(public readonly spaceId: ISpaceId) {
+export class WithSpaceMemberBaseId extends SpaceMemberComositeSpecification {
+  constructor(public readonly baseId: string) {
     super()
   }
   isSatisfiedBy(t: SpaceMember): boolean {
@@ -15,7 +14,7 @@ export class WithSpaceMemberSpaceId extends SpaceMemberComositeSpecification {
     throw new Error("Method not implemented.")
   }
   accept(v: ISpaceMemberVisitor): Result<void, string> {
-    v.withSpaceId(this)
+    v.withBaseId(this)
     return Ok(undefined)
   }
 }
