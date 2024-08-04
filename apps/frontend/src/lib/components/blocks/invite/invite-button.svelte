@@ -18,7 +18,6 @@
       {
         email: "",
         role: "viewer",
-        spaceId: $page.params.spaceId,
       },
       zodClient(inviteCommand),
     ),
@@ -36,7 +35,6 @@
         $invite.mutate({
           email: event.form.data.email,
           role: event.form.data.role,
-          spaceId: $page.params.spaceId,
         })
       },
     },

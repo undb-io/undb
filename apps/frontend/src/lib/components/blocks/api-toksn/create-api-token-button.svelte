@@ -17,7 +17,6 @@
       {
         userId,
         name: "",
-        spaceId: $page.params.spaceId,
       },
       zodClient(createApiTokenCommand),
     ),

@@ -159,7 +159,7 @@
                               "flex h-full flex-1 items-center text-xs font-light",
                               active && "text-primary font-medium",
                             )}
-                            href={`${$page.params.spaceId}/t/${table.id}/${view.id}`}
+                            href={`/t/${table.id}/${view.id}`}
                           >
                             <SheetIcon class="mr-2 h-4 w-4" />
                             {view.name}

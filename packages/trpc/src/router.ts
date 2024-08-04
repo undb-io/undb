@@ -6,6 +6,7 @@ import {
   CreateBaseCommand,
   CreateRecordCommand,
   CreateRecordsCommand,
+  CreateSpaceCommand,
   CreateTableCommand,
   CreateTableFieldCommand,
   CreateTableFormCommand,
@@ -45,6 +46,7 @@ import {
   createBaseCommand,
   createRecordCommand,
   createRecordsCommand,
+  createSpaceCommand,
   createTableCommand,
   createTableFieldCommand,
   createTableFormCommand,
@@ -294,6 +296,7 @@ const apiTokenRouter = t.router({
 
 const spaceRouter = t.router({
   list: p.input(getMemberSpacesQuery).query(({ input }) => queryBus.execute(new GetMemberSpacesQuery(input))),
+  create: p.input(createSpaceCommand).mutation(({ input }) => commandBus.execute(new CreateSpaceCommand(input))),
 })
 
 export const route = t.router({
