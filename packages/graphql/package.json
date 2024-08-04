@@ -8,6 +8,7 @@
   },
   "peerDependencies": {
     "@undb/di": "workspace:*",
+    "@undb/domain": "workspace:*",
     "@undb/context": "workspace:*",
     "@undb/cqrs": "workspace:*",
     "@undb/share": "workspace:*",

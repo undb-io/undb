@@ -18,6 +18,7 @@ import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize } from "lucia"
 import { singleton } from "tsyringe"
 import { v7 } from "uuid"
+import { SPACE_ID_COOKIE_NAME } from "../../constants"
 import { withTransaction } from "../../db"
 
 const adapter = new LibSQLAdapter(sqlite, {
@@ -106,7 +107,7 @@ export class Auth {
 
       const userId = user?.id!
       // TODO: move to other file
-      const spaceId = context.cookie["undb-space-id"]?.value
+      const spaceId = context.cookie[SPACE_ID_COOKIE_NAME]?.value
       const space = await this.spaceService.getSpace({ spaceId })
 
       const member = space.isSome()
@@ -204,7 +205,7 @@ export class Auth {
 
               const space = await this.spaceService.createPersonalSpace()
               await this.spaceMemberService.createMember(userId, space.id.value, role)
-              ctx.cookie["undb-space-id"].set({ value: space.id.value })
+              ctx.cookie[SPACE_ID_COOKIE_NAME].set({ value: space.id.value })
             })
           }
 
