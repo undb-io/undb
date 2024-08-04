@@ -107,12 +107,13 @@ export const app = new Elysia()
   })
   .onBeforeHandle((ctx) => {
     const requestId = ctx.headers["X-Request-ID"] ?? v4()
-    const spaceId = ctx.headers[SPACE_ID_COOKIE_NAME] ?? null
+    const spaceId = ctx.cookie[SPACE_ID_COOKIE_NAME].value ?? undefined
 
     executionContext.enterWith({
       requestId,
       user: { userId: ctx.user?.id ?? null, email: ctx.user?.email, username: ctx.user?.username },
       member: { role: ctx.member?.role ?? null, spaceId: ctx.member?.spaceId ?? null } ?? null,
+      spaceId,
     })
   })
   .get("/healthy", () => {
