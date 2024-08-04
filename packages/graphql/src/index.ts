@@ -4,6 +4,7 @@ import * as otel from "@opentelemetry/api"
 import { executionContext, getCurrentSpaceId } from "@undb/context/server"
 import { QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
+import type { Option } from "@undb/domain"
 import {
   GetAggregatesQuery,
   GetBaseQuery,
@@ -23,6 +24,7 @@ import {
   GetTablesQuery,
 } from "@undb/queries"
 import { injectShareService, type IShareService } from "@undb/share"
+import type { ISpaceDTO } from "@undb/space"
 import {
   TableIdVo,
   injectObjectStorage,
@@ -206,6 +208,7 @@ export class Graphql {
       type Space {
         id: ID!
         name: String!
+        isPersonal: Boolean!
       }
 
       type SpaceMember {
@@ -282,7 +285,11 @@ export class Graphql {
               return null
             }
 
-            return this.queryBus.execute(new GetSpaceByIdQuery({ id: spaceId }))
+            const space = (await this.queryBus.execute(new GetSpaceByIdQuery({ id: spaceId }))) as Option<ISpaceDTO>
+            if (space.isNone()) {
+              return null
+            }
+            return space.unwrap()
           },
           members: async (_, args) => {
             return this.queryBus.execute(new GetMembersQuery({ spaceId: args.spaceId, q: args?.q }))

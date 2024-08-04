@@ -1,4 +1,10 @@
 query GetIndexQuery {
+  space {
+    id
+    name
+    isPersonal
+  }
+
   tables {
     id
     name

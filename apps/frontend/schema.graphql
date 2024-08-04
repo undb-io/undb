@@ -133,6 +133,7 @@ enum ShareTargetType {
 
 type Space {
   id: ID!
+  isPersonal: Boolean!
   name: String!
 }
 
