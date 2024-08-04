@@ -1,3 +1,4 @@
+export * from "./space-api-token.specification.js"
 export * from "./space-base-id.specification.js"
 export * from "./space-id.specification.js"
 export * from "./space-is-personal.specification.js"

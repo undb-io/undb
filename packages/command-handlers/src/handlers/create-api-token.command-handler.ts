@@ -1,4 +1,5 @@
 import { CreateApiTokenCommand } from "@undb/commands"
+import { mustGetCurrentSpaceId } from "@undb/context/server"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import type { ICommandHandler } from "@undb/domain"
@@ -18,7 +19,8 @@ export class CreateApiTokenCommandHandler implements ICommandHandler<CreateApiTo
   async execute(command: CreateApiTokenCommand): Promise<any> {
     this.logger.debug(command)
 
-    const token = ApiTokenDo.create(command)
+    const spaceId = mustGetCurrentSpaceId()
+    const token = ApiTokenDo.create({ ...command, spaceId })
 
     await this.repository.insert(token)
 

@@ -29,6 +29,7 @@ import { withTransaction } from "../../db"
 import { type IBaseRepository, injectBaseRepository } from "@undb/base"
 import { injectUserService, type IUserService } from "@undb/user"
 import { injectSpaceMemberService, type ISpaceMemberService } from "@undb/authz"
+import { injectSpaceService, type ISpaceService } from "@undb/space"
 
 @singleton()
 export class OpenAPI {
@@ -55,6 +56,8 @@ export class OpenAPI {
     private readonly userService: IUserService,
     @injectSpaceMemberService()
     private spaceMemberService: ISpaceMemberService,
+    @injectSpaceService()
+    private spaceService: ISpaceService,
   ) {}
 
   public route() {
@@ -120,20 +123,29 @@ export class OpenAPI {
                 return
               } else {
                 const authorization = context.headers["Authorization"] ?? context.headers["authorization"]
-                const token = authorization?.replace("Bearer ", "")
+                const apiToken = authorization?.replace("Bearer ", "")
 
-                this.logger.debug({ token }, "Checking Authorization token in openapi")
+                this.logger.debug({ apiToken }, "Checking Authorization token in openapi")
 
-                if (token) {
-                  const userId = await this.apiTokenService.verify(token)
+                if (apiToken) {
+                  const userId = await this.apiTokenService.verify(apiToken)
                   if (userId.isSome()) {
                     const user = (await this.userService.findOneById(userId.unwrap())).unwrap()
-                    const member = (await this.spaceMemberService.getSpaceMember(user.id)).unwrap()
+                    const space = await this.spaceService.getSpace({ apiToken })
+                    if (space.isNone()) {
+                      // throw 401 openapi error
+                      context.set.status = 401
+                      throw new Error("Unauthorized")
+                    }
+                    const member = (
+                      await this.spaceMemberService.getSpaceMember(user.id, space.unwrap().id.value)
+                    ).unwrap()
 
                     executionContext.enterWith({
                       requestId: context.headers["x-request-id"] ?? context.headers["X-Request-ID"] ?? "",
                       user: { userId: user?.id ?? null, email: user?.email, username: user?.username },
-                      member: { role: member?.value.role ?? null } ?? null,
+                      member: { role: member?.value.role ?? null, spaceId: space.unwrap().id.value } ?? null,
+                      spaceId: space.unwrap().id.value,
                     })
                     return
                   }
