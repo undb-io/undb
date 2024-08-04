@@ -22,6 +22,7 @@ export class InvitationQueryRepository implements IInvitationQueryRepository {
           invitedAt: invitation.invited_at,
           inviterId: invitation.inviter_id,
           status: invitation.status,
+          spaceId: invitation.space_id,
         })
       : None
   }
@@ -46,6 +47,7 @@ export class InvitationQueryRepository implements IInvitationQueryRepository {
           invitedAt: invitation.invited_at,
           inviterId: invitation.inviter_id,
           status: invitation.status,
+          spaceId: invitation.space_id,
         })
       : None
   }
@@ -71,6 +73,7 @@ export class InvitationQueryRepository implements IInvitationQueryRepository {
       status: i.status,
       invitedAt: i.invited_at,
       inviterId: i.inviter_id,
+      spaceId: i.space_id,
     }))
   }
 }

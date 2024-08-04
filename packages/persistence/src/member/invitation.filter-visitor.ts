@@ -1,4 +1,12 @@
-import type { IInvitationVisitor, InvitationDo, WithEmail, WithInvitedAt, WithRole, WithStatus } from "@undb/authz"
+import type {
+  IInvitationVisitor,
+  InvitationDo,
+  WithEmail,
+  WithInvitedAt,
+  WithRole,
+  WithSpaceId,
+  WithStatus,
+} from "@undb/authz"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
@@ -6,6 +14,10 @@ import type { Database } from "../db"
 export class InvitationFilterVisitor extends AbstractQBVisitor<InvitationDo> implements IInvitationVisitor {
   constructor(protected readonly eb: ExpressionBuilder<Database, "undb_invitation">) {
     super(eb)
+  }
+  withSpaceId(spec: WithSpaceId): void {
+    const cond = this.eb.eb("space_id", "=", spec.spaceId)
+    this.addCond(cond)
   }
   withRole(spec: WithRole): void {
     const cond = this.eb.eb("role", "=", spec.role)

@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "b08f6ceb-ed1f-4fe9-8834-df2b7446d2b8",
+  "id": "7d5928e8-e2dc-4fd1-b506-5eac092f000c",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_api_token": {
@@ -148,6 +148,13 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "space_id": {
+          "name": "space_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {
@@ -166,7 +173,21 @@
           "isUnique": false
         }
       },
-      "foreignKeys": {},
+      "foreignKeys": {
+        "undb_audit_space_id_undb_space_id_fk": {
+          "name": "undb_audit_space_id_undb_space_id_fk",
+          "tableFrom": "undb_audit",
+          "tableTo": "undb_space",
+          "columnsFrom": [
+            "space_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -225,10 +246,11 @@
         }
       },
       "indexes": {
-        "undb_base_name_unique": {
-          "name": "undb_base_name_unique",
+        "base_name_unique_idx": {
+          "name": "base_name_unique_idx",
           "columns": [
-            "name"
+            "name",
+            "space_id"
           ],
           "isUnique": true
         }
@@ -414,10 +436,31 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "space_id": {
+          "name": "space_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "undb_outbox_space_id_undb_space_id_fk": {
+          "name": "undb_outbox_space_id_undb_space_id_fk",
+          "tableFrom": "undb_outbox",
+          "tableTo": "undb_space",
+          "columnsFrom": [
+            "space_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -642,6 +685,13 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "space_id": {
+          "name": "space_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {
@@ -654,7 +704,21 @@
           "isUnique": true
         }
       },
-      "foreignKeys": {},
+      "foreignKeys": {
+        "undb_share_space_id_undb_space_id_fk": {
+          "name": "undb_share_space_id_undb_space_id_fk",
+          "tableFrom": "undb_share",
+          "tableTo": "undb_space",
+          "columnsFrom": [
+            "space_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -885,6 +949,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "space_id": {
+          "name": "space_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "schema": {
           "name": "schema",
           "type": "text",
@@ -967,6 +1038,19 @@
           "tableTo": "undb_base",
           "columnsFrom": [
             "base_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "undb_table_space_id_undb_space_id_fk": {
+          "name": "undb_table_space_id_undb_space_id_fk",
+          "tableFrom": "undb_table",
+          "tableTo": "undb_space",
+          "columnsFrom": [
+            "space_id"
           ],
           "columnsTo": [
             "id"
@@ -1128,6 +1212,13 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "space_id": {
+          "name": "space_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {
@@ -1153,6 +1244,19 @@
           "tableTo": "undb_table",
           "columnsFrom": [
             "table_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "undb_webhook_space_id_undb_space_id_fk": {
+          "name": "undb_webhook_space_id_undb_space_id_fk",
+          "tableFrom": "undb_webhook",
+          "tableTo": "undb_space",
+          "columnsFrom": [
+            "space_id"
           ],
           "columnsTo": [
             "id"
