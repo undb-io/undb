@@ -7,6 +7,7 @@ export interface IInvitationVisitor extends ISpecVisitor {
   withEmail(spec: WithEmail): void
   withRole(spec: WithRole): void
   withInvitedAt(spec: WithInvitedAt): void
+  withSpaceId(spec: WithSpaceId): void
 }
 
 export abstract class InvitationCompositeSpecification extends CompositeSpecification<
@@ -78,6 +79,23 @@ export class WithInvitedAt extends InvitationCompositeSpecification {
   }
   accept(v: IInvitationVisitor): Result<void, string> {
     v.withInvitedAt(this)
+    return Ok(undefined)
+  }
+}
+
+export class WithSpaceId extends InvitationCompositeSpecification {
+  constructor(public readonly spaceId: string) {
+    super()
+  }
+  isSatisfiedBy(t: InvitationDo): boolean {
+    return t.spaceId === this.spaceId
+  }
+  mutate(t: InvitationDo): Result<InvitationDo, string> {
+    t.spaceId = this.spaceId
+    return Ok(t)
+  }
+  accept(v: IInvitationVisitor): Result<void, string> {
+    v.withSpaceId(this)
     return Ok(undefined)
   }
 }

@@ -6,7 +6,7 @@
   import { viewId, getTable } from "$lib/store/table.store"
   import { toast } from "svelte-sonner"
   import { goto, invalidate } from "$app/navigation"
-    import { page } from "$app/stores"
+  import { page } from "$app/stores"
 
   const table = getTable()
 
@@ -15,7 +15,7 @@
     mutationFn: trpc.table.view.delete.mutate,
     async onSuccess(data, variables, context) {
       await invalidate(`table:${$table.id.value}`)
-      await goto(`/${$page.params.spaceId}/t/${$table.id.value}`)
+      await goto(`/t/${$table.id.value}`)
     },
     onError(error) {
       toast.error(error.message)

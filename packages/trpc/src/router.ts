@@ -77,6 +77,7 @@ import {
   updateWebhookCommand,
   updateaccountCommand,
 } from "@undb/commands"
+import { getCurrentSpaceId } from "@undb/context/server"
 import { CommandBus, QueryBus } from "@undb/cqrs"
 import { container } from "@undb/di"
 import type { ICommandBus, IQueryBus } from "@undb/domain"
@@ -84,6 +85,7 @@ import {
   CountRecordsQuery,
   GetAggregatesQuery,
   GetApiTokensQuery,
+  GetMemberSpacesQuery,
   GetRecordByIdQuery,
   GetRecordsQuery,
   GetTableQuery,
@@ -93,6 +95,7 @@ import {
   countRecordsQuery,
   getAggregatesQuery,
   getApiTokensQuery,
+  getMemberSpacesQuery,
   getRecordByIdQuery,
   getRecordsQuery,
   getTableQuery,
@@ -242,8 +245,14 @@ const webhookRouter = t.router({
 const baseRouter = t.router({
   create: p
     .use(authz("base:create"))
-    .input(createBaseCommand)
-    .mutation(({ input }) => commandBus.execute(new CreateBaseCommand(input))),
+    .input(createBaseCommand.omit({ spaceId: true }))
+    .mutation(({ input }) => {
+      const spaceId = getCurrentSpaceId()
+      if (!spaceId) {
+        throw new Error("spaceId is required")
+      }
+      return commandBus.execute(new CreateBaseCommand({ ...input, spaceId }))
+    }),
   update: p
     .use(authz("base:update"))
     .input(updateBaseCommand)
@@ -283,6 +292,10 @@ const apiTokenRouter = t.router({
   list: p.input(getApiTokensQuery).query(({ input }) => queryBus.execute(new GetApiTokensQuery(input))),
 })
 
+const spaceRouter = t.router({
+  list: p.input(getMemberSpacesQuery).query(({ input }) => queryBus.execute(new GetMemberSpacesQuery(input))),
+})
+
 export const route = t.router({
   table: tableRouter,
   record: recordRouter,
@@ -291,6 +304,7 @@ export const route = t.router({
   share: shareRouter,
   authz: authzRouter,
   user: userRouter,
+  space: spaceRouter,
   apiToken: apiTokenRouter,
 })
 

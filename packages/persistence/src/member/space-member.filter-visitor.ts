@@ -6,6 +6,7 @@ import type {
   WithSpaceMemberSpaceId,
 } from "@undb/authz"
 import type { WithSpaceMemberBaseId } from "@undb/authz/src/space-member/specifications/space-member-base-id.specification"
+import type { WithSpaceMemberUserId } from "@undb/authz/src/space-member/specifications/space-member-user-id.specification"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
@@ -23,6 +24,10 @@ export class SpaceMemberFilterVisitor extends AbstractQBVisitor<SpaceMember> imp
       return
     }
     const cond = this.eb.eb("undb_user.username", "like", `%${q.q}%`)
+    this.addCond(cond)
+  }
+  withUserId(s: WithSpaceMemberUserId): void {
+    const cond = this.eb.eb("undb_space_member.user_id", "=", s.userId)
     this.addCond(cond)
   }
   withId(q: WithSpaceMemberId): void {

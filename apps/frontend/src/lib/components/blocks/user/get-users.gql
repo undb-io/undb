@@ -1,5 +1,5 @@
-query GetUsers($spaceId: String!, $q: String) {
-  members(spaceId: $spaceId, q: $q) {
+query GetUsers($q: String) {
+  members(q: $q) {
     role
     user {
       id

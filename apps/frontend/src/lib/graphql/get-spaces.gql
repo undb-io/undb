@@ -1,0 +1,10 @@
+query GetSpaces {
+  spaces {
+    id
+    name
+    isPersonal
+    member {
+      role
+    }
+  }
+}

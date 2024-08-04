@@ -75,7 +75,7 @@
                   "flex h-full flex-1 items-center font-light",
                   active && !tableId && !viewId && "text-primary font-medium",
                 )}
-                href={`/${$page.params.spaceId}/bases/${base.id}`}
+                href={`/bases/${base.id}`}
               >
                 <HardDriveIcon class="mr-2 h-4 w-4" />
                 {base.name}
@@ -112,7 +112,7 @@
                       )}
                     >
                       <a
-                        href={`/${$page.params.spaceId}/t/${table.id}`}
+                        href={`/t/${table.id}`}
                         class={cn("flex h-full flex-1 items-center font-light", active && "text-primary font-medium")}
                       >
                         <DatabaseIcon class="mr-2 h-4 w-4" />

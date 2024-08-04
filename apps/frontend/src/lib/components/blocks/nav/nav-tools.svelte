@@ -38,14 +38,16 @@
     </span>
   </Button>
 
-  <a
-    href={`/${$page.params.spaceId}/members`}
-    data-active={$page.route.id === "/[spaceId]/(authed)/members"}
-    class="hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring data-[active=true]:bg-primary data-[active=true]:text-primary-foreground flex h-8 items-center justify-start gap-2 whitespace-nowrap rounded-md px-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
-  >
-    <Users2Icon class="h-4 w-4" />
-    Members
-  </a>
+  {#if !space?.isPersonal}
+    <a
+      href={`/members`}
+      data-active={$page.route.id === "/(authed)/members"}
+      class="hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring data-[active=true]:bg-primary data-[active=true]:text-primary-foreground flex h-8 items-center justify-start gap-2 whitespace-nowrap rounded-md px-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
+    >
+      <Users2Icon class="h-4 w-4" />
+      Members
+    </a>
+  {/if}
 
   {#if $hasPermission("base:create")}
     <Button

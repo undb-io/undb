@@ -17,6 +17,7 @@ export const injectSpaceMemberRepository = () => inject(SPACE_MEMBER_REPOSITORY)
 
 export interface ISpaceMemberQueryRepository {
   findOneById(id: string): Promise<Option<ISpaceMemberDTO>>
+  findOne(spec: SpaceMemberComositeSpecification): Promise<Option<ISpaceMemberDTO>>
   findByIds(ids: [string, ...string[]]): Promise<ISpaceMemberDTO[]>
   find(spec: Option<SpaceMemberComositeSpecification>): Promise<ISpaceMemberDTO[]>
 }

@@ -85,12 +85,13 @@ type Query {
   invitations(status: InvitationStatus): [Invitation!]!
   member: SpaceMember
   memberById(id: ID!): SpaceMember
-  members(q: String, spaceId: String!): [SpaceMember]!
+  members(q: String): [SpaceMember]!
   membersByIds(ids: [ID!]!): [SpaceMember!]!
   recordAudits(recordId: ID!): [Audit]
   rollupForeignTables(fieldId: ID!, tableId: ID!): [Table!]!
   share(id: ID!): Share
   space: Space
+  spaces: [Space]!
   table(id: ID!): Table
   tableByShare(shareId: ID!): Table
   tableForeignTables(tableId: ID!): [Table!]!
@@ -134,6 +135,7 @@ enum ShareTargetType {
 type Space {
   id: ID!
   isPersonal: Boolean!
+  member: SpaceMember
   name: String!
 }
 

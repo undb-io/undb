@@ -204,7 +204,7 @@ export class Auth {
                 .execute()
 
               const space = await this.spaceService.createPersonalSpace()
-              await this.spaceMemberService.createMember(userId, space.id.value, role)
+              await this.spaceMemberService.createMember(userId, space.id.value, "owner")
               ctx.cookie[SPACE_ID_COOKIE_NAME].set({ value: space.id.value })
             })
           }

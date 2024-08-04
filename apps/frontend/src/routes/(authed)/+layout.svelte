@@ -51,11 +51,11 @@
 
   $: role.set(member?.role ?? null)
 
-  $: if (tables && tables?.length !== 0 && !$page.params.tableId && $page.route.id === "/[spaceId]/(authed)") {
-    goto(`/${$page.params.spaceId}/t/${tables[0]?.id}`, { replaceState: true })
+  $: if (tables && tables?.length !== 0 && !$page.params.tableId && $page.route.id === "/(authed)") {
+    goto(`/t/${tables[0]?.id}`, { replaceState: true })
   }
   $: if (!tables.length && bases.length) {
-    // goto(`/${$page.params.spaceId}/bases/${bases[0]?.id}`, { replaceState: true })
+    // goto(`/bases/${bases[0]?.id}`, { replaceState: true })
   }
 
   let CreateBaseDialog: ComponentType
