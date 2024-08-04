@@ -12,11 +12,11 @@
   },
   "dependencies": {
     "@undb/base": "workspace:*",
-    "@undb/space": "workspace:*",
     "@undb/context": "workspace:*",
     "@undb/di": "workspace:*",
     "@undb/domain": "workspace:*",
     "@undb/logger": "workspace:*",
+    "@undb/space": "workspace:*",
     "@undb/zod": "workspace:*",
     "date-fns": "^3.6.0",
     "radash": "^12.1.0",

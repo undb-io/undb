@@ -6,9 +6,9 @@
   "dependencies": {
     "@undb/di": "workspace:*",
     "@undb/domain": "workspace:*",
-    "@undb/space": "workspace:*",
     "@undb/logger": "workspace:*",
     "@undb/mail": "workspace:*",
+    "@undb/space": "workspace:*",
     "@undb/zod": "workspace:*"
   },
   "devDependencies": {
