@@ -1,5 +1,5 @@
 import type { Audit, AuditSpecification, IAuditRepository } from "@undb/audit"
-import { getCurrentUserId } from "@undb/context/server"
+import { getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import type { Option } from "@undb/domain"
 import type { IQueryBuilder } from "../qb"
@@ -23,7 +23,11 @@ export class AuditRepository implements IAuditRepository {
 
     await this.qb
       .insertInto("undb_audit")
-      .values({ ...values, operator_id: user })
+      .values({
+        ...values,
+        space_id: mustGetCurrentSpaceId(),
+        operator_id: user,
+      })
       .execute()
   }
   updateOneById(id: string, spec: AuditSpecification): Promise<void> {

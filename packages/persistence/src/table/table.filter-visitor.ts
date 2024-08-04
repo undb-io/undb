@@ -1,4 +1,4 @@
-import { getCurrentSpaceId } from "@undb/context/server"
+import { mustGetCurrentSpaceId } from "@undb/context/server"
 import type {
   ITableSpecVisitor,
   TableBaseIdSpecification,
@@ -42,10 +42,7 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
     protected readonly eb: ExpressionBuilder<Database, "undb_table" | "undb_table_id_mapping">,
   ) {
     super(eb)
-    const spaceId = getCurrentSpaceId()
-    if (!spaceId) {
-      throw new Error("SpaceId is required")
-    }
+    const spaceId = mustGetCurrentSpaceId()
     this.addCond(this.eb.eb("space_id", "=", spaceId))
   }
   withId(id: TableIdSpecification): void {

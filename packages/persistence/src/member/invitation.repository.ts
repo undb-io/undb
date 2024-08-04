@@ -1,4 +1,5 @@
 import type { IInvitationRepository, InvitationCompositeSpecification, InvitationDo } from "@undb/authz"
+import { mustGetCurrentSpaceId } from "@undb/context/server"
 import { singleton } from "@undb/di"
 import { getCurrentTransaction } from "../ctx"
 import { InvitationMutationVisitor } from "./invitation.mutation-visitor"
@@ -33,6 +34,7 @@ export class InvitationRepository implements IInvitationRepository {
       .values({
         id: invitation.id.value,
         email: invitation.email,
+        space_id: mustGetCurrentSpaceId(),
         role: invitation.role,
         status: invitation.status,
         invited_at: invitation.invitedAt,
@@ -56,6 +58,7 @@ export class InvitationRepository implements IInvitationRepository {
       .values({
         id: invitation.id.value,
         email: invitation.email,
+        space_id: mustGetCurrentSpaceId(),
         role: invitation.role,
         status: invitation.status,
         invited_at: invitation.invitedAt,
