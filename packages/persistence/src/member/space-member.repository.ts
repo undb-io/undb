@@ -1,9 +1,10 @@
-import { SpaceMember, type ISpaceMemberRepository } from "@undb/authz"
+import { SpaceMember, SpaceMemberComositeSpecification, type ISpaceMemberRepository } from "@undb/authz"
 import { singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import { getCurrentTransaction } from "../ctx"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
+import { SpaceMemberFilterVisitor } from "./space-member.filter-visitor"
 
 @singleton()
 export class SpaceMemberRepository implements ISpaceMemberRepository {
@@ -20,11 +21,17 @@ export class SpaceMemberRepository implements ISpaceMemberRepository {
       .executeTakeFirst()
     return !!user
   }
-  async findOneByUserId(userId: string): Promise<Option<SpaceMember>> {
+
+  async findOne(spec: SpaceMemberComositeSpecification): Promise<Option<SpaceMember>> {
     const member = await this.qb
       .selectFrom("undb_space_member")
       .selectAll()
-      .where((eb) => eb.eb("undb_space_member.user_id", "=", userId))
+      .where((eb) => {
+        const visitor = new SpaceMemberFilterVisitor(this.qb, eb)
+        spec.accept(visitor)
+
+        return visitor.cond
+      })
       .executeTakeFirst()
 
     if (!member) {

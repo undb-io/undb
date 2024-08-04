@@ -6,7 +6,7 @@ import type { SpaceMemberComositeSpecification } from "./space-member.composite-
 
 export interface ISpaceMemberRepository {
   findOneById(id: string): Promise<SpaceMember>
-  findOneByUserId(userId: string): Promise<Option<SpaceMember>>
+  findOne(spec: SpaceMemberComositeSpecification): Promise<Option<SpaceMember>>
 
   insert(member: SpaceMember): Promise<void>
   exists(email: string): Promise<boolean>

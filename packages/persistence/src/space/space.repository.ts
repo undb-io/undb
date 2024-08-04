@@ -1,17 +1,44 @@
 import { getCurrentUserId } from "@undb/context/server"
 import { singleton } from "@undb/di"
-import type { Option } from "@undb/domain"
-import type { ISpaceRepository, Space } from "@undb/space"
+import { None, Some, type Option } from "@undb/domain"
+import { SpaceFactory, type ISpaceRepository, type Space } from "@undb/space"
 import type { ISpaceSpecification } from "@undb/space/src/interface"
 import { getCurrentTransaction } from "../ctx"
+import type { IQueryBuilder } from "../qb"
+import { injectQueryBuilder } from "../qb.provider"
+import { SpaceFilterVisitor } from "./space.filter-visitor"
 
 @singleton()
 export class SpaceRepostitory implements ISpaceRepository {
+  constructor(
+    @injectQueryBuilder()
+    private readonly qb: IQueryBuilder,
+  ) {}
   find(spec: ISpaceSpecification): Promise<Space[]> {
     throw new Error("Method not implemented.")
   }
-  findOne(spec: ISpaceSpecification): Promise<Option<Space>> {
-    throw new Error("Method not implemented.")
+  async findOne(spec: ISpaceSpecification): Promise<Option<Space>> {
+    const space = await this.qb
+      .selectFrom("undb_space")
+      .selectAll()
+      .where((eb) => {
+        const visitor = new SpaceFilterVisitor(eb)
+        spec.accept(visitor)
+        return visitor.cond
+      })
+      .executeTakeFirst()
+
+    if (!space) {
+      return None
+    }
+
+    return Some(
+      SpaceFactory.fromJSON({
+        id: space.id,
+        name: space.name ?? "",
+        isPersonal: Boolean(space.is_personal),
+      }),
+    )
   }
   findOneById(id: string): Promise<Option<Space>> {
     throw new Error("Method not implemented.")
