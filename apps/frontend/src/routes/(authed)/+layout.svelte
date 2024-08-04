@@ -36,6 +36,8 @@
   }
 
   $: indexDataStore = data.indexDataStore
+  $: me = data.me.user
+  $: space = $indexDataStore.data?.space
   $: tables = $indexDataStore.data?.tables?.filter(Boolean) ?? []
   $: bases = $indexDataStore.data?.bases?.filter(Boolean) ?? []
 
@@ -73,8 +75,8 @@
     maxSize={30}
   >
     <div class="flex h-full max-h-screen flex-col gap-2">
-      <div class="border-b p-4 pb-2">
-        <NavTools />
+      <div class="border-b px-4 py-2">
+        <NavTools {space} {me} />
       </div>
       <ScrollArea class="flex-1">
         <TablesNav {tables} {bases} />
