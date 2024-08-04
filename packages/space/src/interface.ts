@@ -5,12 +5,14 @@ import type { WithSpaceBaseId } from "./specifications/space-base-id.specificati
 import type { WithSpaceId } from "./specifications/space-id.specification.js"
 import type { WithSpaceIsPersonal } from "./specifications/space-is-personal.specification.js"
 import type { WithSpaceName } from "./specifications/space-name.specification.js"
+import type { WithSpaceShareId } from "./specifications/space-share-id.specification.js"
 import type { WithSpaceUserId } from "./specifications/space-user-id.specification.js"
 
 export interface ISpaceSpecVisitor extends ISpecVisitor {
   withId(v: WithSpaceId): void
   withUserId(v: WithSpaceUserId): void
   withBaseId(v: WithSpaceBaseId): void
+  withShareId(v: WithSpaceShareId): void
   withApiToken(v: WithSpaceApiToken): void
   withIsPersonal(v: WithSpaceIsPersonal): void
   withName(v: WithSpaceName): void

@@ -1,13 +1,14 @@
 import type {
   ISpaceSpecVisitor,
   Space,
+  WithSpaceApiToken,
   WithSpaceBaseId,
   WithSpaceId,
   WithSpaceIsPersonal,
   WithSpaceName,
+  WithSpaceShareId,
   WithSpaceUserId,
 } from "@undb/space"
-import type { WithSpaceApiTokenId } from "@undb/space/src/specifications/space-api-token-id.specification"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
@@ -33,11 +34,17 @@ export class SpaceFilterVisitor extends AbstractQBVisitor<Space> implements ISpa
     const cond = this.eb.eb("undb_space.id", "=", v.id.value)
     this.addCond(cond)
   }
-  withApiToken(v: WithSpaceApiTokenId): void {
+  withApiToken(v: WithSpaceApiToken): void {
     const subQuery = this.qb
       .selectFrom("undb_api_token")
       .select(["space_id"])
-      .where("undb_api_token.id", "=", v.apiTokenId)
+      .where("undb_api_token.id", "=", v.apiToken)
+
+    const cond = this.eb.eb("undb_space.id", "in", subQuery)
+    this.addCond(cond)
+  }
+  withShareId(v: WithSpaceShareId): void {
+    const subQuery = this.qb.selectFrom("undb_share").select(["space_id"]).where("undb_share.id", "=", v.shareId)
 
     const cond = this.eb.eb("undb_space.id", "in", subQuery)
     this.addCond(cond)

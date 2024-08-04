@@ -321,7 +321,7 @@ export class Graphql {
           member: () => {
             const member = executionContext.getStore()?.member
             if (!member?.role) {
-              throw new Error("Unauthorized")
+              return null
             }
             const user = executionContext.getStore()?.user
             return { role: member.role, userId: user?.userId }
