@@ -11,7 +11,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@libsql/client": "^0.8.0",
+    "@libsql/client": "^0.8.1",
     "@libsql/kysely-libsql": "^0.4.1",
     "@undb/audit": "workspace:*",
     "@undb/authz": "workspace:*",
