@@ -1,6 +1,7 @@
 import { inject, singleton } from "@undb/di"
-import { and, Option } from "@undb/domain"
+import { and, None, Option } from "@undb/domain"
 import { injectSpaceService, type ISpaceId, type ISpaceService } from "@undb/space"
+import type { SetContextValue } from "../../../context/src/context.type"
 import { MemberIdVO } from "../member/member-id.vo"
 import type { InviteDTO } from "./dto"
 import { InvitationDo } from "./invitation.do"
@@ -21,6 +22,7 @@ export interface ISpaceMemberService {
   invite(dto: InviteDTO, username: string): Promise<void>
   acceptinvitation(id: string): Promise<void>
   getSpaceMember(userId: string, spaceId: ISpaceId): Promise<Option<SpaceMember>>
+  setSpaceMemberContext(setContext: SetContextValue, spaceId: ISpaceId, userId: string): Promise<Option<SpaceMember>>
 }
 
 export const SPACE_MEMBER_SERVICE = Symbol("ISpaceMemberService")
@@ -96,5 +98,26 @@ export class SpaceMemberService implements ISpaceMemberService {
 
     const spec = new WithStatus("accepted")
     await this.invitationRepository.updateOneById(id, spec)
+  }
+
+  async setSpaceMemberContext(
+    setContext: SetContextValue,
+    spaceId: ISpaceId,
+    userId: string,
+  ): Promise<Option<SpaceMember>> {
+    if (!spaceId || !userId) {
+      return None
+    }
+    const member = await this.getSpaceMember(userId, spaceId)
+    if (member.isNone()) {
+      return None
+    }
+
+    setContext("member", {
+      role: member.unwrap().props.role,
+      spaceId,
+    })
+
+    return member
   }
 }

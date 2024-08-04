@@ -1,8 +1,14 @@
 import { AsyncLocalStorage } from "node:async_hooks"
-import type { IExecutionContext } from "."
-import type { ExecuteContext } from "./context.type"
+import type { ExecuteContext, IExecutionContext, SetContextValue } from "."
 
-export const executionContext = new AsyncLocalStorage<ExecuteContext>() satisfies IExecutionContext
+export const executionContext = new AsyncLocalStorage() satisfies IExecutionContext
+
+export const setContextValue: SetContextValue = (key: keyof ExecuteContext, value: any): void => {
+  const store = executionContext.getStore()
+  if (store) {
+    ;(store as any)[key] = value
+  }
+}
 
 export const getCurrentUser = () => {
   return executionContext.getStore()?.user!
