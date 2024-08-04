@@ -5,9 +5,22 @@
   import { CREATE_BASE_MODAL, toggleModal } from "$lib/store/modal.store"
   import { page } from "$app/stores"
   import { hasPermission } from "$lib/store/workspace-member.store"
+  import SpaceDropdown from "../space/space-dropdown.svelte"
+  import type { ISpaceDTO } from "@undb/space"
+
+  export let space: ISpaceDTO | undefined | null
+  export let me: any
 </script>
 
 <div class="w-full space-y-1">
+  {#if space}
+    <SpaceDropdown
+      {me}
+      {space}
+      class="hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring data-[active=true]:bg-primary data-[active=true]:text-primary-foreground flex h-8 w-full items-center justify-start gap-2 whitespace-nowrap rounded-md px-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
+    />
+  {/if}
+
   <Button
     variant="outline"
     size="sm"
@@ -28,7 +41,7 @@
   <a
     href={`/${$page.params.spaceId}/members`}
     data-active={$page.route.id === "/[spaceId]/(authed)/members"}
-    class=" hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring data-[active=true]:bg-primary data-[active=true]:text-primary-foreground flex h-8 items-center justify-start gap-2 whitespace-nowrap rounded-md px-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
+    class="hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring data-[active=true]:bg-primary data-[active=true]:text-primary-foreground flex h-8 items-center justify-start gap-2 whitespace-nowrap rounded-md px-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
   >
     <Users2Icon class="h-4 w-4" />
     Members
