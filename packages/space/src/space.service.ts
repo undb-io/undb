@@ -10,12 +10,13 @@ import {
   type ISpaceQueryRepository,
   type ISpaceRepository,
 } from "./space.repository"
-import { WithSpaceBaseId, WithSpaceId } from "./specifications"
+import { WithSpaceApiToken, WithSpaceBaseId, WithSpaceId } from "./specifications"
 import { WithSpaceUserId } from "./specifications/space-user-id.specification"
 
 interface IGetSpaceInput {
   spaceId?: string
   baseId?: string
+  apiToken?: string
 }
 
 export interface ISpaceService {
@@ -53,6 +54,8 @@ export class SpaceService implements ISpaceService {
       spec = Some(WithSpaceId.fromString(input.spaceId))
     } else if (input.baseId) {
       spec = Some(new WithSpaceBaseId(input.baseId))
+    } else if (input.apiToken) {
+      spec = Some(new WithSpaceApiToken(input.apiToken))
     }
 
     if (spec.isNone()) {

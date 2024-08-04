@@ -6,6 +6,7 @@ import { CreateApiTokenCommandHandler } from "./create-api-token.command-handler
 import { CreateBaseCommandHandler } from "./create-base.command-handler"
 import { CreateRecordCommandHandler } from "./create-record.command-handler"
 import { CreateRecordsCommandHandler } from "./create-records.command-handler"
+import { CreateSpaceCommandHandler } from "./create-space.command-handler"
 import { CreateTableFieldCommandHandler } from "./create-table-field.command-handler"
 import { CreateTableFormCommandHandler } from "./create-table-form.command-handler"
 import { CreateTableViewCommandHandler } from "./create-table-view.command-handler"
@@ -80,4 +81,5 @@ export const commandHandlers = [
   ExportViewCommandHandler,
   DeleteTableCommandHandler,
   CreateApiTokenCommandHandler,
+  CreateSpaceCommandHandler,
 ]

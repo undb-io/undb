@@ -42,6 +42,10 @@ export const tables = sqliteTable(
       .notNull()
       .references(() => baseTable.id),
 
+    spaceId: text("space_id")
+      .notNull()
+      .references(() => space.id),
+
     schema: text("schema", { mode: "json" }).notNull(),
     views: text("views", { mode: "json" }).notNull(),
     forms: text("forms", { mode: "json" }),
@@ -133,6 +137,9 @@ export const outbox = sqliteTable("outbox", {
   timestamp: integer("timestamp", { mode: "timestamp_ms" }).notNull(),
   operatorId: text("operator_id").notNull(),
   name: text("name").notNull(),
+  spaceId: text("space_id")
+    .notNull()
+    .references(() => space.id),
 })
 
 export const users = sqliteTable(
@@ -173,6 +180,9 @@ export const webhook = sqliteTable(
     headers: text("headers", { mode: "json" }).notNull(),
     condition: text("condition", { mode: "json" }),
     event: text("event").notNull().$type<RECORD_EVENTS>(),
+    spaceId: text("space_id")
+      .notNull()
+      .references(() => space.id),
   },
   (table) => {
     return {
@@ -193,6 +203,9 @@ export const audit = sqliteTable(
     tableId: text("table_id").notNull(),
     recordId: text("record_id").notNull(),
     operatorId: text("operator_id").notNull(),
+    spaceId: text("space_id")
+      .notNull()
+      .references(() => space.id),
   },
   (table) => {
     return {
@@ -213,25 +226,31 @@ export const spaceMember = sqliteTable("space_member", {
     .references(() => space.id),
 })
 
-export const baseTable = sqliteTable("base", {
-  id: text("id").notNull().primaryKey(),
-  name: text("name").notNull().unique(),
-  spaceId: text("space_id")
-    .references(() => space.id)
-    .notNull(),
-  createdAt: text("created_at")
-    .notNull()
-    .default(sql`(CURRENT_TIMESTAMP)`),
-  createdBy: text("created_by")
-    .notNull()
-    .references(() => users.id),
-  updateAt: text("updated_at")
-    .notNull()
-    .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
-  updatedBy: text("updated_by")
-    .notNull()
-    .references(() => users.id),
-})
+export const baseTable = sqliteTable(
+  "base",
+  {
+    id: text("id").notNull().primaryKey(),
+    name: text("name").notNull(),
+    spaceId: text("space_id")
+      .references(() => space.id)
+      .notNull(),
+    createdAt: text("created_at")
+      .notNull()
+      .default(sql`(CURRENT_TIMESTAMP)`),
+    createdBy: text("created_by")
+      .notNull()
+      .references(() => users.id),
+    updateAt: text("updated_at")
+      .notNull()
+      .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
+    updatedBy: text("updated_by")
+      .notNull()
+      .references(() => users.id),
+  },
+  (base) => ({
+    uniqueNameIndex: unique("base_name_unique_idx").on(base.name, base.spaceId),
+  }),
+)
 
 export const shareTable = sqliteTable(
   "share",
@@ -240,6 +259,9 @@ export const shareTable = sqliteTable(
     targetType: text("target_type").notNull(),
     targetId: text("target_id").notNull(),
     enabled: integer("enabled", { mode: "boolean" }).notNull(),
+    spaceId: text("space_id")
+      .notNull()
+      .references(() => space.id),
   },
   (table) => {
     return {

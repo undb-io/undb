@@ -15,3 +15,12 @@ export const getCurrentUserId = () => {
 export const getCurrentSpaceId = () => {
   return executionContext.getStore()?.spaceId
 }
+
+export const mustGetCurrentSpaceId = () => {
+  const spaceId = getCurrentSpaceId()
+  if (!spaceId) {
+    throw new Error("SpaceId is required")
+  }
+
+  return spaceId
+}

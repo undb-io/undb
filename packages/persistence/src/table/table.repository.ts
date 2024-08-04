@@ -1,4 +1,4 @@
-import { executionContext } from "@undb/context/server"
+import { executionContext, getCurrentSpaceId } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import { None, Option, Some } from "@undb/domain"
 import {
@@ -70,12 +70,18 @@ export class TableRepository implements ITableRepository {
     const ctx = executionContext.getStore()
     const userId = ctx!.user!.userId!
 
+    const spaceId = getCurrentSpaceId()
+    if (!spaceId) {
+      throw new Error("Space ID is required to create a table")
+    }
+
     const rls = table.rls.into(undefined)
     const values: InsertTable = {
       id: table.id.value,
       name: table.name.value,
       base_id: table.baseId,
       created_by: userId,
+      space_id: spaceId,
       created_at: new Date().toISOString(),
       schema: json(table.schema.toJSON()),
       views: json(table.views.toJSON()),

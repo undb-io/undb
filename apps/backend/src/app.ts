@@ -22,7 +22,7 @@ import { Elysia } from "elysia"
 import { all } from "radash"
 import { v4 } from "uuid"
 import { SPACE_ID_COOKIE_NAME } from "./constants"
-import { Auth, OpenAPI, Realtime, TableModule, Web } from "./modules"
+import { Auth, OpenAPI, Realtime, SpaceModule, TableModule, Web } from "./modules"
 import { FileService } from "./modules/file/file"
 import { loggerPlugin } from "./plugins/logging"
 
@@ -139,11 +139,13 @@ export const app = new Elysia()
       const graphql = container.resolve(Graphql)
       const file = container.resolve(FileService)
       const table = container.resolve(TableModule)
+      const space = container.resolve(SpaceModule)
 
       return (
         app
           //
           .use(trpc(route))
+          .use(space.route())
           .use(file.route())
           .use(graphql.route())
           .use(realtime.route())

@@ -27,7 +27,7 @@
     mutationFn: trpc.table.delete.mutate,
     async onSuccess(data, variables, context) {
       await invalidateAll()
-      await goto("/" + $page.params.spaceId)
+      await goto("/")
     },
     onError(error, variables, context) {
       toast.error(error.message)
