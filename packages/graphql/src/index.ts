@@ -1,7 +1,8 @@
 import { yoga } from "@elysiajs/graphql-yoga"
 import { useOpenTelemetry } from "@envelop/opentelemetry"
 import * as otel from "@opentelemetry/api"
-import { executionContext, getCurrentSpaceId } from "@undb/context/server"
+import type { ISpaceMemberDTO } from "@undb/authz"
+import { executionContext, getCurrentSpaceId, getCurrentUserId } from "@undb/context/server"
 import { QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import type { Option } from "@undb/domain"
@@ -12,11 +13,13 @@ import {
   GetInivitationsQuery,
   GetMemberByIdQuery,
   GetMembersByIdsQuery,
+  GetMemberSpacesQuery,
   GetMembersQuery,
   GetRecordAuditsQuery,
   GetRollupForeignTablesQuery,
   GetShareQuery,
   GetSpaceByIdQuery,
+  GetSpaceMemberQuery,
   GetTableByShareQuery,
   GetTableForeignTablesQuery,
   GetTableQuery,
@@ -26,9 +29,9 @@ import {
 import { injectShareService, type IShareService } from "@undb/share"
 import type { ISpaceDTO } from "@undb/space"
 import {
-  TableIdVo,
   injectObjectStorage,
   injectRecordQueryRepository,
+  TableIdVo,
   type IObjectStorage,
   type IRecordQueryRepository,
 } from "@undb/table"
@@ -209,6 +212,8 @@ export class Graphql {
         id: ID!
         name: String!
         isPersonal: Boolean!
+
+        member: SpaceMember
       }
 
       type SpaceMember {
@@ -244,9 +249,10 @@ export class Graphql {
         member: SpaceMember
         memberById(id: ID!): SpaceMember
         membersByIds(ids: [ID!]!): [SpaceMember!]!
-        members(spaceId: String!, q: String): [SpaceMember]!
+        members(q: String): [SpaceMember]!
 
         space: Space
+        spaces: [Space]!
 
         invitations(status: InvitationStatus): [Invitation!]!
 
@@ -291,8 +297,19 @@ export class Graphql {
             }
             return space.unwrap()
           },
+          spaces: async () => {
+            const userId = getCurrentUserId()
+            if (!userId) {
+              return []
+            }
+            return this.queryBus.execute(new GetMemberSpacesQuery({ userId }))
+          },
           members: async (_, args) => {
-            return this.queryBus.execute(new GetMembersQuery({ spaceId: args.spaceId, q: args?.q }))
+            const spaceId = getCurrentSpaceId()
+            if (!spaceId) {
+              return []
+            }
+            return this.queryBus.execute(new GetMembersQuery({ spaceId, q: args?.q }))
           },
           memberById: async (_, args) => {
             const member = await this.queryBus.execute(new GetMemberByIdQuery({ id: args.id }))
@@ -394,6 +411,23 @@ export class Graphql {
           // @ts-ignore
           operator: async (audit) => {
             return (await this.userRepo.findOneById(audit.operatorId)).unwrap()
+          },
+        },
+        Space: {
+          // @ts-ignore
+          member: async (space) => {
+            const userId = getCurrentUserId()
+            if (!userId) {
+              return null
+            }
+            const member = (await this.queryBus.execute(
+              new GetSpaceMemberQuery({ spaceId: space.id, userId }),
+            )) as Option<ISpaceMemberDTO[]>
+
+            if (member.isNone()) {
+              return null
+            }
+            return member.unwrap()
           },
         },
       },

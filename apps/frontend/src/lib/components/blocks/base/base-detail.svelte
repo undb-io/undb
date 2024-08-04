@@ -47,7 +47,7 @@
       <Table.Body>
         {#each base.tables as table}
           {#if table}
-            <Table.Row class="cursor-pointer" on:click={() => goto(`/${$page.params.spaceId}/t/${table.id}`)}>
+            <Table.Row class="cursor-pointer" on:click={() => goto(`/t/${table.id}`)}>
               <Table.Cell class="flex items-center font-medium">
                 <DatabaseIcon class="mr-2 h-4 w-4" />
                 {table.name}

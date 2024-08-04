@@ -22,7 +22,7 @@ export class SpaceRepostitory implements ISpaceRepository {
       .selectFrom("undb_space")
       .selectAll()
       .where((eb) => {
-        const visitor = new SpaceFilterVisitor(eb)
+        const visitor = new SpaceFilterVisitor(this.qb, eb)
         spec.accept(visitor)
         return visitor.cond
       })

@@ -1,6 +1,6 @@
 import { inject, singleton } from "@undb/di"
 import { and, Option } from "@undb/domain"
-import type { ISpaceId } from "@undb/space"
+import { injectSpaceService, type ISpaceId, type ISpaceService } from "@undb/space"
 import { MemberIdVO } from "../member/member-id.vo"
 import type { InviteDTO } from "./dto"
 import { InvitationDo } from "./invitation.do"
@@ -30,6 +30,8 @@ export const injectSpaceMemberService = () => inject(SPACE_MEMBER_SERVICE)
 @singleton()
 export class SpaceMemberService implements ISpaceMemberService {
   constructor(
+    @injectSpaceService()
+    private readonly spaceService: ISpaceService,
     @injectSpaceMemberRepository()
     private readonly spaceMemberRepository: ISpaceMemberRepository,
     @injectInvitationRepository()
@@ -57,12 +59,20 @@ export class SpaceMemberService implements ISpaceMemberService {
       throw new Error("Member already exists")
     }
 
+    const space = await this.spaceService.getSpace({ spaceId: dto.spaceId })
+    if (space.isNone()) {
+      throw new Error("Space not found")
+    }
+
+    if (space.unwrap().isPersonal) {
+      throw new Error("Cannot invite to personal space")
+    }
+
     const spec = new WithEmail(dto.email)
     const existInvitation = await this.invitationQueryRepository.findOne(spec)
     if (existInvitation.isSome()) {
       const invitation = existInvitation.unwrap()
       const spec = and(
-        //
         new WithStatus("pending"),
         new WithInvitedAt(new Date()),
         new WithRole(dto.role ?? invitation.role),

@@ -30,7 +30,7 @@
     mutationFn: trpc.record.bulkCreate.mutate,
     async onSuccess() {
       await invalidate("undb:tables")
-      await goto(`/${$page.params.spaceId}/t/${tableId}`)
+      await goto(`/t/${tableId}`)
       await invalidate(`table:${tableId}`)
       closeModal(IMPORT_TABLE_MODAL)
       baseId.set(null)
@@ -64,7 +64,7 @@
         })
       } else {
         await invalidate("undb:tables")
-        await goto(`/${$page.params.spaceId}/t/${data}`)
+        await goto(`/t/${data}`)
         closeModal(IMPORT_TABLE_MODAL)
         baseId.set(null)
       }

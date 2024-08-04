@@ -37,7 +37,7 @@
           id={table.id}
           value={table.id}
           onSelect={() => {
-            goto(`/${$page.params.spaceId}/t/${table.id}`)
+            goto(`/t/${table.id}`)
             $commandOpen = false
           }}
         >
