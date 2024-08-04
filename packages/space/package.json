@@ -3,6 +3,9 @@
   "module": "src/index.ts",
   "type": "module",
   "types": "src/index.d.ts",
+  "dependencies": {
+    "@undb/context": "workspace:*"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

@@ -1,5 +1,3 @@
-import type { ISpaceMemberRole } from "@undb/authz"
-
 interface ContextUser {
   userId: string | null
   username?: string
@@ -7,7 +5,7 @@ interface ContextUser {
 }
 
 export interface ContextMember {
-  role: ISpaceMemberRole | null
+  role: any | null
   spaceId: string | null
 }
 
@@ -17,3 +15,5 @@ export interface ExecuteContext {
   member?: ContextMember
   spaceId?: string
 }
+
+export type SetContextValue = (key: keyof ExecuteContext, value: any) => void

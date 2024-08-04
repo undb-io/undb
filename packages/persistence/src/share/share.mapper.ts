@@ -1,3 +1,4 @@
+import { mustGetCurrentSpaceId } from "@undb/context/server"
 import { singleton } from "@undb/di"
 import type { Mapper } from "@undb/domain"
 import { ShareFactory, type IShareDTO, type IShareTarget, type Share as ShareDo } from "@undb/share"
@@ -20,6 +21,7 @@ export class ShareMapper implements Mapper<ShareDo, Share, IShareDTO> {
       id: domain.id.value,
       target_id: domain.target.id,
       target_type: domain.target.type,
+      space_id: mustGetCurrentSpaceId(),
       enabled: domain.enabled,
     }
   }
