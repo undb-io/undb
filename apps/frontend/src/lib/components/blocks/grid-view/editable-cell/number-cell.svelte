@@ -47,9 +47,11 @@
 {#if isEditing}
   <input
     bind:this={el}
+    max={field.max}
+    min={field.min}
     class={cn($$restProps.class, "focus-visible:ring-ring w-full rounded-none border-none outline-none focus:bg-white")}
     {value}
-    on:change={debounce({ delay: 100 }, onChange)}
+    on:change={debounce({ delay: 300 }, onChange)}
     type="number"
   />
 {:else}

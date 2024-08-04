@@ -7,7 +7,6 @@ import type {
 } from "@undb/authz"
 import type { WithSpaceMemberBaseId } from "@undb/authz/src/space-member/specifications/space-member-base-id.specification"
 import type { WithSpaceMemberUserId } from "@undb/authz/src/space-member/specifications/space-member-user-id.specification"
-import { mustGetCurrentSpaceId } from "@undb/context/server"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
@@ -19,8 +18,6 @@ export class SpaceMemberFilterVisitor extends AbstractQBVisitor<SpaceMember> imp
     protected readonly eb: ExpressionBuilder<Database, "undb_space_member" | "undb_user">,
   ) {
     super(eb)
-    const spaceId = mustGetCurrentSpaceId()
-    this.addCond(this.eb.eb("undb_space_member.space_id", "=", spaceId))
   }
   withQ(q: WithSpaceMemberQ): void {
     if (!q.q) {

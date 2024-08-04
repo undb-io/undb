@@ -61,6 +61,14 @@ export class NumberField extends AbstractField<NumberFieldValue, NumberFieldCons
     return this.constraint.unwrapOrElse(() => new NumberFieldConstraint({}))
   }
 
+  get max() {
+    return this.#constraint.props.max
+  }
+
+  get min() {
+    return this.#constraint.props.min
+  }
+
   override get valueSchema() {
     return this.#constraint.schema
   }
