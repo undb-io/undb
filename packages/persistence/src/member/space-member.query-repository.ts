@@ -30,6 +30,24 @@ export class SpaceMemberQueryRepository implements ISpaceMemberQueryRepository {
     return Some(this.mapper.toDTO(member))
   }
 
+  async findOne(spec: SpaceMemberComositeSpecification): Promise<Option<ISpaceMemberDTO>> {
+    const member = await this.qb
+      .selectFrom("undb_space_member")
+      .selectAll()
+      .where((eb) => {
+        const visitor = new SpaceMemberFilterVisitor(this.qb, eb)
+        spec.accept(visitor)
+        return visitor.cond
+      })
+      .executeTakeFirst()
+
+    if (!member) {
+      return None
+    }
+
+    return Some(this.mapper.toDTO(member))
+  }
+
   async findByIds(ids: [string, ...string[]]): Promise<ISpaceMemberDTO[]> {
     const members = await this.qb
       .selectFrom("undb_space_member")
@@ -47,7 +65,7 @@ export class SpaceMemberQueryRepository implements ISpaceMemberQueryRepository {
       .selectAll()
       .leftJoin("undb_user", "undb_user.id", "undb_space_member.user_id")
       .where((eb) => {
-        const visitor = new SpaceMemberFilterVisitor(eb)
+        const visitor = new SpaceMemberFilterVisitor(this.qb, eb)
 
         if (spec.isSome()) {
           spec.unwrap().accept(visitor)

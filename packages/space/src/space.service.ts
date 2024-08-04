@@ -1,10 +1,17 @@
 import { inject, singleton } from "@undb/di"
 import { None, Option, Some } from "oxide.ts"
+import type { ISpaceDTO } from "./dto"
 import type { ISpaceSpecification } from "./interface"
 import type { Space } from "./space.do"
 import { SpaceFactory } from "./space.factory"
-import { injectSpaceRepository, type ISpaceRepository } from "./space.repository"
+import {
+  injectSpaceQueryRepository,
+  injectSpaceRepository,
+  type ISpaceQueryRepository,
+  type ISpaceRepository,
+} from "./space.repository"
 import { WithSpaceBaseId, WithSpaceId } from "./specifications"
+import { WithSpaceUserId } from "./specifications/space-user-id.specification"
 
 interface IGetSpaceInput {
   spaceId?: string
@@ -14,6 +21,7 @@ interface IGetSpaceInput {
 export interface ISpaceService {
   createPersonalSpace(): Promise<Space>
   getSpace(input: IGetSpaceInput): Promise<Option<Space>>
+  getMemberSpaces(userId: string): Promise<ISpaceDTO[]>
 }
 
 export const SPACE_SERVICE = Symbol.for("SPACE_SERVICE")
@@ -24,6 +32,9 @@ export class SpaceService implements ISpaceService {
   constructor(
     @injectSpaceRepository()
     private readonly spaceRepository: ISpaceRepository,
+
+    @injectSpaceQueryRepository()
+    private readonly spaceQueryRepository: ISpaceQueryRepository,
   ) {}
   async createPersonalSpace(): Promise<Space> {
     const space = SpaceFactory.create({
@@ -50,5 +61,11 @@ export class SpaceService implements ISpaceService {
     const space = await this.spaceRepository.findOne(spec.unwrap())
 
     return space
+  }
+
+  async getMemberSpaces(userId: string): Promise<ISpaceDTO[]> {
+    const spec = new WithSpaceUserId(userId)
+
+    return this.spaceQueryRepository.find(Some(spec))
   }
 }

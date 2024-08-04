@@ -5,6 +5,7 @@ import { GetBaseQueryHandler } from "./get-base.query-handler"
 import { GetBasesQueryHandler } from "./get-bases.query-handler"
 import { GetInivitationsQueryHandler } from "./get-invitations.query-handler"
 import { GetMemberByIdQueryHandler } from "./get-member-by-id.query-handler"
+import { GetMemberSpacesQueryHandler } from "./get-member-spaces.query-handler"
 import { GetMembersByIdsQueryHandler } from "./get-members-by-ids.query-handler"
 import { GetMembersQueryHandler } from "./get-members.query-handler"
 import { GetReadableRecordByIdHandler } from "./get-readable-record-by-id.query-handler"
@@ -15,6 +16,7 @@ import { GetRecordsQueryHandler } from "./get-records.query-handler"
 import { GetRollupForeignTablesTablesQueryHandler } from "./get-rollup-foreign-tables.query-handler"
 import { GetShareQueryHandler } from "./get-share.query-handler"
 import { GetSpaceByIdQueryHandler } from "./get-space-by-id.query-handler"
+import { GetSpaceMemberQueryHandler } from "./get-space-member.query-handler"
 import { GetTableByShareQueryHandler } from "./get-table-by-share.query-handler"
 import { GetTableForeignTablesQueryHandler } from "./get-table-foreign-tables.query-handler"
 import { GetTableQueryHandler } from "./get-table.query-handler"
@@ -39,6 +41,7 @@ export const queryHandlers = [
   GetMembersQueryHandler,
   GetMemberByIdQueryHandler,
   GetMembersByIdsQueryHandler,
+  GetMemberSpacesQueryHandler,
   GetShareQueryHandler,
   GetTableByShareQueryHandler,
   CountRecordsQueryHandler,
@@ -46,4 +49,5 @@ export const queryHandlers = [
   GetInivitationsQueryHandler,
   GetApiTokensQueryHandler,
   GetSpaceByIdQueryHandler,
+  GetSpaceMemberQueryHandler
 ]

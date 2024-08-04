@@ -7,6 +7,8 @@
   import { queryParam } from "sveltekit-search-params"
   import InvitationsListButton from "$lib/components/blocks/invitations/invitations-list-button.svelte"
   import { hasPermission } from "$lib/store/workspace-member.store"
+  import { onMount } from "svelte"
+  import { goto } from "$app/navigation"
 
   const mq = queryParam("mq")
 
@@ -18,6 +20,13 @@
   function fetchMembers() {
     getMembersStore.fetch({ variables: { q: $mq } })
   }
+
+  $: store = data.indexDataStore
+  onMount(async () => {
+    if ($store.data?.space?.isPersonal) {
+      await goto("/", { replaceState: true })
+    }
+  })
 </script>
 
 <main class="space-y-2 p-6">
