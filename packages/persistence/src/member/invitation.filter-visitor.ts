@@ -7,6 +7,7 @@ import type {
   WithSpaceId,
   WithStatus,
 } from "@undb/authz"
+import { mustGetCurrentSpaceId } from "@undb/context/server"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
@@ -14,6 +15,8 @@ import type { Database } from "../db"
 export class InvitationFilterVisitor extends AbstractQBVisitor<InvitationDo> implements IInvitationVisitor {
   constructor(protected readonly eb: ExpressionBuilder<Database, "undb_invitation">) {
     super(eb)
+    const spaceId = mustGetCurrentSpaceId()
+    this.addCond(this.eb.eb("space_id", "=", spaceId))
   }
   withSpaceId(spec: WithSpaceId): void {
     const cond = this.eb.eb("space_id", "=", spec.spaceId)

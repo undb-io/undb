@@ -14,7 +14,7 @@
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
   import { createSpaceCommand } from "@undb/commands"
-  import { goto } from "$app/navigation"
+  import { goto, invalidateAll } from "$app/navigation"
 
   export let space: ISpaceDTO
   export let me: any
@@ -32,6 +32,7 @@
     async onSuccess(data, variables, context) {
       await fetch(`/api/spaces/${data}/goto`)
       await goto("/")
+      await invalidateAll()
     },
   })
 
@@ -77,7 +78,14 @@
       <DropdownMenu.Separator />
       {#each spaces as space}
         {#if space}
-          <DropdownMenu.Item class="flex items-center justify-between gap-2 text-xs">
+          <DropdownMenu.Item
+            on:click={async () => {
+              await fetch(`/api/spaces/${space.id}/goto`)
+              await goto("/")
+              await invalidateAll()
+            }}
+            class="flex items-center justify-between gap-2 text-xs"
+          >
             <div class="flex items-center gap-2">
               <img src={Logo} alt="" class="h-4 w-4 rounded-full" />
               {#if space.isPersonal}

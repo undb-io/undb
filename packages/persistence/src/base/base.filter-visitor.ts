@@ -1,4 +1,5 @@
 import type { Base, IBaseSpecVisitor, WithBaseId, WithBaseName, WithBaseQ, WithBaseSpaceId } from "@undb/base"
+import { mustGetCurrentSpaceId } from "@undb/context/server"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
@@ -6,6 +7,8 @@ import type { Database } from "../db"
 export class BaseFilterVisitor extends AbstractQBVisitor<Base> implements IBaseSpecVisitor {
   constructor(protected readonly eb: ExpressionBuilder<Database, "undb_base">) {
     super(eb)
+    const spaceId = mustGetCurrentSpaceId()
+    this.addCond(this.eb.eb("space_id", "=", spaceId))
   }
 
   withId(v: WithBaseId): void {
