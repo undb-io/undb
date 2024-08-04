@@ -1,7 +1,7 @@
 import { yoga } from "@elysiajs/graphql-yoga"
 import { useOpenTelemetry } from "@envelop/opentelemetry"
 import * as otel from "@opentelemetry/api"
-import { executionContext } from "@undb/context/server"
+import { executionContext, getCurrentSpaceId } from "@undb/context/server"
 import { QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import {
@@ -15,6 +15,7 @@ import {
   GetRecordAuditsQuery,
   GetRollupForeignTablesQuery,
   GetShareQuery,
+  GetSpaceByIdQuery,
   GetTableByShareQuery,
   GetTableForeignTablesQuery,
   GetTableQuery,
@@ -68,7 +69,7 @@ export class Graphql {
         target: ShareTarget!
       }
 
-      enum WorkspaceRole {
+      enum SpaceRole {
         owner
         admin
         viewer
@@ -202,8 +203,15 @@ export class Graphql {
         username: String!
       }
 
+      type Space {
+        id: ID!
+        name: String!
+      }
+
       type SpaceMember {
-        role: WorkspaceRole!
+        role: SpaceRole!
+
+        spaceId: String!
 
         user: User!
       }
@@ -224,7 +232,7 @@ export class Graphql {
       type Invitation {
         id: ID!
         email: String!
-        role: WorkspaceRole!
+        role: SpaceRole!
         status: InvitationStatus!
         invitedAt: String!
       }
@@ -234,6 +242,8 @@ export class Graphql {
         memberById(id: ID!): SpaceMember
         membersByIds(ids: [ID!]!): [SpaceMember!]!
         members(spaceId: String!, q: String): [SpaceMember]!
+
+        space: Space
 
         invitations(status: InvitationStatus): [Invitation!]!
 
@@ -266,6 +276,14 @@ export class Graphql {
 
       resolvers: {
         Query: {
+          space: async () => {
+            const spaceId = getCurrentSpaceId()
+            if (!spaceId) {
+              return null
+            }
+
+            return this.queryBus.execute(new GetSpaceByIdQuery({ id: spaceId }))
+          },
           members: async (_, args) => {
             return this.queryBus.execute(new GetMembersQuery({ spaceId: args.spaceId, q: args?.q }))
           },

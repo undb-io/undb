@@ -105,12 +105,18 @@ export class Auth {
       }
 
       const userId = user?.id!
-      const member = (await this.spaceMemberService.getSpaceMember(userId)).into(null)?.toJSON()
+      // TODO: move to other file
+      const spaceId = context.cookie["undb-space-id"]?.value
+      const space = await this.spaceService.getSpace({ spaceId })
+
+      const member = space.isSome()
+        ? (await this.spaceMemberService.getSpaceMember(userId, space.unwrap().id.value)).into(null)?.toJSON()
+        : undefined
 
       return {
         user,
         session,
-        member: member ? { role: member.role } : null,
+        member: member ? { role: member.role, spaceId: member.spaceId } : null,
       }
     }
   }
@@ -157,6 +163,8 @@ export class Auth {
             .where((eb) => eb.eb("email", "=", email))
             .executeTakeFirst()
 
+          const response = new Response()
+
           if (user) {
             const validPassword = await Bun.password.verify(password, user.password)
             if (!validPassword) {
@@ -196,13 +204,13 @@ export class Auth {
 
               const space = await this.spaceService.createPersonalSpace()
               await this.spaceMemberService.createMember(userId, space.id.value, role)
+              ctx.cookie["undb-space-id"].set({ value: space.id.value })
             })
           }
 
           const session = await lucia.createSession(userId, {})
           const sessionCookie = lucia.createSessionCookie(session.id)
 
-          const response = new Response()
           response.headers.set("Set-Cookie", sessionCookie.serialize())
           return response
         },
