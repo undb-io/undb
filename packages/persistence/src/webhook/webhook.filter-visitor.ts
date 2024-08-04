@@ -1,3 +1,4 @@
+import { mustGetCurrentSpaceId } from "@undb/context/server"
 import { WontImplementException } from "@undb/domain"
 import type {
   IWebhookSpecVisitor,
@@ -20,6 +21,8 @@ import type { Database } from "../db"
 export class WebhookFilterVisitor extends AbstractQBVisitor<WebhookDo> implements IWebhookSpecVisitor {
   constructor(protected readonly eb: ExpressionBuilder<Database, "undb_webhook">) {
     super(eb)
+    const spaceId = mustGetCurrentSpaceId()
+    this.addCond(this.eb.eb("space_id", "=", spaceId))
   }
   nameEqual(s: WithWebhookName): void {
     const cond = this.eb.eb("name", "=", s.name)

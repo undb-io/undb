@@ -21,7 +21,6 @@ import { WebhookEventsHandler } from "@undb/webhook"
 import { Elysia } from "elysia"
 import { all } from "radash"
 import { v4 } from "uuid"
-import { SPACE_ID_COOKIE_NAME } from "./constants"
 import { Auth, OpenAPI, Realtime, SpaceModule, TableModule, Web } from "./modules"
 import { FileService } from "./modules/file/file"
 import { loggerPlugin } from "./plugins/logging"
@@ -98,23 +97,19 @@ export const app = new Elysia()
       prefix: "/public",
     }),
   )
+  .onRequest((ctx) => {
+    const requestId = ctx.request.headers.get("x-request-id") ?? v4()
+
+    executionContext.enterWith({
+      requestId,
+    })
+  })
   .use(cors())
   .use(html())
   .use(swagger())
   .derive(auth.store())
   .onError((ctx) => {
     ctx.logger.error(ctx.error)
-  })
-  .onBeforeHandle((ctx) => {
-    const requestId = ctx.headers["X-Request-ID"] ?? v4()
-    const spaceId = ctx.cookie[SPACE_ID_COOKIE_NAME].value ?? undefined
-
-    executionContext.enterWith({
-      requestId,
-      user: { userId: ctx.user?.id ?? null, email: ctx.user?.email, username: ctx.user?.username },
-      member: { role: ctx.member?.role ?? null, spaceId: ctx.member?.spaceId ?? null } ?? null,
-      spaceId,
-    })
   })
   .get("/healthy", () => {
     return { status: "ok" }
