@@ -11,6 +11,7 @@ import { swagger } from "@elysiajs/swagger"
 import { trpc } from "@elysiajs/trpc"
 import { executionContext } from "@undb/context/server"
 import { container } from "@undb/di"
+import { env } from "@undb/env"
 import { Graphql } from "@undb/graphql"
 import { createLogger } from "@undb/logger"
 import { dbMigrate } from "@undb/persistence"
@@ -135,7 +136,7 @@ export const app = new Elysia()
         if (!user) {
           return context.redirect(`/login?redirect=${context.path}`, 301)
         }
-        if (!user.emailVerified && user.email) {
+        if (env.UNDB_VERIFY_EMAIL && !user.emailVerified && user.email) {
           return context.redirect(`/verify-email?redirect=${context.path}`, 301)
         }
       },

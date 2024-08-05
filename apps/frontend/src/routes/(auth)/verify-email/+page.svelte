@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { goto } from "$app/navigation"
   import Button from "$lib/components/ui/button/button.svelte"
   import { OTPInput, OTPRoot } from "@jimmyverburgt/svelte-input-otp"
   import { createMutation } from "@tanstack/svelte-query"
   import { LoaderCircleIcon } from "lucide-svelte"
   import Minus from "lucide-svelte/icons/minus"
-  import { defaults, superForm } from "sveltekit-superforms"
 
   let otpref: any
 
@@ -21,6 +21,9 @@
         body: JSON.stringify({ code: value }),
       }),
     mutationKey: ["verify-email"],
+    async onSuccess(data, variables, context) {
+      await goto("/")
+    },
   })
 </script>
 
