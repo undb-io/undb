@@ -158,6 +158,7 @@ export const users = sqliteTable(
     id: text("id").notNull().primaryKey(),
     username: text("username").notNull(),
     email: text("email").notNull().unique(),
+    email_verified: integer("email_verified", { mode: "boolean" }).notNull().default(false),
     password: text("password").notNull(),
     avatar: text("avatar"),
   },
@@ -168,6 +169,16 @@ export const users = sqliteTable(
     }
   },
 )
+
+export const emailVerificationCode = sqliteTable("email_verification_code", {
+  id: integer("id").notNull().primaryKey({ autoIncrement: true }),
+  code: text("code").notNull(),
+  userId: text("user_id")
+    .unique()
+    .references(() => users.id),
+  email: text("email").notNull(),
+  expires_at: integer("expires_at", { mode: "timestamp" }).notNull(),
+})
 
 export const sessionTable = sqliteTable("session", {
   id: text("id").notNull().primaryKey(),

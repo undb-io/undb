@@ -60,16 +60,16 @@
   const { enhance, form: formData } = form
 </script>
 
-<section class="w-[450] -translate-y-20 space-y-5">
+<section class="w-[450px] -translate-y-20 space-y-5">
   <div class="flex justify-center">
     <img src={Logo} alt="undb" class="h-12 w-12" />
   </div>
 
   <form method="POST" use:enhance>
-    <Card.Root class="mx-auto max-w-sm">
+    <Card.Root class="mx-auto">
       <Card.Header>
-        <Card.Title class="text-2xl">Login</Card.Title>
-        <Card.Description>Enter your email below to login to your account</Card.Description>
+        <Card.Title class="text-2xl">Undb Login</Card.Title>
+        <Card.Description>Enter your email below to login to your account.</Card.Description>
       </Card.Header>
       <Card.Content>
         <div class="grid gap-4">

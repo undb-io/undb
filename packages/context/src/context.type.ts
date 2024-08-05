@@ -2,6 +2,7 @@ interface ContextUser {
   userId: string | null
   username?: string
   email?: string
+  emailVerified?: boolean
 }
 
 export interface ContextMember {

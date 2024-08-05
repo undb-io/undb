@@ -3,7 +3,7 @@ import { IsolationLevel } from "kysely"
 
 export const withTransaction =
   (qb: IQueryBuilder, level: IsolationLevel = "read committed") =>
-  (callback: () => Promise<any>) => {
+  <T = any>(callback: () => Promise<T>): Promise<T> => {
     return new Promise((resolve) => {
       return qb
         .transaction()

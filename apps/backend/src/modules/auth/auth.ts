@@ -12,11 +12,15 @@ import { executionContext, setContextValue } from "@undb/context/server"
 import { CommandBus } from "@undb/cqrs"
 import { inject } from "@undb/di"
 import { Some } from "@undb/domain"
+import { env } from "@undb/env"
+import { type IMailService, injectMailService } from "@undb/mail"
 import { type IQueryBuilder, getCurrentTransaction, injectQueryBuilder, sqlite } from "@undb/persistence"
 import { type ISpaceService, injectSpaceService } from "@undb/space"
 import { Context, Elysia, t } from "elysia"
 import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize } from "lucia"
+import { TimeSpan, createDate, isWithinExpirationDate } from "oslo"
+import { alphabet, generateRandomString } from "oslo/crypto"
 import { singleton } from "tsyringe"
 import { v7 } from "uuid"
 import { SPACE_ID_COOKIE_NAME } from "../../constants"
@@ -39,6 +43,7 @@ export const lucia = new Lucia(adapter, {
   },
   getUserAttributes: (attributes) => {
     return {
+      emailVerified: attributes.email_verified,
       email: attributes.email,
       username: attributes.username,
     }
@@ -50,6 +55,7 @@ declare module "lucia" {
     Lucia: typeof lucia
     DatabaseUserAttributes: {
       email: string
+      email_verified: boolean
       username: string
     }
   }
@@ -68,7 +74,47 @@ export class Auth {
     private readonly queryBuilder: IQueryBuilder,
     @injectSpaceService()
     private readonly spaceService: ISpaceService,
+    @injectMailService()
+    private readonly mailService: IMailService,
   ) {}
+
+  async #generateEmailVerificationCode(userId: string, email: string): Promise<string> {
+    const tx = getCurrentTransaction()
+    await tx.deleteFrom("undb_email_verification_code").where("user_id", "=", userId).execute()
+    const code = generateRandomString(6, alphabet("0-9"))
+    await tx
+      .insertInto("undb_email_verification_code")
+      .values({
+        user_id: userId,
+        email,
+        code,
+        expires_at: createDate(new TimeSpan(15, "m")),
+      })
+      .execute()
+    return code
+  }
+
+  async #verifyVerificationCode(user: User, code: string): Promise<boolean> {
+    return this.queryBuilder.transaction().execute(async (tx) => {
+      const databaseCode = await tx
+        .selectFrom("undb_email_verification_code")
+        .selectAll()
+        .where("user_id", "=", user.id)
+        .executeTakeFirst()
+      if (!databaseCode || databaseCode.code !== code) {
+        return false
+      }
+      await tx.deleteFrom("undb_email_verification_code").where("id", "=", databaseCode.id).execute()
+
+      if (!isWithinExpirationDate(new Date(databaseCode.expires_at))) {
+        return false
+      }
+      if (databaseCode.email !== user.email) {
+        return false
+      }
+      return true
+    })
+  }
 
   store() {
     return async (
@@ -117,7 +163,12 @@ export class Auth {
             ?.toJSON()
         : undefined
 
-      setContextValue("user", { userId, username: user!.username, email: user!.email })
+      setContextValue("user", {
+        userId,
+        username: user!.username,
+        email: user!.email,
+        emailVerified: user!.emailVerified,
+      })
       return {
         user,
         session,
@@ -133,6 +184,10 @@ export class Auth {
         const user = store?.user
         if (!user?.userId) {
           return ctx.redirect("/login")
+        }
+
+        if (!user.emailVerified) {
+          return ctx.redirect(`/verify-email`, 301)
         }
 
         const member = store?.member
@@ -210,6 +265,18 @@ export class Auth {
               const space = await this.spaceService.createPersonalSpace()
               await this.spaceMemberService.createMember(userId, space.id.value, "owner")
               ctx.cookie[SPACE_ID_COOKIE_NAME].set({ value: space.id.value })
+
+              const verificationCode = await this.#generateEmailVerificationCode(userId, email)
+              await this.mailService.send({
+                template: "verify-email",
+                data: {
+                  username: username!,
+                  code: verificationCode,
+                  action_url: new URL(`/api/email-verification`, env.UNDB_BASE_URL).toString(),
+                },
+                subject: "Verify your email - undb",
+                to: email,
+              })
             })
           }
 
@@ -292,6 +359,63 @@ export class Auth {
         response.headers.set("Set-Cookie", sessionCookie.serialize())
         return response
       })
+      .post(
+        "/api/email-verification",
+        async (ctx) => {
+          const cookieHeader = ctx.request.headers.get("Cookie") ?? ""
+          const sessionId = lucia.readSessionCookie(cookieHeader)
+
+          if (!sessionId) {
+            return new Response(null, {
+              status: 400,
+            })
+          }
+
+          const { user } = await lucia.validateSession(sessionId)
+          if (!user) {
+            return new Response(null, {
+              status: 401,
+            })
+          }
+
+          const code = ctx.body.code
+          if (typeof code !== "string") {
+            return new Response(null, {
+              status: 400,
+            })
+          }
+
+          await withTransaction(this.queryBuilder)(async () => {
+            const validCode = await this.#verifyVerificationCode(user, code)
+            if (!validCode) {
+              throw new Error("Invalid code")
+            }
+
+            await lucia.invalidateUserSessions(user.id)
+            await this.queryBuilder
+              .updateTable("undb_user")
+              .set("email_verified", true)
+              .where("id", "=", user.id)
+              .execute()
+          })
+
+          const session = await lucia.createSession(user.id, {})
+          const sessionCookie = lucia.createSessionCookie(session.id)
+          return new Response(null, {
+            status: 302,
+            headers: {
+              Location: "/",
+              "Set-Cookie": sessionCookie.serialize(),
+            },
+          })
+        },
+        {
+          type: "json",
+          body: t.Object({
+            code: t.String(),
+          }),
+        },
+      )
       .get(
         "/invitation/:invitationId/accept",
         async (ctx) => {

@@ -84,10 +84,10 @@
   </div>
 
   <form method="POST" use:enhance>
-    <Card.Root class="mx-auto max-w-sm">
+    <Card.Root class="mx-auto">
       <Card.Header>
-        <Card.Title class="text-xl">Sign Up</Card.Title>
-        <Card.Description>Enter your information to create an account</Card.Description>
+        <Card.Title class="text-xl">Undb Sign Up</Card.Title>
+        <Card.Description>Enter your information to create an account.</Card.Description>
       </Card.Header>
       <Card.Content>
         <div class="grid gap-2">

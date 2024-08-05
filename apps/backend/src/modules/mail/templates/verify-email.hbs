@@ -104,11 +104,12 @@
                   <tr>
                     <td class="content-cell">
                       <div class="f-fallback">
-                        <h1>Hi, {{email}}!</h1>
-                        <p>{{invite_sender_name}}
-                          with has invited you to use undb to collaborate with them. Use the button below to set up your
-                          account and get started:</p>
+                        <h1>Hi, {{username}}!</h1>
+                        <p>
+                          Please verify code to verify</p>
                         <!-- Action -->
+
+                        <h1>{{code}}</h1>
                         <table
                           class="body-action"
                           align="center"
@@ -124,8 +125,9 @@
                               <table width="100%" border="0" cellspacing="0" cellpadding="0" role="presentation">
                                 <tr>
                                   <td align="center">
-                                    <a href="{{action_url}}" class="f-fallback button" target="_blank">Accept the
-                                      invitation</a>
+                                    <a href="{{action_url}}" class="f-fallback button" target="_blank">
+                                      Verify Code
+                                    </a>
                                   </td>
                                 </tr>
                               </table>
