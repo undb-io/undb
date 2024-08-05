@@ -12,6 +12,7 @@ export class TableMapper implements Mapper<TableDo, Table, ITableDTO> {
       .setId(entity.id)
       .setName(entity.name)
       .setBaseId(entity.base_id)
+      .setSpaceId(entity.space_id)
       .setSchema(entity.schema ?? [])
       .setViews(entity.views ?? [])
       .setForms(entity.forms ?? [])
@@ -25,6 +26,7 @@ export class TableMapper implements Mapper<TableDo, Table, ITableDTO> {
       id: json.id,
       name: json.name,
       base_id: json.baseId,
+      space_id: json.spaceId,
       schema: json.schema ?? [],
       views: json.views,
       forms: json.forms ?? null,
@@ -37,6 +39,7 @@ export class TableMapper implements Mapper<TableDo, Table, ITableDTO> {
       id: entity.id,
       name: entity.name,
       baseId: entity.base_id,
+      spaceId: entity.space_id,
       schema: entity.schema ?? [],
       views: entity.views ?? [],
       forms: entity.forms ?? [],

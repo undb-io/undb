@@ -41,6 +41,7 @@ export class RecordCreatedEvent extends BaseEvent<
         table: getTableMeta(table),
         record: record.toJSON(),
       },
+      table.spaceId,
     )
   }
 
@@ -55,6 +56,7 @@ export class RecordCreatedEvent extends BaseEvent<
         table: getTableMeta(table),
         record: record.toJSON(),
       },
+      this.spaceId,
     )
   }
 }

@@ -43,7 +43,7 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
   ) {
     super(eb)
     const spaceId = mustGetCurrentSpaceId()
-    this.addCond(this.eb.eb("space_id", "=", spaceId))
+    this.addCond(this.eb.eb("undb_table.space_id", "=", spaceId))
   }
   withId(id: TableIdSpecification): void {
     this.addCond(this.eb.eb("id", "=", id.id.value))

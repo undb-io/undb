@@ -3,7 +3,6 @@ import { z } from "@undb/zod"
 
 const dbEnv = createEnv({
   server: {
-    UNDB_DB_PROVIDER: z.enum(["sqlite", "turso"]).default("sqlite"),
     UNDB_DB_TURSO_URL: z.string().optional(),
     UNDB_DB_TURSO_AUTH_TOKEN: z.string().optional(),
   },

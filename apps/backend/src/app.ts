@@ -9,11 +9,11 @@ import { html } from "@elysiajs/html"
 import staticPlugin from "@elysiajs/static"
 import { swagger } from "@elysiajs/swagger"
 import { trpc } from "@elysiajs/trpc"
-import { AuditEventHandler } from "@undb/audit"
 import { executionContext } from "@undb/context/server"
 import { container } from "@undb/di"
 import { Graphql } from "@undb/graphql"
 import { createLogger } from "@undb/logger"
+import { dbMigrate } from "@undb/persistence"
 import { PubSubContext } from "@undb/realtime"
 import { IRecordEvent } from "@undb/table"
 import { route } from "@undb/trpc"
@@ -45,6 +45,9 @@ export const app = new Elysia()
   //     ],
   //   }),
   // )
+  .onStart(async () => {
+    await dbMigrate()
+  })
   .use(loggerPlugin())
   .onError((ctx) => {
     if (ctx.code === "NOT_FOUND") {
@@ -72,19 +75,24 @@ export const app = new Elysia()
     const logger = createLogger("app onstart")
     const pubsub = container.resolve(PubSubContext)
     const webhookEventHandler = container.resolve(WebhookEventsHandler)
-    const auditEventHandler = container.resolve(AuditEventHandler)
+    // const auditEventHandler = container.resolve(AuditEventHandler)
     const messages = pubsub.subscribe("tenant.*.record.*")
     for await (const message of messages) {
       const event = message as IRecordEvent
       const operatorId = event.operatorId!
+      const spaceId = event.spaceId
 
       // TODO: request id
-      executionContext.enterWith({ requestId: "", user: { userId: operatorId } })
+      executionContext.enterWith({
+        requestId: "",
+        user: { userId: operatorId },
+        spaceId,
+      })
       try {
         await all([
           //
           webhookEventHandler.handle(event),
-          auditEventHandler.handle(event),
+          // auditEventHandler.handle(event),
         ])
       } catch (error) {
         logger.error(error)

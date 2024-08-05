@@ -19,27 +19,25 @@ export class Realtime {
   }
 
   route() {
-    return (
-      new Elysia()
-        // .use(
-        //   cron({
-        //     name: "realtime",
-        //     pattern: Patterns.EVERY_5_SECONDS,
-        //     run: async () => {
-        //       await this.reply.scan()
-        //     },
-        //   }),
-        // )
-        .get(
-          "/api/tables/:tableId/subscription",
-          (ctx) => {
-            const tableId = ctx.params.tableId
-            return new Stream(this.pubsub.subscribe(`tenant.${tableId}.record.*`))
+    return new Elysia()
+      .use(
+        cron({
+          name: "realtime",
+          pattern: Patterns.EVERY_5_SECONDS,
+          run: async () => {
+            await this.reply.scan()
           },
-          {
-            params: t.Object({ tableId: t.String() }),
-          },
-        )
-    )
+        }),
+      )
+      .get(
+        "/api/tables/:tableId/subscription",
+        (ctx) => {
+          const tableId = ctx.params.tableId
+          return new Stream(this.pubsub.subscribe(`tenant.${tableId}.record.*`))
+        },
+        {
+          params: t.Object({ tableId: t.String() }),
+        },
+      )
   }
 }

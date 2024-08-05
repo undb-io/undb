@@ -11,6 +11,7 @@ import type { ContextMember } from "@undb/context"
 import { executionContext, setContextValue } from "@undb/context/server"
 import { CommandBus } from "@undb/cqrs"
 import { inject } from "@undb/di"
+import { Some } from "@undb/domain"
 import { type IQueryBuilder, getCurrentTransaction, injectQueryBuilder, sqlite } from "@undb/persistence"
 import { type ISpaceService, injectSpaceService } from "@undb/space"
 import { Context, Elysia, t } from "elysia"
@@ -255,6 +256,20 @@ export class Auth {
 
           const session = await lucia.createSession(user.id, {})
           const sessionCookie = lucia.createSessionCookie(session.id)
+
+          const spaceId = ctx.cookie[SPACE_ID_COOKIE_NAME]?.value
+          let space = await this.spaceService.getSpace({ spaceId })
+          if (space.isNone()) {
+            space = await this.spaceService.getSpace({ userId: user.id })
+            if (space.isSome()) {
+              ctx.cookie[SPACE_ID_COOKIE_NAME].set({ value: space.unwrap().id.value })
+            } else {
+              space = Some(await this.spaceService.createPersonalSpace())
+              await this.spaceMemberService.createMember(user.id, space.unwrap().id.value, "owner")
+              ctx.cookie[SPACE_ID_COOKIE_NAME].set({ value: space.unwrap().id.value })
+            }
+          }
+
           return new Response(null, {
             status: 302,
             headers: {

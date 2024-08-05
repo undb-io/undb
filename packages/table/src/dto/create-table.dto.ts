@@ -1,4 +1,5 @@
 import { baseIdSchema } from "@undb/base"
+import { spaceIdSchema } from "@undb/space"
 import { z } from "@undb/zod"
 import { createSchemaDTO } from "../modules"
 import { tableId } from "../table-id.vo"
@@ -8,6 +9,7 @@ export const createTableDTO = z.object({
   id: tableId.optional(),
   name: tableName,
   baseId: baseIdSchema,
+  spaceId: spaceIdSchema,
 
   schema: createSchemaDTO,
 })
