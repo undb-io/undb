@@ -134,12 +134,6 @@ export class OpenAPI {
                     const space = await this.spaceService.setSpaceContext(setContextValue, { apiToken })
                     await this.spaceMemberService.setSpaceMemberContext(setContextValue, space.id.value, user.id)
 
-                    // executionContext.enterWith({
-                    //   requestId: context.headers["x-request-id"] ?? context.headers["X-Request-ID"] ?? "",
-                    //   user: { userId: user?.id ?? null, email: user?.email, username: user?.username },
-                    //   member: { role: member?.value.role ?? null, spaceId: space.unwrap().id.value } ?? null,
-                    //   spaceId: space.unwrap().id.value,
-                    // })
                     return
                   }
                 }
