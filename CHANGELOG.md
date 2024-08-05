@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-2
+
+
+### 🚀 Enhancements
+
+- Github oauth ([0b985e0](https://github.com/undb-io/undb/commit/0b985e0))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-1
 
 
