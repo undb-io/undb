@@ -51,7 +51,7 @@
     <Table.Root>
       <Table.Header>
         <Table.Row>
-          <Table.Head class="w-[100px] font-semibold">Name</Table.Head>
+          <Table.Head class="w-[300px] truncate font-semibold">Name</Table.Head>
           <Table.Head>Creator</Table.Head>
           <Table.Head>Token</Table.Head>
           <Table.Head class="text-right">Action</Table.Head>

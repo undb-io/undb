@@ -8,12 +8,12 @@ import {
   DuplicateRecordCommand,
   UpdateRecordCommand,
 } from "@undb/commands"
-import { executionContext, getCurrentUser } from "@undb/context/server"
+import { executionContext, getCurrentUser, getCurrentUserId, setContextValue } from "@undb/context/server"
 import { CommandBus, QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import { type ICommandBus, None, PaginatedDTO, type IQueryBus, Some } from "@undb/domain"
 import { createLogger } from "@undb/logger"
-import { createOpenApiSpec, type IApiTokenService, injectApiTokenService } from "@undb/openapi"
+import { API_TOKEN_HEADER_NAME, createOpenApiSpec, type IApiTokenService, injectApiTokenService } from "@undb/openapi"
 import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
 import { GetReadableRecordByIdQuery, GetReadableRecordsQuery } from "@undb/queries"
 import {
@@ -118,12 +118,12 @@ export class OpenAPI {
         return app
           .guard({
             beforeHandle: async (context) => {
-              const user = getCurrentUser()
-              if (user.userId) {
+              const userId = getCurrentUserId()
+              if (userId) {
                 return
               } else {
-                const authorization = context.headers["Authorization"] ?? context.headers["authorization"]
-                const apiToken = authorization?.replace("Bearer ", "")
+                const apiToken =
+                  context.headers[API_TOKEN_HEADER_NAME] ?? context.headers[API_TOKEN_HEADER_NAME.toLowerCase()]
 
                 this.logger.debug({ apiToken }, "Checking Authorization token in openapi")
 
@@ -131,22 +131,15 @@ export class OpenAPI {
                   const userId = await this.apiTokenService.verify(apiToken)
                   if (userId.isSome()) {
                     const user = (await this.userService.findOneById(userId.unwrap())).unwrap()
-                    const space = await this.spaceService.getSpace({ apiToken })
-                    if (space.isNone()) {
-                      // throw 401 openapi error
-                      context.set.status = 401
-                      throw new Error("Unauthorized")
-                    }
-                    const member = (
-                      await this.spaceMemberService.getSpaceMember(user.id, space.unwrap().id.value)
-                    ).unwrap()
+                    const space = await this.spaceService.setSpaceContext(setContextValue, { apiToken })
+                    await this.spaceMemberService.setSpaceMemberContext(setContextValue, space.id.value, user.id)
 
-                    executionContext.enterWith({
-                      requestId: context.headers["x-request-id"] ?? context.headers["X-Request-ID"] ?? "",
-                      user: { userId: user?.id ?? null, email: user?.email, username: user?.username },
-                      member: { role: member?.value.role ?? null, spaceId: space.unwrap().id.value } ?? null,
-                      spaceId: space.unwrap().id.value,
-                    })
+                    // executionContext.enterWith({
+                    //   requestId: context.headers["x-request-id"] ?? context.headers["X-Request-ID"] ?? "",
+                    //   user: { userId: user?.id ?? null, email: user?.email, username: user?.username },
+                    //   member: { role: member?.value.role ?? null, spaceId: space.unwrap().id.value } ?? null,
+                    //   spaceId: space.unwrap().id.value,
+                    // })
                     return
                   }
                 }
