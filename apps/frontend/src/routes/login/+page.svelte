@@ -60,7 +60,7 @@
   const { enhance, form: formData } = form
 </script>
 
-<section class="-translate-y-20 space-y-5">
+<section class="w-[450] -translate-y-20 space-y-5">
   <div class="flex justify-center">
     <img src={Logo} alt="undb" class="h-12 w-12" />
   </div>
@@ -77,7 +77,13 @@
             <Form.Field {form} name="email">
               <Form.Control let:attrs>
                 <Form.Label for="email">Email</Form.Label>
-                <Input {...attrs} id="email" type="email" bind:value={$formData.email} />
+                <Input
+                  {...attrs}
+                  id="email"
+                  type="email"
+                  placeholder="Enter your email to login"
+                  bind:value={$formData.email}
+                />
               </Form.Control>
               <Form.Description />
               <Form.FieldErrors />
@@ -90,7 +96,7 @@
                   <Label for="password">Password</Label>
                   <a href="##" class="ml-auto inline-block text-sm underline"> Forgot your password? </a>
                 </div>
-                <Input {...attrs} id="password" type="password" bind:value={$formData.password} />
+                <Input {...attrs} id="password" type="password" placeholder="*****" bind:value={$formData.password} />
               </Form.Control>
               <Form.Description />
               <Form.FieldErrors />
