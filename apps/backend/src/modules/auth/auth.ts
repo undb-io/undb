@@ -191,7 +191,7 @@ export class Auth {
           return ctx.redirect("/login")
         }
 
-        if (!user.emailVerified && user.email) {
+        if (env.UNDB_VERIFY_EMAIL && !user.emailVerified && user.email) {
           return ctx.redirect(`/verify-email`, 301)
         }
 
@@ -271,17 +271,19 @@ export class Auth {
               await this.spaceMemberService.createMember(userId, space.id.value, "owner")
               ctx.cookie[SPACE_ID_COOKIE_NAME].set({ value: space.id.value })
 
-              const verificationCode = await this.#generateEmailVerificationCode(userId, email)
-              await this.mailService.send({
-                template: "verify-email",
-                data: {
-                  username: username!,
-                  code: verificationCode,
-                  action_url: new URL(`/api/email-verification`, env.UNDB_BASE_URL).toString(),
-                },
-                subject: "Verify your email - undb",
-                to: email,
-              })
+              if (env.UNDB_VERIFY_EMAIL) {
+                const verificationCode = await this.#generateEmailVerificationCode(userId, email)
+                await this.mailService.send({
+                  template: "verify-email",
+                  data: {
+                    username: username!,
+                    code: verificationCode,
+                    action_url: new URL(`/api/email-verification`, env.UNDB_BASE_URL).toString(),
+                  },
+                  subject: "Verify your email - undb",
+                  to: email,
+                })
+              }
             })
           }
 
@@ -423,7 +425,7 @@ export class Auth {
       )
       .get("/login/github", async (ctx) => {
         const state = generateState()
-        const url = await github.createAuthorizationURL(state)
+        const url = await github.createAuthorizationURL(state, { scopes: ["user:email"] })
         return new Response(null, {
           status: 302,
           headers: {
@@ -483,6 +485,56 @@ export class Auth {
             })
           }
 
+          const emailsResponse = await fetch("https://api.github.com/user/emails", {
+            headers: {
+              Authorization: `Bearer ${tokens.accessToken}`,
+            },
+          })
+          const emails: GithubEmail[] = await emailsResponse.json()
+
+          const primaryEmail = emails.find((email) => email.primary) ?? null
+          if (!primaryEmail) {
+            return new Response("No primary email address", {
+              status: 400,
+            })
+          }
+          if (!primaryEmail.verified) {
+            return new Response("Unverified email", {
+              status: 400,
+            })
+          }
+
+          const existingGithubUser = await this.queryBuilder
+            .selectFrom("undb_user")
+            .selectAll()
+            .where("undb_user.email", "=", primaryEmail.email)
+            .executeTakeFirst()
+
+          if (existingGithubUser) {
+            const spaceId = ctx.cookie[SPACE_ID_COOKIE_NAME].value
+            if (!spaceId) {
+              await this.spaceService.setSpaceContext(setContextValue, { userId: existingGithubUser.id })
+            }
+
+            await this.queryBuilder
+              .insertInto("undb_oauth_account")
+              .values({
+                provider_id: "github",
+                provider_user_id: githubUserResult.id.toString(),
+                user_id: existingGithubUser.id,
+              })
+              .execute()
+
+            const session = await lucia.createSession(existingGithubUser.id, {})
+            const sessionCookie = lucia.createSessionCookie(session.id)
+            return new Response(null, {
+              status: 302,
+              headers: {
+                Location: "/",
+                "Set-Cookie": sessionCookie.serialize(),
+              },
+            })
+          }
           const userId = generateIdFromEntropySize(10) // 16 characters long
           await withTransaction(this.queryBuilder)(async () => {
             const tx = getCurrentTransaction()
@@ -560,4 +612,10 @@ export class Auth {
 interface GitHubUserResult {
   id: number
   login: string // username
+}
+
+interface GithubEmail {
+  email: string
+  primary: boolean
+  verified: boolean
 }

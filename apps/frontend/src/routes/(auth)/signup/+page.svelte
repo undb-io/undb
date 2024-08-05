@@ -6,12 +6,14 @@
   import { Input } from "$lib/components/ui/input/index.js"
   import { Label } from "$lib/components/ui/label/index.js"
   import Logo from "$lib/images/logo.svg"
+  import Github from "$lib/images/github.svg"
   import { createMutation } from "@tanstack/svelte-query"
   import { z } from "@undb/zod"
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import * as Form from "$lib/components/ui/form"
   import { toast } from "svelte-sonner"
+  import { Separator } from "$lib/components/ui/separator"
 
   const schema = z.object({
     email: z.string().email(),
@@ -158,6 +160,13 @@
         <div class="mt-4 text-center text-sm">
           Already have an account?
           <a href="/login" class="underline"> Sign in </a>
+        </div>
+        <Separator class="my-6" />
+        <div class="space-y-2">
+          <Button href="/login/github" variant="secondary" class="w-full">
+            <img class="mr-2 h-5 w-5" src={Github} alt="github" />
+            Login with Github
+          </Button>
         </div>
       </Card.Content>
     </Card.Root>
