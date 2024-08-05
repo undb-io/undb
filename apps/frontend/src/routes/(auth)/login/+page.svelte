@@ -4,6 +4,7 @@
   import { Input } from "$lib/components/ui/input/index.js"
   import { Label } from "$lib/components/ui/label/index.js"
   import Logo from "$lib/images/logo.svg"
+  import Github from "$lib/images/github.svg"
   import { createMutation } from "@tanstack/svelte-query"
   import { z } from "@undb/zod"
   import { defaults, superForm } from "sveltekit-superforms"
@@ -12,7 +13,6 @@
   import { toast } from "svelte-sonner"
   import { Button } from "$lib/components/ui/button"
   import { Separator } from "$lib/components/ui/separator"
-  import { GithubIcon } from "lucide-svelte"
 
   const schema = z.object({
     email: z.string().email(),
@@ -29,10 +29,6 @@
     async onError(error, variables, context) {
       toast.error(error.message)
       await goto("/signup")
-    },
-    onSettled(data, error, variables, context) {
-      console.log(data)
-      console.log(error)
     },
   })
 
@@ -112,9 +108,9 @@
           <a href="/signup" class="underline"> Sign up </a>
         </div>
         <Separator class="my-6" />
-        <div>
+        <div class="space-y-2">
           <Button href="/login/github" variant="secondary" class="w-full">
-            <GithubIcon class="mr-2 h-5 w-5" />
+            <img class="mr-2 h-5 w-5" src={Github} alt="github" />
             Login with Github
           </Button>
         </div>
