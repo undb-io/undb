@@ -135,7 +135,7 @@ export const app = new Elysia()
         if (!user) {
           return context.redirect(`/login?redirect=${context.path}`, 301)
         }
-        if (!user.emailVerified) {
+        if (!user.emailVerified && user.email) {
           return context.redirect(`/verify-email?redirect=${context.path}`, 301)
         }
       },

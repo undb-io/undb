@@ -36,6 +36,7 @@
     "@undb/space": "workspace:*",
     "@undb/trpc": "workspace:*",
     "@undb/webhook": "workspace:*",
+    "arctic": "^1.9.2",
     "bun": "^1.1.21",
     "core-js": "^3.37.1",
     "elysia": "^1.1.5",
