@@ -5,6 +5,10 @@
   import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
   import { CREATE_RLS_MODAL, CREATE_TABLE_MODAL, closeModal, isModalOpen, toggleModal } from "$lib/store/modal.store"
   import { baseId, currentBase } from "$lib/store/base.store"
+  import { QueryObserver, useIsMutating, useQueryClient } from "@tanstack/svelte-query"
+  import { LoaderCircleIcon } from "lucide-svelte"
+
+  const isCreating = useIsMutating({ mutationKey: ["createTable"] })
 </script>
 
 <Sheet.Root
@@ -32,7 +36,14 @@
 
     <Sheet.Footer>
       <Button variant="outline" type="button" on:click={() => closeModal(CREATE_RLS_MODAL)}>Cancel</Button>
-      <Button type="submit" form="createTable">Create</Button>
+      <Button type="submit" disabled={$isCreating > 0} form="createTable">
+        {#if $isCreating > 0}
+          <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
+          Creating
+        {:else}
+          Create
+        {/if}
+      </Button>
     </Sheet.Footer>
   </Sheet.Content>
 </Sheet.Root>
