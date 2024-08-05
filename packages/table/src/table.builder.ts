@@ -1,4 +1,5 @@
 import { None, Some, applyRules } from "@undb/domain"
+import type { ISpaceId } from "@undb/space"
 import { createTableDTO, type ICreateTableDTO, type ITableDTO } from "./dto"
 import { TableCreatedEvent } from "./events"
 import { TableRLSGroup, type ICreateFormDTO, type IFormsDTO, type IRLSGroupDTO } from "./modules"
@@ -15,6 +16,7 @@ import { TableIdSpecification } from "./specifications/table-id.specification"
 import { TableNameSpecification } from "./specifications/table-name.specification"
 import { WithTableRLS } from "./specifications/table-rls.specification"
 import { TableSchemaSpecification } from "./specifications/table-schema.specification"
+import { TableSpaceIdSpecification } from "./specifications/table-space-id.specification"
 import { TableIdVo } from "./table-id.vo"
 import { TableNameVo } from "./table-name.vo"
 import { TableDo } from "./table.do"
@@ -23,6 +25,7 @@ export interface ITableBuilder {
   reset(): void
   setId(id?: string): ITableBuilder
   setBaseId(id: string): ITableBuilder
+  setSpaceId(spaceId: ISpaceId): ITableBuilder
   setName(name: string): ITableBuilder
   createSchema(dto: ICreateSchemaDTO): ITableBuilder
   setSchema(dto: ISchemaDTO): ITableBuilder
@@ -52,6 +55,11 @@ export class TableBuilder implements ITableBuilder {
 
   setBaseId(id: string): ITableBuilder {
     new TableBaseIdSpecification(id).mutate(this.table)
+    return this
+  }
+
+  setSpaceId(spaceId: ISpaceId): ITableBuilder {
+    new TableSpaceIdSpecification(spaceId).mutate(this.table)
     return this
   }
 
@@ -113,6 +121,7 @@ export class TableCreator {
     const table = this.builder
       .setId(dto.id)
       .setBaseId(dto.baseId)
+      .setSpaceId(dto.spaceId)
       .setName(dto.name)
       .createSchema(dto.schema)
       .createViews()
@@ -131,6 +140,7 @@ export class TableCreator {
       .setBaseId(dto.baseId)
       .setName(dto.name)
       .setSchema(dto.schema)
+      .setSpaceId(dto.spaceId)
       .setViews(dto.views)
       .setForms(dto.forms)
       .setRLS(dto.rls)

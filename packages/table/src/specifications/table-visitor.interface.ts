@@ -18,6 +18,7 @@ import type {
   WithTableForeignTablesSpec,
   WithUpdatedFieldSpecification,
 } from "./table-schema.specification"
+import type { TableSpaceIdSpecification } from "./table-space-id.specification"
 import type {
   WithNewView,
   WithoutView,
@@ -35,6 +36,7 @@ import type { TableViewsSpecification } from "./table-views.specification"
 export interface ITableSpecVisitor extends ISpecVisitor {
   withId(id: TableIdSpecification): void
   withBaseId(id: TableBaseIdSpecification): void
+  withSpaceId(id: TableSpaceIdSpecification): void
   idsIn(ids: TableIdsSpecification): void
   withName(name: TableNameSpecification): void
   withSchema(schema: TableSchemaSpecification): void
