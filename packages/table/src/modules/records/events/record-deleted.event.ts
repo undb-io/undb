@@ -39,6 +39,7 @@ export class RecordDeletedEvent extends BaseEvent<
         table: getTableMeta(table),
         record: record.toJSON(),
       },
+      table.spaceId,
     )
   }
 

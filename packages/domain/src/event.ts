@@ -7,12 +7,14 @@ export interface IEvent<TPayload extends object = object, TMeta = any> {
   payload: TPayload
   timestamp: Date
   meta: TMeta
+  spaceId: string
 }
 
 export interface IEventJSON<TPayload extends object = object, TMeta = any> {
   id: string
   name: string
   operatorId?: string
+  spaceId: string
   payload: TPayload
   timestamp: string
   meta: TMeta
@@ -35,6 +37,7 @@ export abstract class BaseEvent<TPayload extends object = object, TName extends 
   constructor(
     public readonly payload: TPayload,
     public readonly meta: TMeta,
+    public readonly spaceId: string,
     public readonly id = v4(),
     public readonly timestamp = new Date(),
   ) {}
@@ -44,6 +47,7 @@ export abstract class BaseEvent<TPayload extends object = object, TName extends 
       id: this.id,
       name: this.name,
       operatorId: this.operatorId,
+      spaceId: this.spaceId,
       timestamp: this.timestamp,
       payload: this.payload,
       meta: this.meta,

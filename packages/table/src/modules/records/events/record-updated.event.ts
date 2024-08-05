@@ -43,6 +43,7 @@ export class RecordUpdatedEvent extends BaseEvent<
         table: getTableMeta(table),
         record: recordDo.toJSON(),
       },
+      table.spaceId,
     )
   }
 
@@ -62,6 +63,7 @@ export class RecordUpdatedEvent extends BaseEvent<
         table: getTableMeta(table, fields),
         record: { ...record.toJSON(), id: this.payload.id },
       },
+      this.spaceId,
     )
   }
 }

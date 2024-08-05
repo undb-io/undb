@@ -20,6 +20,7 @@ interface IGetSpaceInput {
   baseId?: string
   apiToken?: string
   shareId?: string
+  userId?: string
 }
 
 export interface ISpaceService {
@@ -63,6 +64,8 @@ export class SpaceService implements ISpaceService {
       spec = Some(new WithSpaceApiToken(input.apiToken))
     } else if (input.shareId) {
       spec = Some(new WithSpaceShareId(input.shareId))
+    } else if (input.userId) {
+      spec = Some(new WithSpaceUserId(input.userId))
     }
 
     if (spec.isNone()) {

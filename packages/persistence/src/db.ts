@@ -1,9 +1,5 @@
 import type { Kyselify } from "drizzle-orm/kysely"
-import { drizzle } from "drizzle-orm/libsql"
-import { migrate } from "drizzle-orm/libsql/migrator"
 import type { Insertable, Selectable } from "kysely"
-import { sqlite } from "./client"
-import { DrizzleLogger } from "./db.logger"
 import type {
   apiTokenTable,
   audit,
@@ -20,12 +16,6 @@ import type {
   users,
   webhook,
 } from "./tables"
-
-export const db = drizzle(sqlite, {
-  logger: new DrizzleLogger(),
-})
-
-await migrate(db, { migrationsFolder: "./drizzle" })
 
 type SpaceTable = Kyselify<typeof space>
 type TableTable = Kyselify<typeof tables>

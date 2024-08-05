@@ -1,4 +1,5 @@
 import { AggregateRoot, andOptions, None, Option } from "@undb/domain"
+import type { ISpaceId } from "@undb/space"
 import type { ITableDTO } from "./dto"
 import type { ITableEvents } from "./events"
 import { $createFieldSpec, createFieldMethod } from "./methods/create-field.method"
@@ -40,6 +41,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   public name!: TableNameVo
 
   public baseId!: string
+  public spaceId!: ISpaceId
 
   public schema!: Schema
   public views!: Views
@@ -141,6 +143,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
       id: this.id.value,
       name: this.name.value,
       baseId: this.baseId,
+      spaceId: this.spaceId,
       schema: this.schema.toJSON(),
       views: this.views.toJSON(),
       rls: this.rls.into(undefined)?.toJSON(),
