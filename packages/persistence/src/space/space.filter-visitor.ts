@@ -2,6 +2,7 @@ import type {
   ISpaceSpecVisitor,
   Space,
   WithSpaceApiToken,
+  WithSpaceAvatar,
   WithSpaceBaseId,
   WithSpaceId,
   WithSpaceIsPersonal,
@@ -42,6 +43,9 @@ export class SpaceFilterVisitor extends AbstractQBVisitor<Space> implements ISpa
 
     const cond = this.eb.eb("undb_space.id", "in", subQuery)
     this.addCond(cond)
+  }
+  withAvatar(v: WithSpaceAvatar): void {
+    throw new Error("Method not implemented.")
   }
   withShareId(v: WithSpaceShareId): void {
     const subQuery = this.qb.selectFrom("undb_share").select(["space_id"]).where("undb_share.id", "=", v.shareId)

@@ -1,6 +1,7 @@
 import type { CompositeSpecification, ISpecVisitor } from "@undb/domain"
 import type { Space } from "./space.do.js"
 import type { WithSpaceApiToken } from "./specifications/space-api-token.specification.js"
+import type { WithSpaceAvatar } from "./specifications/space-avatar.specification.js"
 import type { WithSpaceBaseId } from "./specifications/space-base-id.specification.js"
 import type { WithSpaceId } from "./specifications/space-id.specification.js"
 import type { WithSpaceIsPersonal } from "./specifications/space-is-personal.specification.js"
@@ -16,6 +17,7 @@ export interface ISpaceSpecVisitor extends ISpecVisitor {
   withApiToken(v: WithSpaceApiToken): void
   withIsPersonal(v: WithSpaceIsPersonal): void
   withName(v: WithSpaceName): void
+  withAvatar(v: WithSpaceAvatar): void
 }
 
 export type ISpaceSpecification = CompositeSpecification<Space, ISpaceSpecVisitor>

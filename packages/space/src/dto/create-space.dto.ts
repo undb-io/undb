@@ -1,8 +1,9 @@
 import { z } from "@undb/zod"
-import { spaceIdSchema, spaceNameSchema } from "../value-objects"
+import { spaceAvatarSchema, spaceIdSchema, spaceNameSchema } from "../value-objects"
 
 export const createSpaceDTO = z.object({
   id: spaceIdSchema.optional(),
+  avatar: spaceAvatarSchema.optional(),
   name: spaceNameSchema,
   isPersonal: z.boolean(),
 })
