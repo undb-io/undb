@@ -38,7 +38,7 @@ export class SpaceFilterVisitor extends AbstractQBVisitor<Space> implements ISpa
     const subQuery = this.qb
       .selectFrom("undb_api_token")
       .select(["space_id"])
-      .where("undb_api_token.id", "=", v.apiToken)
+      .where("undb_api_token.token", "=", v.apiToken)
 
     const cond = this.eb.eb("undb_space.id", "in", subQuery)
     this.addCond(cond)

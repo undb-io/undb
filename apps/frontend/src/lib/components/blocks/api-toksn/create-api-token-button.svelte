@@ -2,14 +2,14 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import { Input } from "$lib/components/ui/input/index.js"
   import { trpc } from "$lib/trpc/client"
-  import { createMutation } from "@tanstack/svelte-query"
+  import { createMutation, QueryObserver, useQueryClient } from "@tanstack/svelte-query"
   import { createApiTokenCommand } from "@undb/commands"
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import * as Form from "$lib/components/ui/form/index.js"
   import { PlusIcon } from "lucide-svelte"
   import * as Dialog from "$lib/components/ui/dialog"
-  import { page } from "$app/stores"
+  import { toast } from "svelte-sonner"
 
   export let userId: string
   const form = superForm(
@@ -35,13 +35,27 @@
   )
   const { enhance, form: formData } = form
 
+  const client = useQueryClient()
+  const observer = new QueryObserver(client, {
+    queryKey: ["apiTokens"],
+  })
+
   const createApiTokenMutation = createMutation({
     mutationFn: trpc.apiToken.create.mutate,
     mutationKey: ["createApiToken"],
+    onError(error, variables, context) {
+      toast.error(error.message)
+    },
+    async onSuccess(data, variables, context) {
+      open = false
+      $observer.refetch()
+    },
   })
+
+  let open = false
 </script>
 
-<Dialog.Root>
+<Dialog.Root bind:open>
   <Dialog.Trigger asChild let:builder>
     <Button builders={[builder]} {...$$restProps}>
       <PlusIcon class="mr-2 h-4 w-4" />
