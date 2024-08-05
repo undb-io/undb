@@ -15,9 +15,19 @@
 
   const schema = z.object({
     email: z.string().email(),
-    password: z.string(),
+    password: z.string().min(6),
     username: z.string().min(2).optional(),
   })
+
+  const formSchema = schema
+    .merge(
+      z.object({
+        confirmPassword: z.string(),
+      }),
+    )
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords do not match",
+    })
 
   type SignupSchema = z.infer<typeof schema>
 
@@ -42,14 +52,15 @@
       {
         email: "",
         password: "",
+        confirmPassword: "",
         username: "",
       },
-      zodClient(schema),
+      zodClient(formSchema),
     ),
     {
       SPA: true,
       dataType: "json",
-      validators: zodClient(schema),
+      validators: zodClient(formSchema),
       resetForm: false,
       invalidateAll: false,
       onUpdate(event) {
@@ -58,11 +69,13 @@
           return
         }
 
-        $signupMutation.mutate(event.form.data)
+        const { confirmPassword, ...data } = event.form.data
+        $signupMutation.mutate(data)
       },
     },
   )
-  const { enhance, form: formData } = form
+  const { enhance, form: formData, allErrors } = form
+  $: disabled = $allErrors.length > 0
 </script>
 
 <section class="-translate-y-20 space-y-5">
@@ -111,7 +124,19 @@
               <Form.FieldErrors />
             </Form.Field>
           </div>
-          <Button type="submit" class="w-full">Create an account</Button>
+          <div class="grid gap-2">
+            <Form.Field {form} name="confirmPassword">
+              <Form.Control let:attrs>
+                <div class="flex justify-between">
+                  <Label for="confirmPassword">Confirm Password</Label>
+                </div>
+                <Input {...attrs} id="confirmPassword" type="password" bind:value={$formData.confirmPassword} />
+              </Form.Control>
+              <Form.Description />
+              <Form.FieldErrors />
+            </Form.Field>
+          </div>
+          <Button {disabled} type="submit" class="w-full">Create an account</Button>
         </div>
         <div class="mt-4 text-center text-sm">
           Already have an account?
