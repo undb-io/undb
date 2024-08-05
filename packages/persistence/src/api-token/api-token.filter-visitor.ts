@@ -1,4 +1,3 @@
-import { mustGetCurrentSpaceId } from "@undb/context/server"
 import type {
   ApiTokenDo,
   IApiTokenVisitor,
@@ -14,8 +13,6 @@ import type { Database } from "../db"
 export class ApiTokenFilterVisitor extends AbstractQBVisitor<ApiTokenDo> implements IApiTokenVisitor {
   constructor(protected readonly eb: ExpressionBuilder<Database, "undb_api_token">) {
     super(eb)
-    const spaceId = mustGetCurrentSpaceId()
-    this.addCond(this.eb.eb("space_id", "=", spaceId))
   }
   withSpaceId(s: WithApiTokenSpaceId): void {
     const cond = this.eb.eb("undb_api_token.space_id", "=", s.spaceId)
