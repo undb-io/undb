@@ -8,7 +8,7 @@ import { compile } from "./templates/compile"
 function createMailerTransport() {
   return createTransport({
     host: env.UNDB_MAIL_HOST,
-    port: parseInt(env.UNDB_MAIL_PORT, 10),
+    port: parseInt(env.UNDB_MAIL_PORT ?? "", 10),
   })
 }
 

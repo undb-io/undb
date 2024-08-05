@@ -43,6 +43,7 @@
     "handlebars": "^4.7.8",
     "lucia": "^3.2.0",
     "nodemailer": "^6.9.14",
+    "oslo": "^1.2.1",
     "radash": "^12.1.0",
     "reflect-metadata": "^0.2.2",
     "uuid": "^10.0.0",
