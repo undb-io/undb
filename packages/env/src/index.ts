@@ -21,6 +21,9 @@ export const env = createEnv({
     UNDB_MAIL_HOST: z.string().optional(),
     UNDB_MAIL_PORT: z.string().optional(),
     UNDB_MAIL_DEFAULT_FROM: z.string().optional(),
+
+    GITHUB_CLIENT_ID: z.string().optional(),
+    GITHUB_CLIENT_SECRET: z.string().optional(),
   },
   runtimeEnv: import.meta.env,
   emptyStringAsUndefined: true,
