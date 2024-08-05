@@ -78,7 +78,7 @@
   $: disabled = $allErrors.length > 0
 </script>
 
-<section class="-translate-y-20 space-y-5">
+<section class="w-[450px] -translate-y-20 space-y-5">
   <div class="flex justify-center">
     <img src={Logo} alt="undb" class="h-12 w-12" />
   </div>
@@ -95,7 +95,12 @@
             <Form.Field {form} name="username">
               <Form.Control let:attrs>
                 <Form.Label for="username">Username</Form.Label>
-                <Input {...attrs} placeholder="Username" id="username" bind:value={$formData.username} />
+                <Input
+                  {...attrs}
+                  placeholder="Enter your display username"
+                  id="username"
+                  bind:value={$formData.username}
+                />
               </Form.Control>
               <Form.Description />
               <Form.FieldErrors />
@@ -105,7 +110,13 @@
             <Form.Field {form} name="email">
               <Form.Control let:attrs>
                 <Form.Label for="email">Email</Form.Label>
-                <Input {...attrs} id="email" type="email" bind:value={$formData.email} />
+                <Input
+                  {...attrs}
+                  id="email"
+                  type="email"
+                  placeholder="Enter your work email"
+                  bind:value={$formData.email}
+                />
               </Form.Control>
               <Form.Description />
               <Form.FieldErrors />
@@ -118,7 +129,7 @@
                   <Label for="password">Password</Label>
                   <a href="##" class="ml-auto inline-block text-sm underline"> Forgot your password? </a>
                 </div>
-                <Input {...attrs} id="password" type="password" bind:value={$formData.password} />
+                <Input {...attrs} id="password" type="password" placeholder="******" bind:value={$formData.password} />
               </Form.Control>
               <Form.Description />
               <Form.FieldErrors />
@@ -130,7 +141,13 @@
                 <div class="flex justify-between">
                   <Label for="confirmPassword">Confirm Password</Label>
                 </div>
-                <Input {...attrs} id="confirmPassword" type="password" bind:value={$formData.confirmPassword} />
+                <Input
+                  {...attrs}
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="******"
+                  bind:value={$formData.confirmPassword}
+                />
               </Form.Control>
               <Form.Description />
               <Form.FieldErrors />
