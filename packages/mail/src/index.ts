@@ -5,27 +5,40 @@ export const MAIL_SERVICE = Symbol("MAIL_SERVICE")
 
 export const injectMailService = () => inject(MAIL_SERVICE)
 
-export const template = z.enum(["invite"])
+export const template = z.enum(["invite", "reset-password", "verify-email"])
 
 export type Template = z.infer<typeof template>
 
-export const sendInviteInput = z.object({
-  template: z.literal("invite"),
-  data: z.object({
-    invite_sender_name: z.string(),
-    email: z.string().email(),
-    action_url: z.string().url(),
-    help_url: z.string().url(),
-  }),
+export const baseInput = z.object({
+  subject: z.string(),
+  from: z.string().optional(),
+  to: z.string().email(),
 })
 
-export const sendInput = sendInviteInput.merge(
-  z.object({
-    subject: z.string(),
-    from: z.string().optional(),
-    to: z.string().email(),
-  }),
-)
+export const sendInviteInput = z
+  .object({
+    template: z.literal("invite"),
+    data: z.object({
+      invite_sender_name: z.string(),
+      email: z.string().email(),
+      action_url: z.string().url(),
+      help_url: z.string().url(),
+    }),
+  })
+  .merge(baseInput)
+
+export const sendVerifyEmailInput = z
+  .object({
+    template: z.literal("verify-email"),
+    data: z.object({
+      username: z.string(),
+      code: z.string(),
+      action_url: z.string().url(),
+    }),
+  })
+  .merge(baseInput)
+
+export const sendInput = z.discriminatedUnion("template", [sendInviteInput, sendVerifyEmailInput])
 
 export type ISendInput = z.infer<typeof sendInput>
 

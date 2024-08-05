@@ -34,6 +34,15 @@ CREATE TABLE `undb_base` (
 	FOREIGN KEY (`updated_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
+CREATE TABLE `undb_email_verification_code` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
+	`code` text NOT NULL,
+	`user_id` text,
+	`email` text NOT NULL,
+	`expires_at` integer NOT NULL,
+	FOREIGN KEY (`user_id`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
 CREATE TABLE `undb_invitation` (
 	`id` text PRIMARY KEY NOT NULL,
 	`email` text NOT NULL,
@@ -144,6 +153,7 @@ CREATE TABLE `undb_user` (
 	`id` text PRIMARY KEY NOT NULL,
 	`username` text NOT NULL,
 	`email` text NOT NULL,
+	`email_verified` integer DEFAULT false NOT NULL,
 	`password` text NOT NULL,
 	`avatar` text
 );
@@ -172,6 +182,7 @@ CREATE INDEX `audit_space_id_idx` ON `undb_audit` (`space_id`);--> statement-bre
 CREATE INDEX `audit_record_id_idx` ON `undb_audit` (`record_id`);--> statement-breakpoint
 CREATE INDEX `base_space_id_idx` ON `undb_base` (`space_id`);--> statement-breakpoint
 CREATE UNIQUE INDEX `base_name_unique_idx` ON `undb_base` (`name`,`space_id`);--> statement-breakpoint
+CREATE UNIQUE INDEX `undb_email_verification_code_user_id_unique` ON `undb_email_verification_code` (`user_id`);--> statement-breakpoint
 CREATE UNIQUE INDEX `undb_invitation_email_unique` ON `undb_invitation` (`email`);--> statement-breakpoint
 CREATE INDEX `invitation_space_id_idx` ON `undb_invitation` (`space_id`);--> statement-breakpoint
 CREATE INDEX `outbox_space_id_idx` ON `undb_outbox` (`space_id`);--> statement-breakpoint

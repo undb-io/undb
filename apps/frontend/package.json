@@ -15,6 +15,7 @@
   "devDependencies": {
     "@fontsource/fira-mono": "^5.0.13",
     "@jhubbardsf/svelte-sortablejs": "latest",
+    "@jimmyverburgt/svelte-input-otp": "^0.0.2",
     "@neoconfetti/svelte": "^2.2.1",
     "@svelte-put/copy": "^3.0.2",
     "@svelte-put/shortcut": "^3.1.1",

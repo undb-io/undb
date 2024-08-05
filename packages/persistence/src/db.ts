@@ -4,6 +4,7 @@ import type {
   apiTokenTable,
   audit,
   baseTable,
+  emailVerificationCode,
   invitations,
   outbox,
   referenceIdMapping,
@@ -31,6 +32,7 @@ type SpaceMemberTable = Kyselify<typeof spaceMember>
 type InvitationTable = Kyselify<typeof invitations>
 type ReferenceIdMappingTable = Kyselify<typeof referenceIdMapping>
 type ApiTokenTable = Kyselify<typeof apiTokenTable>
+type EmailVerificationCodeTable = Kyselify<typeof emailVerificationCode>
 
 export interface Database {
   undb_space: SpaceTable
@@ -47,6 +49,7 @@ export interface Database {
   undb_invitation: InvitationTable
   undb_reference_id_mapping: ReferenceIdMappingTable
   undb_api_token: ApiTokenTable
+  undb_email_verification_code: EmailVerificationCodeTable
 }
 
 export type Space = Selectable<SpaceTable>
@@ -64,6 +67,7 @@ export type User = Selectable<UserTable>
 export type SpaceMember = Selectable<SpaceMemberTable>
 export type Invitation = Selectable<InvitationTable>
 export type ApiToken = Selectable<ApiTokenTable>
+export type EmailVerificationCode = Selectable<EmailVerificationCodeTable>
 
 export type InsertTableIdMapping = Insertable<TableIdMappingTable>
 export type InsertRollupIdMapping = Insertable<RollupIdMappingTable>
