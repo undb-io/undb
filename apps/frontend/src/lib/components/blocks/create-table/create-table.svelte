@@ -20,6 +20,7 @@
 
   const mutation = createMutation({
     mutationFn: trpc.table.create.mutate,
+    mutationKey: ["createTable"],
     async onSuccess(data) {
       await invalidate("undb:tables")
       await goto(`/t/${data}`)
