@@ -35,6 +35,7 @@ export class SpaceRepostitory implements ISpaceRepository {
       SpaceFactory.fromJSON({
         id: space.id,
         name: space.name ?? "",
+        avatar: space.avatar,
         isPersonal: Boolean(space.is_personal),
       }),
     )
@@ -50,6 +51,7 @@ export class SpaceRepostitory implements ISpaceRepository {
       .values({
         id: space.id.value,
         name: space.name.value,
+        avatar: space.avatar.into(undefined)?.value ?? null,
         is_personal: space.isPersonal,
         created_by: userId,
         updated_by: userId,

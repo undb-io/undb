@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "7d5928e8-e2dc-4fd1-b506-5eac092f000c",
+  "id": "ee92f6e7-bd4c-49bd-84ae-69dff65fae71",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_api_token": {
@@ -57,6 +57,20 @@
             "token"
           ],
           "isUnique": true
+        },
+        "api_token_space_id_idx": {
+          "name": "api_token_space_id_idx",
+          "columns": [
+            "space_id"
+          ],
+          "isUnique": false
+        },
+        "api_token_user_id_idx": {
+          "name": "api_token_user_id_idx",
+          "columns": [
+            "user_id"
+          ],
+          "isUnique": false
         }
       },
       "foreignKeys": {
@@ -165,6 +179,13 @@
           ],
           "isUnique": false
         },
+        "audit_space_id_idx": {
+          "name": "audit_space_id_idx",
+          "columns": [
+            "space_id"
+          ],
+          "isUnique": false
+        },
         "audit_record_id_idx": {
           "name": "audit_record_id_idx",
           "columns": [
@@ -246,6 +267,13 @@
         }
       },
       "indexes": {
+        "base_space_id_idx": {
+          "name": "base_space_id_idx",
+          "columns": [
+            "space_id"
+          ],
+          "isUnique": false
+        },
         "base_name_unique_idx": {
           "name": "base_name_unique_idx",
           "columns": [
@@ -359,6 +387,13 @@
             "email"
           ],
           "isUnique": true
+        },
+        "invitation_space_id_idx": {
+          "name": "invitation_space_id_idx",
+          "columns": [
+            "space_id"
+          ],
+          "isUnique": false
         }
       },
       "foreignKeys": {
@@ -445,7 +480,15 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "outbox_space_id_idx": {
+          "name": "outbox_space_id_idx",
+          "columns": [
+            "space_id"
+          ],
+          "isUnique": false
+        }
+      },
       "foreignKeys": {
         "undb_outbox_space_id_undb_space_id_fk": {
           "name": "undb_outbox_space_id_undb_space_id_fk",
@@ -695,6 +738,13 @@
         }
       },
       "indexes": {
+        "share_space_id_idx": {
+          "name": "share_space_id_idx",
+          "columns": [
+            "space_id"
+          ],
+          "isUnique": false
+        },
         "share_unique_idx": {
           "name": "share_unique_idx",
           "columns": [
@@ -744,6 +794,13 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "avatar": {
+          "name": "avatar",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "created_at": {
@@ -848,7 +905,16 @@
           "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "space_member_unique_idx": {
+          "name": "space_member_unique_idx",
+          "columns": [
+            "user_id",
+            "space_id"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {
         "undb_space_member_user_id_undb_user_id_fk": {
           "name": "undb_space_member_user_id_undb_user_id_fk",
@@ -1022,6 +1088,13 @@
           ],
           "isUnique": false
         },
+        "table_space_id_idx": {
+          "name": "table_space_id_idx",
+          "columns": [
+            "space_id"
+          ],
+          "isUnique": false
+        },
         "table_name_unique_idx": {
           "name": "table_name_unique_idx",
           "columns": [
@@ -1117,6 +1190,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "avatar": {
+          "name": "avatar",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         }
       },
@@ -1226,6 +1306,13 @@
           "name": "webhook_table_id_idx",
           "columns": [
             "table_id"
+          ],
+          "isUnique": false
+        },
+        "webhook_space_id_idx": {
+          "name": "webhook_space_id_idx",
+          "columns": [
+            "space_id"
           ],
           "isUnique": false
         },

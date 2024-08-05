@@ -13,6 +13,7 @@ export const space = sqliteTable(
     id: text("id").notNull().primaryKey(),
     name: text("name"),
     isPersonal: integer("is_personal", { mode: "boolean" }).notNull(),
+    avatar: text("avatar"),
     createdAt: text("created_at")
       .notNull()
       .default(sql`(CURRENT_TIMESTAMP)`),
@@ -158,6 +159,7 @@ export const users = sqliteTable(
     username: text("username").notNull(),
     email: text("email").notNull().unique(),
     password: text("password").notNull(),
+    avatar: text("avatar"),
   },
   (table) => {
     return {
