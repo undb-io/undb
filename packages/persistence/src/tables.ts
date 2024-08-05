@@ -170,6 +170,22 @@ export const users = sqliteTable(
   },
 )
 
+export const oauthAccount = sqliteTable(
+  "oauth_account",
+  {
+    provider_id: text("provider_id").notNull(),
+    provider_user_id: text("provider_user_id").notNull(),
+    user_id: text("user_id")
+      .notNull()
+      .references(() => users.id),
+  },
+  (table) => {
+    return {
+      pk: primaryKey({ columns: [table.provider_id, table.provider_user_id] }),
+    }
+  },
+)
+
 export const emailVerificationCode = sqliteTable("email_verification_code", {
   id: integer("id").notNull().primaryKey({ autoIncrement: true }),
   code: text("code").notNull(),

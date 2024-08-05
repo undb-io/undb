@@ -7,6 +7,7 @@ import type {
   TableIdsSpecification,
   TableNameSpecification,
   TableSchemaSpecification,
+  TableSpaceIdSpecification,
   TableUniqueNameSpecification,
   TableViewsSpecification,
   WithDuplicatedFieldSpecification,
@@ -40,6 +41,9 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
     private readonly qb: IQueryBuilder,
   ) {
     super()
+  }
+  withSpaceId(id: TableSpaceIdSpecification): void {
+    throw new Error("Method not implemented.")
   }
   withId(id: TableIdSpecification): void {
     throw new Error("Method not implemented.")

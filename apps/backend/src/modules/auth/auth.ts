@@ -16,15 +16,20 @@ import { env } from "@undb/env"
 import { type IMailService, injectMailService } from "@undb/mail"
 import { type IQueryBuilder, getCurrentTransaction, injectQueryBuilder, sqlite } from "@undb/persistence"
 import { type ISpaceService, injectSpaceService } from "@undb/space"
+import { GitHub } from "arctic"
 import { Context, Elysia, t } from "elysia"
 import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize } from "lucia"
 import { TimeSpan, createDate, isWithinExpirationDate } from "oslo"
+import { serializeCookie } from "oslo/cookie"
 import { alphabet, generateRandomString } from "oslo/crypto"
+import { OAuth2RequestError, generateState } from "oslo/oauth2"
 import { singleton } from "tsyringe"
 import { v7 } from "uuid"
 import { SPACE_ID_COOKIE_NAME } from "../../constants"
 import { withTransaction } from "../../db"
+
+export const github = new GitHub(env.GITHUB_CLIENT_ID!, env.GITHUB_CLIENT_SECRET!)
 
 const adapter = new LibSQLAdapter(sqlite, {
   user: "undb_user",
@@ -186,7 +191,7 @@ export class Auth {
           return ctx.redirect("/login")
         }
 
-        if (!user.emailVerified) {
+        if (!user.emailVerified && user.email) {
           return ctx.redirect(`/verify-email`, 301)
         }
 
@@ -416,6 +421,123 @@ export class Auth {
           }),
         },
       )
+      .get("/login/github", async (ctx) => {
+        const state = generateState()
+        const url = await github.createAuthorizationURL(state)
+        return new Response(null, {
+          status: 302,
+          headers: {
+            Location: url.toString(),
+            "Set-Cookie": serializeCookie("github_oauth_state", state, {
+              httpOnly: true,
+              secure: Bun.env.NODE_ENV === "production",
+              maxAge: 60 * 10, // 10 minutes
+              path: "/",
+            }),
+          },
+        })
+      })
+      .get("/login/github/callback", async (ctx) => {
+        const stateCookie = ctx.cookie["github_oauth_state"]?.value ?? null
+
+        const url = new URL(ctx.request.url)
+        const state = url.searchParams.get("state")
+        const code = url.searchParams.get("code")
+
+        // verify state
+        if (!state || !stateCookie || !code || stateCookie !== state) {
+          return new Response(null, {
+            status: 400,
+          })
+        }
+
+        try {
+          const tokens = await github.validateAuthorizationCode(code)
+          const githubUserResponse = await fetch("https://api.github.com/user", {
+            headers: {
+              Authorization: `Bearer ${tokens.accessToken}`,
+            },
+          })
+          const githubUserResult: GitHubUserResult = await githubUserResponse.json()
+
+          const existingUser = await this.queryBuilder
+            .selectFrom("undb_oauth_account")
+            .selectAll()
+            .where((eb) =>
+              eb.and([
+                eb.eb("provider_id", "=", "github"),
+                eb.eb("provider_user_id", "=", githubUserResult.id.toString()),
+              ]),
+            )
+            .executeTakeFirst()
+
+          if (existingUser) {
+            const session = await lucia.createSession(existingUser.user_id, {})
+            const sessionCookie = lucia.createSessionCookie(session.id)
+            return new Response(null, {
+              status: 302,
+              headers: {
+                Location: "/",
+                "Set-Cookie": sessionCookie.serialize(),
+              },
+            })
+          }
+
+          const userId = generateIdFromEntropySize(10) // 16 characters long
+          await withTransaction(this.queryBuilder)(async () => {
+            const tx = getCurrentTransaction()
+            await tx
+              .insertInto("undb_user")
+              .values({
+                id: userId,
+                username: githubUserResult.login,
+                email: "",
+                password: "",
+                email_verified: false,
+              })
+              .execute()
+
+            setContextValue("user", {
+              userId,
+              username: githubUserResult.login,
+              email: "",
+              emailVerified: false,
+            })
+
+            await tx
+              .insertInto("undb_oauth_account")
+              .values({
+                user_id: userId,
+                provider_id: "github",
+                provider_user_id: githubUserResult.id.toString(),
+              })
+              .execute()
+            const space = await this.spaceService.createPersonalSpace()
+            await this.spaceMemberService.createMember(userId, space.id.value, "owner")
+            ctx.cookie[SPACE_ID_COOKIE_NAME].set({ value: space.id.value })
+          })
+          const session = await lucia.createSession(userId, {})
+          const sessionCookie = lucia.createSessionCookie(session.id)
+          return new Response(null, {
+            status: 302,
+            headers: {
+              Location: "/",
+              "Set-Cookie": sessionCookie.serialize(),
+            },
+          })
+        } catch (e) {
+          console.log(e)
+          if (e instanceof OAuth2RequestError) {
+            // bad verification code, invalid credentials, etc
+            return new Response(null, {
+              status: 400,
+            })
+          }
+          return new Response(null, {
+            status: 500,
+          })
+        }
+      })
       .get(
         "/invitation/:invitationId/accept",
         async (ctx) => {
@@ -434,4 +556,8 @@ export class Auth {
         },
       )
   }
+}
+interface GitHubUserResult {
+  id: number
+  login: string // username
 }
