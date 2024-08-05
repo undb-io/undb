@@ -3,7 +3,7 @@ import type { ICreateSchemaDTO } from "@undb/table"
 import { createTableDTO } from "@undb/table"
 import { z } from "@undb/zod"
 
-export const createTableCommand = createTableDTO
+export const createTableCommand = createTableDTO.omit({ spaceId: true })
 
 export type ICreateTableCommand = z.infer<typeof createTableCommand>
 
