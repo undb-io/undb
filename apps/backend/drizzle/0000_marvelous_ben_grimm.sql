@@ -97,7 +97,9 @@ CREATE TABLE `undb_session` (
 	`id` text PRIMARY KEY NOT NULL,
 	`user_id` text NOT NULL,
 	`expires_at` integer NOT NULL,
-	FOREIGN KEY (`user_id`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action
+	`space_id` text NOT NULL,
+	FOREIGN KEY (`user_id`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`space_id`) REFERENCES `undb_space`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE TABLE `undb_share` (

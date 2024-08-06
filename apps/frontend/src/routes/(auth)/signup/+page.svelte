@@ -129,7 +129,6 @@
               <Form.Control let:attrs>
                 <div class="flex justify-between">
                   <Label for="password">Password</Label>
-                  <a href="##" class="ml-auto inline-block text-sm underline"> Forgot your password? </a>
                 </div>
                 <Input {...attrs} id="password" type="password" placeholder="******" bind:value={$formData.password} />
               </Form.Control>

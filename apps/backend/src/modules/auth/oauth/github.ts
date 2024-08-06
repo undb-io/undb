@@ -8,7 +8,6 @@ import { Elysia } from "elysia"
 import { type Lucia, generateIdFromEntropySize } from "lucia"
 import { serializeCookie } from "oslo/cookie"
 import { OAuth2RequestError, generateState } from "oslo/oauth2"
-import { SPACE_ID_COOKIE_NAME } from "../../../constants"
 import { withTransaction } from "../../../db"
 import { injectLucia } from "../auth.provider"
 import { injectGithubProvider } from "./github.provider"
@@ -81,7 +80,8 @@ export class GithubOAuth {
             .executeTakeFirst()
 
           if (existingUser) {
-            const session = await this.lucia.createSession(existingUser.user_id, {})
+            const space = (await this.spaceService.getSpace({ userId: existingUser.user_id })).expect("space not found")
+            const session = await this.lucia.createSession(existingUser.user_id, { space_id: space.id.value })
             const sessionCookie = this.lucia.createSessionCookie(session.id)
             return new Response(null, {
               status: 302,
@@ -118,10 +118,7 @@ export class GithubOAuth {
             .executeTakeFirst()
 
           if (existingGithubUser) {
-            const spaceId = ctx.cookie[SPACE_ID_COOKIE_NAME].value
-            if (!spaceId) {
-              await this.spaceService.setSpaceContext(setContextValue, { userId: existingGithubUser.id })
-            }
+            const space = await this.spaceService.setSpaceContext(setContextValue, { userId: existingGithubUser.id })
 
             await this.queryBuilder
               .insertInto("undb_oauth_account")
@@ -132,7 +129,7 @@ export class GithubOAuth {
               })
               .execute()
 
-            const session = await this.lucia.createSession(existingGithubUser.id, {})
+            const session = await this.lucia.createSession(existingGithubUser.id, { space_id: space.id.value })
             const sessionCookie = this.lucia.createSessionCookie(session.id)
             return new Response(null, {
               status: 302,
@@ -143,7 +140,7 @@ export class GithubOAuth {
             })
           }
           const userId = generateIdFromEntropySize(10) // 16 characters long
-          await withTransaction(this.queryBuilder)(async () => {
+          const space = await withTransaction(this.queryBuilder)(async () => {
             const tx = getCurrentTransaction()
             await tx
               .insertInto("undb_user")
@@ -175,9 +172,10 @@ export class GithubOAuth {
               .execute()
             const space = await this.spaceService.createPersonalSpace()
             await this.spaceMemberService.createMember(userId, space.id.value, "owner")
-            ctx.cookie[SPACE_ID_COOKIE_NAME].set({ value: space.id.value })
+
+            return space
           })
-          const session = await this.lucia.createSession(userId, {})
+          const session = await this.lucia.createSession(userId, { space_id: space.id.value })
           const sessionCookie = this.lucia.createSessionCookie(session.id)
           return new Response(null, {
             status: 302,

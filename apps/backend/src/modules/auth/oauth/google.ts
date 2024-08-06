@@ -8,7 +8,6 @@ import { env } from "bun"
 import { Elysia } from "elysia"
 import { type Lucia, generateIdFromEntropySize } from "lucia"
 import { OAuth2RequestError, generateState } from "oslo/oauth2"
-import { SPACE_ID_COOKIE_NAME } from "../../../constants"
 import { withTransaction } from "../../../db"
 import { injectLucia } from "../auth.provider"
 import { injectGoogleProvider } from "./google.provider"
@@ -91,7 +90,8 @@ export class GoogleOAuth {
             .executeTakeFirst()
 
           if (existingUser) {
-            const session = await this.lucia.createSession(existingUser.user_id, {})
+            const space = (await this.spaceService.getSpace({ userId: existingUser.user_id })).expect("Space not found")
+            const session = await this.lucia.createSession(existingUser.user_id, { space_id: space.id.value })
             const sessionCookie = this.lucia.createSessionCookie(session.id)
             return new Response(null, {
               status: 302,
@@ -108,10 +108,7 @@ export class GoogleOAuth {
             .executeTakeFirst()
 
           if (existingGoogleUser) {
-            const spaceId = ctx.cookie[SPACE_ID_COOKIE_NAME].value
-            if (!spaceId) {
-              await this.spaceService.setSpaceContext(setContextValue, { userId: existingGoogleUser.id })
-            }
+            const space = await this.spaceService.setSpaceContext(setContextValue, { userId: existingGoogleUser.id })
 
             await this.queryBuilder
               .insertInto("undb_oauth_account")
@@ -122,7 +119,7 @@ export class GoogleOAuth {
               })
               .execute()
 
-            const session = await this.lucia.createSession(existingGoogleUser.id, {})
+            const session = await this.lucia.createSession(existingGoogleUser.id, { space_id: space.id.value })
             const sessionCookie = this.lucia.createSessionCookie(session.id)
             return new Response(null, {
               status: 302,
@@ -133,7 +130,7 @@ export class GoogleOAuth {
             })
           }
           const userId = generateIdFromEntropySize(10) // 16 characters long
-          await withTransaction(this.queryBuilder)(async () => {
+          const space = await withTransaction(this.queryBuilder)(async () => {
             const tx = getCurrentTransaction()
             await tx
               .insertInto("undb_user")
@@ -165,9 +162,10 @@ export class GoogleOAuth {
               .execute()
             const space = await this.spaceService.createPersonalSpace()
             await this.spaceMemberService.createMember(userId, space.id.value, "owner")
-            ctx.cookie[SPACE_ID_COOKIE_NAME].set({ value: space.id.value })
+
+            return space
           })
-          const session = await this.lucia.createSession(userId, {})
+          const session = await this.lucia.createSession(userId, { space_id: space.id.value })
           const sessionCookie = this.lucia.createSessionCookie(session.id)
           return new Response(null, {
             status: 302,

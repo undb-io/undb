@@ -1,6 +1,5 @@
 import {
   type IInvitationQueryRepository,
-  ISpaceMemberRole,
   type ISpaceMemberService,
   injectInvitationQueryRepository,
   injectSpaceMemberService,
@@ -22,7 +21,6 @@ import { TimeSpan, createDate, isWithinExpirationDate } from "oslo"
 import { alphabet, generateRandomString } from "oslo/crypto"
 import { omit } from "radash"
 import { v7 } from "uuid"
-import { SPACE_ID_COOKIE_NAME } from "../../constants"
 import { withTransaction } from "../../db"
 import { injectLucia } from "./auth.provider"
 import { OAuth } from "./oauth/oauth"
@@ -125,8 +123,7 @@ export class Auth {
       }
 
       const userId = user?.id!
-      // TODO: move to other file
-      const spaceId = context.cookie[SPACE_ID_COOKIE_NAME]?.value
+      const spaceId = session?.spaceId
       const space = await this.spaceService.setSpaceContext(setContextValue, { spaceId })
 
       const member = space
@@ -173,8 +170,6 @@ export class Auth {
         "/api/signup",
         async (ctx) => {
           let { email, password, invitationId, username } = ctx.body
-          const hasUser = !!(await this.queryBuilder.selectFrom("undb_user").selectAll().executeTakeFirst())
-          let role: ISpaceMemberRole = "owner"
           if (invitationId) {
             const invitation = await this.invitationRepository.findOneById(invitationId)
             if (invitation.isNone()) {
@@ -184,13 +179,10 @@ export class Auth {
             if (invitation.unwrap().email !== email) {
               throw new Error("Invalid email")
             }
-
-            role = invitation.unwrap().role
-          } else {
-            role = !hasUser ? "owner" : "admin"
           }
 
           let userId: string
+          let spaceId: string = ""
 
           const user = await this.queryBuilder
             .selectFrom("undb_user")
@@ -209,6 +201,8 @@ export class Auth {
             }
 
             userId = user.id
+            const space = (await this.spaceService.getSpace({ userId })).expect("User should have a space")
+            spaceId = space.id.value
           } else {
             userId = generateIdFromEntropySize(10) // 16 characters long
             const passwordHash = await Bun.password.hash(password)
@@ -239,7 +233,8 @@ export class Auth {
 
               const space = await this.spaceService.createPersonalSpace()
               await this.spaceMemberService.createMember(userId, space.id.value, "owner")
-              ctx.cookie[SPACE_ID_COOKIE_NAME].set({ value: space.id.value })
+
+              spaceId = space.id.value
 
               if (env.UNDB_VERIFY_EMAIL) {
                 const verificationCode = await this.#generateEmailVerificationCode(userId, email)
@@ -257,7 +252,7 @@ export class Auth {
             })
           }
 
-          const session = await this.lucia.createSession(userId, {})
+          const session = await this.lucia.createSession(userId, { space_id: spaceId })
           const sessionCookie = this.lucia.createSessionCookie(session.id)
 
           response.headers.set("Set-Cookie", sessionCookie.serialize())
@@ -298,21 +293,14 @@ export class Auth {
             })
           }
 
-          const session = await this.lucia.createSession(user.id, {})
-          const sessionCookie = this.lucia.createSessionCookie(session.id)
-
-          const spaceId = ctx.cookie[SPACE_ID_COOKIE_NAME]?.value
-          let space = await this.spaceService.getSpace({ spaceId })
-          if (space.isNone()) {
-            space = await this.spaceService.getSpace({ userId: user.id })
-            if (space.isSome()) {
-              ctx.cookie[SPACE_ID_COOKIE_NAME].set({ value: space.unwrap().id.value })
-            } else {
-              space = Some(await this.spaceService.createPersonalSpace())
-              await this.spaceMemberService.createMember(user.id, space.unwrap().id.value, "owner")
-              ctx.cookie[SPACE_ID_COOKIE_NAME].set({ value: space.unwrap().id.value })
-            }
+          let space = await this.spaceService.getSpace({ userId: user.id })
+          if (space.isSome()) {
+          } else {
+            space = Some(await this.spaceService.createPersonalSpace())
+            await this.spaceMemberService.createMember(user.id, space.unwrap().id.value, "owner")
           }
+          const session = await this.lucia.createSession(user.id, { space_id: space.unwrap().id.value })
+          const sessionCookie = this.lucia.createSessionCookie(session.id)
 
           return new Response(null, {
             status: 302,
@@ -348,7 +336,7 @@ export class Auth {
             })
           }
 
-          const { user } = await this.lucia.validateSession(sessionId)
+          const { user, session: validatedSession } = await this.lucia.validateSession(sessionId)
           if (!user) {
             return new Response(null, {
               status: 401,
@@ -376,7 +364,7 @@ export class Auth {
               .execute()
           })
 
-          const session = await this.lucia.createSession(user.id, {})
+          const session = await this.lucia.createSession(user.id, { space_id: validatedSession.spaceId })
           const sessionCookie = this.lucia.createSessionCookie(session.id)
           return new Response(null, {
             status: 302,

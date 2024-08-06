@@ -16,6 +16,11 @@ export const lucia = new Lucia(adapter, {
       secure: Bun.env.NODE_ENV === "PRODUCTION", // set `Secure` flag in HTTPS
     },
   },
+  getSessionAttributes: (attributes) => {
+    return {
+      spaceId: attributes.space_id,
+    }
+  },
   getUserAttributes: (attributes) => {
     return {
       emailVerified: Boolean(attributes.email_verified),
@@ -29,12 +34,16 @@ export const lucia = new Lucia(adapter, {
 declare module "lucia" {
   interface Register {
     Lucia: typeof lucia
+    DatabaseSessionAttributes: DatabaseSessionAttributes
     DatabaseUserAttributes: {
       email: string
       email_verified: boolean
       username: string
       avatar?: string
     }
+  }
+  interface DatabaseSessionAttributes {
+    space_id: string
   }
 }
 
