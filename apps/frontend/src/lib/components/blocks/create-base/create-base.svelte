@@ -13,9 +13,9 @@
   const mutation = createMutation({
     mutationFn: trpc.base.create.mutate,
     async onSuccess(data) {
+      await goto(`/bases/${data}`)
       closeModal(CREATE_BASE_MODAL)
       form.reset()
-      await goto(`/bases/${data}`)
     },
     onError(error) {
       toast.error(error.message)
