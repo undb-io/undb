@@ -47,7 +47,7 @@ import {
 } from "@undb/table"
 import { sql, type ExpressionBuilder } from "kysely"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
-import type { IRecordQueryBuilder } from "../qb"
+import type { IQueryBuilder, IRecordQueryBuilder } from "../qb"
 import { JoinTable } from "../underlying/reference/join-table"
 
 export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IRecordVisitor {
@@ -83,9 +83,48 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
   }
   attachmentEqual(s: AttachmentEqual): void {
     this.setData(s.fieldId.value, JSON.stringify(s.value))
+    if (this.record) {
+      const deleteSql = (this.qb as IQueryBuilder)
+        .deleteFrom("undb_attachment_mapping")
+        .where((eb) =>
+          eb.and([
+            eb.eb("undb_attachment_mapping.table_id", "=", this.table.id.value),
+            eb.eb("undb_attachment_mapping.field_id", "=", s.fieldId.value),
+            eb.eb("undb_attachment_mapping.record_id", "=", this.record!.id.value),
+          ]),
+        )
+        .compile()
+      this.addSql(deleteSql)
+
+      if (s.value?.length) {
+        const insertSql = (this.qb as IQueryBuilder)
+          .insertInto("undb_attachment_mapping")
+          .values(
+            s.value?.map((value) => ({
+              table_id: this.table.id.value,
+              field_id: s.fieldId.value,
+              record_id: this.record!.id.value,
+              attachment_id: value.id,
+            })),
+          )
+          .compile()
+        this.addSql(insertSql)
+      }
+    }
   }
   attachmentEmpty(s: AttachmentEmpty): void {
     this.setData(s.fieldId.value, null)
+    const deleteSql = (this.qb as IQueryBuilder)
+      .deleteFrom("undb_attachment_mapping")
+      .where((eb) =>
+        eb.and([
+          eb.eb("undb_attachment_mapping.table_id", "=", this.table.id.value),
+          eb.eb("undb_attachment_mapping.field_id", "=", s.fieldId.value),
+          eb.eb("undb_attachment_mapping.record_id", "=", this.record!.id.value),
+        ]),
+      )
+      .compile()
+    this.addSql(deleteSql)
   }
   referenceEqual(spec: ReferenceEqual): void {
     const record = this.record

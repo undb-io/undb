@@ -2,6 +2,9 @@ export interface IPutObject {
   url: string
   id: string
   mimeType: string
+  name: string
+  token?: string
+  size: number
 }
 
 export interface IObjectStorage {

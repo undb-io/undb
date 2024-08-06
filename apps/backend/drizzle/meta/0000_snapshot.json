@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "4b64dd29-a974-4cec-9c55-837e0e0acfde",
+  "id": "c3c2dc77-f394-4926-a0f1-11dfa1b810df",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_api_token": {
@@ -90,6 +90,194 @@
         "undb_api_token_space_id_undb_space_id_fk": {
           "name": "undb_api_token_space_id_undb_space_id_fk",
           "tableFrom": "undb_api_token",
+          "tableTo": "undb_space",
+          "columnsFrom": [
+            "space_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "undb_attachment_mapping": {
+      "name": "undb_attachment_mapping",
+      "columns": {
+        "attachment_id": {
+          "name": "attachment_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "table_id": {
+          "name": "table_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "record_id": {
+          "name": "record_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "field_id": {
+          "name": "field_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "undb_attachment_mapping_attachment_id_undb_attachment_id_fk": {
+          "name": "undb_attachment_mapping_attachment_id_undb_attachment_id_fk",
+          "tableFrom": "undb_attachment_mapping",
+          "tableTo": "undb_attachment",
+          "columnsFrom": [
+            "attachment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "undb_attachment_mapping_table_id_undb_table_id_fk": {
+          "name": "undb_attachment_mapping_table_id_undb_table_id_fk",
+          "tableFrom": "undb_attachment_mapping",
+          "tableTo": "undb_table",
+          "columnsFrom": [
+            "table_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "undb_attachment_mapping_attachment_id_table_id_record_id_field_id_pk": {
+          "columns": [
+            "attachment_id",
+            "field_id",
+            "record_id",
+            "table_id"
+          ],
+          "name": "undb_attachment_mapping_attachment_id_table_id_record_id_field_id_pk"
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "undb_attachment": {
+      "name": "undb_attachment",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "size": {
+          "name": "size",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "mime_type": {
+          "name": "mime_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "token": {
+          "name": "token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "space_id": {
+          "name": "space_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "attachment_size_idx": {
+          "name": "attachment_size_idx",
+          "columns": [
+            "size"
+          ],
+          "isUnique": false
+        },
+        "attachment_space_id_idx": {
+          "name": "attachment_space_id_idx",
+          "columns": [
+            "space_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "undb_attachment_created_by_undb_user_id_fk": {
+          "name": "undb_attachment_created_by_undb_user_id_fk",
+          "tableFrom": "undb_attachment",
+          "tableTo": "undb_user",
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "undb_attachment_space_id_undb_space_id_fk": {
+          "name": "undb_attachment_space_id_undb_space_id_fk",
+          "tableFrom": "undb_attachment",
           "tableTo": "undb_space",
           "columnsFrom": [
             "space_id"

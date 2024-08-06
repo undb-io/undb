@@ -105,7 +105,7 @@
           <div class="flex h-5 w-5 items-center justify-center">
             {#if isImage(v)}
               <button on:click={() => ($selectedAttachment = v)}>
-                <img src={v.url} alt={v.name} />
+                <img class="h-4 w-4" src={v.url} alt={v.name} />
               </button>
             {:else}
               <FileIcon class="text-muted-foreground h-5 w-5" />

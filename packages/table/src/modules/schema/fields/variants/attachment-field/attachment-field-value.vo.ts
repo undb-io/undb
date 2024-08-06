@@ -2,9 +2,9 @@ import { z } from "@undb/zod"
 import { FieldValueObject } from "../../field-value"
 
 export const attachmentFieldValueItem = z.object({
+  id: z.string(),
   url: z.string(),
   name: z.string(),
-  id: z.string(),
   size: z.number(),
   type: z.string(),
 })
