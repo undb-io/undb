@@ -46,7 +46,7 @@
         <div class="flex flex-1 items-center justify-start">
           {#if selectedValue}
             <Avatar.Root class="h-6 w-6 border">
-              <Avatar.Image src="" alt={selectedValue.user.username} />
+              <Avatar.Image src={selectedValue.user.avatar} alt={selectedValue.user.username} />
               <Avatar.Fallback>{selectedValue.user.username?.slice(0, 2)}</Avatar.Fallback>
             </Avatar.Root>
 
@@ -88,7 +88,7 @@
             <Check class={cn("mr-2 h-4 w-4", value !== user?.user.id && "text-transparent")} />
             <div class="flex items-center gap-1">
               <Avatar.Root>
-                <Avatar.Image src="" alt={user?.user.username} />
+                <Avatar.Image src={user?.user.avatar} alt={user?.user.username} />
                 <Avatar.Fallback>{user?.user.username?.slice(0, 2)}</Avatar.Fallback>
               </Avatar.Root>
               <div>

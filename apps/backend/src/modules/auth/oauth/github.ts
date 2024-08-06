@@ -162,6 +162,7 @@ export class GithubOAuth {
               username: githubUserResult.login,
               email: primaryEmail.email,
               emailVerified: true,
+              avatar: githubUserResult.avatar_url,
             })
 
             await tx

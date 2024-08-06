@@ -20,6 +20,7 @@ import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize } from "lucia"
 import { TimeSpan, createDate, isWithinExpirationDate } from "oslo"
 import { alphabet, generateRandomString } from "oslo/crypto"
+import { omit } from "radash"
 import { v7 } from "uuid"
 import { SPACE_ID_COOKIE_NAME } from "../../constants"
 import { withTransaction } from "../../db"
@@ -139,6 +140,7 @@ export class Auth {
         username: user!.username,
         email: user!.email,
         emailVerified: user!.emailVerified,
+        avatar: user!.avatar,
       })
       return {
         user,
@@ -165,7 +167,7 @@ export class Auth {
 
         const member = store?.member
 
-        return { user, member }
+        return { user: omit(user, ["emailVerified"]), member }
       })
       .post(
         "/api/signup",

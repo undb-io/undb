@@ -5,6 +5,7 @@ query GetUsers($q: String) {
       id
       email
       username
+      avatar
     }
   }
 }

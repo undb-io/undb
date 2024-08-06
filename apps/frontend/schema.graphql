@@ -165,6 +165,7 @@ type Table {
 }
 
 type User {
+  avatar: String
   email: String!
   id: ID!
   username: String!

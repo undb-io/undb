@@ -150,8 +150,9 @@ export class GoogleOAuth {
             setContextValue("user", {
               userId,
               username: googleUserResult.name,
-              email: "",
-              emailVerified: false,
+              email: googleUserResult.email,
+              emailVerified: true,
+              avatar: googleUserResult.picture,
             })
 
             await tx

@@ -206,6 +206,7 @@ export class Graphql {
         id: ID!
         email: String!
         username: String!
+        avatar: String
       }
 
       type Space {
