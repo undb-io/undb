@@ -15,6 +15,7 @@
   import { Input } from "$lib/components/ui/input"
   import { createSpaceCommand } from "@undb/commands"
   import { goto, invalidateAll } from "$app/navigation"
+  import { Skeleton } from "$lib/components/ui/skeleton"
 
   export let space: ISpaceDTO
   export let me: any
@@ -76,31 +77,39 @@
     <DropdownMenu.Group>
       <DropdownMenu.Label>Spaces</DropdownMenu.Label>
       <DropdownMenu.Separator />
-      {#each spaces as space}
-        {#if space}
-          <DropdownMenu.Item
-            on:click={async () => {
-              await fetch(`/api/spaces/${space.id}/goto`)
-              await goto("/")
-              await invalidateAll()
-            }}
-            class="flex items-center justify-between gap-2 text-xs"
-          >
-            <div class="flex items-center gap-2">
-              <img src={Logo} alt="" class="h-4 w-4 rounded-full" />
-              {#if space.isPersonal}
-                {me.username}'s Personal Space
-              {:else}
-                {space.name}
-              {/if}
-            </div>
+      {#if $store.fetching}
+        <div class="space-y-1 px-1 py-0.5">
+          <Skeleton class="h-6 w-full rounded-sm" />
+          <Skeleton class="h-6 w-full rounded-sm" />
+          <Skeleton class="h-6 w-full rounded-sm" />
+        </div>
+      {:else}
+        {#each spaces as space}
+          {#if space}
+            <DropdownMenu.Item
+              on:click={async () => {
+                await fetch(`/api/spaces/${space.id}/goto`)
+                await goto("/")
+                await invalidateAll()
+              }}
+              class="flex items-center justify-between gap-2 text-xs"
+            >
+              <div class="flex items-center gap-2">
+                <img src={Logo} alt="" class="h-4 w-4 rounded-full" />
+                {#if space.isPersonal}
+                  {me.username}'s Personal Space
+                {:else}
+                  {space.name}
+                {/if}
+              </div>
 
-            {#if space.member}
-              <Role role={space.member.role} />
-            {/if}
-          </DropdownMenu.Item>
-        {/if}
-      {/each}
+              {#if space.member}
+                <Role role={space.member.role} />
+              {/if}
+            </DropdownMenu.Item>
+          {/if}
+        {/each}
+      {/if}
       <DropdownMenu.Separator />
       <DropdownMenu.Item on:click={() => (createOpen = true)} class="flex items-center justify-center text-xs">
         <PlusSquareIcon class="mr-2 h-4 w-4" />

@@ -10,11 +10,9 @@
   import { toast } from "svelte-sonner"
   import { invalidate } from "$app/navigation"
   import { goto } from "$app/navigation"
-  import { FieldIdVo, getNextName } from "@undb/table"
+  import { FieldIdVo } from "@undb/table"
   import { CREATE_TABLE_MODAL, closeModal } from "$lib/store/modal.store"
   import { baseId, currentBase } from "$lib/store/base.store"
-  import { LL } from "@undb/i18n/client"
-  import { page } from "$app/stores"
 
   const schema = createTableCommand.omit({ baseId: true })
 
