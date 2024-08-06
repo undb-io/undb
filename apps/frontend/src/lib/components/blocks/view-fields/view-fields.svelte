@@ -25,7 +25,7 @@
   $: visibleCount = viewFieldsVo.getVisibleFieldsCount()
 
   let open = false
-  let menuOpen = false
+  let fieldOpen: Record<string, boolean> = {}
   let update = false
 
   const q = writable("")
@@ -145,7 +145,6 @@
                   </button>
 
                   <Popover.Root
-                    bind:open={menuOpen}
                     portal="body"
                     onOpenChange={(open) => {
                       if (!open) {
@@ -157,7 +156,7 @@
                       <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
                     </Popover.Trigger>
 
-                    <FieldMenu bind:update bind:open={menuOpen} {field} />
+                    <FieldMenu bind:update bind:open={fieldOpen[field.id.value]} {field} />
                   </Popover.Root>
                 </div>
               </div>
