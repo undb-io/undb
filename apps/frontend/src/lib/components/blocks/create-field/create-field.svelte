@@ -83,7 +83,7 @@
 <form method="POST" use:enhance class="space-y-2">
   <Form.Field {form} name="name" class="w-full">
     <Form.Control let:attrs>
-      <Input placeholder="field name..." {...attrs} bind:value={$formData.name} autofocus class="w-full" />
+      <Input placeholder="Set field display name..." {...attrs} bind:value={$formData.name} autofocus class="w-full" />
     </Form.Control>
     <Form.Description />
     <Form.FieldErrors />

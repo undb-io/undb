@@ -52,7 +52,7 @@
   <Form.Field {form} name="name">
     <Form.Control let:attrs>
       <Form.Label>Name</Form.Label>
-      <Input {...attrs} bind:value={$formData.name} />
+      <Input {...attrs} bind:value={$formData.name} placeholder="Set base display name..." />
     </Form.Control>
     <Form.FieldErrors />
   </Form.Field>

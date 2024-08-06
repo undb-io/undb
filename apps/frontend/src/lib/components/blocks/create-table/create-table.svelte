@@ -41,7 +41,7 @@
           {
             id: FieldIdVo.create().value,
             type: "string",
-            name: getNextName([], $LL.table.fieldTypes.string()),
+            name: "Title",
             display: true,
             constraint: {},
           },
@@ -78,7 +78,7 @@
   <Form.Field {form} name="name">
     <Form.Control let:attrs>
       <Form.Label>Name</Form.Label>
-      <Input {...attrs} bind:value={$formData.name} />
+      <Input {...attrs} bind:value={$formData.name} placeholder="Set table display name..." />
     </Form.Control>
     <Form.FieldErrors />
   </Form.Field>

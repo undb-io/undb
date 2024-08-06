@@ -117,7 +117,13 @@
                   }
                 }}
               />
-              <Input {...attrs} class="bg-background no-underline" bind:value={field.name} data-field-id={field.id} />
+              <Input
+                placeholder="Field name"
+                {...attrs}
+                class="bg-background no-underline"
+                bind:value={field.name}
+                data-field-id={field.id}
+              />
               <div class="flex items-center gap-1" use:autoAnimate={{ duration: 100 }}>
                 {#if field.constraint?.required}
                   <span

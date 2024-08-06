@@ -48,7 +48,7 @@
     <Form.Field {form} name="name">
       <Form.Control let:attrs>
         <Form.Label>Name</Form.Label>
-        <Input autofocus {...attrs} bind:value={$formData.name} />
+        <Input autofocus {...attrs} bind:value={$formData.name} placeholder="base name" />
       </Form.Control>
       <Form.Description />
       <Form.FieldErrors />

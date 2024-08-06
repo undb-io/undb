@@ -72,7 +72,7 @@
       <Form.Field {form} name="name">
         <Form.Control let:attrs>
           <Form.Label>Name</Form.Label>
-          <Input {...attrs} bind:value={$formData.name} />
+          <Input {...attrs} bind:value={$formData.name} placeholder="Set api token display name..." />
         </Form.Control>
         <Form.Description>Public token diplay name.</Form.Description>
         <Form.FieldErrors />
