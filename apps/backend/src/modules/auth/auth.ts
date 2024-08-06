@@ -1,7 +1,5 @@
-import { LibSQLAdapter } from "@lucia-auth/adapter-sqlite"
 import {
   type IInvitationQueryRepository,
-  ISpaceMemberRole,
   type ISpaceMemberService,
   injectInvitationQueryRepository,
   injectSpaceMemberService,
@@ -10,60 +8,25 @@ import { AcceptInvitationCommand } from "@undb/commands"
 import type { ContextMember } from "@undb/context"
 import { executionContext, setContextValue } from "@undb/context/server"
 import { CommandBus } from "@undb/cqrs"
-import { inject } from "@undb/di"
+import { container, inject, singleton } from "@undb/di"
 import { Some } from "@undb/domain"
 import { env } from "@undb/env"
 import { type IMailService, injectMailService } from "@undb/mail"
-import { type IQueryBuilder, getCurrentTransaction, injectQueryBuilder, sqlite } from "@undb/persistence"
+import { type IQueryBuilder, getCurrentTransaction, injectQueryBuilder } from "@undb/persistence"
 import { type ISpaceService, injectSpaceService } from "@undb/space"
-import { GitHub } from "arctic"
 import { Context, Elysia, t } from "elysia"
 import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize } from "lucia"
 import { TimeSpan, createDate, isWithinExpirationDate } from "oslo"
-import { serializeCookie } from "oslo/cookie"
 import { alphabet, generateRandomString } from "oslo/crypto"
-import { OAuth2RequestError, generateState } from "oslo/oauth2"
-import { singleton } from "tsyringe"
+import { omit } from "radash"
 import { v7 } from "uuid"
-import { SPACE_ID_COOKIE_NAME } from "../../constants"
 import { withTransaction } from "../../db"
-
-export const github = new GitHub(env.GITHUB_CLIENT_ID!, env.GITHUB_CLIENT_SECRET!)
-
-const adapter = new LibSQLAdapter(sqlite, {
-  user: "undb_user",
-  session: "undb_session",
-})
+import { injectLucia } from "./auth.provider"
+import { OAuth } from "./oauth/oauth"
 
 const getUsernameFromEmail = (email: string): string => {
   return email.split("@")[0]
-}
-
-export const lucia = new Lucia(adapter, {
-  sessionCookie: {
-    attributes: {
-      secure: Bun.env.NODE_ENV === "PRODUCTION", // set `Secure` flag in HTTPS
-    },
-  },
-  getUserAttributes: (attributes) => {
-    return {
-      emailVerified: attributes.email_verified,
-      email: attributes.email,
-      username: attributes.username,
-    }
-  },
-})
-
-declare module "lucia" {
-  interface Register {
-    Lucia: typeof lucia
-    DatabaseUserAttributes: {
-      email: string
-      email_verified: boolean
-      username: string
-    }
-  }
 }
 
 @singleton()
@@ -81,6 +44,8 @@ export class Auth {
     private readonly spaceService: ISpaceService,
     @injectMailService()
     private readonly mailService: IMailService,
+    @injectLucia()
+    private readonly lucia: Lucia,
   ) {}
 
   async #generateEmailVerificationCode(userId: string, email: string): Promise<string> {
@@ -131,7 +96,7 @@ export class Auth {
     }> => {
       // use headers instead of Cookie API to prevent type coercion
       const cookieHeader = context.request.headers.get("Cookie") ?? ""
-      const sessionId = lucia.readSessionCookie(cookieHeader)
+      const sessionId = this.lucia.readSessionCookie(cookieHeader)
 
       if (!sessionId) {
         return {
@@ -141,16 +106,16 @@ export class Auth {
         }
       }
 
-      const { session, user } = await lucia.validateSession(sessionId)
+      const { session, user } = await this.lucia.validateSession(sessionId)
       if (session && session.fresh) {
-        const sessionCookie = lucia.createSessionCookie(session.id)
+        const sessionCookie = this.lucia.createSessionCookie(session.id)
         context.cookie[sessionCookie.name].set({
           value: sessionCookie.value,
           ...sessionCookie.attributes,
         })
       }
       if (!session) {
-        const sessionCookie = lucia.createBlankSessionCookie()
+        const sessionCookie = this.lucia.createBlankSessionCookie()
         context.cookie[sessionCookie.name].set({
           value: sessionCookie.value,
           ...sessionCookie.attributes,
@@ -158,8 +123,7 @@ export class Auth {
       }
 
       const userId = user?.id!
-      // TODO: move to other file
-      const spaceId = context.cookie[SPACE_ID_COOKIE_NAME]?.value
+      const spaceId = session?.spaceId
       const space = await this.spaceService.setSpaceContext(setContextValue, { spaceId })
 
       const member = space
@@ -173,6 +137,7 @@ export class Auth {
         username: user!.username,
         email: user!.email,
         emailVerified: user!.emailVerified,
+        avatar: user!.avatar,
       })
       return {
         user,
@@ -183,7 +148,9 @@ export class Auth {
   }
 
   route() {
+    const oauth = container.resolve(OAuth)
     return new Elysia()
+      .use(oauth.route())
       .get("/api/me", (ctx) => {
         const store = executionContext.getStore()
         const user = store?.user
@@ -197,14 +164,12 @@ export class Auth {
 
         const member = store?.member
 
-        return { user, member }
+        return { user: omit(user, ["emailVerified"]), member }
       })
       .post(
         "/api/signup",
         async (ctx) => {
           let { email, password, invitationId, username } = ctx.body
-          const hasUser = !!(await this.queryBuilder.selectFrom("undb_user").selectAll().executeTakeFirst())
-          let role: ISpaceMemberRole = "owner"
           if (invitationId) {
             const invitation = await this.invitationRepository.findOneById(invitationId)
             if (invitation.isNone()) {
@@ -214,13 +179,10 @@ export class Auth {
             if (invitation.unwrap().email !== email) {
               throw new Error("Invalid email")
             }
-
-            role = invitation.unwrap().role
-          } else {
-            role = !hasUser ? "owner" : "admin"
           }
 
           let userId: string
+          let spaceId: string = ""
 
           const user = await this.queryBuilder
             .selectFrom("undb_user")
@@ -239,6 +201,8 @@ export class Auth {
             }
 
             userId = user.id
+            const space = (await this.spaceService.getSpace({ userId })).expect("User should have a space")
+            spaceId = space.id.value
           } else {
             userId = generateIdFromEntropySize(10) // 16 characters long
             const passwordHash = await Bun.password.hash(password)
@@ -269,7 +233,8 @@ export class Auth {
 
               const space = await this.spaceService.createPersonalSpace()
               await this.spaceMemberService.createMember(userId, space.id.value, "owner")
-              ctx.cookie[SPACE_ID_COOKIE_NAME].set({ value: space.id.value })
+
+              spaceId = space.id.value
 
               if (env.UNDB_VERIFY_EMAIL) {
                 const verificationCode = await this.#generateEmailVerificationCode(userId, email)
@@ -287,8 +252,8 @@ export class Auth {
             })
           }
 
-          const session = await lucia.createSession(userId, {})
-          const sessionCookie = lucia.createSessionCookie(session.id)
+          const session = await this.lucia.createSession(userId, { space_id: spaceId })
+          const sessionCookie = this.lucia.createSessionCookie(session.id)
 
           response.headers.set("Set-Cookie", sessionCookie.serialize())
           return response
@@ -328,21 +293,14 @@ export class Auth {
             })
           }
 
-          const session = await lucia.createSession(user.id, {})
-          const sessionCookie = lucia.createSessionCookie(session.id)
-
-          const spaceId = ctx.cookie[SPACE_ID_COOKIE_NAME]?.value
-          let space = await this.spaceService.getSpace({ spaceId })
-          if (space.isNone()) {
-            space = await this.spaceService.getSpace({ userId: user.id })
-            if (space.isSome()) {
-              ctx.cookie[SPACE_ID_COOKIE_NAME].set({ value: space.unwrap().id.value })
-            } else {
-              space = Some(await this.spaceService.createPersonalSpace())
-              await this.spaceMemberService.createMember(user.id, space.unwrap().id.value, "owner")
-              ctx.cookie[SPACE_ID_COOKIE_NAME].set({ value: space.unwrap().id.value })
-            }
+          let space = await this.spaceService.getSpace({ userId: user.id })
+          if (space.isSome()) {
+          } else {
+            space = Some(await this.spaceService.createPersonalSpace())
+            await this.spaceMemberService.createMember(user.id, space.unwrap().id.value, "owner")
           }
+          const session = await this.lucia.createSession(user.id, { space_id: space.unwrap().id.value })
+          const sessionCookie = this.lucia.createSessionCookie(session.id)
 
           return new Response(null, {
             status: 302,
@@ -361,7 +319,7 @@ export class Auth {
         },
       )
       .post("/api/logout", (ctx) => {
-        const sessionCookie = lucia.createBlankSessionCookie()
+        const sessionCookie = this.lucia.createBlankSessionCookie()
         const response = new Response()
         response.headers.set("Set-Cookie", sessionCookie.serialize())
         return response
@@ -370,7 +328,7 @@ export class Auth {
         "/api/email-verification",
         async (ctx) => {
           const cookieHeader = ctx.request.headers.get("Cookie") ?? ""
-          const sessionId = lucia.readSessionCookie(cookieHeader)
+          const sessionId = this.lucia.readSessionCookie(cookieHeader)
 
           if (!sessionId) {
             return new Response(null, {
@@ -378,7 +336,7 @@ export class Auth {
             })
           }
 
-          const { user } = await lucia.validateSession(sessionId)
+          const { user, session: validatedSession } = await this.lucia.validateSession(sessionId)
           if (!user) {
             return new Response(null, {
               status: 401,
@@ -398,7 +356,7 @@ export class Auth {
               throw new Error("Invalid code")
             }
 
-            await lucia.invalidateUserSessions(user.id)
+            await this.lucia.invalidateUserSessions(user.id)
             await this.queryBuilder
               .updateTable("undb_user")
               .set("email_verified", true)
@@ -406,8 +364,8 @@ export class Auth {
               .execute()
           })
 
-          const session = await lucia.createSession(user.id, {})
-          const sessionCookie = lucia.createSessionCookie(session.id)
+          const session = await this.lucia.createSession(user.id, { space_id: validatedSession.spaceId })
+          const sessionCookie = this.lucia.createSessionCookie(session.id)
           return new Response(null, {
             status: 302,
             headers: {
@@ -423,173 +381,6 @@ export class Auth {
           }),
         },
       )
-      .get("/login/github", async (ctx) => {
-        const state = generateState()
-        const url = await github.createAuthorizationURL(state, { scopes: ["user:email"] })
-        return new Response(null, {
-          status: 302,
-          headers: {
-            Location: url.toString(),
-            "Set-Cookie": serializeCookie("github_oauth_state", state, {
-              httpOnly: true,
-              secure: Bun.env.NODE_ENV === "production",
-              maxAge: 60 * 10, // 10 minutes
-              path: "/",
-            }),
-          },
-        })
-      })
-      .get("/login/github/callback", async (ctx) => {
-        const stateCookie = ctx.cookie["github_oauth_state"]?.value ?? null
-
-        const url = new URL(ctx.request.url)
-        const state = url.searchParams.get("state")
-        const code = url.searchParams.get("code")
-
-        // verify state
-        if (!state || !stateCookie || !code || stateCookie !== state) {
-          return new Response(null, {
-            status: 400,
-          })
-        }
-
-        try {
-          const tokens = await github.validateAuthorizationCode(code)
-          const githubUserResponse = await fetch("https://api.github.com/user", {
-            headers: {
-              Authorization: `Bearer ${tokens.accessToken}`,
-            },
-          })
-          const githubUserResult: GitHubUserResult = await githubUserResponse.json()
-
-          const existingUser = await this.queryBuilder
-            .selectFrom("undb_oauth_account")
-            .selectAll()
-            .where((eb) =>
-              eb.and([
-                eb.eb("provider_id", "=", "github"),
-                eb.eb("provider_user_id", "=", githubUserResult.id.toString()),
-              ]),
-            )
-            .executeTakeFirst()
-
-          if (existingUser) {
-            const session = await lucia.createSession(existingUser.user_id, {})
-            const sessionCookie = lucia.createSessionCookie(session.id)
-            return new Response(null, {
-              status: 302,
-              headers: {
-                Location: "/",
-                "Set-Cookie": sessionCookie.serialize(),
-              },
-            })
-          }
-
-          const emailsResponse = await fetch("https://api.github.com/user/emails", {
-            headers: {
-              Authorization: `Bearer ${tokens.accessToken}`,
-            },
-          })
-          const emails: GithubEmail[] = await emailsResponse.json()
-
-          const primaryEmail = emails.find((email) => email.primary) ?? null
-          if (!primaryEmail) {
-            return new Response("No primary email address", {
-              status: 400,
-            })
-          }
-          if (!primaryEmail.verified) {
-            return new Response("Unverified email", {
-              status: 400,
-            })
-          }
-
-          const existingGithubUser = await this.queryBuilder
-            .selectFrom("undb_user")
-            .selectAll()
-            .where("undb_user.email", "=", primaryEmail.email)
-            .executeTakeFirst()
-
-          if (existingGithubUser) {
-            const spaceId = ctx.cookie[SPACE_ID_COOKIE_NAME].value
-            if (!spaceId) {
-              await this.spaceService.setSpaceContext(setContextValue, { userId: existingGithubUser.id })
-            }
-
-            await this.queryBuilder
-              .insertInto("undb_oauth_account")
-              .values({
-                provider_id: "github",
-                provider_user_id: githubUserResult.id.toString(),
-                user_id: existingGithubUser.id,
-              })
-              .execute()
-
-            const session = await lucia.createSession(existingGithubUser.id, {})
-            const sessionCookie = lucia.createSessionCookie(session.id)
-            return new Response(null, {
-              status: 302,
-              headers: {
-                Location: "/",
-                "Set-Cookie": sessionCookie.serialize(),
-              },
-            })
-          }
-          const userId = generateIdFromEntropySize(10) // 16 characters long
-          await withTransaction(this.queryBuilder)(async () => {
-            const tx = getCurrentTransaction()
-            await tx
-              .insertInto("undb_user")
-              .values({
-                id: userId,
-                username: githubUserResult.login,
-                email: "",
-                password: "",
-                email_verified: false,
-              })
-              .execute()
-
-            setContextValue("user", {
-              userId,
-              username: githubUserResult.login,
-              email: "",
-              emailVerified: false,
-            })
-
-            await tx
-              .insertInto("undb_oauth_account")
-              .values({
-                user_id: userId,
-                provider_id: "github",
-                provider_user_id: githubUserResult.id.toString(),
-              })
-              .execute()
-            const space = await this.spaceService.createPersonalSpace()
-            await this.spaceMemberService.createMember(userId, space.id.value, "owner")
-            ctx.cookie[SPACE_ID_COOKIE_NAME].set({ value: space.id.value })
-          })
-          const session = await lucia.createSession(userId, {})
-          const sessionCookie = lucia.createSessionCookie(session.id)
-          return new Response(null, {
-            status: 302,
-            headers: {
-              Location: "/",
-              "Set-Cookie": sessionCookie.serialize(),
-            },
-          })
-        } catch (e) {
-          console.log(e)
-          if (e instanceof OAuth2RequestError) {
-            // bad verification code, invalid credentials, etc
-            return new Response(null, {
-              status: 400,
-            })
-          }
-          return new Response(null, {
-            status: 500,
-          })
-        }
-      })
       .get(
         "/invitation/:invitationId/accept",
         async (ctx) => {
@@ -608,14 +399,4 @@ export class Auth {
         },
       )
   }
-}
-interface GitHubUserResult {
-  id: number
-  login: string // username
-}
-
-interface GithubEmail {
-  email: string
-  primary: boolean
-  verified: boolean
 }

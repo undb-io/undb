@@ -6,7 +6,7 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { goto } from "$app/navigation"
 
-  export let user: { username: string; userId: string }
+  export let user: { avatar: string | null; username: string; userId: string }
 
   const logoutMutation = createMutation({
     mutationFn: () => fetch("/api/logout", { method: "POST" }),
@@ -24,7 +24,7 @@
   <DropdownMenu.Trigger asChild let:builder>
     <Button builders={[builder]} class="w-full justify-start gap-2" variant="link" size="sm">
       <Avatar.Root class="h-6 w-6">
-        <!-- <Avatar.Image src="" alt="@shadcn" /> -->
+        <Avatar.Image src={user.avatar} alt={user.username} />
         <Avatar.Fallback>{user.username.slice(0, 2)}</Avatar.Fallback>
       </Avatar.Root>
 

@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "c5657173-e544-40d2-b74c-40eeb7532b85",
+  "id": "4b64dd29-a974-4cec-9c55-837e0e0acfde",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "undb_api_token": {
@@ -795,6 +795,13 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "space_id": {
+          "name": "space_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         }
       },
       "indexes": {},
@@ -805,6 +812,19 @@
           "tableTo": "undb_user",
           "columnsFrom": [
             "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "undb_session_space_id_undb_space_id_fk": {
+          "name": "undb_session_space_id_undb_space_id_fk",
+          "tableFrom": "undb_session",
+          "tableTo": "undb_space",
+          "columnsFrom": [
+            "space_id"
           ],
           "columnsTo": [
             "id"

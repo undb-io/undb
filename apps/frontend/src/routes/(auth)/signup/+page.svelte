@@ -7,6 +7,7 @@
   import { Label } from "$lib/components/ui/label/index.js"
   import Logo from "$lib/images/logo.svg"
   import Github from "$lib/images/github.svg"
+  import Google from "$lib/images/Google.svg"
   import { createMutation } from "@tanstack/svelte-query"
   import { z } from "@undb/zod"
   import { defaults, superForm } from "sveltekit-superforms"
@@ -129,7 +130,6 @@
               <Form.Control let:attrs>
                 <div class="flex justify-between">
                   <Label for="password">Password</Label>
-                  <a href="##" class="ml-auto inline-block text-sm underline"> Forgot your password? </a>
                 </div>
                 <Input {...attrs} id="password" type="password" placeholder="******" bind:value={$formData.password} />
               </Form.Control>
@@ -164,8 +164,12 @@
         <Separator class="my-6" />
         <div class="space-y-2">
           <Button href="/login/github" variant="secondary" class="w-full">
-            <img class="mr-2 h-5 w-5" src={Github} alt="github" />
+            <img class="mr-2 h-4 w-4" src={Github} alt="github" />
             Login with Github
+          </Button>
+          <Button href="/login/google" variant="secondary" class="w-full">
+            <img class="mr-2 h-4 w-4" src={Google} alt="google" />
+            Login with Google
           </Button>
         </div>
       </Card.Content>

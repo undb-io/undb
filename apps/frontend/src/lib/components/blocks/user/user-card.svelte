@@ -17,7 +17,7 @@
 <HoverCard.Content class="p-0">
   <div class="flex justify-center gap-2 p-2">
     <Avatar.Root>
-      <Avatar.Image src="" alt={member?.user.username} />
+      <Avatar.Image src={member?.user.avatar} alt={member?.user.username} />
       <Avatar.Fallback>{member?.user.username.slice(0, 2)}</Avatar.Fallback>
     </Avatar.Root>
 

@@ -42,6 +42,10 @@ export default defineConfig({
         target: "http://0.0.0.0:4728",
         changeOrigin: true,
       },
+      "/login/google": {
+        target: "http://0.0.0.0:4728",
+        changeOrigin: true,
+      },
       "/graphql": {
         target: "http://0.0.0.0:4728",
         changeOrigin: true,

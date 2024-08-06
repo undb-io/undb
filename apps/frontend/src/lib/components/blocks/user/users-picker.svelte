@@ -75,7 +75,7 @@
             <Check class={cn("mr-2 h-4 w-4", !value?.includes(user?.user.id ?? "") && "text-transparent")} />
             <div class="flex items-center gap-1">
               <Avatar.Root>
-                <Avatar.Image src="" alt={user?.user.username} />
+                <Avatar.Image src={user?.user.avatar} alt={user?.user.username} />
                 <Avatar.Fallback>{user?.user.username?.slice(0, 2)}</Avatar.Fallback>
               </Avatar.Root>
               <div>

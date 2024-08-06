@@ -23,7 +23,7 @@
   let createOpen = false
 
   const store = new GetSpacesStore()
-  $: open && store.fetch()
+  $: open && store.fetch({ policy: "NetworkOnly" })
 
   $: spaces = $store.data?.spaces ?? []
 

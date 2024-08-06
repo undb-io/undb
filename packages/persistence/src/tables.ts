@@ -202,6 +202,9 @@ export const sessionTable = sqliteTable("session", {
     .notNull()
     .references(() => users.id),
   expiresAt: integer("expires_at").notNull(),
+  spaceId: text("space_id")
+    .notNull()
+    .references(() => space.id),
 })
 
 export const webhook = sqliteTable(

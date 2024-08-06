@@ -3,6 +3,7 @@ interface ContextUser {
   username?: string
   email?: string
   emailVerified?: boolean
+  avatar?: string
 }
 
 export interface ContextMember {

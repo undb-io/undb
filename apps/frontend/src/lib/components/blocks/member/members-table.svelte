@@ -22,7 +22,7 @@
         <Table.Row>
           <Table.Cell class="flex items-center gap-2 font-medium">
             <Avatar.Root>
-              <Avatar.Image src="" alt={member.user.username} />
+              <Avatar.Image src={member.user.avatar} alt={member.user.username} />
               <Avatar.Fallback>{member.user.username.slice(0, 2)}</Avatar.Fallback>
             </Avatar.Root>
 

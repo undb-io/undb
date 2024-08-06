@@ -5,6 +5,7 @@ query GetMember($id: ID!) {
       id
       username
       email
+      avatar
     }
   }
 }
