@@ -5,6 +5,7 @@
   import { Label } from "$lib/components/ui/label/index.js"
   import Logo from "$lib/images/logo.svg"
   import Github from "$lib/images/github.svg"
+  import Google from "$lib/images/Google.svg"
   import { createMutation } from "@tanstack/svelte-query"
   import { z } from "@undb/zod"
   import { defaults, superForm } from "sveltekit-superforms"
@@ -112,6 +113,10 @@
           <Button href="/login/github" variant="secondary" class="w-full">
             <img class="mr-2 h-5 w-5" src={Github} alt="github" />
             Login with Github
+          </Button>
+          <Button href="/login/google" variant="secondary" class="w-full">
+            <img class="mr-2 h-5 w-5" src={Google} alt="google" />
+            Login with Google
           </Button>
         </div>
       </Card.Content>
