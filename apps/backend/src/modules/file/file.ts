@@ -1,10 +1,12 @@
+import { getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
 import { singleton } from "@undb/di"
+import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
 import {
-  IPutObject,
-  TableIdVo,
   injectObjectStorage,
   injectTableRepository,
+  TableIdVo,
   type IObjectStorage,
+  type IPutObject,
   type ITableRepository,
 } from "@undb/table"
 import Elysia, { t } from "elysia"
@@ -16,6 +18,8 @@ export class FileService {
     private readonly objectStorage: IObjectStorage,
     @injectTableRepository()
     private readonly tableRepository: ITableRepository,
+    @injectQueryBuilder()
+    private readonly qb: IQueryBuilder,
   ) {}
 
   async #uploadFile(buffer: Buffer, path: string, originalname: string, mimeType: string) {
@@ -39,8 +43,30 @@ export class FileService {
             file.type,
           )
 
-          responses.push(response)
+          responses.push({ ...response, size: file.size })
         }
+
+        const userId = getCurrentUserId()
+        const spaceId = mustGetCurrentSpaceId()
+
+        await this.qb
+          .insertInto("undb_attachment")
+          .values(
+            responses.map((response) => {
+              return {
+                id: response.id,
+                mime_type: response.mimeType,
+                name: response.name,
+                token: response.token,
+                url: response.url,
+                created_at: new Date(),
+                created_by: userId,
+                size: response.size,
+                space_id: spaceId,
+              }
+            }),
+          )
+          .execute()
 
         return responses
       },

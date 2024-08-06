@@ -12,6 +12,8 @@ export class LocalObjectStorage implements IObjectStorage {
       url: "/public/" + path + "/" + `${id}-${originalname}`,
       id,
       mimeType,
+      name: originalname,
+      size: buffer.length,
     }
   }
   get(id: string): Promise<Buffer> {

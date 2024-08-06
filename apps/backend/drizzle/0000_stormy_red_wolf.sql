@@ -8,6 +8,30 @@ CREATE TABLE `undb_api_token` (
 	FOREIGN KEY (`space_id`) REFERENCES `undb_space`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
+CREATE TABLE `undb_attachment_mapping` (
+	`attachment_id` text NOT NULL,
+	`table_id` text NOT NULL,
+	`record_id` text NOT NULL,
+	`field_id` text NOT NULL,
+	PRIMARY KEY(`attachment_id`, `field_id`, `record_id`, `table_id`),
+	FOREIGN KEY (`attachment_id`) REFERENCES `undb_attachment`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
+CREATE TABLE `undb_attachment` (
+	`id` text PRIMARY KEY NOT NULL,
+	`name` text NOT NULL,
+	`size` integer NOT NULL,
+	`mime_type` text NOT NULL,
+	`url` text NOT NULL,
+	`token` text,
+	`created_at` integer NOT NULL,
+	`created_by` text NOT NULL,
+	`space_id` text NOT NULL,
+	FOREIGN KEY (`created_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`space_id`) REFERENCES `undb_space`(`id`) ON UPDATE no action ON DELETE no action
+);
+--> statement-breakpoint
 CREATE TABLE `undb_audit` (
 	`id` text PRIMARY KEY NOT NULL,
 	`timestamp` integer NOT NULL,
@@ -187,6 +211,8 @@ CREATE UNIQUE INDEX `undb_api_token_user_id_unique` ON `undb_api_token` (`user_i
 CREATE UNIQUE INDEX `undb_api_token_token_unique` ON `undb_api_token` (`token`);--> statement-breakpoint
 CREATE INDEX `api_token_space_id_idx` ON `undb_api_token` (`space_id`);--> statement-breakpoint
 CREATE INDEX `api_token_user_id_idx` ON `undb_api_token` (`user_id`);--> statement-breakpoint
+CREATE INDEX `attachment_size_idx` ON `undb_attachment` (`size`);--> statement-breakpoint
+CREATE INDEX `attachment_space_id_idx` ON `undb_attachment` (`space_id`);--> statement-breakpoint
 CREATE INDEX `audit_table_id_idx` ON `undb_audit` (`table_id`);--> statement-breakpoint
 CREATE INDEX `audit_space_id_idx` ON `undb_audit` (`space_id`);--> statement-breakpoint
 CREATE INDEX `audit_record_id_idx` ON `undb_audit` (`record_id`);--> statement-breakpoint
