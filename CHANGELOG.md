@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-3
+
+
+### 🏡 Chore
+
+- Google svg ([58c32b9](https://github.com/undb-io/undb/commit/58c32b9))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-2
 
 
