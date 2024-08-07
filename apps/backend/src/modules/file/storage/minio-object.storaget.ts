@@ -22,7 +22,7 @@ export class MinioObjectStorage implements IObjectStorage {
     const token = nanoid(16)
     const ext = path.extname(fileName)
     const name = id + ext
-    const url = await this.#minioClient.presignedPutObject(env.UNDB_MINIO_STORAGE_BUCKET!, name, 24 * 60 * 60)
+    const url = await this.#minioClient.presignedPutObject(env.UNDB_STORAGE_PRIVATE_BUCKET!, name, 24 * 60 * 60)
 
     return {
       id,
@@ -33,7 +33,7 @@ export class MinioObjectStorage implements IObjectStorage {
   }
 
   async getPreviewUrl(fileName: string): Promise<string> {
-    return this.#minioClient.presignedGetObject(env.UNDB_MINIO_STORAGE_BUCKET!, fileName, 24 * 60 * 60)
+    return this.#minioClient.presignedGetObject(env.UNDB_STORAGE_PRIVATE_BUCKET!, fileName, 24 * 60 * 60)
   }
 
   put(buffer: Buffer, path: string, originalname: string, mimeType: string): Promise<IPutObject> {
