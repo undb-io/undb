@@ -27,8 +27,7 @@ const minioEnv = createEnv({
     UNDB_MINIO_STORAGE_PORT: z
       .string()
       .optional()
-      .default("9000")
-      .transform((v) => parseInt(v, 10)),
+      .transform((v) => (v ? parseInt(v, 10) : undefined)),
     UNDB_MINIO_STORAGE_USE_SSL: z
       .string()
       .optional()
