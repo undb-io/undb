@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { isImage, type AttachmentField, type IAttachmentFieldValue } from "@undb/table"
+  import { isImage, type AttachmentField, type IAttachmentFieldValue, type IPresign } from "@undb/table"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
@@ -32,31 +32,43 @@
   let open = false
 
   async function onChange(e: Event) {
-    const target = e.target as HTMLInputElement
-    const files = target.files
-    if (!files?.length) return
+    try {
+      const target = e.target as HTMLInputElement
+      const files = target.files
+      if (!files?.length) return
 
-    const [file] = files
+      const [file] = files
 
-    const formData = new FormData()
-    formData.append("files", file)
+      const formData = new FormData()
+      formData.append("files", file)
 
-    const response = await fetch(`/api/upload/${tableId}`, {
-      method: "POST",
-      body: formData,
-    })
+      const signatureResponse = await fetch("/api/signature", {
+        method: "POST",
+        body: JSON.stringify({ fileName: file.name, mimeType: file.type }),
+      })
 
-    const json: { id: string; url: string; mimeType: string }[] = await response.json()
-    if (json.length) {
-      const [data] = json
+      const signature = await signatureResponse.json()
+
+      const { url, id, token, name } = signature as IPresign
+
+      await fetch(url, {
+        method: "PUT",
+        body: file,
+      })
+
+      await fetch(`/api/files/${name}/uploaded`, {
+        method: "POST",
+        body: JSON.stringify({ id, token, url: url.split("?")[0], size: file.size, mimeType: file.type }),
+      })
 
       value = [
         ...(value ?? []),
         {
-          id: data.id,
-          url: data.url,
-          type: data.mimeType,
-          name: file.name,
+          id: id,
+          url: url.split("?")[0],
+          token,
+          type: file.type,
+          name,
           size: file.size,
         },
       ]
@@ -68,6 +80,8 @@
         id: recordId,
         values: { [field.id.value]: value },
       })
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -105,7 +119,7 @@
           <div class="flex h-5 w-5 items-center justify-center">
             {#if isImage(v)}
               <button on:click={() => ($selectedAttachment = v)}>
-                <img class="h-4 w-4" src={v.url} alt={v.name} />
+                <img class="h-4 w-4" src={v.signedUrl ?? v.url} alt={v.name} />
               </button>
             {:else}
               <FileIcon class="text-muted-foreground h-5 w-5" />
@@ -149,7 +163,7 @@
                   >
                     {#if isImage(v)}
                       <button class="h-10 w-10" on:click={() => ($selectedAttachment = v)}>
-                        <img src={v.url} alt={v.name} />
+                        <img src={v.signedUrl ?? v.url} alt={v.name} />
                       </button>
                     {:else}
                       <FileIcon class="text-muted-foreground h-10 w-10" />

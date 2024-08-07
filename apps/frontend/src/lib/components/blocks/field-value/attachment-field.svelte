@@ -5,6 +5,7 @@
   import { selectedAttachment } from "$lib/store/attachment.store"
 
   export let value: IAttachmentFieldValue | undefined = undefined
+  $: console.log(value)
 </script>
 
 <span data-field-value={value}>
@@ -15,7 +16,7 @@
           <div class="h-5 w-5">
             {#if isImage(v)}
               <button on:click={() => ($selectedAttachment = v)}>
-                <img src={v.url} alt={v.name} />
+                <img src={v.signedUrl} alt={v.name} />
               </button>
             {:else}
               <FileIcon class="text-muted-foreground " />

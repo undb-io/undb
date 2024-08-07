@@ -1,4 +1,3 @@
-version: "3.0"
 services:
   undb:
     build:
@@ -12,15 +11,7 @@ services:
       - 3721:3721
     environment:
       - UNDB_DB_TURSO_URL=http://db:8080
+      - UNDB_MINIO_STORAGE_ENDPOINT=http://minio:9000
     depends_on:
       - db
-
-  db:
-    image: ghcr.io/tursodatabase/libsql-server:latest
-    # ports:
-    #   - "8080:8080"
-    #   - "5001:5001"
-    environment:
-      - SQLD_NODE=primary
-    volumes:
-      - ./apps/backend/.undb:/var/lib/sqld
+      - minio

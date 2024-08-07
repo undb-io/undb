@@ -27,58 +27,86 @@ export class FileService {
   }
 
   route() {
-    return new Elysia().post(
-      "/api/upload/:tableId",
-      async (ctx) => {
-        const tableId = new TableIdVo(ctx.params.tableId)
-        const table = (await this.tableRepository.findOneById(tableId)).unwrap()
+    return new Elysia()
+      .post(
+        "/api/signature",
+        async (ctx) => {
+          const { fileName, mimeType } = ctx.body
+          return this.objectStorage.presign(fileName, mimeType)
+        },
+        {
+          type: "json",
+          body: t.Object({
+            fileName: t.String(),
+            mimeType: t.String(),
+          }),
+        },
+      )
+      .post(
+        "/api/files/:fileName/uploaded",
+        async (ctx) => {
+          const { fileName } = ctx.params
+          const { id, token, url, size, mimeType } = ctx.body
+          const signedUrl = await this.objectStorage.getPreviewUrl(fileName)
+          await this.qb
+            .insertInto("undb_attachment")
+            .values({
+              id,
+              token,
+              url,
+              size,
+              mime_type: mimeType,
+              created_at: new Date(),
+              created_by: getCurrentUserId(),
+              space_id: mustGetCurrentSpaceId(),
+              name: fileName,
+            })
+            .execute()
+          return { signedUrl }
+        },
+        {
+          params: t.Object({
+            fileName: t.String(),
+          }),
+          body: t.Object({
+            id: t.String(),
+            token: t.String(),
+            url: t.String(),
+            size: t.Number(),
+            mimeType: t.String(),
+          }),
+        },
+      )
+      .post(
+        "/api/tabls/:tableId",
+        async (ctx) => {
+          const tableId = new TableIdVo(ctx.params.tableId)
+          const table = (await this.tableRepository.findOneById(tableId)).unwrap()
 
-        const responses: IPutObject[] = []
-        for (const file of ctx.body.files) {
-          const arrayBuffer = await file.arrayBuffer()
-          const response = await this.#uploadFile(
-            Buffer.from(arrayBuffer),
-            `${table.baseId}/${table.id.value}`,
-            file.name,
-            file.type,
-          )
+          const responses: IPutObject[] = []
+          for (const file of ctx.body.files) {
+            const arrayBuffer = await file.arrayBuffer()
+            const response = await this.#uploadFile(
+              Buffer.from(arrayBuffer),
+              `${table.baseId}/${table.id.value}`,
+              file.name,
+              file.type,
+            )
 
-          responses.push({ ...response, size: file.size })
-        }
+            responses.push({ ...response, size: file.size })
+          }
 
-        const userId = getCurrentUserId()
-        const spaceId = mustGetCurrentSpaceId()
-
-        await this.qb
-          .insertInto("undb_attachment")
-          .values(
-            responses.map((response) => {
-              return {
-                id: response.id,
-                mime_type: response.mimeType,
-                name: response.name,
-                token: response.token,
-                url: response.url,
-                created_at: new Date(),
-                created_by: userId,
-                size: response.size,
-                space_id: spaceId,
-              }
-            }),
-          )
-          .execute()
-
-        return responses
-      },
-      {
-        type: "multipart/form-data",
-        params: t.Object({
-          tableId: t.String(),
-        }),
-        body: t.Object({
-          files: t.Files(),
-        }),
-      },
-    )
+          return responses
+        },
+        {
+          type: "multipart/form-data",
+          params: t.Object({
+            tableId: t.String(),
+          }),
+          body: t.Object({
+            files: t.Files(),
+          }),
+        },
+      )
   }
 }
