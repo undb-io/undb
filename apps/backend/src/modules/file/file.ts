@@ -1,13 +1,7 @@
 import { getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
 import { singleton } from "@undb/di"
 import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
-import {
-  injectObjectStorage,
-  injectTableRepository,
-  type IObjectStorage,
-  type IPutObject,
-  type ITableRepository,
-} from "@undb/table"
+import { injectObjectStorage, type IObjectStorage, type IPutObject } from "@undb/table"
 import Elysia, { t } from "elysia"
 
 @singleton()
@@ -15,8 +9,6 @@ export class FileService {
   constructor(
     @injectObjectStorage()
     private readonly objectStorage: IObjectStorage,
-    @injectTableRepository()
-    private readonly tableRepository: ITableRepository,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
   ) {}
