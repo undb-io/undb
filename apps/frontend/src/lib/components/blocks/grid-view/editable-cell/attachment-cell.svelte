@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { isImage, type AttachmentField, type IAttachmentFieldValue } from "@undb/table"
+  import { isImage, type AttachmentField, type IAttachmentFieldValue, type IPresign } from "@undb/table"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
@@ -32,32 +32,55 @@
   let open = false
 
   async function onChange(e: Event) {
-    const target = e.target as HTMLInputElement
-    const files = target.files
-    if (!files?.length) return
+    try {
+      const target = e.target as HTMLInputElement
+      const files = target.files
+      if (!files?.length) return
 
-    const [file] = files
+      const [file] = files
 
-    const formData = new FormData()
-    formData.append("files", file)
+      const signatureResponse = await fetch("/api/signature", {
+        method: "POST",
+        body: JSON.stringify({ fileName: file.name, mimeType: file.type }),
+      })
 
-    const response = await fetch(`/api/upload/${tableId}`, {
-      method: "POST",
-      body: formData,
-    })
+      const signature = await signatureResponse.json()
 
-    const json: { id: string; url: string; mimeType: string }[] = await response.json()
-    if (json.length) {
-      const [data] = json
+      const { url, id, token, name } = signature as IPresign
+
+      // local
+      if (url.startsWith("/")) {
+        const formData = new FormData()
+        formData.append("name", name)
+        formData.append("file", file)
+        await fetch(url, {
+          method: "PUT",
+          body: formData,
+        })
+      } else {
+        await fetch(url, {
+          method: "PUT",
+          body: file,
+        })
+      }
+
+      const uploaded = await fetch(`/api/files/${name}/uploaded`, {
+        method: "POST",
+        body: JSON.stringify({ id, token, url: url.split("?")[0], size: file.size, mimeType: file.type }),
+      })
+
+      const { signedUrl } = await uploaded.json()
 
       value = [
         ...(value ?? []),
         {
-          id: data.id,
-          url: data.url,
-          type: data.mimeType,
-          name: file.name,
+          id: id,
+          url: url.split("?")[0],
+          token,
+          type: file.type,
+          name,
           size: file.size,
+          signedUrl,
         },
       ]
 
@@ -68,6 +91,8 @@
         id: recordId,
         values: { [field.id.value]: value },
       })
+    } catch (error) {
+      console.error(error)
     }
   }
 
@@ -105,7 +130,7 @@
           <div class="flex h-5 w-5 items-center justify-center">
             {#if isImage(v)}
               <button on:click={() => ($selectedAttachment = v)}>
-                <img src={v.url} alt={v.name} />
+                <img class="h-4 w-4" src={v.signedUrl ?? v.url} alt={v.name} />
               </button>
             {:else}
               <FileIcon class="text-muted-foreground h-5 w-5" />
@@ -148,8 +173,8 @@
                     class="group relative col-span-1 flex w-full items-center justify-center rounded-sm border"
                   >
                     {#if isImage(v)}
-                      <button class="h-10 w-10" on:click={() => ($selectedAttachment = v)}>
-                        <img src={v.url} alt={v.name} />
+                      <button type="button" class="h-full w-full" on:click={() => ($selectedAttachment = v)}>
+                        <img src={v.signedUrl ?? v.url} alt={v.name} />
                       </button>
                     {:else}
                       <FileIcon class="text-muted-foreground h-10 w-10" />
@@ -158,6 +183,7 @@
                     <AlertDialog.Root>
                       <AlertDialog.Trigger>
                         <button
+                          type="button"
                           class="absolute right-0 top-1 hidden -translate-y-1/2 translate-x-1/2 group-hover:block"
                         >
                           <XIcon class="text-muted-foreground h-5 w-5"></XIcon>
@@ -176,6 +202,7 @@
                         <AlertDialog.Footer>
                           <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
                           <AlertDialog.Action
+                            type="button"
                             on:click={() => removeFile(i)}
                             class="bg-red-500 text-white hover:bg-red-600">Delete</AlertDialog.Action
                           >

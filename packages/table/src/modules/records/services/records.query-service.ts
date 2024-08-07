@@ -1,7 +1,11 @@
 import { singleton } from "@undb/di"
 import type { Option, PaginatedDTO } from "@undb/domain"
+import { group } from "radash"
+import type { TableDo } from "../../../table.do"
 import type { ITableRepository } from "../../../table.repository"
 import { injectTableRepository } from "../../../table.repository.provider"
+import { FieldIdVo, type IAttachmentFieldValue } from "../../schema"
+import { injectObjectStorage, type IObjectStorage } from "../../storage"
 import type { AggregateResult, ICountRecordsDTO, IGetAggregatesDTO, IGetRecordByIdDTO, IGetRecordsDTO } from "../dto"
 import {
   injectRecordQueryRepository,
@@ -32,6 +36,8 @@ export class RecordsQueryService implements IRecordsQueryService {
     readonly tableRepository: ITableRepository,
     @injectRecordQueryRepository()
     readonly repo: IRecordQueryRepository,
+    @injectObjectStorage()
+    readonly objectStorage: IObjectStorage,
   ) {}
 
   getRecords = getRecords
@@ -40,4 +46,47 @@ export class RecordsQueryService implements IRecordsQueryService {
   getReadableRecords = getReadableRecords
   getReadableRecordById = getReadableRecordById
   getAggregates = getAggregates
+
+  async populateAttachment(
+    this: RecordsQueryService,
+    dto: IGetRecordsDTO,
+    table: TableDo,
+    value: IRecordDTO["values"],
+  ): Promise<IRecordDTO["values"]> {
+    const fields = dto.select?.length
+      ? dto.select.map((fieldId) => table.schema.getFieldById(new FieldIdVo(fieldId)).unwrap())
+      : table.schema.fields
+    const attachmentFields = fields.filter((field) => field.type === "attachment")
+    if (!attachmentFields.length) {
+      return value
+    }
+
+    const groupedAttachmentFields = group(attachmentFields, (field) => field.id.value)
+
+    const populate = async (values: IRecordDTO["values"]): Promise<IRecordDTO["values"]> => {
+      const populateAttachment = async ([fieldId, value]: [string, any]): Promise<[string, any]> => {
+        const attachmentField = groupedAttachmentFields[fieldId]
+        if (!attachmentField) {
+          return [fieldId, value]
+        }
+
+        let attachment = value as IAttachmentFieldValue
+        if (!Array.isArray(attachment)) {
+          return [fieldId, attachment]
+        }
+
+        const v = await Promise.all(
+          attachment.map(async (value) => {
+            const signedUrl = await this.objectStorage.getPreviewUrl(value.name)
+            return { ...value, signedUrl }
+          }),
+        )
+        return [fieldId, v]
+      }
+      const entries = Object.entries(values)
+      return Object.fromEntries(await Promise.all(entries.map(populateAttachment)))
+    }
+
+    return populate(value)
+  }
 }

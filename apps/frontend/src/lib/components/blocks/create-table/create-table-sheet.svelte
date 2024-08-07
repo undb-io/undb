@@ -3,9 +3,9 @@
   import CreateTable from "./create-table.svelte"
   import { Button } from "$lib/components/ui/button"
   import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
-  import { CREATE_RLS_MODAL, CREATE_TABLE_MODAL, closeModal, isModalOpen, toggleModal } from "$lib/store/modal.store"
+  import { CREATE_TABLE_MODAL, closeModal, isModalOpen } from "$lib/store/modal.store"
   import { baseId, currentBase } from "$lib/store/base.store"
-  import { QueryObserver, useIsMutating, useQueryClient } from "@tanstack/svelte-query"
+  import { useIsMutating } from "@tanstack/svelte-query"
   import { LoaderCircleIcon } from "lucide-svelte"
 
   const isCreating = useIsMutating({ mutationKey: ["createTable"] })
@@ -13,6 +13,8 @@
 
 <Sheet.Root
   open={$isModalOpen(CREATE_TABLE_MODAL)}
+  closeOnOutsideClick={false}
+  closeOnEscape={false}
   onOpenChange={(open) => {
     if (!open) {
       closeModal(CREATE_TABLE_MODAL)
@@ -35,7 +37,7 @@
     </ScrollArea>
 
     <Sheet.Footer>
-      <Button variant="outline" type="button" on:click={() => closeModal(CREATE_RLS_MODAL)}>Cancel</Button>
+      <Button variant="outline" type="button" on:click={() => closeModal(CREATE_TABLE_MODAL)}>Cancel</Button>
       <Button type="submit" disabled={$isCreating > 0} form="createTable">
         {#if $isCreating > 0}
           <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />

@@ -10,11 +10,9 @@
   import { toast } from "svelte-sonner"
   import { invalidate } from "$app/navigation"
   import { goto } from "$app/navigation"
-  import { FieldIdVo, getNextName } from "@undb/table"
+  import { FieldIdVo } from "@undb/table"
   import { CREATE_TABLE_MODAL, closeModal } from "$lib/store/modal.store"
   import { baseId, currentBase } from "$lib/store/base.store"
-  import { LL } from "@undb/i18n/client"
-  import { page } from "$app/stores"
 
   const schema = createTableCommand.omit({ baseId: true })
 
@@ -41,7 +39,7 @@
           {
             id: FieldIdVo.create().value,
             type: "string",
-            name: getNextName([], $LL.table.fieldTypes.string()),
+            name: "Title",
             display: true,
             constraint: {},
           },
@@ -55,7 +53,7 @@
       validators: zodClient(schema),
       resetForm: false,
       invalidateAll: true,
-      onUpdate(event) {
+      async onUpdate(event) {
         if (!event.form.valid) {
           console.log(event.form.errors)
           return
@@ -63,7 +61,7 @@
         const baseId = $currentBase?.id
         if (!baseId) return
 
-        $mutation.mutate({
+        await $mutation.mutateAsync({
           ...event.form.data,
           baseId: baseId,
         })
@@ -78,7 +76,7 @@
   <Form.Field {form} name="name">
     <Form.Control let:attrs>
       <Form.Label>Name</Form.Label>
-      <Input {...attrs} bind:value={$formData.name} />
+      <Input {...attrs} bind:value={$formData.name} placeholder="Set table display name..." />
     </Form.Control>
     <Form.FieldErrors />
   </Form.Field>

@@ -14,6 +14,7 @@
   import { toast } from "svelte-sonner"
   import { Button } from "$lib/components/ui/button"
   import { Separator } from "$lib/components/ui/separator"
+  import PasswordInput from "$lib/components/ui/input/password-input.svelte"
 
   const schema = z.object({
     email: z.string().email(),
@@ -96,7 +97,7 @@
                   <Label for="password">Password</Label>
                   <a href="##" class="ml-auto inline-block text-sm underline"> Forgot your password? </a>
                 </div>
-                <Input {...attrs} id="password" type="password" placeholder="*****" bind:value={$formData.password} />
+                <PasswordInput {...attrs} id="password" placeholder="*****" bind:value={$formData.password} />
               </Form.Control>
               <Form.Description />
               <Form.FieldErrors />

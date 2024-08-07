@@ -15,6 +15,7 @@
   import * as Form from "$lib/components/ui/form"
   import { toast } from "svelte-sonner"
   import { Separator } from "$lib/components/ui/separator"
+  import PasswordInput from "$lib/components/ui/input/password-input.svelte"
 
   const schema = z.object({
     email: z.string().email(),
@@ -131,7 +132,13 @@
                 <div class="flex justify-between">
                   <Label for="password">Password</Label>
                 </div>
-                <Input {...attrs} id="password" type="password" placeholder="******" bind:value={$formData.password} />
+                <PasswordInput
+                  {...attrs}
+                  id="password"
+                  type="password"
+                  placeholder="******"
+                  bind:value={$formData.password}
+                />
               </Form.Control>
               <Form.Description />
               <Form.FieldErrors />
@@ -143,7 +150,7 @@
                 <div class="flex justify-between">
                   <Label for="confirmPassword">Confirm Password</Label>
                 </div>
-                <Input
+                <PasswordInput
                   {...attrs}
                   id="confirmPassword"
                   type="password"

@@ -1,59 +1,80 @@
 <script lang="ts">
   import Input from "$lib/components/ui/input/input.svelte"
-  import { getTable } from "$lib/store/table.store"
-  import { isImage, type AttachmentField, type IAttachmentFieldValue } from "@undb/table"
+  import { isImage, type AttachmentField, type IAttachmentFieldValue, type IPresign } from "@undb/table"
   import { FileIcon, XIcon } from "lucide-svelte"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
   import { isNumber } from "radash"
   import { selectedAttachment } from "$lib/store/attachment.store"
 
   export let field: AttachmentField
-  const table = getTable()
 
   export let value: IAttachmentFieldValue = []
   export let readonly = false
 
   $: max = field.max
-  $: disabled = value?.length >= max
+  $: disabled = (value?.length ?? 0) >= max
 
   async function onChange(e: Event) {
-    const target = e.target as HTMLInputElement
-    const files = target.files
-    if (!files?.length) return
+    try {
+      const target = e.target as HTMLInputElement
+      const files = target.files
+      if (!files?.length) return
 
-    const [file] = files
+      const [file] = files
 
-    const formData = new FormData()
-    formData.append("files", file)
+      const signatureResponse = await fetch("/api/signature", {
+        method: "POST",
+        body: JSON.stringify({ fileName: file.name, mimeType: file.type }),
+      })
 
-    const response = await fetch(`/api/upload/${$table.id.value}`, {
-      method: "POST",
-      body: formData,
-    })
+      const signature = await signatureResponse.json()
 
-    const json: { id: string; url: string; mimeType: string }[] = await response.json()
-    if (json.length) {
-      const [data] = json
+      const { url, id, token, name } = signature as IPresign
+      // local
+      if (url.startsWith("/")) {
+        const formData = new FormData()
+        formData.append("name", name)
+        formData.append("file", file)
+        await fetch(url, {
+          method: "PUT",
+          body: formData,
+        })
+      } else {
+        await fetch(url, {
+          method: "PUT",
+          body: file,
+        })
+      }
 
+      const uploaded = await fetch(`/api/files/${name}/uploaded`, {
+        method: "POST",
+        body: JSON.stringify({ id, token, url: url.split("?")[0], size: file.size, mimeType: file.type }),
+      })
+
+      const { signedUrl } = await uploaded.json()
       value = [
         ...(value ?? []),
         {
-          id: data.id,
-          url: data.url,
-          type: data.mimeType,
-          name: file.name,
+          id: id,
+          url: url.split("?")[0],
+          token,
+          type: file.type,
+          name,
           size: file.size,
+          signedUrl,
         },
       ]
+    } catch (error) {
+      console.error(error)
     }
   }
 
   function removeFile(index: number) {
-    value = value.filter((_, i) => i !== index)
+    value = value?.filter((_, i) => i !== index) ?? []
   }
 
   function swap(oldIndex: number, newIndex: number) {
-    const newValue = [...value]
+    const newValue = [...(value ?? [])]
     const [removed] = newValue.splice(oldIndex, 1)
     newValue.splice(newIndex, 0, removed)
     value = newValue
@@ -76,7 +97,7 @@
           <div class="flex h-5 w-5 items-center justify-center">
             {#if isImage(v)}
               <button on:click={() => ($selectedAttachment = v)}>
-                <img src={v.url} alt={v.name} />
+                <img src={v.signedUrl} alt={v.name} />
               </button>
             {:else}
               <FileIcon class="text-muted-foreground h-5 w-5" />

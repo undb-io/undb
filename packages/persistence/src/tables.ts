@@ -132,6 +132,50 @@ export const rollupIdMapping = sqliteTable(
   },
 )
 
+export const attachments = sqliteTable(
+  "attachment",
+  {
+    id: text("id").notNull().primaryKey(),
+    name: text("name").notNull(),
+    size: integer("size").notNull(),
+    mimeType: text("mime_type").notNull(),
+    url: text("url").notNull(),
+    token: text("token"),
+    createdAt: integer("created_at", { mode: "timestamp_ms" }).notNull(),
+    createdBy: text("created_by")
+      .notNull()
+      .references(() => users.id),
+    spaceId: text("space_id")
+      .notNull()
+      .references(() => space.id),
+  },
+  (table) => {
+    return {
+      sizeIdx: index("attachment_size_idx").on(table.size),
+      spaceIdIdx: index("attachment_space_id_idx").on(table.spaceId),
+    }
+  },
+)
+
+export const attachmentMapping = sqliteTable(
+  "attachment_mapping",
+  {
+    attachmentId: text("attachment_id")
+      .notNull()
+      .references(() => attachments.id),
+    tableId: text("table_id")
+      .notNull()
+      .references(() => tables.id),
+    recordId: text("record_id").notNull(),
+    fieldId: text("field_id").notNull(),
+  },
+  (table) => {
+    return {
+      pk: primaryKey({ columns: [table.attachmentId, table.tableId, table.recordId, table.fieldId] }),
+    }
+  },
+)
+
 export const outbox = sqliteTable(
   "outbox",
   {

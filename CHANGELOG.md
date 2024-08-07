@@ -3,7 +3,9 @@
 
 ## v1.0.0-3
 
+### 🩹 Fixes
 
+- Fix some patch bugs ([b5d094c](https://github.com/undb-io/undb/commit/b5d094c))
 ### 🏡 Chore
 
 - Google svg ([58c32b9](https://github.com/undb-io/undb/commit/58c32b9))

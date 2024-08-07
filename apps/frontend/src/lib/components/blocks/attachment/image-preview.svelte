@@ -13,12 +13,12 @@
   }}
 >
   <Dialog.Content class="sm:max-w-1/2 max-w-1/2 !w-1/2 gap-0 space-y-0 p-0">
-    <img class="h-full w-full" src={$selectedAttachment?.url} alt="Attachment" />
+    <img class="h-full w-full" src={$selectedAttachment?.signedUrl} alt="Attachment" />
     <div class="bg-muted flex items-center gap-2 border-t p-4">
       <p>
         {$selectedAttachment?.name}
       </p>
-      <a href={$selectedAttachment?.url} target="_blank">
+      <a href={$selectedAttachment?.signedUrl} target="_blank">
         <ExternalLinkIcon class="text-muted-foreground h-4 w-4" />
       </a>
     </div>

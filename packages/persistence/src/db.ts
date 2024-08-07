@@ -2,6 +2,8 @@ import type { Kyselify } from "drizzle-orm/kysely"
 import type { Insertable, Selectable } from "kysely"
 import type {
   apiTokenTable,
+  attachmentMapping,
+  attachments,
   audit,
   baseTable,
   emailVerificationCode,
@@ -32,6 +34,8 @@ type UserTable = Kyselify<typeof users>
 type SpaceMemberTable = Kyselify<typeof spaceMember>
 type InvitationTable = Kyselify<typeof invitations>
 type ReferenceIdMappingTable = Kyselify<typeof referenceIdMapping>
+type AttachmentsTable = Kyselify<typeof attachments>
+type AttachmentMappingTable = Kyselify<typeof attachmentMapping>
 type ApiTokenTable = Kyselify<typeof apiTokenTable>
 type EmailVerificationCodeTable = Kyselify<typeof emailVerificationCode>
 type OAuthAccountTable = Kyselify<typeof oauthAccount>
@@ -53,6 +57,8 @@ export interface Database {
   undb_api_token: ApiTokenTable
   undb_email_verification_code: EmailVerificationCodeTable
   undb_oauth_account: OAuthAccountTable
+  undb_attachment: AttachmentsTable
+  undb_attachment_mapping: AttachmentMappingTable
 }
 
 export type Space = Selectable<SpaceTable>
@@ -72,6 +78,8 @@ export type Invitation = Selectable<InvitationTable>
 export type ApiToken = Selectable<ApiTokenTable>
 export type EmailVerificationCode = Selectable<EmailVerificationCodeTable>
 export type OAuthAccount = Selectable<OAuthAccountTable>
+export type Attachments = Selectable<AttachmentsTable>
+export type AttachmentMapping = Selectable<AttachmentMappingTable>
 
 export type InsertTableIdMapping = Insertable<TableIdMappingTable>
 export type InsertRollupIdMapping = Insertable<RollupIdMappingTable>

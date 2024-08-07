@@ -1,12 +1,12 @@
 import { None, Option, Some } from "@undb/domain"
-import { TableIdVo } from "../../../../table-id.vo"
+import { withUniqueTable } from "../../../../specifications"
 import type { IGetRecordByIdDTO } from "../../dto"
 import { RecordIdVO, type IRecordDTO, type SingleQueryArgs } from "../../record"
 import type { RecordsQueryService } from "../records.query-service"
 
 export async function getRecordById(this: RecordsQueryService, dto: IGetRecordByIdDTO): Promise<Option<IRecordDTO>> {
-  const tableId = new TableIdVo(dto.tableId)
-  const table = (await this.tableRepository.findOneById(tableId)).expect("Table not found")
+  const ts = withUniqueTable(dto).unwrap()
+  const table = (await this.tableRepository.findOne(Some(ts))).expect("Table not found")
 
   const query: SingleQueryArgs = {
     select: None,
@@ -16,5 +16,15 @@ export async function getRecordById(this: RecordsQueryService, dto: IGetRecordBy
     query.select = Some(dto.select)
   }
 
-  return this.repo.findOneById(table, new RecordIdVO(dto.id), Some(query))
+  const record = await this.repo.findOneById(table, new RecordIdVO(dto.id), Some(query))
+  if (record.isNone()) {
+    return None
+  }
+
+  const r = record.unwrap()
+  const values = await this.populateAttachment(dto, table, r.values)
+  return Some({
+    ...r,
+    values,
+  })
 }

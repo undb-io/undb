@@ -88,9 +88,9 @@
     {#each fields as field}
       {@const shouldShow = !tableForm || tableForm.getShouldShowField(field.id.value, $table.schema, tempRecord)}
       {#if shouldShow}
-        <Form.Field class="text-muted-foreground flex gap-4 space-y-0" {form} name={field.id.value}>
+        <Form.Field class="flex gap-4 space-y-0" {form} name={field.id.value}>
           <Form.Control let:attrs>
-            <Form.Label class="flex h-4 w-48 items-center justify-between gap-2 pt-2">
+            <Form.Label class="flex h-4 w-48 items-center justify-between gap-2 pt-4">
               <div data-field-id={field.id.value} class="flex items-center gap-2">
                 <FieldIcon {field} type={field.type} class="h-4 w-4" />
                 <span>{field.name.value}</span>
