@@ -22,9 +22,6 @@
 
       const [file] = files
 
-      const formData = new FormData()
-      formData.append("files", file)
-
       const signatureResponse = await fetch("/api/signature", {
         method: "POST",
         body: JSON.stringify({ fileName: file.name, mimeType: file.type }),
@@ -33,17 +30,28 @@
       const signature = await signatureResponse.json()
 
       const { url, id, token, name } = signature as IPresign
+      // local
+      if (url.startsWith("/")) {
+        const formData = new FormData()
+        formData.append("name", name)
+        formData.append("file", file)
+        await fetch(url, {
+          method: "PUT",
+          body: formData,
+        })
+      } else {
+        await fetch(url, {
+          method: "PUT",
+          body: file,
+        })
+      }
 
-      await fetch(url, {
-        method: "PUT",
-        body: file,
-      })
-
-      await fetch(`/api/files/${name}/uploaded`, {
+      const uploaded = await fetch(`/api/files/${name}/uploaded`, {
         method: "POST",
         body: JSON.stringify({ id, token, url: url.split("?")[0], size: file.size, mimeType: file.type }),
       })
 
+      const { signedUrl } = await uploaded.json()
       value = [
         ...(value ?? []),
         {
@@ -53,6 +61,7 @@
           type: file.type,
           name,
           size: file.size,
+          signedUrl,
         },
       ]
     } catch (error) {

@@ -4,7 +4,6 @@ import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
 import {
   injectObjectStorage,
   injectTableRepository,
-  TableIdVo,
   type IObjectStorage,
   type IPutObject,
   type ITableRepository,
@@ -32,7 +31,7 @@ export class FileService {
         "/api/signature",
         async (ctx) => {
           const { fileName, mimeType } = ctx.body
-          return this.objectStorage.presign(fileName, mimeType)
+          return this.objectStorage.presign(fileName, "", mimeType)
         },
         {
           type: "json",
@@ -65,6 +64,7 @@ export class FileService {
           return { signedUrl }
         },
         {
+          type: "json",
           params: t.Object({
             fileName: t.String(),
           }),
@@ -77,34 +77,24 @@ export class FileService {
           }),
         },
       )
-      .post(
-        "/api/tabls/:tableId",
+      .put(
+        "/api/upload",
         async (ctx) => {
-          const tableId = new TableIdVo(ctx.params.tableId)
-          const table = (await this.tableRepository.findOneById(tableId)).unwrap()
-
           const responses: IPutObject[] = []
-          for (const file of ctx.body.files) {
-            const arrayBuffer = await file.arrayBuffer()
-            const response = await this.#uploadFile(
-              Buffer.from(arrayBuffer),
-              `${table.baseId}/${table.id.value}`,
-              file.name,
-              file.type,
-            )
+          const file = ctx.body.file
+          const name = ctx.body.name
+          const arrayBuffer = await file.arrayBuffer()
+          const response = await this.#uploadFile(Buffer.from(arrayBuffer), "", name, file.type)
 
-            responses.push({ ...response, size: file.size })
-          }
+          responses.push(response)
 
           return responses
         },
         {
           type: "multipart/form-data",
-          params: t.Object({
-            tableId: t.String(),
-          }),
           body: t.Object({
-            files: t.Files(),
+            name: t.String(),
+            file: t.File(),
           }),
         },
       )

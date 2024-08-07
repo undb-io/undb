@@ -21,7 +21,7 @@ const oauthEnv = createEnv({
   emptyStringAsUndefined: true,
 })
 
-const s3Env = createEnv({
+const minioEnv = createEnv({
   server: {
     UNDB_MINIO_STORAGE_ENDPOINT: z.string().optional(),
     UNDB_MINIO_STORAGE_PORT: z
@@ -65,8 +65,10 @@ export const env = createEnv({
         message: "UNDB_VERIFY_EMAIL must be a boolean",
       })
       .transform((v) => v === "true"),
+
+    UNDB_STORAGE_PROVIDER: z.enum(["local", "minio"]).default("local").optional(),
   },
   runtimeEnv: import.meta.env,
   emptyStringAsUndefined: true,
-  extends: [dbEnv, oauthEnv, s3Env],
+  extends: [dbEnv, oauthEnv, minioEnv],
 })

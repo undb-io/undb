@@ -1,19 +1,35 @@
 import { singleton } from "@undb/di"
-import { IObjectStorage, IPutObject } from "@undb/table"
-import { v4 } from "uuid"
+import { IObjectStorage, IPresign, IPutObject } from "@undb/table"
+import { nanoid } from "nanoid"
+import * as path from "node:path"
+import { v7 } from "uuid"
 
 @singleton()
 export class LocalObjectStorage implements IObjectStorage {
-  async put(buffer: Buffer, path: string, originalname: string, mimeType: string): Promise<IPutObject> {
-    const id = v4()
-    await Bun.write(`./.undb/storage/${path}/${id}-${originalname}`, buffer)
+  async presign(fileName: string, _path: string, mimeType: string): Promise<IPresign> {
+    const id = v7()
+    const token = nanoid(16)
+    const ext = path.extname(fileName)
+    const name = id + ext
+
+    const url = "/api/upload"
 
     return {
-      url: "/public/" + path + "/" + `${id}-${originalname}`,
       id,
+      url,
+      token,
+      name,
+    }
+  }
+  async getPreviewUrl(fileName: string): Promise<string> {
+    return "/public/" + fileName
+  }
+  async put(buffer: Buffer, path: string, originalname: string, mimeType: string): Promise<IPutObject> {
+    await Bun.write(`./.undb/storage/${path ? path + "/" : ""}${originalname}`, buffer)
+
+    return {
       mimeType,
       name: originalname,
-      size: buffer.length,
     }
   }
   get(id: string): Promise<Buffer> {
