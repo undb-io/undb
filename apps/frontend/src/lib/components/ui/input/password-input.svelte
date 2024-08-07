@@ -40,6 +40,7 @@
     type={show ? "text" : "password"}
   />
   <button
+    tabindex="-1"
     type="button"
     class="text-muted-foreground absolute right-2 top-1/2 -translate-y-1/2"
     on:click={() => (show = !show)}
