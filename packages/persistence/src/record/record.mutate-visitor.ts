@@ -1,3 +1,4 @@
+import { getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
 import type { ISpecification, ISpecVisitor } from "@undb/domain"
 import {
   ID_TYPE,
@@ -97,6 +98,28 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
       this.addSql(deleteSql)
 
       if (s.value?.length) {
+        const userId = getCurrentUserId()
+        const spaceId = mustGetCurrentSpaceId()
+        const insert = (this.qb as IQueryBuilder)
+          .insertInto("undb_attachment")
+          .values(
+            s.value!.map((value) => {
+              return {
+                size: value.size,
+                url: value.url,
+                created_at: new Date(),
+                created_by: userId,
+                space_id: spaceId,
+                id: value.id,
+                mime_type: value.type,
+                name: value.name,
+              }
+            }),
+          )
+          .onConflict((bd) => bd.columns(["id"]).doNothing())
+          .compile()
+        this.addSql(insert)
+
         const insertSql = (this.qb as IQueryBuilder)
           .insertInto("undb_attachment_mapping")
           .values(
@@ -107,6 +130,7 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
               attachment_id: value.id,
             })),
           )
+          .onConflict((bd) => bd.columns(["table_id", "field_id", "record_id", "attachment_id"]).doNothing())
           .compile()
         this.addSql(insertSql)
       }

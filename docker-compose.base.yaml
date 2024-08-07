@@ -1,0 +1,23 @@
+services:
+  db:
+    image: ghcr.io/tursodatabase/libsql-server:latest
+    ports:
+      - "8080:8080"
+      - "5001:5001"
+    environment:
+      - SQLD_NODE=primary
+    volumes:
+      - ./apps/backend/.undb:/var/lib/sqld
+
+  minio:
+    image: quay.io/minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    volumes:
+      - ./minio/data:/data
+    command: server /data --console-address ":9001"

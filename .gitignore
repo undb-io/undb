@@ -40,3 +40,5 @@ yarn-error.log*
 undb
 .undb
 ./drizzle
+
+minio

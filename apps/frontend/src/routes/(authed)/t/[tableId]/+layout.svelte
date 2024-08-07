@@ -45,5 +45,5 @@
 </main>
 
 <svelte:head>
-  <title>{$table?.name.value || "undb"}</title>
+  <title>{$table?.name.value || "undb"} - undb</title>
 </svelte:head>

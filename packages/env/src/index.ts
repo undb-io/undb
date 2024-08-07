@@ -10,6 +10,42 @@ const dbEnv = createEnv({
   emptyStringAsUndefined: true,
 })
 
+const oauthEnv = createEnv({
+  server: {
+    GITHUB_CLIENT_ID: z.string().optional(),
+    GITHUB_CLIENT_SECRET: z.string().optional(),
+    GOOGLE_CLIENT_ID: z.string().optional(),
+    GOOGLE_CLIENT_SECRET: z.string().optional(),
+  },
+  runtimeEnv: import.meta.env,
+  emptyStringAsUndefined: true,
+})
+
+const s3Env = createEnv({
+  server: {
+    UNDB_MINIO_STORAGE_ENDPOINT: z.string().optional(),
+    UNDB_MINIO_STORAGE_PORT: z
+      .string()
+      .optional()
+      .default("9000")
+      .transform((v) => parseInt(v, 10)),
+    UNDB_MINIO_STORAGE_USE_SSL: z
+      .string()
+      .optional()
+      .default("false")
+      .refine((v) => v === "true" || v === "false", {
+        message: "UNDB_MINIO_STORAGE_USE_SSL must be a boolean",
+      })
+      .transform((v) => v === "true"),
+    UNDB_MINIO_STORAGE_REGION: z.string().optional(),
+    UNDB_MINIO_STORAGE_BUCKET: z.string().optional(),
+    UNDB_MINIO_STORAGE_ACCESS_KEY: z.string().optional(),
+    UNDB_MINIO_STORAGE_SECRET_KEY: z.string().optional(),
+  },
+  runtimeEnv: import.meta.env,
+  emptyStringAsUndefined: true,
+})
+
 export const env = createEnv({
   shared: {
     LOG_LEVEL: z.enum(["info", "debug", "error"]).default("info"),
@@ -29,14 +65,8 @@ export const env = createEnv({
         message: "UNDB_VERIFY_EMAIL must be a boolean",
       })
       .transform((v) => v === "true"),
-
-    GITHUB_CLIENT_ID: z.string().optional(),
-    GITHUB_CLIENT_SECRET: z.string().optional(),
-
-    GOOGLE_CLIENT_ID: z.string().optional(),
-    GOOGLE_CLIENT_SECRET: z.string().optional(),
   },
   runtimeEnv: import.meta.env,
   emptyStringAsUndefined: true,
-  extends: [dbEnv],
+  extends: [dbEnv, oauthEnv, s3Env],
 })
