@@ -173,7 +173,7 @@
                     class="group relative col-span-1 flex w-full items-center justify-center rounded-sm border"
                   >
                     {#if isImage(v)}
-                      <button class="h-10 w-10" on:click={() => ($selectedAttachment = v)}>
+                      <button type="button" class="h-full w-full" on:click={() => ($selectedAttachment = v)}>
                         <img src={v.signedUrl ?? v.url} alt={v.name} />
                       </button>
                     {:else}
@@ -183,6 +183,7 @@
                     <AlertDialog.Root>
                       <AlertDialog.Trigger>
                         <button
+                          type="button"
                           class="absolute right-0 top-1 hidden -translate-y-1/2 translate-x-1/2 group-hover:block"
                         >
                           <XIcon class="text-muted-foreground h-5 w-5"></XIcon>
@@ -201,6 +202,7 @@
                         <AlertDialog.Footer>
                           <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
                           <AlertDialog.Action
+                            type="button"
                             on:click={() => removeFile(i)}
                             class="bg-red-500 text-white hover:bg-red-600">Delete</AlertDialog.Action
                           >

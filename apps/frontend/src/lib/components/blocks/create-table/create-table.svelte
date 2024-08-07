@@ -53,7 +53,7 @@
       validators: zodClient(schema),
       resetForm: false,
       invalidateAll: true,
-      onUpdate(event) {
+      async onUpdate(event) {
         if (!event.form.valid) {
           console.log(event.form.errors)
           return
@@ -61,7 +61,7 @@
         const baseId = $currentBase?.id
         if (!baseId) return
 
-        $mutation.mutate({
+        await $mutation.mutateAsync({
           ...event.form.data,
           baseId: baseId,
         })
