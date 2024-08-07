@@ -17,13 +17,12 @@ export class MinioObjectStorage implements IObjectStorage {
     useSSL: env.UNDB_MINIO_STORAGE_USE_SSL,
   })
 
-  async presign(fileName: string, mimeType: string): Promise<IPresign> {
+  async presign(fileName: string, _path: string, mimeType: string): Promise<IPresign> {
     const id = v7()
     const token = nanoid(16)
     const ext = path.extname(fileName)
     const name = id + ext
     const url = await this.#minioClient.presignedPutObject(env.UNDB_MINIO_STORAGE_BUCKET!, name, 24 * 60 * 60)
-    this.#minioClient.presignedPutObject
 
     return {
       id,
