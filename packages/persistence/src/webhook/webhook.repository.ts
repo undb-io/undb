@@ -1,6 +1,7 @@
 import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import { type IWebhookRepository, type WebhookDo, type WebhookSpecification } from "@undb/webhook"
+import { getCurrentTransaction } from "../ctx"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { WebhookFilterVisitor } from "./webhook.filter-visitor"
@@ -17,7 +18,7 @@ export class WebhookRepository implements IWebhookRepository {
   ) {}
 
   async findOneById(id: string): Promise<Option<WebhookDo>> {
-    const wb = await this.qb
+    const wb = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_webhook")
       .selectAll()
       .where((eb) => eb.eb("id", "=", id))
@@ -31,7 +32,7 @@ export class WebhookRepository implements IWebhookRepository {
   }
 
   async find(spec: WebhookSpecification): Promise<WebhookDo[]> {
-    const wb = await this.qb
+    const wb = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_webhook")
       .selectAll()
       .where((eb) => {
@@ -47,14 +48,14 @@ export class WebhookRepository implements IWebhookRepository {
   async insert(webhook: WebhookDo): Promise<void> {
     const values = this.mapper.toEntity(webhook)
 
-    await this.qb.insertInto("undb_webhook").values(values).execute()
+    await (getCurrentTransaction() ?? this.qb).insertInto("undb_webhook").values(values).execute()
   }
 
   async updateOneById(webhook: WebhookDo, spec: WebhookSpecification): Promise<void> {
     const visitor = new WebhookMutationVisitor()
     spec.accept(visitor)
 
-    await this.qb
+    await (getCurrentTransaction() ?? this.qb)
       .updateTable("undb_webhook")
       .set(visitor.data)
       .where((eb) => eb.eb("id", "=", webhook.id.value))
