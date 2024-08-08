@@ -133,6 +133,7 @@ enum ShareTargetType {
 }
 
 type Space {
+  avatar: String
   id: ID!
   isPersonal: Boolean!
   member: SpaceMember

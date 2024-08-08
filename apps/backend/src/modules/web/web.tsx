@@ -14,7 +14,7 @@ export class Web {
       .get("/s/*", () => index)
       .get("/bases/*", () => index)
       .get("/account/*", () => index)
-      .get("/members", () => index)
+      .get("/settings", () => index)
       .get("/login", () => index)
       .get("/signup", () => index)
   }

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
-  import { PlusIcon, SearchIcon, Users2Icon } from "lucide-svelte"
+  import { PlusIcon, SearchIcon, SettingsIcon } from "lucide-svelte"
   import { commandOpen } from "../command/command.store"
   import { CREATE_BASE_MODAL, toggleModal } from "$lib/store/modal.store"
   import { page } from "$app/stores"
@@ -38,16 +38,18 @@
     </span>
   </Button>
 
-  {#if !space?.isPersonal}
-    <a
-      href={`/members`}
-      data-active={$page.route.id === "/(authed)/members"}
-      class="hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring data-[active=true]:bg-primary data-[active=true]:text-primary-foreground flex h-8 items-center justify-start gap-2 whitespace-nowrap rounded-md px-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
-    >
-      <Users2Icon class="h-4 w-4" />
-      Members
-    </a>
-  {/if}
+  <a
+    href={`/settings`}
+    data-active={$page.route.id === "/(authed)/settings"}
+    class="hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring data-[active=true]:bg-primary data-[active=true]:text-primary-foreground flex h-8 items-center justify-start gap-2 whitespace-nowrap rounded-md px-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
+  >
+    <SettingsIcon class="h-4 w-4" />
+    {#if space?.isPersonal}
+      Settings
+    {:else}
+      Settings & Members
+    {/if}
+  </a>
 
   {#if $hasPermission("base:create")}
     <Button

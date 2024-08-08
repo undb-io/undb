@@ -6,6 +6,7 @@ import { getCurrentTransaction } from "../ctx"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { SpaceFilterVisitor } from "./space.filter-visitor"
+import { SpaceMutateVisitor } from "./space.mutate-visitor"
 
 @singleton()
 export class SpaceRepostitory implements ISpaceRepository {
@@ -40,8 +41,25 @@ export class SpaceRepostitory implements ISpaceRepository {
       }),
     )
   }
-  findOneById(id: string): Promise<Option<Space>> {
-    throw new Error("Method not implemented.")
+  async findOneById(id: string): Promise<Option<Space>> {
+    const space = await (getCurrentTransaction() ?? this.qb)
+      .selectFrom("undb_space")
+      .selectAll()
+      .where("undb_space.id", "=", id)
+      .executeTakeFirst()
+
+    if (!space) {
+      return None
+    }
+
+    return Some(
+      SpaceFactory.fromJSON({
+        id: space.id,
+        avatar: space.avatar,
+        name: space.name ?? "",
+        isPersonal: Boolean(space.is_personal),
+      }),
+    )
   }
   async insert(space: Space): Promise<void> {
     const tx = getCurrentTransaction()
@@ -60,8 +78,16 @@ export class SpaceRepostitory implements ISpaceRepository {
       })
       .execute()
   }
-  updateOneById(space: Space, spec: ISpaceSpecification): Promise<void> {
-    throw new Error("Method not implemented.")
+  async updateOneById(space: Space, spec: ISpaceSpecification): Promise<void> {
+    const visitor = new SpaceMutateVisitor()
+    spec.accept(visitor)
+
+    const userId = getCurrentUserId()
+    await getCurrentTransaction()
+      .updateTable("undb_space")
+      .set({ ...visitor.data, updated_by: userId, updated_at: new Date().toISOString() })
+      .where((eb) => eb.eb("id", "=", space.id.value))
+      .execute()
   }
   deleteOneById(id: string): Promise<void> {
     throw new Error("Method not implemented.")
