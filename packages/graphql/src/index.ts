@@ -213,6 +213,7 @@ export class Graphql {
         id: ID!
         name: String!
         isPersonal: Boolean!
+        avatar: String
 
         member: SpaceMember
       }
@@ -293,6 +294,7 @@ export class Graphql {
             }
 
             const space = (await this.queryBus.execute(new GetSpaceByIdQuery({ id: spaceId }))) as Option<ISpaceDTO>
+
             if (space.isNone()) {
               return null
             }

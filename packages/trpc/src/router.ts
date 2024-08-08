@@ -34,6 +34,7 @@ import {
   UpdateAccountCommand,
   UpdateBaseCommand,
   UpdateRecordCommand,
+  UpdateSpaceCommand,
   UpdateTableCommand,
   UpdateTableFieldCommand,
   UpdateViewCommand,
@@ -73,6 +74,7 @@ import {
   setViewSortCommand,
   updateBaseCommand,
   updateRecordCommand,
+  updateSpaceCommand,
   updateTableCommand,
   updateTableFieldCommand,
   updateViewCommand,
@@ -297,6 +299,7 @@ const apiTokenRouter = t.router({
 const spaceRouter = t.router({
   list: p.input(getMemberSpacesQuery).query(({ input }) => queryBus.execute(new GetMemberSpacesQuery(input))),
   create: p.input(createSpaceCommand).mutation(({ input }) => commandBus.execute(new CreateSpaceCommand(input))),
+  update: p.input(updateSpaceCommand).mutation(({ input }) => commandBus.execute(new UpdateSpaceCommand(input))),
 })
 
 export const route = t.router({

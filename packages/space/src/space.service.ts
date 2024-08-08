@@ -24,7 +24,7 @@ interface IGetSpaceInput {
 }
 
 export interface ISpaceService {
-  createPersonalSpace(): Promise<Space>
+  createPersonalSpace(username: string): Promise<Space>
   getSpace(input: IGetSpaceInput): Promise<Option<Space>>
   getMemberSpaces(userId: string): Promise<ISpaceDTO[]>
   setSpaceContext(setContext: SetContextValue, input: IGetSpaceInput): Promise<Space>
@@ -43,9 +43,9 @@ export class SpaceService implements ISpaceService {
     private readonly spaceQueryRepository: ISpaceQueryRepository,
   ) {}
 
-  async createPersonalSpace(): Promise<Space> {
+  async createPersonalSpace(username: string): Promise<Space> {
     const space = SpaceFactory.create({
-      name: "",
+      name: username + "'s Personal Space",
       isPersonal: true,
     })
 

@@ -231,7 +231,7 @@ export class Auth {
                 })
                 .execute()
 
-              const space = await this.spaceService.createPersonalSpace()
+              const space = await this.spaceService.createPersonalSpace(username!)
               await this.spaceMemberService.createMember(userId, space.id.value, "owner")
 
               spaceId = space.id.value
@@ -296,7 +296,7 @@ export class Auth {
           let space = await this.spaceService.getSpace({ userId: user.id })
           if (space.isSome()) {
           } else {
-            space = Some(await this.spaceService.createPersonalSpace())
+            space = Some(await this.spaceService.createPersonalSpace(user.username))
             await this.spaceMemberService.createMember(user.id, space.unwrap().id.value, "owner")
           }
           const session = await this.lucia.createSession(user.id, { space_id: space.unwrap().id.value })
