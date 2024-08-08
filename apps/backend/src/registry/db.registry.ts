@@ -8,7 +8,8 @@ import {
   WORKSPQACE_MEMBER_QUERY_REPOSITORY,
 } from "@undb/authz"
 import { BASE_OUTBOX_SERVICE, BASE_QUERY_REPOSITORY, BASE_REPOSITORY } from "@undb/base"
-import { container } from "@undb/di"
+import { container, instanceCachingFactory } from "@undb/di"
+import { env } from "@undb/env"
 import { API_TOKEN_QUERY_REPOSITORY, API_TOKEN_REPOSITORY, API_TOKEN_SERVICE, ApiTokenService } from "@undb/openapi"
 import {
   ApiTokenQueryRepository,
@@ -18,8 +19,12 @@ import {
   BaseOutboxService,
   BaseQueryRepository,
   BaseRepository,
+  Client,
+  createSqliteQueryBuilder,
+  createTursoQueryBuilder,
   InvitationQueryRepository,
   InvitationRepository,
+  QUERY_BUILDER,
   RecordOutboxService,
   RecordQueryRepository,
   RecordRepository,
@@ -37,6 +42,7 @@ import {
   WebhookQueryRepository,
   WebhookRepository,
 } from "@undb/persistence"
+import { createSqliteClient, createTursoClient, SQLITE_CLIENT } from "@undb/persistence/src/client"
 import { SHARE_QUERY_REPOSITORY, SHARE_REPOSITORY, SHARE_SERVICE, ShareService } from "@undb/share"
 import { SPACE_QUERY_REPOSITORY, SPACE_REPOSITORY, SPACE_SERVICE, SpaceService } from "@undb/space"
 import {
@@ -49,8 +55,28 @@ import {
 } from "@undb/table"
 import { USER_QUERY_REPOSITORY, USER_REPOSITORY, USER_SERVICE, UserService } from "@undb/user"
 import { WEBHOOK_QUERY_REPOSITORY, WEBHOOK_REPOSITORY } from "@undb/webhook"
+import Database from "bun:sqlite"
 
 export const registerDb = () => {
+  container.register(SQLITE_CLIENT, {
+    useFactory: instanceCachingFactory(() => {
+      if (env.UNDB_DB_PROVIDER === "sqlite") {
+        return createSqliteClient("undb.sqlite")
+      }
+      return createTursoClient(env.UNDB_DB_TURSO_URL!, env.UNDB_DB_TURSO_AUTH_TOKEN)
+    }),
+  })
+  container.register(QUERY_BUILDER, {
+    useFactory: instanceCachingFactory((c) => {
+      if (env.UNDB_DB_PROVIDER === "sqlite") {
+        const sqlite = c.resolve<Database>(SQLITE_CLIENT)
+        return createSqliteQueryBuilder(sqlite)
+      }
+      const sqlite = c.resolve<Client>(SQLITE_CLIENT)
+      return createTursoQueryBuilder(sqlite)
+    }),
+  })
+
   container.register(SPACE_REPOSITORY, SpaceRepostitory)
   container.register(SPACE_QUERY_REPOSITORY, SpaceQueryRepository)
   container.register(SPACE_SERVICE, SpaceService)

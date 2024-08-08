@@ -1,7 +1,15 @@
 import { createClient } from "@libsql/client"
-import { env } from "@undb/env"
+import { inject } from "@undb/di"
+import Database from "bun:sqlite"
 
-export const sqlite = createClient({
-  url: env.UNDB_DB_TURSO_URL!,
-  authToken: env.UNDB_DB_TURSO_AUTH_TOKEN,
-})
+export const SQLITE_CLIENT = Symbol.for("SQLITE_CLIENT")
+
+export const injectSqliteClient = () => inject(SQLITE_CLIENT)
+
+export const createTursoClient = (url: string, authToken?: string) => {
+  return createClient({ url, authToken })
+}
+
+export const createSqliteClient = (fileName: string) => {
+  return new Database(fileName)
+}
