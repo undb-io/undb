@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-4
+
+
+### 🩹 Fixes
+
+- Fix create webhook ([9a2080e](https://github.com/undb-io/undb/commit/9a2080e))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-3
 
 ### 🩹 Fixes
