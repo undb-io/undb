@@ -20,12 +20,12 @@
     "prepare": "husky || echo 1"
   },
   "devDependencies": {
-    "drizzle-kit": "^0.23.1",
+    "drizzle-kit": "^0.23.2",
     "husky": "^9.1.4",
     "lint-staged": "^15.2.8",
     "npm-run-all2": "^6.2.2",
     "prettier": "^3.3.3",
-    "turbo": "^2.0.11"
+    "turbo": "^2.0.12"
   },
   "lint-staged": {
     "**/*": "bunx --bun prettier --write --ignore-unknown"
@@ -33,7 +33,7 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "bun@1.1.21",
+  "packageManager": "bun@1.1.22",
   "workspaces": [
     "apps/*",
     "packages/*"
