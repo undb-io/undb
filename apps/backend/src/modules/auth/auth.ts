@@ -58,7 +58,7 @@ export class Auth {
         user_id: userId,
         email,
         code,
-        expires_at: createDate(new TimeSpan(15, "m")),
+        expires_at: createDate(new TimeSpan(15, "m")).getTime(),
       })
       .execute()
     return code
@@ -350,19 +350,17 @@ export class Auth {
             })
           }
 
-          await withTransaction(this.queryBuilder)(async () => {
-            const validCode = await this.#verifyVerificationCode(user, code)
-            if (!validCode) {
-              throw new Error("Invalid code")
-            }
+          const validCode = await this.#verifyVerificationCode(user, code)
+          if (!validCode) {
+            throw new Error("Invalid code")
+          }
 
-            await this.lucia.invalidateUserSessions(user.id)
-            await this.queryBuilder
-              .updateTable("undb_user")
-              .set("email_verified", true)
-              .where("id", "=", user.id)
-              .execute()
-          })
+          await this.lucia.invalidateUserSessions(user.id)
+          await (getCurrentTransaction() ?? this.queryBuilder)
+            .updateTable("undb_user")
+            .set("email_verified", true)
+            .where("id", "=", user.id)
+            .execute()
 
           const session = await this.lucia.createSession(user.id, { space_id: validatedSession.spaceId })
           const sessionCookie = this.lucia.createSessionCookie(session.id)
