@@ -52,7 +52,7 @@ export class Auth {
   async #generateEmailVerificationCode(userId: string, email: string): Promise<string> {
     const tx = getCurrentTransaction()
     await tx.deleteFrom("undb_email_verification_code").where("user_id", "=", userId).execute()
-    const code = generateRandomString(6, alphabet("0-9"))
+    const code = env.UNDB_MOCK_MAIL_CODE || generateRandomString(6, alphabet("0-9"))
     await tx
       .insertInto("undb_email_verification_code")
       .values({
