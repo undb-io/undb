@@ -1,6 +1,7 @@
 import {
   type IInvitationQueryRepository,
   type ISpaceMemberService,
+  InvitationDTO,
   injectInvitationQueryRepository,
   injectSpaceMemberService,
 } from "@undb/authz"
@@ -9,7 +10,7 @@ import type { ContextMember } from "@undb/context"
 import { executionContext, setContextValue } from "@undb/context/server"
 import { CommandBus } from "@undb/cqrs"
 import { container, inject, singleton } from "@undb/di"
-import { Some } from "@undb/domain"
+import { None, Option, Some } from "@undb/domain"
 import { env } from "@undb/env"
 import { type IMailService, injectMailService } from "@undb/mail"
 import { type IQueryBuilder, getCurrentTransaction, injectQueryBuilder } from "@undb/persistence"
@@ -65,7 +66,7 @@ export class Auth {
   }
 
   async #verifyVerificationCode(user: User, code: string): Promise<boolean> {
-    return this.queryBuilder.transaction().execute(async (tx) => {
+    return (getCurrentTransaction() ?? this.queryBuilder).transaction().execute(async (tx) => {
       const databaseCode = await tx
         .selectFrom("undb_email_verification_code")
         .selectAll()
@@ -170,8 +171,9 @@ export class Auth {
         "/api/signup",
         async (ctx) => {
           let { email, password, invitationId, username } = ctx.body
+          let invitation: Option<InvitationDTO> = None
           if (invitationId) {
-            const invitation = await this.invitationRepository.findOneById(invitationId)
+            invitation = await this.invitationRepository.findOneById(invitationId)
             if (invitation.isNone()) {
               throw new Error("Invitation not found")
             }
@@ -193,16 +195,22 @@ export class Auth {
           const response = new Response()
 
           if (user) {
-            const validPassword = await Bun.password.verify(password, user.password)
-            if (!validPassword) {
-              return new Response("Invalid email or password", {
-                status: 400,
-              })
-            }
-
             userId = user.id
-            const space = (await this.spaceService.getSpace({ userId })).expect("User should have a space")
-            spaceId = space.id.value
+            if (!invitationId) {
+              const validPassword = await Bun.password.verify(password, user.password)
+              if (!validPassword) {
+                return new Response("Invalid email or password", {
+                  status: 400,
+                })
+              }
+
+              const space = (await this.spaceService.getSpace({ userId })).expect("User should have a space")
+              spaceId = space.id.value
+            } else {
+              const invitationSpaceId = invitation.unwrap().spaceId
+              spaceId = invitationSpaceId
+              await this.spaceMemberService.createMember(user.id, invitationSpaceId, invitation.unwrap().role)
+            }
           } else {
             userId = generateIdFromEntropySize(10) // 16 characters long
             const passwordHash = await Bun.password.hash(password)
@@ -217,10 +225,7 @@ export class Auth {
               },
             })
 
-            await withTransaction(
-              this.queryBuilder,
-              "read uncommitted",
-            )(async () => {
+            await withTransaction(this.queryBuilder)(async () => {
               await getCurrentTransaction()
                 .insertInto("undb_user")
                 .values({
@@ -233,8 +238,16 @@ export class Auth {
 
               const space = await this.spaceService.createPersonalSpace(username!)
               await this.spaceMemberService.createMember(userId, space.id.value, "owner")
-
-              spaceId = space.id.value
+              if (invitation.isSome()) {
+                await this.spaceMemberService.createMember(
+                  userId,
+                  invitation.unwrap().spaceId,
+                  invitation.unwrap().role,
+                )
+                spaceId = invitation.unwrap().spaceId
+              } else {
+                spaceId = space.id.value
+              }
 
               if (env.UNDB_VERIFY_EMAIL) {
                 const verificationCode = await this.#generateEmailVerificationCode(userId, email)
@@ -386,7 +399,15 @@ export class Auth {
             const { invitationId } = ctx.params
             await this.commandBus.execute(new AcceptInvitationCommand({ id: invitationId }))
 
-            const response = ctx.redirect("/signup?invitationId=" + invitationId)
+            const invitation = (await this.invitationRepository.findOneById(invitationId)).expect(
+              "Invitation should exist",
+            )
+
+            const search = new URLSearchParams()
+            search.set("invitationId", invitationId)
+            search.set("email", invitation.email)
+
+            const response = ctx.redirect("/signup?" + search.toString(), 301)
             return response
           })
         },

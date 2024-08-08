@@ -14,7 +14,7 @@ export class SpaceMemberRepository implements ISpaceMemberRepository {
   ) {}
 
   async exists(email: string): Promise<boolean> {
-    const user = await this.qb
+    const user = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_user")
       .selectAll()
       .where((eb) => eb.eb("undb_user.email", "=", email))
@@ -23,7 +23,7 @@ export class SpaceMemberRepository implements ISpaceMemberRepository {
   }
 
   async findOne(spec: SpaceMemberComositeSpecification): Promise<Option<SpaceMember>> {
-    const member = await this.qb
+    const member = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_space_member")
       .selectAll()
       .where((eb) => {

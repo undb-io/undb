@@ -70,7 +70,7 @@ declare module "lucia" {
 
 container.register(LUCIA_PROVIDER, {
   useFactory: instanceCachingFactory((c) => {
-    if (env.UNDB_DB_PROVIDER === "sqlite") {
+    if (env.UNDB_DB_PROVIDER === "sqlite" || !env.UNDB_DB_PROVIDER) {
       const sqlite = c.resolve<Database>(SQLITE_CLIENT)
       return createSqliteLucia(sqlite)
     }

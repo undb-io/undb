@@ -10,7 +10,7 @@ import { SQLITE_CLIENT } from "./client"
 import { DrizzleLogger } from "./db.logger"
 
 export async function dbMigrate() {
-  if (env.UNDB_DB_PROVIDER === "sqlite") {
+  if (env.UNDB_DB_PROVIDER === "sqlite" || !env.UNDB_DB_PROVIDER) {
     const sqlite = container.resolve<Database>(SQLITE_CLIENT)
     const db = sqliteDrizzle(sqlite, {
       logger: new DrizzleLogger(),
