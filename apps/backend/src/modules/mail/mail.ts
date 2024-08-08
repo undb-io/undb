@@ -8,7 +8,13 @@ import { compile } from "./templates/compile"
 function createMailerTransport() {
   return createTransport({
     host: env.UNDB_MAIL_HOST,
-    port: parseInt(env.UNDB_MAIL_PORT ?? "", 10),
+    port: env.UNDB_MAIL_PORT ? parseInt(env.UNDB_MAIL_PORT, 10) : undefined,
+    secure: env.UNDB_MAIL_SECURE,
+    auth: {
+      user: env.UNDB_MAIL_USER,
+      pass: env.UNDB_MAIL_PASS,
+    },
+    debug: Bun.env.NODE_ENV !== "production",
   })
 }
 

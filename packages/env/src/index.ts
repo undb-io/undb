@@ -50,6 +50,8 @@ const s3Env = createEnv({
     UNDB_S3_SECRET_ACCESS_KEY: z.string().optional(),
     UNDB_S3_STORAGE_ENDPOINT: z.string().url().optional(),
     UNDB_S3_STORAGE_REGION: z.string().optional(),
+    UNDB_MAIL_USER: z.string().optional(),
+    UNDB_MAIL_PASS: z.string().optional(),
   },
   runtimeEnv: import.meta.env,
   emptyStringAsUndefined: true,
@@ -69,6 +71,14 @@ const emailEnv = createEnv({
     UNDB_MAIL_HOST: z.string().optional(),
     UNDB_MAIL_PORT: z.string().optional(),
     UNDB_MAIL_DEFAULT_FROM: z.string().optional(),
+    UNDB_MAIL_SECURE: z
+      .string()
+      .optional()
+      .default("false")
+      .refine((v) => v === "true" || v === "false", {
+        message: "UNDB_MAIL_SECURE must be a boolean",
+      })
+      .transform((v) => v === "true"),
     UNDB_VERIFY_EMAIL: z
       .string()
       .optional()
