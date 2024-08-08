@@ -21,3 +21,9 @@ services:
     volumes:
       - ./minio/data:/data
     command: server /data --console-address ":9001"
+
+  maildev:
+    image: maildev/maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
