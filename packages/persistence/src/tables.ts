@@ -26,6 +26,8 @@ export const space = sqliteTable(
     updatedBy: text("updated_by")
       .notNull()
       .references(() => users.id),
+    deletedAt: integer("deleted_at", { mode: "timestamp_ms" }),
+    deletedBy: text("deleted_by").references(() => users.id),
   },
   (table) => {
     return {

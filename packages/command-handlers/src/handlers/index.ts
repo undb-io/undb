@@ -14,6 +14,7 @@ import { CreateTableCommandHandler } from "./create-table.command-handler"
 import { CreateWebhookCommandHandler } from "./create-webhook.command-handler"
 import { DeleteInvitationCommandHandler } from "./delete-invitation.command-handler"
 import { DeleteRecordCommandHandler } from "./delete-record.command-handler"
+import { DeleteSpaceCommandHandler } from "./delete-space.command-handler"
 import { DeleteTableFieldCommandHandler } from "./delete-table-field.command-handler"
 import { DeleteTableCommandHandler } from "./delete-table.command-handler"
 import { DeleteViewCommandHandler } from "./delete-view.command-handler"
@@ -84,4 +85,5 @@ export const commandHandlers = [
   CreateApiTokenCommandHandler,
   CreateSpaceCommandHandler,
   UpdateSpaceCommandHandler,
+  DeleteSpaceCommandHandler,
 ]

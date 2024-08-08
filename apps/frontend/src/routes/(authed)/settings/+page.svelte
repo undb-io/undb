@@ -5,7 +5,7 @@
   import { Input } from "$lib/components/ui/input"
   import { SettingsIcon, Users, UsersIcon } from "lucide-svelte"
   import type { LayoutData } from "./$types"
-  import { queryParam } from "sveltekit-search-params"
+  import { queryParam, ssp } from "sveltekit-search-params"
   import InvitationsListButton from "$lib/components/blocks/invitations/invitations-list-button.svelte"
   import { hasPermission } from "$lib/store/workspace-member.store"
   import { onMount } from "svelte"
@@ -13,6 +13,7 @@
   import SpaceSetting from "$lib/components/blocks/space/space-setting.svelte"
 
   const mq = queryParam("mq")
+  const tab = queryParam("tab", ssp.string())
 
   export let data: LayoutData
   $: getMembersStore = data.getMembersStore
@@ -40,7 +41,7 @@
     </h3>
   </div>
 
-  <Tabs.Root value="members" class="w-full">
+  <Tabs.Root bind:value={$tab} class="w-full">
     <Tabs.List>
       <Tabs.Trigger value="members">
         <UsersIcon class="mr-2 h-4 w-4" />
