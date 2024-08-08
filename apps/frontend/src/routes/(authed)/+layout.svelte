@@ -55,7 +55,7 @@
     goto(`/t/${tables[0]?.id}`, { replaceState: true })
   }
   $: if (!tables.length && bases.length) {
-    // goto(`/bases/${bases[0]?.id}`, { replaceState: true })
+    goto(`/bases/${bases[0]?.id}`, { replaceState: true })
   }
 
   let CreateBaseDialog: ComponentType
