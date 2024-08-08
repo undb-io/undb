@@ -71,6 +71,7 @@ const emailEnv = createEnv({
     UNDB_MAIL_HOST: z.string().optional(),
     UNDB_MAIL_PORT: z.string().optional(),
     UNDB_MAIL_DEFAULT_FROM: z.string().optional(),
+    UNDB_MOCK_MAIL_CODE: z.string().optional(),
     UNDB_MAIL_SECURE: z
       .string()
       .optional()
