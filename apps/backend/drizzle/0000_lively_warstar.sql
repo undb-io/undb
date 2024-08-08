@@ -144,8 +144,11 @@ CREATE TABLE `undb_space` (
 	`created_by` text NOT NULL,
 	`updated_at` text NOT NULL,
 	`updated_by` text NOT NULL,
+	`deleted_at` integer,
+	`deleted_by` text,
 	FOREIGN KEY (`created_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action,
-	FOREIGN KEY (`updated_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action
+	FOREIGN KEY (`updated_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action,
+	FOREIGN KEY (`deleted_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE TABLE `undb_space_member` (

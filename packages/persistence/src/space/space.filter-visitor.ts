@@ -21,6 +21,7 @@ export class SpaceFilterVisitor extends AbstractQBVisitor<Space> implements ISpa
     protected readonly eb: ExpressionBuilder<Database, "undb_space">,
   ) {
     super(eb)
+    this.addCond(this.eb.eb("undb_space.deleted_at", "is", null))
   }
   withUserId(v: WithSpaceUserId): void {
     const subQuery = this.qb

@@ -113,7 +113,7 @@ export class TableRepository implements ITableRepository {
   }
 
   async find(spec: Option<TableComositeSpecification>): Promise<TableDo[]> {
-    const tbs = await this.qb
+    const tbs = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_table")
       .selectAll()
       .$if(spec.isSome(), (qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
@@ -124,7 +124,7 @@ export class TableRepository implements ITableRepository {
   }
 
   async findOne(spec: Option<TableComositeSpecification>): Promise<Option<TableDo>> {
-    const tb = await this.qb
+    const tb = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_table")
       .selectAll()
       .$if(spec.isSome(), (qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
@@ -140,7 +140,7 @@ export class TableRepository implements ITableRepository {
 
   async findOneById(id: TableId): Promise<Option<TableDo>> {
     const spec = Some(new TableIdSpecification(id))
-    const tb = await this.qb
+    const tb = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_table")
       .selectAll()
       .$call((qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
@@ -152,7 +152,7 @@ export class TableRepository implements ITableRepository {
 
   async findManyByIds(ids: TableId[]): Promise<TableDo[]> {
     const spec = Some(new TableIdsSpecification(ids))
-    const tbs = await this.qb
+    const tbs = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_table")
       .selectAll()
       .$call((qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
