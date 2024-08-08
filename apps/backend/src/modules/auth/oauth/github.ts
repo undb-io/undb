@@ -170,7 +170,7 @@ export class GithubOAuth {
                 provider_user_id: githubUserResult.id.toString(),
               })
               .execute()
-            const space = await this.spaceService.createPersonalSpace()
+            const space = await this.spaceService.createPersonalSpace(githubUserResult.login)
             await this.spaceMemberService.createMember(userId, space.id.value, "owner")
 
             return space
