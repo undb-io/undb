@@ -9,6 +9,7 @@ import {
 import { executionContext } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
+import { getCurrentTransaction } from "../ctx"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { BaseFilterVisitor } from "./base.filter-visitor"
@@ -30,7 +31,7 @@ export class BaseRepository implements IBaseRepository {
     throw new Error("Method not implemented.")
   }
   async findOne(spec: IBaseSpecification): Promise<Option<Base>> {
-    const base = await this.qb
+    const base = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_base")
       .selectAll()
       .where((eb) => {
@@ -45,7 +46,7 @@ export class BaseRepository implements IBaseRepository {
   async findOneById(id: string): Promise<Option<Base>> {
     const spec = WithBaseId.fromString(id)
 
-    const base = await this.qb
+    const base = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_base")
       .selectAll()
       .where((eb) => {
@@ -61,7 +62,7 @@ export class BaseRepository implements IBaseRepository {
     const user = executionContext.getStore()?.user?.userId!
     const values = this.mapper.toEntity(base)
 
-    await this.qb
+    await getCurrentTransaction()
       .insertInto("undb_base")
       .values({
         ...values,
@@ -80,7 +81,7 @@ export class BaseRepository implements IBaseRepository {
     const visitor = new BaseMutateVisitor()
     spec.accept(visitor)
 
-    await this.qb
+    await getCurrentTransaction()
       .updateTable("undb_base")
       .set({ ...visitor.data, updated_by: userId, updated_at: new Date().toISOString() })
       .where((eb) => eb.eb("id", "=", base.id.value))

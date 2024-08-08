@@ -67,7 +67,7 @@
             <div
               class={cn(
                 "group flex h-8 items-center justify-between pl-4 pr-2 transition-all",
-                active && !tableId && !viewId ? "hover:bg-primary/60 bg-primary/50 rounded-md" : "hover:bg-gray-100",
+                active && !tableId && !viewId ? "bg-primary/90 text-background rounded-md" : "hover:bg-gray-100",
               )}
             >
               <a
@@ -82,7 +82,10 @@
               </a>
 
               <div
-                class="item-center text-muted-foreground flex justify-center gap-2 opacity-0 transition-all group-hover:opacity-100"
+                class={cn(
+                  "item-center text-muted-foreground flex justify-center gap-2 opacity-0 transition-all group-hover:opacity-100",
+                  active && "text-background",
+                )}
               >
                 <button
                   class="h-full"
@@ -95,7 +98,11 @@
                 </button>
                 <Collapsible.Trigger class="h-full">
                   <ChevronRightIcon
-                    class={cn("text-muted-foreground h-4 w-4 transition-all", open[base.id] && "rotate-90")}
+                    class={cn(
+                      "text-muted-foreground h-4 w-4 transition-all",
+                      open[base.id] && "rotate-90",
+                      active && "text-background",
+                    )}
                   />
                 </Collapsible.Trigger>
               </div>
@@ -108,14 +115,14 @@
                     <div
                       class={cn(
                         "group flex h-8 cursor-pointer items-center justify-between rounded-md pl-8 pr-2 transition-all",
-                        active && !viewId ? "hover:bg-primary/60 bg-primary/50" : "hover:bg-gray-100",
+                        active && !viewId ? "bg-primary/90" : "hover:bg-gray-100",
                       )}
                     >
                       <a
                         href={`/t/${table.id}`}
                         class={cn(
-                          "flex h-full flex-1 items-center font-light",
-                          active && "text-primary text-background font-medium",
+                          "text-primary flex h-full flex-1 items-center font-light",
+                          active && !viewId && "text-background font-medium",
                         )}
                       >
                         <DatabaseIcon class="mr-2 h-4 w-4" />
@@ -130,11 +137,15 @@
                           }}
                           class={cn(
                             "flex h-5 w-5 items-center justify-center rounded-md hover:bg-gray-200",
-                            active && !viewId && "hover:bg-blue-200",
+                            active && !viewId && "hover:bg-primary",
                           )}
                         >
                           <ChevronRightIcon
-                            class={cn("text-muted-foreground h-4 w-4 transition-all", open[table.id] && "rotate-90")}
+                            class={cn(
+                              "text-muted-foreground h-4 w-4 transition-all",
+                              open[table.id] && "rotate-90",
+                              active && "text-background",
+                            )}
                           />
                         </Collapsible.Trigger>
                       </div>
@@ -153,14 +164,14 @@
                         {@const active = view.id === viewId}
                         <div
                           class={cn(
-                            "group flex h-8 items-center justify-between pl-14 pr-2 transition-all",
-                            active ? "hover:bg-primary/60 bg-primary/50" : "hover:bg-gray-100",
+                            "group flex h-8 items-center justify-between rounded-sm pl-14 pr-2 transition-all",
+                            active ? "bg-primary/90" : "hover:bg-gray-100",
                           )}
                         >
                           <a
                             class={cn(
                               "flex h-full flex-1 items-center text-xs font-light",
-                              active && "text-primary text-background font-medium",
+                              active && "text-background font-medium",
                             )}
                             href={`/t/${table.id}/${view.id}`}
                           >

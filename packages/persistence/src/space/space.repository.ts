@@ -14,11 +14,28 @@ export class SpaceRepostitory implements ISpaceRepository {
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
   ) {}
-  find(spec: ISpaceSpecification): Promise<Space[]> {
-    throw new Error("Method not implemented.")
+  async find(spec: ISpaceSpecification): Promise<Space[]> {
+    const space = await (getCurrentTransaction() ?? this.qb)
+      .selectFrom("undb_space")
+      .selectAll()
+      .where((eb) => {
+        const visitor = new SpaceFilterVisitor(this.qb, eb)
+        spec.accept(visitor)
+        return visitor.cond
+      })
+      .execute()
+
+    return space.map((s) =>
+      SpaceFactory.fromJSON({
+        id: s.id,
+        name: s.name ?? "",
+        avatar: s.avatar,
+        isPersonal: Boolean(s.is_personal),
+      }),
+    )
   }
   async findOne(spec: ISpaceSpecification): Promise<Option<Space>> {
-    const space = await this.qb
+    const space = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_space")
       .selectAll()
       .where((eb) => {
@@ -46,6 +63,7 @@ export class SpaceRepostitory implements ISpaceRepository {
       .selectFrom("undb_space")
       .selectAll()
       .where("undb_space.id", "=", id)
+      .where("undb_space.deleted_at", "is", null)
       .executeTakeFirst()
 
     if (!space) {
@@ -86,10 +104,16 @@ export class SpaceRepostitory implements ISpaceRepository {
     await getCurrentTransaction()
       .updateTable("undb_space")
       .set({ ...visitor.data, updated_by: userId, updated_at: new Date().toISOString() })
-      .where((eb) => eb.eb("id", "=", space.id.value))
+      .where((eb) => eb.and([eb.eb("id", "=", space.id.value), eb.eb("deleted_at", "is", null)]))
       .execute()
   }
-  deleteOneById(id: string): Promise<void> {
-    throw new Error("Method not implemented.")
+  async deleteOneById(id: string): Promise<void> {
+    const tx = getCurrentTransaction()
+
+    await tx
+      .updateTable("undb_space")
+      .set({ deleted_at: new Date().getTime(), deleted_by: getCurrentUserId() })
+      .where("id", "=", id)
+      .execute()
   }
 }
