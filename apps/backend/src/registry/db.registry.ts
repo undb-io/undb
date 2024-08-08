@@ -60,7 +60,7 @@ import Database from "bun:sqlite"
 export const registerDb = () => {
   container.register(SQLITE_CLIENT, {
     useFactory: instanceCachingFactory(() => {
-      if (env.UNDB_DB_PROVIDER === "sqlite") {
+      if (env.UNDB_DB_PROVIDER === "sqlite" || !env.UNDB_DB_PROVIDER) {
         return createSqliteClient("undb.sqlite")
       }
       return createTursoClient(env.UNDB_DB_TURSO_URL!, env.UNDB_DB_TURSO_AUTH_TOKEN)
@@ -68,7 +68,7 @@ export const registerDb = () => {
   })
   container.register(QUERY_BUILDER, {
     useFactory: instanceCachingFactory((c) => {
-      if (env.UNDB_DB_PROVIDER === "sqlite") {
+      if (env.UNDB_DB_PROVIDER === "sqlite" || !env.UNDB_DB_PROVIDER) {
         const sqlite = c.resolve<Database>(SQLITE_CLIENT)
         return createSqliteQueryBuilder(sqlite)
       }

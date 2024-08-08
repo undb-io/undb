@@ -50,6 +50,10 @@ export default defineConfig({
         target: "http://0.0.0.0:4728",
         changeOrigin: true,
       },
+      "/invitation": {
+        target: "http://0.0.0.0:4728",
+        changeOrigin: true,
+      },
     },
   },
   test: {

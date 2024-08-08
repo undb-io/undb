@@ -37,7 +37,7 @@ export class InvitationRepository implements IInvitationRepository {
         space_id: mustGetCurrentSpaceId(),
         role: invitation.role,
         status: invitation.status,
-        invited_at: invitation.invitedAt,
+        invited_at: invitation.invitedAt.getTime(),
         inviter_id: invitation.inviterId,
       })
       .onConflict((oc) =>
@@ -61,7 +61,7 @@ export class InvitationRepository implements IInvitationRepository {
         space_id: mustGetCurrentSpaceId(),
         role: invitation.role,
         status: invitation.status,
-        invited_at: invitation.invitedAt,
+        invited_at: invitation.invitedAt.getTime(),
         inviter_id: invitation.inviterId,
       })
       .execute()

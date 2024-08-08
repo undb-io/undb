@@ -12,7 +12,7 @@ export class InvitationMutationVisitor extends AbstractQBMutationVisitor impleme
     this.setData("role", spec.role)
   }
   withInvitedAt(spec: WithInvitedAt): void {
-    this.setData("invited_at", spec.invitedAt)
+    this.setData("invited_at", spec.invitedAt.getTime())
   }
 
   withEmail(spec: WithEmail): void {
