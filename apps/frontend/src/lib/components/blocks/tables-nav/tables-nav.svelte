@@ -66,14 +66,14 @@
           <Collapsible.Root bind:open={open[base.id]}>
             <div
               class={cn(
-                "group flex h-8 items-center justify-between pl-4 pr-2",
-                active && !tableId && !viewId ? "rounded-md bg-blue-100/50 hover:bg-blue-100" : "hover:bg-gray-100",
+                "group flex h-8 items-center justify-between pl-4 pr-2 transition-all",
+                active && !tableId && !viewId ? "hover:bg-primary/60 bg-primary/50 rounded-md" : "hover:bg-gray-100",
               )}
             >
               <a
                 class={cn(
                   "flex h-full flex-1 items-center font-light",
-                  active && !tableId && !viewId && "text-primary font-medium",
+                  active && !tableId && !viewId && "text-background font-medium",
                 )}
                 href={`/bases/${base.id}`}
               >
@@ -107,13 +107,16 @@
                   <Collapsible.Root bind:open={open[table.id]}>
                     <div
                       class={cn(
-                        "group flex h-8 cursor-pointer items-center justify-between rounded-md pl-8 pr-2",
-                        active && !viewId ? "bg-blue-100/50 hover:bg-blue-100" : "hover:bg-gray-100",
+                        "group flex h-8 cursor-pointer items-center justify-between rounded-md pl-8 pr-2 transition-all",
+                        active && !viewId ? "hover:bg-primary/60 bg-primary/50" : "hover:bg-gray-100",
                       )}
                     >
                       <a
                         href={`/t/${table.id}`}
-                        class={cn("flex h-full flex-1 items-center font-light", active && "text-primary font-medium")}
+                        class={cn(
+                          "flex h-full flex-1 items-center font-light",
+                          active && "text-primary text-background font-medium",
+                        )}
                       >
                         <DatabaseIcon class="mr-2 h-4 w-4" />
                         {table.name}
@@ -150,14 +153,14 @@
                         {@const active = view.id === viewId}
                         <div
                           class={cn(
-                            "group flex h-8 items-center justify-between pl-14 pr-2",
-                            active ? "bg-blue-100/50 hover:bg-blue-100" : "hover:bg-gray-100",
+                            "group flex h-8 items-center justify-between pl-14 pr-2 transition-all",
+                            active ? "hover:bg-primary/60 bg-primary/50" : "hover:bg-gray-100",
                           )}
                         >
                           <a
                             class={cn(
                               "flex h-full flex-1 items-center text-xs font-light",
-                              active && "text-primary font-medium",
+                              active && "text-primary text-background font-medium",
                             )}
                             href={`/t/${table.id}/${view.id}`}
                           >
