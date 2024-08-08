@@ -39,7 +39,7 @@
   </Button>
 
   <a
-    href={`/settings`}
+    href={`/settings?tab=members`}
     data-active={$page.route.id === "/(authed)/settings"}
     class="hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring data-[active=true]:bg-primary data-[active=true]:text-primary-foreground flex h-8 items-center justify-start gap-2 whitespace-nowrap rounded-md px-3 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
   >
