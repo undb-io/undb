@@ -1,7 +1,6 @@
 export * from "./api-token"
 export * from "./audit"
 export * from "./base"
-export { sqlite } from "./client"
 export * from "./ctx"
 export { type Base, type Outbox, type Table } from "./db"
 export * from "./member"
@@ -15,3 +14,5 @@ export * from "./table"
 export * from "./tables"
 export * from "./user"
 export * from "./webhook"
+
+export { type Client } from "@libsql/client"

@@ -23,8 +23,6 @@ export const t = initTRPC.create({
   },
 })
 
-const qb = container.resolve<IQueryBuilder>(QUERY_BUILDER)
-
 export const p = t.procedure
   .use(async ({ type, input, path, next, rawInput }) => {
     const requestId = executionContext.getStore()?.requestId
@@ -52,6 +50,7 @@ export const p = t.procedure
   })
   .use(async (ctx) => {
     if (ctx.type === "mutation") {
+      const qb = container.resolve<IQueryBuilder>(QUERY_BUILDER)
       return await qb
         .transaction()
         .setIsolationLevel("read committed")
