@@ -27,6 +27,7 @@ export class SpaceQueryRepository implements ISpaceQueryRepository {
       id: space.id,
       name: space.name ?? "",
       isPersonal: Boolean(space.is_personal),
+      avatar: space.avatar,
     }))
   }
   async findOneById(id: string): Promise<Option<ISpaceDTO>> {
@@ -38,6 +39,7 @@ export class SpaceQueryRepository implements ISpaceQueryRepository {
 
     return Some({
       id: space.id,
+      avatar: space.avatar,
       name: space.name ?? "",
       isPersonal: Boolean(space.is_personal),
     })

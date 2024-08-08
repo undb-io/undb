@@ -3,6 +3,7 @@ query GetIndexQuery {
     id
     name
     isPersonal
+    avatar
   }
 
   tables {

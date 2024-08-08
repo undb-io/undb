@@ -35,6 +35,7 @@ import { SetViewSortCommandHandler } from "./set-view-sort.command-handler"
 import { UpdateAccountCommandHandler } from "./update-account.command-handler"
 import { UpdateBaseCommandHandler } from "./update-base.command-handler"
 import { UpdateRecordCommandHandler } from "./update-record.command-handler"
+import { UpdateSpaceCommandHandler } from "./update-space.command-handler"
 import { UpdateTableFieldCommandHandler } from "./update-table-field.command-handler"
 import { UpdateTableCommandHandler } from "./update-table.command-handler"
 import { UpdateViewCommandHandler } from "./update-view.command-handler"
@@ -82,4 +83,5 @@ export const commandHandlers = [
   DeleteTableCommandHandler,
   CreateApiTokenCommandHandler,
   CreateSpaceCommandHandler,
+  UpdateSpaceCommandHandler,
 ]
