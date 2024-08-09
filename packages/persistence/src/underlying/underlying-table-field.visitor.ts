@@ -10,6 +10,7 @@ import {
   RollupField,
   SelectField,
   UpdatedByField,
+  UrlField,
   UserField,
   type AutoIncrementField,
   type CreatedAtField,
@@ -107,6 +108,10 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     this.addColumn(c)
   }
   email(field: EmailField): void {
+    const c = this.tb.addColumn(field.id.value, "varchar(255)")
+    this.addColumn(c)
+  }
+  url(field: UrlField): void {
     const c = this.tb.addColumn(field.id.value, "varchar(255)")
     this.addColumn(c)
   }

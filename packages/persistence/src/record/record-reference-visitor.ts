@@ -6,6 +6,7 @@ import {
   JsonField,
   RatingField,
   SelectField,
+  UrlField,
   UserField,
   type AutoIncrementField,
   type CreatedAtField,
@@ -81,6 +82,9 @@ export class RecordReferenceVisitor implements IFieldVisitor {
     throw new Error("Method not implemented.")
   }
   email(field: EmailField): void {
+    throw new Error("Method not implemented.")
+  }
+  url(field: UrlField): void {
     throw new Error("Method not implemented.")
   }
   date(field: DateField): void {

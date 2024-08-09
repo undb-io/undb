@@ -15,6 +15,7 @@ import {
   StringFieldValue,
   UpdatedAtFieldValue,
   UpdatedByFieldValue,
+  UrlFieldValue,
 } from "./variants"
 import { AttachmentFieldValue, type IAttachmentFieldValue } from "./variants/attachment-field"
 import { CheckboxFieldValue } from "./variants/checkbox-field"
@@ -33,7 +34,8 @@ export class FieldValueFactory {
       .with({ type: "select" }, (field) => Some(new SelectFieldValue(field.valueSchema.parse(value))))
       .with({ type: "reference" }, (field) => Some(new ReferenceFieldValue(field.valueSchema.parse(value))))
       .with({ type: "email" }, (field) => Some(new EmailFieldValue(field.valueSchema.parse(value))))
-      .with({ type: "attachment" }, (field) => Some(new AttachmentFieldValue(field.valueSchema.parse(value))))
+      .with({ type: "url" }, (field) => Some(new UrlFieldValue(field.valueSchema.parse(value))))
+      .with({ type: "attachment" }, (field) => Some(new AttachmentFieldValue(field.valueSchema.parse(value) ?? null)))
       .with({ type: "date" }, (field) => Some(new DateFieldValue(field.valueSchema.parse(value))))
       .with({ type: "json" }, (field) => Some(new JsonFieldValue(field.valueSchema.parse(value))))
       .with({ type: "checkbox" }, (field) => Some(new CheckboxFieldValue(field.valueSchema.parse(value))))
@@ -56,6 +58,7 @@ export class FieldValueFactory {
       .with("rollup", () => Some(new RollupFieldValue(value as number | Date)))
       .with("select", () => Some(new SelectFieldValue(value as IOptionId)))
       .with("email", () => Some(new EmailFieldValue(value as string)))
+      .with("url", () => Some(new UrlFieldValue(value as string)))
       .with("attachment", () => Some(new AttachmentFieldValue(value as IAttachmentFieldValue)))
       .with("date", () => Some(new DateFieldValue(value as Date)))
       .with("json", () => Some(new JsonFieldValue(value as JsonValue)))

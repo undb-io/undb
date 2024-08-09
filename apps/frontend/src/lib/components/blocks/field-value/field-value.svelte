@@ -13,6 +13,7 @@
   import AttachmentField from "./attachment-field.svelte"
   import JsonField from "./json-field.svelte"
   import CheckboxField from "./checkbox-field.svelte"
+  import UrlField from "./url-field.svelte"
 
   export let type: FieldType
   export let value: any
@@ -36,6 +37,7 @@
     select: SelectField,
     rating: RatingField,
     email: StringField,
+    url: UrlField,
     attachment: AttachmentField,
     date: DateField,
     json: JsonField,

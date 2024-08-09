@@ -1,3 +1,4 @@
+import type { UrlField } from "."
 import type { AttachmentField } from "./variants/attachment-field"
 import type { AutoIncrementField } from "./variants/autoincrement-field"
 import type { CheckboxField } from "./variants/checkbox-field"
@@ -34,6 +35,7 @@ export interface IFieldVisitor {
   json(field: JsonField): void
   checkbox(field: CheckboxField): void
   user(field: UserField): void
+  url(field: UrlField): void
 
   reference(field: ReferenceField): void
   rollup(field: RollupField): void

@@ -6,6 +6,7 @@ import { Options } from "./option/options.vo"
 import type { ICreateSelectFieldDTO, IRollupFn } from "./variants"
 
 const EMAIL_REGEXP = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const URL_REGEXP = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/
 
 function isDateValue(value: unknown): boolean {
   if (typeof value === "string") {
@@ -35,6 +36,7 @@ export const inferCreateFieldType = (values: (string | number | null | object | 
   return match(values)
     .returnType<IInferCreateFieldDTO>()
     .with(P.array(P.string.regex(EMAIL_REGEXP)), () => ({ type: "email" }))
+    .with(P.array(P.string.regex(URL_REGEXP)), () => ({ type: "url" }))
     .with(P.array(P.boolean), () => ({ type: "checkbox" }))
     .with(P.array(P.when(isNumberValue)), () => ({ type: "number" }))
     .with(P.array(P.when(isDateValue)), () => ({ type: "date" }))
@@ -74,6 +76,7 @@ const sortableFieldTypes: FieldType[] = [
   "email",
   "date",
   "checkbox",
+  "url",
 ] as const
 
 export function isFieldSortable(type: FieldType): boolean {
@@ -90,6 +93,7 @@ export const fieldTypes: NoneSystemFieldType[] = [
   "number",
   "select",
   "email",
+  "url",
   "rating",
   "date",
   "checkbox",
@@ -118,6 +122,7 @@ export const filterableFieldTypes = [
   "createdBy",
   "date",
   "email",
+  "url",
   "id",
   "number",
   "rating",
@@ -134,7 +139,15 @@ export const getIsFilterableFieldType = (type: FieldType): type is IFilterableFi
 
 export const allFieldTypes: FieldType[] = [...systemFieldTypes, ...fieldTypes] as const
 
-export const fieldsCanBeRollup: FieldType[] = ["number", "string", "rating", "email", "date", "checkbox"] as const
+export const fieldsCanBeRollup: FieldType[] = [
+  "number",
+  "string",
+  "rating",
+  "email",
+  "url",
+  "date",
+  "checkbox",
+] as const
 
 export const getIsFieldCanBeRollup = (type: FieldType): type is "number" => {
   return fieldsCanBeRollup.includes(type)
@@ -145,7 +158,7 @@ export function getRollupFnByType(type: FieldType): IRollupFn[] {
     .returnType<IRollupFn[]>()
     .with("number", "rating", () => ["sum", "average", "max", "min", "count", "lookup"])
     .with("date", () => ["max", "min", "count", "lookup"])
-    .with("string", "email", () => ["lookup", "count"])
+    .with("string", "email", "url", () => ["lookup", "count"])
     .otherwise(() => [])
 }
 
@@ -174,6 +187,7 @@ export const displayFieldTypes: FieldType[] = [
   "autoIncrement",
   "date",
   "email",
+  "url",
   "id",
   "rating",
 ] as const

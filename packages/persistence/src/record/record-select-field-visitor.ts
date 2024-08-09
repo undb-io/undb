@@ -6,6 +6,7 @@ import {
   JsonField,
   RatingField,
   SelectField,
+  UrlField,
   UserField,
   type AutoIncrementField,
   type CreatedAtField,
@@ -112,6 +113,9 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     this.addSelect(this.getField(field.id.value))
   }
   email(field: EmailField): void {
+    this.addSelect(this.getField(field.id.value))
+  }
+  url(field: UrlField): void {
     this.addSelect(this.getField(field.id.value))
   }
   json(field: JsonField): void {

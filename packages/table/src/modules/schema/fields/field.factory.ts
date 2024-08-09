@@ -1,4 +1,5 @@
 import { match } from "ts-pattern"
+import { UrlField } from "."
 import type { ICreateFieldDTO } from "./dto/create-field.dto"
 import type { IFieldDTO } from "./dto/field.dto"
 import type { Field } from "./field.type"
@@ -37,6 +38,7 @@ export class FieldFactory {
       .with({ type: "rollup" }, (dto) => new RollupField(dto))
       .with({ type: "select" }, (dto) => new SelectField(dto))
       .with({ type: "email" }, (dto) => new EmailField(dto))
+      .with({ type: "url" }, (dto) => new UrlField(dto))
       .with({ type: "attachment" }, (dto) => new AttachmentField(dto))
       .with({ type: "date" }, (dto) => new DateField(dto))
       .with({ type: "json" }, (dto) => new JsonField(dto))
@@ -54,6 +56,7 @@ export class FieldFactory {
       .with({ type: "rollup" }, (dto) => RollupField.create(dto))
       .with({ type: "select" }, (dto) => SelectField.create(dto))
       .with({ type: "email" }, (dto) => EmailField.create(dto))
+      .with({ type: "url" }, (dto) => UrlField.create(dto))
       .with({ type: "attachment" }, (dto) => AttachmentField.create(dto))
       .with({ type: "date" }, (dto) => DateField.create(dto))
       .with({ type: "json" }, (dto) => JsonField.create(dto))

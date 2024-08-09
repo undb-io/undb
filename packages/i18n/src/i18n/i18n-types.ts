@@ -226,6 +226,10 @@ type RootTranslation = {
 			 */
 			email: string
 			/**
+			 * U​R​L
+			 */
+			url: string
+			/**
 			 * A​t​t​a​c​h​m​e​n​t
 			 */
 			attachment: string
@@ -560,6 +564,10 @@ export type TranslationFunctions = {
 			 * Email
 			 */
 			email: () => LocalizedString
+			/**
+			 * URL
+			 */
+			url: () => LocalizedString
 			/**
 			 * Attachment
 			 */

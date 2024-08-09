@@ -6,6 +6,7 @@ import {
   SelectContainsAnyOf,
   SelectField,
   SelectFieldValue,
+  UrlEqual,
   UserField,
   UserFieldValue,
   type AttachmentEmpty,
@@ -299,6 +300,9 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     this.setData(s.fieldId.value, s.value)
   }
   emailEqual(s: EmailEqual): void {
+    this.setData(s.fieldId.value, s.value)
+  }
+  urlEqual(s: UrlEqual): void {
     this.setData(s.fieldId.value, s.value)
   }
   and(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {

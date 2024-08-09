@@ -22,6 +22,7 @@
     UsersIcon,
     ListChecksIcon,
     ListTodoIcon,
+    LinkIcon,
   } from "lucide-svelte"
 
   export let type: FieldType
@@ -41,6 +42,7 @@
     select: field?.type === "select" && field.isMultiple ? ListChecksIcon : ListTodoIcon,
     rating: StarIcon,
     email: MailIcon,
+    url: LinkIcon,
     attachment: FileTextIcon,
     date: CalendarIcon,
     json: FileJsonIcon,

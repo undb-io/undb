@@ -58,6 +58,7 @@ const fieldTypes: Record<FieldType, string> = {
   select: "Select",
   rating: "Rating",
   email: "Email",
+  url: "URL",
   attachment: "Attachment",
   json: "JSON",
   checkbox: "Checkbox",

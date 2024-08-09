@@ -15,6 +15,8 @@ import type {
   IStringFieldConstraint,
   IUpdatedAtFieldConditionSchema,
   IUpdatedByFieldConditionSchema,
+  IUrlFieldConditionSchema,
+  IUrlFieldConstraint,
   JSON_TYPE,
   JsonField,
   JsonFieldValue,
@@ -26,10 +28,13 @@ import type {
   RollupFieldValue,
   UPDATED_AT_TYPE,
   UPDATED_BY_TYPE,
+  URL_TYPE,
   UpdatedAtField,
   UpdatedAtFieldValue,
   UpdatedByField,
   UpdatedByFieldValue,
+  UrlField,
+  UrlFieldValue,
 } from ".."
 import type {
   ATTACHMENT_TYPE,
@@ -113,6 +118,7 @@ export type Field =
   | SelectField
   | RatingField
   | EmailField
+  | UrlField
   | AttachmentField
   | DateField
   | JsonField
@@ -143,6 +149,7 @@ export type FieldValue =
   | SelectFieldValue
   | RatingFieldValue
   | EmailFieldValue
+  | UrlFieldValue
   | AttachmentFieldValue
   | DateFieldValue
   | JsonFieldValue
@@ -156,6 +163,7 @@ export type MutableFieldValue =
   | SelectFieldValue
   | RatingFieldValue
   | EmailFieldValue
+  | UrlFieldValue
   | AttachmentFieldValue
   | DateFieldValue
   | JsonFieldValue
@@ -176,6 +184,7 @@ export type FieldType =
   | typeof SELECT_TYPE
   | typeof RATING_TYPE
   | typeof EMAIL_TYPE
+  | typeof URL_TYPE
   | typeof ATTACHMENT_TYPE
   | typeof DATE_TYPE
   | typeof JSON_TYPE
@@ -205,6 +214,7 @@ export type IFieldConditionSchema =
   | ISelectFieldConditionSchema
   | IRatingFieldConditionSchema
   | IEmailFieldConditionSchema
+  | IUrlFieldConditionSchema
   | IAttachmentFieldConditionSchema
   | IDateFieldConditionSchema
   | IJsonFieldConditionSchema
@@ -222,6 +232,7 @@ export type IFieldConstraint =
   | ISelectFieldConstraint
   | IRatingFieldConstraint
   | IEmailFieldConstraint
+  | IUrlFieldConstraint
   | IAttachmentFieldConstraint
   | IDateFieldConstraint
   | IJsonFieldConstraint

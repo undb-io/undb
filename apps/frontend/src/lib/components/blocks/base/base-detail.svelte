@@ -13,7 +13,7 @@
   <div class="flex items-center gap-4">
     <button
       type="button"
-      class="flex h-32 w-80 flex-col justify-between rounded-lg bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
+      class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
       on:click={() => {
         toggleModal(CREATE_TABLE_MODAL)
       }}
@@ -24,7 +24,7 @@
     </button>
     <button
       type="button"
-      class="flex h-32 w-80 flex-col justify-between rounded-lg bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
+      class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
       on:click={() => {
         toggleModal(IMPORT_TABLE_MODAL)
       }}
