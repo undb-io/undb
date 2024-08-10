@@ -58,7 +58,7 @@
 <Dialog.Root bind:open>
   <Dialog.Trigger asChild let:builder>
     <slot>
-      <Button size="sm" builders={[builder]}>
+      <Button size="sm" builders={[builder]} {...$$restProps}>
         <UserPlus class="mr-2 h-3 w-3 font-semibold" />
         Invite Member
       </Button>
