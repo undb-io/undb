@@ -18,6 +18,10 @@ export const getCurrentUserId = () => {
   return executionContext.getStore()?.user?.userId!
 }
 
+export const getCurrentMember = () => {
+  return executionContext.getStore()?.member!
+}
+
 export const getCurrentSpaceId = () => {
   return executionContext.getStore()?.spaceId
 }

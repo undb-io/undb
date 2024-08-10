@@ -4,6 +4,7 @@
   import { ChevronDownIcon } from "lucide-svelte"
   import * as Popover from "$lib/components/ui/popover"
   import FieldMenu from "../field/field-menu.svelte"
+  import { hasPermission } from "$lib/store/space-member.store"
 
   export let field: Field
 
@@ -19,18 +20,20 @@
     </span>
   </div>
 
-  <Popover.Root
-    bind:open
-    onOpenChange={(open) => {
-      if (!open) {
-        update = false
-      }
-    }}
-  >
-    <Popover.Trigger>
-      <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
-    </Popover.Trigger>
+  {#if $hasPermission("field:update") || $hasPermission("field:delete") || $hasPermission("field:create")}
+    <Popover.Root
+      bind:open
+      onOpenChange={(open) => {
+        if (!open) {
+          update = false
+        }
+      }}
+    >
+      <Popover.Trigger>
+        <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
+      </Popover.Trigger>
 
-    <FieldMenu bind:update bind:open {field} />
-  </Popover.Root>
+      <FieldMenu bind:update bind:open {field} />
+    </Popover.Root>
+  {/if}
 </div>

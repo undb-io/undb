@@ -16,6 +16,7 @@
   import { toast } from "svelte-sonner"
   import { Separator } from "$lib/components/ui/separator"
   import PasswordInput from "$lib/components/ui/input/password-input.svelte"
+  import { LoaderCircleIcon } from "lucide-svelte"
 
   const schema = z.object({
     email: z.string().email(),
@@ -39,17 +40,30 @@
 
   $: showBanner = !!invitationId
 
+  let signupError = false
+
   const signupMutation = createMutation({
-    mutationFn: (input: SignupSchema) =>
-      fetch("/api/signup", {
-        method: "POST",
-        body: JSON.stringify({ ...input, invitationId }),
-      }),
+    mutationFn: async (input: SignupSchema) => {
+      try {
+        const { ok } = await fetch("/api/signup", {
+          method: "POST",
+          body: JSON.stringify({ ...input, invitationId }),
+        })
+        if (!ok) {
+          throw new Error("Failed to signup")
+        }
+      } catch (error) {
+        signupError = true
+      }
+    },
+    onMutate(variables) {
+      signupError = false
+    },
     async onSuccess(data, variables, context) {
       await goto("/")
     },
     onError(error, variables, context) {
-      toast.error(error.message)
+      signupError = true
     },
   })
 
@@ -213,7 +227,12 @@
               <Form.FieldErrors />
             </Form.Field>
           </div>
-          <Button {disabled} type="submit" class="w-full">Create an account</Button>
+          <Button {disabled} type="submit" class="w-full">
+            {#if $signupMutation.isPending}
+              <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
+            {/if}
+            Create an account
+          </Button>
         </div>
         <div class="mt-4 text-center text-sm">
           Already have an account?

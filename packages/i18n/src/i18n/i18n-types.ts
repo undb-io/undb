@@ -344,6 +344,10 @@ type RootTranslation = {
 			 */
 			admin: string
 			/**
+			 * E​d​i​t​o​r
+			 */
+			editor: string
+			/**
 			 * V​i​e​w​e​r
 			 */
 			viewer: string
@@ -682,6 +686,10 @@ export type TranslationFunctions = {
 			 * Admin
 			 */
 			admin: () => LocalizedString
+			/**
+			 * Editor
+			 */
+			editor: () => LocalizedString
 			/**
 			 * Viewer
 			 */

@@ -17,6 +17,7 @@
     type MaybeConditionGroup,
   } from "@undb/table"
   import ColorPicker from "$lib/components/ui/color-picker/color-picker.svelte"
+  import { hasPermission } from "$lib/store/space-member.store"
 
   const table = getTable()
   $: color = $table.views.getViewById($viewId).color.into(undefined)
@@ -50,7 +51,12 @@
 
 <Popover.Root bind:open>
   <Popover.Trigger asChild let:builder>
-    <Button variant={count || open ? "secondary" : "ghost"} builders={[builder]} size="sm">
+    <Button
+      disabled={!$hasPermission("table:update") && (!color || color?.isEmpty)}
+      variant={count || open ? "secondary" : "ghost"}
+      builders={[builder]}
+      size="sm"
+    >
       <PaintBucketIcon class="mr-2 h-4 w-4" />
       Color
       {#if count}

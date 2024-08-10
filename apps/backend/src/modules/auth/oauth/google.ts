@@ -160,7 +160,7 @@ export class GoogleOAuth {
                 provider_user_id: googleUserResult.id.toString(),
               })
               .execute()
-            const space = await this.spaceService.createPersonalSpace(googleUserResult.name)
+            const space = await this.spaceService.createSpace({ name: googleUserResult.name })
             await this.spaceMemberService.createMember(userId, space.id.value, "owner")
 
             return space

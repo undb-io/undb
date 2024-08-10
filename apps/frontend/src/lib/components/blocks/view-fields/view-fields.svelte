@@ -16,6 +16,7 @@
   import { writable } from "svelte/store"
   import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
   import FieldMenu from "../field/field-menu.svelte"
+  import { hasPermission } from "$lib/store/space-member.store"
 
   const table = getTable()
   $: fields = $table.getOrderedFields(undefined, $viewId)
@@ -127,7 +128,7 @@
                 <div class="flex items-center gap-2">
                   <Switch
                     size="sm"
-                    disabled={visibleCount === 1 && viewFields.length === 1}
+                    disabled={(visibleCount === 1 && viewFields.length === 1) || !$hasPermission("table:update")}
                     checked={!viewField.hidden}
                     onCheckedChange={(checked) => {
                       viewField.hidden = !checked
@@ -140,9 +141,11 @@
                   </div>
                 </div>
                 <div class="inline-flex items-center gap-1">
-                  <button class="text-muted-foreground handler">
-                    <GripVerticalIcon class="h-3 w-3" />
-                  </button>
+                  {#if $hasPermission("table:update")}
+                    <button class="text-muted-foreground handler">
+                      <GripVerticalIcon class="h-3 w-3" />
+                    </button>
+                  {/if}
 
                   <Popover.Root
                     portal="body"
@@ -153,7 +156,9 @@
                     }}
                   >
                     <Popover.Trigger>
-                      <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
+                      {#if $hasPermission("field:create") || $hasPermission("field:update") || $hasPermission("field:delete")}
+                        <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
+                      {/if}
                     </Popover.Trigger>
 
                     <FieldMenu bind:update bind:open={fieldOpen[field.id.value]} {field} />
@@ -165,45 +170,47 @@
         </SortableList>
       </ScrollArea>
 
-      <div class="-mx-2 flex items-center gap-2 border-t bg-gray-50 px-2 pt-2 shadow-inner">
-        {#if hiddenCount > 0}
-          <Button
-            variant="outline"
-            class="flex-1 shadow-sm"
-            size="sm"
-            on:click={() => {
-              viewFields = viewFieldsVo.showAllFields().toJSON()
-              setViewFields()
-            }}
-          >
-            Show all fields
-          </Button>
-        {:else}
-          <Button
-            variant="outline"
-            class="flex-1 shadow-sm"
-            size="sm"
-            on:click={() => {
-              viewFields = viewFieldsVo.hideAllFields().toJSON()
-              setViewFields()
-            }}
-          >
-            Hide all fields
-          </Button>
-        {/if}
+      {#if $hasPermission("table:update")}
+        <div class="-mx-2 flex items-center gap-2 border-t bg-gray-50 px-2 pt-2 shadow-inner">
+          {#if hiddenCount > 0}
+            <Button
+              variant="outline"
+              class="flex-1 shadow-sm"
+              size="sm"
+              on:click={() => {
+                viewFields = viewFieldsVo.showAllFields().toJSON()
+                setViewFields()
+              }}
+            >
+              Show all fields
+            </Button>
+          {:else}
+            <Button
+              variant="outline"
+              class="flex-1 shadow-sm"
+              size="sm"
+              on:click={() => {
+                viewFields = viewFieldsVo.hideAllFields().toJSON()
+                setViewFields()
+              }}
+            >
+              Hide all fields
+            </Button>
+          {/if}
 
-        <Button
-          variant="outline"
-          class="flex-1 shadow-sm"
-          size="sm"
-          on:click={() => {
-            viewOption.showSystemFields = !viewOption.showSystemFields
-            setViewOption(viewOption.showSystemFields)
-          }}
-        >
-          {viewOption.showSystemFields ? "Hide" : "Show"} system fields
-        </Button>
-      </div>
+          <Button
+            variant="outline"
+            class="flex-1 shadow-sm"
+            size="sm"
+            on:click={() => {
+              viewOption.showSystemFields = !viewOption.showSystemFields
+              setViewOption(viewOption.showSystemFields)
+            }}
+          >
+            {viewOption.showSystemFields ? "Hide" : "Show"} system fields
+          </Button>
+        </div>
+      {/if}
     </div>
   </Popover.Content>
 </Popover.Root>

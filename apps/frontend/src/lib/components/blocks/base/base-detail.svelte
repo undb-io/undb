@@ -4,36 +4,38 @@
   import { DatabaseIcon, ImportIcon, PlusCircleIcon, PlusIcon } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
   import { goto } from "$app/navigation"
-  import { page } from "$app/stores"
+  import { hasPermission } from "$lib/store/space-member.store"
 
   export let base: GetBaseQuery$result["base"]
 </script>
 
 <main class="h-full flex-1 px-4 py-4">
-  <div class="flex items-center gap-4">
-    <button
-      type="button"
-      class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
-      on:click={() => {
-        toggleModal(CREATE_TABLE_MODAL)
-      }}
-    >
-      <PlusCircleIcon class="text-muted-foreground" />
+  {#if $hasPermission("table:create")}
+    <div class="flex items-center gap-4">
+      <button
+        type="button"
+        class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
+        on:click={() => {
+          toggleModal(CREATE_TABLE_MODAL)
+        }}
+      >
+        <PlusCircleIcon class="text-muted-foreground" />
 
-      Create New Table
-    </button>
-    <button
-      type="button"
-      class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
-      on:click={() => {
-        toggleModal(IMPORT_TABLE_MODAL)
-      }}
-    >
-      <ImportIcon class="text-muted-foreground" />
+        Create New Table
+      </button>
+      <button
+        type="button"
+        class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
+        on:click={() => {
+          toggleModal(IMPORT_TABLE_MODAL)
+        }}
+      >
+        <ImportIcon class="text-muted-foreground" />
 
-      Import Table
-    </button>
-  </div>
+        Import Table
+      </button>
+    </div>
+  {/if}
 
   <section class="pt-3">
     <h3 class="text-xl font-normal text-gray-600">Tables</h3>

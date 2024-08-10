@@ -1,5 +1,6 @@
+import { checkPermission } from "@undb/authz"
 import { DeleteSpaceCommand } from "@undb/commands"
-import { getCurrentUserId } from "@undb/context/server"
+import { getCurrentMember, getCurrentUserId } from "@undb/context/server"
 import { CommandBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
@@ -59,25 +60,34 @@ export class SpaceModule {
           }),
         },
       )
-      .delete("/api/space", async (ctx) => {
-        return withTransaction(this.qb)(async () => {
-          await this.commandBus.execute(new DeleteSpaceCommand({}))
+      .delete(
+        "/api/space",
+        async (ctx) => {
+          return withTransaction(this.qb)(async () => {
+            await this.commandBus.execute(new DeleteSpaceCommand({}))
 
-          const userId = getCurrentUserId()
+            const userId = getCurrentUserId()
 
-          await this.lucia.invalidateSession(userId)
-          const space = (await this.spaceService.getSpace({ userId })).expect("Space not found")
+            await this.lucia.invalidateSession(userId)
+            const space = (await this.spaceService.getSpace({ userId })).expect("Space not found")
 
-          const updatedSession = await this.lucia.createSession(userId, { space_id: space.id.value })
-          const sessionCookie = this.lucia.createSessionCookie(updatedSession.id)
-          return new Response(null, {
-            status: 200,
-            headers: {
-              Location: "/",
-              "Set-Cookie": sessionCookie.serialize(),
-            },
+            const updatedSession = await this.lucia.createSession(userId, { space_id: space.id.value })
+            const sessionCookie = this.lucia.createSessionCookie(updatedSession.id)
+            return new Response(null, {
+              status: 200,
+              headers: {
+                Location: "/",
+                "Set-Cookie": sessionCookie.serialize(),
+              },
+            })
           })
-        })
-      })
+        },
+        {
+          beforeHandle(context) {
+            const role = getCurrentMember().role
+            checkPermission(role, ["space:delete"])
+          },
+        },
+      )
   }
 }

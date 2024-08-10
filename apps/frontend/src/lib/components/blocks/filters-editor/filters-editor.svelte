@@ -19,6 +19,7 @@
   import FieldFilterControl from "./field-filter-control.svelte"
   import autoAnimate from "@formkit/auto-animate"
   import { writable } from "svelte/store"
+  import { hasPermission } from "$lib/store/space-member.store"
 
   interface IField {
     id: string
@@ -133,12 +134,14 @@
               <FieldFilterControl {field} bind:op={child.op} bind:value={child.value} />
             </div>
             <div class="col-span-1 flex items-center gap-2">
-              <button type="button" on:click={() => removeFilter(i)}>
-                <Trash2Icon class="text-muted-foreground h-3 w-3" />
-              </button>
-              <button type="button" class="handler">
-                <GripVertical class="text-muted-foreground h-3 w-3" />
-              </button>
+              {#if $hasPermission("table:update")}
+                <button type="button" on:click={() => removeFilter(i)}>
+                  <Trash2Icon class="text-muted-foreground h-3 w-3" />
+                </button>
+                <button type="button" class="handler">
+                  <GripVertical class="text-muted-foreground h-3 w-3" />
+                </button>
+              {/if}
             </div>
           </div>
         {:else if isMaybeGroup(child)}
@@ -151,18 +154,20 @@
               />
               <div class="col-span-9"></div>
               <div class="col-span-1 flex items-center gap-2">
-                <button
-                  type="button"
-                  on:click={(e) => {
-                    e.stopPropagation()
-                    removeFilter(i)
-                  }}
-                >
-                  <Trash2Icon class="text-muted-foreground h-3 w-3" />
-                </button>
-                <button type="button" class="handler">
-                  <GripVertical class="text-muted-foreground h-3 w-3" />
-                </button>
+                {#if $hasPermission("table:update")}
+                  <button
+                    type="button"
+                    on:click={(e) => {
+                      e.stopPropagation()
+                      removeFilter(i)
+                    }}
+                  >
+                    <Trash2Icon class="text-muted-foreground h-3 w-3" />
+                  </button>
+                  <button type="button" class="handler">
+                    <GripVertical class="text-muted-foreground h-3 w-3" />
+                  </button>
+                {/if}
               </div>
             </div>
             <svelte:self bind:value={child} {table} level={level + 1} />
@@ -173,26 +178,30 @@
   {/if}
   <div class={cn("flex justify-between px-4", value?.children.length ? "border-t py-2" : "py-3")}>
     <div class="flex items-center gap-2">
-      <Button disabled={!filteredFields.length} variant="ghost" size="sm" on:click={addCondition}>
-        <PlusIcon class="mr-2 h-3 w-3" />
-        Add Condition
-      </Button>
-      {#if !disableGroup}
-        {#if level < 3}
-          <Button
-            disabled={!filteredFields.length}
-            variant="ghost"
-            class="text-muted-foreground"
-            size="sm"
-            on:click={addConditionGroup}
-          >
-            <PlusIcon class="mr-2 h-3 w-3" />
-            Add Condition Group
-          </Button>
+      {#if $hasPermission("table:update")}
+        <Button disabled={!filteredFields.length} variant="ghost" size="sm" on:click={addCondition}>
+          <PlusIcon class="mr-2 h-3 w-3" />
+          Add Condition
+        </Button>
+        {#if !disableGroup}
+          {#if level < 3}
+            <Button
+              disabled={!filteredFields.length}
+              variant="ghost"
+              class="text-muted-foreground"
+              size="sm"
+              on:click={addConditionGroup}
+            >
+              <PlusIcon class="mr-2 h-3 w-3" />
+              Add Condition Group
+            </Button>
+          {/if}
         {/if}
       {/if}
     </div>
 
-    <slot name="footer" />
+    {#if $hasPermission("table:update")}
+      <slot name="footer" />
+    {/if}
   </div>
 </div>

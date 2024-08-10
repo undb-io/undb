@@ -140,10 +140,14 @@ export class Auth {
         emailVerified: user!.emailVerified,
         avatar: user!.avatar,
       })
+
+      const m = member ? { role: member.role, spaceId: member.spaceId } : null
+      setContextValue("member", m)
+
       return {
         user,
         session,
-        member: member ? { role: member.role, spaceId: member.spaceId } : null,
+        member: m,
       }
     }
   }
@@ -236,7 +240,7 @@ export class Auth {
                 })
                 .execute()
 
-              const space = await this.spaceService.createPersonalSpace(username!)
+              const space = await this.spaceService.createSpace({ name: username! })
               await this.spaceMemberService.createMember(userId, space.id.value, "owner")
               if (invitation.isSome()) {
                 await this.spaceMemberService.createMember(
@@ -309,7 +313,7 @@ export class Auth {
           let space = await this.spaceService.getSpace({ userId: user.id })
           if (space.isSome()) {
           } else {
-            space = Some(await this.spaceService.createPersonalSpace(user.username))
+            space = Some(await this.spaceService.createSpace({ name: user.username }))
             await this.spaceMemberService.createMember(user.id, space.unwrap().id.value, "owner")
           }
           const session = await this.lucia.createSession(user.id, { space_id: space.unwrap().id.value })

@@ -95,6 +95,7 @@ const aggregateFns: Record<IFieldAggregate, string> = {
 const workspaceRoles: Record<ISpaceMemberRole, string> = {
   owner: "Owner",
   admin: "Admin",
+  editor: "Editor",
   viewer: "Viewer"
 }
 

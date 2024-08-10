@@ -5,7 +5,7 @@ export const createSpaceDTO = z.object({
   id: spaceIdSchema.optional(),
   avatar: spaceAvatarSchema.optional(),
   name: spaceNameSchema,
-  isPersonal: z.boolean(),
+  isPersonal: z.boolean().optional(),
 })
 
 export type ICreateSpaceDTO = z.infer<typeof createSpaceDTO>

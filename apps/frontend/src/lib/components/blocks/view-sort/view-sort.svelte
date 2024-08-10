@@ -23,6 +23,7 @@
   import { isNumber } from "radash"
   import { onMount } from "svelte"
   import autoAnimate from "@formkit/auto-animate"
+  import { hasPermission } from "$lib/store/space-member.store"
 
   const table = getTable()
   $: view = $table.views.getViewById($viewId)
@@ -85,7 +86,12 @@
 
 <Popover.Root bind:open>
   <Popover.Trigger asChild let:builder>
-    <Button variant={count || open ? "secondary" : "ghost"} builders={[builder]} size="sm">
+    <Button
+      variant={count || open ? "secondary" : "ghost"}
+      builders={[builder]}
+      size="sm"
+      disabled={!$hasPermission("table:update") && (!sort || sort.isEmpty)}
+    >
       <ArrowUpDownIcon class="mr-2 h-4 w-4" />
       Sorts
       {#if count}
@@ -152,12 +158,14 @@
                   </Select.Root>
                 </div>
                 <div class="text-muted-foreground col-span-2 flex justify-end gap-2">
-                  <button on:click={() => removeSort(item.fieldId)}>
-                    <Trash2Icon class="h-3 w-3" />
-                  </button>
-                  <button class=".handler" on:click={() => removeSort(item.fieldId)}>
-                    <GripVerticalIcon class="h-3 w-3" />
-                  </button>
+                  {#if !$hasPermission("table:update")}
+                    <button on:click={() => removeSort(item.fieldId)}>
+                      <Trash2Icon class="h-3 w-3" />
+                    </button>
+                    <button class=".handler" on:click={() => removeSort(item.fieldId)}>
+                      <GripVerticalIcon class="h-3 w-3" />
+                    </button>
+                  {/if}
                 </div>
               </div>
             {/each}
@@ -165,11 +173,13 @@
         </div>
       {/if}
       <div class="flex w-full items-center justify-between px-4 py-3">
-        <Button {disabled} variant="ghost" size="sm" on:click={addSort}>
-          <PlusIcon class="mr-2 h-3 w-3" />
-          Add Sort
-        </Button>
-        <Button variant="outline" size="sm" on:click={submit}>Submit</Button>
+        {#if !$hasPermission("table:update")}
+          <Button {disabled} variant="ghost" size="sm" on:click={addSort}>
+            <PlusIcon class="mr-2 h-3 w-3" />
+            Add Sort
+          </Button>
+          <Button variant="outline" size="sm" on:click={submit}>Submit</Button>
+        {/if}
       </div>
     </div>
   </Popover.Content>

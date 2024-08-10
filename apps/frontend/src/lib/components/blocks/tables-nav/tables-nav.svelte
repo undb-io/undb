@@ -19,6 +19,7 @@
   import CreateViewButton from "../view/create-view-button.svelte"
   import { onMount } from "svelte"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js"
+  import { hasPermission } from "$lib/store/space-member.store"
 
   export let tables: GetIndexQuery$result["tables"] = []
   export let bases: GetIndexQuery$result["bases"] = []
@@ -87,15 +88,17 @@
                   active && "text-background",
                 )}
               >
-                <button
-                  class="h-full"
-                  on:click={() => {
-                    baseId.set(base.id)
-                    toggleModal(CREATE_TABLE_MODAL)
-                  }}
-                >
-                  <PlusIcon class="h-4 w-4" />
-                </button>
+                {#if $hasPermission("table:create")}
+                  <button
+                    class="h-full"
+                    on:click={() => {
+                      baseId.set(base.id)
+                      toggleModal(CREATE_TABLE_MODAL)
+                    }}
+                  >
+                    <PlusIcon class="h-4 w-4" />
+                  </button>
+                {/if}
                 <Collapsible.Trigger class="h-full">
                   <ChevronRightIcon
                     class={cn(

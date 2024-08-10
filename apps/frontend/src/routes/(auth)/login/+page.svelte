@@ -11,10 +11,12 @@
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import * as Form from "$lib/components/ui/form"
-  import { toast } from "svelte-sonner"
   import { Button } from "$lib/components/ui/button"
   import { Separator } from "$lib/components/ui/separator"
   import PasswordInput from "$lib/components/ui/input/password-input.svelte"
+  import * as Alert from "$lib/components/ui/alert/index.js"
+  import autoAnimate from "@formkit/auto-animate"
+  import { LoaderCircleIcon } from "lucide-svelte"
 
   const schema = z.object({
     email: z.string().email(),
@@ -23,14 +25,28 @@
 
   type LoginSchema = z.infer<typeof schema>
 
+  let loginError = false
+
   const loginMutation = createMutation({
-    mutationFn: (input: LoginSchema) => fetch("/api/login", { method: "POST", body: JSON.stringify(input) }),
+    mutationFn: async (input: LoginSchema) => {
+      try {
+        const { ok } = await fetch("/api/login", { method: "POST", body: JSON.stringify(input) })
+        if (!ok) {
+          throw new Error("Failed to login")
+        }
+        return
+      } catch (error) {
+        loginError = true
+      }
+    },
+    onMutate(variables) {
+      loginError = false
+    },
     async onSuccess(data, variables, context) {
       await goto("/")
     },
     async onError(error, variables, context) {
-      toast.error(error.message)
-      await goto("/signup")
+      loginError = true
     },
   })
 
@@ -103,7 +119,20 @@
               <Form.FieldErrors />
             </Form.Field>
           </div>
-          <Form.Button type="submit" class="w-full">Login</Form.Button>
+          <Form.Button type="submit" class="w-full" disabled={$loginMutation.isPending}>
+            {#if $loginMutation.isPending}
+              <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
+            {/if}
+            Login
+          </Form.Button>
+        </div>
+        <div class="mt-4" use:autoAnimate>
+          {#if loginError}
+            <Alert.Root variant="destructive">
+              <Alert.Title>Error</Alert.Title>
+              <Alert.Description>Invalid email or password.</Alert.Description>
+            </Alert.Root>
+          {/if}
         </div>
         <div class="mt-4 text-center text-sm">
           Don&apos;t have an account?

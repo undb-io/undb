@@ -17,6 +17,10 @@ export class ViewSort extends ValueObject<IViewSort> {
     super(props)
   }
 
+  public get isEmpty(): boolean {
+    return this.props?.length === 0
+  }
+
   public isEqual(sort: IViewSort): boolean {
     return isEqual(sort, this.props)
   }

@@ -8,6 +8,7 @@ import type {
   TableIdsSpecification,
   TableNameSpecification,
   TableSchemaSpecification,
+  TableSpaceIdSpecification,
   TableUniqueNameSpecification,
   TableViewsSpecification,
   WithDuplicatedFieldSpecification,
@@ -43,6 +44,7 @@ export class TableReferenceVisitor implements ITableSpecVisitor {
   }
 
   withId(id: TableIdSpecification): void {}
+  withSpaceId(id: TableSpaceIdSpecification): void {}
   withBaseId(id: TableBaseIdSpecification): void {}
   idsIn(ids: TableIdsSpecification): void {}
   withName(name: TableNameSpecification): void {}

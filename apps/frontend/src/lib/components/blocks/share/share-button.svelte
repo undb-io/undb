@@ -14,6 +14,7 @@
   import { copyToClipboard } from "@svelte-put/copy"
   import { toast } from "svelte-sonner"
   import { cn } from "$lib/utils"
+  import { hasPermission } from "$lib/store/space-member.store"
 
   export let type: IShareTarget["type"]
   export let id: IShareTarget["id"]
@@ -67,64 +68,66 @@
   }
 </script>
 
-<Popover.Root bind:open>
-  <Popover.Trigger asChild let:builder>
-    <Button
-      disabled={$enableShareMutation.isPending || $disableShareMutation.isPending}
-      builders={[builder]}
-      variant={open || enabled ? "secondary" : "ghost"}
-      size="sm"
-    >
-      <ShareIcon class="mr-1 h-4 w-4" />
-      Share
-    </Button>
-  </Popover.Trigger>
-  <Popover.Content class="w-[500px]">
-    <div class={cn("-mx-4 flex items-center justify-between px-4", enabled && "pb-2")}>
-      <h3 class="flex items-center text-sm font-semibold">
-        <ShareIcon class="mr-2 h-4 w-4" />
-
+{#if $hasPermission("share:enable")}
+  <Popover.Root bind:open>
+    <Popover.Trigger asChild let:builder>
+      <Button
+        disabled={$enableShareMutation.isPending || $disableShareMutation.isPending}
+        builders={[builder]}
+        variant={open || enabled ? "secondary" : "ghost"}
+        size="sm"
+      >
+        <ShareIcon class="mr-1 h-4 w-4" />
         Share
-      </h3>
-      <Label class="flex items-center gap-2">
-        <Switch
-          checked={enabled}
-          onCheckedChange={(checked) => {
-            if (checked) {
-              enableShare()
-            } else {
-              disableShare()
-            }
-          }}
-        />
-        {enabled ? "enable" : "disable"}
-      </Label>
-    </div>
+      </Button>
+    </Popover.Trigger>
+    <Popover.Content class="w-[500px]">
+      <div class={cn("-mx-4 flex items-center justify-between px-4", enabled && "pb-2")}>
+        <h3 class="flex items-center text-sm font-semibold">
+          <ShareIcon class="mr-2 h-4 w-4" />
 
-    {#if enabled && share?.id}
-      <div class="-mx-4 border-t px-4 pt-2">
-        <div class="flex items-center gap-2">
-          <Input
-            value={url}
-            readonly
-            class="flex-1 cursor-pointer"
-            on:click={(e) => {
-              copy()
-              e.target.select()
+          Share
+        </h3>
+        <Label class="flex items-center gap-2">
+          <Switch
+            checked={enabled}
+            onCheckedChange={(checked) => {
+              if (checked) {
+                enableShare()
+              } else {
+                disableShare()
+              }
             }}
           />
-          <a role="button" href={url} target="_blank">
-            <ExternalLinkIcon class="h-4 w-4" />
-          </a>
-          <button type="button" on:click={copy}>
-            {#if copied}
-              <CopyCheckIcon class="h-4 w-4" />
-            {:else}
-              <CopyIcon class="h-4 w-4" />
-            {/if}
-          </button>
-        </div>
+          {enabled ? "enable" : "disable"}
+        </Label>
       </div>
-    {/if}
-  </Popover.Content>
-</Popover.Root>
+
+      {#if enabled && share?.id}
+        <div class="-mx-4 border-t px-4 pt-2">
+          <div class="flex items-center gap-2">
+            <Input
+              value={url}
+              readonly
+              class="flex-1 cursor-pointer"
+              on:click={(e) => {
+                copy()
+                e.target.select()
+              }}
+            />
+            <a role="button" href={url} target="_blank">
+              <ExternalLinkIcon class="h-4 w-4" />
+            </a>
+            <button type="button" on:click={copy}>
+              {#if copied}
+                <CopyCheckIcon class="h-4 w-4" />
+              {:else}
+                <CopyIcon class="h-4 w-4" />
+              {/if}
+            </button>
+          </div>
+        </div>
+      {/if}
+    </Popover.Content>
+  </Popover.Root>
+{/if}
