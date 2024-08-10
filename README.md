@@ -15,31 +15,21 @@ UNDB is a no-code platform that can also serve as a Backend as a Service (BaaS).
 
 - ⚡ No-code platform, easy to use
 - 🗄️ Based on SQLite, a lightweight database
+- 🔐 Private and local first
 - 📦 Can be packaged into a binary file using Bun
+- 🪜 Progressive deployment, from local in single file to cloud complicated stacks.
 - 🐳 Supports Docker deployment
 - 🛠️ Provides a UI for table management
 
 ## Quick start
 
 ```bash
-docker run -p 3721:3721 ghcr.io/undb-io/undb:v1.0.0-1
+docker run -p 3721:3721 ghcr.io/undb-io/undb:latest
 ```
 
-## Installation and Usage
+## Development
 
-### Docker compose development
-
-```bash
-docker compose up -d
-```
-
-then visit `http://localhost:3721`
-
-### Prerequisites
-
-- [Bun](https://bun.sh) - Bun is a fast JavaScript runtime and package manager
-
-### Local Development
+### Local Development (Recommended)
 
 1. **Install Bun**
 
@@ -63,6 +53,16 @@ then visit `http://localhost:3721`
    ```bash
    bun run dev
    ```
+
+### Docker compose development
+
+```bash
+docker compose up -d
+```
+
+then visit `http://localhost:3721`
+
+## Build
 
 ### Packaging into a Binary File
 

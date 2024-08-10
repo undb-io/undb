@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { hasPermission } from "$lib/store/workspace-member.store"
+  import { hasPermission } from "$lib/store/space-member.store"
   import { Users } from "lucide-svelte"
   import InvitationsListButton from "../invitations/invitations-list-button.svelte"
   import InviteButton from "../invite/invite-button.svelte"
