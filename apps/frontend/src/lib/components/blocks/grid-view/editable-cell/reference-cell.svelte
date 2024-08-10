@@ -49,7 +49,15 @@
     </div>
 
     {#if (isSelected || isEditing) && hasValueReactive}
-      <ForeignRecordsPickerDropdown shouldUpdate {field} {tableId} {recordId} bind:selected isSelected={false}>
+      <ForeignRecordsPickerDropdown
+        {onValueChange}
+        shouldUpdate
+        {field}
+        {tableId}
+        {recordId}
+        bind:selected
+        isSelected={false}
+      >
         <Button variant="link" class="px-2">+</Button>
       </ForeignRecordsPickerDropdown>
     {/if}

@@ -27,7 +27,7 @@
   export let tableId: string
   export let recordId: string | undefined = undefined
   export let field: ReferenceField
-
+  export let onValueChange = (value: string[]) => {}
   let linkAfterCreate = true
 
   const perPage = writable(20)
@@ -104,6 +104,7 @@
     } else {
       $selected = unique([...($selected ?? []), id])
     }
+    onValueChange($selected)
     if (shouldUpdate) {
       if (recordId) {
         await $updateCell.mutateAsync({

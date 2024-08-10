@@ -11,6 +11,7 @@
   export let value: number = 0
   export let field: RatingField
   export let readonly = false
+  export let onValueChange: (value: number) => void
 
   $: max = field.max
 
@@ -84,6 +85,7 @@
           }
         }}
         on:change={() => {
+          onValueChange(value)
           $updateCell.mutate({
             tableId,
             id: recordId,

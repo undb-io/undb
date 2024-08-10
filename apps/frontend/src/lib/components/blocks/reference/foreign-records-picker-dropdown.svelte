@@ -16,7 +16,7 @@
   export let field: ReferenceField
   $: foreignTableId = field.foreignTableId
   export let selected = writable<string[]>()
-
+  export let onValueChange = (value: string[]) => {}
   export let onOpenChange: (open: boolean) => void = () => {}
 
   const foreignTableStore = new GetForeignTableStore()
@@ -55,6 +55,7 @@
         {recordId}
         {foreignTable}
         bind:selected
+        {onValueChange}
       />
     {/if}
   </Popover.Content>
