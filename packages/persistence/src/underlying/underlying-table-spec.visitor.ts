@@ -7,6 +7,7 @@ import type {
   TableIdsSpecification,
   TableNameSpecification,
   TableSchemaSpecification,
+  TableSpaceIdSpecification,
   TableUniqueNameSpecification,
   TableViewsSpecification,
   UserField,
@@ -67,6 +68,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
     this.#sql.push(...sql)
   }
 
+  withSpaceId(id: TableSpaceIdSpecification): void {}
   withFormId(spec: WithFormIdSpecification): void {}
   withForeignRollupField(spec: WithForeignRollupFieldSpec): void {}
   withTableForeignTables(spec: WithTableForeignTablesSpec): void {}

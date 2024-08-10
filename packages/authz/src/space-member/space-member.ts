@@ -3,8 +3,8 @@ import { spaceIdSchema } from "@undb/space"
 import { z } from "@undb/zod"
 import { memberId } from "../member/member-id.vo"
 
-export const spaceMemberRole = z.enum(["owner", "admin", "viewer"])
-export const spaceMemberWithoutOwner = z.enum(["admin", "viewer"])
+export const spaceMemberRole = z.enum(["owner", "admin", "editor", "viewer"])
+export const spaceMemberWithoutOwner = z.enum(["admin", "editor", "viewer"])
 
 export type ISpaceMemberRole = z.infer<typeof spaceMemberRole>
 export type ISpaceMemberWithoutOwner = z.infer<typeof spaceMemberWithoutOwner>

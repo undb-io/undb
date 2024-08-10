@@ -16,6 +16,7 @@
     type IViewFilterOptionSchema,
     type MaybeConditionGroup,
   } from "@undb/table"
+  import { hasPermission } from "$lib/store/space-member.store"
 
   const table = getTable()
   $: filter = $table.views.getViewById($viewId).filter.into(undefined)
@@ -53,7 +54,12 @@
 
 <Popover.Root bind:open>
   <Popover.Trigger asChild let:builder>
-    <Button variant={count || open ? "secondary" : "ghost"} builders={[builder]} size="sm">
+    <Button
+      variant={count || open ? "secondary" : "ghost"}
+      builders={[builder]}
+      size="sm"
+      disabled={!$hasPermission("table:update") && (!filter || filter?.isEmpty)}
+    >
       <FilterIcon class="mr-2 h-4 w-4" />
       Filters
       {#if count}

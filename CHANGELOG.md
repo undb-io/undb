@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-5
+
+
+### 🩹 Fixes
+
+- Fix on value change ([07adf8e](https://github.com/undb-io/undb/commit/07adf8e))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-4
 
 

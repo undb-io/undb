@@ -85,6 +85,7 @@ export class Graphql {
         number
         rating
         email
+        url
         id
         createdAt
         createdBy

@@ -1,7 +1,7 @@
 import type { SetContextValue } from "@undb/context"
 import { inject, singleton } from "@undb/di"
 import { None, Option, Some } from "oxide.ts"
-import type { ISpaceDTO } from "./dto"
+import type { ICreateSpaceDTO, ISpaceDTO } from "./dto"
 import type { ISpaceSpecification } from "./interface"
 import type { Space } from "./space.do"
 import { SpaceFactory } from "./space.factory"
@@ -24,6 +24,7 @@ interface IGetSpaceInput {
 }
 
 export interface ISpaceService {
+  createSpace(dto: ICreateSpaceDTO): Promise<Space>
   createPersonalSpace(username: string): Promise<Space>
   getSpace(input: IGetSpaceInput): Promise<Option<Space>>
   getMemberSpaces(userId: string): Promise<ISpaceDTO[]>
@@ -43,16 +44,21 @@ export class SpaceService implements ISpaceService {
     private readonly spaceQueryRepository: ISpaceQueryRepository,
   ) {}
 
-  async createPersonalSpace(username: string): Promise<Space> {
-    const space = SpaceFactory.create({
-      name: username + "'s Personal Space",
-      isPersonal: true,
-    })
+  async createSpace(dto: ICreateSpaceDTO): Promise<Space> {
+    const space = SpaceFactory.create(dto)
 
     await this.spaceRepository.insert(space)
 
     return space
   }
+
+  async createPersonalSpace(username: string): Promise<Space> {
+    return this.createSpace({
+      name: username + "'s Personal Space",
+      isPersonal: true,
+    })
+  }
+
   async getSpace(input: IGetSpaceInput): Promise<Option<Space>> {
     let spec: Option<ISpaceSpecification> = None
 

@@ -14,6 +14,7 @@ const createLuciaWithAdapter = (adapter: Adapter) => {
     sessionCookie: {
       attributes: {
         secure: Bun.env.NODE_ENV === "PRODUCTION", // set `Secure` flag in HTTPS
+        domain: Bun.env.UNDB_COOKIE_DOMAIN,
       },
     },
     getSessionAttributes: (attributes) => {

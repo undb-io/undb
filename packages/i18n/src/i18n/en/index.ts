@@ -58,6 +58,7 @@ const fieldTypes: Record<FieldType, string> = {
   select: "Select",
   rating: "Rating",
   email: "Email",
+  url: "URL",
   attachment: "Attachment",
   json: "JSON",
   checkbox: "Checkbox",
@@ -94,6 +95,7 @@ const aggregateFns: Record<IFieldAggregate, string> = {
 const workspaceRoles: Record<ISpaceMemberRole, string> = {
   owner: "Owner",
   admin: "Admin",
+  editor: "Editor",
   viewer: "Viewer"
 }
 

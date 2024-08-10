@@ -10,7 +10,7 @@
   import { ScrollArea } from "$lib/components/ui/scroll-area/index.js"
   import { CREATE_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
   import Command from "$lib/components/blocks/command/command.svelte"
-  import { role } from "$lib/store/workspace-member.store"
+  import { role } from "$lib/store/space-member.store"
   import { bases as basesStore } from "$lib/store/base.store"
   import NavTools from "$lib/components/blocks/nav/nav-tools.svelte"
   import { onMount } from "svelte"

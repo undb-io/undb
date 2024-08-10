@@ -13,6 +13,7 @@
   import JsonControl from "./json-control.svelte"
   import CheckboxControl from "./checkbox-control.svelte"
   import RollupControl from "./rollup-control.svelte"
+  import UrlControl from "./url-control.svelte"
 
   export let readonly = false
   export let field: NoneSystemField
@@ -39,6 +40,7 @@
     select: SelectControl,
     rating: RatingControl,
     email: EmailControl,
+    url: UrlControl,
     attachment: AttachmentControl,
     date: DateControl,
     json: JsonControl,

@@ -13,6 +13,7 @@
   import CheckboxFieldOption from "./checkbox-field-option.svelte"
   import JsonFieldOption from "./json-field-option.svelte"
   import DateFieldOption from "./date-field-option.svelte"
+  import UrlFieldOption from "./url-field-option.svelte"
 
   export let constraint: IFieldConstraint | undefined
   export let option: any | undefined
@@ -31,6 +32,7 @@
     attachment: AttachmentFieldOption,
     user: UserFieldOption,
     email: EmailFieldOption,
+    url: UrlFieldOption,
     checkbox: CheckboxFieldOption,
     json: JsonFieldOption,
     date: DateFieldOption,

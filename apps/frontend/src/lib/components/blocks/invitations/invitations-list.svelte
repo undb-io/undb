@@ -8,7 +8,7 @@
   import { EllipsisIcon, TrashIcon } from "lucide-svelte"
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
-  import { hasPermission } from "$lib/store/workspace-member.store"
+  import { hasPermission } from "$lib/store/space-member.store"
 
   const store = new GetInvitationsStore()
 

@@ -33,6 +33,7 @@ import {
   StringMax,
   StringMin,
   StringStartsWith,
+  UrlEqual,
   UserEmpty,
   UserEqual,
   type IRecordVisitor,
@@ -86,6 +87,7 @@ export class RecordSpecReferenceVisitor implements IRecordVisitor {
   selectEmpty(spec: SelectEmpty): void {}
   ratingEqual(s: RatingEqual): void {}
   emailEqual(s: EmailEqual): void {}
+  urlEqual(s: UrlEqual): void {}
   attachmentEqual(s: AttachmentEqual): void {}
   attachmentEmpty(s: AttachmentEmpty): void {}
   dateEqual(spec: DateEqual): void {}

@@ -12,6 +12,7 @@
   import { zodClient } from "sveltekit-superforms/adapters"
   import { Input } from "$lib/components/ui/input"
   import { cn } from "$lib/utils"
+  import { hasPermission } from "$lib/store/space-member.store"
 
   let open = false
 
@@ -58,27 +59,29 @@
   const { enhance, form: formData } = form
 </script>
 
-<Popover.Root bind:open>
-  <Popover.Trigger asChild let:builder>
-    <Button class={cn("mt-4", $$restProps.class)} builders={[builder]} {...$$restProps}>
-      <slot>
-        <PlusCircleIcon class="mr-2 h-4 w-4" />
-        Create View
-      </slot>
-    </Button>
-  </Popover.Trigger>
-  <Popover.Content>
-    <form method="POST" use:enhance>
-      <Form.Field {form} name="name">
-        <Form.Control let:attrs>
-          <Form.Label>Name</Form.Label>
-          <Input {...attrs} bind:value={$formData.name} />
-        </Form.Control>
-        <Form.Description />
-        <Form.FieldErrors />
-      </Form.Field>
+{#if $hasPermission("table:update")}
+  <Popover.Root bind:open>
+    <Popover.Trigger asChild let:builder>
+      <Button class={cn("mt-4", $$restProps.class)} builders={[builder]} {...$$restProps}>
+        <slot>
+          <PlusCircleIcon class="mr-2 h-4 w-4" />
+          Create View
+        </slot>
+      </Button>
+    </Popover.Trigger>
+    <Popover.Content>
+      <form method="POST" use:enhance>
+        <Form.Field {form} name="name">
+          <Form.Control let:attrs>
+            <Form.Label>Name</Form.Label>
+            <Input {...attrs} bind:value={$formData.name} />
+          </Form.Control>
+          <Form.Description />
+          <Form.FieldErrors />
+        </Form.Field>
 
-      <Form.FormButton class="w-full">Create</Form.FormButton>
-    </form>
-  </Popover.Content>
-</Popover.Root>
+        <Form.FormButton class="w-full">Create</Form.FormButton>
+      </form>
+    </Popover.Content>
+  </Popover.Root>
+{/if}

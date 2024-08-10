@@ -11,6 +11,7 @@
   import { toast } from "svelte-sonner"
   import { Button } from "$lib/components/ui/button"
   import * as AlertDialog from "$lib/components/ui/alert-dialog/index.js"
+  import { hasPermission } from "$lib/store/space-member.store"
 
   export let space: ISpaceDTO
 
@@ -63,13 +64,18 @@
     <Form.Field {form} name="name">
       <Form.Control let:attrs>
         <Form.Label>Space name</Form.Label>
-        <Input {...attrs} placeholder="Set space display name..." bind:value={$formData.name} />
+        <Input
+          {...attrs}
+          disabled={!$hasPermission("space:update")}
+          placeholder="Set space display name..."
+          bind:value={$formData.name}
+        />
       </Form.Control>
       <Form.Description>Change space display name.</Form.Description>
       <Form.FieldErrors />
     </Form.Field>
 
-    <Form.Button>Update</Form.Button>
+    <Form.Button disabled={!$hasPermission("space:update")}>Update</Form.Button>
     {#if browser}
       <!-- <SuperDebug data={$formData} /> -->
     {/if}
@@ -86,7 +92,11 @@
 
     <AlertDialog.Root>
       <AlertDialog.Trigger asChild let:builder>
-        <Button variant="destructive" builders={[builder]} disabled={space.isPersonal}>Delete Space</Button>
+        <Button
+          variant="destructive"
+          builders={[builder]}
+          disabled={space.isPersonal || !$hasPermission("space:delete")}>Delete Space</Button
+        >
       </AlertDialog.Trigger>
       <AlertDialog.Content>
         <AlertDialog.Header>
@@ -106,7 +116,11 @@
             <Button
               variant="destructive"
               builders={[builder]}
-              disabled={$deleteSpaceMutation.isPending || space.isPersonal || deleteConfirm !== "DELETE"}
+              disabled={//
+              $deleteSpaceMutation.isPending ||
+                space.isPersonal ||
+                deleteConfirm !== "DELETE" ||
+                !$hasPermission("space:delete")}
               on:click={async () => {
                 await $deleteSpaceMutation.mutateAsync()
               }}

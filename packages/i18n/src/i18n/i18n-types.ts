@@ -226,6 +226,10 @@ type RootTranslation = {
 			 */
 			email: string
 			/**
+			 * U​R​L
+			 */
+			url: string
+			/**
 			 * A​t​t​a​c​h​m​e​n​t
 			 */
 			attachment: string
@@ -339,6 +343,10 @@ type RootTranslation = {
 			 * A​d​m​i​n
 			 */
 			admin: string
+			/**
+			 * E​d​i​t​o​r
+			 */
+			editor: string
 			/**
 			 * V​i​e​w​e​r
 			 */
@@ -561,6 +569,10 @@ export type TranslationFunctions = {
 			 */
 			email: () => LocalizedString
 			/**
+			 * URL
+			 */
+			url: () => LocalizedString
+			/**
 			 * Attachment
 			 */
 			attachment: () => LocalizedString
@@ -674,6 +686,10 @@ export type TranslationFunctions = {
 			 * Admin
 			 */
 			admin: () => LocalizedString
+			/**
+			 * Editor
+			 */
+			editor: () => LocalizedString
 			/**
 			 * Viewer
 			 */

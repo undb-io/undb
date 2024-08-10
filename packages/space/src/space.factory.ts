@@ -32,7 +32,7 @@ export class SpaceFactory {
       new WithSpaceId(SpaceId.fromOrCreate(input.id)),
       WithSpaceName.fromString(input.name),
       WithSpaceAvatar.fromString(input.avatar ?? undefined),
-      new WithSpaceIsPersonal(input.isPersonal),
+      new WithSpaceIsPersonal(input.isPersonal ?? false),
     )
 
     // @ts-expect-error

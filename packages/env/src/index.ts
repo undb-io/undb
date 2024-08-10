@@ -108,7 +108,8 @@ export const env = createEnv({
   clientPrefix: "UNDB_PUBLIC_",
   client: {},
   server: {
-    UNDB_BASE_URL: z.string().optional(),
+    UNDB_BASE_URL: z.string().optional().default("http://localhost:3721"),
+    UNDB_COOKIE_DOMAIN: z.string().optional(),
   },
   runtimeEnv: import.meta.env,
   emptyStringAsUndefined: true,

@@ -50,10 +50,10 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
     this.addCond(this.eb.eb("undb_table.space_id", "=", id.spaceId))
   }
   withId(id: TableIdSpecification): void {
-    this.addCond(this.eb.eb("id", "=", id.id.value))
+    this.addCond(this.eb.eb("undb_table.id", "=", id.id.value))
   }
   withBaseId(id: TableBaseIdSpecification): void {
-    this.addCond(this.eb.eb("base_id", "=", id.baseId))
+    this.addCond(this.eb.eb("undb_table.base_id", "=", id.baseId))
   }
   idsIn(ids: TableIdsSpecification): void {
     if (!ids.ids.length) return

@@ -17,6 +17,7 @@
     type IStringFieldConditionOp,
     type IUpdatedAtFieldConditionOp,
     type IUpdatedByFieldConditionOp,
+    type IUrlFieldConditionOp,
     type IUserFieldConditionOp,
   } from "@undb/table"
   import Input from "$lib/components/ui/input/input.svelte"
@@ -29,6 +30,7 @@
   import IdFilterInput from "./variants/id-filter-input.svelte"
   import OptionFilterInput from "./variants/option-filter-input.svelte"
   import OptionsFilterInput from "./variants/options-filter-input.svelte"
+  import type { ComponentIcon } from "lucide-svelte"
 
   export let field: Field | undefined
   export let recordId: string | undefined = undefined
@@ -209,6 +211,17 @@
     is_not_empty: null,
   }
 
+  const url: Record<IUrlFieldConditionOp, ComponentType | null> = {
+    eq: Input,
+    neq: Input,
+    contains: Input,
+    does_not_contain: Input,
+    starts_with: Input,
+    ends_with: Input,
+    is_empty: null,
+    is_not_empty: null,
+  }
+
   $: filterFieldInput = {
     string,
     number,
@@ -225,6 +238,7 @@
     checkbox,
     user,
     json,
+    url,
   }
 </script>
 

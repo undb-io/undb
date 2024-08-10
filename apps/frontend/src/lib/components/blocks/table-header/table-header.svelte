@@ -38,6 +38,7 @@
     toggleModal,
   } from "$lib/store/modal.store"
   import { getBaseById } from "$lib/store/base.store"
+  import { hasPermission } from "$lib/store/space-member.store"
 
   const table = getTable()
   $: base = $getBaseById($table.baseId)
@@ -79,22 +80,29 @@
           <Breadcrumb.Item>
             <Breadcrumb.Link class="flex items-center gap-2" href={`/t/${$table.id.value}`}>
               <DropdownMenu.Root>
-                <DropdownMenu.Trigger class="flex items-center gap-2">
+                <DropdownMenu.Trigger
+                  disabled={!$hasPermission("table:update") && !$hasPermission("table:delete")}
+                  class="flex items-center gap-2"
+                >
                   <DatabaseIcon class="h-3 w-3" />
                   {$table.name.value}
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content class="w-[200px]">
-                  <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_TABLE_MODAL)}>
-                    <PencilIcon class="mr-2 h-3 w-3" />
-                    Update table name
-                  </DropdownMenu.Item>
-                  <DropdownMenu.Item
-                    on:click={() => toggleModal(DELETE_TABLE_MODAL)}
-                    class="text-xs text-red-500 hover:bg-red-50 hover:text-red-500"
-                  >
-                    <PencilIcon class="mr-2 h-3 w-3" />
-                    Delete table
-                  </DropdownMenu.Item>
+                  {#if $hasPermission("table:update")}
+                    <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_TABLE_MODAL)}>
+                      <PencilIcon class="mr-2 h-3 w-3" />
+                      Update table name
+                    </DropdownMenu.Item>
+                  {/if}
+                  {#if $hasPermission("table:delete")}
+                    <DropdownMenu.Item
+                      on:click={() => toggleModal(DELETE_TABLE_MODAL)}
+                      class="text-xs text-red-500 hover:bg-red-50 hover:text-red-500"
+                    >
+                      <PencilIcon class="mr-2 h-3 w-3" />
+                      Delete table
+                    </DropdownMenu.Item>
+                  {/if}
                 </DropdownMenu.Content>
               </DropdownMenu.Root>
             </Breadcrumb.Link>
@@ -109,7 +117,13 @@
               <Breadcrumb.Separator />
               <DropdownMenu.Root>
                 <DropdownMenu.Trigger asChild let:builder>
-                  <Button size="sm" variant="link" class="pl-0 pr-0" builders={[builder]}>{currentForm?.name}</Button>
+                  <Button
+                    size="sm"
+                    variant="link"
+                    disabled={!$hasPermission("table:update")}
+                    class="pl-0 pr-0"
+                    builders={[builder]}>{currentForm?.name}</Button
+                  >
                   <ChevronsUpDownIcon class="h-3 w-3" />
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content class="w-[200px]">
@@ -154,49 +168,53 @@
                 <Breadcrumb.Item class="text-xs">
                   <Breadcrumb.Page class="flex items-center gap-1">
                     {view.name.value}
-                    <ChevronDownIcon class="text-muted-foreground h-4 w-4" />
+                    {#if $hasPermission("table:update")}
+                      <ChevronDownIcon class="text-muted-foreground h-4 w-4" />
+                    {/if}
                   </Breadcrumb.Page>
                 </Breadcrumb.Item>
               </DropdownMenu.Trigger>
-              <DropdownMenu.Content class="w-[200px]">
-                <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_VIEW)}>
-                  <PencilIcon class="mr-2 h-3 w-3" />
-                  Update View Name
-                </DropdownMenu.Item>
-                <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(DUPLICATE_VIEW)}>
-                  <CopyPlusIcon class="mr-2 h-3 w-3" />
-                  Duplicate View
-                </DropdownMenu.Item>
-                <DropdownMenu.Sub>
-                  <DropdownMenu.SubTrigger class="text-xs">
-                    <DownloadIcon class="mr-2 h-3 w-3" />
-                    Download View
-                  </DropdownMenu.SubTrigger>
-                  <DropdownMenu.SubContent class="w-[200px]">
-                    <DropdownMenu.Item class="text-xs" on:click={() => downloadView("excel")}>
-                      <FileSpreadsheet class="mr-2 h-4 w-4" />
-                      Download as Excel
-                    </DropdownMenu.Item>
-                    <DropdownMenu.Item class="text-xs" on:click={() => downloadView("csv")}>
-                      <FileTextIcon class="mr-2 h-4 w-4" />
-                      Download as CSV
-                    </DropdownMenu.Item>
-                    <DropdownMenu.Item class="text-xs" on:click={() => downloadView("json")}>
-                      <FileJsonIcon class="mr-2 h-4 w-4" />
-                      Download as JSON
-                    </DropdownMenu.Item>
-                  </DropdownMenu.SubContent>
-                </DropdownMenu.Sub>
-                {#if !view.isDefault}
-                  <DropdownMenu.Item
-                    class="text-xs text-red-500 hover:bg-red-200 hover:text-red-500"
-                    on:click={() => toggleModal(DELETE_VIEW)}
-                  >
-                    <CopyPlusIcon class="mr-2 h-3 w-3" />
-                    Delete View
+              {#if $hasPermission("table:update")}
+                <DropdownMenu.Content class="w-[200px]">
+                  <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_VIEW)}>
+                    <PencilIcon class="mr-2 h-3 w-3" />
+                    Update View Name
                   </DropdownMenu.Item>
-                {/if}
-              </DropdownMenu.Content>
+                  <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(DUPLICATE_VIEW)}>
+                    <CopyPlusIcon class="mr-2 h-3 w-3" />
+                    Duplicate View
+                  </DropdownMenu.Item>
+                  <DropdownMenu.Sub>
+                    <DropdownMenu.SubTrigger class="text-xs">
+                      <DownloadIcon class="mr-2 h-3 w-3" />
+                      Download View
+                    </DropdownMenu.SubTrigger>
+                    <DropdownMenu.SubContent class="w-[200px]">
+                      <DropdownMenu.Item class="text-xs" on:click={() => downloadView("excel")}>
+                        <FileSpreadsheet class="mr-2 h-4 w-4" />
+                        Download as Excel
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item class="text-xs" on:click={() => downloadView("csv")}>
+                        <FileTextIcon class="mr-2 h-4 w-4" />
+                        Download as CSV
+                      </DropdownMenu.Item>
+                      <DropdownMenu.Item class="text-xs" on:click={() => downloadView("json")}>
+                        <FileJsonIcon class="mr-2 h-4 w-4" />
+                        Download as JSON
+                      </DropdownMenu.Item>
+                    </DropdownMenu.SubContent>
+                  </DropdownMenu.Sub>
+                  {#if !view.isDefault}
+                    <DropdownMenu.Item
+                      class="text-xs text-red-500 hover:bg-red-200 hover:text-red-500"
+                      on:click={() => toggleModal(DELETE_VIEW)}
+                    >
+                      <CopyPlusIcon class="mr-2 h-3 w-3" />
+                      Delete View
+                    </DropdownMenu.Item>
+                  {/if}
+                </DropdownMenu.Content>
+              {/if}
             </DropdownMenu.Root>
 
             <CreateViewButton

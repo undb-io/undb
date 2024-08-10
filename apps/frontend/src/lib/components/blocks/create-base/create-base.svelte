@@ -9,6 +9,7 @@
   import { toast } from "svelte-sonner"
   import { CREATE_BASE_MODAL, closeModal } from "$lib/store/modal.store"
   import { goto } from "$app/navigation"
+  import { LoaderCircleIcon } from "lucide-svelte"
 
   const mutation = createMutation({
     mutationFn: trpc.base.create.mutate,
@@ -36,6 +37,7 @@
       dataType: "json",
       validators: zodClient(schema),
       resetForm: false,
+      delayMs: 200,
       invalidateAll: true,
       onUpdate(event) {
         if (!event.form.valid) return
@@ -45,7 +47,7 @@
     },
   )
 
-  const { form: formData, enhance } = form
+  const { form: formData, enhance, delayed } = form
 </script>
 
 <form id="createTable" class="space-y-2 px-1" method="POST" use:enhance>
@@ -61,7 +63,12 @@
     <Form.FormButton type="button" variant="secondary" on:click={() => closeModal(CREATE_BASE_MODAL)}>
       Cancel
     </Form.FormButton>
-    <Form.FormButton>Create</Form.FormButton>
+    <Form.FormButton>
+      {#if $delayed}
+        <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
+      {/if}
+      Create
+    </Form.FormButton>
   </div>
 </form>
 

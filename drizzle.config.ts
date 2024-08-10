@@ -6,6 +6,6 @@ export default defineConfig({
   dialect: "sqlite",
   tablesFilter: ["undb_*"],
   dbCredentials: {
-    url: "./apps/backend/.undb/undb.db",
+    url: "./apps/backend/undb.sqlite",
   },
 })

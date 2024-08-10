@@ -22,7 +22,7 @@ export class CreateSpaceCommandHandler implements ICommandHandler<CreateSpaceCom
   async execute(command: CreateSpaceCommand): Promise<any> {
     this.logger.debug(command)
 
-    const space = SpaceFactory.create({ ...command, isPersonal: false })
+    const space = SpaceFactory.create(command)
 
     await this.repository.insert(space)
     const userId = getCurrentUserId()

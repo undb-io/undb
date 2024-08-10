@@ -23,6 +23,7 @@
   import { GetForeignTableStore, GetRollupForeignTablesStore } from "$houdini"
   import * as Alert from "$lib/components/ui/alert"
   import { preferences } from "$lib/store/persisted.store"
+  import { hasPermission } from "$lib/store/space-member.store"
 
   export let field: Field
   const table = getTable()
@@ -98,26 +99,30 @@
           {/if}
         {/if}
 
-        <Button
-          class="w-full justify-start rounded-none border-none text-xs focus-visible:ring-0"
-          variant="outline"
-          on:click={() => (update = true)}
-        >
-          <PencilIcon class="mr-2 h-3 w-3" />
-          Update Field
-        </Button>
+        {#if $hasPermission("field:update")}
+          <Button
+            class="w-full justify-start rounded-none border-none text-xs focus-visible:ring-0"
+            variant="outline"
+            on:click={() => (update = true)}
+          >
+            <PencilIcon class="mr-2 h-3 w-3" />
+            Update Field
+          </Button>
+        {/if}
 
         {#if !field.isSystem}
           <AlertDialog.Root>
             <AlertDialog.Trigger asChild let:builder>
-              <Button
-                builders={[builder]}
-                class="w-full justify-start rounded-none border-none text-xs focus-visible:ring-0"
-                variant="outline"
-              >
-                <TrashIcon class="mr-2 h-3 w-3" />
-                Duplicate Field
-              </Button>
+              {#if $hasPermission("field:create")}
+                <Button
+                  builders={[builder]}
+                  class="w-full justify-start rounded-none border-none text-xs focus-visible:ring-0"
+                  variant="outline"
+                >
+                  <TrashIcon class="mr-2 h-3 w-3" />
+                  Duplicate Field
+                </Button>
+              {/if}
             </AlertDialog.Trigger>
             <AlertDialog.Content>
               <AlertDialog.Header>
@@ -155,14 +160,16 @@
           </AlertDialog.Root>
           <AlertDialog.Root bind:open={deleteAlertOpen}>
             <AlertDialog.Trigger asChild let:builder>
-              <Button
-                builders={[builder]}
-                class="w-full justify-start rounded-none border-none text-xs text-red-500 hover:bg-red-50 hover:text-red-500 focus-visible:ring-0"
-                variant="outline"
-              >
-                <TrashIcon class="mr-2 h-3 w-3" />
-                Delete Field
-              </Button>
+              {#if $hasPermission("field:delete")}
+                <Button
+                  builders={[builder]}
+                  class="w-full justify-start rounded-none border-none text-xs text-red-500 hover:bg-red-50 hover:text-red-500 focus-visible:ring-0"
+                  variant="outline"
+                >
+                  <TrashIcon class="mr-2 h-3 w-3" />
+                  Delete Field
+                </Button>
+              {/if}
             </AlertDialog.Trigger>
             <AlertDialog.Content>
               <AlertDialog.Header>

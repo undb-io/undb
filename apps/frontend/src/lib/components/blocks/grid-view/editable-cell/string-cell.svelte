@@ -20,6 +20,7 @@
     onSuccess(data, variables, context) {
       el?.blur()
       gridViewStore.exitEditing()
+      onValueChange(value)
     },
     onError(error: Error) {
       toast.error(error.message)

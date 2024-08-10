@@ -4,7 +4,7 @@
   import { commandOpen } from "../command/command.store"
   import { CREATE_BASE_MODAL, toggleModal } from "$lib/store/modal.store"
   import { page } from "$app/stores"
-  import { hasPermission } from "$lib/store/workspace-member.store"
+  import { hasPermission } from "$lib/store/space-member.store"
   import SpaceDropdown from "../space/space-dropdown.svelte"
   import type { ISpaceDTO } from "@undb/space"
 

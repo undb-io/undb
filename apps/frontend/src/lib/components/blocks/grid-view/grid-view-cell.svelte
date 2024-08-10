@@ -7,7 +7,6 @@
   import DateField from "../field-value/date-field.svelte"
   import NumberField from "../field-value/number-field.svelte"
   import { cn } from "$lib/utils"
-  import UserField from "../field-value/user-field.svelte"
   import RollupField from "../field-value/rollup-field.svelte"
   import { isEditingCell, isSelectedCell } from "./grid-view.store"
   import SelectCell from "./editable-cell/select-cell.svelte"
@@ -22,6 +21,7 @@
   import ReferenceCell from "./editable-cell/reference-cell.svelte"
   import ReadonlyUserCell from "./editable-cell/readonly-user-cell.svelte"
   import { recordsStore } from "$lib/store/records.store"
+  import UrlCell from "./editable-cell/url-cell.svelte"
 
   const table = getTable()
 
@@ -49,6 +49,7 @@
     select: SelectCell,
     rating: RatingCell,
     email: EmailCell,
+    url: UrlCell,
     date: DateCell,
     json: JsonCell,
     checkbox: CheckboxCell,

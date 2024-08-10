@@ -2,6 +2,7 @@ import { NotImplementException } from "@undb/domain"
 import {
   JsonContains,
   SelectField,
+  UrlEqual,
   type AttachmentEmpty,
   type AttachmentEqual,
   type CheckboxEqual,
@@ -241,6 +242,10 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     this.addCond(cond)
   }
   emailEqual(s: EmailEqual): void {
+    const cond = this.eb.eb(this.getFieldId(s), "=", s.value)
+    this.addCond(cond)
+  }
+  urlEqual(s: UrlEqual): void {
     const cond = this.eb.eb(this.getFieldId(s), "=", s.value)
     this.addCond(cond)
   }

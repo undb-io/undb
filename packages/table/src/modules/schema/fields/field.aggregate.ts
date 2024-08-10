@@ -7,6 +7,7 @@ import { checkboxFieldAggregate } from "./variants/checkbox-field/checkbox-field
 import { emailFieldAggregate } from "./variants/email-field/email-field.aggregate"
 import { jsonFieldAggregate } from "./variants/json-field/json-field.aggregate"
 import { stringFieldAggregate } from "./variants/string-field/string-field.aggregate"
+import { urlFieldAggregate } from "./variants/url-field/url-field.aggregate"
 import { userFieldAggregate } from "./variants/user-field/user-field.aggregate"
 
 export const fieldAggregate = stringFieldAggregate
@@ -16,6 +17,7 @@ export const fieldAggregate = stringFieldAggregate
   .or(abstractDateAggregate)
   .or(abstractUserAggregate)
   .or(emailFieldAggregate)
+  .or(urlFieldAggregate)
   .or(jsonFieldAggregate)
   .or(checkboxFieldAggregate)
   .or(userFieldAggregate)

@@ -3,6 +3,7 @@ import {
   DateField,
   ID_TYPE,
   JsonField,
+  UrlField,
   UserField,
   type AttachmentField,
   type AutoIncrementField,
@@ -71,6 +72,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
   rating(field: RatingField): void {}
   select(field: SelectField): void {}
   email(field: EmailField): void {}
+  url(field: UrlField): void {}
   date(field: DateField): void {}
   attachment(field: AttachmentField): void {}
   json(field: JsonField): void {}

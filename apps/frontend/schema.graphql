@@ -44,6 +44,7 @@ enum FieldType {
   string
   updatedAt
   updatedBy
+  url
   user
 }
 

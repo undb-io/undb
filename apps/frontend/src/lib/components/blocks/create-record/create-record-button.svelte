@@ -6,7 +6,7 @@
   import { formId } from "$lib/store/tab.store"
   import { cn } from "$lib/utils"
   import { CREATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
-  import { hasPermission } from "$lib/store/workspace-member.store"
+  import { hasPermission } from "$lib/store/space-member.store"
 
   const table = getTable()
 
