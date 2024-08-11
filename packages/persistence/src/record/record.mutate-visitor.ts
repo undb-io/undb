@@ -81,7 +81,7 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     this.setData(spec.fieldId.value, null)
   }
   dateEqual(spec: DateEqual): void {
-    this.setData(spec.fieldId.value, spec.date)
+    this.setData(spec.fieldId.value, spec.date?.getTime() ?? null)
   }
   attachmentEqual(s: AttachmentEqual): void {
     this.setData(s.fieldId.value, JSON.stringify(s.value))
