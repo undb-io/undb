@@ -25,7 +25,7 @@
   export let record: RecordDO
 
   beforeNavigate(({ cancel }) => {
-    if ($tainted) {
+    if (mutableFieldTainted) {
       if (!confirm("Are you sure you want to leave this page? You have unsaved changes that will be lost.")) {
         cancel()
       }
@@ -45,11 +45,12 @@
 
   const updateRecordMutation = createMutation({
     mutationFn: trpc.record.update.mutate,
+    mutationKey: ["updateRecord"],
     onSuccess: async () => {
       toast.success("Record updated")
       onSuccess()
-      reset({})
       await client.invalidateQueries({ queryKey: [record.id.value, "get"] })
+      reset({})
     },
     onError: (error) => {
       toast.error(error.message)
@@ -92,7 +93,10 @@
 
   const { form: formData, enhance, allErrors, tainted, reset, errors } = form
 
-  $: dirty = !!$tainted
+  $: mutableFields = fields.filter((f) => f.isMutable)
+  $: taintedKeys = Object.keys($tainted ?? {})
+  $: mutableFieldTainted = taintedKeys.some((key) => mutableFields.some((f) => f.id.value === key))
+  $: dirty = mutableFieldTainted
   $: disabled = !$tainted || !!$allErrors.length
 
   $: hiddenFields = $table.getOrderedHiddenFields()
@@ -116,7 +120,7 @@
             {#if field.required}
               <span class="text-red-500">*</span>
             {/if}
-            {#if dirty}
+            {#if dirty && field.isMutable}
               <span
                 class="me-2 rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300"
               >

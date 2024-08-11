@@ -4,13 +4,13 @@
   import { Label } from "$lib/components/ui/label/index.js"
   import { Separator } from "$lib/components/ui/separator"
   import * as Alert from "$lib/components/ui/alert/index.js"
-  import { EmailFieldConstraint, type IUrlFieldConstraint } from "@undb/table"
+  import { UrlFieldConstraint, type IUrlFieldConstraint } from "@undb/table"
 
   export let constraint: IUrlFieldConstraint | undefined
   export let display: boolean | undefined
   export let defaultValue: string | undefined
 
-  $: c = constraint ? new EmailFieldConstraint(constraint) : undefined
+  $: c = constraint ? new UrlFieldConstraint(constraint) : undefined
   $: isDefaultValueValid = c && defaultValue ? c.schema.safeParse(defaultValue).success : true
 </script>
 
@@ -19,7 +19,7 @@
     <Label for="defaultValue" class="text-xs font-normal">Default value</Label>
     <Input
       id="defaultValue"
-      type="email"
+      type="url"
       class="bg-background flex-1 text-xs"
       placeholder="Default value..."
       bind:value={defaultValue}

@@ -52,9 +52,11 @@
     }}
   />
 {:else}
-  <div class={$$restProps.class}>
+  <div class={cn($$restProps.class, "truncate")}>
     {#if value}
-      <a href={value} class="font-medium text-blue-600 underline hover:no-underline dark:text-blue-500"> {value} </a>
+      <a href={value} class="truncate font-medium text-blue-600 underline hover:no-underline dark:text-blue-500">
+        {value}
+      </a>
     {/if}
   </div>
 {/if}

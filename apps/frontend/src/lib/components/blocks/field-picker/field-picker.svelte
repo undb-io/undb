@@ -20,7 +20,7 @@
   }
 
   $: fields =
-    $table.getOrderedFields().map<IField>((f) => ({
+    $table?.getOrderedFields().map<IField>((f) => ({
       id: f.id.value,
       value: f.id.value,
       label: f.name.value,
