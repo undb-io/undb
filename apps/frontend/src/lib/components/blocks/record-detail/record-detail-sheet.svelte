@@ -5,13 +5,13 @@
   import { queryParam, ssp } from "sveltekit-search-params"
   import { getTable, viewId } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
-  import { createQuery, useQueryClient } from "@tanstack/svelte-query"
+  import { createQuery, useIsMutating, useQueryClient } from "@tanstack/svelte-query"
   import { RecordDO } from "@undb/table"
   import { derived } from "svelte/store"
   import Skeleton from "$lib/components/ui/skeleton/skeleton.svelte"
   import { cn } from "$lib/utils"
   import AuditList from "../audit/audit-list.svelte"
-  import { HistoryIcon } from "lucide-svelte"
+  import { HistoryIcon, LoaderCircleIcon } from "lucide-svelte"
   import { preferences } from "$lib/store/persisted.store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
 
@@ -35,6 +35,12 @@
       enabled: !!$recordId,
     })),
   )
+
+  const isUpdatingRecord = useIsMutating({
+    mutationKey: ["updateRecord"],
+  })
+
+  $: console.log($isUpdatingRecord)
 
   const client = useQueryClient()
 
@@ -108,7 +114,12 @@
     {#if !readonly}
       <Sheet.Footer class="border-t px-6 pt-4">
         <Button variant="outline" type="button" on:click={() => ($r = null)}>Cancel</Button>
-        <Button type="submit" form={`${$table.id.value}:updateRecord`} {disabled}>Update</Button>
+        <Button type="submit" form={`${$table.id.value}:updateRecord`} disabled={disabled || $isUpdatingRecord > 0}>
+          {#if $isUpdatingRecord > 0}
+            <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
+          {/if}
+          Update
+        </Button>
       </Sheet.Footer>
     {/if}
   </Sheet.Content>

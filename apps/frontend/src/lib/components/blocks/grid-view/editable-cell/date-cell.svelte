@@ -3,7 +3,7 @@
   import { createMutation } from "@tanstack/svelte-query"
   import type { DateField } from "@undb/table"
   import { toast } from "svelte-sonner"
-  import { parseAbsolute } from "@internationalized/date"
+  import { parseDate } from "@internationalized/date"
   import { Calendar } from "$lib/components/ui/calendar"
   import * as Popover from "$lib/components/ui/popover"
   import { isString, isDate } from "radash"
@@ -17,16 +17,13 @@
   export let value: string | Date | undefined = undefined
   function parse(value: string) {
     try {
-      return parseAbsolute(value, "UTC")
+      return parseDate(value)
     } catch {
       return undefined
     }
   }
-  $: internalDate = isString(value)
-    ? parse(value)
-    : isDate(value)
-      ? parseAbsolute(value.toISOString(), "UTC")
-      : undefined
+  $: internalDate = isString(value) ? parse(value) : isDate(value) ? parse(value.toISOString()) : undefined
+  $: console.log(internalDate)
   export let recordId: string
   export let isEditing: boolean
   export let onValueChange = (value: string | undefined) => {}
@@ -68,7 +65,8 @@
           value={internalDate}
           onValueChange={(v) => {
             if (v) {
-              value = v.toDate("UTC").toISOString()
+              value = v.toString()
+              console.log(value)
             } else {
               value = undefined
             }

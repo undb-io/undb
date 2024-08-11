@@ -6,12 +6,10 @@
   import { Calendar } from "$lib/components/ui/calendar"
   import * as Popover from "$lib/components/ui/popover"
   import { isDate, isString } from "radash"
+  import { format } from "date-fns/fp"
 
   export let readonly = false
-
-  const df = new DateFormatter("en-US", {
-    dateStyle: "long",
-  })
+  const formatter = format("yyyy-MM-dd")
 
   export let value: string | Date | undefined = undefined
   function parse(value: string) {
@@ -37,7 +35,7 @@
     >
       <CalendarIcon class="mr-2 h-4 w-4" />
       {#if value}
-        {isString(value) ? df.format(new Date(value)) : df.format(value)}
+        {formatter(value)}
       {/if}
     </Button>
   </Popover.Trigger>

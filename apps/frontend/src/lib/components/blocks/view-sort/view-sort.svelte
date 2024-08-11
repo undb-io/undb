@@ -158,7 +158,7 @@
                   </Select.Root>
                 </div>
                 <div class="text-muted-foreground col-span-2 flex justify-end gap-2">
-                  {#if !$hasPermission("table:update")}
+                  {#if $hasPermission("table:update")}
                     <button on:click={() => removeSort(item.fieldId)}>
                       <Trash2Icon class="h-3 w-3" />
                     </button>
@@ -173,7 +173,7 @@
         </div>
       {/if}
       <div class="flex w-full items-center justify-between px-4 py-3">
-        {#if !$hasPermission("table:update")}
+        {#if $hasPermission("table:update")}
           <Button {disabled} variant="ghost" size="sm" on:click={addSort}>
             <PlusIcon class="mr-2 h-3 w-3" />
             Add Sort

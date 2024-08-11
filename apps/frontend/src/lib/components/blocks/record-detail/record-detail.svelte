@@ -45,11 +45,12 @@
 
   const updateRecordMutation = createMutation({
     mutationFn: trpc.record.update.mutate,
+    mutationKey: ["updateRecord"],
     onSuccess: async () => {
       toast.success("Record updated")
       onSuccess()
-      reset({})
       await client.invalidateQueries({ queryKey: [record.id.value, "get"] })
+      reset({})
     },
     onError: (error) => {
       toast.error(error.message)
