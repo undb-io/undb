@@ -17,13 +17,14 @@
 
   $: open && getForeignTablesStore.fetch()
   $: foreignTables = $getForeignTablesStore.data?.tables.filter((t) => !!t) ?? []
-  $: groupTables = group(foreignTables, (t) => t.base.id)
+  $: groupTables = group(foreignTables, (t) => t.base?.id)
 
   let open = false
   export let value: string | undefined = undefined
   export let disabled: boolean = false
 
-  $: selectedValue = foreignTables.find((f) => f.id === value)?.name ?? $getForeignTableStore.data?.table?.name ?? ""
+  $: selectedValue =
+    foreignTables.filter((f) => !!f).find((f) => f.id === value)?.name ?? $getForeignTableStore.data?.table?.name ?? ""
   let fetched = false
   $: if (value && !selectedValue && !fetched) {
     getForeignTableStore.fetch({ variables: { tableId: value } }).then(() => {
@@ -64,7 +65,7 @@
   <Popover.Content class="max-h-[300px] overflow-y-auto p-0" sameWidth>
     <Command.Root
       filter={(value, search) => {
-        const label = foreignTables.find((t) => t.id === value)?.name ?? ""
+        const label = foreignTables.filter((f) => !!f).find((t) => t.id === value)?.name ?? ""
         return label.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
       }}
     >
@@ -75,26 +76,28 @@
           {@const baseName = tables[0].base.name}
           <Command.Group heading={baseName}>
             {#each tables as t}
-              <Command.Item
-                value={t.id}
-                onSelect={(currentValue) => {
-                  value = currentValue
-                  closeAndFocusTrigger(ids.trigger)
-                }}
-                class="gap-2"
-              >
-                <Check class={cn("h-4 w-4", value !== t.id && "text-transparent")} />
-                <span>
-                  {t.name}
-                </span>
-                {#if t.id === $table.id.value}
-                  <span
-                    class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10"
-                  >
-                    Current
+              {#if t}
+                <Command.Item
+                  value={t.id}
+                  onSelect={(currentValue) => {
+                    value = currentValue
+                    closeAndFocusTrigger(ids.trigger)
+                  }}
+                  class="gap-2"
+                >
+                  <Check class={cn("h-4 w-4", value !== t.id && "text-transparent")} />
+                  <span>
+                    {t.name}
                   </span>
-                {/if}
-              </Command.Item>
+                  {#if t.id === $table.id.value}
+                    <span
+                      class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10"
+                    >
+                      Current
+                    </span>
+                  {/if}
+                </Command.Item>
+              {/if}
             {/each}
           </Command.Group>
         {/if}

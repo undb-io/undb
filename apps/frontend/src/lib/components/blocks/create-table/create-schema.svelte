@@ -10,7 +10,7 @@
     type ICreateSchemaDTO,
     type NoneSystemFieldType,
   } from "@undb/table"
-  import * as Collapsible from "$lib/components/ui/collapsible"
+  import * as Popover from "$lib/components/ui/popover"
   import * as Card from "$lib/components/ui/card"
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
@@ -181,14 +181,14 @@
 <Form.FieldErrors />
 
 <div use:clickoutside on:clickoutside={() => (open = false)}>
-  <Collapsible.Root bind:open>
-    <Collapsible.Trigger class="w-full">
+  <Popover.Root bind:open>
+    <Popover.Trigger class="w-full">
       <Button class="w-full" variant={$formData.schema.length ? "outline" : "default"}>
         <BetweenHorizonalEnd class="mr-2 h-4 w-4" />
         Add Field
       </Button>
-    </Collapsible.Trigger>
-    <Collapsible.Content class="pt-2">
+    </Popover.Trigger>
+    <Popover.Content sameWidth class="p-0">
       <Card.Root class="rounded-none p-1">
         <Card.Content class="p-0">
           <div class="grid grid-cols-4 gap-1">
@@ -205,6 +205,6 @@
           </div>
         </Card.Content>
       </Card.Root>
-    </Collapsible.Content>
-  </Collapsible.Root>
+    </Popover.Content>
+  </Popover.Root>
 </div>
