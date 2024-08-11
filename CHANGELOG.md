@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-6
+
+
+### 🩹 Fixes
+
+- Fix rollup control display ([a922cf7](https://github.com/undb-io/undb/commit/a922cf7))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-5
 
 
