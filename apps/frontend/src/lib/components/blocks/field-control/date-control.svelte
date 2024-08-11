@@ -54,5 +54,17 @@
       }}
       initialFocus
     />
+    <div class="border-t px-2 py-1">
+      <Button
+        class="w-full"
+        variant="outline"
+        on:click={() => {
+          if (value) {
+            value = undefined
+          }
+          open = false
+        }}>Clear</Button
+      >
+    </div>
   </Popover.Content>
 </Popover.Root>

@@ -8,6 +8,7 @@
   import * as Popover from "$lib/components/ui/popover"
   import { isString, isDate } from "radash"
   import { format } from "date-fns/fp"
+  import { Button } from "$lib/components/ui/button"
 
   const formatter = format("yyyy-MM-dd")
 
@@ -79,6 +80,24 @@
             })
           }}
         />
+        <div class="border-t px-2 py-1">
+          <Button
+            class="w-full"
+            variant="outline"
+            on:click={() => {
+              if (value) {
+                value = undefined
+                onValueChange(value)
+                $updateCell.mutate({
+                  tableId,
+                  id: recordId,
+                  values: { [field.id.value]: value },
+                })
+              }
+              open = false
+            }}>Clear</Button
+          >
+        </div>
       </Popover.Content>
     </Popover.Root>
   {:else if value}
