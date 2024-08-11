@@ -193,14 +193,16 @@
         <Card.Content class="p-0">
           <div class="grid grid-cols-4 gap-1">
             {#each fieldTypes as type}
-              <button
-                type="button"
-                on:click={() => addField(type)}
-                class="hover:bg-muted flex cursor-pointer items-center gap-2 p-2 text-sm"
-              >
-                <FieldIcon class="h-4 w-4" {type} />
-                <span>{type}</span>
-              </button>
+              {#if type !== "rollup"}
+                <button
+                  type="button"
+                  on:click={() => addField(type)}
+                  class="hover:bg-muted flex cursor-pointer items-center gap-2 p-2 text-sm"
+                >
+                  <FieldIcon class="h-4 w-4" {type} />
+                  <span>{type}</span>
+                </button>
+              {/if}
             {/each}
           </div>
         </Card.Content>
