@@ -12,6 +12,7 @@ import type {
   WithWebhookURL,
 } from "@undb/webhook"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
+import { json } from "../qb"
 
 export class WebhookMutationVisitor extends AbstractQBMutationVisitor implements IWebhookSpecVisitor {
   idEqual(s: WithWebhookId): void {
@@ -21,10 +22,10 @@ export class WebhookMutationVisitor extends AbstractQBMutationVisitor implements
     this.setData("name", s.name)
   }
   urlEqual(s: WithWebhookURL): void {
-    this.setData("url", s.webhookURL)
+    this.setData("url", s.webhookURL.value)
   }
   headersEqual(s: WithWebhookHeaders): void {
-    this.setData("headers", s.webhookHeaders.toJSON())
+    this.setData("headers", json(s.webhookHeaders.toJSON()))
   }
   withTableId(s: WithWebhookTableId): void {
     throw new Error("Method not implemented.")
@@ -42,6 +43,6 @@ export class WebhookMutationVisitor extends AbstractQBMutationVisitor implements
     throw new Error("Method not implemented.")
   }
   conditionEqual(s: WithWebhookCondition): void {
-    this.setData("condition", s.condition)
+    this.setData("condition", json(s.condition))
   }
 }

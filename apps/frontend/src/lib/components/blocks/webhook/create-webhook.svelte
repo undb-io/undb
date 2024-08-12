@@ -15,8 +15,8 @@
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { type MaybeConditionGroup, parseValidViewFilter } from "@undb/table"
   import { writable } from "svelte/store"
-  import type { IWebhookConditionOptionSchema } from "@undb/webhook/src/webhook.condition"
   import { closeModal, CREATE_WEBHOOK_MODAL } from "$lib/store/modal.store"
+  import type { IWebhookConditionOptionSchema } from "@undb/webhook"
 
   const table = getTable()
 

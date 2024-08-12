@@ -1,6 +1,6 @@
 <script lang="ts">
   import * as Card from "$lib/components/ui/card"
-  import type { IWebhookDTO } from "@undb/webhook"
+  import type { IWebhookConditionOptionSchema, IWebhookDTO } from "@undb/webhook"
   import { Label } from "$lib/components/ui/label/index.js"
   import { Switch } from "$lib/components/ui/switch/index.js"
   import { DotsHorizontal } from "svelte-radix"
@@ -9,14 +9,27 @@
   import { trpc } from "$lib/trpc/client"
   import { tick } from "svelte"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
-  import { PencilIcon, TrashIcon } from "lucide-svelte"
+  import { CopyIcon, PencilIcon, TrashIcon } from "lucide-svelte"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import { Button } from "$lib/components/ui/button"
   import { hasPermission } from "$lib/store/space-member.store"
   import { toast } from "svelte-sonner"
+  import * as Dialog from "$lib/components/ui/dialog"
+  import { defaults, superForm } from "sveltekit-superforms"
+  import { zodClient } from "sveltekit-superforms/adapters"
+  import { updateWebhookCommand } from "@undb/commands"
+  import * as Form from "$lib/components/ui/form"
+  import { Input } from "$lib/components/ui/input"
+  import * as Select from "$lib/components/ui/select/index.js"
+  import * as Collapsible from "$lib/components/ui/collapsible"
+  import FiltersEditor from "../filters-editor/filters-editor.svelte"
+  import { writable } from "svelte/store"
+  import { type MaybeConditionGroup, parseValidViewFilter } from "@undb/table"
 
   const table = getTable()
   export let webhook: IWebhookDTO
+
+  let updateOpen = false
 
   const updateWebhookMutation = createMutation({
     mutationKey: ["table", $table.id.value, "updateWebhook"],
@@ -30,6 +43,42 @@
       enabled: webhook.enabled,
     })
   }
+
+  const form = superForm(
+    defaults(
+      {
+        id: webhook.id,
+        name: webhook.name,
+        url: webhook.url,
+        enabled: webhook.enabled,
+        method: webhook.method,
+        event: webhook.event,
+        headers: webhook.headers,
+        condition: webhook.condition,
+      },
+      zodClient(updateWebhookCommand),
+    ),
+    {
+      SPA: true,
+      dataType: "json",
+      validators: zodClient(updateWebhookCommand),
+      resetForm: false,
+      invalidateAll: false,
+      async onUpdate(event) {
+        if (!event.form.valid) {
+          console.log(event.form.errors)
+          return
+        }
+
+        await $updateWebhookMutation.mutateAsync(event.form.data)
+
+        updateOpen = false
+        $observer.refetch()
+      },
+    },
+  )
+
+  const { form: formData, enhance, tainted } = form
 
   const client = useQueryClient()
   const observer = new QueryObserver(client, {
@@ -46,6 +95,30 @@
       $observer.refetch()
     },
   })
+
+  const condition = writable<MaybeConditionGroup<IWebhookConditionOptionSchema> | undefined>()
+  $: validCondition = $condition ? parseValidViewFilter($table.schema, $condition) : undefined
+  $: validCondition,
+    formData.update(($form) => {
+      $form.condition = validCondition
+      return $form
+    })
+
+  $: selectedMethod = $formData.method
+    ? {
+        label: $formData.method,
+        value: $formData.method,
+      }
+    : undefined
+
+  $: selectedEvent = $formData.event
+    ? {
+        label: $formData.event,
+        value: $formData.event,
+      }
+    : undefined
+
+  let enableCondition = false
 </script>
 
 <Card.Root>
@@ -73,7 +146,7 @@
           <Label class="text-xs" for={"enabled" + webhook.id}>Enabled</Label>
         </div>
 
-        <DropdownMenu.Root closeOnItemClick={false}>
+        <DropdownMenu.Root>
           <DropdownMenu.Trigger>
             <DotsHorizontal class="text-muted-foreground h-4 w-4" />
           </DropdownMenu.Trigger>
@@ -81,11 +154,14 @@
             <DropdownMenu.Group>
               <DropdownMenu.Label>Webhook Action</DropdownMenu.Label>
               <DropdownMenu.Separator />
-              <DropdownMenu.Item class="text-xs">
+              <DropdownMenu.Item class="text-xs" on:click={() => (updateOpen = true)}>
                 <PencilIcon class="mr-1.5 h-3 w-3" />
                 Update Webhook
               </DropdownMenu.Item>
-              <DropdownMenu.Item class="text-xs">Duplicate Webhook</DropdownMenu.Item>
+              <DropdownMenu.Item class="text-xs">
+                <CopyIcon class="mr-1.5 h-3 w-3" />
+                Duplicate Webhook
+              </DropdownMenu.Item>
               <AlertDialog.Root>
                 <DropdownMenu.Item class="text-xs text-red-500 hover:!bg-red-100 hover:!text-red-500">
                   <AlertDialog.Trigger class="flex items-center">
@@ -133,3 +209,84 @@
     </div>
   </Card.Content>
 </Card.Root>
+
+<Dialog.Root bind:open={updateOpen}>
+  <Dialog.Content class="z-50">
+    <Dialog.Header>
+      <Dialog.Title>Update Webhook</Dialog.Title>
+    </Dialog.Header>
+
+    <form method="POST" class="space-y-2" id="updateWebhook" use:enhance>
+      <Form.Field {form} name="name">
+        <Form.Control let:attrs>
+          <Form.Label>Name</Form.Label>
+          <Input {...attrs} bind:value={$formData.name} placeholder="webhook name" />
+        </Form.Control>
+        <Form.FieldErrors />
+      </Form.Field>
+
+      <Label>URL</Label>
+      <div class="flex w-full items-center justify-center gap-2">
+        <Form.Field {form} name="method">
+          <Form.Control let:attrs>
+            <Select.Root
+              selected={selectedMethod}
+              onSelectedChange={(v) => {
+                v && ($formData.method = v.value)
+              }}
+            >
+              <Select.Trigger {...attrs}>
+                <Select.Value placeholder="Select a method" />
+              </Select.Trigger>
+              <Select.Content>
+                <Select.Item value="POST" label="POST" />
+                <Select.Item value="PATCH" label="PATCH" />
+              </Select.Content>
+            </Select.Root>
+            <input hidden bind:value={$formData.method} name={attrs.name} />
+          </Form.Control>
+        </Form.Field>
+
+        <Form.Field {form} name="url" class="flex flex-1 items-center">
+          <Form.Control let:attrs>
+            <Input {...attrs} bind:value={$formData.url} type="url" placeholder="http://example.com/webhook" />
+          </Form.Control>
+          <Form.FieldErrors />
+        </Form.Field>
+      </div>
+
+      <Form.Field {form} name="event" class="w-full">
+        <Form.Control let:attrs>
+          <Form.Label>Event</Form.Label>
+          <Select.Root
+            selected={selectedEvent}
+            onSelectedChange={(v) => {
+              v && ($formData.event = v.value)
+            }}
+          >
+            <Select.Trigger {...attrs}>
+              <Select.Value placeholder="Select a event" />
+            </Select.Trigger>
+            <Select.Content>
+              <Select.Item value="record.created" label="Record Created" />
+              <Select.Item value="record.updated" label="Record Updated" />
+              <Select.Item value="record.deleted" label="Record Deleted" />
+            </Select.Content>
+          </Select.Root>
+          <input hidden bind:value={$formData.event} name={attrs.name} />
+        </Form.Control>
+      </Form.Field>
+
+      <Collapsible.Root class="space-y-2" open={enableCondition}>
+        <div class="flex items-center gap-2">
+          <Label for="enableCondition">Enable Condtion</Label>
+          <Switch id="enableCondition" bind:checked={enableCondition} />
+        </div>
+        <Collapsible.Content>
+          <FiltersEditor class="rounded-sm border" bind:value={$condition} table={$table} />
+        </Collapsible.Content>
+      </Collapsible.Root>
+      <Form.Button disabled={!$tainted} class="w-full">Submit</Form.Button>
+    </form>
+  </Dialog.Content>
+</Dialog.Root>
