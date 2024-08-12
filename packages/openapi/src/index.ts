@@ -48,12 +48,6 @@ export const createOpenApiSpec = (base: Base, table: TableDo, record?: RecordDO)
     recordSubscription(base, table),
   ]
 
-  const bearerAuth = registry.registerComponent("securitySchemes", "bearerAuth", {
-    type: "http",
-    scheme: "bearer",
-    bearerFormat: "JWT",
-  })
-
   const apiKeyAuth = registry.registerComponent("securitySchemes", "apiKeyAuth", {
     type: "apiKey",
     in: "header",
@@ -62,7 +56,7 @@ export const createOpenApiSpec = (base: Base, table: TableDo, record?: RecordDO)
 
   for (const route of routes) {
     registry.registerPath(route)
-    route.security = [{ [bearerAuth.name]: [] }, { [apiKeyAuth.name]: [] }]
+    route.security = [{ [apiKeyAuth.name]: [] }]
   }
 
   const generator = new OpenApiGeneratorV3(registry.definitions)
