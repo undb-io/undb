@@ -33,11 +33,5 @@
         {value}
       </span>
     {/if}
-  {:else}
-    <span
-      class="text-muted-foreground me-2 rounded bg-gray-200 px-1 py-0.5 text-xs font-medium dark:bg-gray-700 dark:text-gray-300"
-    >
-      Unamed
-    </span>
   {/if}
 </span>

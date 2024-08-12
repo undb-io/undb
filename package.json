@@ -20,7 +20,7 @@
     "prepare": "husky || echo 1"
   },
   "devDependencies": {
-    "drizzle-kit": "^0.23.2",
+    "drizzle-kit": "^0.24.0",
     "husky": "^9.1.4",
     "lint-staged": "^15.2.8",
     "npm-run-all2": "^6.2.2",
