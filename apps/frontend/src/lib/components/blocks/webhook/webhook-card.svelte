@@ -4,10 +4,16 @@
   import { Label } from "$lib/components/ui/label/index.js"
   import { Switch } from "$lib/components/ui/switch/index.js"
   import { DotsHorizontal } from "svelte-radix"
-  import { createMutation } from "@tanstack/svelte-query"
+  import { createMutation, QueryObserver, useQueryClient } from "@tanstack/svelte-query"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { tick } from "svelte"
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
+  import { PencilIcon, TrashIcon } from "lucide-svelte"
+  import * as AlertDialog from "$lib/components/ui/alert-dialog"
+  import { Button } from "$lib/components/ui/button"
+  import { hasPermission } from "$lib/store/space-member.store"
+  import { toast } from "svelte-sonner"
 
   const table = getTable()
   export let webhook: IWebhookDTO
@@ -24,6 +30,22 @@
       enabled: webhook.enabled,
     })
   }
+
+  const client = useQueryClient()
+  const observer = new QueryObserver(client, {
+    queryKey: ["tables", $table.id.value, "webhooks"],
+  })
+
+  const deleteWebhookMutation = createMutation({
+    mutationKey: ["table", $table.id.value, "deleteWebhook"],
+    mutationFn: trpc.webhook.delete.mutate,
+    onError(error, variables, context) {
+      toast.error(error.message)
+    },
+    onSuccess(data, variables, context) {
+      $observer.refetch()
+    },
+  })
 </script>
 
 <Card.Root>
@@ -51,9 +73,54 @@
           <Label class="text-xs" for={"enabled" + webhook.id}>Enabled</Label>
         </div>
 
-        <button>
-          <DotsHorizontal class="text-muted-foreground h-4 w-4" />
-        </button>
+        <DropdownMenu.Root closeOnItemClick={false}>
+          <DropdownMenu.Trigger>
+            <DotsHorizontal class="text-muted-foreground h-4 w-4" />
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content>
+            <DropdownMenu.Group>
+              <DropdownMenu.Label>Webhook Action</DropdownMenu.Label>
+              <DropdownMenu.Separator />
+              <DropdownMenu.Item class="text-xs">
+                <PencilIcon class="mr-1.5 h-3 w-3" />
+                Update Webhook
+              </DropdownMenu.Item>
+              <DropdownMenu.Item class="text-xs">Duplicate Webhook</DropdownMenu.Item>
+              <AlertDialog.Root>
+                <DropdownMenu.Item class="text-xs text-red-500 hover:!bg-red-100 hover:!text-red-500">
+                  <AlertDialog.Trigger class="flex items-center">
+                    <TrashIcon class="mr-1.5 h-3 w-3" />
+                    Delete Webhook
+                  </AlertDialog.Trigger>
+                </DropdownMenu.Item>
+                <AlertDialog.Content>
+                  <AlertDialog.Header>
+                    <AlertDialog.Title>Delete Webhook</AlertDialog.Title>
+                    <AlertDialog.Description>
+                      This action cannot be undone. This will permanently delete the webhook.
+                    </AlertDialog.Description>
+                  </AlertDialog.Header>
+                  <AlertDialog.Footer>
+                    <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+                    <AlertDialog.Action asChild let:builder>
+                      <Button
+                        variant="destructive"
+                        builders={[builder]}
+                        disabled={//
+                        $deleteWebhookMutation.isPending || !$hasPermission("space:delete")}
+                        on:click={async () => {
+                          await $deleteWebhookMutation.mutateAsync({ id: webhook.id })
+                        }}
+                      >
+                        Delete Space
+                      </Button>
+                    </AlertDialog.Action>
+                  </AlertDialog.Footer>
+                </AlertDialog.Content>
+              </AlertDialog.Root>
+            </DropdownMenu.Group>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
       </div>
     </div>
 

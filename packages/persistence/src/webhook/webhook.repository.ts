@@ -62,7 +62,7 @@ export class WebhookRepository implements IWebhookRepository {
       .execute()
   }
 
-  deleteOneById(id: string): Promise<void> {
-    throw new Error("Method not implemented.")
+  async deleteOneById(id: string): Promise<void> {
+    await (getCurrentTransaction() ?? this.qb).deleteFrom("undb_webhook").where("undb_webhook.id", "=", id).execute()
   }
 }
