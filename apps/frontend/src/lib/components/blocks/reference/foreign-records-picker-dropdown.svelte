@@ -6,6 +6,7 @@
   import { ReferenceField, TableCreator } from "@undb/table"
   import Button from "$lib/components/ui/button/button.svelte"
   import { Skeleton } from "$lib/components/ui/skeleton"
+  import { LoaderCircleIcon } from "lucide-svelte"
 
   export let isSelected = false
 
@@ -39,10 +40,8 @@
   <Popover.Content class="h-[400px] max-h-[700px] w-[500px] p-0 lg:max-w-4xl">
     {#if $foreignTableStore.fetching}
       <!-- content here -->
-      <div class="space-y-2 p-4">
-        <Skeleton class="h-[20px] w-full rounded-sm" />
-        <Skeleton class="h-[20px] w-full rounded-sm" />
-        <Skeleton class="h-[20px] w-full rounded-sm" />
+      <div class="flex h-full w-full items-center justify-center space-y-2 p-4">
+        <LoaderCircleIcon class="mr-2 h-8 w-8 animate-spin" />
       </div>
     {/if}
     {#if foreignTable}
