@@ -111,9 +111,9 @@
 >
   {#each fields as field}
     {@const dirty = $tainted && $tainted[field.id.value]}
-    <Form.Field class="flex gap-4 space-y-0" {form} name={field.id.value}>
+    <Form.Field class="flex gap-2 space-y-0" {form} name={field.id.value}>
       <Form.Control let:attrs>
-        <Form.Label class="text-muted-foreground flex h-4 w-48 items-center justify-between gap-2 pt-4">
+        <Form.Label class="text-muted-foreground flex h-4 w-48 shrink-0 items-center justify-between gap-2 pt-4">
           <div class="flex items-center gap-2">
             <FieldIcon {field} type={field.type} class="h-4 w-4" />
             <span class="flex-1 truncate">{field.name.value}</span>
@@ -129,8 +129,8 @@
             {/if}
           </div>
         </Form.Label>
-        <div class="flex-1">
-          {#if field.isSystem}
+        <div class="flex-1 overflow-hidden">
+          {#if field.isSystem || !field.isMutable}
             <FieldValue
               {field}
               tableId={$table.id.value}
@@ -138,7 +138,7 @@
               value={values[field.id.value]}
               type={field.type}
               displayValue={displayValues[field.id.value]}
-              class="text-xs"
+              class="min-h-9 text-xs"
             />
           {:else}
             <FieldControl
@@ -159,7 +159,7 @@
   {/each}
 
   {#if hiddenFields.length}
-    <Collapsible.Root bind:open={$preferences.showHiddenFields} class="my-4">
+    <Collapsible.Root bind:open={$preferences.showHiddenFields} class="my-4 w-full">
       <div class="flex w-full items-center gap-1">
         <div class="h-[1px] flex-1 bg-gray-100"></div>
         <Collapsible.Trigger asChild let:builder>
@@ -175,7 +175,7 @@
           {@const dirty = $tainted && $tainted[field.id.value]}
           <Form.Field class="flex gap-4 space-y-0" {form} name={field.id.value}>
             <Form.Control let:attrs>
-              <Form.Label class="text-muted-foreground flex h-4 w-48 items-center justify-between gap-2 pt-2">
+              <Form.Label class="text-muted-foreground flex h-4 w-48 shrink-0 items-center justify-between gap-2 pt-2">
                 <div class="flex items-center gap-2">
                   <FieldIcon {field} type={field.type} class="h-4 w-4" />
                   <span class="flex-1 truncate">{field.name.value}</span>
@@ -191,8 +191,8 @@
                   {/if}
                 </div>
               </Form.Label>
-              <div class="flex-1">
-                {#if field.isSystem}
+              <div class="flex-1 overflow-hidden">
+                {#if field.isSystem || !field.isMutable}
                   <FieldValue
                     {field}
                     tableId={$table.id.value}
@@ -200,7 +200,7 @@
                     value={values[field.id.value]}
                     type={field.type}
                     displayValue={displayValues[field.id.value]}
-                    class="text-xs"
+                    class="min-h-9 text-xs"
                   />
                 {:else}
                   <FieldControl

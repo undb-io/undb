@@ -1,6 +1,6 @@
 <script lang="ts">
   import CalendarIcon from "lucide-svelte/icons/calendar"
-  import { DateFormatter, getLocalTimeZone, parseDate } from "@internationalized/date"
+  import { getLocalTimeZone, parseDate, today } from "@internationalized/date"
   import { cn } from "$lib/utils.js"
   import { Button } from "$lib/components/ui/button"
   import { Calendar } from "$lib/components/ui/calendar"
@@ -52,9 +52,17 @@
       }}
       initialFocus
     />
-    <div class="border-t px-2 py-1">
+    <div class="flex items-center gap-1.5 border-t px-2 py-1">
       <Button
-        class="w-full"
+        class="flex-1"
+        variant="outline"
+        on:click={() => {
+          value = today(getLocalTimeZone()).toString()
+          open = false
+        }}>Today</Button
+      >
+      <Button
+        class="flex-1"
         variant="outline"
         on:click={() => {
           if (value) {

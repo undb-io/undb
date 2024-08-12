@@ -17,6 +17,7 @@ import {
   DeleteTableCommand,
   DeleteTableFieldCommand,
   DeleteViewCommand,
+  DeleteWebhookCommand,
   DisableShareCommand,
   DuplicateRecordCommand,
   DuplicateTableFieldCommand,
@@ -58,6 +59,7 @@ import {
   deleteTableCommand,
   deleteTableFieldCommand,
   deleteViewCommand,
+  deleteWebhookCommand,
   disableShareCommand,
   duplicateRecordCommand,
   duplicateTableFieldCommand,
@@ -143,15 +145,19 @@ const rlsRouter = t.router({
 
 const fieldRouter = t.router({
   create: p
+    .use(authz("field:create"))
     .input(createTableFieldCommand)
     .mutation(({ input }) => commandBus.execute(new CreateTableFieldCommand(input))),
   update: p
+    .use(authz("field:update"))
     .input(updateTableFieldCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateTableFieldCommand(input))),
   duplicate: p
+    .use(authz("field:create"))
     .input(duplicateTableFieldCommand)
     .mutation(({ input }) => commandBus.execute(new DuplicateTableFieldCommand(input))),
   delete: p
+    .use(authz("field:delete"))
     .input(deleteTableFieldCommand)
     .mutation(({ input }) => commandBus.execute(new DeleteTableFieldCommand(input))),
 })
@@ -240,10 +246,22 @@ const recordRouter = t.router({
 })
 
 const webhookRouter = t.router({
-  list: p.input(getWebhooksQuery).query(({ input }) => queryBus.execute(new GetWebhooksQuery(input))),
-
-  create: p.input(createWebhookCommand).mutation(({ input }) => commandBus.execute(new CreateWebhookCommand(input))),
-  update: p.input(updateWebhookCommand).mutation(({ input }) => commandBus.execute(new UpdateWebhookCommand(input))),
+  list: p
+    .use(authz("webhook:list"))
+    .input(getWebhooksQuery)
+    .query(({ input }) => queryBus.execute(new GetWebhooksQuery(input))),
+  create: p
+    .use(authz("webhook:create"))
+    .input(createWebhookCommand)
+    .mutation(({ input }) => commandBus.execute(new CreateWebhookCommand(input))),
+  update: p
+    .use(authz("webhook:update"))
+    .input(updateWebhookCommand)
+    .mutation(({ input }) => commandBus.execute(new UpdateWebhookCommand(input))),
+  delete: p
+    .use(authz("webhook:delete"))
+    .input(deleteWebhookCommand)
+    .mutation(({ input }) => commandBus.execute(new DeleteWebhookCommand(input))),
 })
 
 const baseRouter = t.router({

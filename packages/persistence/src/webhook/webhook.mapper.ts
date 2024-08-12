@@ -27,7 +27,7 @@ export class WebhookMapper implements Mapper<WebhookDo, Webhook, IWebhookDTO> {
       url: entity.url,
       tableId: entity.table_id,
       headers: entity.headers,
-      enabled: entity.enabled,
+      enabled: !!entity.enabled,
       method: entity.method,
       condition: entity.condition ?? undefined,
       event: entity.event,

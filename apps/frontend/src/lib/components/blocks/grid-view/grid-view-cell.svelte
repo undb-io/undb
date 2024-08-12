@@ -22,6 +22,7 @@
   import ReadonlyUserCell from "./editable-cell/readonly-user-cell.svelte"
   import { recordsStore } from "$lib/store/records.store"
   import UrlCell from "./editable-cell/url-cell.svelte"
+  import RollupCell from "./editable-cell/rollup-cell.svelte"
 
   const table = getTable()
 
@@ -45,7 +46,7 @@
     createdBy: ReadonlyUserCell,
     updatedBy: ReadonlyUserCell,
     reference: ReferenceCell,
-    rollup: RollupField,
+    rollup: RollupCell,
     select: SelectCell,
     rating: RatingCell,
     email: EmailCell,

@@ -29,6 +29,11 @@ export const spaceActions = z.enum([
   "record:update",
   "record:download",
 
+  "webhook:create",
+  "webhook:update",
+  "webhook:delete",
+  "webhook:list",
+
   "share:enable",
   "share:disable",
 
