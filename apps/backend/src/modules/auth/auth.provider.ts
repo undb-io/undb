@@ -12,6 +12,7 @@ export const injectLucia = () => inject(LUCIA_PROVIDER)
 const createLuciaWithAdapter = (adapter: Adapter) => {
   const lucia = new Lucia(adapter, {
     sessionCookie: {
+      name: "undb_auth_session",
       attributes: {
         secure: Bun.env.NODE_ENV === "PRODUCTION", // set `Secure` flag in HTTPS
         domain: Bun.env.UNDB_COOKIE_DOMAIN,
