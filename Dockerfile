@@ -41,6 +41,7 @@ COPY --from=prerelease /usr/src/app/apps/backend/undb .
 COPY --from=prerelease /usr/src/app/node_modules ./node_modules
 COPY --from=prerelease /usr/src/app/apps/backend/drizzle ./drizzle
 COPY --from=prerelease /usr/src/app/apps/backend/assets ./assets
+COPY --from=prerelease /usr/src/app/apps/backend/src/modules/mail ./mail
 COPY --from=prerelease /usr/src/app/packages ./packages
 COPY --from=prerelease /usr/src/app/package.json .
 COPY --from=prerelease /usr/src/app/apps/frontend/dist ./dist
