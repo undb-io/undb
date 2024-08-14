@@ -24,14 +24,15 @@
   const record = createQuery(
     derived([table, r, preferences], ([$table, $recordId, $preferences]) => ({
       queryKey: [$recordId, "get", $preferences.showHiddenFields],
-      queryFn: () =>
-        trpc.record.get.query({
+      queryFn: () => {
+        return trpc.record.get.query({
           tableId: $table?.id.value,
           id: $recordId!,
           select: $preferences.showHiddenFields
             ? undefined
             : $table?.getOrderedVisibleFields($viewId).map((f) => f.id.value),
-        }),
+        })
+      },
       enabled: !!$recordId,
     })),
   )
@@ -39,8 +40,6 @@
   const isUpdatingRecord = useIsMutating({
     mutationKey: ["updateRecord"],
   })
-
-  $: console.log($isUpdatingRecord)
 
   const client = useQueryClient()
 
