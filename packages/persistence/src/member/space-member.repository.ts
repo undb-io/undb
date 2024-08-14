@@ -15,7 +15,7 @@ export class SpaceMemberRepository implements ISpaceMemberRepository {
 
   async exists(spec: SpaceMemberComositeSpecification): Promise<boolean> {
     const user = await (getCurrentTransaction() ?? this.qb)
-      .selectFrom("undb_user")
+      .selectFrom("undb_space_member")
       .selectAll()
       .where((eb) => {
         const visitor = new SpaceMemberFilterVisitor(this.qb, eb)
