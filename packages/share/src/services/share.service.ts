@@ -1,12 +1,21 @@
 import { inject, singleton } from "@undb/di"
-import { Option } from "@undb/domain"
+import { Option, Some, type PaginatedDTO } from "@undb/domain"
 import {
   TableComositeSpecification,
+  ViewIdVo,
   WithFormIdSpecification,
   WithViewIdSpecification,
+  buildQuery,
+  injectRecordQueryRepository,
+  injectRecordsQueryService,
   injectTableQueryRepository,
+  injectTableRepository,
+  type IRecordDTO,
+  type IRecordQueryRepository,
+  type IRecordsQueryService,
   type ITableDTO,
   type ITableQueryRepository,
+  type ITableRepository,
 } from "@undb/table"
 import { match } from "ts-pattern"
 import type { IDisableShareDTO, IEnableShareDTO, IShareDTO } from "../dto"
@@ -26,6 +35,7 @@ export interface IShareService {
   getShare(id: string): Promise<Option<IShareDTO>>
   getShareByTarget(target: IShareTarget): Promise<Option<IShareDTO>>
   getTableByShare(id: string): Promise<ITableDTO>
+  getShareRecords(id: string): Promise<PaginatedDTO<IRecordDTO>>
 }
 
 export const SHARE_SERVICE = Symbol.for("SHARE_SERVICE")
@@ -39,7 +49,13 @@ export class ShareService implements IShareService {
     @injectShareQueryRepository()
     private readonly queryRepo: IShareQueryRepository,
     @injectTableQueryRepository()
-    private readonly tableRepo: ITableQueryRepository,
+    private readonly tableQueryRepo: ITableQueryRepository,
+    @injectTableRepository()
+    private readonly tableRepo: ITableRepository,
+    @injectRecordsQueryService()
+    private readonly recordsService: IRecordsQueryService,
+    @injectRecordQueryRepository()
+    private readonly recordRepo: IRecordQueryRepository,
   ) {}
 
   async enableShare(dto: IEnableShareDTO): Promise<void> {
@@ -91,6 +107,32 @@ export class ShareService implements IShareService {
       .with("view", () => new WithViewIdSpecification(share.target.id))
       .exhaustive()
 
-    return (await this.tableRepo.findOne(spec)).expect("table not found")
+    return (await this.tableQueryRepo.findOne(spec)).expect("table not found")
+  }
+
+  async getShareRecords(id: string): Promise<PaginatedDTO<IRecordDTO>> {
+    const share = (await this.repo.findOneById(id)).expect("share not found")
+
+    if (share.target.value.type !== "view") {
+      throw new Error("Only view shares are supported")
+    }
+
+    const spec = match(share.target.type)
+      .returnType<TableComositeSpecification>()
+      .with("form", () => new WithFormIdSpecification(share.target.id))
+      .with("view", () => new WithViewIdSpecification(share.target.id))
+      .exhaustive()
+
+    const table = (await this.tableRepo.findOne(Some(spec))).expect("table not found")
+    const viewId = share.target.id
+
+    const query = buildQuery(table, { viewId })
+
+    const records = await this.recordRepo.find(table, Some(new ViewIdVo(viewId)), query)
+
+    return {
+      ...records,
+      values: await this.recordsService.populateAttachments({ viewId }, table, records.values),
+    }
   }
 }

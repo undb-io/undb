@@ -1,6 +1,6 @@
 <h1 align="center" style="border-bottom: none">
     <div>
-        <a href="https://www.undb.io">
+        <a href="https://undb.io">
             <img src="/docs/images/logo.png" width="80" />
             <br>
             undb
@@ -10,6 +10,13 @@
 </h1>
 
 UNDB is a no-code platform that can also serve as a Backend as a Service (BaaS). It is based on SQLite and can be packaged into a binary file using Bun for backend service. Additionally, it can be deployed as a service via Docker, offering a UI for table management.
+
+<div align="center">
+    <a href="https://app.undb.io">Website</a> |
+    <a href="https://docs.undb.io">Documentation</a> |
+    <a href="https://discord.gg/U9bdhB3c">Discord</a> |
+    <a href="https://app.undb.io/s/v/shrd0q2m4dyijmh">Roadmap</a>
+</div>
 
 ## Features
 
@@ -22,6 +29,10 @@ UNDB is a no-code platform that can also serve as a Backend as a Service (BaaS).
 - 🛠️ Provides a UI for table management
 
 ## Quick start
+
+- Try [undb cloud](https://app.undb.io)
+
+- Run with docker
 
 ```bash
 docker run -p 3721:3721 ghcr.io/undb-io/undb:latest

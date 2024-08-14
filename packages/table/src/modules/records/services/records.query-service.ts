@@ -27,6 +27,7 @@ export interface IRecordsQueryService {
   getReadableRecords(query: IGetRecordsDTO): Promise<PaginatedDTO<IRecordReadableValueDTO>>
   getReadableRecordById(query: IGetRecordByIdDTO): Promise<Option<IRecordReadableValueDTO>>
   getAggregates(query: IGetAggregatesDTO): Promise<Record<string, AggregateResult>>
+  populateAttachments(dto: IGetRecordsDTO, table: TableDo, records: IRecordDTO[]): Promise<IRecordDTO[]>
 }
 
 @singleton()
@@ -46,6 +47,23 @@ export class RecordsQueryService implements IRecordsQueryService {
   getReadableRecords = getReadableRecords
   getReadableRecordById = getReadableRecordById
   getAggregates = getAggregates
+
+  async populateAttachments(
+    this: RecordsQueryService,
+    dto: IGetRecordsDTO,
+    table: TableDo,
+    records: IRecordDTO[],
+  ): Promise<IRecordDTO[]> {
+    return Promise.all(
+      records.map(async (record) => {
+        const values = await this.populateAttachment(dto, table, record.values)
+        return {
+          ...record,
+          values,
+        }
+      }),
+    )
+  }
 
   async populateAttachment(
     this: RecordsQueryService,
