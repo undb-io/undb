@@ -6,11 +6,17 @@
   import { modal, CREATE_RECORD_MODAL, closeModal } from "$lib/store/modal.store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
   import { getTable } from "$lib/store/table.store"
+  import { useIsMutating } from "@tanstack/svelte-query"
+  import { LoaderCircleIcon } from "lucide-svelte"
 
   let disabled = false
   let dirty = false
 
   const table = getTable()
+
+  const isMutating = useIsMutating({
+    mutationKey: [$table.id.value, "createRecord"],
+  })
 </script>
 
 <Sheet.Root
@@ -50,7 +56,13 @@
 
     <Sheet.Footer class="border-t px-6 pt-4">
       <Button variant="outline" type="button" on:click={() => closeModal(CREATE_RECORD_MODAL)}>Cancel</Button>
-      <Button type="submit" form="createRecord">Create</Button>
+      <Button disabled={$isMutating > 0} type="submit" form="createRecord">
+        {#if $isMutating > 0}
+          <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
+        {/if}
+        Create
+        </Button
+      >
     </Sheet.Footer>
   </Sheet.Content>
 </Sheet.Root>
