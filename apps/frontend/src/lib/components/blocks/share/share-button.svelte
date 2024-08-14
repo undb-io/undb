@@ -10,11 +10,12 @@
   import { shareStore } from "$lib/store/share.store"
   import { invalidate } from "$app/navigation"
   import { Input } from "$lib/components/ui/input"
-  import { getShareUrl, type IShareTarget } from "@undb/share"
+  import { getIframe, getShareUrl, type IShareTarget } from "@undb/share"
   import { copyToClipboard } from "@svelte-put/copy"
   import { toast } from "svelte-sonner"
   import { cn } from "$lib/utils"
   import { hasPermission } from "$lib/store/space-member.store"
+  import Textarea from "$lib/components/ui/textarea/textarea.svelte"
 
   export let type: IShareTarget["type"]
   export let id: IShareTarget["id"]
@@ -66,6 +67,17 @@
     }, 2000)
     toast.success("Copied to clipboard")
   }
+
+  $: iframe = url ? getIframe(url) : undefined
+  let iframeCopied = false
+  const copyIFrame = () => {
+    copyToClipboard(iframe)
+    iframeCopied = true
+    setTimeout(() => {
+      iframeCopied = false
+    }, 2000)
+    toast.success("Copied to clipboard")
+  }
 </script>
 
 {#if $hasPermission("share:enable")}
@@ -103,28 +115,55 @@
       </div>
 
       {#if enabled && share?.id}
-        <div class="-mx-4 border-t px-4 pt-2">
-          <div class="flex items-center gap-2">
-            <Input
-              value={url}
-              readonly
-              class="flex-1 cursor-pointer"
-              on:click={(e) => {
-                copy()
-                e.target.select()
-              }}
-            />
-            <a role="button" href={url} target="_blank">
-              <ExternalLinkIcon class="h-4 w-4" />
-            </a>
-            <button type="button" on:click={copy}>
-              {#if copied}
-                <CopyCheckIcon class="h-4 w-4" />
-              {:else}
-                <CopyIcon class="h-4 w-4" />
-              {/if}
-            </button>
+        <div class="-mx-4 space-y-2 border-t px-4 pt-2">
+          <div class="space-y-2">
+            <p class="text-xs font-semibold">Share URL</p>
+            <div class="flex items-center gap-2">
+              <Input
+                value={url}
+                readonly
+                class="flex-1 cursor-pointer"
+                on:click={(e) => {
+                  copy()
+                  e.target.select()
+                }}
+              />
+              <a role="button" href={url} target="_blank">
+                <ExternalLinkIcon class="h-4 w-4" />
+              </a>
+              <button type="button" on:click={copy}>
+                {#if copied}
+                  <CopyCheckIcon class="h-4 w-4" />
+                {:else}
+                  <CopyIcon class="h-4 w-4" />
+                {/if}
+              </button>
+            </div>
           </div>
+
+          {#if iframe}
+            <div class="space-y-2">
+              <p class="text-xs font-semibold">IFrame URL</p>
+              <div class="item-center flex gap-2">
+                <Textarea
+                  rows={4}
+                  on:click={(e) => {
+                    copyIFrame()
+                    e.target.select()
+                  }}
+                  class="flex-1 cursor-pointer"
+                  value={iframe}
+                />
+                <button type="button" on:click={copyIFrame}>
+                  {#if iframeCopied}
+                    <CopyCheckIcon class="h-4 w-4" />
+                  {:else}
+                    <CopyIcon class="h-4 w-4" />
+                  {/if}
+                </button>
+              </div>
+            </div>
+          {/if}
         </div>
       {/if}
     </Popover.Content>
