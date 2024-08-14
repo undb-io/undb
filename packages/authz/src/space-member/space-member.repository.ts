@@ -9,7 +9,7 @@ export interface ISpaceMemberRepository {
   findOne(spec: SpaceMemberComositeSpecification): Promise<Option<SpaceMember>>
 
   insert(member: SpaceMember): Promise<void>
-  exists(email: string): Promise<boolean>
+  exists(spec: SpaceMemberComositeSpecification): Promise<boolean>
 }
 
 export const SPACE_MEMBER_REPOSITORY = Symbol("ISpaceMemberRepository")

@@ -14,8 +14,9 @@ import {
 import { InvitationMailService, type IInvitationMailService } from "./invitation.service"
 import { WithEmail, WithInvitedAt, WithRole, WithStatus } from "./invitation.specification"
 import { SpaceMember, type ISpaceMemberRole } from "./space-member"
+import type { SpaceMemberComositeSpecification } from "./space-member.composite-specification"
 import { injectSpaceMemberRepository, type ISpaceMemberRepository } from "./space-member.repository"
-import { WithSpaceMemberId, WithSpaceMemberSpaceId } from "./specifications"
+import { WithSpaceMemberEmail, WithSpaceMemberId, WithSpaceMemberSpaceId } from "./specifications"
 
 export interface ISpaceMemberService {
   createMember(userId: string, spaceId: ISpaceId, role: ISpaceMemberRole): Promise<void>
@@ -56,7 +57,11 @@ export class SpaceMemberService implements ISpaceMemberService {
   }
 
   async invite(dto: InviteDTO, username: string): Promise<void> {
-    const exists = await this.spaceMemberRepository.exists(dto.email)
+    const existsSpec = and(
+      new WithSpaceMemberEmail(dto.email),
+      new WithSpaceMemberSpaceId(dto.spaceId),
+    ) as Option<SpaceMemberComositeSpecification>
+    const exists = await this.spaceMemberRepository.exists(existsSpec.unwrap())
     if (exists) {
       throw new Error("Member already exists")
     }

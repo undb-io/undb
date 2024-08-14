@@ -1,6 +1,7 @@
 import type {
   ISpaceMemberVisitor,
   SpaceMember,
+  WithSpaceMemberEmail,
   WithSpaceMemberId,
   WithSpaceMemberQ,
   WithSpaceMemberSpaceId,
@@ -28,6 +29,11 @@ export class SpaceMemberFilterVisitor extends AbstractQBVisitor<SpaceMember> imp
   }
   withUserId(s: WithSpaceMemberUserId): void {
     const cond = this.eb.eb("undb_space_member.user_id", "=", s.userId)
+    this.addCond(cond)
+  }
+  withEmail(q: WithSpaceMemberEmail): void {
+    const subQuery = this.qb.selectFrom("undb_user").select(["undb_user.id"]).where("undb_user.email", "=", q.email)
+    const cond = this.eb.eb("undb_space_member.user_id", "in", subQuery)
     this.addCond(cond)
   }
   withId(q: WithSpaceMemberId): void {

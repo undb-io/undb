@@ -87,7 +87,12 @@
         <Form.FieldErrors />
       </Form.Field>
 
-      <Form.Button class="mt-4">Inivte</Form.Button>
+      <Form.Button disabled={$invite.isPending} class="mt-4">
+        {#if $invite.isPending}
+          <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
+        {/if}
+        Inivte
+      </Form.Button>
     </form>
   </Dialog.Content>
 </Dialog.Root>
