@@ -99,7 +99,6 @@
               }
             }}
           />
-          {enabled ? "enable" : "disable"}
         </Label>
       </div>
 

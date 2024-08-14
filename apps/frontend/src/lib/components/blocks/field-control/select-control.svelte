@@ -11,8 +11,8 @@
 
 {#if field.isSingle}
   {#if !Array.isArray(value)}
-    <OptionPicker options={field.options} bind:value sameWidth />
+    <OptionPicker disabled={readonly} options={field.options} bind:value sameWidth />
   {/if}
 {:else if Array.isArray(value) || value === null || value === undefined}
-  <OptionsPicker options={field.options} bind:value sameWidth />
+  <OptionsPicker disabled={readonly} options={field.options} bind:value sameWidth />
 {/if}

@@ -1,6 +1,7 @@
 import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import { WithShareId, type IShareRepository, type Share, type ShareSpecification } from "@undb/share"
+import { getCurrentTransaction } from "../ctx"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { ShareFilterVisitor } from "./share.filter-visitor"
@@ -20,7 +21,7 @@ export class ShareRepository implements IShareRepository {
   async updateOneById(share: Share, spec: ShareSpecification): Promise<void> {
     const entity = this.mapper.toEntity(share)
 
-    await this.qb
+    await (getCurrentTransaction() ?? this.qb)
       .insertInto("undb_share")
       .values(entity)
       .onConflict((ob) => ob.columns(["target_id", "target_type"]).doUpdateSet({ enabled: share.enabled }))
@@ -29,7 +30,7 @@ export class ShareRepository implements IShareRepository {
   async findOneById(id: string): Promise<Option<Share>> {
     const spec = WithShareId.fromString(id)
 
-    const share = await this.qb
+    const share = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_share")
       .selectAll()
       .where((eb) => {
@@ -46,7 +47,7 @@ export class ShareRepository implements IShareRepository {
     return Some(this.mapper.toDo(share))
   }
   async findOne(spec: ShareSpecification): Promise<Option<Share>> {
-    const share = await this.qb
+    const share = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_share")
       .selectAll()
       .where((eb) => {
