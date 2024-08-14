@@ -13,11 +13,16 @@ export class SpaceMemberRepository implements ISpaceMemberRepository {
     private readonly qb: IQueryBuilder,
   ) {}
 
-  async exists(email: string): Promise<boolean> {
+  async exists(spec: SpaceMemberComositeSpecification): Promise<boolean> {
     const user = await (getCurrentTransaction() ?? this.qb)
-      .selectFrom("undb_user")
+      .selectFrom("undb_space_member")
       .selectAll()
-      .where((eb) => eb.eb("undb_user.email", "=", email))
+      .where((eb) => {
+        const visitor = new SpaceMemberFilterVisitor(this.qb, eb)
+        spec.accept(visitor)
+
+        return visitor.cond
+      })
       .executeTakeFirst()
     return !!user
   }

@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-8
+
+
+### 🩹 Fixes
+
+- Fix invitation ([14e28b5](https://github.com/undb-io/undb/commit/14e28b5))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-7
 
 ## v1.0.0-6

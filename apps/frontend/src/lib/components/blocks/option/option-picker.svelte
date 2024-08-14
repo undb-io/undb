@@ -38,6 +38,7 @@
         role="combobox"
         aria-expanded={open}
         class={cn("w-full justify-between overflow-hidden", $$restProps.class)}
+        {...$$restProps}
       >
         {#if selectedValue}
           <Option option={selectedValue} />

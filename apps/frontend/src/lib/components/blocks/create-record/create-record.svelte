@@ -35,6 +35,7 @@
   const createRecordMutation = createMutation(
     derived([table], ([$table]) => ({
       mutationFn: trpc.record.create.mutate,
+      mutationKey: [ $table.id.value, "createRecord"],
       onSuccess: (data) => {
         client.invalidateQueries({
           queryKey: ["records", $table.id.value],
