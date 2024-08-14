@@ -4,7 +4,7 @@
   import Input from "$lib/components/ui/input/input.svelte"
   import { createMutation } from "@tanstack/svelte-query"
   import { inviteCommand } from "@undb/commands"
-  import { UserPlus } from "lucide-svelte"
+  import { LoaderCircleIcon, UserPlus } from "lucide-svelte"
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import * as Form from "$lib/components/ui/form/index.js"
