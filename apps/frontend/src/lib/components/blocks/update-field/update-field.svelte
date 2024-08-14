@@ -17,6 +17,7 @@
   import autoAnimate from "@formkit/auto-animate"
   import { FieldFactory } from "@undb/table/src/modules/schema/fields/field.factory"
   import { cn } from "$lib/utils"
+  import { LoaderCircleIcon } from "lucide-svelte"
 
   const table = getTable()
 
@@ -32,9 +33,9 @@
       async onSuccess() {
         onSuccess()
         toast.success("Update field success")
-        reset()
         await invalidate(`table:${$table.id.value}`)
         await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
+        reset()
       },
       onError(error: Error) {
         toast.error(error.message)
@@ -117,7 +118,10 @@
     {/if}
   </div>
   <div class="flex w-full justify-end border-t pt-4">
-    <Button type="submit" variant="outline" class="w-full" size="sm">Submit</Button>
+    <Button disabled={$updateFieldMutation.isPending} type="submit" variant="outline" class="w-full" size="sm">
+      <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
+      Submit</Button
+    >
   </div>
 </form>
 
