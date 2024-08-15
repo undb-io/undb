@@ -23,7 +23,6 @@
     }
   }
   $: internalDate = isString(value) ? parse(value) : isDate(value) ? parse(value.toISOString()) : undefined
-  $: console.log(internalDate)
   export let recordId: string
   export let isEditing: boolean
   export let onValueChange = (value: string | undefined) => {}
@@ -66,7 +65,6 @@
           onValueChange={(v) => {
             if (v) {
               value = v.toString()
-              console.log(value)
             } else {
               value = undefined
             }

@@ -1,6 +1,7 @@
 import { type ISpaceMemberService, injectSpaceMemberService } from "@undb/authz"
 import { setContextValue } from "@undb/context/server"
 import { singleton } from "@undb/di"
+import { createLogger } from "@undb/logger"
 import { type IQueryBuilder, getCurrentTransaction, injectQueryBuilder } from "@undb/persistence"
 import { type ISpaceService, injectSpaceService } from "@undb/space"
 import { Google, generateCodeVerifier } from "arctic"
@@ -26,6 +27,8 @@ export class GoogleOAuth {
     @injectLucia()
     private readonly lucia: Lucia,
   ) {}
+
+  private logger = createLogger(GoogleOAuth.name)
 
   route() {
     return new Elysia()
@@ -175,7 +178,7 @@ export class GoogleOAuth {
             },
           })
         } catch (e) {
-          console.log(e)
+          this.logger.error(e, "Failed to authenticate user")
           if (e instanceof OAuth2RequestError) {
             // bad verification code, invalid credentials, etc
             return new Response(null, {
