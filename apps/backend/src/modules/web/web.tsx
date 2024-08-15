@@ -17,5 +17,7 @@ export class Web {
       .get("/settings", () => index)
       .get("/login", () => index)
       .get("/signup", () => index)
+      .get("/verify-email", () => index)
+      .get("/reset-password/*", () => index)
   }
 }
