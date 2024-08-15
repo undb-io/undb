@@ -38,7 +38,20 @@ export const sendVerifyEmailInput = z
   })
   .merge(baseInput)
 
-export const sendInput = z.discriminatedUnion("template", [sendInviteInput, sendVerifyEmailInput])
+export const resetPasswordEmailInput = z
+  .object({
+    template: z.literal("reset-password"),
+    data: z.object({
+      action_url: z.string().url(),
+    }),
+  })
+  .merge(baseInput)
+
+export const sendInput = z.discriminatedUnion("template", [
+  sendInviteInput,
+  sendVerifyEmailInput,
+  resetPasswordEmailInput,
+])
 
 export type ISendInput = z.infer<typeof sendInput>
 

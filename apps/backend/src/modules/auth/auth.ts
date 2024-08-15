@@ -19,7 +19,8 @@ import { Context, Elysia, t } from "elysia"
 import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize } from "lucia"
 import { TimeSpan, createDate, isWithinExpirationDate } from "oslo"
-import { alphabet, generateRandomString } from "oslo/crypto"
+import { alphabet, generateRandomString, sha256 } from "oslo/crypto"
+import { encodeHex } from "oslo/encoding"
 import { omit } from "radash"
 import { v7 } from "uuid"
 import { withTransaction } from "../../db"
@@ -85,6 +86,22 @@ export class Auth {
       }
       return true
     })
+  }
+
+  async #createPasswordResetToken(userId: string): Promise<string> {
+    const db = getCurrentTransaction() ?? this.queryBuilder
+    await db.deleteFrom("undb_password_reset_token").where("user_id", "=", userId).execute()
+    const tokenId = generateIdFromEntropySize(25) // 40 character
+    const tokenHash = encodeHex(await sha256(new TextEncoder().encode(tokenId)))
+    await db
+      .insertInto("undb_password_reset_token")
+      .values({
+        token: tokenHash,
+        user_id: userId,
+        expires_at: createDate(new TimeSpan(2, "h")).getTime(),
+      })
+      .execute()
+    return tokenId
   }
 
   store() {
@@ -341,6 +358,96 @@ export class Auth {
         response.headers.set("Set-Cookie", sessionCookie.serialize())
         return response
       })
+      .post(
+        "/api/reset-password",
+        async (ctx) => {
+          return withTransaction(this.queryBuilder)(async () => {
+            const email = ctx.body.email
+            const tx = getCurrentTransaction() ?? this.queryBuilder
+            const user = await tx.selectFrom("undb_user").selectAll().where("email", "=", email).executeTakeFirst()
+            if (!user) {
+              return new Response(null, {
+                status: 200,
+              })
+            }
+
+            const token = await this.#createPasswordResetToken(user.id)
+            await this.mailService.send({
+              template: "reset-password",
+              data: {
+                action_url: new URL(`/reset-password/${token}`, env.UNDB_BASE_URL).toString(),
+              },
+              subject: "Reset your password - undb",
+              to: email,
+            })
+
+            return new Response(null, {
+              status: 200,
+            })
+          })
+        },
+        {
+          type: "json",
+          body: t.Object({
+            email: t.String(),
+          }),
+        },
+      )
+      .post(
+        "/api/reset-password/:token",
+        async (ctx) => {
+          return withTransaction(this.queryBuilder)(async () => {
+            const tx = getCurrentTransaction() ?? this.queryBuilder
+
+            const password = ctx.body.password
+            const verificationToken = ctx.params.token
+            const tokenHash = encodeHex(await sha256(new TextEncoder().encode(verificationToken)))
+
+            const token = await tx
+              .selectFrom("undb_password_reset_token")
+              .selectAll()
+              .where("token", "=", tokenHash)
+              .executeTakeFirst()
+            if (token) {
+              await tx.deleteFrom("undb_password_reset_token").where("token", "=", token.token).execute()
+            }
+
+            if (!token || !isWithinExpirationDate(new Date(token.expires_at))) {
+              return new Response(null, {
+                status: 400,
+              })
+            }
+
+            await this.lucia.invalidateUserSessions(token.user_id)
+            const passwordHash = await Bun.password.hash(password)
+            await tx.updateTable("undb_user").where("id", "=", token.user_id).set("password", passwordHash).execute()
+
+            const space = (await this.spaceService.getSpace({ userId: token.user_id })).expect(
+              "User should have a space",
+            )
+
+            const session = await this.lucia.createSession(token.user_id, { space_id: space.id.value })
+            const sessionCookie = this.lucia.createSessionCookie(session.id)
+            return new Response(null, {
+              status: 302,
+              headers: {
+                Location: "/",
+                "Set-Cookie": sessionCookie.serialize(),
+                "Referrer-Policy": "strict-origin",
+              },
+            })
+          })
+        },
+        {
+          type: "json",
+          params: t.Object({
+            token: t.String(),
+          }),
+          body: t.Object({
+            password: t.String(),
+          }),
+        },
+      )
       .post(
         "/api/email-verification",
         async (ctx) => {

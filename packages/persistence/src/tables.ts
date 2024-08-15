@@ -216,6 +216,23 @@ export const users = sqliteTable(
   },
 )
 
+export const passwordResetTokenTable = sqliteTable(
+  "password_reset_token",
+  {
+    id: integer("id").notNull().primaryKey({ autoIncrement: true }),
+    token: text("token").notNull().unique(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id),
+    expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
+  },
+  (table) => {
+    return {
+      userIdIdx: index("password_reset_token_user_id_idx").on(table.userId),
+    }
+  },
+)
+
 export const oauthAccount = sqliteTable(
   "oauth_account",
   {
