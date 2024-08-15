@@ -10,6 +10,7 @@ import type {
   invitations,
   oauthAccount,
   outbox,
+  passwordResetTokenTable,
   referenceIdMapping,
   rollupIdMapping,
   shareTable,
@@ -39,6 +40,7 @@ type AttachmentMappingTable = Kyselify<typeof attachmentMapping>
 type ApiTokenTable = Kyselify<typeof apiTokenTable>
 type EmailVerificationCodeTable = Kyselify<typeof emailVerificationCode>
 type OAuthAccountTable = Kyselify<typeof oauthAccount>
+type PasswordResetTokenTable = Kyselify<typeof passwordResetTokenTable>
 
 export interface Database {
   undb_space: SpaceTable
@@ -59,6 +61,7 @@ export interface Database {
   undb_oauth_account: OAuthAccountTable
   undb_attachment: AttachmentsTable
   undb_attachment_mapping: AttachmentMappingTable
+  undb_password_reset_token: PasswordResetTokenTable
 }
 
 export type Space = Selectable<SpaceTable>
@@ -80,6 +83,7 @@ export type EmailVerificationCode = Selectable<EmailVerificationCodeTable>
 export type OAuthAccount = Selectable<OAuthAccountTable>
 export type Attachments = Selectable<AttachmentsTable>
 export type AttachmentMapping = Selectable<AttachmentMappingTable>
+export type PasswordResetToken = Selectable<PasswordResetTokenTable>
 
 export type InsertTableIdMapping = Insertable<TableIdMappingTable>
 export type InsertRollupIdMapping = Insertable<RollupIdMappingTable>

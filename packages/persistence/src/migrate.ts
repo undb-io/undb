@@ -16,9 +16,10 @@ export async function dbMigrate() {
       logger: new DrizzleLogger(),
     })
 
-    await sqliteMigrate(db, { migrationsFolder: "./drizzle" })
+    sqliteMigrate(db, { migrationsFolder: "./drizzle" })
     return
   }
+
   const sqlite = container.resolve<Client>(SQLITE_CLIENT)
   const db = libsqlDrizzle(sqlite, {
     logger: new DrizzleLogger(),
