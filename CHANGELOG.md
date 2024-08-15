@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-9
+
+
+### 🏡 Chore
+
+- Upgrade dependencies ([7fb50f1](https://github.com/undb-io/undb/commit/7fb50f1))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-8
 
 
