@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-11
+
+
+### 🩹 Fixes
+
+- Fix route ([2880fee](https://github.com/undb-io/undb/commit/2880fee))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-10
 
 ## v1.0.0-9
