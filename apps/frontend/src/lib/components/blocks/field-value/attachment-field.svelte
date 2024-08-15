@@ -5,7 +5,6 @@
   import { selectedAttachment } from "$lib/store/attachment.store"
 
   export let value: IAttachmentFieldValue | undefined = undefined
-  $: console.log(value)
 </script>
 
 <span data-field-value={value}>

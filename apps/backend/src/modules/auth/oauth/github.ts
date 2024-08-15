@@ -1,6 +1,7 @@
 import { type ISpaceMemberService, injectSpaceMemberService } from "@undb/authz"
 import { setContextValue } from "@undb/context/server"
 import { singleton } from "@undb/di"
+import { createLogger } from "@undb/logger"
 import { type IQueryBuilder, getCurrentTransaction, injectQueryBuilder } from "@undb/persistence"
 import { type ISpaceService, injectSpaceService } from "@undb/space"
 import { GitHub } from "arctic"
@@ -26,6 +27,8 @@ export class GithubOAuth {
     @injectLucia()
     private readonly lucia: Lucia,
   ) {}
+
+  private logger = createLogger(GithubOAuth.name)
 
   route() {
     return new Elysia()
@@ -185,7 +188,7 @@ export class GithubOAuth {
             },
           })
         } catch (e) {
-          console.log(e)
+          this.logger.error(e, "Failed to authenticate user")
           if (e instanceof OAuth2RequestError) {
             // bad verification code, invalid credentials, etc
             return new Response(null, {
