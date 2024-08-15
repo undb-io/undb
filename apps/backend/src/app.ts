@@ -24,31 +24,19 @@ import { all } from "radash"
 import { v4 } from "uuid"
 import { Auth, OpenAPI, Realtime, SpaceModule, TableModule, Web } from "./modules"
 import { FileService } from "./modules/file/file"
+import { OpenTelemetryModule } from "./modules/opentelemetry/opentelemetry.module"
 import { loggerPlugin } from "./plugins/logging"
 
 const auth = container.resolve(Auth)
 const web = container.resolve(Web)
 const openapi = container.resolve(OpenAPI)
+const opentelemetry = container.resolve(OpenTelemetryModule)
 
 export const app = new Elysia()
-  // .use(
-  //   opentelemetry({
-  //     spanProcessors: [
-  //       new BatchSpanProcessor(
-  //         new OTLPTraceExporter({
-  //           url: "https://api.axiom.co/v1/traces",
-  //           headers: {
-  //             Authorization: `Bearer ${Bun.env.AXIOM_TOKEN}`,
-  //             "X-Axiom-Dataset": Bun.env.AXIOM_DATASET,
-  //           },
-  //         }),
-  //       ),
-  //     ],
-  //   }),
-  // )
   .onStart(async () => {
     await dbMigrate()
   })
+  .use(opentelemetry.plugin())
   .use(loggerPlugin())
   .onError((ctx) => {
     if (ctx.code === "NOT_FOUND") {
