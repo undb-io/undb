@@ -390,7 +390,7 @@ export const invitations = sqliteTable(
   "invitation",
   {
     id: text("id").notNull().primaryKey(),
-    email: text("email").notNull().unique(),
+    email: text("email").notNull(),
     role: text("role").notNull().$type<ISpaceMemberWithoutOwner>(),
     status: text("status").notNull().$type<IInvitationStatus>(),
     spaceId: text("space_id")
@@ -404,6 +404,7 @@ export const invitations = sqliteTable(
   (table) => {
     return {
       spaceIdIdx: index("invitation_space_id_idx").on(table.spaceId),
+      uniqueIdx: unique("invitation_unique_idx").on(table.email, table.spaceId),
     }
   },
 )

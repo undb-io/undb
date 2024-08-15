@@ -45,6 +45,7 @@
     "got": "^14.4.2",
     "handlebars": "^4.7.8",
     "lucia": "^3.2.0",
+    "mailgun-nodemailer-transport": "^3.0.2",
     "minio": "^8.0.1",
     "nanoid": "^5.0.7",
     "nodemailer": "^6.9.14",
