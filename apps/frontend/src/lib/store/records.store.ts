@@ -72,12 +72,14 @@ export const createRecordsStore = () => {
 
   const records = derived(store, ($store) => $store.ids.map((id) => $store.records.get(id)!))
   const hasRecord = derived(store, ($store) => !!$store.records.size)
+  const count = derived(store, ($store) => $store.ids.length)
 
   return {
     set,
     setRecord,
     setRecordValue,
     hasRecord,
+    count,
 
     subscribe,
 
