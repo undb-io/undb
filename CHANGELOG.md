@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-12
+
+
+### 🩹 Fixes
+
+- Fix mailgun ([8567d93](https://github.com/undb-io/undb/commit/8567d93))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-11
 
 
