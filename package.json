@@ -1,6 +1,6 @@
 {
   "name": "undb",
-  "version": "1.0.0-9",
+  "version": "1.0.0-10",
   "private": true,
   "scripts": {
     "build": "NODE_ENV=production bun --bun turbo build",

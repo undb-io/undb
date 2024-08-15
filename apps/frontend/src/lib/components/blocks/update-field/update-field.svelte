@@ -119,7 +119,9 @@
   </div>
   <div class="flex w-full justify-end border-t pt-4">
     <Button disabled={$updateFieldMutation.isPending} type="submit" variant="outline" class="w-full" size="sm">
-      <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
+      {#if $updateFieldMutation.isPending}
+        <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
+      {/if}
       Submit</Button
     >
   </div>
