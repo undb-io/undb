@@ -12,7 +12,7 @@ import {
   type IInvitationRepository,
 } from "./invitation.repository"
 import { InvitationMailService, type IInvitationMailService } from "./invitation.service"
-import { WithEmail, WithInvitedAt, WithRole, WithStatus } from "./invitation.specification"
+import { WithEmail, WithInvitedAt, WithRole, WithSpaceId, WithStatus } from "./invitation.specification"
 import { SpaceMember, type ISpaceMemberRole } from "./space-member"
 import type { SpaceMemberComositeSpecification } from "./space-member.composite-specification"
 import { injectSpaceMemberRepository, type ISpaceMemberRepository } from "./space-member.repository"
@@ -75,7 +75,7 @@ export class SpaceMemberService implements ISpaceMemberService {
       throw new Error("Cannot invite to personal space")
     }
 
-    const spec = new WithEmail(dto.email)
+    const spec = new WithEmail(dto.email).and(new WithSpaceId(space.unwrap().id.value))
     const existInvitation = await this.invitationQueryRepository.findOne(spec)
     if (existInvitation.isSome()) {
       const invitation = existInvitation.unwrap()

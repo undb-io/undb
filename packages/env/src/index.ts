@@ -68,6 +68,7 @@ const storageEnv = createEnv({
 
 const emailEnv = createEnv({
   server: {
+    UNDB_MAIL_PROVIDER: z.enum(["nodemailer", "mailgun"]).default("nodemailer").optional(),
     UNDB_MAIL_HOST: z.string().optional(),
     UNDB_MAIL_PORT: z.string().optional(),
     UNDB_MAIL_DEFAULT_FROM: z.string().optional(),
@@ -88,6 +89,8 @@ const emailEnv = createEnv({
         message: "UNDB_VERIFY_EMAIL must be a boolean",
       })
       .transform((v) => v === "true"),
+    UNDB_MAILGUN_API_KEY: z.string().optional(),
+    UNDB_MAILGUN_DOMAIN: z.string().optional(),
   },
   runtimeEnv: import.meta.env,
   emptyStringAsUndefined: true,

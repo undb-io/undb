@@ -15,6 +15,13 @@
       "when": 1723706193281,
       "tag": "0001_familiar_joshua_kane",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1723731591583,
+      "tag": "0002_fixed_lockjaw",
+      "breakpoints": true
     }
   ]
 }

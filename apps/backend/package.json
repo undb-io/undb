@@ -48,6 +48,7 @@
     "minio": "^8.0.1",
     "nanoid": "^5.0.7",
     "nodemailer": "^6.9.14",
+    "nodemailer-mailgun-transport": "^2.1.5",
     "oslo": "^1.2.1",
     "radash": "^12.1.0",
     "reflect-metadata": "^0.2.2",
@@ -56,6 +57,7 @@
   },
   "devDependencies": {
     "@types/nodemailer": "^6.4.15",
+    "@types/nodemailer-mailgun-transport": "^1.4.6",
     "@types/uuid": "^10.0.0",
     "bun-types": "latest",
     "kysely": "^0.27.4"
