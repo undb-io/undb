@@ -19,6 +19,7 @@
   import { derived } from "svelte/store"
   import UpdateTableDialog from "$lib/components/blocks/update-table/update-table-dialog.svelte"
   import DeleteTableDialog from "$lib/components/blocks/delete-table/delete-table-dialog.svelte"
+  import TableRecordDetailSheet from "$lib/components/blocks/record-detail/table-record-detail-sheet.svelte"
 
   function handleR() {
     toggleModal(CREATE_RECORD_MODAL)
@@ -47,7 +48,7 @@
   </main>
 
   <CreateRecordSheet />
-  <RecordDetailSheet />
+  <TableRecordDetailSheet />
   <ConfirmDeleteRecord />
   <ConfirmDuplicateRecord />
   <UpdateViewDialog />

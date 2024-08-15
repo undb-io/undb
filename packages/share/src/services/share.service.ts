@@ -1,6 +1,7 @@
 import { inject, singleton } from "@undb/di"
-import { Option, Some, type PaginatedDTO } from "@undb/domain"
+import { None, Option, Some, type PaginatedDTO } from "@undb/domain"
 import {
+  RecordIdVO,
   TableComositeSpecification,
   ViewIdVo,
   WithFormIdSpecification,
@@ -36,6 +37,7 @@ export interface IShareService {
   getShareByTarget(target: IShareTarget): Promise<Option<IShareDTO>>
   getTableByShare(id: string): Promise<ITableDTO>
   getShareRecords(id: string): Promise<PaginatedDTO<IRecordDTO>>
+  getShareRecordById(id: string, recordId: string): Promise<Option<IRecordDTO>>
 }
 
 export const SHARE_SERVICE = Symbol.for("SHARE_SERVICE")
@@ -134,5 +136,28 @@ export class ShareService implements IShareService {
       ...records,
       values: await this.recordsService.populateAttachments({ viewId }, table, records.values),
     }
+  }
+
+  async getShareRecordById(id: string, recordId: string): Promise<Option<IRecordDTO>> {
+    const share = (await this.repo.findOneById(id)).expect("share not found")
+    const spec = match(share.target.type)
+      .returnType<TableComositeSpecification>()
+      .with("form", () => new WithFormIdSpecification(share.target.id))
+      .with("view", () => new WithViewIdSpecification(share.target.id))
+      .exhaustive()
+
+    const table = (await this.tableRepo.findOne(Some(spec))).expect("table not found")
+
+    const record = await this.recordRepo.findOneById(table, new RecordIdVO(recordId), None)
+    if (record.isNone()) {
+      return None
+    }
+
+    const r = record.unwrap()
+    const values = await this.recordsService.populateAttachment({}, table, r.values)
+    return Some({
+      ...r,
+      values,
+    })
   }
 }

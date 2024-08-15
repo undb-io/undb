@@ -94,6 +94,7 @@ import {
   GetMemberSpacesQuery,
   GetRecordByIdQuery,
   GetRecordsQuery,
+  GetShareRecordByIdQuery,
   GetShareRecordsQuery,
   GetTableQuery,
   GetTablesQuery,
@@ -105,6 +106,7 @@ import {
   getMemberSpacesQuery,
   getRecordByIdQuery,
   getRecordsQuery,
+  getShareRecordByIdQuery,
   getShareRecordsQuery,
   getTableQuery,
   getWebhooksQuery,
@@ -318,6 +320,9 @@ const shareDataRouter = t.router({
   records: publicProcedure
     .input(getShareRecordsQuery)
     .query(({ input }) => queryBus.execute(new GetShareRecordsQuery(input))),
+  record: publicProcedure
+    .input(getShareRecordByIdQuery)
+    .query(({ input }) => queryBus.execute(new GetShareRecordByIdQuery(input))),
 })
 
 const authzRouter = t.router({
