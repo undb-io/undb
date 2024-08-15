@@ -1,0 +1,358 @@
+<script lang="ts">
+  import * as ContextMenu from "$lib/components/ui/context-menu"
+  import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
+  import { writable, type Readable, type Writable } from "svelte/store"
+  import GridViewCheckbox from "./grid-view-checkbox.svelte"
+  import * as Table from "$lib/components/ui/table/index.js"
+  import { addResizedColumns, addSelectedRows } from "svelte-headless-table/plugins"
+  import { copyToClipboard } from "@svelte-put/copy"
+  import { toast } from "svelte-sonner"
+  import { cn } from "$lib/utils.js"
+  import { recordsStore } from "$lib/store/records.store"
+  import { type Field } from "@undb/table"
+  import { getTable } from "$lib/store/table.store"
+  import GridViewActions from "./grid-view-actions.svelte"
+  import GridViewActionHeader from "./grid-view-action-header.svelte"
+  import GridViewCell from "./grid-view-cell.svelte"
+  import GridViewEmpty from "./grid-view-empty.svelte"
+  import GridViewPagination from "./grid-view-pagination.svelte"
+  import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
+  import TableTools from "../table-tools/table-tools.svelte"
+  import GridViewHeader from "./grid-view-header.svelte"
+  import * as Select from "$lib/components/ui/select"
+  import { getBgColor } from "./grid-view.util"
+  import GridViewOpen from "./grid-view-open.svelte"
+  import { queryParam } from "sveltekit-search-params"
+  import { isFunction } from "radash"
+  import GridViewFooter from "./grid-view-footer.svelte"
+  import { DELETE_RECORD_MODAL, DUPLICATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
+  import { ScrollArea } from "$lib/components/ui/scroll-area"
+  import { ClipboardCopyIcon, CopyIcon, Maximize2Icon, Trash2Icon } from "lucide-svelte"
+  import { gridViewStore, isRowSelected, isSelectedCell } from "./grid-view.store"
+  import SelectedRecordsButton from "./selected-records-button.svelte"
+  import { aggregatesStore } from "$lib/store/aggregates.store"
+
+  export let readonly = false
+  export let viewId: Readable<string>
+  export let perPage: Writable<number>
+  export let currentPage: Writable<number>
+  export let isLoading = false
+  export let total: number
+
+  const t = getTable()
+
+  const r = queryParam("r")
+  const deleteRecordId = queryParam("deleteRecordId")
+  const duplicateRecordId = queryParam("duplicateRecordId")
+
+  const copy = async (id: string) => {
+    await copyToClipboard(id)
+    toast.success("Copied record ID to clipboard")
+  }
+
+  $: view = $t.views.getViewById($viewId)
+  $: viewFilter = view.filter.into(undefined)
+  $: hasFilterFieldIds = viewFilter?.fieldIds
+
+  $: colorSpec = view.color.into(undefined)?.getSpec($t.schema).into(undefined)
+
+  $: getTableAggregates = aggregatesStore.getTableAggregates
+  $: aggregates = $getTableAggregates($t.id.value)
+
+  let store = recordsStore
+  let hasRecord = store.hasRecord
+  let count = store.count
+  let records = store.records
+
+  const table = createTable(store.data, {
+    select: addSelectedRows(),
+    resize: addResizedColumns(),
+  })
+  $: fields = $t?.getOrderedVisibleFields($viewId) ?? ([] as Field[])
+
+  $: columns =
+    table.createColumns([
+      table.column({
+        accessor: "$select",
+        header: (_, { pluginStates }) => {
+          const { allPageRowsSelected } = pluginStates.select
+          return createRender(GridViewCheckbox, {
+            checked: allPageRowsSelected,
+            disabled: readonly,
+          })
+        },
+        cell: ({ row }, { pluginStates }) => {
+          const { getRowState } = pluginStates.select
+          const { isSelected } = getRowState(row)
+
+          return createRender(GridViewCheckbox, {
+            checked: isSelected,
+            disabled: readonly,
+          })
+        },
+        plugins: {
+          resize: {
+            initialWidth: 40,
+            disable: true,
+          },
+        },
+      }),
+      table.column({
+        accessor: "open",
+        header: () => "",
+        cell: ({ row }) => createRender(GridViewOpen, { recordId: row.original.id }),
+        plugins: {
+          resize: {
+            initialWidth: 30,
+            disable: true,
+          },
+        },
+      }),
+      ...fields.map((field, index) =>
+        table.column({
+          header: () => createRender(GridViewHeader, { field }),
+          accessor: field.id.value,
+          cell: (item) => {
+            const record = $store.records.get(item.row.original.id)
+            const displayValue = record?.displayValues?.toJSON()?.[field.id.value]
+            return createRender(GridViewCell, {
+              index,
+              value: item.value,
+              field,
+              recordId: item.row.original.id,
+              displayValue,
+              readonly,
+            })
+          },
+          footer: createRender(GridViewFooter, {
+            field,
+            aggregateResult: aggregates?.[field.id.value],
+            readonly,
+          }),
+          plugins: {
+            resize: {
+              initialWidth: 200,
+            },
+          },
+        }),
+      ),
+      table.column({
+        header: () => {
+          return createRender(GridViewActionHeader, { readonly })
+        },
+        accessor: ({ id }) => id,
+        cell: (item) => createRender(GridViewActions, { id: item.value, readonly }),
+        plugins: {
+          resize: {
+            initialWidth: 50,
+            disable: true,
+          },
+        },
+      }),
+    ]) ?? []
+
+  const viewModel = writable(table.createViewModel(columns ?? []))
+  $: columns, viewModel.set(table.createViewModel(columns))
+
+  $: visibleColumns = $viewModel.visibleColumns
+  $: headerRows = $viewModel.headerRows
+  $: pageRows = $viewModel.pageRows
+  $: tableAttrs = $viewModel.tableAttrs
+  $: tableHeaderAttrs = $viewModel.tableHeadAttrs
+  $: tableBodyAttrs = $viewModel.tableBodyAttrs
+
+  $: selectedDataIds = $viewModel.pluginStates.select.selectedDataIds
+  $: selectedRecordIds = Object.keys($selectedDataIds)
+    .map(Number)
+    .map((index) => $store.ids[index])
+
+  $: resize = $viewModel.pluginStates.resize.columnWidths
+</script>
+
+<div class="flex h-full w-full flex-col">
+  {#if !readonly}
+    <TableTools>
+      {#if selectedRecordIds.length}
+        <SelectedRecordsButton class={selectedRecordIds.length && "opacity-100"} ids={selectedRecordIds} />
+      {/if}
+    </TableTools>
+  {/if}
+  <ScrollArea orientation="both" class="h-full flex-1 overflow-auto">
+    <table {...$tableAttrs} class={cn("flex h-full flex-col", $$restProps.class)}>
+      <Table.Header {...$tableHeaderAttrs} class="sticky top-0 z-50 bg-white">
+        {#each $headerRows as headerRow}
+          <Subscribe rowAttrs={headerRow.attrs()}>
+            <Table.Row class="text-xs transition-none hover:bg-inherit">
+              {#each headerRow.cells as cell, i (cell.id)}
+                <Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
+                  {@const hasFilter = hasFilterFieldIds?.has(cell.id) ?? false}
+                  <Table.Head
+                    {...attrs}
+                    class={cn(
+                      "h-9 border-r [&:has([role=checkbox])]:pl-3",
+                      i === 0 && "border-r-0",
+                      hasFilter && "bg-orange-50",
+                    )}
+                  >
+                    {#if cell.id === "$select" && !$hasRecord}
+                      <Checkbox checked={false} disabled />
+                    {:else}
+                      <Render of={cell.render()} />
+                    {/if}
+                  </Table.Head>
+                </Subscribe>
+              {/each}
+            </Table.Row>
+          </Subscribe>
+        {/each}
+      </Table.Header>
+      {#if $count}
+        <Table.Body {...$tableBodyAttrs} class="flex-1">
+          {#each $pageRows as row (row.id)}
+            {@const recordId = row.original.id}
+            <Subscribe rowAttrs={row.attrs()} let:rowAttrs>
+              <ContextMenu.Root>
+                <ContextMenu.Trigger>
+                  <Table.Row
+                    {...rowAttrs}
+                    data-state={($selectedDataIds[row.id] || $isRowSelected(recordId)) && "selected"}
+                    class="text-foreground group cursor-pointer text-xs transition-none"
+                  >
+                    {@const record = $store.records.get(recordId)}
+                    {@const match = colorSpec && record ? record.match(colorSpec) : false}
+                    {@const condition =
+                      match && record
+                        ? view.color.into(undefined)?.getMatchedFieldConditions($t, record)[0]
+                        : undefined}
+                    {#each row.cells as cell, idx (cell.id)}
+                      {@const hasFilter = hasFilterFieldIds?.has(cell.id) ?? false}
+                      <Subscribe attrs={cell.attrs()} let:attrs>
+                        <Table.Cell
+                          class={cn(
+                            "border-border relative border-r p-0",
+                            (idx === 0 || idx === 1) && "border-r-0",
+                            hasFilter && "bg-orange-50",
+                            $isSelectedCell(recordId, cell.column.id) && "bg-gray-100",
+                          )}
+                          {...attrs}
+                          on:click={() => {
+                            if (cell.id === "$select") {
+                              return
+                            }
+
+                            gridViewStore.select(readonly, recordId, cell.column.id)
+                          }}
+                        >
+                          {#if idx === 0 && match && condition && "border-l-4"}
+                            <div
+                              class={cn(
+                                "absolute bottom-0 left-0 top-0 h-full w-1",
+                                getBgColor(condition.option.color),
+                              )}
+                            ></div>
+                            <!-- content here -->
+                          {/if}
+                          {#if cell.id === "amount"}
+                            <div class="text-right font-medium">
+                              <Render of={cell.render()} />
+                            </div>
+                          {:else if cell.id === "$select"}
+                            <div class="flex items-center justify-center">
+                              <Render of={cell.render()} />
+                            </div>
+                          {:else}
+                            <Render of={cell.render()} />
+                          {/if}
+                        </Table.Cell>
+                      </Subscribe>
+                    {/each}
+                  </Table.Row>
+                </ContextMenu.Trigger>
+                <ContextMenu.Content>
+                  <ContextMenu.Item class="text-xs" on:click={() => ($r = recordId)}>
+                    <Maximize2Icon class="mr-2 h-4 w-4" />
+                    View record details
+                  </ContextMenu.Item>
+                  <ContextMenu.Item class="text-xs" on:click={() => copy(recordId)}>
+                    <ClipboardCopyIcon class="mr-2 h-4 w-4" />
+                    Copy record ID
+                  </ContextMenu.Item>
+                  <ContextMenu.Item
+                    class="text-xs"
+                    on:click={() => {
+                      toggleModal(DUPLICATE_RECORD_MODAL)
+                      $duplicateRecordId = recordId
+                    }}
+                  >
+                    <CopyIcon class="mr-2 h-4 w-4" />
+                    Duplicate Record
+                  </ContextMenu.Item>
+                  <ContextMenu.Separator />
+                  <ContextMenu.Item
+                    on:click={() => {
+                      toggleModal(DELETE_RECORD_MODAL)
+                      $deleteRecordId = recordId
+                    }}
+                    class="text-xs text-red-500 data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500"
+                  >
+                    <Trash2Icon class="mr-2 h-4 w-4" />
+                    Delete Record
+                  </ContextMenu.Item>
+                </ContextMenu.Content>
+              </ContextMenu.Root>
+            </Subscribe>
+          {/each}
+        </Table.Body>
+
+        <tfooter class="text-muted-foreground sticky bottom-0 h-8 w-full border-t bg-white text-sm">
+          <tr class="flex h-8 w-full">
+            {#each $visibleColumns as column}
+              {@const width = $resize[column.id]}
+              <td
+                style={`width: ${width}px; min-width: ${width}px; max-width: ${width}px`}
+                class="h-full overflow-hidden"
+              >
+                {#if column.footer && !isFunction(column.footer)}
+                  <Render of={column.footer} />
+                {/if}
+              </td>
+            {/each}
+          </tr>
+        </tfooter>
+      {:else if !isLoading}
+        <GridViewEmpty {readonly} />
+      {/if}
+    </table>
+  </ScrollArea>
+
+  <div class="flex items-center justify-center px-4 py-2">
+    <div class="flex flex-1 flex-row items-center">
+      <GridViewPagination perPage={$perPage} bind:currentPage={$currentPage} count={total} />
+      <div class="flex items-center gap-2 text-sm">
+        <Select.Root
+          selected={{ value: $perPage, label: String($perPage) }}
+          onSelectedChange={(value) => {
+            if (value) {
+              $perPage = value.value
+            }
+            $currentPage = 1
+          }}
+        >
+          <Select.Trigger value={$perPage} class="min-w-16">
+            <Select.Value placeholder="page" />
+          </Select.Trigger>
+          <Select.Content>
+            <Select.Item value={1}>1</Select.Item>
+            <Select.Item value={10}>10</Select.Item>
+            <Select.Item value={50}>50</Select.Item>
+            <Select.Item value={100}>100</Select.Item>
+          </Select.Content>
+        </Select.Root>
+
+        <span class="text-muted-foreground flex-1 text-nowrap text-xs">
+          {total} Rows
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
