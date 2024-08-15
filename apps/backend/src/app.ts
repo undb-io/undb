@@ -126,6 +126,7 @@ export const app = new Elysia()
   .use(auth.route())
   .use(web.route())
   .use(openapi.route())
+  .use(trpc(route))
   .guard(
     {
       beforeHandle(context) {
@@ -151,7 +152,6 @@ export const app = new Elysia()
       return (
         app
           //
-          .use(trpc(route))
           .use(space.route())
           .use(file.route())
           .use(graphql.route())
