@@ -94,6 +94,7 @@ import {
   GetMemberSpacesQuery,
   GetRecordByIdQuery,
   GetRecordsQuery,
+  GetShareRecordsQuery,
   GetTableQuery,
   GetTablesQuery,
   GetWebhooksQuery,
@@ -104,85 +105,106 @@ import {
   getMemberSpacesQuery,
   getRecordByIdQuery,
   getRecordsQuery,
+  getShareRecordsQuery,
   getTableQuery,
   getWebhooksQuery,
 } from "@undb/queries"
 import { tableDTO } from "@undb/table"
 import { z } from "@undb/zod"
 import { authz } from "./authz.middleware"
-import { p, t } from "./trpc"
+import { privateProcedure, publicProcedure, t } from "./trpc"
 
 const commandBus = container.resolve<ICommandBus>(CommandBus)
 const queryBus = container.resolve<IQueryBus>(QueryBus)
 
 const formRouter = t.router({
-  create: p
+  create: privateProcedure
     .input(createTableFormCommand)
     .mutation(({ input }) => commandBus.execute(new CreateTableFormCommand(input))),
-  set: p.input(setTableFormCommand).mutation(({ input }) => commandBus.execute(new SetTableFormCommand(input))),
+  set: privateProcedure
+    .input(setTableFormCommand)
+    .mutation(({ input }) => commandBus.execute(new SetTableFormCommand(input))),
 })
 
 const viewRouter = t.router({
-  create: p
+  create: privateProcedure
     .input(createTableViewCommand)
     .mutation(({ input }) => commandBus.execute(new CreateTableViewCommand(input))),
-  update: p.input(updateViewCommand).mutation(({ input }) => commandBus.execute(new UpdateViewCommand(input))),
-  duplicate: p.input(duplicateViewCommand).mutation(({ input }) => commandBus.execute(new DuplicateViewCommand(input))),
-  delete: p.input(deleteViewCommand).mutation(({ input }) => commandBus.execute(new DeleteViewCommand(input))),
-  setFilter: p.input(setViewFilterCommand).mutation(({ input }) => commandBus.execute(new SetViewFilterCommand(input))),
-  setOption: p.input(setViewOptionCommand).mutation(({ input }) => commandBus.execute(new SetViewOptionCommand(input))),
-  setColor: p.input(setViewColorCommand).mutation(({ input }) => commandBus.execute(new SetViewColorCommand(input))),
-  setSort: p.input(setViewSortCommand).mutation(({ input }) => commandBus.execute(new SetViewSortCommand(input))),
-  setAggregate: p
+  update: privateProcedure
+    .input(updateViewCommand)
+    .mutation(({ input }) => commandBus.execute(new UpdateViewCommand(input))),
+  duplicate: privateProcedure
+    .input(duplicateViewCommand)
+    .mutation(({ input }) => commandBus.execute(new DuplicateViewCommand(input))),
+  delete: privateProcedure
+    .input(deleteViewCommand)
+    .mutation(({ input }) => commandBus.execute(new DeleteViewCommand(input))),
+  setFilter: privateProcedure
+    .input(setViewFilterCommand)
+    .mutation(({ input }) => commandBus.execute(new SetViewFilterCommand(input))),
+  setOption: privateProcedure
+    .input(setViewOptionCommand)
+    .mutation(({ input }) => commandBus.execute(new SetViewOptionCommand(input))),
+  setColor: privateProcedure
+    .input(setViewColorCommand)
+    .mutation(({ input }) => commandBus.execute(new SetViewColorCommand(input))),
+  setSort: privateProcedure
+    .input(setViewSortCommand)
+    .mutation(({ input }) => commandBus.execute(new SetViewSortCommand(input))),
+  setAggregate: privateProcedure
     .input(setViewAggregateCommand)
     .mutation(({ input }) => commandBus.execute(new SetViewAggregateCommand(input))),
-  setFields: p.input(setViewFieldsCommand).mutation(({ input }) => commandBus.execute(new SetViewFieldsCommand(input))),
+  setFields: privateProcedure
+    .input(setViewFieldsCommand)
+    .mutation(({ input }) => commandBus.execute(new SetViewFieldsCommand(input))),
 })
 
 const rlsRouter = t.router({
-  set: p.input(setTableRLSCommand).mutation(({ input }) => commandBus.execute(new SetTableRLSCommand(input))),
+  set: privateProcedure
+    .input(setTableRLSCommand)
+    .mutation(({ input }) => commandBus.execute(new SetTableRLSCommand(input))),
 })
 
 const fieldRouter = t.router({
-  create: p
+  create: privateProcedure
     .use(authz("field:create"))
     .input(createTableFieldCommand)
     .mutation(({ input }) => commandBus.execute(new CreateTableFieldCommand(input))),
-  update: p
+  update: privateProcedure
     .use(authz("field:update"))
     .input(updateTableFieldCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateTableFieldCommand(input))),
-  duplicate: p
+  duplicate: privateProcedure
     .use(authz("field:create"))
     .input(duplicateTableFieldCommand)
     .mutation(({ input }) => commandBus.execute(new DuplicateTableFieldCommand(input))),
-  delete: p
+  delete: privateProcedure
     .use(authz("field:delete"))
     .input(deleteTableFieldCommand)
     .mutation(({ input }) => commandBus.execute(new DeleteTableFieldCommand(input))),
 })
 
 const tableRouter = t.router({
-  list: p
+  list: privateProcedure
     .use(authz("table:list"))
     .input(z.void())
     .output(tableDTO.array())
     .query(() => queryBus.execute(new GetTablesQuery())),
-  get: p
+  get: privateProcedure
     .use(authz("table:read"))
     .input(getTableQuery)
     .output(tableDTO)
     .query(({ input }) => queryBus.execute(new GetTableQuery(input))),
-  create: p
+  create: privateProcedure
     .use(authz("table:create"))
     .input(createTableCommand)
     .output(z.string())
     .mutation(({ input }) => commandBus.execute(new CreateTableCommand(input))),
-  update: p
+  update: privateProcedure
     .use(authz("table:update"))
     .input(updateTableCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateTableCommand(input))),
-  delete: p
+  delete: privateProcedure
     .use(authz("table:delete"))
     .input(deleteTableCommand)
     .mutation(({ input }) => commandBus.execute(new DeleteTableCommand(input))),
@@ -193,79 +215,79 @@ const tableRouter = t.router({
 })
 
 const recordRouter = t.router({
-  list: p
+  list: privateProcedure
     .use(authz("record:list"))
     .input(getRecordsQuery)
     .query(({ input }) => queryBus.execute(new GetRecordsQuery(input))),
-  get: p
+  get: privateProcedure
     .use(authz("record:read"))
     .input(getRecordByIdQuery)
     .query(({ input }) => queryBus.execute(new GetRecordByIdQuery(input))),
-  count: p
+  count: privateProcedure
     .use(authz("record:read"))
     .input(countRecordsQuery)
     .output(countRecordsOutput)
     .query(({ input }) => queryBus.execute(new CountRecordsQuery(input))),
-  create: p
+  create: privateProcedure
     .use(authz("record:create"))
     .input(createRecordCommand)
     .mutation(({ input }) => commandBus.execute(new CreateRecordCommand(input))),
-  bulkCreate: p
+  bulkCreate: privateProcedure
     .use(authz("record:create"))
     .input(createRecordsCommand)
     .mutation(({ input }) => commandBus.execute(new CreateRecordsCommand(input))),
-  update: p
+  update: privateProcedure
     .use(authz("record:update"))
     .input(updateRecordCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateRecordCommand(input))),
-  bulkUpdate: p
+  bulkUpdate: privateProcedure
     .use(authz("record:update"))
     .input(bulkUpdateRecordsCommand)
     .output(bulkUpdateRecordsCommandOutput)
     .mutation(({ input }) => commandBus.execute(new BulkUpdateRecordsCommand(input))),
-  delete: p
+  delete: privateProcedure
     .use(authz("record:delete"))
     .input(deleteRecordCommand)
     .mutation(({ input }) => commandBus.execute(new DeleteRecordCommand(input))),
-  bulkDelete: p
+  bulkDelete: privateProcedure
     .use(authz("record:delete"))
     .input(bulkdeleteRecordsCommand)
     .mutation(({ input }) => commandBus.execute(new BulkDeleteRecordsCommand(input))),
-  duplicate: p
+  duplicate: privateProcedure
     .use(authz("record:create"))
     .input(duplicateRecordCommand)
     .mutation(({ input }) => commandBus.execute(new DuplicateRecordCommand(input))),
-  bulkDuplicate: p
+  bulkDuplicate: privateProcedure
     .use(authz("record:create"))
     .input(bulkduplicateRecordsCommand)
     .mutation(({ input }) => commandBus.execute(new BulkDuplicateRecordsCommand(input))),
-  aggregate: p
+  aggregate: privateProcedure
     .use(authz("record:read"))
     .input(getAggregatesQuery)
     .query(({ input }) => queryBus.execute(new GetAggregatesQuery(input))),
 })
 
 const webhookRouter = t.router({
-  list: p
+  list: privateProcedure
     .use(authz("webhook:list"))
     .input(getWebhooksQuery)
     .query(({ input }) => queryBus.execute(new GetWebhooksQuery(input))),
-  create: p
+  create: privateProcedure
     .use(authz("webhook:create"))
     .input(createWebhookCommand)
     .mutation(({ input }) => commandBus.execute(new CreateWebhookCommand(input))),
-  update: p
+  update: privateProcedure
     .use(authz("webhook:update"))
     .input(updateWebhookCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateWebhookCommand(input))),
-  delete: p
+  delete: privateProcedure
     .use(authz("webhook:delete"))
     .input(deleteWebhookCommand)
     .mutation(({ input }) => commandBus.execute(new DeleteWebhookCommand(input))),
 })
 
 const baseRouter = t.router({
-  create: p
+  create: privateProcedure
     .use(authz("base:create"))
     .input(createBaseCommand.omit({ spaceId: true }))
     .mutation(({ input }) => {
@@ -275,52 +297,62 @@ const baseRouter = t.router({
       }
       return commandBus.execute(new CreateBaseCommand({ ...input, spaceId }))
     }),
-  update: p
+  update: privateProcedure
     .use(authz("base:update"))
     .input(updateBaseCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateBaseCommand(input))),
 })
 
 const shareRouter = t.router({
-  enable: p
+  enable: privateProcedure
     .use(authz("share:enable"))
     .input(enableShareCommand)
     .mutation(({ input }) => commandBus.execute(new EnableShareCommand(input))),
-  disable: p
+  disable: privateProcedure
     .use(authz("share:disable"))
     .input(disableShareCommand)
     .mutation(({ input }) => commandBus.execute(new DisableShareCommand(input))),
 })
 
+const shareDataRouter = t.router({
+  records: publicProcedure
+    .input(getShareRecordsQuery)
+    .query(({ input }) => queryBus.execute(new GetShareRecordsQuery(input))),
+})
+
 const authzRouter = t.router({
-  invite: p
+  invite: privateProcedure
     .use(authz("authz:invite"))
     .input(inviteCommand)
     .mutation(({ input }) => commandBus.execute(new InviteCommand(input))),
-  deleteInvitation: p
+  deleteInvitation: privateProcedure
     .use(authz("authz:deleteInvitation"))
     .input(deleteInvitationCommand)
     .mutation(({ input }) => commandBus.execute(new DeleteInvitationCommand(input))),
 })
 
 const userRouter = t.router({
-  updateAccount: p
+  updateAccount: privateProcedure
     .input(updateaccountCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateAccountCommand(input))),
 })
 
 const apiTokenRouter = t.router({
-  create: p.input(createApiTokenCommand).mutation(({ input }) => commandBus.execute(new CreateApiTokenCommand(input))),
-  list: p.input(getApiTokensQuery).query(({ input }) => queryBus.execute(new GetApiTokensQuery(input))),
+  create: privateProcedure
+    .input(createApiTokenCommand)
+    .mutation(({ input }) => commandBus.execute(new CreateApiTokenCommand(input))),
+  list: privateProcedure.input(getApiTokensQuery).query(({ input }) => queryBus.execute(new GetApiTokensQuery(input))),
 })
 
 const spaceRouter = t.router({
-  list: p
+  list: privateProcedure
     .input(getMemberSpacesQuery)
     .use(authz("space:list"))
     .query(({ input }) => queryBus.execute(new GetMemberSpacesQuery(input))),
-  create: p.input(createSpaceCommand).mutation(({ input }) => commandBus.execute(new CreateSpaceCommand(input))),
-  update: p
+  create: privateProcedure
+    .input(createSpaceCommand)
+    .mutation(({ input }) => commandBus.execute(new CreateSpaceCommand(input))),
+  update: privateProcedure
     .input(updateSpaceCommand)
     .use(authz("space:update"))
     .mutation(({ input }) => commandBus.execute(new UpdateSpaceCommand(input))),
@@ -336,6 +368,7 @@ export const route = t.router({
   user: userRouter,
   space: spaceRouter,
   apiToken: apiTokenRouter,
+  shareData: shareDataRouter,
 })
 
 export type AppRouter = typeof route

@@ -1,7 +1,7 @@
 import { tracing } from "@baselime/trpc-opentelemetry-middleware"
 
-import { initTRPC } from "@trpc/server"
-import { executionContext } from "@undb/context/server"
+import { initTRPC, TRPCError } from "@trpc/server"
+import { executionContext, getCurrentUserId } from "@undb/context/server"
 import { container } from "@undb/di"
 import { createLogger } from "@undb/logger"
 import { QUERY_BUILDER, startTransaction, type IQueryBuilder } from "@undb/persistence"
@@ -63,5 +63,16 @@ export const p = t.procedure
     }
   })
   .use(tracing({ collectInput: true }))
+
+export const privateProcedure = p.use(async (ctx) => {
+  const user = getCurrentUserId()
+
+  if (!user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" })
+  }
+  return ctx.next()
+})
+
+export const publicProcedure = p
 
 export const middleware = t.middleware
