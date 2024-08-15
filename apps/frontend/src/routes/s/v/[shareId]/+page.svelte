@@ -13,7 +13,7 @@
   let RecordDetailSheet: ComponentType
 
   onMount(async () => {
-    RecordDetailSheet = (await import("$lib/components/blocks/record-detail/record-detail-sheet.svelte")).default
+    RecordDetailSheet = (await import("$lib/components/blocks/record-detail/share-record-detail-sheet.svelte")).default
   })
 
   const viewId = derived([shareStore, page], ([$shareStore, $page]) => {

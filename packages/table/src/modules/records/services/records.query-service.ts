@@ -28,6 +28,7 @@ export interface IRecordsQueryService {
   getReadableRecordById(query: IGetRecordByIdDTO): Promise<Option<IRecordReadableValueDTO>>
   getAggregates(query: IGetAggregatesDTO): Promise<Record<string, AggregateResult>>
   populateAttachments(dto: IGetRecordsDTO, table: TableDo, records: IRecordDTO[]): Promise<IRecordDTO[]>
+  populateAttachment(dto: IGetRecordsDTO, table: TableDo, value: IRecordDTO["values"]): Promise<IRecordDTO["values"]>
 }
 
 @singleton()

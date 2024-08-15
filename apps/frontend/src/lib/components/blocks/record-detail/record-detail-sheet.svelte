@@ -3,47 +3,28 @@
   import Button from "$lib/components/ui/button/button.svelte"
   import RecordDetail from "./record-detail.svelte"
   import { queryParam, ssp } from "sveltekit-search-params"
-  import { getTable, viewId } from "$lib/store/table.store"
-  import { trpc } from "$lib/trpc/client"
-  import { createQuery, useIsMutating, useQueryClient } from "@tanstack/svelte-query"
+  import { getTable } from "$lib/store/table.store"
+  import { useIsMutating, useQueryClient } from "@tanstack/svelte-query"
   import { RecordDO } from "@undb/table"
-  import { derived } from "svelte/store"
   import Skeleton from "$lib/components/ui/skeleton/skeleton.svelte"
   import { cn } from "$lib/utils"
   import AuditList from "../audit/audit-list.svelte"
-  import { HistoryIcon, LoaderCircleIcon } from "lucide-svelte"
+  import { LoaderCircleIcon } from "lucide-svelte"
   import { preferences } from "$lib/store/persisted.store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
 
   export let readonly = false
+  export let recordDo: RecordDO | undefined
+  export let isLoading: boolean
 
   const r = queryParam("r", ssp.string(), { pushHistory: false })
 
   const table = getTable()
-
-  const record = createQuery(
-    derived([table, r, preferences], ([$table, $recordId, $preferences]) => ({
-      queryKey: [$recordId, "get", $preferences.showHiddenFields],
-      queryFn: () => {
-        return trpc.record.get.query({
-          tableId: $table?.id.value,
-          id: $recordId!,
-          select: $preferences.showHiddenFields
-            ? undefined
-            : $table?.getOrderedVisibleFields($viewId).map((f) => f.id.value),
-        })
-      },
-      enabled: !!$recordId,
-    })),
-  )
-
   const isUpdatingRecord = useIsMutating({
     mutationKey: ["updateRecord"],
   })
 
   const client = useQueryClient()
-
-  $: recordDo = $record.data?.record ? RecordDO.fromJSON($table, $record.data?.record) : undefined
 
   let disabled = false
 </script>
@@ -73,7 +54,7 @@
     </Sheet.Header>
 
     <div class="flex-1 overflow-hidden">
-      {#if $record.isLoading}
+      {#if isLoading}
         <div class="space-y-4 px-6 py-4">
           <Skeleton class="h-10 w-full" />
           <Skeleton class="h-10 w-full" />
