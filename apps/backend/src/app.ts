@@ -22,6 +22,7 @@ import { WebhookEventsHandler } from "@undb/webhook"
 import { Elysia } from "elysia"
 import { all } from "radash"
 import { v4 } from "uuid"
+import * as pkg from "../../../package.json"
 import { Auth, OpenAPI, Realtime, SpaceModule, TableModule, Web } from "./modules"
 import { FileService } from "./modules/file/file"
 import { OpenTelemetryModule } from "./modules/opentelemetry/opentelemetry.module"
@@ -103,7 +104,21 @@ export const app = new Elysia()
   })
   .use(cors())
   .use(html())
-  .use(swagger())
+  .use(
+    swagger({
+      path: "/openapi",
+      excludeStaticFile: true,
+      exclude: new RegExp(/^(?!.*\/api\/bases).*/),
+      documentation: {
+        info: {
+          title: "Undb OpenAPI Documentation",
+          version: pkg.version,
+        },
+
+        tags: [{ name: "Record", description: "Record operations" }],
+      },
+    }),
+  )
   .derive(auth.store())
   .onError((ctx) => {
     ctx.logger.error(ctx.error)
