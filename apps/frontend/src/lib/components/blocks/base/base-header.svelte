@@ -1,8 +1,9 @@
 <script lang="ts">
   import type { GetBaseQuery$result } from "$houdini"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js"
-  import { UPDATE_BASE_MODAL, toggleModal } from "$lib/store/modal.store"
-  import { HardDriveIcon, PencilIcon, ChevronDownIcon } from "lucide-svelte"
+  import { DUPLICATE_BASE_MODAL, UPDATE_BASE_MODAL, toggleModal } from "$lib/store/modal.store"
+  import { HardDriveIcon, PencilIcon, ChevronDownIcon, CopyIcon } from "lucide-svelte"
+  import DuplicateBase from "./duplicate-base.svelte"
 
   export let base: GetBaseQuery$result["base"]
 </script>
@@ -18,12 +19,18 @@
           <ChevronDownIcon class="h-4 w-4" />
         </div>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
+      <DropdownMenu.Content class="w-[200px]">
         <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_BASE_MODAL)}>
           <PencilIcon class="mr-2 h-3 w-3" />
           Update Base Name
+        </DropdownMenu.Item>
+        <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(DUPLICATE_BASE_MODAL)}>
+          <CopyIcon class="mr-2 h-3 w-3" />
+          Duplicate Base
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   {/if}
 </header>
+
+<DuplicateBase {base} />

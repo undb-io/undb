@@ -1,4 +1,5 @@
 import type { Base, IBaseSpecVisitor, WithBaseId, WithBaseName, WithBaseQ, WithBaseSpaceId } from "@undb/base"
+import type { DuplicatedBaseSpecification } from "@undb/base/src/specifications/base.specification"
 import { mustGetCurrentSpaceId } from "@undb/context/server"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
@@ -11,6 +12,9 @@ export class BaseFilterVisitor extends AbstractQBVisitor<Base> implements IBaseS
     this.addCond(this.eb.eb("space_id", "=", spaceId))
   }
 
+  duplicatedBase(v: DuplicatedBaseSpecification): void {
+    throw new Error("Not implemented")
+  }
   withId(v: WithBaseId): void {
     this.addCond(this.eb.eb("id", "=", v.id.value))
   }

@@ -13,6 +13,7 @@
     "@undb/di": "workspace:*",
     "@undb/domain": "workspace:*",
     "@undb/space": "workspace:*",
+    "@undb/utils": "workspace:*",
     "@undb/zod": "workspace:*"
   }
 }

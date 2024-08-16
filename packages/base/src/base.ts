@@ -1,12 +1,15 @@
 import { AggregateRoot, and } from "@undb/domain"
 import type { ISpaceId } from "@undb/space"
+import { getNextName } from "@undb/utils"
 import type { Option } from "oxide.ts"
+import { BaseFactory } from "./base.factory.js"
 import type { IBaseDTO } from "./dto/base.dto.js"
 import type { IUpdateBaseDTO } from "./dto/update-base.dto.js"
 import { BaseUpdatedEvent } from "./events/base-updated.event.js"
 import type { IBaseSpecification } from "./interface.js"
 import { WithBaseName } from "./specifications/base-name.specification.js"
-import type { BaseId, BaseName } from "./value-objects/index.js"
+import { DuplicatedBaseSpecification } from "./specifications/base.specification.js"
+import { BaseId, type BaseName } from "./value-objects/index.js"
 
 export class Base extends AggregateRoot<any> {
   id!: BaseId
@@ -34,6 +37,16 @@ export class Base extends AggregateRoot<any> {
     this.addDomainEvent(event)
 
     return spec
+  }
+
+  public $duplicate(baseNames: string[]): DuplicatedBaseSpecification {
+    const duplicatedBase = BaseFactory.fromJSON({
+      ...this.toJSON(),
+      id: BaseId.create().value,
+      name: getNextName(baseNames, this.name.value),
+    })
+
+    return new DuplicatedBaseSpecification(this, duplicatedBase)
   }
 
   public toJSON(): IBaseDTO {
