@@ -112,6 +112,11 @@ export class OpenAPI {
         },
         {
           params: t.Object({ baseName: t.String(), tableName: t.String() }),
+          detail: {
+            tags: ["Doc"],
+            summary: "Get OpenAPI documentation for a table",
+            description: "Get OpenAPI documentation for a table",
+          },
         },
       )
       .group("/records", (app) => {
@@ -156,7 +161,14 @@ export class OpenAPI {
                 records: result.values,
               }
             },
-            { params: t.Object({ baseName: t.String(), tableName: t.String() }) },
+            {
+              params: t.Object({ baseName: t.String(), tableName: t.String() }),
+              detail: {
+                tags: ["Record"],
+                summary: "Get records",
+                description: "Get records",
+              },
+            },
           )
           .get(
             "/:recordId",
@@ -169,7 +181,14 @@ export class OpenAPI {
                 data: result,
               }
             },
-            { params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String() }) },
+            {
+              params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String() }),
+              detail: {
+                tags: ["Record"],
+                summary: "Get record by id",
+                description: "Get record by id",
+              },
+            },
           )
           .post(
             "/",
@@ -182,6 +201,11 @@ export class OpenAPI {
             {
               params: t.Object({ baseName: t.String(), tableName: t.String() }),
               body: t.Object({ values: t.Record(t.String(), t.Any()) }),
+              detail: {
+                tags: ["Record"],
+                summary: "Create record",
+                description: "Create record",
+              },
             },
           )
           .post(
@@ -195,6 +219,11 @@ export class OpenAPI {
             {
               params: t.Object({ baseName: t.String(), tableName: t.String() }),
               body: t.Object({ records: t.Array(t.Object({ id: t.Optional(t.String()), values: t.Any() })) }),
+              detail: {
+                tags: ["Record"],
+                summary: "Create records",
+                description: "Create records",
+              },
             },
           )
           .patch(
@@ -215,6 +244,11 @@ export class OpenAPI {
             {
               params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String() }),
               body: t.Object({ values: t.Record(t.String(), t.Any()) }),
+              detail: {
+                tags: ["Record"],
+                summary: "Update record by id",
+                description: "Update record by id",
+              },
             },
           )
           .patch(
@@ -239,6 +273,11 @@ export class OpenAPI {
                 filter: t.Any(),
                 values: t.Record(t.String(), t.Any()),
               }),
+              detail: {
+                tags: ["Record"],
+                summary: "Update records",
+                description: "Update records",
+              },
             },
           )
           .post(
@@ -249,7 +288,14 @@ export class OpenAPI {
                 this.commandBus.execute(new DuplicateRecordCommand({ baseName, tableName, id: ctx.params.recordId })),
               )
             },
-            { params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String() }) },
+            {
+              params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String() }),
+              detail: {
+                tags: ["Record"],
+                summary: "Duplicate record by id",
+                description: "Duplicate record by id",
+              },
+            },
           )
           .post(
             "/records/duplicate",
@@ -269,6 +315,11 @@ export class OpenAPI {
             {
               params: t.Object({ baseName: t.String(), tableName: t.String() }),
               body: t.Object({ filter: t.Any() }),
+              detail: {
+                tags: ["Record"],
+                summary: "Duplicate records",
+                description: "Duplicate records",
+              },
             },
           )
           .delete(
@@ -279,7 +330,14 @@ export class OpenAPI {
                 this.commandBus.execute(new DeleteRecordCommand({ baseName, tableName, id: ctx.params.recordId })),
               )
             },
-            { params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String() }) },
+            {
+              params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String() }),
+              detail: {
+                tags: ["Record"],
+                summary: "Delete record by id",
+                description: "Delete record by id",
+              },
+            },
           )
           .delete(
             "/",
@@ -299,6 +357,11 @@ export class OpenAPI {
             {
               params: t.Object({ baseName: t.String(), tableName: t.String() }),
               body: t.Object({ filter: t.Any() }),
+              detail: {
+                tags: ["Record"],
+                summary: "Delete records",
+                description: "Delete records",
+              },
             },
           )
       })
