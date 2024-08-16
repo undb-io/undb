@@ -25,7 +25,7 @@
     "lint-staged": "^15.2.9",
     "npm-run-all2": "^6.2.2",
     "prettier": "^3.3.3",
-    "turbo": "^2.0.13"
+    "turbo": "^2.0.14"
   },
   "lint-staged": {
     "**/*": "bunx --bun prettier --write --ignore-unknown"
