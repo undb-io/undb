@@ -9,11 +9,12 @@
   import { createMutation } from "@tanstack/svelte-query"
   import type { Base, IBaseDTO } from "@undb/base"
   import { duplicateBaseCommand } from "@undb/commands"
-  import { LoaderCircleIcon } from "lucide-svelte"
+  import { LoaderCircleIcon, SirenIcon } from "lucide-svelte"
   import { toast } from "svelte-sonner"
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { Checkbox } from "$lib/components/ui/checkbox"
+  import * as Alert from "$lib/components/ui/alert"
 
   export let base: Omit<IBaseDTO, "spaceId">
 
@@ -71,7 +72,7 @@
       <Dialog.Description>Create a new base include all tables in base.</Dialog.Description>
     </Dialog.Header>
 
-    <form method="POST" use:enhance>
+    <form method="POST" use:enhance class="space-y-4">
       <Form.Field {form} name="name">
         <Form.Control let:attrs>
           <Form.Label>Name</Form.Label>
@@ -91,7 +92,14 @@
         </Form.Control>
       </Form.Field>
 
-      <div class="mt-4 flex items-center justify-end gap-2">
+      <Alert.Root>
+        <Alert.Description class="flex items-center text-xs">
+          <SirenIcon class="mr-2 h-4 w-4" />
+          System fields will be updated to the current user and timestamp.
+        </Alert.Description>
+      </Alert.Root>
+
+      <div class=" flex items-center justify-end gap-2">
         <Button
           on:click={() => {
             closeModal(DUPLICATE_BASE_MODAL)
