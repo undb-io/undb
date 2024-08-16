@@ -7,6 +7,7 @@ export class DuplicatedTableSpecification extends TableComositeSpecification {
   constructor(
     public readonly originalTable: TableDo,
     public readonly duplicatedTable: TableDo,
+    public readonly includeData: boolean,
   ) {
     super()
   }

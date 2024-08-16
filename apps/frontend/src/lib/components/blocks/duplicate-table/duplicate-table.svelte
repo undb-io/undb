@@ -5,11 +5,44 @@
   import { closeModal, DUPLICATE_TABLE_MODAL, isModalOpen } from "$lib/store/modal.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
+  import { duplicateTableCommand } from "@undb/commands"
   import type { TableDo } from "@undb/table"
   import { LoaderCircleIcon } from "lucide-svelte"
   import { toast } from "svelte-sonner"
+  import { defaults, superForm } from "sveltekit-superforms"
+  import { zodClient } from "sveltekit-superforms/adapters"
+  import * as Form from "$lib/components/ui/form"
+  import { Input } from "$lib/components/ui/input"
+  import { Checkbox } from "$lib/components/ui/checkbox"
 
   export let table: TableDo
+
+  const form = superForm(
+    defaults(
+      {
+        tableId: table.id.value,
+        name: "",
+        includeData: true,
+      },
+      zodClient(duplicateTableCommand),
+    ),
+    {
+      SPA: true,
+      dataType: "json",
+      validators: zodClient(duplicateTableCommand),
+      resetForm: false,
+      invalidateAll: false,
+      onUpdate(event) {
+        if (!event.form.valid) {
+          return
+        }
+
+        $duplicateTableMutation.mutate(event.form.data)
+      },
+    },
+  )
+
+  const { form: formData, enhance } = form
 
   const duplicateTableMutation = createMutation({
     mutationFn: trpc.table.duplicate.mutate,
@@ -40,26 +73,41 @@
       </Dialog.Description>
     </Dialog.Header>
 
-    <div class="item-center flex justify-end gap-2">
-      <Button
-        on:click={() => {
-          closeModal(DUPLICATE_TABLE_MODAL)
-        }}
-        variant="outline"
-      >
-        Cancel
-      </Button>
-      <Button
-        disabled={$duplicateTableMutation.isPending}
-        on:click={() => {
-          $duplicateTableMutation.mutate({ tableId: table.id.value })
-        }}
-      >
-        {#if $duplicateTableMutation.isPending}
-          <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
-        {/if}
-        Duplicate
-      </Button>
-    </div>
+    <form method="POST" use:enhance>
+      <Form.Field {form} name="name">
+        <Form.Control let:attrs>
+          <Form.Label>Name</Form.Label>
+          <Input {...attrs} bind:value={$formData.name} />
+        </Form.Control>
+        <Form.Description>This is new table display name.</Form.Description>
+        <Form.FieldErrors />
+      </Form.Field>
+      <Form.Field {form} name="includeData" class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+        <Form.Control let:attrs>
+          <Checkbox {...attrs} bind:checked={$formData.includeData} />
+          <div class="space-y-1 leading-none">
+            <Form.Label>Include data</Form.Label>
+            <Form.Description>Include data in the new table.</Form.Description>
+          </div>
+          <input name={attrs.name} value={$formData.includeData} hidden />
+        </Form.Control>
+      </Form.Field>
+      <div class="item-center mt-2 flex justify-end gap-2">
+        <Button
+          on:click={() => {
+            closeModal(DUPLICATE_TABLE_MODAL)
+          }}
+          variant="outline"
+        >
+          Cancel
+        </Button>
+        <Form.Button disabled={$duplicateTableMutation.isPending}>
+          {#if $duplicateTableMutation.isPending}
+            <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
+          {/if}
+          Duplicate
+        </Form.Button>
+      </div>
+    </form>
   </Dialog.Content>
 </Dialog.Root>

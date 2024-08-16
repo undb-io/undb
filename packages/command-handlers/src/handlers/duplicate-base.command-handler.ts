@@ -22,7 +22,7 @@ export class DuplicateBaseCommandHandler implements ICommandHandler<DuplicateBas
   async execute(command: DuplicateBaseCommand): Promise<any> {
     const base = (await this.baseRepository.findOneById(command.id)).expect("Base not found")
 
-    const duplicatedBase = await this.tableService.duplicateBase(base, mustGetCurrentSpaceId())
+    const duplicatedBase = await this.tableService.duplicateBase(base, mustGetCurrentSpaceId(), command)
 
     return duplicatedBase.id.value
   }

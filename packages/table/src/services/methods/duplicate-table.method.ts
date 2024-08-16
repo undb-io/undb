@@ -1,6 +1,7 @@
-import { Some } from "@undb/domain"
+import { applyRules, Some } from "@undb/domain"
 import type { IDuplicateTableDTO } from "../../dto"
 import { ReferenceField } from "../../modules"
+import { TableNameShouldBeUnique } from "../../rules/table-name-should-be-unique.rule"
 import { TableBaseIdSpecification } from "../../specifications/table-base-id.specification"
 import { WithUpdatedFieldSpecification } from "../../specifications/table-schema.specification"
 import { TableIdVo } from "../../table-id.vo"
@@ -12,9 +13,12 @@ export async function duplicateTableMethod(this: TableService, dto: IDuplicateTa
   const tables = await this.repository.find(Some(new TableBaseIdSpecification(table.baseId)))
 
   const tableNames = tables.map((t) => t.name.value)
-  const spec = table.$duplicate(dto, tableNames)
+  const spec = table.$duplicate({ ...dto, tableId: TableIdVo.create().value }, tableNames)
 
   const { duplicatedTable } = spec
+
+  applyRules(new TableNameShouldBeUnique(tableNames.concat(duplicatedTable.name.value)))
+
   await this.repository.insert(spec.duplicatedTable)
   await this.repository.updateOneById(spec.duplicatedTable, Some(spec))
 
