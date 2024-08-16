@@ -1,5 +1,6 @@
 import type { ISpecification } from "@undb/domain"
 import type {
+  DuplicatedTableSpecification,
   ITableSpecVisitor,
   TableBaseIdSpecification,
   TableComositeSpecification,
@@ -82,6 +83,7 @@ export class TableReferenceVisitor implements ITableSpecVisitor {
         eb.and([eb.eb("undb_base.name", "=", spec.baseName), eb.eb("undb_table.name", "=", spec.tableName)]),
       )
   }
+  withDuplicatedTable(spec: DuplicatedTableSpecification): void {}
   and(left: ISpecification, right: ISpecification): this {
     left.accept(this)
     right.accept(this)

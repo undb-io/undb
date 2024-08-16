@@ -6,6 +6,7 @@ export const modal = queryParam("modal", ssp.array<string>())
 
 export const CREATE_TABLE_MODAL = "createTable" as const
 export const UPDATE_TABLE_MODAL = "updateTable" as const
+export const DUPLICATE_TABLE_MODAL = "duplicateTable" as const
 export const IMPORT_TABLE_MODAL = "importTable" as const
 export const CREATE_RECORD_MODAL = "createRecord" as const
 export const DELETE_RECORD_MODAL = "deleteRecord" as const
@@ -23,6 +24,7 @@ type ModalType =
   | typeof CREATE_TABLE_MODAL
   | typeof UPDATE_TABLE_MODAL
   | typeof IMPORT_TABLE_MODAL
+  | typeof DUPLICATE_TABLE_MODAL
   | typeof DELETE_RECORD_MODAL
   | typeof DUPLICATE_RECORD_MODAL
   | typeof CREATE_RECORD_MODAL

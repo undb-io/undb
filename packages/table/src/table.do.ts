@@ -8,6 +8,7 @@ import { createViewMethod } from "./methods/create-view.method"
 import { deleteFieldMethod } from "./methods/delete-field.method"
 import { deleteViewMethod } from "./methods/delete-view.method"
 import { duplicateFieldMethod } from "./methods/duplicate-field.method"
+import { duplicateTableMethod } from "./methods/duplicate-table.method"
 import { duplicateViewMethod } from "./methods/duplicate-view.method"
 import { setTableForm } from "./methods/set-table-form.method"
 import { setTableRLS } from "./methods/set-table-rls.method"
@@ -49,6 +50,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   public rls: Option<TableRLSGroup> = None
 
   $update = updateTable
+  $duplicate = duplicateTableMethod
   $updateView = updateView
   $setViewFilter = setViewFilter
   $setViewOption = setViewOption

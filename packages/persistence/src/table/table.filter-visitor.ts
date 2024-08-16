@@ -1,5 +1,6 @@
 import { mustGetCurrentSpaceId } from "@undb/context/server"
 import type {
+  DuplicatedTableSpecification,
   ITableSpecVisitor,
   TableBaseIdSpecification,
   TableDo,
@@ -65,6 +66,9 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
         ids.ids.map((id) => id.value),
       ),
     )
+  }
+  withDuplicatedTable(spec: DuplicatedTableSpecification): void {
+    throw new Error("Method not implemented.")
   }
   withName(name: TableNameSpecification): void {
     this.addCond(this.eb.eb("name", "=", name.name.value))

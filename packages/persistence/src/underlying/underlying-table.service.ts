@@ -2,7 +2,7 @@ import { singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
 import type { TableComositeSpecification, TableDo } from "@undb/table"
 import type { CompiledQuery } from "kysely"
-import { getCurrentTransaction } from "../ctx"
+import { getAnonymousTransaction, getCurrentTransaction } from "../ctx"
 import { UnderlyingTable } from "./underlying-table"
 import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
 import { UnderlyingTableSpecVisitor } from "./underlying-table-spec.visitor"
@@ -34,7 +34,7 @@ export class UnderlyingTableService {
 
   async update(table: TableDo, spec: TableComositeSpecification) {
     const t = new UnderlyingTable(table)
-    const trx = getCurrentTransaction()
+    const trx = getAnonymousTransaction()
 
     const visitor = new UnderlyingTableSpecVisitor(t, trx)
     spec.accept(visitor)

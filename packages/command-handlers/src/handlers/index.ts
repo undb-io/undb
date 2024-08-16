@@ -22,6 +22,7 @@ import { DeleteWebhookCommandHandler } from "./delete-webhook.command-handler"
 import { DisableShareCommandHandler } from "./disable-share.command-handler"
 import { DuplicateRecordCommandHandler } from "./duplicate-record.command-handler"
 import { DuplicateTableFieldCommandHandler } from "./duplicate-table-field.command-handler"
+import { DuplicateTableCommandHandler } from "./duplicate-table.command-handler"
 import { DuplicateViewCommandHandler } from "./duplicate-view.command-handler"
 import { EnableShareCommandHandler } from "./enable-share.command-handler"
 import { ExportViewCommandHandler } from "./export-view.command-handler"
@@ -88,4 +89,5 @@ export const commandHandlers = [
   UpdateSpaceCommandHandler,
   DeleteSpaceCommandHandler,
   DeleteWebhookCommandHandler,
+  DuplicateTableCommandHandler,
 ]

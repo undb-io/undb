@@ -20,6 +20,8 @@
     FileJsonIcon,
     FileTextIcon,
     FileSpreadsheet,
+    TrashIcon,
+    CopyIcon,
   } from "lucide-svelte"
   import * as Breadcrumb from "$lib/components/ui/breadcrumb/index.js"
   import { getTable } from "$lib/store/table.store"
@@ -32,6 +34,7 @@
   import {
     DELETE_TABLE_MODAL,
     DELETE_VIEW,
+    DUPLICATE_TABLE_MODAL,
     DUPLICATE_VIEW,
     UPDATE_TABLE_MODAL,
     UPDATE_VIEW,
@@ -39,6 +42,7 @@
   } from "$lib/store/modal.store"
   import { getBaseById } from "$lib/store/base.store"
   import { hasPermission } from "$lib/store/space-member.store"
+  import DuplicateTable from "../duplicate-table/duplicate-table.svelte"
 
   const table = getTable()
   $: base = $getBaseById($table.baseId)
@@ -94,12 +98,18 @@
                       Update table name
                     </DropdownMenu.Item>
                   {/if}
+                  {#if $hasPermission("table:create")}
+                    <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(DUPLICATE_TABLE_MODAL)}>
+                      <CopyIcon class="mr-2 h-3 w-3" />
+                      Duplicate Table
+                    </DropdownMenu.Item>
+                  {/if}
                   {#if $hasPermission("table:delete")}
                     <DropdownMenu.Item
                       on:click={() => toggleModal(DELETE_TABLE_MODAL)}
                       class="text-xs text-red-500 hover:bg-red-50 hover:text-red-500"
                     >
-                      <PencilIcon class="mr-2 h-3 w-3" />
+                      <TrashIcon class="mr-2 h-3 w-3" />
                       Delete table
                     </DropdownMenu.Item>
                   {/if}
@@ -268,3 +278,5 @@
     </Tabs.Root>
   </div>
 </header>
+
+<DuplicateTable table={$table} />

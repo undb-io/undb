@@ -32,8 +32,10 @@ import type {
   WithViewSort,
 } from "./table-view.specification"
 import type { TableViewsSpecification } from "./table-views.specification"
+import type { DuplicatedTableSpecification } from "./table.specification"
 
 export interface ITableSpecVisitor extends ISpecVisitor {
+  withDuplicatedTable(spec: DuplicatedTableSpecification): void
   withId(id: TableIdSpecification): void
   withBaseId(id: TableBaseIdSpecification): void
   withSpaceId(id: TableSpaceIdSpecification): void

@@ -1,32 +1,35 @@
 import { WontImplementException, type ISpecification, type ISpecVisitor } from "@undb/domain"
-import type {
-  ITableSpecVisitor,
-  SelectField,
-  TableBaseIdSpecification,
-  TableIdSpecification,
-  TableIdsSpecification,
-  TableNameSpecification,
-  TableSchemaSpecification,
-  TableSpaceIdSpecification,
-  TableUniqueNameSpecification,
-  TableViewsSpecification,
-  UserField,
-  WithDuplicatedFieldSpecification,
-  WithForeignRollupFieldSpec,
-  WithNewFieldSpecification,
-  WithNewView,
-  WithoutFieldSpecification,
-  WithoutView,
-  WithTableForeignTablesSpec,
-  WithUpdatedFieldSpecification,
-  WithView,
-  WithViewAggregate,
-  WithViewColor,
-  WithViewFields,
-  WithViewFilter,
-  WithViewIdSpecification,
-  WithViewOption,
-  WithViewSort,
+import {
+  ReferenceField,
+  type DuplicatedTableSpecification,
+  type ITableSpecVisitor,
+  type SelectField,
+  type TableBaseIdSpecification,
+  type TableDo,
+  type TableIdSpecification,
+  type TableIdsSpecification,
+  type TableNameSpecification,
+  type TableSchemaSpecification,
+  type TableSpaceIdSpecification,
+  type TableUniqueNameSpecification,
+  type TableViewsSpecification,
+  type UserField,
+  type WithDuplicatedFieldSpecification,
+  type WithForeignRollupFieldSpec,
+  type WithNewFieldSpecification,
+  type WithNewView,
+  type WithoutFieldSpecification,
+  type WithoutView,
+  type WithTableForeignTablesSpec,
+  type WithUpdatedFieldSpecification,
+  type WithView,
+  type WithViewAggregate,
+  type WithViewColor,
+  type WithViewFields,
+  type WithViewFilter,
+  type WithViewIdSpecification,
+  type WithViewOption,
+  type WithViewSort,
 } from "@undb/table"
 import type {
   TableFormsSpecification,
@@ -40,7 +43,7 @@ import type { IRecordQueryBuilder } from "../qb"
 import { ConversionContext } from "./conversion/conversion.context"
 import { ConversionFactory } from "./conversion/conversion.factory"
 import { JoinTable } from "./reference/join-table"
-import type { UnderlyingTable } from "./underlying-table"
+import { UnderlyingTable } from "./underlying-table"
 import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
 
 export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
@@ -117,6 +120,41 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
           this.addSql(query)
         }
       }
+    }
+  }
+  withDuplicatedTable(spec: DuplicatedTableSpecification): void {
+    const { originalTable, duplicatedTable } = spec
+    // TODO: virtual fields common util
+    const getColumns = (table: TableDo) =>
+      table.schema.fields.filter((f) => f.type !== "reference" && f.type !== "rollup").map((f) => f.id.value)
+
+    const duplicateDataSql = this.qb
+      .insertInto(duplicatedTable.id.value)
+      .columns(getColumns(duplicatedTable))
+      .expression((eb) => eb.selectFrom(originalTable.id.value).select(getColumns(originalTable)))
+      .compile()
+
+    this.addSql(duplicateDataSql)
+
+    const referenceFields = duplicatedTable.schema.fields.filter((f) => f.type === "reference")
+
+    for (const field of referenceFields) {
+      const joinTable = new JoinTable(duplicatedTable, field)
+      const originalField = originalTable.schema.fields.find((f) => f.id.value === field.id.value)
+      if (!(originalField instanceof ReferenceField)) continue
+
+      const originalJoinTable = new JoinTable(originalTable, originalField)
+      const duplicateReferenceSql = this.qb
+        .insertInto(joinTable.getTableName())
+        .columns([joinTable.getValueFieldId(), joinTable.getSymmetricValueFieldId()])
+        .expression((eb) =>
+          eb
+            .selectFrom(originalJoinTable.getTableName())
+            .select([originalJoinTable.getValueFieldId(), originalJoinTable.getSymmetricValueFieldId()]),
+        )
+        .compile()
+
+      this.addSql(duplicateReferenceSql)
     }
   }
   withViewFields(fields: WithViewFields): void {}

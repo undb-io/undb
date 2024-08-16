@@ -17,6 +17,6 @@ export class JoinTable {
   getTableName() {
     const { field } = this
     const { isOwner, foreignTableId } = field
-    return `$${isOwner ? foreignTableId : this.table.id.value}_${isOwner ? field.id.value : field.symmetricFieldId!}_join_table`
+    return `$${isOwner ? foreignTableId : this.table.id.value}_${isOwner ? this.table.id.value + "_" + field.id.value : field.foreignTableId + "_" + field.symmetricFieldId!}_join_table`
   }
 }
