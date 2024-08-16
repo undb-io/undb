@@ -1,4 +1,5 @@
 import { Option, ValueObject } from "@undb/domain"
+import { getNextName } from "@undb/utils"
 import { z, ZodSchema } from "@undb/zod"
 import { objectify } from "radash"
 import {
@@ -31,7 +32,6 @@ import type { Field, MutableFieldValue, NoneSystemField, SystemField } from "./f
 import { AutoIncrementField } from "./fields/variants/autoincrement-field"
 import { CreatedAtField } from "./fields/variants/created-at-field"
 import type { SchemaIdMap, SchemaNameMap } from "./schema.type"
-import { getNextName } from "./schema.util"
 
 export class Schema extends ValueObject<Field[]> {
   public fieldMapById: SchemaIdMap

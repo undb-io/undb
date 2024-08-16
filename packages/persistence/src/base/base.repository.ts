@@ -27,8 +27,19 @@ export class BaseRepository implements IBaseRepository {
     private readonly qb: IQueryBuilder,
   ) {}
 
-  find(spec: IBaseSpecification): Promise<Base[]> {
-    throw new Error("Method not implemented.")
+  async find(spec: IBaseSpecification): Promise<Base[]> {
+    const tx = getCurrentTransaction() ?? this.qb
+    const bases = await tx
+      .selectFrom("undb_base")
+      .selectAll()
+      .where((eb) => {
+        const visitor = new BaseFilterVisitor(eb)
+        spec.accept(visitor)
+        return visitor.cond
+      })
+      .execute()
+
+    return bases.map((base) => this.mapper.toDo(base))
   }
   async findOne(spec: IBaseSpecification): Promise<Option<Base>> {
     const base = await (getCurrentTransaction() ?? this.qb)

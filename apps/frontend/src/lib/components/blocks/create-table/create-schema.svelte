@@ -4,12 +4,11 @@
     FieldIdVo,
     fieldTypes,
     getIsDisplayFieldType,
-    getNextName,
-    OptionIdVo,
     systemFieldTypes,
     type ICreateSchemaDTO,
     type NoneSystemFieldType,
   } from "@undb/table"
+  import { getNextName } from "@undb/utils"
   import * as Popover from "$lib/components/ui/popover"
   import * as Card from "$lib/components/ui/card"
   import * as Form from "$lib/components/ui/form"

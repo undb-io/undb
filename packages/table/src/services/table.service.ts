@@ -1,5 +1,7 @@
+import { injectBaseRepository, type Base, type IBaseRepository } from "@undb/base"
 import { singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
+import type { ISpaceId } from "@undb/space"
 import type {
   ICreateTableDTO,
   ICreateTableFieldDTO,
@@ -30,8 +32,10 @@ import { createTableViewMethod } from "./methods/create-table-view.method"
 import { createTableMethod } from "./methods/create-table.method"
 import { deleteTableFieldMethod } from "./methods/delete-table-field.method"
 import { deleteTableMethod } from "./methods/delete-table.method"
+import { duplicateBaseMethod } from "./methods/duplicate-base.method"
 import { duplicateTableFieldMethod } from "./methods/duplicate-table-field.method"
 import { duplicateTableMethod } from "./methods/duplicate-table.method"
+import { duplicateTablesMethod } from "./methods/duplicate-tables.method"
 import { exportViewMethod } from "./methods/export-view.method"
 import { updateTableFieldMethod } from "./methods/update-table-field.method"
 import { updateTableMethod } from "./methods/update-table.method"
@@ -51,6 +55,8 @@ export interface ITableService {
   createTableView(dto: ICreateTableViewDTO): Promise<TableDo>
 
   exportView(tableId: string, dto: IExportViewDTO): Promise<{ table: TableDo; records: IReadableRecordDTO[] }>
+  duplicateBase(base: Base, spaceId: ISpaceId): Promise<Base>
+  duplicateTables(spaceId: ISpaceId, base: Base, tables: TableDo[]): Promise<TableDo[]>
 }
 
 @singleton()
@@ -68,6 +74,8 @@ export class TableService implements ITableService {
     public readonly recordRepository: IRecordRepository,
     @injectRecordQueryRepository()
     public readonly recordQueryRepository: IRecordQueryRepository,
+    @injectBaseRepository()
+    public readonly baseRepository: IBaseRepository,
   ) {}
 
   createTable = createTableMethod
@@ -84,4 +92,7 @@ export class TableService implements ITableService {
   createTableView = createTableViewMethod
 
   exportView = exportViewMethod
+
+  duplicateBase = duplicateBaseMethod
+  duplicateTables = duplicateTablesMethod
 }

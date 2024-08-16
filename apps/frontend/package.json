@@ -36,6 +36,7 @@
     "@undb/queries": "workspace:*",
     "@undb/share": "workspace:*",
     "@undb/table": "workspace:*",
+    "@undb/utils": "workspace:*",
     "@undb/trpc": "workspace:*",
     "autoprefixer": "^10.4.20",
     "date-fns": "^3.6.0",
