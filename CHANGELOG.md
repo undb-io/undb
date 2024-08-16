@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-16
+
+
+### 🩹 Fixes
+
+- Fix duplicate table bugs ([1d15a68](https://github.com/undb-io/undb/commit/1d15a68))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-15
 
 
