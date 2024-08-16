@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-14
+
+
+### 🚀 Enhancements
+
+- Duplicate table ([26695bc](https://github.com/undb-io/undb/commit/26695bc))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-13
 
 
