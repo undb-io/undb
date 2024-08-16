@@ -11,6 +11,7 @@ export async function duplicateTablesMethod(
   spaceId: ISpaceId,
   base: Base,
   tables: TableDo[],
+  includeData: boolean = false,
 ): Promise<TableDo[]> {
   const idsMap = new Map<string, string>()
   const specs: DuplicatedTableSpecification[] = []
@@ -26,10 +27,12 @@ export async function duplicateTablesMethod(
         tableId: idsMap.get(table.id.value)!,
         baseId: base.id.value,
         spaceId,
+        includeData,
       },
       [],
     )
     specs.push(spec)
+
     const { duplicatedTable } = spec
     duplicatedTables.push(duplicatedTable)
 

@@ -4,6 +4,7 @@ import { getNextName } from "@undb/utils"
 import type { Option } from "oxide.ts"
 import { BaseFactory } from "./base.factory.js"
 import type { IBaseDTO } from "./dto/base.dto.js"
+import type { IDuplicateBaseDTO } from "./dto/duplicate-base.dto.js"
 import type { IUpdateBaseDTO } from "./dto/update-base.dto.js"
 import { BaseUpdatedEvent } from "./events/base-updated.event.js"
 import type { IBaseSpecification } from "./interface.js"
@@ -39,11 +40,12 @@ export class Base extends AggregateRoot<any> {
     return spec
   }
 
-  public $duplicate(baseNames: string[]): DuplicatedBaseSpecification {
+  public $duplicate(dto: IDuplicateBaseDTO, baseNames: string[]): DuplicatedBaseSpecification {
     const duplicatedBase = BaseFactory.fromJSON({
       ...this.toJSON(),
       id: BaseId.create().value,
-      name: getNextName(baseNames, this.name.value),
+      spaceId: dto.spaceId ?? this.spaceId,
+      name: dto.name ?? getNextName(baseNames, this.name.value),
     })
 
     return new DuplicatedBaseSpecification(this, duplicatedBase)

@@ -9,13 +9,17 @@ class BaseNameShouldBeUniqueError extends ExceptionBase {
 }
 
 export class BaseNameShouldBeUnique extends DomainRules<BaseNameShouldBeUniqueError> {
-  constructor(private readonly hasBase: boolean) {
+  constructor(private readonly hasBase: boolean | string[]) {
     super()
   }
 
   override err = new BaseNameShouldBeUniqueError()
 
   override isBroken(): boolean {
+    if (Array.isArray(this.hasBase)) {
+      return this.hasBase.length !== new Set(this.hasBase).size
+    }
+
     return !!this.hasBase
   }
 }

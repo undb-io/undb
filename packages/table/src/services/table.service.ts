@@ -1,4 +1,4 @@
-import { injectBaseRepository, type Base, type IBaseRepository } from "@undb/base"
+import { injectBaseRepository, type Base, type IBaseRepository, type IDuplicateBaseDTO } from "@undb/base"
 import { singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
 import type { ISpaceId } from "@undb/space"
@@ -55,7 +55,7 @@ export interface ITableService {
   createTableView(dto: ICreateTableViewDTO): Promise<TableDo>
 
   exportView(tableId: string, dto: IExportViewDTO): Promise<{ table: TableDo; records: IReadableRecordDTO[] }>
-  duplicateBase(base: Base, spaceId: ISpaceId): Promise<Base>
+  duplicateBase(base: Base, spaceId: ISpaceId, dto: IDuplicateBaseDTO): Promise<Base>
   duplicateTables(spaceId: ISpaceId, base: Base, tables: TableDo[]): Promise<TableDo[]>
 }
 

@@ -123,6 +123,10 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
     }
   }
   withDuplicatedTable(spec: DuplicatedTableSpecification): void {
+    if (!spec.includeData) {
+      return
+    }
+
     const { originalTable, duplicatedTable } = spec
     // TODO: virtual fields common util
     const getColumns = (table: TableDo) =>
