@@ -19,6 +19,7 @@ import {
   DeleteViewCommand,
   DeleteWebhookCommand,
   DisableShareCommand,
+  DuplicateBaseCommand,
   DuplicateRecordCommand,
   DuplicateTableCommand,
   DuplicateTableFieldCommand,
@@ -62,6 +63,7 @@ import {
   deleteViewCommand,
   deleteWebhookCommand,
   disableShareCommand,
+  duplicateBaseCommand,
   duplicateRecordCommand,
   duplicateTableCommand,
   duplicateTableFieldCommand,
@@ -306,6 +308,10 @@ const baseRouter = t.router({
       }
       return commandBus.execute(new CreateBaseCommand({ ...input, spaceId }))
     }),
+  duplicate: privateProcedure
+    .use(authz("base:create"))
+    .input(duplicateBaseCommand)
+    .mutation(({ input }) => commandBus.execute(new DuplicateBaseCommand(input))),
   update: privateProcedure
     .use(authz("base:update"))
     .input(updateBaseCommand)
