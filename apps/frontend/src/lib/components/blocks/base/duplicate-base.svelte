@@ -108,12 +108,7 @@
         >
           Cancel
         </Button>
-        <Form.Button
-          disabled={$duplicateBaseMutation.isPending}
-          on:click={() => {
-            $duplicateBaseMutation.mutate({ id: base.id })
-          }}
-        >
+        <Form.Button disabled={$duplicateBaseMutation.isPending}>
           {#if $duplicateBaseMutation.isPending}
             <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
           {/if}

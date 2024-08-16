@@ -279,4 +279,4 @@
   </div>
 </header>
 
-<DuplicateTable table={$table} />
+<DuplicateTable />

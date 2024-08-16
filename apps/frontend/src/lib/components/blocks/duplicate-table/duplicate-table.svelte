@@ -15,13 +15,14 @@
   import { Input } from "$lib/components/ui/input"
   import { Checkbox } from "$lib/components/ui/checkbox"
   import * as Alert from "$lib/components/ui/alert"
+  import { getTable } from "$lib/store/table.store"
 
-  export let table: TableDo
+  const table = getTable()
 
   const form = superForm(
     defaults(
       {
-        tableId: table.id.value,
+        tableId: $table.id.value,
         name: "",
         includeData: true,
       },
@@ -68,9 +69,9 @@
 >
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Duplicate Table {table.name.value}</Dialog.Title>
+      <Dialog.Title>Duplicate Table {$table.name.value}</Dialog.Title>
       <Dialog.Description>
-        Create a new table with the same structure as {table.name.value}
+        Create a new table with the same structure as {$table.name.value}
       </Dialog.Description>
     </Dialog.Header>
 
