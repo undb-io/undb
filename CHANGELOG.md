@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-15
+
+
+### 🚀 Enhancements
+
+- Duplicate include data ([9600296](https://github.com/undb-io/undb/commit/9600296))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-14
 
 
