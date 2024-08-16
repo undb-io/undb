@@ -5,6 +5,7 @@ import type {
   ICreateTableFieldDTO,
   IDeleteTableDTO,
   IDeleteTableFieldDTO,
+  IDuplicateTableDTO,
   IDuplicateTableFieldDTO,
   IUpdateTableDTO,
   IUpdateTableFieldDTO,
@@ -30,6 +31,7 @@ import { createTableMethod } from "./methods/create-table.method"
 import { deleteTableFieldMethod } from "./methods/delete-table-field.method"
 import { deleteTableMethod } from "./methods/delete-table.method"
 import { duplicateTableFieldMethod } from "./methods/duplicate-table-field.method"
+import { duplicateTableMethod } from "./methods/duplicate-table.method"
 import { exportViewMethod } from "./methods/export-view.method"
 import { updateTableFieldMethod } from "./methods/update-table-field.method"
 import { updateTableMethod } from "./methods/update-table.method"
@@ -38,6 +40,7 @@ export interface ITableService {
   createTable(dto: ICreateTableDTO): Promise<TableDo>
   updateTable(dto: IUpdateTableDTO): Promise<TableDo>
   deleteTable(dto: IDeleteTableDTO): Promise<TableDo>
+  duplicateTable(dto: IDuplicateTableDTO): Promise<TableDo>
 
   createTableField(dto: ICreateTableFieldDTO): Promise<TableDo>
   updateTableField(dto: IUpdateTableFieldDTO): Promise<TableDo>
@@ -70,6 +73,7 @@ export class TableService implements ITableService {
   createTable = createTableMethod
   updateTable = updateTableMethod
   deleteTable = deleteTableMethod
+  duplicateTable = duplicateTableMethod
 
   createTableField = createTableFieldMethod
   deleteTableField = deleteTableFieldMethod

@@ -1,4 +1,5 @@
 import type {
+  DuplicatedTableSpecification,
   ITableSpecVisitor,
   TableBaseIdSpecification,
   TableDo,
@@ -108,6 +109,7 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
   withDuplicateField(schema: WithDuplicatedFieldSpecification): void {
     // throw new Error("Method not implemented.")
   }
+  withDuplicatedTable(spec: DuplicatedTableSpecification): void {}
   withoutField(schema: WithoutFieldSpecification): void {
     this.setData(tables.schema.name, json(this.table.schema.toJSON()))
 

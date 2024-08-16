@@ -20,6 +20,7 @@ import {
   DeleteWebhookCommand,
   DisableShareCommand,
   DuplicateRecordCommand,
+  DuplicateTableCommand,
   DuplicateTableFieldCommand,
   DuplicateViewCommand,
   EnableShareCommand,
@@ -62,6 +63,7 @@ import {
   deleteWebhookCommand,
   disableShareCommand,
   duplicateRecordCommand,
+  duplicateTableCommand,
   duplicateTableFieldCommand,
   duplicateViewCommand,
   enableShareCommand,
@@ -206,6 +208,11 @@ const tableRouter = t.router({
     .use(authz("table:update"))
     .input(updateTableCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateTableCommand(input))),
+  duplicate: privateProcedure
+    .use(authz("table:create"))
+    .input(duplicateTableCommand)
+    .output(z.string())
+    .mutation(({ input }) => commandBus.execute(new DuplicateTableCommand(input))),
   delete: privateProcedure
     .use(authz("table:delete"))
     .input(deleteTableCommand)

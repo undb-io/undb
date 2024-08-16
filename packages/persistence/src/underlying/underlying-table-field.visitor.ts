@@ -133,24 +133,19 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
   }
   reference(field: ReferenceField): void {
     const joinTable = new JoinTable(this.t.table, field)
-    const option = field.option.expect("expect reference option")
 
-    const isOwner = option.isOwner
-
-    if (isOwner) {
-      const sql = this.qb.schema
-        .createTable(joinTable.getTableName())
-        .ifNotExists()
-        .addColumn(joinTable.getSymmetricValueFieldId(), "varchar(10)", (b) =>
-          b.references(`${field.foreignTableId}.${ID_TYPE}`).notNull().onDelete("cascade"),
-        )
-        .addColumn(joinTable.getValueFieldId(), "varchar(10)", (b) =>
-          b.references(`${this.t.table.id.value}.${ID_TYPE}`).notNull().onDelete("cascade"),
-        )
-        .addPrimaryKeyConstraint("primary_key", [joinTable.getSymmetricValueFieldId(), joinTable.getValueFieldId()])
-        .compile()
-      this.addSql(sql)
-    }
+    const sql = this.qb.schema
+      .createTable(joinTable.getTableName())
+      .ifNotExists()
+      .addColumn(joinTable.getSymmetricValueFieldId(), "varchar(10)", (b) =>
+        b.references(`${field.foreignTableId}.${ID_TYPE}`).notNull().onDelete("cascade"),
+      )
+      .addColumn(joinTable.getValueFieldId(), "varchar(10)", (b) =>
+        b.references(`${this.t.table.id.value}.${ID_TYPE}`).notNull().onDelete("cascade"),
+      )
+      .addPrimaryKeyConstraint("primary_key", [joinTable.getSymmetricValueFieldId(), joinTable.getValueFieldId()])
+      .compile()
+    this.addSql(sql)
   }
   rollup(field: RollupField): void {}
   checkbox(field: CheckboxField): void {
