@@ -1,6 +1,11 @@
+import { getCurrentUserId } from "@undb/context/server"
 import { WontImplementException, type ISpecification, type ISpecVisitor } from "@undb/domain"
 import {
+  CREATED_AT_TYPE,
+  CREATED_BY_TYPE,
   ReferenceField,
+  UPDATED_AT_TYPE,
+  UPDATED_BY_TYPE,
   type DuplicatedTableSpecification,
   type ITableSpecVisitor,
   type SelectField,
@@ -139,6 +144,18 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
       .compile()
 
     this.addSql(duplicateDataSql)
+
+    const userId = getCurrentUserId()
+    const updateSql = this.qb
+      .updateTable(duplicatedTable.id.value)
+      .set((eb) => ({
+        [UPDATED_AT_TYPE]: new Date().getTime(),
+        [CREATED_AT_TYPE]: new Date().getTime(),
+        [UPDATED_BY_TYPE]: userId,
+        [CREATED_BY_TYPE]: userId,
+      }))
+      .compile()
+    this.addSql(updateSql)
 
     const referenceFields = duplicatedTable.schema.getReferenceFields()
 

@@ -7,20 +7,22 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { duplicateTableCommand } from "@undb/commands"
   import type { TableDo } from "@undb/table"
-  import { LoaderCircleIcon } from "lucide-svelte"
+  import { LoaderCircleIcon, SirenIcon } from "lucide-svelte"
   import { toast } from "svelte-sonner"
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
   import { Checkbox } from "$lib/components/ui/checkbox"
+  import * as Alert from "$lib/components/ui/alert"
+  import { getTable } from "$lib/store/table.store"
 
-  export let table: TableDo
+  const table = getTable()
 
   const form = superForm(
     defaults(
       {
-        tableId: table.id.value,
+        tableId: $table.id.value,
         name: "",
         includeData: true,
       },
@@ -67,13 +69,13 @@
 >
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Duplicate Table {table.name.value}</Dialog.Title>
+      <Dialog.Title>Duplicate Table {$table.name.value}</Dialog.Title>
       <Dialog.Description>
-        Create a new table with the same structure as {table.name.value}
+        Create a new table with the same structure as {$table.name.value}
       </Dialog.Description>
     </Dialog.Header>
 
-    <form method="POST" use:enhance>
+    <form method="POST" use:enhance class="space-y-4">
       <Form.Field {form} name="name">
         <Form.Control let:attrs>
           <Form.Label>Name</Form.Label>
@@ -92,7 +94,15 @@
           <input name={attrs.name} value={$formData.includeData} hidden />
         </Form.Control>
       </Form.Field>
-      <div class="item-center mt-2 flex justify-end gap-2">
+
+      <Alert.Root>
+        <Alert.Description class="flex items-center text-xs">
+          <SirenIcon class="mr-2 h-4 w-4" />
+          System fields will be updated to the current user and timestamp.
+        </Alert.Description>
+      </Alert.Root>
+
+      <div class="item-center flex justify-end gap-2">
         <Button
           on:click={() => {
             closeModal(DUPLICATE_TABLE_MODAL)
