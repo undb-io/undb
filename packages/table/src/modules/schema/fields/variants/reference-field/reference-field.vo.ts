@@ -157,6 +157,10 @@ export class ReferenceField extends AbstractField<
     return this.option.unwrap().foreignTableId
   }
 
+  public set foreignTableId(foreignTableId: string) {
+    this.option.unwrap().foreignTableId = foreignTableId
+  }
+
   public get condition(): IViewFilterGroup | undefined {
     return this.option.unwrap().condition
   }

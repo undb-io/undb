@@ -18,6 +18,7 @@
     "@undb/logger": "workspace:*",
     "@undb/space": "workspace:*",
     "@undb/zod": "workspace:*",
+    "@undb/utils": "workspace:*",
     "date-fns": "^3.6.0",
     "radash": "^12.1.0",
     "ts-pattern": "^5.3.1"

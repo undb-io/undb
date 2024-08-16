@@ -1,5 +1,5 @@
+import { getNextName } from "@undb/utils"
 import type { IDuplicateTableDTO } from "../dto/duplicate-table.dto"
-import { getNextName } from "../modules"
 import { DuplicatedTableSpecification } from "../specifications"
 import { TableIdVo } from "../table-id.vo"
 import { TableCreator } from "../table.builder"
@@ -12,7 +12,9 @@ export function duplicateTableMethod(
 ): DuplicatedTableSpecification {
   const duplicated = new TableCreator().fromJSON({
     ...this.toJSON(),
-    id: TableIdVo.create().value,
+    id: dto.tableId ?? TableIdVo.create().value,
+    baseId: dto.baseId ?? this.baseId,
+    spaceId: dto.spaceId ?? this.spaceId,
     name: getNextName(tableNames, this.name.value),
   })
 

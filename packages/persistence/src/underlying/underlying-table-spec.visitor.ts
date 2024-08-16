@@ -136,9 +136,11 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
 
     this.addSql(duplicateDataSql)
 
-    const referenceFields = duplicatedTable.schema.fields.filter((f) => f.type === "reference")
+    const referenceFields = duplicatedTable.schema.getReferenceFields()
 
     for (const field of referenceFields) {
+      if (!field.isOwner) continue
+
       const joinTable = new JoinTable(duplicatedTable, field)
       const originalField = originalTable.schema.fields.find((f) => f.id.value === field.id.value)
       if (!(originalField instanceof ReferenceField)) continue

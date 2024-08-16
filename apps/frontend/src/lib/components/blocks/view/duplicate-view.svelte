@@ -8,7 +8,7 @@
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
   import { toggleModal, DUPLICATE_VIEW } from "$lib/store/modal.store"
-  import { getNextName } from "@undb/table"
+  import { getNextName } from "@undb/utils"
 
   const table = getTable()
 
