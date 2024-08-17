@@ -44,7 +44,7 @@
 </script>
 
 <div>
-  <form method="POST" use:enhance>
+  <form class="space-y-4" method="POST" use:enhance>
     <Form.Field {form} name="name">
       <Form.Control let:attrs>
         <Form.Label>Name</Form.Label>

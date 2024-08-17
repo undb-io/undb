@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { toggleModal, UPDATE_BASE_MODAL } from "$lib/store/modal.store"
+  import { toggleModal } from "$lib/store/modal.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import type { IBaseDTO } from "@undb/base"
@@ -8,21 +8,20 @@
   import { zodClient } from "sveltekit-superforms/adapters"
   import * as Form from "$lib/components/ui/form"
   import { Switch } from "$lib/components/ui/switch"
+  import Input from "$lib/components/ui/input/input.svelte"
 
   export let base: Omit<IBaseDTO, "spaceId">
 
   const updateBaseMutation = createMutation({
     mutationKey: ["base", base.id, "updateBase"],
     mutationFn: trpc.base.update.mutate,
-    onSuccess(data, variables, context) {
-      toggleModal(UPDATE_BASE_MODAL)
-    },
   })
 
   const form = superForm(
     defaults(
       {
         id: base.id,
+        name: base.name,
         allowTemplate: base.option?.allowTemplate,
       },
       zodClient(updateBaseCommand),
@@ -45,8 +44,19 @@
 
 <section>
   <form class="max-w-4xl space-y-4" method="POST" use:enhance>
+    <legend class="mb-4 text-lg font-medium"> Base Setting </legend>
+    <Form.Field {form} name="name" class="rounded-lg border p-4">
+      <Form.Control let:attrs>
+        <div class="space-y-0.5">
+          <Form.Label>Name</Form.Label>
+          <Form.Description>Base name.</Form.Description>
+        </div>
+        <Input {...attrs} bind:value={$formData.name} />
+      </Form.Control>
+      <Form.Description />
+      <Form.FieldErrors />
+    </Form.Field>
     <fieldset>
-      <legend class="mb-4 text-lg font-medium"> Base Setting </legend>
       <div class="space-y-4">
         <Form.Field
           {form}
