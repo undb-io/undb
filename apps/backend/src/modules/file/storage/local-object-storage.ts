@@ -1,4 +1,5 @@
 import { singleton } from "@undb/di"
+import { env } from "@undb/env"
 import { IObjectStorage, IPresign, IPutObject } from "@undb/table"
 import { nanoid } from "nanoid"
 import * as path from "node:path"
@@ -22,7 +23,7 @@ export class LocalObjectStorage implements IObjectStorage {
     }
   }
   async getPreviewUrl(fileName: string): Promise<string> {
-    return "/public/" + fileName
+    return env.UNDB_BASE_URL + "/public/" + fileName
   }
   async put(buffer: Buffer, path: string, originalname: string, mimeType: string): Promise<IPutObject> {
     await Bun.write(`./.undb/storage/${path ? path + "/" : ""}${originalname}`, buffer)
