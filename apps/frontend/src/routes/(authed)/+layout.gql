@@ -17,8 +17,6 @@ query GetIndexQuery {
       type
       isDefault
     }
-
-    recordsCount
   }
 
   bases {

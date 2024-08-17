@@ -1,8 +1,12 @@
 import type { IBaseSpecVisitor, WithBaseId, WithBaseName, WithBaseQ, WithBaseSpaceId } from "@undb/base"
+import type { WithBaseOption } from "@undb/base/src/specifications/base-option.specification"
 import type { DuplicatedBaseSpecification } from "@undb/base/src/specifications/base.specification"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
 
 export class BaseMutateVisitor extends AbstractQBMutationVisitor implements IBaseSpecVisitor {
+  withOption(v: WithBaseOption): void {
+    this.setData("allow_template", v.option.allowTemplate)
+  }
   duplicatedBase(v: DuplicatedBaseSpecification): void {
     throw new Error("Method not implemented.")
   }

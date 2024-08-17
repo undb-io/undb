@@ -62,7 +62,5 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
       condition
       updateCondition
     }
-
-    recordsCount
   }
 }
