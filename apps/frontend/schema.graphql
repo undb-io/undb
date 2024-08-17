@@ -13,7 +13,12 @@ type Audit {
 type Base {
   id: ID!
   name: String!
+  option: BaseOption
   tables: [Table]!
+}
+
+type BaseOption {
+  allowTemplate: Boolean
 }
 
 type Field {

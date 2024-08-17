@@ -345,6 +345,7 @@ export const baseTable = sqliteTable(
   {
     id: text("id").notNull().primaryKey(),
     name: text("name").notNull(),
+    allowTemplate: integer("allow_template", { mode: "boolean" }).notNull().default(false),
     spaceId: text("space_id")
       .references(() => space.id)
       .notNull(),

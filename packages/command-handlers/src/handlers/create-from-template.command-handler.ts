@@ -23,6 +23,10 @@ export class CreateFromTemplateCommandHandler implements ICommandHandler<CreateF
     const spec = new WithBaseId(new BaseId(command.baseId)).and(new WithBaseSpaceId(command.spaceId))
     const base = (await this.baseRepository.findOne(spec)).expect("Base not found")
 
+    if (!base.option.allowTemplate) {
+      throw new Error("Base does not allow to create template")
+    }
+
     const targetSpaceId = command.targetSpaceId ?? mustGetCurrentSpaceId()
     const duplicatedBase = await this.tableService.duplicateBase(base, targetSpaceId, {
       id: command.baseId,
