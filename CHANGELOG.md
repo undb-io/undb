@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-20
+
+
+### 🚀 Enhancements
+
+- Allow to create template ([b5cec80](https://github.com/undb-io/undb/commit/b5cec80))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-19
 
 
