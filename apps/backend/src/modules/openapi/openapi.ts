@@ -146,6 +146,8 @@ export class OpenAPI {
 
                     return
                   }
+                } else {
+                  this.logger.error("No api token found in openapi")
                 }
               }
 
