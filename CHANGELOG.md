@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-18
+
+
+### 🩹 Fixes
+
+- Fix insert attachments ([16f03af](https://github.com/undb-io/undb/commit/16f03af))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-17
 
 
