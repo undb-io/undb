@@ -47,7 +47,7 @@ export class FileService {
               url,
               size,
               mime_type: mimeType,
-              created_at: new Date(),
+              created_at: new Date().getTime(),
               created_by: getCurrentUserId(),
               space_id: mustGetCurrentSpaceId(),
               name: fileName,

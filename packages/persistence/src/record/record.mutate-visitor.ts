@@ -108,7 +108,7 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
               return {
                 size: value.size,
                 url: value.url,
-                created_at: new Date(),
+                created_at: new Date().getTime(),
                 created_by: userId,
                 space_id: spaceId,
                 id: value.id,
