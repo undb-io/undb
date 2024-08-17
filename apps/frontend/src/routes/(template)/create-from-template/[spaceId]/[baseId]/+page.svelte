@@ -1,0 +1,150 @@
+<script lang="ts">
+  import { goto } from "$app/navigation"
+  import * as Card from "$lib/components/ui/card/index.js"
+  import { Input } from "$lib/components/ui/input/index.js"
+  import Logo from "$lib/images/logo.svg"
+  import { createMutation } from "@tanstack/svelte-query"
+  import { defaults, superForm } from "sveltekit-superforms"
+  import { zodClient } from "sveltekit-superforms/adapters"
+  import * as Form from "$lib/components/ui/form"
+  import * as Alert from "$lib/components/ui/alert/index.js"
+  import { LoaderCircleIcon, SirenIcon, Store } from "lucide-svelte"
+  import { createFromTemplateCommand } from "@undb/commands"
+  import { Checkbox } from "$lib/components/ui/checkbox"
+  import { trpc } from "$lib/trpc/client"
+  import { page } from "$app/stores"
+  import type { PageData } from "./$types"
+  import * as Select from "$lib/components/ui/select/index.js"
+
+  export let data: PageData
+
+  let { spaceId, baseId } = $page.params
+  let store = data.store
+
+  let spaces = $store.data?.spaces ?? []
+  let space = $store.data?.space
+  let template = $store.data?.template
+
+  const createFromTemplateMutation = createMutation({
+    mutationFn: trpc.base.createFromTemplate.mutate,
+    async onSuccess(data, variables, context) {
+      await goto(`/bases/${data}`)
+    },
+  })
+
+  const form = superForm(
+    defaults(
+      {
+        spaceId,
+        baseId,
+        targetSpaceId: space?.id,
+        name: template?.name,
+        includeData: true,
+      },
+      zodClient(createFromTemplateCommand),
+    ),
+    {
+      SPA: true,
+      dataType: "json",
+      validators: zodClient(createFromTemplateCommand),
+      resetForm: false,
+      invalidateAll: false,
+      async onUpdate(event) {
+        if (!event.form.valid) {
+          console.log(event.form.errors)
+          return
+        }
+
+        await $createFromTemplateMutation.mutateAsync(event.form.data)
+      },
+    },
+  )
+  const { enhance, form: formData } = form
+
+  $: selectedSpace = $formData.targetSpaceId
+    ? {
+        label: spaces.find((space) => space?.id === $formData.targetSpaceId)?.name,
+        value: $formData.targetSpaceId,
+      }
+    : undefined
+</script>
+
+<section class="w-[450px] -translate-y-20 space-y-5">
+  <div class="flex justify-center">
+    <img src={Logo} alt="undb" class="h-12 w-12" />
+  </div>
+
+  <form method="POST" use:enhance>
+    <Card.Root class="mx-auto">
+      <Card.Header>
+        <Card.Title class="text-2xl">Create from template</Card.Title>
+        <Card.Description>Create a new base from a template.</Card.Description>
+      </Card.Header>
+      <Card.Content>
+        <div class="grid gap-2">
+          <div class="grid gap-2">
+            <Form.Field {form} name="name">
+              <Form.Control let:attrs>
+                <Form.Label for="name">Name</Form.Label>
+                <Input {...attrs} id="name" type="name" placeholder="Enter new base name" bind:value={$formData.name} />
+              </Form.Control>
+              <Form.Description />
+              <Form.FieldErrors />
+            </Form.Field>
+          </div>
+          <Form.Field {form} name="targetSpaceId">
+            <Form.Control let:attrs>
+              <Form.Label>Space</Form.Label>
+              <Select.Root
+                selected={selectedSpace}
+                onSelectedChange={(v) => {
+                  v && ($formData.targetSpaceId = v.value)
+                }}
+              >
+                <Select.Trigger {...attrs}>
+                  <Select.Value placeholder="Select a space" />
+                </Select.Trigger>
+                <Select.Content>
+                  {#each spaces as space}
+                    <Select.Item value={space?.id} label={space?.name} />
+                  {/each}
+                </Select.Content>
+              </Select.Root>
+              <input hidden bind:value={$formData.targetSpaceId} name={attrs.name} />
+            </Form.Control>
+            <Form.Description>Select a space to create the new base in.</Form.Description>
+            <Form.FieldErrors />
+          </Form.Field>
+
+          <Form.Field
+            {form}
+            name="includeData"
+            class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4"
+          >
+            <Form.Control let:attrs>
+              <Checkbox {...attrs} bind:checked={$formData.includeData} />
+              <div class="space-y-1 leading-none">
+                <Form.Label>Include data</Form.Label>
+                <Form.Description>Include data in the new base.</Form.Description>
+              </div>
+              <input name={attrs.name} value={$formData.includeData} hidden />
+            </Form.Control>
+          </Form.Field>
+
+          <Alert.Root>
+            <Alert.Description class="flex items-center text-xs">
+              <SirenIcon class="mr-2 h-4 w-4" />
+              System fields will be updated to the current user and timestamp.
+            </Alert.Description>
+          </Alert.Root>
+          <Form.Button type="submit" class="w-full" disabled={$createFromTemplateMutation.isPending}>
+            {#if $createFromTemplateMutation.isPending}
+              <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
+            {/if}
+            Create
+          </Form.Button>
+        </div>
+      </Card.Content>
+    </Card.Root>
+  </form>
+</section>

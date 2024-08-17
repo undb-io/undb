@@ -1,0 +1,19 @@
+query GetCreateFromTemplateData($spaceId: ID!, $baseId: ID!) {
+  space {
+    id
+    name
+  }
+
+  template(spaceId: $spaceId, baseId: $baseId) {
+    name
+  }
+
+  spaces {
+    id
+    name
+    isPersonal
+    member {
+      role
+    }
+  }
+}

@@ -25,6 +25,7 @@ import {
   GetTableQuery,
   GetTablesByBaseIdQuery,
   GetTablesQuery,
+  GetTemplateQuery,
 } from "@undb/queries"
 import { injectShareService, type IShareService } from "@undb/share"
 import type { ISpaceDTO } from "@undb/space"
@@ -234,6 +235,12 @@ export class Graphql {
         tables: [Table]!
       }
 
+      type Template {
+        baseId: ID!
+        spaceId: ID!
+        name: String!
+      }
+
       enum InvitationStatus {
         pending
         accepted
@@ -271,6 +278,8 @@ export class Graphql {
 
         share(id: ID!): Share
         tableByShare(shareId: ID!): Table
+
+        template(spaceId: ID!, baseId: ID!): Template
       }
 
       `,
@@ -369,6 +378,10 @@ export class Graphql {
           },
           invitations: async (_, args) => {
             return await this.queryBus.execute(new GetInivitationsQuery({ status: args?.status }))
+          },
+          template: async (_, { spaceId, baseId }) => {
+            const template = await this.queryBus.execute(new GetTemplateQuery({ spaceId, baseId }))
+            return template
           },
         },
         Base: {

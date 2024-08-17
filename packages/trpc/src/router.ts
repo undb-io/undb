@@ -4,6 +4,7 @@ import {
   BulkUpdateRecordsCommand,
   CreateApiTokenCommand,
   CreateBaseCommand,
+  CreateFromTemplateCommand,
   CreateRecordCommand,
   CreateRecordsCommand,
   CreateSpaceCommand,
@@ -48,6 +49,7 @@ import {
   bulkduplicateRecordsCommand,
   createApiTokenCommand,
   createBaseCommand,
+  createFromTemplateCommand,
   createRecordCommand,
   createRecordsCommand,
   createSpaceCommand,
@@ -308,6 +310,10 @@ const baseRouter = t.router({
       }
       return commandBus.execute(new CreateBaseCommand({ ...input, spaceId }))
     }),
+  createFromTemplate: privateProcedure
+    .use(authz("base:create"))
+    .input(createFromTemplateCommand)
+    .mutation(({ input }) => commandBus.execute(new CreateFromTemplateCommand(input))),
   duplicate: privateProcedure
     .use(authz("base:create"))
     .input(duplicateBaseCommand)
