@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-22
+
+
+### 🏡 Chore
+
+- Get name ([919389e](https://github.com/undb-io/undb/commit/919389e))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-21
 
 

@@ -19,6 +19,7 @@ query GetFormShareData($shareId: ID!) {
 
   tableByShare(shareId: $shareId) {
     id
+    name
     forms {
       description
       fields
