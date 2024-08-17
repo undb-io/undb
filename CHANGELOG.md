@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-21
+
+
+### 🩹 Fixes
+
+- Static create-from-template ([08687bd](https://github.com/undb-io/undb/commit/08687bd))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-20
 
 
