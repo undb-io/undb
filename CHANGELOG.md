@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-17
+
+
+### 🩹 Fixes
+
+- Fix route prerender ([7adc361](https://github.com/undb-io/undb/commit/7adc361))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-16
 
 
