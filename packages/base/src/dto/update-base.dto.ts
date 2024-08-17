@@ -3,7 +3,8 @@ import { baseIdSchema, baseNameSchema } from "../value-objects"
 
 export const updateBaseDTO = z.object({
   id: baseIdSchema,
-  name: baseNameSchema,
+  name: baseNameSchema.optional(),
+  allowTemplate: z.boolean().optional(),
 })
 
 export type IUpdateBaseDTO = z.infer<typeof updateBaseDTO>

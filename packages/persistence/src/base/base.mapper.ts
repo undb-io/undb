@@ -10,6 +10,9 @@ export class BaseMapper implements Mapper<BaseDo, Base, IBaseDTO> {
       id: entity.id,
       name: entity.name,
       spaceId: entity.space_id,
+      option: {
+        allowTemplate: entity.allow_template,
+      },
     })
   }
   toEntity(domain: BaseDo): Base {
@@ -17,6 +20,7 @@ export class BaseMapper implements Mapper<BaseDo, Base, IBaseDTO> {
       id: domain.id.value,
       space_id: domain.spaceId,
       name: domain.name.value,
+      allow_template: domain.option.allowTemplate,
     }
   }
   toDTO(entity: Base): IBaseDTO {
@@ -24,6 +28,9 @@ export class BaseMapper implements Mapper<BaseDo, Base, IBaseDTO> {
       id: entity.id,
       spaceId: entity.space_id,
       name: entity.name,
+      option: {
+        allowTemplate: entity.allow_template,
+      },
     }
   }
 }

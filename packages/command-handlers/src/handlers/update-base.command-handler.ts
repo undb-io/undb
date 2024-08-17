@@ -20,10 +20,12 @@ export class UpdateBaseCommandHandler implements ICommandHandler<UpdateBaseComma
 
     const base = (await this.repository.findOneById(command.id)).unwrap()
 
-    const nameSpec = new WithBaseName(BaseName.from(command.name))
-    const exists = (await this.repository.findOne(nameSpec)).into(null)
+    if (command.name) {
+      const nameSpec = new WithBaseName(BaseName.from(command.name))
+      const exists = (await this.repository.findOne(nameSpec)).into(null)
 
-    applyRules(new BaseNameShouldBeUnique(!!exists))
+      applyRules(new BaseNameShouldBeUnique(!!exists))
+    }
 
     const spec = base.$update(command)
 

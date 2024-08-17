@@ -1,0 +1,1 @@
+ALTER TABLE `undb_base` ADD `allow_template` integer DEFAULT false NOT NULL;

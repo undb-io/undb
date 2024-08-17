@@ -9,13 +9,15 @@ import type { IUpdateBaseDTO } from "./dto/update-base.dto.js"
 import { BaseUpdatedEvent } from "./events/base-updated.event.js"
 import type { IBaseSpecification } from "./interface.js"
 import { WithBaseName } from "./specifications/base-name.specification.js"
+import { WithBaseOption } from "./specifications/base-option.specification.js"
 import { DuplicatedBaseSpecification } from "./specifications/base.specification.js"
-import { BaseId, type BaseName } from "./value-objects/index.js"
+import { BaseId, BaseOption, type BaseName } from "./value-objects/index.js"
 
 export class Base extends AggregateRoot<any> {
   id!: BaseId
   name!: BaseName
   spaceId!: ISpaceId
+  option: BaseOption = new BaseOption({ allowTemplate: false })
 
   static empty() {
     return new Base()
@@ -27,6 +29,10 @@ export class Base extends AggregateRoot<any> {
 
     if (schema.name) {
       specs.push(WithBaseName.fromString(schema.name))
+    }
+
+    if (typeof schema.allowTemplate === "boolean") {
+      specs.push(new WithBaseOption(new BaseOption({ allowTemplate: schema.allowTemplate })))
     }
 
     const spec = and(...specs)
@@ -43,6 +49,7 @@ export class Base extends AggregateRoot<any> {
   public $duplicate(dto: IDuplicateBaseDTO, baseNames: string[]): DuplicatedBaseSpecification {
     const duplicatedBase = BaseFactory.fromJSON({
       ...this.toJSON(),
+      option: { ...this.option?.toJSON(), allowTemplate: false },
       id: BaseId.create().value,
       spaceId: dto.spaceId ?? this.spaceId,
       name: dto.name ?? getNextName(baseNames, this.name.value),
@@ -56,6 +63,7 @@ export class Base extends AggregateRoot<any> {
       id: this.id.value,
       spaceId: this.spaceId,
       name: this.name.value,
+      option: this.option?.toJSON(),
     }
   }
 }
