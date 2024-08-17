@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-19
+
+
+### 🩹 Fixes
+
+- Fix openapi readable values ([46113d0](https://github.com/undb-io/undb/commit/46113d0))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-18
 
 
