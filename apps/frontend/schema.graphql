@@ -97,6 +97,7 @@ type Query {
   tableByShare(shareId: ID!): Table
   tableForeignTables(tableId: ID!): [Table!]!
   tables: [Table]!
+  template(baseId: ID!, spaceId: ID!): Template
 }
 
 type RLS {
@@ -164,6 +165,12 @@ type Table {
   schema: [Field!]!
   viewData(viewId: ID): ViewData
   views: [View!]!
+}
+
+type Template {
+  baseId: ID!
+  name: String!
+  spaceId: ID!
 }
 
 type User {
