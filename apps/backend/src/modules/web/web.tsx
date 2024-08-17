@@ -19,5 +19,6 @@ export class Web {
       .get("/signup", () => index)
       .get("/verify-email", () => index)
       .get("/reset-password/*", () => index)
+      .get("/create-from-template/*", () => index)
   }
 }
