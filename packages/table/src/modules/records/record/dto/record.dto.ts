@@ -19,6 +19,7 @@ export const recordReadableDisplayValueDTO = z.record(fieldName, z.any())
 export type IRecordReadableDisplayValueDTO = z.infer<typeof recordReadableDisplayValueDTO>
 
 export const readableRecordDTO = z.object({
+  id: recordId,
   values: recordReadableValueDTO,
   displayValues: recordReadableDisplayValueDTO.optional(),
 })

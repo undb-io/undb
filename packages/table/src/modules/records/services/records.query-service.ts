@@ -9,6 +9,7 @@ import { injectObjectStorage, type IObjectStorage } from "../../storage"
 import type { AggregateResult, ICountRecordsDTO, IGetAggregatesDTO, IGetRecordByIdDTO, IGetRecordsDTO } from "../dto"
 import {
   injectRecordQueryRepository,
+  type IReadableRecordDTO,
   type IRecordDTO,
   type IRecordQueryRepository,
   type IRecordReadableValueDTO,
@@ -24,7 +25,7 @@ export interface IRecordsQueryService {
   getRecords(query: IGetRecordsDTO): Promise<PaginatedDTO<IRecordDTO>>
   countRecords(query: ICountRecordsDTO): Promise<number>
   getRecordById(query: IGetRecordByIdDTO): Promise<Option<IRecordDTO>>
-  getReadableRecords(query: IGetRecordsDTO): Promise<PaginatedDTO<IRecordReadableValueDTO>>
+  getReadableRecords(query: IGetRecordsDTO): Promise<PaginatedDTO<IReadableRecordDTO>>
   getReadableRecordById(query: IGetRecordByIdDTO): Promise<Option<IRecordReadableValueDTO>>
   getAggregates(query: IGetAggregatesDTO): Promise<Record<string, AggregateResult>>
   populateAttachments(dto: IGetRecordsDTO, table: TableDo, records: IRecordDTO[]): Promise<IRecordDTO[]>

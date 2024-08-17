@@ -9,7 +9,7 @@ import { z } from "@undb/zod"
 extendZodWithOpenApi(z)
 
 import type { Base } from "@undb/base"
-import type { RecordDO, TableDo } from "@undb/table"
+import type { IReadableRecordDTO, TableDo } from "@undb/table"
 import {
   RECORD_COMPONENT,
   bulkDeleteRecords,
@@ -28,7 +28,7 @@ import {
 
 export const API_TOKEN_HEADER_NAME = "x-undb-api-token"
 
-export const createOpenApiSpec = (base: Base, table: TableDo, record?: RecordDO) => {
+export const createOpenApiSpec = (base: Base, table: TableDo, record?: IReadableRecordDTO) => {
   const registry = new OpenAPIRegistry()
 
   const recordSchema = createRecordComponent(table, record)

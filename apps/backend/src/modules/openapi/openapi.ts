@@ -13,17 +13,17 @@ import {
 import { executionContext, getCurrentUserId, setContextValue } from "@undb/context/server"
 import { CommandBus, QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
-import { type ICommandBus, type IQueryBus, None, PaginatedDTO, Some } from "@undb/domain"
+import { type ICommandBus, type IQueryBus, PaginatedDTO, Some } from "@undb/domain"
 import { createLogger } from "@undb/logger"
 import { API_TOKEN_HEADER_NAME, createOpenApiSpec, type IApiTokenService, injectApiTokenService } from "@undb/openapi"
 import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
 import { GetReadableRecordByIdQuery, GetReadableRecordsQuery } from "@undb/queries"
 import { injectSpaceService, type ISpaceService } from "@undb/space"
 import {
-  injectRecordRepository,
+  injectRecordsQueryService,
   injectTableRepository,
   type IRecordReadableValueDTO,
-  type IRecordRepository,
+  type IRecordsQueryService,
   type ITableRepository,
   withUniqueTable,
 } from "@undb/table"
@@ -40,8 +40,8 @@ export class OpenAPI {
     private readonly baseRepo: IBaseRepository,
     @injectTableRepository()
     private readonly repo: ITableRepository,
-    @injectRecordRepository()
-    private readonly recordRepo: IRecordRepository,
+    @injectRecordsQueryService()
+    private readonly recordsQueryService: IRecordsQueryService,
 
     @inject(QueryBus)
     private readonly queryBus: IQueryBus,
@@ -82,7 +82,12 @@ export class OpenAPI {
           const ts = withUniqueTable({ baseName, tableName }).unwrap()
           const table = (await this.repo.findOne(Some(ts))).expect("Table not found")
           const base = (await this.baseRepo.findOneById(table.baseId)).expect("Base not found")
-          const record = (await this.recordRepo.findOne(table, None)).into(undefined)
+          const record = (
+            await this.recordsQueryService.getReadableRecords({
+              tableId: table.id.value,
+              pagination: { limit: 1 },
+            })
+          ).values.at(0)
 
           const spec = createOpenApiSpec(base, table, record)
 

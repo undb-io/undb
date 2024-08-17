@@ -118,6 +118,7 @@ export class RecordDO extends AggregateRoot<IRecordEvent> {
     const values = this.values.toReadable(table, fields)
     const displayValues = this.displayValues?.toReadable(table, fields)
     return {
+      id: this.id.value,
       values,
       displayValues,
     }
