@@ -7,6 +7,7 @@ import type { TableService } from "../table.service"
 export async function duplicateBaseMethod(
   this: TableService,
   base: Base,
+  spaceId: ISpaceId,
   targetSpaceId: ISpaceId,
   dto: IDuplicateBaseDTO,
 ) {
@@ -21,7 +22,7 @@ export async function duplicateBaseMethod(
 
   await this.baseRepository.insert(duplicatedBase)
 
-  const tableSpec = and(new TableBaseIdSpecification(base.id.value), new TableSpaceIdSpecification(targetSpaceId))
+  const tableSpec = and(new TableBaseIdSpecification(base.id.value), new TableSpaceIdSpecification(spaceId))
   const tables = await this.repository.find(tableSpec, true)
   await this.duplicateTables(targetSpaceId, duplicatedBase, tables, dto.includeData)
 
