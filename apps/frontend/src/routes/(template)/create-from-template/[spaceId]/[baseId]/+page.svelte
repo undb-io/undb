@@ -32,7 +32,10 @@
       toast.error(error.message)
     },
     async onSuccess(data, variables, context) {
-      await goto(`/bases/${data}`)
+      if ($formData.targetSpaceId) {
+        await fetch(`/api/spaces/${$formData.targetSpaceId}/goto`)
+      }
+      await goto("/")
     },
   })
 

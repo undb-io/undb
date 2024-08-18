@@ -42,10 +42,13 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
   constructor(
     private readonly qb: IQueryBuilder,
     protected readonly eb: ExpressionBuilder<Database, "undb_table" | "undb_table_id_mapping">,
+    ignoreSapce = false,
   ) {
     super(eb)
-    const spaceId = mustGetCurrentSpaceId()
-    this.addCond(this.eb.eb("undb_table.space_id", "=", spaceId))
+    if (!ignoreSapce) {
+      const spaceId = mustGetCurrentSpaceId()
+      this.addCond(this.eb.eb("undb_table.space_id", "=", spaceId))
+    }
   }
   withSpaceId(id: TableSpaceIdSpecification): void {
     this.addCond(this.eb.eb("undb_table.space_id", "=", id.spaceId))

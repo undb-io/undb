@@ -1,7 +1,7 @@
 import { BaseNameShouldBeUnique, WithBaseSpaceId, type Base, type IDuplicateBaseDTO } from "@undb/base"
-import { applyRules, Some } from "@undb/domain"
+import { and, applyRules } from "@undb/domain"
 import type { ISpaceId } from "@undb/space"
-import { TableBaseIdSpecification } from "../../specifications"
+import { TableBaseIdSpecification, TableSpaceIdSpecification } from "../../specifications"
 import type { TableService } from "../table.service"
 
 export async function duplicateBaseMethod(
@@ -21,7 +21,8 @@ export async function duplicateBaseMethod(
 
   await this.baseRepository.insert(duplicatedBase)
 
-  const tables = await this.repository.find(Some(new TableBaseIdSpecification(base.id.value)))
+  const tableSpec = and(new TableBaseIdSpecification(base.id.value), new TableSpaceIdSpecification(targetSpaceId))
+  const tables = await this.repository.find(tableSpec, true)
   await this.duplicateTables(targetSpaceId, duplicatedBase, tables, dto.includeData)
 
   return duplicatedBase
