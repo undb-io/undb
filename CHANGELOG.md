@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-24
+
+
+### 🩹 Fixes
+
+- Get base of space id ([9b2b5ea](https://github.com/undb-io/undb/commit/9b2b5ea))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-23
 
 
