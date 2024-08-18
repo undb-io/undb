@@ -45,8 +45,8 @@ export abstract class AbstractQBVisitor<T> implements IAbastractQBVisitor, ISpec
     const rv = this.clone()
     right.accept(rv)
 
-    const cond = this.eb.and([lv.cond, rv.cond])
-    this.addCond(cond)
+    // const cond = this.eb.and([lv.cond, rv.cond])
+    // this.addCond(cond)
 
     return this
   }
@@ -58,8 +58,8 @@ export abstract class AbstractQBVisitor<T> implements IAbastractQBVisitor, ISpec
     const rv = this.clone()
     right.accept(rv)
 
-    const cond = this.eb.or([lv.cond, rv.cond])
-    this.addCond(cond)
+    // const cond = this.eb.or([lv.cond, rv.cond])
+    // this.addCond(cond)
 
     return this
   }
@@ -69,7 +69,7 @@ export abstract class AbstractQBVisitor<T> implements IAbastractQBVisitor, ISpec
     v.setIsNot()
 
     spec.accept(v)
-    this.addCond(v.cond)
+    // this.addCond(v.cond)
 
     return this
   }
