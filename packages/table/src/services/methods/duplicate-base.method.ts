@@ -4,11 +4,16 @@ import type { ISpaceId } from "@undb/space"
 import { TableBaseIdSpecification } from "../../specifications"
 import type { TableService } from "../table.service"
 
-export async function duplicateBaseMethod(this: TableService, base: Base, spaceId: ISpaceId, dto: IDuplicateBaseDTO) {
-  const bases = await this.baseRepository.find(new WithBaseSpaceId(spaceId))
+export async function duplicateBaseMethod(
+  this: TableService,
+  base: Base,
+  targetSpaceId: ISpaceId,
+  dto: IDuplicateBaseDTO,
+) {
+  const bases = await this.baseRepository.find(new WithBaseSpaceId(targetSpaceId))
   const baseNames = bases.map((b) => b.name.value)
 
-  const spec = base.$duplicate(dto, baseNames)
+  const spec = base.$duplicate({ ...dto, spaceId: targetSpaceId }, baseNames)
 
   const { duplicatedBase } = spec
 
@@ -17,7 +22,7 @@ export async function duplicateBaseMethod(this: TableService, base: Base, spaceI
   await this.baseRepository.insert(duplicatedBase)
 
   const tables = await this.repository.find(Some(new TableBaseIdSpecification(base.id.value)))
-  await this.duplicateTables(spaceId, duplicatedBase, tables, dto.includeData)
+  await this.duplicateTables(targetSpaceId, duplicatedBase, tables, dto.includeData)
 
   return duplicatedBase
 }
