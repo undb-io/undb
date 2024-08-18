@@ -1,12 +1,13 @@
 import {
   WithBaseId,
+  WithBaseSpaceId,
   injectBaseOutboxService,
   type Base,
   type IBaseOutboxService,
   type IBaseRepository,
   type IBaseSpecification,
 } from "@undb/base"
-import { executionContext } from "@undb/context/server"
+import { executionContext, mustGetCurrentSpaceId } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import { getCurrentTransaction } from "../ctx"
@@ -55,7 +56,7 @@ export class BaseRepository implements IBaseRepository {
     return base ? Some(this.mapper.toDo(base)) : None
   }
   async findOneById(id: string): Promise<Option<Base>> {
-    const spec = WithBaseId.fromString(id)
+    const spec = WithBaseId.fromString(id).and(new WithBaseSpaceId(mustGetCurrentSpaceId()))
 
     const base = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_base")

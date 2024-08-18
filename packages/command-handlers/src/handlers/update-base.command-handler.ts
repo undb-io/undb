@@ -1,5 +1,13 @@
-import { BaseName, BaseNameShouldBeUnique, injectBaseRepository, WithBaseName, type IBaseRepository } from "@undb/base"
+import {
+  BaseName,
+  BaseNameShouldBeUnique,
+  injectBaseRepository,
+  WithBaseName,
+  WithBaseSpaceId,
+  type IBaseRepository,
+} from "@undb/base"
 import { UpdateBaseCommand } from "@undb/commands"
+import { mustGetCurrentSpaceId } from "@undb/context/server"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import { applyRules, type ICommandHandler } from "@undb/domain"
@@ -21,7 +29,7 @@ export class UpdateBaseCommandHandler implements ICommandHandler<UpdateBaseComma
     const base = (await this.repository.findOneById(command.id)).unwrap()
 
     if (command.name) {
-      const nameSpec = new WithBaseName(BaseName.from(command.name))
+      const nameSpec = new WithBaseName(BaseName.from(command.name)).and(new WithBaseSpaceId(mustGetCurrentSpaceId()))
       const exists = (await this.repository.findOne(nameSpec)).into(null)
 
       applyRules(new BaseNameShouldBeUnique(!!exists))
