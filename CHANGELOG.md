@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-25
+
+
+### 🏡 Chore
+
+- Error toast on create table error ([eab2ca3](https://github.com/undb-io/undb/commit/eab2ca3))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-24
 
 
