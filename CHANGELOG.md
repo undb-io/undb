@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-26
+
+
+### 🩹 Fixes
+
+- Fix create from template ([755f57f](https://github.com/undb-io/undb/commit/755f57f))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-25
 
 
