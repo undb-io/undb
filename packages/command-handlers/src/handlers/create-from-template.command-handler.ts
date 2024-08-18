@@ -20,6 +20,8 @@ export class CreateFromTemplateCommandHandler implements ICommandHandler<CreateF
   ) {}
 
   async execute(command: CreateFromTemplateCommand): Promise<any> {
+    this.logger.debug("CreateFromTemplateCommandHandler execute command", command)
+
     const spec = new WithBaseId(new BaseId(command.baseId)).and(new WithBaseSpaceId(command.spaceId))
     const base = (await this.baseRepository.findOne(spec)).expect("Base not found")
 

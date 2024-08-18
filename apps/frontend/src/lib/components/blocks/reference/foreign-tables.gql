@@ -1,5 +1,5 @@
-query GetForeignTables {
-  tables {
+query GetForeignTables($baseId: ID) {
+  tables(baseId: $baseId) {
     id
     name
     schema {

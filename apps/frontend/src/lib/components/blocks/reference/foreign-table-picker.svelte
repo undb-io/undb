@@ -15,7 +15,7 @@
   const getForeignTablesStore = new GetForeignTablesStore()
   const getForeignTableStore = new GetForeignTableStore()
 
-  $: open && getForeignTablesStore.fetch()
+  $: open && getForeignTablesStore.fetch({ variables: { baseId: $table.baseId } })
   $: foreignTables = $getForeignTablesStore.data?.tables.filter((t) => !!t) ?? []
   $: groupTables = group(foreignTables, (t) => t.base?.id)
 

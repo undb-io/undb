@@ -6,13 +6,13 @@ import { injectTableQueryService, type ITableDTO, type ITableQueryService } from
 
 @queryHandler(GetTablesQuery)
 @singleton()
-export class GetTablesQueryHandler implements IQueryHandler<any, any> {
+export class GetTablesQueryHandler implements IQueryHandler<GetTablesQuery, ITableDTO[]> {
   constructor(
     @injectTableQueryService()
     private readonly svc: ITableQueryService,
   ) {}
 
-  async execute(query: any): Promise<ITableDTO[]> {
-    return this.svc.getTables()
+  async execute(query: GetTablesQuery): Promise<ITableDTO[]> {
+    return this.svc.getTables(query.baseId)
   }
 }

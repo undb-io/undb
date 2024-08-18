@@ -8,7 +8,7 @@ import { getTableMethod } from "./methods/get-table.method"
 import { getTablesMethod } from "./methods/get-tables.method"
 
 export interface ITableQueryService {
-  getTables(): Promise<ITableDTO[]>
+  getTables(baseId?: string): Promise<ITableDTO[]>
   getRollupForeignTables(tableId: string, fieldId: string): Promise<ITableDTO[]>
   getTableForeignTables(tableId: string): Promise<ITableDTO[]>
   getTable(id: string): Promise<ITableDTO>
