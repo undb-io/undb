@@ -15,6 +15,7 @@
   import { page } from "$app/stores"
   import type { PageData } from "./$types"
   import * as Select from "$lib/components/ui/select/index.js"
+  import { toast } from "svelte-sonner"
 
   export let data: PageData
 
@@ -27,6 +28,9 @@
 
   const createFromTemplateMutation = createMutation({
     mutationFn: trpc.base.createFromTemplate.mutate,
+    onError(error, variables, context) {
+      toast.error(error.message)
+    },
     async onSuccess(data, variables, context) {
       await goto(`/bases/${data}`)
     },
