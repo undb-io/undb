@@ -1,7 +1,8 @@
-import { injectBaseQueryRepository, type IBaseDTO, type IBaseQueryRepository } from "@undb/base"
+import { injectBaseQueryRepository, WithBaseSpaceId, type IBaseDTO, type IBaseQueryRepository } from "@undb/base"
+import { mustGetCurrentSpaceId } from "@undb/context/server"
 import { queryHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
-import { None, type IQueryHandler } from "@undb/domain"
+import { Some, type IQueryHandler } from "@undb/domain"
 import { GetBasesQuery } from "@undb/queries"
 
 @queryHandler(GetBasesQuery)
@@ -13,6 +14,7 @@ export class GetBasesQueryHandler implements IQueryHandler<GetBasesQuery, any> {
   ) {}
 
   async execute(query: GetBasesQuery): Promise<IBaseDTO[]> {
-    return this.repo.find(None)
+    const spec = new WithBaseSpaceId(mustGetCurrentSpaceId())
+    return this.repo.find(Some(spec))
   }
 }
