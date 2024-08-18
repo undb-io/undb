@@ -112,12 +112,12 @@ export class TableRepository implements ITableRepository {
     }
   }
 
-  async find(spec: Option<TableComositeSpecification>): Promise<TableDo[]> {
+  async find(spec: Option<TableComositeSpecification>, ignoreSpace?: boolean): Promise<TableDo[]> {
     const tbs = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_table")
       .selectAll("undb_table")
       .$if(spec.isSome(), (qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
-      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb).handle(spec))
+      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb, ignoreSpace).handle(spec))
       .execute()
 
     return tbs.map((t) => this.mapper.toDo(t))
