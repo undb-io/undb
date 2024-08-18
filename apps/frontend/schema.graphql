@@ -101,7 +101,7 @@ type Query {
   table(id: ID!): Table
   tableByShare(shareId: ID!): Table
   tableForeignTables(tableId: ID!): [Table!]!
-  tables: [Table]!
+  tables(baseId: ID): [Table]!
   template(baseId: ID!, spaceId: ID!): Template
 }
 

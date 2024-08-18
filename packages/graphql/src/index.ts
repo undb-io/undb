@@ -271,7 +271,7 @@ export class Graphql {
 
         invitations(status: InvitationStatus): [Invitation!]!
 
-        tables: [Table]!
+        tables(baseId: ID): [Table]!
         table(id: ID!): Table
         tableForeignTables(tableId: ID!): [Table!]!
         rollupForeignTables(tableId: ID!, fieldId: ID!): [Table!]!
@@ -352,8 +352,8 @@ export class Graphql {
             const table = await this.queryBus.execute(new GetTableByShareQuery({ shareId: args.shareId }))
             return table
           },
-          tables: async () => {
-            return this.queryBus.execute(new GetTablesQuery())
+          tables: async (_, args) => {
+            return this.queryBus.execute(new GetTablesQuery({ baseId: args?.baseId }))
           },
           tableForeignTables: async (_, args) => {
             return this.queryBus.execute(new GetTableForeignTablesQuery({ tableId: args.tableId }))
