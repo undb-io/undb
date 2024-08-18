@@ -8,7 +8,7 @@ import type { TableService } from "../table.service"
 
 export async function duplicateTablesMethod(
   this: TableService,
-  spaceId: ISpaceId,
+  targetSpaceId: ISpaceId,
   base: Base,
   tables: TableDo[],
   includeData: boolean = false,
@@ -26,7 +26,7 @@ export async function duplicateTablesMethod(
       {
         tableId: idsMap.get(table.id.value)!,
         baseId: base.id.value,
-        spaceId,
+        spaceId: targetSpaceId,
         includeData,
       },
       [],

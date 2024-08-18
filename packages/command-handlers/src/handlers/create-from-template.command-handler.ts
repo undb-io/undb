@@ -30,7 +30,7 @@ export class CreateFromTemplateCommandHandler implements ICommandHandler<CreateF
     }
 
     const targetSpaceId = command.targetSpaceId ?? mustGetCurrentSpaceId()
-    const duplicatedBase = await this.tableService.duplicateBase(base, targetSpaceId, {
+    const duplicatedBase = await this.tableService.duplicateBase(base, command.spaceId, targetSpaceId, {
       id: command.baseId,
       name: command.name,
       includeData: command.includeData,
