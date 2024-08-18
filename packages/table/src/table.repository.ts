@@ -10,7 +10,7 @@ export interface ITableRepository {
   bulkUpdate(updates: { table: TableDo; spec: Option<TableComositeSpecification> }[]): Promise<void>
   deleteOneById(table: TableDo): Promise<void>
 
-  find(spec: Option<TableComositeSpecification>): Promise<TableDo[]>
+  find(spec: Option<TableComositeSpecification>, ignoreSpace?: boolean): Promise<TableDo[]>
   findOne(spec: Option<TableComositeSpecification>): Promise<Option<TableDo>>
   findOneById(id: TableId): Promise<Option<TableDo>>
   findManyByIds(ids: TableId[]): Promise<TableDo[]>
