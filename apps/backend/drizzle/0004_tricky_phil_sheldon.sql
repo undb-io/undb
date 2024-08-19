@@ -1,0 +1,1 @@
+DROP INDEX IF EXISTS `undb_api_token_user_id_unique`;

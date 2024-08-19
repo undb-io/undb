@@ -417,8 +417,7 @@ export const apiTokenTable = sqliteTable(
     name: text("name").notNull(),
     userId: text("user_id")
       .notNull()
-      .references(() => users.id)
-      .unique(),
+      .references(() => users.id),
     spaceId: text("space_id")
       .references(() => space.id)
       .notNull(),

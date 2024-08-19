@@ -11,8 +11,12 @@ export abstract class AbstractQBVisitor<T> implements IAbastractQBVisitor, ISpec
   constructor(protected readonly eb: ExpressionBuilder<any, any>) {}
 
   #isNot = false
-  setIsNot() {
-    this.#isNot = true
+  setIsNot(isNot: boolean) {
+    this.#isNot = isNot
+  }
+
+  getIsNot() {
+    return this.#isNot
   }
 
   #conds: TExpression[] = []
@@ -66,10 +70,11 @@ export abstract class AbstractQBVisitor<T> implements IAbastractQBVisitor, ISpec
 
   not(spec: ISpecification<T, ISpecVisitor>): this {
     const v = this.clone()
-    v.setIsNot()
+    v.setIsNot(true)
 
     spec.accept(v)
-    // this.addCond(v.cond)
+
+    v.setIsNot(false)
 
     return this
   }
