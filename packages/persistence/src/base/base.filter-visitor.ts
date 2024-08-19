@@ -17,7 +17,7 @@ export class BaseFilterVisitor extends AbstractQBVisitor<Base> implements IBaseS
     throw new Error("Not implemented")
   }
   withId(v: WithBaseId): void {
-    this.addCond(this.eb.eb("id", this.getIsNot() ? "!=" : "=", v.id.value))
+    this.addCond(this.eb.eb("id", "=", v.id.value))
   }
   withBaseSpaceId(v: WithBaseSpaceId): void {
     this.addCond(this.eb.eb("space_id", "=", v.spaceId))
