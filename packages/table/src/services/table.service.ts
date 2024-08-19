@@ -56,7 +56,7 @@ export interface ITableService {
 
   exportView(tableId: string, dto: IExportViewDTO): Promise<{ table: TableDo; records: IReadableRecordDTO[] }>
   duplicateBase(base: Base, spaceId: ISpaceId, targetSpaceId: ISpaceId, dto: IDuplicateBaseDTO): Promise<Base>
-  duplicateTables(spaceId: ISpaceId, base: Base, tables: TableDo[]): Promise<TableDo[]>
+  duplicateTables(spaceId: ISpaceId, targetSpaceId: ISpaceId, base: Base, tables: TableDo[]): Promise<TableDo[]>
 }
 
 @singleton()

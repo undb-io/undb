@@ -18,5 +18,5 @@ export function duplicateTableMethod(
     name: dto.name ?? getNextName(tableNames, this.name.value),
   })
 
-  return new DuplicatedTableSpecification(this, duplicated, dto.includeData ?? false)
+  return new DuplicatedTableSpecification(this, duplicated, dto.includeData ?? false, dto.isSameSpace ?? true)
 }

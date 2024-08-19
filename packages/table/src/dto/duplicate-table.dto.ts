@@ -10,6 +10,7 @@ export const duplicateTableDTO = z.object({
   baseId: baseIdSchema.optional(),
   spaceId: spaceIdSchema.optional(),
   includeData: z.boolean().optional(),
+  isSameSpace: z.boolean().optional(),
 })
 
 export type IDuplicateTableDTO = z.infer<typeof duplicateTableDTO>

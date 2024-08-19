@@ -24,7 +24,7 @@ export async function duplicateBaseMethod(
 
   const tableSpec = and(new TableBaseIdSpecification(base.id.value), new TableSpaceIdSpecification(spaceId))
   const tables = await this.repository.find(tableSpec, true)
-  await this.duplicateTables(targetSpaceId, duplicatedBase, tables, dto.includeData)
+  await this.duplicateTables(spaceId, targetSpaceId, duplicatedBase, tables, dto.includeData)
 
   return duplicatedBase
 }
