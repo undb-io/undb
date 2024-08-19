@@ -13,5 +13,10 @@ export async function getReadableRecordById(
   const table = (await this.tableRepository.findOne(Some(spec))).expect("Table not found")
 
   const record = (await this.repo.findOneById(table, new RecordIdVO(dto.id), None)).into(undefined)
-  return record ? Some(recordToReadable(table, record)) : None
+  if (!record) {
+    return None
+  }
+  const values = await this.populateAttachment(dto, table, record.values)
+
+  return Some(recordToReadable(table, { ...record, values }))
 }
