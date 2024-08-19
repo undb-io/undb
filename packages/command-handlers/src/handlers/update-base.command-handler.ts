@@ -1,7 +1,9 @@
 import {
+  BaseId,
   BaseName,
   BaseNameShouldBeUnique,
   injectBaseRepository,
+  WithBaseId,
   WithBaseName,
   WithBaseSpaceId,
   type IBaseRepository,
@@ -29,7 +31,9 @@ export class UpdateBaseCommandHandler implements ICommandHandler<UpdateBaseComma
     const base = (await this.repository.findOneById(command.id)).unwrap()
 
     if (command.name) {
-      const nameSpec = new WithBaseName(BaseName.from(command.name)).and(new WithBaseSpaceId(mustGetCurrentSpaceId()))
+      const nameSpec = new WithBaseName(BaseName.from(command.name))
+        .and(new WithBaseSpaceId(mustGetCurrentSpaceId()))
+        .and(new WithBaseId(new BaseId(command.id)).not())
       const exists = (await this.repository.findOne(nameSpec)).into(null)
 
       applyRules(new BaseNameShouldBeUnique(!!exists))

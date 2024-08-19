@@ -124,38 +124,59 @@ export class OpenAPI {
           },
         },
       )
+      .guard({
+        beforeHandle: async (context) => {
+          const apiToken =
+            context.headers[API_TOKEN_HEADER_NAME] ?? context.headers[API_TOKEN_HEADER_NAME.toLowerCase()]
+
+          this.logger.debug({ apiToken }, "Checking Authorization token in openapi")
+
+          if (apiToken) {
+            const userId = await this.apiTokenService.verify(apiToken)
+            if (userId.isSome()) {
+              const user = (await this.userService.findOneById(userId.unwrap())).unwrap()
+              const space = await this.spaceService.setSpaceContext(setContextValue, { apiToken })
+              await this.spaceMemberService.setSpaceMemberContext(setContextValue, space.id.value, user.id)
+
+              return
+            }
+          } else {
+            const userId = getCurrentUserId()
+
+            if (userId) {
+              return
+            } else {
+              this.logger.error("No api token found in openapi")
+            }
+          }
+
+          // throw 401 openapi error
+          context.set.status = 401
+          throw new Error("Unauthorized")
+        },
+      })
+      .get(
+        "/openapi.json",
+        async (ctx) => {
+          const { baseName, tableName } = ctx.params
+          const ts = withUniqueTable({ baseName, tableName }).unwrap()
+          const table = (await this.repo.findOne(Some(ts))).expect("Table not found")
+          const base = (await this.baseRepo.findOneById(table.baseId)).expect("Base not found")
+          const spec = createOpenApiSpec(base, table)
+          return spec
+        },
+        {
+          params: t.Object({ baseName: t.String(), tableName: t.String() }),
+          detail: {
+            tags: ["Doc"],
+            summary: "Get OpenAPI documentation json spec for a table",
+            description: "Get OpenAPI documentation json spec for a table",
+          },
+        },
+      )
       .group("/records", (app) => {
         return app
-          .guard({
-            beforeHandle: async (context) => {
-              const userId = getCurrentUserId()
-              if (userId) {
-                return
-              } else {
-                const apiToken =
-                  context.headers[API_TOKEN_HEADER_NAME] ?? context.headers[API_TOKEN_HEADER_NAME.toLowerCase()]
 
-                this.logger.debug({ apiToken }, "Checking Authorization token in openapi")
-
-                if (apiToken) {
-                  const userId = await this.apiTokenService.verify(apiToken)
-                  if (userId.isSome()) {
-                    const user = (await this.userService.findOneById(userId.unwrap())).unwrap()
-                    const space = await this.spaceService.setSpaceContext(setContextValue, { apiToken })
-                    await this.spaceMemberService.setSpaceMemberContext(setContextValue, space.id.value, user.id)
-
-                    return
-                  }
-                } else {
-                  this.logger.error("No api token found in openapi")
-                }
-              }
-
-              // throw 401 openapi error
-              context.set.status = 401
-              throw new Error("Unauthorized")
-            },
-          })
           .get(
             "/",
             async (ctx) => {

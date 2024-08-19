@@ -313,7 +313,8 @@ const baseRouter = t.router({
       return commandBus.execute(new CreateBaseCommand({ ...input, spaceId }))
     }),
   createFromTemplate: privateProcedure
-    .use(authz("base:create"))
+    // check authz in handler, because we can create base to another space
+    // .use(authz("base:create"))
     .input(createFromTemplateCommand)
     .mutation(({ input }) => commandBus.execute(new CreateFromTemplateCommand(input))),
   duplicate: privateProcedure

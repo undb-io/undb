@@ -1,8 +1,10 @@
+import { mustGetCurrentSpaceId } from "@undb/context/server"
 import { queryHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import { type IQueryHandler } from "@undb/domain"
 import {
   injectApiTokenQueryRepository,
+  WithApiTokenSpaceId,
   WithApiTokenUserId,
   type IApiTokenDTO,
   type IApiTokenQueryRepository,
@@ -18,7 +20,7 @@ export class GetApiTokensQueryHandler implements IQueryHandler<GetApiTokensQuery
   ) {}
 
   async execute(query: IGetApiTokensQuery): Promise<IApiTokenDTO[]> {
-    const spec = new WithApiTokenUserId(query.userId)
+    const spec = new WithApiTokenUserId(query.userId).and(new WithApiTokenSpaceId(mustGetCurrentSpaceId()))
     const tokens = await this.repo.find(spec)
     return tokens
   }

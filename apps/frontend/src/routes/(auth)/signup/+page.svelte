@@ -236,7 +236,11 @@
         </div>
         <div class="mt-4 text-center text-sm">
           Already have an account?
-          <a href="/login" class="underline"> Sign in </a>
+          {#if invitationId}
+            <a href={`/login?invitationId=${invitationId}`} class="underline"> Sign in </a>
+          {:else}
+            <a href="/login" class="underline"> Sign in </a>
+          {/if}
         </div>
         {#if !invitationId}
           <Separator class="my-6" />

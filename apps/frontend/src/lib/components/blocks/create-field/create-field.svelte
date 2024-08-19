@@ -20,6 +20,8 @@
 
   export let onSuccess: () => void = () => {}
 
+  let name = ""
+
   const client = useQueryClient()
   const createFieldMutation = createMutation(
     derived([table], ([$table]) => ({
@@ -71,7 +73,7 @@
   const { enhance, form: formData, reset } = form
 
   function updateType(type: FieldType) {
-    $formData = createDefaultField($table, type, $LL.table.fieldTypes[type]())
+    $formData = createDefaultField($table, type, $LL.table.fieldTypes[type](), name)
   }
 
   function onTypeChange(type: FieldType) {
@@ -82,7 +84,16 @@
 <form method="POST" use:enhance class="space-y-2">
   <Form.Field {form} name="name" class="w-full">
     <Form.Control let:attrs>
-      <Input placeholder="Set field display name..." {...attrs} bind:value={$formData.name} autofocus class="w-full" />
+      <Input
+        placeholder="Set field display name..."
+        on:change={(e) => {
+          name = e.target.value
+        }}
+        {...attrs}
+        bind:value={$formData.name}
+        autofocus
+        class="w-full"
+      />
     </Form.Control>
     <Form.Description />
     <Form.FieldErrors />

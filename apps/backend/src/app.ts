@@ -107,7 +107,7 @@ export const app = new Elysia()
   .use(
     swagger({
       path: "/openapi",
-      excludeStaticFile: true,
+      excludeStaticFile: false,
       exclude: new RegExp(/^(?!.*\/api\/bases).*/),
       documentation: {
         info: {
@@ -115,7 +115,10 @@ export const app = new Elysia()
           version: pkg.version,
         },
 
-        tags: [{ name: "Record", description: "Record operations" }],
+        tags: [
+          { name: "Record", description: "Record operations" },
+          { name: "Doc", description: "OpenAPI documentation" },
+        ],
       },
     }),
   )

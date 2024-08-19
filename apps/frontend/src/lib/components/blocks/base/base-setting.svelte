@@ -105,8 +105,8 @@
         <AlertDialog.Header>
           <AlertDialog.Title>Are you absolutely sure to delete base?</AlertDialog.Title>
           <AlertDialog.Description>
-            This action cannot be undone. This will permanently delete your database state and remove your data from our
-            servers.
+            You are about to delete base <span class="text-red-500">{base.name}</span>. <br /> This action cannot be undone.
+            This will permanently delete your database state and remove your data from our servers.
           </AlertDialog.Description>
         </AlertDialog.Header>
 

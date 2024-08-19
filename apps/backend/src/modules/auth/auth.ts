@@ -519,22 +519,30 @@ export class Auth {
             const cookieHeader = ctx.request.headers.get("Cookie") ?? ""
             const sessionId = this.lucia.readSessionCookie(cookieHeader)
 
-            function redirectToSignup() {
+            function redirectToSignupOrLogin(
+              path: "signup" | "login" = "signup",
+              email: string | undefined = invitation.email,
+            ) {
               const search = new URLSearchParams()
               search.set("invitationId", invitationId)
-              search.set("email", invitation.email)
+              if (email) {
+                search.set("email", email)
+              }
 
-              const response = ctx.redirect("/signup?" + search.toString(), 301)
+              const response = ctx.redirect(`/${path}?${search.toString()}`, 301)
               return response
             }
 
             if (!sessionId) {
-              return redirectToSignup()
+              return redirectToSignupOrLogin()
             }
 
             const { user, session: validatedSession } = await this.lucia.validateSession(sessionId)
             if (!user) {
-              return redirectToSignup()
+              return redirectToSignupOrLogin()
+            }
+            if (invitation.email !== user.email) {
+              return redirectToSignupOrLogin("login")
             }
 
             await this.spaceMemberService.createMember(user.id, spaceId, invitation.role)
