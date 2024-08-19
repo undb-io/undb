@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { toggleModal } from "$lib/store/modal.store"
+  import * as AlertDialog from "$lib/components/ui/alert-dialog/index.js"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import type { IBaseDTO } from "@undb/base"
@@ -9,8 +9,13 @@
   import * as Form from "$lib/components/ui/form"
   import { Switch } from "$lib/components/ui/switch"
   import Input from "$lib/components/ui/input/input.svelte"
+  import { hasPermission } from "$lib/store/space-member.store"
+  import { Button } from "$lib/components/ui/button"
+  import { toast } from "svelte-sonner"
+  import { goto, invalidateAll } from "$app/navigation"
 
   export let base: Omit<IBaseDTO, "spaceId">
+  let deleteConfirm = ""
 
   const updateBaseMutation = createMutation({
     mutationKey: ["base", base.id, "updateBase"],
@@ -40,9 +45,18 @@
     },
   )
   const { enhance, form: formData } = form
+
+  const deleteSpaceMutation = createMutation({
+    mutationFn: trpc.base.delete.mutate,
+    async onSuccess() {
+      toast.success("Base deleted successfully")
+      await invalidateAll()
+      goto("/")
+    },
+  })
 </script>
 
-<section>
+<section class="space-y-6">
   <form class="max-w-4xl space-y-4" method="POST" use:enhance>
     <legend class="mb-4 text-lg font-medium"> Base Setting </legend>
     <Form.Field {form} name="name" class="rounded-lg border p-4">
@@ -76,4 +90,46 @@
 
     <Form.Button size="sm">Submit</Form.Button>
   </form>
+
+  <div class="max-w-4xl space-y-3 rounded-md border-2 border-red-500 p-4">
+    <p class="text-red-500">Danger Zone</p>
+    <div>Delete Base</div>
+
+    <AlertDialog.Root>
+      <AlertDialog.Trigger asChild let:builder>
+        <Button variant="destructive" builders={[builder]} disabled={!$hasPermission("base:delete")}>
+          Delete Base
+        </Button>
+      </AlertDialog.Trigger>
+      <AlertDialog.Content>
+        <AlertDialog.Header>
+          <AlertDialog.Title>Are you absolutely sure to delete base?</AlertDialog.Title>
+          <AlertDialog.Description>
+            This action cannot be undone. This will permanently delete your database state and remove your data from our
+            servers.
+          </AlertDialog.Description>
+        </AlertDialog.Header>
+
+        <p>Please type <span class="text-red-500">DELETE</span> to confirm.</p>
+        <Input bind:value={deleteConfirm} placeholder="DELETE" />
+
+        <AlertDialog.Footer>
+          <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+          <AlertDialog.Action let:builder asChild>
+            <Button
+              variant="destructive"
+              builders={[builder]}
+              disabled={//
+              $deleteSpaceMutation.isPending || deleteConfirm !== "DELETE" || !$hasPermission("space:delete")}
+              on:click={async () => {
+                await $deleteSpaceMutation.mutateAsync({ id: base.id })
+              }}
+            >
+              Delete Base
+            </Button>
+          </AlertDialog.Action>
+        </AlertDialog.Footer>
+      </AlertDialog.Content>
+    </AlertDialog.Root>
+  </div>
 </section>

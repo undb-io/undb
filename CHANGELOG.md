@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-27
+
+
+### 🚀 Enhancements
+
+- Delete base ([0e5f874](https://github.com/undb-io/undb/commit/0e5f874))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-26
 
 
