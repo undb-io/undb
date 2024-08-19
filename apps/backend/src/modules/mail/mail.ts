@@ -10,8 +10,7 @@ function createMailerTransport() {
   if (env.UNDB_MAIL_PROVIDER === "nodemailer" || !env.UNDB_MAIL_PROVIDER) {
     const options = {
       host: env.UNDB_MAIL_HOST,
-      port: 465,
-      // port: env.UNDB_MAIL_PORT ? parseInt(env.UNDB_MAIL_PORT, 10) : undefined,
+      port: env.UNDB_MAIL_PORT ? parseInt(env.UNDB_MAIL_PORT, 10) : undefined,
       secure: env.UNDB_MAIL_SECURE,
       auth: {
         user: env.UNDB_MAIL_USER,
