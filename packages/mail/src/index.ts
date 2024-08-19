@@ -20,6 +20,7 @@ export const sendInviteInput = z
     template: z.literal("invite"),
     data: z.object({
       invite_sender_name: z.string(),
+      space_name: z.string(),
       email: z.string().email(),
       action_url: z.string().url(),
       help_url: z.string().url(),
