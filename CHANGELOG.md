@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-28
+
+
+### 🏡 Chore
+
+- Invitation space id ([573d7cf](https://github.com/undb-io/undb/commit/573d7cf))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-27
 
 
