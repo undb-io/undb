@@ -1,6 +1,7 @@
+import { checkPermission, injectSpaceMemberService, type ISpaceMemberService } from "@undb/authz"
 import { BaseId, injectBaseRepository, WithBaseId, WithBaseSpaceId, type IBaseRepository } from "@undb/base"
 import { CreateFromTemplateCommand } from "@undb/commands"
-import { mustGetCurrentSpaceId } from "@undb/context/server"
+import { getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import { type ICommandHandler } from "@undb/domain"
@@ -17,10 +18,18 @@ export class CreateFromTemplateCommandHandler implements ICommandHandler<CreateF
     private readonly baseRepository: IBaseRepository,
     @injectTableService()
     private readonly tableService: ITableService,
+    @injectSpaceMemberService()
+    private readonly spaceMemberService: ISpaceMemberService,
   ) {}
 
   async execute(command: CreateFromTemplateCommand): Promise<any> {
     this.logger.debug("CreateFromTemplateCommandHandler execute command", command)
+
+    const userId = getCurrentUserId()
+    const targetSpaceId = command.targetSpaceId ?? mustGetCurrentSpaceId()
+
+    const member = (await this.spaceMemberService.getSpaceMember(userId, targetSpaceId)).expect("Member not found")
+    checkPermission(member.props.role, ["base:create"])
 
     const spec = new WithBaseId(new BaseId(command.baseId)).and(new WithBaseSpaceId(command.spaceId))
     const base = (await this.baseRepository.findOne(spec)).expect("Base not found")
@@ -29,7 +38,6 @@ export class CreateFromTemplateCommandHandler implements ICommandHandler<CreateF
       throw new Error("Base does not allow to create template")
     }
 
-    const targetSpaceId = command.targetSpaceId ?? mustGetCurrentSpaceId()
     const duplicatedBase = await this.tableService.duplicateBase(base, command.spaceId, targetSpaceId, {
       id: command.baseId,
       name: command.name,
