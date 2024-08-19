@@ -134,8 +134,18 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
 
     const { originalTable, duplicatedTable } = spec
     // TODO: virtual fields common util
-    const getColumns = (table: TableDo) =>
-      table.schema.fields.filter((f) => f.type !== "reference" && f.type !== "rollup").map((f) => f.id.value)
+    const getColumns = (table: TableDo) => {
+      return table.schema.fields
+        .filter((f) => f.type !== "reference" && f.type !== "rollup")
+        .filter((f) => {
+          if (spec.isSameSpace) {
+            return true
+          }
+
+          return f.type !== "user" && f.type !== "attachment"
+        })
+        .map((f) => f.id.value)
+    }
 
     const duplicateDataSql = this.qb
       .insertInto(duplicatedTable.id.value)

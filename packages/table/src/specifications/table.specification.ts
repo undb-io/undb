@@ -8,6 +8,7 @@ export class DuplicatedTableSpecification extends TableComositeSpecification {
     public readonly originalTable: TableDo,
     public readonly duplicatedTable: TableDo,
     public readonly includeData: boolean,
+    public readonly isSameSpace: boolean,
   ) {
     super()
   }
