@@ -15,13 +15,13 @@ export abstract class AbstractQBVisitor<T> implements IAbastractQBVisitor, ISpec
     this.#isNot = isNot
   }
 
-  getIsNot() {
-    return this.#isNot
-  }
-
   #conds: TExpression[] = []
   protected addCond(cond: Expression<any>): void {
-    this.#conds.push(cond)
+    if (this.#isNot) {
+      this.#conds.push(this.eb.not(cond))
+    } else {
+      this.#conds.push(cond)
+    }
   }
   get cond(): TExpression {
     const conds = this.#conds
