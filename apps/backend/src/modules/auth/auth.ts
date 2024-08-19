@@ -514,12 +514,39 @@ export class Auth {
               "Invitation should exist",
             )
 
-            const search = new URLSearchParams()
-            search.set("invitationId", invitationId)
-            search.set("email", invitation.email)
+            const spaceId = invitation.spaceId
 
-            const response = ctx.redirect("/signup?" + search.toString(), 301)
-            return response
+            const cookieHeader = ctx.request.headers.get("Cookie") ?? ""
+            const sessionId = this.lucia.readSessionCookie(cookieHeader)
+
+            function redirectToSignup() {
+              const search = new URLSearchParams()
+              search.set("invitationId", invitationId)
+              search.set("email", invitation.email)
+
+              const response = ctx.redirect("/signup?" + search.toString(), 301)
+              return response
+            }
+
+            if (!sessionId) {
+              return redirectToSignup()
+            }
+
+            const { user, session: validatedSession } = await this.lucia.validateSession(sessionId)
+            if (!user) {
+              return redirectToSignup()
+            }
+
+            await this.spaceMemberService.createMember(user.id, spaceId, invitation.role)
+            const session = await this.lucia.createSession(user.id, { space_id: spaceId })
+            const sessionCookie = this.lucia.createSessionCookie(session.id)
+            return new Response(null, {
+              status: 302,
+              headers: {
+                Location: "/",
+                "Set-Cookie": sessionCookie.serialize(),
+              },
+            })
           })
         },
         {
