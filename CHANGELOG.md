@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-29
+
+
+### 🩹 Fixes
+
+- Fix openapi get by record id ([4d92feb](https://github.com/undb-io/undb/commit/4d92feb))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-28
 
 
