@@ -1,7 +1,7 @@
 import {
+  injectBaseOutboxService,
   WithBaseId,
   WithBaseSpaceId,
-  injectBaseOutboxService,
   type Base,
   type IBaseOutboxService,
   type IBaseRepository,
@@ -10,9 +10,11 @@ import {
 import { executionContext, mustGetCurrentSpaceId } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
+import { injectTableRepository, TableBaseIdSpecification, type ITableRepository } from "@undb/table"
 import { getCurrentTransaction } from "../ctx"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
+import { UnderlyingTableService } from "../underlying/underlying-table.service"
 import { BaseFilterVisitor } from "./base.filter-visitor"
 import { BaseMapper } from "./base.mapper"
 import { BaseMutateVisitor } from "./base.mutate-visitor"
@@ -26,6 +28,10 @@ export class BaseRepository implements IBaseRepository {
     private readonly outboxService: IBaseOutboxService,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
+    @injectTableRepository()
+    private readonly tableRepository: ITableRepository,
+    @inject(UnderlyingTableService)
+    private readonly underlyingTableService: UnderlyingTableService,
   ) {}
 
   async find(spec: IBaseSpecification): Promise<Base[]> {
@@ -101,7 +107,37 @@ export class BaseRepository implements IBaseRepository {
     await this.outboxService.save(base)
   }
 
-  deleteOneById(id: string): Promise<void> {
-    throw new Error("Method not implemented.")
+  async deleteOneById(id: string): Promise<void> {
+    const trx = getCurrentTransaction()
+
+    const tables = await this.tableRepository.find(Some(new TableBaseIdSpecification(id)))
+    const tableIds = tables.map((t) => t.id.value)
+
+    await trx
+      .deleteFrom("undb_table_id_mapping")
+      .where((eb) => eb.eb("table_id", "in", tableIds))
+      .execute()
+
+    await trx
+      .deleteFrom("undb_rollup_id_mapping")
+      .where((eb) => eb.eb("table_id", "in", tableIds))
+      .execute()
+
+    await trx
+      .deleteFrom("undb_reference_id_mapping")
+      .where((eb) => eb.eb("table_id", "in", tableIds))
+      .execute()
+
+    await trx
+      .deleteFrom("undb_table")
+      .where((eb) => eb.eb("id", "in", tableIds))
+      .execute()
+
+    await trx
+      .deleteFrom("undb_base")
+      .where((eb) => eb.eb("id", "=", id))
+      .execute()
+
+    await this.underlyingTableService.deleteTables(tables)
   }
 }
