@@ -542,7 +542,7 @@ export class Auth {
               return redirectToSignupOrLogin()
             }
             if (invitation.email !== user.email) {
-              return redirectToSignupOrLogin("login", undefined)
+              return redirectToSignupOrLogin("login")
             }
 
             await this.spaceMemberService.createMember(user.id, spaceId, invitation.role)
