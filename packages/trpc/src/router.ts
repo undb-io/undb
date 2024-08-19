@@ -13,6 +13,7 @@ import {
   CreateTableFormCommand,
   CreateTableViewCommand,
   CreateWebhookCommand,
+  DeleteBaseCommand,
   DeleteInvitationCommand,
   DeleteRecordCommand,
   DeleteTableCommand,
@@ -58,6 +59,7 @@ import {
   createTableFormCommand,
   createTableViewCommand,
   createWebhookCommand,
+  deleteBaseCommand,
   deleteInvitationCommand,
   deleteRecordCommand,
   deleteTableCommand,
@@ -322,6 +324,10 @@ const baseRouter = t.router({
     .use(authz("base:update"))
     .input(updateBaseCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateBaseCommand(input))),
+  delete: privateProcedure
+    .use(authz("base:delete"))
+    .input(deleteBaseCommand)
+    .mutation(({ input }) => commandBus.execute(new DeleteBaseCommand(input))),
 })
 
 const shareRouter = t.router({

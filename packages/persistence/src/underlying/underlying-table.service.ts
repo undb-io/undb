@@ -3,6 +3,7 @@ import { createLogger } from "@undb/logger"
 import type { TableComositeSpecification, TableDo } from "@undb/table"
 import type { CompiledQuery } from "kysely"
 import { getAnonymousTransaction, getCurrentTransaction } from "../ctx"
+import { JoinTable } from "./reference/join-table"
 import { UnderlyingTable } from "./underlying-table"
 import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
 import { UnderlyingTableSpecVisitor } from "./underlying-table-spec.visitor"
@@ -46,5 +47,16 @@ export class UnderlyingTableService {
     const t = new UnderlyingTable(table)
     const trx = getCurrentTransaction()
     await trx.schema.dropTable(t.name).execute()
+    const referenceFields = table.schema.getReferenceFields()
+    for (const field of referenceFields) {
+      const joinTable = new JoinTable(table, field)
+      await trx.schema.dropTable(joinTable.getTableName()).execute()
+    }
+  }
+
+  async deleteTables(tables: TableDo[]) {
+    for (const table of tables) {
+      await this.delete(table)
+    }
   }
 }
