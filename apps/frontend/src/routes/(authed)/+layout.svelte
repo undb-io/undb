@@ -35,11 +35,13 @@
     }
   }
 
-  $: indexDataStore = data.indexDataStore
+  let indexDataStore = data.indexDataStore
   $: me = data.me.user
   $: space = $indexDataStore.data?.space
   $: tables = $indexDataStore.data?.tables?.filter(Boolean) ?? []
   $: bases = $indexDataStore.data?.bases?.filter(Boolean) ?? []
+
+  let isLoading = $indexDataStore.fetching
 
   function setBases() {
     basesStore.set(bases)
@@ -79,7 +81,7 @@
         <NavTools {space} {me} />
       </div>
       <ScrollArea class="flex-1">
-        <TablesNav {tables} {bases} />
+        <TablesNav {tables} {bases} {isLoading} />
       </ScrollArea>
 
       <div class="border-t px-4 py-2">

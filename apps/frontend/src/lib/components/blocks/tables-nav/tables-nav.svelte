@@ -28,9 +28,11 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js"
   import { hasPermission } from "$lib/store/space-member.store"
   import { Button } from "$lib/components/ui/button"
+  import { Skeleton } from "$lib/components/ui/skeleton"
 
   export let tables: GetIndexQuery$result["tables"] = []
   export let bases: GetIndexQuery$result["bases"] = []
+  export let isLoading: boolean = false
 
   let el: HTMLElement
   $: tables, el?.querySelector('[data-active="true"]')?.scrollIntoView()
@@ -231,11 +233,27 @@
         {/if}
       {/each}
     </ul>
+  {:else if isLoading}
+    <div class="space-y-2">
+      <Skeleton class="h-8 w-full" />
+      <Skeleton class="h-8 w-full" />
+      <Skeleton class="h-8 w-full" />
+      <Skeleton class="h-8 w-full" />
+      <Skeleton class="h-8 w-full" />
+      <Skeleton class="h-8 w-full" />
+      <Skeleton class="h-8 w-full" />
+      <Skeleton class="h-8 w-full" />
+      <Skeleton class="h-8 w-full" />
+      <Skeleton class="h-8 w-full" />
+      <Skeleton class="h-8 w-full" />
+    </div>
   {:else}
     <div class="flex flex-col items-center space-y-4 pt-12">
       <InboxIcon class="text-muted-foreground h-16 w-16" />
       <p class="text-muted-foreground">No bases</p>
-      <Button variant="outline" on:click={() => toggleModal(CREATE_BASE_MODAL)}>Create New Base</Button>
+      {#if $hasPermission("base:create")}
+        <Button variant="outline" on:click={() => toggleModal(CREATE_BASE_MODAL)}>Create New Base</Button>
+      {/if}
     </div>
   {/if}
 </nav>
