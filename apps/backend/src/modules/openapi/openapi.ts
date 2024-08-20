@@ -60,6 +60,31 @@ export class OpenAPI {
     private spaceService: ISpaceService,
   ) {}
 
+  async getSpec(baseName: string, tableName: string, viewName: string) {
+    const ts = withUniqueTable({ baseName, tableName }).unwrap()
+    const table = (await this.repo.findOne(Some(ts))).expect("Table not found")
+    const view = table.views.getViewByName(viewName) ?? table.views.getDefaultView()
+    const base = (await this.baseRepo.findOneById(table.baseId)).expect("Base not found")
+    const record = (
+      await this.recordsQueryService.getReadableRecords({
+        tableId: table.id.value,
+        pagination: { limit: 1 },
+        ignoreView: true,
+      })
+    ).values.at(0)
+
+    const viewRecord = (
+      await this.recordsQueryService.getReadableRecords({
+        tableId: table.id.value,
+        pagination: { limit: 1 },
+        viewId: view.id.value,
+      })
+    ).values.at(0)
+
+    const spec = createOpenApiSpec(base, table, view, record, viewRecord)
+    return spec
+  }
+
   public route() {
     return new Elysia({ prefix: "/api/bases/:baseName/tables/:tableName" })
       .onAfterResponse((ctx) => {
@@ -78,18 +103,7 @@ export class OpenAPI {
       .get(
         "/",
         async (ctx) => {
-          const { baseName, tableName } = ctx.params
-          const ts = withUniqueTable({ baseName, tableName }).unwrap()
-          const table = (await this.repo.findOne(Some(ts))).expect("Table not found")
-          const base = (await this.baseRepo.findOneById(table.baseId)).expect("Base not found")
-          const record = (
-            await this.recordsQueryService.getReadableRecords({
-              tableId: table.id.value,
-              pagination: { limit: 1 },
-            })
-          ).values.at(0)
-
-          const spec = createOpenApiSpec(base, table, record)
+          const spec = await this.getSpec(ctx.params.baseName, ctx.params.tableName, ctx.query.view)
 
           return `<html>
               <head>
@@ -117,6 +131,7 @@ export class OpenAPI {
         },
         {
           params: t.Object({ baseName: t.String(), tableName: t.String() }),
+          query: t.Object({ view: t.String() }),
           detail: {
             tags: ["Doc"],
             summary: "Get OpenAPI documentation for a table",
@@ -158,15 +173,12 @@ export class OpenAPI {
       .get(
         "/openapi.json",
         async (ctx) => {
-          const { baseName, tableName } = ctx.params
-          const ts = withUniqueTable({ baseName, tableName }).unwrap()
-          const table = (await this.repo.findOne(Some(ts))).expect("Table not found")
-          const base = (await this.baseRepo.findOneById(table.baseId)).expect("Base not found")
-          const spec = createOpenApiSpec(base, table)
+          const spec = await this.getSpec(ctx.params.baseName, ctx.params.tableName, ctx.query.view)
           return spec
         },
         {
           params: t.Object({ baseName: t.String(), tableName: t.String() }),
+          query: t.Object({ view: t.String() }),
           detail: {
             tags: ["Doc"],
             summary: "Get OpenAPI documentation json spec for a table",
@@ -174,15 +186,14 @@ export class OpenAPI {
           },
         },
       )
-      .group("/records", (app) => {
+      .group("", (app) => {
         return app
-
           .get(
-            "/",
+            "/records",
             async (ctx) => {
               const { baseName, tableName } = ctx.params
               const result = (await this.queryBus.execute(
-                new GetReadableRecordsQuery({ baseName, tableName }),
+                new GetReadableRecordsQuery({ baseName, tableName, ignoreView: true }),
               )) as PaginatedDTO<IRecordReadableValueDTO>
               return {
                 total: result.total,
@@ -199,11 +210,57 @@ export class OpenAPI {
             },
           )
           .get(
-            "/:recordId",
+            "/views/:viewName/records",
+            async (ctx) => {
+              const { baseName, tableName, viewName } = ctx.params
+              const result = (await this.queryBus.execute(
+                new GetReadableRecordsQuery({ baseName, tableName, viewName }),
+              )) as PaginatedDTO<IRecordReadableValueDTO>
+              return {
+                total: result.total,
+                records: result.values,
+              }
+            },
+            {
+              params: t.Object({ baseName: t.String(), tableName: t.String(), viewName: t.String() }),
+              detail: {
+                tags: ["Record"],
+                summary: "Get records by view id",
+                description: "Get records by view id",
+              },
+            },
+          )
+          .get(
+            "/views/:viewName/records/:recordId",
+            async (ctx) => {
+              const { baseName, tableName, viewName, recordId } = ctx.params
+              const result = await this.queryBus.execute(
+                new GetReadableRecordByIdQuery({ baseName, tableName, viewName, id: recordId }),
+              )
+              return {
+                data: result,
+              }
+            },
+            {
+              params: t.Object({
+                baseName: t.String(),
+                tableName: t.String(),
+                viewName: t.String(),
+                recordId: t.String(),
+              }),
+              detail: {
+                tags: ["Record"],
+                summary: "Get record by id in view",
+                description: "Get record by id in view",
+              },
+            },
+          )
+          .get(
+            "/records/:recordId",
             async (ctx) => {
               const { baseName, tableName } = ctx.params
               const result = await this.queryBus.execute(
-                new GetReadableRecordByIdQuery({ baseName, tableName, id: ctx.params.recordId }),
+                new GetReadableRecordByIdQuery({ baseName, tableName, id: ctx.params.recordId, ignoreView: true }),
               )
               return {
                 data: result,
@@ -219,7 +276,7 @@ export class OpenAPI {
             },
           )
           .post(
-            "/",
+            "/records",
             async (ctx) => {
               const { baseName, tableName } = ctx.params
               return withTransaction(this.qb)(() =>
@@ -237,7 +294,7 @@ export class OpenAPI {
             },
           )
           .post(
-            "/bulk",
+            "/records/bulk",
             async (ctx) => {
               const { baseName, tableName } = ctx.params
               return withTransaction(this.qb)(() =>
@@ -255,7 +312,7 @@ export class OpenAPI {
             },
           )
           .patch(
-            "/:recordId",
+            "/records/:recordId",
             async (ctx) => {
               const { baseName, tableName } = ctx.params
               return withTransaction(this.qb)(() =>
@@ -309,7 +366,7 @@ export class OpenAPI {
             },
           )
           .post(
-            "/:recordId/duplicate",
+            "/records/:recordId/duplicate",
             async (ctx) => {
               const { baseName, tableName } = ctx.params
               return withTransaction(this.qb)(() =>
@@ -351,7 +408,7 @@ export class OpenAPI {
             },
           )
           .delete(
-            "/:recordId",
+            "/records/:recordId",
             async (ctx) => {
               const { baseName, tableName } = ctx.params
               return withTransaction(this.qb)(() =>
@@ -368,7 +425,7 @@ export class OpenAPI {
             },
           )
           .delete(
-            "/",
+            "/records",
             async (ctx) => {
               const { baseName, tableName } = ctx.params
               return withTransaction(this.qb)(() =>

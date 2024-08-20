@@ -2,11 +2,13 @@ import { pagniationSchema } from "@undb/domain"
 import { z } from "@undb/zod"
 import { uniqueTableDTO } from "../../../dto/unique-table.dto"
 import { fieldId } from "../../schema"
-import { viewFilterGroup, viewId } from "../../views"
+import { viewFilterGroup, viewId, viewName } from "../../views"
 
 export const getRecordsDTO = z
   .object({
+    viewName: viewName.optional(),
     viewId: viewId.optional(),
+    ignoreView: z.boolean().optional(),
     q: z.string().optional(),
     filters: viewFilterGroup.optional(),
     select: fieldId.array().optional(),

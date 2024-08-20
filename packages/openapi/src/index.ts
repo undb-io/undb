@@ -9,9 +9,10 @@ import { z } from "@undb/zod"
 extendZodWithOpenApi(z)
 
 import type { Base } from "@undb/base"
-import type { IReadableRecordDTO, TableDo } from "@undb/table"
+import { viewName, type IReadableRecordDTO, type TableDo, type View } from "@undb/table"
 import {
   RECORD_COMPONENT,
+  VIEW_NAME_COMPONENT,
   bulkDeleteRecords,
   bulkDuplicateRecords,
   bulkUpdateRecords,
@@ -22,21 +23,33 @@ import {
   duplicateRecordById,
   getRecordById,
   getRecords,
+  getViewRecordById,
+  getViewRecords,
   recordSubscription,
   updateRecord,
 } from "./openapi/record.openapi"
 
 export const API_TOKEN_HEADER_NAME = "x-undb-api-token"
 
-export const createOpenApiSpec = (base: Base, table: TableDo, record?: IReadableRecordDTO) => {
+export const createOpenApiSpec = (
+  base: Base,
+  table: TableDo,
+  view: View,
+  record?: IReadableRecordDTO,
+  viewRecord?: IReadableRecordDTO,
+) => {
   const registry = new OpenAPIRegistry()
 
   const recordSchema = createRecordComponent(table, record)
-  registry.register(RECORD_COMPONENT, recordSchema)
+  const viewRecordSchema = createRecordComponent(table, viewRecord)
+  registry.register(RECORD_COMPONENT, recordSchema.openapi({ description: table.name.value + " record schema" }))
+  registry.register(VIEW_NAME_COMPONENT, viewName.openapi({ description: "specific view name" }))
 
   const routes: RouteConfig[] = [
     getRecords(base, table, recordSchema),
+    getViewRecords(base, table, view, viewRecordSchema),
     getRecordById(base, table, recordSchema),
+    getViewRecordById(base, table, view, viewRecordSchema),
     createRecord(base, table),
     createRecords(base, table),
     updateRecord(base, table),
