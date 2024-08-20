@@ -60,10 +60,9 @@ export class OpenAPI {
     private spaceService: ISpaceService,
   ) {}
 
-  async getSpec(baseName: string, tableName: string, viewName: string) {
+  async getSpec(baseName: string, tableName: string, viewName?: string) {
     const ts = withUniqueTable({ baseName, tableName }).unwrap()
     const table = (await this.repo.findOne(Some(ts))).expect("Table not found")
-    const view = table.views.getViewByName(viewName) ?? table.views.getDefaultView()
     const base = (await this.baseRepo.findOneById(table.baseId)).expect("Base not found")
     const record = (
       await this.recordsQueryService.getReadableRecords({
@@ -73,13 +72,16 @@ export class OpenAPI {
       })
     ).values.at(0)
 
-    const viewRecord = (
-      await this.recordsQueryService.getReadableRecords({
-        tableId: table.id.value,
-        pagination: { limit: 1 },
-        viewId: view.id.value,
-      })
-    ).values.at(0)
+    const view = viewName ? table.views.getViewByName(viewName) : undefined
+    const viewRecord = view
+      ? (
+          await this.recordsQueryService.getReadableRecords({
+            tableId: table.id.value,
+            pagination: { limit: 1 },
+            viewId: view.id.value,
+          })
+        ).values.at(0)
+      : undefined
 
     const spec = createOpenApiSpec(base, table, view, record, viewRecord)
     return spec
@@ -131,7 +133,7 @@ export class OpenAPI {
         },
         {
           params: t.Object({ baseName: t.String(), tableName: t.String() }),
-          query: t.Object({ view: t.String() }),
+          query: t.Object({ view: t.Optional(t.String()) }),
           detail: {
             tags: ["Doc"],
             summary: "Get OpenAPI documentation for a table",
@@ -178,7 +180,7 @@ export class OpenAPI {
         },
         {
           params: t.Object({ baseName: t.String(), tableName: t.String() }),
-          query: t.Object({ view: t.String() }),
+          query: t.Object({ view: t.Optional(t.String()) }),
           detail: {
             tags: ["Doc"],
             summary: "Get OpenAPI documentation json spec for a table",
