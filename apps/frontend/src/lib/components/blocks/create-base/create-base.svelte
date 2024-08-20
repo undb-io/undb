@@ -39,6 +39,9 @@
       resetForm: false,
       delayMs: 200,
       invalidateAll: true,
+      onSubmit(event) {
+        validateForm({ update: true })
+      },
       onUpdate(event) {
         if (!event.form.valid) return
 
@@ -47,7 +50,7 @@
     },
   )
 
-  const { form: formData, enhance, delayed } = form
+  const { form: formData, enhance, delayed, validateForm } = form
 </script>
 
 <form id="createTable" class="space-y-2 px-1" method="POST" use:enhance>

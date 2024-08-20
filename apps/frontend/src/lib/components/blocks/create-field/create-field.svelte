@@ -56,6 +56,9 @@
       validators: zodClient(createFieldDTO),
       resetForm: false,
       invalidateAll: false,
+      onSubmit(input) {
+        validateForm({ update: true })
+      },
       onUpdate(event) {
         if (!event.form.valid) {
           console.log(event.form.data, event.form.errors)
@@ -70,7 +73,7 @@
     },
   )
 
-  const { enhance, form: formData, reset } = form
+  const { enhance, form: formData, reset, validateForm } = form
 
   function updateType(type: FieldType) {
     $formData = createDefaultField($table, type, $LL.table.fieldTypes[type](), name)
