@@ -5,9 +5,12 @@ import { z, type ZodTypeAny } from "@undb/zod"
 
 export const RECORD_ID_COMPONENT = "RecordId"
 export const RECORD_COMPONENT = "Record"
+export const VIEW_COMPONENT = "View"
 export const VIEW_RECORD_COMPONENT = "ViewRecord"
 export const RECORD_VALUES_COMPONENT = "RecordValues"
+export const VIEW_RECORD_VALUES_COMPONENT = "ViewRecordValues"
 export const RECORD_DISPLAY_VALUES_COMPONENT = "RecordDisplayValues"
+export const VIEW_RECORD_DISPLAY_VALUES_COMPONENT = "ViewRecordDisplayValues"
 
 export const createRecordComponent = (table: TableDo, view?: View, record?: IReadableRecordDTO) => {
   const schema = view ? table.schema.getViewReadableSchema(table, view) : table.schema.readableSchema
@@ -19,8 +22,13 @@ export const createRecordComponent = (table: TableDo, view?: View, record?: IRea
   return z
     .object({
       id: recordId.openapi(RECORD_ID_COMPONENT, { example: record?.id }),
-      values: schema.openapi(RECORD_VALUES_COMPONENT, { example }),
-      displayValues: displayScheam.openapi(RECORD_DISPLAY_VALUES_COMPONENT, { example: displayExample }),
+      values: schema.openapi(view ? view.name.value + ":" + VIEW_RECORD_VALUES_COMPONENT : RECORD_VALUES_COMPONENT, {
+        example,
+      }),
+      displayValues: displayScheam.openapi(
+        view ? view.name.value + ":" + VIEW_RECORD_DISPLAY_VALUES_COMPONENT : RECORD_DISPLAY_VALUES_COMPONENT,
+        { example: displayExample },
+      ),
     })
     .openapi(view ? VIEW_RECORD_COMPONENT : RECORD_COMPONENT, {
       description: view ? `record in ${view.name.value} view` : "record",
@@ -56,7 +64,7 @@ export const getViewRecords = (base: Base, table: TableDo, view: View, recordSch
     path: `/bases/${base.name.value}/tables/${table.name.value}/views/${view.name.value}/records`,
     description: `Get ${table.name.value} records in ${view.name.value} view`,
     summary: `Get ${table.name.value} records in ${view.name.value} view`,
-    tags: [RECORD_COMPONENT],
+    tags: [RECORD_COMPONENT, VIEW_COMPONENT],
     responses: {
       200: {
         description: "record data",
@@ -64,7 +72,7 @@ export const getViewRecords = (base: Base, table: TableDo, view: View, recordSch
           "application/json": {
             schema: z.object({
               total: z.number().int().positive(),
-              records: z.array(recordSchema.openapi(VIEW_RECORD_COMPONENT)),
+              records: z.array(recordSchema.openapi(view.name.value + ":" + VIEW_RECORD_COMPONENT)),
             }),
           },
         },
@@ -106,7 +114,7 @@ export const getViewRecordById = (base: Base, table: TableDo, view: View, record
     path: `/bases/${base.name.value}/tables/${table.name.value}/views/${view.name.value}/records/{recordId}`,
     description: `Get ${table.name.value} record by id in ${view.name.value} view`,
     summary: `Get ${table.name.value} record by id in ${view.name.value} view`,
-    tags: [RECORD_COMPONENT],
+    tags: [RECORD_COMPONENT, VIEW_COMPONENT],
     request: {
       params: z.object({
         recordId: recordId,
@@ -118,7 +126,7 @@ export const getViewRecordById = (base: Base, table: TableDo, view: View, record
         content: {
           "application/json": {
             schema: z.object({
-              data: recordSchema.openapi(VIEW_RECORD_COMPONENT).nullable(),
+              data: recordSchema.openapi(view.name.value + ":" + VIEW_RECORD_COMPONENT).nullable(),
             }),
           },
         },
