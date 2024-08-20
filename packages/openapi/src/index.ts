@@ -9,10 +9,9 @@ import { z } from "@undb/zod"
 extendZodWithOpenApi(z)
 
 import type { Base } from "@undb/base"
-import { viewName, type IReadableRecordDTO, type TableDo, type View } from "@undb/table"
+import { type IReadableRecordDTO, type TableDo, type View } from "@undb/table"
 import {
   RECORD_COMPONENT,
-  VIEW_NAME_COMPONENT,
   bulkDeleteRecords,
   bulkDuplicateRecords,
   bulkUpdateRecords,
@@ -40,10 +39,9 @@ export const createOpenApiSpec = (
 ) => {
   const registry = new OpenAPIRegistry()
 
-  const recordSchema = createRecordComponent(table, record)
-  const viewRecordSchema = createRecordComponent(table, viewRecord)
+  const recordSchema = createRecordComponent(table, undefined, record)
+  const viewRecordSchema = createRecordComponent(table, view, viewRecord)
   registry.register(RECORD_COMPONENT, recordSchema.openapi({ description: table.name.value + " record schema" }))
-  registry.register(VIEW_NAME_COMPONENT, viewName.openapi({ description: "specific view name" }))
 
   const routes: RouteConfig[] = [
     getRecords(base, table, recordSchema),
