@@ -18,6 +18,9 @@ export class GetRecordByIdQuery extends Query implements IGetRecordByIdQuery {
   public readonly tableName?: string
   public readonly id: string
   public readonly select?: string[]
+  public readonly viewId?: string
+  public readonly viewName?: string
+  public readonly ignoreView?: boolean
 
   constructor(props: QueryProps<IGetRecordByIdQuery>) {
     super()
@@ -26,5 +29,8 @@ export class GetRecordByIdQuery extends Query implements IGetRecordByIdQuery {
     this.tableName = props.tableName
     this.id = props.id
     this.select = props.select
+    this.viewId = props.viewId
+    this.viewName = props.viewName
+    this.ignoreView = props.ignoreView
   }
 }

@@ -2,7 +2,7 @@ import { None, Some, andOptions, type IPagination, type Option, type PaginatedDT
 import type { TableId } from "../../../table-id.vo"
 import type { TableDo } from "../../../table.do"
 import { getSpec } from "../../schema/fields/condition"
-import type { ViewId } from "../../views"
+import type { View, ViewId } from "../../views"
 import type { AggregateResult, ICountRecordsDTO, IGetRecordsDTO } from "../dto"
 import { withQ } from "../specification/with-q.specification"
 import type { IRecordDTO } from "./dto"
@@ -12,6 +12,8 @@ import type { RecordDO } from "./record.do"
 
 export interface SingleQueryArgs {
   select: Option<string[]>
+  view: View
+  ignoreView?: boolean
 }
 
 export interface CountQueryArgs {
@@ -22,6 +24,7 @@ export interface QueryArgs {
   select: Option<string[]>
   filter: Option<RecordComositeSpecification>
   pagination: Option<IPagination>
+  ignoreView?: boolean
 }
 
 export interface IRecordRepository {
@@ -43,7 +46,7 @@ export interface IRecordRepository {
 }
 
 export interface IRecordQueryRepository {
-  find(table: TableDo, viewId: Option<ViewId>, query: Option<QueryArgs>): Promise<PaginatedDTO<IRecordDTO>>
+  find(table: TableDo, view: View, query: Option<QueryArgs>): Promise<PaginatedDTO<IRecordDTO>>
   findOneById(table: TableDo, id: RecordId, query: Option<SingleQueryArgs>): Promise<Option<IRecordDTO>>
   count(tableId: TableId): Promise<number>
   countWhere(table: TableDo, spec: Option<CountQueryArgs>): Promise<number>
@@ -56,6 +59,7 @@ export function buildQuery(table: TableDo, dto: IGetRecordsDTO): Option<QueryArg
     filter: None,
     select: None,
     pagination: None,
+    ignoreView: dto.ignoreView,
   }
 
   if (dto.pagination) {

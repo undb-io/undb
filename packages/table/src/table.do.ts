@@ -132,9 +132,19 @@ export class TableDo extends AggregateRoot<ITableEvents> {
     return this.views.getViewById(viewId).option.unwrapOrElse(() => ViewOption.default())
   }
 
-  getQuerySpec({ viewId, userId, filter }: { filter?: RecordComositeSpecification; viewId?: string; userId: string }) {
+  getQuerySpec({
+    ignoreView,
+    viewId,
+    userId,
+    filter,
+  }: {
+    ignoreView?: boolean
+    filter?: RecordComositeSpecification
+    viewId?: string
+    userId: string
+  }) {
     const view = this.views.getViewById(viewId)
-    const viewSpec = view.filter.map((f) => f.getSpec(this.schema)).flatten()
+    const viewSpec = ignoreView ? None : view.filter.map((f) => f.getSpec(this.schema)).flatten()
     const rlsSpec = this.rls.map((r) => r.getSpec(this.schema, "read", userId)).flatten()
 
     return andOptions(rlsSpec, viewSpec, Option(filter)) as Option<RecordComositeSpecification>

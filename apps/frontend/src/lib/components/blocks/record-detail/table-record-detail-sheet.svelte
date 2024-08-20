@@ -21,9 +21,7 @@
         return trpc.record.get.query({
           tableId: $table?.id.value,
           id: $recordId!,
-          select: $preferences.showHiddenFields
-            ? undefined
-            : $table?.getOrderedVisibleFields($viewId).map((f) => f.id.value),
+          ignoreView: $preferences.showHiddenFields,
         })
       },
       enabled: !!$recordId,

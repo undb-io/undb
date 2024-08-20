@@ -17,7 +17,9 @@ export class GetRecordsQuery extends Query implements IGetRecordsQuery {
   public readonly tableId?: string
   public readonly baseName?: string
   public readonly tableName?: string
+  public readonly viewName?: string
   public readonly viewId?: string
+  public readonly ignoreView?: boolean
   public readonly filters?: IViewFilterGroup
   public readonly q?: string
   public readonly pagination?: IPagination
@@ -28,7 +30,9 @@ export class GetRecordsQuery extends Query implements IGetRecordsQuery {
     this.tableId = props.tableId
     this.baseName = props.baseName
     this.tableName = props.tableName
+    this.viewName = props.viewName
     this.viewId = props.viewId
+    this.ignoreView = props.ignoreView
     this.filters = props.filters
     this.q = props.q
     this.pagination = props.pagination

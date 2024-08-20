@@ -13,11 +13,13 @@ import {
   type IRecordDTO,
   type IRecordQueryRepository,
   type ITableRepository,
+  type IViewSort,
   type QueryArgs,
   type RecordId,
   type SingleQueryArgs,
   type TableDo,
   type TableId,
+  type View,
   type ViewId,
 } from "@undb/table"
 import { type AliasedExpression, type Expression } from "kysely"
@@ -80,11 +82,15 @@ export class RecordQueryRepository implements IRecordQueryRepository {
   }
 
   async findOneById(table: TableDo, id: RecordId, query: Option<SingleQueryArgs>): Promise<Option<IRecordDTO>> {
-    const select = query.into(undefined)?.select.into(undefined)
+    const q = query.into(undefined)
+    const select = q?.select.into(undefined)
+    const view = q?.ignoreView ? undefined : q?.view
 
     const selectFields = select
       ? select.map((f) => table.schema.getFieldById(new FieldIdVo(f)).into(undefined)).filter((f) => !!f)
-      : table.schema.fields
+      : view
+        ? table.getOrderedVisibleFields(view.id.value)
+        : table.schema.fields
 
     const foreignTables = await this.getForeignTables(table, selectFields)
     const qb = this.helper.createQuery(table, foreignTables, selectFields, None)
@@ -94,23 +100,26 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return result ? Some(getRecordDTOFromEntity(table, result)) : None
   }
 
-  async find(table: TableDo, viewId: Option<ViewId>, query: Option<QueryArgs>): Promise<PaginatedDTO<IRecordDTO>> {
+  async find(table: TableDo, view: View, query: Option<QueryArgs>): Promise<PaginatedDTO<IRecordDTO>> {
     const context = executionContext.getStore()
     const userId = context?.user?.userId!
 
     const t = new UnderlyingTable(table)
-    const view = table.views.getViewById(viewId.into(undefined)?.value)
 
     const filter = query.into(undefined)?.filter.into(undefined)
-    const sort = view.sort.into(undefined)?.value ?? [{ fieldId: AUTO_INCREMENT_TYPE, direction: "asc" }]
+    const defaultSort: IViewSort = [{ fieldId: AUTO_INCREMENT_TYPE, direction: "asc" }]
+    const ignoreView = query.into(undefined)?.ignoreView
+    const sort = ignoreView ? defaultSort : (view.sort.into(undefined)?.value ?? defaultSort)
 
-    const spec = table.getQuerySpec({ viewId: view.id.value, userId, filter })
+    const spec = table.getQuerySpec({ ignoreView, viewId: view.id.value, userId, filter })
     const pagination = query.into(undefined)?.pagination.into(undefined)
     const select = query.into(undefined)?.select.into(undefined)
 
     const selectFields = select
       ? select.map((f) => table.schema.getFieldById(new FieldIdVo(f)).into(undefined)).filter((f) => !!f)
-      : table.getOrderedVisibleFields(view.id.value)
+      : ignoreView
+        ? table.schema.fields
+        : table.getOrderedVisibleFields(view.id.value)
     const foreignTables = await this.getForeignTables(table, selectFields)
     const qb = this.helper.createQuery(table, foreignTables, selectFields, spec)
 
