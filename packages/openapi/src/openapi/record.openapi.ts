@@ -6,7 +6,6 @@ import { z, type ZodTypeAny } from "@undb/zod"
 export const RECORD_ID_COMPONENT = "RecordId"
 export const RECORD_COMPONENT = "Record"
 export const VIEW_RECORD_COMPONENT = "ViewRecord"
-export const VIEW_NAME_COMPONENT = "ViewName"
 export const RECORD_VALUES_COMPONENT = "RecordValues"
 export const RECORD_DISPLAY_VALUES_COMPONENT = "RecordDisplayValues"
 
@@ -23,7 +22,9 @@ export const createRecordComponent = (table: TableDo, view?: View, record?: IRea
       values: schema.openapi(RECORD_VALUES_COMPONENT, { example }),
       displayValues: displayScheam.openapi(RECORD_DISPLAY_VALUES_COMPONENT, { example: displayExample }),
     })
-    .openapi(RECORD_COMPONENT)
+    .openapi(view ? VIEW_RECORD_COMPONENT : RECORD_COMPONENT, {
+      description: view ? `record in ${view.name.value} view` : "record",
+    })
 }
 
 export const getRecords = (base: Base, table: TableDo, recordSchema: ZodTypeAny): RouteConfig => {
