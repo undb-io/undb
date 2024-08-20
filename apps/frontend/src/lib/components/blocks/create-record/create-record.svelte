@@ -35,7 +35,7 @@
   const createRecordMutation = createMutation(
     derived([table], ([$table]) => ({
       mutationFn: trpc.record.create.mutate,
-      mutationKey: [ $table.id.value, "createRecord"],
+      mutationKey: [$table.id.value, "createRecord"],
       onSuccess: (data) => {
         client.invalidateQueries({
           queryKey: ["records", $table.id.value],
@@ -64,6 +64,9 @@
     validators: zodClient(schema),
     resetForm: false,
     invalidateAll: false,
+    onSubmit(event) {
+      validateForm({ update: true })
+    },
     onUpdate(event) {
       if (!event.form.valid) {
         console.log(event.form.errors, event.form.data)
@@ -74,7 +77,7 @@
     },
   })
 
-  const { form: formData, enhance, allErrors, tainted, errors } = form
+  const { form: formData, enhance, allErrors, tainted, errors, validateForm } = form
 
   $: dirty = !!$tainted
   $: disabled = !!$allErrors.length

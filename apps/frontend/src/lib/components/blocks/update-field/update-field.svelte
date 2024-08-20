@@ -61,6 +61,9 @@
     validators: zodClient(updateFieldDTO),
     resetForm: false,
     invalidateAll: false,
+    onSubmit(input) {
+      validateForm({ update: true })
+    },
     onUpdate(event) {
       if (!event.form.valid) {
         console.log(event.form.errors, event.form.data)
@@ -76,7 +79,7 @@
     },
   })
 
-  const { enhance, form: formData, reset } = form
+  const { enhance, form: formData, reset, validateForm } = form
 </script>
 
 <form method="POST" use:enhance class={cn("space-y-2", $$restProps.class)}>

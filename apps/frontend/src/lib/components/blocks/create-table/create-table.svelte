@@ -53,6 +53,9 @@
       validators: zodClient(schema),
       resetForm: false,
       invalidateAll: true,
+      onSubmit(input) {
+        validateForm({ update: true })
+      },
       async onUpdate(event) {
         if (!event.form.valid) {
           console.log(event.form.errors)
@@ -69,7 +72,7 @@
     },
   )
 
-  const { form: formData, enhance } = form
+  const { form: formData, enhance, validateForm } = form
 </script>
 
 <form id="createTable" class="px-1" method="POST" use:enhance>
