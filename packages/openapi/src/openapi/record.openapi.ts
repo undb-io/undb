@@ -1,10 +1,11 @@
 import type { RouteConfig } from "@asteasolutions/zod-to-openapi"
 import type { Base } from "@undb/base"
-import { recordId, type IReadableRecordDTO, type TableDo } from "@undb/table"
+import { recordId, type IReadableRecordDTO, type TableDo, type View } from "@undb/table"
 import { z, type ZodTypeAny } from "@undb/zod"
 
 export const RECORD_ID_COMPONENT = "RecordId"
 export const RECORD_COMPONENT = "Record"
+export const VIEW_NAME_COMPONENT = "ViewName"
 export const RECORD_VALUES_COMPONENT = "RecordValues"
 export const RECORD_DISPLAY_VALUES_COMPONENT = "RecordDisplayValues"
 
@@ -47,12 +48,62 @@ export const getRecords = (base: Base, table: TableDo, recordSchema: ZodTypeAny)
   }
 }
 
+export const getViewRecords = (base: Base, table: TableDo, view: View, recordSchema: ZodTypeAny): RouteConfig => {
+  return {
+    method: "get",
+    path: `/bases/${base.name.value}/tables/${table.name.value}/views/${view.name.value}/records`,
+    description: `Get ${table.name.value} records in ${view.name.value} view`,
+    summary: `Get ${table.name.value} records in ${view.name.value} view`,
+    tags: [RECORD_COMPONENT],
+    responses: {
+      200: {
+        description: "record data",
+        content: {
+          "application/json": {
+            schema: z.object({
+              total: z.number().int().positive(),
+              records: z.array(recordSchema),
+            }),
+          },
+        },
+      },
+    },
+  }
+}
+
 export const getRecordById = (base: Base, table: TableDo, recordSchema: ZodTypeAny): RouteConfig => {
   return {
     method: "get",
     path: `/bases/${base.name.value}/tables/${table.name.value}/records/{recordId}`,
     description: `Get ${table.name.value} record by id`,
     summary: `Get ${table.name.value} record by id`,
+    tags: [RECORD_COMPONENT],
+    request: {
+      params: z.object({
+        recordId: recordId,
+      }),
+    },
+    responses: {
+      200: {
+        description: "record data",
+        content: {
+          "application/json": {
+            schema: z.object({
+              data: recordSchema.nullable(),
+            }),
+          },
+        },
+      },
+    },
+  }
+}
+
+export const getViewRecordById = (base: Base, table: TableDo, view: View, recordSchema: ZodTypeAny): RouteConfig => {
+  return {
+    method: "get",
+    path: `/bases/${base.name.value}/tables/${table.name.value}/views/${view.name.value}/records/{recordId}`,
+    description: `Get ${table.name.value} record by id in ${view.name.value} view`,
+    summary: `Get ${table.name.value} record by id in ${view.name.value} view`,
     tags: [RECORD_COMPONENT],
     request: {
       params: z.object({

@@ -3,7 +3,6 @@ import { None, Option, Some, type PaginatedDTO } from "@undb/domain"
 import {
   RecordIdVO,
   TableComositeSpecification,
-  ViewIdVo,
   WithFormIdSpecification,
   WithViewIdSpecification,
   buildQuery,
@@ -126,15 +125,15 @@ export class ShareService implements IShareService {
       .exhaustive()
 
     const table = (await this.tableRepo.findOne(Some(spec))).expect("table not found")
-    const viewId = share.target.id
+    const view = table.views.getViewById(share.target.id)
 
-    const query = buildQuery(table, { viewId })
+    const query = buildQuery(table, { viewId: view.id.value })
 
-    const records = await this.recordRepo.find(table, Some(new ViewIdVo(viewId)), query)
+    const records = await this.recordRepo.find(table, view, query)
 
     return {
       ...records,
-      values: await this.recordsService.populateAttachments({ viewId }, table, records.values),
+      values: await this.recordsService.populateAttachments({ viewId: view.id.value }, table, records.values),
     }
   }
 

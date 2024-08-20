@@ -27,6 +27,17 @@ export class Views extends ValueObject {
     return new Views([...this.views, view])
   }
 
+  getViewByNameOrId(name: string | undefined, id: string | undefined): View {
+    if (name) {
+      return this.getViewByName(name) ?? this.getDefaultView()
+    }
+    return this.getViewById(id)
+  }
+
+  getViewByName(name: string): View | undefined {
+    return this.views.find((view) => view.name.value === name)
+  }
+
   getViewById(id: string | undefined): View {
     let view: View | undefined
     if (!id) {

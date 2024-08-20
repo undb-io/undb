@@ -7,9 +7,12 @@ import type { RecordsQueryService } from "../records.query-service"
 export async function getRecordById(this: RecordsQueryService, dto: IGetRecordByIdDTO): Promise<Option<IRecordDTO>> {
   const ts = withUniqueTable(dto).unwrap()
   const table = (await this.tableRepository.findOne(Some(ts))).expect("Table not found")
+  const view = table.views.getViewByNameOrId(dto.viewName, dto.viewId)
 
   const query: SingleQueryArgs = {
     select: None,
+    view,
+    ignoreView: dto.ignoreView,
   }
 
   if (dto.select) {
