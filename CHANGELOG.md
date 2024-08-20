@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-30
+
+
+### 🚀 Enhancements
+
+- Doc openapi ([9840664](https://github.com/undb-io/undb/commit/9840664))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-29
 
 
