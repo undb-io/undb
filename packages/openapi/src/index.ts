@@ -12,6 +12,7 @@ import type { Base } from "@undb/base"
 import { type IReadableRecordDTO, type TableDo, type View } from "@undb/table"
 import {
   RECORD_COMPONENT,
+  VIEW_RECORD_COMPONENT,
   bulkDeleteRecords,
   bulkDuplicateRecords,
   bulkUpdateRecords,
@@ -33,21 +34,18 @@ export const API_TOKEN_HEADER_NAME = "x-undb-api-token"
 export const createOpenApiSpec = (
   base: Base,
   table: TableDo,
-  view: View,
+  view?: View,
   record?: IReadableRecordDTO,
   viewRecord?: IReadableRecordDTO,
 ) => {
   const registry = new OpenAPIRegistry()
 
   const recordSchema = createRecordComponent(table, undefined, record)
-  const viewRecordSchema = createRecordComponent(table, view, viewRecord)
   registry.register(RECORD_COMPONENT, recordSchema.openapi({ description: table.name.value + " record schema" }))
 
   const routes: RouteConfig[] = [
     getRecords(base, table, recordSchema),
-    getViewRecords(base, table, view, viewRecordSchema),
     getRecordById(base, table, recordSchema),
-    getViewRecordById(base, table, view, viewRecordSchema),
     createRecord(base, table),
     createRecords(base, table),
     updateRecord(base, table),
@@ -58,6 +56,17 @@ export const createOpenApiSpec = (
     bulkDeleteRecords(base, table),
     recordSubscription(base, table),
   ]
+
+  if (view) {
+    const viewRecordSchema = createRecordComponent(table, view, viewRecord)
+    registry.register(
+      VIEW_RECORD_COMPONENT,
+      viewRecordSchema.openapi({ description: table.name.value + " view record schema" }),
+    )
+
+    routes.push(getViewRecords(base, table, view, viewRecordSchema))
+    routes.push(getViewRecordById(base, table, view, viewRecordSchema))
+  }
 
   const apiKeyAuth = registry.registerComponent("securitySchemes", "apiKeyAuth", {
     type: "apiKey",
