@@ -5,13 +5,14 @@ import { z, type ZodTypeAny } from "@undb/zod"
 
 export const RECORD_ID_COMPONENT = "RecordId"
 export const RECORD_COMPONENT = "Record"
+export const VIEW_RECORD_COMPONENT = "ViewRecord"
 export const VIEW_NAME_COMPONENT = "ViewName"
 export const RECORD_VALUES_COMPONENT = "RecordValues"
 export const RECORD_DISPLAY_VALUES_COMPONENT = "RecordDisplayValues"
 
-export const createRecordComponent = (table: TableDo, record?: IReadableRecordDTO) => {
-  const schema = table.schema.readableSchema
-  const displayScheam = table.schema.displayValuesSchema
+export const createRecordComponent = (table: TableDo, view?: View, record?: IReadableRecordDTO) => {
+  const schema = view ? table.schema.getViewReadableSchema(table, view) : table.schema.readableSchema
+  const displayScheam = view ? table.schema.getViewDisplayValuesSchema(table, view) : table.schema.displayValuesSchema
 
   const example = record?.values
   const displayExample = record?.displayValues
@@ -62,7 +63,7 @@ export const getViewRecords = (base: Base, table: TableDo, view: View, recordSch
           "application/json": {
             schema: z.object({
               total: z.number().int().positive(),
-              records: z.array(recordSchema),
+              records: z.array(recordSchema.openapi(VIEW_RECORD_COMPONENT)),
             }),
           },
         },
@@ -116,7 +117,7 @@ export const getViewRecordById = (base: Base, table: TableDo, view: View, record
         content: {
           "application/json": {
             schema: z.object({
-              data: recordSchema.nullable(),
+              data: recordSchema.openapi(VIEW_RECORD_COMPONENT).nullable(),
             }),
           },
         },

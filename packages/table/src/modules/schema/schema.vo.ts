@@ -8,6 +8,8 @@ import {
   WithoutFieldSpecification,
   WithUpdatedFieldSpecification,
 } from "../../specifications"
+import type { TableDo } from "../../table.do"
+import type { View } from "../views"
 import type { ICreateSchemaDTO } from "./dto"
 import type { ISchemaDTO } from "./dto/schema.dto"
 import {
@@ -142,8 +144,8 @@ export class Schema extends ValueObject<Field[]> {
     return z.object(schema)
   }
 
-  getFieldsHasDisplayValue() {
-    return this.fields.filter((f) => getIsFieldHasDisplayValue(f.type))
+  getFieldsHasDisplayValue(fields: Field[] = this.fields) {
+    return fields.filter((f) => getIsFieldHasDisplayValue(f.type))
   }
 
   get displayValuesSchema() {
@@ -157,9 +159,31 @@ export class Schema extends ValueObject<Field[]> {
     return z.object(schema)
   }
 
+  getViewDisplayValuesSchema(table: TableDo, view: View) {
+    const fields = table.getOrderedVisibleFields(view.id.value)
+    const schema = objectify(
+      this.getFieldsHasDisplayValue(fields),
+      (f) => f.name.value,
+      (f) => z.any(),
+    )
+
+    return z.object(schema)
+  }
+
   get readableSchema() {
     const schema = objectify(
       this.fields,
+      (f) => f.name.value,
+      (f) => f.valueSchema,
+    )
+
+    return z.object(schema)
+  }
+
+  getViewReadableSchema(table: TableDo, view: View) {
+    const viewFields = table.getOrderedVisibleFields(view.id.value)
+    const schema = objectify(
+      viewFields,
       (f) => f.name.value,
       (f) => f.valueSchema,
     )
