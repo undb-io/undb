@@ -23,6 +23,7 @@
     "@undb/di": "workspace:*",
     "@undb/domain": "workspace:*",
     "@undb/space": "workspace:*",
+    "@undb/base": "workspace:*",
     "@undb/table": "workspace:*",
     "@undb/zod": "workspace:*",
     "radash": "^12.1.0"

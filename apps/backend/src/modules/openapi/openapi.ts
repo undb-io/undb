@@ -15,7 +15,13 @@ import { CommandBus, QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import { type ICommandBus, type IQueryBus, PaginatedDTO, Some } from "@undb/domain"
 import { createLogger } from "@undb/logger"
-import { API_TOKEN_HEADER_NAME, createOpenApiSpec, type IApiTokenService, injectApiTokenService } from "@undb/openapi"
+import {
+  API_TOKEN_HEADER_NAME,
+  createOpenApiSpec,
+  type IApiTokenService,
+  injectApiTokenService,
+  ViewsOpenApi,
+} from "@undb/openapi"
 import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
 import { GetReadableRecordByIdQuery, GetReadableRecordsQuery } from "@undb/queries"
 import { injectSpaceService, type ISpaceService } from "@undb/space"
@@ -60,7 +66,7 @@ export class OpenAPI {
     private spaceService: ISpaceService,
   ) {}
 
-  async getSpec(baseName: string, tableName: string, viewName?: string) {
+  async getSpec(baseName: string, tableName: string) {
     const ts = withUniqueTable({ baseName, tableName }).unwrap()
     const table = (await this.repo.findOne(Some(ts))).expect("Table not found")
     const base = (await this.baseRepo.findOneById(table.baseId)).expect("Base not found")
@@ -72,18 +78,21 @@ export class OpenAPI {
       })
     ).values.at(0)
 
-    const view = viewName ? table.views.getViewByName(viewName) : undefined
-    const viewRecord = view
-      ? (
-          await this.recordsQueryService.getReadableRecords({
-            tableId: table.id.value,
-            pagination: { limit: 1 },
-            viewId: view.id.value,
-          })
-        ).values.at(0)
-      : undefined
+    const viewsOpenApi: ViewsOpenApi[] = []
+    const views = table.views.views
 
-    const spec = createOpenApiSpec(base, table, view, record, viewRecord)
+    for (const view of views) {
+      const viewRecord = (
+        await this.recordsQueryService.getReadableRecords({
+          tableId: table.id.value,
+          pagination: { limit: 1 },
+          viewId: view.id.value,
+        })
+      ).values.at(0)
+      viewsOpenApi.push({ view, record: viewRecord })
+    }
+
+    const spec = createOpenApiSpec(base, table, record, viewsOpenApi)
     return spec
   }
 
@@ -105,7 +114,7 @@ export class OpenAPI {
       .get(
         "/",
         async (ctx) => {
-          const spec = await this.getSpec(ctx.params.baseName, ctx.params.tableName, ctx.query.view)
+          const spec = await this.getSpec(ctx.params.baseName, ctx.params.tableName)
 
           return `<html>
               <head>
@@ -133,7 +142,6 @@ export class OpenAPI {
         },
         {
           params: t.Object({ baseName: t.String(), tableName: t.String() }),
-          query: t.Object({ view: t.Optional(t.String()) }),
           detail: {
             tags: ["Doc"],
             summary: "Get OpenAPI documentation for a table",
@@ -175,12 +183,11 @@ export class OpenAPI {
       .get(
         "/openapi.json",
         async (ctx) => {
-          const spec = await this.getSpec(ctx.params.baseName, ctx.params.tableName, ctx.query.view)
+          const spec = await this.getSpec(ctx.params.baseName, ctx.params.tableName)
           return spec
         },
         {
           params: t.Object({ baseName: t.String(), tableName: t.String() }),
-          query: t.Object({ view: t.Optional(t.String()) }),
           detail: {
             tags: ["Doc"],
             summary: "Get OpenAPI documentation json spec for a table",
