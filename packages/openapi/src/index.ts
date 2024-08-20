@@ -31,12 +31,16 @@ import {
 
 export const API_TOKEN_HEADER_NAME = "x-undb-api-token"
 
+export interface ViewsOpenApi {
+  view: View
+  record?: IReadableRecordDTO
+}
+
 export const createOpenApiSpec = (
   base: Base,
   table: TableDo,
-  view?: View,
-  record?: IReadableRecordDTO,
-  viewRecord?: IReadableRecordDTO,
+  record: IReadableRecordDTO | undefined,
+  views: ViewsOpenApi[],
 ) => {
   const registry = new OpenAPIRegistry()
 
@@ -57,11 +61,11 @@ export const createOpenApiSpec = (
     recordSubscription(base, table),
   ]
 
-  if (view) {
-    const viewRecordSchema = createRecordComponent(table, view, viewRecord)
+  for (const { view, record } of views) {
+    const viewRecordSchema = createRecordComponent(table, view, record)
     registry.register(
-      VIEW_RECORD_COMPONENT,
-      viewRecordSchema.openapi({ description: table.name.value + " view record schema" }),
+      view.name.value + ":" + VIEW_RECORD_COMPONENT,
+      viewRecordSchema.openapi({ description: table.name.value + " " + view.name.value + " view record schema" }),
     )
 
     routes.push(getViewRecords(base, table, view, viewRecordSchema))
