@@ -21,6 +21,7 @@ import { AttachmentFieldValue, type IAttachmentFieldValue } from "./variants/att
 import { CheckboxFieldValue } from "./variants/checkbox-field"
 import { CreatedByFieldValue } from "./variants/created-by-field"
 import { EmailFieldValue } from "./variants/email-field"
+import { LongTextFieldValue } from "./variants/long-text-field/long-text-field-value.vo"
 import { RatingFieldValue } from "./variants/rating-field"
 import { SelectFieldValue } from "./variants/select-field"
 import { UserFieldValue } from "./variants/user-field"
@@ -40,6 +41,7 @@ export class FieldValueFactory {
       .with({ type: "json" }, (field) => Some(new JsonFieldValue(field.valueSchema.parse(value))))
       .with({ type: "checkbox" }, (field) => Some(new CheckboxFieldValue(field.valueSchema.parse(value))))
       .with({ type: "user" }, (field) => Some(new UserFieldValue(field.valueSchema.parse(value))))
+      .with({ type: "longText" }, (field) => Some(new LongTextFieldValue(field.valueSchema.parse(value))))
       .otherwise(() => None)
   }
 
@@ -64,6 +66,7 @@ export class FieldValueFactory {
       .with("json", () => Some(new JsonFieldValue(value as JsonValue)))
       .with("checkbox", () => Some(new CheckboxFieldValue(value as boolean)))
       .with("user", () => Some(new UserFieldValue(value as string)))
+      .with("longText", () => Some(new LongTextFieldValue(value as string)))
       .exhaustive()
   }
 }

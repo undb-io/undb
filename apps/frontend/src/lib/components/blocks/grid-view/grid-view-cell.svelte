@@ -23,6 +23,7 @@
   import { recordsStore } from "$lib/store/records.store"
   import UrlCell from "./editable-cell/url-cell.svelte"
   import RollupCell from "./editable-cell/rollup-cell.svelte"
+  import LongTextCell from "./editable-cell/long-text-cell.svelte"
 
   const table = getTable()
 
@@ -38,6 +39,7 @@
 
   const map: Record<FieldType, ComponentType> = {
     string: StringCell,
+    longText: LongTextCell,
     number: NumberCell,
     id: IdField,
     createdAt: DateField,
@@ -71,7 +73,7 @@
   readonly={field.isSystem || readonly}
   tableId={$table.id.value}
   class={cn(
-    "flex h-8 items-center border border-transparent px-2 py-1 text-xs",
+    "relative flex h-8 items-center border border-transparent px-2 py-1 text-xs",
     (isSelected || isEditing) && "border-primary",
   )}
   onValueChange={(v) => {

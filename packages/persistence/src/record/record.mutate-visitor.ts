@@ -3,6 +3,7 @@ import type { ISpecification, ISpecVisitor } from "@undb/domain"
 import {
   ID_TYPE,
   JsonContains,
+  LongTextEqual,
   SelectContainsAnyOf,
   SelectField,
   SelectFieldValue,
@@ -136,6 +137,9 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
         this.addSql(insertSql)
       }
     }
+  }
+  longTextEqual(s: LongTextEqual): void {
+    this.setData(s.fieldId.value, s.value)
   }
   attachmentEmpty(s: AttachmentEmpty): void {
     this.setData(s.fieldId.value, null)

@@ -1,5 +1,4 @@
-import type { z } from "@undb/zod"
-import { referenceFieldAggregate, rollupFieldAggregate } from "../.."
+import { referenceFieldAggregate, rollupFieldAggregate } from "./variants"
 import { abstractDateAggregate } from "./variants/abstractions/abstract-date.aggregate"
 import { abstractNumberAggregate } from "./variants/abstractions/abstract-number.aggregate"
 import { abstractUserAggregate } from "./variants/abstractions/abstract-user.aggregate"
@@ -23,5 +22,3 @@ export const fieldAggregate = stringFieldAggregate
   .or(checkboxFieldAggregate)
   .or(userFieldAggregate)
   .or(longTextFieldAggregate)
-
-export type IFieldAggregate = z.infer<typeof fieldAggregate>

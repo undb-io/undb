@@ -41,6 +41,7 @@ enum FieldType {
   email
   id
   json
+  longText
   number
   rating
   reference

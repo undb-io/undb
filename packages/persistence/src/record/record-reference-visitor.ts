@@ -4,6 +4,7 @@ import {
   DateField,
   ID_TYPE,
   JsonField,
+  LongTextField,
   RatingField,
   SelectField,
   UrlField,
@@ -61,6 +62,9 @@ export class RecordReferenceVisitor implements IFieldVisitor {
     throw new Error("Method not implemented.")
   }
   string(field: StringField): void {
+    throw new Error("Method not implemented.")
+  }
+  longText(field: LongTextField): void {
     throw new Error("Method not implemented.")
   }
   number(field: NumberField): void {

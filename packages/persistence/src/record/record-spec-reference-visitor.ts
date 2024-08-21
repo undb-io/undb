@@ -15,6 +15,7 @@ import {
   JsonContains,
   JsonEmpty,
   JsonEqual,
+  LongTextEqual,
   NumberEmpty,
   NumberEqual,
   NumberGT,
@@ -53,6 +54,7 @@ export class RecordSpecReferenceVisitor implements IRecordVisitor {
   }
 
   stringEqual(spec: StringEqual): void {}
+  longTextEqual(spec: LongTextEqual): void {}
   stringContains(spec: StringContains): void {}
   stringStartsWith(spec: StringStartsWith): void {}
   stringEndsWith(spec: StringEndsWith): void {}
