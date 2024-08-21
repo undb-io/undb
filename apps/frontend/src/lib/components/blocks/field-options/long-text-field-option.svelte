@@ -5,9 +5,12 @@
   import Separator from "$lib/components/ui/separator/separator.svelte"
   import * as Alert from "$lib/components/ui/alert/index.js"
 
-  import { StringFieldConstraint, type ILongTextFieldConstraint, type IStringFieldConstraint } from "@undb/table"
+  import { StringFieldConstraint, type ILongTextFieldConstraint, type ILongTextFieldOption } from "@undb/table"
 
   export let constraint: ILongTextFieldConstraint | undefined
+  export let option: ILongTextFieldOption = {
+    allowRichText: false,
+  }
   export let defaultValue: string | undefined
 
   $: c = constraint ? new StringFieldConstraint(constraint) : undefined
@@ -30,10 +33,18 @@
       <Alert.Description>Your default value is invalid. Default value will not be saved.</Alert.Description>
     </Alert.Root>
   {/if}
-  {#if constraint}
-    <div class="pt-2">
-      <Separator />
+  <div class="pt-2">
+    <Separator />
+  </div>
+
+  {#if option}
+    <div class="flex items-center space-x-2">
+      <Checkbox id="allowRichText" bind:checked={option.allowRichText} />
+      <Label for="allowRichText" class="text-xs font-normal">Allow rich text.</Label>
     </div>
+  {/if}
+
+  {#if constraint}
     <div class="flex items-center space-x-2">
       <Checkbox id="required" bind:checked={constraint.required} />
       <Label for="required" class="text-xs font-normal">Mark as required field.</Label>

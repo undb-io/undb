@@ -18,10 +18,17 @@ import { LongTextEqual } from "./long-text-field.specification"
 
 export const LONGTEXT_TYPE = "longText" as const
 
+export const longTextFieldOption = z.object({
+  allowRichText: z.boolean().optional(),
+})
+
+export type ILongTextFieldOption = z.infer<typeof longTextFieldOption>
+
 export const createLongTextFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(LONGTEXT_TYPE),
   constraint: longTextFieldConstraint.optional(),
   defaultValue: longTextFieldValue,
+  option: longTextFieldOption.optional(),
 })
 
 export type ICreateLongTextFieldDTO = z.infer<typeof createLongTextFieldDTO>
@@ -33,6 +40,7 @@ export const longTextFieldDTO = baseFieldDTO.extend({
   type: z.literal(LONGTEXT_TYPE),
   constraint: longTextFieldConstraint.optional(),
   defaultValue: longTextFieldValue,
+  option: longTextFieldOption.optional(),
 })
 
 export type ILongTextFieldDTO = z.infer<typeof longTextFieldDTO>
@@ -46,12 +54,18 @@ export class LongTextField extends AbstractField<LongTextFieldValue, LongTextFie
     if (dto.defaultValue) {
       this.defaultValue = new LongTextFieldValue(dto.defaultValue)
     }
+    if (dto.option) {
+      this.option = Some({ allowRichText: dto.option.allowRichText })
+    }
   }
 
   static create(dto: ICreateLongTextFieldDTO) {
     const field = new LongTextField({ ...dto, id: FieldIdVo.fromStringOrCreate(dto.id).value })
     if (dto.defaultValue) {
       field.defaultValue = new LongTextFieldValue(dto.defaultValue)
+    }
+    if (dto.option) {
+      field.option = Some({ allowRichText: dto.option.allowRichText })
     }
     return field
   }
