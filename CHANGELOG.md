@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-33
+
+
+### 🩹 Fixes
+
+- Bug ([cfe1f4f](https://github.com/undb-io/undb/commit/cfe1f4f))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-32
 
 
