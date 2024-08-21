@@ -144,6 +144,7 @@ export class Graphql {
 
       type FormOption {
         backgroundColor: String
+        autoAddNewField: Boolean
       }
 
       type Form {

@@ -107,10 +107,10 @@ export class FormFieldVO extends ValueObject<IFormField> {
     return new FormFieldVO({ ...this.props, hidden })
   }
 
-  static create(field: Field) {
+  static create(field: Field, hidden = false) {
     return new FormFieldVO({
       fieldId: field.id.value,
-      hidden: false,
+      hidden,
       required: field.required ?? false,
       conditionEnabled: false,
       condition: undefined,

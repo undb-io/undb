@@ -4,6 +4,7 @@ import { colors, type IColors } from "../../colors"
 
 export const formOption = z.object({
   backgroundColor: colors.optional(),
+  autoAddNewField: z.boolean().optional(),
 })
 
 export type IFormOption = z.infer<typeof formOption>
@@ -21,9 +22,18 @@ export class FormOptionVO extends ValueObject<IFormOption> {
     this.props.backgroundColor = value
   }
 
+  public get autoAddNewField() {
+    return this.props.autoAddNewField
+  }
+
+  public set autoAddNewField(value: boolean | undefined) {
+    this.props.autoAddNewField = value
+  }
+
   toJSON() {
     return {
       backgroundColor: this.backgroundColor,
+      autoAddNewField: this.autoAddNewField,
     }
   }
 }
