@@ -99,6 +99,10 @@ export class LongTextField extends AbstractField<LongTextFieldValue, LongTextFie
     return Option(spec)
   }
 
+  public get allowRichText(): boolean {
+    return this.option.unwrapOrElse(() => ({ allowRichText: false })).allowRichText
+  }
+
   protected override getConditionSchema(optionType: z.ZodTypeAny): ILongTextFieldConditionSchema {
     return createLongTextFieldCondition(optionType)
   }

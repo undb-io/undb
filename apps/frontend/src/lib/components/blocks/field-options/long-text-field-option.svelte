@@ -9,7 +9,7 @@
 
   export let constraint: ILongTextFieldConstraint | undefined
   export let option: ILongTextFieldOption = {
-    allowRichText: false,
+    allowRichText: true,
   }
   export let defaultValue: string | undefined
 

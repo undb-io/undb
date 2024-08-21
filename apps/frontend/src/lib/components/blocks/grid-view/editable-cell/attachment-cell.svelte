@@ -145,6 +145,7 @@
             if (!open) {
             }
           }}
+          portal="body"
         >
           <Dialog.Trigger>
             <button>
