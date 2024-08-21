@@ -14,6 +14,14 @@
   export let value: FieldType | undefined = undefined
   export let onValueChange: (value: FieldType) => void = () => {}
 
+  let search = ""
+
+  $: filtered =
+    fieldTypes.filter((f) => {
+      const label = $LL.table.fieldTypes[f]()
+      return label.toLowerCase().includes(search.toLowerCase())
+    }) ?? []
+
   $: selected = allFieldTypes.find((f) => f === value)
   $: selectedValue = selected ?? "Select a field type..."
 
@@ -50,16 +58,11 @@
     </Button>
   </Popover.Trigger>
   <Popover.Content class="p-0" {sameWidth}>
-    <Command.Root
-      filter={(value, search) => {
-        const label = fieldTypes.find((f) => f === value) ?? ""
-        return label.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
-      }}
-    >
-      <Command.Input placeholder="Search field type..." class="h-9" />
+    <Command.Root shouldFilter={false}>
+      <Command.Input bind:value={search} placeholder="Search field type..." class="h-9" />
       <Command.Empty>No field found.</Command.Empty>
       <Command.Group class="max-h-[300px] overflow-y-auto">
-        {#each fieldTypes as type}
+        {#each filtered as type}
           <Command.Item
             value={type}
             onSelect={(currentValue) => {
