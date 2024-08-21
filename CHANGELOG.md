@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-32
+
+
+### 🚀 Enhancements
+
+- Long text allow rich text ([b6ebbcb](https://github.com/undb-io/undb/commit/b6ebbcb))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-31
 
 
