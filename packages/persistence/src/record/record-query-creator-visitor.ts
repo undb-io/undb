@@ -3,6 +3,7 @@ import {
   DateField,
   ID_TYPE,
   JsonField,
+  LongTextField,
   UrlField,
   UserField,
   type AttachmentField,
@@ -76,6 +77,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
   date(field: DateField): void {}
   attachment(field: AttachmentField): void {}
   json(field: JsonField): void {}
+  longText(field: LongTextField): void {}
   user(field: UserField): void {
     if (field.isMultiple) {
       const usersTable = getTableName(users)

@@ -174,6 +174,10 @@ type RootTranslation = {
 			 */
 			string: string
 			/**
+			 * L​o​n​g​ ​T​e​x​t
+			 */
+			longText: string
+			/**
 			 * N​u​m​b​e​r
 			 */
 			number: string
@@ -516,6 +520,10 @@ export type TranslationFunctions = {
 			 * String
 			 */
 			string: () => LocalizedString
+			/**
+			 * Long Text
+			 */
+			longText: () => LocalizedString
 			/**
 			 * Number
 			 */

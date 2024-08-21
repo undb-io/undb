@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-31
+
+
+### 🚀 Enhancements
+
+- Long text field ([6e41355](https://github.com/undb-io/undb/commit/6e41355))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-30
 
 

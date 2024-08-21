@@ -46,11 +46,17 @@
   )
   const { enhance, form: formData } = form
 
+  let open = false
+
   const deleteSpaceMutation = createMutation({
     mutationFn: trpc.base.delete.mutate,
+    onError(error, variables, context) {
+      toast.error(error.message)
+    },
     async onSuccess() {
       toast.success("Base deleted successfully")
       await invalidateAll()
+      open = false
       goto("/")
     },
   })
@@ -95,7 +101,7 @@
     <p class="text-red-500">Danger Zone</p>
     <div>Delete Base</div>
 
-    <AlertDialog.Root>
+    <AlertDialog.Root bind:open>
       <AlertDialog.Trigger asChild let:builder>
         <Button variant="destructive" builders={[builder]} disabled={!$hasPermission("base:delete")}>
           Delete Base

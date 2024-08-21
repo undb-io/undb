@@ -90,6 +90,7 @@ export function getIsSystemFieldType(type: FieldType): type is SystemFieldType {
 
 export const fieldTypes: NoneSystemFieldType[] = [
   "string",
+  "longText",
   "number",
   "select",
   "email",
@@ -115,6 +116,7 @@ export const systemFieldTypes: SystemFieldType[] = [
 
 export const filterableFieldTypes = [
   "string",
+  "longText",
   "number",
   "autoIncrement",
   "checkbox",

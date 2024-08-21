@@ -76,6 +76,13 @@ import type {
   IEmailFieldConstraint,
 } from "./variants/email-field"
 import type { ID_TYPE, IIdFieldConditionSchema, IdField, IdFieldValue } from "./variants/id-field"
+import {
+  LONGTEXT_TYPE,
+  LongTextField,
+  LongTextFieldValue,
+  type ILongTextFieldConditionSchema,
+  type ILongTextFieldConstraint,
+} from "./variants/long-text-field"
 import type { INumberFieldConstraint } from "./variants/number-field/number-field-constraint.vo"
 import type { NumberFieldValue } from "./variants/number-field/number-field-value.vo"
 import type { NUMBER_TYPE, NumberField } from "./variants/number-field/number-field.vo"
@@ -124,6 +131,7 @@ export type Field =
   | JsonField
   | CheckboxField
   | UserField
+  | LongTextField
 
 export type SystemField =
   | IdField
@@ -155,6 +163,7 @@ export type FieldValue =
   | JsonFieldValue
   | CheckboxFieldValue
   | UserFieldValue
+  | LongTextFieldValue
 
 export type MutableFieldValue =
   | StringFieldValue
@@ -169,6 +178,7 @@ export type MutableFieldValue =
   | JsonFieldValue
   | CheckboxFieldValue
   | UserFieldValue
+  | LongTextFieldValue
 
 export type FieldType =
   | typeof STRING_TYPE
@@ -190,6 +200,7 @@ export type FieldType =
   | typeof JSON_TYPE
   | typeof CHECKBOX_TYPE
   | typeof USER_TYPE
+  | typeof LONGTEXT_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
@@ -220,6 +231,7 @@ export type IFieldConditionSchema =
   | IJsonFieldConditionSchema
   | ICheckboxFieldConditionSchema
   | IUserFieldConditionSchema
+  | ILongTextFieldConditionSchema
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
 
@@ -238,5 +250,6 @@ export type IFieldConstraint =
   | IJsonFieldConstraint
   | ICheckboxFieldConstraint
   | IUserFieldConstraint
+  | ILongTextFieldConstraint
 
 export type IFieldOption = IReferenceFieldOption | IRollupFieldOption | ISelectFieldOption

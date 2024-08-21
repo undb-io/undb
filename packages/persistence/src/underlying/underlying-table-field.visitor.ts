@@ -5,6 +5,7 @@ import {
   DateField,
   ID_TYPE,
   JsonField,
+  LongTextField,
   RatingField,
   ReferenceField,
   RollupField,
@@ -97,6 +98,10 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
   }
   string(field: StringField): void {
     const c = this.tb.addColumn(field.id.value, "varchar(255)")
+    this.addColumn(c)
+  }
+  longText(field: LongTextField): void {
+    const c = this.tb.addColumn(field.id.value, "text")
     this.addColumn(c)
   }
   select(field: SelectField): void {

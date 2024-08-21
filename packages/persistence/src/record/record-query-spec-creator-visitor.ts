@@ -1,6 +1,7 @@
 import {
   ID_TYPE,
   JsonContains,
+  LongTextEqual,
   UrlEqual,
   type AttachmentEmpty,
   type AttachmentEqual,
@@ -61,6 +62,7 @@ export class RecordQuerySpecCreatorVisitor implements IRecordVisitor {
     return this.#creator || this.qb
   }
 
+  longTextEqual(s: LongTextEqual): void {}
   stringEqual(spec: StringEqual): void {}
   stringContains(spec: StringContains): void {}
   stringStartsWith(spec: StringStartsWith): void {}

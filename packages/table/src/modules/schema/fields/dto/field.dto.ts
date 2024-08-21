@@ -19,6 +19,7 @@ import { createdAtFieldDTO } from "../variants/created-at-field"
 import { createdByFieldDTO } from "../variants/created-by-field"
 import { createEmailFieldDTO, emailFieldDTO } from "../variants/email-field"
 import { idFieldDTO } from "../variants/id-field/id-field.vo"
+import { createLongTextFieldDTO, longTextFieldDTO } from "../variants/long-text-field"
 import { createNumberFieldDTO, numberFieldDTO } from "../variants/number-field/number-field.vo"
 import { ratingFieldDTO } from "../variants/rating-field"
 import { createStringFieldDTO, stringFieldDTO } from "../variants/string-field/string-field.vo"
@@ -44,6 +45,7 @@ export const fieldDTO = z.discriminatedUnion("type", [
   jsonFieldDTO,
   checkboxFieldDTO,
   userFieldDTO,
+  longTextFieldDTO,
   urlFieldDTO,
 ])
 
@@ -58,6 +60,7 @@ export const inferCreateFieldDTO = z.discriminatedUnion("type", [
   createCheckboxFieldDTO.omit({ id: true, name: true }),
   createSelectFieldDTO.omit({ id: true, name: true }),
   createUrlFieldDTO.omit({ id: true, name: true }),
+  createLongTextFieldDTO.omit({ id: true, name: true }),
 ])
 
 export type IInferCreateFieldDTO = z.infer<typeof inferCreateFieldDTO>

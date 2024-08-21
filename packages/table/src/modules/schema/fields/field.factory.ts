@@ -12,6 +12,7 @@ import { DateField } from "./variants/date-field/date-field.vo"
 import { EmailField } from "./variants/email-field/email-field.vo"
 import { IdField } from "./variants/id-field/id-field.vo"
 import { JsonField } from "./variants/json-field/json-field.vo"
+import { LongTextField } from "./variants/long-text-field"
 import { NumberField } from "./variants/number-field/number-field.vo"
 import { RatingField } from "./variants/rating-field/rating-field.vo"
 import { ReferenceField } from "./variants/reference-field/reference-field.vo"
@@ -44,6 +45,7 @@ export class FieldFactory {
       .with({ type: "json" }, (dto) => new JsonField(dto))
       .with({ type: "checkbox" }, (dto) => new CheckboxField(dto))
       .with({ type: "user" }, (dto) => new UserField(dto))
+      .with({ type: "longText" }, (dto) => new LongTextField(dto))
       .exhaustive()
   }
 
@@ -62,6 +64,7 @@ export class FieldFactory {
       .with({ type: "json" }, (dto) => JsonField.create(dto))
       .with({ type: "checkbox" }, (dto) => CheckboxField.create(dto))
       .with({ type: "user" }, (dto) => UserField.create(dto))
+      .with({ type: "longText" }, (dto) => LongTextField.create(dto))
       .otherwise(() => {
         throw new Error("Field type creation not supported")
       })

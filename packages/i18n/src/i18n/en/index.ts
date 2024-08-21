@@ -45,6 +45,7 @@ const ops: Record<IOpType, string> = {
 
 const fieldTypes: Record<FieldType, string> = {
   string: "String",
+  longText: "Long Text",
   number: "Number",
   date: "Date",
   id: "ID",
