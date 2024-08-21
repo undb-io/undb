@@ -40,6 +40,9 @@
     validators: zodClient(createFormDTO),
     resetForm: false,
     invalidateAll: false,
+    onSubmit(input) {
+      validateForm({ update: true })
+    },
     onUpdate(event) {
       if (!event.form.valid) return
 
@@ -47,7 +50,7 @@
     },
   })
 
-  const { enhance, form: formData } = form
+  const { enhance, form: formData, validateForm } = form
 </script>
 
 {#if $hasPermission("table:update")}

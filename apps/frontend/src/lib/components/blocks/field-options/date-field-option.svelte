@@ -20,6 +20,7 @@
   export let display: boolean | undefined
   export let defaultValue: string | Date | undefined
   export let placeholder: string | undefined = "Default value..."
+  export let disabled: boolean | undefined
 
   function parse(value: string) {
     try {
@@ -44,6 +45,7 @@
         <Button
           variant="outline"
           {...$$restProps}
+          {disabled}
           class={cn(
             "w-full justify-start text-left font-normal",
             !defaultValue && "text-muted-foreground",

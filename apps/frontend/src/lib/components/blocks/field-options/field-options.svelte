@@ -22,6 +22,7 @@
   export let defaultValue: any | undefined
   export let isNew = true
   export let field: Field | undefined = undefined
+  export let disabled = false
 
   const map: Record<NoneSystemFieldType, ComponentType> = {
     string: StringFieldOption,
@@ -43,4 +44,13 @@
   export let type: NoneSystemFieldType
 </script>
 
-<svelte:component this={map[type]} bind:constraint bind:display bind:defaultValue bind:option {isNew} {field} />
+<svelte:component
+  this={map[type]}
+  {disabled}
+  bind:constraint
+  bind:display
+  bind:defaultValue
+  bind:option
+  {isNew}
+  {field}
+/>

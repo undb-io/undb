@@ -4,6 +4,7 @@
   import { Label } from "$lib/components/ui/label/index.js"
 
   export let defaultValue: boolean | undefined
+  export let disabled: boolean | undefined
 </script>
 
 <div class="space-y-1">
@@ -11,10 +12,11 @@
   <Button
     variant="outline"
     class="flex w-full justify-start"
+    {disabled}
     on:click={() => {
       defaultValue = !defaultValue
     }}
   >
-    <Checkbox checked={defaultValue} id="defaultValue" class="bg-background" placeholder="default value" />
+    <Checkbox {disabled} checked={defaultValue} id="defaultValue" class="bg-background" placeholder="default value" />
   </Button>
 </div>

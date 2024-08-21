@@ -5,9 +5,10 @@
 
   export let color: IColors
   export let name: IOptionName
+  export let disabled: boolean = false
 </script>
 
 <div class="flex flex-1 items-center gap-2">
-  <ColorPicker bind:value={color} onColorChange={(value) => (color = value)} />
-  <Input class="bg-background text-xs" bind:value={name} />
+  <ColorPicker {disabled} bind:value={color} onColorChange={(value) => (color = value)} />
+  <Input {disabled} class="bg-background text-xs" bind:value={name} />
 </div>

@@ -11,11 +11,13 @@
 
   export let field: UserField | CreatedByField | UpdatedByField
   export let value: IUserFieldConditionValue
+  export let disabled = false
 </script>
 
 {#if field.type === "createdBy" || field.type === "updatedBy" || (field.type === "user" && field.isSingle && !Array.isArray(value))}
   <UserPicker bind:value>
     <Button
+      {disabled}
       slot="trigger"
       let:builder
       let:selected
@@ -31,6 +33,7 @@
 {#if field.type === "user" && field.isMultiple && !isString(value)}
   <UsersPicker bind:value>
     <Button
+      {disabled}
       slot="trigger"
       let:builder
       let:selected

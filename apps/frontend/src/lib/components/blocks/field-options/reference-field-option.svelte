@@ -14,6 +14,7 @@
   export let option: Partial<ICreateReferenceFieldDTO["option"] | IUpdateReferenceFieldDTO["option"]>
   export let isNew: boolean
   export let field: ReferenceField
+  export let disabled = false
 </script>
 
 {#if isNew}

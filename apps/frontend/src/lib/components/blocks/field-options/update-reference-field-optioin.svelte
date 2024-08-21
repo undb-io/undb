@@ -31,6 +31,7 @@
     symmetricFieldId: undefined,
     condition: undefined,
   }
+  export let disabled: boolean = false
 
   let allowCondition: boolean = !!option.condition
   const getForeignTableStore = new GetForeignTableQueryStore()
@@ -73,6 +74,7 @@
       <div class="space-y-1">
         <Label for="min" class="text-xs font-normal">Min items</Label>
         <NumberInput
+          {disabled}
           id="min"
           min={0}
           max={constraint.max}
@@ -85,6 +87,7 @@
       <div class="space-y-1">
         <Label for="max" class="text-xs font-normal">Max items</Label>
         <NumberInput
+          {disabled}
           id="max"
           min={constraint.min || 0}
           step={1}
@@ -99,7 +102,7 @@
       <Separator />
     </div>
     <div class="flex items-center space-x-2">
-      <Checkbox id="required" bind:checked={constraint.required} />
+      <Checkbox {disabled} id="required" bind:checked={constraint.required} />
       <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
     </div>
   {/if}
@@ -107,6 +110,7 @@
   <div class="space-y-2">
     <div class="flex items-center space-x-2">
       <Checkbox
+        {disabled}
         id="condition"
         bind:checked={allowCondition}
         onCheckedChange={(checked) => {
@@ -122,6 +126,7 @@
     <div use:autoAnimate>
       {#if allowCondition && foreignTable}
         <FiltersEditor
+          {disabled}
           bind:value={$value}
           class="rounded-sm border"
           sameWidth={false}

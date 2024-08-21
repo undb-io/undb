@@ -4,6 +4,7 @@
 
   export let field: SelectField
   export let value: any
+  export let disabled = false
 </script>
 
-<OptionPicker {...$$restProps} bind:value options={field.options} />
+<OptionPicker {disabled} {...$$restProps} bind:value options={field.options} />

@@ -15,6 +15,7 @@
   import FieldTypePicker from "../field-picker/field-type-picker.svelte"
   import { createDefaultField } from "./create-default-field"
   import { LL } from "@undb/i18n/client"
+  import { BetweenVerticalStartIcon, LoaderCircleIcon } from "lucide-svelte"
 
   const table = getTable()
 
@@ -73,7 +74,7 @@
     },
   )
 
-  const { enhance, form: formData, reset, validateForm } = form
+  const { allErrors, enhance, form: formData, reset, validateForm } = form
 
   function updateType(type: FieldType) {
     $formData = createDefaultField($table, type, $LL.table.fieldTypes[type](), name)
@@ -82,12 +83,15 @@
   function onTypeChange(type: FieldType) {
     updateType(type)
   }
+
+  $: disabled = $createFieldMutation.isPending
 </script>
 
 <form method="POST" use:enhance class="space-y-2">
   <Form.Field {form} name="name" class="w-full">
     <Form.Control let:attrs>
       <Input
+        {disabled}
         placeholder="Set field display name..."
         on:change={(e) => {
           name = e.target.value
@@ -106,6 +110,7 @@
     <Form.Control let:attrs>
       <FieldTypePicker
         {...attrs}
+        {disabled}
         value={$formData.type}
         onValueChange={onTypeChange}
         tabIndex={-1}
@@ -117,6 +122,7 @@
   </Form.Field>
 
   <FieldOptions
+    {disabled}
     type={$formData.type}
     bind:option={$formData.option}
     bind:constraint={$formData.constraint}
@@ -124,8 +130,28 @@
     bind:defaultValue={$formData.defaultValue}
   />
 
+  <Form.Field {form} name="constraint" class="w-full">
+    <Form.Control let:attrs></Form.Control>
+    <Form.Description />
+    <Form.FieldErrors />
+  </Form.Field>
+
+  <Form.Field {form} name="option" class="w-full">
+    <Form.Control let:attrs></Form.Control>
+    <Form.Description />
+    <Form.FieldErrors />
+  </Form.Field>
+
   <div class="flex w-full border-t pt-3">
-    <Button type="submit" class="w-full" size="sm" variant="outline">Create field</Button>
+    <Button {disabled} type="submit" class="w-full" size="sm" variant="outline">
+      {#if $createFieldMutation.isPending}
+        <LoaderCircleIcon class="mr-2 h-4 w-4 animate-spin" />
+      {:else}
+        <BetweenVerticalStartIcon class="mr-2 h-4 w-4" />
+      {/if}
+
+      Create field</Button
+    >
   </div>
 </form>
 

@@ -8,6 +8,7 @@
   import Option from "./option.svelte"
 
   export let options: IOption[] = []
+  export let disabled = false
 
   export let open = false
   let search = ""
@@ -33,6 +34,7 @@
         role="combobox"
         aria-expanded={open}
         class={cn("w-full justify-between  overflow-hidden", $$restProps.class)}
+          {disabled}
         {...$$restProps}
       >
         <div class="flex flex-1 items-center gap-1">

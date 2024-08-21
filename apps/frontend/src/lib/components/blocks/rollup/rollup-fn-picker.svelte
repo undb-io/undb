@@ -5,6 +5,7 @@
 
   export let foreignTable: TableDo
   export let rollupFieldId: string
+  export let disabled: boolean = false
 
   $: rollupField = rollupFieldId
     ? foreignTable.schema.getFieldById(new FieldIdVo(rollupFieldId)).into(undefined)
@@ -29,7 +30,7 @@
       }
     }}
   >
-    <Select.Trigger class="w-full">
+    <Select.Trigger {disabled} class="w-full">
       <Select.Value class="text-xs" placeholder="Select a rollup function..." />
     </Select.Trigger>
     <Select.Content sameWidth>

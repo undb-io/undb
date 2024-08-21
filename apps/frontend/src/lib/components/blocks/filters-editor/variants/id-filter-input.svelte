@@ -6,11 +6,13 @@
 
   let isEditing = false
   export let value: string | undefined
+  export let disabled = false
 </script>
 
 {#if isEditing}
   <Input
     autofocus
+    {disabled}
     bind:value
     on:blur={() => (isEditing = false)}
     on:change={() => (isEditing = false)}
@@ -23,6 +25,7 @@
     on:click={() => {
       isEditing = true
     }}
+    {disabled}
     class={cn($$restProps.class, "justify-start")}
   >
     {#if value}

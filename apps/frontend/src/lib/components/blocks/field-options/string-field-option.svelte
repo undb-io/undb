@@ -11,6 +11,7 @@
   export let constraint: IStringFieldConstraint | undefined
   export let display: boolean | undefined
   export let defaultValue: string | undefined
+  export let disabled = false
 
   $: c = constraint ? new StringFieldConstraint(constraint) : undefined
   $: isDefaultValueValid = c && defaultValue ? c.schema.safeParse(defaultValue).success : true
@@ -20,6 +21,7 @@
   <div class="space-y-1">
     <Label for="defaultValue" class="text-xs font-normal">Default value</Label>
     <Input
+    {disabled}
       id="defaultValue"
       class="bg-background flex-1 text-xs"
       placeholder="Default value..."
@@ -37,6 +39,7 @@
       <div class="space-y-1">
         <Label for="min" class="text-xs font-normal">Min length</Label>
         <NumberInput
+        {disabled}
           id="min"
           min={0}
           max={constraint.max}
@@ -49,6 +52,7 @@
       <div class="space-y-1">
         <Label for="max" class="text-xs font-normal">Max length</Label>
         <NumberInput
+        {disabled}
           id="max"
           min={constraint.min || 0}
           step={1}

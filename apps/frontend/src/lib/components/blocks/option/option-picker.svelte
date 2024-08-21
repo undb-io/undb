@@ -15,6 +15,7 @@
   export let value: IOptionId | null = null
   export let onValueChange: (value: IOptionId | null) => void = () => {}
   export let placeholder: string | undefined = undefined
+  export let disabled = false
 
   $: selectedValue = options.find((option) => option.id === value)
   $: filteredOptions = options.filter((option) => option.name.toLowerCase().includes(search.toLowerCase()))
@@ -38,6 +39,7 @@
         role="combobox"
         aria-expanded={open}
         class={cn("w-full justify-between overflow-hidden", $$restProps.class)}
+        {disabled}
         {...$$restProps}
       >
         {#if selectedValue}

@@ -8,6 +8,7 @@
 
   export let constraint: IJsonFieldConstraint | undefined = { required: false }
   export let defaultValue: Json | undefined
+  export let disabled: boolean | undefined
 
   let content: Content = {
     text: undefined,
@@ -25,6 +26,7 @@
   <div class="space-y-1">
     <Label for="defaultValue" class="text-xs font-normal">Default value</Label>
     <JSONEditor
+      readOnly={disabled}
       {content}
       onChange={handleChange}
       mode={Mode.text}
@@ -40,7 +42,7 @@
     </div>
 
     <div class="flex items-center space-x-2 pt-2">
-      <Checkbox id="required" bind:checked={constraint.required} />
+      <Checkbox {disabled} id="required" bind:checked={constraint.required} />
       <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
     </div>
   {/if}

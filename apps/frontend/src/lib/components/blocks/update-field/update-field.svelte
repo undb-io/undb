@@ -17,7 +17,7 @@
   import autoAnimate from "@formkit/auto-animate"
   import { FieldFactory } from "@undb/table/src/modules/schema/fields/field.factory"
   import { cn } from "$lib/utils"
-  import { LoaderCircleIcon } from "lucide-svelte"
+  import { LoaderCircleIcon, PencilIcon } from "lucide-svelte"
 
   const table = getTable()
 
@@ -124,8 +124,11 @@
     <Button disabled={$updateFieldMutation.isPending} type="submit" variant="outline" class="w-full" size="sm">
       {#if $updateFieldMutation.isPending}
         <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
+      {:else}
+        <PencilIcon class="mr-2 h-5 w-5" />
       {/if}
-      Submit</Button
+      Update Field
+      </Button
     >
   </div>
 </form>

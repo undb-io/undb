@@ -38,6 +38,7 @@
   export let value: any | undefined = undefined
   export let displayValue: any | undefined = undefined
   export let op: IOpType | undefined = undefined
+  export let disabled = false
 
   const className = cn("h-8 rounded-l-none border-l-0 py-0 text-xs bg-background", $$restProps.class)
 
@@ -254,6 +255,6 @@
 {#if field && op}
   {@const c = filterFieldInput[field.type]?.[op]}
   {#if c}
-    <svelte:component this={c} bind:value class={className} {field} />
+    <svelte:component this={c} {disabled} bind:value class={className} {field} />
   {/if}
 {/if}

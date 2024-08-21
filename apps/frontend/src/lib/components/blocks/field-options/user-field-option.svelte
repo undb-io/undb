@@ -17,6 +17,7 @@
   export let defaultValue: IUserFieldValue | undefined
   export let field: UserField | undefined
   export let isNew = true
+  export let disabled: boolean = false
 
   let initialMultiple = !isNew && field?.isMultiple
   let multiple = constraint?.max !== 1
@@ -29,6 +30,7 @@
         size="sm"
         id="single"
         bind:checked={multiple}
+        {disabled}
         onCheckedChange={(multiple) => {
           if (!multiple) {
             constraint.max = 1
@@ -62,12 +64,14 @@
         {#if Array.isArray(defaultValue) || defaultValue === undefined || defaultValue === null}
           <Label for="defaultValue" class="block text-xs font-normal">Default value</Label>
           <UsersPicker
+            {disabled}
             id="defaultValue"
             class="bg-background w-full flex-1 text-xs"
             placeholder="Default value..."
             bind:value={defaultValue}
           >
             <Button
+              {disabled}
               slot="trigger"
               variant="outline"
               size="sm"
@@ -94,12 +98,14 @@
       {:else if !Array.isArray(defaultValue)}
         <Label for="defaultValue" class="block text-xs font-normal">Default value</Label>
         <UserPicker
+          {disabled}
           id="defaultValue"
           class="bg-background w-full flex-1 text-xs"
           placeholder="Default value..."
           bind:value={defaultValue}
         >
           <Button
+            {disabled}
             slot="trigger"
             variant="outline"
             size="sm"
@@ -123,6 +129,7 @@
         <div class="space-y-1">
           <Label for="min" class="text-xs font-normal">Min items</Label>
           <NumberInput
+            {disabled}
             id="min"
             min={0}
             max={constraint.max}
@@ -135,6 +142,7 @@
         <div class="space-y-1">
           <Label for="max" class="text-xs font-normal">Max items</Label>
           <NumberInput
+            {disabled}
             id="max"
             min={constraint.min || 0}
             step={1}
@@ -150,7 +158,7 @@
       <Separator />
     </div>
     <div class="flex items-center space-x-2">
-      <Checkbox id="required" bind:checked={constraint.required} />
+      <Checkbox id="required" bind:checked={constraint.required} {disabled} />
       <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
     </div>
   </div>
