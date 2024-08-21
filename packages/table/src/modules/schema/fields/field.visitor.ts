@@ -8,6 +8,7 @@ import type { DateField } from "./variants/date-field"
 import type { EmailField } from "./variants/email-field"
 import type { IdField } from "./variants/id-field/id-field.vo"
 import type { JsonField } from "./variants/json-field"
+import type { LongTextField } from "./variants/long-text-field"
 import type { NumberField } from "./variants/number-field/number-field.vo"
 import type { RatingField } from "./variants/rating-field"
 import type { ReferenceField } from "./variants/reference-field/reference-field.vo"
@@ -21,6 +22,7 @@ import type { UserField } from "./variants/user-field"
 export interface IFieldVisitor {
   id(field: IdField): void
   autoIncrement(field: AutoIncrementField): void
+  longText(field: LongTextField): void
   createdAt(field: CreatedAtField): void
   createdBy(field: CreatedByField): void
   updatedAt(field: UpdatedAtField): void

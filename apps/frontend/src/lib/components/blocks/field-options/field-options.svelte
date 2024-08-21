@@ -14,6 +14,7 @@
   import JsonFieldOption from "./json-field-option.svelte"
   import DateFieldOption from "./date-field-option.svelte"
   import UrlFieldOption from "./url-field-option.svelte"
+  import LongTextFieldOption from "./long-text-field-option.svelte"
 
   export let constraint: IFieldConstraint | undefined
   export let option: any | undefined
@@ -24,6 +25,7 @@
 
   const map: Record<NoneSystemFieldType, ComponentType> = {
     string: StringFieldOption,
+    longText: LongTextFieldOption,
     number: NumberFieldOption,
     reference: ReferenceFieldOption,
     rollup: RollupFieldOption,

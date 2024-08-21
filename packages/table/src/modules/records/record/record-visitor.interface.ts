@@ -4,6 +4,7 @@ import type {
   ICreatedByFieldValueVisitor,
   IDateFieldValueVisitor,
   IJsonFieldValueVisitor,
+  ILongTextFieldValueVisitor,
   INumberFieldValueVisitor,
   IReferenceFieldValueVisitor,
   IUpdatedAtFieldValueVisitor,
@@ -34,4 +35,5 @@ export type IRecordVisitor = IStringFieldValueVisitor &
   IJsonFieldValueVisitor &
   ICheckboxFieldValueVisitor &
   IUserFieldValueVisitor &
+  ILongTextFieldValueVisitor &
   ISpecVisitor

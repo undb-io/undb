@@ -83,6 +83,7 @@ export class Graphql {
 
       enum FieldType {
         string
+        longText
         number
         rating
         email

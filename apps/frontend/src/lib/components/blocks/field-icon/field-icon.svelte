@@ -23,6 +23,7 @@
     ListChecksIcon,
     ListTodoIcon,
     LinkIcon,
+    FolderIcon,
   } from "lucide-svelte"
 
   export let type: FieldType
@@ -30,6 +31,7 @@
 
   const map: Record<FieldType, ComponentType> = {
     id: KeyRoundIcon,
+    longText: FileTextIcon,
     string: StringIcon,
     number: NumberIcon,
     autoIncrement: ArrowDown01Icon,
@@ -43,7 +45,7 @@
     rating: StarIcon,
     email: MailIcon,
     url: LinkIcon,
-    attachment: FileTextIcon,
+    attachment: FolderIcon,
     date: CalendarIcon,
     json: FileJsonIcon,
     checkbox: SquareCheckIcon,

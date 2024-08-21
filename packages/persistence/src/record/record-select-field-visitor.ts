@@ -4,6 +4,7 @@ import {
   DateField,
   ID_TYPE,
   JsonField,
+  LongTextField,
   RatingField,
   SelectField,
   UrlField,
@@ -79,6 +80,10 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   }
 
   select(field: SelectField): void {
+    this.addSelect(this.getField(field.id.value))
+  }
+
+  longText(field: LongTextField): void {
     this.addSelect(this.getField(field.id.value))
   }
 

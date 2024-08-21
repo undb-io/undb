@@ -3,6 +3,7 @@ import { createDateFieldDTO, createJsonFieldDTO, createUrlFieldDTO } from "../va
 import { createAttachmentFieldDTO } from "../variants/attachment-field"
 import { createCheckboxFieldDTO } from "../variants/checkbox-field"
 import { createEmailFieldDTO } from "../variants/email-field"
+import { createLongTextFieldDTO } from "../variants/long-text-field"
 import { createNumberFieldDTO } from "../variants/number-field/number-field.vo"
 import { createRatingFieldDTO } from "../variants/rating-field/rating-field.vo"
 import { createReferenceFieldDTO } from "../variants/reference-field/reference-field.vo"
@@ -25,6 +26,7 @@ export const createFieldDTO = z.discriminatedUnion("type", [
   createJsonFieldDTO,
   createCheckboxFieldDTO,
   createUserFieldDTO,
+  createLongTextFieldDTO,
 ])
 
 export type ICreateFieldDTO = z.infer<typeof createFieldDTO>
