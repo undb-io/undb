@@ -100,7 +100,7 @@
             disabled={field.required}
             onCheckedChange={(checked) => {
               formField.setRequired(field, checked)
-              form.option = formOption
+              form = form
 
               setForm()
             }}
