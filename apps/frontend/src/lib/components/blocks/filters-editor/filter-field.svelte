@@ -8,6 +8,7 @@
   export let onValueChange: ((value: FieldType | undefined, prev: FieldType) => void) | undefined = undefined
   export let sameWidth = true
   export let table: Writable<TableDo> | undefined = undefined
+  export let disabled = false
 </script>
 
-<FieldPicker bind:table bind:value {...$$restProps} {filter} {onValueChange} {sameWidth} />
+<FieldPicker bind:table bind:value {disabled} {...$$restProps} {filter} {onValueChange} {sameWidth} />

@@ -31,6 +31,7 @@
   export let level = 1
   export let defaultConjunction: Conjunction = "and"
   export let filter: (field: IField) => boolean = () => true
+  export let disabled = false
 
   $: filteredFields = table.getOrderedVisibleFields().filter((f) => filter({ id: f.id.value, type: f.type }))
   export let disableGroup = false
@@ -111,13 +112,14 @@
               </div>
             {:else}
               <ConjunctionPicker
-                disabled={i !== 1}
+                disabled={i !== 1 || disabled}
                 class="col-span-2 bg-white text-center text-xs"
                 bind:value={value.conjunction}
               />
             {/if}
             <div class="col-span-9 grid grid-cols-12 items-center">
               <FilterField
+                {disabled}
                 table={writable(table)}
                 {sameWidth}
                 onValueChange={(type, prev) => {
@@ -131,14 +133,14 @@
                 bind:value={child.field}
                 class={cn("col-span-4 rounded-r-none border-r-0")}
               />
-              <FieldFilterControl {field} bind:op={child.op} bind:value={child.value} />
+              <FieldFilterControl {disabled} {field} bind:op={child.op} bind:value={child.value} />
             </div>
             <div class="col-span-1 flex items-center gap-2">
               {#if $hasPermission("table:update")}
-                <button type="button" on:click={() => removeFilter(i)}>
+                <button {disabled} type="button" on:click={() => removeFilter(i)}>
                   <Trash2Icon class="text-muted-foreground h-3 w-3" />
                 </button>
-                <button type="button" class="handler">
+                <button {disabled} type="button" class="handler">
                   <GripVertical class="text-muted-foreground h-3 w-3" />
                 </button>
               {/if}
@@ -148,7 +150,7 @@
           <div class="space-y-2">
             <div class="grid grid-cols-12 gap-2">
               <ConjunctionPicker
-                disabled={i !== 1}
+                disabled={i !== 1 || disabled}
                 class="col-span-2 bg-white text-center text-xs"
                 bind:value={value.conjunction}
               />
@@ -156,7 +158,8 @@
               <div class="col-span-1 flex items-center gap-2">
                 {#if $hasPermission("table:update")}
                   <button
-                    type="button"
+                    {disabled}
+                                    type="button"
                     on:click={(e) => {
                       e.stopPropagation()
                       removeFilter(i)
@@ -164,7 +167,7 @@
                   >
                     <Trash2Icon class="text-muted-foreground h-3 w-3" />
                   </button>
-                  <button type="button" class="handler">
+                  <button {disabled} type="button" class="handler">
                     <GripVertical class="text-muted-foreground h-3 w-3" />
                   </button>
                 {/if}
@@ -179,14 +182,14 @@
   <div class={cn("flex justify-between px-4", value?.children.length ? "border-t py-2" : "py-3")}>
     <div class="flex items-center gap-2">
       {#if $hasPermission("table:update")}
-        <Button disabled={!filteredFields.length} variant="ghost" size="sm" on:click={addCondition}>
+        <Button disabled={!filteredFields.length || disabled} variant="ghost" size="sm" on:click={addCondition}>
           <PlusIcon class="mr-2 h-3 w-3" />
           Add Condition
         </Button>
         {#if !disableGroup}
           {#if level < 3}
             <Button
-              disabled={!filteredFields.length}
+              disabled={!filteredFields.length || disabled}
               variant="ghost"
               class="text-muted-foreground"
               size="sm"

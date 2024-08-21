@@ -8,6 +8,7 @@
   export let field: Field | undefined
   export let op: IOpType | undefined
   export let value: any | undefined = undefined
+  export let disabled = false
 
   $: conditionOps = field?.conditionOps ?? []
   $: ops = conditionOps.map((op) => ({ value: op, label: $LL.table.ops[op]() })) ?? []
@@ -16,12 +17,12 @@
     op = ops[0]?.value
   }
 
-  $: hasValue = op ? field?.isOpHasValue(op) ?? false : false
+  $: hasValue = op ? (field?.isOpHasValue(op) ?? false) : false
 </script>
 
 <div class="col-span-8 flex flex-1 items-center gap-0">
-  <OpPicker {field} bind:value={op} class={cn("rounded-l-none", hasValue && "rounded-r-none")} />
+  <OpPicker {disabled} {field} bind:value={op} class={cn("rounded-l-none", hasValue && "rounded-r-none")} />
   {#if hasValue}
-    <FilterInput class="w-full flex-1" {field} bind:value {op} />
+    <FilterInput {disabled} class="w-full flex-1" {field} bind:value {op} />
   {/if}
 </div>

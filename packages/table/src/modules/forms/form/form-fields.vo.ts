@@ -10,8 +10,8 @@ export class FormFieldsVO extends ValueObject<FormFieldVO[]> {
     return new FormFieldsVO(fields.map((field) => FormFieldVO.create(field)))
   }
 
-  public addField(field: Field) {
-    return new FormFieldsVO([...this.props, FormFieldVO.create(field)])
+  public addField(field: Field, hidden = false) {
+    return new FormFieldsVO([...this.props, FormFieldVO.create(field, hidden)])
   }
 
   public deleteField(field: Field) {

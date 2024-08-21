@@ -9,6 +9,7 @@
   export let constraint: INumberFieldConstraint | undefined
   export let display: boolean | undefined
   export let defaultValue: number | undefined
+  export let disabled = false
 
   $: c = constraint ? new NumberFieldConstraint(constraint) : undefined
   $: isDefaultValueValid = c && defaultValue ? c.schema.safeParse(defaultValue).success : true
@@ -18,6 +19,7 @@
   <div class="space-y-1">
     <Label for="defaultValue" class="text-xs font-normal">Default value</Label>
     <NumberInput
+      {disabled}
       id="defaultValue"
       class="bg-background flex-1 text-xs"
       placeholder="Default value..."
@@ -36,6 +38,7 @@
       <div class="space-y-1">
         <Label for="min" class="text-xs font-normal">Min</Label>
         <NumberInput
+          {disabled}
           id="min"
           min={0}
           max={constraint.max}
@@ -48,6 +51,7 @@
       <div class="space-y-1">
         <Label for="max" class="text-xs font-normal">Max</Label>
         <NumberInput
+          {disabled}
           id="max"
           min={constraint.min || 0}
           step={1}
@@ -62,12 +66,12 @@
       <Separator />
     </div>
     <div class="flex items-center space-x-2">
-      <Checkbox id="required" bind:checked={constraint.required} />
+      <Checkbox id="required" {disabled} bind:checked={constraint.required} />
       <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
     </div>
 
     <div class="flex items-center space-x-2">
-      <Checkbox id="display" bind:checked={display} />
+      <Checkbox id="display" {disabled} bind:checked={display} />
       <Label for="display" class="text-xs font-normal">Mark as display field.</Label>
     </div>
   {/if}

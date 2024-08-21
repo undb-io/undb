@@ -7,6 +7,7 @@
 
   export let value: JsonValue | undefined = undefined
   export let field: JsonField
+  export let disabled = false
 
   let content: Content = {
     text: undefined,
@@ -22,7 +23,12 @@
 
 <Popover.Root>
   <Popover.Trigger asChild let:builder>
-    <Button variant="outline" builders={[builder]} class={cn("w-full justify-start truncate", $$restProps.class)}>
+    <Button
+      {disabled}
+      variant="outline"
+      builders={[builder]}
+      class={cn("w-full justify-start truncate", $$restProps.class)}
+    >
       {#if value}
         <span>{JSON.stringify(value)}</span>
       {/if}

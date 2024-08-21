@@ -12,6 +12,7 @@
   export let field: Field | undefined
   $: conditionOps = field?.conditionOps ?? []
   $: ops = conditionOps.map((op) => ({ value: op, label: $LL.table.ops[op]() })) ?? []
+  export let disabled = false
 
   let open = false
   export let value: IOpType | undefined = undefined
@@ -29,6 +30,7 @@
 <Popover.Root bind:open let:ids portal="body">
   <Popover.Trigger asChild let:builder>
     <Button
+      {disabled}
       builders={[builder]}
       size="sm"
       variant="outline"

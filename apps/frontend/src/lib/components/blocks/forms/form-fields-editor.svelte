@@ -121,7 +121,8 @@
       {#each filteredFields as formField (formField.fieldId)}
         {@const field = schema.get(formField.fieldId)}
         {#if field}
-          {@const disabled = formField.getRequired(field)}
+          {@const required = formField.getRequired(field)}
+          {@const hiddenDisabled = required && !formField.defaultValue}
           <button
             class={cn("flex w-full items-center justify-between text-pretty p-2 text-sm transition-all", {
               "bg-gray-50 shadow-inner": formField.fieldId === $selectedFieldId,
@@ -153,9 +154,9 @@
                 <Tooltip.Trigger>
                   <Switch
                     size="sm"
-                    bind:checked={formField.required}
-                    on:click={(e) => {
-                      e.stopPropagation()
+                    checked={formField.getRequired(field)}
+                    onCheckedChange={(checked) => {
+                      formField.setRequired(field, checked)
                       setForm()
                     }}
                     disabled={field.required}
@@ -165,8 +166,14 @@
                   <p>Required</p>
                 </Tooltip.Content>
               </Tooltip.Root>
-              <label class={cn(disabled ? "cursor-not-allowed" : "cursor-pointer")}>
-                <input type="checkbox" class="hidden" bind:checked={formField.hidden} {disabled} on:change={setForm} />
+              <label class={cn(hiddenDisabled ? "cursor-not-allowed" : "cursor-pointer")}>
+                <input
+                  type="checkbox"
+                  class="hidden"
+                  bind:checked={formField.hidden}
+                  disabled={hiddenDisabled}
+                  on:change={setForm}
+                />
                 {#if formField.hidden}
                   <EyeClosed class="h-4 w-4" />
                 {:else}

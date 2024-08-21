@@ -11,6 +11,7 @@
   export let option: ILongTextFieldOption = {
     allowRichText: true,
   }
+  export let disabled = false
   export let defaultValue: string | undefined
 
   $: c = constraint ? new StringFieldConstraint(constraint) : undefined
@@ -21,6 +22,7 @@
   <div class="space-y-1">
     <Label for="defaultValue" class="text-xs font-normal">Default value</Label>
     <Input
+      {disabled}
       id="defaultValue"
       class="bg-background flex-1 text-xs"
       placeholder="Default value..."
@@ -39,14 +41,14 @@
 
   {#if option}
     <div class="flex items-center space-x-2">
-      <Checkbox id="allowRichText" bind:checked={option.allowRichText} />
+      <Checkbox id="allowRichText" {disabled} bind:checked={option.allowRichText} />
       <Label for="allowRichText" class="text-xs font-normal">Allow rich text.</Label>
     </div>
   {/if}
 
   {#if constraint}
     <div class="flex items-center space-x-2">
-      <Checkbox id="required" bind:checked={constraint.required} />
+      <Checkbox id="required" {disabled} bind:checked={constraint.required} />
       <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
     </div>
   {/if}

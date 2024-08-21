@@ -20,8 +20,9 @@
   import { writable } from "svelte/store"
   import { GetForeignTableQueryStore } from "$houdini"
   import autoAnimate from "@formkit/auto-animate"
-  import { onMount } from "svelte"
   import { isEqual } from "radash"
+
+  export let disabled = false
 
   export let constraint: IReferenceFieldConstraint | undefined = {
     required: false,
@@ -56,15 +57,16 @@
 <div class="space-y-2">
   {#if option}
     <div class="space-y-1">
-      <Label class="text-muted-foreground flex items-center text-xs font-normal">
-        <ExternalLinkIcon class="mr-2 h-3 w-3" />
+      <Label class="text-muted-foreground flex items-center gap-2 text-xs font-normal">
+        <ExternalLinkIcon class="h-3 w-3" />
         Foreign table
+        <span class="text-red-500"> * </span>
       </Label>
-      <ForeignTablePicker bind:value={option.foreignTableId} class="text-xs" />
+      <ForeignTablePicker {disabled} bind:value={option.foreignTableId} class="text-xs" />
     </div>
   {/if}
   <div class="flex items-center gap-2">
-    <Checkbox id="createSymmetricField" bind:checked={option.createSymmetricField} />
+    <Checkbox id="createSymmetricField" {disabled} bind:checked={option.createSymmetricField} />
     <Label for="createSymmetricField" class="text-xs font-normal">Create symmetric field</Label>
   </div>
   {#if constraint}
@@ -72,6 +74,7 @@
       <div class="space-y-1">
         <Label for="min" class="text-xs font-normal">Min items</Label>
         <NumberInput
+          {disabled}
           id="min"
           min={0}
           max={constraint.max}
@@ -84,6 +87,7 @@
       <div class="space-y-1">
         <Label for="max" class="text-xs font-normal">Max items</Label>
         <NumberInput
+          {disabled}
           id="max"
           min={constraint.min || 0}
           step={1}
@@ -98,20 +102,21 @@
       <Separator />
     </div>
     <div class="flex items-center space-x-2">
-      <Checkbox id="required" bind:checked={constraint.required} />
+      <Checkbox {disabled} id="required" bind:checked={constraint.required} />
       <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
     </div>
   {/if}
 
   <div class="space-y-2">
     <div class="flex items-center space-x-2">
-      <Checkbox id="condition" bind:checked={allowCondition} />
+      <Checkbox {disabled} id="condition" bind:checked={allowCondition} />
       <Label for="condition" class="text-xs font-normal">Limit record selection to condition.</Label>
     </div>
 
     <div use:autoAnimate>
       {#if allowCondition && foreignTable}
         <FiltersEditor
+          {disabled}
           bind:value={$value}
           class="rounded-sm border"
           sameWidth={false}

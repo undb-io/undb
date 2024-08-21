@@ -10,6 +10,7 @@
 
   export let readonly = false
   const formatter = format("yyyy-MM-dd")
+  export let disabled = false
 
   export let value: string | Date | undefined = undefined
   function parse(value: string) {
@@ -27,7 +28,7 @@
 <Popover.Root bind:open openFocus>
   <Popover.Trigger asChild let:builder>
     <Button
-      disabled={readonly}
+      disabled={readonly || disabled}
       variant="outline"
       {...$$restProps}
       class={cn("w-full justify-start text-left font-normal", !value && "text-muted-foreground", $$restProps.class)}

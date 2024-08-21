@@ -7,6 +7,7 @@
 
   export let constraint: IRatingFieldConstraint | undefined
   export let defaultValue: number | undefined
+  export let disabled: boolean = false
 </script>
 
 <div class="space-y-2">
@@ -18,6 +19,7 @@
       placeholder="Default value..."
       bind:value={defaultValue}
       max={constraint?.max}
+      {disabled}
     />
   </div>
   {#if constraint}
@@ -32,6 +34,7 @@
           bind:value={constraint.min}
           placeholder="Min value..."
           class="bg-background text-xs"
+          {disabled}
         />
       </div>
       <div class="space-y-1">
@@ -43,6 +46,7 @@
           bind:value={constraint.max}
           placeholder="Max value..."
           class="bg-background text-xs"
+          {disabled}
         />
       </div>
     </div>
@@ -51,7 +55,7 @@
       <Separator />
     </div>
     <div class="flex items-center space-x-2">
-      <Checkbox id="required" bind:checked={constraint.required} />
+      <Checkbox {disabled} id="required" bind:checked={constraint.required} />
       <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
     </div>
   {/if}

@@ -15,6 +15,8 @@
   import Label from "$lib/components/ui/label/label.svelte"
   import autoAnimate from "@formkit/auto-animate"
 
+  export let disabled: boolean = false
+
   const table = getTable()
 
   export let option: Partial<IRollupFieldOption> = {
@@ -43,6 +45,7 @@
     <Label class="text-xs font-normal">Reference field</Label>
     <FieldPicker
       placeholder="Select a reference field..."
+      {disabled}
       class="w-full justify-start"
       {...$$restProps}
       bind:value={option.referenceFieldId}
@@ -56,6 +59,7 @@
         <Label class="text-xs font-normal">Foreign rollup field</Label>
         <FieldPicker
           class="w-full"
+          {disabled}
           {...$$restProps}
           bind:value={option.rollupFieldId}
           table={foreignTableDo}
@@ -67,7 +71,7 @@
     {#if $foreignTableDo && option.rollupFieldId}
       <div class="space-y-1">
         <Label class="text-xs font-normal">Aggregate function</Label>
-        <RollupFnPicker foreignTable={$foreignTableDo} rollupFieldId={option.rollupFieldId} bind:value={option.fn} />
+        <RollupFnPicker {disabled} foreignTable={$foreignTableDo} rollupFieldId={option.rollupFieldId} bind:value={option.fn} />
       </div>
     {/if}
   </div>

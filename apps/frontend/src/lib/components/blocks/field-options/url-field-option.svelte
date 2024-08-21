@@ -9,6 +9,7 @@
   export let constraint: IUrlFieldConstraint | undefined
   export let display: boolean | undefined
   export let defaultValue: string | undefined
+  export let disabled: boolean | undefined
 
   $: c = constraint ? new UrlFieldConstraint(constraint) : undefined
   $: isDefaultValueValid = c && defaultValue ? c.schema.safeParse(defaultValue).success : true
@@ -23,6 +24,7 @@
       class="bg-background flex-1 text-xs"
       placeholder="Default value..."
       bind:value={defaultValue}
+      {disabled}
     />
   </div>
 
@@ -38,12 +40,12 @@
     </div>
 
     <div class="flex items-center space-x-2">
-      <Checkbox id="required" bind:checked={constraint.required} />
+      <Checkbox id="required" bind:checked={constraint.required} {disabled} />
       <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
     </div>
 
     <div class="flex items-center space-x-2">
-      <Checkbox id="display" bind:checked={display} />
+      <Checkbox id="display" bind:checked={display} {disabled} />
       <Label for="display" class="text-xs font-normal">Mark as display field.</Label>
     </div>
   {/if}

@@ -18,6 +18,7 @@
   export let open = false
   export let value: IMultipleUserFieldValue
   export let onValueChange: (value: IMultipleUserFieldValue) => void = () => {}
+  export let disabled: boolean = false
 
   $: selectedValue = value?.map((v) => users.find((f) => f?.user.id === v)).filter((v) => !!v) ?? []
 
@@ -33,6 +34,7 @@
         role="combobox"
         aria-expanded={open}
         class={cn("w-full justify-between", $$restProps.class)}
+        {disabled}
         {...$$restProps}
       >
         <div class="flex flex-1 items-center gap-1 overflow-hidden">

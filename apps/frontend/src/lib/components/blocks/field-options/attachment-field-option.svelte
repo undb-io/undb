@@ -8,6 +8,7 @@
   import type { IAttachmentFieldConstraint } from "@undb/table"
 
   export let constraint: IAttachmentFieldConstraint | undefined
+  export let disabled: boolean = false
 </script>
 
 {#if constraint}
@@ -22,6 +23,7 @@
         bind:value={constraint.min}
         placeholder="Min items..."
         class="bg-background text-xs"
+        {disabled}
       />
     </div>
     <div class="space-y-1">
@@ -33,6 +35,7 @@
         bind:value={constraint.max}
         placeholder="Max items..."
         class="bg-background text-xs"
+        {disabled}
       />
     </div>
   </div>
@@ -41,7 +44,7 @@
     <Separator />
   </div>
   <div class="flex items-center space-x-2">
-    <Checkbox id="required" bind:checked={constraint.required} />
+    <Checkbox {disabled} id="required" bind:checked={constraint.required} />
     <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
   </div>
 {/if}

@@ -9,6 +9,7 @@
   type $$Props = Props
 
   export let value: IColors | undefined = undefined
+  export let disabled: boolean = false
 
   $: if (!value) {
     value = COLORS[0]
@@ -21,7 +22,7 @@
 </script>
 
 <Popover.Root openFocus bind:open>
-  <Popover.Trigger>
+  <Popover.Trigger {disabled}>
     <ColorItem {value} class="flex items-center justify-center">
       <ChevronDownIcon class={cn("h-4 w-4", value ? "text-white" : "text-black")} />
     </ColorItem>

@@ -11,6 +11,7 @@
   import type { FieldType } from "@undb/table"
 
   export let table = getTable()
+  export let disabled = false
 
   interface IField {
     id: string
@@ -56,6 +57,7 @@
       role="combobox"
       aria-expanded={open}
       class={cn("justify-between", $$restProps.class)}
+      {disabled}
       {...$$restProps}
     >
       <span class="flex flex-1 items-center overflow-hidden text-ellipsis" title={selectedValue}>
