@@ -38,6 +38,9 @@ export class FormFieldVO extends ValueObject<IFormField> {
 
   public set defaultValue(value: any) {
     this.props.defaultValue = value
+    if ((value === null || value === undefined) && this.required) {
+      this.hidden = false
+    }
   }
 
   public set hidden(value: boolean) {
@@ -57,6 +60,14 @@ export class FormFieldVO extends ValueObject<IFormField> {
       return true
     }
     return this.props.required
+  }
+
+  public setRequired(field: Field, value: boolean) {
+    if (field.required) {
+      this.props.required = true
+    } else {
+      this.props.required = value
+    }
   }
 
   public get conditionEnabled() {

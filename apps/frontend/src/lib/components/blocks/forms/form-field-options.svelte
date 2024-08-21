@@ -6,6 +6,7 @@
     type MaybeConditionGroup,
     toMaybeConditionGroup,
     parseValidViewFilter,
+    formOption,
   } from "@undb/table"
   import { Switch } from "$lib/components/ui/switch"
   import { Label } from "$lib/components/ui/label"
@@ -85,18 +86,24 @@
       <div class="flex items-center gap-3">
         <Label class="flex items-center gap-2 text-xs">
           {#if !previousFields.length}
-            <Switch disabled class="text-sm" checked={false} />
+            <Switch size="sm" disabled class="text-sm" checked={false} />
           {:else}
-            <Switch class="text-sm" bind:checked={formField.conditionEnabled} on:click={setForm} />
+            <Switch size="sm" class="text-sm" bind:checked={formField.conditionEnabled} on:click={setForm} />
           {/if}
-          <span>enable condition</span>
+          <span>Enable condition</span>
         </Label>
         <Label class="flex items-center gap-2 text-xs">
           <Switch
             class="text-sm"
-            bind:checked={formField.required}
+            size="sm"
+            checked={formField.getRequired(field)}
             disabled={field.required}
-            on:click={() => setForm()}
+            onCheckedChange={(checked) => {
+              formField.setRequired(field, checked)
+              form.option = formOption
+
+              setForm()
+            }}
           />
           <span>required</span>
         </Label>
@@ -106,7 +113,7 @@
             type="checkbox"
             class="hidden"
             bind:checked={formField.hidden}
-            disabled={formField.required}
+            disabled={formField.getRequired(field) && !formField.defaultValue}
             on:click={setForm}
           />
           {#if formField.hidden}
