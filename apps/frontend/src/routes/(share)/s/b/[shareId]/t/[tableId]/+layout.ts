@@ -6,12 +6,11 @@ export const prerender = "auto"
 export const load: LayoutLoad = async (event) => {
   const getBaseTableShareData = new GetBaseTableShareDataStore()
 
+  const { shareId, tableId } = event.params
+
   await getBaseTableShareData.fetch({
     event,
-    variables: {
-      shareId: event.params.shareId,
-      tableId: event.params.tableId,
-    },
+    variables: { shareId, tableId },
   })
 
   return {

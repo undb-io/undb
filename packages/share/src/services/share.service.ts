@@ -20,6 +20,7 @@ import {
   type ITableDTO,
   type ITableQueryRepository,
   type ITableRepository,
+  type SingleQueryArgs,
 } from "@undb/table"
 import { match } from "ts-pattern"
 import type { IDisableShareDTO, IEnableShareDTO, IShareDTO } from "../dto"
@@ -199,8 +200,14 @@ export class ShareService implements IShareService {
       })
 
     const table = (await this.tableRepo.findOne(Some(spec))).expect("table not found")
+    const view = table.views.getViewById(viewId)
 
-    const record = await this.recordRepo.findOneById(table, new RecordIdVO(recordId), None)
+    const query: SingleQueryArgs = {
+      select: None,
+      view,
+    }
+
+    const record = await this.recordRepo.findOneById(table, new RecordIdVO(recordId), Some(query))
     if (record.isNone()) {
       return None
     }
