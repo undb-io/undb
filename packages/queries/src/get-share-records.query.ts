@@ -7,7 +7,7 @@ export const getShareRecordsQuery = z.object({
   shareId: shareIdSchema,
   tableId: tableId.optional(),
   viewId: viewId.optional(),
-  q: z.string().optional(),
+  q: z.string().optional().nullable(),
 })
 
 export type IGetShareRecordsQuery = z.infer<typeof getShareRecordsQuery>
