@@ -46,9 +46,51 @@ export class WithShareForm extends CompositeSpecification<Share, IShareSpecVisit
   }
 }
 
+export class WithShareTable extends CompositeSpecification<Share, IShareSpecVisitor> {
+  constructor(public readonly tableId: string) {
+    super()
+  }
+
+  isSatisfiedBy(s: Share): boolean {
+    return s.target.type === "table" && s.target.id === this.tableId
+  }
+
+  mutate(w: Share): Result<Share, string> {
+    w.target = new ShareTarget({ type: "table", id: this.tableId })
+    return Ok(w)
+  }
+
+  accept(v: IShareSpecVisitor): Result<void, string> {
+    v.targetTable(this)
+    return Ok(undefined)
+  }
+}
+
+export class WithShareBase extends CompositeSpecification<Share, IShareSpecVisitor> {
+  constructor(public readonly baseId: string) {
+    super()
+  }
+
+  isSatisfiedBy(s: Share): boolean {
+    return s.target.type === "base" && s.target.id === this.baseId
+  }
+
+  mutate(w: Share): Result<Share, string> {
+    w.target = new ShareTarget({ type: "base", id: this.baseId })
+    return Ok(w)
+  }
+
+  accept(v: IShareSpecVisitor): Result<void, string> {
+    v.targetBase(this)
+    return Ok(undefined)
+  }
+}
+
 export const withShare = (type: IShareType | undefined, id: string) => {
   return match(type)
     .with("view", undefined, () => new WithShareView(id))
     .with("form", () => new WithShareForm(id))
+    .with("table", () => new WithShareTable(id))
+    .with("base", () => new WithShareBase(id))
     .exhaustive()
 }

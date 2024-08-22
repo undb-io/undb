@@ -199,7 +199,7 @@ const tableRouter = t.router({
     .use(authz("table:list"))
     .input(z.void())
     .output(tableDTO.array())
-    .query(() => queryBus.execute(new GetTablesQuery())),
+    .query(() => queryBus.execute(new GetTablesQuery({}))),
   get: privateProcedure
     .use(authz("table:read"))
     .input(getTableQuery)
@@ -333,7 +333,6 @@ const baseRouter = t.router({
 
 const shareRouter = t.router({
   enable: privateProcedure
-    .use(authz("share:enable"))
     .input(enableShareCommand)
     .mutation(({ input }) => commandBus.execute(new EnableShareCommand(input))),
   disable: privateProcedure

@@ -1,5 +1,6 @@
+import { baseIdSchema } from "@undb/base"
 import { ValueObject } from "@undb/domain"
-import { formId, viewId } from "@undb/table"
+import { formId, tableId, viewId } from "@undb/table"
 import { z } from "zod"
 
 const shareTargetView = z.object({
@@ -12,10 +13,25 @@ const shareTargetForm = z.object({
   id: formId,
 })
 
-export const shareType = z.enum(["view", "form"])
+const shareTargetTable = z.object({
+  type: z.literal("table"),
+  id: tableId,
+})
+
+const shareTargetBase = z.object({
+  type: z.literal("base"),
+  id: baseIdSchema,
+})
+
+export const shareType = z.enum(["view", "form", "table", "base"])
 export type IShareType = z.infer<typeof shareType>
 
-export const shareTargetSchema = z.discriminatedUnion("type", [shareTargetView, shareTargetForm])
+export const shareTargetSchema = z.discriminatedUnion("type", [
+  shareTargetView,
+  shareTargetForm,
+  shareTargetTable,
+  shareTargetBase,
+])
 
 export type IShareTarget = z.infer<typeof shareTargetSchema>
 

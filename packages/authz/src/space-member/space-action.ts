@@ -34,8 +34,11 @@ export const spaceActions = z.enum([
   "webhook:delete",
   "webhook:list",
 
-  "share:enable",
   "share:disable",
+  "share:view",
+  "share:table",
+  "share:base",
+  "share:form",
 
   "authz:invite",
   "authz:listInvitation",

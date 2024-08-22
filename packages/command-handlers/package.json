@@ -17,6 +17,7 @@
     "@undb/di": "workspace:*",
     "@undb/logger": "workspace:*",
     "@undb/openapi": "workspace:*",
-    "@undb/user": "workspace:*"
+    "@undb/user": "workspace:*",
+    "ts-pattern": "^5.3.1"
   }
 }
