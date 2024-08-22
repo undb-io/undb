@@ -9,6 +9,7 @@
   export let sameWidth = true
   export let table: Writable<TableDo> | undefined = undefined
   export let disabled = false
+  export let readonly = false
 </script>
 
-<FieldPicker bind:table bind:value {disabled} {...$$restProps} {filter} {onValueChange} {sameWidth} />
+<FieldPicker bind:table bind:value {disabled} {readonly} {...$$restProps} {filter} {onValueChange} {sameWidth} />

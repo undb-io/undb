@@ -49,4 +49,7 @@ export class SpaceMemberFilterVisitor extends AbstractQBVisitor<SpaceMember> imp
     const cond = this.eb.eb("undb_space_member.space_id", "=", s.spaceId)
     this.addCond(cond)
   }
+  clone(): this {
+    return new SpaceMemberFilterVisitor(this.qb, this.eb) as this
+  }
 }

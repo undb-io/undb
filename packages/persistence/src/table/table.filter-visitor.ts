@@ -158,4 +158,7 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
     this.addCond(cond)
   }
   withTableUnqueName(spec: TableUniqueNameSpecification): void {}
+  clone(): this {
+    return new TableFilterVisitor(this.qb, this.eb) as this
+  }
 }

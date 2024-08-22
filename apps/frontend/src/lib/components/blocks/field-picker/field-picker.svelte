@@ -12,6 +12,7 @@
 
   export let table = getTable()
   export let disabled = false
+  export let readonly = false
 
   interface IField {
     id: string
@@ -57,7 +58,7 @@
       role="combobox"
       aria-expanded={open}
       class={cn("justify-between", $$restProps.class)}
-      {disabled}
+      disabled={disabled || readonly}
       {...$$restProps}
     >
       <span class="flex flex-1 items-center overflow-hidden text-ellipsis" title={selectedValue}>

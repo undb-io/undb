@@ -13,10 +13,15 @@ import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
 
 export class InvitationFilterVisitor extends AbstractQBVisitor<InvitationDo> implements IInvitationVisitor {
-  constructor(protected readonly eb: ExpressionBuilder<Database, "undb_invitation">) {
+  constructor(
+    protected readonly eb: ExpressionBuilder<Database, "undb_invitation">,
+    cloned = false,
+  ) {
     super(eb)
-    const spaceId = mustGetCurrentSpaceId()
-    this.addCond(this.eb.eb("space_id", "=", spaceId))
+    if (!cloned) {
+      const spaceId = mustGetCurrentSpaceId()
+      this.addCond(this.eb.eb("space_id", "=", spaceId))
+    }
   }
   withSpaceId(spec: WithSpaceId): void {
     const cond = this.eb.eb("space_id", "=", spec.spaceId)
@@ -39,5 +44,9 @@ export class InvitationFilterVisitor extends AbstractQBVisitor<InvitationDo> imp
   withStatus(spec: WithStatus): void {
     const cond = this.eb.eb("status", "=", spec.status)
     this.addCond(cond)
+  }
+
+  clone(): this {
+    return new InvitationFilterVisitor(this.eb, true) as this
   }
 }

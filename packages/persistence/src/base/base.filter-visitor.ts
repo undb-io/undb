@@ -28,4 +28,7 @@ export class BaseFilterVisitor extends AbstractQBVisitor<Base> implements IBaseS
   withQ(v: WithBaseQ): void {
     this.addCond(this.eb.eb("name", "like", `%${v.q}%`))
   }
+  clone(): this {
+    return new BaseFilterVisitor(this.eb) as this
+  }
 }

@@ -12,7 +12,7 @@
   import FilterField from "./filter-field.svelte"
   import Button from "$lib/components/ui/button/button.svelte"
   import { cn } from "$lib/utils"
-  import { GripVertical, PlusIcon, Trash2Icon } from "lucide-svelte"
+  import { FilterXIcon, GripVertical, PlusIcon, SquareMousePointer, Trash2Icon } from "lucide-svelte"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
   import ConjunctionPicker from "./conjunction-picker.svelte"
   import { isNumber, uid } from "radash"
@@ -32,6 +32,7 @@
   export let defaultConjunction: Conjunction = "and"
   export let filter: (field: IField) => boolean = () => true
   export let disabled = false
+  export let readonly = false
 
   $: filteredFields = table.getOrderedVisibleFields().filter((f) => filter({ id: f.id.value, type: f.type }))
   export let disableGroup = false
@@ -112,7 +113,7 @@
               </div>
             {:else}
               <ConjunctionPicker
-                disabled={i !== 1 || disabled}
+                disabled={i !== 1 || disabled || readonly}
                 class="col-span-2 bg-white text-center text-xs"
                 bind:value={value.conjunction}
               />
@@ -120,6 +121,7 @@
             <div class="col-span-9 grid grid-cols-12 items-center">
               <FilterField
                 {disabled}
+                {readonly}
                 table={writable(table)}
                 {sameWidth}
                 onValueChange={(type, prev) => {
@@ -136,7 +138,7 @@
               <FieldFilterControl {disabled} {field} bind:op={child.op} bind:value={child.value} />
             </div>
             <div class="col-span-1 flex items-center gap-2">
-              {#if $hasPermission("table:update")}
+              {#if !readonly && $hasPermission("table:update")}
                 <button {disabled} type="button" on:click={() => removeFilter(i)}>
                   <Trash2Icon class="text-muted-foreground h-3 w-3" />
                 </button>
@@ -150,16 +152,16 @@
           <div class="space-y-2">
             <div class="grid grid-cols-12 gap-2">
               <ConjunctionPicker
-                disabled={i !== 1 || disabled}
+                disabled={i !== 1 || disabled || readonly}
                 class="col-span-2 bg-white text-center text-xs"
                 bind:value={value.conjunction}
               />
               <div class="col-span-9"></div>
               <div class="col-span-1 flex items-center gap-2">
-                {#if $hasPermission("table:update")}
+                {#if !readonly && $hasPermission("table:update")}
                   <button
                     {disabled}
-                                    type="button"
+                    type="button"
                     on:click={(e) => {
                       e.stopPropagation()
                       removeFilter(i)
@@ -173,38 +175,42 @@
                 {/if}
               </div>
             </div>
-            <svelte:self bind:value={child} {table} level={level + 1} />
+            <svelte:self bind:value={child} {table} level={level + 1} {readonly} {disabled} />
           </div>
         {/if}
       {/each}
     </SortableList>
+  {:else if readonly}
+    <slot name="empty" />
   {/if}
-  <div class={cn("flex justify-between px-4", value?.children.length ? "border-t py-2" : "py-3")}>
-    <div class="flex items-center gap-2">
-      {#if $hasPermission("table:update")}
-        <Button disabled={!filteredFields.length || disabled} variant="ghost" size="sm" on:click={addCondition}>
-          <PlusIcon class="mr-2 h-3 w-3" />
-          Add Condition
-        </Button>
-        {#if !disableGroup}
-          {#if level < 3}
-            <Button
-              disabled={!filteredFields.length || disabled}
-              variant="ghost"
-              class="text-muted-foreground"
-              size="sm"
-              on:click={addConditionGroup}
-            >
-              <PlusIcon class="mr-2 h-3 w-3" />
-              Add Condition Group
-            </Button>
+  {#if !readonly}
+    <div class={cn("flex justify-between px-4", value?.children.length ? "border-t py-2" : "py-3")}>
+      <div class="flex items-center gap-2">
+        {#if !readonly && $hasPermission("table:update")}
+          <Button disabled={!filteredFields.length || disabled} variant="ghost" size="sm" on:click={addCondition}>
+            <PlusIcon class="mr-2 h-3 w-3" />
+            Add Condition
+          </Button>
+          {#if !disableGroup}
+            {#if level < 3}
+              <Button
+                disabled={!filteredFields.length || disabled}
+                variant="ghost"
+                class="text-muted-foreground"
+                size="sm"
+                on:click={addConditionGroup}
+              >
+                <PlusIcon class="mr-2 h-3 w-3" />
+                Add Condition Group
+              </Button>
+            {/if}
           {/if}
         {/if}
+      </div>
+
+      {#if !readonly && $hasPermission("table:update")}
+        <slot name="footer" />
       {/if}
     </div>
-
-    {#if $hasPermission("table:update")}
-      <slot name="footer" />
-    {/if}
-  </div>
+  {/if}
 </div>

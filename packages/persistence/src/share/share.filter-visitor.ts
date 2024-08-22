@@ -14,10 +14,15 @@ import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
 
 export class ShareFilterVisitor extends AbstractQBVisitor<Share> implements IShareSpecVisitor {
-  constructor(protected readonly eb: ExpressionBuilder<Database, "undb_share">) {
+  constructor(
+    protected readonly eb: ExpressionBuilder<Database, "undb_share">,
+    cloned = false,
+  ) {
     super(eb)
-    const spaceId = mustGetCurrentSpaceId()
-    this.addCond(this.eb.eb("space_id", "=", spaceId))
+    if (!cloned) {
+      const spaceId = mustGetCurrentSpaceId()
+      this.addCond(this.eb.eb("space_id", "=", spaceId))
+    }
   }
   idEqual(s: WithShareId): void {
     this.addCond(this.eb.eb("id", "=", s.shareId.value))
@@ -41,5 +46,8 @@ export class ShareFilterVisitor extends AbstractQBVisitor<Share> implements ISha
   enabled(s: WithShareEnabled): void {
     const cond = this.eb.eb("enabled", "=", s.enabled)
     this.addCond(cond)
+  }
+  clone(): this {
+    return new ShareFilterVisitor(this.eb, true) as this
   }
 }

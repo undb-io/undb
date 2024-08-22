@@ -46,4 +46,7 @@ export class AuditFilterVisitor extends AbstractQBVisitor<Audit> implements IAud
   after(s: WithAuditAfter): void {
     throw new Error("Method not implemented.")
   }
+  clone(): this {
+    return new AuditFilterVisitor(this.eb) as this
+  }
 }
