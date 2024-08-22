@@ -6,10 +6,10 @@
   import { shareStore } from "$lib/store/share.store"
 
   export let data: LayoutData
-  $: tableStore = data.getFormShareData
+  $: tableStore = data.getBaseTableShareData
 
   $: fetching = $tableStore.fetching
-  $: tableDTO = $tableStore.data?.tableByShare
+  $: tableDTO = $tableStore.data?.tableByShareBase
   $: share = $tableStore.data?.share
 
   const table = writable<TableDo>()

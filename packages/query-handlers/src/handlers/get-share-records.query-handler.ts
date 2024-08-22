@@ -19,7 +19,7 @@ export class GetShareRecordsQueryHandler implements IQueryHandler<IGetShareRecor
   async execute(query: IGetShareRecordsQuery): Promise<IGetShareRecordsOutput> {
     const { shareId } = query
     await this.spaceService.setSpaceContext(setContextValue, { shareId })
-    const records = await this.svc.getShareRecords(shareId)
+    const records = await this.svc.getShareRecords(shareId, query.tableId, query.viewId)
 
     return {
       total: records.total,
