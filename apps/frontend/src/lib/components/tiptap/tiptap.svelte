@@ -4,7 +4,6 @@
   import { Editor } from "@tiptap/core"
   import StarterKit from "@tiptap/starter-kit"
   import { Button } from "../ui/button"
-  import { cn } from "$lib/utils"
   import { BoldIcon, CodeIcon, ItalicIcon } from "lucide-svelte"
 
   let element: HTMLDivElement
