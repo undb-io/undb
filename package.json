@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "drizzle-kit": "^0.24.0",
-    "husky": "^9.1.4",
+    "husky": "^9.1.5",
     "lint-staged": "^15.2.9",
     "npm-run-all2": "^6.2.2",
     "prettier": "^3.3.3",
@@ -33,7 +33,7 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "bun@1.1.24",
+  "packageManager": "bun@1.1.25",
   "workspaces": [
     "apps/*",
     "packages/*"
