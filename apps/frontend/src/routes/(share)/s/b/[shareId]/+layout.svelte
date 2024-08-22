@@ -5,6 +5,8 @@
   import type { PaneAPI } from "paneforge"
   import type { LayoutData } from "./$types"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
+  import Logo from "$lib/images/logo.svg"
+  import { PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-svelte"
 
   export let data: LayoutData
 
@@ -22,14 +24,26 @@
         bind:pane={panelLeft}
         onCollapse={() => (collapsed = true)}
         onExpand={() => (collapsed = false)}
+        collapsible
         class="bg-muted/40 hidden border-r md:block"
         defaultSize={20}
         minSize={15}
         maxSize={30}
       >
         <div class="flex h-full max-h-screen flex-col gap-2">
-          <div class="border-b px-4 py-2">
-            <!-- <NavTools {space} {me} /> -->
+          <div class="flex justify-between border-b px-4 py-4">
+            <a href="https://undb.io" class="inline-flex items-center gap-2" target="_blank" rel="noopener noreferrer">
+              <img src={Logo} alt="Logo" class="h-6 w-6" />
+              <span class="font-bold"> Undb </span>
+            </a>
+
+            <!-- <button on:click={() => (collapsed = !collapsed)}>
+              {#if collapsed}
+                <PanelLeftOpenIcon class="h-5 w-5" />
+              {:else}
+                <PanelLeftCloseIcon class="h-5 w-5" />
+              {/if}
+            </button> -->
           </div>
           <ScrollArea class="flex-1">
             <ShareBaseNav {base} />
@@ -37,11 +51,8 @@
         </div>
       </Resizable.Pane>
       <Resizable.Handle />
-      <Resizable.Pane class="flex h-screen flex-col" defaultSize={85}>
-        <BaseHeader {base} readonly={true} />
-        <section class="flex-1">
-          <slot />
-        </section>
+      <Resizable.Pane class="grid h-screen" defaultSize={85}>
+        <slot />
       </Resizable.Pane>
     </Resizable.PaneGroup>
   {/if}

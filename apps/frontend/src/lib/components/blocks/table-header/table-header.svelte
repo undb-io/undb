@@ -46,6 +46,7 @@
 
   const table = getTable()
   $: base = $getBaseById($table.baseId)
+  export let readonly = false
 
   $: viewId = derived([page], ([$page]) => {
     return $page.params.viewId
