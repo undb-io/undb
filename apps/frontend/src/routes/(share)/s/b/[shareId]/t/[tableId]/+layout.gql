@@ -1,0 +1,39 @@
+query GetBaseTableShareData($shareId: ID!, $tableId: ID!) {
+  share(id: $shareId) {
+    id
+    enabled
+    target {
+      id
+      type
+    }
+  }
+
+  tableByShareBase(shareId: $shareId, tableId: $tableId) {
+    id
+    name
+    forms {
+      description
+      fields
+      id
+      name
+      option {
+        backgroundColor
+      }
+      fields
+    }
+    views {
+      id
+      name
+      fields
+    }
+    schema {
+      constraint
+      defaultValue
+      display
+      id
+      name
+      option
+      type
+    }
+  }
+}

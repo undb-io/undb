@@ -8,6 +8,7 @@ import { inject, singleton } from "@undb/di"
 import type { Option } from "@undb/domain"
 import {
   GetAggregatesQuery,
+  GetBaseByShareQuery,
   GetBaseQuery,
   GetBasesQuery,
   GetInivitationsQuery,
@@ -20,6 +21,7 @@ import {
   GetShareQuery,
   GetSpaceByIdQuery,
   GetSpaceMemberQuery,
+  GetTableByShareBaseQuery,
   GetTableByShareQuery,
   GetTableForeignTablesQuery,
   GetTableQuery,
@@ -286,6 +288,8 @@ export class Graphql {
 
         share(id: ID!): Share
         tableByShare(shareId: ID!): Table
+        baseByShare(shareId: ID!): Base
+        tableByShareBase(shareId: ID!, tableId: ID!): Table
 
         template(spaceId: ID!, baseId: ID!): Template
       }
@@ -353,6 +357,16 @@ export class Graphql {
           },
           tableByShare: async (_, args) => {
             const table = await this.queryBus.execute(new GetTableByShareQuery({ shareId: args.shareId }))
+            return table
+          },
+          baseByShare: async (_, args) => {
+            const base = await this.queryBus.execute(new GetBaseByShareQuery({ shareId: args.shareId }))
+            return base
+          },
+          tableByShareBase: async (_, args) => {
+            const table = await this.queryBus.execute(
+              new GetTableByShareBaseQuery({ shareId: args.shareId, tableId: args.tableId }),
+            )
             return table
           },
           tables: async (_, args) => {

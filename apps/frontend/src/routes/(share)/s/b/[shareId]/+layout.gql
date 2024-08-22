@@ -1,0 +1,23 @@
+query GetShareBaseData($shareId: ID!) {
+  member {
+    role
+    user {
+      email
+      id
+      username
+    }
+  }
+
+  baseByShare(shareId: $shareId) {
+    id
+    name
+    option {
+      allowTemplate
+    }
+
+    tables {
+      id
+      name
+    }
+  }
+}

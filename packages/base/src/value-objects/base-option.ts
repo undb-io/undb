@@ -2,7 +2,7 @@ import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 
 export const baseOptionSchema = z.object({
-  allowTemplate: z.boolean().optional(),
+  allowTemplate: z.boolean().optional().nullable(),
 })
 
 export type IBaseOption = z.infer<typeof baseOptionSchema>

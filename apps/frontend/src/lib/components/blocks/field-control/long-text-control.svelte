@@ -9,7 +9,7 @@
 </script>
 
 {#if field.allowRichText}
-  <Tiptap bind:value />
+  <Tiptap {readonly} bind:value />
 {:else}
   <Textarea rows={5} bind:value {...$$restProps} on:change disabled={readonly} />
 {/if}

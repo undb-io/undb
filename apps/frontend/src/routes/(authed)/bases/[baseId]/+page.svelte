@@ -9,5 +9,5 @@
 </script>
 
 {#if base}
-  <BaseDetail {base} />
+  <BaseDetail {base} getTableUrl={(tableId) => `/t/${tableId}`} />
 {/if}
