@@ -13,6 +13,7 @@
   import { Button } from "$lib/components/ui/button"
   import { toast } from "svelte-sonner"
   import { goto, invalidateAll } from "$app/navigation"
+  import { LoaderCircleIcon } from "lucide-svelte"
 
   export let base: Omit<IBaseDTO, "spaceId">
   let deleteConfirm = ""
@@ -20,6 +21,12 @@
   const updateBaseMutation = createMutation({
     mutationKey: ["base", base.id, "updateBase"],
     mutationFn: trpc.base.update.mutate,
+    onError(error, variables, context) {
+      toast.error(error.message)
+    },
+    onSuccess(data, variables, context) {
+      toast.success("Base updated successfully")
+    },
   })
 
   const form = superForm(
@@ -37,6 +44,9 @@
       validators: zodClient(updateBaseCommand),
       resetForm: false,
       invalidateAll: true,
+      onSubmit(input) {
+        validateForm()
+      },
       onUpdate(event) {
         if (!event.form.valid) return
 
@@ -44,7 +54,7 @@
       },
     },
   )
-  const { enhance, form: formData } = form
+  const { enhance, form: formData, validateForm, tainted } = form
 
   let open = false
 
@@ -94,7 +104,12 @@
       </div>
     </fieldset>
 
-    <Form.Button size="sm">Submit</Form.Button>
+    <Form.Button disabled={!$tainted || $updateBaseMutation.isPending} size="sm">
+      {#if $updateBaseMutation.isPending}
+        <LoaderCircleIcon class="mr-2 h-4 w-4" />
+      {/if}
+      Update Base Setting
+    </Form.Button>
   </form>
 
   <div class="max-w-4xl space-y-3 rounded-md border-2 border-red-500 p-4">

@@ -5,7 +5,7 @@
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest",
-    "type-fest": "^4.24.0"
+    "type-fest": "^4.25.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -17,8 +17,8 @@
     "@undb/domain": "workspace:*",
     "@undb/logger": "workspace:*",
     "@undb/space": "workspace:*",
-    "@undb/zod": "workspace:*",
     "@undb/utils": "workspace:*",
+    "@undb/zod": "workspace:*",
     "date-fns": "^3.6.0",
     "radash": "^12.1.0",
     "ts-pattern": "^5.3.1"
