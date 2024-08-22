@@ -1,6 +1,6 @@
-import { injectBaseQueryRepository, type IBaseDTO, type IBaseQueryRepository } from "@undb/base"
-import { inject, singleton } from "@undb/di"
-import { None, Option, Some, type PaginatedDTO } from "@undb/domain"
+import { injectBaseQueryRepository,type IBaseDTO,type IBaseQueryRepository } from "@undb/base"
+import { inject,singleton } from "@undb/di"
+import { None,Option,Some,type PaginatedDTO } from "@undb/domain"
 import {
   RecordIdVO,
   TableComositeSpecification,
@@ -23,7 +23,7 @@ import {
   type SingleQueryArgs,
 } from "@undb/table"
 import { match } from "ts-pattern"
-import type { IDisableShareDTO, IEnableShareDTO, IShareDTO } from "../dto"
+import type { IDisableShareDTO,IEnableShareDTO,IShareDTO } from "../dto"
 import type { IShareTarget } from "../share-target.vo"
 import { ShareFactory } from "../share.factory"
 import {
@@ -32,7 +32,7 @@ import {
   type IShareQueryRepository,
   type IShareRepository,
 } from "../share.repository"
-import { WithShareId, withShare } from "../specifications"
+import { WithShareId,withShare } from "../specifications"
 
 export interface IShareService {
   enableShare(dto: IEnableShareDTO): Promise<void>
@@ -42,7 +42,7 @@ export interface IShareService {
   getBaseByShare(id: string): Promise<IBaseDTO>
   getTableByShare(id: string): Promise<ITableDTO>
   getTableByShareBase(shareId: string, tableId: string): Promise<ITableDTO>
-  getShareRecords(shareId: string, tableId?: string, viewId?: string): Promise<PaginatedDTO<IRecordDTO>>
+  getShareRecords(shareId: string, tableId?: string, viewId?: string, q?: string): Promise<PaginatedDTO<IRecordDTO>>
   getShareRecordById(id: string, recordId: string, tableId?: string, viewId?: string): Promise<Option<IRecordDTO>>
 }
 
@@ -140,12 +140,17 @@ export class ShareService implements IShareService {
     return (await this.tableQueryRepo.findOne(spec)).expect("table not found")
   }
 
-  async getShareRecords(shareId: string, tableId?: string, viewId?: string): Promise<PaginatedDTO<IRecordDTO>> {
+  async getShareRecords(
+    shareId: string,
+    tableId?: string,
+    viewId?: string,
+    q?: string,
+  ): Promise<PaginatedDTO<IRecordDTO>> {
     const share = (await this.repo.findOneById(shareId)).expect("share not found")
 
     const getData = async (table: TableDo, viewId?: string) => {
       const view = table.views.getViewById(viewId)
-      const query = buildQuery(table, { viewId: view.id.value })
+      const query = buildQuery(table, { viewId: view.id.value, q })
       const records = await this.recordRepo.find(table, view, query)
 
       return {

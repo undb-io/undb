@@ -63,4 +63,7 @@ export class SpaceFilterVisitor extends AbstractQBVisitor<Space> implements ISpa
   withName(v: WithSpaceName): void {
     throw new Error("Method not implemented.")
   }
+  clone(): this {
+    return new SpaceFilterVisitor(this.qb, this.eb) as this
+  }
 }

@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as Popover from "$lib/components/ui/popover/index.js"
   import { Button } from "$lib/components/ui/button/index.js"
-  import { FilterIcon } from "lucide-svelte"
+  import { FilterIcon, FilterXIcon } from "lucide-svelte"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { getTable, viewId } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
@@ -17,6 +17,8 @@
     type MaybeConditionGroup,
   } from "@undb/table"
   import { hasPermission } from "$lib/store/space-member.store"
+
+  export let readonly = false
 
   const table = getTable()
   $: filter = $table.views.getViewById($viewId).filter.into(undefined)
@@ -58,7 +60,7 @@
       variant={count || open ? "secondary" : "ghost"}
       builders={[builder]}
       size="sm"
-      disabled={!$hasPermission("table:update") && (!filter || filter?.isEmpty)}
+      disabled={!readonly && !$hasPermission("table:update") && (!filter || filter?.isEmpty)}
     >
       <FilterIcon class="mr-2 h-4 w-4" />
       Filters
@@ -72,12 +74,20 @@
       <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Filters</div>
     {/if}
     <FiltersEditor
+      {readonly}
       bind:value={$value}
       table={$table}
       on:submit={(e) => handleSubmit(e.detail)}
       filter={(field) => visibleFields.some((f) => f.id.value === field.id) && getIsFilterableFieldType(field.type)}
     >
-      <Button size="sm" variant="outline" on:click={() => handleSubmit(validValue)} slot="footer">Submit</Button>
+      <Button size="sm" disabled={readonly} variant="outline" on:click={() => handleSubmit(validValue)} slot="footer"
+        >Submit</Button
+      >
+
+      <div slot="empty" class="flex flex-col items-center gap-3 px-4 py-6 text-center">
+        <FilterXIcon class="text-primary h-10 w-10" />
+        <h3 class="text-muted-foreground text-sm font-semibold tracking-tight">There's no filters</h3>
+      </div>
     </FiltersEditor>
   </Popover.Content>
 </Popover.Root>

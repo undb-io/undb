@@ -68,7 +68,7 @@
   }
 </script>
 
-<header class="bg-muted/40 flex h-12 items-center gap-4 border-b px-4 lg:px-6">
+<header class="bg-muted/40 flex h-12 items-center gap-4 border-b px-4 py-3 lg:px-6">
   <div class="relative flex w-full flex-1 items-center justify-between">
     <div class="relative flex items-center gap-4">
       <Breadcrumb.Root>
