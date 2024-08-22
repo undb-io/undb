@@ -6,7 +6,7 @@ export const baseDTO = z.object({
   id: baseIdSchema,
   name: baseNameSchema,
   spaceId: spaceIdSchema,
-  option: baseOptionSchema.optional(),
+  option: baseOptionSchema.optional().nullable(),
 })
 
 export type IBaseDTO = z.infer<typeof baseDTO>

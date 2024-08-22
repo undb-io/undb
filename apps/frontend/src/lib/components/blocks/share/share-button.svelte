@@ -16,14 +16,19 @@
   import { cn } from "$lib/utils"
   import { hasPermission } from "$lib/store/space-member.store"
   import Textarea from "$lib/components/ui/textarea/textarea.svelte"
+  import { match } from "ts-pattern"
 
   export let type: IShareTarget["type"]
   export let id: IShareTarget["id"]
 
   const enableShareMutation = createMutation({
+    mutationKey: ["share", "enable", type, id],
     mutationFn: trpc.share.enable.mutate,
     async onSuccess(data, variables, context) {
       await invalidate(`table:${$t.id.value}`)
+    },
+    onError(error, variables, context) {
+      toast.error(error.message)
     },
   })
 
@@ -71,6 +76,7 @@
   $: iframe = url ? getIframe(url) : undefined
   let iframeCopied = false
   const copyIFrame = () => {
+    if (!iframe) return
     copyToClipboard(iframe)
     iframeCopied = true
     setTimeout(() => {
@@ -78,9 +84,16 @@
     }, 2000)
     toast.success("Copied to clipboard")
   }
+
+  $: permission = match(type)
+    .with("table", () => $hasPermission("share:table"))
+    .with("form", () => $hasPermission("share:form"))
+    .with("base", () => $hasPermission("share:base"))
+    .with("view", () => $hasPermission("share:view"))
+    .otherwise(() => false)
 </script>
 
-{#if $hasPermission("share:enable")}
+{#if permission}
   <Popover.Root bind:open>
     <Popover.Trigger asChild let:builder>
       <Button
