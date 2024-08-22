@@ -25,9 +25,11 @@
   }
 </script>
 
-{#if $table}
-  <slot />
-{/if}
+<main class="flex h-screen flex-1 flex-col overflow-hidden">
+  {#if $table}
+    <slot />
+  {/if}
+</main>
 
 <style>
   :global(html) {
