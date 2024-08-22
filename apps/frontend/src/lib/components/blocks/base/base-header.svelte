@@ -5,11 +5,12 @@
   import { HardDriveIcon, PencilIcon, ChevronDownIcon, CopyIcon } from "lucide-svelte"
   import DuplicateBase from "./duplicate-base.svelte"
   import { SettingsIcon } from "lucide-svelte"
+  import ShareButton from "../share/share-button.svelte"
 
   export let base: GetBaseQuery$result["base"]
 </script>
 
-<header class="flex h-12 items-center border-b px-4 py-3">
+<header class="flex h-12 items-center justify-between border-b px-4 py-3">
   {#if base}
     <DropdownMenu.Root>
       <div class="flex items-center gap-2">
@@ -36,6 +37,8 @@
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>
+
+    <ShareButton type="base" id={base.id} />
   {/if}
 </header>
 

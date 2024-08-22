@@ -6,6 +6,11 @@ query GetBaseQuery($baseId: ID!) {
       allowTemplate
     }
 
+    share {
+      enabled
+      id
+    }
+
     tables {
       id
       name

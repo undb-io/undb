@@ -239,6 +239,7 @@ export class Graphql {
         name: String!
         option: BaseOption
 
+        share: Share
         tables: [Table]!
       }
 
@@ -395,6 +396,10 @@ export class Graphql {
           // @ts-ignore
           tables: async (base) => {
             return this.queryBus.execute(new GetTablesByBaseIdQuery({ baseId: base.id }))
+          },
+          // @ts-ignore
+          share: async (base) => {
+            return (await this.shareService.getShareByTarget({ type: "base", id: base.id })).into(null)
           },
         },
         Table: {

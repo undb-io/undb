@@ -106,7 +106,9 @@ export class ShareService implements IShareService {
       .returnType<TableComositeSpecification>()
       .with("form", () => new WithFormIdSpecification(share.target.id))
       .with("view", () => new WithViewIdSpecification(share.target.id))
-      .exhaustive()
+      .otherwise(() => {
+        throw new Error("invalid share target")
+      })
 
     return (await this.tableQueryRepo.findOne(spec)).expect("table not found")
   }
@@ -122,7 +124,9 @@ export class ShareService implements IShareService {
       .returnType<TableComositeSpecification>()
       .with("form", () => new WithFormIdSpecification(share.target.id))
       .with("view", () => new WithViewIdSpecification(share.target.id))
-      .exhaustive()
+      .otherwise(() => {
+        throw new Error("invalid share target")
+      })
 
     const table = (await this.tableRepo.findOne(Some(spec))).expect("table not found")
     const view = table.views.getViewById(share.target.id)
@@ -143,7 +147,9 @@ export class ShareService implements IShareService {
       .returnType<TableComositeSpecification>()
       .with("form", () => new WithFormIdSpecification(share.target.id))
       .with("view", () => new WithViewIdSpecification(share.target.id))
-      .exhaustive()
+      .otherwise(() => {
+        throw new Error("invalid share target")
+      })
 
     const table = (await this.tableRepo.findOne(Some(spec))).expect("table not found")
 

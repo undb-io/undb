@@ -36,8 +36,11 @@ export const spacePermission: Record<ISpaceMemberRole, Record<ISpaceAction, bool
     "webhook:delete": true,
     "webhook:list": true,
 
-    "share:enable": true,
     "share:disable": true,
+    "share:view": true,
+    "share:table": true,
+    "share:base": true,
+    "share:form": true,
 
     "authz:invite": true,
     "authz:listInvitation": true,
@@ -77,8 +80,11 @@ export const spacePermission: Record<ISpaceMemberRole, Record<ISpaceAction, bool
     "webhook:delete": true,
     "webhook:list": true,
 
-    "share:enable": true,
     "share:disable": true,
+    "share:view": true,
+    "share:table": true,
+    "share:base": true,
+    "share:form": true,
 
     "authz:invite": true,
     "authz:listInvitation": true,
@@ -113,8 +119,11 @@ export const spacePermission: Record<ISpaceMemberRole, Record<ISpaceAction, bool
     "record:update": true,
     "record:download": true,
 
-    "share:enable": true,
     "share:disable": true,
+    "share:view": false,
+    "share:table": false,
+    "share:base": false,
+    "share:form": true,
 
     "webhook:create": true,
     "webhook:update": true,
@@ -159,8 +168,11 @@ export const spacePermission: Record<ISpaceMemberRole, Record<ISpaceAction, bool
     "webhook:delete": false,
     "webhook:list": true,
 
-    "share:enable": false,
     "share:disable": false,
+    "share:view": false,
+    "share:table": false,
+    "share:base": false,
+    "share:form": false,
 
     "authz:invite": true,
     "authz:listInvitation": true,

@@ -14,6 +14,7 @@ type Base {
   id: ID!
   name: String!
   option: BaseOption
+  share: Share
   tables: [Table]!
 }
 

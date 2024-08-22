@@ -22,6 +22,10 @@ export const getCurrentMember = () => {
   return executionContext.getStore()?.member!
 }
 
+export const getCurrentRole = () => {
+  return getCurrentMember().role!
+}
+
 export const getCurrentSpaceId = () => {
   return executionContext.getStore()?.spaceId
 }
