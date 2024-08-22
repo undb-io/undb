@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import GridViewDataTable from "$lib/components/blocks/grid-view/grid-view-data-table.svelte"
+  import TableHeader from "$lib/components/blocks/table-header/table-header.svelte"
   import { recordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
@@ -43,15 +44,19 @@
   }
 </script>
 
-<GridViewDataTable
-  {viewId}
-  readonly
-  {perPage}
-  {currentPage}
-  isLoading={$getRecords.isLoading}
-  total={$getRecords.data?.total ?? 0}
-/>
+<div class="flex flex-1 flex-col">
+  <TableHeader />
 
-{#if RecordDetailSheet}
-  <RecordDetailSheet readonly />
-{/if}
+  <GridViewDataTable
+    {viewId}
+    readonly
+    {perPage}
+    {currentPage}
+    isLoading={$getRecords.isLoading}
+    total={$getRecords.data?.total ?? 0}
+  />
+
+  {#if RecordDetailSheet}
+    <RecordDetailSheet readonly />
+  {/if}
+</div>
