@@ -3,7 +3,7 @@
   import type { ISpaceDTO } from "@undb/space"
   import { builderActions, getAttrs } from "bits-ui"
   import Logo from "$lib/images/logo.svg"
-  import { PlusSquareIcon } from "lucide-svelte"
+  import { LoaderCircleIcon, PlusSquareIcon } from "lucide-svelte"
   import * as Dialog from "$lib/components/ui/dialog"
   import { GetSpacesStore } from "$houdini"
   import Role from "../member/role.svelte"
@@ -16,6 +16,7 @@
   import { createSpaceCommand } from "@undb/commands"
   import { goto, invalidateAll } from "$app/navigation"
   import { Skeleton } from "$lib/components/ui/skeleton"
+  import { toast } from "svelte-sonner"
 
   export let space: ISpaceDTO
   export let me: any
@@ -29,7 +30,11 @@
   $: spaces = $store.data?.spaces ?? []
 
   const createSpaceMutation = createMutation({
+    mutationKey: ["space", "create"],
     mutationFn: trpc.space.create.mutate,
+    onError(error, variables, context) {
+      toast.error(error.message)
+    },
     async onSuccess(data, variables, context) {
       await fetch(`/api/spaces/${data}/goto`)
       await goto("/")
@@ -49,6 +54,9 @@
       SPA: true,
       dataType: "json",
       invalidateAll: false,
+      onSubmit(input) {
+        validateForm()
+      },
       onUpdate(event) {
         if (!event.form.valid) {
           return
@@ -59,7 +67,7 @@
     },
   )
 
-  const { form: formData, enhance } = form
+  const { form: formData, enhance, validateForm, tainted } = form
 </script>
 
 <DropdownMenu.Root bind:open>
@@ -135,8 +143,12 @@
         <Form.Description>This is your space name.</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
-      <Form.Button class="flex w-full items-center gap-2">
-        <PlusSquareIcon class="mr-2 h-4 w-4" />
+      <Form.Button disabled={$createSpaceMutation.isPending} class="flex w-full items-center gap-2">
+        {#if $createSpaceMutation.isPending}
+          <LoaderCircleIcon class="mr-2 h-4 w-4" />
+        {:else}
+          <PlusSquareIcon class="mr-2 h-4 w-4" />
+        {/if}
         Create New Space
       </Form.Button>
     </form>

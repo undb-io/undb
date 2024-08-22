@@ -56,6 +56,9 @@
       validators: zodClient(createFromTemplateCommand),
       resetForm: false,
       invalidateAll: false,
+      onSubmit(input) {
+        validateForm()
+      },
       async onUpdate(event) {
         if (!event.form.valid) {
           console.log(event.form.errors)
@@ -66,7 +69,7 @@
       },
     },
   )
-  const { enhance, form: formData } = form
+  const { enhance, form: formData, validateForm } = form
 
   $: selectedSpace = $formData.targetSpaceId
     ? {
