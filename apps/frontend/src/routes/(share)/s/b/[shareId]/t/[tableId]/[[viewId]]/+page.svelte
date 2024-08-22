@@ -11,11 +11,10 @@
 
   let RecordDetailSheet: ComponentType
 
+  let viewId = derived(page, (page) => page.params.viewId)
   onMount(async () => {
     RecordDetailSheet = (await import("$lib/components/blocks/record-detail/share-record-detail-sheet.svelte")).default
   })
-
-  const viewId = readable($page.params.viewId)
 
   const t = getTable()
 
@@ -23,9 +22,9 @@
   const currentPage = writable(1)
 
   const getRecords = createQuery(
-    derived([t, perPage, currentPage, page], ([$table, $perPage, $currentPage, $page]) => {
+    derived([t, perPage, currentPage, viewId, page], ([$table, $perPage, $currentPage, $viewId, $page]) => {
       return {
-        queryKey: ["records", $table?.id.value, $currentPage, $perPage],
+        queryKey: ["records", $table?.id.value, $viewId, $currentPage, $perPage],
         queryFn: () =>
           trpc.shareData.records.query({
             shareId: $page.params.shareId,

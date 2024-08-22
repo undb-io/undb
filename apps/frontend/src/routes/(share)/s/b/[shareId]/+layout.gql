@@ -18,6 +18,12 @@ query GetShareBaseData($shareId: ID!) {
     tables {
       id
       name
+
+      views {
+        id
+        name
+        isDefault
+      }
     }
   }
 }

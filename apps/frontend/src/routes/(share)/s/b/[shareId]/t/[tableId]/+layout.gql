@@ -24,6 +24,7 @@ query GetBaseTableShareData($shareId: ID!, $tableId: ID!) {
     views {
       id
       name
+      isDefault
       fields
     }
     schema {
