@@ -10,6 +10,7 @@
     GripVerticalIcon,
     Trash2Icon,
     PlusIcon,
+    SortAscIcon,
   } from "lucide-svelte"
   import { cn } from "$lib/utils"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
@@ -24,6 +25,8 @@
   import { onMount } from "svelte"
   import autoAnimate from "@formkit/auto-animate"
   import { hasPermission } from "$lib/store/space-member.store"
+
+  export let readonly = false
 
   const table = getTable()
   $: view = $table.views.getViewById($viewId)
@@ -90,7 +93,7 @@
       variant={count || open ? "secondary" : "ghost"}
       builders={[builder]}
       size="sm"
-      disabled={!$hasPermission("table:update") && (!sort || sort.isEmpty)}
+      disabled={!readonly && (!$hasPermission("table:update") && (!sort || sort.isEmpty))}
     >
       <ArrowUpDownIcon class="mr-2 h-4 w-4" />
       Sorts
@@ -170,6 +173,11 @@
               </div>
             {/each}
           </SortableList>
+        </div>
+      {:else if readonly}
+        <div class="flex flex-col items-center gap-3 px-4 py-6 text-center">
+          <SortAscIcon class="text-primary h-10 w-10" />
+          <h3 class="text-muted-foreground text-sm font-semibold tracking-tight">There's no sorts</h3>
         </div>
       {/if}
       <div class="flex w-full items-center justify-between px-4 py-3">

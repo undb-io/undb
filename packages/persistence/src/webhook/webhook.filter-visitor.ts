@@ -19,10 +19,15 @@ import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
 
 export class WebhookFilterVisitor extends AbstractQBVisitor<WebhookDo> implements IWebhookSpecVisitor {
-  constructor(protected readonly eb: ExpressionBuilder<Database, "undb_webhook">) {
+  constructor(
+    protected readonly eb: ExpressionBuilder<Database, "undb_webhook">,
+    cloned = false,
+  ) {
     super(eb)
-    const spaceId = mustGetCurrentSpaceId()
-    this.addCond(this.eb.eb("space_id", "=", spaceId))
+    if (!cloned) {
+      const spaceId = mustGetCurrentSpaceId()
+      this.addCond(this.eb.eb("space_id", "=", spaceId))
+    }
   }
   nameEqual(s: WithWebhookName): void {
     const cond = this.eb.eb("name", "=", s.name)
@@ -61,5 +66,8 @@ export class WebhookFilterVisitor extends AbstractQBVisitor<WebhookDo> implement
   idEqual(s: WithWebhookId): void {
     const cond = this.eb.eb("id", "=", s.webhookId.value)
     this.addCond(cond)
+  }
+  clone(): this {
+    return new WebhookFilterVisitor(this.eb, true) as this
   }
 }

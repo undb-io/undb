@@ -1,14 +1,15 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import GridViewDataTable from "$lib/components/blocks/grid-view/grid-view-data-table.svelte"
-  import TableHeader from "$lib/components/blocks/table-header/table-header.svelte"
+  import ShareTableTools from "$lib/components/blocks/table-tools/share-table-tools.svelte"
   import { recordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createQuery } from "@tanstack/svelte-query"
   import { Records, type IRecordsDTO } from "@undb/table"
   import { onMount, type ComponentType } from "svelte"
-  import { derived, writable, readable } from "svelte/store"
+  import { derived, writable, } from "svelte/store"
+  import { queryParam } from "sveltekit-search-params"
 
   let RecordDetailSheet: ComponentType
 
@@ -21,16 +22,18 @@
 
   const perPage = writable(50)
   const currentPage = writable(1)
+  const q = queryParam("q")
 
   const getRecords = createQuery(
-    derived([t, perPage, currentPage, viewId, page], ([$table, $perPage, $currentPage, $viewId, $page]) => {
+    derived([t, perPage, currentPage, viewId, page, q], ([$table, $perPage, $currentPage, $viewId, $page, $q]) => {
       return {
-        queryKey: ["records", $table?.id.value, $viewId, $currentPage, $perPage],
+        queryKey: ["records", $table?.id.value, $viewId, $currentPage, $perPage, $q],
         queryFn: () =>
           trpc.shareData.records.query({
             shareId: $page.params.shareId,
             tableId: $page.params.tableId,
             viewId: $viewId,
+            q: $q,
           }),
       }
     }),
@@ -45,7 +48,7 @@
 </script>
 
 <div class="flex flex-1 flex-col">
-  <TableHeader />
+  <ShareTableTools />
 
   <GridViewDataTable
     {viewId}

@@ -30,4 +30,7 @@ export class ApiTokenFilterVisitor extends AbstractQBVisitor<ApiTokenDo> impleme
     const cond = this.eb.eb("undb_api_token.user_id", "=", s.userId)
     this.addCond(cond)
   }
+  clone(): this {
+    return new ApiTokenFilterVisitor(this.eb) as this
+  }
 }
