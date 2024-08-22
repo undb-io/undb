@@ -1,6 +1,7 @@
 import { CountRecordsQueryHandler } from "./count-records.query-handler"
 import { GetAggregatesQueryHandler } from "./get-aggregates.query-handler"
 import { GetApiTokensQueryHandler } from "./get-api-tokens.query-handler"
+import { GetBaseByShareQueryHandler } from "./get-base-by-share.query-handler"
 import { GetBaseQueryHandler } from "./get-base.query-handler"
 import { GetBasesQueryHandler } from "./get-bases.query-handler"
 import { GetInivitationsQueryHandler } from "./get-invitations.query-handler"
@@ -19,6 +20,7 @@ import { GetShareRecordsQueryHandler } from "./get-share-records.query-handler"
 import { GetShareQueryHandler } from "./get-share.query-handler"
 import { GetSpaceByIdQueryHandler } from "./get-space-by-id.query-handler"
 import { GetSpaceMemberQueryHandler } from "./get-space-member.query-handler"
+import { GetTableByShareBaseQueryHandler } from "./get-table-by-share-table.query-handler"
 import { GetTableByShareQueryHandler } from "./get-table-by-share.query-handler"
 import { GetTableForeignTablesQueryHandler } from "./get-table-foreign-tables.query-handler"
 import { GetTableQueryHandler } from "./get-table.query-handler"
@@ -56,4 +58,6 @@ export const queryHandlers = [
   GetSpaceByIdQueryHandler,
   GetSpaceMemberQueryHandler,
   GetTemplateQueryHandler,
+  GetBaseByShareQueryHandler,
+  GetTableByShareBaseQueryHandler,
 ]

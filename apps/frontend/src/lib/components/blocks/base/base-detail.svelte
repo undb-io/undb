@@ -1,12 +1,22 @@
 <script lang="ts">
-  import type { GetBaseQuery$result } from "$houdini"
   import { CREATE_TABLE_MODAL, IMPORT_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
   import { DatabaseIcon, ImportIcon, PlusCircleIcon, PlusIcon } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
   import { goto } from "$app/navigation"
   import { hasPermission } from "$lib/store/space-member.store"
+  import type { IBaseOption } from "@undb/base"
 
-  export let base: GetBaseQuery$result["base"]
+  export let base: {
+    id: string
+    name: string
+    option: IBaseOption | null
+    tables: ({
+      id: string
+      name: string
+    } | null)[]
+  }
+
+  export let getTableUrl: (tableId: string) => string
 </script>
 
 <main class="h-full flex-1 px-4 py-4">
@@ -49,7 +59,7 @@
       <Table.Body>
         {#each base.tables as table}
           {#if table}
-            <Table.Row class="cursor-pointer" on:click={() => goto(`/t/${table.id}`)}>
+            <Table.Row class="cursor-pointer" on:click={() => goto(getTableUrl(table.id))}>
               <Table.Cell class="flex items-center font-medium">
                 <DatabaseIcon class="mr-2 h-4 w-4" />
                 {table.name}

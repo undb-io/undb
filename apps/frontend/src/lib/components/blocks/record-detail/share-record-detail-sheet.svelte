@@ -21,6 +21,7 @@
       queryFn: () => {
         return trpc.shareData.record.query({
           shareId: $page.params.shareId,
+          tableId: $table.id.value,
           recordId: $recordId!,
         })
       },
