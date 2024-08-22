@@ -45,13 +45,13 @@
 {#if field.allowRichText}
   <div class={cn("relative overflow-hidden", $$restProps.class)}>
     {#if isEditing || isSelected}
-      <div class="flex w-full justify-between overflow-hidden text-left">
-        <button type="button" on:click={() => (open = true)} class="flex-1 items-start text-left">
+      <div class="flex w-full items-center justify-between gap-1 overflow-hidden">
+        <button type="button" on:click={() => (open = true)} class="flex flex-1 items-center gap-1 truncate">
           <span class="inline-flex flex-1 self-start truncate">
             {@html value}
           </span>
         </button>
-        <button on:click={() => (open = true)}>
+        <button class="shrink-0" on:click={() => (open = true)}>
           <Maximize2Icon class="text-muted-foreground h-3 w-3" />
         </button>
       </div>
@@ -105,10 +105,7 @@
     }
   }}
 >
-  <Dialog.Content
-    hideCloseButton
-    class="flex h-[calc(100vh-200px)] max-w-3xl flex-col overflow-y-auto p-2 md:w-[1000px]"
-  >
+  <Dialog.Content class="flex h-[calc(100vh-200px)] !max-w-none flex-col overflow-y-auto p-2 md:w-2/3">
     <Tiptap {readonly} class="h-full flex-1" bind:value />
   </Dialog.Content>
 </Dialog.Root>
