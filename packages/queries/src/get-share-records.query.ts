@@ -23,7 +23,7 @@ export class GetShareRecordsQuery extends Query implements IGetShareRecordsQuery
   public readonly shareId: string
   public readonly tableId: string | undefined
   public readonly viewId: string | undefined
-  public readonly q: string | undefined
+  public readonly q: string | undefined | null
 
   constructor(props: QueryProps<IGetShareRecordsQuery>) {
     super()
