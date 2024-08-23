@@ -1,6 +1,6 @@
-import { injectBaseQueryRepository,type IBaseDTO,type IBaseQueryRepository } from "@undb/base"
-import { inject,singleton } from "@undb/di"
-import { None,Option,Some,type PaginatedDTO } from "@undb/domain"
+import { injectBaseQueryRepository, type IBaseDTO, type IBaseQueryRepository } from "@undb/base"
+import { inject, singleton } from "@undb/di"
+import { None, Option, Some, type PaginatedDTO } from "@undb/domain"
 import {
   RecordIdVO,
   TableComositeSpecification,
@@ -23,7 +23,7 @@ import {
   type SingleQueryArgs,
 } from "@undb/table"
 import { match } from "ts-pattern"
-import type { IDisableShareDTO,IEnableShareDTO,IShareDTO } from "../dto"
+import type { IDisableShareDTO, IEnableShareDTO, IShareDTO } from "../dto"
 import type { IShareTarget } from "../share-target.vo"
 import { ShareFactory } from "../share.factory"
 import {
@@ -32,13 +32,13 @@ import {
   type IShareQueryRepository,
   type IShareRepository,
 } from "../share.repository"
-import { WithShareId,withShare } from "../specifications"
+import { WithShareId, withShare } from "../specifications"
 
 export interface IShareService {
   enableShare(dto: IEnableShareDTO): Promise<void>
   disableShare(dto: IDisableShareDTO): Promise<void>
   getShare(id: string): Promise<Option<IShareDTO>>
-  getShareByTarget(target: IShareTarget): Promise<Option<IShareDTO>>
+  getShareByTarget(target: IShareTarget, spaceId: string): Promise<Option<IShareDTO>>
   getBaseByShare(id: string): Promise<IBaseDTO>
   getTableByShare(id: string): Promise<ITableDTO>
   getTableByShareBase(shareId: string, tableId: string): Promise<ITableDTO>
@@ -102,7 +102,7 @@ export class ShareService implements IShareService {
     return this.queryRepo.findOne(WithShareId.fromString(id))
   }
 
-  async getShareByTarget(target: IShareTarget): Promise<Option<IShareDTO>> {
+  async getShareByTarget(target: IShareTarget, spaceId: string): Promise<Option<IShareDTO>> {
     const spec = withShare(target.type, target.id)
 
     return this.queryRepo.findOne(spec)

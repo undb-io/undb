@@ -42,10 +42,11 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
   constructor(
     private readonly qb: IQueryBuilder,
     protected readonly eb: ExpressionBuilder<Database, "undb_table" | "undb_table_id_mapping">,
-    ignoreSpace = false,
+    private readonly ignoreSpace = false,
+    cloned = false,
   ) {
     super(eb)
-    if (!ignoreSpace) {
+    if (!ignoreSpace && !cloned) {
       const spaceId = mustGetCurrentSpaceId()
       this.addCond(this.eb.eb("undb_table.space_id", "=", spaceId))
     }
@@ -159,6 +160,6 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
   }
   withTableUnqueName(spec: TableUniqueNameSpecification): void {}
   clone(): this {
-    return new TableFilterVisitor(this.qb, this.eb) as this
+    return new TableFilterVisitor(this.qb, this.eb, this.ignoreSpace, true) as this
   }
 }

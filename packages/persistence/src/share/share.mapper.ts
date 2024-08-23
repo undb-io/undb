@@ -14,6 +14,7 @@ export class ShareMapper implements Mapper<ShareDo, Share, IShareDTO> {
         id: entity.target_id,
       } as IShareTarget,
       enabled: entity.enabled,
+      spaceId: entity.space_id,
     })
   }
   toEntity(domain: ShareDo): Share {
@@ -32,6 +33,7 @@ export class ShareMapper implements Mapper<ShareDo, Share, IShareDTO> {
         id: entity.target_id,
         type: entity.target_type,
       } as IShareTarget,
+      spaceId: entity.space_id,
       enabled: entity.enabled,
     }
   }

@@ -19,7 +19,7 @@
 
   export let data: PageData
 
-  let { spaceId, baseId } = $page.params
+  let { shareId } = $page.params
   let store = data.store
 
   let spaces = $store.data?.spaces ?? []
@@ -42,8 +42,7 @@
   const form = superForm(
     defaults(
       {
-        spaceId,
-        baseId,
+        shareId,
         targetSpaceId: space?.id,
         name: template?.name,
         includeData: true,

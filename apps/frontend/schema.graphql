@@ -107,7 +107,7 @@ type Query {
   tableByShareBase(shareId: ID!, tableId: ID!): Table
   tableForeignTables(tableId: ID!): [Table!]!
   tables(baseId: ID): [Table]!
-  template(baseId: ID!, spaceId: ID!): Template
+  template(shareId: ID!): Template
 }
 
 type RLS {

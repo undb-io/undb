@@ -1,10 +1,10 @@
-query GetCreateFromTemplateData($spaceId: ID!, $baseId: ID!) {
+query GetCreateFromTemplateData($shareId: ID!) {
   space {
     id
     name
   }
 
-  template(spaceId: $spaceId, baseId: $baseId) {
+  template(shareId: $shareId) {
     name
   }
 

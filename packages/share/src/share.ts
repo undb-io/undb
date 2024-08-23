@@ -1,4 +1,5 @@
 import { AggregateRoot, and } from "@undb/domain"
+import type { ISpaceId } from "@undb/space"
 import type { Option } from "oxide.ts"
 import type { IDisableShareDTO } from "./dto/disable-share.dto.js"
 import type { IEnableShareDTO } from "./dto/enable-share.dto.js"
@@ -12,6 +13,7 @@ export class Share extends AggregateRoot<any> {
   id!: ShareId
   target!: ShareTarget
   enabled!: boolean
+  spaceId!: ISpaceId
 
   static empty() {
     return new Share()
@@ -50,6 +52,7 @@ export class Share extends AggregateRoot<any> {
       id: this.id.value,
       target: this.target.toJSON(),
       enabled: this.enabled,
+      spaceId: this.spaceId,
     }
   }
 }

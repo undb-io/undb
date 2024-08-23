@@ -10,7 +10,6 @@ export async function updateTableMethod(this: TableService, dto: IUpdateTableDTO
   const table = (await this.repository.findOneById(new TableIdVo(dto.id))).unwrap()
 
   const qs = new TableBaseIdSpecification(table.baseId)
-  console.log(JSON.stringify(qs))
   const baseTables = await this.repository.find(Some(qs))
 
   const names = baseTables.map((table) => table.name.value).concat(dto.name)

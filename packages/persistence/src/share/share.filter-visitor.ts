@@ -1,4 +1,3 @@
-import { mustGetCurrentSpaceId } from "@undb/context/server"
 import type {
   IShareSpecVisitor,
   Share,
@@ -9,20 +8,18 @@ import type {
   WithShareTable,
   WithShareView,
 } from "@undb/share"
+import type { WithShareSpaceId } from "@undb/share/src/specifications/share-space-id.specification"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
 
 export class ShareFilterVisitor extends AbstractQBVisitor<Share> implements IShareSpecVisitor {
-  constructor(
-    protected readonly eb: ExpressionBuilder<Database, "undb_share">,
-    cloned = false,
-  ) {
+  constructor(protected readonly eb: ExpressionBuilder<Database, "undb_share">) {
     super(eb)
-    if (!cloned) {
-      const spaceId = mustGetCurrentSpaceId()
-      this.addCond(this.eb.eb("space_id", "=", spaceId))
-    }
+  }
+  withShareSpaceId(s: WithShareSpaceId): void {
+    const cond = this.eb.eb("space_id", "=", s.spaceId)
+    this.addCond(cond)
   }
   idEqual(s: WithShareId): void {
     this.addCond(this.eb.eb("id", "=", s.shareId.value))
@@ -48,6 +45,6 @@ export class ShareFilterVisitor extends AbstractQBVisitor<Share> implements ISha
     this.addCond(cond)
   }
   clone(): this {
-    return new ShareFilterVisitor(this.eb, true) as this
+    return new ShareFilterVisitor(this.eb) as this
   }
 }

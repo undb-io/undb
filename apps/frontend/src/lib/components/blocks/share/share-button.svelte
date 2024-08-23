@@ -21,11 +21,16 @@
   export let type: IShareTarget["type"]
   export let id: IShareTarget["id"]
 
+  export let onSuccess: () => void = () => {}
+
   const enableShareMutation = createMutation({
     mutationKey: ["share", "enable", type, id],
     mutationFn: trpc.share.enable.mutate,
     async onSuccess(data, variables, context) {
-      await invalidate(`table:${$t.id.value}`)
+      if ($t) {
+        await invalidate(`table:${$t.id.value}`)
+      }
+      onSuccess()
     },
     onError(error, variables, context) {
       toast.error(error.message)
@@ -45,7 +50,10 @@
   const disableShareMutation = createMutation({
     mutationFn: trpc.share.disable.mutate,
     async onSuccess(data, variables, context) {
-      await invalidate(`table:${$t.id.value}`)
+      if ($t) {
+        await invalidate(`table:${$t.id.value}`)
+      }
+      onSuccess()
     },
   })
 
@@ -91,6 +99,17 @@
     .with("base", () => $hasPermission("share:base"))
     .with("view", () => $hasPermission("share:view"))
     .otherwise(() => false)
+
+  let shareIdCopied = false
+  const copyShareId = async () => {
+    if (!share?.id) return
+    await copyToClipboard(share.id)
+    shareIdCopied = true
+    setTimeout(() => {
+      shareIdCopied = false
+    }, 2000)
+    toast.success("Copied to clipboard")
+  }
 </script>
 
 {#if permission}
@@ -177,6 +196,20 @@
               </div>
             </div>
           {/if}
+
+          <div class="space-y-2">
+            <p class="text-xs font-semibold">Share ID</p>
+            <div class="flex items-center gap-2">
+              <Input value={share?.id} readonly />
+              <button type="button" on:click={copyShareId}>
+                {#if shareIdCopied}
+                  <CopyCheckIcon class="h-4 w-4" />
+                {:else}
+                  <CopyIcon class="h-4 w-4" />
+                {/if}
+              </button>
+            </div>
+          </div>
         </div>
       {/if}
     </Popover.Content>
