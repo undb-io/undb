@@ -34,7 +34,7 @@ export class StringContains extends RecordComositeSpecification {
   }
   isSatisfiedBy(t: RecordDO): boolean {
     const value = t.getValue(this.fieldId)
-    return value.mapOr(false, (v) => v instanceof StringFieldValue && v.value.includes(this.value))
+    return value.mapOr(false, (v) => v instanceof StringFieldValue && !!v.value?.includes(this.value))
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
     throw new Error("Method not implemented.")
@@ -54,7 +54,7 @@ export class StringStartsWith extends RecordComositeSpecification {
   }
   isSatisfiedBy(t: RecordDO): boolean {
     const value = t.getValue(this.fieldId)
-    return value.mapOr(false, (v) => v instanceof StringFieldValue && v.value.startsWith(this.value))
+    return value.mapOr(false, (v) => v instanceof StringFieldValue && !!v.value?.startsWith(this.value))
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
     throw new Error("Method not implemented.")
@@ -74,7 +74,7 @@ export class StringEndsWith extends RecordComositeSpecification {
   }
   isSatisfiedBy(t: RecordDO): boolean {
     const value = t.getValue(this.fieldId)
-    return value.mapOr(false, (v) => v instanceof StringFieldValue && v.value.endsWith(this.value))
+    return value.mapOr(false, (v) => v instanceof StringFieldValue && !!v.value?.endsWith(this.value))
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
     throw new Error("Method not implemented.")
@@ -111,7 +111,7 @@ export class StringMin extends RecordComositeSpecification {
   }
   isSatisfiedBy(t: RecordDO): boolean {
     const value = t.getValue(this.fieldId)
-    return value.mapOr(false, (v) => v instanceof StringFieldValue && v.value.length >= this.min)
+    return value.mapOr(false, (v) => v instanceof StringFieldValue && (v.value?.length ?? 0) >= this.min)
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
     throw new Error("Method not implemented.")
@@ -131,7 +131,7 @@ export class StringMax extends RecordComositeSpecification {
   }
   isSatisfiedBy(t: RecordDO): boolean {
     const value = t.getValue(this.fieldId)
-    return value.mapOr(false, (v) => v instanceof StringFieldValue && v.value.length <= this.max)
+    return value.mapOr(false, (v) => v instanceof StringFieldValue && (v.value?.length ?? 0) <= this.max)
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
     throw new Error("Method not implemented.")

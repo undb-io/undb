@@ -1,4 +1,5 @@
 import {
+  DateIsEmpty,
   ID_TYPE,
   JsonContains,
   LongTextEqual,
@@ -106,6 +107,7 @@ export class RecordQuerySpecCreatorVisitor implements IRecordVisitor {
   urlEqual(s: UrlEqual): void {}
   attachmentEqual(s: AttachmentEqual): void {}
   attachmentEmpty(s: AttachmentEmpty): void {}
+  dateIsEmpty(spec: DateIsEmpty): void {}
   dateEqual(spec: DateEqual): void {}
   jsonEqual(spec: JsonEqual): void {}
   jsonContains(spec: JsonContains): void {}

@@ -11,6 +11,7 @@ import type { FieldId } from "../../field-id.vo"
 import {
   DateIsAfter,
   DateIsBefore,
+  DateIsEmpty,
   DateIsSameDay,
   DateIsToday,
   DateIsTomorrow,
@@ -54,6 +55,9 @@ export function createAbstractDateFieldCondition<ItemType extends z.ZodTypeAny>(
     z.object({ op: z.literal("is_not_before"), value: dateValue }).merge(base),
     z.object({ op: z.literal("is_after"), value: dateValue }).merge(base),
     z.object({ op: z.literal("is_not_after"), value: dateValue }).merge(base),
+
+    z.object({ op: z.literal("is_empty"), value: z.undefined() }).merge(base),
+    z.object({ op: z.literal("is_not_empty"), value: z.undefined() }).merge(base),
   ])
 }
 
@@ -80,3 +84,5 @@ export const createAbstractDateConditionMather = (
     .with({ op: "is_after_tomorrow" }, () => new DateIsAfter(endOfTomorrow(), fieldId))
     .with({ op: "is_after_yesterday" }, () => new DateIsAfter(endOfYesterday(), fieldId))
     .with({ op: "is_not_after" }, ({ value }) => new DateIsAfter(new Date(value), fieldId).not())
+    .with({ op: "is_empty" }, () => new DateIsEmpty(fieldId))
+    .with({ op: "is_not_empty" }, () => new DateIsEmpty(fieldId).not())

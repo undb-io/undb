@@ -1,6 +1,7 @@
 import { getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
 import type { ISpecification, ISpecVisitor } from "@undb/domain"
 import {
+  DateIsEmpty,
   ID_TYPE,
   JsonContains,
   LongTextEqual,
@@ -79,6 +80,9 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     throw new Error("Method not implemented.")
   }
   jsonEmpty(spec: JsonEmpty): void {
+    this.setData(spec.fieldId.value, null)
+  }
+  dateIsEmpty(spec: DateIsEmpty): void {
     this.setData(spec.fieldId.value, null)
   }
   dateEqual(spec: DateEqual): void {

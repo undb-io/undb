@@ -1,5 +1,6 @@
 import { NotImplementException } from "@undb/domain"
 import {
+  DateIsEmpty,
   JsonContains,
   LongTextEqual,
   SelectField,
@@ -89,6 +90,10 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
   }
   jsonEmpty(spec: JsonEmpty): void {
     this.addCond(this.eb.eb(this.getFieldId(spec), "is", null))
+  }
+  dateIsEmpty(spec: DateIsEmpty): void {
+    const cond = this.eb.eb(this.getFieldId(spec), "is", null)
+    this.addCond(cond)
   }
   dateEqual(spec: DateEqual): void {
     this.addCond(this.eb.eb(this.getFieldId(spec), "=", spec.date?.toISOString() ?? null))
