@@ -96,7 +96,7 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     this.addCond(cond)
   }
   dateEqual(spec: DateEqual): void {
-    this.addCond(this.eb.eb(this.getFieldId(spec), "=", spec.date?.toISOString() ?? null))
+    this.addCond(this.eb.eb(this.getFieldId(spec), "=", spec.date?.getTime() ?? null))
   }
   attachmentEqual(s: AttachmentEqual): void {
     throw new Error("Method not implemented.")
@@ -137,35 +137,27 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     this.addCond(cond)
   }
   dateIsBefore(spec: DateIsBefore): void {
-    const cond = this.eb.eb(this.getFieldId(spec), "<", startOfDay(spec.date).toISOString())
+    const cond = this.eb.eb(this.getFieldId(spec), "<", startOfDay(spec.date).getTime())
     this.addCond(cond)
   }
   dateIsAfter(spec: DateIsAfter): void {
-    const cond = this.eb.eb(this.getFieldId(spec), ">", endOfDay(spec.date).toISOString())
+    const cond = this.eb.eb(this.getFieldId(spec), ">", endOfDay(spec.date).getTime())
     this.addCond(cond)
   }
   dateIsTomorrow(spec: DateIsTomorrow): void {
-    const cond = this.eb.between(this.getFieldId(spec), startOfTomorrow().toISOString(), endOfTomorrow().toISOString())
+    const cond = this.eb.between(this.getFieldId(spec), startOfTomorrow().getTime(), endOfTomorrow().getTime())
     this.addCond(cond)
   }
   dateIsYesterday(spec: DateIsTomorrow): void {
-    const cond = this.eb.between(
-      this.getFieldId(spec),
-      startOfYesterday().toISOString(),
-      endOfYesterday().toISOString(),
-    )
+    const cond = this.eb.between(this.getFieldId(spec), startOfYesterday().getTime(), endOfYesterday().getTime())
     this.addCond(cond)
   }
   dateIsToday(spec: DateIsToday): void {
-    const cond = this.eb.between(this.getFieldId(spec), startOfToday().toISOString(), endOfToday().toISOString())
+    const cond = this.eb.between(this.getFieldId(spec), startOfToday().getTime(), endOfToday().getTime())
     this.addCond(cond)
   }
   dateIsSameDate(spec: DateIsSameDay): void {
-    const cond = this.eb.between(
-      this.getFieldId(spec),
-      startOfDay(spec.date).toISOString(),
-      endOfDay(spec.date).toISOString(),
-    )
+    const cond = this.eb.between(this.getFieldId(spec), startOfDay(spec.date).getTime(), endOfDay(spec.date).getTime())
     this.addCond(cond)
   }
   idEqual(spec: IdEqual): void {
