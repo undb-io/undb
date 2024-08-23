@@ -53,7 +53,8 @@
 
   $: role.set(member?.role ?? null)
 
-  $: if (tables && tables?.length !== 0 && !$page.params.tableId && $page.route.id === "/(authed)") {
+  $: console.log(tables, $page.params.tableId, $page.route.id)
+  $: if (tables && tables?.length !== 0 && !$page.params.tableId && $page.route.id === "/(authed)/(space)") {
     goto(`/t/${tables[0]?.id}`, { replaceState: true })
   }
   $: if (!tables.length && bases.length) {

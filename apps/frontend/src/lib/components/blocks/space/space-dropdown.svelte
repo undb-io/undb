@@ -38,6 +38,7 @@
     async onSuccess(data, variables, context) {
       await fetch(`/api/spaces/${data}/goto`)
       await goto("/")
+      createOpen = false
       await invalidateAll()
     },
   })
@@ -54,6 +55,7 @@
       SPA: true,
       dataType: "json",
       invalidateAll: false,
+      validators: zodClient(createSpaceCommand),
       onSubmit(input) {
         validateForm()
       },
@@ -138,7 +140,7 @@
       <Form.Field {form} name="name">
         <Form.Control let:attrs>
           <Form.Label>Name</Form.Label>
-          <Input {...attrs} bind:value={$formData.name} />
+          <Input {...attrs} disabled={$createSpaceMutation.isPending} bind:value={$formData.name} />
         </Form.Control>
         <Form.Description>This is your space name.</Form.Description>
         <Form.FieldErrors />
