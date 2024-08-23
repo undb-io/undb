@@ -16,6 +16,9 @@
   $: selected = writable<string[]>(value)
 
   let hasValue = Array.isArray(value) && value.length > 0
+
+  $: selected, (hasValue = Array.isArray(value) && value.length > 0)
+
   $: hasValueReactive = Array.isArray($selected) && $selected.length > 0
   $: if (hasValue && !hasValueReactive) {
     hasValue = hasValueReactive
