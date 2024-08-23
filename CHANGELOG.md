@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-37
+
+
+### 🩹 Fixes
+
+- Fix space id in outbox ([3d6811c](https://github.com/undb-io/undb/commit/3d6811c))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-36
 
 
