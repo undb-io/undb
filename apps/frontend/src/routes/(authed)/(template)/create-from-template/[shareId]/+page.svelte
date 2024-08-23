@@ -24,9 +24,21 @@
   let { shareId } = $page.params
   let store = data.store
 
-  let spaces = $store.data?.spaces ?? []
-  let space = $store.data?.space
-  let template = $store.data?.template
+  $: spaces = $store.data?.spaces ?? []
+  $: space = $store.data?.space
+  $: template = $store.data?.template
+
+  $: console.log(spaces, space, template)
+  $: if (space) {
+    form.reset({
+      data: {
+        shareId,
+        targetSpaceId: space.id,
+        name: template?.name,
+        includeData: true,
+      },
+    })
+  }
 
   const createFromTemplateMutation = createMutation({
     mutationFn: trpc.base.createFromTemplate.mutate,
