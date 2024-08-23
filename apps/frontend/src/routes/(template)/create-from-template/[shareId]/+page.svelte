@@ -16,6 +16,8 @@
   import type { PageData } from "./$types"
   import * as Select from "$lib/components/ui/select/index.js"
   import { toast } from "svelte-sonner"
+  import * as Dialog from "$lib/components/ui/dialog"
+  import { Button } from "$lib/components/ui/button"
 
   export let data: PageData
 
@@ -95,7 +97,24 @@
             <Form.Field {form} name="name">
               <Form.Control let:attrs>
                 <Form.Label for="name">Name</Form.Label>
-                <Input {...attrs} id="name" type="name" placeholder="Enter new base name" bind:value={$formData.name} />
+                <div class="flex items-center gap-2">
+                  <Input
+                    {...attrs}
+                    id="name"
+                    type="name"
+                    class="flex-1"
+                    placeholder="Enter new base name"
+                    bind:value={$formData.name}
+                  />
+                  <Dialog.Root>
+                    <Dialog.Trigger asChild let:builder>
+                      <Button builders={[builder]} variant="secondary" class="text-sm">Preview</Button>
+                    </Dialog.Trigger>
+                    <Dialog.Content class="sm:max-w-3/4 max-w-3/4 z-[100] h-[800px] !w-1/2 gap-0 space-y-0 p-0">
+                      <iframe src={"/s/b/" + shareId} class="h-full w-full" title={template?.name}></iframe>
+                    </Dialog.Content>
+                  </Dialog.Root>
+                </div>
               </Form.Control>
               <Form.Description />
               <Form.FieldErrors />
