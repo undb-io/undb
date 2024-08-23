@@ -70,7 +70,7 @@ export class TableRepository implements ITableRepository {
     const ctx = executionContext.getStore()
     const userId = ctx!.user!.userId!
 
-    const spaceId = getCurrentSpaceId()
+    const spaceId = table.spaceId ?? getCurrentSpaceId()
     if (!spaceId) {
       throw new Error("Space ID is required to create a table")
     }
