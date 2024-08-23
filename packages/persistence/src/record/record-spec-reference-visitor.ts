@@ -6,6 +6,7 @@ import {
   DateEqual,
   DateIsAfter,
   DateIsBefore,
+  DateIsEmpty,
   DateIsSameDay,
   DateIsToday,
   DateIsTomorrow,
@@ -75,6 +76,7 @@ export class RecordSpecReferenceVisitor implements IRecordVisitor {
   dateIsYesterday(spec: DateIsTomorrow): void {}
   dateIsBefore(spec: DateIsBefore): void {}
   dateIsAfter(spec: DateIsAfter): void {}
+  dateIsEmpty(spec: DateIsEmpty): void {}
   userEqual(spec: UserEqual): void
   userEqual(spec: UserEqual): void {}
   userEmpty(spec: UserEmpty): void

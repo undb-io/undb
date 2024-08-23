@@ -4,7 +4,7 @@ import { isToday } from "date-fns/isToday"
 import type { IRecordVisitor, RecordDO } from "../../../../records"
 import { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import type { FieldId } from "../../field-id.vo"
-import { startOfToday } from "date-fns/startOfToday"
+import { DateFieldValue } from "../date-field"
 
 export class DateIsSameDay extends RecordComositeSpecification {
   constructor(
@@ -117,6 +117,20 @@ export class DateIsAfter extends RecordComositeSpecification {
   }
   accept(v: IRecordVisitor): Result<void, string> {
     v.dateIsAfter(this)
+    return Ok(undefined)
+  }
+}
+
+export class DateIsEmpty extends RecordComositeSpecification {
+  isSatisfiedBy(t: RecordDO): boolean {
+    throw new Error("Method not implemented.")
+  }
+  mutate(t: RecordDO): Result<RecordDO, string> {
+    t.values.setValue(this.fieldId, new DateFieldValue(null))
+    return Ok(t)
+  }
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.dateIsEmpty(this)
     return Ok(undefined)
   }
 }

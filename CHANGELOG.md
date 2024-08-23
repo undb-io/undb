@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-40
+
+
+### 🩹 Fixes
+
+- Fix date filter ([a3aff5a](https://github.com/undb-io/undb/commit/a3aff5a))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-39
 
 
