@@ -34,7 +34,6 @@
       {
         id: base.id,
         name: base.name,
-        allowTemplate: base.option?.allowTemplate,
       },
       zodClient(updateBaseCommand),
     ),
@@ -86,23 +85,6 @@
       <Form.Description />
       <Form.FieldErrors />
     </Form.Field>
-    <fieldset>
-      <div class="space-y-4">
-        <Form.Field
-          {form}
-          name="allowTemplate"
-          class="flex flex-row items-center justify-between rounded-lg border p-4"
-        >
-          <Form.Control let:attrs>
-            <div class="space-y-0.5">
-              <Form.Label>Allow Template</Form.Label>
-              <Form.Description>Allow users to create templates from base.</Form.Description>
-            </div>
-            <Switch includeInput {...attrs} bind:checked={$formData.allowTemplate} />
-          </Form.Control>
-        </Form.Field>
-      </div>
-    </fieldset>
 
     <Form.Button disabled={!$tainted || $updateBaseMutation.isPending} size="sm">
       {#if $updateBaseMutation.isPending}

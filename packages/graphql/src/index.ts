@@ -232,14 +232,9 @@ export class Graphql {
         user: User!
       }
 
-      type BaseOption {
-        allowTemplate: Boolean
-    }
-
       type Base {
         id: ID!
         name: String!
-        option: BaseOption
 
         share: Share
         tables: [Table]!

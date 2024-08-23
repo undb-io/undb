@@ -2,9 +2,6 @@ query GetBaseQuery($baseId: ID!) {
   base(id: $baseId) {
     id
     name
-    option {
-      allowTemplate
-    }
 
     share {
       enabled

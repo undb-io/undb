@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-38
+
+
+### 🚀 Enhancements
+
+- Remove allow template ([78b38bb](https://github.com/undb-io/undb/commit/78b38bb))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-37
 
 
