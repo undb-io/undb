@@ -8,7 +8,7 @@
   import { createQuery } from "@tanstack/svelte-query"
   import { Records, type IRecordsDTO } from "@undb/table"
   import { onMount, type ComponentType } from "svelte"
-  import { derived, writable, } from "svelte/store"
+  import { derived, writable } from "svelte/store"
   import { queryParam } from "sveltekit-search-params"
 
   let RecordDetailSheet: ComponentType
@@ -31,7 +31,7 @@
         queryFn: () =>
           trpc.shareData.records.query({
             shareId: $page.params.shareId,
-            tableId: $page.params.tableId,
+            tableId: $table.id.value,
             viewId: $viewId,
             q: $q,
           }),
