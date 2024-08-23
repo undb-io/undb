@@ -28,7 +28,6 @@
   $: space = $store.data?.space
   $: template = $store.data?.template
 
-  $: console.log(spaces, space, template)
   $: if (space) {
     form.reset({
       data: {
