@@ -75,6 +75,7 @@ export abstract class AbstractQBVisitor<T> implements IAbastractQBVisitor, ISpec
     spec.accept(v)
 
     v.setIsNot(false)
+    this.addCond(v.cond)
 
     return this
   }

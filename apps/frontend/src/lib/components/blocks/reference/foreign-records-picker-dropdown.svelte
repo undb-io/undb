@@ -5,7 +5,6 @@
   import { readable, writable } from "svelte/store"
   import { ReferenceField, TableCreator } from "@undb/table"
   import Button from "$lib/components/ui/button/button.svelte"
-  import { Skeleton } from "$lib/components/ui/skeleton"
   import { LoaderCircleIcon } from "lucide-svelte"
 
   export let isSelected = false
