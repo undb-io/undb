@@ -6,7 +6,7 @@ import { json } from "./qb"
 export class OutboxMapper {
   static fromEvent(event: BaseEvent): InsertOutbox {
     const user = getCurrentUserId()
-    const spaceId = mustGetCurrentSpaceId()
+    const spaceId = event.spaceId ?? mustGetCurrentSpaceId()
     return {
       id: event.id,
       name: event.name,
