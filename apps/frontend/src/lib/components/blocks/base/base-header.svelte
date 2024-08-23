@@ -6,6 +6,7 @@
   import { SettingsIcon } from "lucide-svelte"
   import ShareButton from "../share/share-button.svelte"
   import type { IBaseOption } from "@undb/base"
+  import { invalidate } from "$app/navigation"
 
   export let readonly = false
   export let base: {
@@ -52,7 +53,13 @@
     </DropdownMenu.Root>
 
     {#if !readonly}
-      <ShareButton type="base" id={base.id} />
+      <ShareButton
+        type="base"
+        id={base.id}
+        onSuccess={() => {
+          invalidate(`undb:base:${base.id}`)
+        }}
+      />
     {/if}
   {/if}
 </header>

@@ -2,7 +2,7 @@ import { yoga } from "@elysiajs/graphql-yoga"
 import { useOpenTelemetry } from "@envelop/opentelemetry"
 import * as otel from "@opentelemetry/api"
 import type { ISpaceMemberDTO } from "@undb/authz"
-import { executionContext, getCurrentSpaceId, getCurrentUserId } from "@undb/context/server"
+import { executionContext, getCurrentSpaceId, getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
 import { QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import type { Option } from "@undb/domain"
@@ -291,7 +291,7 @@ export class Graphql {
         baseByShare(shareId: ID!): Base
         tableByShareBase(shareId: ID!, tableId: ID!): Table
 
-        template(spaceId: ID!, baseId: ID!): Template
+        template(shareId: ID!): Template
       }
 
       `,
@@ -401,8 +401,8 @@ export class Graphql {
           invitations: async (_, args) => {
             return await this.queryBus.execute(new GetInivitationsQuery({ status: args?.status }))
           },
-          template: async (_, { spaceId, baseId }) => {
-            const template = await this.queryBus.execute(new GetTemplateQuery({ spaceId, baseId }))
+          template: async (_, { shareId }) => {
+            const template = await this.queryBus.execute(new GetTemplateQuery({ shareId }))
             return template
           },
         },
@@ -413,7 +413,9 @@ export class Graphql {
           },
           // @ts-ignore
           share: async (base) => {
-            return (await this.shareService.getShareByTarget({ type: "base", id: base.id })).into(null)
+            return (
+              await this.shareService.getShareByTarget({ type: "base", id: base.id }, mustGetCurrentSpaceId())
+            ).into(null)
           },
         },
         Table: {
@@ -441,13 +443,17 @@ export class Graphql {
         View: {
           // @ts-ignore
           share: async (view) => {
-            return (await this.shareService.getShareByTarget({ type: "view", id: view.id })).into(null)
+            return (
+              await this.shareService.getShareByTarget({ type: "view", id: view.id }, mustGetCurrentSpaceId())
+            ).into(null)
           },
         },
         Form: {
           // @ts-ignore
           share: async (form) => {
-            return (await this.shareService.getShareByTarget({ type: "form", id: form.id })).into(null)
+            return (
+              await this.shareService.getShareByTarget({ type: "form", id: form.id }, mustGetCurrentSpaceId())
+            ).into(null)
           },
         },
         Audit: {
