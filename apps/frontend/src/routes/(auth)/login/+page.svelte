@@ -30,6 +30,7 @@
   let loginError = false
 
   $: invitationId = $page.url.searchParams.get("invitationId")
+  $: redirect = $page.url.searchParams.get("redirect")
 
   $: showBanner = !!invitationId
 
@@ -49,7 +50,11 @@
       loginError = false
     },
     async onSuccess(data, variables, context) {
-      await goto("/")
+      if (redirect) {
+        await goto(redirect)
+      } else {
+        await goto("/")
+      }
     },
     async onError(error, variables, context) {
       loginError = true
@@ -202,7 +207,11 @@
           </div>
           <div class="mt-4 text-center text-sm">
             Don&apos;t have an account?
-            <a href="/signup" class="underline"> Sign up </a>
+            {#if redirect}
+              <a href="/signup?redirect={redirect}" class="underline"> Sign up </a>
+            {:else}
+              <a href="/signup" class="underline"> Sign up </a>
+            {/if}
           </div>
           <Separator class="my-6" />
           <div class="space-y-2">

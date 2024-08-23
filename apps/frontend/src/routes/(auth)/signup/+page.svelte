@@ -37,6 +37,7 @@
   type SignupSchema = z.infer<typeof schema>
 
   $: invitationId = $page.url.searchParams.get("invitationId")
+  $: redirect = $page.url.searchParams.get("redirect")
 
   $: showBanner = !!invitationId
 
@@ -60,7 +61,11 @@
       signupError = false
     },
     async onSuccess(data, variables, context) {
-      await goto("/")
+      if (redirect) {
+        await goto(redirect)
+      } else {
+        await goto("/")
+      }
     },
     onError(error, variables, context) {
       signupError = true
@@ -238,8 +243,9 @@
           Already have an account?
           {#if invitationId}
             <a href={`/login?invitationId=${invitationId}`} class="underline"> Sign in </a>
-          {:else}
-            <a href="/login" class="underline"> Sign in </a>
+          {:else if redirect}
+            <a href={`/login?redirect=${redirect}`} class="underline"> Sign in </a>
+          {:else} <a href="/login" class="underline"> Sign in </a>
           {/if}
         </div>
         {#if !invitationId}

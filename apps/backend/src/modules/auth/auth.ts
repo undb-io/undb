@@ -173,21 +173,30 @@ export class Auth {
     const oauth = container.resolve(OAuth)
     return new Elysia()
       .use(oauth.route())
-      .get("/api/me", (ctx) => {
-        const store = executionContext.getStore()
-        const user = store?.user
-        if (!user?.userId) {
-          return ctx.redirect("/login")
-        }
+      .get(
+        "/api/me",
+        (ctx) => {
+          const store = executionContext.getStore()
+          const user = store?.user
+          const redirect = ctx.query.redirect
+          if (!user?.userId) {
+            return ctx.redirect("/login" + (redirect ? `?redirect=${redirect}` : ""))
+          }
 
-        if (env.UNDB_VERIFY_EMAIL && !user.emailVerified && user.email) {
-          return ctx.redirect(`/verify-email`, 301)
-        }
+          if (env.UNDB_VERIFY_EMAIL && !user.emailVerified && user.email) {
+            return ctx.redirect(`/verify-email`, 301)
+          }
 
-        const member = store?.member
+          const member = store?.member
 
-        return { user: omit(user, ["emailVerified"]), member }
-      })
+          return { user: omit(user, ["emailVerified"]), member }
+        },
+        {
+          query: t.Object({
+            redirect: t.Optional(t.String()),
+          }),
+        },
+      )
       .post(
         "/api/signup",
         async (ctx) => {

@@ -1,22 +1,19 @@
-import { GetIndexQueryStore } from "$houdini"
 import { redirect } from "@sveltejs/kit"
 import type { LayoutLoad } from "./$types"
 
 export const ssr = false
 
 export const load: LayoutLoad = async (event) => {
-  const me = await event.fetch("/api/me")
+  const redirectURL = encodeURIComponent(event.url.pathname)
+
+  const search = new URLSearchParams({ redirect: redirectURL })
+
+  const me = await event.fetch("/api/me?" + search.toString())
   if (me.redirected) {
     throw redirect(301, me.url)
   }
 
-  event.depends("undb:tables")
-
-  const indexDataStore = new GetIndexQueryStore()
-  await indexDataStore.fetch({ event, policy: "NetworkOnly" })
-
   return {
     me: await me.json(),
-    indexDataStore,
   }
 }
