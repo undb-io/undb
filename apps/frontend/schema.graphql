@@ -13,13 +13,8 @@ type Audit {
 type Base {
   id: ID!
   name: String!
-  option: BaseOption
   share: Share
   tables: [Table]!
-}
-
-type BaseOption {
-  allowTemplate: Boolean
 }
 
 type Field {

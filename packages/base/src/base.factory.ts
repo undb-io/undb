@@ -6,10 +6,8 @@ import { BaseCreatedEvent } from "./events/base-created.event.js"
 import type { IBaseSpecification } from "./interface.js"
 import { WithBaseId } from "./specifications/base-id.specification.js"
 import { WithBaseName } from "./specifications/base-name.specification.js"
-import { WithBaseOption } from "./specifications/base-option.specification.js"
 import { WithBaseSpaceId } from "./specifications/base-space-id.specification.js"
 import { BaseId } from "./value-objects/base-id.vo.js"
-import { BaseOption } from "./value-objects/base-option.js"
 
 export class BaseFactory {
   static new(...specs: IBaseSpecification[]): Base {
@@ -20,12 +18,7 @@ export class BaseFactory {
   }
 
   static fromJSON(dto: IBaseDTO): Base {
-    return this.new(
-      WithBaseId.fromString(dto.id),
-      WithBaseName.fromString(dto.name),
-      new WithBaseSpaceId(dto.spaceId),
-      new WithBaseOption(new BaseOption({ allowTemplate: dto.option?.allowTemplate })),
-    )
+    return this.new(WithBaseId.fromString(dto.id), WithBaseName.fromString(dto.name), new WithBaseSpaceId(dto.spaceId))
   }
 
   static create(input: ICreateBaseDTO): Base {

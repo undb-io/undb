@@ -4,9 +4,7 @@ import type { DuplicatedBaseSpecification } from "@undb/base/src/specifications/
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
 
 export class BaseMutateVisitor extends AbstractQBMutationVisitor implements IBaseSpecVisitor {
-  withOption(v: WithBaseOption): void {
-    this.setData("allow_template", v.option.allowTemplate)
-  }
+  withOption(v: WithBaseOption): void {}
   duplicatedBase(v: DuplicatedBaseSpecification): void {
     throw new Error("Method not implemented.")
   }

@@ -1,0 +1,1 @@
+ALTER TABLE `undb_base` DROP COLUMN `allow_template`;
