@@ -13,6 +13,10 @@ export class FormsVO extends ValueObject<FormVO[]> {
     yield* this.props
   }
 
+  get forms() {
+    return this.props
+  }
+
   $setForm(dto: IFormDTO): WithFormSpecification {
     const previous = this.props.find((form) => form.id === dto.id)?.toJSON()
     return new WithFormSpecification(previous, FormVO.fromJSON(dto))
