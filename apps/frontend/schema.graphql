@@ -135,6 +135,7 @@ type ShareTarget {
 }
 
 enum ShareTargetType {
+  base
   form
   view
 }

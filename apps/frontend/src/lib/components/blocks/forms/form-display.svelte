@@ -149,15 +149,19 @@
                 }}
                 class={cn(
                   "bg-background relative -mx-4 space-y-2 rounded-md border-2 border-transparent p-0 px-4 transition-all",
-                  isSelected ? "border-primary shadow-lg" : "hover:bg-muted/50",
+                  isSelected ? "border-primary shadow-lg" : !readonly && "hover:bg-muted/50",
                 )}
               >
                 {#if isSelected}
-                  <button disabled={readonly} type="button" class="handler bg-primary absolute -left-2 top-2 rounded-sm py-2">
+                  <button
+                    disabled={readonly}
+                    type="button"
+                    class="handler bg-primary absolute -left-2 top-2 rounded-sm py-2"
+                  >
                     <GripVerticalIcon class="h-4 w-4 text-white" />
                   </button>
                 {/if}
-                <div class={cn("cursor-pointer space-y-2 py-2 pb-4")}>
+                <div class={cn("cursor-pointer space-y-2 py-2 pb-4", readonly && "pointer-events-none")}>
                   <div class="text-md flex items-center gap-2 font-medium">
                     <FieldIcon {field} type={field.type} class="h-4 w-4" />
                     <span>

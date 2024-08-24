@@ -10,6 +10,9 @@
   import { onMount, type ComponentType } from "svelte"
   import { derived, writable } from "svelte/store"
   import { queryParam } from "sveltekit-search-params"
+  import { isDataTab, isFormTab } from "$lib/store/tab.store"
+  import ShareTableHeader from "$lib/components/blocks/table-header/share-table-header.svelte"
+  import FormsReadonly from "$lib/components/blocks/forms/forms-readonly.svelte"
 
   let RecordDetailSheet: ComponentType
 
@@ -48,16 +51,21 @@
 </script>
 
 <div class="flex flex-1 flex-col">
+  <ShareTableHeader />
   <ShareTableTools />
 
-  <GridViewDataTable
-    {viewId}
-    readonly
-    {perPage}
-    {currentPage}
-    isLoading={$getRecords.isLoading}
-    total={$getRecords.data?.total ?? 0}
-  />
+  {#if $isDataTab}
+    <GridViewDataTable
+      {viewId}
+      readonly
+      {perPage}
+      {currentPage}
+      isLoading={$getRecords.isLoading}
+      total={$getRecords.data?.total ?? 0}
+    />
+  {:else if $isFormTab}
+    <FormsReadonly />
+  {/if}
 
   {#if RecordDetailSheet}
     <RecordDetailSheet readonly />
