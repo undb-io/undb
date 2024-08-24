@@ -13,7 +13,6 @@
   import { queryParam } from "sveltekit-search-params"
   import { Input } from "$lib/components/ui/input"
   import { Label } from "$lib/components/ui/label"
-  import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
   import autoAnimate from "@formkit/auto-animate"
   import Button from "$lib/components/ui/button/button.svelte"
   import { PlusIcon, GripVerticalIcon } from "lucide-svelte"
@@ -21,6 +20,8 @@
   import { isNumber } from "radash"
   import { getFormBgColor } from "./form-bg-color"
   import { invalidate } from "$app/navigation"
+
+  export let readonly = false
 
   const selectedFieldId = queryParam("formField")
 
@@ -84,13 +85,21 @@
       <input
         class="block w-full text-4xl font-extrabold tracking-tight"
         bind:value={form.name}
+        {readonly}
         on:change={() => {
           setForm()
           isEditingFormName = false
         }}
       />
     {:else}
-      <h2 class="text-4xl font-extrabold tracking-tight" on:click={() => (isEditingFormName = true)}>
+      <h2
+        class="text-4xl font-extrabold tracking-tight"
+        on:click={() => {
+          if (!readonly) {
+            isEditingFormName = true
+          }
+        }}
+      >
         {form.name}
       </h2>
     {/if}
@@ -98,9 +107,9 @@
     {#if form.description || isAddingDescription}
       <div class="my-2">
         <Label>Description</Label>
-        <Input class="text-sm" bind:value={form.description} on:change={setForm}></Input>
+        <Input {readonly} class="text-sm" bind:value={form.description} on:change={setForm}></Input>
       </div>
-    {:else}
+    {:else if !readonly}
       <Button variant="link" size="sm" class="-mx-4" on:click={addDescription}>
         <PlusIcon class="mr-2 h-4 w-4" />
         Add description
@@ -111,6 +120,7 @@
       <SortableList
         class="space-y-2 pb-2"
         handle=".handler"
+        disabled={readonly}
         animation={200}
         onEnd={(event) => {
           if (isNumber(event.oldIndex) && isNumber(event.newIndex)) {
@@ -123,7 +133,13 @@
           {#if field}
             {@const isSelected = $selectedFieldId === field.id.value}
             <label class={cn("block")} data-field-id={formField.fieldId}>
-              <input type="radio" class="hidden" bind:group={$selectedFieldId} value={field.id.value} />
+              <input
+                disabled={readonly}
+                type="radio"
+                class="hidden"
+                bind:group={$selectedFieldId}
+                value={field.id.value}
+              />
               <Collapsible.Root
                 open={isSelected}
                 onOpenChange={(open) => {
@@ -137,7 +153,7 @@
                 )}
               >
                 {#if isSelected}
-                  <button type="button" class="handler bg-primary absolute -left-2 top-2 rounded-sm py-2">
+                  <button disabled={readonly} type="button" class="handler bg-primary absolute -left-2 top-2 rounded-sm py-2">
                     <GripVerticalIcon class="h-4 w-4 text-white" />
                   </button>
                 {/if}
@@ -167,6 +183,7 @@
                   </div>
                   <FieldControl
                     {field}
+                    {readonly}
                     tableId={$table.id.value}
                     bind:value={formField.defaultValue}
                     class="bg-background"

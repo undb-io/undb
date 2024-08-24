@@ -18,6 +18,12 @@ export const spaceActions = z.enum([
   "table:list",
   "table:delete",
 
+  "form:create",
+  "form:update",
+  "form:list",
+  "form:delete",
+  "form:read",
+
   "field:create",
   "field:update",
   "field:delete",
