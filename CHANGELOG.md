@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-41
+
+
+### 🚀 Enhancements
+
+- Readonly form ui ([740c500](https://github.com/undb-io/undb/commit/740c500))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-40
 
 
