@@ -7,9 +7,8 @@
   import TableHeader from "$lib/components/blocks/table-header/table-header.svelte"
   import Forms from "$lib/components/blocks/forms/forms.svelte"
   import Auth from "$lib/components/blocks/auth/auth.svelte"
-  import RecordDetailSheet from "$lib/components/blocks/record-detail/record-detail-sheet.svelte"
   import Developer from "$lib/components/blocks/developer/developer.svelte"
-  import { tab } from "$lib/store/tab.store"
+  import { isFormTab, isAuthTab, isDataTab } from "$lib/store/tab.store"
   import { CREATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import UpdateViewDialog from "$lib/components/blocks/view/update-view-dialog.svelte"
   import DuplicateViewDialog from "$lib/components/blocks/view/duplicate-view-dialog.svelte"
@@ -36,11 +35,11 @@
 
 {#key $table.id.value}
   <main class="h-full flex-1 overflow-auto">
-    {#if !$tab || $tab === "data"}
+    {#if $isDataTab}
       <GridView {viewId} />
-    {:else if $tab === "form"}
+    {:else if $isFormTab}
       <Forms />
-    {:else if $tab === "auth"}
+    {:else if $isAuthTab}
       <Auth />
     {:else}
       <Developer />
