@@ -129,9 +129,11 @@ const queryBus = container.resolve<IQueryBus>(QueryBus)
 
 const formRouter = t.router({
   create: privateProcedure
+    .use(authz("form:create"))
     .input(createTableFormCommand)
     .mutation(({ input }) => commandBus.execute(new CreateTableFormCommand(input))),
   set: privateProcedure
+    .use(authz("form:update"))
     .input(setTableFormCommand)
     .mutation(({ input }) => commandBus.execute(new SetTableFormCommand(input))),
 })

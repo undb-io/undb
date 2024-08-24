@@ -16,6 +16,16 @@ query GetShareBaseData($shareId: ID!) {
       id
       name
 
+      forms {
+        id
+        name
+        fields
+        description
+        option {
+          backgroundColor
+        }
+      }
+
       views {
         id
         name

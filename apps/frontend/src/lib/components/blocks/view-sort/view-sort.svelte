@@ -93,7 +93,7 @@
       variant={count || open ? "secondary" : "ghost"}
       builders={[builder]}
       size="sm"
-      disabled={!readonly && (!$hasPermission("table:update") && (!sort || sort.isEmpty))}
+      disabled={!readonly && !$hasPermission("table:update") && (!sort || sort.isEmpty)}
     >
       <ArrowUpDownIcon class="mr-2 h-4 w-4" />
       Sorts
@@ -176,19 +176,21 @@
         </div>
       {:else if readonly}
         <div class="flex flex-col items-center gap-3 px-4 py-6 text-center">
-          <SortAscIcon class="text-primary h-10 w-10" />
+          <SortAscIcon class="text-primary h-7 w-7" />
           <h3 class="text-muted-foreground text-sm font-semibold tracking-tight">There's no sorts</h3>
         </div>
       {/if}
-      <div class="flex w-full items-center justify-between px-4 py-3">
-        {#if $hasPermission("table:update")}
-          <Button {disabled} variant="ghost" size="sm" on:click={addSort}>
-            <PlusIcon class="mr-2 h-3 w-3" />
-            Add Sort
-          </Button>
-          <Button variant="outline" size="sm" on:click={submit}>Submit</Button>
-        {/if}
-      </div>
+      {#if !readonly}
+        <div class="flex w-full items-center justify-between px-4 py-3">
+          {#if $hasPermission("table:update")}
+            <Button {disabled} variant="ghost" size="sm" on:click={addSort}>
+              <PlusIcon class="mr-2 h-3 w-3" />
+              Add Sort
+            </Button>
+            <Button variant="outline" size="sm" on:click={submit}>Submit</Button>
+          {/if}
+        </div>
+      {/if}
     </div>
   </Popover.Content>
 </Popover.Root>

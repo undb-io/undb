@@ -63,6 +63,7 @@ export class Graphql {
 
       enum ShareTargetType {
         view
+        base
         form
       }
 
