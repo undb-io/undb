@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-43
+
+
+### 🚀 Enhancements
+
+- Add share qrcode ([589900e](https://github.com/undb-io/undb/commit/589900e))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-42
 
 
