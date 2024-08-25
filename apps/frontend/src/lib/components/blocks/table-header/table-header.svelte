@@ -241,7 +241,7 @@
         </Breadcrumb.List>
       </Breadcrumb.Root>
 
-      <RecordUpdating />
+      <!-- <RecordUpdating /> -->
     </div>
 
     <Tabs.Root

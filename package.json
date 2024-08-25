@@ -1,6 +1,6 @@
 {
   "name": "undb",
-  "version": "1.0.0-42",
+  "version": "1.0.0-43",
   "private": true,
   "scripts": {
     "build": "NODE_ENV=production bun --bun turbo build",
@@ -33,7 +33,7 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "bun@1.1.25",
+  "packageManager": "bun@1.1.26",
   "workspaces": [
     "apps/*",
     "packages/*"

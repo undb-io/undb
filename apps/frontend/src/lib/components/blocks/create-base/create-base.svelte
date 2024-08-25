@@ -57,7 +57,12 @@
   <Form.Field {form} name="name">
     <Form.Control let:attrs>
       <Form.Label>Name</Form.Label>
-      <Input {...attrs} bind:value={$formData.name} placeholder="Set base display name..." />
+      <Input
+        {...attrs}
+        disabled={$mutation.isPending}
+        bind:value={$formData.name}
+        placeholder="Set base display name..."
+      />
     </Form.Control>
     <Form.FieldErrors />
   </Form.Field>
@@ -66,7 +71,7 @@
     <Form.FormButton type="button" variant="secondary" on:click={() => closeModal(CREATE_BASE_MODAL)}>
       Cancel
     </Form.FormButton>
-    <Form.FormButton>
+    <Form.FormButton disabled={$mutation.isPending}>
       {#if $delayed}
         <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
       {/if}
