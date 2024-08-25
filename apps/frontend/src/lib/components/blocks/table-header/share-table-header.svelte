@@ -4,7 +4,6 @@
   import * as Breadcrumb from "$lib/components/ui/breadcrumb/index.js"
   import { getTable } from "$lib/store/table.store"
   import { tab, isFormTab, formId } from "$lib/store/tab.store"
-  import RecordUpdating from "../record-updating/record-updating.svelte"
   import { derived } from "svelte/store"
   import { page } from "$app/stores"
   import { getBaseById } from "$lib/store/base.store"
@@ -63,8 +62,6 @@
           {/if}
         </Breadcrumb.List>
       </Breadcrumb.Root>
-
-      <RecordUpdating />
     </div>
 
     {#if forms.length}
