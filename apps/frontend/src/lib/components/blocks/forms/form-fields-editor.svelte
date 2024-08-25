@@ -172,7 +172,14 @@
                   class="hidden"
                   bind:checked={formField.hidden}
                   disabled={hiddenDisabled}
-                  on:change={setForm}
+                  on:change={async () => {
+                    if (hiddenDisabled) {
+                      return
+                    }
+
+                    await tick()
+                    setForm()
+                  }}
                 />
                 {#if formField.hidden}
                   <EyeClosed class="h-4 w-4" />

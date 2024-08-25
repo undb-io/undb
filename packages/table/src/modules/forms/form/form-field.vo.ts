@@ -26,9 +26,6 @@ export class FormFieldVO extends ValueObject<IFormField> {
   }
 
   public get hidden() {
-    if (this.required) {
-      return false
-    }
     return this.props.hidden ?? false
   }
 
