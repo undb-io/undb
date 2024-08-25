@@ -5,7 +5,7 @@
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
-  import { CopyIcon, ShareIcon, CopyCheckIcon, ExternalLinkIcon } from "lucide-svelte"
+  import { CopyIcon, ShareIcon, CopyCheckIcon, ExternalLinkIcon, QrCodeIcon } from "lucide-svelte"
   import * as Popover from "$lib/components/ui/popover"
   import { shareStore } from "$lib/store/share.store"
   import { invalidate } from "$app/navigation"
@@ -17,6 +17,8 @@
   import { hasPermission } from "$lib/store/space-member.store"
   import Textarea from "$lib/components/ui/textarea/textarea.svelte"
   import { match } from "ts-pattern"
+  import QrCode from "svelte-qrcode"
+  import * as HoverCard from "$lib/components/ui/hover-card"
 
   export let type: IShareTarget["type"]
   export let id: IShareTarget["id"]
@@ -170,6 +172,15 @@
                   <CopyIcon class="h-4 w-4" />
                 {/if}
               </button>
+
+              <HoverCard.Root>
+                <HoverCard.Trigger>
+                  <QrCodeIcon class="h-4 w-4" />
+                </HoverCard.Trigger>
+                <HoverCard.Content>
+                  <QrCode value={url} />
+                </HoverCard.Content>
+              </HoverCard.Root>
             </div>
           </div>
 

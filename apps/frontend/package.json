@@ -90,6 +90,7 @@
     "lucide-svelte": "^0.435.0",
     "mode-watcher": "^0.4.1",
     "paneforge": "^0.0.5",
+    "svelte-qrcode": "^1.0.0",
     "svelte-radix": "^1.1.1",
     "svelte-sonner": "^0.3.27",
     "sveltekit-superforms": "^2.17.0",
