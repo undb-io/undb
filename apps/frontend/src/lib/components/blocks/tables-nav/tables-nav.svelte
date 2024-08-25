@@ -83,7 +83,7 @@
             >
               <a
                 class={cn(
-                  "flex h-full flex-1 items-center font-light",
+                  "flex h-full flex-1 items-center font-normal",
                   active && !tableId && !viewId && "text-background font-medium",
                 )}
                 href={`/bases/${base.id}`}
@@ -134,7 +134,7 @@
                       <a
                         href={`/t/${table.id}`}
                         class={cn(
-                          "text-primary flex h-full flex-1 items-center font-light",
+                          "text-primary flex h-full flex-1 items-center font-normal",
                           active && !viewId && "text-background font-medium",
                         )}
                       >
@@ -170,7 +170,7 @@
                         variant="link"
                         class="mt-0 h-8 p-0 pl-14 text-xs"
                       >
-                        <span class="text-xs font-light">+ Create View</span>
+                        <span class="text-xs font-normal">+ Create View</span>
                       </CreateViewButton>
 
                       {#each table.views.filter((view) => !view.isDefault) as view}
@@ -183,7 +183,7 @@
                         >
                           <a
                             class={cn(
-                              "flex h-full flex-1 items-center text-xs font-light",
+                              "flex h-full flex-1 items-center text-xs font-normal",
                               active && "text-background font-medium",
                             )}
                             href={`/t/${table.id}/${view.id}`}
