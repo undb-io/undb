@@ -6,7 +6,6 @@
     type MaybeConditionGroup,
     toMaybeConditionGroup,
     parseValidViewFilter,
-    formOption,
   } from "@undb/table"
   import { Switch } from "$lib/components/ui/switch"
   import { Label } from "$lib/components/ui/label"
@@ -22,6 +21,7 @@
   import type { ZodUndefined } from "@undb/zod"
   import { writable } from "svelte/store"
   import { Button } from "$lib/components/ui/button"
+  import { Checkbox } from "$lib/components/ui/checkbox"
 
   const table = getTable()
 
@@ -57,6 +57,7 @@
   }
 
   $: previousFields = form.getPreviousFields(field.id.value) ?? []
+  $: disabled = formField.getRequired(field) && !formField.defaultValue
 </script>
 
 <div
@@ -108,20 +109,22 @@
           <span>required</span>
         </Label>
 
-        <label class={cn(formField.required ? "cursor-not-allowed" : "cursor-pointer")}>
-          <input
-            type="checkbox"
+        <Label class={cn(disabled ? "cursor-not-allowed" : "cursor-pointer")}>
+          <Checkbox
             class="hidden"
             bind:checked={formField.hidden}
-            disabled={formField.getRequired(field) && !formField.defaultValue}
-            on:click={setForm}
+            {disabled}
+            onCheckedChange={async () => {
+              await tick()
+              setForm()
+            }}
           />
           {#if formField.hidden}
             <EyeClosed class="h-4 w-4" />
           {:else}
             <EyeOpen class="h-4 w-4" />
           {/if}
-        </label>
+        </Label>
       </div>
     </div>
     <Collapsible.Content class="mt-4">

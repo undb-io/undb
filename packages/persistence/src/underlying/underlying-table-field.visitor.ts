@@ -79,17 +79,11 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     this.addColumn(c)
   }
   createdBy(field: CreatedByField): void {
-    const user = getTableName(users)
-    const c = this.tb.addColumn(field.id.value, "text", (b) =>
-      b.references(`${user}.${users.id.name}`).notNull().onDelete("restrict"),
-    )
+    const c = this.tb.addColumn(field.id.value, "text")
     this.addColumn(c)
   }
   updatedBy(field: UpdatedByField): void {
-    const user = getTableName(users)
-    const c = this.tb.addColumn(field.id.value, "text", (b) =>
-      b.references(`${user}.${users.id.name}`).notNull().onDelete("restrict"),
-    )
+    const c = this.tb.addColumn(field.id.value, "text")
     this.addColumn(c)
   }
   id(field: IdField): void {
