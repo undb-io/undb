@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-42
+
+
+### 🩹 Fixes
+
+- Fix form hidden ([eecd268](https://github.com/undb-io/undb/commit/eecd268))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-41
 
 
