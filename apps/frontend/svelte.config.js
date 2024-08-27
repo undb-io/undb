@@ -12,6 +12,9 @@ const config = {
       pages: "dist",
       fallback: "index.html",
     }),
+    env: {
+      publicPrefix: "UNDB_PUBLIC_",
+    },
     alias: {
       $houdini: "./$houdini",
     },

@@ -17,6 +17,7 @@
   import { Separator } from "$lib/components/ui/separator"
   import PasswordInput from "$lib/components/ui/input/password-input.svelte"
   import { LoaderCircleIcon } from "lucide-svelte"
+  import { env } from "$env/dynamic/public"
 
   const schema = z.object({
     email: z.string().email(),
@@ -245,20 +246,25 @@
             <a href={`/login?invitationId=${invitationId}`} class="underline"> Sign in </a>
           {:else if redirect}
             <a href={`/login?redirect=${redirect}`} class="underline"> Sign in </a>
-          {:else} <a href="/login" class="underline"> Sign in </a>
+          {:else}
+            <a href="/login" class="underline"> Sign in </a>
           {/if}
         </div>
         {#if !invitationId}
           <Separator class="my-6" />
           <div class="space-y-2">
-            <Button href="/login/github" variant="secondary" class="w-full">
-              <img class="mr-2 h-4 w-4" src={Github} alt="github" />
-              Login with Github
-            </Button>
-            <Button href="/login/google" variant="secondary" class="w-full">
-              <img class="mr-2 h-4 w-4" src={Google} alt="google" />
-              Login with Google
-            </Button>
+            {#if env.UNDB_PUBLIC_OAUTH_GITHUB_ENABLED === "true"}
+              <Button href="/login/github" variant="secondary" class="w-full">
+                <img class="mr-2 h-4 w-4" src={Github} alt="github" />
+                Login with Github
+              </Button>
+            {/if}
+            {#if env.UNDB_PUBLIC_OAUTH_GOOGLE_ENABLED === "true"}
+              <Button href="/login/google" variant="secondary" class="w-full">
+                <img class="mr-2 h-4 w-4" src={Google} alt="google" />
+                Login with Google
+              </Button>
+            {/if}
           </div>
         {/if}
       </Card.Content>
