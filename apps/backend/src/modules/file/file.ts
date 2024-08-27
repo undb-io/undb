@@ -86,7 +86,7 @@ export class FileService {
           type: "multipart/form-data",
           body: t.Object({
             name: t.String(),
-            file: t.File(),
+            file: t.File({ maxSize: "100m" }),
           }),
         },
       )
