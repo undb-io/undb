@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-44
+
+
+### 🚀 Enhancements
+
+- Enable oauth ([31dd824](https://github.com/undb-io/undb/commit/31dd824))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-43
 
 
