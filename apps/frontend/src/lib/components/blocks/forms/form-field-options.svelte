@@ -133,6 +133,7 @@
         bind:value={$condition}
         table={$table}
         class="rounded-sm border"
+        disabled={field.type === "attachment"}
         on:submit={updateCondition}
       >
         <Button size="xs" slot="footer" on:click={updateCondition}>Submit</Button>
