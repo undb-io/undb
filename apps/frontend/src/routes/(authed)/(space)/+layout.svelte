@@ -60,6 +60,10 @@
     goto(`/bases/${bases[0]?.id}`, { replaceState: true })
   }
 
+  $: if ($page.params.tableId && !tables.find((table) => table?.id === $page.params.tableId)) {
+    goto("/", { replaceState: true })
+  }
+
   let CreateBaseDialog: ComponentType
   onMount(async () => {
     CreateBaseDialog = (await import("$lib/components/blocks/create-base/create-base-dialog.svelte")).default
