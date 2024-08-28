@@ -187,7 +187,7 @@
                   </div>
                   <FieldControl
                     {field}
-                    {readonly}
+                    readonly={readonly || field.type === "attachment"}
                     tableId={$table.id.value}
                     bind:value={formField.defaultValue}
                     class="bg-background"
