@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-45
+
+
+### 🩹 Fixes
+
+- Fix unknown table ([d3a6671](https://github.com/undb-io/undb/commit/d3a6671))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-44
 
 
