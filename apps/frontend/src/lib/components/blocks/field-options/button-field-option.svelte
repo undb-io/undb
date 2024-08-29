@@ -3,10 +3,11 @@
   import { FieldIdVo, getIsMutableFieldType, type IButtonFieldOption } from "@undb/table"
   import { getTable } from "$lib/store/table.store"
   import FieldControl from "../field-control/field-control.svelte"
-  import autoAnimate from "@formkit/auto-animate"
   import { Input } from "$lib/components/ui/input"
   import { Label } from "$lib/components/ui/label"
   import { Checkbox } from "$lib/components/ui/checkbox"
+  import { Button } from "$lib/components/ui/button"
+  import Separator from "$lib/components/ui/separator/separator.svelte"
 
   const table = getTable()
 
@@ -15,13 +16,20 @@
     label: undefined,
     action: {
       type: "update",
-      field: undefined,
-      value: undefined,
+      values: [
+        {
+          field: undefined,
+          value: undefined,
+        },
+      ],
       confirm: true,
     },
   }
 
-  $: field = option.action.field ? $table.schema.getFieldById(new FieldIdVo(option.action.field)).unwrap() : undefined
+  $: selectedFields = option.action.values.map((v) => v.field)
+  $: selectableFields = $table.schema.fields.filter(
+    (f) => getIsMutableFieldType(f.type) && f.type !== "attachment" && !selectedFields.includes(f.id.value),
+  )
 </script>
 
 <div class="space-y-2">
@@ -29,17 +37,39 @@
   <Input class="w-full" placeholder="Button" id="label" bind:value={option.label} />
 
   <p class="text-xs font-semibold">Update Value when Click Button</p>
-  <FieldPicker
-    class="w-full"
-    bind:value={option.action.field}
-    {disabled}
-    filter={(f) => getIsMutableFieldType(f.type) && f.type !== "attachment"}
-  />
-  {#if field}
-    <div use:autoAnimate>
-      <FieldControl bind:value={option.action.value} {field} tableId={$table.id.value} />
-    </div>
+  {#each option.action.values as value, index}
+    {@const field = value.field ? $table.schema.getFieldById(new FieldIdVo(value.field)).unwrap() : undefined}
+    <FieldPicker
+      class="w-full"
+      bind:value={value.field}
+      {disabled}
+      filter={(f) =>
+        getIsMutableFieldType(f.type) && f.type !== "attachment" && !option.action.values.some((v) => v.field === f.id)}
+    />
+    {#if field}
+      <FieldControl
+        class="text-xs"
+        placeholder="Value to update..."
+        bind:value={value.value}
+        {field}
+        tableId={$table.id.value}
+      />
+    {/if}
+    {#if index !== option.action.values.length - 1}
+      <Separator />
+    {/if}
+  {/each}
+  {#if selectableFields.length > 0 && option.action.values.every((v) => v.field)}
+    <Button
+      class="text-muted-foreground w-full text-xs"
+      on:click={() => {
+        option.action.values = [...option.action.values, { field: undefined, value: undefined }]
+      }}
+      variant="link"
+      size="sm">+ Add another field to update</Button
+    >
   {/if}
+
   <div class="flex items-center gap-2">
     <Checkbox id="confirm" bind:checked={option.action.confirm} />
     <Label class="text-xs font-normal" for="confirm">Confirm before update</Label>
