@@ -25,6 +25,7 @@
   import RollupCell from "./editable-cell/rollup-cell.svelte"
   import LongTextCell from "./editable-cell/long-text-cell.svelte"
   import CurrencyCell from "./editable-cell/currency-cell.svelte"
+  import ButtonCell from "./editable-cell/button-cell.svelte"
 
   const table = getTable()
 
@@ -54,6 +55,7 @@
     select: SelectCell,
     rating: RatingCell,
     email: EmailCell,
+    button: ButtonCell,
     url: UrlCell,
     date: DateCell,
     json: JsonCell,

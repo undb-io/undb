@@ -30,6 +30,7 @@ type Field {
 enum FieldType {
   attachment
   autoIncrement
+  button
   checkbox
   createdAt
   createdBy

@@ -6,6 +6,7 @@ import type {
   DATE_TYPE,
   DateField,
   DateFieldValue,
+  IButtonFieldOption,
   IDateFieldConditionSchema,
   IDateFieldConstraint,
   IJsonFieldConditionSchema,
@@ -273,4 +274,4 @@ export type IFieldConstraint =
   | ILongTextFieldConstraint
   | ICurrencyFieldConstraint
 
-export type IFieldOption = IReferenceFieldOption | IRollupFieldOption | ISelectFieldOption
+export type IFieldOption = IReferenceFieldOption | IRollupFieldOption | ISelectFieldOption | IButtonFieldOption

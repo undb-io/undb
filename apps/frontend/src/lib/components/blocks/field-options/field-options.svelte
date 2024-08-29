@@ -16,6 +16,7 @@
   import UrlFieldOption from "./url-field-option.svelte"
   import LongTextFieldOption from "./long-text-field-option.svelte"
   import CurrencyFieldOption from "./currency-field-option.svelte"
+  import ButtonFieldOption from "./button-field-option.svelte"
 
   export let constraint: IFieldConstraint | undefined
   export let option: any | undefined
@@ -37,6 +38,7 @@
     attachment: AttachmentFieldOption,
     user: UserFieldOption,
     email: EmailFieldOption,
+    button: ButtonFieldOption,
     url: UrlFieldOption,
     checkbox: CheckboxFieldOption,
     json: JsonFieldOption,
