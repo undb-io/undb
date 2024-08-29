@@ -63,6 +63,10 @@ export class ButtonField extends AbstractField<ButtonFieldValue, undefined, IBut
     return z.undefined()
   }
 
+  override get mutateSchema() {
+    return None
+  }
+
   override getConditionSchema() {
     // @ts-ignore
     return z.union([])

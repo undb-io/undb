@@ -16,6 +16,7 @@
   import RollupField from "../field-value/rollup-field.svelte"
   import LongTextControl from "./long-text-control.svelte"
   import CurrencyControl from "./currency-control.svelte"
+  import ButtonControl from "./button-control.svelte"
 
   export let readonly = false
   export let field: NoneSystemField
@@ -39,6 +40,7 @@
     currency: CurrencyControl,
     longText: LongTextControl,
     number: NumberControl,
+    button: ButtonControl,
     reference: ReferenceControl,
     rollup: RollupField,
     select: SelectControl,
