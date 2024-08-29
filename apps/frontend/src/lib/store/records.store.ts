@@ -1,4 +1,5 @@
-import { RecordDO, type Records } from "@undb/table"
+import { trpc } from "$lib/trpc/client"
+import { RecordDO, TableDo, type Records } from "@undb/table"
 import { derived, writable } from "svelte/store"
 
 type RecordStore = {
@@ -74,6 +75,14 @@ export const createRecordsStore = () => {
   const hasRecord = derived(store, ($store) => !!$store.records.size)
   const count = derived(store, ($store) => $store.ids.length)
 
+  const invalidateRecord = async (table: TableDo, recordId: string) => {
+    const result = await trpc.record.get.query({ tableId: table.id.value, id: recordId })
+    const record = (result as any)?.record
+    if (!record) return
+    const r = RecordDO.fromJSON(table, record)
+    setRecord(r)
+  }
+
   return {
     set,
     setRecord,
@@ -85,6 +94,7 @@ export const createRecordsStore = () => {
 
     records,
     data,
+    invalidateRecord,
   }
 }
 
