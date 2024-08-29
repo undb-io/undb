@@ -65,6 +65,7 @@ const fieldTypes: Record<FieldType, string> = {
   checkbox: "Checkbox",
   user: "User",
   currency: "Currency",
+  button: "Button",
 }
 
 const rollupFns: Record<IRollupFn, string> = {

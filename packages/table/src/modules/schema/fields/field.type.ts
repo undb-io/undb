@@ -1,4 +1,8 @@
+import type { z } from "@undb/zod"
 import type {
+  BUTTON_TYPE,
+  ButtonField,
+  ButtonFieldValue,
   DATE_TYPE,
   DateField,
   DateFieldValue,
@@ -140,6 +144,7 @@ export type Field =
   | UserField
   | LongTextField
   | CurrencyField
+  | ButtonField
 
 export type SystemField =
   | IdField
@@ -173,6 +178,7 @@ export type FieldValue =
   | UserFieldValue
   | LongTextFieldValue
   | CurrencyFieldValue
+  | ButtonFieldValue
 
 export type MutableFieldValue =
   | StringFieldValue
@@ -212,6 +218,7 @@ export type FieldType =
   | typeof USER_TYPE
   | typeof LONGTEXT_TYPE
   | typeof CURRENCY_TYPE
+  | typeof BUTTON_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
@@ -244,10 +251,11 @@ export type IFieldConditionSchema =
   | IUserFieldConditionSchema
   | ILongTextFieldConditionSchema
   | ICurrencyFieldConditionSchema
+  | z.ZodUnion<any>
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
 
-export type IFilterableFieldType = Exclude<FieldType, "reference" | "rollup" | "attachment">
+export type IFilterableFieldType = Exclude<FieldType, "reference" | "rollup" | "attachment" | "button">
 
 export type IFieldConstraint =
   | IStringFieldConstraint
