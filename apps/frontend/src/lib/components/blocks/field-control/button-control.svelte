@@ -8,6 +8,7 @@
   import { recordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
   import { gridViewStore } from "../grid-view/grid-view.store"
+  import { objectify } from "radash"
 
   export let tableId: string
   export let field: ButtonField
@@ -17,14 +18,13 @@
 
   const client = useQueryClient()
 
-
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
     mutationFn: trpc.record.update.mutate,
     async onSuccess(data, variables, context) {
       gridViewStore.exitEditing()
       await recordsStore.invalidateRecord($table, recordId)
-      await client.invalidateQueries({ queryKey: [recordId, 'get'] })
+      await client.invalidateQueries({ queryKey: [recordId, "get"] })
     },
     onError(error: Error) {
       toast.error(error.message)
@@ -35,14 +35,16 @@
     const option = field.option.into(undefined)
     if (!option) return
     const action = option.action
-    if (!action.field) return
+    if (!action.values.length) return
 
     $updateCell.mutate({
       tableId,
       id: recordId,
-      values: {
-        [action.field]: action.value,
-      },
+      values: objectify(
+        action.values,
+        (v) => v.field!,
+        (v) => v.value ?? null,
+      ),
     })
   }
 </script>

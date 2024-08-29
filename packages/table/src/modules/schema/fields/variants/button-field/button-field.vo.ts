@@ -10,9 +10,12 @@ export const BUTTON_TYPE = "button" as const
 
 export const buttonFieldUpdateAction = z.object({
   type: z.literal("update"),
-  field: fieldId.optional(),
-  // TODO: value type should be defined
-  value: z.any(),
+  values: z.array(
+    z.object({
+      field: fieldId.optional(),
+      value: z.any(),
+    }),
+  ),
   confirm: z.boolean().optional(),
 })
 
