@@ -1,19 +1,21 @@
 import { andOptions, None, Option, Some } from "@undb/domain"
 import { FieldDeletedEvent } from "../events"
-import { type Field, type IDeleteFieldDTO } from "../modules"
+import type { IDeleteFieldDTO } from "../modules/schema/fields/dto/delete-field.dto"
+import { FieldIdVo } from "../modules/schema/fields/field-id.vo"
+import type { Field } from "../modules/schema/fields/field.type"
 import type { TableComositeSpecification } from "../specifications"
 import type { TableDo } from "../table.do"
 
 export function deleteFieldMethod(this: TableDo, dto: IDeleteFieldDTO): [Field, Option<TableComositeSpecification>] {
+  const field = this.schema.getFieldById(new FieldIdVo(dto.id)).expect("field not found")
   const deleteFieldSpec = this.schema.$deleteField(dto)
-  const field = deleteFieldSpec.field
   const formDeleteFieldSpec = this.forms?.$deleteField(field)
   const viewDeleteFieldSpec = this.views.$deleteField(field)
   const rlsDeleteFieldSpec = this.rls.into(undefined)?.$deleteField(field)
 
   const spec = andOptions(
     //
-    Some(deleteFieldSpec),
+    deleteFieldSpec,
     formDeleteFieldSpec ? Some(formDeleteFieldSpec) : None,
     viewDeleteFieldSpec,
     rlsDeleteFieldSpec ? rlsDeleteFieldSpec : None,
@@ -27,5 +29,5 @@ export function deleteFieldMethod(this: TableDo, dto: IDeleteFieldDTO): [Field, 
   })
   this.addDomainEvent(event)
 
-  return [deleteFieldSpec.field, Some(spec)]
+  return [field, Some(spec)]
 }

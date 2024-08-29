@@ -1,7 +1,9 @@
 import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
+import { WithUpdatedFieldSpecification } from "../../../../../specifications/table-schema.specification"
 import type { IRecordComositeSpecification } from "../../../../records"
 import { fieldId, FieldIdVo } from "../../field-id.vo"
+import type { Field } from "../../field.type"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { ButtonFieldValue } from "./button-field-value.vo"
@@ -85,5 +87,20 @@ export class ButtonField extends AbstractField<ButtonFieldValue, undefined, IBut
 
   override accept(visitor: IFieldVisitor): void {
     visitor.button(this)
+  }
+
+  override $onOtherFieldDeleted(field: Field) {
+    const action = this.option.into(undefined)?.action
+    if (!action) return None
+
+    const values = action.values.filter((v) => v.field !== field.id.value)
+    if (values.length === action.values.length) return None
+
+    const updated = ButtonField.create({
+      ...(this.toJSON() as IButtonFieldDTO),
+      option: { ...this.option, action: { ...action, values } },
+    })
+
+    return Some(new WithUpdatedFieldSpecification(this, updated))
   }
 }

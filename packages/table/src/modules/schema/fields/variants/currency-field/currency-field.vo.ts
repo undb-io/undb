@@ -30,7 +30,7 @@ export type ICurrencyFieldOption = z.infer<typeof currencyFieldOption>
 export const createCurrencyFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(CURRENCY_TYPE),
   constraint: currencyFieldConstraint.optional(),
-  defaultValue: currencyFieldValue,
+  defaultValue: currencyFieldValue.optional(),
   option: currencyFieldOption,
 })
 
@@ -42,7 +42,7 @@ export type IUpdateCurrencyFieldDTO = z.infer<typeof updateCurrencyFieldDTO>
 export const currencyFieldDTO = baseFieldDTO.extend({
   type: z.literal(CURRENCY_TYPE),
   constraint: currencyFieldConstraint.optional(),
-  defaultValue: currencyFieldValue,
+  defaultValue: currencyFieldValue.optional(),
   option: currencyFieldOption,
 })
 
