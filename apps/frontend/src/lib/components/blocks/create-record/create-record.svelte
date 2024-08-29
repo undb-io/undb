@@ -82,7 +82,10 @@
   $: dirty = !!$tainted
   $: disabled = !!$allErrors.length
 
-  $: fields = $table.getOrderedMutableFields(formId ? new FormIdVO(formId) : undefined)
+  $: fields = $table
+    .getOrderedMutableFields(formId ? new FormIdVO(formId) : undefined)
+    // TODO: get creatable fields
+    .filter((f) => f.type !== "button")
 
   $: tempRecord = RecordDO.fromJSON($table, { id: RecordIdVO.create().value, values: $formData })
 </script>
