@@ -1,5 +1,6 @@
 import { z } from "@undb/zod"
 import {
+  buttonFieldDTO,
   createDateFieldDTO,
   createJsonFieldDTO,
   createSelectFieldDTO,
@@ -49,6 +50,7 @@ export const fieldDTO = z.discriminatedUnion("type", [
   longTextFieldDTO,
   urlFieldDTO,
   currencyFieldDTO,
+  buttonFieldDTO,
 ])
 
 export type IFieldDTO = z.infer<typeof fieldDTO>

@@ -5,6 +5,7 @@ import type { Field, FieldValue, MutableFieldValue } from "./field.type"
 import type { IOptionId } from "./option/option-id.vo"
 import {
   AutoIncrementFieldValue,
+  ButtonFieldValue,
   CreatedAtFieldValue,
   DateFieldValue,
   IdFieldValue,
@@ -44,6 +45,7 @@ export class FieldValueFactory {
       .with({ type: "user" }, (field) => Some(new UserFieldValue(field.valueSchema.parse(value))))
       .with({ type: "longText" }, (field) => Some(new LongTextFieldValue(field.valueSchema.parse(value))))
       .with({ type: "currency" }, (field) => Some(new CurrencyFieldValue(field.valueSchema.parse(value))))
+      .with({ type: "button" }, () => Some(new ButtonFieldValue(null)))
       .otherwise(() => None)
   }
 
@@ -70,6 +72,7 @@ export class FieldValueFactory {
       .with("user", () => Some(new UserFieldValue(value as string)))
       .with("longText", () => Some(new LongTextFieldValue(value as string)))
       .with("currency", () => Some(new CurrencyFieldValue(value as number)))
+      .with("button", () => Some(new ButtonFieldValue(null)))
       .exhaustive()
   }
 }

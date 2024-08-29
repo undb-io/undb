@@ -1,4 +1,5 @@
 import {
+  ButtonField,
   ID_TYPE,
   type AttachmentField,
   type AutoIncrementField,
@@ -114,6 +115,7 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   number(field: NumberField): void {
     this.addSelect(this.getField(field.id.value))
   }
+  button(field: ButtonField): void {}
   currency(field: CurrencyField): void {
     const fieldName = this.getField(field.id.value)
     const selection = sql`${sql.raw(fieldName)} / 100.0`.as(field.id.value)

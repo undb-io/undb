@@ -1,4 +1,5 @@
 import {
+  ButtonField,
   CurrencyField,
   EmailField,
   ID_TYPE,
@@ -80,6 +81,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
   attachment(field: AttachmentField): void {}
   json(field: JsonField): void {}
   longText(field: LongTextField): void {}
+  button(field: ButtonField): void {}
   user(field: UserField): void {
     if (field.isMultiple) {
       const usersTable = getTableName(users)

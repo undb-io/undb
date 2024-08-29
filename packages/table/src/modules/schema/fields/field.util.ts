@@ -104,6 +104,7 @@ export const fieldTypes: NoneSystemFieldType[] = [
   "reference",
   "rollup",
   "currency",
+  "button",
 ] as const
 
 export const systemFieldTypes: SystemFieldType[] = [

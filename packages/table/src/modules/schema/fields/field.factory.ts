@@ -5,6 +5,7 @@ import type { IFieldDTO } from "./dto/field.dto"
 import type { Field } from "./field.type"
 import { AttachmentField } from "./variants/attachment-field/attachment-field.vo"
 import { AutoIncrementField } from "./variants/autoincrement-field/autoincrement-field.vo"
+import { ButtonField } from "./variants/button-field/button-field.vo"
 import { CheckboxField } from "./variants/checkbox-field/checkbox-field.vo"
 import { CreatedAtField } from "./variants/created-at-field/created-at-field.vo"
 import { CreatedByField } from "./variants/created-by-field/created-by-field.vo"
@@ -48,6 +49,7 @@ export class FieldFactory {
       .with({ type: "user" }, (dto) => new UserField(dto))
       .with({ type: "longText" }, (dto) => new LongTextField(dto))
       .with({ type: "currency" }, (dto) => new CurrencyField(dto))
+      .with({ type: "button" }, (dto) => new ButtonField(dto))
       .exhaustive()
   }
 
@@ -68,6 +70,7 @@ export class FieldFactory {
       .with({ type: "user" }, (dto) => UserField.create(dto))
       .with({ type: "longText" }, (dto) => LongTextField.create(dto))
       .with({ type: "currency" }, (dto) => CurrencyField.create(dto))
+      .with({ type: "button" }, (dto) => ButtonField.create(dto))
       .otherwise(() => {
         throw new Error("Field type creation not supported")
       })
