@@ -1,18 +1,18 @@
 <script lang="ts">
   import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
-  import { ButtonField } from "@undb/table"
+  import { ButtonField, FieldIdVo, FieldValueFactory, RecordDO } from "@undb/table"
   import { toast } from "svelte-sonner"
   import { Button } from "$lib/components/ui/button"
   import { LoaderCircleIcon } from "lucide-svelte"
   import { recordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
   import { gridViewStore } from "../grid-view/grid-view.store"
-  import { objectify } from "radash"
 
   export let tableId: string
   export let field: ButtonField
   export let recordId: string
+  export let record: RecordDO | undefined
 
   const table = getTable()
 
@@ -37,15 +37,13 @@
     const action = option.action
     if (!action.values.length) return
 
-    $updateCell.mutate({
-      tableId,
-      id: recordId,
-      values: objectify(
-        action.values,
-        (v) => v.field!,
-        (v) => v.value ?? null,
-      ),
-    })
+    for (const value of action.values) {
+      if (!value.field) continue
+      const field = $table.schema.getFieldById(new FieldIdVo(value.field)).unwrap()
+      if (record) {
+        record.values.setValue(field.id, FieldValueFactory.fromJSON(field, value.value ?? null).unwrap())
+      }
+    }
   }
 </script>
 
