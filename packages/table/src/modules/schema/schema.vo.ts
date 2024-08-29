@@ -1,4 +1,4 @@
-import { Option, ValueObject } from "@undb/domain"
+import { andOptions, Option, Some, ValueObject } from "@undb/domain"
 import { getNextName } from "@undb/utils"
 import { z, ZodSchema } from "@undb/zod"
 import { objectify } from "radash"
@@ -94,7 +94,11 @@ export class Schema extends ValueObject<Field[]> {
 
   $deleteField(dto: IDeleteFieldDTO) {
     const field = this.getFieldById(new FieldIdVo(dto.id)).expect("Field not found: " + dto.id)
-    return new WithoutFieldSpecification(field)
+    const spec = new WithoutFieldSpecification(field)
+
+    const specs = this.fields.map((f) => f.$onOtherFieldDeleted(field))
+
+    return andOptions(Some(spec), ...specs)
   }
 
   deleteField(field: Field) {

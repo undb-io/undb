@@ -59,6 +59,10 @@
       await invalidate(`table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
       open = false
+      deleteAlertOpen = false
+    },
+    onError(error, variables, context) {
+      toast.error("Delete field failed")
     },
   })
 
@@ -69,6 +73,9 @@
       await invalidate(`table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
       open = false
+    },
+    onError(error, variables, context) {
+      toast.error("Duplicate field failed")
     },
   })
 </script>

@@ -1,5 +1,6 @@
 import { None, Option, Some } from "@undb/domain"
 import { ZodEnum, ZodUndefined, z, type ZodSchema } from "@undb/zod"
+import type { TableComositeSpecification } from "../../../../specifications/table.composite-specification"
 import type {
   INotRecordComositeSpecification,
   IRecordComositeSpecification,
@@ -165,6 +166,10 @@ export abstract class AbstractField<
     const updated = new (Object.getPrototypeOf(this) as any).constructor(json)
 
     return updated
+  }
+
+  $onOtherFieldDeleted(field: Field): Option<TableComositeSpecification> {
+    return None as Option<TableComositeSpecification>
   }
 
   duplicate(name: string) {
