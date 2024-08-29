@@ -8,4 +8,13 @@
   }
 </script>
 
-<Input class={$$restProps.class} disabled={readonly} {value} on:input={onInput} type="number" on:change step={0.01} />
+<Input
+  class={$$restProps.class}
+  disabled={readonly}
+  {value}
+  on:input={onInput}
+  type="number"
+  on:change
+  step={0.01}
+  {...$$restProps}
+/>
