@@ -35,7 +35,7 @@
   export let onSuccess: () => void = () => {}
 
   export let table: Readable<TableDo>
-  const fields = $table.getOrderedVisibleFields()
+  const fields = $table.getOrderedVisibleFields().filter((f) => f.type !== "button")
   const schema = $table.schema.getMutableSchema(fields)
 
   export let disabled: boolean = false
@@ -99,7 +99,7 @@
   $: dirty = mutableFieldTainted
   $: disabled = !$tainted || !!$allErrors.length
 
-  $: hiddenFields = $table.getOrderedHiddenFields()
+  $: hiddenFields = $table.getOrderedHiddenFields().filter((f) => f.type !== "button")
 </script>
 
 <form
@@ -147,6 +147,7 @@
               {field}
               tableId={$table.id.value}
               recordId={$r}
+              {record}
               displayValue={displayValues[field.id.value]}
               {readonly}
               class={cn($errors[field.id.value] && "border-red-500 focus-visible:ring-0")}
