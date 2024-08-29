@@ -24,6 +24,7 @@
   import UrlCell from "./editable-cell/url-cell.svelte"
   import RollupCell from "./editable-cell/rollup-cell.svelte"
   import LongTextCell from "./editable-cell/long-text-cell.svelte"
+  import CurrencyCell from "./editable-cell/currency-cell.svelte"
 
   const table = getTable()
 
@@ -41,6 +42,7 @@
     string: StringCell,
     longText: LongTextCell,
     number: NumberCell,
+    currency: CurrencyCell,
     id: IdField,
     createdAt: DateField,
     updatedAt: DateField,

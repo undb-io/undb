@@ -8,6 +8,7 @@ import { AutoIncrementField } from "./variants/autoincrement-field/autoincrement
 import { CheckboxField } from "./variants/checkbox-field/checkbox-field.vo"
 import { CreatedAtField } from "./variants/created-at-field/created-at-field.vo"
 import { CreatedByField } from "./variants/created-by-field/created-by-field.vo"
+import { CurrencyField } from "./variants/currency-field"
 import { DateField } from "./variants/date-field/date-field.vo"
 import { EmailField } from "./variants/email-field/email-field.vo"
 import { IdField } from "./variants/id-field/id-field.vo"
@@ -46,6 +47,7 @@ export class FieldFactory {
       .with({ type: "checkbox" }, (dto) => new CheckboxField(dto))
       .with({ type: "user" }, (dto) => new UserField(dto))
       .with({ type: "longText" }, (dto) => new LongTextField(dto))
+      .with({ type: "currency" }, (dto) => new CurrencyField(dto))
       .exhaustive()
   }
 
@@ -65,6 +67,7 @@ export class FieldFactory {
       .with({ type: "checkbox" }, (dto) => CheckboxField.create(dto))
       .with({ type: "user" }, (dto) => UserField.create(dto))
       .with({ type: "longText" }, (dto) => LongTextField.create(dto))
+      .with({ type: "currency" }, (dto) => CurrencyField.create(dto))
       .otherwise(() => {
         throw new Error("Field type creation not supported")
       })

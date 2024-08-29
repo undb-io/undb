@@ -15,6 +15,7 @@
   import UrlControl from "./url-control.svelte"
   import RollupField from "../field-value/rollup-field.svelte"
   import LongTextControl from "./long-text-control.svelte"
+  import CurrencyControl from "./currency-control.svelte"
 
   export let readonly = false
   export let field: NoneSystemField
@@ -35,6 +36,7 @@
 
   const map: Record<NoneSystemFieldType, ComponentType> = {
     string: StringControl,
+    currency: CurrencyControl,
     longText: LongTextControl,
     number: NumberControl,
     reference: ReferenceControl,

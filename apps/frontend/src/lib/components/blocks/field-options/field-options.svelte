@@ -15,6 +15,7 @@
   import DateFieldOption from "./date-field-option.svelte"
   import UrlFieldOption from "./url-field-option.svelte"
   import LongTextFieldOption from "./long-text-field-option.svelte"
+  import CurrencyFieldOption from "./currency-field-option.svelte"
 
   export let constraint: IFieldConstraint | undefined
   export let option: any | undefined
@@ -28,6 +29,7 @@
     string: StringFieldOption,
     longText: LongTextFieldOption,
     number: NumberFieldOption,
+    currency: CurrencyFieldOption,
     reference: ReferenceFieldOption,
     rollup: RollupFieldOption,
     select: SelectFieldOption,

@@ -88,6 +88,7 @@ export class Graphql {
         string
         longText
         number
+        currency
         rating
         email
         url

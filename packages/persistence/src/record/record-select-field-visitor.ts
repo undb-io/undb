@@ -1,29 +1,30 @@
 import {
-  AttachmentField,
-  CheckboxField,
-  DateField,
   ID_TYPE,
-  JsonField,
-  LongTextField,
-  RatingField,
-  SelectField,
-  UrlField,
-  UserField,
+  type AttachmentField,
   type AutoIncrementField,
+  type CheckboxField,
   type CreatedAtField,
   type CreatedByField,
+  type CurrencyField,
+  type DateField,
+  type EmailField,
   type Field,
   type IFieldVisitor,
   type IdField,
+  type JsonField,
+  type LongTextField,
   type NumberField,
+  type RatingField,
   type ReferenceField,
   type RollupField,
+  type SelectField,
   type StringField,
   type TableDo,
   type UpdatedAtField,
   type UpdatedByField,
+  type UrlField,
+  type UserField,
 } from "@undb/table"
-import type { EmailField } from "@undb/table/src/modules/schema/fields/variants/email-field"
 import { getTableName } from "drizzle-orm"
 import { sql, type ExpressionBuilder, type SelectExpression } from "kysely"
 import { users } from "../tables"
@@ -100,7 +101,6 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     this.addSelect(this.getField(field.id.value))
     this.#selectSingelUser(field)
   }
-
   updatedBy(field: UpdatedByField): void {
     this.addSelect(this.getField(field.id.value))
     this.#selectSingelUser(field)
@@ -113,6 +113,11 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   }
   number(field: NumberField): void {
     this.addSelect(this.getField(field.id.value))
+  }
+  currency(field: CurrencyField): void {
+    const fieldName = this.getField(field.id.value)
+    const selection = sql`${sql.raw(fieldName)} / 100.0`.as(field.id.value)
+    this.addSelect(selection)
   }
   rating(field: RatingField): void {
     this.addSelect(this.getField(field.id.value))

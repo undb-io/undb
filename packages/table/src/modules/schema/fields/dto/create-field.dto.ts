@@ -2,6 +2,7 @@ import { z } from "@undb/zod"
 import { createDateFieldDTO, createJsonFieldDTO, createUrlFieldDTO } from "../variants"
 import { createAttachmentFieldDTO } from "../variants/attachment-field"
 import { createCheckboxFieldDTO } from "../variants/checkbox-field"
+import { createCurrencyFieldDTO } from "../variants/currency-field"
 import { createEmailFieldDTO } from "../variants/email-field"
 import { createLongTextFieldDTO } from "../variants/long-text-field"
 import { createNumberFieldDTO } from "../variants/number-field/number-field.vo"
@@ -27,6 +28,7 @@ export const createFieldDTO = z.discriminatedUnion("type", [
   createCheckboxFieldDTO,
   createUserFieldDTO,
   createLongTextFieldDTO,
+  createCurrencyFieldDTO,
 ])
 
 export type ICreateFieldDTO = z.infer<typeof createFieldDTO>

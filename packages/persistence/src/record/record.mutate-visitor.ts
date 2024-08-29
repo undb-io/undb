@@ -1,6 +1,7 @@
 import { getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
 import type { ISpecification, ISpecVisitor } from "@undb/domain"
 import {
+  CurrencyEqual,
   DateIsEmpty,
   ID_TYPE,
   JsonContains,
@@ -282,6 +283,9 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
   }
   numberEmpty(spec: NumberEmpty): void {
     throw new Error("Method not implemented.")
+  }
+  currencyEqual(spec: CurrencyEqual): void {
+    this.setData(spec.fieldId.value, spec.value === null ? null : spec.value * 100)
   }
   idEqual(spec: IdEqual): void {
     this.setData(spec.fieldId.value, spec.values.value)

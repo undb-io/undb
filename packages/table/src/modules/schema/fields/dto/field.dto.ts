@@ -17,6 +17,7 @@ import { autoIncrementFieldDTO } from "../variants/autoincrement-field"
 import { checkboxFieldDTO, createCheckboxFieldDTO } from "../variants/checkbox-field"
 import { createdAtFieldDTO } from "../variants/created-at-field"
 import { createdByFieldDTO } from "../variants/created-by-field"
+import { currencyFieldDTO } from "../variants/currency-field"
 import { createEmailFieldDTO, emailFieldDTO } from "../variants/email-field"
 import { idFieldDTO } from "../variants/id-field/id-field.vo"
 import { createLongTextFieldDTO, longTextFieldDTO } from "../variants/long-text-field"
@@ -47,6 +48,7 @@ export const fieldDTO = z.discriminatedUnion("type", [
   userFieldDTO,
   longTextFieldDTO,
   urlFieldDTO,
+  currencyFieldDTO,
 ])
 
 export type IFieldDTO = z.infer<typeof fieldDTO>
