@@ -6,6 +6,7 @@
     type ICheckboxFieldConditionOp,
     type ICreatedAtFieldConditionOp,
     type ICreatedByFieldConditionOp,
+    type ICurrencyFieldConditionOp,
     type IDateFieldConditionOp,
     type IEmailFieldConditionOp,
     type IIdFieldConditionOp,
@@ -66,6 +67,17 @@
     is_not_empty: null,
   }
 
+  const currency: Record<ICurrencyFieldConditionOp, ComponentType | null> = {
+    eq: NumberInput,
+    neq: NumberInput,
+    // gt: NumberInput,
+    // gte: NumberInput,
+    // lt: NumberInput,
+    // lte: NumberInput,
+    is_empty: null,
+    is_not_empty: null,
+  }
+
   const date: Record<IDateFieldConditionOp, ComponentType | null> = {
     is_same_day: DateControl,
     is_not_same_day: DateControl,
@@ -85,6 +97,8 @@
     is_not_before: DateControl,
     is_after: DateControl,
     is_not_after: DateControl,
+    is_empty: null,
+    is_not_empty: null,
   }
 
   const createdAt: Record<ICreatedAtFieldConditionOp, ComponentType | null> = {
@@ -106,6 +120,8 @@
     is_not_before: DateControl,
     is_after: DateControl,
     is_not_after: DateControl,
+    is_empty: null,
+    is_not_empty: null,
   }
 
   const updatedAt: Record<IUpdatedAtFieldConditionOp, ComponentType | null> = {
@@ -127,6 +143,8 @@
     is_not_before: DateControl,
     is_after: DateControl,
     is_not_after: DateControl,
+    is_empty: null,
+    is_not_empty: null,
   }
 
   const rating: Record<IRatingFieldConditionOp, ComponentType | null> = {
@@ -234,6 +252,7 @@
   $: filterFieldInput = {
     string,
     number,
+    currency,
     date,
     id,
     createdAt,
