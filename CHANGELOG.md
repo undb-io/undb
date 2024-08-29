@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-46
+
+
+### 🏡 Chore
+
+- Filter input currency ([ce0af97](https://github.com/undb-io/undb/commit/ce0af97))
+
+### ❤️ Contributors
+
+- Nichenqin <nichenqin@hotmail.com>
+
 ## v1.0.0-45
 
 
