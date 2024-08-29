@@ -22,6 +22,7 @@
   export let field: NoneSystemField
   export let tableId: string
   export let recordId: string | undefined
+  export let record: RecordDO | undefined
 
   export let value: any
   export let displayValue: any
@@ -65,4 +66,5 @@
   {field}
   {tableId}
   {recordId}
+  {record}
 />
