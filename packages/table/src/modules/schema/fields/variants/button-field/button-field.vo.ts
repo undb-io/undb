@@ -1,4 +1,4 @@
-import { None, Option } from "@undb/domain"
+import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { IRecordComositeSpecification } from "../../../../records"
 import { fieldId, FieldIdVo } from "../../field-id.vo"
@@ -8,8 +8,22 @@ import { ButtonFieldValue } from "./button-field-value.vo"
 
 export const BUTTON_TYPE = "button" as const
 
+export const buttonFieldUpdateAction = z.object({
+  type: z.literal("update"),
+  field: fieldId.optional(),
+  // TODO: value type should be defined
+  value: z.any(),
+  confirm: z.boolean().optional(),
+})
+
+export const buttonFieldOption = z.object({
+  label: z.string().optional(),
+  action: buttonFieldUpdateAction,
+})
+
 export const createButtonFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(BUTTON_TYPE),
+  option: buttonFieldOption,
 })
 
 export type ICreateButtonFieldDTO = z.infer<typeof createButtonFieldDTO>
@@ -19,18 +33,28 @@ export type IUpdateButtonFieldDTO = z.infer<typeof updateButtonFieldDTO>
 
 export const buttonFieldDTO = baseFieldDTO.extend({
   type: z.literal(BUTTON_TYPE),
+  option: buttonFieldOption,
 })
+
+export type IButtonFieldOption = z.infer<typeof buttonFieldOption>
 
 export type IButtonFieldDTO = z.infer<typeof buttonFieldDTO>
 
-export class ButtonField extends AbstractField<ButtonFieldValue, undefined> {
+export class ButtonField extends AbstractField<ButtonFieldValue, undefined, IButtonFieldOption> {
   constructor(dto: IButtonFieldDTO) {
     super(dto)
+    if (dto.option) {
+      this.option = Some(dto.option)
+    }
   }
 
   static create(dto: ICreateButtonFieldDTO) {
     const field = new ButtonField({ ...dto, id: FieldIdVo.fromStringOrCreate(dto.id).value })
     return field
+  }
+
+  public get label() {
+    return this.option.into(undefined)?.label
   }
 
   override type = BUTTON_TYPE

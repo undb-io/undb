@@ -91,6 +91,7 @@ export class Graphql {
         currency
         rating
         email
+        button
         url
         id
         createdAt
