@@ -24,6 +24,7 @@
     ListTodoIcon,
     LinkIcon,
     FolderIcon,
+    DollarSignIcon,
   } from "lucide-svelte"
 
   export let type: FieldType
@@ -34,6 +35,7 @@
     longText: FileTextIcon,
     string: StringIcon,
     number: NumberIcon,
+    currency: DollarSignIcon,
     autoIncrement: ArrowDown01Icon,
     createdAt: CalendarPlus2Icon,
     createdBy: UserRoundPlus,

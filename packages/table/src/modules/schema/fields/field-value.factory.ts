@@ -20,6 +20,7 @@ import {
 import { AttachmentFieldValue, type IAttachmentFieldValue } from "./variants/attachment-field"
 import { CheckboxFieldValue } from "./variants/checkbox-field"
 import { CreatedByFieldValue } from "./variants/created-by-field"
+import { CurrencyFieldValue } from "./variants/currency-field"
 import { EmailFieldValue } from "./variants/email-field"
 import { LongTextFieldValue } from "./variants/long-text-field/long-text-field-value.vo"
 import { RatingFieldValue } from "./variants/rating-field"
@@ -42,6 +43,7 @@ export class FieldValueFactory {
       .with({ type: "checkbox" }, (field) => Some(new CheckboxFieldValue(field.valueSchema.parse(value))))
       .with({ type: "user" }, (field) => Some(new UserFieldValue(field.valueSchema.parse(value))))
       .with({ type: "longText" }, (field) => Some(new LongTextFieldValue(field.valueSchema.parse(value))))
+      .with({ type: "currency" }, (field) => Some(new CurrencyFieldValue(field.valueSchema.parse(value))))
       .otherwise(() => None)
   }
 
@@ -67,6 +69,7 @@ export class FieldValueFactory {
       .with("checkbox", () => Some(new CheckboxFieldValue(value as boolean)))
       .with("user", () => Some(new UserFieldValue(value as string)))
       .with("longText", () => Some(new LongTextFieldValue(value as string)))
+      .with("currency", () => Some(new CurrencyFieldValue(value as number)))
       .exhaustive()
   }
 }

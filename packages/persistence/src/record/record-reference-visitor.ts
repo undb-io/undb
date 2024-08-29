@@ -1,29 +1,30 @@
 import {
-  AttachmentField,
-  CheckboxField,
-  DateField,
   ID_TYPE,
-  JsonField,
-  LongTextField,
-  RatingField,
-  SelectField,
-  UrlField,
-  UserField,
+  type AttachmentField,
   type AutoIncrementField,
+  type CheckboxField,
   type CreatedAtField,
   type CreatedByField,
+  type CurrencyField,
+  type DateField,
+  type EmailField,
   type Field,
   type IFieldVisitor,
   type IdField,
+  type JsonField,
+  type LongTextField,
   type NumberField,
+  type RatingField,
   type ReferenceField,
   type RollupField,
+  type SelectField,
   type StringField,
   type TableDo,
   type UpdatedAtField,
   type UpdatedByField,
+  type UrlField,
+  type UserField,
 } from "@undb/table"
-import type { EmailField } from "@undb/table/src/modules/schema/fields/variants/email-field"
 import type { SelectQueryBuilder } from "kysely"
 
 export class RecordReferenceVisitor implements IFieldVisitor {
@@ -68,6 +69,9 @@ export class RecordReferenceVisitor implements IFieldVisitor {
     throw new Error("Method not implemented.")
   }
   number(field: NumberField): void {
+    throw new Error("Method not implemented.")
+  }
+  currency(field: CurrencyField): void {
     throw new Error("Method not implemented.")
   }
   rating(field: RatingField): void {

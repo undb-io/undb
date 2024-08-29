@@ -103,6 +103,7 @@ export const fieldTypes: NoneSystemFieldType[] = [
   "user",
   "reference",
   "rollup",
+  "currency",
 ] as const
 
 export const systemFieldTypes: SystemFieldType[] = [
@@ -133,6 +134,7 @@ export const filterableFieldTypes = [
   "updatedBy",
   "user",
   "json",
+  "currency",
 ] as const
 
 export const getIsFilterableFieldType = (type: FieldType): type is IFilterableFieldType => {
@@ -149,6 +151,7 @@ export const fieldsCanBeRollup: FieldType[] = [
   "url",
   "date",
   "checkbox",
+  "currency",
 ] as const
 
 export const getIsFieldCanBeRollup = (type: FieldType): type is "number" => {
@@ -192,6 +195,7 @@ export const displayFieldTypes: FieldType[] = [
   "url",
   "id",
   "rating",
+  "currency",
 ] as const
 
 export const getIsDisplayFieldType = (type: FieldType): type is (typeof displayFieldTypes)[number] => {

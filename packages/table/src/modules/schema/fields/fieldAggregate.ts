@@ -3,6 +3,7 @@ import { abstractDateAggregate } from "./variants/abstractions/abstract-date.agg
 import { abstractNumberAggregate } from "./variants/abstractions/abstract-number.aggregate"
 import { abstractUserAggregate } from "./variants/abstractions/abstract-user.aggregate"
 import { checkboxFieldAggregate } from "./variants/checkbox-field/checkbox-field.aggregate"
+import { currencyFieldAggregate } from "./variants/currency-field/currency-field.aggregate"
 import { emailFieldAggregate } from "./variants/email-field/email-field.aggregate"
 import { jsonFieldAggregate } from "./variants/json-field/json-field.aggregate"
 import { longTextFieldAggregate } from "./variants/long-text-field/long-text-field.aggregate"
@@ -22,3 +23,4 @@ export const fieldAggregate = stringFieldAggregate
   .or(checkboxFieldAggregate)
   .or(userFieldAggregate)
   .or(longTextFieldAggregate)
+  .or(currencyFieldAggregate)

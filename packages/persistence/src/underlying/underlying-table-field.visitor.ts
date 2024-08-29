@@ -21,6 +21,7 @@ import {
   type StringField,
   type UpdatedAtField,
 } from "@undb/table"
+import type { CurrencyField } from "@undb/table/src/modules/schema/fields/variants/currency-field"
 import type { EmailField } from "@undb/table/src/modules/schema/fields/variants/email-field"
 import { getTableName } from "drizzle-orm"
 import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, CreateTableBuilder, sql } from "kysely"
@@ -104,6 +105,10 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
   }
   number(field: NumberField): void {
     const c = this.tb.addColumn(field.id.value, "real")
+    this.addColumn(c)
+  }
+  currency(field: CurrencyField): void {
+    const c = this.tb.addColumn(field.id.value, "integer")
     this.addColumn(c)
   }
   email(field: EmailField): void {

@@ -1,5 +1,6 @@
 import { NotImplementException } from "@undb/domain"
 import {
+  CurrencyEqual,
   DateIsEmpty,
   JsonContains,
   LongTextEqual,
@@ -126,6 +127,10 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
   }
   userEmpty(spec: UserEmpty): void {
     const cond = this.eb.eb(this.getFieldId(spec), "=", "").or(this.getFieldId(spec), "is", null)
+    this.addCond(cond)
+  }
+  currencyEqual(spec: CurrencyEqual): void {
+    const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value === null ? null : spec.value * 100)
     this.addCond(cond)
   }
   stringMin(spec: StringMin): void {

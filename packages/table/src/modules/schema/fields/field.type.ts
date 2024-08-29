@@ -69,6 +69,13 @@ import type {
   ICreatedByFieldConditionSchema,
 } from "./variants/created-by-field"
 import type {
+  CURRENCY_TYPE,
+  CurrencyField,
+  CurrencyFieldValue,
+  ICurrencyFieldConditionSchema,
+  ICurrencyFieldConstraint,
+} from "./variants/currency-field"
+import type {
   EMAIL_TYPE,
   EmailField,
   EmailFieldValue,
@@ -132,6 +139,7 @@ export type Field =
   | CheckboxField
   | UserField
   | LongTextField
+  | CurrencyField
 
 export type SystemField =
   | IdField
@@ -164,6 +172,7 @@ export type FieldValue =
   | CheckboxFieldValue
   | UserFieldValue
   | LongTextFieldValue
+  | CurrencyFieldValue
 
 export type MutableFieldValue =
   | StringFieldValue
@@ -179,6 +188,7 @@ export type MutableFieldValue =
   | CheckboxFieldValue
   | UserFieldValue
   | LongTextFieldValue
+  | CurrencyFieldValue
 
 export type FieldType =
   | typeof STRING_TYPE
@@ -201,6 +211,7 @@ export type FieldType =
   | typeof CHECKBOX_TYPE
   | typeof USER_TYPE
   | typeof LONGTEXT_TYPE
+  | typeof CURRENCY_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
@@ -232,6 +243,7 @@ export type IFieldConditionSchema =
   | ICheckboxFieldConditionSchema
   | IUserFieldConditionSchema
   | ILongTextFieldConditionSchema
+  | ICurrencyFieldConditionSchema
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
 
@@ -251,5 +263,6 @@ export type IFieldConstraint =
   | ICheckboxFieldConstraint
   | IUserFieldConstraint
   | ILongTextFieldConstraint
+  | ICurrencyFieldConstraint
 
 export type IFieldOption = IReferenceFieldOption | IRollupFieldOption | ISelectFieldOption

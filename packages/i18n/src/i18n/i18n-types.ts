@@ -249,6 +249,10 @@ type RootTranslation = {
 			 * U​s​e​r
 			 */
 			user: string
+			/**
+			 * C​u​r​r​e​n​c​y
+			 */
+			currency: string
 		}
 		rollupFns: {
 			/**
@@ -596,6 +600,10 @@ export type TranslationFunctions = {
 			 * User
 			 */
 			user: () => LocalizedString
+			/**
+			 * Currency
+			 */
+			currency: () => LocalizedString
 		}
 		rollupFns: {
 			/**

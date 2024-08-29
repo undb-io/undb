@@ -1,18 +1,18 @@
 import {
-  CheckboxField,
-  DateField,
+  CurrencyField,
+  EmailField,
   ID_TYPE,
-  JsonField,
-  LongTextField,
-  UrlField,
-  UserField,
   type AttachmentField,
   type AutoIncrementField,
+  type CheckboxField,
   type CreatedAtField,
   type CreatedByField,
+  type DateField,
   type Field,
   type IFieldVisitor,
   type IdField,
+  type JsonField,
+  type LongTextField,
   type NumberField,
   type RatingField,
   type ReferenceField,
@@ -22,8 +22,9 @@ import {
   type TableDo,
   type UpdatedAtField,
   type UpdatedByField,
+  type UrlField,
+  type UserField,
 } from "@undb/table"
-import type { EmailField } from "@undb/table/src/modules/schema/fields/variants/email-field"
 import { getTableName } from "drizzle-orm"
 import { sql, type QueryCreator, type SelectExpression } from "kysely"
 import type { IRecordQueryBuilder } from "../qb"
@@ -69,6 +70,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
   updatedAt(field: UpdatedAtField): void {}
   updatedBy(field: UpdatedByField): void {}
   string(field: StringField): void {}
+  currency(field: CurrencyField): void {}
   number(field: NumberField): void {}
   rating(field: RatingField): void {}
   select(field: SelectField): void {}

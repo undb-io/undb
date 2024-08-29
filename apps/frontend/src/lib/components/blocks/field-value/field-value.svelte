@@ -15,6 +15,7 @@
   import CheckboxField from "./checkbox-field.svelte"
   import UrlField from "./url-field.svelte"
   import LongTextField from "./long-text-field.svelte"
+  import CurrencyField from "./currency-field.svelte"
 
   export let type: FieldType
   export let value: any
@@ -29,6 +30,7 @@
     string: StringField,
     longText: LongTextField,
     number: NumberField,
+    currency: CurrencyField,
     createdAt: DateField,
     updatedAt: DateField,
     autoIncrement: NumberField,
