@@ -1,4 +1,5 @@
 import {
+  ButtonField,
   ID_TYPE,
   type AttachmentField,
   type AutoIncrementField,
@@ -69,6 +70,9 @@ export class RecordReferenceVisitor implements IFieldVisitor {
     throw new Error("Method not implemented.")
   }
   number(field: NumberField): void {
+    throw new Error("Method not implemented.")
+  }
+  button(field: ButtonField): void {
     throw new Error("Method not implemented.")
   }
   currency(field: CurrencyField): void {

@@ -253,6 +253,10 @@ type RootTranslation = {
 			 * C​u​r​r​e​n​c​y
 			 */
 			currency: string
+			/**
+			 * B​u​t​t​o​n
+			 */
+			button: string
 		}
 		rollupFns: {
 			/**
@@ -604,6 +608,10 @@ export type TranslationFunctions = {
 			 * Currency
 			 */
 			currency: () => LocalizedString
+			/**
+			 * Button
+			 */
+			button: () => LocalizedString
 		}
 		rollupFns: {
 			/**

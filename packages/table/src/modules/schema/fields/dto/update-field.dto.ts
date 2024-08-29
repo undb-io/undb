@@ -1,6 +1,7 @@
 import { z } from "@undb/zod"
 import {
   updateAutoIncrementFieldDTO,
+  updateButtonFieldDTO,
   updateCreatedByFieldDTO,
   updateDateFieldDTO,
   updateJsonFieldDTO,
@@ -41,6 +42,7 @@ export const updateFieldDTO = z.discriminatedUnion("type", [
   updateSelectFieldDTO,
   updateRollupFieldDTO,
   updateCurrencyFieldDTO,
+  updateButtonFieldDTO,
 ])
 
 export type IUpdateFieldDTO = z.infer<typeof updateFieldDTO>

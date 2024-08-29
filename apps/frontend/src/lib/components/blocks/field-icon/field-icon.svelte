@@ -25,6 +25,7 @@
     LinkIcon,
     FolderIcon,
     DollarSignIcon,
+    MousePointerClickIcon,
   } from "lucide-svelte"
 
   export let type: FieldType
@@ -52,6 +53,7 @@
     json: FileJsonIcon,
     checkbox: SquareCheckIcon,
     user: field?.type === "user" && field.isMultiple ? UsersIcon : UserIcon,
+    button: MousePointerClickIcon,
   }
 </script>
 

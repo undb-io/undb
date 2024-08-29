@@ -1,5 +1,6 @@
 import {
   AttachmentField,
+  ButtonField,
   CheckboxField,
   CreatedByField,
   DateField,
@@ -107,6 +108,7 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     const c = this.tb.addColumn(field.id.value, "real")
     this.addColumn(c)
   }
+  button(field: ButtonField): void {}
   currency(field: CurrencyField): void {
     const c = this.tb.addColumn(field.id.value, "integer")
     this.addColumn(c)
