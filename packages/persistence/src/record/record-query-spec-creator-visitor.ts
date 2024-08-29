@@ -7,6 +7,7 @@ import {
   type AttachmentEmpty,
   type AttachmentEqual,
   type CheckboxEqual,
+  type CurrencyEqual,
   type DateEqual,
   type DateIsAfter,
   type DateIsBefore,
@@ -91,6 +92,7 @@ export class RecordQuerySpecCreatorVisitor implements IRecordVisitor {
   userEmpty(spec: UserEmpty): void {}
   referenceEqual(spec: ReferenceEqual): void {}
   selectEqual(spec: SelectEqual): void {}
+  currencyEqual(s: CurrencyEqual): void {}
   selectContainsAnyOf(spec: SelectContainsAnyOf): void {
     const field = this.table.schema.getFieldById(spec.fieldId).expect("No field found") as SelectField
     if (field.isMultiple) {

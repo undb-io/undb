@@ -4,6 +4,7 @@ import type { AutoIncrementField } from "./variants/autoincrement-field"
 import type { CheckboxField } from "./variants/checkbox-field"
 import type { CreatedAtField } from "./variants/created-at-field"
 import type { CreatedByField } from "./variants/created-by-field"
+import type { CurrencyField } from "./variants/currency-field"
 import type { DateField } from "./variants/date-field"
 import type { EmailField } from "./variants/email-field"
 import type { IdField } from "./variants/id-field/id-field.vo"
@@ -38,6 +39,7 @@ export interface IFieldVisitor {
   checkbox(field: CheckboxField): void
   user(field: UserField): void
   url(field: UrlField): void
+  currency(field: CurrencyField): void
 
   reference(field: ReferenceField): void
   rollup(field: RollupField): void

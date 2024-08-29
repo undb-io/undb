@@ -63,7 +63,8 @@ const fieldTypes: Record<FieldType, string> = {
   attachment: "Attachment",
   json: "JSON",
   checkbox: "Checkbox",
-  user: "User"
+  user: "User",
+  currency: "Currency",
 }
 
 const rollupFns: Record<IRollupFn, string> = {

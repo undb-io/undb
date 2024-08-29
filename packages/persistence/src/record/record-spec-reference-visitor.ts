@@ -3,6 +3,7 @@ import {
   AttachmentEmpty,
   AttachmentEqual,
   CheckboxEqual,
+  CurrencyEqual,
   DateEqual,
   DateIsAfter,
   DateIsBefore,
@@ -83,6 +84,7 @@ export class RecordSpecReferenceVisitor implements IRecordVisitor {
   userEmpty(spec: UserEmpty): void {}
   referenceEqual(spec: ReferenceEqual): void {}
   selectEqual(spec: SelectEqual): void {}
+  currencyEqual(s: CurrencyEqual): void {}
   selectContainsAnyOf(spec: SelectContainsAnyOf): void {
     this.qb = this.qb
       .innerJoin(spec.fieldId.value, `${this.table.id.value}.${ID_TYPE}`, `${spec.fieldId.value}.${ID_TYPE}`)

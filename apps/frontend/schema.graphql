@@ -33,6 +33,7 @@ enum FieldType {
   checkbox
   createdAt
   createdBy
+  currency
   date
   email
   id
