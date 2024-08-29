@@ -142,6 +142,25 @@ export const getIsFilterableFieldType = (type: FieldType): type is IFilterableFi
   return filterableFieldTypes.includes(type as any)
 }
 
+export const mutableFieldTypes = [
+  "string",
+  "number",
+  "reference",
+  "select",
+  "rating",
+  "email",
+  "url",
+  "attachment",
+  "date",
+  "json",
+  "checkbox",
+  "user",
+  "longText",
+  "currency",
+] as const
+
+export const getIsMutableFieldType = (type: FieldType) => mutableFieldTypes.includes(type as any)
+
 export const allFieldTypes: FieldType[] = [...systemFieldTypes, ...fieldTypes] as const
 
 export const fieldsCanBeRollup: FieldType[] = [
