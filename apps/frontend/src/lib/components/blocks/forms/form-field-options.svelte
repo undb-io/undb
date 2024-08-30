@@ -113,7 +113,7 @@
           <Checkbox
             class="hidden"
             bind:checked={formField.hidden}
-            {disabled}
+            disabled={disabled || field.type === "button"}
             onCheckedChange={async () => {
               await tick()
               setForm()

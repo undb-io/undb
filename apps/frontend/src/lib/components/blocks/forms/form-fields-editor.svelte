@@ -122,7 +122,7 @@
         {@const field = schema.get(formField.fieldId)}
         {#if field}
           {@const required = formField.getRequired(field)}
-          {@const hiddenDisabled = required && !formField.defaultValue}
+          {@const hiddenDisabled = (required && !formField.defaultValue) || field.type === "button"}
           <button
             class={cn("flex w-full items-center justify-between text-pretty p-2 text-sm transition-all", {
               "bg-gray-50 shadow-inner": formField.fieldId === $selectedFieldId,
