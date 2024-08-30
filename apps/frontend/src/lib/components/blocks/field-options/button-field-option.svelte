@@ -1,6 +1,14 @@
 <script lang="ts">
   import FieldPicker from "../field-picker/field-picker.svelte"
-  import { FieldIdVo, getIsMutableFieldType, type IButtonFieldOption } from "@undb/table"
+  import {
+    FieldIdVo,
+    getIsFilterableFieldType,
+    getIsMutableFieldType,
+    type IButtonFieldOption,
+    type MaybeConditionGroup,
+    parseValidViewFilter,
+    toMaybeConditionGroup,
+  } from "@undb/table"
   import { getTable } from "$lib/store/table.store"
   import FieldControl from "../field-control/field-control.svelte"
   import { Input } from "$lib/components/ui/input"
@@ -8,12 +16,19 @@
   import { Checkbox } from "$lib/components/ui/checkbox"
   import { Button } from "$lib/components/ui/button"
   import Separator from "$lib/components/ui/separator/separator.svelte"
+  import { writable } from "svelte/store"
+  import type { ZodUndefined } from "@undb/zod"
+  import FiltersEditor from "../filters-editor/filters-editor.svelte"
+  import { onMount } from "svelte"
 
   const table = getTable()
+
+  $: visibleFields = $table.getOrderedVisibleFields()
 
   export let disabled: boolean | undefined
   export let option: IButtonFieldOption = {
     label: undefined,
+    disabled: undefined,
     action: {
       type: "update",
       values: [
@@ -25,6 +40,17 @@
       confirm: true,
     },
   }
+  const value = writable<MaybeConditionGroup<ZodUndefined> | undefined>()
+  $: validValue = $value ? parseValidViewFilter($table.schema, $value) : undefined
+  $: if (validValue) {
+    option.disabled = validValue
+  }
+
+  onMount(() => {
+    if (option.disabled) {
+      value.set(toMaybeConditionGroup(option.disabled))
+    }
+  })
 
   $: selectedFields = option.action.values.map((v) => v.field)
   $: selectableFields = $table.schema.fields.filter(
@@ -35,6 +61,15 @@
 <div class="space-y-2">
   <Label for="label">Label</Label>
   <Input class="w-full" placeholder="Button" id="label" bind:value={option.label} />
+
+  <div class="space-y-2 rounded-sm border pt-2">
+    <Label class="pl-4 text-xs font-semibold" for="disabled">Disabled When...</Label>
+    <FiltersEditor
+      bind:value={$value}
+      table={$table}
+      filter={(field) => visibleFields.some((f) => f.id.value === field.id) && getIsFilterableFieldType(field.type)}
+    ></FiltersEditor>
+  </div>
 
   <p class="text-xs font-semibold">Update Value when Click Button</p>
   {#each option.action.values as value, index}

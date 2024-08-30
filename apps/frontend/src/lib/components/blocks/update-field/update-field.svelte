@@ -128,8 +128,7 @@
         <PencilIcon class="mr-2 h-5 w-5" />
       {/if}
       Update Field
-      </Button
-    >
+    </Button>
   </div>
 </form>
 

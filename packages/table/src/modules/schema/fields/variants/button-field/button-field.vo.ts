@@ -2,6 +2,8 @@ import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { WithUpdatedFieldSpecification } from "../../../../../specifications/table-schema.specification"
 import type { IRecordComositeSpecification } from "../../../../records"
+import { createConditionGroup } from "../../condition/condition.type"
+import { conditionWithoutFields } from "../../condition/condition.util"
 import { fieldId, FieldIdVo } from "../../field-id.vo"
 import type { Field } from "../../field.type"
 import type { IFieldVisitor } from "../../field.visitor"
@@ -21,9 +23,13 @@ export const buttonFieldUpdateAction = z.object({
   confirm: z.boolean().optional(),
 })
 
+export const buttonDisabled = createConditionGroup(z.undefined(), z.undefined())
+export type IButtonDisabled = z.infer<typeof buttonDisabled>
+
 export const buttonFieldOption = z.object({
   label: z.string().optional(),
   action: buttonFieldUpdateAction,
+  disabled: buttonDisabled.optional(),
 })
 
 export const createButtonFieldDTO = createBaseFieldDTO.extend({
@@ -90,15 +96,20 @@ export class ButtonField extends AbstractField<ButtonFieldValue, undefined, IBut
   }
 
   override $onOtherFieldDeleted(field: Field) {
+    const disabled = this.option.into(undefined)?.disabled
     const action = this.option.into(undefined)?.action
-    if (!action) return None
+    if (!action || !disabled) return None
+
+    let newDisabled = disabled
+    if (disabled) {
+      newDisabled = conditionWithoutFields(disabled, new Set([field.id.value]))
+    }
 
     const values = action.values.filter((v) => v.field !== field.id.value)
-    if (values.length === action.values.length) return None
 
     const updated = ButtonField.create({
       ...(this.toJSON() as IButtonFieldDTO),
-      option: { ...this.option, action: { ...action, values } },
+      option: { ...this.option, disabled: newDisabled, action: { ...action, values } },
     })
 
     return Some(new WithUpdatedFieldSpecification(this, updated))
