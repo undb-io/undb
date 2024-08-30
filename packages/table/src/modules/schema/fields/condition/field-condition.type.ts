@@ -1,18 +1,16 @@
 import { z } from "@undb/zod"
 import type { PartialDeep, SetFieldType, SetRequired } from "type-fest"
-import {
-  createAutoIncrementFieldCondition,
-  createCheckboxFieldCondition,
-  createCreatedAtFieldCondition,
-  createDateFieldCondition,
-  createEmailFieldCondition,
-  createIdFieldCondition,
-  createJsonFieldCondition,
-  createNumberFieldCondition,
-  createSelectFieldCondition,
-  createStringFieldCondition,
-  createUpdatedAtFieldCondition,
-} from "../variants"
+import { createAutoIncrementFieldCondition } from "../variants/autoincrement-field/autoincrement-field.condition"
+import { createCheckboxFieldCondition } from "../variants/checkbox-field/checkbox-field.condition"
+import { createCreatedAtFieldCondition } from "../variants/created-at-field/created-at-field.condition"
+import { createDateFieldCondition } from "../variants/date-field/date-field.condition"
+import { createEmailFieldCondition } from "../variants/email-field/email-field.condition"
+import { createIdFieldCondition } from "../variants/id-field/id-field.condition"
+import { createJsonFieldCondition } from "../variants/json-field/json-field.condition"
+import { createNumberFieldCondition } from "../variants/number-field/number-field.condition"
+import { createSelectFieldCondition } from "../variants/select-field/select-field.condition"
+import { createStringFieldCondition } from "../variants/string-field/string-field.condition"
+import { createUpdatedAtFieldCondition } from "../variants/updated-at-field/updated-at-field.condition"
 
 export function createConditionSchema<OptionType extends z.ZodTypeAny>(optionType: OptionType) {
   return z.union([
