@@ -88,7 +88,11 @@ export class FormFieldVO extends ValueObject<IFormField> {
   }
 
   public show(field: Field): FormFieldVO {
-    return new FormFieldVO({ ...this.props, hidden: false })
+    let hidden = false
+    if (field.type === "button") {
+      hidden = true
+    }
+    return new FormFieldVO({ ...this.props, hidden })
   }
 
   public hide(field: Field): FormFieldVO {
@@ -116,6 +120,11 @@ export class FormFieldVO extends ValueObject<IFormField> {
   }
 
   static create(field: Field, hidden = false) {
+    // TODO: allow button field to be shown in future
+    if (field.type === "button") {
+      hidden = true
+    }
+
     return new FormFieldVO({
       fieldId: field.id.value,
       hidden,
