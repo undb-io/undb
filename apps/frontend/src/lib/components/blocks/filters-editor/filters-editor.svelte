@@ -135,7 +135,7 @@
                 bind:value={child.field}
                 class={cn("col-span-4 rounded-r-none border-r-0")}
               />
-              <FieldFilterControl {disabled} {field} bind:op={child.op} bind:value={child.value} />
+              <FieldFilterControl class="col-span-8 overflow-hidden" {disabled} {field} bind:op={child.op} bind:value={child.value} />
             </div>
             <div class="col-span-1 flex items-center gap-2">
               {#if !readonly && $hasPermission("table:update")}

@@ -20,9 +20,9 @@
   $: hasValue = op ? (field?.isOpHasValue(op) ?? false) : false
 </script>
 
-<div class="col-span-8 flex flex-1 items-center gap-0">
+<div class={cn("col-span-8 flex flex-1 items-center gap-0", $$restProps.class)}>
   <OpPicker {disabled} {field} bind:value={op} class={cn("rounded-l-none", hasValue && "rounded-r-none")} />
   {#if hasValue}
-    <FilterInput {disabled} class="w-full flex-1" {field} bind:value {op} />
+    <FilterInput {disabled} class="flex-1" {field} bind:value {op} />
   {/if}
 </div>
