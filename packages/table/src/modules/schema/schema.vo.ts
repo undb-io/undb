@@ -176,7 +176,7 @@ export class Schema extends ValueObject<Field[]> {
 
   get readableSchema() {
     const schema = objectify(
-      this.fields,
+      this.fields.filter((f) => f.type !== "button"),
       (f) => f.name.value,
       (f) => f.valueSchema,
     )
@@ -185,7 +185,7 @@ export class Schema extends ValueObject<Field[]> {
   }
 
   getViewReadableSchema(table: TableDo, view: View) {
-    const viewFields = table.getOrderedVisibleFields(view.id.value)
+    const viewFields = table.getOrderedVisibleFields(view.id.value).filter((f) => f.type !== "button")
     const schema = objectify(
       viewFields,
       (f) => f.name.value,

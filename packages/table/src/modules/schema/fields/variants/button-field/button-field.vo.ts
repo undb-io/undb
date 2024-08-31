@@ -24,7 +24,7 @@ export const buttonFieldUpdateAction = z.object({
   confirm: z.boolean().optional(),
 })
 
-const buttonCondition = z.null()
+const buttonCondition = z.undefined()
 
 export const buttonDisabled = createConditionGroup(buttonCondition, buttonCondition)
 export type IButtonDisabled = z.infer<typeof buttonDisabled>
