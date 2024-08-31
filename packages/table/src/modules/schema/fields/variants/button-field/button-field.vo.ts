@@ -24,7 +24,9 @@ export const buttonFieldUpdateAction = z.object({
   confirm: z.boolean().optional(),
 })
 
-export const buttonDisabled = createConditionGroup(z.undefined(), z.undefined())
+const buttonCondition = z.null()
+
+export const buttonDisabled = createConditionGroup(buttonCondition, buttonCondition)
 export type IButtonDisabled = z.infer<typeof buttonDisabled>
 
 export const buttonFieldOption = z.object({
@@ -97,6 +99,7 @@ export class ButtonField extends AbstractField<ButtonFieldValue, undefined, IBut
     return None
   }
 
+  protected computed = true
   override getConditionSchema() {
     // @ts-ignore
     return z.union([])

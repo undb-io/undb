@@ -1,10 +1,11 @@
 import type { RouteConfig } from "@asteasolutions/zod-to-openapi"
 import type { Base } from "@undb/base"
-import { recordId, type IReadableRecordDTO, type TableDo, type View } from "@undb/table"
+import { ButtonField, recordId, type IReadableRecordDTO, type TableDo, type View } from "@undb/table"
 import { z, type ZodTypeAny } from "@undb/zod"
 
 export const RECORD_ID_COMPONENT = "RecordId"
 export const RECORD_COMPONENT = "Record"
+export const BUTTON_COMPONENT = "Button"
 export const VIEW_COMPONENT = "View"
 export const VIEW_RECORD_COMPONENT = "ViewRecord"
 export const RECORD_VALUES_COMPONENT = "RecordValues"
@@ -127,6 +128,37 @@ export const getViewRecordById = (base: Base, table: TableDo, view: View, record
           "application/json": {
             schema: z.object({
               data: recordSchema.openapi(view.name.value + ":" + VIEW_RECORD_COMPONENT).nullable(),
+            }),
+          },
+        },
+      },
+    },
+  }
+}
+
+export const triggerButton = (base: Base, table: TableDo, field: ButtonField): RouteConfig => {
+  return {
+    method: "post",
+    path: `/bases/${base.name.value}/tables/${table.name.value}/records/{recordId}/trigger/${field.name.value}`,
+    description: `Trigger ${table.name.value} ${field.name.value} button`,
+    summary: `Trigger ${table.name.value} ${field.name.value} button`,
+    tags: [RECORD_COMPONENT, BUTTON_COMPONENT],
+    request: {
+      params: z.object({
+        recordId: recordId,
+      }),
+    },
+    responses: {
+      200: {
+        description: "button triggered",
+        content: {
+          "application/json": {
+            schema: z.object({
+              mutated: z
+                .boolean()
+                .openapi("TriggerButtonOutput", {
+                  description: "true if the button is triggered and record is updated",
+                }),
             }),
           },
         },

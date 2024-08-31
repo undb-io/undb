@@ -26,6 +26,7 @@ import {
   getViewRecordById,
   getViewRecords,
   recordSubscription,
+  triggerButton,
   updateRecord,
 } from "./openapi/record.openapi"
 
@@ -60,6 +61,11 @@ export const createOpenApiSpec = (
     bulkDeleteRecords(base, table),
     recordSubscription(base, table),
   ]
+
+  const buttons = table.schema.getButtonFields()
+  for (const button of buttons) {
+    routes.push(triggerButton(base, table, button))
+  }
 
   for (const { view, record } of views) {
     const viewRecordSchema = createRecordComponent(table, view, record)

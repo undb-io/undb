@@ -20,9 +20,9 @@
 
   const table = getTable()
 
-  const updateCell = createMutation({
-    mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+  const trigger = createMutation({
+    mutationKey: ["record", tableId, field.id.value, recordId, "trigger"],
+    mutationFn: trpc.record.trigger.mutate,
     async onSuccess(data, variables, context) {
       gridViewStore.exitEditing()
       await recordsStore.invalidateRecord($table, recordId)
@@ -41,19 +41,10 @@
   }
 
   function handleUpdate() {
-    const option = field.option.into(undefined)
-    if (!option) return
-    const action = option.action
-    if (!action.values.length) return
-
-    $updateCell.mutate({
+    $trigger.mutate({
       tableId,
-      id: recordId,
-      values: objectify(
-        action.values,
-        (v) => v.field!,
-        (v) => v.value ?? null,
-      ),
+      recordId,
+      field: field.id.value,
     })
   }
 
@@ -63,8 +54,8 @@
 </script>
 
 <div class={$$restProps.class}>
-  <Button disabled={$updateCell.isPending || disabled} on:click={handleClick} size="xs" variant="outline">
-    {#if $updateCell.isPending}
+  <Button disabled={$trigger.isPending || disabled} on:click={handleClick} size="xs" variant="outline">
+    {#if $trigger.isPending}
       <LoaderCircleIcon className="h-3 w-3 animate-spin" />
     {:else}
       {field.label ?? "Button"}

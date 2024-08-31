@@ -280,6 +280,10 @@ export class Schema extends ValueObject<Field[]> {
     return references
   }
 
+  getButtonFields(fields: Field[] = this.fields): ButtonField[] {
+    return fields.filter((f) => f.type === "button") as ButtonField[]
+  }
+
   getUserFields(fields: Field[] = this.fields): UserField[] {
     return fields.filter((f) => f.type === "user") as UserField[]
   }
