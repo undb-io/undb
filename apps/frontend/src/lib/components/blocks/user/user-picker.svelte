@@ -9,7 +9,9 @@
   import { GetUsersStore } from "$houdini"
   import { Skeleton } from "$lib/components/ui/skeleton"
   import * as Avatar from "$lib/components/ui/avatar"
-  import type { ISingleUserFieldValue } from "@undb/table"
+  import { isUserFieldMacro, userFieldMacros, type ISingleUserFieldValue } from "@undb/table"
+  import { UserIcon } from "lucide-svelte"
+  import UserMacro from "./user-macro.svelte"
 
   let q = ""
   $: store = new GetUsersStore()
@@ -54,6 +56,9 @@
               {selectedValue.user.username}
             </span>
           {/if}
+          {#if value && isUserFieldMacro(value)}
+            <UserMacro {value} />
+          {/if}
         </div>
         <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>
@@ -76,6 +81,22 @@
             <Skeleton class="h-[20px]" />
           </div>
         {/if}
+        {#each userFieldMacros as macro}
+          <Command.Item
+            class="h-12"
+            value={macro}
+            onSelect={(currentValue) => {
+              value = currentValue === value ? null : currentValue
+              closeAndFocusTrigger(ids.trigger)
+              onValueChange(value)
+            }}
+          >
+            <Check class={cn("mr-2 h-4 w-4", value !== macro && "text-transparent")} />
+            <div class="flex items-center gap-1">
+              <UserMacro value={macro} />
+            </div>
+          </Command.Item>
+        {/each}
         {#each users as user}
           <Command.Item
             value={user?.user.id}

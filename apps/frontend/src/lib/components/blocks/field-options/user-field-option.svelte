@@ -2,7 +2,7 @@
   import { Label } from "$lib/components/ui/label/index.js"
   import NumberInput from "$lib/components/ui/input/number-input.svelte"
   import { Switch } from "$lib/components/ui/switch/index.js"
-  import { UserField, type IUserFieldConstraint, type IUserFieldValue } from "@undb/table"
+  import { isUserFieldMacro, UserField, type IUserFieldConstraint, type IUserFieldValue } from "@undb/table"
   import autoAnimate from "@formkit/auto-animate"
   import { Separator } from "$lib/components/ui/separator"
   import { Checkbox } from "$lib/components/ui/checkbox"
@@ -12,6 +12,7 @@
   import { ChevronDownIcon, ChevronsUpDownIcon } from "lucide-svelte"
   import { Button } from "$lib/components/ui/button"
   import * as Alert from "$lib/components/ui/alert/index.js"
+  import UserMacro from "../user/user-macro.svelte"
 
   export let constraint: IUserFieldConstraint | undefined = { required: false, max: 1 }
   export let defaultValue: IUserFieldValue | undefined
@@ -115,7 +116,11 @@
             class="flex w-full flex-nowrap items-center justify-between overflow-hidden"
           >
             {#if defaultValue}
-              <UserFieldComponent disableHoverCard value={defaultValue} displayValue={selected?.user} />
+              {#if isUserFieldMacro(defaultValue)}
+                <UserMacro value={defaultValue} />
+              {:else}
+                <UserFieldComponent disableHoverCard value={defaultValue} displayValue={selected?.user} />
+              {/if}
             {:else}
               <span class="text-muted-foreground"> Select default user... </span>
             {/if}

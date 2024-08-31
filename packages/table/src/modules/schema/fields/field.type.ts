@@ -122,6 +122,7 @@ import type {
   UserField,
   UserFieldValue,
 } from "./variants/user-field"
+import type { IUserFieldMacro } from "./variants/user-field/user-field-macro"
 
 export type Field =
   | StringField
@@ -275,3 +276,5 @@ export type IFieldConstraint =
   | ICurrencyFieldConstraint
 
 export type IFieldOption = IReferenceFieldOption | IRollupFieldOption | ISelectFieldOption | IButtonFieldOption
+
+export type IFieldMacro = IUserFieldMacro

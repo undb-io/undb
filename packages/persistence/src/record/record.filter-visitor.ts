@@ -1,3 +1,4 @@
+import { getCurrentUserId } from "@undb/context/server"
 import { NotImplementException } from "@undb/domain"
 import {
   CurrencyEqual,
@@ -6,6 +7,7 @@ import {
   LongTextEqual,
   SelectField,
   UrlEqual,
+  isUserFieldMacro,
   type AttachmentEmpty,
   type AttachmentEqual,
   type CheckboxEqual,
@@ -117,12 +119,24 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
       const cond = this.eb.eb(this.getFieldId(spec), "=", null)
       this.addCond(cond)
     } else {
-      const cond = this.eb.eb(
-        this.getFieldId(spec),
-        "=",
-        isString(spec.value) ? spec.value : JSON.stringify(spec.value),
-      )
-      this.addCond(cond)
+      function convertMacro(value: string) {
+        if (isUserFieldMacro(value)) {
+          if (value === "@me") {
+            return getCurrentUserId()
+          }
+        }
+
+        return value
+      }
+      if (Array.isArray(spec.value)) {
+        const converted = spec.value.map(convertMacro)
+        const cond = this.eb.eb(this.getFieldId(spec), "=", JSON.stringify(converted))
+        this.addCond(cond)
+      } else {
+        const converted = spec.value ? convertMacro(spec.value) : null
+        const cond = this.eb.eb(this.getFieldId(spec), "=", converted)
+        this.addCond(cond)
+      }
     }
   }
   userEmpty(spec: UserEmpty): void {
