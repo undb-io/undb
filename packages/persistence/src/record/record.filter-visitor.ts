@@ -58,7 +58,7 @@ import {
   startOfYesterday,
 } from "date-fns"
 import type { ExpressionBuilder } from "kysely"
-import { isString } from "radash"
+import { isString, unique } from "radash"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 
 export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements IRecordVisitor {
@@ -129,7 +129,7 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
         return value
       }
       if (Array.isArray(spec.value)) {
-        const converted = spec.value.map(convertMacro)
+        const converted = unique(spec.value.map(convertMacro))
         const cond = this.eb.eb(this.getFieldId(spec), "=", JSON.stringify(converted))
         this.addCond(cond)
       } else {
