@@ -13,6 +13,7 @@ import type { View } from "../views"
 import type { ICreateSchemaDTO } from "./dto"
 import type { ISchemaDTO } from "./dto/schema.dto"
 import {
+  ButtonField,
   CreatedByField,
   FieldIdVo,
   FieldNameVo,
