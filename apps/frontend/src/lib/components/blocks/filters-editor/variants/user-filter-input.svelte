@@ -52,6 +52,11 @@
       builders={[builder]}
       class={cn("flex w-full items-center justify-between", $$restProps.class)}
     >
+      {#each value ?? [] as user}
+        {#if isUserFieldMacro(user)}
+          <UserMacro value={user} />
+        {/if}
+      {/each}
       <UsersFilterInputComponent {field} {value} users={selected.map((s) => s.user)} />
       <ChevronsUpDownIcon class="text-muted-foreground h-3 w-3" />
     </Button>

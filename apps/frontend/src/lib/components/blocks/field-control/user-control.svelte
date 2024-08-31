@@ -44,8 +44,12 @@
     >
       <div class="flex flex-1 items-center gap-2">
         {#each value ?? [] as user, i}
-          {@const value = selected.find((u) => u.user.id === user)?.user ?? displayValue?.[i]}
-          <UserFieldComponent disableHoverCard value={user} displayValue={value} />
+          {#if isUserFieldMacro(user)}
+            <UserMacro value={user} />
+          {:else}
+            {@const value = selected.find((u) => u.user.id === user)?.user ?? displayValue?.[i]}
+            <UserFieldComponent disableHoverCard value={user} displayValue={value} />
+          {/if}
         {/each}
       </div>
       <ChevronsUpDownIcon class="text-muted-foreground h-3 w-3" />

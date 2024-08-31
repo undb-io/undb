@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { UserField, type IUserFieldDisplayValue, type IUserFieldValue } from "@undb/table"
+  import { isUserFieldMacro, UserField, type IUserFieldDisplayValue, type IUserFieldValue } from "@undb/table"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
@@ -8,6 +8,7 @@
   import UsersPicker from "../../user/users-picker.svelte"
   import { builderActions, getAttrs } from "bits-ui"
   import { ChevronDownIcon } from "lucide-svelte"
+  import UserMacro from "../../user/user-macro.svelte"
 
   export let tableId: string
   export let field: UserField
@@ -72,8 +73,12 @@
       >
         <div class="flex flex-1 items-center gap-1 overflow-hidden">
           {#each value ?? [] as user, i}
-            {@const value = selected.find((u) => u.user.id === user)?.user ?? displayValue?.[i]}
-            <UserFieldComponent disableHoverCard value={user} displayValue={value} />
+            {#if isUserFieldMacro(user)}
+              <UserMacro value={user} />
+            {:else}
+              {@const value = selected.find((u) => u.user.id === user)?.user ?? displayValue?.[i]}
+              <UserFieldComponent disableHoverCard value={user} displayValue={value} />
+            {/if}
           {/each}
         </div>
         {#if isEditing}
