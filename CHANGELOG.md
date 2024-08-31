@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-50
+
+
+### 🩹 Fixes
+
+- Fix delete button field ([7992ea3](https://github.com/undb-io/undb/commit/7992ea3))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-49
 
 ## v1.0.0-48

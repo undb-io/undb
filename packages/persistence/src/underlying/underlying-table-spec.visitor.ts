@@ -208,6 +208,10 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
       return
     }
 
+    if (schema.field.type === "button") {
+      return
+    }
+
     if (schema.field.type !== "reference") {
       const query = this.qb
         .updateTable(this.table.name)
@@ -245,6 +249,10 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
         const query = this.qb.schema.dropTable(joinTable.getTableName()).compile()
         this.addSql(query)
       }
+      return
+    }
+
+    if (schema.field.type === "button") {
       return
     }
 
