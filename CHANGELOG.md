@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-51
+
+
+### 🏡 Chore
+
+- Update readme ([eb461ea](https://github.com/undb-io/undb/commit/eb461ea))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-50
 
 
