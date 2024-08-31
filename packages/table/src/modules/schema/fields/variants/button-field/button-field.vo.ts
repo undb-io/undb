@@ -68,7 +68,7 @@ export class ButtonField extends AbstractField<ButtonFieldValue, undefined, IBut
   }
 
   public get label() {
-    return this.option.into(undefined)?.label
+    return this.option.into(undefined)?.label ?? this.name.value
   }
 
   public getDisableSpec(table: TableDo): Option<IRecordComositeSpecification> {
