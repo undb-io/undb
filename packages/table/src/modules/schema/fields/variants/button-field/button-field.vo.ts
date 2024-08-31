@@ -84,7 +84,7 @@ export class ButtonField extends AbstractField<ButtonFieldValue, undefined, IBut
     if (!disabled) return false
 
     const spec = this.getDisableSpec(table)
-    return spec.isSome() ? spec.unwrap().isSatisfiedBy(record) : false
+    return spec.isSome() ? record.match(spec.unwrap()) : false
   }
 
   override type = BUTTON_TYPE
