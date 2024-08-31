@@ -8,7 +8,8 @@
   import { GetUsersStore } from "$houdini"
   import { Skeleton } from "$lib/components/ui/skeleton"
   import * as Avatar from "$lib/components/ui/avatar"
-  import type { IMultipleUserFieldValue } from "@undb/table"
+  import { userFieldMacros, type IMultipleUserFieldValue } from "@undb/table"
+  import UserMacro from "./user-macro.svelte"
 
   let q = ""
   $: store = new GetUsersStore()
@@ -63,6 +64,24 @@
             <Skeleton class="h-[20px]" />
           </div>
         {/if}
+        {#each userFieldMacros as macro}
+          <Command.Item
+            class="h-12"
+            value={macro}
+            onSelect={(currentValue) => {
+              value = value?.includes(currentValue)
+                ? value?.filter((v) => v !== currentValue)
+                : [...(value ?? []), currentValue]
+
+              onValueChange(value ?? [])
+            }}
+          >
+            <Check class={cn("mr-2 h-4 w-4", !value?.includes(macro) && "text-transparent")} />
+            <div class="flex items-center gap-1">
+              <UserMacro value={macro} />
+            </div>
+          </Command.Item>
+        {/each}
         {#each users as user}
           <Command.Item
             value={user?.user.id}

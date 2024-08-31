@@ -52,6 +52,7 @@ import {
   type UserEqual,
 } from "@undb/table"
 import { sql, type ExpressionBuilder } from "kysely"
+import { unique } from "radash"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
 import type { IQueryBuilder, IRecordQueryBuilder } from "../qb"
 import { JoinTable } from "../underlying/reference/join-table"
@@ -239,7 +240,7 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     }
 
     if (Array.isArray(value)) {
-      const converted = value.map(convertMacro)
+      const converted = unique(value.map(convertMacro))
       this.setData(spec.fieldId.value, JSON.stringify(converted))
     } else {
       this.setData(spec.fieldId.value, value ? convertMacro(value) : null)

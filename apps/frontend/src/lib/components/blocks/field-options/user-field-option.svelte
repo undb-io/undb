@@ -84,8 +84,12 @@
               {#if defaultValue?.length}
                 <div class="flex flex-1 items-center gap-1 overflow-hidden">
                   {#each defaultValue ?? [] as user, i}
-                    {@const value = selected.find((u) => u.user.id === user)?.user}
-                    <UserFieldComponent disableHoverCard value={user} displayValue={value} />
+                    {#if isUserFieldMacro(user)}
+                      <UserMacro value={user} />
+                    {:else}
+                      {@const value = selected.find((u) => u.user.id === user)?.user}
+                      <UserFieldComponent disableHoverCard value={user} displayValue={value} />
+                    {/if}
                   {/each}
                 </div>
               {:else}
