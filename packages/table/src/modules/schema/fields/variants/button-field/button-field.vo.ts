@@ -1,9 +1,10 @@
 import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { WithUpdatedFieldSpecification } from "../../../../../specifications/table-schema.specification"
-import type { IRecordComositeSpecification } from "../../../../records"
+import type { TableDo } from "../../../../../table.do"
+import type { IRecordComositeSpecification, RecordDO } from "../../../../records"
 import { createConditionGroup } from "../../condition/condition.type"
-import { conditionWithoutFields } from "../../condition/condition.util"
+import { conditionWithoutFields, getSpec } from "../../condition/condition.util"
 import { fieldId, FieldIdVo } from "../../field-id.vo"
 import type { Field } from "../../field.type"
 import type { IFieldVisitor } from "../../field.visitor"
@@ -66,6 +67,24 @@ export class ButtonField extends AbstractField<ButtonFieldValue, undefined, IBut
 
   public get label() {
     return this.option.into(undefined)?.label
+  }
+
+  public getDisableSpec(table: TableDo): Option<IRecordComositeSpecification> {
+    const disabled = this.option.into(undefined)?.disabled
+    if (!disabled) return None
+
+    return getSpec(table.schema, disabled) as Option<IRecordComositeSpecification>
+  }
+
+  public getIsDisabled(table: TableDo, record: RecordDO) {
+    const values = this.option.into(undefined)?.action.values
+    if (!values?.length) return true
+
+    const disabled = this.option.into(undefined)?.disabled
+    if (!disabled) return false
+
+    const spec = this.getDisableSpec(table)
+    return spec.isSome() ? spec.unwrap().isSatisfiedBy(record) : false
   }
 
   override type = BUTTON_TYPE

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
-  import { ButtonField } from "@undb/table"
+  import { ButtonField, RecordDO } from "@undb/table"
   import { toast } from "svelte-sonner"
   import { gridViewStore } from "../grid-view.store"
   import { Button } from "$lib/components/ui/button"
@@ -13,6 +13,7 @@
   export let tableId: string
   export let field: ButtonField
   export let recordId: string
+  export let record: RecordDO | undefined
 
   const table = getTable()
 
@@ -44,10 +45,12 @@
       ),
     })
   }
+
+  $: disabled = record ? field.getIsDisabled($table, record) : false
 </script>
 
 <div class={$$restProps.class}>
-  <Button disabled={$updateCell.isPending} on:click={handleClick} size="xs" variant="outline">
+  <Button disabled={$updateCell.isPending || disabled} on:click={handleClick} size="xs" variant="outline">
     {#if $updateCell.isPending}
       <LoaderCircleIcon className="h-3 w-3 animate-spin" />
     {:else}

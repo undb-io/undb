@@ -122,6 +122,7 @@
               recordId: item.row.original.id,
               displayValue,
               readonly,
+              record,
             })
           },
           footer: createRender(GridViewFooter, {

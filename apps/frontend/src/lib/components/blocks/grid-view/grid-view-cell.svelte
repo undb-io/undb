@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Field, FieldType } from "@undb/table"
+  import type { Field, FieldType, RecordDO } from "@undb/table"
   import type { ComponentType } from "svelte"
   import StringCell from "./editable-cell/string-cell.svelte"
   import NumberCell from "./editable-cell/number-cell.svelte"
@@ -7,7 +7,6 @@
   import DateField from "../field-value/date-field.svelte"
   import NumberField from "../field-value/number-field.svelte"
   import { cn } from "$lib/utils"
-  import RollupField from "../field-value/rollup-field.svelte"
   import { isEditingCell, isSelectedCell } from "./grid-view.store"
   import SelectCell from "./editable-cell/select-cell.svelte"
   import { getTable } from "$lib/store/table.store"
@@ -34,6 +33,7 @@
   export let index: number
   export let field: Field
   export let recordId: string
+  export let record: RecordDO | undefined
   export let readonly: boolean
 
   $: isEditing = $isEditingCell(recordId, field.id.value)
@@ -74,6 +74,7 @@
   {isEditing}
   {isSelected}
   {recordId}
+  {record}
   readonly={field.isSystem || readonly}
   tableId={$table.id.value}
   class={cn(
