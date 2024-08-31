@@ -208,6 +208,10 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
       return
     }
 
+    if (schema.field.type === "button") {
+      return
+    }
+
     if (schema.field.type !== "reference") {
       const query = this.qb
         .updateTable(this.table.name)
