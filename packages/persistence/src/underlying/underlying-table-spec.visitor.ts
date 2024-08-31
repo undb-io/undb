@@ -252,6 +252,10 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
       return
     }
 
+    if (schema.field.type === "button") {
+      return
+    }
+
     if (schema.field.type !== "rollup") {
       const query = this.tb.dropColumn(schema.field.id.value).compile()
       this.addSql(query)
