@@ -1,11 +1,12 @@
 <script lang="ts">
-  import type { IUserFieldDisplayValue, IUserFieldValue, UserField } from "@undb/table"
+  import { isUserFieldMacro, type IUserFieldDisplayValue, type IUserFieldValue, type UserField } from "@undb/table"
   import UserPicker from "../user/user-picker.svelte"
   import UsersPicker from "../user/users-picker.svelte"
   import { Button } from "$lib/components/ui/button"
   import { ChevronsUpDownIcon } from "lucide-svelte"
   import UserFieldComponent from "$lib/components/blocks/field-value/user-field.svelte"
   import { cn } from "$lib/utils"
+  import UserMacro from "../user/user-macro.svelte"
 
   export let field: UserField
   export let value: IUserFieldValue
@@ -23,6 +24,9 @@
         builders={[builder]}
         class={cn("flex w-full items-center justify-between", $$restProps.class)}
       >
+        {#if value && isUserFieldMacro(value)}
+          <UserMacro {value} />
+        {/if}
         <UserFieldComponent disableHoverCard {value} displayValue={selected?.user ?? displayValue} />
         <ChevronsUpDownIcon class="text-muted-foreground h-3 w-3" />
       </Button>
