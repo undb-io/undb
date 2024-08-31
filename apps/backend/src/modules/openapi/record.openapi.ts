@@ -6,14 +6,15 @@ import {
   CreateRecordsCommand,
   DeleteRecordCommand,
   DuplicateRecordCommand,
+  TriggerRecordButtonCommand,
   UpdateRecordCommand,
 } from "@undb/commands"
 import { CommandBus, QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
-import { type ICommandBus, type IQueryBus, type PaginatedDTO } from "@undb/domain"
+import { Option, type ICommandBus, type IQueryBus, type PaginatedDTO } from "@undb/domain"
 import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
 import { GetReadableRecordByIdQuery, GetReadableRecordsQuery } from "@undb/queries"
-import { type IRecordReadableValueDTO } from "@undb/table"
+import { RecordDO, type IRecordReadableValueDTO } from "@undb/table"
 import Elysia, { t } from "elysia"
 import { withTransaction } from "../../db"
 
@@ -223,6 +224,28 @@ export class RecordOpenApi {
               tags: ["Record"],
               summary: "Duplicate record by id",
               description: "Duplicate record by id",
+            },
+          },
+        )
+        .post(
+          "/records/:recordId/trigger/:field",
+          async (ctx) => {
+            const { baseName, tableName, recordId, field } = ctx.params
+            return withTransaction(this.qb)(async () => {
+              const result = (await this.commandBus.execute(
+                new TriggerRecordButtonCommand({ baseName, tableName, recordId, field }),
+              )) as Option<RecordDO>
+              return {
+                mutated: result.isSome(),
+              }
+            })
+          },
+          {
+            params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String(), field: t.String() }),
+            detail: {
+              tags: ["Record", "Button"],
+              summary: "Trigger record button",
+              description: "Trigger record button",
             },
           },
         )

@@ -1,4 +1,5 @@
 import { singleton } from "@undb/di"
+import type { Option } from "@undb/domain"
 import type { IUniqueTableDTO } from "../../../dto"
 import type { ITableRepository } from "../../../table.repository"
 import { injectTableRepository } from "../../../table.repository.provider"
@@ -14,6 +15,7 @@ import {
   type IUpdateRecordDTO,
   type RecordDO,
 } from "../record"
+import type { ITriggerRecordButtonDTO } from "../record/dto/trigger-record-button.dto"
 import { bulkdeleteRecordsMethod } from "./methods/bulk-delete-records.method"
 import { bulkduplicateRecordsMethod } from "./methods/bulk-duplicate-records.method"
 import { bulkUpdateRecordsMethod } from "./methods/bulk-update-records.method"
@@ -21,12 +23,14 @@ import { createRecordMethod } from "./methods/create-record.method"
 import { createRecordsMethod } from "./methods/create-records.method"
 import { deleteRecordMethod } from "./methods/delete-record.method"
 import { duplicateRecordMethod } from "./methods/duplicate-record.method"
+import { triggerRecordButtonMethod } from "./methods/trigger-record-button.method"
 import { updateRecordMethod } from "./methods/update-record.method"
 
 export interface IRecordsService {
   createRecord(table: IUniqueTableDTO, dto: ICreateRecordDTO): Promise<RecordDO>
   createRecords(table: IUniqueTableDTO, dto: ICreateRecordDTO[]): Promise<RecordDO[]>
   updateRecord(table: IUniqueTableDTO, dto: IUpdateRecordDTO): Promise<RecordDO>
+  triggerRecordButton(table: IUniqueTableDTO, dto: ITriggerRecordButtonDTO): Promise<Option<RecordDO>>
   bulkUpdateRecords(table: IUniqueTableDTO, dto: IBulkUpdateRecordsDTO): Promise<RecordDO[]>
   deleteRecord(table: IUniqueTableDTO, dto: IDeleteRecordDTO): Promise<RecordDO>
   bulkDeleteRecords(table: IUniqueTableDTO, dto: IBulkDeleteRecordsDTO): Promise<RecordDO[]>
@@ -46,6 +50,7 @@ export class RecordsService implements IRecordsService {
   createRecord = createRecordMethod
   createRecords = createRecordsMethod
   updateRecord = updateRecordMethod
+  triggerRecordButton = triggerRecordButtonMethod
   bulkUpdateRecords = bulkUpdateRecordsMethod
   deleteRecord = deleteRecordMethod
   bulkDeleteRecords = bulkdeleteRecordsMethod
