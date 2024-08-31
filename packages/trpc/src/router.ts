@@ -36,6 +36,7 @@ import {
   SetViewFilterCommand,
   SetViewOptionCommand,
   SetViewSortCommand,
+  TriggerRecordButtonCommand,
   UpdateAccountCommand,
   UpdateBaseCommand,
   UpdateRecordCommand,
@@ -82,6 +83,7 @@ import {
   setViewFilterCommand,
   setViewOptionCommand,
   setViewSortCommand,
+  triggerRecordButtonCommand,
   updateBaseCommand,
   updateRecordCommand,
   updateSpaceCommand,
@@ -282,6 +284,10 @@ const recordRouter = t.router({
     .use(authz("record:read"))
     .input(getAggregatesQuery)
     .query(({ input }) => queryBus.execute(new GetAggregatesQuery(input))),
+  trigger: privateProcedure
+    .use(authz("record:update"))
+    .input(triggerRecordButtonCommand)
+    .mutation(({ input }) => commandBus.execute(new TriggerRecordButtonCommand(input))),
 })
 
 const webhookRouter = t.router({
