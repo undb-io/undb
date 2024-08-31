@@ -71,39 +71,43 @@
     ></FiltersEditor>
   </div>
 
-  <p class="text-xs font-semibold">Update Value when Click Button</p>
-  {#each option.action.values as value, index}
-    {@const field = value.field ? $table.schema.getFieldById(new FieldIdVo(value.field)).unwrap() : undefined}
-    <FieldPicker
-      class="w-full"
-      bind:value={value.field}
-      {disabled}
-      filter={(f) =>
-        getIsMutableFieldType(f.type) && f.type !== "attachment" && !option.action.values.some((v) => v.field === f.id)}
-    />
-    {#if field}
-      <FieldControl
-        class="text-xs"
-        placeholder="Value to update..."
-        bind:value={value.value}
-        {field}
-        tableId={$table.id.value}
+  <div class="space-y-2 rounded-md border px-4 py-3">
+    <p class="text-xs font-semibold">Update Value when Click Button</p>
+    {#each option.action.values as value, index}
+      {@const field = value.field ? $table.schema.getFieldById(new FieldIdVo(value.field)).unwrap() : undefined}
+      <FieldPicker
+        class="w-full"
+        bind:value={value.field}
+        {disabled}
+        filter={(f) =>
+          getIsMutableFieldType(f.type) &&
+          f.type !== "attachment" &&
+          !option.action.values.some((v) => v.field === f.id)}
       />
+      {#if field}
+        <FieldControl
+          class="text-xs"
+          placeholder="Value to update..."
+          bind:value={value.value}
+          {field}
+          tableId={$table.id.value}
+        />
+      {/if}
+      {#if index !== option.action.values.length - 1}
+        <Separator />
+      {/if}
+    {/each}
+    {#if selectableFields.length > 0 && option.action.values.every((v) => v.field)}
+      <Button
+        class="text-muted-foreground w-full justify-start text-xs"
+        on:click={() => {
+          option.action.values = [...option.action.values, { field: undefined, value: undefined }]
+        }}
+        variant="link"
+        size="sm">+ Add another field to update</Button
+      >
     {/if}
-    {#if index !== option.action.values.length - 1}
-      <Separator />
-    {/if}
-  {/each}
-  {#if selectableFields.length > 0 && option.action.values.every((v) => v.field)}
-    <Button
-      class="text-muted-foreground w-full text-xs"
-      on:click={() => {
-        option.action.values = [...option.action.values, { field: undefined, value: undefined }]
-      }}
-      variant="link"
-      size="sm">+ Add another field to update</Button
-    >
-  {/if}
+  </div>
 
   <div class="flex items-center gap-2">
     <Checkbox id="confirm" bind:checked={option.action.confirm} />
