@@ -64,7 +64,7 @@
     onSubmit(input) {
       validateForm({ update: true })
     },
-    onUpdate(event) {
+    async onUpdate(event) {
       if (!event.form.valid) {
         console.log(event.form.errors, event.form.data)
         return
@@ -72,7 +72,7 @@
       const data = event.form.data
       const field = FieldFactory.fromJSON(data).toJSON()
 
-      $updateFieldMutation.mutate({
+      await $updateFieldMutation.mutateAsync({
         tableId: $table.id.value,
         field,
       })
@@ -125,7 +125,7 @@
       {#if $updateFieldMutation.isPending}
         <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
       {:else}
-        <PencilIcon class="mr-2 h-5 w-5" />
+        <PencilIcon class="mr-2 h-4 w-4" />
       {/if}
       Update Field
     </Button>
