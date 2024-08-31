@@ -4,6 +4,7 @@ import {
   CurrencyEqual,
   DateIsEmpty,
   ID_TYPE,
+  isUserFieldMacro,
   JsonContains,
   LongTextEqual,
   SelectContainsAnyOf,
@@ -227,7 +228,22 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     const fieldValue = new UserFieldValue(spec.value)
     const value = fieldValue.getValue(field)
 
-    this.setData(spec.fieldId.value, Array.isArray(value) ? JSON.stringify(value) : value)
+    function convertMacro(value: string) {
+      if (isUserFieldMacro(value)) {
+        if (value === "@me") {
+          return getCurrentUserId()
+        }
+      }
+
+      return value
+    }
+
+    if (Array.isArray(value)) {
+      const converted = value.map(convertMacro)
+      this.setData(spec.fieldId.value, JSON.stringify(converted))
+    } else {
+      this.setData(spec.fieldId.value, value ? convertMacro(value) : null)
+    }
   }
   userEmpty(spec: UserEmpty): void {
     this.setData(spec.fieldId.value, null)

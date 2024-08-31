@@ -364,6 +364,12 @@ type RootTranslation = {
 			 */
 			viewer: string
 		}
+		macros: {
+			/**
+			 * C​u​r​r​e​n​t​ ​U​s​e​r
+			 */
+			'@me': string
+		}
 	}
 }
 
@@ -718,6 +724,12 @@ export type TranslationFunctions = {
 			 * Viewer
 			 */
 			viewer: () => LocalizedString
+		}
+		macros: {
+			/**
+			 * Current User
+			 */
+			'@me': () => LocalizedString
 		}
 	}
 }
