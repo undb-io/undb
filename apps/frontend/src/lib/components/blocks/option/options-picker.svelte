@@ -33,9 +33,9 @@
         variant="outline"
         role="combobox"
         aria-expanded={open}
-        class={cn("w-full justify-between  overflow-hidden", $$restProps.class)}
-          {disabled}
+        {disabled}
         {...$$restProps}
+        class={cn("w-full justify-between  overflow-hidden", $$restProps.class)}
       >
         <div class="flex flex-1 items-center gap-1">
           {#if selectedValue.length}
