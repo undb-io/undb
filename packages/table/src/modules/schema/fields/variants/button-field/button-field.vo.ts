@@ -114,6 +114,10 @@ export class ButtonField extends AbstractField<ButtonFieldValue, undefined, IBut
     visitor.button(this)
   }
 
+  get shouldConfirm() {
+    return this.option.into(undefined)?.action.confirm ?? false
+  }
+
   override $onOtherFieldDeleted(field: Field) {
     const disabled = this.option.into(undefined)?.disabled
     const action = this.option.into(undefined)?.action
