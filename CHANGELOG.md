@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-48
+
+
+### 🩹 Fixes
+
+- Update field ux ([9eda222](https://github.com/undb-io/undb/commit/9eda222))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-47
 
 ## v1.0.0-46
