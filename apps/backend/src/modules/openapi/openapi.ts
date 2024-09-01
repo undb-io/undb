@@ -76,7 +76,7 @@ export class OpenAPI {
 
   public route() {
     const recordOpenapi = container.resolve(RecordOpenApi)
-    return new Elysia({ prefix: "/api/bases/:baseName/tables/:tableName" })
+    return new Elysia()
       .onAfterResponse((ctx) => {
         const requestId = executionContext.getStore()?.requestId
         this.logger.info(
@@ -91,7 +91,7 @@ export class OpenAPI {
         )
       })
       .get(
-        "/",
+        "/api/bases/:baseName/tables/:tableName",
         async (ctx) => {
           const spec = await this.getSpec(ctx.params.baseName, ctx.params.tableName)
 
@@ -128,52 +128,56 @@ export class OpenAPI {
           },
         },
       )
-      .guard({
-        beforeHandle: async (context) => {
-          const apiToken =
-            context.headers[API_TOKEN_HEADER_NAME] ?? context.headers[API_TOKEN_HEADER_NAME.toLowerCase()]
+      .group("/openapi/bases/:baseName/tables/:tableName", (app) =>
+        app
 
-          this.logger.debug({ apiToken }, "Checking Authorization token in openapi")
+          .guard({
+            beforeHandle: async (context) => {
+              const apiToken =
+                context.headers[API_TOKEN_HEADER_NAME] ?? context.headers[API_TOKEN_HEADER_NAME.toLowerCase()]
 
-          if (apiToken) {
-            const userId = await this.apiTokenService.verify(apiToken)
-            if (userId.isSome()) {
-              const user = (await this.userService.findOneById(userId.unwrap())).unwrap()
-              const space = await this.spaceService.setSpaceContext(setContextValue, { apiToken })
-              await this.spaceMemberService.setSpaceMemberContext(setContextValue, space.id.value, user.id)
+              this.logger.debug({ apiToken }, "Checking Authorization token in openapi")
 
-              return
-            }
-          } else {
-            const userId = getCurrentUserId()
+              if (apiToken) {
+                const userId = await this.apiTokenService.verify(apiToken)
+                if (userId.isSome()) {
+                  const user = (await this.userService.findOneById(userId.unwrap())).unwrap()
+                  const space = await this.spaceService.setSpaceContext(setContextValue, { apiToken })
+                  await this.spaceMemberService.setSpaceMemberContext(setContextValue, space.id.value, user.id)
 
-            if (userId) {
-              return
-            } else {
-              this.logger.error("No api token found in openapi")
-            }
-          }
+                  return
+                }
+              } else {
+                const userId = getCurrentUserId()
 
-          // throw 401 openapi error
-          context.set.status = 401
-          throw new Error("Unauthorized")
-        },
-      })
-      .get(
-        "/openapi.json",
-        async (ctx) => {
-          const spec = await this.getSpec(ctx.params.baseName, ctx.params.tableName)
-          return spec
-        },
-        {
-          params: t.Object({ baseName: t.String(), tableName: t.String() }),
-          detail: {
-            tags: ["Doc"],
-            summary: "Get OpenAPI documentation json spec for a table",
-            description: "Get OpenAPI documentation json spec for a table",
-          },
-        },
+                if (userId) {
+                  return
+                } else {
+                  this.logger.error("No api token found in openapi")
+                }
+              }
+
+              // throw 401 openapi error
+              context.set.status = 401
+              throw new Error("Unauthorized")
+            },
+          })
+          .get(
+            "/openapi.json",
+            async (ctx) => {
+              const spec = await this.getSpec(ctx.params.baseName, ctx.params.tableName)
+              return spec
+            },
+            {
+              params: t.Object({ baseName: t.String(), tableName: t.String() }),
+              detail: {
+                tags: ["Doc"],
+                summary: "Get OpenAPI documentation json spec for a table",
+                description: "Get OpenAPI documentation json spec for a table",
+              },
+            },
+          )
+          .use(recordOpenapi.route()),
       )
-      .use(recordOpenapi.route())
   }
 }
