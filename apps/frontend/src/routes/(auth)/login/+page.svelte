@@ -216,18 +216,14 @@
           </div>
           <Separator class="my-6" />
           <div class="space-y-2">
-            {#if env.UNDB_PUBLIC_OAUTH_GITHUB_ENABLED === "true"}
-              <Button href="/login/github" variant="secondary" class="w-full">
-                <img class="mr-2 h-4 w-4" src={Github} alt="github" />
-                Login with Github
-              </Button>
-            {/if}
-            {#if env.UNDB_PUBLIC_OAUTH_GOOGLE_ENABLED === "true"}
-              <Button href="/login/google" variant="secondary" class="w-full">
-                <img class="mr-2 h-4 w-4" src={Google} alt="google" />
-                Login with Google
-              </Button>
-            {/if}
+            <Button href="/login/github" variant="secondary" class="w-full">
+              <img class="mr-2 h-4 w-4" src={Github} alt="github" />
+              Login with Github
+            </Button>
+            <Button href="/login/google" variant="secondary" class="w-full">
+              <img class="mr-2 h-4 w-4" src={Google} alt="google" />
+              Login with Google
+            </Button>
           </div>
         </Card.Content>
       </Card.Root>
