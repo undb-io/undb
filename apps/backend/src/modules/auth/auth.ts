@@ -12,6 +12,7 @@ import { CommandBus } from "@undb/cqrs"
 import { container, inject, singleton } from "@undb/di"
 import { None, Option, Some } from "@undb/domain"
 import { env } from "@undb/env"
+import { createLogger } from "@undb/logger"
 import { type IMailService, injectMailService } from "@undb/mail"
 import { type IQueryBuilder, getCurrentTransaction, injectQueryBuilder } from "@undb/persistence"
 import { type ISpaceService, injectSpaceService } from "@undb/space"
@@ -33,6 +34,8 @@ const getUsernameFromEmail = (email: string): string => {
 
 @singleton()
 export class Auth {
+  logger = createLogger(Auth.name)
+
   constructor(
     @injectSpaceMemberService()
     private spaceMemberService: ISpaceMemberService,
@@ -173,6 +176,19 @@ export class Auth {
     const oauth = container.resolve(OAuth)
     return new Elysia()
       .use(oauth.route())
+      .onAfterResponse((ctx) => {
+        const requestId = executionContext.getStore()?.requestId
+        this.logger.info(
+          {
+            method: ctx.request.method,
+            params: ctx.params,
+            query: ctx.query,
+            path: ctx.path,
+            requestId,
+          },
+          "openapi request",
+        )
+      })
       .get(
         "/api/me",
         (ctx) => {
