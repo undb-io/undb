@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-54
+
+
+### 🩹 Fixes
+
+- Auth button ([5dfb32e](https://github.com/undb-io/undb/commit/5dfb32e))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-53
 
 
