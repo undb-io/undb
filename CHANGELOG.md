@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-52
+
+
+### 🏡 Chore
+
+- Use openapi prefix for openapi endpoint ([2e00df1](https://github.com/undb-io/undb/commit/2e00df1))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-51
 
 

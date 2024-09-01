@@ -97,7 +97,7 @@ export const createOpenApiSpec = (
       version: "1.0.0",
       title: table.name.value,
     },
-    servers: [{ url: "/api" }],
+    servers: [{ url: "/openapi" }],
   })
 }
 
