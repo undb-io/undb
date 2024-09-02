@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-55
+
+
+### 🩹 Fixes
+
+- Fix login redirect ([e38a10b](https://github.com/undb-io/undb/commit/e38a10b))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-54
 
 
