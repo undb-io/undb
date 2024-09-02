@@ -63,7 +63,7 @@
     },
     async onSuccess(data, variables, context) {
       if (redirect) {
-        await goto(redirect)
+        window.location.href = redirect
       } else {
         await goto("/")
       }
@@ -245,7 +245,7 @@
           {#if invitationId}
             <a href={`/login?invitationId=${invitationId}`} class="underline"> Sign in </a>
           {:else if redirect}
-            <a href={`/login?redirect=${redirect}`} class="underline"> Sign in </a>
+            <a href={`/login?redirect=${encodeURIComponent(redirect)}`} class="underline"> Sign in </a>
           {:else}
             <a href="/login" class="underline"> Sign in </a>
           {/if}

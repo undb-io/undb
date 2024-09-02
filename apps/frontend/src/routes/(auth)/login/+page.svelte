@@ -209,7 +209,7 @@
           <div class="mt-4 text-center text-sm">
             Don&apos;t have an account?
             {#if redirect}
-              <a href="/signup?redirect={redirect}" class="underline"> Sign up </a>
+              <a href="/signup?redirect={encodeURIComponent(redirect)}" class="underline"> Sign up </a>
             {:else}
               <a href="/signup" class="underline"> Sign up </a>
             {/if}
