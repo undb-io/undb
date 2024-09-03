@@ -178,6 +178,7 @@
                   <div class="flex justify-between">
                     <Label for="password">Password</Label>
                     <Button
+                      tabindex={-1}
                       variant="link"
                       class="ml-auto h-auto p-0 text-sm"
                       on:click={() => {
