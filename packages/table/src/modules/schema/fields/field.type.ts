@@ -79,6 +79,7 @@ import type {
   CurrencyFieldValue,
   ICurrencyFieldConditionSchema,
   ICurrencyFieldConstraint,
+  ICurrencyFieldOption,
 } from "./variants/currency-field"
 import type {
   EMAIL_TYPE,
@@ -275,6 +276,11 @@ export type IFieldConstraint =
   | ILongTextFieldConstraint
   | ICurrencyFieldConstraint
 
-export type IFieldOption = IReferenceFieldOption | IRollupFieldOption | ISelectFieldOption | IButtonFieldOption
+export type IFieldOption =
+  | IReferenceFieldOption
+  | IRollupFieldOption
+  | ISelectFieldOption
+  | IButtonFieldOption
+  | ICurrencyFieldOption
 
 export type IFieldMacro = IUserFieldMacro

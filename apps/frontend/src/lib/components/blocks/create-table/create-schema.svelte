@@ -5,6 +5,7 @@
     fieldTypes,
     getIsDisplayFieldType,
     systemFieldTypes,
+    type IButtonFieldOption,
     type ICreateSchemaDTO,
     type NoneSystemFieldType,
   } from "@undb/table"
@@ -64,8 +65,25 @@
         display: false,
         constraint: {},
         option: {
-          symbol: '$'
+          symbol: "$",
         },
+      }))
+      .with("button", () => ({
+        id: fieldId,
+        type,
+        name: getNextName(
+          $formData.schema.map((field) => field.name),
+          $LL.table.fieldTypes[type](),
+        ),
+        display: false,
+        constraint: {},
+        option: {
+          action: {
+            type: "update",
+            values: [],
+            confirm: true,
+          },
+        } satisfies IButtonFieldOption,
       }))
       .otherwise((type) => ({
         id: fieldId,
