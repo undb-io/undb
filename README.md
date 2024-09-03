@@ -47,6 +47,11 @@ UNDB is a no-code platform that can also serve as a Backend as a Service (BaaS).
 - 🐳 Supports Docker deployment
 - 🛠️ Provides a UI for table management
 
+## Screenshot
+
+![form](./docs/images/form.jpeg)
+![openapi](./docs/images/openapi.jpeg)
+
 ## Quick start
 
 - Try [undb cloud](https://app.undb.io)
