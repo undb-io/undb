@@ -54,6 +54,19 @@
           options: [],
         },
       }))
+      .with("currency", () => ({
+        id: fieldId,
+        type: "currency",
+        name: getNextName(
+          $formData.schema.map((field) => field.name),
+          $LL.table.fieldTypes[type](),
+        ),
+        display: false,
+        constraint: {},
+        option: {
+          symbol: '$'
+        },
+      }))
       .otherwise((type) => ({
         id: fieldId,
         type,
