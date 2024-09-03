@@ -41,7 +41,7 @@
   $: tables = $indexDataStore.data?.tables?.filter(Boolean) ?? []
   $: bases = $indexDataStore.data?.bases?.filter(Boolean) ?? []
 
-  let isLoading = $indexDataStore.fetching
+  $: isLoading = $indexDataStore.fetching
 
   function setBases() {
     basesStore.set(bases)
