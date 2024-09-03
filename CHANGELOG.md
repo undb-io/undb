@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-56
+
+
+### 🏡 Chore
+
+- Add some links ([2a2beb3](https://github.com/undb-io/undb/commit/2a2beb3))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-55
 
 

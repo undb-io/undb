@@ -2,9 +2,11 @@
   import Button from "$lib/components/ui/button/button.svelte"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import * as Avatar from "$lib/components/ui/avatar"
-  import { KeyIcon, LogOutIcon, SettingsIcon } from "lucide-svelte"
+  import { ExternalLinkIcon, KeyIcon, LogOutIcon, SettingsIcon } from "lucide-svelte"
   import { createMutation } from "@tanstack/svelte-query"
   import { goto } from "$app/navigation"
+  import Logo from "$lib/images/logo.svg"
+  import GithubLogo from "$lib/images/github.svg"
 
   export let user: { avatar: string | null; username: string; userId: string }
 
@@ -48,6 +50,16 @@
       <DropdownMenu.Item href="/account/token">
         <KeyIcon class="mr-2 h-4 w-4" />
         Api Token
+      </DropdownMenu.Item>
+      <DropdownMenu.Item href="https://undb.io" target="_blank" rel="noopener noreferrer">
+        <img src={Logo} alt="undb" class="mr-2 h-4 w-4" />
+        Undb Website
+        <ExternalLinkIcon class="ml-auto h-4 w-4" />
+      </DropdownMenu.Item>
+      <DropdownMenu.Item href="https://github.com/undb-io/undb" target="_blank" rel="noopener noreferrer">
+        <img src={GithubLogo} alt="undb" class="mr-2 h-4 w-4" />
+        Github
+        <ExternalLinkIcon class="ml-auto h-4 w-4" />
       </DropdownMenu.Item>
     </DropdownMenu.Group>
   </DropdownMenu.Content>
