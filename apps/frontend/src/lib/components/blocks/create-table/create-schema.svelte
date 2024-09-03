@@ -219,7 +219,7 @@
       </Button>
     </Popover.Trigger>
     <Popover.Content sameWidth class="p-0">
-      <Card.Root class="rounded-none p-1">
+      <Card.Root class="rounded-none px-1.5 py-2">
         <Card.Content class="p-0">
           <div class="grid grid-cols-4 gap-1">
             {#each fieldTypes as type}
@@ -229,8 +229,8 @@
                   on:click={() => addField(type)}
                   class="hover:bg-muted flex cursor-pointer items-center gap-2 p-2 text-sm"
                 >
-                  <FieldIcon class="h-4 w-4" {type} />
-                  <span>{type}</span>
+                  <FieldIcon class="h-3 w-3" {type} />
+                  <span class="text-sm">{$LL.table.fieldTypes[type]()}</span>
                 </button>
               {/if}
             {/each}
