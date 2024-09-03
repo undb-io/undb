@@ -56,7 +56,7 @@
 <div class={$$restProps.class}>
   <Button disabled={$trigger.isPending || disabled} on:click={handleClick} size="xs" variant="outline">
     {#if $trigger.isPending}
-      <LoaderCircleIcon className="h-3 w-3 animate-spin" />
+      <LoaderCircleIcon className="h-2 w-2 animate-spin" />
     {:else}
       {field.label ?? "Button"}
     {/if}

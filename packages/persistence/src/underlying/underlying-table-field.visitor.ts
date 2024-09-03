@@ -155,7 +155,7 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
   }
   rollup(field: RollupField): void {}
   checkbox(field: CheckboxField): void {
-    const c = this.tb.addColumn(field.id.value, "boolean")
+    const c = this.tb.addColumn(field.id.value, "boolean", (b) => b.defaultTo(0).notNull())
     this.addColumn(c)
   }
   user(field: UserField): void {

@@ -74,7 +74,11 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     throw new Error("Method not implemented.")
   }
   checkboxEqual(spec: CheckboxEqual): void {
-    this.setData(spec.fieldId.value, spec.value)
+    if (!spec.value) {
+      this.setData(spec.fieldId.value, false)
+    } else {
+      this.setData(spec.fieldId.value, spec.value)
+    }
   }
   jsonEqual(spec: JsonEqual): void {
     this.setData(spec.fieldId.value, JSON.stringify(spec.json))
