@@ -75,8 +75,13 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     this.addCond(this.eb.eb(this.getFieldId(spec), "in", spec.values))
   }
   checkboxEqual(spec: CheckboxEqual): void {
-    const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value)
-    this.addCond(cond)
+    if (!spec.value) {
+      const cond = this.eb.eb(this.getFieldId(spec), "is", null).or(this.getFieldId(spec), "=", false)
+      this.addCond(cond)
+    } else {
+      const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value)
+      this.addCond(cond)
+    }
   }
   longTextEqual(spec: LongTextEqual): void {
     const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value)
