@@ -12,6 +12,7 @@ import { updateEmailFieldDTO } from "../variants/email-field"
 import { updateIdFieldDTO } from "../variants/id-field/id-field.vo"
 import { updateJsonFieldDTO } from "../variants/json-field/json-field.vo"
 import { updateNumberFieldDTO } from "../variants/number-field/number-field.vo"
+import { updatePercentageFieldDTO } from "../variants/percentage-field/percentage-field.vo"
 import { updateRatingFieldDTO } from "../variants/rating-field/rating-field.vo"
 import { updateReferenceFieldDTO } from "../variants/reference-field/reference-field.vo"
 import { updateRollupFieldDTO } from "../variants/rollup-field/rollup-field.vo"
@@ -43,6 +44,7 @@ export const updateFieldDTO = z.discriminatedUnion("type", [
   updateCurrencyFieldDTO,
   updateButtonFieldDTO,
   updateDurationFieldDTO,
+  updatePercentageFieldDTO,
 ])
 
 export type IUpdateFieldDTO = z.infer<typeof updateFieldDTO>

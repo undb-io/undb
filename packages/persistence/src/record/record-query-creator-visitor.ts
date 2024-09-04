@@ -1,5 +1,6 @@
 import {
   ID_TYPE,
+  PercentageField,
   type AttachmentField,
   type AutoIncrementField,
   type ButtonField,
@@ -84,6 +85,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
   longText(field: LongTextField): void {}
   button(field: ButtonField): void {}
   duration(field: DurationField): void {}
+  percentage(field: PercentageField): void {}
   user(field: UserField): void {
     if (field.isMultiple) {
       const usersTable = getTableName(users)

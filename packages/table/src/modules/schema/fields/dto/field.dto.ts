@@ -8,6 +8,7 @@ import {
   dateFieldDTO,
   durationFieldDTO,
   jsonFieldDTO,
+  percentageFieldDTO,
   referenceFieldDTO,
   rollupFieldDTO,
   selectFieldDTO,
@@ -53,6 +54,7 @@ export const fieldDTO = z.discriminatedUnion("type", [
   currencyFieldDTO,
   buttonFieldDTO,
   durationFieldDTO,
+  percentageFieldDTO,
 ])
 
 export type IFieldDTO = z.infer<typeof fieldDTO>

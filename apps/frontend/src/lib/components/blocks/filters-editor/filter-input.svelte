@@ -15,6 +15,7 @@
     type ILongTextFieldConditionOp,
     type INumberFieldConditionOp,
     type IOpType,
+    type IPercentageFieldConditionOp,
     type IRatingFieldConditionOp,
     type ISelectFieldConditionOp,
     type IStringFieldConditionOp,
@@ -257,6 +258,13 @@
     is_not_empty: null,
   }
 
+  const percentage: Record<IPercentageFieldConditionOp, ComponentType | null> = {
+    eq: NumberInput,
+    neq: NumberInput,
+    is_empty: null,
+    is_not_empty: null,
+  }
+
   $: filterFieldInput = {
     string,
     number,
@@ -277,6 +285,7 @@
     url,
     longText,
     duration,
+    percentage,
   }
 </script>
 

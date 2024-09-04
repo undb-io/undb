@@ -261,6 +261,10 @@ type RootTranslation = {
 			 * B​u​t​t​o​n
 			 */
 			button: string
+			/**
+			 * P​e​r​c​e​n​t​a​g​e
+			 */
+			percentage: string
 		}
 		rollupFns: {
 			/**
@@ -626,6 +630,10 @@ export type TranslationFunctions = {
 			 * Button
 			 */
 			button: () => LocalizedString
+			/**
+			 * Percentage
+			 */
+			percentage: () => LocalizedString
 		}
 		rollupFns: {
 			/**

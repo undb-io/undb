@@ -26,6 +26,7 @@
   import CurrencyCell from "./editable-cell/currency-cell.svelte"
   import ButtonCell from "./editable-cell/button-cell.svelte"
   import DurationCell from "./editable-cell/duration-cell.svelte"
+  import PercentageCell from "./editable-cell/percentage-cell.svelte"
 
   const table = getTable()
 
@@ -64,6 +65,7 @@
     attachment: AttachmentCell,
     user: UserCell,
     duration: DurationCell,
+    percentage: PercentageCell,
   }
 </script>
 

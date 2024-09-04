@@ -25,6 +25,7 @@ import { CreatedByFieldValue } from "./variants/created-by-field"
 import { CurrencyFieldValue } from "./variants/currency-field"
 import { EmailFieldValue } from "./variants/email-field"
 import { LongTextFieldValue } from "./variants/long-text-field/long-text-field-value.vo"
+import { PercentageFieldValue } from "./variants/percentage-field" // 新增导入
 import { RatingFieldValue } from "./variants/rating-field"
 import { SelectFieldValue } from "./variants/select-field"
 import { UserFieldValue } from "./variants/user-field"
@@ -48,6 +49,7 @@ export class FieldValueFactory {
       .with({ type: "currency" }, (field) => Some(new CurrencyFieldValue(field.valueSchema.parse(value))))
       .with({ type: "button" }, () => Some(new ButtonFieldValue(null)))
       .with({ type: "duration" }, (field) => Some(new DurationFieldValue(field.valueSchema.parse(value))))
+      .with({ type: "percentage" }, (field) => Some(new PercentageFieldValue(field.valueSchema.parse(value)))) // 新增 percentage 处理
       .otherwise(() => None)
   }
 
@@ -76,6 +78,7 @@ export class FieldValueFactory {
       .with("currency", () => Some(new CurrencyFieldValue(value as number)))
       .with("button", () => Some(new ButtonFieldValue(null)))
       .with("duration", () => Some(new DurationFieldValue(value as number)))
+      .with("percentage", () => Some(new PercentageFieldValue(value as number))) // 新增 percentage 处理
       .exhaustive()
   }
 }

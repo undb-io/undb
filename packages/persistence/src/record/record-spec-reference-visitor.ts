@@ -25,6 +25,7 @@ import {
   NumberGTE,
   NumberLT,
   NumberLTE,
+  PercentageEqual,
   RatingEqual,
   ReferenceEqual,
   SelectContainsAnyOf,
@@ -56,6 +57,7 @@ export class RecordSpecReferenceVisitor implements IRecordVisitor {
     return this.qb
   }
 
+  percentageEqual(s: PercentageEqual): void {}
   stringEqual(spec: StringEqual): void {}
   longTextEqual(spec: LongTextEqual): void {}
   stringContains(spec: StringContains): void {}

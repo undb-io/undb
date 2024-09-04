@@ -8,6 +8,7 @@ import {
   ID_TYPE,
   JsonField,
   LongTextField,
+  PercentageField,
   RatingField,
   ReferenceField,
   RollupField,
@@ -136,6 +137,10 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
   }
   json(field: JsonField): void {
     const c = this.tb.addColumn(field.id.value, "json")
+    this.addColumn(c)
+  }
+  percentage(field: PercentageField): void {
+    const c = this.tb.addColumn(field.id.value, "real")
     this.addColumn(c)
   }
   reference(field: ReferenceField): void {

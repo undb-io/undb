@@ -108,6 +108,7 @@ export class Graphql {
         checkbox
         user
         duration
+        percentage
       }
 
       type Field {

@@ -1,5 +1,5 @@
 import type { z } from "@undb/zod"
-import { referenceFieldAggregate, rollupFieldAggregate } from "../.."
+import { referenceFieldAggregate,rollupFieldAggregate } from "../.."
 import { abstractDateAggregate } from "./variants/abstractions/abstract-date.aggregate"
 import { abstractNumberAggregate } from "./variants/abstractions/abstract-number.aggregate"
 import { abstractUserAggregate } from "./variants/abstractions/abstract-user.aggregate"
@@ -9,6 +9,7 @@ import { durationFieldAggregate } from "./variants/duration-field/duration-field
 import { emailFieldAggregate } from "./variants/email-field/email-field.aggregate"
 import { jsonFieldAggregate } from "./variants/json-field/json-field.aggregate"
 import { longTextFieldAggregate } from "./variants/long-text-field/long-text-field.aggregate"
+import { percentageFieldAggregate } from "./variants/percentage-field/percentage-field.aggregate"
 import { stringFieldAggregate } from "./variants/string-field/string-field.aggregate"
 import { urlFieldAggregate } from "./variants/url-field/url-field.aggregate"
 import { userFieldAggregate } from "./variants/user-field/user-field.aggregate"
@@ -27,5 +28,6 @@ export const fieldAggregate = stringFieldAggregate
   .or(longTextFieldAggregate)
   .or(currencyFieldAggregate)
   .or(durationFieldAggregate)
+  .or(percentageFieldAggregate)
 
 export type IFieldAggregate = z.infer<typeof fieldAggregate>
