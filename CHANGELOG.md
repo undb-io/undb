@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-58
+
+
+### 🚀 Enhancements
+
+- Duration field ([92948d5](https://github.com/undb-io/undb/commit/92948d5))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-57
 
 ## v1.0.0-56
