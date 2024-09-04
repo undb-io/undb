@@ -6,6 +6,7 @@ import {
   createSelectFieldDTO,
   createUrlFieldDTO,
   dateFieldDTO,
+  durationFieldDTO,
   jsonFieldDTO,
   referenceFieldDTO,
   rollupFieldDTO,
@@ -51,6 +52,7 @@ export const fieldDTO = z.discriminatedUnion("type", [
   urlFieldDTO,
   currencyFieldDTO,
   buttonFieldDTO,
+  durationFieldDTO,
 ])
 
 export type IFieldDTO = z.infer<typeof fieldDTO>

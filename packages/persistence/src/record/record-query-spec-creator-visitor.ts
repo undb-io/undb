@@ -1,5 +1,6 @@
 import {
   DateIsEmpty,
+  DurationEqual,
   ID_TYPE,
   JsonContains,
   LongTextEqual,
@@ -93,6 +94,7 @@ export class RecordQuerySpecCreatorVisitor implements IRecordVisitor {
   referenceEqual(spec: ReferenceEqual): void {}
   selectEqual(spec: SelectEqual): void {}
   currencyEqual(s: CurrencyEqual): void {}
+  durationEqual(s: DurationEqual): void {}
   selectContainsAnyOf(spec: SelectContainsAnyOf): void {
     const field = this.table.schema.getFieldById(spec.fieldId).expect("No field found") as SelectField
     if (field.isMultiple) {

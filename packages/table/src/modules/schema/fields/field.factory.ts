@@ -11,6 +11,7 @@ import { CreatedAtField } from "./variants/created-at-field/created-at-field.vo"
 import { CreatedByField } from "./variants/created-by-field/created-by-field.vo"
 import { CurrencyField } from "./variants/currency-field"
 import { DateField } from "./variants/date-field/date-field.vo"
+import { DurationField } from "./variants/duration-field/duration-field.vo"
 import { EmailField } from "./variants/email-field/email-field.vo"
 import { IdField } from "./variants/id-field/id-field.vo"
 import { JsonField } from "./variants/json-field/json-field.vo"
@@ -50,6 +51,7 @@ export class FieldFactory {
       .with({ type: "longText" }, (dto) => new LongTextField(dto))
       .with({ type: "currency" }, (dto) => new CurrencyField(dto))
       .with({ type: "button" }, (dto) => new ButtonField(dto))
+      .with({ type: "duration" }, (dto) => new DurationField(dto))
       .exhaustive()
   }
 
@@ -71,6 +73,7 @@ export class FieldFactory {
       .with({ type: "longText" }, (dto) => LongTextField.create(dto))
       .with({ type: "currency" }, (dto) => CurrencyField.create(dto))
       .with({ type: "button" }, (dto) => ButtonField.create(dto))
+      .with({ type: "duration" }, (dto) => DurationField.create(dto))
       .otherwise(() => {
         throw new Error("Field type creation not supported")
       })

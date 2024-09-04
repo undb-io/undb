@@ -65,6 +65,7 @@ const fieldTypes: Record<FieldType, string> = {
   checkbox: "Checkbox",
   user: "User",
   currency: "Currency",
+  duration: "Duration",
   button: "Button",
 }
 

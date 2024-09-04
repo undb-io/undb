@@ -82,6 +82,13 @@ import type {
   ICurrencyFieldOption,
 } from "./variants/currency-field"
 import type {
+  DURATION_TYPE,
+  DurationField,
+  DurationFieldValue,
+  IDurationFieldConditionSchema,
+  IDurationFieldConstraint,
+} from "./variants/duration-field"
+import type {
   EMAIL_TYPE,
   EmailField,
   EmailFieldValue,
@@ -148,6 +155,7 @@ export type Field =
   | LongTextField
   | CurrencyField
   | ButtonField
+  | DurationField
 
 export type SystemField =
   | IdField
@@ -182,6 +190,7 @@ export type FieldValue =
   | LongTextFieldValue
   | CurrencyFieldValue
   | ButtonFieldValue
+  | DurationFieldValue
 
 export type MutableFieldValue =
   | StringFieldValue
@@ -198,6 +207,7 @@ export type MutableFieldValue =
   | UserFieldValue
   | LongTextFieldValue
   | CurrencyFieldValue
+  | DurationFieldValue
 
 export type FieldType =
   | typeof STRING_TYPE
@@ -222,6 +232,7 @@ export type FieldType =
   | typeof LONGTEXT_TYPE
   | typeof CURRENCY_TYPE
   | typeof BUTTON_TYPE
+  | typeof DURATION_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
@@ -254,6 +265,7 @@ export type IFieldConditionSchema =
   | IUserFieldConditionSchema
   | ILongTextFieldConditionSchema
   | ICurrencyFieldConditionSchema
+  | IDurationFieldConditionSchema
   | z.ZodUnion<any>
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
@@ -275,6 +287,7 @@ export type IFieldConstraint =
   | IUserFieldConstraint
   | ILongTextFieldConstraint
   | ICurrencyFieldConstraint
+  | IDurationFieldConstraint
 
 export type IFieldOption =
   | IReferenceFieldOption
