@@ -14,6 +14,11 @@ export const getFormBgColor = (color: IColors) => {
     orange: "bg-orange-500/40",
     cyan: "bg-cyan-500/40",
     teal: "bg-teal-500/40",
+    lime: "bg-lime-500/40",
+    emerald: "bg-emerald-500/40",
+    sky: "bg-sky-500/40",
+    violet: "bg-violet-500/40",
+    rose: "bg-rose-500/40",
   }
 
   return colorMap[color]
@@ -33,6 +38,11 @@ export const getFormSelectedColor = (color: IColors) => {
     orange: "bg-orange-500",
     cyan: "bg-cyan-500",
     teal: "bg-teal-500",
+    lime: "bg-lime-500",
+    emerald: "bg-emerald-500",
+    sky: "bg-sky-500",
+    violet: "bg-violet-500",
+    rose: "bg-rose-500",
   }
 
   return colorMap[color]
@@ -52,6 +62,11 @@ export const getFormBorderColor = (color: IColors) => {
     orange: "border-orange-500",
     cyan: "border-cyan-500",
     teal: "border-teal-500",
+    lime: "border-lime-500",
+    emerald: "border-emerald-500",
+    sky: "border-sky-500",
+    violet: "border-violet-500",
+    rose: "border-rose-500",
   }
 
   return colorMap[color]
