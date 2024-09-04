@@ -3,6 +3,7 @@ import type { ISpecification, ISpecVisitor } from "@undb/domain"
 import {
   CurrencyEqual,
   DateIsEmpty,
+  DurationEqual,
   ID_TYPE,
   isUserFieldMacro,
   JsonContains,
@@ -286,6 +287,9 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
   }
   selectEmpty(spec: SelectEmpty): void {
     this.setData(spec.fieldId.value, null)
+  }
+  durationEqual(s: DurationEqual): void {
+    this.setData(s.fieldId.value, s.value)
   }
   numberEqual(spec: NumberEqual): void {
     this.setData(spec.fieldId.value, spec.value)

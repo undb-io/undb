@@ -11,6 +11,7 @@ import {
   DateIsSameDay,
   DateIsToday,
   DateIsTomorrow,
+  DurationEqual,
   ID_TYPE,
   IdEqual,
   IdIn,
@@ -85,6 +86,7 @@ export class RecordSpecReferenceVisitor implements IRecordVisitor {
   referenceEqual(spec: ReferenceEqual): void {}
   selectEqual(spec: SelectEqual): void {}
   currencyEqual(s: CurrencyEqual): void {}
+  durationEqual(s: DurationEqual): void {}
   selectContainsAnyOf(spec: SelectContainsAnyOf): void {
     this.qb = this.qb
       .innerJoin(spec.fieldId.value, `${this.table.id.value}.${ID_TYPE}`, `${spec.fieldId.value}.${ID_TYPE}`)

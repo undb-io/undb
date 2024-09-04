@@ -1,5 +1,11 @@
 import { z } from "@undb/zod"
-import { createButtonFieldDTO, createDateFieldDTO, createJsonFieldDTO, createUrlFieldDTO } from "../variants"
+import {
+  createButtonFieldDTO,
+  createDateFieldDTO,
+  createDurationFieldDTO,
+  createJsonFieldDTO,
+  createUrlFieldDTO,
+} from "../variants"
 import { createAttachmentFieldDTO } from "../variants/attachment-field"
 import { createCheckboxFieldDTO } from "../variants/checkbox-field"
 import { createCurrencyFieldDTO } from "../variants/currency-field"
@@ -30,6 +36,7 @@ export const createFieldDTO = z.discriminatedUnion("type", [
   createLongTextFieldDTO,
   createCurrencyFieldDTO,
   createButtonFieldDTO,
+  createDurationFieldDTO,
 ])
 
 export type ICreateFieldDTO = z.infer<typeof createFieldDTO>

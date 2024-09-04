@@ -36,6 +36,7 @@ enum FieldType {
   createdBy
   currency
   date
+  duration
   email
   id
   json

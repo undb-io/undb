@@ -21,7 +21,7 @@
   let open = false
 </script>
 
-<Popover.Root openFocus bind:open>
+<Popover.Root openFocus bind:open portal="body">
   <Popover.Trigger {disabled}>
     <ColorItem {value} class="flex items-center justify-center">
       <ChevronDownIcon class={cn("h-4 w-4", value ? "text-white" : "text-black")} />

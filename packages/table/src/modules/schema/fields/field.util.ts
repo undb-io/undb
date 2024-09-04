@@ -77,6 +77,7 @@ const sortableFieldTypes: FieldType[] = [
   "date",
   "checkbox",
   "url",
+  "duration",
 ] as const
 
 export function isFieldSortable(type: FieldType): boolean {
@@ -105,6 +106,7 @@ export const fieldTypes: NoneSystemFieldType[] = [
   "rollup",
   "currency",
   "button",
+  "duration",
 ] as const
 
 export const systemFieldTypes: SystemFieldType[] = [
@@ -136,6 +138,7 @@ export const filterableFieldTypes = [
   "user",
   "json",
   "currency",
+  "duration",
 ] as const
 
 export const getIsFilterableFieldType = (type: FieldType): type is IFilterableFieldType => {
@@ -157,6 +160,7 @@ export const mutableFieldTypes = [
   "user",
   "longText",
   "currency",
+  "duration",
 ] as const
 
 export const getIsMutableFieldType = (type: FieldType) => mutableFieldTypes.includes(type as any)
@@ -172,6 +176,7 @@ export const fieldsCanBeRollup: FieldType[] = [
   "date",
   "checkbox",
   "currency",
+  "duration",
 ] as const
 
 export const getIsFieldCanBeRollup = (type: FieldType): type is "number" => {
@@ -181,9 +186,9 @@ export const getIsFieldCanBeRollup = (type: FieldType): type is "number" => {
 export function getRollupFnByType(type: FieldType): IRollupFn[] {
   return match(type)
     .returnType<IRollupFn[]>()
-    .with("number", "rating", () => ["sum", "average", "max", "min", "count", "lookup"])
+    .with("number", "rating", "currency", "duration", () => ["sum", "average", "max", "min", "count", "lookup"])
     .with("date", () => ["max", "min", "count", "lookup"])
-    .with("string", "email", "url", () => ["lookup", "count"])
+    .with("string", "email", "url", "checkbox", () => ["lookup", "count"])
     .otherwise(() => [])
 }
 
@@ -216,6 +221,7 @@ export const displayFieldTypes: FieldType[] = [
   "id",
   "rating",
   "currency",
+  "duration",
 ] as const
 
 export const getIsDisplayFieldType = (type: FieldType): type is (typeof displayFieldTypes)[number] => {

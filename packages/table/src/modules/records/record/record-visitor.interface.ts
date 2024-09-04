@@ -14,6 +14,7 @@ import type {
 import type { IAttachmentFieldValueVisitor } from "../../schema/fields/variants/attachment-field"
 import type { ICreatedAtFieldValueVisitor } from "../../schema/fields/variants/created-at-field"
 import type { ICurrencyFieldValueVisitor } from "../../schema/fields/variants/currency-field"
+import type { IDurationFieldValueVisitor } from "../../schema/fields/variants/duration-field/duration-field-value.visitor"
 import type { IEmailFieldValueVisitor } from "../../schema/fields/variants/email-field"
 import type { IIdFieldValueVisitor } from "../../schema/fields/variants/id-field"
 import type { IRatingFieldValueVisitor } from "../../schema/fields/variants/rating-field"
@@ -38,4 +39,5 @@ export type IRecordVisitor = IStringFieldValueVisitor &
   IUserFieldValueVisitor &
   ILongTextFieldValueVisitor &
   ICurrencyFieldValueVisitor &
+  IDurationFieldValueVisitor &
   ISpecVisitor

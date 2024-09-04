@@ -1,4 +1,4 @@
-import type { ButtonField, UrlField } from "."
+import type { ButtonField, DurationField, UrlField } from "."
 import type { AttachmentField } from "./variants/attachment-field"
 import type { AutoIncrementField } from "./variants/autoincrement-field"
 import type { CheckboxField } from "./variants/checkbox-field"
@@ -41,6 +41,7 @@ export interface IFieldVisitor {
   url(field: UrlField): void
   currency(field: CurrencyField): void
   button(field: ButtonField): void
+  duration(field: DurationField): void
 
   reference(field: ReferenceField): void
   rollup(field: RollupField): void

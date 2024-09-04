@@ -1,5 +1,6 @@
 import {
   ButtonField,
+  DurationField,
   ID_TYPE,
   type AttachmentField,
   type AutoIncrementField,
@@ -131,6 +132,9 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     this.addSelect(this.getField(field.id.value))
   }
   json(field: JsonField): void {
+    this.addSelect(this.getField(field.id.value))
+  }
+  duration(field: DurationField): void {
     this.addSelect(this.getField(field.id.value))
   }
   reference(field: ReferenceField): void {
