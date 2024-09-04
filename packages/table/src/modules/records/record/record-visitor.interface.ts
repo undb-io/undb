@@ -6,6 +6,7 @@ import type {
   IJsonFieldValueVisitor,
   ILongTextFieldValueVisitor,
   INumberFieldValueVisitor,
+  IPercentageFieldValueVisitor,
   IReferenceFieldValueVisitor,
   IUpdatedAtFieldValueVisitor,
   IUrlFieldValueVisitor,
@@ -40,4 +41,5 @@ export type IRecordVisitor = IStringFieldValueVisitor &
   ILongTextFieldValueVisitor &
   ICurrencyFieldValueVisitor &
   IDurationFieldValueVisitor &
+  IPercentageFieldValueVisitor &
   ISpecVisitor

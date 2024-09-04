@@ -67,6 +67,7 @@ const fieldTypes: Record<FieldType, string> = {
   currency: "Currency",
   duration: "Duration",
   button: "Button",
+  percentage: "Percentage",
 }
 
 const rollupFns: Record<IRollupFn, string> = {

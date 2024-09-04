@@ -42,6 +42,7 @@ enum FieldType {
   json
   longText
   number
+  percentage
   rating
   reference
   rollup

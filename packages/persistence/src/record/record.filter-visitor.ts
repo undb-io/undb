@@ -2,6 +2,7 @@ import { getCurrentUserId } from "@undb/context/server"
 import { NotImplementException } from "@undb/domain"
 import {
   DurationEqual,
+  PercentageEqual,
   SelectField,
   isUserFieldMacro,
   type AttachmentEmpty,
@@ -151,6 +152,10 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
   }
   currencyEqual(spec: CurrencyEqual): void {
     const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value === null ? null : spec.value * 100)
+    this.addCond(cond)
+  }
+  percentageEqual(spec: PercentageEqual): void {
+    const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value)
     this.addCond(cond)
   }
   stringMin(spec: StringMin): void {

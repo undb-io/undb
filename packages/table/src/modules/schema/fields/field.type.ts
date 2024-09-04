@@ -107,6 +107,13 @@ import type { INumberFieldConstraint } from "./variants/number-field/number-fiel
 import type { NumberFieldValue } from "./variants/number-field/number-field-value.vo"
 import type { NUMBER_TYPE, NumberField } from "./variants/number-field/number-field.vo"
 import type {
+  IPercentageFieldConditionSchema,
+  IPercentageFieldConstraint,
+  PERCENTAGE_TYPE,
+  PercentageField,
+  PercentageFieldValue,
+} from "./variants/percentage-field"
+import type {
   IRatingFieldConditionSchema,
   IRatingFieldConstraint,
   RATING_TYPE,
@@ -156,6 +163,7 @@ export type Field =
   | CurrencyField
   | ButtonField
   | DurationField
+  | PercentageField
 
 export type SystemField =
   | IdField
@@ -191,6 +199,7 @@ export type FieldValue =
   | CurrencyFieldValue
   | ButtonFieldValue
   | DurationFieldValue
+  | PercentageFieldValue
 
 export type MutableFieldValue =
   | StringFieldValue
@@ -208,6 +217,7 @@ export type MutableFieldValue =
   | LongTextFieldValue
   | CurrencyFieldValue
   | DurationFieldValue
+  | PercentageFieldValue
 
 export type FieldType =
   | typeof STRING_TYPE
@@ -233,6 +243,7 @@ export type FieldType =
   | typeof CURRENCY_TYPE
   | typeof BUTTON_TYPE
   | typeof DURATION_TYPE
+  | typeof PERCENTAGE_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
@@ -266,6 +277,7 @@ export type IFieldConditionSchema =
   | ILongTextFieldConditionSchema
   | ICurrencyFieldConditionSchema
   | IDurationFieldConditionSchema
+  | IPercentageFieldConditionSchema
   | z.ZodUnion<any>
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
@@ -288,6 +300,7 @@ export type IFieldConstraint =
   | ILongTextFieldConstraint
   | ICurrencyFieldConstraint
   | IDurationFieldConstraint
+  | IPercentageFieldConstraint
 
 export type IFieldOption =
   | IReferenceFieldOption

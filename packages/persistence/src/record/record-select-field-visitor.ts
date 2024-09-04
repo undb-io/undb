@@ -2,6 +2,7 @@ import {
   ButtonField,
   DurationField,
   ID_TYPE,
+  PercentageField,
   type AttachmentField,
   type AutoIncrementField,
   type CheckboxField,
@@ -135,6 +136,9 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     this.addSelect(this.getField(field.id.value))
   }
   duration(field: DurationField): void {
+    this.addSelect(this.getField(field.id.value))
+  }
+  percentage(field: PercentageField): void {
     this.addSelect(this.getField(field.id.value))
   }
   reference(field: ReferenceField): void {

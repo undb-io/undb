@@ -18,6 +18,7 @@
   import CurrencyControl from "./currency-control.svelte"
   import ButtonControl from "./button-control.svelte"
   import DurationControl from "./duration-control.svelte"
+  import PercentageControl from "./percentage-control.svelte"
 
   export let readonly = false
   export let field: NoneSystemField
@@ -55,6 +56,7 @@
     checkbox: CheckboxControl,
     user: UserControl,
     duration: DurationControl,
+    percentage: PercentageControl,
   }
 </script>
 

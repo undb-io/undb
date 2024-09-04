@@ -1,5 +1,6 @@
 import {
   ID_TYPE,
+  PercentageField,
   type AttachmentField,
   type AutoIncrementField,
   type ButtonField,
@@ -87,6 +88,9 @@ export class RecordReferenceVisitor implements IFieldVisitor {
   }
   reference(field: ReferenceField): void {
     this.qb = this.qb.leftJoin(field.id.value, `${this.table.id.value}.${ID_TYPE}`, `${field.id.value}.${ID_TYPE}`)
+  }
+  percentage(field: PercentageField): void {
+    throw new Error("Method not implemented.")
   }
   attachment(field: AttachmentField): void {
     throw new Error("Method not implemented.")
