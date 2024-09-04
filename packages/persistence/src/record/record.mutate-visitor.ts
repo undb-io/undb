@@ -8,6 +8,7 @@ import {
   isUserFieldMacro,
   JsonContains,
   LongTextEqual,
+  PercentageEqual,
   SelectContainsAnyOf,
   SelectField,
   SelectFieldValue,
@@ -274,6 +275,9 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
   }
   stringEmpty(spec: StringEmpty): void {
     throw new Error("Method not implemented.")
+  }
+  percentageEqual(s: PercentageEqual): void {
+    this.setData(s.fieldId.value, s.value)
   }
   selectEqual(spec: SelectEqual): void {
     const field = this.table.schema.getFieldById(spec.fieldId).expect("No field found") as SelectField

@@ -17,6 +17,7 @@ import { IdField } from "./variants/id-field/id-field.vo"
 import { JsonField } from "./variants/json-field/json-field.vo"
 import { LongTextField } from "./variants/long-text-field"
 import { NumberField } from "./variants/number-field/number-field.vo"
+import { PercentageField } from "./variants/percentage-field/percentage-field.vo"
 import { RatingField } from "./variants/rating-field/rating-field.vo"
 import { ReferenceField } from "./variants/reference-field/reference-field.vo"
 import { RollupField } from "./variants/rollup-field/rollup-field.vo"
@@ -52,6 +53,7 @@ export class FieldFactory {
       .with({ type: "currency" }, (dto) => new CurrencyField(dto))
       .with({ type: "button" }, (dto) => new ButtonField(dto))
       .with({ type: "duration" }, (dto) => new DurationField(dto))
+      .with({ type: "percentage" }, (dto) => new PercentageField(dto)) // 新增匹配
       .exhaustive()
   }
 
@@ -74,6 +76,7 @@ export class FieldFactory {
       .with({ type: "currency" }, (dto) => CurrencyField.create(dto))
       .with({ type: "button" }, (dto) => ButtonField.create(dto))
       .with({ type: "duration" }, (dto) => DurationField.create(dto))
+      .with({ type: "percentage" }, (dto) => PercentageField.create(dto)) // 新增匹配
       .otherwise(() => {
         throw new Error("Field type creation not supported")
       })

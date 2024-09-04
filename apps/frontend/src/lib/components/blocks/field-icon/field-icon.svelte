@@ -27,6 +27,7 @@
     DollarSignIcon,
     MousePointerClickIcon,
     TimerIcon,
+    PercentIcon,
   } from "lucide-svelte"
 
   export let type: FieldType
@@ -56,6 +57,7 @@
     user: field?.type === "user" && field.isMultiple ? UsersIcon : UserIcon,
     button: MousePointerClickIcon,
     duration: TimerIcon,
+    percentage: PercentIcon,
   }
 </script>
 

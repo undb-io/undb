@@ -18,6 +18,7 @@
   import CurrencyFieldOption from "./currency-field-option.svelte"
   import ButtonFieldOption from "./button-field-option.svelte"
   import DurationFieldOption from "./duration-field-option.svelte"
+  import PercentageFieldOption from "./percentage-field-option.svelte"
 
   export let constraint: IFieldConstraint | undefined
   export let option: any | undefined
@@ -45,6 +46,7 @@
     json: JsonFieldOption,
     date: DateFieldOption,
     duration: DurationFieldOption,
+    percentage: PercentageFieldOption,
   }
 
   export let type: NoneSystemFieldType
