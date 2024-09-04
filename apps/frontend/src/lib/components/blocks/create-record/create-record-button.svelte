@@ -1,17 +1,20 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
-  import { BetweenHorizonalEnd, ChevronDownIcon, FormInputIcon } from "lucide-svelte"
+  import { BetweenHorizonalEnd, ChevronDownIcon, CirclePlusIcon, FormInputIcon } from "lucide-svelte"
   import { getTable } from "$lib/store/table.store"
   import { formId } from "$lib/store/tab.store"
   import { cn } from "$lib/utils"
   import { CREATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import { hasPermission } from "$lib/store/space-member.store"
+  import * as Dialog from "$lib/components/ui/dialog"
+  import CreateForm from "../forms/create-form.svelte"
 
   const table = getTable()
 
   $: forms = $table.forms?.props ?? []
-  $: hasForms = forms.length > 0
+
+  let createForm = false
 </script>
 
 {#if $hasPermission("record:create")}
@@ -24,43 +27,56 @@
         toggleModal(CREATE_RECORD_MODAL)
       }}
       {...$$restProps}
-      class={cn(hasForms && "rounded-r-none border-r-0", $$restProps.class)}
+      class={cn("rounded-r-none border-r-0", $$restProps.class)}
     >
       <BetweenHorizonalEnd class="mr-1 h-4 w-4" />
       Create Record
     </Button>
 
-    {#if hasForms}
-      <DropdownMenu.Root>
-        <DropdownMenu.Trigger>
-          <Button
-            size={$$restProps.size ?? "sm"}
-            variant={$$restProps.variant ?? "outline"}
-            class="rounded-l-none border-l px-2"
-          >
-            <ChevronDownIcon class="h-3 w-3 text-sm font-light" />
-          </Button>
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content class="w-[200px]">
-          <DropdownMenu.Group>
-            <DropdownMenu.Label class="flex items-center gap-2 text-xs">
-              <FormInputIcon class="text-muted-foreground h-4 w-4" />
-              Create By Form</DropdownMenu.Label
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger>
+        <Button
+          size={$$restProps.size ?? "sm"}
+          variant={$$restProps.variant ?? "outline"}
+          class="rounded-l-none border-l px-2"
+        >
+          <ChevronDownIcon class="h-3 w-3 text-sm font-light" />
+        </Button>
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content class="w-[200px]">
+        <DropdownMenu.Group>
+          <DropdownMenu.Label class="flex items-center gap-2 text-xs">
+            <FormInputIcon class="text-muted-foreground h-4 w-4" />
+            Create By Form
+          </DropdownMenu.Label>
+          <DropdownMenu.Separator />
+          {#each forms as form}
+            <DropdownMenu.Item
+              on:click={() => {
+                $formId = form.id
+                toggleModal(CREATE_RECORD_MODAL)
+              }}
             >
+              {form.name}
+            </DropdownMenu.Item>
             <DropdownMenu.Separator />
-            {#each forms as form}
-              <DropdownMenu.Item
-                on:click={() => {
-                  $formId = form.id
-                  toggleModal(CREATE_RECORD_MODAL)
-                }}
-              >
-                {form.name}
-              </DropdownMenu.Item>
-            {/each}
-          </DropdownMenu.Group>
-        </DropdownMenu.Content>
-      </DropdownMenu.Root>
-    {/if}
+          {/each}
+          <DropdownMenu.Item on:click={() => (createForm = true)}>
+            <CirclePlusIcon class="mr-2 h-4 w-4" />
+            Create Form
+          </DropdownMenu.Item>
+        </DropdownMenu.Group>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
   </div>
 {/if}
+
+<Dialog.Root bind:open={createForm}>
+  <Dialog.Content>
+    <Dialog.Header>
+      <Dialog.Title>Create Form</Dialog.Title>
+    </Dialog.Header>
+
+    <CreateForm onSuccess={() => (createForm = false)} />
+  </Dialog.Content>
+</Dialog.Root>
