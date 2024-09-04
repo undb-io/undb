@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-59
+
+
+### 🚀 Enhancements
+
+- Persontage field ([c8df205](https://github.com/undb-io/undb/commit/c8df205))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-58
 
 
