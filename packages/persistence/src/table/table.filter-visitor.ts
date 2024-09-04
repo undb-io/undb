@@ -20,6 +20,7 @@ import type {
   WithNewFormSpecification,
   WithNewView,
   WithoutFieldSpecification,
+  WithoutFormSpecification,
   WithoutView,
   WithTableForeignTablesSpec,
   WithTableRLS,
@@ -137,6 +138,9 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
     this.addCond(cond)
   }
   withNewForm(views: WithNewFormSpecification): void {
+    throw new Error("Method not implemented.")
+  }
+  withoutForm(spec: WithoutFormSpecification): void {
     throw new Error("Method not implemented.")
   }
   withForm(views: WithFormSpecification): void {

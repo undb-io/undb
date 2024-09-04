@@ -14,6 +14,7 @@ import {
   CreateTableViewCommand,
   CreateWebhookCommand,
   DeleteBaseCommand,
+  DeleteFormCommand,
   DeleteInvitationCommand,
   DeleteRecordCommand,
   DeleteTableCommand,
@@ -61,6 +62,7 @@ import {
   createTableViewCommand,
   createWebhookCommand,
   deleteBaseCommand,
+  deleteFormCommand,
   deleteInvitationCommand,
   deleteRecordCommand,
   deleteTableCommand,
@@ -138,6 +140,10 @@ const formRouter = t.router({
     .use(authz("form:update"))
     .input(setTableFormCommand)
     .mutation(({ input }) => commandBus.execute(new SetTableFormCommand(input))),
+  delete: privateProcedure
+    .use(authz("form:delete"))
+    .input(deleteFormCommand)
+    .mutation(({ input }) => commandBus.execute(new DeleteFormCommand(input))),
 })
 
 const viewRouter = t.router({

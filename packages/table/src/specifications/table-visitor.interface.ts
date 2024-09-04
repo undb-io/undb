@@ -5,6 +5,7 @@ import type {
   WithFormIdSpecification,
   WithFormSpecification,
   WithNewFormSpecification,
+  WithoutFormSpecification,
 } from "./table-forms.specification"
 import type { TableIdSpecification, TableIdsSpecification } from "./table-id.specification"
 import type { TableNameSpecification, TableUniqueNameSpecification } from "./table-name.specification"
@@ -59,6 +60,7 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withViewAggregate(viewColor: WithViewAggregate): void
   withViewFields(fields: WithViewFields): void
   withForms(views: TableFormsSpecification): void
+  withoutForm(spec: WithoutFormSpecification): void
   withFormId(spec: WithFormIdSpecification): void
   withNewForm(views: WithNewFormSpecification): void
   withForm(views: WithFormSpecification): void

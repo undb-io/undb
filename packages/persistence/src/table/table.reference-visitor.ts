@@ -20,6 +20,7 @@ import type {
   WithNewFormSpecification,
   WithNewView,
   WithoutFieldSpecification,
+  WithoutFormSpecification,
   WithoutView,
   WithTableForeignTablesSpec,
   WithTableRLS,
@@ -73,6 +74,7 @@ export class TableReferenceVisitor implements ITableSpecVisitor {
     this.sqb = this.sqb.leftJoin("undb_table_id_mapping", "undb_table_id_mapping.table_id", "undb_table.id")
   }
   withNewForm(views: WithNewFormSpecification): void {}
+  withoutForm(spec: WithoutFormSpecification): void {}
   withForm(views: WithFormSpecification): void {}
   withForeignRollupField(spec: WithForeignRollupFieldSpec): void {}
   withTableForeignTables(spec: WithTableForeignTablesSpec): void {}

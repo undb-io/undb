@@ -56,6 +56,23 @@ export class WithNewFormSpecification extends TableComositeSpecification {
   }
 }
 
+export class WithoutFormSpecification extends TableComositeSpecification {
+  constructor(public readonly formId: string) {
+    super()
+  }
+  isSatisfiedBy(t: TableDo): boolean {
+    throw new WontImplementException(WithoutFormSpecification.name + ".isSatisfiedBy")
+  }
+  mutate(t: TableDo): Result<TableDo, string> {
+    t.forms = t.forms ? new FormsVO(t.forms?.props.filter((f) => f.id !== this.formId)) : undefined
+    return Ok(t)
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withoutForm(this)
+    return Ok(undefined)
+  }
+}
+
 export class WithFormSpecification extends TableComositeSpecification {
   constructor(
     public readonly previous: IFormDTO | undefined,
