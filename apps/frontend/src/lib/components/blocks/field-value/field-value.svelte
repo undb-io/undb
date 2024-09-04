@@ -16,6 +16,7 @@
   import UrlField from "./url-field.svelte"
   import LongTextField from "./long-text-field.svelte"
   import CurrencyField from "./currency-field.svelte"
+  import DurationField from "./duration-field.svelte"
 
   export let type: FieldType
   export let value: any
@@ -47,6 +48,7 @@
     json: JsonField,
     checkbox: CheckboxField,
     user: UserField,
+    duration: DurationField,
   }
 </script>
 

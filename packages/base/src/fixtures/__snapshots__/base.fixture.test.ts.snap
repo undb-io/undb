@@ -14,3 +14,22 @@ Base {
   },
 }
 `;
+
+exports[`base fixture test create test base success 1`] = `
+Base {
+  "id": BaseId {
+    "props": {
+      "value": "basttrlpxe2",
+    },
+  },
+  "name": BaseName {
+    "props": {
+      "value": undefined,
+    },
+  },
+  "option": BaseOption {
+    "props": {},
+  },
+  "spaceId": undefined,
+}
+`;

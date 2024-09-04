@@ -55,7 +55,7 @@
     <Command.Root shouldFilter={false}>
       <Command.Input bind:value={search} placeholder="Search option..." />
       <Command.Empty>No option found.</Command.Empty>
-      <Command.Group>
+      <Command.Group class="max-h-[300px] overflow-y-auto">
         {#each filteredOptions as option}
           <Command.Item
             value={option.id}

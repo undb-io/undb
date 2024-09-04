@@ -254,6 +254,10 @@ type RootTranslation = {
 			 */
 			currency: string
 			/**
+			 * D​u​r​a​t​i​o​n
+			 */
+			duration: string
+			/**
 			 * B​u​t​t​o​n
 			 */
 			button: string
@@ -614,6 +618,10 @@ export type TranslationFunctions = {
 			 * Currency
 			 */
 			currency: () => LocalizedString
+			/**
+			 * Duration
+			 */
+			duration: () => LocalizedString
 			/**
 			 * Button
 			 */

@@ -8,6 +8,7 @@ import {
   ButtonFieldValue,
   CreatedAtFieldValue,
   DateFieldValue,
+  DurationFieldValue,
   IdFieldValue,
   JsonFieldValue,
   NumberFieldValue,
@@ -46,6 +47,7 @@ export class FieldValueFactory {
       .with({ type: "longText" }, (field) => Some(new LongTextFieldValue(field.valueSchema.parse(value))))
       .with({ type: "currency" }, (field) => Some(new CurrencyFieldValue(field.valueSchema.parse(value))))
       .with({ type: "button" }, () => Some(new ButtonFieldValue(null)))
+      .with({ type: "duration" }, (field) => Some(new DurationFieldValue(field.valueSchema.parse(value))))
       .otherwise(() => None)
   }
 
@@ -73,6 +75,7 @@ export class FieldValueFactory {
       .with("longText", () => Some(new LongTextFieldValue(value as string)))
       .with("currency", () => Some(new CurrencyFieldValue(value as number)))
       .with("button", () => Some(new ButtonFieldValue(null)))
+      .with("duration", () => Some(new DurationFieldValue(value as number)))
       .exhaustive()
   }
 }

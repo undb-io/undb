@@ -25,6 +25,7 @@
   import LongTextCell from "./editable-cell/long-text-cell.svelte"
   import CurrencyCell from "./editable-cell/currency-cell.svelte"
   import ButtonCell from "./editable-cell/button-cell.svelte"
+  import DurationCell from "./editable-cell/duration-cell.svelte"
 
   const table = getTable()
 
@@ -62,6 +63,7 @@
     checkbox: CheckboxCell,
     attachment: AttachmentCell,
     user: UserCell,
+    duration: DurationCell,
   }
 </script>
 

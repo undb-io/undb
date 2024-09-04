@@ -1,19 +1,17 @@
 import { getCurrentUserId } from "@undb/context/server"
 import { NotImplementException } from "@undb/domain"
 import {
-  CurrencyEqual,
-  DateIsEmpty,
-  JsonContains,
-  LongTextEqual,
+  DurationEqual,
   SelectField,
-  UrlEqual,
   isUserFieldMacro,
   type AttachmentEmpty,
   type AttachmentEqual,
   type CheckboxEqual,
+  type CurrencyEqual,
   type DateEqual,
   type DateIsAfter,
   type DateIsBefore,
+  type DateIsEmpty,
   type DateIsSameDay,
   type DateIsToday,
   type DateIsTomorrow,
@@ -21,8 +19,10 @@ import {
   type IRecordVisitor,
   type IdEqual,
   type IdIn,
+  type JsonContains,
   type JsonEmpty,
   type JsonEqual,
+  type LongTextEqual,
   type NumberEmpty,
   type NumberEqual,
   type NumberGT,
@@ -44,6 +44,7 @@ import {
   type StringMin,
   type StringStartsWith,
   type TableDo,
+  type UrlEqual,
   type UserEmpty,
   type UserEqual,
 } from "@undb/table"
@@ -190,6 +191,10 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
   }
   numberEmpty(spec: NumberEmpty): void {
     const cond = this.eb.eb(this.getFieldId(spec), "is", null)
+    this.addCond(cond)
+  }
+  durationEqual(s: DurationEqual): void {
+    const cond = this.eb.eb(this.getFieldId(s), "=", s.value)
     this.addCond(cond)
   }
   selectEqual(spec: SelectEqual): void {

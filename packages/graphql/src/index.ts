@@ -107,6 +107,7 @@ export class Graphql {
         json
         checkbox
         user
+        duration
       }
 
       type Field {

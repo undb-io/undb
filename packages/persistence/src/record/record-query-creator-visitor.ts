@@ -1,14 +1,15 @@
 import {
-  ButtonField,
-  CurrencyField,
-  EmailField,
   ID_TYPE,
   type AttachmentField,
   type AutoIncrementField,
+  type ButtonField,
   type CheckboxField,
   type CreatedAtField,
   type CreatedByField,
+  type CurrencyField,
   type DateField,
+  type DurationField,
+  type EmailField,
   type Field,
   type IFieldVisitor,
   type IdField,
@@ -82,6 +83,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
   json(field: JsonField): void {}
   longText(field: LongTextField): void {}
   button(field: ButtonField): void {}
+  duration(field: DurationField): void {}
   user(field: UserField): void {
     if (field.isMultiple) {
       const usersTable = getTableName(users)

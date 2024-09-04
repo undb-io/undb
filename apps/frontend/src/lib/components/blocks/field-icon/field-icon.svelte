@@ -26,6 +26,7 @@
     FolderIcon,
     DollarSignIcon,
     MousePointerClickIcon,
+    TimerIcon,
   } from "lucide-svelte"
 
   export let type: FieldType
@@ -54,6 +55,7 @@
     checkbox: SquareCheckIcon,
     user: field?.type === "user" && field.isMultiple ? UsersIcon : UserIcon,
     button: MousePointerClickIcon,
+    duration: TimerIcon,
   }
 </script>
 

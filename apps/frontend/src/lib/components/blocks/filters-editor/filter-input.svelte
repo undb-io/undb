@@ -8,6 +8,7 @@
     type ICreatedByFieldConditionOp,
     type ICurrencyFieldConditionOp,
     type IDateFieldConditionOp,
+    type IDurationFieldConditionOp,
     type IEmailFieldConditionOp,
     type IIdFieldConditionOp,
     type IJsonFieldConditionOp,
@@ -185,6 +186,13 @@
     lte: NumberInput,
   }
 
+  const duration: Record<IDurationFieldConditionOp, ComponentType | null> = {
+    eq: NumberInput,
+    neq: NumberInput,
+    is_empty: null,
+    is_not_empty: null,
+  }
+
   const id: Record<IIdFieldConditionOp, ComponentType | null> = {
     eq: IdFilterInput,
     neq: IdFilterInput,
@@ -268,6 +276,7 @@
     json,
     url,
     longText,
+    duration,
   }
 </script>
 
