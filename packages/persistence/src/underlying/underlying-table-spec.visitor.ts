@@ -41,6 +41,7 @@ import type {
   WithFormIdSpecification,
   WithFormSpecification,
   WithNewFormSpecification,
+  WithoutFormSpecification,
 } from "@undb/table/src/specifications/table-forms.specification"
 import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
 import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, CreateTableBuilder, sql } from "kysely"
@@ -194,6 +195,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
   withForm(views: WithFormSpecification): void {}
   withForms(views: TableFormsSpecification): void {}
   withNewForm(views: WithNewFormSpecification): void {}
+  withoutForm(spec: WithoutFormSpecification): void {}
   withId(id: TableIdSpecification): void {}
   withName(name: TableNameSpecification): void {}
   withSchema(schema: TableSchemaSpecification): void {}

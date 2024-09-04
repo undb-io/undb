@@ -18,6 +18,7 @@ import { DeleteInvitationCommandHandler } from "./delete-invitation.command-hand
 import { DeleteRecordCommandHandler } from "./delete-record.command-handler"
 import { DeleteSpaceCommandHandler } from "./delete-space.command-handler"
 import { DeleteTableFieldCommandHandler } from "./delete-table-field.command-handler"
+import { DeleteFormCommandHandler } from "./delete-table-form.command-handler"
 import { DeleteTableCommandHandler } from "./delete-table.command-handler"
 import { DeleteViewCommandHandler } from "./delete-view.command-handler"
 import { DeleteWebhookCommandHandler } from "./delete-webhook.command-handler"
@@ -98,4 +99,5 @@ export const commandHandlers = [
   DuplicateBaseCommandHandler,
   DeleteBaseCommandHandler,
   TriggerRecordButtonCommandHandler,
+  DeleteFormCommandHandler,
 ]

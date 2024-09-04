@@ -10,6 +10,9 @@
   import { invalidate } from "$app/navigation"
   import { Checkbox } from "$lib/components/ui/checkbox/index.js"
   import { Label } from "$lib/components/ui/label/index.js"
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
+  import { EllipsisIcon } from "lucide-svelte"
+  import * as AlertDialog from "$lib/components/ui/alert-dialog"
 
   const table = getTable()
   export let form: FormVO
@@ -26,6 +29,7 @@
     mutationKey: ["table", $table.id.value, "setForm"],
     mutationFn: trpc.table.form.set.mutate,
     async onSuccess() {
+      await goto(`/t/${$table.id.value}`)
       await invalidate(`table:${$table.id.value}`)
     },
   })
@@ -37,10 +41,45 @@
       form: form.toJSON(),
     })
   }
+
+  const deleteFormMutation = createMutation({
+    mutationKey: ["table", $table.id.value, "deleteForm"],
+    mutationFn: trpc.table.form.delete.mutate,
+    async onSuccess() {
+      await invalidate(`table:${$table.id.value}`)
+    },
+  })
+
+  const deleteForm = async () => {
+    await $deleteFormMutation.mutateAsync({
+      tableId: $table.id.value,
+      id: form.id,
+    })
+    confirmDelete = false
+  }
+
+  let confirmDelete = false
 </script>
 
 <div class="space-y-4 p-4">
-  <h3 class="font-semibold">Form Setting</h3>
+  <div class="flex items-center justify-between">
+    <h3 class="font-semibold">Form Setting</h3>
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger>
+        <EllipsisIcon class="text-muted-foreground h-4 w-4" />
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content>
+        <DropdownMenu.Group>
+          <DropdownMenu.Item
+            on:click={() => (confirmDelete = true)}
+            class="hover:text-500 flex items-center text-xs text-red-500 transition-colors hover:bg-red-100"
+          >
+            Delete form
+          </DropdownMenu.Item>
+        </DropdownMenu.Group>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
+  </div>
 
   <div class="space-y-2">
     <p class="text-muted-foreground">Background color</p>
@@ -90,3 +129,16 @@
     </div>
   </div>
 </div>
+
+<AlertDialog.Root bind:open={confirmDelete}>
+  <AlertDialog.Content>
+    <AlertDialog.Header>
+      <AlertDialog.Title>Delete form: {form.name}?</AlertDialog.Title>
+      <AlertDialog.Description>Form will be deleted permanently.</AlertDialog.Description>
+    </AlertDialog.Header>
+    <AlertDialog.Footer>
+      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Action on:click={deleteForm}>Continue</AlertDialog.Action>
+    </AlertDialog.Footer>
+  </AlertDialog.Content>
+</AlertDialog.Root>

@@ -30,6 +30,7 @@ import type {
   WithViewOption,
   WithViewSort,
   WithoutFieldSpecification,
+  WithoutFormSpecification,
   WithoutView,
 } from "@undb/table"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
@@ -210,6 +211,16 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
       .compile()
 
     this.addSql(sql)
+  }
+  withoutForm(spec: WithoutFormSpecification): void {
+    this.setData(tables.forms.name, this.table.forms ? json(this.table.forms?.toJSON()) : null)
+
+    const deleteQuery = this.qb
+      .deleteFrom("undb_table_id_mapping")
+      .where((eb) => eb.eb("subject_id", "=", spec.formId))
+      .compile()
+
+    this.addSql(deleteQuery)
   }
   withForm(views: WithFormSpecification): void {
     this.setData(tables.forms.name, this.table.forms ? json(this.table.forms?.toJSON()) : null)
