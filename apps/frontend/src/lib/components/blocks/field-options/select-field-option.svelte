@@ -55,7 +55,7 @@
     }
   }
 
-  $: option?.options, handleDefaultValue()
+  // $: option?.options, handleDefaultValue()
 
   const addOption = () => {
     option.options = [
@@ -77,6 +77,7 @@
 
   const removeOption = (id: string) => {
     option.options = option.options.filter((o) => o.id !== id)
+    handleDefaultValue()
   }
 
   let initialMultiple = !isNew && field?.isMultiple
@@ -143,6 +144,7 @@
               defaultValue = [defaultValue]
             }
           }
+          handleDefaultValue()
         }}
       />
       <Label for="single" class="text-xs font-normal">Allow adding multiple options</Label>
