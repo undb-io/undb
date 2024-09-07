@@ -1,6 +1,8 @@
 import { trpc } from "$lib/trpc/client"
-import { RecordDO, TableDo, type Records } from "@undb/table"
+import type { Option } from "@undb/domain"
+import { RecordComositeSpecification, RecordDO, TableDo, type IRecordValues, type Records } from "@undb/table"
 import { derived, writable } from "svelte/store"
+import { queryParam, ssp } from "sveltekit-search-params"
 
 type RecordStore = {
   lastUpdatedAt: number
@@ -33,6 +35,26 @@ export const createRecordsStore = () => {
         ids,
         records,
       }
+    })
+  }
+
+  const upsertRecords = (records: Records) => {
+    store.update((store) => {
+      for (const record of records) {
+        const id = record.id.value
+        if (store.records.has(id)) {
+          store.records.set(id, record)
+          data.update((data) => data.map((d) => (d.id === id ? record.flatten() : d)))
+        } else {
+          store.records.set(id, record)
+          store.ids.push(id)
+          data.update((data) => {
+            data.push(record.flatten())
+            return data
+          })
+        }
+      }
+      return store
     })
   }
 
@@ -83,12 +105,21 @@ export const createRecordsStore = () => {
     setRecord(r)
   }
 
+  const getRecords = (spec: Option<RecordComositeSpecification>) =>
+    derived(store, ($store) => {
+      return [...$store.records.values()].filter((record) =>
+        spec.isSome() ? spec.unwrap().isSatisfiedBy(record) : true,
+      )
+    })
+
   return {
     set,
     setRecord,
     setRecordValue,
     hasRecord,
     count,
+    upsertRecords,
+    getRecords,
 
     subscribe,
 
@@ -99,3 +130,5 @@ export const createRecordsStore = () => {
 }
 
 export const recordsStore = createRecordsStore()
+
+export const defaultRecordValues = queryParam<IRecordValues>("rv", ssp.object())

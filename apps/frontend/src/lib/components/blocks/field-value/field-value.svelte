@@ -17,6 +17,8 @@
   import LongTextField from "./long-text-field.svelte"
   import CurrencyField from "./currency-field.svelte"
   import DurationField from "./duration-field.svelte"
+  import PercentageField from "./percentage-field.svelte"
+  import ButtonControl from "../field-control/button-control.svelte"
 
   export let type: FieldType
   export let value: any
@@ -49,6 +51,8 @@
     checkbox: CheckboxField,
     user: UserField,
     duration: DurationField,
+    percentage: PercentageField,
+    button: ButtonControl,
   }
 </script>
 

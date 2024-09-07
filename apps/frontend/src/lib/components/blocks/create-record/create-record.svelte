@@ -11,6 +11,7 @@
   import { FormIdVO, RecordDO, RecordIdVO, TableDo } from "@undb/table"
   import autoAnimate from "@formkit/auto-animate"
   import { cn } from "$lib/utils"
+  import { defaultRecordValues, recordsStore } from "$lib/store/records.store"
 
   // beforeNavigate(({ cancel }) => {
   //   if ($tainted) {
@@ -42,6 +43,7 @@
         })
         toast.success("Record has been created!")
         onSuccess?.(data)
+        recordsStore.invalidateRecord($table, data)
       },
       onError: (error: Error) => {
         toast.error(error.message)
@@ -56,7 +58,10 @@
     })
   }
 
-  const defaultValue = $table.getDefaultValues(formId ? new FormIdVO(formId) : undefined)
+  $: defaultValue = $table.getDefaultValues(
+    formId ? new FormIdVO(formId) : undefined,
+    $defaultRecordValues ?? undefined,
+  )
 
   const form = superForm(defaults(defaultValue, zodClient(schema)), {
     SPA: true,
@@ -78,6 +83,8 @@
   })
 
   const { form: formData, enhance, allErrors, tainted, errors, validateForm } = form
+
+  $: defaultValue, form.reset({ data: defaultValue })
 
   $: dirty = !!$tainted
   $: disabled = !!$allErrors.length

@@ -3,6 +3,7 @@ import type { Field } from "../schema"
 import type { IViewsDTO } from "./dto"
 import { GridView } from "./view/variants/grid-view.vo"
 import { ViewIdVo } from "./view/view-id.vo"
+import { ViewFactory } from "./view/view.factory"
 import type { View } from "./view/view.type"
 
 export class Views extends ValueObject {
@@ -19,7 +20,7 @@ export class Views extends ValueObject {
   }
 
   static fromJSON(dto: IViewsDTO) {
-    const views = dto.map((view) => new GridView(view))
+    const views = dto.map((view) => ViewFactory.fromJSON(view))
     return new this(views)
   }
 
