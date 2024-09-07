@@ -9,6 +9,7 @@
 
   const table = getTable()
   export let viewId: Readable<string>
+  export let shareId: string
 
   $: view = $table.views.getViewById($viewId)
   $: fieldId = view.type === "kanban" ? view.field.into(undefined) : undefined
@@ -19,13 +20,13 @@
 {#if view.type === "kanban"}
   {#if field?.type === "select"}
     {#if field.isSingle}
-      <SelectKanbanView {view} />
+      <SelectKanbanView {view} {shareId} />
     {:else}
       <section class="flex h-full w-full items-center justify-center">
-        <SelectKanbanRequiresSingle {view} {field} />
+        <SelectKanbanRequiresSingle {view} {field} {shareId} />
       </section>
     {/if}
-  {:else}
+  {:else if !shareId}
     <section class="flex h-full w-full items-center justify-center">
       <SelectKanbanField {view} />
     </section>

@@ -24,8 +24,23 @@
   export let fieldId: string
   export let option: IOption
   export let readonly = false
+  export let shareId: string
 
   const getRecords = ({ pageParam = 1 }) => {
+    if (shareId) {
+      return trpc.shareData.records.query({
+        shareId,
+        filters: {
+          conjunction: "and",
+          children: [{ field: fieldId, op: "eq", value: option.id }],
+        },
+        pagination: {
+          page: pageParam,
+          limit: 20,
+        },
+      })
+    }
+
     return trpc.record.list.query({
       tableId,
       viewId,
@@ -64,27 +79,29 @@
   })
 
   onMount(() => {
-    new Sortable(laneElement, {
-      group: "shared",
-      animation: 150,
-      sort: false,
-      dataIdAttr: "data-record-id",
-      ghostClass: "bg-gray-100",
-      onEnd: (evt) => {
-        const recordId = evt.item.dataset.recordId
-        if (!recordId) return
-        const optionId = evt.to.dataset.optionId
-        if (!optionId) return
+    if (!shareId) {
+      new Sortable(laneElement, {
+        group: "shared",
+        animation: 150,
+        sort: false,
+        dataIdAttr: "data-record-id",
+        ghostClass: "bg-gray-100",
+        onEnd: (evt) => {
+          const recordId = evt.item.dataset.recordId
+          if (!recordId) return
+          const optionId = evt.to.dataset.optionId
+          if (!optionId) return
 
-        $updateRecord.mutate({
-          tableId,
-          id: recordId,
-          values: {
-            [fieldId]: optionId,
-          },
-        })
-      },
-    })
+          $updateRecord.mutate({
+            tableId,
+            id: recordId,
+            values: {
+              [fieldId]: optionId,
+            },
+          })
+        },
+      })
+    }
   })
 
   // @ts-ignore

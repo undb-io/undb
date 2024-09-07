@@ -1,6 +1,6 @@
 import { injectBaseQueryRepository, type IBaseDTO, type IBaseQueryRepository } from "@undb/base"
 import { inject, singleton } from "@undb/di"
-import { None, Option, Some, type PaginatedDTO } from "@undb/domain"
+import { None, Option, Some, type IPagination, type PaginatedDTO } from "@undb/domain"
 import {
   RecordIdVO,
   TableComositeSpecification,
@@ -20,6 +20,7 @@ import {
   type ITableDTO,
   type ITableQueryRepository,
   type ITableRepository,
+  type IViewFilterGroup,
   type SingleQueryArgs,
 } from "@undb/table"
 import { match } from "ts-pattern"
@@ -42,7 +43,15 @@ export interface IShareService {
   getBaseByShare(id: string): Promise<IBaseDTO>
   getTableByShare(id: string): Promise<ITableDTO>
   getTableByShareBase(shareId: string, tableId: string): Promise<ITableDTO>
-  getShareRecords(shareId: string, tableId?: string, viewId?: string, q?: string): Promise<PaginatedDTO<IRecordDTO>>
+  getShareRecords(
+    shareId: string,
+    tableId?: string,
+    viewId?: string,
+    q?: string,
+    filters?: IViewFilterGroup,
+    select?: string[],
+    pagination?: IPagination,
+  ): Promise<PaginatedDTO<IRecordDTO>>
   getShareRecordById(id: string, recordId: string, tableId?: string, viewId?: string): Promise<Option<IRecordDTO>>
 }
 
@@ -145,12 +154,15 @@ export class ShareService implements IShareService {
     tableId?: string,
     viewId?: string,
     q?: string,
+    filters?: IViewFilterGroup,
+    select?: string[],
+    pagination?: IPagination,
   ): Promise<PaginatedDTO<IRecordDTO>> {
     const share = (await this.repo.findOneById(shareId)).expect("share not found")
 
     const getData = async (table: TableDo, viewId?: string) => {
       const view = table.views.getViewById(viewId)
-      const query = buildQuery(table, { viewId: view.id.value, q })
+      const query = buildQuery(table, { viewId: view.id.value, q, filters, select, pagination })
       const records = await this.recordRepo.find(table, view, query)
 
       return {

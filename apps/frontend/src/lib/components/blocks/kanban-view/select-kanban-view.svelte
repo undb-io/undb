@@ -25,6 +25,7 @@
   const table = getTable()
   export let view: KanbanView
   export let readonly = false
+  export let shareId: string
 
   let fieldId = view.field.unwrapUnchecked()!
   let field = $table.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined) as SelectField
@@ -41,35 +42,40 @@
   })
 
   onMount(() => {
-    new Sortable(lanesContainer, {
-      animation: 150,
-      ghostClass: "bg-gray-200",
-      handle: ".lane-handle", // 添加一个句柄类，用于拖拽
-      onEnd: (evt) => {
-        const { oldIndex, newIndex } = evt
-        if (oldIndex !== newIndex && isNumber(oldIndex) && isNumber(newIndex)) {
-          options = arrayMoveImmutable(options, oldIndex, newIndex)
-          $updateFieldMudation.mutate({
-            tableId: $table.id.value,
-            field: {
-              id: fieldId,
-              name: field.name.value,
-              type: "select",
-              option: {
-                ...field.option,
-                options: options,
-              },
-            } satisfies IUpdateSelectFieldDTO,
-          })
-        }
-      },
-    })
+    if (!shareId) {
+      new Sortable(lanesContainer, {
+        animation: 150,
+        ghostClass: "bg-gray-200",
+        handle: ".lane-handle", // 添加一个句柄类，用于拖拽
+        onEnd: (evt) => {
+          const { oldIndex, newIndex } = evt
+          if (oldIndex !== newIndex && isNumber(oldIndex) && isNumber(newIndex)) {
+            options = arrayMoveImmutable(options, oldIndex, newIndex)
+            $updateFieldMudation.mutate({
+              tableId: $table.id.value,
+              field: {
+                id: fieldId,
+                name: field.name.value,
+                type: "select",
+                option: {
+                  ...field.option,
+                  options: options,
+                },
+              } satisfies IUpdateSelectFieldDTO,
+            })
+          }
+        },
+      })
+    }
   })
 
   let name: string
   let color: IColors
 
   const createOption = () => {
+    if (shareId) {
+      return
+    }
     options = [...options, { id: OptionIdVo.create().value, name, color }]
     $updateFieldMudation.mutate({
       tableId: $table.id.value,
@@ -93,33 +99,37 @@
         class="kanban-lane flex w-[350px] shrink-0 flex-col space-y-2 rounded-sm px-2 pt-2 transition-all"
       >
         <div class="flex w-full items-center gap-1">
-          <div class="lane-handle cursor-move">
-            <GripVerticalIcon class="text-muted-foreground h-4 w-4" />
-          </div>
+          {#if !shareId}
+            <div class="lane-handle cursor-move">
+              <GripVerticalIcon class="text-muted-foreground h-4 w-4" />
+            </div>
+          {/if}
           <Option {option} />
         </div>
-        <SelectKanbanLane {readonly} tableId={$table.id.value} viewId={view.id.value} {fieldId} {option} />
+        <SelectKanbanLane {readonly} tableId={$table.id.value} viewId={view.id.value} {fieldId} {option} {shareId} />
       </div>
     {/each}
-    <div class="flex w-[350px] shrink-0 flex-col space-y-2 rounded-sm px-2 pt-2 transition-all">
-      <Popover.Root>
-        <Popover.Trigger asChild let:builder>
-          <Button variant="outline" size="sm" class="w-full" builders={[builder]}>
-            <PlusIcon class="h-4 w-4" />
-            Create New Option
-          </Button>
-        </Popover.Trigger>
-        <Popover.Content sameWidth>
-          <OptionEditor bind:name bind:color />
-          <Button
-            disabled={!name || !color || $updateFieldMudation.isPending}
-            class="mt-2 w-full"
-            on:click={createOption}
-          >
-            Create
-          </Button>
-        </Popover.Content>
-      </Popover.Root>
-    </div>
+    {#if !shareId}
+      <div class="flex w-[350px] shrink-0 flex-col space-y-2 rounded-sm px-2 pt-2 transition-all">
+        <Popover.Root>
+          <Popover.Trigger asChild let:builder>
+            <Button variant="outline" size="sm" class="w-full" builders={[builder]}>
+              <PlusIcon class="h-4 w-4" />
+              Create New Option
+            </Button>
+          </Popover.Trigger>
+          <Popover.Content sameWidth>
+            <OptionEditor bind:name bind:color />
+            <Button
+              disabled={!name || !color || $updateFieldMudation.isPending}
+              class="mt-2 w-full"
+              on:click={createOption}
+            >
+              Create
+            </Button>
+          </Popover.Content>
+        </Popover.Root>
+      </div>
+    {/if}
   </div>
 </div>

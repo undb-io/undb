@@ -33,7 +33,14 @@ query GetViewShareData($shareId: ID!) {
     views {
       id
       name
+      type
       fields
+      option {
+        showSystemFields
+      }
+      kanban {
+        field
+      }
     }
     schema {
       constraint
