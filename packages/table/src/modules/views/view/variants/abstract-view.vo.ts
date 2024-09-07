@@ -13,6 +13,7 @@ import {
   WithViewSort,
   WithoutView,
 } from "../../../../specifications/table-view.specification"
+import { tableId } from "../../../../table-id.vo"
 import type { Field } from "../../../schema"
 import type { IViewDTO } from "../dto"
 import { ViewAggregateVO, viewAggregate, type IViewAggregate } from "../view-aggregate/view-aggregate.vo"
@@ -23,7 +24,7 @@ import { ViewIdVo, viewId, type ViewId } from "../view-id.vo"
 import { ViewNameVo, viewName } from "../view-name.vo"
 import { ViewOption, viewOption, type IViewOption } from "../view-option.vo"
 import { ViewSort, viewSort, type IViewSort } from "../view-sort"
-import type { ViewType } from "../view.type"
+import type { View, ViewType } from "../view.type"
 
 export const createBaseViewDTO = z.object({
   id: viewId.optional(),
@@ -32,6 +33,12 @@ export const createBaseViewDTO = z.object({
 })
 
 export type ICreateBaseViewDTO = z.infer<typeof createBaseViewDTO>
+
+export const updateBaseViewDTO = z.object({
+  tableId,
+  viewId: viewId.optional(),
+  name: viewName,
+})
 
 export const baseViewDTO = z.object({
   id: viewId,
@@ -109,7 +116,7 @@ export abstract class AbstractView {
   abstract $duplicate(): Option<WithNewView>
 
   $delete(): Option<WithoutView> {
-    return Some(new WithoutView(this))
+    return Some(new WithoutView(this as View))
   }
 
   setFilter(filter: IRootViewFilter) {

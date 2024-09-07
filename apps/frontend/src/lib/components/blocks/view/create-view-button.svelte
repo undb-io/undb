@@ -14,6 +14,8 @@
   import { Input } from "$lib/components/ui/input"
   import { cn } from "$lib/utils"
   import { hasPermission } from "$lib/store/space-member.store"
+  import { LoaderCircleIcon } from "lucide-svelte"
+  import ViewTypePicker from "./view-type-picker.svelte"
 
   let open = false
 
@@ -23,9 +25,11 @@
   const createViewMutation = createMutation({
     mutationFn: trpc.table.view.create.mutate,
     mutationKey: ["table", tableId, "createView"],
-    onSuccess() {
+    async onSuccess() {
+      viewNames = [...viewNames, $formData.name]
       toast.success("created view successfully")
-      invalidate(`table:${tableId}`)
+      reset()
+      await invalidate(`table:${tableId}`)
     },
     onError(e) {
       toast.error(e.message)
@@ -57,7 +61,7 @@
     },
   )
 
-  const { enhance, form: formData } = form
+  const { enhance, form: formData, reset } = form
 </script>
 
 {#if $hasPermission("table:update")}
@@ -81,7 +85,20 @@
           <Form.FieldErrors />
         </Form.Field>
 
-        <Form.FormButton class="w-full">Create</Form.FormButton>
+        <Form.Field {form} name="type">
+          <Form.Control let:attrs>
+            <ViewTypePicker {...attrs} bind:value={$formData.type} />
+          </Form.Control>
+          <Form.Description />
+          <Form.FieldErrors />
+        </Form.Field>
+
+        <Form.FormButton disabled={$createViewMutation.isPending} class="w-full">
+          {#if $createViewMutation.isPending}
+            <LoaderCircleIcon class="mr-2 h-4 w-4" />
+          {/if}
+          Create</Form.FormButton
+        >
       </form>
     </Popover.Content>
   </Popover.Root>

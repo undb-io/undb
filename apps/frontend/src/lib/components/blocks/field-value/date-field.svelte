@@ -1,14 +1,17 @@
 <script lang="ts">
-  import { isDate } from "radash"
+  import { cn } from "$lib/utils"
+  import type { CreatedAtField, DateField, UpdatedAtField } from "@undb/table"
 
   export let value: string | Date | undefined = undefined
   export let placeholder: string | undefined = undefined
 
-  $: internalValue = isDate(value) ? value.toISOString() : value
+  export let field: DateField | CreatedAtField | UpdatedAtField
+  let formatter = field.formatter
+
+  $: formattedValue = value ? formatter(value) : ""
+  $: displayValue = formattedValue ?? placeholder ?? ""
 </script>
 
-{#if internalValue}
-  <div class={$$restProps.class}>{internalValue || ""}</div>
-{:else}
-  <div class={$$restProps.class}>{placeholder}</div>
+{#if displayValue}
+  <div class={cn("text-muted-foreground text-sm", $$restProps.class)}>{displayValue}</div>
 {/if}

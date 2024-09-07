@@ -1,5 +1,5 @@
 import type { ISpaceMemberRole } from "@undb/authz"
-import type { FieldType,IFieldAggregate,IFieldMacro,IOpType,IRollupFn } from "@undb/table"
+import type { FieldType,IFieldAggregate,IFieldMacro,IOpType,IRollupFn,ViewType } from "@undb/table"
 import type { BaseTranslation } from "../i18n-types.js"
 
 const ops: Record<IOpType, string> = {
@@ -108,6 +108,11 @@ const macros: Record<IFieldMacro, string> = {
   "@me": "Current User"
 }
 
+const viewTypes: Record<ViewType, string> = {
+  grid: "Grid",
+  kanban: "Kanban",
+}
+
 const en = {
   table: {
     ops,
@@ -115,7 +120,8 @@ const en = {
     rollupFns,
     aggregateFns,
     workspaceRoles,
-    macros
+    macros,
+    viewTypes,
   },
 } satisfies BaseTranslation
 

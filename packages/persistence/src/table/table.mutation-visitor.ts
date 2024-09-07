@@ -34,7 +34,7 @@ import type {
   WithoutView,
 } from "@undb/table"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
-import { json, type IQueryBuilder } from "../qb"
+import { json,type IQueryBuilder } from "../qb"
 import { tables } from "../tables"
 
 export class TableMutationVisitor extends AbstractQBMutationVisitor implements ITableSpecVisitor {

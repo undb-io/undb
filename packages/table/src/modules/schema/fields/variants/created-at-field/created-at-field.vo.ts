@@ -1,5 +1,6 @@
 import { Option, WontImplementException } from "@undb/domain"
 import { z } from "@undb/zod"
+import { format } from "date-fns/fp"
 import type { RecordComositeSpecification } from "../../../.."
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
@@ -44,6 +45,10 @@ export class CreatedAtField extends AbstractField<CreatedAtFieldValue> {
 
   override get valueSchema() {
     return z.string().date()
+  }
+
+  get formatter() {
+    return format("yyyy-MM-dd HH:mm:ss")
   }
 
   override accept(visitor: IFieldVisitor): void {

@@ -129,10 +129,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       .where(this.helper.handleWhere(table, spec))
       .execute()
 
-    const { total } = await this.qb
-      .selectFrom(t.name)
-      .select((eb) => eb.fn.countAll().as("total"))
-      .executeTakeFirstOrThrow()
+    const total = await this.countWhere(table, Some({ filter: spec }))
 
     const records = result.map((r) => getRecordDTOFromEntity(table, r))
     return { values: records, total: Number(total) }

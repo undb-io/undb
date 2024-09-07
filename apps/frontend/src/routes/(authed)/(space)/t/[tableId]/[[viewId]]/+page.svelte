@@ -2,7 +2,6 @@
   import CreateRecordSheet from "$lib/components/blocks/create-record/create-record-sheet.svelte"
   import ConfirmDeleteRecord from "$lib/components/blocks/delete-record/confirm-delete-record.svelte"
   import ConfirmDuplicateRecord from "$lib/components/blocks/duplicate-record/confirm-duplicate-record.svelte"
-  import GridView from "$lib/components/blocks/grid-view/grid-view.svelte"
   import { shortcut } from "@svelte-put/shortcut"
   import TableHeader from "$lib/components/blocks/table-header/table-header.svelte"
   import Forms from "$lib/components/blocks/forms/forms.svelte"
@@ -19,6 +18,7 @@
   import UpdateTableDialog from "$lib/components/blocks/update-table/update-table-dialog.svelte"
   import DeleteTableDialog from "$lib/components/blocks/delete-table/delete-table-dialog.svelte"
   import TableRecordDetailSheet from "$lib/components/blocks/record-detail/table-record-detail-sheet.svelte"
+  import View from "$lib/components/blocks/view/view.svelte"
 
   function handleR() {
     toggleModal(CREATE_RECORD_MODAL)
@@ -34,9 +34,9 @@
 <TableHeader />
 
 {#key $table.id.value}
-  <main class="h-full flex-1 overflow-auto">
+  <main class="flex h-full flex-1 flex-col overflow-auto">
     {#if $isDataTab}
-      <GridView {viewId} />
+      <View {viewId} />
     {:else if $isFormTab}
       <Forms />
     {:else if $isAuthTab}

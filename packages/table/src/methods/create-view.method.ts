@@ -1,12 +1,13 @@
 import { applyRules, Some, type Option } from "@undb/domain"
 import { ViewCreatedEvent } from "../events/view-created.event"
-import { GridView, type ICreateViewDTO } from "../modules"
+import { type ICreateViewDTO } from "../modules"
+import { ViewFactory } from "../modules/views/view/view.factory"
 import { ViewNameShouldBeUnique } from "../rules/view-name-should-be-unique.rule"
 import { WithNewView, type TableComositeSpecification } from "../specifications"
 import type { TableDo } from "../table.do"
 
 export function createViewMethod(this: TableDo, dto: ICreateViewDTO): Option<TableComositeSpecification> {
-  const view = GridView.create(dto)
+  const view = ViewFactory.create(dto)
   const spec = new WithNewView(view)
 
   spec.mutate(this)

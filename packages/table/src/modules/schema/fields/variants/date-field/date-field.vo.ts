@@ -1,5 +1,6 @@
 import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
+import { format } from "date-fns/fp"
 import { isString } from "radash"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import { fieldId, FieldIdVo } from "../../field-id.vo"
@@ -44,6 +45,10 @@ export class DateField extends AbstractField<DateFieldValue> {
 
   static create(dto: ICreateDateFieldDTO) {
     return new DateField({ ...dto, id: FieldIdVo.create().value })
+  }
+
+  get formatter() {
+    return format("yyyy-MM-dd")
   }
 
   override type = DATE_TYPE

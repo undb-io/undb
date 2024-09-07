@@ -378,6 +378,16 @@ type RootTranslation = {
 			 */
 			'@me': string
 		}
+		viewTypes: {
+			/**
+			 * G​r​i​d
+			 */
+			grid: string
+			/**
+			 * K​a​n​b​a​n
+			 */
+			kanban: string
+		}
 	}
 }
 
@@ -746,6 +756,16 @@ export type TranslationFunctions = {
 			 * Current User
 			 */
 			'@me': () => LocalizedString
+		}
+		viewTypes: {
+			/**
+			 * Grid
+			 */
+			grid: () => LocalizedString
+			/**
+			 * Kanban
+			 */
+			kanban: () => LocalizedString
 		}
 	}
 }

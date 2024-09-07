@@ -17,6 +17,7 @@
   import Button from "$lib/components/ui/button/button.svelte"
   import { preferences } from "$lib/store/persisted.store"
   import { cn } from "$lib/utils"
+  import { recordsStore } from "$lib/store/records.store"
 
   export let readonly = false
 
@@ -51,6 +52,7 @@
       onSuccess()
       await client.invalidateQueries({ queryKey: [record.id.value, "get"] })
       reset({})
+      await recordsStore.invalidateRecord($table, record.id.value)
     },
     onError: (error) => {
       toast.error(error.message)
@@ -138,7 +140,7 @@
               value={values[field.id.value]}
               type={field.type}
               displayValue={displayValues[field.id.value]}
-              class="min-h-9 text-xs"
+              class="flex min-h-9 items-center text-xs"
             />
           {:else}
             <FieldControl
