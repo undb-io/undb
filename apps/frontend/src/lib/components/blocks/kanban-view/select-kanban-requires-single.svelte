@@ -5,6 +5,7 @@
 
   export let field: SelectField
   export let view: KanbanView
+  export let shareId: string
 </script>
 
 <Alert.Root class="max-w-prose space-y-4">
@@ -13,5 +14,7 @@
     You are using a select field with multiple options. Please select a single option field.
   </Alert.Description>
 
-  <SelectKanbanFieldForm {view} />
+  {#if !shareId}
+    <SelectKanbanFieldForm {view} />
+  {/if}
 </Alert.Root>
