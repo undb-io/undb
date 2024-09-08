@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-64
+
+
+### 🏡 Chore
+
+- Release ([53c658e](https://github.com/undb-io/undb/commit/53c658e))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-63
 
 ## v1.0.0-62
