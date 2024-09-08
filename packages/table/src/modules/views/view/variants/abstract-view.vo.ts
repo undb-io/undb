@@ -1,6 +1,6 @@
 import { None, Option, Some, and } from "@undb/domain"
 import { z } from "@undb/zod"
-import type { IUpdateViewDTO } from "../../../../dto"
+import type { IDuplicateViewDTO, IUpdateViewDTO } from "../../../../dto"
 import type { TableComositeSpecification } from "../../../../specifications"
 import {
   WithNewView,
@@ -113,7 +113,7 @@ export abstract class AbstractView {
   }
 
   abstract $update(input: IUpdateViewDTO): Option<WithView>
-  abstract $duplicate(): Option<WithNewView>
+  abstract $duplicate(dto: IDuplicateViewDTO): Option<WithNewView>
 
   $delete(): Option<WithoutView> {
     return Some(new WithoutView(this as View))

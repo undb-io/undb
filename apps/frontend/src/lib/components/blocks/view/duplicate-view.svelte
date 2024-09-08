@@ -9,6 +9,7 @@
   import { Input } from "$lib/components/ui/input"
   import { toggleModal, DUPLICATE_VIEW } from "$lib/store/modal.store"
   import { getNextName } from "@undb/utils"
+  import { toast } from "svelte-sonner"
 
   const table = getTable()
 
@@ -17,6 +18,10 @@
     mutationFn: trpc.table.view.duplicate.mutate,
     onSuccess(data, variables, context) {
       toggleModal(DUPLICATE_VIEW)
+      toast.success("View duplicated")
+    },
+    onError(error, variables, context) {
+      toast.error(error.message)
     },
   })
 
@@ -61,6 +66,6 @@
       <Form.FieldErrors />
     </Form.Field>
 
-    <Form.FormButton class="w-full">Submit</Form.FormButton>
+    <Form.FormButton disabled={$duplicateViewMutation.isPending} class="w-full">Submit</Form.FormButton>
   </form>
 </div>

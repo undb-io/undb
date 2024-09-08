@@ -5,13 +5,13 @@
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest",
-    "drizzle-kit": "^0.24.1"
+    "drizzle-kit": "^0.24.2"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@libsql/client": "^0.9.0",
+    "@libsql/client": "^0.10.0",
     "@libsql/kysely-libsql": "^0.4.1",
     "@undb/audit": "workspace:*",
     "@undb/authz": "workspace:*",

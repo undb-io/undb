@@ -10,7 +10,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@t3-oss/env-core": "^0.11.0",
+    "@t3-oss/env-core": "^0.11.1",
     "@undb/zod": "workspace:*"
   }
 }

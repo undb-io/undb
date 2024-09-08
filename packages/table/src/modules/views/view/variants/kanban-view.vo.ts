@@ -1,5 +1,6 @@
 import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
+import type { IDuplicateViewDTO } from "../../../../dto/duplicate-view.dto"
 import { WithNewView, WithView } from "../../../../specifications/table-view.specification"
 import { fieldId } from "../../../schema"
 import { ViewIdVo } from "../view-id.vo"
@@ -61,19 +62,20 @@ export class KanbanView extends AbstractView {
       name: input.name,
       id: this.id.value,
       type: KANBAN_TYPE,
-      kanban: input.kanban,
+      kanban: input.kanban ?? this.kanban.into(undefined),
     })
 
     return Some(new WithView(this, view))
   }
 
-  override $duplicate(): Option<WithNewView> {
+  override $duplicate(dto: IDuplicateViewDTO): Option<WithNewView> {
     const json = this.toJSON()
 
     return Some(
       new WithNewView(
         new KanbanView({
           ...json,
+          name: dto.name,
           kanban: this.kanban.into(undefined),
           isDefault: false,
           id: ViewIdVo.create().value,

@@ -8,6 +8,7 @@
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
   import { toggleModal, UPDATE_VIEW } from "$lib/store/modal.store"
+  import { toast } from "svelte-sonner"
 
   const table = getTable()
 
@@ -16,6 +17,10 @@
     mutationFn: trpc.table.view.update.mutate,
     onSuccess(data, variables, context) {
       toggleModal(UPDATE_VIEW)
+      toast.success("View updated")
+    },
+    onError(error, variables, context) {
+      toast.error(error.message)
     },
   })
 
@@ -26,6 +31,7 @@
       {
         tableId: $table.id.value,
         viewId: $viewId,
+        type: view.type,
         name: view.name.value,
       },
       zodClient(updateViewCommand),
@@ -37,7 +43,10 @@
       resetForm: false,
       invalidateAll: true,
       onUpdate(event) {
-        if (!event.form.valid) return
+        if (!event.form.valid) {
+          console.log(event.form.errors)
+          return
+        }
 
         $updateViewMutation.mutate(event.form.data)
       },
@@ -57,6 +66,6 @@
       <Form.FieldErrors />
     </Form.Field>
 
-    <Form.FormButton class="w-full">Submit</Form.FormButton>
+    <Form.FormButton disabled={$updateViewMutation.isPending} class="w-full">Submit</Form.FormButton>
   </form>
 </div>
