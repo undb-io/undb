@@ -49,6 +49,7 @@ import type { IRecordQueryBuilder } from "../qb"
 import { ConversionContext } from "./conversion/conversion.context"
 import { ConversionFactory } from "./conversion/conversion.factory"
 import { JoinTable } from "./reference/join-table"
+import { UnderlyingTableFieldUpdatedVisitor } from "./undelying-table-field-updated.visitor"
 import { UnderlyingTable } from "./underlying-table"
 import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
 
@@ -126,6 +127,10 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
           this.addSql(query)
         }
       }
+
+      const fieldVisitor = new UnderlyingTableFieldUpdatedVisitor(this.qb, this.table, spec.previous)
+      spec.field.accept(fieldVisitor)
+      this.addSql(...fieldVisitor.sql)
     }
   }
   withDuplicatedTable(spec: DuplicatedTableSpecification): void {

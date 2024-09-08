@@ -86,7 +86,7 @@ export class Schema extends ValueObject<Field[]> {
 
   $updateField(dto: IUpdateFieldDTO) {
     const field = this.getFieldById(new FieldIdVo(dto.id)).expect("Field not found")
-    const updated = field.update(dto as any)
+    const updated = field.clone().update(dto as any)
     return new WithUpdatedFieldSpecification(field, updated)
   }
 
