@@ -10,6 +10,7 @@
   import { zodClient } from "sveltekit-superforms/adapters"
   import { Input } from "$lib/components/ui/input"
   import { hasPermission } from "$lib/store/space-member.store"
+  import { getNextName } from "@undb/utils"
 
   const table = getTable()
 
@@ -28,21 +29,29 @@
     },
   })
 
-  const form = superForm(defaults({ name: "form" }, zodClient(createFormDTO)), {
-    SPA: true,
-    dataType: "json",
-    validators: zodClient(createFormDTO),
-    resetForm: false,
-    invalidateAll: false,
-    onSubmit(input) {
-      validateForm({ update: true })
-    },
-    onUpdate(event) {
-      if (!event.form.valid) return
+  const form = superForm(
+    defaults(
+      {
+        name: getNextName($table.forms?.forms.map((f) => f.name) ?? [], "form"),
+      },
+      zodClient(createFormDTO),
+    ),
+    {
+      SPA: true,
+      dataType: "json",
+      validators: zodClient(createFormDTO),
+      resetForm: false,
+      invalidateAll: false,
+      onSubmit(input) {
+        validateForm({ update: true })
+      },
+      onUpdate(event) {
+        if (!event.form.valid) return
 
-      $createFormMutation.mutate({ tableId: $table.id.value, ...event.form.data })
+        $createFormMutation.mutate({ tableId: $table.id.value, ...event.form.data })
+      },
     },
-  })
+  )
 
   const { enhance, form: formData, validateForm } = form
 </script>
