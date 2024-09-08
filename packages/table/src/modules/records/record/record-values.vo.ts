@@ -12,7 +12,7 @@ export const recordValues = z.record(fieldId, z.any())
 
 export type IRecordValues = z.infer<typeof recordValues>
 
-type RecordValues = Record<IFieldId, FieldValue>
+export type RecordValues = Record<IFieldId, FieldValue>
 
 export class RecordValuesVO extends ValueObject {
   #map: Map<IFieldId, FieldValue>

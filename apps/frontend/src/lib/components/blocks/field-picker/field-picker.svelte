@@ -32,7 +32,7 @@
   let open = false
   export let value: string | undefined = undefined
   export let filter: ((field: IField) => boolean) | undefined = undefined
-  export let onValueChange: ((value: FieldType | undefined, prev: FieldType) => void) | undefined = undefined
+  export let onValueChange: ((value: string | undefined, prev: string | undefined) => void) | undefined = undefined
   export let placeholder = "Select field..."
 
   $: filteredFields = filter ? fields.filter(filter) : fields
@@ -87,14 +87,14 @@
         <div class="-mx-1 max-h-[300px] overflow-y-auto">
           {#each filteredFields as field}
             <Command.Item
-              value={field.value}
+              value={field.id}
               onSelect={(currentValue) => {
-                onValueChange?.(value, currentValue)
+                onValueChange?.(currentValue, value)
                 value = currentValue
                 closeAndFocusTrigger(ids.trigger)
               }}
             >
-              <Check class={cn("mr-2 h-4 w-4", value !== field.value && "text-transparent")} />
+              <Check class={cn("mr-2 h-4 w-4", value !== field.id && "text-transparent")} />
               <div class="flex items-center gap-2 text-xs">
                 <FieldIcon {field} type={field.type} class="h-3 w-3" />
                 <span>

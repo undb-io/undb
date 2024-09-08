@@ -284,7 +284,11 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     const fieldValue = new SelectFieldValue(spec.value)
     const value = fieldValue.getValue(field)
 
-    this.setData(spec.fieldId.value, Array.isArray(value) ? JSON.stringify(value) : value)
+    if (Array.isArray(value)) {
+      this.setData(spec.fieldId.value, value.length ? JSON.stringify(value) : null)
+    } else {
+      this.setData(spec.fieldId.value, value ?? null)
+    }
   }
   selectContainsAnyOf(spec: SelectContainsAnyOf): void {
     throw new Error("Method not implemented.")

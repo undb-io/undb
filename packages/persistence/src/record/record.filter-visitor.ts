@@ -106,7 +106,14 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     this.addCond(cond)
   }
   dateEqual(spec: DateEqual): void {
-    this.addCond(this.eb.eb(this.getFieldId(spec), "=", spec.date?.getTime() ?? null))
+    const time = spec.date?.getTime()
+    if (time === null) {
+      const cond = this.eb.eb(this.getFieldId(spec), "is", null)
+      this.addCond(cond)
+    } else {
+      const cond = this.eb.eb(this.getFieldId(spec), "=", time)
+      this.addCond(cond)
+    }
   }
   attachmentEqual(s: AttachmentEqual): void {
     throw new Error("Method not implemented.")
@@ -123,7 +130,7 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
   }
   userEqual(spec: UserEqual): void {
     if (spec.value === null) {
-      const cond = this.eb.eb(this.getFieldId(spec), "=", null)
+      const cond = this.eb.eb(this.getFieldId(spec), "is", null)
       this.addCond(cond)
     } else {
       function convertMacro(value: string) {
@@ -140,9 +147,14 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
         const cond = this.eb.eb(this.getFieldId(spec), "=", JSON.stringify(converted))
         this.addCond(cond)
       } else {
-        const converted = spec.value ? convertMacro(spec.value) : null
-        const cond = this.eb.eb(this.getFieldId(spec), "=", converted)
-        this.addCond(cond)
+        if (!spec.value) {
+          const cond = this.eb.eb(this.getFieldId(spec), "is", null)
+          this.addCond(cond)
+        } else {
+          const converted = convertMacro(spec.value)
+          const cond = this.eb.eb(this.getFieldId(spec), "=", converted)
+          this.addCond(cond)
+        }
       }
     }
   }
@@ -151,7 +163,16 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     this.addCond(cond)
   }
   currencyEqual(spec: CurrencyEqual): void {
-    const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value === null ? null : spec.value * 100)
+    if (spec.value === null) {
+      const cond = this.eb.eb(this.getFieldId(spec), "is", null)
+      this.addCond(cond)
+    } else {
+      const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value * 100)
+      this.addCond(cond)
+    }
+  }
+  percentageEqual(spec: PercentageEqual): void {
+    const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value)
     this.addCond(cond)
   }
   percentageEqual(spec: PercentageEqual): void {
@@ -204,7 +225,7 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
   }
   selectEqual(spec: SelectEqual): void {
     if (spec.value === null) {
-      const cond = this.eb.eb(this.getFieldId(spec), "=", null)
+      const cond = this.eb.eb(this.getFieldId(spec), "is", null)
       this.addCond(cond)
     } else {
       const cond = this.eb.eb(
@@ -216,7 +237,7 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     }
   }
   selectEmpty(spec: SelectEmpty): void {
-    const cond = this.eb.eb(this.getFieldId(spec), "=", null)
+    const cond = this.eb.eb(this.getFieldId(spec), "is", null)
     this.addCond(cond)
   }
   selectContainsAnyOf(spec: SelectContainsAnyOf): void {

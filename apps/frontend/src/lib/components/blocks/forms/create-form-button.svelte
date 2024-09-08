@@ -20,7 +20,7 @@
       </Button>
     </Popover.Trigger>
     <Popover.Content>
-      <CreateForm />
+      <CreateForm onSuccess={() => (open = false)} />
     </Popover.Content>
   </Popover.Root>
 {/if}

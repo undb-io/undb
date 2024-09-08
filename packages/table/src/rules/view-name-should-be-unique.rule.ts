@@ -4,7 +4,7 @@ class ViewNameShouldBeUniqueError extends ExceptionBase {
   code = "table:VIEW_NAME_SHOULD_BE_UNIQUE"
 
   constructor() {
-    super("view name should be unique within a base")
+    super("view name should be unique within a table")
   }
 }
 

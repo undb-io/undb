@@ -189,4 +189,8 @@ export abstract class AbstractField<
       option: this.option.into(undefined) as any,
     }
   }
+
+  clone() {
+    return new (Object.getPrototypeOf(this) as any).constructor(this.toJSON())
+  }
 }

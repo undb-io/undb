@@ -1,12 +1,14 @@
 <script lang="ts">
+  import { cn } from "$lib/utils"
+
   export let value: string | undefined = undefined
   export let placeholder: string | undefined = undefined
+
+  $: v = value || placeholder || ""
 </script>
 
-{#if !value}
-  <div>
-    {placeholder || ""}
+{#if v}
+  <div class={cn("text-sm", $$restProps.class)}>
+    {v}
   </div>
-{:else}
-  <div class={$$restProps.class}>{value}</div>
 {/if}

@@ -55,7 +55,7 @@
     }
   }
 
-  $: option?.options, handleDefaultValue()
+  // $: option?.options, handleDefaultValue()
 
   const addOption = () => {
     option.options = [
@@ -77,6 +77,7 @@
 
   const removeOption = (id: string) => {
     option.options = option.options.filter((o) => o.id !== id)
+    handleDefaultValue()
   }
 
   let initialMultiple = !isNew && field?.isMultiple
@@ -91,7 +92,7 @@
         <SortableList
           animation={200}
           handle=".handler"
-          class="space-y-2"
+          class="max-h-[200px] space-y-2 overflow-y-auto"
           onEnd={(event) => {
             if (isNumber(event.oldIndex) && isNumber(event.newIndex)) {
               swap(event.oldIndex, event.newIndex)
@@ -143,6 +144,7 @@
               defaultValue = [defaultValue]
             }
           }
+          handleDefaultValue()
         }}
       />
       <Label for="single" class="text-xs font-normal">Allow adding multiple options</Label>

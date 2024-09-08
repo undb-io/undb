@@ -25,6 +25,12 @@ export class Options extends ValueObject<Option[]> {
     )
   }
 
+  static getDeletedOptions(prev: IOption[], newOptions: IOption[]) {
+    const prevIds = prev.map((o) => o.id)
+    const newIds = newOptions.map((o) => o.id)
+    return prevIds.filter((id) => !newIds.includes(id))
+  }
+
   getOptionById(id: string) {
     return O(this.props.find((o) => o.value.id === id))
   }

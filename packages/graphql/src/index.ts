@@ -123,10 +123,15 @@ export class Graphql {
 
       enum ViewType {
         grid
+        kanban
       }
 
       type ViewOption {
         showSystemFields: Boolean
+      }
+
+      type KanbanOption {
+        field: String
       }
 
       type View {
@@ -140,6 +145,8 @@ export class Graphql {
         sort: JSON
         aggregate: JSON
         fields: JSON
+
+        kanban: KanbanOption
 
         shareId: ID
         share: Share

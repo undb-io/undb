@@ -9,6 +9,7 @@ import {
   WithUpdatedFieldSpecification,
 } from "../../specifications"
 import type { TableDo } from "../../table.do"
+import type { IRecordValues } from "../records/record/record-values.vo"
 import type { View } from "../views"
 import type { ICreateSchemaDTO } from "./dto"
 import type { ISchemaDTO } from "./dto/schema.dto"
@@ -85,7 +86,7 @@ export class Schema extends ValueObject<Field[]> {
 
   $updateField(dto: IUpdateFieldDTO) {
     const field = this.getFieldById(new FieldIdVo(dto.id)).expect("Field not found")
-    const updated = field.update(dto as any)
+    const updated = field.clone().update(dto as any)
     return new WithUpdatedFieldSpecification(field, updated)
   }
 
@@ -242,8 +243,8 @@ export class Schema extends ValueObject<Field[]> {
     return this.getFieldById(new FieldIdVo(ID_TYPE)).expect("Id field not found") as IdField
   }
 
-  getDefaultValues() {
-    const values: Record<string, any> = {}
+  getDefaultValues(): IRecordValues {
+    const values: IRecordValues = {}
 
     for (const field of this.mutableFields) {
       if (!field) continue
@@ -297,5 +298,9 @@ export class Schema extends ValueObject<Field[]> {
 
   getRollupFields(fieldId: string): RollupField[] {
     return this.fields.filter((f) => f.type === "rollup" && f.rollupFieldId === fieldId) as RollupField[]
+  }
+
+  getKanbanFields(fields: Field[] = this.fields) {
+    return fields.filter((f) => f.type === "select" && f.isSingle)
   }
 }

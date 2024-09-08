@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-60
+
+
+### 🚀 Enhancements
+
+- Empty kanban lane ([6a2cb04](https://github.com/undb-io/undb/commit/6a2cb04))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-59
 
 

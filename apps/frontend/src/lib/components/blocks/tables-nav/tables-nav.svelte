@@ -29,6 +29,7 @@
   import { hasPermission } from "$lib/store/space-member.store"
   import { Button } from "$lib/components/ui/button"
   import { Skeleton } from "$lib/components/ui/skeleton"
+  import ViewIcon from "../view/view-icon.svelte"
 
   export let tables: GetIndexQuery$result["tables"] = []
   export let bases: GetIndexQuery$result["bases"] = []
@@ -188,7 +189,7 @@
                             )}
                             href={`/t/${table.id}/${view.id}`}
                           >
-                            <SheetIcon class="mr-2 h-4 w-4" />
+                            <ViewIcon type={view.type} class="mr-2 h-4 w-4" />
                             {view.name}
                           </a>
 

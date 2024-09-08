@@ -87,6 +87,10 @@ enum InvitationStatus {
 
 scalar JSON
 
+type KanbanOption {
+  field: String
+}
+
 type Query {
   base(id: ID!): Base!
   baseByShare(shareId: ID!): Base
@@ -197,6 +201,7 @@ type View {
   filter: JSON
   id: ID!
   isDefault: Boolean
+  kanban: KanbanOption
   name: String!
   option: ViewOption
   share: Share
@@ -215,4 +220,5 @@ type ViewOption {
 
 enum ViewType {
   grid
+  kanban
 }

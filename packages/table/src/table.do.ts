@@ -29,6 +29,7 @@ import {
   ViewOption,
   type Field,
   type FormId,
+  type IRecordValues,
   type TableRLSGroup,
 } from "./modules"
 import type { FormsVO } from "./modules/forms/forms.vo"
@@ -91,8 +92,8 @@ export class TableDo extends AggregateRoot<ITableEvents> {
     return this.getOrderedFields(formId).filter((field) => field.isMutable)
   }
 
-  getDefaultValues(formId?: FormId) {
-    const schemaDefaultValues = this.schema.getDefaultValues()
+  getDefaultValues(formId?: FormId, defaultValue?: IRecordValues) {
+    const schemaDefaultValues = { ...this.schema.getDefaultValues(), ...defaultValue }
 
     const form = this.forms?.props.find((form) => form.id === formId?.value)
     if (form) {
