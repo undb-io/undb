@@ -11,7 +11,7 @@
   import { Checkbox } from "$lib/components/ui/checkbox/index.js"
   import { Label } from "$lib/components/ui/label/index.js"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
-  import { EllipsisIcon } from "lucide-svelte"
+  import { EllipsisIcon, TrashIcon } from "lucide-svelte"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
 
   const table = getTable()
@@ -68,12 +68,13 @@
       <DropdownMenu.Trigger>
         <EllipsisIcon class="text-muted-foreground h-4 w-4" />
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content>
+      <DropdownMenu.Content class="w-48">
         <DropdownMenu.Group>
           <DropdownMenu.Item
             on:click={() => (confirmDelete = true)}
             class="hover:text-500 flex items-center text-xs text-red-500 transition-colors hover:bg-red-100"
           >
+            <TrashIcon class="mr-2 h-3 w-3" />
             Delete form
           </DropdownMenu.Item>
         </DropdownMenu.Group>
@@ -123,7 +124,7 @@
         for="autoAddNewField"
         class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
       >
-        Auto show new field
+        Auto add new field to form when create field
       </Label>
       <p class="text-muted-foreground text-sm">When a new field is created, it will be automatically set to show.</p>
     </div>
