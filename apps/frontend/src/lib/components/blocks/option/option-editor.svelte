@@ -10,5 +10,5 @@
 
 <div class="flex flex-1 items-center gap-2">
   <ColorPicker {disabled} bind:value={color} onColorChange={(value) => (color = value)} />
-  <Input {disabled} class="bg-background text-xs" bind:value={name} />
+  <Input {disabled} class="bg-background text-xs" bind:value={name} autofocus />
 </div>

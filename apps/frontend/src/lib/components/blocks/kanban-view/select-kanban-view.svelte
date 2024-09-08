@@ -13,14 +13,14 @@
   import SelectKanbanLane from "./select-kanban-lane.svelte"
   import { arrayMoveImmutable } from "array-move"
   import { isNumber } from "radash"
-  import Option from "../option/option.svelte"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
-  import { GripVerticalIcon, PlusIcon } from "lucide-svelte"
+  import { PlusIcon } from "lucide-svelte"
   import { Button } from "$lib/components/ui/button"
   import * as Popover from "$lib/components/ui/popover"
   import OptionEditor from "../option/option-editor.svelte"
+  import { invalidate } from "$app/navigation"
 
   const table = getTable()
   export let view: KanbanView
@@ -28,14 +28,17 @@
   export let shareId: string
 
   let fieldId = view.field.unwrapUnchecked()!
-  let field = $table.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined) as SelectField
+  $: field = $table.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined) as SelectField
 
   let lanesContainer: HTMLElement
-  let options = field.options
+  $: options = field.options ?? []
 
   const updateFieldMudation = createMutation({
     mutationFn: trpc.table.field.update.mutate,
     mutationKey: ["table", $table.id.value, "field", fieldId, "update"],
+    async onSuccess(data) {
+      await invalidate(`table:${$table.id.value}`)
+    },
     onError(e) {
       toast.error(e.message)
     },
@@ -94,33 +97,29 @@
 <div class="flex-1 overflow-x-auto overflow-y-hidden p-4">
   <div bind:this={lanesContainer} class="flex h-full overflow-y-hidden pr-4">
     {#each options as option (option.id)}
-      <div
-        data-option-id={option.id}
-        class="kanban-lane flex w-[350px] shrink-0 flex-col space-y-2 rounded-sm px-2 pt-2 transition-all"
-      >
-        <div class="flex w-full items-center gap-1">
-          {#if !shareId}
-            <div class="lane-handle cursor-move">
-              <GripVerticalIcon class="text-muted-foreground h-4 w-4" />
-            </div>
-          {/if}
-          <Option {option} />
-        </div>
-        <SelectKanbanLane {readonly} tableId={$table.id.value} viewId={view.id.value} {fieldId} {option} {shareId} />
-      </div>
+      <SelectKanbanLane
+        {field}
+        {readonly}
+        tableId={$table.id.value}
+        viewId={view.id.value}
+        {fieldId}
+        {option}
+        {shareId}
+      />
     {/each}
     {#if !shareId}
       <div class="flex w-[350px] shrink-0 flex-col space-y-2 rounded-sm px-2 pt-2 transition-all">
         <Popover.Root>
           <Popover.Trigger asChild let:builder>
             <Button variant="outline" size="sm" class="w-full" builders={[builder]}>
-              <PlusIcon class="h-4 w-4" />
+              <PlusIcon class="mr-2 h-4 w-4" />
               Create New Option
             </Button>
           </Popover.Trigger>
           <Popover.Content sameWidth>
             <OptionEditor bind:name bind:color />
             <Button
+              size="sm"
               disabled={!name || !color || $updateFieldMudation.isPending}
               class="mt-2 w-full"
               on:click={createOption}
