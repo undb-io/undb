@@ -175,6 +175,10 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value)
     this.addCond(cond)
   }
+  percentageEqual(spec: PercentageEqual): void {
+    const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value)
+    this.addCond(cond)
+  }
   stringMin(spec: StringMin): void {
     const cond = this.eb.eb(this.eb.fn("LENGTH", [this.getFieldId(spec)]), ">=", spec.min)
     this.addCond(cond)
