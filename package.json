@@ -6,7 +6,7 @@
     "build": "NODE_ENV=production bun --bun turbo build",
     "prebuild:desktop": "run-s build move-assets",
     "build:desktop": "NODE_ENV=production bun --cwd=apps/desktop run build:desktop",
-    "build:docker": "bun --bun turbo build:docker",
+    "build:docker": "turbo build:docker",
     "predev:desktop": "bun run move-assets",
     "dev:desktop": "bun --cwd=apps/desktop run dev:desktop",
     "dev": "bun --bun turbo dev",
