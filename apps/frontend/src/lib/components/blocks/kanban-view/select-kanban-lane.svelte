@@ -30,7 +30,7 @@
   export let viewId: string
   export let fieldId: string
   export let field: SelectField
-  export let option: IOption
+  export let option: IOption | null
   export let readonly = false
   export let shareId: string
 
@@ -40,7 +40,7 @@
         shareId,
         filters: {
           conjunction: "and",
-          children: [{ field: fieldId, op: "eq", value: option.id }],
+          children: [{ field: fieldId, op: "eq", value: option ? option.id : null }],
         },
         pagination: {
           page: pageParam,
@@ -54,7 +54,7 @@
       viewId,
       filters: {
         conjunction: "and",
-        children: [{ field: fieldId, op: "eq", value: option.id }],
+        children: [{ field: fieldId, op: "eq", value: option ? option.id : null }],
       },
       pagination: {
         page: pageParam,
@@ -64,7 +64,7 @@
   }
 
   const query = createInfiniteQuery({
-    queryKey: [tableId, fieldId, "getRecords", option.id],
+    queryKey: [tableId, fieldId, "getRecords", option?.id],
     queryFn: getRecords,
     initialPageParam: 1,
     getNextPageParam: (lastPage, pages) => {
@@ -81,7 +81,7 @@
   const updateRecord = createMutation({
     mutationFn: trpc.record.update.mutate,
     onSuccess: (data, variables, context) => {
-      recordsStore.setRecordValue(variables.id, fieldId, option.id)
+      recordsStore.setRecordValue(variables.id, fieldId, option ? option.id : null)
       recordsStore.invalidateRecord($table, variables.id)
     },
   })
@@ -108,7 +108,7 @@
         option: {
           options: field.option
             .unwrapOrElse(() => ({ options: [] }))
-            .options.map((o) => (o.id === option.id ? { ...option } : o)),
+            .options.map((o) => (o.id === option?.id ? { ...option } : o)),
         },
       },
     })
@@ -122,14 +122,14 @@
         type: "select",
         name: field.name.value,
         option: {
-          options: field.option.unwrapOrElse(() => ({ options: [] })).options.filter((o) => o.id !== option.id),
+          options: field.option.unwrapOrElse(() => ({ options: [] })).options.filter((o) => o.id !== option?.id),
         },
       },
     })
   }
 
   onMount(() => {
-    if (!shareId) {
+    if (!shareId && !readonly) {
       new Sortable(laneElement, {
         group: "shared",
         animation: 150,
@@ -139,8 +139,7 @@
         onEnd: (evt) => {
           const recordId = evt.item.dataset.recordId
           if (!recordId) return
-          const optionId = evt.to.dataset.optionId
-          if (!optionId) return
+          const optionId = evt.to.dataset.optionId ?? null
 
           $updateRecord.mutate({
             tableId,
@@ -160,7 +159,7 @@
     recordsStore.upsertRecords(Records.fromJSON($table, records))
   }
 
-  $: recordDos = recordsStore.getRecords(Some(new SelectEqual(option.id, new FieldIdVo(fieldId))))
+  $: recordDos = recordsStore.getRecords(Some(new SelectEqual(option?.id ?? null, new FieldIdVo(fieldId))))
 
   $: fields = $table.getOrderedVisibleFields(viewId) ?? []
 
@@ -169,20 +168,25 @@
 </script>
 
 <div
-  data-option-id={option.id}
+  data-option-id={option?.id ?? null}
   class="kanban-lane flex w-[350px] shrink-0 flex-col space-y-2 rounded-sm px-2 pt-2 transition-all"
 >
   <div class="flex w-full items-center justify-between gap-1">
     <div class="flex items-center gap-1">
-      {#if !shareId}
+      {#if !shareId && option && !readonly}
         <div class="lane-handle cursor-move">
           <GripVerticalIcon class="text-muted-foreground h-4 w-4" />
         </div>
       {/if}
-      <Option {option} />
+
+      {#if option}
+        <Option {option} />
+      {:else}
+        <Option option={{ id: "", name: "No Option", color: "gray" }} />
+      {/if}
     </div>
 
-    {#if !shareId && !readonly}
+    {#if !shareId && !readonly && option}
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild let:builder>
           <Button size="xs" variant="ghost" builders={[builder]}>
@@ -208,17 +212,17 @@
       </DropdownMenu.Root>
     {/if}
   </div>
-  <div class="max-w-[350px] flex-1 space-y-2 overflow-auto" data-option-id={option.id}>
+  <div class="max-w-[350px] flex-1 space-y-2 overflow-auto" data-option-id={option?.id ?? null}>
     <div
       bind:this={laneElement}
-      data-option-id={option.id}
+      data-option-id={option?.id ?? null}
       class="min-h-[200px] space-y-2 rounded-lg border bg-gray-100 p-2"
     >
       {#if !readonly && $hasPermission("record:create")}
         <Button
           on:click={() => {
             $defaultRecordValues = {
-              [fieldId]: option.id,
+              [fieldId]: option ? option.id : null,
             }
             toggleModal(CREATE_RECORD_MODAL)
           }}
@@ -253,27 +257,31 @@
   </div>
 </div>
 
-<Dialog.Root bind:open={updateOptionDialogOpen}>
-  <Dialog.Content>
-    <Dialog.Header>
-      <Dialog.Title>Update option</Dialog.Title>
-    </Dialog.Header>
+{#if option}
+  <Dialog.Root bind:open={updateOptionDialogOpen}>
+    <Dialog.Content>
+      <Dialog.Header>
+        <Dialog.Title>Update option</Dialog.Title>
+      </Dialog.Header>
 
-    <form on:submit|preventDefault={() => updateOption()}>
-      <OptionEditor bind:name={option.name} bind:color={option.color} />
-      <Button type="submit" disabled={$updateFieldMutation.isPending} class="mt-2 w-full">Update</Button>
-    </form>
-  </Dialog.Content>
-</Dialog.Root>
+      <form on:submit|preventDefault={() => updateOption()}>
+        <OptionEditor bind:name={option.name} bind:color={option.color} />
+        <Button type="submit" disabled={$updateFieldMutation.isPending} class="mt-2 w-full">Update</Button>
+      </form>
+    </Dialog.Content>
+  </Dialog.Root>
+{/if}
 
-<AlertDialog.Root bind:open={deleteOptionDialogOpen}>
-  <AlertDialog.Content>
-    <AlertDialog.Header>
-      <AlertDialog.Title>Delete Option <Option {option} /></AlertDialog.Title>
-    </AlertDialog.Header>
-    <AlertDialog.Footer>
-      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-      <AlertDialog.Action on:click={() => deleteOption()}>Continue</AlertDialog.Action>
-    </AlertDialog.Footer>
-  </AlertDialog.Content>
-</AlertDialog.Root>
+{#if option}
+  <AlertDialog.Root bind:open={deleteOptionDialogOpen}>
+    <AlertDialog.Content>
+      <AlertDialog.Header>
+        <AlertDialog.Title>Delete Option <Option {option} /></AlertDialog.Title>
+      </AlertDialog.Header>
+      <AlertDialog.Footer>
+        <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+        <AlertDialog.Action on:click={() => deleteOption()}>Continue</AlertDialog.Action>
+      </AlertDialog.Footer>
+    </AlertDialog.Content>
+  </AlertDialog.Root>
+{/if}

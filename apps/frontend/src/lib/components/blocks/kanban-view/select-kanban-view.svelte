@@ -96,6 +96,15 @@
 
 <div class="flex-1 overflow-x-auto overflow-y-hidden p-4">
   <div bind:this={lanesContainer} class="flex h-full overflow-y-hidden pr-4">
+    <SelectKanbanLane
+      {field}
+      {readonly}
+      tableId={$table.id.value}
+      viewId={view.id.value}
+      {fieldId}
+      option={null}
+      {shareId}
+    />
     {#each options as option (option.id)}
       <SelectKanbanLane
         {field}
