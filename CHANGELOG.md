@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-61
+
+
+### 🩹 Fixes
+
+- Fix bug ([2986c7b](https://github.com/undb-io/undb/commit/2986c7b))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-60
 
 
