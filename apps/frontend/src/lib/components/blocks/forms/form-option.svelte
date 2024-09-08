@@ -13,6 +13,7 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { EllipsisIcon, TrashIcon } from "lucide-svelte"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
+  import { Button } from "$lib/components/ui/button"
 
   const table = getTable()
   export let form: FormVO
@@ -139,7 +140,16 @@
     </AlertDialog.Header>
     <AlertDialog.Footer>
       <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-      <AlertDialog.Action on:click={deleteForm}>Continue</AlertDialog.Action>
+      <AlertDialog.Action asChild let:builder>
+        <Button
+          variant="destructive"
+          builders={[builder]}
+          on:click={deleteForm}
+          disabled={$deleteFormMutation.isPending}
+        >
+          Delete Form
+        </Button>
+      </AlertDialog.Action>
     </AlertDialog.Footer>
   </AlertDialog.Content>
 </AlertDialog.Root>
