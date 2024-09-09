@@ -10,6 +10,7 @@
   import { isEditingCell, isSelectedCell } from "./grid-view.store"
   import SelectCell from "./editable-cell/select-cell.svelte"
   import { getTable } from "$lib/store/table.store"
+  import { getRecordsStore } from "$lib/store/records.store"
   import DateCell from "./editable-cell/date-cell.svelte"
   import CheckboxCell from "./editable-cell/checkbox-cell.svelte"
   import UserCell from "./editable-cell/user-cell.svelte"
@@ -19,7 +20,6 @@
   import AttachmentCell from "./editable-cell/attachment-cell.svelte"
   import ReferenceCell from "./editable-cell/reference-cell.svelte"
   import ReadonlyUserCell from "./editable-cell/readonly-user-cell.svelte"
-  import { recordsStore } from "$lib/store/records.store"
   import UrlCell from "./editable-cell/url-cell.svelte"
   import RollupCell from "./editable-cell/rollup-cell.svelte"
   import LongTextCell from "./editable-cell/long-text-cell.svelte"
@@ -29,6 +29,7 @@
   import PercentageCell from "./editable-cell/percentage-cell.svelte"
 
   const table = getTable()
+  const recordsStore = getRecordsStore()
 
   export let value: any
   export let displayValue: any

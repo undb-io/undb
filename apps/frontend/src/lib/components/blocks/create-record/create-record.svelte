@@ -11,7 +11,7 @@
   import { FormIdVO, RecordDO, RecordIdVO, TableDo } from "@undb/table"
   import autoAnimate from "@formkit/auto-animate"
   import { cn } from "$lib/utils"
-  import { defaultRecordValues, recordsStore } from "$lib/store/records.store"
+  import { defaultRecordValues, getRecordsStore } from "$lib/store/records.store"
 
   // beforeNavigate(({ cancel }) => {
   //   if ($tainted) {
@@ -21,6 +21,7 @@
   //   }
   // })
 
+  const recordsStore = getRecordsStore()
   export let table: Readable<TableDo>
   const schema = $table.schema.getMutableSchema()
 

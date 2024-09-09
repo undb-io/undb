@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { onMount } from "svelte"
+  import { onMount, onDestroy } from "svelte"
   import Sortable from "sortablejs"
-  import { createInfiniteQuery, createMutation } from "@tanstack/svelte-query"
+  import { createInfiniteQuery, createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
-  import { FieldIdVo, Records, SelectEqual, SelectField, type IOption, type IRecordsDTO } from "@undb/table"
+  import { FieldIdVo, RecordDO, Records, SelectEqual, SelectField, type IOption, type IRecordsDTO } from "@undb/table"
   import KanbanSkeleton from "./kanban-skeleton.svelte"
   import { derived, type Readable } from "svelte/store"
   import { getTable } from "$lib/store/table.store"
@@ -12,7 +12,7 @@
   import { EllipsisIcon, GripVerticalIcon, LoaderCircleIcon, PencilIcon, PlusIcon, TrashIcon } from "lucide-svelte"
   import { CREATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import { defaultRecordValues } from "$lib/store/records.store"
-  import { recordsStore } from "$lib/store/records.store"
+  import { getRecordsStore } from "$lib/store/records.store"
   import { Some } from "@undb/domain"
   import { inview } from "svelte-inview"
   import { cn } from "$lib/utils"
@@ -26,6 +26,7 @@
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
 
   const table = getTable()
+  const recordsStore = getRecordsStore()
 
   export let tableId: string
   export let viewId: Readable<string>
@@ -64,29 +65,24 @@
     })
   }
 
-  const query = createInfiniteQuery(
-    derived([table, viewId], ([$table, $viewId]) => {
-      return {
-        queryKey: [$table.id.value, $viewId, fieldId, "getRecords", option?.id],
-        queryFn: getRecords,
-        initialPageParam: 1,
-        getNextPageParam: (lastPage: any, pages: any) => {
-          const current = pages.reduce<number>((acc, cur) => acc + (cur as any).records.length, 0)
-          if (current >= (lastPage as any).total) {
-            return undefined
-          }
-          return pages.length + 1
-        },
+  const query = createInfiniteQuery({
+    queryKey: [$table.id.value, $viewId, fieldId, "getRecords", option?.id],
+    queryFn: getRecords,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, pages) => {
+      const current = pages.reduce<number>((acc, cur) => acc + (cur as any).records.length, 0)
+      if (current >= (lastPage as any).total) {
+        return undefined
       }
-    }),
-  )
+      return pages.length + 1
+    },
+  })
 
   let laneElement: HTMLElement
 
   const updateRecord = createMutation({
     mutationFn: trpc.record.update.mutate,
     onSuccess: (data, variables, context) => {
-      recordsStore.setRecordValue(variables.id, fieldId, option ? option.id : null)
       recordsStore.invalidateRecord($table, variables.id)
     },
   })
@@ -159,12 +155,9 @@
   })
 
   $: {
-    // @ts-ignore
     const records = ($query.data?.pages.flatMap((r: any) => r.records) as IRecordsDTO) ?? []
     recordsStore.upsertRecords(Records.fromJSON($table, records))
   }
-
-  $: rs = recordsStore.data
 
   let storeGetRecords = recordsStore.getRecords
   $: recordDos = $storeGetRecords(Some(new SelectEqual(option?.id ?? null, new FieldIdVo(fieldId))))

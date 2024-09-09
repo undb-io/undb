@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from "svelte"
+  import { onMount, onDestroy } from "svelte"
   import Sortable from "sortablejs"
   import {
     FieldIdVo,
@@ -8,6 +8,7 @@
     type KanbanView,
     type SelectField,
     OptionIdVo,
+    Records,
   } from "@undb/table"
   import type { Readable } from "svelte/store"
   import { getTable } from "$lib/store/table.store"
@@ -22,8 +23,10 @@
   import * as Popover from "$lib/components/ui/popover"
   import OptionEditor from "../option/option-editor.svelte"
   import { invalidate } from "$app/navigation"
+  import { createRecordsStore, getRecordsStore, setRecordsStore, type RecordsStore } from "$lib/store/records.store"
 
   const table = getTable()
+
   export let viewId: Readable<string>
   export let view: KanbanView
   export let readonly = false
@@ -94,6 +97,9 @@
       },
     })
   }
+
+  const recordsStore = createRecordsStore()
+  setRecordsStore(recordsStore)
 </script>
 
 <div class="flex-1 overflow-x-auto overflow-y-hidden p-4">

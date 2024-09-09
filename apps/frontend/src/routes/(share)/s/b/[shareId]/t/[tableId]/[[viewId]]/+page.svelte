@@ -2,7 +2,6 @@
   import { page } from "$app/stores"
   import GridViewDataTable from "$lib/components/blocks/grid-view/grid-view-data-table.svelte"
   import ShareTableTools from "$lib/components/blocks/table-tools/share-table-tools.svelte"
-  import { recordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createQuery } from "@tanstack/svelte-query"
@@ -13,6 +12,7 @@
   import { isDataTab, isFormTab } from "$lib/store/tab.store"
   import ShareTableHeader from "$lib/components/blocks/table-header/share-table-header.svelte"
   import FormsReadonly from "$lib/components/blocks/forms/forms-readonly.svelte"
+  import { createRecordsStore, setRecordsStore } from "$lib/store/records.store"
 
   let RecordDetailSheet: ComponentType
 
@@ -44,9 +44,10 @@
 
   $: records = (($getRecords.data as any)?.records as IRecordsDTO) ?? []
 
-  let store = recordsStore
   $: if ($getRecords.isSuccess) {
-    store.set(Records.fromJSON($t, records), $getRecords.dataUpdatedAt)
+    const store = createRecordsStore()
+    store.setRecords(Records.fromJSON($t, records), $getRecords.dataUpdatedAt)
+    setRecordsStore(store)
   }
 </script>
 

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { derived, writable, type Readable } from "svelte/store"
-  import { recordsStore } from "$lib/store/records.store"
+  import { createRecordsStore, setRecordsStore, type RecordsStore } from "$lib/store/records.store"
   import { Records, type IRecordsDTO, type IViewFilterGroup } from "@undb/table"
   import { createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
@@ -21,8 +21,10 @@
 
   const getRecords = createQuery(
     derived([t, viewId, perPage, currentPage, q], ([$table, $viewId, $perPage, $currentPage, $q]) => {
+      const view = $table.views.getViewById($viewId)
       return {
         queryKey: ["records", $table?.id.value, $viewId, $q, $currentPage, $perPage],
+        enabled: view?.type === "grid",
         queryFn: () =>
           trpc.record.list.query({
             tableId: $table?.id.value,
@@ -38,9 +40,11 @@
   // TODO: record type
   $: records = (($getRecords.data as any)?.records as IRecordsDTO) ?? []
 
-  let store = recordsStore
+  const store = createRecordsStore()
+  setRecordsStore(store)
+
   $: if ($getRecords.isSuccess) {
-    store.set(Records.fromJSON($t, records), $getRecords.dataUpdatedAt)
+    store.setRecords(Records.fromJSON($t, records), $getRecords.dataUpdatedAt)
   }
 </script>
 

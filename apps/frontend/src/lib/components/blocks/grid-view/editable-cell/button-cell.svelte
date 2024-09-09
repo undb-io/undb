@@ -6,7 +6,7 @@
   import { gridViewStore } from "../grid-view.store"
   import { Button } from "$lib/components/ui/button"
   import { LoaderCircleIcon } from "lucide-svelte"
-  import { recordsStore } from "$lib/store/records.store"
+  import { getRecordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
   import { objectify } from "radash"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
@@ -19,6 +19,7 @@
   export let record: RecordDO | undefined
 
   const table = getTable()
+  const recordsStore = getRecordsStore()
 
   const trigger = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId, "trigger"],
