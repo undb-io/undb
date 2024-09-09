@@ -10,7 +10,7 @@ type RecordStore = {
   records: Map<string, RecordDO>
 }
 
-export const createRecordsStore = () => {
+const createRecordsStore = () => {
   const store = writable<RecordStore>({ lastUpdatedAt: 0, ids: [], records: new Map() })
   const data = writable<any[]>([])
 
@@ -105,12 +105,9 @@ export const createRecordsStore = () => {
     setRecord(r)
   }
 
-  const getRecords = (spec: Option<RecordComositeSpecification>) =>
-    derived(store, ($store) => {
-      return [...$store.records.values()].filter((record) =>
-        spec.isSome() ? spec.unwrap().isSatisfiedBy(record) : true,
-      )
-    })
+  const getRecords = derived(store, ($store) => (spec: Option<RecordComositeSpecification>) => {
+    return [...$store.records.values()].filter((record) => (spec.isSome() ? spec.unwrap().isSatisfiedBy(record) : true))
+  })
 
   return {
     set,

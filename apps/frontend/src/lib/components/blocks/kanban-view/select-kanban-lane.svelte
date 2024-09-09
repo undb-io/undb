@@ -5,6 +5,7 @@
   import { trpc } from "$lib/trpc/client"
   import { FieldIdVo, Records, SelectEqual, SelectField, type IOption, type IRecordsDTO } from "@undb/table"
   import KanbanSkeleton from "./kanban-skeleton.svelte"
+  import { derived, type Readable } from "svelte/store"
   import { getTable } from "$lib/store/table.store"
   import KanbanCard from "./kanban-card.svelte"
   import Button from "$lib/components/ui/button/button.svelte"
@@ -27,12 +28,12 @@
   const table = getTable()
 
   export let tableId: string
-  export let viewId: string
+  export let viewId: Readable<string>
   export let fieldId: string
   export let field: SelectField
   export let option: IOption | null
   export let readonly = false
-  export let shareId: string
+  export let shareId: string | undefined = undefined
 
   const getRecords = ({ pageParam = 1 }) => {
     if (shareId) {
@@ -51,7 +52,7 @@
 
     return trpc.record.list.query({
       tableId,
-      viewId,
+      viewId: $viewId,
       filters: {
         conjunction: "and",
         children: [{ field: fieldId, op: "eq", value: option ? option.id : null }],
@@ -63,18 +64,22 @@
     })
   }
 
-  const query = createInfiniteQuery({
-    queryKey: [tableId, fieldId, "getRecords", option?.id],
-    queryFn: getRecords,
-    initialPageParam: 1,
-    getNextPageParam: (lastPage, pages) => {
-      const current = pages.reduce<number>((acc, cur) => acc + (cur as any).records.length, 0)
-      if (current >= (lastPage as any).total) {
-        return undefined
+  const query = createInfiniteQuery(
+    derived([table, viewId], ([$table, $viewId]) => {
+      return {
+        queryKey: [$table.id.value, $viewId, fieldId, "getRecords", option?.id],
+        queryFn: getRecords,
+        initialPageParam: 1,
+        getNextPageParam: (lastPage: any, pages: any) => {
+          const current = pages.reduce<number>((acc, cur) => acc + (cur as any).records.length, 0)
+          if (current >= (lastPage as any).total) {
+            return undefined
+          }
+          return pages.length + 1
+        },
       }
-      return pages.length + 1
-    },
-  })
+    }),
+  )
 
   let laneElement: HTMLElement
 
@@ -153,15 +158,18 @@
     }
   })
 
-  // @ts-ignore
-  $: records = ($query.data?.pages.flatMap((r) => r.records) as IRecordsDTO) ?? []
-  $: if ($query.isSuccess) {
+  $: {
+    // @ts-ignore
+    const records = ($query.data?.pages.flatMap((r: any) => r.records) as IRecordsDTO) ?? []
     recordsStore.upsertRecords(Records.fromJSON($table, records))
   }
 
-  $: recordDos = recordsStore.getRecords(Some(new SelectEqual(option?.id ?? null, new FieldIdVo(fieldId))))
+  $: rs = recordsStore.data
 
-  $: fields = $table.getOrderedVisibleFields(viewId) ?? []
+  let storeGetRecords = recordsStore.getRecords
+  $: recordDos = $storeGetRecords(Some(new SelectEqual(option?.id ?? null, new FieldIdVo(fieldId))))
+
+  $: fields = $table.getOrderedVisibleFields($viewId) ?? []
 
   let updateOptionDialogOpen = false
   let deleteOptionDialogOpen = false
@@ -238,7 +246,7 @@
       {:else if $query.isError}
         <p>error: {$query.error.message}</p>
       {:else}
-        {#each $recordDos as record (record.id.value)}
+        {#each recordDos as record (record.id.value)}
           <KanbanCard {readonly} {record} {fields} />
         {/each}
         {#if !readonly}

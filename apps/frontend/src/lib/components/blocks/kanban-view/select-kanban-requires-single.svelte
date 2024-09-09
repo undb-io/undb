@@ -5,7 +5,7 @@
 
   export let field: SelectField
   export let view: KanbanView
-  export let shareId: string
+  export let shareId: string | undefined = undefined
 </script>
 
 <Alert.Root class="max-w-prose space-y-4">
