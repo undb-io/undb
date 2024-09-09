@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-65
+
+
+### 🏡 Chore
+
+- Fix building ([c991bf5](https://github.com/undb-io/undb/commit/c991bf5))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-64
 
 
