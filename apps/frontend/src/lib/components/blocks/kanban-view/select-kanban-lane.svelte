@@ -304,9 +304,22 @@
         )}
       >
         {#if !readonly && $hasPermission("record:create")}
-          <Button on:click={onCreateRecord} variant="outline" size="sm" class="w-full">
-            <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
-          </Button>
+          {#if $query.isFetchedAfterMount}
+            {#if $query.data?.pages[0]?.total > 0}
+              <Button on:click={onCreateRecord} variant="outline" size="sm" class="w-full">
+                <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
+              </Button>
+            {:else}
+              <div class="flex h-full w-full flex-col items-center justify-center space-y-3">
+                <p class="text-sm font-semibold">No records</p>
+                <p class="text-muted-foreground text-xs">Create a new record of this option <Option option={option ?? {id: '', name: 'No Option', color: 'gray'}} /></p>
+                <Button on:click={onCreateRecord} variant="outline" size="sm" >
+                  <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
+                  New Record
+                </Button>
+              </div>
+            {/if}
+          {/if}
         {/if}
         {#if $query.isLoading}
           <KanbanSkeleton />
