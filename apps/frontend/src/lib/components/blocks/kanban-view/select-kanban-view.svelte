@@ -9,6 +9,7 @@
     type SelectField,
     OptionIdVo,
   } from "@undb/table"
+  import type { Readable } from "svelte/store"
   import { getTable } from "$lib/store/table.store"
   import SelectKanbanLane from "./select-kanban-lane.svelte"
   import { arrayMoveImmutable } from "array-move"
@@ -21,11 +22,14 @@
   import * as Popover from "$lib/components/ui/popover"
   import OptionEditor from "../option/option-editor.svelte"
   import { invalidate } from "$app/navigation"
+  import { createRecordsStore, setRecordsStore } from "$lib/store/records.store"
 
   const table = getTable()
+
+  export let viewId: Readable<string>
   export let view: KanbanView
   export let readonly = false
-  export let shareId: string
+  export let shareId: string | undefined = undefined
 
   let fieldId = view.field.unwrapUnchecked()!
   $: field = $table.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined) as SelectField
@@ -92,29 +96,16 @@
       },
     })
   }
+
+  const recordsStore = createRecordsStore()
+  setRecordsStore(recordsStore)
 </script>
 
 <div class="flex-1 overflow-x-auto overflow-y-hidden p-4">
   <div bind:this={lanesContainer} class="flex h-full overflow-y-hidden pr-4">
-    <SelectKanbanLane
-      {field}
-      {readonly}
-      tableId={$table.id.value}
-      viewId={view.id.value}
-      {fieldId}
-      option={null}
-      {shareId}
-    />
+    <SelectKanbanLane {field} {readonly} tableId={$table.id.value} {viewId} {fieldId} option={null} {shareId} />
     {#each options as option (option.id)}
-      <SelectKanbanLane
-        {field}
-        {readonly}
-        tableId={$table.id.value}
-        viewId={view.id.value}
-        {fieldId}
-        {option}
-        {shareId}
-      />
+      <SelectKanbanLane {field} {readonly} tableId={$table.id.value} {viewId} {fieldId} {option} {shareId} />
     {/each}
     {#if !shareId}
       <div class="flex w-[350px] shrink-0 flex-col space-y-2 rounded-sm px-2 pt-2 transition-all">

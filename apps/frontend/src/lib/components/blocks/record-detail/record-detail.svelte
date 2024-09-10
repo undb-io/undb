@@ -17,7 +17,9 @@
   import Button from "$lib/components/ui/button/button.svelte"
   import { preferences } from "$lib/store/persisted.store"
   import { cn } from "$lib/utils"
-  import { recordsStore } from "$lib/store/records.store"
+  import { getRecordsStore } from "$lib/store/records.store"
+
+  const recordsStore = getRecordsStore()
 
   export let readonly = false
 

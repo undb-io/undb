@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import GridViewDataTable from "$lib/components/blocks/grid-view/grid-view-data-table.svelte"
-  import { recordsStore } from "$lib/store/records.store"
+  import { createRecordsStore, setRecordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createQuery } from "@tanstack/svelte-query"
@@ -11,7 +11,6 @@
   export let viewId: Readable<string>
 
   const t = getTable()
-
   const perPage = writable(50)
   const currentPage = writable(1)
 
@@ -33,9 +32,10 @@
 
   $: records = (($getRecords.data as any)?.records as IRecordsDTO) ?? []
 
-  let store = recordsStore
   $: if ($getRecords.isSuccess) {
-    store.set(Records.fromJSON($t, records), $getRecords.dataUpdatedAt)
+    const store = createRecordsStore()
+    store.setRecords(Records.fromJSON($t, records), $getRecords.dataUpdatedAt)
+    setRecordsStore(store)
   }
 </script>
 

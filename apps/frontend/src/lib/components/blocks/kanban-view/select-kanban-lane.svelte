@@ -1,20 +1,27 @@
 <script lang="ts">
-  import { onMount } from "svelte"
+  import { onMount, onDestroy } from "svelte"
   import Sortable from "sortablejs"
-  import { createInfiniteQuery, createMutation } from "@tanstack/svelte-query"
+  import { createInfiniteQuery, createMutation, type CreateInfiniteQueryOptions } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
-  import { FieldIdVo, Records, SelectEqual, SelectField, type IOption, type IRecordsDTO } from "@undb/table"
+  import {
+    FieldIdVo,
+    Records,
+    SelectEqual,
+    SelectField,
+    type IColors,
+    type IOption,
+    type IRecordsDTO,
+  } from "@undb/table"
   import KanbanSkeleton from "./kanban-skeleton.svelte"
+  import { derived, type Readable } from "svelte/store"
   import { getTable } from "$lib/store/table.store"
   import KanbanCard from "./kanban-card.svelte"
   import Button from "$lib/components/ui/button/button.svelte"
   import { EllipsisIcon, GripVerticalIcon, LoaderCircleIcon, PencilIcon, PlusIcon, TrashIcon } from "lucide-svelte"
   import { CREATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import { defaultRecordValues } from "$lib/store/records.store"
-  import { recordsStore } from "$lib/store/records.store"
+  import { getRecordsStore } from "$lib/store/records.store"
   import { Some } from "@undb/domain"
-  import { inview } from "svelte-inview"
-  import { cn } from "$lib/utils"
   import { hasPermission } from "$lib/store/space-member.store"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import * as Dialog from "$lib/components/ui/dialog"
@@ -23,16 +30,19 @@
   import { toast } from "svelte-sonner"
   import { invalidate } from "$app/navigation"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
+  import { match } from "ts-pattern"
+  import { cn } from "$lib/utils"
 
   const table = getTable()
+  const recordsStore = getRecordsStore()
 
   export let tableId: string
-  export let viewId: string
+  export let viewId: Readable<string>
   export let fieldId: string
   export let field: SelectField
   export let option: IOption | null
   export let readonly = false
-  export let shareId: string
+  export let shareId: string | undefined = undefined
 
   const getRecords = ({ pageParam = 1 }) => {
     if (shareId) {
@@ -51,7 +61,7 @@
 
     return trpc.record.list.query({
       tableId,
-      viewId,
+      viewId: $viewId,
       filters: {
         conjunction: "and",
         children: [{ field: fieldId, op: "eq", value: option ? option.id : null }],
@@ -63,25 +73,35 @@
     })
   }
 
-  const query = createInfiniteQuery({
-    queryKey: [tableId, fieldId, "getRecords", option?.id],
-    queryFn: getRecords,
-    initialPageParam: 1,
-    getNextPageParam: (lastPage, pages) => {
-      const current = pages.reduce<number>((acc, cur) => acc + (cur as any).records.length, 0)
-      if (current >= (lastPage as any).total) {
-        return undefined
-      }
-      return pages.length + 1
-    },
-  })
+  let isInView: boolean
+  const query = createInfiniteQuery(
+    derived([table, viewId], ([$table, $viewId]) => {
+      const view = $table.views.getViewById($viewId)
+      return {
+        queryKey: [$table.id.value, $viewId, fieldId, "getRecords", option?.id],
+        queryFn: getRecords,
+        initialPageParam: 1,
+        getNextPageParam: (lastPage, pages) => {
+          const current = pages.reduce<number>((acc, cur) => acc + (cur as any).records.length, 0)
+          if (current >= (lastPage as any).total) {
+            return undefined
+          }
+          return pages.length + 1
+        },
+        enabled: view?.type === "kanban",
+        filters: {
+          conjunction: "and",
+          children: [{ field: fieldId, op: "eq", value: option ? option.id : null }],
+        },
+      } as CreateInfiniteQueryOptions
+    }),
+  )
 
   let laneElement: HTMLElement
 
   const updateRecord = createMutation({
     mutationFn: trpc.record.update.mutate,
     onSuccess: (data, variables, context) => {
-      recordsStore.setRecordValue(variables.id, fieldId, option ? option.id : null)
       recordsStore.invalidateRecord($table, variables.id)
     },
   })
@@ -153,23 +173,56 @@
     }
   })
 
-  // @ts-ignore
-  $: records = ($query.data?.pages.flatMap((r) => r.records) as IRecordsDTO) ?? []
-  $: if ($query.isSuccess) {
+  $: {
+    const records = ($query.data?.pages.flatMap((r: any) => r.records) as IRecordsDTO) ?? []
     recordsStore.upsertRecords(Records.fromJSON($table, records))
   }
 
-  $: recordDos = recordsStore.getRecords(Some(new SelectEqual(option?.id ?? null, new FieldIdVo(fieldId))))
+  onDestroy(() => {
+    recordsStore.clearRecords()
+  })
 
-  $: fields = $table.getOrderedVisibleFields(viewId) ?? []
+  let storeGetRecords = recordsStore.getRecords
+  $: recordDos = $storeGetRecords(Some(new SelectEqual(option?.id ?? null, new FieldIdVo(fieldId))))
+
+  $: fields = $table.getOrderedVisibleFields($viewId) ?? []
 
   let updateOptionDialogOpen = false
   let deleteOptionDialogOpen = false
+
+  function getKanbanBgColor(color: IColors) {
+    return match(color)
+      .with("gray", () => "bg-gray-100/50")
+      .with("red", () => "bg-red-100/50")
+      .with("yellow", () => "bg-yellow-100/50")
+      .with("green", () => "bg-green-100/50")
+      .with("blue", () => "bg-blue-100/50")
+      .with("indigo", () => "bg-indigo-100/50")
+      .with("purple", () => "bg-purple-100/50")
+      .with("pink", () => "bg-pink-100/50")
+      .with("cyan", () => "bg-cyan-100/50")
+      .with("emerald", () => "bg-emerald-100/50")
+      .with("teal", () => "bg-teal-100/50")
+      .with("sky", () => "bg-sky-100/50")
+      .with("violet", () => "bg-violet-100/50")
+      .with("rose", () => "bg-rose-100/50")
+      .with("black", () => "bg-gray-100/50")
+      .with("lime", () => "bg-lime-100/50")
+      .with("orange", () => "bg-orange-100/50")
+      .exhaustive()
+  }
+
+  function onCreateRecord() {
+    $defaultRecordValues = {
+      [fieldId]: option ? option.id : null,
+    }
+    toggleModal(CREATE_RECORD_MODAL)
+  }
 </script>
 
 <div
   data-option-id={option?.id ?? null}
-  class="kanban-lane flex w-[350px] shrink-0 flex-col space-y-2 rounded-sm px-2 pt-2 transition-all"
+  class={cn("kanban-lane flex w-[350px] shrink-0 flex-col space-y-2 rounded-sm px-2 pt-2 transition-all")}
 >
   <div class="flex w-full items-center justify-between gap-1">
     <div class="flex items-center gap-1">
@@ -212,24 +265,17 @@
       </DropdownMenu.Root>
     {/if}
   </div>
-  <div class="max-w-[350px] flex-1 space-y-2 overflow-auto" data-option-id={option?.id ?? null}>
+  <div class="max-w-[350px] flex-1 space-y-2 overflow-hidden" data-option-id={option?.id ?? null}>
     <div
       bind:this={laneElement}
       data-option-id={option?.id ?? null}
-      class="min-h-[200px] space-y-2 rounded-lg border bg-gray-100 p-2"
+      class={cn(
+        "h-full flex-1 space-y-2 overflow-y-auto rounded-lg border bg-gray-100 p-2",
+        getKanbanBgColor(option?.color ?? "gray"),
+      )}
     >
       {#if !readonly && $hasPermission("record:create")}
-        <Button
-          on:click={() => {
-            $defaultRecordValues = {
-              [fieldId]: option ? option.id : null,
-            }
-            toggleModal(CREATE_RECORD_MODAL)
-          }}
-          variant="outline"
-          size="sm"
-          class="w-full"
-        >
+        <Button on:click={onCreateRecord} variant="outline" size="sm" class="w-full">
           <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
         </Button>
       {/if}
@@ -238,26 +284,41 @@
       {:else if $query.isError}
         <p>error: {$query.error.message}</p>
       {:else}
-        {#each $recordDos as record (record.id.value)}
+        {#each recordDos as record (record.id.value)}
           <KanbanCard {readonly} {record} {fields} />
         {/each}
-        {#if !readonly}
-          <div
-            use:inview
-            class={cn("flex h-10 w-full items-center justify-center", !$query.hasNextPage && "h-0")}
-            on:inview_enter={() => $query.fetchNextPage()}
+        {#if $query.hasNextPage && $query.isFetchedAfterMount}
+          <Button
+            disabled={$query.isFetching}
+            variant="secondary"
+            size="sm"
+            class="w-full"
+            on:click={() => $query.fetchNextPage()}
           >
             {#if $query.isFetching}
-              <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
+              <LoaderCircleIcon class="mr-2 h-3 w-3 animate-spin" />
             {/if}
-          </div>
+            Load more
+          </Button>
         {/if}
       {/if}
     </div>
   </div>
+  <div class="flex w-full items-center justify-between px-2 py-0.5">
+    <Button variant="outline" size="xs" on:click={onCreateRecord}>
+      <PlusIcon class="text-muted-foreground mr-2 h-3 w-3 font-semibold" />
+      New Record
+    </Button>
+
+    {#if $query.isFetchedAfterMount}
+      <p class="text-muted-foreground text-xs">
+        {$query.data?.pages.flatMap((r) => r.records).length} / {$query.data?.pages[0]?.total} records
+      </p>
+    {/if}
+  </div>
 </div>
 
-{#if option}
+{#if option && $hasPermission("field:update")}
   <Dialog.Root bind:open={updateOptionDialogOpen}>
     <Dialog.Content>
       <Dialog.Header>
@@ -272,7 +333,7 @@
   </Dialog.Root>
 {/if}
 
-{#if option}
+{#if option && $hasPermission("field:update")}
   <AlertDialog.Root bind:open={deleteOptionDialogOpen}>
     <AlertDialog.Content>
       <AlertDialog.Header>

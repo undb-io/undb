@@ -8,7 +8,7 @@
   import { copyToClipboard } from "@svelte-put/copy"
   import { toast } from "svelte-sonner"
   import { cn } from "$lib/utils.js"
-  import { recordsStore } from "$lib/store/records.store"
+  import { getRecordsStore } from "$lib/store/records.store"
   import { type Field } from "@undb/table"
   import { getTable } from "$lib/store/table.store"
   import GridViewActions from "./grid-view-actions.svelte"
@@ -59,7 +59,7 @@
   $: getTableAggregates = aggregatesStore.getTableAggregates
   $: aggregates = $getTableAggregates($t.id.value)
 
-  let store = recordsStore
+  let store = getRecordsStore()
   let hasRecord = store.hasRecord
   let count = store.count
   let records = store.records

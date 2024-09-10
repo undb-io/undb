@@ -5,9 +5,9 @@
   import { toast } from "svelte-sonner"
   import { Button } from "$lib/components/ui/button"
   import { LoaderCircleIcon } from "lucide-svelte"
-  import { recordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
   import { gridViewStore } from "../grid-view/grid-view.store"
+  import { getRecordsStore } from "$lib/store/records.store"
 
   export let tableId: string
   export let field: ButtonField
@@ -17,6 +17,7 @@
   const table = getTable()
 
   const client = useQueryClient()
+  const recordsStore = getRecordsStore()
 
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
