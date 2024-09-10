@@ -3,7 +3,15 @@
   import Sortable from "sortablejs"
   import { createInfiniteQuery, createMutation, type CreateInfiniteQueryOptions } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
-  import { FieldIdVo, Records, SelectEqual, SelectField, type IOption, type IRecordsDTO } from "@undb/table"
+  import {
+    FieldIdVo,
+    Records,
+    SelectEqual,
+    SelectField,
+    type IColors,
+    type IOption,
+    type IRecordsDTO,
+  } from "@undb/table"
   import KanbanSkeleton from "./kanban-skeleton.svelte"
   import { derived, type Readable } from "svelte/store"
   import { getTable } from "$lib/store/table.store"
@@ -22,6 +30,8 @@
   import { toast } from "svelte-sonner"
   import { invalidate } from "$app/navigation"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
+  import { match } from "ts-pattern"
+  import { cn } from "$lib/utils"
 
   const table = getTable()
   const recordsStore = getRecordsStore()
@@ -63,6 +73,7 @@
     })
   }
 
+  let isInView: boolean
   const query = createInfiniteQuery(
     derived([table, viewId], ([$table, $viewId]) => {
       const view = $table.views.getViewById($viewId)
@@ -178,11 +189,40 @@
 
   let updateOptionDialogOpen = false
   let deleteOptionDialogOpen = false
+
+  function getKanbanBgColor(color: IColors) {
+    return match(color)
+      .with("gray", () => "bg-gray-100/50")
+      .with("red", () => "bg-red-100/50")
+      .with("yellow", () => "bg-yellow-100/50")
+      .with("green", () => "bg-green-100/50")
+      .with("blue", () => "bg-blue-100/50")
+      .with("indigo", () => "bg-indigo-100/50")
+      .with("purple", () => "bg-purple-100/50")
+      .with("pink", () => "bg-pink-100/50")
+      .with("cyan", () => "bg-cyan-100/50")
+      .with("emerald", () => "bg-emerald-100/50")
+      .with("teal", () => "bg-teal-100/50")
+      .with("sky", () => "bg-sky-100/50")
+      .with("violet", () => "bg-violet-100/50")
+      .with("rose", () => "bg-rose-100/50")
+      .with("black", () => "bg-gray-100/50")
+      .with("lime", () => "bg-lime-100/50")
+      .with("orange", () => "bg-orange-100/50")
+      .exhaustive()
+  }
+
+  function onCreateRecord() {
+    $defaultRecordValues = {
+      [fieldId]: option ? option.id : null,
+    }
+    toggleModal(CREATE_RECORD_MODAL)
+  }
 </script>
 
 <div
   data-option-id={option?.id ?? null}
-  class="kanban-lane flex w-[350px] shrink-0 flex-col space-y-2 rounded-sm px-2 pt-2 transition-all"
+  class={cn("kanban-lane flex w-[350px] shrink-0 flex-col space-y-2 rounded-sm px-2 pt-2 transition-all")}
 >
   <div class="flex w-full items-center justify-between gap-1">
     <div class="flex items-center gap-1">
@@ -225,24 +265,17 @@
       </DropdownMenu.Root>
     {/if}
   </div>
-  <div class="max-w-[350px] flex-1 space-y-2 overflow-auto" data-option-id={option?.id ?? null}>
+  <div class="max-w-[350px] flex-1 space-y-2 overflow-hidden" data-option-id={option?.id ?? null}>
     <div
       bind:this={laneElement}
       data-option-id={option?.id ?? null}
-      class="min-h-[200px] space-y-2 rounded-lg border bg-gray-100 p-2"
+      class={cn(
+        "h-full flex-1 space-y-2 overflow-y-auto rounded-lg border bg-gray-100 p-2",
+        getKanbanBgColor(option?.color ?? "gray"),
+      )}
     >
       {#if !readonly && $hasPermission("record:create")}
-        <Button
-          on:click={() => {
-            $defaultRecordValues = {
-              [fieldId]: option ? option.id : null,
-            }
-            toggleModal(CREATE_RECORD_MODAL)
-          }}
-          variant="outline"
-          size="sm"
-          class="w-full"
-        >
+        <Button on:click={onCreateRecord} variant="outline" size="sm" class="w-full">
           <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
         </Button>
       {/if}
@@ -271,9 +304,21 @@
       {/if}
     </div>
   </div>
+  <div class="flex w-full items-center justify-between px-2 py-0.5">
+    <Button variant="outline" size="xs" on:click={onCreateRecord}>
+      <PlusIcon class="text-muted-foreground mr-2 h-3 w-3 font-semibold" />
+      New Record
+    </Button>
+
+    {#if $query.isFetchedAfterMount}
+      <p class="text-muted-foreground text-xs">
+        {$query.data?.pages.flatMap((r) => r.records).length} / {$query.data?.pages[0]?.total} records
+      </p>
+    {/if}
+  </div>
 </div>
 
-{#if option}
+{#if option && $hasPermission("field:update")}
   <Dialog.Root bind:open={updateOptionDialogOpen}>
     <Dialog.Content>
       <Dialog.Header>
@@ -288,7 +333,7 @@
   </Dialog.Root>
 {/if}
 
-{#if option}
+{#if option && $hasPermission("field:update")}
   <AlertDialog.Root bind:open={deleteOptionDialogOpen}>
     <AlertDialog.Content>
       <AlertDialog.Header>
