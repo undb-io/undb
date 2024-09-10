@@ -1,9 +1,9 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte"
   import Sortable from "sortablejs"
-  import { createInfiniteQuery, createMutation, useQueryClient } from "@tanstack/svelte-query"
+  import { createInfiniteQuery, createMutation, type CreateInfiniteQueryOptions } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
-  import { FieldIdVo, RecordDO, Records, SelectEqual, SelectField, type IOption, type IRecordsDTO } from "@undb/table"
+  import { FieldIdVo, Records, SelectEqual, SelectField, type IOption, type IRecordsDTO } from "@undb/table"
   import KanbanSkeleton from "./kanban-skeleton.svelte"
   import { derived, type Readable } from "svelte/store"
   import { getTable } from "$lib/store/table.store"
@@ -14,8 +14,6 @@
   import { defaultRecordValues } from "$lib/store/records.store"
   import { getRecordsStore } from "$lib/store/records.store"
   import { Some } from "@undb/domain"
-  import { inview } from "svelte-inview"
-  import { cn } from "$lib/utils"
   import { hasPermission } from "$lib/store/space-member.store"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import * as Dialog from "$lib/components/ui/dialog"
@@ -65,18 +63,28 @@
     })
   }
 
-  const query = createInfiniteQuery({
-    queryKey: [$table.id.value, $viewId, fieldId, "getRecords", option?.id],
-    queryFn: getRecords,
-    initialPageParam: 1,
-    getNextPageParam: (lastPage, pages) => {
-      const current = pages.reduce<number>((acc, cur) => acc + (cur as any).records.length, 0)
-      if (current >= (lastPage as any).total) {
-        return undefined
-      }
-      return pages.length + 1
-    },
-  })
+  const query = createInfiniteQuery(
+    derived([table, viewId], ([$table, $viewId]) => {
+      const view = $table.views.getViewById($viewId)
+      return {
+        queryKey: [$table.id.value, $viewId, fieldId, "getRecords", option?.id],
+        queryFn: getRecords,
+        initialPageParam: 1,
+        getNextPageParam: (lastPage, pages) => {
+          const current = pages.reduce<number>((acc, cur) => acc + (cur as any).records.length, 0)
+          if (current >= (lastPage as any).total) {
+            return undefined
+          }
+          return pages.length + 1
+        },
+        enabled: view?.type === "kanban",
+        filters: {
+          conjunction: "and",
+          children: [{ field: fieldId, op: "eq", value: option ? option.id : null }],
+        },
+      } as CreateInfiniteQueryOptions
+    }),
+  )
 
   let laneElement: HTMLElement
 
@@ -158,6 +166,10 @@
     const records = ($query.data?.pages.flatMap((r: any) => r.records) as IRecordsDTO) ?? []
     recordsStore.upsertRecords(Records.fromJSON($table, records))
   }
+
+  onDestroy(() => {
+    recordsStore.clearRecords()
+  })
 
   let storeGetRecords = recordsStore.getRecords
   $: recordDos = $storeGetRecords(Some(new SelectEqual(option?.id ?? null, new FieldIdVo(fieldId))))
@@ -242,16 +254,19 @@
         {#each recordDos as record (record.id.value)}
           <KanbanCard {readonly} {record} {fields} />
         {/each}
-        {#if !readonly}
-          <div
-            use:inview
-            class={cn("flex h-10 w-full items-center justify-center", !$query.hasNextPage && "h-0")}
-            on:inview_enter={() => $query.fetchNextPage()}
+        {#if $query.hasNextPage && $query.isFetchedAfterMount}
+          <Button
+            disabled={$query.isFetching}
+            variant="secondary"
+            size="sm"
+            class="w-full"
+            on:click={() => $query.fetchNextPage()}
           >
             {#if $query.isFetching}
-              <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
+              <LoaderCircleIcon class="mr-2 h-3 w-3 animate-spin" />
             {/if}
-          </div>
+            Load more
+          </Button>
         {/if}
       {/if}
     </div>

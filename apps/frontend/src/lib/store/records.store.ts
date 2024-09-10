@@ -106,6 +106,11 @@ export const createRecordsStore = () => {
     return [...$store.records.values()].filter((record) => (spec.isSome() ? spec.unwrap().isSatisfiedBy(record) : true))
   })
 
+  const clearRecords = () => {
+    store.set({ lastUpdatedAt: 0, ids: [], records: new Map() })
+    data.set([])
+  }
+
   return {
     set,
     update,
@@ -122,6 +127,7 @@ export const createRecordsStore = () => {
     records,
     data,
     invalidateRecord,
+    clearRecords,
   }
 }
 
