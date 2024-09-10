@@ -1,25 +1,22 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
   import { KanbanSquareDashedIcon } from "lucide-svelte"
-  import * as Dialog from "$lib/components/ui/dialog"
+  import * as Dropdown from "$lib/components/ui/dropdown-menu"
   import SelectKanbanFieldForm from "./select-kanban-field-form.svelte"
   import type { KanbanView } from "@undb/table"
 
   export let view: KanbanView
 </script>
 
-<Dialog.Root>
-  <Dialog.Trigger>
-    <Button variant="ghost" size="sm">
+<Dropdown.Root>
+  <Dropdown.Trigger asChild let:builder>
+    <Button variant="ghost" size="sm" builders={[builder]}>
       <KanbanSquareDashedIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
       Kanban
     </Button>
-  </Dialog.Trigger>
-  <Dialog.Content>
-    <Dialog.Header>
-      <Dialog.Title>Update kanban view option</Dialog.Title>
-    </Dialog.Header>
-
+  </Dropdown.Trigger>
+  <Dropdown.Content class="w-[400px] p-2">
+    <Dropdown.Label>Update kanban view</Dropdown.Label>
     <SelectKanbanFieldForm {view} />
-  </Dialog.Content>
-</Dialog.Root>
+  </Dropdown.Content>
+</Dropdown.Root>

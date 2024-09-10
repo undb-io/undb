@@ -7,6 +7,7 @@
   import { getTable } from "$lib/store/table.store"
   import { queryParam } from "sveltekit-search-params"
   import GridViewDataTable from "./grid-view-data-table.svelte"
+  import CreateRecordSheet from "../create-record/create-record-sheet.svelte"
 
   export let readonly = false
 
@@ -56,3 +57,5 @@
   isLoading={$getRecords.isLoading}
   total={$getRecords.data?.total ?? 0}
 />
+
+<CreateRecordSheet />

@@ -2,7 +2,7 @@
   import { Skeleton } from "$lib/components/ui/skeleton"
 </script>
 
-<div class="flex-1 overflow-x-auto overflow-y-hidden bg-gray-100 p-4">
+<div class="flex-1 overflow-x-auto overflow-y-hidden">
   <div class="w-full overflow-hidden">
     {#each Array(4) as _, i}
       <div class="mb-2 w-full rounded bg-white p-2 shadow">
