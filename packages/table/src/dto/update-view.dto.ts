@@ -1,6 +1,6 @@
 import { z } from "@undb/zod"
-import { updateGridViewDTO, updateKanbanViewDTO } from "../modules"
+import { updateGalleryViewDTO,updateGridViewDTO,updateKanbanViewDTO } from "../modules"
 
-export const updateViewDTO = z.discriminatedUnion("type", [updateGridViewDTO, updateKanbanViewDTO])
+export const updateViewDTO = z.discriminatedUnion("type", [updateGridViewDTO, updateKanbanViewDTO, updateGalleryViewDTO])
 
 export type IUpdateViewDTO = z.infer<typeof updateViewDTO>

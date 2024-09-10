@@ -387,6 +387,10 @@ type RootTranslation = {
 			 * K​a​n​b​a​n
 			 */
 			kanban: string
+			/**
+			 * G​a​l​l​e​r​y
+			 */
+			gallery: string
 		}
 	}
 }
@@ -766,6 +770,10 @@ export type TranslationFunctions = {
 			 * Kanban
 			 */
 			kanban: () => LocalizedString
+			/**
+			 * Gallery
+			 */
+			gallery: () => LocalizedString
 		}
 	}
 }

@@ -3,6 +3,7 @@
   import type { Readable } from "svelte/store"
   import GridView from "../grid-view/grid-view.svelte"
   import KanbanView from "../kanban-view/kanban-view.svelte"
+  import GalleryView from "../gallery-view/gallery-view.svelte"
 
   const table = getTable()
   export let viewId: Readable<string>
@@ -16,6 +17,8 @@
       <KanbanView {viewId} />
     {:else if view.type === "grid"}
       <GridView {viewId} />
+    {:else if view.type === "gallery"}
+      <GalleryView {viewId} />
     {/if}
   {/if}
 {/key}
