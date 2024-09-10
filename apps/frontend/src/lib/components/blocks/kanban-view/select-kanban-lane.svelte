@@ -17,7 +17,15 @@
   import { getTable } from "$lib/store/table.store"
   import KanbanCard from "./kanban-card.svelte"
   import Button from "$lib/components/ui/button/button.svelte"
-  import { EllipsisIcon, GripVerticalIcon, LoaderCircleIcon, PencilIcon, PlusIcon, TrashIcon } from "lucide-svelte"
+  import {
+    EllipsisIcon,
+    GripVerticalIcon,
+    LoaderCircleIcon,
+    PencilIcon,
+    PlusIcon,
+    TrashIcon,
+    Maximize2Icon,
+  } from "lucide-svelte"
   import { CREATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import { defaultRecordValues } from "$lib/store/records.store"
   import { getRecordsStore } from "$lib/store/records.store"
@@ -32,6 +40,8 @@
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import { match } from "ts-pattern"
   import { cn } from "$lib/utils"
+  import { kanbanStore } from "$lib/store/kanban.store"
+  import SelectKanbanCollapsedLane from "./select-kanban-collapsed-lane.svelte"
 
   const table = getTable()
   const recordsStore = getRecordsStore()
@@ -73,7 +83,9 @@
     })
   }
 
-  let isInView: boolean
+  let getIsLaneCollapsed = kanbanStore.getIsLaneCollapsed
+  $: isLaneCollapsed = $getIsLaneCollapsed($viewId, option?.id ?? "") ?? false
+
   const query = createInfiniteQuery(
     derived([table, viewId], ([$table, $viewId]) => {
       const view = $table.views.getViewById($viewId)
@@ -149,7 +161,7 @@
   }
 
   onMount(() => {
-    if (!shareId && !readonly) {
+    if (!shareId && !readonly && laneElement) {
       new Sortable(laneElement, {
         group: "shared",
         animation: 150,
@@ -222,24 +234,31 @@
 
 <div
   data-option-id={option?.id ?? null}
-  class={cn("kanban-lane flex w-[350px] shrink-0 flex-col space-y-2 rounded-sm px-2 pt-2 transition-all")}
+  class={cn(
+    "kanban-lane flex shrink-0 flex-col rounded-sm transition-all",
+    isLaneCollapsed ? "w-10 rounded-md border shadow-sm" : "w-[350px]",
+  )}
 >
-  <div class="flex w-full items-center justify-between gap-1">
-    <div class="flex items-center gap-1">
-      {#if !shareId && option && !readonly}
-        <div class="lane-handle cursor-move">
-          <GripVerticalIcon class="text-muted-foreground h-4 w-4" />
-        </div>
-      {/if}
-
-      {#if option}
-        <Option {option} />
-      {:else}
-        <Option option={{ id: "", name: "No Option", color: "gray" }} />
-      {/if}
+  {#if isLaneCollapsed}
+    <div class="mr-2 w-full pt-2" bind:this={laneElement} data-option-id={option?.id ?? null}>
+      <SelectKanbanCollapsedLane option={option ?? { id: "", name: "No Option", color: "gray" }} viewId={$viewId} />
     </div>
+  {:else}
+    <div class="flex w-full items-center justify-between gap-1">
+      <div class="flex items-center gap-1">
+        {#if !shareId && option && !readonly}
+          <div class="lane-handle cursor-move">
+            <GripVerticalIcon class="text-muted-foreground h-4 w-4" />
+          </div>
+        {/if}
 
-    {#if !shareId && !readonly && option}
+        {#if option}
+          <Option {option} />
+        {:else}
+          <Option option={{ id: "", name: "No Option", color: "gray" }} />
+        {/if}
+      </div>
+
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild let:builder>
           <Button size="xs" variant="ghost" builders={[builder]}>
@@ -248,74 +267,102 @@
         </DropdownMenu.Trigger>
         <DropdownMenu.Content class="w-48">
           <DropdownMenu.Group>
-            <DropdownMenu.Item class="text-muted-foreground text-xs" on:click={() => (updateOptionDialogOpen = true)}>
-              <PencilIcon class="mr-2 h-3 w-3" />
-              Update option
-            </DropdownMenu.Item>
+            {#if !shareId && !readonly && option}
+              <DropdownMenu.Item class="text-muted-foreground text-xs" on:click={() => (updateOptionDialogOpen = true)}>
+                <PencilIcon class="mr-2 h-3 w-3" />
+                Update option
+              </DropdownMenu.Item>
+              <DropdownMenu.Item
+                disabled={field.options.length <= 1}
+                class="text-muted-foreground text-xs"
+                on:click={() => (deleteOptionDialogOpen = true)}
+              >
+                <TrashIcon class="mr-2 h-3 w-3" />
+                Delete option
+              </DropdownMenu.Item>
+            {/if}
             <DropdownMenu.Item
-              disabled={field.options.length <= 1}
               class="text-muted-foreground text-xs"
-              on:click={() => (deleteOptionDialogOpen = true)}
+              on:click={() => {
+                kanbanStore.toggleLane($viewId, option?.id ?? "")
+              }}
             >
-              <TrashIcon class="mr-2 h-3 w-3" />
-              Delete option
+              <Maximize2Icon class="mr-2 h-3 w-3" />
+              Collapse Lane
             </DropdownMenu.Item>
           </DropdownMenu.Group>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
-    {/if}
-  </div>
-  <div class="max-w-[350px] flex-1 space-y-2 overflow-hidden" data-option-id={option?.id ?? null}>
-    <div
-      bind:this={laneElement}
-      data-option-id={option?.id ?? null}
-      class={cn(
-        "h-full flex-1 space-y-2 overflow-y-auto rounded-lg border bg-gray-100 p-2",
-        getKanbanBgColor(option?.color ?? "gray"),
-      )}
-    >
-      {#if !readonly && $hasPermission("record:create")}
-        <Button on:click={onCreateRecord} variant="outline" size="sm" class="w-full">
-          <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
-        </Button>
-      {/if}
-      {#if $query.isLoading}
-        <KanbanSkeleton />
-      {:else if $query.isError}
-        <p>error: {$query.error.message}</p>
-      {:else}
-        {#each recordDos as record (record.id.value)}
-          <KanbanCard {readonly} {record} {fields} />
-        {/each}
-        {#if $query.hasNextPage && $query.isFetchedAfterMount}
-          <Button
-            disabled={$query.isFetching}
-            variant="secondary"
-            size="sm"
-            class="w-full"
-            on:click={() => $query.fetchNextPage()}
-          >
-            {#if $query.isFetching}
-              <LoaderCircleIcon class="mr-2 h-3 w-3 animate-spin" />
+    </div>
+    <div class="mt-2 max-w-[350px] flex-1 space-y-2 overflow-hidden" data-option-id={option?.id ?? null}>
+      <div
+        bind:this={laneElement}
+        data-option-id={option?.id ?? null}
+        class={cn(
+          "h-full flex-1 space-y-2 overflow-y-auto rounded-lg border bg-gray-100 p-2",
+          getKanbanBgColor(option?.color ?? "gray"),
+        )}
+      >
+        {#if !readonly && $hasPermission("record:create")}
+          {#if $query.isFetchedAfterMount}
+            {#if $query.data?.pages[0]?.total > 0}
+              <Button on:click={onCreateRecord} variant="outline" size="sm" class="w-full">
+                <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
+              </Button>
+            {:else}
+              <div class="flex h-full w-full flex-col items-center justify-center space-y-3">
+                <p class="text-sm font-semibold">No records</p>
+                <p class="text-muted-foreground text-xs">
+                  Create a new record of this option <Option
+                    option={option ?? { id: "", name: "No Option", color: "gray" }}
+                  />
+                </p>
+                <Button on:click={onCreateRecord} variant="outline" size="sm">
+                  <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
+                  New Record
+                </Button>
+              </div>
             {/if}
-            Load more
-          </Button>
+          {/if}
         {/if}
+        {#if $query.isLoading}
+          <KanbanSkeleton />
+        {:else if $query.isError}
+          <p>error: {$query.error.message}</p>
+        {:else}
+          {#each recordDos as record (record.id.value)}
+            <KanbanCard {readonly} {record} {fields} />
+          {/each}
+          {#if $query.hasNextPage && $query.isFetchedAfterMount}
+            <Button
+              disabled={$query.isFetching}
+              variant="secondary"
+              size="sm"
+              class="w-full"
+              on:click={() => $query.fetchNextPage()}
+            >
+              {#if $query.isFetching}
+                <LoaderCircleIcon class="mr-2 h-3 w-3 animate-spin" />
+              {/if}
+              Load more
+            </Button>
+          {/if}
+        {/if}
+      </div>
+    </div>
+    <div class="mt-2 flex w-full items-center justify-between px-2 py-0.5">
+      <Button variant="outline" size="xs" on:click={onCreateRecord}>
+        <PlusIcon class="text-muted-foreground mr-2 h-3 w-3 font-semibold" />
+        New Record
+      </Button>
+
+      {#if $query.isFetchedAfterMount}
+        <p class="text-muted-foreground text-xs">
+          {$query.data?.pages.flatMap((r) => r.records).length} / {$query.data?.pages[0]?.total} records
+        </p>
       {/if}
     </div>
-  </div>
-  <div class="flex w-full items-center justify-between px-2 py-0.5">
-    <Button variant="outline" size="xs" on:click={onCreateRecord}>
-      <PlusIcon class="text-muted-foreground mr-2 h-3 w-3 font-semibold" />
-      New Record
-    </Button>
-
-    {#if $query.isFetchedAfterMount}
-      <p class="text-muted-foreground text-xs">
-        {$query.data?.pages.flatMap((r) => r.records).length} / {$query.data?.pages[0]?.total} records
-      </p>
-    {/if}
-  </div>
+  {/if}
 </div>
 
 {#if option && $hasPermission("field:update")}
