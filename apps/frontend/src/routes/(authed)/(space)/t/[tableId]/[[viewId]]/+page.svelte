@@ -37,9 +37,6 @@
     {/if}
   </main>
 
-  {#await import("$lib/components/blocks/record-detail/table-record-detail-sheet.svelte") then { default: TableRecordDetailSheet }}
-    <TableRecordDetailSheet />
-  {/await}
   {#await import("$lib/components/blocks/delete-record/confirm-delete-record.svelte") then { default: ConfirmDeleteRecord }}
     <ConfirmDeleteRecord />
   {/await}

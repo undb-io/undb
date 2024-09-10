@@ -111,6 +111,7 @@ const macros: Record<IFieldMacro, string> = {
 const viewTypes: Record<ViewType, string> = {
   grid: "Grid",
   kanban: "Kanban",
+  gallery: "Gallery",
 }
 
 const en = {

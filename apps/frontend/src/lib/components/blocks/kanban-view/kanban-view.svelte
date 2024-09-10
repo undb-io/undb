@@ -8,7 +8,6 @@
   import { FieldIdVo } from "@undb/table"
   import SelectKanbanRequiresSingle from "./select-kanban-requires-single.svelte"
   import KanbanOptionButton from "./kanban-option-button.svelte"
-  import CreateRecordSheet from "../create-record/create-record-sheet.svelte"
 
   const table = getTable()
   export let viewId: Readable<string>
@@ -38,4 +37,10 @@
   {/if}
 {/if}
 
-<CreateRecordSheet />
+{#await import("$lib/components/blocks/create-record/create-record-sheet.svelte") then { default: CreateRecordSheet }}
+  <CreateRecordSheet />
+{/await}
+
+{#await import("$lib/components/blocks/record-detail/table-record-detail-sheet.svelte") then { default: TableRecordDetailSheet }}
+  <TableRecordDetailSheet />
+{/await}

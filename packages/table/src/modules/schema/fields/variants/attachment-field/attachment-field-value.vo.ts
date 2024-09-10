@@ -32,6 +32,10 @@ export class AttachmentFieldValue extends FieldValueObject<IAttachmentFieldValue
     super(value === null ? { value } : value)
   }
 
+  getImages() {
+    return this.value?.filter((item) => isImage(item)) ?? []
+  }
+
   isEmpty() {
     return this.props === null || this.props === undefined || (Array.isArray(this.props) && this.props.length === 0)
   }

@@ -31,6 +31,10 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
         field
       }
 
+      gallery {
+        field
+      }
+
       share {
         enabled
         id
