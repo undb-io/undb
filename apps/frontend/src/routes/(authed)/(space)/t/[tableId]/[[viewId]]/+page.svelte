@@ -1,7 +1,4 @@
 <script lang="ts">
-  import CreateRecordSheet from "$lib/components/blocks/create-record/create-record-sheet.svelte"
-  import ConfirmDeleteRecord from "$lib/components/blocks/delete-record/confirm-delete-record.svelte"
-  import ConfirmDuplicateRecord from "$lib/components/blocks/duplicate-record/confirm-duplicate-record.svelte"
   import { shortcut } from "@svelte-put/shortcut"
   import TableHeader from "$lib/components/blocks/table-header/table-header.svelte"
   import Forms from "$lib/components/blocks/forms/forms.svelte"
@@ -9,15 +6,9 @@
   import Developer from "$lib/components/blocks/developer/developer.svelte"
   import { isFormTab, isAuthTab, isDataTab } from "$lib/store/tab.store"
   import { CREATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
-  import UpdateViewDialog from "$lib/components/blocks/view/update-view-dialog.svelte"
-  import DuplicateViewDialog from "$lib/components/blocks/view/duplicate-view-dialog.svelte"
-  import DeleteViewDialog from "$lib/components/blocks/view/delete-view-dialog.svelte"
   import { getTable } from "$lib/store/table.store"
   import { page } from "$app/stores"
   import { derived } from "svelte/store"
-  import UpdateTableDialog from "$lib/components/blocks/update-table/update-table-dialog.svelte"
-  import DeleteTableDialog from "$lib/components/blocks/delete-table/delete-table-dialog.svelte"
-  import TableRecordDetailSheet from "$lib/components/blocks/record-detail/table-record-detail-sheet.svelte"
   import View from "$lib/components/blocks/view/view.svelte"
 
   function handleR() {
@@ -46,15 +37,30 @@
     {/if}
   </main>
 
-  <CreateRecordSheet />
-  <TableRecordDetailSheet />
-  <ConfirmDeleteRecord />
-  <ConfirmDuplicateRecord />
-  <UpdateViewDialog />
-  <UpdateTableDialog />
-  <DuplicateViewDialog />
-  <DeleteViewDialog />
-  <DeleteTableDialog />
+  {#await import("$lib/components/blocks/record-detail/table-record-detail-sheet.svelte") then { default: TableRecordDetailSheet }}
+    <TableRecordDetailSheet />
+  {/await}
+  {#await import("$lib/components/blocks/delete-record/confirm-delete-record.svelte") then { default: ConfirmDeleteRecord }}
+    <ConfirmDeleteRecord />
+  {/await}
+  {#await import("$lib/components/blocks/duplicate-record/confirm-duplicate-record.svelte") then { default: ConfirmDuplicateRecord }}
+    <ConfirmDuplicateRecord />
+  {/await}
+  {#await import("$lib/components/blocks/view/update-view-dialog.svelte") then { default: UpdateViewDialog }}
+    <UpdateViewDialog />
+  {/await}
+  {#await import("$lib/components/blocks/update-table/update-table-dialog.svelte") then { default: UpdateTableDialog }}
+    <UpdateTableDialog />
+  {/await}
+  {#await import("$lib/components/blocks/view/duplicate-view-dialog.svelte") then { default: DuplicateViewDialog }}
+    <DuplicateViewDialog />
+  {/await}
+  {#await import("$lib/components/blocks/view/delete-view-dialog.svelte") then { default: DeleteViewDialog }}
+    <DeleteViewDialog />
+  {/await}
+  {#await import("$lib/components/blocks/delete-table/delete-table-dialog.svelte") then { default: DeleteTableDialog }}
+    <DeleteTableDialog />
+  {/await}
 {/key}
 
 <svelte:window
