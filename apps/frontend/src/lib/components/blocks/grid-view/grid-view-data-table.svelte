@@ -62,7 +62,6 @@
   let store = getRecordsStore()
   let hasRecord = store.hasRecord
   let count = store.count
-  let records = store.records
 
   const table = createTable(store.data, {
     select: addSelectedRows(),

@@ -1,11 +1,15 @@
 <script lang="ts">
-  import { type Field, type RecordDO } from "@undb/table"
+  import { ViewColor, type Field, type RecordDO } from "@undb/table"
   import FieldValue from "../field-value/field-value.svelte"
   import { getTable } from "$lib/store/table.store"
   import * as Tooltip from "$lib/components/ui/tooltip"
   import { queryParam } from "sveltekit-search-params"
+  import { cn } from "$lib/utils"
+  import { getBgColor } from "../grid-view/grid-view.util"
 
   const table = getTable()
+  export let color: ViewColor | undefined
+
   export let fields: Field[]
   export let record: RecordDO
   export let readonly = false
@@ -14,14 +18,21 @@
 
   let values = record.flatten()
   let displayValues = record.displayValues?.toJSON() ?? {}
+
+  $: colorSpec = color?.getSpec($table.schema).into(undefined)
+  $: isMatch = colorSpec ? record.match(colorSpec) : false
+  $: condition = isMatch ? color?.getMatchedFieldConditions($table, record)[0] : undefined
 </script>
 
 <button
   on:click={() => ($r = record.id.value)}
   disabled={readonly}
   data-record-id={record.id.value}
-  class="mb-2 flex w-full flex-col space-y-2 rounded bg-white p-2 shadow"
+  class={cn("relative mb-2 flex w-full flex-col space-y-2 rounded bg-white p-2 shadow", isMatch && "pl-3")}
 >
+  {#if isMatch}
+    <div class={cn("absolute left-0 top-0 h-full w-1", condition && getBgColor(condition.option.color))}></div>
+  {/if}
   {#each fields as field}
     <div class="flex items-center gap-2">
       <Tooltip.Root>
