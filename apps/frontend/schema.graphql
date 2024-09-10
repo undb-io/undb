@@ -71,6 +71,10 @@ type FormOption {
   backgroundColor: String
 }
 
+type GalleryOption {
+  field: String
+}
+
 type Invitation {
   email: String!
   id: ID!
@@ -199,6 +203,7 @@ type View {
   color: JSON
   fields: JSON
   filter: JSON
+  gallery: GalleryOption
   id: ID!
   isDefault: Boolean
   kanban: KanbanOption
@@ -219,6 +224,7 @@ type ViewOption {
 }
 
 enum ViewType {
+  gallery
   grid
   kanban
 }

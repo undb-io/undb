@@ -44,7 +44,7 @@
         })
         toast.success("Record has been created!")
         onSuccess?.(data)
-        recordsStore.invalidateRecord($table, data)
+        recordsStore?.invalidateRecord($table, data)
       },
       onError: (error: Error) => {
         toast.error(error.message)

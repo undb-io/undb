@@ -15,7 +15,6 @@
   import GridViewActionHeader from "./grid-view-action-header.svelte"
   import GridViewCell from "./grid-view-cell.svelte"
   import GridViewEmpty from "./grid-view-empty.svelte"
-  import GridViewPagination from "./grid-view-pagination.svelte"
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
   import TableTools from "../table-tools/table-tools.svelte"
   import GridViewHeader from "./grid-view-header.svelte"
@@ -31,6 +30,7 @@
   import { gridViewStore, isRowSelected, isSelectedCell } from "./grid-view.store"
   import SelectedRecordsButton from "./selected-records-button.svelte"
   import { aggregatesStore } from "$lib/store/aggregates.store"
+    import ViewPagination from "../view/view-pagination.svelte"
 
   export let readonly = false
   export let viewId: Readable<string>
@@ -327,7 +327,7 @@
 
   <div class="flex items-center justify-center px-4 py-2">
     <div class="flex flex-1 flex-row items-center">
-      <GridViewPagination perPage={$perPage} bind:currentPage={$currentPage} count={total} />
+      <ViewPagination perPage={$perPage} bind:currentPage={$currentPage} count={total} />
       <div class="flex items-center gap-2 text-sm">
         <Select.Root
           selected={{ value: $perPage, label: String($perPage) }}

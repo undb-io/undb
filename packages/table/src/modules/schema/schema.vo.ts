@@ -303,4 +303,8 @@ export class Schema extends ValueObject<Field[]> {
   getKanbanFields(fields: Field[] = this.fields) {
     return fields.filter((f) => f.type === "select" && f.isSingle)
   }
+
+  getGalleryFields(fields: Field[] = this.fields) {
+    return fields.filter((f) => f.type === "attachment")
+  }
 }
