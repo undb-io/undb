@@ -5,6 +5,7 @@
   import { trpc } from "$lib/trpc/client"
   import {
     FieldIdVo,
+    KanbanView,
     Records,
     SelectEqual,
     SelectField,
@@ -47,12 +48,15 @@
   const recordsStore = getRecordsStore()
 
   export let tableId: string
+  export let view: KanbanView
   export let viewId: Readable<string>
   export let fieldId: string
   export let field: SelectField
   export let option: IOption | null
   export let readonly = false
   export let shareId: string | undefined = undefined
+
+  $: color = view.color.into(undefined)
 
   const getRecords = ({ pageParam = 1 }) => {
     if (shareId) {
@@ -186,6 +190,7 @@
   })
 
   $: {
+    // @ts-ignore
     const records = ($query.data?.pages.flatMap((r: any) => r.records) as IRecordsDTO) ?? []
     recordsStore.upsertRecords(Records.fromJSON($table, records))
   }
@@ -331,7 +336,7 @@
           <p>error: {$query.error.message}</p>
         {:else}
           {#each recordDos as record (record.id.value)}
-            <KanbanCard {readonly} {record} {fields} />
+            <KanbanCard {readonly} {record} {fields} {color} />
           {/each}
           {#if $query.hasNextPage && $query.isFetchedAfterMount}
             <Button
