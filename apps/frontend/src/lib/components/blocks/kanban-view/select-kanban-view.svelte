@@ -32,7 +32,7 @@
   export let shareId: string | undefined = undefined
 
   let fieldId = view.field.unwrapUnchecked()!
-  $: field = $table.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined) as SelectField
+  let field = $table.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined) as SelectField
 
   let lanesContainer: HTMLElement
   $: options = field.options ?? []
@@ -52,12 +52,12 @@
     if (!shareId) {
       new Sortable(lanesContainer, {
         animation: 150,
-        ghostClass: "bg-gray-200",
+        ghostClass: "bg-gray-100",
         handle: ".lane-handle", // 添加一个句柄类，用于拖拽
         onEnd: (evt) => {
           const { oldIndex, newIndex } = evt
           if (oldIndex !== newIndex && isNumber(oldIndex) && isNumber(newIndex)) {
-            options = arrayMoveImmutable(options, oldIndex, newIndex)
+            options = arrayMoveImmutable(options, oldIndex - 1, newIndex - 1)
             $updateFieldMudation.mutate({
               tableId: $table.id.value,
               field: {
@@ -77,7 +77,7 @@
   })
 
   let name: string
-  let color: IColors
+  let color = field.getNextColor()
 
   const createOption = () => {
     if (shareId) {
@@ -102,7 +102,7 @@
 </script>
 
 <div class="flex-1 overflow-x-auto overflow-y-hidden p-4">
-  <div bind:this={lanesContainer} class="flex h-full overflow-y-hidden pr-4">
+  <div bind:this={lanesContainer} class="flex h-full space-x-2 overflow-y-hidden pr-2">
     <SelectKanbanLane {field} {readonly} tableId={$table.id.value} {viewId} {fieldId} option={null} {shareId} />
     {#each options as option (option.id)}
       <SelectKanbanLane {field} {readonly} tableId={$table.id.value} {viewId} {fieldId} {option} {shareId} />

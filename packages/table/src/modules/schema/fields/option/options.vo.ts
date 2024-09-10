@@ -38,4 +38,8 @@ export class Options extends ValueObject<Option[]> {
   toJSON() {
     return this.props.map((o) => o.toJSON())
   }
+
+  getNextColor() {
+    return new ColorsVO().next(this.props[this.props.length - 1]?.value.color)
+  }
 }

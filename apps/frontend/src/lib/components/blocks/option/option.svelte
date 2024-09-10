@@ -14,6 +14,7 @@
     getTextColor(option.color),
     getRingColor(option.color),
     getBorderColor(option.color),
+    $$restProps.class,
   )}
 >
   {option.name}

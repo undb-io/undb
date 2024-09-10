@@ -1,6 +1,7 @@
 import { Option, Some, applyRules } from "@undb/domain"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
+import { ColorsVO } from "../../../../colors/colors.vo"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
@@ -135,5 +136,9 @@ export class SelectField extends AbstractField<SelectFieldValue, SelectFieldCons
 
   get options() {
     return this.option.into(undefined)?.options ?? []
+  }
+
+  getNextColor() {
+    return new ColorsVO().next(this.options[this.options.length - 1]?.color)
   }
 }
