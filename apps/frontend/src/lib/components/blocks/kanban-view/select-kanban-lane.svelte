@@ -235,12 +235,12 @@
 <div
   data-option-id={option?.id ?? null}
   class={cn(
-    "kanban-lane flex shrink-0 flex-col rounded-sm px-2 transition-all",
-    isLaneCollapsed ? "w-14 rounded-md border shadow-sm" : "w-[350px]",
+    "kanban-lane flex shrink-0 flex-col rounded-sm transition-all",
+    isLaneCollapsed ? "w-10 rounded-md border shadow-sm" : "w-[350px]",
   )}
 >
   {#if isLaneCollapsed}
-    <div class="mr-2 h-full w-full pt-2" bind:this={laneElement} data-option-id={option?.id ?? null}>
+    <div class="mr-2 w-full pt-2" bind:this={laneElement} data-option-id={option?.id ?? null}>
       <SelectKanbanCollapsedLane option={option ?? { id: "", name: "No Option", color: "gray" }} viewId={$viewId} />
     </div>
   {:else}
@@ -312,8 +312,12 @@
             {:else}
               <div class="flex h-full w-full flex-col items-center justify-center space-y-3">
                 <p class="text-sm font-semibold">No records</p>
-                <p class="text-muted-foreground text-xs">Create a new record of this option <Option option={option ?? {id: '', name: 'No Option', color: 'gray'}} /></p>
-                <Button on:click={onCreateRecord} variant="outline" size="sm" >
+                <p class="text-muted-foreground text-xs">
+                  Create a new record of this option <Option
+                    option={option ?? { id: "", name: "No Option", color: "gray" }}
+                  />
+                </p>
+                <Button on:click={onCreateRecord} variant="outline" size="sm">
                   <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
                   New Record
                 </Button>
