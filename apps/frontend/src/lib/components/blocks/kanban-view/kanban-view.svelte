@@ -1,22 +1,26 @@
 <script lang="ts">
   import { getTable } from "$lib/store/table.store"
   import type { Readable } from "svelte/store"
+  import type { KanbanView } from "@undb/table"
   import SelectKanbanField from "./select-kanban-field.svelte"
   import SelectKanbanView from "./select-kanban-view.svelte"
   import TableTools from "../table-tools/table-tools.svelte"
   import { FieldIdVo } from "@undb/table"
   import SelectKanbanRequiresSingle from "./select-kanban-requires-single.svelte"
+  import KanbanOptionButton from "./kanban-option-button.svelte"
 
   const table = getTable()
   export let viewId: Readable<string>
   export let shareId: string | undefined = undefined
 
-  $: view = $table.views.getViewById($viewId)
+  $: view = $table.views.getViewById($viewId) as KanbanView
   $: fieldId = view.type === "kanban" ? view.field.into(undefined) : undefined
   $: field = fieldId ? $table.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined) : undefined
 </script>
 
-<TableTools />
+<TableTools>
+  <KanbanOptionButton {view} />
+</TableTools>
 {#if view.type === "kanban"}
   {#if field?.type === "select"}
     {#if field.isSingle}
