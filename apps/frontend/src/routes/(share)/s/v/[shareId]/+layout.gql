@@ -41,6 +41,9 @@ query GetViewShareData($shareId: ID!) {
       kanban {
         field
       }
+      gallery {
+        field
+      }
     }
     schema {
       constraint
