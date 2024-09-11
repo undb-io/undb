@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-68
+
+
+### 🏡 Chore
+
+- Add template url ([088313c](https://github.com/undb-io/undb/commit/088313c))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-67
 
 ## v1.0.0-66
