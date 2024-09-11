@@ -1,6 +1,6 @@
 import { baseIdSchema } from "@undb/base"
 import { ValueObject } from "@undb/domain"
-import { formId, tableId, viewId } from "@undb/table"
+import { formId,tableId,viewId } from "@undb/table"
 import { z } from "zod"
 
 const shareTargetView = z.object({
