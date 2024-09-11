@@ -8,6 +8,7 @@
   import { FieldIdVo } from "@undb/table"
   import SelectKanbanRequiresSingle from "./select-kanban-requires-single.svelte"
   import KanbanOptionButton from "./kanban-option-button.svelte"
+  import { createRecordsStore, setRecordsStore } from "$lib/store/records.store"
 
   const table = getTable()
   export let viewId: Readable<string>
@@ -16,10 +17,15 @@
   $: view = $table.views.getViewById($viewId) as KanbanView
   $: fieldId = view.type === "kanban" ? view.field.into(undefined) : undefined
   $: field = fieldId ? $table.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined) : undefined
+
+  const recordsStore = createRecordsStore()
+  setRecordsStore(recordsStore)
 </script>
 
 <TableTools>
-  <KanbanOptionButton {view} />
+  {#if !shareId}
+    <KanbanOptionButton {view} />
+  {/if}
 </TableTools>
 {#if view.type === "kanban"}
   {#if field?.type === "select"}

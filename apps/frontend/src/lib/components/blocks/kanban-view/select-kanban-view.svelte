@@ -22,7 +22,6 @@
   import * as Popover from "$lib/components/ui/popover"
   import OptionEditor from "../option/option-editor.svelte"
   import { invalidate } from "$app/navigation"
-  import { createRecordsStore, setRecordsStore } from "$lib/store/records.store"
 
   const table = getTable()
 
@@ -96,9 +95,6 @@
       },
     })
   }
-
-  const recordsStore = createRecordsStore()
-  setRecordsStore(recordsStore)
 </script>
 
 <div class="flex-1 overflow-x-auto overflow-y-hidden p-4">
@@ -106,7 +102,6 @@
     <SelectKanbanLane {field} {readonly} tableId={$table.id.value} {viewId} {fieldId} option={null} {shareId} {view} />
     {#each options as option (option.id)}
       <SelectKanbanLane {field} {readonly} tableId={$table.id.value} {viewId} {fieldId} {option} {shareId} {view} />
-
     {/each}
     {#if !shareId}
       <div class="flex w-[350px] shrink-0 flex-col space-y-2 rounded-sm px-2 pt-2 transition-all">

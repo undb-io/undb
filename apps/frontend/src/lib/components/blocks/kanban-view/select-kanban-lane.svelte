@@ -43,6 +43,7 @@
   import { cn } from "$lib/utils"
   import { kanbanStore } from "$lib/store/kanban.store"
   import SelectKanbanCollapsedLane from "./select-kanban-collapsed-lane.svelte"
+  import { queryParam } from "sveltekit-search-params"
 
   const table = getTable()
   const recordsStore = getRecordsStore()
@@ -58,10 +59,13 @@
 
   $: color = view.color.into(undefined)
 
+  const q = queryParam("q")
+
   const getRecords = ({ pageParam = 1 }) => {
     if (shareId) {
       return trpc.shareData.records.query({
         shareId,
+        q: $q,
         filters: {
           conjunction: "and",
           children: [{ field: fieldId, op: "eq", value: option ? option.id : null }],
@@ -76,6 +80,7 @@
     return trpc.record.list.query({
       tableId,
       viewId: $viewId,
+      q: $q ?? undefined,
       filters: {
         conjunction: "and",
         children: [{ field: fieldId, op: "eq", value: option ? option.id : null }],
@@ -91,10 +96,10 @@
   $: isLaneCollapsed = $getIsLaneCollapsed($viewId, option?.id ?? "") ?? false
 
   const query = createInfiniteQuery(
-    derived([table, viewId], ([$table, $viewId]) => {
+    derived([table, viewId, q], ([$table, $viewId, $q]) => {
       const view = $table.views.getViewById($viewId)
       return {
-        queryKey: [$table.id.value, $viewId, fieldId, "getRecords", option?.id],
+        queryKey: [$table.id.value, $viewId, fieldId, "getRecords", option?.id, $q],
         queryFn: getRecords,
         initialPageParam: 1,
         getNextPageParam: (lastPage, pages) => {
@@ -356,10 +361,12 @@
       </div>
     </div>
     <div class="mt-2 flex w-full items-center justify-between px-2 py-0.5">
-      <Button variant="outline" size="xs" on:click={onCreateRecord}>
-        <PlusIcon class="text-muted-foreground mr-2 h-3 w-3 font-semibold" />
-        New Record
-      </Button>
+      {#if !shareId}
+        <Button variant="outline" size="xs" on:click={onCreateRecord}>
+          <PlusIcon class="text-muted-foreground mr-2 h-3 w-3 font-semibold" />
+          New Record
+        </Button>
+      {/if}
 
       {#if $query.isFetchedAfterMount}
         <p class="text-muted-foreground text-xs">
