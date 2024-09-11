@@ -12,6 +12,7 @@ import {
   type IDeleteRecordDTO,
   type IDuplicateRecordDTO,
   type IRecordRepository,
+  type ISubmitFormDTO,
   type IUpdateRecordDTO,
   type RecordDO,
 } from "../record"
@@ -23,11 +24,13 @@ import { createRecordMethod } from "./methods/create-record.method"
 import { createRecordsMethod } from "./methods/create-records.method"
 import { deleteRecordMethod } from "./methods/delete-record.method"
 import { duplicateRecordMethod } from "./methods/duplicate-record.method"
+import { submitFormMethod } from "./methods/submit-form.method"
 import { triggerRecordButtonMethod } from "./methods/trigger-record-button.method"
 import { updateRecordMethod } from "./methods/update-record.method"
 
 export interface IRecordsService {
   createRecord(table: IUniqueTableDTO, dto: ICreateRecordDTO): Promise<RecordDO>
+  submitForm(table: IUniqueTableDTO, dto: ISubmitFormDTO): Promise<RecordDO>
   createRecords(table: IUniqueTableDTO, dto: ICreateRecordDTO[]): Promise<RecordDO[]>
   updateRecord(table: IUniqueTableDTO, dto: IUpdateRecordDTO): Promise<RecordDO>
   triggerRecordButton(table: IUniqueTableDTO, dto: ITriggerRecordButtonDTO): Promise<Option<RecordDO>>
@@ -48,6 +51,7 @@ export class RecordsService implements IRecordsService {
   ) {}
 
   createRecord = createRecordMethod
+  submitForm = submitFormMethod
   createRecords = createRecordsMethod
   updateRecord = updateRecordMethod
   triggerRecordButton = triggerRecordButtonMethod
