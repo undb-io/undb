@@ -23,7 +23,7 @@
 
   const table = getTable()
 
-  $: visibleFields = $table.getOrderedVisibleFields()
+  $: visibleFields = $table?.getOrderedVisibleFields() ?? []
 
   export let disabled: boolean | undefined
   export let option: IButtonFieldOption = {
@@ -41,7 +41,7 @@
     },
   }
   const value = writable<MaybeConditionGroup<ZodUndefined> | undefined>()
-  $: validValue = $value ? parseValidViewFilter($table.schema, $value) : undefined
+  $: validValue = $table && $value ? parseValidViewFilter($table.schema, $value) : undefined
   $: if (validValue) {
     option.disabled = validValue
   }
@@ -53,9 +53,9 @@
   })
 
   $: selectedFields = option.action.values.map((v) => v.field)
-  $: selectableFields = $table.schema.fields.filter(
+  $: selectableFields = $table?.schema.fields.filter(
     (f) => getIsMutableFieldType(f.type) && f.type !== "attachment" && !selectedFields.includes(f.id.value),
-  )
+  ) ?? []
 </script>
 
 <div class="space-y-2">
@@ -74,7 +74,7 @@
   <div class="space-y-2 rounded-md border px-4 py-3">
     <p class="text-xs font-semibold">Update Value when Click Button</p>
     {#each option.action.values as value, index}
-      {@const field = value.field ? $table.schema.getFieldById(new FieldIdVo(value.field)).unwrap() : undefined}
+      {@const field = value.field && $table ? $table.schema.getFieldById(new FieldIdVo(value.field)).unwrap() : undefined}
       <FieldPicker
         class="w-full"
         bind:value={value.field}
@@ -90,7 +90,7 @@
           placeholder="Value to update..."
           bind:value={value.value}
           {field}
-          tableId={$table.id.value}
+          tableId={$table?.id.value}
         />
       {/if}
       {#if index !== option.action.values.length - 1}
