@@ -133,7 +133,7 @@
             {/if}
           </div>
         </Form.Label>
-        <div class="h-9 flex-1 overflow-hidden">
+        <div class="min-h-9 flex-1 overflow-hidden">
           {#if field.isSystem || !field.isMutable}
             <FieldValue
               {field}

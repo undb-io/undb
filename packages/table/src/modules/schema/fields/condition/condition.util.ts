@@ -124,6 +124,22 @@ export function getFlattenFieldConditions<OptionType extends z.ZodTypeAny>(
   return result
 }
 
+export function getFieldIdsFromConditionGroup<OptionType extends z.ZodTypeAny>(
+  condition: IConditionGroup<OptionType>,
+): string[] {
+  const result: string[] = []
+
+  condition.children.forEach((child) => {
+    if (isFieldCondition(child)) {
+      result.push(child.field)
+    } else if (isGroup(child)) {
+      result.push(...getFieldIdsFromConditionGroup(child))
+    }
+  })
+
+  return result
+}
+
 export function parseValidCondition<OptionType extends z.ZodTypeAny>(optionType: OptionType) {
   function validate(schema: Schema, condition: MaybeConditionGroup<OptionType>): IConditionGroup<OptionType> {
     const children: IConditionGroupChildren<OptionType> = []

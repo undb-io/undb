@@ -39,6 +39,7 @@ import { SetViewFieldsCommandHandler } from "./set-view-fields.command-handler"
 import { SetViewFilterCommandHandler } from "./set-view-filter.command-handler"
 import { SetViewOptionCommandHandler } from "./set-view-option.command-handler"
 import { SetViewSortCommandHandler } from "./set-view-sort.command-handler"
+import { SubmitFormCommandHandler } from "./submit-form.command-handler"
 import { TriggerRecordButtonCommandHandler } from "./trigger-record-button.command-handler"
 import { UpdateAccountCommandHandler } from "./update-account.command-handler"
 import { UpdateBaseCommandHandler } from "./update-base.command-handler"
@@ -100,4 +101,5 @@ export const commandHandlers = [
   DeleteBaseCommandHandler,
   TriggerRecordButtonCommandHandler,
   DeleteFormCommandHandler,
+  SubmitFormCommandHandler,
 ]

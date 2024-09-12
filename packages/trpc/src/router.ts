@@ -37,6 +37,7 @@ import {
   SetViewFilterCommand,
   SetViewOptionCommand,
   SetViewSortCommand,
+  SubmitFormCommand,
   TriggerRecordButtonCommand,
   UpdateAccountCommand,
   UpdateBaseCommand,
@@ -85,6 +86,7 @@ import {
   setViewFilterCommand,
   setViewOptionCommand,
   setViewSortCommand,
+  submitFormCommand,
   triggerRecordButtonCommand,
   updateBaseCommand,
   updateRecordCommand,
@@ -144,6 +146,9 @@ const formRouter = t.router({
     .use(authz("form:delete"))
     .input(deleteFormCommand)
     .mutation(({ input }) => commandBus.execute(new DeleteFormCommand(input))),
+  submit: privateProcedure
+    .input(submitFormCommand)
+    .mutation(({ input }) => commandBus.execute(new SubmitFormCommand(input))),
 })
 
 const viewRouter = t.router({

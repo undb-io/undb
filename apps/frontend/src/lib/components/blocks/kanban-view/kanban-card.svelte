@@ -28,15 +28,18 @@
   on:click={() => ($r = record.id.value)}
   disabled={readonly}
   data-record-id={record.id.value}
-  class={cn("relative mb-2 flex w-full flex-col space-y-2 rounded bg-white p-2 shadow", isMatch && "pl-3")}
+  class={cn(
+    "relative mb-2 flex w-full flex-col space-y-2 overflow-hidden rounded bg-white p-2 shadow",
+    isMatch && "pl-3",
+  )}
 >
   {#if isMatch}
     <div class={cn("absolute left-0 top-0 h-full w-1", condition && getBgColor(condition.option.color))}></div>
   {/if}
   {#each fields as field}
-    <div class="flex items-center gap-2">
+    <div class="flex w-full items-center gap-2">
       <Tooltip.Root>
-        <Tooltip.Trigger>
+        <Tooltip.Trigger class="w-full">
           <FieldValue
             {field}
             tableId={$table.id.value}
@@ -44,6 +47,7 @@
             value={values[field.id.value]}
             type={field.type}
             displayValue={displayValues[field.id.value]}
+            class="w-full truncate"
           />
         </Tooltip.Trigger>
         <Tooltip.Content>

@@ -31,6 +31,7 @@ import {
   type FormId,
   type IRecordValues,
   type TableRLSGroup,
+  type View,
 } from "./modules"
 import type { FormsVO } from "./modules/forms/forms.vo"
 import type { Schema } from "./modules/schema/schema.vo"
@@ -151,6 +152,40 @@ export class TableDo extends AggregateRoot<ITableEvents> {
     const rlsSpec = this.rls.map((r) => r.getSpec(this.schema, "read", userId)).flatten()
 
     return andOptions(rlsSpec, viewSpec, Option(filter)) as Option<RecordComositeSpecification>
+  }
+
+  getSelectFields(view?: View, select?: string[]): Field[] {
+    const selected = select
+      ? select.map((f) => this.schema.getFieldById(new FieldIdVo(f)).unwrap())
+      : view
+        ? this.getOrderedVisibleFields(view.id.value)
+        : this.schema.fields
+
+    const addField = (fieldId: string) => {
+      if (!set.has(fieldId)) {
+        selected.push(this.schema.getFieldById(new FieldIdVo(fieldId)).unwrap())
+        set.add(fieldId)
+      }
+    }
+
+    const set = new Set(selected.map((f) => f.id.value))
+    if (view?.type === "kanban") {
+      const fieldId = view.field.into(undefined)
+      if (fieldId) {
+        addField(fieldId)
+      }
+    }
+
+    for (const field of selected) {
+      if (field.type === "button") {
+        const fieldIds = field.getFieldIdsFromDisabled()
+        for (const fieldId of fieldIds) {
+          addField(fieldId)
+        }
+      }
+    }
+
+    return selected
   }
 
   toJSON(): ITableDTO {

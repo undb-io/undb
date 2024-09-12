@@ -8,7 +8,7 @@
 </script>
 
 {#if v}
-  <div class={cn("text-sm", $$restProps.class)}>
+  <div class={cn("truncate text-left text-sm", $$restProps.class)}>
     {v}
   </div>
 {/if}
