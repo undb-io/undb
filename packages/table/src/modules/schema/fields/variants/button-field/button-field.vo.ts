@@ -4,7 +4,7 @@ import { WithUpdatedFieldSpecification } from "../../../../../specifications/tab
 import type { TableDo } from "../../../../../table.do"
 import type { IRecordComositeSpecification, RecordDO } from "../../../../records"
 import { createConditionGroup } from "../../condition/condition.type"
-import { conditionWithoutFields, getSpec } from "../../condition/condition.util"
+import { conditionWithoutFields, getFieldIdsFromConditionGroup, getSpec } from "../../condition/condition.util"
 import { fieldId, FieldIdVo } from "../../field-id.vo"
 import type { Field } from "../../field.type"
 import type { IFieldVisitor } from "../../field.visitor"
@@ -87,6 +87,13 @@ export class ButtonField extends AbstractField<ButtonFieldValue, undefined, IBut
 
     const spec = this.getDisableSpec(table)
     return spec.isSome() ? record.match(spec.unwrap()) : false
+  }
+
+  public getFieldIdsFromDisabled() {
+    const disabled = this.option.into(undefined)?.disabled
+    if (!disabled) return []
+
+    return getFieldIdsFromConditionGroup(disabled)
   }
 
   override type = BUTTON_TYPE

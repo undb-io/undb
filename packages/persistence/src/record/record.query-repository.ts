@@ -3,7 +3,6 @@ import { inject, singleton } from "@undb/di"
 import { None, Option, Some, type PaginatedDTO } from "@undb/domain"
 import {
   AUTO_INCREMENT_TYPE,
-  FieldIdVo,
   ID_TYPE,
   TableIdVo,
   injectTableRepository,
@@ -86,11 +85,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const select = q?.select.into(undefined)
     const view = q?.ignoreView ? undefined : q?.view
 
-    const selectFields = select
-      ? select.map((f) => table.schema.getFieldById(new FieldIdVo(f)).into(undefined)).filter((f) => !!f)
-      : view
-        ? table.getOrderedVisibleFields(view.id.value)
-        : table.schema.fields
+    const selectFields = table.getSelectFields(view, select)
 
     const foreignTables = await this.getForeignTables(table, selectFields)
     const qb = this.helper.createQuery(table, foreignTables, selectFields, None)
@@ -115,11 +110,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const pagination = query.into(undefined)?.pagination.into(undefined)
     const select = query.into(undefined)?.select.into(undefined)
 
-    const selectFields = select
-      ? select.map((f) => table.schema.getFieldById(new FieldIdVo(f)).into(undefined)).filter((f) => !!f)
-      : ignoreView
-        ? table.schema.fields
-        : table.getOrderedVisibleFields(view.id.value)
+    const selectFields = table.getSelectFields(ignoreView ? undefined : view, select)
     const foreignTables = await this.getForeignTables(table, selectFields)
     const qb = this.helper.createQuery(table, foreignTables, selectFields, spec)
 
@@ -159,9 +150,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const spec = table.getQuerySpec({ viewId: view.id.value, userId, filter })
 
     const select = query.into(undefined)?.select.into(undefined)
-    const selectFields = select
-      ? select.map((f) => table.schema.getFieldById(new FieldIdVo(f)).into(undefined)).filter((f) => !!f)
-      : table.getOrderedVisibleFields(view.id.value)
+    const selectFields = table.getSelectFields(view, select)
 
     const foreignTables = await this.getForeignTables(table, selectFields)
     const qb = this.helper.createQueryCreator(table, foreignTables, selectFields, spec)

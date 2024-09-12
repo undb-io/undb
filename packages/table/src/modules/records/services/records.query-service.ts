@@ -4,7 +4,7 @@ import { group } from "radash"
 import type { TableDo } from "../../../table.do"
 import type { ITableRepository } from "../../../table.repository"
 import { injectTableRepository } from "../../../table.repository.provider"
-import { FieldIdVo, type IAttachmentFieldValue } from "../../schema"
+import { type IAttachmentFieldValue } from "../../schema"
 import { injectObjectStorage, type IObjectStorage } from "../../storage"
 import type { AggregateResult, ICountRecordsDTO, IGetAggregatesDTO, IGetRecordByIdDTO, IGetRecordsDTO } from "../dto"
 import {
@@ -73,9 +73,7 @@ export class RecordsQueryService implements IRecordsQueryService {
     table: TableDo,
     value: IRecordDTO["values"],
   ): Promise<IRecordDTO["values"]> {
-    const fields = dto.select?.length
-      ? dto.select.map((fieldId) => table.schema.getFieldById(new FieldIdVo(fieldId)).unwrap())
-      : table.schema.fields
+    const fields = table.getSelectFields(undefined, dto.select)
     const attachmentFields = fields.filter((field) => field.type === "attachment")
     if (!attachmentFields.length) {
       return value
