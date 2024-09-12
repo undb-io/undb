@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-69
+
+
+### 🩹 Fixes
+
+- Fix record ui ([76d26f5](https://github.com/undb-io/undb/commit/76d26f5))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-68
 
 
