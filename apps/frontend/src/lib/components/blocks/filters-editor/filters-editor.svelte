@@ -34,7 +34,7 @@
   export let disabled = false
   export let readonly = false
 
-  $: filteredFields = table.getOrderedVisibleFields().filter((f) => filter({ id: f.id.value, type: f.type }))
+  $: filteredFields = table?.getOrderedVisibleFields().filter((f) => filter({ id: f.id.value, type: f.type })) ?? []
   export let disableGroup = false
 
   $: isEven = level % 2 === 0
@@ -103,7 +103,7 @@
       {#each value.children as child, i (child.id)}
         {#if isMaybeFieldCondition(child)}
           {@const field = child.field
-            ? table.schema.getFieldById(new FieldIdVo(child.field)).into(undefined)
+            ? table?.schema.getFieldById(new FieldIdVo(child.field)).into(undefined)
             : undefined}
           <div class="grid grid-cols-12 items-center gap-2">
             {#if i === 0 || disableGroup}
@@ -122,7 +122,7 @@
               <FilterField
                 {disabled}
                 {readonly}
-                table={writable(table)}
+                table={table ? writable(table) : undefined}
                 {sameWidth}
                 onValueChange={(type, prev) => {
                   if (type !== prev) {
@@ -135,7 +135,13 @@
                 bind:value={child.field}
                 class={cn("col-span-4 rounded-r-none border-r-0")}
               />
-              <FieldFilterControl class="col-span-8 overflow-hidden" {disabled} {field} bind:op={child.op} bind:value={child.value} />
+              <FieldFilterControl
+                class="col-span-8 overflow-hidden"
+                {disabled}
+                {field}
+                bind:op={child.op}
+                bind:value={child.value}
+              />
             </div>
             <div class="col-span-1 flex items-center gap-2">
               {#if !readonly && $hasPermission("table:update")}

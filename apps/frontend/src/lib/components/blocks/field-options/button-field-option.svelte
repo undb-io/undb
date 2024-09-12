@@ -53,9 +53,10 @@
   })
 
   $: selectedFields = option.action.values.map((v) => v.field)
-  $: selectableFields = $table?.schema.fields.filter(
-    (f) => getIsMutableFieldType(f.type) && f.type !== "attachment" && !selectedFields.includes(f.id.value),
-  ) ?? []
+  $: selectableFields =
+    $table?.schema.fields.filter(
+      (f) => getIsMutableFieldType(f.type) && f.type !== "attachment" && !selectedFields.includes(f.id.value),
+    ) ?? []
 </script>
 
 <div class="space-y-2">
@@ -74,7 +75,8 @@
   <div class="space-y-2 rounded-md border px-4 py-3">
     <p class="text-xs font-semibold">Update Value when Click Button</p>
     {#each option.action.values as value, index}
-      {@const field = value.field && $table ? $table.schema.getFieldById(new FieldIdVo(value.field)).unwrap() : undefined}
+      {@const field =
+        value.field && $table ? $table.schema.getFieldById(new FieldIdVo(value.field)).unwrap() : undefined}
       <FieldPicker
         class="w-full"
         bind:value={value.field}
