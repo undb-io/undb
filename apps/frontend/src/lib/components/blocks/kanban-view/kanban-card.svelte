@@ -39,7 +39,7 @@
   {#each fields as field}
     <div class="flex w-full items-center gap-2">
       <Tooltip.Root>
-        <Tooltip.Trigger class="w-full">
+        <Tooltip.Trigger class="w-full text-left">
           <FieldValue
             {field}
             tableId={$table.id.value}
@@ -47,7 +47,7 @@
             value={values[field.id.value]}
             type={field.type}
             displayValue={displayValues[field.id.value]}
-            class="w-full truncate"
+            class="w-full truncate text-left"
           />
         </Tooltip.Trigger>
         <Tooltip.Content>
