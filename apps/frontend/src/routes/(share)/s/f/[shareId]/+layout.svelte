@@ -4,6 +4,7 @@
   import type { LayoutData } from "./$types"
   import { writable } from "svelte/store"
   import { shareStore } from "$lib/store/share.store"
+  import Logo from "$lib/images/logo.svg"
 
   export let data: LayoutData
   $: tableStore = data.getFormShareData
@@ -26,7 +27,13 @@
 </script>
 
 {#if $table}
-  <slot />
+  <main class="relative h-full w-full">
+    <slot />
+    <div class="text-muted-foreground absolute bottom-5 right-5 flex items-center justify-center text-sm">
+      <img src={Logo} alt="undb" class="mr-2 h-4 w-4" />
+      Powered by <a href="https://undb.io" class="text-primary underline">&nbsp;undb</a>
+    </div>
+  </main>
 {/if}
 
 <style>
