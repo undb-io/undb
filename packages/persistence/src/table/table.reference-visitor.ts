@@ -29,6 +29,7 @@ import type {
   WithViewAggregate,
   WithViewColor,
   WithViewFields,
+  WithViewFieldWidth,
   WithViewFilter,
   WithViewIdSpecification,
   WithViewOption,
@@ -73,6 +74,7 @@ export class TableReferenceVisitor implements ITableSpecVisitor {
   withFormId(spec: WithFormIdSpecification): void {
     this.sqb = this.sqb.leftJoin("undb_table_id_mapping", "undb_table_id_mapping.table_id", "undb_table.id")
   }
+  withViewFieldWidth(spec: WithViewFieldWidth): void {}
   withNewForm(views: WithNewFormSpecification): void {}
   withoutForm(spec: WithoutFormSpecification): void {}
   withForm(views: WithFormSpecification): void {}

@@ -24,6 +24,7 @@ import type {
   WithView,
   WithViewAggregate,
   WithViewColor,
+  WithViewFieldWidth,
   WithViewFields,
   WithViewFilter,
   WithViewIdSpecification,
@@ -34,7 +35,7 @@ import type {
   WithoutView,
 } from "@undb/table"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
-import { json,type IQueryBuilder } from "../qb"
+import { json, type IQueryBuilder } from "../qb"
 import { tables } from "../tables"
 
 export class TableMutationVisitor extends AbstractQBMutationVisitor implements ITableSpecVisitor {
@@ -149,6 +150,9 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
     throw new Error("Method not implemented.")
   }
   withView(views: WithView): void {
+    this.setData(tables.views.name, json(this.table.views.toJSON()))
+  }
+  withViewFieldWidth(views: WithViewFieldWidth): void {
     this.setData(tables.views.name, json(this.table.views.toJSON()))
   }
   withNewView(views: WithNewView): void {

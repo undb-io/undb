@@ -10,5 +10,11 @@ export function setFieldWidth(this: TableDo, dto: ISetFieldWidthDTO): Option<Tab
     throw new Error("View type is not grid")
   }
 
-  throw new Error("Not implemented")
+  const spec = view.$setFieldWidthSpec(dto.field, dto.width)
+
+  if (spec.isSome()) {
+    spec.unwrap().mutate(this)
+  }
+
+  return spec
 }

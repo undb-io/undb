@@ -1,7 +1,8 @@
 import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { IDuplicateViewDTO } from "../../../../dto"
-import { WithNewView, WithView } from "../../../../specifications/table-view.specification"
+import { WithNewView, WithView, WithViewFieldWidth } from "../../../../specifications/table-view.specification"
+import { FieldIdVo } from "../../../schema/fields/field-id.vo"
 import { ViewIdVo } from "../view-id.vo"
 import { AbstractView, baseViewDTO, createBaseViewDTO, updateBaseViewDTO } from "./abstract-view.vo"
 
@@ -47,6 +48,29 @@ export class GridView extends AbstractView {
     return new GridView({ ...dto, id: ViewIdVo.fromStringOrCreate(dto.id).value })
   }
 
+  getFieldWidth(fieldId: string) {
+    return this.grid.into(undefined)?.widths?.[fieldId] ?? 200
+  }
+
+  setFieldWidth(fieldId: string, width: number) {
+    this.grid = Some({
+      ...this.grid.into(undefined),
+      widths: {
+        ...this.grid.into(undefined)?.widths,
+        [fieldId]: width,
+      },
+    })
+  }
+
+  $setFieldWidthSpec(fieldId: string, width: number): Option<WithViewFieldWidth> {
+    const previous = this.grid.into(undefined)?.widths?.[fieldId]
+    if (previous === width) {
+      return None
+    }
+
+    return Some(new WithViewFieldWidth(this.id, new FieldIdVo(fieldId), width))
+  }
+
   override type = GRID_TYPE
 
   override $update(input: IUpdateGridViewDTO): Option<WithView> {
@@ -77,5 +101,13 @@ export class GridView extends AbstractView {
         }),
       ),
     )
+  }
+
+  override toJSON(): IGridViewDTO {
+    return {
+      ...super.toJSON(),
+      type: GRID_TYPE,
+      grid: this.grid.into(undefined),
+    }
   }
 }
