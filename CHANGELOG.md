@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-70
+
+
+### 🩹 Fixes
+
+- Fix share view ([f87cc32](https://github.com/undb-io/undb/commit/f87cc32))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-69
 
 
