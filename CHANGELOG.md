@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v1.0.0-71
+
+
+### 🚀 Enhancements
+
+- Allow to resize grid view columns ([da211ae](https://github.com/undb-io/undb/commit/da211ae))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-70
 
 
