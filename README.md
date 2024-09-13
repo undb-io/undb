@@ -16,6 +16,7 @@ UNDB is a no-code platform that can also serve as a Backend as a Service (BaaS).
 <div align="center">
     <a href="https://app.undb.io">Website</a> |
     <a href="https://docs.undb.io">Documentation</a> |
+    <a href="https://x.com/unified_undb">Twitter / X</a> |
     <a href="https://discord.gg/3rcNdU3y3U">Discord</a> |
     <a href="https://app.undb.io/s/v/shrd0q2m4dyijmh">Roadmap</a>
 </div>
