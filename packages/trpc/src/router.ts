@@ -29,6 +29,7 @@ import {
   DuplicateViewCommand,
   EnableShareCommand,
   InviteCommand,
+  SetFieldWidthCommand,
   SetTableFormCommand,
   SetTableRLSCommand,
   SetViewAggregateCommand,
@@ -78,6 +79,7 @@ import {
   duplicateViewCommand,
   enableShareCommand,
   inviteCommand,
+  setFieldWidthCommand,
   setTableFormCommand,
   setTableRLSCommand,
   setViewAggregateCommand,
@@ -153,35 +155,49 @@ const formRouter = t.router({
 
 const viewRouter = t.router({
   create: privateProcedure
+    .use(authz("view:create"))
     .input(createTableViewCommand)
     .mutation(({ input }) => commandBus.execute(new CreateTableViewCommand(input))),
   update: privateProcedure
+    .use(authz("view:update"))
     .input(updateViewCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateViewCommand(input))),
   duplicate: privateProcedure
+    .use(authz("view:create"))
     .input(duplicateViewCommand)
     .mutation(({ input }) => commandBus.execute(new DuplicateViewCommand(input))),
   delete: privateProcedure
+    .use(authz("view:delete"))
     .input(deleteViewCommand)
     .mutation(({ input }) => commandBus.execute(new DeleteViewCommand(input))),
   setFilter: privateProcedure
+    .use(authz("view:update"))
     .input(setViewFilterCommand)
     .mutation(({ input }) => commandBus.execute(new SetViewFilterCommand(input))),
   setOption: privateProcedure
+    .use(authz("view:update"))
     .input(setViewOptionCommand)
     .mutation(({ input }) => commandBus.execute(new SetViewOptionCommand(input))),
   setColor: privateProcedure
+    .use(authz("view:update"))
     .input(setViewColorCommand)
     .mutation(({ input }) => commandBus.execute(new SetViewColorCommand(input))),
   setSort: privateProcedure
+    .use(authz("view:update"))
     .input(setViewSortCommand)
     .mutation(({ input }) => commandBus.execute(new SetViewSortCommand(input))),
   setAggregate: privateProcedure
+    .use(authz("view:update"))
     .input(setViewAggregateCommand)
     .mutation(({ input }) => commandBus.execute(new SetViewAggregateCommand(input))),
   setFields: privateProcedure
+    .use(authz("view:update"))
     .input(setViewFieldsCommand)
     .mutation(({ input }) => commandBus.execute(new SetViewFieldsCommand(input))),
+  setFieldWidth: privateProcedure
+    .use(authz("view:update"))
+    .input(setFieldWidthCommand)
+    .mutation(({ input }) => commandBus.execute(new SetFieldWidthCommand(input))),
 })
 
 const rlsRouter = t.router({

@@ -1,4 +1,4 @@
-import { Option, Some } from "@undb/domain"
+import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { IDuplicateViewDTO } from "../../../../dto"
 import { WithNewView, WithView } from "../../../../specifications/table-view.specification"
@@ -7,14 +7,22 @@ import { AbstractView, baseViewDTO, createBaseViewDTO, updateBaseViewDTO } from 
 
 export const GRID_TYPE = "grid" as const
 
+export const gridOption = z.object({
+  widths: z.record(z.number().positive()),
+})
+
+export type IGridOption = z.infer<typeof gridOption>
+
 export const createGridViewDTO = createBaseViewDTO.extend({
   type: z.literal(GRID_TYPE),
+  grid: gridOption.optional(),
 })
 
 export type ICreateGridViewDTO = z.infer<typeof createGridViewDTO>
 
 export const gridViewDTO = baseViewDTO.extend({
   type: z.literal(GRID_TYPE),
+  grid: gridOption.optional(),
 })
 
 export type IGridViewDTO = z.infer<typeof gridViewDTO>
@@ -22,14 +30,17 @@ export type IGridViewDTO = z.infer<typeof gridViewDTO>
 export const updateGridViewDTO = updateBaseViewDTO.merge(
   z.object({
     type: z.literal(GRID_TYPE),
+    grid: gridOption.optional(),
   }),
 )
 
 export type IUpdateGridViewDTO = z.infer<typeof updateGridViewDTO>
 
 export class GridView extends AbstractView {
+  grid: Option<IGridOption> = None
   constructor(dto: IGridViewDTO) {
     super(dto)
+    this.grid = Option(dto.grid)
   }
 
   static create(dto: ICreateGridViewDTO) {
@@ -40,7 +51,13 @@ export class GridView extends AbstractView {
 
   override $update(input: IUpdateGridViewDTO): Option<WithView> {
     const json = this.toJSON()
-    const view = new GridView({ ...json, name: input.name, id: this.id.value, type: GRID_TYPE })
+    const view = new GridView({
+      ...json,
+      name: input.name,
+      id: this.id.value,
+      type: GRID_TYPE,
+      grid: input.grid ?? this.grid.into(undefined),
+    })
 
     return Some(new WithView(this, view))
   }
@@ -56,6 +73,7 @@ export class GridView extends AbstractView {
           isDefault: false,
           id: ViewIdVo.create().value,
           type: GRID_TYPE,
+          grid: this.grid.into(undefined),
         }),
       ),
     )

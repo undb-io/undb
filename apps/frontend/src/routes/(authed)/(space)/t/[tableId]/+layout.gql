@@ -27,6 +27,10 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
       aggregate
       fields
 
+      grid {
+        widths
+      }
+
       kanban {
         field
       }

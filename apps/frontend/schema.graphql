@@ -75,6 +75,10 @@ type GalleryOption {
   field: String
 }
 
+type GridOption {
+  widths: JSON
+}
+
 type Invitation {
   email: String!
   id: ID!
@@ -204,6 +208,7 @@ type View {
   fields: JSON
   filter: JSON
   gallery: GalleryOption
+  grid: GridOption
   id: ID!
   isDefault: Boolean
   kanban: KanbanOption

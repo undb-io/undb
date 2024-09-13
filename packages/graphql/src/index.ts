@@ -131,6 +131,10 @@ export class Graphql {
         showSystemFields: Boolean
       }
 
+      type GridOption {
+        widths: JSON
+      }
+
       type KanbanOption {
         field: String
       }
@@ -151,6 +155,7 @@ export class Graphql {
         aggregate: JSON
         fields: JSON
 
+        grid: GridOption
         kanban: KanbanOption
         gallery: GalleryOption
 

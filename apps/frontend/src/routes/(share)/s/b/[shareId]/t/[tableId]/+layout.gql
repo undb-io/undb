@@ -27,6 +27,9 @@ query GetBaseTableShareData($shareId: ID!, $tableId: ID!) {
       isDefault
       fields
       type
+      grid {
+        widths
+      }
       kanban {
         field
       }

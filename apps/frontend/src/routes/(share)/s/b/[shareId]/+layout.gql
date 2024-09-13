@@ -31,6 +31,9 @@ query GetShareBaseData($shareId: ID!) {
         name
         type
         isDefault
+        grid {
+          widths
+        }
         kanban {
           field
         }
