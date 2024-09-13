@@ -29,6 +29,7 @@ import type {
   WithViewAggregate,
   WithViewColor,
   WithViewFields,
+  WithViewFieldWidth,
   WithViewFilter,
   WithViewIdSpecification,
   WithViewOption,
@@ -71,6 +72,9 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
         ids.ids.map((id) => id.value),
       ),
     )
+  }
+  withViewFieldWidth(views: WithViewFieldWidth): void {
+    throw new Error("Method not implemented.")
   }
   withDuplicatedTable(spec: DuplicatedTableSpecification): void {
     throw new Error("Method not implemented.")

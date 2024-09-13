@@ -6,6 +6,7 @@ import {
   ReferenceField,
   UPDATED_AT_TYPE,
   UPDATED_BY_TYPE,
+  WithViewFieldWidth,
   type DuplicatedTableSpecification,
   type ITableSpecVisitor,
   type SelectField,
@@ -197,6 +198,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
     }
   }
   withViewFields(fields: WithViewFields): void {}
+  withViewFieldWidth(spec: WithViewFieldWidth): void {}
   withForm(views: WithFormSpecification): void {}
   withForms(views: TableFormsSpecification): void {}
   withNewForm(views: WithNewFormSpecification): void {}

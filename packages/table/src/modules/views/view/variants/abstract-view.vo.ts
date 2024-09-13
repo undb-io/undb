@@ -116,7 +116,7 @@ export abstract class AbstractView {
   abstract $duplicate(dto: IDuplicateViewDTO): Option<WithNewView>
 
   $delete(): Option<WithoutView> {
-    return Some(new WithoutView(this as View))
+    return Some(new WithoutView(this as unknown as View))
   }
 
   setFilter(filter: IRootViewFilter) {

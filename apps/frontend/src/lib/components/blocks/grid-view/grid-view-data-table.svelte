@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as ContextMenu from "$lib/components/ui/context-menu"
   import { Render, Subscribe, createRender, createTable } from "svelte-headless-table"
-  import { writable, type Readable, type Writable } from "svelte/store"
+  import { derived, writable, type Readable, type Writable } from "svelte/store"
   import GridViewCheckbox from "./grid-view-checkbox.svelte"
   import * as Table from "$lib/components/ui/table/index.js"
   import { addResizedColumns, addSelectedRows } from "svelte-headless-table/plugins"
@@ -9,7 +9,7 @@
   import { toast } from "svelte-sonner"
   import { cn } from "$lib/utils.js"
   import { getRecordsStore } from "$lib/store/records.store"
-  import { type Field } from "@undb/table"
+  import { GridView, type Field } from "@undb/table"
   import { getTable } from "$lib/store/table.store"
   import GridViewActions from "./grid-view-actions.svelte"
   import GridViewActionHeader from "./grid-view-action-header.svelte"
@@ -30,7 +30,9 @@
   import { gridViewStore, isRowSelected, isSelectedCell } from "./grid-view.store"
   import SelectedRecordsButton from "./selected-records-button.svelte"
   import { aggregatesStore } from "$lib/store/aggregates.store"
-    import ViewPagination from "../view/view-pagination.svelte"
+  import ViewPagination from "../view/view-pagination.svelte"
+  import { createMutation } from "@tanstack/svelte-query"
+  import { trpc } from "$lib/trpc/client"
 
   export let readonly = false
   export let viewId: Readable<string>
@@ -41,6 +43,8 @@
 
   const t = getTable()
 
+  let fields = derived(t, ($t) => $t?.getOrderedVisibleFields($viewId) ?? ([] as Field[]))
+
   const r = queryParam("r")
   const deleteRecordId = queryParam("deleteRecordId")
   const duplicateRecordId = queryParam("duplicateRecordId")
@@ -50,11 +54,11 @@
     toast.success("Copied record ID to clipboard")
   }
 
-  $: view = $t.views.getViewById($viewId)
-  $: viewFilter = view.filter.into(undefined)
+  let view = derived(t, ($t) => $t.views.getViewById($viewId) as GridView)
+  $: viewFilter = $view.filter.into(undefined)
   $: hasFilterFieldIds = viewFilter?.fieldIds
 
-  $: colorSpec = view.color.into(undefined)?.getSpec($t.schema).into(undefined)
+  $: colorSpec = $view.color.into(undefined)?.getSpec($t.schema).into(undefined)
 
   $: getTableAggregates = aggregatesStore.getTableAggregates
   $: aggregates = $getTableAggregates($t.id.value)
@@ -63,14 +67,17 @@
   let hasRecord = store.hasRecord
   let count = store.count
 
+  const setFieldWidth = createMutation({
+    mutationFn: trpc.table.view.setFieldWidth.mutate,
+  })
+
   const table = createTable(store.data, {
     select: addSelectedRows(),
     resize: addResizedColumns(),
   })
-  $: fields = $t?.getOrderedVisibleFields($viewId) ?? ([] as Field[])
 
-  $: columns =
-    table.createColumns([
+  let columns = derived([fields, view], ([$fields, $view]) => {
+    return table.createColumns([
       table.column({
         accessor: "$select",
         header: (_, { pluginStates }) => {
@@ -107,7 +114,7 @@
           },
         },
       }),
-      ...fields.map((field, index) =>
+      ...$fields.map((field, index) =>
         table.column({
           header: () => createRender(GridViewHeader, { field }),
           accessor: field.id.value,
@@ -131,7 +138,8 @@
           }),
           plugins: {
             resize: {
-              initialWidth: 200,
+              initialWidth: $view.getFieldWidth(field.id.value),
+              disable: readonly,
             },
           },
         }),
@@ -149,10 +157,10 @@
           },
         },
       }),
-    ]) ?? []
+    ])
+  })
 
-  const viewModel = writable(table.createViewModel(columns ?? []))
-  $: columns, viewModel.set(table.createViewModel(columns))
+  const viewModel = derived(columns, ($columns) => table.createViewModel($columns))
 
   $: visibleColumns = $viewModel.visibleColumns
   $: headerRows = $viewModel.headerRows
@@ -166,7 +174,7 @@
     .map(Number)
     .map((index) => $store.ids[index])
 
-  $: resize = $viewModel.pluginStates.resize.columnWidths
+  $: columnWidths = $viewModel.pluginStates.resize.columnWidths
 </script>
 
 <div class="flex h-full w-full flex-col">
@@ -186,20 +194,37 @@
               {#each headerRow.cells as cell, i (cell.id)}
                 <Subscribe attrs={cell.attrs()} let:attrs props={cell.props()} let:props>
                   {@const hasFilter = hasFilterFieldIds?.has(cell.id) ?? false}
-                  <Table.Head
+                  <th
                     {...attrs}
                     class={cn(
-                      "h-9 border-r [&:has([role=checkbox])]:pl-3",
+                      "text-muted-foreground relative h-9 border-r px-2 text-left align-middle font-medium [&:has([role=checkbox])]:pl-3 [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
                       i === 0 && "border-r-0",
                       hasFilter && "bg-orange-50",
                     )}
+                    use:props.resize
                   >
                     {#if cell.id === "$select" && !$hasRecord}
                       <Checkbox checked={false} disabled />
                     {:else}
                       <Render of={cell.render()} />
+                      {#if !props.resize.disabled}
+                        <button
+                          class="absolute bottom-0 right-0 top-0 z-10 w-1 cursor-col-resize bg-transparent transition-colors hover:bg-sky-500/50"
+                          use:props.resize.drag
+                          on:mouseup={() => {
+                            const fieldId = cell.id
+                            const width = $columnWidths[fieldId]
+                            $setFieldWidth.mutate({
+                              tableId: $t.id.value,
+                              viewId: $viewId,
+                              field: fieldId,
+                              width,
+                            })
+                          }}
+                        />
+                      {/if}
                     {/if}
-                  </Table.Head>
+                  </th>
                 </Subscribe>
               {/each}
             </Table.Row>
@@ -307,7 +332,7 @@
         <tfooter class="text-muted-foreground sticky bottom-0 h-8 w-full border-t bg-white text-sm">
           <tr class="flex h-8 w-full">
             {#each $visibleColumns as column}
-              {@const width = $resize[column.id]}
+              {@const width = $columnWidths[column.id]}
               <td
                 style={`width: ${width}px; min-width: ${width}px; max-width: ${width}px`}
                 class="h-full overflow-hidden"

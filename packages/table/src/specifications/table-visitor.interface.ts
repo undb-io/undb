@@ -27,6 +27,7 @@ import type {
   WithViewAggregate,
   WithViewColor,
   WithViewFields,
+  WithViewFieldWidth,
   WithViewFilter,
   WithViewIdSpecification,
   WithViewOption,
@@ -67,4 +68,5 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withForeignRollupField(spec: WithForeignRollupFieldSpec): void
   withTableForeignTables(spec: WithTableForeignTablesSpec): void
   withTableUnqueName(spec: TableUniqueNameSpecification): void
+  withViewFieldWidth(spec: WithViewFieldWidth): void
 }
