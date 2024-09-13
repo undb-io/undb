@@ -11,6 +11,7 @@ import { deleteViewMethod } from "./methods/delete-view.method"
 import { duplicateFieldMethod } from "./methods/duplicate-field.method"
 import { duplicateTableMethod } from "./methods/duplicate-table.method"
 import { duplicateViewMethod } from "./methods/duplicate-view.method"
+import { setFieldWidth } from "./methods/set-field-width.method"
 import { setTableForm } from "./methods/set-table-form.method"
 import { setTableRLS } from "./methods/set-table-rls.method"
 import { setViewAggregate } from "./methods/set-view-aggregate.method"
@@ -55,6 +56,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   $update = updateTable
   $duplicate = duplicateTableMethod
   $updateView = updateView
+  $setFieldWidth = setFieldWidth
   $setViewFilter = setViewFilter
   $setViewOption = setViewOption
   $setViewColor = setViewColor

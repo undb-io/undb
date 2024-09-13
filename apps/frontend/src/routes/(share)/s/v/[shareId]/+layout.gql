@@ -38,6 +38,9 @@ query GetViewShareData($shareId: ID!) {
       option {
         showSystemFields
       }
+      grid {
+        widths
+      }
       kanban {
         field
       }
