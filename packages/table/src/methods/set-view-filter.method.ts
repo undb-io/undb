@@ -1,7 +1,6 @@
 import type { Option } from "@undb/domain"
 import type { ISetViewFilterDTO } from "../dto"
 import { SetViewFilterEvent } from "../events"
-import { ViewIdVo } from "../modules"
 import type { TableComositeSpecification } from "../specifications"
 import type { TableDo } from "../table.do"
 
