@@ -65,6 +65,8 @@
     if (shareId) {
       return trpc.shareData.records.query({
         shareId,
+        tableId,
+        viewId: $viewId,
         q: $q,
         filters: {
           conjunction: "and",

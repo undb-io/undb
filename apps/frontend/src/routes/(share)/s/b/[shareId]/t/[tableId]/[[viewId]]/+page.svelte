@@ -1,7 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import GridViewDataTable from "$lib/components/blocks/grid-view/grid-view-data-table.svelte"
-  import ShareTableTools from "$lib/components/blocks/table-tools/share-table-tools.svelte"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createQuery } from "@tanstack/svelte-query"
@@ -13,15 +12,21 @@
   import ShareTableHeader from "$lib/components/blocks/table-header/share-table-header.svelte"
   import FormsReadonly from "$lib/components/blocks/forms/forms-readonly.svelte"
   import { createRecordsStore, setRecordsStore } from "$lib/store/records.store"
+  import ShareGridView from "$lib/components/blocks/share/share-grid-view.svelte"
+  import ShareGalleryView from "$lib/components/blocks/share/share-gallery-view.svelte"
+  import ShareKanbanView from "$lib/components/blocks/share/share-kanban-view.svelte"
 
   let RecordDetailSheet: ComponentType
 
   let viewId = derived(page, (page) => page.params.viewId)
+  let shareId = derived(page, (page) => page.params.shareId)
   onMount(async () => {
     RecordDetailSheet = (await import("$lib/components/blocks/record-detail/share-record-detail-sheet.svelte")).default
   })
 
   const t = getTable()
+
+  $: view = $t.views.getViewById($viewId)
 
   const perPage = writable(50)
   const currentPage = writable(1)
@@ -44,26 +49,24 @@
 
   $: records = (($getRecords.data as any)?.records as IRecordsDTO) ?? []
 
+  const store = createRecordsStore()
+  setRecordsStore(store)
   $: if ($getRecords.isSuccess) {
-    const store = createRecordsStore()
     store.setRecords(Records.fromJSON($t, records), $getRecords.dataUpdatedAt)
-    setRecordsStore(store)
   }
 </script>
 
 <div class="flex flex-1 flex-col">
   <ShareTableHeader />
-  <ShareTableTools />
 
   {#if $isDataTab}
-    <GridViewDataTable
-      {viewId}
-      readonly
-      {perPage}
-      {currentPage}
-      isLoading={$getRecords.isLoading}
-      total={$getRecords.data?.total ?? 0}
-    />
+    {#if view?.type === "grid"}
+      <ShareGridView {viewId} />
+    {:else if view.type === "kanban"}
+      <ShareKanbanView {viewId} shareId={$shareId} />
+    {:else if view.type === "gallery"}
+      <ShareGalleryView {viewId} shareId={$shareId} />
+    {/if}
   {:else if $isFormTab}
     <FormsReadonly />
   {/if}

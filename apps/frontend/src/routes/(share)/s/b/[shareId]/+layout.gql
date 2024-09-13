@@ -29,7 +29,14 @@ query GetShareBaseData($shareId: ID!) {
       views {
         id
         name
+        type
         isDefault
+        kanban {
+          field
+        }
+        gallery {
+          field
+        }
       }
     }
   }
