@@ -31,6 +31,7 @@ import { DuplicateViewCommandHandler } from "./duplicate-view.command-handler"
 import { EnableShareCommandHandler } from "./enable-share.command-handler"
 import { ExportViewCommandHandler } from "./export-view.command-handler"
 import { InviteCommandHandler } from "./invite.command-handler"
+import { SetFieldWidthCommandHandler } from "./set-field-width.command-handler"
 import { SetTableFormCommandHandler } from "./set-table-form.command-handler"
 import { SetTableRLSCommandHandler } from "./set-table-rls.command-handler"
 import { SetViewAggregateCommandHandler } from "./set-view-aggregate.command-handler"
@@ -102,4 +103,5 @@ export const commandHandlers = [
   TriggerRecordButtonCommandHandler,
   DeleteFormCommandHandler,
   SubmitFormCommandHandler,
+  SetFieldWidthCommandHandler,
 ]
