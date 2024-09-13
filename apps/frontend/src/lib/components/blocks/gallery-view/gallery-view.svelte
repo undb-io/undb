@@ -23,19 +23,31 @@
   const currentPage = writable(1)
   const q = queryParam("q")
 
-  const getRecords = createQuery(
+  const getRecords = () => {
+    if (shareId) {
+      return trpc.shareData.records.query({
+        shareId,
+        tableId: $table?.id.value,
+        viewId: $viewId,
+        q: $q ?? undefined,
+        pagination: { limit: $perPage, page: $currentPage },
+      })
+    }
+    return trpc.record.list.query({
+      tableId: $table?.id.value,
+      viewId: $viewId,
+      q: $q ?? undefined,
+      pagination: { limit: $perPage, page: $currentPage },
+    })
+  }
+
+  const getRecordsQuery = createQuery(
     derived([table, viewId, perPage, currentPage, q], ([$table, $viewId, $perPage, $currentPage, $q]) => {
       const view = $table.views.getViewById($viewId)
       return {
         queryKey: ["records", $table?.id.value, $viewId, $q, $currentPage, $perPage],
         enabled: view?.type === "gallery",
-        queryFn: () =>
-          trpc.record.list.query({
-            tableId: $table?.id.value,
-            viewId: $viewId,
-            q: $q ?? undefined,
-            pagination: { limit: $perPage, page: $currentPage },
-          }),
+        queryFn: getRecords,
       }
     }),
   )
@@ -44,12 +56,12 @@
   setRecordsStore(recordsStore)
 
   // $: records = (($getRecords.data as any)?.records as IRecordsDTO) ?? []
-  let records = derived([getRecords], ([$getRecords]) => {
+  let records = derived([getRecordsQuery], ([$getRecords]) => {
     return (($getRecords.data as any)?.records as IRecordsDTO) ?? []
   })
-  $: recordsStore.setRecords(Records.fromJSON($table, $records), $getRecords.dataUpdatedAt)
+  $: recordsStore.setRecords(Records.fromJSON($table, $records), $getRecordsQuery.dataUpdatedAt)
 
-  $: total = ($getRecords.data as any)?.total
+  $: total = ($getRecordsQuery.data as any)?.total
 </script>
 
 <TableTools />

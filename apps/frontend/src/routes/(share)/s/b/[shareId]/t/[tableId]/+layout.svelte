@@ -15,6 +15,7 @@
   const table = writable<TableDo>()
   $: {
     if (!fetching && tableDTO) {
+      // @ts-ignore
       table.set(new TableCreator().fromJSON(tableDTO))
       setTable(table)
     }

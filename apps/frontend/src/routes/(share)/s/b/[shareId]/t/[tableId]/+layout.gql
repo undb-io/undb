@@ -26,6 +26,13 @@ query GetBaseTableShareData($shareId: ID!, $tableId: ID!) {
       name
       isDefault
       fields
+      type
+      kanban {
+        field
+      }
+      gallery {
+        field
+      }
     }
     schema {
       constraint
