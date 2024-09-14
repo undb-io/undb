@@ -8,7 +8,7 @@
   export let viewId: string
 </script>
 
-<div class="flex h-full w-full flex-1 flex-col items-center">
+<div class="flex h-full w-full flex-1 flex-col items-center gap-2">
   <button on:click={() => kanbanStore.toggleLane(viewId, option.id)}>
     <ChevronRightIcon class="text-muted-foreground h-4 w-4" />
   </button>
