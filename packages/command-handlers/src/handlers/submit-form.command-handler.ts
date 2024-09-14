@@ -16,7 +16,7 @@ export class SubmitFormCommandHandler implements ICommandHandler<SubmitFormComma
 
   async execute(command: SubmitFormCommand): Promise<any> {
     this.logger.debug(command, "executing submit form command")
-    const record = await this.service.submitForm(command, { formId: command.formId, values: command.values })
+    const record = await this.service.submitForm(command, { form: command.form, values: command.values })
 
     return record.id.value
   }

@@ -1,4 +1,4 @@
-import { ValueObject } from "@undb/domain"
+import { Option, ValueObject } from "@undb/domain"
 import type { Field } from "../.."
 import type { TableDo } from "../../../table.do"
 import type { SchemaIdMap } from "../../schema/schema.type"
@@ -29,6 +29,10 @@ export class FormFieldsVO extends ValueObject<FormFieldVO[]> {
       return []
     }
     return fields.slice(0, index)
+  }
+
+  public getFormField(fieldId: string): Option<FormFieldVO> {
+    return Option(this.props.find((field) => field.fieldId === fieldId))
   }
 
   public getNextFields(fieldId: string): FormFieldVO[] {
@@ -65,6 +69,10 @@ export class FormFieldsVO extends ValueObject<FormFieldVO[]> {
         return field ? formField.hide(field) : formField
       }),
     )
+  }
+
+  public getVisibleFields(): FormFieldVO[] {
+    return this.props.filter((formField) => !formField.hidden)
   }
 
   toJSON() {

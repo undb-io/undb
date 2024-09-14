@@ -1,5 +1,6 @@
 import { Some } from "@undb/domain"
 import { z } from "@undb/zod"
+import type { FormFieldVO } from "../../../../forms/form/form-field.vo"
 import { FieldConstraintVO } from "../../field-constraint.vo"
 
 export const checkboxFieldConstraint = z.object({})
@@ -18,5 +19,9 @@ export class CheckboxFieldConstraint extends FieldConstraintVO<ICheckboxFieldCon
 
   override get mutateSchema() {
     return Some(this.schema)
+  }
+
+  override fromFormField(formField: FormFieldVO) {
+    return new CheckboxFieldConstraint({}) as this
   }
 }

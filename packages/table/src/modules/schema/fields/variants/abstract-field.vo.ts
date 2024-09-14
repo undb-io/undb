@@ -1,6 +1,7 @@
 import { None, Option, Some } from "@undb/domain"
 import { ZodEnum, ZodUndefined, z, type ZodSchema } from "@undb/zod"
 import type { TableComositeSpecification } from "../../../../specifications/table.composite-specification"
+import type { FormFieldVO } from "../../../forms/form/form-field.vo"
 import type {
   INotRecordComositeSpecification,
   IRecordComositeSpecification,
@@ -95,6 +96,13 @@ export abstract class AbstractField<
     }
 
     throw new Error("Field.mutateSchema is not implemented, field type:" + this.type)
+  }
+
+  getConstraintFromFormField(formField: FormFieldVO): C {
+    if (this.isMutable) {
+      throw new Error("Field.getConstraintFromFormField is not implemented, field type:" + this.type)
+    }
+    throw new Error("Field.getConstraintFromFormField is immutable, field type:" + this.type)
   }
 
   protected abstract getConditionSchema<OptionType extends z.ZodTypeAny>(optionType: OptionType): IFieldConditionSchema

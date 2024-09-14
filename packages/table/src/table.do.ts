@@ -98,7 +98,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   getDefaultValues(formId?: FormId, defaultValue?: IRecordValues) {
     const schemaDefaultValues = { ...this.schema.getDefaultValues(), ...defaultValue }
 
-    const form = this.forms?.props.find((form) => form.id === formId?.value)
+    const form = formId ? this.forms?.getFormById(formId.value) : undefined
     if (form) {
       const formDefaultValues = form.getDefaultValues()
       return { ...schemaDefaultValues, ...formDefaultValues }
