@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-72
+
+
+### 🚀 Enhancements
+
+- Submit from form ([874aea8](https://github.com/undb-io/undb/commit/874aea8))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-71
 
 
