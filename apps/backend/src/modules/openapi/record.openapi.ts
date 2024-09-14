@@ -6,6 +6,7 @@ import {
   CreateRecordsCommand,
   DeleteRecordCommand,
   DuplicateRecordCommand,
+  SubmitFormCommand,
   TriggerRecordButtonCommand,
   UpdateRecordCommand,
 } from "@undb/commands"
@@ -36,7 +37,8 @@ export class RecordOpenApi {
         .get(
           "/records",
           async (ctx) => {
-            const { baseName, tableName } = ctx.params
+            const baseName = decodeURIComponent(ctx.params.baseName)
+            const tableName = decodeURIComponent(ctx.params.tableName)
             const result = (await this.queryBus.execute(
               new GetReadableRecordsQuery({ baseName, tableName, ignoreView: true }),
             )) as PaginatedDTO<IRecordReadableValueDTO>
@@ -57,7 +59,9 @@ export class RecordOpenApi {
         .get(
           "/views/:viewName/records",
           async (ctx) => {
-            const { baseName, tableName, viewName } = ctx.params
+            const baseName = decodeURIComponent(ctx.params.baseName)
+            const tableName = decodeURIComponent(ctx.params.tableName)
+            const viewName = decodeURIComponent(ctx.params.viewName)
             const result = (await this.queryBus.execute(
               new GetReadableRecordsQuery({ baseName, tableName, viewName }),
             )) as PaginatedDTO<IRecordReadableValueDTO>
@@ -78,7 +82,10 @@ export class RecordOpenApi {
         .get(
           "/views/:viewName/records/:recordId",
           async (ctx) => {
-            const { baseName, tableName, viewName, recordId } = ctx.params
+            const baseName = decodeURIComponent(ctx.params.baseName)
+            const tableName = decodeURIComponent(ctx.params.tableName)
+            const viewName = decodeURIComponent(ctx.params.viewName)
+            const recordId = ctx.params.recordId
             const result = await this.queryBus.execute(
               new GetReadableRecordByIdQuery({ baseName, tableName, viewName, id: recordId }),
             )
@@ -103,9 +110,11 @@ export class RecordOpenApi {
         .get(
           "/records/:recordId",
           async (ctx) => {
-            const { baseName, tableName } = ctx.params
+            const baseName = decodeURIComponent(ctx.params.baseName)
+            const tableName = decodeURIComponent(ctx.params.tableName)
+            const recordId = ctx.params.recordId
             const result = await this.queryBus.execute(
-              new GetReadableRecordByIdQuery({ baseName, tableName, id: ctx.params.recordId, ignoreView: true }),
+              new GetReadableRecordByIdQuery({ baseName, tableName, id: recordId, ignoreView: true }),
             )
             return {
               data: result,
@@ -123,7 +132,8 @@ export class RecordOpenApi {
         .post(
           "/records",
           async (ctx) => {
-            const { baseName, tableName } = ctx.params
+            const baseName = decodeURIComponent(ctx.params.baseName)
+            const tableName = decodeURIComponent(ctx.params.tableName)
             return withTransaction(this.qb)(() =>
               this.commandBus.execute(new CreateRecordCommand({ baseName, tableName, values: ctx.body.values })),
             )
@@ -141,7 +151,8 @@ export class RecordOpenApi {
         .post(
           "/records/bulk",
           async (ctx) => {
-            const { baseName, tableName } = ctx.params
+            const baseName = decodeURIComponent(ctx.params.baseName)
+            const tableName = decodeURIComponent(ctx.params.tableName)
             return withTransaction(this.qb)(() =>
               this.commandBus.execute(new CreateRecordsCommand({ baseName, tableName, records: ctx.body.records })),
             )
@@ -159,7 +170,8 @@ export class RecordOpenApi {
         .patch(
           "/records/:recordId",
           async (ctx) => {
-            const { baseName, tableName } = ctx.params
+            const baseName = decodeURIComponent(ctx.params.baseName)
+            const tableName = decodeURIComponent(ctx.params.tableName)
             return withTransaction(this.qb)(() =>
               this.commandBus.execute(
                 new UpdateRecordCommand({
@@ -184,7 +196,8 @@ export class RecordOpenApi {
         .patch(
           "/records",
           async (ctx) => {
-            const { tableName, baseName } = ctx.params
+            const baseName = decodeURIComponent(ctx.params.baseName)
+            const tableName = decodeURIComponent(ctx.params.tableName)
             return withTransaction(this.qb)(() =>
               this.commandBus.execute(
                 new BulkUpdateRecordsCommand({
@@ -213,7 +226,8 @@ export class RecordOpenApi {
         .post(
           "/records/:recordId/duplicate",
           async (ctx) => {
-            const { baseName, tableName } = ctx.params
+            const baseName = decodeURIComponent(ctx.params.baseName)
+            const tableName = decodeURIComponent(ctx.params.tableName)
             return withTransaction(this.qb)(() =>
               this.commandBus.execute(new DuplicateRecordCommand({ baseName, tableName, id: ctx.params.recordId })),
             )
@@ -230,7 +244,10 @@ export class RecordOpenApi {
         .post(
           "/records/:recordId/trigger/:field",
           async (ctx) => {
-            const { baseName, tableName, recordId, field } = ctx.params
+            const baseName = decodeURIComponent(ctx.params.baseName)
+            const tableName = decodeURIComponent(ctx.params.tableName)
+            const recordId = ctx.params.recordId
+            const field = ctx.params.field
             return withTransaction(this.qb)(async () => {
               const result = (await this.commandBus.execute(
                 new TriggerRecordButtonCommand({ baseName, tableName, recordId, field }),
@@ -241,7 +258,12 @@ export class RecordOpenApi {
             })
           },
           {
-            params: t.Object({ baseName: t.String(), tableName: t.String(), recordId: t.String(), field: t.String() }),
+            params: t.Object({
+              baseName: t.String(),
+              tableName: t.String(),
+              recordId: t.String(),
+              field: t.String(),
+            }),
             detail: {
               tags: ["Record", "Button"],
               summary: "Trigger record button",
@@ -252,7 +274,8 @@ export class RecordOpenApi {
         .post(
           "/records/duplicate",
           async (ctx) => {
-            const { baseName, tableName } = ctx.params
+            const baseName = decodeURIComponent(ctx.params.baseName)
+            const tableName = decodeURIComponent(ctx.params.tableName)
             return withTransaction(this.qb)(() =>
               this.commandBus.execute(
                 new BulkDuplicateRecordsCommand({
@@ -277,7 +300,8 @@ export class RecordOpenApi {
         .delete(
           "/records/:recordId",
           async (ctx) => {
-            const { baseName, tableName } = ctx.params
+            const baseName = decodeURIComponent(ctx.params.baseName)
+            const tableName = decodeURIComponent(ctx.params.tableName)
             return withTransaction(this.qb)(() =>
               this.commandBus.execute(new DeleteRecordCommand({ baseName, tableName, id: ctx.params.recordId })),
             )
@@ -294,7 +318,8 @@ export class RecordOpenApi {
         .delete(
           "/records",
           async (ctx) => {
-            const { baseName, tableName } = ctx.params
+            const baseName = decodeURIComponent(ctx.params.baseName)
+            const tableName = decodeURIComponent(ctx.params.tableName)
             return withTransaction(this.qb)(() =>
               this.commandBus.execute(
                 new BulkDeleteRecordsCommand({
@@ -313,6 +338,28 @@ export class RecordOpenApi {
               tags: ["Record"],
               summary: "Delete records",
               description: "Delete records",
+            },
+          },
+        )
+        .post(
+          "/forms/:formName/submit",
+          async (ctx) => {
+            const baseName = decodeURIComponent(ctx.params.baseName)
+            const tableName = decodeURIComponent(ctx.params.tableName)
+            const formName = decodeURIComponent(ctx.params.formName)
+            return withTransaction(this.qb)(() =>
+              this.commandBus.execute(
+                new SubmitFormCommand({ baseName, tableName, form: formName, values: ctx.body.values }),
+              ),
+            )
+          },
+          {
+            params: t.Object({ baseName: t.String(), tableName: t.String(), formName: t.String() }),
+            body: t.Object({ values: t.Record(t.String(), t.Any()) }),
+            detail: {
+              tags: ["Record", "Form"],
+              summary: "Submit form",
+              description: "Submit form",
             },
           },
         )

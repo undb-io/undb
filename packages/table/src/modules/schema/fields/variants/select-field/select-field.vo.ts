@@ -2,6 +2,7 @@ import { Option, Some, applyRules } from "@undb/domain"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
 import { ColorsVO } from "../../../../colors/colors.vo"
+import type { FormFieldVO } from "../../../../forms/form/form-field.vo"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
@@ -95,6 +96,10 @@ export class SelectField extends AbstractField<SelectFieldValue, SelectFieldCons
 
   override get mutateSchema() {
     return this.#constraint.mutateSchema
+  }
+
+  override getConstraintFromFormField(formField: FormFieldVO) {
+    return this.#constraint.fromFormField(formField)
   }
 
   get isSingle() {

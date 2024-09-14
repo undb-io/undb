@@ -36,6 +36,14 @@ export class FormsVO extends ValueObject<FormVO[]> {
     return this.props.find((form) => form.id === formId)
   }
 
+  getFormByName(formName: string) {
+    return this.props.find((form) => form.name === formName)
+  }
+
+  getFormnByIdOrName(idOrName: string) {
+    return this.props.find((form) => form.id === idOrName || form.name === idOrName)
+  }
+
   toJSON() {
     return this.props.map((form) => form.toJSON())
   }
