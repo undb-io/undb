@@ -114,7 +114,7 @@
                 {/if}
               </div>
             </Form.Label>
-            <div class="h-9 flex-1">
+            <div class="min-h-9 flex-1">
               <FieldControl
                 {...attrs}
                 bind:value={$formData[field.id.value]}
