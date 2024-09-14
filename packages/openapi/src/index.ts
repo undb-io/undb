@@ -26,6 +26,7 @@ import {
   getViewRecordById,
   getViewRecords,
   recordSubscription,
+  submitForm,
   triggerButton,
   updateRecord,
 } from "./openapi/record.openapi"
@@ -65,6 +66,11 @@ export const createOpenApiSpec = (
   const buttons = table.schema.getButtonFields()
   for (const button of buttons) {
     routes.push(triggerButton(base, table, button))
+  }
+
+  const forms = table.forms?.forms ?? []
+  for (const form of forms) {
+    routes.push(submitForm(base, table, form))
   }
 
   for (const { view, record } of views) {

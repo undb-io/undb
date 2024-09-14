@@ -3,6 +3,7 @@ import { z } from "@undb/zod"
 import type { TableComositeSpecification } from "../../../../../specifications"
 import { tableId } from "../../../../../table-id.vo"
 import type { TableDo } from "../../../../../table.do"
+import type { FormFieldVO } from "../../../../forms/form/form-field.vo"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import { viewFilterGroup, type IViewFilterGroup } from "../../../../views/view/view-filter/view-filter.vo"
 import { fieldId, FieldIdVo } from "../../field-id.vo"
@@ -125,6 +126,10 @@ export class ReferenceField extends AbstractField<
 
   override get mutateSchema() {
     return this.#constraint.mutateSchema
+  }
+
+  override getConstraintFromFormField(formField: FormFieldVO) {
+    return this.#constraint.fromFormField(formField)
   }
 
   override accept(visitor: IFieldVisitor): void {

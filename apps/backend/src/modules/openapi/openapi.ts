@@ -93,7 +93,9 @@ export class OpenAPI {
       .get(
         "/api/bases/:baseName/tables/:tableName",
         async (ctx) => {
-          const spec = await this.getSpec(ctx.params.baseName, ctx.params.tableName)
+          const baseName = decodeURIComponent(ctx.params.baseName)
+          const tableName = decodeURIComponent(ctx.params.tableName)
+          const spec = await this.getSpec(baseName, tableName)
 
           return `<html>
               <head>
@@ -130,7 +132,6 @@ export class OpenAPI {
       )
       .group("/openapi/bases/:baseName/tables/:tableName", (app) =>
         app
-
           .guard({
             beforeHandle: async (context) => {
               const apiToken =
@@ -165,7 +166,9 @@ export class OpenAPI {
           .get(
             "/openapi.json",
             async (ctx) => {
-              const spec = await this.getSpec(ctx.params.baseName, ctx.params.tableName)
+              const baseName = decodeURIComponent(ctx.params.baseName)
+              const tableName = decodeURIComponent(ctx.params.tableName)
+              const spec = await this.getSpec(baseName, tableName)
               return spec
             },
             {

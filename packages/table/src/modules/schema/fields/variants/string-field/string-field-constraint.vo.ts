@@ -1,5 +1,6 @@
 import { Some } from "@undb/domain"
 import { z } from "@undb/zod"
+import type { FormFieldVO } from "../../../../forms"
 import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.vo"
 
 export const stringFieldConstraint = z
@@ -40,5 +41,12 @@ export class StringFieldConstraint extends FieldConstraintVO<IStringFieldConstra
 
   override get mutateSchema() {
     return Some(this.schema)
+  }
+
+  fromFormField(formField: FormFieldVO) {
+    return new StringFieldConstraint({
+      ...this.props,
+      required: this.props.required ?? formField.required,
+    }) as this
   }
 }

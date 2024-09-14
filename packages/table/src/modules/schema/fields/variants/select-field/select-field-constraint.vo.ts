@@ -1,5 +1,6 @@
 import { Some } from "@undb/domain"
 import { z } from "@undb/zod"
+import type { FormFieldVO } from "../../../../forms/form/form-field.vo"
 import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.vo"
 import { optionId } from "../../option/option-id.vo"
 
@@ -54,5 +55,12 @@ export class SelectFieldConstraint extends FieldConstraintVO<ISelectFieldConstra
 
   get mutateSchema() {
     return Some(this.schema)
+  }
+
+  override fromFormField(formField: FormFieldVO) {
+    return new SelectFieldConstraint({
+      ...this.props,
+      required: this.props.required ?? formField.required,
+    }) as this
   }
 }

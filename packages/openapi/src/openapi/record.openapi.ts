@@ -1,13 +1,15 @@
 import type { RouteConfig } from "@asteasolutions/zod-to-openapi"
 import type { Base } from "@undb/base"
-import { ButtonField, recordId, type IReadableRecordDTO, type TableDo, type View } from "@undb/table"
+import { ButtonField, FormVO, recordId, type IReadableRecordDTO, type TableDo, type View } from "@undb/table"
 import { z, type ZodTypeAny } from "@undb/zod"
 
 export const RECORD_ID_COMPONENT = "RecordId"
 export const RECORD_COMPONENT = "Record"
 export const BUTTON_COMPONENT = "Button"
+export const FORM_COMPONENT = "Form"
 export const VIEW_COMPONENT = "View"
 export const VIEW_RECORD_COMPONENT = "ViewRecord"
+export const FORM_SUBMIT_RECORD_COMPONENT = "FormSubmitRecord"
 export const RECORD_VALUES_COMPONENT = "RecordValues"
 export const VIEW_RECORD_VALUES_COMPONENT = "ViewRecordValues"
 export const RECORD_DISPLAY_VALUES_COMPONENT = "RecordDisplayValues"
@@ -154,11 +156,9 @@ export const triggerButton = (base: Base, table: TableDo, field: ButtonField): R
         content: {
           "application/json": {
             schema: z.object({
-              mutated: z
-                .boolean()
-                .openapi("TriggerButtonOutput", {
-                  description: "true if the button is triggered and record is updated",
-                }),
+              mutated: z.boolean().openapi("TriggerButtonOutput", {
+                description: "true if the button is triggered and record is updated",
+              }),
             }),
           },
         },
@@ -228,6 +228,41 @@ export const createRecords = (base: Base, table: TableDo): RouteConfig => {
             }),
           },
         },
+      },
+    },
+  }
+}
+
+export const submitFormCreateRecordComponent = (table: TableDo, form: FormVO, record?: IReadableRecordDTO) => {
+  return z
+    .object({
+      id: recordId.openapi(RECORD_ID_COMPONENT, { example: record?.id }),
+      values: table.schema.getMutableSchemaFromForm(form, table.schema.mutableFields, false),
+    })
+    .openapi(form.name + ":" + FORM_SUBMIT_RECORD_COMPONENT, {
+      description: `submit record in ${form.name} form`,
+    })
+}
+
+export const submitForm = (base: Base, table: TableDo, form: FormVO): RouteConfig => {
+  return {
+    method: "post",
+    path: `/bases/${base.name.value}/tables/${table.name.value}/forms/${form.name}/submit`,
+    description: `Submit ${table.name.value} form ${form.name}`,
+    summary: `Submit ${table.name.value} form ${form.name}`,
+    tags: [RECORD_COMPONENT, FORM_COMPONENT],
+    request: {
+      body: {
+        content: {
+          "application/json": {
+            schema: submitFormCreateRecordComponent(table, form),
+          },
+        },
+      },
+    },
+    responses: {
+      201: {
+        description: "Form submitted",
       },
     },
   }

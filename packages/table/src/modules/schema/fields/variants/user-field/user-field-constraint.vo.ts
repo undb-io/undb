@@ -1,5 +1,6 @@
 import { Some } from "@undb/domain"
 import { z, type ZodTypeAny } from "@undb/zod"
+import type { FormFieldVO } from "../../../../forms"
 import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.vo"
 
 export const userFieldConstraint = z
@@ -18,8 +19,9 @@ export type IUserFieldConstraint = z.infer<typeof userFieldConstraint>
 export class UserFieldConstraint extends FieldConstraintVO<IUserFieldConstraint> {
   constructor(dto: IUserFieldConstraint) {
     super({
-      required: dto.required,
+      min: dto.min,
       max: dto.max,
+      required: dto.required,
     })
   }
 
@@ -57,5 +59,12 @@ export class UserFieldConstraint extends FieldConstraintVO<IUserFieldConstraint>
 
   get mutateSchema() {
     return Some(this.schema)
+  }
+
+  override fromFormField(formField: FormFieldVO): this {
+    return new UserFieldConstraint({
+      ...this.props,
+      required: this.props.required ?? formField.required,
+    }) as this
   }
 }

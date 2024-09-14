@@ -2,6 +2,7 @@ import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { isString } from "radash"
 import { match } from "ts-pattern"
+import type { FormFieldVO } from "../../../../forms/form/form-field.vo"
 import type { RecordComositeSpecification } from "../../../../records"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
@@ -72,6 +73,10 @@ export class StringField extends AbstractField<StringFieldValue, StringFieldCons
 
   get #constraint(): StringFieldConstraint {
     return this.constraint.unwrapOrElse(() => new StringFieldConstraint({}))
+  }
+
+  override getConstraintFromFormField(formField: FormFieldVO) {
+    return this.#constraint.fromFormField(formField)
   }
 
   override get valueSchema() {

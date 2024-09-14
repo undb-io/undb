@@ -9,6 +9,7 @@ import {
   WithUpdatedFieldSpecification,
 } from "../../specifications"
 import type { TableDo } from "../../table.do"
+import type { FormVO } from "../forms"
 import type { IRecordValues } from "../records/record/record-values.vo"
 import type { View } from "../views"
 import type { ICreateSchemaDTO } from "./dto"
@@ -16,6 +17,7 @@ import type { ISchemaDTO } from "./dto/schema.dto"
 import {
   ButtonField,
   CreatedByField,
+  FieldConstraintVO,
   FieldIdVo,
   FieldNameVo,
   getIsFieldHasDisplayValue,
@@ -130,11 +132,33 @@ export class Schema extends ValueObject<Field[]> {
     return this.fields.filter((f) => f.isMutable)
   }
 
-  getMutableSchema(fields = this.mutableFields, useId = true) {
+  getMutableSchema(fields = this.mutableFields, useFieldId = true) {
     const schema = objectify(
       fields.filter((f) => f.isMutable),
-      (f) => (useId ? f.id.value : f.name.value),
+      (f) => (useFieldId ? f.id.value : f.name.value),
       (f) => (f.mutateSchema as Option<ZodSchema>).unwrapOr(z.undefined()),
+    )
+
+    return z.object(schema)
+  }
+
+  getMutableSchemaFromForm(form: FormVO, fields = this.mutableFields, useFieldId = true) {
+    const visibleFields = form.fields.getVisibleFields()
+    const set = new Set(visibleFields.map((f) => f.fieldId))
+    const schema = objectify(
+      fields.filter((f) => f.isMutable && set.has(f.id.value)),
+      (f) => (useFieldId ? f.id.value : f.name.value),
+      (f) => {
+        const formField = form.fields.getFormField(f.id.value)
+        if (formField.isNone()) {
+          return z.undefined()
+        }
+        const c = f.getConstraintFromFormField(formField.unwrap()) as FieldConstraintVO | undefined
+        if (c) {
+          return c.schema
+        }
+        return z.undefined()
+      },
     )
 
     return z.object(schema)
