@@ -24,7 +24,7 @@
   $: space = $store.data?.space
   onMount(async () => {
     if ($store.data?.space?.isPersonal) {
-      await goto("/", { replaceState: true })
+      // await goto("/", { replaceState: true })
     }
   })
 </script>

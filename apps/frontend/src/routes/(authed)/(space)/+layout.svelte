@@ -17,6 +17,7 @@
   import type { ComponentType } from "svelte"
   import ImportTableDialog from "$lib/components/blocks/import-table/import-table-dialog.svelte"
   import MemberMenu from "$lib/components/blocks/member/member-menu.svelte"
+  import { derived } from "svelte/store"
 
   export let data: LayoutData
 
@@ -36,15 +37,16 @@
   }
 
   let indexDataStore = data.indexDataStore
-  $: me = data.me.user
-  $: space = $indexDataStore.data?.space
-  $: tables = $indexDataStore.data?.tables?.filter(Boolean) ?? []
-  $: bases = $indexDataStore.data?.bases?.filter(Boolean) ?? []
+  let me = data.me.user
+  let space = derived(indexDataStore, ($indexDataStore) => $indexDataStore.data?.space)
+  let tables = derived(indexDataStore, ($indexDataStore) => $indexDataStore.data?.tables?.filter(Boolean) ?? [])
+  let bases = derived(indexDataStore, ($indexDataStore) => $indexDataStore.data?.bases?.filter(Boolean) ?? [])
+  let baseNames = derived(bases, ($bases) => $bases.map((base) => base?.name).filter(Boolean) as string[])
 
   $: isLoading = $indexDataStore.fetching
 
   function setBases() {
-    basesStore.set(bases)
+    basesStore.set($bases)
   }
 
   $: bases, setBases()
@@ -53,15 +55,15 @@
 
   $: role.set(member?.role ?? null)
 
-  $: if (tables && tables?.length !== 0 && !$page.params.tableId && $page.route.id === "/(authed)/(space)") {
-    goto(`/t/${tables[0]?.id}`, { replaceState: true })
+  $: if ($tables && $tables?.length !== 0 && !$page.params.tableId && $page.route.id === "/(authed)/(space)") {
+    goto(`/t/${$tables[0]?.id}`, { replaceState: true })
   }
-  $: if (!tables.length && bases.length) {
-    goto(`/bases/${bases[0]?.id}`, { replaceState: true })
+  $: if (!$tables.length && $bases.length && !$page.params.baseId) {
+    goto(`/bases/${$bases[0]?.id}`, { replaceState: true })
   }
 
-  $: if ($page.params.tableId && !tables.find((table) => table?.id === $page.params.tableId)) {
-    goto("/", { replaceState: true })
+  $: if ($page.params.tableId && !$tables.find((table) => table?.id === $page.params.tableId)) {
+    // goto("/", { replaceState: true })
   }
 
   let CreateBaseDialog: ComponentType
@@ -82,10 +84,10 @@
   >
     <div class="flex h-full max-h-screen flex-col gap-2">
       <div class="border-b px-4 py-2">
-        <NavTools {space} {me} />
+        <NavTools space={$space} me={data.me.user} />
       </div>
       <ScrollArea class="flex-1">
-        <TablesNav {tables} {bases} {isLoading} />
+        <TablesNav tables={$tables} bases={$bases} {isLoading} />
       </ScrollArea>
 
       <div class="border-t px-4 py-2">
@@ -102,9 +104,9 @@
 <CreateTableSheet />
 <ImportTableDialog />
 {#if CreateBaseDialog}
-  <CreateBaseDialog />
+  <CreateBaseDialog baseNames={$baseNames} />
 {/if}
-<Command {tables} />
+<Command tables={$tables} />
 
 <svelte:window
   use:shortcut={{

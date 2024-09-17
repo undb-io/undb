@@ -10,12 +10,12 @@
   import { CREATE_BASE_MODAL, closeModal } from "$lib/store/modal.store"
   import { goto } from "$app/navigation"
   import { LoaderCircleIcon } from "lucide-svelte"
+  import { tick } from "svelte"
+  import { getNextName } from "@undb/utils"
 
   const mutation = createMutation({
     mutationFn: trpc.base.create.mutate,
     async onSuccess(data) {
-      await goto(`/bases/${data}`)
-      closeModal(CREATE_BASE_MODAL)
       form.reset()
     },
     onError(error) {
@@ -23,12 +23,14 @@
     },
   })
 
+  export let baseNames: string[] = []
+
   const schema = createBaseCommand.omit({ spaceId: true })
 
   const form = superForm(
     defaults(
       {
-        name: "base",
+        name: getNextName(baseNames, "base"),
       },
       zodClient(schema),
     ),
@@ -42,10 +44,13 @@
       onSubmit(event) {
         validateForm({ update: true })
       },
-      onUpdate(event) {
+      async onUpdate(event) {
         if (!event.form.valid) return
 
-        $mutation.mutate(event.form.data)
+        const data = await $mutation.mutateAsync(event.form.data)
+        await tick()
+        await goto(`/bases/${data}`)
+        closeModal(CREATE_BASE_MODAL)
       },
     },
   )
