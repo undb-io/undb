@@ -6,7 +6,12 @@
   export let tableNames: string[]
 </script>
 
-<Dialog.Root open={$isModalOpen(IMPORT_TABLE_MODAL)} onOpenChange={(open) => toggleModal(IMPORT_TABLE_MODAL)}>
+<Dialog.Root
+  open={$isModalOpen(IMPORT_TABLE_MODAL)}
+  closeOnOutsideClick={false}
+  closeOnEscape={false}
+  onOpenChange={(open) => toggleModal(IMPORT_TABLE_MODAL)}
+>
   <Dialog.Content class="max-w-3xl">
     <Dialog.Header>Import Data - CSV / JSON / Excel</Dialog.Header>
     <ImportTable {tableNames} />

@@ -22,7 +22,6 @@
     type ICreateSchemaDTO,
   } from "@undb/table"
   import unzip from "lodash.unzip"
-  import FieldIcon from "../field-icon/field-icon.svelte"
   import { getNextName } from "@undb/utils"
   import FieldTypePicker from "../field-picker/field-type-picker.svelte"
 
