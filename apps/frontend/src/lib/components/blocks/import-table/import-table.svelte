@@ -97,7 +97,6 @@
     tableName = getNextName(tableNames, file.name)
 
     let parsed = await parse(file)
-    console.log(parsed)
 
     if (firstRowAsHeader) {
       const names = parsed.data[0].reduce((acc, cur) => {

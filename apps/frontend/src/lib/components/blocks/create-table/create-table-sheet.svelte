@@ -9,6 +9,8 @@
   import { LoaderCircleIcon } from "lucide-svelte"
 
   const isCreating = useIsMutating({ mutationKey: ["createTable"] })
+
+  export let tableNames: string[]
 </script>
 
 <Sheet.Root
@@ -33,7 +35,7 @@
     </Sheet.Header>
 
     <ScrollArea class="flex-1">
-      <CreateTable />
+      <CreateTable {tableNames} />
     </ScrollArea>
 
     <Sheet.Footer>

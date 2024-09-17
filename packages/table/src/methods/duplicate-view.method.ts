@@ -10,7 +10,6 @@ export function duplicateViewMethod(this: TableDo, dto: IDuplicateViewDTO): Opti
   const spec = view.$duplicate(dto)
 
   const names = this.views.views.map((v) => v.name.value)
-  console.log(names)
   applyRules(new ViewNameShouldBeUnique(names))
 
   if (spec.isSome()) {

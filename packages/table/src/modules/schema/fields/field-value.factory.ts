@@ -37,7 +37,6 @@ export class FieldValueFactory {
       .with({ type: "string" }, (field) => Some(new StringFieldValue(field.valueSchema.parse(value))))
       .with({ type: "select" }, (field) => {
         const parsedValue = SelectFieldValue.parseValue(value, field as SelectField)
-        console.log(parsedValue)
         return Some(new SelectFieldValue(field.valueSchema.parse(parsedValue)))
       })
       .with({ type: "reference" }, (field) => Some(new ReferenceFieldValue(field.valueSchema.parse(value))))

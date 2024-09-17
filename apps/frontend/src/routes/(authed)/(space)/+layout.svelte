@@ -11,7 +11,7 @@
   import { CREATE_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
   import Command from "$lib/components/blocks/command/command.svelte"
   import { role } from "$lib/store/space-member.store"
-  import { bases as basesStore } from "$lib/store/base.store"
+  import { baseId, bases as basesStore } from "$lib/store/base.store"
   import NavTools from "$lib/components/blocks/nav/nav-tools.svelte"
   import { onMount } from "svelte"
   import type { ComponentType } from "svelte"
@@ -42,7 +42,9 @@
   let tables = derived(indexDataStore, ($indexDataStore) => $indexDataStore.data?.tables?.filter(Boolean) ?? [])
   let bases = derived(indexDataStore, ($indexDataStore) => $indexDataStore.data?.bases?.filter(Boolean) ?? [])
   let baseNames = derived(bases, ($bases) => $bases.map((base) => base?.name).filter(Boolean) as string[])
-  let baseTables = derived(tables, ($tables) => $tables.filter((table) => table?.baseId === $page.params.baseId))
+  let baseTables = derived([tables, page, baseId], ([$tables, $page, $baseId]) =>
+    $tables.filter((table) => table?.baseId === $page.params.baseId || table?.baseId === $baseId),
+  )
   let baseTableNames = derived(
     baseTables,
     ($baseTables) => $baseTables.map((table) => table?.name).filter(Boolean) as string[],
@@ -106,7 +108,7 @@
   </Resizable.Pane>
 </Resizable.PaneGroup>
 
-<CreateTableSheet />
+<CreateTableSheet tableNames={$baseTableNames} />
 <ImportTableDialog tableNames={$baseTableNames} />
 {#if CreateBaseDialog}
   <CreateBaseDialog baseNames={$baseNames} />
