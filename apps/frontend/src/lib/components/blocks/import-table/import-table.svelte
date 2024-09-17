@@ -86,19 +86,10 @@
     },
   })
 
-  async function onChange(e: Event) {
-    const target = e.target as HTMLInputElement
-    const files = target.files
-    if (!files?.length) return
+  async function setData() {
+    if (!file) return
 
-    const [f] = files
-    tableId = TableIdVo.create().value
-    file = f
-    tableName = getNextName(tableNames, file.name)
-
-    let parsed = await parse(file)
-    console.log(parsed)
-
+    const parsed = await parse(file)
     if (firstRowAsHeader) {
       const names = parsed.data[0].reduce((acc, cur) => {
         if (!cur) {
@@ -119,6 +110,19 @@
         data: [parsed.data[0].map((_, i) => `field ${i + 1}`), ...parsed.data],
       }
     }
+  }
+
+  async function onChange(e: Event) {
+    const target = e.target as HTMLInputElement
+    const files = target.files
+    if (!files?.length) return
+
+    const [f] = files
+    tableId = TableIdVo.create().value
+    file = f
+    tableName = getNextName(tableNames, file.name)
+
+    await setData()
   }
 
   function removeFile() {
@@ -153,16 +157,14 @@
     }
   }
 
-  $: transposed = firstRowAsHeader
-    ? unzip(data?.data.slice(1)).slice(0, inferFieldTypeCount)
-    : unzip(data?.data).slice(0, inferFieldTypeCount)
+  $: transposed = unzip(data?.data.slice(1)).slice(0, inferFieldTypeCount)
 
-  $: schema = data?.data[0].map((header, i) => ({
+  $: schema = (data?.data[0].map((header, i) => ({
     ...inferCreateFieldType(transposed[i]),
     name: header,
     id: FieldIdVo.create().value,
     display: i === 0,
-  })) as ICreateSchemaDTO
+  })) ?? []) as ICreateSchemaDTO
 </script>
 
 {#if step === 0}
@@ -188,76 +190,103 @@
     </div>
   {/if}
   <Label class="flex items-center gap-2">
-    <Checkbox bind:checked={firstRowAsHeader} />
+    <Checkbox
+      disabled={$createTable.isPending || $createRecords.isPending}
+      bind:checked={firstRowAsHeader}
+      onCheckedChange={setData}
+    />
     First row as header
   </Label>
   <Label class="flex items-center gap-2">
-    <Checkbox bind:checked={importData} />
+    <Checkbox disabled={$createTable.isPending || $createRecords.isPending} bind:checked={importData} />
     Import Data
   </Label>
 {:else if step === 1}
+  <Label class="flex items-center gap-2">
+    <Checkbox
+      disabled={$createTable.isPending || $createRecords.isPending}
+      bind:checked={firstRowAsHeader}
+      onCheckedChange={setData}
+    />
+    First row as header
+  </Label>
+  <Label class="flex items-center gap-2">
+    <Checkbox disabled={$createTable.isPending || $createRecords.isPending} bind:checked={importData} />
+    Import Data
+  </Label>
   {#if data && file}
+    <div class="p-3">
+      <Label class="flex items-center gap-2">
+        <div>Name</div>
+        <Input disabled={$createTable.isPending || $createRecords.isPending} class="text-sm" bind:value={tableName} />
+      </Label>
+    </div>
     <div class="rounded-sm border">
-      <div class="border-b p-3">
-        <Label class="flex items-center gap-2">
-          <div>Name</div>
-          <Input class="text-sm" bind:value={tableName} />
-        </Label>
-      </div>
-      <div>
-        <Table.Root>
-          <Table.Header>
-            <Table.Row>
-              <Table.Head class="w-[200px]">Field Name</Table.Head>
-              <Table.Head class="flex-1">Field Type</Table.Head>
-              <Table.Head class="text-right">Action</Table.Head>
+      <Table.Root>
+        <Table.Header>
+          <Table.Row>
+            <Table.Head class="w-[200px]">Field Name</Table.Head>
+            <Table.Head class="flex-1">Field Type</Table.Head>
+            <Table.Head class="text-right">Action</Table.Head>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {#each schema as field, idx}
+            <Table.Row class="group">
+              <Table.Cell class="font-medium">
+                <Input
+                  class="text-sm"
+                  bind:value={data.data[0][idx]}
+                  disabled={$createTable.isPending || $createRecords.isPending}
+                />
+              </Table.Cell>
+              <Table.Cell>
+                <div class="flex items-center">
+                  <FieldIcon type={field.type} class="mr-2 h-4 w-4" />
+                  {field.type}
+                </div>
+              </Table.Cell>
+              <Table.Cell class="text-right">
+                <button
+                  disabled={$createTable.isPending || $createRecords.isPending}
+                  on:click={() => removeField(idx)}
+                  class="rounded-full p-1 opacity-0 transition-colors hover:bg-gray-200 group-hover:opacity-100"
+                >
+                  <XIcon class="text-muted-foreground h-4 w-4" />
+                </button>
+              </Table.Cell>
             </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {#each schema as field, idx}
-              <Table.Row class="group">
-                <Table.Cell class="font-medium">
-                  <Input class="text-sm" bind:value={data.data[0][idx]} />
-                </Table.Cell>
-                <Table.Cell>
-                  <div class="flex items-center">
-                    <FieldIcon type={field.type} class="mr-2 h-4 w-4" />
-                    {field.type}
-                  </div>
-                </Table.Cell>
-                <Table.Cell class="text-right">
-                  <button
-                    on:click={() => removeField(idx)}
-                    class="rounded-full p-1 opacity-0 transition-colors hover:bg-gray-200 group-hover:opacity-100"
-                  >
-                    <XIcon class="text-muted-foreground h-4 w-4" />
-                  </button>
-                </Table.Cell>
-              </Table.Row>
-            {/each}
-          </Table.Body>
-        </Table.Root>
-      </div>
+          {/each}
+        </Table.Body>
+      </Table.Root>
     </div>
   {/if}
 {/if}
 
 <div class="flex justify-end gap-2">
   {#if step === 1}
-    <Button variant="outline" on:click={() => (step = 0)} size="sm">
+    <Button
+      disabled={$createTable.isPending || $createRecords.isPending}
+      variant="outline"
+      on:click={() => (step = 0)}
+      size="sm"
+    >
       <ArrowLeftIcon class="mr-2 h-4 w-4" />
       Back
     </Button>
   {/if}
   <Button
-    disabled={(step === 0 && !file) || (step === 1 && schema.length < 1) || $createTable.isPending}
+    disabled={(step === 0 && !file) ||
+      (step === 1 && schema.length < 1) ||
+      $createTable.isPending ||
+      $createRecords.isPending}
     on:click={handleClickImport}
     size="sm"
   >
     {#if step === 0}
       Next step <ArrowRightIcon class="ml-2 h-4 w-4" />
     {:else}
-      {#if $createTable.isPending}
+      {#if $createTable.isPending || $createRecords.isPending}
         <LoaderCircleIcon class="mr-2 h-4 w-4 animate-spin" />
       {/if}
       Import

@@ -13,8 +13,10 @@
   import { FieldIdVo } from "@undb/table"
   import { CREATE_TABLE_MODAL, closeModal } from "$lib/store/modal.store"
   import { baseId, currentBase } from "$lib/store/base.store"
+  import { getNextName } from "@undb/utils"
 
   const schema = createTableCommand.omit({ baseId: true })
+  export let tableNames: string[]
 
   const mutation = createMutation({
     mutationFn: trpc.table.create.mutate,
@@ -34,7 +36,7 @@
   const form = superForm(
     defaults(
       {
-        name: "",
+        name: getNextName(tableNames, "table"),
         schema: [
           {
             id: FieldIdVo.create().value,
@@ -54,7 +56,6 @@
       resetForm: false,
       invalidateAll: true,
       onSubmit(input) {
-        console.log({ input })
         validateForm({ update: true })
       },
       async onUpdate(event) {
