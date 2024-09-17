@@ -24,6 +24,7 @@
   import unzip from "lodash.unzip"
   import FieldIcon from "../field-icon/field-icon.svelte"
   import { getNextName } from "@undb/utils"
+  import FieldTypePicker from "../field-picker/field-type-picker.svelte"
 
   export let tableNames: string[]
 
@@ -35,6 +36,7 @@
   let firstRowAsHeader = true
   let importData = true
   let tableName: string | undefined = undefined
+  let schema: ICreateSchemaDTO | undefined
 
   const createRecords = createMutation({
     mutationKey: ["table", "import", "records"],
@@ -110,6 +112,15 @@
         data: [parsed.data[0].map((_, i) => `field ${i + 1}`), ...parsed.data],
       }
     }
+
+    const transposed = unzip(data?.data.slice(1)).slice(0, inferFieldTypeCount)
+
+    schema = (data?.data[0].map((header, i) => ({
+      ...inferCreateFieldType(transposed[i]),
+      name: header,
+      id: FieldIdVo.create().value,
+      display: i === 0,
+    })) ?? []) as ICreateSchemaDTO
   }
 
   async function onChange(e: Event) {
@@ -130,6 +141,8 @@
   }
 
   function handleClickImport() {
+    if (!schema) return
+
     if (step === 0) {
       step = 1
       return
@@ -156,15 +169,6 @@
       data.data = data.data.map((r) => r.filter((_, i) => i !== index))
     }
   }
-
-  $: transposed = unzip(data?.data.slice(1)).slice(0, inferFieldTypeCount)
-
-  $: schema = (data?.data[0].map((header, i) => ({
-    ...inferCreateFieldType(transposed[i]),
-    name: header,
-    id: FieldIdVo.create().value,
-    display: i === 0,
-  })) ?? []) as ICreateSchemaDTO
 </script>
 
 {#if step === 0}
@@ -214,7 +218,7 @@
     <Checkbox disabled={$createTable.isPending || $createRecords.isPending} bind:checked={importData} />
     Import Data
   </Label>
-  {#if data && file}
+  {#if data && file && schema}
     <div class="p-3">
       <Label class="flex items-center gap-2">
         <div>Name</div>
@@ -241,10 +245,16 @@
                 />
               </Table.Cell>
               <Table.Cell>
-                <div class="flex items-center">
+                <FieldTypePicker
+                  disabled={$createTable.isPending || $createRecords.isPending}
+                  bind:value={schema[idx].type}
+                  onValueChange={() => {}}
+                  tabIndex={-1}
+                />
+                <!-- <div class="flex items-center">
                   <FieldIcon type={field.type} class="mr-2 h-4 w-4" />
                   {field.type}
-                </div>
+                </div> -->
               </Table.Cell>
               <Table.Cell class="text-right">
                 <button
