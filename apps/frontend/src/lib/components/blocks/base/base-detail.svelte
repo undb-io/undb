@@ -5,6 +5,7 @@
   import { goto } from "$app/navigation"
   import { hasPermission } from "$lib/store/space-member.store"
   import type { IBaseOption } from "@undb/base"
+  import { baseId } from "$lib/store/base.store"
 
   export let base: {
     id: string
@@ -26,6 +27,7 @@
         type="button"
         class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
         on:click={() => {
+          baseId.set(base.id)
           toggleModal(CREATE_TABLE_MODAL)
         }}
       >
@@ -37,6 +39,7 @@
         type="button"
         class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
         on:click={() => {
+          baseId.set(base.id)
           toggleModal(IMPORT_TABLE_MODAL)
         }}
       >

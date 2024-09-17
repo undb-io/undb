@@ -1,5 +1,6 @@
 import { Option as O, ValueObject } from "@undb/domain"
-import { ColorsVO } from "../../../colors"
+import { getNextName } from "@undb/utils"
+import { COLORS, ColorsVO } from "../../../colors"
 import { OptionIdVo } from "./option-id.vo"
 import { Option, type IOption } from "./option.vo"
 
@@ -12,16 +13,14 @@ export class Options extends ValueObject<Option[]> {
     if (strings.length === 0) {
       return new Options([])
     }
-    const color = new ColorsVO()
     return new Options(
-      strings.map(
-        (name, i) =>
-          new Option({
-            id: OptionIdVo.create().value,
-            name,
-            color: i == 0 ? "red" : color.next(),
-          }),
-      ),
+      strings.map((name, i) => {
+        return new Option({
+          id: OptionIdVo.create().value,
+          name: getNextName(strings.slice(0, i), name),
+          color: COLORS[i % COLORS.length],
+        })
+      }),
     )
   }
 

@@ -42,6 +42,11 @@
   let tables = derived(indexDataStore, ($indexDataStore) => $indexDataStore.data?.tables?.filter(Boolean) ?? [])
   let bases = derived(indexDataStore, ($indexDataStore) => $indexDataStore.data?.bases?.filter(Boolean) ?? [])
   let baseNames = derived(bases, ($bases) => $bases.map((base) => base?.name).filter(Boolean) as string[])
+  let baseTables = derived(tables, ($tables) => $tables.filter((table) => table?.baseId === $page.params.baseId))
+  let baseTableNames = derived(
+    baseTables,
+    ($baseTables) => $baseTables.map((table) => table?.name).filter(Boolean) as string[],
+  )
 
   $: isLoading = $indexDataStore.fetching
 
@@ -102,7 +107,7 @@
 </Resizable.PaneGroup>
 
 <CreateTableSheet />
-<ImportTableDialog />
+<ImportTableDialog tableNames={$baseTableNames} />
 {#if CreateBaseDialog}
   <CreateBaseDialog baseNames={$baseNames} />
 {/if}

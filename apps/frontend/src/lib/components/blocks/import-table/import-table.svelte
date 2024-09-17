@@ -4,7 +4,7 @@
   import { Label } from "$lib/components/ui/label"
   import { Checkbox } from "$lib/components/ui/checkbox"
   import { parse, type ImportDataExtensions, type SheetData } from "$lib/import/import.helper"
-  import { FileIcon, XIcon } from "lucide-svelte"
+  import { FileIcon, XIcon, ArrowRightIcon, ArrowLeftIcon } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
   import { invalidate, goto } from "$app/navigation"
   import { baseId, currentBase } from "$lib/store/base.store"
@@ -14,16 +14,29 @@
   import { toast } from "svelte-sonner"
   import {
     castFieldValue,
-    fieldAggregate,
     FieldIdVo,
     inferCreateFieldType,
+    systemFieldNames,
+    systemFieldTypes,
     TableIdVo,
     type ICreateRecordDTO,
     type ICreateSchemaDTO,
   } from "@undb/table"
   import unzip from "lodash.unzip"
   import FieldIcon from "../field-icon/field-icon.svelte"
-  import { page } from "$app/stores"
+  import { getNextName } from "@undb/utils"
+
+  export let tableNames: string[]
+
+  let file: File | undefined
+  let data: { name: string; extension: ImportDataExtensions; data: SheetData } | undefined
+  let tableId: string | undefined
+  let inferFieldTypeCount = 200
+  let step = 0
+  let firstRowAsHeader = true
+  let importData = true
+  let tableName: string | undefined = undefined
+  let rs: string[][] = []
 
   const createRecords = createMutation({
     mutationKey: ["table", "import", "records"],
@@ -74,9 +87,6 @@
     },
   })
 
-  let file: File | undefined
-  let data: { name: string; extension: ImportDataExtensions; data: SheetData } | undefined
-  let tableId: string | undefined
   async function onChange(e: Event) {
     const target = e.target as HTMLInputElement
     const files = target.files
@@ -85,7 +95,28 @@
     const [f] = files
     tableId = TableIdVo.create().value
     file = f
-    data = await parse(file)
+    tableName = getNextName(tableNames, file.name)
+    let parsed = await parse(file)
+    if (firstRowAsHeader) {
+      const names = parsed.data[0].reduce((acc, cur) => {
+        if (!cur) {
+          return acc
+        }
+        const name = getNextName(acc.concat(systemFieldNames), String(cur))
+        return [...acc, name]
+      }, [] as string[])
+      data = {
+        name: file.name,
+        extension: parsed.extension,
+        data: [names, ...parsed.data.slice(1)],
+      }
+    } else {
+      data = {
+        name: file.name,
+        extension: parsed.extension,
+        data: [parsed.data[0].map((_, i) => `field ${i + 1}`), ...parsed.data],
+      }
+    }
   }
 
   function removeFile() {
@@ -105,7 +136,7 @@
 
       $createTable.mutate({
         id: tableId,
-        name: file.name,
+        name: tableName!,
         baseId,
         schema,
       })
@@ -115,44 +146,22 @@
   }
 
   function removeField(index: number) {
-    if (headers.length <= 1) return
-
-    headers = headers.filter((_, i) => i !== index)
     if (data) {
       data.data = data.data.map((r) => r.filter((_, i) => i !== index))
     }
   }
 
-  let inferFieldTypeCount = 200
-
   $: transposed = firstRowAsHeader
     ? unzip(data?.data.slice(1)).slice(0, inferFieldTypeCount)
     : unzip(data?.data).slice(0, inferFieldTypeCount)
 
-  let step = 0
-  let firstRowAsHeader = true
-  let importData = true
-  let headers: string[] = []
-  let rs: string[][] = []
-
-  $: tableName = file?.name
-
-  $: schema = headers.map((header, i) => ({
+  $: schema = data?.data[0].map((header, i) => ({
     ...inferCreateFieldType(transposed[i]),
     name: header,
     id: FieldIdVo.create().value,
     display: i === 0,
   })) as ICreateSchemaDTO
-
-  $: if (data) {
-    if (firstRowAsHeader) {
-      headers = data.data[0].map(String)
-    } else {
-      headers = Array.from({ length: data.data[0].length }, (_, i) => `field ${i + 1}`)
-    }
-
-    rs = firstRowAsHeader ? data.data.slice(1).map((s) => s.map(String)) : data.data.map((s) => s.map(String))
-  }
+  $: console.log(schema)
 </script>
 
 {#if step === 0}
@@ -191,7 +200,7 @@
       <div class="border-b p-3">
         <Label class="flex items-center gap-2">
           <div>Name</div>
-          <Input class="text-sm" value={tableName} on:change={(e) => (tableName = e.target.value)} />
+          <Input class="text-sm" bind:value={tableName} />
         </Label>
       </div>
       <div>
@@ -204,25 +213,24 @@
             </Table.Row>
           </Table.Header>
           <Table.Body>
-            {#each headers as header, idx}
-              {@const field = schema[idx]}
+            {#each schema as field, idx}
               <Table.Row class="group">
-                <Table.Cell class="font-medium">{header}</Table.Cell>
+                <Table.Cell class="font-medium">
+                  <Input class="text-sm" bind:value={data.data[0][idx]} />
+                </Table.Cell>
                 <Table.Cell>
                   <div class="flex items-center">
-                    <FieldIcon {field} type={field.type} class="mr-2 h-4 w-4" />
+                    <FieldIcon type={field.type} class="mr-2 h-4 w-4" />
                     {field.type}
                   </div>
                 </Table.Cell>
                 <Table.Cell class="text-right">
-                  {#if headers.length > 1}
-                    <button
-                      on:click={() => removeField(idx)}
-                      class="rounded-full p-1 opacity-0 transition-colors hover:bg-gray-200 group-hover:opacity-100"
-                    >
-                      <XIcon class="text-muted-foreground h-4 w-4" />
-                    </button>
-                  {/if}
+                  <button
+                    on:click={() => removeField(idx)}
+                    class="rounded-full p-1 opacity-0 transition-colors hover:bg-gray-200 group-hover:opacity-100"
+                  >
+                    <XIcon class="text-muted-foreground h-4 w-4" />
+                  </button>
                 </Table.Cell>
               </Table.Row>
             {/each}
@@ -235,9 +243,16 @@
 
 <div class="flex justify-end gap-2">
   {#if step === 1}
-    <Button variant="outline" on:click={() => (step = 0)} size="sm">back</Button>
+    <Button variant="outline" on:click={() => (step = 0)} size="sm">
+      <ArrowLeftIcon class="mr-2 h-4 w-4" />
+      Back
+    </Button>
   {/if}
-  <Button disabled={(step === 0 && !file) || (step === 1 && headers.length < 1)} on:click={handleClickImport} size="sm">
-    import
+  <Button disabled={(step === 0 && !file) || (step === 1 && schema.length < 1)} on:click={handleClickImport} size="sm">
+    {#if step === 0}
+      Next step <ArrowRightIcon class="ml-2 h-4 w-4" />
+    {:else}
+      Import
+    {/if}
   </Button>
 </div>

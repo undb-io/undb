@@ -33,7 +33,7 @@ export const inferCreateFieldType = (values: (string | number | null | object | 
     .map((s) => (isString(s) ? s.trim() : s))
     .filter(Boolean) as (string | number)[]
 
-  return match(values)
+  return match(distinctValues)
     .returnType<IInferCreateFieldDTO>()
     .with(P.array(P.string.regex(EMAIL_REGEXP)), () => ({ type: "email" }))
     .with(P.array(P.string.regex(URL_REGEXP)), () => ({ type: "url" }))
@@ -119,6 +119,8 @@ export const systemFieldTypes: SystemFieldType[] = [
   "updatedAt",
   "updatedBy",
 ] as const
+
+export const systemFieldNames = ["id", "autoIncrement", "createdAt", "createdBy", "updatedAt", "updatedBy"] as const
 
 export const filterableFieldTypes = [
   "string",
