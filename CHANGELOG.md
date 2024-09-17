@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-75
+
+
+### 🩹 Fixes
+
+- Fix bulk insert large data set ([d87e02f](https://github.com/undb-io/undb/commit/d87e02f))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-74
 
 
