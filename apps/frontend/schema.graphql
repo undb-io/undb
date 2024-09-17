@@ -13,6 +13,7 @@ type Audit {
 type Base {
   id: ID!
   name: String!
+  option: JSON
   share: Share
   tables: [Table]!
 }

@@ -50,6 +50,12 @@ export const isModalOpen = derived(modal, ($modal) => {
   return (type: ModalType) => $modal?.includes(type) ?? false
 })
 
+export const openModal = (type: ModalType) => {
+  modal.update(($modal) => {
+    return $modal?.includes(type) ? $modal : [...($modal ?? []), type]
+  })
+}
+
 export const closeModal = (type: ModalType) => {
   modal.update(($modal) => {
     return $modal?.filter((m) => m !== type) ?? null

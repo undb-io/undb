@@ -258,6 +258,7 @@ export class Graphql {
       type Base {
         id: ID!
         name: String!
+        option: JSON
 
         share: Share
         tables: [Table]!
