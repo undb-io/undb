@@ -2,6 +2,7 @@ query GetBaseQuery($baseId: ID!) {
   base(id: $baseId) {
     id
     name
+    option
 
     share {
       enabled

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CREATE_TABLE_MODAL, IMPORT_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
+  import { CREATE_TABLE_MODAL, IMPORT_TABLE_MODAL, openModal, toggleModal } from "$lib/store/modal.store"
   import { DatabaseIcon, ImportIcon, PlusCircleIcon, PlusIcon } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
   import { goto } from "$app/navigation"
@@ -28,7 +28,7 @@
         class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
         on:click={() => {
           baseId.set(base.id)
-          toggleModal(CREATE_TABLE_MODAL)
+          openModal(CREATE_TABLE_MODAL)
         }}
       >
         <PlusCircleIcon class="text-muted-foreground" />
@@ -40,7 +40,7 @@
         class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
         on:click={() => {
           baseId.set(base.id)
-          toggleModal(IMPORT_TABLE_MODAL)
+          openModal(IMPORT_TABLE_MODAL)
         }}
       >
         <ImportIcon class="text-muted-foreground" />

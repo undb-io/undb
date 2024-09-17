@@ -4,7 +4,7 @@
 
   export let data: PageData
 
-  $: getBaseStore = data.getBaseStore
+  let getBaseStore = data.getBaseStore
   $: base = $getBaseStore.data?.base
 </script>
 

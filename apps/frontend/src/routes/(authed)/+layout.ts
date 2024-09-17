@@ -4,11 +4,11 @@ import type { LayoutLoad } from "./$types"
 export const ssr = false
 
 export const load: LayoutLoad = async (event) => {
-  const redirectURL = encodeURIComponent(event.url.pathname)
+  // const redirectURL = encodeURIComponent(event.url.pathname)
 
-  const search = new URLSearchParams({ redirect: redirectURL })
+  // const search = new URLSearchParams({ redirect: redirectURL })
 
-  const me = await event.fetch("/api/me?" + search.toString())
+  const me = await event.fetch("/api/me")
   if (me.redirected) {
     throw redirect(301, me.url)
   }
