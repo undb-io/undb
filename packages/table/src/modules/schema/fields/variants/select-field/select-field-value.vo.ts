@@ -11,6 +11,19 @@ export class SelectFieldValue extends FieldValueObject<ISelectFieldValue> {
     super(Array.isArray(option) ? option : { value: option })
   }
 
+  static parseValue(value: string | string[] | null, field: SelectField): IOptionId | IOptionId[] | null {
+    if (value === null || value === undefined) {
+      return null
+    }
+    if (Array.isArray(value)) {
+      return value
+        .map((v) => field.options.find((op) => op.id === v || op.name === v))
+        .filter((v) => !!v)
+        .map((v) => v.id)
+    }
+    return field.options.find((op) => op.id === value || op.name === value)?.id ?? null
+  }
+
   isEmpty() {
     if (Array.isArray(this.props)) {
       return this.props.length === 0

@@ -20,7 +20,7 @@
   export let getTableUrl: (tableId: string) => string
 </script>
 
-<main class="h-full flex-1 px-4 py-4">
+<main class="flex flex-1 flex-col overflow-hidden px-4 py-4">
   {#if $hasPermission("table:create")}
     <div class="flex items-center gap-4">
       <button
@@ -50,19 +50,19 @@
     </div>
   {/if}
 
-  <section class="pt-3">
+  <section class="flex flex-1 flex-col overflow-hidden pt-3">
     <h3 class="text-xl font-normal text-gray-600">Tables</h3>
 
-    <Table.Root>
-      <Table.Header>
-        <Table.Row>
+    <Table.Root class="flex w-full flex-1 flex-col overflow-y-auto">
+      <Table.Header class="flex w-full">
+        <Table.Row class="w-full">
           <Table.Head>Name</Table.Head>
         </Table.Row>
       </Table.Header>
-      <Table.Body>
+      <Table.Body class="w-full flex-1">
         {#each base.tables as table}
           {#if table}
-            <Table.Row class="cursor-pointer" on:click={() => goto(getTableUrl(table.id))}>
+            <Table.Row class="flex w-full cursor-pointer" on:click={() => goto(getTableUrl(table.id))}>
               <Table.Cell class="flex items-center font-medium">
                 <DatabaseIcon class="mr-2 h-4 w-4" />
                 {table.name}

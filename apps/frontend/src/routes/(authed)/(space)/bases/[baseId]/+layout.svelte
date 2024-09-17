@@ -15,7 +15,7 @@
   }
 </script>
 
-<main class="flex flex-col">
+<main class="flex h-screen flex-col">
   {#if base}
     <BaseHeader {base} />
     <UpdateBaseDialog {base} />
