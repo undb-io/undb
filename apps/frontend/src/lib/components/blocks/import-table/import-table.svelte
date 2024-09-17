@@ -190,27 +190,35 @@
     </div>
   {/if}
   <Label class="flex items-center gap-2">
-    <Checkbox bind:checked={firstRowAsHeader} onCheckedChange={setData} />
+    <Checkbox
+      disabled={$createTable.isPending || $createRecords.isPending}
+      bind:checked={firstRowAsHeader}
+      onCheckedChange={setData}
+    />
     First row as header
   </Label>
   <Label class="flex items-center gap-2">
-    <Checkbox bind:checked={importData} />
+    <Checkbox disabled={$createTable.isPending || $createRecords.isPending} bind:checked={importData} />
     Import Data
   </Label>
 {:else if step === 1}
   <Label class="flex items-center gap-2">
-    <Checkbox bind:checked={firstRowAsHeader} onCheckedChange={setData} />
+    <Checkbox
+      disabled={$createTable.isPending || $createRecords.isPending}
+      bind:checked={firstRowAsHeader}
+      onCheckedChange={setData}
+    />
     First row as header
   </Label>
   <Label class="flex items-center gap-2">
-    <Checkbox bind:checked={importData} />
+    <Checkbox disabled={$createTable.isPending || $createRecords.isPending} bind:checked={importData} />
     Import Data
   </Label>
   {#if data && file}
     <div class="p-3">
       <Label class="flex items-center gap-2">
         <div>Name</div>
-        <Input class="text-sm" bind:value={tableName} />
+        <Input disabled={$createTable.isPending || $createRecords.isPending} class="text-sm" bind:value={tableName} />
       </Label>
     </div>
     <div class="rounded-sm border">
@@ -226,7 +234,11 @@
           {#each schema as field, idx}
             <Table.Row class="group">
               <Table.Cell class="font-medium">
-                <Input class="text-sm" bind:value={data.data[0][idx]} />
+                <Input
+                  class="text-sm"
+                  bind:value={data.data[0][idx]}
+                  disabled={$createTable.isPending || $createRecords.isPending}
+                />
               </Table.Cell>
               <Table.Cell>
                 <div class="flex items-center">
@@ -236,6 +248,7 @@
               </Table.Cell>
               <Table.Cell class="text-right">
                 <button
+                  disabled={$createTable.isPending || $createRecords.isPending}
                   on:click={() => removeField(idx)}
                   class="rounded-full p-1 opacity-0 transition-colors hover:bg-gray-200 group-hover:opacity-100"
                 >
@@ -252,20 +265,28 @@
 
 <div class="flex justify-end gap-2">
   {#if step === 1}
-    <Button variant="outline" on:click={() => (step = 0)} size="sm">
+    <Button
+      disabled={$createTable.isPending || $createRecords.isPending}
+      variant="outline"
+      on:click={() => (step = 0)}
+      size="sm"
+    >
       <ArrowLeftIcon class="mr-2 h-4 w-4" />
       Back
     </Button>
   {/if}
   <Button
-    disabled={(step === 0 && !file) || (step === 1 && schema.length < 1) || $createTable.isPending}
+    disabled={(step === 0 && !file) ||
+      (step === 1 && schema.length < 1) ||
+      $createTable.isPending ||
+      $createRecords.isPending}
     on:click={handleClickImport}
     size="sm"
   >
     {#if step === 0}
       Next step <ArrowRightIcon class="ml-2 h-4 w-4" />
     {:else}
-      {#if $createTable.isPending}
+      {#if $createTable.isPending || $createRecords.isPending}
         <LoaderCircleIcon class="mr-2 h-4 w-4 animate-spin" />
       {/if}
       Import

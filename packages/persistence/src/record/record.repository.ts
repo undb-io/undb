@@ -18,6 +18,7 @@ import {
   type RecordId,
   type TableDo,
 } from "@undb/table"
+import { chunk } from "es-toolkit/array"
 import { sql, type CompiledQuery, type ExpressionBuilder } from "kysely"
 import { getAnonymousTransaction } from "../ctx"
 import type { IRecordQueryBuilder } from "../qb"
@@ -87,7 +88,7 @@ export class RecordRepository implements IRecordRepository {
     await this.outboxService.save(record)
   }
 
-  async bulkInsert(table: TableDo, records: RecordDO[]): Promise<void> {
+  async #bulkInsert(table: TableDo, records: RecordDO[]): Promise<void> {
     const trx = getAnonymousTransaction()
     const context = executionContext.getStore()
     const userId = context?.user?.userId!
@@ -135,6 +136,13 @@ export class RecordRepository implements IRecordRepository {
     }
 
     await this.outboxService.saveMany(records)
+  }
+
+  async bulkInsert(table: TableDo, records: RecordDO[]): Promise<void> {
+    const chunked = chunk(records, 5000)
+    for (const chunk of chunked) {
+      await this.#bulkInsert(table, chunk)
+    }
   }
 
   async findOne(table: TableDo, spec: Option<RecordComositeSpecification>): Promise<Option<RecordDO>> {
