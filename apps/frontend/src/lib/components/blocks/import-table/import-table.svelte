@@ -4,7 +4,7 @@
   import { Label } from "$lib/components/ui/label"
   import { Checkbox } from "$lib/components/ui/checkbox"
   import { parse, type ImportDataExtensions, type SheetData } from "$lib/import/import.helper"
-  import { FileIcon, XIcon, ArrowRightIcon, ArrowLeftIcon } from "lucide-svelte"
+  import { FileIcon, XIcon, ArrowRightIcon, ArrowLeftIcon, LoaderCircleIcon } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
   import { invalidate, goto } from "$app/navigation"
   import { baseId, currentBase } from "$lib/store/base.store"
@@ -17,7 +17,6 @@
     FieldIdVo,
     inferCreateFieldType,
     systemFieldNames,
-    systemFieldTypes,
     TableIdVo,
     type ICreateRecordDTO,
     type ICreateSchemaDTO,
@@ -36,7 +35,6 @@
   let firstRowAsHeader = true
   let importData = true
   let tableName: string | undefined = undefined
-  let rs: string[][] = []
 
   const createRecords = createMutation({
     mutationKey: ["table", "import", "records"],
@@ -56,7 +54,8 @@
   const createTable = createMutation({
     mutationKey: ["table", "import"],
     mutationFn: trpc.table.create.mutate,
-    async onSuccess(data) {
+    async onSuccess(tableId) {
+      const rs = data?.data.slice(1).map((r) => r.map((v) => String(v))) ?? []
       if (importData && rs.length) {
         const records = rs.map((r, i) => {
           const record: ICreateRecordDTO = { values: {} }
@@ -72,7 +71,7 @@
         })
 
         $createRecords.mutate({
-          tableId: data,
+          tableId: tableId,
           records,
         })
       } else {
@@ -96,7 +95,10 @@
     tableId = TableIdVo.create().value
     file = f
     tableName = getNextName(tableNames, file.name)
+
     let parsed = await parse(file)
+    console.log(parsed)
+
     if (firstRowAsHeader) {
       const names = parsed.data[0].reduce((acc, cur) => {
         if (!cur) {
@@ -161,7 +163,6 @@
     id: FieldIdVo.create().value,
     display: i === 0,
   })) as ICreateSchemaDTO
-  $: console.log(schema)
 </script>
 
 {#if step === 0}
@@ -248,10 +249,17 @@
       Back
     </Button>
   {/if}
-  <Button disabled={(step === 0 && !file) || (step === 1 && schema.length < 1)} on:click={handleClickImport} size="sm">
+  <Button
+    disabled={(step === 0 && !file) || (step === 1 && schema.length < 1) || $createTable.isPending}
+    on:click={handleClickImport}
+    size="sm"
+  >
     {#if step === 0}
       Next step <ArrowRightIcon class="ml-2 h-4 w-4" />
     {:else}
+      {#if $createTable.isPending}
+        <LoaderCircleIcon class="mr-2 h-4 w-4 animate-spin" />
+      {/if}
       Import
     {/if}
   </Button>

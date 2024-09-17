@@ -36,8 +36,8 @@ export const p = t.procedure
       requestId,
       responseTime,
       type,
-      input,
-      rawInput,
+      // input,
+      // rawInput,
       path,
     }
     if (result.ok) {

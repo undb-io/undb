@@ -134,8 +134,9 @@
                     >
                       <a
                         href={`/t/${table.id}`}
+                        title={table.name}
                         class={cn(
-                          "text-primary flex h-full flex-1 items-center font-normal",
+                          "text-primary flex h-full flex-1 items-center truncate font-normal",
                           active && !viewId && "text-background font-medium",
                         )}
                       >

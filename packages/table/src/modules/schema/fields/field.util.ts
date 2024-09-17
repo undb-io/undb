@@ -57,6 +57,9 @@ export const inferCreateFieldType = (values: (string | number | null | object | 
             options: Options.fromStrings(distinctValues.map((value) => value.toString() ?? "")).toJSON(),
           },
           type: "select",
+          constraint: {
+            max: 1,
+          },
         }) as Omit<ICreateSelectFieldDTO, "id" | "name">,
     )
     .with(P.array(P.string), () => ({ type: "string" }))

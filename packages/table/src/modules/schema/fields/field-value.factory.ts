@@ -2,7 +2,6 @@ import { None, Option, Some } from "@undb/domain"
 import { match } from "ts-pattern"
 import type { JsonValue } from "type-fest"
 import type { Field, FieldValue, MutableFieldValue } from "./field.type"
-import type { IOptionId } from "./option/option-id.vo"
 import {
   AutoIncrementFieldValue,
   ButtonFieldValue,
@@ -27,7 +26,7 @@ import { EmailFieldValue } from "./variants/email-field"
 import { LongTextFieldValue } from "./variants/long-text-field/long-text-field-value.vo"
 import { PercentageFieldValue } from "./variants/percentage-field" // 新增导入
 import { RatingFieldValue } from "./variants/rating-field"
-import { SelectFieldValue } from "./variants/select-field"
+import { type SelectField, SelectFieldValue } from "./variants/select-field"
 import { UserFieldValue } from "./variants/user-field"
 
 export class FieldValueFactory {
@@ -36,7 +35,11 @@ export class FieldValueFactory {
       .with({ type: "number" }, (field) => Some(new NumberFieldValue(field.valueSchema.parse(value))))
       .with({ type: "rating" }, (field) => Some(new RatingFieldValue(field.valueSchema.parse(value))))
       .with({ type: "string" }, (field) => Some(new StringFieldValue(field.valueSchema.parse(value))))
-      .with({ type: "select" }, (field) => Some(new SelectFieldValue(field.valueSchema.parse(value))))
+      .with({ type: "select" }, (field) => {
+        const parsedValue = SelectFieldValue.parseValue(value, field as SelectField)
+        console.log(parsedValue)
+        return Some(new SelectFieldValue(field.valueSchema.parse(parsedValue)))
+      })
       .with({ type: "reference" }, (field) => Some(new ReferenceFieldValue(field.valueSchema.parse(value))))
       .with({ type: "email" }, (field) => Some(new EmailFieldValue(field.valueSchema.parse(value))))
       .with({ type: "url" }, (field) => Some(new UrlFieldValue(field.valueSchema.parse(value))))
@@ -66,7 +69,7 @@ export class FieldValueFactory {
       .with("updatedBy", () => Some(new UpdatedByFieldValue(value as string)))
       .with("reference", () => Some(new ReferenceFieldValue(value as string[])))
       .with("rollup", () => Some(new RollupFieldValue(value as number | Date)))
-      .with("select", () => Some(new SelectFieldValue(value as IOptionId)))
+      .with("select", () => Some(new SelectFieldValue(SelectFieldValue.parseValue(value, field as SelectField))))
       .with("email", () => Some(new EmailFieldValue(value as string)))
       .with("url", () => Some(new UrlFieldValue(value as string)))
       .with("attachment", () => Some(new AttachmentFieldValue(value as IAttachmentFieldValue)))

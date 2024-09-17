@@ -23,7 +23,7 @@ const parseCsv = async (file: File, options?: ParseDataOption): Promise<SheetDat
   return new Promise((resolve) => {
     Papa.parse<string[]>(file, {
       complete(results) {
-        resolve(results.data)
+        resolve(results.data.filter((r) => !(r.length === 1 && r[0] === "")))
       },
     })
   })
