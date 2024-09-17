@@ -54,6 +54,7 @@
       resetForm: false,
       invalidateAll: true,
       onSubmit(input) {
+        console.log({ input })
         validateForm({ update: true })
       },
       async onUpdate(event) {

@@ -89,37 +89,39 @@
       <DropdownMenu.Label>Spaces</DropdownMenu.Label>
       <DropdownMenu.Separator />
       {#if $store.fetching}
-        <div class="space-y-1 px-1 py-0.5">
-          <Skeleton class="h-6 w-full rounded-sm" />
-          <Skeleton class="h-6 w-full rounded-sm" />
-          <Skeleton class="h-6 w-full rounded-sm" />
+        <div class="space-y-2 px-2 py-2">
+          <Skeleton class="h-10 w-full rounded-sm" />
+          <Skeleton class="h-10 w-full rounded-sm" />
+          <Skeleton class="h-10 w-full rounded-sm" />
         </div>
       {:else}
-        {#each spaces as space}
-          {#if space}
-            <DropdownMenu.Item
-              on:click={async () => {
-                await fetch(`/api/spaces/${space.id}/goto`)
-                await goto("/")
-                await invalidateAll()
-              }}
-              class="flex items-center justify-between gap-2 text-xs"
-            >
-              <div class="flex items-center gap-2">
-                <img src={Logo} alt="" class="h-4 w-4 rounded-full" />
-                {#if space.isPersonal && !space.name}
-                  {me.username}'s Personal Space
-                {:else}
-                  {space.name}
-                {/if}
-              </div>
+        <div class="max-h-96 overflow-y-auto">
+          {#each spaces as space}
+            {#if space}
+              <DropdownMenu.Item
+                on:click={async () => {
+                  await fetch(`/api/spaces/${space.id}/goto`)
+                  await goto("/")
+                  await invalidateAll()
+                }}
+                class="flex items-center justify-between gap-2 text-xs"
+              >
+                <div class="flex items-center gap-2">
+                  <img src={Logo} alt="" class="h-4 w-4 rounded-full" />
+                  {#if space.isPersonal && !space.name}
+                    {me.username}'s Personal Space
+                  {:else}
+                    {space.name}
+                  {/if}
+                </div>
 
-              {#if space.member}
-                <Role role={space.member.role} />
-              {/if}
-            </DropdownMenu.Item>
-          {/if}
-        {/each}
+                {#if space.member}
+                  <Role role={space.member.role} />
+                {/if}
+              </DropdownMenu.Item>
+            {/if}
+          {/each}
+        </div>
       {/if}
       <DropdownMenu.Separator />
       <DropdownMenu.Item on:click={() => (createOpen = true)} class="flex items-center justify-center text-xs">
