@@ -157,16 +157,14 @@
     }
   }
 
-  $: transposed = firstRowAsHeader
-    ? unzip(data?.data.slice(1)).slice(0, inferFieldTypeCount)
-    : unzip(data?.data).slice(0, inferFieldTypeCount)
+  $: transposed = unzip(data?.data.slice(1)).slice(0, inferFieldTypeCount)
 
-  $: schema = data?.data[0].map((header, i) => ({
+  $: schema = (data?.data[0].map((header, i) => ({
     ...inferCreateFieldType(transposed[i]),
     name: header,
     id: FieldIdVo.create().value,
     display: i === 0,
-  })) as ICreateSchemaDTO
+  })) ?? []) as ICreateSchemaDTO
 </script>
 
 {#if step === 0}
