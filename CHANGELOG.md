@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-74
+
+
+### 🩹 Fixes
+
+- Fix always refetch data ([1d0faf1](https://github.com/undb-io/undb/commit/1d0faf1))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-73
 
 
