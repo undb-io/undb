@@ -86,18 +86,10 @@
     },
   })
 
-  async function onChange(e: Event) {
-    const target = e.target as HTMLInputElement
-    const files = target.files
-    if (!files?.length) return
+  async function setData() {
+    if (!file) return
 
-    const [f] = files
-    tableId = TableIdVo.create().value
-    file = f
-    tableName = getNextName(tableNames, file.name)
-
-    let parsed = await parse(file)
-
+    const parsed = await parse(file)
     if (firstRowAsHeader) {
       const names = parsed.data[0].reduce((acc, cur) => {
         if (!cur) {
@@ -118,6 +110,19 @@
         data: [parsed.data[0].map((_, i) => `field ${i + 1}`), ...parsed.data],
       }
     }
+  }
+
+  async function onChange(e: Event) {
+    const target = e.target as HTMLInputElement
+    const files = target.files
+    if (!files?.length) return
+
+    const [f] = files
+    tableId = TableIdVo.create().value
+    file = f
+    tableName = getNextName(tableNames, file.name)
+
+    await setData()
   }
 
   function removeFile() {
@@ -187,7 +192,7 @@
     </div>
   {/if}
   <Label class="flex items-center gap-2">
-    <Checkbox bind:checked={firstRowAsHeader} />
+    <Checkbox bind:checked={firstRowAsHeader} onCheckedChange={setData} />
     First row as header
   </Label>
   <Label class="flex items-center gap-2">
@@ -195,48 +200,54 @@
     Import Data
   </Label>
 {:else if step === 1}
+  <Label class="flex items-center gap-2">
+    <Checkbox bind:checked={firstRowAsHeader} onCheckedChange={setData} />
+    First row as header
+  </Label>
+  <Label class="flex items-center gap-2">
+    <Checkbox bind:checked={importData} />
+    Import Data
+  </Label>
   {#if data && file}
+    <div class="p-3">
+      <Label class="flex items-center gap-2">
+        <div>Name</div>
+        <Input class="text-sm" bind:value={tableName} />
+      </Label>
+    </div>
     <div class="rounded-sm border">
-      <div class="border-b p-3">
-        <Label class="flex items-center gap-2">
-          <div>Name</div>
-          <Input class="text-sm" bind:value={tableName} />
-        </Label>
-      </div>
-      <div>
-        <Table.Root>
-          <Table.Header>
-            <Table.Row>
-              <Table.Head class="w-[200px]">Field Name</Table.Head>
-              <Table.Head class="flex-1">Field Type</Table.Head>
-              <Table.Head class="text-right">Action</Table.Head>
+      <Table.Root>
+        <Table.Header>
+          <Table.Row>
+            <Table.Head class="w-[200px]">Field Name</Table.Head>
+            <Table.Head class="flex-1">Field Type</Table.Head>
+            <Table.Head class="text-right">Action</Table.Head>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {#each schema as field, idx}
+            <Table.Row class="group">
+              <Table.Cell class="font-medium">
+                <Input class="text-sm" bind:value={data.data[0][idx]} />
+              </Table.Cell>
+              <Table.Cell>
+                <div class="flex items-center">
+                  <FieldIcon type={field.type} class="mr-2 h-4 w-4" />
+                  {field.type}
+                </div>
+              </Table.Cell>
+              <Table.Cell class="text-right">
+                <button
+                  on:click={() => removeField(idx)}
+                  class="rounded-full p-1 opacity-0 transition-colors hover:bg-gray-200 group-hover:opacity-100"
+                >
+                  <XIcon class="text-muted-foreground h-4 w-4" />
+                </button>
+              </Table.Cell>
             </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {#each schema as field, idx}
-              <Table.Row class="group">
-                <Table.Cell class="font-medium">
-                  <Input class="text-sm" bind:value={data.data[0][idx]} />
-                </Table.Cell>
-                <Table.Cell>
-                  <div class="flex items-center">
-                    <FieldIcon type={field.type} class="mr-2 h-4 w-4" />
-                    {field.type}
-                  </div>
-                </Table.Cell>
-                <Table.Cell class="text-right">
-                  <button
-                    on:click={() => removeField(idx)}
-                    class="rounded-full p-1 opacity-0 transition-colors hover:bg-gray-200 group-hover:opacity-100"
-                  >
-                    <XIcon class="text-muted-foreground h-4 w-4" />
-                  </button>
-                </Table.Cell>
-              </Table.Row>
-            {/each}
-          </Table.Body>
-        </Table.Root>
-      </div>
+          {/each}
+        </Table.Body>
+      </Table.Root>
     </div>
   {/if}
 {/if}
