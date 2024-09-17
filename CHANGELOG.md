@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-73
+
+
+### 🩹 Fixes
+
+- Fix import table data csv ([373b396](https://github.com/undb-io/undb/commit/373b396))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-72
 
 
