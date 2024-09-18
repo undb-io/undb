@@ -9,7 +9,7 @@ import type { ICreateSelectFieldDTO, IRollupFn } from "./variants"
 const EMAIL_REGEXP = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const URL_REGEXP = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/
 
-function isDateValue(value: unknown): boolean {
+export function isDateValue(value: unknown): boolean {
   if (typeof value === "string") {
     const timestamp = Date.parse(value)
     return !isNaN(timestamp)
@@ -17,15 +17,15 @@ function isDateValue(value: unknown): boolean {
   return false
 }
 
-function isJsonValue(value: unknown): boolean {
+export function isJsonValue(value: unknown): boolean {
   return isObject(value)
 }
 
-function isNumberValue(value: unknown): boolean {
+export function isNumberValue(value: unknown): boolean {
   return match(value)
     .returnType<boolean>()
     .when(isNumber, () => true)
-    .when(isString, (v) => /^-?\d+$/.test(v))
+    .when(isString, (v) => /^-?\d+(\.\d+)?$/.test(v))
     .otherwise(() => false)
 }
 
