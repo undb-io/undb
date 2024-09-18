@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-78
+
+
+### 🩹 Fixes
+
+- Fix import date field type ([724c8b5](https://github.com/undb-io/undb/commit/724c8b5))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-77
 
 
