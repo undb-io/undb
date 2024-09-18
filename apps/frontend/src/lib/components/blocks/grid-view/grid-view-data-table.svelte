@@ -37,7 +37,7 @@
   export let readonly = false
   export let viewId: Readable<string>
   export let perPage: Writable<number>
-  export let currentPage: Writable<number>
+  export let currentPage: Writable<number | null>
   export let isLoading = false
   export let total: number
 
@@ -360,7 +360,7 @@
             if (value) {
               $perPage = value.value
             }
-            $currentPage = 1
+            $currentPage = null
           }}
         >
           <Select.Trigger value={$perPage} class="min-w-16">

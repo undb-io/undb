@@ -5,7 +5,7 @@
   import { createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
-  import { queryParam } from "sveltekit-search-params"
+  import { queryParam, ssp } from "sveltekit-search-params"
   import GridViewDataTable from "./grid-view-data-table.svelte"
 
   export let readonly = false
@@ -17,7 +17,7 @@
   export let filter: IViewFilterGroup | undefined = undefined
 
   const perPage = writable(50)
-  const currentPage = writable(1)
+  const currentPage = queryParam("page", ssp.number())
 
   const getRecords = createQuery(
     derived([t, viewId, perPage, currentPage, q], ([$table, $viewId, $perPage, $currentPage, $q]) => {
@@ -31,7 +31,7 @@
             viewId: $viewId,
             q: $q ?? undefined,
             filters: filter,
-            pagination: { limit: $perPage, page: $currentPage },
+            pagination: { limit: $perPage, page: $currentPage || 1 },
           }),
       }
     }),
@@ -56,7 +56,6 @@
   isLoading={$getRecords.isLoading}
   total={$getRecords.data?.total ?? 0}
 />
-
 
 {#await import("$lib/components/blocks/create-record/create-record-sheet.svelte") then { default: CreateRecordSheet }}
   <CreateRecordSheet />
