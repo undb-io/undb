@@ -13,7 +13,7 @@
   onOpenChange={(open) => toggleModal(IMPORT_TABLE_MODAL)}
 >
   <Dialog.Content class="max-w-5xl">
-    <Dialog.Header>Import Data - CSV / JSON / Excel</Dialog.Header>
+    <Dialog.Header class="text-lg font-medium text-gray-600">Import Data - CSV / JSON / Excel</Dialog.Header>
     <ImportTable {tableNames} />
   </Dialog.Content>
 </Dialog.Root>

@@ -39,6 +39,7 @@
   let importData = true
   let tableName: string | undefined = undefined
   let schema: ICreateSchemaDTO | undefined
+  let selectedFields: string[] = []
 
   const createRecords = createMutation({
     mutationKey: ["table", "import", "records"],
@@ -66,7 +67,11 @@
 
           for (let j = 0; j < r.length; j++) {
             const field = schema?.[j]
-            if (!field) {
+            if (!field || !field.id) {
+              continue
+            }
+
+            if (!selectedFields.includes(field.id)) {
               continue
             }
             const value = castFieldValue(field, r[j])
@@ -92,7 +97,7 @@
     },
   })
 
-  async function setData() {
+  async function handleFile() {
     if (!file) return
 
     const parsed = await parse(file)
@@ -118,6 +123,7 @@
     }
 
     handleSchemaChange()
+    selectedFields = (schema?.map((field) => field.id).filter((id) => !!id) as string[]) ?? []
   }
 
   function handleSchemaChange() {
@@ -141,12 +147,15 @@
     file = f
     tableName = getNextName(tableNames, file.name)
 
-    await setData()
+    await handleFile()
   }
 
   function removeFile() {
     file = undefined
   }
+
+  $: filteredSchema = (schema?.filter((field) => !!field.id && selectedFields.includes(field.id)) ??
+    []) as ICreateSchemaDTO
 
   function handleClickImport() {
     if (!schema) return
@@ -165,16 +174,10 @@
         id: tableId,
         name: tableName!,
         baseId,
-        schema,
+        schema: filteredSchema,
       })
 
       return
-    }
-  }
-
-  function removeField(index: number) {
-    if (data) {
-      data.data = data.data.map((r) => r.filter((_, i) => i !== index))
     }
   }
 </script>
@@ -189,7 +192,7 @@
   />
   {#if file}
     <div class="flex items-center justify-between gap-2 rounded-sm border p-3">
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 text-gray-600">
         <FileIcon class="text-muted-foreground h-4 w-4" />
         <p>
           {tableName}
@@ -205,7 +208,7 @@
     <Checkbox
       disabled={$createTable.isPending || $createRecords.isPending}
       bind:checked={firstRowAsHeader}
-      onCheckedChange={setData}
+      onCheckedChange={handleFile}
     />
     First row as header
   </Label>
@@ -218,7 +221,7 @@
     <Checkbox
       disabled={$createTable.isPending || $createRecords.isPending}
       bind:checked={firstRowAsHeader}
-      onCheckedChange={setData}
+      onCheckedChange={handleFile}
     />
     First row as header
   </Label>
@@ -237,14 +240,29 @@
       <Table.Root>
         <Table.Header>
           <Table.Row>
+            <Table.Head class="w-[40px]"></Table.Head>
             <Table.Head class="w-[200px]">Field Name</Table.Head>
             <Table.Head class="flex-1">Field Type</Table.Head>
-            <Table.Head class="text-right">Action</Table.Head>
           </Table.Row>
         </Table.Header>
         <Table.Body>
           {#each schema as field, idx}
             <Table.Row class="group">
+              <Table.Cell class="flex items-center justify-center font-medium">
+                {#if !!field.id}
+                  <Checkbox
+                    checked={selectedFields.includes(field.id)}
+                    onCheckedChange={() => {
+                      if (selectedFields.includes(field.id)) {
+                        selectedFields = selectedFields.filter((id) => id !== field.id)
+                      } else {
+                        selectedFields = [...selectedFields, field.name]
+                      }
+                    }}
+                    disabled={$createTable.isPending || $createRecords.isPending}
+                  />
+                {/if}
+              </Table.Cell>
               <Table.Cell class="font-medium">
                 <Input
                   class="text-sm"
@@ -255,6 +273,7 @@
               <Table.Cell class="flex items-center gap-2">
                 <FieldTypePicker
                   disabled={$createTable.isPending || $createRecords.isPending}
+                  filter={(type) => type !== "reference" && type !== "rollup"}
                   bind:value={schema[idx].type}
                   onValueChange={() => {}}
                   tabIndex={-1}
@@ -281,20 +300,6 @@
                     </Dialog.Header>
                   </Dialog.Content>
                 </Dialog.Root>
-
-                <!-- <div class="flex items-center">
-                  <FieldIcon type={field.type} class="mr-2 h-4 w-4" />
-                  {field.type}
-                </div> -->
-              </Table.Cell>
-              <Table.Cell class="text-right">
-                <button
-                  disabled={$createTable.isPending || $createRecords.isPending}
-                  on:click={() => removeField(idx)}
-                  class="rounded-full p-1 opacity-0 transition-colors hover:bg-gray-200 group-hover:opacity-100"
-                >
-                  <XIcon class="text-muted-foreground h-4 w-4" />
-                </button>
               </Table.Cell>
             </Table.Row>
           {/each}
