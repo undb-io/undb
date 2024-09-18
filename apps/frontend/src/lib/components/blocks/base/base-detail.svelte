@@ -63,7 +63,7 @@
         {#each base.tables as table}
           {#if table}
             <Table.Row class="flex w-full cursor-pointer" on:click={() => goto(getTableUrl(table.id))}>
-              <Table.Cell class="flex items-center font-medium">
+              <Table.Cell class="flex items-center font-medium text-gray-700">
                 <DatabaseIcon class="mr-2 h-4 w-4" />
                 {table.name}
               </Table.Cell>
