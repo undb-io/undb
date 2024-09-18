@@ -43,7 +43,7 @@ export class CheckboxField extends AbstractField<CheckboxFieldValue> {
   }
 
   static create(dto: ICreateCheckboxFieldDTO) {
-    return new CheckboxField({ ...dto, id: FieldIdVo.create().value })
+    return new CheckboxField({ ...dto, id: FieldIdVo.fromStringOrCreate(dto.id).value })
   }
 
   override type = CHECKBOX_TYPE

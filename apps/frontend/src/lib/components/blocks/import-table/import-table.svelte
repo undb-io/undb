@@ -4,7 +4,15 @@
   import { Label } from "$lib/components/ui/label"
   import { Checkbox } from "$lib/components/ui/checkbox"
   import { parse, type ImportDataExtensions, type SheetData } from "$lib/import/import.helper"
-  import { FileIcon, XIcon, ArrowRightIcon, ArrowLeftIcon, LoaderCircleIcon, SettingsIcon } from "lucide-svelte"
+  import {
+    FileIcon,
+    XIcon,
+    ArrowRightIcon,
+    ArrowLeftIcon,
+    LoaderCircleIcon,
+    SettingsIcon,
+    ImportIcon,
+  } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
   import { invalidate, goto } from "$app/navigation"
   import { baseId, currentBase } from "$lib/store/base.store"
@@ -39,6 +47,7 @@
   let importData = true
   let tableName: string | undefined = undefined
   let schema: ICreateSchemaDTO | undefined
+  let selectedFields: string[] = []
 
   const createRecords = createMutation({
     mutationKey: ["table", "import", "records"],
@@ -66,9 +75,14 @@
 
           for (let j = 0; j < r.length; j++) {
             const field = schema?.[j]
-            if (!field) {
+            if (!field || !field.id) {
               continue
             }
+
+            if (!selectedFields.includes(field.id)) {
+              continue
+            }
+
             const value = castFieldValue(field, r[j])
             record.values[field.id!] = value
           }
@@ -82,7 +96,7 @@
         })
       } else {
         await invalidate("undb:tables")
-        await goto(`/t/${data}`)
+        await goto(`/t/${tableId}`)
         closeModal(IMPORT_TABLE_MODAL)
         baseId.set(null)
       }
@@ -92,8 +106,13 @@
     },
   })
 
-  async function setData() {
-    if (!file) return
+  async function handleFile() {
+    if (!file) {
+      data = undefined
+      schema = undefined
+      selectedFields = []
+      return
+    }
 
     const parsed = await parse(file)
     if (firstRowAsHeader) {
@@ -118,6 +137,8 @@
     }
 
     handleSchemaChange()
+    selectedFields = (schema?.map((field) => field.id).filter((id) => !!id) as string[]) ?? []
+    step = 1
   }
 
   function handleSchemaChange() {
@@ -141,12 +162,16 @@
     file = f
     tableName = getNextName(tableNames, file.name)
 
-    await setData()
+    await handleFile()
   }
 
   function removeFile() {
     file = undefined
+    handleFile()
   }
+
+  $: filteredSchema = (schema?.filter((field) => !!field.id && selectedFields.includes(field.id)) ??
+    []) as ICreateSchemaDTO
 
   function handleClickImport() {
     if (!schema) return
@@ -165,16 +190,10 @@
         id: tableId,
         name: tableName!,
         baseId,
-        schema,
+        schema: filteredSchema,
       })
 
       return
-    }
-  }
-
-  function removeField(index: number) {
-    if (data) {
-      data.data = data.data.map((r) => r.filter((_, i) => i !== index))
     }
   }
 </script>
@@ -189,7 +208,7 @@
   />
   {#if file}
     <div class="flex items-center justify-between gap-2 rounded-sm border p-3">
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 text-gray-600">
         <FileIcon class="text-muted-foreground h-4 w-4" />
         <p>
           {tableName}
@@ -205,7 +224,7 @@
     <Checkbox
       disabled={$createTable.isPending || $createRecords.isPending}
       bind:checked={firstRowAsHeader}
-      onCheckedChange={setData}
+      onCheckedChange={handleFile}
     />
     First row as header
   </Label>
@@ -218,7 +237,7 @@
     <Checkbox
       disabled={$createTable.isPending || $createRecords.isPending}
       bind:checked={firstRowAsHeader}
-      onCheckedChange={setData}
+      onCheckedChange={handleFile}
     />
     First row as header
   </Label>
@@ -232,29 +251,49 @@
         <div>Name</div>
         <Input disabled={$createTable.isPending || $createRecords.isPending} class="text-sm" bind:value={tableName} />
       </Label>
+
+      <p class="text-sm text-gray-500">
+        {selectedFields.length} fields selected
+      </p>
     </div>
     <div class="rounded-sm border">
-      <Table.Root>
-        <Table.Header>
-          <Table.Row>
+      <Table.Root class="flex h-[400px] flex-col overflow-hidden">
+        <Table.Header class="flex w-full">
+          <Table.Row class="w-full">
+            <Table.Head class="w-[40px]"></Table.Head>
             <Table.Head class="w-[200px]">Field Name</Table.Head>
             <Table.Head class="flex-1">Field Type</Table.Head>
-            <Table.Head class="text-right">Action</Table.Head>
           </Table.Row>
         </Table.Header>
-        <Table.Body>
+        <Table.Body class="w-full flex-1 overflow-y-auto">
           {#each schema as field, idx}
-            <Table.Row class="group">
-              <Table.Cell class="font-medium">
+            <Table.Row data-field-id={field.id} class="group flex w-full">
+              <Table.Cell class="flex w-[40px] items-center justify-center font-medium">
+                {#if !!field.id}
+                  <Checkbox
+                    checked={selectedFields.includes(field.id)}
+                    onCheckedChange={() => {
+                      if (selectedFields.includes(field.id)) {
+                        selectedFields = selectedFields.filter((id) => id !== field.id)
+                      } else {
+                        selectedFields = [...selectedFields, field.name]
+                      }
+                    }}
+                    disabled={$createTable.isPending || $createRecords.isPending}
+                  />
+                {/if}
+              </Table.Cell>
+              <Table.Cell class="w-[200px] font-medium">
                 <Input
                   class="text-sm"
                   bind:value={data.data[0][idx]}
                   disabled={$createTable.isPending || $createRecords.isPending}
                 />
               </Table.Cell>
-              <Table.Cell class="flex items-center gap-2">
+              <Table.Cell class="flex flex-1 items-center gap-2">
                 <FieldTypePicker
                   disabled={$createTable.isPending || $createRecords.isPending}
+                  filter={(type) => type !== "reference" && type !== "rollup"}
                   bind:value={schema[idx].type}
                   onValueChange={() => {}}
                   tabIndex={-1}
@@ -281,20 +320,6 @@
                     </Dialog.Header>
                   </Dialog.Content>
                 </Dialog.Root>
-
-                <!-- <div class="flex items-center">
-                  <FieldIcon type={field.type} class="mr-2 h-4 w-4" />
-                  {field.type}
-                </div> -->
-              </Table.Cell>
-              <Table.Cell class="text-right">
-                <button
-                  disabled={$createTable.isPending || $createRecords.isPending}
-                  on:click={() => removeField(idx)}
-                  class="rounded-full p-1 opacity-0 transition-colors hover:bg-gray-200 group-hover:opacity-100"
-                >
-                  <XIcon class="text-muted-foreground h-4 w-4" />
-                </button>
               </Table.Cell>
             </Table.Row>
           {/each}
@@ -318,10 +343,12 @@
   {/if}
   <Button
     disabled={(step === 0 && !file) ||
-      (step === 1 && schema.length < 1) ||
+      (step === 1 && (!schema || schema.length < 1)) ||
       $createTable.isPending ||
-      $createRecords.isPending}
+      $createRecords.isPending ||
+      selectedFields.length < 1}
     on:click={handleClickImport}
+    class="min-w-32"
     size="sm"
   >
     {#if step === 0}
@@ -329,6 +356,8 @@
     {:else}
       {#if $createTable.isPending || $createRecords.isPending}
         <LoaderCircleIcon class="mr-2 h-4 w-4 animate-spin" />
+      {:else}
+        <ImportIcon class="mr-2 size-4" />
       {/if}
       Import
     {/if}

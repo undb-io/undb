@@ -13,14 +13,17 @@
   let open = false
   export let value: FieldType | undefined = undefined
   export let onValueChange: (value: FieldType) => void = () => {}
+  export let filter: (value: FieldType) => boolean = () => true
 
   let search = ""
 
   $: filtered =
-    fieldTypes.filter((f) => {
-      const label = $LL.table.fieldTypes[f]()
-      return label.toLowerCase().includes(search.toLowerCase())
-    }) ?? []
+    fieldTypes
+      .filter((f) => {
+        const label = $LL.table.fieldTypes[f]()
+        return label.toLowerCase().includes(search.toLowerCase())
+      })
+      .filter(filter) ?? []
 
   $: selected = allFieldTypes.find((f) => f === value)
   $: selectedValue = selected ?? "Select a field type..."

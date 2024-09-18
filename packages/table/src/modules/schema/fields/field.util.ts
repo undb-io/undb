@@ -9,7 +9,7 @@ import type { ICreateSelectFieldDTO, IRollupFn } from "./variants"
 const EMAIL_REGEXP = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const URL_REGEXP = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/
 
-function isDateValue(value: unknown): boolean {
+export function isDateValue(value: unknown): boolean {
   if (typeof value === "string") {
     const timestamp = Date.parse(value)
     return !isNaN(timestamp)
@@ -17,15 +17,34 @@ function isDateValue(value: unknown): boolean {
   return false
 }
 
-function isJsonValue(value: unknown): boolean {
+export function isJsonValue(value: unknown): boolean {
   return isObject(value)
 }
 
-function isNumberValue(value: unknown): boolean {
+export function isCurrencyValue(value: unknown): boolean {
+  if (typeof value !== "number" && typeof value !== "string") return false
+
+  const stringValue = value.toString()
+
+  // 检查是否包含逗号
+  if (stringValue.includes(",")) {
+    return /^-?\d{1,3}(,\d{3})*(\.\d{2})?$/.test(stringValue)
+  }
+
+  // 检查是否有一个小数点和两位小数
+  if (/^-?\d+\.\d{2}$/.test(stringValue)) {
+    return true
+  }
+
+  // 检查是否为整数
+  return /^-?\d+$/.test(stringValue)
+}
+
+export function isNumberValue(value: unknown): boolean {
   return match(value)
     .returnType<boolean>()
     .when(isNumber, () => true)
-    .when(isString, (v) => /^-?\d+$/.test(v))
+    .when(isString, (v) => /^-?\d+(\.\d+)?$/.test(v))
     .otherwise(() => false)
 }
 
@@ -43,6 +62,7 @@ export const inferCreateFieldType = (values: (string | number | null | object | 
     .with(P.array(P.string.regex(EMAIL_REGEXP)), () => ({ type: "email" }))
     .with(P.array(P.string.regex(URL_REGEXP)), () => ({ type: "url" }))
     .with(P.array(P.boolean), () => ({ type: "checkbox" }))
+    .with(P.array(P.when(isCurrencyValue)), () => ({ type: "currency", option: { symbol: "$" } }))
     .with(P.array(P.when(isNumberValue)), () => ({ type: "number" }))
     .with(P.array(P.when(isDateValue)), () => ({ type: "date" }))
     .with(P.array(P.when(isJsonValue)), () => ({ type: "json" }))
@@ -236,6 +256,7 @@ export const castFieldValue = (dto: ICreateSchemaDTO[0], value: string | number 
         .split(",")
         .map((s) => s.trim())
     })
+    .with({ type: "date" }, () => (isString(value) ? new Date(value).toISOString() : null))
     .otherwise(() => value)
 }
 

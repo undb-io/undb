@@ -48,7 +48,7 @@ export class UserField extends AbstractField<UserFieldValue> {
   }
 
   static create(dto: ICreateUserFieldDTO) {
-    return new UserField({ ...dto, id: FieldIdVo.create().value })
+    return new UserField({ ...dto, id: FieldIdVo.fromStringOrCreate(dto.id).value })
   }
 
   override type = USER_TYPE
