@@ -57,14 +57,14 @@
     mutationFn: trpc.table.create.mutate,
     async onSuccess(tableId) {
       const rs = data?.data.slice(1).map((r) => r.map((v) => String(v))) ?? []
-      if (importData && rs.length) {
-        const records = rs.map((r, i) => {
+      if (importData && rs.length && schema) {
+        const records = rs.slice(2050, 2100).map((r, i) => {
           const record: ICreateRecordDTO = { values: {} }
 
           for (let j = 0; j < r.length; j++) {
-            const field = schema[j]
+            const field = schema![j]
             const type = field.type
-            const value = castFieldValue(type, r[j])
+            const value = castFieldValue(field, r[j])
             record.values[field.id!] = value
           }
 
@@ -112,6 +112,10 @@
       }
     }
 
+    handleSchemaChange()
+  }
+
+  function handleSchemaChange() {
     const transposed = unzip(data?.data.slice(1)).slice(0, inferFieldTypeCount)
 
     schema = (data?.data[0].map((header, i) => ({

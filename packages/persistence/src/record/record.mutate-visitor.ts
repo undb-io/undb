@@ -1,5 +1,4 @@
-import { getCurrentUserId,mustGetCurrentSpaceId } from "@undb/context/server"
-import type { ISpecification,ISpecVisitor } from "@undb/domain"
+import { getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
 import {
   CurrencyEqual,
   DateIsEmpty,
@@ -53,10 +52,10 @@ import {
   type UserEmpty,
   type UserEqual,
 } from "@undb/table"
-import { sql,type ExpressionBuilder } from "kysely"
+import { sql, type ExpressionBuilder } from "kysely"
 import { unique } from "radash"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
-import type { IQueryBuilder,IRecordQueryBuilder } from "../qb"
+import type { IQueryBuilder, IRecordQueryBuilder } from "../qb"
 import { JoinTable } from "../underlying/reference/join-table"
 
 export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IRecordVisitor {
@@ -70,6 +69,10 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     private readonly eb: ExpressionBuilder<any, any>,
   ) {
     super()
+    const mutableFields = this.table.schema.mutableFields
+    for (const field of mutableFields) {
+      this.setData(field.id.value, null)
+    }
   }
 
   idIn(spec: IdIn): void {
@@ -83,7 +86,7 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     }
   }
   jsonEqual(spec: JsonEqual): void {
-    this.setData(spec.fieldId.value, JSON.stringify(spec.json))
+    this.setData(spec.fieldId.value, spec.json ? JSON.stringify(spec.json) : null)
   }
   jsonContains(spec: JsonContains): void {
     throw new Error("Method not implemented.")
@@ -98,7 +101,7 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     this.setData(spec.fieldId.value, spec.date?.getTime() ?? null)
   }
   attachmentEqual(s: AttachmentEqual): void {
-    this.setData(s.fieldId.value, JSON.stringify(s.value))
+    this.setData(s.fieldId.value, s.value ? JSON.stringify(s.value) : null)
     if (this.record) {
       const deleteSql = (this.qb as IQueryBuilder)
         .deleteFrom("undb_attachment_mapping")
@@ -152,7 +155,7 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     }
   }
   longTextEqual(s: LongTextEqual): void {
-    this.setData(s.fieldId.value, s.value)
+    this.setData(s.fieldId.value, s.value || null)
   }
   attachmentEmpty(s: AttachmentEmpty): void {
     this.setData(s.fieldId.value, null)
@@ -262,7 +265,7 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     throw new Error("Method not implemented.")
   }
   stringEqual(spec: StringEqual): void {
-    this.setData(spec.fieldId.value, spec.values.value)
+    this.setData(spec.fieldId.value, spec.values.value || null)
   }
   stringContains(spec: StringContains): void {
     throw new Error("Method not implemented.")
@@ -285,9 +288,9 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     const value = fieldValue.getValue(field)
 
     if (Array.isArray(value)) {
-      this.setData(spec.fieldId.value, value.length ? JSON.stringify(value) : null)
+      this.setData(field.id.value, value.length ? JSON.stringify(value) : null)
     } else {
-      this.setData(spec.fieldId.value, value ?? null)
+      this.setData(field.id.value, value ?? null)
     }
   }
   selectContainsAnyOf(spec: SelectContainsAnyOf): void {
@@ -297,10 +300,10 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     this.setData(spec.fieldId.value, null)
   }
   durationEqual(s: DurationEqual): void {
-    this.setData(s.fieldId.value, s.value)
+    this.setData(s.fieldId.value, s.value || null)
   }
   numberEqual(spec: NumberEqual): void {
-    this.setData(spec.fieldId.value, spec.value)
+    this.setData(spec.fieldId.value, spec.value || null)
   }
   numberGT(spec: NumberGT): void {
     throw new Error("Method not implemented.")
@@ -342,26 +345,15 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     throw new Error("Method not implemented.")
   }
   ratingEqual(s: RatingEqual): void {
-    this.setData(s.fieldId.value, s.value)
+    this.setData(s.fieldId.value, s.value || null)
   }
   emailEqual(s: EmailEqual): void {
-    this.setData(s.fieldId.value, s.value)
+    this.setData(s.fieldId.value, s.value || null)
   }
   urlEqual(s: UrlEqual): void {
-    this.setData(s.fieldId.value, s.value)
-  }
-  and(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
-    left.accept(this)
-    right.accept(this)
-    return this
-  }
-  or(left: ISpecification<any, ISpecVisitor>, right: ISpecification<any, ISpecVisitor>): this {
-    throw new Error("Method not implemented.")
-  }
-  not(spec: ISpecification<any, ISpecVisitor>): this {
-    throw new Error("Method not implemented.")
+    this.setData(s.fieldId.value, s.value || null)
   }
   clone(): this {
-    throw new Error("Method not implemented.")
+    return new RecordMutateVisitor(this.table, this.record, this.qb, this.eb) as this
   }
 }

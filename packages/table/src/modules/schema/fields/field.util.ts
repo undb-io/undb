@@ -1,5 +1,6 @@
 import { isNumber, isObject, isString } from "radash"
 import { P, match } from "ts-pattern"
+import type { ICreateSchemaDTO } from "../dto/create-schema.dto"
 import type { IInferCreateFieldDTO } from "./dto/field.dto"
 import type { FieldType, IFilterableFieldType, NoneSystemFieldType, SystemFieldType } from "./field.type"
 import { Options } from "./option/options.vo"
@@ -209,20 +210,28 @@ export function getRollupFnByType(type: FieldType): IRollupFn[] {
     .otherwise(() => [])
 }
 
-export const castFieldValue = (type: FieldType, value: string | number | null | object | boolean) => {
-  return match(type)
-    .with("number", () => {
+export const castFieldValue = (dto: ICreateSchemaDTO[0], value: string | number | null | object | boolean) => {
+  return match(dto)
+    .with({ type: "number" }, { type: "currency" }, { type: "duration" }, { type: "percentage" }, () => {
       if (isNumber(value)) return value
       return value ? Number(value) : null
     })
-    .with("checkbox", () =>
+    .with({ type: "checkbox" }, () =>
       match(value)
         .returnType<boolean>()
         .with(["true", "TRUE"], () => true)
         .with(["false", "FALSE"], () => false)
         .otherwise(Boolean),
     )
-    .with("select", () => value || null)
+    .with({ type: "select" }, (dto) => {
+      if (dto.constraint?.max === 1) {
+        return value || null
+      }
+
+      return String(value)
+        .split(",")
+        .map((s) => s.trim())
+    })
     .otherwise(() => value)
 }
 

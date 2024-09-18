@@ -16,7 +16,7 @@ export class EmailFieldConstraint extends FieldConstraintVO<IEmailFieldConstrain
   override get schema() {
     let base: z.ZodTypeAny = z.string().email()
     if (!this.props.required) {
-      base = base.optional().nullable()
+      base = base.or(z.literal("")).optional().nullable()
     }
 
     return base
