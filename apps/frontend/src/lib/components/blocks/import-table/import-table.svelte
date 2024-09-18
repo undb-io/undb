@@ -4,7 +4,15 @@
   import { Label } from "$lib/components/ui/label"
   import { Checkbox } from "$lib/components/ui/checkbox"
   import { parse, type ImportDataExtensions, type SheetData } from "$lib/import/import.helper"
-  import { FileIcon, XIcon, ArrowRightIcon, ArrowLeftIcon, LoaderCircleIcon, SettingsIcon } from "lucide-svelte"
+  import {
+    FileIcon,
+    XIcon,
+    ArrowRightIcon,
+    ArrowLeftIcon,
+    LoaderCircleIcon,
+    SettingsIcon,
+    ImportIcon,
+  } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
   import { invalidate, goto } from "$app/navigation"
   import { baseId, currentBase } from "$lib/store/base.store"
@@ -27,6 +35,7 @@
   import * as Dialog from "$lib/components/ui/dialog"
   import FieldOptions from "../field-options/field-options.svelte"
   import FieldIcon from "../field-icon/field-icon.svelte"
+  import { ScrollArea } from "$lib/components/ui/scroll-area/index.js"
 
   export let tableNames: string[]
 
@@ -87,7 +96,7 @@
         })
       } else {
         await invalidate("undb:tables")
-        await goto(`/t/${data}`)
+        await goto(`/t/${tableId}`)
         closeModal(IMPORT_TABLE_MODAL)
         baseId.set(null)
       }
@@ -124,6 +133,7 @@
 
     handleSchemaChange()
     selectedFields = (schema?.map((field) => field.id).filter((id) => !!id) as string[]) ?? []
+    step = 1
   }
 
   function handleSchemaChange() {
@@ -235,20 +245,24 @@
         <div>Name</div>
         <Input disabled={$createTable.isPending || $createRecords.isPending} class="text-sm" bind:value={tableName} />
       </Label>
+
+      <p class="text-sm text-gray-500">
+        {selectedFields.length} fields selected
+      </p>
     </div>
     <div class="rounded-sm border">
-      <Table.Root>
-        <Table.Header>
-          <Table.Row>
+      <Table.Root class="flex h-[400px] flex-col overflow-hidden">
+        <Table.Header class="flex w-full">
+          <Table.Row class="w-full">
             <Table.Head class="w-[40px]"></Table.Head>
             <Table.Head class="w-[200px]">Field Name</Table.Head>
             <Table.Head class="flex-1">Field Type</Table.Head>
           </Table.Row>
         </Table.Header>
-        <Table.Body>
+        <Table.Body class="w-full flex-1 overflow-y-auto">
           {#each schema as field, idx}
-            <Table.Row class="group">
-              <Table.Cell class="flex items-center justify-center font-medium">
+            <Table.Row class="group flex w-full">
+              <Table.Cell class="flex w-[40px] items-center justify-center font-medium">
                 {#if !!field.id}
                   <Checkbox
                     checked={selectedFields.includes(field.id)}
@@ -263,14 +277,14 @@
                   />
                 {/if}
               </Table.Cell>
-              <Table.Cell class="font-medium">
+              <Table.Cell class="w-[200px] font-medium">
                 <Input
                   class="text-sm"
                   bind:value={data.data[0][idx]}
                   disabled={$createTable.isPending || $createRecords.isPending}
                 />
               </Table.Cell>
-              <Table.Cell class="flex items-center gap-2">
+              <Table.Cell class="flex flex-1 items-center gap-2">
                 <FieldTypePicker
                   disabled={$createTable.isPending || $createRecords.isPending}
                   filter={(type) => type !== "reference" && type !== "rollup"}
@@ -325,8 +339,10 @@
     disabled={(step === 0 && !file) ||
       (step === 1 && schema.length < 1) ||
       $createTable.isPending ||
-      $createRecords.isPending}
+      $createRecords.isPending ||
+      selectedFields.length < 1}
     on:click={handleClickImport}
+    class="min-w-32"
     size="sm"
   >
     {#if step === 0}
@@ -334,6 +350,8 @@
     {:else}
       {#if $createTable.isPending || $createRecords.isPending}
         <LoaderCircleIcon class="mr-2 h-4 w-4 animate-spin" />
+      {:else}
+        <ImportIcon class="mr-2 size-4" />
       {/if}
       Import
     {/if}
