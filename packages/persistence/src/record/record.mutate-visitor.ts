@@ -69,10 +69,6 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     private readonly eb: ExpressionBuilder<any, any>,
   ) {
     super()
-    const mutableFields = this.table.schema.mutableFields
-    for (const field of mutableFields) {
-      this.setData(field.id.value, null)
-    }
   }
 
   idIn(spec: IdIn): void {

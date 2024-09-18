@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-77
+
+
+### 🩹 Fixes
+
+- Fix import data with null value ([6da3a7c](https://github.com/undb-io/undb/commit/6da3a7c))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-76
 
 
