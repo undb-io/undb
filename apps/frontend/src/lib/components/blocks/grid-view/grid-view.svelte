@@ -7,6 +7,7 @@
   import { getTable } from "$lib/store/table.store"
   import { queryParam, ssp } from "sveltekit-search-params"
   import GridViewDataTable from "./grid-view-data-table.svelte"
+  import { preferences } from "$lib/store/persisted.store"
 
   export let readonly = false
 
@@ -16,7 +17,7 @@
   const q = queryParam("q")
   export let filter: IViewFilterGroup | undefined = undefined
 
-  const perPage = writable(50)
+  const perPage = derived(preferences, ($preferences) => $preferences.gridViewPerPage ?? 50)
   const currentPage = queryParam("page", ssp.number())
 
   const getRecords = createQuery(

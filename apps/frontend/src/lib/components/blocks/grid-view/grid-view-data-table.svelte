@@ -33,10 +33,10 @@
   import ViewPagination from "../view/view-pagination.svelte"
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
+  import { preferences } from "$lib/store/persisted.store"
 
   export let readonly = false
   export let viewId: Readable<string>
-  export let perPage: Writable<number>
   export let currentPage: Writable<number | null>
   export let isLoading = false
   export let total: number
@@ -44,6 +44,8 @@
   const t = getTable()
 
   let fields = derived(t, ($t) => $t?.getOrderedVisibleFields($viewId) ?? ([] as Field[]))
+
+  $: perPage = $preferences.gridViewPerPage ?? 50
 
   const r = queryParam("r")
   const deleteRecordId = queryParam("deleteRecordId")
@@ -352,18 +354,18 @@
 
   <div class="flex items-center justify-center px-4 py-2">
     <div class="flex flex-1 flex-row items-center">
-      <ViewPagination perPage={$perPage} bind:currentPage={$currentPage} count={total} />
+      <ViewPagination {perPage} bind:currentPage={$currentPage} count={total} />
       <div class="flex items-center gap-2 text-sm">
         <Select.Root
-          selected={{ value: $perPage, label: String($perPage) }}
+          selected={{ value: perPage, label: String(perPage) }}
           onSelectedChange={(value) => {
             if (value) {
-              $perPage = value.value
+              $preferences.gridViewPerPage = value.value
             }
             $currentPage = null
           }}
         >
-          <Select.Trigger value={$perPage} class="min-w-16">
+          <Select.Trigger value={$preferences.gridViewPerPage} class="min-w-16">
             <Select.Value placeholder="page" />
           </Select.Trigger>
           <Select.Content>
