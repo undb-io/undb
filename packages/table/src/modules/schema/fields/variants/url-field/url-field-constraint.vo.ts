@@ -16,7 +16,7 @@ export class UrlFieldConstraint extends FieldConstraintVO<IUrlFieldConstraint> {
   override get schema() {
     let base: z.ZodTypeAny = z.string().url()
     if (!this.props.required) {
-      base = base.optional().nullable()
+      base = base.or(z.literal("")).optional().nullable()
     }
 
     return base

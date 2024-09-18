@@ -92,7 +92,7 @@
         <SortableList
           animation={200}
           handle=".handler"
-          class="max-h-[200px] space-y-2 overflow-y-auto"
+          class="max-h-[200px] space-y-2 overflow-y-auto py-1"
           onEnd={(event) => {
             if (isNumber(event.oldIndex) && isNumber(event.newIndex)) {
               swap(event.oldIndex, event.newIndex)

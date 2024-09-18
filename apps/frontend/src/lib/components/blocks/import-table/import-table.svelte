@@ -4,7 +4,7 @@
   import { Label } from "$lib/components/ui/label"
   import { Checkbox } from "$lib/components/ui/checkbox"
   import { parse, type ImportDataExtensions, type SheetData } from "$lib/import/import.helper"
-  import { FileIcon, XIcon, ArrowRightIcon, ArrowLeftIcon, LoaderCircleIcon } from "lucide-svelte"
+  import { FileIcon, XIcon, ArrowRightIcon, ArrowLeftIcon, LoaderCircleIcon, SettingsIcon } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
   import { invalidate, goto } from "$app/navigation"
   import { baseId, currentBase } from "$lib/store/base.store"
@@ -22,8 +22,11 @@
     type ICreateSchemaDTO,
   } from "@undb/table"
   import unzip from "lodash.unzip"
-  import FieldIcon from "../field-icon/field-icon.svelte"
   import { getNextName } from "@undb/utils"
+  import FieldTypePicker from "../field-picker/field-type-picker.svelte"
+  import * as Dialog from "$lib/components/ui/dialog"
+  import FieldOptions from "../field-options/field-options.svelte"
+  import FieldIcon from "../field-icon/field-icon.svelte"
 
   export let tableNames: string[]
 
@@ -35,6 +38,7 @@
   let firstRowAsHeader = true
   let importData = true
   let tableName: string | undefined = undefined
+  let schema: ICreateSchemaDTO | undefined
 
   const createRecords = createMutation({
     mutationKey: ["table", "import", "records"],
@@ -56,14 +60,16 @@
     mutationFn: trpc.table.create.mutate,
     async onSuccess(tableId) {
       const rs = data?.data.slice(1).map((r) => r.map((v) => String(v))) ?? []
-      if (importData && rs.length) {
+      if (importData && rs.length && schema) {
         const records = rs.map((r, i) => {
           const record: ICreateRecordDTO = { values: {} }
 
           for (let j = 0; j < r.length; j++) {
-            const field = schema[j]
-            const type = field.type
-            const value = castFieldValue(type, r[j])
+            const field = schema?.[j]
+            if (!field) {
+              continue
+            }
+            const value = castFieldValue(field, r[j])
             record.values[field.id!] = value
           }
 
@@ -110,6 +116,19 @@
         data: [parsed.data[0].map((_, i) => `field ${i + 1}`), ...parsed.data],
       }
     }
+
+    handleSchemaChange()
+  }
+
+  function handleSchemaChange() {
+    const transposed = unzip(data?.data.slice(1)).slice(0, inferFieldTypeCount)
+
+    schema = (data?.data[0].map((header, i) => ({
+      ...inferCreateFieldType(transposed[i]),
+      name: header,
+      id: FieldIdVo.create().value,
+      display: i === 0,
+    })) ?? []) as ICreateSchemaDTO
   }
 
   async function onChange(e: Event) {
@@ -130,6 +149,8 @@
   }
 
   function handleClickImport() {
+    if (!schema) return
+
     if (step === 0) {
       step = 1
       return
@@ -156,15 +177,6 @@
       data.data = data.data.map((r) => r.filter((_, i) => i !== index))
     }
   }
-
-  $: transposed = unzip(data?.data.slice(1)).slice(0, inferFieldTypeCount)
-
-  $: schema = (data?.data[0].map((header, i) => ({
-    ...inferCreateFieldType(transposed[i]),
-    name: header,
-    id: FieldIdVo.create().value,
-    display: i === 0,
-  })) ?? []) as ICreateSchemaDTO
 </script>
 
 {#if step === 0}
@@ -214,7 +226,7 @@
     <Checkbox disabled={$createTable.isPending || $createRecords.isPending} bind:checked={importData} />
     Import Data
   </Label>
-  {#if data && file}
+  {#if data && file && schema}
     <div class="p-3">
       <Label class="flex items-center gap-2">
         <div>Name</div>
@@ -240,11 +252,40 @@
                   disabled={$createTable.isPending || $createRecords.isPending}
                 />
               </Table.Cell>
-              <Table.Cell>
-                <div class="flex items-center">
+              <Table.Cell class="flex items-center gap-2">
+                <FieldTypePicker
+                  disabled={$createTable.isPending || $createRecords.isPending}
+                  bind:value={schema[idx].type}
+                  onValueChange={() => {}}
+                  tabIndex={-1}
+                />
+                <Dialog.Root>
+                  <Dialog.Trigger>
+                    <SettingsIcon class="text-muted-foreground size-4" />
+                  </Dialog.Trigger>
+                  <Dialog.Content>
+                    <Dialog.Header>
+                      <Dialog.Title class="flex items-center">
+                        Config Field
+                        <FieldIcon type={field.type} class="ml-2 mr-2 size-4" />
+                        {field.name}
+                      </Dialog.Title>
+
+                      <FieldOptions
+                        type={field.type}
+                        bind:option={field.option}
+                        bind:constraint={field.constraint}
+                        bind:display={field.display}
+                        bind:defaultValue={field.defaultValue}
+                      />
+                    </Dialog.Header>
+                  </Dialog.Content>
+                </Dialog.Root>
+
+                <!-- <div class="flex items-center">
                   <FieldIcon type={field.type} class="mr-2 h-4 w-4" />
                   {field.type}
-                </div>
+                </div> -->
               </Table.Cell>
               <Table.Cell class="text-right">
                 <button

@@ -18,6 +18,7 @@
   import ImportTableDialog from "$lib/components/blocks/import-table/import-table-dialog.svelte"
   import MemberMenu from "$lib/components/blocks/member/member-menu.svelte"
   import { derived } from "svelte/store"
+  import { preferences } from "$lib/store/persisted.store"
 
   export let data: LayoutData
 
@@ -82,10 +83,11 @@
 <Resizable.PaneGroup direction="horizontal">
   <Resizable.Pane
     bind:pane={panelLeft}
+    onResize={(size) => ($preferences.panelLeftWidth = size)}
     onCollapse={() => (collapsed = true)}
     onExpand={() => (collapsed = false)}
     class="bg-muted/40 hidden border-r md:block"
-    defaultSize={20}
+    defaultSize={$preferences.panelLeftWidth ?? 20}
     minSize={15}
     maxSize={30}
   >
@@ -103,7 +105,7 @@
     </div>
   </Resizable.Pane>
   <Resizable.Handle />
-  <Resizable.Pane class="grid h-screen" defaultSize={85}>
+  <Resizable.Pane class="grid h-screen" defaultSize={100 - $preferences.panelLeftWidth}>
     <slot />
   </Resizable.Pane>
 </Resizable.PaneGroup>

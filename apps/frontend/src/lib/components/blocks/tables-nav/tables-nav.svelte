@@ -84,7 +84,7 @@
             >
               <a
                 class={cn(
-                  "flex h-full flex-1 items-center font-normal",
+                  "flex h-full flex-1 items-center font-normal text-gray-600",
                   active && !tableId && !viewId && "text-background font-medium",
                 )}
                 href={`/bases/${base.id}`}
@@ -136,7 +136,7 @@
                         href={`/t/${table.id}`}
                         title={table.name}
                         class={cn(
-                          "text-primary flex h-full flex-1 items-center truncate font-normal",
+                          "flex h-full flex-1 items-center truncate font-normal text-gray-600",
                           active && !viewId && "text-background font-medium",
                         )}
                       >

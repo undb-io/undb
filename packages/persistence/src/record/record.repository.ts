@@ -139,7 +139,7 @@ export class RecordRepository implements IRecordRepository {
   }
 
   async bulkInsert(table: TableDo, records: RecordDO[]): Promise<void> {
-    const chunked = chunk(records, 5000)
+    const chunked = chunk(records, 500)
     for (const chunk of chunked) {
       await this.#bulkInsert(table, chunk)
     }

@@ -2,7 +2,7 @@
   import * as Pagination from "$lib/components/ui/pagination"
 
   export let perPage: number
-  export let currentPage: number = 1
+  export let currentPage: number | null = null
 
   export let count: number
 </script>
