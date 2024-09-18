@@ -35,7 +35,6 @@
   import * as Dialog from "$lib/components/ui/dialog"
   import FieldOptions from "../field-options/field-options.svelte"
   import FieldIcon from "../field-icon/field-icon.svelte"
-  import { ScrollArea } from "$lib/components/ui/scroll-area/index.js"
 
   export let tableNames: string[]
 
@@ -83,6 +82,7 @@
             if (!selectedFields.includes(field.id)) {
               continue
             }
+
             const value = castFieldValue(field, r[j])
             record.values[field.id!] = value
           }
@@ -107,7 +107,12 @@
   })
 
   async function handleFile() {
-    if (!file) return
+    if (!file) {
+      data = undefined
+      schema = undefined
+      selectedFields = []
+      return
+    }
 
     const parsed = await parse(file)
     if (firstRowAsHeader) {
@@ -162,6 +167,7 @@
 
   function removeFile() {
     file = undefined
+    handleFile()
   }
 
   $: filteredSchema = (schema?.filter((field) => !!field.id && selectedFields.includes(field.id)) ??
@@ -261,7 +267,7 @@
         </Table.Header>
         <Table.Body class="w-full flex-1 overflow-y-auto">
           {#each schema as field, idx}
-            <Table.Row class="group flex w-full">
+            <Table.Row data-field-id={field.id} class="group flex w-full">
               <Table.Cell class="flex w-[40px] items-center justify-center font-medium">
                 {#if !!field.id}
                   <Checkbox
@@ -337,7 +343,7 @@
   {/if}
   <Button
     disabled={(step === 0 && !file) ||
-      (step === 1 && schema.length < 1) ||
+      (step === 1 && (!schema || schema.length < 1)) ||
       $createTable.isPending ||
       $createRecords.isPending ||
       selectedFields.length < 1}

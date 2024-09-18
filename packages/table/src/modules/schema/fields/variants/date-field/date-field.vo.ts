@@ -45,7 +45,7 @@ export class DateField extends AbstractField<DateFieldValue> {
   }
 
   static create(dto: ICreateDateFieldDTO) {
-    return new DateField({ ...dto, id: FieldIdVo.create().value })
+    return new DateField({ ...dto, id: FieldIdVo.fromStringOrCreate(dto.id).value })
   }
 
   get formatter() {

@@ -9,6 +9,7 @@ import {
   getIsSystemFieldType,
   getRollupFnByType,
   inferCreateFieldType,
+  isCurrencyValue,
   isDateValue,
   isFieldSortable,
   isJsonValue,
@@ -38,6 +39,16 @@ describe("field.util", () => {
 
     it("should return false for non-objects", () => {
       expect(isJsonValue("string")).toBe(false)
+    })
+  })
+
+  describe("isCurrencyValue", () => {
+    it("should check if is currency value", () => {
+      expect(isCurrencyValue(1000)).toBe(true)
+      expect(isCurrencyValue("1,000.00")).toBe(true)
+      expect(isCurrencyValue("1,000")).toBe(true)
+      expect(isCurrencyValue("1000.50")).toBe(true)
+      expect(isCurrencyValue("not a currency")).toBe(false)
     })
   })
 
