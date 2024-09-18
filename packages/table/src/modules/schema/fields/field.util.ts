@@ -36,6 +36,10 @@ export const inferCreateFieldType = (values: (string | number | null | object | 
 
   return match(distinctValues)
     .returnType<IInferCreateFieldDTO>()
+    .when(
+      (p) => !p.length,
+      () => ({ type: "string" }),
+    )
     .with(P.array(P.string.regex(EMAIL_REGEXP)), () => ({ type: "email" }))
     .with(P.array(P.string.regex(URL_REGEXP)), () => ({ type: "url" }))
     .with(P.array(P.boolean), () => ({ type: "checkbox" }))
