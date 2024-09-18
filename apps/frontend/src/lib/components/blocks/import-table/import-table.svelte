@@ -4,7 +4,7 @@
   import { Label } from "$lib/components/ui/label"
   import { Checkbox } from "$lib/components/ui/checkbox"
   import { parse, type ImportDataExtensions, type SheetData } from "$lib/import/import.helper"
-  import { FileIcon, XIcon, ArrowRightIcon, ArrowLeftIcon, LoaderCircleIcon } from "lucide-svelte"
+  import { FileIcon, XIcon, ArrowRightIcon, ArrowLeftIcon, LoaderCircleIcon, SettingsIcon } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
   import { invalidate, goto } from "$app/navigation"
   import { baseId, currentBase } from "$lib/store/base.store"
@@ -24,6 +24,9 @@
   import unzip from "lodash.unzip"
   import { getNextName } from "@undb/utils"
   import FieldTypePicker from "../field-picker/field-type-picker.svelte"
+  import * as Dialog from "$lib/components/ui/dialog"
+  import FieldOptions from "../field-options/field-options.svelte"
+  import FieldIcon from "../field-icon/field-icon.svelte"
 
   export let tableNames: string[]
 
@@ -62,8 +65,10 @@
           const record: ICreateRecordDTO = { values: {} }
 
           for (let j = 0; j < r.length; j++) {
-            const field = schema![j]
-            const type = field.type
+            const field = schema?.[j]
+            if (!field) {
+              continue
+            }
             const value = castFieldValue(field, r[j])
             record.values[field.id!] = value
           }
@@ -247,13 +252,36 @@
                   disabled={$createTable.isPending || $createRecords.isPending}
                 />
               </Table.Cell>
-              <Table.Cell>
+              <Table.Cell class="flex items-center gap-2">
                 <FieldTypePicker
                   disabled={$createTable.isPending || $createRecords.isPending}
                   bind:value={schema[idx].type}
                   onValueChange={() => {}}
                   tabIndex={-1}
                 />
+                <Dialog.Root>
+                  <Dialog.Trigger>
+                    <SettingsIcon class="text-muted-foreground size-4" />
+                  </Dialog.Trigger>
+                  <Dialog.Content>
+                    <Dialog.Header>
+                      <Dialog.Title class="flex items-center">
+                        Config Field
+                        <FieldIcon type={field.type} class="ml-2 mr-2 size-4" />
+                        {field.name}
+                      </Dialog.Title>
+
+                      <FieldOptions
+                        type={field.type}
+                        bind:option={field.option}
+                        bind:constraint={field.constraint}
+                        bind:display={field.display}
+                        bind:defaultValue={field.defaultValue}
+                      />
+                    </Dialog.Header>
+                  </Dialog.Content>
+                </Dialog.Root>
+
                 <!-- <div class="flex items-center">
                   <FieldIcon type={field.type} class="mr-2 h-4 w-4" />
                   {field.type}
