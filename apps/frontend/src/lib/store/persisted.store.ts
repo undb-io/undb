@@ -5,4 +5,5 @@ export const preferences = persisted("undb_preferences", {
   showHiddenFields: false,
   duplicateFieldIncludeData: true,
   gridViewPerPage: 50,
+  panelLeftWidth: 20,
 })
