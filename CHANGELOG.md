@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-76
+
+
+### 🚀 Enhancements
+
+- Persist left pane ([9870a8e](https://github.com/undb-io/undb/commit/9870a8e))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-75
 
 
