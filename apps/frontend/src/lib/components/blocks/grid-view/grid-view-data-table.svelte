@@ -140,7 +140,7 @@
           }),
           plugins: {
             resize: {
-              initialWidth: $view.getFieldWidth(field.id.value),
+              initialWidth: $view.type === 'grid' ?  $view.getFieldWidth(field.id.value) : 200,
               disable: readonly,
             },
           },
