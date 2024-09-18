@@ -58,7 +58,7 @@
     async onSuccess(tableId) {
       const rs = data?.data.slice(1).map((r) => r.map((v) => String(v))) ?? []
       if (importData && rs.length && schema) {
-        const records = rs.slice(2050, 2100).map((r, i) => {
+        const records = rs.map((r, i) => {
           const record: ICreateRecordDTO = { values: {} }
 
           for (let j = 0; j < r.length; j++) {
