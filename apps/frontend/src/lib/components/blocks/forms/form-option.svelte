@@ -3,7 +3,7 @@
   import { trpc } from "$lib/trpc/client"
   import { cn } from "$lib/utils"
   import { createMutation } from "@tanstack/svelte-query"
-  import { CopyIcon } from "lucide-svelte"
+  import { CopyIcon, LoaderCircleIcon } from "lucide-svelte"
   import type { FormVO, IColors } from "@undb/table"
   import { COLORS, duplicateFormDTO, FormOptionVO } from "@undb/table"
   import { tick } from "svelte"
@@ -56,6 +56,7 @@
     mutationFn: trpc.table.form.delete.mutate,
     async onSuccess() {
       await invalidate(`table:${$table.id.value}`)
+      await goto(`/t/${$table.id.value}`)
     },
   })
 
@@ -196,6 +197,9 @@
           on:click={deleteForm}
           disabled={$deleteFormMutation.isPending}
         >
+          {#if $deleteFormMutation.isPending}
+            <LoaderCircleIcon class="mr-2 h-4 w-4 animate-spin" />
+          {/if}
           Delete Form
         </Button>
       </AlertDialog.Action>
