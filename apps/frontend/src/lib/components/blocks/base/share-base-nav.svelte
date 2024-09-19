@@ -33,8 +33,8 @@
   <a
     href={`/s/b/${shareId}`}
     class={cn(
-      "group flex h-8 items-center justify-between pl-4 pr-2 transition-all",
-      active && "bg-primary/90 text-background rounded-md",
+      "group flex h-8 items-center justify-between gap-1 pl-4 pr-2 transition-all",
+      active && "text-background rounded-md bg-gray-800/90",
     )}
   >
     <div class={cn("flex h-full flex-1 items-center font-light")}>
@@ -49,8 +49,8 @@
       <Collapsible.Root bind:open={open[table.id]}>
         <div
           class={cn(
-            "group flex h-8 cursor-pointer items-center justify-between rounded-md pl-8 pr-2 transition-all",
-            active && !viewId ? "bg-primary/90" : "hover:bg-gray-100",
+            "group flex h-8 cursor-pointer items-center justify-between gap-1 rounded-md pl-8 pr-2 transition-all",
+            active && !viewId ? "bg-gray-800/90" : "hover:bg-gray-100",
           )}
         >
           <a
@@ -92,8 +92,8 @@
             {@const active = view.id === viewId}
             <div
               class={cn(
-                "group flex h-8 items-center justify-between rounded-sm pl-14 pr-2 transition-all",
-                active ? "bg-primary/90" : "hover:bg-gray-100",
+                "group flex h-8 items-center justify-between gap-1 rounded-sm pl-14 pr-2 transition-all",
+                active ? "bg-gray-800/90" : "hover:bg-gray-100",
               )}
             >
               <a

@@ -95,9 +95,9 @@
       <div class="border-b px-4 py-2">
         <NavTools space={$space} me={data.me.user} />
       </div>
-      <ScrollArea class="flex-1">
+      <div class="w-full flex-1 overflow-y-auto">
         <TablesNav tables={$tables} bases={$bases} {isLoading} />
-      </ScrollArea>
+      </div>
 
       <div class="border-t px-4 py-2">
         <MemberMenu user={data.me.user} />
