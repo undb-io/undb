@@ -26,6 +26,7 @@ import {
   DuplicateRecordCommand,
   DuplicateTableCommand,
   DuplicateTableFieldCommand,
+  DuplicateTableFormCommand,
   DuplicateViewCommand,
   EnableShareCommand,
   InviteCommand,
@@ -61,7 +62,9 @@ import {
   createTableCommand,
   createTableFieldCommand,
   createTableFormCommand,
+  createTableFormCommandOutput,
   createTableViewCommand,
+  createTableViewCommandOutput,
   createWebhookCommand,
   deleteBaseCommand,
   deleteFormCommand,
@@ -76,7 +79,10 @@ import {
   duplicateRecordCommand,
   duplicateTableCommand,
   duplicateTableFieldCommand,
+  duplicateTableFormCommand,
+  duplicateTableFormCommandOutput,
   duplicateViewCommand,
+  duplicateViewCommandOutput,
   enableShareCommand,
   inviteCommand,
   setFieldWidthCommand,
@@ -100,9 +106,9 @@ import {
   updateaccountCommand,
 } from "@undb/commands"
 import { getCurrentSpaceId } from "@undb/context/server"
-import { CommandBus, QueryBus } from "@undb/cqrs"
+import { CommandBus,QueryBus } from "@undb/cqrs"
 import { container } from "@undb/di"
-import type { ICommandBus, IQueryBus } from "@undb/domain"
+import type { ICommandBus,IQueryBus } from "@undb/domain"
 import {
   CountRecordsQuery,
   GetAggregatesQuery,
@@ -130,7 +136,7 @@ import {
 import { tableDTO } from "@undb/table"
 import { z } from "@undb/zod"
 import { authz } from "./authz.middleware"
-import { privateProcedure, publicProcedure, t } from "./trpc"
+import { privateProcedure,publicProcedure,t } from "./trpc"
 
 const commandBus = container.resolve<ICommandBus>(CommandBus)
 const queryBus = container.resolve<IQueryBus>(QueryBus)
@@ -139,7 +145,13 @@ const formRouter = t.router({
   create: privateProcedure
     .use(authz("form:create"))
     .input(createTableFormCommand)
+    .output(createTableFormCommandOutput)
     .mutation(({ input }) => commandBus.execute(new CreateTableFormCommand(input))),
+  duplicate: privateProcedure
+    .use(authz("form:create"))
+    .input(duplicateTableFormCommand)
+    .output(duplicateTableFormCommandOutput)
+    .mutation(({ input }) => commandBus.execute(new DuplicateTableFormCommand(input))),
   set: privateProcedure
     .use(authz("form:update"))
     .input(setTableFormCommand)
@@ -157,6 +169,7 @@ const viewRouter = t.router({
   create: privateProcedure
     .use(authz("view:create"))
     .input(createTableViewCommand)
+    .output(createTableViewCommandOutput)
     .mutation(({ input }) => commandBus.execute(new CreateTableViewCommand(input))),
   update: privateProcedure
     .use(authz("view:update"))
@@ -165,6 +178,7 @@ const viewRouter = t.router({
   duplicate: privateProcedure
     .use(authz("view:create"))
     .input(duplicateViewCommand)
+    .output(duplicateViewCommandOutput)
     .mutation(({ input }) => commandBus.execute(new DuplicateViewCommand(input))),
   delete: privateProcedure
     .use(authz("view:delete"))

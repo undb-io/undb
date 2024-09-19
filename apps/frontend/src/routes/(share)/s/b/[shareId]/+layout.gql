@@ -11,6 +11,7 @@ query GetShareBaseData($shareId: ID!) {
   baseByShare(shareId: $shareId) {
     id
     name
+    option
 
     tables {
       id
@@ -31,6 +32,7 @@ query GetShareBaseData($shareId: ID!) {
         name
         type
         isDefault
+        aggregate
         grid {
           widths
         }

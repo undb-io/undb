@@ -5,6 +5,7 @@
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { getTable, viewId } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
+  import { LoaderCircleIcon } from "lucide-svelte"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { invalidate } from "$app/navigation"
   import { writable } from "svelte/store"
@@ -40,6 +41,7 @@
     onSuccess: async () => {
       await invalidate(`table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
+      await client.invalidateQueries({ queryKey: ["aggregates", $table.id.value] })
       open = false
     },
   })
@@ -80,9 +82,18 @@
       on:submit={(e) => handleSubmit(e.detail)}
       filter={(field) => visibleFields.some((f) => f.id.value === field.id) && getIsFilterableFieldType(field.type)}
     >
-      <Button size="sm" disabled={readonly} variant="outline" on:click={() => handleSubmit(validValue)} slot="footer"
-        >Submit</Button
+      <Button
+        size="sm"
+        disabled={readonly || $mutation.isPending}
+        variant="outline"
+        on:click={() => handleSubmit(validValue)}
+        slot="footer"
       >
+        {#if $mutation.isPending}
+          <LoaderCircleIcon class="mr-2 h-4 w-4 animate-spin" />
+        {/if}
+        Submit
+      </Button>
 
       <div slot="empty" class="flex flex-col items-center gap-3 px-4 py-6 text-center">
         <FilterXIcon class="text-primary h-10 w-10" />

@@ -8,6 +8,7 @@
   import { queryParam, ssp } from "sveltekit-search-params"
   import GridViewDataTable from "./grid-view-data-table.svelte"
   import { preferences } from "$lib/store/persisted.store"
+  import { aggregatesStore } from "$lib/store/aggregates.store"
 
   export let readonly = false
 
@@ -46,6 +47,18 @@
 
   $: if ($getRecords.isSuccess) {
     store.setRecords(Records.fromJSON($t, records), $getRecords.dataUpdatedAt)
+  }
+
+  const getAggregates = createQuery(
+    derived([t], ([$table]) => ({
+      queryKey: ["aggregates", $table?.id.value, $viewId],
+      queryFn: () => trpc.record.aggregate.query({ tableId: $table.id.value, viewId: $viewId }),
+      enabled: !!$table,
+    })),
+  )
+
+  $: if ($getAggregates.data && $t) {
+    aggregatesStore.updateTableAggregates($viewId ?? $t.views.getDefaultView()?.id.value, $getAggregates.data)
   }
 </script>
 

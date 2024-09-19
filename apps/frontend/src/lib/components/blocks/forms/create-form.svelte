@@ -11,6 +11,7 @@
   import { Input } from "$lib/components/ui/input"
   import { hasPermission } from "$lib/store/space-member.store"
   import { getNextName } from "@undb/utils"
+  import { formId } from "$lib/store/tab.store"
 
   const table = getTable()
 
@@ -19,9 +20,10 @@
   const createFormMutation = createMutation({
     mutationFn: trpc.table.form.create.mutate,
     mutationKey: ["table", $table.id.value, "createForm"],
-    async onSuccess() {
+    async onSuccess(data) {
       toast.success("create form successfully")
       await invalidate(`table:${$table.id.value}`)
+      formId.set(data.formId)
       onSuccess?.()
     },
     onError(e) {

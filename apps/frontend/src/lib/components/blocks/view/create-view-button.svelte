@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { invalidate } from "$app/navigation"
   import * as Form from "$lib/components/ui/form"
   import { Button } from "$lib/components/ui/button"
   import * as Popover from "$lib/components/ui/popover"
@@ -16,6 +15,7 @@
   import { hasPermission } from "$lib/store/space-member.store"
   import { LoaderCircleIcon } from "lucide-svelte"
   import ViewTypePicker from "./view-type-picker.svelte"
+  import { goto, invalidate } from "$app/navigation"
 
   let open = false
 
@@ -25,11 +25,12 @@
   const createViewMutation = createMutation({
     mutationFn: trpc.table.view.create.mutate,
     mutationKey: ["table", tableId, "createView"],
-    async onSuccess() {
+    async onSuccess(data) {
       viewNames = [...viewNames, $formData.name]
       toast.success("created view successfully")
       reset()
       await invalidate(`table:${tableId}`)
+      await goto(`/t/${tableId}/${data.viewId}`)
     },
     onError(e) {
       toast.error(e.message)

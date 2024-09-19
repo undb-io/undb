@@ -3,16 +3,16 @@ import { derived, writable } from "svelte/store"
 type IAggregates = Record<string, string | number | null>
 
 export const createAggregatesStore = () => {
-  const store = writable<Map<string, IAggregates>>(new Map())
+  const store = writable<Record<string, IAggregates>>({})
   const { subscribe, update, set } = store
 
-  const updateTableAggregates = (tableId: string, aggregates: IAggregates) => {
-    update((map) => map.set(tableId, aggregates))
+  const updateTableAggregates = (viewId: string, aggregates: IAggregates) => {
+    update((map) => ({ ...map, [viewId]: aggregates }))
   }
 
   const getTableAggregates = derived(store, ($store) => {
-    return (tableId: string) => {
-      const aggregates = $store.get(tableId)
+    return (viewId: string) => {
+      const aggregates = $store[viewId]
       return aggregates
     }
   })

@@ -1,10 +1,17 @@
 import { Command, type CommandProps } from "@undb/domain"
-import { createTableViewDTO, type ICreateTableViewDTO } from "@undb/table"
+import { createTableViewDTO, tableId, viewId, type ICreateTableViewDTO } from "@undb/table"
 import { z } from "@undb/zod"
 
 export const createTableViewCommand = createTableViewDTO
 
 export type ICreateViewCommand = z.infer<typeof createTableViewCommand>
+
+export const createTableViewCommandOutput = z.object({
+  tableId: tableId,
+  viewId: viewId,
+})
+
+export type ICreateTableViewCommandOutput = z.infer<typeof createTableViewCommandOutput>
 
 export class CreateTableViewCommand extends Command {
   public readonly input: ICreateTableViewDTO

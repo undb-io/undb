@@ -27,6 +27,7 @@ query GetBaseTableShareData($shareId: ID!, $tableId: ID!) {
       isDefault
       fields
       type
+      aggregate
       grid {
         widths
       }

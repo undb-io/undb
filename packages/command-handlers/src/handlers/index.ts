@@ -26,6 +26,7 @@ import { DisableShareCommandHandler } from "./disable-share.command-handler"
 import { DuplicateBaseCommandHandler } from "./duplicate-base.command-handler"
 import { DuplicateRecordCommandHandler } from "./duplicate-record.command-handler"
 import { DuplicateTableFieldCommandHandler } from "./duplicate-table-field.command-handler"
+import { DuplicateTableFormCommandHandler } from "./duplicate-table-form.command-handler"
 import { DuplicateTableCommandHandler } from "./duplicate-table.command-handler"
 import { DuplicateViewCommandHandler } from "./duplicate-view.command-handler"
 import { EnableShareCommandHandler } from "./enable-share.command-handler"
@@ -104,4 +105,5 @@ export const commandHandlers = [
   DeleteFormCommandHandler,
   SubmitFormCommandHandler,
   SetFieldWidthCommandHandler,
+  DuplicateTableFormCommandHandler,
 ]

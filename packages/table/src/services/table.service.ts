@@ -13,14 +13,17 @@ import type {
   IUpdateTableFieldDTO,
 } from "../dto"
 import {
+  FormVO,
   injectRecordQueryRepository,
   injectRecordRepository,
   type ICreateTableViewDTO,
   type IDeleteTableFormDTO,
+  type IDuplicateTableFormDTO,
   type IExportViewDTO,
   type IReadableRecordDTO,
   type IRecordQueryRepository,
   type IRecordRepository,
+  type View,
 } from "../modules"
 import type { ICreateTableFormDTO } from "../modules/forms/dto/create-form.dto"
 import { TableCreator } from "../table.builder"
@@ -36,6 +39,7 @@ import { deleteTableFormMethod } from "./methods/delete-table-form.method"
 import { deleteTableMethod } from "./methods/delete-table.method"
 import { duplicateBaseMethod } from "./methods/duplicate-base.method"
 import { duplicateTableFieldMethod } from "./methods/duplicate-table-field.method"
+import { duplicateTableFormMethod } from "./methods/duplicate-table-form.method"
 import { duplicateTableMethod } from "./methods/duplicate-table.method"
 import { duplicateTablesMethod } from "./methods/duplicate-tables.method"
 import { exportViewMethod } from "./methods/export-view.method"
@@ -53,9 +57,11 @@ export interface ITableService {
   deleteTableField(dto: IDeleteTableFieldDTO): Promise<TableDo>
   duplicateTableField(dto: IDuplicateTableFieldDTO): Promise<TableDo>
 
-  createTableForm(dto: ICreateTableFormDTO): Promise<TableDo>
+  createTableForm(dto: ICreateTableFormDTO): Promise<{ table: TableDo; form: FormVO }>
   deleteTableForm(dto: IDeleteTableFormDTO): Promise<TableDo>
-  createTableView(dto: ICreateTableViewDTO): Promise<TableDo>
+  duplicateTableForm(dto: IDuplicateTableFormDTO): Promise<{ table: TableDo; form: FormVO }>
+
+  createTableView(dto: ICreateTableViewDTO): Promise<{ table: TableDo; view: View }>
 
   exportView(tableId: string, dto: IExportViewDTO): Promise<{ table: TableDo; records: IReadableRecordDTO[] }>
   duplicateBase(base: Base, spaceId: ISpaceId, targetSpaceId: ISpaceId, dto: IDuplicateBaseDTO): Promise<Base>
@@ -93,6 +99,8 @@ export class TableService implements ITableService {
 
   createTableForm = createTableFormMethod
   deleteTableForm = deleteTableFormMethod
+  duplicateTableForm = duplicateTableFormMethod
+
   createTableView = createTableViewMethod
 
   exportView = exportViewMethod

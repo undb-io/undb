@@ -29,7 +29,7 @@
   let open: Record<string, boolean> = {}
 </script>
 
-<nav class="grid items-start gap-1 px-1.5 text-sm font-medium">
+<nav class="items-start gap-1 px-1.5 text-sm font-medium">
   <a
     href={`/s/b/${shareId}`}
     class={cn(
@@ -56,7 +56,7 @@
           <a
             href={`/s/b/${shareId}/t/${table.id}`}
             class={cn(
-              "text-primary flex h-full flex-1 items-center font-light",
+              "text-primary flex h-full flex-1 items-center overflow-hidden font-light",
               active && !viewId && "text-background font-medium",
             )}
           >
