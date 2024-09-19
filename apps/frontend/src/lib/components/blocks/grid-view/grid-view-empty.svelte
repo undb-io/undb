@@ -8,7 +8,7 @@
   const table = getTable()
 </script>
 
-<div class="flex max-w-full flex-1 -translate-y-20 items-center justify-center shadow-sm">
+<div class="flex w-screen flex-1 -translate-x-10 -translate-y-20 items-center justify-center shadow-sm">
   <div class="flex flex-col items-center gap-1 space-y-2 text-center">
     <SquareMousePointer class="text-primary h-10 w-10" />
     <h3 class="text-sm font-bold tracking-tight">{$table.name.value} have no records</h3>
