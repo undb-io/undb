@@ -100,6 +100,15 @@ type KanbanOption {
   field: String
 }
 
+type OAuthSetting {
+  enabled: Boolean!
+}
+
+type OAuthSettings {
+  github: OAuthSetting
+  google: OAuthSetting
+}
+
 type Query {
   base(id: ID!): Base!
   baseByShare(shareId: ID!): Base
@@ -111,6 +120,7 @@ type Query {
   membersByIds(ids: [ID!]!): [SpaceMember!]!
   recordAudits(recordId: ID!): [Audit]
   rollupForeignTables(fieldId: ID!, tableId: ID!): [Table!]!
+  settings: Settings
   share(id: ID!): Share
   space: Space
   spaces: [Space]!
@@ -138,6 +148,15 @@ enum RLSAction {
   delete
   read
   update
+}
+
+type RegistrationSetting {
+  enabled: Boolean!
+}
+
+type Settings {
+  oauth: OAuthSettings
+  registration: RegistrationSetting
 }
 
 type Share {
