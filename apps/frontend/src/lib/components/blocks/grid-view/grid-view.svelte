@@ -51,7 +51,7 @@
 
   const getAggregates = createQuery(
     derived([t], ([$table]) => ({
-      queryKey: ["aggregates", $table?.id.value],
+      queryKey: ["aggregates", $table?.id.value, $viewId],
       queryFn: () => trpc.record.aggregate.query({ tableId: $table.id.value, viewId: $viewId }),
       enabled: !!$table,
     })),

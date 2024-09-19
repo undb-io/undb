@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { page } from "$app/stores"
   import { TableCreator, TableDo } from "@undb/table"
   import { setTable, viewId } from "$lib/store/table.store"
   import type { LayoutData } from "./$types"

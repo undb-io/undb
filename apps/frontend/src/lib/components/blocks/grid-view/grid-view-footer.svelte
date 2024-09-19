@@ -10,7 +10,7 @@
   import type { AggregateResult, Field, IFieldAggregate, IViewAggregate } from "@undb/table"
   import type { Selected } from "bits-ui"
   import { derived } from "svelte/store"
-
+  import { useQueryClient } from "@tanstack/svelte-query"
   const table = getTable()
   export let field: Field
   export let readonly: boolean
@@ -27,12 +27,14 @@
     []
   $: value = $table.views.getViewById($viewId).aggregate.into(undefined)?.value?.[field.id.value]
 
+  const client = useQueryClient()
   const setViewAggregateMutation = createMutation(
     derived([table], ([$table]) => ({
       mutationKey: ["table", $table.id.value, "setViewAggregate"],
       mutationFn: trpc.table.view.setAggregate.mutate,
       async onSuccess() {
         await invalidate(`table:${$table.id.value}`)
+        await client.invalidateQueries({ queryKey: ["aggregates", $table.id.value] })
       },
     })),
   )
