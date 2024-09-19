@@ -9,6 +9,7 @@ import { deleteFieldMethod } from "./methods/delete-field.method"
 import { deleteFormMethod } from "./methods/delete-form.method"
 import { deleteViewMethod } from "./methods/delete-view.method"
 import { duplicateFieldMethod } from "./methods/duplicate-field.method"
+import { duplicateFormMethod } from "./methods/duplicate-form.method"
 import { duplicateTableMethod } from "./methods/duplicate-table.method"
 import { duplicateViewMethod } from "./methods/duplicate-view.method"
 import { setFieldWidth } from "./methods/set-field-width.method"
@@ -72,6 +73,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   $duplicateField = duplicateFieldMethod
   $createForm = createFormMethod
   $deleteForm = deleteFormMethod
+  $duplicateForm = duplicateFormMethod
   $createView = createViewMethod
   $duplicateView = duplicateViewMethod
   $deleteView = deleteViewMethod

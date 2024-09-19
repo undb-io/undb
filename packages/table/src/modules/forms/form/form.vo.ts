@@ -2,16 +2,17 @@ import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import { objectify } from "radash"
 import type { TableDo } from "../../../table.do"
-import type { RecordDO, RecordValues } from "../../records"
+import type { RecordDO,RecordValues } from "../../records"
 import type { Schema } from "../../schema"
-import { conditionContainsFields, getSpec } from "../../schema/fields/condition/condition.util"
+import { conditionContainsFields,getSpec } from "../../schema/fields/condition/condition.util"
 import type { Field } from "../../schema/fields/field.type"
 import type { ICreateFormDTO } from "../dto/create-form.dto"
-import { FormFieldVO, formField } from "./form-field.vo"
+import type { IDuplicateFormDTO } from "../dto/duplicate-form.dto"
+import { FormFieldVO,formField } from "./form-field.vo"
 import { FormFieldsVO } from "./form-fields.vo"
-import { FormIdVO, formId, type FormId } from "./form-id.vo"
-import { FormNameVo, formName } from "./form-name.vo"
-import { FormOptionVO, formOption } from "./form-option.vo"
+import { FormIdVO,formId,type FormId } from "./form-id.vo"
+import { FormNameVo,formName } from "./form-name.vo"
+import { FormOptionVO,formOption } from "./form-option.vo"
 
 export const formDTO = z.object({
   id: formId,
@@ -112,6 +113,16 @@ export class FormVO extends ValueObject<IForm> {
       name: this.props.name,
       description: this.description,
       fields: formFields,
+      option: this.props.option,
+    })
+  }
+
+  public duplicate(dto: IDuplicateFormDTO): FormVO {
+    return new FormVO({
+      id: FormIdVO.create(),
+      name: dto.name ? new FormNameVo(dto.name) : this.props.name,
+      description: this.description,
+      fields: this.props.fields,
       option: this.props.option,
     })
   }

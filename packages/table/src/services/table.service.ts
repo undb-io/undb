@@ -18,6 +18,7 @@ import {
   injectRecordRepository,
   type ICreateTableViewDTO,
   type IDeleteTableFormDTO,
+  type IDuplicateTableFormDTO,
   type IExportViewDTO,
   type IReadableRecordDTO,
   type IRecordQueryRepository,
@@ -38,6 +39,7 @@ import { deleteTableFormMethod } from "./methods/delete-table-form.method"
 import { deleteTableMethod } from "./methods/delete-table.method"
 import { duplicateBaseMethod } from "./methods/duplicate-base.method"
 import { duplicateTableFieldMethod } from "./methods/duplicate-table-field.method"
+import { duplicateTableFormMethod } from "./methods/duplicate-table-form.method"
 import { duplicateTableMethod } from "./methods/duplicate-table.method"
 import { duplicateTablesMethod } from "./methods/duplicate-tables.method"
 import { exportViewMethod } from "./methods/export-view.method"
@@ -57,6 +59,8 @@ export interface ITableService {
 
   createTableForm(dto: ICreateTableFormDTO): Promise<{ table: TableDo; form: FormVO }>
   deleteTableForm(dto: IDeleteTableFormDTO): Promise<TableDo>
+  duplicateTableForm(dto: IDuplicateTableFormDTO): Promise<{ table: TableDo; form: FormVO }>
+
   createTableView(dto: ICreateTableViewDTO): Promise<{ table: TableDo; view: View }>
 
   exportView(tableId: string, dto: IExportViewDTO): Promise<{ table: TableDo; records: IReadableRecordDTO[] }>
@@ -95,6 +99,8 @@ export class TableService implements ITableService {
 
   createTableForm = createTableFormMethod
   deleteTableForm = deleteTableFormMethod
+  duplicateTableForm = duplicateTableFormMethod
+
   createTableView = createTableViewMethod
 
   exportView = exportViewMethod

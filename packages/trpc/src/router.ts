@@ -26,6 +26,7 @@ import {
   DuplicateRecordCommand,
   DuplicateTableCommand,
   DuplicateTableFieldCommand,
+  DuplicateTableFormCommand,
   DuplicateViewCommand,
   EnableShareCommand,
   InviteCommand,
@@ -78,6 +79,8 @@ import {
   duplicateRecordCommand,
   duplicateTableCommand,
   duplicateTableFieldCommand,
+  duplicateTableFormCommand,
+  duplicateTableFormCommandOutput,
   duplicateViewCommand,
   duplicateViewCommandOutput,
   enableShareCommand,
@@ -144,6 +147,11 @@ const formRouter = t.router({
     .input(createTableFormCommand)
     .output(createTableFormCommandOutput)
     .mutation(({ input }) => commandBus.execute(new CreateTableFormCommand(input))),
+  duplicate: privateProcedure
+    .use(authz("form:create"))
+    .input(duplicateTableFormCommand)
+    .output(duplicateTableFormCommandOutput)
+    .mutation(({ input }) => commandBus.execute(new DuplicateTableFormCommand(input))),
   set: privateProcedure
     .use(authz("form:update"))
     .input(setTableFormCommand)

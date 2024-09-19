@@ -3,17 +3,26 @@
   import { trpc } from "$lib/trpc/client"
   import { cn } from "$lib/utils"
   import { createMutation } from "@tanstack/svelte-query"
+  import { CopyIcon } from "lucide-svelte"
   import type { FormVO, IColors } from "@undb/table"
-  import { COLORS, FormOptionVO } from "@undb/table"
+  import { COLORS, duplicateFormDTO, FormOptionVO } from "@undb/table"
   import { tick } from "svelte"
   import { getFormBgColor, getFormBorderColor, getFormSelectedColor } from "./form-bg-color"
-  import { invalidate } from "$app/navigation"
+  import { goto, invalidate } from "$app/navigation"
   import { Checkbox } from "$lib/components/ui/checkbox/index.js"
   import { Label } from "$lib/components/ui/label/index.js"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { EllipsisIcon, TrashIcon } from "lucide-svelte"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import { Button } from "$lib/components/ui/button"
+  import { getNextName } from "@undb/utils"
+  import { defaults, superForm } from "sveltekit-superforms"
+  import { zodClient } from "sveltekit-superforms/adapters"
+  import * as Dialog from "$lib/components/ui/dialog"
+  import * as Form from "$lib/components/ui/form/index.js"
+  import { Input } from "$lib/components/ui/input/index.js"
+  import { formId } from "$lib/store/tab.store"
+  import { toast } from "svelte-sonner"
 
   const table = getTable()
   export let form: FormVO
@@ -30,7 +39,6 @@
     mutationKey: ["table", $table.id.value, "setForm"],
     mutationFn: trpc.table.form.set.mutate,
     async onSuccess() {
-      await goto(`/t/${$table.id.value}`)
       await invalidate(`table:${$table.id.value}`)
     },
   })
@@ -60,6 +68,43 @@
   }
 
   let confirmDelete = false
+
+  const duplicateFormMutation = createMutation({
+    mutationKey: ["table", $table.id.value, "duplicateForm"],
+    mutationFn: trpc.table.form.duplicate.mutate,
+    async onSuccess(data) {
+      toast.success("Duplicate form successfully")
+      duplicateFormDialog = false
+      await invalidate(`table:${$table.id.value}`)
+      formId.set(data.formId)
+    },
+  })
+
+  const frm = superForm(
+    defaults(
+      {
+        id: form.id,
+        name: getNextName($table.forms?.forms.map((f) => f.name) ?? [], form.name),
+      },
+      zodClient(duplicateFormDTO),
+    ),
+    {
+      SPA: true,
+      dataType: "json",
+      validators: zodClient(duplicateFormDTO),
+      resetForm: false,
+      invalidateAll: false,
+      onUpdate(event) {
+        if (!event.form.valid) return
+
+        $duplicateFormMutation.mutate({ ...event.form.data, tableId: $table.id.value })
+      },
+    },
+  )
+
+  let duplicateFormDialog = false
+
+  const { enhance, form: formData } = frm
 </script>
 
 <div class="space-y-4 p-4">
@@ -71,6 +116,10 @@
       </DropdownMenu.Trigger>
       <DropdownMenu.Content class="w-48">
         <DropdownMenu.Group>
+          <DropdownMenu.Item class="text-xs" on:click={() => (duplicateFormDialog = true)}>
+            <CopyIcon class="mr-2 h-3 w-3" />
+            Duplicate form
+          </DropdownMenu.Item>
           <DropdownMenu.Item
             on:click={() => (confirmDelete = true)}
             class="hover:text-500 flex items-center text-xs text-red-500 transition-colors hover:bg-red-100"
@@ -153,3 +202,24 @@
     </AlertDialog.Footer>
   </AlertDialog.Content>
 </AlertDialog.Root>
+
+<Dialog.Root bind:open={duplicateFormDialog}>
+  <Dialog.Content>
+    <Dialog.Header>
+      <Dialog.Title>Duplicate form: {form.name}?</Dialog.Title>
+      <Dialog.Description>Form will be duplicated.</Dialog.Description>
+    </Dialog.Header>
+    <form action="/?/username" method="POST" class="space-y-4" use:enhance>
+      <Form.Field form={frm} name="name">
+        <Form.Control let:attrs>
+          <Form.Label>Name</Form.Label>
+          <Input {...attrs} bind:value={$formData.name} />
+        </Form.Control>
+        <Form.Description>Set form display name.</Form.Description>
+        <Form.FieldErrors />
+      </Form.Field>
+
+      <Form.Button disabled={$duplicateFormMutation.isPending} class="w-full">Duplicate</Form.Button>
+    </form>
+  </Dialog.Content>
+</Dialog.Root>
