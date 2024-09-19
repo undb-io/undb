@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-80
+
+
+### 🩹 Fixes
+
+- Missing base option in gql ([d632881](https://github.com/undb-io/undb/commit/d632881))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-79
 
 ## v1.0.0-78
