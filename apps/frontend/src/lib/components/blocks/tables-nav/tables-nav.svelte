@@ -68,7 +68,7 @@
   let open: Record<string, boolean> = {}
 </script>
 
-<nav bind:this={el} class="grid items-start gap-1 px-1.5 text-sm font-medium">
+<nav bind:this={el} class="items-start gap-1 px-1.5 text-sm font-medium">
   {#if bases?.length}
     <ul>
       {#each bases as base}
@@ -78,8 +78,8 @@
           <Collapsible.Root bind:open={open[base.id]}>
             <div
               class={cn(
-                "group flex h-8 items-center justify-between pl-4 pr-2 transition-all",
-                active && !tableId && !viewId ? "bg-primary/90 text-background rounded-md" : "hover:bg-gray-100",
+                "group flex h-8 items-center justify-between gap-1 pl-4 pr-2 transition-all",
+                active && !tableId && !viewId ? "text-background rounded-md bg-gray-800/90" : "hover:bg-gray-100",
               )}
             >
               <a
@@ -128,8 +128,8 @@
                   <Collapsible.Root bind:open={open[table.id]}>
                     <div
                       class={cn(
-                        "group flex h-8 cursor-pointer items-center justify-between rounded-md pl-8 pr-2 transition-all",
-                        active && !viewId ? "bg-primary/90" : "hover:bg-gray-100",
+                        "group flex h-8 cursor-pointer items-center justify-between gap-1 truncate rounded-md pl-8 pr-2 transition-all",
+                        active && !viewId ? "bg-gray-800/90" : "hover:bg-gray-100",
                       )}
                     >
                       <a
@@ -179,8 +179,8 @@
                         {@const active = view.id === viewId}
                         <div
                           class={cn(
-                            "group flex h-8 items-center justify-between rounded-sm pl-14 pr-2 transition-all",
-                            active ? "bg-primary/90" : "hover:bg-gray-100",
+                            "group flex h-8 items-center justify-between gap-1 rounded-sm pl-14 pr-2 transition-all",
+                            active ? "bg-gray-800/90" : "hover:bg-gray-100",
                           )}
                         >
                           <a
