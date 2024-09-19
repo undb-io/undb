@@ -11,6 +11,7 @@ query GetShareBaseData($shareId: ID!) {
   baseByShare(shareId: $shareId) {
     id
     name
+    option
 
     tables {
       id

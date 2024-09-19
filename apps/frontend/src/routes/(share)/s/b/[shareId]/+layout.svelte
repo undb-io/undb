@@ -1,12 +1,9 @@
 <script lang="ts">
-  import BaseHeader from "$lib/components/blocks/base/base-header.svelte"
   import ShareBaseNav from "$lib/components/blocks/base/share-base-nav.svelte"
   import * as Resizable from "$lib/components/ui/resizable"
   import type { PaneAPI } from "paneforge"
   import type { LayoutData } from "./$types"
-  import { ScrollArea } from "$lib/components/ui/scroll-area"
   import Logo from "$lib/images/logo.svg"
-  import { PanelLeftCloseIcon, PanelLeftOpenIcon } from "lucide-svelte"
 
   export let data: LayoutData
 
