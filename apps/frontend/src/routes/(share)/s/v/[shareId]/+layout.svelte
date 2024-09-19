@@ -1,9 +1,9 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import { TableCreator, TableDo } from "@undb/table"
-  import { setTable } from "$lib/store/table.store"
+  import { setTable, viewId } from "$lib/store/table.store"
   import type { LayoutData } from "./$types"
-  import { writable } from "svelte/store"
+  import { derived, writable } from "svelte/store"
   import { shareStore } from "$lib/store/share.store"
   import { aggregatesStore } from "$lib/store/aggregates.store"
   import { createQuery } from "@tanstack/svelte-query"
@@ -28,14 +28,16 @@
     $shareStore.set(share.id, share)
   }
 
-  const getAggregates = createQuery({
-    queryKey: [share?.id, "aggregates", tableDTO?.id],
-    queryFn: () => trpc.record.aggregate.query({ tableId: tableDTO!.id, viewId: share!.target.id }),
-    enabled: !!share && !!tableDTO,
-  })
+  const getAggregates = createQuery(
+    derived([table], ([$table]) => ({
+      queryKey: [share?.id, "aggregates", tableDTO?.id],
+      queryFn: () => trpc.record.aggregate.query({ tableId: $table.id.value, viewId: share!.target.id }),
+      enabled: !!share && !!$table,
+    })),
+  )
 
-  if ($getAggregates.data && tableDTO) {
-    aggregatesStore.updateTableAggregates(tableDTO.id, $getAggregates.data)
+  $: if ($getAggregates.data && $table) {
+    aggregatesStore.updateTableAggregates($viewId ?? $table.views.getDefaultView()?.id.value, $getAggregates.data)
   }
 </script>
 

@@ -29,7 +29,6 @@
   import { ClipboardCopyIcon, CopyIcon, Maximize2Icon, Trash2Icon } from "lucide-svelte"
   import { gridViewStore, isRowSelected, isSelectedCell } from "./grid-view.store"
   import SelectedRecordsButton from "./selected-records-button.svelte"
-  import { aggregatesStore } from "$lib/store/aggregates.store"
   import ViewPagination from "../view/view-pagination.svelte"
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
@@ -61,9 +60,6 @@
   $: hasFilterFieldIds = viewFilter?.fieldIds
 
   $: colorSpec = $view.color.into(undefined)?.getSpec($t.schema).into(undefined)
-
-  $: getTableAggregates = aggregatesStore.getTableAggregates
-  $: aggregates = $getTableAggregates($t.id.value)
 
   let store = getRecordsStore()
   let hasRecord = store.hasRecord
@@ -135,12 +131,11 @@
           },
           footer: createRender(GridViewFooter, {
             field,
-            aggregateResult: aggregates?.[field.id.value],
             readonly,
           }),
           plugins: {
             resize: {
-              initialWidth: $view.type === 'grid' ?  $view.getFieldWidth(field.id.value) : 200,
+              initialWidth: $view.type === "grid" ? $view.getFieldWidth(field.id.value) : 200,
               disable: readonly,
             },
           },

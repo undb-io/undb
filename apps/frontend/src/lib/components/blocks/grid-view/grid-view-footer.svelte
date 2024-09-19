@@ -1,6 +1,7 @@
 <script lang="ts">
   import { invalidate } from "$app/navigation"
   import * as Select from "$lib/components/ui/select/index.js"
+  import { aggregatesStore } from "$lib/store/aggregates.store"
   import { getTable, viewId } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { cn } from "$lib/utils"
@@ -12,12 +13,16 @@
 
   const table = getTable()
   export let field: Field
-
   export let readonly: boolean
 
-  export let aggregateResult: AggregateResult | undefined = undefined
+  let aggregates = derived(
+    [aggregatesStore, table, viewId],
+    ([$aggregates, $table, $viewId]) => $aggregates[$viewId ?? $table.views.getDefaultView()?.id.value],
+  )
+  $: aggregateResult = $aggregates?.[field.id.value]
 
   $: options =
+    // @ts-ignore
     field.aggregate.options?.map((value) => ({ value, label: $LL.table.aggregateFns[value as IFieldAggregate]() })) ??
     []
   $: value = $table.views.getViewById($viewId).aggregate.into(undefined)?.value?.[field.id.value]
