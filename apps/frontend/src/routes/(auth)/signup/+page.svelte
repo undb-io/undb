@@ -18,6 +18,9 @@
   import PasswordInput from "$lib/components/ui/input/password-input.svelte"
   import { LoaderCircleIcon } from "lucide-svelte"
   import { env } from "$env/dynamic/public"
+  import type { PageData } from "./$types"
+
+  export let data: PageData
 
   const schema = z.object({
     email: z.string().email(),
@@ -253,14 +256,18 @@
         {#if !invitationId}
           <Separator class="my-6" />
           <div class="space-y-2">
-            <Button href="/login/github" variant="secondary" class="w-full">
-              <img class="mr-2 h-4 w-4" src={Github} alt="github" />
-              Login with Github
-            </Button>
-            <Button href="/login/google" variant="secondary" class="w-full">
-              <img class="mr-2 h-4 w-4" src={Google} alt="google" />
-              Login with Google
-            </Button>
+            {#if data.oauth?.github?.enabled}
+              <Button href="/login/github" variant="secondary" class="w-full">
+                <img class="mr-2 h-4 w-4" src={Github} alt="github" />
+                Login with Github
+              </Button>
+            {/if}
+            {#if data.oauth?.google?.enabled}
+              <Button href="/login/google" variant="secondary" class="w-full">
+                <img class="mr-2 h-4 w-4" src={Google} alt="google" />
+                Login with Google
+              </Button>
+            {/if}
           </div>
         {/if}
       </Card.Content>

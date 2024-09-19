@@ -6,6 +6,7 @@ import { executionContext, getCurrentSpaceId, getCurrentUserId, mustGetCurrentSp
 import { QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import type { Option } from "@undb/domain"
+import { env } from "@undb/env"
 import {
   GetAggregatesQuery,
   GetBaseByShareQuery,
@@ -284,7 +285,27 @@ export class Graphql {
         invitedAt: String!
       }
 
+      type OAuthSetting {
+        enabled: Boolean!
+      }
+
+      type OAuthSettings {
+        google: OAuthSetting
+        github: OAuthSetting
+      }
+
+      type RegistrationSetting {
+        enabled: Boolean!
+      }
+
+      type Settings {
+        oauth: OAuthSettings
+        registration: RegistrationSetting
+      }
+
       type Query {
+        settings: Settings
+
         member: SpaceMember
         memberById(id: ID!): SpaceMember
         membersByIds(ids: [ID!]!): [SpaceMember!]!
@@ -328,6 +349,21 @@ export class Graphql {
 
       resolvers: {
         Query: {
+          settings: async () => {
+            return {
+              registration: {
+                enabled: !env.UNDB_DISABLE_REGISTRATION,
+              },
+              oauth: {
+                google: {
+                  enabled: env.UNDB_OAUTH_GOOGLE_ENABLED,
+                },
+                github: {
+                  enabled: env.UNDB_OAUTH_GITHUB_ENABLED,
+                },
+              },
+            }
+          },
           space: async () => {
             const spaceId = getCurrentSpaceId()
             if (!spaceId) {

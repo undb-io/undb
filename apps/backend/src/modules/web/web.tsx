@@ -1,5 +1,6 @@
 import staticPlugin from "@elysiajs/static"
 import { singleton } from "@undb/di"
+import { env } from "@undb/env"
 import Elysia from "elysia"
 
 @singleton()
@@ -16,7 +17,13 @@ export class Web {
       .get("/account/*", () => index)
       .get("/settings", () => index)
       .get("/login", () => index)
-      .get("/signup", () => index)
+      .get("/signup", (ctx) => {
+        if (env.UNDB_DISABLE_REGISTRATION) {
+          ctx.redirect("/login", 302)
+          return
+        }
+        return index
+      })
       .get("/verify-email", () => index)
       .get("/reset-password/*", () => index)
       .get("/create-from-template/*", () => index)
