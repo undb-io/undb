@@ -45,9 +45,9 @@
               {/if}
             </button> -->
           </div>
-          <ScrollArea class="flex-1">
+          <div class="w-full flex-1 overflow-y-auto">
             <ShareBaseNav {base} />
-          </ScrollArea>
+          </div>
         </div>
       </Resizable.Pane>
       <Resizable.Handle />
