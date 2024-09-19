@@ -72,10 +72,10 @@
   const currency: Record<ICurrencyFieldConditionOp, ComponentType | null> = {
     eq: NumberInput,
     neq: NumberInput,
-    // gt: NumberInput,
-    // gte: NumberInput,
-    // lt: NumberInput,
-    // lte: NumberInput,
+    gt: NumberInput,
+    gte: NumberInput,
+    lt: NumberInput,
+    lte: NumberInput,
     is_empty: null,
     is_not_empty: null,
   }

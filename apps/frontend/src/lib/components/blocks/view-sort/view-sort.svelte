@@ -11,6 +11,7 @@
     Trash2Icon,
     PlusIcon,
     SortAscIcon,
+    LoaderCircleIcon,
   } from "lucide-svelte"
   import { cn } from "$lib/utils"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
@@ -110,6 +111,7 @@
           <SortableList
             class={cn("space-y-1.5")}
             animation={200}
+            disabled={$setViewSortMutation.isPending}
             onEnd={(event) => {
               if (isNumber(event.oldIndex) && isNumber(event.newIndex)) {
                 swapSort(event.oldIndex, event.newIndex)
@@ -123,10 +125,12 @@
                     filter={(field) => !selectedFieldIds.has(field.value) && isFieldSortable(field.type)}
                     bind:value={item.fieldId}
                     class="col-span-5 rounded-r-none border-r-0"
+                    disabled={$setViewSortMutation.isPending}
                   />
 
                   <Select.Root
                     portal="body"
+                    disabled={$setViewSortMutation.isPending}
                     selected={{ value: item.direction, label: item.direction }}
                     onSelectedChange={(value) => {
                       if (value) {
@@ -162,10 +166,14 @@
                 </div>
                 <div class="text-muted-foreground col-span-2 flex justify-end gap-2">
                   {#if $hasPermission("table:update")}
-                    <button on:click={() => removeSort(item.fieldId)}>
+                    <button disabled={$setViewSortMutation.isPending} on:click={() => removeSort(item.fieldId)}>
                       <Trash2Icon class="h-3 w-3" />
                     </button>
-                    <button class=".handler" on:click={() => removeSort(item.fieldId)}>
+                    <button
+                      disabled={$setViewSortMutation.isPending}
+                      class=".handler"
+                      on:click={() => removeSort(item.fieldId)}
+                    >
                       <GripVerticalIcon class="h-3 w-3" />
                     </button>
                   {/if}
@@ -183,11 +191,16 @@
       {#if !readonly}
         <div class="flex w-full items-center justify-between px-4 py-3">
           {#if $hasPermission("table:update")}
-            <Button {disabled} variant="ghost" size="sm" on:click={addSort}>
+            <Button disabled={$setViewSortMutation.isPending || disabled} variant="ghost" size="sm" on:click={addSort}>
               <PlusIcon class="mr-2 h-3 w-3" />
               Add Sort
             </Button>
-            <Button variant="outline" size="sm" on:click={submit}>Submit</Button>
+            <Button disabled={disabled || $setViewSortMutation.isPending} variant="outline" size="sm" on:click={submit}>
+              {#if $setViewSortMutation.isPending}
+                <LoaderCircleIcon class="mr-2 h-3 w-3 animate-spin" />
+              {/if}
+              Submit
+            </Button>
           {/if}
         </div>
       {/if}

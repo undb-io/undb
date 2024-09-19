@@ -6,6 +6,7 @@ import type { RecordComositeSpecification } from "../../../../records/record/rec
 import { fieldId, FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
+import { NumberGT, NumberGTE, NumberLT, NumberLTE } from "../abstractions"
 import { StringEmpty } from "../string-field"
 import { CurrencyFieldConstraint, currencyFieldConstraint } from "./currency-field-constraint.vo"
 import { currencyFieldValue, CurrencyFieldValue } from "./currency-field-value.vo"
@@ -109,6 +110,10 @@ export class CurrencyField extends AbstractField<CurrencyFieldValue, CurrencyFie
     const spec = match(condition)
       .with({ op: "eq" }, ({ value }) => new CurrencyEqual(value, this.id))
       .with({ op: "neq" }, ({ value }) => new CurrencyEqual(value, this.id).not())
+      .with({ op: "gt" }, ({ value }) => new NumberGT(value, this.id))
+      .with({ op: "gte" }, ({ value }) => new NumberGTE(value, this.id))
+      .with({ op: "lt" }, ({ value }) => new NumberLT(value, this.id))
+      .with({ op: "lte" }, ({ value }) => new NumberLTE(value, this.id))
       .with({ op: "is_empty" }, () => new StringEmpty(this.id))
       .with({ op: "is_not_empty" }, () => new StringEmpty(this.id).not())
       .exhaustive()

@@ -6,7 +6,10 @@ export function createCurrencyFieldCondition<ItemType extends z.ZodTypeAny>(item
   return z.union([
     z.object({ op: z.literal("eq"), value: z.number() }).merge(base),
     z.object({ op: z.literal("neq"), value: z.number() }).merge(base),
-    // TODO: gt lt etc
+    z.object({ op: z.literal("gt"), value: z.number() }).merge(base),
+    z.object({ op: z.literal("gte"), value: z.number() }).merge(base),
+    z.object({ op: z.literal("lt"), value: z.number() }).merge(base),
+    z.object({ op: z.literal("lte"), value: z.number() }).merge(base),
     z.object({ op: z.literal("is_empty"), value: z.undefined() }).merge(base),
     z.object({ op: z.literal("is_not_empty"), value: z.undefined() }).merge(base),
   ])

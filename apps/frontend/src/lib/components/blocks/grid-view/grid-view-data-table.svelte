@@ -326,8 +326,8 @@
           {/each}
         </Table.Body>
 
-        <tfooter class="text-muted-foreground sticky bottom-0 h-8 w-full border-t bg-white text-sm">
-          <tr class="flex h-8 w-full">
+        <tfooter class="text-muted-foreground sticky bottom-0 h-10 w-full border-t bg-white pb-2 text-sm">
+          <tr class="flex h-10 w-full">
             {#each $visibleColumns as column}
               {@const width = $columnWidths[column.id]}
               <td
@@ -347,7 +347,7 @@
     </table>
   </ScrollArea>
 
-  <div class="flex items-center justify-center px-4 py-2">
+  <div class="flex items-center justify-center border-t px-4 py-2">
     <div class="flex flex-1 flex-row items-center">
       <ViewPagination {perPage} bind:currentPage={$currentPage} count={total} />
       <div class="flex items-center gap-2 text-sm">

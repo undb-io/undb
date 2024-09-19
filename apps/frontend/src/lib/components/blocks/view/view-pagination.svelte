@@ -12,7 +12,7 @@
   {perPage}
   let:pages
   let:currentPage
-  class="mx-0 border-t py-2"
+  class="mx-0 py-2"
   onPageChange={(page) => (currentPage = page)}
 >
   <Pagination.Content class="self-end">
