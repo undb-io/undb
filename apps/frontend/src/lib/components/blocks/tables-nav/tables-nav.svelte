@@ -136,12 +136,14 @@
                         href={`/t/${table.id}`}
                         title={table.name}
                         class={cn(
-                          "flex h-full flex-1 items-center truncate font-normal text-gray-600",
+                          "flex h-full flex-1 items-center overflow-hidden font-normal text-gray-600",
                           active && !viewId && "text-background font-medium",
                         )}
                       >
                         <DatabaseIcon class="mr-2 h-4 w-4" />
-                        {table.name}
+                        <span class="truncate">
+                          {table.name}
+                        </span>
                       </a>
                       <div class="flex items-center gap-2 opacity-0 transition-all group-hover:opacity-100">
                         <Collapsible.Trigger

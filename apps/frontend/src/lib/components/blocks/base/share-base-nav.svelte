@@ -49,7 +49,7 @@
       <Collapsible.Root bind:open={open[table.id]}>
         <div
           class={cn(
-            "group flex h-8 cursor-pointer items-center justify-between gap-1 rounded-md pl-8 pr-2 transition-all",
+            "group flex h-8 cursor-pointer items-center justify-between gap-1 overflow-hidden rounded-md pl-8 pr-2 transition-all",
             active && !viewId ? "bg-gray-800/90" : "hover:bg-gray-100",
           )}
         >
@@ -61,7 +61,9 @@
             )}
           >
             <DatabaseIcon class="mr-2 h-4 w-4" />
-            {table.name}
+            <span class="truncate">
+              {table.name}
+            </span>
           </a>
           <div class="flex items-center gap-2 opacity-0 transition-all group-hover:opacity-100">
             {#if views.length > 0}
