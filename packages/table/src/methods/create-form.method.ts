@@ -5,7 +5,10 @@ import type { TableComositeSpecification } from "../specifications"
 import { WithNewFormSpecification } from "../specifications/table-forms.specification"
 import type { TableDo } from "../table.do"
 
-export function createFormMethod(this: TableDo, dto: ICreateFormDTO): Option<TableComositeSpecification> {
+export function createFormMethod(
+  this: TableDo,
+  dto: ICreateFormDTO,
+): { spec: Option<TableComositeSpecification>; form: FormVO } {
   const form = FormVO.create(this, dto)
   const spec = new WithNewFormSpecification(form)
 
@@ -20,5 +23,5 @@ export function createFormMethod(this: TableDo, dto: ICreateFormDTO): Option<Tab
   // })
   // this.addDomainEvent(event)
 
-  return Some(spec)
+  return { spec: Some(spec), form }
 }

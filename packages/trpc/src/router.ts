@@ -61,6 +61,7 @@ import {
   createTableCommand,
   createTableFieldCommand,
   createTableFormCommand,
+  createTableFormCommandOutput,
   createTableViewCommand,
   createTableViewCommandOutput,
   createWebhookCommand,
@@ -141,6 +142,7 @@ const formRouter = t.router({
   create: privateProcedure
     .use(authz("form:create"))
     .input(createTableFormCommand)
+    .output(createTableFormCommandOutput)
     .mutation(({ input }) => commandBus.execute(new CreateTableFormCommand(input))),
   set: privateProcedure
     .use(authz("form:update"))

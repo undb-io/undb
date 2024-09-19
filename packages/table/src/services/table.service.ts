@@ -13,6 +13,7 @@ import type {
   IUpdateTableFieldDTO,
 } from "../dto"
 import {
+  FormVO,
   injectRecordQueryRepository,
   injectRecordRepository,
   type ICreateTableViewDTO,
@@ -54,7 +55,7 @@ export interface ITableService {
   deleteTableField(dto: IDeleteTableFieldDTO): Promise<TableDo>
   duplicateTableField(dto: IDuplicateTableFieldDTO): Promise<TableDo>
 
-  createTableForm(dto: ICreateTableFormDTO): Promise<TableDo>
+  createTableForm(dto: ICreateTableFormDTO): Promise<{ table: TableDo; form: FormVO }>
   deleteTableForm(dto: IDeleteTableFormDTO): Promise<TableDo>
   createTableView(dto: ICreateTableViewDTO): Promise<{ table: TableDo; view: View }>
 
