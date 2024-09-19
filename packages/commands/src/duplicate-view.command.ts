@@ -1,10 +1,17 @@
 import { Command, type CommandProps } from "@undb/domain"
-import { duplicateViewDTO } from "@undb/table"
+import { duplicateViewDTO, tableId, viewId } from "@undb/table"
 import { z } from "@undb/zod"
 
 export const duplicateViewCommand = duplicateViewDTO
 
 export type IDuplicateViewCommand = z.infer<typeof duplicateViewCommand>
+
+export const duplicateViewCommandOutput = z.object({
+  tableId: tableId,
+  viewId: viewId,
+})
+
+export type IDuplicateViewCommandOutput = z.infer<typeof duplicateViewCommandOutput>
 
 export class DuplicateViewCommand extends Command implements IDuplicateViewCommand {
   public readonly tableId: string

@@ -21,6 +21,7 @@ import {
   type IReadableRecordDTO,
   type IRecordQueryRepository,
   type IRecordRepository,
+  type View,
 } from "../modules"
 import type { ICreateTableFormDTO } from "../modules/forms/dto/create-form.dto"
 import { TableCreator } from "../table.builder"
@@ -55,7 +56,7 @@ export interface ITableService {
 
   createTableForm(dto: ICreateTableFormDTO): Promise<TableDo>
   deleteTableForm(dto: IDeleteTableFormDTO): Promise<TableDo>
-  createTableView(dto: ICreateTableViewDTO): Promise<TableDo>
+  createTableView(dto: ICreateTableViewDTO): Promise<{ table: TableDo; view: View }>
 
   exportView(tableId: string, dto: IExportViewDTO): Promise<{ table: TableDo; records: IReadableRecordDTO[] }>
   duplicateBase(base: Base, spaceId: ISpaceId, targetSpaceId: ISpaceId, dto: IDuplicateBaseDTO): Promise<Base>

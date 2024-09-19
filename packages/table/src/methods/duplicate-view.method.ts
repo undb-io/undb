@@ -1,11 +1,15 @@
 import { applyRules, type Option } from "@undb/domain"
 import type { IDuplicateViewDTO } from "../dto/duplicate-view.dto"
 import { ViewCreatedEvent } from "../events/view-created.event"
+import type { View } from "../modules"
 import { ViewNameShouldBeUnique } from "../rules/view-name-should-be-unique.rule"
 import { type TableComositeSpecification } from "../specifications"
 import type { TableDo } from "../table.do"
 
-export function duplicateViewMethod(this: TableDo, dto: IDuplicateViewDTO): Option<TableComositeSpecification> {
+export function duplicateViewMethod(
+  this: TableDo,
+  dto: IDuplicateViewDTO,
+): { spec: Option<TableComositeSpecification>; view: View } {
   const view = this.views.getViewById(dto.viewId)
   const spec = view.$duplicate(dto)
 
@@ -22,5 +26,5 @@ export function duplicateViewMethod(this: TableDo, dto: IDuplicateViewDTO): Opti
     this.addDomainEvent(event)
   }
 
-  return spec
+  return { spec, view }
 }

@@ -62,6 +62,7 @@ import {
   createTableFieldCommand,
   createTableFormCommand,
   createTableViewCommand,
+  createTableViewCommandOutput,
   createWebhookCommand,
   deleteBaseCommand,
   deleteFormCommand,
@@ -77,6 +78,7 @@ import {
   duplicateTableCommand,
   duplicateTableFieldCommand,
   duplicateViewCommand,
+  duplicateViewCommandOutput,
   enableShareCommand,
   inviteCommand,
   setFieldWidthCommand,
@@ -157,6 +159,7 @@ const viewRouter = t.router({
   create: privateProcedure
     .use(authz("view:create"))
     .input(createTableViewCommand)
+    .output(createTableViewCommandOutput)
     .mutation(({ input }) => commandBus.execute(new CreateTableViewCommand(input))),
   update: privateProcedure
     .use(authz("view:update"))
@@ -165,6 +168,7 @@ const viewRouter = t.router({
   duplicate: privateProcedure
     .use(authz("view:create"))
     .input(duplicateViewCommand)
+    .output(duplicateViewCommandOutput)
     .mutation(({ input }) => commandBus.execute(new DuplicateViewCommand(input))),
   delete: privateProcedure
     .use(authz("view:delete"))

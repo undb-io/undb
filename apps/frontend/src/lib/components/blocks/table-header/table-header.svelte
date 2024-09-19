@@ -234,8 +234,7 @@
             <CreateViewButton
               tableId={$table.id.value}
               viewNames={$table.views.views.map((v) => v.name.value)}
-              class="mt-0"
-              size="icon"
+              class="mt-0 p-0 hover:bg-transparent"
               variant="ghost"
             >
               <PlusCircleIcon class="h-4 w-4" />

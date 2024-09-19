@@ -2,23 +2,27 @@
   import { getTable, viewId } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
+  import { LoaderCircleIcon } from "lucide-svelte"
   import { duplicateViewCommand } from "@undb/commands"
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
-  import { toggleModal, DUPLICATE_VIEW } from "$lib/store/modal.store"
+  import { closeModal, DUPLICATE_VIEW } from "$lib/store/modal.store"
   import { getNextName } from "@undb/utils"
   import { toast } from "svelte-sonner"
+  import { invalidate, goto } from "$app/navigation"
 
   const table = getTable()
 
   const duplicateViewMutation = createMutation({
     mutationKey: ["table", $viewId, "duplicateView"],
     mutationFn: trpc.table.view.duplicate.mutate,
-    onSuccess(data, variables, context) {
-      toggleModal(DUPLICATE_VIEW)
+    async onSuccess(data, variables, context) {
+      closeModal(DUPLICATE_VIEW)
       toast.success("View duplicated")
+      await invalidate(`table:${data.tableId}`)
+      await goto(`/t/${data.tableId}/${data.viewId}`)
     },
     onError(error, variables, context) {
       toast.error(error.message)
@@ -66,6 +70,11 @@
       <Form.FieldErrors />
     </Form.Field>
 
-    <Form.FormButton disabled={$duplicateViewMutation.isPending} class="w-full">Submit</Form.FormButton>
+    <Form.FormButton disabled={$duplicateViewMutation.isPending} class="w-full">
+      {#if $duplicateViewMutation.isPending}
+        <LoaderCircleIcon class="mr-2 size-4 animate-spin" />
+      {/if}
+      Duplicate</Form.FormButton
+    >
   </form>
 </div>
