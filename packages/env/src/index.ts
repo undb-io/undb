@@ -1,6 +1,23 @@
 import { createEnv } from "@t3-oss/env-core"
 import { z } from "@undb/zod"
 
+const authEnv = createEnv({
+  server: {
+    UNDB_DISABLE_REGISTRATION: z
+      .string()
+      .optional()
+      .default("false")
+      .refine((v) => v === "true" || v === "false", {
+        message: "UNDB_DISABLE_REGISTRATION must be a boolean",
+      })
+      .transform((v) => v === "true"),
+    UNDB_ADMIN_EMAIL: z.string().email().optional(),
+    UNDB_ADMIN_PASSWORD: z.string().optional(),
+  },
+  runtimeEnv: import.meta.env,
+  emptyStringAsUndefined: true,
+})
+
 const tursoEnv = createEnv({
   server: {
     UNDB_DB_TURSO_URL: z.string().optional(),
@@ -12,8 +29,24 @@ const tursoEnv = createEnv({
 
 const oauthEnv = createEnv({
   server: {
+    UNDB_OAUTH_GITHUB_ENABLED: z
+      .string()
+      .optional()
+      .default("false")
+      .refine((v) => v === "true" || v === "false", {
+        message: "UNDB_OAUTH_GITHUB_ENABLED must be a boolean",
+      })
+      .transform((v) => v === "true"),
     GITHUB_CLIENT_ID: z.string().optional(),
     GITHUB_CLIENT_SECRET: z.string().optional(),
+    UNDB_OAUTH_GOOGLE_ENABLED: z
+      .string()
+      .optional()
+      .default("false")
+      .refine((v) => v === "true" || v === "false", {
+        message: "UNDB_OAUTH_GOOGLE_ENABLED must be a boolean",
+      })
+      .transform((v) => v === "true"),
     GOOGLE_CLIENT_ID: z.string().optional(),
     GOOGLE_CLIENT_SECRET: z.string().optional(),
   },
@@ -116,5 +149,5 @@ export const env = createEnv({
   },
   runtimeEnv: import.meta.env,
   emptyStringAsUndefined: true,
-  extends: [tursoEnv, dbEnv, oauthEnv, storageEnv, s3Env, emailEnv, minioEnv],
+  extends: [tursoEnv, dbEnv, oauthEnv, storageEnv, s3Env, emailEnv, minioEnv, authEnv],
 })

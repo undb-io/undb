@@ -19,7 +19,11 @@
   import { LoaderCircleIcon } from "lucide-svelte"
   import ResetPassword from "$lib/components/blocks/auth/reset-password.svelte"
   import { page } from "$app/stores"
-  import { env } from "$env/dynamic/public"
+  import type { PageData } from "./$types"
+
+  export let data: PageData
+
+  let registrationEnabled = data.registrationEnabled
 
   const schema = z.object({
     email: z.string().email(),
@@ -207,24 +211,34 @@
               </Alert.Root>
             {/if}
           </div>
-          <div class="mt-4 text-center text-sm">
-            Don&apos;t have an account?
-            {#if redirect}
-              <a href="/signup?redirect={encodeURIComponent(redirect)}" class="underline"> Sign up </a>
-            {:else}
-              <a href="/signup" class="underline"> Sign up </a>
-            {/if}
-          </div>
+          {#if registrationEnabled}
+            <div class="mt-4 text-center text-sm">
+              Don&apos;t have an account?
+              {#if redirect}
+                <a href="/signup?redirect={encodeURIComponent(redirect)}" class="underline"> Sign up </a>
+              {:else}
+                <a href="/signup" class="underline"> Sign up </a>
+              {/if}
+            </div>
+          {:else}
+            <p class="text-muted-foreground mt-4 text-center text-xs">
+              Registration is disabled. <br /> Contact your administrator to request access.
+            </p>
+          {/if}
           <Separator class="my-6" />
           <div class="space-y-2">
-            <Button href="/login/github" variant="secondary" class="w-full">
-              <img class="mr-2 h-4 w-4" src={Github} alt="github" />
-              Login with Github
-            </Button>
-            <Button href="/login/google" variant="secondary" class="w-full">
-              <img class="mr-2 h-4 w-4" src={Google} alt="google" />
-              Login with Google
-            </Button>
+            {#if data.oauth?.github?.enabled}
+              <Button href="/login/github" variant="secondary" class="w-full">
+                <img class="mr-2 h-4 w-4" src={Github} alt="github" />
+                Login with Github
+              </Button>
+            {/if}
+            {#if data.oauth?.google?.enabled}
+              <Button href="/login/google" variant="secondary" class="w-full">
+                <img class="mr-2 h-4 w-4" src={Google} alt="google" />
+                Login with Google
+              </Button>
+            {/if}
           </div>
         </Card.Content>
       </Card.Root>

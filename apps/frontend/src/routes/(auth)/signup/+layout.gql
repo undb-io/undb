@@ -1,0 +1,15 @@
+query GetSignupSettings {
+  settings {
+    registration {
+      enabled
+    }
+    oauth {
+      google {
+        enabled
+      }
+      github {
+        enabled
+      }
+    }
+  }
+}

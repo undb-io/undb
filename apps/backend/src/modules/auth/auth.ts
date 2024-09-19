@@ -176,6 +176,56 @@ export class Auth {
     const oauth = container.resolve(OAuth)
     return new Elysia()
       .use(oauth.route())
+      .onStart(async (ctx) => {
+        const adminEmail = env.UNDB_ADMIN_EMAIL
+        const adminPassword = env.UNDB_ADMIN_PASSWORD
+        if (env.UNDB_DISABLE_REGISTRATION) {
+          this.logger.info("Registration is disabled")
+          if (!adminEmail || !adminPassword) {
+            this.logger.fatal("Registration is disabled but admin user is not set")
+            throw new Error("Registration is disabled but admin user is not set")
+          }
+
+          const user = await this.queryBuilder
+            .selectFrom("undb_user")
+            .selectAll()
+            .where((eb) => eb.eb("email", "=", adminEmail))
+            .executeTakeFirst()
+
+          if (!user) {
+            const userId = generateIdFromEntropySize(10) // 16 characters long
+            const passwordHash = await Bun.password.hash(adminPassword)
+            const username = getUsernameFromEmail(adminEmail)
+
+            executionContext.enterWith({
+              requestId: v7(),
+              user: {
+                userId,
+                username,
+                email: adminEmail,
+              },
+            })
+
+            await withTransaction(this.queryBuilder)(async () => {
+              await getCurrentTransaction()
+                .insertInto("undb_user")
+                .values({
+                  email: adminEmail,
+                  username: username!,
+                  id: userId,
+                  password: passwordHash,
+                  email_verified: true,
+                })
+                .execute()
+
+              const space = await this.spaceService.createSpace({ name: username! })
+              await this.spaceMemberService.createMember(userId, space.id.value, "owner")
+
+              this.logger.info("Admin user created")
+            })
+          }
+        }
+      })
       .onAfterResponse((ctx) => {
         const requestId = executionContext.getStore()?.requestId
         this.logger.info(
@@ -318,6 +368,13 @@ export class Auth {
           return response
         },
         {
+          beforeHandle(context) {
+            if (env.UNDB_DISABLE_REGISTRATION) {
+              return new Response(null, {
+                status: 403,
+              })
+            }
+          },
           type: "json",
           body: t.Object({
             email: t.String({ format: "email" }),
