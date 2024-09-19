@@ -87,9 +87,10 @@
               <DropdownMenu.Root>
                 <DropdownMenu.Trigger
                   disabled={!$hasPermission("table:update") && !$hasPermission("table:delete")}
-                  class="flex items-center gap-2"
+                  class="flex max-w-[200px] items-center gap-2 truncate"
+                  title={$table.name.value}
                 >
-                  <DatabaseIcon class="h-3 w-3" />
+                  <DatabaseIcon class="size-3" />
                   {$table.name.value}
                 </DropdownMenu.Trigger>
                 <DropdownMenu.Content class="w-[200px]">
