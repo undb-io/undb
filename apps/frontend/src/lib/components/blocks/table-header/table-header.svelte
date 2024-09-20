@@ -253,7 +253,7 @@
           return
         }
 
-        tab.set(value === "data" ? "" : (value ?? ""))
+        tab.set(value === "data" ? null : (value ?? null))
         if (value === "developer" && !$developerTab) {
           $developerTab = "openapi"
         }

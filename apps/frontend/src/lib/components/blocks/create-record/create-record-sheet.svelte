@@ -8,6 +8,8 @@
   import { getTable } from "$lib/store/table.store"
   import { useIsMutating } from "@tanstack/svelte-query"
   import { LoaderCircleIcon } from "lucide-svelte"
+  import { useMediaQuery } from "$lib/store/media-query.store"
+  import { cn } from "$lib/utils"
 
   let disabled = false
   let dirty = false
@@ -17,6 +19,8 @@
   const isMutating = useIsMutating({
     mutationKey: [$table.id.value, "createRecord"],
   })
+
+  const match = useMediaQuery("(max-width: 768px)")
 </script>
 
 <Sheet.Root
@@ -33,7 +37,8 @@
   }}
 >
   <Sheet.Content
-    class="sm:max-w-1/2 flex w-1/2 flex-col gap-0 px-0 py-4 transition-all"
+    side={$match ? "bottom" : "right"}
+    class={cn("flex flex-col gap-0 px-0 py-4 transition-all", $match ? "h-2/3 w-full" : "sm:max-w-1/2 flex w-1/2")}
     transitionConfig={{ duration: 50 }}
   >
     <Sheet.Header class="border-b px-6 pb-2">
@@ -54,15 +59,14 @@
       </ScrollArea>
     </div>
 
-    <Sheet.Footer class="border-t px-6 pt-4">
+    <Sheet.Footer class={cn("border-t px-6 pt-4", $match ? "flex-col space-y-2" : "")}>
       <Button variant="outline" type="button" on:click={() => closeModal(CREATE_RECORD_MODAL)}>Cancel</Button>
       <Button disabled={$isMutating > 0} type="submit" form="createRecord">
         {#if $isMutating > 0}
           <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
         {/if}
         Create
-        </Button
-      >
+      </Button>
     </Sheet.Footer>
   </Sheet.Content>
 </Sheet.Root>

@@ -12,6 +12,7 @@
   import autoAnimate from "@formkit/auto-animate"
   import { cn } from "$lib/utils"
   import { defaultRecordValues, getRecordsStore } from "$lib/store/records.store"
+  import { useMediaQuery } from "$lib/store/media-query.store"
 
   // beforeNavigate(({ cancel }) => {
   //   if ($tainted) {
@@ -33,6 +34,8 @@
   $: tableForm = formId ? $table.forms?.getFormById(formId) : undefined
 
   const client = useQueryClient()
+
+  const mediaQuery = useMediaQuery("(max-width: 768px)")
 
   const createRecordMutation = createMutation(
     derived([table], ([$table]) => ({
@@ -99,11 +102,11 @@
 </script>
 
 <form method="POST" use:enhance id="createRecord" enctype="multipart/form-data" class="my-4 space-y-4">
-  <ul use:autoAnimate class="space-y-4">
+  <ul use:autoAnimate class={cn("space-y-4", $mediaQuery ? "space-y-2" : "space-y-4")}>
     {#each fields as field}
       {@const shouldShow = !tableForm || tableForm.getShouldShowField(field.id.value, $table.schema, tempRecord)}
       {#if shouldShow}
-        <Form.Field class="flex gap-4 space-y-0" {form} name={field.id.value}>
+        <Form.Field class={cn("flex gap-4 space-y-0", $mediaQuery ? "flex-col" : "")} {form} name={field.id.value}>
           <Form.Control let:attrs>
             <Form.Label class="flex h-4 w-48 items-center justify-between gap-2 pt-4">
               <div data-field-id={field.id.value} class="flex items-center gap-2">
