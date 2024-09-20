@@ -1,4 +1,5 @@
 import { GetTableQueryStore } from "$houdini"
+import { redirect } from "@sveltejs/kit"
 import type { LayoutLoad } from "./$types"
 
 export const prerender = "auto"
@@ -10,7 +11,10 @@ export const load: LayoutLoad = async (event) => {
 
   const store = new GetTableQueryStore()
 
-  await store.fetch({ event, variables: { tableId }, policy: "NetworkOnly" })
+  const data = await store.fetch({ event, variables: { tableId }, policy: "NetworkOnly" })
+  if (data.errors?.length) {
+    throw redirect(302, "/")
+  }
 
   return {
     tableStore: store,

@@ -1,7 +1,7 @@
 <script lang="ts">
   import Input from "$lib/components/ui/input/input.svelte"
   import { isImage, type AttachmentField, type IAttachmentFieldValue, type IPresign } from "@undb/table"
-  import { FileIcon, XIcon } from "lucide-svelte"
+  import { FileIcon, XIcon, LoaderCircleIcon } from "lucide-svelte"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
   import { isNumber } from "radash"
   import { selectedAttachment } from "$lib/store/attachment.store"
@@ -14,6 +14,8 @@
   $: max = field.max
   $: disabled = (value?.length ?? 0) >= max
 
+  let isUploading = false
+
   async function onChange(e: Event) {
     try {
       const target = e.target as HTMLInputElement
@@ -22,6 +24,7 @@
 
       const [file] = files
 
+      isUploading = true
       const signatureResponse = await fetch("/api/signature", {
         method: "POST",
         body: JSON.stringify({ fileName: file.name, mimeType: file.type }),
@@ -52,6 +55,7 @@
       })
 
       const { signedUrl } = await uploaded.json()
+      isUploading = false
       value = [
         ...(value ?? []),
         {
@@ -66,6 +70,8 @@
       ]
     } catch (error) {
       console.error(error)
+    } finally {
+      isUploading = false
     }
   }
 
@@ -103,7 +109,7 @@
               <FileIcon class="text-muted-foreground h-5 w-5" />
             {/if}
           </div>
-          <span class="flex-1">
+          <span class="text-muted-foreground flex-1 text-sm">
             {v.name}
           </span>
           <button on:click={() => removeFile(i)} class="rounded-full p-2 transition-colors hover:bg-gray-100">
@@ -112,6 +118,12 @@
         </div>
       {/each}
     </SortableList>
+    {#if isUploading}
+      <div class="flex items-center gap-2 pb-2">
+        <LoaderCircleIcon class="text-muted-foreground size-4 animate-spin" />
+        <span class="text-muted-foreground text-sm">Uploading...</span>
+      </div>
+    {/if}
   </div>
 {/if}
-<Input {...$$restProps} type="file" on:change={onChange} disabled={readonly || disabled} />
+<Input {...$$restProps} type="file" on:change={onChange} disabled={readonly || disabled || isUploading} />

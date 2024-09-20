@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Input from "$lib/components/ui/input/input.svelte"
   import { durationToMilliseconds, isDurationString, millisecondsToDuration } from "@undb/table"
 
   export let value: number | undefined
@@ -24,4 +25,4 @@
   }
 </script>
 
-<input value={internalValue} on:change={onChange} {...$$restProps} />
+<Input placeholder="hh:mm" value={internalValue} on:change={onChange} {...$$restProps} />

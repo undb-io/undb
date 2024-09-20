@@ -4,12 +4,14 @@
   import type { LayoutData } from "./$types"
   import { writable } from "svelte/store"
   import { shareStore } from "$lib/store/share.store"
+  import { goto } from "$app/navigation"
 
   export let data: LayoutData
   $: tableStore = data.getBaseTableShareData
 
   $: fetching = $tableStore.fetching
   $: tableDTO = $tableStore.data?.tableByShareBase
+  $: hasError = $tableStore.errors?.length
   $: share = $tableStore.data?.share
 
   const table = writable<TableDo>()
@@ -23,6 +25,11 @@
 
   $: if (share) {
     $shareStore.set(share.id, share)
+  }
+
+  $: if (hasError) {
+    console.error(hasError)
+    goto("/")
   }
 </script>
 

@@ -1,6 +1,10 @@
 import { getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
 import {
   CurrencyEqual,
+  CurrencyGT,
+  CurrencyGTE,
+  CurrencyLT,
+  CurrencyLTE,
   DateIsEmpty,
   DurationEqual,
   ID_TYPE,
@@ -318,6 +322,18 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
   }
   currencyEqual(spec: CurrencyEqual): void {
     this.setData(spec.fieldId.value, spec.value === null ? null : spec.value * 100)
+  }
+  currencyGT(s: CurrencyGT): void {
+    throw new Error("Method not implemented.")
+  }
+  currencyGTE(s: CurrencyGTE): void {
+    throw new Error("Method not implemented.")
+  }
+  currencyLT(s: CurrencyLT): void {
+    throw new Error("Method not implemented.")
+  }
+  currencyLTE(s: CurrencyLTE): void {
+    throw new Error("Method not implemented.")
   }
   idEqual(spec: IdEqual): void {
     this.setData(spec.fieldId.value, spec.values.value)

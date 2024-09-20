@@ -3,10 +3,19 @@
   import * as Tooltip from "$lib/components/ui/tooltip"
   import { ImagesIcon } from "lucide-svelte"
 
-  import { FieldIdVo, type RecordDO, type AttachmentField, AttachmentFieldValue, type Field } from "@undb/table"
+  import {
+    FieldIdVo,
+    type RecordDO,
+    type AttachmentField,
+    AttachmentFieldValue,
+    type Field,
+    ViewColor,
+  } from "@undb/table"
   import { queryParam } from "sveltekit-search-params"
   import { getTable } from "$lib/store/table.store"
   import FieldValue from "../field-value/field-value.svelte"
+  import { getBgColor } from "../grid-view/grid-view.util"
+  import { cn } from "$lib/utils"
 
   const table = getTable()
   export let record: RecordDO
@@ -21,6 +30,11 @@
   let field = $table.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined) as AttachmentField | undefined
   $: fieldValues = record.getValue(new FieldIdVo(fieldId)).into(undefined) as AttachmentFieldValue | undefined
   $: images = fieldValues?.getImages() ?? []
+
+  export let color: ViewColor | undefined
+  $: colorSpec = color?.getSpec($table.schema).into(undefined)
+  $: isMatch = colorSpec ? record.match(colorSpec) : false
+  $: condition = isMatch ? color?.getMatchedFieldConditions($table, record)[0] : undefined
 </script>
 
 <div class="group col-span-1 flex flex-col rounded-md border shadow-sm transition-all hover:shadow-lg">
@@ -41,7 +55,13 @@
       <ImagesIcon class="text-muted-foreground/50 h-10 w-10" />
     </div>
   {/if}
-  <button on:click={() => ($r = record.id.value)} class="flex flex-1 flex-col space-y-2 px-2 py-3">
+  <button
+    on:click={() => ($r = record.id.value)}
+    class={cn("relative flex flex-1 flex-col space-y-2 px-2 py-3", isMatch && "pl-3")}
+  >
+    {#if isMatch}
+      <div class={cn("absolute left-0 top-0 h-full w-1", condition && getBgColor(condition.option.color))}></div>
+    {/if}
     {#each fields.filter((f) => f.id.value !== fieldId) as field}
       <div class="flex w-full">
         <FieldValue

@@ -4,6 +4,10 @@ import {
   AttachmentEqual,
   CheckboxEqual,
   CurrencyEqual,
+  CurrencyGT,
+  CurrencyGTE,
+  CurrencyLT,
+  CurrencyLTE,
   DateEqual,
   DateIsAfter,
   DateIsBefore,
@@ -88,6 +92,10 @@ export class RecordSpecReferenceVisitor implements IRecordVisitor {
   referenceEqual(spec: ReferenceEqual): void {}
   selectEqual(spec: SelectEqual): void {}
   currencyEqual(s: CurrencyEqual): void {}
+  currencyGT(s: CurrencyGT): void {}
+  currencyGTE(s: CurrencyGTE): void {}
+  currencyLT(s: CurrencyLT): void {}
+  currencyLTE(s: CurrencyLTE): void {}
   durationEqual(s: DurationEqual): void {}
   selectContainsAnyOf(spec: SelectContainsAnyOf): void {
     this.qb = this.qb

@@ -34,7 +34,7 @@
   import IdFilterInput from "./variants/id-filter-input.svelte"
   import OptionFilterInput from "./variants/option-filter-input.svelte"
   import OptionsFilterInput from "./variants/options-filter-input.svelte"
-  import type { ComponentIcon } from "lucide-svelte"
+  import DurationInput from "$lib/components/blocks/duration/duration-input.svelte"
 
   export let field: Field | undefined
   export let recordId: string | undefined = undefined
@@ -72,10 +72,10 @@
   const currency: Record<ICurrencyFieldConditionOp, ComponentType | null> = {
     eq: NumberInput,
     neq: NumberInput,
-    // gt: NumberInput,
-    // gte: NumberInput,
-    // lt: NumberInput,
-    // lte: NumberInput,
+    gt: NumberInput,
+    gte: NumberInput,
+    lt: NumberInput,
+    lte: NumberInput,
     is_empty: null,
     is_not_empty: null,
   }
@@ -188,8 +188,12 @@
   }
 
   const duration: Record<IDurationFieldConditionOp, ComponentType | null> = {
-    eq: NumberInput,
-    neq: NumberInput,
+    eq: DurationInput,
+    neq: DurationInput,
+    gt: DurationInput,
+    gte: DurationInput,
+    lt: DurationInput,
+    lte: DurationInput,
     is_empty: null,
     is_not_empty: null,
   }

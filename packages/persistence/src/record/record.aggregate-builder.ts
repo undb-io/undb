@@ -26,12 +26,36 @@ export class AggregateFnBuiler {
 
     return match(this.aggregate)
       .returnType<AliasedExpression<any, any>>()
-      .with("sum", () => this.eb.fn.coalesce(this.eb.fn.sum(getRef(field)), sql`0`).as(alias))
-      .with("avg", () => this.eb.fn.coalesce(this.eb.fn.avg(getRef(field)), sql`0`).as(alias))
-      .with("min", () => this.eb.fn.coalesce(this.eb.fn.min(getRef(field)), sql`0`).as(alias))
-      .with("max", () => this.eb.fn.coalesce(this.eb.fn.max(getRef(field)), sql`0`).as(alias))
-      .with("count", () => this.eb.fn.countAll().as(alias))
-      .with("count_uniq", () => this.eb.fn.count(fieldId).distinct().as(alias))
+      .with("sum", () => {
+        const expr =
+          field.type === "currency"
+            ? sql`COALESCE(SUM(${sql.ref(getRef(field))}) / 100.0, 0)`
+            : sql`COALESCE(SUM(${sql.ref(getRef(field))}), 0)`
+        return expr.as(alias)
+      })
+      .with("avg", () => {
+        const expr =
+          field.type === "currency"
+            ? sql`COALESCE(AVG(${sql.ref(getRef(field))}) / 100.0, 0)`
+            : sql`COALESCE(AVG(${sql.ref(getRef(field))}), 0)`
+        return expr.as(alias)
+      })
+      .with("min", () => {
+        const expr =
+          field.type === "currency"
+            ? sql`COALESCE(MIN(${sql.ref(getRef(field))}) / 100.0, 0)`
+            : sql`COALESCE(MIN(${sql.ref(getRef(field))}), 0)`
+        return expr.as(alias)
+      })
+      .with("max", () => {
+        const expr =
+          field.type === "currency"
+            ? sql`COALESCE(MAX(${sql.ref(getRef(field))}) / 100.0, 0)`
+            : sql`COALESCE(MAX(${sql.ref(getRef(field))}), 0)`
+        return expr.as(alias)
+      })
+      .with("count", () => sql`COUNT(*)`.as(alias))
+      .with("count_uniq", () => sql`COUNT(DISTINCT ${sql.ref(fieldId)})`.as(alias))
       .with("count_empty", () => {
         if (field.type === "reference") {
           return sql`COUNT(*)`.as(alias)

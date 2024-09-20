@@ -41,6 +41,7 @@
     onValueChange={debounce({ delay: 300 }, onChange)}
     max={field.max}
     min={field.min}
+    autofocus
     class={cn($$restProps.class, "focus-visible:ring-ring w-full rounded-none border-none outline-none focus:bg-white")}
     {value}
   />

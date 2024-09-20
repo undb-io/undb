@@ -2,6 +2,10 @@ import { z } from "@undb/zod"
 
 export const currencyFieldAggregate = z.enum([
   //
+  "sum",
+  "avg",
+  "min",
+  "max",
   "count_empty",
   "count_uniq",
   "count_not_empty",

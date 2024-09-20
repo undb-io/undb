@@ -37,7 +37,7 @@
       </section>
     {/if}
   {:else if !shareId}
-    <section class="flex h-full w-full items-center justify-center">
+    <section class="bg-muted flex h-full w-full items-center justify-center">
       <SelectKanbanField {view} />
     </section>
   {/if}

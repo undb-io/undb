@@ -15,7 +15,7 @@ import {
   type ICurrencyFieldCondition,
   type ICurrencyFieldConditionSchema,
 } from "./currency-field.condition"
-import { CurrencyEqual } from "./currency-field.specification"
+import { CurrencyEqual, CurrencyGT, CurrencyGTE, CurrencyLT, CurrencyLTE } from "./currency-field.specification"
 
 export const CURRENCY_TYPE = "currency" as const
 
@@ -109,6 +109,10 @@ export class CurrencyField extends AbstractField<CurrencyFieldValue, CurrencyFie
     const spec = match(condition)
       .with({ op: "eq" }, ({ value }) => new CurrencyEqual(value, this.id))
       .with({ op: "neq" }, ({ value }) => new CurrencyEqual(value, this.id).not())
+      .with({ op: "gt" }, ({ value }) => new CurrencyGT(value, this.id))
+      .with({ op: "gte" }, ({ value }) => new CurrencyGTE(value, this.id))
+      .with({ op: "lt" }, ({ value }) => new CurrencyLT(value, this.id))
+      .with({ op: "lte" }, ({ value }) => new CurrencyLTE(value, this.id))
       .with({ op: "is_empty" }, () => new StringEmpty(this.id))
       .with({ op: "is_not_empty" }, () => new StringEmpty(this.id).not())
       .exhaustive()

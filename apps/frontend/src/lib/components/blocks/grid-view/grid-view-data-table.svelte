@@ -56,10 +56,10 @@
   }
 
   let view = derived(t, ($t) => $t.views.getViewById($viewId) as GridView)
-  $: viewFilter = $view.filter.into(undefined)
+  $: viewFilter = $view.filter?.into(undefined)
   $: hasFilterFieldIds = viewFilter?.fieldIds
 
-  $: colorSpec = $view.color.into(undefined)?.getSpec($t.schema).into(undefined)
+  $: colorSpec = $view.color?.into(undefined)?.getSpec($t.schema).into(undefined)
 
   let store = getRecordsStore()
   let hasRecord = store.hasRecord
@@ -244,7 +244,7 @@
                     {@const match = colorSpec && record ? record.match(colorSpec) : false}
                     {@const condition =
                       match && record
-                        ? view.color.into(undefined)?.getMatchedFieldConditions($t, record)[0]
+                        ? $view.color?.into(undefined)?.getMatchedFieldConditions($t, record)[0]
                         : undefined}
                     {#each row.cells as cell, idx (cell.id)}
                       {@const hasFilter = hasFilterFieldIds?.has(cell.id) ?? false}
@@ -326,8 +326,8 @@
           {/each}
         </Table.Body>
 
-        <tfooter class="text-muted-foreground sticky bottom-0 h-8 w-full border-t bg-white text-sm">
-          <tr class="flex h-8 w-full">
+        <tfooter class="text-muted-foreground sticky bottom-0 h-10 w-full border-t bg-white pb-2 text-sm">
+          <tr class="flex h-10 w-full">
             {#each $visibleColumns as column}
               {@const width = $columnWidths[column.id]}
               <td
@@ -347,7 +347,7 @@
     </table>
   </ScrollArea>
 
-  <div class="flex items-center justify-center px-4 py-2">
+  <div class="flex items-center justify-center border-t px-4 py-2">
     <div class="flex flex-1 flex-row items-center">
       <ViewPagination {perPage} bind:currentPage={$currentPage} count={total} />
       <div class="flex items-center gap-2 text-sm">

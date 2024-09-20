@@ -98,6 +98,7 @@ const sortableFieldTypes: FieldType[] = [
   "updatedAt",
   "autoIncrement",
   "createdBy",
+  "currency",
   "rollup",
   "select",
   "rating",

@@ -6,6 +6,7 @@ import type { RecordComositeSpecification } from "../../../../records/record/rec
 import { fieldId, FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
+import { NumberGT, NumberGTE, NumberLT, NumberLTE } from "../abstractions/abstract-number-value.specification"
 import { StringEmpty } from "../string-field"
 import { DurationFieldConstraint, durationFieldConstraint } from "./duration-field-constraint.vo"
 import { durationFieldValue, DurationFieldValue } from "./duration-field-value.vo"
@@ -95,6 +96,10 @@ export class DurationField extends AbstractField<DurationFieldValue, DurationFie
     const spec = match(condition)
       .with({ op: "eq" }, ({ value }) => new DurationEqual(value, this.id))
       .with({ op: "neq" }, ({ value }) => new DurationEqual(value, this.id).not())
+      .with({ op: "gt" }, ({ value }) => new NumberGT(value, this.id))
+      .with({ op: "gte" }, ({ value }) => new NumberGTE(value, this.id))
+      .with({ op: "lt" }, ({ value }) => new NumberLT(value, this.id))
+      .with({ op: "lte" }, ({ value }) => new NumberLTE(value, this.id))
       .with({ op: "is_empty" }, () => new StringEmpty(this.id))
       .with({ op: "is_not_empty" }, () => new StringEmpty(this.id).not())
       .exhaustive()
