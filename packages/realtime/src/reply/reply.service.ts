@@ -1,5 +1,6 @@
 import { inject, singleton } from "@undb/di"
 import type { BaseEvent } from "@undb/domain"
+import { env } from "@undb/env"
 import type { IQueryBuilder } from "@undb/persistence/src/qb"
 import { injectQueryBuilder } from "@undb/persistence/src/qb.provider"
 import { PubSubContext } from "../pubsub/pubsub.context"
@@ -16,7 +17,11 @@ export class ReplyService {
   ) {}
 
   public async scan() {
-    const outboxList = await this.qb.selectFrom("undb_outbox").selectAll().limit(10).execute()
+    const outboxList = await this.qb
+      .selectFrom("undb_outbox")
+      .selectAll()
+      .limit(env.UNDB_OUTBOX_SCAN_BATCH_SIZE)
+      .execute()
     for (const item of outboxList) {
       const event = ReplyEventFactory.from(item)
       if (event.isNone()) continue
