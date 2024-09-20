@@ -1,25 +1,31 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
-  import { PlusIcon, SearchIcon, SettingsIcon } from "lucide-svelte"
+  import { PlusIcon, SearchIcon, SettingsIcon, PanelLeftCloseIcon } from "lucide-svelte"
   import { commandOpen } from "../command/command.store"
   import { CREATE_BASE_MODAL, toggleModal } from "$lib/store/modal.store"
   import { page } from "$app/stores"
   import { hasPermission } from "$lib/store/space-member.store"
   import SpaceDropdown from "../space/space-dropdown.svelte"
   import type { ISpaceDTO } from "@undb/space"
+  import { preferences } from "$lib/store/persisted.store"
 
   export let space: ISpaceDTO | undefined | null
   export let me: any
 </script>
 
 <div class="w-full space-y-1">
-  {#if space}
-    <SpaceDropdown
-      {me}
-      {space}
-      class="hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring data-[active=true]:bg-primary data-[active=true]:text-primary-foreground flex h-8 w-full items-center justify-start gap-2 whitespace-nowrap rounded-md px-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
-    />
-  {/if}
+  <div class="flex items-center justify-between">
+    {#if space}
+      <SpaceDropdown
+        {me}
+        {space}
+        class="hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring data-[active=true]:bg-primary data-[active=true]:text-primary-foreground flex h-8 w-full flex-1 items-center justify-start gap-2 whitespace-nowrap rounded-md px-1.5 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 disabled:pointer-events-none disabled:opacity-50"
+      />
+    {/if}
+    <button on:click={() => preferences.update((p) => ({ ...p, panelLeftCollapsed: true, panelLeftWidth: 0 }))}>
+      <PanelLeftCloseIcon class="text-muted-foreground size-4" />
+    </button>
+  </div>
 
   <Button
     variant="outline"

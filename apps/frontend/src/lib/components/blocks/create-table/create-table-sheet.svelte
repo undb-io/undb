@@ -24,7 +24,7 @@
     }
   }}
 >
-  <Sheet.Content side="left" class="sm:max-w-1/2 flex w-1/3 flex-col">
+  <Sheet.Content side="left" class="sm:max-w-2/3 lg:max-w-1/2 flex !max-w-none flex-col sm:w-2/3 lg:w-1/2">
     <Sheet.Header>
       <Sheet.Title>
         Create Table

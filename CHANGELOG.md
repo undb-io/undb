@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-82
+
+
+### 🏡 Chore
+
+- Upgrade dependecies ([631fa3b](https://github.com/undb-io/undb/commit/631fa3b))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-81
 
 

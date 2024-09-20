@@ -17,9 +17,8 @@
     mutationFn: trpc.base.create.mutate,
     async onSuccess(data) {
       form.reset()
-      await tick()
-      await invalidateAll()
       await goto(`/bases/${data}`)
+      await invalidateAll()
       closeModal(CREATE_BASE_MODAL)
     },
     onError(error) {
@@ -59,7 +58,7 @@
   const { form: formData, enhance, delayed, validateForm } = form
 </script>
 
-<form id="createTable" class="space-y-2 px-1" method="POST" use:enhance>
+<form id="createBase" class="space-y-2 px-1" method="POST" use:enhance>
   <Form.Field {form} name="name">
     <Form.Control let:attrs>
       <Form.Label>Name</Form.Label>
@@ -71,7 +70,7 @@
       />
     </Form.Control>
     <Form.FieldErrors />
-  </Form.Field>
+</Form.Field>
 
   <div class="flex items-center justify-end gap-2">
     <Form.FormButton type="button" variant="secondary" on:click={() => closeModal(CREATE_BASE_MODAL)}>

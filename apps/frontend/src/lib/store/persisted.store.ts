@@ -6,4 +6,5 @@ export const preferences = persisted("undb_preferences", {
   duplicateFieldIncludeData: true,
   gridViewPerPage: 50,
   panelLeftWidth: 20,
+  panelLeftCollapsed: false,
 })

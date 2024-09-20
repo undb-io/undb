@@ -17,24 +17,25 @@
   import type { ComponentType } from "svelte"
   import ImportTableDialog from "$lib/components/blocks/import-table/import-table-dialog.svelte"
   import MemberMenu from "$lib/components/blocks/member/member-menu.svelte"
-  import { derived } from "svelte/store"
+  import { derived, get } from "svelte/store"
   import { preferences } from "$lib/store/persisted.store"
 
   export let data: LayoutData
 
-  function handleT(detail: ShortcutEventDetail) {
-    toggleModal(CREATE_TABLE_MODAL)
-  }
-
   let panelLeft: PaneAPI
-  let collapsed = false
+  $: if ($preferences.panelLeftCollapsed) {
+    panelLeft?.collapse()
+  } else {
+    panelLeft?.expand()
+  }
   function handleB(detail: ShortcutEventDetail) {
-    collapsed = !collapsed
-    if (collapsed) {
-      panelLeft.collapse()
-    } else {
-      panelLeft.expand()
-    }
+    preferences.update((p) => ({ ...p, panelLeftCollapsed: !p.panelLeftCollapsed }))
+    // const panelLeftCollapsed = get(preferences).panelLeftCollapsed
+    // if (panelLeftCollapsed) {
+    //   panelLeft.collapse()
+    // } else {
+    //   panelLeft.expand()
+    // }
   }
 
   let indexDataStore = data.indexDataStore
@@ -84,8 +85,9 @@
   <Resizable.Pane
     bind:pane={panelLeft}
     onResize={(size) => ($preferences.panelLeftWidth = size)}
-    onCollapse={() => (collapsed = true)}
-    onExpand={() => (collapsed = false)}
+    collapsible
+    onCollapse={() => ($preferences.panelLeftCollapsed = true)}
+    onExpand={() => ($preferences.panelLeftCollapsed = false)}
     class="bg-muted/40 hidden border-r md:block"
     defaultSize={$preferences.panelLeftWidth ?? 20}
     minSize={15}
@@ -121,13 +123,8 @@
   use:shortcut={{
     trigger: [
       {
-        key: "t",
-        modifier: ["ctrl", "meta"],
-        callback: handleT,
-      },
-      {
         key: "b",
-        modifier: ["meta"],
+        modifier: ["meta", "ctrl"],
         callback: handleB,
       },
     ],
