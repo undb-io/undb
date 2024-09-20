@@ -10,12 +10,13 @@
   import { createRecordsStore, setRecordsStore } from "$lib/store/records.store"
   import GalleryViewField from "./gallery-view-field.svelte"
   import ViewPagination from "../view/view-pagination.svelte"
+  import { cn } from "$lib/utils"
 
   const table = getTable()
   export let viewId: Readable<string>
   export let shareId: string | undefined = undefined
 
-  let view = $table.views.getViewById($viewId) as GalleryView
+  $: view = $table.views.getViewById($viewId) as GalleryView
 
   $: field = view.gallery.unwrapOrElse(() => ({ field: undefined })).field
 
@@ -65,14 +66,16 @@
 </script>
 
 <TableTools />
-<div class="flex-1 overflow-x-auto overflow-y-hidden p-4">
+<div class={cn("flex-1 overflow-x-auto overflow-y-hidden p-4", !field && "bg-muted")}>
   {#if !field}
     <GalleryViewField {view} />
   {:else}
     <GalleryViewCards fieldId={field} {viewId} />
   {/if}
 </div>
-<ViewPagination perPage={$perPage} bind:currentPage={$currentPage} count={total} />
+{#if field}
+  <ViewPagination perPage={$perPage} bind:currentPage={$currentPage} count={total} />
+{/if}
 
 {#await import("$lib/components/blocks/create-record/create-record-sheet.svelte") then { default: CreateRecordSheet }}
   <CreateRecordSheet />

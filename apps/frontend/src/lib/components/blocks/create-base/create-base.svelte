@@ -8,7 +8,7 @@
   import { Input } from "$lib/components/ui/input"
   import { toast } from "svelte-sonner"
   import { CREATE_BASE_MODAL, closeModal } from "$lib/store/modal.store"
-  import { goto } from "$app/navigation"
+  import { goto, invalidateAll } from "$app/navigation"
   import { LoaderCircleIcon } from "lucide-svelte"
   import { tick } from "svelte"
   import { getNextName } from "@undb/utils"
@@ -17,6 +17,10 @@
     mutationFn: trpc.base.create.mutate,
     async onSuccess(data) {
       form.reset()
+      await tick()
+      await invalidateAll()
+      await goto(`/bases/${data}`)
+      closeModal(CREATE_BASE_MODAL)
     },
     onError(error) {
       toast.error(error.message)
@@ -47,10 +51,7 @@
       async onUpdate(event) {
         if (!event.form.valid) return
 
-        const data = await $mutation.mutateAsync(event.form.data)
-        await tick()
-        await goto(`/bases/${data}`)
-        closeModal(CREATE_BASE_MODAL)
+        $mutation.mutate(event.form.data)
       },
     },
   )

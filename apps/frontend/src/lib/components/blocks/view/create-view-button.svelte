@@ -43,7 +43,7 @@
   const form = superForm(
     defaults(
       {
-        name: getNextName(viewNames, "default"),
+        name: getNextName(viewNames, "view"),
         type: "grid",
       },
       zodClient(createViewDTO),

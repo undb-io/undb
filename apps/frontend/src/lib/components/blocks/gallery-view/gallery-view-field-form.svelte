@@ -55,11 +55,11 @@
 </script>
 
 <div class="space-y-2">
-  <form id="select-kanban-field-form" class="space-y-2" use:enhance>
+  <form id="select-gallery-field-form" class="space-y-2" use:enhance>
     <div class="grid w-full items-center gap-4">
       <div class="flex flex-col space-y-1.5">
         <FieldPicker
-          placeholder="Select a select type field to group kanban lanes"
+          placeholder="Select a select type field to group gallery lanes"
           value={$formData.gallery?.field}
           onValueChange={(field) => {
             if ($formData.gallery) {
@@ -77,6 +77,6 @@
   <CreateFieldButton class="w-full" variant="secondary" />
 
   <div class="flex w-full justify-end">
-    <Button type="submit" form="select-kanban-field-form">Confirm</Button>
+    <Button type="submit" form="select-gallery-field-form">Confirm</Button>
   </div>
 </div>
