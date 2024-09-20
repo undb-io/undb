@@ -109,7 +109,7 @@
               <FileIcon class="text-muted-foreground h-5 w-5" />
             {/if}
           </div>
-          <span class="flex-1">
+          <span class="text-muted-foreground flex-1 text-sm">
             {v.name}
           </span>
           <button on:click={() => removeFile(i)} class="rounded-full p-2 transition-colors hover:bg-gray-100">
@@ -126,4 +126,4 @@
     {/if}
   </div>
 {/if}
-<Input  {...$$restProps} type="file" on:change={onChange} disabled={readonly || disabled || isUploading} />
+<Input {...$$restProps} type="file" on:change={onChange} disabled={readonly || disabled || isUploading} />
