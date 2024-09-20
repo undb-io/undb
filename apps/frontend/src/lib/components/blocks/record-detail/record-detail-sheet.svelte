@@ -12,6 +12,7 @@
   import { LoaderCircleIcon } from "lucide-svelte"
   import { preferences } from "$lib/store/persisted.store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
+  import RecordDetailMenu from "./record-detail-menu.svelte"
 
   export let readonly = false
   export let recordDo: RecordDO | undefined
@@ -45,11 +46,12 @@
     transitionConfig={{ duration: 50 }}
   >
     <Sheet.Header class="border-b px-6 pb-2">
-      <Sheet.Title class="flex items-center justify-between">
+      <Sheet.Title class="flex items-center justify-between pr-10">
         <span> Record Detail </span>
         <!-- <button disabled class="mr-6" on:click={() => ($preferences.showAudit = !$preferences.showAudit)}>
           <HistoryIcon class="text-muted-foreground h-4 w-4" />
         </button> -->
+        <RecordDetailMenu />
       </Sheet.Title>
     </Sheet.Header>
 

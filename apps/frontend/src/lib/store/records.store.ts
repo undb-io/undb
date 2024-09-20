@@ -111,6 +111,14 @@ export const createRecordsStore = () => {
     data.set([])
   }
 
+  const deleteRecord = (id: string) => {
+    store.update((store) => {
+      store.records.delete(id)
+      store.ids = store.ids.filter((id) => id !== id)
+      return store
+    })
+  }
+
   return {
     set,
     update,
@@ -123,6 +131,8 @@ export const createRecordsStore = () => {
     count,
     upsertRecords,
     getRecords,
+
+    deleteRecord,
 
     records,
     data,
