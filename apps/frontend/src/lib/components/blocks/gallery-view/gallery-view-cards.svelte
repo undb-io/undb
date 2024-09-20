@@ -10,6 +10,9 @@
   export let fieldId: string
   const recordsStore = getRecordsStore()
 
+  $: view = $table.views.getViewById($viewId)
+  $: color = view.color.into(undefined)
+
   $: fields = $table.getOrderedVisibleFields($viewId) ?? []
 
   let records = recordsStore.records
@@ -20,7 +23,7 @@
 {:else}
   <div class="grid w-full flex-1 gap-4 overflow-y-auto sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
     {#each $records as record (record.id.value)}
-      <GalleryViewCard {record} {fieldId} {fields} />
+      <GalleryViewCard {record} {fieldId} {fields} {color} />
     {/each}
   </div>
 {/if}
