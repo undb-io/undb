@@ -1,4 +1,8 @@
 import {
+  CurrencyGT,
+  CurrencyGTE,
+  CurrencyLT,
+  CurrencyLTE,
   DateIsEmpty,
   DurationEqual,
   ID_TYPE,
@@ -96,6 +100,10 @@ export class RecordQuerySpecCreatorVisitor implements IRecordVisitor {
   referenceEqual(spec: ReferenceEqual): void {}
   selectEqual(spec: SelectEqual): void {}
   currencyEqual(s: CurrencyEqual): void {}
+  currencyGT(s: CurrencyGT): void {}
+  currencyGTE(s: CurrencyGTE): void {}
+  currencyLT(s: CurrencyLT): void {}
+  currencyLTE(s: CurrencyLTE): void {}
   durationEqual(s: DurationEqual): void {}
   selectContainsAnyOf(spec: SelectContainsAnyOf): void {
     const field = this.table.schema.getFieldById(spec.fieldId).expect("No field found") as SelectField

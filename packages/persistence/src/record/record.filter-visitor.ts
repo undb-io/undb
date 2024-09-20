@@ -1,6 +1,10 @@
 import { getCurrentUserId } from "@undb/context/server"
 import { NotImplementException } from "@undb/domain"
 import {
+  CurrencyGT,
+  CurrencyGTE,
+  CurrencyLT,
+  CurrencyLTE,
   DurationEqual,
   PercentageEqual,
   SelectField,
@@ -170,6 +174,22 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
       const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value * 100)
       this.addCond(cond)
     }
+  }
+  currencyGT(spec: CurrencyGT): void {
+    const cond = this.eb.eb(this.getFieldId(spec), ">", spec.value * 100)
+    this.addCond(cond)
+  }
+  currencyGTE(spec: CurrencyGTE): void {
+    const cond = this.eb.eb(this.getFieldId(spec), ">=", spec.value * 100)
+    this.addCond(cond)
+  }
+  currencyLT(spec: CurrencyLT): void {
+    const cond = this.eb.eb(this.getFieldId(spec), "<", spec.value * 100)
+    this.addCond(cond)
+  }
+  currencyLTE(spec: CurrencyLTE): void {
+    const cond = this.eb.eb(this.getFieldId(spec), "<=", spec.value * 100)
+    this.addCond(cond)
   }
   percentageEqual(spec: PercentageEqual): void {
     if (!spec.value) {

@@ -25,3 +25,83 @@ export class CurrencyEqual extends RecordComositeSpecification {
     return Ok(undefined)
   }
 }
+
+export class CurrencyGT extends RecordComositeSpecification {
+  constructor(
+    readonly value: number,
+    readonly fieldId: FieldId,
+  ) {
+    super(fieldId)
+  }
+  isSatisfiedBy(t: RecordDO): boolean {
+    const value = t.getValue(this.fieldId)
+    return value.mapOr(false, (v) => isNumber(v.value) && v.value > this.value)
+  }
+  mutate(t: RecordDO): Result<RecordDO, string> {
+    throw new Error("Method not implemented.")
+  }
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.currencyGT(this)
+    return Ok(undefined)
+  }
+}
+
+export class CurrencyGTE extends RecordComositeSpecification {
+  constructor(
+    readonly value: number,
+    readonly fieldId: FieldId,
+  ) {
+    super(fieldId)
+  }
+  isSatisfiedBy(t: RecordDO): boolean {
+    const value = t.getValue(this.fieldId)
+    return value.mapOr(false, (v) => isNumber(v.value) && v.value >= this.value)
+  }
+  mutate(t: RecordDO): Result<RecordDO, string> {
+    throw new Error("Method not implemented.")
+  }
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.currencyGTE(this)
+    return Ok(undefined)
+  }
+}
+
+export class CurrencyLT extends RecordComositeSpecification {
+  constructor(
+    readonly value: number,
+    readonly fieldId: FieldId,
+  ) {
+    super(fieldId)
+  }
+  isSatisfiedBy(t: RecordDO): boolean {
+    const value = t.getValue(this.fieldId)
+    return value.mapOr(false, (v) => isNumber(v.value) && v.value < this.value)
+  }
+  mutate(t: RecordDO): Result<RecordDO, string> {
+    throw new Error("Method not implemented.")
+  }
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.currencyLT(this)
+    return Ok(undefined)
+  }
+}
+
+export class CurrencyLTE extends RecordComositeSpecification {
+  constructor(
+    readonly value: number,
+    readonly fieldId: FieldId,
+  ) {
+    super(fieldId)
+  }
+  isSatisfiedBy(t: RecordDO): boolean {
+    const value = t.getValue(this.fieldId)
+    return value.mapOr(false, (v) => isNumber(v.value) && v.value <= this.value)
+  }
+  mutate(t: RecordDO): Result<RecordDO, string> {
+    throw new Error("Method not implemented.")
+  }
+  accept(v: IRecordVisitor): Result<void, string> {
+    v.currencyLTE(this)
+    return Ok(undefined)
+  }
+}
