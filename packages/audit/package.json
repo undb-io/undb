@@ -9,7 +9,7 @@
     "@undb/domain": "workspace:*",
     "@undb/table": "workspace:*",
     "@undb/zod": "workspace:*",
-    "date-fns": "^4.1.0",
+    "date-fns": "^3.6.0",
     "radash": "^12.1.0"
   },
   "devDependencies": {

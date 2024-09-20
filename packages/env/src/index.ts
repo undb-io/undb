@@ -132,6 +132,10 @@ const emailEnv = createEnv({
 const dbEnv = createEnv({
   server: {
     UNDB_DB_PROVIDER: z.enum(["sqlite", "turso"]).default("sqlite").optional(),
+    UNDB_OUTBOX_SCAN_BATCH_SIZE: z
+      .string()
+      .optional()
+      .transform((v) => parseInt(v ?? "1000", 10)),
   },
   runtimeEnv: import.meta.env,
   emptyStringAsUndefined: true,
