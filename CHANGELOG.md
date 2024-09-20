@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-81
+
+
+### 🩹 Fixes
+
+- Gallery color ([604a8d4](https://github.com/undb-io/undb/commit/604a8d4))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-80
 
 
