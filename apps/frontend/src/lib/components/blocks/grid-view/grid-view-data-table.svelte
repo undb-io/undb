@@ -56,10 +56,10 @@
   }
 
   let view = derived(t, ($t) => $t.views.getViewById($viewId) as GridView)
-  $: viewFilter = $view.filter.into(undefined)
+  $: viewFilter = $view.filter?.into(undefined)
   $: hasFilterFieldIds = viewFilter?.fieldIds
 
-  $: colorSpec = $view.color.into(undefined)?.getSpec($t.schema).into(undefined)
+  $: colorSpec = $view.color?.into(undefined)?.getSpec($t.schema).into(undefined)
 
   let store = getRecordsStore()
   let hasRecord = store.hasRecord
@@ -244,7 +244,7 @@
                     {@const match = colorSpec && record ? record.match(colorSpec) : false}
                     {@const condition =
                       match && record
-                        ? view.color.into(undefined)?.getMatchedFieldConditions($t, record)[0]
+                        ? $view.color?.into(undefined)?.getMatchedFieldConditions($t, record)[0]
                         : undefined}
                     {#each row.cells as cell, idx (cell.id)}
                       {@const hasFilter = hasFilterFieldIds?.has(cell.id) ?? false}
