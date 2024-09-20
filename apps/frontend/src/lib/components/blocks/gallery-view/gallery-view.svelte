@@ -69,7 +69,7 @@
 </script>
 
 <TableTools />
-<div class={cn("flex-1 overflow-x-auto overflow-y-hidden p-4", !field && "bg-muted")}>
+<div class={cn("flex-1 overflow-y-auto overflow-x-hidden p-4", !field && "bg-muted")}>
   {#if !field}
     <GalleryViewField {view} />
   {:else if $isLoading}

@@ -40,7 +40,7 @@
 >
   <Sheet.Content
     class={cn(
-      "sm:max-w-1/2 flex h-full w-1/2 flex-col gap-0 px-0 py-4 transition-all",
+      "lg:max-w-2/3 xl:max-w-1/2 flex h-full !max-w-none flex-col gap-0 px-0 py-4 transition-all lg:w-2/3 xl:w-1/2",
       $preferences.showAudit && "w-2/3",
     )}
     transitionConfig={{ duration: 50 }}

@@ -18,7 +18,7 @@
 {#if $records.length === 0}
   <GalleryViewEmpty />
 {:else}
-  <div class="grid w-full flex-1 gap-4 overflow-y-auto md:grid-cols-5">
+  <div class="grid w-full flex-1 gap-4 overflow-y-auto sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
     {#each $records as record (record.id.value)}
       <GalleryViewCard {record} {fieldId} {fields} />
     {/each}

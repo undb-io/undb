@@ -1,15 +1,20 @@
 <script lang="ts">
   import { Skeleton } from "$lib/components/ui/skeleton"
+  import { getTable, viewId } from "$lib/store/table.store"
+
+  const table = getTable()
+
+  $: fields = $table.getOrderedVisibleFields($viewId) ?? []
 </script>
 
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-  {#each Array(12) as _}
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
+  {#each Array(20) as _}
     <div class="flex flex-col rounded-md border shadow-sm">
       <Skeleton class="h-[150px] w-full" />
-      <div class="flex flex-col space-y-2 p-4">
-        <Skeleton class="h-4 w-3/4" />
-        <Skeleton class="h-4 w-1/2" />
-        <Skeleton class="h-4 w-2/3" />
+      <div class="flex flex-col space-y-2 px-2 py-4">
+        {#each Array(fields.length - 1) as _}
+          <Skeleton class="h-5 w-full" />
+        {/each}
       </div>
     </div>
   {/each}
