@@ -91,7 +91,7 @@
   $: disabled = !!$allErrors.length
 </script>
 
-<form id="createTable" class="grid gap-3 px-1" method="POST" use:enhance>
+<form id="createWebhook" class="grid gap-3 px-1" method="POST" use:enhance>
   <Form.Field {form} name="name">
     <Form.Control let:attrs>
       <Form.Label>Name</Form.Label>

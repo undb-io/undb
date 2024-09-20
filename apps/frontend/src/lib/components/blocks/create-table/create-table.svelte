@@ -63,7 +63,7 @@
           console.log(event.form.errors)
           return
         }
-        const baseId = $currentBase?.id
+        const baseId = $currentBase?.id ?? $baseId
         if (!baseId) return
 
         await $mutation.mutateAsync({
