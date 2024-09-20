@@ -5,8 +5,6 @@
   export let currentPage: number | null = null
 
   export let count: number
-
-  $: console.log(perPage, currentPage, count)
 </script>
 
 <Pagination.Root
@@ -21,7 +19,6 @@
     <Pagination.Item>
       <Pagination.PrevButton />
     </Pagination.Item>
-    {JSON.stringify(pages)}
     {#each pages as page (page.key)}
       {#if page.type === "ellipsis"}
         <Pagination.Item>

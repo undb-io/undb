@@ -11,6 +11,7 @@
   import GalleryViewField from "./gallery-view-field.svelte"
   import ViewPagination from "../view/view-pagination.svelte"
   import { cn } from "$lib/utils"
+  import GalleryViewLoading from "./gallery-view-loading.svelte"
 
   const table = getTable()
   export let viewId: Readable<string>
@@ -53,6 +54,8 @@
     }),
   )
 
+  let isLoading = derived([getRecordsQuery], ([$getRecords]) => $getRecords.isLoading)
+
   const recordsStore = createRecordsStore()
   setRecordsStore(recordsStore)
 
@@ -69,6 +72,8 @@
 <div class={cn("flex-1 overflow-x-auto overflow-y-hidden p-4", !field && "bg-muted")}>
   {#if !field}
     <GalleryViewField {view} />
+  {:else if $isLoading}
+    <GalleryViewLoading />
   {:else}
     <GalleryViewCards fieldId={field} {viewId} />
   {/if}
