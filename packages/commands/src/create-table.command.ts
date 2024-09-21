@@ -10,7 +10,8 @@ export type ICreateTableCommand = z.infer<typeof createTableCommand>
 export class CreateTableCommand extends Command implements ICreateTableCommand {
   public readonly id?: string
   public readonly name: string
-  public readonly baseId: string
+  public readonly baseId?: string
+  public readonly baseName?: string
   public readonly schema: ICreateSchemaDTO
 
   constructor(props: CommandProps<ICreateTableCommand>) {
@@ -18,6 +19,7 @@ export class CreateTableCommand extends Command implements ICreateTableCommand {
     this.id = props.id
     this.name = props.name
     this.baseId = props.baseId
+    this.baseName = props.baseName
     this.schema = props.schema
   }
 }
