@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-84
+
+
+### 🏡 Chore
+
+- Fix ts issue ([68c5291](https://github.com/undb-io/undb/commit/68c5291))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-83
 
 

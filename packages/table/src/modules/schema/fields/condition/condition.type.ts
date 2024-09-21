@@ -29,12 +29,16 @@ export type MaybeConditionGroupChildren<OptionType extends z.ZodTypeAny> = Maybe
 export function createConditionGroup<OptionType extends ZodTypeAny, FieldOptionType extends ZodTypeAny = OptionType>(
   optionType: OptionType,
   fieldType: FieldOptionType,
+  level = 1,
 ): z.ZodType<IConditionGroup<FieldOptionType>> {
+  const nested = level < 3 ? z.lazy(() => createConditionGroup(optionType, fieldType, level + 1)) : undefined
+  const child = nested
+    ? z.union([...createConditionSchema(fieldType).options, nested])
+    : z.union([...createConditionSchema(fieldType).options])
+
   return z.object({
     conjunction: z.enum(["and", "or"]),
-    children: z.array(
-      z.union([...createConditionSchema(fieldType).options, z.lazy(() => createConditionGroup(optionType, fieldType))]),
-    ),
+    children: z.array(child),
     disabled: z.boolean().optional(),
     option: optionType,
   }) as z.ZodType<IConditionGroup<FieldOptionType>>

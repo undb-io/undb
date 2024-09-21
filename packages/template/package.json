@@ -1,0 +1,20 @@
+{
+  "name": "@undb/template",
+  "module": "src/index.ts",
+  "types": "src/index.d.ts",
+  "type": "module",
+  "dependencies": {
+    "@undb/base": "workspace:*",
+    "@undb/table": "workspace:*",
+    "@undb/zod": "workspace:*",
+    "@undb/di": "workspace:*",
+    "@undb/logger": "workspace:*",
+    "zod-to-json-schema": "^3.23.3"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

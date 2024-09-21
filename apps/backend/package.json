@@ -36,6 +36,7 @@
     "@undb/realtime": "workspace:*",
     "@undb/share": "workspace:*",
     "@undb/space": "workspace:*",
+    "@undb/template": "workspace:*",
     "@undb/trpc": "workspace:*",
     "@undb/webhook": "workspace:*",
     "arctic": "^1.9.2",

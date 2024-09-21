@@ -9,7 +9,7 @@
   import * as Form from "$lib/components/ui/form"
   import * as Alert from "$lib/components/ui/alert/index.js"
   import { LoaderCircleIcon, SirenIcon, Store } from "lucide-svelte"
-  import { createFromTemplateCommand } from "@undb/commands"
+  import { createFromShareCommand } from "@undb/commands"
   import { Checkbox } from "$lib/components/ui/checkbox"
   import { trpc } from "$lib/trpc/client"
   import { page } from "$app/stores"
@@ -39,8 +39,8 @@
     })
   }
 
-  const createFromTemplateMutation = createMutation({
-    mutationFn: trpc.base.createFromTemplate.mutate,
+  const createFromShareMutation = createMutation({
+    mutationFn: trpc.base.createFromShare.mutate,
     onError(error, variables, context) {
       toast.error(error.message)
     },
@@ -60,12 +60,12 @@
         name: template?.name,
         includeData: true,
       },
-      zodClient(createFromTemplateCommand),
+      zodClient(createFromShareCommand),
     ),
     {
       SPA: true,
       dataType: "json",
-      validators: zodClient(createFromTemplateCommand),
+      validators: zodClient(createFromShareCommand),
       resetForm: false,
       invalidateAll: false,
       onSubmit(input) {
@@ -77,7 +77,7 @@
           return
         }
 
-        await $createFromTemplateMutation.mutateAsync(event.form.data)
+        await $createFromShareMutation.mutateAsync(event.form.data)
       },
     },
   )
@@ -176,8 +176,8 @@
               System fields will be updated to the current user and timestamp.
             </Alert.Description>
           </Alert.Root>
-          <Form.Button type="submit" class="w-full" disabled={$createFromTemplateMutation.isPending}>
-            {#if $createFromTemplateMutation.isPending}
+          <Form.Button type="submit" class="w-full" disabled={$createFromShareMutation.isPending}>
+            {#if $createFromShareMutation.isPending}
               <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
             {/if}
             Create

@@ -1,0 +1,32 @@
+{
+  "hello": {
+    "tables": {
+      "world": {
+        "schema": {
+          "name": {
+            "type": "string",
+            "constraint": {
+              "max": 10
+            },
+            "defaultValue": "world",
+            "display": true
+          },
+          "age": {
+            "type": "number",
+            "constraint": {
+              "min": 0
+            }
+          },
+          "parent": {
+            "type": "user",
+            "defaultValue": "@me"
+          },
+          "isActive": {
+            "type": "checkbox",
+            "defaultValue": true
+          }
+        }
+      }
+    }
+  }
+}

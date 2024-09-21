@@ -8,9 +8,24 @@
   import SpaceDropdown from "../space/space-dropdown.svelte"
   import type { ISpaceDTO } from "@undb/space"
   import { preferences } from "$lib/store/persisted.store"
+  import { createMutation } from "@tanstack/svelte-query"
+  import { trpc } from "$lib/trpc/client"
+  import { toast } from "svelte-sonner"
+  import { goto, invalidateAll } from "$app/navigation"
 
   export let space: ISpaceDTO | undefined | null
   export let me: any
+
+  const createFromTemplateMutation = createMutation({
+    mutationFn: trpc.template.createFromTemplate.mutate,
+    onSuccess: async (data) => {
+      await invalidateAll()
+      toast.success("Base created successfully")
+      if (data.baseIds.length > 0) {
+        goto(`/bases/${data.baseIds[0]}`)
+      }
+    },
+  })
 </script>
 
 <div class="w-full space-y-1">
@@ -67,5 +82,15 @@
       <PlusIcon class="mr-2 h-3 w-3" />
       Create New Base
     </Button>
+
+    <!-- <Button
+      class="w-full justify-start text-left"
+      on:click={() => $createFromTemplateMutation.mutate({ templateName: "test" })}
+      variant="link"
+      size="sm"
+    >
+      <PlusIcon class="mr-2 h-3 w-3" />
+      Create New Base
+    </Button> -->
   {/if}
 </div>

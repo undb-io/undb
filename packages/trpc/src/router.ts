@@ -4,6 +4,7 @@ import {
   BulkUpdateRecordsCommand,
   CreateApiTokenCommand,
   CreateBaseCommand,
+  CreateFromShareCommand,
   CreateFromTemplateCommand,
   CreateRecordCommand,
   CreateRecordsCommand,
@@ -55,7 +56,9 @@ import {
   bulkduplicateRecordsCommand,
   createApiTokenCommand,
   createBaseCommand,
+  createFromShareCommand,
   createFromTemplateCommand,
+  createFromTemplateCommandOutput,
   createRecordCommand,
   createRecordsCommand,
   createSpaceCommand,
@@ -106,9 +109,9 @@ import {
   updateaccountCommand,
 } from "@undb/commands"
 import { getCurrentSpaceId } from "@undb/context/server"
-import { CommandBus,QueryBus } from "@undb/cqrs"
+import { CommandBus, QueryBus } from "@undb/cqrs"
 import { container } from "@undb/di"
-import type { ICommandBus,IQueryBus } from "@undb/domain"
+import type { ICommandBus, IQueryBus } from "@undb/domain"
 import {
   CountRecordsQuery,
   GetAggregatesQuery,
@@ -136,7 +139,7 @@ import {
 import { tableDTO } from "@undb/table"
 import { z } from "@undb/zod"
 import { authz } from "./authz.middleware"
-import { privateProcedure,publicProcedure,t } from "./trpc"
+import { privateProcedure, publicProcedure, t } from "./trpc"
 
 const commandBus = container.resolve<ICommandBus>(CommandBus)
 const queryBus = container.resolve<IQueryBus>(QueryBus)
@@ -361,11 +364,11 @@ const baseRouter = t.router({
       }
       return commandBus.execute(new CreateBaseCommand({ ...input, spaceId }))
     }),
-  createFromTemplate: privateProcedure
+  createFromShare: privateProcedure
     // check authz in handler, because we can create base to another space
     // .use(authz("base:create"))
-    .input(createFromTemplateCommand)
-    .mutation(({ input }) => commandBus.execute(new CreateFromTemplateCommand(input))),
+    .input(createFromShareCommand)
+    .mutation(({ input }) => commandBus.execute(new CreateFromShareCommand(input))),
   duplicate: privateProcedure
     .use(authz("base:create"))
     .input(duplicateBaseCommand)
@@ -425,16 +428,24 @@ const apiTokenRouter = t.router({
 
 const spaceRouter = t.router({
   list: privateProcedure
-    .input(getMemberSpacesQuery)
     .use(authz("space:list"))
+    .input(getMemberSpacesQuery)
     .query(({ input }) => queryBus.execute(new GetMemberSpacesQuery(input))),
   create: privateProcedure
     .input(createSpaceCommand)
     .mutation(({ input }) => commandBus.execute(new CreateSpaceCommand(input))),
   update: privateProcedure
-    .input(updateSpaceCommand)
     .use(authz("space:update"))
+    .input(updateSpaceCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateSpaceCommand(input))),
+})
+
+const templateRouter = t.router({
+  createFromTemplate: privateProcedure
+    .use(authz("base:create"))
+    .input(createFromTemplateCommand)
+    .output(createFromTemplateCommandOutput)
+    .mutation(({ input }) => commandBus.execute(new CreateFromTemplateCommand(input))),
 })
 
 export const route = t.router({
@@ -448,6 +459,7 @@ export const route = t.router({
   space: spaceRouter,
   apiToken: apiTokenRouter,
   shareData: shareDataRouter,
+  template: templateRouter,
 })
 
 export type AppRouter = typeof route

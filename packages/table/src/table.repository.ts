@@ -6,8 +6,10 @@ import type { TableDo } from "./table.do"
 
 export interface ITableRepository {
   insert(table: TableDo): Promise<void>
+  insertMany(tables: TableDo[]): Promise<void>
   updateOneById(table: TableDo, spec: Option<TableComositeSpecification>): Promise<void>
   bulkUpdate(updates: { table: TableDo; spec: Option<TableComositeSpecification> }[]): Promise<void>
+
   deleteOneById(table: TableDo): Promise<void>
 
   find(spec: Option<TableComositeSpecification>, ignoreSpace?: boolean): Promise<TableDo[]>

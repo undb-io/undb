@@ -26,12 +26,14 @@ import * as pkg from "../../../package.json"
 import { Auth, OpenAPI, Realtime, SpaceModule, TableModule, Web } from "./modules"
 import { FileService } from "./modules/file/file"
 import { OpenTelemetryModule } from "./modules/opentelemetry/opentelemetry.module"
+import { TemplateModule } from "./modules/template/template.module"
 import { loggerPlugin } from "./plugins/logging"
 
 const auth = container.resolve(Auth)
 const web = container.resolve(Web)
 const openapi = container.resolve(OpenAPI)
 const opentelemetry = container.resolve(OpenTelemetryModule)
+const template = container.resolve(TemplateModule)
 
 export const app = new Elysia()
   .onStart(async () => {
@@ -132,6 +134,7 @@ export const app = new Elysia()
   .use(auth.route())
   .use(web.route())
   .use(openapi.route())
+  .use(template.route())
   .use(trpc(route))
   .guard(
     {
