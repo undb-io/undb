@@ -1,0 +1,17 @@
+{
+  "name": "hello",
+  "tables": {
+    "world": {
+      "schema": {
+        "name": {
+          "type": "string",
+          "constraint": {
+            "max": 10
+          },
+          "defaultValue": "world",
+          "display": true
+        }
+      }
+    }
+  }
+}
