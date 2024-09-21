@@ -21,7 +21,7 @@ import { createReferenceFieldCondition, type IReferenceFieldConditionSchema } fr
 
 export const REFERENCE_TYPE = "reference" as const
 
-const referenceFieldOption = z.object({
+export const referenceFieldOption = z.object({
   isOwner: z.boolean(),
   foreignTableId: tableId,
   symmetricFieldId: fieldId.optional(),

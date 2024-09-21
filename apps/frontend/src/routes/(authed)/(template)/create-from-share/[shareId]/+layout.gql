@@ -1,4 +1,4 @@
-query GetCreateFromTemplateData($shareId: ID!) {
+query GetCreateFromShareData($shareId: ID!) {
   space {
     id
     name

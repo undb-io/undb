@@ -1,8 +1,8 @@
 {
   "json.schemas": [
     {
-      "fileMatch": ["packages/template/src/templates/*.json"],
-      "url": "http://localhost:3721/api/template/schema.json"
+      "fileMatch": ["packages/template/src/templates/*.base.json"],
+      "url": "http://localhost:3721/api/template/base/schema.json"
     }
   ]
 }

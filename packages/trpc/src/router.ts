@@ -4,7 +4,7 @@ import {
   BulkUpdateRecordsCommand,
   CreateApiTokenCommand,
   CreateBaseCommand,
-  CreateFromTemplateCommand,
+  CreateFromShareCommand,
   CreateRecordCommand,
   CreateRecordsCommand,
   CreateSpaceCommand,
@@ -55,7 +55,7 @@ import {
   bulkduplicateRecordsCommand,
   createApiTokenCommand,
   createBaseCommand,
-  createFromTemplateCommand,
+  createFromShareCommand,
   createRecordCommand,
   createRecordsCommand,
   createSpaceCommand,
@@ -106,9 +106,9 @@ import {
   updateaccountCommand,
 } from "@undb/commands"
 import { getCurrentSpaceId } from "@undb/context/server"
-import { CommandBus,QueryBus } from "@undb/cqrs"
+import { CommandBus, QueryBus } from "@undb/cqrs"
 import { container } from "@undb/di"
-import type { ICommandBus,IQueryBus } from "@undb/domain"
+import type { ICommandBus, IQueryBus } from "@undb/domain"
 import {
   CountRecordsQuery,
   GetAggregatesQuery,
@@ -136,7 +136,7 @@ import {
 import { tableDTO } from "@undb/table"
 import { z } from "@undb/zod"
 import { authz } from "./authz.middleware"
-import { privateProcedure,publicProcedure,t } from "./trpc"
+import { privateProcedure, publicProcedure, t } from "./trpc"
 
 const commandBus = container.resolve<ICommandBus>(CommandBus)
 const queryBus = container.resolve<IQueryBus>(QueryBus)
@@ -361,11 +361,11 @@ const baseRouter = t.router({
       }
       return commandBus.execute(new CreateBaseCommand({ ...input, spaceId }))
     }),
-  createFromTemplate: privateProcedure
+  createFromShare: privateProcedure
     // check authz in handler, because we can create base to another space
     // .use(authz("base:create"))
-    .input(createFromTemplateCommand)
-    .mutation(({ input }) => commandBus.execute(new CreateFromTemplateCommand(input))),
+    .input(createFromShareCommand)
+    .mutation(({ input }) => commandBus.execute(new CreateFromShareCommand(input))),
   duplicate: privateProcedure
     .use(authz("base:create"))
     .input(duplicateBaseCommand)

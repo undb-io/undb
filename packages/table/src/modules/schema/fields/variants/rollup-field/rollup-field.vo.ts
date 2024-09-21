@@ -17,7 +17,7 @@ export const rollupFn = z.enum(["sum", "average", "count", "min", "max", "lookup
 
 export type IRollupFn = z.infer<typeof rollupFn>
 
-const rollupFieldOption = z.object({
+export const rollupFieldOption = z.object({
   referenceFieldId: fieldId,
   rollupFieldId: fieldId,
   fn: rollupFn,

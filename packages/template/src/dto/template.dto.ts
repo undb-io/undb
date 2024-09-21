@@ -1,14 +1,15 @@
 import { baseNameSchema } from "@undb/base"
-import { createFieldWithoutNameDTO } from "@undb/table"
+import { createFieldWithoutNameDTO, fieldId, tableName } from "@undb/table"
 import { z } from "@undb/zod"
 
-export const templateDTO = z.object({
+export const baseTemplateDTO = z.object({
   name: baseNameSchema,
   tables: z.record(
+    tableName,
     z.object({
-      schema: z.record(createFieldWithoutNameDTO),
+      schema: z.record(fieldId, createFieldWithoutNameDTO),
     }),
   ),
 })
 
-export type ITemplateDTO = z.infer<typeof templateDTO>
+export type IBaseTemplateDTO = z.infer<typeof baseTemplateDTO>

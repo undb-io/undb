@@ -1,6 +1,6 @@
 import { checkPermission, injectSpaceMemberService, type ISpaceMemberService } from "@undb/authz"
 import { BaseId, injectBaseRepository, WithBaseId, WithBaseSpaceId, type IBaseRepository } from "@undb/base"
-import { CreateFromTemplateCommand } from "@undb/commands"
+import { CreateFromShareCommand } from "@undb/commands"
 import { getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
@@ -9,10 +9,10 @@ import { createLogger } from "@undb/logger"
 import { injectShareRepository, WithShareId, type IShareRepository } from "@undb/share"
 import { injectTableService, type ITableService } from "@undb/table"
 
-@commandHandler(CreateFromTemplateCommand)
+@commandHandler(CreateFromShareCommand)
 @singleton()
-export class CreateFromTemplateCommandHandler implements ICommandHandler<CreateFromTemplateCommand, any> {
-  private readonly logger = createLogger(CreateFromTemplateCommandHandler.name)
+export class CreateFromShareCommandHandler implements ICommandHandler<CreateFromShareCommand, any> {
+  private readonly logger = createLogger(CreateFromShareCommandHandler.name)
 
   constructor(
     @injectBaseRepository()
@@ -25,8 +25,8 @@ export class CreateFromTemplateCommandHandler implements ICommandHandler<CreateF
     private readonly shareRepository: IShareRepository,
   ) {}
 
-  async execute(command: CreateFromTemplateCommand): Promise<any> {
-    this.logger.debug("CreateFromTemplateCommandHandler execute command", command)
+  async execute(command: CreateFromShareCommand): Promise<any> {
+    this.logger.debug("CreateFromShareCommandHandler execute command", command)
     const share = (await this.shareRepository.findOne(WithShareId.fromString(command.shareId))).expect(
       "Share not found",
     )
