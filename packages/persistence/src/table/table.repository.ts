@@ -106,6 +106,12 @@ export class TableRepository implements ITableRepository {
     await this.outboxService.save(table)
   }
 
+  async insertMany(tables: TableDo[]): Promise<void> {
+    for (const table of tables) {
+      await this.insert(table)
+    }
+  }
+
   async bulkUpdate(updates: { table: TableDo; spec: Option<TableComositeSpecification> }[]): Promise<void> {
     for (const update of updates) {
       await this.#updateOneById(update.table, update.spec)

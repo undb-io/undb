@@ -5,6 +5,7 @@ import {
   CreateApiTokenCommand,
   CreateBaseCommand,
   CreateFromShareCommand,
+  CreateFromTemplateCommand,
   CreateRecordCommand,
   CreateRecordsCommand,
   CreateSpaceCommand,
@@ -56,6 +57,8 @@ import {
   createApiTokenCommand,
   createBaseCommand,
   createFromShareCommand,
+  createFromTemplateCommand,
+  createFromTemplateCommandOutput,
   createRecordCommand,
   createRecordsCommand,
   createSpaceCommand,
@@ -425,16 +428,24 @@ const apiTokenRouter = t.router({
 
 const spaceRouter = t.router({
   list: privateProcedure
-    .input(getMemberSpacesQuery)
     .use(authz("space:list"))
+    .input(getMemberSpacesQuery)
     .query(({ input }) => queryBus.execute(new GetMemberSpacesQuery(input))),
   create: privateProcedure
     .input(createSpaceCommand)
     .mutation(({ input }) => commandBus.execute(new CreateSpaceCommand(input))),
   update: privateProcedure
-    .input(updateSpaceCommand)
     .use(authz("space:update"))
+    .input(updateSpaceCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateSpaceCommand(input))),
+})
+
+const templateRouter = t.router({
+  createFromTemplate: privateProcedure
+    .use(authz("base:create"))
+    .input(createFromTemplateCommand)
+    .output(createFromTemplateCommandOutput)
+    .mutation(({ input }) => commandBus.execute(new CreateFromTemplateCommand(input))),
 })
 
 export const route = t.router({
@@ -448,6 +459,7 @@ export const route = t.router({
   space: spaceRouter,
   apiToken: apiTokenRouter,
   shareData: shareDataRouter,
+  template: templateRouter,
 })
 
 export type AppRouter = typeof route

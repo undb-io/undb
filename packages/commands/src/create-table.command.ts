@@ -1,9 +1,12 @@
+import { baseIdSchema, baseNameSchema } from "@undb/base"
 import { Command, type CommandProps } from "@undb/domain"
 import type { ICreateSchemaDTO } from "@undb/table"
 import { createTableDTO } from "@undb/table"
 import { z } from "@undb/zod"
 
-export const createTableCommand = createTableDTO.omit({ spaceId: true })
+export const createTableCommand = createTableDTO
+  .omit({ spaceId: true })
+  .merge(z.object({ baseId: baseIdSchema.optional(), baseName: baseNameSchema.optional() }))
 
 export type ICreateTableCommand = z.infer<typeof createTableCommand>
 

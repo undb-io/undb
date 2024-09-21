@@ -5,6 +5,7 @@ import { BulkUpdateRecordsCommandHandler } from "./bulk-update-records.command-h
 import { CreateApiTokenCommandHandler } from "./create-api-token.command-handler"
 import { CreateBaseCommandHandler } from "./create-base.command-handler"
 import { CreateFromShareCommandHandler } from "./create-from-share.command-handler"
+import { CreateFromTemplateCommandHandler } from "./create-from-template.command-handler"
 import { CreateRecordCommandHandler } from "./create-record.command-handler"
 import { CreateRecordsCommandHandler } from "./create-records.command-handler"
 import { CreateSpaceCommandHandler } from "./create-space.command-handler"
@@ -106,4 +107,5 @@ export const commandHandlers = [
   SubmitFormCommandHandler,
   SetFieldWidthCommandHandler,
   DuplicateTableFormCommandHandler,
+  CreateFromTemplateCommandHandler,
 ]

@@ -20,6 +20,7 @@
     "@undb/persistence": "workspace:*",
     "@undb/queries": "workspace:*",
     "@undb/table": "workspace:*",
+    "@undb/template": "workspace:*",
     "@undb/zod": "workspace:*",
     "zod-validation-error": "^3.3.1"
   }
