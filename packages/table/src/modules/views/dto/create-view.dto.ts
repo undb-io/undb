@@ -8,6 +8,8 @@ export const createViewDTO = z.object({
   type: viewType,
 })
 
+export const createViewWithoutNameDTO = createViewDTO.omit({ name: true })
+
 export type ICreateViewDTO = z.infer<typeof createViewDTO>
 
 export const createTableViewDTO = createViewDTO.merge(z.object({ tableId }))

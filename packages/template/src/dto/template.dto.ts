@@ -1,12 +1,25 @@
 import { baseNameSchema } from "@undb/base"
-import { createFieldWithoutNameDTO, fieldId, tableId, tableName } from "@undb/table"
+import {
+  createFieldWithoutNameDTO,
+  createFormWithoutNameDTO,
+  createViewWithoutNameDTO,
+  fieldName,
+  formName,
+  tableId,
+  tableName,
+  viewName,
+} from "@undb/table"
 import { z } from "@undb/zod"
 
-const templateSchemaDTO = z.record(fieldId, createFieldWithoutNameDTO)
+const templateSchemaDTO = z.record(fieldName, createFieldWithoutNameDTO)
+const tempalteViewDTO = z.record(viewName, createViewWithoutNameDTO)
+const templateFormDTO = z.record(formName, createFormWithoutNameDTO)
 
 const basicTemplateTableDTO = z.object({
   id: tableId.optional(),
   schema: templateSchemaDTO,
+  views: tempalteViewDTO.optional(),
+  forms: templateFormDTO.optional(),
 })
 
 export const baseTemplateDTO = z.record(
