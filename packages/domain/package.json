@@ -12,7 +12,7 @@
   "dependencies": {
     "@undb/zod": "workspace:*",
     "array-move": "^4.0.0",
-    "date-fns": "^3.6.0",
+    "date-fns": "^4.1.0",
     "dequal": "^2.0.3",
     "nanoid": "^5.0.7",
     "oxide.ts": "^1.1.0",

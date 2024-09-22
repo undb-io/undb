@@ -2,7 +2,7 @@ import { getNextName } from "@undb/utils"
 import type { IDuplicateTableDTO } from "../dto/duplicate-table.dto"
 import { DuplicatedTableSpecification } from "../specifications"
 import { TableIdVo } from "../table-id.vo"
-import { TableCreator } from "../table.builder"
+import { TableFactory } from "../table.builder"
 import { TableDo } from "../table.do"
 
 export function duplicateTableMethod(
@@ -10,7 +10,7 @@ export function duplicateTableMethod(
   dto: IDuplicateTableDTO,
   tableNames: string[],
 ): DuplicatedTableSpecification {
-  const duplicated = new TableCreator().fromJSON({
+  const duplicated = TableFactory.fromJSON({
     ...this.toJSON(),
     id: dto.tableId ?? TableIdVo.create().value,
     baseId: dto.baseId ?? this.baseId,

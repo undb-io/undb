@@ -4,9 +4,11 @@ import { tableRLSCondition } from "../table-rls-condition.vo"
 import { rlsId } from "../table-rls-id.vo"
 import { tableRLSSubject } from "../table-rls-subject.vo"
 
+export const rlsName = z.string().min(2)
+
 export const rlsDTO = z.object({
   id: rlsId,
-  name: z.string().min(2),
+  name: rlsName,
   enabled: z.boolean(),
   action: tableRLSAction,
   allow: z.boolean(),

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores"
-  import { TableCreator, TableDo } from "@undb/table"
+  import { TableFactory, TableDo } from "@undb/table"
   import { setTable } from "$lib/store/table.store"
   import type { LayoutData } from "./$types"
   import { writable } from "svelte/store"
@@ -16,7 +16,7 @@
   const table = writable<TableDo>()
   $: {
     if (!fetching && tableDTO && $page.params.tableId === tableDTO.id) {
-      table.set(new TableCreator().fromJSON(tableDTO))
+      table.set(TableFactory.fromJSON(tableDTO))
       setTable(table)
     }
   }

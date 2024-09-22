@@ -11,11 +11,11 @@
   },
   "dependencies": {
     "@undb/base": "workspace:*",
-    "@undb/template": "workspace:*",
     "@undb/domain": "workspace:*",
     "@undb/openapi": "workspace:*",
     "@undb/share": "workspace:*",
     "@undb/table": "workspace:*",
+    "@undb/template": "workspace:*",
     "@undb/zod": "workspace:*"
   }
 }

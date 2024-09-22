@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { TableCreator, TableDo } from "@undb/table"
+  import { TableFactory, TableDo } from "@undb/table"
   import { setTable, viewId } from "$lib/store/table.store"
   import type { LayoutData } from "./$types"
   import { derived, writable } from "svelte/store"
@@ -18,7 +18,7 @@
   const table = writable<TableDo>()
   $: {
     if (!fetching && tableDTO) {
-      table.set(new TableCreator().fromJSON(tableDTO))
+      table.set(TableFactory.fromJSON(tableDTO))
       setTable(table)
     }
   }

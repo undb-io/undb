@@ -1,5 +1,5 @@
 import { Base, BaseFactory } from "@undb/base"
-import { type ICreateSchemaDTO, TableCreator, TableDo } from "@undb/table"
+import { type ICreateSchemaDTO, TableDo, TableFactory } from "@undb/table"
 import { getNextName } from "@undb/utils"
 import { type IBaseTemplateDTO } from "./dto/template.dto"
 
@@ -15,7 +15,7 @@ export class TemplateFactory {
       for (const [name, table] of Object.entries(b.tables)) {
         const schema = Object.entries(table.schema).map(([name, field]) => ({ ...field, name })) as ICreateSchemaDTO
 
-        const t = new TableCreator().create({ baseId, name, schema, spaceId })
+        const t = TableFactory.create({ baseId, name, schema, spaceId })
         tables.push(t)
       }
 

@@ -2,7 +2,7 @@
   import {
     getIsFilterableFieldType,
     parseValidViewFilter,
-    TableCreator,
+    TableFactory,
     toMaybeConditionGroup,
     type IReferenceFieldConstraint,
     type IUpdateReferenceFieldDTO,
@@ -43,7 +43,7 @@
   $: ft = $getForeignTableStore.data?.table
 
   // @ts-ignore
-  $: foreignTable = ft ? new TableCreator().fromJSON(ft) : undefined
+  $: foreignTable = ft ? TableFactory.fromJSON(ft) : undefined
 
   const value = writable<MaybeConditionGroup<IViewFilterOptionSchema> | undefined>()
   onMount(() => {

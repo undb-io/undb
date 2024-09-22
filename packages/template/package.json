@@ -5,10 +5,10 @@
   "type": "module",
   "dependencies": {
     "@undb/base": "workspace:*",
-    "@undb/table": "workspace:*",
-    "@undb/zod": "workspace:*",
     "@undb/di": "workspace:*",
     "@undb/logger": "workspace:*",
+    "@undb/table": "workspace:*",
+    "@undb/zod": "workspace:*",
     "zod-to-json-schema": "^3.23.3"
   },
   "devDependencies": {
