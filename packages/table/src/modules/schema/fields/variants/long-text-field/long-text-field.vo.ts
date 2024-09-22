@@ -20,7 +20,7 @@ import { LongTextEqual } from "./long-text-field.specification"
 export const LONGTEXT_TYPE = "longText" as const
 
 export const longTextFieldOption = z.object({
-  allowRichText: z.boolean().optional(),
+  allowRichText: z.boolean().optional().default(true),
 })
 
 export type ILongTextFieldOption = z.infer<typeof longTextFieldOption>
@@ -56,7 +56,7 @@ export class LongTextField extends AbstractField<LongTextFieldValue, LongTextFie
       this.defaultValue = new LongTextFieldValue(dto.defaultValue)
     }
     if (dto.option) {
-      this.option = Some({ allowRichText: dto.option.allowRichText })
+      this.option = Some({ allowRichText: dto.option.allowRichText ?? false })
     }
   }
 
@@ -66,7 +66,7 @@ export class LongTextField extends AbstractField<LongTextFieldValue, LongTextFie
       field.defaultValue = new LongTextFieldValue(dto.defaultValue)
     }
     if (dto.option) {
-      field.option = Some({ allowRichText: dto.option.allowRichText })
+      field.option = Some({ allowRichText: dto.option.allowRichText ?? true })
     }
     return field
   }
@@ -105,7 +105,7 @@ export class LongTextField extends AbstractField<LongTextFieldValue, LongTextFie
   }
 
   public get allowRichText(): boolean {
-    return this.option.unwrapOrElse(() => ({ allowRichText: false })).allowRichText
+    return this.option.unwrapOrElse(() => ({ allowRichText: true })).allowRichText
   }
 
   protected override getConditionSchema(optionType: z.ZodTypeAny): ILongTextFieldConditionSchema {

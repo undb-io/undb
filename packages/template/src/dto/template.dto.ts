@@ -20,6 +20,8 @@ const basicTemplateTableDTO = z.object({
   schema: templateSchemaDTO,
   views: tempalteViewDTO.optional(),
   forms: templateFormDTO.optional(),
+
+  records: z.record(z.any()).array().optional(),
 })
 
 export const baseTemplateDTO = z.record(

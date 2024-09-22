@@ -1,7 +1,13 @@
 import { Base, injectBaseRepository, WithBaseSpaceId, type IBaseRepository } from "@undb/base"
 import { singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
-import { injectTableRepository, TableDo, type ITableRepository } from "@undb/table"
+import {
+  injectRecordRepository,
+  injectTableRepository,
+  TableDo,
+  type IRecordRepository,
+  type ITableRepository,
+} from "@undb/table"
 import type { IBaseTemplateDTO } from "../dto"
 import { TemplateFactory } from "../template.factory"
 
@@ -18,6 +24,8 @@ export class TemplateService implements ITemplateService {
     private readonly baseRepository: IBaseRepository,
     @injectTableRepository()
     private readonly tableRepository: ITableRepository,
+    @injectRecordRepository()
+    private readonly recordRepository: IRecordRepository,
   ) {}
 
   async createBase(dto: IBaseTemplateDTO, spaceId: string): Promise<{ base: Base; tables: TableDo[] }[]> {

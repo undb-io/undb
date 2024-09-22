@@ -107,10 +107,6 @@ export class TableBuilder implements ITableBuilder {
   }
 }
 
-export interface ITableCreator {
-  create(dto: ICreateTableDTO): TableDo
-}
-
 export class TableFactory {
   private static get builder() {
     return new TableBuilder()
@@ -132,6 +128,10 @@ export class TableFactory {
     // @ts-ignore - TODO: fix this
     table.addDomainEvent(new TableCreatedEvent({ table: table.toJSON() }))
     return table
+  }
+
+  static createMany(dtos: ICreateTableDTO[]): TableDo[] {
+    return dtos.map((dto) => this.create(dto))
   }
 
   static fromJSON(dto: ITableDTO): TableDo {
