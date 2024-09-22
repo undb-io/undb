@@ -26,6 +26,6 @@ export class Web {
       })
       .get("/verify-email", () => index)
       .get("/reset-password/*", () => index)
-      .get("/create-from-template/*", () => index)
+      .get("/create-from-share/*", () => index)
   }
 }
