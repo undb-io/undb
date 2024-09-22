@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-86
+
+
+### 🩹 Fixes
+
+- Fix lock file ([1e7da81](https://github.com/undb-io/undb/commit/1e7da81))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-85
 
 
