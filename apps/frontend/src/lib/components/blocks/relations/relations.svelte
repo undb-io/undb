@@ -3,7 +3,7 @@
   import { Svelvet } from "svelvet"
   import TableNode from "./table-node.svelte"
   import { GetTableForeignTablesStore } from "$houdini"
-  import { TableCreator } from "@undb/table"
+  import { TableFactory } from "@undb/table"
 
   const table = getTable()
 
@@ -13,7 +13,7 @@
 
   $: foreignTablesDTO = $getForeignTablesStore.data?.tableForeignTables ?? []
   // @ts-ignore
-  $: foreignTables = foreignTablesDTO.map((table) => new TableCreator().fromJSON(table))
+  $: foreignTables = foreignTablesDTO.map((table) => TableFactory.fromJSON(table))
 </script>
 
 <Svelvet controls minimap>

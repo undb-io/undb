@@ -3,7 +3,7 @@
   import * as Popover from "$lib/components/ui/popover"
   import ForeignRecordsPicker from "./foreign-records-picker.svelte"
   import { readable, writable } from "svelte/store"
-  import { ReferenceField, TableCreator } from "@undb/table"
+  import { ReferenceField, TableFactory } from "@undb/table"
   import Button from "$lib/components/ui/button/button.svelte"
   import { LoaderCircleIcon } from "lucide-svelte"
 
@@ -27,7 +27,7 @@
 
   $: table = $foreignTableStore.data?.table
 
-  $: foreignTable = table ? readable(new TableCreator().fromJSON(table)) : null
+  $: foreignTable = table ? readable(TableFactory.fromJSON(table)) : null
 </script>
 
 <Popover.Root portal="body" bind:open {onOpenChange}>

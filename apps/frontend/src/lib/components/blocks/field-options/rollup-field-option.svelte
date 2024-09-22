@@ -3,7 +3,7 @@
   import {
     FieldIdVo,
     ReferenceField,
-    TableCreator,
+    TableFactory,
     TableDo,
     getIsFieldCanBeRollup,
     type IRollupFieldOption,
@@ -34,7 +34,7 @@
 
   $: foreignTable = $store.data?.table
   const foreignTableDo = writable<TableDo>()
-  $: if (foreignTable) foreignTableDo.set(new TableCreator().fromJSON(foreignTable))
+  $: if (foreignTable) foreignTableDo.set(TableFactory.fromJSON(foreignTable))
   $: schema = foreignTable?.schema
 
   $: fields = schema?.filter((f) => getIsFieldCanBeRollup(f.type))
@@ -71,7 +71,12 @@
     {#if $foreignTableDo && option.rollupFieldId}
       <div class="space-y-1">
         <Label class="text-xs font-normal">Aggregate function</Label>
-        <RollupFnPicker {disabled} foreignTable={$foreignTableDo} rollupFieldId={option.rollupFieldId} bind:value={option.fn} />
+        <RollupFnPicker
+          {disabled}
+          foreignTable={$foreignTableDo}
+          rollupFieldId={option.rollupFieldId}
+          bind:value={option.fn}
+        />
       </div>
     {/if}
   </div>

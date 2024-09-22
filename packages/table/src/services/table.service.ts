@@ -26,7 +26,7 @@ import {
   type View,
 } from "../modules"
 import type { ICreateTableFormDTO } from "../modules/forms/dto/create-form.dto"
-import { TableCreator } from "../table.builder"
+import { TableFactory } from "../table.builder"
 import type { TableDo } from "../table.do"
 import type { ITableRepository } from "../table.repository"
 import { injectTableRepository } from "../table.repository.provider"
@@ -73,7 +73,7 @@ export class TableService implements ITableService {
   readonly logger = createLogger(TableService.name)
 
   public get creator() {
-    return new TableCreator()
+    return TableFactory
   }
 
   constructor(

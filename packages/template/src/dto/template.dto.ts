@@ -1,10 +1,11 @@
 import { baseNameSchema } from "@undb/base"
-import { createFieldWithoutNameDTO, fieldId, tableName } from "@undb/table"
+import { createFieldWithoutNameDTO, fieldId, tableId, tableName } from "@undb/table"
 import { z } from "@undb/zod"
 
 const templateSchemaDTO = z.record(fieldId, createFieldWithoutNameDTO)
 
 const basicTemplateTableDTO = z.object({
+  id: tableId.optional(),
   schema: templateSchemaDTO,
 })
 

@@ -111,12 +111,12 @@ export interface ITableCreator {
   create(dto: ICreateTableDTO): TableDo
 }
 
-export class TableCreator {
-  private get builder() {
+export class TableFactory {
+  private static get builder() {
     return new TableBuilder()
   }
 
-  create(dto: ICreateTableDTO): TableDo {
+  static create(dto: ICreateTableDTO): TableDo {
     dto = createTableDTO.parse(dto)
     const table = this.builder
       .setId(dto.id)
@@ -134,7 +134,7 @@ export class TableCreator {
     return table
   }
 
-  fromJSON(dto: ITableDTO): TableDo {
+  static fromJSON(dto: ITableDTO): TableDo {
     return this.builder
       .setId(dto.id)
       .setBaseId(dto.baseId)
