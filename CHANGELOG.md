@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-85
+
+
+### 🩹 Fixes
+
+- Fix create from share ([3906824](https://github.com/undb-io/undb/commit/3906824))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-84
 
 
