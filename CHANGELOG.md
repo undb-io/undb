@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-87
+
+
+### 🏡 Chore
+
+- Remove buttong ([a74b338](https://github.com/undb-io/undb/commit/a74b338))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-86
 
 
