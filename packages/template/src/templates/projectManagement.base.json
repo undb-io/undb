@@ -5,7 +5,39 @@
         "schema": {
           "Title": {
             "id": "title",
-            "type": "string"
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Status": {
+            "id": "status",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "defaultValue": "backlog",
+            "option": {
+              "options": [
+                {
+                  "id": "backlog",
+                  "color": "gray",
+                  "name": "Backlog"
+                },
+                {
+                  "id": "inProgress",
+                  "name": "In Progress",
+                  "color": "blue"
+                },
+                {
+                  "id": "done",
+                  "name": "Done",
+                  "color": "green"
+                }
+              ]
+            }
           },
           "Projects Count": {
             "type": "rollup",
@@ -18,13 +50,25 @@
               "rollupFieldId": "title"
             }
           }
+        },
+        "views": {
+          "Kanban": {
+            "type": "kanban",
+            "kanban": {
+              "field": "status"
+            }
+          }
         }
       },
       "Bugs": {
         "schema": {
           "Title": {
             "id": "title",
-            "type": "string"
+            "type": "string",
+            "display": true,
+            "constraint": {
+              "required": true
+            }
           },
           "Projects": {
             "id": "projects",
@@ -43,6 +87,61 @@
               "referenceFieldId": "projects",
               "rollupFieldId": "title"
             }
+          },
+          "Status": {
+            "id": "status",
+            "type": "select",
+            "defaultValue": "backlog",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "backlog",
+                  "name": "Backlog",
+                  "color": "gray"
+                },
+                {
+                  "id": "inProgress",
+                  "name": "In Progress",
+                  "color": "blue"
+                },
+                {
+                  "id": "done",
+                  "name": "Done",
+                  "color": "green"
+                }
+              ]
+            }
+          }
+        },
+        "views": {
+          "Kanban": {
+            "type": "kanban",
+            "kanban": {
+              "field": "status"
+            }
+          },
+          "All Tasks": {
+            "type": "grid"
+          }
+        },
+        "forms": {
+          "New Bug": {
+            "fields": [
+              {
+                "fieldId": "title",
+                "hidden": false,
+                "required": true
+              },
+              {
+                "fieldId": "status",
+                "defaultValue": "backlog",
+                "hidden": true
+              }
+            ]
           }
         }
       }

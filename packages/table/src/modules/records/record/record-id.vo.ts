@@ -5,7 +5,7 @@ const prefix = "rec"
 
 const size = 8
 
-export const recordId = z.string().startsWith(prefix)
+export const recordId = z.string().startsWith(prefix).or(z.string())
 
 export const RecordIdVO = IdFactory(prefix, size)
 
