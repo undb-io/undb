@@ -130,8 +130,34 @@
         "views": {
           "Kanban": {
             "type": "kanban",
+            "color": {
+              "conjunction": "and",
+              "children": [
+                {
+                  "field": "status",
+                  "op": "eq",
+                  "value": "done",
+                  "option": {
+                    "color": "green"
+                  }
+                }
+              ]
+            },
             "kanban": {
               "field": "status"
+            }
+          },
+          "Done": {
+            "type": "grid",
+            "filter": {
+              "conjunction": "and",
+              "children": [
+                {
+                  "field": "status",
+                  "op": "eq",
+                  "value": "done"
+                }
+              ]
             }
           },
           "All Tasks": {
@@ -149,6 +175,16 @@
               {
                 "fieldId": "status",
                 "defaultValue": "backlog",
+                "conditionEnabled": true,
+                "condition": {
+                  "conjunction": "and",
+                  "children": [
+                    {
+                      "field": "title",
+                      "op": "is_not_empty"
+                    }
+                  ]
+                },
                 "hidden": true
               }
             ]

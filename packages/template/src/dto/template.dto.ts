@@ -28,24 +28,26 @@ import {
 } from "@undb/table"
 import { z } from "@undb/zod"
 
+const omitName = { name: true } as const
+
 const createTemplateFieldDTO = z.discriminatedUnion("type", [
-  createTablesStringFieldDTO.omit({ name: true }),
-  createTablesNumberFieldDTO.omit({ name: true }),
-  createTablesReferenceFieldDTO.omit({ name: true }),
-  createTablesRollupFieldDTO.omit({ name: true }),
-  createTablesSelectFieldDTO.omit({ name: true }),
-  createTablesRatingFieldDTO.omit({ name: true }),
-  createTablesEmailFieldDTO.omit({ name: true }),
-  createTablesUrlFieldDTO.omit({ name: true }),
-  createTablesAttachmentFieldDTO.omit({ name: true }),
-  createTablesButtonFieldDTO.omit({ name: true }),
-  createTablesCheckboxFieldDTO.omit({ name: true }),
-  createTablesCurrencyFieldDTO.omit({ name: true }),
-  createTablesDateFieldDTO.omit({ name: true }),
-  createTablesJsonFieldDTO.omit({ name: true }),
-  createTablesUserFieldDTO.omit({ name: true }),
-  createTablesPercentageFieldDTO.omit({ name: true }),
-  createTablesDurationFieldDTO.omit({ name: true }),
+  createTablesStringFieldDTO.omit(omitName),
+  createTablesNumberFieldDTO.omit(omitName),
+  createTablesReferenceFieldDTO.omit(omitName),
+  createTablesRollupFieldDTO.omit(omitName),
+  createTablesSelectFieldDTO.omit(omitName),
+  createTablesRatingFieldDTO.omit(omitName),
+  createTablesEmailFieldDTO.omit(omitName),
+  createTablesUrlFieldDTO.omit(omitName),
+  createTablesAttachmentFieldDTO.omit(omitName),
+  createTablesButtonFieldDTO.omit(omitName),
+  createTablesCheckboxFieldDTO.omit(omitName),
+  createTablesCurrencyFieldDTO.omit(omitName),
+  createTablesDateFieldDTO.omit(omitName),
+  createTablesJsonFieldDTO.omit(omitName),
+  createTablesUserFieldDTO.omit(omitName),
+  createTablesPercentageFieldDTO.omit(omitName),
+  createTablesDurationFieldDTO.omit(omitName),
 ])
 
 const templateSchemaDTO = z.record(fieldName, createTemplateFieldDTO)
@@ -58,7 +60,7 @@ const basicTemplateTableDTO = z.object({
   views: tempalteViewDTO.optional(),
   forms: templateFormDTO.optional(),
 
-  records: flattenCreateRecordDTO.optional(),
+  records: flattenCreateRecordDTO.array().optional(),
 })
 
 export const baseTemplateDTO = z.record(

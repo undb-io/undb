@@ -42,7 +42,7 @@
       {/if}
     {/if}
   </div>
-  {#if (isSelected || isEditing) && ((!Array.isArray(value) && !!value) || (Array.isArray(value) && value.length))}
+  {#if (isSelected || isEditing) && ((!Array.isArray(value) && !!value) || (Array.isArray(value) && value.length)) && field.fn === "lookup"}
     <Popover.Root>
       <Popover.Trigger asChild let:builder>
         <Button builders={[builder]} variant="link" class="min-w-4 pl-2 pr-0">
