@@ -1,8 +1,18 @@
+import type { Base } from "@undb/base"
 import { None, Some, applyRules } from "@undb/domain"
 import type { ISpaceId } from "@undb/space"
-import { createTableDTO, type ICreateTableDTO, type ITableDTO } from "./dto"
+import { getNextName } from "@undb/utils"
+import { createTableDTO, type ICreateTableDTO, type ICreateTablesDTO, type ITableDTO } from "./dto"
 import { TableCreatedEvent } from "./events"
-import { ReferenceField, TableRLSGroup, type ICreateFormDTO, type IFormsDTO, type IRLSGroupDTO } from "./modules"
+import {
+  ReferenceField,
+  TableRLSGroup,
+  type ICreateFieldDTO,
+  type ICreateFormDTO,
+  type ICreateReferenceFieldDTO,
+  type IFormsDTO,
+  type IRLSGroupDTO,
+} from "./modules"
 import { FormsVO } from "./modules/forms/forms.vo"
 import type { ICreateSchemaDTO } from "./modules/schema/dto/create-schema.dto"
 import type { ISchemaDTO } from "./modules/schema/dto/schema.dto"
@@ -132,14 +142,37 @@ export class TableFactory {
     return table
   }
 
-  static createMany(dtos: ICreateTableDTO[]): TableDo[] {
-    const tables = dtos.map((dto) => this.create(dto))
+  // create many table inside a base
+  static createMany(baseNames: string[], base: Base, dtos: ICreateTablesDTO[]): TableDo[] {
+    const ids = new TablesIdsMap(baseNames, base, dtos)
+    const baseName = getNextName(baseNames, base.name.value)
 
-    const ts = tables.map((table) => ({ table, referenceFields: table.schema.getReferenceFields() }))
+    const tables = dtos.map((dto) => {
+      const schema = dto.schema
+        .filter((f) => f.type !== "rollup")
+        .map((field) => {
+          if (field.type === "reference") {
+            const id = ids.mustGet(baseName, field.option.foreignTable.tableName)
+            return {
+              ...field,
+              option: {
+                ...field.option,
+                foreignTableId: id,
+              },
+            } as ICreateReferenceFieldDTO
+          }
+          return field as ICreateFieldDTO
+        }) as ICreateSchemaDTO
 
-    for (const { table, referenceFields } of ts) {
+      const id = ids.mustGet(baseName, dto.name)
+      const table = this.create({ ...dto, id, schema })
+      return { table, dto: { ...dto, id: table.id.value } }
+    })
+
+    for (const { table } of tables) {
+      const referenceFields = table.schema.getReferenceFields()
       for (const referenceField of referenceFields) {
-        const foreignTable = tables.find((table) => table.id.value === referenceField.foreignTableId)
+        const foreignTable = tables.find(({ table }) => table.id.value === referenceField.foreignTableId)?.table
         if (!foreignTable) {
           throw new Error("Foreign table not found")
         }
@@ -148,7 +181,13 @@ export class TableFactory {
       }
     }
 
-    return tables
+    for (const { table, dto } of tables) {
+      const rollupFieldDTOs = dto.schema.filter((field) => field.type === "rollup")
+      for (const rollupField of rollupFieldDTOs) {
+      }
+    }
+
+    return tables.map(({ table }) => table)
   }
 
   static fromJSON(dto: ITableDTO): TableDo {
@@ -162,5 +201,36 @@ export class TableFactory {
       .setForms(dto.forms)
       .setRLS(dto.rls)
       .build()
+  }
+}
+
+class TablesIdsMap {
+  private map = new Map<string, string>()
+
+  constructor(baseNames: string[], base: Base, dto: ICreateTablesDTO[]) {
+    for (const table of dto) {
+      const name = getNextName(baseNames, base.name.value)
+      this.map.set(this.generateKey(name, table.name), TableIdVo.create().value)
+    }
+  }
+
+  private generateKey(baseName: string, tableName: string): string {
+    return `${baseName}-${tableName}`
+  }
+
+  set(baseName: string, tableName: string) {
+    this.map.set(this.generateKey(baseName, tableName), TableIdVo.create().value)
+  }
+
+  get(baseName: string, tableName: string): string | undefined {
+    return this.map.get(this.generateKey(baseName, tableName))
+  }
+
+  mustGet(baseName: string, tableName: string): string {
+    const id = this.get(baseName, tableName)
+    if (!id) {
+      throw new Error("Cannot get id from table ids map")
+    }
+    return id
   }
 }

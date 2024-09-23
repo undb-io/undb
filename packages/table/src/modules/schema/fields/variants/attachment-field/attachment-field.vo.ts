@@ -23,6 +23,8 @@ export const createAttachmentFieldDTO = createBaseFieldDTO.extend({
   constraint: attachmentFieldConstraint.optional(),
 })
 
+export const createTablesAttachmentFieldDTO = createAttachmentFieldDTO
+
 export type ICreateAttachmentFieldDTO = z.infer<typeof createAttachmentFieldDTO>
 
 export const updateAttachmentFieldDTO = createAttachmentFieldDTO.setKey("id", fieldId)

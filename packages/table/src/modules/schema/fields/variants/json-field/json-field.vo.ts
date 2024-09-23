@@ -24,6 +24,8 @@ export const createJsonFieldDTO = createBaseFieldDTO.extend({
   defaultValue: z.any().optional().nullable(),
 })
 
+export const createTablesJsonFieldDTO = createJsonFieldDTO
+
 export type ICreateJsonFieldDTO = z.infer<typeof createJsonFieldDTO>
 export const updateJsonFieldDTO = createJsonFieldDTO.setKey("id", fieldId)
 export type IUpjsonJsonFieldDTO = z.infer<typeof updateJsonFieldDTO>

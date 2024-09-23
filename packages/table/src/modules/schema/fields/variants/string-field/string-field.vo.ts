@@ -33,6 +33,8 @@ export const createStringFieldDTO = createBaseFieldDTO.extend({
   defaultValue: stringFieldValue,
 })
 
+export const createTablesStringFieldDTO = createStringFieldDTO
+
 export type ICreateStringFieldDTO = z.infer<typeof createStringFieldDTO>
 
 export const updateStringFieldDTO = createStringFieldDTO.setKey("id", fieldId)

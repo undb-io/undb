@@ -24,6 +24,8 @@ export const createNumberFieldDTO = createBaseFieldDTO.extend({
   defaultValue: numberFieldValueSchema,
 })
 
+export const createTablesNumberFieldDTO = createNumberFieldDTO
+
 export type ICreateNumberFieldDTO = z.infer<typeof createNumberFieldDTO>
 
 export const updateNumberFieldDTO = createNumberFieldDTO.setKey("id", fieldId)

@@ -26,6 +26,8 @@ export const createRatingFieldDTO = createBaseFieldDTO.extend({
   defaultValue: ratingFieldValueSchema,
 })
 
+export const createTablesRatingFieldDTO = createRatingFieldDTO
+
 export type ICreateRatingFieldDTO = z.infer<typeof createRatingFieldDTO>
 
 export const updateRatingFieldDTO = createRatingFieldDTO.setKey("id", fieldId)

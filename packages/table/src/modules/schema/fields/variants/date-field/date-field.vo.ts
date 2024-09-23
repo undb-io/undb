@@ -25,6 +25,8 @@ export const createDateFieldDTO = createBaseFieldDTO.extend({
   defaultValue: dateFieldValue,
 })
 
+export const createTablesDateFieldDTO = createDateFieldDTO
+
 export type ICreateDateFieldDTO = z.infer<typeof createDateFieldDTO>
 export const updateDateFieldDTO = createDateFieldDTO.setKey("id", fieldId)
 export type IUpdateDateFieldDTO = z.infer<typeof updateDateFieldDTO>

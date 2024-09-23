@@ -4,6 +4,7 @@
       "Projects": {
         "schema": {
           "Title": {
+            "id": "title",
             "type": "string"
           }
         }
@@ -11,14 +12,15 @@
       "Bugs": {
         "schema": {
           "Title": {
+            "id": "title",
             "type": "string"
           },
           "Projects": {
+            "id": "projects",
             "type": "reference",
             "option": {
               "createSymmetricField": true,
               "foreignTable": {
-                "baseName": "Project Management",
                 "tableName": "Projects"
               }
             }

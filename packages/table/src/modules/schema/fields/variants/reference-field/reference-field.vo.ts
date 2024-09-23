@@ -1,7 +1,9 @@
+import { baseNameSchema } from "@undb/base"
 import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { TableComositeSpecification } from "../../../../../specifications"
 import { tableId } from "../../../../../table-id.vo"
+import { tableName } from "../../../../../table-name.vo"
 import type { TableDo } from "../../../../../table.do"
 import type { FormFieldVO } from "../../../../forms/form/form-field.vo"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
@@ -48,6 +50,25 @@ export const createReferenceFieldDTO = createBaseFieldDTO
     constraint: referenceFieldConstraint.optional(),
   })
   .omit({ display: true })
+
+const createTablesReferenceOption = createReferenceFieldOption
+  .omit({
+    foreignTableId: true,
+  })
+  .merge(
+    z.object({
+      foreignTable: z.object({
+        baseName: baseNameSchema.optional(),
+        tableName: tableName,
+      }),
+    }),
+  )
+
+export const createTablesReferenceFieldDTO = createReferenceFieldDTO.merge(
+  z.object({
+    option: createTablesReferenceOption,
+  }),
+)
 
 export type ICreateReferenceFieldDTO = z.infer<typeof createReferenceFieldDTO>
 export const updateReferenceFieldDTO = createReferenceFieldDTO

@@ -34,6 +34,8 @@ export const createSelectFieldDTO = createBaseFieldDTO.extend({
   option: selectFieldOption,
 })
 
+export const createTablesSelectFieldDTO = createSelectFieldDTO
+
 export type ICreateSelectFieldDTO = z.infer<typeof createSelectFieldDTO>
 
 export const updateSelectFieldDTO = createSelectFieldDTO.setKey("id", fieldId)

@@ -32,6 +32,8 @@ export const createLongTextFieldDTO = createBaseFieldDTO.extend({
   option: longTextFieldOption.optional(),
 })
 
+export const createTablesLongTextFieldDTO = createLongTextFieldDTO
+
 export type ICreateLongTextFieldDTO = z.infer<typeof createLongTextFieldDTO>
 
 export const updateLongTextFieldDTO = createLongTextFieldDTO.setKey("id", fieldId)

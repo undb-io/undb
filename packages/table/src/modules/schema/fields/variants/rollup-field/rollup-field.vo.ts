@@ -1,5 +1,7 @@
+import { baseNameSchema } from "@undb/base"
 import { Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
+import { tableName } from "../../../../../table-name.vo"
 import type { TableDo } from "../../../../../table.do"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
@@ -25,16 +27,32 @@ export const rollupFieldOption = z.object({
 
 export type IRollupFieldOption = z.infer<typeof rollupFieldOption>
 
+export const createRollupFieldOption = rollupFieldOption
+
 export const createRollupFieldDTO = createBaseFieldDTO
   .extend({
     type: z.literal(ROLLUP_TYPE),
-    option: z.object({
-      referenceFieldId: fieldId,
-      rollupFieldId: fieldId,
-      fn: rollupFn,
-    }),
+    option: createRollupFieldOption,
   })
   .omit({ display: true })
+
+const createTablesRollupOption = createRollupFieldOption.merge(
+  z.object({
+    referenceFieldId: fieldId.optional(),
+    foreignReferenceField: z
+      .object({
+        baseName: baseNameSchema.optional(),
+        tableName: tableName,
+        fieldId: fieldId,
+      })
+      .optional(),
+  }),
+)
+export const createTablesRollupFieldDTO = createRollupFieldDTO.merge(
+  z.object({
+    option: createTablesRollupOption,
+  }),
+)
 
 export type ICreateRollupFieldDTO = z.infer<typeof createRollupFieldDTO>
 export const updateRollupFieldDTO = createRollupFieldDTO.setKey("id", fieldId)

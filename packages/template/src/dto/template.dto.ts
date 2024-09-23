@@ -1,25 +1,23 @@
 import { baseNameSchema } from "@undb/base"
 import {
-  createAttachmentFieldDTO,
-  createButtonFieldDTO,
-  createCheckboxFieldDTO,
-  createCurrencyFieldDTO,
-  createDateFieldDTO,
-  createDurationFieldDTO,
-  createEmailFieldDTO,
   createFormWithoutNameDTO,
-  createJsonFieldDTO,
-  createLongTextFieldDTO,
-  createNumberFieldDTO,
-  createPercentageFieldDTO,
-  createRatingFieldDTO,
-  createReferenceFieldDTO,
-  createReferenceFieldOption,
-  createRollupFieldDTO,
-  createSelectFieldDTO,
-  createStringFieldDTO,
-  createUrlFieldDTO,
-  createUserFieldDTO,
+  createTablesAttachmentFieldDTO,
+  createTablesButtonFieldDTO,
+  createTablesCheckboxFieldDTO,
+  createTablesCurrencyFieldDTO,
+  createTablesDateFieldDTO,
+  createTablesDurationFieldDTO,
+  createTablesEmailFieldDTO,
+  createTablesJsonFieldDTO,
+  createTablesNumberFieldDTO,
+  createTablesPercentageFieldDTO,
+  createTablesRatingFieldDTO,
+  createTablesReferenceFieldDTO,
+  createTablesRollupFieldDTO,
+  createTablesSelectFieldDTO,
+  createTablesStringFieldDTO,
+  createTablesUrlFieldDTO,
+  createTablesUserFieldDTO,
   createViewWithoutNameDTO,
   fieldName,
   formName,
@@ -29,42 +27,24 @@ import {
 } from "@undb/table"
 import { z } from "@undb/zod"
 
-const createTemplateReferenceOption = createReferenceFieldOption
-  .omit({
-    foreignTableId: true,
-  })
-  .merge(
-    z.object({
-      foreignTable: z.object({
-        baseName: baseNameSchema,
-        tableName: tableName,
-      }),
-    }),
-  )
-
 const createTemplateFieldDTO = z.discriminatedUnion("type", [
-  createStringFieldDTO.omit({ name: true }),
-  createNumberFieldDTO.omit({ name: true }),
-  createReferenceFieldDTO.omit({ name: true }).merge(
-    z.object({
-      option: createTemplateReferenceOption,
-    }),
-  ),
-  createRollupFieldDTO.omit({ name: true }),
-  createSelectFieldDTO.omit({ name: true }),
-  createRatingFieldDTO.omit({ name: true }),
-  createEmailFieldDTO.omit({ name: true }),
-  createUrlFieldDTO.omit({ name: true }),
-  createAttachmentFieldDTO.omit({ name: true }),
-  createDateFieldDTO.omit({ name: true }),
-  createJsonFieldDTO.omit({ name: true }),
-  createCheckboxFieldDTO.omit({ name: true }),
-  createUserFieldDTO.omit({ name: true }),
-  createLongTextFieldDTO.omit({ name: true }),
-  createCurrencyFieldDTO.omit({ name: true }),
-  createButtonFieldDTO.omit({ name: true }),
-  createDurationFieldDTO.omit({ name: true }),
-  createPercentageFieldDTO.omit({ name: true }),
+  createTablesStringFieldDTO.omit({ name: true }),
+  createTablesNumberFieldDTO.omit({ name: true }),
+  createTablesReferenceFieldDTO.omit({ name: true }),
+  createTablesRollupFieldDTO.omit({ name: true }),
+  createTablesSelectFieldDTO.omit({ name: true }),
+  createTablesRatingFieldDTO.omit({ name: true }),
+  createTablesEmailFieldDTO.omit({ name: true }),
+  createTablesUrlFieldDTO.omit({ name: true }),
+  createTablesAttachmentFieldDTO.omit({ name: true }),
+  createTablesButtonFieldDTO.omit({ name: true }),
+  createTablesCheckboxFieldDTO.omit({ name: true }),
+  createTablesCurrencyFieldDTO.omit({ name: true }),
+  createTablesDateFieldDTO.omit({ name: true }),
+  createTablesJsonFieldDTO.omit({ name: true }),
+  createTablesUserFieldDTO.omit({ name: true }),
+  createTablesPercentageFieldDTO.omit({ name: true }),
+  createTablesDurationFieldDTO.omit({ name: true }),
 ])
 
 const templateSchemaDTO = z.record(fieldName, createTemplateFieldDTO)
