@@ -1,0 +1,224 @@
+{
+  "Project Management": {
+    "tables": {
+      "Projects": {
+        "schema": {
+          "Title": {
+            "id": "title",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Status": {
+            "id": "status",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "defaultValue": "backlog",
+            "option": {
+              "options": [
+                {
+                  "id": "backlog",
+                  "color": "gray",
+                  "name": "Backlog"
+                },
+                {
+                  "id": "inProgress",
+                  "name": "In Progress",
+                  "color": "blue"
+                },
+                {
+                  "id": "done",
+                  "name": "Done",
+                  "color": "green"
+                }
+              ]
+            }
+          },
+          "Projects Count": {
+            "type": "rollup",
+            "option": {
+              "fn": "count",
+              "foreignReferenceField": {
+                "tableName": "Bugs",
+                "fieldId": "projects"
+              },
+              "rollupFieldId": "title"
+            }
+          }
+        },
+        "views": {
+          "Kanban": {
+            "type": "kanban",
+            "kanban": {
+              "field": "status"
+            }
+          },
+          "All Projects": {
+            "type": "grid",
+            "sort": [
+              {
+                "fieldId": "status",
+                "direction": "asc"
+              }
+            ]
+          }
+        },
+        "records": [
+          {
+            "id": "project-1",
+            "Title": "Project 1"
+          },
+          {
+            "id": "project-2",
+            "Title": "Project 2"
+          }
+        ]
+      },
+      "Bugs": {
+        "schema": {
+          "Title": {
+            "id": "title",
+            "type": "string",
+            "display": true,
+            "constraint": {
+              "required": true
+            }
+          },
+          "Projects": {
+            "id": "projects",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "tableName": "Projects"
+              }
+            }
+          },
+          "BugsCount": {
+            "type": "rollup",
+            "option": {
+              "fn": "count",
+              "referenceFieldId": "projects",
+              "rollupFieldId": "title"
+            }
+          },
+          "Status": {
+            "id": "status",
+            "type": "select",
+            "defaultValue": "backlog",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "backlog",
+                  "name": "Backlog",
+                  "color": "gray"
+                },
+                {
+                  "id": "inProgress",
+                  "name": "In Progress",
+                  "color": "blue"
+                },
+                {
+                  "id": "done",
+                  "name": "Done",
+                  "color": "green"
+                }
+              ]
+            }
+          }
+        },
+        "views": {
+          "Kanban": {
+            "type": "kanban",
+            "color": {
+              "conjunction": "and",
+              "children": [
+                {
+                  "field": "status",
+                  "op": "eq",
+                  "value": "done",
+                  "option": {
+                    "color": "green"
+                  }
+                }
+              ]
+            },
+            "kanban": {
+              "field": "status"
+            }
+          },
+          "Done": {
+            "type": "grid",
+            "filter": {
+              "conjunction": "and",
+              "children": [
+                {
+                  "field": "status",
+                  "op": "eq",
+                  "value": "done"
+                }
+              ]
+            }
+          },
+          "All Tasks": {
+            "type": "grid"
+          }
+        },
+        "forms": {
+          "New Bug": {
+            "fields": [
+              {
+                "fieldId": "title",
+                "hidden": false,
+                "required": true
+              },
+              {
+                "fieldId": "status",
+                "defaultValue": "backlog",
+                "conditionEnabled": true,
+                "condition": {
+                  "conjunction": "and",
+                  "children": [
+                    {
+                      "field": "title",
+                      "op": "is_not_empty"
+                    }
+                  ]
+                },
+                "hidden": true
+              }
+            ]
+          }
+        },
+        "records": [
+          {
+            "id": "bug-1",
+            "Title": "Bug 1",
+            "Status": "inProgress",
+            "Projects": ["project-1"]
+          },
+          {
+            "id": "bug-2",
+            "Title": "Bug 2",
+            "Projects": ["project-1"]
+          },
+          {
+            "id": "bug-3",
+            "Title": "Bug 3",
+            "Status": "done",
+            "Projects": ["project-2"]
+          }
+        ]
+      }
+    }
+  }
+}

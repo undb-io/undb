@@ -35,6 +35,8 @@ export const createCurrencyFieldDTO = createBaseFieldDTO.extend({
   option: currencyFieldOption,
 })
 
+export const createTablesCurrencyFieldDTO = createCurrencyFieldDTO
+
 export type ICreateCurrencyFieldDTO = z.infer<typeof createCurrencyFieldDTO>
 
 export const updateCurrencyFieldDTO = createCurrencyFieldDTO.setKey("id", fieldId)

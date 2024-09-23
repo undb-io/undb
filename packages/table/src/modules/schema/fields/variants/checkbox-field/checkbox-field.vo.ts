@@ -23,6 +23,8 @@ export const createCheckboxFieldDTO = createBaseFieldDTO.extend({
   defaultValue: checkboxFieldValue.optional().nullable(),
 })
 
+export const createTablesCheckboxFieldDTO = createCheckboxFieldDTO
+
 export type ICreateCheckboxFieldDTO = z.infer<typeof createCheckboxFieldDTO>
 export const updateCheckboxFieldDTO = createCheckboxFieldDTO.setKey("id", fieldId)
 export type IUpcheckboxCheckboxFieldDTO = z.infer<typeof updateCheckboxFieldDTO>

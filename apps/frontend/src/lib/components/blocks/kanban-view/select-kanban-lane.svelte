@@ -324,11 +324,13 @@
             {:else}
               <div class="flex h-full w-full flex-col items-center justify-center space-y-3">
                 <p class="text-sm font-semibold">No records</p>
-                <p class="text-muted-foreground text-xs">
-                  Create a new record of this option <Option
-                    option={option ?? { id: "", name: "No Option", color: "gray" }}
-                  />
-                </p>
+                <div class="text-muted-foreground space-y-2 text-xs">
+                  <p>Create a new record of this option</p>
+
+                  <div class="flex w-full items-center justify-center">
+                    <Option option={option ?? { id: "", name: "No Option", color: "gray" }} />
+                  </div>
+                </div>
                 <Button on:click={onCreateRecord} variant="outline" size="sm">
                   <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
                   New Record

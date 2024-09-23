@@ -24,6 +24,8 @@ export const createUserFieldDTO = createBaseFieldDTO.extend({
   defaultValue: userFieldValue,
 })
 
+export const createTablesUserFieldDTO = createUserFieldDTO
+
 export type ICreateUserFieldDTO = z.infer<typeof createUserFieldDTO>
 export const updateUserFieldDTO = createUserFieldDTO.setKey("id", fieldId)
 export type IUpuserUserFieldDTO = z.infer<typeof updateUserFieldDTO>

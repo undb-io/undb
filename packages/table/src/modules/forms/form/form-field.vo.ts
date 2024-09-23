@@ -20,6 +20,10 @@ export const formField = z.object({
 
 export type IFormField = z.infer<typeof formField>
 
+export const createFormField = formField
+
+export type ICreateFormField = z.infer<typeof createFormField>
+
 export class FormFieldVO extends ValueObject<IFormField> {
   public get fieldId() {
     return this.props.fieldId
@@ -119,7 +123,10 @@ export class FormFieldVO extends ValueObject<IFormField> {
     return new FormFieldVO({ ...this.props, hidden })
   }
 
-  static create(field: Field, hidden = false) {
+  static create(
+    field: Field,
+    { hidden, conditionEnabled, condition, required, defaultValue }: Omit<ICreateFormField, "fieldId"> = {},
+  ) {
     // TODO: allow button field to be shown in future
     if (field.type === "button") {
       hidden = true
@@ -127,10 +134,11 @@ export class FormFieldVO extends ValueObject<IFormField> {
 
     return new FormFieldVO({
       fieldId: field.id.value,
+      defaultValue,
       hidden,
-      required: field.required ?? false,
-      conditionEnabled: false,
-      condition: undefined,
+      required: field.required ?? required ?? false,
+      conditionEnabled: typeof conditionEnabled === "boolean" ? conditionEnabled : !!condition,
+      condition,
     })
   }
 

@@ -38,6 +38,7 @@
     DELETE_VIEW,
     DUPLICATE_TABLE_MODAL,
     DUPLICATE_VIEW,
+    SET_DEFAULT_VIEW,
     UPDATE_TABLE_MODAL,
     UPDATE_VIEW,
     toggleModal,
@@ -227,6 +228,10 @@
                       </DropdownMenu.SubContent>
                     </DropdownMenu.Sub>
                     {#if !view.isDefault}
+                      <DropdownMenu.Item class="text-xs " on:click={() => toggleModal(SET_DEFAULT_VIEW)}>
+                        <PencilIcon class="mr-2 h-3 w-3" />
+                        Set as Default View
+                      </DropdownMenu.Item>
                       <DropdownMenu.Item
                         class="text-xs text-red-500 hover:bg-red-200 hover:text-red-500"
                         on:click={() => toggleModal(DELETE_VIEW)}

@@ -25,6 +25,8 @@ export const createEmailFieldDTO = createBaseFieldDTO.extend({
   defaultValue: emailFieldValue,
 })
 
+export const createTablesEmailFieldDTO = createEmailFieldDTO
+
 export type ICreateEmailFieldDTO = z.infer<typeof createEmailFieldDTO>
 
 export const updateEmailFieldDTO = createEmailFieldDTO.setKey("id", fieldId)

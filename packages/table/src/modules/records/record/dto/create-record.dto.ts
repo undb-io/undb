@@ -8,3 +8,15 @@ export const createRecordDTO = z.object({
 })
 
 export type ICreateRecordDTO = z.infer<typeof createRecordDTO>
+
+export const flattenCreateRecordDTO = recordValues
+
+export type IFlattenCreateRecordDTO = z.infer<typeof flattenCreateRecordDTO>
+
+export function flattenToCreateRecordDTO(dto: IFlattenCreateRecordDTO): ICreateRecordDTO {
+  const { id, ...values } = dto
+  return {
+    id,
+    values,
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "hello": {
+    "tables": {
+      "world": {
+        "schema": {
+          "title": {
+            "id": "title",
+            "type": "string",
+            "constraint": {
+              "max": 20
+            },
+            "display": true
+          },
+          "description": {
+            "type": "longText",
+            "option": {
+              "allowRichText": true
+            }
+          },
+          "status": {
+            "id": "status",
+            "type": "select",
+            "constraint": {
+              "max": 1
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "todo",
+                  "color": "blue",
+                  "name": "Todo"
+                },
+                {
+                  "id": "in_progress",
+                  "color": "yellow",
+                  "name": "In Progress"
+                },
+                {
+                  "id": "done",
+                  "color": "green",
+                  "name": "Done"
+                }
+              ]
+            }
+          }
+        },
+        "views": {
+          "grid": {
+            "type": "grid"
+          },
+          "kanban": {
+            "type": "kanban",
+            "kanban": {
+              "field": "status"
+            }
+          },
+          "gallery": {
+            "type": "gallery"
+          }
+        },
+        "forms": {
+          "form": {
+            "fields": [
+              {
+                "fieldId": "title"
+              },
+              {
+                "fieldId": "status",
+                "conditionEnabled": true,
+                "defaultValue": "todo",
+                "condition": {
+                  "conjunction": "and",
+                  "children": [{ "field": "title", "op": "is_not_empty" }]
+                }
+              }
+            ]
+          }
+        },
+        "records": [
+          {
+            "title": "Create a new project",
+            "description": "Create a new project for the client",
+            "status": "todo"
+          }
+        ]
+      }
+    }
+  }
+}

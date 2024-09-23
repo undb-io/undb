@@ -31,6 +31,7 @@ import {
   DuplicateViewCommand,
   EnableShareCommand,
   InviteCommand,
+  SetDefaultViewCommand,
   SetFieldWidthCommand,
   SetTableFormCommand,
   SetTableRLSCommand,
@@ -88,6 +89,7 @@ import {
   duplicateViewCommandOutput,
   enableShareCommand,
   inviteCommand,
+  setDefaultViewCommand,
   setFieldWidthCommand,
   setTableFormCommand,
   setTableRLSCommand,
@@ -215,6 +217,10 @@ const viewRouter = t.router({
     .use(authz("view:update"))
     .input(setFieldWidthCommand)
     .mutation(({ input }) => commandBus.execute(new SetFieldWidthCommand(input))),
+  setDefault: privateProcedure
+    .use(authz("view:update"))
+    .input(setDefaultViewCommand)
+    .mutation(({ input }) => commandBus.execute(new SetDefaultViewCommand(input))),
 })
 
 const rlsRouter = t.router({

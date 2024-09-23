@@ -12,6 +12,7 @@ import { duplicateFieldMethod } from "./methods/duplicate-field.method"
 import { duplicateFormMethod } from "./methods/duplicate-form.method"
 import { duplicateTableMethod } from "./methods/duplicate-table.method"
 import { duplicateViewMethod } from "./methods/duplicate-view.method"
+import { setDefaultView } from "./methods/set-default-view.method"
 import { setFieldWidth } from "./methods/set-field-width.method"
 import { setTableForm } from "./methods/set-table-form.method"
 import { setTableRLS } from "./methods/set-table-rls.method"
@@ -57,6 +58,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   $update = updateTable
   $duplicate = duplicateTableMethod
   $updateView = updateView
+  $setDefaultView = setDefaultView
   $setFieldWidth = setFieldWidth
   $setViewFilter = setViewFilter
   $setViewOption = setViewOption

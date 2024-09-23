@@ -21,6 +21,8 @@ export const createUrlFieldDTO = createBaseFieldDTO.extend({
   defaultValue: urlFieldValue,
 })
 
+export const createTablesUrlFieldDTO = createUrlFieldDTO
+
 export type ICreateUrlFieldDTO = z.infer<typeof createUrlFieldDTO>
 
 export const updateUrlFieldDTO = createUrlFieldDTO.setKey("id", fieldId)

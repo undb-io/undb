@@ -40,6 +40,8 @@ export const createButtonFieldDTO = createBaseFieldDTO.extend({
   option: buttonFieldOption,
 })
 
+export const createTablesButtonFieldDTO = createButtonFieldDTO
+
 export type ICreateButtonFieldDTO = z.infer<typeof createButtonFieldDTO>
 
 export const updateButtonFieldDTO = createButtonFieldDTO.setKey("id", fieldId)

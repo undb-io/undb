@@ -1,6 +1,7 @@
 import type { IBaseTemplateDTO } from "../dto"
-import { default as test } from "./test.base.json"
+import { default as projectManagement } from "./projectManagement.base.json"
+import { default as todoList } from "./todoList.base.json"
 
-const templates = { test } as Record<string, IBaseTemplateDTO>
+const templates = { todoList, projectManagement } as Record<string, IBaseTemplateDTO>
 
 export { templates }

@@ -25,6 +25,8 @@ export const createPercentageFieldDTO = createBaseFieldDTO.extend({
   defaultValue: percentageFieldValue.optional(),
 })
 
+export const createTablesPercentageFieldDTO = createPercentageFieldDTO
+
 export type ICreatePercentageFieldDTO = z.infer<typeof createPercentageFieldDTO>
 
 export const updatePercentageFieldDTO = createPercentageFieldDTO.setKey("id", fieldId)

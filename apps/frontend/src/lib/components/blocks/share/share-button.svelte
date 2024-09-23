@@ -156,7 +156,7 @@
               <Input
                 value={url}
                 readonly
-                class="flex-1 cursor-pointer"
+                class="flex-1 cursor-pointer text-gray-600"
                 on:click={(e) => {
                   copy()
                   e.target.select()
@@ -194,7 +194,7 @@
                     copyIFrame()
                     e.target.select()
                   }}
-                  class="flex-1 cursor-pointer"
+                  class="flex-1 cursor-pointer text-gray-600"
                   value={iframe}
                 />
                 <button type="button" on:click={copyIFrame}>
@@ -211,8 +211,21 @@
           <div class="space-y-2">
             <p class="text-xs font-semibold">Share ID</p>
             <div class="flex items-center gap-2">
-              <Input value={share?.id} readonly />
-              <button type="button" on:click={copyShareId}>
+              <Input
+                on:click={(e) => {
+                  copyShareId()
+                  e.target.select()
+                }}
+                value={share?.id}
+                readonly
+                class="cursor-pointer text-gray-600"
+              />
+              <button
+                type="button"
+                on:click={(e) => {
+                  copyShareId()
+                }}
+              >
                 {#if shareIdCopied}
                   <CopyCheckIcon class="h-4 w-4" />
                 {:else}

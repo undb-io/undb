@@ -22,31 +22,33 @@
   setRecordsStore(recordsStore)
 </script>
 
-<TableTools>
-  {#if !shareId}
-    <KanbanOptionButton {view} />
-  {/if}
-</TableTools>
-{#if view.type === "kanban"}
-  {#if field?.type === "select"}
-    {#if field.isSingle}
-      <SelectKanbanView {view} {shareId} {viewId} />
-    {:else}
-      <section class="flex h-full w-full items-center justify-center">
-        <SelectKanbanRequiresSingle {view} {field} {shareId} />
+{#key $table.id.value}
+  <TableTools>
+    {#if !shareId}
+      <KanbanOptionButton {view} />
+    {/if}
+  </TableTools>
+  {#if view.type === "kanban"}
+    {#if field?.type === "select"}
+      {#if field.isSingle}
+        <SelectKanbanView {view} {shareId} {viewId} />
+      {:else}
+        <section class="flex h-full w-full items-center justify-center">
+          <SelectKanbanRequiresSingle {view} {field} {shareId} />
+        </section>
+      {/if}
+    {:else if !shareId}
+      <section class="bg-muted flex h-full w-full items-center justify-center">
+        <SelectKanbanField {view} />
       </section>
     {/if}
-  {:else if !shareId}
-    <section class="bg-muted flex h-full w-full items-center justify-center">
-      <SelectKanbanField {view} />
-    </section>
   {/if}
-{/if}
 
-{#await import("$lib/components/blocks/create-record/create-record-sheet.svelte") then { default: CreateRecordSheet }}
-  <CreateRecordSheet />
-{/await}
+  {#await import("$lib/components/blocks/create-record/create-record-sheet.svelte") then { default: CreateRecordSheet }}
+    <CreateRecordSheet />
+  {/await}
 
-{#await import("$lib/components/blocks/record-detail/table-record-detail-sheet.svelte") then { default: TableRecordDetailSheet }}
-  <TableRecordDetailSheet />
-{/await}
+  {#await import("$lib/components/blocks/record-detail/table-record-detail-sheet.svelte") then { default: TableRecordDetailSheet }}
+    <TableRecordDetailSheet />
+  {/await}
+{/key}

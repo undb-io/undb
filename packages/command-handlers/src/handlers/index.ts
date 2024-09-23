@@ -33,6 +33,7 @@ import { DuplicateViewCommandHandler } from "./duplicate-view.command-handler"
 import { EnableShareCommandHandler } from "./enable-share.command-handler"
 import { ExportViewCommandHandler } from "./export-view.command-handler"
 import { InviteCommandHandler } from "./invite.command-handler"
+import { SetDefaultViewCommandHandler } from "./set-default-view.command-handler"
 import { SetFieldWidthCommandHandler } from "./set-field-width.command-handler"
 import { SetTableFormCommandHandler } from "./set-table-form.command-handler"
 import { SetTableRLSCommandHandler } from "./set-table-rls.command-handler"
@@ -108,4 +109,5 @@ export const commandHandlers = [
   SetFieldWidthCommandHandler,
   DuplicateTableFormCommandHandler,
   CreateFromTemplateCommandHandler,
+  SetDefaultViewCommandHandler,
 ]

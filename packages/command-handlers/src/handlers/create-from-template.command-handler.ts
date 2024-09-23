@@ -21,7 +21,7 @@ export class CreateFromTemplateCommandHandler
   async execute(command: CreateFromTemplateCommand): Promise<ICreateFromTemplateCommandOutput> {
     this.logger.info(`create from template command received: ${command.templateName}`)
 
-    const template = templates["test"]
+    const template = templates["projectManagement"]
 
     const spaceId = mustGetCurrentSpaceId()
     const result = await this.templateService.createBase(template, spaceId)

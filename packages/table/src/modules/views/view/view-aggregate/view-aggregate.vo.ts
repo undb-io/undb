@@ -2,7 +2,7 @@ import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import { isEmpty } from "radash"
 import type { TableDo } from "../../../../table.do"
-import { fieldId } from "../../../schema"
+import { fieldId } from "../../../schema/fields/field-id.vo"
 import { fieldAggregate, type IFieldAggregate } from "../../../schema/fields/field.aggregate"
 
 export const viewAggregate = z.record(fieldId, fieldAggregate)

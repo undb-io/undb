@@ -17,6 +17,7 @@
     CREATE_TABLE_MODAL,
     DELETE_VIEW,
     DUPLICATE_VIEW,
+    SET_DEFAULT_VIEW,
     toggleModal,
     UPDATE_VIEW,
   } from "$lib/store/modal.store"
@@ -214,8 +215,12 @@
                                     Duplicate View
                                   </DropdownMenu.Item>
                                   {#if !view.isDefault}
+                                    <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(SET_DEFAULT_VIEW)}>
+                                      <PencilIcon class="mr-2 h-3 w-3" />
+                                      Set as Default View
+                                    </DropdownMenu.Item>
                                     <DropdownMenu.Item
-                                      class="text-xs text-red-500 hover:bg-red-200 hover:text-red-500"
+                                      class="text-xs text-red-500 hover:!bg-red-200 hover:!text-red-500"
                                       on:click={() => toggleModal(DELETE_VIEW)}
                                     >
                                       <CopyPlusIcon class="mr-2 h-3 w-3" />

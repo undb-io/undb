@@ -26,6 +26,8 @@ export const createDurationFieldDTO = createBaseFieldDTO.extend({
   defaultValue: durationFieldValue.optional(),
 })
 
+export const createTablesDurationFieldDTO = createDurationFieldDTO
+
 export type ICreateDurationFieldDTO = z.infer<typeof createDurationFieldDTO>
 
 export const updateDurationFieldDTO = createDurationFieldDTO.setKey("id", fieldId)
