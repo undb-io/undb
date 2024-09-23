@@ -15,9 +15,7 @@ export class FormFieldsVO extends ValueObject<FormFieldVO[]> {
     const formFieldsMap = new Map(formFields.map((formField) => [formField.fieldId, formField]))
 
     return new FormFieldsVO(
-      fields
-        .filter((field) => formFieldsMap.has(field.id.value))
-        .map((field) => FormFieldVO.create(field, formFieldsMap.get(field.id.value))),
+      fields.map((field) => FormFieldVO.create(field, formFieldsMap.get(field.id.value) ?? { hidden: true })),
     )
   }
 
