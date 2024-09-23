@@ -1,7 +1,24 @@
 import { baseNameSchema } from "@undb/base"
 import {
-  createFieldWithoutNameDTO,
+  createAttachmentFieldDTO,
+  createButtonFieldDTO,
+  createCheckboxFieldDTO,
+  createCurrencyFieldDTO,
+  createDateFieldDTO,
+  createDurationFieldDTO,
+  createEmailFieldDTO,
   createFormWithoutNameDTO,
+  createJsonFieldDTO,
+  createLongTextFieldDTO,
+  createNumberFieldDTO,
+  createPercentageFieldDTO,
+  createRatingFieldDTO,
+  createReferenceFieldDTO,
+  createRollupFieldDTO,
+  createSelectFieldDTO,
+  createStringFieldDTO,
+  createUrlFieldDTO,
+  createUserFieldDTO,
   createViewWithoutNameDTO,
   fieldName,
   formName,
@@ -11,7 +28,28 @@ import {
 } from "@undb/table"
 import { z } from "@undb/zod"
 
-const templateSchemaDTO = z.record(fieldName, createFieldWithoutNameDTO)
+const createTemplateFieldDTO = z.discriminatedUnion("type", [
+  createStringFieldDTO.omit({ name: true }),
+  createNumberFieldDTO.omit({ name: true }),
+  createReferenceFieldDTO.omit({ name: true }),
+  createRollupFieldDTO.omit({ name: true }),
+  createSelectFieldDTO.omit({ name: true }),
+  createRatingFieldDTO.omit({ name: true }),
+  createEmailFieldDTO.omit({ name: true }),
+  createUrlFieldDTO.omit({ name: true }),
+  createAttachmentFieldDTO.omit({ name: true }),
+  createDateFieldDTO.omit({ name: true }),
+  createJsonFieldDTO.omit({ name: true }),
+  createCheckboxFieldDTO.omit({ name: true }),
+  createUserFieldDTO.omit({ name: true }),
+  createLongTextFieldDTO.omit({ name: true }),
+  createCurrencyFieldDTO.omit({ name: true }),
+  createButtonFieldDTO.omit({ name: true }),
+  createDurationFieldDTO.omit({ name: true }),
+  createPercentageFieldDTO.omit({ name: true }),
+])
+
+const templateSchemaDTO = z.record(fieldName, createTemplateFieldDTO)
 const tempalteViewDTO = z.record(viewName, createViewWithoutNameDTO)
 const templateFormDTO = z.record(formName, createFormWithoutNameDTO)
 

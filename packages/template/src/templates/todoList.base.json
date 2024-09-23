@@ -17,6 +17,7 @@
             }
           },
           "status": {
+            "id": "status",
             "type": "select",
             "constraint": {
               "max": 1
@@ -41,6 +42,23 @@
               ]
             }
           }
+        },
+        "views": {
+          "grid": {
+            "type": "grid"
+          },
+          "kanban": {
+            "type": "kanban",
+            "kanban": {
+              "field": "status"
+            }
+          },
+          "gallery": {
+            "type": "gallery"
+          }
+        },
+        "forms": {
+          "form": {}
         },
         "records": [
           {

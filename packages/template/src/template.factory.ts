@@ -1,5 +1,12 @@
 import { Base, BaseFactory } from "@undb/base"
-import { type ICreateSchemaDTO, type ICreateTableDTO, TableDo, TableFactory } from "@undb/table"
+import {
+  type ICreateFormDTO,
+  type ICreateSchemaDTO,
+  type ICreateTableDTO,
+  type ICreateViewDTO,
+  TableDo,
+  TableFactory,
+} from "@undb/table"
 import { getNextName } from "@undb/utils"
 import { type IBaseTemplateDTO } from "./dto/template.dto"
 
@@ -17,11 +24,24 @@ export class TemplateFactory {
           name,
         })) as ICreateSchemaDTO
 
+        const views = Object.entries(table.views ?? {}).map(([name, view]) => ({
+          ...view,
+          name,
+        })) as ICreateViewDTO[]
+
+        const forms = Object.entries(table.forms ?? {}).map(([name, form]) => ({
+          ...form,
+          name,
+        })) as ICreateFormDTO[]
+
         return {
           baseId,
           name,
           schema,
           spaceId,
+
+          views,
+          forms,
         }
       }) as ICreateTableDTO[]
 

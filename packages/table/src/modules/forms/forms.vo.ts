@@ -1,12 +1,20 @@
 import { ValueObject } from "@undb/domain"
 import type { Field } from ".."
 import { TableFormsSpecification, WithFormSpecification } from "../../specifications/table-forms.specification"
-import type { IFormsDTO } from "./dto"
+import type { TableDo } from "../../table.do"
+import type { ICreateFormDTO, IFormsDTO } from "./dto"
 import { FormVO, type IFormDTO } from "./form/form.vo"
 
 export class FormsVO extends ValueObject<FormVO[]> {
   static fromJSON(forms: IFormsDTO) {
     return new FormsVO(forms.map((form) => FormVO.fromJSON(form)))
+  }
+
+  static create(table: TableDo, forms?: ICreateFormDTO[]) {
+    if (forms?.length) {
+      return new FormsVO(forms.map((form) => FormVO.create(table, form)))
+    }
+    return new FormsVO([])
   }
 
   *[Symbol.iterator]() {

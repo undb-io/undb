@@ -1,5 +1,5 @@
 import { z } from "@undb/zod"
-import { viewId } from "../view"
+import { viewId } from "../view/view-id.vo"
 
 export const exportViewDTO = z.object({
   viewId: viewId,

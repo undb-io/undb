@@ -8,7 +8,7 @@ import type { ICreateSchemaDTO } from "./modules/schema/dto/create-schema.dto"
 import type { ISchemaDTO } from "./modules/schema/dto/schema.dto"
 import { FieldNameShouldBeUnique } from "./modules/schema/rules"
 import { Schema } from "./modules/schema/schema.vo"
-import type { IViewsDTO } from "./modules/views/dto"
+import type { ICreateViewDTO, IViewsDTO } from "./modules/views/dto"
 import { Views } from "./modules/views/views.vo"
 import { TableBaseIdSpecification, TableViewsSpecification } from "./specifications"
 import { TableFormsSpecification } from "./specifications/table-forms.specification"
@@ -29,8 +29,8 @@ export interface ITableBuilder {
   setName(name: string): ITableBuilder
   createSchema(dto: ICreateSchemaDTO): ITableBuilder
   setSchema(dto: ISchemaDTO): ITableBuilder
-  createViews(): ITableBuilder
-  createForms(dto: ICreateFormDTO[]): ITableBuilder
+  createViews(dto?: ICreateViewDTO[]): ITableBuilder
+  createForms(dto?: ICreateFormDTO[]): ITableBuilder
   setViews(dto: IViewsDTO): ITableBuilder
   setForms(dto?: IFormsDTO): ITableBuilder
   setRLS(dto?: IRLSGroupDTO): ITableBuilder
@@ -78,8 +78,8 @@ export class TableBuilder implements ITableBuilder {
     return this
   }
 
-  createViews(): ITableBuilder {
-    new TableViewsSpecification(Views.create()).mutate(this.table)
+  createViews(dto?: ICreateViewDTO[]): ITableBuilder {
+    new TableViewsSpecification(Views.create(dto)).mutate(this.table)
     return this
   }
 
@@ -89,7 +89,8 @@ export class TableBuilder implements ITableBuilder {
   }
 
   createForms(dto: ICreateFormDTO[]): ITableBuilder {
-    throw new Error("Method not implemented.")
+    new TableFormsSpecification(FormsVO.create(this.table, dto)).mutate(this.table)
+    return this
   }
 
   setForms(dto: IFormsDTO = []): ITableBuilder {
@@ -120,7 +121,8 @@ export class TableFactory {
       .setSpaceId(dto.spaceId)
       .setName(dto.name)
       .createSchema(dto.schema)
-      .createViews()
+      .createViews(dto.views)
+      .createForms(dto.forms)
       .build()
 
     applyRules(new FieldNameShouldBeUnique(table.schema))

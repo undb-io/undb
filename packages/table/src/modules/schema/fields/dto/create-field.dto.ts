@@ -39,25 +39,4 @@ export const createFieldDTO = z.discriminatedUnion("type", [
   createPercentageFieldDTO,
 ])
 
-export const createFieldWithoutNameDTO = z.discriminatedUnion("type", [
-  createStringFieldDTO.omit({ name: true }),
-  createNumberFieldDTO.omit({ name: true }),
-  createReferenceFieldDTO.omit({ name: true }),
-  createRollupFieldDTO.omit({ name: true }),
-  createSelectFieldDTO.omit({ name: true }),
-  createRatingFieldDTO.omit({ name: true }),
-  createEmailFieldDTO.omit({ name: true }),
-  createUrlFieldDTO.omit({ name: true }),
-  createAttachmentFieldDTO.omit({ name: true }),
-  createDateFieldDTO.omit({ name: true }),
-  createJsonFieldDTO.omit({ name: true }),
-  createCheckboxFieldDTO.omit({ name: true }),
-  createUserFieldDTO.omit({ name: true }),
-  createLongTextFieldDTO.omit({ name: true }),
-  createCurrencyFieldDTO.omit({ name: true }),
-  createButtonFieldDTO.omit({ name: true }),
-  createDurationFieldDTO.omit({ name: true }),
-  createPercentageFieldDTO.omit({ name: true }),
-])
-
 export type ICreateFieldDTO = z.infer<typeof createFieldDTO>
