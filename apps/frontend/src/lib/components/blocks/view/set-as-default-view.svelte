@@ -1,12 +1,13 @@
 <script lang="ts">
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
-  import { isModalOpen, SET_DEFAULT_VIEW, toggleModal } from "$lib/store/modal.store"
+  import { isModalOpen, SET_DEFAULT_VIEW, toggleModal, closeModal } from "$lib/store/modal.store"
   import { trpc } from "$lib/trpc/client"
   import { getTable, viewId } from "$lib/store/table.store"
   import { createMutation } from "@tanstack/svelte-query"
   import { derived } from "svelte/store"
   import { invalidateAll } from "$app/navigation"
   import { toast } from "svelte-sonner"
+  import { goto } from "$app/navigation"
 
   const table = getTable()
 
@@ -15,8 +16,10 @@
   const setAsDefaultViewMutation = createMutation({
     mutationFn: trpc.table.view.setDefault.mutate,
     async onSuccess(data, variables, context) {
+      closeModal(SET_DEFAULT_VIEW)
       await invalidateAll()
       toast.success("View set as default")
+      await goto(`/t/${$table.id.value}`)
     },
     onError(error, variables, context) {
       toast.error(error.message)
@@ -33,6 +36,7 @@
     <AlertDialog.Footer>
       <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
       <AlertDialog.Action
+        disabled={$setAsDefaultViewMutation.isPending}
         on:click={() => $setAsDefaultViewMutation.mutate({ tableId: $table.id.value, viewId: $viewId })}
       >
         Continue
