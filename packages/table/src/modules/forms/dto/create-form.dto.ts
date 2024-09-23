@@ -1,15 +1,13 @@
 import { z } from "@undb/zod"
 import { tableId } from "../../../table-id.vo"
+import { createFormField } from "../form"
 import { formId } from "../form/form-id.vo"
 import { formName } from "../form/form-name.vo"
 
 export const createFormDTO = z.object({
   id: formId.optional(),
   name: formName,
-  // TODO: should create table accept fields?
-  // now it's not used
-  // just using table fields
-  // fields: formField.optional(),
+  fields: createFormField.array().optional(),
 })
 
 export const createFormWithoutNameDTO = createFormDTO.omit({ name: true })

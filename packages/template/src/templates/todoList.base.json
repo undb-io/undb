@@ -4,6 +4,7 @@
       "world": {
         "schema": {
           "title": {
+            "id": "title",
             "type": "string",
             "constraint": {
               "max": 20
@@ -58,7 +59,22 @@
           }
         },
         "forms": {
-          "form": {}
+          "form": {
+            "fields": [
+              {
+                "fieldId": "title"
+              },
+              {
+                "fieldId": "status",
+                "conditionEnabled": true,
+                "defaultValue": "todo",
+                "condition": {
+                  "conjunction": "and",
+                  "children": [{ "field": "title", "op": "is_not_empty" }]
+                }
+              }
+            ]
+          }
         },
         "records": [
           {

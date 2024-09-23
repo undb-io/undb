@@ -1,17 +1,28 @@
 import { Option, ValueObject } from "@undb/domain"
-import type { Field } from "../.."
 import type { TableDo } from "../../../table.do"
+import type { Field } from "../../schema/fields/field.type"
 import type { SchemaIdMap } from "../../schema/schema.type"
-import { FormFieldVO } from "./form-field.vo"
+import { FormFieldVO, type ICreateFormField } from "./form-field.vo"
 
 export class FormFieldsVO extends ValueObject<FormFieldVO[]> {
-  static create(table: TableDo) {
+  static create(table: TableDo, formFields?: ICreateFormField[]) {
     const fields = table.getOrderedMutableFields()
-    return new FormFieldsVO(fields.map((field) => FormFieldVO.create(field)))
+
+    if (!formFields) {
+      return new FormFieldsVO(fields.map((field) => FormFieldVO.create(field)))
+    }
+
+    const formFieldsMap = new Map(formFields.map((formField) => [formField.fieldId, formField]))
+
+    return new FormFieldsVO(
+      fields
+        .filter((field) => formFieldsMap.has(field.id.value))
+        .map((field) => FormFieldVO.create(field, formFieldsMap.get(field.id.value))),
+    )
   }
 
   public addField(field: Field, hidden = false) {
-    return new FormFieldsVO([...this.props, FormFieldVO.create(field, hidden)])
+    return new FormFieldsVO([...this.props, FormFieldVO.create(field, { hidden })])
   }
 
   public deleteField(field: Field) {
