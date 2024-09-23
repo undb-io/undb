@@ -183,7 +183,27 @@ export class TableFactory {
 
     for (const { table, dto } of tables) {
       const rollupFieldDTOs = dto.schema.filter((field) => field.type === "rollup")
-      for (const rollupField of rollupFieldDTOs) {
+      for (const dto of rollupFieldDTOs) {
+        let referenceFieldId: string | undefined
+        if (dto.option.referenceFieldId) {
+          referenceFieldId = dto.option.referenceFieldId
+        } else if (dto.option.foreignReferenceField) {
+          const table = tables.find(({ table }) => table.name.value === dto.option.foreignReferenceField?.tableName)
+          const field = table?.table.schema.fields.find((f) => f.id.value === dto.option.foreignReferenceField?.fieldId)
+          if (field?.type === "reference") {
+            referenceFieldId = field.symmetricFieldId
+          }
+        }
+
+        if (referenceFieldId) {
+          table.$createField({
+            ...dto,
+            option: {
+              ...dto.option,
+              referenceFieldId,
+            },
+          })
+        }
       }
     }
 

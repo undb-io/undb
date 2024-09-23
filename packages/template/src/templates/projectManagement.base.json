@@ -6,6 +6,17 @@
           "Title": {
             "id": "title",
             "type": "string"
+          },
+          "Projects Count": {
+            "type": "rollup",
+            "option": {
+              "fn": "count",
+              "foreignReferenceField": {
+                "tableName": "Bugs",
+                "fieldId": "projects"
+              },
+              "rollupFieldId": "title"
+            }
           }
         }
       },
@@ -23,6 +34,14 @@
               "foreignTable": {
                 "tableName": "Projects"
               }
+            }
+          },
+          "BugsCount": {
+            "type": "rollup",
+            "option": {
+              "fn": "count",
+              "referenceFieldId": "projects",
+              "rollupFieldId": "title"
             }
           }
         }
