@@ -14,6 +14,7 @@ import {
   createPercentageFieldDTO,
   createRatingFieldDTO,
   createReferenceFieldDTO,
+  createReferenceFieldOption,
   createRollupFieldDTO,
   createSelectFieldDTO,
   createStringFieldDTO,
@@ -28,10 +29,27 @@ import {
 } from "@undb/table"
 import { z } from "@undb/zod"
 
+const createTemplateReferenceOption = createReferenceFieldOption
+  .omit({
+    foreignTableId: true,
+  })
+  .merge(
+    z.object({
+      foreignTable: z.object({
+        baseName: baseNameSchema,
+        tableName: tableName,
+      }),
+    }),
+  )
+
 const createTemplateFieldDTO = z.discriminatedUnion("type", [
   createStringFieldDTO.omit({ name: true }),
   createNumberFieldDTO.omit({ name: true }),
-  createReferenceFieldDTO.omit({ name: true }),
+  createReferenceFieldDTO.omit({ name: true }).merge(
+    z.object({
+      option: createTemplateReferenceOption,
+    }),
+  ),
   createRollupFieldDTO.omit({ name: true }),
   createSelectFieldDTO.omit({ name: true }),
   createRatingFieldDTO.omit({ name: true }),

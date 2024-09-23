@@ -2,7 +2,7 @@ import { None, Some, applyRules } from "@undb/domain"
 import type { ISpaceId } from "@undb/space"
 import { createTableDTO, type ICreateTableDTO, type ITableDTO } from "./dto"
 import { TableCreatedEvent } from "./events"
-import { TableRLSGroup, type ICreateFormDTO, type IFormsDTO, type IRLSGroupDTO } from "./modules"
+import { ReferenceField, TableRLSGroup, type ICreateFormDTO, type IFormsDTO, type IRLSGroupDTO } from "./modules"
 import { FormsVO } from "./modules/forms/forms.vo"
 import type { ICreateSchemaDTO } from "./modules/schema/dto/create-schema.dto"
 import type { ISchemaDTO } from "./modules/schema/dto/schema.dto"
@@ -133,7 +133,22 @@ export class TableFactory {
   }
 
   static createMany(dtos: ICreateTableDTO[]): TableDo[] {
-    return dtos.map((dto) => this.create(dto))
+    const tables = dtos.map((dto) => this.create(dto))
+
+    const ts = tables.map((table) => ({ table, referenceFields: table.schema.getReferenceFields() }))
+
+    for (const { table, referenceFields } of ts) {
+      for (const referenceField of referenceFields) {
+        const foreignTable = tables.find((table) => table.id.value === referenceField.foreignTableId)
+        if (!foreignTable) {
+          throw new Error("Foreign table not found")
+        }
+        const symmetricField = ReferenceField.createSymmetricField(table, foreignTable, referenceField)
+        foreignTable.$createFieldSpec(symmetricField)
+      }
+    }
+
+    return tables
   }
 
   static fromJSON(dto: ITableDTO): TableDo {

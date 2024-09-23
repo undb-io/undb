@@ -74,6 +74,7 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
         table_id: this.table.id.value,
         subject_id: field.id.value,
       })
+      .onConflict((ob) => ob.doNothing())
       .compile()
     this.addSql(sql)
 
@@ -164,6 +165,7 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
         table_id: this.table.id.value,
         subject_id: views.view.id.value,
       })
+      .onConflict((ob) => ob.doNothing())
       .compile()
 
     this.addSql(sql)
@@ -212,6 +214,7 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
         table_id: this.table.id.value,
         subject_id: views.form.id,
       })
+      .onConflict((ob) => ob.doNothing())
       .compile()
 
     this.addSql(sql)

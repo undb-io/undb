@@ -28,16 +28,23 @@ export const referenceFieldOption = z.object({
   condition: viewFilterGroup.optional(),
 })
 
+export const createReferenceFieldOption = referenceFieldOption
+  .omit({
+    isOwner: true,
+    symmetricFieldId: true,
+  })
+  .merge(
+    z.object({
+      createSymmetricField: z.boolean().optional(),
+    }),
+  )
+
 export type IReferenceFieldOption = z.infer<typeof referenceFieldOption>
 
 export const createReferenceFieldDTO = createBaseFieldDTO
   .extend({
     type: z.literal(REFERENCE_TYPE),
-    option: z.object({
-      foreignTableId: tableId,
-      createSymmetricField: z.boolean(),
-      condition: viewFilterGroup.optional(),
-    }),
+    option: createReferenceFieldOption,
     constraint: referenceFieldConstraint.optional(),
   })
   .omit({ display: true })

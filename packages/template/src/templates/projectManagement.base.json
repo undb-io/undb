@@ -1,0 +1,30 @@
+{
+  "Project Management": {
+    "tables": {
+      "Projects": {
+        "schema": {
+          "Title": {
+            "type": "string"
+          }
+        }
+      },
+      "Bugs": {
+        "schema": {
+          "Title": {
+            "type": "string"
+          },
+          "Projects": {
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "baseName": "Project Management",
+                "tableName": "Projects"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

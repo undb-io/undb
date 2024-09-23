@@ -17,7 +17,7 @@ export function createQueryBuilderWithDialect(dialect: Dialect) {
         logger.debug(
           {
             query: event.query.sql,
-            // params: event.query.parameters,
+            params: event.query.parameters,
             duration: event.queryDurationMillis,
           },
           "kysely.query",
@@ -27,7 +27,7 @@ export function createQueryBuilderWithDialect(dialect: Dialect) {
           {
             error: event.error,
             query: event.query.sql,
-            // params: event.query.parameters,
+            params: event.query.parameters,
             duration: event.queryDurationMillis,
           },
           "kysely.error",

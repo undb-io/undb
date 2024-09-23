@@ -100,7 +100,11 @@ export class TableRepository implements ITableRepository {
       .concat(formIds)
       .concat(fieldsIds)
       .map((id) => ({ table_id: table.id.value, subject_id: id }))
-    await trx.insertInto("undb_table_id_mapping").values(mapping).execute()
+    await trx
+      .insertInto("undb_table_id_mapping")
+      .values(mapping)
+      .onConflict((ob) => ob.doNothing())
+      .execute()
 
     await this.underlyingTableService.create(table)
     await this.outboxService.save(table)
