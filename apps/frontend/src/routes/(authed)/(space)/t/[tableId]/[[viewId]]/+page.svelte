@@ -52,6 +52,9 @@
   {#await import("$lib/components/blocks/view/duplicate-view-dialog.svelte") then { default: DuplicateViewDialog }}
     <DuplicateViewDialog />
   {/await}
+  {#await import("$lib/components/blocks/view/set-as-default-view.svelte") then { default: SetAsDefaultView }}
+    <SetAsDefaultView />
+  {/await}
   {#await import("$lib/components/blocks/view/delete-view-dialog.svelte") then { default: DeleteViewDialog }}
     <DeleteViewDialog />
   {/await}

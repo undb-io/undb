@@ -1,4 +1,6 @@
-import { andOptions, Option, ValueObject } from "@undb/domain"
+import { and, andOptions, None, Option, ValueObject } from "@undb/domain"
+import type { ISetDefaultViewDTO } from "../../dto/set-default-view.dto"
+import { WithView, type TableComositeSpecification } from "../../specifications"
 import type { Field } from "../schema"
 import type { ICreateViewDTO, IViewsDTO } from "./dto"
 import { GridView } from "./view/variants/grid-view.vo"
@@ -91,5 +93,26 @@ export class Views extends ValueObject {
     const specs = this.views.map((view) => view.$deleteField(field))
 
     return andOptions(...specs)
+  }
+
+  $setDefaultView(dto: ISetDefaultViewDTO): Option<TableComositeSpecification> {
+    const defaultView = this.getDefaultView()
+    if (defaultView.id.value === dto.viewId) {
+      return None
+    }
+
+    const view = this.getViewById(dto.viewId)
+
+    const defaultViewSpec = new WithView(
+      ViewFactory.fromJSON(defaultView.toJSON()),
+      ViewFactory.fromJSON({ ...defaultView.toJSON(), isDefault: false }),
+    )
+
+    const viewSpec = new WithView(
+      ViewFactory.fromJSON(view.toJSON()),
+      ViewFactory.fromJSON({ ...view.toJSON(), isDefault: true }),
+    )
+
+    return and(defaultViewSpec, viewSpec)
   }
 }

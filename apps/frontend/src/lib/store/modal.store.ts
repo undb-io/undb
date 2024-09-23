@@ -15,6 +15,7 @@ export const CREATE_WEBHOOK_MODAL = "createWebhook" as const
 export const CREATE_RLS_MODAL = "createRLS" as const
 export const UPDATE_VIEW = "updateView" as const
 export const DUPLICATE_VIEW = "duplicateView" as const
+export const SET_DEFAULT_VIEW = "setDefaultView" as const
 export const DELETE_VIEW = "deleteView" as const
 export const CREATE_BASE_MODAL = "createBase" as const
 export const DUPLICATE_BASE_MODAL = "duplicateBase" as const
@@ -34,6 +35,7 @@ type ModalType =
   | typeof UPDATE_VIEW
   | typeof DUPLICATE_VIEW
   | typeof DELETE_VIEW
+  | typeof SET_DEFAULT_VIEW
   | typeof CREATE_BASE_MODAL
   | typeof UPDATE_BASE_MODAL
   | typeof DELETE_TABLE_MODAL
