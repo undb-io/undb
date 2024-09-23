@@ -58,7 +58,17 @@
               "field": "status"
             }
           }
-        }
+        },
+        "records": [
+          {
+            "id": "project-1",
+            "Title": "Project 1"
+          },
+          {
+            "id": "project-2",
+            "Title": "Project 2"
+          }
+        ]
       },
       "Bugs": {
         "schema": {
@@ -143,7 +153,26 @@
               }
             ]
           }
-        }
+        },
+        "records": [
+          {
+            "id": "bug-1",
+            "Title": "Bug 1",
+            "Status": "inProgress",
+            "Projects": ["project-1"]
+          },
+          {
+            "id": "bug-2",
+            "Title": "Bug 2",
+            "Projects": ["project-1"]
+          },
+          {
+            "id": "bug-3",
+            "Title": "Bug 3",
+            "Status": "done",
+            "Projects": ["project-2"]
+          }
+        ]
       }
     }
   }

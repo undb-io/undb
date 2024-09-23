@@ -1,9 +1,12 @@
 import { Base, BaseFactory } from "@undb/base"
 import {
+  flattenToCreateRecordDTO,
   type ICreateFormDTO,
   type ICreateTablesDTO,
   type ICreateTablesSchemaDTO,
   type ICreateViewDTO,
+  type IFlattenCreateRecordDTO,
+  RecordDO,
   TableDo,
   TableFactory,
 } from "@undb/table"
@@ -11,8 +14,12 @@ import { getNextName } from "@undb/utils"
 import { type IBaseTemplateDTO } from "./dto/template.dto"
 
 export class TemplateFactory {
-  static create(template: IBaseTemplateDTO, baseNames: string[], spaceId: string): { base: Base; tables: TableDo[] }[] {
-    const result: { base: Base; tables: TableDo[] }[] = []
+  static create(
+    template: IBaseTemplateDTO,
+    baseNames: string[],
+    spaceId: string,
+  ): { base: Base; tables: { table: TableDo; records: RecordDO[] }[] }[] {
+    const result: { base: Base; tables: { table: TableDo; records: RecordDO[] }[] }[] = []
     for (const [name, b] of Object.entries(template)) {
       const baseName = getNextName(baseNames, name)
       const base = BaseFactory.create({ name: baseName, spaceId })
@@ -36,6 +43,9 @@ export class TemplateFactory {
           name,
         })) as ICreateFormDTO[]
 
+        console.log(table.records)
+        const records = table.records?.map((record: IFlattenCreateRecordDTO) => flattenToCreateRecordDTO(record))
+
         return {
           baseId,
           name,
@@ -44,6 +54,7 @@ export class TemplateFactory {
 
           views,
           forms,
+          records,
         }
       }) as ICreateTablesDTO[]
 

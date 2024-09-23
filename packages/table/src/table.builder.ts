@@ -5,6 +5,7 @@ import { getNextName } from "@undb/utils"
 import { createTableDTO, type ICreateTableDTO, type ICreateTablesDTO, type ITableDTO } from "./dto"
 import { TableCreatedEvent } from "./events"
 import {
+  RecordDO,
   ReferenceField,
   TableRLSGroup,
   type ICreateFieldDTO,
@@ -143,7 +144,11 @@ export class TableFactory {
   }
 
   // create many table inside a base
-  static createMany(baseNames: string[], base: Base, dtos: ICreateTablesDTO[]): TableDo[] {
+  static createMany(
+    baseNames: string[],
+    base: Base,
+    dtos: ICreateTablesDTO[],
+  ): { table: TableDo; records: RecordDO[] }[] {
     const ids = new TablesIdsMap(baseNames, base, dtos)
     const baseName = getNextName(baseNames, base.name.value)
 
@@ -207,7 +212,10 @@ export class TableFactory {
       }
     }
 
-    return tables.map(({ table }) => table)
+    return tables.map(({ table, dto }) => {
+      const records = dto.records?.map((record) => RecordDO.create(table, record)) ?? []
+      return { table, records }
+    })
   }
 
   static fromJSON(dto: ITableDTO): TableDo {

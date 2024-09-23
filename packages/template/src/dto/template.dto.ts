@@ -20,6 +20,7 @@ import {
   createTablesUserFieldDTO,
   createViewWithoutNameDTO,
   fieldName,
+  flattenCreateRecordDTO,
   formName,
   tableId,
   tableName,
@@ -57,7 +58,7 @@ const basicTemplateTableDTO = z.object({
   views: tempalteViewDTO.optional(),
   forms: templateFormDTO.optional(),
 
-  records: z.record(z.any()).array().optional(),
+  records: flattenCreateRecordDTO.optional(),
 })
 
 export const baseTemplateDTO = z.record(

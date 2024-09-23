@@ -29,20 +29,19 @@ export class RecordValuesVO extends ValueObject {
     const values: RecordValues = {}
 
     for (const field of fields) {
-      const value = dto[field.id.value] ?? dto[field.name.value] ?? null
+      let value = dto[field.id.value] ?? dto[field.name.value] ?? null
+      if (value === null) {
+        const defaultValue = field.defaultValue as Option<MutableFieldValue>
+        if (defaultValue.isSome() && field.isDefaultValueValid && !defaultValue.unwrap().isEmpty()) {
+          value = defaultValue.unwrap().value
+        }
+      }
       const fieldValue: Option<MutableFieldValue> = value === undefined ? None : FieldValueFactory.create(field, value)
 
       let v: MutableFieldValue | undefined = undefined
 
       if (fieldValue.isSome()) {
         v = fieldValue.unwrap()
-      }
-
-      if ((!!v && v.isEmpty()) || fieldValue.isNone()) {
-        const defaultValue = field.defaultValue as Option<MutableFieldValue>
-        if (defaultValue.isSome() && field.isDefaultValueValid && !defaultValue.unwrap().isEmpty()) {
-          v = defaultValue.unwrap()
-        }
       }
 
       if (v) {
