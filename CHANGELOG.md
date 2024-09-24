@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-89
+
+
+### 🩹 Fixes
+
+- Fix import table data ([6f3c4ec](https://github.com/undb-io/undb/commit/6f3c4ec))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-88
 
 
