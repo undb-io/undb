@@ -28,7 +28,7 @@ import {
   viewFilterGroup,
 } from "@undb/table"
 import zodToJsonSchema from "zod-to-json-schema"
-import { baseTemplateDTO } from "../dto/template.dto"
+import { baseTemplateDTO } from "../dto/template-schema.dto"
 
 export const baseTemplateSchema = zodToJsonSchema(baseTemplateDTO, {
   errorMessages: true,

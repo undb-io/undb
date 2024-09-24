@@ -11,7 +11,7 @@ import {
   TableFactory,
 } from "@undb/table"
 import { getNextName } from "@undb/utils"
-import { type IBaseTemplateDTO } from "./dto/template.dto"
+import { type IBaseTemplateDTO } from "./dto/template-schema.dto"
 
 export class TemplateFactory {
   static create(

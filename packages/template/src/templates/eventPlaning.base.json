@@ -1,330 +1,324 @@
 {
-    "Event Planing": {
-      "tables": {
-        "Schedule": {
-            "schema": {
-                "Activity": {
-                  "id": "activity",
-                  "type": "string"
+  "Event Planing": {
+    "tables": {
+      "Schedule": {
+        "schema": {
+          "Activity": {
+            "id": "activity",
+            "type": "string"
+          },
+          "Type": {
+            "id": "type",
+            "type": "select",
+            "constraint": {
+              "max": 1
+            },
+            "option": {
+              "options": [
+                {
+                  "color": "gray",
+                  "id": "meal",
+                  "name": "Meal"
                 },
-                "Type": {
-                  "id": "type",
-                  "type": "select",
-                  "constraint": {
-                    "max": 1
-                  },
-                  "option": {
-                    "options": [
-                        {
-                            "color": "gray",
-                            "id": "meal",
-                            "name": "Meal"
-                        },
-                        {
-                            "color": "blue",
-                            "id": "keynote",
-                            "name": "Keynote"
-                        },
-                        {
-                            "color": "purple",
-                            "id": "panel",
-                            "name": "Panel"
-                        },
-                        {
-                            "color": "yellow",
-                            "id": "networking",
-                            "name": "Networking"
-                        }
-                    ]
-                  }
+                {
+                  "color": "blue",
+                  "id": "keynote",
+                  "name": "Keynote"
                 },
-                "Start": {
-                  "id": "start",
-                  "type": "date"
+                {
+                  "color": "purple",
+                  "id": "panel",
+                  "name": "Panel"
                 },
-                "End": {
-                  "id": "end",
-                  "type": "date"
-                },
-                "Location": {
-                  "id": "quantity",
-                  "type": "string"
-                },
-                "Speakers": {
-                    "id": "speakers",
-                    "type": "reference",
-                    "option": {
-                        "createSymmetricField": false,
-                        "foreignTable": {
-                            "tableName": "Speakers"
-                        }
-                    }
-                },
-                "Notes": {
-                  "id": "notes",
-                  "type": "longText",
-                  "option": {
-                    "allowRichText": true
-                  }
+                {
+                  "color": "yellow",
+                  "id": "networking",
+                  "name": "Networking"
                 }
-            },
-            "records": [
-                {
-                    "Activity": "Welcome breakfast",
-                    "Type": "meal",
-                    "Start": "2021-09-01T08:00:00.000Z",
-                    "End": "2021-09-01T09:00:00.000Z",
-                    "Location": "Ballroom A",
-                    "Speakers": [
-                        "Jane Doe",
-                        "John Smith"
-                    ],
-                    "Notes": "Breakfast will be served in the ballroom"
-                },
-                {
-                    "Activity": "Opening keynote",
-                    "Type": "keynote",
-                    "Start": "2021-09-01T09:30:00.000Z",
-                    "End": "2021-09-01T10:30:00.000Z",
-                    "Location": "Auditorium",
-                    "Speakers": [
-                        "Jane Doe"
-                    ],
-                    "Notes": "Jane will be speaking about the future of technology"
-                }
-            ]
-        },
-        "Speakers": {
-            "schema": {
-                "Name": {
-                    "id": "name",
-                    "type": "string"
-                },
-                "Company": {
-                    "id": "company",
-                    "type": "string"
-                },
-                "Email": {
-                    "id": "email",
-                    "type": "email"
-                },
-                "Phone": {
-                    "id": "phone",
-                    "type": "string"
-                },
-                "Confirmed": {
-                    "id": "confirmed",
-                    "type": "checkbox"
-                }
-            },
-            "records": [
-                {
-                    "Name": "Jane Doe",
-                    "Company": "Acme Corp",
-                    "Email": "test1@163.com",
-                    "Phone": "13708089090",
-                    "Confirmed": true
-                },
-                {
-                    "Name": "John Smith",
-                    "Company": "Widgets Co",
-                    "Email": "test2@163.com",
-                    "Phone": "13566776666",
-                    "Confirmed": false
-                },
-                {
-                    "Name": "Alice Jackson",
-                    "Company": "Software LLC",
-                    "Email": "test3@163.com",
-                    "Phone": "13877778888",
-                    "Confirmed": true
-                }
-            ]
-        },
-        "Attendees": {
-            "schema": {
-                "Name": {
-                    "id": "name",
-                    "type": "string"
-                },
-                "Company": {
-                    "id": "company",
-                    "type": "string"
-                },
-                "Role": {
-                    "id": "role",
-                    "type": "string"
-                },
-                "Email": {
-                    "id": "email",
-                    "type": "email"
-                },
-                "Phone": {
-                    "id": "phone",
-                    "type": "string"
-                }
-            },
-            "records": [
-                {
-                    "Name": "Alice Smith",
-                    "Company": "Acme Corp",
-                    "Role": "Software Engineer",
-                    "Email": "test4@163.com",
-                    "Phone": "13856789090"
-                },
-                {
-                    "Name": "Bob Brown",
-                    "Company": "Widgets Co",
-                    "Role": "Product Manager",
-                    "Email": "test5@163.com",
-                    "Phone": "13890909090"
-                }
-            ]
-        },
-        "Budget": {
-          "schema": {
-            "Name": {
-              "id": "name",
-              "type": "string"
-            },
-            "Estimated": {
-              "id": "estimated",
-              "type": "currency",
-              "option": {
-                "symbol": "$"
-              }
-            },
-            "Actual": {
-              "id": "actual",
-              "type": "currency",
-              "option": {
-                "symbol": "$"
-              }
-            },
-            "Quantity": {
-              "id": "quantity",
-              "type": "currency",
-              "option": {
-                "symbol": "$"
-              }
-            },
-            "Total cost": {
-              "id": "totalCost",
-              "type": "currency",
-              "option": {
-                "symbol": "$"
-              }
-            },
-            "Total budget": {
-              "id": "totalBudget",
-              "type": "currency",
-              "option": {
-                "symbol": "$"
-              }
-            },
-            "Under budget": {
-              "id": "underBudget",
-              "type": "select",
-              "constraint": {
-                "max": 1
-              },
-              "option": {
-                "options": [
-                  {
-                    "color": "green",
-                    "id": "true",
-                    "name": "✔️"
-                  },
-                  {
-                    "color": "red",
-                    "id": "false",
-                    "name": "❌"
-                  }
-                ]
-              }
-            },
-            "Notes": {
-              "id": "notes",
-              "type": "longText",
-              "option": {
-                "allowRichText": true
+              ]
+            }
+          },
+          "Start": {
+            "id": "start",
+            "type": "date"
+          },
+          "End": {
+            "id": "end",
+            "type": "date"
+          },
+          "Location": {
+            "id": "quantity",
+            "type": "string"
+          },
+          "Speakers": {
+            "id": "speakers",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": false,
+              "foreignTable": {
+                "tableName": "Speakers"
               }
             }
           },
-          "records": [
-            {
-                "Name": "Venue rental",
-                "Estimated": 30000,
-                "Actual": 16899,
-                "Quantity": 1,
-                "Total cost": 16899,
-                "Total budget": 17500,
-                "Under budget": "true",
-                "Notes": ""
-            },
-            {
-                "Name": "Labor (set up, during conference, take down)",
-                "Estimated": 3500,
-                "Actual": 3890,
-                "Quantity": 1,
-                "Total cost": 3890,
-                "Total budget": 4000,
-                "Under budget": "true",
-                "Notes": ""
-            },
-            {
-                "Name": "Food",
-                "Estimated": 9500,
-                "Actual": 4675,
-                "Quantity": 2,
-                "Total cost": 9350,
-                "Total budget": 9500,
-                "Under budget": "true",
-                "Notes": ""
-            },
-            {
-                "Name": "Speaker honoraria",
-                "Estimated": 250,
-                "Actual": 250,
-                "Quantity": 9,
-                "Total cost": 2250,
-                "Total budget": 3000,
-                "Under budget": "true",
-                "Notes": ""
-            },
-            {
-                "Name": "Printed programs",
-                "Estimated": 0.25,
-                "Actual": 0.33,
-                "Quantity": 1000,
-                "Total cost": 330,
-                "Total budget": 300,
-                "Under budget": "false",
-                "Notes": "Printing ended up being slightly more expensive than anticipated due to our usage of color & glossy paper "
-            },
-            {
-                "Name": "T-shirts & gifts",
-                "Estimated": 20,
-                "Actual": 17.4,
-                "Quantity": 500,
-                "Total cost": 8700,
-                "Total budget": 8500,
-                "Under budget": "false",
-                "Notes": "Had to add expedited shipping for the t-shirts which pushed us a little above our budget"
-            },
-            {
-                "Name": "Miscellaneous supplies",
-                "Estimated": 1000,
-                "Actual": 837.5,
-                "Quantity": 1,
-                "Total cost": 837.5,
-                "Total budget": 1000,
-                "Under budget": "true",
-                "Notes": ""
+          "Notes": {
+            "id": "notes",
+            "type": "longText",
+            "option": {
+              "allowRichText": true
             }
-          ]
-        }
+          }
+        },
+        "records": [
+          {
+            "Activity": "Welcome breakfast",
+            "Type": "meal",
+            "Start": "2021-09-01T08:00:00.000Z",
+            "End": "2021-09-01T09:00:00.000Z",
+            "Location": "Ballroom A",
+            "Speakers": ["Jane Doe", "John Smith"],
+            "Notes": "Breakfast will be served in the ballroom"
+          },
+          {
+            "Activity": "Opening keynote",
+            "Type": "keynote",
+            "Start": "2021-09-01T09:30:00.000Z",
+            "End": "2021-09-01T10:30:00.000Z",
+            "Location": "Auditorium",
+            "Speakers": ["Jane Doe"],
+            "Notes": "Jane will be speaking about the future of technology"
+          }
+        ]
+      },
+      "Speakers": {
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string"
+          },
+          "Company": {
+            "id": "company",
+            "type": "string"
+          },
+          "Email": {
+            "id": "email",
+            "type": "email"
+          },
+          "Phone": {
+            "id": "phone",
+            "type": "string"
+          },
+          "Confirmed": {
+            "id": "confirmed",
+            "type": "checkbox"
+          }
+        },
+        "records": [
+          {
+            "Name": "Jane Doe",
+            "Company": "Acme Corp",
+            "Email": "test1@163.com",
+            "Phone": "13708089090",
+            "Confirmed": true
+          },
+          {
+            "Name": "John Smith",
+            "Company": "Widgets Co",
+            "Email": "test2@163.com",
+            "Phone": "13566776666",
+            "Confirmed": false
+          },
+          {
+            "Name": "Alice Jackson",
+            "Company": "Software LLC",
+            "Email": "test3@163.com",
+            "Phone": "13877778888",
+            "Confirmed": true
+          }
+        ]
+      },
+      "Attendees": {
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string"
+          },
+          "Company": {
+            "id": "company",
+            "type": "string"
+          },
+          "Role": {
+            "id": "role",
+            "type": "string"
+          },
+          "Email": {
+            "id": "email",
+            "type": "email"
+          },
+          "Phone": {
+            "id": "phone",
+            "type": "string"
+          }
+        },
+        "records": [
+          {
+            "Name": "Alice Smith",
+            "Company": "Acme Corp",
+            "Role": "Software Engineer",
+            "Email": "test4@163.com",
+            "Phone": "13856789090"
+          },
+          {
+            "Name": "Bob Brown",
+            "Company": "Widgets Co",
+            "Role": "Product Manager",
+            "Email": "test5@163.com",
+            "Phone": "13890909090"
+          }
+        ]
+      },
+      "Budget": {
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string"
+          },
+          "Estimated": {
+            "id": "estimated",
+            "type": "currency",
+            "option": {
+              "symbol": "$"
+            }
+          },
+          "Actual": {
+            "id": "actual",
+            "type": "currency",
+            "option": {
+              "symbol": "$"
+            }
+          },
+          "Quantity": {
+            "id": "quantity",
+            "type": "currency",
+            "option": {
+              "symbol": "$"
+            }
+          },
+          "Total cost": {
+            "id": "totalCost",
+            "type": "currency",
+            "option": {
+              "symbol": "$"
+            }
+          },
+          "Total budget": {
+            "id": "totalBudget",
+            "type": "currency",
+            "option": {
+              "symbol": "$"
+            }
+          },
+          "Under budget": {
+            "id": "underBudget",
+            "type": "select",
+            "constraint": {
+              "max": 1
+            },
+            "option": {
+              "options": [
+                {
+                  "color": "green",
+                  "id": "true",
+                  "name": "✔️"
+                },
+                {
+                  "color": "red",
+                  "id": "false",
+                  "name": "❌"
+                }
+              ]
+            }
+          },
+          "Notes": {
+            "id": "notes",
+            "type": "longText",
+            "option": {
+              "allowRichText": true
+            }
+          }
+        },
+        "records": [
+          {
+            "Name": "Venue rental",
+            "Estimated": 30000,
+            "Actual": 16899,
+            "Quantity": 1,
+            "Total cost": 16899,
+            "Total budget": 17500,
+            "Under budget": "true",
+            "Notes": ""
+          },
+          {
+            "Name": "Labor (set up, during conference, take down)",
+            "Estimated": 3500,
+            "Actual": 3890,
+            "Quantity": 1,
+            "Total cost": 3890,
+            "Total budget": 4000,
+            "Under budget": "true",
+            "Notes": ""
+          },
+          {
+            "Name": "Food",
+            "Estimated": 9500,
+            "Actual": 4675,
+            "Quantity": 2,
+            "Total cost": 9350,
+            "Total budget": 9500,
+            "Under budget": "true",
+            "Notes": ""
+          },
+          {
+            "Name": "Speaker honoraria",
+            "Estimated": 250,
+            "Actual": 250,
+            "Quantity": 9,
+            "Total cost": 2250,
+            "Total budget": 3000,
+            "Under budget": "true",
+            "Notes": ""
+          },
+          {
+            "Name": "Printed programs",
+            "Estimated": 0.25,
+            "Actual": 0.33,
+            "Quantity": 1000,
+            "Total cost": 330,
+            "Total budget": 300,
+            "Under budget": "false",
+            "Notes": "Printing ended up being slightly more expensive than anticipated due to our usage of color & glossy paper "
+          },
+          {
+            "Name": "T-shirts & gifts",
+            "Estimated": 20,
+            "Actual": 17.4,
+            "Quantity": 500,
+            "Total cost": 8700,
+            "Total budget": 8500,
+            "Under budget": "false",
+            "Notes": "Had to add expedited shipping for the t-shirts which pushed us a little above our budget"
+          },
+          {
+            "Name": "Miscellaneous supplies",
+            "Estimated": 1000,
+            "Actual": 837.5,
+            "Quantity": 1,
+            "Total cost": 837.5,
+            "Total budget": 1000,
+            "Under budget": "true",
+            "Notes": ""
+          }
+        ]
       }
     }
   }
-  
+}
