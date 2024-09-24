@@ -275,6 +275,9 @@
                   "value": "done"
                 }
               ]
+            },
+            "aggregate": {
+              "title": "count"
             }
           },
           "All Tasks": {

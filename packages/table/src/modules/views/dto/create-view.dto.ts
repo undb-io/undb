@@ -1,6 +1,6 @@
 import { z } from "@undb/zod"
 import { tableId } from "../../../table-id.vo"
-import { viewColorGroup, viewFields, viewFilterGroup, viewOption, viewSort } from "../view"
+import { viewAggregate, viewColorGroup, viewFields, viewFilterGroup, viewOption, viewSort } from "../view"
 import { galleryOption } from "../view/variants/gallery-view.vo"
 import { kanbanOption } from "../view/variants/kanban-view.vo"
 import { viewId } from "../view/view-id.vo"
@@ -17,6 +17,7 @@ export const createBaseViewDTO = z.object({
   color: viewColorGroup.optional(),
   sort: viewSort.optional(),
   fields: viewFields.optional(),
+  aggregate: viewAggregate.optional(),
 })
 
 export const createGridViewDTO = createBaseViewDTO.extend({
