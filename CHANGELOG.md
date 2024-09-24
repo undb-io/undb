@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-88
+
+
+### 🩹 Fixes
+
+- Fix kanban card ui ([129bc9b](https://github.com/undb-io/undb/commit/129bc9b))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-87
 
 
