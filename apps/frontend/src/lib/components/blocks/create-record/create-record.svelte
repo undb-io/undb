@@ -8,11 +8,12 @@
   import { zodClient } from "sveltekit-superforms/adapters"
   import { toast } from "svelte-sonner"
   import { derived, type Readable } from "svelte/store"
-  import { FormIdVO, RecordDO, RecordIdVO, TableDo } from "@undb/table"
+  import { FormIdVO, ID_TYPE, RecordDO, RecordIdVO, TableDo } from "@undb/table"
   import autoAnimate from "@formkit/auto-animate"
   import { cn } from "$lib/utils"
   import { defaultRecordValues, getRecordsStore } from "$lib/store/records.store"
   import { useMediaQuery } from "$lib/store/media-query.store"
+  import IdControl from "../field-control/id-control.svelte"
 
   // beforeNavigate(({ cancel }) => {
   //   if ($tainted) {
@@ -55,17 +56,18 @@
     })),
   )
 
-  const createRecord = (values: any) => {
+  const createRecord = ({ id, ...values }: any) => {
     $createRecordMutation.mutate({
       tableId: $table.id.value,
+      id,
       values,
     })
   }
 
-  $: defaultValue = $table.getDefaultValues(
-    formId ? new FormIdVO(formId) : undefined,
-    $defaultRecordValues ?? undefined,
-  )
+  $: defaultValue = {
+    ...$table.getDefaultValues(formId ? new FormIdVO(formId) : undefined, $defaultRecordValues ?? undefined),
+    [ID_TYPE]: null,
+  }
 
   const form = superForm(defaults(defaultValue, zodClient(schema)), {
     SPA: true,
@@ -98,11 +100,37 @@
     // TODO: get creatable fields
     .filter((f) => f.type !== "button")
 
+  $: idField = $table.schema.getIdField()
+
   $: tempRecord = RecordDO.fromJSON($table, { id: RecordIdVO.create().value, values: $formData })
 </script>
 
 <form method="POST" use:enhance id="createRecord" enctype="multipart/form-data" class="my-4 space-y-4">
   <ul use:autoAnimate class={cn("space-y-4", $mediaQuery ? "space-y-2" : "space-y-4")}>
+    {#if idField}
+      <Form.Field class={cn("flex gap-4 space-y-0", $mediaQuery ? "flex-col" : "")} {form} name={ID_TYPE}>
+        <Form.Control let:attrs>
+          <Form.Label class="flex h-4 w-48 items-center justify-between gap-2 pt-4">
+            <div data-field-id={ID_TYPE} class="flex items-center gap-2">
+              <FieldIcon type={ID_TYPE} class="h-4 w-4" />
+              <span>ID</span>
+            </div>
+          </Form.Label>
+          <div class="min-h-9 flex-1">
+            <IdControl
+              {...attrs}
+              bind:value={$formData[ID_TYPE]}
+              tableId={$table.id.value}
+              field={idField}
+              class={cn($errors[ID_TYPE] && "border-red-500 focus-visible:ring-0")}
+              tabIndex={-1}
+              placeholder="Leave blank to auto generate..."
+            />
+            <Form.FieldErrors class="mt-2" />
+          </div>
+        </Form.Control>
+      </Form.Field>
+    {/if}
     {#each fields as field}
       {@const shouldShow = !tableForm || tableForm.getShouldShowField(field.id.value, $table.schema, tempRecord)}
       {#if shouldShow}
