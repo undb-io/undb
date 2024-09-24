@@ -133,9 +133,11 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any, foreignTable
 
         function handleValue(value: (string | number)[]) {
           if (lookupField?.type === "date") {
-            return value.map((v: string | number) => new Date(v).toISOString()).map(formatter)
+            return value
+              .map((v: string | number) => (v ? new Date(v).toISOString() : null))
+              .map((v) => (v ? formatter(v) : null))
           } else if (lookupField?.type === "select") {
-            return value.map((v) => lookupField.getOptionById(v)?.name)
+            return value.map((v) => lookupField.getOptionById(v)?.name ?? null)
           } else {
             return value
           }
