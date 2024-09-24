@@ -8,7 +8,7 @@ export const createRecordCommand = createRecordDTO.merge(uniqueTableDTO)
 export type ICreateRecordCommand = z.infer<typeof createRecordCommand>
 
 export class CreateRecordCommand extends Command implements ICreateRecordCommand {
-  public readonly id?: string
+  public readonly id?: string | null
   public readonly tableId?: string
   public readonly baseName?: string
   public readonly tableName?: string
