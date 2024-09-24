@@ -11,7 +11,7 @@ export function duplicateViewMethod(
   dto: IDuplicateViewDTO,
 ): { spec: Option<TableComositeSpecification>; view: View } {
   const view = this.views.getViewById(dto.viewId)
-  const spec = view.$duplicate(dto)
+  const spec = view.$duplicate(this, dto)
 
   const names = this.views.views.map((v) => v.name.value)
   applyRules(new ViewNameShouldBeUnique(names))
