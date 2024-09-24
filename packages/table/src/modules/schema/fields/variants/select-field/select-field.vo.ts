@@ -145,6 +145,10 @@ export class SelectField extends AbstractField<SelectFieldValue, SelectFieldCons
     return this.option.into(undefined)?.options ?? []
   }
 
+  getOptionById(id: OptionId) {
+    return this.options.find((o) => o.id === id)
+  }
+
   getNextColor() {
     return new ColorsVO().next(this.options[this.options.length - 1]?.color)
   }

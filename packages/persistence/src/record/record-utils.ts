@@ -123,30 +123,31 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any, foreignTable
 
       if (field.type === "rollup" && field.fn === "lookup") {
         const foreignTable = field.getForeignTable(table, foreignTables)
-        let isLookupDate = false
+        let lookupField: Field | undefined = undefined
         if (foreignTable) {
           const rollupField = field.getRollupField(foreignTable)
           if (rollupField.isSome()) {
-            const type = rollupField.unwrap().type
-            if (type === "date") {
-              isLookupDate = true
-            }
+            lookupField = rollupField.unwrap()
+          }
+        }
+
+        function handleValue(value: (string | number)[]) {
+          if (lookupField?.type === "date") {
+            return value.map((v: string | number) => new Date(v).toISOString()).map(formatter)
+          } else if (lookupField?.type === "select") {
+            return value.map((v) => lookupField.getOptionById(v)?.name)
+          } else {
+            return value
           }
         }
 
         if (Array.isArray(value)) {
-          if (isLookupDate) {
-            values[key] = value.map((v: string | number) => new Date(v).toISOString()).map(formatter)
-          } else {
-            values[key] = value
-          }
+          values[key] = handleValue(value)
           continue
         } else if (isString(value)) {
           try {
             values[key] = JSON.parse(value)
-            if (isLookupDate) {
-              values[key] = values[key].map((v: string) => new Date(v).toISOString())
-            }
+            values[key] = handleValue(values[key])
           } catch (error) {
             logger.warn({ error, value }, "Error parsing JSON")
             values[key] = [value]
