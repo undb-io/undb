@@ -236,7 +236,7 @@ export const createRecords = (base: Base, table: TableDo): RouteConfig => {
 export const submitFormCreateRecordComponent = (table: TableDo, form: FormVO, record?: IReadableRecordDTO) => {
   return z
     .object({
-      id: recordId.openapi(RECORD_ID_COMPONENT, { example: record?.id }),
+      id: recordId.optional().openapi(RECORD_ID_COMPONENT, { example: record?.id }),
       values: table.schema.getMutableSchemaFromForm(form, table.schema.mutableFields, false),
     })
     .openapi(form.name + ":" + FORM_SUBMIT_RECORD_COMPONENT, {
