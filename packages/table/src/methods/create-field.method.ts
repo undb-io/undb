@@ -9,7 +9,7 @@ import type { TableDo } from "../table.do"
 export function $createFieldSpec(this: TableDo, field: Field): Option<TableComositeSpecification> {
   const createFieldSpec = this.schema.$createField(field)
   const formAddFieldSpec = this.forms?.$addField(field)
-  const viewAddFieldSpec = this.views.$addField(field)
+  const viewAddFieldSpec = this.views.$addField(this, field)
 
   const spec = andOptions(
     Some(createFieldSpec),

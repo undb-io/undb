@@ -2,6 +2,7 @@ import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { IDuplicateViewDTO } from "../../../../dto"
 import { WithNewView, WithView, WithViewFieldWidth } from "../../../../specifications/table-view.specification"
+import type { TableDo } from "../../../../table.do"
 import { FieldIdVo } from "../../../schema/fields/field-id.vo"
 import { ViewIdVo } from "../view-id.vo"
 import { AbstractView, baseViewDTO, createBaseViewDTO, updateBaseViewDTO } from "./abstract-view.vo"
@@ -39,13 +40,13 @@ export type IUpdateGridViewDTO = z.infer<typeof updateGridViewDTO>
 
 export class GridView extends AbstractView {
   grid: Option<IGridOption> = None
-  constructor(dto: IGridViewDTO) {
-    super(dto)
+  constructor(table: TableDo, dto: IGridViewDTO) {
+    super(table, dto)
     this.grid = Option(dto.grid)
   }
 
-  static create(dto: ICreateGridViewDTO) {
-    return new GridView({ ...dto, id: ViewIdVo.fromStringOrCreate(dto.id).value })
+  static create(table: TableDo, dto: ICreateGridViewDTO) {
+    return new GridView(table, { ...dto, id: ViewIdVo.fromStringOrCreate(dto.id).value })
   }
 
   getFieldWidth(fieldId: string) {
@@ -73,9 +74,9 @@ export class GridView extends AbstractView {
 
   override type = GRID_TYPE
 
-  override $update(input: IUpdateGridViewDTO): Option<WithView> {
+  override $update(table: TableDo, input: IUpdateGridViewDTO): Option<WithView> {
     const json = this.toJSON()
-    const view = new GridView({
+    const view = new GridView(table, {
       ...json,
       name: input.name,
       id: this.id.value,
@@ -86,12 +87,12 @@ export class GridView extends AbstractView {
     return Some(new WithView(this, view))
   }
 
-  override $duplicate(dto: IDuplicateViewDTO): Option<WithNewView> {
+  override $duplicate(table: TableDo, dto: IDuplicateViewDTO): Option<WithNewView> {
     const json = this.toJSON()
 
     return Some(
       new WithNewView(
-        new GridView({
+        new GridView(table, {
           ...json,
           name: dto.name,
           isDefault: false,

@@ -43,7 +43,6 @@ export class TemplateFactory {
           name,
         })) as ICreateFormDTO[]
 
-        console.log(table.records)
         const records = table.records?.map((record: IFlattenCreateRecordDTO) => flattenToCreateRecordDTO(record))
 
         return {

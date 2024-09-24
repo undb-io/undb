@@ -662,6 +662,10 @@
           },
           "Done": {
             "type": "grid",
+            "fields": [{ "fieldId": "status", "hidden": true }],
+            "option": {
+              "showSystemFields": true
+            },
             "filter": {
               "conjunction": "and",
               "children": [

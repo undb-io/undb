@@ -178,7 +178,7 @@
               class="flex-1 shadow-sm"
               size="sm"
               on:click={() => {
-                viewFields = viewFieldsVo.showAllFields().toJSON()
+                viewFields = viewFieldsVo.showAllFields($table).toJSON()
                 setViewFields()
               }}
             >
@@ -190,7 +190,7 @@
               class="flex-1 shadow-sm"
               size="sm"
               on:click={() => {
-                viewFields = viewFieldsVo.hideAllFields().toJSON()
+                viewFields = viewFieldsVo.hideAllFields($table).toJSON()
                 setViewFields()
               }}
             >

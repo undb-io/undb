@@ -14,17 +14,22 @@ export const viewFields = viewField.array()
 export type IViewFields = z.infer<typeof viewFields>
 
 export class ViewFields extends ValueObject<IViewFields> {
-  constructor(props: IViewFields) {
-    super(props)
+  constructor(table: TableDo, props: IViewFields) {
+    const fields = table.schema.fields.map((field) => {
+      const exists = props.find((f) => f.fieldId === field.id.value)
+      if (exists) {
+        return exists
+      }
+      return {
+        fieldId: field.id.value,
+        hidden: false,
+      }
+    })
+    super(fields)
   }
 
   static default(table: TableDo): ViewFields {
-    return new ViewFields(
-      table.schema.fields.map((field) => ({
-        fieldId: field.id.value,
-        hidden: false,
-      })),
-    )
+    return new ViewFields(table, [])
   }
 
   public isEqual(sort: IViewFields): boolean {
@@ -55,19 +60,28 @@ export class ViewFields extends ValueObject<IViewFields> {
     return this.getHiddenFields().length
   }
 
-  public addField(field: Field): ViewFields {
-    return new ViewFields([...this.props, { fieldId: field.id.value, hidden: false }])
+  public addField(table: TableDo, field: Field): ViewFields {
+    return new ViewFields(table, [...this.props, { fieldId: field.id.value, hidden: false }])
   }
 
-  public deleteField(field: Field): ViewFields {
-    return new ViewFields(this.props.filter((f) => f.fieldId !== field.id.value))
+  public deleteField(table: TableDo, field: Field): ViewFields {
+    return new ViewFields(
+      table,
+      this.props.filter((f) => f.fieldId !== field.id.value),
+    )
   }
 
-  public showAllFields(): ViewFields {
-    return new ViewFields(this.props.map((field) => ({ ...field, hidden: false })))
+  public showAllFields(table: TableDo): ViewFields {
+    return new ViewFields(
+      table,
+      this.props.map((field) => ({ ...field, hidden: false })),
+    )
   }
 
-  public hideAllFields(): ViewFields {
-    return new ViewFields(this.props.map((field) => ({ ...field, hidden: true })))
+  public hideAllFields(table: TableDo): ViewFields {
+    return new ViewFields(
+      table,
+      this.props.map((field) => ({ ...field, hidden: true })),
+    )
   }
 }

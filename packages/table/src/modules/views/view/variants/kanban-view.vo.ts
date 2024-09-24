@@ -2,6 +2,7 @@ import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { IDuplicateViewDTO } from "../../../../dto/duplicate-view.dto"
 import { WithNewView, WithView } from "../../../../specifications/table-view.specification"
+import type { TableDo } from "../../../../table.do"
 import { fieldId } from "../../../schema"
 import { ViewIdVo } from "../view-id.vo"
 import { AbstractView, baseViewDTO, createBaseViewDTO, updateBaseViewDTO } from "./abstract-view.vo"
@@ -44,20 +45,20 @@ export class KanbanView extends AbstractView {
     return this.kanban.map((x) => x.field)
   }
 
-  constructor(dto: IKanbanViewDTO) {
-    super(dto)
+  constructor(table: TableDo, dto: IKanbanViewDTO) {
+    super(table, dto)
     this.kanban = Option(dto.kanban)
   }
 
-  static create(dto: ICreateKanbanViewDTO) {
-    return new KanbanView({ ...dto, id: ViewIdVo.fromStringOrCreate(dto.id).value })
+  static create(table: TableDo, dto: ICreateKanbanViewDTO) {
+    return new KanbanView(table, { ...dto, id: ViewIdVo.fromStringOrCreate(dto.id).value })
   }
 
   override type = KANBAN_TYPE
 
-  override $update(input: IUpdateKanbanViewDTO): Option<WithView> {
+  override $update(table: TableDo, input: IUpdateKanbanViewDTO): Option<WithView> {
     const json = this.toJSON()
-    const view = new KanbanView({
+    const view = new KanbanView(table, {
       ...json,
       name: input.name,
       id: this.id.value,
@@ -68,12 +69,12 @@ export class KanbanView extends AbstractView {
     return Some(new WithView(this, view))
   }
 
-  override $duplicate(dto: IDuplicateViewDTO): Option<WithNewView> {
+  override $duplicate(table: TableDo, dto: IDuplicateViewDTO): Option<WithNewView> {
     const json = this.toJSON()
 
     return Some(
       new WithNewView(
-        new KanbanView({
+        new KanbanView(table, {
           ...json,
           name: dto.name,
           kanban: this.kanban.into(undefined),

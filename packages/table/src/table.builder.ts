@@ -90,12 +90,12 @@ export class TableBuilder implements ITableBuilder {
   }
 
   createViews(dto?: ICreateViewDTO[]): ITableBuilder {
-    new TableViewsSpecification(Views.create(dto)).mutate(this.table)
+    new TableViewsSpecification(Views.create(this.table, dto)).mutate(this.table)
     return this
   }
 
   setViews(dto: IViewsDTO): ITableBuilder {
-    new TableViewsSpecification(Views.fromJSON(dto)).mutate(this.table)
+    new TableViewsSpecification(Views.fromJSON(this.table, dto)).mutate(this.table)
     return this
   }
 
