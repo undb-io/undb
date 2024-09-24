@@ -8,7 +8,7 @@ import type { TableDo } from "../table.do"
 export function updateView(this: TableDo, dto: IUpdateViewDTO): Option<TableComositeSpecification> {
   const view = this.views.getViewById(dto.viewId)
 
-  const spec = view.$update(dto)
+  const spec = view.$update(this, dto)
   if (spec.isSome()) {
     spec.unwrap().mutate(this)
 

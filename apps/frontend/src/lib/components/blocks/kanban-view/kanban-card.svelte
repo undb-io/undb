@@ -16,8 +16,8 @@
 
   const r = queryParam("r")
 
-  let values = record.flatten()
-  let displayValues = record.displayValues?.toJSON() ?? {}
+  $: values = record.flatten()
+  $: displayValues = record.displayValues?.toJSON() ?? {}
 
   $: colorSpec = color?.getSpec($table.schema).into(undefined)
   $: isMatch = colorSpec ? record.match(colorSpec) : false
