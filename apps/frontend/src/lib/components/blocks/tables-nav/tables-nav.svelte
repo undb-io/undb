@@ -79,19 +79,21 @@
           <Collapsible.Root bind:open={open[base.id]}>
             <div
               class={cn(
-                "group flex h-8 items-center justify-between gap-1 pl-4 pr-2 transition-all",
+                "group flex h-8 items-center justify-between gap-1 overflow-hidden pl-4 pr-2 transition-all",
                 active && !tableId && !viewId ? "text-background rounded-md bg-gray-800/90" : "hover:bg-gray-100",
               )}
             >
               <a
                 class={cn(
-                  "flex h-full flex-1 items-center font-normal text-gray-600",
+                  "flex h-full flex-1 items-center overflow-hidden font-normal text-gray-600",
                   active && !tableId && !viewId && "text-background font-medium",
                 )}
                 href={`/bases/${base.id}`}
               >
                 <HardDriveIcon class="mr-2 h-4 w-4" />
-                {base.name}
+                <span class="truncate">
+                  {base.name}
+                </span>
               </a>
 
               <div
