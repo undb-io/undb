@@ -83,7 +83,7 @@
       Create New Base
     </Button>
 
-    <Button
+    <!-- <Button
       class="w-full justify-start text-left"
       on:click={() => $createFromTemplateMutation.mutate({ templateName: "test" })}
       variant="link"
@@ -91,6 +91,6 @@
     >
       <PlusIcon class="mr-2 h-3 w-3" />
       Create New Base
-    </Button>
+    </Button> -->
   {/if}
 </div>
