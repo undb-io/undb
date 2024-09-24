@@ -1,0 +1,206 @@
+{
+  "Office Inventory Management": {
+    "tables": {
+      "Snack Orders": {
+        "schema": {
+          "Snack Name": {
+            "id": "snackName",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Ordered": {
+            "id": "ordered",
+            "type": "checkbox",
+            "defaultValue": false
+          },
+          "Store": {
+            "id": "store",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "defaultValue": "wholeway",
+            "option": {
+              "options": [
+                { "id": "wholeway", "color": "gray", "name": "Wholeway" },
+                { "id": "mostco", "color": "yellow", "name": "Mostco" },
+                { "id": "traderjake", "color": "red", "name": "Trader Jack's" }
+              ]
+            }
+          },
+          "Quantity": {
+            "id": "quantity",
+            "type": "number",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Unit Price": {
+            "id": "unitPrice",
+            "type": "currency",
+            "constraint": {
+              "required": true
+            },
+            "option": {
+              "symbol": "$"
+            }
+          },
+          "Total Price": {
+            "id": "totalPrice",
+            "type": "currency",
+            "constraint": {
+              "required": true
+            },
+            "option": {
+              "symbol": "$"
+            }
+          },
+          "Date Submitted": {
+            "id": "dateSubmitted",
+            "type": "date",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Requester (If any)": {
+            "id": "requester",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": false
+            },
+            "option": {
+              "options": [
+                { "id": "celeste", "color": "green", "name": "Celeste" },
+                { "id": "yolanda", "color": "yellow", "name": "Yolanda" },
+                { "id": "mac", "color": "blue", "name": "Mac" },
+                { "id": "sean", "color": "red", "name": "Sean" },
+                { "id": "brenda", "color": "gray", "name": "Brenda" }
+              ]
+            }
+          },
+          "Notes": {
+            "id": "notes",
+            "type": "string"
+          }
+        }
+      },
+      "Devices": {
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Device Type": {
+            "id": "deviceType",
+            "type": "select",
+            "constraint": {
+              "required": true,
+              "max": 1
+            },
+            "option": {
+              "options": [
+                { "id": "laptop", "color": "blue", "name": "Laptop" },
+                { "id": "desktop", "color": "yellow", "name": "Desktop" },
+                { "id": "tablet", "color": "red", "name": "Tablet" },
+                { "id": "phone", "color": "green", "name": "Phone" },
+                { "id": "other", "color": "gray", "name": "Other" }
+              ]
+            }
+          },
+          "Serial Number": {
+            "id": "serialNumber",
+            "type": "number",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Current Owner": {
+            "id": "currentOwner",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "tableName": "Employees"
+              }
+            }
+          }
+        }
+      },
+      "Furniture": {
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Type": {
+            "id": "type",
+            "type": "select",
+            "constraint": {
+              "required": true,
+              "max": 1
+            },
+            "option": {
+              "options": [
+                { "id": "desk", "color": "blue", "name": "Desk" },
+                { "id": "chair", "color": "yellow", "name": "Chair" },
+                { "id": "cabinet", "color": "red", "name": "Cabinet" },
+                { "id": "table", "color": "green", "name": "Table" },
+                { "id": "other", "color": "gray", "name": "Other" }
+              ]
+            }
+          },
+          "Serial Number": {
+            "id": "serialNumber",
+            "type": "number",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Current Owner": {
+            "id": "currentOwner",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "tableName": "Employees"
+              }
+            }
+          },
+          "Photo": {
+            "id": "photo",
+            "type": "attachment"
+          }
+        }
+      },
+      "Employees": {
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Label": {
+            "id": "label",
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
