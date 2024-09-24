@@ -8,7 +8,10 @@ import {
   type IRecordValues,
   type TableDo,
 } from "@undb/table"
+import { format } from "date-fns/fp"
 import { isNumber, isString } from "radash"
+
+const formatter = format("yyyy-MM-dd")
 
 export type DisplayFieldName = `$${string}`
 
@@ -56,7 +59,7 @@ const logger = createLogger("record-utils")
  * @param entity The entity to get the record DTO from.
  * @returns The record DTO.
  */
-export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO {
+export function getRecordDTOFromEntity(table: TableDo, entity: any, foreignTables: Map<string, TableDo>): IRecordDTO {
   const id = entity.id
   const values: IRecordValues = {}
   const displayValues: IRecordDisplayValues = {}
@@ -104,7 +107,6 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO 
 
       if (
         (field.type === "reference" ||
-          (field.type === "rollup" && field.fn === "lookup") ||
           field.type === "attachment" ||
           field.type === "json" ||
           ((field.type === "select" || field.type === "user") && field.isMultiple)) &&
@@ -117,6 +119,43 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO 
           values[key] = [value]
         }
         continue
+      }
+
+      if (field.type === "rollup" && field.fn === "lookup") {
+        const foreignTable = field.getForeignTable(table, foreignTables)
+        let lookupField: Field | undefined = undefined
+        if (foreignTable) {
+          const rollupField = field.getRollupField(foreignTable)
+          if (rollupField.isSome()) {
+            lookupField = rollupField.unwrap()
+          }
+        }
+
+        function handleValue(value: (string | number)[]) {
+          if (lookupField?.type === "date") {
+            return value
+              .map((v: string | number) => (v ? new Date(v).toISOString() : null))
+              .map((v) => (v ? formatter(v) : null))
+          } else if (lookupField?.type === "select") {
+            return value.map((v) => lookupField.getOptionById(v)?.name ?? null)
+          } else {
+            return value
+          }
+        }
+
+        if (Array.isArray(value)) {
+          values[key] = handleValue(value)
+          continue
+        } else if (isString(value)) {
+          try {
+            values[key] = JSON.parse(value)
+            values[key] = handleValue(values[key])
+          } catch (error) {
+            logger.warn({ error, value }, "Error parsing JSON")
+            values[key] = [value]
+          }
+          continue
+        }
       }
 
       if (field.type === "checkbox") {

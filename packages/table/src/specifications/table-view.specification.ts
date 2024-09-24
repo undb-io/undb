@@ -1,5 +1,5 @@
-import { Ok,Option,WontImplementException,type Result } from "@undb/domain"
-import type { FieldId,IRootViewFilter,View,ViewId } from "../modules"
+import { Ok, Option, WontImplementException, type Result } from "@undb/domain"
+import type { FieldId, IRootViewFilter, View, ViewId } from "../modules"
 import type { IViewAggregate } from "../modules/views/view/view-aggregate/view-aggregate.vo"
 import type { IRootViewColor } from "../modules/views/view/view-color"
 import type { IViewFields } from "../modules/views/view/view-fields"
@@ -59,7 +59,7 @@ export class WithNewView extends TableComositeSpecification {
     throw new WontImplementException(TableComositeSpecification.name + ".isSatisfiedBy")
   }
   mutate(t: TableDo): Result<TableDo, string> {
-    t.views = t.views.addView(this.view)
+    t.views = t.views.addView(t, this.view)
     return Ok(t)
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
@@ -186,7 +186,7 @@ export class WithViewFields extends TableComositeSpecification {
   }
   mutate(t: TableDo): Result<TableDo, string> {
     const view = t.views.getViewById(this.viewId.value)
-    view.setFields(this.fields)
+    view.setFields(t, this.fields)
     return Ok(t)
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
@@ -224,7 +224,7 @@ export class WithViewFieldWidth extends TableComositeSpecification {
   }
   mutate(t: TableDo): Result<TableDo, string> {
     const view = t.views.getViewById(this.viewId.value)
-    if (view.type === 'grid') {
+    if (view.type === "grid") {
       view.setFieldWidth(this.fieldId.value, this.width)
     }
     return Ok(t)

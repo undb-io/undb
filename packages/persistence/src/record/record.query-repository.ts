@@ -92,7 +92,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
 
     const result = await qb.where(`${table.id.value}.${ID_TYPE}`, "=", id.value).executeTakeFirst()
 
-    return result ? Some(getRecordDTOFromEntity(table, result)) : None
+    return result ? Some(getRecordDTOFromEntity(table, result, foreignTables)) : None
   }
 
   async find(table: TableDo, view: View, query: Option<QueryArgs>): Promise<PaginatedDTO<IRecordDTO>> {
@@ -122,7 +122,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
 
     const total = await this.countWhere(table, Some({ filter: spec }))
 
-    const records = result.map((r) => getRecordDTOFromEntity(table, r))
+    const records = result.map((r) => getRecordDTOFromEntity(table, r, foreignTables))
     return { values: records, total: Number(total) }
   }
 

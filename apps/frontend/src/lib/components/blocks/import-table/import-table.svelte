@@ -183,7 +183,7 @@
 
     if (step === 1) {
       if (!file || !data) return
-      const baseId = $currentBase?.id
+      const baseId = $currentBase?.id ?? $baseId
       if (!baseId) return
 
       $createTable.mutate({

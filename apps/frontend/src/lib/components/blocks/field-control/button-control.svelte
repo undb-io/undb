@@ -32,7 +32,8 @@
     },
   })
 
-  function handleClick() {
+  function handleClick(e: Event) {
+    e.stopPropagation()
     const option = field.option.into(undefined)
     if (!option) return
     const action = option.action
@@ -49,7 +50,7 @@
 </script>
 
 <div class={$$restProps.class}>
-  <Button disabled={$updateCell.isPending} on:click={handleClick} variant="outline" class="w-full">
+  <Button disabled={$updateCell.isPending} on:click={handleClick} variant="outline" class="w-full" size="sm">
     {#if $updateCell.isPending}
       <LoaderCircleIcon className="h-5 w-5 animate-spin" />
     {:else}

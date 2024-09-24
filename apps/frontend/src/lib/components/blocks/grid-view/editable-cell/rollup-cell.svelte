@@ -22,13 +22,13 @@
           {#each value as item}
             {#if !!item}
               <span
-                class="me-2 rounded bg-gray-200 px-1 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                class="me-2 truncate rounded bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300"
               >
                 {item}
               </span>
             {:else}
               <span
-                class="text-muted-foreground me-2 rounded bg-gray-200 px-1 py-0.5 text-xs font-medium dark:bg-gray-700 dark:text-gray-300"
+                class="text-muted-foreground me-2 rounded bg-gray-200 px-2 py-0.5 text-xs font-medium dark:bg-gray-700 dark:text-gray-300"
               >
                 Unamed
               </span>
@@ -54,13 +54,13 @@
           {#each value as item}
             {#if !!item}
               <span
-                class="me-2 rounded bg-gray-100 px-1 py-1 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                class="me-2 rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300"
               >
                 {item}
               </span>
             {:else}
               <span
-                class="text-muted-foreground me-2 rounded bg-gray-100 px-1 py-1 text-xs font-medium dark:bg-gray-700 dark:text-gray-300"
+                class="text-muted-foreground me-2 rounded bg-gray-100 px-2 py-1 text-xs font-medium dark:bg-gray-700 dark:text-gray-300"
               >
                 Unamed
               </span>

@@ -7,7 +7,7 @@ export const setFieldWidthDTO = z.object({
   tableId: tableId,
   viewId: viewId.optional(),
   field: fieldId,
-  width: z.number(),
+  width: z.number().positive(),
 })
 
 export type ISetFieldWidthDTO = z.infer<typeof setFieldWidthDTO>

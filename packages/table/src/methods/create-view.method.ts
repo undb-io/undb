@@ -10,7 +10,7 @@ export function createViewMethod(
   this: TableDo,
   dto: ICreateViewDTO,
 ): { spec: Option<TableComositeSpecification>; view: View } {
-  const view = ViewFactory.create(dto)
+  const view = ViewFactory.create(this, dto)
   const spec = new WithNewView(view)
 
   spec.mutate(this)

@@ -10,7 +10,7 @@ export function deleteFieldMethod(this: TableDo, dto: IDeleteFieldDTO): [Field, 
   const field = this.schema.getFieldById(new FieldIdVo(dto.id)).expect("field not found")
   const deleteFieldSpec = this.schema.$deleteField(dto)
   const formDeleteFieldSpec = this.forms?.$deleteField(field)
-  const viewDeleteFieldSpec = this.views.$deleteField(field)
+  const viewDeleteFieldSpec = this.views.$deleteField(this, field)
   const rlsDeleteFieldSpec = this.rls.into(undefined)?.$deleteField(field)
 
   const spec = andOptions(

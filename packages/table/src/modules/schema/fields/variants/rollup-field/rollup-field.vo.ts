@@ -1,9 +1,10 @@
 import { baseNameSchema } from "@undb/base"
-import { Option, Some } from "@undb/domain"
+import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { tableName } from "../../../../../table-name.vo"
 import type { TableDo } from "../../../../../table.do"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
+import type { Field } from "../../field.type"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { createAbstractNumberFieldMather } from "../abstractions"
@@ -133,6 +134,19 @@ export class RollupField extends AbstractField<RollupFieldValue, undefined, IRol
     return table.schema
       .getFieldById(new FieldIdVo(this.referenceFieldId))
       .expect("reference field not found") as ReferenceField
+  }
+
+  getForeignTable(table: TableDo, foreignTables: Map<string, TableDo>) {
+    const referenceField = this.getReferenceField(table)
+    const foreignTableId = referenceField.foreignTableId
+    return foreignTables.get(foreignTableId)
+  }
+
+  getRollupField(foreignTable: TableDo): Option<Field> {
+    if (!this.rollupFieldId) {
+      return None
+    }
+    return foreignTable.schema.getFieldById(new FieldIdVo(this.rollupFieldId))
   }
 
   get fn() {

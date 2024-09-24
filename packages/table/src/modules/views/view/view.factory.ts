@@ -1,4 +1,5 @@
 import { match } from "ts-pattern"
+import type { TableDo } from "../../../table.do"
 import type { ICreateViewDTO } from "../dto/create-view.dto"
 import type { IViewDTO } from "./dto/view.dto"
 import { GalleryView } from "./variants/gallery-view.vo"
@@ -6,19 +7,19 @@ import { GridView } from "./variants/grid-view.vo"
 import { KanbanView } from "./variants/kanban-view.vo"
 
 export class ViewFactory {
-  static create(dto: ICreateViewDTO) {
+  static create(table: TableDo, dto: ICreateViewDTO) {
     return match(dto)
-      .with({ type: "grid" }, (dto) => GridView.create(dto))
-      .with({ type: "kanban" }, (dto) => KanbanView.create(dto))
-      .with({ type: "gallery" }, (dto) => GalleryView.create(dto))
+      .with({ type: "grid" }, (dto) => GridView.create(table, dto))
+      .with({ type: "kanban" }, (dto) => KanbanView.create(table, dto))
+      .with({ type: "gallery" }, (dto) => GalleryView.create(table, dto))
       .exhaustive()
   }
 
-  static fromJSON(dto: IViewDTO) {
+  static fromJSON(table: TableDo, dto: IViewDTO) {
     return match(dto)
-      .with({ type: "grid" }, (dto) => new GridView(dto))
-      .with({ type: "kanban" }, (dto) => new KanbanView(dto))
-      .with({ type: "gallery" }, (dto) => new GalleryView(dto))
+      .with({ type: "grid" }, (dto) => new GridView(table, dto))
+      .with({ type: "kanban" }, (dto) => new KanbanView(table, dto))
+      .with({ type: "gallery" }, (dto) => new GalleryView(table, dto))
       .exhaustive()
   }
 }

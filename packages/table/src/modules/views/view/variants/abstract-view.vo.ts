@@ -14,6 +14,7 @@ import {
   WithoutView,
 } from "../../../../specifications/table-view.specification"
 import { tableId } from "../../../../table-id.vo"
+import type { TableDo } from "../../../../table.do"
 import type { Field } from "../../../schema"
 import type { IViewDTO } from "../dto"
 import { ViewAggregateVO, viewAggregate, type IViewAggregate } from "../view-aggregate/view-aggregate.vo"
@@ -69,7 +70,7 @@ export abstract class AbstractView {
 
   abstract type: ViewType
 
-  constructor(dto: IBaseViewDTO) {
+  constructor(table: TableDo, dto: IBaseViewDTO) {
     this.id = new ViewIdVo(dto.id)
     this.name = new ViewNameVo(dto.name)
     this.isDefault = dto.isDefault ?? false
@@ -86,7 +87,7 @@ export abstract class AbstractView {
       this.setAggregate(dto.aggregate)
     }
     if (dto.fields) {
-      this.setFields(dto.fields)
+      this.setFields(table, dto.fields)
     }
     if (dto.option) {
       this.setOption(dto.option)
@@ -112,8 +113,8 @@ export abstract class AbstractView {
     return Some(new WithViewOption(this.id, Option(previous), option))
   }
 
-  abstract $update(input: IUpdateViewDTO): Option<WithView>
-  abstract $duplicate(dto: IDuplicateViewDTO): Option<WithNewView>
+  abstract $update(table: TableDo, input: IUpdateViewDTO): Option<WithView>
+  abstract $duplicate(table: TableDo, dto: IDuplicateViewDTO): Option<WithNewView>
 
   $delete(): Option<WithoutView> {
     return Some(new WithoutView(this as unknown as View))
@@ -177,8 +178,8 @@ export abstract class AbstractView {
     return Some(new WithViewAggregate(this.id, Option(previous), aggregate))
   }
 
-  setFields(fields: IViewFields) {
-    this.fields = Some(new ViewFields(fields))
+  setFields(table: TableDo, fields: IViewFields) {
+    this.fields = Some(new ViewFields(table, fields))
   }
 
   $setFieldsSpec(fields: IViewFields): Option<WithViewFields> {
@@ -190,22 +191,22 @@ export abstract class AbstractView {
     return Some(new WithViewFields(this.id, Option(previous), fields))
   }
 
-  $addField(field: Field): Option<WithViewFields> {
+  $addField(table: TableDo, field: Field): Option<WithViewFields> {
     if (this.fields.isNone()) {
       return None
     }
 
     const previous = this.fields.into(null)?.value
-    const fields = this.fields.unwrap().addField(field)
+    const fields = this.fields.unwrap().addField(table, field)
 
     return Some(new WithViewFields(this.id, Option(previous), fields.toJSON()))
   }
 
-  $deleteField(field: Field): Option<TableComositeSpecification> {
+  $deleteField(table: TableDo, field: Field): Option<TableComositeSpecification> {
     let specs: TableComositeSpecification[] = []
     if (this.fields.isSome()) {
       const previous = this.fields.into(null)?.value
-      const fields = this.fields.unwrap().deleteField(field)
+      const fields = this.fields.unwrap().deleteField(table, field)
 
       specs.push(new WithViewFields(this.id, Option(previous), fields.toJSON()))
     }

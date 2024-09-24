@@ -39,7 +39,7 @@
         disabled={$setAsDefaultViewMutation.isPending}
         on:click={() => $setAsDefaultViewMutation.mutate({ tableId: $table.id.value, viewId: $viewId })}
       >
-        Continue
+        Set as Default View
       </AlertDialog.Action>
     </AlertDialog.Footer>
   </AlertDialog.Content>

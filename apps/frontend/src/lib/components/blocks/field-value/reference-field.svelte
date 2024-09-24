@@ -12,13 +12,22 @@
 </script>
 
 <div class="flex gap-1 overflow-hidden">
-  <ForeignRecordsPickerDropdown shouldUpdate {field} {tableId} {recordId} bind:isSelected={hasValue}>
+  <ForeignRecordsPickerDropdown shouldUpdate {field} {tableId} {recordId} bind:isSelected={hasValue} let:builder>
     {#if hasValue}
-      <Button size="xs" variant="link" class="px-0">
+      <Button size="xs" variant="link" class="px-0" builders={[builder]} on:click={(e) => e.stopPropagation()}>
         {value?.length} Linked Records
       </Button>
     {:else}
-      <Button size="xs" variant="link" type="button" class="px-0">+ Link Records</Button>
+      <Button
+        size="xs"
+        variant="link"
+        type="button"
+        class="px-0"
+        builders={[builder]}
+        on:click={(e) => e.stopPropagation()}
+      >
+        + Link Records
+      </Button>
     {/if}
   </ForeignRecordsPickerDropdown>
 </div>

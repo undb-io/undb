@@ -1,6 +1,7 @@
 import { and, andOptions, None, Option, ValueObject } from "@undb/domain"
 import type { ISetDefaultViewDTO } from "../../dto/set-default-view.dto"
 import { WithView, type TableComositeSpecification } from "../../specifications"
+import type { TableDo } from "../../table.do"
 import type { Field } from "../schema"
 import type { ICreateViewDTO, IViewsDTO } from "./dto"
 import { GridView } from "./view/variants/grid-view.vo"
@@ -13,33 +14,33 @@ export class Views extends ValueObject {
     super(views)
   }
 
-  static create(views?: ICreateViewDTO[]) {
+  static create(table: TableDo, views?: ICreateViewDTO[]) {
     if (views?.length) {
       let vs = new Views([])
-      const vsDTO = views.map((view) => ViewFactory.create(view))
+      const vsDTO = views.map((view) => ViewFactory.create(table, view))
 
       for (const view of vsDTO) {
-        vs = vs.addView(view)
+        vs = vs.addView(table, view)
       }
 
       return vs
     }
-    return new Views([GridView.create({ name: "default", type: "grid", isDefault: true })])
+    return new Views([GridView.create(table, { name: "default", type: "grid", isDefault: true })])
   }
 
   toJSON(): IViewsDTO {
     return this.views.map((view) => view.toJSON())
   }
 
-  static fromJSON(dto: IViewsDTO) {
-    const views = dto.map((view) => ViewFactory.fromJSON(view))
+  static fromJSON(table: TableDo, dto: IViewsDTO) {
+    const views = dto.map((view) => ViewFactory.fromJSON(table, view))
     return new this(views)
   }
 
-  addView(view: View) {
+  addView(table: TableDo, view: View) {
     if (!this.views.length) {
       const json = view.toJSON()
-      const defaultView = ViewFactory.fromJSON({ ...json, isDefault: true })
+      const defaultView = ViewFactory.fromJSON(table, { ...json, isDefault: true })
       return new Views([defaultView])
     }
     return new Views([...this.views, view])
@@ -83,19 +84,19 @@ export class Views extends ValueObject {
     return new Views(this.views.filter((v) => !v.id.equals(view.id)))
   }
 
-  $addField(field: Field) {
-    const specs = this.views.map((view) => view.$addField(field))
+  $addField(table: TableDo, field: Field) {
+    const specs = this.views.map((view) => view.$addField(table, field))
 
     return andOptions(...specs)
   }
 
-  $deleteField(field: Field) {
-    const specs = this.views.map((view) => view.$deleteField(field))
+  $deleteField(table: TableDo, field: Field) {
+    const specs = this.views.map((view) => view.$deleteField(table, field))
 
     return andOptions(...specs)
   }
 
-  $setDefaultView(dto: ISetDefaultViewDTO): Option<TableComositeSpecification> {
+  $setDefaultView(table: TableDo, dto: ISetDefaultViewDTO): Option<TableComositeSpecification> {
     const defaultView = this.getDefaultView()
     if (defaultView.id.value === dto.viewId) {
       return None
@@ -104,13 +105,13 @@ export class Views extends ValueObject {
     const view = this.getViewById(dto.viewId)
 
     const defaultViewSpec = new WithView(
-      ViewFactory.fromJSON(defaultView.toJSON()),
-      ViewFactory.fromJSON({ ...defaultView.toJSON(), isDefault: false }),
+      ViewFactory.fromJSON(table, defaultView.toJSON()),
+      ViewFactory.fromJSON(table, { ...defaultView.toJSON(), isDefault: false }),
     )
 
     const viewSpec = new WithView(
-      ViewFactory.fromJSON(view.toJSON()),
-      ViewFactory.fromJSON({ ...view.toJSON(), isDefault: true }),
+      ViewFactory.fromJSON(table, view.toJSON()),
+      ViewFactory.fromJSON(table, { ...view.toJSON(), isDefault: true }),
     )
 
     return and(defaultViewSpec, viewSpec)

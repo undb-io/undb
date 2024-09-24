@@ -2,6 +2,7 @@ import { None, Option, Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { IDuplicateViewDTO } from "../../../../dto/duplicate-view.dto"
 import { WithNewView, WithView } from "../../../../specifications/table-view.specification"
+import type { TableDo } from "../../../../table.do"
 import { fieldId } from "../../../schema"
 import { ViewIdVo } from "../view-id.vo"
 import { AbstractView, baseViewDTO, createBaseViewDTO, updateBaseViewDTO } from "./abstract-view.vo"
@@ -44,20 +45,20 @@ export class GalleryView extends AbstractView {
     return this.gallery.map((x) => x.field)
   }
 
-  constructor(dto: IGalleryViewDTO) {
-    super(dto)
+  constructor(table: TableDo, dto: IGalleryViewDTO) {
+    super(table, dto)
     this.gallery = Option(dto.gallery)
   }
 
-  static create(dto: ICreateGalleryViewDTO) {
-    return new GalleryView({ ...dto, id: ViewIdVo.fromStringOrCreate(dto.id).value })
+  static create(table: TableDo, dto: ICreateGalleryViewDTO) {
+    return new GalleryView(table, { ...dto, id: ViewIdVo.fromStringOrCreate(dto.id).value })
   }
 
   override type = GALLERY_TYPE
 
-  override $update(input: IUpdateGalleryViewDTO): Option<WithView> {
+  override $update(table: TableDo, input: IUpdateGalleryViewDTO): Option<WithView> {
     const json = this.toJSON()
-    const view = new GalleryView({
+    const view = new GalleryView(table, {
       ...json,
       name: input.name,
       id: this.id.value,
@@ -68,12 +69,12 @@ export class GalleryView extends AbstractView {
     return Some(new WithView(this, view))
   }
 
-  override $duplicate(dto: IDuplicateViewDTO): Option<WithNewView> {
+  override $duplicate(table: TableDo, dto: IDuplicateViewDTO): Option<WithNewView> {
     const json = this.toJSON()
 
     return Some(
       new WithNewView(
-        new GalleryView({
+        new GalleryView(table, {
           ...json,
           name: dto.name,
           gallery: this.gallery.into(undefined),

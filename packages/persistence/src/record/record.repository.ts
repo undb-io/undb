@@ -150,7 +150,7 @@ export class RecordRepository implements IRecordRepository {
     const qb = this.helper.createQuery(table, foreignTables, table.schema.fields, spec)
 
     const record = await qb.limit(1).executeTakeFirst()
-    const dto = record ? getRecordDTOFromEntity(table, record) : undefined
+    const dto = record ? getRecordDTOFromEntity(table, record, foreignTables) : undefined
     return dto ? Some(RecordDO.fromJSON(table, dto)) : None
   }
 
@@ -160,7 +160,7 @@ export class RecordRepository implements IRecordRepository {
     const records = await qb.where(this.helper.handleWhere(table, spec)).execute()
 
     return records.map((record) => {
-      const dto = getRecordDTOFromEntity(table, record)
+      const dto = getRecordDTOFromEntity(table, record, foreignTables)
       return RecordDO.fromJSON(table, dto)
     })
   }
@@ -175,7 +175,7 @@ export class RecordRepository implements IRecordRepository {
       return None
     }
 
-    const dto = getRecordDTOFromEntity(table, records[0])
+    const dto = getRecordDTOFromEntity(table, records[0], foreignTables)
     return Some(RecordDO.fromJSON(table, dto))
   }
 
@@ -193,7 +193,7 @@ export class RecordRepository implements IRecordRepository {
       .execute()
 
     return records.map((record) => {
-      const dto = getRecordDTOFromEntity(table, record)
+      const dto = getRecordDTOFromEntity(table, record, foreignTables)
       return RecordDO.fromJSON(table, dto)
     })
   }

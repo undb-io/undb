@@ -213,6 +213,7 @@ export const fieldsCanBeRollup: FieldType[] = [
   "currency",
   "duration",
   "percentage",
+  "select",
 ] as const
 
 export const getIsFieldCanBeRollup = (type: FieldType): type is "number" => {
@@ -231,7 +232,7 @@ export function getRollupFnByType(type: FieldType): IRollupFn[] {
       "lookup",
     ])
     .with("date", () => ["max", "min", "count", "lookup"])
-    .with("string", "email", "url", "checkbox", () => ["lookup", "count"])
+    .with("string", "email", "url", "checkbox", "select", () => ["lookup", "count"])
     .otherwise(() => [])
 }
 

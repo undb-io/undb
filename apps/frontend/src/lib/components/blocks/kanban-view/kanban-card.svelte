@@ -16,8 +16,8 @@
 
   const r = queryParam("r")
 
-  let values = record.flatten()
-  let displayValues = record.displayValues?.toJSON() ?? {}
+  $: values = record.flatten()
+  $: displayValues = record.displayValues?.toJSON() ?? {}
 
   $: colorSpec = color?.getSpec($table.schema).into(undefined)
   $: isMatch = colorSpec ? record.match(colorSpec) : false
@@ -28,32 +28,31 @@
   on:click={() => ($r = record.id.value)}
   disabled={readonly}
   data-record-id={record.id.value}
-  class={cn(
-    "relative mb-2 flex w-full flex-col space-y-2 overflow-hidden rounded bg-white p-2 shadow",
-    isMatch && "pl-3",
-  )}
+  class={cn("relative mb-2 flex w-full flex-col overflow-hidden rounded bg-white p-2 shadow", isMatch && "pl-3")}
 >
+  <div class="flex w-full flex-col space-y-2 overflow-hidden">
+    {#each fields as field, idx (field.id.value)}
+      <div class="flex w-full items-center gap-2 overflow-hidden">
+        <Tooltip.Root>
+          <Tooltip.Trigger class="w-full text-left">
+            <FieldValue
+              {field}
+              tableId={$table.id.value}
+              recordId={record.id.value}
+              value={values[field.id.value]}
+              type={field.type}
+              displayValue={displayValues[field.id.value]}
+              class={cn("w-full truncate text-left", idx === 0 ? "text-md font-medium" : "")}
+            />
+          </Tooltip.Trigger>
+          <Tooltip.Content>
+            <p>{field.name.value}</p>
+          </Tooltip.Content>
+        </Tooltip.Root>
+      </div>
+    {/each}
+  </div>
   {#if isMatch}
     <div class={cn("absolute left-0 top-0 h-full w-1", condition && getBgColor(condition.option.color))}></div>
   {/if}
-  {#each fields as field}
-    <div class="flex w-full items-center gap-2">
-      <Tooltip.Root>
-        <Tooltip.Trigger class="w-full text-left">
-          <FieldValue
-            {field}
-            tableId={$table.id.value}
-            recordId={record.id.value}
-            value={values[field.id.value]}
-            type={field.type}
-            displayValue={displayValues[field.id.value]}
-            class="w-full truncate text-left"
-          />
-        </Tooltip.Trigger>
-        <Tooltip.Content>
-          <p>{field.name.value}</p>
-        </Tooltip.Content>
-      </Tooltip.Root>
-    </div>
-  {/each}
 </button>

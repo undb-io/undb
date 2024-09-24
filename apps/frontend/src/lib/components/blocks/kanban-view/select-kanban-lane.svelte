@@ -61,39 +61,6 @@
 
   const q = queryParam("q")
 
-  const getRecords = ({ pageParam = 1 }) => {
-    if (shareId) {
-      return trpc.shareData.records.query({
-        shareId,
-        tableId,
-        viewId: $viewId,
-        q: $q,
-        filters: {
-          conjunction: "and",
-          children: [{ field: fieldId, op: "eq", value: option ? option.id : null }],
-        },
-        pagination: {
-          page: pageParam,
-          limit: 20,
-        },
-      })
-    }
-
-    return trpc.record.list.query({
-      tableId,
-      viewId: $viewId,
-      q: $q ?? undefined,
-      filters: {
-        conjunction: "and",
-        children: [{ field: fieldId, op: "eq", value: option ? option.id : null }],
-      },
-      pagination: {
-        page: pageParam,
-        limit: 20,
-      },
-    })
-  }
-
   let getIsLaneCollapsed = kanbanStore.getIsLaneCollapsed
   $: isLaneCollapsed = $getIsLaneCollapsed($viewId, option?.id ?? "") ?? false
 
@@ -102,7 +69,38 @@
       const view = $table.views.getViewById($viewId)
       return {
         queryKey: [$table.id.value, $viewId, fieldId, "getRecords", option?.id, $q],
-        queryFn: getRecords,
+        queryFn: ({ pageParam = 1 }) => {
+          if (shareId) {
+            return trpc.shareData.records.query({
+              shareId,
+              tableId: $table.id.value,
+              viewId: $viewId,
+              q: $q,
+              filters: {
+                conjunction: "and",
+                children: [{ field: fieldId, op: "eq", value: option ? option.id : null }],
+              },
+              pagination: {
+                page: pageParam,
+                limit: 20,
+              },
+            })
+          }
+
+          return trpc.record.list.query({
+            tableId: $table.id.value,
+            viewId: $viewId,
+            q: $q ?? undefined,
+            filters: {
+              conjunction: "and",
+              children: [{ field: fieldId, op: "eq", value: option ? option.id : null }],
+            },
+            pagination: {
+              page: pageParam,
+              limit: 20,
+            },
+          })
+        },
         initialPageParam: 1,
         getNextPageParam: (lastPage, pages) => {
           const current = pages.reduce<number>((acc, cur) => acc + (cur as any).records.length, 0)
