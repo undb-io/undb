@@ -9,7 +9,7 @@ import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { createAbstractDateConditionMather } from "../abstractions/abstract-date-field.condition"
 import { abstractDateAggregate } from "../abstractions/abstract-date.aggregate"
-import { DateFieldConstraint } from "./date-field-constraint.vo"
+import { dateFieldConstraint, DateFieldConstraint } from "./date-field-constraint.vo"
 import { dateFieldValue, DateFieldValue } from "./date-field-value.vo"
 import {
   createDateFieldCondition,
@@ -22,6 +22,7 @@ export const DATE_TYPE = "date" as const
 
 export const createDateFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(DATE_TYPE),
+  constraint: dateFieldConstraint.optional(),
   defaultValue: dateFieldValue,
 })
 
@@ -33,6 +34,7 @@ export type IUpdateDateFieldDTO = z.infer<typeof updateDateFieldDTO>
 
 export const dateFieldDTO = baseFieldDTO.extend({
   type: z.literal(DATE_TYPE),
+  constraint: dateFieldConstraint.optional(),
   defaultValue: dateFieldValue,
 })
 
@@ -41,6 +43,9 @@ export type IDateFieldDTO = z.infer<typeof dateFieldDTO>
 export class DateField extends AbstractField<DateFieldValue> {
   constructor(dto: IDateFieldDTO) {
     super(dto)
+    if (dto.constraint) {
+      this.constraint = Some(new DateFieldConstraint(dto.constraint))
+    }
     if (dto.defaultValue) {
       this.defaultValue = new DateFieldValue(dto.defaultValue)
     }
