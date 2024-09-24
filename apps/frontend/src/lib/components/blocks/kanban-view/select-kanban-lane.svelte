@@ -68,7 +68,7 @@
     derived([table, viewId, q], ([$table, $viewId, $q]) => {
       const view = $table.views.getViewById($viewId)
       return {
-        queryKey: [$table.id.value, $viewId, fieldId, "getRecords", option?.id, $q],
+        queryKey: ["records", $table.id.value, $viewId, fieldId, option?.id, $q],
         queryFn: ({ pageParam = 1 }) => {
           if (shareId) {
             return trpc.shareData.records.query({
@@ -315,7 +315,7 @@
       >
         {#if !readonly && $hasPermission("record:create")}
           {#if $query.isFetchedAfterMount}
-            {#if $query.data?.pages[0]?.total > 0}
+            {#if recordDos.length > 0}
               <Button on:click={onCreateRecord} variant="outline" size="sm" class="w-full">
                 <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
               </Button>

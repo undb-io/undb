@@ -1,0 +1,393 @@
+{
+  "Office Inventory Management": {
+    "tables": {
+      "Snack Orders": {
+        "schema": {
+          "Snack Name": {
+            "id": "snackName",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Ordered": {
+            "id": "ordered",
+            "type": "checkbox",
+            "defaultValue": false
+          },
+          "Store": {
+            "id": "store",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "defaultValue": "wholeway",
+            "option": {
+              "options": [
+                { "id": "wholeway", "color": "gray", "name": "Wholeway" },
+                { "id": "mostco", "color": "yellow", "name": "Mostco" },
+                { "id": "traderjake", "color": "red", "name": "Trader Jack's" }
+              ]
+            }
+          },
+          "Quantity": {
+            "id": "quantity",
+            "type": "number",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Unit Price": {
+            "id": "unitPrice",
+            "type": "currency",
+            "constraint": {
+              "required": true
+            },
+            "option": {
+              "symbol": "$"
+            }
+          },
+          "Total Price": {
+            "id": "totalPrice",
+            "type": "currency",
+            "constraint": {
+              "required": true
+            },
+            "option": {
+              "symbol": "$"
+            }
+          },
+          "Date Submitted": {
+            "id": "dateSubmitted",
+            "type": "date",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Requester (If any)": {
+            "id": "requester",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": false
+            },
+            "option": {
+              "options": [
+                { "id": "celeste", "color": "green", "name": "Celeste" },
+                { "id": "yolanda", "color": "yellow", "name": "Yolanda" },
+                { "id": "mac", "color": "blue", "name": "Mac" },
+                { "id": "sean", "color": "red", "name": "Sean" },
+                { "id": "brenda", "color": "gray", "name": "Brenda" }
+              ]
+            }
+          },
+          "Notes": {
+            "id": "notes",
+            "type": "string"
+          }
+        },
+        "records": [
+          {
+            "Snack Name": "Pretzels",
+            "Ordered": true,
+            "Store": "wholeway",
+            "Quantity": 11,
+            "Unit Price": 1,
+            "Total Price": 10,
+            "Date Submitted": "2021-09-01T08:00:00.000Z",
+            "Requester (If any)": "celeste",
+            "Notes": "Extra salt, please."
+          },
+          {
+            "Snack Name": "Chips",
+            "Ordered": true,
+            "Store": "mostco",
+            "Quantity": 5,
+            "Unit Price": 2,
+            "Total Price": 10,
+            "Date Submitted": "2021-09-01T08:00:00.000Z",
+            "Requester (If any)": "yolanda",
+            "Notes": "Extra spicy, please."
+          },
+          {
+            "Snack Name": "Cookies",
+            "Ordered": true,
+            "Store": "traderjake",
+            "Quantity": 3,
+            "Unit Price": 3,
+            "Total Price": 9,
+            "Date Submitted": "2021-09-01T08:00:00.000Z",
+            "Requester (If any)": "mac",
+            "Notes": "Extra chocolate, please."
+          },
+          {
+            "Snack Name": "Candy",
+            "Ordered": true,
+            "Store": "wholeway",
+            "Quantity": 7,
+            "Unit Price": 1,
+            "Total Price": 7,
+            "Date Submitted": "2021-09-01T08:00:00.000Z",
+            "Requester (If any)": "sean",
+            "Notes": "Extra sweet, please."
+          },
+          {
+            "Snack Name": "Gum",
+            "Ordered": true,
+            "Store": "mostco",
+            "Quantity": 2,
+            "Unit Price": 1,
+            "Total Price": 2,
+            "Date Submitted": "2021-09-01T08:00:00.000Z",
+            "Requester (If any)": "brenda",
+            "Notes": "Extra minty, please."
+          },
+          {
+            "Snack Name": "Soda",
+            "Ordered": true,
+            "Store": "traderjake",
+            "Quantity": 1,
+            "Unit Price": 2,
+            "Total Price": 2,
+            "Date Submitted": "2021-09-01T08:00:00.000Z",
+            "Requester (If any)": "celeste",
+            "Notes": "Extra bubbly, please."
+          }
+        ]
+      },
+      "Devices": {
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Device Type": {
+            "id": "deviceType",
+            "type": "select",
+            "constraint": {
+              "required": true,
+              "max": 1
+            },
+            "option": {
+              "options": [
+                { "id": "laptop", "color": "blue", "name": "Laptop" },
+                { "id": "desktop", "color": "yellow", "name": "Desktop" },
+                { "id": "tablet", "color": "red", "name": "Tablet" },
+                { "id": "phone", "color": "green", "name": "Phone" },
+                { "id": "other", "color": "gray", "name": "Other" }
+              ]
+            }
+          },
+          "Serial Number": {
+            "id": "serialNumber",
+            "type": "number",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Current Owner": {
+            "id": "currentOwner",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "tableName": "Employees"
+              }
+            }
+          }
+				},
+				"records": [
+          {
+            "Name": "MacBook Pro",
+            "Device Type": "laptop",
+            "Serial Number": 1234567890,
+            "Current Owner": ["celeste"]
+          },
+          {
+            "Name": "iMac",
+            "Device Type": "desktop",
+            "Serial Number": 2345678901,
+            "Current Owner": ["yolanda"]
+          },
+          {
+            "Name": "iPad",
+            "Device Type": "tablet",
+            "Serial Number": 3456789012,
+            "Current Owner": ["mac"]
+          },
+          {
+            "Name": "iPhone",
+            "Device Type": "phone",
+            "Serial Number": 4567890123,
+            "Current Owner": ["sean"]
+          },
+          {
+            "Name": "Samsung Galaxy",
+            "Device Type": "phone",
+            "Serial Number": 5678901234,
+            "Current Owner": ["brenda"]
+          },
+          {
+            "Name": "Surface Pro",
+            "Device Type": "tablet",
+            "Serial Number": 6789012345,
+            "Current Owner": ["celeste"]
+          },
+          {
+            "Name": "Dell XPS",
+            "Device Type": "laptop",
+            "Serial Number": 7890123456,
+            "Current Owner": ["yolanda"]
+          }
+        ]
+      },
+      "Furniture": {
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Type": {
+            "id": "type",
+            "type": "select",
+            "constraint": {
+              "required": true,
+              "max": 1
+            },
+            "option": {
+              "options": [
+                { "id": "desk", "color": "blue", "name": "Desk" },
+                { "id": "chair", "color": "yellow", "name": "Chair" },
+                { "id": "cabinet", "color": "red", "name": "Cabinet" },
+                { "id": "table", "color": "green", "name": "Table" },
+                { "id": "other", "color": "gray", "name": "Other" }
+              ]
+            }
+          },
+          "Serial Number": {
+            "id": "serialNumber",
+            "type": "number",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Current Owner": {
+            "id": "currentOwner",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "tableName": "Employees"
+              }
+            }
+          },
+          "Photo": {
+            "id": "photo",
+            "type": "attachment"
+          }
+        },
+				"records": [
+          {
+            "Name": "Standing Desk",
+            "Type": "desk",
+            "Serial Number": 1234567890,
+            "Current Owner": ["celeste"]
+      
+          },
+          {
+            "Name": "Office Chair",
+            "Type": "chair",
+            "Serial Number": 2345678901,
+            "Current Owner": ["yolanda"]
+          },
+          {
+            "Name": "Filing Cabinet",
+            "Type": "cabinet",
+            "Serial Number": 3456789012,
+            "Current Owner": ["mac"]
+          },
+          {
+            "Name": "Conference Table",
+            "Type": "table",
+            "Serial Number": 4567890123,
+            "Current Owner": ["sean"]
+          },
+          {
+            "Name": "Coffee Table",
+            "Type": "table",
+            "Serial Number": 5678901234,
+            "Current Owner": ["brenda"]
+          },
+          {
+            "Name": "Bookshelf",
+            "Type": "cabinet",
+            "Serial Number": 6789012345,
+            "Current Owner": ["celeste"]
+          },
+          {
+            "Name": "Dining Table",
+            "Type": "table",
+            "Serial Number": 7890123456,
+            "Current Owner": ["yolanda"]
+          }
+        ]
+      },
+      "Employees": {
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Label": {
+            "id": "label",
+            "type": "string"
+          }
+        },
+        "records": [
+          {
+            "Name": "Celeste",
+            "Label": "Software Engineer"
+          },
+          {
+            "Name": "Yolanda",
+            "Label": "Product Manager"
+          },
+          {
+            "Name": "Mac",
+            "Label": "Designer"
+          },
+          {
+            "Name": "Sean",
+            "Label": "Data Analyst"
+          },
+          {
+            "Name": "Brenda",
+            "Label": "Marketing Specialist"
+          },
+          {
+            "Name": "Alex",
+            "Label": "Software Engineer"
+          },
+          {
+            "Name": "Chris",
+            "Label": "Product Manager"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,1 +1,1 @@
-export * from "./template.schema"
+export * from "./template-schema.schema"

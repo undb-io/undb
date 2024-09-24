@@ -61,6 +61,7 @@ import {
   createFromTemplateCommand,
   createFromTemplateCommandOutput,
   createRecordCommand,
+  createRecordCommandOutput,
   createRecordsCommand,
   createSpaceCommand,
   createTableCommand,
@@ -300,6 +301,7 @@ const recordRouter = t.router({
   create: privateProcedure
     .use(authz("record:create"))
     .input(createRecordCommand)
+    .output(createRecordCommandOutput)
     .mutation(({ input }) => commandBus.execute(new CreateRecordCommand(input))),
   bulkCreate: privateProcedure
     .use(authz("record:create"))

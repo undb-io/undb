@@ -60,10 +60,10 @@ export class Views extends ValueObject {
   getViewById(id: string | undefined): View {
     let view: View | undefined
     if (!id) {
-      view = this.views.at(0)
+      view = this.getDefaultView()
     } else {
       const viewId = new ViewIdVo(id)
-      view = this.views.find((view) => view.id.equals(viewId)) ?? this.views.at(0)
+      view = this.views.find((view) => view.id.equals(viewId)) ?? this.getDefaultView()
     }
     return Option(view).expect("View not found")
   }

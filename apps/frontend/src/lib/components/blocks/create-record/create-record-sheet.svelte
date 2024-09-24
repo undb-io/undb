@@ -3,7 +3,7 @@
   import CreateRecord from "./create-record.svelte"
   import Button from "$lib/components/ui/button/button.svelte"
   import { formId } from "$lib/store/tab.store"
-  import { modal, CREATE_RECORD_MODAL, closeModal } from "$lib/store/modal.store"
+  import { isModalOpen, CREATE_RECORD_MODAL, closeModal } from "$lib/store/modal.store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
   import { getTable } from "$lib/store/table.store"
   import { useIsMutating } from "@tanstack/svelte-query"
@@ -24,7 +24,7 @@
 </script>
 
 <Sheet.Root
-  open={$modal?.includes(CREATE_RECORD_MODAL) ?? false}
+  open={$isModalOpen(CREATE_RECORD_MODAL)}
   onOpenChange={(open) => {
     if (!open) {
       closeModal(CREATE_RECORD_MODAL)

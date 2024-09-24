@@ -243,10 +243,14 @@
   </Label>
   <Label class="flex items-center gap-2">
     <Checkbox disabled={$createTable.isPending || $createRecords.isPending} bind:checked={importData} />
-    Import Data
+    <span>Import Data</span>
+
+    {#if (data?.data.length ?? 0) > 1}
+      <span>({(data?.data.length ?? 0) - 1} rows)</span>
+    {/if}
   </Label>
   {#if data && file && schema}
-    <div class="p-3">
+    <div class="space-y-2">
       <Label class="flex items-center gap-2">
         <div>Name</div>
         <Input disabled={$createTable.isPending || $createRecords.isPending} class="text-sm" bind:value={tableName} />

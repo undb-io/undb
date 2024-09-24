@@ -14,6 +14,7 @@
   import { defaultRecordValues, getRecordsStore } from "$lib/store/records.store"
   import { useMediaQuery } from "$lib/store/media-query.store"
   import IdControl from "../field-control/id-control.svelte"
+  import type { ICreateRecordCommandOutput } from "@undb/commands"
 
   // beforeNavigate(({ cancel }) => {
   //   if ($tainted) {
@@ -42,7 +43,7 @@
     derived([table], ([$table]) => ({
       mutationFn: trpc.record.create.mutate,
       mutationKey: [$table.id.value, "createRecord"],
-      onSuccess: (data) => {
+      onSuccess: (data: ICreateRecordCommandOutput) => {
         client.invalidateQueries({
           queryKey: ["records", $table.id.value],
         })

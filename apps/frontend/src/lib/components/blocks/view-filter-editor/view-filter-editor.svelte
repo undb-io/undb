@@ -23,6 +23,7 @@
 
   const table = getTable()
   $: filter = $table.views.getViewById($viewId).filter.into(undefined)
+  $: console.log($viewId, filter)
   $: count = filter?.count ?? 0
 
   const value = writable<MaybeConditionGroup<IViewFilterOptionSchema> | undefined>()

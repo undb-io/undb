@@ -233,7 +233,7 @@
                         Set as Default View
                       </DropdownMenu.Item>
                       <DropdownMenu.Item
-                        class="text-xs text-red-500 hover:bg-red-200 hover:text-red-500"
+                        class="text-xs text-red-500 hover:!bg-red-200 hover:!text-red-500"
                         on:click={() => toggleModal(DELETE_VIEW)}
                       >
                         <CopyPlusIcon class="mr-2 h-3 w-3" />
