@@ -30,7 +30,7 @@
         {/each}
       </div>
     {:else if isNumber(value)}
-      <span>
+      <span class="text-xs font-medium">
         {value}
       </span>
     {/if}

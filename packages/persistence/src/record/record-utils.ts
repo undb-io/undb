@@ -8,7 +8,10 @@ import {
   type IRecordValues,
   type TableDo,
 } from "@undb/table"
+import { format } from "date-fns/fp"
 import { isNumber, isString } from "radash"
+
+const formatter = format("yyyy-MM-dd")
 
 export type DisplayFieldName = `$${string}`
 
@@ -56,7 +59,7 @@ const logger = createLogger("record-utils")
  * @param entity The entity to get the record DTO from.
  * @returns The record DTO.
  */
-export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO {
+export function getRecordDTOFromEntity(table: TableDo, entity: any, foreignTables: Map<string, TableDo>): IRecordDTO {
   const id = entity.id
   const values: IRecordValues = {}
   const displayValues: IRecordDisplayValues = {}
@@ -104,7 +107,6 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO 
 
       if (
         (field.type === "reference" ||
-          (field.type === "rollup" && field.fn === "lookup") ||
           field.type === "attachment" ||
           field.type === "json" ||
           ((field.type === "select" || field.type === "user") && field.isMultiple)) &&
@@ -117,6 +119,40 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any): IRecordDTO 
           values[key] = [value]
         }
         continue
+      }
+
+      if (field.type === "rollup" && field.fn === "lookup") {
+        const foreignTable = field.getForeignTable(table, foreignTables)
+        let isLookupDate = false
+        if (foreignTable) {
+          const rollupField = field.getRollupField(foreignTable)
+          if (rollupField.isSome()) {
+            const type = rollupField.unwrap().type
+            if (type === "date") {
+              isLookupDate = true
+            }
+          }
+        }
+
+        if (Array.isArray(value)) {
+          if (isLookupDate) {
+            values[key] = value.map((v: string | number) => new Date(v).toISOString()).map(formatter)
+          } else {
+            values[key] = value
+          }
+          continue
+        } else if (isString(value)) {
+          try {
+            values[key] = JSON.parse(value)
+            if (isLookupDate) {
+              values[key] = values[key].map((v: string) => new Date(v).toISOString())
+            }
+          } catch (error) {
+            logger.warn({ error, value }, "Error parsing JSON")
+            values[key] = [value]
+          }
+          continue
+        }
       }
 
       if (field.type === "checkbox") {

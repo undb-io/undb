@@ -39,7 +39,7 @@
               ]
             }
           },
-          "Projects Count": {
+          "Bugs Count": {
             "type": "rollup",
             "option": {
               "fn": "count",
@@ -49,6 +49,10 @@
               },
               "rollupFieldId": "title"
             }
+          },
+          "Due Date": {
+            "id": "dueDate",
+            "type": "date"
           }
         },
         "views": {
@@ -71,11 +75,503 @@
         "records": [
           {
             "id": "project-1",
-            "Title": "Project 1"
+            "Title": "Smart Home System Development",
+            "Due Date": "2023-12-31"
           },
           {
             "id": "project-2",
-            "Title": "Project 2"
+            "Title": "E-commerce Platform Upgrade",
+            "Due Date": "2024-03-15"
+          },
+          {
+            "id": "project-3",
+            "Title": "Mobile Payment App Optimization",
+            "Due Date": "2024-02-28"
+          },
+          {
+            "id": "project-4",
+            "Title": "AI Customer Service System",
+            "Due Date": "2024-06-30"
+          },
+          {
+            "id": "project-5",
+            "Title": "Cloud Storage Solution",
+            "Due Date": "2024-04-30"
+          },
+          {
+            "id": "project-6",
+            "Title": "Blockchain Supply Chain Management",
+            "Due Date": "2024-09-15"
+          },
+          {
+            "id": "project-7",
+            "Title": "Virtual Reality Education Platform",
+            "Due Date": "2024-08-31"
+          },
+          {
+            "id": "project-8",
+            "Title": "IoT Vehicle Tracking System",
+            "Due Date": "2024-05-31"
+          },
+          {
+            "id": "project-9",
+            "Title": "Big Data Analytics Tool Development",
+            "Due Date": "2024-07-31"
+          },
+          {
+            "id": "project-10",
+            "Title": "Cybersecurity Enhancement",
+            "Due Date": "2024-03-31"
+          },
+          {
+            "id": "project-11",
+            "Title": "Intelligent Medical Diagnosis System",
+            "Due Date": "2024-11-30"
+          },
+          {
+            "id": "project-12",
+            "Title": "Renewable Energy Management Platform",
+            "Due Date": "2024-10-31"
+          },
+          {
+            "id": "project-13",
+            "Title": "Facial Recognition Access Control",
+            "Due Date": "2024-06-15"
+          },
+          {
+            "id": "project-14",
+            "Title": "Smart City Traffic Management",
+            "Due Date": "2024-09-30"
+          },
+          {
+            "id": "project-15",
+            "Title": "Online Education Course Platform",
+            "Due Date": "2024-07-15"
+          },
+          {
+            "id": "project-16",
+            "Title": "Social Media Data Analysis Tool",
+            "Due Date": "2024-05-15"
+          },
+          {
+            "id": "project-17",
+            "Title": "Smart Agriculture Monitoring System",
+            "Due Date": "2024-08-15"
+          },
+          {
+            "id": "project-18",
+            "Title": "Telemedicine Consultation Platform",
+            "Due Date": "2024-04-15"
+          },
+          {
+            "id": "project-19",
+            "Title": "Enterprise Resource Planning System Upgrade",
+            "Due Date": "2024-10-15"
+          },
+          {
+            "id": "project-20",
+            "Title": "Intelligent Warehouse Management Solution",
+            "Due Date": "2024-06-30"
+          },
+          {
+            "id": "project-21",
+            "Title": "Augmented Reality Navigation App",
+            "Due Date": "2024-09-15"
+          },
+          {
+            "id": "project-22",
+            "Title": "Smart Home Voice Control System",
+            "Due Date": "2024-07-31"
+          },
+          {
+            "id": "project-23",
+            "Title": "Blockchain Digital Identity Verification",
+            "Due Date": "2024-11-15"
+          },
+          {
+            "id": "project-24",
+            "Title": "AI Image Recognition System",
+            "Due Date": "2024-08-31"
+          },
+          {
+            "id": "project-25",
+            "Title": "Intelligent Energy Management Platform",
+            "Due Date": "2024-05-31"
+          },
+          {
+            "id": "project-26",
+            "Title": "Machine Learning Predictive Analytics Tool",
+            "Due Date": "2024-10-31"
+          },
+          {
+            "id": "project-27",
+            "Title": "IoT Smart Waste Sorting System",
+            "Due Date": "2024-07-15"
+          },
+          {
+            "id": "project-28",
+            "Title": "Cloud Computing Resource Scheduling Platform",
+            "Due Date": "2024-09-30"
+          },
+          {
+            "id": "project-29",
+            "Title": "Smart Manufacturing Production Line Optimization",
+            "Due Date": "2024-12-15"
+          },
+          {
+            "id": "project-30",
+            "Title": "Network Security Threat Detection System",
+            "Due Date": "2024-06-15"
+          },
+          {
+            "id": "project-31",
+            "Title": "Intelligent Building Energy Management",
+            "Due Date": "2024-08-15"
+          },
+          {
+            "id": "project-32",
+            "Title": "Blockchain Electronic Voting System",
+            "Due Date": "2024-11-30"
+          },
+          {
+            "id": "project-33",
+            "Title": "AI Natural Language Processing Platform",
+            "Due Date": "2024-07-31"
+          },
+          {
+            "id": "project-34",
+            "Title": "Intelligent Traffic Signal Control System",
+            "Due Date": "2024-10-15"
+          },
+          {
+            "id": "project-35",
+            "Title": "Virtual Reality Training Simulator",
+            "Due Date": "2024-09-15"
+          },
+          {
+            "id": "project-36",
+            "Title": "Big Data Customer Behavior Analysis Platform",
+            "Due Date": "2024-12-31"
+          },
+          {
+            "id": "project-37",
+            "Title": "Smart Water Resource Management System",
+            "Due Date": "2024-08-31"
+          },
+          {
+            "id": "project-38",
+            "Title": "Blockchain Digital Copyright Protection",
+            "Due Date": "2024-11-15"
+          },
+          {
+            "id": "project-39",
+            "Title": "AI Recommendation Engine Development",
+            "Due Date": "2024-10-31"
+          },
+          {
+            "id": "project-40",
+            "Title": "Smart Home Security Monitoring System",
+            "Due Date": "2024-07-15"
+          },
+          {
+            "id": "project-41",
+            "Title": "Cloud-Native Application Development Platform",
+            "Due Date": "2024-09-30"
+          },
+          {
+            "id": "project-42",
+            "Title": "IoT Smart Parking Management",
+            "Due Date": "2024-06-30"
+          },
+          {
+            "id": "project-43",
+            "Title": "Robotic Process Automation Tool",
+            "Due Date": "2024-08-15"
+          },
+          {
+            "id": "project-44",
+            "Title": "Intelligent Environmental Monitoring System",
+            "Due Date": "2024-11-30"
+          },
+          {
+            "id": "project-45",
+            "Title": "Blockchain Cross-Border Payment Platform",
+            "Due Date": "2024-10-15"
+          },
+          {
+            "id": "project-46",
+            "Title": "AI Sentiment Analysis System",
+            "Due Date": "2024-07-31"
+          },
+          {
+            "id": "project-47",
+            "Title": "Smart Factory Production Scheduling Platform",
+            "Due Date": "2024-09-15"
+          },
+          {
+            "id": "project-48",
+            "Title": "Augmented Reality Remote Collaboration Tool",
+            "Due Date": "2024-12-15"
+          },
+          {
+            "id": "project-49",
+            "Title": "Big Data Risk Assessment Model",
+            "Due Date": "2024-11-15"
+          },
+          {
+            "id": "project-50",
+            "Title": "Smart Grid Management System",
+            "Due Date": "2024-08-31"
+          },
+          {
+            "id": "project-51",
+            "Title": "Blockchain Traceability Platform Development",
+            "Due Date": "2024-10-31"
+          },
+          {
+            "id": "project-52",
+            "Title": "AI Video Analysis System",
+            "Due Date": "2024-09-30"
+          },
+          {
+            "id": "project-53",
+            "Title": "Smart Home Energy Management Platform",
+            "Due Date": "2024-07-15"
+          },
+          {
+            "id": "project-54",
+            "Title": "Cloud Security Solution",
+            "Due Date": "2024-11-30"
+          },
+          {
+            "id": "project-55",
+            "Title": "IoT Asset Tracking System",
+            "Due Date": "2024-08-15"
+          },
+          {
+            "id": "project-56",
+            "Title": "Machine Learning Anomaly Detection Tool",
+            "Due Date": "2024-10-15"
+          },
+          {
+            "id": "project-57",
+            "Title": "Smart City Waste Management Platform",
+            "Due Date": "2024-12-31"
+          },
+          {
+            "id": "project-58",
+            "Title": "Blockchain Smart Contract Platform",
+            "Due Date": "2024-09-15"
+          },
+          {
+            "id": "project-59",
+            "Title": "AI Medical Image Analysis",
+            "Due Date": "2024-11-15"
+          },
+          {
+            "id": "project-60",
+            "Title": "Intelligent Logistics Delivery System",
+            "Due Date": "2024-07-31"
+          },
+          {
+            "id": "project-61",
+            "Title": "Virtual Reality Social Platform",
+            "Due Date": "2024-10-31"
+          },
+          {
+            "id": "project-62",
+            "Title": "Big Data Predictive Maintenance System",
+            "Due Date": "2024-08-31"
+          },
+          {
+            "id": "project-63",
+            "Title": "Smart Agriculture Irrigation Management",
+            "Due Date": "2024-06-30"
+          },
+          {
+            "id": "project-64",
+            "Title": "Blockchain Digital Asset Exchange Platform",
+            "Due Date": "2024-09-30"
+          },
+          {
+            "id": "project-65",
+            "Title": "AI Chatbot Development",
+            "Due Date": "2024-07-15"
+          },
+          {
+            "id": "project-66",
+            "Title": "Smart Home Health Monitoring System",
+            "Due Date": "2024-11-30"
+          },
+          {
+            "id": "project-67",
+            "Title": "Cloud Gaming Streaming Platform",
+            "Due Date": "2024-10-15"
+          },
+          {
+            "id": "project-68",
+            "Title": "IoT Smart Lighting Control",
+            "Due Date": "2024-08-15"
+          },
+          {
+            "id": "project-69",
+            "Title": "Robotic Process Automation Platform",
+            "Due Date": "2024-12-15"
+          },
+          {
+            "id": "project-70",
+            "Title": "Smart City Air Quality Monitoring",
+            "Due Date": "2024-09-15"
+          },
+          {
+            "id": "project-71",
+            "Title": "Blockchain-based Supply Chain Financing",
+            "Due Date": "2024-11-15"
+          },
+          {
+            "id": "project-72",
+            "Title": "AI-powered Fraud Detection System",
+            "Due Date": "2024-07-31"
+          },
+          {
+            "id": "project-73",
+            "Title": "Smart Traffic Congestion Management",
+            "Due Date": "2024-10-31"
+          },
+          {
+            "id": "project-74",
+            "Title": "Augmented Reality Retail Experience",
+            "Due Date": "2024-08-31"
+          },
+          {
+            "id": "project-75",
+            "Title": "IoT-based Precision Agriculture System",
+            "Due Date": "2024-06-30"
+          },
+          {
+            "id": "project-76",
+            "Title": "Quantum Computing Simulation Platform",
+            "Due Date": "2024-12-31"
+          },
+          {
+            "id": "project-77",
+            "Title": "AI-driven Customer Segmentation Tool",
+            "Due Date": "2024-09-30"
+          },
+          {
+            "id": "project-78",
+            "Title": "Smart City Emergency Response System",
+            "Due Date": "2024-11-30"
+          },
+          {
+            "id": "project-79",
+            "Title": "Blockchain-based Voting System",
+            "Due Date": "2024-10-15"
+          },
+          {
+            "id": "project-80",
+            "Title": "Virtual Reality Therapy Platform",
+            "Due Date": "2024-08-15"
+          },
+          {
+            "id": "project-81",
+            "Title": "IoT-enabled Smart Office Solution",
+            "Due Date": "2024-07-15"
+          },
+          {
+            "id": "project-82",
+            "Title": "AI-powered Personal Finance Assistant",
+            "Due Date": "2024-09-15"
+          },
+          {
+            "id": "project-83",
+            "Title": "Drone Delivery Management System",
+            "Due Date": "2024-11-15"
+          },
+          {
+            "id": "project-84",
+            "Title": "Blockchain-based Healthcare Data Exchange",
+            "Due Date": "2024-12-15"
+          },
+          {
+            "id": "project-85",
+            "Title": "Smart City Noise Pollution Monitoring",
+            "Due Date": "2024-10-31"
+          },
+          {
+            "id": "project-86",
+            "Title": "AI-driven HR Recruitment Platform",
+            "Due Date": "2024-08-31"
+          },
+          {
+            "id": "project-87",
+            "Title": "IoT Fleet Management System",
+            "Due Date": "2024-07-31"
+          },
+          {
+            "id": "project-88",
+            "Title": "Augmented Reality Maintenance Guide",
+            "Due Date": "2024-09-30"
+          },
+          {
+            "id": "project-89",
+            "Title": "Blockchain-based Charity Donation Platform",
+            "Due Date": "2024-11-30"
+          },
+          {
+            "id": "project-90",
+            "Title": "Smart Home Elderly Care System",
+            "Due Date": "2024-10-15"
+          },
+          {
+            "id": "project-91",
+            "Title": "AI-powered Legal Document Analysis",
+            "Due Date": "2024-08-15"
+          },
+          {
+            "id": "project-92",
+            "Title": "IoT-based Smart Irrigation System",
+            "Due Date": "2024-06-30"
+          },
+          {
+            "id": "project-93",
+            "Title": "Blockchain Digital Identity Management",
+            "Due Date": "2024-12-31"
+          },
+          {
+            "id": "project-94",
+            "Title": "Virtual Reality Real Estate Tour Platform",
+            "Due Date": "2024-11-15"
+          },
+          {
+            "id": "project-95",
+            "Title": "AI-driven Predictive Maintenance for Industry",
+            "Due Date": "2024-09-15"
+          },
+          {
+            "id": "project-96",
+            "Title": "Smart City Traffic Light Optimization",
+            "Due Date": "2024-07-15"
+          },
+          {
+            "id": "project-97",
+            "Title": "IoT-based Smart Waste Collection",
+            "Due Date": "2024-10-31"
+          },
+          {
+            "id": "project-98",
+            "Title": "Blockchain-based Intellectual Property Registry",
+            "Due Date": "2024-08-31"
+          },
+          {
+            "id": "project-99",
+            "Title": "AI Language Translation Platform",
+            "Due Date": "2024-11-30"
+          },
+          {
+            "id": "project-100",
+            "Title": "Smart Building Management System",
+            "Due Date": "2024-12-15"
           }
         ]
       },
@@ -99,10 +595,18 @@
               }
             }
           },
-          "BugsCount": {
+          "Project Due Date": {
             "type": "rollup",
             "option": {
-              "fn": "count",
+              "fn": "lookup",
+              "referenceFieldId": "projects",
+              "rollupFieldId": "dueDate"
+            }
+          },
+          "Project Name": {
+            "type": "rollup",
+            "option": {
+              "fn": "lookup",
               "referenceFieldId": "projects",
               "rollupFieldId": "title"
             }
@@ -193,8 +697,7 @@
                       "op": "is_not_empty"
                     }
                   ]
-                },
-                "hidden": true
+                }
               }
             ]
           }
@@ -202,20 +705,969 @@
         "records": [
           {
             "id": "bug-1",
-            "Title": "Bug 1",
+            "Title": "Login page not responsive on mobile devices",
             "Status": "inProgress",
-            "Projects": ["project-1"]
+            "Projects": ["project-2"]
           },
           {
             "id": "bug-2",
-            "Title": "Bug 2",
-            "Projects": ["project-1"]
+            "Title": "Payment gateway timeout during high traffic",
+            "Status": "backlog",
+            "Projects": ["project-2"]
           },
           {
             "id": "bug-3",
-            "Title": "Bug 3",
+            "Title": "User profile picture upload failing",
             "Status": "done",
             "Projects": ["project-2"]
+          },
+          {
+            "id": "bug-4",
+            "Title": "Incorrect product recommendations in AI system",
+            "Status": "inProgress",
+            "Projects": ["project-4"]
+          },
+          {
+            "id": "bug-5",
+            "Title": "Data synchronization issues in cloud storage",
+            "Status": "backlog",
+            "Projects": ["project-5"]
+          },
+          {
+            "id": "bug-6",
+            "Title": "Blockchain transaction verification delay",
+            "Status": "inProgress",
+            "Projects": ["project-6"]
+          },
+          {
+            "id": "bug-7",
+            "Title": "VR headset causing motion sickness in education app",
+            "Status": "backlog",
+            "Projects": ["project-7"]
+          },
+          {
+            "id": "bug-8",
+            "Title": "IoT device battery drain issue",
+            "Status": "inProgress",
+            "Projects": ["project-8"]
+          },
+          {
+            "id": "bug-9",
+            "Title": "Data visualization error in analytics dashboard",
+            "Status": "done",
+            "Projects": ["project-9"]
+          },
+          {
+            "id": "bug-10",
+            "Title": "Firewall blocking legitimate traffic",
+            "Status": "inProgress",
+            "Projects": ["project-10"]
+          },
+          {
+            "id": "bug-11",
+            "Title": "Medical diagnosis system false positives",
+            "Status": "backlog",
+            "Projects": ["project-11"]
+          },
+          {
+            "id": "bug-12",
+            "Title": "Renewable energy output calculation inaccuracy",
+            "Status": "inProgress",
+            "Projects": ["project-12"]
+          },
+          {
+            "id": "bug-13",
+            "Title": "Facial recognition failing in low light conditions",
+            "Status": "backlog",
+            "Projects": ["project-13"]
+          },
+          {
+            "id": "bug-14",
+            "Title": "Traffic light synchronization error",
+            "Status": "inProgress",
+            "Projects": ["project-14"]
+          },
+          {
+            "id": "bug-15",
+            "Title": "Video streaming lag in online course platform",
+            "Status": "done",
+            "Projects": ["project-15"]
+          },
+          {
+            "id": "bug-16",
+            "Title": "Social media sentiment analysis accuracy issues",
+            "Status": "inProgress",
+            "Projects": ["project-16"]
+          },
+          {
+            "id": "bug-17",
+            "Title": "Soil moisture sensor calibration error",
+            "Status": "backlog",
+            "Projects": ["project-17"]
+          },
+          {
+            "id": "bug-18",
+            "Title": "Telemedicine video call quality degradation",
+            "Status": "inProgress",
+            "Projects": ["project-18"]
+          },
+          {
+            "id": "bug-19",
+            "Title": "ERP system inventory tracking discrepancy",
+            "Status": "backlog",
+            "Projects": ["project-19"]
+          },
+          {
+            "id": "bug-20",
+            "Title": "Warehouse robot collision avoidance failure",
+            "Status": "inProgress",
+            "Projects": ["project-20"]
+          },
+          {
+            "id": "bug-21",
+            "Title": "AR navigation app GPS drift in urban areas",
+            "Status": "backlog",
+            "Projects": ["project-21"]
+          },
+          {
+            "id": "bug-22",
+            "Title": "Voice control system misinterpreting commands",
+            "Status": "inProgress",
+            "Projects": ["project-22"]
+          },
+          {
+            "id": "bug-23",
+            "Title": "Blockchain identity verification timeout",
+            "Status": "done",
+            "Projects": ["project-23"]
+          },
+          {
+            "id": "bug-24",
+            "Title": "AI image recognition false negatives",
+            "Status": "inProgress",
+            "Projects": ["project-24"]
+          },
+          {
+            "id": "bug-25",
+            "Title": "Energy consumption prediction algorithm inaccuracy",
+            "Status": "backlog",
+            "Projects": ["project-25"]
+          },
+          {
+            "id": "bug-26",
+            "Title": "Machine learning model overfitting on test data",
+            "Status": "inProgress",
+            "Projects": ["project-26"]
+          },
+          {
+            "id": "bug-27",
+            "Title": "IoT waste sorting system misclassification",
+            "Status": "backlog",
+            "Projects": ["project-27"]
+          },
+          {
+            "id": "bug-28",
+            "Title": "Cloud resource allocation inefficiency",
+            "Status": "inProgress",
+            "Projects": ["project-28"]
+          },
+          {
+            "id": "bug-29",
+            "Title": "Smart manufacturing line unexpected shutdowns",
+            "Status": "done",
+            "Projects": ["project-29"]
+          },
+          {
+            "id": "bug-30",
+            "Title": "Network intrusion detection false alarms",
+            "Status": "inProgress",
+            "Projects": ["project-30"]
+          },
+          {
+            "id": "bug-31",
+            "Title": "Building HVAC system energy waste",
+            "Status": "backlog",
+            "Projects": ["project-31"]
+          },
+          {
+            "id": "bug-32",
+            "Title": "Blockchain voting system double-voting vulnerability",
+            "Status": "inProgress",
+            "Projects": ["project-32"]
+          },
+          {
+            "id": "bug-33",
+            "Title": "NLP model misunderstanding context in conversations",
+            "Status": "backlog",
+            "Projects": ["project-33"]
+          },
+          {
+            "id": "bug-34",
+            "Title": "Traffic signal optimization causing congestion",
+            "Status": "inProgress",
+            "Projects": ["project-34"]
+          },
+          {
+            "id": "bug-35",
+            "Title": "VR training simulator causing disorientation",
+            "Status": "done",
+            "Projects": ["project-35"]
+          },
+          {
+            "id": "bug-36",
+            "Title": "Customer behavior prediction model bias",
+            "Status": "inProgress",
+            "Projects": ["project-36"]
+          },
+          {
+            "id": "bug-37",
+            "Title": "Smart water meter reading inaccuracies",
+            "Status": "backlog",
+            "Projects": ["project-37"]
+          },
+          {
+            "id": "bug-38",
+            "Title": "Digital copyright protection system bypass",
+            "Status": "inProgress",
+            "Projects": ["project-38"]
+          },
+          {
+            "id": "bug-39",
+            "Title": "AI recommendation engine suggesting irrelevant items",
+            "Status": "backlog",
+            "Projects": ["project-39"]
+          },
+          {
+            "id": "bug-40",
+            "Title": "Home security system false alarms",
+            "Status": "inProgress",
+            "Projects": ["project-40"]
+          },
+          {
+            "id": "bug-41",
+            "Title": "Cloud-native app scaling issues under high load",
+            "Status": "backlog",
+            "Projects": ["project-41"]
+          },
+          {
+            "id": "bug-42",
+            "Title": "Smart parking system incorrect space availability",
+            "Status": "inProgress",
+            "Projects": ["project-42"]
+          },
+          {
+            "id": "bug-43",
+            "Title": "RPA tool failing to handle exceptions",
+            "Status": "done",
+            "Projects": ["project-43"]
+          },
+          {
+            "id": "bug-44",
+            "Title": "Environmental sensor calibration drift",
+            "Status": "inProgress",
+            "Projects": ["project-44"]
+          },
+          {
+            "id": "bug-45",
+            "Title": "Blockchain payment system double-spending vulnerability",
+            "Status": "backlog",
+            "Projects": ["project-45"]
+          },
+          {
+            "id": "bug-46",
+            "Title": "AI sentiment analysis misinterpreting sarcasm",
+            "Status": "inProgress",
+            "Projects": ["project-46"]
+          },
+          {
+            "id": "bug-47",
+            "Title": "Smart home system unresponsive to voice commands",
+            "Status": "backlog",
+            "Projects": ["project-1"]
+          },
+          {
+            "id": "bug-48",
+            "Title": "E-commerce platform search results irrelevance",
+            "Status": "inProgress",
+            "Projects": ["project-2"]
+          },
+          {
+            "id": "bug-49",
+            "Title": "Mobile payment app transaction failure",
+            "Status": "done",
+            "Projects": ["project-3"]
+          },
+          {
+            "id": "bug-50",
+            "Title": "AI chatbot providing incorrect information",
+            "Status": "inProgress",
+            "Projects": ["project-4"]
+          },
+          {
+            "id": "bug-51",
+            "Title": "Cloud storage data corruption during transfer",
+            "Status": "backlog",
+            "Projects": ["project-5"]
+          },
+          {
+            "id": "bug-52",
+            "Title": "Blockchain supply chain tracking inconsistencies",
+            "Status": "inProgress",
+            "Projects": ["project-6"]
+          },
+          {
+            "id": "bug-53",
+            "Title": "VR education platform causing eye strain",
+            "Status": "backlog",
+            "Projects": ["project-7"]
+          },
+          {
+            "id": "bug-54",
+            "Title": "IoT vehicle tracking system location inaccuracy",
+            "Status": "inProgress",
+            "Projects": ["project-8"]
+          },
+          {
+            "id": "bug-55",
+            "Title": "Big data analytics tool memory leak",
+            "Status": "done",
+            "Projects": ["project-9"]
+          },
+          {
+            "id": "bug-56",
+            "Title": "Cybersecurity system failing to detect new threats",
+            "Status": "inProgress",
+            "Projects": ["project-10"]
+          },
+          {
+            "id": "bug-57",
+            "Title": "Medical diagnosis AI misclassifying rare conditions",
+            "Status": "backlog",
+            "Projects": ["project-11"]
+          },
+          {
+            "id": "bug-58",
+            "Title": "Renewable energy forecasting model inaccuracy",
+            "Status": "inProgress",
+            "Projects": ["project-12"]
+          },
+          {
+            "id": "bug-59",
+            "Title": "Facial recognition system privacy concerns",
+            "Status": "backlog",
+            "Projects": ["project-13"]
+          },
+          {
+            "id": "bug-60",
+            "Title": "Smart city traffic management causing gridlock",
+            "Status": "inProgress",
+            "Projects": ["project-14"]
+          },
+          {
+            "id": "bug-61",
+            "Title": "Online education platform quiz grading errors",
+            "Status": "done",
+            "Projects": ["project-15"]
+          },
+          {
+            "id": "bug-62",
+            "Title": "Social media data analysis privacy breach",
+            "Status": "inProgress",
+            "Projects": ["project-16"]
+          },
+          {
+            "id": "bug-63",
+            "Title": "Smart agriculture system overwatering crops",
+            "Status": "backlog",
+            "Projects": ["project-17"]
+          },
+          {
+            "id": "bug-64",
+            "Title": "Telemedicine platform data encryption weakness",
+            "Status": "inProgress",
+            "Projects": ["project-18"]
+          },
+          {
+            "id": "bug-65",
+            "Title": "ERP system financial reporting discrepancies",
+            "Status": "backlog",
+            "Projects": ["project-19"]
+          },
+          {
+            "id": "bug-66",
+            "Title": "Warehouse management AI misplacing inventory",
+            "Status": "inProgress",
+            "Projects": ["project-20"]
+          },
+          {
+            "id": "bug-67",
+            "Title": "AR navigation app battery drain issue",
+            "Status": "done",
+            "Projects": ["project-21"]
+          },
+          {
+            "id": "bug-68",
+            "Title": "Smart home voice control system security vulnerability",
+            "Status": "inProgress",
+            "Projects": ["project-22"]
+          },
+          {
+            "id": "bug-69",
+            "Title": "Blockchain identity verification data leak",
+            "Status": "backlog",
+            "Projects": ["project-23"]
+          },
+          {
+            "id": "bug-70",
+            "Title": "AI image recognition system bias",
+            "Status": "inProgress",
+            "Projects": ["project-24"]
+          },
+          {
+            "id": "bug-71",
+            "Title": "Energy management platform causing power outages",
+            "Status": "backlog",
+            "Projects": ["project-25"]
+          },
+          {
+            "id": "bug-72",
+            "Title": "Machine learning model performance degradation over time",
+            "Status": "inProgress",
+            "Projects": ["project-26"]
+          },
+          {
+            "id": "bug-73",
+            "Title": "IoT waste sorting system contamination issues",
+            "Status": "done",
+            "Projects": ["project-27"]
+          },
+          {
+            "id": "bug-74",
+            "Title": "Cloud computing resource over-allocation",
+            "Status": "inProgress",
+            "Projects": ["project-28"]
+          },
+          {
+            "id": "bug-75",
+            "Title": "Smart manufacturing quality control false negatives",
+            "Status": "backlog",
+            "Projects": ["project-29"]
+          },
+          {
+            "id": "bug-76",
+            "Title": "Network security system performance bottleneck",
+            "Status": "inProgress",
+            "Projects": ["project-30"]
+          },
+          {
+            "id": "bug-77",
+            "Title": "Building energy management system sensor failures",
+            "Status": "backlog",
+            "Projects": ["project-31"]
+          },
+          {
+            "id": "bug-78",
+            "Title": "Blockchain voting system audit trail gaps",
+            "Status": "inProgress",
+            "Projects": ["project-32"]
+          },
+          {
+            "id": "bug-79",
+            "Title": "NLP model struggling with multilingual input",
+            "Status": "done",
+            "Projects": ["project-33"]
+          },
+          {
+            "id": "bug-80",
+            "Title": "Intelligent traffic control causing pedestrian delays",
+            "Status": "inProgress",
+            "Projects": ["project-34"]
+          },
+          {
+            "id": "bug-81",
+            "Title": "VR training simulator graphics rendering issues",
+            "Status": "backlog",
+            "Projects": ["project-35"]
+          },
+          {
+            "id": "bug-82",
+            "Title": "Customer behavior analysis privacy concerns",
+            "Status": "inProgress",
+            "Projects": ["project-36"]
+          },
+          {
+            "id": "bug-83",
+            "Title": "Smart water management system leak detection failures",
+            "Status": "backlog",
+            "Projects": ["project-37"]
+          },
+          {
+            "id": "bug-84",
+            "Title": "Blockchain copyright system content fingerprinting errors",
+            "Status": "inProgress",
+            "Projects": ["project-38"]
+          },
+          {
+            "id": "bug-85",
+            "Title": "AI recommendation engine filter bubble effect",
+            "Status": "done",
+            "Projects": ["project-39"]
+          },
+          {
+            "id": "bug-86",
+            "Title": "Smart home security system camera blind spots",
+            "Status": "inProgress",
+            "Projects": ["project-40"]
+          },
+          {
+            "id": "bug-87",
+            "Title": "Cloud-native app container orchestration failures",
+            "Status": "backlog",
+            "Projects": ["project-41"]
+          },
+          {
+            "id": "bug-88",
+            "Title": "IoT parking management payment processing errors",
+            "Status": "inProgress",
+            "Projects": ["project-42"]
+          },
+          {
+            "id": "bug-89",
+            "Title": "RPA tool incompatibility with legacy systems",
+            "Status": "backlog",
+            "Projects": ["project-43"]
+          },
+          {
+            "id": "bug-90",
+            "Title": "Environmental monitoring system data transmission delays",
+            "Status": "inProgress",
+            "Projects": ["project-44"]
+          },
+          {
+            "id": "bug-91",
+            "Title": "Blockchain payment system transaction reversal issues",
+            "Status": "done",
+            "Projects": ["project-45"]
+          },
+          {
+            "id": "bug-92",
+            "Title": "AI sentiment analysis struggling with context",
+            "Status": "inProgress",
+            "Projects": ["project-46"]
+          },
+          {
+            "id": "bug-93",
+            "Title": "Smart home system integration conflicts",
+            "Status": "backlog",
+            "Projects": ["project-1"]
+          },
+          {
+            "id": "bug-94",
+            "Title": "E-commerce platform product recommendation irrelevance",
+            "Status": "inProgress",
+            "Projects": ["project-2"]
+          },
+          {
+            "id": "bug-95",
+            "Title": "Mobile payment app security vulnerabilities",
+            "Status": "backlog",
+            "Projects": ["project-3"]
+          },
+          {
+            "id": "bug-96",
+            "Title": "AI customer service system language model hallucinations",
+            "Status": "inProgress",
+            "Projects": ["project-4"]
+          },
+          {
+            "id": "bug-97",
+            "Title": "Cloud storage system data retrieval latency",
+            "Status": "done",
+            "Projects": ["project-5"]
+          },
+          {
+            "id": "bug-98",
+            "Title": "Blockchain supply chain product authenticity verification failures",
+            "Status": "inProgress",
+            "Projects": ["project-6"]
+          },
+          {
+            "id": "bug-99",
+            "Title": "VR education platform content loading issues",
+            "Status": "backlog",
+            "Projects": ["project-7"]
+          },
+          {
+            "id": "bug-100",
+            "Title": "IoT vehicle tracking battery life optimization needed",
+            "Status": "inProgress",
+            "Projects": ["project-8"]
+          },
+          {
+            "id": "bug-101",
+            "Title": "Big data analytics tool query performance issues",
+            "Status": "backlog",
+            "Projects": ["project-9"]
+          },
+          {
+            "id": "bug-102",
+            "Title": "Cybersecurity system update deployment failures",
+            "Status": "inProgress",
+            "Projects": ["project-10"]
+          },
+          {
+            "id": "bug-103",
+            "Title": "Medical diagnosis AI explainability concerns",
+            "Status": "done",
+            "Projects": ["project-11"]
+          },
+          {
+            "id": "bug-104",
+            "Title": "Renewable energy management load balancing issues",
+            "Status": "inProgress",
+            "Projects": ["project-12"]
+          },
+          {
+            "id": "bug-105",
+            "Title": "Facial recognition access control tailgating vulnerability",
+            "Status": "backlog",
+            "Projects": ["project-13"]
+          },
+          {
+            "id": "bug-106",
+            "Title": "Smart city traffic management emergency vehicle prioritization failures",
+            "Status": "inProgress",
+            "Projects": ["project-14"]
+          },
+          {
+            "id": "bug-107",
+            "Title": "Online education course content version control issues",
+            "Status": "backlog",
+            "Projects": ["project-15"]
+          },
+          {
+            "id": "bug-108",
+            "Title": "Social media data analysis tool API rate limiting",
+            "Status": "inProgress",
+            "Projects": ["project-16"]
+          },
+          {
+            "id": "bug-109",
+            "Title": "Smart agriculture pest detection false positives",
+            "Status": "done",
+            "Projects": ["project-17"]
+          },
+          {
+            "id": "bug-110",
+            "Title": "Telemedicine platform video quality degradation",
+            "Status": "inProgress",
+            "Projects": ["project-18"]
+          },
+          {
+            "id": "bug-111",
+            "Title": "ERP system module integration conflicts",
+            "Status": "backlog",
+            "Projects": ["project-19"]
+          },
+          {
+            "id": "bug-112",
+            "Title": "Intelligent warehouse management system picking errors",
+            "Status": "inProgress",
+            "Projects": ["project-20"]
+          },
+          {
+            "id": "bug-113",
+            "Title": "AR navigation app landmark recognition failures",
+            "Status": "backlog",
+            "Projects": ["project-21"]
+          },
+          {
+            "id": "bug-114",
+            "Title": "Smart home voice control wake word false activations",
+            "Status": "inProgress",
+            "Projects": ["project-22"]
+          },
+          {
+            "id": "bug-115",
+            "Title": "Blockchain digital identity system user onboarding friction",
+            "Status": "done",
+            "Projects": ["project-23"]
+          },
+          {
+            "id": "bug-116",
+            "Title": "AI image recognition system adversarial attack vulnerability",
+            "Status": "inProgress",
+            "Projects": ["project-24"]
+          },
+          {
+            "id": "bug-117",
+            "Title": "Intelligent energy management demand forecasting inaccuracies",
+            "Status": "backlog",
+            "Projects": ["project-25"]
+          },
+          {
+            "id": "bug-118",
+            "Title": "Machine learning predictive maintenance false alarms",
+            "Status": "inProgress",
+            "Projects": ["project-26"]
+          },
+          {
+            "id": "bug-119",
+            "Title": "IoT smart waste sorting system sensor malfunctions",
+            "Status": "backlog",
+            "Projects": ["project-27"]
+          },
+          {
+            "id": "bug-120",
+            "Title": "Cloud computing resource scheduling inefficiencies",
+            "Status": "inProgress",
+            "Projects": ["project-28"]
+          },
+          {
+            "id": "bug-121",
+            "Title": "Smart manufacturing production line bottleneck detection failures",
+            "Status": "done",
+            "Projects": ["project-29"]
+          },
+          {
+            "id": "bug-122",
+            "Title": "Network security threat intelligence feed integration issues",
+            "Status": "inProgress",
+            "Projects": ["project-30"]
+          },
+          {
+            "id": "bug-123",
+            "Title": "Intelligent building management system HVAC control instability",
+            "Status": "backlog",
+            "Projects": ["project-31"]
+          },
+          {
+            "id": "bug-124",
+            "Title": "Blockchain electronic voting system voter authentication challenges",
+            "Status": "inProgress",
+            "Projects": ["project-32"]
+          },
+          {
+            "id": "bug-125",
+            "Title": "AI natural language processing model bias in translations",
+            "Status": "backlog",
+            "Projects": ["project-33"]
+          },
+          {
+            "id": "bug-126",
+            "Title": "Intelligent traffic signal control system pedestrian safety concerns",
+            "Status": "inProgress",
+            "Projects": ["project-34"]
+          },
+          {
+            "id": "bug-127",
+            "Title": "VR training simulator motion tracking latency",
+            "Status": "done",
+            "Projects": ["project-35"]
+          },
+          {
+            "id": "bug-128",
+            "Title": "Big data customer behavior analysis data quality issues",
+            "Status": "inProgress",
+            "Projects": ["project-36"]
+          },
+          {
+            "id": "bug-129",
+            "Title": "Smart water resource management system pipe burst detection delays",
+            "Status": "backlog",
+            "Projects": ["project-37"]
+          },
+          {
+            "id": "bug-130",
+            "Title": "Blockchain digital copyright protection content piracy vulnerabilities",
+            "Status": "inProgress",
+            "Projects": ["project-38"]
+          },
+          {
+            "id": "bug-131",
+            "Title": "AI recommendation engine cold start problem for new users",
+            "Status": "backlog",
+            "Projects": ["project-39"]
+          },
+          {
+            "id": "bug-132",
+            "Title": "Smart home security monitoring false alarm rate",
+            "Status": "inProgress",
+            "Projects": ["project-40"]
+          },
+          {
+            "id": "bug-133",
+            "Title": "Cloud-native application development CI/CD pipeline failures",
+            "Status": "done",
+            "Projects": ["project-41"]
+          },
+          {
+            "id": "bug-134",
+            "Title": "IoT smart parking occupancy sensor accuracy issues",
+            "Status": "inProgress",
+            "Projects": ["project-42"]
+          },
+          {
+            "id": "bug-135",
+            "Title": "Robotic process automation script maintenance challenges",
+            "Status": "backlog",
+            "Projects": ["project-43"]
+          },
+          {
+            "id": "bug-136",
+            "Title": "Intelligent environmental monitoring system data interpolation errors",
+            "Status": "inProgress",
+            "Projects": ["project-44"]
+          },
+          {
+            "id": "bug-137",
+            "Title": "Blockchain cross-border payment system regulatory compliance issues",
+            "Status": "backlog",
+            "Projects": ["project-45"]
+          },
+          {
+            "id": "bug-138",
+            "Title": "AI sentiment analysis system struggling with emojis and slang",
+            "Status": "inProgress",
+            "Projects": ["project-46"]
+          },
+          {
+            "id": "bug-139",
+            "Title": "Smart home system device compatibility issues",
+            "Status": "done",
+            "Projects": ["project-1"]
+          },
+          {
+            "id": "bug-140",
+            "Title": "E-commerce platform inventory synchronization delays",
+            "Status": "inProgress",
+            "Projects": ["project-2"]
+          },
+          {
+            "id": "bug-141",
+            "Title": "Mobile payment app cross-platform consistency issues",
+            "Status": "backlog",
+            "Projects": ["project-3"]
+          },
+          {
+            "id": "bug-142",
+            "Title": "AI customer service chatbot context retention problems",
+            "Status": "inProgress",
+            "Projects": ["project-4"]
+          },
+          {
+            "id": "bug-143",
+            "Title": "Cloud storage system data deduplication inefficiencies",
+            "Status": "backlog",
+            "Projects": ["project-5"]
+          },
+          {
+            "id": "bug-144",
+            "Title": "Blockchain supply chain management system scalability limitations",
+            "Status": "inProgress",
+            "Projects": ["project-6"]
+          },
+          {
+            "id": "bug-145",
+            "Title": "VR education platform user interface accessibility issues",
+            "Status": "done",
+            "Projects": ["project-7"]
+          },
+          {
+            "id": "bug-146",
+            "Title": "IoT vehicle tracking system cellular network coverage gaps",
+            "Status": "inProgress",
+            "Projects": ["project-8"]
+          },
+          {
+            "id": "bug-147",
+            "Title": "Big data analytics tool data visualization rendering issues",
+            "Status": "backlog",
+            "Projects": ["project-9"]
+          },
+          {
+            "id": "bug-148",
+            "Title": "Cybersecurity enhancement system false positive rate",
+            "Status": "inProgress",
+            "Projects": ["project-10"]
+          },
+          {
+            "id": "bug-149",
+            "Title": "Medical diagnosis AI system integration with EHR challenges",
+            "Status": "backlog",
+            "Projects": ["project-11"]
+          },
+          {
+            "id": "bug-150",
+            "Title": "Renewable energy management platform grid stability issues",
+            "Status": "inProgress",
+            "Projects": ["project-12"]
+          },
+          {
+            "id": "bug-151",
+            "Title": "Facial recognition access control system performance in varying lighting",
+            "Status": "done",
+            "Projects": ["project-13"]
+          },
+          {
+            "id": "bug-152",
+            "Title": "Smart city traffic management system sensor data inconsistencies",
+            "Status": "inProgress",
+            "Projects": ["project-14"]
+          },
+          {
+            "id": "bug-153",
+            "Title": "Online education course platform user engagement tracking inaccuracies",
+            "Status": "backlog",
+            "Projects": ["project-15"]
+          },
+          {
+            "id": "bug-154",
+            "Title": "Social media data analysis tool data normalization issues",
+            "Status": "inProgress",
+            "Projects": ["project-16"]
+          },
+          {
+            "id": "bug-155",
+            "Title": "Smart agriculture monitoring system weather data integration challenges",
+            "Status": "backlog",
+            "Projects": ["project-17"]
+          },
+          {
+            "id": "bug-156",
+            "Title": "Telemedicine consultation platform scheduling conflicts",
+            "Status": "inProgress",
+            "Projects": ["project-18"]
+          },
+          {
+            "id": "bug-157",
+            "Title": "ERP system upgrade data migration errors",
+            "Status": "done",
+            "Projects": ["project-19"]
+          },
+          {
+            "id": "bug-158",
+            "Title": "Intelligent warehouse management solution inventory discrepancies",
+            "Status": "inProgress",
+            "Projects": ["project-20"]
+          },
+          {
+            "id": "bug-159",
+            "Title": "AR navigation app POI database update delays",
+            "Status": "backlog",
+            "Projects": ["project-21"]
+          },
+          {
+            "id": "bug-160",
+            "Title": "Smart home voice control system multi-language support issues",
+            "Status": "inProgress",
+            "Projects": ["project-22"]
+          },
+          {
+            "id": "bug-161",
+            "Title": "Blockchain digital identity verification system performance bottlenecks",
+            "Status": "backlog",
+            "Projects": ["project-23"]
           }
         ]
       }
