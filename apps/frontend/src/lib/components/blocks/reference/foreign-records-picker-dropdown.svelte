@@ -31,9 +31,9 @@
 </script>
 
 <Popover.Root portal="body" bind:open {onOpenChange}>
-  <Popover.Trigger>
-    <slot>
-      <Button size="xs" disabled={readonly} variant="link" type="button">+ Link Records</Button>
+  <Popover.Trigger asChild let:builder>
+    <slot {builder}>
+      <Button size="xs" disabled={readonly} variant="link" type="button" builders={[builder]}>+ Link Records</Button>
     </slot>
   </Popover.Trigger>
   <Popover.Content class="h-[400px] max-h-[700px] w-[500px] p-0 lg:max-w-4xl">

@@ -40,13 +40,14 @@
         {recordId}
         bind:isSelected={hasValue}
         bind:selected
+        let:builder
       >
         {#if hasValueReactive}
-          <Button size="xs" variant="link" class="px-0">
+          <Button size="xs" variant="link" class="px-0" builders={[builder]}>
             {$selected.length} Linked Records
           </Button>
         {:else}
-          <Button size="xs" variant="link" type="button" class="px-0">+ Link Records</Button>
+          <Button size="xs" variant="link" type="button" class="px-0" builders={[builder]}>+ Link Records</Button>
         {/if}
       </ForeignRecordsPickerDropdown>
     </div>
@@ -60,8 +61,9 @@
         {recordId}
         bind:selected
         isSelected={false}
+        let:builder
       >
-        <Button variant="link" class="px-2">+</Button>
+        <Button variant="link" class="px-2" builders={[builder]}>+</Button>
       </ForeignRecordsPickerDropdown>
     {/if}
   </div>
