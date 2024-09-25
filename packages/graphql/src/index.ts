@@ -29,6 +29,7 @@ import {
   GetTableQuery,
   GetTablesByBaseIdQuery,
   GetTablesQuery,
+  GetTemplatesQuery,
 } from "@undb/queries"
 import { injectShareService, type IShareService } from "@undb/share"
 import type { ISpaceDTO } from "@undb/space"
@@ -303,14 +304,24 @@ export class Graphql {
         registration: RegistrationSetting
       }
 
+      enum TemplateType {
+        base
+      }
+
+      type TemplateVariant {
+        type: TemplateType!
+        template: JSON
+      }
+
       type Tempalte {
         id: ID!
         name: String!
-        template: JSON
+        template: TemplateVariant!
       }
 
       type Query {
         settings: Settings
+        templates: [Template!]!
 
         member: SpaceMember
         memberById(id: ID!): SpaceMember
@@ -369,6 +380,9 @@ export class Graphql {
                 },
               },
             }
+          },
+          templates: async () => {
+            return this.queryBus.execute(new GetTemplatesQuery())
           },
           space: async () => {
             const spaceId = getCurrentSpaceId()
