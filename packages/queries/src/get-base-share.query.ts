@@ -4,11 +4,11 @@ import { shareIdSchema } from "@undb/share"
 import { spaceIdSchema } from "@undb/space"
 import { z } from "@undb/zod"
 
-export const getTemplateQuery = z.object({
+export const getBaseShareQuery = z.object({
   shareId: shareIdSchema,
 })
 
-export type IGetTemplateQuery = z.infer<typeof getTemplateQuery>
+export type IGetBaseShareQuery = z.infer<typeof getBaseShareQuery>
 
 export const getTemplateOutput = z.object({
   baseId: baseIdSchema,
@@ -18,10 +18,10 @@ export const getTemplateOutput = z.object({
 
 export type IGetTemplateOutput = z.infer<typeof getTemplateOutput>
 
-export class GetTemplateQuery extends Query implements IGetTemplateQuery {
+export class GetBaseShareQuery extends Query implements IGetBaseShareQuery {
   public readonly shareId: string
 
-  constructor(props: QueryProps<IGetTemplateQuery>) {
+  constructor(props: QueryProps<IGetBaseShareQuery>) {
     super()
     this.shareId = props.shareId
   }

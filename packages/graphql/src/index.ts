@@ -11,6 +11,7 @@ import {
   GetAggregatesQuery,
   GetBaseByShareQuery,
   GetBaseQuery,
+  GetBaseShareQuery,
   GetBasesQuery,
   GetInivitationsQuery,
   GetMemberByIdQuery,
@@ -28,7 +29,6 @@ import {
   GetTableQuery,
   GetTablesByBaseIdQuery,
   GetTablesQuery,
-  GetTemplateQuery,
 } from "@undb/queries"
 import { injectShareService, type IShareService } from "@undb/share"
 import type { ISpaceDTO } from "@undb/space"
@@ -303,6 +303,12 @@ export class Graphql {
         registration: RegistrationSetting
       }
 
+      type Tempalte {
+        id: ID!
+        name: String!
+        template: JSON
+      }
+
       type Query {
         settings: Settings
 
@@ -457,7 +463,7 @@ export class Graphql {
             return await this.queryBus.execute(new GetInivitationsQuery({ status: args?.status }))
           },
           template: async (_, { shareId }) => {
-            const template = await this.queryBus.execute(new GetTemplateQuery({ shareId }))
+            const template = await this.queryBus.execute(new GetBaseShareQuery({ shareId }))
             return template
           },
         },

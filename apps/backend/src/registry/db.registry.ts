@@ -37,6 +37,7 @@ import {
   TableOutboxService,
   TableQueryRepository,
   TableRepository,
+  TemplateQueryRepository,
   UserQueryRepository,
   UserRepository,
   WebhookQueryRepository,
@@ -53,6 +54,7 @@ import {
   TABLE_QUERY_REPOSITORY,
   TABLE_REPOSITORY,
 } from "@undb/table"
+import { TEMPLATE_QUERY_REPOSITORY } from "@undb/template"
 import { USER_QUERY_REPOSITORY, USER_REPOSITORY, USER_SERVICE, UserService } from "@undb/user"
 import { WEBHOOK_QUERY_REPOSITORY, WEBHOOK_REPOSITORY } from "@undb/webhook"
 import Database from "bun:sqlite"
@@ -107,4 +109,5 @@ export const registerDb = () => {
   container.register(API_TOKEN_REPOSITORY, ApiTokenRepository)
   container.register(API_TOKEN_QUERY_REPOSITORY, ApiTokenQueryRepository)
   container.register(API_TOKEN_SERVICE, ApiTokenService)
+  container.register(TEMPLATE_QUERY_REPOSITORY, TemplateQueryRepository)
 }

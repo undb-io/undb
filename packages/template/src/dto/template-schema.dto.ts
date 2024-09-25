@@ -71,11 +71,3 @@ export const baseTemplateDTO = z.record(
 )
 
 export type IBaseTemplateDTO = z.infer<typeof baseTemplateDTO>
-
-export const tableTemplateDTO = z
-  .object({
-    name: tableName,
-  })
-  .merge(basicTemplateTableDTO)
-
-export type ITableTemplateDTO = z.infer<typeof tableTemplateDTO>

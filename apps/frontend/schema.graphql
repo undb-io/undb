@@ -209,6 +209,12 @@ type Table {
   views: [View!]!
 }
 
+type Tempalte {
+  id: ID!
+  name: String!
+  template: JSON
+}
+
 type Template {
   baseId: ID!
   name: String!
