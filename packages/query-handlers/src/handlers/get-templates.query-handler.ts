@@ -2,13 +2,13 @@ import { queryHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import { None, type IQueryHandler } from "@undb/domain"
 import { GetTemplatesQuery } from "@undb/queries"
-import { injectBaseShareQueryRepository, type ITemplateDTO, type ITemplateQueryRepository } from "@undb/template"
+import { injectTemplateQueryRepository, type ITemplateDTO, type ITemplateQueryRepository } from "@undb/template"
 
 @queryHandler(GetTemplatesQuery)
 @singleton()
 export class GetTemplatesQueryHandler implements IQueryHandler<GetTemplatesQuery, any> {
   constructor(
-    @injectBaseShareQueryRepository()
+    @injectTemplateQueryRepository()
     private readonly repo: ITemplateQueryRepository,
   ) {}
 

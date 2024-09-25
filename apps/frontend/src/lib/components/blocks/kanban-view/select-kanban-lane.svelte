@@ -278,13 +278,13 @@
         <DropdownMenu.Content class="w-48">
           <DropdownMenu.Group>
             {#if !shareId && !readonly && option}
-              <DropdownMenu.Item class="text-muted-foreground text-xs" on:click={() => (updateOptionDialogOpen = true)}>
+              <DropdownMenu.Item class="text-xs text-gray-700" on:click={() => (updateOptionDialogOpen = true)}>
                 <PencilIcon class="mr-2 h-3 w-3" />
                 Update option
               </DropdownMenu.Item>
               <DropdownMenu.Item
                 disabled={field.options.length <= 1}
-                class="text-muted-foreground text-xs"
+                class="text-xs text-gray-700"
                 on:click={() => (deleteOptionDialogOpen = true)}
               >
                 <TrashIcon class="mr-2 h-3 w-3" />
@@ -292,7 +292,7 @@
               </DropdownMenu.Item>
             {/if}
             <DropdownMenu.Item
-              class="text-muted-foreground text-xs"
+              class="text-xs text-gray-700"
               on:click={() => {
                 kanbanStore.toggleLane($viewId, option?.id ?? "")
               }}

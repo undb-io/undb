@@ -1,9 +1,10 @@
 import { baseIdSchema } from "@undb/base"
 import { Command, type CommandProps } from "@undb/domain"
+import { templateId } from "@undb/template/src/template/value-objects/template-id.vo"
 import { z } from "@undb/zod"
 
 export const createFromTemplateCommand = z.object({
-  templateName: z.string(),
+  id: templateId,
 })
 
 export type ICreateFromTemplateCommand = z.infer<typeof createFromTemplateCommand>
@@ -15,10 +16,10 @@ export const createFromTemplateCommandOutput = z.object({
 export type ICreateFromTemplateCommandOutput = z.infer<typeof createFromTemplateCommandOutput>
 
 export class CreateFromTemplateCommand extends Command implements ICreateFromTemplateCommand {
-  public readonly templateName: string
+  public readonly id: string
 
   constructor(props: CommandProps<ICreateFromTemplateCommand>) {
     super(props)
-    this.templateName = props.templateName
+    this.id = props.id
   }
 }

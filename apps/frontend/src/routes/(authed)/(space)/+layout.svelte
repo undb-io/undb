@@ -131,6 +131,11 @@
 {#if CreateBaseDialog}
   <CreateBaseDialog baseNames={$baseNames} />
 {/if}
+
+{#await import("$lib/components/blocks/template/template-list-sheet.svelte") then { default: TemplateListSheet }}
+  <TemplateListSheet />
+{/await}
+
 <Command tables={$tables} />
 
 <svelte:window

@@ -17,4 +17,4 @@ export const TEMPLATE_REPOSITORY = Symbol.for("ITemplateRepository")
 export const injectTemplateRepository = () => inject(TEMPLATE_REPOSITORY)
 
 export const TEMPLATE_QUERY_REPOSITORY = Symbol.for("IBaseShareQueryRepository")
-export const injectBaseShareQueryRepository = () => inject(TEMPLATE_QUERY_REPOSITORY)
+export const injectTemplateQueryRepository = () => inject(TEMPLATE_QUERY_REPOSITORY)

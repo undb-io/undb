@@ -36,6 +36,7 @@
     "@undb/queries": "workspace:*",
     "@undb/share": "workspace:*",
     "@undb/table": "workspace:*",
+    "@undb/template": "workspace:*",
     "@undb/trpc": "workspace:*",
     "@undb/utils": "workspace:*",
     "array-move": "^4.0.0",
