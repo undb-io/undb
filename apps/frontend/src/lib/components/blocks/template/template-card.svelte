@@ -27,7 +27,7 @@
   })
 </script>
 
-<Card.Root class="space-y-2 rounded-sm p-5">
+<Card.Root class="flex flex-col justify-between space-y-2 rounded-sm p-5">
   <Card.Header class="p-0">
     <Card.Title class="flex flex-col gap-2">
       <span>
