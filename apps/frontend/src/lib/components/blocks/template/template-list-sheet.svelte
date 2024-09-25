@@ -6,7 +6,7 @@
 </script>
 
 <Sheet.Root open={$isModalOpen(IMPORT_TEMPLATE_MODAL)} onOpenChange={() => toggleModal(IMPORT_TEMPLATE_MODAL)}>
-  <Sheet.Content class="flex h-[80%] flex-col" side="bottom">
+  <Sheet.Content class="flex h-[80%] flex-col bg-gray-50" side="bottom">
     <Sheet.Header>
       <Sheet.Title class="flex items-center">
         <PackageIcon class="mr-2 size-5" />

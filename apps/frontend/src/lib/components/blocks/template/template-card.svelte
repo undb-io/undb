@@ -29,8 +29,13 @@
 
 <Card.Root class="space-y-2 rounded-sm p-5">
   <Card.Header class="p-0">
-    <Card.Title>{template.name}</Card.Title>
-    <!-- <Card.Description>{template.description}</Card.Description> -->
+    <Card.Title class="flex flex-col gap-2">
+      <span>
+        {template.name}
+      </span>
+      <span class="text-muted-foreground text-xs"># {template.category}</span>
+    </Card.Title>
+    <Card.Description>{template.description}</Card.Description>
   </Card.Header>
   <!-- <Card.Content class="p-0">
     <p>Card Content</p>

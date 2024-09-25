@@ -1,0 +1,19 @@
+import { ValueObject } from "@undb/domain"
+import { z } from "@undb/zod"
+
+export const templateCategory = z.enum([
+  "hr",
+  "marketing",
+  "sales",
+  "it",
+  "finance",
+  "legal",
+  "product",
+  "design",
+  "customer-support",
+  "other",
+])
+
+export type ITemplateCategory = z.infer<typeof templateCategory>
+
+export class TemplateCategory extends ValueObject<ITemplateCategory> {}
