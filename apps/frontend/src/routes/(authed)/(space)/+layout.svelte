@@ -18,7 +18,8 @@
   import ImportTableDialog from "$lib/components/blocks/import-table/import-table-dialog.svelte"
   import MemberMenu from "$lib/components/blocks/member/member-menu.svelte"
   import { derived, get } from "svelte/store"
-  import { preferences } from "$lib/store/persisted.store"
+  import { lastViewedTable, preferences } from "$lib/store/persisted.store"
+  import { currentSpaceId } from "$lib/store/space.store"
 
   export let data: LayoutData
 
@@ -64,8 +65,21 @@
 
   $: role.set(member?.role ?? null)
 
+  $: $space && currentSpaceId.set($space.id)
+
   $: if ($tables && $tables?.length !== 0 && !$page.params.tableId && $page.route.id === "/(authed)/(space)") {
-    goto(`/t/${$tables[0]?.id}`, { replaceState: true })
+    if ($space) {
+      const current = get(lastViewedTable)?.[$space?.id]
+      if (current) {
+        if (current.viewId) {
+          goto(`/t/${current.tableId}/${current.viewId}`, { replaceState: true })
+        } else {
+          goto(`/t/${current.tableId}`, { replaceState: true })
+        }
+      }
+    } else {
+      goto(`/t/${$tables[0]?.id}`, { replaceState: true })
+    }
   }
   $: if (!$tables.length && $bases.length && !$page.params.baseId) {
     goto(`/bases/${$bases[0]?.id}`, { replaceState: true })

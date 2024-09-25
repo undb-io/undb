@@ -8,3 +8,10 @@ export const preferences = persisted("undb_preferences", {
   panelLeftWidth: 20,
   panelLeftCollapsed: false,
 })
+
+interface LastViewed {
+  tableId: string
+  viewId?: string
+}
+
+export const lastViewedTable = persisted<Record<string, LastViewed>>("undb_last_viewed_table", {})
