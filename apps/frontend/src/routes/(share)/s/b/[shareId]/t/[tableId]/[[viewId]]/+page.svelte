@@ -56,9 +56,8 @@
   }
 </script>
 
-<div class="flex flex-1 flex-col">
-  <ShareTableHeader />
-
+<ShareTableHeader />
+<main class="flex h-full flex-1 flex-col overflow-auto">
   {#if $isDataTab}
     {#if view?.type === "grid"}
       <ShareGridView {viewId} />
@@ -70,8 +69,8 @@
   {:else if $isFormTab}
     <FormsReadonly />
   {/if}
+</main>
 
-  {#if RecordDetailSheet}
-    <RecordDetailSheet readonly />
-  {/if}
-</div>
+{#if RecordDetailSheet}
+  <RecordDetailSheet readonly />
+{/if}

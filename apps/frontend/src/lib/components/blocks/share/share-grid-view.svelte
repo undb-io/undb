@@ -6,7 +6,6 @@
   import { trpc } from "$lib/trpc/client"
   import { createQuery } from "@tanstack/svelte-query"
   import { Records, type IRecordsDTO } from "@undb/table"
-  import { onMount } from "svelte"
   import ShareTableTools from "$lib/components/blocks/table-tools/share-table-tools.svelte"
   import { derived, writable, type Readable } from "svelte/store"
 
@@ -45,7 +44,7 @@
 </script>
 
 {#if store}
-  <ShareTableTools />
+  <!-- <ShareTableTools /> -->
   <GridViewDataTable
     {viewId}
     readonly
