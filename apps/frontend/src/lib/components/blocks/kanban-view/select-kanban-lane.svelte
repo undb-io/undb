@@ -172,7 +172,17 @@
   onMount(() => {
     if (!shareId && !readonly && laneElement) {
       new Sortable(laneElement, {
-        group: "shared",
+        group: {
+          name: "shared",
+          put: (to, from, dragEl, event) => {
+            const toOptionId = to.el.dataset.optionId
+            if (field.required && !toOptionId) {
+              return false
+            }
+
+            return true
+          },
+        },
         animation: 150,
         sort: false,
         dataIdAttr: "data-record-id",
