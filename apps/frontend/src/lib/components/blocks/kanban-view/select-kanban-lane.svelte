@@ -339,10 +339,12 @@
                     <Option option={option ?? { id: "", name: "No Option", color: "gray" }} />
                   </div>
                 </div>
-                <Button on:click={onCreateRecord} variant="outline" size="sm">
-                  <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
-                  New Record
-                </Button>
+                {#if !(field.required && !option)}
+                  <Button on:click={onCreateRecord} variant="outline" size="sm">
+                    <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
+                    New Record
+                  </Button>
+                {/if}
               </div>
             {/if}
           {/if}
