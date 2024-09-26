@@ -33,7 +33,7 @@
   }
 </script>
 
-<main class="flex h-screen flex-1 flex-col overflow-hidden">
+<main class="flex h-full flex-col overflow-hidden">
   {#if $table}
     <slot />
   {/if}

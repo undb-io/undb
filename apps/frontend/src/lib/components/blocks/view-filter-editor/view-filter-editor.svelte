@@ -23,7 +23,6 @@
 
   const table = getTable()
   $: filter = $table.views.getViewById($viewId).filter.into(undefined)
-  $: console.log($viewId, filter)
   $: count = filter?.count ?? 0
 
   const value = writable<MaybeConditionGroup<IViewFilterOptionSchema> | undefined>()
@@ -57,7 +56,7 @@
   }
 </script>
 
-<Popover.Root bind:open>
+<Popover.Root bind:open portal="body">
   <Popover.Trigger asChild let:builder>
     <Button
       variant={count || open ? "secondary" : "ghost"}

@@ -1,17 +1,18 @@
 {
-  "hello": {
+  "Todo List": {
     "tables": {
-      "world": {
+      "Todos": {
         "schema": {
-          "title": {
+          "Title": {
             "id": "title",
             "type": "string",
             "constraint": {
-              "max": 20
+              "max": 200
             },
             "display": true
           },
-          "description": {
+          "Description": {
+            "id": "description",
             "type": "longText",
             "option": {
               "allowRichText": true
@@ -53,9 +54,6 @@
             "kanban": {
               "field": "status"
             }
-          },
-          "gallery": {
-            "type": "gallery"
           }
         },
         "forms": {
@@ -81,6 +79,526 @@
             "title": "Create a new project",
             "description": "Create a new project for the client",
             "status": "todo"
+          },
+          {
+            "title": "Prepare presentation for client meeting",
+            "description": "Create slides and gather data for tomorrow's client presentation",
+            "status": "todo"
+          },
+          {
+            "title": "Review and respond to urgent emails",
+            "description": "Go through inbox and reply to high-priority messages",
+            "status": "in_progress"
+          },
+          {
+            "title": "Complete project report",
+            "description": "Finalize the monthly progress report for the marketing campaign",
+            "status": "in_progress"
+          },
+          {
+            "title": "Schedule team building activity",
+            "description": "Plan and organize a team outing for next month",
+            "status": "todo"
+          },
+          {
+            "title": "Update personal resume",
+            "description": "Add recent achievements and skills to CV",
+            "status": "todo"
+          },
+          {
+            "title": "Conduct performance reviews",
+            "description": "Evaluate team members and prepare feedback",
+            "status": "todo"
+          },
+          {
+            "title": "Develop new feature for app",
+            "description": "Code and test the user authentication module",
+            "status": "in_progress"
+          },
+          {
+            "title": "Attend webinar on AI trends",
+            "description": "Join online seminar about latest AI developments in industry",
+            "status": "todo"
+          },
+          {
+            "title": "Prepare monthly budget report",
+            "description": "Compile expenses and create financial summary for CFO",
+            "status": "todo"
+          },
+          {
+            "title": "Fix bug in production code",
+            "description": "Investigate and resolve the login issue reported by users",
+            "status": "in_progress"
+          },
+          {
+            "title": "Write blog post for company website",
+            "description": "Draft article about recent product launch",
+            "status": "todo"
+          },
+          {
+            "title": "Organize digital files",
+            "description": "Clean up and structure documents on cloud storage",
+            "status": "in_progress"
+          },
+          {
+            "title": "Research competitors",
+            "description": "Analyze market competitors and create comparison report",
+            "status": "todo"
+          },
+          {
+            "title": "Set up new employee onboarding",
+            "description": "Prepare welcome package and schedule orientation for new hire",
+            "status": "todo"
+          },
+          {
+            "title": "Upgrade office equipment",
+            "description": "Research and order new computers for the design team",
+            "status": "in_progress"
+          },
+          {
+            "title": "Plan social media content",
+            "description": "Create content calendar for next month's social media posts",
+            "status": "todo"
+          },
+          {
+            "title": "Conduct user testing",
+            "description": "Organize and oversee usability testing for new product feature",
+            "status": "todo"
+          },
+          {
+            "title": "Prepare for board meeting",
+            "description": "Gather key metrics and create executive summary",
+            "status": "in_progress"
+          },
+          {
+            "title": "Revise company policies",
+            "description": "Update employee handbook with new regulations",
+            "status": "todo"
+          },
+          {
+            "title": "Optimize database queries",
+            "description": "Improve performance of slow-running database operations",
+            "status": "in_progress"
+          },
+          {
+            "title": "Create marketing materials",
+            "description": "Design brochures and flyers for upcoming trade show",
+            "status": "todo"
+          },
+          {
+            "title": "Conduct security audit",
+            "description": "Review and test company's cybersecurity measures",
+            "status": "todo"
+          },
+          {
+            "title": "Develop training program",
+            "description": "Create curriculum for new employee skill development",
+            "status": "in_progress"
+          },
+          {
+            "title": "Negotiate vendor contracts",
+            "description": "Review and renew agreements with key suppliers",
+            "status": "todo"
+          },
+          {
+            "title": "Implement new CRM system",
+            "description": "Oversee installation and data migration to new CRM",
+            "status": "in_progress"
+          },
+          {
+            "title": "Conduct market research",
+            "description": "Survey target audience for new product ideas",
+            "status": "todo"
+          },
+          {
+            "title": "Plan annual company retreat",
+            "description": "Book venue and plan activities for team-building event",
+            "status": "todo"
+          },
+          {
+            "title": "Update company website",
+            "description": "Refresh content and improve SEO for main website",
+            "status": "in_progress"
+          },
+          {
+            "title": "Prepare tax documents",
+            "description": "Gather and organize financial records for tax filing",
+            "status": "todo"
+          },
+          {
+            "title": "Develop mobile app prototype",
+            "description": "Create wireframes and basic functionality for new app idea",
+            "status": "in_progress"
+          },
+          {
+            "title": "Conduct employee satisfaction survey",
+            "description": "Create and distribute annual workplace satisfaction questionnaire",
+            "status": "todo"
+          },
+          {
+            "title": "Optimize inventory management",
+            "description": "Implement new system for tracking and ordering supplies",
+            "status": "in_progress"
+          },
+          {
+            "title": "Create disaster recovery plan",
+            "description": "Develop and document procedures for business continuity",
+            "status": "todo"
+          },
+          {
+            "title": "Launch customer loyalty program",
+            "description": "Finalize and implement rewards system for repeat customers",
+            "status": "in_progress"
+          },
+          {
+            "title": "Conduct code review",
+            "description": "Review and provide feedback on team's latest code submissions",
+            "status": "todo"
+          },
+          {
+            "title": "Update product documentation",
+            "description": "Revise user manuals and API documentation",
+            "status": "in_progress"
+          },
+          {
+            "title": "Organize charity fundraiser",
+            "description": "Plan company-wide event to support local non-profit",
+            "status": "todo"
+          },
+          {
+            "title": "Implement data analytics tool",
+            "description": "Set up and configure new analytics platform for business insights",
+            "status": "in_progress"
+          },
+          {
+            "title": "Conduct annual performance reviews",
+            "description": "Schedule and prepare for employee evaluations",
+            "status": "todo"
+          },
+          {
+            "title": "Develop new product roadmap",
+            "description": "Create strategic plan for product development over next 12 months",
+            "status": "in_progress"
+          },
+          {
+            "title": "Streamline onboarding process",
+            "description": "Improve and automate new employee orientation procedures",
+            "status": "todo"
+          },
+          {
+            "title": "Conduct focus group",
+            "description": "Organize and moderate customer feedback session for new product",
+            "status": "in_progress"
+          },
+          {
+            "title": "Update emergency contact list",
+            "description": "Refresh company-wide emergency contact information",
+            "status": "todo"
+          },
+          {
+            "title": "Implement new payroll system",
+            "description": "Transition to updated payroll software and processes",
+            "status": "in_progress"
+          },
+          {
+            "title": "Create employee wellness program",
+            "description": "Develop initiatives to promote health and well-being at work",
+            "status": "todo"
+          },
+          {
+            "title": "Conduct IT infrastructure audit",
+            "description": "Review and document current technology stack and needs",
+            "status": "in_progress"
+          },
+          {
+            "title": "Plan product launch event",
+            "description": "Organize logistics for upcoming product release party",
+            "status": "todo"
+          },
+          {
+            "title": "Develop crisis communication plan",
+            "description": "Create protocols for handling public relations emergencies",
+            "status": "in_progress"
+          },
+          {
+            "title": "Implement green office initiatives",
+            "description": "Research and implement eco-friendly practices in the workplace",
+            "status": "todo"
+          },
+          {
+            "title": "Conduct vendor evaluation",
+            "description": "Assess current suppliers and identify potential new partners",
+            "status": "in_progress"
+          },
+          {
+            "title": "Update company branding guidelines",
+            "description": "Revise and distribute new brand identity standards",
+            "status": "todo"
+          },
+          {
+            "title": "Implement customer feedback system",
+            "description": "Set up automated process for collecting and analyzing customer input",
+            "status": "in_progress"
+          },
+          {
+            "title": "Organize company hackathon",
+            "description": "Plan internal coding competition to foster innovation",
+            "status": "todo"
+          },
+          {
+            "title": "Develop mentorship program",
+            "description": "Create structure for pairing experienced employees with new hires",
+            "status": "in_progress"
+          },
+          {
+            "title": "Conduct accessibility audit",
+            "description": "Review company website and apps for ADA compliance",
+            "status": "todo"
+          },
+          {
+            "title": "Implement new project management tool",
+            "description": "Transition team to new software for tracking projects and tasks",
+            "status": "in_progress"
+          },
+          {
+            "title": "Create employee recognition program",
+            "description": "Develop system for acknowledging and rewarding top performers",
+            "status": "todo"
+          },
+          {
+            "title": "Optimize email marketing campaigns",
+            "description": "Analyze and improve open rates and click-through rates",
+            "status": "in_progress"
+          },
+          {
+            "title": "Develop internship program",
+            "description": "Create structure and curriculum for summer intern positions",
+            "status": "todo"
+          },
+          {
+            "title": "Conduct GDPR compliance review",
+            "description": "Ensure all processes adhere to data protection regulations",
+            "status": "in_progress"
+          },
+          {
+            "title": "Create company podcast",
+            "description": "Plan and record first episodes of internal company podcast",
+            "status": "todo"
+          },
+          {
+            "title": "Implement AI chatbot",
+            "description": "Develop and deploy AI-powered customer service chatbot",
+            "status": "in_progress"
+          },
+          {
+            "title": "Organize office move",
+            "description": "Coordinate logistics for relocating to new office space",
+            "status": "todo"
+          },
+          {
+            "title": "Develop cross-department collaboration initiative",
+            "description": "Create program to foster teamwork between different departments",
+            "status": "in_progress"
+          },
+          {
+            "title": "Conduct employee skills assessment",
+            "description": "Evaluate current skill sets and identify training needs",
+            "status": "todo"
+          },
+          {
+            "title": "Implement new version control system",
+            "description": "Migrate codebase to updated version control platform",
+            "status": "in_progress"
+          },
+          {
+            "title": "Create company style guide",
+            "description": "Develop comprehensive writing and formatting guidelines",
+            "status": "todo"
+          },
+          {
+            "title": "Optimize cloud infrastructure",
+            "description": "Review and improve cloud service usage and costs",
+            "status": "in_progress"
+          },
+          {
+            "title": "Plan international expansion",
+            "description": "Research and strategize for entering new global markets",
+            "status": "todo"
+          },
+          {
+            "title": "Implement new HR management system",
+            "description": "Set up software for streamlining HR processes and data",
+            "status": "in_progress"
+          },
+          {
+            "title": "Develop sustainability report",
+            "description": "Compile data and create annual corporate sustainability document",
+            "status": "todo"
+          },
+          {
+            "title": "Conduct user experience workshop",
+            "description": "Organize team session to improve product usability",
+            "status": "in_progress"
+          },
+          {
+            "title": "Create employee handbook",
+            "description": "Compile and write comprehensive guide for company policies",
+            "status": "todo"
+          },
+          {
+            "title": "Implement single sign-on system",
+            "description": "Set up SSO for all company applications and services",
+            "status": "in_progress"
+          },
+          {
+            "title": "Develop crisis management plan",
+            "description": "Create protocols for handling various emergency scenarios",
+            "status": "todo"
+          },
+          {
+            "title": "Optimize website load times",
+            "description": "Improve performance and speed of company website",
+            "status": "in_progress"
+          },
+          {
+            "title": "Plan company anniversary celebration",
+            "description": "Organize events for upcoming company milestone",
+            "status": "todo"
+          },
+          {
+            "title": "Implement new expense reporting system",
+            "description": "Set up software for streamlining expense submissions and approvals",
+            "status": "in_progress"
+          },
+          {
+            "title": "Develop customer education program",
+            "description": "Create series of tutorials and webinars for product users",
+            "status": "todo"
+          },
+          {
+            "title": "Conduct competitive analysis",
+            "description": "Research and report on competitors' products and strategies",
+            "status": "in_progress"
+          },
+          {
+            "title": "Create internal knowledge base",
+            "description": "Develop centralized repository for company information and processes",
+            "status": "todo"
+          },
+          {
+            "title": "Implement new customer support ticketing system",
+            "description": "Set up and configure software for managing customer inquiries",
+            "status": "in_progress"
+          },
+          {
+            "title": "Develop employee training videos",
+            "description": "Create series of instructional videos for onboarding and skill development",
+            "status": "todo"
+          },
+          {
+            "title": "Conduct software license audit",
+            "description": "Review and optimize software subscriptions and licenses",
+            "status": "in_progress"
+          },
+          {
+            "title": "Create company newsletter",
+            "description": "Develop monthly internal newsletter to improve communication",
+            "status": "todo"
+          },
+          {
+            "title": "Implement new backup and recovery system",
+            "description": "Set up improved data backup and disaster recovery processes",
+            "status": "in_progress"
+          },
+          {
+            "title": "Develop API documentation",
+            "description": "Create comprehensive guide for using company's public API",
+            "status": "todo"
+          },
+          {
+            "title": "Conduct employee engagement survey",
+            "description": "Create and distribute questionnaire to measure workplace satisfaction",
+            "status": "in_progress"
+          },
+          {
+            "title": "Optimize search engine rankings",
+            "description": "Implement SEO strategies to improve website visibility",
+            "status": "todo"
+          },
+          {
+            "title": "Develop data governance policy",
+            "description": "Create guidelines for data management and security",
+            "status": "in_progress"
+          },
+          {
+            "title": "Plan company volunteer day",
+            "description": "Organize team event for community service project",
+            "status": "todo"
+          },
+          {
+            "title": "Implement new time tracking system",
+            "description": "Set up software for more accurate project time management",
+            "status": "in_progress"
+          },
+          {
+            "title": "Create customer case studies",
+            "description": "Develop success stories featuring satisfied clients",
+            "status": "todo"
+          },
+          {
+            "title": "Conduct ergonomic assessment",
+            "description": "Evaluate and improve workplace ergonomics for employee health",
+            "status": "in_progress"
+          },
+          {
+            "title": "Develop product pricing strategy",
+            "description": "Analyze market and create optimal pricing model for products",
+            "status": "todo"
+          },
+          {
+            "title": "Implement continuous integration pipeline",
+            "description": "Set up automated testing and deployment processes",
+            "status": "in_progress"
+          },
+          {
+            "title": "Create company mission statement",
+            "description": "Develop concise statement of company's purpose and values",
+            "status": "todo"
+          },
+          {
+            "title": "Optimize mobile app performance",
+            "description": "Improve speed and responsiveness of company's mobile application",
+            "status": "in_progress"
+          },
+          {
+            "title": "Develop customer retention strategy",
+            "description": "Create plan to increase customer loyalty and reduce churn",
+            "status": "todo"
+          },
+          {
+            "title": "Implement new inventory tracking system",
+            "description": "Set up software for real-time inventory management",
+            "status": "in_progress"
+          },
+          {
+            "title": "Create employee referral program",
+            "description": "Develop system to encourage and reward employee referrals",
+            "status": "todo"
+          },
+          {
+            "title": "Conduct privacy impact assessment",
+            "description": "Evaluate and mitigate privacy risks in company processes",
+            "status": "in_progress"
+          },
+          {
+            "title": "Develop content marketing strategy",
+            "description": "Create plan for producing and distributing valuable content",
+            "status": "todo"
+          },
+          {
+            "title": "Implement new customer relationship management system",
+            "description": "Set up and configure CRM software for sales team",
+            "status": "in_progress"
           }
         ]
       }

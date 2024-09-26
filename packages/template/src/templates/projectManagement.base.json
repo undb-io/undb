@@ -91,6 +91,7 @@
           {
             "id": "project-4",
             "Title": "AI Customer Service System",
+            "Status": "inProgress",
             "Due Date": "2024-06-30"
           },
           {
@@ -106,6 +107,7 @@
           {
             "id": "project-7",
             "Title": "Virtual Reality Education Platform",
+            "Status": "inProgress",
             "Due Date": "2024-08-31"
           },
           {
@@ -116,6 +118,7 @@
           {
             "id": "project-9",
             "Title": "Big Data Analytics Tool Development",
+            "Status": "inProgress",
             "Due Date": "2024-07-31"
           },
           {
@@ -141,6 +144,7 @@
           {
             "id": "project-14",
             "Title": "Smart City Traffic Management",
+            "Status": "done",
             "Due Date": "2024-09-30"
           },
           {
@@ -264,7 +268,7 @@
             "type": "grid",
             "fields": [{ "fieldId": "status", "hidden": true }],
             "option": {
-              "showSystemFields": true
+              "showSystemFields": false
             },
             "filter": {
               "conjunction": "and",

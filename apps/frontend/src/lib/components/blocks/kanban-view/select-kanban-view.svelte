@@ -25,10 +25,11 @@
 
   const table = getTable()
 
-  export let viewId: Readable<string>
+  export let viewId: Readable<string | undefined>
   export let view: KanbanView
   export let readonly = false
   export let shareId: string | undefined = undefined
+  export let disableRecordQuery = false
 
   let fieldId = view.field.unwrapUnchecked()!
   let field = $table.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined) as SelectField
@@ -99,11 +100,31 @@
 
 <div class="flex-1 overflow-x-auto overflow-y-hidden p-4">
   <div bind:this={lanesContainer} class="flex h-full space-x-2 overflow-y-hidden pr-2">
-    <SelectKanbanLane {field} {readonly} tableId={$table.id.value} {viewId} {fieldId} option={null} {shareId} {view} />
+    <SelectKanbanLane
+      {field}
+      {readonly}
+      tableId={$table.id.value}
+      {viewId}
+      {fieldId}
+      option={null}
+      {shareId}
+      {view}
+      {disableRecordQuery}
+    />
     {#each options as option (option.id)}
-      <SelectKanbanLane {field} {readonly} tableId={$table.id.value} {viewId} {fieldId} {option} {shareId} {view} />
+      <SelectKanbanLane
+        {field}
+        {readonly}
+        tableId={$table.id.value}
+        {viewId}
+        {fieldId}
+        {option}
+        {shareId}
+        {view}
+        {disableRecordQuery}
+      />
     {/each}
-    {#if !shareId}
+    {#if !shareId && !readonly}
       <div class="flex w-[350px] shrink-0 flex-col space-y-2 rounded-sm px-2 pt-2 transition-all">
         <Popover.Root>
           <Popover.Trigger asChild let:builder>

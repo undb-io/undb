@@ -12,6 +12,7 @@ export * from "./share"
 export * from "./space"
 export * from "./table"
 export * from "./tables"
+export * from "./template"
 export * from "./user"
 export * from "./webhook"
 

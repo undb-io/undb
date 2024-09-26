@@ -33,9 +33,10 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { preferences } from "$lib/store/persisted.store"
+  import ShareTableTools from "$lib/components/blocks/table-tools/share-table-tools.svelte"
 
   export let readonly = false
-  export let viewId: Readable<string>
+  export let viewId: Readable<string | undefined>
   export let currentPage: Writable<number | null>
   export let isLoading = false
   export let total: number
@@ -181,6 +182,8 @@
         <SelectedRecordsButton class={selectedRecordIds.length && "opacity-100"} ids={selectedRecordIds} />
       {/if}
     </TableTools>
+  {:else}
+    <ShareTableTools />
   {/if}
   <ScrollArea orientation="both" class="h-full flex-1 overflow-auto">
     <table {...$tableAttrs} class={cn("flex h-full flex-col", $$restProps.class)}>

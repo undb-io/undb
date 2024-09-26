@@ -5,7 +5,6 @@
     ChevronRightIcon,
     DatabaseIcon,
     HardDriveIcon,
-    SheetIcon,
     PlusIcon,
     EllipsisIcon,
     PencilIcon,

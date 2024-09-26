@@ -130,6 +130,7 @@ type Query {
   tableForeignTables(tableId: ID!): [Table!]!
   tables(baseId: ID): [Table]!
   template(shareId: ID!): Template
+  templates: [Template!]!
 }
 
 type RLS {
@@ -209,10 +210,25 @@ type Table {
   views: [View!]!
 }
 
+type Tempalte {
+  id: ID!
+  name: String!
+  template: TemplateVariant!
+}
+
 type Template {
   baseId: ID!
   name: String!
   spaceId: ID!
+}
+
+enum TemplateType {
+  base
+}
+
+type TemplateVariant {
+  template: JSON
+  type: TemplateType!
 }
 
 type User {

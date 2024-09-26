@@ -126,6 +126,7 @@ import {
   GetShareRecordsQuery,
   GetTableQuery,
   GetTablesQuery,
+  GetTemplatesQuery,
   GetWebhooksQuery,
   countRecordsOutput,
   countRecordsQuery,
@@ -137,6 +138,7 @@ import {
   getShareRecordByIdQuery,
   getShareRecordsQuery,
   getTableQuery,
+  getTemplatesQuery,
   getWebhooksQuery,
 } from "@undb/queries"
 import { tableDTO } from "@undb/table"
@@ -449,6 +451,7 @@ const spaceRouter = t.router({
 })
 
 const templateRouter = t.router({
+  list: publicProcedure.input(getTemplatesQuery).query(({ input }) => queryBus.execute(new GetTemplatesQuery())),
   createFromTemplate: privateProcedure
     .use(authz("base:create"))
     .input(createFromTemplateCommand)

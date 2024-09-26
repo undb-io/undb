@@ -1,35 +1,38 @@
 <script lang="ts">
   import { page } from "$app/stores"
   import GridViewDataTable from "$lib/components/blocks/grid-view/grid-view-data-table.svelte"
-  import { createRecordsStore, setRecordsStore, type RecordsStore } from "$lib/store/records.store"
+  import { preferences } from "$lib/store/persisted.store"
+  import { createRecordsStore, setRecordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createQuery } from "@tanstack/svelte-query"
   import { Records, type IRecordsDTO } from "@undb/table"
-  import { onMount } from "svelte"
-  import ShareTableTools from "$lib/components/blocks/table-tools/share-table-tools.svelte"
-  import { derived, writable, type Readable } from "svelte/store"
+  import { derived, type Readable } from "svelte/store"
+  import { queryParam, ssp } from "sveltekit-search-params"
 
-  export let viewId: Readable<string>
+  export let viewId: Readable<string | undefined>
 
   const t = getTable()
-  const perPage = writable(50)
-  const currentPage = writable(1)
+  const perPage = derived(preferences, ($preferences) => $preferences.gridViewPerPage ?? 50)
+  const currentPage = queryParam("page", ssp.number())
+  const q = queryParam("q")
 
   const getRecords = createQuery(
-    derived([t, perPage, currentPage, page], ([$table, $perPage, $currentPage, $page]) => {
+    derived([t, perPage, currentPage, page, q], ([$table, $perPage, $currentPage, $page, $q]) => {
       return {
-        queryKey: ["records", $table?.id.value, $currentPage, $perPage],
+        queryKey: ["records", $table?.id.value, $currentPage, $perPage, $q],
         queryFn: () =>
           trpc.shareData.records.query({
             shareId: $page.params.shareId,
             tableId: $table.id.value,
             viewId: $viewId,
+            q: $q,
             pagination: {
-              page: $currentPage,
+              page: $currentPage ?? 1,
               limit: $perPage,
             },
           }),
+        enabled: !!$perPage,
       }
     }),
   )
@@ -45,7 +48,6 @@
 </script>
 
 {#if store}
-  <ShareTableTools />
   <GridViewDataTable
     {viewId}
     readonly

@@ -6,6 +6,7 @@
   import type { KanbanView } from "@undb/table"
 
   export let view: KanbanView
+  export let readonly = false
 </script>
 
 <Dropdown.Root>
@@ -16,7 +17,13 @@
     </Button>
   </Dropdown.Trigger>
   <Dropdown.Content class="w-[400px] p-2">
-    <Dropdown.Label>Update kanban view</Dropdown.Label>
-    <SelectKanbanFieldForm {view} />
+    <Dropdown.Label>
+      {#if !readonly}
+        Update kanban view
+      {:else}
+        Kanban view
+      {/if}
+    </Dropdown.Label>
+    <SelectKanbanFieldForm {view} {readonly} />
   </Dropdown.Content>
 </Dropdown.Root>

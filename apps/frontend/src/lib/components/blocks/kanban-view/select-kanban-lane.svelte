@@ -50,19 +50,20 @@
 
   export let tableId: string
   export let view: KanbanView
-  export let viewId: Readable<string>
+  export let viewId: Readable<string | undefined>
   export let fieldId: string
   export let field: SelectField
   export let option: IOption | null
   export let readonly = false
   export let shareId: string | undefined = undefined
+  export let disableRecordQuery = false
 
   $: color = view.color.into(undefined)
 
   const q = queryParam("q")
 
   let getIsLaneCollapsed = kanbanStore.getIsLaneCollapsed
-  $: isLaneCollapsed = $getIsLaneCollapsed($viewId, option?.id ?? "") ?? false
+  $: isLaneCollapsed = $viewId ? ($getIsLaneCollapsed($viewId, option?.id ?? "") ?? false) : false
 
   const query = createInfiniteQuery(
     derived([table, viewId, q], ([$table, $viewId, $q]) => {
@@ -109,7 +110,7 @@
           }
           return pages.length + 1
         },
-        enabled: view?.type === "kanban",
+        enabled: view?.type === "kanban" && !disableRecordQuery,
         filters: {
           conjunction: "and",
           children: [{ field: fieldId, op: "eq", value: option ? option.id : null }],
@@ -172,7 +173,17 @@
   onMount(() => {
     if (!shareId && !readonly && laneElement) {
       new Sortable(laneElement, {
-        group: "shared",
+        group: {
+          name: "shared",
+          put: (to, from, dragEl, event) => {
+            const toOptionId = to.el.dataset.optionId
+            if (field.required && !toOptionId) {
+              return false
+            }
+
+            return true
+          },
+        },
         animation: 150,
         sort: false,
         dataIdAttr: "data-record-id",
@@ -278,13 +289,13 @@
         <DropdownMenu.Content class="w-48">
           <DropdownMenu.Group>
             {#if !shareId && !readonly && option}
-              <DropdownMenu.Item class="text-muted-foreground text-xs" on:click={() => (updateOptionDialogOpen = true)}>
+              <DropdownMenu.Item class="text-xs text-gray-700" on:click={() => (updateOptionDialogOpen = true)}>
                 <PencilIcon class="mr-2 h-3 w-3" />
                 Update option
               </DropdownMenu.Item>
               <DropdownMenu.Item
                 disabled={field.options.length <= 1}
-                class="text-muted-foreground text-xs"
+                class="text-xs text-gray-700"
                 on:click={() => (deleteOptionDialogOpen = true)}
               >
                 <TrashIcon class="mr-2 h-3 w-3" />
@@ -292,8 +303,11 @@
               </DropdownMenu.Item>
             {/if}
             <DropdownMenu.Item
-              class="text-muted-foreground text-xs"
+              class="text-xs text-gray-700"
               on:click={() => {
+                if (!$viewId) {
+                  return
+                }
                 kanbanStore.toggleLane($viewId, option?.id ?? "")
               }}
             >
@@ -313,7 +327,7 @@
           getKanbanBgColor(option?.color ?? "gray"),
         )}
       >
-        {#if !readonly && $hasPermission("record:create")}
+        {#if  $hasPermission("record:create")}
           {#if $query.isFetchedAfterMount}
             {#if recordDos.length > 0}
               <Button on:click={onCreateRecord} variant="outline" size="sm" class="w-full">
@@ -329,10 +343,12 @@
                     <Option option={option ?? { id: "", name: "No Option", color: "gray" }} />
                   </div>
                 </div>
-                <Button on:click={onCreateRecord} variant="outline" size="sm">
-                  <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
-                  New Record
-                </Button>
+                {#if !readonly && !(field.required && !option)}
+                  <Button on:click={onCreateRecord} variant="outline" size="sm">
+                    <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
+                    New Record
+                  </Button>
+                {/if}
               </div>
             {/if}
           {/if}
@@ -364,10 +380,14 @@
     </div>
     <div class="mt-2 flex w-full items-center justify-between px-2 py-0.5">
       {#if !shareId}
-        <Button variant="outline" size="xs" on:click={onCreateRecord}>
-          <PlusIcon class="text-muted-foreground mr-2 h-3 w-3 font-semibold" />
-          New Record
-        </Button>
+        {#if !(field.required && !option) && !readonly}
+          <Button variant="outline" size="xs" on:click={onCreateRecord}>
+            <PlusIcon class="text-muted-foreground mr-2 h-3 w-3 font-semibold" />
+            New Record
+          </Button>
+        {:else}
+          <div class="h-6"></div>
+        {/if}
       {/if}
 
       {#if $query.isFetchedAfterMount}
