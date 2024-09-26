@@ -88,7 +88,7 @@
   }
 </script>
 
-<Popover.Root bind:open>
+<Popover.Root bind:open portal="body">
   <Popover.Trigger asChild let:builder>
     <Button
       variant={count || open ? "secondary" : "ghost"}

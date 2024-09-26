@@ -10,6 +10,9 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
   import { invalidate } from "$app/navigation"
+  import { hasPermission } from "$lib/store/space-member.store"
+
+  export let readonly = false
 
   const table = getTable()
 
@@ -59,6 +62,7 @@
     <div class="grid w-full items-center gap-4">
       <div class="flex flex-col space-y-1.5">
         <FieldPicker
+          disabled={readonly}
           placeholder="Select a select type field to group kanban lanes"
           value={$formData.kanban?.field}
           onValueChange={(field) => {
@@ -74,9 +78,13 @@
     </div>
   </form>
 
-  <CreateFieldButton class="w-full" variant="secondary" />
+  {#if !readonly && $hasPermission("field:update")}
+    <CreateFieldButton class="w-full" variant="secondary" />
+  {/if}
 
-  <div class="flex w-full justify-end">
-    <Button type="submit" form="select-kanban-field-form">Confirm</Button>
-  </div>
+  {#if !readonly}
+    <div class="flex w-full justify-end">
+      <Button type="submit" form="select-kanban-field-form" disabled={readonly}>Confirm</Button>
+    </div>
+  {/if}
 </div>

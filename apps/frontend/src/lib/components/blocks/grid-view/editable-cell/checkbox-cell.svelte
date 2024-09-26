@@ -10,6 +10,7 @@
   export let field: CheckboxField
   export let value: boolean = false
   export let recordId: string
+  export let readonly = false
   export let onValueChange: (value: boolean) => void
 
   const updateCell = createMutation({
@@ -23,9 +24,10 @@
 
 <div class={cn($$restProps.class, "flex items-center justify-center")}>
   <Checkbox
+    disabled={readonly}
     bind:checked={value}
     onCheckedChange={(checked) => {
-      onValueChange(checked)
+      onValueChange(!!checked)
       $updateCell.mutate({
         tableId,
         id: recordId,

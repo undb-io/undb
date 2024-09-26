@@ -18,6 +18,8 @@
   import FieldMenu from "../field/field-menu.svelte"
   import { hasPermission } from "$lib/store/space-member.store"
 
+  export let readonly = false
+
   const table = getTable()
   $: fields = $table.getOrderedFields(undefined, $viewId)
   $: viewFieldsVo = $table.getViewFields($viewId)
@@ -47,6 +49,8 @@
   })
 
   const setViewFields = async () => {
+    if (readonly) return
+
     await tick()
     $setViewFieldsMutation.mutate({
       tableId: $table.id.value,
@@ -56,6 +60,7 @@
   }
 
   function swapFields(oldIndex: number, newIndex: number) {
+    if (readonly) return
     const fields = [...viewFields]
     const [removed] = fields.splice(oldIndex, 1)
     fields.splice(newIndex, 0, removed)
@@ -76,6 +81,8 @@
   })
 
   const setViewOption = async (value: boolean) => {
+    if (readonly) return
+
     viewOption.showSystemFields = value
     await tick()
     $setViewOptionMutation.mutate({
@@ -86,7 +93,7 @@
   }
 </script>
 
-<Popover.Root bind:open>
+<Popover.Root bind:open portal="body">
   <Popover.Trigger asChild let:builder>
     <Button variant={open || !!hiddenCount ? "secondary" : "ghost"} builders={[builder]} size="sm">
       <ListIcon class="mr-2 h-4 w-4" />
@@ -115,6 +122,7 @@
           class="h-full p-2"
           animation={200}
           handle=".handler"
+          disabled={readonly}
           onEnd={(event) => {
             if (isNumber(event.oldIndex) && isNumber(event.newIndex)) {
               swapFields(event.oldIndex, event.newIndex)
@@ -128,7 +136,9 @@
                 <div class="flex items-center gap-2">
                   <Switch
                     size="sm"
-                    disabled={(visibleCount === 1 && viewFields.length === 1) || !$hasPermission("table:update")}
+                    disabled={(visibleCount === 1 && viewFields.length === 1) ||
+                      !$hasPermission("table:update") ||
+                      readonly}
                     checked={!viewField.hidden}
                     onCheckedChange={(checked) => {
                       viewField.hidden = !checked
@@ -141,7 +151,7 @@
                   </div>
                 </div>
                 <div class="inline-flex items-center gap-1">
-                  {#if $hasPermission("table:update")}
+                  {#if $hasPermission("table:update") && !readonly}
                     <button class="text-muted-foreground handler">
                       <GripVerticalIcon class="h-3 w-3" />
                     </button>

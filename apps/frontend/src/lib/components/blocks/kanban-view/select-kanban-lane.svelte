@@ -50,19 +50,20 @@
 
   export let tableId: string
   export let view: KanbanView
-  export let viewId: Readable<string>
+  export let viewId: Readable<string | undefined>
   export let fieldId: string
   export let field: SelectField
   export let option: IOption | null
   export let readonly = false
   export let shareId: string | undefined = undefined
+  export let disableRecordQuery = false
 
   $: color = view.color.into(undefined)
 
   const q = queryParam("q")
 
   let getIsLaneCollapsed = kanbanStore.getIsLaneCollapsed
-  $: isLaneCollapsed = $getIsLaneCollapsed($viewId, option?.id ?? "") ?? false
+  $: isLaneCollapsed = $viewId ? ($getIsLaneCollapsed($viewId, option?.id ?? "") ?? false) : false
 
   const query = createInfiniteQuery(
     derived([table, viewId, q], ([$table, $viewId, $q]) => {
@@ -109,7 +110,7 @@
           }
           return pages.length + 1
         },
-        enabled: view?.type === "kanban",
+        enabled: view?.type === "kanban" && !disableRecordQuery,
         filters: {
           conjunction: "and",
           children: [{ field: fieldId, op: "eq", value: option ? option.id : null }],
@@ -304,6 +305,9 @@
             <DropdownMenu.Item
               class="text-xs text-gray-700"
               on:click={() => {
+                if (!$viewId) {
+                  return
+                }
                 kanbanStore.toggleLane($viewId, option?.id ?? "")
               }}
             >
@@ -323,7 +327,7 @@
           getKanbanBgColor(option?.color ?? "gray"),
         )}
       >
-        {#if !readonly && $hasPermission("record:create")}
+        {#if  $hasPermission("record:create")}
           {#if $query.isFetchedAfterMount}
             {#if recordDos.length > 0}
               <Button on:click={onCreateRecord} variant="outline" size="sm" class="w-full">
@@ -339,7 +343,7 @@
                     <Option option={option ?? { id: "", name: "No Option", color: "gray" }} />
                   </div>
                 </div>
-                {#if !(field.required && !option)}
+                {#if !readonly && !(field.required && !option)}
                   <Button on:click={onCreateRecord} variant="outline" size="sm">
                     <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
                     New Record
@@ -376,7 +380,7 @@
     </div>
     <div class="mt-2 flex w-full items-center justify-between px-2 py-0.5">
       {#if !shareId}
-        {#if !(field.required && !option)}
+        {#if !(field.required && !option) && !readonly}
           <Button variant="outline" size="xs" on:click={onCreateRecord}>
             <PlusIcon class="text-muted-foreground mr-2 h-3 w-3 font-semibold" />
             New Record

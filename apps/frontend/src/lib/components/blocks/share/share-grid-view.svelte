@@ -2,15 +2,15 @@
   import { page } from "$app/stores"
   import GridViewDataTable from "$lib/components/blocks/grid-view/grid-view-data-table.svelte"
   import { preferences } from "$lib/store/persisted.store"
-  import { createRecordsStore, setRecordsStore, type RecordsStore } from "$lib/store/records.store"
+  import { createRecordsStore, setRecordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createQuery } from "@tanstack/svelte-query"
   import { Records, type IRecordsDTO } from "@undb/table"
-  import { derived, writable, type Readable } from "svelte/store"
+  import { derived, type Readable } from "svelte/store"
   import { queryParam, ssp } from "sveltekit-search-params"
 
-  export let viewId: Readable<string>
+  export let viewId: Readable<string | undefined>
 
   const t = getTable()
   const perPage = derived(preferences, ($preferences) => $preferences.gridViewPerPage ?? 50)

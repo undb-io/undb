@@ -25,7 +25,7 @@
   let open = false
 </script>
 
-<Popover.Root bind:open openFocus>
+<Popover.Root bind:open openFocus portal="body">
   <Popover.Trigger asChild let:builder>
     <Button
       disabled={readonly || disabled}

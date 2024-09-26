@@ -1,7 +1,7 @@
 import { NanoID } from "@undb/domain"
 import { z } from "@undb/zod"
 
-export const spaceIdSchema = z.string().min(1)
+export const spaceIdSchema = z.string()
 
 export type ISpaceId = z.infer<typeof spaceIdSchema>
 

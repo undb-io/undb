@@ -36,7 +36,7 @@
   import ShareTableTools from "$lib/components/blocks/table-tools/share-table-tools.svelte"
 
   export let readonly = false
-  export let viewId: Readable<string>
+  export let viewId: Readable<string | undefined>
   export let currentPage: Writable<number | null>
   export let isLoading = false
   export let total: number

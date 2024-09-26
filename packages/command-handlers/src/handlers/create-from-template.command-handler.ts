@@ -3,7 +3,6 @@ import { mustGetCurrentSpaceId } from "@undb/context/server"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import { type ICommandHandler } from "@undb/domain"
-import { createLogger } from "@undb/logger"
 import { injectTemplateService, type ITemplateService } from "@undb/template"
 
 @commandHandler(CreateFromTemplateCommand)
@@ -11,8 +10,6 @@ import { injectTemplateService, type ITemplateService } from "@undb/template"
 export class CreateFromTemplateCommandHandler
   implements ICommandHandler<CreateFromTemplateCommand, ICreateFromTemplateCommandOutput>
 {
-  private readonly logger = createLogger(CreateFromTemplateCommandHandler.name)
-
   constructor(
     @injectTemplateService()
     private readonly templateService: ITemplateService,

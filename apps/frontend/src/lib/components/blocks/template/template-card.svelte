@@ -7,7 +7,13 @@
   import { toast } from "svelte-sonner"
   import { invalidateAll, goto } from "$app/navigation"
   import { IMPORT_TEMPLATE_MODAL, closeModal } from "$lib/store/modal.store"
-  import { LoaderCircleIcon, FullscreenIcon } from "lucide-svelte"
+  import { FullscreenIcon } from "lucide-svelte"
+  import * as Dialog from "$lib/components/ui/dialog"
+  import TemplatePreview from "./template-preview.svelte"
+  import { Checkbox } from "$lib/components/ui/checkbox/index.js"
+  import Label from "$lib/components/ui/label/label.svelte"
+
+  let includeData = true
 
   export let template: ITemplateDTO
 
@@ -46,19 +52,59 @@
     <p>Card Content</p>
   </Card.Content> -->
   <Card.Footer class="p-0">
-    <Button
-      variant="outline"
-      class="w-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-      size="sm"
-      disabled={$createFromTemplate.isPending}
-      on:click={() => $createFromTemplate.mutate({ id: template.id })}
-    >
-      {#if $createFromTemplate.isPending}
-        <LoaderCircleIcon class="mr-2 size-4 animate-spin" />
-      {:else}
-        <FullscreenIcon class="mr-2 size-4" />
-      {/if}
-      Import Template
-    </Button>
+    <Dialog.Root>
+      <Dialog.Trigger asChild let:builder>
+        <Button
+          builders={[builder]}
+          variant="outline"
+          class="w-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          size="sm"
+          disabled={$createFromTemplate.isPending}
+        >
+          <FullscreenIcon class="mr-2 size-4" />
+          Preview Template
+        </Button>
+      </Dialog.Trigger>
+      <Dialog.Content class="flex h-[90%] !w-[90%] !max-w-none flex-col overflow-hidden">
+        <Dialog.Header class="flex flex-row justify-between">
+          <div class="space-y-2">
+            <Dialog.Title>
+              <span>
+                Preview template {template.name}
+              </span>
+            </Dialog.Title>
+            <Dialog.Description class="max-w-4xl">
+              {template.description}
+            </Dialog.Description>
+          </div>
+          <div class="mr-10 space-y-2">
+            <Button
+              disabled={$createFromTemplate.isPending}
+              on:click={() => $createFromTemplate.mutate({ id: template.id, includeData })}
+            >
+              {#if $createFromTemplate.isPending}
+                <LoaderCircleIcon class="mr-2 size-4 animate-spin" />
+              {:else}
+                Use this Template
+              {/if}
+            </Button>
+
+            <div class="flex items-center space-x-2">
+              <Checkbox id="terms" bind:checked={includeData} />
+              <Label
+                for="terms"
+                class="text-xs font-medium leading-none text-gray-500 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Include data.
+              </Label>
+            </div>
+          </div>
+        </Dialog.Header>
+
+        <div class="flex-1 overflow-auto rounded-sm border">
+          <TemplatePreview {template} />
+        </div>
+      </Dialog.Content>
+    </Dialog.Root>
   </Card.Footer>
 </Card.Root>

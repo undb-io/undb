@@ -8,22 +8,28 @@
   import ViewFields from "../view-fields/view-fields.svelte"
   import ShareViewButton from "../share/share-view-button.svelte"
   import BulkUpdateRecordsButton from "../bulk-update-records/bulk-update-records-button.svelte"
+
+  export let readonly = false
 </script>
 
 <div class="flex items-center justify-between gap-2 border-b px-4 py-2">
   <div class="flex items-center gap-2">
-    <CreateRecordButton />
-    <ViewFilterEditor />
-    <ViewColorEditor />
-    <ViewSort />
-    <ViewFields />
+    {#if !readonly}
+      <CreateRecordButton />
+    {/if}
+    <ViewFilterEditor {readonly} />
+    <ViewColorEditor {readonly} />
+    <ViewSort {readonly} />
+    <ViewFields {readonly} />
     <slot></slot>
   </div>
 
   <div class="flex items-center gap-2">
-    <BulkUpdateRecordsButton />
-    <CreateFieldButton />
-    <ShareViewButton />
+    {#if !readonly}
+      <BulkUpdateRecordsButton />
+      <CreateFieldButton />
+      <ShareViewButton />
+    {/if}
     <RecordsSearch />
   </div>
 </div>

@@ -15,9 +15,11 @@ export type ICreateFromTemplateCommandOutput = z.infer<typeof createFromTemplate
 
 export class CreateFromTemplateCommand extends Command implements ICreateFromTemplateCommand {
   public readonly id: string
+  public readonly includeData?: boolean
 
   constructor(props: CommandProps<ICreateFromTemplateCommand>) {
     super(props)
     this.id = props.id
+    this.includeData = props.includeData
   }
 }
