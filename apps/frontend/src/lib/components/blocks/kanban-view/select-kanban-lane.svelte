@@ -376,10 +376,14 @@
     </div>
     <div class="mt-2 flex w-full items-center justify-between px-2 py-0.5">
       {#if !shareId}
-        <Button variant="outline" size="xs" on:click={onCreateRecord}>
-          <PlusIcon class="text-muted-foreground mr-2 h-3 w-3 font-semibold" />
-          New Record
-        </Button>
+        {#if !(field.required && !option)}
+          <Button variant="outline" size="xs" on:click={onCreateRecord}>
+            <PlusIcon class="text-muted-foreground mr-2 h-3 w-3 font-semibold" />
+            New Record
+          </Button>
+        {:else}
+          <div class="h-6"></div>
+        {/if}
       {/if}
 
       {#if $query.isFetchedAfterMount}

@@ -9,7 +9,7 @@
   export let tableId: string
   export let recordId: string | undefined
 
-  $: selected = writable<string[]>(value)
+  $: selected = writable<string[]>(value ?? [])
 
   let hasValue = Array.isArray(value) && value.length > 0
 
@@ -36,7 +36,7 @@
     bind:selected
     let:builder
   >
-    {#if hasValue}
+    {#if hasValueReactive}
       <Button size="xs" variant="link" class="px-0" builders={[builder]} on:click={(e) => e.stopPropagation()}>
         {value?.length} Linked Records
       </Button>
