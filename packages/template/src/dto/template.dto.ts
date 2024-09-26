@@ -6,6 +6,7 @@ import { templateSchemaVariants } from "../template/value-objects/template-schem
 
 export const templateDTO = z.object({
   id: templateId,
+  icon: z.string().optional(),
   name: templateName,
   description: z.string().optional(),
   category: templateCategory,

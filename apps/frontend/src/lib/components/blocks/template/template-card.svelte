@@ -7,7 +7,7 @@
   import { toast } from "svelte-sonner"
   import { invalidateAll, goto } from "$app/navigation"
   import { IMPORT_TEMPLATE_MODAL, closeModal } from "$lib/store/modal.store"
-  import { LoaderCircleIcon } from "lucide-svelte"
+  import { LoaderCircleIcon, FullscreenIcon } from "lucide-svelte"
 
   export let template: ITemplateDTO
 
@@ -27,15 +27,20 @@
   })
 </script>
 
-<Card.Root class="flex flex-col justify-between space-y-2 rounded-sm p-5">
+<Card.Root class="flex h-[180px] flex-col justify-between space-y-2 rounded-sm p-5">
   <Card.Header class="p-0">
-    <Card.Title class="flex flex-col gap-2">
-      <span>
-        {template.name}
-      </span>
-      <span class="text-muted-foreground text-xs"># {template.category}</span>
+    <Card.Title class="flex gap-2">
+      <span class="-translate-y-1 self-start justify-self-start text-xl">{template.icon}</span>
+      <div class="flex flex-col gap-2">
+        <span>
+          {template.name}
+        </span>
+        <span class="text-muted-foreground text-xs"># {template.category}</span>
+      </div>
     </Card.Title>
-    <Card.Description>{template.description}</Card.Description>
+    <Card.Description class="line-clamp-2" title={template.description}>
+      {template.description}
+    </Card.Description>
   </Card.Header>
   <!-- <Card.Content class="p-0">
     <p>Card Content</p>
@@ -44,13 +49,16 @@
     <Button
       variant="outline"
       class="w-full"
+      size="sm"
       disabled={$createFromTemplate.isPending}
       on:click={() => $createFromTemplate.mutate({ id: template.id })}
     >
       {#if $createFromTemplate.isPending}
-        <LoaderCircleIcon class="mr-2 h-3 w-3 animate-spin" />
+        <LoaderCircleIcon class="mr-2 size-4 animate-spin" />
+      {:else}
+        <FullscreenIcon class="mr-2 size-4" />
       {/if}
-      Import Template</Button
-    >
+      Import Template
+    </Button>
   </Card.Footer>
 </Card.Root>
