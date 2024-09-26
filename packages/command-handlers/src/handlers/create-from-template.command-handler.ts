@@ -20,7 +20,7 @@ export class CreateFromTemplateCommandHandler
 
   async execute(command: CreateFromTemplateCommand): Promise<ICreateFromTemplateCommandOutput> {
     const spaceId = mustGetCurrentSpaceId()
-    const result = await this.templateService.createBase(command.id, spaceId)
+    const result = await this.templateService.createBase(command, spaceId)
 
     return { baseIds: result.map(({ base }) => base.id.value) }
   }

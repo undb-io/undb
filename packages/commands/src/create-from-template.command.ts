@@ -1,11 +1,9 @@
 import { baseIdSchema } from "@undb/base"
 import { Command, type CommandProps } from "@undb/domain"
-import { templateId } from "@undb/template/src/template/value-objects/template-id.vo"
+import { createFromTemplateDTO } from "@undb/template"
 import { z } from "@undb/zod"
 
-export const createFromTemplateCommand = z.object({
-  id: templateId,
-})
+export const createFromTemplateCommand = createFromTemplateDTO
 
 export type ICreateFromTemplateCommand = z.infer<typeof createFromTemplateCommand>
 

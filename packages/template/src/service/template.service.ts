@@ -8,11 +8,15 @@ import {
   type IRecordRepository,
   type ITableRepository,
 } from "@undb/table"
+import type { ICreateFromTemplateDTO } from "../dto"
 import { injectTemplateQueryRepository, type ITemplateQueryRepository } from "../template"
 import { TemplateFactory } from "../template.factory"
 
 export interface ITemplateService {
-  createBase(id: string, spaceId: string): Promise<{ base: Base; tables: { table: TableDo; records: RecordDO[] }[] }[]>
+  createBase(
+    dto: ICreateFromTemplateDTO,
+    spaceId: string,
+  ): Promise<{ base: Base; tables: { table: TableDo; records: RecordDO[] }[] }[]>
 }
 
 @singleton()
@@ -29,7 +33,7 @@ export class TemplateService implements ITemplateService {
   ) {}
 
   async createBase(
-    id: string,
+    { id, includeData }: ICreateFromTemplateDTO,
     spaceId: string,
   ): Promise<{ base: Base; tables: { table: TableDo; records: RecordDO[] }[] }[]> {
     const template = (await this.templateQueryRepository.findOneById(id)).expect("template not found")
@@ -41,8 +45,10 @@ export class TemplateService implements ITemplateService {
     for (const { base, tables } of result) {
       await this.baseRepository.insert(base)
       await this.tableRepository.insertMany(tables.map((table) => table.table))
-      for (const { table, records } of tables) {
-        await this.recordRepository.bulkInsert(table, records)
+      if (includeData) {
+        for (const { table, records } of tables) {
+          await this.recordRepository.bulkInsert(table, records)
+        }
       }
     }
 

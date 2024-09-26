@@ -27,7 +27,7 @@
   })
 </script>
 
-<Card.Root class="flex h-[180px] flex-col justify-between space-y-2 rounded-sm p-5">
+<Card.Root class="group flex h-[180px] flex-col justify-between space-y-2 rounded-sm p-5">
   <Card.Header class="p-0">
     <Card.Title class="flex gap-2">
       <span class="-translate-y-1 self-start justify-self-start text-xl">{template.icon}</span>
@@ -48,7 +48,7 @@
   <Card.Footer class="p-0">
     <Button
       variant="outline"
-      class="w-full"
+      class="w-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
       size="sm"
       disabled={$createFromTemplate.isPending}
       on:click={() => $createFromTemplate.mutate({ id: template.id })}
