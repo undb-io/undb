@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-90
+
+
+### 🚀 Enhancements
+
+- Template preview ([550256d](https://github.com/undb-io/undb/commit/550256d))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-89
 
 
