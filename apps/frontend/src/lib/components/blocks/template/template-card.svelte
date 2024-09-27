@@ -80,6 +80,7 @@
           </div>
           <div class="mr-10 space-y-2">
             <Button
+              class="w-44"
               disabled={$createFromTemplate.isPending}
               on:click={() => $createFromTemplate.mutate({ id: template.id, includeData })}
             >

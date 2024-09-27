@@ -10,6 +10,7 @@ import {
   type ICreateFieldDTO,
   type ICreateReferenceFieldDTO,
   type ICreateSchemaDTO,
+  type ICreateTablesReferenceFieldDTO,
 } from "./modules"
 import { FieldNameShouldBeUnique } from "./modules/schema/rules"
 import { TableIdVo } from "./table-id.vo"
@@ -82,15 +83,25 @@ export class TableFactory {
     const baseName = getNextName(baseNames, base.name.value)
 
     const referenceIds = new Set<string>()
+    const symmetricFields: ICreateTablesReferenceFieldDTO[] = []
     const tables = dtos.map((dto) => {
       const schema = dto.schema
-        .filter((f) => f.type !== "rollup")
         .map((field) => {
+          if (field.type === "rollup") {
+            return null
+          }
           if (field.type === "reference") {
-            const foreignTableId = ids.mustGet(baseName, field.option.foreignTable.tableName)
             if (!field.id) {
               field.id = FieldIdVo.create().value
             }
+
+            // Symmetric field
+            if (!field.option.foreignTable) {
+              symmetricFields.push(field)
+              return null
+            }
+
+            const foreignTableId = ids.mustGet(baseName, field.option.foreignTable.tableName)
             if (field.option.createSymmetricField) {
               referenceIds.add(field.id!)
             }
@@ -103,7 +114,8 @@ export class TableFactory {
             } as ICreateReferenceFieldDTO
           }
           return field as ICreateFieldDTO
-        }) as ICreateSchemaDTO
+        })
+        .filter((v) => !!v) as ICreateSchemaDTO
 
       const id = ids.mustGet(baseName, dto.name)
       const table = this.create({ ...dto, id, schema })
@@ -118,7 +130,9 @@ export class TableFactory {
         if (!foreignTable) {
           throw new Error("Foreign table not found")
         }
-        const symmetricField = ReferenceField.createSymmetricField(table, foreignTable, referenceField)
+        const dto = symmetricFields.find((f) => f.option.symmetricFieldId === referenceField.id.value)
+        console.log(dto)
+        const symmetricField = ReferenceField.createSymmetricField(table, foreignTable, referenceField, dto)
         foreignTable.$createFieldSpec(symmetricField)
       }
     }

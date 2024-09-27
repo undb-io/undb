@@ -22,5 +22,15 @@
 </script>
 
 {#if store}
-  <GridViewDataTable {viewId} readonly {perPage} {currentPage} isLoading={false} total={records.length} />
+  {#key $viewId}
+    <GridViewDataTable
+      {viewId}
+      readonly
+      {perPage}
+      {currentPage}
+      isLoading={false}
+      total={records.length}
+      hidePagination
+    />
+  {/key}
 {/if}

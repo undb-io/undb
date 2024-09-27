@@ -1,12 +1,21 @@
 import { singleton } from "@undb/di"
-import { baseTemplateSchema } from "@undb/template"
+import { None } from "@undb/domain"
+import { baseTemplateSchema, injectTemplateQueryRepository, type ITemplateQueryRepository } from "@undb/template"
 import Elysia from "elysia"
 
 @singleton()
 export class TemplateModule {
+  constructor(
+    @injectTemplateQueryRepository()
+    private readonly templateRepo: ITemplateQueryRepository,
+  ) {}
   route() {
-    return new Elysia().get("/api/template/base/schema.json", () => {
-      return baseTemplateSchema
-    })
+    return new Elysia()
+      .get("/api/template/base/schema.json", () => {
+        return baseTemplateSchema
+      })
+      .get("/api/templates", () => {
+        return this.templateRepo.find(None)
+      })
   }
 }

@@ -51,24 +51,29 @@ export const createReferenceFieldDTO = createBaseFieldDTO
   })
   .omit({ display: true })
 
+const createOwnerReferenceFieldOption = z.object({
+  foreignTable: z.object({
+    baseName: baseNameSchema.optional(),
+    tableName: tableName,
+  }),
+})
+const createSymmetricReferenceFieldOption = z.object({
+  symmetricFieldId: fieldId,
+})
+
 const createTablesReferenceOption = createReferenceFieldOption
   .omit({
     foreignTableId: true,
   })
-  .merge(
-    z.object({
-      foreignTable: z.object({
-        baseName: baseNameSchema.optional(),
-        tableName: tableName,
-      }),
-    }),
-  )
+  .merge(createOwnerReferenceFieldOption.partial())
+  .merge(createSymmetricReferenceFieldOption.partial())
 
 export const createTablesReferenceFieldDTO = createReferenceFieldDTO.merge(
   z.object({
     option: createTablesReferenceOption,
   }),
 )
+export type ICreateTablesReferenceFieldDTO = z.infer<typeof createTablesReferenceFieldDTO>
 
 export type ICreateReferenceFieldDTO = z.infer<typeof createReferenceFieldDTO>
 export const updateReferenceFieldDTO = createReferenceFieldDTO
@@ -121,15 +126,27 @@ export class ReferenceField extends AbstractField<
       name: dto.name,
       option: { foreignTableId, condition, isOwner: true },
       id: FieldIdVo.fromStringOrCreate(dto.id).value,
+      constraint: dto.constraint,
     })
   }
 
-  static createSymmetricField(foreignTable: TableDo, table: TableDo, field: ReferenceField) {
+  static createSymmetricField(
+    foreignTable: TableDo,
+    table: TableDo,
+    field: ReferenceField,
+    dto?: ICreateTablesReferenceFieldDTO,
+  ) {
     const symmetricField = new ReferenceField({
       type: "reference",
-      name: table.schema.getNextFieldName(foreignTable.name.value),
-      option: { isOwner: false, foreignTableId: foreignTable.id.value, symmetricFieldId: field.id.value },
-      id: FieldIdVo.create().value,
+      id: dto?.id || FieldIdVo.create().value,
+      name: table.schema.getNextFieldName(dto?.name || foreignTable.name.value),
+      option: {
+        isOwner: false,
+        foreignTableId: foreignTable.id.value,
+        symmetricFieldId: field.id.value,
+        condition: dto?.option.condition,
+      },
+      constraint: dto?.constraint,
     })
 
     symmetricField.connect(field)
