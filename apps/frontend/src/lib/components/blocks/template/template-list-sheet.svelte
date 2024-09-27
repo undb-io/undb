@@ -13,7 +13,7 @@
     }
   }}
 >
-  <Sheet.Content class="flex h-[85%] flex-col bg-gray-50" side="bottom">
+  <Sheet.Content class="flex h-[90%] flex-col bg-gray-50" side="bottom">
     <Sheet.Header>
       <Sheet.Title class="flex items-center">
         <PackageIcon class="mr-2 size-5" />

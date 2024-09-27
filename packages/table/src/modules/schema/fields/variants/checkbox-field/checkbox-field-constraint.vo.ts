@@ -12,7 +12,7 @@ export class CheckboxFieldConstraint extends FieldConstraintVO<ICheckboxFieldCon
     super({})
   }
   override get schema() {
-    let base: z.ZodTypeAny = z.boolean().optional()
+    let base: z.ZodTypeAny = z.boolean().optional().nullable()
 
     return base
   }

@@ -14,8 +14,12 @@ export class TemplateModule {
       .get("/api/template/base/schema.json", () => {
         return baseTemplateSchema
       })
-      .get("/api/templates", () => {
-        return this.templateRepo.find(None)
+      .get("/api/templates", async () => {
+        const templates = await this.templateRepo.find(None)
+
+        return {
+          templates,
+        }
       })
   }
 }

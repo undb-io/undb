@@ -52,7 +52,7 @@
     }}
   />
 {:else}
-  <div class={$$restProps.class}>
+  <div class={cn("truncate", $$restProps.class)}>
     {#if value}
       <a href={`mailto:${value}`} class="text-primary underline"> {value} </a>
     {/if}

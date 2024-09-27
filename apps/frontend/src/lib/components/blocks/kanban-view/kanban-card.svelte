@@ -32,24 +32,27 @@
 >
   <div class="flex w-full flex-col space-y-2 overflow-hidden">
     {#each fields as field, idx (field.id.value)}
-      <div class="flex w-full items-center gap-2 overflow-hidden">
-        <Tooltip.Root>
-          <Tooltip.Trigger class="w-full text-left">
-            <FieldValue
-              {field}
-              tableId={$table.id.value}
-              recordId={record.id.value}
-              value={values[field.id.value]}
-              type={field.type}
-              displayValue={displayValues[field.id.value]}
-              class={cn("w-full truncate text-left", idx === 0 ? "text-md font-medium" : "")}
-            />
-          </Tooltip.Trigger>
-          <Tooltip.Content>
-            <p>{field.name.value}</p>
-          </Tooltip.Content>
-        </Tooltip.Root>
-      </div>
+      {@const value = values[field.id.value]}
+      {#if value !== null && value !== undefined}
+        <div class="flex w-full items-center gap-2 overflow-hidden">
+          <Tooltip.Root>
+            <Tooltip.Trigger class="w-full text-left">
+              <FieldValue
+                {field}
+                tableId={$table.id.value}
+                recordId={record.id.value}
+                {value}
+                type={field.type}
+                displayValue={displayValues[field.id.value]}
+                class={cn("truncate text-left", idx === 0 ? "text-md font-medium" : "")}
+              />
+            </Tooltip.Trigger>
+            <Tooltip.Content>
+              <p>{field.name.value}</p>
+            </Tooltip.Content>
+          </Tooltip.Root>
+        </div>
+      {/if}
     {/each}
   </div>
   {#if isMatch}
