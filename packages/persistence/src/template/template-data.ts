@@ -62,7 +62,7 @@ export const templateData: ITemplateDTO[] = [
 
 if (env.NODE_ENV === "development") {
   templateData.unshift({
-    id: "6ba7b814-9dad-11d1-80b4-00c04fd430c8",
+    id: "test",
     icon: "💼",
     name: "Test",
     category: "sales",
