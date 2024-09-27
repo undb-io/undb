@@ -2,7 +2,6 @@
   import { MoveLeftIcon } from "lucide-svelte"
   import type { PageServerData } from "./$types"
   import { Button } from "$lib/components/ui/button"
-  import { PUBLIC_UNDB_HOST } from "$env/static/public"
   import { AspectRatio } from "$lib/components/ui/aspect-ratio"
   import * as Dialog from "$lib/components/ui/dialog"
 
@@ -19,18 +18,10 @@
   <div class="space-y-4">
     {#if template}
       <div class="flex items-center justify-between">
-        <a href="/" class="inline-flex items-center text-muted-foreground hover:text-primary">
+        <a href="/" class="text-muted-foreground hover:text-primary inline-flex items-center">
           <MoveLeftIcon class="mr-2 h-3 w-3" />
           Back to templates
         </a>
-        <Button
-          size="sm"
-          class="tracking-tighter', 'transform-gpu group relative gap-2 overflow-hidden
-							 ring-offset-current transition-all duration-300 ease-out hover:ring-2 hover:ring-primary hover:ring-offset-2"
-          href={PUBLIC_UNDB_HOST + "/create-from-share/" + template.values.shareId}
-        >
-          Use this template
-        </Button>
       </div>
       {@const cover = template.values.Cover?.[0]}
       {#if cover}
@@ -65,26 +56,12 @@
           {template.values.Summary}
         </p>
       </div>
-
-      <Button
-        class="tracking-tighter', 'transform-gpu group relative w-[400px] gap-2 overflow-hidden text-lg
-							font-semibold ring-offset-current transition-all duration-300 ease-out hover:ring-2 hover:ring-primary hover:ring-offset-2"
-        href={PUBLIC_UNDB_HOST + "/create-from-share/" + template.values.shareId}
-      >
-        Use this template
-      </Button>
     {/if}
   </div>
 
   {#if template}
     <div class="space-y-4">
       <h1 class="text-lg font-semibold">Template Preview</h1>
-      <iframe
-        class="h-[700px] w-full rounded-md border"
-        src={PUBLIC_UNDB_HOST + "/s/b/" + template.values.shareId}
-        frameborder="1"
-        title={template.values.Title}
-      ></iframe>
     </div>
   {/if}
 </section>

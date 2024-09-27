@@ -12,7 +12,6 @@
     InboxIcon,
   } from "lucide-svelte"
   import {
-    CREATE_BASE_MODAL,
     CREATE_TABLE_MODAL,
     DELETE_VIEW,
     DUPLICATE_VIEW,
@@ -20,6 +19,7 @@
     toggleModal,
     UPDATE_VIEW,
   } from "$lib/store/modal.store"
+  import CreateBaseButton from "../base/create-base-button.svelte"
   import { baseId } from "$lib/store/base.store"
   import * as Collapsible from "$lib/components/ui/collapsible"
   import { cn } from "$lib/utils"
@@ -27,7 +27,6 @@
   import { onMount } from "svelte"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js"
   import { hasPermission } from "$lib/store/space-member.store"
-  import { Button } from "$lib/components/ui/button"
   import { Skeleton } from "$lib/components/ui/skeleton"
   import ViewIcon from "../view/view-icon.svelte"
 
@@ -261,9 +260,7 @@
     <div class="flex flex-col items-center space-y-4 pt-12">
       <InboxIcon class="text-muted-foreground h-16 w-16" />
       <p class="text-muted-foreground">No bases</p>
-      {#if $hasPermission("base:create")}
-        <Button variant="outline" on:click={() => toggleModal(CREATE_BASE_MODAL)}>Create New Base</Button>
-      {/if}
+      <CreateBaseButton variant="outline" />
     </div>
   {/if}
 </nav>
