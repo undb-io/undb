@@ -204,14 +204,14 @@
                 {#if r}
                   {@const values = r.flatten()}
                   {@const displayValues = r.displayValues?.toJSON() ?? {}}
-                  <div class="flex items-center gap-2">
+                  <div class="flex w-full flex-1 items-center gap-2">
                     {#if fields.length}
                       {@const field = fields[0]}
                       <div class="flex-1 space-y-1">
-                        <Tooltip.Root>
+                        <Tooltip.Root portal="body">
                           <Tooltip.Trigger asChild let:builder>
                             <span
-                              class="inline-flex items-center px-3 pt-2"
+                              class="inline-flex max-w-80 items-center overflow-hidden px-3 pt-2"
                               use:builderActions={{ builders: [builder] }}
                               {...getAttrs([builder])}
                             >
@@ -222,7 +222,8 @@
                                 value={values[field.id.value]}
                                 type={field.type}
                                 displayValue={displayValues[field.id.value]}
-                                class="font-semibold"
+                                class="truncate font-semibold"
+                                title={values[field.id.value]}
                                 placeholder="-"
                               />
                             </span>

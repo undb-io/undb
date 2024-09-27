@@ -8,10 +8,13 @@
   import { cn } from "$lib/utils"
   import { HardDriveIcon, DatabaseIcon, ViewIcon, ChevronRightIcon } from "lucide-svelte"
   import * as Collapsible from "$lib/components/ui/collapsible"
+  import { setTemplate } from "$lib/store/template.store"
 
   export let template: ITemplateDTO
 
-  let t = TemplateFactory.create(template.template.template, [], "")
+  setTemplate(writable(template))
+
+  let t = TemplateFactory.preview(template.template.template)
   let tables = t.flatMap((base) => base.tables.map(({ table }) => table))
   let bases = t.map((base) => base.base)
 

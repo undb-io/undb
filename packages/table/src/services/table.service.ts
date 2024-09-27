@@ -26,8 +26,8 @@ import {
   type View,
 } from "../modules"
 import type { ICreateTableFormDTO } from "../modules/forms/dto/create-form.dto"
-import { TableFactory } from "../table.builder"
 import type { TableDo } from "../table.do"
+import { TableFactory } from "../table.factory"
 import type { ITableRepository } from "../table.repository"
 import { injectTableRepository } from "../table.repository.provider"
 import { createTableFieldMethod } from "./methods/create-table-field.method"

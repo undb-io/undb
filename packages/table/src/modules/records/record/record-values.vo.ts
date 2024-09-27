@@ -55,14 +55,13 @@ export class RecordValuesVO extends ValueObject {
   static fromJSON(table: TableDo, dto: IRecordValues) {
     const values: RecordValues = {}
 
-    for (const [id, value] of Object.entries(dto)) {
-      const fieldId = new FieldIdVo(id)
-      const field = table.schema.getFieldById(fieldId).into(null)
+    for (const [idOrName, value] of Object.entries(dto)) {
+      const field = table.schema.getFieldByIdOrName(idOrName).into(null)
       if (!field) continue
 
       const fieldValue = FieldValueFactory.fromJSON(field, value)
       if (fieldValue.isSome()) {
-        Reflect.set(values, fieldId.value, fieldValue.unwrap())
+        Reflect.set(values, field.id.value, fieldValue.unwrap())
       }
     }
 
