@@ -54,9 +54,28 @@
             "id": "company",
             "type": "reference",
             "option": {
+              "createSymmetricField": true,
               "foreignTable": {
                 "tableName": "Companies"
               }
+            }
+          },
+          "Company Name": {
+            "id": "companyName",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "company",
+              "rollupFieldId": "name",
+              "fn": "lookup"
+            }
+          },
+          "Company Industry": {
+            "id": "companyIndustry",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "company",
+              "rollupFieldId": "industry",
+              "fn": "lookup"
             }
           },
           "Deals": {
@@ -1074,16 +1093,6 @@
           "Website": {
             "id": "website",
             "type": "url"
-          },
-          "Contacts": {
-            "id": "contacts",
-            "type": "reference",
-            "option": {
-              "foreignTable": {
-                "tableName": "Contacts"
-              },
-              "createSymmetricField": true
-            }
           }
         },
         "records": [

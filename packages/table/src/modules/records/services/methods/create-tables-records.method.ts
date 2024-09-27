@@ -21,12 +21,17 @@ export async function createTablesRecordsMethod(
         if (value.isNone()) {
           continue
         }
-        const spec = new ReferenceEqual(value.unwrap() as ReferenceFieldValue, field.id)
-        specs.push(spec)
+        const referecneValue = value.unwrap() as ReferenceFieldValue
+        if (referecneValue.value?.length) {
+          const spec = new ReferenceEqual(value.unwrap() as ReferenceFieldValue, field.id)
+          specs.push(spec)
+        }
       }
 
-      const spec = and(...specs) as Option<RecordComositeSpecification>
-      await this.repo.updateOneById(table, record, spec)
+      if (specs.length) {
+        const spec = and(...specs) as Option<RecordComositeSpecification>
+        await this.repo.updateOneById(table, record, spec)
+      }
     }
   }
 }
