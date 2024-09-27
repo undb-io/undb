@@ -9,6 +9,7 @@ import {
   createTablesDurationFieldDTO,
   createTablesEmailFieldDTO,
   createTablesJsonFieldDTO,
+  createTablesLongTextFieldDTO,
   createTablesNumberFieldDTO,
   createTablesPercentageFieldDTO,
   createTablesRatingFieldDTO,
@@ -48,6 +49,7 @@ const createTemplateFieldDTO = z.discriminatedUnion("type", [
   createTablesUserFieldDTO.omit(omitName),
   createTablesPercentageFieldDTO.omit(omitName),
   createTablesDurationFieldDTO.omit(omitName),
+  createTablesLongTextFieldDTO.omit(omitName),
 ])
 
 const templateSchemaDTO = z.record(fieldName, createTemplateFieldDTO)

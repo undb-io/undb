@@ -2,8 +2,8 @@ import { getNextName } from "@undb/utils"
 import type { IDuplicateTableDTO } from "../dto/duplicate-table.dto"
 import { DuplicatedTableSpecification } from "../specifications"
 import { TableIdVo } from "../table-id.vo"
-import { TableFactory } from "../table.builder"
 import { TableDo } from "../table.do"
+import { TableFactory } from "../table.factory"
 
 export function duplicateTableMethod(
   this: TableDo,

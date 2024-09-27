@@ -2,6 +2,7 @@
   import ViewFilterEditor from "../view-filter-editor/view-filter-editor.svelte"
   import ViewColorEditor from "../view-color-editor/view-color-editor.svelte"
   import ViewSort from "../view-sort/view-sort.svelte"
+  import ViewFields from "../view-fields/view-fields.svelte"
   import RecordsSearch from "../search/records-search.svelte"
 </script>
 
@@ -10,6 +11,7 @@
     <ViewFilterEditor readonly />
     <ViewColorEditor readonly />
     <ViewSort readonly />
+    <ViewFields readonly />
     <slot></slot>
   </div>
 

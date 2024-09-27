@@ -8,6 +8,7 @@
   import { invalidateAll, goto } from "$app/navigation"
   import { IMPORT_TEMPLATE_MODAL, closeModal } from "$lib/store/modal.store"
   import { FullscreenIcon } from "lucide-svelte"
+  import { LoaderCircleIcon } from "lucide-svelte"
   import * as Dialog from "$lib/components/ui/dialog"
   import TemplatePreview from "./template-preview.svelte"
   import { Checkbox } from "$lib/components/ui/checkbox/index.js"
@@ -52,7 +53,7 @@
     <p>Card Content</p>
   </Card.Content> -->
   <Card.Footer class="p-0">
-    <Dialog.Root>
+    <Dialog.Root portal="body">
       <Dialog.Trigger asChild let:builder>
         <Button
           builders={[builder]}
@@ -84,9 +85,8 @@
             >
               {#if $createFromTemplate.isPending}
                 <LoaderCircleIcon class="mr-2 size-4 animate-spin" />
-              {:else}
-                Use this Template
               {/if}
+              Use this Template
             </Button>
 
             <div class="flex items-center space-x-2">

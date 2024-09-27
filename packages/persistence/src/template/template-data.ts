@@ -46,4 +46,15 @@ export const templateData: ITemplateDTO[] = [
       template: templates.officeInventoryManagement as IBaseTemplateDTO,
     },
   },
+  {
+    id: "6ba7b814-9dad-11d1-80b4-00c04fd430c8",
+    icon: "💼",
+    name: "CRM",
+    category: "sales",
+    description: "A template for managing customer relationships, deals, and activities.",
+    template: {
+      type: "base",
+      template: templates.crm as IBaseTemplateDTO,
+    },
+  },
 ]

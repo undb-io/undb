@@ -1,6 +1,7 @@
 import { singleton } from "@undb/di"
 import type { Option } from "@undb/domain"
 import type { IUniqueTableDTO } from "../../../dto"
+import type { TableDo } from "../../../table.do"
 import type { ITableRepository } from "../../../table.repository"
 import { injectTableRepository } from "../../../table.repository.provider"
 import {
@@ -22,6 +23,7 @@ import { bulkduplicateRecordsMethod } from "./methods/bulk-duplicate-records.met
 import { bulkUpdateRecordsMethod } from "./methods/bulk-update-records.method"
 import { createRecordMethod } from "./methods/create-record.method"
 import { createRecordsMethod } from "./methods/create-records.method"
+import { createTablesRecordsMethod } from "./methods/create-tables-records.method"
 import { deleteRecordMethod } from "./methods/delete-record.method"
 import { duplicateRecordMethod } from "./methods/duplicate-record.method"
 import { submitFormMethod } from "./methods/submit-form.method"
@@ -39,6 +41,7 @@ export interface IRecordsService {
   bulkDeleteRecords(table: IUniqueTableDTO, dto: IBulkDeleteRecordsDTO): Promise<RecordDO[]>
   duplicateRecord(table: IUniqueTableDTO, dto: IDuplicateRecordDTO): Promise<RecordDO>
   bulkDuplicateRecords(table: IUniqueTableDTO, dto: IBulkDuplicateRecordsDTO): Promise<RecordDO[]>
+  createTablesRecords(input: { table: TableDo; records: RecordDO[] }[]): Promise<void>
 }
 
 @singleton()
@@ -60,4 +63,5 @@ export class RecordsService implements IRecordsService {
   bulkDeleteRecords = bulkdeleteRecordsMethod
   duplicateRecord = duplicateRecordMethod
   bulkDuplicateRecords = bulkduplicateRecordsMethod
+  createTablesRecords = createTablesRecordsMethod
 }

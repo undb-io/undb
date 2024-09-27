@@ -1,0 +1,1163 @@
+{
+  "CRM": {
+    "tables": {
+      "Contacts": {
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Status": {
+            "id": "status",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "defaultValue": "lead",
+            "option": {
+              "options": [
+                {
+                  "id": "lead",
+                  "color": "gray",
+                  "name": "Lead"
+                },
+                {
+                  "id": "prospect",
+                  "name": "Prospect",
+                  "color": "blue"
+                },
+                {
+                  "id": "customer",
+                  "name": "Customer",
+                  "color": "green"
+                }
+              ]
+            }
+          },
+          "Email": {
+            "id": "email",
+            "type": "email",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Phone": {
+            "id": "phone",
+            "type": "string"
+          },
+          "Company": {
+            "id": "company",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "tableName": "Companies"
+              }
+            }
+          },
+          "Company Name": {
+            "id": "companyName",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "company",
+              "rollupFieldId": "name",
+              "fn": "lookup"
+            }
+          },
+          "Company Industry": {
+            "id": "companyIndustry",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "company",
+              "rollupFieldId": "industry",
+              "fn": "lookup"
+            }
+          },
+          "Deals": {
+            "id": "deals",
+            "type": "reference",
+            "option": {
+              "foreignTable": {
+                "tableName": "Deals"
+              },
+              "createSymmetricField": true
+            }
+          },
+          "Deals Count": {
+            "type": "rollup",
+            "option": {
+              "fn": "count",
+              "referenceFieldId": "deals",
+              "rollupFieldId": "id"
+            }
+          },
+          "Total Deal Value": {
+            "type": "rollup",
+            "option": {
+              "fn": "sum",
+              "referenceFieldId": "deals",
+              "rollupFieldId": "value"
+            }
+          }
+        },
+        "records": [
+          {
+            "id": "contact-1",
+            "Name": "John Doe",
+            "Status": "lead",
+            "Email": "john.doe@example.com",
+            "Phone": "+1 123-456-7890",
+            "Company": ["company-1"]
+          },
+          {
+            "id": "contact-2",
+            "Name": "Jane Smith",
+            "Status": "prospect",
+            "Email": "jane.smith@example.com",
+            "Phone": "+1 234-567-8901",
+            "Company": ["company-2"]
+          },
+          {
+            "id": "contact-3",
+            "Name": "Bob Johnson",
+            "Status": "customer",
+            "Email": "bob.johnson@example.com",
+            "Phone": "+1 345-678-9012",
+            "Company": ["company-3"]
+          },
+          {
+            "id": "contact-4",
+            "Name": "Alice Brown",
+            "Status": "lead",
+            "Email": "alice.brown@example.com",
+            "Phone": "+1 456-789-0123",
+            "Company": ["company-4"]
+          },
+          {
+            "id": "contact-5",
+            "Name": "Charlie Wilson",
+            "Status": "prospect",
+            "Email": "charlie.wilson@example.com",
+            "Phone": "+1 567-890-1234",
+            "Company": ["company-5"]
+          },
+          {
+            "id": "contact-6",
+            "Name": "David Lee",
+            "Status": "customer",
+            "Email": "david.lee@example.com",
+            "Phone": "+1 678-901-2345",
+            "Company": ["company-6"]
+          },
+          {
+            "id": "contact-7",
+            "Name": "Emma Davis",
+            "Status": "lead",
+            "Email": "emma.davis@example.com",
+            "Phone": "+1 789-012-3456",
+            "Company": ["company-7"]
+          },
+          {
+            "id": "contact-8",
+            "Name": "Frank Miller",
+            "Status": "prospect",
+            "Email": "frank.miller@example.com",
+            "Phone": "+1 890-123-4567",
+            "Company": ["company-8"]
+          },
+          {
+            "id": "contact-9",
+            "Name": "Grace Taylor",
+            "Status": "customer",
+            "Email": "grace.taylor@example.com",
+            "Phone": "+1 901-234-5678",
+            "Company": ["company-9"]
+          },
+          {
+            "id": "contact-10",
+            "Name": "Henry Wilson",
+            "Status": "lead",
+            "Email": "henry.wilson@example.com",
+            "Phone": "+1 012-345-6789",
+            "Company": ["company-10"]
+          },
+          {
+            "id": "contact-11",
+            "Name": "Isabella Moore",
+            "Status": "prospect",
+            "Email": "isabella.moore@example.com",
+            "Phone": "+1 123-456-7890",
+            "Company": ["company-1"]
+          },
+          {
+            "id": "contact-12",
+            "Name": "Jack Thompson",
+            "Status": "customer",
+            "Email": "jack.thompson@example.com",
+            "Phone": "+1 234-567-8901",
+            "Company": ["company-2"]
+          },
+          {
+            "id": "contact-13",
+            "Name": "Katherine White",
+            "Status": "lead",
+            "Email": "katherine.white@example.com",
+            "Phone": "+1 345-678-9012",
+            "Company": ["company-3"]
+          },
+          {
+            "id": "contact-14",
+            "Name": "Liam Anderson",
+            "Status": "prospect",
+            "Email": "liam.anderson@example.com",
+            "Phone": "+1 456-789-0123",
+            "Company": ["company-4"]
+          },
+          {
+            "id": "contact-15",
+            "Name": "Mia Garcia",
+            "Status": "customer",
+            "Email": "mia.garcia@example.com",
+            "Phone": "+1 567-890-1234",
+            "Company": ["company-5"]
+          },
+          {
+            "id": "contact-16",
+            "Name": "Noah Martinez",
+            "Status": "lead",
+            "Email": "noah.martinez@example.com",
+            "Phone": "+1 678-901-2345",
+            "Company": ["company-6"]
+          },
+          {
+            "id": "contact-17",
+            "Name": "Olivia Robinson",
+            "Status": "prospect",
+            "Email": "olivia.robinson@example.com",
+            "Phone": "+1 789-012-3456",
+            "Company": ["company-7"]
+          },
+          {
+            "id": "contact-18",
+            "Name": "Peter Clark",
+            "Status": "customer",
+            "Email": "peter.clark@example.com",
+            "Phone": "+1 890-123-4567",
+            "Company": ["company-8"]
+          },
+          {
+            "id": "contact-19",
+            "Name": "Quinn Rodriguez",
+            "Status": "lead",
+            "Email": "quinn.rodriguez@example.com",
+            "Phone": "+1 901-234-5678",
+            "Company": ["company-9"]
+          },
+          {
+            "id": "contact-20",
+            "Name": "Rachel Lewis",
+            "Status": "prospect",
+            "Email": "rachel.lewis@example.com",
+            "Phone": "+1 012-345-6789",
+            "Company": ["company-10"]
+          },
+          {
+            "id": "contact-21",
+            "Name": "Samuel Lee",
+            "Status": "customer",
+            "Email": "samuel.lee@example.com",
+            "Phone": "+1 123-456-7890",
+            "Company": ["company-1"]
+          },
+          {
+            "id": "contact-22",
+            "Name": "Tiffany Nguyen",
+            "Status": "lead",
+            "Email": "tiffany.nguyen@example.com",
+            "Phone": "+1 234-567-8901",
+            "Company": ["company-2"]
+          },
+          {
+            "id": "contact-23",
+            "Name": "Ulysses King",
+            "Status": "prospect",
+            "Email": "ulysses.king@example.com",
+            "Phone": "+1 345-678-9012",
+            "Company": ["company-3"]
+          },
+          {
+            "id": "contact-24",
+            "Name": "Victoria Scott",
+            "Status": "customer",
+            "Email": "victoria.scott@example.com",
+            "Phone": "+1 456-789-0123",
+            "Company": ["company-4"]
+          },
+          {
+            "id": "contact-25",
+            "Name": "William Turner",
+            "Status": "lead",
+            "Email": "william.turner@example.com",
+            "Phone": "+1 567-890-1234",
+            "Company": ["company-5"]
+          },
+          {
+            "id": "contact-26",
+            "Name": "Xander Hayes",
+            "Status": "prospect",
+            "Email": "xander.hayes@example.com",
+            "Phone": "+1 678-901-2345",
+            "Company": ["company-6"]
+          },
+          {
+            "id": "contact-27",
+            "Name": "Yasmin Cooper",
+            "Status": "customer",
+            "Email": "yasmin.cooper@example.com",
+            "Phone": "+1 789-012-3456",
+            "Company": ["company-7"]
+          },
+          {
+            "id": "contact-28",
+            "Name": "Zachary Foster",
+            "Status": "lead",
+            "Email": "zachary.foster@example.com",
+            "Phone": "+1 890-123-4567",
+            "Company": ["company-8"]
+          },
+          {
+            "id": "contact-29",
+            "Name": "Abigail Murphy",
+            "Status": "prospect",
+            "Email": "abigail.murphy@example.com",
+            "Phone": "+1 901-234-5678",
+            "Company": ["company-9"]
+          },
+          {
+            "id": "contact-30",
+            "Name": "Benjamin Rivera",
+            "Status": "customer",
+            "Email": "benjamin.rivera@example.com",
+            "Phone": "+1 012-345-6789",
+            "Company": ["company-10"]
+          }
+        ]
+      },
+      "Deals": {
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Stage": {
+            "id": "stage",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "defaultValue": "qualification",
+            "option": {
+              "options": [
+                {
+                  "id": "qualification",
+                  "color": "gray",
+                  "name": "Qualification"
+                },
+                {
+                  "id": "proposal",
+                  "name": "Proposal",
+                  "color": "blue"
+                },
+                {
+                  "id": "negotiation",
+                  "name": "Negotiation",
+                  "color": "orange"
+                },
+                {
+                  "id": "closed_won",
+                  "name": "Closed Won",
+                  "color": "green"
+                },
+                {
+                  "id": "closed_lost",
+                  "name": "Closed Lost",
+                  "color": "red"
+                }
+              ]
+            }
+          },
+          "Value": {
+            "id": "value",
+            "type": "currency",
+            "constraint": {
+              "required": true
+            },
+            "option": {
+              "symbol": "$"
+            }
+          },
+          "Close Date": {
+            "id": "closeDate",
+            "type": "date"
+          }
+        },
+        "records": [
+          {
+            "id": "deal-1",
+            "Name": "Software License Renewal",
+            "Stage": "proposal",
+            "Value": 50000,
+            "Close Date": "2023-12-31",
+            "Contacts": ["contact-1"]
+          },
+          {
+            "id": "deal-2",
+            "Name": "Cloud Migration Project",
+            "Stage": "negotiation",
+            "Value": 100000,
+            "Close Date": "2024-03-15",
+            "Contacts": ["contact-2"]
+          },
+          {
+            "id": "deal-3",
+            "Name": "IT Support Contract",
+            "Stage": "closed_won",
+            "Value": 75000,
+            "Close Date": "2023-11-30",
+            "Contacts": ["contact-3"]
+          },
+          {
+            "id": "deal-4",
+            "Name": "Hardware Upgrade",
+            "Stage": "qualification",
+            "Value": 25000,
+            "Close Date": "2024-02-28",
+            "Contacts": ["contact-4"]
+          },
+          {
+            "id": "deal-5",
+            "Name": "Custom Software Development",
+            "Stage": "proposal",
+            "Value": 200000,
+            "Close Date": "2024-06-30",
+            "Contacts": ["contact-5"]
+          },
+          {
+            "id": "deal-6",
+            "Name": "Network Security Audit",
+            "Stage": "qualification",
+            "Value": 30000,
+            "Close Date": "2024-01-15",
+            "Contacts": ["contact-6"]
+          },
+          {
+            "id": "deal-7",
+            "Name": "Data Analytics Platform",
+            "Stage": "proposal",
+            "Value": 150000,
+            "Close Date": "2024-04-30",
+            "Contacts": ["contact-7"]
+          },
+          {
+            "id": "deal-8",
+            "Name": "Mobile App Development",
+            "Stage": "negotiation",
+            "Value": 80000,
+            "Close Date": "2024-05-31",
+            "Contacts": ["contact-8"]
+          },
+          {
+            "id": "deal-9",
+            "Name": "Cybersecurity Training Program",
+            "Stage": "closed_won",
+            "Value": 40000,
+            "Close Date": "2023-12-15",
+            "Contacts": ["contact-9"]
+          },
+          {
+            "id": "deal-10",
+            "Name": "ERP System Implementation",
+            "Stage": "proposal",
+            "Value": 300000,
+            "Close Date": "2024-08-31",
+            "Contacts": ["contact-10"]
+          },
+          {
+            "id": "deal-11",
+            "Name": "Cloud Storage Expansion",
+            "Stage": "qualification",
+            "Value": 60000,
+            "Close Date": "2024-03-01",
+            "Contacts": ["contact-11"]
+          },
+          {
+            "id": "deal-12",
+            "Name": "AI-powered Chatbot",
+            "Stage": "negotiation",
+            "Value": 90000,
+            "Close Date": "2024-06-15",
+            "Contacts": ["contact-12"]
+          },
+          {
+            "id": "deal-13",
+            "Name": "IT Infrastructure Upgrade",
+            "Stage": "proposal",
+            "Value": 250000,
+            "Close Date": "2024-09-30",
+            "Contacts": ["contact-13"]
+          },
+          {
+            "id": "deal-14",
+            "Name": "Disaster Recovery Plan",
+            "Stage": "closed_won",
+            "Value": 55000,
+            "Close Date": "2023-11-15",
+            "Contacts": ["contact-14"]
+          },
+          {
+            "id": "deal-15",
+            "Name": "IoT Device Management Platform",
+            "Stage": "qualification",
+            "Value": 120000,
+            "Close Date": "2024-07-31",
+            "Contacts": ["contact-15"]
+          },
+          {
+            "id": "deal-16",
+            "Name": "Virtual Reality Training Solution",
+            "Stage": "proposal",
+            "Value": 180000,
+            "Close Date": "2024-10-15",
+            "Contacts": ["contact-16"]
+          },
+          {
+            "id": "deal-17",
+            "Name": "Data Center Relocation",
+            "Stage": "negotiation",
+            "Value": 400000,
+            "Close Date": "2024-11-30",
+            "Contacts": ["contact-17"]
+          },
+          {
+            "id": "deal-18",
+            "Name": "Blockchain Integration Project",
+            "Stage": "qualification",
+            "Value": 150000,
+            "Close Date": "2024-08-15",
+            "Contacts": ["contact-18"]
+          },
+          {
+            "id": "deal-19",
+            "Name": "Customer Relationship Management System",
+            "Stage": "proposal",
+            "Value": 100000,
+            "Close Date": "2024-05-15",
+            "Contacts": ["contact-19"]
+          },
+          {
+            "id": "deal-20",
+            "Name": "Robotic Process Automation",
+            "Stage": "closed_won",
+            "Value": 200000,
+            "Close Date": "2023-12-01",
+            "Contacts": ["contact-20"]
+          },
+          {
+            "id": "deal-21",
+            "Name": "5G Network Implementation",
+            "Stage": "qualification",
+            "Value": 500000,
+            "Close Date": "2024-12-31",
+            "Contacts": ["contact-21"]
+          },
+          {
+            "id": "deal-22",
+            "Name": "Augmented Reality Maintenance System",
+            "Stage": "proposal",
+            "Value": 250000,
+            "Close Date": "2024-09-15",
+            "Contacts": ["contact-22"]
+          },
+          {
+            "id": "deal-23",
+            "Name": "Quantum Computing Research Partnership",
+            "Stage": "negotiation",
+            "Value": 1000000,
+            "Close Date": "2025-06-30",
+            "Contacts": ["contact-23"]
+          },
+          {
+            "id": "deal-24",
+            "Name": "Edge Computing Infrastructure",
+            "Stage": "qualification",
+            "Value": 300000,
+            "Close Date": "2024-10-31",
+            "Contacts": ["contact-24"]
+          },
+          {
+            "id": "deal-25",
+            "Name": "Digital Twin Technology Implementation",
+            "Stage": "proposal",
+            "Value": 450000,
+            "Close Date": "2025-03-15",
+            "Contacts": ["contact-25"]
+          },
+          {
+            "id": "deal-26",
+            "Name": "Predictive Maintenance Solution",
+            "Stage": "closed_won",
+            "Value": 180000,
+            "Close Date": "2023-11-30",
+            "Contacts": ["contact-26"]
+          },
+          {
+            "id": "deal-27",
+            "Name": "Biometric Authentication System",
+            "Stage": "negotiation",
+            "Value": 75000,
+            "Close Date": "2024-04-30",
+            "Contacts": ["contact-27"]
+          },
+          {
+            "id": "deal-28",
+            "Name": "Smart Building Management Platform",
+            "Stage": "proposal",
+            "Value": 350000,
+            "Close Date": "2024-11-15",
+            "Contacts": ["contact-28"]
+          },
+          {
+            "id": "deal-29",
+            "Name": "Autonomous Vehicle Software Development",
+            "Stage": "qualification",
+            "Value": 800000,
+            "Close Date": "2025-09-30",
+            "Contacts": ["contact-29"]
+          },
+          {
+            "id": "deal-30",
+            "Name": "Cybersecurity Incident Response Team",
+            "Stage": "closed_won",
+            "Value": 120000,
+            "Close Date": "2023-12-15",
+            "Contacts": ["contact-30"]
+          },
+          {
+            "id": "deal-31",
+            "Name": "Machine Learning Model Optimization",
+            "Stage": "proposal",
+            "Value": 200000,
+            "Close Date": "2024-07-31",
+            "Contacts": ["contact-1"]
+          },
+          {
+            "id": "deal-32",
+            "Name": "Hybrid Cloud Migration",
+            "Stage": "negotiation",
+            "Value": 550000,
+            "Close Date": "2024-10-31",
+            "Contacts": ["contact-2"]
+          },
+          {
+            "id": "deal-33",
+            "Name": "Supply Chain Visibility Platform",
+            "Stage": "qualification",
+            "Value": 275000,
+            "Close Date": "2024-08-15",
+            "Contacts": ["contact-3"]
+          },
+          {
+            "id": "deal-34",
+            "Name": "Natural Language Processing Engine",
+            "Stage": "proposal",
+            "Value": 320000,
+            "Close Date": "2025-01-31",
+            "Contacts": ["contact-4"]
+          },
+          {
+            "id": "deal-35",
+            "Name": "Drone Fleet Management System",
+            "Stage": "closed_won",
+            "Value": 150000,
+            "Close Date": "2023-12-31",
+            "Contacts": ["contact-5"]
+          },
+          {
+            "id": "deal-36",
+            "Name": "Quantum-resistant Cryptography Implementation",
+            "Stage": "qualification",
+            "Value": 400000,
+            "Close Date": "2025-03-31",
+            "Contacts": ["contact-6"]
+          },
+          {
+            "id": "deal-37",
+            "Name": "Augmented Analytics Platform",
+            "Stage": "negotiation",
+            "Value": 280000,
+            "Close Date": "2024-09-30",
+            "Contacts": ["contact-7"]
+          },
+          {
+            "id": "deal-38",
+            "Name": "Zero Trust Security Architecture",
+            "Stage": "proposal",
+            "Value": 350000,
+            "Close Date": "2024-11-30",
+            "Contacts": ["contact-8"]
+          },
+          {
+            "id": "deal-39",
+            "Name": "Digital Employee Experience Platform",
+            "Stage": "closed_won",
+            "Value": 190000,
+            "Close Date": "2023-12-15",
+            "Contacts": ["contact-9"]
+          },
+          {
+            "id": "deal-40",
+            "Name": "Serverless Computing Adoption",
+            "Stage": "qualification",
+            "Value": 100000,
+            "Close Date": "2024-06-30",
+            "Contacts": ["contact-10"]
+          },
+          {
+            "id": "deal-41",
+            "Name": "Intelligent Document Processing Solution",
+            "Stage": "proposal",
+            "Value": 225000,
+            "Close Date": "2024-08-31",
+            "Contacts": ["contact-11"]
+          },
+          {
+            "id": "deal-42",
+            "Name": "Multi-cloud Orchestration Platform",
+            "Stage": "negotiation",
+            "Value": 475000,
+            "Close Date": "2025-02-28",
+            "Contacts": ["contact-12"]
+          },
+          {
+            "id": "deal-43",
+            "Name": "Industrial IoT Sensor Network",
+            "Stage": "closed_won",
+            "Value": 380000,
+            "Close Date": "2023-11-30",
+            "Contacts": ["contact-13"]
+          },
+          {
+            "id": "deal-44",
+            "Name": "Continuous Integration/Continuous Deployment Pipeline",
+            "Stage": "qualification",
+            "Value": 150000,
+            "Close Date": "2024-05-31",
+            "Contacts": ["contact-14"]
+          },
+          {
+            "id": "deal-45",
+            "Name": "Data Fabric Architecture Implementation",
+            "Stage": "proposal",
+            "Value": 520000,
+            "Close Date": "2025-04-30",
+            "Contacts": ["contact-15"]
+          },
+          {
+            "id": "deal-46",
+            "Name": "Low-code Application Development Platform",
+            "Stage": "negotiation",
+            "Value": 200000,
+            "Close Date": "2024-07-31",
+            "Contacts": ["contact-16"]
+          },
+          {
+            "id": "deal-47",
+            "Name": "Unified Communications as a Service",
+            "Stage": "closed_won",
+            "Value": 95000,
+            "Close Date": "2023-12-31",
+            "Contacts": ["contact-17"]
+          },
+          {
+            "id": "deal-48",
+            "Name": "Hyperautomation Strategy Consulting",
+            "Stage": "qualification",
+            "Value": 300000,
+            "Close Date": "2024-10-31",
+            "Contacts": ["contact-18"]
+          },
+          {
+            "id": "deal-49",
+            "Name": "Confidential Computing Implementation",
+            "Stage": "proposal",
+            "Value": 400000,
+            "Close Date": "2025-01-31",
+            "Contacts": ["contact-19"]
+          },
+          {
+            "id": "deal-50",
+            "Name": "Digital Ethics and Privacy Framework",
+            "Stage": "negotiation",
+            "Value": 180000,
+            "Close Date": "2024-09-30",
+            "Contacts": ["contact-20"]
+          }
+        ]
+      },
+      "Activities": {
+        "schema": {
+          "Type": {
+            "id": "type",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "call",
+                  "color": "blue",
+                  "name": "Call"
+                },
+                {
+                  "id": "meeting",
+                  "name": "Meeting",
+                  "color": "green"
+                },
+                {
+                  "id": "email",
+                  "name": "Email",
+                  "color": "orange"
+                }
+              ]
+            }
+          },
+          "Subject": {
+            "id": "subject",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Date": {
+            "id": "date",
+            "type": "date",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Notes": {
+            "id": "notes",
+            "type": "longText"
+          },
+          "Contact": {
+            "id": "contact",
+            "type": "reference",
+            "option": {
+              "foreignTable": {
+                "tableName": "Contacts"
+              }
+            }
+          },
+          "Deal": {
+            "id": "deal",
+            "type": "reference",
+            "option": {
+              "foreignTable": {
+                "tableName": "Deals"
+              }
+            }
+          }
+        },
+        "records": [
+          {
+            "id": "activity-1",
+            "Type": "call",
+            "Subject": "Initial Contact",
+            "Date": "2023-11-15",
+            "Notes": "Discussed potential software needs",
+            "Contact": ["contact-1"],
+            "Deal": ["deal-1"]
+          },
+          {
+            "id": "activity-2",
+            "Type": "meeting",
+            "Subject": "Project Scope Discussion",
+            "Date": "2023-11-20",
+            "Notes": "Reviewed cloud migration requirements",
+            "Contact": ["contact-2"],
+            "Deal": ["deal-2"]
+          },
+          {
+            "id": "activity-3",
+            "Type": "email",
+            "Subject": "Contract Sent",
+            "Date": "2023-11-25",
+            "Notes": "Sent final IT support contract for signature",
+            "Contact": ["contact-3"],
+            "Deal": ["deal-3"]
+          },
+          {
+            "id": "activity-4",
+            "Type": "call",
+            "Subject": "Follow-up on Proposal",
+            "Date": "2023-11-28",
+            "Notes": "Answered questions about hardware upgrade options",
+            "Contact": ["contact-4"],
+            "Deal": ["deal-4"]
+          },
+          {
+            "id": "activity-5",
+            "Type": "meeting",
+            "Subject": "Requirements Gathering",
+            "Date": "2023-12-01",
+            "Notes": "Detailed discussion of custom software features",
+            "Contact": ["contact-5"],
+            "Deal": ["deal-5"]
+          },
+          {
+            "id": "activity-6",
+            "Type": "email",
+            "Subject": "Proposal Follow-up",
+            "Date": "2023-12-05",
+            "Notes": "Sent additional information on pricing structure",
+            "Contact": ["contact-1"],
+            "Deal": ["deal-1"]
+          },
+          {
+            "id": "activity-7",
+            "Type": "call",
+            "Subject": "Technical Consultation",
+            "Date": "2023-12-10",
+            "Notes": "Provided technical advice on system integration",
+            "Contact": ["contact-2"],
+            "Deal": ["deal-2"]
+          },
+          {
+            "id": "activity-8",
+            "Type": "meeting",
+            "Subject": "Contract Negotiation",
+            "Date": "2023-12-15",
+            "Notes": "Discussed terms and conditions of the service agreement",
+            "Contact": ["contact-3"],
+            "Deal": ["deal-3"]
+          },
+          {
+            "id": "activity-9",
+            "Type": "email",
+            "Subject": "Project Timeline",
+            "Date": "2023-12-20",
+            "Notes": "Sent proposed project timeline for review",
+            "Contact": ["contact-4"],
+            "Deal": ["deal-4"]
+          },
+          {
+            "id": "activity-10",
+            "Type": "call",
+            "Subject": "Budget Discussion",
+            "Date": "2023-12-25",
+            "Notes": "Reviewed budget allocations for different project phases",
+            "Contact": ["contact-5"],
+            "Deal": ["deal-5"]
+          },
+          {
+            "id": "activity-11",
+            "Type": "meeting",
+            "Subject": "Stakeholder Presentation",
+            "Date": "2023-12-30",
+            "Notes": "Presented project overview to key stakeholders",
+            "Contact": ["contact-1"],
+            "Deal": ["deal-1"]
+          },
+          {
+            "id": "activity-12",
+            "Type": "email",
+            "Subject": "Resource Allocation",
+            "Date": "2024-01-05",
+            "Notes": "Discussed resource requirements for project kickoff",
+            "Contact": ["contact-2"],
+            "Deal": ["deal-2"]
+          },
+          {
+            "id": "activity-13",
+            "Type": "call",
+            "Subject": "Security Concerns",
+            "Date": "2024-01-10",
+            "Notes": "Addressed client's questions about data security measures",
+            "Contact": ["contact-3"],
+            "Deal": ["deal-3"]
+          },
+          {
+            "id": "activity-14",
+            "Type": "meeting",
+            "Subject": "User Training Plan",
+            "Date": "2024-01-15",
+            "Notes": "Outlined the user training strategy for new software",
+            "Contact": ["contact-4"],
+            "Deal": ["deal-4"]
+          },
+          {
+            "id": "activity-15",
+            "Type": "email",
+            "Subject": "Progress Report",
+            "Date": "2024-01-20",
+            "Notes": "Sent monthly progress report on ongoing projects",
+            "Contact": ["contact-5"],
+            "Deal": ["deal-5"]
+          },
+          {
+            "id": "activity-16",
+            "Type": "call",
+            "Subject": "Feedback Collection",
+            "Date": "2024-01-25",
+            "Notes": "Gathered feedback on recently implemented features",
+            "Contact": ["contact-1"],
+            "Deal": ["deal-1"]
+          },
+          {
+            "id": "activity-17",
+            "Type": "meeting",
+            "Subject": "Milestone Review",
+            "Date": "2024-01-30",
+            "Notes": "Reviewed project milestones and adjusted timelines",
+            "Contact": ["contact-2"],
+            "Deal": ["deal-2"]
+          },
+          {
+            "id": "activity-18",
+            "Type": "email",
+            "Subject": "Upsell Opportunity",
+            "Date": "2024-02-05",
+            "Notes": "Proposed additional services to enhance current solution",
+            "Contact": ["contact-3"],
+            "Deal": ["deal-3"]
+          },
+          {
+            "id": "activity-19",
+            "Type": "call",
+            "Subject": "Issue Resolution",
+            "Date": "2024-02-10",
+            "Notes": "Addressed and resolved a critical software bug",
+            "Contact": ["contact-4"],
+            "Deal": ["deal-4"]
+          },
+          {
+            "id": "activity-20",
+            "Type": "meeting",
+            "Subject": "Contract Renewal",
+            "Date": "2024-02-15",
+            "Notes": "Discussed terms for upcoming contract renewal",
+            "Contact": ["contact-5"],
+            "Deal": ["deal-5"]
+          }
+        ]
+      },
+      "Companies": {
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Industry": {
+            "id": "industry",
+            "type": "select",
+            "constraint": {
+              "max": 1
+            },
+            "option": {
+              "options": [
+                { "id": "technology", "name": "Technology", "color": "blue" },
+                { "id": "finance", "name": "Finance", "color": "green" },
+                { "id": "healthcare", "name": "Healthcare", "color": "red" },
+                { "id": "manufacturing", "name": "Manufacturing", "color": "orange" },
+                { "id": "retail", "name": "Retail", "color": "purple" }
+              ]
+            }
+          },
+          "Website": {
+            "id": "website",
+            "type": "url"
+          }
+        },
+        "records": [
+          {
+            "id": "company-1",
+            "Name": "ABC Corp",
+            "Industry": "technology",
+            "Website": "https://www.abccorp.com"
+          },
+          {
+            "id": "company-2",
+            "Name": "XYZ Inc",
+            "Industry": "finance",
+            "Website": "https://www.xyzinc.com"
+          },
+          {
+            "id": "company-3",
+            "Name": "123 Industries",
+            "Industry": "manufacturing",
+            "Website": "https://www.123industries.com"
+          },
+          {
+            "id": "company-4",
+            "Name": "Tech Solutions",
+            "Industry": "technology",
+            "Website": "https://www.techsolutions.com"
+          },
+          {
+            "id": "company-5",
+            "Name": "Global Enterprises",
+            "Industry": "finance",
+            "Website": "https://www.globalenterprises.com"
+          },
+          {
+            "id": "company-6",
+            "Name": "HealthCare Plus",
+            "Industry": "healthcare",
+            "Website": "https://www.healthcareplus.com"
+          },
+          {
+            "id": "company-7",
+            "Name": "Retail Giants",
+            "Industry": "retail",
+            "Website": "https://www.retailgiants.com"
+          },
+          {
+            "id": "company-8",
+            "Name": "Innovative Systems",
+            "Industry": "technology",
+            "Website": "https://www.innovativesystems.com"
+          },
+          {
+            "id": "company-9",
+            "Name": "MediTech Solutions",
+            "Industry": "healthcare",
+            "Website": "https://www.meditechsolutions.com"
+          },
+          {
+            "id": "company-10",
+            "Name": "EcoManufacture",
+            "Industry": "manufacturing",
+            "Website": "https://www.ecomanufacture.com"
+          }
+        ]
+      }
+    }
+  }
+}

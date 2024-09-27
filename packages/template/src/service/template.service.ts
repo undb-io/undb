@@ -2,10 +2,12 @@ import { Base, injectBaseRepository, WithBaseSpaceId, type IBaseRepository } fro
 import { singleton } from "@undb/di"
 import {
   injectRecordRepository,
+  injectRecordsService,
   injectTableRepository,
   RecordDO,
   TableDo,
   type IRecordRepository,
+  type IRecordsService,
   type ITableRepository,
 } from "@undb/table"
 import type { ICreateFromTemplateDTO } from "../dto"
@@ -30,6 +32,8 @@ export class TemplateService implements ITemplateService {
     private readonly recordRepository: IRecordRepository,
     @injectTemplateQueryRepository()
     private readonly templateQueryRepository: ITemplateQueryRepository,
+    @injectRecordsService()
+    private readonly recordsService: IRecordsService,
   ) {}
 
   async createBase(
@@ -45,11 +49,10 @@ export class TemplateService implements ITemplateService {
     for (const { base, tables } of result) {
       await this.baseRepository.insert(base)
       await this.tableRepository.insertMany(tables.map((table) => table.table))
-      if (includeData) {
-        for (const { table, records } of tables) {
-          await this.recordRepository.bulkInsert(table, records)
-        }
+      if (!includeData) {
+        continue
       }
+      await this.recordsService.createTablesRecords(tables)
     }
 
     return result

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CREATE_TABLE_MODAL, IMPORT_TABLE_MODAL, openModal, toggleModal } from "$lib/store/modal.store"
+  import { CREATE_TABLE_MODAL, IMPORT_TABLE_MODAL, openModal } from "$lib/store/modal.store"
   import { DatabaseIcon, ImportIcon, PlusCircleIcon, PlusIcon, SquareMousePointer } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
   import { goto } from "$app/navigation"

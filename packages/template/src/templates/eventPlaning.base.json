@@ -54,7 +54,7 @@
             "id": "speakers",
             "type": "reference",
             "option": {
-              "createSymmetricField": false,
+              "createSymmetricField": true,
               "foreignTable": {
                 "tableName": "Speakers"
               }
@@ -75,7 +75,7 @@
             "Start": "2021-09-01T08:00:00.000Z",
             "End": "2021-09-01T09:00:00.000Z",
             "Location": "Ballroom A",
-            "Speakers": ["Jane Doe", "John Smith"],
+            "Speakers": ["speaker-1", "speaker-2"],
             "Notes": "Breakfast will be served in the ballroom"
           },
           {
@@ -84,7 +84,7 @@
             "Start": "2021-09-01T09:30:00.000Z",
             "End": "2021-09-01T10:30:00.000Z",
             "Location": "Auditorium",
-            "Speakers": ["Jane Doe"],
+            "Speakers": ["speaker-1"],
             "Notes": "Jane will be speaking about the future of technology"
           }
         ]
@@ -114,6 +114,7 @@
         },
         "records": [
           {
+            "id": "speaker-1",
             "Name": "Jane Doe",
             "Company": "Acme Corp",
             "Email": "test1@163.com",
@@ -121,6 +122,7 @@
             "Confirmed": true
           },
           {
+            "id": "speaker-2",
             "Name": "John Smith",
             "Company": "Widgets Co",
             "Email": "test2@163.com",
@@ -128,6 +130,7 @@
             "Confirmed": false
           },
           {
+            "id": "speaker-3",
             "Name": "Alice Jackson",
             "Company": "Software LLC",
             "Email": "test3@163.com",

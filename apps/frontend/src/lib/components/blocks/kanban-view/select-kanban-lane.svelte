@@ -327,7 +327,7 @@
           getKanbanBgColor(option?.color ?? "gray"),
         )}
       >
-        {#if  $hasPermission("record:create")}
+        {#if $hasPermission("record:create")}
           {#if $query.isFetchedAfterMount}
             {#if recordDos.length > 0}
               <Button on:click={onCreateRecord} variant="outline" size="sm" class="w-full">
@@ -400,7 +400,7 @@
 </div>
 
 {#if option && $hasPermission("field:update")}
-  <Dialog.Root bind:open={updateOptionDialogOpen}>
+  <Dialog.Root bind:open={updateOptionDialogOpen} portal="body">
     <Dialog.Content>
       <Dialog.Header>
         <Dialog.Title>Update option</Dialog.Title>
@@ -415,7 +415,7 @@
 {/if}
 
 {#if option && $hasPermission("field:update")}
-  <AlertDialog.Root bind:open={deleteOptionDialogOpen}>
+  <AlertDialog.Root bind:open={deleteOptionDialogOpen} portal="body">
     <AlertDialog.Content>
       <AlertDialog.Header>
         <AlertDialog.Title>Delete Option <Option {option} /></AlertDialog.Title>
