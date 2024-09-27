@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-91
+
+
+### 🩹 Fixes
+
+- Template create record with referecegst ([b8fe6d7](https://github.com/undb-io/undb/commit/b8fe6d7))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-90
 
 
