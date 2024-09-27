@@ -5,4 +5,6 @@
   export let value: boolean
 </script>
 
-<Switch {...$$restProps} disabled={readonly} bind:checked={value} />
+<div class="flex h-full items-center">
+  <Switch {...$$restProps} disabled={readonly} bind:checked={value} />
+</div>

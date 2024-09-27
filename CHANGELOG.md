@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-92
+
+
+### 🩹 Fixes
+
+- Remove template build now ([f0fa496](https://github.com/undb-io/undb/commit/f0fa496))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-91
 
 

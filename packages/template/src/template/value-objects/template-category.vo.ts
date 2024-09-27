@@ -3,6 +3,7 @@ import { z } from "@undb/zod"
 
 export const templateCategory = z.enum([
   "hr",
+  "crm",
   "marketing",
   "sales",
   "it",

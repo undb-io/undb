@@ -17,6 +17,7 @@
   export let field: ButtonField
   export let recordId: string
   export let record: RecordDO | undefined
+  export let readonly = false
 
   const table = getTable()
   const recordsStore = getRecordsStore()
@@ -93,7 +94,8 @@
 
     <AlertDialog.Footer>
       <AlertDialog.Cancel on:click={() => (confirm = false)}>Cancel</AlertDialog.Cancel>
-      <AlertDialog.Action on:click={handleUpdate}>Continue</AlertDialog.Action>
+      <AlertDialog.Action disabled={readonly || $trigger.isPending} on:click={handleUpdate}>Continue</AlertDialog.Action
+      >
     </AlertDialog.Footer>
   </AlertDialog.Content>
 </AlertDialog.Root>

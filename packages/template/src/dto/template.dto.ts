@@ -9,7 +9,7 @@ export const templateDTO = z.object({
   icon: z.string().optional(),
   name: templateName,
   description: z.string().optional(),
-  category: templateCategory,
+  categories: templateCategory.array(),
   template: templateSchemaVariants,
 })
 

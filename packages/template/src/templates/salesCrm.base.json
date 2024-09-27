@@ -1,0 +1,712 @@
+{
+  "Sales CRM": {
+    "tables": {
+      "CRM": {
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Company": {
+            "id": "company",
+            "type": "string"
+          },
+          "Status": {
+            "id": "status",
+            "type": "select",
+            "constraint": {
+              "max": 1
+            },
+            "defaultValue": "lead",
+            "option": {
+              "options": [
+                {
+                  "id": "lead",
+                  "name": "Lead",
+                  "color": "blue"
+                },
+                {
+                  "id": "qualified",
+                  "name": "Qualified",
+                  "color": "green"
+                },
+                {
+                  "id": "customer",
+                  "name": "Customer",
+                  "color": "purple"
+                }
+              ]
+            }
+          },
+          "Priority": {
+            "id": "priority",
+            "type": "select",
+            "constraint": {
+              "max": 1
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "low",
+                  "name": "Low",
+                  "color": "gray"
+                },
+                {
+                  "id": "medium",
+                  "name": "Medium",
+                  "color": "yellow"
+                },
+                {
+                  "id": "high",
+                  "name": "High",
+                  "color": "red"
+                }
+              ]
+            }
+          },
+          "Estimated Value": {
+            "id": "estimatedValue",
+            "type": "currency",
+            "option": {
+              "symbol": "$"
+            }
+          },
+          "Account Owner": {
+            "id": "accountOwner",
+            "type": "string"
+          },
+          "Email": {
+            "id": "email",
+            "type": "email"
+          },
+          "Phone": {
+            "id": "phone",
+            "type": "string"
+          },
+          "Expected Close": {
+            "id": "expectedClose",
+            "type": "date"
+          },
+          "Last Contact": {
+            "id": "lastContact",
+            "type": "date"
+          },
+          "Contacted": {
+            "id": "contacted",
+            "type": "checkbox"
+          },
+          "Contacted Button": {
+            "id": "contactedButton",
+            "type": "button",
+            "option": {
+              "label": "Mark Contacted",
+              "action": {
+                "confirm": true,
+                "type": "update",
+                "values": [
+                  {
+                    "field": "contacted",
+                    "value": true
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "views": {
+          "All Contacts": {
+            "type": "grid"
+          },
+          "By Status": {
+            "type": "kanban",
+            "kanban": {
+              "field": "status"
+            }
+          }
+        },
+        "records": [
+          {
+            "Name": "John Smith",
+            "Company": "Acme Corp",
+            "Status": "lead",
+            "Priority": "high",
+            "Estimated Value": 50000,
+            "Account Owner": "Sarah Johnson",
+            "Email": "john.smith@acme.com",
+            "Contacted": false,
+            "Expected Close": "2023-12-15",
+            "Last Contact": null
+          },
+          {
+            "Name": "Emily Brown",
+            "Company": "TechGiant Inc",
+            "Status": "qualified",
+            "Priority": "medium",
+            "Estimated Value": 30000,
+            "Account Owner": "Michael Lee",
+            "Email": "emily.brown@techgiant.com",
+            "Contacted": true,
+            "Expected Close": "2023-11-30",
+            "Last Contact": "2023-10-05"
+          },
+          {
+            "Name": "David Wilson",
+            "Company": "Global Solutions",
+            "Status": "customer",
+            "Priority": "low",
+            "Estimated Value": 20000,
+            "Account Owner": "Jennifer Chen",
+            "Email": "david.wilson@globalsolutions.com",
+            "Contacted": true,
+            "Expected Close": "2023-10-20",
+            "Last Contact": "2023-09-28"
+          },
+          {
+            "Name": "Lisa Taylor",
+            "Company": "Innovate Systems",
+            "Status": "lead",
+            "Priority": "high",
+            "Estimated Value": 80000,
+            "Account Owner": "Robert Kim",
+            "Email": "lisa.taylor@innovatesystems.com",
+            "Contacted": false,
+            "Expected Close": "2024-01-10",
+            "Last Contact": null
+          },
+          {
+            "Name": "Mark Johnson",
+            "Company": "Smart Tech",
+            "Status": "qualified",
+            "Priority": "medium",
+            "Estimated Value": 40000,
+            "Account Owner": "Amanda Wong",
+            "Email": "mark.johnson@smarttech.com",
+            "Contacted": true,
+            "Expected Close": "2023-12-05",
+            "Last Contact": "2023-10-12"
+          },
+          {
+            "Name": "Sarah Davis",
+            "Company": "Mega Retail",
+            "Status": "customer",
+            "Priority": "high",
+            "Estimated Value": 60000,
+            "Account Owner": "Thomas Zhang",
+            "Email": "sarah.davis@megaretail.com",
+            "Contacted": true,
+            "Expected Close": "2023-11-15",
+            "Last Contact": "2023-10-01"
+          },
+          {
+            "Name": "James Wilson",
+            "Company": "Tech Solutions",
+            "Status": "lead",
+            "Priority": "medium",
+            "Estimated Value": 35000,
+            "Account Owner": "Emma Liu",
+            "Email": "james.wilson@techsolutions.com",
+            "Contacted": false,
+            "Expected Close": "2023-12-20",
+            "Last Contact": null
+          },
+          {
+            "Name": "Jessica Lee",
+            "Company": "Global Innovations",
+            "Status": "qualified",
+            "Priority": "high",
+            "Estimated Value": 70000,
+            "Account Owner": "Daniel Park",
+            "Email": "jessica.lee@globalinnovations.com",
+            "Contacted": true,
+            "Expected Close": "2023-11-25",
+            "Last Contact": "2023-10-08"
+          },
+          {
+            "Name": "Ryan Chen",
+            "Company": "Smart Systems",
+            "Status": "customer",
+            "Priority": "low",
+            "Estimated Value": 25000,
+            "Account Owner": "Olivia Wang",
+            "Email": "ryan.chen@smartsystems.com",
+            "Contacted": true,
+            "Expected Close": "2023-10-30",
+            "Last Contact": "2023-09-22"
+          },
+          {
+            "Name": "Michelle Kim",
+            "Company": "Innovative Tech",
+            "Status": "lead",
+            "Priority": "medium",
+            "Estimated Value": 45000,
+            "Account Owner": "Andrew Ng",
+            "Email": "michelle.kim@innovativetech.com",
+            "Contacted": false,
+            "Expected Close": "2023-12-10",
+            "Last Contact": null
+          },
+          {
+            "Name": "Kevin Zhang",
+            "Company": "Global Tech",
+            "Status": "qualified",
+            "Priority": "high",
+            "Estimated Value": 55000,
+            "Account Owner": "Sophia Li",
+            "Email": "kevin.zhang@globaltech.com",
+            "Contacted": true,
+            "Expected Close": "2023-11-20",
+            "Last Contact": "2023-10-03"
+          },
+          {
+            "Name": "Laura Martinez",
+            "Company": "Smart Solutions",
+            "Status": "customer",
+            "Priority": "medium",
+            "Estimated Value": 38000,
+            "Account Owner": "Chris Wong",
+            "Email": "laura.martinez@smartsolutions.com",
+            "Contacted": true,
+            "Expected Close": "2023-10-25",
+            "Last Contact": "2023-09-30"
+          },
+          {
+            "Name": "Alex Johnson",
+            "Company": "Tech Innovators",
+            "Status": "lead",
+            "Priority": "low",
+            "Estimated Value": 28000,
+            "Account Owner": "Rachel Kim",
+            "Email": "alex.johnson@techinnovators.com",
+            "Contacted": false,
+            "Expected Close": "2023-12-30",
+            "Last Contact": null
+          },
+          {
+            "Name": "Samantha Brown",
+            "Company": "Global Systems",
+            "Status": "qualified",
+            "Priority": "high",
+            "Estimated Value": 65000,
+            "Account Owner": "Eric Chen",
+            "Email": "samantha.brown@globalsystems.com",
+            "Contacted": true,
+            "Expected Close": "2023-11-10",
+            "Last Contact": "2023-10-07"
+          },
+          {
+            "Name": "Daniel Lee",
+            "Company": "Innovative Solutions",
+            "Status": "customer",
+            "Priority": "medium",
+            "Estimated Value": 42000,
+            "Account Owner": "Megan Liu",
+            "Email": "daniel.lee@innovativesolutions.com",
+            "Contacted": true,
+            "Expected Close": "2023-10-15",
+            "Last Contact": "2023-09-25"
+          },
+          {
+            "Name": "Emma Wilson",
+            "Company": "Tech Giants",
+            "Status": "lead",
+            "Priority": "high",
+            "Estimated Value": 75000,
+            "Account Owner": "Jason Wang",
+            "Email": "emma.wilson@techgiants.com",
+            "Contacted": false,
+            "Expected Close": "2024-01-05",
+            "Last Contact": null
+          },
+          {
+            "Name": "Michael Chen",
+            "Company": "Smart Innovations",
+            "Status": "qualified",
+            "Priority": "low",
+            "Estimated Value": 32000,
+            "Account Owner": "Linda Kim",
+            "Email": "michael.chen@smartinnovations.com",
+            "Contacted": true,
+            "Expected Close": "2023-11-28",
+            "Last Contact": "2023-10-10"
+          },
+          {
+            "Name": "Olivia Davis",
+            "Company": "Global Tech Solutions",
+            "Status": "customer",
+            "Priority": "high",
+            "Estimated Value": 58000,
+            "Account Owner": "David Zhang",
+            "Email": "olivia.davis@globaltechsolutions.com",
+            "Contacted": true,
+            "Expected Close": "2023-10-28",
+            "Last Contact": "2023-09-20"
+          },
+          {
+            "Name": "William Taylor",
+            "Company": "Innovative Systems",
+            "Status": "lead",
+            "Priority": "medium",
+            "Estimated Value": 48000,
+            "Account Owner": "Sophie Chen",
+            "Email": "william.taylor@innovativesystems.com",
+            "Contacted": false,
+            "Expected Close": "2023-12-25",
+            "Last Contact": null
+          },
+          {
+            "Name": "Sophia Wang",
+            "Company": "Tech Solutions Inc",
+            "Status": "qualified",
+            "Priority": "high",
+            "Estimated Value": 68000,
+            "Account Owner": "Ryan Kim",
+            "Email": "sophia.wang@techsolutionsinc.com",
+            "Contacted": true,
+            "Expected Close": "2023-11-18",
+            "Last Contact": "2023-10-02"
+          },
+          {
+            "Name": "Ethan Brown",
+            "Company": "Smart Tech Solutions",
+            "Status": "customer",
+            "Priority": "low",
+            "Estimated Value": 22000,
+            "Account Owner": "Emily Liu",
+            "Email": "ethan.brown@smarttechsolutions.com",
+            "Contacted": true,
+            "Expected Close": "2023-10-18",
+            "Last Contact": "2023-09-29"
+          },
+          {
+            "Name": "Ava Johnson",
+            "Company": "Global Innovations Inc",
+            "Status": "lead",
+            "Priority": "high",
+            "Estimated Value": 72000,
+            "Account Owner": "Kevin Chen",
+            "Email": "ava.johnson@globalinnovationsinc.com",
+            "Contacted": false,
+            "Expected Close": "2024-01-15",
+            "Last Contact": null
+          },
+          {
+            "Name": "Noah Martinez",
+            "Company": "Tech Systems",
+            "Status": "qualified",
+            "Priority": "medium",
+            "Estimated Value": 36000,
+            "Account Owner": "Michelle Wang",
+            "Email": "noah.martinez@techsystems.com",
+            "Contacted": true,
+            "Expected Close": "2023-11-22",
+            "Last Contact": "2023-10-09"
+          },
+          {
+            "Name": "Isabella Kim",
+            "Company": "Innovative Tech Solutions",
+            "Status": "customer",
+            "Priority": "high",
+            "Estimated Value": 62000,
+            "Account Owner": "Andrew Lee",
+            "Email": "isabella.kim@innovativetechsolutions.com",
+            "Contacted": true,
+            "Expected Close": "2023-10-22",
+            "Last Contact": "2023-09-27"
+          },
+          {
+            "Name": "Liam Wilson",
+            "Company": "Smart Innovations Inc",
+            "Status": "lead",
+            "Priority": "low",
+            "Estimated Value": 26000,
+            "Account Owner": "Jessica Chen",
+            "Email": "liam.wilson@smartinnovationsinc.com",
+            "Contacted": false,
+            "Expected Close": "2023-12-28",
+            "Last Contact": null
+          },
+          {
+            "Name": "Mia Davis",
+            "Company": "Global Tech Systems",
+            "Status": "qualified",
+            "Priority": "high",
+            "Estimated Value": 78000,
+            "Account Owner": "Daniel Kim",
+            "Email": "mia.davis@globaltechsystems.com",
+            "Contacted": true,
+            "Expected Close": "2023-11-12",
+            "Last Contact": "2023-10-06"
+          },
+          {
+            "Name": "Jacob Lee",
+            "Company": "Tech Innovators Inc",
+            "Status": "customer",
+            "Priority": "medium",
+            "Estimated Value": 44000,
+            "Account Owner": "Olivia Zhang",
+            "Email": "jacob.lee@techinnovatorsinc.com",
+            "Contacted": true,
+            "Expected Close": "2023-10-12",
+            "Last Contact": "2023-09-24"
+          },
+          {
+            "Name": "Charlotte Brown",
+            "Company": "Smart Solutions Inc",
+            "Status": "lead",
+            "Priority": "high",
+            "Estimated Value": 66000,
+            "Account Owner": "William Wang",
+            "Email": "charlotte.brown@smartsolutionsinc.com",
+            "Contacted": false,
+            "Expected Close": "2024-01-08",
+            "Last Contact": null
+          },
+          {
+            "Name": "Benjamin Chen",
+            "Company": "Global Systems Solutions",
+            "Status": "qualified",
+            "Priority": "low",
+            "Estimated Value": 30000,
+            "Account Owner": "Sophia Kim",
+            "Email": "benjamin.chen@globalsystemssolutions.com",
+            "Contacted": true,
+            "Expected Close": "2023-11-26",
+            "Last Contact": "2023-10-11"
+          },
+          {
+            "Name": "Amelia Taylor",
+            "Company": "Innovative Tech Inc",
+            "Status": "customer",
+            "Priority": "high",
+            "Estimated Value": 56000,
+            "Account Owner": "Ethan Liu",
+            "Email": "amelia.taylor@innovativetechinc.com",
+            "Contacted": true,
+            "Expected Close": "2023-10-26",
+            "Last Contact": "2023-09-21"
+          },
+          {
+            "Name": "Lucas Johnson",
+            "Company": "Tech Solutions Group",
+            "Status": "lead",
+            "Priority": "medium",
+            "Estimated Value": 46000,
+            "Account Owner": "Ava Chen",
+            "Email": "lucas.johnson@techsolutionsgroup.com",
+            "Contacted": false,
+            "Expected Close": "2023-12-22",
+            "Last Contact": null
+          },
+          {
+            "Name": "Harper Wilson",
+            "Company": "Smart Innovations Group",
+            "Status": "qualified",
+            "Priority": "high",
+            "Estimated Value": 70000,
+            "Account Owner": "Noah Kim",
+            "Email": "harper.wilson@smartinnovationsgroup.com",
+            "Contacted": true,
+            "Expected Close": "2023-11-16",
+            "Last Contact": "2023-10-04"
+          },
+          {
+            "Name": "Evelyn Martinez",
+            "Company": "Global Tech Innovations",
+            "Status": "customer",
+            "Priority": "low",
+            "Estimated Value": 24000,
+            "Account Owner": "Isabella Wang",
+            "Email": "evelyn.martinez@globaltechinnovations.com",
+            "Contacted": true,
+            "Expected Close": "2023-10-16",
+            "Last Contact": "2023-09-26"
+          },
+          {
+            "Name": "Alexander Kim",
+            "Company": "Tech Systems Group",
+            "Status": "lead",
+            "Priority": "high",
+            "Estimated Value": 74000,
+            "Account Owner": "Liam Chen",
+            "Email": "alexander.kim@techsystemsgroup.com",
+            "Contacted": false,
+            "Expected Close": "2024-01-12",
+            "Last Contact": null
+          },
+          {
+            "Name": "Abigail Davis",
+            "Company": "Innovative Solutions Group",
+            "Status": "qualified",
+            "Priority": "medium",
+            "Estimated Value": 34000,
+            "Account Owner": "Mia Liu",
+            "Email": "abigail.davis@innovativesolutionsgroup.com",
+            "Contacted": true,
+            "Expected Close": "2023-11-24",
+            "Last Contact": "2023-10-08"
+          },
+          {
+            "Name": "Daniel Brown",
+            "Company": "Smart Tech Group",
+            "Status": "customer",
+            "Priority": "high",
+            "Estimated Value": 64000,
+            "Account Owner": "Jacob Zhang",
+            "Email": "daniel.brown@smarttechgroup.com",
+            "Contacted": true,
+            "Expected Close": "2023-10-24",
+            "Last Contact": "2023-09-23"
+          },
+          {
+            "Name": "Sofia Wilson",
+            "Company": "Global Innovations Group",
+            "Status": "lead",
+            "Priority": "low",
+            "Estimated Value": 28000,
+            "Account Owner": "Charlotte Kim",
+            "Email": "sofia.wilson@globalinnovationsgroup.com",
+            "Contacted": false,
+            "Expected Close": "2023-12-26",
+            "Last Contact": null
+          },
+          {
+            "Name": "Matthew Lee",
+            "Company": "Tech Innovators Group",
+            "Status": "qualified",
+            "Priority": "high",
+            "Estimated Value": 76000,
+            "Account Owner": "Benjamin Wang",
+            "Email": "matthew.lee@techinnovatorsgroup.com",
+            "Contacted": true,
+            "Expected Close": "2023-11-14",
+            "Last Contact": "2023-10-01"
+          },
+          {
+            "Name": "Scarlett Chen",
+            "Company": "Smart Systems Solutions",
+            "Status": "customer",
+            "Priority": "medium",
+            "Estimated Value": 40000,
+            "Account Owner": "Amelia Liu",
+            "Email": "scarlett.chen@smartsystemssolutions.com",
+            "Contacted": true,
+            "Expected Close": "2023-10-14",
+            "Last Contact": "2023-09-28"
+          },
+          {
+            "Name": "Joseph Taylor",
+            "Company": "Global Tech Solutions Group",
+            "Status": "lead",
+            "Priority": "high",
+            "Estimated Value": 68000,
+            "Account Owner": "Lucas Chen",
+            "Email": "joseph.taylor@globaltechsolutionsgroup.com",
+            "Contacted": false,
+            "Expected Close": "2024-01-06",
+            "Last Contact": null
+          },
+          {
+            "Name": "Victoria Johnson",
+            "Company": "Innovative Systems Group",
+            "Status": "qualified",
+            "Priority": "low",
+            "Estimated Value": 32000,
+            "Account Owner": "Harper Kim",
+            "Email": "victoria.johnson@innovativesystemsgroup.com",
+            "Contacted": true,
+            "Expected Close": "2023-11-30",
+            "Last Contact": "2023-10-10"
+          },
+          {
+            "Name": "Christopher Martinez",
+            "Company": "Tech Solutions Innovations",
+            "Status": "customer",
+            "Priority": "high",
+            "Estimated Value": 58000,
+            "Account Owner": "Evelyn Wang",
+            "Email": "christopher.martinez@techsolutionsinnovations.com",
+            "Contacted": true,
+            "Expected Close": "2023-10-30",
+            "Last Contact": "2023-09-22"
+          },
+          {
+            "Name": "Madison Wilson",
+            "Company": "Smart Innovations Solutions",
+            "Status": "lead",
+            "Priority": "medium",
+            "Estimated Value": 48000,
+            "Account Owner": "Alexander Liu",
+            "Email": "madison.wilson@smartinnovationssolutions.com",
+            "Contacted": false,
+            "Expected Close": "2023-12-18",
+            "Last Contact": null
+          },
+          {
+            "Name": "Andrew Kim",
+            "Company": "Global Systems Innovations",
+            "Status": "qualified",
+            "Priority": "high",
+            "Estimated Value": 72000,
+            "Account Owner": "Abigail Chen",
+            "Email": "andrew.kim@globalsystemsinnovations.com",
+            "Contacted": true,
+            "Expected Close": "2023-11-20",
+            "Last Contact": "2023-10-05"
+          },
+          {
+            "Name": "Grace Davis",
+            "Company": "Tech Innovations Solutions",
+            "Status": "customer",
+            "Priority": "low",
+            "Estimated Value": 26000,
+            "Account Owner": "Daniel Wang",
+            "Email": "grace.davis@techinnovationssolutions.com",
+            "Contacted": true,
+            "Expected Close": "2023-10-20",
+            "Last Contact": "2023-09-27"
+          },
+          {
+            "Name": "David Brown",
+            "Company": "Smart Tech Innovations",
+            "Status": "lead",
+            "Priority": "high",
+            "Estimated Value": 70000,
+            "Account Owner": "Sofia Kim",
+            "Email": "david.brown@smarttechinnovations.com",
+            "Contacted": false,
+            "Expected Close": "2024-01-02",
+            "Last Contact": null
+          },
+          {
+            "Name": "Zoe Lee",
+            "Company": "Global Solutions Innovations",
+            "Status": "qualified",
+            "Priority": "medium",
+            "Estimated Value": 38000,
+            "Account Owner": "Matthew Liu",
+            "Email": "zoe.lee@globalsolutionsinnovations.com",
+            "Contacted": true,
+            "Expected Close": "2023-11-28",
+            "Last Contact": "2023-10-09"
+          },
+          {
+            "Name": "Elijah Chen",
+            "Company": "Innovative Tech Group",
+            "Status": "customer",
+            "Priority": "high",
+            "Estimated Value": 60000,
+            "Account Owner": "Scarlett Wang",
+            "Email": "elijah.chen@innovativetechgroup.com",
+            "Contacted": true,
+            "Expected Close": "2023-10-28",
+            "Last Contact": "2023-09-25"
+          }
+        ]
+      }
+    }
+  }
+}

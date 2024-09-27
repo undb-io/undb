@@ -1,0 +1,77 @@
+{
+  "Test": {
+    "tables": {
+      "Table1": {
+        "schema": {
+          "Title": {
+            "id": "title",
+            "type": "string"
+          },
+          "Ref2": {
+            "id": "ref2",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "tableName": "Table2"
+              }
+            }
+          },
+          "Roll1": {
+            "id": "roll1",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "ref2",
+              "rollupFieldId": "title",
+              "fn": "lookup"
+            }
+          }
+        },
+        "records": [
+          {
+            "Title": "1-1",
+            "Ref2": ["1", "2"]
+          },
+          {
+            "Title": "1-2",
+            "Ref2": ["2"]
+          }
+        ]
+      },
+      "Table2": {
+        "schema": {
+          "Title": {
+            "id": "title",
+            "type": "string"
+          },
+          "Ref1": {
+            "id": "ref1",
+            "type": "reference",
+            "option": {
+              "symmetricFieldId": "ref2"
+            }
+          },
+          "T1": {
+            "id": "t1",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "ref1",
+              "rollupFieldId": "title",
+              "fn": "lookup"
+            }
+          }
+        },
+        "records": [
+          {
+            "id": "1",
+            "Title": "2-1"
+          },
+          {
+            "id": "2",
+            "Title": "2-2"
+          }
+        ]
+      }
+    }
+  }
+}

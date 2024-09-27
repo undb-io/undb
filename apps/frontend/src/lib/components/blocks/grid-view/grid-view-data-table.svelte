@@ -40,6 +40,7 @@
   export let currentPage: Writable<number | null>
   export let isLoading = false
   export let total: number
+  export let hidePagination = false
 
   const t = getTable()
 
@@ -350,6 +351,7 @@
     </table>
   </ScrollArea>
 
+  {#if !hidePagination}
   <div class="flex items-center justify-center border-t px-4 py-2">
     <div class="flex flex-1 flex-row items-center">
       <ViewPagination {perPage} bind:currentPage={$currentPage} count={total} />
@@ -378,6 +380,7 @@
           {total} Rows
         </span>
       </div>
+      </div>
     </div>
-  </div>
+  {/if}
 </div>

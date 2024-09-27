@@ -42,7 +42,11 @@
         <span>
           {template.name}
         </span>
-        <span class="text-muted-foreground text-xs"># {template.category}</span>
+        <div class="flex items-center gap-2">
+          {#each template.categories as category}
+            <span class="text-muted-foreground text-xs"># {category}</span>
+          {/each}
+        </div>
       </div>
     </Card.Title>
     <Card.Description class="line-clamp-2" title={template.description}>
@@ -80,6 +84,7 @@
           </div>
           <div class="mr-10 space-y-2">
             <Button
+              class="w-44"
               disabled={$createFromTemplate.isPending}
               on:click={() => $createFromTemplate.mutate({ id: template.id, includeData })}
             >
