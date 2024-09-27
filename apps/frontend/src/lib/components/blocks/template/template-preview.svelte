@@ -14,7 +14,7 @@
 
   setTemplate(writable(template))
 
-  let t = TemplateFactory.preview(template.template.template)
+  let t = TemplateFactory.create(template.template.template, [],"preview")
   let tables = t.flatMap((base) => base.tables.map(({ table }) => table))
   let bases = t.map((base) => base.base)
 

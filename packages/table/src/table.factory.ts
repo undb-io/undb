@@ -4,6 +4,7 @@ import { getNextName } from "@undb/utils"
 import { createTableDTO, type ICreateTableDTO, type ICreateTablesDTO, type ITableDTO } from "./dto"
 import { TableCreatedEvent } from "./events"
 import {
+  FieldIdVo,
   RecordDO,
   ReferenceField,
   type ICreateFieldDTO,
@@ -80,17 +81,24 @@ export class TableFactory {
     const ids = new TablesIdsMap(baseNames, base, dtos)
     const baseName = getNextName(baseNames, base.name.value)
 
+    const referenceIds = new Set<string>()
     const tables = dtos.map((dto) => {
       const schema = dto.schema
         .filter((f) => f.type !== "rollup")
         .map((field) => {
           if (field.type === "reference") {
-            const id = ids.mustGet(baseName, field.option.foreignTable.tableName)
+            const foreignTableId = ids.mustGet(baseName, field.option.foreignTable.tableName)
+            if (!field.id) {
+              field.id = FieldIdVo.create().value
+            }
+            if (field.option.createSymmetricField) {
+              referenceIds.add(field.id!)
+            }
             return {
               ...field,
               option: {
                 ...field.option,
-                foreignTableId: id,
+                foreignTableId: foreignTableId,
               },
             } as ICreateReferenceFieldDTO
           }
@@ -103,7 +111,8 @@ export class TableFactory {
     })
 
     for (const { table } of tables) {
-      const referenceFields = table.schema.getReferenceFields()
+      const referenceFields = table.schema.getReferenceFields().filter((f) => referenceIds.has(f.id.value))
+
       for (const referenceField of referenceFields) {
         const foreignTable = tables.find(({ table }) => table.id.value === referenceField.foreignTableId)?.table
         if (!foreignTable) {

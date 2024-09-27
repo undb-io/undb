@@ -85,9 +85,8 @@
             >
               {#if $createFromTemplate.isPending}
                 <LoaderCircleIcon class="mr-2 size-4 animate-spin" />
-              {:else}
-                Use this Template
               {/if}
+              Use this Template
             </Button>
 
             <div class="flex items-center space-x-2">
