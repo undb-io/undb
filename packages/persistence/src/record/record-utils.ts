@@ -10,6 +10,7 @@ import {
 } from "@undb/table"
 import { format } from "date-fns/fp"
 import { isNumber, isString } from "radash"
+import { match } from "ts-pattern"
 
 const formatter = format("yyyy-MM-dd")
 
@@ -121,7 +122,7 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any, foreignTable
         continue
       }
 
-      if (field.type === "rollup" && field.fn === "lookup") {
+      if (field.type === "rollup") {
         const foreignTable = field.getForeignTable(table, foreignTables)
         let lookupField: Field | undefined = undefined
         if (foreignTable) {
@@ -131,29 +132,45 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any, foreignTable
           }
         }
 
-        function handleValue(value: (string | number)[]) {
-          if (lookupField?.type === "date") {
-            return value
-              .map((v: string | number) => (v ? new Date(v).toISOString() : null))
-              .map((v) => (v ? formatter(v) : null))
-          } else if (lookupField?.type === "select") {
-            return value.map((v) => lookupField.getOptionById(v)?.name ?? null)
-          } else {
-            return value
+        if (field.fn === "lookup") {
+          function handleValue(value: (string | number)[]) {
+            return match(lookupField)
+              .with({ type: "date" }, () =>
+                value
+                  .map((v: string | number) => (v ? new Date(v).toISOString() : null))
+                  .map((v) => (v ? formatter(v) : null)),
+              )
+              .with({ type: "select" }, (field) => value.map((v) => field.getOptionById(v)?.name ?? null))
+              .otherwise(() => value)
           }
-        }
 
-        if (Array.isArray(value)) {
-          values[key] = handleValue(value)
-          continue
-        } else if (isString(value)) {
-          try {
-            values[key] = JSON.parse(value)
-            values[key] = handleValue(values[key])
-          } catch (error) {
-            logger.warn({ error, value }, "Error parsing JSON")
-            values[key] = [value]
+          if (Array.isArray(value)) {
+            values[key] = handleValue(value)
+            continue
+          } else if (isString(value)) {
+            try {
+              values[key] = JSON.parse(value)
+              values[key] = handleValue(values[key])
+            } catch (error) {
+              logger.warn({ error, value }, "Error parsing JSON")
+              values[key] = [value]
+            }
+            continue
           }
+        } else if (field.fn === "sum" || field.fn === "average" || field.fn === "min" || field.fn === "max") {
+          function handleValue(value: number) {
+            return match(lookupField)
+              .with({ type: "currency" }, (field) => field.format(value))
+              .otherwise(() => null)
+          }
+          values[key] = value
+          const displayValue = handleValue(value as number)
+          if (displayValue !== null) {
+            displayValues[key] = displayValue
+          }
+          continue
+        } else {
+          values[key] = value
           continue
         }
       }
