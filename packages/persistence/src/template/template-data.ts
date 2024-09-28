@@ -70,7 +70,7 @@ export const templateData: ITemplateDTO[] = [
     },
   },
   {
-    id: "6ba7b814-9dad-11d1-80b4-00c04fd430c8",
+    id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
     icon: "📸",
     name: "Social Media Content",
     categories: ["marketing"],
