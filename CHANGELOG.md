@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-93
+
+
+### 🩹 Fixes
+
+- Fix ui ([2e2eff3](https://github.com/undb-io/undb/commit/2e2eff3))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-92
 
 
