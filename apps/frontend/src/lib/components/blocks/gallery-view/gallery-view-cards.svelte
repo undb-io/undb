@@ -6,7 +6,7 @@
   import GalleryViewEmpty from "./gallery-view-empty.svelte"
 
   const table = getTable()
-  export let viewId: Readable<string>
+  export let viewId: Readable<string | undefined>
   export let fieldId: string
   export let r: Writable<string | null>
   const recordsStore = getRecordsStore()

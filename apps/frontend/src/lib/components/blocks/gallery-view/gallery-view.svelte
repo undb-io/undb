@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getTable } from "$lib/store/table.store"
   import { derived, writable, type Readable, type Writable } from "svelte/store"
-  import { type GalleryView, type IRecordsDTO, Records } from "@undb/table"
+  import { type GalleryView, type IRecordsDTO, RecordDO, Records } from "@undb/table"
   import { queryParam } from "sveltekit-search-params"
   import TableTools from "../table-tools/table-tools.svelte"
   import { trpc } from "$lib/trpc/client"
@@ -14,9 +14,12 @@
   import GalleryViewLoading from "./gallery-view-loading.svelte"
 
   const table = getTable()
-  export let viewId: Readable<string>
+  export let viewId: Readable<string | undefined>
   export let shareId: string | undefined = undefined
   export let r: Writable<string | null>
+  export let disableRecordQuery = false
+  export let records: RecordDO[] | undefined = undefined
+  export let readonly = false
 
   $: view = $table.views.getViewById($viewId) as GalleryView
 
@@ -49,7 +52,7 @@
       const view = $table.views.getViewById($viewId)
       return {
         queryKey: ["records", $table?.id.value, $viewId, $q, $currentPage, $perPage],
-        enabled: view?.type === "gallery",
+        enabled: view?.type === "gallery" && !disableRecordQuery,
         queryFn: getRecords,
       }
     }),
@@ -60,16 +63,19 @@
   const recordsStore = createRecordsStore()
   setRecordsStore(recordsStore)
 
-  // $: records = (($getRecords.data as any)?.records as IRecordsDTO) ?? []
-  let records = derived([getRecordsQuery], ([$getRecords]) => {
+  let rs = derived([getRecordsQuery], ([$getRecords]) => {
     return (($getRecords.data as any)?.records as IRecordsDTO) ?? []
   })
-  $: recordsStore.setRecords(Records.fromJSON($table, $records), $getRecordsQuery.dataUpdatedAt)
+  $: if (!disableRecordQuery) {
+    recordsStore.setRecords(Records.fromJSON($table, $rs), $getRecordsQuery.dataUpdatedAt)
+  } else {
+    recordsStore.setRecords(new Records(records ?? []), Date.now())
+  }
 
   $: total = ($getRecordsQuery.data as any)?.total
 </script>
 
-<TableTools {r} />
+<TableTools {r} {readonly} />
 <div class={cn("flex-1 overflow-y-auto overflow-x-hidden p-4", !field && "bg-muted")}>
   {#if !field}
     <GalleryViewField {view} />

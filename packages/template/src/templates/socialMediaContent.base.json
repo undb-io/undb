@@ -1,0 +1,223 @@
+{
+  "Social Media Content": {
+    "tables": {
+      "Posts": {
+        "schema": {
+          "Title": {
+            "id": "title",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Status": {
+            "id": "status",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "defaultValue": "backlog",
+            "option": {
+              "options": [
+                {
+                  "id": "backlog",
+                  "name": "Backlog",
+                  "color": "gray"
+                },
+                {
+                  "id": "posted",
+                  "name": "Posted",
+                  "color": "green"
+                }
+              ]
+            }
+          },
+          "Date": {
+            "id": "date",
+            "type": "date"
+          },
+          "Image": {
+            "id": "image",
+            "type": "attachment"
+          },
+          "Area": {
+            "id": "area",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "editorial",
+                  "name": "Editorial",
+                  "color": "red"
+                },
+                {
+                  "id": "brand",
+                  "name": "Brand",
+                  "color": "orange"
+                },
+                {
+                  "id": "product",
+                  "name": "Product",
+                  "color": "yellow"
+                },
+                {
+                  "id": "event",
+                  "name": "Event",
+                  "color": "blue"
+                }
+              ]
+            }
+          },
+          "Platform": {
+            "id": "platform",
+            "type": "select",
+            "constraint": {
+              "max": 3,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "twitter",
+                  "name": "Twitter",
+                  "color": "sky"
+                },
+                {
+                  "id": "linkedin",
+                  "name": "LinkedIn",
+                  "color": "blue"
+                },
+                {
+                  "id": "instagram",
+                  "name": "Instagram",
+                  "color": "purple"
+                },
+                {
+                  "id": "facebook",
+                  "name": "Facebook",
+                  "color": "indigo"
+                },
+                {
+                  "id": "tiktok",
+                  "name": "TikTok",
+                  "color": "pink"
+                },
+                {
+                  "id": "youtube",
+                  "name": "YouTube",
+                  "color": "red"
+                },
+                {
+                  "id": "reddit",
+                  "name": "Reddit",
+                  "color": "orange"
+                },
+                {
+                  "id": "igstory",
+                  "name": "IG Story",
+                  "color": "rose"
+                }
+              ]
+            }
+          },
+          "Visuals needed": {
+            "id": "visualsNeeded",
+            "type": "checkbox",
+            "defaultValue": false
+          }
+        },
+        "views": {
+          "Board": {
+            "type": "gallery",
+            "gallery": {
+              "field": "image"
+            }
+          },
+          "All Posts": {
+            "type": "grid"
+          }
+        },
+        "records": [
+          {
+            "id": "post-1",
+            "Title": "New Product Launch Teaser",
+            "Status": "posted",
+            "Date": "2024-08-28",
+            "Area": "editorial",
+            "Platform": ["linkedin", "reddit"],
+            "Visuals needed": false
+          },
+          {
+            "id": "post-2",
+            "Title": "Seeking Tech Experts",
+            "Status": "posted",
+            "Date": "2024-08-22",
+            "Area": "brand",
+            "Platform": ["twitter", "linkedin"],
+            "Visuals needed": false
+          },
+          {
+            "id": "post-3",
+            "Title": "Employee Spotlight",
+            "Status": "posted",
+            "Date": "2024-08-13",
+            "Area": "brand",
+            "Platform": ["instagram", "igstory"],
+            "Visuals needed": true
+          },
+          {
+            "id": "post-4",
+            "Title": "New Feature Announcement",
+            "Status": "posted",
+            "Date": "2024-08-12",
+            "Area": "product",
+            "Platform": ["twitter", "linkedin"],
+            "Visuals needed": true
+          },
+          {
+            "id": "post-5",
+            "Title": "NYC Networking Mixer",
+            "Status": "posted",
+            "Date": "2024-08-08",
+            "Area": "event",
+            "Platform": ["tiktok", "reddit"],
+            "Visuals needed": true
+          },
+          {
+            "id": "post-6",
+            "Title": "Tech Talk Tuesday Episode",
+            "Status": "backlog",
+            "Date": null,
+            "Area": "editorial",
+            "Platform": ["youtube"],
+            "Visuals needed": false
+          },
+          {
+            "id": "post-7",
+            "Title": "SF Open House Invitation",
+            "Status": "backlog",
+            "Date": null,
+            "Area": "event",
+            "Platform": ["igstory"],
+            "Visuals needed": false
+          },
+          {
+            "id": "post-8",
+            "Title": "Quarterly Performance Highlights",
+            "Status": "backlog",
+            "Date": null,
+            "Area": "brand",
+            "Platform": ["linkedin"],
+            "Visuals needed": false
+          }
+        ]
+      }
+    }
+  }
+}

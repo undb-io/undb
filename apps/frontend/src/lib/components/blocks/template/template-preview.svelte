@@ -10,6 +10,7 @@
   import * as Collapsible from "$lib/components/ui/collapsible"
   import { setTemplate } from "$lib/store/template.store"
   import RecordDetailSheet from "$lib/components/blocks/record-detail/record-detail-sheet.svelte"
+  import GalleryView from "$lib/components/blocks/gallery-view/gallery-view.svelte"
 
   export let template: ITemplateDTO
 
@@ -195,6 +196,8 @@
             <TemplateGridView viewId={currentViewId} records={$records} {r} />
           {:else if $currentView?.type === "kanban"}
             <KanbanView viewId={currentViewId} records={$records} {r} disableRecordQuery readonly />
+          {:else if $currentView?.type === "gallery"}
+            <GalleryView viewId={currentViewId} records={$records} {r} readonly disableRecordQuery />
           {/if}
         </section>
       {/if}

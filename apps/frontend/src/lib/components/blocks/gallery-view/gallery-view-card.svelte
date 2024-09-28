@@ -1,8 +1,6 @@
 <script lang="ts">
   import * as Carousel from "$lib/components/ui/carousel/index.js"
-  import * as Tooltip from "$lib/components/ui/tooltip"
   import { ImagesIcon } from "lucide-svelte"
-
   import {
     FieldIdVo,
     type RecordDO,
@@ -11,7 +9,6 @@
     type Field,
     ViewColor,
   } from "@undb/table"
-  import { queryParam } from "sveltekit-search-params"
   import { getTable } from "$lib/store/table.store"
   import FieldValue from "../field-value/field-value.svelte"
   import { getBgColor } from "../grid-view/grid-view.util"
