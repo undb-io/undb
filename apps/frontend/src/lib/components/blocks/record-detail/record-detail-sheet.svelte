@@ -2,7 +2,6 @@
   import * as Sheet from "$lib/components/ui/sheet"
   import Button from "$lib/components/ui/button/button.svelte"
   import RecordDetail from "./record-detail.svelte"
-  import { queryParam, ssp } from "sveltekit-search-params"
   import { getTable } from "$lib/store/table.store"
   import { useIsMutating, useQueryClient } from "@tanstack/svelte-query"
   import { RecordDO } from "@undb/table"
@@ -13,12 +12,12 @@
   import { preferences } from "$lib/store/persisted.store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
   import RecordDetailMenu from "./record-detail-menu.svelte"
+  import { type Writable } from "svelte/store"
 
   export let readonly = false
   export let recordDo: RecordDO | undefined
   export let isLoading: boolean
-
-  const r = queryParam("r", ssp.string(), { pushHistory: false })
+  export let r: Writable<string | null>
 
   const table = getTable()
   const isUpdatingRecord = useIsMutating({
@@ -34,9 +33,10 @@
   open={!!$r}
   onOpenChange={(open) => {
     if (!open) {
-      r.set("")
+      $r = null
     }
   }}
+  portal="body"
 >
   <Sheet.Content
     class={cn(
@@ -51,7 +51,7 @@
         <!-- <button disabled class="mr-6" on:click={() => ($preferences.showAudit = !$preferences.showAudit)}>
           <HistoryIcon class="text-muted-foreground h-4 w-4" />
         </button> -->
-        <RecordDetailMenu />
+        <RecordDetailMenu {r} />
       </Sheet.Title>
     </Sheet.Header>
 
@@ -74,6 +74,7 @@
                     $r = null
                     await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
                   }}
+                  {r}
                   {table}
                   {readonly}
                   record={recordDo}

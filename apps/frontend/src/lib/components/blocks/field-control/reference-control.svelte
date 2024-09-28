@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { ReferenceField } from "@undb/table"
   import ForeignRecordsPickerDropdown from "../reference/foreign-records-picker-dropdown.svelte"
-  import { writable } from "svelte/store"
+  import { writable, type Writable } from "svelte/store"
   import { Button } from "$lib/components/ui/button"
   import { onMount } from "svelte"
 
@@ -10,6 +10,7 @@
   export let readonly = false
   export let field: ReferenceField
   export let value: string[]
+  export let r: Writable<string | null>
 
   let selected = writable<string[]>(value)
 
@@ -28,6 +29,7 @@
 <div class="flex gap-1 overflow-hidden">
   <ForeignRecordsPickerDropdown
     let:builder
+    {r}
     {readonly}
     {field}
     {tableId}
@@ -44,7 +46,7 @@
     {/if}
   </ForeignRecordsPickerDropdown>
   {#if hasValueReactive}
-    <ForeignRecordsPickerDropdown {field} {tableId} {recordId} bind:selected isSelected={false} let:builder>
+    <ForeignRecordsPickerDropdown {r} {field} {tableId} {recordId} bind:selected isSelected={false} let:builder>
       <Button variant="link" class="px-2" size="xs" builders={[builder]}>+ Link Records</Button>
     </ForeignRecordsPickerDropdown>
   {/if}

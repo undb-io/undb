@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { type Writable } from "svelte/store"
   import type { Field, FieldType } from "@undb/table"
   import type { ComponentType } from "svelte"
   import StringField from "./string-field.svelte"
@@ -27,6 +28,7 @@
   export let tableId: string
   export let recordId: string | undefined
   export let placeholder: string | undefined = undefined
+  export let r: Writable<string | null>
 
   const map: Record<FieldType, ComponentType> = {
     id: IdField,
@@ -56,4 +58,14 @@
   }
 </script>
 
-<svelte:component this={map[type]} {tableId} {recordId} {...$$restProps} {field} {value} {displayValue} {placeholder} />
+<svelte:component
+  this={map[type]}
+  {tableId}
+  {recordId}
+  {...$$restProps}
+  {field}
+  {value}
+  {displayValue}
+  {placeholder}
+  {r}
+/>

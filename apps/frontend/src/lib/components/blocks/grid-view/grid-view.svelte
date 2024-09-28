@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { derived, writable, type Readable } from "svelte/store"
+  import { derived, writable, type Readable, type Writable } from "svelte/store"
   import { createRecordsStore, setRecordsStore, type RecordsStore } from "$lib/store/records.store"
   import { Records, type IRecordsDTO, type IViewFilterGroup } from "@undb/table"
   import { createQuery } from "@tanstack/svelte-query"
@@ -14,6 +14,7 @@
 
   const t = getTable()
   export let viewId: Readable<string>
+  export let r: Writable<string | null>
 
   const q = queryParam("q")
   export let filter: IViewFilterGroup | undefined = undefined
@@ -67,6 +68,7 @@
   {readonly}
   {perPage}
   {currentPage}
+  {r}
   isLoading={$getRecords.isLoading}
   total={$getRecords.data?.total ?? 0}
 />

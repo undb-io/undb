@@ -1,9 +1,9 @@
 <script lang="ts">
   import { Maximize2Icon } from "lucide-svelte"
-  import { queryParam, ssp } from "sveltekit-search-params"
+  import type { Writable } from "svelte/store"
 
-  const r = queryParam("r", ssp.string(), { pushHistory: false })
   export let recordId: string
+  export let r: Writable<string | null>
 </script>
 
 <button

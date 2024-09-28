@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { queryParam, ssp } from "sveltekit-search-params"
-  import { getTable, viewId } from "$lib/store/table.store"
+  import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createQuery } from "@tanstack/svelte-query"
   import { RecordDO } from "@undb/table"
@@ -8,10 +7,9 @@
   import { preferences } from "$lib/store/persisted.store"
   import RecordDetailSheet from "./record-detail-sheet.svelte"
   import { page } from "$app/stores"
+  import { r } from "$lib/store/records.store"
 
   export let readonly = false
-
-  const r = queryParam("r", ssp.string(), { pushHistory: false })
 
   const table = getTable()
 
@@ -32,4 +30,4 @@
   $: recordDo = $record.data?.record ? RecordDO.fromJSON($table, $record.data?.record) : undefined
 </script>
 
-<RecordDetailSheet {readonly} {recordDo} isLoading={$record.isLoading} />
+<RecordDetailSheet {readonly} {recordDo} isLoading={$record.isLoading} {r} />

@@ -69,6 +69,17 @@ export const templateData: ITemplateDTO[] = [
       template: templates.officeInventoryManagement as IBaseTemplateDTO,
     },
   },
+  {
+    id: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    icon: "📸",
+    name: "Social Media Content",
+    categories: ["marketing"],
+    description: "A template for managing social media content, including posts, images, and videos.",
+    template: {
+      type: "base",
+      template: templates.socialMediaContent as IBaseTemplateDTO,
+    },
+  },
 ]
 
 // if (env.NODE_ENV === "development") {

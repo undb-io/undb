@@ -44,40 +44,42 @@
     </span>
   </Button>
 
-  <Button
-    href={`/settings?tab=members`}
-    data-active={$page.route.id === "/(authed)/(space)/settings"}
-    class="data-[active=true]:bg-primary/80 data-[active=true]:text-primary-foreground"
-    variant="link"
-    size="xs"
-  >
-    <SettingsIcon class="mr-2 h-4 w-4" />
-    {#if space?.isPersonal}
-      Settings
-    {:else}
-      Settings & Members
+  <div class="flex flex-col gap-1">
+    <Button
+      href={`/settings?tab=members`}
+      data-active={$page.route.id === "/(authed)/(space)/settings"}
+      class="data-[active=true]:bg-primary/80 data-[active=true]:text-primary-foreground w-full justify-start py-1 text-left"
+      variant="link"
+      size="xs"
+    >
+      <SettingsIcon class="mr-2 h-4 w-4" />
+      {#if space?.isPersonal}
+        Settings
+      {:else}
+        Settings & Members
+      {/if}
+    </Button>
+
+    {#if $hasPermission("base:create")}
+      <Button
+        class="w-full justify-start text-left"
+        on:click={() => toggleModal(CREATE_BASE_MODAL)}
+        variant="link"
+        size="xs"
+      >
+        <PlusIcon class="mr-2 h-3 w-3" />
+        Create New Base
+      </Button>
+
+      <Button
+        class="w-full justify-start text-left"
+        on:click={() => toggleModal(IMPORT_TEMPLATE_MODAL)}
+        variant="link"
+        size="xs"
+      >
+        <PackageIcon class="mr-2 h-3 w-3" />
+        Import From Template
+      </Button>
     {/if}
-  </Button>
-
-  {#if $hasPermission("base:create")}
-    <Button
-      class="w-full justify-start text-left"
-      on:click={() => toggleModal(CREATE_BASE_MODAL)}
-      variant="link"
-      size="xs"
-    >
-      <PlusIcon class="mr-2 h-3 w-3" />
-      Create New Base
-    </Button>
-
-    <Button
-      class="w-full justify-start text-left"
-      on:click={() => toggleModal(IMPORT_TEMPLATE_MODAL)}
-      variant="link"
-      size="xs"
-    >
-      <PackageIcon class="mr-2 h-3 w-3" />
-      Import From Template
-    </Button>
-  {/if}
+  </div>
 </div>

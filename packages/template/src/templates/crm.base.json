@@ -879,6 +879,15 @@
                 "tableName": "Deals"
               }
             }
+          },
+          "Rating": {
+            "id": "rating",
+            "type": "rating",
+            "constraint": {
+              "min": 1,
+              "max": 5
+            },
+            "defaultValue": 3
           }
         },
         "records": [

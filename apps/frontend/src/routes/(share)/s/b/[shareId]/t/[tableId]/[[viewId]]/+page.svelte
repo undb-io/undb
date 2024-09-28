@@ -9,6 +9,7 @@
   import ShareGridView from "$lib/components/blocks/share/share-grid-view.svelte"
   import ShareGalleryView from "$lib/components/blocks/share/share-gallery-view.svelte"
   import ShareKanbanView from "$lib/components/blocks/share/share-kanban-view.svelte"
+  import { r } from "$lib/store/records.store"
 
   let RecordDetailSheet: ComponentType
 
@@ -39,5 +40,5 @@
 </main>
 
 {#if RecordDetailSheet}
-  <RecordDetailSheet readonly />
+  <RecordDetailSheet readonly {r} />
 {/if}

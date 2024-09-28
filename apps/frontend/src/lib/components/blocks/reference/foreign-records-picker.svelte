@@ -23,6 +23,7 @@
   export let isSelected = false
   export let shouldUpdate = false
   export let readonly = false
+  export let r: Writable<string | null>
 
   export let tableId: string
   export let recordId: string | undefined = undefined
@@ -199,11 +200,11 @@
         <ScrollArea orientation="both" class="h-full flex-1 overflow-auto">
           <div class="divide-y">
             {#each records as record}
-              {@const r = dos.get(record.id)}
+              {@const re = dos.get(record.id)}
               <div class="group flex-1 space-y-2">
-                {#if r}
-                  {@const values = r.flatten()}
-                  {@const displayValues = r.displayValues?.toJSON() ?? {}}
+                {#if re}
+                  {@const values = re.flatten()}
+                  {@const displayValues = re.displayValues?.toJSON() ?? {}}
                   <div class="flex w-full flex-1 items-center gap-2">
                     {#if fields.length}
                       {@const field = fields[0]}
@@ -216,6 +217,7 @@
                               {...getAttrs([builder])}
                             >
                               <FieldValue
+                                {r}
                                 tableId={$foreignTable.id.value}
                                 recordId={record.id}
                                 {field}
@@ -245,6 +247,7 @@
                                   {...getAttrs([builder])}
                                 >
                                   <FieldValue
+                                    {r}
                                     tableId={$foreignTable.id.value}
                                     recordId={record.id}
                                     {field}
@@ -271,6 +274,7 @@
                         <ForeignRecordDetailButton
                           class="opacity-0 group-hover:opacity-100"
                           {foreignTable}
+                          {r}
                           recordId={readable(record.id)}
                         />
                         {#if !readonly}

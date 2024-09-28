@@ -14,7 +14,7 @@
     type IRecordsDTO,
   } from "@undb/table"
   import KanbanSkeleton from "./kanban-skeleton.svelte"
-  import { derived, type Readable } from "svelte/store"
+  import { derived, type Readable, type Writable } from "svelte/store"
   import { getTable } from "$lib/store/table.store"
   import KanbanCard from "./kanban-card.svelte"
   import Button from "$lib/components/ui/button/button.svelte"
@@ -57,6 +57,7 @@
   export let readonly = false
   export let shareId: string | undefined = undefined
   export let disableRecordQuery = false
+  export let r: Writable<string | null>
 
   $: color = view.color.into(undefined)
 
@@ -359,7 +360,7 @@
           <p>error: {$query.error.message}</p>
         {:else}
           {#each recordDos as record (record.id.value)}
-            <KanbanCard {readonly} {record} {fields} {color} />
+            <KanbanCard {readonly} {record} {fields} {color} {r} />
           {/each}
           {#if $query.hasNextPage && $query.isFetchedAfterMount}
             <Button

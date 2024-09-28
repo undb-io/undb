@@ -2,11 +2,12 @@
   import type { ReferenceField } from "@undb/table"
   import ForeignRecordsPickerDropdown from "../reference/foreign-records-picker-dropdown.svelte"
   import { Button } from "$lib/components/ui/button"
-  import { writable } from "svelte/store"
+  import { writable, type Writable } from "svelte/store"
   import { onMount } from "svelte"
 
   export let value: string[] | null
   export let field: ReferenceField
+  export let r: Writable<string | null>
   export let tableId: string
   export let recordId: string | undefined
 
@@ -37,6 +38,7 @@
     {recordId}
     bind:isSelected={hasValue}
     bind:selected
+    {r}
     let:builder
   >
     {#if hasValueReactive}

@@ -24,12 +24,13 @@
   import type { IBulkUpdateRecordsCommandOutput } from "@undb/commands"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
-  import { writable } from "svelte/store"
+  import { writable, type Writable } from "svelte/store"
   import autoAnimate from "@formkit/auto-animate"
 
   const table = getTable()
   const mutableFields = $table.schema.mutableFields
   const schema = $table.schema.getMutableSchema()
+  export let r: Writable<string | null>
 
   let open = false
 
@@ -163,6 +164,7 @@
                     {...attrs}
                     bind:value={$formData[field.id.value]}
                     {field}
+                    {r}
                     tableId={$table.id.value}
                     class={cn($errors[field.id.value] && "border-red-500 focus-visible:ring-0")}
                   />

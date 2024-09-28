@@ -22,6 +22,7 @@
   import * as Popover from "$lib/components/ui/popover"
   import OptionEditor from "../option/option-editor.svelte"
   import { invalidate } from "$app/navigation"
+  import type { Writable } from "svelte/store"
 
   const table = getTable()
 
@@ -30,6 +31,7 @@
   export let readonly = false
   export let shareId: string | undefined = undefined
   export let disableRecordQuery = false
+  export let r: Writable<string | null>
 
   let fieldId = view.field.unwrapUnchecked()!
   let field = $table.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined) as SelectField
@@ -110,6 +112,7 @@
       {shareId}
       {view}
       {disableRecordQuery}
+      {r}
     />
     {#each options as option (option.id)}
       <SelectKanbanLane
@@ -122,6 +125,7 @@
         {shareId}
         {view}
         {disableRecordQuery}
+        {r}
       />
     {/each}
     {#if !shareId && !readonly}

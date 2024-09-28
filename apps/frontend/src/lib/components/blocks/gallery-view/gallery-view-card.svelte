@@ -1,8 +1,6 @@
 <script lang="ts">
   import * as Carousel from "$lib/components/ui/carousel/index.js"
-  import * as Tooltip from "$lib/components/ui/tooltip"
   import { ImagesIcon } from "lucide-svelte"
-
   import {
     FieldIdVo,
     type RecordDO,
@@ -11,16 +9,16 @@
     type Field,
     ViewColor,
   } from "@undb/table"
-  import { queryParam } from "sveltekit-search-params"
   import { getTable } from "$lib/store/table.store"
   import FieldValue from "../field-value/field-value.svelte"
   import { getBgColor } from "../grid-view/grid-view.util"
   import { cn } from "$lib/utils"
+  import type { Writable } from "svelte/store"
 
   const table = getTable()
   export let record: RecordDO
   export let fields: Field[]
-  const r = queryParam("r")
+  export let r: Writable<string | null>
 
   let values = record.flatten()
   let displayValues = record.displayValues?.toJSON() ?? {}
@@ -65,6 +63,7 @@
     {#each fields.filter((f) => f.id.value !== fieldId) as field}
       <div class="flex w-full">
         <FieldValue
+          {r}
           {field}
           tableId={$table.id.value}
           recordId={record.id.value}

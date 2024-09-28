@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getTable } from "$lib/store/table.store"
-  import type { Readable } from "svelte/store"
+  import type { Readable, Writable } from "svelte/store"
   import type { KanbanView, RecordDO } from "@undb/table"
   import SelectKanbanField from "./select-kanban-field.svelte"
   import SelectKanbanView from "./select-kanban-view.svelte"
@@ -16,6 +16,7 @@
   export let readonly = false
   export let records: RecordDO[] | undefined = undefined
   export let disableRecordQuery = false
+  export let r: Writable<string | null>
 
   $: view = $table.views.getViewById($viewId) as KanbanView
   $: fieldId = view.type === "kanban" ? view.field.into(undefined) : undefined
@@ -29,7 +30,7 @@
 </script>
 
 {#key $table.id.value}
-  <TableTools {readonly}>
+  <TableTools {readonly} {r}>
     {#if !shareId}
       <KanbanOptionButton {view} {readonly} />
     {/if}
@@ -37,7 +38,7 @@
   {#if view.type === "kanban"}
     {#if field?.type === "select"}
       {#if field.isSingle}
-        <SelectKanbanView {view} {shareId} {viewId} {disableRecordQuery} {readonly} />
+        <SelectKanbanView {view} {shareId} {viewId} {disableRecordQuery} {readonly} {r} />
       {:else}
         <section class="flex h-full w-full items-center justify-center">
           <SelectKanbanRequiresSingle {view} {field} {shareId} />

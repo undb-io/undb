@@ -19,13 +19,14 @@
   import ButtonControl from "./button-control.svelte"
   import DurationControl from "./duration-control.svelte"
   import PercentageControl from "./percentage-control.svelte"
+  import { type Writable } from "svelte/store"
 
   export let readonly = false
   export let field: NoneSystemField
   export let tableId: string
   export let recordId: string | undefined
   export let record: RecordDO | undefined
-
+  export let r: Writable<string | null>
   export let value: any
   export let displayValue: any
 
@@ -71,4 +72,5 @@
   {tableId}
   {recordId}
   {record}
+  {r}
 />

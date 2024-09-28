@@ -3,18 +3,17 @@
   import FieldValue from "../field-value/field-value.svelte"
   import { getTable } from "$lib/store/table.store"
   import * as Tooltip from "$lib/components/ui/tooltip"
-  import { queryParam } from "sveltekit-search-params"
   import { cn } from "$lib/utils"
   import { getBgColor } from "../grid-view/grid-view.util"
+  import type { Writable } from "svelte/store"
 
   const table = getTable()
   export let color: ViewColor | undefined
+  export let r: Writable<string | null>
 
   export let fields: Field[]
   export let record: RecordDO
   export let readonly = false
-
-  const r = queryParam("r")
 
   $: values = record.flatten()
   $: displayValues = record.displayValues?.toJSON() ?? {}
@@ -25,8 +24,9 @@
 </script>
 
 <button
-  on:click={() => ($r = record.id.value)}
-  disabled={readonly}
+  on:click={() => {
+    $r = record.id.value
+  }}
   data-record-id={record.id.value}
   class={cn("relative mb-2 flex w-full flex-col overflow-hidden rounded bg-white p-2 shadow", isMatch && "pl-3")}
 >
@@ -38,6 +38,7 @@
           <Tooltip.Root>
             <Tooltip.Trigger class="w-full text-left">
               <FieldValue
+                {r}
                 {field}
                 tableId={$table.id.value}
                 recordId={record.id.value}
