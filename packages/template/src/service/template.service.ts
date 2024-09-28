@@ -1,12 +1,10 @@
 import { Base, injectBaseRepository, WithBaseSpaceId, type IBaseRepository } from "@undb/base"
 import { singleton } from "@undb/di"
 import {
-  injectRecordRepository,
   injectRecordsService,
   injectTableRepository,
   RecordDO,
   TableDo,
-  type IRecordRepository,
   type IRecordsService,
   type ITableRepository,
 } from "@undb/table"
@@ -28,8 +26,6 @@ export class TemplateService implements ITemplateService {
     private readonly baseRepository: IBaseRepository,
     @injectTableRepository()
     private readonly tableRepository: ITableRepository,
-    @injectRecordRepository()
-    private readonly recordRepository: IRecordRepository,
     @injectTemplateQueryRepository()
     private readonly templateQueryRepository: ITemplateQueryRepository,
     @injectRecordsService()

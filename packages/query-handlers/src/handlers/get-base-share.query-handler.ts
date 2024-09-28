@@ -2,12 +2,12 @@ import { BaseId, injectBaseRepository, WithBaseId, WithBaseSpaceId, type IBaseRe
 import { queryHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import type { IQueryHandler } from "@undb/domain"
-import { GetBaseShareQuery, type IGetBaseShareQuery, type IGetTemplateOutput } from "@undb/queries"
+import { GetBaseShareQuery, type IGetBaseShareOutput, type IGetBaseShareQuery } from "@undb/queries"
 import { injectShareRepository, ShareId, WithShareId, type IShareRepository } from "@undb/share"
 
 @queryHandler(GetBaseShareQuery)
 @singleton()
-export class GetBaseShareQueryHandler implements IQueryHandler<IGetBaseShareQuery, IGetTemplateOutput> {
+export class GetBaseShareQueryHandler implements IQueryHandler<IGetBaseShareQuery, IGetBaseShareOutput> {
   constructor(
     @injectBaseRepository()
     private readonly baseRepo: IBaseRepository,
@@ -15,7 +15,7 @@ export class GetBaseShareQueryHandler implements IQueryHandler<IGetBaseShareQuer
     private readonly shareRepo: IShareRepository,
   ) {}
 
-  async execute({ shareId }: IGetBaseShareQuery): Promise<IGetTemplateOutput> {
+  async execute({ shareId }: IGetBaseShareQuery): Promise<IGetBaseShareOutput> {
     const share = (await this.shareRepo.findOne(new WithShareId(new ShareId(shareId)))).expect("share not found")
     if (share.target.type !== "base") {
       throw new Error("share target is not base")
