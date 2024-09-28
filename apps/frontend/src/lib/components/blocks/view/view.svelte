@@ -4,6 +4,7 @@
   import GridView from "../grid-view/grid-view.svelte"
   import KanbanView from "../kanban-view/kanban-view.svelte"
   import GalleryView from "../gallery-view/gallery-view.svelte"
+  import { r } from "$lib/store/records.store"
 
   const table = getTable()
   export let viewId: Readable<string>
@@ -14,11 +15,11 @@
 {#key $viewId}
   {#if view}
     {#if view.type === "kanban"}
-      <KanbanView {viewId} />
+      <KanbanView {viewId} {r} />
     {:else if view.type === "grid"}
-      <GridView {viewId} />
+      <GridView {viewId} {r} />
     {:else if view.type === "gallery"}
-      <GalleryView {viewId} />
+      <GalleryView {viewId} {r} />
     {/if}
   {/if}
 {/key}

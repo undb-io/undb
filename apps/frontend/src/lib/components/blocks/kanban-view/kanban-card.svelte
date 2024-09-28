@@ -3,18 +3,17 @@
   import FieldValue from "../field-value/field-value.svelte"
   import { getTable } from "$lib/store/table.store"
   import * as Tooltip from "$lib/components/ui/tooltip"
-  import { queryParam } from "sveltekit-search-params"
   import { cn } from "$lib/utils"
   import { getBgColor } from "../grid-view/grid-view.util"
+  import type { Writable } from "svelte/store"
 
   const table = getTable()
   export let color: ViewColor | undefined
+  export let r: Writable<string | null>
 
   export let fields: Field[]
   export let record: RecordDO
   export let readonly = false
-
-  const r = queryParam("r")
 
   $: values = record.flatten()
   $: displayValues = record.displayValues?.toJSON() ?? {}

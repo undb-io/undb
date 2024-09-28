@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getTable } from "$lib/store/table.store"
-  import { derived, writable, type Readable } from "svelte/store"
+  import { derived, writable, type Readable, type Writable } from "svelte/store"
   import { type GalleryView, type IRecordsDTO, Records } from "@undb/table"
   import { queryParam } from "sveltekit-search-params"
   import TableTools from "../table-tools/table-tools.svelte"
@@ -16,6 +16,7 @@
   const table = getTable()
   export let viewId: Readable<string>
   export let shareId: string | undefined = undefined
+  export let r: Writable<string | null>
 
   $: view = $table.views.getViewById($viewId) as GalleryView
 
@@ -75,7 +76,7 @@
   {:else if $isLoading}
     <GalleryViewLoading />
   {:else}
-    <GalleryViewCards fieldId={field} {viewId} />
+    <GalleryViewCards fieldId={field} {viewId} {r} />
   {/if}
 </div>
 {#if field}

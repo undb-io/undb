@@ -9,12 +9,13 @@
   import { HardDriveIcon, DatabaseIcon, ViewIcon, ChevronRightIcon } from "lucide-svelte"
   import * as Collapsible from "$lib/components/ui/collapsible"
   import { setTemplate } from "$lib/store/template.store"
+  import RecordDetailSheet from "$lib/components/blocks/record-detail/record-detail-sheet.svelte"
 
   export let template: ITemplateDTO
 
   setTemplate(writable(template))
 
-  let t = TemplateFactory.create(template.template.template, [],"preview")
+  let t = TemplateFactory.create(template.template.template, [], "preview")
   let tables = t.flatMap((base) => base.tables.map(({ table }) => table))
   let bases = t.map((base) => base.base)
 
@@ -33,6 +34,11 @@
 
   let currentView = derived([currentTable, currentViewId], ([$currentTable, $currentViewId]) => {
     return $currentTable?.views.getViewById($currentViewId)
+  })
+
+  let r = writable<string | null>(null)
+  let recordDo = derived([records, r], ([$records, $r]) => {
+    return $records.find((record) => record.id.value === $r)
   })
 
   $: if ($currentTable) {
@@ -186,12 +192,14 @@
       {#if $currentTable}
         <section class="flex h-full flex-1 flex-col overflow-auto">
           {#if $currentView?.type === "grid"}
-            <TemplateGridView viewId={currentViewId} records={$records} />
+            <TemplateGridView viewId={currentViewId} records={$records} {r} />
           {:else if $currentView?.type === "kanban"}
-            <KanbanView viewId={currentViewId} records={$records} disableRecordQuery readonly />
+            <KanbanView viewId={currentViewId} records={$records} {r} disableRecordQuery readonly />
           {/if}
         </section>
       {/if}
     {/key}
   </div>
 {/if}
+
+<RecordDetailSheet readonly recordDo={$recordDo} isLoading={false} {r} />

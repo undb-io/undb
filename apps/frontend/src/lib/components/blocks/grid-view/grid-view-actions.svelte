@@ -7,10 +7,11 @@
   import { DELETE_RECORD_MODAL, DUPLICATE_RECORD_MODAL, toggleModal } from "$lib/store/modal.store"
   import { queryParam } from "sveltekit-search-params"
   import { ClipboardCopyIcon, CopyIcon, Maximize2Icon, Trash2Icon } from "lucide-svelte"
+  import type { Writable } from "svelte/store"
 
   const deleteRecordId = queryParam("deleteRecordId")
   const duplicateRecordId = queryParam("duplicateRecordId")
-  const r = queryParam("r")
+  export let r: Writable<string | null>
 
   export let id: string
 

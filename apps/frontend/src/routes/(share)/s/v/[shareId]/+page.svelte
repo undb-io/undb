@@ -4,6 +4,7 @@
   import { shareStore } from "$lib/store/share.store"
   import { onMount, type ComponentType } from "svelte"
   import { derived } from "svelte/store"
+  import { r } from "$lib/store/records.store"
 
   let RecordDetailSheet: ComponentType
 
@@ -20,5 +21,5 @@
 <ShareViewPage {viewId} shareId={$page.params.shareId} />
 
 {#if RecordDetailSheet}
-  <RecordDetailSheet readonly />
+  <RecordDetailSheet readonly {r} />
 {/if}

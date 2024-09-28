@@ -16,11 +16,12 @@
   import FieldValue from "../field-value/field-value.svelte"
   import { getBgColor } from "../grid-view/grid-view.util"
   import { cn } from "$lib/utils"
+  import type { Writable } from "svelte/store"
 
   const table = getTable()
   export let record: RecordDO
   export let fields: Field[]
-  const r = queryParam("r")
+  export let r: Writable<string | null>
 
   let values = record.flatten()
   let displayValues = record.displayValues?.toJSON() ?? {}

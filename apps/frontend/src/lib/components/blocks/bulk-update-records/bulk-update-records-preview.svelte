@@ -7,6 +7,7 @@
   import { FullscreenIcon } from "lucide-svelte"
   import { createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
+  import { r } from "$lib/store/records.store"
 
   const table = getTable()
 
@@ -43,7 +44,7 @@
     </Dialog.Header>
 
     <div class="h-full w-full flex-1 overflow-auto">
-      <GridView class="h-full w-full border" readonly {viewId} {filter} />
+      <GridView class="h-full w-full border" readonly {viewId} {filter} {r} />
     </div>
   </Dialog.Content>
 </Dialog.Root>

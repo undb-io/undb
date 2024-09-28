@@ -152,3 +152,5 @@ export function setRecordsStore(store: RecordsStore) {
 export function getRecordsStore() {
   return getContext<RecordsStore>("records")
 }
+
+export const r = queryParam("r", ssp.string(), { pushHistory: false })

@@ -41,6 +41,7 @@
   export let isLoading = false
   export let total: number
   export let hidePagination = false
+  export let r: Writable<string | null>
 
   const t = getTable()
 
@@ -48,7 +49,6 @@
 
   $: perPage = $preferences.gridViewPerPage ?? 50
 
-  const r = queryParam("r")
   const deleteRecordId = queryParam("deleteRecordId")
   const duplicateRecordId = queryParam("duplicateRecordId")
 
@@ -106,7 +106,7 @@
       table.column({
         accessor: "open",
         header: () => "",
-        cell: ({ row }) => createRender(GridViewOpen, { recordId: row.original.id }),
+        cell: ({ row }) => createRender(GridViewOpen, { recordId: row.original.id, r }),
         plugins: {
           resize: {
             initialWidth: 30,
@@ -148,7 +148,7 @@
           return createRender(GridViewActionHeader, { readonly })
         },
         accessor: ({ id }) => id,
-        cell: (item) => createRender(GridViewActions, { id: item.value, readonly }),
+        cell: (item) => createRender(GridViewActions, { id: item.value, readonly, r }),
         plugins: {
           resize: {
             initialWidth: 50,
@@ -352,34 +352,34 @@
   </ScrollArea>
 
   {#if !hidePagination}
-  <div class="flex items-center justify-center border-t px-4 py-2">
-    <div class="flex flex-1 flex-row items-center">
-      <ViewPagination {perPage} bind:currentPage={$currentPage} count={total} />
-      <div class="flex items-center gap-2 text-sm">
-        <Select.Root
-          selected={{ value: perPage, label: String(perPage) }}
-          onSelectedChange={(value) => {
-            if (value) {
-              $preferences.gridViewPerPage = value.value
-            }
-            $currentPage = null
-          }}
-        >
-          <Select.Trigger value={$preferences.gridViewPerPage} class="min-w-16">
-            <Select.Value placeholder="page" />
-          </Select.Trigger>
-          <Select.Content>
-            <Select.Item value={1}>1</Select.Item>
-            <Select.Item value={10}>10</Select.Item>
-            <Select.Item value={50}>50</Select.Item>
-            <Select.Item value={100}>100</Select.Item>
-          </Select.Content>
-        </Select.Root>
+    <div class="flex items-center justify-center border-t px-4 py-2">
+      <div class="flex flex-1 flex-row items-center">
+        <ViewPagination {perPage} bind:currentPage={$currentPage} count={total} />
+        <div class="flex items-center gap-2 text-sm">
+          <Select.Root
+            selected={{ value: perPage, label: String(perPage) }}
+            onSelectedChange={(value) => {
+              if (value) {
+                $preferences.gridViewPerPage = value.value
+              }
+              $currentPage = null
+            }}
+          >
+            <Select.Trigger value={$preferences.gridViewPerPage} class="min-w-16">
+              <Select.Value placeholder="page" />
+            </Select.Trigger>
+            <Select.Content>
+              <Select.Item value={1}>1</Select.Item>
+              <Select.Item value={10}>10</Select.Item>
+              <Select.Item value={50}>50</Select.Item>
+              <Select.Item value={100}>100</Select.Item>
+            </Select.Content>
+          </Select.Root>
 
-        <span class="text-muted-foreground flex-1 text-nowrap text-xs">
-          {total} Rows
-        </span>
-      </div>
+          <span class="text-muted-foreground flex-1 text-nowrap text-xs">
+            {total} Rows
+          </span>
+        </div>
       </div>
     </div>
   {/if}

@@ -9,6 +9,7 @@
   import { Records, type IRecordsDTO } from "@undb/table"
   import { derived, type Readable } from "svelte/store"
   import { queryParam, ssp } from "sveltekit-search-params"
+  import { r } from "$lib/store/records.store"
 
   export let viewId: Readable<string | undefined>
 
@@ -50,6 +51,7 @@
 {#if store}
   <GridViewDataTable
     {viewId}
+    {r}
     readonly
     {perPage}
     {currentPage}

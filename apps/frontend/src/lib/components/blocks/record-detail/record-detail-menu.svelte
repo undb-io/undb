@@ -5,11 +5,11 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
-  import { queryParam } from "sveltekit-search-params"
   import { getRecordsStore } from "$lib/store/records.store"
+  import type { Writable } from "svelte/store"
 
   const table = getTable()
-  const r = queryParam("r")
+  export let r: Writable<string | null>
   const recordsStore = getRecordsStore()
 
   $: canDelete = $hasPermission("record:delete")
