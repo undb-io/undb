@@ -122,6 +122,7 @@
             const record = $store.records.get(item.row.original.id)
             const displayValue = record?.displayValues?.toJSON()?.[field.id.value]
             return createRender(GridViewCell, {
+              r,
               index,
               value: item.value,
               field,
@@ -178,7 +179,7 @@
 
 <div class="flex h-full w-full flex-col">
   {#if !readonly}
-    <TableTools>
+    <TableTools {r}>
       {#if selectedRecordIds.length}
         <SelectedRecordsButton class={selectedRecordIds.length && "opacity-100"} ids={selectedRecordIds} />
       {/if}

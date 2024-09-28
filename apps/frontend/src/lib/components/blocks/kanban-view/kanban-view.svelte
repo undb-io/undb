@@ -30,7 +30,7 @@
 </script>
 
 {#key $table.id.value}
-  <TableTools {readonly}>
+  <TableTools {readonly} {r}>
     {#if !shareId}
       <KanbanOptionButton {view} {readonly} />
     {/if}

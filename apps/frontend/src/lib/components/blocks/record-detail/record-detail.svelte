@@ -11,20 +11,18 @@
   import { toast } from "svelte-sonner"
   import { beforeNavigate } from "$app/navigation"
   import { pick } from "radash"
-  import { queryParam } from "sveltekit-search-params"
   import type { Readable } from "svelte/store"
   import * as Collapsible from "$lib/components/ui/collapsible"
   import Button from "$lib/components/ui/button/button.svelte"
   import { preferences } from "$lib/store/persisted.store"
   import { cn } from "$lib/utils"
   import { getRecordsStore } from "$lib/store/records.store"
+  import { type Writable } from "svelte/store"
 
   const recordsStore = getRecordsStore()
 
   export let readonly = false
-
-  const r = queryParam("r")
-
+  export let r: Writable<string | null>
   export let record: RecordDO
 
   beforeNavigate(({ cancel }) => {
@@ -136,6 +134,7 @@
         <div class="min-h-9 flex-1 overflow-hidden">
           {#if field.isSystem || !field.isMutable}
             <FieldValue
+              {r}
               {field}
               tableId={$table.id.value}
               recordId={record.id.value}
@@ -151,6 +150,7 @@
               {field}
               tableId={$table.id.value}
               recordId={$r}
+              {r}
               {record}
               displayValue={displayValues[field.id.value]}
               {readonly}
@@ -199,6 +199,7 @@
               <div class="flex-1 overflow-hidden">
                 {#if field.isSystem || !field.isMutable}
                   <FieldValue
+                    {r}
                     {field}
                     tableId={$table.id.value}
                     recordId={record.id.value}
@@ -212,6 +213,7 @@
                     {...attrs}
                     bind:value={$formData[field.id.value]}
                     {field}
+                    {r}
                     tableId={$table.id.value}
                     recordId={$r}
                     displayValue={displayValues[field.id.value]}

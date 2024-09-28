@@ -8,8 +8,10 @@
   import ViewFields from "../view-fields/view-fields.svelte"
   import ShareViewButton from "../share/share-view-button.svelte"
   import BulkUpdateRecordsButton from "../bulk-update-records/bulk-update-records-button.svelte"
+  import type { Writable } from "svelte/store"
 
   export let readonly = false
+  export let r: Writable<string | null>
 </script>
 
 <div class="flex items-center justify-between gap-2 border-b px-4 py-2">
@@ -26,7 +28,7 @@
 
   <div class="flex items-center gap-2">
     {#if !readonly}
-      <BulkUpdateRecordsButton />
+      <BulkUpdateRecordsButton {r} />
       <CreateFieldButton />
       <ShareViewButton />
     {/if}

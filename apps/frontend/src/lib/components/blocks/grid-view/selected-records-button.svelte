@@ -11,6 +11,7 @@
   import BulkUpdateRecords from "../bulk-update-records/bulk-update-records.svelte"
   import { ID_TYPE } from "@undb/table"
   import { cn } from "$lib/utils"
+  import { r } from "$lib/store/records.store"
 
   const table = getTable()
 
@@ -115,6 +116,7 @@
                     conjunction: "and",
                     children: [{ field: ID_TYPE, op: "in", value: ids }],
                   }}
+                  {r}
                 />
               </Sheet.Content>
             </Sheet.Root>

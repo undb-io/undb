@@ -69,7 +69,7 @@
   $: total = ($getRecordsQuery.data as any)?.total
 </script>
 
-<TableTools />
+<TableTools {r} />
 <div class={cn("flex-1 overflow-y-auto overflow-x-hidden p-4", !field && "bg-muted")}>
   {#if !field}
     <GalleryViewField {view} />

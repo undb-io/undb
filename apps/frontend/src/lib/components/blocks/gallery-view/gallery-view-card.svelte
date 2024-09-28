@@ -66,6 +66,7 @@
     {#each fields.filter((f) => f.id.value !== fieldId) as field}
       <div class="flex w-full">
         <FieldValue
+          {r}
           {field}
           tableId={$table.id.value}
           recordId={record.id.value}

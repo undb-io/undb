@@ -33,7 +33,7 @@
   open={!!$r}
   onOpenChange={(open) => {
     if (!open) {
-      r.set("")
+      $r = null
     }
   }}
   portal="body"
@@ -74,6 +74,7 @@
                     $r = null
                     await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
                   }}
+                  {r}
                   {table}
                   {readonly}
                   record={recordDo}

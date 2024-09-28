@@ -24,8 +24,9 @@
 </script>
 
 <button
-  on:click={() => ($r = record.id.value)}
-  disabled={readonly}
+  on:click={() => {
+    $r = record.id.value
+  }}
   data-record-id={record.id.value}
   class={cn("relative mb-2 flex w-full flex-col overflow-hidden rounded bg-white p-2 shadow", isMatch && "pl-3")}
 >
@@ -37,6 +38,7 @@
           <Tooltip.Root>
             <Tooltip.Trigger class="w-full text-left">
               <FieldValue
+                {r}
                 {field}
                 tableId={$table.id.value}
                 recordId={record.id.value}

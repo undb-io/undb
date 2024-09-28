@@ -5,8 +5,6 @@
   import * as Dialog from "$lib/components/ui/dialog"
   import { Button } from "$lib/components/ui/button"
   import { FullscreenIcon } from "lucide-svelte"
-  import { createQuery } from "@tanstack/svelte-query"
-  import { trpc } from "$lib/trpc/client"
   import { r } from "$lib/store/records.store"
 
   const table = getTable()

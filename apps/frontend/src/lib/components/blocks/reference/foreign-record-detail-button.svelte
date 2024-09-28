@@ -1,7 +1,7 @@
 <script lang="ts">
   import { HistoryIcon, Maximize2Icon } from "lucide-svelte"
   import * as Sheet from "$lib/components/ui/sheet"
-  import { derived, writable, type Readable } from "svelte/store"
+  import { derived, writable, type Readable, type Writable } from "svelte/store"
   import { RecordDO, type TableDo } from "@undb/table"
   import { Button } from "$lib/components/ui/button"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
@@ -14,6 +14,7 @@
   import { createQuery, useQueryClient } from "@tanstack/svelte-query"
 
   export let foreignTable: Readable<TableDo>
+  export let r: Writable<string | null>
 
   export let recordId: Readable<string>
 
@@ -93,6 +94,7 @@
                       queryKey: ["records", $foreignTable.id.value],
                     })
                   }}
+                  {r}
                   table={foreignTable}
                   record={recordDo}
                   bind:disabled

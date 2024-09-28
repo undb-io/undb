@@ -4,7 +4,9 @@
   import { PencilIcon } from "lucide-svelte"
   import BulkUpdateRecords from "./bulk-update-records.svelte"
   import { hasPermission } from "$lib/store/space-member.store"
+  import { type Writable } from "svelte/store"
 
+  export let r: Writable<string | null>
   let open = false
 </script>
 
@@ -21,7 +23,7 @@
         <Sheet.Title>Bulk Update Records</Sheet.Title>
       </Sheet.Header>
 
-      <BulkUpdateRecords onSuccess={() => (open = false)} />
+      <BulkUpdateRecords {r} onSuccess={() => (open = false)} />
     </Sheet.Content>
   </Sheet.Root>
 {/if}

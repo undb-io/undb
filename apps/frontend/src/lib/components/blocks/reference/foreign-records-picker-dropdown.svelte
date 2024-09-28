@@ -6,12 +6,14 @@
   import { ReferenceField, TableFactory } from "@undb/table"
   import Button from "$lib/components/ui/button/button.svelte"
   import { LoaderCircleIcon } from "lucide-svelte"
+  import { type Writable } from "svelte/store"
 
   export let isSelected = false
 
   export let shouldUpdate = false
   export let readonly = false
   export let tableId: string
+  export let r: Writable<string | null>
   export let recordId: string | undefined
   export let field: ReferenceField
   $: foreignTableId = field.foreignTableId
@@ -46,6 +48,7 @@
     {#if foreignTable}
       <ForeignRecordsPicker
         {readonly}
+        {r}
         {shouldUpdate}
         bind:isSelected
         {field}
