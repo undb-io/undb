@@ -131,7 +131,6 @@ export class TableFactory {
           throw new Error("Foreign table not found")
         }
         const dto = symmetricFields.find((f) => f.option.symmetricFieldId === referenceField.id.value)
-        console.log(dto)
         const symmetricField = ReferenceField.createSymmetricField(table, foreignTable, referenceField, dto)
         foreignTable.$createFieldSpec(symmetricField)
       }

@@ -133,6 +133,7 @@ import {
   countRecordsQuery,
   getAggregatesQuery,
   getApiTokensQuery,
+  getMemberSpacesOutput,
   getMemberSpacesQuery,
   getRecordByIdQuery,
   getRecordsQuery,
@@ -443,6 +444,7 @@ const spaceRouter = t.router({
   list: privateProcedure
     .use(authz("space:list"))
     .input(getMemberSpacesQuery)
+    .output(getMemberSpacesOutput)
     .query(({ input }) => queryBus.execute(new GetMemberSpacesQuery(input))),
   create: privateProcedure
     .input(createSpaceCommand)
