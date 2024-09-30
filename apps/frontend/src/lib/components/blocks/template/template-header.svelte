@@ -13,7 +13,8 @@
   import { toast } from "svelte-sonner"
   import { Checkbox } from "$lib/components/ui/checkbox/index.js"
   import * as Form from "$lib/components/ui/form/index.js"
-  import { goto } from "$app/navigation"
+  import { goto, invalidate } from "$app/navigation"
+  import LoginOrSignup from "../auth/login-or-signup.svelte"
 
   export let template: ITemplateDTO
   export let me: any
@@ -27,7 +28,6 @@
   })
 
   $: spaces = $getSpacesQuery.data ?? []
-  $: console.log(spaces)
   $: items = spaces.map((space) => ({
     value: space.id,
     label: space.name,
@@ -93,71 +93,79 @@
     <span class="text-sm font-medium"> Undb Template </span>
   </div>
 
-  <Dialog.Root
-    bind:open
-    onOpenChange={(open) => {
-      if (open) {
-        $getSpacesQuery.refetch()
-      }
-    }}
-  >
-    <Dialog.Trigger asChild let:builder>
-      <Button size="sm" builders={[builder]}>Get started with this template</Button>
-    </Dialog.Trigger>
-    <Dialog.Content>
-      <Dialog.Header>
-        <Dialog.Title>Which space do you want to create this template in?</Dialog.Title>
-        <Dialog.Description>You can create a new base or a new table in the selected space.</Dialog.Description>
-      </Dialog.Header>
+  {#if me}
+    <Dialog.Root
+      bind:open
+      onOpenChange={(open) => {
+        if (open) {
+          $getSpacesQuery.refetch()
+        }
+      }}
+    >
+      <Dialog.Trigger asChild let:builder>
+        <Button size="sm" builders={[builder]}>Get started with this template</Button>
+      </Dialog.Trigger>
+      <Dialog.Content>
+        <Dialog.Header>
+          <Dialog.Title>Which space do you want to create this template in?</Dialog.Title>
+          <Dialog.Description>You can create a new base or a new table in the selected space.</Dialog.Description>
+        </Dialog.Header>
 
-      <form method="POST" use:enhance>
-        <Form.Field {form} name="spaceId">
-          <Form.Control let:attrs>
-            <Form.Label>Space</Form.Label>
+        <form method="POST" use:enhance>
+          <Form.Field {form} name="spaceId">
+            <Form.Control let:attrs>
+              <Form.Label>Space</Form.Label>
 
-            <Select.Root
-              selected={selectedSpace}
-              onSelectedChange={(v) => {
-                v && ($formData.spaceId = v.value)
-              }}
+              <Select.Root
+                selected={selectedSpace}
+                onSelectedChange={(v) => {
+                  v && ($formData.spaceId = v.value)
+                }}
+              >
+                <Select.Trigger class="w-full">
+                  <Select.Value placeholder="Space" />
+                </Select.Trigger>
+                <Select.Content sameWidth>
+                  {#each items as item}
+                    <Select.Item value={item.value}>{item.label}</Select.Item>
+                  {/each}
+                </Select.Content>
+              </Select.Root>
+              <input hidden bind:value={$formData.spaceId} name={attrs.name} />
+            </Form.Control>
+            <Form.Description
+              >Select a space to create a new base or a new table in the selected space.</Form.Description
             >
-              <Select.Trigger class="w-full">
-                <Select.Value placeholder="Space" />
-              </Select.Trigger>
-              <Select.Content sameWidth>
-                {#each items as item}
-                  <Select.Item value={item.value}>{item.label}</Select.Item>
-                {/each}
-              </Select.Content>
-            </Select.Root>
-            <input hidden bind:value={$formData.spaceId} name={attrs.name} />
-          </Form.Control>
-          <Form.Description>Select a space to create a new base or a new table in the selected space.</Form.Description>
-          <Form.FieldErrors />
-        </Form.Field>
+            <Form.FieldErrors />
+          </Form.Field>
 
-        <Form.Field
-          {form}
-          name="includeData"
-          class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4"
-        >
-          <Form.Control let:attrs>
-            <Checkbox {...attrs} bind:checked={$formData.includeData} />
-            <div class="space-y-1 leading-none">
-              <Form.Label>Include data</Form.Label>
-              <Form.Description>Include data from the template to the new base or table.</Form.Description>
-            </div>
-            <input name={attrs.name} value={$formData.includeData} hidden />
-          </Form.Control>
-        </Form.Field>
+          <Form.Field
+            {form}
+            name="includeData"
+            class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4"
+          >
+            <Form.Control let:attrs>
+              <Checkbox {...attrs} bind:checked={$formData.includeData} />
+              <div class="space-y-1 leading-none">
+                <Form.Label>Include data</Form.Label>
+                <Form.Description>Include data from the template to the new base or table.</Form.Description>
+              </div>
+              <input name={attrs.name} value={$formData.includeData} hidden />
+            </Form.Control>
+          </Form.Field>
 
-        <Form.Button disabled={$createFromTemplate.isPending} class="mt-2 w-full">
-          {#if $createFromTemplate.isPending}
-            <LoaderCircleIcon class="mr-2 size-4 animate-spin" />
-          {/if}
-          Import
-        </Form.Button>
-      </form>
-    </Dialog.Content>
-  </Dialog.Root>
+          <Form.Button disabled={$createFromTemplate.isPending} class="mt-2 w-full">
+            {#if $createFromTemplate.isPending}
+              <LoaderCircleIcon class="mr-2 size-4 animate-spin" />
+            {/if}
+            Import
+          </Form.Button>
+        </form>
+      </Dialog.Content>
+    </Dialog.Root>
+  {:else}
+    <Button href={`/login?redirect=${encodeURIComponent(`/templates/${template.id}`)}`}
+      >Login to create a new base or table</Button
+    >
+  {/if}
 </header>

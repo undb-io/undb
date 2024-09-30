@@ -4,7 +4,7 @@ import { templateId } from "../template/value-objects/template-id.vo"
 
 export const createFromTemplateDTO = z.object({
   id: templateId,
-  spaceId: spaceIdSchema,
+  spaceId: spaceIdSchema.optional(),
   includeData: z.boolean().optional(),
 })
 
