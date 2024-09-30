@@ -1,4 +1,9 @@
+import { env } from "@undb/env"
 import { templates, type IBaseTemplateDTO, type ITemplateDTO } from "@undb/template"
+
+function getTemplateCover(folder: string, file: string) {
+  return env.UNDB_BASE_URL + "/assets/templates/" + folder + "/" + file
+}
 
 export const templateData: ITemplateDTO[] = [
   {
@@ -6,6 +11,7 @@ export const templateData: ITemplateDTO[] = [
     icon: "🚀",
     name: "Project Management",
     categories: ["it"],
+    cover: getTemplateCover("projectManagement", "cover.jpg"),
     description:
       "A comprehensive template for managing projects, tasks, and team collaboration. It includes features for tracking project progress, assigning tasks, managing resources, and facilitating team communication, helping you achieve project goals more efficiently.",
     template: {
