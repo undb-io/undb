@@ -27,6 +27,7 @@ import { GetTableForeignTablesQueryHandler } from "./get-table-foreign-tables.qu
 import { GetTableQueryHandler } from "./get-table.query-handler"
 import { GetTablesByBaseIdQueryHandler } from "./get-tables-by-base-id.query-handler"
 import { GetTablesQueryHandler } from "./get-tables.query-handler"
+import { GetTemplateQueryHandler } from "./get-template.query-handler"
 import { GetTemplatesQueryHandler } from "./get-templates.query-handler"
 import { GetWebhooksQueryHandler } from "./get-webhooks.query-handler"
 
@@ -62,4 +63,5 @@ export const queryHandlers = [
   GetBaseByShareQueryHandler,
   GetTableByShareBaseQueryHandler,
   GetTemplatesQueryHandler,
+  GetTemplateQueryHandler
 ]

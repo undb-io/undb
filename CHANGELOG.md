@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-94
+
+
+### 🚀 Enhancements
+
+- Login to create template ([ffe01de](https://github.com/undb-io/undb/commit/ffe01de))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-93
 
 

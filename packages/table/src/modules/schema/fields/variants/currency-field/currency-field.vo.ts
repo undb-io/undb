@@ -91,6 +91,10 @@ export class CurrencyField extends AbstractField<CurrencyFieldValue, CurrencyFie
     return this.#constraint.props.min
   }
 
+  format(value: number) {
+    return `${this.symbol} ${value}`
+  }
+
   override get valueSchema() {
     return this.#constraint.schema
   }

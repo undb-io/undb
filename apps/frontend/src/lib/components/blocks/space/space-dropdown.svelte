@@ -17,7 +17,6 @@
   import { goto, invalidateAll } from "$app/navigation"
   import { Skeleton } from "$lib/components/ui/skeleton"
   import { toast } from "svelte-sonner"
-  import { env } from "$env/dynamic/public"
 
   export let space: ISpaceDTO
   export let me: any

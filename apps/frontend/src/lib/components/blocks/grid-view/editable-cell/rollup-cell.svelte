@@ -7,6 +7,7 @@
   import * as Popover from "$lib/components/ui/popover"
 
   export let value: string | Array<string | null>
+  export let displayValue: string | null
   export let field: RollupField
   export let isEditing: boolean
   export let isSelected: boolean

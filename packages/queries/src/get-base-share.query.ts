@@ -10,13 +10,13 @@ export const getBaseShareQuery = z.object({
 
 export type IGetBaseShareQuery = z.infer<typeof getBaseShareQuery>
 
-export const getTemplateOutput = z.object({
+export const getBaseShareOutput = z.object({
   baseId: baseIdSchema,
   spaceId: spaceIdSchema,
   name: z.string(),
 })
 
-export type IGetTemplateOutput = z.infer<typeof getTemplateOutput>
+export type IGetBaseShareOutput = z.infer<typeof getBaseShareOutput>
 
 export class GetBaseShareQuery extends Query implements IGetBaseShareQuery {
   public readonly shareId: string
