@@ -12,6 +12,11 @@ export const templateData: ITemplateDTO[] = [
     name: "Project Management",
     categories: ["it"],
     cover: getTemplateImage("projectManagement", "cover.jpg"),
+    images: [
+      getTemplateImage("projectManagement", "image1.png"),
+      getTemplateImage("projectManagement", "image2.png"),
+      getTemplateImage("projectManagement", "image3.png"),
+    ],
     description:
       "A comprehensive template for managing projects, tasks, and team collaboration. It includes features for tracking project progress, assigning tasks, managing resources, and facilitating team communication, helping you achieve project goals more efficiently.",
     template: {

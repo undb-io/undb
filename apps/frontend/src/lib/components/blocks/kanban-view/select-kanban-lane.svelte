@@ -289,20 +289,6 @@
         </DropdownMenu.Trigger>
         <DropdownMenu.Content class="w-48">
           <DropdownMenu.Group>
-            {#if !shareId && !readonly && option}
-              <DropdownMenu.Item class="text-xs text-gray-700" on:click={() => (updateOptionDialogOpen = true)}>
-                <PencilIcon class="mr-2 h-3 w-3" />
-                Update option
-              </DropdownMenu.Item>
-              <DropdownMenu.Item
-                disabled={field.options.length <= 1}
-                class="text-xs text-gray-700"
-                on:click={() => (deleteOptionDialogOpen = true)}
-              >
-                <TrashIcon class="mr-2 h-3 w-3" />
-                Delete option
-              </DropdownMenu.Item>
-            {/if}
             <DropdownMenu.Item
               class="text-xs text-gray-700"
               on:click={() => {
@@ -315,6 +301,20 @@
               <Maximize2Icon class="mr-2 h-3 w-3" />
               Collapse Lane
             </DropdownMenu.Item>
+            {#if !shareId && !readonly && option}
+              <DropdownMenu.Item class="text-xs text-gray-700" on:click={() => (updateOptionDialogOpen = true)}>
+                <PencilIcon class="mr-2 h-3 w-3" />
+                Update option
+              </DropdownMenu.Item>
+              <DropdownMenu.Item
+                disabled={field.options.length <= 1}
+                class="text-xs hover:!bg-red-200 hover:!text-red-700"
+                on:click={() => (deleteOptionDialogOpen = true)}
+              >
+                <TrashIcon class="mr-2 h-3 w-3" />
+                Delete option
+              </DropdownMenu.Item>
+            {/if}
           </DropdownMenu.Group>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
@@ -423,7 +423,12 @@
       </AlertDialog.Header>
       <AlertDialog.Footer>
         <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-        <AlertDialog.Action on:click={() => deleteOption()}>Continue</AlertDialog.Action>
+        <AlertDialog.Action asChild let:builder>
+          <Button builders={[builder]} variant="destructive" on:click={() => deleteOption()}>
+            <TrashIcon class="mr-2 size-4" />
+            Delete</Button
+          >
+        </AlertDialog.Action>
       </AlertDialog.Footer>
     </AlertDialog.Content>
   </AlertDialog.Root>
