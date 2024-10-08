@@ -20,6 +20,7 @@
   export let selected = writable<string[]>()
   export let onValueChange = (value: string[]) => {}
   export let onOpenChange: (open: boolean) => void = () => {}
+  export let onSuccess: (id?: string) => void = () => {}
 
   const foreignTableStore = new GetForeignTableStore()
 
@@ -57,6 +58,7 @@
         {foreignTable}
         bind:selected
         {onValueChange}
+        {onSuccess}
       />
     {/if}
   </Popover.Content>

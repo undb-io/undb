@@ -2,12 +2,17 @@
   import type { ReferenceField } from "@undb/table"
   import ForeignRecordsPickerDropdown from "../../reference/foreign-records-picker-dropdown.svelte"
   import { Button } from "$lib/components/ui/button"
-  import { writable, type Writable } from "svelte/store"
+  import { writable, type Readable, type Writable } from "svelte/store"
+  import { getRecordsStore } from "$lib/store/records.store"
+  import { getTable } from "$lib/store/table.store"
+
+  const table = getTable()
 
   export let tableId: string
   export let field: ReferenceField
   export let value: string[] = []
   export let displayValue: string[]
+  export let viewId: Readable<string | undefined>
   export let isEditing: boolean
   export let isSelected: boolean
   export let recordId: string
@@ -24,6 +29,12 @@
   $: if (hasValue && !hasValueReactive) {
     hasValue = hasValueReactive
   }
+
+  const recordStore = getRecordsStore()
+
+  function onSuccess(id: string) {
+    recordStore.invalidateRecord($table, id, $viewId)
+  }
 </script>
 
 <div class={$$restProps.class}>
@@ -36,6 +47,7 @@
             hasValue = hasValueReactive
           }
         }}
+        {onValueChange}
         {field}
         {tableId}
         {recordId}
@@ -43,6 +55,7 @@
         bind:isSelected={hasValue}
         bind:selected
         let:builder
+        {onSuccess}
       >
         {#if hasValueReactive}
           <Button size="xs" variant="link" class="px-0" builders={[builder]}>
@@ -57,6 +70,7 @@
     {#if (isSelected || isEditing) && hasValueReactive}
       <ForeignRecordsPickerDropdown
         {onValueChange}
+        {onSuccess}
         shouldUpdate
         {field}
         {tableId}

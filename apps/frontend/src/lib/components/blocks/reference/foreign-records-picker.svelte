@@ -29,6 +29,8 @@
   export let recordId: string | undefined = undefined
   export let field: ReferenceField
   export let onValueChange = (value: string[]) => {}
+  export let onSuccess: (id?: string) => void
+
   let linkAfterCreate = true
 
   const perPage = writable(20)
@@ -92,6 +94,7 @@
     mutationFn: trpc.record.update.mutate,
     async onSuccess(data, variables, context) {
       await client.invalidateQueries({ queryKey: ["records", field.foreignTableId] })
+      onSuccess?.(recordId)
     },
     onError(error: Error) {
       toast.error(error.message)

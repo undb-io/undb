@@ -122,7 +122,7 @@
             const record = $store.records.get(item.row.original.id)
             const displayValue = record?.displayValues?.toJSON()?.[field.id.value]
             return createRender(GridViewCell, {
-              r,
+              viewId,
               index,
               value: item.value,
               field,
