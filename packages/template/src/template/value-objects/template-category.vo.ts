@@ -13,6 +13,9 @@ export const templateCategory = z.enum([
   "design",
   "customer-support",
   "other",
+  "startup",
+  "project",
+  "personal",
 ])
 
 export type ITemplateCategory = z.infer<typeof templateCategory>

@@ -11,6 +11,7 @@ export const templateDTO = z.object({
   cover: z.string().optional(),
   images: z.array(z.string()).optional(),
   description: z.string().optional(),
+  detail: z.string().optional(),
   categories: templateCategory.array(),
   template: templateSchemaVariants,
 })

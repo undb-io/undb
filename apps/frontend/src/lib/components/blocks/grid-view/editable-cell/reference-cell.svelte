@@ -32,8 +32,10 @@
 
   const recordStore = getRecordsStore()
 
-  function onSuccess(id: string) {
-    recordStore.invalidateRecord($table, id, $viewId)
+  function onSuccess(id?: string) {
+    if (id) {
+      recordStore.invalidateRecord($table, id, $viewId)
+    }
   }
 </script>
 
