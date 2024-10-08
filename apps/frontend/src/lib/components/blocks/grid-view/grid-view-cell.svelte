@@ -27,6 +27,7 @@
   import ButtonCell from "./editable-cell/button-cell.svelte"
   import DurationCell from "./editable-cell/duration-cell.svelte"
   import PercentageCell from "./editable-cell/percentage-cell.svelte"
+  import type { Readable } from "svelte/store"
 
   const table = getTable()
   const recordsStore = getRecordsStore()
@@ -34,6 +35,7 @@
   export let value: any
   export let displayValue: any
   export let index: number
+  export let viewId: Readable<string | undefined>
   export let field: Field
   export let recordId: string
   export let record: RecordDO | undefined
@@ -80,6 +82,7 @@
   {isSelected}
   {recordId}
   {record}
+  {viewId}
   readonly={field.isSystem || readonly}
   tableId={$table.id.value}
   class={cn(

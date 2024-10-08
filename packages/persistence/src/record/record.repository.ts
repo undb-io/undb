@@ -146,8 +146,9 @@ export class RecordRepository implements IRecordRepository {
   }
 
   async findOne(table: TableDo, spec: Option<RecordComositeSpecification>): Promise<Option<RecordDO>> {
-    const foreignTables = await this.getForeignTables(table, table.schema.fields)
-    const qb = this.helper.createQuery(table, foreignTables, table.schema.fields, spec)
+    const selected = table.getSelectFields()
+    const foreignTables = await this.getForeignTables(table, selected)
+    const qb = this.helper.createQuery(table, foreignTables, selected, spec)
 
     const record = await qb.limit(1).executeTakeFirst()
     const dto = record ? getRecordDTOFromEntity(table, record, foreignTables) : undefined
@@ -155,8 +156,9 @@ export class RecordRepository implements IRecordRepository {
   }
 
   async find(table: TableDo, spec: Option<RecordComositeSpecification>): Promise<RecordDO[]> {
-    const foreignTables = await this.getForeignTables(table, table.schema.fields)
-    const qb = this.helper.createQuery(table, foreignTables, table.schema.fields, spec)
+    const selected = table.getSelectFields()
+    const foreignTables = await this.getForeignTables(table, selected)
+    const qb = this.helper.createQuery(table, foreignTables, selected, spec)
     const records = await qb.where(this.helper.handleWhere(table, spec)).execute()
 
     return records.map((record) => {
@@ -166,8 +168,9 @@ export class RecordRepository implements IRecordRepository {
   }
 
   async findOneById(table: TableDo, recordId: RecordId): Promise<Option<RecordDO>> {
-    const foreignTables = await this.getForeignTables(table, table.schema.fields)
-    const qb = this.helper.createQuery(table, foreignTables, table.schema.fields, None)
+    const selected = table.getSelectFields()
+    const foreignTables = await this.getForeignTables(table, selected)
+    const qb = this.helper.createQuery(table, foreignTables, selected, None)
 
     const records = await qb.where(`${table.id.value}.${ID_TYPE}`, "=", recordId.value).limit(1).execute()
 
@@ -180,9 +183,9 @@ export class RecordRepository implements IRecordRepository {
   }
 
   async findByIds(table: TableDo, ids: RecordId[]): Promise<RecordDO[]> {
-    const t = new UnderlyingTable(table)
-    const foreignTables = await this.getForeignTables(table, table.schema.fields)
-    const qb = this.helper.createQuery(table, foreignTables, table.schema.fields, None)
+    const selected = table.getSelectFields()
+    const foreignTables = await this.getForeignTables(table, selected)
+    const qb = this.helper.createQuery(table, foreignTables, selected, None)
 
     const records = await qb
       .where(

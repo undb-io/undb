@@ -1,4 +1,4 @@
-import type { ISpecVisitor, ISpecification } from "@undb/domain"
+import type { ISpecVisitor, ISpecification, Option } from "@undb/domain"
 import type { CompiledQuery, Expression, ExpressionBuilder } from "kysely"
 
 type TExpression = Expression<any>
@@ -40,6 +40,14 @@ export abstract class AbstractQBVisitor<T> implements IAbastractQBVisitor, ISpec
     }
 
     return cond
+  }
+
+  exec(spec: Option<ISpecification<T, ISpecVisitor>>) {
+    if (spec.isSome()) {
+      spec.unwrap().accept(this)
+    }
+
+    return this.cond
   }
 
   and(left: ISpecification<T, ISpecVisitor>, right: ISpecification<T, ISpecVisitor>): this {

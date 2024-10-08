@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
-  import { PlusIcon, SearchIcon, SettingsIcon, PanelLeftCloseIcon, PackageIcon } from "lucide-svelte"
+  import { CirclePlusIcon, SearchIcon, SettingsIcon, PanelLeftCloseIcon, PackageIcon } from "lucide-svelte"
   import { commandOpen } from "../command/command.store"
   import { CREATE_BASE_MODAL, IMPORT_TEMPLATE_MODAL, toggleModal } from "$lib/store/modal.store"
   import { page } from "$app/stores"
@@ -52,7 +52,7 @@
       variant="link"
       size="xs"
     >
-      <SettingsIcon class="mr-2 h-4 w-4" />
+      <SettingsIcon class="mr-2 size-4" />
       {#if space?.isPersonal}
         Settings
       {:else}
@@ -67,7 +67,7 @@
         variant="link"
         size="xs"
       >
-        <PlusIcon class="mr-2 h-3 w-3" />
+        <CirclePlusIcon class="mr-2 size-4" />
         Create New Base
       </Button>
 
@@ -77,7 +77,7 @@
         variant="link"
         size="xs"
       >
-        <PackageIcon class="mr-2 h-3 w-3" />
+        <PackageIcon class="mr-2 size-4" />
         Import From Template
       </Button>
     {/if}

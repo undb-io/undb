@@ -1,6 +1,7 @@
 import type { SetContextValue } from "@undb/context"
 import { inject, singleton } from "@undb/di"
 import { None, Option, Some } from "oxide.ts"
+import { match, P } from "ts-pattern"
 import type { ICreateSpaceDTO, ISpaceDTO } from "./dto"
 import type { ISpaceSpecification } from "./interface"
 import type { Space } from "./space.do"
@@ -11,13 +12,13 @@ import {
   type ISpaceQueryRepository,
   type ISpaceRepository,
 } from "./space.repository"
-import { WithSpaceApiToken, WithSpaceBaseId, WithSpaceId } from "./specifications"
-import { WithSpaceShareId } from "./specifications/space-share-id.specification"
+import { WithSpaceApiToken, WithSpaceBaseId, WithSpaceId, WithSpaceShareId, WithSpaceTableId } from "./specifications"
 import { WithSpaceUserId } from "./specifications/space-user-id.specification"
 
 interface IGetSpaceInput {
   spaceId?: string
   baseId?: string
+  tableId?: string
   apiToken?: string
   shareId?: string
   userId?: string
@@ -60,19 +61,15 @@ export class SpaceService implements ISpaceService {
   }
 
   async getSpace(input: IGetSpaceInput): Promise<Option<Space>> {
-    let spec: Option<ISpaceSpecification> = None
-
-    if (input.spaceId) {
-      spec = Some(WithSpaceId.fromString(input.spaceId))
-    } else if (input.baseId) {
-      spec = Some(new WithSpaceBaseId(input.baseId))
-    } else if (input.apiToken) {
-      spec = Some(new WithSpaceApiToken(input.apiToken))
-    } else if (input.shareId) {
-      spec = Some(new WithSpaceShareId(input.shareId))
-    } else if (input.userId) {
-      spec = Some(new WithSpaceUserId(input.userId))
-    }
+    const spec = match(input)
+      .returnType<Option<ISpaceSpecification>>()
+      .with({ spaceId: P.string }, () => Some(WithSpaceId.fromString(input.spaceId!)))
+      .with({ baseId: P.string }, () => Some(new WithSpaceBaseId(input.baseId!)))
+      .with({ tableId: P.string }, () => Some(new WithSpaceTableId(input.tableId!)))
+      .with({ apiToken: P.string }, () => Some(new WithSpaceApiToken(input.apiToken!)))
+      .with({ shareId: P.string }, () => Some(new WithSpaceShareId(input.shareId!)))
+      .with({ userId: P.string }, () => Some(new WithSpaceUserId(input.userId!)))
+      .otherwise(() => None)
 
     if (spec.isNone()) {
       return None

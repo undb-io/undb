@@ -34,6 +34,71 @@
                   "color": "yellow",
                   "id": "networking",
                   "name": "Networking"
+                },
+                {
+                  "color": "green",
+                  "id": "workshop",
+                  "name": "Workshop"
+                },
+                {
+                  "color": "red",
+                  "id": "presentation",
+                  "name": "Presentation"
+                },
+                {
+                  "color": "orange",
+                  "id": "social",
+                  "name": "Social"
+                },
+                {
+                  "color": "pink",
+                  "id": "demo",
+                  "name": "Demo"
+                },
+                {
+                  "color": "teal",
+                  "id": "symposium",
+                  "name": "Symposium"
+                },
+                {
+                  "color": "indigo",
+                  "id": "competition",
+                  "name": "Competition"
+                },
+                {
+                  "color": "orange",
+                  "id": "career",
+                  "name": "Career"
+                },
+                {
+                  "color": "cyan",
+                  "id": "ceremony",
+                  "name": "Ceremony"
+                },
+                {
+                  "color": "lime",
+                  "id": "exhibition",
+                  "name": "Exhibition"
+                },
+                {
+                  "color": "yellow",
+                  "id": "discussion",
+                  "name": "Discussion"
+                },
+                {
+                  "color": "red",
+                  "id": "mentoring",
+                  "name": "Mentoring"
+                },
+                {
+                  "color": "green",
+                  "id": "break",
+                  "name": "Break"
+                },
+                {
+                  "color": "blue",
+                  "id": "seminar",
+                  "name": "Seminar"
                 }
               ]
             }
@@ -86,6 +151,285 @@
             "Location": "Auditorium",
             "Speakers": ["speaker-1"],
             "Notes": "Jane will be speaking about the future of technology"
+          },
+          {
+            "Activity": "Panel Discussion: AI Ethics",
+            "Type": "panel",
+            "Start": "2021-09-01T11:00:00.000Z",
+            "End": "2021-09-01T12:30:00.000Z",
+            "Location": "Conference Room B",
+            "Speakers": ["speaker-2", "speaker-3"],
+            "Notes": "Exploring ethical considerations in AI development"
+          },
+          {
+            "Activity": "Networking Lunch",
+            "Type": "meal",
+            "Start": "2021-09-01T12:30:00.000Z",
+            "End": "2021-09-01T14:00:00.000Z",
+            "Location": "Garden Terrace",
+            "Speakers": [],
+            "Notes": "Buffet lunch with vegetarian options available"
+          },
+          {
+            "Activity": "Workshop: Cloud Computing",
+            "Type": "workshop",
+            "Start": "2021-09-01T14:00:00.000Z",
+            "End": "2021-09-01T16:00:00.000Z",
+            "Location": "Tech Lab",
+            "Speakers": ["speaker-1"],
+            "Notes": "Hands-on session on cloud infrastructure"
+          },
+          {
+            "Activity": "Coffee Break",
+            "Type": "break",
+            "Start": "2021-09-01T16:00:00.000Z",
+            "End": "2021-09-01T16:30:00.000Z",
+            "Location": "Lobby",
+            "Speakers": [],
+            "Notes": "Refreshments and light snacks provided"
+          },
+          {
+            "Activity": "Closing Remarks",
+            "Type": "presentation",
+            "Start": "2021-09-01T16:30:00.000Z",
+            "End": "2021-09-01T17:00:00.000Z",
+            "Location": "Auditorium",
+            "Speakers": ["speaker-2"],
+            "Notes": "Summary of the day's events and future outlook"
+          },
+          {
+            "Activity": "VR Demo",
+            "Type": "demo",
+            "Start": "2021-09-02T09:00:00.000Z",
+            "End": "2021-09-02T11:00:00.000Z",
+            "Location": "Innovation Hub",
+            "Speakers": ["speaker-3"],
+            "Notes": "Showcasing latest VR technologies"
+          },
+          {
+            "Activity": "Blockchain Seminar",
+            "Type": "seminar",
+            "Start": "2021-09-02T11:30:00.000Z",
+            "End": "2021-09-02T13:00:00.000Z",
+            "Location": "Conference Room A",
+            "Speakers": ["speaker-1", "speaker-2"],
+            "Notes": "Exploring blockchain applications in various industries"
+          },
+          {
+            "Activity": "Startup Pitch Competition",
+            "Type": "competition",
+            "Start": "2021-09-02T14:00:00.000Z",
+            "End": "2021-09-02T16:00:00.000Z",
+            "Location": "Auditorium",
+            "Speakers": [],
+            "Notes": "10 startups competing for funding"
+          },
+          {
+            "Activity": "Gala Dinner",
+            "Type": "meal",
+            "Start": "2021-09-02T19:00:00.000Z",
+            "End": "2021-09-02T22:00:00.000Z",
+            "Location": "Grand Ballroom",
+            "Speakers": [],
+            "Notes": "Formal attire required, awards ceremony included"
+          },
+          {
+            "Activity": "IoT Workshop",
+            "Type": "workshop",
+            "Start": "2021-09-03T09:00:00.000Z",
+            "End": "2021-09-03T11:00:00.000Z",
+            "Location": "Tech Lab",
+            "Speakers": ["speaker-3"],
+            "Notes": "Practical session on IoT device programming"
+          },
+          {
+            "Activity": "Future of Work Panel",
+            "Type": "panel",
+            "Start": "2021-09-03T11:30:00.000Z",
+            "End": "2021-09-03T13:00:00.000Z",
+            "Location": "Conference Room B",
+            "Speakers": ["speaker-1", "speaker-2", "speaker-3"],
+            "Notes": "Discussing remote work trends and technologies"
+          },
+          {
+            "Activity": "Networking Lunch",
+            "Type": "meal",
+            "Start": "2021-09-03T13:00:00.000Z",
+            "End": "2021-09-03T14:30:00.000Z",
+            "Location": "Rooftop Garden",
+            "Speakers": [],
+            "Notes": "Casual lunch with scenic views"
+          },
+          {
+            "Activity": "Cybersecurity Masterclass",
+            "Type": "workshop",
+            "Start": "2021-09-03T15:00:00.000Z",
+            "End": "2021-09-03T17:00:00.000Z",
+            "Location": "Secure Lab",
+            "Speakers": ["speaker-2"],
+            "Notes": "Advanced techniques in network security"
+          },
+          {
+            "Activity": "Closing Keynote",
+            "Type": "keynote",
+            "Start": "2021-09-03T17:30:00.000Z",
+            "End": "2021-09-03T18:30:00.000Z",
+            "Location": "Auditorium",
+            "Speakers": ["speaker-1"],
+            "Notes": "Inspirational talk on innovation and future tech"
+          },
+          {
+            "Activity": "Farewell Cocktail Reception",
+            "Type": "networking",
+            "Start": "2021-09-03T19:00:00.000Z",
+            "End": "2021-09-03T21:00:00.000Z",
+            "Location": "Skyline Lounge",
+            "Speakers": [],
+            "Notes": "Casual networking event with drinks and canapés"
+          },
+          {
+            "Activity": "AI in Healthcare Symposium",
+            "Type": "symposium",
+            "Start": "2021-09-04T09:00:00.000Z",
+            "End": "2021-09-04T12:00:00.000Z",
+            "Location": "Medical Tech Center",
+            "Speakers": ["speaker-1", "speaker-3"],
+            "Notes": "Exploring AI applications in medical diagnosis and treatment"
+          },
+          {
+            "Activity": "Green Tech Showcase",
+            "Type": "exhibition",
+            "Start": "2021-09-04T13:00:00.000Z",
+            "End": "2021-09-04T16:00:00.000Z",
+            "Location": "Exhibition Hall",
+            "Speakers": [],
+            "Notes": "Displaying latest innovations in sustainable technology"
+          },
+          {
+            "Activity": "Quantum Computing Talk",
+            "Type": "presentation",
+            "Start": "2021-09-04T16:30:00.000Z",
+            "End": "2021-09-04T17:30:00.000Z",
+            "Location": "Lecture Hall",
+            "Speakers": ["speaker-2"],
+            "Notes": "Introduction to quantum computing principles and applications"
+          },
+          {
+            "Activity": "Tech Trivia Night",
+            "Type": "social",
+            "Start": "2021-09-04T20:00:00.000Z",
+            "End": "2021-09-04T22:00:00.000Z",
+            "Location": "Hotel Bar",
+            "Speakers": [],
+            "Notes": "Fun quiz night with tech-themed questions and prizes"
+          },
+          {
+            "Activity": "Robotics Demonstration",
+            "Type": "demo",
+            "Start": "2021-09-05T10:00:00.000Z",
+            "End": "2021-09-05T12:00:00.000Z",
+            "Location": "Robotics Lab",
+            "Speakers": ["speaker-3"],
+            "Notes": "Live demonstration of advanced robotics systems"
+          },
+          {
+            "Activity": "Women in Tech Luncheon",
+            "Type": "networking",
+            "Start": "2021-09-05T12:30:00.000Z",
+            "End": "2021-09-05T14:00:00.000Z",
+            "Location": "Executive Dining Room",
+            "Speakers": ["speaker-1"],
+            "Notes": "Celebrating and supporting women in technology fields"
+          },
+          {
+            "Activity": "5G and Beyond Panel",
+            "Type": "panel",
+            "Start": "2021-09-05T14:30:00.000Z",
+            "End": "2021-09-05T16:00:00.000Z",
+            "Location": "Conference Room A",
+            "Speakers": ["speaker-2", "speaker-3"],
+            "Notes": "Discussing the future of mobile networks and connectivity"
+          },
+          {
+            "Activity": "Augmented Reality Workshop",
+            "Type": "workshop",
+            "Start": "2021-09-05T16:30:00.000Z",
+            "End": "2021-09-05T18:30:00.000Z",
+            "Location": "AR/VR Studio",
+            "Speakers": ["speaker-1"],
+            "Notes": "Hands-on session creating AR applications"
+          },
+          {
+            "Activity": "Tech Ethics Roundtable",
+            "Type": "discussion",
+            "Start": "2021-09-06T09:00:00.000Z",
+            "End": "2021-09-06T11:00:00.000Z",
+            "Location": "Boardroom",
+            "Speakers": ["speaker-1", "speaker-2", "speaker-3"],
+            "Notes": "Open discussion on ethical challenges in technology"
+          },
+          {
+            "Activity": "Data Science Bootcamp",
+            "Type": "workshop",
+            "Start": "2021-09-06T11:30:00.000Z",
+            "End": "2021-09-06T15:30:00.000Z",
+            "Location": "Computer Lab",
+            "Speakers": ["speaker-2"],
+            "Notes": "Intensive session on data analysis and machine learning"
+          },
+          {
+            "Activity": "Tech Startup Mentoring",
+            "Type": "mentoring",
+            "Start": "2021-09-06T16:00:00.000Z",
+            "End": "2021-09-06T18:00:00.000Z",
+            "Location": "Meeting Rooms",
+            "Speakers": ["speaker-1", "speaker-3"],
+            "Notes": "One-on-one mentoring sessions for tech entrepreneurs"
+          },
+          {
+            "Activity": "Cybersecurity CTF Competition",
+            "Type": "competition",
+            "Start": "2021-09-07T09:00:00.000Z",
+            "End": "2021-09-07T17:00:00.000Z",
+            "Location": "Secure Lab",
+            "Speakers": [],
+            "Notes": "Capture The Flag competition for security enthusiasts"
+          },
+          {
+            "Activity": "Future of Transportation Symposium",
+            "Type": "symposium",
+            "Start": "2021-09-07T10:00:00.000Z",
+            "End": "2021-09-07T13:00:00.000Z",
+            "Location": "Auditorium",
+            "Speakers": ["speaker-1", "speaker-2"],
+            "Notes": "Exploring electric vehicles, autonomous driving, and urban mobility"
+          },
+          {
+            "Activity": "Open Source Contributors Meetup",
+            "Type": "networking",
+            "Start": "2021-09-07T14:00:00.000Z",
+            "End": "2021-09-07T16:00:00.000Z",
+            "Location": "Collaboration Space",
+            "Speakers": [],
+            "Notes": "Casual meetup for open source project contributors"
+          },
+          {
+            "Activity": "Tech Job Fair",
+            "Type": "career",
+            "Start": "2021-09-08T10:00:00.000Z",
+            "End": "2021-09-08T16:00:00.000Z",
+            "Location": "Exhibition Hall",
+            "Speakers": [],
+            "Notes": "Connect with tech companies and explore job opportunities"
+          },
+          {
+            "Activity": "Closing Ceremony",
+            "Type": "ceremony",
+            "Start": "2021-09-08T17:00:00.000Z",
+            "End": "2021-09-08T18:00:00.000Z",
+            "Location": "Grand Ballroom",
+            "Speakers": ["speaker-1", "speaker-2", "speaker-3"],
+            "Notes": "Wrapping up the event with final remarks and awards"
           }
         ]
       },
@@ -176,6 +520,349 @@
             "Role": "Product Manager",
             "Email": "test5@163.com",
             "Phone": "13890909090"
+          },
+          {
+            "Name": "Charlie Davis",
+            "Company": "Tech Solutions",
+            "Role": "CTO",
+            "Email": "charlie.davis@techsolutions.com",
+            "Phone": "13912345678"
+          },
+          {
+            "Name": "Diana Evans",
+            "Company": "Marketing Pros",
+            "Role": "Marketing Director",
+            "Email": "diana.evans@marketingpros.com",
+            "Phone": "13923456789"
+          },
+          {
+            "Name": "Ethan Foster",
+            "Company": "Data Insights",
+            "Role": "Data Analyst",
+            "Email": "ethan.foster@datainsights.com",
+            "Phone": "13934567890"
+          },
+          {
+            "Name": "Fiona Grant",
+            "Company": "Design Hub",
+            "Role": "UX Designer",
+            "Email": "fiona.grant@designhub.com",
+            "Phone": "13945678901"
+          },
+          {
+            "Name": "George Harris",
+            "Company": "Cloud Systems",
+            "Role": "Cloud Architect",
+            "Email": "george.harris@cloudsystems.com",
+            "Phone": "13956789012"
+          },
+          {
+            "Name": "Hannah Irving",
+            "Company": "AI Innovations",
+            "Role": "AI Researcher",
+            "Email": "hannah.irving@aiinnovations.com",
+            "Phone": "13967890123"
+          },
+          {
+            "Name": "Ian Johnson",
+            "Company": "Security First",
+            "Role": "Cybersecurity Specialist",
+            "Email": "ian.johnson@securityfirst.com",
+            "Phone": "13978901234"
+          },
+          {
+            "Name": "Julia King",
+            "Company": "Web Wizards",
+            "Role": "Frontend Developer",
+            "Email": "julia.king@webwizards.com",
+            "Phone": "13989012345"
+          },
+          {
+            "Name": "Kevin Lee",
+            "Company": "Mobile Masters",
+            "Role": "Mobile App Developer",
+            "Email": "kevin.lee@mobilemasters.com",
+            "Phone": "13990123456"
+          },
+          {
+            "Name": "Laura Miller",
+            "Company": "Network Nexus",
+            "Role": "Network Engineer",
+            "Email": "laura.miller@networknexus.com",
+            "Phone": "13901234567"
+          },
+          {
+            "Name": "Michael Nelson",
+            "Company": "DevOps Dynamo",
+            "Role": "DevOps Engineer",
+            "Email": "michael.nelson@devopsdynamo.com",
+            "Phone": "13912345670"
+          },
+          {
+            "Name": "Natalie Owen",
+            "Company": "Quality Quest",
+            "Role": "QA Tester",
+            "Email": "natalie.owen@qualityquest.com",
+            "Phone": "13923456781"
+          },
+          {
+            "Name": "Oscar Parker",
+            "Company": "Blockchain Builders",
+            "Role": "Blockchain Developer",
+            "Email": "oscar.parker@blockchainbuilders.com",
+            "Phone": "13934567892"
+          },
+          {
+            "Name": "Penny Quinn",
+            "Company": "Project Pros",
+            "Role": "Project Manager",
+            "Email": "penny.quinn@projectpros.com",
+            "Phone": "13945678903"
+          },
+          {
+            "Name": "Quentin Ross",
+            "Company": "VR Ventures",
+            "Role": "VR Developer",
+            "Email": "quentin.ross@vrventures.com",
+            "Phone": "13956789014"
+          },
+          {
+            "Name": "Rachel Scott",
+            "Company": "Data Driven",
+            "Role": "Data Scientist",
+            "Email": "rachel.scott@datadriven.com",
+            "Phone": "13967890125"
+          },
+          {
+            "Name": "Samuel Taylor",
+            "Company": "IoT Innovators",
+            "Role": "IoT Specialist",
+            "Email": "samuel.taylor@iotinnovators.com",
+            "Phone": "13978901236"
+          },
+          {
+            "Name": "Tina Underwood",
+            "Company": "UI United",
+            "Role": "UI Designer",
+            "Email": "tina.underwood@uiunited.com",
+            "Phone": "13989012347"
+          },
+          {
+            "Name": "Ulysses Vance",
+            "Company": "Backend Builders",
+            "Role": "Backend Developer",
+            "Email": "ulysses.vance@backendbuilders.com",
+            "Phone": "13990123458"
+          },
+          {
+            "Name": "Victoria White",
+            "Company": "Agile Aces",
+            "Role": "Scrum Master",
+            "Email": "victoria.white@agileaces.com",
+            "Phone": "13901234569"
+          },
+          {
+            "Name": "William Xavier",
+            "Company": "ML Mavericks",
+            "Role": "Machine Learning Engineer",
+            "Email": "william.xavier@mlmavericks.com",
+            "Phone": "13912345671"
+          },
+          {
+            "Name": "Xena Young",
+            "Company": "Code Crafters",
+            "Role": "Software Architect",
+            "Email": "xena.young@codecrafters.com",
+            "Phone": "13923456782"
+          },
+          {
+            "Name": "Yannick Zane",
+            "Company": "API Artisans",
+            "Role": "API Developer",
+            "Email": "yannick.zane@apiartisans.com",
+            "Phone": "13934567893"
+          },
+          {
+            "Name": "Zoe Adams",
+            "Company": "Testing Titans",
+            "Role": "Test Automation Engineer",
+            "Email": "zoe.adams@testingtitans.com",
+            "Phone": "13945678904"
+          },
+          {
+            "Name": "Adam Baker",
+            "Company": "Cloud Champions",
+            "Role": "Cloud Engineer",
+            "Email": "adam.baker@cloudchampions.com",
+            "Phone": "13956789015"
+          },
+          {
+            "Name": "Bella Carter",
+            "Company": "Security Sentinels",
+            "Role": "Information Security Analyst",
+            "Email": "bella.carter@securitysentinels.com",
+            "Phone": "13967890126"
+          },
+          {
+            "Name": "Cameron Dixon",
+            "Company": "UX Universe",
+            "Role": "UX Researcher",
+            "Email": "cameron.dixon@uxuniverse.com",
+            "Phone": "13978901237"
+          },
+          {
+            "Name": "Daisy Ellis",
+            "Company": "Data Detectives",
+            "Role": "Business Intelligence Analyst",
+            "Email": "daisy.ellis@datadetectives.com",
+            "Phone": "13989012348"
+          },
+          {
+            "Name": "Eli Fisher",
+            "Company": "Mobile Mavericks",
+            "Role": "iOS Developer",
+            "Email": "eli.fisher@mobilemavericks.com",
+            "Phone": "13990123459"
+          },
+          {
+            "Name": "Faye Graham",
+            "Company": "Web Warriors",
+            "Role": "Full Stack Developer",
+            "Email": "faye.graham@webwarriors.com",
+            "Phone": "13901234570"
+          },
+          {
+            "Name": "Gavin Hughes",
+            "Company": "AI Architects",
+            "Role": "AI Engineer",
+            "Email": "gavin.hughes@aiarchitects.com",
+            "Phone": "13912345672"
+          },
+          {
+            "Name": "Holly Ingram",
+            "Company": "DevSecOps Defenders",
+            "Role": "DevSecOps Engineer",
+            "Email": "holly.ingram@devsecopsdefenders.com",
+            "Phone": "13923456783"
+          },
+          {
+            "Name": "Isaac James",
+            "Company": "Quantum Questers",
+            "Role": "Quantum Computing Researcher",
+            "Email": "isaac.james@quantumquesters.com",
+            "Phone": "13934567894"
+          },
+          {
+            "Name": "Jasmine Kelly",
+            "Company": "AR Adventurers",
+            "Role": "AR Developer",
+            "Email": "jasmine.kelly@aradventurers.com",
+            "Phone": "13945678905"
+          },
+          {
+            "Name": "Kyle Lawrence",
+            "Company": "Ethical Hackers",
+            "Role": "Penetration Tester",
+            "Email": "kyle.lawrence@ethicalhackers.com",
+            "Phone": "13956789016"
+          },
+          {
+            "Name": "Lily Morgan",
+            "Company": "Cloud Native Ninjas",
+            "Role": "Kubernetes Specialist",
+            "Email": "lily.morgan@cloudnativeninjas.com",
+            "Phone": "13967890127"
+          },
+          {
+            "Name": "Mason Newton",
+            "Company": "Big Data Brainiacs",
+            "Role": "Big Data Engineer",
+            "Email": "mason.newton@bigdatabrainiacs.com",
+            "Phone": "13978901238"
+          },
+          {
+            "Name": "Nora Oliver",
+            "Company": "Serverless Sages",
+            "Role": "Serverless Architect",
+            "Email": "nora.oliver@serverlesssages.com",
+            "Phone": "13989012349"
+          },
+          {
+            "Name": "Owen Patterson",
+            "Company": "Microservices Maestros",
+            "Role": "Microservices Developer",
+            "Email": "owen.patterson@microservicesmaestros.com",
+            "Phone": "13990123460"
+          },
+          {
+            "Name": "Paige Quinn",
+            "Company": "Blockchain Brainiacs",
+            "Role": "Smart Contract Developer",
+            "Email": "paige.quinn@blockchainbrainiacs.com",
+            "Phone": "13901234571"
+          },
+          {
+            "Name": "Quinn Reynolds",
+            "Company": "Edge Computing Experts",
+            "Role": "Edge Computing Specialist",
+            "Email": "quinn.reynolds@edgecomputingexperts.com",
+            "Phone": "13912345673"
+          },
+          {
+            "Name": "Ryan Sanders",
+            "Company": "NLP Ninjas",
+            "Role": "NLP Engineer",
+            "Email": "ryan.sanders@nlpninjas.com",
+            "Phone": "13923456784"
+          },
+          {
+            "Name": "Sophia Turner",
+            "Company": "Robotic Process Automation Rockstars",
+            "Role": "RPA Developer",
+            "Email": "sophia.turner@rparockstars.com",
+            "Phone": "13934567895"
+          },
+          {
+            "Name": "Tyler Underwood",
+            "Company": "Quantum Encryption Experts",
+            "Role": "Quantum Cryptographer",
+            "Email": "tyler.underwood@quantumencryptionexperts.com",
+            "Phone": "13945678906"
+          },
+          {
+            "Name": "Uma Vaughn",
+            "Company": "5G Gurus",
+            "Role": "5G Network Engineer",
+            "Email": "uma.vaughn@5ggurus.com",
+            "Phone": "13956789017"
+          },
+          {
+            "Name": "Victor Watson",
+            "Company": "Digital Twin Developers",
+            "Role": "Digital Twin Specialist",
+            "Email": "victor.watson@digitaltwindevelopers.com",
+            "Phone": "13967890128"
+          },
+          {
+            "Name": "Wendy Xavier",
+            "Company": "Predictive Analytics Pros",
+            "Role": "Predictive Analytics Specialist",
+            "Email": "wendy.xavier@predictiveanalyticspros.com",
+            "Phone": "13978901239"
+          },
+          {
+            "Name": "Xavier Young",
+            "Company": "Quantum ML Experts",
+            "Role": "Quantum Machine Learning Researcher",
+            "Email": "xavier.young@quantummlexperts.com",
+            "Phone": "13989012350"
+          },
+          {
+            "Name": "Yvonne Zhang",
+            "Company": "Zero Trust Zealots",
+            "Role": "Zero Trust Security Architect",
+            "Email": "yvonne.zhang@zerotrustzealots.com",
+            "Phone": "13990123461"
           }
         ]
       },
@@ -319,6 +1006,466 @@
             "Total budget": 1000,
             "Under budget": "true",
             "Notes": ""
+          },
+          {
+            "Name": "Audio equipment rental",
+            "Estimated": 2000,
+            "Actual": 1850,
+            "Quantity": 1,
+            "Total cost": 1850,
+            "Total budget": 2000,
+            "Under budget": "true",
+            "Notes": "Found a better deal with a local supplier"
+          },
+          {
+            "Name": "Video production",
+            "Estimated": 5000,
+            "Actual": 5200,
+            "Quantity": 1,
+            "Total cost": 5200,
+            "Total budget": 5000,
+            "Under budget": "false",
+            "Notes": "Added an extra camera for better coverage"
+          },
+          {
+            "Name": "Event insurance",
+            "Estimated": 1500,
+            "Actual": 1500,
+            "Quantity": 1,
+            "Total cost": 1500,
+            "Total budget": 1500,
+            "Under budget": "true",
+            "Notes": ""
+          },
+          {
+            "Name": "Security personnel",
+            "Estimated": 800,
+            "Actual": 750,
+            "Quantity": 5,
+            "Total cost": 3750,
+            "Total budget": 4000,
+            "Under budget": "true",
+            "Notes": "Negotiated a better rate with the security company"
+          },
+          {
+            "Name": "Transportation",
+            "Estimated": 3000,
+            "Actual": 3200,
+            "Quantity": 1,
+            "Total cost": 3200,
+            "Total budget": 3000,
+            "Under budget": "false",
+            "Notes": "Had to add an extra shuttle due to increased attendance"
+          },
+          {
+            "Name": "Signage and banners",
+            "Estimated": 1200,
+            "Actual": 1150,
+            "Quantity": 1,
+            "Total cost": 1150,
+            "Total budget": 1200,
+            "Under budget": "true",
+            "Notes": "Found a more cost-effective printing option"
+          },
+          {
+            "Name": "Event app development",
+            "Estimated": 4000,
+            "Actual": 4200,
+            "Quantity": 1,
+            "Total cost": 4200,
+            "Total budget": 4000,
+            "Under budget": "false",
+            "Notes": "Added some additional features requested by sponsors"
+          },
+          {
+            "Name": "Wi-Fi upgrade",
+            "Estimated": 1500,
+            "Actual": 1600,
+            "Quantity": 1,
+            "Total cost": 1600,
+            "Total budget": 1500,
+            "Under budget": "false",
+            "Notes": "Needed higher bandwidth due to increased attendee numbers"
+          },
+          {
+            "Name": "Stage design",
+            "Estimated": 3500,
+            "Actual": 3300,
+            "Quantity": 1,
+            "Total cost": 3300,
+            "Total budget": 3500,
+            "Under budget": "true",
+            "Notes": "Found some cost-effective decorative elements"
+          },
+          {
+            "Name": "Photography services",
+            "Estimated": 2000,
+            "Actual": 2000,
+            "Quantity": 1,
+            "Total cost": 2000,
+            "Total budget": 2000,
+            "Under budget": "true",
+            "Notes": ""
+          },
+          {
+            "Name": "Social media promotion",
+            "Estimated": 1000,
+            "Actual": 950,
+            "Quantity": 1,
+            "Total cost": 950,
+            "Total budget": 1000,
+            "Under budget": "true",
+            "Notes": "Utilized more organic reach than initially planned"
+          },
+          {
+            "Name": "Event staff uniforms",
+            "Estimated": 50,
+            "Actual": 45,
+            "Quantity": 30,
+            "Total cost": 1350,
+            "Total budget": 1500,
+            "Under budget": "true",
+            "Notes": "Found a bulk discount on uniforms"
+          },
+          {
+            "Name": "Attendee badges",
+            "Estimated": 2,
+            "Actual": 1.8,
+            "Quantity": 1000,
+            "Total cost": 1800,
+            "Total budget": 2000,
+            "Under budget": "true",
+            "Notes": "Negotiated a better price with the supplier"
+          },
+          {
+            "Name": "Event management software",
+            "Estimated": 2500,
+            "Actual": 2500,
+            "Quantity": 1,
+            "Total cost": 2500,
+            "Total budget": 2500,
+            "Under budget": "true",
+            "Notes": ""
+          },
+          {
+            "Name": "Venue decoration",
+            "Estimated": 3000,
+            "Actual": 3100,
+            "Quantity": 1,
+            "Total cost": 3100,
+            "Total budget": 3000,
+            "Under budget": "false",
+            "Notes": "Added some last-minute decorative elements"
+          },
+          {
+            "Name": "First aid services",
+            "Estimated": 800,
+            "Actual": 800,
+            "Quantity": 1,
+            "Total cost": 800,
+            "Total budget": 800,
+            "Under budget": "true",
+            "Notes": ""
+          },
+          {
+            "Name": "Interpretation services",
+            "Estimated": 2500,
+            "Actual": 2600,
+            "Quantity": 1,
+            "Total cost": 2600,
+            "Total budget": 2500,
+            "Under budget": "false",
+            "Notes": "Added an extra language due to international attendees"
+          },
+          {
+            "Name": "Event insurance",
+            "Estimated": 1500,
+            "Actual": 1500,
+            "Quantity": 1,
+            "Total cost": 1500,
+            "Total budget": 1500,
+            "Under budget": "true",
+            "Notes": ""
+          },
+          {
+            "Name": "Parking management",
+            "Estimated": 1000,
+            "Actual": 950,
+            "Quantity": 1,
+            "Total cost": 950,
+            "Total budget": 1000,
+            "Under budget": "true",
+            "Notes": "Efficient planning reduced staff needs"
+          },
+          {
+            "Name": "VIP lounge setup",
+            "Estimated": 2000,
+            "Actual": 2100,
+            "Quantity": 1,
+            "Total cost": 2100,
+            "Total budget": 2000,
+            "Under budget": "false",
+            "Notes": "Added some premium refreshments for VIP guests"
+          },
+          {
+            "Name": "Event mobile app",
+            "Estimated": 3500,
+            "Actual": 3400,
+            "Quantity": 1,
+            "Total cost": 3400,
+            "Total budget": 3500,
+            "Under budget": "true",
+            "Notes": "Developers completed the project under estimated hours"
+          },
+          {
+            "Name": "Networking area setup",
+            "Estimated": 1500,
+            "Actual": 1550,
+            "Quantity": 1,
+            "Total cost": 1550,
+            "Total budget": 1500,
+            "Under budget": "false",
+            "Notes": "Added more seating options for comfort"
+          },
+          {
+            "Name": "Event website",
+            "Estimated": 2000,
+            "Actual": 1900,
+            "Quantity": 1,
+            "Total cost": 1900,
+            "Total budget": 2000,
+            "Under budget": "true",
+            "Notes": "Used some pre-built templates to save costs"
+          },
+          {
+            "Name": "Speaker gifts",
+            "Estimated": 100,
+            "Actual": 95,
+            "Quantity": 10,
+            "Total cost": 950,
+            "Total budget": 1000,
+            "Under budget": "true",
+            "Notes": "Found a good deal on bulk purchase"
+          },
+          {
+            "Name": "Event feedback system",
+            "Estimated": 800,
+            "Actual": 800,
+            "Quantity": 1,
+            "Total cost": 800,
+            "Total budget": 800,
+            "Under budget": "true",
+            "Notes": ""
+          },
+          {
+            "Name": "Breakout session equipment",
+            "Estimated": 1500,
+            "Actual": 1600,
+            "Quantity": 1,
+            "Total cost": 1600,
+            "Total budget": 1500,
+            "Under budget": "false",
+            "Notes": "Needed extra microphones for Q&A sessions"
+          },
+          {
+            "Name": "Event registration system",
+            "Estimated": 1200,
+            "Actual": 1150,
+            "Quantity": 1,
+            "Total cost": 1150,
+            "Total budget": 1200,
+            "Under budget": "true",
+            "Notes": "Annual subscription discount applied"
+          },
+          {
+            "Name": "Sponsor booth setup",
+            "Estimated": 5000,
+            "Actual": 5100,
+            "Quantity": 1,
+            "Total cost": 5100,
+            "Total budget": 5000,
+            "Under budget": "false",
+            "Notes": "Last-minute requests from sponsors for additional equipment"
+          },
+          {
+            "Name": "Event marketing materials",
+            "Estimated": 3000,
+            "Actual": 2900,
+            "Quantity": 1,
+            "Total cost": 2900,
+            "Total budget": 3000,
+            "Under budget": "true",
+            "Notes": "Bulk printing discount applied"
+          },
+          {
+            "Name": "Speaker travel arrangements",
+            "Estimated": 5000,
+            "Actual": 5200,
+            "Quantity": 1,
+            "Total cost": 5200,
+            "Total budget": 5000,
+            "Under budget": "false",
+            "Notes": "Last-minute flight changes for one speaker"
+          },
+          {
+            "Name": "Event sustainability initiatives",
+            "Estimated": 2000,
+            "Actual": 1950,
+            "Quantity": 1,
+            "Total cost": 1950,
+            "Total budget": 2000,
+            "Under budget": "true",
+            "Notes": "Found cost-effective eco-friendly alternatives"
+          },
+          {
+            "Name": "Post-event survey tool",
+            "Estimated": 500,
+            "Actual": 500,
+            "Quantity": 1,
+            "Total cost": 500,
+            "Total budget": 500,
+            "Under budget": "true",
+            "Notes": ""
+          },
+          {
+            "Name": "Event hashtag campaign",
+            "Estimated": 1000,
+            "Actual": 950,
+            "Quantity": 1,
+            "Total cost": 950,
+            "Total budget": 1000,
+            "Under budget": "true",
+            "Notes": "Leveraged more organic reach than expected"
+          },
+          {
+            "Name": "Virtual event platform",
+            "Estimated": 4000,
+            "Actual": 4100,
+            "Quantity": 1,
+            "Total cost": 4100,
+            "Total budget": 4000,
+            "Under budget": "false",
+            "Notes": "Added some premium features for better engagement"
+          },
+          {
+            "Name": "Event signage",
+            "Estimated": 1500,
+            "Actual": 1450,
+            "Quantity": 1,
+            "Total cost": 1450,
+            "Total budget": 1500,
+            "Under budget": "true",
+            "Notes": "Found a local supplier with competitive prices"
+          },
+          {
+            "Name": "Networking event entertainment",
+            "Estimated": 2000,
+            "Actual": 2100,
+            "Quantity": 1,
+            "Total cost": 2100,
+            "Total budget": 2000,
+            "Under budget": "false",
+            "Notes": "Added an extra hour of entertainment due to popular demand"
+          },
+          {
+            "Name": "Event photography",
+            "Estimated": 1500,
+            "Actual": 1500,
+            "Quantity": 1,
+            "Total cost": 1500,
+            "Total budget": 1500,
+            "Under budget": "true",
+            "Notes": ""
+          },
+          {
+            "Name": "Social media wall",
+            "Estimated": 1000,
+            "Actual": 950,
+            "Quantity": 1,
+            "Total cost": 950,
+            "Total budget": 1000,
+            "Under budget": "true",
+            "Notes": "Found a more cost-effective solution"
+          },
+          {
+            "Name": "Event gamification",
+            "Estimated": 2500,
+            "Actual": 2600,
+            "Quantity": 1,
+            "Total cost": 2600,
+            "Total budget": 2500,
+            "Under budget": "false",
+            "Notes": "Added more prize incentives to increase participation"
+          },
+          {
+            "Name": "Speaker preparation room",
+            "Estimated": 1000,
+            "Actual": 950,
+            "Quantity": 1,
+            "Total cost": 950,
+            "Total budget": 1000,
+            "Under budget": "true",
+            "Notes": "Used existing venue amenities effectively"
+          },
+          {
+            "Name": "Event mobile charging stations",
+            "Estimated": 800,
+            "Actual": 850,
+            "Quantity": 1,
+            "Total cost": 850,
+            "Total budget": 800,
+            "Under budget": "false",
+            "Notes": "Added more stations due to high demand"
+          },
+          {
+            "Name": "Event videography",
+            "Estimated": 3000,
+            "Actual": 2900,
+            "Quantity": 1,
+            "Total cost": 2900,
+            "Total budget": 3000,
+            "Under budget": "true",
+            "Notes": "Negotiated a package deal with the videographer"
+          },
+          {
+            "Name": "Event app push notifications",
+            "Estimated": 500,
+            "Actual": 500,
+            "Quantity": 1,
+            "Total cost": 500,
+            "Total budget": 500,
+            "Under budget": "true",
+            "Notes": ""
+          },
+          {
+            "Name": "Simultaneous interpretation equipment",
+            "Estimated": 2000,
+            "Actual": 2100,
+            "Quantity": 1,
+            "Total cost": 2100,
+            "Total budget": 2000,
+            "Under budget": "false",
+            "Notes": "Needed additional headsets due to increased international attendance"
+          },
+          {
+            "Name": "Event social media management",
+            "Estimated": 1500,
+            "Actual": 1450,
+            "Quantity": 1,
+            "Total cost": 1450,
+            "Total budget": 1500,
+            "Under budget": "true",
+            "Notes": "Efficient planning reduced work hours"
+          },
+          {
+            "Name": "Event live streaming",
+            "Estimated": 3000,
+            "Actual": 3100,
+            "Quantity": 1,
+            "Total cost": 3100,
+            "Total budget": 3000,
+            "Under budget": "false",
+            "Notes": "Added backup internet connection for reliability"
           }
         ]
       }

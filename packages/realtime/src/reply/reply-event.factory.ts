@@ -8,7 +8,7 @@ export class ReplyEventFactory {
     return RecordEventFactory.fromJSON(outbox.space_id, {
       ...outbox,
       spaceId: outbox.space_id,
-      operatorId: outbox.operator_id,
+      operatorId: outbox.user_id,
       timestamp: outbox.timestamp,
     } as IEventJSON)
   }

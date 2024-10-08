@@ -38,11 +38,7 @@ export class SpaceRepostitory implements ISpaceRepository {
     const space = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_space")
       .selectAll()
-      .where((eb) => {
-        const visitor = new SpaceFilterVisitor(this.qb, eb)
-        spec.accept(visitor)
-        return visitor.cond
-      })
+      .where((eb) => new SpaceFilterVisitor(this.qb, eb).exec(Some(spec)))
       .executeTakeFirst()
 
     if (!space) {

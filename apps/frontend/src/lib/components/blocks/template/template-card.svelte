@@ -82,27 +82,33 @@
               {template.description}
             </Dialog.Description>
           </div>
-          <div class="mr-10 space-y-2">
-            <Button
-              class="w-44"
-              disabled={$createFromTemplate.isPending}
-              on:click={() => $createFromTemplate.mutate({ id: template.id, includeData })}
-            >
-              {#if $createFromTemplate.isPending}
-                <LoaderCircleIcon class="mr-2 size-4 animate-spin" />
-              {/if}
-              Use this Template
-            </Button>
-
-            <div class="flex items-center space-x-2">
-              <Checkbox id="terms" bind:checked={includeData} />
-              <Label
-                for="terms"
-                class="text-xs font-medium leading-none text-gray-500 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          <div class="mr-10 flex flex-row gap-2">
+            <div class="space-y-2">
+              <Button
+                class="w-44"
+                disabled={$createFromTemplate.isPending}
+                on:click={() => $createFromTemplate.mutate({ id: template.id, includeData })}
               >
-                Include data.
-              </Label>
+                {#if $createFromTemplate.isPending}
+                  <LoaderCircleIcon class="mr-2 size-4 animate-spin" />
+                {/if}
+                Use this Template
+              </Button>
+
+              <div class="flex items-center space-x-2">
+                <Checkbox id="terms" bind:checked={includeData} />
+                <Label
+                  for="terms"
+                  class="text-xs font-medium leading-none text-gray-500 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Include data.
+                </Label>
+              </div>
             </div>
+
+            <Button size="icon" href={`/templates/${template.id}`}>
+              <FullscreenIcon class="size-4" />
+            </Button>
           </div>
         </Dialog.Header>
 

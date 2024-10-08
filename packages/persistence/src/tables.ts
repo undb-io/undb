@@ -185,7 +185,7 @@ export const outbox = sqliteTable(
     payload: text("payload", { mode: "json" }).notNull(),
     meta: text("meta", { mode: "json" }),
     timestamp: integer("timestamp", { mode: "timestamp_ms" }).notNull(),
-    operatorId: text("operator_id").notNull(),
+    userId: text("user_id"),
     name: text("name").notNull(),
     spaceId: text("space_id")
       .notNull()

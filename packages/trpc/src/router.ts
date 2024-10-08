@@ -172,7 +172,7 @@ const formRouter = t.router({
     .use(authz("form:delete"))
     .input(deleteFormCommand)
     .mutation(({ input }) => commandBus.execute(new DeleteFormCommand(input))),
-  submit: privateProcedure
+  submit: publicProcedure
     .input(submitFormCommand)
     .mutation(({ input }) => commandBus.execute(new SubmitFormCommand(input))),
 })
