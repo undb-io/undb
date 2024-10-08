@@ -7,6 +7,7 @@ import type {
   WithSpaceIsPersonal,
   WithSpaceName,
   WithSpaceShareId,
+  WithSpaceTableId,
   WithSpaceUserId,
 } from "@undb/space"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
@@ -16,6 +17,9 @@ export class SpaceMutateVisitor extends AbstractQBMutationVisitor implements ISp
     throw new Error("Method not implemented.")
   }
   withUserId(v: WithSpaceUserId): void {
+    throw new Error("Method not implemented.")
+  }
+  withTableId(v: WithSpaceTableId): void {
     throw new Error("Method not implemented.")
   }
   withBaseId(v: WithSpaceBaseId): void {

@@ -8,6 +8,7 @@ import type {
   WithSpaceIsPersonal,
   WithSpaceName,
   WithSpaceShareId,
+  WithSpaceTableId,
   WithSpaceUserId,
 } from "@undb/space"
 import type { ExpressionBuilder } from "kysely"
@@ -36,6 +37,15 @@ export class SpaceFilterVisitor extends AbstractQBVisitor<Space> implements ISpa
     const cond = this.eb.eb("undb_space.id", "=", v.id.value)
     this.addCond(cond)
   }
+  withTableId(v: WithSpaceTableId): void {
+    const subQuery = this.qb
+      .selectFrom("undb_table")
+      .select(["undb_table.space_id"])
+      .where("undb_table.id", "=", v.tableId)
+
+    const cond = this.eb.eb("undb_space.id", "in", subQuery)
+    this.addCond(cond)
+  }
   withApiToken(v: WithSpaceApiToken): void {
     const subQuery = this.qb
       .selectFrom("undb_api_token")
@@ -55,7 +65,10 @@ export class SpaceFilterVisitor extends AbstractQBVisitor<Space> implements ISpa
     this.addCond(cond)
   }
   withBaseId(v: WithSpaceBaseId): void {
-    throw new Error("Method not implemented.")
+    const subQuery = this.qb.selectFrom("undb_base").select(["undb_base.space_id"]).where("undb_base.id", "=", v.baseId)
+
+    const cond = this.eb.eb("undb_space.id", "in", subQuery)
+    this.addCond(cond)
   }
   withIsPersonal(v: WithSpaceIsPersonal): void {
     throw new Error("Method not implemented.")

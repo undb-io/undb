@@ -38,7 +38,7 @@
 
   const createRecordMutation = createMutation(
     derived([table], ([$table]) => ({
-      mutationFn: trpc.record.create.mutate,
+      mutationFn: trpc.table.form.submit.mutate,
       onSuccess: () => {
         closeModal(CREATE_RECORD_MODAL)
         client.invalidateQueries({
@@ -54,8 +54,13 @@
   )
 
   const createRecord = (values: any) => {
+    const formId = form?.id
+        if (!formId) {
+          return
+        }
     $createRecordMutation.mutate({
       tableId: $table.id.value,
+      form: formId,
       values,
     })
   }

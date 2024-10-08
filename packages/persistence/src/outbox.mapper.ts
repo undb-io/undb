@@ -13,7 +13,7 @@ export class OutboxMapper {
       payload: json(event.payload),
       space_id: spaceId,
       meta: event.meta ? json(event.meta) : null,
-      operator_id: event.operatorId ?? user,
+      user_id: event.operatorId ?? user,
       timestamp: event.timestamp.getTime(),
     }
   }
