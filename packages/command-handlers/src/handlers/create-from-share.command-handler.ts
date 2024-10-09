@@ -8,6 +8,7 @@ import { type ICommandHandler } from "@undb/domain"
 import { createLogger } from "@undb/logger"
 import { injectShareRepository, WithShareId, type IShareRepository } from "@undb/share"
 import { injectTableService, type ITableService } from "@undb/table"
+import { getNextName } from "@undb/utils"
 
 @commandHandler(CreateFromShareCommand)
 @singleton()
@@ -44,12 +45,15 @@ export class CreateFromShareCommandHandler implements ICommandHandler<CreateFrom
     const member = (await this.spaceMemberService.getSpaceMember(userId, targetSpaceId)).expect("Member not found")
     checkPermission(member.props.role, ["base:create"])
 
+    const bases = await this.baseRepository.find(new WithBaseSpaceId(spaceId))
+    const baseNames = bases.map((base) => base.name.value)
+
     const spec = new WithBaseId(new BaseId(baseId)).and(new WithBaseSpaceId(spaceId))
     const base = (await this.baseRepository.findOne(spec)).expect("Base not found")
 
     const duplicatedBase = await this.tableService.duplicateBase(base, spaceId, targetSpaceId, {
       id: baseId,
-      name: command.name,
+      name: getNextName(baseNames, command.name),
       includeData: command.includeData,
     })
 

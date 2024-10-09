@@ -4,6 +4,8 @@
   import type { PaneAPI } from "paneforge"
   import type { LayoutData } from "./$types"
   import Logo from "$lib/images/logo.svg"
+  import { Button } from "$lib/components/ui/button"
+  import { page } from "$app/stores"
 
   export let data: LayoutData
 
@@ -34,13 +36,7 @@
               <span class="font-bold"> Undb </span>
             </a>
 
-            <!-- <button on:click={() => (collapsed = !collapsed)}>
-              {#if collapsed}
-                <PanelLeftOpenIcon class="h-5 w-5" />
-              {:else}
-                <PanelLeftCloseIcon class="h-5 w-5" />
-              {/if}
-            </button> -->
+            <Button href={`/create-from-share/${$page.params.shareId}`} size="sm">Use this template</Button>
           </div>
           <div class="w-full flex-1 overflow-y-auto">
             <ShareBaseNav {base} />
