@@ -83,6 +83,10 @@ export class TableDo extends AggregateRoot<ITableEvents> {
 
   #createReferenceField = createReferenceField
 
+  reorderFields(fieldsOrder: string[]) {
+    this.schema = this.schema.reorderFields(fieldsOrder)
+  }
+
   getOrderedFields(formId?: FormId, viewId?: string): Field[] {
     const fields = this.schema.fields
     if (formId) {

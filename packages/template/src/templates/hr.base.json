@@ -2,6 +2,24 @@
   "Human Resource Management": {
     "tables": {
       "Employees": {
+        "fieldsOrder": [
+          "Name",
+          "Position",
+          "Department",
+          "Department Name",
+          "Manage Department",
+          "Manage Department Name",
+          "Start Date",
+          "Salary",
+          "Reports To",
+          "Manager Name",
+          "Subordinates",
+          "Subordinates Count",
+          "Subordinates Name",
+          "Email",
+          "Phone",
+          "Employment Status"
+        ],
         "schema": {
           "Name": {
             "id": "name",
@@ -128,6 +146,24 @@
               "fn": "lookup"
             }
           },
+          "Subordinates Count": {
+            "id": "subordinates_count",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "subordinates",
+              "rollupFieldId": "id",
+              "fn": "count"
+            }
+          },
+          "Subordinates Name": {
+            "id": "subordinates_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "subordinates",
+              "rollupFieldId": "name",
+              "fn": "lookup"
+            }
+          },
           "Email": {
             "id": "email",
             "type": "email",
@@ -198,7 +234,8 @@
             "start_date": "2023-01-15",
             "salary": 70000,
             "email": "alice@example.com",
-            "employment_status": "full_time"
+            "employment_status": "full_time",
+            "phone": "123-456-7890"
           },
           {
             "id": "EMP002",
@@ -209,7 +246,8 @@
             "salary": 90000,
             "reports_to": ["EMP003"],
             "email": "bob@example.com",
-            "employment_status": "full_time"
+            "employment_status": "full_time",
+            "phone": "234-567-8901"
           },
           {
             "id": "EMP003",
@@ -219,11 +257,21 @@
             "start_date": "2021-03-10",
             "salary": 60000,
             "email": "carol@example.com",
-            "employment_status": "full_time"
+            "employment_status": "full_time",
+            "phone": "345-678-9012"
           }
         ]
       },
       "Departments": {
+        "fieldsOrder": [
+          "Department Name",
+          "Manager",
+          "Manager Name",
+          "Budget",
+          "Location",
+          "Employees",
+          "Employees Count"
+        ],
         "schema": {
           "Department Name": {
             "id": "department_name",
@@ -310,6 +358,7 @@
         ]
       },
       "Payroll": {
+        "fieldsOrder": ["Employee Name", "Employee", "Month", "Amount", "Bonus", "Deductions", "Net Pay"],
         "schema": {
           "Employee Name": {
             "id": "employee_name",
@@ -408,12 +457,13 @@
         ]
       },
       "Time Off Requests": {
+        "fieldsOrder": ["Employee Name", "Employee", "Start Date", "End Date", "Type", "Status", "Reason"],
         "schema": {
           "Employee": {
             "id": "employee",
             "type": "reference",
             "option": {
-              "createSymmetricField": true,
+              "createSymmetricField": false,
               "foreignTable": {
                 "tableName": "Employees"
               }
@@ -519,6 +569,38 @@
             }
           }
         },
+        "forms": {
+          "Time Off Request Form": {
+            "fields": [
+              {
+                "fieldId": "employee",
+                "hidden": false,
+                "required": true
+              },
+              {
+                "fieldId": "start_date",
+                "hidden": false,
+                "required": true
+              },
+              {
+                "fieldId": "end_date",
+                "hidden": false,
+                "required": true
+              },
+              {
+                "fieldId": "type",
+                "hidden": false,
+                "defaultValue": "vacation",
+                "required": true
+              },
+              {
+                "fieldId": "reason",
+                "hidden": false,
+                "required": true
+              }
+            ]
+          }
+        },
         "records": [
           {
             "employee": ["EMP001"],
@@ -547,6 +629,17 @@
         ]
       },
       "Performance Reviews": {
+        "fieldsOrder": [
+          "Employee Name",
+          "Performance Rating",
+          "Employee",
+          "Review Date",
+          "Reviewer",
+          "Reviewer Name",
+          "Comments",
+          "Goals",
+          "Next Review Date"
+        ],
         "schema": {
           "Employee": {
             "id": "employee",
@@ -569,7 +662,7 @@
             "id": "reviewer",
             "type": "reference",
             "option": {
-              "createSymmetricField": true,
+              "createSymmetricField": false,
               "foreignTable": {
                 "tableName": "Employees"
               }

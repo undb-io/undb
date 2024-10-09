@@ -20,6 +20,7 @@ import {
   createTablesUrlFieldDTO,
   createTablesUserFieldDTO,
   createViewWithoutNameDTO,
+  fieldId,
   fieldName,
   flattenCreateRecordDTO,
   formName,
@@ -59,6 +60,7 @@ const templateFormDTO = z.record(formName, createFormWithoutNameDTO)
 const basicTemplateTableDTO = z.object({
   id: tableId.optional(),
   schema: templateSchemaDTO,
+  fieldsOrder: z.array(fieldName.or(fieldId)).optional(),
   views: tempalteViewDTO.optional(),
   forms: templateFormDTO.optional(),
 
