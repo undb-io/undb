@@ -327,6 +327,56 @@ export const templateData: ITemplateDTO[] = [
       template: templates.hr as IBaseTemplateDTO,
     },
   },
+  {
+    id: "6ba7b816-9dad-11d1-80b4-00c04fd430c8",
+    icon: "🔍",
+    name: "Agile Development Management",
+    categories: ["development", "agile", "startup"],
+    cover: getTemplateImage("agileDevelopment", "cover.jpg"),
+    images: [getTemplateImage("agileDevelopment", "image1.png"), getTemplateImage("agileDevelopment", "image2.png")],
+    description: "A template for managing agile development projects, including requirements, tasks, and defects.",
+    detail: `
+      <h1>Optimize Your Agile Development Process: UnDB's Agile Development Management Template</h1>
+
+      <h2>Comprehensive Agile Development Management Features</h2>
+      <p>UnDB's Agile Development Management template offers a powerful set of tools to enhance your agile development process:</p>
+      <ul>
+        <li>Requirements Management: Easily create, assign, and track project requirements</li>
+        <li>Task Tracking: Efficiently manage and monitor development tasks</li>
+        <li>Defect Management: Track and resolve software defects</li>
+        <li>Iteration Planning: Plan and manage sprints or iterations</li>
+        <li>Test Case Management: Create and execute test cases</li>
+        <li>Team Management: Organize and track team members' contributions</li>
+        <li>Time Tracking: Monitor time spent on tasks and projects</li>
+      </ul>
+
+      <h2>Why Choose UnDB for Agile Development Management?</h2>
+      <p>UnDB offers unique advantages for your agile development needs:</p>
+      <ul>
+        <li>Customizable: Tailor the template to fit your specific agile methodology and project requirements</li>
+        <li>User-Friendly: Intuitive interface for easy adoption across your development team</li>
+        <li>Scalable: Grows with your projects, from small teams to large-scale development efforts</li>
+        <li>Integration-Ready: Seamlessly connects with other UnDB templates and tools</li>
+        <li>Data-Driven: Make informed decisions with real-time project insights and analytics</li>
+      </ul>
+
+      <h2>Getting Started with UnDB's Agile Development Template</h2>
+      <p>Follow these steps to implement our agile development solution:</p>
+      <ol>
+        <li>Import the Agile Development template to your UnDB workspace</li>
+        <li>Customize fields and views to match your team's agile processes</li>
+        <li>Input your project requirements and create initial tasks</li>
+        <li>Set up iterations or sprints and assign team members</li>
+        <li>Start tracking progress, managing defects, and monitoring team performance</li>
+      </ol>
+
+      <p>Transform your agile development process today with UnDB's comprehensive Agile Development Management template!</p>
+    `,
+    template: {
+      type: "base",
+      template: templates.agileDevelopment as IBaseTemplateDTO,
+    },
+  },
 ]
 
 if (env.NODE_ENV === "development") {

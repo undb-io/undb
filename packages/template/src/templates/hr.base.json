@@ -259,6 +259,105 @@
             "email": "carol@example.com",
             "employment_status": "full_time",
             "phone": "345-678-9012"
+          },
+          {
+            "id": "EMP004",
+            "name": "David Brown",
+            "position": "developer",
+            "department": ["dept1"],
+            "start_date": "2023-02-01",
+            "salary": 75000,
+            "email": "david@example.com",
+            "employment_status": "full_time",
+            "phone": "456-789-0123"
+          },
+          {
+            "id": "EMP005",
+            "name": "Emma Davis",
+            "position": "designer",
+            "department": ["dept3"],
+            "start_date": "2022-11-15",
+            "salary": 65000,
+            "email": "emma@example.com",
+            "employment_status": "full_time",
+            "phone": "567-890-1234"
+          },
+          {
+            "id": "EMP006",
+            "name": "Frank Wilson",
+            "position": "marketing",
+            "department": ["dept2"],
+            "start_date": "2023-03-20",
+            "salary": 68000,
+            "email": "frank@example.com",
+            "employment_status": "full_time",
+            "phone": "678-901-2345"
+          },
+          {
+            "id": "EMP007",
+            "name": "Grace Taylor",
+            "position": "finance",
+            "department": ["dept2"],
+            "start_date": "2022-09-01",
+            "salary": 72000,
+            "email": "grace@example.com",
+            "employment_status": "full_time",
+            "phone": "789-012-3456"
+          },
+          {
+            "id": "EMP008",
+            "name": "Henry Clark",
+            "position": "developer",
+            "department": ["dept1"],
+            "start_date": "2023-04-10",
+            "salary": 71000,
+            "email": "henry@example.com",
+            "employment_status": "full_time",
+            "phone": "890-123-4567"
+          },
+          {
+            "id": "EMP009",
+            "name": "Isabel Rodriguez",
+            "position": "hr",
+            "department": ["dept3"],
+            "start_date": "2022-07-15",
+            "salary": 62000,
+            "email": "isabel@example.com",
+            "employment_status": "full_time",
+            "phone": "901-234-5678"
+          },
+          {
+            "id": "EMP010",
+            "name": "Jack Thompson",
+            "position": "manager",
+            "department": ["dept1"],
+            "start_date": "2021-12-01",
+            "salary": 92000,
+            "email": "jack@example.com",
+            "employment_status": "full_time",
+            "phone": "012-345-6789"
+          },
+          {
+            "id": "EMP011",
+            "name": "Karen Lee",
+            "position": "designer",
+            "department": ["dept3"],
+            "start_date": "2023-01-05",
+            "salary": 67000,
+            "email": "karen@example.com",
+            "employment_status": "full_time",
+            "phone": "123-456-7891"
+          },
+          {
+            "id": "EMP012",
+            "name": "Liam Harris",
+            "position": "developer",
+            "department": ["dept1"],
+            "start_date": "2022-10-20",
+            "salary": 73000,
+            "email": "liam@example.com",
+            "employment_status": "full_time",
+            "phone": "234-567-8902"
           }
         ]
       },
@@ -354,6 +453,55 @@
             "manager": null,
             "budget": 250000,
             "location": "San Francisco"
+          },
+          {
+            "id": "dept4",
+            "department_name": "Marketing",
+            "manager": ["EMP006"],
+            "budget": 400000,
+            "location": "Los Angeles"
+          },
+          {
+            "id": "dept5",
+            "department_name": "Finance",
+            "manager": ["EMP007"],
+            "budget": 350000,
+            "location": "Boston"
+          },
+          {
+            "id": "dept6",
+            "department_name": "Customer Support",
+            "manager": null,
+            "budget": 200000,
+            "location": "Dallas"
+          },
+          {
+            "id": "dept7",
+            "department_name": "Sales",
+            "manager": null,
+            "budget": 450000,
+            "location": "Miami"
+          },
+          {
+            "id": "dept8",
+            "department_name": "Research and Development",
+            "manager": ["EMP010"],
+            "budget": 600000,
+            "location": "Seattle"
+          },
+          {
+            "id": "dept9",
+            "department_name": "Quality Assurance",
+            "manager": null,
+            "budget": 180000,
+            "location": "Austin"
+          },
+          {
+            "id": "dept10",
+            "department_name": "Operations",
+            "manager": null,
+            "budget": 280000,
+            "location": "Denver"
           }
         ]
       },
@@ -453,6 +601,78 @@
             "bonus": 300,
             "deductions": 800,
             "net_pay": 5500
+          },
+          {
+            "employee": ["EMP004"],
+            "month": "2023-08-01",
+            "amount": 7500,
+            "bonus": 600,
+            "deductions": 1100,
+            "net_pay": 7000
+          },
+          {
+            "employee": ["EMP005"],
+            "month": "2023-08-01",
+            "amount": 6500,
+            "bonus": 400,
+            "deductions": 900,
+            "net_pay": 6000
+          },
+          {
+            "employee": ["EMP006"],
+            "month": "2023-08-01",
+            "amount": 6800,
+            "bonus": 450,
+            "deductions": 950,
+            "net_pay": 6300
+          },
+          {
+            "employee": ["EMP007"],
+            "month": "2023-08-01",
+            "amount": 7200,
+            "bonus": 550,
+            "deductions": 1050,
+            "net_pay": 6700
+          },
+          {
+            "employee": ["EMP008"],
+            "month": "2023-08-01",
+            "amount": 7100,
+            "bonus": 520,
+            "deductions": 1020,
+            "net_pay": 6600
+          },
+          {
+            "employee": ["EMP009"],
+            "month": "2023-08-01",
+            "amount": 6200,
+            "bonus": 320,
+            "deductions": 820,
+            "net_pay": 5700
+          },
+          {
+            "employee": ["EMP010"],
+            "month": "2023-08-01",
+            "amount": 9200,
+            "bonus": 1100,
+            "deductions": 1600,
+            "net_pay": 8700
+          },
+          {
+            "employee": ["EMP011"],
+            "month": "2023-08-01",
+            "amount": 6700,
+            "bonus": 420,
+            "deductions": 920,
+            "net_pay": 6200
+          },
+          {
+            "employee": ["EMP012"],
+            "month": "2023-08-01",
+            "amount": 7300,
+            "bonus": 570,
+            "deductions": 1070,
+            "net_pay": 6800
           }
         ]
       },
@@ -625,6 +845,62 @@
             "type": "sick",
             "status": "approved",
             "reason": "Recovering from surgery"
+          },
+          {
+            "employee": ["EMP004"],
+            "start_date": "2023-12-20",
+            "end_date": "2023-12-31",
+            "type": "vacation",
+            "status": "approved",
+            "reason": "Holiday break"
+          },
+          {
+            "employee": ["EMP005"],
+            "start_date": "2023-09-25",
+            "end_date": "2023-09-26",
+            "type": "personal",
+            "status": "approved",
+            "reason": "Attending a wedding"
+          },
+          {
+            "employee": ["EMP006"],
+            "start_date": "2023-10-05",
+            "end_date": "2023-10-07",
+            "type": "sick",
+            "status": "approved",
+            "reason": "Flu"
+          },
+          {
+            "employee": ["EMP007"],
+            "start_date": "2023-11-20",
+            "end_date": "2023-11-24",
+            "type": "vacation",
+            "status": "pending",
+            "reason": "Thanksgiving break"
+          },
+          {
+            "employee": ["EMP008"],
+            "start_date": "2023-12-01",
+            "end_date": "2023-12-02",
+            "type": "personal",
+            "status": "approved",
+            "reason": "Moving to a new apartment"
+          },
+          {
+            "employee": ["EMP009"],
+            "start_date": "2023-09-15",
+            "end_date": "2023-09-16",
+            "type": "sick",
+            "status": "approved",
+            "reason": "Dental procedure"
+          },
+          {
+            "employee": ["EMP010"],
+            "start_date": "2023-10-10",
+            "end_date": "2023-10-14",
+            "type": "vacation",
+            "status": "approved",
+            "reason": "Family reunion"
           }
         ]
       },
@@ -735,6 +1011,58 @@
             "comments": "Outstanding leadership and project management.",
             "goals": "Mentor junior team members",
             "next_review_date": "2024-01-01"
+          },
+          {
+            "employee": ["EMP003"],
+            "review_date": "2023-06-20",
+            "reviewer": ["EMP010"],
+            "performance_rating": 4,
+            "comments": "Excellent HR initiatives implemented.",
+            "goals": "Develop new employee onboarding program",
+            "next_review_date": "2023-12-20"
+          },
+          {
+            "employee": ["EMP004"],
+            "review_date": "2023-07-10",
+            "reviewer": ["EMP002"],
+            "performance_rating": 3,
+            "comments": "Good technical skills, needs improvement in communication.",
+            "goals": "Enhance communication with team members",
+            "next_review_date": "2024-01-10"
+          },
+          {
+            "employee": ["EMP005"],
+            "review_date": "2023-06-25",
+            "reviewer": ["EMP010"],
+            "performance_rating": 4,
+            "comments": "Creative designs, meets deadlines consistently.",
+            "goals": "Explore new design tools and techniques",
+            "next_review_date": "2023-12-25"
+          },
+          {
+            "employee": ["EMP006"],
+            "review_date": "2023-07-05",
+            "reviewer": ["EMP003"],
+            "performance_rating": 4,
+            "comments": "Effective marketing campaigns, good team player.",
+            "goals": "Develop skills in digital marketing",
+            "next_review_date": "2024-01-05"
+          },
+          {
+            "employee": ["EMP007"],
+            "review_date": "2023-06-30",
+            "reviewer": ["EMP010"],
+            "performance_rating": 5,
+            "comments": "Exceptional financial analysis and reporting.",
+            "goals": "Lead a cost-saving initiative",
+            "next_review_date": "2023-12-30"
+          },
+          {
+            "employee": ["EMP008"],
+            "review_date": "2023-07-15",
+            "reviewer": ["EMP002"],
+            "performance_rating": 4,
+            "comments": "Strong problem-solving skills, reliable team member."
           }
         ]
       }

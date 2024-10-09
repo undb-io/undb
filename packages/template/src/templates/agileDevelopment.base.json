@@ -1,0 +1,1219 @@
+{
+  "Agile Development Management": {
+    "tables": {
+      "Requirements": {
+        "fieldsOrder": [
+          "Title",
+          "Description",
+          "Priority",
+          "Status",
+          "Created Date",
+          "Estimated Completion Date",
+          "Actual Completion Date",
+          "Assignee",
+          "Assignee Name",
+          "Related Tasks",
+          "Related Defects"
+        ],
+        "schema": {
+          "Title": {
+            "id": "title",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Description": {
+            "id": "description",
+            "type": "longText"
+          },
+          "Priority": {
+            "id": "priority",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "high",
+                  "name": "High",
+                  "color": "red"
+                },
+                {
+                  "id": "medium",
+                  "name": "Medium",
+                  "color": "yellow"
+                },
+                {
+                  "id": "low",
+                  "name": "Low",
+                  "color": "green"
+                }
+              ]
+            }
+          },
+          "Status": {
+            "id": "status",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "new",
+                  "name": "New",
+                  "color": "blue"
+                },
+                {
+                  "id": "in_progress",
+                  "name": "In Progress",
+                  "color": "yellow"
+                },
+                {
+                  "id": "completed",
+                  "name": "Completed",
+                  "color": "green"
+                }
+              ]
+            }
+          },
+          "Created Date": {
+            "id": "created_date",
+            "type": "date",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Estimated Completion Date": {
+            "id": "estimated_completion_date",
+            "type": "date"
+          },
+          "Actual Completion Date": {
+            "id": "actual_completion_date",
+            "type": "date"
+          },
+          "Assignee": {
+            "id": "assignee",
+            "type": "reference",
+            "option": {
+              "foreignTable": {
+                "tableName": "Team Members"
+              }
+            }
+          },
+          "Assignee Name": {
+            "id": "assignee_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "assignee",
+              "rollupFieldId": "name",
+              "fn": "lookup"
+            }
+          },
+          "Related Tasks": {
+            "id": "related_tasks",
+            "type": "reference",
+            "option": {
+              "symmetricFieldId": "related_requirement"
+            }
+          },
+          "Related Defects": {
+            "id": "related_defects",
+            "type": "reference",
+            "option": {
+              "symmetricFieldId": "related_requirement"
+            }
+          }
+        },
+        "views": {
+          "All Requirements": {
+            "type": "grid",
+            "sort": [
+              {
+                "fieldId": "created_date",
+                "direction": "desc"
+              }
+            ]
+          },
+          "By Status": {
+            "type": "kanban",
+            "kanban": {
+              "field": "status"
+            }
+          }
+        },
+        "records": [
+          {
+            "id": "REQ001",
+            "title": "User Login Feature",
+            "description": "Implement user login and authentication functionality",
+            "priority": "high",
+            "status": "in_progress",
+            "created_date": "2023-05-01",
+            "estimated_completion_date": "2023-05-15",
+            "assignee": ["TM001"],
+            "related_tasks": ["TASK001", "TASK002"],
+            "related_defects": ["DEF001"]
+          },
+          {
+            "id": "REQ002",
+            "title": "Data Visualization Dashboard",
+            "description": "Create a dashboard for displaying key metrics",
+            "priority": "medium",
+            "status": "new",
+            "created_date": "2023-05-02",
+            "estimated_completion_date": "2023-05-30",
+            "assignee": ["TM002"],
+            "related_tasks": ["TASK003"]
+          },
+          {
+            "id": "REQ003",
+            "title": "User Profile Management",
+            "description": "Implement functionality for users to manage their profiles",
+            "priority": "medium",
+            "status": "new",
+            "created_date": "2023-05-03",
+            "estimated_completion_date": "2023-05-20",
+            "assignee": ["TM003"],
+            "related_tasks": ["TASK004", "TASK005"]
+          },
+          {
+            "id": "REQ004",
+            "title": "Search Functionality",
+            "description": "Implement search feature across the application",
+            "priority": "high",
+            "status": "new",
+            "created_date": "2023-05-04",
+            "estimated_completion_date": "2023-05-25",
+            "assignee": ["TM004"],
+            "related_tasks": ["TASK006"]
+          },
+          {
+            "id": "REQ005",
+            "title": "Email Notification System",
+            "description": "Implement email notifications for various user actions",
+            "priority": "low",
+            "status": "new",
+            "created_date": "2023-05-05",
+            "estimated_completion_date": "2023-06-10",
+            "assignee": ["TM001"],
+            "related_tasks": ["TASK007", "TASK008"]
+          },
+          {
+            "id": "REQ006",
+            "title": "Mobile Responsiveness",
+            "description": "Ensure the application is fully responsive on mobile devices",
+            "priority": "high",
+            "status": "new",
+            "created_date": "2023-05-06",
+            "estimated_completion_date": "2023-06-15",
+            "assignee": ["TM002"],
+            "related_tasks": ["TASK009", "TASK010"]
+          },
+          {
+            "id": "REQ007",
+            "title": "User Activity Logging",
+            "description": "Implement logging system for user activities",
+            "priority": "medium",
+            "status": "new",
+            "created_date": "2023-05-07",
+            "estimated_completion_date": "2023-05-28",
+            "assignee": ["TM003"],
+            "related_tasks": ["TASK011"]
+          },
+          {
+            "id": "REQ008",
+            "title": "Data Export Feature",
+            "description": "Allow users to export their data in various formats",
+            "priority": "low",
+            "status": "new",
+            "created_date": "2023-05-08",
+            "estimated_completion_date": "2023-06-20",
+            "assignee": ["TM004"],
+            "related_tasks": ["TASK012", "TASK013"]
+          },
+          {
+            "id": "REQ009",
+            "title": "Multi-language Support",
+            "description": "Implement multi-language support for the application",
+            "priority": "medium",
+            "status": "new",
+            "created_date": "2023-05-09",
+            "estimated_completion_date": "2023-06-30",
+            "assignee": ["TM001"],
+            "related_tasks": ["TASK014", "TASK015"]
+          },
+          {
+            "id": "REQ010",
+            "title": "Performance Optimization",
+            "description": "Optimize application performance and loading times",
+            "priority": "high",
+            "status": "new",
+            "created_date": "2023-05-10",
+            "estimated_completion_date": "2023-06-25",
+            "assignee": ["TM002"],
+            "related_tasks": ["TASK016", "TASK017"]
+          }
+        ]
+      },
+      "Defects": {
+        "fieldsOrder": [
+          "Title",
+          "Description",
+          "Severity",
+          "Status",
+          "Created Date",
+          "Resolved Date",
+          "Assignee",
+          "Assignee Name",
+          "Related Requirement"
+        ],
+        "schema": {
+          "Title": {
+            "id": "title",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Description": {
+            "id": "description",
+            "type": "longText"
+          },
+          "Severity": {
+            "id": "severity",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "critical",
+                  "name": "Critical",
+                  "color": "red"
+                },
+                {
+                  "id": "major",
+                  "name": "Major",
+                  "color": "orange"
+                },
+                {
+                  "id": "minor",
+                  "name": "Minor",
+                  "color": "yellow"
+                }
+              ]
+            }
+          },
+          "Status": {
+            "id": "status",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "open",
+                  "name": "Open",
+                  "color": "red"
+                },
+                {
+                  "id": "in_progress",
+                  "name": "In Progress",
+                  "color": "yellow"
+                },
+                {
+                  "id": "resolved",
+                  "name": "Resolved",
+                  "color": "green"
+                }
+              ]
+            }
+          },
+          "Created Date": {
+            "id": "created_date",
+            "type": "date",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Resolved Date": {
+            "id": "resolved_date",
+            "type": "date"
+          },
+          "Assignee": {
+            "id": "assignee",
+            "type": "reference",
+            "option": {
+              "foreignTable": {
+                "tableName": "Team Members"
+              }
+            }
+          },
+          "Assignee Name": {
+            "id": "assignee_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "assignee",
+              "rollupFieldId": "name",
+              "fn": "lookup"
+            }
+          },
+          "Related Requirement": {
+            "id": "related_requirement",
+            "type": "reference",
+            "option": {
+              "foreignTable": {
+                "tableName": "Requirements"
+              }
+            }
+          }
+        },
+        "views": {
+          "All Defects": {
+            "type": "grid",
+            "sort": [
+              {
+                "fieldId": "created_date",
+                "direction": "desc"
+              }
+            ]
+          },
+          "By Status": {
+            "type": "kanban",
+            "kanban": {
+              "field": "status"
+            }
+          }
+        },
+        "records": [
+          {
+            "id": "DEF001",
+            "title": "Login Button Unresponsive",
+            "description": "The login button doesn't respond when clicked",
+            "severity": "major",
+            "status": "open",
+            "created_date": "2023-05-03",
+            "assignee": ["TM003"],
+            "related_requirement": ["REQ001"]
+          },
+          {
+            "id": "DEF002",
+            "title": "Incorrect Data in Dashboard",
+            "description": "The sales data in the dashboard is showing incorrect values",
+            "severity": "critical",
+            "status": "in_progress",
+            "created_date": "2023-05-04",
+            "assignee": ["TM004"],
+            "related_requirement": ["REQ002"]
+          },
+          {
+            "id": "DEF003",
+            "title": "Profile Picture Upload Fails",
+            "description": "Users are unable to upload profile pictures",
+            "severity": "minor",
+            "status": "open",
+            "created_date": "2023-05-05",
+            "assignee": ["TM001"],
+            "related_requirement": ["REQ003"]
+          },
+          {
+            "id": "DEF004",
+            "title": "Search Results Inconsistent",
+            "description": "Search results are inconsistent across different pages",
+            "severity": "major",
+            "status": "open",
+            "created_date": "2023-05-06",
+            "assignee": ["TM002"],
+            "related_requirement": ["REQ004"]
+          },
+          {
+            "id": "DEF005",
+            "title": "Email Notifications Not Sending",
+            "description": "Users are not receiving email notifications",
+            "severity": "critical",
+            "status": "in_progress",
+            "created_date": "2023-05-07",
+            "assignee": ["TM003"],
+            "related_requirement": ["REQ005"]
+          },
+          {
+            "id": "DEF006",
+            "title": "Mobile Layout Broken",
+            "description": "The layout is broken on certain mobile devices",
+            "severity": "major",
+            "status": "open",
+            "created_date": "2023-05-08",
+            "assignee": ["TM004"],
+            "related_requirement": ["REQ006"]
+          },
+          {
+            "id": "DEF007",
+            "title": "User Activity Logs Incomplete",
+            "description": "Some user activities are not being logged",
+            "severity": "minor",
+            "status": "open",
+            "created_date": "2023-05-09",
+            "assignee": ["TM001"],
+            "related_requirement": ["REQ007"]
+          },
+          {
+            "id": "DEF008",
+            "title": "Data Export Formatting Issues",
+            "description": "Exported data has formatting issues in certain file types",
+            "severity": "minor",
+            "status": "open",
+            "created_date": "2023-05-10",
+            "assignee": ["TM002"],
+            "related_requirement": ["REQ008"]
+          },
+          {
+            "id": "DEF009",
+            "title": "Language Switch Causes Crash",
+            "description": "App crashes when switching languages in certain scenarios",
+            "severity": "critical",
+            "status": "in_progress",
+            "created_date": "2023-05-11",
+            "assignee": ["TM003"],
+            "related_requirement": ["REQ009"]
+          },
+          {
+            "id": "DEF010",
+            "title": "Slow Loading on Large Datasets",
+            "description": "Application becomes unresponsive with large datasets",
+            "severity": "major",
+            "status": "open",
+            "created_date": "2023-05-12",
+            "assignee": ["TM004"],
+            "related_requirement": ["REQ010"]
+          }
+        ]
+      },
+      "Iterations": {
+        "fieldsOrder": ["Name", "Start Date", "End Date", "Status", "Goals", "Related Requirements", "Related Tasks"],
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Start Date": {
+            "id": "start_date",
+            "type": "date",
+            "constraint": {
+              "required": true
+            }
+          },
+          "End Date": {
+            "id": "end_date",
+            "type": "date",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Status": {
+            "id": "status",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "planned",
+                  "name": "Planned",
+                  "color": "blue"
+                },
+                {
+                  "id": "in_progress",
+                  "name": "In Progress",
+                  "color": "yellow"
+                },
+                {
+                  "id": "completed",
+                  "name": "Completed",
+                  "color": "green"
+                }
+              ]
+            }
+          },
+          "Goals": {
+            "id": "goals",
+            "type": "longText"
+          },
+          "Related Requirements": {
+            "id": "related_requirements",
+            "type": "reference",
+            "option": {
+              "foreignTable": {
+                "tableName": "Requirements"
+              }
+            }
+          },
+          "Related Tasks": {
+            "id": "related_tasks",
+            "type": "reference",
+            "option": {
+              "foreignTable": {
+                "tableName": "Tasks"
+              }
+            }
+          }
+        },
+        "views": {
+          "All Iterations": {
+            "type": "grid",
+            "sort": [
+              {
+                "fieldId": "start_date",
+                "direction": "desc"
+              }
+            ]
+          }
+        },
+        "records": [
+          {
+            "id": "IT001",
+            "name": "Sprint 1",
+            "start_date": "2023-05-01",
+            "end_date": "2023-05-14",
+            "status": "in_progress",
+            "goals": "Complete user login feature and start dashboard development",
+            "related_requirements": ["REQ001", "REQ002"],
+            "related_tasks": ["TASK001", "TASK002", "TASK003"]
+          },
+          {
+            "id": "IT002",
+            "name": "Sprint 2",
+            "start_date": "2023-05-15",
+            "end_date": "2023-05-28",
+            "status": "planned",
+            "goals": "Finish dashboard development and address major defects",
+            "related_requirements": ["REQ002"],
+            "related_tasks": ["TASK004", "TASK005"]
+          },
+          {
+            "id": "IT003",
+            "name": "Sprint 3",
+            "start_date": "2023-05-29",
+            "end_date": "2023-06-11",
+            "status": "planned",
+            "goals": "Implement user profile management and search functionality",
+            "related_requirements": ["REQ003", "REQ004"],
+            "related_tasks": ["TASK006", "TASK007", "TASK008"]
+          },
+          {
+            "id": "IT004",
+            "name": "Sprint 4",
+            "start_date": "2023-06-12",
+            "end_date": "2023-06-25",
+            "status": "planned",
+            "goals": "Develop email notification system and improve mobile responsiveness",
+            "related_requirements": ["REQ005", "REQ006"],
+            "related_tasks": ["TASK009", "TASK010", "TASK011"]
+          },
+          {
+            "id": "IT005",
+            "name": "Sprint 5",
+            "start_date": "2023-06-26",
+            "end_date": "2023-07-09",
+            "status": "planned",
+            "goals": "Implement user activity logging and data export feature",
+            "related_requirements": ["REQ007", "REQ008"],
+            "related_tasks": ["TASK012", "TASK013", "TASK014"]
+          },
+          {
+            "id": "IT006",
+            "name": "Sprint 6",
+            "start_date": "2023-07-10",
+            "end_date": "2023-07-23",
+            "status": "planned",
+            "goals": "Add multi-language support and focus on performance optimization",
+            "related_requirements": ["REQ009", "REQ010"],
+            "related_tasks": ["TASK015", "TASK016", "TASK017"]
+          }
+        ]
+      },
+      "Test Cases": {
+        "fieldsOrder": [
+          "Title",
+          "Description",
+          "Status",
+          "Created Date",
+          "Last Executed Date",
+          "Related Requirement",
+          "Related Defect"
+        ],
+        "schema": {
+          "Title": {
+            "id": "title",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Description": {
+            "id": "description",
+            "type": "longText"
+          },
+          "Status": {
+            "id": "status",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "not_executed",
+                  "name": "Not Executed",
+                  "color": "gray"
+                },
+                {
+                  "id": "passed",
+                  "name": "Passed",
+                  "color": "green"
+                },
+                {
+                  "id": "failed",
+                  "name": "Failed",
+                  "color": "red"
+                }
+              ]
+            }
+          },
+          "Created Date": {
+            "id": "created_date",
+            "type": "date",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Last Executed Date": {
+            "id": "last_executed_date",
+            "type": "date"
+          },
+          "Related Requirement": {
+            "id": "related_requirement",
+            "type": "reference",
+            "option": {
+              "foreignTable": {
+                "tableName": "Requirements"
+              }
+            }
+          },
+          "Related Defect": {
+            "id": "related_defect",
+            "type": "reference",
+            "option": {
+              "foreignTable": {
+                "tableName": "Defects"
+              }
+            }
+          }
+        },
+        "views": {
+          "All Test Cases": {
+            "type": "grid",
+            "sort": [
+              {
+                "fieldId": "created_date",
+                "direction": "desc"
+              }
+            ]
+          },
+          "By Status": {
+            "type": "kanban",
+            "kanban": {
+              "field": "status"
+            }
+          }
+        },
+        "records": [
+          {
+            "id": "TC001",
+            "title": "User Login Test",
+            "description": "Test user login functionality with valid credentials",
+            "status": "failed",
+            "created_date": "2023-05-02",
+            "last_executed_date": "2023-05-03",
+            "related_requirement": ["REQ001"],
+            "related_defect": ["DEF001"]
+          },
+          {
+            "id": "TC002",
+            "title": "Dashboard Data Accuracy Test",
+            "description": "Verify the accuracy of data displayed in the dashboard",
+            "status": "not_executed",
+            "created_date": "2023-05-03",
+            "related_requirement": ["REQ002"]
+          },
+          {
+            "id": "TC003",
+            "title": "User Profile Update Test",
+            "description": "Test the functionality of updating user profile information",
+            "status": "passed",
+            "created_date": "2023-05-04",
+            "last_executed_date": "2023-05-05",
+            "related_requirement": ["REQ003"]
+          },
+          {
+            "id": "TC004",
+            "title": "Search Functionality Test",
+            "description": "Verify the search feature returns accurate results",
+            "status": "failed",
+            "created_date": "2023-05-05",
+            "last_executed_date": "2023-05-06",
+            "related_requirement": ["REQ004"],
+            "related_defect": ["DEF004"]
+          },
+          {
+            "id": "TC005",
+            "title": "Email Notification Test",
+            "description": "Test if email notifications are sent correctly for various actions",
+            "status": "not_executed",
+            "created_date": "2023-05-06",
+            "related_requirement": ["REQ005"]
+          },
+          {
+            "id": "TC006",
+            "title": "Mobile Responsiveness Test",
+            "description": "Verify the application's responsiveness on various mobile devices",
+            "status": "failed",
+            "created_date": "2023-05-07",
+            "last_executed_date": "2023-05-08",
+            "related_requirement": ["REQ006"],
+            "related_defect": ["DEF006"]
+          },
+          {
+            "id": "TC007",
+            "title": "User Activity Logging Test",
+            "description": "Verify that all user activities are correctly logged",
+            "status": "passed",
+            "created_date": "2023-05-08",
+            "last_executed_date": "2023-05-09",
+            "related_requirement": ["REQ007"]
+          },
+          {
+            "id": "TC008",
+            "title": "Data Export Feature Test",
+            "description": "Test the functionality of exporting data in various formats",
+            "status": "failed",
+            "created_date": "2023-05-09",
+            "last_executed_date": "2023-05-10",
+            "related_requirement": ["REQ008"],
+            "related_defect": ["DEF008"]
+          },
+          {
+            "id": "TC009",
+            "title": "Multi-language Support Test",
+            "description": "Verify that the application correctly supports multiple languages",
+            "status": "not_executed",
+            "created_date": "2023-05-10",
+            "related_requirement": ["REQ009"]
+          },
+          {
+            "id": "TC010",
+            "title": "Performance Optimization Test",
+            "description": "Test the application's performance under various load conditions",
+            "status": "not_executed",
+            "created_date": "2023-05-11",
+            "related_requirement": ["REQ010"]
+          }
+        ]
+      },
+      "Tasks": {
+        "fieldsOrder": [
+          "Title",
+          "Description",
+          "Status",
+          "Priority",
+          "Estimated Hours",
+          "Actual Hours",
+          "Assignee",
+          "Assignee Name",
+          "Related Requirement",
+          "Related Iteration"
+        ],
+        "schema": {
+          "Title": {
+            "id": "title",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Description": {
+            "id": "description",
+            "type": "longText"
+          },
+          "Status": {
+            "id": "status",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "to_do",
+                  "name": "To Do",
+                  "color": "blue"
+                },
+                {
+                  "id": "in_progress",
+                  "name": "In Progress",
+                  "color": "yellow"
+                },
+                {
+                  "id": "done",
+                  "name": "Done",
+                  "color": "green"
+                }
+              ]
+            }
+          },
+          "Priority": {
+            "id": "priority",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "high",
+                  "name": "High",
+                  "color": "red"
+                },
+                {
+                  "id": "medium",
+                  "name": "Medium",
+                  "color": "yellow"
+                },
+                {
+                  "id": "low",
+                  "name": "Low",
+                  "color": "green"
+                }
+              ]
+            }
+          },
+          "Estimated Hours": {
+            "id": "estimated_hours",
+            "type": "number"
+          },
+          "Actual Hours": {
+            "id": "actual_hours",
+            "type": "number"
+          },
+          "Assignee": {
+            "id": "assignee",
+            "type": "reference",
+            "option": {
+              "foreignTable": {
+                "tableName": "Team Members"
+              }
+            }
+          },
+          "Assignee Name": {
+            "id": "assignee_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "assignee",
+              "rollupFieldId": "name",
+              "fn": "lookup"
+            }
+          },
+          "Related Requirement": {
+            "id": "related_requirement",
+            "type": "reference",
+            "option": {
+              "foreignTable": {
+                "tableName": "Requirements"
+              }
+            }
+          },
+          "Related Iteration": {
+            "id": "related_iteration",
+            "type": "reference",
+            "option": {
+              "foreignTable": {
+                "tableName": "Iterations"
+              }
+            }
+          }
+        },
+        "views": {
+          "All Tasks": {
+            "type": "grid",
+            "sort": [
+              {
+                "fieldId": "priority",
+                "direction": "desc"
+              }
+            ]
+          },
+          "By Status": {
+            "type": "kanban",
+            "kanban": {
+              "field": "status"
+            }
+          }
+        },
+        "records": [
+          {
+            "id": "TASK001",
+            "title": "Implement Login UI",
+            "description": "Create the user interface for the login screen",
+            "status": "done",
+            "priority": "high",
+            "estimated_hours": 8,
+            "actual_hours": 10,
+            "assignee": ["TM001"],
+            "related_requirement": ["REQ001"],
+            "related_iteration": ["IT001"]
+          },
+          {
+            "id": "TASK002",
+            "title": "Implement Login Backend",
+            "description": "Develop the backend logic for user authentication",
+            "status": "in_progress",
+            "priority": "high",
+            "estimated_hours": 16,
+            "actual_hours": 12,
+            "assignee": ["TM002"],
+            "related_requirement": ["REQ001"],
+            "related_iteration": ["IT001"]
+          },
+          {
+            "id": "TASK003",
+            "title": "Design Dashboard Layout",
+            "description": "Create the layout design for the data visualization dashboard",
+            "status": "to_do",
+            "priority": "medium",
+            "estimated_hours": 12,
+            "assignee": ["TM003"],
+            "related_requirement": ["REQ002"],
+            "related_iteration": ["IT001"]
+          }
+        ]
+      },
+      "Time Entries": {
+        "fieldsOrder": ["Date", "Hours", "Description", "Team Member", "Team Member Name", "Related Task"],
+        "schema": {
+          "Date": {
+            "id": "date",
+            "type": "date",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Hours": {
+            "id": "hours",
+            "type": "number",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Description": {
+            "id": "description",
+            "type": "longText"
+          },
+          "Team Member": {
+            "id": "team_member",
+            "type": "reference",
+            "option": {
+              "foreignTable": {
+                "tableName": "Team Members"
+              }
+            }
+          },
+          "Team Member Name": {
+            "id": "team_member_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "team_member",
+              "rollupFieldId": "name",
+              "fn": "lookup"
+            }
+          },
+          "Related Task": {
+            "id": "related_task",
+            "type": "reference",
+            "option": {
+              "foreignTable": {
+                "tableName": "Tasks"
+              }
+            }
+          }
+        },
+        "views": {
+          "All Time Entries": {
+            "type": "grid",
+            "sort": [
+              {
+                "fieldId": "date",
+                "direction": "desc"
+              }
+            ]
+          }
+        },
+        "records": [
+          {
+            "id": "TE001",
+            "date": "2023-05-01",
+            "hours": 6,
+            "description": "Worked on login UI implementation",
+            "team_member": ["TM001"],
+            "related_task": ["TASK001"]
+          },
+          {
+            "id": "TE002",
+            "date": "2023-05-02",
+            "hours": 8,
+            "description": "Continued work on login backend",
+            "team_member": ["TM002"],
+            "related_task": ["TASK002"]
+          }
+        ]
+      },
+      "Team Members": {
+        "fieldsOrder": ["Name", "Email", "Role", "Assigned Tasks", "Assigned Requirements", "Time Entries"],
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Email": {
+            "id": "email",
+            "type": "email",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Role": {
+            "id": "role",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "developer",
+                  "name": "Developer",
+                  "color": "blue"
+                },
+                {
+                  "id": "tester",
+                  "name": "Tester",
+                  "color": "green"
+                },
+                {
+                  "id": "product_owner",
+                  "name": "Product Owner",
+                  "color": "purple"
+                },
+                {
+                  "id": "scrum_master",
+                  "name": "Scrum Master",
+                  "color": "orange"
+                }
+              ]
+            }
+          },
+          "Assigned Tasks": {
+            "id": "assigned_tasks",
+            "type": "reference",
+            "option": {
+              "symmetricFieldId": "assignee"
+            }
+          },
+          "Assigned Requirements": {
+            "id": "assigned_requirements",
+            "type": "reference",
+            "option": {
+              "symmetricFieldId": "assignee"
+            }
+          },
+          "Time Entries": {
+            "id": "time_entries",
+            "type": "reference",
+            "option": {
+              "symmetricFieldId": "team_member"
+            }
+          }
+        },
+        "views": {
+          "All Team Members": {
+            "type": "grid"
+          },
+          "By Role": {
+            "type": "kanban",
+            "kanban": {
+              "field": "role"
+            }
+          }
+        },
+        "records": [
+          {
+            "id": "TM001",
+            "name": "John Doe",
+            "email": "john.doe@example.com",
+            "role": "developer",
+            "assigned_tasks": ["TASK001"],
+            "assigned_requirements": ["REQ001"],
+            "time_entries": ["TE001"]
+          },
+          {
+            "id": "TM002",
+            "name": "Jane Smith",
+            "email": "jane.smith@example.com",
+            "role": "developer",
+            "assigned_tasks": ["TASK002"],
+            "assigned_requirements": ["REQ002"],
+            "time_entries": ["TE002"]
+          },
+          {
+            "id": "TM003",
+            "name": "Bob Johnson",
+            "email": "bob.johnson@example.com",
+            "role": "tester",
+            "assigned_tasks": ["TASK003"]
+          },
+          {
+            "id": "TM004",
+            "name": "Alice Brown",
+            "email": "alice.brown@example.com",
+            "role": "product_owner"
+          }
+        ]
+      }
+    }
+  }
+}
