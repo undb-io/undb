@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-96
+
+
+### 🏡 Chore
+
+- Hide hr template ([d9f220d](https://github.com/undb-io/undb/commit/d9f220d))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-95
 
 
