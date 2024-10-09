@@ -1,5 +1,5 @@
 import type { Audit, AuditSpecification, IAuditRepository } from "@undb/audit"
-import { getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
+import { injectContext, type IContext } from "@undb/context"
 import { inject, singleton } from "@undb/di"
 import type { Option } from "@undb/domain"
 import type { IQueryBuilder } from "../qb"
@@ -13,19 +13,21 @@ export class AuditRepository implements IAuditRepository {
     private readonly mapper: AuditMapper,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
   findOne(spec: AuditSpecification): Promise<Option<Audit>> {
     throw new Error("Method not implemented.")
   }
   async insert(audit: Audit): Promise<void> {
-    const user = getCurrentUserId()
+    const user = this.context.getCurrentUserId()
     const values = this.mapper.toEntity(audit)
 
     await this.qb
       .insertInto("undb_audit")
       .values({
         ...values,
-        space_id: mustGetCurrentSpaceId(),
+        space_id: this.context.mustGetCurrentSpaceId(),
         operator_id: user,
       })
       .execute()

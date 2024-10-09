@@ -9,7 +9,7 @@ import {
   type IBaseRepository,
 } from "@undb/base"
 import { UpdateBaseCommand } from "@undb/commands"
-import { mustGetCurrentSpaceId } from "@undb/context/server"
+import { injectContext, type IContext } from "@undb/context"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import { applyRules, type ICommandHandler } from "@undb/domain"
@@ -23,6 +23,8 @@ export class UpdateBaseCommandHandler implements ICommandHandler<UpdateBaseComma
   constructor(
     @injectBaseRepository()
     private readonly repository: IBaseRepository,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   async execute(command: UpdateBaseCommand): Promise<any> {
@@ -30,9 +32,10 @@ export class UpdateBaseCommandHandler implements ICommandHandler<UpdateBaseComma
 
     const base = (await this.repository.findOneById(command.id)).unwrap()
 
+    const spaceId = this.context.mustGetCurrentSpaceId()
     if (command.name) {
       const nameSpec = new WithBaseName(BaseName.from(command.name))
-        .and(new WithBaseSpaceId(mustGetCurrentSpaceId()))
+        .and(new WithBaseSpaceId(spaceId))
         .and(new WithBaseId(new BaseId(command.id)).not())
       const exists = (await this.repository.findOne(nameSpec)).into(null)
 

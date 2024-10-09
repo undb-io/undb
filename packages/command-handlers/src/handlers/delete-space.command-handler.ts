@@ -1,5 +1,5 @@
 import { DeleteSpaceCommand } from "@undb/commands"
-import { getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
+import { injectContext, type IContext } from "@undb/context"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import { type ICommandHandler } from "@undb/domain"
@@ -11,15 +11,17 @@ export class DeleteSpaceCommandHandler implements ICommandHandler<DeleteSpaceCom
   constructor(
     @injectSpaceRepository()
     private readonly repository: ISpaceRepository,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   async execute(command: DeleteSpaceCommand): Promise<any> {
-    const spaces = await this.repository.find(new WithSpaceUserId(getCurrentUserId()))
+    const spaces = await this.repository.find(new WithSpaceUserId(this.context.mustGetCurrentUserId()))
     if (spaces.length === 1) {
       throw new Error("Cannot delete the last space")
     }
 
-    const spaceId = mustGetCurrentSpaceId()
+    const spaceId = this.context.mustGetCurrentSpaceId()
     const space = (await this.repository.findOneById(spaceId)).expect("Space not found")
     if (space.isPersonal) {
       throw new Error("Cannot delete personal space")

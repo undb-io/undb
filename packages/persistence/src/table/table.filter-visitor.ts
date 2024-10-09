@@ -1,4 +1,3 @@
-import { mustGetCurrentSpaceId } from "@undb/context/server"
 import type {
   DuplicatedTableSpecification,
   ITableSpecVisitor,
@@ -44,12 +43,12 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
   constructor(
     private readonly qb: IQueryBuilder,
     protected readonly eb: ExpressionBuilder<Database, "undb_table" | "undb_table_id_mapping">,
+    private readonly spaceId: string,
     private readonly ignoreSpace = false,
     cloned = false,
   ) {
     super(eb)
     if (!ignoreSpace && !cloned) {
-      const spaceId = mustGetCurrentSpaceId()
       this.addCond(this.eb.eb("undb_table.space_id", "=", spaceId))
     }
   }
@@ -168,6 +167,6 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
   }
   withTableUnqueName(spec: TableUniqueNameSpecification): void {}
   clone(): this {
-    return new TableFilterVisitor(this.qb, this.eb, this.ignoreSpace, true) as this
+    return new TableFilterVisitor(this.qb, this.eb, this.spaceId, this.ignoreSpace, true) as this
   }
 }

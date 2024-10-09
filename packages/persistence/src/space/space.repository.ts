@@ -1,4 +1,4 @@
-import { getCurrentUserId } from "@undb/context/server"
+import { injectContext, type IContext } from "@undb/context"
 import { singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import { SpaceFactory, type ISpaceRepository, type ISpaceSpecification, type Space } from "@undb/space"
@@ -13,6 +13,8 @@ export class SpaceRepostitory implements ISpaceRepository {
   constructor(
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
   async find(spec: ISpaceSpecification): Promise<Space[]> {
     const space = await (getCurrentTransaction() ?? this.qb)
@@ -77,7 +79,7 @@ export class SpaceRepostitory implements ISpaceRepository {
   }
   async insert(space: Space): Promise<void> {
     const tx = getCurrentTransaction()
-    const userId = getCurrentUserId()
+    const userId = this.context.getCurrentUserId()
     await tx
       .insertInto("undb_space")
       .values({
@@ -96,7 +98,7 @@ export class SpaceRepostitory implements ISpaceRepository {
     const visitor = new SpaceMutateVisitor()
     spec.accept(visitor)
 
-    const userId = getCurrentUserId()
+    const userId = this.context.getCurrentUserId()
     await getCurrentTransaction()
       .updateTable("undb_space")
       .set({ ...visitor.data, updated_by: userId, updated_at: new Date().toISOString() })
@@ -108,7 +110,7 @@ export class SpaceRepostitory implements ISpaceRepository {
 
     await tx
       .updateTable("undb_space")
-      .set({ deleted_at: new Date().getTime(), deleted_by: getCurrentUserId() })
+      .set({ deleted_at: new Date().getTime(), deleted_by: this.context.getCurrentUserId() })
       .where("id", "=", id)
       .execute()
   }

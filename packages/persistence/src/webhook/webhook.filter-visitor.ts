@@ -1,4 +1,3 @@
-import { mustGetCurrentSpaceId } from "@undb/context/server"
 import { WontImplementException } from "@undb/domain"
 import type {
   IWebhookSpecVisitor,
@@ -21,11 +20,11 @@ import type { Database } from "../db"
 export class WebhookFilterVisitor extends AbstractQBVisitor<WebhookDo> implements IWebhookSpecVisitor {
   constructor(
     protected readonly eb: ExpressionBuilder<Database, "undb_webhook">,
+    private readonly spaceId: string,
     cloned = false,
   ) {
     super(eb)
     if (!cloned) {
-      const spaceId = mustGetCurrentSpaceId()
       this.addCond(this.eb.eb("space_id", "=", spaceId))
     }
   }
@@ -68,6 +67,6 @@ export class WebhookFilterVisitor extends AbstractQBVisitor<WebhookDo> implement
     this.addCond(cond)
   }
   clone(): this {
-    return new WebhookFilterVisitor(this.eb, true) as this
+    return new WebhookFilterVisitor(this.eb, this.spaceId, true) as this
   }
 }

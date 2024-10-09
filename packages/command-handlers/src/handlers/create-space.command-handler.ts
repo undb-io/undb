@@ -1,6 +1,6 @@
 import { injectSpaceMemberService, type ISpaceMemberService } from "@undb/authz"
 import { CreateSpaceCommand } from "@undb/commands"
-import { getCurrentUserId } from "@undb/context/server"
+import { injectContext, type IContext } from "@undb/context"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import { type ICommandHandler } from "@undb/domain"
@@ -17,6 +17,8 @@ export class CreateSpaceCommandHandler implements ICommandHandler<CreateSpaceCom
     private readonly repository: ISpaceRepository,
     @injectSpaceMemberService()
     private readonly spaceMemberService: ISpaceMemberService,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   async execute(command: CreateSpaceCommand): Promise<any> {
@@ -25,7 +27,7 @@ export class CreateSpaceCommandHandler implements ICommandHandler<CreateSpaceCom
     const space = SpaceFactory.create(command)
 
     await this.repository.insert(space)
-    const userId = getCurrentUserId()
+    const userId = this.context.mustGetCurrentUserId()
     await this.spaceMemberService.createMember(userId, space.id.value, "owner")
 
     return space.id.value

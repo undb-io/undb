@@ -1,7 +1,7 @@
 import { checkPermission, injectSpaceMemberService, type ISpaceMemberService } from "@undb/authz"
 import { BaseId, injectBaseRepository, WithBaseId, WithBaseSpaceId, type IBaseRepository } from "@undb/base"
 import { CreateFromShareCommand } from "@undb/commands"
-import { getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
+import { injectContext, type IContext } from "@undb/context"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import { type ICommandHandler } from "@undb/domain"
@@ -24,6 +24,8 @@ export class CreateFromShareCommandHandler implements ICommandHandler<CreateFrom
     private readonly spaceMemberService: ISpaceMemberService,
     @injectShareRepository()
     private readonly shareRepository: IShareRepository,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   async execute(command: CreateFromShareCommand): Promise<any> {
@@ -39,8 +41,8 @@ export class CreateFromShareCommandHandler implements ICommandHandler<CreateFrom
     const baseId = share.target.id
     const spaceId = share.spaceId
 
-    const userId = getCurrentUserId()
-    const targetSpaceId = command.targetSpaceId ?? mustGetCurrentSpaceId()
+    const userId = this.context.mustGetCurrentUserId()
+    const targetSpaceId = command.targetSpaceId ?? this.context.mustGetCurrentSpaceId()
 
     const member = (await this.spaceMemberService.getSpaceMember(userId, targetSpaceId)).expect("Member not found")
     checkPermission(member.props.role, ["base:create"])

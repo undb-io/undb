@@ -1,4 +1,4 @@
-import { getCurrentUserId } from "@undb/context/server"
+import type { IContext } from "@undb/context"
 import { NotImplementException } from "@undb/domain"
 import {
   CurrencyGT,
@@ -74,6 +74,7 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
   constructor(
     eb: ExpressionBuilder<any, any>,
     private readonly table: TableDo,
+    private readonly context: IContext,
   ) {
     super(eb)
   }
@@ -137,10 +138,10 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
       const cond = this.eb.eb(this.getFieldId(spec), "is", null)
       this.addCond(cond)
     } else {
-      function convertMacro(value: string) {
+      const convertMacro = (value: string) => {
         if (isUserFieldMacro(value)) {
           if (value === "@me") {
-            return getCurrentUserId()
+            return this.context.getCurrentUserId()
           }
         }
 
@@ -328,6 +329,6 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     this.addCond(cond)
   }
   clone(): this {
-    return new RecordFilterVisitor(this.eb, this.table) as this
+    return new RecordFilterVisitor(this.eb, this.table, this.context) as this
   }
 }

@@ -1,12 +1,12 @@
-import { getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
+import type { IContext } from "@undb/context"
 import type { BaseEvent } from "@undb/domain"
 import type { InsertOutbox } from "./db"
 import { json } from "./qb"
 
 export class OutboxMapper {
-  static fromEvent(event: BaseEvent): InsertOutbox {
-    const user = getCurrentUserId()
-    const spaceId = event.spaceId ?? mustGetCurrentSpaceId()
+  static fromEvent(event: BaseEvent, context: IContext): InsertOutbox {
+    const user = context.getCurrentUserId()
+    const spaceId = event.spaceId ?? context.mustGetCurrentSpaceId()
     return {
       id: event.id,
       name: event.name,

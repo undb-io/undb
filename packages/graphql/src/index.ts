@@ -2,7 +2,8 @@ import { yoga } from "@elysiajs/graphql-yoga"
 import { useOpenTelemetry } from "@envelop/opentelemetry"
 import * as otel from "@opentelemetry/api"
 import type { ISpaceMemberDTO } from "@undb/authz"
-import { executionContext, getCurrentSpaceId, getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
+import { injectContext, type IContext } from "@undb/context"
+import { executionContext, getCurrentSpaceId } from "@undb/context/server"
 import { QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import type { Option } from "@undb/domain"
@@ -55,6 +56,8 @@ export class Graphql {
     public readonly shareService: IShareService,
     @injectObjectStorage()
     public readonly objectStorage: IObjectStorage,
+    @injectContext()
+    public readonly context: IContext,
   ) {}
 
   public route() {
@@ -398,7 +401,7 @@ export class Graphql {
             return space.unwrap()
           },
           spaces: async () => {
-            const userId = getCurrentUserId()
+            const userId = this.context.getCurrentUserId()
             if (!userId) {
               return []
             }
@@ -489,7 +492,10 @@ export class Graphql {
           // @ts-ignore
           share: async (base) => {
             return (
-              await this.shareService.getShareByTarget({ type: "base", id: base.id }, mustGetCurrentSpaceId())
+              await this.shareService.getShareByTarget(
+                { type: "base", id: base.id },
+                this.context.mustGetCurrentSpaceId(),
+              )
             ).into(null)
           },
         },
@@ -519,7 +525,10 @@ export class Graphql {
           // @ts-ignore
           share: async (view) => {
             return (
-              await this.shareService.getShareByTarget({ type: "view", id: view.id }, mustGetCurrentSpaceId())
+              await this.shareService.getShareByTarget(
+                { type: "view", id: view.id },
+                this.context.mustGetCurrentSpaceId(),
+              )
             ).into(null)
           },
         },
@@ -527,7 +536,10 @@ export class Graphql {
           // @ts-ignore
           share: async (form) => {
             return (
-              await this.shareService.getShareByTarget({ type: "form", id: form.id }, mustGetCurrentSpaceId())
+              await this.shareService.getShareByTarget(
+                { type: "form", id: form.id },
+                this.context.mustGetCurrentSpaceId(),
+              )
             ).into(null)
           },
         },
@@ -540,7 +552,7 @@ export class Graphql {
         Space: {
           // @ts-ignore
           member: async (space) => {
-            const userId = getCurrentUserId()
+            const userId = this.context.getCurrentUserId()
             if (!userId) {
               return null
             }

@@ -10,15 +10,16 @@ import type {
   WithAuditTimestamp,
 } from "@undb/audit"
 import type { WithAuditRecordId } from "@undb/audit/src/specifications/audit-record-id.specification"
-import { mustGetCurrentSpaceId } from "@undb/context/server"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
 
 export class AuditFilterVisitor extends AbstractQBVisitor<Audit> implements IAuditSpecVisitor {
-  constructor(protected readonly eb: ExpressionBuilder<Database, "undb_audit">) {
+  constructor(
+    protected readonly eb: ExpressionBuilder<Database, "undb_audit">,
+    private readonly spaceId: string,
+  ) {
     super(eb)
-    const spaceId = mustGetCurrentSpaceId()
     this.addCond(this.eb.eb("space_id", "=", spaceId))
   }
   idEqual(s: WithAuditId): void {
@@ -47,6 +48,6 @@ export class AuditFilterVisitor extends AbstractQBVisitor<Audit> implements IAud
     throw new Error("Method not implemented.")
   }
   clone(): this {
-    return new AuditFilterVisitor(this.eb) as this
+    return new AuditFilterVisitor(this.eb, this.spaceId) as this
   }
 }

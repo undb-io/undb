@@ -1,4 +1,4 @@
-import { getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
+import type { IContext } from "@undb/context"
 import {
   CurrencyEqual,
   CurrencyGT,
@@ -71,6 +71,7 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     private readonly record: RecordDO | null,
     private readonly qb: IRecordQueryBuilder,
     private readonly eb: ExpressionBuilder<any, any>,
+    private readonly context: IContext,
   ) {
     super()
   }
@@ -116,8 +117,8 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
       this.addSql(deleteSql)
 
       if (s.value?.length) {
-        const userId = getCurrentUserId()
-        const spaceId = mustGetCurrentSpaceId()
+        const userId = this.context.getCurrentUserId()
+        const spaceId = this.context.mustGetCurrentSpaceId()
         const insert = (this.qb as IQueryBuilder)
           .insertInto("undb_attachment")
           .values(
@@ -238,10 +239,10 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     const fieldValue = new UserFieldValue(spec.value)
     const value = fieldValue.getValue(field)
 
-    function convertMacro(value: string) {
+    const convertMacro = (value: string) => {
       if (isUserFieldMacro(value)) {
         if (value === "@me") {
-          return getCurrentUserId()
+          return this.context.getCurrentUserId()
         }
       }
 
@@ -366,6 +367,6 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     this.setData(s.fieldId.value, s.value || null)
   }
   clone(): this {
-    return new RecordMutateVisitor(this.table, this.record, this.qb, this.eb) as this
+    return new RecordMutateVisitor(this.table, this.record, this.qb, this.eb, this.context) as this
   }
 }

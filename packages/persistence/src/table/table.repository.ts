@@ -1,3 +1,4 @@
+import { injectContext, type IContext } from "@undb/context"
 import { executionContext, getCurrentSpaceId } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import { None, Option, Some } from "@undb/domain"
@@ -30,6 +31,8 @@ export class TableRepository implements ITableRepository {
     private readonly outboxService: ITableOutboxService,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   get mapper() {
@@ -127,7 +130,9 @@ export class TableRepository implements ITableRepository {
       .selectFrom("undb_table")
       .selectAll("undb_table")
       .$if(spec.isSome(), (qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
-      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb, ignoreSpace).handle(spec))
+      .where((eb) =>
+        new TableDbQuerySpecHandler(this.qb, eb, this.context.mustGetCurrentSpaceId(), ignoreSpace).handle(spec),
+      )
     const tbs = await query.execute()
 
     return tbs.map((t) => this.mapper.toDo(t))
@@ -138,7 +143,7 @@ export class TableRepository implements ITableRepository {
       .selectFrom("undb_table")
       .selectAll("undb_table")
       .$if(spec.isSome(), (qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
-      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb).handle(spec))
+      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb, this.context.mustGetCurrentSpaceId()).handle(spec))
       .executeTakeFirst()
 
     if (!tb) {
@@ -154,7 +159,7 @@ export class TableRepository implements ITableRepository {
       .selectFrom("undb_table")
       .selectAll("undb_table")
       .$call((qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
-      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb).handle(spec))
+      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb, this.context.mustGetCurrentSpaceId()).handle(spec))
       .executeTakeFirst()
 
     return tb ? Some(this.mapper.toDo(tb)) : None
@@ -166,7 +171,7 @@ export class TableRepository implements ITableRepository {
       .selectFrom("undb_table")
       .selectAll("undb_table")
       .$call((qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
-      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb).handle(spec))
+      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb, this.context.mustGetCurrentSpaceId()).handle(spec))
       .execute()
 
     return tbs.map((t) => this.mapper.toDo(t))

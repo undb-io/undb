@@ -1,6 +1,7 @@
 import { checkPermission } from "@undb/authz"
 import { DeleteSpaceCommand } from "@undb/commands"
-import { getCurrentMember, getCurrentUserId } from "@undb/context/server"
+import { type IContext, injectContext } from "@undb/context"
+import { getCurrentMember } from "@undb/context/server"
 import { CommandBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
@@ -21,6 +22,8 @@ export class SpaceModule {
     private readonly commandBus: CommandBus,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
   public route() {
     return new Elysia()
@@ -66,7 +69,7 @@ export class SpaceModule {
           return withTransaction(this.qb)(async () => {
             await this.commandBus.execute(new DeleteSpaceCommand({}))
 
-            const userId = getCurrentUserId()
+            const userId = this.context.mustGetCurrentUserId()
 
             await this.lucia.invalidateSession(userId)
             const space = (await this.spaceService.getSpace({ userId })).expect("Space not found")
