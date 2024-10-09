@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-97
+
+
+### 🏡 Chore
+
+- Template assets ([0f85e43](https://github.com/undb-io/undb/commit/0f85e43))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-96
 
 
