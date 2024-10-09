@@ -1,5 +1,5 @@
 import { env } from "@undb/env"
-import { templates,type IBaseTemplateDTO,type ITemplateDTO } from "@undb/template"
+import { templates, type IBaseTemplateDTO, type ITemplateDTO } from "@undb/template"
 
 function getTemplateImage(folder: string, file: string) {
   return env.UNDB_BASE_URL + "/assets/templates/" + folder + "/" + file
@@ -245,31 +245,88 @@ export const templateData: ITemplateDTO[] = [
     images: [getTemplateImage("hr", "image1.png"), getTemplateImage("hr", "image2.png")],
     description: "A template for managing human resources, including employees, positions, and departments.",
     detail: `
-      <h1>Streamline Your Human Resource Management with UnDB's HR Management Template</h1>
-      <h2>Comprehensive HR Management Features</h2>
-      <p>UnDB's HR Management template offers a powerful set of tools to enhance your human resource management:</p>
-      <ul>
-        <li>Employee Management: Easily create, assign, and monitor employee records</li>
-        <li>Department Organization: Efficiently structure and manage company departments</li>
-        <li>Payroll Administration: Track and manage employee compensation, including salaries, bonuses, and benefits</li>
-        <li>Performance Evaluation: Set up and conduct regular performance reviews and goal-setting sessions</li>
-        <li>Time Off Management: Streamline the process of requesting, approving, and tracking employee leave</li>
-        <li>Recruitment and Onboarding: Manage job postings, applications, and new employee onboarding processes</li>
-        <li>Training and Development: Plan and track employee training programs and career development initiatives</li>
-        <li>Compliance Management: Ensure adherence to labor laws and company policies</li>
-        <li>Reporting and Analytics: Generate insightful reports on various HR metrics for data-driven decision making</li>
-      </ul>
-      <h2>Benefits of Using UnDB's HR Management Template</h2>
-      <p>Implementing our HR Management template can bring numerous advantages to your organization:</p>
-      <ul>
-        <li>Increased Efficiency: Automate routine HR tasks and streamline workflows</li>
-        <li>Improved Data Accuracy: Centralize employee information and reduce errors in record-keeping</li>
-        <li>Enhanced Employee Experience: Provide self-service options for employees to access their information</li>
-        <li>Better Decision Making: Leverage HR analytics to make informed strategic decisions</li>
-        <li>Scalability: Easily adapt the template to your growing organization's needs</li>
-        <li>Cost Savings: Reduce administrative overhead and optimize resource allocation</li>
-      </ul>
-      <p>Start transforming your HR processes today with UnDB's comprehensive HR Management template!</p>
+    <h1>UnDB Human Resource Management Template: Streamline Your HR Processes</h1>
+
+<h2>Comprehensive HR Management Features for Modern Businesses</h2>
+
+<p>UnDB's Human Resource Management template offers a powerful set of tools to revolutionize your HR operations:</p>
+
+<h3>Employee Management System</h3>
+<ul>
+  <li>Create and maintain detailed employee profiles</li>
+  <li>Track positions, departments, salaries, and employment status</li>
+  <li>Manage organizational hierarchy with reporting structures</li>
+</ul>
+
+<h3>Department and Payroll Administration</h3>
+<ul>
+  <li>Organize company departments with budget and location tracking</li>
+  <li>Administer payroll, including salaries, bonuses, and deductions</li>
+  <li>Automate net pay calculations for efficient processing</li>
+</ul>
+
+<h3>Leave Management and Performance Evaluation</h3>
+<ul>
+  <li>Streamline time-off requests with customizable leave types</li>
+  <li>Conduct regular performance reviews with rating systems</li>
+  <li>Set and track employee goals for career development</li>
+</ul>
+
+<h2>Benefits of UnDB's HR Software Template</h2>
+
+<p>Transform your human resources processes with our comprehensive solution:</p>
+
+<ul>
+  <li>Centralized HR Data Management</li>
+  <li>Improved Operational Efficiency</li>
+  <li>Enhanced Organizational Visibility</li>
+  <li>Scalable and Customizable Platform</li>
+  <li>Data-Driven HR Decision Making</li>
+</ul>
+
+<h2>HR Template Structure</h2>
+
+<p>Our HR management system includes five key components:</p>
+
+<ol>
+  <li>Employees Database</li>
+  <li>Departments Tracker</li>
+  <li>Payroll Management System</li>
+  <li>Time Off Request Platform</li>
+  <li>Performance Review Module</li>
+</ol>
+
+<h2>Getting Started with UnDB's HR Template</h2>
+
+<p>Follow these steps to implement our HR solution:</p>
+
+<ol>
+  <li>Import the HR template to your UnDB workspace</li>
+  <li>Customize fields and views to match your organization</li>
+  <li>Input employee and department data</li>
+  <li>Configure leave request and performance review workflows</li>
+  <li>Start tracking payroll and departmental budgets</li>
+</ol>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Q: Is UnDB's HR template suitable for small businesses?</h3>
+<p>A: Yes, our template is scalable and can be customized for businesses of all sizes.</p>
+
+<h3>Q: Can I integrate this template with other HR tools?</h3>
+<p>A: UnDB offers various integration options. Contact our support team for specific integration queries.</p>
+
+<h3>Q: How secure is the employee data in this system?</h3>
+<p>A: We prioritize data security with encryption and access controls. Learn more about our security measures <a href="#">here</a>.</p>
+
+<h2>What Our Customers Say</h2>
+
+<blockquote>
+  "UnDB's HR template has streamlined our entire human resources process. It's intuitive, comprehensive, and highly customizable." - Sarah J., HR Director
+</blockquote>
+
+<p>Transform your HR processes today with UnDB's comprehensive Human Resource Management template!</p>
+
     `,
     template: {
       type: "base",
