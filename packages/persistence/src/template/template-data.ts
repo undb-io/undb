@@ -317,13 +317,7 @@ export const templateData: ITemplateDTO[] = [
 <p>A: UnDB offers various integration options. Contact our support team for specific integration queries.</p>
 
 <h3>Q: How secure is the employee data in this system?</h3>
-<p>A: We prioritize data security with encryption and access controls. Learn more about our security measures <a href="#">here</a>.</p>
-
-<h2>What Our Customers Say</h2>
-
-<blockquote>
-  "UnDB's HR template has streamlined our entire human resources process. It's intuitive, comprehensive, and highly customizable." - Sarah J., HR Director
-</blockquote>
+<p>A: We prioritize data security with encryption and access controls. </p>
 
 <p>Transform your HR processes today with UnDB's comprehensive Human Resource Management template!</p>
 
