@@ -12,7 +12,7 @@ import {
   type ICreateSchemaDTO,
   type ICreateTablesReferenceFieldDTO,
 } from "./modules"
-import { FieldNameShouldBeUnique } from "./modules/schema/rules"
+import { FieldIdShouldBeUnique, FieldNameShouldBeUnique } from "./modules/schema/rules"
 import { TableIdVo } from "./table-id.vo"
 import { TableBuilder } from "./table.builder"
 import type { TableDo } from "./table.do"
@@ -65,7 +65,7 @@ export class TableFactory {
       .createForms(dto.forms)
       .build()
 
-    applyRules(new FieldNameShouldBeUnique(table.schema))
+    applyRules(new FieldNameShouldBeUnique(table.schema), new FieldIdShouldBeUnique(table.schema))
 
     // @ts-ignore - TODO: fix this
     table.addDomainEvent(new TableCreatedEvent({ table: table.toJSON() }))

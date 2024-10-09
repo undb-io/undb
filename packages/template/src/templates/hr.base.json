@@ -63,6 +63,15 @@
               }
             }
           },
+          "Department Name": {
+            "id": "department_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "department",
+              "rollupFieldId": "department_name",
+              "fn": "lookup"
+            }
+          },
           "Start Date": {
             "id": "start_date",
             "type": "date",
@@ -128,15 +137,6 @@
                   "color": "blue"
                 }
               ]
-            }
-          },
-          "Department Name": {
-            "id": "department_name",
-            "type": "rollup",
-            "option": {
-              "referenceFieldId": "department",
-              "rollupFieldId": "department_name",
-              "fn": "lookup"
             }
           },
           "Manager Name": {

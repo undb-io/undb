@@ -2,6 +2,7 @@ import { None, Option, Some, andOptions, applyRules } from "@undb/domain"
 import { FieldCreatedEvent } from "../events"
 import { type Field, type ICreateFieldDTO } from "../modules"
 import { FieldFactory } from "../modules/schema/fields/field.factory"
+import { FieldIdShouldBeUnique } from "../modules/schema/rules/field-id-should-be-unique.rule"
 import { FieldNameShouldBeUnique } from "../modules/schema/rules/field-name-should-be-unique.rule"
 import type { TableComositeSpecification } from "../specifications"
 import type { TableDo } from "../table.do"
@@ -18,7 +19,7 @@ export function $createFieldSpec(this: TableDo, field: Field): Option<TableComos
   ).unwrap()
   spec.mutate(this)
 
-  applyRules(new FieldNameShouldBeUnique(this.schema))
+  applyRules(new FieldNameShouldBeUnique(this.schema), new FieldIdShouldBeUnique(this.schema))
 
   const event = new FieldCreatedEvent({
     tableId: this.id.value,
