@@ -7,6 +7,157 @@ function getTemplateImage(folder: string, file: string) {
 
 export const templateData: ITemplateDTO[] = [
   {
+    id: "6ba7b815-9dad-11d1-80b4-00c04fd430c8",
+    icon: "👨‍👧‍👦",
+    name: "Human Resource Management",
+    categories: ["hr"],
+    cover: getTemplateImage("hr", "cover.jpg"),
+    images: [
+      getTemplateImage("hr", "image1.png"),
+      getTemplateImage("hr", "image2.png"),
+      getTemplateImage("hr", "image3.png"),
+      getTemplateImage("hr", "image4.png"),
+      getTemplateImage("hr", "image5.png"),
+    ],
+    description: "A template for managing human resources, including employees, positions, and departments.",
+    detail: `
+    <h1>UnDB Human Resource Management Template: Streamline Your HR Processes</h1>
+
+<h2>Comprehensive HR Management Features for Modern Businesses</h2>
+
+<p>UnDB's Human Resource Management template offers a powerful set of tools to revolutionize your HR operations:</p>
+
+<h3>Employee Management System</h3>
+<ul>
+  <li>Create and maintain detailed employee profiles</li>
+  <li>Track positions, departments, salaries, and employment status</li>
+  <li>Manage organizational hierarchy with reporting structures</li>
+</ul>
+
+<h3>Department and Payroll Administration</h3>
+<ul>
+  <li>Organize company departments with budget and location tracking</li>
+  <li>Administer payroll, including salaries, bonuses, and deductions</li>
+  <li>Automate net pay calculations for efficient processing</li>
+</ul>
+
+<h3>Leave Management and Performance Evaluation</h3>
+<ul>
+  <li>Streamline time-off requests with customizable leave types</li>
+  <li>Conduct regular performance reviews with rating systems</li>
+  <li>Set and track employee goals for career development</li>
+</ul>
+
+<h2>Benefits of UnDB's HR Software Template</h2>
+
+<p>Transform your human resources processes with our comprehensive solution:</p>
+
+<ul>
+  <li>Centralized HR Data Management</li>
+  <li>Improved Operational Efficiency</li>
+  <li>Enhanced Organizational Visibility</li>
+  <li>Scalable and Customizable Platform</li>
+  <li>Data-Driven HR Decision Making</li>
+</ul>
+
+<h2>HR Template Structure</h2>
+
+<p>Our HR management system includes five key components:</p>
+
+<ol>
+  <li>Employees Database</li>
+  <li>Departments Tracker</li>
+  <li>Payroll Management System</li>
+  <li>Time Off Request Platform</li>
+  <li>Performance Review Module</li>
+</ol>
+
+<h2>Getting Started with UnDB's HR Template</h2>
+
+<p>Follow these steps to implement our HR solution:</p>
+
+<ol>
+  <li>Import the HR template to your UnDB workspace</li>
+  <li>Customize fields and views to match your organization</li>
+  <li>Input employee and department data</li>
+  <li>Configure leave request and performance review workflows</li>
+  <li>Start tracking payroll and departmental budgets</li>
+</ol>
+
+<h2>Frequently Asked Questions</h2>
+
+<h3>Q: Is UnDB's HR template suitable for small businesses?</h3>
+<p>A: Yes, our template is scalable and can be customized for businesses of all sizes.</p>
+
+<h3>Q: Can I integrate this template with other HR tools?</h3>
+<p>A: UnDB offers various integration options. Contact our support team for specific integration queries.</p>
+
+<h3>Q: How secure is the employee data in this system?</h3>
+<p>A: We prioritize data security with encryption and access controls. </p>
+
+<p>Transform your HR processes today with UnDB's comprehensive Human Resource Management template!</p>
+
+    `,
+    template: {
+      type: "base",
+      template: templates.hr as IBaseTemplateDTO,
+    },
+  },
+  {
+    id: "6ba7b816-9dad-11d1-80b4-00c04fd430c8",
+    icon: "🔍",
+    name: "Agile Development Management",
+    categories: ["development", "agile", "startup"],
+    cover: getTemplateImage("agileDevelopment", "cover.jpg"),
+    images: [
+      getTemplateImage("agileDevelopment", "image1.png"),
+      getTemplateImage("agileDevelopment", "image2.png"),
+      getTemplateImage("agileDevelopment", "image3.png"),
+    ],
+    description: "A template for managing agile development projects, including requirements, tasks, and defects.",
+    detail: `
+      <h1>Optimize Your Agile Development Process: UnDB's Agile Development Management Template</h1>
+
+      <h2>Comprehensive Agile Development Management Features</h2>
+      <p>UnDB's Agile Development Management template offers a powerful set of tools to enhance your agile development process:</p>
+      <ul>
+        <li>Requirements Management: Easily create, assign, and track project requirements</li>
+        <li>Task Tracking: Efficiently manage and monitor development tasks</li>
+        <li>Defect Management: Track and resolve software defects</li>
+        <li>Iteration Planning: Plan and manage sprints or iterations</li>
+        <li>Test Case Management: Create and execute test cases</li>
+        <li>Team Management: Organize and track team members' contributions</li>
+        <li>Time Tracking: Monitor time spent on tasks and projects</li>
+      </ul>
+
+      <h2>Why Choose UnDB for Agile Development Management?</h2>
+      <p>UnDB offers unique advantages for your agile development needs:</p>
+      <ul>
+        <li>Customizable: Tailor the template to fit your specific agile methodology and project requirements</li>
+        <li>User-Friendly: Intuitive interface for easy adoption across your development team</li>
+        <li>Scalable: Grows with your projects, from small teams to large-scale development efforts</li>
+        <li>Integration-Ready: Seamlessly connects with other UnDB templates and tools</li>
+        <li>Data-Driven: Make informed decisions with real-time project insights and analytics</li>
+      </ul>
+
+      <h2>Getting Started with UnDB's Agile Development Template</h2>
+      <p>Follow these steps to implement our agile development solution:</p>
+      <ol>
+        <li>Import the Agile Development template to your UnDB workspace</li>
+        <li>Customize fields and views to match your team's agile processes</li>
+        <li>Input your project requirements and create initial tasks</li>
+        <li>Set up iterations or sprints and assign team members</li>
+        <li>Start tracking progress, managing defects, and monitoring team performance</li>
+      </ol>
+
+      <p>Transform your agile development process today with UnDB's comprehensive Agile Development Management template!</p>
+    `,
+    template: {
+      type: "base",
+      template: templates.agileDevelopment as IBaseTemplateDTO,
+    },
+  },
+  {
     id: "550e8400-e29b-41d4-a716-446655440000",
     icon: "🚀",
     name: "Project Management",
@@ -234,147 +385,6 @@ export const templateData: ITemplateDTO[] = [
     template: {
       type: "base",
       template: templates.socialMediaContent as IBaseTemplateDTO,
-    },
-  },
-  {
-    id: "6ba7b815-9dad-11d1-80b4-00c04fd430c8",
-    icon: "👨‍👧‍👦",
-    name: "Human Resource Management",
-    categories: ["hr"],
-    cover: getTemplateImage("hr", "cover.jpg"),
-    images: [getTemplateImage("hr", "image1.png"), getTemplateImage("hr", "image2.png")],
-    description: "A template for managing human resources, including employees, positions, and departments.",
-    detail: `
-    <h1>UnDB Human Resource Management Template: Streamline Your HR Processes</h1>
-
-<h2>Comprehensive HR Management Features for Modern Businesses</h2>
-
-<p>UnDB's Human Resource Management template offers a powerful set of tools to revolutionize your HR operations:</p>
-
-<h3>Employee Management System</h3>
-<ul>
-  <li>Create and maintain detailed employee profiles</li>
-  <li>Track positions, departments, salaries, and employment status</li>
-  <li>Manage organizational hierarchy with reporting structures</li>
-</ul>
-
-<h3>Department and Payroll Administration</h3>
-<ul>
-  <li>Organize company departments with budget and location tracking</li>
-  <li>Administer payroll, including salaries, bonuses, and deductions</li>
-  <li>Automate net pay calculations for efficient processing</li>
-</ul>
-
-<h3>Leave Management and Performance Evaluation</h3>
-<ul>
-  <li>Streamline time-off requests with customizable leave types</li>
-  <li>Conduct regular performance reviews with rating systems</li>
-  <li>Set and track employee goals for career development</li>
-</ul>
-
-<h2>Benefits of UnDB's HR Software Template</h2>
-
-<p>Transform your human resources processes with our comprehensive solution:</p>
-
-<ul>
-  <li>Centralized HR Data Management</li>
-  <li>Improved Operational Efficiency</li>
-  <li>Enhanced Organizational Visibility</li>
-  <li>Scalable and Customizable Platform</li>
-  <li>Data-Driven HR Decision Making</li>
-</ul>
-
-<h2>HR Template Structure</h2>
-
-<p>Our HR management system includes five key components:</p>
-
-<ol>
-  <li>Employees Database</li>
-  <li>Departments Tracker</li>
-  <li>Payroll Management System</li>
-  <li>Time Off Request Platform</li>
-  <li>Performance Review Module</li>
-</ol>
-
-<h2>Getting Started with UnDB's HR Template</h2>
-
-<p>Follow these steps to implement our HR solution:</p>
-
-<ol>
-  <li>Import the HR template to your UnDB workspace</li>
-  <li>Customize fields and views to match your organization</li>
-  <li>Input employee and department data</li>
-  <li>Configure leave request and performance review workflows</li>
-  <li>Start tracking payroll and departmental budgets</li>
-</ol>
-
-<h2>Frequently Asked Questions</h2>
-
-<h3>Q: Is UnDB's HR template suitable for small businesses?</h3>
-<p>A: Yes, our template is scalable and can be customized for businesses of all sizes.</p>
-
-<h3>Q: Can I integrate this template with other HR tools?</h3>
-<p>A: UnDB offers various integration options. Contact our support team for specific integration queries.</p>
-
-<h3>Q: How secure is the employee data in this system?</h3>
-<p>A: We prioritize data security with encryption and access controls. </p>
-
-<p>Transform your HR processes today with UnDB's comprehensive Human Resource Management template!</p>
-
-    `,
-    template: {
-      type: "base",
-      template: templates.hr as IBaseTemplateDTO,
-    },
-  },
-  {
-    id: "6ba7b816-9dad-11d1-80b4-00c04fd430c8",
-    icon: "🔍",
-    name: "Agile Development Management",
-    categories: ["development", "agile", "startup"],
-    cover: getTemplateImage("agileDevelopment", "cover.jpg"),
-    images: [getTemplateImage("agileDevelopment", "image1.png"), getTemplateImage("agileDevelopment", "image2.png")],
-    description: "A template for managing agile development projects, including requirements, tasks, and defects.",
-    detail: `
-      <h1>Optimize Your Agile Development Process: UnDB's Agile Development Management Template</h1>
-
-      <h2>Comprehensive Agile Development Management Features</h2>
-      <p>UnDB's Agile Development Management template offers a powerful set of tools to enhance your agile development process:</p>
-      <ul>
-        <li>Requirements Management: Easily create, assign, and track project requirements</li>
-        <li>Task Tracking: Efficiently manage and monitor development tasks</li>
-        <li>Defect Management: Track and resolve software defects</li>
-        <li>Iteration Planning: Plan and manage sprints or iterations</li>
-        <li>Test Case Management: Create and execute test cases</li>
-        <li>Team Management: Organize and track team members' contributions</li>
-        <li>Time Tracking: Monitor time spent on tasks and projects</li>
-      </ul>
-
-      <h2>Why Choose UnDB for Agile Development Management?</h2>
-      <p>UnDB offers unique advantages for your agile development needs:</p>
-      <ul>
-        <li>Customizable: Tailor the template to fit your specific agile methodology and project requirements</li>
-        <li>User-Friendly: Intuitive interface for easy adoption across your development team</li>
-        <li>Scalable: Grows with your projects, from small teams to large-scale development efforts</li>
-        <li>Integration-Ready: Seamlessly connects with other UnDB templates and tools</li>
-        <li>Data-Driven: Make informed decisions with real-time project insights and analytics</li>
-      </ul>
-
-      <h2>Getting Started with UnDB's Agile Development Template</h2>
-      <p>Follow these steps to implement our agile development solution:</p>
-      <ol>
-        <li>Import the Agile Development template to your UnDB workspace</li>
-        <li>Customize fields and views to match your team's agile processes</li>
-        <li>Input your project requirements and create initial tasks</li>
-        <li>Set up iterations or sprints and assign team members</li>
-        <li>Start tracking progress, managing defects, and monitoring team performance</li>
-      </ol>
-
-      <p>Transform your agile development process today with UnDB's comprehensive Agile Development Management template!</p>
-    `,
-    template: {
-      type: "base",
-      template: templates.agileDevelopment as IBaseTemplateDTO,
     },
   },
 ]
