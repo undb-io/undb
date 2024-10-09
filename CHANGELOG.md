@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-96
+
+
+### 🏡 Chore
+
+- Upgrade api reference ([1caab42](https://github.com/undb-io/undb/commit/1caab42))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-95
 
 
