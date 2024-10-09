@@ -50,6 +50,7 @@ export class TemplateFactory {
           name,
           schema,
           spaceId,
+          fieldsOrder: table.fieldsOrder,
 
           views,
           forms,

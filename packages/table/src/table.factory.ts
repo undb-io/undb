@@ -162,6 +162,12 @@ export class TableFactory {
       }
     }
 
+    for (const { table, dto } of tables) {
+      if (Array.isArray(dto.fieldsOrder)) {
+        table.reorderFields(dto.fieldsOrder)
+      }
+    }
+
     return tables.map(({ table, dto }) => {
       const records = dto.records?.map((record) => RecordDO.create(table, record)) ?? []
       return { table, records }

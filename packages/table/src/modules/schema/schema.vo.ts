@@ -82,6 +82,28 @@ export class Schema extends ValueObject<Field[]> {
     return new WithNewFieldSpecification(field)
   }
 
+  reorderFields(fieldsOrder: string[]): Schema {
+    const orderedFields: Field[] = []
+    const fieldSet = new Set(fieldsOrder)
+
+    // 首先添加按照 fieldsOrder 排序的字段
+    for (const idOrName of fieldsOrder) {
+      const field = this.fieldMapById.get(idOrName) || this.fieldMapByName.get(idOrName)
+      if (field) {
+        orderedFields.push(field)
+      }
+    }
+
+    // 添加未在 fieldsOrder 中指定的字段
+    for (const field of this.fields) {
+      if (!fieldSet.has(field.id.value) && !fieldSet.has(field.name.value)) {
+        orderedFields.push(field)
+      }
+    }
+
+    return new Schema(orderedFields)
+  }
+
   createField(field: Field) {
     return new Schema([...this.fields, field])
   }

@@ -1,3 +1,4 @@
+import { default as agileDevelopment } from "./agileDevelopment.base.json"
 import { default as crm } from "./crm.base.json"
 import { default as eventPlaningList } from "./eventPlaning.base.json"
 import { default as hr } from "./hr.base.json"
@@ -18,6 +19,8 @@ const templates = {
   salesCrm,
   socialMediaContent,
   hr,
+  agileDevelopment,
 } as const
 
 export { templates }
+

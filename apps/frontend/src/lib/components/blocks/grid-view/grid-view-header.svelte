@@ -13,9 +13,9 @@
 </script>
 
 <div data-field-id={field.id.value} data-field-type={field.type} class="flex items-center justify-between gap-1">
-  <div class="flex items-center gap-1">
+  <div class="flex items-center gap-1 overflow-hidden">
     <FieldIcon {field} type={field.type} class="h-4 w-4" />
-    <span>
+    <span class="truncate" title={field.name.value} data-field-name={field.name.value} data-field-id={field.id.value}>
       {field.name.value}
     </span>
   </div>
