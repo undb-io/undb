@@ -278,16 +278,16 @@ export const templateData: ITemplateDTO[] = [
   },
 ]
 
-// if (env.NODE_ENV === "development") {
-//   templateData.unshift({
-//     id: "test",
-//     icon: "💼",
-//     name: "Test",
-//     categories: ["sales"],
-//     description: "A template for testing",
-//     template: {
-//       type: "base",
-//       template: templates.test as IBaseTemplateDTO,
-//     },
-//   })
-// }
+if (env.NODE_ENV === "development") {
+  templateData.unshift({
+    id: "test",
+    icon: "💼",
+    name: "Test",
+    categories: ["sales"],
+    description: "A template for testing",
+    template: {
+      type: "base",
+      template: templates.test as IBaseTemplateDTO,
+    },
+  })
+}

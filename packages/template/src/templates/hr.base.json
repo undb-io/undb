@@ -72,6 +72,22 @@
               "fn": "lookup"
             }
           },
+          "Manage Department": {
+            "id": "manage_department",
+            "type": "reference",
+            "option": {
+              "symmetricFieldId": "manager"
+            }
+          },
+          "Manage Department Name": {
+            "id": "manage_department_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "manage_department",
+              "rollupFieldId": "department_name",
+              "fn": "lookup"
+            }
+          },
           "Start Date": {
             "id": "start_date",
             "type": "date",
@@ -94,6 +110,22 @@
               "foreignTable": {
                 "tableName": "Employees"
               }
+            }
+          },
+          "Subordinates": {
+            "id": "subordinates",
+            "type": "reference",
+            "option": {
+              "symmetricFieldId": "reports_to"
+            }
+          },
+          "Manager Name": {
+            "id": "manager_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "reports_to",
+              "rollupFieldId": "name",
+              "fn": "lookup"
             }
           },
           "Email": {
@@ -137,15 +169,6 @@
                   "color": "blue"
                 }
               ]
-            }
-          },
-          "Manager Name": {
-            "id": "manager_name",
-            "type": "rollup",
-            "option": {
-              "referenceFieldId": "reports_to",
-              "rollupFieldId": "name",
-              "fn": "lookup"
             }
           }
         },
@@ -220,6 +243,15 @@
               }
             }
           },
+          "Manager Name": {
+            "id": "manager_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "manager",
+              "rollupFieldId": "name",
+              "fn": "lookup"
+            }
+          },
           "Budget": {
             "id": "budget",
             "type": "currency",
@@ -231,13 +263,20 @@
             "id": "location",
             "type": "string"
           },
-          "Manager Name": {
-            "id": "manager_name",
+          "Employees": {
+            "id": "employees",
+            "type": "reference",
+            "option": {
+              "symmetricFieldId": "department"
+            }
+          },
+          "Employees Count": {
+            "id": "employees_count",
             "type": "rollup",
             "option": {
-              "referenceFieldId": "manager",
-              "rollupFieldId": "name",
-              "fn": "lookup"
+              "referenceFieldId": "employees",
+              "rollupFieldId": "id",
+              "fn": "count"
             }
           }
         },
@@ -248,18 +287,21 @@
         },
         "records": [
           {
+            "id": "dept1",
             "department_name": "Development",
             "manager": ["EMP002"],
             "budget": 500000,
             "location": "New York"
           },
           {
+            "id": "dept2",
             "department_name": "Human Resources",
             "manager": ["EMP003"],
             "budget": 300000,
             "location": "Chicago"
           },
           {
+            "id": "dept3",
             "department_name": "Design",
             "manager": null,
             "budget": 250000,
@@ -269,6 +311,15 @@
       },
       "Payroll": {
         "schema": {
+          "Employee Name": {
+            "id": "employee_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "employee",
+              "rollupFieldId": "name",
+              "fn": "lookup"
+            }
+          },
           "Employee": {
             "id": "employee",
             "type": "reference",
@@ -315,15 +366,6 @@
             "type": "currency",
             "option": {
               "symbol": "$"
-            }
-          },
-          "Employee Name": {
-            "id": "employee_name",
-            "type": "rollup",
-            "option": {
-              "referenceFieldId": "employee",
-              "rollupFieldId": "name",
-              "fn": "lookup"
             }
           }
         },
