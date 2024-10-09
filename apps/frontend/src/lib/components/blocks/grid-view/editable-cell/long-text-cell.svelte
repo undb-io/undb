@@ -43,11 +43,15 @@
 </script>
 
 {#if field.allowRichText}
-  <div class={cn("relative overflow-hidden", $$restProps.class)}>
+  <div class={cn("relative h-full overflow-hidden", $$restProps.class)}>
     {#if isEditing || isSelected}
-      <div class="flex w-full items-center justify-between gap-1 overflow-hidden">
-        <button type="button" on:click={() => (open = true)} class="flex flex-1 items-center gap-1 truncate">
-          <span class="inline-flex flex-1 self-start truncate">
+      <div class="flex h-full w-full items-center justify-between gap-1 overflow-hidden">
+        <button
+          type="button"
+          on:click={() => (open = true)}
+          class="flex h-full flex-1 items-center gap-1 overflow-hidden"
+        >
+          <span class="inline-flex h-full flex-1 items-center truncate">
             {@html value}
           </span>
         </button>

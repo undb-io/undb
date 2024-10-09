@@ -117,7 +117,7 @@ export class OpenAPI {
                     JSON.stringify(configuration)
                 </script>
 
-                <script src="/assets/api-reference.js"></script>
+                <script src="/assets/api-reference@1.25.30.js"></script>
               </body>
             </html>`
         },

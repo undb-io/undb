@@ -55,7 +55,7 @@
           {#each value as item}
             {#if !!item}
               <span
-                class="me-2 min-w-8 rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                class="me-2 min-w-8 truncate rounded bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300"
               >
                 {item}
               </span>

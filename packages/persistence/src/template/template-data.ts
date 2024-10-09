@@ -1,5 +1,5 @@
 import { env } from "@undb/env"
-import { templates, type IBaseTemplateDTO, type ITemplateDTO } from "@undb/template"
+import { templates,type IBaseTemplateDTO,type ITemplateDTO } from "@undb/template"
 
 function getTemplateImage(folder: string, file: string) {
   return env.UNDB_BASE_URL + "/assets/templates/" + folder + "/" + file
@@ -236,18 +236,58 @@ export const templateData: ITemplateDTO[] = [
       template: templates.socialMediaContent as IBaseTemplateDTO,
     },
   },
+  // {
+  //   id: "6ba7b815-9dad-11d1-80b4-00c04fd430c8",
+  //   icon: "👨‍👧‍👦",
+  //   name: "Human Resource Management",
+  //   categories: ["hr"],
+  //   cover: getTemplateImage("hr", "cover.jpg"),
+  //   images: [getTemplateImage("hr", "image1.png"), getTemplateImage("hr", "image2.png")],
+  //   description: "A template for managing human resources, including employees, positions, and departments.",
+  //   detail: `
+  //     <h1>Streamline Your Human Resource Management with UnDB's HR Management Template</h1>
+  //     <h2>Comprehensive HR Management Features</h2>
+  //     <p>UnDB's HR Management template offers a powerful set of tools to enhance your human resource management:</p>
+  //     <ul>
+  //       <li>Employee Management: Easily create, assign, and monitor employee records</li>
+  //       <li>Department Organization: Efficiently structure and manage company departments</li>
+  //       <li>Payroll Administration: Track and manage employee compensation, including salaries, bonuses, and benefits</li>
+  //       <li>Performance Evaluation: Set up and conduct regular performance reviews and goal-setting sessions</li>
+  //       <li>Time Off Management: Streamline the process of requesting, approving, and tracking employee leave</li>
+  //       <li>Recruitment and Onboarding: Manage job postings, applications, and new employee onboarding processes</li>
+  //       <li>Training and Development: Plan and track employee training programs and career development initiatives</li>
+  //       <li>Compliance Management: Ensure adherence to labor laws and company policies</li>
+  //       <li>Reporting and Analytics: Generate insightful reports on various HR metrics for data-driven decision making</li>
+  //     </ul>
+  //     <h2>Benefits of Using UnDB's HR Management Template</h2>
+  //     <p>Implementing our HR Management template can bring numerous advantages to your organization:</p>
+  //     <ul>
+  //       <li>Increased Efficiency: Automate routine HR tasks and streamline workflows</li>
+  //       <li>Improved Data Accuracy: Centralize employee information and reduce errors in record-keeping</li>
+  //       <li>Enhanced Employee Experience: Provide self-service options for employees to access their information</li>
+  //       <li>Better Decision Making: Leverage HR analytics to make informed strategic decisions</li>
+  //       <li>Scalability: Easily adapt the template to your growing organization's needs</li>
+  //       <li>Cost Savings: Reduce administrative overhead and optimize resource allocation</li>
+  //     </ul>
+  //     <p>Start transforming your HR processes today with UnDB's comprehensive HR Management template!</p>
+  //   `,
+  //   template: {
+  //     type: "base",
+  //     template: templates.hr as IBaseTemplateDTO,
+  //   },
+  // },
 ]
 
-// if (env.NODE_ENV === "development") {
-//   templateData.unshift({
-//     id: "test",
-//     icon: "💼",
-//     name: "Test",
-//     categories: ["sales"],
-//     description: "A template for testing",
-//     template: {
-//       type: "base",
-//       template: templates.test as IBaseTemplateDTO,
-//     },
-//   })
-// }
+if (env.NODE_ENV === "development") {
+  templateData.unshift({
+    id: "test",
+    icon: "💼",
+    name: "Test",
+    categories: ["sales"],
+    description: "A template for testing",
+    template: {
+      type: "base",
+      template: templates.test as IBaseTemplateDTO,
+    },
+  })
+}

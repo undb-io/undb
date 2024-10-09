@@ -25,16 +25,28 @@
               "rollupFieldId": "title",
               "fn": "lookup"
             }
+          },
+          "Ref22": {
+            "id": "ref22",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "tableName": "Table2"
+              }
+            }
           }
         },
         "records": [
           {
             "Title": "1-1",
-            "Ref2": ["1", "2"]
+            "Ref2": ["1", "2"],
+            "Ref22": ["1", "2"]
           },
           {
             "Title": "1-2",
-            "Ref2": ["2"]
+            "Ref2": ["2"],
+            "Ref22": ["2"]
           }
         ]
       },
@@ -49,6 +61,13 @@
             "type": "reference",
             "option": {
               "symmetricFieldId": "ref2"
+            }
+          },
+          "Ref11": {
+            "id": "ref11",
+            "type": "reference",
+            "option": {
+              "symmetricFieldId": "ref22"
             }
           },
           "T1": {

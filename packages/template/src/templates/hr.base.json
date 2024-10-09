@@ -1,0 +1,650 @@
+{
+  "Human Resource Management": {
+    "tables": {
+      "Employees": {
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Position": {
+            "id": "position",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "developer",
+                  "name": "Developer",
+                  "color": "blue"
+                },
+                {
+                  "id": "manager",
+                  "name": "Manager",
+                  "color": "green"
+                },
+                {
+                  "id": "hr",
+                  "name": "HR Specialist",
+                  "color": "purple"
+                },
+                {
+                  "id": "designer",
+                  "name": "Designer",
+                  "color": "yellow"
+                },
+                {
+                  "id": "marketing",
+                  "name": "Marketing Specialist",
+                  "color": "orange"
+                },
+                {
+                  "id": "finance",
+                  "name": "Finance Analyst",
+                  "color": "red"
+                }
+              ]
+            }
+          },
+          "Department": {
+            "id": "department",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "tableName": "Departments"
+              }
+            }
+          },
+          "Department Name": {
+            "id": "department_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "department",
+              "rollupFieldId": "department_name",
+              "fn": "lookup"
+            }
+          },
+          "Manage Department": {
+            "id": "manage_department",
+            "type": "reference",
+            "option": {
+              "symmetricFieldId": "manager"
+            }
+          },
+          "Manage Department Name": {
+            "id": "manage_department_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "manage_department",
+              "rollupFieldId": "department_name",
+              "fn": "lookup"
+            }
+          },
+          "Start Date": {
+            "id": "start_date",
+            "type": "date",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Salary": {
+            "id": "salary",
+            "type": "currency",
+            "option": {
+              "symbol": "$"
+            }
+          },
+          "Reports To": {
+            "id": "reports_to",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "tableName": "Employees"
+              }
+            }
+          },
+          "Subordinates": {
+            "id": "subordinates",
+            "type": "reference",
+            "option": {
+              "symmetricFieldId": "reports_to"
+            }
+          },
+          "Manager Name": {
+            "id": "manager_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "reports_to",
+              "rollupFieldId": "name",
+              "fn": "lookup"
+            }
+          },
+          "Email": {
+            "id": "email",
+            "type": "email",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Phone": {
+            "id": "phone",
+            "type": "string"
+          },
+          "Employment Status": {
+            "id": "employment_status",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "full_time",
+                  "name": "Full-time",
+                  "color": "green"
+                },
+                {
+                  "id": "part_time",
+                  "name": "Part-time",
+                  "color": "yellow"
+                },
+                {
+                  "id": "contract",
+                  "name": "Contract",
+                  "color": "orange"
+                },
+                {
+                  "id": "intern",
+                  "name": "Intern",
+                  "color": "blue"
+                }
+              ]
+            }
+          }
+        },
+        "views": {
+          "All Employees": {
+            "type": "grid",
+            "sort": [
+              {
+                "fieldId": "name",
+                "direction": "asc"
+              }
+            ]
+          },
+          "By Position": {
+            "type": "kanban",
+            "kanban": {
+              "field": "position"
+            }
+          }
+        },
+        "records": [
+          {
+            "id": "EMP001",
+            "name": "Alice Johnson",
+            "position": "developer",
+            "department": ["dept1"],
+            "start_date": "2023-01-15",
+            "salary": 70000,
+            "email": "alice@example.com",
+            "employment_status": "full_time"
+          },
+          {
+            "id": "EMP002",
+            "name": "Bob Smith",
+            "position": "manager",
+            "department": ["dept2"],
+            "start_date": "2022-05-01",
+            "salary": 90000,
+            "reports_to": ["EMP003"],
+            "email": "bob@example.com",
+            "employment_status": "full_time"
+          },
+          {
+            "id": "EMP003",
+            "name": "Carol White",
+            "position": "hr",
+            "department": ["dept3"],
+            "start_date": "2021-03-10",
+            "salary": 60000,
+            "email": "carol@example.com",
+            "employment_status": "full_time"
+          }
+        ]
+      },
+      "Departments": {
+        "schema": {
+          "Department Name": {
+            "id": "department_name",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Manager": {
+            "id": "manager",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "tableName": "Employees"
+              }
+            }
+          },
+          "Manager Name": {
+            "id": "manager_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "manager",
+              "rollupFieldId": "name",
+              "fn": "lookup"
+            }
+          },
+          "Budget": {
+            "id": "budget",
+            "type": "currency",
+            "option": {
+              "symbol": "$"
+            }
+          },
+          "Location": {
+            "id": "location",
+            "type": "string"
+          },
+          "Employees": {
+            "id": "employees",
+            "type": "reference",
+            "option": {
+              "symmetricFieldId": "department"
+            }
+          },
+          "Employees Count": {
+            "id": "employees_count",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "employees",
+              "rollupFieldId": "id",
+              "fn": "count"
+            }
+          }
+        },
+        "views": {
+          "All Departments": {
+            "type": "grid"
+          }
+        },
+        "records": [
+          {
+            "id": "dept1",
+            "department_name": "Development",
+            "manager": ["EMP002"],
+            "budget": 500000,
+            "location": "New York"
+          },
+          {
+            "id": "dept2",
+            "department_name": "Human Resources",
+            "manager": ["EMP003"],
+            "budget": 300000,
+            "location": "Chicago"
+          },
+          {
+            "id": "dept3",
+            "department_name": "Design",
+            "manager": null,
+            "budget": 250000,
+            "location": "San Francisco"
+          }
+        ]
+      },
+      "Payroll": {
+        "schema": {
+          "Employee Name": {
+            "id": "employee_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "employee",
+              "rollupFieldId": "name",
+              "fn": "lookup"
+            }
+          },
+          "Employee": {
+            "id": "employee",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "tableName": "Employees"
+              }
+            }
+          },
+          "Month": {
+            "id": "month",
+            "type": "date",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Amount": {
+            "id": "amount",
+            "type": "currency",
+            "option": {
+              "symbol": "$"
+            },
+            "constraint": {
+              "required": true
+            }
+          },
+          "Bonus": {
+            "id": "bonus",
+            "type": "currency",
+            "option": {
+              "symbol": "$"
+            }
+          },
+          "Deductions": {
+            "id": "deductions",
+            "type": "currency",
+            "option": {
+              "symbol": "$"
+            }
+          },
+          "Net Pay": {
+            "id": "net_pay",
+            "type": "currency",
+            "option": {
+              "symbol": "$"
+            }
+          }
+        },
+        "views": {
+          "Monthly Payroll": {
+            "type": "grid",
+            "sort": [
+              {
+                "fieldId": "month",
+                "direction": "desc"
+              }
+            ]
+          }
+        },
+        "records": [
+          {
+            "employee": ["EMP001"],
+            "month": "2023-08-01",
+            "amount": 7000,
+            "bonus": 500,
+            "deductions": 1000,
+            "net_pay": 6500
+          },
+          {
+            "employee": ["EMP002"],
+            "month": "2023-08-01",
+            "amount": 9000,
+            "bonus": 1000,
+            "deductions": 1500,
+            "net_pay": 8500
+          },
+          {
+            "employee": ["EMP003"],
+            "month": "2023-08-01",
+            "amount": 6000,
+            "bonus": 300,
+            "deductions": 800,
+            "net_pay": 5500
+          }
+        ]
+      },
+      "Time Off Requests": {
+        "schema": {
+          "Employee": {
+            "id": "employee",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "tableName": "Employees"
+              }
+            }
+          },
+          "Start Date": {
+            "id": "start_date",
+            "type": "date",
+            "constraint": {
+              "required": true
+            }
+          },
+          "End Date": {
+            "id": "end_date",
+            "type": "date",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Type": {
+            "id": "type",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "vacation",
+                  "name": "Vacation",
+                  "color": "green"
+                },
+                {
+                  "id": "sick",
+                  "name": "Sick Leave",
+                  "color": "red"
+                },
+                {
+                  "id": "personal",
+                  "name": "Personal",
+                  "color": "blue"
+                }
+              ]
+            }
+          },
+          "Status": {
+            "id": "status",
+            "type": "select",
+            "defaultValue": "pending",
+            "constraint": {
+              "max": 1
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "pending",
+                  "name": "Pending",
+                  "color": "orange"
+                },
+                {
+                  "id": "approved",
+                  "name": "Approved",
+                  "color": "green"
+                },
+                {
+                  "id": "rejected",
+                  "name": "Rejected",
+                  "color": "red"
+                }
+              ]
+            }
+          },
+          "Reason": {
+            "id": "reason",
+            "type": "longText"
+          },
+          "Employee Name": {
+            "id": "employee_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "employee",
+              "rollupFieldId": "name",
+              "fn": "lookup"
+            }
+          }
+        },
+        "views": {
+          "All Requests": {
+            "type": "grid"
+          },
+          "Pending Requests": {
+            "type": "grid",
+            "filter": {
+              "conjunction": "and",
+              "children": [
+                {
+                  "field": "status",
+                  "op": "eq",
+                  "value": "pending"
+                }
+              ]
+            }
+          }
+        },
+        "records": [
+          {
+            "employee": ["EMP001"],
+            "start_date": "2023-09-01",
+            "end_date": "2023-09-10",
+            "type": "vacation",
+            "status": "approved",
+            "reason": "Annual family vacation"
+          },
+          {
+            "employee": ["EMP002"],
+            "start_date": "2023-10-15",
+            "end_date": "2023-10-20",
+            "type": "personal",
+            "status": "pending",
+            "reason": "Personal matters"
+          },
+          {
+            "employee": ["EMP003"],
+            "start_date": "2023-11-05",
+            "end_date": "2023-11-15",
+            "type": "sick",
+            "status": "approved",
+            "reason": "Recovering from surgery"
+          }
+        ]
+      },
+      "Performance Reviews": {
+        "schema": {
+          "Employee": {
+            "id": "employee",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "tableName": "Employees"
+              }
+            }
+          },
+          "Review Date": {
+            "id": "review_date",
+            "type": "date",
+            "constraint": {
+              "required": true
+            }
+          },
+          "Reviewer": {
+            "id": "reviewer",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "tableName": "Employees"
+              }
+            }
+          },
+          "Performance Rating": {
+            "id": "performance_rating",
+            "type": "rating",
+            "constraint": {
+              "max": 5
+            }
+          },
+          "Comments": {
+            "id": "comments",
+            "type": "longText"
+          },
+          "Goals": {
+            "id": "goals",
+            "type": "longText"
+          },
+          "Next Review Date": {
+            "id": "next_review_date",
+            "type": "date"
+          },
+          "Employee Name": {
+            "id": "employee_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "employee",
+              "rollupFieldId": "name",
+              "fn": "lookup"
+            }
+          },
+          "Reviewer Name": {
+            "id": "reviewer_name",
+            "type": "rollup",
+            "option": {
+              "referenceFieldId": "reviewer",
+              "rollupFieldId": "name",
+              "fn": "lookup"
+            }
+          }
+        },
+        "views": {
+          "All Reviews": {
+            "type": "grid",
+            "sort": [
+              {
+                "fieldId": "review_date",
+                "direction": "desc"
+              }
+            ]
+          }
+        },
+        "records": [
+          {
+            "employee": ["EMP001"],
+            "review_date": "2023-06-15",
+            "reviewer": ["EMP002"],
+            "performance_rating": 4,
+            "comments": "Excellent work on the latest project.",
+            "goals": "Improve leadership skills",
+            "next_review_date": "2023-12-15"
+          },
+          {
+            "employee": ["EMP002"],
+            "review_date": "2023-07-01",
+            "reviewer": ["EMP003"],
+            "performance_rating": 5,
+            "comments": "Outstanding leadership and project management.",
+            "goals": "Mentor junior team members",
+            "next_review_date": "2024-01-01"
+          }
+        ]
+      }
+    }
+  }
+}

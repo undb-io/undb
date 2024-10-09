@@ -1,5 +1,6 @@
 import { default as crm } from "./crm.base.json"
 import { default as eventPlaningList } from "./eventPlaning.base.json"
+import { default as hr } from "./hr.base.json"
 import { default as officeInventoryManagement } from "./officeInventoryManagement.base.json"
 import { default as projectManagement } from "./projectManagement.base.json"
 import { default as salesCrm } from "./salesCrm.base.json"
@@ -16,6 +17,7 @@ const templates = {
   crm,
   salesCrm,
   socialMediaContent,
+  hr,
 } as const
 
 export { templates }

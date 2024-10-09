@@ -108,7 +108,7 @@ export class RecordQueryHelper {
           }
         }
 
-        return qb.orderBy(`${s.fieldId} ${s.direction}`)
+        return qb.orderBy(`${table.id.value}.${s.fieldId} ${s.direction}`)
       }, qb)
     }
   }
