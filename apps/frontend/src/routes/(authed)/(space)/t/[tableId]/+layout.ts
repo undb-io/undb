@@ -18,5 +18,6 @@ export const load: LayoutLoad = async (event) => {
 
   return {
     tableStore: store,
+    table: data.data?.table,
   }
 }

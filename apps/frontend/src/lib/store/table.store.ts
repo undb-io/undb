@@ -1,7 +1,7 @@
 import { page } from "$app/stores"
 import type { TableDo } from "@undb/table"
-import { getContext, setContext } from "svelte"
-import { derived, type Writable } from "svelte/store"
+import { getContext,setContext } from "svelte"
+import { derived,type Writable } from "svelte/store"
 
 export function setTable(table: Writable<TableDo>) {
   setContext("table", table)

@@ -18,7 +18,7 @@
   $: {
     if (!fetching && tableDTO) {
       // @ts-ignore
-      table.set(TableFactory.fromJSON(tableDTO))
+      table.set(new TableFactory().fromJSON(tableDTO))
       setTable(table)
     }
   }

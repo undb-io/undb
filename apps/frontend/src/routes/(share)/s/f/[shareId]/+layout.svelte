@@ -16,7 +16,7 @@
   const table = writable<TableDo>()
   $: {
     if (!fetching && tableDTO) {
-      table.set(TableFactory.fromJSON(tableDTO))
+      table.set(new TableFactory().fromJSON(tableDTO))
       setTable(table)
     }
   }

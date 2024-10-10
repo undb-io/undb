@@ -1,9 +1,15 @@
 import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import { tableId } from "../../table-id.vo"
+import { aggregate } from "../aggregate/aggregate.vo"
 import { chart } from "../chart/chart.vo"
 import { widgetId, WidgetIdVo } from "./widget-id.vo"
 import { widgetName } from "./widget-name.vo"
+
+const widgetItemAggregate = z.object({
+  type: z.literal("aggregate"),
+  aggregate: aggregate,
+})
 
 const widgetItemChart = z.object({
   type: z.literal("chart"),
@@ -15,7 +21,7 @@ const widgetItemTable = z.object({
   tableId: tableId,
 })
 
-const widgetItem = z.discriminatedUnion("type", [widgetItemChart, widgetItemTable])
+const widgetItem = z.discriminatedUnion("type", [widgetItemAggregate, widgetItemChart, widgetItemTable])
 
 export const widgetDTO = z.object({
   id: widgetId,
@@ -31,8 +37,8 @@ export class WidgetVO extends ValueObject<IWidgetDTO> {
       id: WidgetIdVo.create().value,
       name: widgetName.parse(name),
       item: {
-        type: "chart",
-        chart: {
+        type: "aggregate",
+        aggregate: {
           type: "count",
           config: {},
         },

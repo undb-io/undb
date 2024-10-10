@@ -15,7 +15,7 @@
   export let viewId: Readable<string | undefined>
 
   const view = derived([viewId], ([$viewId]) => $table?.views.getViewById($viewId))
-  const widgets = derived([view], ([$view]) => $view?.widgets ?? [])
+  const widgets = derived([view], ([$view]) => $view?.widgets.unwrapOr([]) ?? [])
 
   const createViewWidgetMutation = createMutation({
     mutationFn: trpc.table.view.widget.create.mutate,
@@ -36,7 +36,7 @@
       {/each}
       <Popover.Root bind:open>
         <Popover.Trigger asChild let:builder>
-          <Button size="sm" class="w-full" builders={[builder]}>
+          <Button size="sm" class="w-full" builders={[builder]} variant={$widgets.length ? "outline" : "default"}>
             <PlusIcon class="mr-2 size-4" />
             Add Widget
           </Button>

@@ -3,38 +3,37 @@
   import { TableFactory, TableDo } from "@undb/table"
   import { setTable } from "$lib/store/table.store"
   import type { LayoutData } from "./$types"
-  import { writable } from "svelte/store"
+  import { derived, writable } from "svelte/store"
   import { shareStore } from "$lib/store/share.store"
   import { aggregatesStore } from "$lib/store/aggregates.store"
 
   export let data: LayoutData
-  $: tableStore = data.tableStore
+  let tableStore = data.tableStore
 
-  $: fetching = $tableStore.fetching
-  $: tableDTO = $tableStore.data?.table
+  let tableDTO = derived(tableStore, ($tableStore) => $tableStore.data?.table)
 
   const table = writable<TableDo>()
-  $: {
-    if (!fetching && tableDTO && $page.params.tableId === tableDTO.id) {
-      table.set(TableFactory.fromJSON(tableDTO))
+  $: if ($page.params.tableId === $tableDTO?.id) {
+    if ($tableDTO) {
+      table.set(new TableFactory().fromJSON($tableDTO))
       setTable(table)
     }
   }
 
-  $: if (tableDTO) {
-    for (const view of tableDTO.views) {
+  $: if ($tableDTO) {
+    for (const view of $tableDTO.views) {
       if (view.share) {
         shareStore.set(view.id, { ...view.share, target: { type: "view", id: view.id } })
       }
     }
 
-    for (const form of tableDTO.forms ?? []) {
+    for (const form of $tableDTO.forms ?? []) {
       if (form?.share) {
         shareStore.set(form.id, { ...form.share, target: { type: "form", id: form.id } })
       }
     }
 
-    aggregatesStore.updateTableAggregates(tableDTO.id, tableDTO.viewData?.aggregate ?? {})
+    aggregatesStore.updateTableAggregates($tableDTO.id, $tableDTO.viewData?.aggregate ?? {})
   }
 </script>
 

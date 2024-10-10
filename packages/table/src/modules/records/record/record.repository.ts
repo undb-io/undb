@@ -2,7 +2,7 @@ import { None, Some, andOptions, type IPagination, type Option, type PaginatedDT
 import type { TableId } from "../../../table-id.vo"
 import type { TableDo } from "../../../table.do"
 import { getSpec } from "../../schema/fields/condition"
-import type { View, ViewId } from "../../views"
+import type { IViewAggregate, View, ViewId } from "../../views"
 import type { AggregateResult, ICountRecordsDTO, IGetRecordsDTO } from "../dto"
 import { withQ } from "../specification/with-q.specification"
 import type { IRecordDTO } from "./dto"
@@ -51,7 +51,12 @@ export interface IRecordQueryRepository {
   count(tableId: TableId): Promise<number>
   countWhere(table: TableDo, spec: Option<CountQueryArgs>): Promise<number>
 
-  aggregate(table: TableDo, viewId: Option<ViewId>, query: Option<QueryArgs>): Promise<Record<string, AggregateResult>>
+  aggregate(
+    table: TableDo,
+    viewId: Option<ViewId>,
+    aggregate: Option<IViewAggregate>,
+    query: Option<QueryArgs>,
+  ): Promise<Record<string, AggregateResult>>
 }
 
 export function buildQuery(table: TableDo, dto: IGetRecordsDTO): Option<QueryArgs> {

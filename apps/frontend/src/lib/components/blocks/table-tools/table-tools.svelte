@@ -34,6 +34,6 @@
       <ShareViewButton />
     {/if}
     <RecordsSearch />
-    <ViewWidgetButton />
+    <!-- <ViewWidgetButton /> -->
   </div>
 </div>

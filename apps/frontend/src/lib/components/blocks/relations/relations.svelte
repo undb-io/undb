@@ -13,7 +13,7 @@
 
   $: foreignTablesDTO = $getForeignTablesStore.data?.tableForeignTables ?? []
   // @ts-ignore
-  $: foreignTables = foreignTablesDTO.map((table) => TableFactory.fromJSON(table))
+  $: foreignTables = foreignTablesDTO.map((table) => new TableFactory().fromJSON(table))
 </script>
 
 <Svelvet controls minimap>

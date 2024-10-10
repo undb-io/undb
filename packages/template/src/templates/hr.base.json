@@ -82,7 +82,7 @@
             }
           },
           "Department Name": {
-            "id": "department_name",
+            "id": "employee_department_name",
             "type": "rollup",
             "option": {
               "referenceFieldId": "department",
