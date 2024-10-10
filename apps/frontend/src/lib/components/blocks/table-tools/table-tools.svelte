@@ -8,6 +8,7 @@
   import ViewFields from "../view-fields/view-fields.svelte"
   import ShareViewButton from "../share/share-view-button.svelte"
   import BulkUpdateRecordsButton from "../bulk-update-records/bulk-update-records-button.svelte"
+  import ViewWidgetButton from "../view-widget/view-widget-button.svelte"
   import type { Writable } from "svelte/store"
 
   export let readonly = false
@@ -33,5 +34,6 @@
       <ShareViewButton />
     {/if}
     <RecordsSearch />
+    <ViewWidgetButton />
   </div>
 </div>

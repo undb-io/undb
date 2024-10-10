@@ -254,6 +254,7 @@ type View {
   shareId: ID
   sort: JSON
   type: ViewType!
+  widgets: [Widget]
 }
 
 type ViewData {
@@ -268,4 +269,10 @@ enum ViewType {
   gallery
   grid
   kanban
+}
+
+type Widget {
+  id: ID!
+  item: JSON
+  name: String!
 }

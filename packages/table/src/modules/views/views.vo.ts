@@ -1,4 +1,5 @@
 import { and, andOptions, None, Option, ValueObject } from "@undb/domain"
+import type { ICreateViewWidgetDTO } from ".."
 import type { ISetDefaultViewDTO } from "../../dto/set-default-view.dto"
 import { WithView, type TableComositeSpecification } from "../../specifications"
 import type { TableDo } from "../../table.do"
@@ -88,6 +89,17 @@ export class Views extends ValueObject {
     const specs = this.views.map((view) => view.$addField(table, field))
 
     return andOptions(...specs)
+  }
+
+  $createWidget(table: TableDo, dto: ICreateViewWidgetDTO): Option<TableComositeSpecification> {
+    const view = this.getViewById(dto.viewId)
+    const spec = view.$createWidgetSpec(dto.widget)
+
+    if (spec.isSome()) {
+      spec.unwrap().mutate(table)
+    }
+
+    return spec
   }
 
   $deleteField(table: TableDo, field: Field) {

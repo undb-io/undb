@@ -33,6 +33,7 @@ import type {
   WithViewIdSpecification,
   WithViewOption,
   WithViewSort,
+  WithViewWidgets,
 } from "@undb/table"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
@@ -131,6 +132,9 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
     throw new Error("Method not implemented.")
   }
   withViewFields(fields: WithViewFields): void {
+    throw new Error("Method not implemented.")
+  }
+  withViewWidgets(spec: WithViewWidgets): void {
     throw new Error("Method not implemented.")
   }
   withForms(views: TableFormsSpecification): void {

@@ -148,6 +148,12 @@ export class Graphql {
         field: String
       }
 
+      type Widget {
+        id: ID!
+        name: String!
+        item: JSON
+      }
+
       type View {
         id: ID!
         name: String!
@@ -163,6 +169,7 @@ export class Graphql {
         grid: GridOption
         kanban: KanbanOption
         gallery: GalleryOption
+        widgets: [Widget]
 
         shareId: ID
         share: Share

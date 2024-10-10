@@ -32,6 +32,7 @@ import type {
   WithViewIdSpecification,
   WithViewOption,
   WithViewSort,
+  WithViewWidgets,
 } from "./table-view.specification"
 import type { TableViewsSpecification } from "./table-views.specification"
 import type { DuplicatedTableSpecification } from "./table.specification"
@@ -69,4 +70,5 @@ export interface ITableSpecVisitor extends ISpecVisitor {
   withTableForeignTables(spec: WithTableForeignTablesSpec): void
   withTableUnqueName(spec: TableUniqueNameSpecification): void
   withViewFieldWidth(spec: WithViewFieldWidth): void
+  withViewWidgets(spec: WithViewWidgets): void
 }
