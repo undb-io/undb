@@ -5,6 +5,7 @@ import type { IRootViewColor } from "../modules/views/view/view-color"
 import type { IViewFields } from "../modules/views/view/view-fields"
 import type { IViewOption } from "../modules/views/view/view-option.vo"
 import type { IViewSort } from "../modules/views/view/view-sort"
+import type { IWidgetDTO } from "../modules/widgets/widget.vo"
 import type { TableDo } from "../table.do"
 import type { ITableSpecVisitor } from "./table-visitor.interface"
 import { TableComositeSpecification } from "./table.composite-specification"
@@ -27,6 +28,28 @@ export class WithViewOption extends TableComositeSpecification {
   }
   accept(v: ITableSpecVisitor): Result<void, string> {
     v.withViewOption(this)
+    return Ok(undefined)
+  }
+}
+
+export class WithViewWidgets extends TableComositeSpecification {
+  constructor(
+    public readonly viewId: ViewId,
+    public readonly previous: Option<IWidgetDTO[]>,
+    public readonly widgets: IWidgetDTO[],
+  ) {
+    super()
+  }
+  isSatisfiedBy(t: TableDo): boolean {
+    throw new WontImplementException(WithViewWidgets.name + ".isSatisfiedBy")
+  }
+  mutate(t: TableDo): Result<TableDo, string> {
+    const view = t.views.getViewById(this.viewId.value)
+    view.setWidgets(this.widgets)
+    return Ok(t)
+  }
+  accept(v: ITableSpecVisitor): Result<void, string> {
+    v.withViewWidgets(this)
     return Ok(undefined)
   }
 }

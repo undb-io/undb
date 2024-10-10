@@ -7,6 +7,7 @@ import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { IdEqual, IdIn } from "./id-field-value.specification"
 import { IdFieldValue } from "./id-field-value.vo"
+import { idFieldAggregate } from "./id-field.aggregate"
 import { createIdFieldCondition, type IIdFieldCondition, type IIdFieldConditionSchema } from "./id-field.condition"
 
 export const ID_TYPE = "id" as const
@@ -69,6 +70,6 @@ export class IdField extends AbstractField<IdFieldValue> {
   }
 
   override get aggregate() {
-    return z.undefined()
+    return idFieldAggregate
   }
 }

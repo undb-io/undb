@@ -1,0 +1,1 @@
+ALTER TABLE `undb_table` ADD `widgets` text;

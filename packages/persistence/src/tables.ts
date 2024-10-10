@@ -53,6 +53,7 @@ export const tables = sqliteTable(
     views: text("views", { mode: "json" }).notNull(),
     forms: text("forms", { mode: "json" }),
     rls: text("rls", { mode: "json" }),
+    widgets: text("widgets", { mode: "json" }),
 
     createdAt: text("created_at")
       .notNull()

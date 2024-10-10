@@ -45,7 +45,7 @@
 
   const t = getTable()
 
-  let fields = derived(t, ($t) => $t?.getOrderedVisibleFields($viewId) ?? ([] as Field[]))
+  let fields = derived([t, viewId], ([$t, $viewId]) => $t?.getOrderedVisibleFields($viewId) ?? ([] as Field[]))
 
   $: perPage = $preferences.gridViewPerPage ?? 50
 

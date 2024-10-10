@@ -73,7 +73,7 @@ export class TableService implements ITableService {
   readonly logger = createLogger(TableService.name)
 
   public get creator() {
-    return TableFactory
+    return new TableFactory()
   }
 
   constructor(

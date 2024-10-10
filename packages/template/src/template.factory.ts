@@ -58,7 +58,7 @@ export class TemplateFactory {
         }
       }) as ICreateTablesDTO[]
 
-      const tables = TableFactory.createMany(baseNames, base, dtos)
+      const tables = new TableFactory().createMany(baseNames, base, dtos)
       result.push({ base, tables })
     }
 

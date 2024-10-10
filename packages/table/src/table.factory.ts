@@ -49,11 +49,11 @@ class TablesIdsMap {
 }
 
 export class TableFactory {
-  private static get builder() {
+  private get builder() {
     return new TableBuilder()
   }
 
-  static create(dto: ICreateTableDTO): TableDo {
+  create(dto: ICreateTableDTO): TableDo {
     dto = createTableDTO.parse(dto)
     const table = this.builder
       .setId(dto.id)
@@ -73,7 +73,7 @@ export class TableFactory {
   }
 
   // create many table inside a base
-  static createMany(
+  createMany(
     baseNames: string[],
     base: Base,
     dtos: ICreateTablesDTO[],
@@ -174,7 +174,7 @@ export class TableFactory {
     })
   }
 
-  static fromJSON(dto: ITableDTO): TableDo {
+  fromJSON(dto: ITableDTO): TableDo {
     return this.builder
       .setId(dto.id)
       .setBaseId(dto.baseId)

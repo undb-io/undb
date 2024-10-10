@@ -43,7 +43,7 @@
   $: ft = $getForeignTableStore.data?.table
 
   // @ts-ignore
-  $: foreignTable = ft ? TableFactory.fromJSON(ft) : undefined
+  $: foreignTable = ft ? new TableFactory().fromJSON(ft) : undefined
 
   const value = writable<MaybeConditionGroup<IViewFilterOptionSchema> | undefined>()
   $: if ($value && foreignTable) {

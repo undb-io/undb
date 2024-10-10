@@ -30,6 +30,7 @@ import type {
   WithViewIdSpecification,
   WithViewOption,
   WithViewSort,
+  WithViewWidgets,
   WithoutFieldSpecification,
   WithoutFormSpecification,
   WithoutView,
@@ -169,6 +170,9 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
       .compile()
 
     this.addSql(sql)
+  }
+  withViewWidgets(spec: WithViewWidgets): void {
+    this.setData(tables.views.name, json(this.table.views.toJSON()))
   }
   withoutView(view: WithoutView): void {
     this.setData(tables.views.name, json(this.table.views.toJSON()))

@@ -43,6 +43,12 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
         enabled
         id
       }
+
+      widgets {
+        id
+        name
+        item
+      }
     }
 
     forms {
