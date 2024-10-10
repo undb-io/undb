@@ -1,4 +1,5 @@
 import type { IInvitationQueryRepository, InvitationCompositeSpecification, InvitationDTO } from "@undb/authz"
+import { injectContext, type IContext } from "@undb/context"
 import { singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import { getCurrentTransaction } from "../ctx"
@@ -11,6 +12,8 @@ export class InvitationQueryRepository implements IInvitationQueryRepository {
   constructor(
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
   async findOneById(id: string): Promise<Option<InvitationDTO>> {
     const invitation = await (getCurrentTransaction() ?? this.qb)
@@ -37,7 +40,7 @@ export class InvitationQueryRepository implements IInvitationQueryRepository {
       .selectFrom("undb_invitation")
       .selectAll()
       .where((eb) => {
-        const visitor = new InvitationFilterVisitor(eb)
+        const visitor = new InvitationFilterVisitor(eb, this.context.mustGetCurrentSpaceId())
         spec.accept(visitor)
 
         return visitor.cond
@@ -62,7 +65,7 @@ export class InvitationQueryRepository implements IInvitationQueryRepository {
       .selectFrom("undb_invitation")
       .selectAll()
       .where((eb) => {
-        const visitor = new InvitationFilterVisitor(eb)
+        const visitor = new InvitationFilterVisitor(eb, this.context.mustGetCurrentSpaceId())
         if (spec.isSome()) {
           spec.unwrap().accept(visitor)
         }

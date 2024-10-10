@@ -34,7 +34,7 @@
 
   $: foreignTable = $store.data?.table
   const foreignTableDo = writable<TableDo>()
-  $: if (foreignTable) foreignTableDo.set(TableFactory.fromJSON(foreignTable))
+  $: if (foreignTable) foreignTableDo.set(new TableFactory().fromJSON(foreignTable))
   $: schema = foreignTable?.schema
 
   $: fields = schema?.filter((f) => getIsFieldCanBeRollup(f.type))

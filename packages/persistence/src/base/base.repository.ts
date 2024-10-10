@@ -7,7 +7,8 @@ import {
   type IBaseRepository,
   type IBaseSpecification,
 } from "@undb/base"
-import { executionContext, mustGetCurrentSpaceId } from "@undb/context/server"
+import { injectContext, type IContext } from "@undb/context"
+import { executionContext } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import { injectTableRepository, TableBaseIdSpecification, type ITableRepository } from "@undb/table"
@@ -32,6 +33,8 @@ export class BaseRepository implements IBaseRepository {
     private readonly tableRepository: ITableRepository,
     @inject(UnderlyingTableService)
     private readonly underlyingTableService: UnderlyingTableService,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   async find(spec: IBaseSpecification): Promise<Base[]> {
@@ -62,7 +65,8 @@ export class BaseRepository implements IBaseRepository {
     return base ? Some(this.mapper.toDo(base)) : None
   }
   async findOneById(id: string): Promise<Option<Base>> {
-    const spec = WithBaseId.fromString(id).and(new WithBaseSpaceId(mustGetCurrentSpaceId()))
+    const spaceId = this.context.mustGetCurrentSpaceId()
+    const spec = WithBaseId.fromString(id).and(new WithBaseSpaceId(spaceId))
 
     const base = await (getCurrentTransaction() ?? this.qb)
       .selectFrom("undb_base")

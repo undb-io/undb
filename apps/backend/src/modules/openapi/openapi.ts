@@ -1,6 +1,7 @@
 import { injectSpaceMemberService, type ISpaceMemberService } from "@undb/authz"
 import { type IBaseRepository, injectBaseRepository } from "@undb/base"
-import { executionContext, getCurrentUserId, setContextValue } from "@undb/context/server"
+import { type IContext, injectContext } from "@undb/context"
+import { executionContext, setContextValue } from "@undb/context/server"
 import { container, singleton } from "@undb/di"
 import { Some } from "@undb/domain"
 import { createLogger } from "@undb/logger"
@@ -42,6 +43,8 @@ export class OpenAPI {
     private spaceMemberService: ISpaceMemberService,
     @injectSpaceService()
     private spaceService: ISpaceService,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   async getSpec(baseName: string, tableName: string) {
@@ -149,7 +152,7 @@ export class OpenAPI {
                   return
                 }
               } else {
-                const userId = getCurrentUserId()
+                const userId = this.context.getCurrentUserId()
 
                 if (userId) {
                   return

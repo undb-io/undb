@@ -1,5 +1,5 @@
 import { UpdateSpaceCommand } from "@undb/commands"
-import { mustGetCurrentSpaceId } from "@undb/context/server"
+import { injectContext, type IContext } from "@undb/context"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import { type ICommandHandler } from "@undb/domain"
@@ -11,10 +11,12 @@ export class UpdateSpaceCommandHandler implements ICommandHandler<UpdateSpaceCom
   constructor(
     @injectSpaceRepository()
     private readonly repository: ISpaceRepository,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   async execute(command: UpdateSpaceCommand): Promise<any> {
-    const spaceId = mustGetCurrentSpaceId()
+    const spaceId = this.context.mustGetCurrentSpaceId()
     const space = (await this.repository.findOneById(spaceId)).expect("Space not found")
 
     const spec = space.$update(command)

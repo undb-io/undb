@@ -1,11 +1,15 @@
 import type { IInvitationRepository, InvitationCompositeSpecification, InvitationDo } from "@undb/authz"
-import { mustGetCurrentSpaceId } from "@undb/context/server"
+import { injectContext, type IContext } from "@undb/context"
 import { singleton } from "@undb/di"
 import { getCurrentTransaction } from "../ctx"
 import { InvitationMutationVisitor } from "./invitation.mutation-visitor"
 
 @singleton()
 export class InvitationRepository implements IInvitationRepository {
+  constructor(
+    @injectContext()
+    private readonly context: IContext,
+  ) {}
   async deleteOneById(id: string): Promise<void> {
     const trx = getCurrentTransaction()
 
@@ -34,7 +38,7 @@ export class InvitationRepository implements IInvitationRepository {
       .values({
         id: invitation.id.value,
         email: invitation.email,
-        space_id: mustGetCurrentSpaceId(),
+        space_id: this.context.mustGetCurrentSpaceId(),
         role: invitation.role,
         status: invitation.status,
         invited_at: invitation.invitedAt.getTime(),
@@ -58,7 +62,7 @@ export class InvitationRepository implements IInvitationRepository {
       .values({
         id: invitation.id.value,
         email: invitation.email,
-        space_id: mustGetCurrentSpaceId(),
+        space_id: this.context.mustGetCurrentSpaceId(),
         role: invitation.role,
         status: invitation.status,
         invited_at: invitation.invitedAt.getTime(),

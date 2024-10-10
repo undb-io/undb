@@ -1,3 +1,4 @@
+import { injectContext, type IContext } from "@undb/context"
 import { singleton } from "@undb/di"
 import { None, Option, Some } from "@undb/domain"
 import {
@@ -18,6 +19,8 @@ export class TableQueryRepository implements ITableQueryRepository {
   constructor(
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   public get mapper() {
@@ -29,7 +32,7 @@ export class TableQueryRepository implements ITableQueryRepository {
       .selectFrom("undb_table")
       .selectAll()
       .$if(spec.isSome(), (qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
-      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb).handle(spec))
+      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb, this.context.mustGetCurrentSpaceId()).handle(spec))
       .execute()
 
     return tbs.map((r) => this.mapper.toDTO(r))
@@ -40,7 +43,7 @@ export class TableQueryRepository implements ITableQueryRepository {
       .selectFrom("undb_table")
       .selectAll()
       .$call((qb) => new TableReferenceVisitor(qb).call(spec))
-      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb).handle(Some(spec)))
+      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb, this.context.mustGetCurrentSpaceId()).handle(Some(spec)))
       .executeTakeFirst()
 
     return tb ? Some(this.mapper.toDTO(tb)) : None
@@ -52,7 +55,7 @@ export class TableQueryRepository implements ITableQueryRepository {
       .selectFrom("undb_table")
       .selectAll()
       .$call((qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
-      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb).handle(spec))
+      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb, this.context.mustGetCurrentSpaceId()).handle(spec))
       .executeTakeFirst()
 
     return tb ? Some(this.mapper.toDTO(tb)) : None

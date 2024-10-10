@@ -34,6 +34,7 @@ import type {
   WithViewIdSpecification,
   WithViewOption,
   WithViewSort,
+  WithViewWidgets,
 } from "@undb/table"
 import type { SelectQueryBuilder } from "kysely"
 import type { Database, Table } from "../db"
@@ -80,6 +81,7 @@ export class TableReferenceVisitor implements ITableSpecVisitor {
   withForm(views: WithFormSpecification): void {}
   withForeignRollupField(spec: WithForeignRollupFieldSpec): void {}
   withTableForeignTables(spec: WithTableForeignTablesSpec): void {}
+  withViewWidgets(spec: WithViewWidgets): void {}
   withTableUnqueName(spec: TableUniqueNameSpecification): void {
     this.sqb = this.sqb
       .innerJoin("undb_base", "undb_table.base_id", "undb_base.id")

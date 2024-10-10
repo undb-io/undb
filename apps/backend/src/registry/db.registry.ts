@@ -8,6 +8,8 @@ import {
   WORKSPQACE_MEMBER_QUERY_REPOSITORY,
 } from "@undb/authz"
 import { BASE_OUTBOX_SERVICE, BASE_QUERY_REPOSITORY, BASE_REPOSITORY } from "@undb/base"
+import { CONTEXT_TOKEN } from "@undb/context"
+import { ServerContext } from "@undb/context/server"
 import { container, instanceCachingFactory } from "@undb/di"
 import { env } from "@undb/env"
 import { API_TOKEN_QUERY_REPOSITORY, API_TOKEN_REPOSITORY, API_TOKEN_SERVICE, ApiTokenService } from "@undb/openapi"
@@ -79,6 +81,7 @@ export const registerDb = () => {
     }),
   })
 
+  container.register(CONTEXT_TOKEN, ServerContext)
   container.register(SPACE_REPOSITORY, SpaceRepostitory)
   container.register(SPACE_QUERY_REPOSITORY, SpaceQueryRepository)
   container.register(SPACE_SERVICE, SpaceService)

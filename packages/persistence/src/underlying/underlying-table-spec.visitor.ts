@@ -1,4 +1,4 @@
-import { getCurrentUserId } from "@undb/context/server"
+import type { IContext } from "@undb/context"
 import { WontImplementException, type ISpecification, type ISpecVisitor } from "@undb/domain"
 import {
   CREATED_AT_TYPE,
@@ -7,6 +7,7 @@ import {
   UPDATED_AT_TYPE,
   UPDATED_BY_TYPE,
   WithViewFieldWidth,
+  WithViewWidgets,
   type DuplicatedTableSpecification,
   type ITableSpecVisitor,
   type SelectField,
@@ -59,6 +60,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
   constructor(
     public readonly table: UnderlyingTable,
     public readonly qb: IRecordQueryBuilder,
+    public readonly context: IContext,
   ) {
     this.tb = qb.schema.alterTable(table.name)
   }
@@ -162,7 +164,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
 
     this.addSql(duplicateDataSql)
 
-    const userId = getCurrentUserId()
+    const userId = this.context.getCurrentUserId()
     const updateSql = this.qb
       .updateTable(duplicatedTable.id.value)
       .set((eb) => ({
@@ -199,6 +201,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
   }
   withViewFields(fields: WithViewFields): void {}
   withViewFieldWidth(spec: WithViewFieldWidth): void {}
+  withViewWidgets(spec: WithViewWidgets): void {}
   withForm(views: WithFormSpecification): void {}
   withForms(views: TableFormsSpecification): void {}
   withNewForm(views: WithNewFormSpecification): void {}

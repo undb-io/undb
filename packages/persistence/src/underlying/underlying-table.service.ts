@@ -1,8 +1,9 @@
+import { injectContext,type IContext } from "@undb/context"
 import { singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
-import type { TableComositeSpecification, TableDo } from "@undb/table"
+import type { TableComositeSpecification,TableDo } from "@undb/table"
 import type { CompiledQuery } from "kysely"
-import { getAnonymousTransaction, getCurrentTransaction } from "../ctx"
+import { getAnonymousTransaction,getCurrentTransaction } from "../ctx"
 import { JoinTable } from "./reference/join-table"
 import { UnderlyingTable } from "./underlying-table"
 import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
@@ -10,6 +11,8 @@ import { UnderlyingTableSpecVisitor } from "./underlying-table-spec.visitor"
 
 @singleton()
 export class UnderlyingTableService {
+  constructor(@injectContext() private readonly context: IContext) {}
+
   readonly logger = createLogger(UnderlyingTableService.name)
 
   async create(table: TableDo) {
@@ -37,7 +40,7 @@ export class UnderlyingTableService {
     const t = new UnderlyingTable(table)
     const trx = getAnonymousTransaction()
 
-    const visitor = new UnderlyingTableSpecVisitor(t, trx)
+    const visitor = new UnderlyingTableSpecVisitor(t, trx, this.context)
     spec.accept(visitor)
 
     await visitor.execute()

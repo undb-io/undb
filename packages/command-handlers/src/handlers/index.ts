@@ -13,6 +13,7 @@ import { CreateTableFieldCommandHandler } from "./create-table-field.command-han
 import { CreateTableFormCommandHandler } from "./create-table-form.command-handler"
 import { CreateTableViewCommandHandler } from "./create-table-view.command-handler"
 import { CreateTableCommandHandler } from "./create-table.command-handler"
+import { CreateViewWidgetCommandHandler } from "./create-view-widget.command-handler"
 import { CreateWebhookCommandHandler } from "./create-webhook.command-handler"
 import { DeleteBaseCommandHandler } from "./delete-base.command-handler"
 import { DeleteInvitationCommandHandler } from "./delete-invitation.command-handler"
@@ -110,4 +111,5 @@ export const commandHandlers = [
   DuplicateTableFormCommandHandler,
   CreateFromTemplateCommandHandler,
   SetDefaultViewCommandHandler,
+  CreateViewWidgetCommandHandler,
 ]

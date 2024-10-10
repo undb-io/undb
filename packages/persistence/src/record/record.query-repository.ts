@@ -12,6 +12,7 @@ import {
   type IRecordDTO,
   type IRecordQueryRepository,
   type ITableRepository,
+  type IViewAggregate,
   type IViewSort,
   type QueryArgs,
   type RecordId,
@@ -129,6 +130,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
   async aggregate(
     table: TableDo,
     viewId: Option<ViewId>,
+    aggregate: Option<IViewAggregate>,
     query: Option<QueryArgs>,
   ): Promise<Record<string, AggregateResult>> {
     const context = executionContext.getStore()
@@ -136,13 +138,19 @@ export class RecordQueryRepository implements IRecordQueryRepository {
 
     const t = new UnderlyingTable(table)
     const view = table.views.getViewById(viewId.into(undefined)?.value)
-    const aggregates = view.aggregate
-    if (aggregates.isNone()) {
-      return {}
-    }
+    if (aggregate.isNone()) {
+      const aggregates = view.aggregate
+      if (aggregates.isNone()) {
+        return {}
+      }
+      const aggs = aggregates.unwrap()
+      if (aggs.isEmpty()) {
+        return {}
+      }
 
-    const aggs = aggregates.unwrap()
-    if (aggs.isEmpty()) {
+      aggregate = Some(aggs.toJSON())
+    }
+    if (aggregate.isNone()) {
       return {}
     }
 
@@ -168,7 +176,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       .select((eb) => {
         const ebs: AliasedExpression<any, any>[] = []
 
-        for (const [fieldId, fieldAggregate] of aggs) {
+        for (const [fieldId, fieldAggregate] of Object.entries(aggregate.unwrap())) {
           if (!fieldAggregate) {
             continue
           }
@@ -185,7 +193,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       .where((eb) => {
         const ebs: Expression<any>[] = []
 
-        for (const [fieldId, fieldAggregate] of aggs) {
+        for (const [fieldId, fieldAggregate] of Object.entries(aggregate.unwrap())) {
           if (!fieldAggregate) {
             continue
           }

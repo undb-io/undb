@@ -1,7 +1,7 @@
 import { None, Option, Some, and } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { IDuplicateViewDTO, IUpdateViewDTO } from "../../../../dto"
-import type { TableComositeSpecification } from "../../../../specifications"
+import { type TableComositeSpecification } from "../../../../specifications"
 import {
   WithNewView,
   WithView,
@@ -11,11 +11,13 @@ import {
   WithViewFilter,
   WithViewOption,
   WithViewSort,
+  WithViewWidgets,
   WithoutView,
 } from "../../../../specifications/table-view.specification"
 import { tableId } from "../../../../table-id.vo"
 import type { TableDo } from "../../../../table.do"
 import type { Field } from "../../../schema"
+import { WidgetVO, widgetDTO, type IWidgetDTO } from "../../../widgets/widget.vo"
 import type { IViewDTO } from "../dto"
 import { ViewAggregateVO, viewAggregate, type IViewAggregate } from "../view-aggregate/view-aggregate.vo"
 import { ViewColor, viewColorGroup, type IRootViewColor } from "../view-color"
@@ -52,6 +54,7 @@ export const baseViewDTO = z.object({
   sort: viewSort.optional(),
   aggregate: viewAggregate.optional(),
   fields: viewFields.optional(),
+  widgets: widgetDTO.array().optional(),
 })
 
 export type IBaseViewDTO = z.infer<typeof baseViewDTO>
@@ -67,6 +70,7 @@ export abstract class AbstractView {
   sort: Option<ViewSort> = None
   aggregate: Option<ViewAggregateVO> = None
   fields: Option<ViewFields> = None
+  widgets: Option<WidgetVO[]> = None
 
   abstract type: ViewType
 
@@ -92,6 +96,20 @@ export abstract class AbstractView {
     if (dto.option) {
       this.setOption(dto.option)
     }
+    if (dto.widgets) {
+      this.setWidgets(dto.widgets)
+    }
+  }
+
+  setWidgets(widgets: IWidgetDTO[]) {
+    this.widgets = Some(widgets.map((widget) => new WidgetVO(widget)))
+  }
+
+  $createWidgetSpec(dto: IWidgetDTO): Option<WithViewWidgets> {
+    const widget = new WidgetVO(dto)
+    const previous = this.widgets.into(null)
+    const widgets = this.widgets.unwrapOr([]).concat(widget)
+    return Some(new WithViewWidgets(this.id, Option(previous), widgets))
   }
 
   get showSystemFields() {
@@ -247,6 +265,7 @@ export abstract class AbstractView {
       sort: this.sort.into(null)?.toJSON(),
       aggregate: this.aggregate.into(null)?.toJSON(),
       fields: this.fields.into(null)?.toJSON(),
+      widgets: this.widgets.into(undefined),
     }
   }
 }

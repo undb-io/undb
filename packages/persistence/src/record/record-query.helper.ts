@@ -1,3 +1,4 @@
+import { injectContext, type IContext } from "@undb/context"
 import { singleton } from "@undb/di"
 import type { IPagination, Option } from "@undb/domain"
 import { FieldIdVo, type Field, type IViewSort, type RecordComositeSpecification, type TableDo } from "@undb/table"
@@ -18,6 +19,8 @@ export class RecordQueryHelper {
   constructor(
     @injectQueryBuilder()
     public readonly qb: IRecordQueryBuilder,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   createQueryCreator(
@@ -62,7 +65,7 @@ export class RecordQueryHelper {
 
   handleWhere(table: TableDo, spec: Option<RecordComositeSpecification>) {
     return (eb: ExpressionBuilder<any, any>) => {
-      const visitor = new RecordFilterVisitor(eb, table)
+      const visitor = new RecordFilterVisitor(eb, table, this.context)
       if (spec?.isSome()) {
         spec.unwrap().accept(visitor)
       }

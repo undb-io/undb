@@ -1,4 +1,5 @@
 import type { AuditSpecification, IAuditDTO, IAuditQueryRepository } from "@undb/audit"
+import { injectContext, type IContext } from "@undb/context"
 import { inject, singleton } from "@undb/di"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
@@ -12,6 +13,8 @@ export class AuditQueryRepository implements IAuditQueryRepository {
     private readonly mapper: AuditMapper,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   async find(spec: AuditSpecification): Promise<IAuditDTO[]> {
@@ -19,7 +22,7 @@ export class AuditQueryRepository implements IAuditQueryRepository {
       .selectFrom("undb_audit")
       .selectAll()
       .where((eb) => {
-        const visitor = new AuditFilterVisitor(eb)
+        const visitor = new AuditFilterVisitor(eb, this.context.mustGetCurrentSpaceId())
         spec.accept(visitor)
         return visitor.cond
       })

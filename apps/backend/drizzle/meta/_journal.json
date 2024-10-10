@@ -50,6 +50,13 @@
       "when": 1728358607342,
       "tag": "0006_mature_madame_web",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1728539365470,
+      "tag": "0007_steep_dragon_lord",
+      "breakpoints": true
     }
   ]
 }

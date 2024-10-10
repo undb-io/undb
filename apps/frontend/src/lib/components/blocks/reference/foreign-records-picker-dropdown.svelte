@@ -2,7 +2,7 @@
   import { GetForeignTableStore } from "$houdini"
   import * as Popover from "$lib/components/ui/popover"
   import ForeignRecordsPicker from "./foreign-records-picker.svelte"
-  import { readable, writable } from "svelte/store"
+  import { derived, readable, writable } from "svelte/store"
   import { ReferenceField, TableFactory } from "@undb/table"
   import Button from "$lib/components/ui/button/button.svelte"
   import { LoaderCircleIcon } from "lucide-svelte"
@@ -28,9 +28,10 @@
 
   $: if (open) foreignTableStore.fetch({ variables: { tableId: foreignTableId } })
 
-  $: table = $foreignTableStore.data?.table
-
-  $: foreignTable = table ? readable(TableFactory.fromJSON(table)) : null
+  const foreignTable = derived(foreignTableStore, ($foreignTableStore) => {
+    const table = $foreignTableStore.data?.table
+    return table ? new TableFactory().fromJSON(table) : null
+  })
 </script>
 
 <Popover.Root portal="body" bind:open {onOpenChange}>
@@ -46,7 +47,7 @@
         <LoaderCircleIcon class="mr-2 h-8 w-8 animate-spin" />
       </div>
     {/if}
-    {#if foreignTable}
+    {#if $foreignTable}
       <ForeignRecordsPicker
         {readonly}
         {r}

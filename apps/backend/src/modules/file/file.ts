@@ -1,4 +1,4 @@
-import { getCurrentUserId, mustGetCurrentSpaceId } from "@undb/context/server"
+import { type IContext, injectContext } from "@undb/context"
 import { singleton } from "@undb/di"
 import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
 import { injectObjectStorage, type IObjectStorage, type IPutObject } from "@undb/table"
@@ -11,6 +11,8 @@ export class FileService {
     private readonly objectStorage: IObjectStorage,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   async #uploadFile(buffer: Buffer, path: string, originalname: string, mimeType: string) {
@@ -48,8 +50,8 @@ export class FileService {
               size,
               mime_type: mimeType,
               created_at: new Date().getTime(),
-              created_by: getCurrentUserId(),
-              space_id: mustGetCurrentSpaceId(),
+              created_by: this.context.mustGetCurrentUserId(),
+              space_id: this.context.mustGetCurrentSpaceId(),
               name: fileName,
             })
             .execute()

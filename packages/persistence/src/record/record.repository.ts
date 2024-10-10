@@ -1,3 +1,4 @@
+import { injectContext, type IContext } from "@undb/context"
 import { executionContext } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
@@ -21,8 +22,6 @@ import {
 import { chunk } from "es-toolkit/array"
 import { sql, type CompiledQuery, type ExpressionBuilder } from "kysely"
 import { getAnonymousTransaction } from "../ctx"
-import type { IRecordQueryBuilder } from "../qb"
-import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { RecordQueryHelper } from "./record-query.helper"
 import { getRecordDTOFromEntity } from "./record-utils"
@@ -32,8 +31,6 @@ import { RecordMutateVisitor } from "./record.mutate-visitor"
 @singleton()
 export class RecordRepository implements IRecordRepository {
   constructor(
-    @injectQueryBuilder()
-    private readonly qb: IRecordQueryBuilder,
     @injectRecordOutboxService()
     private readonly outboxService: IRecordOutboxService,
     @inject(RecordMapper)
@@ -42,6 +39,8 @@ export class RecordRepository implements IRecordRepository {
     private readonly tableRepo: ITableRepository,
     @inject(RecordQueryHelper)
     private readonly helper: RecordQueryHelper,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   private async getForeignTables(table: TableDo, fields: Field[]): Promise<Map<string, TableDo>> {
@@ -70,7 +69,7 @@ export class RecordRepository implements IRecordRepository {
     await trx
       .insertInto(t.name)
       .values((eb) => {
-        const visitor = new RecordMutateVisitor(table, record, trx, eb)
+        const visitor = new RecordMutateVisitor(table, record, trx, eb, this.context)
         spec.accept(visitor)
 
         sql.push(...visitor.sql)
@@ -102,7 +101,7 @@ export class RecordRepository implements IRecordRepository {
       .values((eb) =>
         records.map((record) => {
           const spec = record.toInsertSpec(table)
-          const visitor = new RecordMutateVisitor(table, record, trx, eb)
+          const visitor = new RecordMutateVisitor(table, record, trx, eb, this.context)
           spec.accept(visitor)
 
           sql.push(...visitor.sql)
@@ -214,7 +213,7 @@ export class RecordRepository implements IRecordRepository {
     await trx
       .updateTable(t.name)
       .set((eb) => {
-        const visitor = new RecordMutateVisitor(table, record, trx, eb)
+        const visitor = new RecordMutateVisitor(table, record, trx, eb, this.context)
         spec.unwrap().accept(visitor)
         sql.push(...visitor.sql)
         return { ...visitor.data, [UPDATED_BY_TYPE]: userId }
@@ -250,13 +249,13 @@ export class RecordRepository implements IRecordRepository {
         let data = {}
         if (records.length) {
           for (const record of records) {
-            const visitor = new RecordMutateVisitor(table, record, trx, eb)
+            const visitor = new RecordMutateVisitor(table, record, trx, eb, this.context)
             update.accept(visitor)
             queries.push(...visitor.sql)
             data = { ...data, ...visitor.data }
           }
         } else {
-          const visitor = new RecordMutateVisitor(table, null, trx, eb)
+          const visitor = new RecordMutateVisitor(table, null, trx, eb, this.context)
           update.accept(visitor)
           queries.push(...visitor.sql)
           data = visitor.data

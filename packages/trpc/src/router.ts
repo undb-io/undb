@@ -13,6 +13,7 @@ import {
   CreateTableFieldCommand,
   CreateTableFormCommand,
   CreateTableViewCommand,
+  CreateViewWidgetCommand,
   CreateWebhookCommand,
   DeleteBaseCommand,
   DeleteFormCommand,
@@ -70,6 +71,7 @@ import {
   createTableFormCommandOutput,
   createTableViewCommand,
   createTableViewCommandOutput,
+  createViewWidgetCommand,
   createWebhookCommand,
   deleteBaseCommand,
   deleteFormCommand,
@@ -112,9 +114,9 @@ import {
   updateaccountCommand,
 } from "@undb/commands"
 import { getCurrentSpaceId } from "@undb/context/server"
-import { CommandBus, QueryBus } from "@undb/cqrs"
+import { CommandBus,QueryBus } from "@undb/cqrs"
 import { container } from "@undb/di"
-import type { ICommandBus, IQueryBus } from "@undb/domain"
+import type { ICommandBus,IQueryBus } from "@undb/domain"
 import {
   CountRecordsQuery,
   GetAggregatesQuery,
@@ -148,7 +150,7 @@ import {
 import { tableDTO } from "@undb/table"
 import { z } from "@undb/zod"
 import { authz } from "./authz.middleware"
-import { privateProcedure, publicProcedure, t } from "./trpc"
+import { privateProcedure,publicProcedure,t } from "./trpc"
 
 const commandBus = container.resolve<ICommandBus>(CommandBus)
 const queryBus = container.resolve<IQueryBus>(QueryBus)
@@ -175,6 +177,13 @@ const formRouter = t.router({
   submit: publicProcedure
     .input(submitFormCommand)
     .mutation(({ input }) => commandBus.execute(new SubmitFormCommand(input))),
+})
+
+const viewWidgetRouter = t.router({
+  create: privateProcedure
+    .use(authz("view:update"))
+    .input(createViewWidgetCommand)
+    .mutation(({ input }) => commandBus.execute(new CreateViewWidgetCommand(input))),
 })
 
 const viewRouter = t.router({
@@ -228,6 +237,7 @@ const viewRouter = t.router({
     .use(authz("view:update"))
     .input(setDefaultViewCommand)
     .mutation(({ input }) => commandBus.execute(new SetDefaultViewCommand(input))),
+  widget: viewWidgetRouter,
 })
 
 const rlsRouter = t.router({

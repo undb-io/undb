@@ -99,8 +99,8 @@
   <form method="POST" use:enhance>
     <Card.Root class="mx-auto">
       <Card.Header>
-        <Card.Title class="text-2xl">Create from template</Card.Title>
-        <Card.Description>Create a new base from a template.</Card.Description>
+        <Card.Title class="text-2xl">Create from share</Card.Title>
+        <Card.Description>Create a new base from a shared base.</Card.Description>
       </Card.Header>
       <Card.Content>
         <div class="grid gap-2">

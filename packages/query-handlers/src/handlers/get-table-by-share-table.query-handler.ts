@@ -1,5 +1,6 @@
 import { injectSpaceMemberService, type ISpaceMemberService } from "@undb/authz"
-import { getCurrentUserId, setContextValue } from "@undb/context/server"
+import { injectContext, type IContext } from "@undb/context"
+import { setContextValue } from "@undb/context/server"
 import { queryHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import type { IQueryHandler } from "@undb/domain"
@@ -18,10 +19,12 @@ export class GetTableByShareBaseQueryHandler implements IQueryHandler<any, ITabl
     private readonly spaceSvc: ISpaceService,
     @injectSpaceMemberService()
     private readonly spaceMemberSvc: ISpaceMemberService,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   async execute(query: IGetTableByShareBaseQuery): Promise<ITableDTO> {
-    const userId = getCurrentUserId()
+    const userId = this.context.mustGetCurrentUserId()
     const space = await this.spaceSvc.setSpaceContext(setContextValue, { shareId: query.shareId })
     await this.spaceMemberSvc.setSpaceMemberContext(setContextValue, space.id.value, userId)
 

@@ -1,4 +1,4 @@
-import { mustGetCurrentSpaceId } from "@undb/context/server"
+import { injectContext, type IContext } from "@undb/context"
 import { singleton } from "@undb/di"
 import type { Mapper } from "@undb/domain"
 import { WebhookDo, WebhookFactory, type IWebhookDTO } from "@undb/webhook"
@@ -7,6 +7,10 @@ import { json } from "../qb"
 
 @singleton()
 export class WebhookMapper implements Mapper<WebhookDo, Webhook, IWebhookDTO> {
+  constructor(
+    @injectContext()
+    private readonly context: IContext,
+  ) {}
   toDo(entity: Webhook): WebhookDo {
     return WebhookFactory.fromJSON({
       id: entity.id,
@@ -45,7 +49,7 @@ export class WebhookMapper implements Mapper<WebhookDo, Webhook, IWebhookDTO> {
       method: data.method,
       condition: data.condition ? json(data.condition) : null,
       event: data.event,
-      space_id: mustGetCurrentSpaceId(),
+      space_id: this.context.mustGetCurrentSpaceId(),
     }
   }
 }

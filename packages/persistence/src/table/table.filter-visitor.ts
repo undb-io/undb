@@ -1,4 +1,3 @@
-import { mustGetCurrentSpaceId } from "@undb/context/server"
 import type {
   DuplicatedTableSpecification,
   ITableSpecVisitor,
@@ -34,6 +33,7 @@ import type {
   WithViewIdSpecification,
   WithViewOption,
   WithViewSort,
+  WithViewWidgets,
 } from "@undb/table"
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
@@ -44,12 +44,12 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
   constructor(
     private readonly qb: IQueryBuilder,
     protected readonly eb: ExpressionBuilder<Database, "undb_table" | "undb_table_id_mapping">,
+    private readonly spaceId: string,
     private readonly ignoreSpace = false,
     cloned = false,
   ) {
     super(eb)
     if (!ignoreSpace && !cloned) {
-      const spaceId = mustGetCurrentSpaceId()
       this.addCond(this.eb.eb("undb_table.space_id", "=", spaceId))
     }
   }
@@ -134,6 +134,9 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
   withViewFields(fields: WithViewFields): void {
     throw new Error("Method not implemented.")
   }
+  withViewWidgets(spec: WithViewWidgets): void {
+    throw new Error("Method not implemented.")
+  }
   withForms(views: TableFormsSpecification): void {
     throw new Error("Method not implemented.")
   }
@@ -168,6 +171,6 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
   }
   withTableUnqueName(spec: TableUniqueNameSpecification): void {}
   clone(): this {
-    return new TableFilterVisitor(this.qb, this.eb, this.ignoreSpace, true) as this
+    return new TableFilterVisitor(this.qb, this.eb, this.spaceId, this.ignoreSpace, true) as this
   }
 }

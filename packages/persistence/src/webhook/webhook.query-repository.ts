@@ -1,3 +1,4 @@
+import { injectContext, type IContext } from "@undb/context"
 import { inject, singleton } from "@undb/di"
 import { None, Some, type IPagination, type Option } from "@undb/domain"
 import type { IWebhookDTO, IWebhookQueryRepository, WebhookSpecification } from "@undb/webhook"
@@ -13,6 +14,8 @@ export class WebhookQueryRepository implements IWebhookQueryRepository {
     private readonly mapper: WebhookMapper,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   async findOneById(id: string): Promise<Option<IWebhookDTO>> {
@@ -30,7 +33,7 @@ export class WebhookQueryRepository implements IWebhookQueryRepository {
       .selectFrom("undb_webhook")
       .selectAll()
       .where((eb) => {
-        const visitor = new WebhookFilterVisitor(eb)
+        const visitor = new WebhookFilterVisitor(eb, this.context.mustGetCurrentSpaceId())
         if (spec.isSome()) {
           spec.unwrap().accept(visitor)
         }

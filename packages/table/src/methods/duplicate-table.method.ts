@@ -10,7 +10,7 @@ export function duplicateTableMethod(
   dto: IDuplicateTableDTO,
   tableNames: string[],
 ): DuplicatedTableSpecification {
-  const duplicated = TableFactory.fromJSON({
+  const duplicated = new TableFactory().fromJSON({
     ...this.toJSON(),
     id: dto.tableId ?? TableIdVo.create().value,
     baseId: dto.baseId ?? this.baseId,
