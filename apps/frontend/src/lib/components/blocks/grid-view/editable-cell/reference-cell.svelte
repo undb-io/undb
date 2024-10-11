@@ -5,6 +5,7 @@
   import { writable, type Readable, type Writable } from "svelte/store"
   import { getRecordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
+  import { cn } from "$lib/utils"
 
   const table = getTable()
 
@@ -39,9 +40,9 @@
   }
 </script>
 
-<div class={$$restProps.class}>
+<div class={cn("overflow-hidden", $$restProps.class)}>
   <div class="flex w-full items-center justify-between gap-1">
-    <div class="flex flex-1 items-center gap-1">
+    <div class="flex flex-1 items-center gap-1 truncate">
       <ForeignRecordsPickerDropdown
         shouldUpdate
         onOpenChange={(open) => {

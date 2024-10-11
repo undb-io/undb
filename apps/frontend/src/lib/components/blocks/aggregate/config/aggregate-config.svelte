@@ -1,7 +1,9 @@
 <script lang="ts">
   import * as Tabs from "$lib/components/ui/tabs"
   import { getTable } from "$lib/store/table.store"
+  import { invalidate } from "$app/navigation"
   import {
+    filterAggregateField,
     getIsFilterableFieldType,
     parseValidAggregateCondition,
     toMaybeConditionGroup,
@@ -12,10 +14,13 @@
   } from "@undb/table"
   import { writable } from "svelte/store"
   import FiltersEditor from "../../filters-editor/filters-editor.svelte"
-  import { createMutation } from "@tanstack/svelte-query"
+  import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { Button } from "$lib/components/ui/button"
   import { SaveIcon } from "lucide-svelte"
+  import FieldPicker from "../../field-picker/field-picker.svelte"
+  import AggregateTypePicker from "../aggregate-type-picker.svelte"
+  import { tick } from "svelte"
 
   export let viewId: string
   export let widget: IWidgetDTO
@@ -29,14 +34,22 @@
   $: validValue = $value ? parseValidAggregateCondition($table.schema, $value) : undefined
   $: visibleFields = $table.getOrderedVisibleFields()
 
+  const client = useQueryClient()
+
   const updateViewWidgetMutation = createMutation({
     mutationFn: trpc.table.view.widget.update.mutate,
-    onSuccess(data, variables, context) {
+    async onSuccess(data, variables, context) {
+      await invalidate(`table:${$table.id.value}`)
+      await tick()
+      await client.invalidateQueries({ queryKey: ["aggregate", $table.id.value] })
       onSuccess()
     },
   })
 
-  const updateViewWidget = () => {
+  const updateViewWidget = (widget: IWidgetDTO) => {
+    if (widget.item.type !== "aggregate") {
+      return
+    }
     $updateViewWidgetMutation.mutate({
       tableId: $table.id.value,
       viewId,
@@ -45,7 +58,7 @@
         item: {
           type: "aggregate",
           aggregate: {
-            ...aggregate,
+            ...widget.item.aggregate,
             condition: validValue,
           },
         },
@@ -54,37 +67,69 @@
   }
 </script>
 
-<div class="flex h-full flex-col py-2">
-  <div class="flex-1 space-y-3">
-    <div class="flex gap-2">
-      <div class="h-ful w-1 rounded-sm bg-gray-200"></div>
-      <div class="text-sm font-medium">Settings</div>
+{#if widget.item.type === "aggregate"}
+  <div class="flex h-full flex-col py-2">
+    <div class="flex-1 space-y-3">
+      <div class="flex gap-2">
+        <div class="h-ful w-1 rounded-sm bg-gray-200"></div>
+        <div class="text-sm font-medium">Settings</div>
+      </div>
+      <Tabs.Root
+        class="w-full"
+        value={widget.item.aggregate.type === "count" ? "count" : "aggregate"}
+        onValueChange={(value) => {
+          if (widget.item.type === "aggregate") {
+            if (value === "aggregate") {
+              widget.item.aggregate.type = "sum"
+              // @ts-expect-error for type infer
+              if (widget.item.aggregate.type !== "count") {
+                widget.item.aggregate.config = { field: undefined }
+              }
+            }
+            if (value === "count") {
+              widget.item.aggregate = {
+                type: "count",
+              }
+            }
+          }
+        }}
+      >
+        <Tabs.List class="w-full">
+          <Tabs.Trigger class="flex-1" value="count">Count</Tabs.Trigger>
+          <Tabs.Trigger class="flex-1" value="aggregate">Aggregate</Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="count"></Tabs.Content>
+        <Tabs.Content value="aggregate" class="space-y-2">
+          {#if widget.item.type === "aggregate" && widget.item.aggregate.type !== "count"}
+            <AggregateTypePicker bind:value={widget.item.aggregate.type} />
+            <FieldPicker
+              bind:value={widget.item.aggregate.config.field}
+              class="w-full flex-1"
+              placeholder="Select a field to aggregate..."
+              filter={(field) => filterAggregateField(field.type, widget.item.aggregate?.type)}
+            />
+          {/if}
+        </Tabs.Content>
+      </Tabs.Root>
+
+      <div class="flex gap-2">
+        <div class="h-ful w-1 rounded-sm bg-gray-200"></div>
+        <div class="text-sm font-medium">Filters</div>
+      </div>
+
+      <FiltersEditor
+        bind:value={$value}
+        table={$table}
+        filter={(field) => visibleFields.some((f) => f.id.value === field.id) && getIsFilterableFieldType(field.type)}
+        class="rounded-md border pt-3"
+      ></FiltersEditor>
     </div>
-    <Tabs.Root value="count" class="w-full">
-      <Tabs.List class="w-full">
-        <Tabs.Trigger class="flex-1" value="count">Count</Tabs.Trigger>
-        <Tabs.Trigger class="flex-1" value="aggregate">Aggregate</Tabs.Trigger>
-      </Tabs.List>
-      <Tabs.Content value="count">Make changes to your account here.</Tabs.Content>
-      <Tabs.Content value="aggregate">Change your password here.</Tabs.Content>
-    </Tabs.Root>
 
-    <div class="flex gap-2">
-      <div class="h-ful w-1 rounded-sm bg-gray-200"></div>
-      <div class="text-sm font-medium">Filters</div>
+    <div class="flex justify-end">
+      <Button disabled={$updateViewWidgetMutation.isPending} on:click={() => updateViewWidget(widget)} class="w-full">
+        <SaveIcon class="mr-2 size-4" />
+        Save
+      </Button>
     </div>
-
-    <FiltersEditor
-      bind:value={$value}
-      table={$table}
-      filter={(field) => visibleFields.some((f) => f.id.value === field.id) && getIsFilterableFieldType(field.type)}
-    ></FiltersEditor>
   </div>
-
-  <div class="flex justify-end">
-    <Button disabled={$updateViewWidgetMutation.isPending} on:click={updateViewWidget} class="w-full">
-      <SaveIcon class="mr-2 size-4" />
-      Save
-    </Button>
-  </div>
-</div>
+{/if}

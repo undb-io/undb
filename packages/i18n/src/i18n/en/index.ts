@@ -114,6 +114,12 @@ const viewTypes: Record<ViewType, string> = {
   gallery: "Gallery",
 }
 
+const widgetTypes: Record<string, string> = {
+  aggregate: "Aggregate",
+  chart: "Chart",
+  table: "Table"
+}
+
 const en = {
   table: {
     ops,
@@ -123,6 +129,7 @@ const en = {
     workspaceRoles,
     macros,
     viewTypes,
+    widgetTypes,
   },
 } satisfies BaseTranslation
 
