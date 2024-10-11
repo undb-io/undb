@@ -6,5 +6,5 @@
 
 <Button on:click={() => toggleModal(VIEW_WIDGET_MODAL)} variant="outline" size="sm">
   <PlugIcon class="mr-2 size-4" />
-  Widget
+  Widgets
 </Button>

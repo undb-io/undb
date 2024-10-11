@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-100
+
+
+### 🩹 Fixes
+
+- Fix kanban gallery view widget ([5f06822](https://github.com/undb-io/undb/commit/5f06822))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-99
 
 

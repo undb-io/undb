@@ -8,8 +8,11 @@
   import { PlusIcon } from "lucide-svelte"
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
-  import CreateWidgetForm from "../widget/create-widget-form.svelte"
+  import CreateViewWidgetForm from "../widget/create-view-widget-form.svelte"
   import Widget from "../widget/widget.svelte"
+  import { toast } from "svelte-sonner"
+  import { onMount } from "svelte"
+  import Sortable from "sortablejs"
 
   let table = getTable()
   export let viewId: Readable<string | undefined>
@@ -19,9 +22,39 @@
 
   const createViewWidgetMutation = createMutation({
     mutationFn: trpc.table.view.widget.create.mutate,
+    onError(error, variables, context) {
+      toast.error(error.message)
+    },
   })
 
   let open = false
+
+  let widgetsContainer: HTMLElement
+
+  onMount(() => {
+    // if (widgetsContainer) {
+    //   new Sortable(widgetsContainer, {
+    //     animation: 150,
+    //     ghostClass: "bg-gray-100",
+    //     onEnd: (evt) => {
+    //       // 在这里处理排序结果
+    //       const newOrder = Array.from(widgetsContainer.children).map((el) => el.id)
+    //       // 调用API更新widget顺序
+    //       updateWidgetsOrder(newOrder)
+    //     },
+    //   })
+    // }
+  })
+
+  function updateWidgetsOrder(newOrder: string[]) {
+    console.log(newOrder)
+    // 调用API更新widget顺序的逻g辑
+    // 例如:
+    // trpc.table.view.widget.updateOrder.mutate({
+    //   viewId: $viewId,
+    //   order: newOrder
+    // })
+  }
 </script>
 
 <Sheet.Root portal="body" open={$isModalOpen(VIEW_WIDGET_MODAL)} onOpenChange={() => toggleModal(VIEW_WIDGET_MODAL)}>
@@ -30,29 +63,29 @@
       <Sheet.Title>Widgets</Sheet.Title>
       <Sheet.Description>View Widgets</Sheet.Description>
     </Sheet.Header>
-    <div class="flex-1 space-y-3 overflow-y-auto">
+    <div class="flex-1 space-y-3 overflow-y-auto" bind:this={widgetsContainer}>
       {#each $widgets as widget}
         <Widget {widget} viewId={$view.id.value} />
       {/each}
-      <Popover.Root bind:open>
-        <Popover.Trigger asChild let:builder>
-          <Button size="sm" class="w-full" builders={[builder]} variant={$widgets.length ? "outline" : "default"}>
-            <PlusIcon class="mr-2 size-4" />
-            Add Widget
-          </Button>
-        </Popover.Trigger>
-        <Popover.Content sameWidth>
-          {#if $viewId}
-            <CreateWidgetForm
-              viewId={$viewId}
-              onSuccess={() => {
-                open = false
-              }}
-            />
-          {/if}
-        </Popover.Content>
-      </Popover.Root>
     </div>
+    <Popover.Root bind:open>
+      <Popover.Trigger asChild let:builder>
+        <Button size="sm" class="w-full" builders={[builder]} variant={$widgets.length ? "outline" : "default"}>
+          <PlusIcon class="mr-2 size-4" />
+          Add Widget
+        </Button>
+      </Popover.Trigger>
+      <Popover.Content sameWidth>
+        {#if $viewId}
+          <CreateViewWidgetForm
+            viewId={$viewId}
+            onSuccess={() => {
+              open = false
+            }}
+          />
+        {/if}
+      </Popover.Content>
+    </Popover.Root>
     <Sheet.Footer>
       <Sheet.Close asChild let:builder>
         <Button disabled={$createViewWidgetMutation.isPending} builders={[builder]} type="button">Close</Button>
