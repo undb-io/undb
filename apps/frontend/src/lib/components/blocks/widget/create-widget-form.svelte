@@ -13,6 +13,7 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { invalidate } from "$app/navigation"
+  import WidgetTypePicker from "./widget-type-picker.svelte"
 
   const table = getTable()
   export let viewId: string
@@ -61,6 +62,14 @@
     <Form.Control let:attrs>
       <Form.Label>Name</Form.Label>
       <Input {...attrs} bind:value={$formData.widget.name} />
+    </Form.Control>
+    <Form.FieldErrors />
+  </Form.Field>
+
+  <Form.Field {form} name="widget.item.type">
+    <Form.Control let:attrs>
+      <Form.Label>Type</Form.Label>
+      <WidgetTypePicker {...attrs} bind:value={$formData.widget.item.type} />
     </Form.Control>
     <Form.FieldErrors />
   </Form.Field>

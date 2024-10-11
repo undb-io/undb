@@ -24,7 +24,7 @@
   let open = false
 </script>
 
-<Sheet.Root open={$isModalOpen(VIEW_WIDGET_MODAL)} onOpenChange={() => toggleModal(VIEW_WIDGET_MODAL)}>
+<Sheet.Root portal="body" open={$isModalOpen(VIEW_WIDGET_MODAL)} onOpenChange={() => toggleModal(VIEW_WIDGET_MODAL)}>
   <Sheet.Content side="right" class="flex flex-col">
     <Sheet.Header>
       <Sheet.Title>Widgets</Sheet.Title>

@@ -40,7 +40,6 @@ export class WidgetVO extends ValueObject<IWidgetDTO> {
         type: "aggregate",
         aggregate: {
           type: "count",
-          config: {},
         },
       },
     })

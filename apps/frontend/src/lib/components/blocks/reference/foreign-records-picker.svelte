@@ -257,7 +257,7 @@
                                     value={values[field.id.value]}
                                     type={field.type}
                                     displayValue={displayValues[field.id.value]}
-                                    class="text-xs"
+                                    class="truncate text-xs"
                                     placeholder="-"
                                   />
                                 </span>
