@@ -7,6 +7,7 @@
   import * as Dialog from "$lib/components/ui/dialog"
 
   export let widget: IWidgetDTO
+  export let viewId: string
 </script>
 
 <div class="rounded-sm border">
@@ -17,7 +18,7 @@
         <Dialog.Trigger>
           <Maximize2Icon class="size-3" />
         </Dialog.Trigger>
-        <Dialog.Content class="sm:max-w-1/2 max-w-1/2 z-[200] flex h-[calc(100vh-200px)] !w-1/2 flex-col gap-0 p-0">
+        <Dialog.Content class="sm:max-w-4/5 max-w-4/5 flex h-[calc(100vh-200px)] !w-4/5 flex-col gap-0 p-0">
           <Dialog.Header class="border-b p-4">
             <Dialog.Title>{widget.name}</Dialog.Title>
           </Dialog.Header>
@@ -28,10 +29,12 @@
                 <Aggregate aggregate={widget.item.aggregate} class="h-full" />
               {/if}
             </div>
-            <div class="w-1/4 border-l px-4 py-2">
-              {#if widget.item.type === "aggregate"}
-                <AggregateConfig aggregate={widget.item.aggregate} />
-              {/if}
+            <div class="flex w-1/4 flex-col border-l px-4 py-2">
+              <div class="flex-1">
+                {#if widget.item.type === "aggregate"}
+                  <AggregateConfig {viewId} {widget} aggregate={widget.item.aggregate} />
+                {/if}
+              </div>
             </div>
           </div>
         </Dialog.Content>
@@ -43,7 +46,7 @@
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
           <DropdownMenu.Item class="text-xs">
-            <PencilIcon class="mr-2" />
+            <PencilIcon class="mr-2 size-3" />
             Edit Name
           </DropdownMenu.Item>
         </DropdownMenu.Content>
