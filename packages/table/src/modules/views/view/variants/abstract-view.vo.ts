@@ -112,6 +112,13 @@ export abstract class AbstractView {
     return Some(new WithViewWidgets(this.id, Option(previous), widgets))
   }
 
+  $updateWidgetSpec(dto: IWidgetDTO): Option<WithViewWidgets> {
+    const widget = new WidgetVO(dto)
+    const previous = this.widgets.into(null)
+    const widgets = this.widgets.unwrapOr([]).map((w) => (w.id === widget.id ? widget : w))
+    return Some(new WithViewWidgets(this.id, Option(previous), widgets))
+  }
+
   get showSystemFields() {
     return this.option.mapOr(false, (f) => !!f.props.showSystemFields)
   }

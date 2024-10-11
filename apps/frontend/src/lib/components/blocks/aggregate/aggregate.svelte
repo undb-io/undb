@@ -10,4 +10,4 @@
   }
 </script>
 
-<svelte:component this={map[aggregate.type]} {...$$restProps} />
+<svelte:component this={map[aggregate.type]} {aggregate} {...$$restProps} />

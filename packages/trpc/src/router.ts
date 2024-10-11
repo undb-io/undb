@@ -51,6 +51,7 @@ import {
   UpdateTableCommand,
   UpdateTableFieldCommand,
   UpdateViewCommand,
+  UpdateViewWidgetCommand,
   UpdateWebhookCommand,
   bulkUpdateRecordsCommand,
   bulkUpdateRecordsCommandOutput,
@@ -110,13 +111,14 @@ import {
   updateTableCommand,
   updateTableFieldCommand,
   updateViewCommand,
+  updateViewWidgetCommand,
   updateWebhookCommand,
   updateaccountCommand,
 } from "@undb/commands"
 import { getCurrentSpaceId } from "@undb/context/server"
-import { CommandBus,QueryBus } from "@undb/cqrs"
+import { CommandBus, QueryBus } from "@undb/cqrs"
 import { container } from "@undb/di"
-import type { ICommandBus,IQueryBus } from "@undb/domain"
+import type { ICommandBus, IQueryBus } from "@undb/domain"
 import {
   CountRecordsQuery,
   GetAggregatesQuery,
@@ -150,7 +152,7 @@ import {
 import { tableDTO } from "@undb/table"
 import { z } from "@undb/zod"
 import { authz } from "./authz.middleware"
-import { privateProcedure,publicProcedure,t } from "./trpc"
+import { privateProcedure, publicProcedure, t } from "./trpc"
 
 const commandBus = container.resolve<ICommandBus>(CommandBus)
 const queryBus = container.resolve<IQueryBus>(QueryBus)
@@ -184,6 +186,10 @@ const viewWidgetRouter = t.router({
     .use(authz("view:update"))
     .input(createViewWidgetCommand)
     .mutation(({ input }) => commandBus.execute(new CreateViewWidgetCommand(input))),
+  update: privateProcedure
+    .use(authz("view:update"))
+    .input(updateViewWidgetCommand)
+    .mutation(({ input }) => commandBus.execute(new UpdateViewWidgetCommand(input))),
 })
 
 const viewRouter = t.router({

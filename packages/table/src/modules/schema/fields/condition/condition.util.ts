@@ -89,8 +89,16 @@ export function toMaybeFieldCondition(condition: IFieldCondition): MaybeFieldCon
 }
 
 export function toMaybeConditionGroup<OptionType extends z.ZodTypeAny>(
-  condition: IConditionGroup<OptionType>,
+  condition?: IConditionGroup<OptionType>,
 ): MaybeConditionGroup<OptionType> {
+  if (!condition) {
+    return {
+      id: uid(10),
+      conjunction: "and",
+      children: [],
+    }
+  }
+
   return {
     id: uid(10),
     conjunction: condition.conjunction,
