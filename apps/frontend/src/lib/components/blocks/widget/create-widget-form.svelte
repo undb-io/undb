@@ -66,13 +66,13 @@
     <Form.FieldErrors />
   </Form.Field>
 
-  <Form.Field {form} name="widget.item.type">
+  <!-- <Form.Field {form} name="widget.item.type">
     <Form.Control let:attrs>
       <Form.Label>Type</Form.Label>
       <WidgetTypePicker {...attrs} bind:value={$formData.widget.item.type} />
     </Form.Control>
     <Form.FieldErrors />
-  </Form.Field>
+  </Form.Field> -->
 
   <Button type="submit" variant="outline" disabled={$createViewWidgetMutation.isPending} class="w-full">
     {#if $createViewWidgetMutation.isPending}
