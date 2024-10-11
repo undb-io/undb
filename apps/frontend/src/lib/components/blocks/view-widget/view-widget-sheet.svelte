@@ -48,7 +48,7 @@
 
   function updateWidgetsOrder(newOrder: string[]) {
     console.log(newOrder)
-    // 调用API更新widget顺序的逻辑
+    // 调用API更新widget顺序的逻g辑
     // 例如:
     // trpc.table.view.widget.updateOrder.mutate({
     //   viewId: $viewId,

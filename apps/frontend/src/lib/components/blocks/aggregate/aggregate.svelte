@@ -4,6 +4,7 @@
   import { cn } from "$lib/utils"
   import { createQuery } from "@tanstack/svelte-query"
   import { ID_TYPE, type IAggregate, type IWidgetDTO } from "@undb/table"
+  import { isNumber } from "radash"
   import { derived } from "svelte/store"
 
   const table = getTable()
@@ -56,7 +57,7 @@
         </div>
       </div>
     </div>
-  {:else}
+  {:else if isNumber($count)}
     <span class="text-8xl font-bold">{$count}</span>
   {/if}
 </div>
