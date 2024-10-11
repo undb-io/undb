@@ -392,6 +392,20 @@ type RootTranslation = {
 			 */
 			gallery: string
 		}
+		widgetTypes: {
+			/**
+			 * A​g​g​r​e​g​a​t​e
+			 */
+			aggregate: string
+			/**
+			 * C​h​a​r​t
+			 */
+			chart: string
+			/**
+			 * T​a​b​l​e
+			 */
+			table: string
+		}
 	}
 }
 
@@ -774,6 +788,20 @@ export type TranslationFunctions = {
 			 * Gallery
 			 */
 			gallery: () => LocalizedString
+		}
+		widgetTypes: {
+			/**
+			 * Aggregate
+			 */
+			aggregate: () => LocalizedString
+			/**
+			 * Chart
+			 */
+			chart: () => LocalizedString
+			/**
+			 * Table
+			 */
+			table: () => LocalizedString
 		}
 	}
 }
