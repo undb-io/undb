@@ -13,6 +13,7 @@
   import { getTable } from "$lib/store/table.store"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import { invalidate } from "$app/navigation"
+  import { toast } from "svelte-sonner"
 
   const table = getTable()
 
@@ -29,11 +30,14 @@
       confirmDelete = false
       await invalidate(`table:${$table.id.value}`)
     },
+    onError(error, variables, context) {
+      toast.error(error.message)
+    },
   })
 </script>
 
 <div class="group rounded-sm border">
-  <div class="flex items-center justify-between p-4">
+  <div class="flex items-center justify-between px-4 py-2">
     <span class="text-sm font-bold">{widget.name}</span>
     <div class="hidden items-center gap-2 group-hover:flex">
       <Dialog.Root bind:open portal="body">
@@ -54,7 +58,7 @@
           <div class="flex h-full flex-1">
             <div class="w-3/4 pr-4">
               {#if widget.item.type === "aggregate"}
-                <Aggregate {viewId} aggregate={widget.item.aggregate} class="h-full" />
+                <Aggregate {widget} {viewId} aggregate={widget.item.aggregate} class="h-full" />
               {/if}
             </div>
             <div class="flex w-1/4 flex-col border-l px-4 py-2">
@@ -92,7 +96,7 @@
     </div>
   </div>
   {#if widget.item.type === "aggregate"}
-    <Aggregate {viewId} aggregate={widget.item.aggregate} />
+    <Aggregate {widget} {viewId} aggregate={widget.item.aggregate} />
   {/if}
 </div>
 
@@ -106,11 +110,12 @@
     </AlertDialog.Header>
     <AlertDialog.Footer>
       <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-      <AlertDialog.Action
-        asChild
-        let:builder
-      >
-        <Button builders={[builder]} variant="destructive" on:click={() => $deleteViewWidgetMutation.mutate({ tableId: $table.id.value, viewId, id: widget.id })}>
+      <AlertDialog.Action asChild let:builder>
+        <Button
+          builders={[builder]}
+          variant="destructive"
+          on:click={() => $deleteViewWidgetMutation.mutate({ tableId: $table.id.value, viewId, id: widget.id })}
+        >
           Delete
         </Button>
       </AlertDialog.Action>

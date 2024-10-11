@@ -14,9 +14,17 @@
   import { trpc } from "$lib/trpc/client"
   import { invalidate } from "$app/navigation"
   import WidgetTypePicker from "./widget-type-picker.svelte"
+  import { derived } from "svelte/store"
+  import { getNextName } from "@undb/utils"
+  import { toast } from "svelte-sonner"
 
   const table = getTable()
   export let viewId: string
+
+  let view = derived([table], ([$table]) => $table?.views.getViewById(viewId))
+  let widgets = derived([view], ([$view]) => $view?.widgets.unwrapOr([]))
+  let widgetNames = derived([widgets], ([$widgets]) => $widgets.map((w) => w.name))
+  let name = derived([widgetNames], ([$widgetNames]) => getNextName($widgetNames, "Count"))
 
   export let onSuccess: () => void = () => {}
 
@@ -25,7 +33,7 @@
       {
         tableId: $table.id.value,
         viewId,
-        widget: WidgetVO.default().toJSON(),
+        widget: WidgetVO.default($name).toJSON(),
       },
       zodClient(createViewWidgetCommand),
     ),
@@ -53,6 +61,9 @@
     async onSuccess(data) {
       await invalidate(`table:${$table.id.value}`)
       onSuccess()
+    },
+    onError(error, variables, context) {
+      toast.error(error.message)
     },
   })
 </script>

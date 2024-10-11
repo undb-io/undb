@@ -21,6 +21,7 @@
   import FieldPicker from "../../field-picker/field-picker.svelte"
   import AggregateTypePicker from "../aggregate-type-picker.svelte"
   import { tick } from "svelte"
+  import { toast } from "svelte-sonner"
 
   export let viewId: string
   export let widget: IWidgetDTO
@@ -41,8 +42,11 @@
     async onSuccess(data, variables, context) {
       await invalidate(`table:${$table.id.value}`)
       await tick()
-      await client.invalidateQueries({ queryKey: ["aggregate", $table.id.value] })
+      await client.invalidateQueries({ queryKey: ["aggregate", $table.id.value, widget.id] })
       onSuccess()
+    },
+    onError(error, variables, context) {
+      toast.error(error.message)
     },
   })
 

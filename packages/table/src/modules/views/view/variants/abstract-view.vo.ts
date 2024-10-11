@@ -1,6 +1,7 @@
-import { None, Option, Some, and } from "@undb/domain"
+import { None, Option, Some, and, applyRules } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { IDuplicateViewDTO, IUpdateViewDTO } from "../../../../dto"
+import { ViewWidgetNameShouldBeUnique } from "../../../../rules/view-widget-name-should-be-unique.rule"
 import { type TableComositeSpecification } from "../../../../specifications"
 import {
   WithNewView,
@@ -102,6 +103,8 @@ export abstract class AbstractView {
   }
 
   setWidgets(widgets: IWidgetDTO[]) {
+    const names = widgets.map((w) => w.name)
+    applyRules(new ViewWidgetNameShouldBeUnique(names))
     this.widgets = Some(widgets.map((widget) => new WidgetVO(widget)))
   }
 
@@ -119,7 +122,7 @@ export abstract class AbstractView {
     return Some(new WithViewWidgets(this.id, Option(previous), widgets))
   }
 
-  $deleteWidgetSpec(id: WidgetId): Option<WithViewWidgets> {
+  $deleteWidgetSpec(id: string): Option<WithViewWidgets> {
     const previous = this.widgets.into(null)
     const widgets = this.widgets.unwrapOr([]).filter((w) => w.id !== id)
     return Some(new WithViewWidgets(this.id, Option(previous), widgets))
