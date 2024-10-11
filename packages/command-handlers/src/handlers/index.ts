@@ -22,6 +22,7 @@ import { DeleteSpaceCommandHandler } from "./delete-space.command-handler"
 import { DeleteTableFieldCommandHandler } from "./delete-table-field.command-handler"
 import { DeleteFormCommandHandler } from "./delete-table-form.command-handler"
 import { DeleteTableCommandHandler } from "./delete-table.command-handler"
+import { DeleteViewWidgetCommandHandler } from "./delete-view-widget.command-handler"
 import { DeleteViewCommandHandler } from "./delete-view.command-handler"
 import { DeleteWebhookCommandHandler } from "./delete-webhook.command-handler"
 import { DisableShareCommandHandler } from "./disable-share.command-handler"
@@ -114,4 +115,5 @@ export const commandHandlers = [
   SetDefaultViewCommandHandler,
   CreateViewWidgetCommandHandler,
   UpdateViewWidgetCommandHandler,
+  DeleteViewWidgetCommandHandler,
 ]
