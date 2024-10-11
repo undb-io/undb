@@ -6,12 +6,30 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import * as Dialog from "$lib/components/ui/dialog"
   import { Input } from "$lib/components/ui/input"
+  import { Button } from "$lib/components/ui/button"
+  import { trpc } from "$lib/trpc/client"
+  import { createMutation } from "@tanstack/svelte-query"
+  import { TrashIcon } from "lucide-svelte"
+  import { getTable } from "$lib/store/table.store"
+  import * as AlertDialog from "$lib/components/ui/alert-dialog"
+  import { invalidate } from "$app/navigation"
+
+  const table = getTable()
 
   export let widget: IWidgetDTO
   export let viewId: string
 
   let editing = false
   let open = false
+  let confirmDelete = false
+
+  const deleteViewWidgetMutation = createMutation({
+    mutationFn: trpc.table.view.widget.delete.mutate,
+    onSuccess: async () => {
+      confirmDelete = false
+      await invalidate(`table:${$table.id.value}`)
+    },
+  })
 </script>
 
 <div class="group rounded-sm border">
@@ -65,6 +83,10 @@
             <PencilIcon class="mr-2 size-3" />
             Edit Name
           </DropdownMenu.Item>
+          <DropdownMenu.Item class="text-xs" on:click={() => (confirmDelete = true)}>
+            <TrashIcon class="mr-2 size-3" />
+            Delete
+          </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Root>
     </div>
@@ -73,3 +95,25 @@
     <Aggregate {viewId} aggregate={widget.item.aggregate} />
   {/if}
 </div>
+
+<AlertDialog.Root bind:open={confirmDelete}>
+  <AlertDialog.Content>
+    <AlertDialog.Header>
+      <AlertDialog.Title>Delete Widget {widget.name}?</AlertDialog.Title>
+      <AlertDialog.Description>
+        This action cannot be undone. This will permanently delete this widget. and remove your data from our servers.
+      </AlertDialog.Description>
+    </AlertDialog.Header>
+    <AlertDialog.Footer>
+      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Action
+        asChild
+        let:builder
+      >
+        <Button builders={[builder]} variant="destructive" on:click={() => $deleteViewWidgetMutation.mutate({ tableId: $table.id.value, viewId, id: widget.id })}>
+          Delete
+        </Button>
+      </AlertDialog.Action>
+    </AlertDialog.Footer>
+  </AlertDialog.Content>
+</AlertDialog.Root>

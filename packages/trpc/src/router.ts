@@ -22,6 +22,7 @@ import {
   DeleteTableCommand,
   DeleteTableFieldCommand,
   DeleteViewCommand,
+  DeleteViewWidgetCommand,
   DeleteWebhookCommand,
   DisableShareCommand,
   DuplicateBaseCommand,
@@ -81,6 +82,7 @@ import {
   deleteTableCommand,
   deleteTableFieldCommand,
   deleteViewCommand,
+  deleteViewWidgetCommand,
   deleteWebhookCommand,
   disableShareCommand,
   duplicateBaseCommand,
@@ -190,6 +192,10 @@ const viewWidgetRouter = t.router({
     .use(authz("view:update"))
     .input(updateViewWidgetCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateViewWidgetCommand(input))),
+  delete: privateProcedure
+    .use(authz("view:update"))
+    .input(deleteViewWidgetCommand)
+    .mutation(({ input }) => commandBus.execute(new DeleteViewWidgetCommand(input))),
 })
 
 const viewRouter = t.router({

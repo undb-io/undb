@@ -119,6 +119,12 @@ export abstract class AbstractView {
     return Some(new WithViewWidgets(this.id, Option(previous), widgets))
   }
 
+  $deleteWidgetSpec(id: WidgetId): Option<WithViewWidgets> {
+    const previous = this.widgets.into(null)
+    const widgets = this.widgets.unwrapOr([]).filter((w) => w.id !== id)
+    return Some(new WithViewWidgets(this.id, Option(previous), widgets))
+  }
+
   get showSystemFields() {
     return this.option.mapOr(false, (f) => !!f.props.showSystemFields)
   }
