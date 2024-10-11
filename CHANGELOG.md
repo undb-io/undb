@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-99
+
+
+### 🏡 Chore
+
+- Hide widget type ([d886315](https://github.com/undb-io/undb/commit/d886315))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-98
 
 ## v1.0.0-97
