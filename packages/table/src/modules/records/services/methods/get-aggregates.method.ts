@@ -1,7 +1,7 @@
-import { None,Some } from "@undb/domain"
+import { None, Option, Some } from "@undb/domain"
 import { TableIdVo } from "../../../../table-id.vo"
 import { ViewIdVo } from "../../../views"
-import type { AggregateResult,IGetAggregatesDTO } from "../../dto"
+import type { AggregateResult, IGetAggregatesDTO } from "../../dto"
 import type { RecordsQueryService } from "../records.query-service"
 
 export async function getAggregates(
@@ -11,6 +11,7 @@ export async function getAggregates(
   const tableId = new TableIdVo(dto.tableId)
   const table = (await this.tableRepository.findOneById(tableId)).expect("Table not found")
   const viewId = dto.viewId ? Some(new ViewIdVo(dto.viewId)) : None
+  const aggregate = dto.aggregate
 
-  return this.repo.aggregate(table, viewId, None, None)
+  return this.repo.aggregate(table, viewId, Option(aggregate), None)
 }
