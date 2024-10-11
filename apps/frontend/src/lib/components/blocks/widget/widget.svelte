@@ -5,23 +5,31 @@
   import AggregateConfig from "../aggregate/config/aggregate-config.svelte"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import * as Dialog from "$lib/components/ui/dialog"
+  import { Input } from "$lib/components/ui/input"
 
   export let widget: IWidgetDTO
   export let viewId: string
+
+  let editing = false
+  let open = false
 </script>
 
 <div class="group rounded-sm border">
   <div class="flex items-center justify-between p-4">
     <span class="text-sm font-bold">{widget.name}</span>
     <div class="hidden items-center gap-2 group-hover:flex">
-      <Dialog.Root portal="body">
+      <Dialog.Root bind:open portal="body">
         <Dialog.Trigger>
           <Maximize2Icon class="size-3" />
         </Dialog.Trigger>
         <Dialog.Content class="sm:max-w-4/5 max-w-4/5 flex h-[calc(100vh-200px)] !w-4/5 flex-col gap-0 p-0">
-          <Dialog.Header class="border-b p-4">
+          <Dialog.Header class="border-b p-4" on:dblclick={() => (editing = true)}>
             <Dialog.Title>
-              {widget.name}
+              {#if editing}
+                <Input class="w-1/2" autofocus on:focus={(e) => e.target.select()} bind:value={widget.name} />
+              {:else}
+                {widget.name}
+              {/if}
             </Dialog.Title>
           </Dialog.Header>
 
@@ -47,7 +55,13 @@
           <EllipsisIcon class="size-3" />
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
-          <DropdownMenu.Item class="text-xs">
+          <DropdownMenu.Item
+            class="text-xs"
+            on:click={() => {
+              open = true
+              editing = true
+            }}
+          >
             <PencilIcon class="mr-2 size-3" />
             Edit Name
           </DropdownMenu.Item>
