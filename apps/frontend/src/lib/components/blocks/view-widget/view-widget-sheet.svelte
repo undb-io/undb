@@ -15,7 +15,7 @@
   export let viewId: Readable<string | undefined>
 
   let view = derived([table, viewId], ([$table, $viewId]) => $table?.views.getViewById($viewId))
-  let widgets = derived([view], ([$view]) => $view?.widgets.unwrapOr([]) ?? [])
+  let widgets = derived([view], ([$view]) => ($view?.widgets.unwrapOr([]) ?? []).map((w) => w.toJSON()))
 
   const createViewWidgetMutation = createMutation({
     mutationFn: trpc.table.view.widget.create.mutate,
@@ -32,7 +32,7 @@
     </Sheet.Header>
     <div class="flex-1 space-y-3 overflow-y-auto">
       {#each $widgets as widget}
-        <Widget {widget} />
+        <Widget {widget} viewId={$view.id.value} />
       {/each}
       <Popover.Root bind:open>
         <Popover.Trigger asChild let:builder>

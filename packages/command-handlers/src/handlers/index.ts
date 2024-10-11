@@ -52,6 +52,7 @@ import { UpdateRecordCommandHandler } from "./update-record.command-handler"
 import { UpdateSpaceCommandHandler } from "./update-space.command-handler"
 import { UpdateTableFieldCommandHandler } from "./update-table-field.command-handler"
 import { UpdateTableCommandHandler } from "./update-table.command-handler"
+import { UpdateViewWidgetCommandHandler } from "./update-view-widget.command-handler"
 import { UpdateViewCommandHandler } from "./update-view.command-handler"
 import { UpdateWebhookCommandHandler } from "./update-webhook.command-handler"
 
@@ -112,4 +113,5 @@ export const commandHandlers = [
   CreateFromTemplateCommandHandler,
   SetDefaultViewCommandHandler,
   CreateViewWidgetCommandHandler,
+  UpdateViewWidgetCommandHandler,
 ]

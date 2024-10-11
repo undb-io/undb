@@ -1,12 +1,12 @@
-import { and, andOptions, None, Option, ValueObject } from "@undb/domain"
-import type { ICreateViewWidgetDTO } from ".."
+import { and,andOptions,None,Option,ValueObject } from "@undb/domain"
 import type { ISetDefaultViewDTO } from "../../dto/set-default-view.dto"
-import { WithView, type TableComositeSpecification } from "../../specifications"
+import { WithView,type TableComositeSpecification } from "../../specifications"
 import type { TableDo } from "../../table.do"
 import type { Field } from "../schema"
-import type { ICreateViewDTO, IViewsDTO } from "./dto"
+import type { ICreateViewDTO,IViewsDTO } from "./dto"
 import { GridView } from "./view/variants/grid-view.vo"
 import { ViewIdVo } from "./view/view-id.vo"
+import type { ICreateViewWidgetDTO,IUpdateViewWidgetDTO } from "./view/view-widget/view-widget.dto"
 import { ViewFactory } from "./view/view.factory"
 import type { View } from "./view/view.type"
 
@@ -94,6 +94,17 @@ export class Views extends ValueObject {
   $createWidget(table: TableDo, dto: ICreateViewWidgetDTO): Option<TableComositeSpecification> {
     const view = this.getViewById(dto.viewId)
     const spec = view.$createWidgetSpec(dto.widget)
+
+    if (spec.isSome()) {
+      spec.unwrap().mutate(table)
+    }
+
+    return spec
+  }
+
+  $updateWidget(table: TableDo, dto: IUpdateViewWidgetDTO): Option<TableComositeSpecification> {
+    const view = this.getViewById(dto.viewId)
+    const spec = view.$updateWidgetSpec(dto.widget)
 
     if (spec.isSome()) {
       spec.unwrap().mutate(table)

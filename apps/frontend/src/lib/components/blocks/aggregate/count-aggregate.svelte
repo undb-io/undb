@@ -3,11 +3,13 @@
   import { trpc } from "$lib/trpc/client"
   import { cn } from "$lib/utils"
   import { createQuery } from "@tanstack/svelte-query"
-  import { ID_TYPE } from "@undb/table"
+  import { ID_TYPE, type IAggregate } from "@undb/table"
   import { derived } from "svelte/store"
 
   const table = getTable()
   export let viewId: string | undefined
+
+  export let aggregate: IAggregate
 
   const getAggregate = createQuery({
     queryKey: ["aggregate", $table.id.value],
@@ -16,6 +18,7 @@
         tableId: $table.id.value,
         viewId,
         aggregate: { [ID_TYPE]: "count" },
+        condition: aggregate.condition,
       })
     },
   })
