@@ -11,11 +11,11 @@
   import CreateWidgetForm from "../widget/create-widget-form.svelte"
   import Widget from "../widget/widget.svelte"
 
-  const table = getTable()
+  let table = getTable()
   export let viewId: Readable<string | undefined>
 
-  const view = derived([viewId], ([$viewId]) => $table?.views.getViewById($viewId))
-  const widgets = derived([view], ([$view]) => $view?.widgets.unwrapOr([]) ?? [])
+  let view = derived([table, viewId], ([$table, $viewId]) => $table?.views.getViewById($viewId))
+  let widgets = derived([view], ([$view]) => $view?.widgets.unwrapOr([]) ?? [])
 
   const createViewWidgetMutation = createMutation({
     mutationFn: trpc.table.view.widget.create.mutate,

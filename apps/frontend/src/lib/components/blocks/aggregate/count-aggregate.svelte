@@ -1,20 +1,44 @@
 <script lang="ts">
-  import { AspectRatio } from "$lib/components/ui/aspect-ratio"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { cn } from "$lib/utils"
   import { createQuery } from "@tanstack/svelte-query"
+  import { ID_TYPE } from "@undb/table"
+  import { derived } from "svelte/store"
 
   const table = getTable()
   export let viewId: string | undefined
 
   const getAggregate = createQuery({
-    queryKey: ["aggregate"],
+    queryKey: ["aggregate", $table.id.value],
+    queryFn: () => {
+      return trpc.record.aggregate.query({
+        tableId: $table.id.value,
+        viewId,
+        aggregate: { [ID_TYPE]: "count" },
+      })
+    },
   })
+
+  let count = derived(getAggregate, ($data) => ($data.data as any)?.[ID_TYPE])
+  $: isPending = $getAggregate.isPending
 </script>
 
-<AspectRatio ratio={1}>
-  <div class={cn("flex h-full w-full items-center justify-center rounded-lg bg-white p-6", $$restProps.class)}>
-    <span class="text-8xl font-bold">50</span>
-  </div>
-</AspectRatio>
+<div class={cn("flex h-full w-full items-center justify-center rounded-lg bg-white p-6", $$restProps.class)}>
+  {#if isPending}
+    <div class="flex animate-pulse space-x-4">
+      <div class="h-16 w-16 rounded-full bg-slate-200"></div>
+      <div class="flex-1 space-y-6 py-1">
+        <div class="h-4 rounded bg-slate-200"></div>
+        <div class="space-y-3">
+          <div class="grid grid-cols-3 gap-4">
+            <div class="col-span-2 h-4 rounded bg-slate-200"></div>
+            <div class="col-span-1 h-4 rounded bg-slate-200"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {:else}
+    <span class="text-8xl font-bold">{$count}</span>
+  {/if}
+</div>
