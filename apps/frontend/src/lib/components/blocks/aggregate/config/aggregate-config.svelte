@@ -105,7 +105,10 @@
         <Tabs.Content value="count"></Tabs.Content>
         <Tabs.Content value="aggregate" class="space-y-2">
           {#if widget.item.type === "aggregate" && widget.item.aggregate.type !== "count"}
-            <AggregateTypePicker bind:value={widget.item.aggregate.type} />
+            <AggregateTypePicker
+              bind:value={widget.item.aggregate.type}
+              onValueChange={() => (widget.item.aggregate.config.field = undefined)}
+            />
             <FieldPicker
               bind:value={widget.item.aggregate.config.field}
               class="w-full flex-1"
