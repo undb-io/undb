@@ -91,6 +91,12 @@ export class DateField extends AbstractField<DateFieldValue> {
     return createDateFieldCondition(optionType)
   }
 
+  override formatAggregate(aggregate?: string, value?: number | string): string | number {
+    if (value === undefined) return ""
+    if (aggregate === "min" || aggregate === "max") return this.formatter(value)
+    return value ?? ""
+  }
+
   override get aggregate() {
     return abstractDateAggregate
   }

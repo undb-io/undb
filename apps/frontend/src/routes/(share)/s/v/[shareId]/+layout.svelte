@@ -30,7 +30,8 @@
   const getAggregates = createQuery(
     derived([table], ([$table]) => ({
       queryKey: [share?.id, "aggregates", tableDTO?.id],
-      queryFn: () => trpc.record.aggregate.query({ tableId: $table.id.value, viewId: share!.target.id }),
+      queryFn: () =>
+        trpc.shareData.aggregate.query({ shareId: share!.id, tableId: $table.id.value, viewId: share!.target.id }),
       enabled: !!share && !!$table,
     })),
   )

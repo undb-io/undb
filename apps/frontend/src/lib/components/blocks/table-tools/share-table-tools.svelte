@@ -4,6 +4,7 @@
   import ViewSort from "../view-sort/view-sort.svelte"
   import ViewFields from "../view-fields/view-fields.svelte"
   import RecordsSearch from "../search/records-search.svelte"
+  import ViewWidgetButton from "../view-widget/view-widget-button.svelte"
 </script>
 
 <div class="flex items-center justify-between gap-2 border-b px-4 py-2">
@@ -17,5 +18,6 @@
 
   <div class="flex items-center gap-2">
     <RecordsSearch />
+    <ViewWidgetButton  />
   </div>
 </div>

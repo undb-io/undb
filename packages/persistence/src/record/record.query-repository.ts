@@ -202,11 +202,11 @@ export class RecordQueryRepository implements IRecordQueryRepository {
           if (!field) {
             continue
           }
-          const builder = new AggregateFnBuiler(t, eb, field, fieldAggregate)
-          const expr = builder.handleWhere()
-          if (expr.isSome()) {
-            ebs.push(expr.unwrap())
-          }
+          // const builder = new AggregateFnBuiler(t, eb, field, fieldAggregate)
+          // const expr = builder.handleWhere()
+          // if (expr.isSome()) {
+          //   ebs.push(expr.unwrap())
+          // }
         }
 
         return eb.and(ebs)

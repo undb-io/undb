@@ -28,7 +28,7 @@
 <main class="flex h-full flex-1 flex-col overflow-auto">
   {#if $isDataTab}
     {#if view?.type === "grid"}
-      <ShareGridView {viewId} />
+      <ShareGridView {viewId} shareId={$shareId} />
     {:else if view.type === "kanban"}
       <ShareKanbanView {viewId} shareId={$shareId} />
     {:else if view.type === "gallery"}

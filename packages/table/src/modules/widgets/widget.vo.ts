@@ -1,8 +1,9 @@
-import { ValueObject } from "@undb/domain"
+import { None, Option, Some, ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import { tableId } from "../../table-id.vo"
 import { aggregate } from "../aggregate/aggregate.vo"
 import { chart } from "../chart/chart.vo"
+import type { Field } from "../schema/fields/field.type"
 import { widgetId, WidgetIdVo } from "./widget-id.vo"
 import { widgetName } from "./widget-name.vo"
 
@@ -30,6 +31,18 @@ export const widgetDTO = z.object({
 })
 
 export type IWidgetDTO = z.infer<typeof widgetDTO>
+
+export function isValidWidget(widget: IWidgetDTO) {
+  if (widget.item.type !== "aggregate") {
+    return true
+  }
+
+  if (widget.item.aggregate.type === "count") {
+    return true
+  }
+
+  return widget.item.aggregate.config.field !== undefined
+}
 
 export class WidgetVO extends ValueObject<IWidgetDTO> {
   static default(name = "Count") {
@@ -62,5 +75,34 @@ export class WidgetVO extends ValueObject<IWidgetDTO> {
       name: this.props.name,
       item: this.props.item,
     }
+  }
+
+  public get isValid() {
+    return isValidWidget(this.toJSON())
+  }
+
+  deleteField(field: Field): Option<WidgetVO> {
+    if (this.props.item.type === "aggregate") {
+      if (this.props.item.aggregate.type !== "count") {
+        if (this.props.item.aggregate.config.field === field.id.value) {
+          const widget = new WidgetVO({
+            ...this.props,
+            item: {
+              ...this.props.item,
+              aggregate: {
+                ...this.props.item.aggregate,
+                config: {
+                  ...this.props.item.aggregate.config,
+                  field: undefined,
+                },
+              },
+            },
+          })
+          return Some(widget)
+        }
+      }
+    }
+
+    return None
   }
 }

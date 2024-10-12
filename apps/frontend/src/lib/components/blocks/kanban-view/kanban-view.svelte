@@ -60,6 +60,6 @@
   {/await}
 
   {#await import("$lib/components/blocks/view-widget/view-widget-sheet.svelte") then { default: ViewWidgetSheet }}
-    <ViewWidgetSheet {viewId} />
+    <ViewWidgetSheet {viewId} {shareId}/>
   {/await}
 {/key}

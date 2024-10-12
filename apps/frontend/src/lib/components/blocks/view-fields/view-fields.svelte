@@ -17,6 +17,7 @@
   import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
   import FieldMenu from "../field/field-menu.svelte"
   import { hasPermission } from "$lib/store/space-member.store"
+  import CreateFieldButton from "../create-field/create-field-button.svelte"
 
   export let readonly = false
 
@@ -111,7 +112,7 @@
       </div>
       <Input
         autofocus
-        class="h-full flex-1 rounded-none border-0 border-none pl-0 shadow-none focus-visible:ring-0"
+        class="h-full flex-1 rounded-none border-0 border-none pl-0 text-sm shadow-none focus-visible:ring-0"
         placeholder={`Search ${$table.name.value} fields...`}
         bind:value={$q}
       />
@@ -181,44 +182,47 @@
       </ScrollArea>
 
       {#if $hasPermission("table:update")}
-        <div class="-mx-2 flex items-center gap-2 border-t bg-gray-50 px-2 pt-2 shadow-inner">
-          {#if hiddenCount > 0}
-            <Button
-              variant="outline"
-              class="flex-1 shadow-sm"
-              size="sm"
-              on:click={() => {
-                viewFields = viewFieldsVo.showAllFields($table).toJSON()
-                setViewFields()
-              }}
-            >
-              Show all fields
-            </Button>
-          {:else}
-            <Button
-              variant="outline"
-              class="flex-1 shadow-sm"
-              size="sm"
-              on:click={() => {
-                viewFields = viewFieldsVo.hideAllFields($table).toJSON()
-                setViewFields()
-              }}
-            >
-              Hide all fields
-            </Button>
-          {/if}
+        <div class="-mx-2 space-y-2 border-t bg-gray-50 px-2 pt-2 shadow-inner">
+          <CreateFieldButton class="w-full" />
+          <div class="flex items-center gap-2">
+            {#if hiddenCount > 0}
+              <Button
+                variant="outline"
+                class="flex-1 shadow-sm"
+                size="sm"
+                on:click={() => {
+                  viewFields = viewFieldsVo.showAllFields($table).toJSON()
+                  setViewFields()
+                }}
+              >
+                Show all fields
+              </Button>
+            {:else}
+              <Button
+                variant="outline"
+                class="flex-1 shadow-sm"
+                size="sm"
+                on:click={() => {
+                  viewFields = viewFieldsVo.hideAllFields($table).toJSON()
+                  setViewFields()
+                }}
+              >
+                Hide all fields
+              </Button>
+            {/if}
 
-          <Button
-            variant="outline"
-            class="flex-1 shadow-sm"
-            size="sm"
-            on:click={() => {
-              viewOption.showSystemFields = !viewOption.showSystemFields
-              setViewOption(viewOption.showSystemFields)
-            }}
-          >
-            {viewOption.showSystemFields ? "Hide" : "Show"} system fields
-          </Button>
+            <Button
+              variant="outline"
+              class="flex-1 shadow-sm"
+              size="sm"
+              on:click={() => {
+                viewOption.showSystemFields = !viewOption.showSystemFields
+                setViewOption(viewOption.showSystemFields)
+              }}
+            >
+              {viewOption.showSystemFields ? "Hide" : "Show"} system fields
+            </Button>
+          </div>
         </div>
       {/if}
     </div>

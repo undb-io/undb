@@ -42,6 +42,11 @@ query GetShareBaseData($shareId: ID!) {
         gallery {
           field
         }
+        widgets {
+          id
+          name
+          item
+        }
       }
     }
   }
