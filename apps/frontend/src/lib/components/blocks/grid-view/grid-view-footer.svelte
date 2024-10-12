@@ -20,7 +20,11 @@
     [aggregatesStore, table, viewId],
     ([$aggregates, $table, $viewId]) => $aggregates[$viewId ?? $table.views.getDefaultView()?.id.value],
   )
-  $: aggregateResult = field.type === "date" ? field.format($aggregates?.[field.id.value] ?? undefined) : $aggregates?.[field.id.value]
+
+  $: aggregateResult =
+    field.type === "date" && (value === "min" || value === "max")
+      ? field.format($aggregates?.[field.id.value] ?? undefined)
+      : $aggregates?.[field.id.value]
 
   $: options =
     // @ts-ignore
