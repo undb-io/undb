@@ -1,6 +1,6 @@
 import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
-import { fieldId,type FieldType } from "../schema"
+import { fieldId, type FieldType } from "../schema"
 import { createConditionGroup } from "../schema/fields/condition/condition.type"
 import { parseValidCondition } from "../schema/fields/condition/condition.util"
 
@@ -61,6 +61,16 @@ export class AggregateVO extends ValueObject<IAggregate> {}
 export const filterAggregateField = (fieldType: FieldType, aggregateType: IAggregateType) => {
   if (aggregateType === "sum" || aggregateType === "avg") {
     return fieldType === "number" || fieldType === "currency" || fieldType === "duration" || fieldType === "rating"
+  }
+
+  if (aggregateType === "min" || aggregateType === "max") {
+    return (
+      fieldType === "date" ||
+      fieldType === "number" ||
+      fieldType === "currency" ||
+      fieldType === "duration" ||
+      fieldType === "rating"
+    )
   }
 
   // TODO: add date type fields

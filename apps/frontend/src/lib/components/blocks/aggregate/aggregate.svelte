@@ -43,10 +43,19 @@
     },
   })
 
-  let count = derived(
-    getAggregate,
-    ($data) => ($data.data as any)?.[aggregate.type === "count" ? ID_TYPE : aggregate.config.field!],
-  )
+  let value = derived([getAggregate, table], ([$data, $table]) => {
+    if (aggregate.type === "count") {
+      return ($data.data as any)?.[ID_TYPE]
+    }
+    if (aggregate.config.field) {
+      const field = $table.schema.getFieldByIdOrName(aggregate.config.field)
+      console.log(field)
+      if (field.isSome()) {
+        return field.unwrap().formatAggregate(aggregate.type, ($data.data as any)?.[aggregate.config.field])
+      }
+    }
+    return null
+  })
   $: isPending = $getAggregate.isPending
 </script>
 
@@ -73,11 +82,7 @@
         </div>
       </div>
     </div>
-  {:else if isNumber($count)}
-    {#if $count > 10000}
-      <span class="text-6xl font-bold">{$count}</span>
-    {:else}
-      <span class="text-8xl font-bold">{$count}</span>
-    {/if}
+  {:else if $value}
+    <span class="text-8xl font-bold">{$value}</span>
   {/if}
 </div>

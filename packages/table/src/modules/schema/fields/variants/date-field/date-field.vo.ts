@@ -59,11 +59,6 @@ export class DateField extends AbstractField<DateFieldValue> {
     return format("yyyy-MM-dd")
   }
 
-  format(value?: string | number | Date) {
-    if (!value) return ""
-    return this.formatter(value)
-  }
-
   override type = DATE_TYPE
 
   override get #constraint(): DateFieldConstraint {
@@ -94,6 +89,12 @@ export class DateField extends AbstractField<DateFieldValue> {
 
   protected override getConditionSchema(optionType: z.ZodTypeAny): IDateFieldConditionSchema {
     return createDateFieldCondition(optionType)
+  }
+
+  override formatAggregate(aggregate?: string, value?: number | string): string | number {
+    if (value === undefined) return ""
+    if (aggregate === "min" || aggregate === "max") return this.formatter(value)
+    return value ?? ""
   }
 
   override get aggregate() {

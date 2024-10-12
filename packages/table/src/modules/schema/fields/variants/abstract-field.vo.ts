@@ -148,6 +148,10 @@ export abstract class AbstractField<
 
   abstract get aggregate(): ZodEnum<[string, ...string[]]> | ZodUndefined
 
+  formatAggregate(aggregate?: string, value?: number | string): string | number {
+    return value ?? ""
+  }
+
   get defaultValue(): Option<V> {
     if (this.isSystem) {
       return None
