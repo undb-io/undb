@@ -48,6 +48,11 @@ query GetViewShareData($shareId: ID!) {
       gallery {
         field
       }
+      widgets {
+        id
+        name
+        item
+      }
     }
     schema {
       constraint

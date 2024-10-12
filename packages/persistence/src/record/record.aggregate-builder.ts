@@ -36,7 +36,7 @@ export class AggregateFnBuiler {
       .with("avg", () => {
         const expr =
           field.type === "currency"
-            ? sql`COALESCE(AVG(${sql.ref(getRef(field))}) / 100.0, 0)`
+            ? sql`ROUND(COALESCE(AVG(${sql.ref(getRef(field))}) / 100.0, 0), 2)`
             : sql`COALESCE(AVG(${sql.ref(getRef(field))}), 0)`
         return expr.as(alias)
       })

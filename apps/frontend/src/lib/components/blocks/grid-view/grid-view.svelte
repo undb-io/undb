@@ -15,6 +15,7 @@
   const t = getTable()
   export let viewId: Readable<string>
   export let r: Writable<string | null>
+  export let shareId: string | undefined = undefined
 
   const q = queryParam("q")
   export let filter: IViewFilterGroup | undefined = undefined
@@ -51,11 +52,20 @@
   }
 
   const getAggregates = createQuery(
-    derived([t], ([$table]) => ({
-      queryKey: ["aggregates", $table?.id.value, $viewId],
-      queryFn: () => trpc.record.aggregate.query({ tableId: $table.id.value, viewId: $viewId }),
-      enabled: !!$table,
-    })),
+    derived([t], ([$table]) => {
+      if (shareId) {
+        return {
+          queryKey: ["aggregates", $table?.id.value, $viewId],
+          queryFn: () => trpc.shareData.aggregate.query({ shareId, tableId: $table.id.value, viewId: $viewId }),
+          enabled: !!$table,
+        }
+      }
+      return {
+        queryKey: ["aggregates", $table?.id.value, $viewId],
+        queryFn: () => trpc.record.aggregate.query({ tableId: $table.id.value, viewId: $viewId }),
+        enabled: !!$table,
+      }
+    }),
   )
 
   $: if ($getAggregates.data && $t) {

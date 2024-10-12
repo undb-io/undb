@@ -10,8 +10,10 @@
   import { derived, type Readable } from "svelte/store"
   import { queryParam, ssp } from "sveltekit-search-params"
   import { r } from "$lib/store/records.store"
+  import { aggregatesStore } from "$lib/store/aggregates.store"
 
   export let viewId: Readable<string | undefined>
+  export let shareId: string
 
   const t = getTable()
   const perPage = derived(preferences, ($preferences) => $preferences.gridViewPerPage ?? 50)
@@ -46,6 +48,19 @@
   $: if ($getRecords.isSuccess) {
     store.setRecords(Records.fromJSON($t, records), $getRecords.dataUpdatedAt)
   }
+
+  const getAggregates = createQuery(
+    derived([t], ([$table]) => {
+      return {
+        queryKey: ["aggregates", $table?.id.value, $viewId],
+        queryFn: () => trpc.shareData.aggregate.query({ shareId, tableId: $table.id.value, viewId: $viewId }),
+        enabled: !!$table,
+      }
+    }),
+  )
+  $: if ($getAggregates.data && $t) {
+    aggregatesStore.updateTableAggregates($viewId ?? $t.views.getDefaultView()?.id.value, $getAggregates.data)
+  }
 </script>
 
 {#if store}
@@ -59,3 +74,7 @@
     total={$getRecords.data?.total ?? 0}
   />
 {/if}
+
+{#await import("$lib/components/blocks/view-widget/view-widget-sheet.svelte") then { default: ViewWidgetSheet }}
+  <ViewWidgetSheet {viewId} {shareId} />
+{/await}

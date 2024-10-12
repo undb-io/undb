@@ -30,7 +30,6 @@
   <div class="flex items-center gap-2">
     {#if !readonly}
       <BulkUpdateRecordsButton {r} />
-      <CreateFieldButton />
       <ShareViewButton />
     {/if}
     <RecordsSearch />

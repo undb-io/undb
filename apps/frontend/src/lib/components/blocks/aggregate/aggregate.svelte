@@ -9,6 +9,7 @@
 
   const table = getTable()
   export let viewId: string | undefined
+  export let shareId: string | undefined
 
   export let widget: IWidgetDTO
   export let aggregate: IAggregate
@@ -16,23 +17,25 @@
   const getAggregate = createQuery({
     queryKey: ["aggregate", $table.id.value, widget.id],
     queryFn: () => {
-      if (aggregate.type === "count") {
-        return trpc.record.aggregate.query({
+      const agg =
+        aggregate.type === "count"
+          ? ({ [ID_TYPE]: "count" } as const)
+          : ({ [aggregate.config.field!]: aggregate.type } as const)
+      if (shareId) {
+        return trpc.shareData.aggregate.query({
+          shareId,
           tableId: $table.id.value,
           viewId,
-          aggregate: { [ID_TYPE]: "count" },
+          aggregate: agg,
           condition: aggregate.condition,
         })
       }
-
-      if (aggregate.config.field) {
-        return trpc.record.aggregate.query({
-          tableId: $table.id.value,
-          viewId,
-          aggregate: { [aggregate.config.field]: aggregate.type },
-          condition: aggregate.condition,
-        })
-      }
+      return trpc.record.aggregate.query({
+        tableId: $table.id.value,
+        viewId,
+        aggregate: agg,
+        condition: aggregate.condition,
+      })
     },
   })
 
@@ -58,6 +61,10 @@
       </div>
     </div>
   {:else if isNumber($count)}
-    <span class="text-8xl font-bold">{$count}</span>
+    {#if $count > 10000}
+      <span class="text-6xl font-bold">{$count}</span>
+    {:else}
+      <span class="text-8xl font-bold">{$count}</span>
+    {/if}
   {/if}
 </div>

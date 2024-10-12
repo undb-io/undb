@@ -9,7 +9,7 @@
 </script>
 
 {#if $hasPermission("field:create")}
-  <Popover.Root bind:open>
+  <Popover.Root bind:open portal="body">
     <Popover.Trigger asChild let:builder>
       <Button builders={[builder]} size="sm" variant="outline" {...$$restProps}>
         <slot>

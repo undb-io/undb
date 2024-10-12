@@ -13,7 +13,7 @@
 </script>
 
 {#if view.type === "grid"}
-  <ShareGridView {viewId} />
+  <ShareGridView {viewId} {shareId} />
 {:else if view.type === "kanban"}
   <ShareKanbanView {viewId} {shareId} />
 {:else if view.type === "gallery"}

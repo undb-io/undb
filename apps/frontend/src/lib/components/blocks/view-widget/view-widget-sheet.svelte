@@ -16,6 +16,7 @@
 
   let table = getTable()
   export let viewId: Readable<string | undefined>
+  export let shareId: string | undefined = undefined
 
   let view = derived([table, viewId], ([$table, $viewId]) => $table?.views.getViewById($viewId))
   let widgets = derived([view], ([$view]) => ($view?.widgets.unwrapOr([]) ?? []).map((w) => w.toJSON()))
@@ -63,33 +64,36 @@
       <Sheet.Title>Widgets</Sheet.Title>
       <Sheet.Description>View Widgets</Sheet.Description>
     </Sheet.Header>
-    <div class="flex-1 space-y-3 overflow-y-auto" bind:this={widgetsContainer}>
-      {#each $widgets as widget}
-        <Widget {widget} viewId={$view.id.value} />
-      {/each}
-    </div>
-    <Popover.Root bind:open>
-      <Popover.Trigger asChild let:builder>
-        <Button size="sm" class="w-full" builders={[builder]} variant={$widgets.length ? "outline" : "default"}>
-          <PlusIcon class="mr-2 size-4" />
-          Add Widget
-        </Button>
-      </Popover.Trigger>
-      <Popover.Content sameWidth>
-        {#if $viewId}
-          <CreateViewWidgetForm
-            viewId={$viewId}
-            onSuccess={() => {
-              open = false
-            }}
-          />
-        {/if}
-      </Popover.Content>
-    </Popover.Root>
-    <Sheet.Footer>
-      <Sheet.Close asChild let:builder>
-        <Button disabled={$createViewWidgetMutation.isPending} builders={[builder]} type="button">Close</Button>
-      </Sheet.Close>
-    </Sheet.Footer>
+    {#if $widgets.length}
+      <div class="flex-1 space-y-3 overflow-y-auto" bind:this={widgetsContainer}>
+        {#each $widgets as widget}
+          <Widget {shareId} {widget} viewId={$view.id.value} />
+        {/each}
+      </div>
+    {:else}
+      <div class="flex flex-1 items-center justify-center">
+        <p class="text-muted-foreground text-sm">No widgets found</p>
+      </div>
+    {/if}
+    {#if !shareId}
+      <Popover.Root bind:open>
+        <Popover.Trigger asChild let:builder>
+          <Button size="sm" class="w-full" builders={[builder]} variant={$widgets.length ? "outline" : "default"}>
+            <PlusIcon class="mr-2 size-4" />
+            Add Widget
+          </Button>
+        </Popover.Trigger>
+        <Popover.Content sameWidth>
+          {#if $viewId}
+            <CreateViewWidgetForm
+              viewId={$viewId}
+              onSuccess={() => {
+                open = false
+              }}
+            />
+          {/if}
+        </Popover.Content>
+      </Popover.Root>
+    {/if}
   </Sheet.Content>
 </Sheet.Root>

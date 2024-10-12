@@ -37,6 +37,11 @@ query GetBaseTableShareData($shareId: ID!, $tableId: ID!) {
       gallery {
         field
       }
+      widgets {
+        id
+        name
+        item
+      }
     }
     schema {
       constraint

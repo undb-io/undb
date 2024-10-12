@@ -1,12 +1,23 @@
 import { Query, type QueryProps } from "@undb/domain"
 import { shareIdSchema } from "@undb/share"
-import { aggregateResult, fieldId, tableId, viewId } from "@undb/table"
+import {
+  aggregateConditionGroup,
+  aggregateResult,
+  fieldId,
+  tableId,
+  viewAggregate,
+  viewId,
+  type IAggregateConditionGroup,
+  type IViewAggregate,
+} from "@undb/table"
 import { z } from "@undb/zod"
 
 export const getShareAggregatesQuery = z.object({
   shareId: shareIdSchema,
-  tableId: tableId.optional(),
+  tableId: tableId,
   viewId: viewId.optional(),
+  aggregate: viewAggregate.optional(),
+  condition: aggregateConditionGroup.optional(),
 })
 
 export type IGetShareAggregatesQuery = z.infer<typeof getShareAggregatesQuery>
@@ -17,13 +28,17 @@ export type IGetShareAggregatesOutput = z.infer<typeof getShareAggregatesOutput>
 
 export class GetShareAggregatesQuery extends Query implements IGetShareAggregatesQuery {
   public readonly shareId: string
-  public readonly tableId: string | undefined
+  public readonly tableId: string
   public readonly viewId: string | undefined
+  public readonly aggregate: IViewAggregate | undefined
+  public readonly condition: IAggregateConditionGroup | undefined
 
   constructor(props: QueryProps<IGetShareAggregatesQuery>) {
     super()
     this.shareId = props.shareId
     this.tableId = props.tableId
     this.viewId = props.viewId
+    this.aggregate = props.aggregate
+    this.condition = props.condition
   }
 }
