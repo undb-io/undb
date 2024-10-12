@@ -59,6 +59,11 @@ export class DateField extends AbstractField<DateFieldValue> {
     return format("yyyy-MM-dd")
   }
 
+  format(value?: string | number | Date) {
+    if (!value) return ""
+    return this.formatter(value)
+  }
+
   override type = DATE_TYPE
 
   override get #constraint(): DateFieldConstraint {

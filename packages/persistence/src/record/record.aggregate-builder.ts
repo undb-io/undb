@@ -1,6 +1,6 @@
-import { None, Some, type Option } from "@undb/domain"
-import { ID_TYPE, type Field, type IFieldAggregate } from "@undb/table"
-import { sql, type AliasedExpression, type Expression, type ExpressionBuilder } from "kysely"
+import { None,Some,type Option } from "@undb/domain"
+import { ID_TYPE,type Field,type IFieldAggregate } from "@undb/table"
+import { sql,type AliasedExpression,type Expression,type ExpressionBuilder } from "kysely"
 import { match } from "ts-pattern"
 import type { UnderlyingTable } from "../underlying/underlying-table"
 
@@ -41,10 +41,9 @@ export class AggregateFnBuiler {
         return expr.as(alias)
       })
       .with("min", () => {
-        const expr =
-          field.type === "currency"
-            ? sql`COALESCE(MIN(${sql.ref(getRef(field))}) / 100.0, 0)`
-            : sql`COALESCE(MIN(${sql.ref(getRef(field))}), 0)`
+        const expr = match(field.type)
+          .with("currency", () => sql`COALESCE(MIN(${sql.ref(getRef(field))}) / 100.0, 0)`)
+          .otherwise(() => sql`COALESCE(MIN(${sql.ref(getRef(field))}), 0)`)
         return expr.as(alias)
       })
       .with("max", () => {

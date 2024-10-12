@@ -11,6 +11,7 @@
   import type { Selected } from "bits-ui"
   import { derived } from "svelte/store"
   import { useQueryClient } from "@tanstack/svelte-query"
+
   const table = getTable()
   export let field: Field
   export let readonly: boolean
@@ -19,7 +20,7 @@
     [aggregatesStore, table, viewId],
     ([$aggregates, $table, $viewId]) => $aggregates[$viewId ?? $table.views.getDefaultView()?.id.value],
   )
-  $: aggregateResult = $aggregates?.[field.id.value]
+  $: aggregateResult = field.type === "date" ? field.format($aggregates?.[field.id.value] ?? undefined) : $aggregates?.[field.id.value]
 
   $: options =
     // @ts-ignore
