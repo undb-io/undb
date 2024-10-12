@@ -971,6 +971,29 @@
                 "fieldId": "priority",
                 "direction": "desc"
               }
+            ],
+            "widgets": [
+              {
+                "id": "count",
+                "name": "Count",
+                "item": {
+                  "type": "aggregate",
+                  "aggregate": {
+                    "type": "count"
+                  }
+                }
+              },
+              {
+                "id": "estimated_hours",
+                "name": "Estimated Hours",
+                "item": {
+                  "type": "aggregate",
+                  "aggregate": {
+                    "type": "avg",
+                    "config": { "field": "estimated_hours" }
+                  }
+                }
+              }
             ]
           },
           "By Status": {
