@@ -266,6 +266,22 @@ export abstract class AbstractView {
       specs.push(new WithViewSort(this.id, Option(previous), sort.toJSON()))
     }
 
+    if (this.widgets.isSome()) {
+      const previous = this.widgets.into(null)
+      const widgets = this.widgets.unwrap().map((w) => {
+        const updated = w.deleteField(field)
+        return updated.isSome() ? updated.unwrap() : w
+      })
+
+      specs.push(
+        new WithViewWidgets(
+          this.id,
+          Option(previous),
+          widgets.map((w) => w.toJSON()),
+        ),
+      )
+    }
+
     return and(...specs)
   }
 

@@ -125,7 +125,7 @@
         bind:value={$value}
         table={$table}
         filter={(field) => visibleFields.some((f) => f.id.value === field.id) && getIsFilterableFieldType(field.type)}
-        class="rounded-md border pt-3"
+        class="rounded-md border"
       ></FiltersEditor>
     </div>
 
