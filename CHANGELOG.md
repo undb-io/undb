@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-101
+
+
+### 🩹 Fixes
+
+- Fix aggregate date config ([70753dc](https://github.com/undb-io/undb/commit/70753dc))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-100
 
 
