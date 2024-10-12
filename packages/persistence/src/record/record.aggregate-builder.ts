@@ -1,6 +1,5 @@
-import { None,Some,type Option } from "@undb/domain"
-import { ID_TYPE,type Field,type IFieldAggregate } from "@undb/table"
-import { sql,type AliasedExpression,type Expression,type ExpressionBuilder } from "kysely"
+import { ID_TYPE, type Field, type IFieldAggregate } from "@undb/table"
+import { sql, type AliasedExpression, type ExpressionBuilder } from "kysely"
 import { match } from "ts-pattern"
 import type { UnderlyingTable } from "../underlying/underlying-table"
 
@@ -18,6 +17,9 @@ export class AggregateFnBuiler {
     const fieldId = this.table.getFieldName(alias)
 
     const getRef = (field: Field) => {
+      if (field.type === "reference") {
+        return this.table.getFieldName(ID_TYPE)
+      }
       if (field.type === "rollup") {
         return `${field.getReferenceField(this.table.table).id.value}.${field.id.value}`
       }
@@ -57,13 +59,23 @@ export class AggregateFnBuiler {
       .with("count_uniq", () => sql`COUNT(DISTINCT ${sql.ref(fieldId)})`.as(alias))
       .with("count_empty", () => {
         if (field.type === "reference") {
-          return sql`COUNT(*)`.as(alias)
+          return sql`COUNT(
+                        CASE
+                            WHEN ${sql.ref(getRef(field))} NOT IN (SELECT ${sql.raw(ID_TYPE)} FROM ${sql.ref(field.id.value)})
+                            THEN 1
+                        END
+                    )`.as(alias)
         }
         return sql`COUNT(*) - COUNT(NULLIF(${sql.ref(getRef(field))}, ''))`.as(alias)
       })
       .with("count_not_empty", () => {
         if (field.type === "reference") {
-          return sql`COUNT(*)`.as(alias)
+          return sql`COUNT(
+                        CASE
+                            WHEN ${sql.ref(getRef(field))} IN (SELECT ${sql.raw(ID_TYPE)} FROM ${sql.ref(field.id.value)})
+                            THEN 1
+                        END
+                    )`.as(alias)
         }
         return sql`COUNT(CASE WHEN ${sql.ref(getRef(field))} IS NOT NULL AND ${sql.ref(getRef(field))} != 0 THEN 1 END)`.as(
           alias,
@@ -77,32 +89,5 @@ export class AggregateFnBuiler {
       .with("percent_true", () => sql`COUNT(CASE WHEN ${sql.ref(fieldId)} THEN 1 END) * 1.0 / COUNT(*)`.as(alias))
       .with("percent_false", () => sql`COUNT(CASE WHEN NOT ${sql.ref(fieldId)} THEN 1 END) * 1.0 / COUNT(*)`.as(alias))
       .exhaustive()
-  }
-
-  public handleWhere(): Option<Expression<any>> {
-    return match(this.field.type)
-      .returnType<Option<Expression<any>>>()
-      .with("reference", () =>
-        match(this.aggregate)
-          .returnType<Option<Expression<any>>>()
-          .with("count_not_empty", () => {
-            const expr = this.eb(
-              this.table.getFieldName(ID_TYPE),
-              "in",
-              this.eb.selectFrom(this.field.id.value).select(ID_TYPE),
-            )
-            return Some(expr)
-          })
-          .with("count_empty", () => {
-            const expr = this.eb(
-              this.table.getFieldName(ID_TYPE),
-              "not in",
-              this.eb.selectFrom(this.field.id.value).select(ID_TYPE),
-            )
-            return Some(expr)
-          })
-          .otherwise(() => None),
-      )
-      .otherwise(() => None)
   }
 }
