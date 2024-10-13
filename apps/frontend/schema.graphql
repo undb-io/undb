@@ -23,6 +23,7 @@ type Dashboard {
   baseId: ID!
   id: ID!
   name: String!
+  spaceId: ID!
 }
 
 type Field {
