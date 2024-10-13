@@ -1,3 +1,4 @@
+import type { IBaseId } from "@undb/base"
 import { AggregateRoot, and } from "@undb/domain"
 import type { ISpaceId } from "@undb/space"
 import { getNextName } from "@undb/utils"
@@ -14,6 +15,7 @@ import { DashboardId, type DashboardName } from "./value-objects/index.js"
 
 export class Dashboard extends AggregateRoot<any> {
   id!: DashboardId
+  baseId!: IBaseId
   name!: DashboardName
   spaceId!: ISpaceId
 
@@ -54,6 +56,7 @@ export class Dashboard extends AggregateRoot<any> {
   public toJSON(): IDashboardDTO {
     return {
       id: this.id.value,
+      baseId: this.baseId,
       spaceId: this.spaceId,
       name: this.name.value,
     }

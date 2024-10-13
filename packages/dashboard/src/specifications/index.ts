@@ -1,7 +1,9 @@
+export * from "./dashboard-base-id.specification.js"
 export * from "./dashboard-id.specification.js"
 export * from "./dashboard-name.specification.js"
 export * from "./dashboard-q.specification.js"
 export * from "./dashboard-space-id.specification.js"
+export * from "./dashboard.specification.js"
 
 import { CompositeSpecification, Err, Ok, Result } from "@undb/domain"
 import type { Dashboard } from "../dashboard.do.js"

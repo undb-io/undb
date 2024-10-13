@@ -4,6 +4,7 @@ import {
   BulkUpdateRecordsCommand,
   CreateApiTokenCommand,
   CreateBaseCommand,
+  CreateDashboardCommand,
   CreateFromShareCommand,
   CreateFromTemplateCommand,
   CreateRecordCommand,
@@ -60,6 +61,7 @@ import {
   bulkduplicateRecordsCommand,
   createApiTokenCommand,
   createBaseCommand,
+  createDashboardCommand,
   createFromShareCommand,
   createFromTemplateCommand,
   createFromTemplateCommandOutput,
@@ -118,9 +120,9 @@ import {
   updateaccountCommand,
 } from "@undb/commands"
 import { getCurrentSpaceId } from "@undb/context/server"
-import { CommandBus, QueryBus } from "@undb/cqrs"
+import { CommandBus,QueryBus } from "@undb/cqrs"
 import { container } from "@undb/di"
-import type { ICommandBus, IQueryBus } from "@undb/domain"
+import type { ICommandBus,IQueryBus } from "@undb/domain"
 import {
   CountRecordsQuery,
   GetAggregatesQuery,
@@ -156,7 +158,7 @@ import {
 import { tableDTO } from "@undb/table"
 import { z } from "@undb/zod"
 import { authz } from "./authz.middleware"
-import { privateProcedure, publicProcedure, t } from "./trpc"
+import { privateProcedure,publicProcedure,t } from "./trpc"
 
 const commandBus = container.resolve<ICommandBus>(CommandBus)
 const queryBus = container.resolve<IQueryBus>(QueryBus)
@@ -495,11 +497,19 @@ const templateRouter = t.router({
     .mutation(({ input }) => commandBus.execute(new CreateFromTemplateCommand(input))),
 })
 
+const dashboardRouter = t.router({
+  create: privateProcedure
+    .use(authz("dashboard:create"))
+    .input(createDashboardCommand)
+    .mutation(({ input }) => commandBus.execute(new CreateDashboardCommand(input))),
+})
+
 export const route = t.router({
   table: tableRouter,
   record: recordRouter,
   webhook: webhookRouter,
   base: baseRouter,
+  dashboard: dashboardRouter,
   share: shareRouter,
   authz: authzRouter,
   user: userRouter,

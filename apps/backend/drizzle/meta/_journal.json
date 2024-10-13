@@ -57,6 +57,13 @@
       "when": 1728539365470,
       "tag": "0007_steep_dragon_lord",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1728814857375,
+      "tag": "0008_bored_terror",
+      "breakpoints": true
     }
   ]
 }

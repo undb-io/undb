@@ -1,7 +1,9 @@
 export * from "./base-id.specification.js"
 export * from "./base-name.specification.js"
+export * from "./base-option.specification.js"
 export * from "./base-q.specification.js"
 export * from "./base-space-id.specification.js"
+export * from "./base.specification.js"
 
 import { CompositeSpecification, Err, Ok, Result } from "@undb/domain"
 import type { Base } from "../base.js"

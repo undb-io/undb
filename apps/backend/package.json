@@ -28,6 +28,7 @@
     "@undb/context": "workspace:*",
     "@undb/cqrs": "workspace:*",
     "@undb/di": "workspace:*",
+    "@undb/dashboard": "workspace:*",
     "@undb/graphql": "workspace:*",
     "@undb/logger": "workspace:*",
     "@undb/openapi": "workspace:*",

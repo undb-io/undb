@@ -1,6 +1,12 @@
-import type { IBaseSpecVisitor, WithBaseId, WithBaseName, WithBaseQ, WithBaseSpaceId } from "@undb/base"
-import type { WithBaseOption } from "@undb/base/src/specifications/base-option.specification"
-import type { DuplicatedBaseSpecification } from "@undb/base/src/specifications/base.specification"
+import type {
+  DuplicatedBaseSpecification,
+  IBaseSpecVisitor,
+  WithBaseId,
+  WithBaseName,
+  WithBaseOption,
+  WithBaseQ,
+  WithBaseSpaceId,
+} from "@undb/base"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
 
 export class BaseMutateVisitor extends AbstractQBMutationVisitor implements IBaseSpecVisitor {

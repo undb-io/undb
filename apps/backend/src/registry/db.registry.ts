@@ -10,6 +10,7 @@ import {
 import { BASE_OUTBOX_SERVICE, BASE_QUERY_REPOSITORY, BASE_REPOSITORY } from "@undb/base"
 import { CONTEXT_TOKEN } from "@undb/context"
 import { ServerContext } from "@undb/context/server"
+import { DASHBOARD_OUTBOX_SERVICE, DASHBOARD_QUERY_REPOSITORY, DASHBOARD_REPOSITORY } from "@undb/dashboard"
 import { container, instanceCachingFactory } from "@undb/di"
 import { env } from "@undb/env"
 import { API_TOKEN_QUERY_REPOSITORY, API_TOKEN_REPOSITORY, API_TOKEN_SERVICE, ApiTokenService } from "@undb/openapi"
@@ -24,6 +25,9 @@ import {
   Client,
   createSqliteQueryBuilder,
   createTursoQueryBuilder,
+  DashboardOutboxService,
+  DashboardQueryRepository,
+  DashboardRepository,
   InvitationQueryRepository,
   InvitationRepository,
   QUERY_BUILDER,
@@ -91,6 +95,9 @@ export const registerDb = () => {
   container.register(RECORD_REPOSITORY, RecordRepository)
   container.register(RECORD_OUTBOX_SERVICE, RecordOutboxService)
   container.register(TABLE_OUTBOX_SERVICE, TableOutboxService)
+  container.register(DASHBOARD_REPOSITORY, DashboardRepository)
+  container.register(DASHBOARD_QUERY_REPOSITORY, DashboardQueryRepository)
+  container.register(DASHBOARD_OUTBOX_SERVICE, DashboardOutboxService)
   container.register(WEBHOOK_REPOSITORY, WebhookRepository)
   container.register(WEBHOOK_QUERY_REPOSITORY, WebhookQueryRepository)
   container.register(AUDIT_REPOSITORY, AuditRepository)
