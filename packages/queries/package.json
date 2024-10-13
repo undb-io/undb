@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@undb/authz": "workspace:*",
+    "@undb/dashboard": "workspace:*",
     "@undb/domain": "workspace:*",
     "@undb/share": "workspace:*",
     "@undb/table": "workspace:*",

@@ -13,5 +13,11 @@ query GetBaseQuery($baseId: ID!) {
       id
       name
     }
+
+    dashboards {
+      id
+      name
+      baseId
+    }
   }
 }

@@ -32,6 +32,7 @@
 
   export let tables: GetIndexQuery$result["tables"] = []
   export let bases: GetIndexQuery$result["bases"] = []
+  export let dashboards: GetIndexQuery$result["dashboards"] = []
   export let isLoading: boolean = false
 
   let el: HTMLElement
@@ -39,6 +40,7 @@
   $: tableId = $page.params.tableId
   $: viewId = $page.params.viewId
   $: paramBaseId = $page.params.baseId
+  $: dashboardId = $page.params.dashboardId
 
   onMount(() => {
     if (paramBaseId) {
@@ -74,6 +76,7 @@
         {#if base}
           {@const active = base.id === paramBaseId}
           {@const baseTables = tables.filter((t) => t?.baseId === base.id)}
+          {@const baseDashboards = dashboards.filter((d) => d?.baseId === base.id)}
           <Collapsible.Root bind:open={open[base.id]}>
             <div
               class={cn(
@@ -123,6 +126,27 @@
               </div>
             </div>
             <Collapsible.Content class="space-y-1 pt-1">
+              {#each baseDashboards as dashboard}
+                {#if dashboard}
+                  {@const active = dashboard.id === dashboardId}
+                  <div
+                    class={cn(
+                      "group flex h-8 cursor-pointer items-center justify-between gap-1 truncate rounded-md pl-8 pr-2 transition-all",
+                      active ? "bg-gray-800/90" : "hover:bg-gray-100",
+                    )}
+                  >
+                    <a
+                      href={`/d/${dashboard.id}`}
+                      class={cn(
+                        "flex h-full flex-1 items-center overflow-hidden font-normal text-gray-600",
+                        active && "text-background font-medium",
+                      )}
+                    >
+                      {dashboard.name}
+                    </a>
+                  </div>
+                {/if}
+              {/each}
               {#each baseTables as table}
                 {#if table}
                   {@const active = table.id === tableId}
