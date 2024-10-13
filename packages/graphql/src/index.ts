@@ -14,6 +14,8 @@ import {
   GetBaseQuery,
   GetBaseShareQuery,
   GetBasesQuery,
+  GetDashboardByIdQuery,
+  GetDashboardsQuery,
   GetInivitationsQuery,
   GetMemberByIdQuery,
   GetMembersByIdsQuery,
@@ -92,6 +94,7 @@ export class Graphql {
       type Dashboard {
         id: ID!
         name: String!
+        baseId: ID!
       }
 
       enum FieldType {
@@ -469,6 +472,13 @@ export class Graphql {
           tableForeignTables: async (_, args) => {
             return this.queryBus.execute(new GetTableForeignTablesQuery({ tableId: args.tableId }))
           },
+          dashboards: async (_, args) => {
+            return this.queryBus.execute(new GetDashboardsQuery({ baseId: args?.baseId }))
+          },
+          dashboard: async (_, args) => {
+            const dashboard = await this.queryBus.execute(new GetDashboardByIdQuery({ id: args.id }))
+            return dashboard
+          },
           rollupForeignTables: async (_, args) => {
             return this.queryBus.execute(
               new GetRollupForeignTablesQuery({
@@ -513,6 +523,10 @@ export class Graphql {
                 this.context.mustGetCurrentSpaceId(),
               )
             ).into(null)
+          },
+          // @ts-ignore
+          dashboards: async (base) => {
+            return this.queryBus.execute(new GetDashboardsQuery({ baseId: base.id }))
           },
         },
         Table: {

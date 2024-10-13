@@ -49,5 +49,11 @@ query GetShareBaseData($shareId: ID!) {
         }
       }
     }
+
+    dashboards {
+      id
+      name
+      baseId
+    }
   }
 }

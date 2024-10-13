@@ -1,0 +1,6 @@
+query GetDashboardQuery($dashboardId: ID!) {
+  dashboard(id: $dashboardId) {
+    id
+    name
+  }
+}
