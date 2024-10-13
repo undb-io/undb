@@ -49,7 +49,6 @@
     }
     if (aggregate.config.field) {
       const field = $table.schema.getFieldByIdOrName(aggregate.config.field)
-      console.log(field)
       if (field.isSome()) {
         return field.unwrap().formatAggregate(aggregate.type, ($data.data as any)?.[aggregate.config.field])
       }
