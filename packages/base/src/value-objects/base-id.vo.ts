@@ -3,6 +3,8 @@ import { z } from "@undb/zod"
 
 export const baseIdSchema = z.string().min(1)
 
+export type IBaseId = z.infer<typeof baseIdSchema>
+
 export class BaseId extends NanoID {
   private static BASE_ID_PREFIX = "bas"
   private static BASE_ID_SIZE = 8

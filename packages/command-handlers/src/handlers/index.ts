@@ -4,6 +4,7 @@ import { BulkDuplicateRecordsCommandHandler } from "./bulk-duplicate-records.com
 import { BulkUpdateRecordsCommandHandler } from "./bulk-update-records.command-handler"
 import { CreateApiTokenCommandHandler } from "./create-api-token.command-handler"
 import { CreateBaseCommandHandler } from "./create-base.command-handler"
+import { CreateDashboardCommandHandler } from "./create-dashboard.command-handler"
 import { CreateFromShareCommandHandler } from "./create-from-share.command-handler"
 import { CreateFromTemplateCommandHandler } from "./create-from-template.command-handler"
 import { CreateRecordCommandHandler } from "./create-record.command-handler"
@@ -116,4 +117,5 @@ export const commandHandlers = [
   CreateViewWidgetCommandHandler,
   UpdateViewWidgetCommandHandler,
   DeleteViewWidgetCommandHandler,
+  CreateDashboardCommandHandler,
 ]

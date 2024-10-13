@@ -17,6 +17,7 @@
     "@undb/context": "workspace:*",
     "@undb/cqrs": "workspace:*",
     "@undb/di": "workspace:*",
+    "@undb/dashboard": "workspace:*",
     "@undb/persistence": "workspace:*",
     "@undb/queries": "workspace:*",
     "@undb/table": "workspace:*",

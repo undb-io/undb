@@ -136,6 +136,10 @@
   <TemplateListSheet />
 {/await}
 
+{#await import("$lib/components/blocks/dashboard/create-dashboard-dialog.svelte") then { default: CreateDashboardDialog }}
+  <CreateDashboardDialog />
+{/await}
+
 <Command tables={$tables} />
 
 <svelte:window

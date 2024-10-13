@@ -1,6 +1,13 @@
 <script lang="ts">
-  import { CREATE_TABLE_MODAL, IMPORT_TABLE_MODAL, openModal } from "$lib/store/modal.store"
-  import { DatabaseIcon, ImportIcon, PlusCircleIcon, PlusIcon, SquareMousePointer } from "lucide-svelte"
+  import { CREATE_DASHBOARD_MODAL, CREATE_TABLE_MODAL, IMPORT_TABLE_MODAL, openModal } from "$lib/store/modal.store"
+  import {
+    DatabaseIcon,
+    ImportIcon,
+    PlusCircleIcon,
+    PlusIcon,
+    SquareMousePointer,
+    LayoutDashboardIcon,
+  } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
   import { goto } from "$app/navigation"
   import { hasPermission } from "$lib/store/space-member.store"
@@ -47,6 +54,18 @@
         <ImportIcon class="text-muted-foreground" />
 
         Import Table
+      </button>
+      <button
+        type="button"
+        class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
+        on:click={() => {
+          baseId.set(base.id)
+          openModal(CREATE_DASHBOARD_MODAL)
+        }}
+      >
+        <LayoutDashboardIcon class="text-muted-foreground" />
+
+        Create New Dashboard
       </button>
     </div>
   {/if}
