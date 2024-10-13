@@ -1,0 +1,6 @@
+export * from "./create-dashboard.dto"
+export * from "./dashboard.dto"
+export * from "./delete-dashboard.dto"
+export * from "./duplicate-dashboard.dto"
+export * from "./unique-dashboard.dto"
+export * from "./update-dashboard.dto"
