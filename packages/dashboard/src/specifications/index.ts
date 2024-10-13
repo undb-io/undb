@@ -13,7 +13,7 @@ import { DashboardId } from "../value-objects/dashboard-id.vo.js"
 import { WithDashboardId } from "./dashboard-id.specification.js"
 import { WithDashboardName } from "./dashboard-name.specification.js"
 
-type DashboardComositeSpecification = CompositeSpecification<Dashboard, IDashboardSpecVisitor>
+export type DashboardComositeSpecification = CompositeSpecification<Dashboard, IDashboardSpecVisitor>
 
 export const withUniqueDashboard = (dto: IUniqueDashboardDTO): Result<DashboardComositeSpecification, string> => {
   if (dto.dashboardId) {

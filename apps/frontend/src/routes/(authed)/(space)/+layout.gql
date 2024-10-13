@@ -19,6 +19,12 @@ query GetIndexQuery {
     }
   }
 
+  dashboards {
+    id
+    name
+    baseId
+  }
+
   bases {
     id
     name

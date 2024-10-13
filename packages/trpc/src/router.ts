@@ -120,13 +120,14 @@ import {
   updateaccountCommand,
 } from "@undb/commands"
 import { getCurrentSpaceId } from "@undb/context/server"
-import { CommandBus,QueryBus } from "@undb/cqrs"
+import { CommandBus, QueryBus } from "@undb/cqrs"
 import { container } from "@undb/di"
-import type { ICommandBus,IQueryBus } from "@undb/domain"
+import type { ICommandBus, IQueryBus } from "@undb/domain"
 import {
   CountRecordsQuery,
   GetAggregatesQuery,
   GetApiTokensQuery,
+  GetDashboardByIdQuery,
   GetMemberSpacesQuery,
   GetRecordByIdQuery,
   GetRecordsQuery,
@@ -142,6 +143,7 @@ import {
   countRecordsQuery,
   getAggregatesQuery,
   getApiTokensQuery,
+  getDashboardByIdQuery,
   getMemberSpacesOutput,
   getMemberSpacesQuery,
   getRecordByIdQuery,
@@ -158,7 +160,7 @@ import {
 import { tableDTO } from "@undb/table"
 import { z } from "@undb/zod"
 import { authz } from "./authz.middleware"
-import { privateProcedure,publicProcedure,t } from "./trpc"
+import { privateProcedure, publicProcedure, t } from "./trpc"
 
 const commandBus = container.resolve<ICommandBus>(CommandBus)
 const queryBus = container.resolve<IQueryBus>(QueryBus)
@@ -502,6 +504,10 @@ const dashboardRouter = t.router({
     .use(authz("dashboard:create"))
     .input(createDashboardCommand)
     .mutation(({ input }) => commandBus.execute(new CreateDashboardCommand(input))),
+  get: privateProcedure
+    .use(authz("dashboard:read"))
+    .input(getDashboardByIdQuery)
+    .query(({ input }) => queryBus.execute(new GetDashboardByIdQuery(input))),
 })
 
 export const route = t.router({

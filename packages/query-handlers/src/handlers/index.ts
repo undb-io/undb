@@ -5,6 +5,8 @@ import { GetBaseByShareQueryHandler } from "./get-base-by-share.query-handler"
 import { GetBaseShareQueryHandler } from "./get-base-share.query-handler"
 import { GetBaseQueryHandler } from "./get-base.query-handler"
 import { GetBasesQueryHandler } from "./get-bases.query-handler"
+import { GetDashboardByIdQueryHandler } from "./get-dashboard-by-id.query-handler"
+import { GetDashboardsQueryHandler } from "./get-dashboards.query-handler"
 import { GetInivitationsQueryHandler } from "./get-invitations.query-handler"
 import { GetMemberByIdQueryHandler } from "./get-member-by-id.query-handler"
 import { GetMemberSpacesQueryHandler } from "./get-member-spaces.query-handler"
@@ -66,4 +68,6 @@ export const queryHandlers = [
   GetTemplatesQueryHandler,
   GetTemplateQueryHandler,
   GetShareAggregatesQueryHandler,
+  GetDashboardsQueryHandler,
+  GetDashboardByIdQueryHandler,
 ]

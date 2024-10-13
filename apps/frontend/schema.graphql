@@ -20,6 +20,7 @@ type Base {
 }
 
 type Dashboard {
+  baseId: ID!
   id: ID!
   name: String!
 }

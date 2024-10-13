@@ -43,6 +43,7 @@
   let me = data.me.user
   let space = derived(indexDataStore, ($indexDataStore) => $indexDataStore.data?.space)
   let tables = derived(indexDataStore, ($indexDataStore) => $indexDataStore.data?.tables?.filter(Boolean) ?? [])
+  let dashboards = derived(indexDataStore, ($indexDataStore) => $indexDataStore.data?.dashboards?.filter(Boolean) ?? [])
   let bases = derived(indexDataStore, ($indexDataStore) => $indexDataStore.data?.bases?.filter(Boolean) ?? [])
   let baseNames = derived(bases, ($bases) => $bases.map((base) => base?.name).filter(Boolean) as string[])
   let baseTables = derived([tables, page, baseId], ([$tables, $page, $baseId]) =>
@@ -81,7 +82,7 @@
       goto(`/t/${$tables[0]?.id}`, { replaceState: true })
     }
   }
-  $: if (!$tables.length && $bases.length && !$page.params.baseId) {
+  $: if (!$tables.length && !$dashboards.length && $bases.length && !$page.params.baseId) {
     goto(`/bases/${$bases[0]?.id}`, { replaceState: true })
   }
 
@@ -112,7 +113,7 @@
         <NavTools space={$space} me={data.me.user} />
       </div>
       <div class="w-full flex-1 overflow-y-auto">
-        <TablesNav tables={$tables} bases={$bases} {isLoading} />
+        <TablesNav tables={$tables} bases={$bases} dashboards={$dashboards} {isLoading} />
       </div>
 
       <div class="border-t px-4 py-2">
