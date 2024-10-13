@@ -1,11 +1,12 @@
 import type { Kyselify } from "drizzle-orm/kysely"
-import type { Insertable, Selectable } from "kysely"
+import type { Insertable,Selectable } from "kysely"
 import type {
   apiTokenTable,
   attachmentMapping,
   attachments,
   audit,
   baseTable,
+  dashboards,
   emailVerificationCode,
   invitations,
   oauthAccount,
@@ -24,6 +25,7 @@ import type {
 
 type SpaceTable = Kyselify<typeof space>
 type TableTable = Kyselify<typeof tables>
+type DashboardTable = Kyselify<typeof dashboards>
 type TableIdMappingTable = Kyselify<typeof tableIdMapping>
 type RollupIdMappingTable = Kyselify<typeof rollupIdMapping>
 type AuditTable = Kyselify<typeof audit>
@@ -46,6 +48,7 @@ export interface Database {
   undb_space: SpaceTable
   undb_base: BaseTable
   undb_table: TableTable
+  undb_dashboard: DashboardTable
   undb_audit: AuditTable
   undb_table_id_mapping: TableIdMappingTable
   undb_rollup_id_mapping: RollupIdMappingTable
@@ -66,6 +69,7 @@ export interface Database {
 
 export type Space = Selectable<SpaceTable>
 export type Table = Selectable<TableTable>
+export type Dashboard = Selectable<DashboardTable>
 export type InsertTable = Insertable<TableTable>
 export type Base = Selectable<BaseTable>
 export type Audit = Selectable<AuditTable>

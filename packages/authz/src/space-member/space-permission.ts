@@ -26,6 +26,12 @@ export const spacePermission: Record<ISpaceMemberRole, Record<ISpaceAction, bool
     "table:delete": true,
     "table:read": true,
 
+    "dashboard:create": true,
+    "dashboard:update": true,
+    "dashboard:list": true,
+    "dashboard:delete": true,
+    "dashboard:read": true,
+
     "form:create": true,
     "form:update": true,
     "form:list": true,
@@ -76,6 +82,12 @@ export const spacePermission: Record<ISpaceMemberRole, Record<ISpaceAction, bool
     "table:delete": true,
     "table:read": true,
 
+    "dashboard:create": true,
+    "dashboard:update": true,
+    "dashboard:list": true,
+    "dashboard:delete": true,
+    "dashboard:read": true,
+
     "view:create": true,
     "view:update": true,
     "view:read": true,
@@ -125,6 +137,12 @@ export const spacePermission: Record<ISpaceMemberRole, Record<ISpaceAction, bool
     "base:delete": false,
     "base:read": true,
     "base:update": true,
+
+    "dashboard:create": true,
+    "dashboard:update": true,
+    "dashboard:list": true,
+    "dashboard:delete": false,
+    "dashboard:read": true,
 
     "form:create": true,
     "form:update": true,
@@ -187,6 +205,12 @@ export const spacePermission: Record<ISpaceMemberRole, Record<ISpaceAction, bool
     "table:list": true,
     "table:delete": false,
     "table:read": true,
+
+    "dashboard:create": false,
+    "dashboard:update": false,
+    "dashboard:list": true,
+    "dashboard:delete": false,
+    "dashboard:read": true,
 
     "view:create": false,
     "view:update": false,

@@ -1,9 +1,9 @@
 import type { IAuditDetail } from "@undb/audit"
-import type { IInvitationStatus, ISpaceMemberRole, ISpaceMemberWithoutOwner } from "@undb/authz"
+import type { IInvitationStatus,ISpaceMemberRole,ISpaceMemberWithoutOwner } from "@undb/authz"
 import type { RECORD_EVENTS } from "@undb/table"
 import type { IWebhookMethod } from "@undb/webhook"
 import { sql } from "drizzle-orm"
-import { index, integer, primaryKey, sqliteTableCreator, text, unique } from "drizzle-orm/sqlite-core"
+import { index,integer,primaryKey,sqliteTableCreator,text,unique } from "drizzle-orm/sqlite-core"
 
 const sqliteTable = sqliteTableCreator((name) => `undb_${name}`)
 
@@ -131,6 +131,40 @@ export const rollupIdMapping = sqliteTable(
   (table) => {
     return {
       pk: primaryKey({ columns: [table.fieldId, table.rollupId] }),
+    }
+  },
+)
+
+export const dashboards = sqliteTable(
+  "dashboard",
+  {
+    id: text("id").notNull().primaryKey(),
+    name: text("name").notNull(),
+    baseId: text("base_id")
+      .notNull()
+      .references(() => baseTable.id),
+    spaceId: text("space_id")
+      .notNull()
+      .references(() => space.id),
+
+    createdAt: text("created_at")
+      .notNull()
+      .default(sql`(CURRENT_TIMESTAMP)`),
+    createdBy: text("created_by")
+      .notNull()
+      .references(() => users.id),
+    updateAt: text("updated_at")
+      .notNull()
+      .$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
+    updatedBy: text("updated_by")
+      .notNull()
+      .references(() => users.id),
+  },
+  (table) => {
+    return {
+      baseIdIdx: index("dashboard_base_id_idx").on(table.baseId),
+      uniqueOnName: unique("dashboard_name_unique_idx").on(table.name, table.baseId),
+      spaceIdIdx: index("dashboard_space_id_idx").on(table.spaceId),
     }
   },
 )

@@ -89,6 +89,11 @@ export class Graphql {
         viewer
       }
 
+      type Dashboard {
+        id: ID!
+        name: String!
+      }
+
       enum FieldType {
         string
         longText
@@ -274,6 +279,7 @@ export class Graphql {
 
         share: Share
         tables: [Table]!
+        dashboards: [Dashboard]!
       }
 
       type Template {
@@ -347,6 +353,9 @@ export class Graphql {
         table(id: ID!): Table
         tableForeignTables(tableId: ID!): [Table!]!
         rollupForeignTables(tableId: ID!, fieldId: ID!): [Table!]!
+
+        dashboards(baseId: ID): [Dashboard]!
+        dashboard(id: ID!): Dashboard
 
         bases: [Base]
         base(id: ID!): Base!

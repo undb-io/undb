@@ -11,11 +11,17 @@ type Audit {
 }
 
 type Base {
+  dashboards: [Dashboard]!
   id: ID!
   name: String!
   option: JSON
   share: Share
   tables: [Table]!
+}
+
+type Dashboard {
+  id: ID!
+  name: String!
 }
 
 type Field {
@@ -113,6 +119,8 @@ type Query {
   base(id: ID!): Base!
   baseByShare(shareId: ID!): Base
   bases: [Base]
+  dashboard(id: ID!): Dashboard
+  dashboards(baseId: ID): [Dashboard]!
   invitations(status: InvitationStatus): [Invitation!]!
   member: SpaceMember
   memberById(id: ID!): SpaceMember
