@@ -95,6 +95,7 @@ export class Graphql {
         id: ID!
         name: String!
         baseId: ID!
+        spaceId: ID!
       }
 
       enum FieldType {
