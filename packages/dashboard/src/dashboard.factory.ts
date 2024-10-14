@@ -8,6 +8,7 @@ import { DashboardBaseIdSpecification } from "./specifications/dashboard-base-id
 import { WithDashboardId } from "./specifications/dashboard-id.specification.js"
 import { WithDashboardName } from "./specifications/dashboard-name.specification.js"
 import { WithDashboardSpaceId } from "./specifications/dashboard-space-id.specification.js"
+import { WithDashboardWidgets } from "./specifications/dashboard-widget.specification.js"
 import { DashboardId } from "./value-objects/dashboard-id.vo.js"
 
 export class DashboardFactory {
@@ -24,6 +25,7 @@ export class DashboardFactory {
       WithDashboardName.fromString(dto.name),
       new WithDashboardSpaceId(dto.spaceId),
       new DashboardBaseIdSpecification(dto.baseId),
+      new WithDashboardWidgets(dto.widgets || []),
     )
   }
 
@@ -33,6 +35,7 @@ export class DashboardFactory {
       WithDashboardName.fromString(input.name),
       new WithDashboardSpaceId(input.spaceId),
       new DashboardBaseIdSpecification(input.baseId!),
+      new WithDashboardWidgets(input.widgets || []),
     )
 
     // @ts-expect-error

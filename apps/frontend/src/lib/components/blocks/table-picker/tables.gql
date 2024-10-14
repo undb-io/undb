@@ -1,0 +1,11 @@
+query GetTables($baseId: ID) {
+  tables(baseId: $baseId) {
+    id
+    name
+
+    base {
+      id
+      name
+    }
+  }
+}

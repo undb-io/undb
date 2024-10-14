@@ -21,6 +21,7 @@ export class GetAggregatesQuery extends Query implements IGetAggregatesQuery {
   public readonly viewId?: string
   public readonly aggregate?: IViewAggregate
   public readonly condition?: IAggregateConditionGroup
+  public readonly ignoreView?: boolean
 
   constructor(props: QueryProps<IGetAggregatesQuery>) {
     super()
@@ -28,5 +29,6 @@ export class GetAggregatesQuery extends Query implements IGetAggregatesQuery {
     this.viewId = props.viewId
     this.aggregate = props.aggregate
     this.condition = props.condition
+    this.ignoreView = props.ignoreView
   }
 }

@@ -1,0 +1,101 @@
+<script lang="ts">
+  import { superForm } from "sveltekit-superforms/client"
+  import { zodClient } from "sveltekit-superforms/adapters"
+  import { Loader2 } from "lucide-svelte"
+  import * as Form from "$lib/components/ui/form"
+  import { Input } from "$lib/components/ui/input"
+  import { Button } from "$lib/components/ui/button"
+  import { addDashboardWidgetCommand } from "@undb/commands"
+  import { defaults } from "sveltekit-superforms"
+  import { PlugIcon } from "lucide-svelte"
+  import { createMutation } from "@tanstack/svelte-query"
+  import { trpc } from "$lib/trpc/client"
+  import { derived } from "svelte/store"
+  import { getNextName } from "@undb/utils"
+  import { toast } from "svelte-sonner"
+  import { getDashboard } from "$lib/store/dashboard.store"
+  import { DashboardWidget } from "@undb/dashboard"
+  import TablePicker from "../table-picker/table-picker.svelte"
+  import { invalidate } from "$app/navigation"
+
+  const dashboard = getDashboard()
+
+  let widgets = derived([dashboard], ([$dashboard]) => $dashboard?.widgets.value ?? [])
+  let widgetNames = derived([widgets], ([$widgets]) => $widgets.map((w) => w.widget.name))
+  let name = derived([widgetNames], ([$widgetNames]) => getNextName($widgetNames, "Count"))
+
+  export let onSuccess: () => void = () => {}
+
+  const form = superForm(
+    defaults(
+      {
+        dashboardId: $dashboard.id.value,
+        widget: DashboardWidget.default(undefined, $name).toJSON(),
+      },
+      zodClient(addDashboardWidgetCommand),
+    ),
+    {
+      SPA: true,
+      dataType: "json",
+      validators: zodClient(addDashboardWidgetCommand),
+      taintedMessage: null,
+      invalidateAll: false,
+      onSubmit(input) {
+        validateForm({ update: true })
+      },
+      onUpdate(event) {
+        if (!event.form.valid) return
+
+        $addDashboardWidgetMutation.mutate(event.form.data)
+      },
+    },
+  )
+
+  const { form: formData, enhance, validateForm } = form
+
+  const addDashboardWidgetMutation = createMutation({
+    mutationFn: trpc.dashboard.widget.add.mutate,
+    async onSuccess(data) {
+      onSuccess()
+      await invalidate(`dashboard:${$dashboard.id.value}`)
+    },
+    onError(error, variables, context) {
+      toast.error(error.message)
+    },
+  })
+</script>
+
+<form method="POST" use:enhance>
+  <Form.Field {form} name="widget.widget.name">
+    <Form.Control let:attrs>
+      <Form.Label>Table</Form.Label>
+      <TablePicker {...attrs} baseId={$dashboard.baseId} bind:value={$formData.widget.table.id} />
+    </Form.Control>
+    <Form.FieldErrors />
+  </Form.Field>
+
+  <Form.Field {form} name="widget.widget.name">
+    <Form.Control let:attrs>
+      <Form.Label>Name</Form.Label>
+      <Input {...attrs} class="text-xs" bind:value={$formData.widget.widget.name} />
+    </Form.Control>
+    <Form.FieldErrors />
+  </Form.Field>
+
+  <!-- <Form.Field {form} name="widget.item.type">
+    <Form.Control let:attrs>
+      <Form.Label>Type</Form.Label>
+      <WidgetTypePicker {...attrs} bind:value={$formData.widget.item.type} />
+    </Form.Control>
+    <Form.FieldErrors />
+  </Form.Field> -->
+
+  <Button type="submit" variant="outline" disabled={$addDashboardWidgetMutation.isPending} class="w-full">
+    {#if $addDashboardWidgetMutation.isPending}
+      <Loader2 class="mr-2 h-4 w-4 animate-spin" />
+    {:else}
+      <PlugIcon class="mr-2 h-4 w-4" />
+    {/if}
+    Add Widget
+  </Button>
+</form>

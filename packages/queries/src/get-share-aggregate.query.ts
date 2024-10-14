@@ -18,6 +18,7 @@ export const getShareAggregatesQuery = z.object({
   viewId: viewId.optional(),
   aggregate: viewAggregate.optional(),
   condition: aggregateConditionGroup.optional(),
+  ignoreView: z.boolean().optional(),
 })
 
 export type IGetShareAggregatesQuery = z.infer<typeof getShareAggregatesQuery>
@@ -32,6 +33,7 @@ export class GetShareAggregatesQuery extends Query implements IGetShareAggregate
   public readonly viewId: string | undefined
   public readonly aggregate: IViewAggregate | undefined
   public readonly condition: IAggregateConditionGroup | undefined
+  public readonly ignoreView?: boolean
 
   constructor(props: QueryProps<IGetShareAggregatesQuery>) {
     super()
@@ -40,5 +42,6 @@ export class GetShareAggregatesQuery extends Query implements IGetShareAggregate
     this.viewId = props.viewId
     this.aggregate = props.aggregate
     this.condition = props.condition
+    this.ignoreView = props.ignoreView
   }
 }

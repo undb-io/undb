@@ -20,5 +20,7 @@
 </svelte:head>
 
 <main>
-  <slot />
+  {#if dashboard}
+    <slot />
+  {/if}
 </main>

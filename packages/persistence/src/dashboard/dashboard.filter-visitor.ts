@@ -6,6 +6,7 @@ import type {
   WithDashboardName,
   WithDashboardQ,
   WithDashboardSpaceId,
+  WithDashboardWidgets,
 } from "@undb/dashboard"
 import type { DuplicatedDashboardSpecification } from "@undb/dashboard/src/specifications/dashboard.specification"
 import type { ExpressionBuilder } from "kysely"
@@ -17,6 +18,9 @@ export class DashboardFilterVisitor extends AbstractQBVisitor<Dashboard> impleme
     super(eb)
   }
 
+  withDashboardWidgets(v: WithDashboardWidgets): void {
+    throw new Error("Method not implemented.")
+  }
   withDashboardBaseId(v: DashboardBaseIdSpecification): void {
     this.addCond(this.eb.eb("base_id", "=", v.baseId))
   }

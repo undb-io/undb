@@ -4,7 +4,6 @@
   import { cn } from "$lib/utils"
   import { createQuery } from "@tanstack/svelte-query"
   import { ID_TYPE, isValidWidget, type IAggregate, type IWidgetDTO } from "@undb/table"
-  import { isNumber } from "radash"
   import { derived } from "svelte/store"
   import { TriangleAlertIcon } from "lucide-svelte"
   import * as Tooltip from "$lib/components/ui/tooltip"
@@ -12,6 +11,7 @@
   const table = getTable()
   export let viewId: string | undefined
   export let shareId: string | undefined
+  export let ignoreView: boolean = false
 
   export let widget: IWidgetDTO
   export let aggregate: IAggregate
@@ -32,6 +32,7 @@
           viewId,
           aggregate: agg,
           condition: aggregate.condition,
+          ignoreView,
         })
       }
       return trpc.record.aggregate.query({
@@ -39,6 +40,7 @@
         viewId,
         aggregate: agg,
         condition: aggregate.condition,
+        ignoreView,
       })
     },
   })
@@ -58,12 +60,7 @@
   $: isPending = $getAggregate.isPending
 </script>
 
-<div
-  class={cn(
-    "flex h-full w-full items-center justify-center rounded-lg bg-white px-6 py-20 text-base",
-    $$restProps.class,
-  )}
->
+<div class={cn("flex w-full items-center justify-center rounded-lg bg-white px-6 py-20 text-base", $$restProps.class)}>
   {#if !isValid}
     <Tooltip.Root>
       <Tooltip.Trigger>
@@ -86,7 +83,7 @@
         </div>
       </div>
     </div>
-  {:else if $value}
+  {:else if $value !== undefined}
     <span class="text-[2rem] font-bold">{$value}</span>
   {/if}
 </div>

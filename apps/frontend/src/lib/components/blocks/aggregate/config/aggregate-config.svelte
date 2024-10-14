@@ -23,7 +23,7 @@
   import { tick } from "svelte"
   import { toast } from "svelte-sonner"
 
-  export let viewId: string
+  export let viewId: string | undefined
   export let widget: IWidgetDTO
   export let aggregate: IAggregate
   export let onSuccess: () => void = () => {}
@@ -52,6 +52,9 @@
 
   const updateViewWidget = (widget: IWidgetDTO) => {
     if (widget.item.type !== "aggregate") {
+      return
+    }
+    if (!viewId) {
       return
     }
     $updateViewWidgetMutation.mutate({

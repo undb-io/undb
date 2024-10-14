@@ -91,11 +91,21 @@ export class Graphql {
         viewer
       }
 
+      type DashboardWidgetTable {
+        id: ID
+      }
+
+      type DashboardWidget {
+        table: DashboardWidgetTable!
+        widget: Widget
+      }
+
       type Dashboard {
         id: ID!
         name: String!
         baseId: ID!
         spaceId: ID!
+        widgets: [DashboardWidget!]
       }
 
       enum FieldType {

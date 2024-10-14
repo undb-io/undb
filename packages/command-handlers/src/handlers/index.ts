@@ -1,4 +1,5 @@
 import { AcceptInvitationCommandHandler } from "./accept-invitation.command-handler"
+import { AddDashboardWidgetCommandHandler } from "./add-dashboard-widget.command-handler"
 import { BulkDeleteRecordsCommandHandler } from "./bulk-delete-records.command-handler"
 import { BulkDuplicateRecordsCommandHandler } from "./bulk-duplicate-records.command-handler"
 import { BulkUpdateRecordsCommandHandler } from "./bulk-update-records.command-handler"
@@ -118,4 +119,5 @@ export const commandHandlers = [
   UpdateViewWidgetCommandHandler,
   DeleteViewWidgetCommandHandler,
   CreateDashboardCommandHandler,
+  AddDashboardWidgetCommandHandler,
 ]

@@ -1,9 +1,10 @@
 import type { IAuditDetail } from "@undb/audit"
-import type { IInvitationStatus,ISpaceMemberRole,ISpaceMemberWithoutOwner } from "@undb/authz"
+import type { IInvitationStatus, ISpaceMemberRole, ISpaceMemberWithoutOwner } from "@undb/authz"
+import type { IDashboardWidgets } from "@undb/dashboard"
 import type { RECORD_EVENTS } from "@undb/table"
 import type { IWebhookMethod } from "@undb/webhook"
 import { sql } from "drizzle-orm"
-import { index,integer,primaryKey,sqliteTableCreator,text,unique } from "drizzle-orm/sqlite-core"
+import { index, integer, primaryKey, sqliteTableCreator, text, unique } from "drizzle-orm/sqlite-core"
 
 const sqliteTable = sqliteTableCreator((name) => `undb_${name}`)
 
@@ -146,6 +147,9 @@ export const dashboards = sqliteTable(
     spaceId: text("space_id")
       .notNull()
       .references(() => space.id),
+
+    widgets: text("widgets", { mode: "json" }).$type<IDashboardWidgets>(),
+    layout: text("layout", { mode: "json" }),
 
     createdAt: text("created_at")
       .notNull()
