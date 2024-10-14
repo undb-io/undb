@@ -1,3 +1,4 @@
+export * from "./add-widget.dto"
 export * from "./create-dashboard.dto"
 export * from "./dashboard.dto"
 export * from "./delete-dashboard.dto"

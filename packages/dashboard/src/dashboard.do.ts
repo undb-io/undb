@@ -11,13 +11,14 @@ import { DashboardUpdatedEvent } from "./events/dashboard-updated.event.js"
 import type { IDashboardSpecification } from "./interface.js"
 import { WithDashboardName } from "./specifications/dashboard-name.specification.js"
 import { DuplicatedDashboardSpecification } from "./specifications/dashboard.specification.js"
-import { DashboardId, type DashboardName } from "./value-objects/index.js"
+import { DashboardId, DashboardWidgets, type DashboardName } from "./value-objects/index.js"
 
 export class Dashboard extends AggregateRoot<any> {
   id!: DashboardId
   baseId!: IBaseId
   name!: DashboardName
   spaceId!: ISpaceId
+  widgets!: DashboardWidgets
 
   static empty() {
     return new Dashboard()
@@ -59,6 +60,7 @@ export class Dashboard extends AggregateRoot<any> {
       baseId: this.baseId,
       spaceId: this.spaceId,
       name: this.name.value,
+      widgets: this.widgets.value,
     }
   }
 }

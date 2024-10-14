@@ -6,10 +6,15 @@ import type {
   WithDashboardName,
   WithDashboardQ,
   WithDashboardSpaceId,
+  WithDashboardWidgets,
 } from "@undb/dashboard"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
+import { json } from "../qb"
 
 export class DashboardMutateVisitor extends AbstractQBMutationVisitor implements IDashboardSpecVisitor {
+  withDashboardWidgets(v: WithDashboardWidgets): void {
+    this.setData("widgets", v.widgets.length ? json(v.widgets) : null)
+  }
   withDashboardBaseId(v: DashboardBaseIdSpecification): void {
     throw new Error("Method not implemented.")
   }

@@ -1,4 +1,5 @@
 import {
+  AddDashboardWidgetCommand,
   BulkDeleteRecordsCommand,
   BulkDuplicateRecordsCommand,
   BulkUpdateRecordsCommand,
@@ -55,6 +56,7 @@ import {
   UpdateViewCommand,
   UpdateViewWidgetCommand,
   UpdateWebhookCommand,
+  addDashboardWidgetCommand,
   bulkUpdateRecordsCommand,
   bulkUpdateRecordsCommandOutput,
   bulkdeleteRecordsCommand,
@@ -499,6 +501,13 @@ const templateRouter = t.router({
     .mutation(({ input }) => commandBus.execute(new CreateFromTemplateCommand(input))),
 })
 
+const dashboardWidgetRouter = t.router({
+  add: privateProcedure
+    .use(authz("dashboard:update"))
+    .input(addDashboardWidgetCommand)
+    .mutation(({ input }) => commandBus.execute(new AddDashboardWidgetCommand(input))),
+})
+
 const dashboardRouter = t.router({
   create: privateProcedure
     .use(authz("dashboard:create"))
@@ -508,6 +517,7 @@ const dashboardRouter = t.router({
     .use(authz("dashboard:read"))
     .input(getDashboardByIdQuery)
     .query(({ input }) => queryBus.execute(new GetDashboardByIdQuery(input))),
+  widget: dashboardWidgetRouter,
 })
 
 export const route = t.router({

@@ -20,6 +20,7 @@ export async function getAggregates(
     select: None,
     filter: None,
     pagination: None,
+    ignoreView: dto.ignoreView,
   }
   if (dto.condition) {
     args.filter = getSpec(table.schema, dto.condition) as Option<RecordComositeSpecification>

@@ -12,6 +12,7 @@ export const getAggregatesDTO = z.object({
   viewId: viewId.optional(),
   aggregate: viewAggregate.optional(),
   condition: aggregateConditionGroup.optional(),
+  ignoreView: z.boolean().optional(),
 })
 
 export type IGetAggregatesDTO = z.infer<typeof getAggregatesDTO>

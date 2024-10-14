@@ -14,6 +14,6 @@ export class DashboardCreatedEvent extends BaseEvent<IDashboardCreatedEventPaylo
   name = EVT_DASHBOARD_CREATED
 
   constructor(public readonly payload: IDashboardCreatedEventPayload) {
-    super(payload, undefined)
+    super(payload, undefined, payload.dashboard.spaceId)
   }
 }
