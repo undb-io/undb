@@ -1,0 +1,80 @@
+<script lang="ts">
+  import { GetTablesStore } from "$houdini"
+  import Check from "svelte-radix/Check.svelte"
+  import CaretSort from "svelte-radix/CaretSort.svelte"
+  import { tick } from "svelte"
+  import * as Command from "$lib/components/ui/command/index.js"
+  import * as Popover from "$lib/components/ui/popover/index.js"
+  import { Button } from "$lib/components/ui/button/index.js"
+  import { cn } from "$lib/utils.js"
+
+  export let value: string | undefined = undefined
+  export let disabled: boolean = false
+  export let baseId: string
+
+  $: selectedValue = tables.find((t) => t.id === value)?.name ?? ""
+
+  const store = new GetTablesStore()
+
+  let open = false
+  $: open && store.fetch({ variables: { baseId } })
+  $: tables = $store.data?.tables.filter((t) => !!t) ?? []
+
+  function closeAndFocusTrigger(triggerId: string) {
+    open = false
+    tick().then(() => {
+      document.getElementById(triggerId)?.focus()
+    })
+  }
+</script>
+
+<Popover.Root bind:open let:ids portal="body">
+  <Popover.Trigger asChild let:builder>
+    <Button
+      builders={[builder]}
+      variant="outline"
+      role="combobox"
+      size="sm"
+      aria-expanded={open}
+      class={cn("w-full justify-between", $$restProps.class)}
+      {disabled}
+    >
+      {#if selectedValue}
+        {selectedValue}
+      {:else}
+        <span class="text-muted-foreground">Select a table...</span>
+      {/if}
+      <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+    </Button>
+  </Popover.Trigger>
+  <Popover.Content class="max-h-[300px] overflow-y-auto p-0" sameWidth>
+    <Command.Root
+      filter={(value, search) => {
+        const label = tables.find((t) => t.id === value)?.name ?? ""
+        return label.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
+      }}
+    >
+      <Command.Input placeholder="Search tables..." class="h-9" />
+      <Command.Empty>No tables found.</Command.Empty>
+      <Command.Group>
+        {#each tables as t}
+          {#if t}
+            <Command.Item
+              value={t.id}
+              onSelect={(currentValue) => {
+                value = currentValue
+                closeAndFocusTrigger(ids.trigger)
+              }}
+              class="gap-2"
+            >
+              <Check class={cn("h-4 w-4", value !== t.id && "text-transparent")} />
+              <span>
+                {t.name}
+              </span>
+            </Command.Item>
+          {/if}
+        {/each}
+      </Command.Group>
+    </Command.Root>
+  </Popover.Content>
+</Popover.Root>

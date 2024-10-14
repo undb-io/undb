@@ -24,6 +24,16 @@ type Dashboard {
   id: ID!
   name: String!
   spaceId: ID!
+  widgets: [DashboardWidget!]
+}
+
+type DashboardWidget {
+  table: DashboardWidgetTable!
+  widget: Widget
+}
+
+type DashboardWidgetTable {
+  id: ID
 }
 
 type Field {

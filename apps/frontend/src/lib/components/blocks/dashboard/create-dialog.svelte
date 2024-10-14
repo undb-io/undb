@@ -10,6 +10,7 @@
   import { trpc } from "$lib/trpc/client"
   import { closeModal, CREATE_DASHBOARD_MODAL } from "$lib/store/modal.store"
   import { currentBase, baseId } from "$lib/store/base.store"
+  import { invalidateAll } from "$app/navigation"
 
   const schema = createDashboardCommand.omit({ baseId: true, baseName: true })
 
@@ -48,8 +49,9 @@
 
   const createDashboard = createMutation({
     mutationFn: trpc.dashboard.create.mutate,
-    onSuccess() {
+    async onSuccess() {
       toast.success("Dashboard created successfully")
+      await invalidateAll()
       closeModal(CREATE_DASHBOARD_MODAL)
     },
     onError(error) {

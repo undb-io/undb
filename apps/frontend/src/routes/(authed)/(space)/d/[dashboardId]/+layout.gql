@@ -4,5 +4,15 @@ query GetDashboardQuery($dashboardId: ID!) {
     name
     baseId
     spaceId
+    widgets {
+      table {
+        id
+      }
+      widget {
+        id
+        name
+        item
+      }
+    }
   }
 }

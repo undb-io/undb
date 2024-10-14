@@ -15,6 +15,6 @@ export class DashboardUpdatedEvent extends BaseEvent<IDashboardUpdatedEventPaylo
   name = EVT_DASHBOARD_UPDATED
 
   constructor(public readonly payload: IDashboardUpdatedEventPayload) {
-    super(payload, undefined)
+    super(payload, undefined, payload.dashboard.spaceId)
   }
 }

@@ -2,6 +2,7 @@ import { DashboardFactory, type Dashboard as DashboardDo, type IDashboardDTO } f
 import { singleton } from "@undb/di"
 import type { Mapper } from "@undb/domain"
 import type { Dashboard } from "../db"
+import { json } from "../qb"
 
 @singleton()
 export class DashboardMapper implements Mapper<DashboardDo, Dashboard, IDashboardDTO> {
@@ -11,6 +12,7 @@ export class DashboardMapper implements Mapper<DashboardDo, Dashboard, IDashboar
       name: entity.name,
       baseId: entity.base_id,
       spaceId: entity.space_id,
+      widgets: entity.widgets ?? [],
     })
   }
   toEntity(domain: DashboardDo): Dashboard {
@@ -19,6 +21,7 @@ export class DashboardMapper implements Mapper<DashboardDo, Dashboard, IDashboar
       space_id: domain.spaceId,
       base_id: domain.baseId,
       name: domain.name.value,
+      widgets: domain.widgets.value ? json(domain.widgets.value) : null,
     }
   }
   toDTO(entity: Dashboard): IDashboardDTO {
@@ -27,6 +30,7 @@ export class DashboardMapper implements Mapper<DashboardDo, Dashboard, IDashboar
       spaceId: entity.space_id,
       baseId: entity.base_id,
       name: entity.name,
+      widgets: entity.widgets ?? [],
     }
   }
 }

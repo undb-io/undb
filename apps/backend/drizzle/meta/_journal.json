@@ -64,6 +64,13 @@
       "when": 1728814857375,
       "tag": "0008_bored_terror",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1728874533782,
+      "tag": "0009_workable_scorpion",
+      "breakpoints": true
     }
   ]
 }

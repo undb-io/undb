@@ -5,6 +5,7 @@
     ChevronRightIcon,
     DatabaseIcon,
     HardDriveIcon,
+    GaugeIcon,
     PlusIcon,
     EllipsisIcon,
     PencilIcon,
@@ -58,6 +59,11 @@
       if (activeView) {
         open[activeTable.id] = true
       }
+    }
+
+    const activeDashboard = dashboards.find((d) => d?.id === dashboardId)
+    if (activeDashboard) {
+      open[activeDashboard.baseId] = true
     }
   }
 
@@ -142,6 +148,7 @@
                         active && "text-background font-medium",
                       )}
                     >
+                      <GaugeIcon class="mr-2 h-4 w-4" />
                       {dashboard.name}
                     </a>
                   </div>
