@@ -59,7 +59,7 @@
 </script>
 
 {#if $table}
-  <div class="group rounded-sm border">
+  <div class="group w-full rounded-sm border">
     <div class="flex items-center justify-between px-4 py-2">
       <span class="text-sm font-bold">{widget.name}</span>
       {#if !shareId}

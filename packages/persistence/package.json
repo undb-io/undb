@@ -5,7 +5,7 @@
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest",
-    "drizzle-kit": "^0.24.2"
+    "drizzle-kit": "^0.25.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -19,18 +19,18 @@
     "@undb/context": "workspace:*",
     "@undb/di": "workspace:*",
     "@undb/domain": "workspace:*",
-    "@undb/template": "workspace:*",
     "@undb/logger": "workspace:*",
     "@undb/openapi": "workspace:*",
     "@undb/table": "workspace:*",
+    "@undb/template": "workspace:*",
     "@undb/user": "workspace:*",
     "@undb/webhook": "workspace:*",
     "date-fns": "^4.1.0",
-    "drizzle-orm": "^0.33.0",
-    "es-toolkit": "^1.20.0",
+    "drizzle-orm": "^0.34.1",
+    "es-toolkit": "^1.25.1",
     "kysely": "^0.27.4",
     "kysely-bun-sqlite": "^0.3.2",
     "radash": "^12.1.0",
-    "ts-pattern": "^5.3.1"
+    "ts-pattern": "^5.5.0"
   }
 }

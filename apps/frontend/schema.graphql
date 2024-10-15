@@ -22,6 +22,7 @@ type Base {
 type Dashboard {
   baseId: ID!
   id: ID!
+  layout: JSON
   name: String!
   spaceId: ID!
   widgets: [DashboardWidget!]

@@ -24,6 +24,10 @@ const widgetItemTable = z.object({
 
 const widgetItem = z.discriminatedUnion("type", [widgetItemAggregate, widgetItemChart, widgetItemTable])
 
+export const widgetType = z.enum(["aggregate", "chart", "table"])
+
+export type IWidgetType = z.infer<typeof widgetType>
+
 export const widgetDTO = z.object({
   id: widgetId,
   name: widgetName,
