@@ -7,8 +7,8 @@
     "@undb/di": "workspace:*",
     "@undb/persistence": "workspace:*",
     "@undb/table": "workspace:*",
-    "drizzle-orm": "^0.33.0",
-    "ts-pattern": "^5.3.1"
+    "drizzle-orm": "^0.34.1",
+    "ts-pattern": "^5.5.0"
   },
   "devDependencies": {
     "@types/bun": "latest"

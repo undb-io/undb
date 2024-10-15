@@ -1,5 +1,6 @@
 export * from "./dashboard-base-id.specification.js"
 export * from "./dashboard-id.specification.js"
+export * from "./dashboard-layout.specification.js"
 export * from "./dashboard-name.specification.js"
 export * from "./dashboard-q.specification.js"
 export * from "./dashboard-space-id.specification.js"

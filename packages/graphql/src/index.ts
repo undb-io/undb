@@ -105,6 +105,7 @@ export class Graphql {
         name: String!
         baseId: ID!
         spaceId: ID!
+        layout: JSON
         widgets: [DashboardWidget!]
       }
 

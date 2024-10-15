@@ -15,10 +15,10 @@
     "@undb/context": "workspace:*",
     "@undb/cqrs": "workspace:*",
     "@undb/di": "workspace:*",
-    "@undb/template": "workspace:*",
     "@undb/logger": "workspace:*",
     "@undb/openapi": "workspace:*",
     "@undb/queries": "workspace:*",
-    "@undb/table": "workspace:*"
+    "@undb/table": "workspace:*",
+    "@undb/template": "workspace:*"
   }
 }

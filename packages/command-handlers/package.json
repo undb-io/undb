@@ -11,15 +11,15 @@
   },
   "dependencies": {
     "@undb/base": "workspace:*",
-    "@undb/dashboard": "workspace:*",
     "@undb/commands": "workspace:*",
     "@undb/context": "workspace:*",
     "@undb/cqrs": "workspace:*",
+    "@undb/dashboard": "workspace:*",
     "@undb/di": "workspace:*",
     "@undb/logger": "workspace:*",
     "@undb/openapi": "workspace:*",
     "@undb/template": "workspace:*",
     "@undb/user": "workspace:*",
-    "ts-pattern": "^5.3.1"
+    "ts-pattern": "^5.5.0"
   }
 }
