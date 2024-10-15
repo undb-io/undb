@@ -6,6 +6,7 @@ import { DashboardCreatedEvent } from "./events/dashboard-created.event.js"
 import type { IDashboardSpecification } from "./interface.js"
 import { DashboardBaseIdSpecification } from "./specifications/dashboard-base-id.specification.js"
 import { WithDashboardId } from "./specifications/dashboard-id.specification.js"
+import { WithDashboardLayout } from "./specifications/dashboard-layout.specification.js"
 import { WithDashboardName } from "./specifications/dashboard-name.specification.js"
 import { WithDashboardSpaceId } from "./specifications/dashboard-space-id.specification.js"
 import { WithDashboardWidgets } from "./specifications/dashboard-widget.specification.js"
@@ -26,6 +27,7 @@ export class DashboardFactory {
       new WithDashboardSpaceId(dto.spaceId),
       new DashboardBaseIdSpecification(dto.baseId),
       new WithDashboardWidgets(dto.widgets || []),
+      new WithDashboardLayout(dto.layout),
     )
   }
 
@@ -36,6 +38,7 @@ export class DashboardFactory {
       new WithDashboardSpaceId(input.spaceId),
       new DashboardBaseIdSpecification(input.baseId!),
       new WithDashboardWidgets(input.widgets || []),
+      new WithDashboardLayout(input.layout),
     )
 
     // @ts-expect-error
