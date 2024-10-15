@@ -18,6 +18,7 @@ import { CreateTableCommandHandler } from "./create-table.command-handler"
 import { CreateViewWidgetCommandHandler } from "./create-view-widget.command-handler"
 import { CreateWebhookCommandHandler } from "./create-webhook.command-handler"
 import { DeleteBaseCommandHandler } from "./delete-base.command-handler"
+import { DeleteDashboardWidgetCommandHandler } from "./delete-dashboard-widget.command-handler"
 import { DeleteInvitationCommandHandler } from "./delete-invitation.command-handler"
 import { DeleteRecordCommandHandler } from "./delete-record.command-handler"
 import { DeleteSpaceCommandHandler } from "./delete-space.command-handler"
@@ -51,6 +52,7 @@ import { SubmitFormCommandHandler } from "./submit-form.command-handler"
 import { TriggerRecordButtonCommandHandler } from "./trigger-record-button.command-handler"
 import { UpdateAccountCommandHandler } from "./update-account.command-handler"
 import { UpdateBaseCommandHandler } from "./update-base.command-handler"
+import { UpdateDashboardWidgetCommandHandler } from "./update-dashboard-widget.command-handler"
 import { UpdateRecordCommandHandler } from "./update-record.command-handler"
 import { UpdateSpaceCommandHandler } from "./update-space.command-handler"
 import { UpdateTableFieldCommandHandler } from "./update-table-field.command-handler"
@@ -120,4 +122,6 @@ export const commandHandlers = [
   DeleteViewWidgetCommandHandler,
   CreateDashboardCommandHandler,
   AddDashboardWidgetCommandHandler,
+  UpdateDashboardWidgetCommandHandler,
+  DeleteDashboardWidgetCommandHandler,
 ]

@@ -18,6 +18,7 @@ import {
   CreateViewWidgetCommand,
   CreateWebhookCommand,
   DeleteBaseCommand,
+  DeleteDashboardWidgetCommand,
   DeleteFormCommand,
   DeleteInvitationCommand,
   DeleteRecordCommand,
@@ -49,6 +50,7 @@ import {
   TriggerRecordButtonCommand,
   UpdateAccountCommand,
   UpdateBaseCommand,
+  UpdateDashboardWidgetCommand,
   UpdateRecordCommand,
   UpdateSpaceCommand,
   UpdateTableCommand,
@@ -80,6 +82,7 @@ import {
   createViewWidgetCommand,
   createWebhookCommand,
   deleteBaseCommand,
+  deleteDashboardWidgetCommand,
   deleteFormCommand,
   deleteInvitationCommand,
   deleteRecordCommand,
@@ -112,6 +115,7 @@ import {
   submitFormCommand,
   triggerRecordButtonCommand,
   updateBaseCommand,
+  updateDashboardWidgetCommand,
   updateRecordCommand,
   updateSpaceCommand,
   updateTableCommand,
@@ -506,6 +510,14 @@ const dashboardWidgetRouter = t.router({
     .use(authz("dashboard:update"))
     .input(addDashboardWidgetCommand)
     .mutation(({ input }) => commandBus.execute(new AddDashboardWidgetCommand(input))),
+  update: privateProcedure
+    .use(authz("dashboard:update"))
+    .input(updateDashboardWidgetCommand)
+    .mutation(({ input }) => commandBus.execute(new UpdateDashboardWidgetCommand(input))),
+  delete: privateProcedure
+    .use(authz("dashboard:update"))
+    .input(deleteDashboardWidgetCommand)
+    .mutation(({ input }) => commandBus.execute(new DeleteDashboardWidgetCommand(input))),
 })
 
 const dashboardRouter = t.router({
