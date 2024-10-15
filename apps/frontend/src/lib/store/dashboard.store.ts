@@ -1,6 +1,6 @@
 import type { Dashboard } from "@undb/dashboard"
 import { getContext, setContext } from "svelte"
-import { derived, type Writable } from "svelte/store"
+import { derived, readable, type Writable } from "svelte/store"
 
 export function setDashboard(dashboard: Writable<Dashboard>) {
   setContext("dashboard", dashboard)
@@ -12,5 +12,8 @@ export function getDashboard() {
 
 export function getIsDashboard() {
   const dashboard = getContext<Writable<Dashboard>>("dashboard")
+  if (!dashboard) {
+    return readable(false)
+  }
   return derived(dashboard, ($dashboard) => !!$dashboard)
 }

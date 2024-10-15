@@ -15,6 +15,7 @@
   import { invalidate } from "$app/navigation"
   import { toast } from "svelte-sonner"
   import { getDashboard, getIsDashboard } from "$lib/store/dashboard.store"
+  import { cn } from "$lib/utils"
 
   export let tableId: string | undefined
   const table = getTable()
@@ -59,7 +60,7 @@
 </script>
 
 {#if $table}
-  <div class="group w-full rounded-sm border">
+  <div class={cn("group flex h-full w-full flex-col rounded-sm border", $$restProps.class)}>
     <div class="flex items-center justify-between px-4 py-2">
       <span class="text-sm font-bold">{widget.name}</span>
       {#if !shareId}
@@ -88,7 +89,7 @@
                       {shareId}
                       {ignoreView}
                       aggregate={widget.item.aggregate}
-                      class="h-full"
+                      class="h-full text-[6rem]"
                     />
                   {/if}
                 </div>
