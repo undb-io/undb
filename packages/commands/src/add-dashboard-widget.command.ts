@@ -1,4 +1,4 @@
-import { addDashboardWidgetDTO, type IDashboardWidget } from "@undb/dashboard"
+import { addDashboardWidgetDTO, type IDashboardLayout, type IDashboardWidget } from "@undb/dashboard"
 import { Command, type CommandProps } from "@undb/domain"
 import { z } from "@undb/zod"
 
@@ -9,10 +9,12 @@ export type IAddDashboardWidgetCommand = z.infer<typeof addDashboardWidgetComman
 export class AddDashboardWidgetCommand extends Command implements IAddDashboardWidgetCommand {
   public readonly dashboardId: string
   public readonly widget: IDashboardWidget
+  public readonly layout: IDashboardLayout
 
   constructor(props: CommandProps<IAddDashboardWidgetCommand>) {
     super(props)
     this.dashboardId = props.dashboardId
     this.widget = props.widget
+    this.layout = props.layout
   }
 }

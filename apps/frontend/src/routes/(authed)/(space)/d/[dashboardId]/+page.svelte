@@ -10,7 +10,9 @@
 </script>
 
 <div class="flex h-full flex-col">
-  <header class="flex items-center justify-end px-4 py-2"></header>
+  <header class="flex items-center justify-end px-4 py-2">
+    <AddDashboardWidgetButton variant="outline" size="sm" />
+  </header>
   {#if $widgets?.value.length}
     <main class="px-4 py-4">
       <DashboardWidgets />

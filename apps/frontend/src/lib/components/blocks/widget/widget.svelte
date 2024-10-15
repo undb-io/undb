@@ -16,6 +16,7 @@
   import { toast } from "svelte-sonner"
   import { getDashboard, getIsDashboard } from "$lib/store/dashboard.store"
   import { cn } from "$lib/utils"
+  import { GripVerticalIcon, ScalingIcon } from "lucide-svelte"
 
   export let tableId: string | undefined
   const table = getTable()
@@ -24,6 +25,9 @@
   export let viewId: string | undefined = undefined
   export let ignoreView: boolean = false
   export let shareId: string | undefined = undefined
+
+  export let movePointerDown: ((e: Event) => void) | undefined = undefined
+  export let resizePointerDown: ((e: Event) => void) | undefined = undefined
 
   const isDashboard = getIsDashboard()
   const dashboard = getDashboard()
@@ -60,9 +64,17 @@
 </script>
 
 {#if $table}
-  <div class={cn("group flex h-full w-full flex-col rounded-sm border", $$restProps.class)}>
+  <div class={cn("group absolute flex h-full w-full flex-col rounded-sm border", $$restProps.class)}>
     <div class="flex items-center justify-between px-4 py-2">
-      <span class="text-sm font-bold">{widget.name}</span>
+      <div class="flex items-center gap-2">
+        {#if movePointerDown}
+          <GripVerticalIcon
+            on:pointerdown={movePointerDown}
+            class="cursor-grab text-gray-500 opacity-0 group-hover:block group-hover:opacity-100 dark:text-gray-200"
+          />
+        {/if}
+        <span class="text-sm font-bold">{widget.name}</span>
+      </div>
       {#if !shareId}
         <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100">
           <Dialog.Root bind:open portal="body">
@@ -130,6 +142,15 @@
     </div>
     {#if widget.item.type === "aggregate"}
       <Aggregate {ignoreView} {widget} {viewId} {shareId} aggregate={widget.item.aggregate} />
+    {/if}
+
+    {#if resizePointerDown}
+      <ScalingIcon
+        class="text-primary-400 absolute
+				bottom-0 right-0 hidden cursor-se-resize
+				text-3xl group-hover:block"
+        on:pointerdown={resizePointerDown}
+      />
     {/if}
   </div>
 

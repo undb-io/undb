@@ -17,6 +17,10 @@ export class AddDashboardWidgetCommandHandler implements ICommandHandler<AddDash
 
   async execute(command: AddDashboardWidgetCommand): Promise<any> {
     this.logger.debug(command)
-    await this.service.addWidget({ dashboardId: command.dashboardId, widget: command.widget })
+    await this.service.addWidget({
+      dashboardId: command.dashboardId,
+      widget: command.widget,
+      layout: command.layout,
+    })
   }
 }
