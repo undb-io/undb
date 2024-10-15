@@ -7,7 +7,7 @@
 
 <Popover.Root>
   <Popover.Trigger asChild let:builder>
-    <Button builders={[builder]}>
+    <Button builders={[builder]} {...$$restProps}>
       <PlusCircleIcon class="mr-2 h-4 w-4" />
       Add Widget
     </Button>
