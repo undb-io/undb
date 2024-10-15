@@ -60,7 +60,9 @@
   $: isPending = $getAggregate.isPending
 </script>
 
-<div class={cn("flex w-full items-center justify-center rounded-lg bg-white px-6 py-20 text-base", $$restProps.class)}>
+<div
+  class={cn("flex w-full flex-1 items-center justify-center rounded-lg bg-white px-6 text-[3rem]", $$restProps.class)}
+>
   {#if !isValid}
     <Tooltip.Root>
       <Tooltip.Trigger>
@@ -84,6 +86,6 @@
       </div>
     </div>
   {:else if $value !== undefined}
-    <span class="text-[2rem] font-bold">{$value}</span>
+    <span class="font-bold">{$value}</span>
   {/if}
 </div>
