@@ -22,11 +22,16 @@
   import AggregateTypePicker from "../aggregate-type-picker.svelte"
   import { tick } from "svelte"
   import { toast } from "svelte-sonner"
+  import { getDashboard, getIsDashboard } from "$lib/store/dashboard.store"
 
   export let viewId: string | undefined
+  export let tableId: string | undefined
   export let widget: IWidgetDTO
   export let aggregate: IAggregate
   export let onSuccess: () => void = () => {}
+
+  const isDashboard = getIsDashboard()
+  const dashboard = getDashboard()
 
   const table = getTable()
   const value = writable<MaybeConditionGroup<IAggregateCondition> | undefined>(
@@ -37,7 +42,7 @@
 
   const client = useQueryClient()
 
-  const updateViewWidgetMutation = createMutation({
+  const updateWidgetMutation = createMutation({
     mutationFn: trpc.table.view.widget.update.mutate,
     async onSuccess(data, variables, context) {
       await invalidate(`table:${$table.id.value}`)
@@ -50,27 +55,59 @@
     },
   })
 
+  const updateDashboardWidget = createMutation({
+    mutationFn: trpc.dashboard.widget.update.mutate,
+    async onSuccess(data, variables, context) {
+      await invalidate(`dashboard:${$dashboard.id.value}`)
+      await tick()
+      await client.invalidateQueries({ queryKey: ["aggregate", $table.id.value, widget.id] })
+      onSuccess()
+    },
+  })
+
   const updateViewWidget = (widget: IWidgetDTO) => {
     if (widget.item.type !== "aggregate") {
       return
     }
-    if (!viewId) {
-      return
-    }
-    $updateViewWidgetMutation.mutate({
-      tableId: $table.id.value,
-      viewId,
-      widget: {
-        ...widget,
-        item: {
-          type: "aggregate",
-          aggregate: {
-            ...widget.item.aggregate,
-            condition: validValue,
+
+    if ($isDashboard) {
+      $updateDashboardWidget.mutate({
+        id: $dashboard.id.value,
+        widget: {
+          table: {
+            id: tableId,
+          },
+          widget: {
+            ...widget,
+            item: {
+              type: "aggregate",
+              aggregate: {
+                ...widget.item.aggregate,
+                condition: validValue,
+              },
+            },
           },
         },
-      },
-    })
+      })
+    } else {
+      if (!viewId) {
+        return
+      }
+      $updateWidgetMutation.mutate({
+        tableId: $table.id.value,
+        viewId,
+        widget: {
+          ...widget,
+          item: {
+            type: "aggregate",
+            aggregate: {
+              ...widget.item.aggregate,
+              condition: validValue,
+            },
+          },
+        },
+      })
+    }
   }
 </script>
 
@@ -136,7 +173,7 @@
     </div>
 
     <div class="flex justify-end">
-      <Button disabled={$updateViewWidgetMutation.isPending} on:click={() => updateViewWidget(widget)} class="w-full">
+      <Button disabled={$updateWidgetMutation.isPending} on:click={() => updateViewWidget(widget)} class="w-full">
         <SaveIcon class="mr-2 size-4" />
         Save
       </Button>

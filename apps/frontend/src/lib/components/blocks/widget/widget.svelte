@@ -14,14 +14,18 @@
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import { invalidate } from "$app/navigation"
   import { toast } from "svelte-sonner"
+  import { getDashboard, getIsDashboard } from "$lib/store/dashboard.store"
 
-  export let tableId: string
+  export let tableId: string | undefined
   const table = getTable()
 
   export let widget: IWidgetDTO
   export let viewId: string | undefined = undefined
   export let ignoreView: boolean = false
   export let shareId: string | undefined = undefined
+
+  const isDashboard = getIsDashboard()
+  const dashboard = getDashboard()
 
   let editing = false
   let open = false
@@ -39,6 +43,19 @@
       toast.error(error.message)
     },
   })
+
+  const deleteDashboardWidgetMutation = createMutation({
+    mutationFn: trpc.dashboard.widget.delete.mutate,
+    onSuccess: async () => {
+      confirmDelete = false
+      if ($isDashboard) {
+        await invalidate(`dashboard:${$dashboard.id.value}`)
+      }
+    },
+    onError(error, variables, context) {
+      toast.error(error.message)
+    },
+  })
 </script>
 
 {#if $table}
@@ -46,7 +63,7 @@
     <div class="flex items-center justify-between px-4 py-2">
       <span class="text-sm font-bold">{widget.name}</span>
       {#if !shareId}
-        <div class="hidden items-center gap-2 group-hover:flex">
+        <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100">
           <Dialog.Root bind:open portal="body">
             <Dialog.Trigger>
               <Maximize2Icon class="size-3" />
@@ -78,7 +95,7 @@
                 <div class="flex w-1/4 flex-col border-l px-4 py-2">
                   <div class="flex-1">
                     {#if widget.item.type === "aggregate"}
-                      <AggregateConfig {viewId} {widget} aggregate={widget.item.aggregate} />
+                      <AggregateConfig {tableId} {viewId} {widget} aggregate={widget.item.aggregate} />
                     {/if}
                   </div>
                 </div>
@@ -130,7 +147,9 @@
             builders={[builder]}
             variant="destructive"
             on:click={() => {
-              if (viewId) {
+              if ($isDashboard) {
+                $deleteDashboardWidgetMutation.mutate({ dashboardId: $dashboard.id.value, widgetId: widget.id })
+              } else if (viewId && tableId) {
                 $deleteViewWidgetMutation.mutate({ tableId, viewId, id: widget.id })
               }
             }}

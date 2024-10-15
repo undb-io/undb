@@ -1,6 +1,7 @@
-import { ValueObject } from "@undb/domain"
+import { Option, Some, ValueObject } from "@undb/domain"
 import { tableId, widgetDTO, WidgetVO } from "@undb/table"
 import * as z from "@undb/zod"
+import type { IUpdateDashboardWidgetDTO } from "../dto/update-dashboard-widget.dto"
 import { WithDashboardWidgets, type DashboardComositeSpecification } from "../specifications"
 
 export const dashboardWidgetSchema = z.object({
@@ -48,5 +49,26 @@ export class DashboardWidgets extends ValueObject<IDashboardWidgets> {
   $addWidget(widget: IDashboardWidget): DashboardComositeSpecification {
     const widgets = this.addWidget(widget)
     return new WithDashboardWidgets(widgets)
+  }
+
+  $updateWidget({ widget }: IUpdateDashboardWidgetDTO): Option<DashboardComositeSpecification> {
+    const newWidget = new DashboardWidget({
+      table: widget.table,
+      widget: widget.widget,
+    })
+
+    const widgets: IDashboardWidgets = this.value.map((w) =>
+      w.widget.id === newWidget.props.widget.id ? newWidget.toJSON() : w,
+    )
+
+    const spec = new WithDashboardWidgets(widgets)
+
+    return Some(spec)
+  }
+
+  $deleteWidget(widgetId: string): Option<DashboardComositeSpecification> {
+    const widgets = this.value.filter((w) => w.widget.id !== widgetId)
+    const spec = new WithDashboardWidgets(widgets)
+    return Some(spec)
   }
 }

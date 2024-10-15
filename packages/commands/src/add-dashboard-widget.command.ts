@@ -1,8 +1,8 @@
-import { addWidgetDTO, type IDashboardWidget } from "@undb/dashboard"
+import { addDashboardWidgetDTO, type IDashboardWidget } from "@undb/dashboard"
 import { Command, type CommandProps } from "@undb/domain"
 import { z } from "@undb/zod"
 
-export const addDashboardWidgetCommand = addWidgetDTO
+export const addDashboardWidgetCommand = addDashboardWidgetDTO
 
 export type IAddDashboardWidgetCommand = z.infer<typeof addDashboardWidgetCommand>
 
