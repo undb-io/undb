@@ -60,9 +60,7 @@
   $: isPending = $getAggregate.isPending
 </script>
 
-<div
-  class={cn("flex w-full flex-1 items-center justify-center rounded-lg bg-white px-6 text-[3rem]", $$restProps.class)}
->
+<div class={cn("flex w-full flex-1 items-center justify-center rounded-lg px-6 text-[3rem]", $$restProps.class)}>
   {#if !isValid}
     <Tooltip.Root>
       <Tooltip.Trigger>

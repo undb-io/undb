@@ -53,15 +53,18 @@ export const createWidgetItems = (dashboard: Dashboard) => {
       widget: null,
     }
 
-    const findOutPosition = gridHelp.findSpace(newItem, $widgetItems, COLS)
+    if ($widgetItems.length) {
+      const findOutPosition = gridHelp.findSpace(newItem, $widgetItems, COLS)
 
-    newItem = {
-      ...newItem,
-      [COLS]: {
-        ...newItem[COLS],
-        ...findOutPosition,
-      },
+      newItem = {
+        ...newItem,
+        [COLS]: {
+          ...newItem[COLS],
+          ...findOutPosition,
+        },
+      }
     }
+    console.log(newItem)
 
     update(($widgetItems) => [...$widgetItems, ...[newItem]])
 
