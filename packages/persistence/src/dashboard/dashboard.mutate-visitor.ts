@@ -3,6 +3,7 @@ import type {
   DuplicatedDashboardSpecification,
   IDashboardSpecVisitor,
   WithDashboardId,
+  WithDashboardLayout,
   WithDashboardName,
   WithDashboardQ,
   WithDashboardSpaceId,
@@ -12,6 +13,9 @@ import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
 import { json } from "../qb"
 
 export class DashboardMutateVisitor extends AbstractQBMutationVisitor implements IDashboardSpecVisitor {
+  withDashboardLayout(v: WithDashboardLayout): void {
+    this.setData("layout", v.layout ? json(v.layout) : null)
+  }
   withDashboardWidgets(v: WithDashboardWidgets): void {
     this.setData("widgets", v.widgets.length ? json(v.widgets) : null)
   }

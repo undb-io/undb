@@ -20,16 +20,11 @@ export interface WidgetDataItem {
   widget: IWidgetDTO | null
 }
 
-const createWidgetItems = () => {
+export const createWidgetItems = (dashboard: Dashboard) => {
   const { subscribe, set, update } = writable<WidgetDataItem[]>([])
-
   let $widgetItems: WidgetDataItem[] = []
 
-  subscribe((items) => {
-    $widgetItems = items
-  })
-
-  const init = (dashboard: Dashboard) => {
+  function init() {
     const widgets = dashboard.widgets.value
     set(
       widgets.map((widget) => ({
@@ -45,7 +40,7 @@ const createWidgetItems = () => {
     )
   }
 
-  const add = (type: IWidgetType) => {
+  function add(type: IWidgetType) {
     const id = WidgetIdVo.create().value
     let newItem: WidgetDataItem = {
       [COLS]: gridHelp.item({
@@ -73,12 +68,18 @@ const createWidgetItems = () => {
     return newItem
   }
 
-  const remove = (id: string) => {
+  function remove(id: string) {
     const widgetItems = $widgetItems.filter((w) => w.widget?.id !== id)
     $widgetItems = widgetItems
     $widgetItems = gridHelp.adjust(widgetItems, COLS)
     return $widgetItems
   }
+
+  init()
+
+  subscribe((items) => {
+    $widgetItems = items
+  })
 
   return {
     subscribe,
@@ -92,4 +93,4 @@ const createWidgetItems = () => {
 
 export const cols = [[1200, COLS]]
 
-export const widgetItems = createWidgetItems()
+export type WidgetItemsStore = ReturnType<typeof createWidgetItems>
