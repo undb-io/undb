@@ -68,10 +68,11 @@
     <div class="flex items-center justify-between px-4 py-2">
       <div class="flex items-center gap-2">
         {#if movePointerDown}
-          <GripVerticalIcon
-            on:pointerdown={movePointerDown}
-            class="text-muted-foreground size-4 cursor-grab opacity-0 group-hover:block group-hover:opacity-100 dark:text-gray-200"
-          />
+          <button on:pointerdown={movePointerDown}>
+            <GripVerticalIcon
+              class="text-muted-foreground size-4 cursor-grab opacity-0 group-hover:block group-hover:opacity-100 dark:text-gray-200"
+            />
+          </button>
         {/if}
         <span class="text-sm font-bold">{widget.name}</span>
       </div>
@@ -145,12 +146,13 @@
     {/if}
 
     {#if resizePointerDown}
-      <ChevronRightIcon
-        class="text-muted-foreground absolute bottom-0 right-0
+      <button on:pointerdown={resizePointerDown}>
+        <ChevronRightIcon
+          class="text-muted-foreground absolute bottom-0 right-0
 				hidden size-4 rotate-45 cursor-se-resize
 				text-3xl group-hover:block"
-        on:pointerdown={resizePointerDown}
-      />
+        />
+      </button>
     {/if}
   </div>
 

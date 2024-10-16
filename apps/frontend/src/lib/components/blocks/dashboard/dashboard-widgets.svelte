@@ -40,3 +40,17 @@
     {/if}
   </Grid>
 </div>
+
+<style>
+  :global(.svlt-grid-shadow) {
+    /* Back shadow */
+    background: #dbeafe !important;
+    opacity: 0.5;
+    border: 2px #2563eb dashed;
+    border-radius: 4px;
+  }
+
+  :global(.svlt-grid-item) {
+    opacity: 1 !important;
+  }
+</style>
