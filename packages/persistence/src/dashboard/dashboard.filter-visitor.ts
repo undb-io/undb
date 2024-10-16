@@ -3,6 +3,7 @@ import type {
   DashboardBaseIdSpecification,
   IDashboardSpecVisitor,
   WithDashboardId,
+  WithDashboardLayout,
   WithDashboardName,
   WithDashboardQ,
   WithDashboardSpaceId,
@@ -18,6 +19,9 @@ export class DashboardFilterVisitor extends AbstractQBVisitor<Dashboard> impleme
     super(eb)
   }
 
+  withDashboardLayout(v: WithDashboardLayout): void {
+    throw new Error("Method not implemented.")
+  }
   withDashboardWidgets(v: WithDashboardWidgets): void {
     throw new Error("Method not implemented.")
   }

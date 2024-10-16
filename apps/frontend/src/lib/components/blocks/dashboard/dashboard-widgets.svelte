@@ -1,16 +1,12 @@
 <script lang="ts">
-  import { getDashboard } from "$lib/store/dashboard.store"
-  import { COLS, cols, widgetItems } from "$lib/store/widget.store"
+  import { getDashboardWidgetItemsStore } from "$lib/store/dashboard.store"
+  import { COLS, cols } from "$lib/store/widget.store"
   import DashboardWidget from "./dashboard-widget.svelte"
 
   // @ts-ignore
   import Grid from "svelte-grid"
 
-  const dashboard = getDashboard()
-
-  $: if ($dashboard) {
-    widgetItems.init($dashboard)
-  }
+  const widgetItems = getDashboardWidgetItemsStore()
 
   const onPointeup = () => {
     const widgets = $widgetItems.map((item) => {

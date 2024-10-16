@@ -16,7 +16,7 @@
   import { toast } from "svelte-sonner"
   import { getDashboard, getIsDashboard } from "$lib/store/dashboard.store"
   import { cn } from "$lib/utils"
-  import { GripVerticalIcon, ScalingIcon } from "lucide-svelte"
+  import { GripVerticalIcon, ChevronRightIcon } from "lucide-svelte"
 
   export let tableId: string | undefined
   const table = getTable()
@@ -70,7 +70,7 @@
         {#if movePointerDown}
           <GripVerticalIcon
             on:pointerdown={movePointerDown}
-            class="cursor-grab text-gray-500 opacity-0 group-hover:block group-hover:opacity-100 dark:text-gray-200"
+            class="text-muted-foreground size-4 cursor-grab opacity-0 group-hover:block group-hover:opacity-100 dark:text-gray-200"
           />
         {/if}
         <span class="text-sm font-bold">{widget.name}</span>
@@ -145,9 +145,9 @@
     {/if}
 
     {#if resizePointerDown}
-      <ScalingIcon
-        class="text-primary-400 absolute
-				bottom-0 right-0 hidden cursor-se-resize
+      <ChevronRightIcon
+        class="text-muted-foreground absolute bottom-0 right-0
+				hidden size-4 rotate-45 cursor-se-resize
 				text-3xl group-hover:block"
         on:pointerdown={resizePointerDown}
       />
