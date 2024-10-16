@@ -13,6 +13,7 @@ export class DashboardMapper implements Mapper<DashboardDo, Dashboard, IDashboar
       baseId: entity.base_id,
       spaceId: entity.space_id,
       widgets: entity.widgets ?? [],
+      layout: entity.layout,
     })
   }
   toEntity(domain: DashboardDo): Dashboard {
@@ -22,6 +23,7 @@ export class DashboardMapper implements Mapper<DashboardDo, Dashboard, IDashboar
       base_id: domain.baseId,
       name: domain.name.value,
       widgets: domain.widgets.value ? json(domain.widgets.value) : null,
+      layout: domain.layout.value ? json(domain.layout.value) : null,
     }
   }
   toDTO(entity: Dashboard): IDashboardDTO {
@@ -31,6 +33,7 @@ export class DashboardMapper implements Mapper<DashboardDo, Dashboard, IDashboar
       baseId: entity.base_id,
       name: entity.name,
       widgets: entity.widgets ?? [],
+      layout: entity.layout ?? {},
     }
   }
 }

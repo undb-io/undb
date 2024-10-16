@@ -13,7 +13,7 @@ export const dashboardDTO = z.object({
   baseId: baseIdSchema,
   spaceId: spaceIdSchema,
   name: dashboardNameSchema,
-  layout: dashboardLayoutsSchema,
+  layout: dashboardLayoutsSchema.optional().nullable(),
   widgets: dashboardWidgetsSchema.optional().nullable(),
 })
 

@@ -1,4 +1,5 @@
 import { singleton } from "@undb/di"
+import { createLogger } from "@undb/logger"
 import { injectTableRepository, TableIdVo, type ITableRepository } from "@undb/table"
 import type { Dashboard } from "../dashboard.do"
 import { injectDashboardRepository, type IDashboardRepository } from "../dashboard.repository"
@@ -10,6 +11,8 @@ export interface IDashboarService {
 
 @singleton()
 export class DashboardService implements IDashboarService {
+  private readonly logger = createLogger(DashboardService.name)
+
   constructor(
     @injectDashboardRepository()
     private readonly dashboardRepository: IDashboardRepository,
@@ -26,10 +29,13 @@ export class DashboardService implements IDashboarService {
 
     ;(await this.tableRepository.findOneById(new TableIdVo(tableId))).expect("table not found")
 
-    const spec = dashboard.widgets.$addWidget(dto.widget)
-    spec.mutate(dashboard)
+    const spec = dashboard.$addWidget(dto)
+    if (spec.isNone()) {
+      return dashboard
+    }
+    spec.unwrap().mutate(dashboard)
 
-    await this.dashboardRepository.updateOneById(dashboard, spec)
+    await this.dashboardRepository.updateOneById(dashboard, spec.unwrap())
 
     return dashboard
   }

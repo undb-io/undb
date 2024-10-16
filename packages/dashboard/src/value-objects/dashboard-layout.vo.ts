@@ -2,6 +2,8 @@ import { ValueObject } from "@undb/domain"
 import { widgetId, type IWidgetDTO, type IWidgetType } from "@undb/table"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
+import type { IAddDashboardWidgetDTO } from "../dto/add-dashboard-widget.dto"
+import { WithDashboardLayout } from "../specifications"
 
 export const dashboardLayoutSchema = z.object({
   x: z.number().nonnegative(),
@@ -31,6 +33,10 @@ export type IDashboardLayouts = z.infer<typeof dashboardLayoutsSchema>
 export class DashboardLayouts extends ValueObject<IDashboardLayouts> {
   constructor(layouts: IDashboardLayouts) {
     super(layouts ? layouts : { value: null })
+  }
+
+  static default(): IDashboardLayout {
+    return this.defaultLayout("aggregate")
   }
 
   static defaultLayout(type: IWidgetType): IDashboardLayout {
@@ -75,5 +81,21 @@ export class DashboardLayouts extends ValueObject<IDashboardLayouts> {
     }
 
     return DashboardLayouts.defaultLayout(widget.item.type)
+  }
+
+  addLayout(widget: IWidgetDTO, layout: IDashboardLayout): IDashboardLayouts {
+    return {
+      ...this.value,
+      [widget.id]: layout,
+    }
+  }
+
+  $addWidget(dto: IAddDashboardWidgetDTO): WithDashboardLayout {
+    const layout = this.addLayout(dto.widget.widget, dto.layout)
+    return new WithDashboardLayout(layout)
+  }
+
+  toJSON(): IDashboardLayouts {
+    return this.value
   }
 }

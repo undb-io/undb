@@ -1,6 +1,7 @@
 <script lang="ts">
   import { superForm } from "sveltekit-superforms/client"
   import { zodClient } from "sveltekit-superforms/adapters"
+  import SuperDebug from "sveltekit-superforms"
   import { Loader2 } from "lucide-svelte"
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
@@ -13,10 +14,11 @@
   import { derived } from "svelte/store"
   import { getNextName } from "@undb/utils"
   import { toast } from "svelte-sonner"
-  import { getDashboard } from "$lib/store/dashboard.store"
-  import { DashboardWidget } from "@undb/dashboard"
+  import { getDashboard, getDashboardWidgetItemsStore } from "$lib/store/dashboard.store"
+  import { DashboardWidget, DashboardLayouts } from "@undb/dashboard"
   import TablePicker from "../table-picker/table-picker.svelte"
   import { invalidate } from "$app/navigation"
+  import { COLS } from "$lib/store/widget.store"
 
   const dashboard = getDashboard()
 
@@ -26,11 +28,23 @@
 
   export let onSuccess: () => void = () => {}
 
+  const widgetItems = getDashboardWidgetItemsStore()
+  const widget = widgetItems.add("aggregate")
+
+  const layout = widget[COLS]
+  const defaultLayout = DashboardLayouts.default()
+
   const form = superForm(
     defaults(
       {
         dashboardId: $dashboard.id.value,
         widget: DashboardWidget.default(undefined, $name).toJSON(),
+        layout: {
+          x: layout.x ?? defaultLayout.x,
+          y: layout.y ?? defaultLayout.y,
+          w: layout.w ?? defaultLayout.w,
+          h: layout.h ?? defaultLayout.h,
+        },
       },
       zodClient(addDashboardWidgetCommand),
     ),
@@ -44,7 +58,10 @@
         validateForm({ update: true })
       },
       onUpdate(event) {
-        if (!event.form.valid) return
+        if (!event.form.valid) {
+          console.log(event.form.errors)
+          return
+        }
 
         $addDashboardWidgetMutation.mutate(event.form.data)
       },
@@ -90,12 +107,20 @@
     <Form.FieldErrors />
   </Form.Field> -->
 
-  <Button type="submit" variant="outline" disabled={$addDashboardWidgetMutation.isPending} class="w-full">
+  <Form.Button
+    size="sm"
+    type="submit"
+    variant="outline"
+    disabled={$addDashboardWidgetMutation.isPending}
+    class="w-full"
+  >
     {#if $addDashboardWidgetMutation.isPending}
       <Loader2 class="mr-2 h-4 w-4 animate-spin" />
     {:else}
       <PlugIcon class="mr-2 h-4 w-4" />
     {/if}
     Add Widget
-  </Button>
+  </Form.Button>
 </form>
+
+<SuperDebug data={$formData} />
