@@ -13,5 +13,5 @@
 </script>
 
 {#if displayValue}
-  <div class={cn("text-muted-foreground text-sm", $$restProps.class)}>{displayValue}</div>
+  <div class={cn("text-sm", $$restProps.class)}>{displayValue}</div>
 {/if}

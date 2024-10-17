@@ -50,7 +50,7 @@
         size="xs"
         variant="link"
         type="button"
-        class="px-0"
+        class="text-muted-foreground px-0"
         builders={[builder]}
         on:click={(e) => e.stopPropagation()}
       >

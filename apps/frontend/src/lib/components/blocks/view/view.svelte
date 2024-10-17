@@ -4,6 +4,7 @@
   import GridView from "../grid-view/grid-view.svelte"
   import KanbanView from "../kanban-view/kanban-view.svelte"
   import GalleryView from "../gallery-view/gallery-view.svelte"
+  import ListView from "../list-view/list-view.svelte"
   import { r } from "$lib/store/records.store"
 
   const table = getTable()
@@ -20,6 +21,8 @@
       <GridView {viewId} {r} />
     {:else if view.type === "gallery"}
       <GalleryView {viewId} {r} />
+    {:else if view.type === "list"}
+      <ListView {viewId} {r} />
     {/if}
   {/if}
 {/key}

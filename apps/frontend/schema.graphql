@@ -291,6 +291,7 @@ enum ViewType {
   gallery
   grid
   kanban
+  list
 }
 
 type Widget {
