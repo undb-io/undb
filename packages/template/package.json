@@ -5,6 +5,7 @@
   "type": "module",
   "dependencies": {
     "@undb/base": "workspace:*",
+    "@undb/dashboard": "workspace:*",
     "@undb/di": "workspace:*",
     "@undb/domain": "workspace:*",
     "@undb/logger": "workspace:*",

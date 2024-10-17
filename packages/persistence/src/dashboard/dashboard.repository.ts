@@ -90,6 +90,12 @@ export class DashboardRepository implements IDashboardRepository {
     await this.outboxService.save(dashboard)
   }
 
+  async insertMany(dashboards: Dashboard[]): Promise<void> {
+    for (const dashboard of dashboards) {
+      await this.insert(dashboard)
+    }
+  }
+
   async updateOneById(dashboard: Dashboard, spec: IDashboardSpecification): Promise<void> {
     const userId = this.context.mustGetCurrentUserId()
 
