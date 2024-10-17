@@ -57,6 +57,7 @@ export const spaceActions = z.enum([
   "share:table",
   "share:base",
   "share:form",
+  "share:dashboard",
 
   "authz:invite",
   "authz:listInvitation",

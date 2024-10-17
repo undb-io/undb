@@ -1,6 +1,6 @@
-import { injectBaseQueryRepository, type IBaseDTO, type IBaseQueryRepository } from "@undb/base"
-import { inject, singleton } from "@undb/di"
-import { None, Option, Some, type IPagination, type PaginatedDTO } from "@undb/domain"
+import { injectBaseQueryRepository,type IBaseDTO,type IBaseQueryRepository } from "@undb/base"
+import { inject,singleton } from "@undb/di"
+import { None,Option,Some,type IPagination,type PaginatedDTO } from "@undb/domain"
 import {
   RecordIdVO,
   TableComositeSpecification,
@@ -24,7 +24,7 @@ import {
   type SingleQueryArgs,
 } from "@undb/table"
 import { match } from "ts-pattern"
-import type { IDisableShareDTO, IEnableShareDTO, IShareDTO } from "../dto"
+import type { IDisableShareDTO,IEnableShareDTO,IShareDTO } from "../dto"
 import type { IShareTarget } from "../share-target.vo"
 import { ShareFactory } from "../share.factory"
 import {
@@ -33,7 +33,7 @@ import {
   type IShareQueryRepository,
   type IShareRepository,
 } from "../share.repository"
-import { WithShareId, withShare } from "../specifications"
+import { WithShareId,withShare } from "../specifications"
 
 export interface IShareService {
   enableShare(dto: IEnableShareDTO): Promise<void>
@@ -206,7 +206,7 @@ export class ShareService implements IShareService {
       .returnType<TableComositeSpecification>()
       .with("form", () => new WithFormIdSpecification(share.target.id))
       .with("view", () => new WithViewIdSpecification(share.target.id))
-      .with("base", () => {
+      .with("base", "dashboard", () => {
         if (!tableId) {
           throw new Error("tableId is required if share target is table")
         }

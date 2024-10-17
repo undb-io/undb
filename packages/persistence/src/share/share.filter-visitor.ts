@@ -2,6 +2,7 @@ import type {
   IShareSpecVisitor,
   Share,
   WithShareBase,
+  WithShareDashboard,
   WithShareEnabled,
   WithShareForm,
   WithShareId,
@@ -30,6 +31,10 @@ export class ShareFilterVisitor extends AbstractQBVisitor<Share> implements ISha
   }
   targetBase(s: WithShareBase): void {
     const cond = this.eb.and([this.eb.eb("target_type", "=", "base"), this.eb.eb("target_id", "=", s.baseId)])
+    this.addCond(cond)
+  }
+  targetDashboard(s: WithShareDashboard): void {
+    const cond = this.eb.and([this.eb.eb("target_type", "=", "dashboard"), this.eb.eb("target_id", "=", s.dashboardId)])
     this.addCond(cond)
   }
   targetView(s: WithShareView): void {

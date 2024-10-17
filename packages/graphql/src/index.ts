@@ -107,6 +107,8 @@ export class Graphql {
         spaceId: ID!
         layout: JSON
         widgets: [DashboardWidget!]
+
+        share: Share
       }
 
       enum FieldType {
@@ -561,6 +563,17 @@ export class Graphql {
           // @ts-ignore
           user: async (member) => {
             return (await this.userRepo.findOneById(member.userId)).unwrap()
+          },
+        },
+        Dashboard: {
+          // @ts-ignore
+          share: async (dashboard) => {
+            return (
+              await this.shareService.getShareByTarget(
+                { type: "dashboard", id: dashboard.id },
+                this.context.mustGetCurrentSpaceId(),
+              )
+            ).into(null)
           },
         },
         View: {

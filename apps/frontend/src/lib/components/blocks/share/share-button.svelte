@@ -17,6 +17,7 @@
   import { hasPermission } from "$lib/store/space-member.store"
   import Textarea from "$lib/components/ui/textarea/textarea.svelte"
   import { match } from "ts-pattern"
+  // @ts-ignore
   import QrCode from "svelte-qrcode"
   import * as HoverCard from "$lib/components/ui/hover-card"
 
@@ -100,6 +101,7 @@
     .with("form", () => $hasPermission("share:form"))
     .with("base", () => $hasPermission("share:base"))
     .with("view", () => $hasPermission("share:view"))
+    .with("dashboard", () => $hasPermission("share:dashboard"))
     .otherwise(() => false)
 
   let shareIdCopied = false

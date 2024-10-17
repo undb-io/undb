@@ -5,6 +5,7 @@ export const getShareViewUrl = (origin: string, shareId: string) => origin + "/s
 export const getShareFormUrl = (origin: string, shareId: string) => origin + "/s/f/" + shareId
 export const getShareTableUrl = (origin: string, shareId: string) => origin + "/s/t/" + shareId
 export const getShareBaseUrl = (origin: string, shareId: string) => origin + "/s/b/" + shareId
+export const getShareDashboardUrl = (origin: string, shareId: string) => origin + "/s/d/" + shareId
 
 export const getShareUrl = (type: IShareType, origin: string, id: string) => {
   return match(type)
@@ -12,6 +13,7 @@ export const getShareUrl = (type: IShareType, origin: string, id: string) => {
     .with("form", () => getShareFormUrl(origin, id))
     .with("table", () => getShareTableUrl(origin, id))
     .with("base", () => getShareBaseUrl(origin, id))
+    .with("dashboard", () => getShareDashboardUrl(origin, id))
     .exhaustive()
 }
 

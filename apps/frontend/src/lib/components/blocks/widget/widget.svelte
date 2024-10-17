@@ -65,8 +65,8 @@
 
 {#if $table}
   <div class={cn("group absolute flex h-full w-full flex-col rounded-sm border", $$restProps.class)}>
-    <div class="flex items-center justify-between px-4 py-2">
-      <div class="flex items-center gap-2">
+    <div class="flex items-center justify-between p-2">
+      <div class="flex items-center gap-0.5">
         {#if movePointerDown}
           <button on:pointerdown={movePointerDown}>
             <GripVerticalIcon
