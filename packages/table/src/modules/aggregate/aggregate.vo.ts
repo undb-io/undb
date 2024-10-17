@@ -1,6 +1,6 @@
 import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
-import { fieldId, type FieldType } from "../schema"
+import { fieldId, fieldName, type FieldType } from "../schema"
 import { createConditionGroup } from "../schema/fields/condition/condition.type"
 import { parseValidCondition } from "../schema/fields/condition/condition.util"
 
@@ -19,7 +19,7 @@ export const countAggregate = baseAggregate.extend({
 })
 
 const fieldAggregateConfig = z.object({
-  field: fieldId.optional(),
+  field: fieldId.or(fieldName).optional(),
 })
 
 export const sumAggregate = baseAggregate.extend({

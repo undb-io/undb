@@ -1,4 +1,5 @@
 import { Base, injectBaseRepository, WithBaseSpaceId, type IBaseRepository } from "@undb/base"
+import { injectDashboardRepository, type IDashboardRepository } from "@undb/dashboard"
 import { singleton } from "@undb/di"
 import {
   injectRecordsService,
@@ -30,6 +31,8 @@ export class TemplateService implements ITemplateService {
     private readonly templateQueryRepository: ITemplateQueryRepository,
     @injectRecordsService()
     private readonly recordsService: IRecordsService,
+    @injectDashboardRepository()
+    private readonly dashboardRepository: IDashboardRepository,
   ) {}
 
   async createBase(
@@ -42,13 +45,15 @@ export class TemplateService implements ITemplateService {
     const baseNames = bases.map((base) => base.name.value)
     const result = TemplateFactory.create(template.template.template, baseNames, spaceId)
 
-    for (const { base, tables } of result) {
+    for (const { base, tables, dashboards } of result) {
       await this.baseRepository.insert(base)
       await this.tableRepository.insertMany(tables.map((table) => table.table))
       if (!includeData) {
         continue
       }
       await this.recordsService.createTablesRecords(tables)
+
+      await this.dashboardRepository.insertMany(dashboards)
     }
 
     return result

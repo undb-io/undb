@@ -1,5 +1,6 @@
 {
   "Human Resource Management": {
+    "tablesOrder": ["Employees", "Departments", "Time Off Requests", "Payroll", "Performance Reviews"],
     "tables": {
       "Employees": {
         "fieldsOrder": [
@@ -1065,6 +1066,35 @@
             "comments": "Strong problem-solving skills, reliable team member."
           }
         ]
+      }
+    },
+    "dashboards": {
+      "Hr Dashboard": {
+        "widgets": {
+          "Developers Count": {
+            "tableName": "Employees",
+            "widget": {
+              "id": "developers_count",
+              "name": "Developers Count",
+              "item": {
+                "type": "aggregate",
+                "aggregate": {
+                  "type": "count",
+                  "condition": {
+                    "conjunction": "and",
+                    "children": [
+                      {
+                        "field": "position",
+                        "op": "eq",
+                        "value": "developer"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

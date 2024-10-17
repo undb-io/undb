@@ -1,6 +1,7 @@
 import type { IBaseId } from "@undb/base"
 import { AggregateRoot, and, Some } from "@undb/domain"
 import type { ISpaceId } from "@undb/space"
+import type { TableDo } from "@undb/table"
 import { getNextName } from "@undb/utils"
 import type { Option } from "oxide.ts"
 import { DashboardFactory } from "./dashboard.factory.js"
@@ -58,8 +59,8 @@ export class Dashboard extends AggregateRoot<any> {
     return new DuplicatedDashboardSpecification(this, duplicatedDashboard)
   }
 
-  $addWidget(dto: IAddDashboardWidgetDTO): Option<DashboardComositeSpecification> {
-    return and(this.widgets.$addWidget(dto.widget), this.layout.$addWidget(dto))
+  $addWidget(table: TableDo, dto: IAddDashboardWidgetDTO): Option<DashboardComositeSpecification> {
+    return and(this.widgets.$addWidget(table, dto.widget), this.layout.$addWidget(dto))
   }
 
   $relayoutWidgets(dto: IRelayoutDashboardWidgetsDTO): Option<DashboardComositeSpecification> {

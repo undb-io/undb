@@ -10,6 +10,7 @@ export interface IDashboardRepository {
   findOneById(id: string): Promise<Option<Dashboard>>
 
   insert(dashboard: Dashboard): Promise<void>
+  insertMany(dashboards: Dashboard[]): Promise<void>
   updateOneById(dashboard: Dashboard, spec: IDashboardSpecification): Promise<void>
   deleteOneById(id: string): Promise<void>
 }
