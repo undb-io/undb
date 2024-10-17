@@ -21,6 +21,8 @@
   let dropdownOpen = false
   let updateOpen = false
 
+  export let onDuplicateSuccess: () => void = () => {}
+
   const client = useQueryClient()
   const deleteRecordsMutation = createMutation({
     mutationFn: trpc.record.bulkDelete.mutate,
@@ -48,11 +50,12 @@
 
   const duplicateRecordsMutation = createMutation({
     mutationFn: trpc.record.bulkDuplicate.mutate,
-    onSuccess(data, variables, context) {
-      client.invalidateQueries({
+    async onSuccess(data, variables, context) {
+      await client.invalidateQueries({
         queryKey: ["records", $table.id.value],
       })
       toast.success("Record has been duplicated!")
+      onDuplicateSuccess()
     },
   })
 
