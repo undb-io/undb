@@ -12,6 +12,7 @@ export class Web {
       .use(staticPlugin({ prefix: "/assets", assets: "assets" }))
       .get("/", () => index)
       .get("/t/*", () => index)
+      .get("/dashboards/*", () => index)
       .get("/s/*", () => index)
       .get("/bases/*", () => index)
       .get("/account/*", () => index)

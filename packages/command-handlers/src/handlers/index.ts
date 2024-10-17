@@ -38,6 +38,7 @@ import { DuplicateViewCommandHandler } from "./duplicate-view.command-handler"
 import { EnableShareCommandHandler } from "./enable-share.command-handler"
 import { ExportViewCommandHandler } from "./export-view.command-handler"
 import { InviteCommandHandler } from "./invite.command-handler"
+import { RelayoutDashboardWidgetsCommandHandler } from "./relayout-dashboard-widgets.command-handler"
 import { SetDefaultViewCommandHandler } from "./set-default-view.command-handler"
 import { SetFieldWidthCommandHandler } from "./set-field-width.command-handler"
 import { SetTableFormCommandHandler } from "./set-table-form.command-handler"
@@ -124,4 +125,5 @@ export const commandHandlers = [
   AddDashboardWidgetCommandHandler,
   UpdateDashboardWidgetCommandHandler,
   DeleteDashboardWidgetCommandHandler,
+  RelayoutDashboardWidgetsCommandHandler,
 ]
