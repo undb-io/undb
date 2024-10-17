@@ -86,11 +86,32 @@ export class WithShareBase extends CompositeSpecification<Share, IShareSpecVisit
   }
 }
 
+export class WithShareDashboard extends CompositeSpecification<Share, IShareSpecVisitor> {
+  constructor(public readonly dashboardId: string) {
+    super()
+  }
+
+  isSatisfiedBy(s: Share): boolean {
+    return s.target.type === "dashboard" && s.target.id === this.dashboardId
+  }
+
+  mutate(w: Share): Result<Share, string> {
+    w.target = new ShareTarget({ type: "dashboard", id: this.dashboardId })
+    return Ok(w)
+  }
+
+  accept(v: IShareSpecVisitor): Result<void, string> {
+    v.targetDashboard(this)
+    return Ok(undefined)
+  }
+}
+
 export const withShare = (type: IShareType | undefined, id: string) => {
   return match(type)
     .with("view", undefined, () => new WithShareView(id))
     .with("form", () => new WithShareForm(id))
     .with("table", () => new WithShareTable(id))
     .with("base", () => new WithShareBase(id))
+    .with("dashboard", () => new WithShareDashboard(id))
     .exhaustive()
 }

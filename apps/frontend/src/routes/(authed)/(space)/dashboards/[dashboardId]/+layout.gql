@@ -15,5 +15,10 @@ query GetDashboardQuery($dashboardId: ID!) {
         item
       }
     }
+
+    share {
+      enabled
+      id
+    }
   }
 }

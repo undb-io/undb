@@ -29,6 +29,7 @@ export class EnableShareCommandHandler implements ICommandHandler<EnableShareCom
       .with("form", () => "share:form")
       .with("view", () => "share:view")
       .with("base", () => "share:base")
+      .with("dashboard", () => "share:dashboard")
       .exhaustive()
 
     checkPermission(role, [permission])

@@ -59,6 +59,7 @@ export const spacePermission: Record<ISpaceMemberRole, Record<ISpaceAction, bool
     "share:table": true,
     "share:base": true,
     "share:form": true,
+    "share:dashboard": true,
 
     "authz:invite": true,
     "authz:listInvitation": true,
@@ -121,6 +122,7 @@ export const spacePermission: Record<ISpaceMemberRole, Record<ISpaceAction, bool
     "share:table": true,
     "share:base": true,
     "share:form": true,
+    "share:dashboard": true,
 
     "authz:invite": true,
     "authz:listInvitation": true,
@@ -178,6 +180,7 @@ export const spacePermission: Record<ISpaceMemberRole, Record<ISpaceAction, bool
     "share:table": false,
     "share:base": false,
     "share:form": true,
+    "share:dashboard": false,
 
     "webhook:create": true,
     "webhook:update": true,
@@ -245,6 +248,7 @@ export const spacePermission: Record<ISpaceMemberRole, Record<ISpaceAction, bool
     "share:table": false,
     "share:base": false,
     "share:form": false,
+    "share:dashboard": false,
 
     "authz:invite": true,
     "authz:listInvitation": true,
