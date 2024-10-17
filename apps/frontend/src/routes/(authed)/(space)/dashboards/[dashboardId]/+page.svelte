@@ -19,13 +19,13 @@
       {$dashboard.name.value}
     </h1>
     <div class="flex items-center gap-2">
-      <ShareButton
+      <!-- <ShareButton
         type="dashboard"
         id={$dashboard.id.value}
         onSuccess={() => {
           invalidate(`undb:dashboard:${$dashboard.id.value}`)
         }}
-      />
+      /> -->
 
       <AddDashboardWidgetButton variant="outline" size="sm" />
     </div>

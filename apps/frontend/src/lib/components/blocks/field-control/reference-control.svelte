@@ -42,7 +42,9 @@
         {$selected.length} Linked Records
       </Button>
     {:else}
-      <Button size="xs" variant="link" type="button" class="px-0" builders={[builder]}>+ Link Records</Button>
+      <Button size="xs" variant="link" type="button" class="text-muted-foreground px-0" builders={[builder]}>
+        + Link Records
+      </Button>
     {/if}
   </ForeignRecordsPickerDropdown>
   {#if hasValueReactive}

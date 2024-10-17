@@ -181,7 +181,11 @@
   {#if !readonly}
     <TableTools {r}>
       {#if selectedRecordIds.length}
-        <SelectedRecordsButton class={selectedRecordIds.length && "opacity-100"} ids={selectedRecordIds} />
+        <SelectedRecordsButton
+          onDuplicateSuccess={() => selectedDataIds?.clear()}
+          class={selectedRecordIds.length && "opacity-100"}
+          ids={selectedRecordIds}
+        />
       {/if}
     </TableTools>
   {:else}

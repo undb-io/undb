@@ -112,6 +112,7 @@ const viewTypes: Record<ViewType, string> = {
   grid: "Grid",
   kanban: "Kanban",
   gallery: "Gallery",
+  list: "List",
 }
 
 const widgetTypes: Record<string, string> = {

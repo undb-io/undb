@@ -7,6 +7,7 @@
   import * as Popover from "$lib/components/ui/popover/index.js"
   import { Button } from "$lib/components/ui/button/index.js"
   import { cn } from "$lib/utils.js"
+  import { DatabaseIcon } from "lucide-svelte"
 
   export let value: string | undefined = undefined
   export let disabled: boolean = false
@@ -40,7 +41,10 @@
       {disabled}
     >
       {#if selectedValue}
-        {selectedValue}
+        <span class="flex items-center gap-2">
+          <DatabaseIcon class="text-muted-foreground h-4 w-4" />
+          {selectedValue}
+        </span>
       {:else}
         <span class="text-muted-foreground">Select a table...</span>
       {/if}
@@ -54,7 +58,7 @@
         return label.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
       }}
     >
-      <Command.Input placeholder="Search tables..." class="h-9" />
+      <Command.Input placeholder="Search tables..." class="h-9 text-xs" />
       <Command.Empty>No tables found.</Command.Empty>
       <Command.Group>
         {#each tables as t}
@@ -68,7 +72,8 @@
               class="gap-2"
             >
               <Check class={cn("h-4 w-4", value !== t.id && "text-transparent")} />
-              <span>
+              <span class="flex items-center gap-2">
+                <DatabaseIcon class="text-muted-foreground h-4 w-4" />
                 {t.name}
               </span>
             </Command.Item>
