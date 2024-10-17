@@ -1,7 +1,7 @@
 import { z } from "@undb/zod"
 import { tableId } from "../../../table-id.vo"
 import { widgetDTO } from "../../widgets/widget.vo"
-import { listOption, viewAggregate, viewColorGroup, viewFields, viewFilterGroup, viewOption, viewSort } from "../view"
+import { viewAggregate, viewColorGroup, viewFields, viewFilterGroup, viewOption, viewSort } from "../view"
 import { galleryOption } from "../view/variants/gallery-view.vo"
 import { kanbanOption } from "../view/variants/kanban-view.vo"
 import { viewId } from "../view/view-id.vo"
@@ -33,7 +33,6 @@ export const createKanbanViewDTO = createBaseViewDTO.extend({
 
 export const createListViewDTO = createBaseViewDTO.extend({
   type: z.literal("list"),
-  list: listOption.optional(),
 })
 
 export const createGalleryViewDTO = createBaseViewDTO.extend({

@@ -152,6 +152,7 @@ export class Graphql {
         grid
         kanban
         gallery
+        list
       }
 
       type ViewOption {
