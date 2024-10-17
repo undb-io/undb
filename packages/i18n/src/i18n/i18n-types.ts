@@ -391,6 +391,10 @@ type RootTranslation = {
 			 * G​a​l​l​e​r​y
 			 */
 			gallery: string
+			/**
+			 * L​i​s​t
+			 */
+			list: string
 		}
 		widgetTypes: {
 			/**
@@ -788,6 +792,10 @@ export type TranslationFunctions = {
 			 * Gallery
 			 */
 			gallery: () => LocalizedString
+			/**
+			 * List
+			 */
+			list: () => LocalizedString
 		}
 		widgetTypes: {
 			/**

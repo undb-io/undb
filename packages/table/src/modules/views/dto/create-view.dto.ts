@@ -1,7 +1,7 @@
 import { z } from "@undb/zod"
 import { tableId } from "../../../table-id.vo"
 import { widgetDTO } from "../../widgets/widget.vo"
-import { viewAggregate, viewColorGroup, viewFields, viewFilterGroup, viewOption, viewSort } from "../view"
+import { listOption, viewAggregate, viewColorGroup, viewFields, viewFilterGroup, viewOption, viewSort } from "../view"
 import { galleryOption } from "../view/variants/gallery-view.vo"
 import { kanbanOption } from "../view/variants/kanban-view.vo"
 import { viewId } from "../view/view-id.vo"
@@ -31,6 +31,11 @@ export const createKanbanViewDTO = createBaseViewDTO.extend({
   kanban: kanbanOption.optional(),
 })
 
+export const createListViewDTO = createBaseViewDTO.extend({
+  type: z.literal("list"),
+  list: listOption.optional(),
+})
+
 export const createGalleryViewDTO = createBaseViewDTO.extend({
   type: z.literal("gallery"),
   gallery: galleryOption.optional(),
@@ -40,6 +45,7 @@ export const createViewDTO = z.discriminatedUnion("type", [
   createGridViewDTO,
   createKanbanViewDTO,
   createGalleryViewDTO,
+  createListViewDTO,
 ])
 
 export const createViewsDTO = z.array(createViewDTO).refine(
@@ -55,6 +61,7 @@ export const createViewWithoutNameDTO = z.discriminatedUnion("type", [
   createGridViewDTO.omit({ name: true }),
   createKanbanViewDTO.omit({ name: true }),
   createGalleryViewDTO.omit({ name: true }),
+  createListViewDTO.omit({ name: true }),
 ])
 
 export const createViewsWithoutNameDTO = z.array(createViewWithoutNameDTO).refine(
@@ -72,6 +79,7 @@ export const createTableViewDTO = z.discriminatedUnion("type", [
   createGridViewDTO.merge(z.object({ tableId })),
   createKanbanViewDTO.merge(z.object({ tableId })),
   createGalleryViewDTO.merge(z.object({ tableId })),
+  createListViewDTO.merge(z.object({ tableId })),
 ])
 
 export type ICreateTableViewDTO = z.infer<typeof createTableViewDTO>
