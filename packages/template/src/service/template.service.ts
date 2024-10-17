@@ -48,11 +48,9 @@ export class TemplateService implements ITemplateService {
     for (const { base, tables, dashboards } of result) {
       await this.baseRepository.insert(base)
       await this.tableRepository.insertMany(tables.map((table) => table.table))
-      if (!includeData) {
-        continue
+      if (includeData) {
+        await this.recordsService.createTablesRecords(tables)
       }
-      await this.recordsService.createTablesRecords(tables)
-
       await this.dashboardRepository.insertMany(dashboards)
     }
 
