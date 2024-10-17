@@ -64,7 +64,6 @@ export const createWidgetItems = (dashboard: Dashboard) => {
         },
       }
     }
-    console.log(newItem)
 
     update(($widgetItems) => [...$widgetItems, ...[newItem]])
 

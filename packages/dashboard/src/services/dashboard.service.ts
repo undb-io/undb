@@ -3,10 +3,12 @@ import { createLogger } from "@undb/logger"
 import { injectTableRepository, TableIdVo, type ITableRepository } from "@undb/table"
 import type { Dashboard } from "../dashboard.do"
 import { injectDashboardRepository, type IDashboardRepository } from "../dashboard.repository"
-import type { IAddDashboardWidgetDTO } from "../dto"
+import type { IAddDashboardWidgetDTO } from "../dto/add-dashboard-widget.dto"
+import type { IRelayoutDashboardWidgetsDTO } from "../dto/relayout-dashboard-widgets.dto"
 
 export interface IDashboarService {
   addWidget(dto: IAddDashboardWidgetDTO): Promise<Dashboard>
+  relayoutWidgets(dto: IRelayoutDashboardWidgetsDTO): Promise<Dashboard>
 }
 
 @singleton()
@@ -37,6 +39,17 @@ export class DashboardService implements IDashboarService {
 
     await this.dashboardRepository.updateOneById(dashboard, spec.unwrap())
 
+    return dashboard
+  }
+
+  async relayoutWidgets(dto: IRelayoutDashboardWidgetsDTO): Promise<Dashboard> {
+    const dashboard = (await this.dashboardRepository.findOneById(dto.dashboardId)).expect("dashboard not found")
+    const spec = dashboard.$relayoutWidgets(dto)
+    if (spec.isNone()) {
+      return dashboard
+    }
+    spec.unwrap().mutate(dashboard)
+    await this.dashboardRepository.updateOneById(dashboard, spec.unwrap())
     return dashboard
   }
 }

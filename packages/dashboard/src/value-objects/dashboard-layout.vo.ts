@@ -95,6 +95,18 @@ export class DashboardLayouts extends ValueObject<IDashboardLayouts> {
     return new WithDashboardLayout(layout)
   }
 
+  private mergeLayouts(layouts: IDashboardLayouts): IDashboardLayouts {
+    return {
+      ...this.value,
+      ...layouts,
+    }
+  }
+
+  $relayoutWidgets(dto: IDashboardLayouts): WithDashboardLayout {
+    const layout = this.mergeLayouts(dto)
+    return new WithDashboardLayout(layout)
+  }
+
   toJSON(): IDashboardLayouts {
     return this.value
   }

@@ -142,7 +142,7 @@
                     )}
                   >
                     <a
-                      href={`/d/${dashboard.id}`}
+                      href={`/dashboards/${dashboard.id}`}
                       class={cn(
                         "flex h-full flex-1 items-center overflow-hidden font-normal text-gray-600",
                         active && "text-background font-medium",
