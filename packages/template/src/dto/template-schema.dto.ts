@@ -1,4 +1,5 @@
 import { baseNameSchema } from "@undb/base"
+import { dashboardIdSchema, dashboardLayoutsSchema, dashboardNameSchema, dashboardWidgetsSchema } from "@undb/dashboard"
 import {
   createFormWithoutNameDTO,
   createTablesAttachmentFieldDTO,
@@ -27,6 +28,7 @@ import {
   tableId,
   tableName,
   viewName,
+  widgetName,
 } from "@undb/table"
 import { z } from "@undb/zod"
 
@@ -67,10 +69,29 @@ const basicTemplateTableDTO = z.object({
   records: flattenCreateRecordDTO.array().optional(),
 })
 
+const templateDashboardWidgetDTO = dashboardWidgetsSchema.element
+  .omit({
+    table: true,
+  })
+  .extend({
+    // TODO: basename
+    // TODO: maybe move this to dashboardWidgetSchema
+    tableName: tableName,
+  })
+
+const basicTemplateDashboardDTO = z.object({
+  id: dashboardIdSchema.optional(),
+  layout: dashboardLayoutsSchema.optional().nullable(),
+  widgets: z.record(widgetName, templateDashboardWidgetDTO).optional(),
+})
+
 export const baseTemplateDTO = z.record(
   baseNameSchema,
   z.object({
+    tablesOrder: z.array(tableName).optional(),
     tables: z.record(tableName, basicTemplateTableDTO),
+    dashboardsOrder: z.array(dashboardNameSchema).optional(),
+    dashboards: z.record(dashboardNameSchema, basicTemplateDashboardDTO).optional(),
   }),
 )
 

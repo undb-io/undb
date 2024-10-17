@@ -26,7 +26,7 @@ export class DashboardFactory {
       WithDashboardName.fromString(dto.name),
       new WithDashboardSpaceId(dto.spaceId),
       new DashboardBaseIdSpecification(dto.baseId),
-      new WithDashboardWidgets(dto.widgets || []),
+      WithDashboardWidgets.from(dto.widgets || []),
       new WithDashboardLayout(dto.layout),
     )
   }
@@ -37,7 +37,7 @@ export class DashboardFactory {
       WithDashboardName.fromString(input.name),
       new WithDashboardSpaceId(input.spaceId),
       new DashboardBaseIdSpecification(input.baseId!),
-      new WithDashboardWidgets(input.widgets || []),
+      WithDashboardWidgets.from(input.widgets || []),
       new WithDashboardLayout(input.layout),
     )
 
@@ -45,5 +45,9 @@ export class DashboardFactory {
     dashboard.addDomainEvent(new DashboardCreatedEvent({ dashboard: dashboard.toJSON() }))
 
     return dashboard
+  }
+
+  static createMany(dtos: ICreateDashboardDTO[]): Dashboard[] {
+    return dtos.map((dto) => this.create(dto))
   }
 }

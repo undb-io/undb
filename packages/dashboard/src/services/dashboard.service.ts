@@ -23,15 +23,17 @@ export class DashboardService implements IDashboarService {
   ) {}
 
   async addWidget(dto: IAddDashboardWidgetDTO): Promise<Dashboard> {
+    this.logger.debug(dto)
+
     const dashboard = (await this.dashboardRepository.findOneById(dto.dashboardId)).expect("dashboard not found")
     const tableId = dto.widget.table.id
     if (!tableId) {
       throw new Error("table id is required")
     }
 
-    ;(await this.tableRepository.findOneById(new TableIdVo(tableId))).expect("table not found")
+    const table = (await this.tableRepository.findOneById(new TableIdVo(tableId))).expect("table not found")
 
-    const spec = dashboard.$addWidget(dto)
+    const spec = dashboard.$addWidget(table, dto)
     if (spec.isNone()) {
       return dashboard
     }
