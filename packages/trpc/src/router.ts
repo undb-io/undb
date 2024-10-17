@@ -36,6 +36,7 @@ import {
   DuplicateViewCommand,
   EnableShareCommand,
   InviteCommand,
+  RelayoutDashboardWidgetsCommand,
   SetDefaultViewCommand,
   SetFieldWidthCommand,
   SetTableFormCommand,
@@ -102,6 +103,7 @@ import {
   duplicateViewCommandOutput,
   enableShareCommand,
   inviteCommand,
+  relayoutDashboardWidgetsCommand,
   setDefaultViewCommand,
   setFieldWidthCommand,
   setTableFormCommand,
@@ -518,6 +520,10 @@ const dashboardWidgetRouter = t.router({
     .use(authz("dashboard:update"))
     .input(deleteDashboardWidgetCommand)
     .mutation(({ input }) => commandBus.execute(new DeleteDashboardWidgetCommand(input))),
+  relayout: privateProcedure
+    .use(authz("dashboard:update"))
+    .input(relayoutDashboardWidgetsCommand)
+    .mutation(({ input }) => commandBus.execute(new RelayoutDashboardWidgetsCommand(input))),
 })
 
 const dashboardRouter = t.router({

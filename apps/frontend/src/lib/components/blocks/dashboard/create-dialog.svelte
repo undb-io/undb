@@ -11,13 +11,15 @@
   import { closeModal, CREATE_DASHBOARD_MODAL } from "$lib/store/modal.store"
   import { currentBase, baseId } from "$lib/store/base.store"
   import { invalidateAll } from "$app/navigation"
+  import { getNextName } from "@undb/utils"
 
   const schema = createDashboardCommand.omit({ baseId: true, baseName: true })
+  export let dashboardNames: string[]
 
   const form = superForm(
     defaults(
       {
-        name: "dashboard",
+        name: getNextName(dashboardNames, "Dashboard"),
       },
       zodClient(schema),
     ),

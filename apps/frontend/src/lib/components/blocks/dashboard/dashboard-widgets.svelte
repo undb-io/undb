@@ -1,25 +1,38 @@
 <script lang="ts">
-  import { getDashboardWidgetItemsStore } from "$lib/store/dashboard.store"
+  import { getDashboard, getDashboardWidgetItemsStore } from "$lib/store/dashboard.store"
   import { COLS, cols } from "$lib/store/widget.store"
+  import { createMutation } from "@tanstack/svelte-query"
   import DashboardWidget from "./dashboard-widget.svelte"
 
   // @ts-ignore
   import Grid from "svelte-grid"
+  import { trpc } from "$lib/trpc/client"
+  import type { IDashboardLayouts } from "@undb/dashboard"
+
+  const dashboard = getDashboard()
 
   const widgetItems = getDashboardWidgetItemsStore()
 
-  const onPointeup = () => {
-    const widgets = $widgetItems.map((item) => {
-      const { x, y, h, w } = item[COLS]
-      const layout = { x, y, h, w }
-      return { id: item.id, layout }
-    })
+  const relayoutWidgetsMutation = createMutation({
+    mutationFn: trpc.dashboard.widget.relayout.mutate,
+  })
 
-    // $relayoutWidgets.mutate({
-    // 	tableId: $table.id.value,
-    // 	viewId: $view.id.value,
-    // 	widgets,
-    // })
+  const onPointeup = () => {
+    const widgets = $widgetItems
+      .map((item) => {
+        const { x, y, h, w } = item[COLS]
+        const layout = { x, y, h, w }
+        return { id: item.id, layout }
+      })
+      .reduce((acc, cur) => {
+        acc![cur.id] = cur.layout
+        return acc
+      }, {} as IDashboardLayouts)
+
+    $relayoutWidgetsMutation.mutate({
+      dashboardId: $dashboard.id.value,
+      layout: widgets,
+    })
   }
 </script>
 

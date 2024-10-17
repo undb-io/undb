@@ -2,9 +2,15 @@ import { injectBaseRepository, withUniqueBase, type IBaseRepository } from "@und
 import { CreateDashboardCommand } from "@undb/commands"
 import { injectContext, type IContext } from "@undb/context"
 import { commandHandler } from "@undb/cqrs"
-import { DashboardFactory, injectDashboardRepository, type IDashboardRepository } from "@undb/dashboard"
+import {
+  DashboardBaseIdSpecification,
+  DashboardFactory,
+  DashboardNameShouldBeUnique,
+  injectDashboardRepository,
+  type IDashboardRepository,
+} from "@undb/dashboard"
 import { singleton } from "@undb/di"
-import { type ICommandHandler } from "@undb/domain"
+import { applyRules, type ICommandHandler } from "@undb/domain"
 import { createLogger } from "@undb/logger"
 
 @commandHandler(CreateDashboardCommand)
@@ -24,14 +30,14 @@ export class CreateDashboardCommandHandler implements ICommandHandler<CreateDash
   async execute(command: CreateDashboardCommand): Promise<any> {
     this.logger.debug(command)
 
-    // const spaceId = this.context.mustGetCurrentSpaceId()
-    // const nameSpec = new WithDashboardName(DashboardName.from(command.name)).and(new WithDashboardSpaceId(spaceId))
-    // const exists = (await this.repository.findOne(nameSpec)).into(null)
-
-    // applyRules(new DashboardNameShouldBeUnique(!!exists))
     const base = (
       await this.baseRepository.findOne(withUniqueBase({ baseId: command.baseId, baseName: command.baseName }).unwrap())
     ).expect("Base not found")
+
+    const baseIdSpec = new DashboardBaseIdSpecification(base.id.value)
+    const baseDashboards = await this.repository.find(baseIdSpec)
+    const names = baseDashboards.map((dashboard) => dashboard.name.value).concat(command.name)
+    applyRules(new DashboardNameShouldBeUnique(names))
 
     const spaceId = this.context.mustGetCurrentSpaceId()
     const dashboard = DashboardFactory.create({ ...command, spaceId, baseId: base.id.value })

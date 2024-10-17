@@ -2,6 +2,8 @@
   import * as Dialog from "$lib/components/ui/dialog"
   import { CREATE_DASHBOARD_MODAL, closeModal, isModalOpen } from "$lib/store/modal.store"
   import CreateDashboard from "./create-dialog.svelte"
+
+  export let dashboardNames: string[]
 </script>
 
 <Dialog.Root
@@ -16,7 +18,7 @@
     <Dialog.Header>
       <Dialog.Title>Create New Dashboard.</Dialog.Title>
 
-      <CreateDashboard />
+      <CreateDashboard {dashboardNames} />
     </Dialog.Header>
   </Dialog.Content>
 </Dialog.Root>

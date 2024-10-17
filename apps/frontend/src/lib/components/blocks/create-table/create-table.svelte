@@ -36,7 +36,7 @@
   const form = superForm(
     defaults(
       {
-        name: getNextName(tableNames, "table"),
+        name: getNextName(tableNames, "Table"),
         schema: [
           {
             id: FieldIdVo.create().value,

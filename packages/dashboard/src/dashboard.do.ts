@@ -1,5 +1,5 @@
 import type { IBaseId } from "@undb/base"
-import { AggregateRoot, and } from "@undb/domain"
+import { AggregateRoot, and, Some } from "@undb/domain"
 import type { ISpaceId } from "@undb/space"
 import { getNextName } from "@undb/utils"
 import type { Option } from "oxide.ts"
@@ -7,6 +7,7 @@ import { DashboardFactory } from "./dashboard.factory.js"
 import type { IAddDashboardWidgetDTO } from "./dto/add-dashboard-widget.dto.js"
 import type { IDashboardDTO } from "./dto/dashboard.dto.js"
 import type { IDuplicateDashboardDTO } from "./dto/duplicate-dashboard.dto.js"
+import type { IRelayoutDashboardWidgetsDTO } from "./dto/relayout-dashboard-widgets.dto.js"
 import type { IUpdateDashboardDTO } from "./dto/update-dashboard.dto.js"
 import { DashboardUpdatedEvent } from "./events/dashboard-updated.event.js"
 import type { IDashboardSpecification } from "./interface.js"
@@ -59,6 +60,11 @@ export class Dashboard extends AggregateRoot<any> {
 
   $addWidget(dto: IAddDashboardWidgetDTO): Option<DashboardComositeSpecification> {
     return and(this.widgets.$addWidget(dto.widget), this.layout.$addWidget(dto))
+  }
+
+  $relayoutWidgets(dto: IRelayoutDashboardWidgetsDTO): Option<DashboardComositeSpecification> {
+    const spec = this.layout.$relayoutWidgets(dto.layout)
+    return Some(spec)
   }
 
   public toJSON(): IDashboardDTO {
