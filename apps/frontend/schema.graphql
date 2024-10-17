@@ -24,6 +24,7 @@ type Dashboard {
   id: ID!
   layout: JSON
   name: String!
+  share: Share
   spaceId: ID!
   widgets: [DashboardWidget!]
 }

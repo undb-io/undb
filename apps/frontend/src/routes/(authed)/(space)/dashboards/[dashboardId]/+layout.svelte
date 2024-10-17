@@ -3,15 +3,24 @@
   import type { LayoutData } from "./$types"
   import { setDashboard } from "$lib/store/dashboard.store"
   import { writable } from "svelte/store"
+  import { shareStore } from "$lib/store/share.store"
 
   export let data: LayoutData
 
   $: dashboardStore = data.dashboardStore
   $: dashboard = $dashboardStore.data?.dashboard
+  $: share = dashboard?.share
 
   $: if (dashboard) {
     const dashboardDo = DashboardFactory.fromJSON(dashboard)
     setDashboard(writable(dashboardDo))
+  }
+  $: if (share && dashboard) {
+    shareStore.set(dashboard.id, {
+      enabled: share.enabled,
+      id: share.id,
+      target: { type: "dashboard", id: dashboard.id },
+    })
   }
 </script>
 
