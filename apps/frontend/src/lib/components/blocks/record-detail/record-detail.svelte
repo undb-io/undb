@@ -142,6 +142,7 @@
               type={field.type}
               displayValue={displayValues[field.id.value]}
               class="flex min-h-9 items-center text-xs"
+              readonly
             />
           {:else}
             <FieldControl
@@ -207,6 +208,7 @@
                     type={field.type}
                     displayValue={displayValues[field.id.value]}
                     class="min-h-9 text-xs"
+                    readonly
                   />
                 {:else}
                   <FieldControl
