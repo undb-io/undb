@@ -10,6 +10,7 @@
   export let r: Writable<string | null>
   export let tableId: string
   export let recordId: string | undefined
+  export let readonly: boolean = false
 
   let selected = writable<string[]>(value ?? [])
 
@@ -40,6 +41,7 @@
     bind:selected
     {r}
     let:builder
+    {readonly}
   >
     {#if hasValueReactive}
       <Button size="xs" variant="link" class="px-0" builders={[builder]} on:click={(e) => e.stopPropagation()}>

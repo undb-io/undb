@@ -29,6 +29,7 @@
   export let recordId: string | undefined
   export let placeholder: string | undefined = undefined
   export let r: Writable<string | null>
+  export let readonly: boolean = false
 
   const map: Record<FieldType, ComponentType> = {
     id: IdField,
@@ -68,4 +69,5 @@
   {displayValue}
   {placeholder}
   {r}
+  {readonly}
 />
