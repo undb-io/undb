@@ -8,6 +8,7 @@
   const table = getTable()
   export let viewId: Readable<string | undefined>
   export let r: Writable<string | null>
+  export let readonly: boolean = false
 
   const recordsStore = getRecordsStore()
 
@@ -42,6 +43,7 @@
               value={values[field.id.value]}
               type={field.type}
               displayValue={displayValues[field.id.value]}
+              {readonly}
             />
           </Table.Cell>
         {/each}

@@ -4,6 +4,7 @@
   import { getTable } from "$lib/store/table.store"
   import ShareKanbanView from "./share-kanban-view.svelte"
   import ShareGalleryView from "./share-gallery-view.svelte"
+  import ShareListView from "./share-list-view.svelte"
 
   const table = getTable()
   export let viewId: Readable<string>
@@ -18,4 +19,6 @@
   <ShareKanbanView {viewId} {shareId} />
 {:else if view.type === "gallery"}
   <ShareGalleryView {viewId} {shareId} />
+{:else if view.type === "list"}
+  <ShareListView {viewId} {shareId} />
 {/if}

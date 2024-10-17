@@ -144,7 +144,7 @@
         {$selected.length} selected records
       </button>
     {/if}
-    {#if isSelected}
+    {#if isSelected && !readonly}
       <button
         on:click={() => {
           isSelected = false

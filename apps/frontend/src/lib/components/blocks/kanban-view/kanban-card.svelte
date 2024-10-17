@@ -46,6 +46,7 @@
                 type={field.type}
                 displayValue={displayValues[field.id.value]}
                 class={cn("truncate text-left", idx === 0 ? "text-md font-medium" : "")}
+                {readonly}
               />
             </Tooltip.Trigger>
             <Tooltip.Content>

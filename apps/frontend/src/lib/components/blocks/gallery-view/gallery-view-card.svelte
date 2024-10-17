@@ -19,6 +19,7 @@
   export let record: RecordDO
   export let fields: Field[]
   export let r: Writable<string | null>
+  export let readonly: boolean = false
 
   let values = record.flatten()
   let displayValues = record.displayValues?.toJSON() ?? {}
@@ -70,6 +71,7 @@
           value={values[field.id.value]}
           type={field.type}
           displayValue={displayValues[field.id.value]}
+          {readonly}
         />
       </div>
     {/each}

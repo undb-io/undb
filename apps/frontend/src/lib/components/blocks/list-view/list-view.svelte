@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getTable } from "$lib/store/table.store"
   import { derived, writable, type Readable, type Writable } from "svelte/store"
-  import { type GalleryView, type IRecordsDTO, RecordDO, Records } from "@undb/table"
+  import { type IRecordsDTO, RecordDO, Records } from "@undb/table"
   import { queryParam } from "sveltekit-search-params"
   import TableTools from "../table-tools/table-tools.svelte"
   import { trpc } from "$lib/trpc/client"
@@ -19,8 +19,6 @@
   export let disableRecordQuery = false
   export let records: RecordDO[] | undefined = undefined
   export let readonly = false
-
-  $: view = $table.views.getViewById($viewId) as GalleryView
 
   const perPage = writable(50)
   const currentPage = writable(1)
@@ -80,7 +78,7 @@
       <ListViewLoading />
     </div>
   {:else}
-    <ListViewList {viewId} {r} />
+    <ListViewList {viewId} {r} {readonly} />
   {/if}
 </div>
 <ViewPagination perPage={$perPage} bind:currentPage={$currentPage} count={total} />
