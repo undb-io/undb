@@ -51,7 +51,12 @@ export class GalleryView extends AbstractView {
   }
 
   static create(table: TableDo, dto: ICreateGalleryViewDTO) {
-    return new GalleryView(table, { ...dto, id: ViewIdVo.fromStringOrCreate(dto.id).value })
+    const fields = table.getOrderedFields()
+    return new GalleryView(table, {
+      ...dto,
+      id: ViewIdVo.fromStringOrCreate(dto.id).value,
+      fields: fields.map((f, index) => ({ fieldId: f.id.value, hidden: index > 5 })),
+    })
   }
 
   override type = GALLERY_TYPE
