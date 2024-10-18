@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-102
+
+
+### 🩹 Fixes
+
+- Fix editing widget name ([b7c4239](https://github.com/undb-io/undb/commit/b7c4239))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-101
 
 
