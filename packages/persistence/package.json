@@ -14,6 +14,7 @@
     "@libsql/client": "^0.14.0",
     "@libsql/kysely-libsql": "^0.4.1",
     "@undb/audit": "workspace:*",
+    "@undb/cqrs": "workspace:*",
     "@undb/authz": "workspace:*",
     "@undb/base": "workspace:*",
     "@undb/context": "workspace:*",

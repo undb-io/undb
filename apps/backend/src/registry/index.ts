@@ -1,6 +1,7 @@
 import { registerCommands } from "@undb/command-handlers"
 import { registerQueries } from "@undb/query-handlers"
 
+import { registerEvents } from "@undb/event-handlers"
 import { registerWebhook } from "../modules"
 import { registerStorage } from "../modules/file/storage"
 import { registerMail } from "../modules/mail/mail.register"
@@ -13,6 +14,7 @@ export const register = () => {
   registerContext()
   registerDb()
   registerCommands()
+  registerEvents()
   registerQueries()
   registerWebhook()
 }
