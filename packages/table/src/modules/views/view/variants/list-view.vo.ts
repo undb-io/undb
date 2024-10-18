@@ -34,7 +34,12 @@ export class ListView extends AbstractView {
   }
 
   static create(table: TableDo, dto: ICreateListViewDTO) {
-    return new ListView(table, { ...dto, id: ViewIdVo.fromStringOrCreate(dto.id).value })
+    const fields = table.getOrderedFields(undefined, undefined)
+    return new ListView(table, {
+      ...dto,
+      id: ViewIdVo.fromStringOrCreate(dto.id).value,
+      fields: fields.map((f, index) => ({ fieldId: f.id.value, hidden: index > 5 })),
+    })
   }
 
   override type = LIST_TYPE

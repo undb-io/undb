@@ -51,7 +51,12 @@ export class KanbanView extends AbstractView {
   }
 
   static create(table: TableDo, dto: ICreateKanbanViewDTO) {
-    return new KanbanView(table, { ...dto, id: ViewIdVo.fromStringOrCreate(dto.id).value })
+    const fields = table.getOrderedFields()
+    return new KanbanView(table, {
+      ...dto,
+      id: ViewIdVo.fromStringOrCreate(dto.id).value,
+      fields: fields.map((f, index) => ({ fieldId: f.id.value, hidden: index > 5 })),
+    })
   }
 
   override type = KANBAN_TYPE
