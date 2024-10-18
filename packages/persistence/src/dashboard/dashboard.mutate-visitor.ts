@@ -17,7 +17,7 @@ export class DashboardMutateVisitor extends AbstractQBMutationVisitor implements
     this.setData("layout", v.layout ? json(v.layout) : null)
   }
   withDashboardWidgets(v: WithDashboardWidgets): void {
-    this.setData("widgets", v.widgets.length ? json(v.widgets) : null)
+    this.setData("widgets", v.widgets.value.length ? json(v.widgets.value) : null)
   }
   withDashboardBaseId(v: DashboardBaseIdSpecification): void {
     throw new Error("Method not implemented.")
