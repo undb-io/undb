@@ -5,8 +5,9 @@
   import BulkUpdateRecords from "./bulk-update-records.svelte"
   import { hasPermission } from "$lib/store/space-member.store"
   import { type Writable } from "svelte/store"
-
+  import type { Readable } from "svelte/store"
   export let r: Writable<string | null>
+  export let viewId: Readable<string | undefined>
   let open = false
 </script>
 
@@ -23,7 +24,7 @@
         <Sheet.Title>Bulk Update Records</Sheet.Title>
       </Sheet.Header>
 
-      <BulkUpdateRecords {r} onSuccess={() => (open = false)} />
+      <BulkUpdateRecords {r} {viewId} onSuccess={() => (open = false)} />
     </Sheet.Content>
   </Sheet.Root>
 {/if}

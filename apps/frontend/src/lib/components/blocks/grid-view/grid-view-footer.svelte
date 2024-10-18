@@ -2,7 +2,7 @@
   import { invalidate } from "$app/navigation"
   import * as Select from "$lib/components/ui/select/index.js"
   import { aggregatesStore } from "$lib/store/aggregates.store"
-  import { getTable, viewId } from "$lib/store/table.store"
+  import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { cn } from "$lib/utils"
   import { createMutation } from "@tanstack/svelte-query"
@@ -11,8 +11,10 @@
   import type { Selected } from "bits-ui"
   import { derived } from "svelte/store"
   import { useQueryClient } from "@tanstack/svelte-query"
+  import type { Readable } from "svelte/store"
 
   const table = getTable()
+  export let viewId: Readable<string | undefined>
   export let field: Field
   export let readonly: boolean
 

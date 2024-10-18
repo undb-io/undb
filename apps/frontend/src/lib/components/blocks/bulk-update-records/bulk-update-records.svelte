@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
-  import { getTable, viewId } from "$lib/store/table.store"
+  import { getTable } from "$lib/store/table.store"
   import { cn } from "$lib/utils"
   import {
     FieldIdVo,
@@ -26,8 +26,10 @@
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { writable, type Writable } from "svelte/store"
   import autoAnimate from "@formkit/auto-animate"
+  import type { Readable } from "svelte/store"
 
   const table = getTable()
+  export let viewId: Readable<string | undefined>
   const mutableFields = $table.schema.mutableFields
   const schema = $table.schema.getMutableSchema()
   export let r: Writable<string | null>

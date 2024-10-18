@@ -3,7 +3,7 @@
   import { Switch } from "$lib/components/ui/switch"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
   import * as Popover from "$lib/components/ui/popover"
-  import { getTable, viewId } from "$lib/store/table.store"
+  import { getTable } from "$lib/store/table.store"
   import { FieldIdVo } from "@undb/table"
   import { ListIcon, GripVerticalIcon, SearchIcon, ChevronDownIcon } from "lucide-svelte"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
@@ -13,13 +13,14 @@
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
   import { isNumber } from "radash"
   import { Input } from "$lib/components/ui/input"
-  import { writable } from "svelte/store"
+  import { writable, type Readable } from "svelte/store"
   import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
   import FieldMenu from "../field/field-menu.svelte"
   import { hasPermission } from "$lib/store/space-member.store"
   import CreateFieldButton from "../create-field/create-field-button.svelte"
 
   export let readonly = false
+  export let viewId: Readable<string | undefined>
 
   const table = getTable()
   $: fields = $table.getOrderedFields(undefined, $viewId)

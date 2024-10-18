@@ -36,6 +36,9 @@ query GetViewShareData($shareId: ID!) {
       type
       fields
       aggregate
+      filter
+      color
+      sort
       option {
         showSystemFields
       }

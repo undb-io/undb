@@ -15,8 +15,8 @@
   } from "lucide-svelte"
   import { cn } from "$lib/utils"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
-
-  import { getTable, viewId } from "$lib/store/table.store"
+  import type { Readable } from "svelte/store"
+  import { getTable } from "$lib/store/table.store"
   import { type IViewSort, isFieldSortable } from "@undb/table"
   import FieldPicker from "../field-picker/field-picker.svelte"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
@@ -28,6 +28,7 @@
   import { hasPermission } from "$lib/store/space-member.store"
 
   export let readonly = false
+  export let viewId: Readable<string | undefined>
 
   const table = getTable()
   $: view = $table.views.getViewById($viewId)

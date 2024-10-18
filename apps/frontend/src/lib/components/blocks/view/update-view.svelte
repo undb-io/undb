@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getTable, viewId } from "$lib/store/table.store"
+  import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { updateViewCommand } from "@undb/commands"
@@ -9,8 +9,10 @@
   import { Input } from "$lib/components/ui/input"
   import { toggleModal, UPDATE_VIEW } from "$lib/store/modal.store"
   import { toast } from "svelte-sonner"
+  import type { Readable } from "svelte/store"
 
   const table = getTable()
+  export let viewId: Readable<string | undefined>
 
   const updateViewMutation = createMutation({
     mutationKey: ["table", $viewId, "updateView"],

@@ -12,10 +12,12 @@
   import { ID_TYPE } from "@undb/table"
   import { cn } from "$lib/utils"
   import { r } from "$lib/store/records.store"
+  import type { Readable } from "svelte/store"
 
   const table = getTable()
 
   export let ids: string[]
+  export let viewId: Readable<string | undefined>
 
   let open = false
   let dropdownOpen = false
@@ -110,6 +112,7 @@
                 </Sheet.Header>
 
                 <BulkUpdateRecords
+                  {viewId}
                   customFilter
                   onSuccess={() => {
                     updateOpen = false

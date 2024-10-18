@@ -135,6 +135,7 @@
           footer: createRender(GridViewFooter, {
             field,
             readonly,
+            viewId,
           }),
           plugins: {
             resize: {
@@ -179,9 +180,10 @@
 
 <div class="flex h-full w-full flex-col">
   {#if !readonly}
-    <TableTools {r}>
+    <TableTools {r} {viewId}>
       {#if selectedRecordIds.length}
         <SelectedRecordsButton
+          {viewId}
           onDuplicateSuccess={() => selectedDataIds?.clear()}
           class={selectedRecordIds.length && "opacity-100"}
           ids={selectedRecordIds}
@@ -189,7 +191,7 @@
       {/if}
     </TableTools>
   {:else}
-    <ShareTableTools />
+    <ShareTableTools {viewId} />
   {/if}
   <ScrollArea orientation="both" class="h-full flex-1 overflow-auto">
     <table {...$tableAttrs} class={cn("flex h-full flex-col", $$restProps.class)}>
