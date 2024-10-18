@@ -86,7 +86,15 @@
               <Dialog.Header class="border-b p-4" on:dblclick={() => (editing = true)}>
                 <Dialog.Title>
                   {#if editing}
-                    <Input class="w-1/2" autofocus on:focus={(e) => e.target.select()} bind:value={widget.name} />
+                    <Input
+                      on:blur={() => {
+                        editing = false
+                      }}
+                      class="w-1/2"
+                      autofocus
+                      on:focus={(e) => e.target.select()}
+                      bind:value={widget.name}
+                    />
                   {:else}
                     {widget.name}
                   {/if}
@@ -109,7 +117,15 @@
                 <div class="flex w-1/4 flex-col border-l px-4 py-2">
                   <div class="flex-1">
                     {#if widget.item.type === "aggregate"}
-                      <AggregateConfig {tableId} {viewId} {widget} aggregate={widget.item.aggregate} />
+                      <AggregateConfig
+                        {tableId}
+                        {viewId}
+                        {widget}
+                        aggregate={widget.item.aggregate}
+                        onSuccess={() => {
+                          editing = false
+                        }}
+                      />
                     {/if}
                   </div>
                 </div>
