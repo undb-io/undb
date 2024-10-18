@@ -1,6 +1,6 @@
 <script lang="ts">
   import { queryParam, ssp } from "sveltekit-search-params"
-  import { getTable, viewId } from "$lib/store/table.store"
+  import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createQuery } from "@tanstack/svelte-query"
   import { RecordDO } from "@undb/table"
@@ -8,8 +8,10 @@
   import { preferences } from "$lib/store/persisted.store"
   import RecordDetailSheet from "./record-detail-sheet.svelte"
   import { r } from "$lib/store/records.store"
+  import type { Readable } from "svelte/store"
 
   export let readonly = false
+  export let viewId: Readable<string | undefined>
 
   const table = getTable()
 

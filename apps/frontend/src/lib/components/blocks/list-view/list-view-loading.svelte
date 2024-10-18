@@ -1,8 +1,9 @@
 <script lang="ts">
   import { Skeleton } from "$lib/components/ui/skeleton"
-  import { getTable, viewId } from "$lib/store/table.store"
-
+  import { getTable } from "$lib/store/table.store"
+  import type { Readable } from "svelte/store"
   const table = getTable()
+  export let viewId: Readable<string | undefined>
 
   $: fields = $table.getOrderedVisibleFields($viewId) ?? []
 </script>

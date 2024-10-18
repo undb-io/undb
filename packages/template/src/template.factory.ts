@@ -105,7 +105,6 @@ export class TemplateFactory {
         }
       }) as ICreateDashboardDTO[]
 
-      console.log(JSON.stringify(createDashboardDTOs))
       const dashboards = DashboardFactory.createMany(createDashboardDTOs)
 
       result.push({ base, tables, dashboards })

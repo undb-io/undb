@@ -3,7 +3,7 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import { FilterIcon, FilterXIcon } from "lucide-svelte"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
-  import { getTable, viewId } from "$lib/store/table.store"
+  import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { LoaderCircleIcon } from "lucide-svelte"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
@@ -18,11 +18,14 @@
     type MaybeConditionGroup,
   } from "@undb/table"
   import { hasPermission } from "$lib/store/space-member.store"
+  import type { Readable } from "svelte/store"
 
   export let readonly = false
+  export let viewId: Readable<string | undefined>
 
   const table = getTable()
-  $: filter = $table.views.getViewById($viewId).filter.into(undefined)
+  $: view = $table.views.getViewById($viewId)
+  $: filter = view?.filter.into(undefined)
   $: count = filter?.count ?? 0
 
   const value = writable<MaybeConditionGroup<IViewFilterOptionSchema> | undefined>()

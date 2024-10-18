@@ -1,13 +1,15 @@
 <script lang="ts">
   import type { IViewFilterGroup } from "@undb/table"
   import GridView from "$lib/components/blocks/grid-view/grid-view.svelte"
-  import { getTable, viewId } from "$lib/store/table.store"
+  import { getTable } from "$lib/store/table.store"
   import * as Dialog from "$lib/components/ui/dialog"
   import { Button } from "$lib/components/ui/button"
   import { FullscreenIcon } from "lucide-svelte"
   import { r } from "$lib/store/records.store"
+  import type { Readable } from "svelte/store"
 
   const table = getTable()
+  export let viewId: Readable<string | undefined>
 
   export let filter: IViewFilterGroup
 

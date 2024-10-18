@@ -44,19 +44,19 @@
     <ConfirmDuplicateRecord />
   {/await}
   {#await import("$lib/components/blocks/view/update-view-dialog.svelte") then { default: UpdateViewDialog }}
-    <UpdateViewDialog />
+    <UpdateViewDialog {viewId} />
   {/await}
   {#await import("$lib/components/blocks/update-table/update-table-dialog.svelte") then { default: UpdateTableDialog }}
     <UpdateTableDialog />
   {/await}
   {#await import("$lib/components/blocks/view/duplicate-view-dialog.svelte") then { default: DuplicateViewDialog }}
-    <DuplicateViewDialog />
+    <DuplicateViewDialog {viewId} />
   {/await}
   {#await import("$lib/components/blocks/view/set-as-default-view.svelte") then { default: SetAsDefaultView }}
-    <SetAsDefaultView />
+    <SetAsDefaultView {viewId} />
   {/await}
   {#await import("$lib/components/blocks/view/delete-view-dialog.svelte") then { default: DeleteViewDialog }}
-    <DeleteViewDialog />
+    <DeleteViewDialog {viewId} />
   {/await}
   {#await import("$lib/components/blocks/delete-table/delete-table-dialog.svelte") then { default: DeleteTableDialog }}
     <DeleteTableDialog />

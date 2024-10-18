@@ -2,15 +2,16 @@
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import { isModalOpen, SET_DEFAULT_VIEW, toggleModal, closeModal } from "$lib/store/modal.store"
   import { trpc } from "$lib/trpc/client"
-  import { getTable, viewId } from "$lib/store/table.store"
+  import { getTable } from "$lib/store/table.store"
   import { createMutation } from "@tanstack/svelte-query"
   import { derived } from "svelte/store"
   import { invalidateAll } from "$app/navigation"
   import { toast } from "svelte-sonner"
   import { goto } from "$app/navigation"
+  import type { Readable } from "svelte/store"
 
   const table = getTable()
-
+  export let viewId: Readable<string | undefined>
   let view = derived([table, viewId], ([$table, $viewId]) => $table.views.getViewById($viewId))
 
   const setAsDefaultViewMutation = createMutation({
