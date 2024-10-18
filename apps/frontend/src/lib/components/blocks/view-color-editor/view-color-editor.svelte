@@ -3,7 +3,7 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import { FilterXIcon, PaintBucketIcon } from "lucide-svelte"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
-  import { getTable, viewId } from "$lib/store/table.store"
+  import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { invalidate } from "$app/navigation"
@@ -18,8 +18,10 @@
   } from "@undb/table"
   import ColorPicker from "$lib/components/ui/color-picker/color-picker.svelte"
   import { hasPermission } from "$lib/store/space-member.store"
+  import type { Readable } from "svelte/store"
 
   export let readonly = false
+  export let viewId: Readable<string | undefined>
 
   const table = getTable()
   $: color = $table.views.getViewById($viewId).color.into(undefined)

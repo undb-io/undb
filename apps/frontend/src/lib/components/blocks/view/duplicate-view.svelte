@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getTable, viewId } from "$lib/store/table.store"
+  import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { LoaderCircleIcon } from "lucide-svelte"
@@ -12,8 +12,10 @@
   import { getNextName } from "@undb/utils"
   import { toast } from "svelte-sonner"
   import { invalidate, goto } from "$app/navigation"
+  import type { Readable } from "svelte/store"
 
   const table = getTable()
+  export let viewId: Readable<string | undefined>
 
   const duplicateViewMutation = createMutation({
     mutationKey: ["table", $viewId, "duplicateView"],

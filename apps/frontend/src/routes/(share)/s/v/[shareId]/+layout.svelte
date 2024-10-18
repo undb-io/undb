@@ -1,12 +1,13 @@
 <script lang="ts">
   import { TableFactory, TableDo } from "@undb/table"
-  import { setTable, viewId } from "$lib/store/table.store"
+  import { setTable } from "$lib/store/table.store"
   import type { LayoutData } from "./$types"
   import { derived, writable } from "svelte/store"
   import { shareStore } from "$lib/store/share.store"
   import { aggregatesStore } from "$lib/store/aggregates.store"
   import { createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
+  import { page } from "$app/stores"
 
   export let data: LayoutData
   $: tableStore = data.getViewShareData
@@ -35,6 +36,11 @@
       enabled: !!share && !!$table,
     })),
   )
+
+  const viewId = derived([shareStore, page], ([$shareStore, $page]) => {
+    const share = $shareStore.get($page.params.shareId)
+    return share?.target.id!
+  })
 
   $: if ($getAggregates.data && $table) {
     aggregatesStore.updateTableAggregates($viewId ?? $table.views.getDefaultView()?.id.value, $getAggregates.data)
