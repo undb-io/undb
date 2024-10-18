@@ -13,7 +13,10 @@ export type ISpaceCreatedEventPayload = z.infer<typeof spaceCreatedEventPayload>
 export class SpaceCreatedEvent extends BaseEvent<ISpaceCreatedEventPayload, typeof EVT_SPACE_CREATED> {
   name = EVT_SPACE_CREATED
 
-  constructor(public readonly payload: ISpaceCreatedEventPayload) {
-    super(payload, undefined)
+  constructor(
+    public readonly payload: ISpaceCreatedEventPayload,
+    spaceId: string,
+  ) {
+    super(payload, undefined, spaceId)
   }
 }

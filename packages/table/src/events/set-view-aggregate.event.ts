@@ -17,7 +17,10 @@ export type ISetViewAggregateEventPayload = z.infer<typeof setViewAggregateEvent
 export class SetViewAggregateEvent extends BaseEvent<ISetViewAggregateEventPayload, typeof EVT_SET_VIEW_COLOR> {
   name = EVT_SET_VIEW_COLOR
 
-  constructor(public readonly payload: ISetViewAggregateEventPayload) {
-    super(payload, undefined)
+  constructor(
+    public readonly payload: ISetViewAggregateEventPayload,
+    spaceId: string,
+  ) {
+    super(payload, undefined, spaceId)
   }
 }

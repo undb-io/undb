@@ -19,10 +19,13 @@ export function duplicateViewMethod(
   if (spec.isSome()) {
     spec.unwrap().mutate(this)
 
-    const event = new ViewCreatedEvent({
-      tableId: this.id.value,
-      view: view.toJSON(),
-    })
+    const event = new ViewCreatedEvent(
+      {
+        tableId: this.id.value,
+        view: view.toJSON(),
+      },
+      this.spaceId,
+    )
     this.addDomainEvent(event)
   }
 

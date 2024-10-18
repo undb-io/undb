@@ -17,7 +17,10 @@ export type ISetViewFilterEventPayload = z.infer<typeof setViewFilterEventPayloa
 export class SetViewFilterEvent extends BaseEvent<ISetViewFilterEventPayload, typeof EVT_SET_VIEW_FILTER> {
   name = EVT_SET_VIEW_FILTER
 
-  constructor(public readonly payload: ISetViewFilterEventPayload) {
-    super(payload, undefined)
+  constructor(
+    public readonly payload: ISetViewFilterEventPayload,
+    spaceId: string,
+  ) {
+    super(payload, undefined, spaceId)
   }
 }

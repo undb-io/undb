@@ -23,10 +23,13 @@ export function deleteFieldMethod(this: TableDo, dto: IDeleteFieldDTO): [Field, 
 
   spec.mutate(this)
 
-  const event = new FieldDeletedEvent({
-    tableId: this.id.value,
-    field: field.toJSON(),
-  })
+  const event = new FieldDeletedEvent(
+    {
+      tableId: this.id.value,
+      field: field.toJSON(),
+    },
+    this.spaceId,
+  )
   this.addDomainEvent(event)
 
   return [field, Some(spec)]

@@ -17,7 +17,10 @@ export type ISetViewSortEventPayload = z.infer<typeof setViewSortEventPayload>
 export class SetViewSortEvent extends BaseEvent<ISetViewSortEventPayload, typeof EVT_SET_VIEW_SORT> {
   name = EVT_SET_VIEW_SORT
 
-  constructor(public readonly payload: ISetViewSortEventPayload) {
-    super(payload, undefined)
+  constructor(
+    public readonly payload: ISetViewSortEventPayload,
+    spaceId: string,
+  ) {
+    super(payload, undefined, spaceId)
   }
 }

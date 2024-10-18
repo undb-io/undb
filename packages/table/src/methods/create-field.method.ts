@@ -21,12 +21,15 @@ export function $createFieldSpec(this: TableDo, field: Field): Option<TableComos
 
   applyRules(new FieldNameShouldBeUnique(this.schema), new FieldIdShouldBeUnique(this.schema))
 
-  const event = new FieldCreatedEvent({
-    tableId: this.id.value,
-    field: createFieldSpec.field.toJSON(),
-    views: this.views.toJSON(),
-    forms: formAddFieldSpec?.forms.toJSON(),
-  })
+  const event = new FieldCreatedEvent(
+    {
+      tableId: this.id.value,
+      field: createFieldSpec.field.toJSON(),
+      views: this.views.toJSON(),
+      forms: formAddFieldSpec?.forms.toJSON(),
+    },
+    this.spaceId,
+  )
   this.addDomainEvent(event)
 
   return Some(spec)

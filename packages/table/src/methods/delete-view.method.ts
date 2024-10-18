@@ -15,10 +15,13 @@ export function deleteViewMethod(this: TableDo, dto: IDeleteViewDTO): Option<Tab
   if (spec.isSome()) {
     spec.unwrap().mutate(this)
 
-    const event = new ViewDeletedEvent({
-      tableId: this.id.value,
-      viewId: view.id.value,
-    })
+    const event = new ViewDeletedEvent(
+      {
+        tableId: this.id.value,
+        viewId: view.id.value,
+      },
+      this.spaceId,
+    )
     this.addDomainEvent(event)
   }
 

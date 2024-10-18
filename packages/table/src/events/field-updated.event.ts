@@ -16,7 +16,10 @@ export type IFieldUpdatedEventPayload = z.infer<typeof fieldUpdatedEventPayload>
 export class FieldUpdatedEvent extends BaseEvent<IFieldUpdatedEventPayload, typeof EVT_FIELD_UPDATED> {
   name = EVT_FIELD_UPDATED
 
-  constructor(public readonly payload: IFieldUpdatedEventPayload) {
-    super(payload, undefined)
+  constructor(
+    public readonly payload: IFieldUpdatedEventPayload,
+    spaceId: string,
+  ) {
+    super(payload, undefined, spaceId)
   }
 }

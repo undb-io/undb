@@ -17,7 +17,10 @@ export type ISetViewOptionEventPayload = z.infer<typeof setViewOptionEventPayloa
 export class SetViewOptionEvent extends BaseEvent<ISetViewOptionEventPayload, typeof EVT_SET_VIEW_OPTION> {
   name = EVT_SET_VIEW_OPTION
 
-  constructor(public readonly payload: ISetViewOptionEventPayload) {
-    super(payload, undefined)
+  constructor(
+    public readonly payload: ISetViewOptionEventPayload,
+    spaceId: string,
+  ) {
+    super(payload, undefined, spaceId)
   }
 }

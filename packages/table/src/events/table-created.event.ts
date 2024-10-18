@@ -13,7 +13,10 @@ export type ITableCreatedEventPayload = z.infer<typeof tableCreatedEventPayload>
 export class TableCreatedEvent extends BaseEvent<ITableCreatedEventPayload, typeof EVT_TABLE_CREATED> {
   name = EVT_TABLE_CREATED
 
-  constructor(public readonly payload: ITableCreatedEventPayload) {
-    super(payload, undefined)
+  constructor(
+    public readonly payload: ITableCreatedEventPayload,
+    spaceId: string,
+  ) {
+    super(payload, undefined, spaceId)
   }
 }

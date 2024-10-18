@@ -16,7 +16,10 @@ export type ISetTableFormEventPayload = z.infer<typeof setTableFormEventPayload>
 export class SetTableFormEvent extends BaseEvent<ISetTableFormEventPayload, typeof EVT_SET_TABLE_VIEW> {
   name = EVT_SET_TABLE_VIEW
 
-  constructor(public readonly payload: ISetTableFormEventPayload) {
-    super(payload, undefined)
+  constructor(
+    public readonly payload: ISetTableFormEventPayload,
+    spaceId: string,
+  ) {
+    super(payload, undefined, spaceId)
   }
 }
