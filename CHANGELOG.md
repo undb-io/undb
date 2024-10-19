@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-103
+
+
+### 🚀 Enhancements
+
+- Dashboard on field deleted ([691cff2](https://github.com/undb-io/undb/commit/691cff2))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-102
 
 
