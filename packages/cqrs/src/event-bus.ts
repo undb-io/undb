@@ -4,7 +4,6 @@ import { Subject } from "rxjs"
 import type { Class } from "type-fest"
 import { EVENT_HANDLER_METADATA, EVENT_METADATA } from "./decorators/constants"
 import { DefaultEventPubSub } from "./default-event-publisher"
-import { EventHandlerNotFoundException } from "./exceptions/event-handler-not-found.exception"
 import { InvalidEventHandlerException } from "./exceptions/invalid-event-handler.exception"
 
 export type EventHandlerType = Class<IEventHandler<BaseEvent, any>>
@@ -17,8 +16,11 @@ export class EventBus<TEvent extends BaseEvent = BaseEvent> implements IEventBus
   #handlers = new Map<string, IEventHandler<TEvent, any>>()
 
   async publish(event: TEvent): Promise<void> {
-    console.log("publish event", event)
     const eventId = this.getEventId(event)
+    if (!eventId) {
+      return
+    }
+
     const handler = this.#handlers.get(eventId)
     if (!handler) {
       return
@@ -57,11 +59,11 @@ export class EventBus<TEvent extends BaseEvent = BaseEvent> implements IEventBus
     return eventMetadata.id
   }
 
-  private getEventId(event: TEvent): string {
+  private getEventId(event: TEvent): string | undefined {
     const { constructor: eventType } = Object.getPrototypeOf(event)
     const eventMetadata: EventMetadata = Reflect.getMetadata(EVENT_METADATA, eventType)
     if (!eventMetadata) {
-      throw new EventHandlerNotFoundException(eventType.name)
+      return
     }
     return eventMetadata.id
   }

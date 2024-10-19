@@ -15,16 +15,26 @@ export type IViewFields = z.infer<typeof viewFields>
 
 export class ViewFields extends ValueObject<IViewFields> {
   constructor(table: TableDo, props: IViewFields) {
-    const fields = table.schema.fields.map((field) => {
-      const exists = props.find((f) => f.fieldId === field.id.value)
-      if (exists) {
-        return exists
+    const fields = props.map((prop) => {
+      const field = table.schema.getFieldByIdOrName(prop.fieldId)
+      if (field) {
+        return prop
       }
       return {
-        fieldId: field.id.value,
-        hidden: false,
+        fieldId: prop.fieldId,
+        hidden: true,
       }
     })
+
+    table.schema.fields.forEach((field) => {
+      if (!fields.some((f) => f.fieldId === field.id.value)) {
+        fields.push({
+          fieldId: field.id.value,
+          hidden: false,
+        })
+      }
+    })
+
     super(fields)
   }
 
