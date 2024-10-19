@@ -7,14 +7,16 @@
   import { setTable } from "$lib/store/table.store"
   import { writable } from "svelte/store"
 
-  export let tableId: string
+  export let tableId: string | undefined
   export let widget: IWidgetDTO
   export let movePointerDown: ((e: Event) => void) | undefined = undefined
   export let resizePointerDown: ((e: Event) => void) | undefined = undefined
 
   const store = new GetDashboardWidgetTableStore()
   onMount(() => {
-    store.fetch({ variables: { tableId } })
+    if (tableId) {
+      store.fetch({ variables: { tableId } })
+    }
   })
 
   $: table = $store.data?.table
@@ -25,6 +27,4 @@
   }
 </script>
 
-{#if table}
-  <Widget {widget} {tableId} {movePointerDown} {resizePointerDown} />
-{/if}
+<Widget {widget} {tableId} {movePointerDown} {resizePointerDown} />

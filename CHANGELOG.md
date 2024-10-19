@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-104
+
+
+### 🩹 Fixes
+
+- Fix handle on table deleted ([c351539](https://github.com/undb-io/undb/commit/c351539))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-103
 
 

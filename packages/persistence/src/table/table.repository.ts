@@ -200,5 +200,7 @@ export class TableRepository implements ITableRepository {
       .execute()
 
     await this.underlyingTableService.delete(table)
+    console.log("save", table.domainEvents)
+    await this.outboxService.save(table)
   }
 }

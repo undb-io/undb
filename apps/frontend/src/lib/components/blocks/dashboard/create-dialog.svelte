@@ -62,7 +62,7 @@
   })
 </script>
 
-<form method="POST" class=" space-y-6" use:enhance>
+<form method="POST" class="space-y-3" use:enhance>
   <Form.Field {form} name="name">
     <Form.Control let:attrs>
       <Form.Label>Name</Form.Label>
@@ -74,6 +74,6 @@
 
   <Form.Button disabled={$createDashboard.isPending}>Submit</Form.Button>
   {#if browser}
-    <SuperDebug data={$formData} />
+    <!-- <SuperDebug data={$formData} /> -->
   {/if}
 </form>

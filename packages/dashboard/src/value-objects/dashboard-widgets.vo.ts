@@ -48,6 +48,21 @@ export class DashboardWidget extends ValueObject<IDashboardWidget> {
     )
   }
 
+  deleteTable(tableId: string): Option<DashboardWidget> {
+    if (this.tableId !== tableId) {
+      return None
+    }
+
+    return Some(
+      new DashboardWidget({
+        table: {
+          id: undefined,
+        },
+        widget: this.props.widget,
+      }),
+    )
+  }
+
   /**
    * Creates a DashboardWidget instance
    * @param table Table object
@@ -131,6 +146,16 @@ export class DashboardWidgets extends ValueObject<IDashboardWidgets> {
     const widgets = this.value.map((w) => {
       const widget = new DashboardWidget(w)
       const updated = widget.deleteField(tableId, fieldId)
+      return updated.isSome() ? updated.unwrap().toJSON() : w
+    })
+    const dashbaordWidgets = new DashboardWidgets(widgets)
+    return Some(new WithDashboardWidgets(dashbaordWidgets))
+  }
+
+  $onTableDeleted(tableId: string): Option<DashboardComositeSpecification> {
+    const widgets = this.value.map((w) => {
+      const widget = new DashboardWidget(w)
+      const updated = widget.deleteTable(tableId)
       return updated.isSome() ? updated.unwrap().toJSON() : w
     })
     const dashbaordWidgets = new DashboardWidgets(widgets)

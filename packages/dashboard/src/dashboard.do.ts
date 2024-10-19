@@ -76,6 +76,10 @@ export class Dashboard extends AggregateRoot<any> {
     return this.widgets.$onFieldDeleted(tableId, fieldId)
   }
 
+  $onTableDeleted(tableId: string): Option<DashboardComositeSpecification> {
+    return this.widgets.$onTableDeleted(tableId)
+  }
+
   public toJSON(): IDashboardDTO {
     return {
       id: this.id.value,

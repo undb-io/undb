@@ -26,8 +26,8 @@
   const deleteTableMutation = createMutation({
     mutationFn: trpc.table.delete.mutate,
     async onSuccess(data, variables, context) {
-      await invalidateAll()
       await goto("/")
+      await invalidateAll()
     },
     onError(error, variables, context) {
       toast.error(error.message)

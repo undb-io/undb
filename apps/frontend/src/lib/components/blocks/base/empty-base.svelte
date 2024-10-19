@@ -4,7 +4,7 @@
 </script>
 
 <main class="flex h-full flex-col overflow-hidden">
-  <div class="flex flex-1 -translate-y-20 items-center justify-center rounded-lg border border-dashed shadow-sm">
+  <div class="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
     <div class="flex flex-col items-center gap-2 text-center">
       <InboxIcon class="text-muted-foreground h-16 w-16" />
       <h3 class="text-sm font-bold tracking-tight">There is no base in the space.</h3>
