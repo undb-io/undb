@@ -40,6 +40,7 @@ export async function deleteTableMethod(this: TableService, dto: IDeleteTableDTO
     await this.repository.bulkUpdate(updates)
   }
 
+  table.$deleteTable()
   await this.repository.deleteOneById(table)
 
   return table

@@ -30,14 +30,23 @@ export class DashboardMutateVisitor extends AbstractQBMutationVisitor implements
   }
   withDashboardWidgets(v: WithDashboardWidgets): void {
     this.setData("widgets", v.widgets.value.length ? json(v.widgets.value) : null)
-    const tableIds = v.widgets.tableIds
     const dashboardId = this.dashboard.id.value
-    const sql = this.qb
-      .insertInto("undb_dashboard_table_id_mapping")
-      .values(tableIds.map((tableId) => ({ dashboard_id: dashboardId, table_id: tableId })))
-      .onConflict((ob) => ob.doNothing())
+
+    const deleteSql = this.qb
+      .deleteFrom("undb_dashboard_table_id_mapping")
+      .where("dashboard_id", "=", dashboardId)
       .compile()
-    this.addSql(sql)
+    this.addSql(deleteSql)
+
+    const tableIds = v.widgets.tableIds
+    if (tableIds.length > 0) {
+      const sql = this.qb
+        .insertInto("undb_dashboard_table_id_mapping")
+        .values(tableIds.map((tableId) => ({ dashboard_id: dashboardId, table_id: tableId })))
+        .onConflict((ob) => ob.doNothing())
+        .compile()
+      this.addSql(sql)
+    }
   }
   withDashboardBaseId(v: DashboardBaseIdSpecification): void {
     throw new Error("Method not implemented.")

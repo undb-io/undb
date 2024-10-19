@@ -37,17 +37,19 @@
   const value = writable<MaybeConditionGroup<IAggregateCondition> | undefined>(
     toMaybeConditionGroup(aggregate.condition),
   )
-  $: validValue = $value ? parseValidAggregateCondition($table.schema, $value) : undefined
-  $: visibleFields = $table.getOrderedVisibleFields()
+  $: validValue = $value && $table ? parseValidAggregateCondition($table.schema, $value) : undefined
+  $: visibleFields = $table?.getOrderedVisibleFields()
 
   const client = useQueryClient()
 
   const updateWidgetMutation = createMutation({
     mutationFn: trpc.table.view.widget.update.mutate,
     async onSuccess(data, variables, context) {
-      await invalidate(`table:${$table.id.value}`)
-      await tick()
-      await client.invalidateQueries({ queryKey: ["aggregate", $table.id.value, widget.id] })
+      if ($table) {
+        await invalidate(`table:${$table.id.value}`)
+        await tick()
+        await client.invalidateQueries({ queryKey: ["aggregate", $table.id.value, widget.id] })
+      }
       onSuccess()
     },
     onError(error, variables, context) {
@@ -58,9 +60,11 @@
   const updateDashboardWidget = createMutation({
     mutationFn: trpc.dashboard.widget.update.mutate,
     async onSuccess(data, variables, context) {
-      await invalidate(`dashboard:${$dashboard.id.value}`)
-      await tick()
-      await client.invalidateQueries({ queryKey: ["aggregate", $table.id.value, widget.id] })
+      if ($table) {
+        await invalidate(`dashboard:${$dashboard.id.value}`)
+        await tick()
+        await client.invalidateQueries({ queryKey: ["aggregate", $table.id.value, widget.id] })
+      }
       onSuccess()
     },
   })
@@ -90,7 +94,7 @@
         },
       })
     } else {
-      if (!viewId) {
+      if (!viewId || !$table) {
         return
       }
       $updateWidgetMutation.mutate({
@@ -164,12 +168,14 @@
         <div class="text-sm font-medium">Filters</div>
       </div>
 
-      <FiltersEditor
-        bind:value={$value}
-        table={$table}
-        filter={(field) => visibleFields.some((f) => f.id.value === field.id) && getIsFilterableFieldType(field.type)}
-        class="rounded-md border"
-      ></FiltersEditor>
+      {#if $table}
+        <FiltersEditor
+          bind:value={$value}
+          table={$table}
+          filter={(field) => visibleFields.some((f) => f.id.value === field.id) && getIsFilterableFieldType(field.type)}
+          class="rounded-md border"
+        ></FiltersEditor>
+      {/if}
     </div>
 
     <div class="flex justify-end">

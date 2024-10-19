@@ -94,7 +94,7 @@
         </Table.Body>
       {:else}
         <div class="flex flex-1 items-center justify-center">
-          <div class="text-muted-foreground -translate-y-48">
+          <div class="text-muted-foreground">
             <div class="flex flex-col items-center gap-1 space-y-2 text-center">
               <SquareMousePointer class="text-primary h-10 w-10" />
               <h3 class="text-sm font-bold tracking-tight">{base.name} have no tables</h3>
@@ -108,7 +108,8 @@
                   }}
                 >
                   <PlusIcon class="mr-2 h-4 w-4" />
-                  Create New Table</Button
+                  Create New Table
+                  </Button
                 >
                 <Button
                   class="w-48"
@@ -119,8 +120,8 @@
                   }}
                 >
                   <ImportIcon class="mr-2 h-4 w-4" />
-                  Import Table</Button
-                >
+                  Import Table
+                </Button>
               {/if}
             </div>
           </div>

@@ -7,6 +7,7 @@ import { createFormMethod } from "./methods/create-form.method"
 import { createViewMethod } from "./methods/create-view.method"
 import { deleteFieldMethod } from "./methods/delete-field.method"
 import { deleteFormMethod } from "./methods/delete-form.method"
+import { deleteTable } from "./methods/delete-table.method"
 import { deleteViewMethod } from "./methods/delete-view.method"
 import { duplicateFieldMethod } from "./methods/duplicate-field.method"
 import { duplicateFormMethod } from "./methods/duplicate-form.method"
@@ -80,6 +81,8 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   $duplicateView = duplicateViewMethod
   $deleteView = deleteViewMethod
   $setTableForm = setTableForm
+
+  $deleteTable = deleteTable
 
   #createReferenceField = createReferenceField
 

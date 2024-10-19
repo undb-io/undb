@@ -9,6 +9,8 @@
   import * as Tooltip from "$lib/components/ui/tooltip"
 
   const table = getTable()
+
+  export let tableId: string | undefined
   export let viewId: string | undefined
   export let shareId: string | undefined
   export let ignoreView: boolean = false
@@ -16,10 +18,10 @@
   export let widget: IWidgetDTO
   export let aggregate: IAggregate
 
-  $: isValid = isValidWidget(widget)
+  $: isValid = isValidWidget(widget) && !!tableId
 
   const getAggregate = createQuery({
-    queryKey: ["aggregate", $table.id.value, widget.id],
+    queryKey: ["aggregate", widget.id],
     queryFn: () => {
       const agg =
         aggregate.type === "count"
@@ -28,7 +30,7 @@
       if (shareId) {
         return trpc.shareData.aggregate.query({
           shareId,
-          tableId: $table.id.value,
+          tableId,
           viewId,
           aggregate: agg,
           condition: aggregate.condition,
@@ -36,7 +38,7 @@
         })
       }
       return trpc.record.aggregate.query({
-        tableId: $table.id.value,
+        tableId,
         viewId,
         aggregate: agg,
         condition: aggregate.condition,
@@ -45,7 +47,7 @@
     },
   })
 
-  let value = derived([getAggregate, table], ([$data, $table]) => {
+  let value = derived([getAggregate], ([$data]) => {
     if (aggregate.type === "count") {
       return ($data.data as any)?.[ID_TYPE]
     }

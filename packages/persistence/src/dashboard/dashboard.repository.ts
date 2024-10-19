@@ -91,10 +91,12 @@ export class DashboardRepository implements IDashboardRepository {
       })
       .execute()
     const tableIds = dashboard.tableIds
-    await qb
-      .insertInto("undb_dashboard_table_id_mapping")
-      .values(tableIds.map((id) => ({ dashboard_id: dashboard.id.value, table_id: id })))
-      .execute()
+    if (tableIds.length > 0) {
+      await qb
+        .insertInto("undb_dashboard_table_id_mapping")
+        .values(tableIds.map((id) => ({ dashboard_id: dashboard.id.value, table_id: id })))
+        .execute()
+    }
     await this.outboxService.save(dashboard)
   }
 
@@ -116,6 +118,10 @@ export class DashboardRepository implements IDashboardRepository {
       .set({ ...visitor.data, updated_by: userId, updated_at: new Date().toISOString() })
       .where((eb) => eb.eb("id", "=", dashboard.id.value))
       .execute()
+
+    for (const sql of visitor.sql) {
+      await qb.executeQuery(sql)
+    }
     await this.outboxService.save(dashboard)
   }
 
