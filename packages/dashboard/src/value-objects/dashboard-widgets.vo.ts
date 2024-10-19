@@ -1,4 +1,4 @@
-import { Option, Some, ValueObject } from "@undb/domain"
+import { None, Option, Some, ValueObject } from "@undb/domain"
 import { TableDo, tableId, widgetDTO, WidgetVO, type IWidgetDTO } from "@undb/table"
 import * as z from "@undb/zod"
 import type { IUpdateDashboardWidgetDTO } from "../dto/update-dashboard-widget.dto"
@@ -21,6 +21,31 @@ export class DashboardWidget extends ValueObject<IDashboardWidget> {
       },
       widget: WidgetVO.default(name).toJSON(),
     })
+  }
+
+  get tableId() {
+    return this.props.table.id
+  }
+
+  deleteField(tableId: string, fieldId: string): Option<DashboardWidget> {
+    if (this.tableId !== tableId) {
+      return None
+    }
+
+    const widget = WidgetVO.fromJSON(this.props.widget)
+    const updated = widget.deleteField(fieldId)
+    if (updated.isNone()) {
+      return None
+    }
+
+    return Some(
+      new DashboardWidget({
+        table: {
+          id: this.props.table.id,
+        },
+        widget: updated.unwrap().toJSON(),
+      }),
+    )
   }
 
   /**
@@ -100,6 +125,20 @@ export class DashboardWidgets extends ValueObject<IDashboardWidgets> {
   static from(dtos: { table: TableDo; widget: IWidgetDTO }[]): DashboardWidgets {
     const widgets = dtos.map((dto) => DashboardWidget.from(dto.table, dto.widget))
     return new DashboardWidgets(widgets.map((w) => w.toJSON()))
+  }
+
+  $onFieldDeleted(tableId: string, fieldId: string): Option<DashboardComositeSpecification> {
+    const widgets = this.value.map((w) => {
+      const widget = new DashboardWidget(w)
+      const updated = widget.deleteField(tableId, fieldId)
+      return updated.isSome() ? updated.unwrap().toJSON() : w
+    })
+    const dashbaordWidgets = new DashboardWidgets(widgets)
+    return Some(new WithDashboardWidgets(dashbaordWidgets))
+  }
+
+  get tableIds(): string[] {
+    return this.value.map((w) => w.table.id).filter((tableId) => !!tableId) as string[]
   }
 
   addWidget(table: TableDo, dto: IDashboardWidget): DashboardWidgets {

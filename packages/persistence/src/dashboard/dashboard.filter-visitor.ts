@@ -1,6 +1,7 @@
 import type {
   Dashboard,
   DashboardBaseIdSpecification,
+  DashboardTableIdSpecification,
   IDashboardSpecVisitor,
   WithDashboardId,
   WithDashboardLayout,
@@ -13,12 +14,25 @@ import type { DuplicatedDashboardSpecification } from "@undb/dashboard/src/speci
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
+import type { IQueryBuilder } from "../qb"
 
 export class DashboardFilterVisitor extends AbstractQBVisitor<Dashboard> implements IDashboardSpecVisitor {
-  constructor(protected readonly eb: ExpressionBuilder<Database, "undb_dashboard">) {
+  constructor(
+    protected readonly eb: ExpressionBuilder<Database, "undb_dashboard">,
+
+    private readonly qb: IQueryBuilder,
+  ) {
     super(eb)
   }
 
+  withDashboardTableId(v: DashboardTableIdSpecification): void {
+    const subQuery = this.qb
+      .selectFrom("undb_dashboard_table_id_mapping")
+      .select("dashboard_id")
+      .where("table_id", "=", v.tableId)
+    const cond = this.eb.eb("id", "in", subQuery)
+    this.addCond(cond)
+  }
   withDashboardLayout(v: WithDashboardLayout): void {
     throw new Error("Method not implemented.")
   }
@@ -44,6 +58,6 @@ export class DashboardFilterVisitor extends AbstractQBVisitor<Dashboard> impleme
     this.addCond(this.eb.eb("name", "like", `%${v.q}%`))
   }
   clone(): this {
-    return new DashboardFilterVisitor(this.eb) as this
+    return new DashboardFilterVisitor(this.eb, this.qb) as this
   }
 }

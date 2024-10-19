@@ -95,7 +95,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
         return form.visibleFields.map((f) => this.schema.getFieldById(new FieldIdVo(f.fieldId)).unwrap())
       }
     }
-    const showSystemFields = this.views.getViewById(viewId).showSystemFields
+    const showSystemFields = !!this.views?.getViewById(viewId).showSystemFields
     return fields.filter((f) => (showSystemFields ? true : !f.isSystem))
   }
 

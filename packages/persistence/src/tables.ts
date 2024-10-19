@@ -173,6 +173,23 @@ export const dashboards = sqliteTable(
   },
 )
 
+export const dashboardTableIdMapping = sqliteTable(
+  "dashboard_table_id_mapping",
+  {
+    dashboardId: text("dashboard_id")
+      .notNull()
+      .references(() => dashboards.id),
+    tableId: text("table_id")
+      .notNull()
+      .references(() => tables.id),
+  },
+  (table) => {
+    return {
+      pk: primaryKey({ columns: [table.dashboardId, table.tableId] }),
+    }
+  },
+)
+
 export const attachments = sqliteTable(
   "attachment",
   {

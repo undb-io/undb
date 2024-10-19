@@ -1,5 +1,7 @@
 import type {
+  Dashboard,
   DashboardBaseIdSpecification,
+  DashboardTableIdSpecification,
   DuplicatedDashboardSpecification,
   IDashboardSpecVisitor,
   WithDashboardId,
@@ -10,14 +12,32 @@ import type {
   WithDashboardWidgets,
 } from "@undb/dashboard"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
-import { json } from "../qb"
+import { json, type IQueryBuilder } from "../qb"
 
 export class DashboardMutateVisitor extends AbstractQBMutationVisitor implements IDashboardSpecVisitor {
+  constructor(
+    private readonly dashboard: Dashboard,
+    private readonly qb: IQueryBuilder,
+  ) {
+    super()
+  }
+
+  withDashboardTableId(v: DashboardTableIdSpecification): void {
+    throw new Error("Method not implemented.")
+  }
   withDashboardLayout(v: WithDashboardLayout): void {
     this.setData("layout", v.layout ? json(v.layout) : null)
   }
   withDashboardWidgets(v: WithDashboardWidgets): void {
     this.setData("widgets", v.widgets.value.length ? json(v.widgets.value) : null)
+    const tableIds = v.widgets.tableIds
+    const dashboardId = this.dashboard.id.value
+    const sql = this.qb
+      .insertInto("undb_dashboard_table_id_mapping")
+      .values(tableIds.map((tableId) => ({ dashboard_id: dashboardId, table_id: tableId })))
+      .onConflict((ob) => ob.doNothing())
+      .compile()
+    this.addSql(sql)
   }
   withDashboardBaseId(v: DashboardBaseIdSpecification): void {
     throw new Error("Method not implemented.")

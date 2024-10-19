@@ -36,7 +36,7 @@ export class DashboardRepository implements IDashboardRepository {
       .selectFrom("undb_dashboard")
       .selectAll()
       .where((eb) => {
-        const visitor = new DashboardFilterVisitor(eb)
+        const visitor = new DashboardFilterVisitor(eb, tx)
         spec.accept(visitor)
         return visitor.cond
       })
@@ -45,11 +45,12 @@ export class DashboardRepository implements IDashboardRepository {
     return dashboards.map((dashboard) => this.mapper.toDo(dashboard))
   }
   async findOne(spec: IDashboardSpecification): Promise<Option<Dashboard>> {
-    const dashboard = await (getCurrentTransaction() ?? this.qb)
+    const tx = getCurrentTransaction() ?? this.qb
+    const dashboard = await tx
       .selectFrom("undb_dashboard")
       .selectAll()
       .where((eb) => {
-        const visitor = new DashboardFilterVisitor(eb)
+        const visitor = new DashboardFilterVisitor(eb, tx)
         spec.accept(visitor)
         return visitor.cond
       })
@@ -61,11 +62,12 @@ export class DashboardRepository implements IDashboardRepository {
     const spaceId = this.context.mustGetCurrentSpaceId()
     const spec = WithDashboardId.fromString(id).and(new WithDashboardSpaceId(spaceId))
 
-    const dashboard = await (getCurrentTransaction() ?? this.qb)
+    const tx = getCurrentTransaction() ?? this.qb
+    const dashboard = await tx
       .selectFrom("undb_dashboard")
       .selectAll()
       .where((eb) => {
-        const visitor = new DashboardFilterVisitor(eb)
+        const visitor = new DashboardFilterVisitor(eb, tx)
         spec.accept(visitor)
         return visitor.cond
       })
@@ -77,7 +79,8 @@ export class DashboardRepository implements IDashboardRepository {
     const user = this.context.mustGetCurrentUserId()
     const values = this.mapper.toEntity(dashboard)
 
-    await getCurrentTransaction()
+    const qb = getCurrentTransaction() ?? this.qb
+    await qb
       .insertInto("undb_dashboard")
       .values({
         ...values,
@@ -86,6 +89,11 @@ export class DashboardRepository implements IDashboardRepository {
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
+      .execute()
+    const tableIds = dashboard.tableIds
+    await qb
+      .insertInto("undb_dashboard_table_id_mapping")
+      .values(tableIds.map((id) => ({ dashboard_id: dashboard.id.value, table_id: id })))
       .execute()
     await this.outboxService.save(dashboard)
   }
@@ -99,10 +107,11 @@ export class DashboardRepository implements IDashboardRepository {
   async updateOneById(dashboard: Dashboard, spec: IDashboardSpecification): Promise<void> {
     const userId = this.context.mustGetCurrentUserId()
 
-    const visitor = new DashboardMutateVisitor()
+    const qb = getCurrentTransaction() ?? this.qb
+    const visitor = new DashboardMutateVisitor(dashboard, qb)
     spec.accept(visitor)
 
-    await getCurrentTransaction()
+    await qb
       .updateTable("undb_dashboard")
       .set({ ...visitor.data, updated_by: userId, updated_at: new Date().toISOString() })
       .where((eb) => eb.eb("id", "=", dashboard.id.value))
