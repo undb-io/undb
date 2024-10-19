@@ -1,7 +1,7 @@
-import { injectContext,type IContext } from "@undb/context"
-import { executionContext,getCurrentSpaceId } from "@undb/context/server"
-import { inject,singleton } from "@undb/di"
-import { None,Option,Some } from "@undb/domain"
+import { injectContext, type IContext } from "@undb/context"
+import { executionContext, getCurrentSpaceId } from "@undb/context/server"
+import { inject, singleton } from "@undb/di"
+import { None, Option, Some } from "@undb/domain"
 import {
   TableComositeSpecification,
   TableIdSpecification,
@@ -13,8 +13,8 @@ import {
   type TableId,
 } from "@undb/table"
 import { getCurrentTransaction } from "../ctx"
-import type { InsertTable,InsertTableIdMapping } from "../db"
-import { json,type IQueryBuilder } from "../qb"
+import type { InsertTable, InsertTableIdMapping } from "../db"
+import { json, type IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTableService } from "../underlying/underlying-table.service"
 import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"

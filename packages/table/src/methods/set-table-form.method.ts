@@ -10,11 +10,14 @@ export function setTableForm(this: TableDo, dto: ISetTableFormDTO): Option<Table
   if (!spec) return None
   spec.mutate(this)
 
-  const event = new SetTableFormEvent({
-    tableId: this.id.value,
-    previous: spec.previous ?? null,
-    form: spec.form.toJSON(),
-  })
+  const event = new SetTableFormEvent(
+    {
+      tableId: this.id.value,
+      previous: spec.previous ?? null,
+      form: spec.form.toJSON(),
+    },
+    this.spaceId,
+  )
   this.addDomainEvent(event)
 
   return Some(spec)

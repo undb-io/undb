@@ -3,7 +3,6 @@ import { z } from "@undb/zod"
 import { tableId } from "../../table-id.vo"
 import { aggregate } from "../aggregate/aggregate.vo"
 import { chart } from "../chart/chart.vo"
-import type { Field } from "../schema/fields/field.type"
 import { widgetId, WidgetIdVo } from "./widget-id.vo"
 import { widgetName } from "./widget-name.vo"
 
@@ -61,6 +60,11 @@ export class WidgetVO extends ValueObject<IWidgetDTO> {
       },
     })
   }
+
+  static fromJSON(dto: IWidgetDTO) {
+    return new this(dto)
+  }
+
   public get id() {
     return this.props.id
   }
@@ -85,10 +89,10 @@ export class WidgetVO extends ValueObject<IWidgetDTO> {
     return isValidWidget(this.toJSON())
   }
 
-  deleteField(field: Field): Option<WidgetVO> {
+  deleteField(fieldId: string): Option<WidgetVO> {
     if (this.props.item.type === "aggregate") {
       if (this.props.item.aggregate.type !== "count") {
-        if (this.props.item.aggregate.config.field === field.id.value) {
+        if (this.props.item.aggregate.config.field === fieldId) {
           const widget = new WidgetVO({
             ...this.props,
             item: {

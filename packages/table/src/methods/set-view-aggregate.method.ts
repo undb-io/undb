@@ -1,7 +1,6 @@
 import type { Option } from "@undb/domain"
 import type { ISetViewAggregateDTO } from "../dto"
 import { SetViewAggregateEvent } from "../events"
-import { ViewIdVo } from "../modules"
 import type { TableComositeSpecification } from "../specifications"
 import type { TableDo } from "../table.do"
 
@@ -12,12 +11,15 @@ export function setViewAggregate(this: TableDo, dto: ISetViewAggregateDTO): Opti
   if (spec.isSome()) {
     spec.unwrap().mutate(this)
 
-    const event = new SetViewAggregateEvent({
-      tableId: this.id.value,
-      viewId: view.id.value,
-      previous: spec.unwrap().previous.into(null) ?? null,
-      aggregate: view.aggregate.into(null)?.value ?? null,
-    })
+    const event = new SetViewAggregateEvent(
+      {
+        tableId: this.id.value,
+        viewId: view.id.value,
+        previous: spec.unwrap().previous.into(null) ?? null,
+        aggregate: view.aggregate.into(null)?.value ?? null,
+      },
+      this.spaceId,
+    )
     this.addDomainEvent(event)
   }
 

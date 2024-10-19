@@ -18,10 +18,13 @@ export function createViewMethod(
   const names = this.views.views.map((v) => v.name.value)
   applyRules(new ViewNameShouldBeUnique(names))
 
-  const event = new ViewCreatedEvent({
-    tableId: this.id.value,
-    view: view.toJSON(),
-  })
+  const event = new ViewCreatedEvent(
+    {
+      tableId: this.id.value,
+      view: view.toJSON(),
+    },
+    this.spaceId,
+  )
   this.addDomainEvent(event)
 
   return { spec: Some(spec), view }

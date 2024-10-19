@@ -6,6 +6,7 @@ import {
 } from "@undb/dashboard"
 import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
+import { getCurrentTransaction } from "../ctx"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { DashboardFilterVisitor } from "./dashboard.filter-visitor"
@@ -21,11 +22,12 @@ export class DashboardQueryRepository implements IDashboardQueryRepository {
   ) {}
 
   async find(spec: Option<IDashboardSpecification>): Promise<IDashboardDTO[]> {
-    const dashboards = await this.qb
+    const qb = getCurrentTransaction() ?? this.qb
+    const dashboards = await qb
       .selectFrom("undb_dashboard")
       .selectAll()
       .where((eb) => {
-        const visitor = new DashboardFilterVisitor(eb)
+        const visitor = new DashboardFilterVisitor(eb, qb)
         if (spec.isSome()) {
           spec.unwrap().accept(visitor)
         }
@@ -39,11 +41,12 @@ export class DashboardQueryRepository implements IDashboardQueryRepository {
   async findOneById(id: string): Promise<Option<IDashboardDTO>> {
     const spec = WithDashboardId.fromString(id)
 
+    const qb = getCurrentTransaction() ?? this.qb
     const dashboard = await this.qb
       .selectFrom("undb_dashboard")
       .selectAll()
       .where((eb) => {
-        const visitor = new DashboardFilterVisitor(eb)
+        const visitor = new DashboardFilterVisitor(eb, qb)
         spec.accept(visitor)
         return visitor.cond
       })

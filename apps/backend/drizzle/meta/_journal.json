@@ -71,6 +71,13 @@
       "when": 1728874533782,
       "tag": "0009_workable_scorpion",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1729306799169,
+      "tag": "0010_nostalgic_nehzno",
+      "breakpoints": true
     }
   ]
 }

@@ -15,7 +15,10 @@ export type IViewDeletedEventPayload = z.infer<typeof viewDeletedEventPayload>
 export class ViewDeletedEvent extends BaseEvent<IViewDeletedEventPayload, typeof EVT_VIEW_DELETED> {
   name = EVT_VIEW_DELETED
 
-  constructor(public readonly payload: IViewDeletedEventPayload) {
-    super(payload, undefined)
+  constructor(
+    public readonly payload: IViewDeletedEventPayload,
+    spaceId: string,
+  ) {
+    super(payload, undefined, spaceId)
   }
 }

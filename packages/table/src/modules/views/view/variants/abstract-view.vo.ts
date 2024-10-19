@@ -269,7 +269,7 @@ export abstract class AbstractView {
     if (this.widgets.isSome()) {
       const previous = this.widgets.into(null)
       const widgets = this.widgets.unwrap().map((w) => {
-        const updated = w.deleteField(field)
+        const updated = w.deleteField(field.id.value)
         return updated.isSome() ? updated.unwrap() : w
       })
 

@@ -15,7 +15,10 @@ export type IFieldDeletedEventPayload = z.infer<typeof fieldDeletedEventPayload>
 export class FieldDeletedEvent extends BaseEvent<IFieldDeletedEventPayload, typeof EVT_FIELD_DELETED> {
   name = EVT_FIELD_DELETED
 
-  constructor(public readonly payload: IFieldDeletedEventPayload) {
-    super(payload, undefined)
+  constructor(
+    public readonly payload: IFieldDeletedEventPayload,
+    spaceId: string,
+  ) {
+    super(payload, undefined, spaceId)
   }
 }

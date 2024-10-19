@@ -13,11 +13,14 @@ export function updateFieldMethod(this: TableDo, dto: IUpdateFieldDTO): Option<T
 
   applyRules(new FieldNameShouldBeUnique(this.schema), new FieldIdShouldBeUnique(this.schema))
 
-  const event = new FieldUpdatedEvent({
-    tableId: this.id.value,
-    field: spec.field.toJSON(),
-    previous: spec.previous.toJSON(),
-  })
+  const event = new FieldUpdatedEvent(
+    {
+      tableId: this.id.value,
+      field: spec.field.toJSON(),
+      previous: spec.previous.toJSON(),
+    },
+    this.spaceId,
+  )
   this.addDomainEvent(event)
 
   return Some(spec)

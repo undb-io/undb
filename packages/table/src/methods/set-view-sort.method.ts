@@ -1,7 +1,6 @@
 import { applyRules, type Option } from "@undb/domain"
 import type { ISetViewSortDTO } from "../dto"
 import { SetViewSortEvent } from "../events"
-import { ViewIdVo } from "../modules"
 import { ViewSortShouldBeSortable } from "../rules/view-sort-should-be-sortable.rule"
 import { ViewSortShouldNotDuplicated } from "../rules/view-sort-should-not-duplicated.rule"
 import type { TableComositeSpecification } from "../specifications"
@@ -19,12 +18,15 @@ export function setViewSort(this: TableDo, dto: ISetViewSortDTO): Option<TableCo
   if (spec.isSome()) {
     spec.unwrap().mutate(this)
 
-    const event = new SetViewSortEvent({
-      tableId: this.id.value,
-      viewId: view.id.value,
-      previous: spec.unwrap().previous.into(null) ?? null,
-      sort: view.sort.into(null)?.toJSON() ?? null,
-    })
+    const event = new SetViewSortEvent(
+      {
+        tableId: this.id.value,
+        viewId: view.id.value,
+        previous: spec.unwrap().previous.into(null) ?? null,
+        sort: view.sort.into(null)?.toJSON() ?? null,
+      },
+      this.spaceId,
+    )
     this.addDomainEvent(event)
   }
 

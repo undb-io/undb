@@ -14,7 +14,7 @@ export type IBaseUpdatedEventPayload = z.infer<typeof baseUpdatedEventPayload>
 export class BaseUpdatedEvent extends BaseEvent<IBaseUpdatedEventPayload, typeof EVT_BASE_UPDATED> {
   name = EVT_BASE_UPDATED
 
-  constructor(public readonly payload: IBaseUpdatedEventPayload) {
-    super(payload, undefined)
+  constructor(public readonly payload: IBaseUpdatedEventPayload, spaceId: string  ) {
+    super(payload, undefined, spaceId)
   }
 }

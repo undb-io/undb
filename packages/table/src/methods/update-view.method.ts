@@ -15,11 +15,14 @@ export function updateView(this: TableDo, dto: IUpdateViewDTO): Option<TableComo
     const names = this.views.views.map((v) => v.name.value)
     applyRules(new ViewNameShouldBeUnique(names))
 
-    const event = new ViewUpdatedEvent({
-      tableId: this.id.value,
-      previous: spec.unwrap().previous.toJSON() ?? null,
-      view: view?.toJSON() ?? null,
-    })
+    const event = new ViewUpdatedEvent(
+      {
+        tableId: this.id.value,
+        previous: spec.unwrap().previous.toJSON() ?? null,
+        view: view?.toJSON() ?? null,
+      },
+      this.spaceId,
+    )
     this.addDomainEvent(event)
   }
 

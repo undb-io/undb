@@ -1,6 +1,6 @@
 {
   "name": "undb",
-  "version": "1.0.0-102",
+  "version": "1.0.0-103",
   "private": true,
   "scripts": {
     "build": "NODE_ENV=production bun --bun turbo build",
@@ -23,7 +23,7 @@
     "drizzle-kit": "^0.26.2",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
-    "npm-run-all2": "^6.2.3",
+    "npm-run-all2": "^6.2.4",
     "prettier": "^3.3.3",
     "turbo": "^2.1.3"
   },
@@ -33,7 +33,7 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "bun@1.1.30",
+  "packageManager": "bun@1.1.31",
   "workspaces": [
     "apps/*",
     "packages/*"

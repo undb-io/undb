@@ -18,7 +18,10 @@ export type ISetViewFieldsEventPayload = z.infer<typeof setViewFieldsEventPayloa
 export class SetViewFieldsEvent extends BaseEvent<ISetViewFieldsEventPayload, typeof EVT_SET_VIEW_FIELDS> {
   name = EVT_SET_VIEW_FIELDS
 
-  constructor(public readonly payload: ISetViewFieldsEventPayload) {
-    super(payload, undefined)
+  constructor(
+    public readonly payload: ISetViewFieldsEventPayload,
+    spaceId: string,
+  ) {
+    super(payload, undefined, spaceId)
   }
 }
