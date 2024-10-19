@@ -21,8 +21,7 @@ export class EventBus<TEvent extends BaseEvent = BaseEvent> implements IEventBus
     const eventId = this.getEventId(event)
     const handler = this.#handlers.get(eventId)
     if (!handler) {
-      const eventName = this.getEventName(event)
-      throw new EventHandlerNotFoundException(eventName)
+      return
     }
     this.publisher.publish(event)
     return handler.handle(event)
