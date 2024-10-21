@@ -7,6 +7,7 @@ import type { WithDashboardName } from "./specifications/dashboard-name.specific
 import type { WithDashboardQ } from "./specifications/dashboard-q.specification.js"
 import type { WithDashboardSpaceId } from "./specifications/dashboard-space-id.specification.js"
 import type { DashboardTableIdSpecification } from "./specifications/dashboard-table-id.specification.js"
+import type { DashboardUniqueSpecification } from "./specifications/dashboard-unique.specification.js"
 import type { WithDashboardWidgets } from "./specifications/dashboard-widget.specification.js"
 import type { DuplicatedDashboardSpecification } from "./specifications/dashboard.specification.js"
 
@@ -20,6 +21,7 @@ export interface IDashboardSpecVisitor extends ISpecVisitor {
   withDashboardLayout(v: WithDashboardLayout): void
   withName(v: WithDashboardName): void
   withQ(v: WithDashboardQ): void
+  withUniqueDashboard(v: DashboardUniqueSpecification): void
 }
 
 export type IDashboardSpecification = CompositeSpecification<Dashboard, IDashboardSpecVisitor>

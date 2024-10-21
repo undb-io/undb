@@ -1,13 +1,13 @@
-import { spaceIdSchema } from "@undb/space"
+import { baseNameSchema } from "@undb/base"
 import { z } from "@undb/zod"
-import { dashboardIdSchema, dashboardNameSchema } from "../value-objects"
+import { dashboardIdSchema,dashboardNameSchema } from "../value-objects"
 
 export const uniqueDashboardDTO = z
   .object({
     dashboardId: dashboardIdSchema,
     dashboardName: dashboardNameSchema,
-    spaceId: spaceIdSchema,
-  })
+    baseName: baseNameSchema
+    })
   .partial()
 
 export type IUniqueDashboardDTO = z.infer<typeof uniqueDashboardDTO>

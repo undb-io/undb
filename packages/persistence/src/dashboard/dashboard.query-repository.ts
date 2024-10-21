@@ -11,6 +11,7 @@ import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { DashboardFilterVisitor } from "./dashboard.filter-visitor"
 import { DashboardMapper } from "./dashboard.mapper"
+import { DashboardReferenceVisitor } from "./dashboard.reference-visitor"
 
 @singleton()
 export class DashboardQueryRepository implements IDashboardQueryRepository {
@@ -26,6 +27,7 @@ export class DashboardQueryRepository implements IDashboardQueryRepository {
     const dashboards = await qb
       .selectFrom("undb_dashboard")
       .selectAll()
+      .$if(spec.isSome(), (qb) => new DashboardReferenceVisitor(qb).call(spec.unwrap()))
       .where((eb) => {
         const visitor = new DashboardFilterVisitor(eb, qb)
         if (spec.isSome()) {
@@ -45,6 +47,7 @@ export class DashboardQueryRepository implements IDashboardQueryRepository {
     const dashboard = await this.qb
       .selectFrom("undb_dashboard")
       .selectAll()
+      .$call((qb) => new DashboardReferenceVisitor(qb).call(spec))
       .where((eb) => {
         const visitor = new DashboardFilterVisitor(eb, qb)
         spec.accept(visitor)

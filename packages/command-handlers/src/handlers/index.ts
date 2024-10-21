@@ -55,6 +55,7 @@ import { TriggerRecordButtonCommandHandler } from "./trigger-record-button.comma
 import { UpdateAccountCommandHandler } from "./update-account.command-handler"
 import { UpdateBaseCommandHandler } from "./update-base.command-handler"
 import { UpdateDashboardWidgetCommandHandler } from "./update-dashboard-widget.command-handler"
+import { UpdateDashboardCommandHandler } from "./update-dashboard.command-handler"
 import { UpdateRecordCommandHandler } from "./update-record.command-handler"
 import { UpdateSpaceCommandHandler } from "./update-space.command-handler"
 import { UpdateTableFieldCommandHandler } from "./update-table-field.command-handler"
@@ -128,4 +129,5 @@ export const commandHandlers = [
   DeleteDashboardWidgetCommandHandler,
   RelayoutDashboardWidgetsCommandHandler,
   DeleteDashboardCommandHandler,
+  UpdateDashboardCommandHandler,
 ]

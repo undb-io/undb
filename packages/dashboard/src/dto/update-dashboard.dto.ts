@@ -1,8 +1,7 @@
 import { z } from "@undb/zod"
-import { dashboardIdSchema, dashboardNameSchema } from "../value-objects"
+import { dashboardNameSchema } from "../value-objects"
 
 export const updateDashboardDTO = z.object({
-  id: dashboardIdSchema,
   name: dashboardNameSchema.optional(),
 })
 

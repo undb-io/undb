@@ -52,6 +52,7 @@ import {
   TriggerRecordButtonCommand,
   UpdateAccountCommand,
   UpdateBaseCommand,
+  UpdateDashboardCommand,
   UpdateDashboardWidgetCommand,
   UpdateRecordCommand,
   UpdateSpaceCommand,
@@ -119,6 +120,7 @@ import {
   submitFormCommand,
   triggerRecordButtonCommand,
   updateBaseCommand,
+  updateDashboardCommand,
   updateDashboardWidgetCommand,
   updateRecordCommand,
   updateSpaceCommand,
@@ -537,6 +539,10 @@ const dashboardRouter = t.router({
     .use(authz("dashboard:read"))
     .input(getDashboardByIdQuery)
     .query(({ input }) => queryBus.execute(new GetDashboardByIdQuery(input))),
+  update: privateProcedure
+    .use(authz("dashboard:update"))
+    .input(updateDashboardCommand)
+    .mutation(({ input }) => commandBus.execute(new UpdateDashboardCommand(input))),
   delete: privateProcedure
     .use(authz("dashboard:delete"))
     .input(deleteDashboardCommand)

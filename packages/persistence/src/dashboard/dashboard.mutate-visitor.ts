@@ -2,6 +2,7 @@ import type {
   Dashboard,
   DashboardBaseIdSpecification,
   DashboardTableIdSpecification,
+  DashboardUniqueSpecification,
   DuplicatedDashboardSpecification,
   IDashboardSpecVisitor,
   WithDashboardId,
@@ -22,6 +23,7 @@ export class DashboardMutateVisitor extends AbstractQBMutationVisitor implements
     super()
   }
 
+  withUniqueDashboard(v: DashboardUniqueSpecification): void {}
   withDashboardTableId(v: DashboardTableIdSpecification): void {
     throw new Error("Method not implemented.")
   }

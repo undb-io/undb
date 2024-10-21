@@ -3,7 +3,7 @@
   import AddDashboardWidgetButton from "$lib/components/blocks/widget/add-dashboard-widget-button.svelte"
   import { getDashboard } from "$lib/store/dashboard.store"
   import { derived } from "svelte/store"
-  import { GaugeIcon, EllipsisIcon } from "lucide-svelte"
+  import { GaugeIcon, EllipsisIcon, PencilIcon } from "lucide-svelte"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { TrashIcon } from "lucide-svelte"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
@@ -11,6 +11,12 @@
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { goto, invalidateAll } from "$app/navigation"
+  import * as Dialog from "$lib/components/ui/dialog"
+  import * as Form from "$lib/components/ui/form"
+  import { Input } from "$lib/components/ui/input"
+  import { zodClient } from "sveltekit-superforms/adapters"
+  import { defaults, superForm } from "sveltekit-superforms"
+  import { updateDashboardDTO } from "@undb/dashboard"
 
   const dashboard = getDashboard()
 
@@ -30,6 +36,40 @@
   const deleteDashboard = () => {
     $deleteDashboardMutation.mutate({ id: $dashboard.id.value })
   }
+
+  let updateDialogOpen = false
+
+  const updateDashboardForm = superForm(
+    defaults(
+      {
+        name: $dashboard.name.value,
+      },
+      zodClient(updateDashboardDTO),
+    ),
+    {
+      validators: zodClient(updateDashboardDTO),
+      SPA: true,
+      dataType: "json",
+      onSubmit: (data) => {
+        validateForm({ update: true })
+      },
+      onUpdate: (data) => {
+        if (!data.form.valid) {
+          console.log(data.form.errors)
+          return
+        }
+
+        $updateDashboardMutation.mutate({ dashboardId: $dashboard.id.value, name: data.form.data.name })
+      },
+    },
+  )
+
+  const { form: formData, enhance, validateForm } = updateDashboardForm
+
+  const updateDashboardMutation = createMutation({
+    mutationFn: trpc.dashboard.update.mutate,
+    mutationKey: ["dashboard", "update", $dashboard.id.value],
+  })
 </script>
 
 <div class="flex h-full flex-col">
@@ -44,7 +84,11 @@
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
           <DropdownMenu.Group>
-            <DropdownMenu.Item on:click={() => (deleteDialogOpen = true)}>
+            <DropdownMenu.Item class="text-xs" on:click={() => (updateDialogOpen = true)}>
+              <PencilIcon class="mr-2 size-3" />
+              Update Dashboard
+            </DropdownMenu.Item>
+            <DropdownMenu.Item class="text-xs" on:click={() => (deleteDialogOpen = true)}>
               <TrashIcon class="mr-2 size-3" />
               Delete Dashboard
             </DropdownMenu.Item>
@@ -91,3 +135,24 @@
     </AlertDialog.Footer>
   </AlertDialog.Content>
 </AlertDialog.Root>
+
+<Dialog.Root bind:open={updateDialogOpen}>
+  <Dialog.Content>
+    <Dialog.Header>
+      <Dialog.Title>Update Dashboard</Dialog.Title>
+    </Dialog.Header>
+
+    <form method="POST" use:enhance>
+      <Form.Field form={updateDashboardForm} name="name">
+        <Form.Control let:attrs>
+          <Form.Label>Name</Form.Label>
+          <Input {...attrs} bind:value={$formData.name} />
+        </Form.Control>
+        <Form.Description />
+        <Form.FieldErrors />
+      </Form.Field>
+
+      <Form.Button>Update</Form.Button>
+    </form>
+  </Dialog.Content>
+</Dialog.Root>
