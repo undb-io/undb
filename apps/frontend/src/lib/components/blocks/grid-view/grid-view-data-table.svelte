@@ -210,6 +210,7 @@
                       hasFilter && "bg-orange-50",
                     )}
                     use:props.resize
+                    data-field-id={cell.id}
                   >
                     {#if cell.id === "$select" && !$hasRecord}
                       <Checkbox checked={false} disabled />

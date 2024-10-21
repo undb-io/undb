@@ -19,7 +19,6 @@ export class DashboardOnTableDeletedEventHandle implements IEventHandler<TableDe
 
     const spec = new DashboardTableIdSpecification(tableId)
     const dashboards = await this.dashboardRepository.find(spec)
-    console.log(dashboards)
 
     for (const dashboard of dashboards) {
       const spec = dashboard.$onTableDeleted(tableId)

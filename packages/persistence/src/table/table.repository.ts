@@ -109,6 +109,56 @@ export class TableRepository implements ITableRepository {
       .onConflict((ob) => ob.doNothing())
       .execute()
 
+    for (const view of table.views.views) {
+      await trx
+        .insertInto("undb_table_id_mapping")
+        .values({
+          table_id: table.id.value,
+          subject_id: view.id.value,
+        })
+        .onConflict((ob) => ob.doNothing())
+        .execute()
+    }
+
+    for (const form of table.forms?.props ?? []) {
+      await trx
+        .insertInto("undb_table_id_mapping")
+        .values({
+          table_id: table.id.value,
+          subject_id: form.id,
+        })
+        .onConflict((ob) => ob.doNothing())
+        .execute()
+    }
+
+    for (const field of table.schema.fields) {
+      if (field.type === "rollup") {
+        const referenceField = field.getReferenceField(table)
+        const option = field.option.unwrap()
+        await trx
+          .insertInto("undb_rollup_id_mapping")
+          .values({
+            field_id: option.rollupFieldId,
+            table_id: referenceField.foreignTableId,
+            rollup_id: field.id.value,
+            rollup_table_id: table.id.value,
+          })
+          .onConflict((ob) => ob.doNothing())
+          .execute()
+      } else if (field.type === "reference" && field.symmetricFieldId) {
+        await trx
+          .insertInto("undb_reference_id_mapping")
+          .values({
+            field_id: field.id.value,
+            table_id: table.id.value,
+            symmetric_field_id: field.symmetricFieldId,
+            foreign_table_id: field.foreignTableId,
+          })
+          .onConflict((ob) => ob.doNothing())
+          .execute()
+      }
+    }
+
     await this.underlyingTableService.create(table)
     await this.outboxService.save(table)
   }
@@ -200,7 +250,6 @@ export class TableRepository implements ITableRepository {
       .execute()
 
     await this.underlyingTableService.delete(table)
-    console.log("save", table.domainEvents)
     await this.outboxService.save(table)
   }
 }

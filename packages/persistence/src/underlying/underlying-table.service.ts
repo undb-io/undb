@@ -1,9 +1,9 @@
-import { injectContext,type IContext } from "@undb/context"
+import { injectContext, type IContext } from "@undb/context"
 import { singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
-import type { TableComositeSpecification,TableDo } from "@undb/table"
+import type { TableComositeSpecification, TableDo } from "@undb/table"
 import type { CompiledQuery } from "kysely"
-import { getAnonymousTransaction,getCurrentTransaction } from "../ctx"
+import { getAnonymousTransaction, getCurrentTransaction } from "../ctx"
 import { JoinTable } from "./reference/join-table"
 import { UnderlyingTable } from "./underlying-table"
 import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
@@ -53,7 +53,7 @@ export class UnderlyingTableService {
     const referenceFields = table.schema.getReferenceFields()
     for (const field of referenceFields) {
       const joinTable = new JoinTable(table, field)
-      await trx.schema.dropTable(joinTable.getTableName()).execute()
+      await trx.schema.dropTable(joinTable.getTableName()).ifExists().execute()
     }
   }
 
