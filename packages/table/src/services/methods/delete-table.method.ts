@@ -37,6 +37,25 @@ export async function deleteTableMethod(this: TableService, dto: IDeleteTableDTO
       }
     }
 
+    for (const foreignTable of foreignTables) {
+      const referenceFields = foreignTable.schema
+        .getReferenceFields()
+        .filter(
+          (referenceField) => !referenceField.symmetricFieldId && referenceField.foreignTableId === table.id.value,
+        )
+
+      for (const referenceField of referenceFields) {
+        const [, spec] = foreignTable.$deleteField({ id: referenceField.id.value })
+        updates.push({ table: foreignTable, spec })
+
+        const rollupFields = referenceField.getRollupFields(foreignTable.schema.fields)
+        for (const rollupField of rollupFields) {
+          const [, spec] = foreignTable.$deleteField({ id: rollupField.id.value })
+          updates.push({ table: foreignTable, spec })
+        }
+      }
+    }
+
     await this.repository.bulkUpdate(updates)
   }
 

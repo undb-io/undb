@@ -145,7 +145,7 @@ export class TableRepository implements ITableRepository {
           })
           .onConflict((ob) => ob.doNothing())
           .execute()
-      } else if (field.type === "reference" && field.symmetricFieldId) {
+      } else if (field.type === "reference") {
         await trx
           .insertInto("undb_reference_id_mapping")
           .values({

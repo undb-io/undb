@@ -40,7 +40,6 @@ import {
 import type { FormsVO } from "./modules/forms/forms.vo"
 import type { Schema } from "./modules/schema/schema.vo"
 import type { Views } from "./modules/views/views.vo"
-import { createReferenceField } from "./services/methods/create-table-field.method"
 import type { TableId } from "./table-id.vo"
 import type { TableNameVo } from "./table-name.vo"
 
@@ -83,8 +82,6 @@ export class TableDo extends AggregateRoot<ITableEvents> {
   $setTableForm = setTableForm
 
   $deleteTable = deleteTable
-
-  #createReferenceField = createReferenceField
 
   reorderFields(fieldsOrder: string[]) {
     this.schema = this.schema.reorderFields(fieldsOrder)
