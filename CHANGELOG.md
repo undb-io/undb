@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-106
+
+
+### 🩹 Fixes
+
+- Fix dropping table ([f2bf79b](https://github.com/undb-io/undb/commit/f2bf79b))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-105
 
 
