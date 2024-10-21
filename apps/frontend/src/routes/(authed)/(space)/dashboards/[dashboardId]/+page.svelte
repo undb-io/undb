@@ -3,13 +3,89 @@
   import AddDashboardWidgetButton from "$lib/components/blocks/widget/add-dashboard-widget-button.svelte"
   import { getDashboard } from "$lib/store/dashboard.store"
   import { derived } from "svelte/store"
-  import { GaugeIcon } from "lucide-svelte"
-  import ShareButton from "$lib/components/blocks/share/share-button.svelte"
-  import { invalidate } from "$app/navigation"
+  import { GaugeIcon, EllipsisIcon, PencilIcon } from "lucide-svelte"
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
+  import { TrashIcon } from "lucide-svelte"
+  import * as AlertDialog from "$lib/components/ui/alert-dialog"
+  import Button from "$lib/components/ui/button/button.svelte"
+  import { trpc } from "$lib/trpc/client"
+  import { createMutation } from "@tanstack/svelte-query"
+  import { goto, invalidateAll } from "$app/navigation"
+  import * as Dialog from "$lib/components/ui/dialog"
+  import * as Form from "$lib/components/ui/form"
+  import { Input } from "$lib/components/ui/input"
+  import { CopyIcon } from "lucide-svelte"
+  import { zodClient } from "sveltekit-superforms/adapters"
+  import { defaults, superForm } from "sveltekit-superforms"
+  import { updateDashboardDTO } from "@undb/dashboard"
 
   const dashboard = getDashboard()
 
   const widgets = derived(dashboard, ($dashboard) => $dashboard?.widgets)
+
+  let deleteDialogOpen = false
+
+  const deleteDashboardMutation = createMutation({
+    mutationFn: trpc.dashboard.delete.mutate,
+    mutationKey: ["dashboard", "delete", $dashboard.id.value],
+    onSuccess: async () => {
+      await invalidateAll()
+      goto("/")
+    },
+  })
+
+  const deleteDashboard = () => {
+    $deleteDashboardMutation.mutate({ id: $dashboard.id.value })
+  }
+
+  let updateDialogOpen = false
+
+  const updateDashboardForm = superForm(
+    defaults(
+      {
+        name: $dashboard.name.value,
+      },
+      zodClient(updateDashboardDTO),
+    ),
+    {
+      validators: zodClient(updateDashboardDTO),
+      SPA: true,
+      dataType: "json",
+      onSubmit: (data) => {
+        validateForm({ update: true })
+      },
+      onUpdate: (data) => {
+        if (!data.form.valid) {
+          console.log(data.form.errors)
+          return
+        }
+
+        $updateDashboardMutation.mutate({ dashboardId: $dashboard.id.value, name: data.form.data.name })
+      },
+    },
+  )
+
+  const { form: formData, enhance, validateForm } = updateDashboardForm
+
+  const updateDashboardMutation = createMutation({
+    mutationFn: trpc.dashboard.update.mutate,
+    mutationKey: ["dashboard", "update", $dashboard.id.value],
+  })
+
+  let duplicateDialogOpen = false
+
+  const duplicateDashboardMutation = createMutation({
+    mutationFn: trpc.dashboard.duplicate.mutate,
+    mutationKey: ["dashboard", "duplicate", $dashboard.id.value],
+    onSuccess: async (data) => {
+      await invalidateAll()
+      await goto(`/dashboards/${data}`)
+    },
+  })
+
+  const duplicateDashboard = () => {
+    $duplicateDashboardMutation.mutate({ id: $dashboard.id.value })
+  }
 </script>
 
 <div class="flex h-full flex-col">
@@ -17,6 +93,28 @@
     <h1 class="flex items-center text-lg font-medium">
       <GaugeIcon class="mr-2 size-5" />
       {$dashboard.name.value}
+
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger>
+          <EllipsisIcon class="text-muted-foreground ml-2 size-4" />
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <DropdownMenu.Group>
+            <DropdownMenu.Item class="text-xs" on:click={() => (updateDialogOpen = true)}>
+              <PencilIcon class="mr-2 size-3" />
+              Update Dashboard
+            </DropdownMenu.Item>
+            <DropdownMenu.Item class="text-xs" on:click={() => (duplicateDialogOpen = true)}>
+              <CopyIcon class="mr-2 size-3" />
+              Duplicate Dashboard
+            </DropdownMenu.Item>
+            <DropdownMenu.Item class="text-xs" on:click={() => (deleteDialogOpen = true)}>
+              <TrashIcon class="mr-2 size-3" />
+              Delete Dashboard
+            </DropdownMenu.Item>
+          </DropdownMenu.Group>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
     </h1>
     <div class="flex items-center gap-2">
       <!-- <ShareButton
@@ -40,3 +138,55 @@
     </div>
   {/if}
 </div>
+
+<AlertDialog.Root bind:open={deleteDialogOpen}>
+  <AlertDialog.Content>
+    <AlertDialog.Header>
+      <AlertDialog.Title>Delete Dashboard?</AlertDialog.Title>
+      <AlertDialog.Description>
+        This action cannot be undone. This will permanently delete your dashboard and remove your data from our servers.
+      </AlertDialog.Description>
+    </AlertDialog.Header>
+    <AlertDialog.Footer>
+      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Action asChild let:builder>
+        <Button variant="destructive" on:click={deleteDashboard} builders={[builder]}>Delete</Button>
+      </AlertDialog.Action>
+    </AlertDialog.Footer>
+  </AlertDialog.Content>
+</AlertDialog.Root>
+
+<AlertDialog.Root bind:open={duplicateDialogOpen}>
+  <AlertDialog.Content>
+    <AlertDialog.Header>
+      <AlertDialog.Title>Duplicate Dashboard?</AlertDialog.Title>
+    </AlertDialog.Header>
+    <AlertDialog.Footer>
+      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Action asChild let:builder>
+        <Button on:click={duplicateDashboard} builders={[builder]}>Duplicate</Button>
+      </AlertDialog.Action>
+    </AlertDialog.Footer>
+  </AlertDialog.Content>
+</AlertDialog.Root>
+
+<Dialog.Root bind:open={updateDialogOpen}>
+  <Dialog.Content>
+    <Dialog.Header>
+      <Dialog.Title>Update Dashboard</Dialog.Title>
+    </Dialog.Header>
+
+    <form method="POST" use:enhance>
+      <Form.Field form={updateDashboardForm} name="name">
+        <Form.Control let:attrs>
+          <Form.Label>Name</Form.Label>
+          <Input {...attrs} bind:value={$formData.name} />
+        </Form.Control>
+        <Form.Description />
+        <Form.FieldErrors />
+      </Form.Field>
+
+      <Form.Button>Update</Form.Button>
+    </form>
+  </Dialog.Content>
+</Dialog.Root>

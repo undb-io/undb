@@ -16,6 +16,7 @@ import { injectQueryBuilder } from "../qb.provider"
 import { DashboardFilterVisitor } from "./dashboard.filter-visitor"
 import { DashboardMapper } from "./dashboard.mapper"
 import { DashboardMutateVisitor } from "./dashboard.mutate-visitor"
+import { DashboardReferenceVisitor } from "./dashboard.reference-visitor"
 
 @singleton()
 export class DashboardRepository implements IDashboardRepository {
@@ -35,6 +36,7 @@ export class DashboardRepository implements IDashboardRepository {
     const dashboards = await tx
       .selectFrom("undb_dashboard")
       .selectAll()
+      .$call((qb) => new DashboardReferenceVisitor(qb).call(spec))
       .where((eb) => {
         const visitor = new DashboardFilterVisitor(eb, tx)
         spec.accept(visitor)
@@ -49,6 +51,7 @@ export class DashboardRepository implements IDashboardRepository {
     const dashboard = await tx
       .selectFrom("undb_dashboard")
       .selectAll()
+      .$call((qb) => new DashboardReferenceVisitor(qb).call(spec))
       .where((eb) => {
         const visitor = new DashboardFilterVisitor(eb, tx)
         spec.accept(visitor)
@@ -66,6 +69,7 @@ export class DashboardRepository implements IDashboardRepository {
     const dashboard = await tx
       .selectFrom("undb_dashboard")
       .selectAll()
+      .$call((qb) => new DashboardReferenceVisitor(qb).call(spec))
       .where((eb) => {
         const visitor = new DashboardFilterVisitor(eb, tx)
         spec.accept(visitor)
@@ -126,6 +130,16 @@ export class DashboardRepository implements IDashboardRepository {
   }
 
   async deleteOneById(id: string): Promise<void> {
-    throw new Error("Method not implemented.")
+    const qb = getCurrentTransaction() ?? this.qb
+
+    await qb
+      .deleteFrom("undb_dashboard_table_id_mapping")
+      .where((eb) => eb.eb("dashboard_id", "=", id))
+      .execute()
+
+    await qb
+      .deleteFrom("undb_dashboard")
+      .where((eb) => eb.eb("id", "=", id))
+      .execute()
   }
 }

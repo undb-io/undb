@@ -19,6 +19,7 @@ import { CreateViewWidgetCommandHandler } from "./create-view-widget.command-han
 import { CreateWebhookCommandHandler } from "./create-webhook.command-handler"
 import { DeleteBaseCommandHandler } from "./delete-base.command-handler"
 import { DeleteDashboardWidgetCommandHandler } from "./delete-dashboard-widget.command-handler"
+import { DeleteDashboardCommandHandler } from "./delete-dashboard.command-handler"
 import { DeleteInvitationCommandHandler } from "./delete-invitation.command-handler"
 import { DeleteRecordCommandHandler } from "./delete-record.command-handler"
 import { DeleteSpaceCommandHandler } from "./delete-space.command-handler"
@@ -30,6 +31,7 @@ import { DeleteViewCommandHandler } from "./delete-view.command-handler"
 import { DeleteWebhookCommandHandler } from "./delete-webhook.command-handler"
 import { DisableShareCommandHandler } from "./disable-share.command-handler"
 import { DuplicateBaseCommandHandler } from "./duplicate-base.command-handler"
+import { DuplicateDashboardCommandHandler } from "./duplicate-dashboard.command-handler"
 import { DuplicateRecordCommandHandler } from "./duplicate-record.command-handler"
 import { DuplicateTableFieldCommandHandler } from "./duplicate-table-field.command-handler"
 import { DuplicateTableFormCommandHandler } from "./duplicate-table-form.command-handler"
@@ -54,6 +56,7 @@ import { TriggerRecordButtonCommandHandler } from "./trigger-record-button.comma
 import { UpdateAccountCommandHandler } from "./update-account.command-handler"
 import { UpdateBaseCommandHandler } from "./update-base.command-handler"
 import { UpdateDashboardWidgetCommandHandler } from "./update-dashboard-widget.command-handler"
+import { UpdateDashboardCommandHandler } from "./update-dashboard.command-handler"
 import { UpdateRecordCommandHandler } from "./update-record.command-handler"
 import { UpdateSpaceCommandHandler } from "./update-space.command-handler"
 import { UpdateTableFieldCommandHandler } from "./update-table-field.command-handler"
@@ -126,4 +129,7 @@ export const commandHandlers = [
   UpdateDashboardWidgetCommandHandler,
   DeleteDashboardWidgetCommandHandler,
   RelayoutDashboardWidgetsCommandHandler,
+  DeleteDashboardCommandHandler,
+  UpdateDashboardCommandHandler,
+  DuplicateDashboardCommandHandler,
 ]

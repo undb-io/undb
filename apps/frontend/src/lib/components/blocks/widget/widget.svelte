@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { IWidgetDTO } from "@undb/table"
+  import type { IWidgetDTO, TableDo } from "@undb/table"
   import { EllipsisIcon, PencilIcon, Maximize2Icon } from "lucide-svelte"
   import Aggregate from "../aggregate/aggregate.svelte"
   import AggregateConfig from "../aggregate/config/aggregate-config.svelte"
@@ -19,7 +19,7 @@
   import { GripVerticalIcon, ChevronRightIcon } from "lucide-svelte"
 
   export let tableId: string | undefined
-  const table = getTable()
+  export let table: TableDo | undefined
 
   export let widget: IWidgetDTO
   export let viewId: string | undefined = undefined
@@ -40,7 +40,7 @@
     mutationFn: trpc.table.view.widget.delete.mutate,
     onSuccess: async () => {
       confirmDelete = false
-      if ($table) {
+      if (table) {
         await invalidate(`table:${tableId}`)
       }
     },
@@ -63,7 +63,7 @@
   })
 </script>
 
-<div class={cn("group absolute flex h-full w-full flex-col rounded-sm border", $$restProps.class)}>
+<div class={cn("group flex h-full w-full flex-col rounded-sm border", $$restProps.class)}>
   <div class="flex items-center justify-between p-2">
     <div class="flex items-center gap-0.5">
       {#if movePointerDown}
@@ -102,8 +102,9 @@
 
             <div class="flex h-full flex-1">
               <div class="w-3/4 pr-4">
-                {#if widget.item.type === "aggregate"}
+                {#if widget.item.type === "aggregate" && table}
                   <Aggregate
+                    {table}
                     {tableId}
                     {widget}
                     {viewId}
@@ -116,8 +117,9 @@
               </div>
               <div class="flex w-1/4 flex-col border-l px-4 py-2">
                 <div class="flex-1">
-                  {#if widget.item.type === "aggregate"}
+                  {#if widget.item.type === "aggregate" && table}
                     <AggregateConfig
+                      {table}
                       {tableId}
                       {viewId}
                       {widget}
@@ -157,8 +159,8 @@
       </div>
     {/if}
   </div>
-  {#if widget.item.type === "aggregate"}
-    <Aggregate {tableId} {ignoreView} {widget} {viewId} {shareId} aggregate={widget.item.aggregate} />
+  {#if widget.item.type === "aggregate" && table}
+    <Aggregate {table} {tableId} {ignoreView} {widget} {viewId} {shareId} aggregate={widget.item.aggregate} />
   {/if}
 
   {#if resizePointerDown}

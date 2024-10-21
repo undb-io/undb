@@ -2,6 +2,7 @@ import type {
   Dashboard,
   DashboardBaseIdSpecification,
   DashboardTableIdSpecification,
+  DashboardUniqueSpecification,
   IDashboardSpecVisitor,
   WithDashboardId,
   WithDashboardLayout,
@@ -19,12 +20,12 @@ import type { IQueryBuilder } from "../qb"
 export class DashboardFilterVisitor extends AbstractQBVisitor<Dashboard> implements IDashboardSpecVisitor {
   constructor(
     protected readonly eb: ExpressionBuilder<Database, "undb_dashboard">,
-
     private readonly qb: IQueryBuilder,
   ) {
     super(eb)
   }
 
+  withUniqueDashboard(v: DashboardUniqueSpecification): void {}
   withDashboardTableId(v: DashboardTableIdSpecification): void {
     const subQuery = this.qb
       .selectFrom("undb_dashboard_table_id_mapping")

@@ -18,6 +18,7 @@ import {
   CreateViewWidgetCommand,
   CreateWebhookCommand,
   DeleteBaseCommand,
+  DeleteDashboardCommand,
   DeleteDashboardWidgetCommand,
   DeleteFormCommand,
   DeleteInvitationCommand,
@@ -29,6 +30,7 @@ import {
   DeleteWebhookCommand,
   DisableShareCommand,
   DuplicateBaseCommand,
+  DuplicateDashboardCommand,
   DuplicateRecordCommand,
   DuplicateTableCommand,
   DuplicateTableFieldCommand,
@@ -51,6 +53,7 @@ import {
   TriggerRecordButtonCommand,
   UpdateAccountCommand,
   UpdateBaseCommand,
+  UpdateDashboardCommand,
   UpdateDashboardWidgetCommand,
   UpdateRecordCommand,
   UpdateSpaceCommand,
@@ -83,6 +86,7 @@ import {
   createViewWidgetCommand,
   createWebhookCommand,
   deleteBaseCommand,
+  deleteDashboardCommand,
   deleteDashboardWidgetCommand,
   deleteFormCommand,
   deleteInvitationCommand,
@@ -94,6 +98,7 @@ import {
   deleteWebhookCommand,
   disableShareCommand,
   duplicateBaseCommand,
+  duplicateDashboardCommand,
   duplicateRecordCommand,
   duplicateTableCommand,
   duplicateTableFieldCommand,
@@ -117,6 +122,7 @@ import {
   submitFormCommand,
   triggerRecordButtonCommand,
   updateBaseCommand,
+  updateDashboardCommand,
   updateDashboardWidgetCommand,
   updateRecordCommand,
   updateSpaceCommand,
@@ -535,6 +541,18 @@ const dashboardRouter = t.router({
     .use(authz("dashboard:read"))
     .input(getDashboardByIdQuery)
     .query(({ input }) => queryBus.execute(new GetDashboardByIdQuery(input))),
+  update: privateProcedure
+    .use(authz("dashboard:update"))
+    .input(updateDashboardCommand)
+    .mutation(({ input }) => commandBus.execute(new UpdateDashboardCommand(input))),
+  duplicate: privateProcedure
+    .use(authz("dashboard:create"))
+    .input(duplicateDashboardCommand)
+    .mutation(({ input }) => commandBus.execute(new DuplicateDashboardCommand(input))),
+  delete: privateProcedure
+    .use(authz("dashboard:delete"))
+    .input(deleteDashboardCommand)
+    .mutation(({ input }) => commandBus.execute(new DeleteDashboardCommand(input))),
   widget: dashboardWidgetRouter,
 })
 
