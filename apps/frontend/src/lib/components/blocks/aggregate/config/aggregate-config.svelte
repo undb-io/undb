@@ -23,7 +23,9 @@
   import { tick } from "svelte"
   import { toast } from "svelte-sonner"
   import { getDashboard, getIsDashboard } from "$lib/store/dashboard.store"
+  import type { TableDo } from "@undb/table"
 
+  export let table: TableDo | undefined
   export let viewId: string | undefined
   export let tableId: string | undefined
   export let widget: IWidgetDTO
@@ -33,22 +35,21 @@
   const isDashboard = getIsDashboard()
   const dashboard = getDashboard()
 
-  const table = getTable()
   const value = writable<MaybeConditionGroup<IAggregateCondition> | undefined>(
     toMaybeConditionGroup(aggregate.condition),
   )
-  $: validValue = $value && $table ? parseValidAggregateCondition($table.schema, $value) : undefined
-  $: visibleFields = $table?.getOrderedVisibleFields()
+  $: validValue = $value && table ? parseValidAggregateCondition(table.schema, $value) : undefined
+  $: visibleFields = table?.getOrderedVisibleFields() ?? []
 
   const client = useQueryClient()
 
   const updateWidgetMutation = createMutation({
     mutationFn: trpc.table.view.widget.update.mutate,
     async onSuccess(data, variables, context) {
-      if ($table) {
-        await invalidate(`table:${$table.id.value}`)
+      if (table) {
+        await invalidate(`table:${table.id.value}`)
         await tick()
-        await client.invalidateQueries({ queryKey: ["aggregate", $table.id.value, widget.id] })
+        await client.invalidateQueries({ queryKey: ["aggregate", table.id.value, widget.id] })
       }
       onSuccess()
     },
@@ -60,10 +61,10 @@
   const updateDashboardWidget = createMutation({
     mutationFn: trpc.dashboard.widget.update.mutate,
     async onSuccess(data, variables, context) {
-      if ($table) {
+      if (table) {
         await invalidate(`dashboard:${$dashboard.id.value}`)
         await tick()
-        await client.invalidateQueries({ queryKey: ["aggregate", $table.id.value, widget.id] })
+        await client.invalidateQueries({ queryKey: ["aggregate", table.id.value, widget.id] })
       }
       onSuccess()
     },
@@ -94,11 +95,11 @@
         },
       })
     } else {
-      if (!viewId || !$table) {
+      if (!viewId || !table) {
         return
       }
       $updateWidgetMutation.mutate({
-        tableId: $table.id.value,
+        tableId: table.id.value,
         viewId,
         widget: {
           ...widget,
@@ -153,12 +154,15 @@
               bind:value={widget.item.aggregate.type}
               onValueChange={() => (widget.item.aggregate.config.field = undefined)}
             />
-            <FieldPicker
-              bind:value={widget.item.aggregate.config.field}
-              class="w-full flex-1"
-              placeholder="Select a field to aggregate..."
-              filter={(field) => filterAggregateField(field.type, widget.item.aggregate?.type)}
-            />
+            {#if table}
+              <FieldPicker
+                table={writable(table)}
+                bind:value={widget.item.aggregate.config.field}
+                class="w-full flex-1"
+                placeholder="Select a field to aggregate..."
+                filter={(field) => filterAggregateField(field.type, widget.item.aggregate?.type)}
+              />
+            {/if}
           {/if}
         </Tabs.Content>
       </Tabs.Root>
@@ -168,11 +172,12 @@
         <div class="text-sm font-medium">Filters</div>
       </div>
 
-      {#if $table}
+      {#if table}
         <FiltersEditor
           bind:value={$value}
-          table={$table}
-          filter={(field) => visibleFields.some((f) => f.id.value === field.id) && getIsFilterableFieldType(field.type)}
+          {table}
+          filter={(field) =>
+            visibleFields?.some((f) => f.id.value === field.id) && getIsFilterableFieldType(field.type)}
           class="rounded-md border"
         ></FiltersEditor>
       {/if}

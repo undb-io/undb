@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { cn } from "$lib/utils"
   import { createQuery } from "@tanstack/svelte-query"
@@ -7,10 +6,10 @@
   import { derived } from "svelte/store"
   import { TriangleAlertIcon } from "lucide-svelte"
   import * as Tooltip from "$lib/components/ui/tooltip"
-
-  const table = getTable()
+  import type { TableDo } from "@undb/table"
 
   export let tableId: string | undefined
+  export let table: TableDo | undefined
   export let viewId: string | undefined
   export let shareId: string | undefined
   export let ignoreView: boolean = false
@@ -52,13 +51,13 @@
     if (aggregate.type === "count") {
       return ($data.data as any)?.[ID_TYPE]
     }
-    if (aggregate.config.field) {
-      const field = $table.schema.getFieldByIdOrName(aggregate.config.field)
+    if (aggregate.config.field && table) {
+      const field = table.schema.getFieldByIdOrName(aggregate.config.field)
       if (field.isSome()) {
         return field.unwrap().formatAggregate(aggregate.type, ($data.data as any)?.[aggregate.config.field])
       }
     }
-    return null
+    return undefined
   })
   $: isPending = $getAggregate.isPending
 </script>

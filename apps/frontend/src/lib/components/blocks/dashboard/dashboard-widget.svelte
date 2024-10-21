@@ -2,7 +2,6 @@
   import { TableFactory, type IWidgetDTO } from "@undb/table"
   import { GetDashboardWidgetTableStore } from "$houdini"
   import { onMount } from "svelte"
-  import { GripVerticalIcon } from "lucide-svelte"
   import Widget from "../widget/widget.svelte"
   import { setTable } from "$lib/store/table.store"
   import { writable } from "svelte/store"
@@ -13,18 +12,17 @@
   export let resizePointerDown: ((e: Event) => void) | undefined = undefined
 
   const store = new GetDashboardWidgetTableStore()
-  onMount(() => {
-    if (tableId) {
-      store.fetch({ variables: { tableId } })
-    }
-  })
+
+  $: if (tableId) {
+    store.fetch({ variables: { tableId } })
+  }
 
   $: table = $store.data?.table
+  $: tableDo = table ? new TableFactory().fromJSON(table) : undefined
 
-  $: if (table) {
-    const t = new TableFactory().fromJSON(table)
-    setTable(writable(t))
+  $: if (tableDo) {
+    setTable(writable(tableDo))
   }
 </script>
 
-<Widget {widget} {tableId} {movePointerDown} {resizePointerDown} />
+<Widget table={tableDo} {widget} {tableId} {movePointerDown} {resizePointerDown} />
