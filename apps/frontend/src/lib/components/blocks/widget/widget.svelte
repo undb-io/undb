@@ -78,6 +78,19 @@
       toast.error(error.message)
     },
   })
+
+  const duplicateViewWidgetMutation = createMutation({
+    mutationFn: trpc.table.view.widget.duplicate.mutate,
+    onSuccess: async () => {
+      confirmDuplicate = false
+      if (table) {
+        await invalidate(`table:${tableId}`)
+      }
+    },
+    onError(error, variables, context) {
+      toast.error(error.message)
+    },
+  })
 </script>
 
 <div class={cn("group flex h-full w-full flex-col rounded-sm border", $$restProps.class)}>
@@ -237,7 +250,7 @@
             if ($isDashboard) {
               const added = dashboardWidgets.add(widget.item.type)
               const layout = added[COLS]
-  const defaultLayout = DashboardLayouts.default()
+              const defaultLayout = DashboardLayouts.default()
               $duplicateDashboardWidgetMutation.mutate({
                 dashboardId: $dashboard.id.value,
                 widgetId: widget.id,
@@ -248,6 +261,8 @@
                   h: layout.h ?? defaultLayout.h,
                 },
               })
+            } else if (viewId && tableId) {
+              $duplicateViewWidgetMutation.mutate({ tableId, viewId, widgetId: widget.id })
             }
           }}
         >

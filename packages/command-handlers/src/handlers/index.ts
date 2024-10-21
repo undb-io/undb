@@ -37,6 +37,7 @@ import { DuplicateRecordCommandHandler } from "./duplicate-record.command-handle
 import { DuplicateTableFieldCommandHandler } from "./duplicate-table-field.command-handler"
 import { DuplicateTableFormCommandHandler } from "./duplicate-table-form.command-handler"
 import { DuplicateTableCommandHandler } from "./duplicate-table.command-handler"
+import { DuplicateViewWidgetCommandHandler } from "./duplicate-view-widget.command-handler"
 import { DuplicateViewCommandHandler } from "./duplicate-view.command-handler"
 import { EnableShareCommandHandler } from "./enable-share.command-handler"
 import { ExportViewCommandHandler } from "./export-view.command-handler"
@@ -134,4 +135,5 @@ export const commandHandlers = [
   UpdateDashboardCommandHandler,
   DuplicateDashboardCommandHandler,
   DuplicateDashboardWidgetCommandHandler,
+  DuplicateViewWidgetCommandHandler,
 ]
