@@ -14,6 +14,7 @@
   import * as Dialog from "$lib/components/ui/dialog"
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
+  import { CopyIcon } from "lucide-svelte"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { defaults, superForm } from "sveltekit-superforms"
   import { updateDashboardDTO } from "@undb/dashboard"
@@ -70,6 +71,21 @@
     mutationFn: trpc.dashboard.update.mutate,
     mutationKey: ["dashboard", "update", $dashboard.id.value],
   })
+
+  let duplicateDialogOpen = false
+
+  const duplicateDashboardMutation = createMutation({
+    mutationFn: trpc.dashboard.duplicate.mutate,
+    mutationKey: ["dashboard", "duplicate", $dashboard.id.value],
+    onSuccess: async (data) => {
+      await invalidateAll()
+      await goto(`/dashboards/${data}`)
+    },
+  })
+
+  const duplicateDashboard = () => {
+    $duplicateDashboardMutation.mutate({ id: $dashboard.id.value })
+  }
 </script>
 
 <div class="flex h-full flex-col">
@@ -87,6 +103,10 @@
             <DropdownMenu.Item class="text-xs" on:click={() => (updateDialogOpen = true)}>
               <PencilIcon class="mr-2 size-3" />
               Update Dashboard
+            </DropdownMenu.Item>
+            <DropdownMenu.Item class="text-xs" on:click={() => (duplicateDialogOpen = true)}>
+              <CopyIcon class="mr-2 size-3" />
+              Duplicate Dashboard
             </DropdownMenu.Item>
             <DropdownMenu.Item class="text-xs" on:click={() => (deleteDialogOpen = true)}>
               <TrashIcon class="mr-2 size-3" />
@@ -131,6 +151,20 @@
       <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
       <AlertDialog.Action asChild let:builder>
         <Button variant="destructive" on:click={deleteDashboard} builders={[builder]}>Delete</Button>
+      </AlertDialog.Action>
+    </AlertDialog.Footer>
+  </AlertDialog.Content>
+</AlertDialog.Root>
+
+<AlertDialog.Root bind:open={duplicateDialogOpen}>
+  <AlertDialog.Content>
+    <AlertDialog.Header>
+      <AlertDialog.Title>Duplicate Dashboard?</AlertDialog.Title>
+    </AlertDialog.Header>
+    <AlertDialog.Footer>
+      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Action asChild let:builder>
+        <Button on:click={duplicateDashboard} builders={[builder]}>Duplicate</Button>
       </AlertDialog.Action>
     </AlertDialog.Footer>
   </AlertDialog.Content>

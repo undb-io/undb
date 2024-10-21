@@ -52,8 +52,7 @@ export class Dashboard extends AggregateRoot<any> {
     const duplicatedDashboard = DashboardFactory.fromJSON({
       ...this.toJSON(),
       id: DashboardId.create().value,
-      spaceId: dto.spaceId ?? this.spaceId,
-      name: dto.name ?? getNextName(dashboardNames, this.name.value),
+      name: getNextName(dashboardNames, this.name.value),
     })
 
     return new DuplicatedDashboardSpecification(this, duplicatedDashboard)

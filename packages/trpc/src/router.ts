@@ -30,6 +30,7 @@ import {
   DeleteWebhookCommand,
   DisableShareCommand,
   DuplicateBaseCommand,
+  DuplicateDashboardCommand,
   DuplicateRecordCommand,
   DuplicateTableCommand,
   DuplicateTableFieldCommand,
@@ -97,6 +98,7 @@ import {
   deleteWebhookCommand,
   disableShareCommand,
   duplicateBaseCommand,
+  duplicateDashboardCommand,
   duplicateRecordCommand,
   duplicateTableCommand,
   duplicateTableFieldCommand,
@@ -543,6 +545,10 @@ const dashboardRouter = t.router({
     .use(authz("dashboard:update"))
     .input(updateDashboardCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateDashboardCommand(input))),
+  duplicate: privateProcedure
+    .use(authz("dashboard:create"))
+    .input(duplicateDashboardCommand)
+    .mutation(({ input }) => commandBus.execute(new DuplicateDashboardCommand(input))),
   delete: privateProcedure
     .use(authz("dashboard:delete"))
     .input(deleteDashboardCommand)
