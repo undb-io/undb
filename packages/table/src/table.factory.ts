@@ -82,6 +82,7 @@ export class TableFactory {
     const ids = new TablesIdsMap(baseNames, base, dtos)
     const baseName = getNextName(baseNames, base.name.value)
 
+    // only reference will create symmetric fields set
     const referenceIds = new Set<string>()
     const symmetricFields: ICreateTablesReferenceFieldDTO[] = []
     const tables = dtos.map((dto) => {

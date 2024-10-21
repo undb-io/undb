@@ -100,7 +100,7 @@ export const referenceIdMapping = sqliteTable(
     tableId: text("table_id")
       .notNull()
       .references(() => tables.id),
-    symmetricFieldId: text("symmetric_field_id").notNull(),
+    symmetricFieldId: text("symmetric_field_id"),
     foreignTableId: text("foreign_table_id")
       .notNull()
       .references(() => tables.id),

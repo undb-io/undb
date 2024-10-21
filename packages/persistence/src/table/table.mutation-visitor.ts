@@ -94,20 +94,18 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
         .compile()
       this.addSql(sql)
     } else if (field.type === "reference") {
-      if (field.symmetricFieldId) {
-        const sql = this.qb
-          .insertInto("undb_reference_id_mapping")
-          .values({
-            field_id: field.id.value,
-            table_id: this.table.id.value,
-            symmetric_field_id: field.symmetricFieldId,
-            foreign_table_id: field.foreignTableId,
-          })
-          .onConflict((ob) => ob.doNothing())
-          .compile()
+      const sql = this.qb
+        .insertInto("undb_reference_id_mapping")
+        .values({
+          field_id: field.id.value,
+          table_id: this.table.id.value,
+          symmetric_field_id: field.symmetricFieldId ?? null,
+          foreign_table_id: field.foreignTableId,
+        })
+        .onConflict((ob) => ob.doNothing())
+        .compile()
 
-        this.addSql(sql)
-      }
+      this.addSql(sql)
     }
   }
   withDuplicateField(schema: WithDuplicatedFieldSpecification): void {
