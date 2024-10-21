@@ -66,7 +66,14 @@
     {#if $widgets.length}
       <div class="flex-1 space-y-3 overflow-y-auto" bind:this={widgetsContainer}>
         {#each $widgets as widget}
-          <Widget {shareId} {widget} viewId={$view.id.value} tableId={$table.id.value} class="h-[180px]" />
+          <Widget
+            table={$table}
+            {shareId}
+            {widget}
+            viewId={$view.id.value}
+            tableId={$table.id.value}
+            class="h-[180px]"
+          />
         {/each}
       </div>
     {:else}
