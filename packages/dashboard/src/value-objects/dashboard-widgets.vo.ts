@@ -1,5 +1,6 @@
 import { None, Option, Some, ValueObject } from "@undb/domain"
 import { TableDo, tableId, widgetDTO, WidgetVO, type IWidgetDTO } from "@undb/table"
+import { getNextName } from "@undb/utils"
 import * as z from "@undb/zod"
 import type { IUpdateDashboardWidgetDTO } from "../dto/update-dashboard-widget.dto"
 import { WithDashboardWidgets, type DashboardComositeSpecification } from "../specifications"
@@ -122,6 +123,26 @@ export class DashboardWidget extends ValueObject<IDashboardWidget> {
     })
   }
 
+  getWidget(widgetId: string): Option<IWidgetDTO> {
+    if (this.props.widget.id !== widgetId) {
+      return None
+    }
+    return Some(this.props.widget)
+  }
+
+  duplicateWidget(table: TableDo, name: string): Option<DashboardWidget> {
+    const widget = WidgetVO.fromJSON(this.props.widget)
+    const duplicated = widget.duplicate(name)
+    return Some(
+      new DashboardWidget({
+        table: {
+          id: table.id.value,
+        },
+        widget: duplicated.toJSON(),
+      }),
+    )
+  }
+
   toJSON(): IDashboardWidget {
     return {
       widget: this.props.widget,
@@ -200,6 +221,33 @@ export class DashboardWidgets extends ValueObject<IDashboardWidgets> {
   $deleteWidget(widgetId: string): Option<DashboardComositeSpecification> {
     const widgets = this.deleteWidget(widgetId)
     const spec = new WithDashboardWidgets(widgets)
+    return Some(spec)
+  }
+
+  getWidget(widgetId: string): Option<IDashboardWidget> {
+    const widget = this.value.find((w) => w.widget.id === widgetId)
+    if (!widget) {
+      return None
+    }
+    return Some(widget)
+  }
+
+  duplicateWidget(table: TableDo, widgetId: string): DashboardWidgets {
+    const widget = this.getWidget(widgetId).expect("widget not found")
+    const widgets = this.props
+    const widgetNames = widgets.map((w) => w.widget.name)
+    const name = getNextName(widgetNames, widget.widget.name)
+    const duplicated = new DashboardWidget(widget).duplicateWidget(table, name)
+    return new DashboardWidgets([...this.value, duplicated.unwrap().toJSON()])
+  }
+
+  $duplicateWidget(table: TableDo, widgetId: string): Option<DashboardComositeSpecification> {
+    const widget = this.getWidget(widgetId)
+    if (widget.isNone()) {
+      return None
+    }
+    const duplicated = this.duplicateWidget(table, widget.unwrap().widget.id)
+    const spec = new WithDashboardWidgets(duplicated)
     return Some(spec)
   }
 }

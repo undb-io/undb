@@ -9,6 +9,7 @@ import { ViewIdVo } from "./view/view-id.vo"
 import type {
   ICreateViewWidgetDTO,
   IDeleteViewWidgetDTO,
+  IDuplicateViewWidgetDTO,
   IUpdateViewWidgetDTO,
 } from "./view/view-widget/view-widget.dto"
 import { ViewFactory } from "./view/view.factory"
@@ -98,6 +99,17 @@ export class Views extends ValueObject {
   $createWidget(table: TableDo, dto: ICreateViewWidgetDTO): Option<TableComositeSpecification> {
     const view = this.getViewById(dto.viewId)
     const spec = view.$createWidgetSpec(dto.widget)
+
+    if (spec.isSome()) {
+      spec.unwrap().mutate(table)
+    }
+
+    return spec
+  }
+
+  $duplicateWidget(table: TableDo, dto: IDuplicateViewWidgetDTO): Option<TableComositeSpecification> {
+    const view = this.getViewById(dto.viewId)
+    const spec = view.$duplicateWidgetSpec(dto.widgetId)
 
     if (spec.isSome()) {
       spec.unwrap().mutate(table)

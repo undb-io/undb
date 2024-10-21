@@ -31,11 +31,13 @@ import {
   DisableShareCommand,
   DuplicateBaseCommand,
   DuplicateDashboardCommand,
+  DuplicateDashboardWidgetCommand,
   DuplicateRecordCommand,
   DuplicateTableCommand,
   DuplicateTableFieldCommand,
   DuplicateTableFormCommand,
   DuplicateViewCommand,
+  DuplicateViewWidgetCommand,
   EnableShareCommand,
   InviteCommand,
   RelayoutDashboardWidgetsCommand,
@@ -99,6 +101,7 @@ import {
   disableShareCommand,
   duplicateBaseCommand,
   duplicateDashboardCommand,
+  duplicateDashboardWidgetCommand,
   duplicateRecordCommand,
   duplicateTableCommand,
   duplicateTableFieldCommand,
@@ -106,6 +109,7 @@ import {
   duplicateTableFormCommandOutput,
   duplicateViewCommand,
   duplicateViewCommandOutput,
+  duplicateViewWidgetCommand,
   enableShareCommand,
   inviteCommand,
   relayoutDashboardWidgetsCommand,
@@ -212,6 +216,10 @@ const viewWidgetRouter = t.router({
     .use(authz("view:update"))
     .input(updateViewWidgetCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateViewWidgetCommand(input))),
+  duplicate: privateProcedure
+    .use(authz("view:update"))
+    .input(duplicateViewWidgetCommand)
+    .mutation(({ input }) => commandBus.execute(new DuplicateViewWidgetCommand(input))),
   delete: privateProcedure
     .use(authz("view:update"))
     .input(deleteViewWidgetCommand)
@@ -522,6 +530,10 @@ const dashboardWidgetRouter = t.router({
     .use(authz("dashboard:update"))
     .input(updateDashboardWidgetCommand)
     .mutation(({ input }) => commandBus.execute(new UpdateDashboardWidgetCommand(input))),
+  duplicate: privateProcedure
+    .use(authz("dashboard:update"))
+    .input(duplicateDashboardWidgetCommand)
+    .mutation(({ input }) => commandBus.execute(new DuplicateDashboardWidgetCommand(input))),
   delete: privateProcedure
     .use(authz("dashboard:update"))
     .input(deleteDashboardWidgetCommand)

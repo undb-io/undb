@@ -23,3 +23,10 @@ export const deleteViewWidgetDTO = z.object({
 })
 
 export type IDeleteViewWidgetDTO = z.infer<typeof deleteViewWidgetDTO>
+
+export const duplicateViewWidgetDTO = z.object({
+  viewId: viewId,
+  widgetId: widgetId,
+})
+
+export type IDuplicateViewWidgetDTO = z.infer<typeof duplicateViewWidgetDTO>

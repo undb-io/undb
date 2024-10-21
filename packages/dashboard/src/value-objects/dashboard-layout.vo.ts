@@ -2,7 +2,6 @@ import { ValueObject } from "@undb/domain"
 import { widgetId, type IWidgetDTO, type IWidgetType } from "@undb/table"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
-import type { IAddDashboardWidgetDTO } from "../dto/add-dashboard-widget.dto"
 import { WithDashboardLayout } from "../specifications"
 
 export const dashboardLayoutSchema = z.object({
@@ -83,16 +82,16 @@ export class DashboardLayouts extends ValueObject<IDashboardLayouts> {
     return DashboardLayouts.defaultLayout(widget.item.type)
   }
 
-  addLayout(widget: IWidgetDTO, layout: IDashboardLayout): IDashboardLayouts {
+  addLayout(widgetId: string, layout: IDashboardLayout): IDashboardLayouts {
     return {
       ...this.value,
-      [widget.id]: layout,
+      [widgetId]: layout,
     }
   }
 
-  $addWidget(dto: IAddDashboardWidgetDTO): WithDashboardLayout {
-    const layout = this.addLayout(dto.widget.widget, dto.layout)
-    return new WithDashboardLayout(layout)
+  $addWidget(widgetId: string, layout: IDashboardLayout): WithDashboardLayout {
+    const layouts = this.addLayout(widgetId, layout)
+    return new WithDashboardLayout(layouts)
   }
 
   private mergeLayouts(layouts: IDashboardLayouts): IDashboardLayouts {

@@ -165,7 +165,7 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
     const subQuery = this.qb
       .selectFrom("undb_reference_id_mapping")
       .select(["foreign_table_id"])
-      .where((eb) => eb.eb("table_id", "=", spec.tableId.value))
+      .where((eb) => eb.eb("table_id", "=", spec.tableId.value).or(eb.eb("foreign_table_id", "=", spec.tableId.value)))
     const cond = this.eb.eb("id", "in", subQuery)
     this.addCond(cond)
   }

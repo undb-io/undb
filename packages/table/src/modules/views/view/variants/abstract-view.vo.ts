@@ -1,4 +1,5 @@
 import { None, Option, Some, and, applyRules } from "@undb/domain"
+import { getNextName } from "@undb/utils"
 import { z } from "@undb/zod"
 import type { IDuplicateViewDTO, IUpdateViewDTO } from "../../../../dto"
 import { ViewWidgetNameShouldBeUnique } from "../../../../rules/view-widget-name-should-be-unique.rule"
@@ -112,6 +113,19 @@ export abstract class AbstractView {
     const widget = new WidgetVO(dto)
     const previous = this.widgets.into(null)
     const widgets = this.widgets.unwrapOr([]).concat(widget)
+    return Some(new WithViewWidgets(this.id, Option(previous), widgets))
+  }
+
+  $duplicateWidgetSpec(widgetId: string): Option<WithViewWidgets> {
+    const widget = this.widgets.unwrapOr([]).find((w) => w.id === widgetId)
+    if (!widget) {
+      return None
+    }
+    const previous = this.widgets.into(null)
+    const widgetsNames = previous?.map((w) => w.name) ?? []
+    const name = getNextName(widgetsNames, widget.name)
+    const duplicated = widget.duplicate(name)
+    const widgets = this.widgets.unwrapOr([]).concat(duplicated)
     return Some(new WithViewWidgets(this.id, Option(previous), widgets))
   }
 
