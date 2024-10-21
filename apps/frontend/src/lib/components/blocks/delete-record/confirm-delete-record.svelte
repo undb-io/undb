@@ -7,6 +7,8 @@
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { queryParam } from "sveltekit-search-params"
   import { toast } from "svelte-sonner"
+  import Button from "$lib/components/ui/button/button.svelte"
+  import { Loader2Icon } from "lucide-svelte"
 
   const deleteRecordId = queryParam("deleteRecordId")
 
@@ -61,8 +63,13 @@
       >
         Cancel
       </AlertDialog.Cancel>
-      <AlertDialog.Action class="text-background bg-red-500 hover:bg-red-600" on:click={onDelete}>
-        Delete
+      <AlertDialog.Action asChild>
+        <Button on:click={onDelete} variant="destructive" disabled={$deleteRecordMutation.isPending}>
+          {#if $deleteRecordMutation.isPending}
+            <Loader2Icon class="mr-2 size-3 animate-spin" />
+          {/if}
+          Delete
+        </Button>
       </AlertDialog.Action>
     </AlertDialog.Footer>
   </AlertDialog.Content>
