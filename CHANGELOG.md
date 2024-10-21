@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-107
+
+
+### 🩹 Fixes
+
+- Fix delete table issue ([2ba0723](https://github.com/undb-io/undb/commit/2ba0723))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-106
 
 
