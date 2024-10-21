@@ -18,6 +18,7 @@ import {
   CreateViewWidgetCommand,
   CreateWebhookCommand,
   DeleteBaseCommand,
+  DeleteDashboardCommand,
   DeleteDashboardWidgetCommand,
   DeleteFormCommand,
   DeleteInvitationCommand,
@@ -83,6 +84,7 @@ import {
   createViewWidgetCommand,
   createWebhookCommand,
   deleteBaseCommand,
+  deleteDashboardCommand,
   deleteDashboardWidgetCommand,
   deleteFormCommand,
   deleteInvitationCommand,
@@ -535,6 +537,10 @@ const dashboardRouter = t.router({
     .use(authz("dashboard:read"))
     .input(getDashboardByIdQuery)
     .query(({ input }) => queryBus.execute(new GetDashboardByIdQuery(input))),
+  delete: privateProcedure
+    .use(authz("dashboard:delete"))
+    .input(deleteDashboardCommand)
+    .mutation(({ input }) => commandBus.execute(new DeleteDashboardCommand(input))),
   widget: dashboardWidgetRouter,
 })
 

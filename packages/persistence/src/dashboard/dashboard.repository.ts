@@ -126,6 +126,16 @@ export class DashboardRepository implements IDashboardRepository {
   }
 
   async deleteOneById(id: string): Promise<void> {
-    throw new Error("Method not implemented.")
+    const qb = getCurrentTransaction() ?? this.qb
+
+    await qb
+      .deleteFrom("undb_dashboard_table_id_mapping")
+      .where((eb) => eb.eb("dashboard_id", "=", id))
+      .execute()
+
+    await qb
+      .deleteFrom("undb_dashboard")
+      .where((eb) => eb.eb("id", "=", id))
+      .execute()
   }
 }

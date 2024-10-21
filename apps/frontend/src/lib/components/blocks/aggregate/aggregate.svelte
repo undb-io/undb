@@ -22,6 +22,7 @@
 
   const getAggregate = createQuery({
     queryKey: ["aggregate", widget.id],
+    enabled: !!tableId,
     queryFn: () => {
       const agg =
         aggregate.type === "count"
@@ -30,7 +31,7 @@
       if (shareId) {
         return trpc.shareData.aggregate.query({
           shareId,
-          tableId,
+          tableId: tableId!,
           viewId,
           aggregate: agg,
           condition: aggregate.condition,
@@ -38,7 +39,7 @@
         })
       }
       return trpc.record.aggregate.query({
-        tableId,
+        tableId: tableId!,
         viewId,
         aggregate: agg,
         condition: aggregate.condition,

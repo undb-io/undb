@@ -19,6 +19,7 @@ import { CreateViewWidgetCommandHandler } from "./create-view-widget.command-han
 import { CreateWebhookCommandHandler } from "./create-webhook.command-handler"
 import { DeleteBaseCommandHandler } from "./delete-base.command-handler"
 import { DeleteDashboardWidgetCommandHandler } from "./delete-dashboard-widget.command-handler"
+import { DeleteDashboardCommandHandler } from "./delete-dashboard.command-handler"
 import { DeleteInvitationCommandHandler } from "./delete-invitation.command-handler"
 import { DeleteRecordCommandHandler } from "./delete-record.command-handler"
 import { DeleteSpaceCommandHandler } from "./delete-space.command-handler"
@@ -126,4 +127,5 @@ export const commandHandlers = [
   UpdateDashboardWidgetCommandHandler,
   DeleteDashboardWidgetCommandHandler,
   RelayoutDashboardWidgetsCommandHandler,
+  DeleteDashboardCommandHandler,
 ]
