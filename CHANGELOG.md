@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-105
+
+
+### 🩹 Fixes
+
+- Fix loading delete record ([002a59d](https://github.com/undb-io/undb/commit/002a59d))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-104
 
 
