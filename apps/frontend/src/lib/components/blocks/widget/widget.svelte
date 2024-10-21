@@ -14,9 +14,11 @@
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import { invalidate } from "$app/navigation"
   import { toast } from "svelte-sonner"
-  import { getDashboard, getIsDashboard } from "$lib/store/dashboard.store"
+  import { getDashboard, getDashboardWidgetItemsStore, getIsDashboard } from "$lib/store/dashboard.store"
   import { cn } from "$lib/utils"
-  import { GripVerticalIcon, ChevronRightIcon } from "lucide-svelte"
+  import { GripVerticalIcon, ChevronRightIcon, CopyIcon } from "lucide-svelte"
+  import { COLS } from "$lib/store/widget.store"
+  import { DashboardLayouts } from "@undb/dashboard"
 
   export let tableId: string | undefined
   export let table: TableDo | undefined
@@ -53,6 +55,21 @@
     mutationFn: trpc.dashboard.widget.delete.mutate,
     onSuccess: async () => {
       confirmDelete = false
+      if ($isDashboard) {
+        await invalidate(`dashboard:${$dashboard.id.value}`)
+      }
+    },
+    onError(error, variables, context) {
+      toast.error(error.message)
+    },
+  })
+
+  const dashboardWidgets = getDashboardWidgetItemsStore()
+
+  let confirmDuplicate = false
+  const duplicateDashboardWidgetMutation = createMutation({
+    mutationFn: trpc.dashboard.widget.duplicate.mutate,
+    onSuccess: async () => {
       if ($isDashboard) {
         await invalidate(`dashboard:${$dashboard.id.value}`)
       }
@@ -150,6 +167,10 @@
               <PencilIcon class="mr-2 size-3" />
               Edit Name
             </DropdownMenu.Item>
+            <DropdownMenu.Item class="text-xs" on:click={() => (confirmDuplicate = true)}>
+              <CopyIcon class="mr-2 size-3" />
+              Duplicate
+            </DropdownMenu.Item>
             <DropdownMenu.Item class="text-xs" on:click={() => (confirmDelete = true)}>
               <TrashIcon class="mr-2 size-3" />
               Delete
@@ -197,6 +218,40 @@
           }}
         >
           Delete
+        </Button>
+      </AlertDialog.Action>
+    </AlertDialog.Footer>
+  </AlertDialog.Content>
+</AlertDialog.Root>
+
+<AlertDialog.Root bind:open={confirmDuplicate}>
+  <AlertDialog.Content>
+    <AlertDialog.Header>
+      <AlertDialog.Title>Duplicate Widget {widget.name}?</AlertDialog.Title>
+    </AlertDialog.Header>
+    <AlertDialog.Footer>
+      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Action asChild>
+        <Button
+          on:click={() => {
+            if ($isDashboard) {
+              const added = dashboardWidgets.add(widget.item.type)
+              const layout = added[COLS]
+  const defaultLayout = DashboardLayouts.default()
+              $duplicateDashboardWidgetMutation.mutate({
+                dashboardId: $dashboard.id.value,
+                widgetId: widget.id,
+                layout: {
+                  x: layout.x ?? defaultLayout.x,
+                  y: layout.y ?? defaultLayout.y,
+                  w: layout.w ?? defaultLayout.w,
+                  h: layout.h ?? defaultLayout.h,
+                },
+              })
+            }
+          }}
+        >
+          Duplicate
         </Button>
       </AlertDialog.Action>
     </AlertDialog.Footer>

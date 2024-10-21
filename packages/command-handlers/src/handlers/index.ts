@@ -31,6 +31,7 @@ import { DeleteViewCommandHandler } from "./delete-view.command-handler"
 import { DeleteWebhookCommandHandler } from "./delete-webhook.command-handler"
 import { DisableShareCommandHandler } from "./disable-share.command-handler"
 import { DuplicateBaseCommandHandler } from "./duplicate-base.command-handler"
+import { DuplicateDashboardWidgetCommandHandler } from "./duplicate-dashboard-widget.command-handler"
 import { DuplicateDashboardCommandHandler } from "./duplicate-dashboard.command-handler"
 import { DuplicateRecordCommandHandler } from "./duplicate-record.command-handler"
 import { DuplicateTableFieldCommandHandler } from "./duplicate-table-field.command-handler"
@@ -132,4 +133,5 @@ export const commandHandlers = [
   DeleteDashboardCommandHandler,
   UpdateDashboardCommandHandler,
   DuplicateDashboardCommandHandler,
+  DuplicateDashboardWidgetCommandHandler,
 ]

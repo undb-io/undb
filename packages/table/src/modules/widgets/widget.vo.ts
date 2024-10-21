@@ -113,4 +113,12 @@ export class WidgetVO extends ValueObject<IWidgetDTO> {
 
     return None
   }
+
+  duplicate(name: string): WidgetVO {
+    return new WidgetVO({
+      ...this.props,
+      name,
+      id: WidgetIdVo.create().value,
+    })
+  }
 }

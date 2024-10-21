@@ -1,12 +1,13 @@
 import type { IBaseId } from "@undb/base"
-import { AggregateRoot, and, Some } from "@undb/domain"
+import { AggregateRoot, and, andOptions, Some } from "@undb/domain"
 import type { ISpaceId } from "@undb/space"
 import type { TableDo } from "@undb/table"
 import { getNextName } from "@undb/utils"
-import type { Option } from "oxide.ts"
+import { Option } from "oxide.ts"
 import { DashboardFactory } from "./dashboard.factory.js"
 import type { IAddDashboardWidgetDTO } from "./dto/add-dashboard-widget.dto.js"
 import type { IDashboardDTO } from "./dto/dashboard.dto.js"
+import type { IDuplicateDashboardWidgetDTO } from "./dto/duplicate-dashboard-widget.dto.js"
 import type { IDuplicateDashboardDTO } from "./dto/duplicate-dashboard.dto.js"
 import type { IRelayoutDashboardWidgetsDTO } from "./dto/relayout-dashboard-widgets.dto.js"
 import type { IUpdateDashboardDTO } from "./dto/update-dashboard.dto.js"
@@ -59,7 +60,14 @@ export class Dashboard extends AggregateRoot<any> {
   }
 
   $addWidget(table: TableDo, dto: IAddDashboardWidgetDTO): Option<DashboardComositeSpecification> {
-    return and(this.widgets.$addWidget(table, dto.widget), this.layout.$addWidget(dto))
+    return and(this.widgets.$addWidget(table, dto.widget), this.layout.$addWidget(dto.widget.widget.id, dto.layout))
+  }
+
+  $duplicateWidget(table: TableDo, dto: IDuplicateDashboardWidgetDTO): Option<DashboardComositeSpecification> {
+    return andOptions(
+      this.widgets.$duplicateWidget(table, dto.widgetId),
+      Option(this.layout.$addWidget(dto.widgetId, dto.layout)),
+    )
   }
 
   $relayoutWidgets(dto: IRelayoutDashboardWidgetsDTO): Option<DashboardComositeSpecification> {
