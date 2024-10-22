@@ -4,6 +4,7 @@ import type {
   DashboardTableIdSpecification,
   DashboardUniqueSpecification,
   IDashboardSpecVisitor,
+  WithDashboardDescription,
   WithDashboardId,
   WithDashboardLayout,
   WithDashboardName,
@@ -25,6 +26,9 @@ export class DashboardFilterVisitor extends AbstractQBVisitor<Dashboard> impleme
     super(eb)
   }
 
+  withDescription(v: WithDashboardDescription): void {
+    this.addCond(this.eb.eb("description", "=", v.description ?? null))
+  }
   withUniqueDashboard(v: DashboardUniqueSpecification): void {}
   withDashboardTableId(v: DashboardTableIdSpecification): void {
     const subQuery = this.qb

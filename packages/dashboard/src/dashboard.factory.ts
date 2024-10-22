@@ -5,6 +5,7 @@ import type { IDashboardDTO } from "./dto/dashboard.dto.js"
 import { DashboardCreatedEvent } from "./events/dashboard-created.event.js"
 import type { IDashboardSpecification } from "./interface.js"
 import { DashboardBaseIdSpecification } from "./specifications/dashboard-base-id.specification.js"
+import { WithDashboardDescription } from "./specifications/dashboard-description.specification.js"
 import { WithDashboardId } from "./specifications/dashboard-id.specification.js"
 import { WithDashboardLayout } from "./specifications/dashboard-layout.specification.js"
 import { WithDashboardName } from "./specifications/dashboard-name.specification.js"
@@ -28,6 +29,7 @@ export class DashboardFactory {
       new DashboardBaseIdSpecification(dto.baseId),
       WithDashboardWidgets.from(dto.widgets || []),
       new WithDashboardLayout(dto.layout),
+      WithDashboardDescription.fromString(dto.description),
     )
   }
 
@@ -39,6 +41,7 @@ export class DashboardFactory {
       new DashboardBaseIdSpecification(input.baseId!),
       WithDashboardWidgets.from(input.widgets || []),
       new WithDashboardLayout(input.layout),
+      WithDashboardDescription.fromString(input.description),
     )
 
     // @ts-expect-error

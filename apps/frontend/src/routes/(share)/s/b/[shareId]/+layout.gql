@@ -53,6 +53,7 @@ query GetShareBaseData($shareId: ID!) {
     dashboards {
       id
       name
+      description
       baseId
     }
   }

@@ -18,6 +18,7 @@
   import { zodClient } from "sveltekit-superforms/adapters"
   import { defaults, superForm } from "sveltekit-superforms"
   import { updateDashboardDTO } from "@undb/dashboard"
+  import { Textarea } from "$lib/components/ui/textarea"
 
   const dashboard = getDashboard()
 
@@ -44,6 +45,7 @@
     defaults(
       {
         name: $dashboard.name.value,
+        description: $dashboard.description,
       },
       zodClient(updateDashboardDTO),
     ),
@@ -60,7 +62,11 @@
           return
         }
 
-        $updateDashboardMutation.mutate({ dashboardId: $dashboard.id.value, name: data.form.data.name })
+        $updateDashboardMutation.mutate({
+          dashboardId: $dashboard.id.value,
+          name: data.form.data.name,
+          description: data.form.data.description,
+        })
       },
     },
   )
@@ -181,6 +187,15 @@
         <Form.Control let:attrs>
           <Form.Label>Name</Form.Label>
           <Input {...attrs} bind:value={$formData.name} />
+        </Form.Control>
+        <Form.Description />
+        <Form.FieldErrors />
+      </Form.Field>
+
+      <Form.Field form={updateDashboardForm} name="description">
+        <Form.Control let:attrs>
+          <Form.Label>Description</Form.Label>
+          <Textarea {...attrs} bind:value={$formData.description} />
         </Form.Control>
         <Form.Description />
         <Form.FieldErrors />

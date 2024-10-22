@@ -1,0 +1,1 @@
+ALTER TABLE `undb_dashboard` ADD `description` text;

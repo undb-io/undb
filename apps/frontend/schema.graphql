@@ -21,6 +21,7 @@ type Base {
 
 type Dashboard {
   baseId: ID!
+  description: String
   id: ID!
   layout: JSON
   name: String!

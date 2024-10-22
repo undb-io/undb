@@ -103,6 +103,7 @@ export class Graphql {
       type Dashboard {
         id: ID!
         name: String!
+        description: String
         baseId: ID!
         spaceId: ID!
         layout: JSON

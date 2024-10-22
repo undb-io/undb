@@ -18,6 +18,7 @@ query GetBaseQuery($baseId: ID!) {
       id
       name
       baseId
+      description
     }
   }
 }

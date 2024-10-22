@@ -1,4 +1,5 @@
 export * from "./dashboard-base-id.specification.js"
+export * from "./dashboard-description.specification.js"
 export * from "./dashboard-id.specification.js"
 export * from "./dashboard-layout.specification.js"
 export * from "./dashboard-name.specification.js"

@@ -5,6 +5,7 @@ import type {
   DashboardUniqueSpecification,
   DuplicatedDashboardSpecification,
   IDashboardSpecVisitor,
+  WithDashboardDescription,
   WithDashboardId,
   WithDashboardLayout,
   WithDashboardName,
@@ -24,6 +25,7 @@ export class DashboardReferenceVisitor implements IDashboardSpecVisitor {
     return this.sqb
   }
   withId(v: WithDashboardId): void {}
+  withDescription(v: WithDashboardDescription): void {}
   withDashboardSpaceId(v: WithDashboardSpaceId): void {}
   withDashboardBaseId(v: DashboardBaseIdSpecification): void {}
   withDashboardTableId(v: DashboardTableIdSpecification): void {}

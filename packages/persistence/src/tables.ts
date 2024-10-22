@@ -141,6 +141,7 @@ export const dashboards = sqliteTable(
   {
     id: text("id").notNull().primaryKey(),
     name: text("name").notNull(),
+    description: text("description"),
     baseId: text("base_id")
       .notNull()
       .references(() => baseTable.id),

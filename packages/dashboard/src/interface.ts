@@ -1,6 +1,7 @@
 import type { CompositeSpecification, ISpecVisitor } from "@undb/domain"
 import type { Dashboard } from "./dashboard.do.js"
 import type { DashboardBaseIdSpecification } from "./specifications/dashboard-base-id.specification.js"
+import type { WithDashboardDescription } from "./specifications/dashboard-description.specification.js"
 import type { WithDashboardId } from "./specifications/dashboard-id.specification.js"
 import type { WithDashboardLayout } from "./specifications/dashboard-layout.specification.js"
 import type { WithDashboardName } from "./specifications/dashboard-name.specification.js"
@@ -20,6 +21,7 @@ export interface IDashboardSpecVisitor extends ISpecVisitor {
   withDashboardWidgets(v: WithDashboardWidgets): void
   withDashboardLayout(v: WithDashboardLayout): void
   withName(v: WithDashboardName): void
+  withDescription(v: WithDashboardDescription): void
   withQ(v: WithDashboardQ): void
   withUniqueDashboard(v: DashboardUniqueSpecification): void
 }

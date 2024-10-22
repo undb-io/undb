@@ -2,6 +2,7 @@ query GetDashboardQuery($dashboardId: ID!) {
   dashboard(id: $dashboardId) {
     id
     name
+    description
     baseId
     spaceId
     layout
