@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-108
+
+
+### 🚀 Enhancements
+
+- Share dashboard ([38917da](https://github.com/undb-io/undb/commit/38917da))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-107
 
 
