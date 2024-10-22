@@ -6,18 +6,21 @@
   import { zodClient } from "sveltekit-superforms/adapters"
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
+  import { Loader2 } from "lucide-svelte"
   import { toggleModal, UPDATE_TABLE_MODAL } from "$lib/store/modal.store"
   import { updateTableDTO } from "@undb/table"
   import { toast } from "svelte-sonner"
+  import { invalidate } from "$app/navigation"
 
   const table = getTable()
 
   const updateTableMutation = createMutation({
     mutationKey: ["table", $table.id.value, "update"],
     mutationFn: trpc.table.update.mutate,
-    onSuccess(data, variables, context) {
-      toggleModal(UPDATE_TABLE_MODAL)
+    async onSuccess(data, variables, context) {
       toast.success("Table updated")
+      await invalidate(`table:${$table.id.value}`)
+      toggleModal(UPDATE_TABLE_MODAL)
     },
     onError(error, variables, context) {
       toast.error(error.message)
@@ -59,6 +62,11 @@
       <Form.FieldErrors />
     </Form.Field>
 
-    <Form.FormButton class="w-full">Submit</Form.FormButton>
+    <Form.FormButton disabled={$updateTableMutation.isPending} class="w-full">
+      {#if $updateTableMutation.isPending}
+        <Loader2 className="w-4 h-4 animate-spin" />
+      {/if}
+      Submit
+    </Form.FormButton>
   </form>
 </div>
