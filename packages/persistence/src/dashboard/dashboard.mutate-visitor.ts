@@ -5,6 +5,7 @@ import type {
   DashboardUniqueSpecification,
   DuplicatedDashboardSpecification,
   IDashboardSpecVisitor,
+  WithDashboardDescription,
   WithDashboardId,
   WithDashboardLayout,
   WithDashboardName,
@@ -24,6 +25,9 @@ export class DashboardMutateVisitor extends AbstractQBMutationVisitor implements
   }
 
   withUniqueDashboard(v: DashboardUniqueSpecification): void {}
+  withDescription(v: WithDashboardDescription): void {
+    this.setData("description", v.description ?? null)
+  }
   withDashboardTableId(v: DashboardTableIdSpecification): void {
     throw new Error("Method not implemented.")
   }

@@ -13,6 +13,7 @@ export const createDashboardDTO = z.object({
   name: dashboardNameSchema,
   spaceId: spaceIdSchema,
   baseId: baseIdSchema,
+  description: z.string().optional(),
   widgets: dashboardWidgetsSchema.optional(),
   layout: dashboardLayoutsSchema.optional(),
 })

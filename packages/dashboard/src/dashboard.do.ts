@@ -15,13 +15,14 @@ import { DashboardUpdatedEvent } from "./events/dashboard-updated.event.js"
 import type { IDashboardSpecification } from "./interface.js"
 import { WithDashboardName } from "./specifications/dashboard-name.specification.js"
 import { DuplicatedDashboardSpecification } from "./specifications/dashboard.specification.js"
-import type { DashboardComositeSpecification } from "./specifications/index.js"
+import { WithDashboardDescription, type DashboardComositeSpecification } from "./specifications/index.js"
 import { DashboardId, DashboardLayouts, DashboardWidgets, type DashboardName } from "./value-objects/index.js"
 
 export class Dashboard extends AggregateRoot<any> {
   id!: DashboardId
   baseId!: IBaseId
   name!: DashboardName
+  description?: string
   spaceId!: ISpaceId
   widgets!: DashboardWidgets
   layout!: DashboardLayouts
@@ -36,6 +37,9 @@ export class Dashboard extends AggregateRoot<any> {
 
     if (schema.name) {
       specs.push(WithDashboardName.fromString(schema.name))
+    }
+    if (schema.description) {
+      specs.push(WithDashboardDescription.fromString(schema.description))
     }
 
     const spec = and(...specs)
@@ -93,6 +97,7 @@ export class Dashboard extends AggregateRoot<any> {
       baseId: this.baseId,
       spaceId: this.spaceId,
       name: this.name.value,
+      description: this.description,
       widgets: this.widgets.value,
       layout: this.layout.value,
     }

@@ -21,6 +21,7 @@ type Base {
 
 type Dashboard {
   baseId: ID!
+  description: String
   id: ID!
   layout: JSON
   name: String!
@@ -134,6 +135,7 @@ type Query {
   baseByShare(shareId: ID!): Base
   bases: [Base]
   dashboard(id: ID!): Dashboard
+  dashboardByShare(shareId: ID!): Dashboard
   dashboards(baseId: ID): [Dashboard]!
   invitations(status: InvitationStatus): [Invitation!]!
   member: SpaceMember
@@ -149,6 +151,7 @@ type Query {
   table(id: ID!): Table
   tableByShare(shareId: ID!): Table
   tableByShareBase(shareId: ID!, tableId: ID!): Table
+  tableByShareDashboard(shareId: ID!, tableId: ID!): Table
   tableForeignTables(tableId: ID!): [Table!]!
   tables(baseId: ID): [Table]!
   template(shareId: ID!): Template

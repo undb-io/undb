@@ -1,11 +1,15 @@
-query GetDashboardQuery($dashboardId: ID!) {
-  dashboard(id: $dashboardId) {
+query GetDashboardByShare($shareId: ID!) {
+  dashboardByShare(shareId: $shareId) {
     id
     name
     description
     baseId
     spaceId
     layout
+    share {
+      enabled
+      id
+    }
     widgets {
       table {
         id
@@ -15,11 +19,6 @@ query GetDashboardQuery($dashboardId: ID!) {
         name
         item
       }
-    }
-
-    share {
-      enabled
-      id
     }
   }
 }

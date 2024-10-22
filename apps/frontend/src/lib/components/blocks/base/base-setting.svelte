@@ -14,6 +14,7 @@
   import { toast } from "svelte-sonner"
   import { goto, invalidateAll } from "$app/navigation"
   import { LoaderCircleIcon } from "lucide-svelte"
+  import { Loader2, TrashIcon } from "lucide-svelte"
 
   export let base: Omit<IBaseDTO, "spaceId">
   let deleteConfirm = ""
@@ -57,7 +58,7 @@
 
   let open = false
 
-  const deleteSpaceMutation = createMutation({
+  const deleteBaseMutation = createMutation({
     mutationFn: trpc.base.delete.mutate,
     onError(error, variables, context) {
       toast.error(error.message)
@@ -118,16 +119,21 @@
 
         <AlertDialog.Footer>
           <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-          <AlertDialog.Action let:builder asChild>
+          <AlertDialog.Action asChild>
             <Button
               variant="destructive"
-              builders={[builder]}
+              class="gap-2"
               disabled={//
-              $deleteSpaceMutation.isPending || deleteConfirm !== "DELETE" || !$hasPermission("space:delete")}
+              $deleteBaseMutation.isPending || deleteConfirm !== "DELETE" || !$hasPermission("space:delete")}
               on:click={async () => {
-                await $deleteSpaceMutation.mutateAsync({ id: base.id })
+                await $deleteBaseMutation.mutateAsync({ id: base.id })
               }}
             >
+              {#if $deleteBaseMutation.isPending}
+                <Loader2 class="h-4 w-4 animate-spin" />
+              {:else}
+                  <TrashIcon class="size-4" />
+              {/if}
               Delete Base
             </Button>
           </AlertDialog.Action>

@@ -10,7 +10,7 @@
   import Button from "$lib/components/ui/button/button.svelte"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
-  import { goto, invalidateAll } from "$app/navigation"
+  import { goto, invalidate, invalidateAll } from "$app/navigation"
   import * as Dialog from "$lib/components/ui/dialog"
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
@@ -18,6 +18,10 @@
   import { zodClient } from "sveltekit-superforms/adapters"
   import { defaults, superForm } from "sveltekit-superforms"
   import { updateDashboardDTO } from "@undb/dashboard"
+  import { Textarea } from "$lib/components/ui/textarea"
+  import { Loader2Icon } from "lucide-svelte"
+  import { toast } from "svelte-sonner"
+  import ShareButton from "$lib/components/blocks/share/share-button.svelte"
 
   const dashboard = getDashboard()
 
@@ -32,6 +36,9 @@
       await invalidateAll()
       goto("/")
     },
+    onError: (error) => {
+      toast.error(error.message)
+    },
   })
 
   const deleteDashboard = () => {
@@ -44,6 +51,7 @@
     defaults(
       {
         name: $dashboard.name.value,
+        description: $dashboard.description,
       },
       zodClient(updateDashboardDTO),
     ),
@@ -60,7 +68,11 @@
           return
         }
 
-        $updateDashboardMutation.mutate({ dashboardId: $dashboard.id.value, name: data.form.data.name })
+        $updateDashboardMutation.mutate({
+          dashboardId: $dashboard.id.value,
+          name: data.form.data.name,
+          description: data.form.data.description,
+        })
       },
     },
   )
@@ -117,13 +129,13 @@
       </DropdownMenu.Root>
     </h1>
     <div class="flex items-center gap-2">
-      <!-- <ShareButton
+      <ShareButton
         type="dashboard"
         id={$dashboard.id.value}
         onSuccess={() => {
           invalidate(`undb:dashboard:${$dashboard.id.value}`)
         }}
-      /> -->
+      />
 
       <AddDashboardWidgetButton variant="outline" size="sm" />
     </div>
@@ -149,8 +161,13 @@
     </AlertDialog.Header>
     <AlertDialog.Footer>
       <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-      <AlertDialog.Action asChild let:builder>
-        <Button variant="destructive" on:click={deleteDashboard} builders={[builder]}>Delete</Button>
+      <AlertDialog.Action asChild>
+        <Button variant="destructive" on:click={deleteDashboard}>
+          {#if $deleteDashboardMutation.isPending}
+            <Loader2Icon class="mr-2 size-4" />
+          {/if}
+          Delete</Button
+        >
       </AlertDialog.Action>
     </AlertDialog.Footer>
   </AlertDialog.Content>
@@ -181,6 +198,15 @@
         <Form.Control let:attrs>
           <Form.Label>Name</Form.Label>
           <Input {...attrs} bind:value={$formData.name} />
+        </Form.Control>
+        <Form.Description />
+        <Form.FieldErrors />
+      </Form.Field>
+
+      <Form.Field form={updateDashboardForm} name="description">
+        <Form.Control let:attrs>
+          <Form.Label>Description</Form.Label>
+          <Textarea {...attrs} bind:value={$formData.description} />
         </Form.Control>
         <Form.Description />
         <Form.FieldErrors />

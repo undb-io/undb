@@ -7,6 +7,7 @@
     PlusIcon,
     SquareMousePointer,
     LayoutDashboardIcon,
+    GaugeIcon,
   } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
   import { goto } from "$app/navigation"
@@ -23,14 +24,19 @@
       id: string
       name: string
     } | null)[]
+    dashboards: ({
+      id: string
+      name: string
+      description: string | null | undefined
+    } | null)[]
   }
 
   export let getTableUrl: (tableId: string) => string
 </script>
 
 <main class="flex flex-1 flex-col overflow-hidden px-4 py-4">
-  {#if $hasPermission("table:create")}
-    <div class="flex items-center gap-4">
+  <div class="flex items-center gap-4">
+    {#if $hasPermission("table:create")}
       <button
         type="button"
         class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
@@ -55,23 +61,44 @@
 
         Import Table
       </button>
+    {/if}
+    {#if $hasPermission("dashboard:create")}
       <button
         type="button"
         class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
-        on:click={() => {
-          baseId.set(base.id)
-          openModal(CREATE_DASHBOARD_MODAL)
-        }}
       >
         <LayoutDashboardIcon class="text-muted-foreground" />
 
         Create New Dashboard
       </button>
-    </div>
-  {/if}
+    {/if}
+  </div>
 
   <section class="flex flex-1 flex-col overflow-hidden pt-3">
-    <h3 class="text-xl font-normal text-gray-600">Tables</h3>
+    {#if base.dashboards.length > 0}
+      <h3 class="mt-2 text-2xl font-semibold tracking-tight">Dashboards</h3>
+
+      <div class="mt-4 flex flex-wrap gap-2 overflow-y-auto">
+        {#each base.dashboards as dashboard}
+          {#if dashboard}
+            <a
+              href={`/dashboards/${dashboard.id}`}
+              class="text-card-foreground h-[100px] w-[300px] overflow-hidden rounded-md border px-4 py-2"
+            >
+              <span class="inline-flex items-center font-semibold">
+                <GaugeIcon class="mr-2 h-4 w-4" />
+                {dashboard.name}
+              </span>
+              {#if dashboard.description}
+                <p class="text-muted-foreground truncate text-sm">{dashboard.description}</p>
+              {/if}
+            </a>
+          {/if}
+        {/each}
+      </div>
+    {/if}
+
+    <h3 class="mt-2 text-2xl font-semibold tracking-tight">Tables</h3>
 
     <Table.Root class="flex w-full flex-1 flex-col overflow-y-auto">
       <Table.Header class="flex w-full">
@@ -109,8 +136,7 @@
                 >
                   <PlusIcon class="mr-2 h-4 w-4" />
                   Create New Table
-                  </Button
-                >
+                </Button>
                 <Button
                   class="w-48"
                   variant="outline"

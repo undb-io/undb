@@ -1,6 +1,7 @@
-import { injectBaseQueryRepository,type IBaseDTO,type IBaseQueryRepository } from "@undb/base"
-import { inject,singleton } from "@undb/di"
-import { None,Option,Some,type IPagination,type PaginatedDTO } from "@undb/domain"
+import { injectBaseQueryRepository, type IBaseDTO, type IBaseQueryRepository } from "@undb/base"
+import { injectDashboardQueryRepository, type IDashboardDTO, type IDashboardQueryRepository } from "@undb/dashboard"
+import { inject, singleton } from "@undb/di"
+import { None, Option, Some, type IPagination, type PaginatedDTO } from "@undb/domain"
 import {
   RecordIdVO,
   TableComositeSpecification,
@@ -24,7 +25,7 @@ import {
   type SingleQueryArgs,
 } from "@undb/table"
 import { match } from "ts-pattern"
-import type { IDisableShareDTO,IEnableShareDTO,IShareDTO } from "../dto"
+import type { IDisableShareDTO, IEnableShareDTO, IShareDTO } from "../dto"
 import type { IShareTarget } from "../share-target.vo"
 import { ShareFactory } from "../share.factory"
 import {
@@ -33,7 +34,7 @@ import {
   type IShareQueryRepository,
   type IShareRepository,
 } from "../share.repository"
-import { WithShareId,withShare } from "../specifications"
+import { WithShareId, withShare } from "../specifications"
 
 export interface IShareService {
   enableShare(dto: IEnableShareDTO): Promise<void>
@@ -41,8 +42,10 @@ export interface IShareService {
   getShare(id: string): Promise<Option<IShareDTO>>
   getShareByTarget(target: IShareTarget, spaceId: string): Promise<Option<IShareDTO>>
   getBaseByShare(id: string): Promise<IBaseDTO>
+  getDashboardByShare(id: string): Promise<IDashboardDTO>
   getTableByShare(id: string): Promise<ITableDTO>
   getTableByShareBase(shareId: string, tableId: string): Promise<ITableDTO>
+  getTableByShareDashboard(shareId: string, tableId: string): Promise<ITableDTO>
   getShareRecords(
     shareId: string,
     tableId?: string,
@@ -75,6 +78,8 @@ export class ShareService implements IShareService {
     private readonly recordsService: IRecordsQueryService,
     @injectRecordQueryRepository()
     private readonly recordRepo: IRecordQueryRepository,
+    @injectDashboardQueryRepository()
+    private readonly dashboardQueryRepo: IDashboardQueryRepository,
   ) {}
 
   async enableShare(dto: IEnableShareDTO): Promise<void> {
@@ -126,9 +131,27 @@ export class ShareService implements IShareService {
     return (await this.baseQueryRepo.findOneById(share.target.id)).expect("base not found")
   }
 
+  async getDashboardByShare(id: string): Promise<IDashboardDTO> {
+    const share = (await this.repo.findOneById(id)).expect("share not found")
+    if (share.target.type !== "dashboard") {
+      throw new Error("invalid share target")
+    }
+
+    return (await this.dashboardQueryRepo.findOneById(share.target.id)).expect("dashboard not found")
+  }
+
   async getTableByShareBase(shareId: string, tableId: string): Promise<ITableDTO> {
     const share = (await this.repo.findOneById(shareId)).expect("share not found")
     if (share.target.type !== "base") {
+      throw new Error("invalid share target")
+    }
+
+    return (await this.tableQueryRepo.findOneById(new TableIdVo(tableId))).expect("table not found")
+  }
+
+  async getTableByShareDashboard(shareId: string, tableId: string): Promise<ITableDTO> {
+    const share = (await this.repo.findOneById(shareId)).expect("share not found")
+    if (share.target.type !== "dashboard") {
       throw new Error("invalid share target")
     }
 
