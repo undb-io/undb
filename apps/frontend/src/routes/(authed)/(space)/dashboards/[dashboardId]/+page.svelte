@@ -19,6 +19,8 @@
   import { defaults, superForm } from "sveltekit-superforms"
   import { updateDashboardDTO } from "@undb/dashboard"
   import { Textarea } from "$lib/components/ui/textarea"
+  import { Loader2Icon } from "lucide-svelte"
+  import { toast } from "svelte-sonner"
 
   const dashboard = getDashboard()
 
@@ -32,6 +34,9 @@
     onSuccess: async () => {
       await invalidateAll()
       goto("/")
+    },
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 
@@ -155,8 +160,13 @@
     </AlertDialog.Header>
     <AlertDialog.Footer>
       <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
-      <AlertDialog.Action asChild let:builder>
-        <Button variant="destructive" on:click={deleteDashboard} builders={[builder]}>Delete</Button>
+      <AlertDialog.Action asChild>
+        <Button variant="destructive" on:click={deleteDashboard}>
+          {#if $deleteDashboardMutation.isPending}
+            <Loader2Icon class="mr-2 size-4" />
+          {/if}
+          Delete</Button
+        >
       </AlertDialog.Action>
     </AlertDialog.Footer>
   </AlertDialog.Content>
