@@ -132,8 +132,8 @@
       <ShareButton
         type="dashboard"
         id={$dashboard.id.value}
-        onSuccess={() => {
-          invalidate(`undb:dashboard:${$dashboard.id.value}`)
+        onSuccess={async () => {
+          await invalidate(`undb:dashboard:${$dashboard.id.value}`)
         }}
       />
 

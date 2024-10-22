@@ -7,7 +7,7 @@ export const prerender = "auto"
 export const load: LayoutLoad = async (event) => {
   const { dashboardId } = event.params
 
-  event.depends(`dashboard:${dashboardId}`)
+  event.depends(`undb:dashboard:${dashboardId}`)
 
   const store = new GetDashboardQueryStore()
 
