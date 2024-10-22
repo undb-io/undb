@@ -9,6 +9,8 @@
   import { trpc } from "$lib/trpc/client"
   import type { IDashboardLayouts } from "@undb/dashboard"
 
+  export let shareId: string | undefined = undefined
+
   const dashboard = getDashboard()
 
   const widgetItems = getDashboardWidgetItemsStore()
@@ -49,7 +51,13 @@
     on:pointerup={onPointeup}
   >
     {#if dataItem.widget}
-      <DashboardWidget widget={dataItem.widget} tableId={dataItem.tableId} {movePointerDown} {resizePointerDown} />
+      <DashboardWidget
+        widget={dataItem.widget}
+        {shareId}
+        tableId={dataItem.tableId}
+        {movePointerDown}
+        {resizePointerDown}
+      />
     {/if}
   </Grid>
 </div>

@@ -1,0 +1,24 @@
+query GetDashboardByShare($shareId: ID!) {
+  dashboardByShare(shareId: $shareId) {
+    id
+    name
+    description
+    baseId
+    spaceId
+    layout
+    share {
+      enabled
+      id
+    }
+    widgets {
+      table {
+        id
+      }
+      widget {
+        id
+        name
+        item
+      }
+    }
+  }
+}

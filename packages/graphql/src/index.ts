@@ -15,6 +15,7 @@ import {
   GetBaseShareQuery,
   GetBasesQuery,
   GetDashboardByIdQuery,
+  GetDashboardByShareQuery,
   GetDashboardsQuery,
   GetInivitationsQuery,
   GetMemberByIdQuery,
@@ -27,6 +28,7 @@ import {
   GetSpaceByIdQuery,
   GetSpaceMemberQuery,
   GetTableByShareBaseQuery,
+  GetTableByShareDashboardQuery,
   GetTableByShareQuery,
   GetTableForeignTablesQuery,
   GetTableQuery,
@@ -376,6 +378,9 @@ export class Graphql {
         dashboards(baseId: ID): [Dashboard]!
         dashboard(id: ID!): Dashboard
 
+        dashboardByShare(shareId: ID!): Dashboard
+        tableByShareDashboard(shareId: ID!, tableId: ID!): Table
+
         bases: [Base]
         base(id: ID!): Base!
 
@@ -476,9 +481,19 @@ export class Graphql {
             const base = await this.queryBus.execute(new GetBaseByShareQuery({ shareId: args.shareId }))
             return base
           },
+          dashboardByShare: async (_, args) => {
+            const dashboard = await this.queryBus.execute(new GetDashboardByShareQuery({ shareId: args.shareId }))
+            return dashboard
+          },
           tableByShareBase: async (_, args) => {
             const table = await this.queryBus.execute(
               new GetTableByShareBaseQuery({ shareId: args.shareId, tableId: args.tableId }),
+            )
+            return table
+          },
+          tableByShareDashboard: async (_, args) => {
+            const table = await this.queryBus.execute(
+              new GetTableByShareDashboardQuery({ shareId: args.shareId, tableId: args.tableId }),
             )
             return table
           },

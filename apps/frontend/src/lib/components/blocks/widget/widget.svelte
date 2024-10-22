@@ -40,6 +40,7 @@
 
   const deleteViewWidgetMutation = createMutation({
     mutationFn: trpc.table.view.widget.delete.mutate,
+    enabled: !shareId,
     onSuccess: async () => {
       confirmDelete = false
       if (table) {
@@ -53,6 +54,7 @@
 
   const deleteDashboardWidgetMutation = createMutation({
     mutationFn: trpc.dashboard.widget.delete.mutate,
+    enabled: !shareId,
     onSuccess: async () => {
       confirmDelete = false
       if ($isDashboard) {
@@ -69,6 +71,7 @@
   let confirmDuplicate = false
   const duplicateDashboardWidgetMutation = createMutation({
     mutationFn: trpc.dashboard.widget.duplicate.mutate,
+    enabled: !shareId,
     onSuccess: async () => {
       if ($isDashboard) {
         await invalidate(`dashboard:${$dashboard.id.value}`)
@@ -81,6 +84,7 @@
 
   const duplicateViewWidgetMutation = createMutation({
     mutationFn: trpc.table.view.widget.duplicate.mutate,
+    enabled: !shareId,
     onSuccess: async () => {
       confirmDuplicate = false
       if (table) {
@@ -96,7 +100,7 @@
 <div class={cn("group flex h-full w-full flex-col rounded-sm border", $$restProps.class)}>
   <div class="flex items-center justify-between p-2">
     <div class="flex items-center gap-0.5">
-      {#if movePointerDown}
+      {#if movePointerDown && !shareId}
         <button on:pointerdown={movePointerDown}>
           <GripVerticalIcon
             class="text-muted-foreground size-4 cursor-grab opacity-0 group-hover:block group-hover:opacity-100 dark:text-gray-200"
@@ -197,7 +201,7 @@
     <Aggregate {table} {tableId} {ignoreView} {widget} {viewId} {shareId} aggregate={widget.item.aggregate} />
   {/if}
 
-  {#if resizePointerDown}
+  {#if resizePointerDown && !shareId}
     <button on:pointerdown={resizePointerDown}>
       <ChevronRightIcon
         class="text-muted-foreground absolute bottom-0 right-0

@@ -10,7 +10,7 @@
   import Button from "$lib/components/ui/button/button.svelte"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
-  import { goto, invalidateAll } from "$app/navigation"
+  import { goto, invalidate, invalidateAll } from "$app/navigation"
   import * as Dialog from "$lib/components/ui/dialog"
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
@@ -21,6 +21,7 @@
   import { Textarea } from "$lib/components/ui/textarea"
   import { Loader2Icon } from "lucide-svelte"
   import { toast } from "svelte-sonner"
+  import ShareButton from "$lib/components/blocks/share/share-button.svelte"
 
   const dashboard = getDashboard()
 
@@ -128,13 +129,13 @@
       </DropdownMenu.Root>
     </h1>
     <div class="flex items-center gap-2">
-      <!-- <ShareButton
+      <ShareButton
         type="dashboard"
         id={$dashboard.id.value}
         onSuccess={() => {
           invalidate(`undb:dashboard:${$dashboard.id.value}`)
         }}
-      /> -->
+      />
 
       <AddDashboardWidgetButton variant="outline" size="sm" />
     </div>
