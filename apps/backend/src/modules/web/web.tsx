@@ -6,7 +6,16 @@ import Elysia from "elysia"
 @singleton()
 export class Web {
   route() {
-    const index = Bun.file("dist/index.html")
+    const cdnUrl = process.env.PUBLIC_CDN_URL
+    const getAsset = (path: string) => {
+      if (cdnUrl) {
+        return `${cdnUrl}${path}`
+      }
+      return Bun.file(`dist${path}`)
+    }
+
+    const index = getAsset("/index.html")
+
     return new Elysia()
       .use(staticPlugin({ prefix: "/", assets: "dist" }))
       .use(staticPlugin({ prefix: "/assets", assets: "assets" }))
