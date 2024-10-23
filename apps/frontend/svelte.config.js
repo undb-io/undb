@@ -12,6 +12,9 @@ const config = {
       pages: "dist",
       fallback: "index.html",
     }),
+    paths: {
+      assets: import.meta.env.PUBLIC_CDN_URL || "",
+    },
     env: {
       publicPrefix: "UNDB_PUBLIC_",
     },

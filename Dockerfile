@@ -1,5 +1,8 @@
 FROM node:22 as builder
 
+ARG CDN_URL
+ENV PUBLIC_CDN_URL=$CDN_URL
+
 WORKDIR /usr/src/app
 
 RUN npm i -g bun
