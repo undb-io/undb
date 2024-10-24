@@ -42,7 +42,7 @@
     mutationKey: ["table", $table.id.value, "setFilters"],
     mutationFn: trpc.table.view.setFilter.mutate,
     onSuccess: async () => {
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
       await client.invalidateQueries({ queryKey: ["aggregates", $table.id.value] })
       open = false

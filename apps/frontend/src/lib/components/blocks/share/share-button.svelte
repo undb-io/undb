@@ -31,7 +31,7 @@
     mutationFn: trpc.share.enable.mutate,
     async onSuccess(data, variables, context) {
       if ($t) {
-        await invalidate(`table:${$t.id.value}`)
+        await invalidate(`undb:table:${$t.id.value}`)
       }
       onSuccess()
     },
@@ -54,7 +54,7 @@
     mutationFn: trpc.share.disable.mutate,
     async onSuccess(data, variables, context) {
       if ($t) {
-        await invalidate(`table:${$t.id.value}`)
+        await invalidate(`undb:table:${$t.id.value}`)
       }
       onSuccess()
     },

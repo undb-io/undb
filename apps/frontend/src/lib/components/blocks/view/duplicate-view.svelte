@@ -23,7 +23,7 @@
     async onSuccess(data, variables, context) {
       closeModal(DUPLICATE_VIEW)
       toast.success("View duplicated")
-      await invalidate(`table:${data.tableId}`)
+      await invalidate(`undb:table:${data.tableId}`)
       await goto(`/t/${data.tableId}/${data.viewId}`)
     },
     onError(error, variables, context) {

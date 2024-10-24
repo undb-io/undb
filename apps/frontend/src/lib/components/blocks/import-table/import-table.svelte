@@ -55,7 +55,7 @@
     async onSuccess() {
       await invalidate("undb:tables")
       await goto(`/t/${tableId}`)
-      await invalidate(`table:${tableId}`)
+      await invalidate(`undb:table:${tableId}`)
       closeModal(IMPORT_TABLE_MODAL)
       baseId.set(null)
     },

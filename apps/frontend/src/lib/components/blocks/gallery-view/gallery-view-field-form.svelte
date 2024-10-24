@@ -10,8 +10,10 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
   import { invalidate } from "$app/navigation"
+  import { CircleCheckBigIcon } from "lucide-svelte"
 
   const table = getTable()
+  export let readonly = false
 
   $: fields = $table.schema.getGalleryFields()
 
@@ -49,7 +51,7 @@
     mutationKey: ["updateView"],
     async onSuccess(data, variables, context) {
       toast.success("View updated")
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
     },
   })
 </script>
@@ -61,6 +63,7 @@
         <FieldPicker
           placeholder="Select a select type field to group gallery lanes"
           value={$formData.gallery?.field}
+          disabled={readonly}
           onValueChange={(field) => {
             if ($formData.gallery) {
               $formData.gallery.field = field
@@ -74,9 +77,21 @@
     </div>
   </form>
 
-  <CreateFieldButton class="w-full" variant="secondary" />
+  {#if !readonly}
+    <CreateFieldButton class="w-full" variant="secondary" />
 
-  <div class="flex w-full justify-end">
-    <Button type="submit" form="select-gallery-field-form">Confirm</Button>
-  </div>
+    <div class="flex w-full justify-end">
+      <Button
+        variant="outline"
+        disabled={readonly}
+        size="sm"
+        class="w-full"
+        type="submit"
+        form="select-gallery-field-form"
+      >
+        <CircleCheckBigIcon class="mr-2 size-4" />
+        Confirm
+      </Button>
+    </div>
+  {/if}
 </div>

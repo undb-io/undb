@@ -56,7 +56,7 @@
     mutationFn: trpc.table.field.delete.mutate,
     async onSuccess() {
       toast.success("Delete field success")
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
       open = false
       deleteAlertOpen = false
@@ -70,7 +70,7 @@
     mutationFn: trpc.table.field.duplicate.mutate,
     async onSuccess() {
       toast.success("Duplicate field success")
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
       open = false
     },

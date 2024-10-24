@@ -11,6 +11,7 @@
   import { toast } from "svelte-sonner"
   import { invalidate } from "$app/navigation"
   import { hasPermission } from "$lib/store/space-member.store"
+  import { CircleCheckBigIcon } from "lucide-svelte"
 
   export let readonly = false
 
@@ -52,7 +53,7 @@
     mutationKey: ["updateView"],
     async onSuccess(data, variables, context) {
       toast.success("View updated")
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
     },
   })
 </script>
@@ -84,7 +85,17 @@
 
   {#if !readonly}
     <div class="flex w-full justify-end">
-      <Button type="submit" form="select-kanban-field-form" disabled={readonly}>Confirm</Button>
+      <Button
+        variant="outline"
+        size="sm"
+        class="w-full"
+        type="submit"
+        form="select-kanban-field-form"
+        disabled={readonly}
+      >
+        <CircleCheckBigIcon class="mr-2 size-4" />
+        Confirm
+      </Button>
     </div>
   {/if}
 </div>
