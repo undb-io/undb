@@ -27,6 +27,7 @@ import {
   type UrlField,
   type UserField,
 } from "@undb/table"
+import type { FormulaField } from "@undb/table/src/modules/schema/fields/variants/formula-field"
 import { sql } from "kysely"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
 import type { IRecordQueryBuilder } from "../qb"
@@ -50,6 +51,7 @@ export class UnderlyingTableFieldUpdatedVisitor extends AbstractQBMutationVisito
   string(field: StringField): void {}
   number(field: NumberField): void {}
   rating(field: RatingField): void {}
+  formula(field: FormulaField): void {}
   select(field: SelectField): void {
     const prev = this.prev as SelectField
     const deletedOptions = Options.getDeletedOptions(prev.options, field.options)

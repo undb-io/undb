@@ -7,7 +7,7 @@ export const prerender = "auto"
 export const load: LayoutLoad = async (event) => {
   const { tableId } = event.params
 
-  event.depends(`table:${tableId}`)
+  event.depends(`undb:table:${tableId}`)
 
   const store = new GetTableQueryStore()
 

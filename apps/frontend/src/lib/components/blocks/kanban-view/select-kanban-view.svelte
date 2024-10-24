@@ -43,7 +43,7 @@
     mutationFn: trpc.table.field.update.mutate,
     mutationKey: ["table", $table.id.value, "field", fieldId, "update"],
     async onSuccess(data) {
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
     },
     onError(e) {
       toast.error(e.message)

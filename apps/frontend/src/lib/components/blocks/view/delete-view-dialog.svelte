@@ -3,7 +3,7 @@
   import { DELETE_VIEW, isModalOpen, toggleModal } from "$lib/store/modal.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
-  import {  getTable } from "$lib/store/table.store"
+  import { getTable } from "$lib/store/table.store"
   import { toast } from "svelte-sonner"
   import { goto, invalidate } from "$app/navigation"
   import { page } from "$app/stores"
@@ -15,7 +15,7 @@
     mutationKey: ["table", $viewId, "deleteView"],
     mutationFn: trpc.table.view.delete.mutate,
     async onSuccess(data, variables, context) {
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
       await goto(`/t/${$table.id.value}`)
     },
     onError(error) {

@@ -7,7 +7,7 @@
 
   const table = getTable()
   export let viewId: Readable<string | undefined>
-  export let fieldId: string
+  export let fieldId: string | undefined
   export let r: Writable<string | null>
   const recordsStore = getRecordsStore()
 

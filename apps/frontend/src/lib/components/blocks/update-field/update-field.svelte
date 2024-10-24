@@ -33,7 +33,7 @@
       async onSuccess() {
         onSuccess()
         toast.success("Update field success")
-        await invalidate(`table:${$table.id.value}`)
+        await invalidate(`undb:table:${$table.id.value}`)
         await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
         reset()
       },

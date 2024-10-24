@@ -15,7 +15,7 @@
   let selected = writable<string[]>(value)
 
   onMount(() => {
-    selected.set(value)
+    selected?.set(value)
   })
   $: $selected, (value = $selected)
 
@@ -39,7 +39,7 @@
   >
     {#if hasValueReactive}
       <Button size="xs" variant="link" class="px-0" builders={[builder]}>
-        {$selected.length} Linked Records
+        {$selected?.length} Linked Records
       </Button>
     {:else}
       <Button size="xs" variant="link" type="button" class="text-muted-foreground px-0" builders={[builder]}>

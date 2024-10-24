@@ -38,7 +38,7 @@
     mutationKey: ["table", $table.id.value, "setColor"],
     mutationFn: trpc.table.view.setColor.mutate,
     onSuccess: async () => {
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
       open = false
     },
   })

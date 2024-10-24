@@ -44,7 +44,7 @@
     onSuccess: async () => {
       confirmDelete = false
       if (table) {
-        await invalidate(`table:${tableId}`)
+        await invalidate(`undb:table:${tableId}`)
       }
     },
     onError(error, variables, context) {
@@ -88,7 +88,7 @@
     onSuccess: async () => {
       confirmDuplicate = false
       if (table) {
-        await invalidate(`table:${tableId}`)
+        await invalidate(`undb:table:${tableId}`)
       }
     },
     onError(error, variables, context) {

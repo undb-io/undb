@@ -37,7 +37,7 @@
       mutationKey: ["table", $table.id.value, "setViewAggregate"],
       mutationFn: trpc.table.view.setAggregate.mutate,
       async onSuccess() {
-        await invalidate(`table:${$table.id.value}`)
+        await invalidate(`undb:table:${$table.id.value}`)
         await client.invalidateQueries({ queryKey: ["aggregates", $table.id.value] })
       },
     })),

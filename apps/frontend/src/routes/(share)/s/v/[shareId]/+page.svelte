@@ -21,5 +21,5 @@
 <ShareViewPage {viewId} shareId={$page.params.shareId} />
 
 {#if RecordDetailSheet}
-  <RecordDetailSheet readonly {r} />
+  <RecordDetailSheet {viewId} readonly {r} />
 {/if}

@@ -61,7 +61,7 @@
     mutationKey: ["table", $table.id.value, "setSort"],
     mutationFn: trpc.table.view.setSort.mutate,
     async onSettled() {
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
       open = false
     },

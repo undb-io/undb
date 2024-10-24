@@ -108,6 +108,7 @@ const sortableFieldTypes: FieldType[] = [
   "url",
   "duration",
   "percentage",
+  "formula",
 ] as const
 
 export function isFieldSortable(type: FieldType): boolean {
@@ -173,6 +174,7 @@ export const filterableFieldTypes = [
   "currency",
   "duration",
   "percentage",
+  "formula",
 ] as const
 
 export const getIsFilterableFieldType = (type: FieldType): type is IFilterableFieldType => {
@@ -200,7 +202,8 @@ export const mutableFieldTypes = [
 
 export const getIsMutableFieldType = (type: FieldType) => mutableFieldTypes.includes(type as any)
 
-export const allFieldTypes: FieldType[] = [...systemFieldTypes, ...fieldTypes] as const
+// TODO: move formula to fieldTypes
+export const allFieldTypes: FieldType[] = [...systemFieldTypes, ...fieldTypes, "formula"] as const
 
 export const fieldsCanBeRollup: FieldType[] = [
   "number",

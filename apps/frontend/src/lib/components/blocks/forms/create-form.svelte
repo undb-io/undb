@@ -22,7 +22,7 @@
     mutationKey: ["table", $table.id.value, "createForm"],
     async onSuccess(data) {
       toast.success("create form successfully")
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
       formId.set(data.formId)
       onSuccess?.()
     },

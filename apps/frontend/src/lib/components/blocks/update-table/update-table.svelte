@@ -19,7 +19,7 @@
     mutationFn: trpc.table.update.mutate,
     async onSuccess(data, variables, context) {
       toast.success("Table updated")
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
       toggleModal(UPDATE_TABLE_MODAL)
     },
     onError(error, variables, context) {

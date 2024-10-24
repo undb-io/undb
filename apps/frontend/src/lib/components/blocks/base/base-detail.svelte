@@ -39,25 +39,25 @@
     {#if $hasPermission("table:create")}
       <button
         type="button"
-        class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
+        class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-neutral-50 px-4 py-7 text-left transition-all hover:bg-neutral-100/70 hover:shadow-md"
         on:click={() => {
           baseId.set(base.id)
           openModal(CREATE_TABLE_MODAL)
         }}
       >
-        <PlusCircleIcon class="text-muted-foreground" />
+        <PlusCircleIcon class="text-blue-600" />
 
         Create New Table
       </button>
       <button
         type="button"
-        class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
+        class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-neutral-50 px-4 py-7 text-left transition-all hover:bg-neutral-100/70 hover:shadow-md"
         on:click={() => {
           baseId.set(base.id)
           openModal(IMPORT_TABLE_MODAL)
         }}
       >
-        <ImportIcon class="text-muted-foreground" />
+        <ImportIcon class="text-orange-600" />
 
         Import Table
       </button>
@@ -65,9 +65,13 @@
     {#if $hasPermission("dashboard:create")}
       <button
         type="button"
-        class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-gray-100 px-4 py-7 text-left transition-all hover:bg-gray-200/50 hover:shadow-lg"
+        class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-neutral-50 px-4 py-7 text-left transition-all hover:bg-neutral-100/70 hover:shadow-md"
+        on:click={() => {
+          baseId.set(base.id)
+          openModal(CREATE_DASHBOARD_MODAL)
+        }}
       >
-        <LayoutDashboardIcon class="text-muted-foreground" />
+        <LayoutDashboardIcon class="text-green-600" />
 
         Create New Dashboard
       </button>
@@ -76,14 +80,14 @@
 
   <section class="flex flex-1 flex-col overflow-hidden pt-3">
     {#if base.dashboards.length > 0}
-      <h3 class="mt-2 text-2xl font-semibold tracking-tight">Dashboards</h3>
+      <h3 class="mt-2 text-xl font-semibold tracking-tight">Dashboards</h3>
 
       <div class="mt-4 flex flex-wrap gap-2 overflow-y-auto">
         {#each base.dashboards as dashboard}
           {#if dashboard}
             <a
               href={`/dashboards/${dashboard.id}`}
-              class="text-card-foreground h-[100px] w-[300px] overflow-hidden rounded-md border px-4 py-2"
+              class="text-card-foreground h-[100px] w-[300px] overflow-hidden rounded-md border px-4 py-2 transition-all hover:shadow-md"
             >
               <span class="inline-flex items-center font-semibold">
                 <GaugeIcon class="mr-2 h-4 w-4" />
@@ -98,7 +102,7 @@
       </div>
     {/if}
 
-    <h3 class="mt-2 text-2xl font-semibold tracking-tight">Tables</h3>
+    <h3 class="mt-2 text-xl font-semibold tracking-tight">Tables</h3>
 
     <Table.Root class="flex w-full flex-1 flex-col overflow-y-auto">
       <Table.Header class="flex w-full">

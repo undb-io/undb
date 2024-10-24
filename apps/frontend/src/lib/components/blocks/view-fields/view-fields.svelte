@@ -45,7 +45,7 @@
     mutationFn: trpc.table.view.setFields.mutate,
     mutationKey: ["table", $table.id.value, "setFields"],
     async onSuccess(data, variables, context) {
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
     },
   })
@@ -77,7 +77,7 @@
     mutationFn: trpc.table.view.setOption.mutate,
     mutationKey: ["table", $table.id.value, "setOption"],
     async onSuccess(data, variables, context) {
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
       client.invalidateQueries({ queryKey: ["records", $table.id.value] })
     },
   })

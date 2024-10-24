@@ -9,6 +9,7 @@ import { updateCurrencyFieldDTO } from "../variants/currency-field"
 import { updateDateFieldDTO } from "../variants/date-field/date-field.vo"
 import { updateDurationFieldDTO } from "../variants/duration-field/duration-field.vo"
 import { updateEmailFieldDTO } from "../variants/email-field"
+import { updateFormulaFieldDTO } from "../variants/formula-field/formula-field.vo"
 import { updateIdFieldDTO } from "../variants/id-field/id-field.vo"
 import { updateJsonFieldDTO } from "../variants/json-field/json-field.vo"
 import { updateNumberFieldDTO } from "../variants/number-field/number-field.vo"
@@ -45,6 +46,7 @@ export const updateFieldDTO = z.discriminatedUnion("type", [
   updateButtonFieldDTO,
   updateDurationFieldDTO,
   updatePercentageFieldDTO,
+  updateFormulaFieldDTO,
 ])
 
 export type IUpdateFieldDTO = z.infer<typeof updateFieldDTO>

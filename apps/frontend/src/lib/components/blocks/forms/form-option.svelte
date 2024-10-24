@@ -39,7 +39,7 @@
     mutationKey: ["table", $table.id.value, "setForm"],
     mutationFn: trpc.table.form.set.mutate,
     async onSuccess() {
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
     },
   })
 
@@ -55,7 +55,7 @@
     mutationKey: ["table", $table.id.value, "deleteForm"],
     mutationFn: trpc.table.form.delete.mutate,
     async onSuccess() {
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
       await goto(`/t/${$table.id.value}`)
     },
   })
@@ -76,7 +76,7 @@
     async onSuccess(data) {
       toast.success("Duplicate form successfully")
       duplicateFormDialog = false
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
       formId.set(data.formId)
     },
   })

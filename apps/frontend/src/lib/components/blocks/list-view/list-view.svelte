@@ -75,7 +75,7 @@
 <div class={cn("flex-1 overflow-y-auto overflow-x-hidden")}>
   {#if $isLoading}
     <div class="p-4">
-      <ListViewLoading />
+      <ListViewLoading {viewId} />
     </div>
   {:else}
     <ListViewList {viewId} {r} {readonly} />
@@ -88,7 +88,7 @@
 {/await}
 
 {#await import("$lib/components/blocks/record-detail/table-record-detail-sheet.svelte") then { default: TableRecordDetailSheet }}
-  <TableRecordDetailSheet />
+  <TableRecordDetailSheet {viewId} />
 {/await}
 
 {#await import("$lib/components/blocks/view-widget/view-widget-sheet.svelte") then { default: ViewWidgetSheet }}

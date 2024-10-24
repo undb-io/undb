@@ -3,13 +3,14 @@
   import { trpc } from "$lib/trpc/client"
   import { createQuery } from "@tanstack/svelte-query"
   import { RecordDO } from "@undb/table"
-  import { derived } from "svelte/store"
+  import { derived, type Readable } from "svelte/store"
   import { preferences } from "$lib/store/persisted.store"
   import RecordDetailSheet from "./record-detail-sheet.svelte"
   import { page } from "$app/stores"
   import { r } from "$lib/store/records.store"
 
   export let readonly = false
+  export let viewId: Readable<string | undefined>
 
   const table = getTable()
 
@@ -30,4 +31,4 @@
   $: recordDo = $record.data?.record ? RecordDO.fromJSON($table, $record.data?.record) : undefined
 </script>
 
-<RecordDetailSheet {readonly} {recordDo} isLoading={$record.isLoading} {r} />
+<RecordDetailSheet {readonly} {viewId} {recordDo} isLoading={$record.isLoading} {r} />

@@ -29,7 +29,7 @@
       viewNames = [...viewNames, $formData.name]
       toast.success("created view successfully")
       reset()
-      await invalidate(`table:${tableId}`)
+      await invalidate(`undb:table:${tableId}`)
       await goto(`/t/${tableId}/${data.viewId}`)
     },
     onError(e) {

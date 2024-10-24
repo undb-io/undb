@@ -47,7 +47,7 @@
     mutationFn: trpc.table.view.widget.update.mutate,
     async onSuccess(data, variables, context) {
       if (table) {
-        await invalidate(`table:${table.id.value}`)
+        await invalidate(`undb:table:${table.id.value}`)
         await tick()
         await client.invalidateQueries({ queryKey: ["aggregate", table.id.value, widget.id] })
       }

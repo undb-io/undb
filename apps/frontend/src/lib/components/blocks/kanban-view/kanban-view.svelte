@@ -30,7 +30,7 @@
 </script>
 
 {#key $table.id.value}
-  <TableTools {readonly} {r}>
+  <TableTools {readonly} {viewId} {r}>
     {#if !shareId}
       <KanbanOptionButton {view} {readonly} />
     {/if}
@@ -56,10 +56,10 @@
   {/await}
 
   {#await import("$lib/components/blocks/record-detail/table-record-detail-sheet.svelte") then { default: TableRecordDetailSheet }}
-    <TableRecordDetailSheet />
+    <TableRecordDetailSheet {viewId} />
   {/await}
 
   {#await import("$lib/components/blocks/view-widget/view-widget-sheet.svelte") then { default: ViewWidgetSheet }}
-    <ViewWidgetSheet {viewId} {shareId}/>
+    <ViewWidgetSheet {viewId} {shareId} />
   {/await}
 {/key}

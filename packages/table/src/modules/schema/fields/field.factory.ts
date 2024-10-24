@@ -13,6 +13,7 @@ import { CurrencyField } from "./variants/currency-field"
 import { DateField } from "./variants/date-field/date-field.vo"
 import { DurationField } from "./variants/duration-field/duration-field.vo"
 import { EmailField } from "./variants/email-field/email-field.vo"
+import { FormulaField } from "./variants/formula-field/formula-field.vo"
 import { IdField } from "./variants/id-field/id-field.vo"
 import { JsonField } from "./variants/json-field/json-field.vo"
 import { LongTextField } from "./variants/long-text-field"
@@ -53,7 +54,8 @@ export class FieldFactory {
       .with({ type: "currency" }, (dto) => new CurrencyField(dto))
       .with({ type: "button" }, (dto) => new ButtonField(dto))
       .with({ type: "duration" }, (dto) => new DurationField(dto))
-      .with({ type: "percentage" }, (dto) => new PercentageField(dto)) // 新增匹配
+      .with({ type: "percentage" }, (dto) => new PercentageField(dto))
+      .with({ type: "formula" }, (dto) => new FormulaField(dto))
       .exhaustive()
   }
 
@@ -76,7 +78,8 @@ export class FieldFactory {
       .with({ type: "currency" }, (dto) => CurrencyField.create(dto))
       .with({ type: "button" }, (dto) => ButtonField.create(dto))
       .with({ type: "duration" }, (dto) => DurationField.create(dto))
-      .with({ type: "percentage" }, (dto) => PercentageField.create(dto)) // 新增匹配
+      .with({ type: "percentage" }, (dto) => PercentageField.create(dto))
+      .with({ type: "formula" }, (dto) => FormulaField.create(dto))
       .otherwise(() => {
         throw new Error("Field type creation not supported")
       })

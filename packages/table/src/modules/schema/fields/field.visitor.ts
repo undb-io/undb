@@ -8,6 +8,7 @@ import type { CurrencyField } from "./variants/currency-field"
 import type { DateField } from "./variants/date-field"
 import type { DurationField } from "./variants/duration-field/duration-field.vo"
 import type { EmailField } from "./variants/email-field"
+import type { FormulaField } from "./variants/formula-field/formula-field.vo"
 import type { IdField } from "./variants/id-field/id-field.vo"
 import type { JsonField } from "./variants/json-field"
 import type { LongTextField } from "./variants/long-text-field"
@@ -46,6 +47,7 @@ export interface IFieldVisitor {
   button(field: ButtonField): void
   duration(field: DurationField): void
   percentage(field: PercentageField): void
+  formula(field: FormulaField): void
 
   reference(field: ReferenceField): void
   rollup(field: RollupField): void

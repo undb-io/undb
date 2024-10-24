@@ -134,7 +134,7 @@
     onSuccess: async (data, variables, context) => {
       toast.success("Option updated")
       updateOptionDialogOpen = false
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
     },
     onError: (error, variables, context) => {
       toast.error(error.message)

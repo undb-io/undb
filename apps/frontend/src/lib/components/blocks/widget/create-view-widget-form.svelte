@@ -59,7 +59,7 @@
   const createViewWidgetMutation = createMutation({
     mutationFn: trpc.table.view.widget.create.mutate,
     async onSuccess(data) {
-      await invalidate(`table:${$table.id.value}`)
+      await invalidate(`undb:table:${$table.id.value}`)
       onSuccess()
     },
     onError(error, variables, context) {

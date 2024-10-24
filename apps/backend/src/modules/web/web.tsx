@@ -6,28 +6,38 @@ import Elysia from "elysia"
 @singleton()
 export class Web {
   route() {
-    const index = Bun.file("dist/index.html")
+    const cdnUrl = process.env.PUBLIC_CDN_URL
+    const getAsset = async (path: string) => {
+      if (cdnUrl) {
+        const response = await fetch(`${cdnUrl}${path}`)
+        return response.text()
+      }
+      return Bun.file(`dist${path}`).text()
+    }
+
+    const getIndex = () => getAsset("/index.html")
+
     return new Elysia()
       .use(staticPlugin({ prefix: "/", assets: "dist" }))
       .use(staticPlugin({ prefix: "/assets", assets: "assets" }))
-      .get("/", () => index)
-      .get("/t/*", () => index)
-      .get("/dashboards/*", () => index)
-      .get("/s/*", () => index)
-      .get("/bases/*", () => index)
-      .get("/account/*", () => index)
-      .get("/settings", () => index)
-      .get("/login", () => index)
-      .get("/signup", (ctx) => {
+      .get("/", () => getIndex())
+      .get("/t/*", () => getIndex())
+      .get("/dashboards/*", () => getIndex())
+      .get("/s/*", () => getIndex())
+      .get("/bases/*", () => getIndex())
+      .get("/account/*", () => getIndex())
+      .get("/settings", () => getIndex())
+      .get("/login", () => getIndex())
+      .get("/signup", async (ctx) => {
         if (env.UNDB_DISABLE_REGISTRATION) {
           ctx.redirect("/login", 302)
           return
         }
-        return index
+        return getIndex()
       })
-      .get("/verify-email", () => index)
-      .get("/reset-password/*", () => index)
-      .get("/create-from-share/*", () => index)
-      .get("/templates/*", () => index)
+      .get("/verify-email", () => getIndex())
+      .get("/reset-password/*", () => getIndex())
+      .get("/create-from-share/*", () => getIndex())
+      .get("/templates/*", () => getIndex())
   }
 }

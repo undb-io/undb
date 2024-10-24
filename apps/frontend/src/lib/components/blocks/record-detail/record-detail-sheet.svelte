@@ -12,11 +12,12 @@
   import { preferences } from "$lib/store/persisted.store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
   import RecordDetailMenu from "./record-detail-menu.svelte"
-  import { type Writable } from "svelte/store"
+  import { type Writable, type Readable } from "svelte/store"
 
   export let readonly = false
   export let recordDo: RecordDO | undefined
   export let isLoading: boolean
+  export let viewId: Readable<string | undefined>
   export let r: Writable<string | null>
 
   const table = getTable()
@@ -70,6 +71,7 @@
             <div class={cn("overflow-hidden", $preferences.showAudit && $r ? "col-span-3" : "col-span-4")}>
               <div class="h-full w-full overflow-auto px-6">
                 <RecordDetail
+                  {viewId}
                   onSuccess={async () => {
                     $r = null
                     await client.invalidateQueries({ queryKey: ["records", $table.id.value] })

@@ -205,4 +205,4 @@
   </div>
 {/if}
 
-<RecordDetailSheet readonly recordDo={$recordDo} isLoading={false} {r} />
+<RecordDetailSheet viewId={currentViewId} readonly recordDo={$recordDo} isLoading={false} {r} />

@@ -20,6 +20,7 @@
   import DurationField from "./duration-field.svelte"
   import PercentageField from "./percentage-field.svelte"
   import ButtonControl from "../field-control/button-control.svelte"
+  import FormulaField from "./formula-field.svelte"
 
   export let type: FieldType
   export let value: any
@@ -55,6 +56,7 @@
     user: UserField,
     duration: DurationField,
     percentage: PercentageField,
+    formula: FormulaField,
     button: ButtonControl,
   }
 </script>

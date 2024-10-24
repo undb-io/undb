@@ -12,6 +12,7 @@
   import ViewPagination from "../view/view-pagination.svelte"
   import { cn } from "$lib/utils"
   import GalleryViewLoading from "./gallery-view-loading.svelte"
+  import GalleryViewOptionButton from "./gallery-option-button.svelte"
 
   const table = getTable()
   export let viewId: Readable<string | undefined>
@@ -75,12 +76,14 @@
   $: total = ($getRecordsQuery.data as any)?.total
 </script>
 
-<TableTools {r} {readonly} />
-<div class={cn("flex-1 overflow-y-auto overflow-x-hidden p-4", !field && "bg-muted")}>
-  {#if !field}
-    <GalleryViewField {view} />
-  {:else if $isLoading}
-    <GalleryViewLoading />
+<TableTools {r} {viewId} {readonly}>
+  {#if !shareId}
+    <GalleryViewOptionButton {view} {readonly} />
+  {/if}
+</TableTools>
+<div class={cn("flex-1 overflow-y-auto overflow-x-hidden p-4")}>
+  {#if $isLoading}
+    <GalleryViewLoading {viewId} />
   {:else}
     <GalleryViewCards fieldId={field} {viewId} {r} />
   {/if}
@@ -94,7 +97,7 @@
 {/await}
 
 {#await import("$lib/components/blocks/record-detail/table-record-detail-sheet.svelte") then { default: TableRecordDetailSheet }}
-  <TableRecordDetailSheet />
+  <TableRecordDetailSheet {viewId} />
 {/await}
 
 {#await import("$lib/components/blocks/view-widget/view-widget-sheet.svelte") then { default: ViewWidgetSheet }}
