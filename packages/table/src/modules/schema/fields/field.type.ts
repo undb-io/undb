@@ -95,6 +95,9 @@ import type {
   IEmailFieldConditionSchema,
   IEmailFieldConstraint,
 } from "./variants/email-field"
+import type { FormulaFieldValue } from "./variants/formula-field/formula-field-value.vo"
+import type { IFormulaFieldConditionSchema } from "./variants/formula-field/formula-field.condition"
+import type { FORMULA_TYPE, FormulaField, IFormulaFieldOption } from "./variants/formula-field/formula-field.vo"
 import type { ID_TYPE, IIdFieldConditionSchema, IdField, IdFieldValue } from "./variants/id-field"
 import {
   LONGTEXT_TYPE,
@@ -164,6 +167,7 @@ export type Field =
   | ButtonField
   | DurationField
   | PercentageField
+  | FormulaField
 
 export type SystemField =
   | IdField
@@ -200,6 +204,7 @@ export type FieldValue =
   | ButtonFieldValue
   | DurationFieldValue
   | PercentageFieldValue
+  | FormulaFieldValue
 
 export type MutableFieldValue =
   | StringFieldValue
@@ -244,6 +249,7 @@ export type FieldType =
   | typeof BUTTON_TYPE
   | typeof DURATION_TYPE
   | typeof PERCENTAGE_TYPE
+  | typeof FORMULA_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
@@ -278,11 +284,12 @@ export type IFieldConditionSchema =
   | ICurrencyFieldConditionSchema
   | IDurationFieldConditionSchema
   | IPercentageFieldConditionSchema
+  | IFormulaFieldConditionSchema
   | z.ZodUnion<any>
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
 
-export type IFilterableFieldType = Exclude<FieldType, "reference" | "rollup" | "attachment" | "button">
+export type IFilterableFieldType = Exclude<FieldType, "reference" | "rollup" | "attachment" | "button" | "formula">
 
 export type IFieldConstraint =
   | IStringFieldConstraint
@@ -308,5 +315,6 @@ export type IFieldOption =
   | ISelectFieldOption
   | IButtonFieldOption
   | ICurrencyFieldOption
+  | IFormulaFieldOption
 
 export type IFieldMacro = IUserFieldMacro

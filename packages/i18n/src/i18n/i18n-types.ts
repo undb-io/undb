@@ -265,6 +265,10 @@ type RootTranslation = {
 			 * P​e​r​c​e​n​t​a​g​e
 			 */
 			percentage: string
+			/**
+			 * F​o​r​m​u​l​a
+			 */
+			formula: string
 		}
 		rollupFns: {
 			/**
@@ -666,6 +670,10 @@ export type TranslationFunctions = {
 			 * Percentage
 			 */
 			percentage: () => LocalizedString
+			/**
+			 * Formula
+			 */
+			formula: () => LocalizedString
 		}
 		rollupFns: {
 			/**

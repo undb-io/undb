@@ -115,7 +115,9 @@
     {@const dirty = $tainted && $tainted[field.id.value]}
     <Form.Field class="flex gap-2 space-y-0" {form} name={field.id.value}>
       <Form.Control let:attrs>
-        <Form.Label class="text-muted-foreground flex h-4 w-48 shrink-0 items-center justify-between gap-2 pt-4">
+        <Form.Label
+          class="text-muted-foreground flex h-full w-48 shrink-0 items-center justify-between gap-2 truncate pt-2"
+        >
           <div class="flex items-center gap-2">
             <FieldIcon {field} type={field.type} class="h-4 w-4" />
             <span class="flex-1 truncate">{field.name.value}</span>
@@ -141,7 +143,7 @@
               value={values[field.id.value]}
               type={field.type}
               displayValue={displayValues[field.id.value]}
-              class="flex min-h-9 items-center text-xs"
+              class="flex min-h-9 items-center truncate text-xs"
               readonly
             />
           {:else}

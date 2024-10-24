@@ -68,6 +68,7 @@ const fieldTypes: Record<FieldType, string> = {
   duration: "Duration",
   button: "Button",
   percentage: "Percentage",
+  formula: "Formula",
 }
 
 const rollupFns: Record<IRollupFn, string> = {

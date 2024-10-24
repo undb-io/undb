@@ -60,6 +60,7 @@ enum FieldType {
   date
   duration
   email
+  formula
   id
   json
   longText

@@ -28,6 +28,7 @@ import {
   type UrlField,
   type UserField,
 } from "@undb/table"
+import type { FormulaField } from "@undb/table/src/modules/schema/fields/variants/formula-field"
 import type { SelectQueryBuilder } from "kysely"
 
 export class RecordReferenceVisitor implements IFieldVisitor {
@@ -88,6 +89,9 @@ export class RecordReferenceVisitor implements IFieldVisitor {
   }
   reference(field: ReferenceField): void {
     this.qb = this.qb.leftJoin(field.id.value, `${this.table.id.value}.${ID_TYPE}`, `${field.id.value}.${ID_TYPE}`)
+  }
+  formula(field: FormulaField): void {
+    throw new Error("Method not implemented.")
   }
   percentage(field: PercentageField): void {
     throw new Error("Method not implemented.")

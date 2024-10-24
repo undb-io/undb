@@ -14,6 +14,7 @@
   import CheckboxControl from "./checkbox-control.svelte"
   import UrlControl from "./url-control.svelte"
   import RollupField from "../field-value/rollup-field.svelte"
+  import FormulaField from "../field-value/formula-field.svelte"
   import LongTextControl from "./long-text-control.svelte"
   import CurrencyControl from "./currency-control.svelte"
   import ButtonControl from "./button-control.svelte"
@@ -55,6 +56,7 @@
     date: DateControl,
     json: JsonControl,
     checkbox: CheckboxControl,
+    formula: FormulaField,
     user: UserControl,
     duration: DurationControl,
     percentage: PercentageControl,

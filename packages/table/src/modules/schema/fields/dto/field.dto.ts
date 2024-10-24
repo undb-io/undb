@@ -22,6 +22,7 @@ import { createdAtFieldDTO } from "../variants/created-at-field"
 import { createdByFieldDTO } from "../variants/created-by-field"
 import { createCurrencyFieldDTO, currencyFieldDTO } from "../variants/currency-field"
 import { createEmailFieldDTO, emailFieldDTO } from "../variants/email-field"
+import { formulaFieldDTO } from "../variants/formula-field/formula-field.vo"
 import { idFieldDTO } from "../variants/id-field/id-field.vo"
 import { createLongTextFieldDTO, longTextFieldDTO } from "../variants/long-text-field"
 import { createNumberFieldDTO, numberFieldDTO } from "../variants/number-field/number-field.vo"
@@ -55,6 +56,7 @@ export const fieldDTO = z.discriminatedUnion("type", [
   buttonFieldDTO,
   durationFieldDTO,
   percentageFieldDTO,
+  formulaFieldDTO,
 ])
 
 export type IFieldDTO = z.infer<typeof fieldDTO>
