@@ -11,19 +11,19 @@
   import { toast } from "svelte-sonner"
   import { beforeNavigate } from "$app/navigation"
   import { pick } from "radash"
-  import type { Readable } from "svelte/store"
   import * as Collapsible from "$lib/components/ui/collapsible"
   import Button from "$lib/components/ui/button/button.svelte"
   import { preferences } from "$lib/store/persisted.store"
   import { cn } from "$lib/utils"
   import { getRecordsStore } from "$lib/store/records.store"
-  import { type Writable } from "svelte/store"
+  import { type Writable, type Readable } from "svelte/store"
 
   const recordsStore = getRecordsStore()
 
   export let readonly = false
   export let r: Writable<string | null>
   export let record: RecordDO
+  export let viewId: Readable<string | undefined>
 
   beforeNavigate(({ cancel }) => {
     if (mutableFieldTainted) {
@@ -36,7 +36,7 @@
   export let onSuccess: () => void = () => {}
 
   export let table: Readable<TableDo>
-  const fields = $table.getOrderedVisibleFields().filter((f) => f.type !== "button")
+  const fields = $table.getOrderedVisibleFields($viewId).filter((f) => f.type !== "button")
   const schema = $table.schema.getMutableSchema(fields)
 
   export let disabled: boolean = false
@@ -101,7 +101,7 @@
   $: dirty = mutableFieldTainted
   $: disabled = !$tainted || !!$allErrors.length
 
-  $: hiddenFields = $table.getOrderedHiddenFields().filter((f) => f.type !== "button")
+  $: hiddenFields = $table.getOrderedHiddenFields($viewId).filter((f) => f.type !== "button")
 </script>
 
 <form

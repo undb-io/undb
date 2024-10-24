@@ -40,5 +40,5 @@
 </main>
 
 {#if RecordDetailSheet}
-  <RecordDetailSheet readonly {r} />
+  <RecordDetailSheet {viewId} readonly {r} />
 {/if}

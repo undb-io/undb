@@ -32,4 +32,4 @@
   $: recordDo = $record.data?.record ? RecordDO.fromJSON($table, $record.data?.record) : undefined
 </script>
 
-<RecordDetailSheet {readonly} {recordDo} isLoading={$record.isLoading} {r} />
+<RecordDetailSheet {viewId} {readonly} {recordDo} isLoading={$record.isLoading} {r} />
