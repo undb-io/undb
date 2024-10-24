@@ -22,6 +22,7 @@
     "@sveltejs/adapter-static": "^3.0.5",
     "@sveltejs/kit": "^2.7.1",
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "@tailwindcss/typography": "^0.5.15",
     "@tanstack/eslint-plugin-query": "^5.59.7",
     "@types/eslint": "^8.56.12",
     "@types/lodash.unzip": "^3.4.9",
