@@ -28,6 +28,7 @@
     MousePointerClickIcon,
     TimerIcon,
     PercentIcon,
+    SquareFunctionIcon,
   } from "lucide-svelte"
 
   export let type: FieldType
@@ -58,6 +59,7 @@
     button: MousePointerClickIcon,
     duration: TimerIcon,
     percentage: PercentIcon,
+    formula: SquareFunctionIcon,
   }
 </script>
 

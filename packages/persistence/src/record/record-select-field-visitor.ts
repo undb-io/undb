@@ -28,6 +28,7 @@ import {
   type UrlField,
   type UserField,
 } from "@undb/table"
+import type { FormulaField } from "@undb/table/src/modules/schema/fields/variants/formula-field"
 import { getTableName } from "drizzle-orm"
 import { sql, type ExpressionBuilder, type SelectExpression } from "kysely"
 import { users } from "../tables"
@@ -166,6 +167,9 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   rollup(field: RollupField): void {
     const select = `${field.referenceFieldId}.${field.id.value} as ${field.id.value}`
     this.addSelect(select)
+  }
+  formula(field: FormulaField): void {
+    this.addSelect(this.getField(field.id.value))
   }
   attachment(field: AttachmentField): void {
     this.addSelect(this.getField(field.id.value))

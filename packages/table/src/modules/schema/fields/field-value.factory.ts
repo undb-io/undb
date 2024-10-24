@@ -23,6 +23,7 @@ import { CheckboxFieldValue } from "./variants/checkbox-field"
 import { CreatedByFieldValue } from "./variants/created-by-field"
 import { CurrencyFieldValue } from "./variants/currency-field"
 import { EmailFieldValue } from "./variants/email-field"
+import { FormulaFieldValue } from "./variants/formula-field/formula-field-value.vo"
 import { LongTextFieldValue } from "./variants/long-text-field/long-text-field-value.vo"
 import { PercentageFieldValue } from "./variants/percentage-field" // 新增导入
 import { RatingFieldValue } from "./variants/rating-field"
@@ -68,6 +69,7 @@ export class FieldValueFactory {
       .with("updatedBy", () => Some(new UpdatedByFieldValue(value as string)))
       .with("reference", () => Some(new ReferenceFieldValue(value as string[])))
       .with("rollup", () => Some(new RollupFieldValue(value as number | Date)))
+      .with("formula", () => Some(new FormulaFieldValue(value as any)))
       .with("select", () => Some(new SelectFieldValue(SelectFieldValue.parseValue(value, field as SelectField))))
       .with("email", () => Some(new EmailFieldValue(value as string)))
       .with("url", () => Some(new UrlFieldValue(value as string)))

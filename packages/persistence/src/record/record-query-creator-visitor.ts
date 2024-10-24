@@ -28,6 +28,7 @@ import {
   type UrlField,
   type UserField,
 } from "@undb/table"
+import type { FormulaField } from "@undb/table/src/modules/schema/fields/variants/formula-field"
 import { getTableName } from "drizzle-orm"
 import { sql, type QueryCreator, type SelectExpression } from "kysely"
 import type { IRecordQueryBuilder } from "../qb"
@@ -86,6 +87,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
   button(field: ButtonField): void {}
   duration(field: DurationField): void {}
   percentage(field: PercentageField): void {}
+  formula(field: FormulaField): void {}
   user(field: UserField): void {
     if (field.isMultiple) {
       const usersTable = getTableName(users)

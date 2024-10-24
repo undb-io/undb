@@ -881,23 +881,17 @@
           },
           "Actual": {
             "id": "actual",
-            "type": "currency",
-            "option": {
-              "symbol": "$"
-            }
+            "type": "number"
           },
           "Quantity": {
             "id": "quantity",
-            "type": "currency",
-            "option": {
-              "symbol": "$"
-            }
+            "type": "number"
           },
           "Total cost": {
             "id": "totalCost",
-            "type": "currency",
+            "type": "formula",
             "option": {
-              "symbol": "$"
+              "fn": "{{ actual }} * {{ quantity }}"
             }
           },
           "Total budget": {

@@ -5,6 +5,7 @@ import {
   CreatedByField,
   DateField,
   DurationField,
+  FormulaField,
   ID_TYPE,
   JsonField,
   LongTextField,
@@ -179,5 +180,13 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
       const c = this.tb.addColumn(field.id.value, "json")
       this.addColumn(c)
     }
+  }
+  formula(field: FormulaField): void {
+    const parse = (fn: string): string => {
+      return fn.replaceAll("{{", "").replaceAll("}}", "")
+    }
+    const exp = parse(field.fn)
+    const c = this.tb.addColumn(field.id.value, "text", (b) => b.generatedAlwaysAs(sql.raw(exp)).stored())
+    this.addColumn(c)
   }
 }

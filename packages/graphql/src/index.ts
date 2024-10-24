@@ -139,6 +139,7 @@ export class Graphql {
         user
         duration
         percentage
+        formula
       }
 
       type Field {

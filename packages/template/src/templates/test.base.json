@@ -35,18 +35,44 @@
                 "tableName": "Table2"
               }
             }
+          },
+          "Count1": {
+            "id": "count1",
+            "type": "number"
+          },
+          "Count2": {
+            "id": "count2",
+            "type": "number"
+          },
+          "Sum": {
+            "id": "sum",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} + {{count2}}"
+            }
+          },
+          "Sum2": {
+            "id": "sum2",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} + {{sum}}"
+            }
           }
         },
         "records": [
           {
             "Title": "1-1",
             "Ref2": ["1", "2"],
-            "Ref22": ["1", "2"]
+            "Ref22": ["1", "2"],
+            "Count1": 1,
+            "Count2": 2
           },
           {
             "Title": "1-2",
             "Ref2": ["2"],
-            "Ref22": ["2"]
+            "Ref22": ["2"],
+            "Count1": 2,
+            "Count2": 3
           }
         ]
       },

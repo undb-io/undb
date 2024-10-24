@@ -9,6 +9,7 @@ import { createCurrencyFieldDTO, createTablesCurrencyFieldDTO } from "../variant
 import { createDateFieldDTO, createTablesDateFieldDTO } from "../variants/date-field/date-field.vo"
 import { createDurationFieldDTO } from "../variants/duration-field/duration-field.vo"
 import { createEmailFieldDTO, createTablesEmailFieldDTO } from "../variants/email-field/email-field.vo"
+import { createFormulaFieldDTO, createTablesFormulaFieldDTO } from "../variants/formula-field"
 import { createJsonFieldDTO, createTablesJsonFieldDTO } from "../variants/json-field/json-field.vo"
 import { createLongTextFieldDTO, createTablesLongTextFieldDTO } from "../variants/long-text-field/long-text-field.vo"
 import { createNumberFieldDTO, createTablesNumberFieldDTO } from "../variants/number-field/number-field.vo"
@@ -43,6 +44,7 @@ export const createFieldDTO = z.discriminatedUnion("type", [
   createButtonFieldDTO,
   createDurationFieldDTO,
   createPercentageFieldDTO,
+  createFormulaFieldDTO,
 ])
 
 export const createTablesFieldDTO = z.discriminatedUnion("type", [
@@ -63,6 +65,7 @@ export const createTablesFieldDTO = z.discriminatedUnion("type", [
   createTablesLongTextFieldDTO,
   createTablesUserFieldDTO,
   createTablesPercentageFieldDTO,
+  createTablesFormulaFieldDTO,
 ])
 
 export type ICreateFieldDTO = z.infer<typeof createFieldDTO>

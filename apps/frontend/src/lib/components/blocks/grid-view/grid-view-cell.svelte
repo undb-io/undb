@@ -27,6 +27,7 @@
   import ButtonCell from "./editable-cell/button-cell.svelte"
   import DurationCell from "./editable-cell/duration-cell.svelte"
   import PercentageCell from "./editable-cell/percentage-cell.svelte"
+  import FormulaCell from "./editable-cell/formula-cell.svelte"
   import type { Readable } from "svelte/store"
 
   const table = getTable()
@@ -69,6 +70,7 @@
     user: UserCell,
     duration: DurationCell,
     percentage: PercentageCell,
+    formula: FormulaCell,
   }
 </script>
 
