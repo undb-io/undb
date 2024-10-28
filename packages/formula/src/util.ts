@@ -1,7 +1,7 @@
 import { CharStreams, CommonTokenStream } from "antlr4ts"
+import { FormulaVisitor } from "./formula.visitor"
 import { FormulaLexer } from "./grammar/FormulaLexer"
 import { FormulaParser } from "./grammar/FormulaParser"
-import { CustomFormulaVisitor } from "./visitor"
 
 export function createParser(input: string) {
   const inputStream = CharStreams.fromString(input)
@@ -15,7 +15,7 @@ export function parseFormula(input: string) {
 
   const tree = parser.formula()
 
-  const visitor = new CustomFormulaVisitor()
+  const visitor = new FormulaVisitor()
   const parsedFormula = visitor.visit(tree)
 
   return parsedFormula

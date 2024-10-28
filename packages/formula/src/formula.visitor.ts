@@ -23,7 +23,7 @@ import {
   type VariableResult,
 } from "./types"
 
-export class CustomFormulaVisitor
+export class FormulaVisitor
   extends AbstractParseTreeVisitor<ExpressionResult>
   implements FormulaParserVisitor<ExpressionResult>
 {
