@@ -8,7 +8,7 @@ import {
   FunctionCallContext,
   FunctionExprContext,
   MulDivModExprContext,
-  ParseTree,
+  type ParseTree,
   VariableContext,
 } from "@undb/formula"
 

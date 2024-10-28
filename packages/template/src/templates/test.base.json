@@ -42,13 +42,37 @@
           },
           "Count2": {
             "id": "count2",
-            "type": "number"
+            "type": "currency",
+            "option": {
+              "symbol": "$"
+            }
           },
           "Sum": {
             "id": "sum",
             "type": "formula",
             "option": {
               "fn": "{{count1}} + {{count2}}"
+            }
+          },
+          "SumAdd": {
+            "id": "sumadd",
+            "type": "formula",
+            "option": {
+              "fn": "ADD({{count1}}, ADD({{count2}}, {{count1}}))"
+            }
+          },
+          "Multiply": {
+            "id": "multiply",
+            "type": "formula",
+            "option": {
+              "fn": "MULTIPLY({{count1}}, {{count2}})"
+            }
+          },
+          "ComplicatedFn": {
+            "id": "complicatedFn",
+            "type": "formula",
+            "option": {
+              "fn": "ADD({{count1}}, MULTIPLY({{count2}}, {{count1}}))"
             }
           },
           "Sum2": {

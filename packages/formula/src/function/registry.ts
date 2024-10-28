@@ -1,4 +1,5 @@
 import { ParamType, type ExpressionResult } from "../types"
+import { FormulaFunction } from "./type"
 
 interface FunctionDefinition {
   paramPatterns: ParamType[][]
@@ -8,11 +9,11 @@ interface FunctionDefinition {
 export class FunctionRegistry {
   private functions: Map<string, FunctionDefinition> = new Map()
 
-  register(name: string, paramPatterns: ParamType[][], returnType: ParamType) {
-    this.functions.set(name.toUpperCase(), { paramPatterns, returnType })
+  register(name: FormulaFunction, paramPatterns: ParamType[][], returnType: ParamType) {
+    this.functions.set(name, { paramPatterns, returnType })
   }
 
-  get(name: string): FunctionDefinition | undefined {
+  get(name: FormulaFunction): FunctionDefinition | undefined {
     return this.functions.get(name.toUpperCase())
   }
 
@@ -20,7 +21,7 @@ export class FunctionRegistry {
     return this.functions.has(name.toUpperCase())
   }
 
-  validateArgs(name: string, args: ExpressionResult[]): void {
+  validateArgs(name: FormulaFunction, args: ExpressionResult[]): void {
     const funcDef = this.get(name)
     if (!funcDef) {
       throw new Error(`Unknown function name: ${name}`)
