@@ -1,5 +1,6 @@
 import { AbstractParseTreeVisitor } from "antlr4ts/tree/AbstractParseTreeVisitor"
 import { globalFunctionRegistry } from "./function/registry"
+import { FormulaFunction } from "./function/type"
 import {
   AddSubExprContext,
   ArgumentListContext,
@@ -79,7 +80,7 @@ export class CustomFormulaVisitor
   }
 
   visitFunctionCall(ctx: FunctionCallContext): ExpressionResult {
-    const funcName = ctx.IDENTIFIER().text
+    const funcName = ctx.IDENTIFIER().text as FormulaFunction
     const args = ctx.argumentList() ? (this.visit(ctx.argumentList()!) as FunctionExpressionResult) : undefined
 
     if (!globalFunctionRegistry.isValid(funcName)) {
