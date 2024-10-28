@@ -80,3 +80,308 @@ exports[`parse formula test {{field1}} 1`] = `
   "variable": "field1",
 }
 `;
+
+exports[`parse formula test 1 + 1 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 1,
+    },
+    {
+      "type": "number",
+      "value": 1,
+    },
+  ],
+  "name": "+",
+  "returnType": 0,
+  "type": "functionCall",
+  "value": "1+1",
+}
+`;
+
+exports[`parse formula test {{field1}} + {{field2}} 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+  ],
+  "name": "+",
+  "returnType": 0,
+  "type": "functionCall",
+  "value": "{{field1}}+{{field2}}",
+}
+`;
+
+exports[`parse formula test SUM({{field1}}, {{field2}}) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "variable",
+          "value": "{{field1}}",
+          "variable": "field1",
+        },
+        {
+          "type": "variable",
+          "value": "{{field2}}",
+          "variable": "field2",
+        },
+      ],
+      "type": "argumentList",
+    },
+  ],
+  "name": "SUM",
+  "returnType": 0,
+  "type": "functionCall",
+  "value": "SUM({{field1}},{{field2}})",
+}
+`;
+
+exports[`parse formula test CONCAT({{field1}}, {{field2}}) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "variable",
+          "value": "{{field1}}",
+          "variable": "field1",
+        },
+        {
+          "type": "variable",
+          "value": "{{field2}}",
+          "variable": "field2",
+        },
+      ],
+      "type": "argumentList",
+    },
+  ],
+  "name": "CONCAT",
+  "returnType": 1,
+  "type": "functionCall",
+  "value": "CONCAT({{field1}},{{field2}})",
+}
+`;
+
+exports[`parse formula test CONCAT({{field1}}, {{field2}}, {{field3}}) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "variable",
+          "value": "{{field1}}",
+          "variable": "field1",
+        },
+        {
+          "type": "variable",
+          "value": "{{field2}}",
+          "variable": "field2",
+        },
+        {
+          "type": "variable",
+          "value": "{{field3}}",
+          "variable": "field3",
+        },
+      ],
+      "type": "argumentList",
+    },
+  ],
+  "name": "CONCAT",
+  "returnType": 1,
+  "type": "functionCall",
+  "value": "CONCAT({{field1}},{{field2}},{{field3}})",
+}
+`;
+
+exports[`parse formula test SUBTRACT(1, 2) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "number",
+          "value": 1,
+        },
+        {
+          "type": "number",
+          "value": 2,
+        },
+      ],
+      "type": "argumentList",
+    },
+  ],
+  "name": "SUBTRACT",
+  "returnType": 0,
+  "type": "functionCall",
+  "value": "SUBTRACT(1,2)",
+}
+`;
+
+exports[`parse formula test MULTIPLY(1, 2) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "number",
+          "value": 1,
+        },
+        {
+          "type": "number",
+          "value": 2,
+        },
+      ],
+      "type": "argumentList",
+    },
+  ],
+  "name": "MULTIPLY",
+  "returnType": 0,
+  "type": "functionCall",
+  "value": "MULTIPLY(1,2)",
+}
+`;
+
+exports[`parse formula test DIVIDE(1, 2) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "number",
+          "value": 1,
+        },
+        {
+          "type": "number",
+          "value": 2,
+        },
+      ],
+      "type": "argumentList",
+    },
+  ],
+  "name": "DIVIDE",
+  "returnType": 0,
+  "type": "functionCall",
+  "value": "DIVIDE(1,2)",
+}
+`;
+
+exports[`parse formula test 1 - 1 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 1,
+    },
+    {
+      "type": "number",
+      "value": 1,
+    },
+  ],
+  "name": "-",
+  "returnType": 0,
+  "type": "functionCall",
+  "value": "1-1",
+}
+`;
+
+exports[`parse formula test 1 * 1 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 1,
+    },
+    {
+      "type": "number",
+      "value": 1,
+    },
+  ],
+  "name": "*",
+  "returnType": 0,
+  "type": "functionCall",
+  "value": "1*1",
+}
+`;
+
+exports[`parse formula test 1 / 1 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 1,
+    },
+    {
+      "type": "number",
+      "value": 1,
+    },
+  ],
+  "name": "/",
+  "returnType": 0,
+  "type": "functionCall",
+  "value": "1/1",
+}
+`;
+
+exports[`parse formula test SUBTRACT(1, 2) + MULTIPLY(3, 4) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "arguments": [
+            {
+              "type": "number",
+              "value": 1,
+            },
+            {
+              "type": "number",
+              "value": 2,
+            },
+          ],
+          "type": "argumentList",
+        },
+      ],
+      "name": "SUBTRACT",
+      "returnType": 0,
+      "type": "functionCall",
+      "value": "SUBTRACT(1,2)",
+    },
+    {
+      "arguments": [
+        {
+          "arguments": [
+            {
+              "type": "number",
+              "value": 3,
+            },
+            {
+              "type": "number",
+              "value": 4,
+            },
+          ],
+          "type": "argumentList",
+        },
+      ],
+      "name": "MULTIPLY",
+      "returnType": 0,
+      "type": "functionCall",
+      "value": "MULTIPLY(3,4)",
+    },
+  ],
+  "name": "+",
+  "returnType": 0,
+  "type": "functionCall",
+  "value": "SUBTRACT(1,2)+MULTIPLY(3,4)",
+}
+`;

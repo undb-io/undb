@@ -65,9 +65,8 @@ export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> i
   }
   visitFunctionCall(ctx: FunctionCallContext): string {
     const functionName = ctx.IDENTIFIER().text as FormulaFunction
-    // TODO: handle other functions
     return match(functionName)
-      .with("ADD", () => {
+      .with("ADD", "SUM", () => {
         const fn = this.arguments(ctx.argumentList()!).join(" + ")
         return `(${fn})`
       })
@@ -83,9 +82,13 @@ export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> i
         const fn = this.arguments(ctx.argumentList()!).join(" / ")
         return `(${fn})`
       })
+      .with("CONCAT", () => {
+        const fn = this.arguments(ctx.argumentList()!).join(" || ")
+        return `(${fn})`
+      })
       .otherwise(() => {
         const args = ctx.argumentList() ? this.visit(ctx.argumentList()!) : ""
-        return `${functionName}(${args})`
+        return `${functionName.toLowerCase()}(${args})`
       })
   }
 

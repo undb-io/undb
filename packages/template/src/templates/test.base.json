@@ -61,6 +61,20 @@
               "fn": "ADD({{count1}}, ADD({{count2}}, {{count1}}))"
             }
           },
+          "SumCounts": {
+            "id": "sumcounts",
+            "type": "formula",
+            "option": {
+              "fn": "SUM({{count1}}, {{count2}})"
+            }
+          },
+          "SumSum": {
+            "id": "sumsum",
+            "type": "formula",
+            "option": {
+              "fn": "SUM({{sum}}, {{sumadd}})"
+            }
+          },
           "Multiply": {
             "id": "multiply",
             "type": "formula",
@@ -73,6 +87,13 @@
             "type": "formula",
             "option": {
               "fn": "ADD({{count1}}, MULTIPLY({{count2}}, {{count1}}))"
+            }
+          },
+          "Concat": {
+            "id": "concat",
+            "type": "formula",
+            "option": {
+              "fn": "CONCAT({{id}}, {{title}}, {{count1}}, {{count2}}, {{complicatedFn}})"
             }
           },
           "Sum2": {
