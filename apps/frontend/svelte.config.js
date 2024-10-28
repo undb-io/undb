@@ -7,6 +7,10 @@ const config = {
   // for more information about preprocessors
   preprocess: vitePreprocess(),
 
+  vitePlugin: {
+    exclude: ["@undb/formula"],
+  },
+
   kit: {
     adapter: adapter({
       pages: "dist",

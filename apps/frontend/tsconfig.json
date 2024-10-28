@@ -10,6 +10,7 @@
     "noEmit": true,
     "moduleResolution": "bundler",
     "experimentalDecorators": true,
+    "verbatimModuleSyntax": false,
     "emitDecoratorMetadata": true,
     "rootDirs": [".", "./.svelte-kit/types", "./$houdini/types", "./$houdini"]
   }

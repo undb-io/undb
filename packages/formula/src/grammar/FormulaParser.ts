@@ -23,7 +23,6 @@ import { VocabularyImpl } from "antlr4ts/VocabularyImpl";
 
 import * as Utils from "antlr4ts/misc/Utils";
 
-import { FormulaParserListener } from "./FormulaParserListener";
 import { FormulaParserVisitor } from "./FormulaParserVisitor";
 
 
@@ -646,18 +645,6 @@ export class FormulaContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return FormulaParser.RULE_formula; }
 	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterFormula) {
-			listener.enterFormula(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitFormula) {
-			listener.exitFormula(this);
-		}
-	}
-	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
 		if (visitor.visitFormula) {
 			return visitor.visitFormula(this);
@@ -697,18 +684,6 @@ export class MulDivModExprContext extends ExpressionContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterMulDivModExpr) {
-			listener.enterMulDivModExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitMulDivModExpr) {
-			listener.exitMulDivModExpr(this);
-		}
-	}
-	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
 		if (visitor.visitMulDivModExpr) {
 			return visitor.visitMulDivModExpr(this);
@@ -735,18 +710,6 @@ export class AddSubExprContext extends ExpressionContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterAddSubExpr) {
-			listener.enterAddSubExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitAddSubExpr) {
-			listener.exitAddSubExpr(this);
-		}
-	}
-	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
 		if (visitor.visitAddSubExpr) {
 			return visitor.visitAddSubExpr(this);
@@ -769,18 +732,6 @@ export class PowerExprContext extends ExpressionContext {
 	constructor(ctx: ExpressionContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
-	}
-	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterPowerExpr) {
-			listener.enterPowerExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitPowerExpr) {
-			listener.exitPowerExpr(this);
-		}
 	}
 	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
@@ -813,18 +764,6 @@ export class ComparisonExprContext extends ExpressionContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterComparisonExpr) {
-			listener.enterComparisonExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitComparisonExpr) {
-			listener.exitComparisonExpr(this);
-		}
-	}
-	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
 		if (visitor.visitComparisonExpr) {
 			return visitor.visitComparisonExpr(this);
@@ -847,18 +786,6 @@ export class AndExprContext extends ExpressionContext {
 	constructor(ctx: ExpressionContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
-	}
-	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterAndExpr) {
-			listener.enterAndExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitAndExpr) {
-			listener.exitAndExpr(this);
-		}
 	}
 	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
@@ -885,18 +812,6 @@ export class OrExprContext extends ExpressionContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterOrExpr) {
-			listener.enterOrExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitOrExpr) {
-			listener.exitOrExpr(this);
-		}
-	}
-	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
 		if (visitor.visitOrExpr) {
 			return visitor.visitOrExpr(this);
@@ -913,18 +828,6 @@ export class NotExprContext extends ExpressionContext {
 	constructor(ctx: ExpressionContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
-	}
-	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterNotExpr) {
-			listener.enterNotExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitNotExpr) {
-			listener.exitNotExpr(this);
-		}
 	}
 	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
@@ -944,18 +847,6 @@ export class FunctionExprContext extends ExpressionContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterFunctionExpr) {
-			listener.enterFunctionExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitFunctionExpr) {
-			listener.exitFunctionExpr(this);
-		}
-	}
-	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
 		if (visitor.visitFunctionExpr) {
 			return visitor.visitFunctionExpr(this);
@@ -973,18 +864,6 @@ export class VariableExprContext extends ExpressionContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterVariableExpr) {
-			listener.enterVariableExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitVariableExpr) {
-			listener.exitVariableExpr(this);
-		}
-	}
-	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
 		if (visitor.visitVariableExpr) {
 			return visitor.visitVariableExpr(this);
@@ -998,18 +877,6 @@ export class NumberExprContext extends ExpressionContext {
 	constructor(ctx: ExpressionContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
-	}
-	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterNumberExpr) {
-			listener.enterNumberExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitNumberExpr) {
-			listener.exitNumberExpr(this);
-		}
 	}
 	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
@@ -1027,18 +894,6 @@ export class StringExprContext extends ExpressionContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterStringExpr) {
-			listener.enterStringExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitStringExpr) {
-			listener.exitStringExpr(this);
-		}
-	}
-	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
 		if (visitor.visitStringExpr) {
 			return visitor.visitStringExpr(this);
@@ -1052,18 +907,6 @@ export class TrueExprContext extends ExpressionContext {
 	constructor(ctx: ExpressionContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
-	}
-	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterTrueExpr) {
-			listener.enterTrueExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitTrueExpr) {
-			listener.exitTrueExpr(this);
-		}
 	}
 	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
@@ -1081,18 +924,6 @@ export class FalseExprContext extends ExpressionContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterFalseExpr) {
-			listener.enterFalseExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitFalseExpr) {
-			listener.exitFalseExpr(this);
-		}
-	}
-	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
 		if (visitor.visitFalseExpr) {
 			return visitor.visitFalseExpr(this);
@@ -1106,18 +937,6 @@ export class NullExprContext extends ExpressionContext {
 	constructor(ctx: ExpressionContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
-	}
-	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterNullExpr) {
-			listener.enterNullExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitNullExpr) {
-			listener.exitNullExpr(this);
-		}
 	}
 	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
@@ -1135,18 +954,6 @@ export class DateExprContext extends ExpressionContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterDateExpr) {
-			listener.enterDateExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitDateExpr) {
-			listener.exitDateExpr(this);
-		}
-	}
-	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
 		if (visitor.visitDateExpr) {
 			return visitor.visitDateExpr(this);
@@ -1162,18 +969,6 @@ export class TimeExprContext extends ExpressionContext {
 		this.copyFrom(ctx);
 	}
 	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterTimeExpr) {
-			listener.enterTimeExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitTimeExpr) {
-			listener.exitTimeExpr(this);
-		}
-	}
-	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
 		if (visitor.visitTimeExpr) {
 			return visitor.visitTimeExpr(this);
@@ -1187,18 +982,6 @@ export class DateTimeExprContext extends ExpressionContext {
 	constructor(ctx: ExpressionContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
-	}
-	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterDateTimeExpr) {
-			listener.enterDateTimeExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitDateTimeExpr) {
-			listener.exitDateTimeExpr(this);
-		}
 	}
 	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
@@ -1218,18 +1001,6 @@ export class ParenExprContext extends ExpressionContext {
 	constructor(ctx: ExpressionContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
-	}
-	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterParenExpr) {
-			listener.enterParenExpr(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitParenExpr) {
-			listener.exitParenExpr(this);
-		}
 	}
 	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
@@ -1254,18 +1025,6 @@ export class FunctionCallContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return FormulaParser.RULE_functionCall; }
-	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterFunctionCall) {
-			listener.enterFunctionCall(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitFunctionCall) {
-			listener.exitFunctionCall(this);
-		}
-	}
 	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
 		if (visitor.visitFunctionCall) {
@@ -1302,18 +1061,6 @@ export class ArgumentListContext extends ParserRuleContext {
 	// @Override
 	public get ruleIndex(): number { return FormulaParser.RULE_argumentList; }
 	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterArgumentList) {
-			listener.enterArgumentList(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitArgumentList) {
-			listener.exitArgumentList(this);
-		}
-	}
-	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
 		if (visitor.visitArgumentList) {
 			return visitor.visitArgumentList(this);
@@ -1349,18 +1096,6 @@ export class VariableContext extends ParserRuleContext {
 	}
 	// @Override
 	public get ruleIndex(): number { return FormulaParser.RULE_variable; }
-	// @Override
-	public enterRule(listener: FormulaParserListener): void {
-		if (listener.enterVariable) {
-			listener.enterVariable(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: FormulaParserListener): void {
-		if (listener.exitVariable) {
-			listener.exitVariable(this);
-		}
-	}
 	// @Override
 	public accept<Result>(visitor: FormulaParserVisitor<Result>): Result {
 		if (visitor.visitVariable) {

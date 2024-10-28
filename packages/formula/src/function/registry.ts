@@ -26,17 +26,32 @@ export class FunctionRegistry {
       throw new Error(`Unknown function: ${name}`)
     }
 
-    const isValidPattern = funcDef.paramPatterns.some((pattern) => {
-      if (pattern.length > args.length) {
-        return false
+    // 检查是否有任何模式的参数数量匹配
+    const hasMatchingPattern = funcDef.paramPatterns.some((pattern) => {
+      // 如果模式中包含 VARIADIC，则参数数量必须大于等于 pattern.length - 1
+      // 否则参数数量必须完全匹配
+      if (pattern.includes(ParamType.VARIADIC)) {
+        return args.length >= pattern.length - 1
       }
+      return args.length === pattern.length
+    })
 
+    if (!hasMatchingPattern) {
+      const expectedCounts = funcDef.paramPatterns
+        .map((pattern) =>
+          pattern.includes(ParamType.VARIADIC) ? `at least ${pattern.length - 1}` : `${pattern.length}`,
+        )
+        .join(" or ")
+      throw new Error(`Function ${name} expects ${expectedCounts} arguments, but got ${args.length}`)
+    }
+
+    const isValidPattern = funcDef.paramPatterns.some((pattern) => {
       for (let i = 0; i < pattern.length; i++) {
         const expectedType = pattern[i]
         if (expectedType === ParamType.VARIADIC) {
           // 剩余的所有参数都应该匹配 VARIADIC 的前一个类型
           const variadicType = pattern[i - 1]
-          return args.slice(i).every((arg) => this.isTypeMatch(arg, variadicType))
+          return args.slice(i - 1).every((arg) => this.isTypeMatch(arg, variadicType))
         }
         if (!this.isTypeMatch(args[i], expectedType)) {
           return false

@@ -1,0 +1,82 @@
+// Bun Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parse formula test ADD(1, ADD(2, {{ field1 }})) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "number",
+          "value": 1,
+        },
+        {
+          "arguments": [
+            {
+              "arguments": [
+                {
+                  "type": "number",
+                  "value": 2,
+                },
+                {
+                  "type": "variable",
+                  "value": "{{field1}}",
+                  "variable": "field1",
+                },
+              ],
+              "type": "argumentList",
+            },
+          ],
+          "name": "ADD",
+          "returnType": 0,
+          "type": "functionCall",
+          "value": "ADD(2,{{field1}})",
+        },
+      ],
+      "type": "argumentList",
+    },
+  ],
+  "name": "ADD",
+  "returnType": 0,
+  "type": "functionCall",
+  "value": "ADD(1,ADD(2,{{field1}}))",
+}
+`;
+
+exports[`parse formula test ADD(1, 2) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "number",
+          "value": 1,
+        },
+        {
+          "type": "number",
+          "value": 2,
+        },
+      ],
+      "type": "argumentList",
+    },
+  ],
+  "name": "ADD",
+  "returnType": 0,
+  "type": "functionCall",
+  "value": "ADD(1,2)",
+}
+`;
+
+exports[`parse formula test 1 1`] = `
+{
+  "type": "number",
+  "value": 1,
+}
+`;
+
+exports[`parse formula test {{field1}} 1`] = `
+{
+  "type": "variable",
+  "value": "{{field1}}",
+  "variable": "field1",
+}
+`;

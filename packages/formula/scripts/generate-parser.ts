@@ -1,3 +1,3 @@
 import { $ } from "bun"
 
-await $`antlr4ts -visitor src/grammar/*.g4`
+await $`antlr4ts -visitor -no-listener src/grammar/*.g4`
