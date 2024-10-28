@@ -5,10 +5,11 @@
   import { defaultKeymap } from "@codemirror/commands"
   import { syntaxHighlighting, HighlightStyle } from "@codemirror/language"
   import { tags } from "@lezer/highlight"
-  import { FormulaCursorVisitor, parseFormula } from "@undb/formula"
+  import { parseFormula } from "@undb/formula"
   import { templateVariablePlugin } from "./plugins/varaible.plugin"
   import { cn } from "$lib/utils"
   import { createParser } from "@undb/formula/src/util"
+  import { FormulaCursorVisitor } from "./formula-cursor.visitor"
 
   let editor: EditorView
   let suggestions: string[] = []
@@ -223,22 +224,24 @@
       const parser = createParser(doc)
       visitor.visit(parser.formula())
 
-      const functionNode = visitor.getNearestFunctionNode()
-      if (functionNode) {
-        const functionStart = functionNode.start.startIndex
-        const functionNameLength = functionNode.IDENTIFIER().text.length
-        const transaction = editor.state.update({
-          changes: {
-            from: functionStart,
-            to: functionStart + functionNameLength,
-            insert: suggestion,
-          },
-          selection: {
-            anchor: functionStart + suggestion.length + 1,
-          },
-        })
-        editor.dispatch(transaction)
-        return
+      if (!isInsideParens) {
+        const functionNode = visitor.getNearestFunctionNode()
+        if (functionNode) {
+          const functionStart = functionNode.start.startIndex
+          const functionNameLength = functionNode.IDENTIFIER().text.length
+          const transaction = editor.state.update({
+            changes: {
+              from: functionStart,
+              to: functionStart + functionNameLength,
+              insert: suggestion,
+            },
+            selection: {
+              anchor: functionStart + suggestion.length + 1,
+            },
+          })
+          editor.dispatch(transaction)
+          return
+        }
       }
       const suggestionWithParens = `${suggestion}()`
       const transaction = editor.state.update({

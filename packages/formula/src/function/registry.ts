@@ -23,7 +23,7 @@ export class FunctionRegistry {
   validateArgs(name: string, args: ExpressionResult[]): void {
     const funcDef = this.get(name)
     if (!funcDef) {
-      throw new Error(`Unknown function: ${name}`)
+      throw new Error(`Unknown function name: ${name}`)
     }
 
     // 检查是否有任何模式的参数数量匹配
