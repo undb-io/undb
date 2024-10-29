@@ -746,3 +746,114 @@ exports[`parse formula test AVERAGE({{field1}}, {{field2}}, {{field3}}) 1`] = `
   "value": "AVERAGE({{field1}},{{field2}},{{field3}})",
 }
 `;
+
+exports[`parse formula test CONCAT({{field1}}, {{field2}}) 2`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+  ],
+  "name": "CONCAT",
+  "returnType": "string",
+  "type": "functionCall",
+  "value": "CONCAT({{field1}},{{field2}})",
+}
+`;
+
+exports[`parse formula test CONCAT({{field1}}, {{field2}}, {{field3}}) 2`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+    {
+      "type": "variable",
+      "value": "{{field3}}",
+      "variable": "field3",
+    },
+  ],
+  "name": "CONCAT",
+  "returnType": "string",
+  "type": "functionCall",
+  "value": "CONCAT({{field1}},{{field2}},{{field3}})",
+}
+`;
+
+exports[`parse formula test LEFT({{field1}}, 3) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "number",
+      "value": 3,
+    },
+  ],
+  "name": "LEFT",
+  "returnType": "string",
+  "type": "functionCall",
+  "value": "LEFT({{field1}},3)",
+}
+`;
+
+exports[`parse formula test RIGHT({{field1}}, 3) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "number",
+      "value": 3,
+    },
+  ],
+  "name": "RIGHT",
+  "returnType": "string",
+  "type": "functionCall",
+  "value": "RIGHT({{field1}},3)",
+}
+`;
+
+exports[`parse formula test MID({{field1}}, 2, 3) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "number",
+      "value": 2,
+    },
+    {
+      "type": "number",
+      "value": 3,
+    },
+  ],
+  "name": "MID",
+  "returnType": "string",
+  "type": "functionCall",
+  "value": "MID({{field1}},2,3)",
+}
+`;

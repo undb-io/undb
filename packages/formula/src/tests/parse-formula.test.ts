@@ -42,6 +42,11 @@ describe("parse formula", () => {
     "MAX({{field1}}, {{field2}}, {{field3}})",
     "AVERAGE(1, 2, 3)",
     "AVERAGE({{field1}}, {{field2}}, {{field3}})",
+    "CONCAT({{field1}}, {{field2}})",
+    "CONCAT({{field1}}, {{field2}}, {{field3}})",
+    "LEFT({{field1}}, 3)",
+    "RIGHT({{field1}}, 3)",
+    "MID({{field1}}, 2, 3)",
   ])("test %s", (input) => {
     const result = parseFormula(input)
 
