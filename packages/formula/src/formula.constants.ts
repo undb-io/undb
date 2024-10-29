@@ -30,6 +30,9 @@ export const FORMULA_FUNCTIONS: FormulaFunction[] = [
   "FIND",
   "REPLACE",
   "SUBSTITUTE",
+  "REPEAT",
+  "SEARCH",
+  "SUBSTR",
 
   // 逻辑运算
   "AND",
@@ -40,15 +43,12 @@ export const FORMULA_FUNCTIONS: FormulaFunction[] = [
   "ISBLANK",
   "ISNUMBER",
   "ISTEXT",
-  "ISERROR",
 
   // 统计函数
   "COUNT",
   "COUNTA",
   "COUNTIF",
   "SUMIF",
-  "AVERAGE",
-  "STDEV",
-  "VAR",
   "CORREL",
+  "RECORD_ID",
 ] as const

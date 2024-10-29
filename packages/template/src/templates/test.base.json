@@ -393,6 +393,34 @@
             "option": {
               "fn": "{{count1}} < {{count2}}"
             }
+          },
+          "Len": {
+            "id": "len",
+            "type": "formula",
+            "option": {
+              "fn": "LEN({{string1}})"
+            }
+          },
+          "Replace": {
+            "id": "replace",
+            "type": "formula",
+            "option": {
+              "fn": "REPLACE({{string1}}, 'llo', {{string2}})"
+            }
+          },
+          "Search": {
+            "id": "search",
+            "type": "formula",
+            "option": {
+              "fn": "SEARCH({{string1}}, {{string2}})"
+            }
+          },
+          "Repeat": {
+            "id": "repeat",
+            "type": "formula",
+            "option": {
+              "fn": "REPEAT({{string1}}, 3)"
+            }
           }
         },
         "records": [
@@ -411,7 +439,9 @@
           },
           {
             "Count1": 5,
-            "Count2": 3
+            "Count2": 3,
+            "String1": "Hello",
+            "String2": "llo"
           }
         ]
       }

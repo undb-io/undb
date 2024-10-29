@@ -29,6 +29,9 @@ export type FormulaFunction =
   | "FIND"
   | "REPLACE"
   | "SUBSTITUTE"
+  | "REPEAT"
+  | "SEARCH"
+  | "SUBSTR"
 
   // // 日期时间
   // | "NOW"
@@ -51,14 +54,11 @@ export type FormulaFunction =
   | "ISBLANK"
   | "ISNUMBER"
   | "ISTEXT"
-  | "ISERROR"
 
   // 统计函数
   | "COUNT"
   | "COUNTA"
   | "COUNTIF"
   | "SUMIF"
-  | "AVERAGE"
-  | "STDEV"
-  | "VAR"
   | "CORREL"
+  | "RECORD_ID"

@@ -18,7 +18,7 @@ import {
   type FormulaFunction,
   type FormulaParserVisitor,
 } from "@undb/formula"
-import { FieldIdVo, type TableDo } from "@undb/table"
+import { FieldIdVo,type TableDo } from "@undb/table"
 import { match } from "ts-pattern"
 
 export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> implements FormulaParserVisitor<string> {
@@ -139,6 +139,31 @@ export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> i
       .with("MID", () => {
         const args = this.arguments(ctx.argumentList()!)
         return `SUBSTR(${args[0]}, ${args[1]}, ${args[2]})`
+      })
+      .with("AND", () => {
+        const args = this.arguments(ctx.argumentList()!)
+        return `(${args.map((arg) => `COALESCE(${arg}, FALSE)`).join(" AND ")})`
+      })
+      .with("OR", () => {
+        const args = this.arguments(ctx.argumentList()!)
+        return `(${args.map((arg) => `COALESCE(${arg}, FALSE)`).join(" OR ")})`
+      })
+      .with("NOT", () => {
+        const args = this.arguments(ctx.argumentList()!)
+        return `NOT ${args[0]}`
+      })
+      .with("SEARCH", () => {
+        const args = this.arguments(ctx.argumentList()!)
+        return `COALESCE(INSTR(LOWER(COALESCE(${args[1]}, '')), LOWER(COALESCE(${args[0]}, ''))), 0)`
+      })
+      .with("LEN", () => {
+        const args = this.arguments(ctx.argumentList()!)
+        return `LENGTH(${args[0]})`
+      })
+      .with("REPEAT", () => {
+        const args = this.arguments(ctx.argumentList()!)
+        // args[0] 是要重复的字符串，args[1] 是重复次数
+        return `SUBSTR(REPLACE(HEX(ZEROBLOB(${args[1]})), '00', ${args[0]}), 1, LENGTH(${args[0]}) * ${args[1]})`
       })
       .otherwise(() => {
         const args = ctx.argumentList() ? this.visit(ctx.argumentList()!) : ""
