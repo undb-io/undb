@@ -176,6 +176,14 @@
             "id": "count3",
             "type": "number"
           },
+          "String1": {
+            "id": "string1",
+            "type": "string"
+          },
+          "String2": {
+            "id": "string2",
+            "type": "string"
+          },
           "Sum": {
             "id": "sum",
             "type": "formula",
@@ -273,18 +281,70 @@
             "option": {
               "fn": "AVERAGE({{count3}}, {{count1}}, {{count2}})"
             }
+          },
+          "Concat": {
+            "id": "concat",
+            "type": "formula",
+            "option": {
+              "fn": "CONCAT({{string1}}, ' ', {{string2}})"
+            }
+          },
+          "Upper": {
+            "id": "upper",
+            "type": "formula",
+            "option": {
+              "fn": "UPPER({{string1}})"
+            }
+          },
+          "Lower": {
+            "id": "lower",
+            "type": "formula",
+            "option": {
+              "fn": "LOWER({{string1}})"
+            }
+          },
+          "Trim": {
+            "id": "trim",
+            "type": "formula",
+            "option": {
+              "fn": "TRIM({{string1}})"
+            }
+          },
+          "Left": {
+            "id": "left",
+            "type": "formula",
+            "option": {
+              "fn": "LEFT({{string1}}, 3)"
+            }
+          },
+          "Right": {
+            "id": "right",
+            "type": "formula",
+            "option": {
+              "fn": "RIGHT({{string1}}, 3)"
+            }
+          },
+          "Mid": {
+            "id": "mid",
+            "type": "formula",
+            "option": {
+              "fn": "MID({{string1}}, 2, 3)"
+            }
           }
         },
         "records": [
           {
             "Count1": 1,
             "Count2": 2,
-            "Count3": 3
+            "Count3": 3,
+            "String1": "Hello",
+            "String2": "World"
           },
           {
             "Count1": 4,
             "Count2": 2,
-            "Count3": -3
+            "Count3": -3,
+            "String1": " Hello "
           },
           {
             "Count1": 5,

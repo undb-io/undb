@@ -93,7 +93,9 @@ export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> i
         return `(${fn})`
       })
       .with("CONCAT", () => {
-        const fn = this.arguments(ctx.argumentList()!).join(" || ")
+        const fn = this.arguments(ctx.argumentList()!)
+          .map((arg) => `COALESCE(${arg}, '')`)
+          .join(" || ")
         return `(${fn})`
       })
       .with("AVERAGE", () => {
@@ -105,6 +107,18 @@ export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> i
           ${args.map((arg) => `(CASE WHEN ${arg} IS NULL THEN 0 ELSE 1 END)`).join(" + ")}
         , 0)
         ))`
+      })
+      .with("LEFT", () => {
+        const args = this.arguments(ctx.argumentList()!)
+        return `SUBSTR(${args[0]}, 1, ${args[1]})`
+      })
+      .with("RIGHT", () => {
+        const args = this.arguments(ctx.argumentList()!)
+        return `SUBSTR(${args[0]}, -${args[1]}, ${args[1]})`
+      })
+      .with("MID", () => {
+        const args = this.arguments(ctx.argumentList()!)
+        return `SUBSTR(${args[0]}, ${args[1]}, ${args[2]})`
       })
       .otherwise(() => {
         const args = ctx.argumentList() ? this.visit(ctx.argumentList()!) : ""
