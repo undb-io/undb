@@ -1,5 +1,6 @@
 export { AbstractParseTreeVisitor } from "antlr4ts/tree/AbstractParseTreeVisitor"
 export { type ParseTree } from "antlr4ts/tree/ParseTree"
+export * from "./formula.constants"
 export * from "./formula.visitor"
 export * from "./formula/formula.type"
 export * from "./grammar/FormulaLexer"

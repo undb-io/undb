@@ -5,20 +5,22 @@
   import { defaultKeymap } from "@codemirror/commands"
   import { syntaxHighlighting, HighlightStyle } from "@codemirror/language"
   import { tags } from "@lezer/highlight"
-  import { parseFormula } from "@undb/formula"
+  import { type FormulaFunction, parseFormula } from "@undb/formula"
   import { templateVariablePlugin } from "./plugins/varaible.plugin"
   import { cn } from "$lib/utils"
   import { createParser } from "@undb/formula/src/util"
   import { FormulaCursorVisitor } from "./formula-cursor.visitor"
+  import * as Table from "$lib/components/ui/table"
+  import { FORMULA_FUNCTIONS } from "@undb/formula"
+  import { SquareFunctionIcon, TriangleAlertIcon } from "lucide-svelte"
+
+  const functions = FORMULA_FUNCTIONS
+  const fields = ["field1", "field2", "field3"]
+  export let value: string = ""
 
   let editor: EditorView
-  let suggestions: string[] = []
+  let suggestions: string[] = [...functions, ...fields]
   let selectedSuggestion: string = ""
-
-  $: showSuggestions = suggestions.length > 0
-
-  const functions = ["ADD", "SUBTRACT", "MULTIPLY", "DIVIDE", "SUM", "CONCAT"]
-  const fields = ["field1", "field2", "field3"]
 
   const highlightStyle = HighlightStyle.define([
     { tag: tags.keyword, color: "#5c6bc0" },
@@ -35,7 +37,7 @@
           {
             key: "ArrowUp",
             run: () => {
-              if (!showSuggestions || suggestions.length === 0) return false
+              if (suggestions.length === 0) return false
               const currentIndex = suggestions.findIndex((s) => s === selectedSuggestion)
               const nextIndex = currentIndex <= 0 ? suggestions.length - 1 : currentIndex - 1
               selectedSuggestion = suggestions[nextIndex]
@@ -45,7 +47,7 @@
           {
             key: "ArrowDown",
             run: () => {
-              if (!showSuggestions || suggestions.length === 0) return false
+              if (suggestions.length === 0) return false
               const currentIndex = suggestions.findIndex((s) => s === selectedSuggestion)
               const nextIndex = currentIndex >= suggestions.length - 1 ? 0 : currentIndex + 1
               selectedSuggestion = suggestions[nextIndex]
@@ -147,7 +149,11 @@
         ]),
         syntaxHighlighting(highlightStyle),
         templateVariablePlugin,
+        EditorView.lineWrapping,
         EditorView.updateListener.of((update) => {
+          const formula = editor.state.doc.toString()
+          value = formula
+
           if (update.docChanged) {
             updateSuggestions()
           } else if (update.selectionSet) {
@@ -218,7 +224,7 @@
       insertStart = doc.length - lastWord.length
     }
 
-    if (functions.includes(suggestion)) {
+    if (functions.includes(suggestion as FormulaFunction)) {
       // 如果在函数名中间,只替换函数名部分
       const visitor = new FormulaCursorVisitor(cursor)
       const parser = createParser(doc)
@@ -287,22 +293,43 @@
   }
 </script>
 
-<div class="p-4">
-  <div id="editor-container" class="mb-2 rounded-md border border-gray-300"></div>
+<div>
+  <div id="editor-container" class="mb-2 rounded-sm border"></div>
   {#if errorMessage}
-    <p class="text-destructive">{errorMessage}</p>
+    <p class="text-destructive flex items-center gap-1 text-xs">
+      <TriangleAlertIcon class="size-3" />
+      {errorMessage}
+    </p>
   {/if}
 
-  {#if showSuggestions}
-    <ul class="rounded-md border border-gray-300 bg-white shadow-lg">
-      {#each suggestions as suggestion}
-        {@const isSelected = suggestion === selectedSuggestion}
-        <button on:click={() => insertSuggestion(suggestion)} class="w-full">
-          <li class={cn("w-full cursor-pointer p-2 hover:bg-gray-100", isSelected && "bg-gray-100")}>
-            {suggestion}
-          </li>
-        </button>
-      {/each}
-    </ul>
-  {/if}
+  <ul class="mt-2 flex h-[250px] flex-col overflow-auto rounded-lg border border-gray-200">
+    {#each suggestions as suggestion}
+      {@const isSelected = suggestion === selectedSuggestion}
+      {@const isFunction = functions.includes(suggestion)}
+      <button type="button" on:click={() => insertSuggestion(suggestion)} class="w-full text-left text-xs font-medium">
+        <li class={cn("flex w-full items-center gap-1 p-2 hover:bg-gray-100", isSelected && "bg-gray-100")}>
+          {#if isFunction}
+            <span class="font-normal">
+              <SquareFunctionIcon class="size-4" />
+            </span>
+            <span>
+              {suggestion}()
+            </span>
+          {:else}
+            <span>{suggestion}</span>
+          {/if}
+        </li>
+      </button>
+    {/each}
+  </ul>
 </div>
+
+<style lang="postcss">
+  :global(.cm-focused) {
+    @apply rounded-sm !outline !outline-2 !outline-offset-2 !outline-blue-500/70;
+  }
+
+  :global(.cm-content) {
+    @apply py-2 text-xs;
+  }
+</style>
