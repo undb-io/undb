@@ -66,6 +66,7 @@ describe("parse formula", () => {
     "AND({{field1}}, {{field2}})",
     "OR({{field1}}, {{field2}})",
     "NOT({{field1}})",
+    "JSON_EXTRACT({{field1}}, '$.name')",
   ])("test %s", (input) => {
     const result = parseFormula(input)
 

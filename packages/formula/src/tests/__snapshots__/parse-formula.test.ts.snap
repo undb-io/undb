@@ -1370,3 +1370,23 @@ exports[`parse formula test NOT({{field1}}) 1`] = `
   "value": "NOT({{field1}})",
 }
 `;
+
+exports[`parse formula test JSON_EXTRACT({{field1}}, '$.name') 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "string",
+      "value": "$.name",
+    },
+  ],
+  "name": "JSON_EXTRACT",
+  "returnType": "any",
+  "type": "functionCall",
+  "value": "JSON_EXTRACT({{field1}},'$.name')",
+}
+`;
