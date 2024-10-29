@@ -857,3 +857,374 @@ exports[`parse formula test MID({{field1}}, 2, 3) 1`] = `
   "value": "MID({{field1}},2,3)",
 }
 `;
+
+exports[`parse formula test NOT ({{field1}} > {{field2}}) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "variable",
+          "value": "{{field1}}",
+          "variable": "field1",
+        },
+        {
+          "type": "variable",
+          "value": "{{field2}}",
+          "variable": "field2",
+        },
+      ],
+      "name": ">",
+      "returnType": "boolean",
+      "type": "functionCall",
+      "value": "{{field1}}>{{field2}}",
+    },
+  ],
+  "name": "NOT",
+  "returnType": "boolean",
+  "type": "functionCall",
+  "value": "NOT({{field1}}>{{field2}})",
+}
+`;
+
+exports[`parse formula test ({{field1}} > {{field2}}) AND ({{field2}} > {{field3}}) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "variable",
+          "value": "{{field1}}",
+          "variable": "field1",
+        },
+        {
+          "type": "variable",
+          "value": "{{field2}}",
+          "variable": "field2",
+        },
+      ],
+      "name": ">",
+      "returnType": "boolean",
+      "type": "functionCall",
+      "value": "{{field1}}>{{field2}}",
+    },
+    {
+      "arguments": [
+        {
+          "type": "variable",
+          "value": "{{field2}}",
+          "variable": "field2",
+        },
+        {
+          "type": "variable",
+          "value": "{{field3}}",
+          "variable": "field3",
+        },
+      ],
+      "name": ">",
+      "returnType": "boolean",
+      "type": "functionCall",
+      "value": "{{field2}}>{{field3}}",
+    },
+  ],
+  "name": "AND",
+  "returnType": "boolean",
+  "type": "functionCall",
+  "value": "({{field1}}>{{field2}})AND({{field2}}>{{field3}})",
+}
+`;
+
+exports[`parse formula test ({{field1}} > {{field2}}) OR ({{field2}} > {{field3}}) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "variable",
+          "value": "{{field1}}",
+          "variable": "field1",
+        },
+        {
+          "type": "variable",
+          "value": "{{field2}}",
+          "variable": "field2",
+        },
+      ],
+      "name": ">",
+      "returnType": "boolean",
+      "type": "functionCall",
+      "value": "{{field1}}>{{field2}}",
+    },
+    {
+      "arguments": [
+        {
+          "type": "variable",
+          "value": "{{field2}}",
+          "variable": "field2",
+        },
+        {
+          "type": "variable",
+          "value": "{{field3}}",
+          "variable": "field3",
+        },
+      ],
+      "name": ">",
+      "returnType": "boolean",
+      "type": "functionCall",
+      "value": "{{field2}}>{{field3}}",
+    },
+  ],
+  "name": "OR",
+  "returnType": "boolean",
+  "type": "functionCall",
+  "value": "({{field1}}>{{field2}})OR({{field2}}>{{field3}})",
+}
+`;
+
+exports[`parse formula test {{field1}} = {{field2}} 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+  ],
+  "name": "=",
+  "returnType": "boolean",
+  "type": "functionCall",
+  "value": "{{field1}}={{field2}}",
+}
+`;
+
+exports[`parse formula test {{field1}} != {{field2}} 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+  ],
+  "name": "!=",
+  "returnType": "boolean",
+  "type": "functionCall",
+  "value": "{{field1}}!={{field2}}",
+}
+`;
+
+exports[`parse formula test {{field1}} >= {{field2}} 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+  ],
+  "name": ">=",
+  "returnType": "boolean",
+  "type": "functionCall",
+  "value": "{{field1}}>={{field2}}",
+}
+`;
+
+exports[`parse formula test {{field1}} <= {{field2}} 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+  ],
+  "name": "<=",
+  "returnType": "boolean",
+  "type": "functionCall",
+  "value": "{{field1}}<={{field2}}",
+}
+`;
+
+exports[`parse formula test {{field1}} < {{field2}} 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+  ],
+  "name": "<",
+  "returnType": "boolean",
+  "type": "functionCall",
+  "value": "{{field1}}<{{field2}}",
+}
+`;
+
+exports[`parse formula test {{field1}} > 1 AND {{field2}} < 2 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "variable",
+          "value": "{{field1}}",
+          "variable": "field1",
+        },
+        {
+          "type": "number",
+          "value": 1,
+        },
+      ],
+      "name": ">",
+      "returnType": "boolean",
+      "type": "functionCall",
+      "value": "{{field1}}>1",
+    },
+    {
+      "arguments": [
+        {
+          "type": "variable",
+          "value": "{{field2}}",
+          "variable": "field2",
+        },
+        {
+          "type": "number",
+          "value": 2,
+        },
+      ],
+      "name": "<",
+      "returnType": "boolean",
+      "type": "functionCall",
+      "value": "{{field2}}<2",
+    },
+  ],
+  "name": "AND",
+  "returnType": "boolean",
+  "type": "functionCall",
+  "value": "{{field1}}>1AND{{field2}}<2",
+}
+`;
+
+exports[`parse formula test {{field1}} > 1 OR {{field2}} < 2 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "variable",
+          "value": "{{field1}}",
+          "variable": "field1",
+        },
+        {
+          "type": "number",
+          "value": 1,
+        },
+      ],
+      "name": ">",
+      "returnType": "boolean",
+      "type": "functionCall",
+      "value": "{{field1}}>1",
+    },
+    {
+      "arguments": [
+        {
+          "type": "variable",
+          "value": "{{field2}}",
+          "variable": "field2",
+        },
+        {
+          "type": "number",
+          "value": 2,
+        },
+      ],
+      "name": "<",
+      "returnType": "boolean",
+      "type": "functionCall",
+      "value": "{{field2}}<2",
+    },
+  ],
+  "name": "OR",
+  "returnType": "boolean",
+  "type": "functionCall",
+  "value": "{{field1}}>1OR{{field2}}<2",
+}
+`;
+
+exports[`parse formula test NOT ({{field1}} > 1 AND {{field2}} < 2) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "arguments": [
+            {
+              "type": "variable",
+              "value": "{{field1}}",
+              "variable": "field1",
+            },
+            {
+              "type": "number",
+              "value": 1,
+            },
+          ],
+          "name": ">",
+          "returnType": "boolean",
+          "type": "functionCall",
+          "value": "{{field1}}>1",
+        },
+        {
+          "arguments": [
+            {
+              "type": "variable",
+              "value": "{{field2}}",
+              "variable": "field2",
+            },
+            {
+              "type": "number",
+              "value": 2,
+            },
+          ],
+          "name": "<",
+          "returnType": "boolean",
+          "type": "functionCall",
+          "value": "{{field2}}<2",
+        },
+      ],
+      "name": "AND",
+      "returnType": "boolean",
+      "type": "functionCall",
+      "value": "{{field1}}>1AND{{field2}}<2",
+    },
+  ],
+  "name": "NOT",
+  "returnType": "boolean",
+  "type": "functionCall",
+  "value": "NOT({{field1}}>1AND{{field2}}<2)",
+}
+`;
