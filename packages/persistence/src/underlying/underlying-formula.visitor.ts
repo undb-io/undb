@@ -6,7 +6,9 @@ import {
   FunctionCallContext,
   FunctionExprContext,
   MulDivModExprContext,
+  NumberExprContext,
   ParenExprContext,
+  StringExprContext,
   VariableContext,
   VariableExprContext,
   type FormulaFunction,
@@ -22,6 +24,14 @@ export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> i
 
   protected defaultResult(): string {
     return ""
+  }
+
+  visitNumberExpr(ctx: NumberExprContext): string {
+    return ctx.NUMBER().text
+  }
+
+  visitStringExpr(ctx: StringExprContext): string {
+    return ctx.STRING().text
   }
 
   visitAddSubExpr(ctx: AddSubExprContext): string {
@@ -85,6 +95,16 @@ export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> i
       .with("CONCAT", () => {
         const fn = this.arguments(ctx.argumentList()!).join(" || ")
         return `(${fn})`
+      })
+      .with("AVERAGE", () => {
+        const args = this.arguments(ctx.argumentList()!)
+        return `(
+        (${args.map((arg) => `COALESCE(${arg}, 0)`).join(" + ")})
+        /
+        (NULLIF(
+          ${args.map((arg) => `(CASE WHEN ${arg} IS NULL THEN 0 ELSE 1 END)`).join(" + ")}
+        , 0)
+        ))`
       })
       .otherwise(() => {
         const args = ctx.argumentList() ? this.visit(ctx.argumentList()!) : ""

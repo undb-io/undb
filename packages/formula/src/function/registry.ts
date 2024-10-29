@@ -1,4 +1,4 @@
-import { ParamType, type ExpressionResult } from "../types"
+import { ParamType,type ExpressionResult } from "../types"
 import { FormulaFunction } from "./type"
 
 interface FunctionDefinition {
@@ -102,3 +102,14 @@ globalFunctionRegistry.register("MULTIPLY", [[ParamType.NUMBER, ParamType.NUMBER
 globalFunctionRegistry.register("DIVIDE", [[ParamType.NUMBER, ParamType.NUMBER]], ParamType.NUMBER)
 globalFunctionRegistry.register("SUM", [[ParamType.NUMBER, ParamType.VARIADIC]], ParamType.NUMBER)
 globalFunctionRegistry.register("CONCAT", [[ParamType.STRING, ParamType.VARIADIC]], ParamType.STRING)
+globalFunctionRegistry.register("MOD", [[ParamType.NUMBER, ParamType.NUMBER]], ParamType.NUMBER)
+globalFunctionRegistry.register("POWER", [[ParamType.NUMBER, ParamType.NUMBER]], ParamType.NUMBER)
+globalFunctionRegistry.register("SQRT", [[ParamType.NUMBER]], ParamType.NUMBER)
+globalFunctionRegistry.register("ABS", [[ParamType.NUMBER]], ParamType.NUMBER)
+globalFunctionRegistry.register("ROUND", [[ParamType.NUMBER]], ParamType.NUMBER)
+globalFunctionRegistry.register("FLOOR", [[ParamType.NUMBER]], ParamType.NUMBER)
+globalFunctionRegistry.register("CEILING", [[ParamType.NUMBER]], ParamType.NUMBER)
+globalFunctionRegistry.register("MIN", [[ParamType.NUMBER, ParamType.VARIADIC]], ParamType.NUMBER)
+globalFunctionRegistry.register("MAX", [[ParamType.NUMBER, ParamType.VARIADIC]], ParamType.NUMBER)
+globalFunctionRegistry.register("AVERAGE", [[ParamType.NUMBER, ParamType.VARIADIC]], ParamType.NUMBER)
+// globalFunctionRegistry.register("MEDIAN", [[ParamType.NUMBER, ParamType.VARIADIC]], ParamType.NUMBER)

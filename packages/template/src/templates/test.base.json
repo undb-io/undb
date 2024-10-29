@@ -161,6 +161,136 @@
             "Title": "2-2"
           }
         ]
+      },
+      "Formula1": {
+        "schema": {
+          "Count1": {
+            "id": "count1",
+            "type": "number"
+          },
+          "Count2": {
+            "id": "count2",
+            "type": "number"
+          },
+          "Count3": {
+            "id": "count3",
+            "type": "number"
+          },
+          "Sum": {
+            "id": "sum",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} + {{count2}} + {{count3}}"
+            }
+          },
+          "Subtract": {
+            "id": "subtract",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} - {{count2}}"
+            }
+          },
+          "Mod": {
+            "id": "mod",
+            "type": "formula",
+            "option": {
+              "fn": "MOD({{count3}}, {{count2}})"
+            }
+          },
+          "Power": {
+            "id": "power",
+            "type": "formula",
+            "option": {
+              "fn": "POWER({{count3}}, {{count2}})"
+            }
+          },
+          "Sqrt": {
+            "id": "sqrt",
+            "type": "formula",
+            "option": {
+              "fn": "SQRT({{count3}})"
+            }
+          },
+          "Abs": {
+            "id": "abs",
+            "type": "formula",
+            "option": {
+              "fn": "ABS({{count3}})"
+            }
+          },
+          "Round": {
+            "id": "round",
+            "type": "formula",
+            "option": {
+              "fn": "ROUND({{count3}})"
+            }
+          },
+          "Floor": {
+            "id": "floor",
+            "type": "formula",
+            "option": {
+              "fn": "FLOOR({{count3}})"
+            }
+          },
+          "Ceiling": {
+            "id": "ceiling",
+            "type": "formula",
+            "option": {
+              "fn": "CEILING({{count3}})"
+            }
+          },
+          "Min1": {
+            "id": "min",
+            "type": "formula",
+            "option": {
+              "fn": "MIN({{count3}}, {{count2}})"
+            }
+          },
+          "Min2": {
+            "id": "min2",
+            "type": "formula",
+            "option": {
+              "fn": "MIN({{count3}}, {{count1}}, {{count2}})"
+            }
+          },
+          "Max1": {
+            "id": "max1",
+            "type": "formula",
+            "option": {
+              "fn": "MAX({{count3}}, {{count2}})"
+            }
+          },
+          "Max2": {
+            "id": "max2",
+            "type": "formula",
+            "option": {
+              "fn": "MAX({{count3}}, {{count1}}, {{count2}})"
+            }
+          },
+          "Average": {
+            "id": "average",
+            "type": "formula",
+            "option": {
+              "fn": "AVERAGE({{count3}}, {{count1}}, {{count2}})"
+            }
+          }
+        },
+        "records": [
+          {
+            "Count1": 1,
+            "Count2": 2,
+            "Count3": 3
+          },
+          {
+            "Count1": 4,
+            "Count2": 2,
+            "Count3": -3
+          },
+          {
+            "Count1": 5,
+            "Count2": 3
+          }
+        ]
       }
     }
   }
