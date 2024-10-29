@@ -4,45 +4,168 @@ exports[`parse formula test ADD(1, ADD(2, {{ field1 }})) 1`] = `
 {
   "arguments": [
     {
+      "type": "number",
+      "value": 1,
+    },
+    {
       "arguments": [
         {
           "type": "number",
-          "value": 1,
+          "value": 2,
         },
         {
-          "arguments": [
-            {
-              "arguments": [
-                {
-                  "type": "number",
-                  "value": 2,
-                },
-                {
-                  "type": "variable",
-                  "value": "{{field1}}",
-                  "variable": "field1",
-                },
-              ],
-              "type": "argumentList",
-            },
-          ],
-          "name": "ADD",
-          "returnType": 0,
-          "type": "functionCall",
-          "value": "ADD(2,{{field1}})",
+          "type": "variable",
+          "value": "{{field1}}",
+          "variable": "field1",
         },
       ],
-      "type": "argumentList",
+      "name": "ADD",
+      "returnType": "number",
+      "type": "functionCall",
+      "value": "ADD(2,{{field1}})",
     },
   ],
   "name": "ADD",
-  "returnType": 0,
+  "returnType": "number",
   "type": "functionCall",
   "value": "ADD(1,ADD(2,{{field1}}))",
 }
 `;
 
 exports[`parse formula test ADD(1, 2) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 1,
+    },
+    {
+      "type": "number",
+      "value": 2,
+    },
+  ],
+  "name": "ADD",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "ADD(1,2)",
+}
+`;
+
+exports[`parse formula test SUBTRACT(1, 2) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 1,
+    },
+    {
+      "type": "number",
+      "value": 2,
+    },
+  ],
+  "name": "SUBTRACT",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "SUBTRACT(1,2)",
+}
+`;
+
+exports[`parse formula test MULTIPLY(1, 2) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 1,
+    },
+    {
+      "type": "number",
+      "value": 2,
+    },
+  ],
+  "name": "MULTIPLY",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "MULTIPLY(1,2)",
+}
+`;
+
+exports[`parse formula test DIVIDE(1, 2) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 1,
+    },
+    {
+      "type": "number",
+      "value": 2,
+    },
+  ],
+  "name": "DIVIDE",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "DIVIDE(1,2)",
+}
+`;
+
+exports[`parse formula test 1 - 1 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 1,
+    },
+    {
+      "type": "number",
+      "value": 1,
+    },
+  ],
+  "name": "-",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "1-1",
+}
+`;
+
+exports[`parse formula test 1 * 1 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 1,
+    },
+    {
+      "type": "number",
+      "value": 1,
+    },
+  ],
+  "name": "*",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "1*1",
+}
+`;
+
+exports[`parse formula test 1 / 1 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 1,
+    },
+    {
+      "type": "number",
+      "value": 1,
+    },
+  ],
+  "name": "/",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "1/1",
+}
+`;
+
+exports[`parse formula test SUBTRACT(1, 2) + MULTIPLY(3, 4) 1`] = `
 {
   "arguments": [
     {
@@ -56,13 +179,32 @@ exports[`parse formula test ADD(1, 2) 1`] = `
           "value": 2,
         },
       ],
-      "type": "argumentList",
+      "name": "SUBTRACT",
+      "returnType": "number",
+      "type": "functionCall",
+      "value": "SUBTRACT(1,2)",
+    },
+    {
+      "arguments": [
+        {
+          "type": "number",
+          "value": 3,
+        },
+        {
+          "type": "number",
+          "value": 4,
+        },
+      ],
+      "name": "MULTIPLY",
+      "returnType": "number",
+      "type": "functionCall",
+      "value": "MULTIPLY(3,4)",
     },
   ],
-  "name": "ADD",
-  "returnType": 0,
+  "name": "+",
+  "returnType": "number",
   "type": "functionCall",
-  "value": "ADD(1,2)",
+  "value": "SUBTRACT(1,2)+MULTIPLY(3,4)",
 }
 `;
 
@@ -94,7 +236,7 @@ exports[`parse formula test 1 + 1 1`] = `
     },
   ],
   "name": "+",
-  "returnType": 0,
+  "returnType": "number",
   "type": "functionCall",
   "value": "1+1",
 }
@@ -115,7 +257,7 @@ exports[`parse formula test {{field1}} + {{field2}} 1`] = `
     },
   ],
   "name": "+",
-  "returnType": 0,
+  "returnType": "number",
   "type": "functionCall",
   "value": "{{field1}}+{{field2}}",
 }
@@ -125,23 +267,18 @@ exports[`parse formula test SUM({{field1}}, {{field2}}) 1`] = `
 {
   "arguments": [
     {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-        {
-          "type": "variable",
-          "value": "{{field2}}",
-          "variable": "field2",
-        },
-      ],
-      "type": "argumentList",
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
     },
   ],
   "name": "SUM",
-  "returnType": 0,
+  "returnType": "number",
   "type": "functionCall",
   "value": "SUM({{field1}},{{field2}})",
 }
@@ -151,23 +288,18 @@ exports[`parse formula test CONCAT({{field1}}, {{field2}}) 1`] = `
 {
   "arguments": [
     {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-        {
-          "type": "variable",
-          "value": "{{field2}}",
-          "variable": "field2",
-        },
-      ],
-      "type": "argumentList",
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
     },
   ],
   "name": "CONCAT",
-  "returnType": 1,
+  "returnType": "string",
   "type": "functionCall",
   "value": "CONCAT({{field1}},{{field2}})",
 }
@@ -177,212 +309,25 @@ exports[`parse formula test CONCAT({{field1}}, {{field2}}, {{field3}}) 1`] = `
 {
   "arguments": [
     {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-        {
-          "type": "variable",
-          "value": "{{field2}}",
-          "variable": "field2",
-        },
-        {
-          "type": "variable",
-          "value": "{{field3}}",
-          "variable": "field3",
-        },
-      ],
-      "type": "argumentList",
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+    {
+      "type": "variable",
+      "value": "{{field3}}",
+      "variable": "field3",
     },
   ],
   "name": "CONCAT",
-  "returnType": 1,
+  "returnType": "string",
   "type": "functionCall",
   "value": "CONCAT({{field1}},{{field2}},{{field3}})",
-}
-`;
-
-exports[`parse formula test SUBTRACT(1, 2) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "number",
-          "value": 1,
-        },
-        {
-          "type": "number",
-          "value": 2,
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "SUBTRACT",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "SUBTRACT(1,2)",
-}
-`;
-
-exports[`parse formula test MULTIPLY(1, 2) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "number",
-          "value": 1,
-        },
-        {
-          "type": "number",
-          "value": 2,
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "MULTIPLY",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "MULTIPLY(1,2)",
-}
-`;
-
-exports[`parse formula test DIVIDE(1, 2) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "number",
-          "value": 1,
-        },
-        {
-          "type": "number",
-          "value": 2,
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "DIVIDE",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "DIVIDE(1,2)",
-}
-`;
-
-exports[`parse formula test 1 - 1 1`] = `
-{
-  "arguments": [
-    {
-      "type": "number",
-      "value": 1,
-    },
-    {
-      "type": "number",
-      "value": 1,
-    },
-  ],
-  "name": "-",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "1-1",
-}
-`;
-
-exports[`parse formula test 1 * 1 1`] = `
-{
-  "arguments": [
-    {
-      "type": "number",
-      "value": 1,
-    },
-    {
-      "type": "number",
-      "value": 1,
-    },
-  ],
-  "name": "*",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "1*1",
-}
-`;
-
-exports[`parse formula test 1 / 1 1`] = `
-{
-  "arguments": [
-    {
-      "type": "number",
-      "value": 1,
-    },
-    {
-      "type": "number",
-      "value": 1,
-    },
-  ],
-  "name": "/",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "1/1",
-}
-`;
-
-exports[`parse formula test SUBTRACT(1, 2) + MULTIPLY(3, 4) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "arguments": [
-            {
-              "type": "number",
-              "value": 1,
-            },
-            {
-              "type": "number",
-              "value": 2,
-            },
-          ],
-          "type": "argumentList",
-        },
-      ],
-      "name": "SUBTRACT",
-      "returnType": 0,
-      "type": "functionCall",
-      "value": "SUBTRACT(1,2)",
-    },
-    {
-      "arguments": [
-        {
-          "arguments": [
-            {
-              "type": "number",
-              "value": 3,
-            },
-            {
-              "type": "number",
-              "value": 4,
-            },
-          ],
-          "type": "argumentList",
-        },
-      ],
-      "name": "MULTIPLY",
-      "returnType": 0,
-      "type": "functionCall",
-      "value": "MULTIPLY(3,4)",
-    },
-  ],
-  "name": "+",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "SUBTRACT(1,2)+MULTIPLY(3,4)",
 }
 `;
 
@@ -390,235 +335,18 @@ exports[`parse formula test MOD(1, 2) 1`] = `
 {
   "arguments": [
     {
-      "arguments": [
-        {
-          "type": "number",
-          "value": 1,
-        },
-        {
-          "type": "number",
-          "value": 2,
-        },
-      ],
-      "type": "argumentList",
+      "type": "number",
+      "value": 1,
+    },
+    {
+      "type": "number",
+      "value": 2,
     },
   ],
   "name": "MOD",
-  "returnType": 0,
+  "returnType": "number",
   "type": "functionCall",
   "value": "MOD(1,2)",
-}
-`;
-
-exports[`parse formula test POWER(2, 3) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "number",
-          "value": 2,
-        },
-        {
-          "type": "number",
-          "value": 3,
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "POWER",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "POWER(2,3)",
-}
-`;
-
-exports[`parse formula test SQRT(4) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "number",
-          "value": 4,
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "SQRT",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "SQRT(4)",
-}
-`;
-
-exports[`parse formula test ABS(-5) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "number",
-          "value": 5,
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "ABS",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "ABS(-5)",
-}
-`;
-
-exports[`parse formula test ROUND(1.234, 2) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "number",
-          "value": 1.234,
-        },
-        {
-          "type": "number",
-          "value": 2,
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "ROUND",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "ROUND(1.234,2)",
-}
-`;
-
-exports[`parse formula test FLOOR(1.234, 2) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "number",
-          "value": 1.234,
-        },
-        {
-          "type": "number",
-          "value": 2,
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "FLOOR",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "FLOOR(1.234,2)",
-}
-`;
-
-exports[`parse formula test CEILING(1.234, 2) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "number",
-          "value": 1.234,
-        },
-        {
-          "type": "number",
-          "value": 2,
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "CEILING",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "CEILING(1.234,2)",
-}
-`;
-
-exports[`parse formula test MIN(1, 2) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "number",
-          "value": 1,
-        },
-        {
-          "type": "number",
-          "value": 2,
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "MIN",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "MIN(1,2)",
-}
-`;
-
-exports[`parse formula test MAX(1, 2) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "number",
-          "value": 1,
-        },
-        {
-          "type": "number",
-          "value": 2,
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "MAX",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "MAX(1,2)",
-}
-`;
-
-exports[`parse formula test AVERAGE(1, 2, 3) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "number",
-          "value": 1,
-        },
-        {
-          "type": "number",
-          "value": 2,
-        },
-        {
-          "type": "number",
-          "value": 3,
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "AVERAGE",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "AVERAGE(1,2,3)",
 }
 `;
 
@@ -626,25 +354,39 @@ exports[`parse formula test MOD({{field1}}, {{field2}}) 1`] = `
 {
   "arguments": [
     {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-        {
-          "type": "variable",
-          "value": "{{field2}}",
-          "variable": "field2",
-        },
-      ],
-      "type": "argumentList",
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
     },
   ],
   "name": "MOD",
-  "returnType": 0,
+  "returnType": "number",
   "type": "functionCall",
   "value": "MOD({{field1}},{{field2}})",
+}
+`;
+
+exports[`parse formula test POWER(2, 3) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 2,
+    },
+    {
+      "type": "number",
+      "value": 3,
+    },
+  ],
+  "name": "POWER",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "POWER(2,3)",
 }
 `;
 
@@ -652,25 +394,35 @@ exports[`parse formula test POWER({{field1}}, {{field2}}) 1`] = `
 {
   "arguments": [
     {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-        {
-          "type": "variable",
-          "value": "{{field2}}",
-          "variable": "field2",
-        },
-      ],
-      "type": "argumentList",
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
     },
   ],
   "name": "POWER",
-  "returnType": 0,
+  "returnType": "number",
   "type": "functionCall",
   "value": "POWER({{field1}},{{field2}})",
+}
+`;
+
+exports[`parse formula test SQRT(4) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 4,
+    },
+  ],
+  "name": "SQRT",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "SQRT(4)",
 }
 `;
 
@@ -678,20 +430,30 @@ exports[`parse formula test SQRT({{field1}}) 1`] = `
 {
   "arguments": [
     {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-      ],
-      "type": "argumentList",
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
     },
   ],
   "name": "SQRT",
-  "returnType": 0,
+  "returnType": "number",
   "type": "functionCall",
   "value": "SQRT({{field1}})",
+}
+`;
+
+exports[`parse formula test ABS(-5) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 5,
+    },
+  ],
+  "name": "ABS",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "ABS(-5)",
 }
 `;
 
@@ -699,240 +461,15 @@ exports[`parse formula test ABS({{field1}}) 1`] = `
 {
   "arguments": [
     {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-      ],
-      "type": "argumentList",
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
     },
   ],
   "name": "ABS",
-  "returnType": 0,
+  "returnType": "number",
   "type": "functionCall",
   "value": "ABS({{field1}})",
-}
-`;
-
-exports[`parse formula test ROUND({{field1}}, 2) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-        {
-          "type": "number",
-          "value": 2,
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "ROUND",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "ROUND({{field1}},2)",
-}
-`;
-
-exports[`parse formula test FLOOR({{field1}}, 2) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-        {
-          "type": "number",
-          "value": 2,
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "FLOOR",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "FLOOR({{field1}},2)",
-}
-`;
-
-exports[`parse formula test CEILING({{field1}}, 2) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-        {
-          "type": "number",
-          "value": 2,
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "CEILING",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "CEILING({{field1}},2)",
-}
-`;
-
-exports[`parse formula test MIN({{field1}}, {{field2}}) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-        {
-          "type": "variable",
-          "value": "{{field2}}",
-          "variable": "field2",
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "MIN",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "MIN({{field1}},{{field2}})",
-}
-`;
-
-exports[`parse formula test MIN({{field1}}, {{field2}}, {{field3}}) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-        {
-          "type": "variable",
-          "value": "{{field2}}",
-          "variable": "field2",
-        },
-        {
-          "type": "variable",
-          "value": "{{field3}}",
-          "variable": "field3",
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "MIN",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "MIN({{field1}},{{field2}},{{field3}})",
-}
-`;
-
-exports[`parse formula test MAX({{field1}}, {{field2}}) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-        {
-          "type": "variable",
-          "value": "{{field2}}",
-          "variable": "field2",
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "MAX",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "MAX({{field1}},{{field2}})",
-}
-`;
-
-exports[`parse formula test MAX({{field1}}, {{field2}}, {{field3}}) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-        {
-          "type": "variable",
-          "value": "{{field2}}",
-          "variable": "field2",
-        },
-        {
-          "type": "variable",
-          "value": "{{field3}}",
-          "variable": "field3",
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "MAX",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "MAX({{field1}},{{field2}},{{field3}})",
-}
-`;
-
-exports[`parse formula test AVERAGE({{field1}}, {{field2}}, {{field3}}) 1`] = `
-{
-  "arguments": [
-    {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-        {
-          "type": "variable",
-          "value": "{{field2}}",
-          "variable": "field2",
-        },
-        {
-          "type": "variable",
-          "value": "{{field3}}",
-          "variable": "field3",
-        },
-      ],
-      "type": "argumentList",
-    },
-  ],
-  "name": "AVERAGE",
-  "returnType": 0,
-  "type": "functionCall",
-  "value": "AVERAGE({{field1}},{{field2}},{{field3}})",
 }
 `;
 
@@ -940,17 +477,12 @@ exports[`parse formula test ROUND(1.234) 1`] = `
 {
   "arguments": [
     {
-      "arguments": [
-        {
-          "type": "number",
-          "value": 1.234,
-        },
-      ],
-      "type": "argumentList",
+      "type": "number",
+      "value": 1.234,
     },
   ],
   "name": "ROUND",
-  "returnType": 0,
+  "returnType": "number",
   "type": "functionCall",
   "value": "ROUND(1.234)",
 }
@@ -960,18 +492,13 @@ exports[`parse formula test ROUND({{field1}}) 1`] = `
 {
   "arguments": [
     {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-      ],
-      "type": "argumentList",
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
     },
   ],
   "name": "ROUND",
-  "returnType": 0,
+  "returnType": "number",
   "type": "functionCall",
   "value": "ROUND({{field1}})",
 }
@@ -981,17 +508,12 @@ exports[`parse formula test FLOOR(1.234) 1`] = `
 {
   "arguments": [
     {
-      "arguments": [
-        {
-          "type": "number",
-          "value": 1.234,
-        },
-      ],
-      "type": "argumentList",
+      "type": "number",
+      "value": 1.234,
     },
   ],
   "name": "FLOOR",
-  "returnType": 0,
+  "returnType": "number",
   "type": "functionCall",
   "value": "FLOOR(1.234)",
 }
@@ -1001,18 +523,13 @@ exports[`parse formula test FLOOR({{field1}}) 1`] = `
 {
   "arguments": [
     {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-      ],
-      "type": "argumentList",
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
     },
   ],
   "name": "FLOOR",
-  "returnType": 0,
+  "returnType": "number",
   "type": "functionCall",
   "value": "FLOOR({{field1}})",
 }
@@ -1022,17 +539,12 @@ exports[`parse formula test CEILING(1.234) 1`] = `
 {
   "arguments": [
     {
-      "arguments": [
-        {
-          "type": "number",
-          "value": 1.234,
-        },
-      ],
-      "type": "argumentList",
+      "type": "number",
+      "value": 1.234,
     },
   ],
   "name": "CEILING",
-  "returnType": 0,
+  "returnType": "number",
   "type": "functionCall",
   "value": "CEILING(1.234)",
 }
@@ -1042,19 +554,195 @@ exports[`parse formula test CEILING({{field1}}) 1`] = `
 {
   "arguments": [
     {
-      "arguments": [
-        {
-          "type": "variable",
-          "value": "{{field1}}",
-          "variable": "field1",
-        },
-      ],
-      "type": "argumentList",
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
     },
   ],
   "name": "CEILING",
-  "returnType": 0,
+  "returnType": "number",
   "type": "functionCall",
   "value": "CEILING({{field1}})",
+}
+`;
+
+exports[`parse formula test MIN(1, 2) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 1,
+    },
+    {
+      "type": "number",
+      "value": 2,
+    },
+  ],
+  "name": "MIN",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "MIN(1,2)",
+}
+`;
+
+exports[`parse formula test MIN({{field1}}, {{field2}}) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+  ],
+  "name": "MIN",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "MIN({{field1}},{{field2}})",
+}
+`;
+
+exports[`parse formula test MIN({{field1}}, {{field2}}, {{field3}}) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+    {
+      "type": "variable",
+      "value": "{{field3}}",
+      "variable": "field3",
+    },
+  ],
+  "name": "MIN",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "MIN({{field1}},{{field2}},{{field3}})",
+}
+`;
+
+exports[`parse formula test MAX(1, 2) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 1,
+    },
+    {
+      "type": "number",
+      "value": 2,
+    },
+  ],
+  "name": "MAX",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "MAX(1,2)",
+}
+`;
+
+exports[`parse formula test MAX({{field1}}, {{field2}}) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+  ],
+  "name": "MAX",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "MAX({{field1}},{{field2}})",
+}
+`;
+
+exports[`parse formula test MAX({{field1}}, {{field2}}, {{field3}}) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+    {
+      "type": "variable",
+      "value": "{{field3}}",
+      "variable": "field3",
+    },
+  ],
+  "name": "MAX",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "MAX({{field1}},{{field2}},{{field3}})",
+}
+`;
+
+exports[`parse formula test AVERAGE(1, 2, 3) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "number",
+      "value": 1,
+    },
+    {
+      "type": "number",
+      "value": 2,
+    },
+    {
+      "type": "number",
+      "value": 3,
+    },
+  ],
+  "name": "AVERAGE",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "AVERAGE(1,2,3)",
+}
+`;
+
+exports[`parse formula test AVERAGE({{field1}}, {{field2}}, {{field3}}) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+    {
+      "type": "variable",
+      "value": "{{field3}}",
+      "variable": "field3",
+    },
+  ],
+  "name": "AVERAGE",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "AVERAGE({{field1}},{{field2}},{{field3}})",
 }
 `;
