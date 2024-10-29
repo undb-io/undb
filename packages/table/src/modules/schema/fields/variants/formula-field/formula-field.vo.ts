@@ -1,4 +1,5 @@
-import { Option, Some } from "@undb/domain"
+import { None, Option, Some } from "@undb/domain"
+import { parseFormula, returnType } from "@undb/formula"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
@@ -23,6 +24,13 @@ export const formulaFieldOption = z.object({
   fn,
 })
 
+const formulaMetadata = z.object({
+  returnType: returnType,
+  fields: z.array(fieldId),
+})
+
+export type IFormulaFieldMetadata = z.infer<typeof formulaMetadata>
+
 export type IFormulaFieldOption = z.infer<typeof formulaFieldOption>
 
 export const createFormulaFieldDTO = createBaseFieldDTO.extend({
@@ -45,11 +53,38 @@ export const formulaFieldDTO = baseFieldDTO.extend({
 export type IFormulaFieldDTO = z.infer<typeof formulaFieldDTO>
 
 export class FormulaField extends AbstractField<FormulaFieldValue, undefined, IFormulaFieldOption> {
+  private metadata: Option<IFormulaFieldMetadata> = None
   constructor(dto: IFormulaFieldDTO) {
     super(dto)
     if (dto.option) {
-      this.option = Some(dto.option)
+      this.setOption(dto.option)
     }
+  }
+
+  setOption(option: IFormulaFieldOption) {
+    this.option = Some(option)
+    const fn = option.fn
+    if (fn) {
+      try {
+        const result = parseFormula(fn)
+        if (result.type === "functionCall") {
+          const metadata: IFormulaFieldMetadata = {
+            returnType: result.returnType,
+            fields: result.arguments
+              .filter((arg) => arg.type === "argumentList")
+              .flatMap((arg) => arg.arguments.filter((arg) => arg.type === "variable"))
+              .map((arg) => arg.variable),
+          }
+          this.setMetadata(metadata)
+        }
+      } catch (error) {
+        // ignore
+      }
+    }
+  }
+
+  setMetadata(metadata: IFormulaFieldMetadata) {
+    this.metadata = Some(metadata)
   }
 
   static create(dto: ICreateFormulaFieldDTO) {
@@ -98,5 +133,16 @@ export class FormulaField extends AbstractField<FormulaFieldValue, undefined, IF
 
   get fn() {
     return this.option.mapOr("", (o) => o.fn)
+  }
+
+  get returnType() {
+    return this.metadata.mapOr("any", (m) => m.returnType)
+  }
+
+  override toJSON() {
+    return {
+      ...super.toJSON(),
+      metadata: this.metadata.into(null),
+    }
   }
 }

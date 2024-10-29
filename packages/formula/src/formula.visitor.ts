@@ -15,20 +15,12 @@ import {
   VariableExprContext,
 } from "./grammar/FormulaParser"
 import type { FormulaParserVisitor } from "./grammar/FormulaParserVisitor"
-import {
-  type ExpressionResult,
-  type FunctionExpressionResult,
-  type NumberResult,
-  ParamType,
-  type VariableResult,
-} from "./types"
+import { type ExpressionResult, type FunctionExpressionResult, type NumberResult, type VariableResult } from "./types"
 
 export class FormulaVisitor
   extends AbstractParseTreeVisitor<ExpressionResult>
   implements FormulaParserVisitor<ExpressionResult>
 {
-  private variables: Set<string> = new Set()
-
   visitFormula(ctx: FormulaContext): ExpressionResult {
     return this.visit(ctx.expression())
   }
@@ -41,7 +33,7 @@ export class FormulaVisitor
       type: "functionCall",
       name: op,
       arguments: [left, right],
-      returnType: ParamType.NUMBER,
+      returnType: "number",
       value: ctx.text,
     }
   }
@@ -54,7 +46,7 @@ export class FormulaVisitor
       type: "functionCall",
       name: op,
       arguments: [left, right],
-      returnType: ParamType.NUMBER,
+      returnType: "number",
       value: ctx.text,
     }
   }
@@ -111,13 +103,8 @@ export class FormulaVisitor
   }
   visitVariable(ctx: VariableContext): ExpressionResult {
     const variableName = ctx.IDENTIFIER().text
-    this.variables.add(variableName)
-    const raw = `{{${variableName}}}`
+    const raw = ctx.text
     return { type: "variable", value: raw, variable: variableName }
-  }
-
-  getVariables(): string[] {
-    return Array.from(this.variables)
   }
 
   protected defaultResult(): ExpressionResult {

@@ -1,11 +1,12 @@
-export enum ParamType {
-  NUMBER,
-  STRING,
-  BOOLEAN,
-  DATE,
-  ANY,
-  VARIADIC, // 用于表示可变参数
-}
+import { z } from "@undb/zod"
+
+export const paramType = z.enum(["number", "string", "boolean", "date", "any", "variadic"])
+
+export type ParamType = z.infer<typeof paramType>
+
+export const returnType = z.enum(["number", "string", "boolean", "date", "any"])
+
+export type ReturnType = z.infer<typeof returnType>
 
 export type FunctionDefinition = string
 
@@ -13,7 +14,7 @@ export type FunctionExpressionResult = {
   type: "functionCall"
   name: string
   arguments: ExpressionResult[]
-  returnType: ParamType
+  returnType: ReturnType
   value: FunctionDefinition
 }
 

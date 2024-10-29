@@ -5,4 +5,6 @@ export * from "./function/type"
 export * from "./grammar/FormulaLexer"
 export * from "./grammar/FormulaParser"
 export * from "./grammar/FormulaParserVisitor"
+export * from "./types"
 export * from "./util"
+

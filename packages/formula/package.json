@@ -11,6 +11,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
+    "@undb/zod": "*",
     "antlr4ts": "^0.5.0-alpha.4"
   },
   "scripts": {

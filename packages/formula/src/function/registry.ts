@@ -1,15 +1,15 @@
-import { ParamType,type ExpressionResult } from "../types"
+import { ParamType, ReturnType, type ExpressionResult } from "../types"
 import { FormulaFunction } from "./type"
 
 interface FunctionDefinition {
   paramPatterns: ParamType[][]
-  returnType: ParamType
+  returnType: ReturnType
 }
 
 export class FunctionRegistry {
   private functions: Map<string, FunctionDefinition> = new Map()
 
-  register(name: FormulaFunction, paramPatterns: ParamType[][], returnType: ParamType) {
+  register(name: FormulaFunction, paramPatterns: ParamType[][], returnType: ReturnType) {
     this.functions.set(name, { paramPatterns, returnType })
   }
 
@@ -31,7 +31,7 @@ export class FunctionRegistry {
     const hasMatchingPattern = funcDef.paramPatterns.some((pattern) => {
       // 如果模式中包含 VARIADIC，则参数数量必须大于等于 pattern.length - 1
       // 否则参数数量必须完全匹配
-      if (pattern.includes(ParamType.VARIADIC)) {
+      if (pattern.includes("variadic")) {
         return args.length >= pattern.length - 1
       }
       return args.length === pattern.length
@@ -39,9 +39,7 @@ export class FunctionRegistry {
 
     if (!hasMatchingPattern) {
       const expectedCounts = funcDef.paramPatterns
-        .map((pattern) =>
-          pattern.includes(ParamType.VARIADIC) ? `at least ${pattern.length - 1}` : `${pattern.length}`,
-        )
+        .map((pattern) => (pattern.includes("variadic") ? `at least ${pattern.length - 1}` : `${pattern.length}`))
         .join(" or ")
       throw new Error(`Function ${name} expects ${expectedCounts} arguments, but got ${args.length}`)
     }
@@ -49,7 +47,7 @@ export class FunctionRegistry {
     const isValidPattern = funcDef.paramPatterns.some((pattern) => {
       for (let i = 0; i < pattern.length; i++) {
         const expectedType = pattern[i]
-        if (expectedType === ParamType.VARIADIC) {
+        if (expectedType === "variadic") {
           // 剩余的所有参数都应该匹配 VARIADIC 的前一个类型
           const variadicType = pattern[i - 1]
           return args.slice(i - 1).every((arg) => this.isTypeMatch(arg, variadicType))
@@ -76,16 +74,16 @@ export class FunctionRegistry {
     }
 
     switch (expectedType) {
-      case ParamType.NUMBER:
+      case "number":
         return arg.type === "number"
-      case ParamType.STRING:
+      case "string":
         return arg.type === "string"
-      case ParamType.BOOLEAN:
+      case "boolean":
         return arg.type === "boolean"
-      case ParamType.DATE:
+      case "date":
         // TODO: 假设有日期类型的处理
         return false
-      case ParamType.ANY:
+      case "any":
         return true
       default:
         return false
@@ -96,20 +94,19 @@ export class FunctionRegistry {
 export const globalFunctionRegistry = new FunctionRegistry()
 
 // 注册函数，支持多种参数模式
-globalFunctionRegistry.register("ADD", [[ParamType.NUMBER, ParamType.NUMBER]], ParamType.NUMBER)
-globalFunctionRegistry.register("SUBTRACT", [[ParamType.NUMBER, ParamType.NUMBER]], ParamType.NUMBER)
-globalFunctionRegistry.register("MULTIPLY", [[ParamType.NUMBER, ParamType.NUMBER]], ParamType.NUMBER)
-globalFunctionRegistry.register("DIVIDE", [[ParamType.NUMBER, ParamType.NUMBER]], ParamType.NUMBER)
-globalFunctionRegistry.register("SUM", [[ParamType.NUMBER, ParamType.VARIADIC]], ParamType.NUMBER)
-globalFunctionRegistry.register("CONCAT", [[ParamType.STRING, ParamType.VARIADIC]], ParamType.STRING)
-globalFunctionRegistry.register("MOD", [[ParamType.NUMBER, ParamType.NUMBER]], ParamType.NUMBER)
-globalFunctionRegistry.register("POWER", [[ParamType.NUMBER, ParamType.NUMBER]], ParamType.NUMBER)
-globalFunctionRegistry.register("SQRT", [[ParamType.NUMBER]], ParamType.NUMBER)
-globalFunctionRegistry.register("ABS", [[ParamType.NUMBER]], ParamType.NUMBER)
-globalFunctionRegistry.register("ROUND", [[ParamType.NUMBER]], ParamType.NUMBER)
-globalFunctionRegistry.register("FLOOR", [[ParamType.NUMBER]], ParamType.NUMBER)
-globalFunctionRegistry.register("CEILING", [[ParamType.NUMBER]], ParamType.NUMBER)
-globalFunctionRegistry.register("MIN", [[ParamType.NUMBER, ParamType.VARIADIC]], ParamType.NUMBER)
-globalFunctionRegistry.register("MAX", [[ParamType.NUMBER, ParamType.VARIADIC]], ParamType.NUMBER)
-globalFunctionRegistry.register("AVERAGE", [[ParamType.NUMBER, ParamType.VARIADIC]], ParamType.NUMBER)
-// globalFunctionRegistry.register("MEDIAN", [[ParamType.NUMBER, ParamType.VARIADIC]], ParamType.NUMBER)
+globalFunctionRegistry.register("ADD", [["number", "number"]], "number")
+globalFunctionRegistry.register("SUBTRACT", [["number", "number"]], "number")
+globalFunctionRegistry.register("MULTIPLY", [["number", "number"]], "number")
+globalFunctionRegistry.register("DIVIDE", [["number", "number"]], "number")
+globalFunctionRegistry.register("SUM", [["number", "variadic"]], "number")
+globalFunctionRegistry.register("CONCAT", [["string", "variadic"]], "string")
+globalFunctionRegistry.register("MOD", [["number", "number"]], "number")
+globalFunctionRegistry.register("POWER", [["number", "number"]], "number")
+globalFunctionRegistry.register("SQRT", [["number"]], "number")
+globalFunctionRegistry.register("ABS", [["number"]], "number")
+globalFunctionRegistry.register("ROUND", [["number"]], "number")
+globalFunctionRegistry.register("FLOOR", [["number"]], "number")
+globalFunctionRegistry.register("CEILING", [["number"]], "number")
+globalFunctionRegistry.register("MIN", [["number", "variadic"]], "number")
+globalFunctionRegistry.register("MAX", [["number", "variadic"]], "number")
+globalFunctionRegistry.register("AVERAGE", [["number", "variadic"]], "number")
