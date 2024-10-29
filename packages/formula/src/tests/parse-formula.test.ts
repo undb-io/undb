@@ -58,6 +58,14 @@ describe("parse formula", () => {
     "{{field1}} > 1 AND {{field2}} < 2",
     "{{field1}} > 1 OR {{field2}} < 2",
     "NOT ({{field1}} > 1 AND {{field2}} < 2)",
+    "SEARCH({{field1}}, {{field2}})",
+    "REPLACE({{field1}}, {{field2}}, {{field3}})",
+    "REPEAT({{field1}}, {{field2}})",
+    "LEN({{field1}})",
+    "SUBSTR({{field1}}, {{field2}}, {{field3}})",
+    "AND({{field1}}, {{field2}})",
+    "OR({{field1}}, {{field2}})",
+    "NOT({{field1}})",
   ])("test %s", (input) => {
     const result = parseFormula(input)
 

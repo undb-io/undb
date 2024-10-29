@@ -1228,3 +1228,145 @@ exports[`parse formula test NOT ({{field1}} > 1 AND {{field2}} < 2) 1`] = `
   "value": "NOT({{field1}}>1AND{{field2}}<2)",
 }
 `;
+
+exports[`parse formula test SEARCH({{field1}}, {{field2}}) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+  ],
+  "name": "SEARCH",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "SEARCH({{field1}},{{field2}})",
+}
+`;
+
+exports[`parse formula test REPLACE({{field1}}, {{field2}}, {{field3}}) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+    {
+      "type": "variable",
+      "value": "{{field3}}",
+      "variable": "field3",
+    },
+  ],
+  "name": "REPLACE",
+  "returnType": "string",
+  "type": "functionCall",
+  "value": "REPLACE({{field1}},{{field2}},{{field3}})",
+}
+`;
+
+exports[`parse formula test REPEAT({{field1}}, {{field2}}) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+  ],
+  "name": "REPEAT",
+  "returnType": "string",
+  "type": "functionCall",
+  "value": "REPEAT({{field1}},{{field2}})",
+}
+`;
+
+exports[`parse formula test LEN({{field1}}) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+  ],
+  "name": "LEN",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "LEN({{field1}})",
+}
+`;
+
+exports[`parse formula test SUBSTR({{field1}}, {{field2}}, {{field3}}) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+    {
+      "type": "variable",
+      "value": "{{field2}}",
+      "variable": "field2",
+    },
+    {
+      "type": "variable",
+      "value": "{{field3}}",
+      "variable": "field3",
+    },
+  ],
+  "name": "SUBSTR",
+  "returnType": "string",
+  "type": "functionCall",
+  "value": "SUBSTR({{field1}},{{field2}},{{field3}})",
+}
+`;
+
+exports[`parse formula test AND({{field1}}, {{field2}}) 1`] = `
+{
+  "type": "variable",
+  "value": "{{field1}}",
+  "variable": "field1",
+}
+`;
+
+exports[`parse formula test OR({{field1}}, {{field2}}) 1`] = `
+{
+  "type": "variable",
+  "value": "{{field1}}",
+  "variable": "field1",
+}
+`;
+
+exports[`parse formula test NOT({{field1}}) 1`] = `
+{
+  "arguments": [
+    {
+      "type": "variable",
+      "value": "{{field1}}",
+      "variable": "field1",
+    },
+  ],
+  "name": "NOT",
+  "returnType": "boolean",
+  "type": "functionCall",
+  "value": "NOT({{field1}})",
+}
+`;
