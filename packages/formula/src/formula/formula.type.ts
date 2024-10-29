@@ -62,3 +62,4 @@ export type FormulaFunction =
   | "SUMIF"
   | "CORREL"
   | "RECORD_ID"
+  | "JSON_EXTRACT"

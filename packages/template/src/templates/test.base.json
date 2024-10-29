@@ -163,6 +163,7 @@
         ]
       },
       "Formula1": {
+        "fieldsOrder": ["Count1", "Count2", "Count3", "String1", "String2", "Json1"],
         "schema": {
           "Count1": {
             "id": "count1",
@@ -183,6 +184,10 @@
           "String2": {
             "id": "string2",
             "type": "string"
+          },
+          "Json1": {
+            "id": "json1",
+            "type": "json"
           },
           "Sum": {
             "id": "sum",
@@ -421,6 +426,13 @@
             "option": {
               "fn": "REPEAT({{string1}}, 3)"
             }
+          },
+          "JsonExtractName": {
+            "id": "jsonExtractName",
+            "type": "formula",
+            "option": {
+              "fn": "JSON_EXTRACT({{json1}}, '$.name')"
+            }
           }
         },
         "records": [
@@ -429,7 +441,8 @@
             "Count2": 2,
             "Count3": 3,
             "String1": "Hello",
-            "String2": "World"
+            "String2": "World",
+            "Json1": "{\"name\": \"John\", \"age\": 30, \"city\": \"New York\"}"
           },
           {
             "Count1": 4,

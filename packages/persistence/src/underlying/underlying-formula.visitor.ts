@@ -18,7 +18,7 @@ import {
   type FormulaFunction,
   type FormulaParserVisitor,
 } from "@undb/formula"
-import { FieldIdVo,type TableDo } from "@undb/table"
+import { FieldIdVo, type TableDo } from "@undb/table"
 import { match } from "ts-pattern"
 
 export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> implements FormulaParserVisitor<string> {
@@ -63,14 +63,14 @@ export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> i
   }
 
   visitVariable(ctx: VariableContext): string {
-    const variable = ctx.text
     const fieldId = ctx.IDENTIFIER().text
-    const field = this.table.schema.getFieldById(new FieldIdVo(fieldId)).expect("field not found")
-    const trimmed = variable.replace(/^\{\{|\}\}$/g, "").trim()
+    const field = this.table.schema
+      .getFieldById(new FieldIdVo(fieldId))
+      .expect(`variable ${fieldId} not found in table ${this.table.name.value}`)
     if (field.type === "currency") {
-      return `(${trimmed}/100)`
+      return `(${fieldId}/100)`
     }
-    return trimmed
+    return fieldId
   }
 
   visitFormula(ctx: FormulaContext): string {
@@ -90,36 +90,39 @@ export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> i
     return this.visit(ctx.expression())
   }
 
-  private arguments(ctx: ArgumentListContext): string[] {
-    return ctx.expression().map((expr) => this.visit(expr))
+  private arguments(ctx: FunctionCallContext): string[] {
+    return ctx
+      .argumentList()!
+      .expression()
+      .map((expr) => this.visit(expr))
   }
   visitFunctionCall(ctx: FunctionCallContext): string {
     const functionName = ctx.IDENTIFIER().text as FormulaFunction
     return match(functionName)
       .with("ADD", "SUM", () => {
-        const fn = this.arguments(ctx.argumentList()!).join(" + ")
+        const fn = this.arguments(ctx).join(" + ")
         return `(${fn})`
       })
       .with("SUBTRACT", () => {
-        const fn = this.arguments(ctx.argumentList()!).join(" - ")
+        const fn = this.arguments(ctx).join(" - ")
         return `(${fn})`
       })
       .with("MULTIPLY", () => {
-        const fn = this.arguments(ctx.argumentList()!).join(" * ")
+        const fn = this.arguments(ctx).join(" * ")
         return `(${fn})`
       })
       .with("DIVIDE", () => {
-        const fn = this.arguments(ctx.argumentList()!).join(" / ")
+        const fn = this.arguments(ctx).join(" / ")
         return `(${fn})`
       })
       .with("CONCAT", () => {
-        const fn = this.arguments(ctx.argumentList()!)
+        const fn = this.arguments(ctx)
           .map((arg) => `COALESCE(${arg}, '')`)
           .join(" || ")
         return `(${fn})`
       })
       .with("AVERAGE", () => {
-        const args = this.arguments(ctx.argumentList()!)
+        const args = this.arguments(ctx)
         return `(
         (${args.map((arg) => `COALESCE(${arg}, 0)`).join(" + ")})
         /
@@ -129,49 +132,52 @@ export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> i
         ))`
       })
       .with("LEFT", () => {
-        const args = this.arguments(ctx.argumentList()!)
+        const args = this.arguments(ctx)
         return `SUBSTR(${args[0]}, 1, ${args[1]})`
       })
       .with("RIGHT", () => {
-        const args = this.arguments(ctx.argumentList()!)
+        const args = this.arguments(ctx)
         return `SUBSTR(${args[0]}, -${args[1]}, ${args[1]})`
       })
       .with("MID", () => {
-        const args = this.arguments(ctx.argumentList()!)
+        const args = this.arguments(ctx)
         return `SUBSTR(${args[0]}, ${args[1]}, ${args[2]})`
       })
       .with("AND", () => {
-        const args = this.arguments(ctx.argumentList()!)
+        const args = this.arguments(ctx)
         return `(${args.map((arg) => `COALESCE(${arg}, FALSE)`).join(" AND ")})`
       })
       .with("OR", () => {
-        const args = this.arguments(ctx.argumentList()!)
+        const args = this.arguments(ctx)
         return `(${args.map((arg) => `COALESCE(${arg}, FALSE)`).join(" OR ")})`
       })
       .with("NOT", () => {
-        const args = this.arguments(ctx.argumentList()!)
+        const args = this.arguments(ctx)
         return `NOT ${args[0]}`
       })
       .with("SEARCH", () => {
-        const args = this.arguments(ctx.argumentList()!)
+        const args = this.arguments(ctx)
         return `COALESCE(INSTR(LOWER(COALESCE(${args[1]}, '')), LOWER(COALESCE(${args[0]}, ''))), 0)`
       })
       .with("LEN", () => {
-        const args = this.arguments(ctx.argumentList()!)
+        const args = this.arguments(ctx)
         return `LENGTH(${args[0]})`
       })
       .with("REPEAT", () => {
-        const args = this.arguments(ctx.argumentList()!)
+        const args = this.arguments(ctx)
         // args[0] 是要重复的字符串，args[1] 是重复次数
         return `SUBSTR(REPLACE(HEX(ZEROBLOB(${args[1]})), '00', ${args[0]}), 1, LENGTH(${args[0]}) * ${args[1]})`
       })
       .otherwise(() => {
         const args = ctx.argumentList() ? this.visit(ctx.argumentList()!) : ""
-        return `${functionName.toLowerCase()}(${args})`
+        return `${functionName}(${args})`
       })
   }
 
   visitArgumentList(ctx: ArgumentListContext): string {
-    return this.arguments(ctx).join(", ")
+    return ctx
+      .expression()
+      .map((expr) => this.visit(expr))
+      .join(", ")
   }
 }

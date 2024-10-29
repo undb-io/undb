@@ -1,12 +1,12 @@
-import { None, Option, Some } from "@undb/domain"
+import { Option,Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
 import type { FormFieldVO } from "../../../../forms/form/form-field.vo"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
-import { fieldId, FieldIdVo } from "../../field-id.vo"
+import { fieldId,FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
-import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
-import { jsonFieldConstraint, JsonFieldConstraint } from "./json-field-constraint.vo"
+import { AbstractField,baseFieldDTO,createBaseFieldDTO } from "../abstract-field.vo"
+import { jsonFieldConstraint,JsonFieldConstraint } from "./json-field-constraint.vo"
 import { JsonFieldValue } from "./json-field-value.vo"
 import { jsonFieldAggregate } from "./json-field.aggregate"
 import {
@@ -14,7 +14,7 @@ import {
   type IJsonFieldCondition,
   type IJsonFieldConditionSchema,
 } from "./json-field.condition"
-import { JsonContains, JsonEmpty, JsonEqual } from "./json-field.specification"
+import { JsonContains,JsonEmpty,JsonEqual } from "./json-field.specification"
 
 export const JSON_TYPE = "json" as const
 
@@ -50,7 +50,7 @@ export class JsonField extends AbstractField<JsonFieldValue> {
   }
 
   static create(dto: ICreateJsonFieldDTO) {
-    return new JsonField({ ...dto, id: FieldIdVo.create().value })
+    return new JsonField({ ...dto, id: FieldIdVo.fromStringOrCreate(dto.id).value })
   }
 
   override type = JSON_TYPE
@@ -97,6 +97,6 @@ export class JsonField extends AbstractField<JsonFieldValue> {
   }
 
   override getMutationSpec(value: JsonFieldValue): Option<RecordComositeSpecification> {
-    return value.value ? Some(new JsonEqual(value.value, this.id)) : None
+    return value.value ? Some(new JsonEqual(value.value, this.id)) : Some(new JsonEqual(null, this.id))
   }
 }

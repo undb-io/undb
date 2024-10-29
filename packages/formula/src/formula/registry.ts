@@ -1,5 +1,5 @@
 import { ParamType, ReturnType, type ExpressionResult } from "../types"
-import { FormulaFunction } from "./type"
+import { FormulaFunction } from "./formula.type"
 
 interface FunctionDefinition {
   paramPatterns: ParamType[][]
@@ -135,3 +135,5 @@ globalFunctionRegistry.register("ISTEXT", [["any"]], "boolean")
 // globalFunctionRegistry.register("COUNTA", [["variadic"]], "number")
 // globalFunctionRegistry.register("COUNTIF", [["variadic"]], "number")
 // globalFunctionRegistry.register("SUMIF", [["variadic"]], "number")
+
+globalFunctionRegistry.register("JSON_EXTRACT", [["string", "string"]], "any")

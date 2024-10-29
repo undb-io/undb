@@ -1,6 +1,6 @@
 import { AbstractParseTreeVisitor } from "antlr4ts/tree/AbstractParseTreeVisitor"
-import { globalFunctionRegistry } from "./function/registry"
-import { FormulaFunction } from "./function/type"
+import { FormulaFunction } from "./formula/formula.type"
+import { globalFunctionRegistry } from "./formula/registry"
 import {
   AddSubExprContext,
   AndExprContext,

@@ -7,6 +7,11 @@ import {
   CurrencyLTE,
   DateIsEmpty,
   DurationEqual,
+  FormulaEqual,
+  FormulaGT,
+  FormulaGTE,
+  FormulaLT,
+  FormulaLTE,
   ID_TYPE,
   isUserFieldMacro,
   JsonContains,
@@ -87,7 +92,13 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     }
   }
   jsonEqual(spec: JsonEqual): void {
-    this.setData(spec.fieldId.value, spec.json ? JSON.stringify(spec.json) : null)
+    if (!spec.json) {
+      this.setData(spec.fieldId.value, null)
+    } else if (typeof spec.json === "string") {
+      this.setData(spec.fieldId.value, spec.json)
+    } else {
+      this.setData(spec.fieldId.value, JSON.stringify(spec.json))
+    }
   }
   jsonContains(spec: JsonContains): void {
     throw new Error("Method not implemented.")
@@ -368,5 +379,20 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
   }
   clone(): this {
     return new RecordMutateVisitor(this.table, this.record, this.qb, this.eb, this.context) as this
+  }
+  formulaEqual(s: FormulaEqual): void {
+    throw new Error("Method not implemented.")
+  }
+  formulaGT(s: FormulaGT): void {
+    throw new Error("Method not implemented.")
+  }
+  formulaGTE(s: FormulaGTE): void {
+    throw new Error("Method not implemented.")
+  }
+  formulaLT(s: FormulaLT): void {
+    throw new Error("Method not implemented.")
+  }
+  formulaLTE(s: FormulaLTE): void {
+    throw new Error("Method not implemented.")
   }
 }

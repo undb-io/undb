@@ -1,4 +1,4 @@
-import { FormulaFunction } from "./function/type"
+import { FormulaFunction } from "./formula/formula.type"
 
 export const FORMULA_FUNCTIONS: FormulaFunction[] = [
   "ADD",
@@ -51,4 +51,6 @@ export const FORMULA_FUNCTIONS: FormulaFunction[] = [
   // "SUMIF",
   // "CORREL",
   // "RECORD_ID",
+
+  "JSON_EXTRACT",
 ] as const
