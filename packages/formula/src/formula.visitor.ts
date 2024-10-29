@@ -21,6 +21,8 @@ export class FormulaVisitor
   extends AbstractParseTreeVisitor<ExpressionResult>
   implements FormulaParserVisitor<ExpressionResult>
 {
+  private variables: Set<string> = new Set()
+
   visitFormula(ctx: FormulaContext): ExpressionResult {
     return this.visit(ctx.expression())
   }
@@ -88,7 +90,7 @@ export class FormulaVisitor
     return {
       type: "functionCall",
       name: funcName,
-      arguments: Array.isArray(args) ? args : args ? [args] : [],
+      arguments: args?.arguments ?? [],
       returnType,
       value: ctx.text,
     }
@@ -104,7 +106,12 @@ export class FormulaVisitor
   visitVariable(ctx: VariableContext): ExpressionResult {
     const variableName = ctx.IDENTIFIER().text
     const raw = ctx.text
+    this.variables.add(variableName)
     return { type: "variable", value: raw, variable: variableName }
+  }
+
+  getVariables(): string[] {
+    return Array.from(this.variables)
   }
 
   protected defaultResult(): ExpressionResult {

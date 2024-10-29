@@ -1,5 +1,5 @@
 import { None, Option, Some } from "@undb/domain"
-import { parseFormula, returnType } from "@undb/formula"
+import { createParser, FormulaVisitor, returnType } from "@undb/formula"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
@@ -66,14 +66,14 @@ export class FormulaField extends AbstractField<FormulaFieldValue, undefined, IF
     const fn = option.fn
     if (fn) {
       try {
-        const result = parseFormula(fn)
+        const parser = createParser(fn)
+        const tree = parser.formula()
+        const visitor = new FormulaVisitor()
+        const result = visitor.visit(tree)
         if (result.type === "functionCall") {
           const metadata: IFormulaFieldMetadata = {
             returnType: result.returnType,
-            fields: result.arguments
-              .filter((arg) => arg.type === "argumentList")
-              .flatMap((arg) => arg.arguments.filter((arg) => arg.type === "variable"))
-              .map((arg) => arg.variable),
+            fields: visitor.getVariables(),
           }
           this.setMetadata(metadata)
         }
