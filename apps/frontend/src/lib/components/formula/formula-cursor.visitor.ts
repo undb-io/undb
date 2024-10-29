@@ -1,13 +1,17 @@
 import {
   AbstractParseTreeVisitor,
   AddSubExprContext,
+  AndExprContext,
   ArgumentListContext,
+  ComparisonExprContext,
   ExpressionContext,
   FormulaContext,
   FormulaParserVisitor,
   FunctionCallContext,
   FunctionExprContext,
   MulDivModExprContext,
+  NotExprContext,
+  OrExprContext,
   type ParseTree,
   VariableContext,
 } from "@undb/formula"
@@ -67,6 +71,22 @@ export class FormulaCursorVisitor extends AbstractParseTreeVisitor<void> impleme
   }
 
   visitFormula(ctx: FormulaContext) {
+    this.visitPositionInRange(ctx)
+  }
+
+  visitComparisonExpr(ctx: ComparisonExprContext) {
+    this.visitPositionInRange(ctx)
+  }
+
+  visitAndExpr(ctx: AndExprContext) {
+    this.visitPositionInRange(ctx)
+  }
+
+  visitOrExpr(ctx: OrExprContext) {
+    this.visitPositionInRange(ctx)
+  }
+
+  visitNotExpr(ctx: NotExprContext) {
     this.visitPositionInRange(ctx)
   }
 

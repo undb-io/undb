@@ -1,12 +1,16 @@
 import {
   AbstractParseTreeVisitor,
   AddSubExprContext,
+  AndExprContext,
   ArgumentListContext,
+  ComparisonExprContext,
   FormulaContext,
   FunctionCallContext,
   FunctionExprContext,
   MulDivModExprContext,
+  NotExprContext,
   NumberExprContext,
+  OrExprContext,
   ParenExprContext,
   StringExprContext,
   VariableContext,
@@ -32,6 +36,22 @@ export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> i
 
   visitStringExpr(ctx: StringExprContext): string {
     return ctx.STRING().text
+  }
+
+  visitComparisonExpr(ctx: ComparisonExprContext): string {
+    return this.visit(ctx.expression(0)) + ctx._op.text + this.visit(ctx.expression(1))
+  }
+
+  visitAndExpr(ctx: AndExprContext): string {
+    return this.visit(ctx.expression(0)) + " AND " + this.visit(ctx.expression(1))
+  }
+
+  visitOrExpr(ctx: OrExprContext): string {
+    return this.visit(ctx.expression(0)) + " OR " + this.visit(ctx.expression(1))
+  }
+
+  visitNotExpr(ctx: NotExprContext): string {
+    return "NOT " + this.visit(ctx.expression())
   }
 
   visitAddSubExpr(ctx: AddSubExprContext): string {

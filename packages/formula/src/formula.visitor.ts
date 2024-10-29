@@ -3,25 +3,54 @@ import { globalFunctionRegistry } from "./function/registry"
 import { FormulaFunction } from "./function/type"
 import {
   AddSubExprContext,
+  AndExprContext,
   ArgumentListContext,
+  ComparisonExprContext,
   FormulaContext,
   FunctionCallContext,
   FunctionExprContext,
   MulDivModExprContext,
+  NotExprContext,
   NumberExprContext,
+  OrExprContext,
   ParenExprContext,
   StringExprContext,
   VariableContext,
   VariableExprContext,
 } from "./grammar/FormulaParser"
 import type { FormulaParserVisitor } from "./grammar/FormulaParserVisitor"
-import { type ExpressionResult, type FunctionExpressionResult, type NumberResult, type VariableResult } from "./types"
+import {
+  ReturnType,
+  type ExpressionResult,
+  type FunctionExpressionResult,
+  type NumberResult,
+  type VariableResult,
+} from "./types"
 
 export class FormulaVisitor
   extends AbstractParseTreeVisitor<ExpressionResult>
   implements FormulaParserVisitor<ExpressionResult>
 {
   private variables: Set<string> = new Set()
+
+  private assertType(result: ExpressionResult, types: ReturnType[]): boolean {
+    if (result.type === "variable") {
+      return true
+    }
+
+    if (result.type === "functionCall") {
+      if (!types.includes(result.returnType)) {
+        throw new Error(`Expected ${types.join(" or ")} but got ${result.name}`)
+      }
+      return true
+    }
+
+    if (!types.includes(result.type as ReturnType)) {
+      throw new Error(`Expected ${types.join(" or ")} but got ${result.type}`)
+    }
+
+    return true
+  }
 
   visitFormula(ctx: FormulaContext): ExpressionResult {
     return this.visit(ctx.expression())
@@ -30,6 +59,10 @@ export class FormulaVisitor
   visitMulDivModExpr(ctx: MulDivModExprContext): ExpressionResult {
     const left = this.visit(ctx.expression(0)) as NumberResult | VariableResult
     const right = this.visit(ctx.expression(1)) as NumberResult | VariableResult
+
+    this.assertType(left, ["number"])
+    this.assertType(right, ["number"])
+
     const op = ctx._op.text!
     return {
       type: "functionCall",
@@ -41,14 +74,79 @@ export class FormulaVisitor
   }
 
   visitAddSubExpr(ctx: AddSubExprContext): ExpressionResult {
-    const left = this.visit(ctx.expression(0)) as NumberResult
-    const right = this.visit(ctx.expression(1)) as NumberResult
+    const left = this.visit(ctx.expression(0)) as NumberResult | VariableResult
+    const right = this.visit(ctx.expression(1)) as NumberResult | VariableResult
+
+    this.assertType(left, ["number"])
+    this.assertType(right, ["number"])
+
     const op = ctx._op.text!
     return {
       type: "functionCall",
       name: op,
       arguments: [left, right],
       returnType: "number",
+      value: ctx.text,
+    }
+  }
+
+  visitComparisonExpr(ctx: ComparisonExprContext): ExpressionResult {
+    const left = this.visit(ctx.expression(0))
+    const right = this.visit(ctx.expression(1))
+
+    this.assertType(left, ["number"])
+    this.assertType(right, ["number"])
+
+    const op = ctx._op.text!
+    return {
+      type: "functionCall",
+      name: op,
+      arguments: [left, right],
+      returnType: "boolean",
+      value: ctx.text,
+    }
+  }
+
+  visitAndExpr(ctx: AndExprContext): ExpressionResult {
+    const left = this.visit(ctx.expression(0))
+    const right = this.visit(ctx.expression(1))
+
+    this.assertType(left, ["boolean"])
+    this.assertType(right, ["boolean"])
+
+    return {
+      type: "functionCall",
+      name: "AND",
+      arguments: [left, right],
+      returnType: "boolean",
+      value: ctx.text,
+    }
+  }
+
+  visitOrExpr(ctx: OrExprContext): ExpressionResult {
+    const left = this.visit(ctx.expression(0))
+    const right = this.visit(ctx.expression(1))
+
+    this.assertType(left, ["boolean"])
+    this.assertType(right, ["boolean"])
+
+    return {
+      type: "functionCall",
+      name: "OR",
+      arguments: [left, right],
+      returnType: "boolean",
+      value: ctx.text,
+    }
+  }
+
+  visitNotExpr(ctx: NotExprContext): ExpressionResult {
+    const expr = this.visit(ctx.expression())
+    this.assertType(expr, ["boolean"])
+    return {
+      type: "functionCall",
+      name: "NOT",
+      arguments: [expr],
+      returnType: "boolean",
       value: ctx.text,
     }
   }

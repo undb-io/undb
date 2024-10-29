@@ -330,6 +330,69 @@
             "option": {
               "fn": "MID({{string1}}, 2, 3)"
             }
+          },
+          "Greater": {
+            "id": "greater",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} > {{count2}}"
+            }
+          },
+          "And": {
+            "id": "nestedCompare",
+            "type": "formula",
+            "option": {
+              "fn": "({{count1}} > {{count2}}) AND ({{count2}} > {{count3}})"
+            }
+          },
+          "Or": {
+            "id": "or",
+            "type": "formula",
+            "option": {
+              "fn": "({{count1}} > {{count2}}) OR ({{count2}} > {{count3}})"
+            }
+          },
+          "NOT": {
+            "id": "not",
+            "type": "formula",
+            "option": {
+              "fn": "NOT ({{count1}} > {{count2}})"
+            }
+          },
+          "Equal": {
+            "id": "equal",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} = {{count2}}"
+            }
+          },
+          "NotEqual": {
+            "id": "notEqual",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} != {{count2}}"
+            }
+          },
+          "GreaterEqual": {
+            "id": "greaterEqual",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} >= {{count2}}"
+            }
+          },
+          "LessEqual": {
+            "id": "lessEqual",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} <= {{count2}}"
+            }
+          },
+          "Less": {
+            "id": "less",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} < {{count2}}"
+            }
           }
         },
         "records": [
