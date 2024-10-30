@@ -139,7 +139,7 @@ export const fieldTypes: NoneSystemFieldType[] = [
   "button",
   "duration",
   "percentage",
-  // "formula",
+  "formula",
 ] as const
 
 export const systemFieldTypes: SystemFieldType[] = [

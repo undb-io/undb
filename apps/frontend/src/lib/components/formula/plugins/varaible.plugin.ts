@@ -1,25 +1,10 @@
 import { StateField } from "@codemirror/state"
 import { Decoration, DecorationSet, EditorView, WidgetType } from "@codemirror/view"
+import { variable } from "../style"
 
 // 创建两个装饰器：一个用于整个变量区域，一个用于隐藏花括号
 const variableMark = Decoration.mark({
-  class: `
-    bg-blue-50
-    hover:bg-blue-100
-    rounded
-    px-1
-    border
-    border-blue-200
-    mx-[1px]
-    transition-all
-    duration-200
-    ease-in-out
-    hover:shadow-sm
-    hover:border-blue-300
-    cursor-pointer
-  `
-    .replace(/\s+/g, " ")
-    .trim(),
+  class: variable(),
 })
 
 // 用于隐藏花括号的装饰器

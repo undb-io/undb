@@ -204,7 +204,7 @@
   }
 
   function insertSuggestion(suggestion: string) {
-    const cursor = editor.state.selection.main.head
+    let cursor = editor.state.selection.main.head
     const doc = editor.state.doc.toString()
     const textBeforeCursor = doc.slice(0, cursor)
 
@@ -263,20 +263,64 @@
       editor.dispatch(transaction)
     } else {
       const fieldWithBrackets = `{{${suggestion}}}`
-      const transaction = editor.state.update({
-        changes: {
-          from: insertStart,
-          to: cursor,
-          insert: fieldWithBrackets,
-        },
-        selection: {
-          anchor: insertStart + fieldWithBrackets.length,
-        },
-      })
-      editor.dispatch(transaction)
-    }
+      const textBeforeCursor = editor.state.doc.sliceString(0, cursor)
+      const textAfterCursor = editor.state.doc.sliceString(cursor)
 
-    editor.focus()
+      // 使用正则表达式找到光标位置最近的完整变量
+      const fullText = editor.state.doc.toString()
+      let start = cursor
+      let end = cursor
+
+      // 向前搜索 {{
+      for (let i = cursor; i >= 0; i--) {
+        if (fullText.slice(i, i + 2) === "{{") {
+          start = i
+          break
+        }
+      }
+
+      // 向后搜索 }}
+      for (let i = cursor; i < fullText.length; i++) {
+        if (fullText.slice(i, i + 2) === "}}") {
+          end = i + 2
+          break
+        }
+      }
+
+      // 检查找到的范围是否是一个有效的变量（不超过最近的逗号）
+      const textBetween = fullText.slice(start, end)
+      const isValidVariable = textBetween.includes("{{") && textBetween.includes("}}") && !textBetween.includes(",")
+
+      if (isValidVariable) {
+        // 替换找到的变量
+        const transaction = editor.state.update({
+          changes: {
+            from: start,
+            to: end,
+            insert: fieldWithBrackets,
+          },
+          selection: {
+            anchor: start + fieldWithBrackets.length,
+          },
+        })
+        editor.dispatch(transaction)
+      } else {
+        // 不在变量内部或范围无效，直接在当前位置插入新变量
+        const transaction = editor.state.update({
+          changes: {
+            from: cursor,
+            to: cursor,
+            insert: fieldWithBrackets,
+          },
+          selection: {
+            anchor: cursor + fieldWithBrackets.length,
+          },
+        })
+        editor.dispatch(transaction)
+      }
+
+      editor.focus()
+    }
   }
 
   let errorMessage: string = ""
