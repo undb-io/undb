@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-112
+
+
+### 🩹 Fixes
+
+- Remove antlr4ts ([13eaa3d](https://github.com/undb-io/undb/commit/13eaa3d))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-111
 
 
