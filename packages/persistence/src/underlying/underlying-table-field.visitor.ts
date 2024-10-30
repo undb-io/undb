@@ -44,6 +44,7 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     private readonly qb: IQueryBuilder,
     private readonly t: UnderlyingTable,
     public tb: TB,
+    public readonly isNew: boolean = false,
   ) {}
   public atb: AlterTableColumnAlteringBuilder | CreateTableBuilder<any, any> | null = null
 
@@ -193,7 +194,10 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
 
     this.logger.debug("parsed formula", { parsed })
 
-    const c = this.tb.addColumn(field.id.value, "text", (b) => b.generatedAlwaysAs(sql.raw(parsed)).stored())
+    const c = this.tb.addColumn(field.id.value, "text", (b) => {
+      const column = b.generatedAlwaysAs(sql.raw(parsed))
+      return this.isNew ? column.stored() : column
+    })
     this.addColumn(c)
   }
 }

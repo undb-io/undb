@@ -10,7 +10,6 @@
   import { cn } from "$lib/utils"
   import { createParser } from "@undb/formula/src/util"
   import { FormulaCursorVisitor } from "./formula-cursor.visitor"
-  import * as Table from "$lib/components/ui/table"
   import { FORMULA_FUNCTIONS } from "@undb/formula"
   import { SquareFunctionIcon, TriangleAlertIcon } from "lucide-svelte"
 
@@ -257,14 +256,12 @@
           insert: suggestionWithParens,
         },
         selection: {
-          anchor: insertStart + suggestionWithParens.length - 1,
+          anchor: insertStart + suggestion.length + 1,
         },
       })
       editor.dispatch(transaction)
     } else {
       const fieldWithBrackets = `{{${suggestion}}}`
-      const textBeforeCursor = editor.state.doc.sliceString(0, cursor)
-      const textAfterCursor = editor.state.doc.sliceString(cursor)
 
       // 使用正则表达式找到光标位置最近的完整变量
       const fullText = editor.state.doc.toString()
@@ -305,7 +302,7 @@
         })
         editor.dispatch(transaction)
       } else {
-        // 不在变量内部或范围无效，直接在当前位置插入新变量
+        // 不在变量内部或范��无效，直接在当前位置插入新变量
         const transaction = editor.state.update({
           changes: {
             from: cursor,
@@ -318,9 +315,8 @@
         })
         editor.dispatch(transaction)
       }
-
-      editor.focus()
     }
+    editor.focus()
   }
 
   let errorMessage: string = ""

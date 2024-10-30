@@ -210,7 +210,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
   withName(name: TableNameSpecification): void {}
   withSchema(schema: TableSchemaSpecification): void {}
   withNewField(schema: WithNewFieldSpecification): void {
-    const fieldVisitor = new UnderlyingTableFieldVisitor(this.qb, this.table, this.tb)
+    const fieldVisitor = new UnderlyingTableFieldVisitor(this.qb, this.table, this.tb, false)
     schema.field.accept(fieldVisitor)
     this.addSql(...fieldVisitor.sql)
     this.atb = fieldVisitor.atb
