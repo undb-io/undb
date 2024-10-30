@@ -5,6 +5,11 @@ import {
   CurrencyLTE,
   DateIsEmpty,
   DurationEqual,
+  FormulaEqual,
+  FormulaGT,
+  FormulaGTE,
+  FormulaLT,
+  FormulaLTE,
   ID_TYPE,
   JsonContains,
   LongTextEqual,
@@ -127,6 +132,12 @@ export class RecordQuerySpecCreatorVisitor implements IRecordVisitor {
   jsonContains(spec: JsonContains): void {}
   jsonEmpty(spec: JsonEmpty): void {}
   checkboxEqual(spec: CheckboxEqual): void {}
+
+  formulaEqual(spec: FormulaEqual): void {}
+  formulaGT(spec: FormulaGT): void {}
+  formulaGTE(spec: FormulaGTE): void {}
+  formulaLT(spec: FormulaLT): void {}
+  formulaLTE(spec: FormulaLTE): void {}
 
   and(left: RecordComositeSpecification, right: RecordComositeSpecification): this {
     const lv = this.clone()

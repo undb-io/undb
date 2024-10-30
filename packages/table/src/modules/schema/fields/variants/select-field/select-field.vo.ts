@@ -4,6 +4,7 @@ import { match } from "ts-pattern"
 import { ColorsVO } from "../../../../colors/colors.vo"
 import type { FormFieldVO } from "../../../../forms/form/form-field.vo"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
+import type { TableDo } from "../../../../table.do"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { Options, option, optionId } from "../../option"
@@ -77,8 +78,8 @@ export class SelectField extends AbstractField<SelectFieldValue, SelectFieldCons
     return field
   }
 
-  override update(dto: IUpdateSelectFieldDTO): SelectField {
-    const field = super.update(dto) as SelectField
+  override update(table: TableDo, dto: IUpdateSelectFieldDTO): SelectField {
+    const field = super.update(table, dto) as SelectField
 
     const options = field.options.map((o) => o.name)
     applyRules(new OptionNameShouldBeUnique(options))

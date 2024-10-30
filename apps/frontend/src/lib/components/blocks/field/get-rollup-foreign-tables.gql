@@ -9,6 +9,7 @@ query GetRollupForeignTables($tableId: ID!, $fieldId: ID!) {
       constraint
       option
       display
+      metadata
     }
     views {
       id

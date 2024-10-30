@@ -32,6 +32,7 @@ import type { FormulaField } from "@undb/table/src/modules/schema/fields/variant
 import { AlterTableBuilder, sql } from "kysely"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
 import type { IRecordQueryBuilder } from "../qb"
+import { getUnderlyingFormulaType } from "./underlying-formula.util"
 import { UnderlyingFormulaVisitor } from "./underlying-formula.visitor"
 import type { UnderlyingTable } from "./underlying-table"
 
@@ -61,7 +62,8 @@ export class UnderlyingTableFieldUpdatedVisitor extends AbstractQBMutationVisito
 
     const drop = this.tb.dropColumn(field.id.value).compile()
     this.addSql(drop)
-    const add = this.tb.addColumn(field.id.value, "text", (b) => b.generatedAlwaysAs(sql.raw(parsed))).compile()
+    const type = getUnderlyingFormulaType(field.returnType)
+    const add = this.tb.addColumn(field.id.value, type, (b) => b.generatedAlwaysAs(sql.raw(parsed))).compile()
     this.addSql(add)
   }
   select(field: SelectField): void {

@@ -65,6 +65,7 @@ query GetViewShareData($shareId: ID!) {
       name
       option
       type
+      metadata
     }
   }
 }

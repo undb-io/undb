@@ -233,7 +233,7 @@ export class ReferenceField extends AbstractField<
     })
   }
 
-  public override update(dto: IUpdateReferenceFieldDTO): ReferenceField {
+  public override update(table: TableDo, dto: IUpdateReferenceFieldDTO): ReferenceField {
     return new ReferenceField({
       type: "reference",
       name: dto.name,

@@ -1,6 +1,7 @@
 import { None, Option, Some } from "@undb/domain"
 import { ZodEnum, ZodUndefined, z, type ZodSchema } from "@undb/zod"
 import type { TableComositeSpecification } from "../../../../specifications/table.composite-specification"
+import type { TableDo } from "../../../../table.do"
 import type { FormFieldVO } from "../../../forms/form/form-field.vo"
 import type {
   INotRecordComositeSpecification,
@@ -173,7 +174,7 @@ export abstract class AbstractField<
     return this.validate(this.defaultValue.unwrap()).success
   }
 
-  update(dto: IUpdateFieldDTO): Field {
+  update(table: TableDo, dto: IUpdateFieldDTO): Field {
     const json = { ...this.toJSON(), ...dto, type: this.type, id: this.id.value }
     const updated = new (Object.getPrototypeOf(this) as any).constructor(json)
 

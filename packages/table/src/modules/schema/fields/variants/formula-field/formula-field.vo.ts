@@ -2,6 +2,7 @@ import { None, Option, Some } from "@undb/domain"
 import { createParser, FormulaVisitor, returnType } from "@undb/formula"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
+import type { TableDo } from "../../../../../table.do"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import { fieldId, FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
@@ -15,6 +16,7 @@ import {
   type IFormulaFieldConditionSchema,
 } from "./formula-field.condition"
 import { FormulaEqual, FormulaGT, FormulaGTE, FormulaLT, FormulaLTE } from "./formula-field.specification"
+import { FormulaReturnTypeVisitor } from "./formula-return-type.visitor"
 
 export const FORMULA_TYPE = "formula" as const
 
@@ -48,6 +50,7 @@ export type IUpdateFormulaFieldDTO = z.infer<typeof updateFormulaFieldDTO>
 export const formulaFieldDTO = baseFieldDTO.extend({
   type: z.literal(FORMULA_TYPE),
   option: formulaFieldOption,
+  metadata: formulaMetadata.optional().nullable(),
 })
 
 export type IFormulaFieldDTO = z.infer<typeof formulaFieldDTO>
@@ -59,36 +62,57 @@ export class FormulaField extends AbstractField<FormulaFieldValue, undefined, IF
     if (dto.option) {
       this.setOption(dto.option)
     }
+    if (dto.metadata) {
+      this.metadata = Some(dto.metadata)
+    }
   }
 
   setOption(option: IFormulaFieldOption) {
     this.option = Some(option)
-    const fn = option.fn
-    if (fn) {
-      try {
-        const parser = createParser(fn)
-        const tree = parser.formula()
-        const visitor = new FormulaVisitor()
-        const result = visitor.visit(tree)
-        if (result.type === "functionCall") {
-          const metadata: IFormulaFieldMetadata = {
-            returnType: result.returnType,
-            fields: visitor.getVariables(),
-          }
-          this.setMetadata(metadata)
+  }
+
+  setMetadata(table: TableDo) {
+    const fn = this.fn
+    if (!fn) return
+
+    try {
+      const parser = createParser(fn)
+      const tree = parser.formula()
+      const visitor = new FormulaVisitor()
+      const result = visitor.visit(tree)
+      if (result.type === "functionCall") {
+        const metadata: IFormulaFieldMetadata = {
+          returnType: result.returnType,
+          fields: visitor.getVariables(),
         }
-      } catch (error) {
-        // ignore
+        this.metadata = Some(metadata)
+      } else if (result.type === "variable") {
+        const fieldId = result.variable
+        const field = table.schema.getFieldByIdOrName(fieldId).into(null)
+        if (field) {
+          const visitor = new FormulaReturnTypeVisitor()
+          field.accept(visitor)
+          const metadata: IFormulaFieldMetadata = {
+            returnType: visitor.returnType,
+            fields: [fieldId],
+          }
+          this.metadata = Some(metadata)
+        }
+      } else if (result.type === "boolean" || result.type === "number" || result.type === "string") {
+        const metadata: IFormulaFieldMetadata = {
+          returnType: result.type,
+          fields: [],
+        }
+        this.metadata = Some(metadata)
       }
+    } catch (error) {
+      // ignore
     }
   }
 
-  setMetadata(metadata: IFormulaFieldMetadata) {
-    this.metadata = Some(metadata)
-  }
-
-  static create(dto: ICreateFormulaFieldDTO) {
+  static create(table: TableDo, dto: ICreateFormulaFieldDTO) {
     const field = new FormulaField({ ...dto, id: FieldIdVo.fromStringOrCreate(dto.id).value })
+    field.setMetadata(table)
     return field
   }
 
@@ -120,7 +144,7 @@ export class FormulaField extends AbstractField<FormulaFieldValue, undefined, IF
   }
 
   protected override getConditionSchema(optionType: z.ZodTypeAny): IFormulaFieldConditionSchema {
-    return createFormulaFieldCondition(optionType)
+    return createFormulaFieldCondition(this.returnType)(optionType)
   }
 
   override getMutationSpec(value: FormulaFieldValue): Option<RecordComositeSpecification> {
@@ -139,10 +163,16 @@ export class FormulaField extends AbstractField<FormulaFieldValue, undefined, IF
     return this.metadata.mapOr("any", (m) => m.returnType)
   }
 
+  override update(table: TableDo, dto: IUpdateFormulaFieldDTO): FormulaField {
+    const field = super.update(table, dto) as FormulaField
+    field.setMetadata(table)
+    return field
+  }
+
   override toJSON() {
     return {
       ...super.toJSON(),
-      metadata: this.metadata.into(null),
+      metadata: this.metadata.into(undefined),
     }
   }
 }

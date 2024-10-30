@@ -1,6 +1,6 @@
-import { andOptions, Option, Some, ValueObject } from "@undb/domain"
+import { andOptions,Option,Some,ValueObject } from "@undb/domain"
 import { getNextName } from "@undb/utils"
-import { z, ZodSchema } from "@undb/zod"
+import { z,ZodSchema } from "@undb/zod"
 import { objectify } from "radash"
 import {
   WithDuplicatedFieldSpecification,
@@ -34,10 +34,10 @@ import {
   type IUpdateFieldDTO,
 } from "./fields"
 import { FieldFactory } from "./fields/field.factory"
-import type { Field, MutableFieldValue, NoneSystemField, SystemField } from "./fields/field.type"
+import type { Field,MutableFieldValue,NoneSystemField,SystemField } from "./fields/field.type"
 import { AutoIncrementField } from "./fields/variants/autoincrement-field"
 import { CreatedAtField } from "./fields/variants/created-at-field"
-import type { SchemaIdMap, SchemaNameMap } from "./schema.type"
+import type { SchemaIdMap,SchemaNameMap } from "./schema.type"
 
 export class Schema extends ValueObject<Field[]> {
   public fieldMapById: SchemaIdMap
@@ -56,9 +56,9 @@ export class Schema extends ValueObject<Field[]> {
     this.fieldMapByName = fieldMapByName
   }
 
-  static create(dto: ICreateSchemaDTO): Schema {
-    const fields = dto.map((field) => FieldFactory.create(field))
-    return new Schema([
+  static create(table: TableDo, dto: ICreateSchemaDTO): Schema {
+    const fields = dto.map((field) => FieldFactory.create(table, field))
+    const schema = new Schema([
       IdField.create({ name: "id", type: "id" }),
       ...fields,
       CreatedAtField.create({ name: "createdAt", type: "createdAt" }),
@@ -67,11 +67,21 @@ export class Schema extends ValueObject<Field[]> {
       UpdatedByField.create({ name: "updatedBy", type: "updatedBy" }),
       AutoIncrementField.create({ name: "autoIncrement", type: "autoIncrement" }),
     ])
+
+    for (const field of schema.fields) {
+      if (field.type === "formula") {
+        field.setMetadata(table)
+      }
+    }
+
+    return schema
   }
 
   static fromJSON(dto: ISchemaDTO): Schema {
     const fields = dto.map((field) => FieldFactory.fromJSON(field))
-    return new Schema(fields)
+    const schema = new Schema(fields)
+
+    return schema
   }
 
   *[Symbol.iterator]() {
@@ -108,9 +118,9 @@ export class Schema extends ValueObject<Field[]> {
     return new Schema([...this.fields, field])
   }
 
-  $updateField(dto: IUpdateFieldDTO) {
+  $updateField(table: TableDo, dto: IUpdateFieldDTO) {
     const field = this.getFieldById(new FieldIdVo(dto.id)).expect("Field not found")
-    const updated = field.clone().update(dto as any)
+    const updated = field.clone().update(table, dto as any)
     return new WithUpdatedFieldSpecification(field, updated)
   }
 

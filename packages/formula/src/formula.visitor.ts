@@ -20,6 +20,7 @@ import {
 } from "./grammar/FormulaParser"
 import type { FormulaParserVisitor } from "./grammar/FormulaParserVisitor"
 import {
+  ArgumentListResult,
   ReturnType,
   type ExpressionResult,
   type FunctionExpressionResult,
@@ -194,14 +195,14 @@ export class FormulaVisitor
     }
   }
 
-  visitArgumentList(ctx: ArgumentListContext): ExpressionResult {
+  visitArgumentList(ctx: ArgumentListContext): ArgumentListResult {
     const args = ctx.expression().map((expr) => this.visit(expr))
     return {
       type: "argumentList",
       arguments: args,
     }
   }
-  visitVariable(ctx: VariableContext): ExpressionResult {
+  visitVariable(ctx: VariableContext): VariableResult {
     const variableName = ctx.IDENTIFIER().text
     const raw = ctx.text
     this.variables.add(variableName)

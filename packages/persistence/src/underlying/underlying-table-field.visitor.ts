@@ -34,6 +34,7 @@ import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, Crea
 import type { IQueryBuilder } from "../qb"
 import { users } from "../tables"
 import { JoinTable } from "./reference/join-table"
+import { getUnderlyingFormulaType } from "./underlying-formula.util"
 import { UnderlyingFormulaVisitor } from "./underlying-formula.visitor"
 import type { UnderlyingTable } from "./underlying-table"
 
@@ -194,7 +195,8 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
 
     this.logger.debug("parsed formula", { parsed })
 
-    const c = this.tb.addColumn(field.id.value, "text", (b) => {
+    const type = getUnderlyingFormulaType(field.returnType)
+    const c = this.tb.addColumn(field.id.value, type, (b) => {
       const column = b.generatedAlwaysAs(sql.raw(parsed))
       return this.isNew ? column.stored() : column
     })
