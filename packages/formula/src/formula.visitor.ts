@@ -1,4 +1,3 @@
-import { AbstractParseTreeVisitor } from "antlr4ts/tree/AbstractParseTreeVisitor"
 import { FormulaFunction } from "./formula/formula.type"
 import { globalFunctionRegistry } from "./formula/registry"
 import {
@@ -18,7 +17,7 @@ import {
   VariableContext,
   VariableExprContext,
 } from "./grammar/FormulaParser"
-import type { FormulaParserVisitor } from "./grammar/FormulaParserVisitor"
+import FormulaParserVisitor from "./grammar/FormulaParserVisitor"
 import {
   ArgumentListResult,
   ReturnType,
@@ -28,10 +27,7 @@ import {
   type VariableResult,
 } from "./types"
 
-export class FormulaVisitor
-  extends AbstractParseTreeVisitor<ExpressionResult>
-  implements FormulaParserVisitor<ExpressionResult>
-{
+export class FormulaVisitor extends FormulaParserVisitor<ExpressionResult> {
   private variables: Set<string> = new Set()
 
   private assertType(result: ExpressionResult, types: ReturnType[]): boolean {
@@ -53,11 +49,11 @@ export class FormulaVisitor
     return true
   }
 
-  visitFormula(ctx: FormulaContext): ExpressionResult {
+  visitFormula = (ctx: FormulaContext): ExpressionResult => {
     return this.visit(ctx.expression())
   }
 
-  visitMulDivModExpr(ctx: MulDivModExprContext): ExpressionResult {
+  visitMulDivModExpr = (ctx: MulDivModExprContext): ExpressionResult => {
     const left = this.visit(ctx.expression(0)) as NumberResult | VariableResult
     const right = this.visit(ctx.expression(1)) as NumberResult | VariableResult
 
@@ -70,11 +66,11 @@ export class FormulaVisitor
       name: op,
       arguments: [left, right],
       returnType: "number",
-      value: ctx.text,
+      value: ctx.getText(),
     }
   }
 
-  visitAddSubExpr(ctx: AddSubExprContext): ExpressionResult {
+  visitAddSubExpr = (ctx: AddSubExprContext): ExpressionResult => {
     const left = this.visit(ctx.expression(0)) as NumberResult | VariableResult
     const right = this.visit(ctx.expression(1)) as NumberResult | VariableResult
 
@@ -87,11 +83,11 @@ export class FormulaVisitor
       name: op,
       arguments: [left, right],
       returnType: "number",
-      value: ctx.text,
+      value: ctx.getText(),
     }
   }
 
-  visitComparisonExpr(ctx: ComparisonExprContext): ExpressionResult {
+  visitComparisonExpr = (ctx: ComparisonExprContext): ExpressionResult => {
     const left = this.visit(ctx.expression(0))
     const right = this.visit(ctx.expression(1))
 
@@ -104,11 +100,11 @@ export class FormulaVisitor
       name: op,
       arguments: [left, right],
       returnType: "boolean",
-      value: ctx.text,
+      value: ctx.getText(),
     }
   }
 
-  visitAndExpr(ctx: AndExprContext): ExpressionResult {
+  visitAndExpr = (ctx: AndExprContext): ExpressionResult => {
     const left = this.visit(ctx.expression(0))
     const right = this.visit(ctx.expression(1))
 
@@ -120,11 +116,11 @@ export class FormulaVisitor
       name: "AND",
       arguments: [left, right],
       returnType: "boolean",
-      value: ctx.text,
+      value: ctx.getText(),
     }
   }
 
-  visitOrExpr(ctx: OrExprContext): ExpressionResult {
+  visitOrExpr = (ctx: OrExprContext): ExpressionResult => {
     const left = this.visit(ctx.expression(0))
     const right = this.visit(ctx.expression(1))
 
@@ -136,11 +132,11 @@ export class FormulaVisitor
       name: "OR",
       arguments: [left, right],
       returnType: "boolean",
-      value: ctx.text,
+      value: ctx.getText(),
     }
   }
 
-  visitNotExpr(ctx: NotExprContext): ExpressionResult {
+  visitNotExpr = (ctx: NotExprContext): ExpressionResult => {
     const expr = this.visit(ctx.expression())
     this.assertType(expr, ["boolean"])
     return {
@@ -148,32 +144,32 @@ export class FormulaVisitor
       name: "NOT",
       arguments: [expr],
       returnType: "boolean",
-      value: ctx.text,
+      value: ctx.getText(),
     }
   }
 
-  visitFunctionExpr(ctx: FunctionExprContext): ExpressionResult {
+  visitFunctionExpr = (ctx: FunctionExprContext): ExpressionResult => {
     return this.visit(ctx.functionCall())
   }
 
-  visitVariableExpr(ctx: VariableExprContext): ExpressionResult {
+  visitVariableExpr = (ctx: VariableExprContext): ExpressionResult => {
     return this.visit(ctx.variable())
   }
 
-  visitNumberExpr(ctx: NumberExprContext): ExpressionResult {
-    return { type: "number", value: Number(ctx.NUMBER().text) }
+  visitNumberExpr = (ctx: NumberExprContext): ExpressionResult => {
+    return { type: "number", value: Number(ctx.NUMBER().getText()) }
   }
 
-  visitStringExpr(ctx: StringExprContext): ExpressionResult {
-    return { type: "string", value: ctx.STRING().text.slice(1, -1) }
+  visitStringExpr = (ctx: StringExprContext): ExpressionResult => {
+    return { type: "string", value: ctx.STRING().getText().slice(1, -1) }
   }
 
-  visitParenExpr(ctx: ParenExprContext): ExpressionResult {
+  visitParenExpr = (ctx: ParenExprContext): ExpressionResult => {
     return this.visit(ctx.expression())
   }
 
-  visitFunctionCall(ctx: FunctionCallContext): ExpressionResult {
-    const funcName = ctx.IDENTIFIER().text as FormulaFunction
+  visitFunctionCall = (ctx: FunctionCallContext): ExpressionResult => {
+    const funcName = ctx.IDENTIFIER().getText() as FormulaFunction
     const args = ctx.argumentList() ? (this.visit(ctx.argumentList()!) as FunctionExpressionResult) : undefined
 
     if (!globalFunctionRegistry.isValid(funcName)) {
@@ -191,20 +187,20 @@ export class FormulaVisitor
       name: funcName,
       arguments: args?.arguments ?? [],
       returnType,
-      value: ctx.text,
+      value: ctx.getText(),
     }
   }
 
-  visitArgumentList(ctx: ArgumentListContext): ArgumentListResult {
-    const args = ctx.expression().map((expr) => this.visit(expr))
+  visitArgumentList = (ctx: ArgumentListContext): ArgumentListResult => {
+    const args = ctx.expression_list().map((expr) => this.visit(expr))
     return {
       type: "argumentList",
       arguments: args,
     }
   }
-  visitVariable(ctx: VariableContext): VariableResult {
-    const variableName = ctx.IDENTIFIER().text
-    const raw = ctx.text
+  visitVariable = (ctx: VariableContext): VariableResult => {
+    const variableName = ctx.IDENTIFIER().getText()
+    const raw = ctx.getText()
     this.variables.add(variableName)
     return { type: "variable", value: raw, variable: variableName }
   }

@@ -1,10 +1,10 @@
-import { CharStreams, CommonTokenStream } from "antlr4ts"
+import { CharStream, CommonTokenStream } from "antlr4"
 import { FormulaVisitor } from "./formula.visitor"
-import { FormulaLexer } from "./grammar/FormulaLexer"
-import { FormulaParser } from "./grammar/FormulaParser"
+import FormulaLexer from "./grammar/FormulaLexer"
+import FormulaParser from "./grammar/FormulaParser"
 
 export function createParser(input: string) {
-  const inputStream = CharStreams.fromString(input)
+  const inputStream = new CharStream(input)
   const lexer = new FormulaLexer(inputStream)
   const tokenStream = new CommonTokenStream(lexer)
   return new FormulaParser(tokenStream)

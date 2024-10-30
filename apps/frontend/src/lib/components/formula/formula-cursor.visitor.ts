@@ -1,5 +1,4 @@
 import {
-  AbstractParseTreeVisitor,
   AddSubExprContext,
   AndExprContext,
   ArgumentListContext,
@@ -16,7 +15,7 @@ import {
   VariableContext,
 } from "@undb/formula"
 
-export class FormulaCursorVisitor extends AbstractParseTreeVisitor<void> implements FormulaParserVisitor<void> {
+export class FormulaCursorVisitor extends FormulaParserVisitor<void> {
   private pathNodes: ParseTree[] = []
   private variables: Set<string> = new Set()
   public readonly targetPosition: number
@@ -46,7 +45,7 @@ export class FormulaCursorVisitor extends AbstractParseTreeVisitor<void> impleme
 
   public getFunctionName(): string | undefined {
     const functionCall = this.getNearestFunctionNode()
-    return functionCall?.IDENTIFIER()?.text
+    return functionCall?.IDENTIFIER().getText()
   }
 
   protected defaultResult(): void {
@@ -60,8 +59,8 @@ export class FormulaCursorVisitor extends AbstractParseTreeVisitor<void> impleme
   visitPositionInRange(ctx: ExpressionContext) {
     if (!ctx.start || !ctx.stop) return
 
-    const start = ctx.start.startIndex
-    const stop = ctx.stop.stopIndex
+    const start = ctx.start.tokenIndex
+    const stop = ctx.stop.tokenIndex
     const isPositionWithinRange = start <= this.targetPosition && stop >= this.targetPosition
 
     if (isPositionWithinRange) {
@@ -70,48 +69,48 @@ export class FormulaCursorVisitor extends AbstractParseTreeVisitor<void> impleme
     }
   }
 
-  visitFormula(ctx: FormulaContext) {
+  visitFormula = (ctx: FormulaContext) => {
     this.visitPositionInRange(ctx)
   }
 
-  visitComparisonExpr(ctx: ComparisonExprContext) {
+  visitComparisonExpr = (ctx: ComparisonExprContext) => {
     this.visitPositionInRange(ctx)
   }
 
-  visitAndExpr(ctx: AndExprContext) {
+  visitAndExpr = (ctx: AndExprContext) => {
     this.visitPositionInRange(ctx)
   }
 
-  visitOrExpr(ctx: OrExprContext) {
+  visitOrExpr = (ctx: OrExprContext) => {
     this.visitPositionInRange(ctx)
   }
 
-  visitNotExpr(ctx: NotExprContext) {
+  visitNotExpr = (ctx: NotExprContext) => {
     this.visitPositionInRange(ctx)
   }
 
-  visitMulDivModExpr(ctx: MulDivModExprContext) {
+  visitMulDivModExpr = (ctx: MulDivModExprContext) => {
     this.visitPositionInRange(ctx)
   }
 
-  visitAddSubExpr(ctx: AddSubExprContext) {
+  visitAddSubExpr = (ctx: AddSubExprContext) => {
     this.visitPositionInRange(ctx)
   }
 
-  visitFunctionExpr(ctx: FunctionExprContext) {
+  visitFunctionExpr = (ctx: FunctionExprContext) => {
     this.visitPositionInRange(ctx)
   }
 
-  visitFunctionCall(ctx: FunctionCallContext) {
+  visitFunctionCall = (ctx: FunctionCallContext) => {
     this.visitPositionInRange(ctx)
   }
 
-  visitArgumentList(ctx: ArgumentListContext) {
+  visitArgumentList = (ctx: ArgumentListContext) => {
     this.visitPositionInRange(ctx)
   }
 
-  visitVariable(ctx: VariableContext) {
-    this.variables.add(ctx.IDENTIFIER().text)
+  visitVariable = (ctx: VariableContext) => {
+    this.variables.add(ctx.IDENTIFIER().getText())
     this.visitPositionInRange(ctx)
   }
 }
