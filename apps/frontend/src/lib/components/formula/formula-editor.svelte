@@ -68,39 +68,46 @@
           },
           {
             key: "ArrowLeft",
-            run: () => {
+            run: (editor) => {
               const cursor = editor.state.selection.main.head
               const content = editor.state.doc.toString()
               const textBeforeCursor = content.slice(0, cursor)
 
               // 如果光标在 }} 前面,移动到变量名前面
               if (textBeforeCursor.endsWith("}}")) {
-                let i = textBeforeCursor.length - 2
-                // 往前找到变量名开始位置
-                while (i >= 0 && /[a-zA-Z0-9_]/.test(textBeforeCursor[i])) {
-                  i--
-                }
+                let i = 2
                 // 跳过空格
-                while (i >= 0 && textBeforeCursor[i] === " ") {
-                  i--
+                while (i < textBeforeCursor.length && textBeforeCursor[textBeforeCursor.length - i - 1] === " ") {
+                  i++
                 }
-                if (i >= 0 && textBeforeCursor[i] === "{" && i > 0 && textBeforeCursor[i - 1] === "{") {
+                // 找到变量名开始位置
+                while (
+                  i < textBeforeCursor.length &&
+                  /[a-zA-Z0-9_]/.test(textBeforeCursor[textBeforeCursor.length - i - 1])
+                ) {
+                  i++
+                }
+                if (i > 2) {
                   editor.dispatch({
-                    selection: { anchor: i - 1 },
+                    selection: { anchor: cursor - i },
                   })
                   return true
                 }
               }
 
               // 找到连续的 } 或 { 的第一个位置
-              let i = cursor - 1
-              while (i >= 0 && (textBeforeCursor[i] === "}" || textBeforeCursor[i] === "{")) {
-                i--
+              let i = 0
+              while (
+                i < textBeforeCursor.length &&
+                (textBeforeCursor[textBeforeCursor.length - i - 1] === "}" ||
+                  textBeforeCursor[textBeforeCursor.length - i - 1] === "{")
+              ) {
+                i++
               }
 
-              if (i < cursor - 1) {
+              if (i > 0) {
                 editor.dispatch({
-                  selection: { anchor: i },
+                  selection: { anchor: cursor - i },
                 })
                 return true
               }
@@ -109,7 +116,7 @@
           },
           {
             key: "ArrowRight",
-            run: () => {
+            run: (editor) => {
               const cursor = editor.state.selection.main.head
               const content = editor.state.doc.toString()
               const textAfterCursor = content.slice(cursor)
@@ -155,6 +162,33 @@
                 insertSuggestion(selectedSuggestion)
               }
               return true
+            },
+          },
+          {
+            key: "Backspace",
+            run: (editor) => {
+              const cursor = editor.state.selection.main.head
+              const content = editor.state.doc.toString()
+              const textBeforeCursor = content.slice(0, cursor)
+              const textAfterCursor = content.slice(cursor)
+
+              // 检查是否在变量内部或者最后一个 } 后面
+              const lastOpenBrace = textBeforeCursor.lastIndexOf("{{")
+              if (lastOpenBrace !== -1) {
+                const nextCloseBrace = content.indexOf("}}", lastOpenBrace)
+                if (nextCloseBrace !== -1 && cursor <= nextCloseBrace + 2 && cursor > lastOpenBrace) {
+                  // 删除整个变量
+                  editor.dispatch({
+                    changes: {
+                      from: lastOpenBrace,
+                      to: nextCloseBrace + 2,
+                      insert: "",
+                    },
+                  })
+                  return true
+                }
+              }
+              return false
             },
           },
           ...defaultKeymap,
