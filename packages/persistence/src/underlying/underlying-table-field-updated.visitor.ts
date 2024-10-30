@@ -1,3 +1,4 @@
+import { createParser } from "@undb/formula"
 import {
   Options,
   type AttachmentField,
@@ -28,9 +29,10 @@ import {
   type UserField,
 } from "@undb/table"
 import type { FormulaField } from "@undb/table/src/modules/schema/fields/variants/formula-field"
-import { sql } from "kysely"
+import { AlterTableBuilder, sql } from "kysely"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
 import type { IRecordQueryBuilder } from "../qb"
+import { UnderlyingFormulaVisitor } from "./underlying-formula.visitor"
 import type { UnderlyingTable } from "./underlying-table"
 
 export class UnderlyingTableFieldUpdatedVisitor extends AbstractQBMutationVisitor implements IFieldVisitor {
@@ -38,6 +40,7 @@ export class UnderlyingTableFieldUpdatedVisitor extends AbstractQBMutationVisito
     private readonly qb: IRecordQueryBuilder,
     private readonly table: UnderlyingTable,
     private readonly prev: Field,
+    private readonly tb: AlterTableBuilder,
   ) {
     super()
   }
@@ -51,7 +54,16 @@ export class UnderlyingTableFieldUpdatedVisitor extends AbstractQBMutationVisito
   string(field: StringField): void {}
   number(field: NumberField): void {}
   rating(field: RatingField): void {}
-  formula(field: FormulaField): void {}
+  formula(field: FormulaField): void {
+    const visitor = new UnderlyingFormulaVisitor(this.table.table)
+    const parser = createParser(field.fn)
+    const parsed = visitor.visit(parser.formula())
+
+    const drop = this.tb.dropColumn(field.id.value).compile()
+    this.addSql(drop)
+    const add = this.tb.addColumn(field.id.value, "text", (b) => b.generatedAlwaysAs(sql.raw(parsed))).compile()
+    this.addSql(add)
+  }
   select(field: SelectField): void {
     const prev = this.prev as SelectField
     const deletedOptions = Options.getDeletedOptions(prev.options, field.options)

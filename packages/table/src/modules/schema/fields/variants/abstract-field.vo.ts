@@ -202,7 +202,7 @@ export abstract class AbstractField<
     }
   }
 
-  clone() {
+  clone(): this {
     return new (Object.getPrototypeOf(this) as any).constructor(this.toJSON())
   }
 }

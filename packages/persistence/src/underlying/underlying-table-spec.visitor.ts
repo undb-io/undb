@@ -131,7 +131,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
         }
       }
 
-      const fieldVisitor = new UnderlyingTableFieldUpdatedVisitor(this.qb, this.table, spec.previous)
+      const fieldVisitor = new UnderlyingTableFieldUpdatedVisitor(this.qb, this.table, spec.previous, this.tb)
       spec.field.accept(fieldVisitor)
       this.addSql(...fieldVisitor.sql)
     }
