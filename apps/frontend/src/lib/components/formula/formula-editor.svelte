@@ -12,13 +12,20 @@
   import { FormulaCursorVisitor } from "./formula-cursor.visitor"
   import { FORMULA_FUNCTIONS } from "@undb/formula"
   import { SquareFunctionIcon, TriangleAlertIcon } from "lucide-svelte"
+  import { getTable } from "$lib/store/table.store"
+  import { derived } from "svelte/store"
+  import FieldIcon from "../blocks/field-icon/field-icon.svelte"
 
   const functions = FORMULA_FUNCTIONS
-  const fields = ["field1", "field2", "field3"]
+
+  const table = getTable()
+  let fields = derived(table, ($table) =>
+    $table.schema.fields.filter((field) => !field.isSystem).map((field) => field.id.value),
+  )
   export let value: string = ""
 
   let editor: EditorView
-  let suggestions: string[] = [...functions, ...fields]
+  let suggestions: string[] = [...functions, ...$fields]
   let selectedSuggestion: string = ""
 
   const highlightStyle = HighlightStyle.define([
@@ -147,7 +154,7 @@
           ...defaultKeymap,
         ]),
         syntaxHighlighting(highlightStyle),
-        templateVariablePlugin,
+        templateVariablePlugin($table),
         EditorView.lineWrapping,
         EditorView.updateListener.of((update) => {
           const formula = editor.state.doc.toString()
@@ -194,9 +201,9 @@
     const isInsideParens = lastOpenParen > lastCloseParen
 
     if (content.trim() === "") {
-      suggestions = [...functions, ...fields]
+      suggestions = [...functions, ...$fields]
     } else if ((hasArgumentList || isInsideParens) && hasFunctionCall) {
-      suggestions = [...functions, ...fields]
+      suggestions = [...functions, ...$fields]
     } else if (hasFunctionCall) {
       suggestions = functions
     }
@@ -346,6 +353,7 @@
     {#each suggestions as suggestion}
       {@const isSelected = suggestion === selectedSuggestion}
       {@const isFunction = functions.includes(suggestion)}
+      {@const isField = !isFunction}
       <button type="button" on:click={() => insertSuggestion(suggestion)} class="w-full text-left text-xs font-medium">
         <li class={cn("flex w-full items-center gap-1 p-2 hover:bg-gray-100", isSelected && "bg-gray-100")}>
           {#if isFunction}
@@ -356,7 +364,13 @@
               {suggestion}()
             </span>
           {:else}
-            <span>{suggestion}</span>
+            {@const field = $table.schema.getFieldByIdOrName(suggestion).into(null)}
+            {#if field}
+              <span class="flex items-center gap-1">
+                <FieldIcon class="size-4" type={field.type} {field} />
+                {field.name.value}
+              </span>
+            {/if}
           {/if}
         </li>
       </button>

@@ -433,6 +433,13 @@
             "option": {
               "fn": "JSON_EXTRACT({{json1}}, '$.name')"
             }
+          },
+          "AddAutoIncrement": {
+            "id": "addAutoIncrement",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} + {{autoIncrement}}"
+            }
           }
         },
         "records": [
