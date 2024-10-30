@@ -7,7 +7,7 @@ import { FormulaFieldValue } from "./formula-field-value.vo"
 
 export class FormulaEqual extends RecordComositeSpecification {
   constructor(
-    readonly value: number | null,
+    readonly value: number | null | boolean,
     readonly fieldId: FieldId,
   ) {
     super(fieldId)

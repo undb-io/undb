@@ -9,7 +9,7 @@ import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { StringEmpty } from "../string-field"
 import { FormulaFieldValue } from "./formula-field-value.vo"
-import { formulaFieldAggregate } from "./formula-field.aggregate"
+import { createFormulaFieldAggregate } from "./formula-field.aggregate"
 import {
   createFormulaFieldCondition,
   type IFormulaFieldCondition,
@@ -138,6 +138,8 @@ export class FormulaField extends AbstractField<FormulaFieldValue, undefined, IF
       .with({ op: "lte" }, ({ value }) => new FormulaLTE(value, this.id))
       .with({ op: "is_empty" }, () => new StringEmpty(this.id))
       .with({ op: "is_not_empty" }, () => new StringEmpty(this.id).not())
+      .with({ op: "is_true" }, () => new FormulaEqual(true, this.id))
+      .with({ op: "is_false" }, () => new FormulaEqual(false, this.id).not())
       .exhaustive()
 
     return Option(spec)
@@ -152,7 +154,7 @@ export class FormulaField extends AbstractField<FormulaFieldValue, undefined, IF
   }
 
   override get aggregate() {
-    return formulaFieldAggregate
+    return createFormulaFieldAggregate(this.returnType)
   }
 
   get fn() {
