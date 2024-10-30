@@ -18,7 +18,7 @@ import {
   type FormulaFunction,
   type FormulaParserVisitor,
 } from "@undb/formula"
-import { FieldIdVo, type TableDo } from "@undb/table"
+import { AUTO_INCREMENT_TYPE, FieldIdVo, ID_TYPE, type TableDo } from "@undb/table"
 import { match } from "ts-pattern"
 
 export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> implements FormulaParserVisitor<string> {
@@ -69,6 +69,8 @@ export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> i
       .expect(`variable ${fieldId} not found in table ${this.table.name.value}`)
     if (field.type === "currency") {
       return `(${fieldId}/100)`
+    } else if (field.type === "autoIncrement") {
+      return `[${fieldId}]`
     }
     return fieldId
   }
@@ -167,6 +169,12 @@ export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> i
         const args = this.arguments(ctx)
         // args[0] 是要重复的字符串，args[1] 是重复次数
         return `SUBSTR(REPLACE(HEX(ZEROBLOB(${args[1]})), '00', ${args[0]}), 1, LENGTH(${args[0]}) * ${args[1]})`
+      })
+      .with("RECORD_ID", () => {
+        return ID_TYPE
+      })
+      .with("AUTO_INCREMENT", () => {
+        return `[${AUTO_INCREMENT_TYPE}]`
       })
       .otherwise(() => {
         const args = ctx.argumentList() ? this.visit(ctx.argumentList()!) : ""

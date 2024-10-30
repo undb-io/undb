@@ -50,7 +50,9 @@ export const FORMULA_FUNCTIONS: FormulaFunction[] = [
   // "COUNTIF",
   // "SUMIF",
   // "CORREL",
-  // "RECORD_ID",
 
   "JSON_EXTRACT",
+
+  "RECORD_ID",
+  "AUTO_INCREMENT",
 ] as const

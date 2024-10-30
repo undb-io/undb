@@ -15,12 +15,18 @@
   import { getTable } from "$lib/store/table.store"
   import { derived } from "svelte/store"
   import FieldIcon from "../blocks/field-icon/field-icon.svelte"
+  import { type Field } from "@undb/table"
 
   const functions = FORMULA_FUNCTIONS
 
+  export let field: Field | undefined = undefined
+
   const table = getTable()
   let fields = derived(table, ($table) =>
-    $table.schema.fields.filter((field) => !field.isSystem).map((field) => field.id.value),
+    $table.schema.fields
+      .filter((field) => !field.isSystem)
+      .filter((f) => f.id.value !== field?.id.value)
+      .map((field) => field.id.value),
   )
   export let value: string = ""
 
@@ -37,7 +43,7 @@
 
   onMount(() => {
     const state = EditorState.create({
-      doc: "",
+      doc: value,
       extensions: [
         keymap.of([
           {
@@ -173,6 +179,8 @@
       state,
       parent: document.getElementById("editor-container")!,
     })
+
+    editor.focus()
   })
 
   function onSelectionChange() {

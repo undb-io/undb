@@ -61,5 +61,8 @@ export type FormulaFunction =
   | "COUNTIF"
   | "SUMIF"
   | "CORREL"
-  | "RECORD_ID"
   | "JSON_EXTRACT"
+
+  // System Field
+  | "RECORD_ID"
+  | "AUTO_INCREMENT"

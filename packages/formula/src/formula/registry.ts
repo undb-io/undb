@@ -137,3 +137,6 @@ globalFunctionRegistry.register("ISTEXT", [["any"]], "boolean")
 // globalFunctionRegistry.register("SUMIF", [["variadic"]], "number")
 
 globalFunctionRegistry.register("JSON_EXTRACT", [["string", "string"]], "any")
+
+globalFunctionRegistry.register("RECORD_ID", [], "string")
+globalFunctionRegistry.register("AUTO_INCREMENT", [], "number")
