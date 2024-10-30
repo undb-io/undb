@@ -51,6 +51,7 @@ query GetBaseTableShareData($shareId: ID!, $tableId: ID!) {
       name
       option
       type
+      metadata
     }
   }
 }

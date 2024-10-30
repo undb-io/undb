@@ -20,6 +20,7 @@
     "@undb/context": "workspace:*",
     "@undb/di": "workspace:*",
     "@undb/domain": "workspace:*",
+    "@undb/formula": "workspace:*",
     "@undb/logger": "workspace:*",
     "@undb/openapi": "workspace:*",
     "@undb/table": "workspace:*",

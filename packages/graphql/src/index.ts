@@ -150,6 +150,7 @@ export class Graphql {
         display: Boolean
         constraint: JSON
         option: JSON
+        metadata: JSON
       }
 
       enum ViewType {

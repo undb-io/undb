@@ -6,7 +6,6 @@ import { checkboxFieldAggregate } from "./variants/checkbox-field/checkbox-field
 import { currencyFieldAggregate } from "./variants/currency-field/currency-field.aggregate"
 import { durationFieldAggregate } from "./variants/duration-field/duration-field.aggregate"
 import { emailFieldAggregate } from "./variants/email-field/email-field.aggregate"
-import { formulaFieldAggregate } from "./variants/formula-field/formula-field.aggregate"
 import { jsonFieldAggregate } from "./variants/json-field/json-field.aggregate"
 import { longTextFieldAggregate } from "./variants/long-text-field/long-text-field.aggregate"
 import { percentageFieldAggregate } from "./variants/percentage-field/percentage-field.aggregate"
@@ -31,6 +30,5 @@ export const fieldAggregate = stringFieldAggregate
   .or(currencyFieldAggregate)
   .or(durationFieldAggregate)
   .or(percentageFieldAggregate)
-  .or(formulaFieldAggregate)
 
 export type IFieldAggregate = z.infer<typeof fieldAggregate>

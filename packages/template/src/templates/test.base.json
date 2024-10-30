@@ -42,13 +42,58 @@
           },
           "Count2": {
             "id": "count2",
-            "type": "number"
+            "type": "currency",
+            "option": {
+              "symbol": "$"
+            }
           },
           "Sum": {
             "id": "sum",
             "type": "formula",
             "option": {
               "fn": "{{count1}} + {{count2}}"
+            }
+          },
+          "SumAdd": {
+            "id": "sumadd",
+            "type": "formula",
+            "option": {
+              "fn": "ADD({{count1}}, ADD({{count2}}, {{count1}}))"
+            }
+          },
+          "SumCounts": {
+            "id": "sumcounts",
+            "type": "formula",
+            "option": {
+              "fn": "SUM({{count1}}, {{count2}})"
+            }
+          },
+          "SumSum": {
+            "id": "sumsum",
+            "type": "formula",
+            "option": {
+              "fn": "SUM({{sum}}, {{sumadd}})"
+            }
+          },
+          "Multiply": {
+            "id": "multiply",
+            "type": "formula",
+            "option": {
+              "fn": "MULTIPLY({{count1}}, {{count2}})"
+            }
+          },
+          "ComplicatedFn": {
+            "id": "complicatedFn",
+            "type": "formula",
+            "option": {
+              "fn": "ADD({{count1}}, MULTIPLY({{count2}}, {{count1}}))"
+            }
+          },
+          "Concat": {
+            "id": "concat",
+            "type": "formula",
+            "option": {
+              "fn": "CONCAT({{id}}, {{title}}, {{count1}}, {{count2}}, {{complicatedFn}})"
             }
           },
           "Sum2": {
@@ -114,6 +159,309 @@
           {
             "id": "2",
             "Title": "2-2"
+          }
+        ]
+      },
+      "Formula1": {
+        "fieldsOrder": ["Count1", "Count2", "Count3", "String1", "String2", "Json1"],
+        "schema": {
+          "Count1": {
+            "id": "count1",
+            "type": "number"
+          },
+          "Count2": {
+            "id": "count2",
+            "type": "number"
+          },
+          "Count3": {
+            "id": "count3",
+            "type": "number"
+          },
+          "String1": {
+            "id": "string1",
+            "type": "string"
+          },
+          "String2": {
+            "id": "string2",
+            "type": "string"
+          },
+          "Json1": {
+            "id": "json1",
+            "type": "json"
+          },
+          "Sum": {
+            "id": "sum",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} + {{count2}} + {{count3}}"
+            }
+          },
+          "Subtract": {
+            "id": "subtract",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} - {{count2}}"
+            }
+          },
+          "Mod": {
+            "id": "mod",
+            "type": "formula",
+            "option": {
+              "fn": "MOD({{count3}}, {{count2}})"
+            }
+          },
+          "Power": {
+            "id": "power",
+            "type": "formula",
+            "option": {
+              "fn": "POWER({{count3}}, {{count2}})"
+            }
+          },
+          "Sqrt": {
+            "id": "sqrt",
+            "type": "formula",
+            "option": {
+              "fn": "SQRT({{count3}})"
+            }
+          },
+          "Abs": {
+            "id": "abs",
+            "type": "formula",
+            "option": {
+              "fn": "ABS({{count3}})"
+            }
+          },
+          "Round": {
+            "id": "round",
+            "type": "formula",
+            "option": {
+              "fn": "ROUND({{count3}})"
+            }
+          },
+          "Floor": {
+            "id": "floor",
+            "type": "formula",
+            "option": {
+              "fn": "FLOOR({{count3}})"
+            }
+          },
+          "Ceiling": {
+            "id": "ceiling",
+            "type": "formula",
+            "option": {
+              "fn": "CEILING({{count3}})"
+            }
+          },
+          "Min1": {
+            "id": "min",
+            "type": "formula",
+            "option": {
+              "fn": "MIN({{count3}}, {{count2}})"
+            }
+          },
+          "Min2": {
+            "id": "min2",
+            "type": "formula",
+            "option": {
+              "fn": "MIN({{count3}}, {{count1}}, {{count2}})"
+            }
+          },
+          "Max1": {
+            "id": "max1",
+            "type": "formula",
+            "option": {
+              "fn": "MAX({{count3}}, {{count2}})"
+            }
+          },
+          "Max2": {
+            "id": "max2",
+            "type": "formula",
+            "option": {
+              "fn": "MAX({{count3}}, {{count1}}, {{count2}})"
+            }
+          },
+          "Average": {
+            "id": "average",
+            "type": "formula",
+            "option": {
+              "fn": "AVERAGE({{count3}}, {{count1}}, {{count2}})"
+            }
+          },
+          "Concat": {
+            "id": "concat",
+            "type": "formula",
+            "option": {
+              "fn": "CONCAT({{string1}}, ' ', {{string2}})"
+            }
+          },
+          "Upper": {
+            "id": "upper",
+            "type": "formula",
+            "option": {
+              "fn": "UPPER({{string1}})"
+            }
+          },
+          "Lower": {
+            "id": "lower",
+            "type": "formula",
+            "option": {
+              "fn": "LOWER({{string1}})"
+            }
+          },
+          "Trim": {
+            "id": "trim",
+            "type": "formula",
+            "option": {
+              "fn": "TRIM({{string1}})"
+            }
+          },
+          "Left": {
+            "id": "left",
+            "type": "formula",
+            "option": {
+              "fn": "LEFT({{string1}}, 3)"
+            }
+          },
+          "Right": {
+            "id": "right",
+            "type": "formula",
+            "option": {
+              "fn": "RIGHT({{string1}}, 3)"
+            }
+          },
+          "Mid": {
+            "id": "mid",
+            "type": "formula",
+            "option": {
+              "fn": "MID({{string1}}, 2, 3)"
+            }
+          },
+          "Greater": {
+            "id": "greater",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} > {{count2}}"
+            }
+          },
+          "And": {
+            "id": "nestedCompare",
+            "type": "formula",
+            "option": {
+              "fn": "({{count1}} > {{count2}}) AND ({{count2}} > {{count3}})"
+            }
+          },
+          "Or": {
+            "id": "or",
+            "type": "formula",
+            "option": {
+              "fn": "({{count1}} > {{count2}}) OR ({{count2}} > {{count3}})"
+            }
+          },
+          "NOT": {
+            "id": "not",
+            "type": "formula",
+            "option": {
+              "fn": "NOT ({{count1}} > {{count2}})"
+            }
+          },
+          "Equal": {
+            "id": "equal",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} = {{count2}}"
+            }
+          },
+          "NotEqual": {
+            "id": "notEqual",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} != {{count2}}"
+            }
+          },
+          "GreaterEqual": {
+            "id": "greaterEqual",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} >= {{count2}}"
+            }
+          },
+          "LessEqual": {
+            "id": "lessEqual",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} <= {{count2}}"
+            }
+          },
+          "Less": {
+            "id": "less",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} < {{count2}}"
+            }
+          },
+          "Len": {
+            "id": "len",
+            "type": "formula",
+            "option": {
+              "fn": "LEN({{string1}})"
+            }
+          },
+          "Replace": {
+            "id": "replace",
+            "type": "formula",
+            "option": {
+              "fn": "REPLACE({{string1}}, 'llo', {{string2}})"
+            }
+          },
+          "Search": {
+            "id": "search",
+            "type": "formula",
+            "option": {
+              "fn": "SEARCH({{string1}}, {{string2}})"
+            }
+          },
+          "Repeat": {
+            "id": "repeat",
+            "type": "formula",
+            "option": {
+              "fn": "REPEAT({{string1}}, 3)"
+            }
+          },
+          "JsonExtractName": {
+            "id": "jsonExtractName",
+            "type": "formula",
+            "option": {
+              "fn": "JSON_EXTRACT({{json1}}, '$.name')"
+            }
+          },
+          "AddAutoIncrement": {
+            "id": "addAutoIncrement",
+            "type": "formula",
+            "option": {
+              "fn": "{{count1}} + {{autoIncrement}}"
+            }
+          }
+        },
+        "records": [
+          {
+            "Count1": 1,
+            "Count2": 2,
+            "Count3": 3,
+            "String1": "Hello",
+            "String2": "World",
+            "Json1": "{\"name\": \"John\", \"age\": 30, \"city\": \"New York\"}"
+          },
+          {
+            "Count1": 4,
+            "Count2": 2,
+            "Count3": -3,
+            "String1": " Hello "
+          },
+          {
+            "Count1": 5,
+            "Count2": 3,
+            "String1": "Hello",
+            "String2": "llo"
           }
         ]
       }

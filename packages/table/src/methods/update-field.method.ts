@@ -7,7 +7,7 @@ import type { TableComositeSpecification } from "../specifications"
 import type { TableDo } from "../table.do"
 
 export function updateFieldMethod(this: TableDo, dto: IUpdateFieldDTO): Option<TableComositeSpecification> {
-  const spec = this.schema.$updateField(dto)
+  const spec = this.schema.$updateField(this, dto)
   // TODO: update form
   spec.mutate(this)
 

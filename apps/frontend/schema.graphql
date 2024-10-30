@@ -44,6 +44,7 @@ type Field {
   defaultValue: JSON
   display: Boolean
   id: ID!
+  metadata: JSON
   name: String!
   option: JSON
   type: FieldType!

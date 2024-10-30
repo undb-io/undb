@@ -51,8 +51,8 @@ import type { IRecordQueryBuilder } from "../qb"
 import { ConversionContext } from "./conversion/conversion.context"
 import { ConversionFactory } from "./conversion/conversion.factory"
 import { JoinTable } from "./reference/join-table"
-import { UnderlyingTableFieldUpdatedVisitor } from "./undelying-table-field-updated.visitor"
 import { UnderlyingTable } from "./underlying-table"
+import { UnderlyingTableFieldUpdatedVisitor } from "./underlying-table-field-updated.visitor"
 import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
 
 export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
@@ -131,7 +131,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
         }
       }
 
-      const fieldVisitor = new UnderlyingTableFieldUpdatedVisitor(this.qb, this.table, spec.previous)
+      const fieldVisitor = new UnderlyingTableFieldUpdatedVisitor(this.qb, this.table, spec.previous, this.tb)
       spec.field.accept(fieldVisitor)
       this.addSql(...fieldVisitor.sql)
     }
@@ -210,7 +210,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
   withName(name: TableNameSpecification): void {}
   withSchema(schema: TableSchemaSpecification): void {}
   withNewField(schema: WithNewFieldSpecification): void {
-    const fieldVisitor = new UnderlyingTableFieldVisitor(this.qb, this.table, this.tb)
+    const fieldVisitor = new UnderlyingTableFieldVisitor(this.qb, this.table, this.tb, false)
     schema.field.accept(fieldVisitor)
     this.addSql(...fieldVisitor.sql)
     this.atb = fieldVisitor.atb

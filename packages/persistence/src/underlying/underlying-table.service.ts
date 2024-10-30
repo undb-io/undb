@@ -22,7 +22,7 @@ export class UnderlyingTableService {
     await trx.schema
       .createTable(t.name)
       .$call((tb) => {
-        const visitor = new UnderlyingTableFieldVisitor(trx, t, tb)
+        const visitor = new UnderlyingTableFieldVisitor(trx, t, tb, true)
         for (const field of table.schema) {
           field.accept(visitor)
         }

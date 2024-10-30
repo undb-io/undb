@@ -1,5 +1,6 @@
 import { match } from "ts-pattern"
 import { UrlField } from "."
+import type { TableDo } from "../../../table.do"
 import type { ICreateFieldDTO } from "./dto/create-field.dto"
 import type { IFieldDTO } from "./dto/field.dto"
 import type { Field } from "./field.type"
@@ -59,7 +60,7 @@ export class FieldFactory {
       .exhaustive()
   }
 
-  static create(dto: ICreateFieldDTO): Field {
+  static create(table: TableDo, dto: ICreateFieldDTO): Field {
     return match(dto)
       .with({ type: "string" }, (dto) => StringField.create(dto))
       .with({ type: "number" }, (dto) => NumberField.create(dto))
@@ -79,7 +80,7 @@ export class FieldFactory {
       .with({ type: "button" }, (dto) => ButtonField.create(dto))
       .with({ type: "duration" }, (dto) => DurationField.create(dto))
       .with({ type: "percentage" }, (dto) => PercentageField.create(dto))
-      .with({ type: "formula" }, (dto) => FormulaField.create(dto))
+      .with({ type: "formula" }, (dto) => FormulaField.create(table, dto))
       .otherwise(() => {
         throw new Error("Field type creation not supported")
       })

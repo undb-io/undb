@@ -1,6 +1,5 @@
 <script lang="ts">
   import * as Tabs from "$lib/components/ui/tabs"
-  import { getTable } from "$lib/store/table.store"
   import { invalidate } from "$app/navigation"
   import {
     filterAggregateField,

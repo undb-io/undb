@@ -36,7 +36,7 @@ export function $createFieldSpec(this: TableDo, field: Field): Option<TableComos
 }
 
 export function createFieldMethod(this: TableDo, dto: ICreateFieldDTO): [Field, Option<TableComositeSpecification>] {
-  const field = FieldFactory.create(dto)
+  const field = FieldFactory.create(this, dto)
 
   return [field, this.$createFieldSpec(field)]
 }

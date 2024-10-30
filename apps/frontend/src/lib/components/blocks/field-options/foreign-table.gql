@@ -10,6 +10,7 @@ query GetForeignTableQuery($tableId: ID!) {
       display
       constraint
       option
+      metadata
     }
     views {
       id

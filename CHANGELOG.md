@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-111
+
+
+### 🚀 Enhancements
+
+- Support formula field aggregate ([b1ceece](https://github.com/undb-io/undb/commit/b1ceece))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-110
 
 ## v1.0.0-109

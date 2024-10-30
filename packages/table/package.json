@@ -15,6 +15,7 @@
     "@undb/context": "workspace:*",
     "@undb/di": "workspace:*",
     "@undb/domain": "workspace:*",
+    "@undb/formula": "workspace:*",
     "@undb/logger": "workspace:*",
     "@undb/space": "workspace:*",
     "@undb/utils": "workspace:*",

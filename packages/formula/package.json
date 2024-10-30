@@ -1,0 +1,21 @@
+{
+  "name": "@undb/formula",
+  "module": "src/index.ts",
+  "type": "module",
+  "types": "src/index.d.ts",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "antlr4ts-cli": "^0.5.0-alpha.4"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@undb/zod": "*",
+    "antlr4ts": "^0.5.0-alpha.4"
+  },
+  "scripts": {
+    "generate-parser": "bun run scripts/generate-parser.ts",
+    "generate": "bun generate-parser"
+  }
+}

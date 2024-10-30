@@ -6,6 +6,11 @@ import {
   CurrencyLT,
   CurrencyLTE,
   DurationEqual,
+  FormulaEqual,
+  FormulaGT,
+  FormulaGTE,
+  FormulaLT,
+  FormulaLTE,
   PercentageEqual,
   SelectField,
   isUserFieldMacro,
@@ -326,6 +331,26 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
   }
   urlEqual(s: UrlEqual): void {
     const cond = this.eb.eb(this.getFieldId(s), "=", s.value)
+    this.addCond(cond)
+  }
+  formulaEqual(spec: FormulaEqual): void {
+    const cond = this.eb.eb(this.getFieldId(spec), "=", spec.value)
+    this.addCond(cond)
+  }
+  formulaGT(spec: FormulaGT): void {
+    const cond = this.eb.eb(this.getFieldId(spec), ">", spec.value)
+    this.addCond(cond)
+  }
+  formulaGTE(spec: FormulaGTE): void {
+    const cond = this.eb.eb(this.getFieldId(spec), ">=", spec.value)
+    this.addCond(cond)
+  }
+  formulaLT(spec: FormulaLT): void {
+    const cond = this.eb.eb(this.getFieldId(spec), "<", spec.value)
+    this.addCond(cond)
+  }
+  formulaLTE(spec: FormulaLTE): void {
+    const cond = this.eb.eb(this.getFieldId(spec), "<=", spec.value)
     this.addCond(cond)
   }
   clone(): this {

@@ -269,6 +269,39 @@
     is_not_empty: null,
   }
 
+  $: formula = {}
+
+  $: if (field?.type === "formula") {
+    if (field.returnType === "number") {
+      formula = {
+        eq: NumberInput,
+        neq: NumberInput,
+        gt: NumberInput,
+        gte: NumberInput,
+        lt: NumberInput,
+        lte: NumberInput,
+        is_empty: null,
+        is_not_empty: null,
+      }
+    } else if (field.returnType === "boolean") {
+      formula = {
+        is_true: null,
+        is_false: null,
+      }
+    } else if (field.returnType === "string") {
+      formula = {
+        eq: Input,
+        neq: Input,
+        contains: Input,
+        does_not_contain: Input,
+        starts_with: Input,
+        ends_with: Input,
+        is_empty: null,
+        is_not_empty: null,
+      }
+    }
+  }
+
   $: filterFieldInput = {
     string,
     number,
@@ -289,6 +322,7 @@
     url,
     longText,
     duration,
+    formula,
     percentage,
   }
 </script>

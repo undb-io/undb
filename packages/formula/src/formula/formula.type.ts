@@ -1,0 +1,68 @@
+export type FormulaFunction =
+  // 数学运算
+  | "ADD"
+  | "SUBTRACT"
+  | "MULTIPLY"
+  | "DIVIDE"
+  | "SUM"
+  | "CONCAT"
+  | "MOD"
+  | "POWER"
+  | "SQRT"
+  | "ABS"
+  | "ROUND"
+  | "FLOOR"
+  | "CEILING"
+  | "MIN"
+  | "MAX"
+  | "AVERAGE"
+  // | "MEDIAN"
+
+  // 文本处理
+  | "UPPER"
+  | "LOWER"
+  | "TRIM"
+  | "LEFT"
+  | "RIGHT"
+  | "MID"
+  | "LEN"
+  | "FIND"
+  | "REPLACE"
+  | "SUBSTITUTE"
+  | "REPEAT"
+  | "SEARCH"
+  | "SUBSTR"
+
+  // // 日期时间
+  // | "NOW"
+  // | "TODAY"
+  // | "YEAR"
+  // | "MONTH"
+  // | "DAY"
+  // | "HOUR"
+  // | "MINUTE"
+  // | "SECOND"
+  // | "WEEKDAY"
+  // | "DATE"
+
+  // 逻辑运算
+  | "AND"
+  | "OR"
+  | "NOT"
+  | "IF"
+  | "SWITCH"
+  | "ISBLANK"
+  | "ISNUMBER"
+  | "ISTEXT"
+
+  // 统计函数
+  | "COUNT"
+  | "COUNTA"
+  | "COUNTIF"
+  | "SUMIF"
+  | "CORREL"
+  | "JSON_EXTRACT"
+
+  // System Field
+  | "RECORD_ID"
+  | "AUTO_INCREMENT"

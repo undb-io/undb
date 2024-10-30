@@ -66,7 +66,7 @@ export class TableBuilder implements ITableBuilder {
   }
 
   createSchema(dto: ICreateSchemaDTO): ITableBuilder {
-    new TableSchemaSpecification(Schema.create(dto)).mutate(this.table)
+    new TableSchemaSpecification(Schema.create(this.table, dto)).mutate(this.table)
     return this
   }
 

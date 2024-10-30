@@ -1,12 +1,19 @@
 import { sveltekit } from "@sveltejs/kit/vite"
 import houdini from "houdini/vite"
 import { visualizer } from "rollup-plugin-visualizer"
+import { nodePolyfills } from "vite-plugin-node-polyfills"
 import { defineConfig } from "vitest/config"
 
 export default defineConfig({
   plugins: [
     houdini(),
     sveltekit(),
+    nodePolyfills({
+      include: ["assert"],
+      globals: {
+        process: true,
+      },
+    }),
     visualizer({
       emitFile: true,
       filename: "stats.html",

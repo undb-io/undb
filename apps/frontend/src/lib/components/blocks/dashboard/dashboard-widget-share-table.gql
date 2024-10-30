@@ -16,6 +16,7 @@ query GetDashboardWidgetShareTable($shareId: ID!, $tableId: ID!) {
       display
       constraint
       option
+      metadata
     }
 
     views {

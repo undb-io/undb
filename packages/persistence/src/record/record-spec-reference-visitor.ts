@@ -16,6 +16,11 @@ import {
   DateIsToday,
   DateIsTomorrow,
   DurationEqual,
+  FormulaEqual,
+  FormulaGT,
+  FormulaGTE,
+  FormulaLT,
+  FormulaLTE,
   ID_TYPE,
   IdEqual,
   IdIn,
@@ -113,6 +118,11 @@ export class RecordSpecReferenceVisitor implements IRecordVisitor {
   jsonContains(spec: JsonContains): void {}
   jsonEmpty(spec: JsonEmpty): void {}
   checkboxEqual(spec: CheckboxEqual): void {}
+  formulaEqual(spec: FormulaEqual): void {}
+  formulaGT(spec: FormulaGT): void {}
+  formulaGTE(spec: FormulaGTE): void {}
+  formulaLT(spec: FormulaLT): void {}
+  formulaLTE(spec: FormulaLTE): void {}
   and(left: ISpecification, right: ISpecification): this {
     left.accept(this)
     right.accept(this)

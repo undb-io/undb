@@ -1,3 +1,5 @@
+import { createParser } from "@undb/formula"
+import { createLogger } from "@undb/logger"
 import {
   AttachmentField,
   ButtonField,
@@ -32,6 +34,8 @@ import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, Crea
 import type { IQueryBuilder } from "../qb"
 import { users } from "../tables"
 import { JoinTable } from "./reference/join-table"
+import { getUnderlyingFormulaType } from "./underlying-formula.util"
+import { UnderlyingFormulaVisitor } from "./underlying-formula.visitor"
 import type { UnderlyingTable } from "./underlying-table"
 
 export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any> | AlterTableBuilder>
@@ -41,8 +45,11 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     private readonly qb: IQueryBuilder,
     private readonly t: UnderlyingTable,
     public tb: TB,
+    public readonly isNew: boolean = false,
   ) {}
   public atb: AlterTableColumnAlteringBuilder | CreateTableBuilder<any, any> | null = null
+
+  private logger = createLogger(UnderlyingFormulaVisitor.name)
 
   private addColumn(c: AlterTableColumnAlteringBuilder | CreateTableBuilder<any, any>) {
     this.atb = c
@@ -182,11 +189,17 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     }
   }
   formula(field: FormulaField): void {
-    const parse = (fn: string): string => {
-      return fn.replaceAll("{{", "").replaceAll("}}", "")
-    }
-    const exp = parse(field.fn)
-    const c = this.tb.addColumn(field.id.value, "text", (b) => b.generatedAlwaysAs(sql.raw(exp)).stored())
+    const visitor = new UnderlyingFormulaVisitor(this.t.table)
+    const parser = createParser(field.fn)
+    const parsed = visitor.visit(parser.formula())
+
+    this.logger.debug("parsed formula", { parsed })
+
+    const type = getUnderlyingFormulaType(field.returnType)
+    const c = this.tb.addColumn(field.id.value, type, (b) => {
+      const column = b.generatedAlwaysAs(sql.raw(parsed))
+      return this.isNew ? column.stored() : column
+    })
     this.addColumn(c)
   }
 }

@@ -11,6 +11,7 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
       display
       constraint
       option
+      metadata
     }
 
     views {

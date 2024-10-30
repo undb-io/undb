@@ -16,6 +16,7 @@ query GetForeignTable($tableId: ID!) {
       display
       constraint
       option
+      metadata
     }
 
     views {
