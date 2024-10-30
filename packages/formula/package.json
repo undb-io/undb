@@ -4,18 +4,17 @@
   "type": "module",
   "types": "src/index.d.ts",
   "devDependencies": {
-    "@types/bun": "latest",
-    "antlr4ts-cli": "^0.5.0-alpha.4"
+    "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
     "@undb/zod": "*",
-    "antlr4ts": "^0.5.0-alpha.4"
+    "antlr4": "^4.13.2"
   },
   "scripts": {
     "generate-parser": "bun run scripts/generate-parser.ts",
-    "generate": "bun generate-parser"
+    "generate": "bun run generate-parser"
   }
 }

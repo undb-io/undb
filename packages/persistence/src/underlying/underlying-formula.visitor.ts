@@ -1,10 +1,10 @@
 import {
-  AbstractParseTreeVisitor,
   AddSubExprContext,
   AndExprContext,
   ArgumentListContext,
   ComparisonExprContext,
   FormulaContext,
+  FormulaParserVisitor,
   FunctionCallContext,
   FunctionExprContext,
   MulDivModExprContext,
@@ -16,12 +16,11 @@ import {
   VariableContext,
   VariableExprContext,
   type FormulaFunction,
-  type FormulaParserVisitor,
 } from "@undb/formula"
 import { AUTO_INCREMENT_TYPE, FieldIdVo, ID_TYPE, type TableDo } from "@undb/table"
 import { match } from "ts-pattern"
 
-export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> implements FormulaParserVisitor<string> {
+export class UnderlyingFormulaVisitor extends FormulaParserVisitor<string> {
   constructor(private readonly table: TableDo) {
     super()
   }
@@ -30,40 +29,40 @@ export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> i
     return ""
   }
 
-  visitNumberExpr(ctx: NumberExprContext): string {
-    return ctx.NUMBER().text
+  visitNumberExpr = (ctx: NumberExprContext): string => {
+    return ctx.NUMBER().getText()
   }
 
-  visitStringExpr(ctx: StringExprContext): string {
-    return ctx.STRING().text
+  visitStringExpr = (ctx: StringExprContext): string => {
+    return ctx.STRING().getText()
   }
 
-  visitComparisonExpr(ctx: ComparisonExprContext): string {
+  visitComparisonExpr = (ctx: ComparisonExprContext): string => {
     return this.visit(ctx.expression(0)) + ctx._op.text + this.visit(ctx.expression(1))
   }
 
-  visitAndExpr(ctx: AndExprContext): string {
+  visitAndExpr = (ctx: AndExprContext): string => {
     return this.visit(ctx.expression(0)) + " AND " + this.visit(ctx.expression(1))
   }
 
-  visitOrExpr(ctx: OrExprContext): string {
+  visitOrExpr = (ctx: OrExprContext): string => {
     return this.visit(ctx.expression(0)) + " OR " + this.visit(ctx.expression(1))
   }
 
-  visitNotExpr(ctx: NotExprContext): string {
+  visitNotExpr = (ctx: NotExprContext): string => {
     return "NOT " + this.visit(ctx.expression())
   }
 
-  visitAddSubExpr(ctx: AddSubExprContext): string {
+  visitAddSubExpr = (ctx: AddSubExprContext): string => {
     return this.visit(ctx.expression(0)) + ctx._op.text + this.visit(ctx.expression(1))
   }
 
-  visitMulDivModExpr(ctx: MulDivModExprContext): string {
+  visitMulDivModExpr = (ctx: MulDivModExprContext): string => {
     return this.visit(ctx.expression(0)) + ctx._op.text + this.visit(ctx.expression(1))
   }
 
-  visitVariable(ctx: VariableContext): string {
-    const fieldId = ctx.IDENTIFIER().text
+  visitVariable = (ctx: VariableContext): string => {
+    const fieldId = ctx.IDENTIFIER().getText()
     const field = this.table.schema
       .getFieldById(new FieldIdVo(fieldId))
       .expect(`variable ${fieldId} not found in table ${this.table.name.value}`)
@@ -75,31 +74,31 @@ export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> i
     return fieldId
   }
 
-  visitFormula(ctx: FormulaContext): string {
+  visitFormula = (ctx: FormulaContext): string => {
     const expr = ctx.expression()
     return this.visit(expr)
   }
 
-  visitFunctionExpr(ctx: FunctionExprContext): string {
+  visitFunctionExpr = (ctx: FunctionExprContext): string => {
     return this.visit(ctx.functionCall())
   }
 
-  visitVariableExpr(ctx: VariableExprContext): string {
+  visitVariableExpr = (ctx: VariableExprContext): string => {
     return this.visit(ctx.variable())
   }
 
-  visitParenExpr(ctx: ParenExprContext): string {
+  visitParenExpr = (ctx: ParenExprContext): string => {
     return this.visit(ctx.expression())
   }
 
   private arguments(ctx: FunctionCallContext): string[] {
     return ctx
       .argumentList()!
-      .expression()
+      .expression_list()
       .map((expr) => this.visit(expr))
   }
-  visitFunctionCall(ctx: FunctionCallContext): string {
-    const functionName = ctx.IDENTIFIER().text as FormulaFunction
+  visitFunctionCall = (ctx: FunctionCallContext): string => {
+    const functionName = ctx.IDENTIFIER().getText() as FormulaFunction
     return match(functionName)
       .with("ADD", "SUM", () => {
         const fn = this.arguments(ctx).join(" + ")
@@ -182,9 +181,9 @@ export class UnderlyingFormulaVisitor extends AbstractParseTreeVisitor<string> i
       })
   }
 
-  visitArgumentList(ctx: ArgumentListContext): string {
+  visitArgumentList = (ctx: ArgumentListContext): string => {
     return ctx
-      .expression()
+      .expression_list()
       .map((expr) => this.visit(expr))
       .join(", ")
   }
