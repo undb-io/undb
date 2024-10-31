@@ -1,5 +1,5 @@
+import { globalFormulaRegistry } from "./formula/formula.registry"
 import { FormulaFunction } from "./formula/formula.type"
-import { globalFunctionRegistry } from "./formula/registry"
 import {
   AddSubExprContext,
   AndExprContext,
@@ -172,15 +172,15 @@ export class FormulaVisitor extends FormulaParserVisitor<ExpressionResult> {
     const funcName = ctx.IDENTIFIER().getText() as FormulaFunction
     const args = ctx.argumentList() ? (this.visit(ctx.argumentList()!) as FunctionExpressionResult) : undefined
 
-    if (!globalFunctionRegistry.isValid(funcName)) {
+    if (!globalFormulaRegistry.isValid(funcName)) {
       throw new Error(`Unknown function: ${funcName}`)
     }
 
     if (args) {
-      globalFunctionRegistry.validateArgs(funcName, args.arguments)
+      globalFormulaRegistry.validateArgs(funcName, args.arguments)
     }
 
-    const returnType = globalFunctionRegistry.get(funcName)!.returnType
+    const returnType = globalFormulaRegistry.get(funcName)!.returnType
 
     return {
       type: "functionCall",

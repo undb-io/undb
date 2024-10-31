@@ -8,14 +8,14 @@ export const returnType = z.enum(["number", "string", "boolean", "date", "any"])
 
 export type ReturnType = z.infer<typeof returnType>
 
-export type FunctionDefinition = string
+export type FormulaDefinition = string
 
 export type FunctionExpressionResult = {
   type: "functionCall"
   name: string
   arguments: ExpressionResult[]
   returnType: ReturnType
-  value: FunctionDefinition
+  value: FormulaDefinition
 }
 
 export type ArgumentListResult = {
