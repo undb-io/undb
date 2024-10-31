@@ -1390,3 +1390,286 @@ exports[`parse formula test JSON_EXTRACT({{field1}}, '$.name') 1`] = `
   "value": "JSON_EXTRACT({{field1}},'$.name')",
 }
 `;
+
+exports[`parse formula test IF(1 > 2, 1, 2) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "number",
+          "value": 1,
+        },
+        {
+          "type": "number",
+          "value": 2,
+        },
+      ],
+      "name": ">",
+      "returnType": "boolean",
+      "type": "functionCall",
+      "value": "1>2",
+    },
+    {
+      "type": "number",
+      "value": 1,
+    },
+    {
+      "type": "number",
+      "value": 2,
+    },
+  ],
+  "name": "IF",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "IF(1>2,1,2)",
+}
+`;
+
+exports[`parse formula test IF(1 > 2, ADD(1, 2), SUBTRACT(3, 4)) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "number",
+          "value": 1,
+        },
+        {
+          "type": "number",
+          "value": 2,
+        },
+      ],
+      "name": ">",
+      "returnType": "boolean",
+      "type": "functionCall",
+      "value": "1>2",
+    },
+    {
+      "arguments": [
+        {
+          "type": "number",
+          "value": 1,
+        },
+        {
+          "type": "number",
+          "value": 2,
+        },
+      ],
+      "name": "ADD",
+      "returnType": "number",
+      "type": "functionCall",
+      "value": "ADD(1,2)",
+    },
+    {
+      "arguments": [
+        {
+          "type": "number",
+          "value": 3,
+        },
+        {
+          "type": "number",
+          "value": 4,
+        },
+      ],
+      "name": "SUBTRACT",
+      "returnType": "number",
+      "type": "functionCall",
+      "value": "SUBTRACT(3,4)",
+    },
+  ],
+  "name": "IF",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "IF(1>2,ADD(1,2),SUBTRACT(3,4))",
+}
+`;
+
+exports[`parse formula test IF(1 > 2, ADD({{field1}}, 2), SUBTRACT({{field2}}, 4)) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "number",
+          "value": 1,
+        },
+        {
+          "type": "number",
+          "value": 2,
+        },
+      ],
+      "name": ">",
+      "returnType": "boolean",
+      "type": "functionCall",
+      "value": "1>2",
+    },
+    {
+      "arguments": [
+        {
+          "type": "variable",
+          "value": "{{field1}}",
+          "variable": "field1",
+        },
+        {
+          "type": "number",
+          "value": 2,
+        },
+      ],
+      "name": "ADD",
+      "returnType": "number",
+      "type": "functionCall",
+      "value": "ADD({{field1}},2)",
+    },
+    {
+      "arguments": [
+        {
+          "type": "variable",
+          "value": "{{field2}}",
+          "variable": "field2",
+        },
+        {
+          "type": "number",
+          "value": 4,
+        },
+      ],
+      "name": "SUBTRACT",
+      "returnType": "number",
+      "type": "functionCall",
+      "value": "SUBTRACT({{field2}},4)",
+    },
+  ],
+  "name": "IF",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "IF(1>2,ADD({{field1}},2),SUBTRACT({{field2}},4))",
+}
+`;
+
+exports[`parse formula test IF(1 > 2, IF(2 > 3, 4, 5), 6) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "number",
+          "value": 1,
+        },
+        {
+          "type": "number",
+          "value": 2,
+        },
+      ],
+      "name": ">",
+      "returnType": "boolean",
+      "type": "functionCall",
+      "value": "1>2",
+    },
+    {
+      "arguments": [
+        {
+          "arguments": [
+            {
+              "type": "number",
+              "value": 2,
+            },
+            {
+              "type": "number",
+              "value": 3,
+            },
+          ],
+          "name": ">",
+          "returnType": "boolean",
+          "type": "functionCall",
+          "value": "2>3",
+        },
+        {
+          "type": "number",
+          "value": 4,
+        },
+        {
+          "type": "number",
+          "value": 5,
+        },
+      ],
+      "name": "IF",
+      "returnType": "number",
+      "type": "functionCall",
+      "value": "IF(2>3,4,5)",
+    },
+    {
+      "type": "number",
+      "value": 6,
+    },
+  ],
+  "name": "IF",
+  "returnType": "number",
+  "type": "functionCall",
+  "value": "IF(1>2,IF(2>3,4,5),6)",
+}
+`;
+
+exports[`parse formula test IF(1 > 2, CONCAT({{field1}}, {{field2}}), SUBTRACT({{field2}}, 4)) 1`] = `
+{
+  "arguments": [
+    {
+      "arguments": [
+        {
+          "type": "number",
+          "value": 1,
+        },
+        {
+          "type": "number",
+          "value": 2,
+        },
+      ],
+      "name": ">",
+      "returnType": "boolean",
+      "type": "functionCall",
+      "value": "1>2",
+    },
+    {
+      "arguments": [
+        {
+          "type": "variable",
+          "value": "{{field1}}",
+          "variable": "field1",
+        },
+        {
+          "type": "variable",
+          "value": "{{field2}}",
+          "variable": "field2",
+        },
+      ],
+      "name": "CONCAT",
+      "returnType": "string",
+      "type": "functionCall",
+      "value": "CONCAT({{field1}},{{field2}})",
+    },
+    {
+      "arguments": [
+        {
+          "type": "variable",
+          "value": "{{field2}}",
+          "variable": "field2",
+        },
+        {
+          "type": "number",
+          "value": 4,
+        },
+      ],
+      "name": "SUBTRACT",
+      "returnType": "number",
+      "type": "functionCall",
+      "value": "SUBTRACT({{field2}},4)",
+    },
+  ],
+  "name": "IF",
+  "returnType": [
+    "string",
+    "number",
+  ],
+  "type": "functionCall",
+  "value": "IF(1>2,CONCAT({{field1}},{{field2}}),SUBTRACT({{field2}},4))",
+}
+`;

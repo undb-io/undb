@@ -5,6 +5,7 @@ import {
   AndExprContext,
   ArgumentListContext,
   ComparisonExprContext,
+  FalseExprContext,
   FormulaContext,
   FunctionCallContext,
   FunctionExprContext,
@@ -14,6 +15,7 @@ import {
   OrExprContext,
   ParenExprContext,
   StringExprContext,
+  TrueExprContext,
   VariableContext,
   VariableExprContext,
 } from "./grammar/FormulaParser"
@@ -27,6 +29,16 @@ import {
   type VariableResult,
 } from "./types"
 
+function getReturnTypeFromExpressionResult(result: ExpressionResult): ReturnType {
+  if (result.type === "argumentList" || result.type === "variable") {
+    return "any"
+  }
+  if (result.type === "functionCall") {
+    return result.returnType
+  }
+  return result.type as ReturnType
+}
+
 export class FormulaVisitor extends FormulaParserVisitor<ExpressionResult> {
   private variables: Set<string> = new Set()
 
@@ -36,7 +48,10 @@ export class FormulaVisitor extends FormulaParserVisitor<ExpressionResult> {
     }
 
     if (result.type === "functionCall") {
-      if (!types.includes(result.returnType)) {
+      if (!Array.isArray(result.returnType) && !types.includes(result.returnType)) {
+        throw new Error(`Expected ${types.join(" or ")} but got ${result.name}`)
+      }
+      if (Array.isArray(result.returnType) && !result.returnType.every((type) => types.includes(type))) {
         throw new Error(`Expected ${types.join(" or ")} but got ${result.name}`)
       }
       return true
@@ -168,7 +183,72 @@ export class FormulaVisitor extends FormulaParserVisitor<ExpressionResult> {
     return this.visit(ctx.expression())
   }
 
-  visitFunctionCall = (ctx: FunctionCallContext): ExpressionResult => {
+  visitTrueExpr = (ctx: TrueExprContext): ExpressionResult => {
+    return { type: "boolean", value: true }
+  }
+  visitFalseExpr = (ctx: FalseExprContext): ExpressionResult => {
+    return { type: "boolean", value: false }
+  }
+
+  private getFormulaReturnType(ctx: FunctionCallContext, funcName: FormulaFunction): ReturnType {
+    if (funcName === "IF") {
+      const args = ctx.argumentList()?.expression_list() ?? []
+      if (args.length < 3) {
+        throw new Error("IF function requires 3 arguments")
+      }
+
+      const thenResult = this.visit(args[1])
+      const elseResult = this.visit(args[2])
+
+      if (thenResult.type === "functionCall") {
+        const thenType = Array.isArray(thenResult.returnType) ? thenResult.returnType : [thenResult.returnType]
+        const elseType =
+          elseResult.type === "functionCall"
+            ? Array.isArray(elseResult.returnType)
+              ? elseResult.returnType
+              : [elseResult.returnType]
+            : [elseResult.type as ReturnType]
+
+        const allTypes = [...new Set([...thenType, ...elseType])]
+        return allTypes.length === 1 ? allTypes[0] : allTypes
+      }
+
+      if (elseResult.type === "functionCall") {
+        const elseType = Array.isArray(elseResult.returnType) ? elseResult.returnType : [elseResult.returnType]
+        const thenType = [thenResult.type as ReturnType]
+
+        const allTypes = [...new Set([...thenType, ...elseType])]
+        return allTypes.length === 1 ? allTypes[0] : allTypes
+      }
+
+      const thenReturnType = getReturnTypeFromExpressionResult(thenResult)
+      const elseReturnType = getReturnTypeFromExpressionResult(elseResult)
+      if (typeof thenReturnType === "string" && typeof elseReturnType === "string") {
+        if (thenReturnType === elseReturnType) {
+          return thenReturnType
+        }
+        return [thenReturnType, elseReturnType]
+      }
+      if (Array.isArray(thenReturnType) && Array.isArray(elseReturnType)) {
+        const allTypes = [...new Set([...thenReturnType, ...elseReturnType])]
+        return allTypes.length === 1 ? allTypes[0] : allTypes
+      }
+
+      if (Array.isArray(thenReturnType) && typeof elseReturnType === "string") {
+        const allTypes = [...new Set([...thenReturnType, elseReturnType])]
+        return allTypes.length === 1 ? allTypes[0] : allTypes
+      }
+      if (Array.isArray(elseReturnType) && typeof thenReturnType === "string") {
+        const allTypes = [...new Set([thenReturnType, ...elseReturnType])]
+        return allTypes.length === 1 ? allTypes[0] : allTypes
+      }
+      return "any"
+    }
+    const formula = globalFormulaRegistry.get(funcName)!
+    return formula.returnType
+  }
+
+  visitFunctionCall = (ctx: FunctionCallContext): FunctionExpressionResult => {
     const funcName = ctx.IDENTIFIER().getText() as FormulaFunction
     const args = ctx.argumentList() ? (this.visit(ctx.argumentList()!) as FunctionExpressionResult) : undefined
 
@@ -180,7 +260,7 @@ export class FormulaVisitor extends FormulaParserVisitor<ExpressionResult> {
       globalFormulaRegistry.validateArgs(funcName, args.arguments)
     }
 
-    const returnType = globalFormulaRegistry.get(funcName)!.returnType
+    const returnType = this.getFormulaReturnType(ctx, funcName)
 
     return {
       type: "functionCall",

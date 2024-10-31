@@ -4,7 +4,8 @@ export const paramType = z.enum(["number", "string", "boolean", "date", "any", "
 
 export type ParamType = z.infer<typeof paramType>
 
-export const returnType = z.enum(["number", "string", "boolean", "date", "any"])
+const returnTypeEnum = z.enum(["number", "string", "boolean", "date", "any"])
+export const returnType = returnTypeEnum.or(z.array(returnTypeEnum))
 
 export type ReturnType = z.infer<typeof returnType>
 
@@ -51,3 +52,5 @@ export type ExpressionResult =
   | NumberResult
   | StringResult
   | BooleanResult
+
+export type ExpressionResultType = ExpressionResult["type"]
