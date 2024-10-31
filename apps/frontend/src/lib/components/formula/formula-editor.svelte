@@ -478,11 +478,19 @@
 
   <div bind:this={hoverSuggestionContainer} class="fixed left-0 top-0 w-80 rounded-md border bg-white shadow-md">
     {#if hoverFormula}
-      <div>
-        <div class="flex items-center gap-2 border-b bg-gray-100 px-2 py-1 text-sm">
+      <div class="flex items-center justify-between border-b bg-gray-100 px-2 py-1">
+        <div class="flex items-center gap-2 text-sm">
           <SquareFunctionIcon class="size-4" />
           {hoverSuggestion}()
         </div>
+
+        {#if hoverFormula.returnType}
+          <span
+            class="me-2 rounded bg-blue-100 px-2.5 py-0.5 text-xs font-medium uppercase text-blue-800 dark:bg-blue-900 dark:text-blue-300"
+          >
+            {hoverFormula.returnType}
+          </span>
+        {/if}
       </div>
 
       <div class="space-y-2 p-2">
