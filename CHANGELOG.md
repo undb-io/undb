@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-113
+
+
+### 🏡 Chore
+
+- Add formula return type ([3ff9a59](https://github.com/undb-io/undb/commit/3ff9a59))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-112
 
 
