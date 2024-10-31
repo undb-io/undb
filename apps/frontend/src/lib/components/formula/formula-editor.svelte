@@ -16,6 +16,8 @@
   import { derived } from "svelte/store"
   import FieldIcon from "../blocks/field-icon/field-icon.svelte"
   import { type Field } from "@undb/table"
+  import { computePosition, flip, shift, offset } from "@floating-ui/dom"
+  import { globalFormulaRegistry } from "@undb/formula/src/formula/formula.registry"
 
   const functions = FORMULA_FUNCTIONS
 
@@ -31,8 +33,15 @@
   export let value: string = ""
 
   let editor: EditorView
-  let suggestions: string[] = [...functions, ...$fields]
+  let formulaSuggestions: string[] = [...functions]
+  let fieldSuggestions: string[] = [...$fields]
+
+  $: suggestions = [...formulaSuggestions, ...fieldSuggestions]
+
   let selectedSuggestion: string = ""
+  let hoverSuggestion: string = ""
+
+  $: hoverFormula = hoverSuggestion ? globalFormulaRegistry.get(hoverSuggestion as FormulaFunction) : undefined
 
   const highlightStyle = HighlightStyle.define([
     { tag: tags.keyword, color: "#5c6bc0" },
@@ -281,8 +290,8 @@
       if (!isInsideParens) {
         const functionNode = visitor.getNearestFunctionNode()
         if (functionNode) {
-          const functionStart = functionNode.start.startIndex
-          const functionNameLength = functionNode.IDENTIFIER().text.length
+          const functionStart = functionNode.start.tokenIndex
+          const functionNameLength = functionNode.IDENTIFIER().getText().length
           const transaction = editor.state.update({
             changes: {
               from: functionStart,
@@ -311,16 +320,17 @@
       editor.dispatch(transaction)
     } else {
       const fieldWithBrackets = `{{${suggestion}}}`
-
-      // 使用正则表达式找到光标位置最近的完整变量
       const fullText = editor.state.doc.toString()
-      let start = cursor
-      let end = cursor
+
+      // 检查光标是否在变量内部
+      let isInsideVariable = false
+      let variableStart = -1
+      let variableEnd = -1
 
       // 向前搜索 {{
       for (let i = cursor; i >= 0; i--) {
         if (fullText.slice(i, i + 2) === "{{") {
-          start = i
+          variableStart = i
           break
         }
       }
@@ -328,30 +338,32 @@
       // 向后搜索 }}
       for (let i = cursor; i < fullText.length; i++) {
         if (fullText.slice(i, i + 2) === "}}") {
-          end = i + 2
+          variableEnd = i + 2
           break
         }
       }
 
-      // 检查找到的范围是否是一个有效的变量（不超过最近的逗号）
-      const textBetween = fullText.slice(start, end)
-      const isValidVariable = textBetween.includes("{{") && textBetween.includes("}}") && !textBetween.includes(",")
+      // 判断光标是否在变量内部
+      if (variableStart !== -1 && variableEnd !== -1) {
+        const textBetween = fullText.slice(variableStart, variableEnd)
+        isInsideVariable = textBetween.includes("{{") && textBetween.includes("}}") && !textBetween.includes(",")
+      }
 
-      if (isValidVariable) {
-        // 替换找到的变量
+      // 如果光标在变量内部，替换变量
+      // 如果光标在变量后面或其他位置，直接在当前位置插入
+      if (isInsideVariable && cursor < variableEnd) {
         const transaction = editor.state.update({
           changes: {
-            from: start,
-            to: end,
+            from: variableStart,
+            to: variableEnd,
             insert: fieldWithBrackets,
           },
           selection: {
-            anchor: start + fieldWithBrackets.length,
+            anchor: variableStart + fieldWithBrackets.length,
           },
         })
         editor.dispatch(transaction)
       } else {
-        // 不在变量内部或范��无效，直接在当前位置插入新变量
         const transaction = editor.state.update({
           changes: {
             from: cursor,
@@ -380,9 +392,30 @@
       errorMessage = (error as Error).message
     }
   }
+
+  let hoverSuggestionContainer: HTMLElement
+  let editorContainerWrapper: HTMLElement
+
+  function update() {
+    if (hoverSuggestionContainer && editorContainerWrapper && hoverFormula) {
+      computePosition(editorContainerWrapper, hoverSuggestionContainer, {
+        placement: "left-start",
+        middleware: [flip(), shift({ padding: 5 }), offset(10)],
+      }).then(({ x, y }) => {
+        Object.assign(hoverSuggestionContainer.style, {
+          left: `${x}px`,
+          top: `${y}px`,
+        })
+      })
+    }
+  }
+
+  onMount(() => {
+    update()
+  })
 </script>
 
-<div>
+<div bind:this={editorContainerWrapper} id="editor-container-wrapper" class="relative">
   <div id="editor-container" class="mb-2 rounded-sm border"></div>
   {#if errorMessage}
     <p class="text-destructive flex items-center gap-1 text-xs">
@@ -391,33 +424,103 @@
     </p>
   {/if}
 
-  <ul class="mt-2 flex h-[250px] flex-col overflow-auto rounded-lg border border-gray-200">
-    {#each suggestions as suggestion}
+  <ul class="mt-2 flex h-[250px] flex-col divide-y overflow-auto rounded-lg border border-gray-200">
+    <div class="sticky top-0 z-10 border-b bg-gray-100 px-2 py-1.5 text-xs font-semibold">Formula</div>
+    {#each formulaSuggestions as suggestion}
       {@const isSelected = suggestion === selectedSuggestion}
-      {@const isFunction = functions.includes(suggestion)}
-      {@const isField = !isFunction}
-      <button type="button" on:click={() => insertSuggestion(suggestion)} class="w-full text-left text-xs font-medium">
+      {@const isHovered = suggestion === hoverSuggestion}
+      <button
+        type="button"
+        on:click={() => insertSuggestion(suggestion)}
+        on:mouseenter={() => {
+          hoverSuggestion = suggestion
+          update()
+        }}
+        class="group relative w-full text-left text-xs font-medium"
+      >
+        <li
+          class={cn("flex w-full items-center gap-1 p-2 hover:bg-gray-100", (isSelected || isHovered) && "bg-gray-100")}
+        >
+          <span class="font-normal">
+            <SquareFunctionIcon class="size-4" />
+          </span>
+          <span>
+            {suggestion}()
+          </span>
+        </li>
+
+        <div class="absolute left-0 top-0 z-50 -translate-x-[100%] group-hover:block">hello</div>
+      </button>
+    {/each}
+    <div class="sticky top-0 z-10 border-b bg-gray-100 px-2 py-1.5 text-xs font-semibold">Field</div>
+    {#each fieldSuggestions as suggestion}
+      {@const isSelected = suggestion === selectedSuggestion}
+      {@const field = $table.schema.getFieldByIdOrName(suggestion).into(null)}
+      <button
+        type="button"
+        on:mouseenter={() => {
+          hoverSuggestion = ""
+        }}
+        on:click={() => insertSuggestion(suggestion)}
+        class="w-full text-left text-xs font-medium"
+      >
         <li class={cn("flex w-full items-center gap-1 p-2 hover:bg-gray-100", isSelected && "bg-gray-100")}>
-          {#if isFunction}
-            <span class="font-normal">
-              <SquareFunctionIcon class="size-4" />
+          {#if field}
+            <span class="flex items-center gap-1">
+              <FieldIcon class="size-4" type={field.type} {field} />
+              {field.name.value}
             </span>
-            <span>
-              {suggestion}()
-            </span>
-          {:else}
-            {@const field = $table.schema.getFieldByIdOrName(suggestion).into(null)}
-            {#if field}
-              <span class="flex items-center gap-1">
-                <FieldIcon class="size-4" type={field.type} {field} />
-                {field.name.value}
-              </span>
-            {/if}
           {/if}
         </li>
       </button>
     {/each}
   </ul>
+
+  <div bind:this={hoverSuggestionContainer} class="fixed left-0 top-0 w-80 rounded-md border bg-white shadow-md">
+    {#if hoverFormula}
+      <div class="flex items-center justify-between border-b bg-gray-100 px-2 py-1">
+        <div class="flex items-center gap-2 text-sm">
+          <SquareFunctionIcon class="size-4" />
+          {hoverSuggestion}()
+        </div>
+
+        {#if hoverFormula.returnType}
+          <span
+            class="me-2 rounded bg-blue-100 px-2.5 py-0.5 text-xs font-medium uppercase text-blue-800 dark:bg-blue-900 dark:text-blue-300"
+          >
+            {hoverFormula.returnType}
+          </span>
+        {/if}
+      </div>
+
+      <div class="space-y-2 p-2">
+        <p class="overflow-hidden whitespace-normal break-words text-xs text-gray-500">{hoverFormula.description}</p>
+        <div class="space-y-2">
+          <p class="text-xs font-semibold text-gray-500">Syntax</p>
+          {#each hoverFormula.syntax as syntax}
+            <div class="whitespace-normal break-words rounded-sm border px-2 py-1 text-xs leading-6 text-gray-800">
+              {syntax}
+            </div>
+          {/each}
+        </div>
+        {#if hoverFormula.examples && hoverFormula.examples.length > 0}
+          <p class="text-xs font-semibold text-gray-500">Examples</p>
+          <div class="space-y-2">
+            {#each hoverFormula.examples as example}
+              <div class="whitespace-normal break-words rounded-sm border px-2 py-1 text-xs leading-6 text-gray-800">
+                {example[0]}
+                {#if example[1]}
+                  <span class="text-gray-500">
+                    => {example[1]}
+                  </span>
+                {/if}
+              </div>
+            {/each}
+          </div>
+        {/if}
+      </div>
+    {/if}
+  </div>
 </div>
 
 <style lang="postcss">
