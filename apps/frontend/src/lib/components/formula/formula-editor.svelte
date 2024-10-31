@@ -311,16 +311,17 @@
       editor.dispatch(transaction)
     } else {
       const fieldWithBrackets = `{{${suggestion}}}`
-
-      // 使用正则表达式找到光标位置最近的完整变量
       const fullText = editor.state.doc.toString()
-      let start = cursor
-      let end = cursor
+
+      // 检查光标是否在变量内部
+      let isInsideVariable = false
+      let variableStart = -1
+      let variableEnd = -1
 
       // 向前搜索 {{
       for (let i = cursor; i >= 0; i--) {
         if (fullText.slice(i, i + 2) === "{{") {
-          start = i
+          variableStart = i
           break
         }
       }
@@ -328,30 +329,32 @@
       // 向后搜索 }}
       for (let i = cursor; i < fullText.length; i++) {
         if (fullText.slice(i, i + 2) === "}}") {
-          end = i + 2
+          variableEnd = i + 2
           break
         }
       }
 
-      // 检查找到的范围是否是一个有效的变量（不超过最近的逗号）
-      const textBetween = fullText.slice(start, end)
-      const isValidVariable = textBetween.includes("{{") && textBetween.includes("}}") && !textBetween.includes(",")
+      // 判断光标是否在变量内部
+      if (variableStart !== -1 && variableEnd !== -1) {
+        const textBetween = fullText.slice(variableStart, variableEnd)
+        isInsideVariable = textBetween.includes("{{") && textBetween.includes("}}") && !textBetween.includes(",")
+      }
 
-      if (isValidVariable) {
-        // 替换找到的变量
+      // 如果光标在变量内部，替换变量
+      // 如果光标在变量后面或其他位置，直接在当前位置插入
+      if (isInsideVariable && cursor < variableEnd) {
         const transaction = editor.state.update({
           changes: {
-            from: start,
-            to: end,
+            from: variableStart,
+            to: variableEnd,
             insert: fieldWithBrackets,
           },
           selection: {
-            anchor: start + fieldWithBrackets.length,
+            anchor: variableStart + fieldWithBrackets.length,
           },
         })
         editor.dispatch(transaction)
       } else {
-        // 不在变量内部或范��无效，直接在当前位置插入新变量
         const transaction = editor.state.update({
           changes: {
             from: cursor,
@@ -391,7 +394,7 @@
     </p>
   {/if}
 
-  <ul class="mt-2 flex h-[250px] flex-col overflow-auto rounded-lg border border-gray-200">
+  <ul class="mt-2 flex h-[250px] flex-col divide-y overflow-auto rounded-lg border border-gray-200">
     {#each suggestions as suggestion}
       {@const isSelected = suggestion === selectedSuggestion}
       {@const isFunction = functions.includes(suggestion)}
