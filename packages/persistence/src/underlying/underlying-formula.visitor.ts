@@ -100,6 +100,13 @@ export class UnderlyingFormulaVisitor extends FormulaParserVisitor<string> {
   visitFunctionCall = (ctx: FunctionCallContext): string => {
     const functionName = ctx.IDENTIFIER().getText() as FormulaFunction
     return match(functionName)
+      .with("IF", () => {
+        const args = ctx.argumentList()!.expression_list()
+        const condition = this.visit(args[0])
+        const thenExpr = this.visit(args[1])
+        const elseExpr = this.visit(args[2])
+        return `(CASE WHEN ${condition} THEN ${thenExpr} ELSE ${elseExpr} END)`
+      })
       .with("ADD", "SUM", () => {
         const fn = this.arguments(ctx).join(" + ")
         return `(${fn})`

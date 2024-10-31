@@ -189,6 +189,13 @@
             "id": "json1",
             "type": "json"
           },
+          "IF": {
+            "id": "if",
+            "type": "formula",
+            "option": {
+              "fn": "IF({{count1}} > {{count2}}, ADD({{count1}}, {{count2}}), SUBTRACT({{count1}}, {{count2}}))"
+            }
+          },
           "Sum": {
             "id": "sum",
             "type": "formula",

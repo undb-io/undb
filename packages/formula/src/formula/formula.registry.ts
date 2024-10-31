@@ -95,6 +95,9 @@ export class FormulaRegistry {
 
   private isTypeMatch(arg: ExpressionResult, expectedType: ParamType): boolean {
     if (arg.type === "functionCall") {
+      if (expectedType === "any") {
+        return true
+      }
       return arg.returnType === expectedType
     }
 
@@ -354,4 +357,16 @@ globalFormulaRegistry.register(
   "number",
   "Returns the next value in an auto-incrementing sequence.",
   [["AUTO_INCREMENT()", 1]],
+)
+
+globalFormulaRegistry.register(
+  "IF",
+  [["boolean", "any", "any"]],
+  "any",
+  "Returns one value if a condition is true and another value if it is false.",
+  [
+    ["IF(1 < 2, 1, 2)", 1],
+    ["IF({{field1}} > {{field2}}, {{field1}}, {{field2}})", undefined],
+    ["IF({{field1}} > {{field2}}, ADD({{field1}}, {{field2}}), SUBTRACT({{field1}}, {{field2}}))", undefined],
+  ],
 )

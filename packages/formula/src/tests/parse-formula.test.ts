@@ -67,6 +67,11 @@ describe("parse formula", () => {
     "OR({{field1}}, {{field2}})",
     "NOT({{field1}})",
     "JSON_EXTRACT({{field1}}, '$.name')",
+    "IF(1 > 2, 1, 2)",
+    "IF(1 > 2, ADD(1, 2), SUBTRACT(3, 4))",
+    "IF(1 > 2, ADD({{field1}}, 2), SUBTRACT({{field2}}, 4))",
+    "IF(1 > 2, IF(2 > 3, 4, 5), 6)",
+    "IF(1 > 2, CONCAT({{field1}}, {{field2}}), SUBTRACT({{field2}}, 4))",
   ])("test %s", (input) => {
     const result = parseFormula(input)
 
