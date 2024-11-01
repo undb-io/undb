@@ -313,3 +313,14 @@ globalFormulaRegistry.register(
     ["SWITCH({{field1}}, 1, 'one', 2, 'two', 3, 'three')", undefined],
   ],
 )
+
+globalFormulaRegistry.register(
+  "FIND",
+  [["string", "string"]],
+  "number",
+  "Returns the position of a substring within a string.",
+  [
+    ["FIND('Hello', 'e')", 1],
+    ["FIND({{field1}}, 'e')", undefined],
+  ],
+)
