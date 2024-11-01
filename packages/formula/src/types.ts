@@ -28,6 +28,7 @@ export type VariableResult = {
   type: "variable"
   value: string
   variable: string
+  returnType: ReturnType
 }
 
 export type NumberResult = {
@@ -45,6 +46,10 @@ export type BooleanResult = {
   value: boolean
 }
 
+export type NullResult = {
+  type: "null"
+}
+
 export type ExpressionResult =
   | FunctionExpressionResult
   | ArgumentListResult
@@ -52,5 +57,6 @@ export type ExpressionResult =
   | NumberResult
   | StringResult
   | BooleanResult
+  | NullResult
 
 export type ExpressionResultType = ExpressionResult["type"]

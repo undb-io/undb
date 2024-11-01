@@ -5,7 +5,7 @@
   import { defaultKeymap } from "@codemirror/commands"
   import { syntaxHighlighting, HighlightStyle } from "@codemirror/language"
   import { tags } from "@lezer/highlight"
-  import { type FormulaFunction, parseFormula } from "@undb/formula"
+  import { type FormulaFunction } from "@undb/formula"
   import { templateVariablePlugin } from "./plugins/varaible.plugin"
   import { cn } from "$lib/utils"
   import { createParser } from "@undb/formula/src/util"
@@ -15,13 +15,13 @@
   import { getTable } from "$lib/store/table.store"
   import { derived } from "svelte/store"
   import FieldIcon from "../blocks/field-icon/field-icon.svelte"
-  import { type Field } from "@undb/table"
   import { computePosition, flip, shift, offset } from "@floating-ui/dom"
   import { globalFormulaRegistry } from "@undb/formula/src/formula/formula.registry"
+  import { parseFormula, type FormulaField } from "@undb/table"
 
   const functions = FORMULA_FUNCTIONS
 
-  export let field: Field | undefined = undefined
+  export let field: FormulaField | undefined = undefined
 
   const table = getTable()
   let fields = derived(table, ($table) =>
@@ -385,10 +385,11 @@
   function validateFormula() {
     const formula = editor.state.doc.toString()
     try {
-      const parsed = parseFormula(formula)
+      const parsed = parseFormula($table, formula)
       errorMessage = ""
       return parsed
     } catch (error) {
+      console.error(error)
       errorMessage = (error as Error).message
     }
   }
@@ -418,9 +419,9 @@
 <div bind:this={editorContainerWrapper} id="editor-container-wrapper" class="relative">
   <div id="editor-container" class="mb-2 rounded-sm border"></div>
   {#if errorMessage}
-    <p class="text-destructive flex items-center gap-1 text-xs">
+    <p class="text-destructive flex items-start gap-1 text-xs">
       <TriangleAlertIcon class="size-3" />
-      {errorMessage}
+      <span class="flex-1">{errorMessage}</span>
     </p>
   {/if}
 
