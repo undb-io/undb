@@ -27,7 +27,6 @@ export const FORMULA_FUNCTIONS: FormulaFunction[] = [
   "RIGHT",
   "MID",
   "LEN",
-  "FIND",
   "REPLACE",
   "SUBSTITUTE",
   "REPEAT",

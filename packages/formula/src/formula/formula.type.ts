@@ -26,7 +26,6 @@ export type FormulaFunction =
   | "RIGHT"
   | "MID"
   | "LEN"
-  | "FIND"
   | "REPLACE"
   | "SUBSTITUTE"
   | "REPEAT"
