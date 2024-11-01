@@ -343,6 +343,9 @@ export class FormulaVisitor extends FormulaParserVisitor<ExpressionResult> {
     }
 
     if (arg.type === "functionCall" || arg.type === "variable") {
+      if (arg.returnType === "any") {
+        return true
+      }
       if (Array.isArray(arg.returnType)) {
         return arg.returnType.includes(expectedType as any)
       }

@@ -75,7 +75,7 @@ export class FormulaReturnTypeVisitor implements IFieldVisitor {
     this.#reaturnType = "date"
   }
   json(field: JsonField): void {
-    this.#reaturnType = "any"
+    this.#reaturnType = "string"
   }
   checkbox(field: CheckboxField): void {
     this.#reaturnType = "boolean"
