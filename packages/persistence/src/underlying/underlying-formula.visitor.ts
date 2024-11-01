@@ -107,6 +107,19 @@ export class UnderlyingFormulaVisitor extends FormulaParserVisitor<string> {
         const elseExpr = this.visit(args[2])
         return `(CASE WHEN ${condition} THEN ${thenExpr} ELSE ${elseExpr} END)`
       })
+      .with("SWITCH", () => {
+        const args = ctx.argumentList()!.expression_list()
+        const expr = args[0]
+        const pairs = args.slice(1, -1)
+        const defaultValue = args[args.length - 1]
+
+        let sql = "CASE " + this.visit(expr)
+        for (let i = 0; i < pairs.length; i += 2) {
+          sql += ` WHEN ${this.visit(pairs[i])} THEN ${this.visit(pairs[i + 1])}`
+        }
+        sql += ` ELSE ${this.visit(defaultValue)} END`
+        return `(${sql})`
+      })
       .with("ADD", "SUM", () => {
         const fn = this.arguments(ctx).join(" + ")
         return `(${fn})`
