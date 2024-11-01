@@ -120,10 +120,6 @@ export class UnderlyingFormulaVisitor extends FormulaParserVisitor<string> {
         sql += ` ELSE ${this.visit(defaultValue)} END`
         return `(${sql})`
       })
-      .with("FIND", () => {
-        const args = this.arguments(ctx)
-        return `(INSTR(LOWER(${args[1]}), LOWER(${args[0]})))`
-      })
       .with("ADD", "SUM", () => {
         const fn = this.arguments(ctx).join(" + ")
         return `(${fn})`
