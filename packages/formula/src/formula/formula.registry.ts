@@ -20,6 +20,10 @@ export class FormulaRegistry {
     examples?: [string, any][],
   ) {
     function generateFunctionSyntax(): string[] {
+      if (name === "SWITCH") {
+        return [`${name}(expr, [pattern, value, ..., default])`]
+      }
+
       if (paramPatterns.length === 0) {
         return [`${name}()`]
       }
@@ -296,5 +300,16 @@ globalFormulaRegistry.register(
     ["IF(1 < 2, 1, 2)", 1],
     ["IF({{field1}} > {{field2}}, {{field1}}, {{field2}})", undefined],
     ["IF({{field1}} > {{field2}}, ADD({{field1}}, {{field2}}), SUBTRACT({{field1}}, {{field2}}))", undefined],
+  ],
+)
+
+globalFormulaRegistry.register(
+  "SWITCH",
+  [["any", "variadic"]],
+  "any",
+  "Returns the first value that matches the condition.",
+  [
+    ["SWITCH(1, 1, 'one', 2, 'two', 3, 'three')", "one"],
+    ["SWITCH({{field1}}, 1, 'one', 2, 'two', 3, 'three')", undefined],
   ],
 )

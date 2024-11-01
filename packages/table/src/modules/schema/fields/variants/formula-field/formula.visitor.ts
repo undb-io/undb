@@ -273,6 +273,39 @@ export class FormulaVisitor extends FormulaParserVisitor<ExpressionResult> {
         return allTypes.length === 1 ? allTypes[0] : allTypes
       }
       return "any"
+    } else if (funcName === "SWITCH") {
+      const args = ctx.argumentList()?.expression_list() ?? []
+      const expr = this.visit(args[0])
+      const pairs = args.slice(1, -1)
+      const defaultValue = this.visit(args[args.length - 1])
+
+      // 获取所有 value 的返回类型
+      const valueTypes: ReturnType[] = []
+      for (let i = 1; i < pairs.length; i += 2) {
+        const value = this.visit(pairs[i])
+        if (value.type === "functionCall") {
+          const returnType = Array.isArray(value.returnType) ? value.returnType : [value.returnType]
+          valueTypes.push(...returnType)
+        } else if (value.type === "variable") {
+          valueTypes.push(value.returnType)
+        } else {
+          valueTypes.push(getReturnTypeFromExpressionResult(value))
+        }
+      }
+
+      // 添加默认值的返回类型
+      if (defaultValue.type === "functionCall") {
+        const returnType = Array.isArray(defaultValue.returnType) ? defaultValue.returnType : [defaultValue.returnType]
+        valueTypes.push(...returnType)
+      } else if (defaultValue.type === "variable") {
+        valueTypes.push(defaultValue.returnType)
+      } else {
+        valueTypes.push(getReturnTypeFromExpressionResult(defaultValue))
+      }
+
+      // 去重并返回类型
+      const allTypes = [...new Set(valueTypes.flat())]
+      return allTypes.length === 1 ? allTypes[0] : allTypes
     }
     const formula = globalFormulaRegistry.get(funcName)!
     return formula.returnType
@@ -282,6 +315,19 @@ export class FormulaVisitor extends FormulaParserVisitor<ExpressionResult> {
     const funcDef = globalFormulaRegistry.get(name)
     if (!funcDef) {
       throw new Error(`Unknown function name: ${name}`)
+    }
+
+    // 特殊处理 SWITCH 函数
+    if (name === "SWITCH") {
+      if (args.length < 3) {
+        throw new Error(`SWITCH function expects at least 3 arguments (expr, pattern, value), but got ${args.length}`)
+      }
+      if (args.length % 2 !== 0) {
+        throw new Error(
+          `SWITCH function expects even number of arguments (expr, pattern1, value1, pattern2, value2, ..., default), but got ${args.length}`,
+        )
+      }
+      return
     }
 
     // 检查是否有任何模式的参数数量匹配
