@@ -1,5 +1,3 @@
-import { globalFormulaRegistry } from "./formula/formula.registry"
-import { FormulaFunction } from "./formula/formula.type"
 import {
   AddSubExprContext,
   AndExprContext,
@@ -7,10 +5,13 @@ import {
   ComparisonExprContext,
   FalseExprContext,
   FormulaContext,
+  FormulaParserVisitor,
   FunctionCallContext,
   FunctionExprContext,
+  globalFormulaRegistry,
   MulDivModExprContext,
   NotExprContext,
+  NullExprContext,
   NumberExprContext,
   OrExprContext,
   ParenExprContext,
@@ -18,20 +19,24 @@ import {
   TrueExprContext,
   VariableContext,
   VariableExprContext,
-} from "./grammar/FormulaParser"
-import FormulaParserVisitor from "./grammar/FormulaParserVisitor"
-import {
-  ArgumentListResult,
-  ReturnType,
+  type ArgumentListResult,
   type ExpressionResult,
+  type FormulaFunction,
   type FunctionExpressionResult,
   type NumberResult,
+  type ParamType,
+  type ReturnType,
   type VariableResult,
-} from "./types"
+} from "@undb/formula"
+import type { TableDo } from "../../../../../table.do"
+import { FormulaReturnTypeVisitor } from "./formula-return-type.visitor"
 
 function getReturnTypeFromExpressionResult(result: ExpressionResult): ReturnType {
-  if (result.type === "argumentList" || result.type === "variable") {
+  if (result.type === "argumentList") {
     return "any"
+  }
+  if (result.type === "variable") {
+    return result.returnType
   }
   if (result.type === "functionCall") {
     return result.returnType
@@ -40,10 +45,32 @@ function getReturnTypeFromExpressionResult(result: ExpressionResult): ReturnType
 }
 
 export class FormulaVisitor extends FormulaParserVisitor<ExpressionResult> {
+  constructor(private readonly table: TableDo) {
+    super()
+  }
   private variables: Set<string> = new Set()
 
+  /**
+   * 验证表达式结果类型是否符合预期
+   *
+   * @throws {Error} 当字段不存在时抛出 "Field xxx not found"
+   * @throws {Error} 当变量类型不匹配时抛出 "Expected xxx but got xxx"
+   * @throws {Error} 当函数返回类型不匹配时抛出 "Expected xxx but got xxx"
+   * @throws {Error} 当表达式类型不匹配时抛出 "Expected xxx but got xxx"
+   */
   private assertType(result: ExpressionResult, types: ReturnType[]): boolean {
     if (result.type === "variable") {
+      const field = this.table.schema.getFieldByIdOrName(result.variable).into(null)
+      if (!field) {
+        throw new Error(`Field ${result.variable} not found`)
+      }
+      const visitor = new FormulaReturnTypeVisitor()
+      field.accept(visitor)
+      const returnType = visitor.returnType
+      if (!types.includes(returnType)) {
+        throw new Error(`Expected ${types.join(" or ")} but got ${returnType}`)
+      }
+
       return true
     }
 
@@ -189,6 +216,9 @@ export class FormulaVisitor extends FormulaParserVisitor<ExpressionResult> {
   visitFalseExpr = (ctx: FalseExprContext): ExpressionResult => {
     return { type: "boolean", value: false }
   }
+  visitNullExpr = (ctx: NullExprContext): ExpressionResult => {
+    return { type: "null" }
+  }
 
   private getFormulaReturnType(ctx: FunctionCallContext, funcName: FormulaFunction): ReturnType {
     if (funcName === "IF") {
@@ -200,7 +230,7 @@ export class FormulaVisitor extends FormulaParserVisitor<ExpressionResult> {
       const thenResult = this.visit(args[1])
       const elseResult = this.visit(args[2])
 
-      if (thenResult.type === "functionCall") {
+      if (thenResult.type === "functionCall" || thenResult.type === "variable") {
         const thenType = Array.isArray(thenResult.returnType) ? thenResult.returnType : [thenResult.returnType]
         const elseType =
           elseResult.type === "functionCall"
@@ -209,15 +239,15 @@ export class FormulaVisitor extends FormulaParserVisitor<ExpressionResult> {
               : [elseResult.returnType]
             : [elseResult.type as ReturnType]
 
-        const allTypes = [...new Set([...thenType, ...elseType])]
+        const allTypes = [...new Set([...thenType, ...elseType.flat()])]
         return allTypes.length === 1 ? allTypes[0] : allTypes
       }
 
-      if (elseResult.type === "functionCall") {
+      if (elseResult.type === "functionCall" || elseResult.type === "variable") {
         const elseType = Array.isArray(elseResult.returnType) ? elseResult.returnType : [elseResult.returnType]
         const thenType = [thenResult.type as ReturnType]
 
-        const allTypes = [...new Set([...thenType, ...elseType])]
+        const allTypes = [...new Set([...thenType.flat(), ...elseType])]
         return allTypes.length === 1 ? allTypes[0] : allTypes
       }
 
@@ -248,6 +278,91 @@ export class FormulaVisitor extends FormulaParserVisitor<ExpressionResult> {
     return formula.returnType
   }
 
+  validateArgs(name: FormulaFunction, args: ExpressionResult[]): void {
+    const funcDef = globalFormulaRegistry.get(name)
+    if (!funcDef) {
+      throw new Error(`Unknown function name: ${name}`)
+    }
+
+    // 检查是否有任何模式的参数数量匹配
+    const hasMatchingPattern = funcDef.paramPatterns.some((pattern) => {
+      // 如果模式中包含 VARIADIC，则参数数量必须大于等于 pattern.length - 1
+      // 否则参数数量必须完全匹配
+      if (pattern.includes("variadic")) {
+        return args.length >= pattern.length - 1
+      }
+      return args.length === pattern.length
+    })
+
+    if (!hasMatchingPattern) {
+      const expectedCounts = funcDef.paramPatterns
+        .map((pattern) => (pattern.includes("variadic") ? `at least ${pattern.length - 1}` : `${pattern.length}`))
+        .join(" or ")
+      throw new Error(`Function ${name} expects ${expectedCounts} arguments, but got ${args.length}`)
+    }
+
+    const isValidPattern = funcDef.paramPatterns.some((pattern) => {
+      for (let i = 0; i < pattern.length; i++) {
+        const expectedType = pattern[i]
+        if (expectedType === "variadic") {
+          // 剩余的所有参数都应该匹配 VARIADIC 的前一个类型
+          const variadicType = pattern[i - 1]
+          return args.slice(i - 1).every((arg) => this.isTypeMatch(arg, variadicType))
+        }
+        if (!this.isTypeMatch(args[i], expectedType)) {
+          return false
+        }
+      }
+      return true
+    })
+
+    if (!isValidPattern) {
+      throw new Error(
+        `Function ${name} arguments do not match, expected: ${funcDef.syntax.join("\n")}, got: ${args
+          .map((arg) => {
+            if (!arg) {
+              return "null"
+            }
+            if (arg.type === "functionCall" || arg.type === "variable") {
+              return arg.returnType
+            }
+            return arg.type
+          })
+          .join(", ")}`,
+      )
+    }
+  }
+
+  private isTypeMatch(arg: ExpressionResult, expectedType: ParamType): boolean {
+    if (!arg) {
+      return false
+    }
+
+    if (expectedType === "any") {
+      return true
+    }
+
+    if (arg.type === "functionCall" || arg.type === "variable") {
+      if (Array.isArray(arg.returnType)) {
+        return arg.returnType.includes(expectedType as any)
+      }
+      return arg.returnType === expectedType
+    }
+
+    switch (expectedType) {
+      case "number":
+        return arg.type === "number"
+      case "string":
+        return arg.type === "string"
+      case "boolean":
+        return arg.type === "boolean"
+      case "date":
+        // TODO: 假设有日期类型的处理
+        return false
+      default:
+        return false
+    }
+  }
   visitFunctionCall = (ctx: FunctionCallContext): FunctionExpressionResult => {
     const funcName = ctx.IDENTIFIER().getText() as FormulaFunction
     const args = ctx.argumentList() ? (this.visit(ctx.argumentList()!) as FunctionExpressionResult) : undefined
@@ -257,7 +372,7 @@ export class FormulaVisitor extends FormulaParserVisitor<ExpressionResult> {
     }
 
     if (args) {
-      globalFormulaRegistry.validateArgs(funcName, args.arguments)
+      this.validateArgs(funcName, args.arguments)
     }
 
     const returnType = this.getFormulaReturnType(ctx, funcName)
@@ -282,7 +397,18 @@ export class FormulaVisitor extends FormulaParserVisitor<ExpressionResult> {
     const variableName = ctx.IDENTIFIER().getText()
     const raw = ctx.getText()
     this.variables.add(variableName)
-    return { type: "variable", value: raw, variable: variableName }
+
+    const fieldId = variableName
+
+    const field = this.table.schema.getFieldByIdOrName(fieldId).into(null)
+    if (!field) {
+      throw new Error(`Field ${fieldId} not found`)
+    }
+    const returnTypeVisitor = new FormulaReturnTypeVisitor()
+    field.accept(returnTypeVisitor)
+    const returnType = returnTypeVisitor.returnType
+
+    return { type: "variable", value: raw, variable: variableName, returnType }
   }
 
   getVariables(): string[] {

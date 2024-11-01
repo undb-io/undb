@@ -1,5 +1,5 @@
 import { None, Option, Some } from "@undb/domain"
-import { createParser, FormulaVisitor, returnType } from "@undb/formula"
+import { createParser, returnType } from "@undb/formula"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
 import type { TableDo } from "../../../../../table.do"
@@ -16,7 +16,8 @@ import {
   type IFormulaFieldConditionSchema,
 } from "./formula-field.condition"
 import { FormulaEqual, FormulaGT, FormulaGTE, FormulaLT, FormulaLTE } from "./formula-field.specification"
-import { FormulaReturnTypeVisitor } from "./formula-return-type.visitor"
+import { parseFormula } from "./formula.util"
+import { FormulaVisitor } from "./formula.visitor"
 
 export const FORMULA_TYPE = "formula" as const
 
@@ -67,6 +68,10 @@ export class FormulaField extends AbstractField<FormulaFieldValue, undefined, IF
     }
   }
 
+  public parseFormula(table: TableDo) {
+    return parseFormula(table, this.fn)
+  }
+
   setOption(option: IFormulaFieldOption) {
     this.option = Some(option)
   }
@@ -78,7 +83,7 @@ export class FormulaField extends AbstractField<FormulaFieldValue, undefined, IF
     try {
       const parser = createParser(fn)
       const tree = parser.formula()
-      const visitor = new FormulaVisitor()
+      const visitor = new FormulaVisitor(table)
       const result = visitor.visit(tree)
       if (result.type === "functionCall") {
         const metadata: IFormulaFieldMetadata = {
@@ -87,17 +92,11 @@ export class FormulaField extends AbstractField<FormulaFieldValue, undefined, IF
         }
         this.metadata = Some(metadata)
       } else if (result.type === "variable") {
-        const fieldId = result.variable
-        const field = table.schema.getFieldByIdOrName(fieldId).into(null)
-        if (field) {
-          const visitor = new FormulaReturnTypeVisitor()
-          field.accept(visitor)
-          const metadata: IFormulaFieldMetadata = {
-            returnType: visitor.returnType,
-            fields: [fieldId],
-          }
-          this.metadata = Some(metadata)
+        const metadata: IFormulaFieldMetadata = {
+          returnType: result.returnType,
+          fields: [result.variable],
         }
+        this.metadata = Some(metadata)
       } else if (result.type === "boolean" || result.type === "number" || result.type === "string") {
         const metadata: IFormulaFieldMetadata = {
           returnType: result.type,
