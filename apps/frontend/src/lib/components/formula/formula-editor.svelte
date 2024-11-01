@@ -1,11 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte"
+  import Fuse from "fuse.js"
   import { EditorState } from "@codemirror/state"
   import { EditorView, keymap } from "@codemirror/view"
   import { defaultKeymap } from "@codemirror/commands"
   import { syntaxHighlighting, HighlightStyle } from "@codemirror/language"
   import { tags } from "@lezer/highlight"
-  import { type FormulaFunction } from "@undb/formula"
+  import { CharStreams, FormulaLexer, type FormulaFunction } from "@undb/formula"
   import { templateVariablePlugin } from "./plugins/varaible.plugin"
   import { cn } from "$lib/utils"
   import { createParser } from "@undb/formula/src/util"
@@ -33,8 +34,17 @@
   export let value: string = ""
 
   let editor: EditorView
-  let formulaSuggestions: string[] = [...functions]
-  let fieldSuggestions: string[] = [...$fields]
+  let formulaSuggestions: string[] = []
+  let fieldSuggestions: string[] = []
+
+  function initSuggestions() {
+    formulaSuggestions = [...functions]
+    fieldSuggestions = [...$fields]
+  }
+
+  onMount(() => {
+    initSuggestions()
+  })
 
   $: suggestions = [...formulaSuggestions, ...fieldSuggestions]
 
@@ -210,7 +220,7 @@
           value = formula
 
           if (update.docChanged) {
-            updateSuggestions()
+            updateSuggestions(true)
           } else if (update.selectionSet) {
             onSelectionChange()
           }
@@ -230,34 +240,56 @@
     updateSuggestions()
   }
 
-  function updateSuggestions() {
+  let suggestionsList: HTMLUListElement
+
+  function updateSuggestions(updated = false) {
     validateFormula()
+
+    if (!updated) {
+      suggestionsList.scrollTop = 0
+      initSuggestions()
+      return
+    }
 
     const content = editor.state.doc.toString()
 
     // 获取光标位置
     const cursor = editor.state.selection.main.head
-    const textBeforeCursor = content.slice(0, cursor)
 
-    const visitor = new FormulaCursorVisitor(cursor)
-    const parser = createParser(content)
-    visitor.visit(parser.formula())
+    const inputStream = CharStreams.fromString(content)
+    const lexer = new FormulaLexer(inputStream)
+    const allTokens = lexer.getAllTokens()
 
-    const hasArgumentList = visitor.hasAggumentList()
-    const hasFunctionCall = visitor.hasFunctionCall()
+    let searchValue = ""
+    for (const token of allTokens) {
+      const startIndex = token.start
+      const stopIndex = token.stop
+      if (cursor - 1 >= startIndex && cursor - 1 <= stopIndex) {
+        if (token.type === FormulaLexer.IDENTIFIER) {
+          searchValue = token.text
+          break
+        }
 
-    // 检查是否在括号内
-    const lastOpenParen = textBeforeCursor.lastIndexOf("(")
-    const lastCloseParen = textBeforeCursor.lastIndexOf(")")
-    const isInsideParens = lastOpenParen > lastCloseParen
-
-    if (content.trim() === "") {
-      suggestions = [...functions, ...$fields]
-    } else if ((hasArgumentList || isInsideParens) && hasFunctionCall) {
-      suggestions = [...functions, ...$fields]
-    } else if (hasFunctionCall) {
-      suggestions = functions
+        if (token.type === FormulaLexer.LBRACE) {
+          formulaSuggestions = []
+          fieldSuggestions = [...$fields]
+          // 如果光标在括号内,则不进行搜索, 直接使用 fields
+          return
+        }
+      }
     }
+
+    if (!searchValue) {
+      initSuggestions()
+      return
+    }
+
+    const formulaFuse = new Fuse(formulaSuggestions)
+    formulaSuggestions = formulaFuse.search(searchValue).map((result) => result.item)
+    const fieldFuse = new Fuse(fieldSuggestions)
+    fieldSuggestions = fieldFuse.search(searchValue).map((result) => result.item)
+
+    suggestionsList.scrollTop = 0
   }
 
   function insertSuggestion(suggestion: string) {
@@ -425,7 +457,10 @@
     </p>
   {/if}
 
-  <ul class="mt-2 flex h-[250px] flex-col divide-y overflow-auto rounded-lg border border-gray-200">
+  <ul
+    class="mt-2 flex h-[250px] flex-col divide-y overflow-auto rounded-lg border border-gray-200"
+    bind:this={suggestionsList}
+  >
     <div class="sticky top-0 z-10 border-b bg-gray-100 px-2 py-1.5 text-xs font-semibold">Formula</div>
     {#each formulaSuggestions as suggestion}
       {@const isSelected = suggestion === selectedSuggestion}

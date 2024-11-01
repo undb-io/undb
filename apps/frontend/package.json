@@ -100,6 +100,7 @@
     "cmdk-sv": "^0.0.18",
     "embla-carousel-svelte": "^8.3.0",
     "formsnap": "^1.0.1",
+    "fuse.js": "^7.0.0",
     "lucide-svelte": "^0.453.0",
     "mode-watcher": "^0.4.1",
     "paneforge": "^0.0.6",
