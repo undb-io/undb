@@ -18,6 +18,13 @@ export class TableSchemaSpecification extends TableComositeSpecification {
   }
   mutate(t: TableDo): Result<TableDo, string> {
     t.schema = this.schema
+
+    for (const field of t.schema.fields) {
+      if (field.type === "formula") {
+        field.setMetadata(t)
+      }
+    }
+
     return Ok(t)
   }
   accept(v: ITableSpecVisitor): Result<void, string> {

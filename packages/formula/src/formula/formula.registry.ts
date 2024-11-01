@@ -143,7 +143,7 @@ globalFormulaRegistry.register(
   ],
 )
 
-globalFormulaRegistry.register("CONCAT", [["string", "variadic"]], "string", "Concatenates a list of strings.", [
+globalFormulaRegistry.register("CONCAT", [["any", "variadic"]], "string", "Concatenates a list of strings.", [
   ["CONCAT('Hello', 'World')", "HelloWorld"],
   ["CONCAT({{field1}}, 'World')", undefined],
 ])

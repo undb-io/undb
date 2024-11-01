@@ -1,16 +1,17 @@
 <script lang="ts">
-  import { trpc } from "$lib/trpc/client"
   import { cn } from "$lib/utils"
-  import { createMutation } from "@tanstack/svelte-query"
   import type { FormulaField } from "@undb/table"
-  import { toast } from "svelte-sonner"
-  import { gridViewStore } from "../grid-view.store"
+  import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
 
-  export let value: string
+  export let value: string | number
+  export let field: FormulaField
+  let returnType = field.returnType
 </script>
 
 <div class={cn("truncate", $$restProps.class)}>
-  {#if value}
+  {#if returnType === "boolean"}
+    <Checkbox checked={value === 1} disabled />
+  {:else if value !== undefined && value !== null}
     {value}
   {/if}
 </div>
