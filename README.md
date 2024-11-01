@@ -34,10 +34,6 @@ UNDB is a no-code platform that can also serve as a Backend as a Service (BaaS).
 
 <br />
 
-<div align="center">
-<a href="https://www.producthunt.com/posts/undb-2?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-undb&#0045;2" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=485793&theme=light" alt="Undb - Open&#0032;Source&#0032;Airtable&#0032;Alternative&#0032;&#0038;&#0032;Backend&#0032;as&#0032;a&#0032;Service | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
-</div>
-
 ## Features
 
 - ⚡ No-code platform, easy to use
