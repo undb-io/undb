@@ -1,6 +1,6 @@
-import { andOptions,Option,Some,ValueObject } from "@undb/domain"
+import { andOptions, Option, Some, ValueObject } from "@undb/domain"
 import { getNextName } from "@undb/utils"
-import { z,ZodSchema } from "@undb/zod"
+import { z, ZodSchema } from "@undb/zod"
 import { objectify } from "radash"
 import {
   WithDuplicatedFieldSpecification,
@@ -34,10 +34,10 @@ import {
   type IUpdateFieldDTO,
 } from "./fields"
 import { FieldFactory } from "./fields/field.factory"
-import type { Field,MutableFieldValue,NoneSystemField,SystemField } from "./fields/field.type"
+import type { Field, MutableFieldValue, NoneSystemField, SystemField } from "./fields/field.type"
 import { AutoIncrementField } from "./fields/variants/autoincrement-field"
 import { CreatedAtField } from "./fields/variants/created-at-field"
-import type { SchemaIdMap,SchemaNameMap } from "./schema.type"
+import type { SchemaIdMap, SchemaNameMap } from "./schema.type"
 
 export class Schema extends ValueObject<Field[]> {
   public fieldMapById: SchemaIdMap
@@ -67,12 +67,6 @@ export class Schema extends ValueObject<Field[]> {
       UpdatedByField.create({ name: "updatedBy", type: "updatedBy" }),
       AutoIncrementField.create({ name: "autoIncrement", type: "autoIncrement" }),
     ])
-
-    for (const field of schema.fields) {
-      if (field.type === "formula") {
-        field.setMetadata(table)
-      }
-    }
 
     return schema
   }

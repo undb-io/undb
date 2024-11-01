@@ -105,6 +105,7 @@ export class FormulaField extends AbstractField<FormulaFieldValue, undefined, IF
         this.metadata = Some(metadata)
       }
     } catch (error) {
+      console.error(error)
       // ignore
     }
   }
