@@ -178,7 +178,7 @@ export class UnderlyingFormulaVisitor extends FormulaParserVisitor<string> {
       })
       .with("SEARCH", () => {
         const args = this.arguments(ctx)
-        return `COALESCE(INSTR(LOWER(COALESCE(${args[1]}, '')), LOWER(COALESCE(${args[0]}, ''))), 0)`
+        return `COALESCE(INSTR(LOWER(COALESCE(${args[0]}, '')), LOWER(COALESCE(${args[1]}, ''))), 0)`
       })
       .with("LEN", () => {
         const args = this.arguments(ctx)
