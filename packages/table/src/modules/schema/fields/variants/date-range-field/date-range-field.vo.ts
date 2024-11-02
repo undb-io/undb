@@ -1,5 +1,5 @@
 import { Option, Some } from "@undb/domain"
-import { z } from "@undb/zod"
+import { z, ZodUndefined } from "@undb/zod"
 import { format } from "date-fns/fp"
 import type { FormFieldVO } from "../../../../forms/form/form-field.vo"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
@@ -34,7 +34,7 @@ export const dateRangeFieldDTO = baseFieldDTO.extend({
   defaultValue: dateRangeFieldValue,
 })
 
-export type IDateRangeFieldDTO = z.infer<typeof daterangeFieldDTO>
+export type IDateRangeFieldDTO = z.infer<typeof dateRangeFieldDTO>
 
 export class DateRangeField extends AbstractField<DateRangeFieldValue> {
   constructor(dto: IDateRangeFieldDTO) {
@@ -55,7 +55,7 @@ export class DateRangeField extends AbstractField<DateRangeFieldValue> {
     return format("yyyy-MM-dd")
   }
 
-  override type = DATERANGE_TYPE
+  override type = DATE_RANGE_TYPE
 
   override get #constraint(): DateRangeFieldConstraint {
     return this.constraint.unwrapOrElse(() => new DateRangeFieldConstraint({}))
@@ -77,7 +77,7 @@ export class DateRangeField extends AbstractField<DateRangeFieldValue> {
     visitor.dateRange(this)
   }
 
-  override getSpec(condition: IDateRangeFieldCondition) {
+  override getSpec(condition: IDateRangeFieldCondition): Option<RecordComositeSpecification> {
     throw new Error("Not implemented")
     // const spec = createAbstractDateRangeConditionMather(condition, this.id).exhaustive()
 
@@ -94,7 +94,7 @@ export class DateRangeField extends AbstractField<DateRangeFieldValue> {
     return value ?? ""
   }
 
-  override get aggregate() {
+  override get aggregate(): ZodUndefined {
     throw new Error("Not implemented")
   }
 
