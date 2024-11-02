@@ -9,6 +9,8 @@ import type {
   IButtonFieldOption,
   IDateFieldConditionSchema,
   IDateFieldConstraint,
+  IDateRangeFieldConditionSchema,
+  IDateRangeFieldConstraint,
   IJsonFieldConditionSchema,
   IJsonFieldConstraint,
   INumberFieldConditionSchema,
@@ -81,6 +83,8 @@ import type {
   ICurrencyFieldConstraint,
   ICurrencyFieldOption,
 } from "./variants/currency-field"
+import type { DateRangeFieldValue } from "./variants/date-range-field/date-range-field-value.vo"
+import type { DATE_RANGE_TYPE, DateRangeField } from "./variants/date-range-field/date-range-field.vo"
 import type {
   DURATION_TYPE,
   DurationField,
@@ -168,6 +172,7 @@ export type Field =
   | DurationField
   | PercentageField
   | FormulaField
+  | DateRangeField
 
 export type SystemField =
   | IdField
@@ -205,6 +210,7 @@ export type FieldValue =
   | DurationFieldValue
   | PercentageFieldValue
   | FormulaFieldValue
+  | DateRangeFieldValue
 
 export type MutableFieldValue =
   | StringFieldValue
@@ -223,6 +229,7 @@ export type MutableFieldValue =
   | CurrencyFieldValue
   | DurationFieldValue
   | PercentageFieldValue
+  | DateRangeFieldValue
 
 export type FieldType =
   | typeof STRING_TYPE
@@ -250,6 +257,7 @@ export type FieldType =
   | typeof DURATION_TYPE
   | typeof PERCENTAGE_TYPE
   | typeof FORMULA_TYPE
+  | typeof DATE_RANGE_TYPE
 
 export type NoneSystemFieldType = Exclude<
   FieldType,
@@ -285,6 +293,7 @@ export type IFieldConditionSchema =
   | IDurationFieldConditionSchema
   | IPercentageFieldConditionSchema
   | IFormulaFieldConditionSchema
+  | IDateRangeFieldConditionSchema
   | z.ZodUnion<any>
 
 export type SystemFieldType = Exclude<FieldType, NoneSystemFieldType>
@@ -308,6 +317,7 @@ export type IFieldConstraint =
   | ICurrencyFieldConstraint
   | IDurationFieldConstraint
   | IPercentageFieldConstraint
+  | IDateRangeFieldConstraint
 
 export type IFieldOption =
   | IReferenceFieldOption
