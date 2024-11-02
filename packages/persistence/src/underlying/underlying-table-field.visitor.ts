@@ -148,11 +148,11 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
   dateRange(field: DateRangeField): void {
     const { start, end } = getDateRangeFieldName(field)
 
-    const startColumn = this.tb.addColumn(start, "timestamp")
-    this.addColumn(startColumn)
+    const startColumn = this.tb.addColumn(start, "timestamp").compile()
+    this.addSql(startColumn)
 
-    const endColumn = this.tb.addColumn(end, "timestamp")
-    this.addColumn(endColumn)
+    const endColumn = this.tb.addColumn(end, "timestamp").compile()
+    this.addSql(endColumn)
   }
   json(field: JsonField): void {
     const c = this.tb.addColumn(field.id.value, "json")

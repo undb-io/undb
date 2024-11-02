@@ -19,7 +19,7 @@ export const DATE_RANGE_TYPE = "dateRange" as const
 export const createDateRangeFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(DATE_RANGE_TYPE),
   constraint: daterangeFieldConstraint.optional(),
-  defaultValue: dateRangeFieldValue,
+  defaultValue: dateRangeFieldValue.optional(),
 })
 
 export const createTablesDateRangeFieldDTO = createDateRangeFieldDTO
@@ -31,7 +31,7 @@ export type IUpdateDateRangeFieldDTO = z.infer<typeof updateDateRangeFieldDTO>
 export const dateRangeFieldDTO = baseFieldDTO.extend({
   type: z.literal(DATE_RANGE_TYPE),
   constraint: daterangeFieldConstraint.optional(),
-  defaultValue: dateRangeFieldValue,
+  defaultValue: dateRangeFieldValue.optional(),
 })
 
 export type IDateRangeFieldDTO = z.infer<typeof dateRangeFieldDTO>

@@ -12,6 +12,7 @@ import { CreatedAtField } from "./variants/created-at-field/created-at-field.vo"
 import { CreatedByField } from "./variants/created-by-field/created-by-field.vo"
 import { CurrencyField } from "./variants/currency-field"
 import { DateField } from "./variants/date-field/date-field.vo"
+import { DateRangeField } from "./variants/date-range-field/date-range-field.vo"
 import { DurationField } from "./variants/duration-field/duration-field.vo"
 import { EmailField } from "./variants/email-field/email-field.vo"
 import { FormulaField } from "./variants/formula-field/formula-field.vo"
@@ -57,6 +58,7 @@ export class FieldFactory {
       .with({ type: "duration" }, (dto) => new DurationField(dto))
       .with({ type: "percentage" }, (dto) => new PercentageField(dto))
       .with({ type: "formula" }, (dto) => new FormulaField(dto))
+      .with({ type: "dateRange" }, (dto) => new DateRangeField(dto))
       .exhaustive()
   }
 
@@ -81,6 +83,7 @@ export class FieldFactory {
       .with({ type: "duration" }, (dto) => DurationField.create(dto))
       .with({ type: "percentage" }, (dto) => PercentageField.create(dto))
       .with({ type: "formula" }, (dto) => FormulaField.create(table, dto))
+      .with({ type: "dateRange" }, (dto) => DateRangeField.create(dto))
       .otherwise(() => {
         throw new Error("Field type creation not supported")
       })

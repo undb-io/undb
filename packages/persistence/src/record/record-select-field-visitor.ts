@@ -181,9 +181,7 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   }
   dateRange(field: DateRangeField): void {
     const { start, end } = getDateRangeFieldName(field)
-
-    this.addSelect(this.getField(start))
-    this.addSelect(this.getField(end))
+    this.addSelect(this.eb.fn("json_array", [this.getField(start), this.getField(end)]).as(field.id.value))
   }
   checkbox(field: CheckboxField): void {
     this.addSelect(this.getField(field.id.value))
