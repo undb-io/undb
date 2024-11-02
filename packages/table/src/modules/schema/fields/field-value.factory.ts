@@ -22,6 +22,7 @@ import { AttachmentFieldValue, type IAttachmentFieldValue } from "./variants/att
 import { CheckboxFieldValue } from "./variants/checkbox-field"
 import { CreatedByFieldValue } from "./variants/created-by-field"
 import { CurrencyFieldValue } from "./variants/currency-field"
+import { DateRangeFieldValue } from "./variants/date-range-field/date-range-field-value.vo"
 import { EmailFieldValue } from "./variants/email-field"
 import { FormulaFieldValue } from "./variants/formula-field/formula-field-value.vo"
 import { LongTextFieldValue } from "./variants/long-text-field/long-text-field-value.vo"
@@ -52,7 +53,8 @@ export class FieldValueFactory {
       .with({ type: "currency" }, (field) => Some(new CurrencyFieldValue(field.valueSchema.parse(value))))
       .with({ type: "button" }, () => Some(new ButtonFieldValue(null)))
       .with({ type: "duration" }, (field) => Some(new DurationFieldValue(field.valueSchema.parse(value))))
-      .with({ type: "percentage" }, (field) => Some(new PercentageFieldValue(field.valueSchema.parse(value)))) // 新增 percentage 处理
+      .with({ type: "percentage" }, (field) => Some(new PercentageFieldValue(field.valueSchema.parse(value))))
+      .with({ type: "dateRange" }, (field) => Some(new DateRangeFieldValue(field.valueSchema.parse(value))))
       .otherwise(() => None)
   }
 
@@ -82,7 +84,8 @@ export class FieldValueFactory {
       .with("currency", () => Some(new CurrencyFieldValue(value as number)))
       .with("button", () => Some(new ButtonFieldValue(null)))
       .with("duration", () => Some(new DurationFieldValue(value as number)))
-      .with("percentage", () => Some(new PercentageFieldValue(value as number))) // 新增 percentage 处理
+      .with("percentage", () => Some(new PercentageFieldValue(value as number)))
+      .with("dateRange", () => Some(new DateRangeFieldValue(value as DateRangeFieldValue)))
       .exhaustive()
   }
 }

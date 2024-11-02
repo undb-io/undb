@@ -140,6 +140,7 @@ export class Graphql {
         duration
         percentage
         formula
+        dateRange
       }
 
       type Field {
