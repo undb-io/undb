@@ -18,11 +18,13 @@
   import FieldIcon from "../blocks/field-icon/field-icon.svelte"
   import { computePosition, flip, shift, offset } from "@floating-ui/dom"
   import { globalFormulaRegistry } from "@undb/formula/src/formula/formula.registry"
-  import { parseFormula, type FormulaField } from "@undb/table"
+  import { getReturnTypeFromExpressionResult, parseFormula, type FormulaField } from "@undb/table"
+  import Label from "../ui/label/label.svelte"
 
   const functions = FORMULA_FUNCTIONS
 
   export let field: FormulaField | undefined = undefined
+  let returnType = field?.returnType
 
   const table = getTable()
   let fields = derived(table, ($table) =>
@@ -418,6 +420,7 @@
     const formula = editor.state.doc.toString()
     try {
       const parsed = parseFormula($table, formula)
+      returnType = getReturnTypeFromExpressionResult(parsed)
       errorMessage = ""
       return parsed
     } catch (error) {
@@ -448,6 +451,17 @@
   })
 </script>
 
+<div class="flex items-center justify-between space-y-1">
+  <Label for="Formula" class="text-xs font-normal">Formula</Label>
+
+  {#if returnType}
+    <span
+      class="me-2 rounded bg-blue-100 px-2.5 py-0.5 text-xs font-medium uppercase text-blue-800 dark:bg-blue-900 dark:text-blue-300"
+    >
+      {returnType}
+    </span>
+  {/if}
+</div>
 <div bind:this={editorContainerWrapper} id="editor-container-wrapper" class="relative">
   <div id="editor-container" class="mb-2 rounded-sm border"></div>
   {#if errorMessage}
@@ -461,7 +475,9 @@
     class="mt-2 flex h-[250px] flex-col divide-y overflow-auto rounded-lg border border-gray-200"
     bind:this={suggestionsList}
   >
-    <div class="sticky top-0 z-10 border-b bg-gray-100 px-2 py-1.5 text-xs font-semibold">Formula</div>
+    <div class="flex items-center justify-between">
+      <div class="sticky top-0 z-10 border-b bg-gray-100 px-2 py-1.5 text-xs font-semibold">Formula</div>
+    </div>
     {#each formulaSuggestions as suggestion}
       {@const isSelected = suggestion === selectedSuggestion}
       {@const isHovered = suggestion === hoverSuggestion}

@@ -1,12 +1,12 @@
-import { None, Option, Some } from "@undb/domain"
-import { createParser, returnType } from "@undb/formula"
+import { None,Option,Some } from "@undb/domain"
+import { createParser,returnType } from "@undb/formula"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
 import type { TableDo } from "../../../../../table.do"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
-import { fieldId, FieldIdVo } from "../../field-id.vo"
+import { fieldId,FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
-import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
+import { AbstractField,baseFieldDTO,createBaseFieldDTO } from "../abstract-field.vo"
 import { StringEmpty } from "../string-field"
 import { FormulaFieldValue } from "./formula-field-value.vo"
 import { createFormulaFieldAggregate } from "./formula-field.aggregate"
@@ -15,7 +15,7 @@ import {
   type IFormulaFieldCondition,
   type IFormulaFieldConditionSchema,
 } from "./formula-field.condition"
-import { FormulaEqual, FormulaGT, FormulaGTE, FormulaLT, FormulaLTE } from "./formula-field.specification"
+import { FormulaEqual,FormulaGT,FormulaGTE,FormulaLT,FormulaLTE } from "./formula-field.specification"
 import { parseFormula } from "./formula.util"
 import { FormulaVisitor } from "./formula.visitor"
 
@@ -83,6 +83,10 @@ export class FormulaField extends AbstractField<FormulaFieldValue, undefined, IF
     try {
       const parser = createParser(fn)
       const tree = parser.formula()
+      // TODO: assert table schema is ready
+      if (!table.schema) {
+        return
+      }
       const visitor = new FormulaVisitor(table)
       const result = visitor.visit(tree)
       if (result.type === "functionCall") {

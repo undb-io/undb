@@ -1,5 +1,6 @@
 import {
   ButtonField,
+  DateRangeField,
   DurationField,
   ID_TYPE,
   PercentageField,
@@ -33,6 +34,7 @@ import { getTableName } from "drizzle-orm"
 import { sql, type ExpressionBuilder, type SelectExpression } from "kysely"
 import { users } from "../tables"
 import type { UnderlyingTable } from "../underlying/underlying-table"
+import { getDateRangeFieldName } from "../underlying/underlying-table.util"
 import { createDisplayFieldName } from "./record-utils"
 
 export class RecordSelectFieldVisitor implements IFieldVisitor {
@@ -176,6 +178,12 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   }
   date(field: DateField): void {
     this.addSelect(this.getField(field.id.value))
+  }
+  dateRange(field: DateRangeField): void {
+    const { start, end } = getDateRangeFieldName(field)
+
+    this.addSelect(this.getField(start))
+    this.addSelect(this.getField(end))
   }
   checkbox(field: CheckboxField): void {
     this.addSelect(this.getField(field.id.value))

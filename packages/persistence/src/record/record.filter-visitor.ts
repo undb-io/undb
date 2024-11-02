@@ -5,6 +5,8 @@ import {
   CurrencyGTE,
   CurrencyLT,
   CurrencyLTE,
+  DateRangeEqual,
+  DateRangeIsEmpty,
   DurationEqual,
   FormulaEqual,
   FormulaGT,
@@ -124,6 +126,12 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
       const cond = this.eb.eb(this.getFieldId(spec), "=", time)
       this.addCond(cond)
     }
+  }
+  dateRangeEqual(spec: DateRangeEqual): void {
+    throw new Error("Method not implemented.")
+  }
+  dateRangeIsEmpty(spec: DateRangeIsEmpty): void {
+    throw new Error("Method not implemented.")
   }
   attachmentEqual(s: AttachmentEqual): void {
     throw new Error("Method not implemented.")

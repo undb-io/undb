@@ -48,6 +48,7 @@ const fieldTypes: Record<FieldType, string> = {
   longText: "Long Text",
   number: "Number",
   date: "Date",
+  dateRange: "Date Range",
   id: "ID",
   createdAt: "Created At",
   autoIncrement: "Auto Increment",

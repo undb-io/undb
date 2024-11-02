@@ -1,5 +1,6 @@
 import { createParser } from "@undb/formula"
 import {
+  DateRangeField,
   Options,
   type AttachmentField,
   type AutoIncrementField,
@@ -102,6 +103,7 @@ export class UnderlyingTableFieldUpdatedVisitor extends AbstractQBMutationVisito
   email(field: EmailField): void {}
   attachment(field: AttachmentField): void {}
   date(field: DateField): void {}
+  dateRange(field: DateRangeField): void {}
   json(field: JsonField): void {}
   checkbox(field: CheckboxField): void {}
   user(field: UserField): void {}

@@ -6,6 +6,7 @@ import {
   CheckboxField,
   CreatedByField,
   DateField,
+  DateRangeField,
   DurationField,
   FormulaField,
   ID_TYPE,
@@ -37,6 +38,7 @@ import { JoinTable } from "./reference/join-table"
 import { getUnderlyingFormulaType } from "./underlying-formula.util"
 import { UnderlyingFormulaVisitor } from "./underlying-formula.visitor"
 import type { UnderlyingTable } from "./underlying-table"
+import { getDateRangeFieldName } from "./underlying-table.util"
 
 export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any> | AlterTableBuilder>
   implements IFieldVisitor
@@ -142,6 +144,15 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
   date(field: DateField): void {
     const c = this.tb.addColumn(field.id.value, "timestamp")
     this.addColumn(c)
+  }
+  dateRange(field: DateRangeField): void {
+    const { start, end } = getDateRangeFieldName(field)
+
+    const startColumn = this.tb.addColumn(start, "timestamp")
+    this.addColumn(startColumn)
+
+    const endColumn = this.tb.addColumn(end, "timestamp")
+    this.addColumn(endColumn)
   }
   json(field: JsonField): void {
     const c = this.tb.addColumn(field.id.value, "json")
