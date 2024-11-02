@@ -6,6 +6,7 @@ import type { CreatedAtField } from "./variants/created-at-field"
 import type { CreatedByField } from "./variants/created-by-field"
 import type { CurrencyField } from "./variants/currency-field"
 import type { DateField } from "./variants/date-field"
+import type { DateRangeField } from "./variants/date-range-field/date-range-field.vo"
 import type { DurationField } from "./variants/duration-field/duration-field.vo"
 import type { EmailField } from "./variants/email-field"
 import type { FormulaField } from "./variants/formula-field/formula-field.vo"
@@ -39,6 +40,7 @@ export interface IFieldVisitor {
   email(field: EmailField): void
   attachment(field: AttachmentField): void
   date(field: DateField): void
+  dateRange(field: DateRangeField): void
   json(field: JsonField): void
   checkbox(field: CheckboxField): void
   user(field: UserField): void
