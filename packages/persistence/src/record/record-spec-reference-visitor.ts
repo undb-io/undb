@@ -15,6 +15,8 @@ import {
   DateIsSameDay,
   DateIsToday,
   DateIsTomorrow,
+  DateRangeEqual,
+  DateRangeIsEmpty,
   DurationEqual,
   FormulaEqual,
   FormulaGT,
@@ -90,9 +92,9 @@ export class RecordSpecReferenceVisitor implements IRecordVisitor {
   dateIsBefore(spec: DateIsBefore): void {}
   dateIsAfter(spec: DateIsAfter): void {}
   dateIsEmpty(spec: DateIsEmpty): void {}
-  userEqual(spec: UserEqual): void
+  dateRangeEqual(spec: DateRangeEqual): void {}
+  dateRangeIsEmpty(spec: DateRangeIsEmpty): void {}
   userEqual(spec: UserEqual): void {}
-  userEmpty(spec: UserEmpty): void
   userEmpty(spec: UserEmpty): void {}
   referenceEqual(spec: ReferenceEqual): void {}
   selectEqual(spec: SelectEqual): void {}

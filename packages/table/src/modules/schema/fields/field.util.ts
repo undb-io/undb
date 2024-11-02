@@ -109,6 +109,7 @@ const sortableFieldTypes: FieldType[] = [
   "duration",
   "percentage",
   "formula",
+  "dateRange",
 ] as const
 
 export function isFieldSortable(type: FieldType): boolean {
@@ -140,6 +141,7 @@ export const fieldTypes: NoneSystemFieldType[] = [
   "duration",
   "percentage",
   "formula",
+  "dateRange",
 ] as const
 
 export const systemFieldTypes: SystemFieldType[] = [
@@ -176,6 +178,7 @@ export const filterableFieldTypes = [
   "duration",
   "percentage",
   "formula",
+  "dateRange",
 ] as const
 
 export const getIsFilterableFieldType = (type: FieldType): type is IFilterableFieldType => {
@@ -199,6 +202,7 @@ export const mutableFieldTypes = [
   "currency",
   "duration",
   "percentage",
+  "dateRange",
 ] as const
 
 export const getIsMutableFieldType = (type: FieldType) => mutableFieldTypes.includes(type as any)

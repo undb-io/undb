@@ -29,6 +29,7 @@
     TimerIcon,
     PercentIcon,
     SquareFunctionIcon,
+    CalendarRangeIcon,
   } from "lucide-svelte"
 
   export let type: FieldType
@@ -60,6 +61,7 @@
     duration: TimerIcon,
     percentage: PercentIcon,
     formula: SquareFunctionIcon,
+    dateRange: CalendarRangeIcon,
   }
 </script>
 

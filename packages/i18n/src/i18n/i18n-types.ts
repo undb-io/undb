@@ -186,6 +186,10 @@ type RootTranslation = {
 			 */
 			date: string
 			/**
+			 * D​a​t​e​ ​R​a​n​g​e
+			 */
+			dateRange: string
+			/**
 			 * I​D
 			 */
 			id: string
@@ -590,6 +594,10 @@ export type TranslationFunctions = {
 			 * Date
 			 */
 			date: () => LocalizedString
+			/**
+			 * Date Range
+			 */
+			dateRange: () => LocalizedString
 			/**
 			 * ID
 			 */
