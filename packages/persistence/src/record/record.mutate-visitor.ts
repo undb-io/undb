@@ -6,6 +6,8 @@ import {
   CurrencyLT,
   CurrencyLTE,
   DateIsEmpty,
+  DateRangeEqual,
+  DateRangeIsEmpty,
   DurationEqual,
   FormulaEqual,
   FormulaGT,
@@ -111,6 +113,12 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
   }
   dateEqual(spec: DateEqual): void {
     this.setData(spec.fieldId.value, spec.date?.getTime() ?? null)
+  }
+  dateRangeEqual(spec: DateRangeEqual): void {
+    throw new Error("Method not implemented.")
+  }
+  dateRangeIsEmpty(spec: DateRangeIsEmpty): void {
+    throw new Error("Method not implemented.")
   }
   attachmentEqual(s: AttachmentEqual): void {
     this.setData(s.fieldId.value, s.value ? JSON.stringify(s.value) : null)

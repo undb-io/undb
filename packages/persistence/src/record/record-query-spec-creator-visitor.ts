@@ -4,6 +4,8 @@ import {
   CurrencyLT,
   CurrencyLTE,
   DateIsEmpty,
+  DateRangeEqual,
+  DateRangeIsEmpty,
   DurationEqual,
   FormulaEqual,
   FormulaGT,
@@ -98,6 +100,8 @@ export class RecordQuerySpecCreatorVisitor implements IRecordVisitor {
   dateIsYesterday(spec: DateIsTomorrow): void {}
   dateIsBefore(spec: DateIsBefore): void {}
   dateIsAfter(spec: DateIsAfter): void {}
+  dateRangeEqual(spec: DateRangeEqual): void {}
+  dateRangeIsEmpty(spec: DateRangeIsEmpty): void {}
   userEqual(spec: UserEqual): void
   userEqual(spec: UserEqual): void {}
   userEmpty(spec: UserEmpty): void

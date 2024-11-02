@@ -1,4 +1,5 @@
 import {
+  DateRangeField,
   ID_TYPE,
   PercentageField,
   type AttachmentField,
@@ -109,6 +110,9 @@ export class RecordReferenceVisitor implements IFieldVisitor {
     throw new Error("Method not implemented.")
   }
   date(field: DateField): void {
+    throw new Error("Method not implemented.")
+  }
+  dateRange(field: DateRangeField): void {
     throw new Error("Method not implemented.")
   }
   json(field: JsonField): void {

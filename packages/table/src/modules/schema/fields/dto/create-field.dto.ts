@@ -7,6 +7,10 @@ import { createButtonFieldDTO, createTablesButtonFieldDTO } from "../variants/bu
 import { createCheckboxFieldDTO, createTablesCheckboxFieldDTO } from "../variants/checkbox-field/checkbox-field.vo"
 import { createCurrencyFieldDTO, createTablesCurrencyFieldDTO } from "../variants/currency-field/currency-field.vo"
 import { createDateFieldDTO, createTablesDateFieldDTO } from "../variants/date-field/date-field.vo"
+import {
+  createDateRangeFieldDTO,
+  createTablesDateRangeFieldDTO,
+} from "../variants/date-range-field/date-range-field.vo"
 import { createDurationFieldDTO } from "../variants/duration-field/duration-field.vo"
 import { createEmailFieldDTO, createTablesEmailFieldDTO } from "../variants/email-field/email-field.vo"
 import { createFormulaFieldDTO, createTablesFormulaFieldDTO } from "../variants/formula-field"
@@ -45,6 +49,7 @@ export const createFieldDTO = z.discriminatedUnion("type", [
   createDurationFieldDTO,
   createPercentageFieldDTO,
   createFormulaFieldDTO,
+  createDateRangeFieldDTO,
 ])
 
 export const createTablesFieldDTO = z.discriminatedUnion("type", [
@@ -66,6 +71,7 @@ export const createTablesFieldDTO = z.discriminatedUnion("type", [
   createTablesUserFieldDTO,
   createTablesPercentageFieldDTO,
   createTablesFormulaFieldDTO,
+  createTablesDateRangeFieldDTO,
 ])
 
 export type ICreateFieldDTO = z.infer<typeof createFieldDTO>

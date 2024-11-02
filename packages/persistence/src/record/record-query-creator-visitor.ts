@@ -1,4 +1,5 @@
 import {
+  DateRangeField,
   ID_TYPE,
   PercentageField,
   type AttachmentField,
@@ -81,6 +82,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
   email(field: EmailField): void {}
   url(field: UrlField): void {}
   date(field: DateField): void {}
+  dateRange(field: DateRangeField): void {}
   attachment(field: AttachmentField): void {}
   json(field: JsonField): void {}
   longText(field: LongTextField): void {}

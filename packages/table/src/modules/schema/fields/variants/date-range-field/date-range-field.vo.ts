@@ -14,7 +14,7 @@ import {
   type IDateRangeFieldConditionSchema,
 } from "./date-range-field.condition"
 
-export const DATE_RANGE_TYPE = "daterange" as const
+export const DATE_RANGE_TYPE = "dateRange" as const
 
 export const createDateRangeFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(DATE_RANGE_TYPE),
@@ -25,8 +25,8 @@ export const createDateRangeFieldDTO = createBaseFieldDTO.extend({
 export const createTablesDateRangeFieldDTO = createDateRangeFieldDTO
 
 export type ICreateDateRangeFieldDTO = z.infer<typeof createDateRangeFieldDTO>
-export const updaterangeDateRangeFieldDTO = createDateRangeFieldDTO.setKey("id", fieldId)
-export type IUpdaterangeDateRangeFieldDTO = z.infer<typeof updaterangeDateRangeFieldDTO>
+export const updateDateRangeFieldDTO = createDateRangeFieldDTO.setKey("id", fieldId)
+export type IUpdateDateRangeFieldDTO = z.infer<typeof updateDateRangeFieldDTO>
 
 export const dateRangeFieldDTO = baseFieldDTO.extend({
   type: z.literal(DATE_RANGE_TYPE),
