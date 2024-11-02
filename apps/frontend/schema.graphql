@@ -59,6 +59,7 @@ enum FieldType {
   createdBy
   currency
   date
+  dateRange
   duration
   email
   formula
