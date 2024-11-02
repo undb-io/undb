@@ -7,6 +7,7 @@ import type { CheckboxField } from "../checkbox-field"
 import type { CreatedByField } from "../created-by-field"
 import type { CurrencyField } from "../currency-field"
 import type { DateField } from "../date-field"
+import type { DateRangeField } from "../date-range-field/date-range-field.vo"
 import type { DurationField } from "../duration-field"
 import type { EmailField } from "../email-field"
 import type { IdField } from "../id-field"
@@ -90,6 +91,9 @@ export class FormulaReturnTypeVisitor implements IFieldVisitor {
     this.#reaturnType = "number"
   }
   button(field: ButtonField): void {}
+  dateRange(field: DateRangeField): void {
+    // this.#reaturnType = ["any", "date"]
+  }
   duration(field: DurationField): void {
     this.#reaturnType = "number"
   }
