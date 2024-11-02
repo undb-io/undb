@@ -106,15 +106,15 @@
   $: tempRecord = RecordDO.fromJSON($table, { id: RecordIdVO.create().value, values: $formData })
 </script>
 
-<form method="POST" use:enhance id="createRecord" enctype="multipart/form-data" class="my-4 space-y-4">
+<form method="POST" use:enhance id="createRecord" enctype="multipart/form-data" class="my-4 space-y-4 px-6">
   <ul use:autoAnimate class={cn("space-y-4", $mediaQuery ? "space-y-2" : "space-y-4")}>
     {#if idField}
-      <Form.Field class={cn("flex gap-4 space-y-0", $mediaQuery ? "flex-col" : "")} {form} name={ID_TYPE}>
+      <Form.Field class={cn("space-y-2", $mediaQuery ? "space-y-2" : "")} {form} name={ID_TYPE}>
         <Form.Control let:attrs>
-          <Form.Label class="flex h-4 w-48 items-center justify-between gap-2 pt-4">
-            <div data-field-id={ID_TYPE} class="flex items-center gap-2">
-              <FieldIcon type={ID_TYPE} class="h-4 w-4" />
-              <span>ID</span>
+          <Form.Label class="h-full w-48 space-y-2">
+            <div data-field-id={ID_TYPE} class="flex items-center gap-1">
+              <FieldIcon type={ID_TYPE} class="size-3" />
+              <span class="text-sm">ID</span>
             </div>
           </Form.Label>
           <div class="min-h-9 flex-1">
@@ -135,12 +135,12 @@
     {#each fields as field}
       {@const shouldShow = !tableForm || tableForm.getShouldShowField(field.id.value, $table.schema, tempRecord)}
       {#if shouldShow}
-        <Form.Field class={cn("flex gap-4 space-y-0", $mediaQuery ? "flex-col" : "")} {form} name={field.id.value}>
+        <Form.Field class={cn("space-y-2", $mediaQuery ? "space-y-2" : "")} {form} name={field.id.value}>
           <Form.Control let:attrs>
-            <Form.Label class="flex h-4 w-48 items-center justify-between gap-2 pt-4">
-              <div data-field-id={field.id.value} class="flex items-center gap-2">
-                <FieldIcon {field} type={field.type} class="h-4 w-4" />
-                <span>{field.name.value}</span>
+            <Form.Label class="h-full w-48 space-y-2">
+              <div data-field-id={field.id.value} class="flex items-center gap-1">
+                <FieldIcon {field} type={field.type} class="size-3" />
+                <span class="truncate text-sm">{field.name.value}</span>
                 {#if field.required}
                   <span class="text-red-500">*</span>
                 {/if}

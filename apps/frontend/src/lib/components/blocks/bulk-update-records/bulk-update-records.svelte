@@ -146,12 +146,12 @@
         <div use:autoAnimate class="flex-1 space-y-4">
           {#each selectedFields as field}
             {@const dirty = $tainted && $tainted[field.id.value]}
-            <Form.Field class="flex gap-2" {form} name={field.id.value}>
+            <Form.Field class="space-y-2" {form} name={field.id.value}>
               <Form.Control let:attrs>
-                <Form.Label class="text-muted-foreground flex h-4 w-48 items-center justify-between gap-2">
-                  <div class="flex items-center gap-2 pt-6">
-                    <FieldIcon {field} type={field.type} class="h-4 w-4" />
-                    <span class="flex-1 truncate">{field.name.value}</span>
+                <Form.Label class="h-full w-48 space-y-2">
+                  <div class="flex items-center gap-2">
+                    <FieldIcon {field} type={field.type} class="size-3" />
+                    <span class="truncate text-sm">{field.name.value}</span>
                     {#if dirty}
                       <span
                         class="me-2 rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300"
@@ -209,7 +209,7 @@
         {#each mutableFields as field}
           {@const selected = selectedFieldIds.includes(field.id.value)}
           <Button
-            variant={selected ? "default" : "outline"}
+            variant={selected ? "secondary" : "outline"}
             class={cn("w-full justify-start shadow-sm")}
             on:click={() => {
               selectedFieldIds.includes(field.id.value)
