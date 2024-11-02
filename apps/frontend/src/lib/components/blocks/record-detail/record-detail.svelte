@@ -113,27 +113,25 @@
 >
   {#each fields as field}
     {@const dirty = $tainted && $tainted[field.id.value]}
-    <Form.Field class="flex gap-2 space-y-0" {form} name={field.id.value}>
+    <Form.Field class="space-y-2" {form} name={field.id.value}>
       <Form.Control let:attrs>
-        <Form.Label
-          class="text-muted-foreground flex h-full w-48 shrink-0 items-center justify-between gap-2 truncate pt-2"
-        >
-          <div class="flex items-center gap-2">
-            <FieldIcon {field} type={field.type} class="h-4 w-4" />
-            <span class="flex-1 truncate">{field.name.value}</span>
+        <Form.Label class="h-full w-48 shrink-0 space-y-2 truncate font-medium leading-none">
+          <div class="flex items-center gap-1">
+            <FieldIcon {field} type={field.type} class="size-3" />
+            <span class="truncate text-sm">{field.name.value}</span>
             {#if field.required}
               <span class="text-red-500">*</span>
             {/if}
             {#if dirty && field.isMutable}
               <span
-                class="me-2 rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300"
+                class="me-2 rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium uppercase text-green-800 dark:bg-green-900 dark:text-green-300"
               >
                 updated
               </span>
             {/if}
           </div>
         </Form.Label>
-        <div class="min-h-9 flex-1 overflow-hidden">
+        <div class="min-h-9 flex-1">
           {#if field.isSystem || !field.isMutable}
             <FieldValue
               {r}
@@ -181,25 +179,25 @@
       <Collapsible.Content class="mt-4 space-y-4">
         {#each hiddenFields as field}
           {@const dirty = $tainted && $tainted[field.id.value]}
-          <Form.Field class="flex gap-4 space-y-0" {form} name={field.id.value}>
+          <Form.Field class="space-y-2" {form} name={field.id.value}>
             <Form.Control let:attrs>
-              <Form.Label class="text-muted-foreground flex h-4 w-48 shrink-0 items-center justify-between gap-2 pt-2">
-                <div class="flex items-center gap-2">
-                  <FieldIcon {field} type={field.type} class="h-4 w-4" />
-                  <span class="flex-1 truncate">{field.name.value}</span>
+              <Form.Label class="h-full w-48 shrink-0 space-y-2">
+                <div class="flex items-center gap-1">
+                  <FieldIcon {field} type={field.type} class="size-3" />
+                  <span class="truncate text-sm">{field.name.value}</span>
                   {#if field.required}
                     <span class="text-red-500">*</span>
                   {/if}
                   {#if dirty}
                     <span
-                      class="me-2 rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300"
+                      class="me-2 rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium uppercase text-green-800 dark:bg-green-900 dark:text-green-300"
                     >
                       updated
                     </span>
                   {/if}
                 </div>
               </Form.Label>
-              <div class="flex-1 overflow-hidden">
+              <div class="flex-1">
                 {#if field.isSystem || !field.isMutable}
                   <FieldValue
                     {r}
