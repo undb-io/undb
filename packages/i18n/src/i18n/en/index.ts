@@ -97,6 +97,10 @@ const aggregateFns: Record<IFieldAggregate, string> = {
   count_false: "False",
   percent_true: "Percent True",
   percent_false: "Percent False",
+  start_max: "Start Date Max",
+  end_max: "End Date Max",
+  start_min: "Start Date Min",
+  end_min: "End Date Min",
 }
 
 const workspaceRoles: Record<ISpaceMemberRole, string> = {
