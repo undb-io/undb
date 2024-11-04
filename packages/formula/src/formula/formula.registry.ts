@@ -313,3 +313,15 @@ globalFormulaRegistry.register(
     ["SWITCH({{field1}}, 1, 'one', 2, 'two', 3, 'three')", undefined],
   ],
 )
+
+globalFormulaRegistry.register(
+  "XOR",
+  [["boolean", "variadic"]],
+  "boolean",
+  "Returns true if an odd number of arguments are true.",
+  [
+    ["XOR(true, false)", true],
+    ["XOR(1 < 2, 5 < 3, 8 < 10)", false],
+    ["XOR({{field1}}, false)", undefined],
+  ],
+)

@@ -475,9 +475,7 @@
     class="mt-2 flex h-[250px] flex-col divide-y overflow-auto rounded-lg border border-gray-200"
     bind:this={suggestionsList}
   >
-    <div class="flex items-center justify-between">
-      <div class="sticky top-0 z-10 border-b bg-gray-100 px-2 py-1.5 text-xs font-semibold">Formula</div>
-    </div>
+    <div class="sticky top-0 z-10 border-b bg-gray-100 px-2 py-1.5 text-xs font-semibold">Formula</div>
     {#each formulaSuggestions as suggestion}
       {@const isSelected = suggestion === selectedSuggestion}
       {@const isHovered = suggestion === hoverSuggestion}
@@ -561,7 +559,7 @@
             {#each hoverFormula.examples as example}
               <div class="whitespace-normal break-words rounded-sm border px-2 py-1 text-xs leading-6 text-gray-800">
                 {example[0]}
-                {#if example[1]}
+                {#if example[1] !== undefined}
                   <span class="text-gray-500">
                     => {example[1]}
                   </span>
