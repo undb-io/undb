@@ -92,7 +92,9 @@ export class DateRangeField extends AbstractField<DateRangeFieldValue> {
 
   override formatAggregate(aggregate?: string, value?: number | string): string | number {
     if (value === undefined) return ""
-    if (aggregate === "min" || aggregate === "max") return this.formatter(value)
+    if (aggregate === "start_min" || aggregate === "end_min" || aggregate === "start_max" || aggregate === "end_max") {
+      return this.formatter(value)
+    }
     return value ?? ""
   }
 

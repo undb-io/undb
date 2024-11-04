@@ -21,13 +21,13 @@ export class DateRangeFieldConstraint extends FieldConstraintVO<IDateRangeFieldC
   }
   override get schema() {
     let date: z.ZodTypeAny = z.date().or(z.string().datetime()).or(z.string().date()).nullable().optional()
-    let base = z.tuple([date, date])
-    if (!this.props.required) {
+    let base = z.tuple([date, date]).refine((value) => !!value?.[0] || !!value?.[1], {
+      message: "At least one date must be set",
+    })
+    if (this.props.required) {
       return base
     } else {
-      return base.refine((value) => !!value[0] || !!value[1], {
-        message: "At least one date must be set",
-      })
+      return base.optional().nullable()
     }
   }
 

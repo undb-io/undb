@@ -2,6 +2,7 @@ import { ID_TYPE, type Field, type IFieldAggregate } from "@undb/table"
 import { sql, type AliasedExpression, type ExpressionBuilder } from "kysely"
 import { match } from "ts-pattern"
 import type { UnderlyingTable } from "../underlying/underlying-table"
+import { getDateRangeFieldName } from "../underlying/underlying-table.util"
 
 export class AggregateFnBuiler {
   constructor(
@@ -22,6 +23,10 @@ export class AggregateFnBuiler {
       }
       if (field.type === "rollup") {
         return `${field.getReferenceField(this.table.table).id.value}.${field.id.value}`
+      }
+      if (field.type === "dateRange") {
+        const { start } = getDateRangeFieldName(field)
+        return this.table.getFieldName(start)
       }
       return this.table.getFieldName(field.id.value)
     }
@@ -66,6 +71,15 @@ export class AggregateFnBuiler {
                         END
                     )`.as(alias)
         }
+        if (field.type === "dateRange") {
+          const { start, end } = getDateRangeFieldName(field)
+          return sql`COUNT(
+            CASE
+              WHEN ${sql.ref(this.table.getFieldName(start))} IS NULL AND ${sql.ref(this.table.getFieldName(end))} IS NULL
+              THEN 1
+            END
+          )`.as(alias)
+        }
         return sql`COUNT(*) - COUNT(NULLIF(${sql.ref(getRef(field))}, ''))`.as(alias)
       })
       .with("count_not_empty", () => {
@@ -88,6 +102,34 @@ export class AggregateFnBuiler {
       .with("count_false", () => sql`COUNT(CASE WHEN NOT ${sql.ref(fieldId)} THEN 1 END)`.as(alias))
       .with("percent_true", () => sql`COUNT(CASE WHEN ${sql.ref(fieldId)} THEN 1 END) * 1.0 / COUNT(*)`.as(alias))
       .with("percent_false", () => sql`COUNT(CASE WHEN NOT ${sql.ref(fieldId)} THEN 1 END) * 1.0 / COUNT(*)`.as(alias))
+      .with("start_max", () => {
+        if (field.type !== "dateRange") {
+          throw new Error("start_max is only supported for dateRange field")
+        }
+        const { start } = getDateRangeFieldName(field)
+        return sql`MAX(${sql.ref(this.table.getFieldName(start))})`.as(alias)
+      })
+      .with("end_max", () => {
+        if (field.type !== "dateRange") {
+          throw new Error("end_max is only supported for dateRange field")
+        }
+        const { end } = getDateRangeFieldName(field)
+        return sql`MAX(${sql.ref(this.table.getFieldName(end))})`.as(alias)
+      })
+      .with("start_min", () => {
+        if (field.type !== "dateRange") {
+          throw new Error("start_min is only supported for dateRange field")
+        }
+        const { start } = getDateRangeFieldName(field)
+        return sql`MIN(${sql.ref(this.table.getFieldName(start))})`.as(alias)
+      })
+      .with("end_min", () => {
+        if (field.type !== "dateRange") {
+          throw new Error("end_min is only supported for dateRange field")
+        }
+        const { end } = getDateRangeFieldName(field)
+        return sql`MIN(${sql.ref(this.table.getFieldName(end))})`.as(alias)
+      })
       .exhaustive()
   }
 }
