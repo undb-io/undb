@@ -1,5 +1,6 @@
 import { createLogger } from "@undb/logger"
 import {
+  DateRangeFieldValue,
   FieldIdVo,
   ID_TYPE,
   type Field,
@@ -181,6 +182,13 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any, foreignTable
       }
       if (field.type === "date" && (isString(value) || isNumber(value))) {
         values[key] = new Date(value).toISOString()
+        continue
+      }
+      if (field.type === "dateRange" && Array.isArray(value)) {
+        const dateRange = new DateRangeFieldValue([value[0], value[1]])
+        const start = dateRange.start
+        const end = dateRange.end
+        values[key] = [start?.toISOString() ?? null, end?.toISOString() ?? null]
         continue
       }
       values[key] = value

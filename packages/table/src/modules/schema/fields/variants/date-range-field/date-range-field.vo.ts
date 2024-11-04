@@ -1,5 +1,5 @@
 import { Option, Some } from "@undb/domain"
-import { z, ZodUndefined } from "@undb/zod"
+import { z } from "@undb/zod"
 import { format } from "date-fns/fp"
 import type { FormFieldVO } from "../../../../forms/form/form-field.vo"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
@@ -8,11 +8,13 @@ import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { daterangeFieldConstraint, DateRangeFieldConstraint } from "./date-range-field-constraint.vo"
 import { dateRangeFieldValue, DateRangeFieldValue } from "./date-range-field-value.vo"
+import { dateRangeFieldAggregate } from "./date-range-field.aggregate"
 import {
   createDateRangeFieldCondition,
   type IDateRangeFieldCondition,
   type IDateRangeFieldConditionSchema,
 } from "./date-range-field.condition"
+import { DateRangeEqual } from "./date-range-field.specification"
 
 export const DATE_RANGE_TYPE = "dateRange" as const
 
@@ -94,12 +96,11 @@ export class DateRangeField extends AbstractField<DateRangeFieldValue> {
     return value ?? ""
   }
 
-  override get aggregate(): ZodUndefined {
-    throw new Error("Not implemented")
+  override get aggregate() {
+    return dateRangeFieldAggregate
   }
 
   override getMutationSpec(value: DateRangeFieldValue): Option<RecordComositeSpecification> {
-    throw new Error("Not implemented")
-    // return Some(new DateRangeEqual(isString(value.value) ? new Date(value.value) : (value.value ?? null), this.id))
+    return Some(new DateRangeEqual(value, this.id))
   }
 }
