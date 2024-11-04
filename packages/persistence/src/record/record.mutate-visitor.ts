@@ -6,6 +6,13 @@ import {
   CurrencyLT,
   CurrencyLTE,
   DateIsEmpty,
+  DateRangeDateIsAfter,
+  DateRangeDateIsBefore,
+  DateRangeDateIsEmpty,
+  DateRangeDateIsSameDay,
+  DateRangeDateIsToday,
+  DateRangeDateIsTomorrow,
+  DateRangeDateIsYesterday,
   DateRangeEqual,
   DateRangeField,
   DateRangeIsEmpty,
@@ -130,6 +137,28 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
 
     this.setData(start, null)
     this.setData(end, null)
+  }
+  dateRangeDateIsAfter(spec: DateRangeDateIsAfter): void {
+    throw new Error("Method not implemented.")
+  }
+  dateRangeDateIsBefore(spec: DateRangeDateIsBefore): void {
+    throw new Error("Method not implemented.")
+  }
+
+  dateRangeDateIsSameDay(spec: DateRangeDateIsSameDay): void {
+    throw new Error("Method not implemented.")
+  }
+  dateRangeDateIsToday(spec: DateRangeDateIsToday): void {
+    throw new Error("Method not implemented.")
+  }
+  dateRangeDateIsTomorrow(spec: DateRangeDateIsTomorrow): void {
+    throw new Error("Method not implemented.")
+  }
+  dateRangeDateIsYesterday(spec: DateRangeDateIsYesterday): void {
+    throw new Error("Method not implemented.")
+  }
+  dateRangeDateIsEmpty(spec: DateRangeDateIsEmpty): void {
+    throw new Error("Method not implemented.")
   }
   attachmentEqual(s: AttachmentEqual): void {
     this.setData(s.fieldId.value, s.value ? JSON.stringify(s.value) : null)

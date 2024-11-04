@@ -10,6 +10,7 @@ import { daterangeFieldConstraint, DateRangeFieldConstraint } from "./date-range
 import { dateRangeFieldValue, DateRangeFieldValue } from "./date-range-field-value.vo"
 import { dateRangeFieldAggregate } from "./date-range-field.aggregate"
 import {
+  createDateRangeConditionMather,
   createDateRangeFieldCondition,
   type IDateRangeFieldCondition,
   type IDateRangeFieldConditionSchema,
@@ -79,15 +80,14 @@ export class DateRangeField extends AbstractField<DateRangeFieldValue> {
     visitor.dateRange(this)
   }
 
-  override getSpec(condition: IDateRangeFieldCondition): Option<RecordComositeSpecification> {
-    throw new Error("Not implemented")
-    // const spec = createAbstractDateRangeConditionMather(condition, this.id).exhaustive()
+  override getSpec(condition: IDateRangeFieldCondition) {
+    const spec = createDateRangeConditionMather(condition, this.id).exhaustive()
 
-    // return Option(spec)
+    return Option(spec)
   }
 
   protected override getConditionSchema(optionType: z.ZodTypeAny): IDateRangeFieldConditionSchema {
-    return createDateRangeFieldCondition(optionType)
+    return createDateRangeFieldCondition()
   }
 
   override formatAggregate(aggregate?: string, value?: number | string): string | number {
