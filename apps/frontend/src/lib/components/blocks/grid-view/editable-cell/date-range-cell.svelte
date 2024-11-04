@@ -72,18 +72,21 @@
     <Popover.Content class="w-auto p-0">
       <RangeCalendar
         onValueChange={(v) => {
-          const start = v.start?.toString()
-          const end = v.end?.toString()
-          const startDate = start ? new Date(start).toISOString() : undefined
-          const endDate = end ? new Date(end).toISOString() : undefined
+          const start = v.start?.toDate(getLocalTimeZone())
+          const end = v.end?.toDate(getLocalTimeZone())
+
+          const startDate = start ? start.toISOString() : undefined
+          const endDate = end ? end.toISOString() : undefined
 
           value = [startDate, endDate]
           onValueChange(value)
-          $updateCell.mutate({
-            tableId,
-            id: recordId,
-            values: { [field.id.value]: value },
-          })
+          if (startDate && endDate) {
+            $updateCell.mutate({
+              tableId,
+              id: recordId,
+              values: { [field.id.value]: value },
+            })
+          }
         }}
         value={internalValue}
         placeholder={internalValue?.start}

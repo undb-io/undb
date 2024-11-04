@@ -37,22 +37,11 @@
   export let field: DateRangeField
   let formatter = field.formatter
 
-  export let onValueChange: (
-    value: [string | Date | null | undefined, string | Date | null | undefined] | undefined,
-  ) => void
+  export let onValueChange:
+    | ((value: [string | Date | null | undefined, string | Date | null | undefined] | undefined) => void)
+    | undefined
 
   let open = false
-
-  const updateCell = createMutation({
-    mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
-    onSuccess(data, variables, context) {
-      open = false
-    },
-    onError(error: Error) {
-      toast.error(error.message)
-    },
-  })
 </script>
 
 <div class={$$restProps.class}>
@@ -79,18 +68,14 @@
     <Popover.Content class="w-auto p-0" align="start">
       <RangeCalendar
         onValueChange={(v) => {
-          const start = v.start?.toString()
-          const end = v.end?.toString()
-          const startDate = start ? new Date(start).toISOString() : undefined
-          const endDate = end ? new Date(end).toISOString() : undefined
+          const start = v.start?.toDate(getLocalTimeZone())
+          const end = v.end?.toDate(getLocalTimeZone())
+
+          const startDate = start ? start.toISOString() : undefined
+          const endDate = end ? end.toISOString() : undefined
 
           value = [startDate, endDate]
-          onValueChange(value)
-          $updateCell.mutate({
-            tableId,
-            id: recordId,
-            values: { [field.id.value]: value },
-          })
+          onValueChange?.(value)
         }}
         value={internalValue}
         placeholder={internalValue?.start}
@@ -104,12 +89,7 @@
           class="w-full"
           on:click={() => {
             value = undefined
-            onValueChange(value)
-            $updateCell.mutate({
-              tableId,
-              id: recordId,
-              values: { [field.id.value]: value },
-            })
+            onValueChange?.(value)
           }}
         >
           Clear
