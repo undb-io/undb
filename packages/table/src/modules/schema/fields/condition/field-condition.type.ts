@@ -1,5 +1,6 @@
 import { z } from "@undb/zod"
 import type { PartialDeep, SetFieldType, SetRequired } from "type-fest"
+import { createDateRangeFieldCondition } from "../variants"
 import { createAutoIncrementFieldCondition } from "../variants/autoincrement-field/autoincrement-field.condition"
 import { createCheckboxFieldCondition } from "../variants/checkbox-field/checkbox-field.condition"
 import { createCreatedAtFieldCondition } from "../variants/created-at-field/created-at-field.condition"
@@ -25,6 +26,7 @@ export function createConditionSchema<OptionType extends z.ZodTypeAny>(optionTyp
     ...createEmailFieldCondition(optionType).options,
     ...createSelectFieldCondition(optionType).options,
     ...createCheckboxFieldCondition(optionType).options,
+    ...createDateRangeFieldCondition().options,
   ])
 }
 

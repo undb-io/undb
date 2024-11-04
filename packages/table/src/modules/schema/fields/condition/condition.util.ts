@@ -96,6 +96,7 @@ export function toMaybeConditionGroup<OptionType extends z.ZodTypeAny>(
       id: uid(10),
       conjunction: "and",
       children: [],
+      option: {},
     }
   }
 

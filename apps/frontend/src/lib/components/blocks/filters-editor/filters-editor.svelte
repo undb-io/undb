@@ -12,7 +12,7 @@
   import FilterField from "./filter-field.svelte"
   import Button from "$lib/components/ui/button/button.svelte"
   import { cn } from "$lib/utils"
-  import { FilterXIcon, GripVertical, PlusIcon, SquareMousePointer, Trash2Icon } from "lucide-svelte"
+  import { GripVertical, PlusIcon, Trash2Icon } from "lucide-svelte"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
   import ConjunctionPicker from "./conjunction-picker.svelte"
   import { isNumber, uid } from "radash"
@@ -49,9 +49,10 @@
       field: field?.id.value,
       op: conditionOps?.[0] as any,
       value: undefined,
+      option: {},
     }
     if (!value) {
-      value = { children: [filter], conjunction: defaultConjunction, id: uid(10) }
+      value = { children: [filter], conjunction: defaultConjunction, id: uid(10), option: {} }
     } else {
       value.children = [...value.children, filter]
     }
@@ -61,10 +62,11 @@
     const conditionGroup: MaybeConditionGroup<any> = {
       id: uid(10),
       conjunction: defaultConjunction,
+      option: {},
       children: [],
     }
     if (!value) {
-      value = { children: [conditionGroup], conjunction: defaultConjunction, id: uid(10) }
+      value = { children: [conditionGroup], conjunction: defaultConjunction, id: uid(10), option: {} }
     } else {
       value.children = [...value.children, conditionGroup]
     }
@@ -139,6 +141,7 @@
                 class="col-span-8 overflow-hidden"
                 {disabled}
                 {field}
+                bind:option={child.option}
                 bind:op={child.op}
                 bind:value={child.value}
               />

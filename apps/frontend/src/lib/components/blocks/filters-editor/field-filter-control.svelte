@@ -4,9 +4,11 @@
   import OpPicker from "./op-picker.svelte"
   import { cn } from "$lib/utils"
   import FilterInput from "./filter-input.svelte"
+  import FieldFilterOption from "./field-filter-option.svelte"
 
   export let field: Field | undefined
   export let op: IOpType | undefined
+  export let option: any
   export let value: any | undefined = undefined
   export let disabled = false
 
@@ -21,6 +23,7 @@
 </script>
 
 <div class={cn("col-span-8 flex flex-1 items-center gap-0", $$restProps.class)}>
+  <FieldFilterOption {field} bind:option class="h-8 w-20 font-semibold" />
   <OpPicker {disabled} {field} bind:value={op} class={cn("rounded-l-none", hasValue && "rounded-r-none")} />
   {#if hasValue}
     <FilterInput {disabled} class="flex-1" {field} bind:value {op} />
