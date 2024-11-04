@@ -20,6 +20,7 @@
   import ButtonControl from "./button-control.svelte"
   import DurationControl from "./duration-control.svelte"
   import PercentageControl from "./percentage-control.svelte"
+  import DateRangeControl from "./date-range-control.svelte"
   import { type Writable } from "svelte/store"
 
   export let readonly = false
@@ -60,6 +61,7 @@
     user: UserControl,
     duration: DurationControl,
     percentage: PercentageControl,
+    dateRange: DateRangeControl,
   }
 </script>
 

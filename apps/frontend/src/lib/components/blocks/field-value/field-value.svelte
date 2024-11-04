@@ -1,6 +1,6 @@
 <script lang="ts">
   import { type Writable } from "svelte/store"
-  import type { Field, FieldType } from "@undb/table"
+  import { type Field, type FieldType } from "@undb/table"
   import type { ComponentType } from "svelte"
   import StringField from "./string-field.svelte"
   import NumberField from "./number-field.svelte"
@@ -21,6 +21,7 @@
   import PercentageField from "./percentage-field.svelte"
   import ButtonControl from "../field-control/button-control.svelte"
   import FormulaField from "./formula-field.svelte"
+  import DateRangeField from "./date-range-field.svelte"
 
   export let type: FieldType
   export let value: any
@@ -58,6 +59,7 @@
     percentage: PercentageField,
     formula: FormulaField,
     button: ButtonControl,
+    dateRange: DateRangeField,
   }
 </script>
 
