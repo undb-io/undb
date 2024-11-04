@@ -189,6 +189,15 @@ export class UnderlyingFormulaVisitor extends FormulaParserVisitor<string> {
         // args[0] 是要重复的字符串，args[1] 是重复次数
         return `SUBSTR(REPLACE(HEX(ZEROBLOB(${args[1]})), '00', ${args[0]}), 1, LENGTH(${args[0]}) * ${args[1]})`
       })
+      .with("XOR", () => {
+        const args = this.arguments(ctx)
+        // 对多个参数递归应用 XOR
+        // XOR(A,B,C) = XOR(XOR(A,B), C)
+        return args.reduce((result, arg, index) => {
+          if (index === 0) return arg
+          return `((${result} OR ${arg}) AND NOT (${result} AND ${arg}))`
+        })
+      })
       .with("RECORD_ID", () => {
         return ID_TYPE
       })

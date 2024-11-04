@@ -47,6 +47,7 @@ export type FormulaFunction =
   // 逻辑运算
   | "AND"
   | "OR"
+  | "XOR"
   | "NOT"
   | "IF"
   | "SWITCH"
