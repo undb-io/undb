@@ -31,6 +31,7 @@
     $table.schema.fields
       .filter((field) => !field.isSystem)
       .filter((f) => f.id.value !== field?.id.value)
+      .filter((f) => f.type !== "dateRange" && f.type !== "button")
       .map((field) => field.id.value),
   )
   export let value: string = ""
