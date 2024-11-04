@@ -361,6 +361,22 @@ type RootTranslation = {
 			 * P​e​r​c​e​n​t​ ​F​a​l​s​e
 			 */
 			percent_false: string
+			/**
+			 * S​t​a​r​t​ ​D​a​t​e​ ​M​a​x
+			 */
+			start_max: string
+			/**
+			 * E​n​d​ ​D​a​t​e​ ​M​a​x
+			 */
+			end_max: string
+			/**
+			 * S​t​a​r​t​ ​D​a​t​e​ ​M​i​n
+			 */
+			start_min: string
+			/**
+			 * E​n​d​ ​D​a​t​e​ ​M​i​n
+			 */
+			end_min: string
 		}
 		workspaceRoles: {
 			/**
@@ -770,6 +786,22 @@ export type TranslationFunctions = {
 			 * Percent False
 			 */
 			percent_false: () => LocalizedString
+			/**
+			 * Start Date Max
+			 */
+			start_max: () => LocalizedString
+			/**
+			 * End Date Max
+			 */
+			end_max: () => LocalizedString
+			/**
+			 * Start Date Min
+			 */
+			start_min: () => LocalizedString
+			/**
+			 * End Date Min
+			 */
+			end_min: () => LocalizedString
 		}
 		workspaceRoles: {
 			/**

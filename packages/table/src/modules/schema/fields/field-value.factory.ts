@@ -22,7 +22,7 @@ import { AttachmentFieldValue, type IAttachmentFieldValue } from "./variants/att
 import { CheckboxFieldValue } from "./variants/checkbox-field"
 import { CreatedByFieldValue } from "./variants/created-by-field"
 import { CurrencyFieldValue } from "./variants/currency-field"
-import { DateRangeFieldValue } from "./variants/date-range-field/date-range-field-value.vo"
+import { DateRangeFieldValue, type IDateRangeFieldValue } from "./variants/date-range-field/date-range-field-value.vo"
 import { EmailFieldValue } from "./variants/email-field"
 import { FormulaFieldValue } from "./variants/formula-field/formula-field-value.vo"
 import { LongTextFieldValue } from "./variants/long-text-field/long-text-field-value.vo"
@@ -85,7 +85,7 @@ export class FieldValueFactory {
       .with("button", () => Some(new ButtonFieldValue(null)))
       .with("duration", () => Some(new DurationFieldValue(value as number)))
       .with("percentage", () => Some(new PercentageFieldValue(value as number)))
-      .with("dateRange", () => Some(new DateRangeFieldValue(value as DateRangeFieldValue)))
+      .with("dateRange", () => Some(new DateRangeFieldValue(value as IDateRangeFieldValue)))
       .exhaustive()
   }
 }

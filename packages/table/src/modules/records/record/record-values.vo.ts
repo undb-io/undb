@@ -30,13 +30,14 @@ export class RecordValuesVO extends ValueObject {
 
     for (const field of fields) {
       let value = dto[field.id.value] ?? dto[field.name.value] ?? null
-      if (value === null) {
+      if (value === null || value === undefined) {
         const defaultValue = field.defaultValue as Option<MutableFieldValue>
         if (defaultValue.isSome() && field.isDefaultValueValid && !defaultValue.unwrap().isEmpty()) {
           value = defaultValue.unwrap().value
         }
       }
-      const fieldValue: Option<MutableFieldValue> = value === undefined ? None : FieldValueFactory.create(field, value)
+      const fieldValue: Option<MutableFieldValue> =
+        value === undefined || value === null ? None : FieldValueFactory.create(field, value)
 
       let v: MutableFieldValue | undefined = undefined
 
@@ -129,6 +130,7 @@ export class RecordValuesVO extends ValueObject {
   getMuttableValues(schema: SchemaIdMap) {
     const values: Record<string, any> = {}
 
+    console.log(this.values)
     for (const [id, value] of Object.entries(this.values)) {
       const field = schema.get(id)
       if (!field) continue
