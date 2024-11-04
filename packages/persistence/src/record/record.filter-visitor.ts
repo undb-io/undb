@@ -5,7 +5,15 @@ import {
   CurrencyGTE,
   CurrencyLT,
   CurrencyLTE,
+  DateRangeDateIsAfter,
+  DateRangeDateIsBefore,
+  DateRangeDateIsEmpty,
+  DateRangeDateIsSameDay,
+  DateRangeDateIsToday,
+  DateRangeDateIsTomorrow,
+  DateRangeDateIsYesterday,
   DateRangeEqual,
+  DateRangeField,
   DateRangeIsEmpty,
   DurationEqual,
   FormulaEqual,
@@ -73,10 +81,14 @@ import {
 import type { ExpressionBuilder } from "kysely"
 import { isString, unique } from "radash"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
+import { getDateRangeFieldName } from "../underlying/underlying-table.util"
 
 export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements IRecordVisitor {
   private getFieldId(spec: RecordComositeSpecification) {
-    return `${this.table.id.value}.${spec.fieldId.value}`
+    return this.getTableFieldId(spec.fieldId.value)
+  }
+  private getTableFieldId(fieldId: string) {
+    return `${this.table.id.value}.${fieldId}`
   }
   constructor(
     eb: ExpressionBuilder<any, any>,
@@ -132,6 +144,76 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
   }
   dateRangeIsEmpty(spec: DateRangeIsEmpty): void {
     throw new Error("Method not implemented.")
+  }
+  dateRangeDateIsAfter(spec: DateRangeDateIsAfter): void {
+    const field = this.table.schema.getFieldById(spec.fieldId).expect("Field not found")
+    const { start, end } = getDateRangeFieldName(field as DateRangeField)
+    const cond = this.eb.eb(
+      spec.scope === "start" ? this.getTableFieldId(start) : this.getTableFieldId(end),
+      ">",
+      spec.date.getTime(),
+    )
+    this.addCond(cond)
+  }
+  dateRangeDateIsBefore(spec: DateRangeDateIsBefore): void {
+    const field = this.table.schema.getFieldById(spec.fieldId).expect("Field not found")
+    const { start, end } = getDateRangeFieldName(field as DateRangeField)
+    const cond = this.eb.eb(
+      spec.scope === "start" ? this.getTableFieldId(start) : this.getTableFieldId(end),
+      "<",
+      spec.date.getTime(),
+    )
+    this.addCond(cond)
+  }
+  dateRangeDateIsSameDay(spec: DateRangeDateIsSameDay): void {
+    const field = this.table.schema.getFieldById(spec.fieldId).expect("Field not found")
+    const { start, end } = getDateRangeFieldName(field as DateRangeField)
+    const cond = this.eb.between(
+      spec.scope === "start" ? this.getTableFieldId(start) : this.getTableFieldId(end),
+      spec.date.getTime(),
+      spec.date.getTime(),
+    )
+    this.addCond(cond)
+  }
+  dateRangeDateIsToday(spec: DateRangeDateIsToday): void {
+    const field = this.table.schema.getFieldById(spec.fieldId).expect("Field not found")
+    const { start, end } = getDateRangeFieldName(field as DateRangeField)
+    const cond = this.eb.between(
+      spec.scope === "start" ? this.getTableFieldId(start) : this.getTableFieldId(end),
+      startOfToday().getTime(),
+      endOfToday().getTime(),
+    )
+    this.addCond(cond)
+  }
+  dateRangeDateIsEmpty(spec: DateRangeDateIsEmpty): void {
+    const field = this.table.schema.getFieldById(spec.fieldId).expect("Field not found")
+    const { start, end } = getDateRangeFieldName(field as DateRangeField)
+    const cond = this.eb.eb(
+      spec.scope === "start" ? this.getTableFieldId(start) : this.getTableFieldId(end),
+      "is",
+      null,
+    )
+    this.addCond(cond)
+  }
+  dateRangeDateIsTomorrow(spec: DateRangeDateIsTomorrow): void {
+    const field = this.table.schema.getFieldById(spec.fieldId).expect("Field not found")
+    const { start, end } = getDateRangeFieldName(field as DateRangeField)
+    const cond = this.eb.between(
+      spec.scope === "start" ? this.getTableFieldId(start) : this.getTableFieldId(end),
+      startOfTomorrow().getTime(),
+      endOfTomorrow().getTime(),
+    )
+    this.addCond(cond)
+  }
+  dateRangeDateIsYesterday(spec: DateRangeDateIsYesterday): void {
+    const field = this.table.schema.getFieldById(spec.fieldId).expect("Field not found")
+    const { start, end } = getDateRangeFieldName(field as DateRangeField)
+    const cond = this.eb.between(
+      spec.scope === "start" ? this.getTableFieldId(start) : this.getTableFieldId(end),
+      startOfYesterday().getTime(),
+      endOfYesterday().getTime(),
+    )
+    this.addCond(cond)
   }
   attachmentEqual(s: AttachmentEqual): void {
     throw new Error("Method not implemented.")

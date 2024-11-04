@@ -103,6 +103,8 @@
     is_not_empty: null,
   }
 
+  const dateRange = date
+
   const createdAt: Record<ICreatedAtFieldConditionOp, ComponentType | null> = {
     is_same_day: DateControl,
     is_not_same_day: DateControl,
@@ -324,6 +326,7 @@
     duration,
     formula,
     percentage,
+    dateRange,
   }
 </script>
 
