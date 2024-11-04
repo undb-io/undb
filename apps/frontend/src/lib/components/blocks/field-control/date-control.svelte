@@ -6,11 +6,13 @@
   import { Calendar } from "$lib/components/ui/calendar"
   import * as Popover from "$lib/components/ui/popover"
   import { isDate, isString } from "radash"
-  import { format } from "date-fns/fp"
+  import { DateField } from "@undb/table"
 
   export let readonly = false
-  const formatter = format("yyyy-MM-dd")
   export let disabled = false
+  export let field: DateField
+
+  let formatter = field.formatter
 
   export let value: string | Date | undefined = undefined
   function parse(value: string) {
