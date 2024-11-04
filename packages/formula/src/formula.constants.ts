@@ -37,6 +37,7 @@ export const FORMULA_FUNCTIONS: FormulaFunction[] = [
   "AND",
   "OR",
   "NOT",
+  "XOR",
   "IF",
   "SWITCH",
   // "ISBLANK",
