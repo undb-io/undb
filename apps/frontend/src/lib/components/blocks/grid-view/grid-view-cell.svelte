@@ -28,6 +28,7 @@
   import DurationCell from "./editable-cell/duration-cell.svelte"
   import PercentageCell from "./editable-cell/percentage-cell.svelte"
   import FormulaCell from "./editable-cell/formula-cell.svelte"
+  import DateRangeCell from "./editable-cell/date-range-cell.svelte"
   import type { Readable } from "svelte/store"
 
   const table = getTable()
@@ -71,6 +72,7 @@
     duration: DurationCell,
     percentage: PercentageCell,
     formula: FormulaCell,
+    dateRange: DateRangeCell,
   }
 </script>
 
