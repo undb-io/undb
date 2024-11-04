@@ -7,10 +7,7 @@
   import { Calendar } from "$lib/components/ui/calendar"
   import * as Popover from "$lib/components/ui/popover"
   import { isString, isDate } from "radash"
-  import { format } from "date-fns/fp"
   import { Button } from "$lib/components/ui/button"
-
-  const formatter = format("yyyy-MM-dd")
 
   export let tableId: string
   export let field: DateField
@@ -18,10 +15,11 @@
   function parse(value: string) {
     try {
       return parseDate(value)
-    } catch {
+    } catch (e) {
       return undefined
     }
   }
+  let formatter = field.formatter
   $: internalDate = isString(value) ? parse(value) : isDate(value) ? parse(value.toISOString()) : undefined
   export let recordId: string
   export let isEditing: boolean

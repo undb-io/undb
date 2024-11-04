@@ -7,8 +7,10 @@ import {
   CurrencyLTE,
   DateIsEmpty,
   DateRangeEqual,
+  DateRangeField,
   DateRangeIsEmpty,
   DurationEqual,
+  FieldIdVo,
   FormulaEqual,
   FormulaGT,
   FormulaGTE,
@@ -68,6 +70,7 @@ import { unique } from "radash"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
 import type { IQueryBuilder, IRecordQueryBuilder } from "../qb"
 import { JoinTable } from "../underlying/reference/join-table"
+import { getDateRangeFieldName } from "../underlying/underlying-table.util"
 
 export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IRecordVisitor {
   constructor(
@@ -115,10 +118,18 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     this.setData(spec.fieldId.value, spec.date?.getTime() ?? null)
   }
   dateRangeEqual(spec: DateRangeEqual): void {
-    throw new Error("Method not implemented.")
+    const field = this.table.schema.getFieldById(new FieldIdVo(spec.fieldId.value)).expect("No field found")
+    const { start, end } = getDateRangeFieldName(field as DateRangeField)
+
+    this.setData(start, spec.dateRange.start?.getTime() ?? null)
+    this.setData(end, spec.dateRange.end?.getTime() ?? null)
   }
   dateRangeIsEmpty(spec: DateRangeIsEmpty): void {
-    throw new Error("Method not implemented.")
+    const field = this.table.schema.getFieldById(new FieldIdVo(spec.fieldId.value)).expect("No field found")
+    const { start, end } = getDateRangeFieldName(field as DateRangeField)
+
+    this.setData(start, null)
+    this.setData(end, null)
   }
   attachmentEqual(s: AttachmentEqual): void {
     this.setData(s.fieldId.value, s.value ? JSON.stringify(s.value) : null)
