@@ -150,7 +150,7 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     const { start, end } = getDateRangeFieldName(field as DateRangeField)
     const cond = this.eb.eb(
       spec.scope === "start" ? this.getTableFieldId(start) : this.getTableFieldId(end),
-      ">",
+      ">=",
       spec.date.getTime(),
     )
     this.addCond(cond)
@@ -160,7 +160,7 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     const { start, end } = getDateRangeFieldName(field as DateRangeField)
     const cond = this.eb.eb(
       spec.scope === "start" ? this.getTableFieldId(start) : this.getTableFieldId(end),
-      "<",
+      "<=",
       spec.date.getTime(),
     )
     this.addCond(cond)
@@ -305,11 +305,11 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
     this.addCond(cond)
   }
   dateIsBefore(spec: DateIsBefore): void {
-    const cond = this.eb.eb(this.getFieldId(spec), "<", startOfDay(spec.date).getTime())
+    const cond = this.eb.eb(this.getFieldId(spec), "<=", spec.date.getTime())
     this.addCond(cond)
   }
   dateIsAfter(spec: DateIsAfter): void {
-    const cond = this.eb.eb(this.getFieldId(spec), ">", endOfDay(spec.date).getTime())
+    const cond = this.eb.eb(this.getFieldId(spec), ">=", spec.date.getTime())
     this.addCond(cond)
   }
   dateIsTomorrow(spec: DateIsTomorrow): void {

@@ -96,6 +96,7 @@
       builders={[builder]}
       size="sm"
       disabled={!readonly && !$hasPermission("table:update") && (!sort || sort.isEmpty)}
+      {...$$restProps}
     >
       <ArrowUpDownIcon class="mr-2 h-4 w-4" />
       Sorts

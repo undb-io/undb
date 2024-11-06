@@ -419,6 +419,10 @@ type RootTranslation = {
 			 * L​i​s​t
 			 */
 			list: string
+			/**
+			 * C​a​l​e​n​d​a​r
+			 */
+			calendar: string
 		}
 		widgetTypes: {
 			/**
@@ -844,6 +848,10 @@ export type TranslationFunctions = {
 			 * List
 			 */
 			list: () => LocalizedString
+			/**
+			 * Calendar
+			 */
+			calendar: () => LocalizedString
 		}
 		widgetTypes: {
 			/**

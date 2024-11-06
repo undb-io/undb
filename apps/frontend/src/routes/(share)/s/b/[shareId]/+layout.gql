@@ -39,6 +39,9 @@ query GetShareBaseData($shareId: ID!) {
         kanban {
           field
         }
+      calendar {
+        field
+      }
         gallery {
           field
         }

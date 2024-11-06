@@ -1,5 +1,11 @@
 import { Command, type CommandProps } from "@undb/domain"
-import { updateViewDTO, type IGalleryOption, type IKanbanOption, type ViewType } from "@undb/table"
+import {
+  updateViewDTO,
+  type ICalendarOption,
+  type IGalleryOption,
+  type IKanbanOption,
+  type ViewType,
+} from "@undb/table"
 import { z } from "@undb/zod"
 
 export const updateViewCommand = updateViewDTO
@@ -13,6 +19,7 @@ export class UpdateViewCommand extends Command {
   public readonly type: ViewType
   public readonly kanban?: IKanbanOption
   public readonly gallery?: IGalleryOption
+  public readonly calendar?: ICalendarOption
 
   constructor(props: CommandProps<IUpdateViewCommand>) {
     super(props)
@@ -27,6 +34,10 @@ export class UpdateViewCommand extends Command {
     if (props.type === "gallery") {
       // @ts-ignore
       this.gallery = props.gallery
+    }
+    if (props.type === "calendar") {
+      // @ts-ignore
+      this.calendar = props.calendar
     }
   }
 }
