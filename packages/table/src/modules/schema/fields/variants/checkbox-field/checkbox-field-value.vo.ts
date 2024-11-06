@@ -1,7 +1,7 @@
 import { z } from "@undb/zod"
 import { FieldValueObject } from "../../field-value"
 
-export const checkboxFieldValue = z.boolean()
+export const checkboxFieldValue = z.boolean().nullable()
 
 type ICheckboxFieldValue = z.infer<typeof checkboxFieldValue>
 

@@ -6,6 +6,7 @@
   import GalleryView from "../gallery-view/gallery-view.svelte"
   import ListView from "../list-view/list-view.svelte"
   import { r } from "$lib/store/records.store"
+  import CalendarView from "../calendar-view/calendar-view.svelte"
 
   const table = getTable()
   export let viewId: Readable<string>
@@ -23,6 +24,8 @@
       <GalleryView {viewId} {r} />
     {:else if view.type === "list"}
       <ListView {viewId} {r} />
+    {:else if view.type === "calendar"}
+      <CalendarView {viewId} {r} />
     {/if}
   {/if}
 {/key}

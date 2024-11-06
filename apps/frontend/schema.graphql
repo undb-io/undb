@@ -19,6 +19,10 @@ type Base {
   tables: [Table]!
 }
 
+type CalendarOption {
+  field: String
+}
+
 type Dashboard {
   baseId: ID!
   description: String
@@ -268,6 +272,7 @@ type User {
 
 type View {
   aggregate: JSON
+  calendar: CalendarOption
   color: JSON
   fields: JSON
   filter: JSON
@@ -294,6 +299,7 @@ type ViewOption {
 }
 
 enum ViewType {
+  calendar
   gallery
   grid
   kanban

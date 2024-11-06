@@ -31,7 +31,7 @@ export const dateMacros = z.enum<DateMacrosPattern, [DateMacrosPattern, ...DateM
 
 export type IDateMacros = z.infer<typeof dateMacros>
 
-const dateValue = z.string().date().or(dateMacros)
+const dateValue = z.string().or(dateMacros)
 
 export function createAbstractDateFieldCondition<ItemType extends z.ZodTypeAny>(itemType: ItemType) {
   const base = createBaseConditionSchema(itemType)

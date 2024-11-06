@@ -1,4 +1,4 @@
-import { None, Option, ValueObject, andOptions } from "@undb/domain"
+import { Option, ValueObject, andOptions } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { RecordComositeSpecification } from "../.."
 import type { TableDo } from "../../../table.do"
@@ -36,8 +36,7 @@ export class RecordValuesVO extends ValueObject {
           value = defaultValue.unwrap().value
         }
       }
-      const fieldValue: Option<MutableFieldValue> =
-        value === undefined || value === null ? None : FieldValueFactory.create(field, value)
+      const fieldValue: Option<MutableFieldValue> = FieldValueFactory.create(field, value)
 
       let v: MutableFieldValue | undefined = undefined
 
@@ -130,7 +129,6 @@ export class RecordValuesVO extends ValueObject {
   getMuttableValues(schema: SchemaIdMap) {
     const values: Record<string, any> = {}
 
-    console.log(this.values)
     for (const [id, value] of Object.entries(this.values)) {
       const field = schema.get(id)
       if (!field) continue

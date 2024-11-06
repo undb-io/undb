@@ -1,4 +1,4 @@
-import { andOptions, Option, Some, ValueObject } from "@undb/domain"
+import { andOptions, None, Option, Some, ValueObject } from "@undb/domain"
 import { getNextName } from "@undb/utils"
 import { z, ZodSchema } from "@undb/zod"
 import { objectify } from "radash"
@@ -308,6 +308,12 @@ export class Schema extends ValueObject<Field[]> {
     return values
   }
 
+  getDefaultDisplayField(fieldIds?: Set<string>): Option<Field> {
+    const displayFields = this.getDisplayFields(fieldIds)
+    if (displayFields.length === 0) return None
+    return Some(displayFields[0])
+  }
+
   getDisplayFields(fieldIds?: Set<string>) {
     return this.fields.filter((f) => (fieldIds ? fieldIds.has(f.id.value) : true) && f.display)
   }
@@ -352,6 +358,11 @@ export class Schema extends ValueObject<Field[]> {
 
   getKanbanFields(fields: Field[] = this.fields) {
     return fields.filter((f) => f.type === "select" && f.isSingle)
+  }
+
+  getCalendarFields(fields: Field[] = this.fields) {
+    // TODO: add date range field
+    return fields.filter((f) => f.type === "date")
   }
 
   getGalleryFields(fields: Field[] = this.fields) {

@@ -81,6 +81,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@atlaskit/pragmatic-drag-and-drop": "^1.4.0",
     "@codemirror/commands": "^6.7.1",
     "@codemirror/language": "^6.10.3",
     "@codemirror/state": "^6.4.1",
@@ -90,6 +91,7 @@
     "@internationalized/date": "^3.5.6",
     "@svelte-put/clickoutside": "^3.0.2",
     "@tanstack/svelte-query": "^5.59.13",
+    "@tanstack/svelte-virtual": "^3.10.8",
     "@tiptap/core": "^2.8.0",
     "@tiptap/pm": "^2.8.0",
     "@tiptap/starter-kit": "^2.8.0",

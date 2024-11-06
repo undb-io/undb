@@ -159,6 +159,7 @@ export class Graphql {
         kanban
         gallery
         list
+        calendar
       }
 
       type ViewOption {
@@ -174,6 +175,10 @@ export class Graphql {
       }
 
       type GalleryOption {
+        field: String
+      }
+
+      type CalendarOption {
         field: String
       }
 
@@ -198,6 +203,7 @@ export class Graphql {
         grid: GridOption
         kanban: KanbanOption
         gallery: GalleryOption
+        calendar: CalendarOption
         widgets: [Widget]
 
         shareId: ID

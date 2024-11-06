@@ -58,6 +58,10 @@ export class DateRangeField extends AbstractField<DateRangeFieldValue> {
     return format("yyyy-MM-dd")
   }
 
+  format(date: Date) {
+    return this.formatter(date)
+  }
+
   override type = DATE_RANGE_TYPE
 
   override get #constraint(): DateRangeFieldConstraint {

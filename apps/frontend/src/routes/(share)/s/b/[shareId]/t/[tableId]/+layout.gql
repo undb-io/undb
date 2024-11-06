@@ -37,6 +37,9 @@ query GetBaseTableShareData($shareId: ID!, $tableId: ID!) {
       gallery {
         field
       }
+      calendar {
+        field
+      }
       widgets {
         id
         name
