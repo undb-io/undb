@@ -1,5 +1,5 @@
 import { Ok, type Result } from "@undb/domain"
-import { endOfDay, isAfter, isBefore, isTomorrow, isYesterday, startOfDay } from "date-fns"
+import { endOfDay, isAfter, isBefore, isEqual, isTomorrow, isYesterday, startOfDay } from "date-fns"
 import { isToday } from "date-fns/isToday"
 import type { IRecordVisitor, RecordDO } from "../../../../records"
 import { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
@@ -90,7 +90,12 @@ export class DateIsBefore extends RecordComositeSpecification {
   }
   isSatisfiedBy(t: RecordDO): boolean {
     const value = t.getValue(this.fieldId)
-    return value.mapOr(false, (v) => v.value instanceof Date && isBefore(v.value, startOfDay(this.date)))
+    return value.mapOr(
+      false,
+      (v) =>
+        (v.value instanceof Date && isBefore(v.value, startOfDay(this.date))) ||
+        isEqual(v.value, startOfDay(this.date)),
+    )
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
     throw new Error("Method not implemented.")
@@ -110,7 +115,11 @@ export class DateIsAfter extends RecordComositeSpecification {
   }
   isSatisfiedBy(t: RecordDO): boolean {
     const value = t.getValue(this.fieldId)
-    return value.mapOr(false, (v) => v.value instanceof Date && isAfter(v.value, endOfDay(this.date)))
+    return value.mapOr(
+      false,
+      (v) =>
+        v.value instanceof Date && (isAfter(v.value, endOfDay(this.date)) || isEqual(v.value, endOfDay(this.date))),
+    )
   }
   mutate(t: RecordDO): Result<RecordDO, string> {
     throw new Error("Method not implemented.")

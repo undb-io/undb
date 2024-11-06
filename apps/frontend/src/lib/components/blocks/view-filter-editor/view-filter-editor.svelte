@@ -66,6 +66,7 @@
       builders={[builder]}
       size="sm"
       disabled={!readonly && !$hasPermission("table:update") && (!filter || filter?.isEmpty)}
+      {...$$restProps}
     >
       <FilterIcon class="mr-2 h-4 w-4" />
       Filters

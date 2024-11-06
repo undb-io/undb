@@ -39,6 +39,9 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
       gallery {
         field
       }
+      calendar {
+        field
+      }
 
       share {
         enabled

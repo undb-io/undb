@@ -4,7 +4,7 @@
   import { PlugIcon } from "lucide-svelte"
 </script>
 
-<Button on:click={() => toggleModal(VIEW_WIDGET_MODAL)} variant="outline" size="sm">
+<Button on:click={() => toggleModal(VIEW_WIDGET_MODAL)} variant="outline" size="sm" {...$$restProps}>
   <PlugIcon class="mr-2 size-4" />
   Widgets
 </Button>

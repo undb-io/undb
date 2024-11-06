@@ -1,9 +1,19 @@
 import { z } from "@undb/zod"
 import { tableId } from "../../../table-id.vo"
 import { widgetDTO } from "../../widgets/widget.vo"
-import { viewAggregate, viewColorGroup, viewFields, viewFilterGroup, viewOption, viewSort } from "../view"
-import { galleryOption } from "../view/variants/gallery-view.vo"
-import { kanbanOption } from "../view/variants/kanban-view.vo"
+import {
+  createCalendarViewDTO,
+  createGridViewDTO,
+  createListViewDTO,
+  viewAggregate,
+  viewColorGroup,
+  viewFields,
+  viewFilterGroup,
+  viewOption,
+  viewSort,
+} from "../view"
+import { createGalleryViewDTO } from "../view/variants/gallery-view.vo"
+import { createKanbanViewDTO } from "../view/variants/kanban-view.vo"
 import { viewId } from "../view/view-id.vo"
 import { viewName } from "../view/view-name.vo"
 import { viewType } from "../view/view.type"
@@ -22,29 +32,12 @@ export const createBaseViewDTO = z.object({
   widgets: widgetDTO.array().optional(),
 })
 
-export const createGridViewDTO = createBaseViewDTO.extend({
-  type: z.literal("grid"),
-})
-
-export const createKanbanViewDTO = createBaseViewDTO.extend({
-  type: z.literal("kanban"),
-  kanban: kanbanOption.optional(),
-})
-
-export const createListViewDTO = createBaseViewDTO.extend({
-  type: z.literal("list"),
-})
-
-export const createGalleryViewDTO = createBaseViewDTO.extend({
-  type: z.literal("gallery"),
-  gallery: galleryOption.optional(),
-})
-
 export const createViewDTO = z.discriminatedUnion("type", [
   createGridViewDTO,
   createKanbanViewDTO,
   createGalleryViewDTO,
   createListViewDTO,
+  createCalendarViewDTO,
 ])
 
 export const createViewsDTO = z.array(createViewDTO).refine(
@@ -61,6 +54,7 @@ export const createViewWithoutNameDTO = z.discriminatedUnion("type", [
   createKanbanViewDTO.omit({ name: true }),
   createGalleryViewDTO.omit({ name: true }),
   createListViewDTO.omit({ name: true }),
+  createCalendarViewDTO.omit({ name: true }),
 ])
 
 export const createViewsWithoutNameDTO = z.array(createViewWithoutNameDTO).refine(
@@ -79,6 +73,7 @@ export const createTableViewDTO = z.discriminatedUnion("type", [
   createKanbanViewDTO.merge(z.object({ tableId })),
   createGalleryViewDTO.merge(z.object({ tableId })),
   createListViewDTO.merge(z.object({ tableId })),
+  createCalendarViewDTO.merge(z.object({ tableId })),
 ])
 
 export type ICreateTableViewDTO = z.infer<typeof createTableViewDTO>

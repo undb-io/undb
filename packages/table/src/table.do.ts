@@ -179,7 +179,7 @@ export class TableDo extends AggregateRoot<ITableEvents> {
     }
 
     const set = new Set(selected.map((f) => f.id.value))
-    if (view?.type === "kanban") {
+    if (view?.type === "kanban" || view?.type === "calendar" || view?.type === "gallery") {
       const fieldId = view.field.into(undefined)
       if (fieldId) {
         addField(fieldId)

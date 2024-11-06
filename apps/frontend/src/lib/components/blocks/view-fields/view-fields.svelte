@@ -97,7 +97,7 @@
 
 <Popover.Root bind:open portal="body">
   <Popover.Trigger asChild let:builder>
-    <Button variant={open || !!hiddenCount ? "secondary" : "ghost"} builders={[builder]} size="sm">
+    <Button variant={open || !!hiddenCount ? "secondary" : "ghost"} builders={[builder]} size="sm" {...$$restProps}>
       <ListIcon class="mr-2 h-4 w-4" />
       {#if !!hiddenCount}
         {hiddenCount} Fields hidden

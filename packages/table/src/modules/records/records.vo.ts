@@ -16,6 +16,14 @@ export class Records extends ValueObject {
     return new Map(this.records.map((record) => [record.id.value, record]))
   }
 
+  get isEmpty() {
+    return this.records.length === 0
+  }
+
+  get count() {
+    return this.records.length
+  }
+
   *[Symbol.iterator]() {
     yield* this.records
   }

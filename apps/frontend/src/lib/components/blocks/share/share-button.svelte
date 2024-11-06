@@ -124,6 +124,7 @@
         builders={[builder]}
         variant={open || enabled ? "secondary" : "ghost"}
         size="sm"
+        {...$$restProps}
       >
         <ShareIcon class="mr-1 h-4 w-4" />
         Share
