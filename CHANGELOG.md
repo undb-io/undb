@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-115
+
+
+### 🩹 Fixes
+
+- Fix delete table ([cdc544d](https://github.com/undb-io/undb/commit/cdc544d))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-114
 
 
