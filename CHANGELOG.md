@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-115
+
+
+### 🩹 Fixes
+
+- Fix delete base ([7e18506](https://github.com/undb-io/undb/commit/7e18506))
+
+### ❤️ Contributors
+
+- Nichenqin <nichenqin@hotmail.com>
+
 ## v1.0.0-114
 
 
