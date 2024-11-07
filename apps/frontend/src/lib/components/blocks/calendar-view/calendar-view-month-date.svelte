@@ -28,9 +28,9 @@
   const isSelected = monthStore.isSelected
   const getIsSameMonth = monthStore.getIsSameMonth
 
-  let day = getDate(date)
-  let today = isToday(date)
-  let _isWeekend = isWeekend(date)
+  $: day = getDate(date)
+  $: today = isToday(date)
+  $: _isWeekend = isWeekend(date)
 
   $: selected = $isSelected(date)
   $: isSameMonth = $getIsSameMonth(date)
@@ -202,7 +202,7 @@
           {date}
           {r}
           readonly={true}
-          shareId={shareId}
+          {shareId}
           record={aboutToDropRecord}
           {displayField}
           {field}
