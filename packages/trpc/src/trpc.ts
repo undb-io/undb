@@ -56,7 +56,9 @@ export const p = t.procedure
         .setIsolationLevel("read committed")
         .execute(async (tx) => {
           startTransaction(tx)
-          return await ctx.next()
+          const result = await ctx.next()
+
+          return result
         })
     } else {
       return await ctx.next()

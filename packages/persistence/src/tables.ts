@@ -97,13 +97,9 @@ export const referenceIdMapping = sqliteTable(
   "reference_id_mapping",
   {
     fieldId: text("field_id").notNull(),
-    tableId: text("table_id")
-      .notNull()
-      .references(() => tables.id),
+    tableId: text("table_id").notNull(),
     symmetricFieldId: text("symmetric_field_id"),
-    foreignTableId: text("foreign_table_id")
-      .notNull()
-      .references(() => tables.id),
+    foreignTableId: text("foreign_table_id").notNull(),
   },
   (table) => {
     return {
@@ -121,13 +117,9 @@ export const rollupIdMapping = sqliteTable(
   "rollup_id_mapping",
   {
     fieldId: text("field_id").notNull(),
-    tableId: text("table_id")
-      .notNull()
-      .references(() => tables.id),
+    tableId: text("table_id").notNull(),
     rollupId: text("rollup_id").notNull(),
-    rollupTableId: text("rollup_table_id")
-      .notNull()
-      .references(() => tables.id),
+    rollupTableId: text("rollup_table_id").notNull(),
   },
   (table) => {
     return {
