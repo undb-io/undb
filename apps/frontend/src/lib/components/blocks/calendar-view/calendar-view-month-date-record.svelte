@@ -46,7 +46,7 @@
   }
 
   $: displayValue = displayField
-    ? (record.getValue(displayField.id).into(undefined)?.value ?? record.getDisplayValue($table))
+    ? record.getValue(displayField.id).into(undefined)?.value || record.getDisplayValue($table)
     : ""
   $: value = record.getValue(field.id).into(undefined)?.value
     ? field.format(record.getValue(field.id).into(undefined)?.value ?? "")
