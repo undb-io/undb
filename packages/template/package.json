@@ -11,7 +11,7 @@
     "@undb/logger": "workspace:*",
     "@undb/table": "workspace:*",
     "@undb/zod": "workspace:*",
-    "zod-to-json-schema": "^3.23.3"
+    "zod-to-json-schema": "^3.23.5"
   },
   "devDependencies": {
     "@types/bun": "latest"
