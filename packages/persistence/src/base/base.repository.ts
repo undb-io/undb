@@ -133,8 +133,28 @@ export class BaseRepository implements IBaseRepository {
       .execute()
 
     await trx
+      .deleteFrom("undb_dashboard_table_id_mapping")
+      .where((eb) => eb.eb("table_id", "in", tableIds))
+      .execute()
+
+    await trx
+      .deleteFrom("undb_attachment_mapping")
+      .where((eb) => eb.eb("table_id", "in", tableIds))
+      .execute()
+
+    await trx
+      .deleteFrom("undb_webhook")
+      .where((eb) => eb.eb("table_id", "in", tableIds))
+      .execute()
+
+    await trx
+      .deleteFrom("undb_dashboard")
+      .where((eb) => eb.eb("base_id", "=", id))
+      .execute()
+
+    await trx
       .deleteFrom("undb_table")
-      .where((eb) => eb.eb("id", "in", tableIds))
+      .where((eb) => eb.eb("base_id", "=", id))
       .execute()
 
     await trx
