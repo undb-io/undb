@@ -11,6 +11,8 @@
   import { setTemplate } from "$lib/store/template.store"
   import RecordDetailSheet from "$lib/components/blocks/record-detail/record-detail-sheet.svelte"
   import GalleryView from "$lib/components/blocks/gallery-view/gallery-view.svelte"
+  import CalendarView from "$lib/components/blocks/calendar-view/calendar-view.svelte"
+  import ListView from "$lib/components/blocks/list-view/list-view.svelte"
 
   export let template: ITemplateDTO
 
@@ -198,6 +200,10 @@
             <KanbanView viewId={currentViewId} records={$records} {r} disableRecordQuery readonly />
           {:else if $currentView?.type === "gallery"}
             <GalleryView viewId={currentViewId} records={$records} {r} readonly disableRecordQuery />
+          {:else if $currentView?.type === "calendar"}
+            <CalendarView viewId={currentViewId} records={$records} {r} readonly disableRecordQuery />
+          {:else if $currentView?.type === "list"}
+            <ListView viewId={currentViewId} records={$records} {r} readonly disableRecordQuery />
           {/if}
         </section>
       {/if}

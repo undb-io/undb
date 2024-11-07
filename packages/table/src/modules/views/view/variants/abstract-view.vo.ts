@@ -35,6 +35,13 @@ export const createBaseViewDTO = z.object({
   id: viewId.optional(),
   name: viewName,
   isDefault: z.boolean().optional(),
+
+  filter: viewFilterGroup.optional(),
+  color: viewColorGroup.optional(),
+  sort: viewSort.optional(),
+  fields: viewFields.optional(),
+  aggregate: viewAggregate.optional(),
+  widgets: widgetDTO.array().optional(),
 })
 
 export type ICreateBaseViewDTO = z.infer<typeof createBaseViewDTO>

@@ -4,6 +4,7 @@
   import type { Field, RecordDO, DateField, DateRangeField } from "@undb/table"
   import { monthStore } from "$lib/store/calendar.store"
   import { cn } from "$lib/utils"
+  import { getTable } from "$lib/store/table.store"
 
   export let record: RecordDO
   export let displayField: Field | undefined
@@ -12,6 +13,8 @@
   export let date: Date
   export let readonly = false
   export let shareId: string | undefined
+
+  const table = getTable()
 
   function setupDraggableDate(node: HTMLElement, record: RecordDO) {
     function setup(record: RecordDO) {
@@ -42,7 +45,9 @@
     }
   }
 
-  $: displayValue = displayField ? (record.getValue(displayField.id).into(undefined)?.value ?? "") : ""
+  $: displayValue = displayField
+    ? (record.getValue(displayField.id).into(undefined)?.value ?? record.getDisplayValue($table))
+    : ""
   $: value = record.getValue(field.id).into(undefined)?.value
     ? field.format(record.getValue(field.id).into(undefined)?.value ?? "")
     : ""
