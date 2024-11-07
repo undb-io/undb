@@ -258,7 +258,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
       const field = schema.field
       if (field.isOwner) {
         const joinTable = new JoinTable(this.table.table, field)
-        const query = this.qb.schema.dropTable(joinTable.getTableName()).compile()
+        const query = this.qb.schema.dropTable(joinTable.getTableName()).ifExists().compile()
         this.addSql(query)
       }
       return

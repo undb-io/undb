@@ -5,7 +5,8 @@
         "schema": {
           "Activity": {
             "id": "activity",
-            "type": "string"
+            "type": "string",
+            "display": true
           },
           "Type": {
             "id": "type",
@@ -133,12 +134,35 @@
             }
           }
         },
+        "views": {
+          "All Events": {
+            "type": "grid",
+            "sort": [
+              {
+                "fieldId": "start",
+                "direction": "asc"
+              }
+            ]
+          },
+          "Calendar View": {
+            "type": "calendar",
+            "calendar": {
+              "field": "start"
+            }
+          },
+          "By Type": {
+            "type": "kanban",
+            "kanban": {
+              "field": "type"
+            }
+          }
+        },
         "records": [
           {
             "Activity": "Welcome breakfast",
             "Type": "meal",
-            "Start": "2021-09-01T08:00:00.000Z",
-            "End": "2021-09-01T09:00:00.000Z",
+            "Start": "2024-11-01",
+            "End": "2024-11-01",
             "Location": "Ballroom A",
             "Speakers": ["speaker-1", "speaker-2"],
             "Notes": "Breakfast will be served in the ballroom"
@@ -146,8 +170,8 @@
           {
             "Activity": "Opening keynote",
             "Type": "keynote",
-            "Start": "2021-09-01T09:30:00.000Z",
-            "End": "2021-09-01T10:30:00.000Z",
+            "Start": "2024-11-02",
+            "End": "2024-11-02",
             "Location": "Auditorium",
             "Speakers": ["speaker-1"],
             "Notes": "Jane will be speaking about the future of technology"
@@ -155,8 +179,8 @@
           {
             "Activity": "Panel Discussion: AI Ethics",
             "Type": "panel",
-            "Start": "2021-09-01T11:00:00.000Z",
-            "End": "2021-09-01T12:30:00.000Z",
+            "Start": "2024-11-03",
+            "End": "2024-11-03",
             "Location": "Conference Room B",
             "Speakers": ["speaker-2", "speaker-3"],
             "Notes": "Exploring ethical considerations in AI development"
@@ -164,8 +188,8 @@
           {
             "Activity": "Networking Lunch",
             "Type": "meal",
-            "Start": "2021-09-01T12:30:00.000Z",
-            "End": "2021-09-01T14:00:00.000Z",
+            "Start": "2024-11-04",
+            "End": "2024-11-04",
             "Location": "Garden Terrace",
             "Speakers": [],
             "Notes": "Buffet lunch with vegetarian options available"
@@ -173,8 +197,8 @@
           {
             "Activity": "Workshop: Cloud Computing",
             "Type": "workshop",
-            "Start": "2021-09-01T14:00:00.000Z",
-            "End": "2021-09-01T16:00:00.000Z",
+            "Start": "2024-11-05",
+            "End": "2024-11-05",
             "Location": "Tech Lab",
             "Speakers": ["speaker-1"],
             "Notes": "Hands-on session on cloud infrastructure"
@@ -182,8 +206,8 @@
           {
             "Activity": "Coffee Break",
             "Type": "break",
-            "Start": "2021-09-01T16:00:00.000Z",
-            "End": "2021-09-01T16:30:00.000Z",
+            "Start": "2024-11-06",
+            "End": "2024-11-06",
             "Location": "Lobby",
             "Speakers": [],
             "Notes": "Refreshments and light snacks provided"
@@ -191,8 +215,8 @@
           {
             "Activity": "Closing Remarks",
             "Type": "presentation",
-            "Start": "2021-09-01T16:30:00.000Z",
-            "End": "2021-09-01T17:00:00.000Z",
+            "Start": "2024-11-07",
+            "End": "2024-11-07",
             "Location": "Auditorium",
             "Speakers": ["speaker-2"],
             "Notes": "Summary of the day's events and future outlook"
@@ -200,8 +224,8 @@
           {
             "Activity": "VR Demo",
             "Type": "demo",
-            "Start": "2021-09-02T09:00:00.000Z",
-            "End": "2021-09-02T11:00:00.000Z",
+            "Start": "2024-11-08",
+            "End": "2024-11-08",
             "Location": "Innovation Hub",
             "Speakers": ["speaker-3"],
             "Notes": "Showcasing latest VR technologies"
@@ -209,8 +233,8 @@
           {
             "Activity": "Blockchain Seminar",
             "Type": "seminar",
-            "Start": "2021-09-02T11:30:00.000Z",
-            "End": "2021-09-02T13:00:00.000Z",
+            "Start": "2024-11-09",
+            "End": "2024-11-09",
             "Location": "Conference Room A",
             "Speakers": ["speaker-1", "speaker-2"],
             "Notes": "Exploring blockchain applications in various industries"
@@ -218,8 +242,8 @@
           {
             "Activity": "Startup Pitch Competition",
             "Type": "competition",
-            "Start": "2021-09-02T14:00:00.000Z",
-            "End": "2021-09-02T16:00:00.000Z",
+            "Start": "2024-11-10",
+            "End": "2024-11-10",
             "Location": "Auditorium",
             "Speakers": [],
             "Notes": "10 startups competing for funding"
@@ -227,8 +251,8 @@
           {
             "Activity": "Gala Dinner",
             "Type": "meal",
-            "Start": "2021-09-02T19:00:00.000Z",
-            "End": "2021-09-02T22:00:00.000Z",
+            "Start": "2024-11-11",
+            "End": "2024-11-11",
             "Location": "Grand Ballroom",
             "Speakers": [],
             "Notes": "Formal attire required, awards ceremony included"
@@ -236,8 +260,8 @@
           {
             "Activity": "IoT Workshop",
             "Type": "workshop",
-            "Start": "2021-09-03T09:00:00.000Z",
-            "End": "2021-09-03T11:00:00.000Z",
+            "Start": "2024-11-12",
+            "End": "2024-11-12",
             "Location": "Tech Lab",
             "Speakers": ["speaker-3"],
             "Notes": "Practical session on IoT device programming"
@@ -245,8 +269,8 @@
           {
             "Activity": "Future of Work Panel",
             "Type": "panel",
-            "Start": "2021-09-03T11:30:00.000Z",
-            "End": "2021-09-03T13:00:00.000Z",
+            "Start": "2024-11-13",
+            "End": "2024-11-13",
             "Location": "Conference Room B",
             "Speakers": ["speaker-1", "speaker-2", "speaker-3"],
             "Notes": "Discussing remote work trends and technologies"
@@ -254,8 +278,8 @@
           {
             "Activity": "Networking Lunch",
             "Type": "meal",
-            "Start": "2021-09-03T13:00:00.000Z",
-            "End": "2021-09-03T14:30:00.000Z",
+            "Start": "2024-11-14",
+            "End": "2024-11-14",
             "Location": "Rooftop Garden",
             "Speakers": [],
             "Notes": "Casual lunch with scenic views"
@@ -263,8 +287,8 @@
           {
             "Activity": "Cybersecurity Masterclass",
             "Type": "workshop",
-            "Start": "2021-09-03T15:00:00.000Z",
-            "End": "2021-09-03T17:00:00.000Z",
+            "Start": "2024-11-15",
+            "End": "2024-11-15",
             "Location": "Secure Lab",
             "Speakers": ["speaker-2"],
             "Notes": "Advanced techniques in network security"
@@ -272,8 +296,8 @@
           {
             "Activity": "Closing Keynote",
             "Type": "keynote",
-            "Start": "2021-09-03T17:30:00.000Z",
-            "End": "2021-09-03T18:30:00.000Z",
+            "Start": "2024-11-16",
+            "End": "2024-11-16",
             "Location": "Auditorium",
             "Speakers": ["speaker-1"],
             "Notes": "Inspirational talk on innovation and future tech"
@@ -281,8 +305,8 @@
           {
             "Activity": "Farewell Cocktail Reception",
             "Type": "networking",
-            "Start": "2021-09-03T19:00:00.000Z",
-            "End": "2021-09-03T21:00:00.000Z",
+            "Start": "2024-11-17",
+            "End": "2024-11-17",
             "Location": "Skyline Lounge",
             "Speakers": [],
             "Notes": "Casual networking event with drinks and canapés"
@@ -290,8 +314,8 @@
           {
             "Activity": "AI in Healthcare Symposium",
             "Type": "symposium",
-            "Start": "2021-09-04T09:00:00.000Z",
-            "End": "2021-09-04T12:00:00.000Z",
+            "Start": "2024-11-18",
+            "End": "2024-11-18",
             "Location": "Medical Tech Center",
             "Speakers": ["speaker-1", "speaker-3"],
             "Notes": "Exploring AI applications in medical diagnosis and treatment"
@@ -299,8 +323,8 @@
           {
             "Activity": "Green Tech Showcase",
             "Type": "exhibition",
-            "Start": "2021-09-04T13:00:00.000Z",
-            "End": "2021-09-04T16:00:00.000Z",
+            "Start": "2024-11-19",
+            "End": "2024-11-19",
             "Location": "Exhibition Hall",
             "Speakers": [],
             "Notes": "Displaying latest innovations in sustainable technology"
@@ -308,8 +332,8 @@
           {
             "Activity": "Quantum Computing Talk",
             "Type": "presentation",
-            "Start": "2021-09-04T16:30:00.000Z",
-            "End": "2021-09-04T17:30:00.000Z",
+            "Start": "2024-11-20",
+            "End": "2024-11-20",
             "Location": "Lecture Hall",
             "Speakers": ["speaker-2"],
             "Notes": "Introduction to quantum computing principles and applications"
@@ -317,8 +341,8 @@
           {
             "Activity": "Tech Trivia Night",
             "Type": "social",
-            "Start": "2021-09-04T20:00:00.000Z",
-            "End": "2021-09-04T22:00:00.000Z",
+            "Start": "2024-11-21",
+            "End": "2024-11-21",
             "Location": "Hotel Bar",
             "Speakers": [],
             "Notes": "Fun quiz night with tech-themed questions and prizes"
@@ -326,8 +350,8 @@
           {
             "Activity": "Robotics Demonstration",
             "Type": "demo",
-            "Start": "2021-09-05T10:00:00.000Z",
-            "End": "2021-09-05T12:00:00.000Z",
+            "Start": "2024-11-22",
+            "End": "2024-11-22",
             "Location": "Robotics Lab",
             "Speakers": ["speaker-3"],
             "Notes": "Live demonstration of advanced robotics systems"
@@ -335,8 +359,8 @@
           {
             "Activity": "Women in Tech Luncheon",
             "Type": "networking",
-            "Start": "2021-09-05T12:30:00.000Z",
-            "End": "2021-09-05T14:00:00.000Z",
+            "Start": "2024-11-23",
+            "End": "2024-11-23",
             "Location": "Executive Dining Room",
             "Speakers": ["speaker-1"],
             "Notes": "Celebrating and supporting women in technology fields"
@@ -344,8 +368,8 @@
           {
             "Activity": "5G and Beyond Panel",
             "Type": "panel",
-            "Start": "2021-09-05T14:30:00.000Z",
-            "End": "2021-09-05T16:00:00.000Z",
+            "Start": "2024-11-24",
+            "End": "2024-11-24",
             "Location": "Conference Room A",
             "Speakers": ["speaker-2", "speaker-3"],
             "Notes": "Discussing the future of mobile networks and connectivity"
@@ -353,8 +377,8 @@
           {
             "Activity": "Augmented Reality Workshop",
             "Type": "workshop",
-            "Start": "2021-09-05T16:30:00.000Z",
-            "End": "2021-09-05T18:30:00.000Z",
+            "Start": "2024-11-25",
+            "End": "2024-11-25",
             "Location": "AR/VR Studio",
             "Speakers": ["speaker-1"],
             "Notes": "Hands-on session creating AR applications"
@@ -362,8 +386,8 @@
           {
             "Activity": "Tech Ethics Roundtable",
             "Type": "discussion",
-            "Start": "2021-09-06T09:00:00.000Z",
-            "End": "2021-09-06T11:00:00.000Z",
+            "Start": "2024-11-26",
+            "End": "2024-11-26",
             "Location": "Boardroom",
             "Speakers": ["speaker-1", "speaker-2", "speaker-3"],
             "Notes": "Open discussion on ethical challenges in technology"
@@ -371,8 +395,8 @@
           {
             "Activity": "Data Science Bootcamp",
             "Type": "workshop",
-            "Start": "2021-09-06T11:30:00.000Z",
-            "End": "2021-09-06T15:30:00.000Z",
+            "Start": "2024-11-27",
+            "End": "2024-11-27",
             "Location": "Computer Lab",
             "Speakers": ["speaker-2"],
             "Notes": "Intensive session on data analysis and machine learning"
@@ -380,8 +404,8 @@
           {
             "Activity": "Tech Startup Mentoring",
             "Type": "mentoring",
-            "Start": "2021-09-06T16:00:00.000Z",
-            "End": "2021-09-06T18:00:00.000Z",
+            "Start": "2024-11-28",
+            "End": "2024-11-28",
             "Location": "Meeting Rooms",
             "Speakers": ["speaker-1", "speaker-3"],
             "Notes": "One-on-one mentoring sessions for tech entrepreneurs"
@@ -389,8 +413,8 @@
           {
             "Activity": "Cybersecurity CTF Competition",
             "Type": "competition",
-            "Start": "2021-09-07T09:00:00.000Z",
-            "End": "2021-09-07T17:00:00.000Z",
+            "Start": "2024-11-29",
+            "End": "2024-11-29",
             "Location": "Secure Lab",
             "Speakers": [],
             "Notes": "Capture The Flag competition for security enthusiasts"
@@ -398,8 +422,8 @@
           {
             "Activity": "Future of Transportation Symposium",
             "Type": "symposium",
-            "Start": "2021-09-07T10:00:00.000Z",
-            "End": "2021-09-07T13:00:00.000Z",
+            "Start": "2024-11-30",
+            "End": "2024-11-30",
             "Location": "Auditorium",
             "Speakers": ["speaker-1", "speaker-2"],
             "Notes": "Exploring electric vehicles, autonomous driving, and urban mobility"
@@ -407,8 +431,8 @@
           {
             "Activity": "Open Source Contributors Meetup",
             "Type": "networking",
-            "Start": "2021-09-07T14:00:00.000Z",
-            "End": "2021-09-07T16:00:00.000Z",
+            "Start": "2024-12-01",
+            "End": "2024-12-01",
             "Location": "Collaboration Space",
             "Speakers": [],
             "Notes": "Casual meetup for open source project contributors"
@@ -416,8 +440,8 @@
           {
             "Activity": "Tech Job Fair",
             "Type": "career",
-            "Start": "2021-09-08T10:00:00.000Z",
-            "End": "2021-09-08T16:00:00.000Z",
+            "Start": "2024-12-02",
+            "End": "2024-12-02",
             "Location": "Exhibition Hall",
             "Speakers": [],
             "Notes": "Connect with tech companies and explore job opportunities"
@@ -425,8 +449,8 @@
           {
             "Activity": "Closing Ceremony",
             "Type": "ceremony",
-            "Start": "2021-09-08T17:00:00.000Z",
-            "End": "2021-09-08T18:00:00.000Z",
+            "Start": "2024-12-03",
+            "End": "2024-12-03",
             "Location": "Grand Ballroom",
             "Speakers": ["speaker-1", "speaker-2", "speaker-3"],
             "Notes": "Wrapping up the event with final remarks and awards"
@@ -437,7 +461,8 @@
         "schema": {
           "Name": {
             "id": "name",
-            "type": "string"
+            "type": "string",
+            "display": true
           },
           "Company": {
             "id": "company",

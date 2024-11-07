@@ -8,7 +8,7 @@ import {
   type IRootCondition,
 } from "../../../schema/fields/condition"
 
-export const viewFilterOption = z.undefined()
+export const viewFilterOption = z.any()
 
 export type IViewFilterOptionSchema = typeof viewFilterOption
 

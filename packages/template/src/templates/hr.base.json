@@ -359,6 +359,28 @@
             "email": "liam@example.com",
             "employment_status": "full_time",
             "phone": "234-567-8902"
+          },
+          {
+            "id": "EMP013",
+            "name": "Michael Zhang",
+            "position": "developer",
+            "department": ["dept1"],
+            "start_date": "2023-05-15",
+            "salary": 74000,
+            "email": "michael@example.com",
+            "employment_status": "full_time",
+            "phone": "345-678-9013"
+          },
+          {
+            "id": "EMP014",
+            "name": "Sarah Chen",
+            "position": "designer",
+            "department": ["dept3"],
+            "start_date": "2023-06-01",
+            "salary": 66000,
+            "email": "sarah@example.com",
+            "employment_status": "full_time",
+            "phone": "456-789-0124"
           }
         ]
       },
@@ -581,7 +603,7 @@
         "records": [
           {
             "employee": ["EMP001"],
-            "month": "2023-08-01",
+            "month": "2024-03-01",
             "amount": 7000,
             "bonus": 500,
             "deductions": 1000,
@@ -589,7 +611,7 @@
           },
           {
             "employee": ["EMP002"],
-            "month": "2023-08-01",
+            "month": "2024-03-01",
             "amount": 9000,
             "bonus": 1000,
             "deductions": 1500,
@@ -597,7 +619,7 @@
           },
           {
             "employee": ["EMP003"],
-            "month": "2023-08-01",
+            "month": "2024-03-01",
             "amount": 6000,
             "bonus": 300,
             "deductions": 800,
@@ -605,7 +627,7 @@
           },
           {
             "employee": ["EMP004"],
-            "month": "2023-08-01",
+            "month": "2024-03-01",
             "amount": 7500,
             "bonus": 600,
             "deductions": 1100,
@@ -613,7 +635,7 @@
           },
           {
             "employee": ["EMP005"],
-            "month": "2023-08-01",
+            "month": "2024-03-01",
             "amount": 6500,
             "bonus": 400,
             "deductions": 900,
@@ -621,7 +643,7 @@
           },
           {
             "employee": ["EMP006"],
-            "month": "2023-08-01",
+            "month": "2024-03-01",
             "amount": 6800,
             "bonus": 450,
             "deductions": 950,
@@ -629,7 +651,7 @@
           },
           {
             "employee": ["EMP007"],
-            "month": "2023-08-01",
+            "month": "2024-03-01",
             "amount": 7200,
             "bonus": 550,
             "deductions": 1050,
@@ -637,7 +659,7 @@
           },
           {
             "employee": ["EMP008"],
-            "month": "2023-08-01",
+            "month": "2024-03-01",
             "amount": 7100,
             "bonus": 520,
             "deductions": 1020,
@@ -645,7 +667,7 @@
           },
           {
             "employee": ["EMP009"],
-            "month": "2023-08-01",
+            "month": "2024-03-01",
             "amount": 6200,
             "bonus": 320,
             "deductions": 820,
@@ -653,7 +675,7 @@
           },
           {
             "employee": ["EMP010"],
-            "month": "2023-08-01",
+            "month": "2024-03-01",
             "amount": 9200,
             "bonus": 1100,
             "deductions": 1600,
@@ -661,7 +683,7 @@
           },
           {
             "employee": ["EMP011"],
-            "month": "2023-08-01",
+            "month": "2024-03-01",
             "amount": 6700,
             "bonus": 420,
             "deductions": 920,
@@ -669,7 +691,7 @@
           },
           {
             "employee": ["EMP012"],
-            "month": "2023-08-01",
+            "month": "2024-03-01",
             "amount": 7300,
             "bonus": 570,
             "deductions": 1070,
@@ -825,80 +847,80 @@
         "records": [
           {
             "employee": ["EMP001"],
-            "start_date": "2023-09-01",
-            "end_date": "2023-09-10",
+            "start_date": "2024-03-01",
+            "end_date": "2024-03-10",
             "type": "vacation",
             "status": "approved",
             "reason": "Annual family vacation"
           },
           {
             "employee": ["EMP002"],
-            "start_date": "2023-10-15",
-            "end_date": "2023-10-20",
+            "start_date": "2024-03-15",
+            "end_date": "2024-03-20",
             "type": "personal",
             "status": "pending",
             "reason": "Personal matters"
           },
           {
             "employee": ["EMP003"],
-            "start_date": "2023-11-05",
-            "end_date": "2023-11-15",
+            "start_date": "2024-03-05",
+            "end_date": "2024-03-15",
             "type": "sick",
             "status": "approved",
             "reason": "Recovering from surgery"
           },
           {
             "employee": ["EMP004"],
-            "start_date": "2023-12-20",
-            "end_date": "2023-12-31",
+            "start_date": "2024-03-20",
+            "end_date": "2024-03-31",
             "type": "vacation",
             "status": "approved",
             "reason": "Holiday break"
           },
           {
             "employee": ["EMP005"],
-            "start_date": "2023-09-25",
-            "end_date": "2023-09-26",
+            "start_date": "2024-03-25",
+            "end_date": "2024-03-26",
             "type": "personal",
             "status": "approved",
             "reason": "Attending a wedding"
           },
           {
             "employee": ["EMP006"],
-            "start_date": "2023-10-05",
-            "end_date": "2023-10-07",
+            "start_date": "2024-03-05",
+            "end_date": "2024-03-07",
             "type": "sick",
             "status": "approved",
             "reason": "Flu"
           },
           {
             "employee": ["EMP007"],
-            "start_date": "2023-11-20",
-            "end_date": "2023-11-24",
+            "start_date": "2024-03-20",
+            "end_date": "2024-03-24",
             "type": "vacation",
             "status": "pending",
             "reason": "Thanksgiving break"
           },
           {
             "employee": ["EMP008"],
-            "start_date": "2023-12-01",
-            "end_date": "2023-12-02",
+            "start_date": "2024-03-01",
+            "end_date": "2024-03-02",
             "type": "personal",
             "status": "approved",
             "reason": "Moving to a new apartment"
           },
           {
             "employee": ["EMP009"],
-            "start_date": "2023-09-15",
-            "end_date": "2023-09-16",
+            "start_date": "2024-03-15",
+            "end_date": "2024-03-16",
             "type": "sick",
             "status": "approved",
             "reason": "Dental procedure"
           },
           {
             "employee": ["EMP010"],
-            "start_date": "2023-10-10",
-            "end_date": "2023-10-14",
+            "start_date": "2024-03-10",
+            "end_date": "2024-03-14",
             "type": "vacation",
             "status": "approved",
             "reason": "Family reunion"
@@ -992,78 +1014,102 @@
                 "direction": "desc"
               }
             ]
+          },
+          "Calendar": {
+            "type": "calendar",
+            "calendar": {
+              "field": "review_date"
+            }
           }
         },
         "records": [
           {
             "employee": ["EMP001"],
-            "review_date": "2023-06-15",
+            "review_date": "2024-11-15",
             "reviewer": ["EMP002"],
             "performance_rating": 4,
             "comments": "Excellent work on the latest project.",
             "goals": "Improve leadership skills",
-            "next_review_date": "2023-12-15"
+            "next_review_date": "2024-09-15"
           },
           {
             "employee": ["EMP002"],
-            "review_date": "2023-07-01",
+            "review_date": "2024-11-01",
             "reviewer": ["EMP003"],
             "performance_rating": 5,
             "comments": "Outstanding leadership and project management.",
             "goals": "Mentor junior team members",
-            "next_review_date": "2024-01-01"
+            "next_review_date": "2024-09-01"
           },
           {
             "employee": ["EMP003"],
-            "review_date": "2023-06-20",
+            "review_date": "2024-11-20",
             "reviewer": ["EMP010"],
             "performance_rating": 4,
             "comments": "Excellent HR initiatives implemented.",
             "goals": "Develop new employee onboarding program",
-            "next_review_date": "2023-12-20"
+            "next_review_date": "2024-09-20"
           },
           {
             "employee": ["EMP004"],
-            "review_date": "2023-07-10",
+            "review_date": "2024-11-10",
             "reviewer": ["EMP002"],
             "performance_rating": 3,
             "comments": "Good technical skills, needs improvement in communication.",
             "goals": "Enhance communication with team members",
-            "next_review_date": "2024-01-10"
+            "next_review_date": "2024-09-10"
           },
           {
             "employee": ["EMP005"],
-            "review_date": "2023-06-25",
+            "review_date": "2024-11-25",
             "reviewer": ["EMP010"],
             "performance_rating": 4,
             "comments": "Creative designs, meets deadlines consistently.",
             "goals": "Explore new design tools and techniques",
-            "next_review_date": "2023-12-25"
+            "next_review_date": "2024-09-25"
           },
           {
             "employee": ["EMP006"],
-            "review_date": "2023-07-05",
+            "review_date": "2024-11-05",
             "reviewer": ["EMP003"],
             "performance_rating": 4,
             "comments": "Effective marketing campaigns, good team player.",
             "goals": "Develop skills in digital marketing",
-            "next_review_date": "2024-01-05"
+            "next_review_date": "2024-09-05"
           },
           {
             "employee": ["EMP007"],
-            "review_date": "2023-06-30",
+            "review_date": "2024-11-30",
             "reviewer": ["EMP010"],
             "performance_rating": 5,
             "comments": "Exceptional financial analysis and reporting.",
             "goals": "Lead a cost-saving initiative",
-            "next_review_date": "2023-12-30"
+            "next_review_date": "2024-09-30"
           },
           {
             "employee": ["EMP008"],
-            "review_date": "2023-07-15",
+            "review_date": "2024-11-15",
             "reviewer": ["EMP002"],
             "performance_rating": 4,
             "comments": "Strong problem-solving skills, reliable team member."
+          },
+          {
+            "employee": ["EMP013"],
+            "review_date": "2024-11-18",
+            "reviewer": ["EMP002"],
+            "performance_rating": 4,
+            "comments": "Excellent coding practices and team collaboration.",
+            "goals": "Learn new frontend frameworks",
+            "next_review_date": "2024-09-18"
+          },
+          {
+            "employee": ["EMP014"],
+            "review_date": "2024-11-20",
+            "reviewer": ["EMP010"],
+            "performance_rating": 5,
+            "comments": "Outstanding UI/UX designs and user research.",
+            "goals": "Lead design system implementation",
+            "next_review_date": "2024-09-20"
           }
         ]
       }

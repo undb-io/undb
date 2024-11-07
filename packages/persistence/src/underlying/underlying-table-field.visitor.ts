@@ -30,10 +30,8 @@ import {
 } from "@undb/table"
 import type { CurrencyField } from "@undb/table/src/modules/schema/fields/variants/currency-field"
 import type { EmailField } from "@undb/table/src/modules/schema/fields/variants/email-field"
-import { getTableName } from "drizzle-orm"
 import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, CreateTableBuilder, sql } from "kysely"
 import type { IQueryBuilder } from "../qb"
-import { users } from "../tables"
 import { JoinTable } from "./reference/join-table"
 import { getUnderlyingFormulaType } from "./underlying-formula.util"
 import { UnderlyingFormulaVisitor } from "./underlying-formula.visitor"
@@ -168,12 +166,8 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     const sql = this.qb.schema
       .createTable(joinTable.getTableName())
       .ifNotExists()
-      .addColumn(joinTable.getSymmetricValueFieldId(), "varchar(10)", (b) =>
-        b.references(`${field.foreignTableId}.${ID_TYPE}`).notNull().onDelete("cascade"),
-      )
-      .addColumn(joinTable.getValueFieldId(), "varchar(10)", (b) =>
-        b.references(`${this.t.table.id.value}.${ID_TYPE}`).notNull().onDelete("cascade"),
-      )
+      .addColumn(joinTable.getSymmetricValueFieldId(), "varchar(10)", (b) => b.notNull())
+      .addColumn(joinTable.getValueFieldId(), "varchar(10)", (b) => b.notNull())
       .addPrimaryKeyConstraint("primary_key", [joinTable.getSymmetricValueFieldId(), joinTable.getValueFieldId()])
       .compile()
     this.addSql(sql)
@@ -189,10 +183,7 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
   }
   user(field: UserField): void {
     if (field.isSingle) {
-      const user = getTableName(users)
-      const c = this.tb.addColumn(field.id.value, "text", (b) =>
-        b.references(`${user}.${users.id.name}`).onDelete("restrict"),
-      )
+      const c = this.tb.addColumn(field.id.value, "text")
       this.addColumn(c)
     } else {
       const c = this.tb.addColumn(field.id.value, "json")
