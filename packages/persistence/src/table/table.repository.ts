@@ -245,6 +245,21 @@ export class TableRepository implements ITableRepository {
       .execute()
 
     await trx
+      .deleteFrom("undb_dashboard_table_id_mapping")
+      .where((eb) => eb.eb("table_id", "=", table.id.value))
+      .execute()
+
+    await trx
+      .deleteFrom("undb_attachment_mapping")
+      .where((eb) => eb.eb("table_id", "=", table.id.value))
+      .execute()
+
+    await trx
+      .deleteFrom("undb_webhook")
+      .where((eb) => eb.eb("table_id", "=", table.id.value))
+      .execute()
+
+    await trx
       .deleteFrom("undb_table")
       .where((eb) => eb.eb("id", "=", table.id.value))
       .execute()

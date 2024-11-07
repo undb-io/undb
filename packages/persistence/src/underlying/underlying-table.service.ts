@@ -49,7 +49,7 @@ export class UnderlyingTableService {
   async delete(table: TableDo) {
     const t = new UnderlyingTable(table)
     const trx = getCurrentTransaction()
-    await trx.schema.dropTable(t.name).execute()
+    await trx.schema.dropTable(t.name).ifExists().execute()
     const referenceFields = table.schema.getReferenceFields()
     for (const field of referenceFields) {
       const joinTable = new JoinTable(table, field)
