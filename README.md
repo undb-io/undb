@@ -49,6 +49,7 @@ UNDB is a no-code platform that can also serve as a Backend as a Service (BaaS).
 ![kanban](./docs/images/kanban.jpeg)
 ![gallery](./docs/images/gallery.jpeg)
 ![form](./docs/images/form.jpeg)
+![calendar](./docs/images/calendar.jpeg)
 ![openapi](./docs/images/openapi.jpeg)
 
 ## Quick start
