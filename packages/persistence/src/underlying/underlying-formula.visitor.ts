@@ -229,10 +229,12 @@ export class UnderlyingFormulaVisitor extends FormulaParserVisitor<string> {
       })
       .with("SQRT", () => {
         const args = this.arguments(ctx)
-        return `SQRT(${args[0]})`
+        // 使用幂运算来实现平方根: x^0.5 = √x
+        return `POWER(${args[0]}, 0.5)`
       })
       .with("POWER", () => {
         const args = this.arguments(ctx)
+        // 使用 exp 和 ln 实现幂运算: a^b = e^(b*ln(a))
         return `POWER(${args[0]}, ${args[1]})`
       })
       .with("MOD", () => {

@@ -210,6 +210,13 @@
               "fn": "{{count1}} - {{count2}}"
             }
           },
+          "Mod": {
+            "id": "mod",
+            "type": "formula",
+            "option": {
+              "fn": "MOD({{count3}}, {{count2}})"
+            }
+          },
           "Abs": {
             "id": "abs",
             "type": "formula",
