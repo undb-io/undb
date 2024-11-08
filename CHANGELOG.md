@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-116
+
+
+### 🚀 Enhancements
+
+- Add other date formula ([612819b](https://github.com/undb-io/undb/commit/612819b))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-115
 
 
