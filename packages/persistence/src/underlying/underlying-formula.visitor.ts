@@ -227,6 +227,18 @@ export class UnderlyingFormulaVisitor extends FormulaParserVisitor<string> {
           END AS INTEGER
         )`
       })
+      .with("YEAR", () => {
+        const args = this.arguments(ctx)
+        return `CAST(strftime('%Y', ${args[0]}/1000, 'unixepoch') AS INTEGER)`
+      })
+      .with("MONTH", () => {
+        const args = this.arguments(ctx)
+        return `CAST(strftime('%m', ${args[0]}/1000, 'unixepoch') AS INTEGER)`
+      })
+      .with("DAY", () => {
+        const args = this.arguments(ctx)
+        return `CAST(strftime('%d', ${args[0]}/1000, 'unixepoch') AS INTEGER)`
+      })
       .with("RECORD_ID", () => {
         return ID_TYPE
       })

@@ -363,3 +363,16 @@ globalFormulaRegistry.register(
     ["DATE_DIFF({{field1}}, {{field2}}, 'day')", undefined],
   ],
 )
+
+globalFormulaRegistry.register("YEAR", [["date"]], "number", "Returns the year of a date.", [
+  ["YEAR('2024-01-01')", 2024],
+  ["YEAR({{field1}})", undefined],
+])
+globalFormulaRegistry.register("MONTH", [["date"]], "number", "Returns the month of a date.", [
+  ["MONTH('2024-01-01')", 1],
+  ["MONTH({{field1}})", undefined],
+])
+globalFormulaRegistry.register("DAY", [["date"]], "number", "Returns the day of a date.", [
+  ["DAY('2024-01-01')", 1],
+  ["DAY({{field1}})", undefined],
+])

@@ -572,6 +572,27 @@
             "option": {
               "fn": "DATE_DIFF({{date1}}, {{date2}}, 'year')"
             }
+          },
+          "Year": {
+            "id": "year",
+            "type": "formula",
+            "option": {
+              "fn": "YEAR({{date1}})"
+            }
+          },
+          "Month": {
+            "id": "month",
+            "type": "formula",
+            "option": {
+              "fn": "MONTH({{date1}})"
+            }
+          },
+          "Day": {
+            "id": "day",
+            "type": "formula",
+            "option": {
+              "fn": "DAY({{date1}})"
+            }
           }
         },
         "records": [
