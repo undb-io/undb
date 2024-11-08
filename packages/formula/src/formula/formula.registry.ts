@@ -325,3 +325,70 @@ globalFormulaRegistry.register(
     ["XOR({{field1}}, false)", undefined],
   ],
 )
+
+globalFormulaRegistry.register("DATE_ADD", [["date", "number", "string"]], "date", "Adds a number of date to date", [
+  ["DATE_ADD('2024-01-01', 1, 'day')", "2024-01-02"],
+  ["DATE_ADD('2024-01-01', 1, 'month')", "2024-02-01"],
+  ["DATE_ADD('2024-01-01', 1, 'year')", "2025-01-01"],
+  ["DATE_ADD('2024-01-01', 1, 'hour')", "2024-01-01 01:00:00"],
+  ["DATE_ADD('2024-01-01', 1, 'minute')", "2024-01-01 00:01:00"],
+  ["DATE_ADD('2024-01-01', 1, 'second')", "2024-01-01 00:00:01"],
+  ["DATE_ADD({{field1}}, 1, 'day')", undefined],
+])
+globalFormulaRegistry.register(
+  "DATE_SUBTRACT",
+  [["date", "number", "string"]],
+  "date",
+  "Subtracts a number of date from date",
+  [
+    ["DATE_SUBTRACT('2024-01-01', 1, 'day')", "2023-12-31"],
+    ["DATE_SUBTRACT('2024-01-01', 1, 'month')", "2023-12-01"],
+    ["DATE_SUBTRACT('2024-01-01', 1, 'year')", "2023-01-01"],
+    ["DATE_SUBTRACT('2024-01-01', 1, 'hour')", "2023-12-31 23:00:00"],
+    ["DATE_SUBTRACT('2024-01-01', 1, 'minute')", "2023-12-31 23:59:00"],
+    ["DATE_SUBTRACT('2024-01-01', 1, 'second')", "2023-12-31 23:59:59"],
+    ["DATE_SUBTRACT({{field1}}, 1, 'day')", undefined],
+  ],
+)
+
+globalFormulaRegistry.register(
+  "DATE_DIFF",
+  [["date", "date", "string"]],
+  "number",
+  "Returns the difference between two dates in the specified unit.",
+  [
+    ["DATE_DIFF('2024-01-01', '2024-01-02', 'day')", 1],
+    ["DATE_DIFF('2024-01-01', '2024-01-02', 'month')", 0],
+    ["DATE_DIFF('2024-01-01', '2024-01-02', 'year')", 0],
+    ["DATE_DIFF({{field1}}, {{field2}}, 'day')", undefined],
+  ],
+)
+
+globalFormulaRegistry.register("YEAR", [["date"]], "number", "Returns the year of a date.", [
+  ["YEAR('2024-01-01')", 2024],
+  ["YEAR({{field1}})", undefined],
+])
+globalFormulaRegistry.register("MONTH", [["date"]], "number", "Returns the month of a date.", [
+  ["MONTH('2024-01-01')", 1],
+  ["MONTH({{field1}})", undefined],
+])
+globalFormulaRegistry.register("DAY", [["date"]], "number", "Returns the day of a date.", [
+  ["DAY('2024-01-01')", 1],
+  ["DAY({{field1}})", undefined],
+])
+globalFormulaRegistry.register("HOUR", [["date"]], "number", "Returns the hour of a date.", [
+  ["HOUR('2024-01-01 01:00:00')", 1],
+  ["HOUR({{field1}})", undefined],
+])
+globalFormulaRegistry.register("MINUTE", [["date"]], "number", "Returns the minute of a date.", [
+  ["MINUTE('2024-01-01 01:00:00')", 0],
+  ["MINUTE({{field1}})", undefined],
+])
+globalFormulaRegistry.register("SECOND", [["date"]], "number", "Returns the second of a date.", [
+  ["SECOND('2024-01-01 01:00:00')", 0],
+  ["SECOND({{field1}})", undefined],
+])
+globalFormulaRegistry.register("WEEKDAY", [["date"]], "number", "Returns the weekday of a date.", [
+  ["WEEKDAY('2024-01-01')", 2],
+  ["WEEKDAY({{field1}})", undefined],
+])

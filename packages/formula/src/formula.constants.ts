@@ -33,6 +33,18 @@ export const FORMULA_FUNCTIONS: FormulaFunction[] = [
   "SEARCH",
   "SUBSTR",
 
+  // 日期时间
+  "DATE_ADD",
+  "DATE_SUBTRACT",
+  "DATE_DIFF",
+  "YEAR",
+  "MONTH",
+  "DAY",
+  "HOUR",
+  "MINUTE",
+  "SECOND",
+  "WEEKDAY",
+
   // 逻辑运算
   "AND",
   "OR",

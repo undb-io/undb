@@ -217,20 +217,6 @@
               "fn": "MOD({{count3}}, {{count2}})"
             }
           },
-          "Power": {
-            "id": "power",
-            "type": "formula",
-            "option": {
-              "fn": "POWER({{count3}}, {{count2}})"
-            }
-          },
-          "Sqrt": {
-            "id": "sqrt",
-            "type": "formula",
-            "option": {
-              "fn": "SQRT({{count3}})"
-            }
-          },
           "Abs": {
             "id": "abs",
             "type": "formula",
@@ -469,6 +455,186 @@
             "Count2": 3,
             "String1": "Hello",
             "String2": "llo"
+          }
+        ]
+      },
+      "Formula2": {
+        "schema": {
+          "Date1": {
+            "id": "date1",
+            "type": "date"
+          },
+          "Date2": {
+            "id": "date2",
+            "type": "date"
+          },
+          "DateAdd1": {
+            "id": "dateAdd1",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_ADD({{date1}}, 1, 'day')"
+            }
+          },
+          "DateAdd2": {
+            "id": "dateAdd2",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_ADD({{date1}}, 1, 'month')"
+            }
+          },
+          "DateAdd3": {
+            "id": "dateAdd3",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_ADD({{date1}}, 1, 'year')"
+            }
+          },
+          "DateAdd4": {
+            "id": "dateAdd4",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_ADD({{date1}}, 1, 'hour')"
+            }
+          },
+          "DateAdd5": {
+            "id": "dateAdd5",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_ADD({{date1}}, 1, 'minute')"
+            }
+          },
+          "DateAdd6": {
+            "id": "dateAdd6",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_ADD({{date1}}, 1, 'second')"
+            }
+          },
+          "DateSubtract1": {
+            "id": "dateSubtract1",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_SUBTRACT({{date1}}, 1, 'day')"
+            }
+          },
+          "DateSubtract2": {
+            "id": "dateSubtract2",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_SUBTRACT({{date1}}, 1, 'month')"
+            }
+          },
+          "DateSubtract3": {
+            "id": "dateSubtract3",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_SUBTRACT({{date1}}, 1, 'year')"
+            }
+          },
+          "DateSubtract4": {
+            "id": "dateSubtract4",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_SUBTRACT({{date1}}, 1, 'hour')"
+            }
+          },
+          "DateSubtract5": {
+            "id": "dateSubtract5",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_SUBTRACT({{date1}}, 1, 'minute')"
+            }
+          },
+          "DateSubtract6": {
+            "id": "dateSubtract6",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_SUBTRACT({{date1}}, 1, 'second')"
+            }
+          },
+          "DateDiff1": {
+            "id": "dateDiff1",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_DIFF({{date1}}, {{date2}}, 'day')"
+            }
+          },
+          "DateDiff2": {
+            "id": "dateDiff2",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_DIFF({{date1}}, {{date2}}, 'month')"
+            }
+          },
+          "DateDiff3": {
+            "id": "dateDiff3",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_DIFF({{date1}}, {{date2}}, 'year')"
+            }
+          },
+          "Year": {
+            "id": "year",
+            "type": "formula",
+            "option": {
+              "fn": "YEAR({{date1}})"
+            }
+          },
+          "Month": {
+            "id": "month",
+            "type": "formula",
+            "option": {
+              "fn": "MONTH({{date1}})"
+            }
+          },
+          "Day": {
+            "id": "day",
+            "type": "formula",
+            "option": {
+              "fn": "DAY({{date1}})"
+            }
+          },
+          "Hour": {
+            "id": "hour",
+            "type": "formula",
+            "option": {
+              "fn": "HOUR({{date1}})"
+            }
+          },
+          "Minute": {
+            "id": "minute",
+            "type": "formula",
+            "option": {
+              "fn": "MINUTE({{date1}})"
+            }
+          },
+          "Second": {
+            "id": "second",
+            "type": "formula",
+            "option": {
+              "fn": "SECOND({{date1}})"
+            }
+          },
+          "Weekday": {
+            "id": "weekday",
+            "type": "formula",
+            "option": {
+              "fn": "WEEKDAY({{date1}})"
+            }
+          }
+        },
+        "records": [
+          {
+            "Date1": "2024-01-01",
+            "Date2": "2024-01-02"
+          },
+          {
+            "Date1": "2024-01-01",
+            "Date2": "2024-02-01"
+          },
+          {
+            "Date1": "2024-01-01",
+            "Date2": "2025-01-01"
           }
         ]
       }

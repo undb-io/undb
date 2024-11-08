@@ -198,11 +198,98 @@ export class UnderlyingFormulaVisitor extends FormulaParserVisitor<string> {
           return `((${result} OR ${arg}) AND NOT (${result} AND ${arg}))`
         })
       })
+      .with("DATE_ADD", () => {
+        const args = this.arguments(ctx)
+        // args[0] 是日期时间戳
+        // args[1] 是要增加的数值
+        // args[2] 是单位 ('year', 'month', 'day', 'hour', 'minute', 'second')
+        return `datetime(${args[0]}/1000, 'unixepoch', '+' || ${args[1]} || ' ' || ${args[2]})`
+      })
+      .with("DATE_SUBTRACT", () => {
+        const args = this.arguments(ctx)
+        return `datetime(${args[0]}/1000, 'unixepoch', '-' || ${args[1]} || ' ' || ${args[2]})`
+      })
+      .with("DATE_DIFF", () => {
+        const args = this.arguments(ctx)
+        // args[0] 是开始日期
+        // args[1] 是结束日期
+        // args[2] 是单位 ('year', 'month', 'day')
+        return `CAST(
+          CASE ${args[2]}
+            WHEN 'day' THEN JULIANDAY(${args[1]}/1000, 'unixepoch') - JULIANDAY(${args[0]}/1000, 'unixepoch')
+            WHEN 'month' THEN (
+              (CAST(strftime('%Y', ${args[1]}/1000, 'unixepoch') AS INTEGER) - CAST(strftime('%Y', ${args[0]}/1000, 'unixepoch') AS INTEGER)) * 12 +
+              (CAST(strftime('%m', ${args[1]}/1000, 'unixepoch') AS INTEGER) - CAST(strftime('%m', ${args[0]}/1000, 'unixepoch') AS INTEGER))
+            )
+            WHEN 'year' THEN (
+              CAST(strftime('%Y', ${args[1]}/1000, 'unixepoch') AS INTEGER) - CAST(strftime('%Y', ${args[0]}/1000, 'unixepoch') AS INTEGER)
+            )
+          END AS INTEGER
+        )`
+      })
+      .with("YEAR", () => {
+        const args = this.arguments(ctx)
+        return `CAST(strftime('%Y', ${args[0]}/1000, 'unixepoch') AS INTEGER)`
+      })
+      .with("MONTH", () => {
+        const args = this.arguments(ctx)
+        return `CAST(strftime('%m', ${args[0]}/1000, 'unixepoch') AS INTEGER)`
+      })
+      .with("DAY", () => {
+        const args = this.arguments(ctx)
+        return `CAST(strftime('%d', ${args[0]}/1000, 'unixepoch') AS INTEGER)`
+      })
+      .with("HOUR", () => {
+        const args = this.arguments(ctx)
+        return `CAST(strftime('%H', ${args[0]}/1000, 'unixepoch') AS INTEGER)`
+      })
+      .with("MINUTE", () => {
+        const args = this.arguments(ctx)
+        return `CAST(strftime('%M', ${args[0]}/1000, 'unixepoch') AS INTEGER)`
+      })
+      .with("SECOND", () => {
+        const args = this.arguments(ctx)
+        return `CAST(strftime('%S', ${args[0]}/1000, 'unixepoch') AS INTEGER)`
+      })
+      .with("WEEKDAY", () => {
+        const args = this.arguments(ctx)
+        return `CAST(strftime('%w', ${args[0]}/1000, 'unixepoch') AS INTEGER)`
+      })
       .with("RECORD_ID", () => {
         return ID_TYPE
       })
       .with("AUTO_INCREMENT", () => {
         return `[${AUTO_INCREMENT_TYPE}]`
+      })
+      .with("CEILING", () => {
+        const args = this.arguments(ctx)
+        return `CAST(ROUND(${args[0]} + 0.499999999999999) AS INTEGER)`
+      })
+      .with("FLOOR", () => {
+        const args = this.arguments(ctx)
+        return `CAST(ROUND(${args[0]} - 0.499999999999999) AS INTEGER)`
+      })
+      .with("ROUND", () => {
+        const args = this.arguments(ctx)
+        return `CAST(ROUND(${args[0]}) AS INTEGER)`
+      })
+      .with("ABS", () => {
+        const args = this.arguments(ctx)
+        return `ABS(${args[0]})`
+      })
+      .with("SQRT", () => {
+        const args = this.arguments(ctx)
+        // 使用幂运算来实现平方根: x^0.5 = √x
+        return `POWER(${args[0]}, 0.5)`
+      })
+      .with("POWER", () => {
+        const args = this.arguments(ctx)
+        // 使用 exp 和 ln 实现幂运算: a^b = e^(b*ln(a))
+        return `POWER(${args[0]}, ${args[1]})`
+      })
+      .with("MOD", () => {
+        const args = this.arguments(ctx)
+        return `(${args[0]} % ${args[1]})`
       })
       .otherwise(() => {
         const args = ctx.argumentList() ? this.visit(ctx.argumentList()!) : ""

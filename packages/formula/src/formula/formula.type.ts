@@ -32,16 +32,19 @@ export type FormulaFunction =
   | "SEARCH"
   | "SUBSTR"
 
-  // // 日期时间
+  // 日期时间
+  | "DATE_ADD"
+  | "DATE_SUBTRACT"
+  | "DATE_DIFF"
+  | "YEAR"
+  | "MONTH"
+  | "DAY"
   // | "NOW"
   // | "TODAY"
-  // | "YEAR"
-  // | "MONTH"
-  // | "DAY"
-  // | "HOUR"
-  // | "MINUTE"
-  // | "SECOND"
-  // | "WEEKDAY"
+  | "HOUR"
+  | "MINUTE"
+  | "SECOND"
+  | "WEEKDAY"
   // | "DATE"
 
   // 逻辑运算
