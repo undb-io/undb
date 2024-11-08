@@ -376,3 +376,19 @@ globalFormulaRegistry.register("DAY", [["date"]], "number", "Returns the day of 
   ["DAY('2024-01-01')", 1],
   ["DAY({{field1}})", undefined],
 ])
+globalFormulaRegistry.register("HOUR", [["date"]], "number", "Returns the hour of a date.", [
+  ["HOUR('2024-01-01 01:00:00')", 1],
+  ["HOUR({{field1}})", undefined],
+])
+globalFormulaRegistry.register("MINUTE", [["date"]], "number", "Returns the minute of a date.", [
+  ["MINUTE('2024-01-01 01:00:00')", 0],
+  ["MINUTE({{field1}})", undefined],
+])
+globalFormulaRegistry.register("SECOND", [["date"]], "number", "Returns the second of a date.", [
+  ["SECOND('2024-01-01 01:00:00')", 0],
+  ["SECOND({{field1}})", undefined],
+])
+globalFormulaRegistry.register("WEEKDAY", [["date"]], "number", "Returns the weekday of a date.", [
+  ["WEEKDAY('2024-01-01')", 2],
+  ["WEEKDAY({{field1}})", undefined],
+])

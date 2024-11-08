@@ -593,6 +593,34 @@
             "option": {
               "fn": "DAY({{date1}})"
             }
+          },
+          "Hour": {
+            "id": "hour",
+            "type": "formula",
+            "option": {
+              "fn": "HOUR({{date1}})"
+            }
+          },
+          "Minute": {
+            "id": "minute",
+            "type": "formula",
+            "option": {
+              "fn": "MINUTE({{date1}})"
+            }
+          },
+          "Second": {
+            "id": "second",
+            "type": "formula",
+            "option": {
+              "fn": "SECOND({{date1}})"
+            }
+          },
+          "Weekday": {
+            "id": "weekday",
+            "type": "formula",
+            "option": {
+              "fn": "WEEKDAY({{date1}})"
+            }
           }
         },
         "records": [

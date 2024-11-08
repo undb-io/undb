@@ -239,6 +239,22 @@ export class UnderlyingFormulaVisitor extends FormulaParserVisitor<string> {
         const args = this.arguments(ctx)
         return `CAST(strftime('%d', ${args[0]}/1000, 'unixepoch') AS INTEGER)`
       })
+      .with("HOUR", () => {
+        const args = this.arguments(ctx)
+        return `CAST(strftime('%H', ${args[0]}/1000, 'unixepoch') AS INTEGER)`
+      })
+      .with("MINUTE", () => {
+        const args = this.arguments(ctx)
+        return `CAST(strftime('%M', ${args[0]}/1000, 'unixepoch') AS INTEGER)`
+      })
+      .with("SECOND", () => {
+        const args = this.arguments(ctx)
+        return `CAST(strftime('%S', ${args[0]}/1000, 'unixepoch') AS INTEGER)`
+      })
+      .with("WEEKDAY", () => {
+        const args = this.arguments(ctx)
+        return `CAST(strftime('%w', ${args[0]}/1000, 'unixepoch') AS INTEGER)`
+      })
       .with("RECORD_ID", () => {
         return ID_TYPE
       })

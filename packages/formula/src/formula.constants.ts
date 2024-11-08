@@ -40,6 +40,10 @@ export const FORMULA_FUNCTIONS: FormulaFunction[] = [
   "YEAR",
   "MONTH",
   "DAY",
+  "HOUR",
+  "MINUTE",
+  "SECOND",
+  "WEEKDAY",
 
   // 逻辑运算
   "AND",

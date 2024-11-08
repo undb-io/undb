@@ -41,10 +41,10 @@ export type FormulaFunction =
   | "DAY"
   // | "NOW"
   // | "TODAY"
-  // | "HOUR"
-  // | "MINUTE"
-  // | "SECOND"
-  // | "WEEKDAY"
+  | "HOUR"
+  | "MINUTE"
+  | "SECOND"
+  | "WEEKDAY"
   // | "DATE"
 
   // 逻辑运算
