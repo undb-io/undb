@@ -35,6 +35,7 @@ export type FormulaFunction =
   // 日期时间
   | "DATE_ADD"
   | "DATE_SUBTRACT"
+  | "DATE_DIFF"
   // | "NOW"
   // | "TODAY"
   // | "YEAR"

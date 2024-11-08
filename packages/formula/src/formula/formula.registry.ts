@@ -350,3 +350,16 @@ globalFormulaRegistry.register(
     ["DATE_SUBTRACT({{field1}}, 1, 'day')", undefined],
   ],
 )
+
+globalFormulaRegistry.register(
+  "DATE_DIFF",
+  [["date", "date", "string"]],
+  "number",
+  "Returns the difference between two dates in the specified unit.",
+  [
+    ["DATE_DIFF('2024-01-01', '2024-01-02', 'day')", 1],
+    ["DATE_DIFF('2024-01-01', '2024-01-02', 'month')", 0],
+    ["DATE_DIFF('2024-01-01', '2024-01-02', 'year')", 0],
+    ["DATE_DIFF({{field1}}, {{field2}}, 'day')", undefined],
+  ],
+)

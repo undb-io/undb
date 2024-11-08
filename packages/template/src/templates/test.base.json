@@ -464,6 +464,10 @@
             "id": "date1",
             "type": "date"
           },
+          "Date2": {
+            "id": "date2",
+            "type": "date"
+          },
           "DateAdd1": {
             "id": "dateAdd1",
             "type": "formula",
@@ -547,11 +551,41 @@
             "option": {
               "fn": "DATE_SUBTRACT({{date1}}, 1, 'second')"
             }
+          },
+          "DateDiff1": {
+            "id": "dateDiff1",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_DIFF({{date1}}, {{date2}}, 'day')"
+            }
+          },
+          "DateDiff2": {
+            "id": "dateDiff2",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_DIFF({{date1}}, {{date2}}, 'month')"
+            }
+          },
+          "DateDiff3": {
+            "id": "dateDiff3",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_DIFF({{date1}}, {{date2}}, 'year')"
+            }
           }
         },
         "records": [
           {
-            "Date1": "2024-01-01"
+            "Date1": "2024-01-01",
+            "Date2": "2024-01-02"
+          },
+          {
+            "Date1": "2024-01-01",
+            "Date2": "2024-02-01"
+          },
+          {
+            "Date1": "2024-01-01",
+            "Date2": "2025-01-01"
           }
         ]
       }

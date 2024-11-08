@@ -209,6 +209,24 @@ export class UnderlyingFormulaVisitor extends FormulaParserVisitor<string> {
         const args = this.arguments(ctx)
         return `datetime(${args[0]}/1000, 'unixepoch', '-' || ${args[1]} || ' ' || ${args[2]})`
       })
+      .with("DATE_DIFF", () => {
+        const args = this.arguments(ctx)
+        // args[0] 是开始日期
+        // args[1] 是结束日期
+        // args[2] 是单位 ('year', 'month', 'day')
+        return `CAST(
+          CASE ${args[2]}
+            WHEN 'day' THEN JULIANDAY(${args[1]}/1000, 'unixepoch') - JULIANDAY(${args[0]}/1000, 'unixepoch')
+            WHEN 'month' THEN (
+              (CAST(strftime('%Y', ${args[1]}/1000, 'unixepoch') AS INTEGER) - CAST(strftime('%Y', ${args[0]}/1000, 'unixepoch') AS INTEGER)) * 12 +
+              (CAST(strftime('%m', ${args[1]}/1000, 'unixepoch') AS INTEGER) - CAST(strftime('%m', ${args[0]}/1000, 'unixepoch') AS INTEGER))
+            )
+            WHEN 'year' THEN (
+              CAST(strftime('%Y', ${args[1]}/1000, 'unixepoch') AS INTEGER) - CAST(strftime('%Y', ${args[0]}/1000, 'unixepoch') AS INTEGER)
+            )
+          END AS INTEGER
+        )`
+      })
       .with("RECORD_ID", () => {
         return ID_TYPE
       })

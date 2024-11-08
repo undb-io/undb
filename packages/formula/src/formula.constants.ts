@@ -36,6 +36,7 @@ export const FORMULA_FUNCTIONS: FormulaFunction[] = [
   // 日期时间
   "DATE_ADD",
   "DATE_SUBTRACT",
+  "DATE_DIFF",
 
   // 逻辑运算
   "AND",
