@@ -335,3 +335,18 @@ globalFormulaRegistry.register("DATE_ADD", [["date", "number", "string"]], "date
   ["DATE_ADD('2024-01-01', 1, 'second')", "2024-01-01 00:00:01"],
   ["DATE_ADD({{field1}}, 1, 'day')", undefined],
 ])
+globalFormulaRegistry.register(
+  "DATE_SUBTRACT",
+  [["date", "number", "string"]],
+  "date",
+  "Subtracts a number of date from date",
+  [
+    ["DATE_SUBTRACT('2024-01-01', 1, 'day')", "2023-12-31"],
+    ["DATE_SUBTRACT('2024-01-01', 1, 'month')", "2023-12-01"],
+    ["DATE_SUBTRACT('2024-01-01', 1, 'year')", "2023-01-01"],
+    ["DATE_SUBTRACT('2024-01-01', 1, 'hour')", "2023-12-31 23:00:00"],
+    ["DATE_SUBTRACT('2024-01-01', 1, 'minute')", "2023-12-31 23:59:00"],
+    ["DATE_SUBTRACT('2024-01-01', 1, 'second')", "2023-12-31 23:59:59"],
+    ["DATE_SUBTRACT({{field1}}, 1, 'day')", undefined],
+  ],
+)

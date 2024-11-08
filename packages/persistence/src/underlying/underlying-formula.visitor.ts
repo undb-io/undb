@@ -205,6 +205,10 @@ export class UnderlyingFormulaVisitor extends FormulaParserVisitor<string> {
         // args[2] 是单位 ('year', 'month', 'day', 'hour', 'minute', 'second')
         return `datetime(${args[0]}/1000, 'unixepoch', '+' || ${args[1]} || ' ' || ${args[2]})`
       })
+      .with("DATE_SUBTRACT", () => {
+        const args = this.arguments(ctx)
+        return `datetime(${args[0]}/1000, 'unixepoch', '-' || ${args[1]} || ' ' || ${args[2]})`
+      })
       .with("RECORD_ID", () => {
         return ID_TYPE
       })

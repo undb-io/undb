@@ -505,8 +505,55 @@
             "option": {
               "fn": "DATE_ADD({{date1}}, 1, 'second')"
             }
+          },
+          "DateSubtract1": {
+            "id": "dateSubtract1",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_SUBTRACT({{date1}}, 1, 'day')"
+            }
+          },
+          "DateSubtract2": {
+            "id": "dateSubtract2",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_SUBTRACT({{date1}}, 1, 'month')"
+            }
+          },
+          "DateSubtract3": {
+            "id": "dateSubtract3",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_SUBTRACT({{date1}}, 1, 'year')"
+            }
+          },
+          "DateSubtract4": {
+            "id": "dateSubtract4",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_SUBTRACT({{date1}}, 1, 'hour')"
+            }
+          },
+          "DateSubtract5": {
+            "id": "dateSubtract5",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_SUBTRACT({{date1}}, 1, 'minute')"
+            }
+          },
+          "DateSubtract6": {
+            "id": "dateSubtract6",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_SUBTRACT({{date1}}, 1, 'second')"
+            }
           }
-        }
+        },
+        "records": [
+          {
+            "Date1": "2024-01-01"
+          }
+        ]
       }
     }
   }
