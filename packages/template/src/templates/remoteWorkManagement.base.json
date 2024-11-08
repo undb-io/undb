@@ -1,0 +1,282 @@
+{
+  "Remote Work Management": {
+    "tablesOrder": [
+      "Remote Workers",
+      "Time Tracking",
+      "Equipment Inventory",
+      "Virtual Meetings",
+      "Performance Metrics"
+    ],
+    "tables": {
+      "Remote Workers": {
+        "fieldsOrder": [
+          "Name",
+          "Position",
+          "Time Zone",
+          "Department",
+          "Department Name",
+          "Work Schedule",
+          "Start Date",
+          "Salary",
+          "Reports To",
+          "Manager Name",
+          "Email",
+          "Phone",
+          "Remote Status",
+          "Equipment Assigned"
+        ],
+        "schema": {
+          "Name": {
+            "id": "name",
+            "type": "string",
+            "constraint": {
+              "required": true
+            },
+            "display": true
+          },
+          "Position": {
+            "id": "position",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "remote_developer",
+                  "name": "Remote Developer",
+                  "color": "blue"
+                },
+                {
+                  "id": "remote_designer",
+                  "name": "Remote Designer",
+                  "color": "purple"
+                },
+                {
+                  "id": "remote_manager",
+                  "name": "Remote Manager",
+                  "color": "green"
+                },
+                {
+                  "id": "remote_support",
+                  "name": "Remote Support",
+                  "color": "orange"
+                }
+              ]
+            }
+          },
+          "Time Zone": {
+            "id": "timezone",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "utc_plus_8",
+                  "name": "UTC+8 (Asia)",
+                  "color": "blue"
+                },
+                {
+                  "id": "utc_0",
+                  "name": "UTC+0 (Europe)",
+                  "color": "green"
+                },
+                {
+                  "id": "utc_minus_5",
+                  "name": "UTC-5 (US East)",
+                  "color": "orange"
+                },
+                {
+                  "id": "utc_minus_8",
+                  "name": "UTC-8 (US West)",
+                  "color": "purple"
+                }
+              ]
+            }
+          },
+          "Remote Status": {
+            "id": "remote_status",
+            "type": "select",
+            "constraint": {
+              "max": 1,
+              "required": true
+            },
+            "option": {
+              "options": [
+                {
+                  "id": "online",
+                  "name": "Online",
+                  "color": "green"
+                },
+                {
+                  "id": "offline",
+                  "name": "Offline",
+                  "color": "gray"
+                },
+                {
+                  "id": "meeting",
+                  "name": "In Meeting",
+                  "color": "blue"
+                },
+                {
+                  "id": "break",
+                  "name": "On Break",
+                  "color": "orange"
+                }
+              ]
+            }
+          }
+        },
+        "views": {
+          "All Remote Workers": {
+            "type": "grid",
+            "sort": [
+              {
+                "fieldId": "name",
+                "direction": "asc"
+              }
+            ]
+          },
+          "By Time Zone": {
+            "type": "kanban",
+            "kanban": {
+              "field": "timezone"
+            }
+          },
+          "By Status": {
+            "type": "kanban",
+            "kanban": {
+              "field": "remote_status"
+            }
+          }
+        },
+        "records": [
+          {
+            "id": "RW001",
+            "name": "Alice Johnson",
+            "position": "remote_developer",
+            "timezone": "utc_minus_8",
+            "department": ["tech_dept"],
+            "start_date": "2023-01-15",
+            "salary": 85000,
+            "email": "alice@remote.com",
+            "phone": "123-456-7890",
+            "remote_status": "online"
+          },
+          {
+            "id": "RW002",
+            "name": "Bob Chen",
+            "position": "remote_manager",
+            "timezone": "utc_plus_8",
+            "department": ["product_dept"],
+            "start_date": "2022-05-01",
+            "salary": 95000,
+            "email": "bob@remote.com",
+            "phone": "234-567-8901",
+            "remote_status": "meeting"
+          },
+          {
+            "id": "RW003",
+            "name": "Carol White",
+            "position": "remote_designer",
+            "timezone": "utc_0",
+            "department": ["design_dept"],
+            "start_date": "2023-03-10",
+            "salary": 78000,
+            "email": "carol@remote.com",
+            "phone": "345-678-9012",
+            "remote_status": "online"
+          },
+          {
+            "id": "RW004",
+            "name": "David Kumar",
+            "position": "remote_developer",
+            "timezone": "utc_plus_8",
+            "department": ["tech_dept"],
+            "start_date": "2023-02-01",
+            "salary": 82000,
+            "email": "david@remote.com",
+            "phone": "456-789-0123",
+            "remote_status": "break"
+          },
+          {
+            "id": "RW005",
+            "name": "Emma Garcia",
+            "position": "remote_support",
+            "timezone": "utc_minus_5",
+            "department": ["support_dept"],
+            "start_date": "2022-11-15",
+            "salary": 65000,
+            "email": "emma@remote.com",
+            "phone": "567-890-1234",
+            "remote_status": "online"
+          },
+          {
+            "id": "RW006",
+            "name": "Frank Wilson",
+            "position": "remote_developer",
+            "timezone": "utc_0",
+            "department": ["tech_dept"],
+            "start_date": "2023-03-20",
+            "salary": 83000,
+            "email": "frank@remote.com",
+            "phone": "678-901-2345",
+            "remote_status": "offline"
+          },
+          {
+            "id": "RW007",
+            "name": "Grace Taylor",
+            "position": "remote_designer",
+            "timezone": "utc_minus_5",
+            "department": ["design_dept"],
+            "start_date": "2022-09-01",
+            "salary": 76000,
+            "email": "grace@remote.com",
+            "phone": "789-012-3456",
+            "remote_status": "meeting"
+          },
+          {
+            "id": "RW008",
+            "name": "Henry Zhang",
+            "position": "remote_support",
+            "timezone": "utc_plus_8",
+            "department": ["support_dept"],
+            "start_date": "2023-04-10",
+            "salary": 67000,
+            "email": "henry@remote.com",
+            "phone": "890-123-4567",
+            "remote_status": "online"
+          },
+          {
+            "id": "RW009",
+            "name": "Isabel Rodriguez",
+            "position": "remote_manager",
+            "timezone": "utc_minus_5",
+            "department": ["product_dept"],
+            "start_date": "2022-07-15",
+            "salary": 92000,
+            "email": "isabel@remote.com",
+            "phone": "901-234-5678",
+            "remote_status": "online"
+          },
+          {
+            "id": "RW010",
+            "name": "Jack Thompson",
+            "position": "remote_developer",
+            "timezone": "utc_minus_8",
+            "department": ["tech_dept"],
+            "start_date": "2023-01-01",
+            "salary": 84000,
+            "email": "jack@remote.com",
+            "phone": "012-345-6789",
+            "remote_status": "break"
+          }
+        ]
+      }
+    }
+  }
+}

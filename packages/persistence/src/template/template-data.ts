@@ -387,6 +387,57 @@ export const templateData: ITemplateDTO[] = [
       template: templates.socialMediaContent as IBaseTemplateDTO,
     },
   },
+  {
+    id: "6ba7b812-9dad-11d1-80b4-00c04fd430c8",
+    icon: "💼",
+    name: "Remote Work Management",
+    categories: ["development", "hr"],
+    cover: getTemplateImage("remoteWorkManagement", "cover.jpg"),
+    images: [
+      getTemplateImage("remoteWorkManagement", "image1.png"),
+      getTemplateImage("remoteWorkManagement", "image2.png"),
+    ],
+    description: "A template for managing remote workers, including tasks, time tracking, and equipment inventory.",
+    detail: `
+      <h1>UnDB Remote Work Management Template: Optimize Your Distributed Team Operations</h1>
+
+      <h2>Comprehensive Remote Work Management Features for Modern Organizations</h2>
+
+      <p>UnDB's Remote Work Management template provides essential tools to effectively manage distributed teams:</p>
+
+      <h3>Remote Employee Management</h3>
+      <ul>
+        <li>Track remote worker profiles, time zones, and work schedules</li>
+        <li>Manage virtual team structures and reporting relationships</li>
+        <li>Monitor remote employee performance and productivity</li>
+      </ul>
+
+      <h3>Time and Project Tracking</h3>
+      <ul>
+        <li>Record work hours across different time zones</li>
+        <li>Track project progress and task completion</li>
+        <li>Generate detailed productivity reports</li>
+      </ul>
+
+      <h3>Equipment and Resource Management</h3>
+      <ul>
+        <li>Track company equipment assigned to remote workers</li>
+        <li>Manage software licenses and digital resources</li>
+        <li>Monitor equipment maintenance and updates</li>
+      </ul>
+
+      <h3>Virtual Communication Tools</h3>
+      <ul>
+        <li>Schedule and track virtual meetings and team events</li>
+        <li>Facilitate remote team collaboration</li>
+        <li>Maintain clear communication channels</li>
+      </ul>
+    `,
+    template: {
+      type: "base",
+      template: templates.remoteWorkManagement as IBaseTemplateDTO,
+    },
+  },
 ]
 
 if (env.NODE_ENV === "development") {
