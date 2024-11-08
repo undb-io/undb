@@ -32,7 +32,8 @@ export type FormulaFunction =
   | "SEARCH"
   | "SUBSTR"
 
-  // // 日期时间
+  // 日期时间
+  | "DATE_ADD"
   // | "NOW"
   // | "TODAY"
   // | "YEAR"

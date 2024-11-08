@@ -325,3 +325,13 @@ globalFormulaRegistry.register(
     ["XOR({{field1}}, false)", undefined],
   ],
 )
+
+globalFormulaRegistry.register("DATE_ADD", [["date", "number", "string"]], "date", "Adds a number of date to date", [
+  ["DATE_ADD('2024-01-01', 1, 'day')", "2024-01-02"],
+  ["DATE_ADD('2024-01-01', 1, 'month')", "2024-02-01"],
+  ["DATE_ADD('2024-01-01', 1, 'year')", "2025-01-01"],
+  ["DATE_ADD('2024-01-01', 1, 'hour')", "2024-01-01 01:00:00"],
+  ["DATE_ADD('2024-01-01', 1, 'minute')", "2024-01-01 00:01:00"],
+  ["DATE_ADD('2024-01-01', 1, 'second')", "2024-01-01 00:00:01"],
+  ["DATE_ADD({{field1}}, 1, 'day')", undefined],
+])

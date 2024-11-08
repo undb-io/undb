@@ -198,11 +198,46 @@ export class UnderlyingFormulaVisitor extends FormulaParserVisitor<string> {
           return `((${result} OR ${arg}) AND NOT (${result} AND ${arg}))`
         })
       })
+      .with("DATE_ADD", () => {
+        const args = this.arguments(ctx)
+        // args[0] 是日期时间戳
+        // args[1] 是要增加的数值
+        // args[2] 是单位 ('year', 'month', 'day', 'hour', 'minute', 'second')
+        return `datetime(${args[0]}/1000, 'unixepoch', '+' || ${args[1]} || ' ' || ${args[2]})`
+      })
       .with("RECORD_ID", () => {
         return ID_TYPE
       })
       .with("AUTO_INCREMENT", () => {
         return `[${AUTO_INCREMENT_TYPE}]`
+      })
+      .with("CEILING", () => {
+        const args = this.arguments(ctx)
+        return `CAST(ROUND(${args[0]} + 0.499999999999999) AS INTEGER)`
+      })
+      .with("FLOOR", () => {
+        const args = this.arguments(ctx)
+        return `CAST(ROUND(${args[0]} - 0.499999999999999) AS INTEGER)`
+      })
+      .with("ROUND", () => {
+        const args = this.arguments(ctx)
+        return `CAST(ROUND(${args[0]}) AS INTEGER)`
+      })
+      .with("ABS", () => {
+        const args = this.arguments(ctx)
+        return `ABS(${args[0]})`
+      })
+      .with("SQRT", () => {
+        const args = this.arguments(ctx)
+        return `SQRT(${args[0]})`
+      })
+      .with("POWER", () => {
+        const args = this.arguments(ctx)
+        return `POWER(${args[0]}, ${args[1]})`
+      })
+      .with("MOD", () => {
+        const args = this.arguments(ctx)
+        return `(${args[0]} % ${args[1]})`
       })
       .otherwise(() => {
         const args = ctx.argumentList() ? this.visit(ctx.argumentList()!) : ""

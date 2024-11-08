@@ -210,27 +210,6 @@
               "fn": "{{count1}} - {{count2}}"
             }
           },
-          "Mod": {
-            "id": "mod",
-            "type": "formula",
-            "option": {
-              "fn": "MOD({{count3}}, {{count2}})"
-            }
-          },
-          "Power": {
-            "id": "power",
-            "type": "formula",
-            "option": {
-              "fn": "POWER({{count3}}, {{count2}})"
-            }
-          },
-          "Sqrt": {
-            "id": "sqrt",
-            "type": "formula",
-            "option": {
-              "fn": "SQRT({{count3}})"
-            }
-          },
           "Abs": {
             "id": "abs",
             "type": "formula",
@@ -471,6 +450,56 @@
             "String2": "llo"
           }
         ]
+      },
+      "Formula2": {
+        "schema": {
+          "Date1": {
+            "id": "date1",
+            "type": "date"
+          },
+          "DateAdd1": {
+            "id": "dateAdd1",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_ADD({{date1}}, 1, 'day')"
+            }
+          },
+          "DateAdd2": {
+            "id": "dateAdd2",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_ADD({{date1}}, 1, 'month')"
+            }
+          },
+          "DateAdd3": {
+            "id": "dateAdd3",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_ADD({{date1}}, 1, 'year')"
+            }
+          },
+          "DateAdd4": {
+            "id": "dateAdd4",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_ADD({{date1}}, 1, 'hour')"
+            }
+          },
+          "DateAdd5": {
+            "id": "dateAdd5",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_ADD({{date1}}, 1, 'minute')"
+            }
+          },
+          "DateAdd6": {
+            "id": "dateAdd6",
+            "type": "formula",
+            "option": {
+              "fn": "DATE_ADD({{date1}}, 1, 'second')"
+            }
+          }
+        }
       }
     }
   }
