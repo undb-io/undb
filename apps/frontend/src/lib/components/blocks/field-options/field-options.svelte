@@ -20,6 +20,7 @@
   import DurationFieldOption from "./duration-field-option.svelte"
   import PercentageFieldOption from "./percentage-field-option.svelte"
   import FormulaFieldOption from "./formula-field-option.svelte"
+  import DateRangeFieldOption from "./date-range-field-option.svelte"
 
   export let constraint: IFieldConstraint | undefined
   export let option: any | undefined
@@ -49,6 +50,7 @@
     duration: DurationFieldOption,
     percentage: PercentageFieldOption,
     formula: FormulaFieldOption,
+    dateRange: DateRangeFieldOption,
   }
 
   export let type: NoneSystemFieldType
