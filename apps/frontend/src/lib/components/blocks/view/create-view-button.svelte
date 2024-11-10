@@ -16,8 +16,14 @@
   import { LoaderCircleIcon } from "lucide-svelte"
   import ViewTypePicker from "./view-type-picker.svelte"
   import { goto, invalidate } from "$app/navigation"
+  import { getTable } from "$lib/store/table.store"
+  import FieldPicker from "../field-picker/field-picker.svelte"
+  import * as Tooltip from "$lib/components/ui/tooltip"
+  import { CircleHelpIcon } from "lucide-svelte"
 
   let open = false
+
+  const table = getTable()
 
   export let tableId: string
   export let viewNames: string[]
@@ -88,11 +94,112 @@
 
         <Form.Field {form} name="type">
           <Form.Control let:attrs>
-            <ViewTypePicker {...attrs} bind:value={$formData.type} />
+            <Form.Label>View Type</Form.Label>
+            <ViewTypePicker
+              {...attrs}
+              bind:value={$formData.type}
+              onValueChange={(type) => {
+                if (type === "calendar") {
+                  const field = $table.schema.getCalendarFields().at(0)?.id.value
+                  formData.update((f) => ({ ...f, calendar: { field } }))
+                } else if (type === "gallery") {
+                  const field = $table.schema.getGalleryFields().at(0)?.id.value
+                  formData.update((f) => ({ ...f, gallery: { field } }))
+                } else if (type === "kanban") {
+                  const field = $table.schema.getKanbanFields().at(0)?.id.value
+                  formData.update((f) => ({ ...f, kanban: { field } }))
+                }
+              }}
+            />
           </Form.Control>
           <Form.Description />
           <Form.FieldErrors />
         </Form.Field>
+        {#if $formData.type === "calendar" && $formData.calendar}
+          <Form.Field {form} name="calendar.field">
+            <Form.Control let:attrs>
+              <Form.Label class="flex items-center gap-2">
+                Calendar Field
+                <Tooltip.Root>
+                  <Tooltip.Trigger>
+                    <CircleHelpIcon class="size-4" />
+                  </Tooltip.Trigger>
+                  <Tooltip.Content>
+                    <p>Group calendar by a date type field</p>
+                  </Tooltip.Content>
+                </Tooltip.Root>
+              </Form.Label>
+              <FieldPicker
+                {...attrs}
+                bind:value={$formData.calendar.field}
+                class="w-full"
+                filter={(f) =>
+                  $table.schema
+                    .getCalendarFields()
+                    .map((f) => f.id.value)
+                    .includes(f.id)}
+              />
+            </Form.Control>
+            <Form.Description />
+            <Form.FieldErrors />
+          </Form.Field>
+        {:else if $formData.type === "gallery" && $formData.gallery}
+          <Form.Field {form} name="gallery.field">
+            <Form.Control let:attrs>
+              <Form.Label class="flex items-center gap-2">
+                Gallery Field
+                <Tooltip.Root>
+                  <Tooltip.Trigger>
+                    <CircleHelpIcon class="size-4" />
+                  </Tooltip.Trigger>
+                  <Tooltip.Content>
+                    <p>Gallery view will display a banner of images grouped by an attachment type field</p>
+                  </Tooltip.Content>
+                </Tooltip.Root>
+              </Form.Label>
+              <FieldPicker
+                {...attrs}
+                bind:value={$formData.gallery.field}
+                class="w-full"
+                filter={(f) =>
+                  $table.schema
+                    .getGalleryFields()
+                    .map((f) => f.id.value)
+                    .includes(f.id)}
+              />
+            </Form.Control>
+            <Form.Description />
+            <Form.FieldErrors />
+          </Form.Field>
+        {:else if $formData.type === "kanban" && $formData.kanban}
+          <Form.Field {form} name="kanban.field">
+            <Form.Control let:attrs>
+              <Form.Label class="flex items-center gap-2">
+                Kanban Field
+                <Tooltip.Root>
+                  <Tooltip.Trigger>
+                    <CircleHelpIcon class="size-4" />
+                  </Tooltip.Trigger>
+                  <Tooltip.Content>
+                    <p>Group kanban by a select type field</p>
+                  </Tooltip.Content>
+                </Tooltip.Root>
+              </Form.Label>
+              <FieldPicker
+                {...attrs}
+                bind:value={$formData.kanban.field}
+                class="w-full"
+                filter={(f) =>
+                  $table.schema
+                    .getKanbanFields()
+                    .map((f) => f.id.value)
+                    .includes(f.id)}
+              />
+            </Form.Control>
+            <Form.Description />
+            <Form.FieldErrors />
+          </Form.Field>
+        {/if}
 
         <Form.FormButton disabled={$createViewMutation.isPending} class="w-full">
           {#if $createViewMutation.isPending}
