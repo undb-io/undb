@@ -401,6 +401,10 @@ type RootTranslation = {
 			 * C​u​r​r​e​n​t​ ​U​s​e​r
 			 */
 			'@me': string
+			/**
+			 * C​u​r​r​e​n​t​ ​D​a​t​e
+			 */
+			'@now': string
 		}
 		viewTypes: {
 			/**
@@ -830,6 +834,10 @@ export type TranslationFunctions = {
 			 * Current User
 			 */
 			'@me': () => LocalizedString
+			/**
+			 * Current Date
+			 */
+			'@now': () => LocalizedString
 		}
 		viewTypes: {
 			/**

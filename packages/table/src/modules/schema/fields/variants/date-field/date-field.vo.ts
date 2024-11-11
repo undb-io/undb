@@ -10,6 +10,7 @@ import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-fie
 import { createAbstractDateConditionMather } from "../abstractions/abstract-date-field.condition"
 import { abstractDateAggregate } from "../abstractions/abstract-date.aggregate"
 import { dateFieldConstraint, DateFieldConstraint } from "./date-field-constraint.vo"
+import { isDateFieldMacro } from "./date-field-macro"
 import { dateFieldValue, DateFieldValue } from "./date-field-value.vo"
 import {
   createDateFieldCondition,
@@ -106,6 +107,15 @@ export class DateField extends AbstractField<DateFieldValue> {
   }
 
   override getMutationSpec(value: DateFieldValue): Option<RecordComositeSpecification> {
-    return Some(new DateEqual(isString(value.value) ? new Date(value.value) : (value.value ?? null), this.id))
+    return Some(
+      new DateEqual(
+        isString(value.value)
+          ? isDateFieldMacro(value.value)
+            ? value.value
+            : new Date(value.value)
+          : (value.value ?? null),
+        this.id,
+      ),
+    )
   }
 }

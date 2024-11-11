@@ -1,9 +1,8 @@
 <script lang="ts">
   import { Checkbox } from "$lib/components/ui/checkbox"
-  import NumberInput from "$lib/components/ui/input/number-input.svelte"
   import { Label } from "$lib/components/ui/label/index.js"
   import { Separator } from "$lib/components/ui/separator"
-  import type { IDateFieldConstraint, INumberFieldConstraint } from "@undb/table"
+  import { isDateFieldMacro, type IDateFieldConstraint } from "@undb/table"
   import * as Popover from "$lib/components/ui/popover"
   import { Button } from "$lib/components/ui/button"
   import { cn } from "$lib/utils"
@@ -11,6 +10,8 @@
   import { DateFormatter, getLocalTimeZone, parseDate } from "@internationalized/date"
   import { isDate, isString } from "radash"
   import { Calendar } from "$lib/components/ui/calendar"
+  import DateMacroPicker from "../date/date-macro-picker.svelte"
+  import DateMacro from "../date/date-macro.svelte"
 
   const df = new DateFormatter("en-US", {
     dateStyle: "long",
@@ -30,7 +31,9 @@
     }
   }
   $: internalDate = isString(defaultValue)
-    ? parse(defaultValue)
+    ? isDateFieldMacro(defaultValue)
+      ? defaultValue
+      : parse(defaultValue)
     : isDate(defaultValue)
       ? parseDate(defaultValue.toISOString())
       : undefined
@@ -53,19 +56,31 @@
           )}
           builders={[builder]}
         >
-          <CalendarIcon class="mr-2 h-4 w-4" />
-          {#if internalDate}
-            {df.format(internalDate.toDate(getLocalTimeZone()))}
+          {#if isString(internalDate) && isDateFieldMacro(internalDate)}
+            <DateMacro value={internalDate} />
           {:else}
-            <span class="text-muted-foreground text-xs">
-              {placeholder}
-            </span>
+            <CalendarIcon class="mr-2 h-4 w-4" />
+            {#if internalDate}
+              {df.format(internalDate.toDate(getLocalTimeZone()))}
+            {:else}
+              <span class="text-muted-foreground text-xs">
+                {placeholder}
+              </span>
+            {/if}
           {/if}
         </Button>
       </Popover.Trigger>
       <Popover.Content class="p-0" align="start">
+        <div class="p-1">
+          <DateMacroPicker
+            onValueChange={(v) => {
+              open = false
+            }}
+            bind:value={defaultValue}
+          />
+        </div>
         <Calendar
-          value={internalDate}
+          value={isString(internalDate) && isDateFieldMacro(internalDate) ? undefined : internalDate}
           onValueChange={(v) => {
             if (v) {
               defaultValue = v.toString()

@@ -6,7 +6,9 @@
   import { Calendar } from "$lib/components/ui/calendar"
   import * as Popover from "$lib/components/ui/popover"
   import { isDate, isString } from "radash"
-  import { DateField } from "@undb/table"
+  import { DateField, isDateFieldMacro } from "@undb/table"
+  import DateMacroPicker from "../date/date-macro-picker.svelte"
+  import DateMacro from "../date/date-macro.svelte"
 
   export let readonly = false
   export let disabled = false
@@ -16,6 +18,8 @@
 
   export let value: string | Date | undefined = undefined
   function parse(value: string) {
+    if (isDateFieldMacro(value)) return value
+
     try {
       return parseDate(value)
     } catch {
@@ -38,13 +42,25 @@
     >
       <CalendarIcon class="mr-2 h-4 w-4" />
       {#if value}
-        {formatter(value)}
+        {#if isString(value) && isDateFieldMacro(value)}
+          <DateMacro {value} />
+        {:else}
+          {formatter(value)}
+        {/if}
       {/if}
     </Button>
   </Popover.Trigger>
   <Popover.Content class="p-0" side="bottom" align="start">
+    <div class="p-1">
+      <DateMacroPicker
+        onValueChange={() => {
+          open = false
+        }}
+        bind:value
+      />
+    </div>
     <Calendar
-      value={internalDate}
+      value={isString(internalDate) && isDateFieldMacro(internalDate) ? undefined : internalDate}
       onValueChange={(v) => {
         if (v) {
           value = v.toString()

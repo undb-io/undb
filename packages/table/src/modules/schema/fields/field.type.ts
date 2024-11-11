@@ -83,6 +83,7 @@ import type {
   ICurrencyFieldConstraint,
   ICurrencyFieldOption,
 } from "./variants/currency-field"
+import type { IDateFieldMacro } from "./variants/date-field/date-field-macro"
 import type { DateRangeFieldValue } from "./variants/date-range-field/date-range-field-value.vo"
 import type { DATE_RANGE_TYPE, DateRangeField } from "./variants/date-range-field/date-range-field.vo"
 import type {
@@ -327,4 +328,4 @@ export type IFieldOption =
   | ICurrencyFieldOption
   | IFormulaFieldOption
 
-export type IFieldMacro = IUserFieldMacro
+export type IFieldMacro = IUserFieldMacro | IDateFieldMacro
