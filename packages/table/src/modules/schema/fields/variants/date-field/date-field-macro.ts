@@ -1,6 +1,6 @@
 import { z } from "@undb/zod"
 
-export const dateFieldMacroSchema = z.enum(["@now"])
+export const dateFieldMacroSchema = z.enum(["@now", "@today", "@yesterday", "@tomorrow"])
 
 export const dateFieldMacros = dateFieldMacroSchema.options
 

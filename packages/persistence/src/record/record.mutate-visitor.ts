@@ -72,7 +72,7 @@ import {
   type UserEmpty,
   type UserEqual,
 } from "@undb/table"
-import { startOfDay } from "date-fns"
+import { startOfDay, startOfToday, startOfTomorrow, startOfYesterday } from "date-fns"
 import { sql, type ExpressionBuilder } from "kysely"
 import { unique } from "radash"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
@@ -125,6 +125,15 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
   dateEqual(spec: DateEqual): void {
     if (spec.date === "@now") {
       const start = startOfDay(new Date())
+      this.setData(spec.fieldId.value, start.getTime())
+    } else if (spec.date === "@today") {
+      const start = startOfToday()
+      this.setData(spec.fieldId.value, start.getTime())
+    } else if (spec.date === "@yesterday") {
+      const start = startOfYesterday()
+      this.setData(spec.fieldId.value, start.getTime())
+    } else if (spec.date === "@tomorrow") {
+      const start = startOfTomorrow()
       this.setData(spec.fieldId.value, start.getTime())
     } else {
       this.setData(spec.fieldId.value, spec.date?.getTime() ?? null)
