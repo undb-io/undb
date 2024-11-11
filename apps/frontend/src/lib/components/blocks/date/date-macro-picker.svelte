@@ -2,7 +2,8 @@
   import * as Select from "$lib/components/ui/select"
   import type { IDateFieldMacro } from "@undb/table"
   import { isString } from "radash"
-  import { isDateFieldMacro } from "@undb/table"
+  import { dateFieldMacros, isDateFieldMacro } from "@undb/table"
+  import { LL } from "@undb/i18n/client"
 
   export let value: any | undefined = undefined
   export let onValueChange: (v: IDateFieldMacro | undefined) => void = () => {}
@@ -14,6 +15,11 @@
           value,
         }
       : undefined
+
+  const macros = dateFieldMacros.map((v) => ({
+    label: $LL.table.macros[v](),
+    value: v,
+  }))
 </script>
 
 <Select.Root
@@ -32,6 +38,10 @@
     <Select.Value class="text-xs" placeholder="Select a macro..." />
   </Select.Trigger>
   <Select.Content>
-    <Select.Item value="@now">Now</Select.Item>
+    {#each macros as macro}
+      <Select.Item class="text-xs text-gray-600" value={macro.value}>
+        {macro.label}
+      </Select.Item>
+    {/each}
   </Select.Content>
 </Select.Root>

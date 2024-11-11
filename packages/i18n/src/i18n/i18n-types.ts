@@ -402,9 +402,21 @@ type RootTranslation = {
 			 */
 			'@me': string
 			/**
-			 * C​u​r​r​e​n​t​ ​D​a​t​e
+			 * N​o​w
 			 */
 			'@now': string
+			/**
+			 * T​o​d​a​y
+			 */
+			'@today': string
+			/**
+			 * Y​e​s​t​e​r​d​a​y
+			 */
+			'@yesterday': string
+			/**
+			 * T​o​m​o​r​r​o​w
+			 */
+			'@tomorrow': string
 		}
 		viewTypes: {
 			/**
@@ -835,9 +847,21 @@ export type TranslationFunctions = {
 			 */
 			'@me': () => LocalizedString
 			/**
-			 * Current Date
+			 * Now
 			 */
 			'@now': () => LocalizedString
+			/**
+			 * Today
+			 */
+			'@today': () => LocalizedString
+			/**
+			 * Yesterday
+			 */
+			'@yesterday': () => LocalizedString
+			/**
+			 * Tomorrow
+			 */
+			'@tomorrow': () => LocalizedString
 		}
 		viewTypes: {
 			/**
