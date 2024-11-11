@@ -138,7 +138,9 @@
                     .getCalendarFields()
                     .map((f) => f.id.value)
                     .includes(f.id)}
-              />
+              >
+                <div slot="empty">No date field found.</div>
+              </FieldPicker>
             </Form.Control>
             <Form.Description />
             <Form.FieldErrors />
@@ -166,7 +168,9 @@
                     .getGalleryFields()
                     .map((f) => f.id.value)
                     .includes(f.id)}
-              />
+              >
+                <div slot="empty">No attachment field found.</div>
+              </FieldPicker>
             </Form.Control>
             <Form.Description />
             <Form.FieldErrors />
@@ -194,7 +198,9 @@
                     .getKanbanFields()
                     .map((f) => f.id.value)
                     .includes(f.id)}
-              />
+              >
+                <div slot="empty">No select field found.</div>
+              </FieldPicker>
             </Form.Control>
             <Form.Description />
             <Form.FieldErrors />

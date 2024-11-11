@@ -82,7 +82,9 @@
       }}
     >
       <Command.Input {placeholder} class="h-9 text-xs" />
-      <Command.Empty>No field found.</Command.Empty>
+      <Command.Empty class="text-muted-foreground">
+        <slot name="empty">No field found.</slot>
+      </Command.Empty>
       <Command.Group>
         <div class="-mx-1 max-h-[300px] overflow-y-auto">
           {#each filteredFields as field}
