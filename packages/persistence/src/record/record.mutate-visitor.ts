@@ -72,6 +72,7 @@ import {
   type UserEmpty,
   type UserEqual,
 } from "@undb/table"
+import { startOfDay } from "date-fns"
 import { sql, type ExpressionBuilder } from "kysely"
 import { unique } from "radash"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
@@ -122,7 +123,12 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     this.setData(spec.fieldId.value, null)
   }
   dateEqual(spec: DateEqual): void {
-    this.setData(spec.fieldId.value, spec.date?.getTime() ?? null)
+    if (spec.date === "@now") {
+      const start = startOfDay(new Date())
+      this.setData(spec.fieldId.value, start.getTime())
+    } else {
+      this.setData(spec.fieldId.value, spec.date?.getTime() ?? null)
+    }
   }
   dateRangeEqual(spec: DateRangeEqual): void {
     const field = this.table.schema.getFieldById(new FieldIdVo(spec.fieldId.value)).expect("No field found")

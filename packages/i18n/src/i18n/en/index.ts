@@ -111,7 +111,8 @@ const workspaceRoles: Record<ISpaceMemberRole, string> = {
 }
 
 const macros: Record<IFieldMacro, string> = {
-  "@me": "Current User"
+  "@me": "Current User",
+  "@now": "Now"
 }
 
 const viewTypes: Record<ViewType, string> = {

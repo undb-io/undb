@@ -2,6 +2,7 @@ import { Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { FormFieldVO } from "../../../../forms/form/form-field.vo"
 import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.vo"
+import { dateFieldMacroSchema } from "./date-field-macro"
 
 export const dateFieldConstraint = z
   .object({
@@ -20,7 +21,13 @@ export class DateFieldConstraint extends FieldConstraintVO<IDateFieldConstraint>
     })
   }
   override get schema() {
-    let base: z.ZodTypeAny = z.string().date().or(z.string().datetime()).or(z.string().date()).or(z.date())
+    let base: z.ZodTypeAny = z
+      .string()
+      .date()
+      .or(z.string().datetime())
+      .or(z.string().date())
+      .or(z.date())
+      .or(dateFieldMacroSchema)
     if (!this.props.required) {
       base = base.optional().nullable()
     }
