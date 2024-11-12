@@ -318,16 +318,19 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
         if (value === "@me") {
           return this.context.getCurrentUserId()
         }
+
+        return null
       }
 
       return value
     }
 
     if (Array.isArray(value)) {
-      const converted = unique(value.map(convertMacro))
+      const converted = unique(value.map(convertMacro).filter(Boolean))
       this.setData(spec.fieldId.value, JSON.stringify(converted))
     } else {
-      this.setData(spec.fieldId.value, value ? convertMacro(value) : null)
+      const converted = value ? convertMacro(value) : null
+      this.setData(spec.fieldId.value, converted)
     }
   }
   userEmpty(spec: UserEmpty): void {
