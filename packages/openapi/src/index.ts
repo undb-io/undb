@@ -12,15 +12,18 @@ import type { Base } from "@undb/base"
 import { type IReadableRecordDTO, type TableDo, type View } from "@undb/table"
 import {
   RECORD_COMPONENT,
+  VIEW_PIVOT_COMPONENT,
   VIEW_RECORD_COMPONENT,
   bulkDeleteRecords,
   bulkDuplicateRecords,
   bulkUpdateRecords,
+  createPivotViewDateComponent,
   createRecord,
   createRecordComponent,
   createRecords,
   deleteRecordById,
   duplicateRecordById,
+  getPivotData,
   getRecordById,
   getRecords,
   getViewRecordById,
@@ -74,14 +77,21 @@ export const createOpenApiSpec = (
   }
 
   for (const { view, record } of views) {
-    const viewRecordSchema = createRecordComponent(table, view, record)
-    registry.register(
-      view.name.value + ":" + VIEW_RECORD_COMPONENT,
-      viewRecordSchema.openapi({ description: table.name.value + " " + view.name.value + " view record schema" }),
-    )
+    if (view.type === "pivot") {
+      const pivotViewDataComponent = createPivotViewDateComponent(table, view)
+      registry.register(view.name.value + ":" + VIEW_PIVOT_COMPONENT, pivotViewDataComponent)
 
-    routes.push(getViewRecords(base, table, view, viewRecordSchema))
-    routes.push(getViewRecordById(base, table, view, viewRecordSchema))
+      routes.push(getPivotData(base, table, view))
+    } else {
+      const viewRecordSchema = createRecordComponent(table, view, record)
+      registry.register(
+        view.name.value + ":" + VIEW_RECORD_COMPONENT,
+        viewRecordSchema.openapi({ description: table.name.value + " " + view.name.value + " view record schema" }),
+      )
+
+      routes.push(getViewRecords(base, table, view, viewRecordSchema))
+      routes.push(getViewRecordById(base, table, view, viewRecordSchema))
+    }
   }
 
   const apiKeyAuth = registry.registerComponent("securitySchemes", "apiKeyAuth", {

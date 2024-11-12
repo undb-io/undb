@@ -1,6 +1,15 @@
 import type { RouteConfig } from "@asteasolutions/zod-to-openapi"
 import type { Base } from "@undb/base"
-import { ButtonField, FormVO, recordId, type IReadableRecordDTO, type TableDo, type View } from "@undb/table"
+import {
+  ButtonField,
+  FormVO,
+  getPivotDataOutput,
+  PivotView,
+  recordId,
+  type IReadableRecordDTO,
+  type TableDo,
+  type View,
+} from "@undb/table"
 import { z, type ZodTypeAny } from "@undb/zod"
 
 export const RECORD_ID_COMPONENT = "RecordId"
@@ -8,7 +17,9 @@ export const RECORD_COMPONENT = "Record"
 export const BUTTON_COMPONENT = "Button"
 export const FORM_COMPONENT = "Form"
 export const VIEW_COMPONENT = "View"
+export const PIVOT_COMPONENT = "Pivot"
 export const VIEW_RECORD_COMPONENT = "ViewRecord"
+export const VIEW_PIVOT_COMPONENT = "ViewPivotData"
 export const FORM_SUBMIT_RECORD_COMPONENT = "FormSubmitRecord"
 export const RECORD_VALUES_COMPONENT = "RecordValues"
 export const VIEW_RECORD_VALUES_COMPONENT = "ViewRecordValues"
@@ -36,6 +47,32 @@ export const createRecordComponent = (table: TableDo, view?: View, record?: IRea
     .openapi(view ? VIEW_RECORD_COMPONENT : RECORD_COMPONENT, {
       description: view ? `record in ${view.name.value} view` : "record",
     })
+}
+
+export const createPivotViewDateComponent = (table: TableDo, view: PivotView) => {
+  return getPivotDataOutput.openapi(view.name.value + ":" + VIEW_PIVOT_COMPONENT, {
+    description: `pivot view data in ${view.name.value} view`,
+  })
+}
+
+export const getPivotData = (base: Base, table: TableDo, view: PivotView): RouteConfig => {
+  return {
+    method: "get",
+    path: `/bases/${base.name.value}/tables/${table.name.value}/views/${view.name.value}/data`,
+    description: `Get pivot view data in ${view.name.value} view`,
+    summary: `Get pivot view data in ${view.name.value} view`,
+    tags: [PIVOT_COMPONENT, VIEW_COMPONENT],
+    responses: {
+      200: {
+        description: "pivot view data",
+        content: {
+          "application/json": {
+            schema: getPivotDataOutput,
+          },
+        },
+      },
+    },
+  }
 }
 
 export const getRecords = (base: Base, table: TableDo, recordSchema: ZodTypeAny): RouteConfig => {
