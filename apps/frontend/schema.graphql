@@ -137,6 +137,13 @@ type OAuthSettings {
   google: OAuthSetting
 }
 
+type PivotOption {
+  aggregate: String
+  columnLabel: String
+  rowLabel: String
+  value: String
+}
+
 type Query {
   base(id: ID!): Base!
   baseByShare(shareId: ID!): Base
@@ -283,6 +290,7 @@ type View {
   kanban: KanbanOption
   name: String!
   option: ViewOption
+  pivot: PivotOption
   share: Share
   shareId: ID
   sort: JSON
@@ -304,6 +312,7 @@ enum ViewType {
   grid
   kanban
   list
+  pivot
 }
 
 type Widget {

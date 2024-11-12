@@ -14,6 +14,7 @@ import {
 } from "../view"
 import { createGalleryViewDTO } from "../view/variants/gallery-view.vo"
 import { createKanbanViewDTO } from "../view/variants/kanban-view.vo"
+import { createPivotViewDTO } from "../view/variants/pivot-view.vo"
 import { viewId } from "../view/view-id.vo"
 import { viewName } from "../view/view-name.vo"
 import { viewType } from "../view/view.type"
@@ -38,6 +39,7 @@ export const createViewDTO = z.discriminatedUnion("type", [
   createGalleryViewDTO,
   createListViewDTO,
   createCalendarViewDTO,
+  createPivotViewDTO,
 ])
 
 export const createViewsDTO = z.array(createViewDTO).refine(
@@ -55,6 +57,7 @@ export const createViewWithoutNameDTO = z.discriminatedUnion("type", [
   createGalleryViewDTO.omit({ name: true }),
   createListViewDTO.omit({ name: true }),
   createCalendarViewDTO.omit({ name: true }),
+  createPivotViewDTO.omit({ name: true }),
 ])
 
 export const createViewsWithoutNameDTO = z.array(createViewWithoutNameDTO).refine(
@@ -74,6 +77,7 @@ export const createTableViewDTO = z.discriminatedUnion("type", [
   createGalleryViewDTO.merge(z.object({ tableId })),
   createListViewDTO.merge(z.object({ tableId })),
   createCalendarViewDTO.merge(z.object({ tableId })),
+  createPivotViewDTO.merge(z.object({ tableId })),
 ])
 
 export type ICreateTableViewDTO = z.infer<typeof createTableViewDTO>

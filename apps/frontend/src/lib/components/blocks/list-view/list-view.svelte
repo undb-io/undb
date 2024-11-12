@@ -82,15 +82,3 @@
   {/if}
 </div>
 <ViewPagination perPage={$perPage} bind:currentPage={$currentPage} count={total} />
-
-{#await import("$lib/components/blocks/create-record/create-record-sheet.svelte") then { default: CreateRecordSheet }}
-  <CreateRecordSheet />
-{/await}
-
-{#await import("$lib/components/blocks/record-detail/table-record-detail-sheet.svelte") then { default: TableRecordDetailSheet }}
-  <TableRecordDetailSheet {viewId} />
-{/await}
-
-{#await import("$lib/components/blocks/view-widget/view-widget-sheet.svelte") then { default: ViewWidgetSheet }}
-  <ViewWidgetSheet {viewId} {shareId} />
-{/await}
