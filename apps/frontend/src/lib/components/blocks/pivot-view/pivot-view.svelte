@@ -8,19 +8,21 @@
   const table = getTable()
   export let viewId: Readable<string>
   export let r: Writable<string | null>
+  export let readonly: boolean = false
+  export let shareId: string | undefined
 
   $: view = $table.views.getViewById($viewId)
 </script>
 
 {#key $table.id.value}
   {#if view.type === "pivot"}
-    <PivotViewToolbar {viewId} {view} />
-    {#if !view.isValid}
+    <PivotViewToolbar {viewId} {view} {readonly} {shareId} />
+    {#if !view.isValid && !readonly && !shareId}
       <section class="bg-muted flex h-full w-full items-center justify-center">
         <PivotViewOption {view} />
       </section>
     {:else}
-      <PivotViewData {view} />
+      <PivotViewData {view} {readonly} {shareId} />
     {/if}
   {/if}
 {/key}

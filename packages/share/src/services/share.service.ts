@@ -15,6 +15,9 @@ import {
   injectRecordsQueryService,
   injectTableQueryRepository,
   injectTableRepository,
+  withUniqueTable,
+  type IGetPivotDataDTO,
+  type IGetPivotDataOutput,
   type IRecordDTO,
   type IRecordQueryRepository,
   type IRecordsQueryService,
@@ -55,6 +58,7 @@ export interface IShareService {
     select?: string[],
     pagination?: IPagination,
   ): Promise<PaginatedDTO<IRecordDTO>>
+  getSharePivotData(shareId: string, dto: IGetPivotDataDTO): Promise<IGetPivotDataOutput>
   getShareRecordById(id: string, recordId: string, tableId?: string, viewId?: string): Promise<Option<IRecordDTO>>
 }
 
@@ -170,6 +174,22 @@ export class ShareService implements IShareService {
       })
 
     return (await this.tableQueryRepo.findOne(spec)).expect("table not found")
+  }
+
+  async getSharePivotData(shareId: string, dto: IGetPivotDataDTO): Promise<IGetPivotDataOutput> {
+    const share = (await this.repo.findOneById(shareId)).expect("share not found")
+    if (share.target.type !== "view") {
+      throw new Error("invalid share target")
+    }
+
+    const spec = withUniqueTable(dto).expect("invalid unique table specification")
+    const table = (await this.tableRepo.findOne(Some(spec))).expect("table not found")
+    const view = table.views.getViewById(share.target.id)
+    if (!view) {
+      throw new Error("view not found")
+    }
+
+    return this.recordsService.getPivotData({ tableId: table.id.value, viewId: view.id.value })
   }
 
   async getShareRecords(

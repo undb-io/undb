@@ -40,9 +40,11 @@
           $endTimestamp?.toISOString(),
         ],
         enabled: view?.type === "calendar" && !!$startTimestamp && !!$endTimestamp && !disableRecordQuery,
-        queryFn: () =>
-          trpc.record.list.query({
-            tableId: $table?.id.value,
+        queryFn: () => {
+          if (shareId) {
+            return trpc.shareData.records.query({
+              shareId,
+              tableId: $table?.id.value,
             viewId: $viewId,
             q: $q ?? undefined,
             filters: {
@@ -51,8 +53,14 @@
                 { field: field.id.value, op: "is_after", value: $startTimestamp!.toISOString() },
                 { field: field.id.value, op: "is_before", value: $endTimestamp!.toISOString() },
               ],
-            },
-          }),
+              },
+            })
+          }
+          return trpc.record.list.query({
+            tableId: $table?.id.value,
+            viewId: $viewId,
+          })
+        },
       }
     }),
   )

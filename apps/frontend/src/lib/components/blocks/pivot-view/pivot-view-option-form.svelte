@@ -97,26 +97,28 @@
           <Form.Control let:attrs>
             <div class="flex items-center justify-between">
               <Form.Label>Row Label</Form.Label>
-              <Tooltip.Root portal="body">
-                <Tooltip.Trigger>
-                  <button
-                    type="button"
-                    on:click={() => {
-                      if (!$formData.pivot) return
-                      const columnLabel = $formData.pivot?.columnLabel
-                      const rowLabel = $formData.pivot?.rowLabel
+              {#if !readonly}
+                <Tooltip.Root portal="body">
+                  <Tooltip.Trigger>
+                    <button
+                      type="button"
+                      on:click={() => {
+                        if (!$formData.pivot) return
+                        const columnLabel = $formData.pivot?.columnLabel
+                        const rowLabel = $formData.pivot?.rowLabel
 
-                      $formData.pivot.columnLabel = rowLabel
-                      $formData.pivot.rowLabel = columnLabel
-                    }}
-                  >
-                    <ArrowDownUpIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
-                  </button>
-                </Tooltip.Trigger>
-                <Tooltip.Content>
-                  <p>Swap with Column Label</p>
-                </Tooltip.Content>
-              </Tooltip.Root>
+                        $formData.pivot.columnLabel = rowLabel
+                        $formData.pivot.rowLabel = columnLabel
+                      }}
+                    >
+                      <ArrowDownUpIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
+                    </button>
+                  </Tooltip.Trigger>
+                  <Tooltip.Content>
+                    <p>Swap with Column Label</p>
+                  </Tooltip.Content>
+                </Tooltip.Root>
+              {/if}
             </div>
             <FieldPicker
               {...attrs}
@@ -143,6 +145,7 @@
             <Form.Label>Aggregate</Form.Label>
             <PivotAggregatePicker
               {...attrs}
+              disabled={readonly}
               value={$formData.pivot?.aggregate}
               class="w-full text-left"
               onValueChange={(v) => {
@@ -191,7 +194,9 @@
           </Form.Field>
         {/if}
 
-        <Form.Button disabled={$updateViewMutation.isPending} class="w-full">Save</Form.Button>
+        {#if !readonly}
+          <Form.Button disabled={$updateViewMutation.isPending} class="w-full">Save</Form.Button>
+        {/if}
       </div>
     </div>
   </form>
