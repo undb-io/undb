@@ -8,14 +8,24 @@
 
   const table = getTable()
   export let view: PivotView
+  export let readonly: boolean = false
+  export let shareId: string | undefined
 
   const getPivotData = createQuery({
     queryKey: ["pivot-data", $table.id.value, view.id.value],
-    queryFn: () =>
-      trpc.record.pivot.query({
+    queryFn: () => {
+      if (shareId) {
+        return trpc.shareData.pivot.query({
+          shareId,
+          tableId: $table.id.value,
+          viewId: view.id.value,
+        })
+      }
+      return trpc.record.pivot.query({
         tableId: $table.id.value,
         viewId: view.id.value,
-      }),
+      })
+    },
   })
 
   $: result = ($getPivotData.data as any) ?? []
