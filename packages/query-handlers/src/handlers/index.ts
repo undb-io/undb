@@ -13,6 +13,7 @@ import { GetMemberByIdQueryHandler } from "./get-member-by-id.query-handler"
 import { GetMemberSpacesQueryHandler } from "./get-member-spaces.query-handler"
 import { GetMembersByIdsQueryHandler } from "./get-members-by-ids.query-handler"
 import { GetMembersQueryHandler } from "./get-members.query-handler"
+import { GetPivotDataQueryHandler } from "./get-pivot-data.query-handler"
 import { GetReadableRecordByIdHandler } from "./get-readable-record-by-id.query-handler"
 import { GetReadableRecordsHandler } from "./get-readable-records.query-handler"
 import { GetRecordAuditsQueryHandler } from "./get-record-audits.query-handler"
@@ -74,4 +75,5 @@ export const queryHandlers = [
   GetDashboardByIdQueryHandler,
   GetDashboardByShareQueryHandler,
   GetTableByShareDashboardQueryHandler,
+  GetPivotDataQueryHandler,
 ]

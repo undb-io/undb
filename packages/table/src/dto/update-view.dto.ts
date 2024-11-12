@@ -5,6 +5,7 @@ import {
   updateGridViewDTO,
   updateKanbanViewDTO,
   updateListViewDTO,
+  updatePivotViewDTO,
 } from "../modules"
 
 export const updateViewDTO = z.discriminatedUnion("type", [
@@ -13,6 +14,7 @@ export const updateViewDTO = z.discriminatedUnion("type", [
   updateGalleryViewDTO,
   updateListViewDTO,
   updateCalendarViewDTO,
+  updatePivotViewDTO,
 ])
 
 export type IUpdateViewDTO = z.infer<typeof updateViewDTO>

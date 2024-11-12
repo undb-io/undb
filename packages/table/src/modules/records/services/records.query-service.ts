@@ -6,7 +6,14 @@ import type { ITableRepository } from "../../../table.repository"
 import { injectTableRepository } from "../../../table.repository.provider"
 import { type IAttachmentFieldValue } from "../../schema"
 import { injectObjectStorage, type IObjectStorage } from "../../storage"
-import type { AggregateResult, ICountRecordsDTO, IGetAggregatesDTO, IGetRecordByIdDTO, IGetRecordsDTO } from "../dto"
+import type {
+  AggregateResult,
+  ICountRecordsDTO,
+  IGetAggregatesDTO,
+  IGetPivotDataDTO,
+  IGetRecordByIdDTO,
+  IGetRecordsDTO,
+} from "../dto"
 import {
   injectRecordQueryRepository,
   type IReadableRecordDTO,
@@ -16,6 +23,7 @@ import {
 } from "../record"
 import { countRecords } from "./methods/count-records.method"
 import { getAggregates } from "./methods/get-aggregates.method"
+import { getPivotData } from "./methods/get-pivot-data.method"
 import { getReadableRecordById } from "./methods/get-readable-record-by-id.method"
 import { getReadableRecords } from "./methods/get-readable-records.method"
 import { getRecordById } from "./methods/get-record-by-id.method"
@@ -30,6 +38,7 @@ export interface IRecordsQueryService {
   getAggregates(query: IGetAggregatesDTO): Promise<Record<string, AggregateResult>>
   populateAttachments(dto: IGetRecordsDTO, table: TableDo, records: IRecordDTO[]): Promise<IRecordDTO[]>
   populateAttachment(dto: IGetRecordsDTO, table: TableDo, value: IRecordDTO["values"]): Promise<IRecordDTO["values"]>
+  getPivotData(query: IGetPivotDataDTO): Promise<any>
 }
 
 @singleton()
@@ -49,6 +58,7 @@ export class RecordsQueryService implements IRecordsQueryService {
   getReadableRecords = getReadableRecords
   getReadableRecordById = getReadableRecordById
   getAggregates = getAggregates
+  getPivotData = getPivotData
 
   async populateAttachments(
     this: RecordsQueryService,

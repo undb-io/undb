@@ -7,6 +7,7 @@ import { GalleryView } from "./variants/gallery-view.vo"
 import { GridView } from "./variants/grid-view.vo"
 import { KanbanView } from "./variants/kanban-view.vo"
 import { ListView } from "./variants/list-view.vo"
+import { PivotView } from "./variants/pivot-view.vo"
 
 export class ViewFactory {
   static create(table: TableDo, dto: ICreateViewDTO) {
@@ -16,6 +17,7 @@ export class ViewFactory {
       .with({ type: "gallery" }, (dto) => GalleryView.create(table, dto))
       .with({ type: "list" }, (dto) => ListView.create(table, dto))
       .with({ type: "calendar" }, (dto) => CalendarView.create(table, dto))
+      .with({ type: "pivot" }, (dto) => PivotView.create(table, dto))
       .exhaustive()
   }
 
@@ -26,6 +28,7 @@ export class ViewFactory {
       .with({ type: "gallery" }, (dto) => new GalleryView(table, dto))
       .with({ type: "list" }, (dto) => new ListView(table, dto))
       .with({ type: "calendar" }, (dto) => new CalendarView(table, dto))
+      .with({ type: "pivot" }, (dto) => new PivotView(table, dto))
       .exhaustive()
   }
 }

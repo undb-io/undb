@@ -1,6 +1,13 @@
 <script lang="ts">
   import type { ComponentType } from "svelte"
-  import { LayoutGridIcon, KanbanIcon, GalleryVerticalIcon, ListIcon, CalendarIcon } from "lucide-svelte"
+  import {
+    LayoutGridIcon,
+    KanbanIcon,
+    GalleryVerticalIcon,
+    ListIcon,
+    CalendarIcon,
+    PanelsTopLeftIcon,
+  } from "lucide-svelte"
   import type { ViewType } from "@undb/table"
 
   export let type: ViewType
@@ -11,6 +18,7 @@
     gallery: GalleryVerticalIcon,
     list: ListIcon,
     calendar: CalendarIcon,
+    pivot: PanelsTopLeftIcon,
   }
 </script>
 

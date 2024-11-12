@@ -123,7 +123,8 @@ const viewTypes: Record<ViewType, string> = {
   kanban: "Kanban",
   gallery: "Gallery",
   list: "List",
-  calendar: "Calendar"
+  calendar: "Calendar",
+  pivot: "Pivot"
 }
 
 const widgetTypes: Record<string, string> = {
