@@ -9,6 +9,9 @@
   import { builderActions, getAttrs } from "bits-ui"
   import { ChevronDownIcon } from "lucide-svelte"
   import UserMacro from "../../user/user-macro.svelte"
+  import { useQueryClient } from "@tanstack/svelte-query"
+  import { getRecordsStore } from "$lib/store/records.store"
+  import { getTable } from "$lib/store/table.store"
 
   export let tableId: string
   export let field: UserField
@@ -24,9 +27,20 @@
     open = true
   }
 
+  const table = getTable()
+
+  const store = getRecordsStore()
+
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
     mutationFn: trpc.record.update.mutate,
+    async onSuccess(data, variables) {
+      console.log(variables)
+      const value = variables.values[field.id.value]
+      if (isUserFieldMacro(value)) {
+        await store.invalidateRecord($table, recordId)
+      }
+    },
     onError(error: Error) {
       toast.error(error.message)
     },
