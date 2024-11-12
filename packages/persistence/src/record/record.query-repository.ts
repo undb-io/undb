@@ -10,6 +10,7 @@ import {
   type AggregateResult,
   type CountQueryArgs,
   type Field,
+  type IGetPivotDataOutput,
   type IPivotAggregate,
   type IRecordDTO,
   type IRecordQueryRepository,
@@ -129,14 +130,14 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return { values: records, total: Number(total) }
   }
 
-  async getPivotData(table: TableDo, viewId: string): Promise<any> {
+  async getPivotData(table: TableDo, viewId: string): Promise<IGetPivotDataOutput> {
     const view = table.views.getViewById(viewId)
 
     if (view.type !== "pivot") {
-      return {}
+      throw new Error("Invalid view type")
     }
     if (!view.isValid) {
-      return {}
+      throw new Error("Invalid view")
     }
 
     const columnLabel = view.columnLabel.unwrap()!
@@ -148,7 +149,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const rowField = table.schema.getFieldByIdOrName(rowLabel).into(undefined)
     const valueField = table.schema.getFieldByIdOrName(value).into(undefined)
     if (!columnField || !rowField) {
-      return {}
+      throw new Error("Invalid view")
     }
 
     function convertAggFn(aggFn: IPivotAggregate) {
@@ -262,7 +263,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       })
       .execute()
 
-    return result
+    return result as IGetPivotDataOutput
   }
 
   async aggregate(

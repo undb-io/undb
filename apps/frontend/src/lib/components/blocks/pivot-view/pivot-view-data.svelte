@@ -47,7 +47,7 @@
             </Table.Head>
           {/each}
           <Table.Head class="border-r bg-gray-50 text-right font-semibold"
-            >{aggregate?.toUpperCase() ?? "Total"} ({columnField.name.value})</Table.Head
+            >{aggregate?.toUpperCase() ?? "Total"} ({rowField.name.value})</Table.Head
           >
         </Table.Row>
       </Table.Header>
@@ -71,9 +71,9 @@
               <Table.Cell class="border-r text-right">
                 {#if value}
                   {#if valueField?.type === "currency" && aggregate !== "count"}
-                    <span class="text-sm text-gray-800">{valueField.symbol}</span>
+                    <span class="text-xs text-gray-800">{valueField.symbol}</span>
                   {/if}
-                  <span class="text-sm text-gray-800">{value}</span>
+                  <span class="text-xs text-gray-800">{value}</span>
                 {:else}
                   <div class="ml-auto h-2 w-7 rounded-sm bg-slate-200"></div>
                 {/if}
@@ -81,16 +81,16 @@
             {/each}
             <Table.Cell class="border-r bg-gray-50 text-right">
               {#if valueField?.type === "currency" && aggregate !== "count"}
-                <span class="text-sm text-gray-800">{valueField.symbol}</span>
+                <span class="text-xs text-gray-800">{valueField.symbol}</span>
               {/if}
-              <span class="text-sm text-gray-800">{rowTotal}</span>
+              <span class="text-xs text-gray-800">{rowTotal}</span>
             </Table.Cell>
           </Table.Row>
         {/each}
         {#if total}
           <Table.Row>
             <Table.Cell class="border-r bg-gray-50 font-semibold"
-              >{aggregate?.toUpperCase() ?? "Total"} ({rowField.name.value})</Table.Cell
+              >{aggregate?.toUpperCase() ?? "Total"} ({columnField.name.value})</Table.Cell
             >
             {@const totalRowTotal = total["agg"]}
             {#each options as option}
@@ -98,9 +98,9 @@
               <Table.Cell class="border-r bg-gray-50 text-right">
                 {#if value}
                   {#if valueField?.type === "currency" && aggregate !== "count"}
-                    <span class="text-sm text-gray-800">{valueField.symbol}</span>
+                    <span class="text-xs text-gray-800">{valueField.symbol}</span>
                   {/if}
-                  <span class="text-sm text-gray-800">{value}</span>
+                  <span class="text-xs text-gray-800">{value}</span>
                 {:else}
                   <div class="ml-auto h-2 w-7 rounded-sm bg-slate-200"></div>
                 {/if}

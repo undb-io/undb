@@ -3,7 +3,7 @@ import type { TableId } from "../../../table-id.vo"
 import type { TableDo } from "../../../table.do"
 import { getSpec } from "../../schema/fields/condition"
 import type { IViewAggregate, View, ViewId } from "../../views"
-import type { AggregateResult, ICountRecordsDTO, IGetRecordsDTO } from "../dto"
+import type { AggregateResult, ICountRecordsDTO, IGetPivotDataOutput, IGetRecordsDTO } from "../dto"
 import { withQ } from "../specification/with-q.specification"
 import type { IRecordDTO } from "./dto"
 import type { RecordId } from "./record-id.vo"
@@ -50,7 +50,7 @@ export interface IRecordQueryRepository {
   findOneById(table: TableDo, id: RecordId, query: Option<SingleQueryArgs>): Promise<Option<IRecordDTO>>
   count(tableId: TableId): Promise<number>
   countWhere(table: TableDo, spec: Option<CountQueryArgs>): Promise<number>
-  getPivotData(table: TableDo, viewId: string): Promise<any>
+  getPivotData(table: TableDo, viewId: string): Promise<IGetPivotDataOutput>
 
   aggregate(
     table: TableDo,
