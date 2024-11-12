@@ -1,16 +1,17 @@
 import { singleton } from "@undb/di"
-import type { Option, PaginatedDTO } from "@undb/domain"
+import type { Option,PaginatedDTO } from "@undb/domain"
 import { group } from "radash"
 import type { TableDo } from "../../../table.do"
 import type { ITableRepository } from "../../../table.repository"
 import { injectTableRepository } from "../../../table.repository.provider"
 import { type IAttachmentFieldValue } from "../../schema"
-import { injectObjectStorage, type IObjectStorage } from "../../storage"
+import { injectObjectStorage,type IObjectStorage } from "../../storage"
 import type {
   AggregateResult,
   ICountRecordsDTO,
   IGetAggregatesDTO,
   IGetPivotDataDTO,
+  IGetPivotDataOutput,
   IGetRecordByIdDTO,
   IGetRecordsDTO,
 } from "../dto"
@@ -38,7 +39,7 @@ export interface IRecordsQueryService {
   getAggregates(query: IGetAggregatesDTO): Promise<Record<string, AggregateResult>>
   populateAttachments(dto: IGetRecordsDTO, table: TableDo, records: IRecordDTO[]): Promise<IRecordDTO[]>
   populateAttachment(dto: IGetRecordsDTO, table: TableDo, value: IRecordDTO["values"]): Promise<IRecordDTO["values"]>
-  getPivotData(query: IGetPivotDataDTO): Promise<any>
+  getPivotData(query: IGetPivotDataDTO): Promise<IGetPivotDataOutput>
 }
 
 @singleton()

@@ -14,11 +14,13 @@ export const DEFAULT_PIVOT_AGGREGATE = "sum"
 
 export type IPivotAggregate = (typeof PIVOT_AGGREGATE)[number]
 
+export const pivotAggregateSchema = z.enum(PIVOT_AGGREGATE)
+
 export const pivotOption = z.object({
   columnLabel: fieldId.optional(),
   rowLabel: fieldId.optional(),
   value: fieldId.optional(),
-  aggregate: z.enum(PIVOT_AGGREGATE).optional(),
+  aggregate: pivotAggregateSchema.optional(),
 })
 
 export type IPivotOption = z.infer<typeof pivotOption>

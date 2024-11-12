@@ -14,7 +14,7 @@ import { CommandBus, QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import { Option, type ICommandBus, type IQueryBus, type PaginatedDTO } from "@undb/domain"
 import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
-import { GetReadableRecordByIdQuery, GetReadableRecordsQuery } from "@undb/queries"
+import { GetPivotDataQuery, GetReadableRecordByIdQuery, GetReadableRecordsQuery } from "@undb/queries"
 import { RecordDO, type IRecordReadableValueDTO } from "@undb/table"
 import Elysia, { t } from "elysia"
 import { withTransaction } from "../../db"
@@ -76,6 +76,24 @@ export class RecordOpenApi {
               tags: ["Record"],
               summary: "Get records by view id",
               description: "Get records by view id",
+            },
+          },
+        )
+        .get(
+          "/views/:viewName/data",
+          async (ctx) => {
+            const baseName = decodeURIComponent(ctx.params.baseName)
+            const tableName = decodeURIComponent(ctx.params.tableName)
+            const viewName = decodeURIComponent(ctx.params.viewName)
+
+            return await this.queryBus.execute(new GetPivotDataQuery({ baseName, tableName, viewName }))
+          },
+          {
+            params: t.Object({ baseName: t.String(), tableName: t.String(), viewName: t.String() }),
+            detail: {
+              tags: ["Record"],
+              summary: "Get pivot view data",
+              description: "Get pivot view data",
             },
           },
         )
