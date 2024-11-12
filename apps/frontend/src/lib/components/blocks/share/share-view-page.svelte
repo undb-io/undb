@@ -6,6 +6,7 @@
   import ShareGalleryView from "./share-gallery-view.svelte"
   import ShareListView from "./share-list-view.svelte"
   import ShareCalendarView from "./share-calendar-view.svelte"
+  import SharePivotView from "./share-pivot-view.svelte"
 
   const table = getTable()
   export let viewId: Readable<string>
@@ -24,4 +25,6 @@
   <ShareListView {viewId} {shareId} />
 {:else if view.type === "calendar"}
   <ShareCalendarView {viewId} {shareId} />
+{:else if view.type === "pivot"}
+  <SharePivotView {viewId} {shareId} />
 {/if}

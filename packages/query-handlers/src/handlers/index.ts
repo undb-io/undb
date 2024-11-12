@@ -21,6 +21,7 @@ import { GetRecordByIdQueryHandler } from "./get-record-by-id.query-handler"
 import { GetRecordsQueryHandler } from "./get-records.query-handler"
 import { GetRollupForeignTablesTablesQueryHandler } from "./get-rollup-foreign-tables.query-handler"
 import { GetShareAggregatesQueryHandler } from "./get-share-aggregates.query-handler"
+import { GetSharePivotDataQueryHandler } from "./get-share-pivot-data.query-handler"
 import { GetShareRecordByIdQueryHandler } from "./get-share-record-by-id.query-handler"
 import { GetShareRecordsQueryHandler } from "./get-share-records.query-handler"
 import { GetShareQueryHandler } from "./get-share.query-handler"
@@ -76,4 +77,5 @@ export const queryHandlers = [
   GetDashboardByShareQueryHandler,
   GetTableByShareDashboardQueryHandler,
   GetPivotDataQueryHandler,
+  GetSharePivotDataQueryHandler,
 ]

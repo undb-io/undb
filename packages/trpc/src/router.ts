@@ -151,6 +151,7 @@ import {
   GetRecordByIdQuery,
   GetRecordsQuery,
   GetShareAggregatesQuery,
+  GetSharePivotDataQuery,
   GetShareRecordByIdQuery,
   GetShareRecordsQuery,
   GetTableQuery,
@@ -169,6 +170,7 @@ import {
   getRecordByIdQuery,
   getRecordsQuery,
   getShareAggregatesQuery,
+  getSharePivotDataQuery,
   getShareRecordByIdQuery,
   getShareRecordsQuery,
   getTableQuery,
@@ -473,6 +475,9 @@ const shareDataRouter = t.router({
   aggregate: publicProcedure
     .input(getShareAggregatesQuery)
     .query(({ input }) => queryBus.execute(new GetShareAggregatesQuery(input))),
+  pivot: publicProcedure
+    .input(getSharePivotDataQuery)
+    .query(({ input }) => queryBus.execute(new GetSharePivotDataQuery(input))),
 })
 
 const authzRouter = t.router({
