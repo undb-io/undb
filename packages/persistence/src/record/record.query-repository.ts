@@ -4,11 +4,13 @@ import { None, Option, Some, type PaginatedDTO } from "@undb/domain"
 import {
   AUTO_INCREMENT_TYPE,
   ID_TYPE,
+  SelectField,
   TableIdVo,
   injectTableRepository,
   type AggregateResult,
   type CountQueryArgs,
   type Field,
+  type IPivotAggregate,
   type IRecordDTO,
   type IRecordQueryRepository,
   type ITableRepository,
@@ -22,7 +24,7 @@ import {
   type View,
   type ViewId,
 } from "@undb/table"
-import { type AliasedExpression, type Expression } from "kysely"
+import { sql, type AliasedExpression, type Expression } from "kysely"
 import type { IRecordQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
@@ -125,6 +127,142 @@ export class RecordQueryRepository implements IRecordQueryRepository {
 
     const records = result.map((r) => getRecordDTOFromEntity(table, r, foreignTables))
     return { values: records, total: Number(total) }
+  }
+
+  async getPivotData(table: TableDo, viewId: string): Promise<any> {
+    const view = table.views.getViewById(viewId)
+
+    if (view.type !== "pivot") {
+      return {}
+    }
+    if (!view.isValid) {
+      return {}
+    }
+
+    const columnLabel = view.columnLabel.unwrap()!
+    const rowLabel = view.rowLabel.unwrap()!
+    const value = view.value.unwrap()!
+    const aggregate = view.pivotAggregate.unwrap()!
+
+    const columnField = table.schema.getFieldByIdOrName(columnLabel).into(undefined) as SelectField | undefined
+    const rowField = table.schema.getFieldByIdOrName(rowLabel).into(undefined)
+    const valueField = table.schema.getFieldByIdOrName(value).into(undefined)
+    if (!columnField || !rowField) {
+      return {}
+    }
+
+    function convertAggFn(aggFn: IPivotAggregate) {
+      aggFn = aggFn.toLowerCase() as IPivotAggregate
+      if (aggFn === "average") {
+        return "avg"
+      }
+      return aggFn
+    }
+
+    const options = columnField.options
+    const aggFn = convertAggFn(aggregate)
+
+    const t = new UnderlyingTable(table)
+    const result = await this.qb
+      .selectFrom(t.name)
+      .select((eb) => {
+        const selects: AliasedExpression<any, any>[] = [eb.ref(`${t.name}.${rowField.id.value}`).as("label")]
+
+        const columnSelects = options
+          .map((option) => {
+            if (aggFn === "count") {
+              const caseString = `count(CASE WHEN "${t.name}"."${columnField.id.value}" = '${option.id}' THEN 1 END)`
+              return [sql.raw(`'${option.name}'`), sql.raw(caseString)]
+            } else {
+              if (!valueField) {
+                throw new Error("value field is required")
+              }
+
+              let valueFieldAlias = `${t.name}.${valueField.id.value}`
+              if (valueField.type === "currency") {
+                valueFieldAlias = `${t.name}.${valueField.id.value} / 100`
+              }
+
+              const caseString =
+                `${aggFn}(CASE WHEN ` +
+                `"${t.name}"."${columnField.id.value}" = '${option.id}' ` +
+                `THEN ${valueFieldAlias} ` +
+                `END)`
+              return [sql.raw(`'${option.name}'`), sql.raw(caseString)]
+            }
+          })
+          .flat()
+
+        selects.push(eb.fn("json_object", columnSelects).as("values"))
+
+        if (aggFn === "count") {
+          selects.push(sql.raw(`sum(CASE WHEN "${t.name}"."${columnField.id.value}" IS NOT NULL THEN 1 END)`).as(`agg`))
+        } else {
+          if (!valueField) {
+            throw new Error("value field is required")
+          }
+          const rowTotalString =
+            valueField.type === "currency"
+              ? `${aggFn}("${t.name}"."${valueField.id.value}") / 100`
+              : `${aggFn}("${t.name}"."${valueField.id.value}")`
+          selects.push(sql.raw(rowTotalString).as(`agg`))
+        }
+
+        return selects
+      })
+      .groupBy(`${t.name}.${rowField.id.value}`)
+      .unionAll((qb) => {
+        return qb.selectFrom(t.name).select((eb) => {
+          const selects: AliasedExpression<any, any>[] = [sql.raw("'Total'").as("label")]
+
+          const columnSelects = options
+            .map((option) => {
+              if (aggFn === "count") {
+                const caseString = `count(CASE WHEN "${t.name}"."${columnField.id.value}" = '${option.id}' THEN 1 END)`
+                return [sql.raw(`'${option.name}'`), sql.raw(caseString)]
+              } else {
+                if (!valueField) {
+                  throw new Error("value field is required")
+                }
+
+                let valueFieldAlias = `${t.name}.${valueField.id.value}`
+                if (valueField.type === "currency") {
+                  valueFieldAlias = `${t.name}.${valueField.id.value} / 100`
+                }
+
+                const caseString =
+                  `${aggFn}(CASE WHEN ` +
+                  `"${t.name}"."${columnField.id.value}" = '${option.id}' ` +
+                  `THEN ${valueFieldAlias} ` +
+                  `END)`
+                return [sql.raw(`'${option.name}'`), sql.raw(caseString)]
+              }
+            })
+            .flat()
+
+          selects.push(eb.fn("json_object", columnSelects).as("values"))
+
+          if (aggFn === "count") {
+            selects.push(
+              sql.raw(`sum(CASE WHEN "${t.name}"."${columnField.id.value}" IS NOT NULL THEN 1 END)`).as(`agg`),
+            )
+          } else {
+            if (!valueField) {
+              throw new Error("value field is required")
+            }
+            const rowTotalString =
+              valueField.type === "currency"
+                ? `${aggFn}("${t.name}"."${valueField.id.value}") / 100`
+                : `${aggFn}("${t.name}"."${valueField.id.value}")`
+            selects.push(sql.raw(rowTotalString).as(`agg`))
+          }
+
+          return selects
+        })
+      })
+      .execute()
+
+    return result
   }
 
   async aggregate(

@@ -1,9 +1,10 @@
-import { Command, type CommandProps } from "@undb/domain"
+import { Command,type CommandProps } from "@undb/domain"
 import {
   updateViewDTO,
   type ICalendarOption,
   type IGalleryOption,
   type IKanbanOption,
+  type IPivotOption,
   type ViewType,
 } from "@undb/table"
 import { z } from "@undb/zod"
@@ -20,6 +21,7 @@ export class UpdateViewCommand extends Command {
   public readonly kanban?: IKanbanOption
   public readonly gallery?: IGalleryOption
   public readonly calendar?: ICalendarOption
+  public readonly pivot?: IPivotOption
 
   constructor(props: CommandProps<IUpdateViewCommand>) {
     super(props)
@@ -38,6 +40,10 @@ export class UpdateViewCommand extends Command {
     if (props.type === "calendar") {
       // @ts-ignore
       this.calendar = props.calendar
+    }
+    if (props.type === "pivot") {
+      // @ts-ignore
+      this.pivot = props.pivot
     }
   }
 }

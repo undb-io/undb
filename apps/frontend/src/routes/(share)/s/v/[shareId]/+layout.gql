@@ -54,6 +54,12 @@ query GetViewShareData($shareId: ID!) {
       calendar {
         field
       }
+      pivot {
+        columnLabel
+        rowLabel
+        value
+        aggregate
+      }
       widgets {
         id
         name

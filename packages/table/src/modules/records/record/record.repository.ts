@@ -50,6 +50,7 @@ export interface IRecordQueryRepository {
   findOneById(table: TableDo, id: RecordId, query: Option<SingleQueryArgs>): Promise<Option<IRecordDTO>>
   count(tableId: TableId): Promise<number>
   countWhere(table: TableDo, spec: Option<CountQueryArgs>): Promise<number>
+  getPivotData(table: TableDo, viewId: string): Promise<any>
 
   aggregate(
     table: TableDo,

@@ -37,6 +37,12 @@ query GetBaseTableShareData($shareId: ID!, $tableId: ID!) {
       gallery {
         field
       }
+      pivot {
+        columnLabel
+        rowLabel
+        value
+        aggregate
+      }
       calendar {
         field
       }

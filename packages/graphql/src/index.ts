@@ -160,6 +160,7 @@ export class Graphql {
         gallery
         list
         calendar
+        pivot
       }
 
       type ViewOption {
@@ -180,6 +181,13 @@ export class Graphql {
 
       type CalendarOption {
         field: String
+      }
+
+      type PivotOption {
+        columnLabel: String
+        rowLabel: String
+        value: String
+        aggregate: String
       }
 
       type Widget {
@@ -204,6 +212,7 @@ export class Graphql {
         kanban: KanbanOption
         gallery: GalleryOption
         calendar: CalendarOption
+        pivot: PivotOption
         widgets: [Widget]
 
         shareId: ID

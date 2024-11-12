@@ -42,6 +42,12 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
       calendar {
         field
       }
+      pivot {
+        columnLabel
+        rowLabel
+        value
+        aggregate
+      }
 
       share {
         enabled

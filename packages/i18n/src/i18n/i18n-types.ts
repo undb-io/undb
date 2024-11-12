@@ -439,6 +439,10 @@ type RootTranslation = {
 			 * C​a​l​e​n​d​a​r
 			 */
 			calendar: string
+			/**
+			 * P​i​v​o​t
+			 */
+			pivot: string
 		}
 		widgetTypes: {
 			/**
@@ -884,6 +888,10 @@ export type TranslationFunctions = {
 			 * Calendar
 			 */
 			calendar: () => LocalizedString
+			/**
+			 * Pivot
+			 */
+			pivot: () => LocalizedString
 		}
 		widgetTypes: {
 			/**
