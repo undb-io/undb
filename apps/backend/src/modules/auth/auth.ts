@@ -613,7 +613,6 @@ export class Auth {
               }
 
               const response = ctx.redirect(`/${path}?${search.toString()}`, 301)
-              console.log(response)
               if (cookie) {
                 response.headers.set("Set-Cookie", cookie.serialize())
               }

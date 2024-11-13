@@ -34,7 +34,6 @@
     mutationKey: ["record", tableId, field.id.value, recordId],
     mutationFn: trpc.record.update.mutate,
     async onSuccess(data, variables) {
-      console.log(variables)
       const value = variables.values[field.id.value]
       if (isUserFieldMacro(value)) {
         await store.invalidateRecord($table, recordId)
