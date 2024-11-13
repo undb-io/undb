@@ -150,7 +150,7 @@ export class PivotView extends AbstractView {
 }
 
 export function isValidColumnLabel(field: Field) {
-  return (field.type === "select" && field.isSingle) || (field.type === "user" && field.isSingle)
+  return field.type === "select" && field.isSingle
 }
 
 export function isValidRowLabel(field: Field) {
