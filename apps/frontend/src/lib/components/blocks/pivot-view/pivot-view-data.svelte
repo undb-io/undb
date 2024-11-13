@@ -62,68 +62,86 @@
         </Table.Row>
       </Table.Header>
       <Table.Body>
-        {#each data as row}
-          {@const rowTotal = row["agg"]}
-          <Table.Row>
-            <Table.Cell class="border-r bg-gray-50 font-semibold">
-              {#if rowField.type === "select"}
-                {@const optionId = row.label}
-                {@const option = rowField.options.find((o) => o.id === optionId)}
-                {#if option}
-                  <Option {option} />
-                {/if}
-              {:else}
-                {row.label}
-              {/if}
-            </Table.Cell>
-            {#each options as option}
-              {@const value = row.values[option.name]}
-              <Table.Cell class="border-r text-right">
-                {#if value}
-                  {#if valueField?.type === "currency" && aggregate !== "count"}
-                    <span class="text-xs text-gray-800">{valueField.symbol}</span>
-                  {/if}
-                  <span class="text-xs text-gray-800">{value}</span>
-                {:else}
-                  <div class="ml-auto h-2 w-7 rounded-sm bg-slate-200"></div>
-                {/if}
+        {#if $getPivotData.isPending}
+          {#each Array(10) as _}
+            <Table.Row>
+              <Table.Cell class="border-r bg-gray-50">
+                <div class="h-4 w-32 animate-pulse rounded bg-slate-200" />
               </Table.Cell>
-            {/each}
-            <Table.Cell class="border-r bg-gray-50 text-right">
-              {#if valueField?.type === "currency" && aggregate !== "count"}
-                <span class="text-xs text-gray-800">{valueField.symbol}</span>
-              {/if}
-              <span class="text-xs text-gray-800">{rowTotal}</span>
-            </Table.Cell>
-          </Table.Row>
-        {/each}
-        {#if total}
-          <Table.Row>
-            <Table.Cell class="border-r bg-gray-50 font-semibold"
-              >{aggregate?.toUpperCase() ?? "Total"} ({columnField.name.value})</Table.Cell
-            >
-            {@const totalRowTotal = total["agg"]}
-            {#each options as option}
-              {@const value = total.values[option.name]}
+              {#each options as _}
+                <Table.Cell class="border-r text-right">
+                  <div class="ml-auto h-4 w-16 animate-pulse rounded bg-slate-200" />
+                </Table.Cell>
+              {/each}
               <Table.Cell class="border-r bg-gray-50 text-right">
-                {#if value}
-                  {#if valueField?.type === "currency" && aggregate !== "count"}
-                    <span class="text-xs text-gray-800">{valueField.symbol}</span>
+                <div class="ml-auto h-4 w-16 animate-pulse rounded bg-slate-200" />
+              </Table.Cell>
+            </Table.Row>
+          {/each}
+        {:else}
+          {#each data as row}
+            {@const rowTotal = row["agg"]}
+            <Table.Row>
+              <Table.Cell class="border-r bg-gray-50 font-semibold">
+                {#if rowField.type === "select"}
+                  {@const optionId = row.label}
+                  {@const option = rowField.options.find((o) => o.id === optionId)}
+                  {#if option}
+                    <Option {option} />
                   {/if}
-                  <span class="text-xs text-gray-800">{value}</span>
                 {:else}
-                  <div class="ml-auto h-2 w-7 rounded-sm bg-slate-200"></div>
+                  {row.label}
                 {/if}
               </Table.Cell>
-            {/each}
-            <Table.Cell class="border-r bg-gray-50 text-right">
-              {#if valueField?.type === "currency" && aggregate !== "count"}
-                <span class="text-sm text-gray-800">{valueField.symbol}</span>
-              {/if}
+              {#each options as option}
+                {@const value = row.values[option.name]}
+                <Table.Cell class="border-r text-right">
+                  {#if value}
+                    {#if valueField?.type === "currency" && aggregate !== "count"}
+                      <span class="text-xs text-gray-800">{valueField.symbol}</span>
+                    {/if}
+                    <span class="text-xs text-gray-800">{value}</span>
+                  {:else}
+                    <div class="ml-auto h-2 w-7 rounded-sm bg-slate-200"></div>
+                  {/if}
+                </Table.Cell>
+              {/each}
+              <Table.Cell class="border-r bg-gray-50 text-right">
+                {#if valueField?.type === "currency" && aggregate !== "count"}
+                  <span class="text-xs text-gray-800">{valueField.symbol}</span>
+                {/if}
+                <span class="text-xs text-gray-800">{rowTotal}</span>
+              </Table.Cell>
+            </Table.Row>
+          {/each}
+          {#if total}
+            <Table.Row>
+              <Table.Cell class="border-r bg-gray-50 font-semibold"
+                >{aggregate?.toUpperCase() ?? "Total"} ({columnField.name.value})</Table.Cell
+              >
+              {@const totalRowTotal = total["agg"]}
+              {#each options as option}
+                {@const value = total.values[option.name]}
+                <Table.Cell class="border-r bg-gray-50 text-right">
+                  {#if value}
+                    {#if valueField?.type === "currency" && aggregate !== "count"}
+                      <span class="text-xs text-gray-800">{valueField.symbol}</span>
+                    {/if}
+                    <span class="text-xs text-gray-800">{value}</span>
+                  {:else}
+                    <div class="ml-auto h-2 w-7 rounded-sm bg-slate-200"></div>
+                  {/if}
+                </Table.Cell>
+              {/each}
+              <Table.Cell class="border-r bg-gray-50 text-right">
+                {#if valueField?.type === "currency" && aggregate !== "count"}
+                  <span class="text-sm text-gray-800">{valueField.symbol}</span>
+                {/if}
 
-              <span class="text-sm text-gray-800">{totalRowTotal}</span>
-            </Table.Cell>
-          </Table.Row>
+                <span class="text-sm text-gray-800">{totalRowTotal}</span>
+              </Table.Cell>
+            </Table.Row>
+          {/if}
         {/if}
       </Table.Body>
     </Table.Root>
