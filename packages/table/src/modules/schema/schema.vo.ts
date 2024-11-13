@@ -11,7 +11,8 @@ import {
 import type { TableDo } from "../../table.do"
 import type { FormVO } from "../forms"
 import type { IRecordValues } from "../records/record/record-values.vo"
-import type { IPivotAggregate, View } from "../views"
+import { type IPivotAggregate, type View } from "../views"
+import { isValidColumnLabel, isValidRowLabel, isValidValueField } from "../views/view/variants/pivot-view.vo"
 import type { ICreateSchemaDTO } from "./dto"
 import type { ISchemaDTO } from "./dto/schema.dto"
 import {
@@ -371,20 +372,13 @@ export class Schema extends ValueObject<Field[]> {
 
   getPivotFields(type: "column" | "row", fields: Field[] = this.fields) {
     if (type === "column") {
-      return fields.filter((f) => (f.type === "select" && f.isSingle) || (f.type === "user" && f.isSingle))
+      return fields.filter(isValidColumnLabel)
     }
 
-    return fields.filter(
-      (f) => f.type === "string" || (f.type === "select" && f.isSingle) || (f.type === "user" && f.isSingle),
-    )
+    return fields.filter(isValidRowLabel)
   }
 
   getPivotValueFields(aggregate: IPivotAggregate, fields: Field[] = this.fields) {
-    if (aggregate === "count") {
-      return fields
-    }
-    return fields.filter(
-      (f) => f.type === "number" || f.type === "percentage" || f.type === "currency" || f.type === "rating",
-    )
+    return fields.filter((field) => isValidValueField(aggregate, field))
   }
 }

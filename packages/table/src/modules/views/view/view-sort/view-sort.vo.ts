@@ -1,7 +1,8 @@
 import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
 import { isEqual } from "radash"
-import { fieldId, type Field } from "../../../schema"
+import { fieldId } from "../../../schema/fields/field-id.vo"
+import type { Field } from "../../../schema/fields/field.type"
 
 export const viewSortOption = z.object({
   fieldId,

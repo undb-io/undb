@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as Form from "$lib/components/ui/form"
   import { getTable } from "$lib/store/table.store"
-  import { updatePivotViewDTO, type PivotView } from "@undb/table"
+  import { isValidColumnLabel, isValidRowLabel, updatePivotViewDTO, type PivotView } from "@undb/table"
   import FieldPicker from "../field-picker/field-picker.svelte"
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
@@ -55,6 +55,19 @@
 
   const { enhance, form: formData } = form
 
+  $: columnLabel = $formData.pivot?.columnLabel
+  $: rowLabel = $formData.pivot?.rowLabel
+
+  $: columnField = $columnFields.find((f) => f.id.value === columnLabel)
+  $: rowField = $rowFields.find((f) => f.id.value === rowLabel)
+
+  $: swapEnabled =
+    columnField &&
+    rowField &&
+    columnField.id.value !== rowField.id.value &&
+    isValidColumnLabel(rowField) &&
+    isValidRowLabel(columnField)
+
   const updateViewMutation = createMutation({
     mutationFn: trpc.table.view.update.mutate,
     mutationKey: ["updateView"],
@@ -102,6 +115,7 @@
                   <Tooltip.Trigger>
                     <button
                       type="button"
+                      disabled={!swapEnabled}
                       on:click={() => {
                         if (!$formData.pivot) return
                         const columnLabel = $formData.pivot?.columnLabel

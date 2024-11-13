@@ -3,7 +3,7 @@ import { z } from "@undb/zod"
 import type { IDuplicateViewDTO } from "../../../../dto/duplicate-view.dto"
 import { WithNewView, WithView } from "../../../../specifications/table-view.specification"
 import type { TableDo } from "../../../../table.do"
-import { fieldId } from "../../../schema"
+import { fieldId } from "../../../schema/fields/field-id.vo"
 import { ViewIdVo } from "../view-id.vo"
 import { AbstractView, baseViewDTO, createBaseViewDTO, updateBaseViewDTO } from "./abstract-view.vo"
 

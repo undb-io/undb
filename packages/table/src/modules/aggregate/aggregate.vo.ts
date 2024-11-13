@@ -1,8 +1,10 @@
 import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
-import { fieldId, fieldName, type FieldType } from "../schema"
 import { createConditionGroup } from "../schema/fields/condition/condition.type"
 import { parseValidCondition } from "../schema/fields/condition/condition.util"
+import { fieldId } from "../schema/fields/field-id.vo"
+import { fieldName } from "../schema/fields/field-name.vo"
+import type { FieldType } from "../schema/fields/field.type"
 
 const aggregateCondition = z.undefined()
 export type IAggregateCondition = typeof aggregateCondition
