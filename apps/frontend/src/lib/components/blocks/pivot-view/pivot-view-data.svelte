@@ -1,10 +1,11 @@
 <script lang="ts">
-  import type { PivotView, SelectField, StringField } from "@undb/table"
+  import type { PivotView, SelectField, StringField, UserField } from "@undb/table"
   import { createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { getTable } from "$lib/store/table.store"
   import * as Table from "$lib/components/ui/table"
   import Option from "$lib/components/blocks/option/option.svelte"
+  import UserFieldComponent from "$lib/components/blocks/field-value/user-field.svelte"
 
   const table = getTable()
   export let view: PivotView
@@ -35,7 +36,11 @@
   $: aggregate = view.pivotAggregate.unwrapOr("count")
 
   $: columnField = $table.schema.getFieldByIdOrName(columnFieldId).into(undefined) as SelectField | undefined
-  $: rowField = $table.schema.getFieldByIdOrName(rowFieldId).into(undefined) as SelectField | StringField | undefined
+  $: rowField = $table.schema.getFieldByIdOrName(rowFieldId).into(undefined) as
+    | SelectField
+    | StringField
+    | UserField
+    | undefined
   $: valueField = $table.schema.getFieldByIdOrName(valueFieldId).into(undefined)
   $: options = columnField?.options ?? []
 
@@ -81,16 +86,22 @@
         {:else}
           {#each data as row}
             {@const rowTotal = row["agg"]}
+            {@const label = row.label}
+            {@const labelValues = row.labelValues}
             <Table.Row>
               <Table.Cell class="border-r bg-gray-50 font-semibold">
-                {#if rowField.type === "select"}
-                  {@const optionId = row.label}
+                {#if label === null}
+                  (Is Empty)
+                {:else if rowField.type === "select"}
+                  {@const optionId = label}
                   {@const option = rowField.options.find((o) => o.id === optionId)}
                   {#if option}
                     <Option {option} />
                   {/if}
+                {:else if rowField.type === "user"}
+                  <UserFieldComponent value={label} displayValue={labelValues} />
                 {:else}
-                  {row.label}
+                  {label}
                 {/if}
               </Table.Cell>
               {#each options as option}
