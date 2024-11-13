@@ -5,7 +5,7 @@
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest",
-    "drizzle-kit": "^0.26.2"
+    "drizzle-kit": "^0.28.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -29,7 +29,7 @@
     "@undb/webhook": "workspace:*",
     "date-fns": "^4.1.0",
     "drizzle-orm": "^0.36.1",
-    "es-toolkit": "^1.26.1",
+    "es-toolkit": "^1.27.0",
     "kysely": "^0.27.4",
     "kysely-bun-sqlite": "^0.3.2",
     "radash": "^12.1.0",

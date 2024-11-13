@@ -10,7 +10,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "i18next": "^23.16.4",
+    "i18next": "^23.16.5",
     "zod": "^3.23.8",
     "zod-i18n-map": "^2.27.0",
     "zod-validation-error": "^3.4.0"
