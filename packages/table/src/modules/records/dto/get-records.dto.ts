@@ -1,7 +1,7 @@
 import { pagniationSchema } from "@undb/domain"
 import { z } from "@undb/zod"
 import { uniqueTableDTO } from "../../../dto/unique-table.dto"
-import { fieldId } from "../../schema"
+import { fieldId } from "../../schema/fields/field-id.vo"
 import { viewFilterGroup, viewId, viewName } from "../../views"
 
 export const getRecordsDTO = z

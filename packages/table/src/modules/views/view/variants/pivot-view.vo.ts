@@ -3,7 +3,8 @@ import { z } from "@undb/zod"
 import type { IDuplicateViewDTO } from "../../../../dto/duplicate-view.dto"
 import { WithNewView, WithView } from "../../../../specifications/table-view.specification"
 import type { TableDo } from "../../../../table.do"
-import { fieldId } from "../../../schema"
+import { fieldId } from "../../../schema/fields/field-id.vo"
+import type { Field } from "../../../schema/fields/field.type"
 import { ViewIdVo } from "../view-id.vo"
 import { AbstractView, baseViewDTO, createBaseViewDTO, updateBaseViewDTO } from "./abstract-view.vo"
 
@@ -146,4 +147,21 @@ export class PivotView extends AbstractView {
   toJSON() {
     return { ...super.toJSON(), pivot: this.pivot.into(undefined) }
   }
+}
+
+export function isValidColumnLabel(field: Field) {
+  return (field.type === "select" && field.isSingle) || (field.type === "user" && field.isSingle)
+}
+
+export function isValidRowLabel(field: Field) {
+  return (
+    field.type === "string" || (field.type === "select" && field.isSingle) || (field.type === "user" && field.isSingle)
+  )
+}
+
+export function isValidValueField(aggregate: IPivotAggregate, field: Field) {
+  if (aggregate === "count") {
+    return true
+  }
+  return field.type === "number" || field.type === "percentage" || field.type === "currency" || field.type === "rating"
 }
