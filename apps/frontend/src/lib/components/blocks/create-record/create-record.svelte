@@ -15,6 +15,7 @@
   import { useMediaQuery } from "$lib/store/media-query.store"
   import IdControl from "../field-control/id-control.svelte"
   import type { ICreateRecordCommandOutput } from "@undb/commands"
+  import { onMount } from "svelte"
 
   // beforeNavigate(({ cancel }) => {
   //   if ($tainted) {
@@ -65,10 +66,23 @@
     })
   }
 
-  $: defaultValue = {
-    ...$table.getDefaultValues(formId ? new FormIdVO(formId) : undefined, $defaultRecordValues ?? undefined),
-    [ID_TYPE]: null,
+  let defaultValue: any = {}
+
+  function setDefaultValue() {
+    defaultValue = {
+      ...$table.getDefaultValues(formId ? new FormIdVO(formId) : undefined, $defaultRecordValues ?? undefined),
+      [ID_TYPE]: null,
+    }
+    form.reset({ data: defaultValue })
   }
+
+  $: if ($defaultRecordValues) {
+    setDefaultValue()
+  }
+
+  onMount(() => {
+    setDefaultValue()
+  })
 
   const form = superForm(defaults(defaultValue, zodClient(schema)), {
     SPA: true,
@@ -79,9 +93,13 @@
     onSubmit(event) {
       validateForm({ update: true })
     },
+    onChange(event) {
+      validateForm({ update: true })
+    },
     onUpdate(event) {
       if (!event.form.valid) {
-        console.log(event.form.errors, event.form.data)
+        console.log(event.form.errors)
+        console.log(event.form.data)
         return
       }
 
@@ -91,10 +109,9 @@
 
   const { form: formData, enhance, allErrors, tainted, errors, validateForm } = form
 
-  $: defaultValue, form.reset({ data: defaultValue })
-
   $: dirty = !!$tainted
   $: disabled = !!$allErrors.length
+  $: console.log($allErrors)
 
   $: fields = $table
     .getOrderedMutableFields(formId ? new FormIdVO(formId) : undefined)

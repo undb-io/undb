@@ -61,7 +61,7 @@
 
     <Sheet.Footer class={cn("border-t px-6 pt-4", $match ? "flex-col space-y-2" : "")}>
       <Button variant="outline" type="button" on:click={() => closeModal(CREATE_RECORD_MODAL)}>Cancel</Button>
-      <Button disabled={$isMutating > 0} type="submit" form="createRecord">
+      <Button disabled={$isMutating > 0 || disabled} type="submit" form="createRecord">
         {#if $isMutating > 0}
           <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
         {/if}

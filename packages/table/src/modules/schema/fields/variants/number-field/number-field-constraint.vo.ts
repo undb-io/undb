@@ -28,17 +28,21 @@ export class NumberFieldConstraint extends FieldConstraintVO<INumberFieldConstra
   }
   override get schema() {
     let base: z.ZodTypeAny = z.number()
-    if (!this.props.required) {
-      base = base.optional().nullable()
-    }
     if (this.props.min) {
-      base = base.and(z.number().min(this.props.min))
+      base = base.and(
+        z.number().min(this.props.min, { message: `min should be greater than or equal to ${this.props.min}` }),
+      )
     }
     if (this.props.max) {
-      base = base.and(z.number().max(this.props.max))
+      base = base.and(
+        z.number().max(this.props.max, { message: `max should be less than or equal to ${this.props.max}` }),
+      )
     }
     if (this.props.isInt) {
       base = base.and(z.number().int())
+    }
+    if (!this.props.required) {
+      base = base.optional().nullable()
     }
 
     return base

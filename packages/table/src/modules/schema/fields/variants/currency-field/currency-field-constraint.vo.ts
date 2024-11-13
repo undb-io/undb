@@ -28,14 +28,14 @@ export class CurrencyFieldConstraint extends FieldConstraintVO<ICurrencyFieldCon
   }
   override get schema() {
     let base: z.ZodTypeAny = z.number().nonnegative()
-    if (!this.props.required) {
-      base = base.optional().nullable()
-    }
     if (this.props.min) {
       base = base.and(z.number().min(this.props.min))
     }
     if (this.props.max) {
       base = base.and(z.number().max(this.props.max))
+    }
+    if (!this.props.required) {
+      base = base.optional().nullable()
     }
 
     return base
