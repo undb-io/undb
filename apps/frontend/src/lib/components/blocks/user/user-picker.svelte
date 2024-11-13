@@ -83,7 +83,7 @@
         {/if}
         {#each userFieldMacros as macro}
           <Command.Item
-            class="h-12"
+            class="h-8"
             value={macro}
             onSelect={(currentValue) => {
               value = currentValue === value ? null : currentValue
