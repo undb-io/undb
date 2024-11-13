@@ -1,5 +1,6 @@
 import { z } from "@undb/zod"
-import { fieldId, fieldName } from "../../../schema"
+import { fieldId } from "../../../schema/fields/field-id.vo"
+import { fieldName } from "../../../schema/fields/field-name.vo"
 import { recordId } from "../record-id.vo"
 
 export const triggerRecordButtonDTO = z.object({

@@ -1,6 +1,6 @@
 import { ValueObject } from "@undb/domain"
 import { z } from "@undb/zod"
-import { fieldId } from "../schema"
+import { fieldId } from "../schema/fields/field-id.vo"
 
 const pieChart = z.object({
   type: z.literal("pie"),

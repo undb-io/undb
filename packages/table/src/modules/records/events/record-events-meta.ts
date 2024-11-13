@@ -1,6 +1,7 @@
 import { z } from "@undb/zod"
 import { tableName } from "../../../table-name.vo"
-import { fieldId, fieldName } from "../../schema"
+import { fieldId } from "../../schema/fields/field-id.vo"
+import { fieldName } from "../../schema/fields/field-name.vo"
 
 export const recordEventTableMeta = z.object({
   name: tableName,
