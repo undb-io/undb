@@ -9,7 +9,6 @@
   import { builderActions, getAttrs } from "bits-ui"
   import { ChevronDownIcon } from "lucide-svelte"
   import UserMacro from "../../user/user-macro.svelte"
-  import { useQueryClient } from "@tanstack/svelte-query"
   import { getRecordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
 
