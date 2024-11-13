@@ -10,7 +10,7 @@ COPY . .
 
 RUN bun install
 
-EXPOSE 5173
+EXPOSE 3721
 
 ENTRYPOINT ["/tini", "--"]
 CMD ["bun", "run", "dev"]

@@ -8,8 +8,8 @@
     "build:docker": "bun build --compile src/index.ts --target=bun --packages=external --sourcemap --outfile undb"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.686.0",
-    "@aws-sdk/s3-request-presigner": "^3.686.0",
+    "@aws-sdk/client-s3": "^3.689.0",
+    "@aws-sdk/s3-request-presigner": "^3.689.0",
     "@elysiajs/cors": "1.1.0",
     "@elysiajs/cron": "1.1.0",
     "@elysiajs/html": "1.1.0",

@@ -14,6 +14,7 @@
   import { Separator } from "$lib/components/ui/separator"
   import PasswordInput from "$lib/components/ui/input/password-input.svelte"
   import { LoaderCircleIcon } from "lucide-svelte"
+  import { cn } from "$lib/utils"
 
   export let redirect: string | null
   export let invitationId: string | null
@@ -113,8 +114,21 @@
     <div class="grid gap-2">
       <Form.Field {form} name="email">
         <Form.Control let:attrs>
-          <Form.Label for="email">Email</Form.Label>
-          <Input {...attrs} id="email" type="email" placeholder="Enter your work email" bind:value={$formData.email} />
+          <Form.Label for="email"
+            >Email
+            {#if invitationId}
+              <span class="text-green-500"> (Invited)</span>
+            {/if}
+          </Form.Label>
+          <Input
+            {...attrs}
+            disabled={!!invitationId}
+            id="email"
+            type="email"
+            class={cn(!!invitationId && "border-2 border-green-500")}
+            placeholder="Enter your work email"
+            bind:value={$formData.email}
+          />
         </Form.Control>
         <Form.Description />
         <Form.FieldErrors />

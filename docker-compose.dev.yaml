@@ -19,6 +19,9 @@ services:
       - UNDB_VERIFY_EMAIL=true
       - UNDB_MAIL_HOST=maildev
       - UNDB_MAIL_PORT=1025
+      - UNDB_DISABLE_REGISTRATION=true
+      - UNDB_ADMIN_EMAIL=admin@undb.io
+      - UNDB_ADMIN_PASSWORD=admin
     depends_on:
       - db
       - minio

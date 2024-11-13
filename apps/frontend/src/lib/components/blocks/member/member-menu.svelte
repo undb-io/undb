@@ -51,7 +51,7 @@
         <KeyIcon class="mr-2 h-4 w-4" />
         Api Token
       </DropdownMenu.Item>
-      <DropdownMenu.Item href="https://template.undb.io" target="_blank" rel="noopener noreferrer">
+      <DropdownMenu.Item href="https://undb.io/templates" target="_blank" rel="noopener noreferrer">
         <img src={Logo} alt="undb" class="mr-2 h-4 w-4" />
         Undb Templates
         <ExternalLinkIcon class="ml-auto h-4 w-4" />

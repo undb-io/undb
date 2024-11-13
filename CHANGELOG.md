@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-119
+
+
+### 🩹 Fixes
+
+- Fix update record form validation ([c695ffe](https://github.com/undb-io/undb/commit/c695ffe))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-118
 
 

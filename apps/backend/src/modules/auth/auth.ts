@@ -20,6 +20,7 @@ import { Context, Elysia, t } from "elysia"
 import type { Session, User } from "lucia"
 import { Lucia, generateIdFromEntropySize } from "lucia"
 import { TimeSpan, createDate, isWithinExpirationDate } from "oslo"
+import { Cookie } from "oslo/cookie"
 import { alphabet, generateRandomString, sha256 } from "oslo/crypto"
 import { encodeHex } from "oslo/encoding"
 import { omit } from "radash"
@@ -182,8 +183,10 @@ export class Auth {
         if (env.UNDB_DISABLE_REGISTRATION) {
           this.logger.info("Registration is disabled")
           if (!adminEmail || !adminPassword) {
-            this.logger.fatal("Registration is disabled but admin user is not set")
-            throw new Error("Registration is disabled but admin user is not set")
+            const message =
+              "Registration is disabled but admin user is not set, please set UNDB_ADMIN_EMAIL and UNDB_ADMIN_PASSWORD environment variables"
+            this.logger.fatal(message)
+            throw new Error(message)
           }
 
           const user = await this.queryBuilder
@@ -369,7 +372,8 @@ export class Auth {
         },
         {
           beforeHandle(context) {
-            if (env.UNDB_DISABLE_REGISTRATION) {
+            const invitationId = context.body.invitationId
+            if (env.UNDB_DISABLE_REGISTRATION && !invitationId) {
               return new Response(null, {
                 status: 403,
               })
@@ -596,14 +600,12 @@ export class Auth {
               "Invitation should exist",
             )
 
-            const spaceId = invitation.spaceId
-
-            const cookieHeader = ctx.request.headers.get("Cookie") ?? ""
-            const sessionId = this.lucia.readSessionCookie(cookieHeader)
+            const { spaceId, email, role } = invitation
 
             function redirectToSignupOrLogin(
               path: "signup" | "login" = "signup",
               email: string | undefined = invitation.email,
+              cookie?: Cookie,
             ) {
               const search = new URLSearchParams()
               search.set("invitationId", invitationId)
@@ -612,31 +614,25 @@ export class Auth {
               }
 
               const response = ctx.redirect(`/${path}?${search.toString()}`, 301)
+              if (cookie) {
+                response.headers.set("Set-Cookie", cookie.serialize())
+              }
               return response
             }
 
-            if (!sessionId) {
-              return redirectToSignupOrLogin()
-            }
-
-            const { user, session: validatedSession } = await this.lucia.validateSession(sessionId)
+            const user = await this.queryBuilder
+              .selectFrom("undb_user")
+              .selectAll()
+              .where("email", "=", email)
+              .executeTakeFirst()
             if (!user) {
-              return redirectToSignupOrLogin()
+              return redirectToSignupOrLogin("signup", email)
+            } else {
+              await this.spaceMemberService.createMember(user.id, spaceId, role)
+              const session = await this.lucia.createSession(user.id, { space_id: spaceId })
+              const sessionCookie = this.lucia.createSessionCookie(session.id)
+              return redirectToSignupOrLogin("login", email, sessionCookie)
             }
-            if (invitation.email !== user.email) {
-              return redirectToSignupOrLogin("login")
-            }
-
-            await this.spaceMemberService.createMember(user.id, spaceId, invitation.role)
-            const session = await this.lucia.createSession(user.id, { space_id: spaceId })
-            const sessionCookie = this.lucia.createSessionCookie(session.id)
-            return new Response(null, {
-              status: 302,
-              headers: {
-                Location: "/",
-                "Set-Cookie": sessionCookie.serialize(),
-              },
-            })
           })
         },
         {

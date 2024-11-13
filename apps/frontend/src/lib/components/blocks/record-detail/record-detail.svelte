@@ -80,6 +80,12 @@
     validators: zodClient(schema),
     resetForm: false,
     invalidateAll: false,
+    onSubmit(input) {
+      validateForm({ update: true })
+    },
+    onChange(event) {
+      validateForm({ update: true })
+    },
     onUpdate(event) {
       if (!event.form.valid) {
         return
@@ -93,7 +99,7 @@
     },
   })
 
-  const { form: formData, enhance, allErrors, tainted, reset, errors } = form
+  const { form: formData, enhance, allErrors, tainted, reset, errors, validateForm } = form
 
   $: mutableFields = fields.filter((f) => f.isMutable)
   $: taintedKeys = Object.keys($tainted ?? {})

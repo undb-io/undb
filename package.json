@@ -1,6 +1,6 @@
 {
   "name": "undb",
-  "version": "1.0.0-118",
+  "version": "1.0.0-119",
   "private": true,
   "scripts": {
     "build": "NODE_ENV=production bun --bun turbo build",
@@ -9,10 +9,12 @@
     "build:docker": "turbo build:docker",
     "predev:desktop": "bun run move-assets",
     "dev:desktop": "bun --cwd=apps/desktop run dev:desktop",
+    "dev:docker": "docker compose -f docker-compose.dev.yaml up",
     "dev": "bun --bun turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md,svelte}\"",
     "studio": "drizzle-kit studio --config drizzle.config.ts",
+    "studio:turso": "drizzle-kit studio --config drizzle.turso.config.ts",
     "generate": "bun generate:db",
     "generate:db": "drizzle-kit generate --config drizzle.config.ts",
     "migrate:db": "drizzle-kit push --config drizzle.config.ts",
@@ -20,7 +22,7 @@
     "prepare": "husky || echo 1"
   },
   "devDependencies": {
-    "drizzle-kit": "^0.26.2",
+    "drizzle-kit": "^0.28.0",
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "npm-run-all2": "^7.0.1",
