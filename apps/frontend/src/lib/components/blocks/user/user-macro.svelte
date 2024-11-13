@@ -8,7 +8,7 @@
 
 {#if value}
   <div class="flex items-center gap-2">
-    <UserIcon class="h-4 w-4" />
-    <span class="text-muted-foreground bg-muted rounded-full border px-1.5"> {$LL.table.macros[value]()} </span>
+    <UserIcon class="size-3" />
+    <span class="bg-muted rounded-full border px-1.5 text-xs text-gray-700"> {$LL.table.macros[value]()} </span>
   </div>
 {/if}
