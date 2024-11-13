@@ -372,7 +372,8 @@ export class Auth {
         },
         {
           beforeHandle(context) {
-            if (env.UNDB_DISABLE_REGISTRATION) {
+            const invitationId = context.body.invitationId
+            if (env.UNDB_DISABLE_REGISTRATION && !invitationId) {
               return new Response(null, {
                 status: 403,
               })
