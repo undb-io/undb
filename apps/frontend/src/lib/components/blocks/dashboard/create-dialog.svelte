@@ -34,11 +34,11 @@
       },
       onUpdate: ({ form: f }) => {
         if (f.valid) {
-          const baseId = $currentBase?.id ?? $baseId
-          if (!baseId) return
+          const _baseId = $currentBase?.id ?? $baseId
+          if (!_baseId) return
           $createDashboard.mutate({
             ...f.data,
-            baseId,
+            baseId: _baseId,
           })
         } else {
           toast.error("Please fix the errors in the form.")

@@ -63,12 +63,12 @@
           console.log(event.form.errors)
           return
         }
-        const baseId = $currentBase?.id ?? $baseId
-        if (!baseId) return
+        const _baseId = $currentBase?.id ?? $baseId
+        if (!_baseId) return
 
         await $mutation.mutateAsync({
           ...event.form.data,
-          baseId: baseId,
+          baseId: _baseId,
         })
       },
     },

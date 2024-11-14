@@ -338,7 +338,7 @@
           {/each}
         </Table.Body>
 
-        <tfooter class="text-muted-foreground sticky bottom-0 h-10 w-full border-t bg-white pb-2 text-sm">
+        <tfoot class="text-muted-foreground sticky bottom-0 h-10 w-full border-t bg-white pb-2 text-sm">
           <tr class="flex h-10 w-full">
             {#each $visibleColumns as column}
               {@const width = $columnWidths[column.id]}
@@ -352,7 +352,7 @@
               </td>
             {/each}
           </tr>
-        </tfooter>
+        </tfoot>
       {:else if !isLoading}
         <GridViewEmpty {readonly} />
       {/if}
