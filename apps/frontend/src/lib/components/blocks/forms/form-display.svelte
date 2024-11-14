@@ -30,7 +30,7 @@
 
   export let form: FormVO
 
-  let formFields = form.visibleFields
+  $: formFields = form.visibleFields
 
   const setFormMutation = createMutation({
     mutationKey: ["table", $table.id.value, "setForm"],
@@ -127,9 +127,11 @@
           }
         }}
       >
-        {#each formFields as formField (formField.fieldId)}
+        {#each formFields as _, i (formFields[i].fieldId)}
+          {@const formField = formFields[i]}
           {@const field = $table.schema.getFieldByIdOrName(formField.fieldId).into(undefined)}
           {#if field}
+            {@const required = formField.getRequired(field)}
             {@const isSelected = $selectedFieldId === field.id.value}
             <label class={cn("block")} data-field-id={formField.fieldId}>
               <input
@@ -166,7 +168,7 @@
                     <span>
                       {field.name.value}
                     </span>
-                    {#if formField.getRequired(field)}
+                    {#if required}
                       <span class="text-red-500">*</span>
                     {/if}
                     {#if formField.conditionEnabled && formField.hasCondition}
@@ -195,7 +197,7 @@
                   />
                 </div>
                 <Collapsible.Content>
-                  <FormFieldOptions {field} bind:formField bind:form class="-mx-4" />
+                  <FormFieldOptions {field} bind:formField={formFields[i]} bind:form class="-mx-4" />
                 </Collapsible.Content>
               </Collapsible.Root>
             </label>

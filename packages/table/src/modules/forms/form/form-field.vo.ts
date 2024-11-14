@@ -65,9 +65,9 @@ export class FormFieldVO extends ValueObject<IFormField> {
 
   public setRequired(field: Field, value: boolean) {
     if (field.required) {
-      this.props.required = true
+      this.required = true
     } else {
-      this.props.required = value
+      this.required = value
     }
   }
 

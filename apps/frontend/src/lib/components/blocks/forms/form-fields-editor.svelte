@@ -43,12 +43,12 @@
     })
   }
 
-  function swapFormFields(oldIndex: number, newIndex: number) {
+  async function swapFormFields(oldIndex: number, newIndex: number) {
     const fields = [...form.fields.props]
     const [removed] = fields.splice(oldIndex, 1)
     fields.splice(newIndex, 0, removed)
     form.fields = new FormFieldsVO(fields)
-    setForm()
+    await setForm()
   }
 
   let selectAll = form.getAllSelected()
@@ -118,7 +118,8 @@
         }
       }}
     >
-      {#each filteredFields as formField (formField.fieldId)}
+      {#each filteredFields as _, i (filteredFields[i].fieldId)}
+        {@const formField = filteredFields[i]}
         {@const field = schema.get(formField.fieldId)}
         {#if field}
           {@const required = formField.getRequired(field)}
@@ -155,8 +156,9 @@
                   <Switch
                     size="sm"
                     checked={formField.getRequired(field)}
-                    onCheckedChange={(checked) => {
+                    onCheckedChange={async (checked) => {
                       formField.setRequired(field, checked)
+                      await tick()
                       setForm()
                     }}
                     disabled={field.required}
@@ -178,6 +180,7 @@
                     }
 
                     await tick()
+                    form = form
                     setForm()
                   }}
                 />
