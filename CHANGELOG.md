@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-120
+
+
+### 🩹 Fixes
+
+- Fix invalidate ([4e2514c](https://github.com/undb-io/undb/commit/4e2514c))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-119
 
 
