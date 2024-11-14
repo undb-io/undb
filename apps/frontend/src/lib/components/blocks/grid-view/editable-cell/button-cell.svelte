@@ -27,7 +27,7 @@
     mutationFn: trpc.record.trigger.mutate,
     async onSuccess(data, variables, context) {
       gridViewStore.exitEditing()
-      await recordsStore.invalidateRecord($table, recordId)
+      await recordsStore?.invalidateRecord($table, recordId)
     },
     onError(error: Error) {
       toast.error(error.message)
