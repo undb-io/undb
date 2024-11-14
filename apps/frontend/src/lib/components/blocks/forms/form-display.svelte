@@ -20,6 +20,7 @@
   import { isNumber } from "radash"
   import { getFormBgColor } from "./form-bg-color"
   import { invalidate } from "$app/navigation"
+  import { derived } from "svelte/store"
 
   export let readonly = false
 
@@ -27,11 +28,9 @@
 
   const table = getTable()
 
-  $: schema = $table.schema.fieldMapById
-
   export let form: FormVO
 
-  $: formFields = form.visibleFields
+  let formFields = form.visibleFields
 
   const setFormMutation = createMutation({
     mutationKey: ["table", $table.id.value, "setForm"],
@@ -51,7 +50,7 @@
 
   let isEditingFormName = false
 
-  let el: HTMLDivElement
+  let el: HTMLDivElement | undefined
   $: if ($selectedFieldId) {
     el?.querySelector(`[data-field-id="${$selectedFieldId}"]`)?.scrollIntoView({ behavior: "smooth" })
   }
@@ -129,7 +128,7 @@
         }}
       >
         {#each formFields as formField (formField.fieldId)}
-          {@const field = schema.get(formField.fieldId)}
+          {@const field = $table.schema.getFieldByIdOrName(formField.fieldId).into(undefined)}
           {#if field}
             {@const isSelected = $selectedFieldId === field.id.value}
             <label class={cn("block")} data-field-id={formField.fieldId}>

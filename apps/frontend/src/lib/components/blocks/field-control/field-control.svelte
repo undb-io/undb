@@ -2,7 +2,7 @@
   import type { NoneSystemField, NoneSystemFieldType, RecordDO } from "@undb/table"
   import StringControl from "./string-control.svelte"
   import NumberControl from "./number-control.svelte"
-  import type { ComponentType } from "svelte"
+  import type { Component } from "svelte"
   import DateControl from "./date-control.svelte"
   import UserControl from "./user-control.svelte"
   import ReferenceControl from "./reference-control.svelte"
@@ -22,6 +22,7 @@
   import PercentageControl from "./percentage-control.svelte"
   import DateRangeControl from "./date-range-control.svelte"
   import { type Writable } from "svelte/store"
+  import { onMount } from "svelte"
 
   export let readonly = false
   export let field: NoneSystemField
@@ -39,9 +40,13 @@
     }
   }
 
-  $: field, handleValue()
+  onMount(() => {
+    if (field) {
+      handleValue()
+    }
+  })
 
-  const map: Record<NoneSystemFieldType, ComponentType> = {
+  const map: Record<NoneSystemFieldType, Component> = {
     string: StringControl,
     currency: CurrencyControl,
     longText: LongTextControl,
