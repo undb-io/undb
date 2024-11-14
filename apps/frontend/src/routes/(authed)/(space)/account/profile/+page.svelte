@@ -9,6 +9,7 @@
   import type { PageData } from "./$types"
   import * as Form from "$lib/components/ui/form/index.js"
   import Label from "$lib/components/ui/label/label.svelte"
+  import { toast } from "svelte-sonner"
 
   export let data: PageData
 
@@ -26,6 +27,12 @@
       validators: zodClient(updateaccountCommand),
       resetForm: false,
       invalidateAll: false,
+      onSubmit(input) {
+        validateForm({ update: true })
+      },
+      onChange(event) {
+        validateForm({ update: true })
+      },
       onUpdate(event) {
         if (!event.form.valid) return
 
@@ -33,11 +40,14 @@
       },
     },
   )
-  const { enhance, form: formData } = form
+  const { enhance, form: formData, validateForm, allErrors } = form
 
   const updateAccountMutation = createMutation({
     mutationFn: trpc.user.updateAccount.mutate,
     mutationKey: ["updateAccount"],
+    onSuccess() {
+      toast.success("Account updated")
+    },
   })
 </script>
 
@@ -59,7 +69,7 @@
       <Label>Email</Label>
       <Input disabled bind:value={data.me.user.email} />
 
-      <Form.Button>Save</Form.Button>
+      <Form.Button disabled={$updateAccountMutation.isPending || $allErrors.length > 0}>Save</Form.Button>
     </form>
   </Card.Content>
 </Card.Root>
