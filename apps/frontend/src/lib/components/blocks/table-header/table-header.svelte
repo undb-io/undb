@@ -267,10 +267,12 @@
           return
         }
 
-        tab.set(value === "data" ? null : (value ?? null))
         if (value === "developer" && !$developerTab) {
           $developerTab = "openapi"
+          return
         }
+
+        tab.set(value === "data" ? null : (value ?? null))
       }}
       class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform"
     >

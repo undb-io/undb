@@ -3,7 +3,7 @@ import { z } from "@undb/zod"
 
 export const updateaccountCommand = z.object({
   userId: z.string(),
-  username: z.string(),
+  username: z.string().min(1),
 })
 export type IUpdateAccountCommand = z.infer<typeof updateaccountCommand>
 

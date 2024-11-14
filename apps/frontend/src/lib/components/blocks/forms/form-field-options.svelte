@@ -29,6 +29,8 @@
   export let form: FormVO
   export let field: Field
 
+  $: required = formField.getRequired(field)
+
   const setFormMutation = createMutation({
     mutationFn: trpc.table.form.set.mutate,
     mutationKey: ["table", $table.id.value, "setForm"],
@@ -57,7 +59,7 @@
   }
 
   $: previousFields = form.getPreviousFields(field.id.value) ?? []
-  $: disabled = formField.getRequired(field) && !formField.defaultValue
+  $: disabled = required && !formField.defaultValue
 </script>
 
 <div
@@ -97,10 +99,11 @@
           <Switch
             class="text-sm"
             size="sm"
-            checked={formField.getRequired(field)}
+            checked={required}
             disabled={field.required}
-            onCheckedChange={(checked) => {
+            onCheckedChange={async (checked) => {
               formField.setRequired(field, checked)
+              await tick()
               form = form
 
               setForm()
@@ -116,6 +119,7 @@
             disabled={disabled || field.type === "button"}
             onCheckedChange={async () => {
               await tick()
+              form = form
               setForm()
             }}
           />

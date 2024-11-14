@@ -5,6 +5,7 @@
   import { getRecordsStore } from "$lib/store/records.store"
   import FieldValue from "../field-value/field-value.svelte"
   import { Maximize2Icon } from "lucide-svelte"
+  import { cn } from "$lib/utils"
 
   const table = getTable()
   export let viewId: Readable<string | undefined>
@@ -43,7 +44,7 @@
             <Maximize2Icon class="text-muted-foreground size-3" />
           </button>
         </Table.Cell>
-        {#each $fields as field}
+        {#each $fields as field, i}
           <Table.Cell>
             <FieldValue
               {r}
@@ -53,6 +54,7 @@
               value={values[field.id.value]}
               type={field.type}
               displayValue={displayValues[field.id.value]}
+              class={cn("text-xs", i === 0 && "font-semibold")}
               {readonly}
             />
           </Table.Cell>

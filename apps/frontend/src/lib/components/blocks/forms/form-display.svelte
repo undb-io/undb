@@ -20,14 +20,13 @@
   import { isNumber } from "radash"
   import { getFormBgColor } from "./form-bg-color"
   import { invalidate } from "$app/navigation"
+  import { derived } from "svelte/store"
 
   export let readonly = false
 
   const selectedFieldId = queryParam("formField")
 
   const table = getTable()
-
-  $: schema = $table.schema.fieldMapById
 
   export let form: FormVO
 
@@ -51,7 +50,7 @@
 
   let isEditingFormName = false
 
-  let el: HTMLDivElement
+  let el: HTMLDivElement | undefined
   $: if ($selectedFieldId) {
     el?.querySelector(`[data-field-id="${$selectedFieldId}"]`)?.scrollIntoView({ behavior: "smooth" })
   }
@@ -128,9 +127,11 @@
           }
         }}
       >
-        {#each formFields as formField (formField.fieldId)}
-          {@const field = schema.get(formField.fieldId)}
+        {#each formFields as _, i (formFields[i].fieldId)}
+          {@const formField = formFields[i]}
+          {@const field = $table.schema.getFieldByIdOrName(formField.fieldId).into(undefined)}
           {#if field}
+            {@const required = formField.getRequired(field)}
             {@const isSelected = $selectedFieldId === field.id.value}
             <label class={cn("block")} data-field-id={formField.fieldId}>
               <input
@@ -167,7 +168,7 @@
                     <span>
                       {field.name.value}
                     </span>
-                    {#if formField.getRequired(field)}
+                    {#if required}
                       <span class="text-red-500">*</span>
                     {/if}
                     {#if formField.conditionEnabled && formField.hasCondition}
@@ -196,7 +197,7 @@
                   />
                 </div>
                 <Collapsible.Content>
-                  <FormFieldOptions {field} bind:formField bind:form class="-mx-4" />
+                  <FormFieldOptions {field} bind:formField={formFields[i]} bind:form class="-mx-4" />
                 </Collapsible.Content>
               </Collapsible.Root>
             </label>

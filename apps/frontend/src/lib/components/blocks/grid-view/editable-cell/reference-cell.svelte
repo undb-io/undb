@@ -35,7 +35,7 @@
 
   function onSuccess(id?: string) {
     if (id) {
-      recordStore.invalidateRecord($table, id, $viewId)
+      recordStore?.invalidateRecord($table, id, $viewId)
     }
   }
 </script>
