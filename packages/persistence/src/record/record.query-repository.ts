@@ -60,13 +60,17 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return Number(total)
   }
 
-  async countWhere(table: TableDo, query: Option<CountQueryArgs>): Promise<number> {
+  async countWhere(table: TableDo, view: View | undefined, query: Option<CountQueryArgs>): Promise<number> {
     const t = new UnderlyingTable(table)
 
     const spec = Option(query.into(undefined)?.filter.into(undefined))
+    const select = query.into(undefined)?.select.into(undefined)
 
-    const { total } = await this.qb
-      .selectFrom(t.name)
+    const selectFields = table.getSelectFields(view, select)
+    const foreignTables = await this.getForeignTables(table, selectFields)
+    const qb = this.helper.createQuery(table, foreignTables, selectFields, spec)
+
+    const { total } = await qb
       .select((eb) => eb.fn.countAll().as("total"))
       .where(this.helper.handleWhere(table, spec))
       .executeTakeFirstOrThrow()
@@ -126,7 +130,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       .where(this.helper.handleWhere(table, spec))
       .execute()
 
-    const total = await this.countWhere(table, Some({ filter: spec }))
+    const total = await this.countWhere(table, view, Some({ filter: spec, select: query.map((q) => q.select) }))
 
     const records = result.map((r) => getRecordDTOFromEntity(table, r, foreignTables))
     return { values: records, total: Number(total) }

@@ -9,5 +9,5 @@ export async function countRecords(this: RecordsQueryService, dto: ICountRecords
 
   const query = buildCountQuery(table, dto)
 
-  return this.repo.countWhere(table, query)
+  return this.repo.countWhere(table, undefined, query)
 }
