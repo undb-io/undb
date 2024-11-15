@@ -24,35 +24,35 @@ type RootTranslation = {
 			 */
 			neq: string
 			/**
-			 * c​o​n​t​a​i​n​s
+			 * C​o​n​t​a​i​n​s
 			 */
 			contains: string
 			/**
-			 * n​o​t​ ​c​o​n​t​a​i​n​s
+			 * N​o​t​ ​C​o​n​t​a​i​n​s
 			 */
 			does_not_contain: string
 			/**
-			 * s​t​a​r​t​s​ ​w​i​t​h
+			 * S​t​a​r​t​s​ ​W​i​t​h
 			 */
 			starts_with: string
 			/**
-			 * e​n​d​s​ ​w​i​t​h
+			 * E​n​d​s​ ​W​i​t​h
 			 */
 			ends_with: string
 			/**
-			 * i​s​ ​e​m​p​t​y
+			 * I​s​ ​E​m​p​t​y
 			 */
 			is_empty: string
 			/**
-			 * i​s​ ​n​o​t​ ​e​m​p​t​y
+			 * I​s​ ​N​o​t​ ​E​m​p​t​y
 			 */
 			is_not_empty: string
 			/**
-			 * m​i​n
+			 * M​i​n
 			 */
 			min: string
 			/**
-			 * m​a​x
+			 * M​a​x
 			 */
 			max: string
 			/**
@@ -72,99 +72,99 @@ type RootTranslation = {
 			 */
 			lte: string
 			/**
-			 * i​n
+			 * I​n
 			 */
 			'in': string
 			/**
-			 * n​o​t​ ​i​n
+			 * N​o​t​ ​I​n
 			 */
 			nin: string
 			/**
-			 * a​n​y​ ​o​f
+			 * A​n​y​ ​O​f
 			 */
 			any_of: string
 			/**
-			 * n​o​t​ ​a​n​y​ ​o​f
+			 * N​o​t​ ​A​n​y​ ​O​f
 			 */
 			not_any_of: string
 			/**
-			 * i​s​ ​s​a​m​e​ ​d​a​y
+			 * I​s​ ​S​a​m​e​ ​D​a​y
 			 */
 			is_same_day: string
 			/**
-			 * i​s​ ​n​o​t​ ​s​a​m​e​ ​d​a​y
+			 * I​s​ ​N​o​t​ ​S​a​m​e​ ​D​a​y
 			 */
 			is_not_same_day: string
 			/**
-			 * i​s​ ​t​o​d​a​y
+			 * I​s​ ​T​o​d​a​y
 			 */
 			is_tody: string
 			/**
-			 * i​s​ ​n​o​t​ ​t​o​d​a​y
+			 * I​s​ ​N​o​t​ ​T​o​d​a​y
 			 */
 			is_not_today: string
 			/**
-			 * i​s​ ​a​f​t​e​r​ ​t​o​d​a​y
+			 * I​s​ ​A​f​t​e​r​ ​T​o​d​a​y
 			 */
 			is_after_today: string
 			/**
-			 * i​s​ ​b​e​f​o​r​e​ ​t​o​d​a​y
+			 * I​s​ ​B​e​f​o​r​e​ ​T​o​d​a​y
 			 */
 			is_before_today: string
 			/**
-			 * i​s​ ​t​o​m​o​r​r​o​w
+			 * I​s​ ​T​o​m​o​r​r​o​w
 			 */
 			is_tomorrow: string
 			/**
-			 * i​s​ ​n​o​t​ ​t​o​m​o​r​r​o​w
+			 * I​s​ ​N​o​t​ ​T​o​m​o​r​r​o​w
 			 */
 			is_not_tomorrow: string
 			/**
-			 * i​s​ ​a​f​t​e​r​ ​t​o​m​o​r​r​o​w
+			 * I​s​ ​A​f​t​e​r​ ​T​o​m​o​r​r​o​w
 			 */
 			is_after_tomorrow: string
 			/**
-			 * i​s​ ​b​e​f​o​r​e​ ​t​o​m​o​r​r​o​w
+			 * I​s​ ​B​e​f​o​r​e​ ​T​o​m​o​r​r​o​w
 			 */
 			is_before_tommorow: string
 			/**
-			 * i​s​ ​y​e​s​t​e​r​d​a​y
+			 * I​s​ ​Y​e​s​t​e​r​d​a​y
 			 */
 			is_yesterday: string
 			/**
-			 * i​s​ ​n​o​t​ ​y​e​s​t​e​r​d​a​y
+			 * I​s​ ​N​o​t​ ​Y​e​s​t​e​r​d​a​y
 			 */
 			is_not_yesterday: string
 			/**
-			 * i​s​ ​a​f​t​e​r​ ​y​e​s​t​e​r​d​a​y
+			 * I​s​ ​A​f​t​e​r​ ​Y​e​s​t​e​r​d​a​y
 			 */
 			is_after_yesterday: string
 			/**
-			 * i​s​ ​b​e​f​o​r​e​ ​y​e​s​t​e​r​d​a​y
+			 * I​s​ ​B​e​f​o​r​e​ ​Y​e​s​t​e​r​d​a​y
 			 */
 			is_before_yesterday: string
 			/**
-			 * i​s​ ​b​e​f​o​r​e
+			 * I​s​ ​B​e​f​o​r​e
 			 */
 			is_before: string
 			/**
-			 * i​s​ ​n​o​t​ ​b​e​f​o​r​e
+			 * I​s​ ​N​o​t​ ​B​e​f​o​r​e
 			 */
 			is_not_before: string
 			/**
-			 * i​s​ ​a​f​t​e​r
+			 * I​s​ ​A​f​t​e​r
 			 */
 			is_after: string
 			/**
-			 * i​s​ ​n​o​t​ ​a​f​t​e​r
+			 * I​s​ ​N​o​t​ ​A​f​t​e​r
 			 */
 			is_not_after: string
 			/**
-			 * i​s​ ​t​r​u​e
+			 * I​s​ ​T​r​u​e
 			 */
 			is_true: string
 			/**
-			 * i​s​ ​f​a​l​s​e
+			 * I​s​ ​F​a​l​s​e
 			 */
 			is_false: string
 		}
@@ -473,35 +473,35 @@ export type TranslationFunctions = {
 			 */
 			neq: () => LocalizedString
 			/**
-			 * contains
+			 * Contains
 			 */
 			contains: () => LocalizedString
 			/**
-			 * not contains
+			 * Not Contains
 			 */
 			does_not_contain: () => LocalizedString
 			/**
-			 * starts with
+			 * Starts With
 			 */
 			starts_with: () => LocalizedString
 			/**
-			 * ends with
+			 * Ends With
 			 */
 			ends_with: () => LocalizedString
 			/**
-			 * is empty
+			 * Is Empty
 			 */
 			is_empty: () => LocalizedString
 			/**
-			 * is not empty
+			 * Is Not Empty
 			 */
 			is_not_empty: () => LocalizedString
 			/**
-			 * min
+			 * Min
 			 */
 			min: () => LocalizedString
 			/**
-			 * max
+			 * Max
 			 */
 			max: () => LocalizedString
 			/**
@@ -521,99 +521,99 @@ export type TranslationFunctions = {
 			 */
 			lte: () => LocalizedString
 			/**
-			 * in
+			 * In
 			 */
 			'in': () => LocalizedString
 			/**
-			 * not in
+			 * Not In
 			 */
 			nin: () => LocalizedString
 			/**
-			 * any of
+			 * Any Of
 			 */
 			any_of: () => LocalizedString
 			/**
-			 * not any of
+			 * Not Any Of
 			 */
 			not_any_of: () => LocalizedString
 			/**
-			 * is same day
+			 * Is Same Day
 			 */
 			is_same_day: () => LocalizedString
 			/**
-			 * is not same day
+			 * Is Not Same Day
 			 */
 			is_not_same_day: () => LocalizedString
 			/**
-			 * is today
+			 * Is Today
 			 */
 			is_tody: () => LocalizedString
 			/**
-			 * is not today
+			 * Is Not Today
 			 */
 			is_not_today: () => LocalizedString
 			/**
-			 * is after today
+			 * Is After Today
 			 */
 			is_after_today: () => LocalizedString
 			/**
-			 * is before today
+			 * Is Before Today
 			 */
 			is_before_today: () => LocalizedString
 			/**
-			 * is tomorrow
+			 * Is Tomorrow
 			 */
 			is_tomorrow: () => LocalizedString
 			/**
-			 * is not tomorrow
+			 * Is Not Tomorrow
 			 */
 			is_not_tomorrow: () => LocalizedString
 			/**
-			 * is after tomorrow
+			 * Is After Tomorrow
 			 */
 			is_after_tomorrow: () => LocalizedString
 			/**
-			 * is before tomorrow
+			 * Is Before Tomorrow
 			 */
 			is_before_tommorow: () => LocalizedString
 			/**
-			 * is yesterday
+			 * Is Yesterday
 			 */
 			is_yesterday: () => LocalizedString
 			/**
-			 * is not yesterday
+			 * Is Not Yesterday
 			 */
 			is_not_yesterday: () => LocalizedString
 			/**
-			 * is after yesterday
+			 * Is After Yesterday
 			 */
 			is_after_yesterday: () => LocalizedString
 			/**
-			 * is before yesterday
+			 * Is Before Yesterday
 			 */
 			is_before_yesterday: () => LocalizedString
 			/**
-			 * is before
+			 * Is Before
 			 */
 			is_before: () => LocalizedString
 			/**
-			 * is not before
+			 * Is Not Before
 			 */
 			is_not_before: () => LocalizedString
 			/**
-			 * is after
+			 * Is After
 			 */
 			is_after: () => LocalizedString
 			/**
-			 * is not after
+			 * Is Not After
 			 */
 			is_not_after: () => LocalizedString
 			/**
-			 * is true
+			 * Is True
 			 */
 			is_true: () => LocalizedString
 			/**
-			 * is false
+			 * Is False
 			 */
 			is_false: () => LocalizedString
 		}

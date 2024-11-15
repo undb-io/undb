@@ -78,7 +78,7 @@ import {
   startOfTomorrow,
   startOfYesterday,
 } from "date-fns"
-import type { ExpressionBuilder } from "kysely"
+import { type ExpressionBuilder } from "kysely"
 import { isString, unique } from "radash"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import { getDateRangeFieldName } from "../underlying/underlying-table.util"
@@ -394,7 +394,8 @@ export class RecordFilterVisitor extends AbstractQBVisitor<RecordDO> implements 
       const cond = this.eb.eb(this.getFieldId(spec), "in", spec.value)
       this.addCond(cond)
     } else {
-      const cond = this.eb.eb(`${spec.fieldId.value}.${spec.fieldId.value}`, "in", spec.value)
+      const conditions = spec.value.map((value) => this.eb.eb(this.getFieldId(spec), "like", `%${value}%`))
+      const cond = this.eb.or(conditions)
       this.addCond(cond)
     }
   }
