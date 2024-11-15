@@ -61,12 +61,9 @@ export class RecordQueryRepository implements IRecordQueryRepository {
   }
 
   async countWhere(table: TableDo, view: View | undefined, query: Option<CountQueryArgs>): Promise<number> {
-    const t = new UnderlyingTable(table)
-
     const spec = Option(query.into(undefined)?.filter.into(undefined))
-    const select = query.into(undefined)?.select.into(undefined)
 
-    const selectFields = table.getSelectFields(view, select)
+    const selectFields = table.getSelectFields(view, undefined)
     const foreignTables = await this.getForeignTables(table, selectFields)
     const qb = this.helper.createQuery(table, foreignTables, selectFields, spec)
 
