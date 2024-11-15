@@ -51,7 +51,7 @@ export const currencyFieldDTO = baseFieldDTO.extend({
 
 export type ICurrencyFieldDTO = z.infer<typeof currencyFieldDTO>
 
-export class CurrencyField extends AbstractField<CurrencyFieldValue, CurrencyFieldConstraint> {
+export class CurrencyField extends AbstractField<CurrencyFieldValue, CurrencyFieldConstraint, ICurrencyFieldOption> {
   constructor(dto: ICurrencyFieldDTO) {
     super(dto)
     if (dto.constraint) {

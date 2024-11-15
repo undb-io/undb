@@ -9,6 +9,7 @@ import type {
   IButtonFieldOption,
   IDateFieldConditionSchema,
   IDateFieldConstraint,
+  IDateFieldOption,
   IDateRangeFieldConditionSchema,
   IDateRangeFieldConstraint,
   IJsonFieldConditionSchema,
@@ -327,5 +328,6 @@ export type IFieldOption =
   | IButtonFieldOption
   | ICurrencyFieldOption
   | IFormulaFieldOption
+  | IDateFieldOption
 
 export type IFieldMacro = IUserFieldMacro | IDateFieldMacro

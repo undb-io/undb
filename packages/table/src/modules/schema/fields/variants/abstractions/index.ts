@@ -1,4 +1,5 @@
 export * from "./abstract-date-field.condition"
+export * from "./abstract-date-option"
 export * from "./abstract-date-value.specification"
 export * from "./abstract-date-value.visitor"
 export * from "./abstract-number-field.condition"
