@@ -52,7 +52,7 @@
       onSuccess()
       await client.invalidateQueries({ queryKey: [record.id.value, "get"] })
       reset({})
-      await recordsStore.invalidateRecord($table, record.id.value)
+      await recordsStore?.invalidateRecord($table, record.id.value)
     },
     onError: (error) => {
       toast.error(error.message)

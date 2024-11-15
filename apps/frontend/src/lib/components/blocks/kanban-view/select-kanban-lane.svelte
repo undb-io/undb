@@ -125,7 +125,7 @@
   const updateRecord = createMutation({
     mutationFn: trpc.record.update.mutate,
     onSuccess: (data, variables, context) => {
-      recordsStore.invalidateRecord($table, variables.id)
+      recordsStore?.invalidateRecord($table, variables.id)
     },
   })
 

@@ -6,6 +6,7 @@ import type { RecordComositeSpecification } from "../../../../records/record/rec
 import { fieldId, FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
+import { abstractDateOption } from "../abstractions/abstract-date-option"
 import { daterangeFieldConstraint, DateRangeFieldConstraint } from "./date-range-field-constraint.vo"
 import { dateRangeFieldValue, DateRangeFieldValue } from "./date-range-field-value.vo"
 import { dateRangeFieldAggregate } from "./date-range-field.aggregate"
@@ -19,10 +20,23 @@ import { DateRangeEqual } from "./date-range-field.specification"
 
 export const DATE_RANGE_TYPE = "dateRange" as const
 
+export const dateRangeFieldOption = abstractDateOption.extend({
+  includeTime: z.boolean().optional(),
+})
+
+export type IDateRangeFieldOption = z.infer<typeof dateRangeFieldOption>
+
+export const DEFAULT_DATE_RANGE_FIELD_OPTION = {
+  format: "yyyy-MM-dd",
+  includeTime: false,
+  timeFormat: "HH:mm",
+} as const satisfies IDateRangeFieldOption
+
 export const createDateRangeFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(DATE_RANGE_TYPE),
   constraint: daterangeFieldConstraint.optional(),
   defaultValue: dateRangeFieldValue.optional(),
+  option: dateRangeFieldOption.optional(),
 })
 
 export const createTablesDateRangeFieldDTO = createDateRangeFieldDTO
@@ -35,6 +49,7 @@ export const dateRangeFieldDTO = baseFieldDTO.extend({
   type: z.literal(DATE_RANGE_TYPE),
   constraint: daterangeFieldConstraint.optional(),
   defaultValue: dateRangeFieldValue.optional(),
+  option: dateRangeFieldOption.optional(),
 })
 
 export type IDateRangeFieldDTO = z.infer<typeof dateRangeFieldDTO>
@@ -48,14 +63,41 @@ export class DateRangeField extends AbstractField<DateRangeFieldValue> {
     if (dto.defaultValue) {
       this.defaultValue = new DateRangeFieldValue(dto.defaultValue)
     }
+    if (dto.option) {
+      this.option = Some(dto.option)
+    }
   }
 
   static create(dto: ICreateDateRangeFieldDTO) {
     return new DateRangeField({ ...dto, id: FieldIdVo.fromStringOrCreate(dto.id).value })
   }
 
+  get dateRangeFieldOption() {
+    return this.option.unwrapOr(DEFAULT_DATE_RANGE_FIELD_OPTION)
+  }
+
+  get dateFormatterString() {
+    return this.dateRangeFieldOption.format ?? DEFAULT_DATE_RANGE_FIELD_OPTION.format
+  }
+
+  get timeFormatterString() {
+    return this.dateRangeFieldOption.timeFormat ?? DEFAULT_DATE_RANGE_FIELD_OPTION.timeFormat
+  }
+
+  get includeTime() {
+    return this.dateRangeFieldOption.includeTime ?? DEFAULT_DATE_RANGE_FIELD_OPTION.includeTime
+  }
+
+  get fullFormatterString() {
+    if (this.includeTime) {
+      return `${this.dateFormatterString} ${this.timeFormatterString}`
+    }
+    return this.dateFormatterString
+  }
+
   get formatter() {
-    return format("yyyy-MM-dd")
+    const str = this.fullFormatterString
+    return format(str)
   }
 
   format(date: Date) {

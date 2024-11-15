@@ -37,7 +37,6 @@
       open = false
     }
   }
-  $: shouldConfirm = includeTime && value
 </script>
 
 <Popover.Root bind:open openFocus portal="body">

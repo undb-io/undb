@@ -24,7 +24,7 @@
     mutationFn: trpc.record.update.mutate,
     async onSuccess(data, variables, context) {
       gridViewStore.exitEditing()
-      await recordsStore.invalidateRecord($table, recordId)
+      await recordsStore?.invalidateRecord($table, recordId)
       await client.invalidateQueries({ queryKey: [recordId, "get"] })
     },
     onError(error: Error) {
