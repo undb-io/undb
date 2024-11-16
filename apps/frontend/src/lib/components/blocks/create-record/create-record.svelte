@@ -111,7 +111,6 @@
 
   $: dirty = !!$tainted
   $: disabled = !!$allErrors.length
-  $: console.log($allErrors)
 
   $: fields = $table
     .getOrderedMutableFields(formId ? new FormIdVO(formId) : undefined)

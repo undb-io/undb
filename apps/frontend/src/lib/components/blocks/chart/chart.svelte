@@ -6,6 +6,8 @@
 
   const map: Record<string, ComponentType> = {
   }
+
+  $: component = map[chart.type]
 </script>
 
-<svelte:component this={map[chart.type]} />
+<svelte:component this={component} />

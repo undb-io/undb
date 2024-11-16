@@ -29,6 +29,8 @@
   export let isNew = true
   export let field: Field | undefined = undefined
   export let disabled = false
+  export let type: NoneSystemFieldType
+
 
   const map: Record<NoneSystemFieldType, ComponentType> = {
     string: StringFieldOption,
@@ -53,11 +55,11 @@
     dateRange: DateRangeFieldOption,
   }
 
-  export let type: NoneSystemFieldType
+  $: component = map[type]
 </script>
 
 <svelte:component
-  this={map[type]}
+  this={component}
   {disabled}
   bind:constraint
   bind:display

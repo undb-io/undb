@@ -17,7 +17,6 @@
   export let onValueChange: (value: { hour: number; minute: number }) => void = () => {}
   export let disabled = false
 
-  $: console.log(value)
 
   let hourSearch = ""
   let minuteSearch = ""
