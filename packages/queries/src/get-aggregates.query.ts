@@ -17,18 +17,26 @@ export const getAggregatesOutput = z.record(fieldId, aggregateResult)
 export type IGetAggregatesOutput = z.infer<typeof getAggregatesOutput>
 
 export class GetAggregatesQuery extends Query implements IGetAggregatesQuery {
-  public readonly tableId: string
+  public readonly tableId?: string
+  public readonly baseName?: string
+  public readonly tableName?: string
   public readonly viewId?: string
+  public readonly viewName?: string
   public readonly aggregate?: IViewAggregate
   public readonly condition?: IAggregateConditionGroup
   public readonly ignoreView?: boolean
+  public readonly isReadable?: boolean
 
   constructor(props: QueryProps<IGetAggregatesQuery>) {
     super()
     this.tableId = props.tableId
+    this.baseName = props.baseName
+    this.tableName = props.tableName
     this.viewId = props.viewId
+    this.viewName = props.viewName
     this.aggregate = props.aggregate
     this.condition = props.condition
     this.ignoreView = props.ignoreView
+    this.isReadable = props.isReadable
   }
 }
