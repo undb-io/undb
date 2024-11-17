@@ -1,6 +1,7 @@
 import { z } from "@undb/zod"
 import { tableId } from "../../../table-id.vo"
 import { aggregateConditionGroup } from "../../aggregate"
+import { fieldId, fieldName } from "../../schema"
 import { viewAggregate, viewId } from "../../views"
 
 export const aggregateResult = z.number().or(z.string().date()).nullable()
@@ -13,6 +14,7 @@ export const getAggregatesDTO = z.object({
   aggregate: viewAggregate.optional(),
   condition: aggregateConditionGroup.optional(),
   ignoreView: z.boolean().optional(),
+  select: fieldId.or(fieldName).array().optional(),
 })
 
 export type IGetAggregatesDTO = z.infer<typeof getAggregatesDTO>

@@ -106,8 +106,6 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const context = executionContext.getStore()
     const userId = context?.user?.userId!
 
-    const t = new UnderlyingTable(table)
-
     const filter = query.into(undefined)?.filter.into(undefined)
     const defaultSort: IViewSort = [{ fieldId: AUTO_INCREMENT_TYPE, direction: "asc" }]
     const ignoreView = query.into(undefined)?.ignoreView
@@ -304,6 +302,9 @@ export class RecordQueryRepository implements IRecordQueryRepository {
 
         for (const [fieldId, fieldAggregate] of Object.entries(aggregate.unwrap())) {
           if (!fieldAggregate) {
+            continue
+          }
+          if (!selectFields.some((f) => f.id.value === fieldId)) {
             continue
           }
           const field = table.schema.fieldMapById.get(fieldId)

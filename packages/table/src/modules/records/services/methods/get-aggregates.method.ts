@@ -17,7 +17,7 @@ export async function getAggregates(
   const aggregate = dto.aggregate
 
   let args: QueryArgs = {
-    select: None,
+    select: dto.select ? Some(dto.select) : None,
     filter: None,
     pagination: None,
     ignoreView: dto.ignoreView,
