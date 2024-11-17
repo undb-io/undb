@@ -9,11 +9,13 @@
   import Button from "$lib/components/ui/button/button.svelte"
   import TimePicker from "$lib/components/blocks/date/time-picker.svelte"
 
+  type Value = [string | Date | null | undefined, string | Date | null | undefined] | undefined | null
+
   export let readonly = false
   export let disabled = false
   export let tableId: string
   export let recordId: string
-  export let value: [string | Date | null | undefined, string | Date | null | undefined] | undefined = undefined
+  export let value: Value = undefined
 
   $: startDate = value?.[0]
   $: endDate = value?.[1]
@@ -39,9 +41,7 @@
   $: formatter = field.formatter
   $: includeTime = field.includeTime
 
-  export let onValueChange:
-    | ((value: [string | Date | null | undefined, string | Date | null | undefined] | undefined) => void)
-    | undefined
+  export let onValueChange: (value: Value) => void | undefined
 
   let open = false
 </script>
@@ -124,8 +124,9 @@
           variant="outline"
           class="w-full"
           on:click={() => {
-            value = undefined
-            onValueChange?.(value)
+            value = null
+            onValueChange?.(null)
+            open = false
           }}
         >
           Clear
@@ -139,7 +140,7 @@
               open = false
             }}
           >
-            Save
+            Set Date Range
           </Button>
         </div>
       {/if}

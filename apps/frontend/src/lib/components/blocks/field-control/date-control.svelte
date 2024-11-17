@@ -18,7 +18,7 @@
   $: formatter = field.formatter
   $: includeTime = field.includeTime
 
-  export let value: string | Date | undefined = undefined
+  export let value: string | Date | undefined | null = undefined
   function parse(value: string) {
     if (isDateFieldMacro(value)) return value
 
@@ -107,11 +107,13 @@
         variant="outline"
         on:click={() => {
           if (value) {
-            value = undefined
+            value = null
           }
-          onChange()
-        }}>Clear</Button
+          open = false
+        }}
       >
+        Clear
+      </Button>
     </div>
   </Popover.Content>
 </Popover.Root>

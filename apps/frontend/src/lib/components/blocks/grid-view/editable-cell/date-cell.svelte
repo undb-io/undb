@@ -29,7 +29,7 @@
 
   $: shouldConfirm = includeTime && value
 
-  function save() {
+  function save(value: string | Date | null) {
     $updateCell.mutate({
       tableId,
       id: recordId,
@@ -81,7 +81,7 @@
             }
             onValueChange(value)
             if (!shouldConfirm) {
-              save()
+              save(value)
             }
           }}
         />
@@ -97,7 +97,7 @@
                 value = new Date(new Date(value).setHours(v.hour, v.minute, 0, 0)).toISOString()
                 onValueChange(value)
                 if (!shouldConfirm) {
-                  save()
+                  save(value)
                 }
               }}
             />
@@ -110,31 +110,29 @@
             on:click={() => {
               value = today(getLocalTimeZone()).toString()
               onValueChange(value)
-              if (!shouldConfirm) {
-                save()
-              }
+              save(value)
             }}>Today</Button
           >
-          <Button
-            class="flex-1"
-            variant="outline"
-            on:click={() => {
-              if (value) {
-                value = undefined
-                onValueChange(value)
-                if (!shouldConfirm) {
-                  save()
+          {#if !field.required}
+            <Button
+              class="flex-1"
+              variant="outline"
+              on:click={() => {
+                if (value) {
+                  value = undefined
+                  onValueChange(value)
+                  save(null)
                 }
-              }
-            }}>Clear</Button
-          >
+              }}>Clear</Button
+            >
+          {/if}
         </div>
         {#if shouldConfirm}
           <div class="flex items-center gap-1.5 border-t px-2 py-1">
             <Button
               class="w-full"
               on:click={() => {
-                save()
+                save(value ?? null)
               }}>Save</Button
             >
           </div>

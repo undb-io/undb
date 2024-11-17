@@ -11,9 +11,11 @@
   import Button from "$lib/components/ui/button/button.svelte"
   import TimePicker from "$lib/components/blocks/date/time-picker.svelte"
 
+  type Value = [string | Date | null | undefined, string | Date | null | undefined] | undefined
+
   export let tableId: string
   export let recordId: string
-  export let value: [string | Date | null | undefined, string | Date | null | undefined] | undefined = undefined
+  export let value: Value = undefined
 
   $: startDate = value?.[0]
   $: endDate = value?.[1]
@@ -41,9 +43,7 @@
   $: formatter = field.formatter
   $: includeTime = field.includeTime
 
-  export let onValueChange: (
-    value: [string | Date | null | undefined, string | Date | null | undefined] | undefined,
-  ) => void
+  export let onValueChange: (value: Value) => void
 
   let open = false
   $: if (isEditing) {
@@ -61,7 +61,7 @@
     },
   })
 
-  function save() {
+  function save(value: Value) {
     $updateCell.mutate({
       tableId,
       id: recordId,
@@ -100,7 +100,7 @@
             onValueChange(value)
             if (startDate && endDate) {
               if (!includeTime) {
-                save()
+                save(value)
               }
             }
           }}
@@ -151,9 +151,12 @@
             on:click={() => {
               value = undefined
               onValueChange(value)
-              if (!includeTime) {
-                save()
-              }
+              $updateCell.mutate({
+                tableId,
+                id: recordId,
+                values: { [field.id.value]: null },
+              })
+              open = false
             }}
           >
             Clear
@@ -164,7 +167,7 @@
             <Button
               class="w-full"
               on:click={() => {
-                save()
+                save(value)
               }}
             >
               Save

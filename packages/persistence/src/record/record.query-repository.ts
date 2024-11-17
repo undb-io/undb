@@ -329,6 +329,9 @@ export class RecordQueryRepository implements IRecordQueryRepository {
           if (!field) {
             continue
           }
+          if (!selectFields.some((f) => f.id.value === fieldId)) {
+            continue
+          }
           // const builder = new AggregateFnBuiler(t, eb, field, fieldAggregate)
           // const expr = builder.handleWhere()
           // if (expr.isSome()) {
