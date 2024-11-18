@@ -25,8 +25,15 @@
   export let shareId: string | undefined = undefined
   export let viewId: Readable<string | undefined>
 
+  const table = getTable()
+  const store = getRecordsStore()
+
+  const records = store.records
+
   const isSelected = monthStore.isSelected
   const getIsSameMonth = monthStore.getIsSameMonth
+
+  $: color = $viewId ? $table.views.getViewById($viewId)?.color.into(undefined) : undefined
 
   $: day = getDate(date)
   $: today = isToday(date)
@@ -34,11 +41,6 @@
 
   $: selected = $isSelected(date)
   $: isSameMonth = $getIsSameMonth(date)
-
-  const table = getTable()
-  const store = getRecordsStore()
-
-  const records = store.records
 
   $: dateRecords = $records.filter((r) => {
     const spec = new DateIsSameDay(date, field.id)
@@ -206,11 +208,12 @@
           record={aboutToDropRecord}
           {displayField}
           {field}
+          {color}
           class="opacity-50"
         />
       {/if}
       {#each visibleRecords as record (record.id.value)}
-        <CalendarViewMonthDateRecord {date} {r} {record} {displayField} {field} {shareId} {readonly} />
+        <CalendarViewMonthDateRecord {color} {date} {r} {record} {displayField} {field} {shareId} {readonly} />
       {/each}
     </div>
     {#if remainingCount > 0}

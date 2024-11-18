@@ -11,6 +11,7 @@
   import CreateRecordButton from "../create-record/create-record-button.svelte"
   import ShareButton from "../share/share-button.svelte"
   import ViewWidgetButton from "../view-widget/view-widget-button.svelte"
+  import ViewColorEditor from "../view-color-editor/view-color-editor.svelte"
 
   export let viewId: Readable<string | undefined>
   export let view: CalendarView
@@ -29,6 +30,7 @@
     <ViewFilterEditor {readonly} {viewId} size="xs" />
     <ViewFields {readonly} {viewId} size="xs" />
     <ViewSort {readonly} {viewId} size="xs" />
+    <ViewColorEditor {readonly} {viewId} size="xs" />
     {#if $viewId}
       <ShareButton type="view" id={$viewId} size="xs" />
     {/if}

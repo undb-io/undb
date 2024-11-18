@@ -104,6 +104,8 @@
 
   let virtualListEl: HTMLDivElement
 
+  $: color = $viewId ? $t.views.getViewById($viewId)?.color.into(undefined) : undefined
+
   $: virtualizer = createVirtualizer<HTMLDivElement, HTMLDivElement>({
     count: records?.count ?? 0,
     getScrollElement: () => virtualListEl,
@@ -133,7 +135,15 @@
           <div
             style="position: absolute; top: 0; left: 0; width: 100%; height: {row.size}px; transform: translateY({row.start}px);"
           >
-            <CalendarViewMonthRecord {r} record={records?.records[row.index]} {defaultField} {field} {shareId} {readonly}/>
+            <CalendarViewMonthRecord
+              {r}
+              {color}
+              record={records?.records[row.index]}
+              {defaultField}
+              {field}
+              {shareId}
+              {readonly}
+            />
           </div>
         {/each}
       </div>
