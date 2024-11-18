@@ -93,9 +93,9 @@
     onSubmit(event) {
       validateForm({ update: true })
     },
-    onChange(event) {
-      validateForm({ update: true })
-    },
+    // onChange(event) {
+    //   validateForm({ update: true })
+    // },
     onUpdate(event) {
       if (!event.form.valid) {
         console.log(event.form.errors)
