@@ -3,7 +3,7 @@
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
   import { Label } from "$lib/components/ui/label/index.js"
 
-  export let defaultValue: boolean | undefined
+  export let defaultValue: boolean | undefined = false
   export let disabled: boolean | undefined
 </script>
 

@@ -39,8 +39,8 @@ export type ICheckboxFieldDTO = z.infer<typeof checkboxFieldDTO>
 export class CheckboxField extends AbstractField<CheckboxFieldValue> {
   constructor(dto: ICheckboxFieldDTO) {
     super(dto)
-    if (dto.defaultValue === true) {
-      this.defaultValue = new CheckboxFieldValue(dto.defaultValue ?? false)
+    if (typeof dto.defaultValue === "boolean") {
+      this.defaultValue = new CheckboxFieldValue(dto.defaultValue)
     }
   }
 
