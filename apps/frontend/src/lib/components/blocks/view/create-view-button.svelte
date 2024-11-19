@@ -100,13 +100,13 @@
               bind:value={$formData.type}
               onValueChange={(type) => {
                 if (type === "calendar") {
-                  const field = $table.schema.getCalendarFields().at(0)?.id.value
+                  const field = $table?.schema.getCalendarFields().at(0)?.id.value
                   formData.update((f) => ({ ...f, calendar: { field } }))
                 } else if (type === "gallery") {
-                  const field = $table.schema.getGalleryFields().at(0)?.id.value
+                  const field = $table?.schema.getGalleryFields().at(0)?.id.value
                   formData.update((f) => ({ ...f, gallery: { field } }))
                 } else if (type === "kanban") {
-                  const field = $table.schema.getKanbanFields().at(0)?.id.value
+                  const field = $table?.schema.getKanbanFields().at(0)?.id.value
                   formData.update((f) => ({ ...f, kanban: { field } }))
                 }
               }}

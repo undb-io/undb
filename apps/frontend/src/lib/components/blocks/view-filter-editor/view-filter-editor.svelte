@@ -84,7 +84,7 @@
       bind:value={$value}
       table={$table}
       on:submit={(e) => handleSubmit(e.detail)}
-      filter={(field) => visibleFields.some((f) => f.id.value === field.id) && getIsFilterableFieldType(field.type)}
+      filter={(field) => getIsFilterableFieldType(field.type)}
     >
       <Button
         size="sm"

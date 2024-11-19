@@ -185,6 +185,12 @@ export class TableDo extends AggregateRoot<ITableEvents> {
         addField(fieldId)
       }
     }
+    if (view?.color.isSome()) {
+      const fieldIds = view.color.unwrap().fieldIds
+      for (const fieldId of fieldIds) {
+        addField(fieldId)
+      }
+    }
 
     for (const field of selected) {
       if (field.type === "button") {

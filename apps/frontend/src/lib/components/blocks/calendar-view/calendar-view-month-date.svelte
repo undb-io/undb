@@ -4,7 +4,7 @@
   import { DateIsSameDay, type RecordDO, type DateField, type DateRangeField, DateFieldValue } from "@undb/table"
   import { type Writable } from "svelte/store"
   import { onMount } from "svelte"
-  import { monthStore } from "$lib/store/calendar.store"
+  import { calendarStore } from "$lib/store/calendar.store"
   import CalendarViewMonthDateRecord from "./calendar-view-month-date-record.svelte"
   import { getDate } from "date-fns/getDate"
   import { isToday } from "date-fns/isToday"
@@ -25,8 +25,15 @@
   export let shareId: string | undefined = undefined
   export let viewId: Readable<string | undefined>
 
-  const isSelected = monthStore.isSelected
-  const getIsSameMonth = monthStore.getIsSameMonth
+  const table = getTable()
+  const store = getRecordsStore()
+
+  const records = store.records
+
+  const isSelected = calendarStore.isSelected
+  const getIsSameMonth = calendarStore.getIsSameMonth
+
+  $: color = $viewId ? $table.views.getViewById($viewId)?.color.into(undefined) : undefined
 
   $: day = getDate(date)
   $: today = isToday(date)
@@ -34,11 +41,6 @@
 
   $: selected = $isSelected(date)
   $: isSameMonth = $getIsSameMonth(date)
-
-  const table = getTable()
-  const store = getRecordsStore()
-
-  const records = store.records
 
   $: dateRecords = $records.filter((r) => {
     const spec = new DateIsSameDay(date, field.id)
@@ -159,11 +161,11 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
   use:setupDropTarget={date}
-  on:click={() => monthStore.select(date)}
+  on:click={() => calendarStore.select(date)}
   on:dblclick={() => onCreateRecord(date)}
   class={cn(
     "group relative h-full border-b border-r border-gray-200 bg-white p-2",
-    ($monthStore.dates.indexOf(date) + 1) % 7 === 0 && "border-r-0",
+    ($calendarStore.dates.indexOf(date) + 1) % 7 === 0 && "border-r-0",
     _isWeekend && "bg-gray-50",
   )}
 >
@@ -206,18 +208,19 @@
           record={aboutToDropRecord}
           {displayField}
           {field}
+          {color}
           class="opacity-50"
         />
       {/if}
       {#each visibleRecords as record (record.id.value)}
-        <CalendarViewMonthDateRecord {date} {r} {record} {displayField} {field} {shareId} {readonly} />
+        <CalendarViewMonthDateRecord {color} {date} {r} {record} {displayField} {field} {shareId} {readonly} />
       {/each}
     </div>
     {#if remainingCount > 0}
       <button
         on:click={() => {
-          monthStore.select(date)
-          monthStore.setScope("selectedDate")
+          calendarStore.select(date)
+          calendarStore.setScope("selectedDate")
         }}
         class="absolute bottom-0 right-0 rounded-sm border bg-white px-1 py-0.5 text-[10px] text-gray-500 transition-all hover:bg-gray-50 hover:shadow-sm"
       >

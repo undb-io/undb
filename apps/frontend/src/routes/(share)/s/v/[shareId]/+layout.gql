@@ -53,6 +53,7 @@ query GetViewShareData($shareId: ID!) {
       }
       calendar {
         field
+        timeScale
       }
       pivot {
         columnLabel

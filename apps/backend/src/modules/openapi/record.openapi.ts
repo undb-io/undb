@@ -14,7 +14,12 @@ import { CommandBus, QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import { Option, type ICommandBus, type IQueryBus, type PaginatedDTO } from "@undb/domain"
 import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
-import { GetPivotDataQuery, GetReadableRecordByIdQuery, GetReadableRecordsQuery } from "@undb/queries"
+import {
+  GetAggregatesQuery,
+  GetPivotDataQuery,
+  GetReadableRecordByIdQuery,
+  GetReadableRecordsQuery,
+} from "@undb/queries"
 import { RecordDO, type IRecordReadableValueDTO } from "@undb/table"
 import Elysia, { t } from "elysia"
 import { withTransaction } from "../../db"
@@ -94,6 +99,33 @@ export class RecordOpenApi {
               tags: ["Record"],
               summary: "Get pivot view data",
               description: "Get pivot view data",
+            },
+          },
+        )
+        .get(
+          "/views/:viewName/records/aggregate",
+          async (ctx) => {
+            const baseName = decodeURIComponent(ctx.params.baseName)
+            const tableName = decodeURIComponent(ctx.params.tableName)
+            const viewName = decodeURIComponent(ctx.params.viewName)
+
+            const result = await this.queryBus.execute(
+              new GetAggregatesQuery({ baseName, tableName, viewName, isReadable: true }),
+            )
+            return {
+              data: result,
+            }
+          },
+          {
+            params: t.Object({
+              baseName: t.String(),
+              tableName: t.String(),
+              viewName: t.String(),
+            }),
+            detail: {
+              tags: ["Record", "Aggregate"],
+              summary: "Get record aggregate in view",
+              description: "Get record aggregate in view",
             },
           },
         )

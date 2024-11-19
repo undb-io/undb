@@ -23,6 +23,7 @@ import {
   createRecords,
   deleteRecordById,
   duplicateRecordById,
+  getAggregateRecords,
   getPivotData,
   getRecordById,
   getRecords,
@@ -89,6 +90,7 @@ export const createOpenApiSpec = (
         viewRecordSchema.openapi({ description: table.name.value + " " + view.name.value + " view record schema" }),
       )
 
+      routes.push(getAggregateRecords(base, table, view))
       routes.push(getViewRecords(base, table, view, viewRecordSchema))
       routes.push(getViewRecordById(base, table, view, viewRecordSchema))
     }

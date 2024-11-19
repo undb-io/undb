@@ -1,25 +1,21 @@
 <script lang="ts">
   import * as Select from "$lib/components/ui/select"
-  import { monthStore } from "$lib/store/calendar.store"
-  import type { MonthScope } from "$lib/store/calendar.store"
+  import { calendarStore } from "$lib/store/calendar.store"
   import { cn } from "$lib/utils"
+  import { CalendarView, type Scope } from "@undb/table"
 
-  const scopes: { value: MonthScope; label: string }[] = [
-    { value: "selectedDate", label: "In selected date" },
-    { value: "withoutDate", label: "Without date" },
-    { value: "thisMonth", label: "In this month" },
-    { value: "allRecords", label: "All records" },
-  ]
+  export let view: CalendarView
 
-  const scope = $monthStore.scope
+  const scope = $calendarStore.scope
+  $: scopes = view.scopes
 
   $: selected = {
     value: $scope,
     label: scopes.find((s) => s.value === $scope)?.label ?? "Select Scope",
   }
 
-  function setScope(scope: MonthScope) {
-    monthStore.setScope(scope)
+  function setScope(scope: Scope) {
+    calendarStore.setScope(scope)
   }
 </script>
 

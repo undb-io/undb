@@ -328,11 +328,12 @@
     percentage,
     dateRange,
   }
+
+  $: component = filterFieldInput[field?.type]?.[op]
 </script>
 
 {#if field && op}
-  {@const c = filterFieldInput[field.type]?.[op]}
-  {#if c}
-    <svelte:component this={c} {disabled} bind:value class={className} {field} />
+  {#if component}
+    <svelte:component this={component} {disabled} bind:value class={className} {field} />
   {/if}
 {/if}

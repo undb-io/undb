@@ -955,6 +955,9 @@
             "type": "date",
             "constraint": {
               "required": true
+            },
+            "option": {
+              "includeTime": true
             }
           },
           "Reviewer": {

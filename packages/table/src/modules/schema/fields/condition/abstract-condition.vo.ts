@@ -8,6 +8,7 @@ import type { Field } from "../field.type"
 import type { IRootCondition, MaybeConditionGroup } from "./condition.type"
 import {
   conditionsWithField,
+  getConditionGroupCount,
   getFieldSpec,
   getFlattenFieldConditions,
   getSpec,
@@ -26,7 +27,7 @@ export abstract class Condition<OptionType extends z.ZodTypeAny> extends ValueOb
   }
 
   get count() {
-    return this.fieldIds.size
+    return getConditionGroupCount(this.value)
   }
 
   getSpec(schema: Schema) {
@@ -79,7 +80,7 @@ export abstract class Condition<OptionType extends z.ZodTypeAny> extends ValueOb
   get fieldIds(): Set<string> {
     const result = new Set<string>()
     for (const condition of this.fieldConditiosIter) {
-      result.add(condition.fieldId)
+      result.add(condition.field)
     }
 
     return result

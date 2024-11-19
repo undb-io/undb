@@ -39,7 +39,7 @@
       class={cn("justify-between", "rounded-r-none", $$restProps.class)}
       {...$$restProps}
     >
-      <span class="overflow-hidden text-ellipsis" title={selectedValue}>
+      <span class="overflow-hidden text-ellipsis text-xs text-gray-700" title={selectedValue}>
         {selectedValue ?? "op..."}
       </span>
       <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -52,6 +52,7 @@
       <Command.Group>
         {#each ops as framework}
           <Command.Item
+            class="text-xs text-gray-700"
             value={framework.value}
             onSelect={(currentValue) => {
               value = currentValue

@@ -40,8 +40,9 @@ query GetShareBaseData($shareId: ID!) {
           field
         }
       calendar {
-        field
-      }
+          field
+          timeScale
+        }
         gallery {
           field
         }

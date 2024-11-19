@@ -180,6 +180,12 @@ export function isEmptyConditionGroup<OptionType extends z.ZodTypeAny>(
   return condition.children.length === 0
 }
 
+export function getConditionGroupCount<OptionType extends z.ZodTypeAny>(
+  condition: IConditionGroup<OptionType>,
+): number {
+  return condition.children.reduce((acc, child) => acc + (isGroup(child) ? getConditionGroupCount(child) : 1), 0)
+}
+
 /**
  * Removes field conditions from a condition group recursively, based on the provided field IDs.
  * If a child condition is a field condition and its field ID is not in the provided set of field IDs,

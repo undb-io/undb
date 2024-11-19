@@ -93,9 +93,9 @@
     onSubmit(event) {
       validateForm({ update: true })
     },
-    onChange(event) {
-      validateForm({ update: true })
-    },
+    // onChange(event) {
+    //   validateForm({ update: true })
+    // },
     onUpdate(event) {
       if (!event.form.valid) {
         console.log(event.form.errors)
@@ -111,7 +111,6 @@
 
   $: dirty = !!$tainted
   $: disabled = !!$allErrors.length
-  $: console.log($allErrors)
 
   $: fields = $table
     .getOrderedMutableFields(formId ? new FormIdVO(formId) : undefined)

@@ -14,6 +14,7 @@ import { z, type ZodTypeAny } from "@undb/zod"
 
 export const RECORD_ID_COMPONENT = "RecordId"
 export const RECORD_COMPONENT = "Record"
+export const AGGREGATE_RECORD_COMPONENT = "Aggregate"
 export const BUTTON_COMPONENT = "Button"
 export const FORM_COMPONENT = "Form"
 export const VIEW_COMPONENT = "View"
@@ -113,6 +114,29 @@ export const getViewRecords = (base: Base, table: TableDo, view: View, recordSch
             schema: z.object({
               total: z.number().int().positive(),
               records: z.array(recordSchema.openapi(view.name.value + ":" + VIEW_RECORD_COMPONENT)),
+            }),
+          },
+        },
+      },
+    },
+  }
+}
+
+export const getAggregateRecords = (base: Base, table: TableDo, view: View): RouteConfig => {
+  return {
+    method: "get",
+    path: `/bases/${base.name.value}/tables/${table.name.value}/views/${view.name.value}/records/aggregate`,
+    description: `Get ${table.name.value} records aggregate in ${view.name.value} view`,
+    summary: `Get ${table.name.value} records aggregate in ${view.name.value} view`,
+    tags: [RECORD_COMPONENT, AGGREGATE_RECORD_COMPONENT, VIEW_COMPONENT],
+    responses: {
+      200: {
+        description: "record aggregate data",
+        content: {
+          "application/json": {
+            schema: z.object({
+              // TODO: add field properties
+              data: z.record(z.string(), z.number()),
             }),
           },
         },

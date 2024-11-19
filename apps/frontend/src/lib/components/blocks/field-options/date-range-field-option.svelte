@@ -1,9 +1,12 @@
 <script lang="ts">
   import { Checkbox } from "$lib/components/ui/checkbox"
-  import NumberInput from "$lib/components/ui/input/number-input.svelte"
   import { Label } from "$lib/components/ui/label/index.js"
   import { Separator } from "$lib/components/ui/separator"
-  import type { IDateFieldConstraint, INumberFieldConstraint } from "@undb/table"
+  import {
+    DEFAULT_DATE_RANGE_FIELD_OPTION,
+    type IDateRangeFieldConstraint,
+    type IDateRangeFieldOption,
+  } from "@undb/table"
   import * as Popover from "$lib/components/ui/popover"
   import { Button } from "$lib/components/ui/button"
   import { cn } from "$lib/utils"
@@ -11,16 +14,20 @@
   import { DateFormatter, getLocalTimeZone, parseAbsolute } from "@internationalized/date"
   import { isDate, isString } from "radash"
   import { RangeCalendar } from "$lib/components/ui/range-calendar"
+  import DateFormatterPicker from "../date/date-formatter-picker.svelte"
+  import TimeFormatterPicker from "../date/time-formatter-picker.svelte"
+  import { Switch } from "$lib/components/ui/switch"
 
   const df = new DateFormatter("en-US", {
     dateStyle: "long",
   })
 
-  export let constraint: IDateFieldConstraint | undefined
+  export let constraint: IDateRangeFieldConstraint | undefined
   export let display: boolean | undefined
   export let defaultValue: [string | Date | null | undefined, string | Date | null | undefined] | undefined = undefined
   export let placeholder: string | undefined = "Default value..."
   export let disabled: boolean | undefined
+  export let option: IDateRangeFieldOption = DEFAULT_DATE_RANGE_FIELD_OPTION
 
   function parse(value: string) {
     try {
@@ -91,6 +98,22 @@
       </Popover.Content>
     </Popover.Root>
   </div>
+  <div>
+    <Label for="format" class="text-xs font-normal">Date Format</Label>
+    <DateFormatterPicker id="format" bind:value={option.format} />
+  </div>
+
+  <div class="inline-flex items-center gap-2">
+    <Switch size="sm" id="includeTime" bind:checked={option.includeTime} />
+    <Label for="includeTime" class="text-xs font-normal">Include Time</Label>
+  </div>
+
+  {#if option.includeTime}
+    <div>
+      <Label for="timeFormat" class="text-xs font-normal">Time Format</Label>
+      <TimeFormatterPicker id="timeFormat" bind:value={option.timeFormat} />
+    </div>
+  {/if}
   {#if constraint}
     <div class="pt-2">
       <Separator />

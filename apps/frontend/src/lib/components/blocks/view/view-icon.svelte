@@ -20,6 +20,8 @@
     calendar: CalendarIcon,
     pivot: PanelsTopLeftIcon,
   }
+
+  $: component = map[type]
 </script>
 
-<svelte:component this={map[type]} {...$$restProps} />
+<svelte:component this={component} {...$$restProps} />

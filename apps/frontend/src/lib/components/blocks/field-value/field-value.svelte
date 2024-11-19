@@ -61,10 +61,12 @@
     button: ButtonControl,
     dateRange: DateRangeField,
   }
+
+  $: component = map[type]
 </script>
 
 <svelte:component
-  this={map[type]}
+  this={component}
   {tableId}
   {recordId}
   {...$$restProps}

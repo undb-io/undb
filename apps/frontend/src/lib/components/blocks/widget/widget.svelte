@@ -58,7 +58,7 @@
     onSuccess: async () => {
       confirmDelete = false
       if ($isDashboard) {
-        await invalidate(`dashboard:${$dashboard.id.value}`)
+        await invalidate(`undb:dashboard:${$dashboard.id.value}`)
       }
     },
     onError(error, variables, context) {
@@ -74,7 +74,7 @@
     enabled: !shareId,
     onSuccess: async () => {
       if ($isDashboard) {
-        await invalidate(`dashboard:${$dashboard.id.value}`)
+        await invalidate(`undb:dashboard:${$dashboard.id.value}`)
       }
     },
     onError(error, variables, context) {

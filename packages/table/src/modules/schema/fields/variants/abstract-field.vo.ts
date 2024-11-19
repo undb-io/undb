@@ -150,6 +150,9 @@ export abstract class AbstractField<
   abstract get aggregate(): ZodEnum<[string, ...string[]]> | ZodUndefined
 
   formatAggregate(aggregate?: string, value?: number | string): string | number {
+    if (aggregate === "percent_empty" || aggregate === "percent_not_empty" || aggregate === "percent_uniq") {
+      return `${(Number(value) ?? 0) * 100}%`
+    }
     return value ?? ""
   }
 

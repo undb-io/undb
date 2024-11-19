@@ -18,6 +18,7 @@ export interface SingleQueryArgs {
 
 export interface CountQueryArgs {
   filter: Option<RecordComositeSpecification>
+  select: Option<string[]>
 }
 
 export interface QueryArgs {
@@ -49,7 +50,7 @@ export interface IRecordQueryRepository {
   find(table: TableDo, view: View, query: Option<QueryArgs>): Promise<PaginatedDTO<IRecordDTO>>
   findOneById(table: TableDo, id: RecordId, query: Option<SingleQueryArgs>): Promise<Option<IRecordDTO>>
   count(tableId: TableId): Promise<number>
-  countWhere(table: TableDo, spec: Option<CountQueryArgs>): Promise<number>
+  countWhere(table: TableDo, view: View | undefined, spec: Option<CountQueryArgs>): Promise<number>
   getPivotData(table: TableDo, viewId: string): Promise<IGetPivotDataOutput>
 
   aggregate(
@@ -91,6 +92,7 @@ export function buildQuery(table: TableDo, dto: IGetRecordsDTO): Option<QueryArg
 export function buildCountQuery(table: TableDo, dto: ICountRecordsDTO): Option<CountQueryArgs> {
   const query: CountQueryArgs = {
     filter: None,
+    select: None,
   }
 
   if (dto.q) {

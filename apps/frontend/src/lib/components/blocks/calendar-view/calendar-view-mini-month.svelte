@@ -1,23 +1,25 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button"
-  import { monthStore } from "$lib/store/calendar.store"
+  import { calendarStore } from "$lib/store/calendar.store"
   import { cn } from "$lib/utils"
   import { format } from "date-fns"
   import { getMonth } from "date-fns/getMonth"
   import { isSameMonth } from "date-fns/isSameMonth"
   import { ChevronLeftIcon, ChevronRightIcon } from "lucide-svelte"
 
-  const currentYear = monthStore.currentYear
-  const currentMonth = monthStore.currentMonth
+  const currentYear = calendarStore.currentYear
+  const currentMonth = calendarStore.currentMonth
+
+  export let onChange: (date: Date) => void = () => {}
 </script>
 
 <div class="flex w-full flex-col">
   <div class="flex items-center px-2 py-1">
-    <Button variant="ghost" size="icon" on:click={() => monthStore.prevYear()}>
+    <Button variant="ghost" size="icon" on:click={() => calendarStore.prevYear()}>
       <ChevronLeftIcon class="size-3 text-gray-500" />
     </Button>
     <span class="flex-1 text-center text-sm font-medium">{$currentYear}</span>
-    <Button variant="ghost" size="icon" on:click={() => monthStore.nextYear()}>
+    <Button variant="ghost" size="icon" on:click={() => calendarStore.nextYear()}>
       <ChevronRightIcon class="size-3 text-gray-500" />
     </Button>
   </div>
@@ -32,7 +34,10 @@
           isCurrentMonth && "bg-gray-200 font-semibold",
           isNow && !isCurrentMonth && "font-semibold text-blue-500",
         )}
-        on:click={() => monthStore.setMonth(date)}
+        on:click={() => {
+          calendarStore.setMonth(date)
+          onChange(date)
+        }}
       >
         {format(date, "MMM")}
       </button>

@@ -18,12 +18,12 @@
 
 <Dropdown.Root>
   <Dropdown.Trigger asChild let:builder>
-    <Button variant="ghost" size="sm" class="gap-1" builders={[builder]} {...$$restProps}>
+    <Button variant="ghost" size="sm" class="group gap-1" builders={[builder]} {...$$restProps}>
       <CalendarIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
       Calendar
       {#if field}
         <span>by</span>
-        <span class="inline-flex items-center gap-1 rounded-sm bg-gray-100 px-1.5 py-0.5">
+        <span class="inline-flex items-center gap-1 rounded-sm bg-gray-100 px-1.5 py-0.5 group-hover:bg-gray-200">
           <FieldIcon type={field.type} {field} class="size-3 text-gray-700" />
           {field.name.value}
         </span>
@@ -38,6 +38,6 @@
         Calendar view
       {/if}
     </Dropdown.Label>
-    <CalendarFieldForm {view} {readonly} />
+    <CalendarFieldForm bind:view {readonly} />
   </Dropdown.Content>
 </Dropdown.Root>

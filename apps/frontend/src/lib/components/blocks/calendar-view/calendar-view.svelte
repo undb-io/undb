@@ -1,10 +1,11 @@
 <script lang="ts">
   import { getTable } from "$lib/store/table.store"
-  import type { Readable, Writable } from "svelte/store"
+  import { derived, type Readable, type Writable } from "svelte/store"
   import type { CalendarView, RecordDO } from "@undb/table"
   import { FieldIdVo, Records, type DateField, type DateRangeField } from "@undb/table"
   import { createRecordsStore, setRecordsStore } from "$lib/store/records.store"
   import CalendarViewToolbar from "./calendar-view-toolbar.svelte"
+  import { calendarStore } from "$lib/store/calendar.store"
 
   const table = getTable()
   export let viewId: Readable<string | undefined>
@@ -25,19 +26,53 @@
   if (records) {
     recordsStore.setRecords(new Records(records), Date.now())
   }
+
+  $: timeScale = view.timeScale
+  let startOfWeekTimestamp = calendarStore.startOfWeekTimestamp
+  let selectedDate = derived(calendarStore, ($calendarStore) => $calendarStore.selectedDate)
 </script>
 
 {#key $table.id.value}
-  <CalendarViewToolbar {viewId} {view} {readonly} />
+  <CalendarViewToolbar {viewId} bind:view {readonly} />
   {#if view.type === "calendar"}
     {#if field}
-      {#await import("$lib/components/blocks/calendar-view/calendar-view-month.svelte") then { default: CalendarViewMonth }}
-        <CalendarViewMonth {field} {view} {shareId} {viewId} {disableRecordQuery} {readonly} {r} />
-      {/await}
+      {#if timeScale === "month"}
+        {#await import("$lib/components/blocks/calendar-view/calendar-view-month.svelte") then { default: CalendarViewMonth }}
+          <CalendarViewMonth {field} bind:view {shareId} {viewId} {disableRecordQuery} {readonly} {r} />
+        {/await}
+      {:else if timeScale === "week"}
+        {#await import("$lib/components/blocks/calendar-view/calendar-view-day.svelte") then { default: CalendarViewWeek }}
+          <CalendarViewWeek
+            {field}
+            bind:view
+            {shareId}
+            {viewId}
+            {disableRecordQuery}
+            {readonly}
+            {r}
+            startDate={startOfWeekTimestamp}
+            days={7}
+          />
+        {/await}
+      {:else if timeScale === "day"}
+        {#await import("$lib/components/blocks/calendar-view/calendar-view-day.svelte") then { default: CalendarViewDay }}
+          <CalendarViewDay
+            {field}
+            bind:view
+            {shareId}
+            {viewId}
+            {disableRecordQuery}
+            {readonly}
+            {r}
+            startDate={selectedDate}
+            days={1}
+          />
+        {/await}
+      {/if}
     {:else}
       <section class="flex h-full w-full items-center justify-center">
         {#await import("$lib/components/blocks/calendar-view/select-calendar-field.svelte") then { default: SelectCalendarField }}
-          <SelectCalendarField {view} />
+          <SelectCalendarField bind:view />
         {/await}
       </section>
     {/if}

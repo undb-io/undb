@@ -8,6 +8,7 @@
   import * as Popover from "$lib/components/ui/popover"
   import { isString, isDate } from "radash"
   import { Button } from "$lib/components/ui/button"
+  import TimePicker from "$lib/components/blocks/date/time-picker.svelte"
 
   export let tableId: string
   export let field: DateField
@@ -19,11 +20,23 @@
       return undefined
     }
   }
-  let formatter = field.formatter
+  $: formatter = field.formatter
+  $: includeTime = field.includeTime
   $: internalDate = isString(value) ? parse(value) : isDate(value) ? parse(value.toISOString()) : undefined
   export let recordId: string
   export let isEditing: boolean
   export let onValueChange = (value: string | undefined) => {}
+
+  $: shouldConfirm = includeTime && value
+
+  function save(value: string | Date | null) {
+    $updateCell.mutate({
+      tableId,
+      id: recordId,
+      values: { [field.id.value]: value },
+    })
+    open = false
+  }
 
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
@@ -67,13 +80,29 @@
               value = undefined
             }
             onValueChange(value)
-            $updateCell.mutate({
-              tableId,
-              id: recordId,
-              values: { [field.id.value]: value },
-            })
+            if (!shouldConfirm) {
+              save(value)
+            }
           }}
         />
+        {#if includeTime}
+          <div class="px-2 pb-2">
+            <TimePicker
+              value={{
+                hour: value ? new Date(value).getHours() : 0,
+                minute: value ? new Date(value).getMinutes() : 0,
+              }}
+              onValueChange={(v) => {
+                if (!value) return
+                value = new Date(new Date(value).setHours(v.hour, v.minute, 0, 0)).toISOString()
+                onValueChange(value)
+                if (!shouldConfirm) {
+                  save(value)
+                }
+              }}
+            />
+          </div>
+        {/if}
         <div class="flex items-center gap-1.5 border-t px-2 py-1">
           <Button
             class="flex-1"
@@ -81,31 +110,33 @@
             on:click={() => {
               value = today(getLocalTimeZone()).toString()
               onValueChange(value)
-              $updateCell.mutate({
-                tableId,
-                id: recordId,
-                values: { [field.id.value]: value },
-              })
-              open = false
+              save(value)
             }}>Today</Button
           >
-          <Button
-            class="flex-1"
-            variant="outline"
-            on:click={() => {
-              if (value) {
-                value = undefined
-                onValueChange(value)
-                $updateCell.mutate({
-                  tableId,
-                  id: recordId,
-                  values: { [field.id.value]: value },
-                })
-              }
-              open = false
-            }}>Clear</Button
-          >
+          {#if !field.required}
+            <Button
+              class="flex-1"
+              variant="outline"
+              on:click={() => {
+                if (value) {
+                  value = undefined
+                  onValueChange(value)
+                  save(null)
+                }
+              }}>Clear</Button
+            >
+          {/if}
         </div>
+        {#if shouldConfirm}
+          <div class="flex items-center gap-1.5 border-t px-2 py-1">
+            <Button
+              class="w-full"
+              on:click={() => {
+                save(value ?? null)
+              }}>Save</Button
+            >
+          </div>
+        {/if}
       </Popover.Content>
     </Popover.Root>
   {:else if value}

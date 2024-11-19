@@ -74,7 +74,7 @@
     mutationFn: trpc.dashboard.widget.add.mutate,
     async onSuccess(data) {
       onSuccess()
-      await invalidate(`dashboard:${$dashboard.id.value}`)
+      await invalidate(`undb:dashboard:${$dashboard.id.value}`)
     },
     onError(error, variables, context) {
       toast.error(error.message)

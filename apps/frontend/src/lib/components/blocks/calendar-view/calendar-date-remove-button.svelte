@@ -8,7 +8,7 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { useQueryClient } from "@tanstack/svelte-query"
   import { cn } from "$lib/utils"
-  import { monthStore } from "$lib/store/calendar.store"
+  import { calendarStore } from "$lib/store/calendar.store"
 
   export let view: CalendarView
 
@@ -69,6 +69,6 @@
   }
 </script>
 
-<button use:setupDropTarget class={cn("hidden transition-opacity", $monthStore.isDragging && "block")}>
+<button use:setupDropTarget class={cn("hidden transition-opacity", $calendarStore.isDragging && "block")}>
   <Trash2Icon class={cn("size-10 text-gray-600", isDraggedOver && "text-red-600")} />
 </button>

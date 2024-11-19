@@ -1,8 +1,8 @@
 import { None, Option, Some } from "@undb/domain"
-import type { RecordComositeSpecification } from "../../.."
-import { TableIdVo } from "../../../../table-id.vo"
+import { mapKeys } from "radash"
+import { FieldIdVo, type RecordComositeSpecification } from "../../.."
+import { withUniqueTable } from "../../../../specifications/table-name.specification"
 import { getSpec } from "../../../schema/fields/condition"
-import { ViewIdVo } from "../../../views"
 import type { AggregateResult, IGetAggregatesDTO } from "../../dto"
 import type { QueryArgs } from "../../record/record.repository"
 import type { RecordsQueryService } from "../records.query-service"
@@ -11,13 +11,14 @@ export async function getAggregates(
   this: RecordsQueryService,
   dto: IGetAggregatesDTO,
 ): Promise<Record<string, AggregateResult>> {
-  const tableId = new TableIdVo(dto.tableId)
-  const table = (await this.tableRepository.findOneById(tableId)).expect("Table not found")
-  const viewId = dto.viewId ? Some(new ViewIdVo(dto.viewId)) : None
+  const spec = withUniqueTable(dto).expect("Invalid unique table specification")
+  const table = (await this.tableRepository.findOne(Some(spec))).expect("Table not found")
+  const view = table.views.getViewByNameOrId(dto.viewName, dto.viewId)
+  const viewId = Some(view.id)
   const aggregate = dto.aggregate
 
   let args: QueryArgs = {
-    select: None,
+    select: dto.select ? Some(dto.select) : None,
     filter: None,
     pagination: None,
     ignoreView: dto.ignoreView,
@@ -26,5 +27,12 @@ export async function getAggregates(
     args.filter = getSpec(table.schema, dto.condition) as Option<RecordComositeSpecification>
   }
 
-  return this.repo.aggregate(table, viewId, Option(aggregate), Some(args))
+  const result = await this.repo.aggregate(table, viewId, Option(aggregate), Some(args))
+  if (dto.isReadable) {
+    return mapKeys(
+      result,
+      (fieldId) => table.schema.getFieldById(new FieldIdVo(fieldId)).expect("Field not found").name.value,
+    )
+  }
+  return result
 }

@@ -50,6 +50,10 @@
         await tick()
         await client.invalidateQueries({ queryKey: ["aggregate", table.id.value, widget.id] })
       }
+      if (isDashboard) {
+        await invalidate(`undb:dashboard:${$dashboard.id.value}`)
+        await tick()
+      }
       onSuccess()
     },
     onError(error, variables, context) {
@@ -61,7 +65,7 @@
     mutationFn: trpc.dashboard.widget.update.mutate,
     async onSuccess(data, variables, context) {
       if (table) {
-        await invalidate(`dashboard:${$dashboard.id.value}`)
+        await invalidate(`undb:dashboard:${$dashboard.id.value}`)
         await tick()
         await client.invalidateQueries({ queryKey: ["aggregate", table.id.value, widget.id] })
       }

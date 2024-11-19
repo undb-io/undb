@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-121
+
+
+### 🏡 Chore
+
+- Update config ([2de647e](https://github.com/undb-io/undb/commit/2de647e))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-120
 
 

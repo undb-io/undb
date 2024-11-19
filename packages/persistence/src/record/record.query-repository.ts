@@ -60,13 +60,14 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     return Number(total)
   }
 
-  async countWhere(table: TableDo, query: Option<CountQueryArgs>): Promise<number> {
-    const t = new UnderlyingTable(table)
-
+  async countWhere(table: TableDo, view: View | undefined, query: Option<CountQueryArgs>): Promise<number> {
     const spec = Option(query.into(undefined)?.filter.into(undefined))
 
-    const { total } = await this.qb
-      .selectFrom(t.name)
+    const selectFields = table.getSelectFields(view, undefined)
+    const foreignTables = await this.getForeignTables(table, selectFields)
+    const qb = this.helper.createQuery(table, foreignTables, selectFields, spec)
+
+    const { total } = await qb
       .select((eb) => eb.fn.countAll().as("total"))
       .where(this.helper.handleWhere(table, spec))
       .executeTakeFirstOrThrow()
@@ -105,8 +106,6 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const context = executionContext.getStore()
     const userId = context?.user?.userId!
 
-    const t = new UnderlyingTable(table)
-
     const filter = query.into(undefined)?.filter.into(undefined)
     const defaultSort: IViewSort = [{ fieldId: AUTO_INCREMENT_TYPE, direction: "asc" }]
     const ignoreView = query.into(undefined)?.ignoreView
@@ -126,7 +125,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
       .where(this.helper.handleWhere(table, spec))
       .execute()
 
-    const total = await this.countWhere(table, Some({ filter: spec }))
+    const total = await this.countWhere(table, view, Some({ filter: spec, select: query.map((q) => q.select) }))
 
     const records = result.map((r) => getRecordDTOFromEntity(table, r, foreignTables))
     return { values: records, total: Number(total) }
@@ -305,6 +304,9 @@ export class RecordQueryRepository implements IRecordQueryRepository {
           if (!fieldAggregate) {
             continue
           }
+          if (!selectFields.some((f) => f.id.value === fieldId)) {
+            continue
+          }
           const field = table.schema.fieldMapById.get(fieldId)
           if (!field) {
             continue
@@ -325,6 +327,9 @@ export class RecordQueryRepository implements IRecordQueryRepository {
 
           const field = table.schema.fieldMapById.get(fieldId)
           if (!field) {
+            continue
+          }
+          if (!selectFields.some((f) => f.id.value === fieldId)) {
             continue
           }
           // const builder = new AggregateFnBuiler(t, eb, field, fieldAggregate)

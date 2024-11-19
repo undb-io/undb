@@ -2,7 +2,12 @@
   import { Checkbox } from "$lib/components/ui/checkbox"
   import { Label } from "$lib/components/ui/label/index.js"
   import { Separator } from "$lib/components/ui/separator"
-  import { isDateFieldMacro, type IDateFieldConstraint } from "@undb/table"
+  import {
+    DEFAULT_DATE_FIELD_OPTION,
+    type IDateFieldOption,
+    isDateFieldMacro,
+    type IDateFieldConstraint,
+  } from "@undb/table"
   import * as Popover from "$lib/components/ui/popover"
   import { Button } from "$lib/components/ui/button"
   import { cn } from "$lib/utils"
@@ -12,6 +17,9 @@
   import { Calendar } from "$lib/components/ui/calendar"
   import DateMacroPicker from "../date/date-macro-picker.svelte"
   import DateMacro from "../date/date-macro.svelte"
+  import DateFormatterPicker from "../date/date-formatter-picker.svelte"
+  import TimeFormatterPicker from "../date/time-formatter-picker.svelte"
+  import { Switch } from "$lib/components/ui/switch"
 
   const df = new DateFormatter("en-US", {
     dateStyle: "long",
@@ -22,6 +30,7 @@
   export let defaultValue: string | Date | undefined
   export let placeholder: string | undefined = "Default value..."
   export let disabled: boolean | undefined
+  export let option: IDateFieldOption = DEFAULT_DATE_FIELD_OPTION
 
   function parse(value: string) {
     try {
@@ -94,6 +103,24 @@
       </Popover.Content>
     </Popover.Root>
   </div>
+
+  <div>
+    <Label for="format" class="text-xs font-normal">Date Format</Label>
+    <DateFormatterPicker id="format" bind:value={option.format} />
+  </div>
+
+  <div class="inline-flex items-center gap-2">
+    <Switch size="sm" id="includeTime" bind:checked={option.includeTime} />
+    <Label for="includeTime" class="text-xs font-normal">Include Time</Label>
+  </div>
+
+  {#if option.includeTime}
+    <div>
+      <Label for="timeFormat" class="text-xs font-normal">Time Format</Label>
+      <TimeFormatterPicker id="timeFormat" bind:value={option.timeFormat} />
+    </div>
+  {/if}
+
   {#if constraint}
     <div class="pt-2">
       <Separator />

@@ -51,6 +51,7 @@
           trpc.record.list.query({
             tableId: $table.id.value,
             q: $q || undefined,
+            ignoreView: true,
             filters: $selected?.length
               ? {
                   conjunction: "and",

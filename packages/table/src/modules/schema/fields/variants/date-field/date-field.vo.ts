@@ -8,10 +8,12 @@ import { fieldId, FieldIdVo } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { createAbstractDateConditionMather } from "../abstractions/abstract-date-field.condition"
+import { abstractDateOption } from "../abstractions/abstract-date-option"
 import { abstractDateAggregate } from "../abstractions/abstract-date.aggregate"
 import { dateFieldConstraint, DateFieldConstraint } from "./date-field-constraint.vo"
 import { isDateFieldMacro } from "./date-field-macro"
 import { dateFieldValue, DateFieldValue } from "./date-field-value.vo"
+
 import {
   createDateFieldCondition,
   type IDateFieldCondition,
@@ -21,10 +23,23 @@ import { DateEqual } from "./date-field.specification"
 
 export const DATE_TYPE = "date" as const
 
+export const dateFieldOption = abstractDateOption.extend({
+  includeTime: z.boolean().optional(),
+})
+
+export type IDateFieldOption = z.infer<typeof dateFieldOption>
+
+export const DEFAULT_DATE_FIELD_OPTION = {
+  format: "yyyy-MM-dd",
+  includeTime: false,
+  timeFormat: "HH:mm",
+} as const satisfies IDateFieldOption
+
 export const createDateFieldDTO = createBaseFieldDTO.extend({
   type: z.literal(DATE_TYPE),
   constraint: dateFieldConstraint.optional(),
   defaultValue: dateFieldValue,
+  option: dateFieldOption.optional(),
 })
 
 export const createTablesDateFieldDTO = createDateFieldDTO
@@ -37,11 +52,12 @@ export const dateFieldDTO = baseFieldDTO.extend({
   type: z.literal(DATE_TYPE),
   constraint: dateFieldConstraint.optional(),
   defaultValue: dateFieldValue,
+  option: dateFieldOption.optional(),
 })
 
 export type IDateFieldDTO = z.infer<typeof dateFieldDTO>
 
-export class DateField extends AbstractField<DateFieldValue> {
+export class DateField extends AbstractField<DateFieldValue, DateFieldConstraint, IDateFieldOption> {
   constructor(dto: IDateFieldDTO) {
     super(dto)
     if (dto.constraint) {
@@ -50,6 +66,32 @@ export class DateField extends AbstractField<DateFieldValue> {
     if (dto.defaultValue) {
       this.defaultValue = new DateFieldValue(dto.defaultValue)
     }
+    if (dto.option) {
+      this.option = Some(dto.option)
+    }
+  }
+
+  get dateFieldOption() {
+    return this.option.unwrapOr(DEFAULT_DATE_FIELD_OPTION)
+  }
+
+  get dateFormatterString() {
+    return this.dateFieldOption.format ?? DEFAULT_DATE_FIELD_OPTION.format
+  }
+
+  get timeFormatterString() {
+    return this.dateFieldOption.timeFormat ?? DEFAULT_DATE_FIELD_OPTION.timeFormat
+  }
+
+  get includeTime() {
+    return this.dateFieldOption.includeTime ?? DEFAULT_DATE_FIELD_OPTION.includeTime
+  }
+
+  get fullFormatterString() {
+    if (this.includeTime) {
+      return `${this.dateFormatterString} ${this.timeFormatterString}`
+    }
+    return this.dateFormatterString
   }
 
   static create(dto: ICreateDateFieldDTO) {
@@ -57,7 +99,8 @@ export class DateField extends AbstractField<DateFieldValue> {
   }
 
   get formatter() {
-    return format("yyyy-MM-dd")
+    const str = this.fullFormatterString
+    return format(str)
   }
 
   format(date: Date) {

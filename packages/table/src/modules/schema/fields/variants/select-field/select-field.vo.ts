@@ -1,13 +1,13 @@
 import { Option, Some, applyRules } from "@undb/domain"
 import { z } from "@undb/zod"
 import { match } from "ts-pattern"
+import type { TableDo } from "../../../../../table.do"
 import { ColorsVO } from "../../../../colors/colors.vo"
 import type { FormFieldVO } from "../../../../forms/form/form-field.vo"
 import type { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
-import type { TableDo } from "../../../../table.do"
 import { FieldIdVo, fieldId } from "../../field-id.vo"
 import type { IFieldVisitor } from "../../field.visitor"
-import { Options, option, optionId } from "../../option"
+import { Options, option, optionId, type IOptionId } from "../../option"
 import { OptionNameShouldBeUnique } from "../../rules/option-name-should-be-unique.rule"
 import { AbstractField, baseFieldDTO, createBaseFieldDTO } from "../abstract-field.vo"
 import { SelectFieldConstraint, selectFieldConstraint } from "./select-field-constraint.vo"
@@ -146,7 +146,7 @@ export class SelectField extends AbstractField<SelectFieldValue, SelectFieldCons
     return this.option.into(undefined)?.options ?? []
   }
 
-  getOptionById(id: OptionId) {
+  getOptionById(id: IOptionId) {
     return this.options.find((o) => o.id === id)
   }
 

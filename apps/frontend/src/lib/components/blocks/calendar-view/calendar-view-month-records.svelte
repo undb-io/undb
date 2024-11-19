@@ -6,7 +6,7 @@
   import { getTable } from "$lib/store/table.store"
   import { type Readable } from "svelte/store"
   import { trpc } from "$lib/trpc/client"
-  import { monthStore } from "$lib/store/calendar.store"
+  import { calendarStore } from "$lib/store/calendar.store"
   import { type IRecordsDTO, type IViewFilterGroup, Records } from "@undb/table"
   import { format } from "date-fns"
   import { match } from "ts-pattern"
@@ -17,8 +17,10 @@
   import { createVirtualizer } from "@tanstack/svelte-virtual"
   import { inview } from "svelte-inview"
   import { LoaderCircleIcon } from "lucide-svelte"
+  import { CalendarView } from "@undb/table"
 
   export let viewId: Readable<string | undefined>
+  export let view: CalendarView
   export let field: DateField | DateRangeField
   export let r: Writable<string | null>
   export let shareId: string | undefined
@@ -28,17 +30,19 @@
 
   let defaultField = $t.schema.getDefaultDisplayField().into(undefined)
 
-  const startTimestamp = monthStore.startTimestamp
-  const endTimestamp = monthStore.endTimestamp
-  const scope = $monthStore.scope
+  const startTimestamp = calendarStore.startTimestamp
+  const endTimestamp = calendarStore.endTimestamp
+  const startOfWeekTimestamp = calendarStore.startOfWeekTimestamp
+  const endOfWeekTimestamp = calendarStore.endOfWeekTimestamp
+  const scope = $calendarStore.scope
 
   const search = writable("")
 
   const getRecords = createInfiniteQuery(
     derived(
-      [t, viewId, monthStore, startTimestamp, endTimestamp, search],
-      ([$table, $viewId, $monthStore, $startTimestamp, $endTimestamp, $search]) => {
-        const date = $monthStore.selectedDate
+      [t, viewId, calendarStore, startTimestamp, endTimestamp, search],
+      ([$table, $viewId, $calendarStore, $startTimestamp, $endTimestamp, $search]) => {
+        const date = $calendarStore.selectedDate
 
         const filters = match($scope)
           .returnType<IViewFilterGroup | undefined>()
@@ -66,12 +70,23 @@
               children: [{ field: field.id.value, op: "is_empty" }],
             }
           })
+          .with("thisWeek", () => {
+            if (!$startOfWeekTimestamp || !$endOfWeekTimestamp) return undefined
+            return {
+              conjunction: "and",
+              children: [
+                { field: field.id.value, op: "is_after", value: $startOfWeekTimestamp!.toISOString() },
+                { field: field.id.value, op: "is_before", value: $endOfWeekTimestamp!.toISOString() },
+              ],
+            }
+          })
           .otherwise(() => undefined)
 
         const dateString = match($scope)
           .returnType<string | undefined>()
           .with("selectedDate", () => date?.toISOString())
           .with("thisMonth", () => $startTimestamp?.toISOString())
+          .with("thisWeek", () => $startOfWeekTimestamp?.toISOString())
           .otherwise(() => undefined)
         return {
           queryKey: ["records", $table?.id.value, $viewId, scope, dateString, $search],
@@ -104,6 +119,8 @@
 
   let virtualListEl: HTMLDivElement
 
+  $: color = $viewId ? $t.views.getViewById($viewId)?.color.into(undefined) : undefined
+
   $: virtualizer = createVirtualizer<HTMLDivElement, HTMLDivElement>({
     count: records?.count ?? 0,
     getScrollElement: () => virtualListEl,
@@ -112,12 +129,12 @@
   })
 </script>
 
-<div class="flex flex-1 flex-col gap-2 overflow-hidden p-2">
+<div class="flex h-full flex-1 flex-col gap-2 overflow-hidden p-2">
   <div class="flex items-center justify-between gap-1.5 text-sm font-medium">
     <span> Records </span>
 
     <span class="flex-1">
-      <CalendarViewMonthRecordsFilterPicker />
+      <CalendarViewMonthRecordsFilterPicker bind:view />
     </span>
   </div>
 
@@ -133,7 +150,15 @@
           <div
             style="position: absolute; top: 0; left: 0; width: 100%; height: {row.size}px; transform: translateY({row.start}px);"
           >
-            <CalendarViewMonthRecord {r} record={records?.records[row.index]} {defaultField} {field} {shareId} {readonly}/>
+            <CalendarViewMonthRecord
+              {r}
+              {color}
+              record={records?.records[row.index]}
+              {defaultField}
+              {field}
+              {shareId}
+              {readonly}
+            />
           </div>
         {/each}
       </div>
@@ -159,7 +184,7 @@
         </div>
       {/if}
     {:else if !$getRecords.isPending}
-      <div class="flex h-full items-center justify-center">
+      <div class="flex h-full flex-1 items-center justify-center">
         <span class="text-muted-foreground text-sm">No Records found</span>
       </div>
     {/if}

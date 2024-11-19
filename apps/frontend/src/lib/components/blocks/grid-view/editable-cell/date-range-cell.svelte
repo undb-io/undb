@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { parseAbsolute, type DateValue, getLocalTimeZone } from "@internationalized/date"
+  import { parseAbsolute, getLocalTimeZone } from "@internationalized/date"
   import { RangeCalendar } from "$lib/components/ui/range-calendar/index.js"
   import * as Popover from "$lib/components/ui/popover/index.js"
   import { isString } from "radash"
@@ -9,10 +9,16 @@
   import { toast } from "svelte-sonner"
   import { trpc } from "$lib/trpc/client.js"
   import Button from "$lib/components/ui/button/button.svelte"
+  import TimePicker from "$lib/components/blocks/date/time-picker.svelte"
+
+  type Value = [string | Date | null | undefined, string | Date | null | undefined] | undefined
 
   export let tableId: string
   export let recordId: string
-  export let value: [string | Date | null | undefined, string | Date | null | undefined] | undefined = undefined
+  export let value: Value = undefined
+
+  $: startDate = value?.[0]
+  $: endDate = value?.[1]
 
   function parse(value: string) {
     try {
@@ -34,11 +40,10 @@
   export let field: DateRangeField
   export let isEditing = false
   export let isSelected = false
-  let formatter = field.formatter
+  $: formatter = field.formatter
+  $: includeTime = field.includeTime
 
-  export let onValueChange: (
-    value: [string | Date | null | undefined, string | Date | null | undefined] | undefined,
-  ) => void
+  export let onValueChange: (value: Value) => void
 
   let open = false
   $: if (isEditing) {
@@ -55,21 +60,32 @@
       toast.error(error.message)
     },
   })
+
+  function save(value: Value) {
+    $updateCell.mutate({
+      tableId,
+      id: recordId,
+      values: { [field.id.value]: value },
+    })
+    open = false
+  }
 </script>
 
 <div class={$$restProps.class}>
   {#if isEditing}
     <Popover.Root openFocus bind:open>
-      <Popover.Trigger class="h-full w-full text-left outline-none ring-0">
-        {#if internalValue && internalValue.start}
-          {#if internalValue.end}
-            {formatter(internalValue.start.toDate())} - {formatter(internalValue.end.toDate())}
-          {:else}
-            {formatter(internalValue.start.toDate())}
+      <Popover.Trigger class="h-full w-full overflow-hidden text-left outline-none ring-0">
+        <span class="flex w-full items-center truncate">
+          {#if internalValue && internalValue.start}
+            {#if internalValue.end}
+              {formatter(internalValue.start.toDate())} - {formatter(internalValue.end.toDate())}
+            {:else}
+              {formatter(internalValue.start.toDate())}
+            {/if}
+          {:else if value?.[0]}
+            {formatter(new Date(value[0]))}
           {/if}
-        {:else if value?.[0]}
-          {formatter(new Date(value[0]))}
-        {/if}
+        </span>
       </Popover.Trigger>
       <Popover.Content class="w-auto p-0">
         <RangeCalendar
@@ -83,11 +99,9 @@
             value = [startDate, endDate]
             onValueChange(value)
             if (startDate && endDate) {
-              $updateCell.mutate({
-                tableId,
-                id: recordId,
-                values: { [field.id.value]: value },
-              })
+              if (!includeTime) {
+                save(value)
+              }
             }
           }}
           value={internalValue}
@@ -95,6 +109,40 @@
           initialFocus
           numberOfMonths={2}
         />
+        {#if includeTime}
+          <div class="flex items-center gap-2 p-2 pt-0">
+            <div class="flex-1">
+              <TimePicker
+                disabled={!startDate}
+                value={{
+                  hour: startDate ? new Date(startDate).getHours() : 0,
+                  minute: startDate ? new Date(startDate).getMinutes() : 0,
+                }}
+                onValueChange={(v) => {
+                  if (!startDate) return
+                  startDate = new Date(new Date(startDate).setHours(v.hour, v.minute, 0, 0)).toISOString()
+                  value = [startDate, endDate]
+                  onValueChange(value)
+                }}
+              />
+            </div>
+            <div class="flex-1">
+              <TimePicker
+                disabled={!endDate}
+                value={{
+                  hour: endDate ? new Date(endDate).getHours() : 0,
+                  minute: endDate ? new Date(endDate).getMinutes() : 0,
+                }}
+                onValueChange={(v) => {
+                  if (!endDate) return
+                  endDate = new Date(new Date(endDate).setHours(v.hour, v.minute, 0, 0)).toISOString()
+                  value = [startDate, endDate]
+                  onValueChange(value)
+                }}
+              />
+            </div>
+          </div>
+        {/if}
 
         <div class="border-t p-2">
           <Button
@@ -106,22 +154,39 @@
               $updateCell.mutate({
                 tableId,
                 id: recordId,
-                values: { [field.id.value]: value },
+                values: { [field.id.value]: null },
               })
+              open = false
             }}
           >
             Clear
           </Button>
         </div>
+        {#if includeTime}
+          <div class="border-t p-2">
+            <Button
+              class="w-full"
+              on:click={() => {
+                save(value)
+              }}
+            >
+              Save
+            </Button>
+          </div>
+        {/if}
       </Popover.Content>
     </Popover.Root>
-  {:else if internalValue && internalValue.start}
-    {#if internalValue.end}
-      {formatter(internalValue.start.toDate())} - {formatter(internalValue.end.toDate())}
-    {:else}
-      {formatter(internalValue.start.toDate())}
-    {/if}
-  {:else if value?.[0]}
-    {formatter(new Date(value[0]))}
+  {:else}
+    <span class="flex w-full items-center truncate">
+      {#if internalValue && internalValue.start}
+        {#if internalValue.end}
+          {formatter(internalValue.start.toDate())} - {formatter(internalValue.end.toDate())}
+        {:else}
+          {formatter(internalValue.start.toDate())}
+        {/if}
+      {:else if value?.[0]}
+        {formatter(new Date(value[0]))}
+      {/if}
+    </span>
   {/if}
 </div>

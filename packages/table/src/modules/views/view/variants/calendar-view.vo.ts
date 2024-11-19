@@ -9,8 +9,14 @@ import { AbstractView, baseViewDTO, createBaseViewDTO, updateBaseViewDTO } from 
 
 export const CALENDAR_TYPE = "calendar" as const
 
+export const calendarTimeScale = z.enum(["day", "week", "month"])
+export type CalendarTimeScale = z.infer<typeof calendarTimeScale>
+
+export const calendarTimeScales = ["day", "week", "month"] as const
+
 export const calendarOption = z.object({
   field: fieldId.optional(),
+  timeScale: calendarTimeScale.optional(),
 })
 
 export type ICalendarOption = z.infer<typeof calendarOption>
@@ -38,11 +44,40 @@ export const updateCalendarViewDTO = updateBaseViewDTO.merge(
 
 export type IUpdateCalendarViewDTO = z.infer<typeof updateCalendarViewDTO>
 
+export type MonthScope = "selectedDate" | "withoutDate" | "thisMonth" | "allRecords"
+export type WeekScope = "selectedWeek" | "thisWeek" | "allRecords"
+export type DayScope = "selectedDate" | "withoutDate" | "allRecords"
+export type Scope = MonthScope | WeekScope | DayScope
+
+const baseScope: { value: Scope; label: string }[] = [
+  { value: "selectedDate", label: "In selected date" },
+  { value: "withoutDate", label: "Without date" },
+  { value: "allRecords", label: "All records" },
+]
+
+const scopesMap: Record<CalendarTimeScale, { value: Scope; label: string }[]> = {
+  day: baseScope,
+  week: [{ value: "thisWeek", label: "In this week" }, ...baseScope],
+  month: [...baseScope, { value: "thisMonth", label: "In this month" }],
+} as const
+
 export class CalendarView extends AbstractView {
   calendar: Option<ICalendarOption> = None
 
   get field() {
     return this.calendar.map((x) => x.field)
+  }
+
+  get timeScale() {
+    return this.calendar.map((x) => x.timeScale ?? "month").unwrapOr("month")
+  }
+
+  set timeScale(timeScale: CalendarTimeScale) {
+    this.calendar = this.calendar.map((x) => ({ ...x, timeScale }))
+  }
+
+  get scopes() {
+    return scopesMap[this.timeScale]
   }
 
   constructor(table: TableDo, dto: ICalendarViewDTO) {

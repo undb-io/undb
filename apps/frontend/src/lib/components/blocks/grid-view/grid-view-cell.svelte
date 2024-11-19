@@ -74,10 +74,12 @@
     formula: FormulaCell,
     dateRange: DateRangeCell,
   }
+
+  $: component = map[field.type]
 </script>
 
 <svelte:component
-  this={map[field.type]}
+  this={component}
   bind:value
   {displayValue}
   {field}

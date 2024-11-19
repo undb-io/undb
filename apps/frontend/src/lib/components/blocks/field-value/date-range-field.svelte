@@ -6,7 +6,7 @@
   export let placeholder: string | undefined = undefined
 
   export let field: DateField | CreatedAtField | UpdatedAtField
-  let formatter = field.formatter
+  $: formatter = field.formatter
 </script>
 
 <div class={cn("text-sm", $$restProps.class)}>
