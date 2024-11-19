@@ -54,7 +54,7 @@
     defaults(
       {
         id: template.id,
-        includeData: true,
+        includeData: false,
         spaceId: me?.member?.spaceId,
       },
       zodClient(createFromTemplateCommand),
