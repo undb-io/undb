@@ -88,6 +88,6 @@ export class CheckboxField extends AbstractField<CheckboxFieldValue> {
   }
 
   override getMutationSpec(value: CheckboxFieldValue): Option<RecordComositeSpecification> {
-    return Some(new CheckboxEqual(value.value, this.id))
+    return Some(new CheckboxEqual(!!value.value, this.id))
   }
 }
