@@ -12,6 +12,6 @@
     <Card.Description>Select a select type field to group calendar lanes.</Card.Description>
   </Card.Header>
   <Card.Content class="space-y-4">
-    <SelectCalendarFieldForm {view} />
+    <SelectCalendarFieldForm bind:view />
   </Card.Content>
 </Card.Root>

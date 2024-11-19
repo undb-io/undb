@@ -1,3 +1,4 @@
+import { Scope } from "@undb/table"
 import {
   addDays,
   addMonths,
@@ -17,35 +18,16 @@ import {
   subYears,
 } from "date-fns"
 import { persisted } from "svelte-persisted-store"
-import { derived, get, Writable, writable } from "svelte/store"
-
-export type MonthScope = "selectedDate" | "withoutDate" | "thisMonth" | "allRecords"
-export type WeekScope = "selectedWeek" | "thisWeek" | "allRecords"
-export type DayScope = "selectedDate" | "withoutDate" | "allRecords"
-export type Scope = MonthScope | WeekScope | DayScope
-export type TimeScale = "month" | "week" | "day"
+import { derived, Writable, writable } from "svelte/store"
 
 interface CalendarState {
   selectedDate: Date
   dates: Date[]
   weekDates: Date[]
   scope: Writable<Scope>
-  timeScale: Writable<TimeScale>
 
   isDragging: boolean
 }
-
-const baseScope: { value: Scope; label: string }[] = [
-  { value: "selectedDate", label: "In selected date" },
-  { value: "withoutDate", label: "Without date" },
-  { value: "allRecords", label: "All records" },
-]
-
-const scopesMap: Record<TimeScale, { value: Scope; label: string }[]> = {
-  day: baseScope,
-  week: [{ value: "thisWeek", label: "In this week" }, ...baseScope],
-  month: [...baseScope, { value: "thisMonth", label: "In this month" }],
-} as const
 
 export const createCalendarStore = () => {
   const generateDatesInMonth = (date: Date): Date[] => {
@@ -74,7 +56,6 @@ export const createCalendarStore = () => {
     dates: generateDatesInMonth(now),
     weekDates: generateWeekDates(now),
     scope: persisted("calendar-scope", "thisMonth"),
-    timeScale: persisted<TimeScale>("calendar-time-scale", "month"),
     isDragging: false,
   })
 
@@ -82,10 +63,7 @@ export const createCalendarStore = () => {
     subscribe,
     setScope: (scope: Scope) => {
       update((state) => {
-        const scopeValue =
-          scopesMap[get(state.timeScale)].find((s) => s.value === scope)?.value ??
-          scopesMap[get(state.timeScale)][0].value
-        state.scope.update((s) => scopeValue)
+        state.scope.update((s) => scope)
         return state
       })
     },
@@ -185,18 +163,6 @@ export const createCalendarStore = () => {
         isDragging,
       }))
     },
-    setTimeScale: (timeScale: TimeScale) => {
-      update((state) => {
-        state.timeScale.update((s) => timeScale)
-        const scopeValue =
-          scopesMap[timeScale].find((s) => s.value === get(state.scope))?.value ?? scopesMap[timeScale][0].value
-        state.scope.update((s) => scopeValue)
-        return {
-          ...state,
-          weekDates: generateWeekDates(state.selectedDate),
-        }
-      })
-    },
     setSelectedDate: (date: Date) => {
       update((state) => ({
         ...state,
@@ -226,12 +192,6 @@ export const createCalendarStore = () => {
       })
     },
   }
-
-  const scopes = derived(store, ($calendar) => {
-    const timeScale = get($calendar.timeScale)
-
-    return scopesMap[timeScale]
-  })
 
   // 派生 store：获取最早时间戳
   const startTimestamp = derived(store, ($calendar) => {
@@ -298,7 +258,6 @@ export const createCalendarStore = () => {
 
   return {
     ...store,
-    scopes,
     startTimestamp,
     endTimestamp,
     startOfMonthTimestamp,

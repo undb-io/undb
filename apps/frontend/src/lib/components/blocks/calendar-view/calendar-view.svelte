@@ -27,24 +27,24 @@
     recordsStore.setRecords(new Records(records), Date.now())
   }
 
-  $: timeScale = $calendarStore.timeScale
+  $: timeScale = view.timeScale
   let startOfWeekTimestamp = calendarStore.startOfWeekTimestamp
   let selectedDate = derived(calendarStore, ($calendarStore) => $calendarStore.selectedDate)
 </script>
 
 {#key $table.id.value}
-  <CalendarViewToolbar {viewId} {view} {readonly} />
+  <CalendarViewToolbar {viewId} bind:view {readonly} />
   {#if view.type === "calendar"}
     {#if field}
-      {#if $timeScale === "month"}
+      {#if timeScale === "month"}
         {#await import("$lib/components/blocks/calendar-view/calendar-view-month.svelte") then { default: CalendarViewMonth }}
-          <CalendarViewMonth {field} {view} {shareId} {viewId} {disableRecordQuery} {readonly} {r} />
+          <CalendarViewMonth {field} bind:view {shareId} {viewId} {disableRecordQuery} {readonly} {r} />
         {/await}
-      {:else if $timeScale === "week"}
+      {:else if timeScale === "week"}
         {#await import("$lib/components/blocks/calendar-view/calendar-view-day.svelte") then { default: CalendarViewWeek }}
           <CalendarViewWeek
             {field}
-            {view}
+            bind:view
             {shareId}
             {viewId}
             {disableRecordQuery}
@@ -54,11 +54,11 @@
             days={7}
           />
         {/await}
-      {:else if $timeScale === "day"}
+      {:else if timeScale === "day"}
         {#await import("$lib/components/blocks/calendar-view/calendar-view-day.svelte") then { default: CalendarViewDay }}
           <CalendarViewDay
             {field}
-            {view}
+            bind:view
             {shareId}
             {viewId}
             {disableRecordQuery}
@@ -72,7 +72,7 @@
     {:else}
       <section class="flex h-full w-full items-center justify-center">
         {#await import("$lib/components/blocks/calendar-view/select-calendar-field.svelte") then { default: SelectCalendarField }}
-          <SelectCalendarField {view} />
+          <SelectCalendarField bind:view />
         {/await}
       </section>
     {/if}

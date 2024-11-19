@@ -123,12 +123,12 @@
     <div class="absolute bottom-4 right-2">
       <!-- TODO: is dragging -->
       {#if !readonly}
-        <CalendarDateRemoveButton {view} />
+        <CalendarDateRemoveButton bind:view />
       {/if}
     </div>
   </div>
   <div class="flex h-full w-[300px] flex-col divide-y border-l">
     <CalendarViewMiniMonth />
-    <CalendarViewMonthRecords {r} {viewId} {field} {shareId} {readonly} />
+    <CalendarViewMonthRecords bind:view {r} {viewId} {field} {shareId} {readonly} />
   </div>
 </div>

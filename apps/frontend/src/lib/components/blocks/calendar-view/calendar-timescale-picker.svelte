@@ -8,27 +8,56 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import { cn } from "$lib/utils.js"
   import { LL } from "@undb/i18n/client"
-  import { type TimeScale } from "$lib/store/calendar.store"
-  import { calendarStore } from "$lib/store/calendar.store"
+  import { calendarTimeScales, type CalendarTimeScale, type CalendarView } from "@undb/table"
+  import { createMutation } from "@tanstack/svelte-query"
+  import { trpc } from "$lib/trpc/client"
+  import { toast } from "svelte-sonner"
+  import { getTable } from "$lib/store/table.store"
+  import { invalidate } from "$app/navigation"
+  import { type ICalendarViewDTO } from "@undb/table"
 
-  export const timeScales: TimeScale[] = ["month", "week", "day"]
+  export let view: CalendarView
+  const table = getTable()
 
   let open = false
 
   let search = ""
 
-  $: filtered = timeScales.filter((scale) => {
+  $: filtered = calendarTimeScales.filter((scale) => {
     const label = $LL.table.timeScales[scale]() ?? scale
     return label.toLowerCase().includes(search.toLowerCase())
   })
 
-  $: selected = $calendarStore.timeScale
+  $: selected = view.timeScale
   $: selectedValue = selected ?? "Select time scale..."
 
   function closeAndFocusTrigger(triggerId: string) {
     open = false
     tick().then(() => {
       document.getElementById(triggerId)?.focus()
+    })
+  }
+
+  const updateViewMutation = createMutation({
+    mutationFn: trpc.table.view.update.mutate,
+    mutationKey: ["updateView"],
+    async onSuccess(data, variables, context) {
+      await invalidate(`undb:table:${$table.id.value}`)
+    },
+  })
+
+  function onSelect(scale: string) {
+    view.timeScale = scale as CalendarTimeScale
+    const json = view.toJSON() as ICalendarViewDTO
+
+    $updateViewMutation.mutate({
+      tableId: $table.id.value,
+      viewId: view.id.value,
+      ...json,
+      calendar: {
+        ...json.calendar,
+        timeScale: view.timeScale,
+      },
     })
   }
 </script>
@@ -46,10 +75,10 @@
           {...$$restProps}
           class={cn("w-full justify-between", $$restProps.class)}
         >
-          <span class="flex items-center overflow-hidden text-ellipsis" title={$selectedValue}>
-            {#if $selected}
+          <span class="flex items-center overflow-hidden text-ellipsis" title={selectedValue}>
+            {#if selected}
               <slot>
-                {$LL.table.timeScales[$selected]() ?? $selected}
+                {$LL.table.timeScales[selected]() ?? selected}
               </slot>
             {/if}
           </span>
@@ -69,12 +98,12 @@
         {#each filtered as scale}
           <Command.Item
             value={scale}
-            onSelect={(currentValue) => {
-              calendarStore.setTimeScale(currentValue as TimeScale)
+            onSelect={(value) => {
+              onSelect(value)
               closeAndFocusTrigger(ids.trigger)
             }}
           >
-            <Check class={cn("mr-2 h-4 w-4", $selected !== scale && "text-transparent")} />
+            <Check class={cn("mr-2 h-4 w-4", selected !== scale && "text-transparent")} />
             <span class="text-xs">
               {$LL.table.timeScales[scale]() ?? scale}
             </span>

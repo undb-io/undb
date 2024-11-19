@@ -21,6 +21,13 @@ type Base {
 
 type CalendarOption {
   field: String
+  timeScale: CalendarTimeScale
+}
+
+enum CalendarTimeScale {
+  day
+  month
+  week
 }
 
 type Dashboard {

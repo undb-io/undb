@@ -17,8 +17,10 @@
   import { createVirtualizer } from "@tanstack/svelte-virtual"
   import { inview } from "svelte-inview"
   import { LoaderCircleIcon } from "lucide-svelte"
+  import { CalendarView } from "@undb/table"
 
   export let viewId: Readable<string | undefined>
+  export let view: CalendarView
   export let field: DateField | DateRangeField
   export let r: Writable<string | null>
   export let shareId: string | undefined
@@ -72,7 +74,10 @@
             if (!$startOfWeekTimestamp || !$endOfWeekTimestamp) return undefined
             return {
               conjunction: "and",
-              children: [{ field: field.id.value, op: "is_after", value: $startOfWeekTimestamp!.toISOString() }, { field: field.id.value, op: "is_before", value: $endOfWeekTimestamp!.toISOString() }],
+              children: [
+                { field: field.id.value, op: "is_after", value: $startOfWeekTimestamp!.toISOString() },
+                { field: field.id.value, op: "is_before", value: $endOfWeekTimestamp!.toISOString() },
+              ],
             }
           })
           .otherwise(() => undefined)
@@ -129,7 +134,7 @@
     <span> Records </span>
 
     <span class="flex-1">
-      <CalendarViewMonthRecordsFilterPicker />
+      <CalendarViewMonthRecordsFilterPicker bind:view />
     </span>
   </div>
 
@@ -179,7 +184,7 @@
         </div>
       {/if}
     {:else if !$getRecords.isPending}
-      <div class="flex h-full h-full flex-1 items-center justify-center">
+      <div class="flex h-full flex-1 items-center justify-center">
         <span class="text-muted-foreground text-sm">No Records found</span>
       </div>
     {/if}

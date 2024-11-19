@@ -179,8 +179,15 @@ export class Graphql {
         field: String
       }
 
+      enum CalendarTimeScale {
+        day
+        week
+        month
+      }
+
       type CalendarOption {
         field: String
+        timeScale: CalendarTimeScale
       }
 
       type PivotOption {

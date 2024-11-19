@@ -45,6 +45,7 @@ query GetBaseTableShareData($shareId: ID!, $tableId: ID!) {
       }
       calendar {
         field
+        timeScale
       }
       widgets {
         id

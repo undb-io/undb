@@ -38,6 +38,6 @@
         Calendar view
       {/if}
     </Dropdown.Label>
-    <CalendarFieldForm {view} {readonly} />
+    <CalendarFieldForm bind:view {readonly} />
   </Dropdown.Content>
 </Dropdown.Root>

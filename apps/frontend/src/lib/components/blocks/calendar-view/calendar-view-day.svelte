@@ -27,8 +27,6 @@
         })
       : [],
   )
-
-  $: console.log($displayDates)
 </script>
 
 <div class="relative flex h-full flex-1 overflow-hidden">
@@ -64,7 +62,7 @@
           <CalendarViewDayTimeline
             date={startDate}
             {viewId}
-            {view}
+            bind:view
             {r}
             {field}
             {shareId}
@@ -77,7 +75,7 @@
               <CalendarViewDayTimeline
                 date={readable(date)}
                 {viewId}
-                {view}
+                bind:view
                 {r}
                 {field}
                 {shareId}
@@ -97,7 +95,7 @@
       <CalendarViewMiniDay />
     </div>
     <div class="flex-1 overflow-y-auto">
-      <CalendarViewMonthRecords {r} {viewId} {field} {shareId} {readonly} />
+      <CalendarViewMonthRecords bind:view {r} {viewId} {field} {shareId} {readonly} />
     </div>
   </div>
 </div>

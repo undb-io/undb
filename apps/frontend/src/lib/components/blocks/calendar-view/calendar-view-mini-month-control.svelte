@@ -6,8 +6,10 @@
   import CalendarViewMiniMonth from "./calendar-view-mini-month.svelte"
   import { format } from "date-fns"
   import CalendarViewMiniDay from "./calendar-view-mini-day.svelte"
+  import { type CalendarView } from "@undb/table"
 
-  let timeScale = $calendarStore.timeScale
+  export let view: CalendarView
+  $: timeScale = view.timeScale
   let open = false
 
   let onChange: (date: Date) => void = () => {
@@ -22,9 +24,9 @@
   variant="secondary"
   size="xs"
   on:click={() => {
-    if ($timeScale === "day") {
+    if (timeScale === "day") {
       calendarStore.prevDay()
-    } else if ($timeScale === "week") {
+    } else if (timeScale === "week") {
       calendarStore.prevWeek()
     } else {
       calendarStore.prevMonth()
@@ -36,21 +38,21 @@
 <Popover.Root bind:open>
   <Popover.Trigger>
     <Button variant="secondary" size="xs">
-      {#if $timeScale === "day"}
+      {#if timeScale === "day"}
         {format($calendarStore.selectedDate, "yyyy-MM-dd")}
-      {:else if $timeScale === "week"}
-        {format($startOfWeek!, "yyyy-MM-dd")}
+      {:else if timeScale === "week"}
+        {$startOfWeek && format($startOfWeek, "yyyy-MM-dd")}
         -
-        {format($endOfWeek!, "yyyy-MM-dd")}
+        {$endOfWeek && format($endOfWeek, "yyyy-MM-dd")}
       {:else}
         {format($calendarStore.selectedDate, "yyyy-MM")}
       {/if}
     </Button>
   </Popover.Trigger>
   <Popover.Content class="px-0 py-2">
-    {#if $timeScale === "day"}
+    {#if timeScale === "day"}
       <CalendarViewMiniDay {onChange} />
-    {:else if $timeScale === "week"}
+    {:else if timeScale === "week"}
       <CalendarViewMiniDay {onChange} />
     {:else}
       <CalendarViewMiniMonth {onChange} />
@@ -61,9 +63,9 @@
   variant="secondary"
   size="xs"
   on:click={() => {
-    if ($timeScale === "day") {
+    if (timeScale === "day") {
       calendarStore.nextDay()
-    } else if ($timeScale === "week") {
+    } else if (timeScale === "week") {
       calendarStore.nextWeek()
     } else {
       calendarStore.nextMonth()

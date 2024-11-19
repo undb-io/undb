@@ -22,13 +22,13 @@
 <div class="flex justify-between gap-2 border-b px-2 py-2">
   <div class="flex items-center gap-2">
     <CreateRecordButton size="xs" />
-    <CalendarViewMiniMonthControl />
+    <CalendarViewMiniMonthControl bind:view />
     <Button variant="outline" size="xs" on:click={() => calendarStore.reset()}>Today</Button>
-    <CalendarTimescalePicker size="xs" />
+    <CalendarTimescalePicker size="xs" bind:view />
   </div>
 
   <div>
-    <CalendarOptionButton {readonly} {view} size="xs" />
+    <CalendarOptionButton {readonly} bind:view size="xs" />
     <ViewFilterEditor {readonly} {viewId} size="xs" />
     <ViewFields {readonly} {viewId} size="xs" />
     <ViewSort {readonly} {viewId} size="xs" />

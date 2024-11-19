@@ -41,6 +41,7 @@ query GetTableQuery($tableId: ID!, $viewId: ID) {
       }
       calendar {
         field
+        timeScale
       }
       pivot {
         columnLabel
