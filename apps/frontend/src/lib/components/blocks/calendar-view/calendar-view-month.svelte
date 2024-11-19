@@ -2,7 +2,7 @@
   import { type IRecordsDTO, Records, type CalendarView, type DateField, type DateRangeField } from "@undb/table"
   import { derived, type Readable } from "svelte/store"
   import type { Writable } from "svelte/store"
-  import { monthStore } from "$lib/store/calendar.store"
+  import { calendarStore } from "$lib/store/calendar.store"
   import { createRecordsStore, setRecordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
@@ -21,8 +21,8 @@
   export let r: Writable<string | null>
   export let field: DateField | DateRangeField
 
-  const startTimestamp = monthStore.startTimestamp
-  const endTimestamp = monthStore.endTimestamp
+  const startTimestamp = calendarStore.startTimestamp
+  const endTimestamp = calendarStore.endTimestamp
 
   const t = getTable()
   const q = queryParam("q")
@@ -45,14 +45,14 @@
             return trpc.shareData.records.query({
               shareId,
               tableId: $table?.id.value,
-            viewId: $viewId,
-            q: $q ?? undefined,
-            filters: {
-              conjunction: "and",
-              children: [
-                { field: field.id.value, op: "is_after", value: $startTimestamp!.toISOString() },
-                { field: field.id.value, op: "is_before", value: $endTimestamp!.toISOString() },
-              ],
+              viewId: $viewId,
+              q: $q ?? undefined,
+              filters: {
+                conjunction: "and",
+                children: [
+                  { field: field.id.value, op: "is_after", value: $startTimestamp!.toISOString() },
+                  { field: field.id.value, op: "is_before", value: $endTimestamp!.toISOString() },
+                ],
               },
             })
           }
@@ -116,7 +116,7 @@
       </div>
     </div>
     <div class="grid h-full grid-cols-7 grid-rows-5">
-      {#each $monthStore.dates as date}
+      {#each $calendarStore.dates as date}
         <CalendarViewMonthDate {date} {r} {field} {readonly} {shareId} {viewId} />
       {/each}
     </div>

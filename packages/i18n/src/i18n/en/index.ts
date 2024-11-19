@@ -133,6 +133,14 @@ const widgetTypes: Record<string, string> = {
   table: "Table"
 }
 
+type TimeScale = "month" | "week" | "day"
+
+const timeScales: Record<TimeScale, string> = {
+  month: "Month",
+  week: "Week",
+  day: "Day"
+}
+
 const en = {
   table: {
     ops,
@@ -143,6 +151,7 @@ const en = {
     macros,
     viewTypes,
     widgetTypes,
+    timeScales,
   },
 } satisfies BaseTranslation
 

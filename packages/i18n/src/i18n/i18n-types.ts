@@ -458,6 +458,20 @@ type RootTranslation = {
 			 */
 			table: string
 		}
+		timeScales: {
+			/**
+			 * M​o​n​t​h
+			 */
+			month: string
+			/**
+			 * W​e​e​k
+			 */
+			week: string
+			/**
+			 * D​a​y
+			 */
+			day: string
+		}
 	}
 }
 
@@ -906,6 +920,20 @@ export type TranslationFunctions = {
 			 * Table
 			 */
 			table: () => LocalizedString
+		}
+		timeScales: {
+			/**
+			 * Month
+			 */
+			month: () => LocalizedString
+			/**
+			 * Week
+			 */
+			week: () => LocalizedString
+			/**
+			 * Day
+			 */
+			day: () => LocalizedString
 		}
 	}
 }

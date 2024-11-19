@@ -1,25 +1,19 @@
 <script lang="ts">
   import * as Select from "$lib/components/ui/select"
-  import { monthStore } from "$lib/store/calendar.store"
-  import type { MonthScope } from "$lib/store/calendar.store"
+  import { calendarStore } from "$lib/store/calendar.store"
+  import type { Scope } from "$lib/store/calendar.store"
   import { cn } from "$lib/utils"
 
-  const scopes: { value: MonthScope; label: string }[] = [
-    { value: "selectedDate", label: "In selected date" },
-    { value: "withoutDate", label: "Without date" },
-    { value: "thisMonth", label: "In this month" },
-    { value: "allRecords", label: "All records" },
-  ]
-
-  const scope = $monthStore.scope
+  const scope = $calendarStore.scope
+  const scopes = calendarStore.scopes
 
   $: selected = {
     value: $scope,
-    label: scopes.find((s) => s.value === $scope)?.label ?? "Select Scope",
+    label: $scopes.find((s) => s.value === $scope)?.label ?? "Select Scope",
   }
 
-  function setScope(scope: MonthScope) {
-    monthStore.setScope(scope)
+  function setScope(scope: Scope) {
+    calendarStore.setScope(scope)
   }
 </script>
 
@@ -38,7 +32,7 @@
     </Select.Value>
   </Select.Trigger>
   <Select.Content>
-    {#each scopes as scope}
+    {#each $scopes as scope}
       <Select.Item class="text-xs" value={scope.value} label={scope.label}>
         {scope.label}
       </Select.Item>

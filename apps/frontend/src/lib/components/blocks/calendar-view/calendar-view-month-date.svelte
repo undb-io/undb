@@ -4,7 +4,7 @@
   import { DateIsSameDay, type RecordDO, type DateField, type DateRangeField, DateFieldValue } from "@undb/table"
   import { type Writable } from "svelte/store"
   import { onMount } from "svelte"
-  import { monthStore } from "$lib/store/calendar.store"
+  import { calendarStore } from "$lib/store/calendar.store"
   import CalendarViewMonthDateRecord from "./calendar-view-month-date-record.svelte"
   import { getDate } from "date-fns/getDate"
   import { isToday } from "date-fns/isToday"
@@ -30,8 +30,8 @@
 
   const records = store.records
 
-  const isSelected = monthStore.isSelected
-  const getIsSameMonth = monthStore.getIsSameMonth
+  const isSelected = calendarStore.isSelected
+  const getIsSameMonth = calendarStore.getIsSameMonth
 
   $: color = $viewId ? $table.views.getViewById($viewId)?.color.into(undefined) : undefined
 
@@ -161,11 +161,11 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
   use:setupDropTarget={date}
-  on:click={() => monthStore.select(date)}
+  on:click={() => calendarStore.select(date)}
   on:dblclick={() => onCreateRecord(date)}
   class={cn(
     "group relative h-full border-b border-r border-gray-200 bg-white p-2",
-    ($monthStore.dates.indexOf(date) + 1) % 7 === 0 && "border-r-0",
+    ($calendarStore.dates.indexOf(date) + 1) % 7 === 0 && "border-r-0",
     _isWeekend && "bg-gray-50",
   )}
 >
@@ -219,8 +219,8 @@
     {#if remainingCount > 0}
       <button
         on:click={() => {
-          monthStore.select(date)
-          monthStore.setScope("selectedDate")
+          calendarStore.select(date)
+          calendarStore.setScope("selectedDate")
         }}
         class="absolute bottom-0 right-0 rounded-sm border bg-white px-1 py-0.5 text-[10px] text-gray-500 transition-all hover:bg-gray-50 hover:shadow-sm"
       >

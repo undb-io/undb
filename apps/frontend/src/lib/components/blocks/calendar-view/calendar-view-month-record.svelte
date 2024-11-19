@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Field, RecordDO, DateField, DateRangeField } from "@undb/table"
   import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
-  import { monthStore } from "$lib/store/calendar.store"
+  import { calendarStore } from "$lib/store/calendar.store"
   import { type Writable } from "svelte/store"
   import { cn } from "$lib/utils"
   import { getTable } from "$lib/store/table.store"
@@ -33,10 +33,10 @@
           }
         },
         onDragStart(args) {
-          monthStore.setIsDragging(true)
+          calendarStore.setIsDragging(true)
         },
         onDrop(args) {
-          monthStore.setIsDragging(false)
+          calendarStore.setIsDragging(false)
         },
       })
     }
