@@ -118,6 +118,7 @@
   $: records = Records.fromJSON($t, rs)
 
   let virtualListEl: HTMLDivElement
+  let virtualItemEls: HTMLDivElement[] = []
 
   $: color = $viewId ? $t.views.getViewById($viewId)?.color.into(undefined) : undefined
 
@@ -127,6 +128,14 @@
     estimateSize: () => 60,
     overscan: 5,
   })
+
+  $: items = $virtualizer.getVirtualItems()
+
+  $: {
+    if (virtualItemEls.length) {
+      virtualItemEls.forEach((el) => $virtualizer.measureElement(el))
+    }
+  }
 </script>
 
 <div class="flex h-full flex-1 flex-col gap-2 overflow-hidden p-2">
@@ -146,21 +155,26 @@
   <div class="flex-1 overflow-auto" bind:this={virtualListEl}>
     {#if !records.isEmpty}
       <div style="position: relative; height: {$virtualizer.getTotalSize()}px; width: 100%;">
-        {#each $virtualizer.getVirtualItems() as row (row.key)}
-          <div
-            style="position: absolute; top: 0; left: 0; width: 100%; height: {row.size}px; transform: translateY({row.start}px);"
-          >
-            <CalendarViewMonthRecord
-              {r}
-              {color}
-              record={records?.records[row.index]}
-              {defaultField}
-              {field}
-              {shareId}
-              {readonly}
-            />
-          </div>
-        {/each}
+        <div
+          class="space-y-2"
+          style="position: absolute; top: 0; left: 0; width: 100%; transform: translateY({items[0]
+            ? items[0].start
+            : 0}px);"
+        >
+          {#each items as row, idx (row.key)}
+            <div bind:this={virtualItemEls[idx]}>
+              <CalendarViewMonthRecord
+                {r}
+                {color}
+                record={records?.records[row.index]}
+                {defaultField}
+                {field}
+                {shareId}
+                {readonly}
+              />
+            </div>
+          {/each}
+        </div>
       </div>
 
       {#if $getRecords.hasNextPage}

@@ -12,6 +12,7 @@
   import { invalidate } from "$app/navigation"
   import { hasPermission } from "$lib/store/space-member.store"
   import { CircleCheckBigIcon } from "lucide-svelte"
+  import * as Form from "$lib/components/ui/form"
 
   export let readonly = false
 
@@ -21,6 +22,8 @@
 
   export let view: CalendarView
 
+  let calendar = view.calendar.unwrapOrElse(() => ({ field: undefined, timeScale: "month" }))
+
   const form = superForm(
     defaults(
       {
@@ -28,7 +31,10 @@
         viewId: view.id.value,
         type: "calendar",
         name: view.name.value,
-        calendar: view.calendar.unwrapOrElse(() => ({ field: undefined })),
+        calendar: {
+          ...calendar,
+          timeScale: calendar.timeScale ?? "month",
+        },
       },
       zodClient(updateCalendarViewDTO),
     ),
@@ -38,15 +44,21 @@
       validators: zodClient(updateCalendarViewDTO),
       resetForm: false,
       invalidateAll: false,
+      onSubmit(event) {
+        validateForm({ update: true })
+      },
       onUpdate(event) {
-        if (!event.form.valid) return
+        if (!event.form.valid) {
+          console.log(event.form.errors, event.form.data)
+          return
+        }
 
         $updateViewMutation.mutate(event.form.data)
       },
     },
   )
 
-  const { enhance, form: formData } = form
+  const { enhance, form: formData, validateForm } = form
 
   const updateViewMutation = createMutation({
     mutationFn: trpc.table.view.update.mutate,
@@ -62,19 +74,27 @@
   <form id="select-calendar-field-form" class="space-y-2" use:enhance>
     <div class="grid w-full items-center gap-4">
       <div class="flex flex-col space-y-1.5">
-        <FieldPicker
-          disabled={readonly}
-          placeholder="Select a select type field to group calendar lanes"
-          value={$formData.calendar?.field}
-          onValueChange={(field) => {
-            if ($formData.calendar) {
-              $formData.calendar.field = field
-            } else {
-              $formData.calendar = { field }
-            }
-          }}
-          filter={(f) => fields.map((f) => f.id.value).includes(f.id)}
-        />
+        <Form.Field {form} name="calendar.field">
+          <Form.Control let:attrs>
+            <Form.Label for="calendar.field">Calendar field</Form.Label>
+            <FieldPicker
+              disabled={readonly}
+              placeholder="Select a select type field to group calendar lanes"
+              class="w-full"
+              value={$formData.calendar?.field}
+              onValueChange={(field) => {
+                if ($formData.calendar) {
+                  $formData.calendar.field = field
+                } else {
+                  $formData.calendar = { field }
+                }
+              }}
+              filter={(f) => fields.map((f) => f.id.value).includes(f.id)}
+            />
+          </Form.Control>
+          <Form.Description />
+          <Form.FieldErrors />
+        </Form.Field>
       </div>
     </div>
   </form>
