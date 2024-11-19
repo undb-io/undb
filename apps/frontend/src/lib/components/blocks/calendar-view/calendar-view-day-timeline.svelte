@@ -447,7 +447,10 @@
         {@const colorSpec = color?.getSpec($table.schema).into(undefined)}
         {@const isMatch = colorSpec ? position.record.match(colorSpec) : false}
         {@const condition = isMatch ? color?.getMatchedFieldConditions($table, position.record)[0] : undefined}
-        {@const title = `${position.start.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} - ${position.end.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`}
+        {@const title =
+          field.type === "date"
+            ? `${position.start.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
+            : `${position.start.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} - ${position.end.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`}
         <div
           use:setupDraggableDate={position.record}
           class={cn(
