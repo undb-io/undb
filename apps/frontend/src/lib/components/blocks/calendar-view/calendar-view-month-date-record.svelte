@@ -7,6 +7,7 @@
   import { getTable } from "$lib/store/table.store"
   import type { ViewColor } from "@undb/table"
   import { getColor } from "./calendar-view.util"
+  import * as Tooltip from "$lib/components/ui/tooltip"
 
   export let record: RecordDO
   export let displayField: Field | undefined
@@ -60,24 +61,31 @@
   $: condition = isMatch ? color?.getMatchedFieldConditions($table, record)[0] : undefined
 </script>
 
-<button
-  class={cn(
-    "h-[20px] w-full overflow-hidden rounded-sm border border-gray-300 px-1 py-0.5 text-left text-[10px]  transition-all  hover:shadow-md",
-    $$restProps.class,
-    isMatch && getColor(condition?.option.color),
-  )}
-  on:click={() => r.set(record.id.value)}
-  use:setupDraggableDate={record}
->
-  <span class="truncate">
-    <div class="flex items-center gap-1 truncate">
-      <span class="font-semibold">
-        {displayValue}
+<Tooltip.Root>
+  <Tooltip.Trigger>
+    <button
+      class={cn(
+        "h-[20px] w-full overflow-hidden rounded-sm border border-gray-300 px-1 py-0.5 text-left text-[10px]  transition-all  hover:shadow-md",
+        $$restProps.class,
+        isMatch && getColor(condition?.option.color),
+      )}
+      on:click={() => r.set(record.id.value)}
+      use:setupDraggableDate={record}
+    >
+      <span class="truncate">
+        <div class="flex items-center gap-1 truncate">
+          <span class="font-semibold">
+            {displayValue}
+          </span>
+          <span> · </span>
+          <span>
+            {value}
+          </span>
+        </div>
       </span>
-      <span> · </span>
-      <span>
-        {value}
-      </span>
-    </div>
-  </span>
-</button>
+    </button>
+  </Tooltip.Trigger>
+  <Tooltip.Content>
+    <p>{displayValue} · {value}</p>
+  </Tooltip.Content>
+</Tooltip.Root>
