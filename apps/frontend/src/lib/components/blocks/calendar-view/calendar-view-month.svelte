@@ -128,7 +128,6 @@
     </div>
   </div>
   <div class="flex h-full w-[300px] flex-col divide-y border-l">
-    <CalendarViewMiniMonth />
     <CalendarViewMonthRecords bind:view {r} {viewId} {field} {shareId} {readonly} />
   </div>
 </div>

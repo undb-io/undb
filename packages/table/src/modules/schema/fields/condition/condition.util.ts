@@ -286,3 +286,13 @@ export function replaceCondtionFieldNameWithFieldId<OptionType extends z.ZodType
     children,
   }
 }
+
+export function mergeConditionGroups<OptionType extends z.ZodTypeAny>(
+  a: IConditionGroup<OptionType>,
+  b: IConditionGroup<OptionType>,
+): IConditionGroup<OptionType> {
+  return {
+    conjunction: "and",
+    children: [a, b],
+  }
+}
