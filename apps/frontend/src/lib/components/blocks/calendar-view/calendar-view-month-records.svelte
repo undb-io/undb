@@ -113,6 +113,7 @@
               tableId: $table?.id.value,
               viewId: $viewId,
               filters: merged,
+              ignoreView: true,
               q: $search,
               pagination: {
                 page: pageParam,
