@@ -8,12 +8,19 @@ export class AggregateFnBuiler {
   constructor(
     private readonly table: UnderlyingTable,
     private readonly eb: ExpressionBuilder<any, any>,
-    private readonly field: Field,
+    private readonly field: Field | undefined,
     private readonly aggregate: IFieldAggregate,
   ) {}
 
   public build(): AliasedExpression<any, any> {
     const field = this.field
+    const aggregate = this.aggregate
+    if (!field && (aggregate === "count_empty" || aggregate === "count")) {
+      return sql`COUNT(*)`.as("id")
+    }
+    if (!field) {
+      throw new Error("Field is required for aggregate")
+    }
     const alias = field.id.value
     const fieldId = this.table.getFieldName(alias)
 
@@ -31,7 +38,7 @@ export class AggregateFnBuiler {
       return this.table.getFieldName(field.id.value)
     }
 
-    return match(this.aggregate)
+    return match(aggregate)
       .returnType<AliasedExpression<any, any>>()
       .with("sum", () => {
         const expr =
