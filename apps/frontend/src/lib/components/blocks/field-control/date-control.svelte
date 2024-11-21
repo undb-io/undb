@@ -72,7 +72,7 @@
     <Calendar
       value={isString(internalDate) && isDateFieldMacro(internalDate) ? undefined : internalDate}
       onValueChange={(v) => {
-        let vv: string | undefined
+        let vv
         if (v) {
           vv = v.toString()
         } else {
