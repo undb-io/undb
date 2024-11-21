@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-125
+
+
+### 🩹 Fixes
+
+- Fix nested filter ([646a2e2](https://github.com/undb-io/undb/commit/646a2e2))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-124
 
 ## v1.0.0-123
