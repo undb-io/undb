@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-125
+
+
+### 🩹 Fixes
+
+- Fix date control ([f0eed23](https://github.com/undb-io/undb/commit/f0eed23))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-124
 
 ## v1.0.0-123
