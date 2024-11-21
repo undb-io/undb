@@ -35,6 +35,7 @@
   import OptionFilterInput from "./variants/option-filter-input.svelte"
   import OptionsFilterInput from "./variants/options-filter-input.svelte"
   import DurationInput from "$lib/components/blocks/duration/duration-input.svelte"
+  import StringControl from "$lib/components/blocks/field-control/string-control.svelte"
 
   export let field: Field | undefined
   export let recordId: string | undefined = undefined
@@ -43,15 +44,17 @@
   export let op: IOpType | undefined = undefined
   export let disabled = false
 
+  export let onValueChange: ((value: any) => void) | undefined = undefined
+
   const className = cn("h-8 rounded-l-none border-l-0 py-0 text-xs bg-background", $$restProps.class)
 
   const string: Record<IStringFieldConditionOp, ComponentType | null> = {
-    eq: Input,
-    neq: Input,
-    contains: Input,
-    does_not_contain: Input,
-    starts_with: Input,
-    ends_with: Input,
+    eq: StringControl,
+    neq: StringControl,
+    contains: StringControl,
+    does_not_contain: StringControl,
+    starts_with: StringControl,
+    ends_with: StringControl,
     is_empty: null,
     is_not_empty: null,
     min: NumberInput,
@@ -334,6 +337,6 @@
 
 {#if field && op}
   {#if component}
-    <svelte:component this={component} {disabled} bind:value class={className} {field} />
+    <svelte:component this={component} {disabled} bind:value class={className} {field} {onValueChange} />
   {/if}
 {/if}

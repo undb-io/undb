@@ -29,19 +29,19 @@
             <div class="col-span-9 grid grid-cols-12 items-center">
               <FilterField
                 disabled
-                value={child.field}
+                bind:value={child.field}
                 class={cn(!!child.field && "col-span-4 rounded-r-none border-r-0")}
               />
               <OpPicker
                 disabled
                 {field}
-                value={child.op}
+                bind:value={child.op}
                 class={cn("col-span-3 rounded-l-none", !!child.value && "rounded-r-none")}
               />
               <FilterInput
                 disabled
                 {field}
-                value={child.value}
+                bind:value={child.value}
                 op={child.op}
                 class="col-span-5 bg-white text-xs font-medium"
               />

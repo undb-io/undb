@@ -5,7 +5,7 @@
 
   export let value: string | undefined
   export let filter: ((field: any) => boolean) | undefined = undefined
-  export let onValueChange: ((value: FieldType | undefined, prev: FieldType) => void) | undefined = undefined
+  export let onValueChange: ((value: string | undefined, prev: string) => void) | undefined = undefined
   export let sameWidth = true
   export let table: Writable<TableDo> | undefined = undefined
   export let disabled = false

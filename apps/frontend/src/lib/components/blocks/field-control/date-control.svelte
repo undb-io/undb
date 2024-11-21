@@ -33,7 +33,7 @@
 
   let open = false
 
-  function onChange() {
+  function onChange(value: string | Date | undefined | null) {
     if (!includeTime) {
       open = false
     }
@@ -63,8 +63,8 @@
   <Popover.Content class="p-0" side="bottom" align="start">
     <div class="p-1">
       <DateMacroPicker
-        onValueChange={() => {
-          onChange()
+        onValueChange={(v) => {
+          onChange(v)
         }}
         bind:value
       />
@@ -72,12 +72,14 @@
     <Calendar
       value={isString(internalDate) && isDateFieldMacro(internalDate) ? undefined : internalDate}
       onValueChange={(v) => {
+        let vv: string | undefined
         if (v) {
-          value = v.toString()
+          vv = v.toString()
         } else {
-          value = undefined
+          vv = undefined
         }
-        onChange()
+        value = vv
+        onChange(vv)
       }}
       initialFocus
     />
@@ -90,8 +92,9 @@
           }}
           onValueChange={(v) => {
             if (!value) return
-            value = new Date(new Date(value).setHours(v.hour, v.minute, 0, 0)).toISOString()
-            onValueChange?.(value)
+            const vv = new Date(new Date(value).setHours(v.hour, v.minute, 0, 0)).toISOString()
+            value = vv
+            onValueChange?.(vv)
           }}
         />
       </div>
@@ -101,8 +104,9 @@
         class="flex-1"
         variant="outline"
         on:click={() => {
-          value = today(getLocalTimeZone()).toString()
-          onChange()
+          const v = today(getLocalTimeZone()).toString()
+          value = v
+          onChange(v)
         }}>Today</Button
       >
       <Button
@@ -111,7 +115,7 @@
         on:click={() => {
           if (value) {
             value = null
-            onValueChange?.(value)
+            onValueChange?.(null)
           }
           open = false
         }}

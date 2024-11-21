@@ -5,6 +5,8 @@
   export let field: SelectField
   export let value: any
   export let disabled = false
+
+  export let onValueChange: (value: any) => void = () => {}
 </script>
 
-<OptionPicker {disabled} {...$$restProps} bind:value options={field.options} />
+<OptionPicker {disabled} {...$$restProps} bind:value options={field.options} {onValueChange} />

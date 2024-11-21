@@ -12,6 +12,10 @@
   export let value: any | undefined = undefined
   export let disabled = false
 
+  export let onOptionChange: ((option: any) => void) | undefined = undefined
+  export let onValueChange: ((value: any) => void) | undefined = undefined
+  export let onOpChange: ((op: IOpType) => void) | undefined = undefined
+
   $: conditionOps = field?.conditionOps ?? []
   $: ops = conditionOps.map((op) => ({ value: op, label: $LL.table.ops[op]() })) ?? []
 
@@ -24,8 +28,14 @@
 
 <div class={cn("col-span-8 flex flex-1 items-center gap-0", $$restProps.class)}>
   <FieldFilterOption {field} bind:option class="h-8 w-20 font-semibold" />
-  <OpPicker {disabled} {field} bind:value={op} class={cn("rounded-l-none", hasValue && "rounded-r-none")} />
+  <OpPicker
+    {disabled}
+    {field}
+    bind:value={op}
+    class={cn("rounded-l-none", hasValue && "rounded-r-none")}
+    onValueChange={onOpChange}
+  />
   {#if hasValue}
-    <FilterInput {disabled} class="flex-1" {field} bind:value {op} />
+    <FilterInput {disabled} class="flex-1" {field} bind:value {op} {onValueChange} />
   {/if}
 </div>

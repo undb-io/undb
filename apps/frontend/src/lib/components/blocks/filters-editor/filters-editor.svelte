@@ -34,6 +34,8 @@
   export let disabled = false
   export let readonly = false
 
+  export let onValueChange: ((value: MaybeConditionGroup<any> | undefined) => void) | undefined = undefined
+
   $: filteredFields = table?.getOrderedVisibleFields().filter((f) => filter({ id: f.id.value, type: f.type })) ?? []
   export let disableGroup = false
 
@@ -126,11 +128,16 @@
                 {readonly}
                 table={table ? writable(table) : undefined}
                 {sameWidth}
-                onValueChange={(type, prev) => {
-                  if (type !== prev) {
-                    if (isMaybeFieldCondition(child)) {
+                onValueChange={async (field, prev) => {
+                  if (isMaybeFieldCondition(child)) {
+                    if (field !== prev) {
                       child.value = undefined
+                    } else {
+                      child.value = field
                     }
+
+                    child = child
+                    value = value
                   }
                 }}
                 {filter}
@@ -144,6 +151,30 @@
                 bind:option={child.option}
                 bind:op={child.op}
                 bind:value={child.value}
+                onOpChange={(o) => {
+                  if (isMaybeFieldCondition(child)) {
+                    child.op = o
+                    child = child
+                    value = value
+                    onValueChange?.(value)
+                  }
+                }}
+                onOptionChange={(o) => {
+                  if (isMaybeFieldCondition(child)) {
+                    child.option = o
+                    child = child
+                    value = value
+                    onValueChange?.(value)
+                  }
+                }}
+                onValueChange={(v) => {
+                  if (isMaybeFieldCondition(child)) {
+                    child.value = v
+                    child = child
+                    value = value
+                    onValueChange?.(value)
+                  }
+                }}
               />
             </div>
             <div class="col-span-1 flex items-center gap-2">
@@ -184,7 +215,7 @@
                 {/if}
               </div>
             </div>
-            <svelte:self bind:value={child} {table} level={level + 1} {readonly} {disabled} />
+            <svelte:self {onValueChange} bind:value={child} {table} level={level + 1} {readonly} {disabled} {filter} />
           </div>
         {/if}
       {/each}
