@@ -69,7 +69,10 @@
         $$restProps.class,
         isMatch && getColor(condition?.option.color),
       )}
-      on:click={() => r.set(record.id.value)}
+      on:click={(e) => {
+        e.stopPropagation()
+        r.set(record.id.value)
+      }}
       use:setupDraggableDate={record}
     >
       <span class="truncate">
