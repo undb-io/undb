@@ -250,10 +250,10 @@
               <CreateViewButton
                 tableId={$table.id.value}
                 viewNames={$table.views.views.map((v) => v.name.value)}
-                class="mt-0 p-0 hover:bg-transparent"
+                class="text-muted-foreground mt-0 p-0 hover:bg-transparent"
                 variant="ghost"
               >
-                <PlusCircleIcon class="size-3" />
+                <PlusCircleIcon class="size-4" />
               </CreateViewButton>
             {/if}
           </Breadcrumb.List>

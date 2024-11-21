@@ -301,11 +301,6 @@ export class RecordQueryRepository implements IRecordQueryRepository {
         const ebs: AliasedExpression<any, any>[] = []
 
         for (const [fieldId, fieldAggregate] of Object.entries(aggregate.unwrap())) {
-          if (fieldAggregate === "count_empty" || fieldAggregate === "count") {
-            const builder = new AggregateFnBuiler(t, eb, undefined, fieldAggregate)
-            ebs.push(builder.build())
-            continue
-          }
           if (!fieldAggregate) {
             continue
           }
@@ -314,7 +309,11 @@ export class RecordQueryRepository implements IRecordQueryRepository {
           }
           const field = table.schema.fieldMapById.get(fieldId)
           if (!field) {
-            continue
+            if (fieldAggregate === "count") {
+              const builder = new AggregateFnBuiler(t, eb, undefined, fieldAggregate)
+              ebs.push(builder.build())
+              continue
+            }
           }
           const builder = new AggregateFnBuiler(t, eb, field, fieldAggregate)
           ebs.push(builder.build())

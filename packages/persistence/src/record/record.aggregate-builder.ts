@@ -15,13 +15,13 @@ export class AggregateFnBuiler {
   public build(): AliasedExpression<any, any> {
     const field = this.field
     const aggregate = this.aggregate
-    if (!field && (aggregate === "count_empty" || aggregate === "count")) {
-      return sql`COUNT(*)`.as("id")
+    const alias = field?.id.value ?? ID_TYPE
+    if (!field && aggregate === "count") {
+      return sql`COUNT(*)`.as(alias)
     }
     if (!field) {
       throw new Error("Field is required for aggregate")
     }
-    const alias = field.id.value
     const fieldId = this.table.getFieldName(alias)
 
     const getRef = (field: Field) => {
