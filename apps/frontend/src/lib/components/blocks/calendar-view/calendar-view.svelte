@@ -33,7 +33,7 @@
 </script>
 
 {#key $table.id.value}
-  <CalendarViewToolbar {viewId} bind:view {readonly} />
+  <CalendarViewToolbar {viewId} bind:view {readonly} {shareId} />
   {#if view.type === "calendar"}
     {#if field}
       {#if timeScale === "month"}

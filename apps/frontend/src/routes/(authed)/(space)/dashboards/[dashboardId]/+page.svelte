@@ -102,13 +102,13 @@
 
 <div class="flex h-full flex-col">
   <header class="flex items-center justify-between border-b px-4 py-2">
-    <h1 class="flex items-center text-lg font-medium">
-      <GaugeIcon class="mr-2 size-5" />
+    <h1 class="flex items-center text-sm font-medium text-gray-700">
+      <GaugeIcon class="mr-2 size-4" />
       {$dashboard.name.value}
 
       <DropdownMenu.Root>
         <DropdownMenu.Trigger>
-          <EllipsisIcon class="text-muted-foreground ml-2 size-4" />
+          <EllipsisIcon class="text-muted-foreground ml-4 size-4" />
         </DropdownMenu.Trigger>
         <DropdownMenu.Content>
           <DropdownMenu.Group>
@@ -120,7 +120,10 @@
               <CopyIcon class="mr-2 size-3" />
               Duplicate Dashboard
             </DropdownMenu.Item>
-            <DropdownMenu.Item class="text-xs" on:click={() => (deleteDialogOpen = true)}>
+            <DropdownMenu.Item
+              class="text-destructive text-xs hover:!bg-red-100 hover:!text-red-500"
+              on:click={() => (deleteDialogOpen = true)}
+            >
               <TrashIcon class="mr-2 size-3" />
               Delete Dashboard
             </DropdownMenu.Item>

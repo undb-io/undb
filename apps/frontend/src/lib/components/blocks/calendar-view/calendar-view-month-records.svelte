@@ -56,8 +56,8 @@
 
   const getRecords = createInfiniteQuery(
     derived(
-      [t, viewId, calendarStore, startTimestamp, endTimestamp, search, validValue],
-      ([$table, $viewId, $calendarStore, $startTimestamp, $endTimestamp, $search, $filter]) => {
+      [t, viewId, calendarStore, startTimestamp, endTimestamp, search, validValue, scope],
+      ([$table, $viewId, $calendarStore, $startTimestamp, $endTimestamp, $search, $filter, $scope]) => {
         const date = $calendarStore.selectedDate
 
         const filters = match($scope)
@@ -107,9 +107,23 @@
           .with("thisWeek", () => $startOfWeekTimestamp?.toISOString())
           .otherwise(() => undefined)
         return {
-          queryKey: ["records", $table?.id.value, $viewId, scope, dateString, $search],
-          queryFn: ({ pageParam = 1 }) =>
-            trpc.record.list.query({
+          queryKey: ["records", $table?.id.value, $viewId, $scope, dateString, $search],
+          queryFn: ({ pageParam = 1 }) => {
+            if (shareId) {
+              return trpc.shareData.records.query({
+                shareId,
+                tableId: $table?.id.value,
+                viewId: $viewId,
+                filters: merged,
+                ignoreView: true,
+                q: $search,
+                pagination: {
+                  page: pageParam,
+                  limit: 20,
+                },
+              })
+            }
+            return trpc.record.list.query({
               tableId: $table?.id.value,
               viewId: $viewId,
               filters: merged,
@@ -119,7 +133,8 @@
                 page: pageParam,
                 limit: 20,
               },
-            }),
+            })
+          },
           initialPageParam: 1,
           getNextPageParam: (lastPage, pages) => {
             const current = pages.reduce<number>((acc, cur) => acc + cur.records.length, 0)

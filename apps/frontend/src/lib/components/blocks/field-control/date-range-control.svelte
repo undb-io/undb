@@ -58,12 +58,24 @@
       >
         {#if internalValue && internalValue.start}
           {#if internalValue.end}
-            {formatter(internalValue.start.toDate())} - {formatter(internalValue.end.toDate())}
+            <span class="flex items-center gap-1">
+              <span class="rounded-sm border bg-gray-50 px-1 py-0.5">
+                {formatter(internalValue.start.toDate())}
+              </span>
+              <span class="mx-1 text-xs text-gray-500"> - </span>
+              <span class="rounded-sm border bg-gray-50 px-1 py-0.5">
+                {formatter(internalValue.end.toDate())}
+              </span>
+            </span>
           {:else}
-            {formatter(internalValue.start.toDate())}
+            <span class="rounded-sm border bg-gray-50 px-1 py-0.5">
+              {formatter(internalValue.start.toDate())}
+            </span>
           {/if}
         {:else if value?.[0]}
-          {formatter(new Date(value[0]))}
+          <span class="rounded-sm border bg-gray-50 px-1 py-0.5">
+            {formatter(new Date(value[0]))}
+          </span>
         {/if}
       </Button>
     </Popover.Trigger>

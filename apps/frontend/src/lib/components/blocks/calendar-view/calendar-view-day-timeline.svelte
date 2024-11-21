@@ -28,6 +28,7 @@
   import { PlusIcon } from "lucide-svelte"
   import { CREATE_RECORD_MODAL, openModal } from "$lib/store/modal.store"
   import { tick } from "svelte"
+  import { hasPermission } from "$lib/store/space-member.store"
 
   export let viewId: Readable<string | undefined>
   export let view: CalendarView
@@ -389,30 +390,32 @@
     >
       <!-- 半小时分隔线 -->
       <div class="absolute top-[30px] w-full border-t border-gray-50"></div>
-      <button
-        type="button"
-        class={cn(
-          "absolute right-2 top-1/2 z-50 hidden size-6 -translate-y-1/2 items-center justify-center rounded-sm border group-hover:flex",
-          isSelected && "flex",
-        )}
-        on:click={async (e) => {
-          e.stopPropagation()
-          const d = new Date($date)
-          d.setHours(hour)
-          d.setMinutes(0)
-          d.setSeconds(0)
-          d.setMilliseconds(0)
-          defaultRecordValues.set({
-            [field.id.value]: d.toISOString(),
-          })
-          await tick()
-          setTimeout(() => {
-            openModal(CREATE_RECORD_MODAL)
-          }, 0)
-        }}
-      >
-        <PlusIcon class="size-4 text-gray-500" />
-      </button>
+      {#if !shareId && $hasPermission("record:create")}
+        <button
+          type="button"
+          class={cn(
+            "absolute right-2 top-1/2 z-50 hidden size-6 -translate-y-1/2 items-center justify-center rounded-sm border group-hover:flex",
+            isSelected && "flex",
+          )}
+          on:click={async (e) => {
+            e.stopPropagation()
+            const d = new Date($date)
+            d.setHours(hour)
+            d.setMinutes(0)
+            d.setSeconds(0)
+            d.setMilliseconds(0)
+            defaultRecordValues.set({
+              [field.id.value]: d.toISOString(),
+            })
+            await tick()
+            setTimeout(() => {
+              openModal(CREATE_RECORD_MODAL)
+            }, 0)
+          }}
+        >
+          <PlusIcon class="size-4 text-gray-500" />
+        </button>
+      {/if}
     </div>
   {/each}
 

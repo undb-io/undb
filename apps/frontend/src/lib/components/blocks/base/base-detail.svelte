@@ -8,6 +8,8 @@
     SquareMousePointer,
     LayoutDashboardIcon,
     GaugeIcon,
+    CirclePlusIcon,
+    ChevronDownIcon,
   } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
   import { goto } from "$app/navigation"
@@ -15,6 +17,7 @@
   import type { IBaseOption } from "@undb/base"
   import { baseId } from "$lib/store/base.store"
   import { Button } from "$lib/components/ui/button"
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
 
   export let base: {
     id: string
@@ -35,74 +38,88 @@
 </script>
 
 <main class="flex flex-1 flex-col overflow-hidden px-4 py-4">
-  <div class="flex items-center gap-4">
-    {#if $hasPermission("table:create")}
-      <button
-        type="button"
-        class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-neutral-50 px-4 py-7 text-left transition-all hover:bg-neutral-100/70 hover:shadow-md"
-        on:click={() => {
-          baseId.set(base.id)
-          openModal(CREATE_TABLE_MODAL)
-        }}
-      >
-        <PlusCircleIcon class="text-blue-600" />
+  <section class="flex flex-1 flex-col overflow-hidden">
+    <h3 class="mt-2 inline-flex items-center text-xl font-semibold tracking-tight">
+      <GaugeIcon class="mr-2 size-5 text-gray-700" />
+      Dashboards
+    </h3>
 
-        Create New Table
-      </button>
-      <button
-        type="button"
-        class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-neutral-50 px-4 py-7 text-left transition-all hover:bg-neutral-100/70 hover:shadow-md"
-        on:click={() => {
-          baseId.set(base.id)
-          openModal(IMPORT_TABLE_MODAL)
-        }}
-      >
-        <ImportIcon class="text-orange-600" />
+    <div class="mt-4 flex flex-wrap gap-2 overflow-y-auto">
+      {#each base.dashboards as dashboard}
+        {#if dashboard}
+          <a
+            href={`/dashboards/${dashboard.id}`}
+            class="text-card-foreground h-[100px] w-[300px] overflow-hidden rounded-md border px-4 py-2 transition-all hover:shadow-md"
+          >
+            <span class="inline-flex items-center font-semibold">
+              <GaugeIcon class="mr-2 h-4 w-4 text-gray-700" />
+              {dashboard.name}
+            </span>
+            {#if dashboard.description}
+              <p class="text-muted-foreground truncate text-sm">{dashboard.description}</p>
+            {/if}
+          </a>
+        {/if}
+      {/each}
+      {#if $hasPermission("dashboard:create")}
+        <button
+          type="button"
+          class="item-center group flex h-[100px] w-[300px] justify-center rounded-lg border border border-dashed transition-all hover:bg-neutral-50/70 hover:shadow-md"
+          on:click={() => {
+            baseId.set(base.id)
+            openModal(CREATE_DASHBOARD_MODAL)
+          }}
+        >
+          <div class="flex h-full w-full items-center justify-center">
+            <CirclePlusIcon class="text-gray-300 transition-all group-hover:text-gray-700" />
+          </div>
+        </button>
+      {/if}
+    </div>
 
-        Import Table
-      </button>
-    {/if}
-    {#if $hasPermission("dashboard:create")}
-      <button
-        type="button"
-        class="flex h-32 w-80 flex-col justify-between rounded-lg border bg-neutral-50 px-4 py-7 text-left transition-all hover:bg-neutral-100/70 hover:shadow-md"
-        on:click={() => {
-          baseId.set(base.id)
-          openModal(CREATE_DASHBOARD_MODAL)
-        }}
-      >
-        <LayoutDashboardIcon class="text-green-600" />
+    <div class="mt-4 flex items-center gap-5">
+      <h3 class="inline-flex items-center text-xl font-semibold tracking-tight">
+        <DatabaseIcon class="mr-2 size-5 text-gray-700" />
+        Tables
+      </h3>
 
-        Create New Dashboard
-      </button>
-    {/if}
-  </div>
+      {#if $hasPermission("table:create")}
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger asChild let:builder>
+            <Button variant="outline" size="sm" builders={[builder]}>
+              <PlusIcon class="mr-1 size-4" />
+              Create
+              <ChevronDownIcon class="ml-1 size-4" />
+            </Button>
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content class="w-[200px]">
+            <DropdownMenu.Group>
+              <DropdownMenu.Item
+                on:click={() => {
+                  baseId.set(base.id)
+                  openModal(CREATE_TABLE_MODAL)
+                }}
+                class="text-xs text-gray-700"
+              >
+                <PlusIcon class="mr-2 size-4" />
+                Create New Table
+              </DropdownMenu.Item>
 
-  <section class="flex flex-1 flex-col overflow-hidden pt-3">
-    {#if base.dashboards.length > 0}
-      <h3 class="mt-2 text-xl font-semibold tracking-tight">Dashboards</h3>
-
-      <div class="mt-4 flex flex-wrap gap-2 overflow-y-auto">
-        {#each base.dashboards as dashboard}
-          {#if dashboard}
-            <a
-              href={`/dashboards/${dashboard.id}`}
-              class="text-card-foreground h-[100px] w-[300px] overflow-hidden rounded-md border px-4 py-2 transition-all hover:shadow-md"
-            >
-              <span class="inline-flex items-center font-semibold">
-                <GaugeIcon class="mr-2 h-4 w-4" />
-                {dashboard.name}
-              </span>
-              {#if dashboard.description}
-                <p class="text-muted-foreground truncate text-sm">{dashboard.description}</p>
-              {/if}
-            </a>
-          {/if}
-        {/each}
-      </div>
-    {/if}
-
-    <h3 class="mt-2 text-xl font-semibold tracking-tight">Tables</h3>
+              <DropdownMenu.Item
+                on:click={() => {
+                  baseId.set(base.id)
+                  openModal(IMPORT_TABLE_MODAL)
+                }}
+                class="text-xs text-gray-700"
+              >
+                <ImportIcon class="mr-2 size-4" />
+                Import Table
+              </DropdownMenu.Item>
+            </DropdownMenu.Group>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
+      {/if}
+    </div>
 
     <Table.Root class="flex w-full flex-1 flex-col overflow-y-auto">
       <Table.Header class="flex w-full">

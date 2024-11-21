@@ -85,7 +85,7 @@
             {#if base}
               <Breadcrumb.Item>
                 <Breadcrumb.Link class="flex items-center gap-2" href={`/bases/${$table.baseId}`}>
-                  <HardDriveIcon class="h-3 w-3" />
+                  <HardDriveIcon class="size-3" />
                   {base.name}
                 </Breadcrumb.Link>
               </Breadcrumb.Item>
@@ -103,27 +103,29 @@
                     <span class="truncate">
                       {$table.name.value}
                     </span>
+                    <ChevronDownIcon class="size-3" />
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Content class="w-[200px]">
                     {#if $hasPermission("table:update")}
                       <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_TABLE_MODAL)}>
-                        <PencilIcon class="mr-2 h-3 w-3" />
-                        Update table name
+                        <PencilIcon class="mr-2 size-3" />
+                        Update Table Name
                       </DropdownMenu.Item>
                     {/if}
                     {#if $hasPermission("table:create")}
                       <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(DUPLICATE_TABLE_MODAL)}>
-                        <CopyIcon class="mr-2 h-3 w-3" />
+                        <CopyIcon class="mr-2 size-3" />
                         Duplicate Table
                       </DropdownMenu.Item>
                     {/if}
                     {#if $hasPermission("table:delete")}
+                      <DropdownMenu.Separator />
                       <DropdownMenu.Item
                         on:click={() => toggleModal(DELETE_TABLE_MODAL)}
-                        class="text-xs text-red-500 hover:bg-red-50 hover:text-red-500"
+                        class="text-xs text-red-500 hover:!bg-red-50 hover:!text-red-500"
                       >
-                        <TrashIcon class="mr-2 h-3 w-3" />
-                        Delete table
+                        <TrashIcon class="mr-2 size-3" />
+                        Delete Table
                       </DropdownMenu.Item>
                     {/if}
                   </DropdownMenu.Content>
@@ -134,7 +136,7 @@
             {#if $isFormTab}
               {#if forms.length}
                 <Breadcrumb.Item>
-                  <FormInputIcon class="h-3 w-3" />
+                  <FormInputIcon class="size-3" />
                   Forms
                 </Breadcrumb.Item>
                 <Breadcrumb.Separator />
@@ -147,7 +149,7 @@
                       class="pl-0 pr-0"
                       builders={[builder]}>{currentForm?.name}</Button
                     >
-                    <ChevronsUpDownIcon class="h-3 w-3" />
+                    <ChevronsUpDownIcon class="size-3" />
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Content class="w-[200px]">
                     <DropdownMenu.Group>
@@ -168,7 +170,7 @@
               <Tooltip.Root>
                 <Tooltip.Trigger>
                   <CreateFormButton class="mt-0" size="icon" variant="ghost">
-                    <PlusCircleIcon class="h-4 w-4" />
+                    <PlusCircleIcon class="size-3" />
                   </CreateFormButton>
                 </Tooltip.Trigger>
                 <Tooltip.Content>
@@ -177,12 +179,12 @@
               </Tooltip.Root>
             {:else if $isAuthTab}
               <Breadcrumb.Item>
-                <FingerprintIcon class="h-3 w-3" />
+                <FingerprintIcon class="size-3" />
                 Auth
               </Breadcrumb.Item>
             {:else if $isDeveloperTab}
               <Breadcrumb.Item>
-                <Code2Icon class="h-3 w-3" />
+                <Code2Icon class="size-3" />
                 Developer
               </Breadcrumb.Item>
             {:else}
@@ -192,7 +194,7 @@
                     <Breadcrumb.Page class="flex items-center gap-1">
                       {view.name.value}
                       {#if $hasPermission("table:update")}
-                        <ChevronDownIcon class="text-muted-foreground h-4 w-4" />
+                        <ChevronDownIcon class="text-muted-foreground size-3" />
                       {/if}
                     </Breadcrumb.Page>
                   </Breadcrumb.Item>
@@ -200,43 +202,44 @@
                 {#if $hasPermission("table:update")}
                   <DropdownMenu.Content class="w-[200px]">
                     <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_VIEW)}>
-                      <PencilIcon class="mr-2 h-3 w-3" />
+                      <PencilIcon class="mr-2 size-3" />
                       Update View Name
                     </DropdownMenu.Item>
                     <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(DUPLICATE_VIEW)}>
-                      <CopyPlusIcon class="mr-2 h-3 w-3" />
+                      <CopyPlusIcon class="mr-2 size-3" />
                       Duplicate View
                     </DropdownMenu.Item>
                     <DropdownMenu.Sub>
                       <DropdownMenu.SubTrigger class="text-xs">
-                        <DownloadIcon class="mr-2 h-3 w-3" />
+                        <DownloadIcon class="mr-2 size-3" />
                         Download View
                       </DropdownMenu.SubTrigger>
                       <DropdownMenu.SubContent class="w-[200px]">
                         <DropdownMenu.Item class="text-xs" on:click={() => downloadView("excel")}>
-                          <FileSpreadsheet class="mr-2 h-4 w-4" />
+                          <FileSpreadsheet class="mr-2 size-3" />
                           Download as Excel
                         </DropdownMenu.Item>
                         <DropdownMenu.Item class="text-xs" on:click={() => downloadView("csv")}>
-                          <FileTextIcon class="mr-2 h-4 w-4" />
+                          <FileTextIcon class="mr-2 size-3" />
                           Download as CSV
                         </DropdownMenu.Item>
                         <DropdownMenu.Item class="text-xs" on:click={() => downloadView("json")}>
-                          <FileJsonIcon class="mr-2 h-4 w-4" />
+                          <FileJsonIcon class="mr-2 size-3" />
                           Download as JSON
                         </DropdownMenu.Item>
                       </DropdownMenu.SubContent>
                     </DropdownMenu.Sub>
                     {#if !view.isDefault}
                       <DropdownMenu.Item class="text-xs " on:click={() => toggleModal(SET_DEFAULT_VIEW)}>
-                        <PencilIcon class="mr-2 h-3 w-3" />
+                        <PencilIcon class="mr-2 size-3" />
                         Set as Default View
                       </DropdownMenu.Item>
+                      <DropdownMenu.Separator />
                       <DropdownMenu.Item
-                        class="text-xs text-red-500 hover:!bg-red-200 hover:!text-red-500"
+                        class="text-xs text-red-500 hover:!bg-red-100 hover:!text-red-500"
                         on:click={() => toggleModal(DELETE_VIEW)}
                       >
-                        <CopyPlusIcon class="mr-2 h-3 w-3" />
+                        <TrashIcon class="mr-2 size-3" />
                         Delete View
                       </DropdownMenu.Item>
                     {/if}
@@ -247,10 +250,10 @@
               <CreateViewButton
                 tableId={$table.id.value}
                 viewNames={$table.views.views.map((v) => v.name.value)}
-                class="mt-0 p-0 hover:bg-transparent"
+                class="text-muted-foreground mt-0 p-0 hover:bg-transparent"
                 variant="ghost"
               >
-                <PlusCircleIcon class="h-4 w-4" />
+                <PlusCircleIcon class="size-4" />
               </CreateViewButton>
             {/if}
           </Breadcrumb.List>
@@ -274,23 +277,22 @@
 
         tab.set(value === "data" ? null : (value ?? null))
       }}
-      class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform"
     >
       <Tabs.List>
         <Tabs.Trigger value="data">
-          <SheetIcon class="mr-2 h-4 w-4" />
+          <SheetIcon class="mr-2 size-3" />
           Data
         </Tabs.Trigger>
         <Tabs.Trigger value="form">
-          <TextCursorInputIcon class="mr-2 h-4 w-4" />
+          <TextCursorInputIcon class="mr-2 size-3" />
           Forms
         </Tabs.Trigger>
         <Tabs.Trigger value="auth">
-          <FingerprintIcon class="mr-2 h-4 w-4" />
+          <FingerprintIcon class="mr-2 size-3" />
           Auth
         </Tabs.Trigger>
         <Tabs.Trigger value="developer">
-          <Code2Icon class="mr-2 h-4 w-4" />
+          <Code2Icon class="mr-2 size-3" />
           Developer
         </Tabs.Trigger>
       </Tabs.List>
