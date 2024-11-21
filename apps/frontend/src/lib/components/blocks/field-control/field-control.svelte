@@ -32,6 +32,7 @@
   export let r: Writable<string | null>
   export let value: any
   export let displayValue: any
+  export let onValueChange: (value: any) => void
 
   function handleValue() {
     const { success } = field.valueSchema.safeParse(value)
@@ -73,7 +74,6 @@
 <svelte:component
   this={map[field.type]}
   {readonly}
-  on:change
   {...$$restProps}
   bind:value
   {displayValue}
@@ -82,4 +82,5 @@
   {recordId}
   {record}
   {r}
+  {onValueChange}
 />

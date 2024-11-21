@@ -4,6 +4,7 @@
   export let value: Json | undefined = undefined
   export let field: JsonField
   export let readonly = false
+  export let onValueChange: (value: Json) => void
 
   let content: Content = {
     text: "{}",
@@ -12,8 +13,11 @@
 
   const handleChange: OnChange = (updatedContent, previousContent, { contentErrors, patchResult }) => {
     content = updatedContent
-    // @ts-ignore
-    if (!contentErrors) value = JSON.parse(content.text)
+    if (!contentErrors) {
+      // @ts-ignore
+      value = JSON.parse(content.text)
+      onValueChange?.(value)
+    }
   }
 </script>
 

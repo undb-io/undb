@@ -19,7 +19,7 @@
   import { writable } from "svelte/store"
   import type { ZodUndefined } from "@undb/zod"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
-  import { onMount } from "svelte"
+  import { onMount, tick } from "svelte"
 
   const table = getTable()
 
@@ -80,8 +80,11 @@
       <FieldPicker
         class="w-full"
         value={value.field}
-        onValueChange={(field) => {
+        onValueChange={async (field) => {
           value.field = field
+          value.value = undefined
+          option = option
+          await tick()
         }}
         {disabled}
         filter={(f) =>
@@ -93,7 +96,12 @@
         <FieldControl
           class="text-xs"
           placeholder="Value to update..."
-          bind:value={value.value}
+          value={value.value}
+          onValueChange={async (v) => {
+            value.value = v
+            option = option
+            await tick()
+          }}
           {field}
           tableId={$table?.id.value}
         />

@@ -3,8 +3,14 @@
 
   export let readonly = false
   export let value: boolean
+  export let onValueChange: (value: boolean) => void
 </script>
 
 <div class="flex h-full items-center">
-  <Switch {...$$restProps} disabled={readonly} bind:checked={value} />
+  <Switch
+    {...$$restProps}
+    disabled={readonly}
+    bind:checked={value}
+    on:change={(e) => onValueChange?.(e.target.checked)}
+  />
 </div>

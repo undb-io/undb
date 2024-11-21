@@ -190,9 +190,12 @@
                     {field}
                     readonly={readonly || field.type === "attachment"}
                     tableId={$table.id.value}
-                    bind:value={formField.defaultValue}
+                    value={formField.defaultValue}
+                    onValueChange={(value) => {
+                      formField.defaultValue = value
+                      setForm()
+                    }}
                     class="bg-background"
-                    on:change={setForm}
                     placeholder={`set default value for ${field.name.value}`}
                   />
                 </div>

@@ -6,10 +6,11 @@
   export let field: LongTextField
   export let value: string
   export let readonly = false
+  export let onValueChange: (value: string) => void
 </script>
 
 {#if field.allowRichText}
-  <Tiptap {readonly} bind:value />
+  <Tiptap {readonly} bind:value {onValueChange} />
 {:else}
-  <Textarea rows={5} bind:value {...$$restProps} on:change disabled={readonly} />
+  <Textarea rows={5} bind:value {...$$restProps}  disabled={readonly} on:input={(e) => onValueChange?.(e.target.value)} />
 {/if}

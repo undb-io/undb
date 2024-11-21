@@ -8,6 +8,7 @@
 
   let element: HTMLDivElement
   let editor: Editor
+  export let onValueChange: (value: string) => void
 
   export let readonly = false
 
@@ -34,6 +35,7 @@
         const html = props.editor.getHTML()
         value = html
         dispatch("change", html)
+        onValueChange?.(html)
       },
     })
   })

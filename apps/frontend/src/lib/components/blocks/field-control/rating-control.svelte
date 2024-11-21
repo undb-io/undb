@@ -5,6 +5,7 @@
   export let value: number = 0
   export let field: RatingField
   export let readonly = false
+  export let onValueChange: (value: number) => void
 
   $: max = field.max
 
@@ -61,6 +62,7 @@
             value = 0
             overIndex = undefined
           }
+          onValueChange?.(value)
         }}
         readonly={$$restProps.readonly}
       />
