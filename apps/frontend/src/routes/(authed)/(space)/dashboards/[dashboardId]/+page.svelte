@@ -102,8 +102,8 @@
 
 <div class="flex h-full flex-col">
   <header class="flex items-center justify-between border-b px-4 py-2">
-    <h1 class="flex items-center text-lg font-medium">
-      <GaugeIcon class="mr-2 size-5" />
+    <h1 class="flex items-center text-sm font-medium text-gray-700">
+      <GaugeIcon class="mr-2 size-4" />
       {$dashboard.name.value}
 
       <DropdownMenu.Root>
