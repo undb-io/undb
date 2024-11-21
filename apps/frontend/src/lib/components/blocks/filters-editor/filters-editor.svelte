@@ -139,7 +139,7 @@
               />
               <FieldFilterControl
                 class="col-span-8 overflow-hidden"
-                {disabled}
+                disabled={disabled || readonly}
                 {field}
                 bind:option={child.option}
                 bind:op={child.op}

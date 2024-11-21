@@ -17,6 +17,7 @@
   export let viewId: Readable<string | undefined>
   export let view: CalendarView
   export let readonly = false
+  export let shareId: string | undefined
 </script>
 
 <div class="flex justify-between gap-2 border-b px-2 py-2">
@@ -24,7 +25,9 @@
     <CreateRecordButton size="xs" />
     <CalendarViewMiniMonthControl bind:view />
     <Button variant="outline" size="xs" on:click={() => calendarStore.reset()}>Today</Button>
-    <CalendarTimescalePicker size="xs" bind:view />
+    {#if !shareId}
+      <CalendarTimescalePicker size="xs" bind:view />
+    {/if}
   </div>
 
   <div>

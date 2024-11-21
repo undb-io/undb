@@ -111,8 +111,10 @@
               value = today(getLocalTimeZone()).toString()
               onValueChange(value)
               save(value)
-            }}>Today</Button
+            }}
           >
+            {includeTime ? "Now" : "Today"}
+          </Button>
           {#if !field.required}
             <Button
               class="flex-1"
