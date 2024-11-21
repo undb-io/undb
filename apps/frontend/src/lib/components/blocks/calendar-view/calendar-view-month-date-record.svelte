@@ -62,7 +62,7 @@
 </script>
 
 <Tooltip.Root>
-  <Tooltip.Trigger>
+  <Tooltip.Trigger class="w-full">
     <button
       class={cn(
         "h-[20px] w-full overflow-hidden rounded-sm border border-gray-300 px-1 py-0.5 text-left text-[10px]  transition-all  hover:shadow-md",
