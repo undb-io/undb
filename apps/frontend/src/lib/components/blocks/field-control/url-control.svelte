@@ -3,6 +3,14 @@
 
   export let value: string
   export let readonly = false
+  export let onValueChange: (value: string) => void
 </script>
 
-<Input bind:value {...$$restProps} type="url" on:change disabled={readonly} />
+<Input
+  bind:value
+  {...$$restProps}
+  type="url"
+  on:change
+  disabled={readonly}
+  on:input={(e) => onValueChange?.(e.target.value)}
+/>

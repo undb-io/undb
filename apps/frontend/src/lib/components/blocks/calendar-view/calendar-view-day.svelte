@@ -91,9 +91,6 @@
 
   <!-- 右侧面板 -->
   <div class="flex h-full w-[300px] flex-col divide-y border-l border-gray-200">
-    <div class="flex-none">
-      <CalendarViewMiniDay />
-    </div>
     <div class="flex-1 overflow-y-auto">
       <CalendarViewMonthRecords bind:view {r} {viewId} {field} {shareId} {readonly} />
     </div>

@@ -11,6 +11,7 @@
   export let field: ReferenceField
   export let value: string[]
   export let r: Writable<string | null>
+  export let onValueChange: (value: string[]) => void
 
   let selected = writable<string[]>(value)
 
@@ -36,6 +37,7 @@
     {recordId}
     bind:isSelected={hasValue}
     bind:selected
+    {onValueChange}
   >
     {#if hasValueReactive}
       <Button size="xs" variant="link" class="px-0" builders={[builder]}>
@@ -48,7 +50,16 @@
     {/if}
   </ForeignRecordsPickerDropdown>
   {#if hasValueReactive}
-    <ForeignRecordsPickerDropdown {r} {field} {tableId} {recordId} bind:selected isSelected={false} let:builder>
+    <ForeignRecordsPickerDropdown
+      {onValueChange}
+      {r}
+      {field}
+      {tableId}
+      {recordId}
+      bind:selected
+      isSelected={false}
+      let:builder
+    >
       <Button variant="link" class="px-2" size="xs" builders={[builder]}>+ Link Records</Button>
     </ForeignRecordsPickerDropdown>
   {/if}

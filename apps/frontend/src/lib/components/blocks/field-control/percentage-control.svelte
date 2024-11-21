@@ -4,9 +4,11 @@
 
   export let readonly = false
   export let value: number | undefined
+  export let onValueChange: (value: number) => void
 
   function onChange(nums: number[]) {
     value = nums[0] / 100
+    onValueChange?.(value)
   }
 </script>
 

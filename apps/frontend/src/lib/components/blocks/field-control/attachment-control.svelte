@@ -7,6 +7,7 @@
   import { selectedAttachment } from "$lib/store/attachment.store"
 
   export let field: AttachmentField
+  export let onValueChange: (value: IAttachmentFieldValue) => void
 
   export let value: IAttachmentFieldValue = []
   export let readonly = false
@@ -68,6 +69,7 @@
           signedUrl,
         },
       ]
+      onValueChange?.(value)
     } catch (error) {
       console.error(error)
     } finally {

@@ -3,8 +3,10 @@
 
   export let readonly = false
   export let value: number
+  export let onValueChange: (value: number) => void
   const onInput = (event: Event) => {
     value = +(event.target as HTMLInputElement).value
+    onValueChange?.(value)
   }
 </script>
 
@@ -14,7 +16,6 @@
   {value}
   on:input={onInput}
   type="number"
-  on:change
   step={0.01}
   {...$$restProps}
 />

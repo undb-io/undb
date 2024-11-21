@@ -131,7 +131,14 @@
               </Form.Label>
               <FieldPicker
                 {...attrs}
-                bind:value={$formData.calendar.field}
+                value={$formData.calendar.field}
+                onValueChange={(field) => {
+                  if ($formData.calendar) {
+                    $formData.calendar.field = field
+                  } else {
+                    $formData.calendar = { field }
+                  }
+                }}
                 class="w-full"
                 filter={(f) =>
                   $table.schema
@@ -161,7 +168,14 @@
               </Form.Label>
               <FieldPicker
                 {...attrs}
-                bind:value={$formData.gallery.field}
+                value={$formData.gallery.field}
+                onValueChange={(field) => {
+                  if ($formData.gallery) {
+                    $formData.gallery.field = field
+                  } else {
+                    $formData.gallery = { field }
+                  }
+                }}
                 class="w-full"
                 filter={(f) =>
                   $table.schema
@@ -191,7 +205,14 @@
               </Form.Label>
               <FieldPicker
                 {...attrs}
-                bind:value={$formData.kanban.field}
+                value={$formData.kanban.field}
+                onValueChange={(field) => {
+                  if ($formData.kanban) {
+                    $formData.kanban.field = field
+                  } else {
+                    $formData.kanban = { field }
+                  }
+                }}
                 class="w-full"
                 filter={(f) =>
                   $table.schema

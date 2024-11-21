@@ -1,8 +1,20 @@
 <script lang="ts">
-  import { RecordDO, type DateField, type DateRangeField } from "@undb/table"
+  import {
+    getConditionGroupCount,
+    getIsFilterableFieldType,
+    mergeConditionGroups,
+    RecordDO,
+    type DateField,
+    type DateRangeField,
+  } from "@undb/table"
   import { createInfiniteQuery, type CreateInfiniteQueryOptions } from "@tanstack/svelte-query"
   import CalendarViewMonthRecordsFilterPicker from "./calendar-view-month-records-filter-picker.svelte"
   import { derived, type Writable } from "svelte/store"
+  import * as Popover from "$lib/components/ui/popover/index.js"
+  import { Button } from "$lib/components/ui/button/index.js"
+  import { FilterIcon } from "lucide-svelte"
+  import Badge from "$lib/components/ui/badge/badge.svelte"
+  import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { getTable } from "$lib/store/table.store"
   import { type Readable } from "svelte/store"
   import { trpc } from "$lib/trpc/client"
@@ -18,6 +30,7 @@
   import { inview } from "svelte-inview"
   import { LoaderCircleIcon } from "lucide-svelte"
   import { CalendarView } from "@undb/table"
+  import { parseValidViewFilter, type MaybeConditionGroup, type IViewFilterOptionSchema } from "@undb/table"
 
   export let viewId: Readable<string | undefined>
   export let view: CalendarView
@@ -38,10 +51,13 @@
 
   const search = writable("")
 
+  const value = writable<MaybeConditionGroup<IViewFilterOptionSchema> | undefined>()
+  let validValue: Writable<IViewFilterGroup | undefined> = writable(undefined)
+
   const getRecords = createInfiniteQuery(
     derived(
-      [t, viewId, calendarStore, startTimestamp, endTimestamp, search],
-      ([$table, $viewId, $calendarStore, $startTimestamp, $endTimestamp, $search]) => {
+      [t, viewId, calendarStore, startTimestamp, endTimestamp, search, validValue],
+      ([$table, $viewId, $calendarStore, $startTimestamp, $endTimestamp, $search, $filter]) => {
         const date = $calendarStore.selectedDate
 
         const filters = match($scope)
@@ -82,6 +98,8 @@
           })
           .otherwise(() => undefined)
 
+        const merged = filters && $filter ? mergeConditionGroups(filters, $filter) : (filters ?? $filter)
+
         const dateString = match($scope)
           .returnType<string | undefined>()
           .with("selectedDate", () => date?.toISOString())
@@ -94,7 +112,8 @@
             trpc.record.list.query({
               tableId: $table?.id.value,
               viewId: $viewId,
-              filters,
+              filters: merged,
+              ignoreView: true,
               q: $search,
               pagination: {
                 page: pageParam,
@@ -136,6 +155,14 @@
       virtualItemEls.forEach((el) => $virtualizer.measureElement(el))
     }
   }
+
+  let open = false
+  let count = derived(validValue, ($validValue) => ($validValue ? getConditionGroupCount($validValue) : 0))
+
+  function handleSubmit(value?: IViewFilterGroup) {
+    validValue.set(value)
+    open = false
+  }
 </script>
 
 <div class="flex h-full flex-1 flex-col gap-2 overflow-hidden p-2">
@@ -146,6 +173,38 @@
       <CalendarViewMonthRecordsFilterPicker bind:view />
     </span>
   </div>
+
+  <!-- <div>
+    <Popover.Root bind:open portal="body">
+      <Popover.Trigger asChild let:builder>
+        <Button
+          variant={$count || open ? "secondary" : "ghost"}
+          builders={[builder]}
+          size="sm"
+          {...$$restProps}
+          class="w-full justify-start text-left"
+        >
+          <FilterIcon class="mr-2 h-4 w-4" />
+          Filters
+          {#if $count}
+            <Badge variant="secondary" class="ml-2 rounded-full">{$count}</Badge>
+          {/if}
+        </Button>
+      </Popover.Trigger>
+      <Popover.Content class="w-[450px] space-y-2 p-0 shadow-2xl">
+        {#if $value?.children.length}
+          <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Filters</div>
+        {/if}
+        <FiltersEditor
+          {readonly}
+          bind:value={$value}
+          table={$t}
+          on:submit={(e) => handleSubmit(e.detail)}
+          filter={(field) => getIsFilterableFieldType(field.type)}
+        ></FiltersEditor>
+      </Popover.Content>
+    </Popover.Root>
+  </div> -->
 
   <div class="flex items-center justify-between gap-2">
     <SearchIcon class="size-3 text-gray-500" />

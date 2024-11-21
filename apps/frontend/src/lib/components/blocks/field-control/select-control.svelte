@@ -7,12 +7,13 @@
 
   export let field: SelectField
   export let value: IOptionId | IOptionId[] | null = null
+  export let onValueChange: (value: IOptionId | IOptionId[] | null) => void
 </script>
 
 {#if field.isSingle}
   {#if !Array.isArray(value)}
-    <OptionPicker disabled={readonly} options={field.options} bind:value sameWidth {...$$restProps} />
+    <OptionPicker {onValueChange} disabled={readonly} options={field.options} bind:value sameWidth {...$$restProps} />
   {/if}
 {:else if Array.isArray(value) || value === null || value === undefined}
-  <OptionsPicker disabled={readonly} options={field.options} bind:value sameWidth {...$$restProps} />
+  <OptionsPicker {onValueChange} disabled={readonly} options={field.options} bind:value sameWidth {...$$restProps} />
 {/if}

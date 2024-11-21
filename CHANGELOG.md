@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-123
+
+
+### 🩹 Fixes
+
+- Fix button field optiong ([cda70bb](https://github.com/undb-io/undb/commit/cda70bb))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-122
 
 

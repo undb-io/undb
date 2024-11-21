@@ -11,11 +11,12 @@
   export let field: UserField
   export let value: IUserFieldValue
   export let displayValue: IUserFieldDisplayValue[] | IUserFieldDisplayValue | null
+  export let onValueChange: (value: IUserFieldValue) => void
 </script>
 
 {#if field.isSingle}
   {#if !Array.isArray(value) && !Array.isArray(displayValue)}
-    <UserPicker sameWidth bind:value>
+    <UserPicker sameWidth bind:value {onValueChange}>
       <Button
         slot="trigger"
         let:builder
@@ -33,7 +34,7 @@
     </UserPicker>
   {/if}
 {:else if (Array.isArray(value) || value === undefined || value === null) && (Array.isArray(displayValue) || !displayValue)}
-  <UsersPicker sameWidth bind:value>
+  <UsersPicker sameWidth bind:value {onValueChange}>
     <Button
       slot="trigger"
       let:builder

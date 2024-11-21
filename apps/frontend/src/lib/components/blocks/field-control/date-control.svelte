@@ -14,6 +14,7 @@
   export let readonly = false
   export let disabled = false
   export let field: DateField
+  export let onValueChange: (value: string | Date | undefined | null) => void
 
   $: formatter = field.formatter
   $: includeTime = field.includeTime
@@ -36,6 +37,7 @@
     if (!includeTime) {
       open = false
     }
+    onValueChange?.(value)
   }
 </script>
 
@@ -89,6 +91,7 @@
           onValueChange={(v) => {
             if (!value) return
             value = new Date(new Date(value).setHours(v.hour, v.minute, 0, 0)).toISOString()
+            onValueChange?.(value)
           }}
         />
       </div>
@@ -108,6 +111,7 @@
         on:click={() => {
           if (value) {
             value = null
+            onValueChange?.(value)
           }
           open = false
         }}
