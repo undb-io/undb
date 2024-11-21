@@ -56,8 +56,8 @@
 
   const getRecords = createInfiniteQuery(
     derived(
-      [t, viewId, calendarStore, startTimestamp, endTimestamp, search, validValue],
-      ([$table, $viewId, $calendarStore, $startTimestamp, $endTimestamp, $search, $filter]) => {
+      [t, viewId, calendarStore, startTimestamp, endTimestamp, search, validValue, scope],
+      ([$table, $viewId, $calendarStore, $startTimestamp, $endTimestamp, $search, $filter, $scope]) => {
         const date = $calendarStore.selectedDate
 
         const filters = match($scope)
@@ -107,7 +107,7 @@
           .with("thisWeek", () => $startOfWeekTimestamp?.toISOString())
           .otherwise(() => undefined)
         return {
-          queryKey: ["records", $table?.id.value, $viewId, scope, dateString, $search],
+          queryKey: ["records", $table?.id.value, $viewId, $scope, dateString, $search],
           queryFn: ({ pageParam = 1 }) => {
             if (shareId) {
               return trpc.shareData.records.query({
