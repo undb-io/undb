@@ -19,7 +19,6 @@ import {
   FormulaGTE,
   FormulaLT,
   FormulaLTE,
-  ID_TYPE,
   JsonContains,
   LongTextEqual,
   PercentageEqual,
@@ -52,7 +51,6 @@ import {
   type SelectContainsAnyOf,
   type SelectEmpty,
   type SelectEqual,
-  type SelectField,
   type StringContains,
   type StringEmpty,
   type StringEndsWith,
@@ -64,7 +62,7 @@ import {
   type UserEmpty,
   type UserEqual,
 } from "@undb/table"
-import { sql, type QueryCreator } from "kysely"
+import { type QueryCreator } from "kysely"
 import type { IRecordQueryBuilder } from "../qb"
 
 export class RecordQuerySpecCreatorVisitor implements IRecordVisitor {
@@ -128,16 +126,7 @@ export class RecordQuerySpecCreatorVisitor implements IRecordVisitor {
   currencyLT(s: CurrencyLT): void {}
   currencyLTE(s: CurrencyLTE): void {}
   durationEqual(s: DurationEqual): void {}
-  selectContainsAnyOf(spec: SelectContainsAnyOf): void {
-    const field = this.table.schema.getFieldById(spec.fieldId).expect("No field found") as SelectField
-    if (field.isMultiple) {
-      this.#creator = (this.#creator || this.qb).with(spec.fieldId.value, (db) =>
-        db
-          .selectFrom([this.table.id.value, sql.raw(`json_each(${this.getFieldId(spec)})`).as("json_each")])
-          .select([`${this.table.id.value}.${ID_TYPE}`, `json_each.value as ${spec.fieldId.value}`]),
-      )
-    }
-  }
+  selectContainsAnyOf(spec: SelectContainsAnyOf): void {}
   selectEmpty(spec: SelectEmpty): void {}
   ratingEqual(s: RatingEqual): void {}
   emailEqual(s: EmailEqual): void {}
@@ -176,6 +165,7 @@ export class RecordQuerySpecCreatorVisitor implements IRecordVisitor {
     return this
   }
   not(spec: RecordComositeSpecification): this {
+    spec.accept(this)
     return this
   }
   clone(): this {

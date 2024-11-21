@@ -14,6 +14,8 @@
   $: ops = conditionOps.map((op) => ({ value: op, label: $LL.table.ops[op]() })) ?? []
   export let disabled = false
 
+  export let onValueChange: ((value: IOpType) => void) | undefined = undefined
+
   let open = false
   export let value: IOpType | undefined = undefined
 
@@ -57,6 +59,7 @@
             onSelect={(currentValue) => {
               value = currentValue
               closeAndFocusTrigger(ids.trigger)
+              onValueChange?.(currentValue)
             }}
           >
             <Check class={cn("mr-2 h-4 w-4", value !== framework.value && "text-transparent")} />

@@ -60,10 +60,11 @@
           <Command.Item
             value={option.id}
             onSelect={(currentValue) => {
-              value = value?.includes(currentValue)
+              const v = value?.includes(currentValue)
                 ? value?.filter((v) => v !== currentValue)
                 : [...(value ?? []), currentValue]
-              onValueChange(value ?? [])
+              value = v
+              onValueChange(v ?? [])
             }}
           >
             <Check class={cn("text-primary mr-2 h-4 w-4", !value?.includes(option.id) && "text-transparent")} />

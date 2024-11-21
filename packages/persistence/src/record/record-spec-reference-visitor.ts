@@ -30,7 +30,6 @@ import {
   FormulaGTE,
   FormulaLT,
   FormulaLTE,
-  ID_TYPE,
   IdEqual,
   IdIn,
   JsonContains,
@@ -118,11 +117,7 @@ export class RecordSpecReferenceVisitor implements IRecordVisitor {
   currencyLT(s: CurrencyLT): void {}
   currencyLTE(s: CurrencyLTE): void {}
   durationEqual(s: DurationEqual): void {}
-  selectContainsAnyOf(spec: SelectContainsAnyOf): void {
-    this.qb = this.qb
-      .innerJoin(spec.fieldId.value, `${this.table.id.value}.${ID_TYPE}`, `${spec.fieldId.value}.${ID_TYPE}`)
-      .groupBy(`${this.table.id.value}.${ID_TYPE}`)
-  }
+  selectContainsAnyOf(spec: SelectContainsAnyOf): void {}
   selectEmpty(spec: SelectEmpty): void {}
   ratingEqual(s: RatingEqual): void {}
   emailEqual(s: EmailEqual): void {}
@@ -151,6 +146,7 @@ export class RecordSpecReferenceVisitor implements IRecordVisitor {
     return this
   }
   not(spec: ISpecification): this {
+    spec.accept(this)
     return this
   }
   clone(): this {
