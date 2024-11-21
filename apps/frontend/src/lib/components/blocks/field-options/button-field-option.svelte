@@ -79,7 +79,10 @@
         value.field && $table ? $table.schema.getFieldById(new FieldIdVo(value.field)).unwrap() : undefined}
       <FieldPicker
         class="w-full"
-        bind:value={value.field}
+        value={value.field}
+        onValueChange={(field) => {
+          value.field = field
+        }}
         {disabled}
         filter={(f) =>
           getIsMutableFieldType(f.type) &&

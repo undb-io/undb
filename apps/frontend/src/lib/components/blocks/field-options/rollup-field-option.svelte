@@ -48,7 +48,10 @@
       {disabled}
       class="w-full justify-start"
       {...$$restProps}
-      bind:value={option.referenceFieldId}
+      value={option.referenceFieldId}
+      onValueChange={(field) => {
+        option.referenceFieldId = field
+      }}
       filter={(f) => f.type === "reference"}
     />
   </div>
@@ -61,7 +64,10 @@
           class="w-full"
           {disabled}
           {...$$restProps}
-          bind:value={option.rollupFieldId}
+          value={option.rollupFieldId}
+          onValueChange={(field) => {
+            option.rollupFieldId = field
+          }}
           table={foreignTableDo}
           filter={(f) => fields.some((field) => field.id === f.id)}
         />
@@ -75,7 +81,10 @@
           {disabled}
           foreignTable={$foreignTableDo}
           rollupFieldId={option.rollupFieldId}
-          bind:value={option.fn}
+          value={option.fn}
+          onValueChange={(fn) => {
+            option.fn = fn
+          }}
         />
       </div>
     {/if}

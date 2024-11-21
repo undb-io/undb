@@ -125,7 +125,10 @@
                 <div class="col-span-10 grid grid-cols-8">
                   <FieldPicker
                     filter={(field) => !selectedFieldIds.has(field.value) && isFieldSortable(field.type)}
-                    bind:value={item.fieldId}
+                    value={item.fieldId}
+                    onValueChange={(field) => {
+                      item.fieldId = field
+                    }}
                     class="col-span-5 rounded-r-none border-r-0"
                     disabled={$setViewSortMutation.isPending}
                   />
