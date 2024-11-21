@@ -10,6 +10,7 @@
   import { toggleModal, UPDATE_VIEW } from "$lib/store/modal.store"
   import { toast } from "svelte-sonner"
   import type { Readable } from "svelte/store"
+  import { invalidate } from "$app/navigation"
 
   const table = getTable()
   export let viewId: Readable<string | undefined>
@@ -17,9 +18,10 @@
   const updateViewMutation = createMutation({
     mutationKey: ["table", $viewId, "updateView"],
     mutationFn: trpc.table.view.update.mutate,
-    onSuccess(data, variables, context) {
+    async onSuccess(data, variables, context) {
       toggleModal(UPDATE_VIEW)
       toast.success("View updated")
+      await invalidate(`undb:table:${$table.id.value}`)
     },
     onError(error, variables, context) {
       toast.error(error.message)
