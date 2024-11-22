@@ -128,7 +128,8 @@ export class TableDo extends AggregateRoot<ITableEvents> {
     const visibleFields = this.getViewFields(viewId).getVisibleFields()
 
     return visibleFields
-      .map((fieldId) => this.schema.getFieldById(new FieldIdVo(fieldId)).unwrap())
+      .map((fieldId) => this.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined))
+      .filter((f) => !!f)
       .filter((field) => (view.showSystemFields ? true : !field.isSystem))
   }
 

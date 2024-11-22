@@ -28,7 +28,6 @@
   import * as Breadcrumb from "$lib/components/ui/breadcrumb/index.js"
   import { getTable } from "$lib/store/table.store"
   import { tab, isFormTab, formId, developerTab, isAuthTab, isDeveloperTab } from "$lib/store/tab.store"
-  import RecordUpdating from "../record-updating/record-updating.svelte"
   import CreateFormButton from "../forms/create-form-button.svelte"
   import CreateViewButton from "../view/create-view-button.svelte"
   import { derived } from "svelte/store"
@@ -100,7 +99,7 @@
                     title={$table.name.value}
                   >
                     <DatabaseIcon class="size-3" />
-                    <span class="truncate">
+                    <span class="truncate text-xs text-gray-700">
                       {$table.name.value}
                     </span>
                     <ChevronDownIcon class="size-3" />

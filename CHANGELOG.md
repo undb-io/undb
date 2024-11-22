@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-126
+
+
+### 🚀 Enhancements
+
+- Allow to reference field cross base ([993aab8](https://github.com/undb-io/undb/commit/993aab8))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-125
 
 
