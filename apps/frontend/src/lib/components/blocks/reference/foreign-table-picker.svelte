@@ -9,19 +9,22 @@
   import { getTable } from "$lib/store/table.store"
   import { GetForeignTablesStore, GetForeignTableStore } from "$houdini"
   import { group } from "radash"
+  import { DatabaseIcon, ChevronRightIcon, ExternalLinkIcon } from "lucide-svelte"
 
   const table = getTable()
 
   const getForeignTablesStore = new GetForeignTablesStore()
   const getForeignTableStore = new GetForeignTableStore()
 
-  $: open && getForeignTablesStore.fetch({ variables: { baseId: $table.baseId } })
+  $: open && getForeignTablesStore.fetch()
   $: foreignTables = $getForeignTablesStore.data?.tables.filter((t) => !!t) ?? []
   $: groupTables = group(foreignTables, (t) => t.base?.id)
 
   let open = false
   export let value: string | undefined = undefined
   export let disabled: boolean = false
+
+  $: foreignBase = $getForeignTableStore.data?.table?.base
 
   $: selectedValue =
     foreignTables.filter((f) => !!f).find((f) => f.id === value)?.name ?? $getForeignTableStore.data?.table?.name ?? ""
@@ -45,22 +48,35 @@
 
 <Popover.Root bind:open let:ids portal="body">
   <Popover.Trigger asChild let:builder>
-    <Button
-      builders={[builder]}
-      variant="outline"
-      role="combobox"
-      size="sm"
-      aria-expanded={open}
-      class={cn("w-full justify-between", $$restProps.class)}
-      {disabled}
-    >
-      {#if selectedValue}
-        {selectedValue}
-      {:else}
-        <span class="text-muted-foreground"> Select a table... </span>
+    <div class="flex items-center gap-2">
+      <Button
+        builders={[builder]}
+        variant="outline"
+        role="combobox"
+        size="sm"
+        aria-expanded={open}
+        class={cn("w-full justify-between", $$restProps.class)}
+        {disabled}
+      >
+        {#if selectedValue}
+          <span class="inline-flex items-center gap-1 truncate text-xs text-gray-700">
+            {#if foreignBase}
+              {foreignBase.name}
+              <ChevronRightIcon class="size-3 shrink-0 opacity-50" />
+            {/if}
+            {selectedValue}
+          </span>
+        {:else}
+          <span class="text-muted-foreground"> Select a table... </span>
+        {/if}
+        <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
+      </Button>
+      {#if value}
+        <a href={`/t/${value}`} class="text-muted-foreground">
+          <ExternalLinkIcon class="mr-2 h-3 w-3" />
+        </a>
       {/if}
-      <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
-    </Button>
+    </div>
   </Popover.Trigger>
   <Popover.Content class="max-h-[300px] overflow-y-auto p-0" sameWidth>
     <Command.Root
@@ -86,7 +102,8 @@
                   class="gap-2"
                 >
                   <Check class={cn("h-4 w-4", value !== t.id && "text-transparent")} />
-                  <span>
+                  <span class="inline-flex items-center gap-2 truncate text-xs text-gray-700">
+                    <DatabaseIcon class="h-4 w-4" />
                     {t.name}
                   </span>
                   {#if t.id === $table?.id.value}
