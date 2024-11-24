@@ -6,6 +6,8 @@
   import {
     FieldIdVo,
     KanbanView,
+    RecordDO,
+    SelectFieldValue,
     Records,
     SelectEqual,
     SelectField,
@@ -122,10 +124,12 @@
 
   let laneElement: HTMLElement
 
+  const spec = Some(new SelectEqual(option?.id ?? null, new FieldIdVo(fieldId)))
+
   const updateRecord = createMutation({
     mutationFn: trpc.record.update.mutate,
-    onSuccess: (data, variables, context) => {
-      recordsStore?.invalidateRecord($table, variables.id)
+    onError: (error, variables, context) => {
+      toast.error(error.message)
     },
   })
 
@@ -170,6 +174,11 @@
       },
     })
   }
+  let records = derived(recordsStore, ($recordsStore) =>
+    [...$recordsStore.records.values()].filter((record) =>
+      spec.isSome() ? spec.unwrap().isSatisfiedBy(record) : true,
+    ),
+  )
 
   onMount(() => {
     if (!shareId && !readonly && laneElement) {
@@ -192,7 +201,13 @@
         onEnd: (evt) => {
           const recordId = evt.item.dataset.recordId
           if (!recordId) return
+          const fromOptionId = evt.from.dataset.optionId ?? null
           const optionId = evt.to.dataset.optionId ?? null
+
+          recordsStore.setRecordValue(recordId, field, optionId)
+          if (fromOptionId !== optionId) {
+            evt.item.remove()
+          }
 
           $updateRecord.mutate({
             tableId,
@@ -215,9 +230,6 @@
   onDestroy(() => {
     recordsStore.clearRecords()
   })
-
-  let storeGetRecords = recordsStore.getRecords
-  $: recordDos = $storeGetRecords(Some(new SelectEqual(option?.id ?? null, new FieldIdVo(fieldId))))
 
   $: fields = $table.getOrderedVisibleFields($viewId) ?? []
 
@@ -330,7 +342,7 @@
       >
         {#if $hasPermission("record:create")}
           {#if $query.isFetchedAfterMount}
-            {#if recordDos.length > 0}
+            {#if $records.length > 0}
               <Button on:click={onCreateRecord} variant="outline" size="sm" class="w-full">
                 <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
               </Button>
@@ -359,7 +371,7 @@
         {:else if $query.isError}
           <p>error: {$query.error.message}</p>
         {:else}
-          {#each recordDos as record (record.id.value)}
+          {#each $records as record (record.id.value)}
             <KanbanCard {readonly} {record} {fields} {color} {r} />
           {/each}
           {#if $query.hasNextPage && $query.isFetchedAfterMount}
