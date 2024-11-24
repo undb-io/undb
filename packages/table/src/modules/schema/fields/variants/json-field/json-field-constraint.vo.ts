@@ -2,6 +2,7 @@ import { Some } from "@undb/domain"
 import { z } from "@undb/zod"
 import type { FormFieldVO } from "../../../../forms/form/form-field.vo"
 import { FieldConstraintVO, baseFieldConstraint } from "../../field-constraint.vo"
+import { jsonSchemaValue } from "./json-field-value.vo"
 
 export const jsonFieldConstraint = z
   .object({
@@ -20,8 +21,7 @@ export class JsonFieldConstraint extends FieldConstraintVO<IJsonFieldConstraint>
     })
   }
   override get schema() {
-    const literalSchema = z.union([z.string(), z.number(), z.boolean(), z.null()])
-    let base: z.ZodTypeAny = z.lazy(() => z.union([literalSchema, z.array(base), z.record(base)]))
+    let base: z.ZodTypeAny = jsonSchemaValue
 
     if (!this.props.required) {
       base = base.optional().nullable()

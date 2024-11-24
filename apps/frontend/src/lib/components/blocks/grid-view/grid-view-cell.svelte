@@ -97,6 +97,6 @@
   )}
   onValueChange={(v) => {
     value = v
-    recordsStore.setRecordValue(recordId, field.id.value, v)
+    recordsStore.setRecordValue(recordId, field, v)
   }}
 />

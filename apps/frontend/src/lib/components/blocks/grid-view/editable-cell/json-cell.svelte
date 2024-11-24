@@ -14,7 +14,7 @@
   export let isSelected: boolean
   export let field: JsonField
   export let recordId: string
-  export let onValueChange: (value: JsonValue) => void
+  export let onValueChange: (value: JsonValue | undefined) => void
 
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
@@ -25,7 +25,7 @@
   })
 
   let content: Content = {
-    text: undefined,
+    text: JSON.stringify(value ?? {}, null, 2),
     json: value ?? {},
   }
 

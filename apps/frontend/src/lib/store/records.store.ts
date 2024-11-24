@@ -1,6 +1,14 @@
 import { trpc } from "$lib/trpc/client"
 import type { Option } from "@undb/domain"
-import { RecordComositeSpecification, RecordDO, TableDo, type IRecordValues, type Records } from "@undb/table"
+import {
+  Field,
+  FieldValueFactory,
+  RecordComositeSpecification,
+  RecordDO,
+  TableDo,
+  type IRecordValues,
+  type Records,
+} from "@undb/table"
 import { getContext, setContext } from "svelte"
 import { derived, writable } from "svelte/store"
 import { queryParam, ssp } from "sveltekit-search-params"
@@ -23,6 +31,7 @@ export const createRecordsStore = () => {
         const id = record.id.value
         if (store.records.has(id)) {
           store.records.set(id, record)
+          store.records = store.records
           data.update((data) => data.map((d) => (d.id === id ? record.flatten() : d)))
         } else {
           store.records.set(id, record)
@@ -41,12 +50,14 @@ export const createRecordsStore = () => {
     return store.update((store) => {
       if (store.records.has(record.id.value)) {
         store.records.set(record.id.value, record)
+        store.records = store.records
         data.update((data) => {
           return data.map((d) => (d.id === record.id.value ? record.flatten() : d))
         })
         return store
       } else {
         store.records.set(record.id.value, record)
+        store.records = store.records
         store.ids.push(record.id.value)
         data.update((data) => {
           data.push(record.flatten())
@@ -57,12 +68,20 @@ export const createRecordsStore = () => {
     })
   }
 
-  const setRecordValue = (id: string, key: string, value: any) => {
+  const setRecordValue = (id: string, field: Field, value: any) => {
+    const v = FieldValueFactory.fromJSON(field, value).into(undefined)
+    if (!v) return
+
     return store.update((store) => {
       if (store.records.has(id)) {
         data.update((data) => {
-          return data.map((d) => (d.id === id ? { ...d, [key]: value } : d))
+          const updated = data.map((d) => (d.id === id ? { ...d, [field.id.value]: v.value } : d))
+          return updated
         })
+        const record = store.records.get(id)!
+        record.values.setValue(field.id, v)
+        store.records.set(record.id.value, record)
+        store.records = store.records
       }
       return store
     })

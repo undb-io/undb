@@ -7,7 +7,7 @@
   export let onValueChange: (value: Json) => void
 
   let content: Content = {
-    text: "{}",
+    text: JSON.stringify(value ?? {}, null, 2),
     json: value ?? {},
   }
 
