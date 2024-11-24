@@ -5,10 +5,15 @@ import { FieldValueObject } from "../../field-value"
 
 export type { JsonValue } from "type-fest"
 
-const baseSchema = z.union([z.string(), z.number(), z.boolean(), z.null()])
-const jsonSchemaValue: z.ZodTypeAny = z.lazy(() =>
-  z.union([baseSchema, z.array(jsonSchemaValue), z.record(jsonSchemaValue)]),
-)
+const baseSchema = z.union([
+  z.string(),
+  z.number(),
+  z.boolean(),
+  z.null(),
+  z.array(z.any()),
+  z.record(z.any(), z.any()),
+])
+export const jsonSchemaValue = baseSchema
 
 export const mutateJsonFieldValueSchema = jsonSchemaValue
 
