@@ -25,7 +25,7 @@
   })
 
   let content: Content = {
-    text: JSON.stringify(value ?? {}),
+    text: JSON.stringify(value ?? {}, null, 2),
     json: value ?? {},
   }
 
