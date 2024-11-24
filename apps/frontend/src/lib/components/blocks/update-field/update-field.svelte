@@ -113,6 +113,7 @@
             bind:constraint={$formData.constraint}
             bind:display={$formData.display}
             bind:defaultValue={$formData.defaultValue}
+            {...attrs}
           />
         </Form.Control>
         <Form.Description />

@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-127
+
+
+### 🏡 Chore
+
+- Add logging ([8decb41](https://github.com/undb-io/undb/commit/8decb41))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-126
 
 

@@ -35,9 +35,14 @@ const openapi = container.resolve(OpenAPI)
 const opentelemetry = container.resolve(OpenTelemetryModule)
 const template = container.resolve(TemplateModule)
 
+const logger = createLogger("app")
+
 export const app = new Elysia()
-  .onStart(async () => {
+  .on("start", async () => {
+    logger.info("db migrate start")
     await dbMigrate()
+    logger.info("db migrate done")
+    await auth.onStart()
   })
   .use(opentelemetry.plugin())
   .use(loggerPlugin())
@@ -64,7 +69,6 @@ export const app = new Elysia()
     set.headers["Server-Timing"] = `handle;dur=${(await end) - begin}`
   })
   .onStart(async () => {
-    const logger = createLogger("app onstart")
     const pubsub = container.resolve(PubSubContext)
     const webhookEventHandler = container.resolve(WebhookEventsHandler)
     // const auditEventHandler = container.resolve(AuditEventHandler)

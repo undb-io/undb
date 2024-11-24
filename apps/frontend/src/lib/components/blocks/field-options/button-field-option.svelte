@@ -17,7 +17,7 @@
   import { Button } from "$lib/components/ui/button"
   import Separator from "$lib/components/ui/separator/separator.svelte"
   import { writable } from "svelte/store"
-  import type { ZodUndefined } from "@undb/zod"
+  import { Switch } from "$lib/components/ui/switch"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { onMount, tick } from "svelte"
 
@@ -40,15 +40,18 @@
       confirm: true,
     },
   }
-  const value = writable<MaybeConditionGroup<ZodUndefined> | undefined>()
+  const value = writable<MaybeConditionGroup<any> | undefined>()
   $: validValue = $table && $value ? parseValidViewFilter($table.schema, $value) : undefined
   $: if (validValue) {
     option.disabled = validValue
   }
 
+  let disabledWhen = false
+
   onMount(() => {
     if (option.disabled) {
       value.set(toMaybeConditionGroup(option.disabled))
+      disabledWhen = true
     }
   })
 
@@ -63,14 +66,19 @@
   <Label for="label">Label</Label>
   <Input class="w-full" placeholder="Button" id="label" bind:value={option.label} />
 
-  <div class="space-y-2 rounded-sm border pt-2">
-    <Label class="pl-4 text-xs font-semibold" for="disabled">Disabled When...</Label>
-    <FiltersEditor
-      bind:value={$value}
-      table={$table}
-      filter={(field) => visibleFields.some((f) => f.id.value === field.id) && getIsFilterableFieldType(field.type)}
-    ></FiltersEditor>
-  </div>
+  <Label class="flex items-center gap-2 text-xs font-semibold" for="disabled">
+    <Switch id="disabled" bind:checked={disabledWhen} size="sm" />
+    Disabled When...
+  </Label>
+  {#if disabledWhen}
+    <div class="space-y-2 rounded-sm border pt-2">
+      <FiltersEditor
+        bind:value={$value}
+        table={$table}
+        filter={(field) => visibleFields.some((f) => f.id.value === field.id) && getIsFilterableFieldType(field.type)}
+      ></FiltersEditor>
+    </div>
+  {/if}
 
   <div class="space-y-2 rounded-md border px-4 py-3">
     <p class="text-xs font-semibold">Update Value when Click Button</p>

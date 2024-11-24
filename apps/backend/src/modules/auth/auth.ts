@@ -173,62 +173,64 @@ export class Auth {
     }
   }
 
+  async onStart() {
+    const adminEmail = env.UNDB_ADMIN_EMAIL
+    const adminPassword = env.UNDB_ADMIN_PASSWORD
+    if (env.UNDB_DISABLE_REGISTRATION) {
+      this.logger.info("Registration is disabled")
+      if (!adminEmail || !adminPassword) {
+        const message =
+          "Registration is disabled but admin user is not set, please set UNDB_ADMIN_EMAIL and UNDB_ADMIN_PASSWORD environment variables"
+        this.logger.fatal(message)
+        throw new Error(message)
+      }
+
+      const user = await this.queryBuilder
+        .selectFrom("undb_user")
+        .selectAll()
+        .where((eb) => eb.eb("email", "=", adminEmail))
+        .executeTakeFirst()
+
+      if (!user) {
+        this.logger.info("Admin user not found, creating...")
+        const userId = generateIdFromEntropySize(10) // 16 characters long
+        const passwordHash = await Bun.password.hash(adminPassword)
+        const username = getUsernameFromEmail(adminEmail)
+
+        executionContext.enterWith({
+          requestId: v7(),
+          user: {
+            userId,
+            username,
+            email: adminEmail,
+          },
+        })
+
+        await withTransaction(this.queryBuilder)(async () => {
+          await getCurrentTransaction()
+            .insertInto("undb_user")
+            .values({
+              email: adminEmail,
+              username: username!,
+              id: userId,
+              password: passwordHash,
+              email_verified: true,
+            })
+            .execute()
+
+          const space = await this.spaceService.createSpace({ name: username! })
+          await this.spaceMemberService.createMember(userId, space.id.value, "owner")
+
+          this.logger.info("Admin user created")
+        })
+      }
+    }
+  }
+
   route() {
     const oauth = container.resolve(OAuth)
     return new Elysia()
       .use(oauth.route())
-      .onStart(async (ctx) => {
-        const adminEmail = env.UNDB_ADMIN_EMAIL
-        const adminPassword = env.UNDB_ADMIN_PASSWORD
-        if (env.UNDB_DISABLE_REGISTRATION) {
-          this.logger.info("Registration is disabled")
-          if (!adminEmail || !adminPassword) {
-            const message =
-              "Registration is disabled but admin user is not set, please set UNDB_ADMIN_EMAIL and UNDB_ADMIN_PASSWORD environment variables"
-            this.logger.fatal(message)
-            throw new Error(message)
-          }
-
-          const user = await this.queryBuilder
-            .selectFrom("undb_user")
-            .selectAll()
-            .where((eb) => eb.eb("email", "=", adminEmail))
-            .executeTakeFirst()
-
-          if (!user) {
-            const userId = generateIdFromEntropySize(10) // 16 characters long
-            const passwordHash = await Bun.password.hash(adminPassword)
-            const username = getUsernameFromEmail(adminEmail)
-
-            executionContext.enterWith({
-              requestId: v7(),
-              user: {
-                userId,
-                username,
-                email: adminEmail,
-              },
-            })
-
-            await withTransaction(this.queryBuilder)(async () => {
-              await getCurrentTransaction()
-                .insertInto("undb_user")
-                .values({
-                  email: adminEmail,
-                  username: username!,
-                  id: userId,
-                  password: passwordHash,
-                  email_verified: true,
-                })
-                .execute()
-
-              const space = await this.spaceService.createSpace({ name: username! })
-              await this.spaceMemberService.createMember(userId, space.id.value, "owner")
-
-              this.logger.info("Admin user created")
-            })
-          }
-        }
-      })
       .onAfterResponse((ctx) => {
         const requestId = executionContext.getStore()?.requestId
         this.logger.info(

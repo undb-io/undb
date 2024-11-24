@@ -31,7 +31,6 @@
   export let disabled = false
   export let type: NoneSystemFieldType
 
-
   const map: Record<NoneSystemFieldType, ComponentType> = {
     string: StringFieldOption,
     longText: LongTextFieldOption,
@@ -67,4 +66,5 @@
   bind:option
   {isNew}
   {field}
+  {...$$restProps}
 />

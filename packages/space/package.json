@@ -5,6 +5,7 @@
   "types": "src/index.d.ts",
   "dependencies": {
     "@undb/context": "workspace:*",
+    "@undb/logger": "workspace:*",
     "ts-pattern": "^5.5.0"
   },
   "devDependencies": {

@@ -1,5 +1,6 @@
 import type { SetContextValue } from "@undb/context"
 import { inject, singleton } from "@undb/di"
+import { createLogger } from "@undb/logger"
 import { None, Option, Some } from "oxide.ts"
 import { match, P } from "ts-pattern"
 import type { ICreateSpaceDTO, ISpaceDTO } from "./dto"
@@ -37,6 +38,7 @@ export const injectSpaceService = () => inject(SPACE_SERVICE)
 
 @singleton()
 export class SpaceService implements ISpaceService {
+  private logger = createLogger("SpaceService")
   constructor(
     @injectSpaceRepository()
     private readonly spaceRepository: ISpaceRepository,
@@ -86,6 +88,7 @@ export class SpaceService implements ISpaceService {
   }
 
   async setSpaceContext(setContext: SetContextValue, input: IGetSpaceInput): Promise<Space> {
+    this.logger.debug(input, "setSpaceContext")
     const space = await this.getSpace(input)
     setContext("spaceId", space.unwrap().id.value)
 
