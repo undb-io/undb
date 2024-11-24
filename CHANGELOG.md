@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-128
+
+
+### 🩹 Fixes
+
+- Fix json default format ([036aeca](https://github.com/undb-io/undb/commit/036aeca))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-127
 
 
