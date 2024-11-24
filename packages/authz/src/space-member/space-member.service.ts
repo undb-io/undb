@@ -1,5 +1,6 @@
 import { inject, singleton } from "@undb/di"
 import { and, None, Option } from "@undb/domain"
+import { createLogger } from "@undb/logger"
 import { injectSpaceService, type ISpaceId, type ISpaceService } from "@undb/space"
 import type { SetContextValue } from "../../../context/src/context.type"
 import { MemberIdVO } from "../member/member-id.vo"
@@ -32,6 +33,7 @@ export const injectSpaceMemberService = () => inject(SPACE_MEMBER_SERVICE)
 
 @singleton()
 export class SpaceMemberService implements ISpaceMemberService {
+  private logger = createLogger("SpaceMemberService")
   constructor(
     @injectSpaceService()
     private readonly spaceService: ISpaceService,
@@ -110,6 +112,8 @@ export class SpaceMemberService implements ISpaceMemberService {
     spaceId: ISpaceId,
     userId: string,
   ): Promise<Option<SpaceMember>> {
+    this.logger.debug({ spaceId, userId }, "setSpaceMemberContext")
+
     if (!spaceId || !userId) {
       return None
     }
