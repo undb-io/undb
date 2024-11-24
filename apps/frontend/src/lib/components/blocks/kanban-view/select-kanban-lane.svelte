@@ -225,6 +225,7 @@
   $: {
     // @ts-ignore
     const records = ($query.data?.pages.slice(lastSetPage).flatMap((r: any) => r.records) as IRecordsDTO) ?? []
+    // @ts-ignore
     lastSetPage = $query.data?.pages.length ?? 0
     recordsStore.upsertRecords(Records.fromJSON($table, records))
   }
