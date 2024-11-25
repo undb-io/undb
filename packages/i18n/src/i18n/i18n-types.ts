@@ -6,7 +6,9 @@ export type BaseTranslation = BaseTranslationType
 export type BaseLocale = 'en'
 
 export type Locales =
+	| 'ja'
 	| 'zh'
+	| 'ko'
 	| 'en'
 
 export type Translation = RootTranslation
@@ -2029,6 +2031,10 @@ type RootTranslation = {
 		 * E​n​a​b​l​e​ ​C​o​n​d​i​t​i​o​n
 		 */
 		enableCondition: string
+		/**
+		 * T​y​p​e
+		 */
+		type: string
 	}
 	share: {
 		/**
@@ -4159,6 +4165,10 @@ export type TranslationFunctions = {
 		 * Enable Condition
 		 */
 		enableCondition: () => LocalizedString
+		/**
+		 * Type
+		 */
+		type: () => LocalizedString
 	}
 	share: {
 		/**

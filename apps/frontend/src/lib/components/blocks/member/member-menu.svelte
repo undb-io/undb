@@ -82,6 +82,8 @@
         <DropdownMenu.SubContent>
           <DropdownMenu.Item on:click={() => changeLanguage("en")}>English</DropdownMenu.Item>
           <DropdownMenu.Item on:click={() => changeLanguage("zh")}>中文</DropdownMenu.Item>
+          <DropdownMenu.Item on:click={() => changeLanguage("ja")}>日本語</DropdownMenu.Item>
+          <DropdownMenu.Item on:click={() => changeLanguage("ko")}>한국어</DropdownMenu.Item>
         </DropdownMenu.SubContent>
       </DropdownMenu.Sub>
     </DropdownMenu.Group>

@@ -5,11 +5,15 @@ import { initFormatters } from './formatters.js'
 import type { Locales, Translations } from './i18n-types.js'
 import { loadedFormatters, loadedLocales, locales } from './i18n-util.js'
 
+import ja from './ja/index.js'
 import zh from './zh/index.js'
+import ko from './ko/index.js'
 import en from './en/index.js'
 
 const localeTranslations = {
+	ja,
 	zh,
+	ko,
 	en,
 }
 
