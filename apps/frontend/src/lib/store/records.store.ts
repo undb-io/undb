@@ -138,6 +138,8 @@ export const createRecordsStore = () => {
   const deleteRecord = (id: string) => {
     store.update((store) => {
       store.records.delete(id)
+      data.update((data) => data.filter((d) => d.id !== id))
+      store.records = store.records
       store.ids = store.ids.filter((id) => id !== id)
       return store
     })

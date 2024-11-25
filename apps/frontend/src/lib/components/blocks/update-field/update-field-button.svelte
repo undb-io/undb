@@ -4,6 +4,7 @@
   import * as Popover from "$lib/components/ui/popover"
   import UpdateField from "./update-field.svelte"
   import type { Field } from "@undb/table"
+  import { LL } from "@undb/i18n/client"
 
   export let field: Field
   let open = false
@@ -14,7 +15,7 @@
     <Button builders={[builder]} size="sm" variant="outline" {...$$restProps}>
       <slot>
         <SettingsIcon class="mr-2 h-3 w-3" />
-        Update Field
+        {$LL.table.field.update()}
       </slot>
     </Button>
   </Popover.Trigger>

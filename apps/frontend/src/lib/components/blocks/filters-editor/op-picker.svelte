@@ -49,7 +49,7 @@
   </Popover.Trigger>
   <Popover.Content class="w-[200px] p-0">
     <Command.Root>
-      <Command.Input placeholder="Search op..." class="h-9" />
+      <Command.Input placeholder={$LL.table.common.searchOp()} class="h-9" />
       <Command.Empty>No oprator found.</Command.Empty>
       <Command.Group>
         {#each ops as framework}

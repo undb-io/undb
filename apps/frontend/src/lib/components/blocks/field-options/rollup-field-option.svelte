@@ -14,6 +14,7 @@
   import RollupFnPicker from "../rollup/rollup-fn-picker.svelte"
   import Label from "$lib/components/ui/label/label.svelte"
   import autoAnimate from "@formkit/auto-animate"
+  import { LL } from "@undb/i18n/client"
 
   export let disabled: boolean = false
 
@@ -42,9 +43,9 @@
 
 <div class="space-y-2">
   <div class="space-y-1">
-    <Label class="text-xs font-normal">Reference field</Label>
+    <Label class="text-xs font-normal">{$LL.table.field.rollup.referenceField()}</Label>
     <FieldPicker
-      placeholder="Select a reference field..."
+      placeholder={$LL.table.field.rollup.selectReferenceField()}
       {disabled}
       class="w-full justify-start"
       {...$$restProps}
@@ -59,7 +60,7 @@
   <div class="space-y-2" use:autoAnimate>
     {#if $foreignTableDo && fields?.length}
       <div class="space-y-1">
-        <Label class="text-xs font-normal">Foreign rollup field</Label>
+        <Label class="text-xs font-normal">{$LL.table.field.rollup.foreignRollupField()}</Label>
         <FieldPicker
           class="w-full"
           {disabled}
@@ -76,7 +77,7 @@
 
     {#if $foreignTableDo && option.rollupFieldId}
       <div class="space-y-1">
-        <Label class="text-xs font-normal">Aggregate function</Label>
+        <Label class="text-xs font-normal">{$LL.table.field.rollup.aggregateFunction()}</Label>
         <RollupFnPicker
           {disabled}
           foreignTable={$foreignTableDo}

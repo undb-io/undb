@@ -3,6 +3,7 @@
   import { hasPermission } from "$lib/store/space-member.store"
   import CreateRlsButton from "./create-rls-button.svelte"
   import { SquareMousePointer } from "lucide-svelte"
+  import { LL } from '@undb/i18n/client'
 
   const table = getTable()
 </script>
@@ -15,9 +16,13 @@
   >
     <div class="flex flex-col items-center gap-3 text-center">
       <SquareMousePointer class="text-primary h-10 w-10" />
-      <h3 class="text-sm font-bold tracking-tight">{$table.name.value} have no record level security</h3>
+      <h3 class="text-sm font-bold tracking-tight">
+        {$LL.table.authz.noRecordLevelSecurity({ table: $table.name.value })}
+      </h3>
       {#if $hasPermission("table:update")}
-        <p class="text-muted-foreground text-sm">Click button to create your first record level security policy</p>
+        <p class="text-muted-foreground text-sm">
+          {$LL.table.authz.noRecordLevelSecurityDescription()}
+        </p>
         <CreateRlsButton />
       {/if}
     </div>

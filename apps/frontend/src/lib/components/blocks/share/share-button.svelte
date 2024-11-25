@@ -20,6 +20,7 @@
   // @ts-ignore
   import QrCode from "svelte-qrcode"
   import * as HoverCard from "$lib/components/ui/hover-card"
+  import { LL } from "@undb/i18n/client"
 
   export let type: IShareTarget["type"]
   export let id: IShareTarget["id"]
@@ -81,7 +82,7 @@
     setTimeout(() => {
       copied = false
     }, 2000)
-    toast.success("Copied to clipboard")
+    toast.success($LL.share.copied())
   }
 
   $: iframe = url ? getIframe(url) : undefined
@@ -93,7 +94,7 @@
     setTimeout(() => {
       iframeCopied = false
     }, 2000)
-    toast.success("Copied to clipboard")
+    toast.success($LL.share.copied())
   }
 
   $: permission = match(type)
@@ -127,15 +128,14 @@
         {...$$restProps}
       >
         <ShareIcon class="mr-1 h-4 w-4" />
-        Share
+        {$LL.share.button()}
       </Button>
     </Popover.Trigger>
     <Popover.Content class="w-[500px]">
       <div class={cn("-mx-4 flex items-center justify-between px-4", enabled && "pb-2")}>
         <h3 class="flex items-center text-sm font-semibold">
           <ShareIcon class="mr-2 h-4 w-4" />
-
-          Share
+          {$LL.share.title()}
         </h3>
         <Label class="flex items-center gap-2">
           <Switch
@@ -154,7 +154,7 @@
       {#if enabled && share?.id}
         <div class="-mx-4 space-y-2 border-t px-4 pt-2">
           <div class="space-y-2">
-            <p class="text-xs font-semibold">Share URL</p>
+            <p class="text-xs font-semibold">{$LL.share.shareUrl()}</p>
             <div class="flex items-center gap-2">
               <Input
                 value={url}
@@ -189,7 +189,7 @@
 
           {#if iframe}
             <div class="space-y-2">
-              <p class="text-xs font-semibold">IFrame URL</p>
+              <p class="text-xs font-semibold">{$LL.share.iframeUrl()}</p>
               <div class="item-center flex gap-2">
                 <Textarea
                   rows={4}
@@ -212,7 +212,7 @@
           {/if}
 
           <div class="space-y-2">
-            <p class="text-xs font-semibold">Share ID</p>
+            <p class="text-xs font-semibold">{$LL.share.shareId()}</p>
             <div class="flex items-center gap-2">
               <Input
                 on:click={(e) => {

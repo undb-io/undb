@@ -22,6 +22,7 @@
   import { Loader2Icon } from "lucide-svelte"
   import { toast } from "svelte-sonner"
   import ShareButton from "$lib/components/blocks/share/share-button.svelte"
+  import { LL } from "@undb/i18n/client"
 
   const dashboard = getDashboard()
 
@@ -114,18 +115,18 @@
           <DropdownMenu.Group>
             <DropdownMenu.Item class="text-xs" on:click={() => (updateDialogOpen = true)}>
               <PencilIcon class="mr-2 size-3" />
-              Update Dashboard
+              {$LL.dashboard.updateName()}
             </DropdownMenu.Item>
             <DropdownMenu.Item class="text-xs" on:click={() => (duplicateDialogOpen = true)}>
               <CopyIcon class="mr-2 size-3" />
-              Duplicate Dashboard
+              {$LL.dashboard.duplicateDashboard()}
             </DropdownMenu.Item>
             <DropdownMenu.Item
               class="text-destructive text-xs hover:!bg-red-100 hover:!text-red-500"
               on:click={() => (deleteDialogOpen = true)}
             >
               <TrashIcon class="mr-2 size-3" />
-              Delete Dashboard
+              {$LL.dashboard.deleteDashboard()}
             </DropdownMenu.Item>
           </DropdownMenu.Group>
         </DropdownMenu.Content>
@@ -157,20 +158,20 @@
 <AlertDialog.Root bind:open={deleteDialogOpen}>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Delete Dashboard?</AlertDialog.Title>
+      <AlertDialog.Title>{$LL.dashboard.confirmDeleteDashboard()}</AlertDialog.Title>
       <AlertDialog.Description>
-        This action cannot be undone. This will permanently delete your dashboard and remove your data from our servers.
+        {$LL.dashboard.confirmDeleteDashboardDescription()}
       </AlertDialog.Description>
     </AlertDialog.Header>
     <AlertDialog.Footer>
-      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Cancel>{$LL.common.cancel()}</AlertDialog.Cancel>
       <AlertDialog.Action asChild>
         <Button variant="destructive" on:click={deleteDashboard}>
           {#if $deleteDashboardMutation.isPending}
             <Loader2Icon class="mr-2 size-4" />
           {/if}
-          Delete</Button
-        >
+          {$LL.common.delete()}
+        </Button>
       </AlertDialog.Action>
     </AlertDialog.Footer>
   </AlertDialog.Content>
@@ -179,12 +180,14 @@
 <AlertDialog.Root bind:open={duplicateDialogOpen}>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Duplicate Dashboard?</AlertDialog.Title>
+      <AlertDialog.Title>{$LL.dashboard.duplicateDashboardConfirm()}</AlertDialog.Title>
     </AlertDialog.Header>
     <AlertDialog.Footer>
-      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Cancel>{$LL.common.cancel()}</AlertDialog.Cancel>
       <AlertDialog.Action asChild let:builder>
-        <Button on:click={duplicateDashboard} builders={[builder]}>Duplicate</Button>
+        <Button on:click={duplicateDashboard} builders={[builder]}>
+          {$LL.common.duplicate()}
+        </Button>
       </AlertDialog.Action>
     </AlertDialog.Footer>
   </AlertDialog.Content>
@@ -193,13 +196,13 @@
 <Dialog.Root bind:open={updateDialogOpen}>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Update Dashboard</Dialog.Title>
+      <Dialog.Title>{$LL.dashboard.updateDashboard()}</Dialog.Title>
     </Dialog.Header>
 
     <form method="POST" use:enhance>
       <Form.Field form={updateDashboardForm} name="name">
         <Form.Control let:attrs>
-          <Form.Label>Name</Form.Label>
+          <Form.Label>{$LL.common.name()}</Form.Label>
           <Input {...attrs} bind:value={$formData.name} />
         </Form.Control>
         <Form.Description />
@@ -208,14 +211,14 @@
 
       <Form.Field form={updateDashboardForm} name="description">
         <Form.Control let:attrs>
-          <Form.Label>Description</Form.Label>
+          <Form.Label>{$LL.common.description()}</Form.Label>
           <Textarea {...attrs} bind:value={$formData.description} />
         </Form.Control>
         <Form.Description />
         <Form.FieldErrors />
       </Form.Field>
 
-      <Form.Button>Update</Form.Button>
+      <Form.Button>{$LL.common.update()}</Form.Button>
     </form>
   </Dialog.Content>
 </Dialog.Root>

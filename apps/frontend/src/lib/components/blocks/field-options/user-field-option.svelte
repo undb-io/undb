@@ -13,6 +13,7 @@
   import { Button } from "$lib/components/ui/button"
   import * as Alert from "$lib/components/ui/alert/index.js"
   import UserMacro from "../user/user-macro.svelte"
+  import { LL } from "@undb/i18n/client"
 
   export let constraint: IUserFieldConstraint | undefined = { required: false, max: 1 }
   export let defaultValue: IUserFieldValue | undefined
@@ -46,15 +47,17 @@
           }
         }}
       />
-      <Label for="single" class="text-xs font-normal">Allow adding multiple users</Label>
+      <Label for="single" class="text-xs font-normal">{$LL.table.field.user.allowAddMultiple()}</Label>
     </div>
 
     <div use:autoAnimate>
       {#if !isNew}
         {#if initialMultiple && !multiple}
           <Alert.Root class="border-yellow-500 bg-yellow-50">
-            <Alert.Title>Change from multiple options to single option!</Alert.Title>
-            <Alert.Description class="text-xs">Only first option will be remained.</Alert.Description>
+            <Alert.Title>{$LL.table.field.user.changeFromMultipleToSingle()}</Alert.Title>
+            <Alert.Description class="text-xs"
+              >{$LL.table.field.user.changeFromMultipleToSingleDescription()}</Alert.Description
+            >
           </Alert.Root>
         {/if}
       {/if}
@@ -63,12 +66,12 @@
     <div class="w-full space-y-1">
       {#if multiple}
         {#if Array.isArray(defaultValue) || defaultValue === undefined || defaultValue === null}
-          <Label for="defaultValue" class="block text-xs font-normal">Default value</Label>
+          <Label for="defaultValue" class="block text-xs font-normal">{$LL.table.field.defaultValue.label()}</Label>
           <UsersPicker
             {disabled}
             id="defaultValue"
             class="bg-background w-full flex-1 text-xs"
-            placeholder="Default value..."
+            placeholder={$LL.table.field.defaultValue.placeholder()}
             bind:value={defaultValue}
           >
             <Button
@@ -93,7 +96,7 @@
                   {/each}
                 </div>
               {:else}
-                <span class="text-muted-foreground"> Select default users... </span>
+                <span class="text-muted-foreground"> {$LL.table.field.defaultValue.placeholder()} </span>
               {/if}
               <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
             </Button>
@@ -101,12 +104,12 @@
           </UsersPicker>
         {/if}
       {:else if !Array.isArray(defaultValue)}
-        <Label for="defaultValue" class="block text-xs font-normal">Default value</Label>
+        <Label for="defaultValue" class="block text-xs font-normal">{$LL.table.field.defaultValue.label()}</Label>
         <UserPicker
           {disabled}
           id="defaultValue"
           class="bg-background w-full flex-1 text-xs"
-          placeholder="Default value..."
+          placeholder={$LL.table.field.defaultValue.placeholder()}
           bind:value={defaultValue}
         >
           <Button
@@ -126,7 +129,7 @@
                 <UserFieldComponent disableHoverCard value={defaultValue} displayValue={selected?.user} />
               {/if}
             {:else}
-              <span class="text-muted-foreground"> Select default user... </span>
+              <span class="text-muted-foreground"> {$LL.table.field.defaultValue.placeholder()} </span>
             {/if}
             <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
           </Button>
@@ -136,7 +139,7 @@
     <div class="grid grid-cols-2 gap-2" use:autoAnimate>
       {#if multiple}
         <div class="space-y-1">
-          <Label for="min" class="text-xs font-normal">Min items</Label>
+          <Label for="min" class="text-xs font-normal">{$LL.table.field.user.min()}</Label>
           <NumberInput
             {disabled}
             id="min"
@@ -144,19 +147,19 @@
             max={constraint.max}
             step={1}
             bind:value={constraint.min}
-            placeholder="Min items..."
+            placeholder={$LL.table.field.user.minPlaceholder()}
             class="bg-background text-xs"
           />
         </div>
         <div class="space-y-1">
-          <Label for="max" class="text-xs font-normal">Max items</Label>
+          <Label for="max" class="text-xs font-normal">{$LL.table.field.user.max()}</Label>
           <NumberInput
             {disabled}
             id="max"
             min={constraint.min || 0}
             step={1}
             bind:value={constraint.max}
-            placeholder="Max items..."
+            placeholder={$LL.table.field.user.maxPlaceholder()}
             class="bg-background text-xs"
           />
         </div>
@@ -168,7 +171,7 @@
     </div>
     <div class="flex items-center space-x-2">
       <Checkbox id="required" bind:checked={constraint.required} {disabled} />
-      <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
+      <Label for="required" class="text-xs font-normal">{$LL.table.field.defaultValue.markAsRequired()}</Label>
     </div>
   </div>
 {/if}

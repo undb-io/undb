@@ -6,6 +6,7 @@
   import { Button } from "$lib/components/ui/button"
   import type { IOption } from "@undb/table"
   import Option from "./option.svelte"
+  import { LL } from "@undb/i18n/client"
 
   export let options: IOption[] = []
   export let disabled = false
@@ -53,8 +54,8 @@
   </Popover.Trigger>
   <Popover.Content class="p-0" {sameWidth}>
     <Command.Root shouldFilter={false}>
-      <Command.Input bind:value={search} placeholder="Search option..." />
-      <Command.Empty>No option found.</Command.Empty>
+      <Command.Input bind:value={search} placeholder={$LL.table.field.select.option.search()} />
+      <Command.Empty>{$LL.table.field.select.option.noOptionFound()}</Command.Empty>
       <Command.Group class="max-h-[300px] overflow-y-auto">
         {#each filteredOptions as option}
           <Command.Item

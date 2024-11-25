@@ -22,6 +22,7 @@
   import OptionsPicker from "../option/options-picker.svelte"
   import OptionPicker from "../option/option-picker.svelte"
   import * as Alert from "$lib/components/ui/alert/index.js"
+  import { LL } from "@undb/i18n/client"
 
   export let constraint: ISelectFieldConstraint | undefined
   const colors = new ColorsVO()
@@ -87,7 +88,7 @@
 {#if constraint}
   <div class="space-y-2 pt-2">
     <div class="space-y-1">
-      <p class="text-xs font-normal">Options</p>
+      <p class="text-xs font-normal">{$LL.table.field.select.option.label()}</p>
       <div class="space-y-2">
         <SortableList
           animation={200}
@@ -121,7 +122,7 @@
 
         <Button {disabled} on:click={addOption} class="w-full text-xs" size="sm" variant="outline">
           <PlusSquareIcon class="mr-2 h-3 w-3" />
-          Add Option
+          {$LL.table.field.select.option.add()}
         </Button>
       </div>
     </div>
@@ -147,15 +148,17 @@
           handleDefaultValue()
         }}
       />
-      <Label for="single" class="text-xs font-normal">Allow adding multiple options</Label>
+      <Label for="single" class="text-xs font-normal">{$LL.table.field.select.allowAddMultiple()}</Label>
     </div>
 
     <div use:autoAnimate>
       {#if !isNew}
         {#if initialMultiple && !multiple}
           <Alert.Root class="border-yellow-500 bg-yellow-50">
-            <Alert.Title>Change from multiple options to single option!</Alert.Title>
-            <Alert.Description class="text-xs">Only first option will be remained.</Alert.Description>
+            <Alert.Title>{$LL.table.field.select.option.changeFromMultipleToSingle()}</Alert.Title>
+            <Alert.Description class="text-xs"
+              >{$LL.table.field.select.option.changeFromMultipleToSingleDescription()}</Alert.Description
+            >
           </Alert.Root>
         {/if}
       {/if}
@@ -164,25 +167,25 @@
     <div class="w-full space-y-1">
       {#if multiple}
         {#if Array.isArray(defaultValue) || defaultValue === undefined || defaultValue === null}
-          <Label for="defaultValue" class="block text-xs font-normal">Default value</Label>
+          <Label for="defaultValue" class="block text-xs font-normal">{$LL.table.field.defaultValue.label()}</Label>
           <OptionsPicker
             {disabled}
             sameWidth
             id="defaultValue"
             class="bg-background w-full flex-1 text-xs"
-            placeholder="Select default options..."
+            placeholder={$LL.table.field.select.option.selectDefault()}
             options={option.options}
             bind:value={defaultValue}
           />
         {/if}
       {:else if !Array.isArray(defaultValue)}
-        <Label for="defaultValue" class="block text-xs font-normal">Default value</Label>
+        <Label for="defaultValue" class="block text-xs font-normal">{$LL.table.field.defaultValue.label()}</Label>
         <OptionPicker
           {disabled}
           sameWidth
           id="defaultValue"
           class="bg-background w-full flex-1 text-xs"
-          placeholder="Select default options..."
+          placeholder={$LL.table.field.select.option.selectDefault()}
           options={option.options}
           bind:value={defaultValue}
         />
@@ -192,7 +195,7 @@
     <div class="grid grid-cols-2 gap-2" use:autoAnimate>
       {#if multiple}
         <div class="space-y-1">
-          <Label for="min" class="text-xs font-normal">Min items</Label>
+          <Label for="min" class="text-xs font-normal">{$LL.table.field.select.min()}</Label>
           <NumberInput
             {disabled}
             id="min"
@@ -200,19 +203,19 @@
             max={constraint.max}
             step={1}
             bind:value={constraint.min}
-            placeholder="Min items..."
+            placeholder={$LL.table.field.select.minPlaceholder()}
             class="bg-background text-xs"
           />
         </div>
         <div class="space-y-1">
-          <Label for="max" class="text-xs font-normal">Max items</Label>
+          <Label for="max" class="text-xs font-normal">{$LL.table.field.select.max()}</Label>
           <NumberInput
             {disabled}
             id="max"
             min={constraint.min || 0}
             step={1}
             bind:value={constraint.max}
-            placeholder="Max items..."
+            placeholder={$LL.table.field.select.maxPlaceholder()}
             class="bg-background text-xs"
           />
         </div>
@@ -224,7 +227,7 @@
     </div>
     <div class="flex items-center space-x-2">
       <Checkbox {disabled} id="required" bind:checked={constraint.required} />
-      <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
+      <Label for="required" class="text-xs font-normal">{$LL.table.field.defaultValue.markAsRequired()}</Label>
     </div>
   </div>
 {/if}

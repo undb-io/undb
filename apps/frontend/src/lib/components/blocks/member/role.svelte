@@ -2,6 +2,7 @@
   import { cn } from "$lib/utils"
   import type { ISpaceMemberRole } from "@undb/authz"
   import { getRoleBgColor } from "./get-role-bg-color"
+  import { LL } from "@undb/i18n/client"
 
   export let role: ISpaceMemberRole
 </script>
@@ -12,5 +13,5 @@
     getRoleBgColor(role),
   )}
 >
-  {role}
+  {$LL.roles[role]()}
 </span>

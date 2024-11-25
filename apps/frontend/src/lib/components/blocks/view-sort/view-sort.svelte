@@ -26,6 +26,8 @@
   import { onMount } from "svelte"
   import autoAnimate from "@formkit/auto-animate"
   import { hasPermission } from "$lib/store/space-member.store"
+  import { LL } from "@undb/i18n/client"
+  import SortPicker from "./sort-picker.svelte"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
@@ -99,7 +101,7 @@
       {...$$restProps}
     >
       <ArrowUpDownIcon class="mr-2 h-4 w-4" />
-      Sorts
+      {$LL.table.common.sorts.sort()}
       {#if count}
         <Badge variant="secondary" class="ml-2 rounded-full">{count}</Badge>
       {/if}
@@ -109,7 +111,7 @@
     <div use:autoAnimate class="h-full w-full">
       {#if value?.length}
         <div class="space-y-2 border-b px-4 py-2">
-          <div class="text-muted-foreground text-xs">Sorts</div>
+          <div class="text-muted-foreground text-xs">{$LL.table.common.sorts.sort()}</div>
           <SortableList
             class={cn("space-y-1.5")}
             animation={200}
@@ -127,47 +129,15 @@
                     filter={(field) => !selectedFieldIds.has(field.value) && isFieldSortable(field.type)}
                     value={item.fieldId}
                     onValueChange={(field) => {
-                      item.fieldId = field
+                      if (field) {
+                        item.fieldId = field
+                      }
                     }}
                     class="col-span-5 rounded-r-none border-r-0"
                     disabled={$setViewSortMutation.isPending}
                   />
 
-                  <Select.Root
-                    portal="body"
-                    disabled={$setViewSortMutation.isPending}
-                    selected={{ value: item.direction, label: item.direction }}
-                    onSelectedChange={(value) => {
-                      if (value) {
-                        item.direction = value.value
-                      }
-                    }}
-                  >
-                    <Select.Trigger class="col-span-3 h-8 rounded-l-none">
-                      <Select.Value asChild let:label>
-                        <div class="flex items-center gap-2">
-                          {#if label === "asc"}
-                            <ArrowDownAzIcon class="mr-1 h-3 w-3" />
-                          {:else}
-                            <ArrowUpZaIcon class="mr-1 h-4 w-4" />
-                          {/if}
-                          <span>
-                            {label}
-                          </span>
-                        </div>
-                      </Select.Value>
-                    </Select.Trigger>
-                    <Select.Content class="text-sm">
-                      <Select.Item value="asc">
-                        <ArrowDownAzIcon class="mr-1 h-3 w-3" />
-                        asc
-                      </Select.Item>
-                      <Select.Item value="desc">
-                        <ArrowUpZaIcon class="mr-1 h-4 w-4" />
-                        desc
-                      </Select.Item>
-                    </Select.Content>
-                  </Select.Root>
+                  <SortPicker bind:value={item.direction} class="col-span-3"   />
                 </div>
                 <div class="text-muted-foreground col-span-2 flex justify-end gap-2">
                   {#if $hasPermission("table:update")}
@@ -190,7 +160,9 @@
       {:else if readonly}
         <div class="flex flex-col items-center gap-3 px-4 py-6 text-center">
           <SortAscIcon class="text-primary h-7 w-7" />
-          <h3 class="text-muted-foreground text-sm font-semibold tracking-tight">There's no sorts</h3>
+          <h3 class="text-muted-foreground text-sm font-semibold tracking-tight">
+            {$LL.table.common.sorts.empty()}
+          </h3>
         </div>
       {/if}
       {#if !readonly}
@@ -198,13 +170,13 @@
           {#if $hasPermission("table:update")}
             <Button disabled={$setViewSortMutation.isPending || disabled} variant="ghost" size="sm" on:click={addSort}>
               <PlusIcon class="mr-2 h-3 w-3" />
-              Add Sort
+              {$LL.table.common.sorts.add()}
             </Button>
             <Button disabled={disabled || $setViewSortMutation.isPending} variant="outline" size="sm" on:click={submit}>
               {#if $setViewSortMutation.isPending}
                 <LoaderCircleIcon class="mr-2 h-3 w-3 animate-spin" />
               {/if}
-              Submit
+              {$LL.table.common.submit()}
             </Button>
           {/if}
         </div>

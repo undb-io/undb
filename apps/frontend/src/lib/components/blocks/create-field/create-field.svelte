@@ -150,7 +150,8 @@
         <BetweenVerticalStartIcon class="mr-2 h-4 w-4" />
       {/if}
 
-      Create field</Button
+      {$LL.table.field.create()}
+      </Button
     >
   </div>
 </form>

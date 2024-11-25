@@ -6,6 +6,7 @@
   import PivotViewOptionForm from "./pivot-view-option-form.svelte"
   import { useQueryClient } from "@tanstack/svelte-query"
   import { getTable } from "$lib/store/table.store"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
 
@@ -25,15 +26,15 @@
   <Dropdown.Trigger asChild let:builder>
     <Button variant="ghost" size="sm" builders={[builder]}>
       <PanelsTopLeftIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
-      Pivot
+      {$LL.table.view.pivot.pivot()}
     </Button>
   </Dropdown.Trigger>
   <Dropdown.Content class="w-[400px] px-4 py-2">
     <Dropdown.Label class="px-0 py-2">
       {#if !readonly}
-        Update pivot view
+        {$LL.table.view.pivot.update()}
       {:else}
-        Pivot view
+        {$LL.table.view.pivot.view()}
       {/if}
     </Dropdown.Label>
     <PivotViewOptionForm {view} {readonly} {onSuccess} />

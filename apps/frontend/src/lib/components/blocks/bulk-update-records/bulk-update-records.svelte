@@ -27,6 +27,7 @@
   import { writable, type Writable } from "svelte/store"
   import autoAnimate from "@formkit/auto-animate"
   import type { Readable } from "svelte/store"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
   export let viewId: Readable<string | undefined>
@@ -49,9 +50,9 @@
     mutationFn: trpc.record.bulkUpdate.mutate,
     onSuccess: async (data) => {
       if (!data.modifiedCount) {
-        toast.warning("No records updated")
+        toast.warning($LL.table.record.bulkUpdate.noRecordsUpdated())
       } else {
-        toast.success(`${data.modifiedCount} records updated successfully`)
+        toast.success($LL.table.record.bulkUpdate.recordsUpdated({ count: data.modifiedCount }))
       }
       reset({})
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
@@ -124,7 +125,7 @@
   <div class="col-span-3 flex h-full flex-col border-r px-4 py-3">
     {#if !customFilter}
       <div class="space-y-2">
-        <p class="font-semibold">Update records with the following condition</p>
+        <p class="font-semibold">{$LL.table.record.bulkUpdate.updateWithCondition()}</p>
         <FiltersEditor
           bind:value={$value}
           table={$table}
@@ -138,8 +139,8 @@
         <div class="flex-1">
           <Alert.Root>
             <PencilIcon class="h-4 w-4" />
-            <Alert.Title>Add Update Field</Alert.Title>
-            <Alert.Description>SELECT COLUMNS TO EDIT</Alert.Description>
+            <Alert.Title>{$LL.table.record.bulkUpdate.addField()}</Alert.Title>
+            <Alert.Description>{$LL.table.record.bulkUpdate.selectColumns()}</Alert.Description>
           </Alert.Root>
         </div>
       {:else}
@@ -156,7 +157,7 @@
                       <span
                         class="me-2 rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300"
                       >
-                        updated
+                        {$LL.table.record.bulkUpdate.updated()}
                       </span>
                     {/if}
                   </div>
@@ -187,7 +188,7 @@
           }}
         >
           <PencilIcon class="mr-2 h-4 w-4" />
-          Bulk Update
+          {$LL.table.record.bulkUpdate.button()}
         </Button>
       </div>
     </div>
@@ -195,15 +196,19 @@
 
   <div class="col-span-1 h-full px-3 py-3">
     <ScrollArea class="h-full">
-      <p class="text-muted-foreground mb-2 font-normal">SELECT COLUMNS TO EDIT</p>
+      <p class="text-muted-foreground mb-2 font-normal">{$LL.table.record.bulkUpdate.selectColumns()}</p>
       <div class="mb-2 flex w-full items-center gap-2">
         <Button
           class="flex-1"
           size="sm"
           variant="outline"
-          on:click={() => (selectedFieldIds = mutableFields.map((f) => f.id.value))}>Select All</Button
+          on:click={() => (selectedFieldIds = mutableFields.map((f) => f.id.value))}
         >
-        <Button size="sm" class="flex-1" variant="outline" on:click={() => (selectedFieldIds = [])}>Remove All</Button>
+          {$LL.table.record.bulkUpdate.selectAll()}
+        </Button>
+        <Button size="sm" class="flex-1" variant="outline" on:click={() => (selectedFieldIds = [])}>
+          {$LL.table.record.bulkUpdate.removeAll()}
+        </Button>
       </div>
       <div class="space-y-2">
         {#each mutableFields as field}
@@ -229,11 +234,11 @@
 <AlertDialog.Root bind:open>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Update records?</AlertDialog.Title>
-      <AlertDialog.Description>All selected fields will be updated</AlertDialog.Description>
+      <AlertDialog.Title>{$LL.table.record.bulkUpdate.title()}</AlertDialog.Title>
+      <AlertDialog.Description>{$LL.table.record.bulkUpdate.description()}</AlertDialog.Description>
     </AlertDialog.Header>
     <AlertDialog.Footer>
-      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Cancel>{$LL.table.common.cancel()}</AlertDialog.Cancel>
       <AlertDialog.Action
         on:click={() => {
           if (values) {
@@ -241,7 +246,7 @@
           }
         }}
       >
-        Continue
+        {$LL.table.record.bulkUpdate.continue()}
       </AlertDialog.Action>
     </AlertDialog.Footer>
   </AlertDialog.Content>

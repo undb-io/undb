@@ -6,6 +6,7 @@
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { toast } from "svelte-sonner"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
 
@@ -15,7 +16,7 @@
   const duplciateRecordMutation = createMutation({
     mutationFn: trpc.record.duplicate.mutate,
     onError() {
-      toast.error("Failed to duplicate record")
+      toast.error($LL.table.record.failedToDuplicateRecord())
     },
     async onSuccess() {
       await client.invalidateQueries({
@@ -47,9 +48,9 @@
 >
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Duplicate Record</AlertDialog.Title>
+      <AlertDialog.Title>{$LL.table.record.confirmDuplicateRecord()}</AlertDialog.Title>
       <AlertDialog.Description>
-        A new record with new id will be created. Are you sure you want to continue?
+        {$LL.table.record.confirmDuplicateRecordDescription()}
       </AlertDialog.Description>
     </AlertDialog.Header>
     <AlertDialog.Footer>
@@ -57,13 +58,17 @@
         on:click={() => {
           toggleModal(DUPLICATE_RECORD_MODAL)
           $duplicateRecordId = null
-        }}>Cancel</AlertDialog.Cancel
+        }}
       >
+        {$LL.common.cancel()}
+      </AlertDialog.Cancel>
       <AlertDialog.Action
         on:click={() => {
           duplicateRecord()
-        }}>Continue</AlertDialog.Action
+        }}
       >
+        {$LL.common.continue()}
+      </AlertDialog.Action>
     </AlertDialog.Footer>
   </AlertDialog.Content>
 </AlertDialog.Root>

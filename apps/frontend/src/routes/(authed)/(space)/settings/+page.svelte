@@ -7,6 +7,7 @@
   import { goto } from "$app/navigation"
   import SpaceSetting from "$lib/components/blocks/space/space-setting.svelte"
   import MemberSetting from "$lib/components/blocks/member/member-setting.svelte"
+  import { LL } from "@undb/i18n/client"
 
   const mq = queryParam("mq")
   const tab = queryParam("tab", ssp.string())
@@ -34,7 +35,7 @@
     <div class="space-y-2">
       <h3 class="flex items-center text-xl">
         <SettingsIcon class="mr-2 h-4 w-4" />
-        Settings
+        {$LL.setting.setting()}
       </h3>
     </div>
 
@@ -42,11 +43,11 @@
       <Tabs.List>
         <Tabs.Trigger value="members">
           <UsersIcon class="mr-2 h-4 w-4" />
-          Members
+          {$LL.setting.members()}
         </Tabs.Trigger>
         <Tabs.Trigger value="settings">
           <SettingsIcon class="mr-2 h-4 w-4" />
-          Settings
+          {$LL.setting.setting()}
         </Tabs.Trigger>
       </Tabs.List>
       <Tabs.Content value="members" class="space-y-2">

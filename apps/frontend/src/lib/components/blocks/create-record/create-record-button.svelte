@@ -9,6 +9,7 @@
   import { hasPermission } from "$lib/store/space-member.store"
   import * as Dialog from "$lib/components/ui/dialog"
   import CreateForm from "../forms/create-form.svelte"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
 
@@ -30,7 +31,7 @@
       class={cn("rounded-r-none border-r-0", $$restProps.class)}
     >
       <BetweenHorizonalEnd class="mr-1 h-4 w-4" />
-      Create Record
+      {$LL.table.record.create()}
     </Button>
 
     <DropdownMenu.Root>
@@ -47,7 +48,7 @@
         <DropdownMenu.Group>
           <DropdownMenu.Label class="flex items-center gap-2 text-xs">
             <FormInputIcon class="text-muted-foreground h-4 w-4" />
-            Create By Form
+            {$LL.table.record.createByForm()}
           </DropdownMenu.Label>
           <DropdownMenu.Separator />
           {#each forms as form}
@@ -63,7 +64,7 @@
           {/each}
           <DropdownMenu.Item on:click={() => (createForm = true)}>
             <CirclePlusIcon class="mr-2 h-4 w-4" />
-            Create Form
+            {$LL.table.form.create()}
           </DropdownMenu.Item>
         </DropdownMenu.Group>
       </DropdownMenu.Content>
@@ -74,7 +75,7 @@
 <Dialog.Root bind:open={createForm}>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Create Form</Dialog.Title>
+      <Dialog.Title>{$LL.table.form.create()}</Dialog.Title>
     </Dialog.Header>
 
     <CreateForm onSuccess={() => (createForm = false)} />

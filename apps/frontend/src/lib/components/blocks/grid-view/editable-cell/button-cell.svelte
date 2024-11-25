@@ -8,10 +8,10 @@
   import { LoaderCircleIcon } from "lucide-svelte"
   import { getRecordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
-  import { objectify } from "radash"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import FieldPicker from "../../field-picker/field-picker.svelte"
   import FieldControl from "../../field-control/field-control.svelte"
+  import { LL } from "@undb/i18n/client"
 
   export let tableId: string
   export let field: ButtonField
@@ -68,8 +68,8 @@
 <AlertDialog.Root bind:open={confirm}>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Confirm to update</AlertDialog.Title>
-      <AlertDialog.Description>The following fields will be updated when you click the button.</AlertDialog.Description>
+      <AlertDialog.Title>{$LL.table.record.button.confirmToUpdate()}</AlertDialog.Title>
+      <AlertDialog.Description>{$LL.table.record.button.confirmToUpdateDescription()}</AlertDialog.Description>
     </AlertDialog.Header>
 
     {#if field.option.isSome()}
@@ -93,8 +93,9 @@
     {/if}
 
     <AlertDialog.Footer>
-      <AlertDialog.Cancel on:click={() => (confirm = false)}>Cancel</AlertDialog.Cancel>
-      <AlertDialog.Action disabled={readonly || $trigger.isPending} on:click={handleUpdate}>Continue</AlertDialog.Action
+      <AlertDialog.Cancel on:click={() => (confirm = false)}>{$LL.common.cancel()}</AlertDialog.Cancel>
+      <AlertDialog.Action disabled={readonly || $trigger.isPending} on:click={handleUpdate}
+        >{$LL.common.continue()}</AlertDialog.Action
       >
     </AlertDialog.Footer>
   </AlertDialog.Content>

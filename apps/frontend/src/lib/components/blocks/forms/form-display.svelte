@@ -21,6 +21,7 @@
   import { getFormBgColor } from "./form-bg-color"
   import { invalidate } from "$app/navigation"
   import { derived } from "svelte/store"
+  import { LL } from "@undb/i18n/client"
 
   export let readonly = false
 
@@ -105,13 +106,13 @@
 
     {#if form.description || isAddingDescription}
       <div class="my-2">
-        <Label>Description</Label>
+        <Label>{$LL.common.description()}</Label>
         <Input {readonly} class="text-sm" bind:value={form.description} on:change={setForm}></Input>
       </div>
     {:else if !readonly}
       <Button variant="link" size="sm" class="-mx-4" on:click={addDescription}>
         <PlusIcon class="mr-2 h-4 w-4" />
-        Add description
+        {$LL.table.form.addDescription()}
       </Button>
     {/if}
 
@@ -175,14 +176,14 @@
                       <span
                         class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"
                       >
-                        condition
+                        {$LL.table.form.condition()}
                       </span>
                     {/if}
                     {#if form.getIsFormFieldContionInValid(formField.fieldId)}
                       <span
                         class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20"
                       >
-                        invalid condition
+                        {$LL.table.form.invalidCondition()}
                       </span>
                     {/if}
                   </div>
@@ -196,7 +197,7 @@
                       setForm()
                     }}
                     class="bg-background"
-                    placeholder={`set default value for ${field.name.value}`}
+                    placeholder={$LL.table.form.setDefaultValue({field: field.name.value})}
                   />
                 </div>
                 <Collapsible.Content>
@@ -210,7 +211,7 @@
 
       <div class="flex justify-between">
         <div></div>
-        <Button>Submit</Button>
+        <Button>{$LL.common.submit()}</Button>
       </div>
     </div>
   </div>

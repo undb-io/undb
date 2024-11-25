@@ -7,6 +7,7 @@
   import ShareButton from "../share/share-button.svelte"
   import type { IBaseOption } from "@undb/base"
   import { invalidate } from "$app/navigation"
+  import { LL } from "@undb/i18n/client"
 
   export let readonly = false
   export let base: {
@@ -43,11 +44,11 @@
       <DropdownMenu.Content class="w-[200px]">
         <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_BASE_MODAL)}>
           <PencilIcon class="mr-2 h-3 w-3" />
-          Update Base Name
+          {$LL.base.updateBaseName()}
         </DropdownMenu.Item>
         <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(DUPLICATE_BASE_MODAL)}>
           <CopyIcon class="mr-2 h-3 w-3" />
-          Duplicate Base
+          {$LL.base.duplicateBase({name: base.name})}
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu.Root>

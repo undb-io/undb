@@ -7,6 +7,7 @@
   import Button from "$lib/components/ui/button/button.svelte"
   import { LoaderCircleIcon } from "lucide-svelte"
   import { type Writable } from "svelte/store"
+  import { LL } from "@undb/i18n/client"
 
   export let isSelected = false
 
@@ -37,7 +38,9 @@
 <Popover.Root portal="body" bind:open {onOpenChange}>
   <Popover.Trigger asChild let:builder>
     <slot {builder}>
-      <Button size="xs" disabled={readonly} variant="link" type="button" builders={[builder]}>+ Link Records</Button>
+      <Button size="xs" disabled={readonly} variant="link" type="button" builders={[builder]}
+        >+ {$LL.table.record.reference.link()}</Button
+      >
     </slot>
   </Popover.Trigger>
   <Popover.Content class="h-[400px] max-h-[700px] w-[500px] p-0 lg:max-w-4xl">

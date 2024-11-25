@@ -15,6 +15,7 @@
   import { toast } from "svelte-sonner"
   import { CREATE_RLS_MODAL, closeModal } from "$lib/store/modal.store"
   import Input from "$lib/components/ui/input/input.svelte"
+  import { LL } from '@undb/i18n/client'
 
   const table = getTable()
 
@@ -22,11 +23,11 @@
     mutationKey: ["table", $table.id.value, "rls", "create"],
     mutationFn: trpc.table.rls.set.mutate,
     onSuccess(data, variables, context) {
-      toast.success("RLS created")
+      toast.success($LL.table.authz.created())
       closeModal(CREATE_RLS_MODAL)
     },
     onError(error, variables, context) {
-      toast.error("Failed to create RLS")
+      toast.error($LL.table.authz.failed())
     },
   })
 
@@ -63,14 +64,14 @@
 
   $: selectedSubject = $formData.subject
     ? {
-        label: $formData.subject,
+        label: $LL.table.authz.subject[$formData.subject](),
         value: $formData.subject,
       }
     : undefined
 
   $: selectedAction = $formData.action
     ? {
-        label: $formData.action,
+        label: $LL.table.authz.actions[$formData.action](),
         value: $formData.action,
       }
     : undefined
@@ -92,16 +93,16 @@
 <form method="POST" class="w-full space-y-3" use:enhance>
   <Form.Field {form} name="name">
     <Form.Control let:attrs>
-      <Form.Label>Name</Form.Label>
-      <Input {...attrs} bind:value={$formData.name} placeholder="record level security name" />
+      <Form.Label>{$LL.common.name()}</Form.Label>
+      <Input {...attrs} bind:value={$formData.name} placeholder={$LL.table.authz.rlsName()} />
     </Form.Control>
-    <Form.Description>Give your RLS a name</Form.Description>
+    <Form.Description>{$LL.table.authz.giveYourRLSName()}</Form.Description>
     <Form.FieldErrors />
   </Form.Field>
   <div class="flex items-end gap-2">
     <Form.Field {form} name="subject" class="flex-1">
       <Form.Control let:attrs>
-        <Form.Label>Subject</Form.Label>
+        <Form.Label>{$LL.table.authz.subjectName()}</Form.Label>
         <Select.Root
           selected={selectedSubject}
           onSelectedChange={(v) => {
@@ -109,11 +110,11 @@
           }}
         >
           <Select.Trigger {...attrs}>
-            <Select.Value placeholder="Select a verified email to display" />
+            <Select.Value  />
           </Select.Trigger>
           <Select.Content>
-            <Select.Item value="any" label="any" />
-            <Select.Item value="nobody" label="nobody" />
+            <Select.Item value="any" label={$LL.table.authz.subject.any()} />
+            <Select.Item value="nobody" label={$LL.table.authz.subject.nobody()} />
           </Select.Content>
         </Select.Root>
         <input hidden bind:value={$formData.subject} name={attrs.name} />
@@ -123,14 +124,14 @@
     <Form.Field {form} name="allow">
       <Form.Control let:attrs>
         <Toggle aria-label="toggle bold" class="text-xs" on:click={() => ($formData.allow = !$formData.allow)}>
-          {$formData.allow ? "allow" : "deny"}
+          {$formData.allow ? $LL.table.authz.allow() : $LL.table.authz.deny()}
         </Toggle>
       </Form.Control>
     </Form.Field>
 
     <Form.Field {form} name="action" class="flex-1">
       <Form.Control let:attrs>
-        <Form.Label>Action</Form.Label>
+        <Form.Label>{$LL.table.authz.action()}</Form.Label>
         <Select.Root
           selected={selectedAction}
           onSelectedChange={(v) => {
@@ -138,13 +139,13 @@
           }}
         >
           <Select.Trigger {...attrs}>
-            <Select.Value placeholder="Select a verified email to display" />
+            <Select.Value />
           </Select.Trigger>
           <Select.Content>
-            <Select.Item value="read" label="read" />
-            <Select.Item value="create" disabled label="create" />
-            <Select.Item value="update" disabled label="update" />
-            <Select.Item value="delete" disabled label="delete" />
+            <Select.Item value="read" label={$LL.table.authz.actions.read()} />
+            <Select.Item value="create" disabled label={$LL.table.authz.actions.create()} />
+            <Select.Item value="update" disabled label={$LL.table.authz.actions.update()} />
+            <Select.Item value="delete" disabled label={$LL.table.authz.actions.delete()} />
           </Select.Content>
         </Select.Root>
         <input hidden bind:value={$formData.action} name={attrs.name} />
@@ -155,7 +156,7 @@
   <Form.Field {form} name="condition">
     <Form.Control let:attrs>
       <Form.Label class="flex items-center gap-2" for="enableCondition">
-        Matches conditions...
+        {$LL.table.authz.matchesConditions()}
         <Switch bind:checked={enableContion} id="enableCondition" />
       </Form.Label>
       {#if enableContion}
@@ -186,7 +187,7 @@
       </Form.Control>
     </Form.Field>
   {/if}
-  <Form.Button class="w-full" disabled={!!$allErrors.length || !dirty}>Submit</Form.Button>
+  <Form.Button class="w-full" disabled={!!$allErrors.length || !dirty}>{$LL.common.submit()}</Form.Button>
 
   <!-- {#if browser}
     <SuperDebug data={$formData} />

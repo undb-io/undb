@@ -17,6 +17,7 @@
   import { derived } from "svelte/store"
   import { getNextName } from "@undb/utils"
   import { toast } from "svelte-sonner"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
   export let viewId: string
@@ -71,7 +72,7 @@
 <form method="POST" use:enhance>
   <Form.Field {form} name="widget.name">
     <Form.Control let:attrs>
-      <Form.Label>Name</Form.Label>
+      <Form.Label>{$LL.widget.name()}</Form.Label>
       <Input {...attrs} bind:value={$formData.widget.name} />
     </Form.Control>
     <Form.FieldErrors />
@@ -91,6 +92,6 @@
     {:else}
       <PlugIcon class="mr-2 h-4 w-4" />
     {/if}
-    Add Widget
+    {$LL.table.view.widget.add()}
   </Button>
 </form>

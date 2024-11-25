@@ -5,6 +5,7 @@
   import { Label } from "$lib/components/ui/label/index.js"
   import { Separator } from "$lib/components/ui/separator"
   import type { IJsonFieldConstraint } from "@undb/table"
+  import { LL } from "@undb/i18n/client"
 
   export let constraint: IJsonFieldConstraint | undefined = { required: false }
   export let defaultValue: Json | undefined
@@ -24,7 +25,7 @@
 
 <div class="space-y-2">
   <div class="space-y-1">
-    <Label for="defaultValue" class="text-xs font-normal">Default value</Label>
+    <Label for="defaultValue" class="text-xs font-normal">{$LL.table.field.defaultValue.label()}</Label>
     <JSONEditor
       readOnly={disabled}
       {content}
@@ -43,7 +44,7 @@
 
     <div class="flex items-center space-x-2 pt-2">
       <Checkbox {disabled} id="required" bind:checked={constraint.required} />
-      <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
+      <Label for="required" class="text-xs font-normal">{$LL.table.field.defaultValue.markAsRequired()}</Label>
     </div>
   {/if}
 </div>

@@ -12,6 +12,7 @@
   import { Button } from "$lib/components/ui/button"
   import * as AlertDialog from "$lib/components/ui/alert-dialog/index.js"
   import { hasPermission } from "$lib/store/space-member.store"
+  import { LL } from "@undb/i18n/client"
 
   export let space: ISpaceDTO
 
@@ -63,7 +64,7 @@
   <form method="POST" class="w-2/3 space-y-4" use:enhance>
     <Form.Field {form} name="name">
       <Form.Control let:attrs>
-        <Form.Label>Space name</Form.Label>
+        <Form.Label>{$LL.space.name()}</Form.Label>
         <Input
           {...attrs}
           disabled={!$hasPermission("space:update")}
@@ -71,11 +72,11 @@
           bind:value={$formData.name}
         />
       </Form.Control>
-      <Form.Description>Change space display name.</Form.Description>
+      <Form.Description>{$LL.space.setDisplayName()}</Form.Description>
       <Form.FieldErrors />
     </Form.Field>
 
-    <Form.Button disabled={!$hasPermission("space:update")}>Update</Form.Button>
+    <Form.Button disabled={!$hasPermission("space:update")}>{$LL.common.update()}</Form.Button>
     {#if browser}
       <!-- <SuperDebug data={$formData} /> -->
     {/if}
@@ -83,11 +84,11 @@
 
   <!-- Delete space -->
   <div class="w-2/3 space-y-3 rounded-md border-2 border-red-500 p-4">
-    <p class="text-red-500">Danger Zone</p>
-    <div>Delete Space</div>
+    <p class="text-red-500">{$LL.common.dangerZone()}</p>
+    <div>{$LL.common.delete()}</div>
 
     {#if space.isPersonal}
-      <p class="text-muted-foreground">You can not delete your personal space.</p>
+      <p class="text-muted-foreground">{$LL.space.cannotDeletePersonalSpace()}</p>
     {/if}
 
     <AlertDialog.Root>
@@ -95,15 +96,16 @@
         <Button
           variant="destructive"
           builders={[builder]}
-          disabled={space.isPersonal || !$hasPermission("space:delete")}>Delete Space</Button
+          disabled={space.isPersonal || !$hasPermission("space:delete")}
         >
+          {$LL.space.deleteSpace()}
+        </Button>
       </AlertDialog.Trigger>
       <AlertDialog.Content>
         <AlertDialog.Header>
-          <AlertDialog.Title>Are you absolutely sure to delete space?</AlertDialog.Title>
+          <AlertDialog.Title>{$LL.space.deleteSpaceConfirm()}</AlertDialog.Title>
           <AlertDialog.Description>
-            This action cannot be undone. This will permanently delete your database state and remove your data from our
-            servers.
+            {$LL.space.deleteSpaceDescription()}
           </AlertDialog.Description>
         </AlertDialog.Header>
 
@@ -111,7 +113,7 @@
         <Input bind:value={deleteConfirm} placeholder="DELETE" />
 
         <AlertDialog.Footer>
-          <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+          <AlertDialog.Cancel>{$LL.common.cancel()}</AlertDialog.Cancel>
           <AlertDialog.Action let:builder asChild>
             <Button
               variant="destructive"
@@ -125,7 +127,7 @@
                 await $deleteSpaceMutation.mutateAsync()
               }}
             >
-              Delete Space
+              {$LL.space.deleteSpace()}
             </Button>
           </AlertDialog.Action>
         </AlertDialog.Footer>

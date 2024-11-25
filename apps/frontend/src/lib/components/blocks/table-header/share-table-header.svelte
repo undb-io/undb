@@ -7,7 +7,7 @@
   import { derived } from "svelte/store"
   import { page } from "$app/stores"
   import { getBaseById } from "$lib/store/base.store"
-
+  import { LL } from "@undb/i18n/client"
   const table = getTable()
   $: base = $getBaseById($table.baseId)
 
@@ -46,7 +46,7 @@
             {#if forms.length}
               <Breadcrumb.Item>
                 <FormInputIcon class="h-4 w-4" />
-                Forms
+                {$LL.table.form.label()}
               </Breadcrumb.Item>
               <Breadcrumb.Separator />
               <Breadcrumb.Item>
@@ -79,11 +79,11 @@
         <Tabs.List>
           <Tabs.Trigger value="data">
             <SheetIcon class="mr-2 h-4 w-4" />
-            Data
+            {$LL.common.data()}
           </Tabs.Trigger>
           <Tabs.Trigger value="form">
             <TextCursorInputIcon class="mr-2 h-4 w-4" />
-            Forms
+            {$LL.table.form.label()}
           </Tabs.Trigger>
         </Tabs.List>
       </Tabs.Root>

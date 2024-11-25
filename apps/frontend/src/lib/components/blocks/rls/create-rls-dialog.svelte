@@ -3,6 +3,7 @@
   import { CREATE_RLS_MODAL, isModalOpen, toggleModal } from "$lib/store/modal.store"
   import { FingerprintIcon } from "lucide-svelte"
   import CreateRLS from "./create-rls.svelte"
+  import { LL } from '@undb/i18n/client'
 </script>
 
 <Dialog.Root
@@ -15,7 +16,7 @@
     <Dialog.Header>
       <Dialog.Title class="flex items-center">
         <FingerprintIcon class="mr-2 h-6 w-6" />
-        Create Record Level Security
+        {$LL.table.authz.create()}
       </Dialog.Title>
     </Dialog.Header>
 

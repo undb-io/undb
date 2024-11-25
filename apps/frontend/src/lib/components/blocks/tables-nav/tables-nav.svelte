@@ -30,6 +30,7 @@
   import { hasPermission } from "$lib/store/space-member.store"
   import { Skeleton } from "$lib/components/ui/skeleton"
   import ViewIcon from "../view/view-icon.svelte"
+  import { LL } from "@undb/i18n/client"
 
   export let tables: GetIndexQuery$result["tables"] = []
   export let bases: GetIndexQuery$result["bases"] = []
@@ -206,7 +207,7 @@
                         variant="link"
                         class="mt-0 h-8 p-0 pl-14 text-xs"
                       >
-                        <span class="text-xs font-normal">+ Create View</span>
+                        <span class="text-xs font-normal">+ {$LL.table.view.create()}</span>
                       </CreateViewButton>
 
                       {#each table.views.filter((view) => !view.isDefault) as view}
@@ -239,23 +240,23 @@
                                 <DropdownMenu.Content>
                                   <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_VIEW)}>
                                     <PencilIcon class="mr-2 h-3 w-3" />
-                                    Update View Name
+                                    {$LL.table.view.updateName()}
                                   </DropdownMenu.Item>
                                   <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(DUPLICATE_VIEW)}>
                                     <CopyPlusIcon class="mr-2 h-3 w-3" />
-                                    Duplicate View
+                                    {$LL.table.view.duplicateView()}
                                   </DropdownMenu.Item>
                                   {#if !view.isDefault}
                                     <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(SET_DEFAULT_VIEW)}>
                                       <PencilIcon class="mr-2 h-3 w-3" />
-                                      Set as Default View
+                                      {$LL.table.view.setAsDefaultView()}
                                     </DropdownMenu.Item>
                                     <DropdownMenu.Item
                                       class="text-xs text-red-500 hover:!bg-red-200 hover:!text-red-500"
                                       on:click={() => toggleModal(DELETE_VIEW)}
                                     >
                                       <CopyPlusIcon class="mr-2 h-3 w-3" />
-                                      Delete View
+                                      {$LL.table.view.deleteView()}
                                     </DropdownMenu.Item>
                                   {/if}
                                 </DropdownMenu.Content>
@@ -290,7 +291,7 @@
   {:else}
     <div class="flex flex-col items-center space-y-4 pt-12">
       <InboxIcon class="text-muted-foreground h-16 w-16" />
-      <p class="text-muted-foreground">No bases</p>
+      <p class="text-muted-foreground">{$LL.base.noBases()}</p>
       <CreateBaseButton variant="outline" />
     </div>
   {/if}

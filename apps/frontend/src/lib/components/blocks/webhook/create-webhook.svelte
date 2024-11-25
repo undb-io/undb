@@ -17,6 +17,7 @@
   import { writable } from "svelte/store"
   import { closeModal, CREATE_WEBHOOK_MODAL } from "$lib/store/modal.store"
   import type { IWebhookConditionOptionSchema } from "@undb/webhook"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
 
@@ -94,8 +95,8 @@
 <form id="createWebhook" class="grid gap-3 px-1" method="POST" use:enhance>
   <Form.Field {form} name="name">
     <Form.Control let:attrs>
-      <Form.Label>Name</Form.Label>
-      <Input {...attrs} bind:value={$formData.name} placeholder="webhook name" />
+      <Form.Label>{$LL.common.name()}</Form.Label>
+      <Input {...attrs} bind:value={$formData.name} placeholder={$LL.common.name()} />
     </Form.Control>
     <Form.FieldErrors />
   </Form.Field>
@@ -111,7 +112,7 @@
           }}
         >
           <Select.Trigger {...attrs}>
-            <Select.Value placeholder="Select a method" />
+            <Select.Value placeholder={$LL.common.select()} />
           </Select.Trigger>
           <Select.Content>
             <Select.Item value="POST" label="POST" />
@@ -132,7 +133,7 @@
 
   <Form.Field {form} name="event" class="w-full">
     <Form.Control let:attrs>
-      <Form.Label>Event</Form.Label>
+      <Form.Label>{$LL.common.event()}</Form.Label>
       <Select.Root
         selected={selectedEvent}
         onSelectedChange={(v) => {
@@ -140,12 +141,12 @@
         }}
       >
         <Select.Trigger {...attrs}>
-          <Select.Value placeholder="Select a event" />
+          <Select.Value placeholder={$LL.common.select()} />
         </Select.Trigger>
         <Select.Content>
-          <Select.Item value="record.created" label="Record Created" />
-          <Select.Item value="record.updated" label="Record Updated" />
-          <Select.Item value="record.deleted" label="Record Deleted" />
+          <Select.Item value="record.created" label={$LL.table.events.record.created()} />
+          <Select.Item value="record.updated" label={$LL.table.events.record.updated()} />
+          <Select.Item value="record.deleted" label={$LL.table.events.record.deleted()} />
         </Select.Content>
       </Select.Root>
       <input hidden bind:value={$formData.event} name={attrs.name} />
@@ -154,7 +155,7 @@
 
   <Collapsible.Root class="space-y-2" open={enableCondition}>
     <div class="flex items-center gap-2">
-      <Label for="enableCondition">Enable Condtion</Label>
+      <Label for="enableCondition">{$LL.common.enableCondition()}</Label>
       <Switch id="enableCondition" bind:checked={enableCondition} />
     </div>
     <Collapsible.Content>
@@ -162,7 +163,7 @@
     </Collapsible.Content>
   </Collapsible.Root>
 
-  <Form.Button {disabled}>Submit</Form.Button>
+  <Form.Button {disabled}>{$LL.common.submit()}</Form.Button>
 </form>
 
 <!-- <div class="mt-2">
