@@ -18,6 +18,8 @@
   import FieldMenu from "../field/field-menu.svelte"
   import { hasPermission } from "$lib/store/space-member.store"
   import CreateFieldButton from "../create-field/create-field-button.svelte"
+  import { LL } from "@undb/i18n/client"
+  import { EyeIcon, EyeOffIcon } from "lucide-svelte"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
@@ -100,9 +102,9 @@
     <Button variant={open || !!hiddenCount ? "secondary" : "ghost"} builders={[builder]} size="sm" {...$$restProps}>
       <ListIcon class="mr-2 h-4 w-4" />
       {#if !!hiddenCount}
-        {hiddenCount} Fields hidden
+        {$LL.table.field.hidden({ n: hiddenCount })}
       {:else}
-        Fields
+        {$LL.table.field.fields()}
       {/if}
     </Button>
   </Popover.Trigger>
@@ -114,7 +116,7 @@
       <Input
         autofocus
         class="h-full flex-1 rounded-none border-0 border-none pl-0 text-sm shadow-none focus-visible:ring-0"
-        placeholder={`Search ${$table.name.value} fields...`}
+        placeholder={$LL.table.field.searchTableFields({ table: $table.name.value })}
         bind:value={$q}
       />
     </div>
@@ -189,39 +191,48 @@
             {#if hiddenCount > 0}
               <Button
                 variant="outline"
-                class="flex-1 shadow-sm"
+                class="flex-1 gap-2 shadow-sm"
                 size="sm"
                 on:click={() => {
                   viewFields = viewFieldsVo.showAllFields($table).toJSON()
                   setViewFields()
                 }}
               >
-                Show all fields
+                <EyeIcon class="h-3 w-3" />
+                {$LL.table.view.field.showAllFields()}
               </Button>
             {:else}
               <Button
                 variant="outline"
-                class="flex-1 shadow-sm"
+                class="flex-1 gap-2 shadow-sm"
                 size="sm"
                 on:click={() => {
                   viewFields = viewFieldsVo.hideAllFields($table).toJSON()
                   setViewFields()
                 }}
               >
-                Hide all fields
+                <EyeOffIcon class="h-3 w-3" />
+                {$LL.table.view.field.hideAllFields()}
               </Button>
             {/if}
 
             <Button
               variant="outline"
-              class="flex-1 shadow-sm"
+              class="flex-1 gap-2 shadow-sm"
               size="sm"
               on:click={() => {
                 viewOption.showSystemFields = !viewOption.showSystemFields
                 setViewOption(viewOption.showSystemFields)
               }}
             >
-              {viewOption.showSystemFields ? "Hide" : "Show"} system fields
+              {#if viewOption.showSystemFields}
+                <EyeOffIcon class="h-3 w-3" />
+              {:else}
+                <EyeIcon class="h-3 w-3" />
+              {/if}
+              {viewOption.showSystemFields
+                ? $LL.table.view.field.hideSystemFields()
+                : $LL.table.view.field.showSystemFields()}
             </Button>
           </div>
         </div>

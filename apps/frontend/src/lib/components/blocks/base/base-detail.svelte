@@ -18,6 +18,7 @@
   import { baseId } from "$lib/store/base.store"
   import { Button } from "$lib/components/ui/button"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
+  import { LL } from "@undb/i18n/client"
 
   export let base: {
     id: string
@@ -41,7 +42,7 @@
   <section class="flex flex-1 flex-col overflow-hidden">
     <h3 class="mt-2 inline-flex items-center text-xl font-semibold tracking-tight">
       <GaugeIcon class="mr-2 size-5 text-gray-700" />
-      Dashboards
+      {$LL.dashboard.dashboards()}
     </h3>
 
     <div class="mt-4 flex flex-wrap gap-2 overflow-y-auto">
@@ -80,7 +81,7 @@
     <div class="mt-4 flex items-center gap-5">
       <h3 class="inline-flex items-center text-xl font-semibold tracking-tight">
         <DatabaseIcon class="mr-2 size-5 text-gray-700" />
-        Tables
+        {$LL.table.common.tables()}
       </h3>
 
       {#if $hasPermission("table:create")}
@@ -88,7 +89,7 @@
           <DropdownMenu.Trigger asChild let:builder>
             <Button variant="outline" size="sm" builders={[builder]}>
               <PlusIcon class="mr-1 size-4" />
-              Create
+              {$LL.common.create()}
               <ChevronDownIcon class="ml-1 size-4" />
             </Button>
           </DropdownMenu.Trigger>
@@ -102,7 +103,7 @@
                 class="text-xs text-gray-700"
               >
                 <PlusIcon class="mr-2 size-4" />
-                Create New Table
+                {$LL.table.common.create()}
               </DropdownMenu.Item>
 
               <DropdownMenu.Item
@@ -113,7 +114,7 @@
                 class="text-xs text-gray-700"
               >
                 <ImportIcon class="mr-2 size-4" />
-                Import Table
+                {$LL.table.common.import()}
               </DropdownMenu.Item>
             </DropdownMenu.Group>
           </DropdownMenu.Content>
@@ -124,7 +125,7 @@
     <Table.Root class="flex w-full flex-1 flex-col overflow-y-auto">
       <Table.Header class="flex w-full">
         <Table.Row class="w-full">
-          <Table.Head>Name</Table.Head>
+          <Table.Head>{$LL.common.name()}</Table.Head>
         </Table.Row>
       </Table.Header>
       {#if base.tables.length > 0}
@@ -156,7 +157,7 @@
                   }}
                 >
                   <PlusIcon class="mr-2 h-4 w-4" />
-                  Create New Table
+                  {$LL.table.common.create()}
                 </Button>
                 <Button
                   class="w-48"
@@ -167,7 +168,7 @@
                   }}
                 >
                   <ImportIcon class="mr-2 h-4 w-4" />
-                  Import Table
+                  {$LL.table.common.import()}
                 </Button>
               {/if}
             </div>

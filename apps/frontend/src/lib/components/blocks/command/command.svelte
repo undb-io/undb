@@ -5,6 +5,7 @@
   import { commandOpen } from "./command.store"
   import { goto } from "$app/navigation"
   import { page } from "$app/stores"
+  import { LL } from "@undb/i18n/client"
 
   function handleK(e: ShortcutEventDetail) {
     $commandOpen = !$commandOpen
@@ -28,10 +29,10 @@
   closeOnEscape
   closeOnOutsideClick
 >
-  <Command.Input placeholder="Search for tables..." />
+  <Command.Input placeholder={$LL.table.common.search()} />
   <Command.List>
-    <Command.Empty>No results found.</Command.Empty>
-    <Command.Group heading="Tables">
+    <Command.Empty>{$LL.table.common.noResultsFound()}</Command.Empty>
+    <Command.Group heading={$LL.table.common.tables()}>
       {#each tables as table}
         <Command.Item
           id={table.id}

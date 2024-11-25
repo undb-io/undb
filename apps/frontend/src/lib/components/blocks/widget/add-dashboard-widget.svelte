@@ -19,6 +19,7 @@
   import TablePicker from "../table-picker/table-picker.svelte"
   import { invalidate } from "$app/navigation"
   import { COLS } from "$lib/store/widget.store"
+  import { LL } from "@undb/i18n/client"
 
   const dashboard = getDashboard()
 
@@ -85,7 +86,7 @@
 <form method="POST" use:enhance>
   <Form.Field {form} name="widget.widget.name">
     <Form.Control let:attrs>
-      <Form.Label>Table</Form.Label>
+      <Form.Label>{$LL.table.common.table()}</Form.Label>
       <TablePicker {...attrs} baseId={$dashboard.baseId} bind:value={$formData.widget.table.id} />
     </Form.Control>
     <Form.FieldErrors />
@@ -93,7 +94,7 @@
 
   <Form.Field {form} name="widget.widget.name">
     <Form.Control let:attrs>
-      <Form.Label>Name</Form.Label>
+      <Form.Label>{$LL.common.name()}</Form.Label>
       <Input {...attrs} class="text-xs" bind:value={$formData.widget.widget.name} />
     </Form.Control>
     <Form.FieldErrors />
@@ -119,7 +120,7 @@
     {:else}
       <PlugIcon class="mr-2 h-4 w-4" />
     {/if}
-    Add Widget
+    {$LL.widget.add()}
   </Form.Button>
 </form>
 

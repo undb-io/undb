@@ -11,6 +11,7 @@
   import { toast } from "svelte-sonner"
   import { invalidate } from "$app/navigation"
   import { CircleCheckBigIcon } from "lucide-svelte"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
   export let readonly = false
@@ -61,7 +62,7 @@
     <div class="grid w-full items-center gap-4">
       <div class="flex flex-col space-y-1.5">
         <FieldPicker
-          placeholder="Select a select type field to group gallery lanes"
+          placeholder={$LL.table.view.gallery.groupBy()}
           value={$formData.gallery?.field}
           disabled={readonly}
           onValueChange={(field) => {
@@ -90,7 +91,7 @@
         form="select-gallery-field-form"
       >
         <CircleCheckBigIcon class="mr-2 size-4" />
-        Confirm
+        {$LL.common.confirm()}
       </Button>
     </div>
   {/if}

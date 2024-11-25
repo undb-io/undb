@@ -3,6 +3,7 @@
   import { BetweenVerticalStartIcon } from "lucide-svelte"
   import * as Popover from "$lib/components/ui/popover"
   import CreateField from "./create-field.svelte"
+  import { LL } from "@undb/i18n/client"
   import { hasPermission } from "$lib/store/space-member.store"
 
   let open = false
@@ -14,7 +15,7 @@
       <Button builders={[builder]} size="sm" variant="outline" {...$$restProps}>
         <slot>
           <BetweenVerticalStartIcon class="mr-1 h-4 w-4" />
-          Create Field
+          {$LL.table.field.create()}
         </slot>
       </Button>
     </Popover.Trigger>

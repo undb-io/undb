@@ -8,7 +8,7 @@
 
   $: selectedRole = role
     ? {
-        label: $LL.table.workspaceRoles[role](),
+        label: $LL.roles[role](),
         value: role,
       }
     : undefined

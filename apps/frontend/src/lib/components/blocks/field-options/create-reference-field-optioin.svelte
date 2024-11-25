@@ -19,6 +19,7 @@
   import { GetForeignTableQueryStore } from "$houdini"
   import autoAnimate from "@formkit/auto-animate"
   import { isEqual } from "radash"
+  import { LL } from "@undb/i18n/client"
 
   export let disabled = false
 
@@ -57,7 +58,7 @@
     <div class="space-y-1">
       <Label class="text-muted-foreground flex items-center gap-2 text-xs font-normal">
         <ExternalLinkIcon class="h-3 w-3" />
-        Foreign table
+        {$LL.table.field.reference.foreignTable()}
         <span class="text-red-500"> * </span>
       </Label>
       <ForeignTablePicker {disabled} bind:value={option.foreignTableId} class="text-xs" />
@@ -65,12 +66,14 @@
   {/if}
   <div class="flex items-center gap-2">
     <Checkbox id="createSymmetricField" {disabled} bind:checked={option.createSymmetricField} />
-    <Label for="createSymmetricField" class="text-xs font-normal">Create symmetric field</Label>
+    <Label for="createSymmetricField" class="text-xs font-normal"
+      >{$LL.table.field.reference.createSymmetricField()}</Label
+    >
   </div>
   {#if constraint}
     <div class="grid grid-cols-2 gap-2">
       <div class="space-y-1">
-        <Label for="min" class="text-xs font-normal">Min items</Label>
+        <Label for="min" class="text-xs font-normal">{$LL.table.field.reference.min()}</Label>
         <NumberInput
           {disabled}
           id="min"
@@ -78,19 +81,19 @@
           max={constraint.max}
           step={1}
           bind:value={constraint.min}
-          placeholder="Min items..."
+          placeholder={$LL.table.field.reference.minPlaceholder()}
           class="bg-background text-xs"
         />
       </div>
       <div class="space-y-1">
-        <Label for="max" class="text-xs font-normal">Max items</Label>
+        <Label for="max" class="text-xs font-normal">{$LL.table.field.reference.max()}</Label>
         <NumberInput
           {disabled}
           id="max"
           min={constraint.min || 0}
           step={1}
           bind:value={constraint.max}
-          placeholder="Max items..."
+          placeholder={$LL.table.field.reference.maxPlaceholder()}
           class="bg-background text-xs"
         />
       </div>
@@ -101,14 +104,16 @@
     </div>
     <div class="flex items-center space-x-2">
       <Checkbox {disabled} id="required" bind:checked={constraint.required} />
-      <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
+      <Label for="required" class="text-xs font-normal">{$LL.table.field.defaultValue.markAsRequired()}</Label>
     </div>
   {/if}
 
   <div class="space-y-2">
     <div class="flex items-center space-x-2">
       <Checkbox {disabled} id="condition" bind:checked={allowCondition} />
-      <Label for="condition" class="text-xs font-normal">Limit record selection to condition.</Label>
+      <Label for="condition" class="text-xs font-normal"
+        >{$LL.table.field.reference.limitRecordSelectionToCondition()}</Label
+      >
     </div>
 
     <div use:autoAnimate>

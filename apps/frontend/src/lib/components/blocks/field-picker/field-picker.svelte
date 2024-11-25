@@ -9,6 +9,7 @@
   import { getTable } from "$lib/store/table.store"
   import FieldIcon from "../field-icon/field-icon.svelte"
   import type { FieldType } from "@undb/table"
+  import { LL } from "@undb/i18n/client"
 
   export let table = getTable()
   export let disabled = false
@@ -33,7 +34,7 @@
   export let value: string | undefined = undefined
   export let filter: ((field: IField) => boolean) | undefined = undefined
   export let onValueChange: ((value: string | undefined, prev: string | undefined) => void) | undefined = undefined
-  export let placeholder = "Select field..."
+  export let placeholder: string = $LL.table.field.selectField()
 
   $: filteredFields = filter ? fields.filter(filter) : fields
 
@@ -83,7 +84,7 @@
     >
       <Command.Input {placeholder} class="h-9 text-xs" />
       <Command.Empty class="text-muted-foreground">
-        <slot name="empty">No field found.</slot>
+        <slot name="empty">{$LL.table.field.empty()}</slot>
       </Command.Empty>
       <Command.Group>
         <div class="-mx-1 max-h-[300px] overflow-y-auto">

@@ -12,6 +12,7 @@
   import { currentBase, baseId } from "$lib/store/base.store"
   import { invalidateAll } from "$app/navigation"
   import { getNextName } from "@undb/utils"
+  import { LL } from "@undb/i18n/client"
 
   const schema = createDashboardCommand.omit({ baseId: true, baseName: true })
   export let dashboardNames: string[]
@@ -65,14 +66,14 @@
 <form method="POST" class="space-y-3" use:enhance>
   <Form.Field {form} name="name">
     <Form.Control let:attrs>
-      <Form.Label>Name</Form.Label>
+      <Form.Label>{$LL.common.name()}</Form.Label>
       <Input {...attrs} bind:value={$formData.name} />
     </Form.Control>
-    <Form.Description>This is dashboard's public display name.</Form.Description>
+    <Form.Description>{$LL.dashboard.nameDescription()}</Form.Description>
     <Form.FieldErrors />
   </Form.Field>
 
-  <Form.Button disabled={$createDashboard.isPending}>Submit</Form.Button>
+  <Form.Button disabled={$createDashboard.isPending}>{$LL.common.create()}</Form.Button>
   {#if browser}
     <!-- <SuperDebug data={$formData} /> -->
   {/if}

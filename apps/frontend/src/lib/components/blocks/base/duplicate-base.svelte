@@ -15,6 +15,7 @@
   import { zodClient } from "sveltekit-superforms/adapters"
   import { Checkbox } from "$lib/components/ui/checkbox"
   import * as Alert from "$lib/components/ui/alert"
+  import { LL } from "@undb/i18n/client"
 
   export let base: Omit<IBaseDTO, "spaceId">
 
@@ -68,25 +69,25 @@
 >
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Duplicate Base {base.name}</Dialog.Title>
-      <Dialog.Description>Create a new base include all tables in base.</Dialog.Description>
+      <Dialog.Title>{$LL.base.duplicateBase({ name: base.name })}</Dialog.Title>
+      <Dialog.Description>{$LL.base.duplicateBaseDescription()}</Dialog.Description>
     </Dialog.Header>
 
     <form method="POST" use:enhance class="space-y-4">
       <Form.Field {form} name="name">
         <Form.Control let:attrs>
-          <Form.Label>Name</Form.Label>
+          <Form.Label>{$LL.common.name()}</Form.Label>
           <Input {...attrs} bind:value={$formData.name} />
         </Form.Control>
-        <Form.Description>This is base display name.</Form.Description>
+        <Form.Description>{$LL.base.nameDescription()}</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
       <Form.Field {form} name="includeData" class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
         <Form.Control let:attrs>
           <Checkbox {...attrs} bind:checked={$formData.includeData} />
           <div class="space-y-1 leading-none">
-            <Form.Label>Include data</Form.Label>
-            <Form.Description>Include data in the new base.</Form.Description>
+            <Form.Label>{$LL.base.includeData()}</Form.Label>
+            <Form.Description>{$LL.base.includeDataDescription()}</Form.Description>
           </div>
           <input name={attrs.name} value={$formData.includeData} hidden />
         </Form.Control>
@@ -95,7 +96,7 @@
       <Alert.Root>
         <Alert.Description class="flex items-center text-xs">
           <SirenIcon class="mr-2 h-4 w-4" />
-          System fields will be updated to the current user and timestamp.
+          {$LL.base.systemFieldsUpdated()}
         </Alert.Description>
       </Alert.Root>
 
@@ -106,13 +107,13 @@
           }}
           variant="outline"
         >
-          Cancel
+          {$LL.common.cancel()}
         </Button>
         <Form.Button disabled={$duplicateBaseMutation.isPending}>
           {#if $duplicateBaseMutation.isPending}
             <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
           {/if}
-          Duplicate
+          {$LL.common.duplicate()}
         </Form.Button>
       </div>
     </form>

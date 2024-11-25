@@ -22,6 +22,7 @@
   import { writable } from "svelte/store"
   import { Button } from "$lib/components/ui/button"
   import { Checkbox } from "$lib/components/ui/checkbox"
+  import {LL} from '@undb/i18n/client'
 
   const table = getTable()
 
@@ -93,7 +94,7 @@
           {:else}
             <Switch size="sm" class="text-sm" bind:checked={formField.conditionEnabled} on:click={setForm} />
           {/if}
-          <span>Enable condition</span>
+          <span>{$LL.table.form.enableCondition()}</span>
         </Label>
         <Label class="flex items-center gap-2 text-xs">
           <Switch
@@ -109,7 +110,7 @@
               setForm()
             }}
           />
-          <span>required</span>
+          <span>{$LL.common.required()}</span>
         </Label>
 
         <Label class={cn(disabled ? "cursor-not-allowed" : "cursor-pointer")}>
@@ -140,7 +141,9 @@
         disabled={field.type === "attachment"}
         on:submit={updateCondition}
       >
-        <Button size="xs" slot="footer" on:click={updateCondition}>Submit</Button>
+        <Button size="xs" slot="footer" on:click={updateCondition}>
+          {$LL.common.submit()}
+        </Button>
       </FiltersEditor>
     </Collapsible.Content>
   </Collapsible.Root>

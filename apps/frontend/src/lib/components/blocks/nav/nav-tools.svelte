@@ -8,6 +8,7 @@
   import SpaceDropdown from "../space/space-dropdown.svelte"
   import type { ISpaceDTO } from "@undb/space"
   import { preferences } from "$lib/store/persisted.store"
+  import { LL } from "@undb/i18n/client"
 
   export let space: ISpaceDTO | undefined | null
   export let me: any
@@ -33,9 +34,9 @@
     class="mb-2 flex w-full items-center justify-between"
     on:click={() => ($commandOpen = true)}
   >
-    <span class="inline-flex items-center">
+    <span class="inline-flex items-center text-muted-foreground">
       <SearchIcon class="text-muted-foreground mr-2 h-3 w-3" />
-      Search
+      {$LL.common.search()}
     </span>
     <span>
       <code class="bg-muted relative rounded border border-gray-300 px-[0.3rem] py-[0.2rem] font-mono text-xs">
@@ -54,9 +55,9 @@
     >
       <SettingsIcon class="mr-2 size-4" />
       {#if space?.isPersonal}
-        Settings
+        {$LL.setting.setting()}
       {:else}
-        Settings & Members
+        {$LL.setting.settingAndMembers()}
       {/if}
     </Button>
 
@@ -68,7 +69,7 @@
         size="xs"
       >
         <CirclePlusIcon class="mr-2 size-4" />
-        Create New Base
+        {$LL.base.createBase()}
       </Button>
 
       <Button
@@ -78,7 +79,7 @@
         size="xs"
       >
         <PackageIcon class="mr-2 size-4" />
-        Import From Template
+        {$LL.base.importFromTemplate()}
       </Button>
     {/if}
   </div>

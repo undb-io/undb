@@ -3,6 +3,7 @@
   import { hasPermission } from "$lib/store/space-member.store"
   import CreateFormButton from "./create-form-button.svelte"
   import { SquareMousePointer } from "lucide-svelte"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
 </script>
@@ -15,10 +16,10 @@
   >
     <div class="flex flex-col items-center gap-1 text-center">
       <SquareMousePointer class="text-primary h-10 w-10" />
-      <h3 class="text-sm font-bold tracking-tight">{$table.name.value} have no forms</h3>
+      <h3 class="text-sm font-bold tracking-tight">{$LL.table.form.noForms({tableName: $table.name.value})} </h3>
 
       {#if $hasPermission("table:update")}
-        <p class="text-muted-foreground text-sm">You can start selling as soon as you add a form.</p>
+        <p class="text-muted-foreground text-sm">{$LL.table.form.noFormsDescription()}</p>
         <CreateFormButton />
       {/if}
     </div>

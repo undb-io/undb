@@ -5,6 +5,7 @@
   import { cn } from "$lib/utils"
   import { hasPermission } from "$lib/store/space-member.store"
   import CreateForm from "./create-form.svelte"
+  import { LL } from "@undb/i18n/client"
 
   let open = false
 </script>
@@ -15,7 +16,7 @@
       <Button class={cn("mt-4", $$restProps.class)} builders={[builder]} {...$$restProps}>
         <slot>
           <PlusCircleIcon class="mr-2 h-4 w-4" />
-          Create Form
+          {$LL.table.form.create()}
         </slot>
       </Button>
     </Popover.Trigger>

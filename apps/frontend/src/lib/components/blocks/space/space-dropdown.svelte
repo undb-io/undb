@@ -17,6 +17,7 @@
   import { goto, invalidateAll } from "$app/navigation"
   import { Skeleton } from "$lib/components/ui/skeleton"
   import { toast } from "svelte-sonner"
+  import { LL } from "@undb/i18n/client"
 
   export let space: ISpaceDTO
   export let me: any
@@ -77,7 +78,7 @@
     <button class={$$restProps.class} use:builderActions={{ builders: [builder] }} {...getAttrs([builder])}>
       <img src={Logo} alt="" class="h-4 w-4 rounded-full" />
       {#if space.isPersonal && !space.name}
-        {me.username}'s Personal Space
+        {$LL.space.personalSpace({ username: me.username })}
       {:else}
         {space.name}
       {/if}
@@ -85,7 +86,7 @@
   </DropdownMenu.Trigger>
   <DropdownMenu.Content sameWidth>
     <DropdownMenu.Group>
-      <DropdownMenu.Label>Spaces</DropdownMenu.Label>
+      <DropdownMenu.Label>{$LL.space.spaces()}</DropdownMenu.Label>
       <DropdownMenu.Separator />
       {#if $store.fetching}
         <div class="space-y-2 px-2 py-2">
@@ -108,7 +109,7 @@
                 <div class="flex items-center gap-2">
                   <img src={Logo} alt="" class="h-4 w-4 rounded-full" />
                   {#if space.isPersonal && !space.name}
-                    {me.username}'s Personal Space
+                    {$LL.space.personalSpace({ username: me.username })}
                   {:else}
                     {space.name}
                   {/if}
@@ -125,7 +126,7 @@
       <DropdownMenu.Separator />
       <DropdownMenu.Item on:click={() => (createOpen = true)} class="flex items-center justify-center text-xs">
         <PlusSquareIcon class="mr-2 h-4 w-4" />
-        Create New Space
+        {$LL.space.createSpace()}
       </DropdownMenu.Item>
     </DropdownMenu.Group>
   </DropdownMenu.Content>
@@ -134,17 +135,17 @@
 <Dialog.Root bind:open={createOpen}>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Create Space</Dialog.Title>
-      <Dialog.Description>Create new space to organize your data and collaborate with your team.</Dialog.Description>
+      <Dialog.Title>{$LL.space.createSpace()}</Dialog.Title>
+      <Dialog.Description>{$LL.space.createSpaceDescription()}</Dialog.Description>
     </Dialog.Header>
 
     <form use:enhance>
       <Form.Field {form} name="name">
         <Form.Control let:attrs>
-          <Form.Label>Name</Form.Label>
+          <Form.Label>{$LL.space.spaceName()}</Form.Label>
           <Input {...attrs} disabled={$createSpaceMutation.isPending} bind:value={$formData.name} />
         </Form.Control>
-        <Form.Description>This is your space name.</Form.Description>
+        <Form.Description>{$LL.space.spaceNameDescription()}</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
       <Form.Button disabled={$createSpaceMutation.isPending} class="flex w-full items-center gap-2">
@@ -153,7 +154,7 @@
         {:else}
           <PlusSquareIcon class="mr-2 h-4 w-4" />
         {/if}
-        Create New Space
+        {$LL.space.createSpace()}
       </Form.Button>
     </form>
   </Dialog.Content>

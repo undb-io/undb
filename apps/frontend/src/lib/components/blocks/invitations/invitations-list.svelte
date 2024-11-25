@@ -9,6 +9,7 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { hasPermission } from "$lib/store/space-member.store"
+  import { LL } from "@undb/i18n/client"
 
   const store = new GetInvitationsStore()
 
@@ -31,14 +32,14 @@
 </script>
 
 <Table.Root>
-  <Table.Caption>A list of pending invatations.</Table.Caption>
+  <Table.Caption>{$LL.space.pendingInvitations()}</Table.Caption>
   <Table.Header>
     <Table.Row>
-      <Table.Head>Email</Table.Head>
-      <Table.Head>Status</Table.Head>
-      <Table.Head>Role</Table.Head>
-      <Table.Head>Invited At</Table.Head>
-      <Table.Head>Action</Table.Head>
+      <Table.Head>{$LL.common.email()}</Table.Head>
+      <Table.Head>{$LL.common.status()}</Table.Head>
+      <Table.Head>{$LL.common.role()}</Table.Head>
+      <Table.Head>{$LL.space.invitedAt()}</Table.Head>
+      <Table.Head>{$LL.common.action()}</Table.Head>
     </Table.Row>
   </Table.Header>
   <Table.Body>
@@ -68,7 +69,7 @@
                   on:click={() => deleteInvitation(invitation.id)}
                 >
                   <TrashIcon class="mr-2 h-3 w-3" />
-                  Delete Invitation
+                  {$LL.space.deleteInvitation()}
                 </DropdownMenu.Item>
               </DropdownMenu.Content>
             {/if}

@@ -10,6 +10,7 @@
   import { LoaderCircleIcon } from "lucide-svelte"
   import { useMediaQuery } from "$lib/store/media-query.store"
   import { cn } from "$lib/utils"
+  import { LL } from "@undb/i18n/client"
 
   let disabled = false
   let dirty = false
@@ -42,7 +43,7 @@
     transitionConfig={{ duration: 50 }}
   >
     <Sheet.Header class="border-b px-6 pb-2">
-      <Sheet.Title>Create Record</Sheet.Title>
+      <Sheet.Title>{$LL.table.record.create()}</Sheet.Title>
     </Sheet.Header>
 
     <div class="flex-1 overflow-hidden">
@@ -60,12 +61,14 @@
     </div>
 
     <Sheet.Footer class={cn("border-t px-6 pt-4", $match ? "flex-col space-y-2" : "")}>
-      <Button variant="outline" type="button" on:click={() => closeModal(CREATE_RECORD_MODAL)}>Cancel</Button>
+      <Button variant="outline" type="button" on:click={() => closeModal(CREATE_RECORD_MODAL)}>
+        {$LL.common.cancel()}
+      </Button>
       <Button disabled={$isMutating > 0 || disabled} type="submit" form="createRecord">
         {#if $isMutating > 0}
           <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
         {/if}
-        Create
+        {$LL.common.create()}
       </Button>
     </Sheet.Footer>
   </Sheet.Content>

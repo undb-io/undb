@@ -20,6 +20,7 @@
   import { Switch } from "$lib/components/ui/switch"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { onMount, tick } from "svelte"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
 
@@ -63,12 +64,12 @@
 </script>
 
 <div class="space-y-2">
-  <Label for="label">Label</Label>
+  <Label for="label">{$LL.table.field.button.label()}</Label>
   <Input class="w-full" placeholder="Button" id="label" bind:value={option.label} />
 
   <Label class="flex items-center gap-2 text-xs font-semibold" for="disabled">
     <Switch id="disabled" bind:checked={disabledWhen} size="sm" />
-    Disabled When...
+    {$LL.table.field.button.disabledWhen()}
   </Label>
   {#if disabledWhen}
     <div class="space-y-2 rounded-sm border pt-2">
@@ -81,7 +82,7 @@
   {/if}
 
   <div class="space-y-2 rounded-md border px-4 py-3">
-    <p class="text-xs font-semibold">Update Value when Click Button</p>
+    <p class="text-xs font-semibold">{$LL.table.field.button.updateValueWhenClickButton()}</p>
     {#each option.action.values as value, index}
       {@const field =
         value.field && $table ? $table.schema.getFieldById(new FieldIdVo(value.field)).unwrap() : undefined}
@@ -103,7 +104,7 @@
       {#if field}
         <FieldControl
           class="text-xs"
-          placeholder="Value to update..."
+          placeholder={$LL.table.field.button.valueToUpdate()}
           value={value.value}
           onValueChange={async (v) => {
             value.value = v
@@ -125,13 +126,13 @@
           option.action.values = [...option.action.values, { field: undefined, value: undefined }]
         }}
         variant="link"
-        size="sm">+ Add another field to update</Button
+        size="sm">{$LL.table.field.button.addAnotherFieldToUpdate()}</Button
       >
     {/if}
   </div>
 
   <div class="flex items-center gap-2">
     <Checkbox id="confirm" bind:checked={option.action.confirm} />
-    <Label class="text-xs font-normal" for="confirm">Confirm before update</Label>
+    <Label class="text-xs font-normal" for="confirm">{$LL.table.field.button.confirmBeforeUpdate()}</Label>
   </div>
 </div>

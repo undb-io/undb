@@ -20,6 +20,7 @@
   import { globalFormulaRegistry } from "@undb/formula/src/formula/formula.registry"
   import { getReturnTypeFromExpressionResult, parseFormula, type FormulaField } from "@undb/table"
   import Label from "../ui/label/label.svelte"
+  import { LL } from "@undb/i18n/client"
 
   const functions = FORMULA_FUNCTIONS
 
@@ -453,7 +454,7 @@
 </script>
 
 <div class="flex items-center justify-between space-y-1">
-  <Label for="Formula" class="text-xs font-normal">Formula</Label>
+  <Label for="Formula" class="text-xs font-normal">{$LL.table.field.formula.label()}</Label>
 
   {#if returnType}
     <span
@@ -476,7 +477,9 @@
     class="mt-2 flex h-[250px] flex-col divide-y overflow-auto rounded-lg border border-gray-200"
     bind:this={suggestionsList}
   >
-    <div class="sticky top-0 z-10 border-b bg-gray-100 px-2 py-1.5 text-xs font-semibold">Formula</div>
+    <div class="sticky top-0 z-10 border-b bg-gray-100 px-2 py-1.5 text-xs font-semibold">
+      {$LL.table.field.formula.label()}
+    </div>
     {#each formulaSuggestions as suggestion}
       {@const isSelected = suggestion === selectedSuggestion}
       {@const isHovered = suggestion === hoverSuggestion}
@@ -503,7 +506,9 @@
         <div class="absolute left-0 top-0 z-50 -translate-x-[100%] group-hover:block">hello</div>
       </button>
     {/each}
-    <div class="sticky top-0 z-10 border-b bg-gray-100 px-2 py-1.5 text-xs font-semibold">Field</div>
+    <div class="sticky top-0 z-10 border-b bg-gray-100 px-2 py-1.5 text-xs font-semibold">
+      {$LL.table.field.fields()}
+    </div>
     {#each fieldSuggestions as suggestion}
       {@const isSelected = suggestion === selectedSuggestion}
       {@const field = $table.schema.getFieldByIdOrName(suggestion).into(null)}
@@ -547,7 +552,7 @@
       <div class="space-y-2 p-2">
         <p class="overflow-hidden whitespace-normal break-words text-xs text-gray-500">{hoverFormula.description}</p>
         <div class="space-y-2">
-          <p class="text-xs font-semibold text-gray-500">Syntax</p>
+          <p class="text-xs font-semibold text-gray-500">{$LL.table.field.formula.syntax()}</p>
           {#each hoverFormula.syntax as syntax}
             <div class="whitespace-normal break-words rounded-sm border px-2 py-1 text-xs leading-6 text-gray-800">
               {syntax}
@@ -555,7 +560,7 @@
           {/each}
         </div>
         {#if hoverFormula.examples && hoverFormula.examples.length > 0}
-          <p class="text-xs font-semibold text-gray-500">Examples</p>
+          <p class="text-xs font-semibold text-gray-500">{$LL.table.field.formula.examples()}</p>
           <div class="space-y-2">
             {#each hoverFormula.examples as example}
               <div class="whitespace-normal break-words rounded-sm border px-2 py-1 text-xs leading-6 text-gray-800">

@@ -12,6 +12,7 @@
   import { LoaderCircleIcon } from "lucide-svelte"
   import { tick } from "svelte"
   import { getNextName } from "@undb/utils"
+  import { LL } from "@undb/i18n/client"
 
   const mutation = createMutation({
     mutationFn: trpc.base.create.mutate,
@@ -61,12 +62,12 @@
 <form id="createBase" class="space-y-2 px-1" method="POST" use:enhance>
   <Form.Field {form} name="name">
     <Form.Control let:attrs>
-      <Form.Label>Name</Form.Label>
+      <Form.Label>{$LL.common.name()}</Form.Label>
       <Input
         {...attrs}
         disabled={$mutation.isPending}
         bind:value={$formData.name}
-        placeholder="Set base display name..."
+        placeholder="{$LL.base.displayName()}"
       />
     </Form.Control>
     <Form.FieldErrors />
@@ -74,13 +75,13 @@
 
   <div class="flex items-center justify-end gap-2">
     <Form.FormButton type="button" variant="secondary" on:click={() => closeModal(CREATE_BASE_MODAL)}>
-      Cancel
+      {$LL.common.cancel()}
     </Form.FormButton>
     <Form.FormButton disabled={$mutation.isPending}>
       {#if $delayed}
         <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
       {/if}
-      Create
+      {$LL.common.create()}
     </Form.FormButton>
   </div>
 </form>

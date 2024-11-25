@@ -9,7 +9,7 @@
 </script>
 
 <div
-  class="mx-auto grid max-w-4xl gap-3 pt-6
+  class="mx-auto grid w-[500px] gap-3 pt-6
 "
 >
   <div class="flex w-full justify-end">

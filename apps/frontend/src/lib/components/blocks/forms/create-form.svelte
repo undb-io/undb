@@ -12,6 +12,7 @@
   import { hasPermission } from "$lib/store/space-member.store"
   import { getNextName } from "@undb/utils"
   import { formId } from "$lib/store/tab.store"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
 
@@ -62,12 +63,12 @@
   <form method="POST" use:enhance>
     <Form.Field {form} name="name">
       <Form.Control let:attrs>
-        <Form.Label>Name</Form.Label>
+        <Form.Label>{$LL.common.name()}</Form.Label>
         <Input {...attrs} bind:value={$formData.name} disabled={$createFormMutation.isPending} />
       </Form.Control>
       <Form.Description />
       <Form.FieldErrors />
     </Form.Field>
-    <Form.FormButton disabled={$createFormMutation.isPending} class="w-full">Create</Form.FormButton>
+    <Form.FormButton disabled={$createFormMutation.isPending} class="w-full">{$LL.common.create()}</Form.FormButton>
   </form>
 {/if}

@@ -15,6 +15,7 @@
   import { goto, invalidateAll } from "$app/navigation"
   import { LoaderCircleIcon } from "lucide-svelte"
   import { Loader2, TrashIcon } from "lucide-svelte"
+  import { LL } from "@undb/i18n/client"
 
   export let base: Omit<IBaseDTO, "spaceId">
   let deleteConfirm = ""
@@ -74,12 +75,12 @@
 
 <section class="space-y-6">
   <form class="max-w-4xl space-y-4" method="POST" use:enhance>
-    <legend class="mb-4 text-lg font-medium"> Base Setting </legend>
+    <legend class="mb-4 text-lg font-medium">{$LL.base.baseSettings()}</legend>
     <Form.Field {form} name="name" class="rounded-lg border p-4">
       <Form.Control let:attrs>
         <div class="space-y-0.5">
-          <Form.Label>Name</Form.Label>
-          <Form.Description>Base name.</Form.Description>
+          <Form.Label>{$LL.common.name()}</Form.Label>
+          <Form.Description>{$LL.base.nameDescription()}</Form.Description>
         </div>
         <Input {...attrs} bind:value={$formData.name} />
       </Form.Control>
@@ -91,23 +92,23 @@
       {#if $updateBaseMutation.isPending}
         <LoaderCircleIcon class="mr-2 h-4 w-4" />
       {/if}
-      Update Base Setting
+      {$LL.base.updateBase()}
     </Form.Button>
   </form>
 
   <div class="max-w-4xl space-y-3 rounded-md border-2 border-red-500 p-4">
-    <p class="text-red-500">Danger Zone</p>
-    <div>Delete Base</div>
+    <p class="text-red-500">{$LL.common.dangerZone()}</p>
+    <div>{$LL.base.deleteBase()}</div>
 
     <AlertDialog.Root bind:open>
       <AlertDialog.Trigger asChild let:builder>
         <Button variant="destructive" builders={[builder]} disabled={!$hasPermission("base:delete")}>
-          Delete Base
+          {$LL.base.deleteBase()}
         </Button>
       </AlertDialog.Trigger>
       <AlertDialog.Content>
         <AlertDialog.Header>
-          <AlertDialog.Title>Are you absolutely sure to delete base?</AlertDialog.Title>
+          <AlertDialog.Title>{$LL.base.deleteBaseConfirm()}</AlertDialog.Title>
           <AlertDialog.Description>
             You are about to delete base <span class="text-red-500">{base.name}</span>. <br /> This action cannot be undone.
             This will permanently delete your database state and remove your data from our servers.
@@ -118,7 +119,7 @@
         <Input bind:value={deleteConfirm} placeholder="DELETE" />
 
         <AlertDialog.Footer>
-          <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+          <AlertDialog.Cancel>{$LL.common.cancel()}</AlertDialog.Cancel>
           <AlertDialog.Action asChild>
             <Button
               variant="destructive"
@@ -132,9 +133,9 @@
               {#if $deleteBaseMutation.isPending}
                 <Loader2 class="h-4 w-4 animate-spin" />
               {:else}
-                  <TrashIcon class="size-4" />
+                <TrashIcon class="size-4" />
               {/if}
-              Delete Base
+              {$LL.base.deleteBase()}
             </Button>
           </AlertDialog.Action>
         </AlertDialog.Footer>

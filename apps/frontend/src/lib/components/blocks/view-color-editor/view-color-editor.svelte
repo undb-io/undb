@@ -19,6 +19,7 @@
   import ColorPicker from "$lib/components/ui/color-picker/color-picker.svelte"
   import { hasPermission } from "$lib/store/space-member.store"
   import type { Readable } from "svelte/store"
+  import { LL } from "@undb/i18n/client"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
@@ -63,7 +64,7 @@
       {...$$restProps}
     >
       <PaintBucketIcon class="mr-2 h-4 w-4" />
-      Color
+      {$LL.table.common.color()}
       {#if count}
         <Badge variant="secondary" class="ml-2 rounded-full">{count}</Badge>
       {/if}
@@ -71,7 +72,7 @@
   </Popover.Trigger>
   <Popover.Content class="w-[630px] space-y-2 p-0 shadow-2xl" align="start">
     {#if $value?.children.length}
-      <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Color</div>
+      <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">{$LL.table.common.color()}</div>
     {/if}
     <FiltersEditor
       {readonly}
@@ -89,10 +90,14 @@
           }}
         />
       </div>
-      <Button size="sm" variant="outline" on:click={() => handleSubmit(validValue)} slot="footer">Submit</Button>
+      <Button size="sm" variant="outline" on:click={() => handleSubmit(validValue)} slot="footer">
+        {$LL.table.common.submit()}
+      </Button>
       <div slot="empty" class="flex flex-col items-center gap-3 px-4 py-6 text-center">
         <FilterXIcon class="text-primary h-10 w-10" />
-        <h3 class="text-muted-foreground text-sm font-semibold tracking-tight">There's no color filter</h3>
+        <h3 class="text-muted-foreground text-sm font-semibold tracking-tight">
+          {$LL.table.common.colorEmpty()}
+        </h3>
       </div>
     </FiltersEditor>
   </Popover.Content>

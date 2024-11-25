@@ -20,6 +20,7 @@
   import autoAnimate from "@formkit/auto-animate"
   import { writable } from "svelte/store"
   import { hasPermission } from "$lib/store/space-member.store"
+  import { LL } from "@undb/i18n/client"
 
   interface IField {
     id: string
@@ -113,7 +114,9 @@
             {#if i === 0 || disableGroup}
               <div class="item-center col-span-2 flex gap-2">
                 <slot name="option" index={i} option={child} onChange={(option) => (child.option = option)} />
-                <span class="flex flex-1 items-center justify-center text-center text-xs">Where</span>
+                <span class="flex flex-1 items-center justify-center text-center text-xs">
+                  {$LL.table.common.where()}
+                </span>
               </div>
             {:else}
               <ConjunctionPicker
@@ -229,7 +232,7 @@
         {#if !readonly && $hasPermission("table:update")}
           <Button disabled={!filteredFields.length || disabled} variant="ghost" size="sm" on:click={addCondition}>
             <PlusIcon class="mr-2 h-3 w-3" />
-            Add Condition
+            {$LL.table.common.condition.add()}
           </Button>
           {#if !disableGroup}
             {#if level < 3}
@@ -241,7 +244,7 @@
                 on:click={addConditionGroup}
               >
                 <PlusIcon class="mr-2 h-3 w-3" />
-                Add Condition Group
+                {$LL.table.common.condition.addGroup()}
               </Button>
             {/if}
           {/if}

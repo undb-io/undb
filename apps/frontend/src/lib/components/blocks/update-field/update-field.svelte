@@ -18,6 +18,7 @@
   import { FieldFactory } from "@undb/table/src/modules/schema/fields/field.factory"
   import { cn } from "$lib/utils"
   import { LoaderCircleIcon, PencilIcon } from "lucide-svelte"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
 
@@ -128,7 +129,7 @@
       {:else}
         <PencilIcon class="mr-2 h-4 w-4" />
       {/if}
-      Update Field
+      {$LL.table.field.update()}
     </Button>
   </div>
 </form>

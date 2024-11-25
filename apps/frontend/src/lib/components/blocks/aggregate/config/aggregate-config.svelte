@@ -23,6 +23,7 @@
   import { toast } from "svelte-sonner"
   import { getDashboard, getIsDashboard } from "$lib/store/dashboard.store"
   import type { TableDo } from "@undb/table"
+  import { LL } from "@undb/i18n/client"
 
   export let table: TableDo | undefined
   export let viewId: string | undefined
@@ -124,7 +125,7 @@
     <div class="flex-1 space-y-3">
       <div class="flex gap-2">
         <div class="h-ful w-1 rounded-sm bg-gray-200"></div>
-        <div class="text-sm font-medium">Settings</div>
+        <div class="text-sm font-medium">{$LL.common.settings()}</div>
       </div>
       <Tabs.Root
         class="w-full"
@@ -147,8 +148,8 @@
         }}
       >
         <Tabs.List class="w-full">
-          <Tabs.Trigger class="flex-1" value="count">Count</Tabs.Trigger>
-          <Tabs.Trigger class="flex-1" value="aggregate">Aggregate</Tabs.Trigger>
+          <Tabs.Trigger class="flex-1" value="count">{$LL.widget.count()}</Tabs.Trigger>
+          <Tabs.Trigger class="flex-1" value="aggregate">{$LL.widget.aggregate()}</Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="count"></Tabs.Content>
         <Tabs.Content value="aggregate" class="space-y-2">
@@ -162,7 +163,7 @@
                 table={writable(table)}
                 bind:value={widget.item.aggregate.config.field}
                 class="w-full flex-1"
-                placeholder="Select a field to aggregate..."
+                placeholder={$LL.aggregate.selectField()}
                 filter={(field) => filterAggregateField(field.type, widget.item.aggregate?.type)}
               />
             {/if}
@@ -172,7 +173,7 @@
 
       <div class="flex gap-2">
         <div class="h-ful w-1 rounded-sm bg-gray-200"></div>
-        <div class="text-sm font-medium">Filters</div>
+        <div class="text-sm font-medium">{$LL.widget.filters()}</div>
       </div>
 
       {#if table}
@@ -189,7 +190,7 @@
     <div class="flex justify-end">
       <Button disabled={$updateWidgetMutation.isPending} on:click={() => updateViewWidget(widget)} class="w-full">
         <SaveIcon class="mr-2 size-4" />
-        Save
+        {$LL.common.save()}
       </Button>
     </div>
   </div>
