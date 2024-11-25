@@ -8,6 +8,7 @@
   import type { GetMembers$result, GetMemberStore } from "$houdini"
   import type { ISpaceDTO } from "@undb/space"
   import { Input } from "$lib/components/ui/input"
+  import { LL } from "@undb/i18n/client"
 
   const mq = queryParam("mq")
 
@@ -20,12 +21,12 @@
 <div class="flex justify-between">
   <h4 class="flex items-center">
     <Users class="mr-2 h-4 w-4" />
-    Members
+    {$LL.setting.members()}
   </h4>
   <div class="flex items-center gap-2">
     {#if $hasPermission("authz:invite")}
       {#if space.isPersonal}
-        <p class="text-muted-foreground text-xs font-normal">You cannot invite member to a personal space.</p>
+        <p class="text-muted-foreground text-xs font-normal">{$LL.space.cannotInviteMemberToPersonalSpace()}</p>
       {/if}
       <InviteButton disabled={space.isPersonal} />
     {/if}
@@ -37,5 +38,5 @@
   </div>
 </div>
 
-<Input bind:value={$mq} on:change={() => fetchMembers()} placeholder="Search Members..." class="max-w-xs" />
+<Input bind:value={$mq} on:change={() => fetchMembers()} placeholder={$LL.space.searchMembers()} class="max-w-xs" />
 <MembersTable {members} />

@@ -54,7 +54,7 @@
   </Popover.Trigger>
   <Popover.Content class="p-0" {sameWidth}>
     <Command.Root shouldFilter={false}>
-      <Command.Input bind:value={search} placeholder="Search aggregate type..." class="h-9" />
+      <Command.Input bind:value={search} placeholder={$LL.table.aggregate.searchType()} class="h-9" />
       <Command.Empty>No aggregate type found</Command.Empty>
       <Command.Group class="max-h-[300px] overflow-y-auto">
         {#each filtered as type}

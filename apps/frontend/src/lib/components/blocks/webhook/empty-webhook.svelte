@@ -3,6 +3,7 @@
   import CreateWebhookButton from "./create-webhook-button.svelte"
   import { hasPermission } from "$lib/store/space-member.store"
   import { SquareMousePointer } from "lucide-svelte"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
 </script>
@@ -15,9 +16,9 @@
   >
     <div class="flex flex-col items-center gap-3 text-center">
       <SquareMousePointer class="text-primary h-10 w-10" />
-      <h3 class="text-xs font-bold tracking-tight">{$table.name.value} have no webhooks</h3>
+      <h3 class="text-xs font-bold tracking-tight">{$LL.webhook.noWebhooks({ table: $table.name.value })}</h3>
       {#if $hasPermission("table:update")}
-        <p class="text-muted-foreground text-sm">Click button to create your first webhook</p>
+        <p class="text-muted-foreground text-sm">{$LL.webhook.noWebhooksDescription()}</p>
         <CreateWebhookButton />
       {/if}
     </div>

@@ -34,6 +34,7 @@
   import { trpc } from "$lib/trpc/client"
   import { preferences } from "$lib/store/persisted.store"
   import ShareTableTools from "$lib/components/blocks/table-tools/share-table-tools.svelte"
+  import { LL } from "@undb/i18n/client"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
@@ -54,7 +55,7 @@
 
   const copy = async (id: string) => {
     await copyToClipboard(id)
-    toast.success("Copied record ID to clipboard")
+    toast.success($LL.table.record.copiedRecordId())
   }
 
   let view = derived(t, ($t) => $t.views.getViewById($viewId) as GridView)
@@ -305,11 +306,11 @@
                 <ContextMenu.Content>
                   <ContextMenu.Item class="text-xs" on:click={() => ($r = recordId)}>
                     <Maximize2Icon class="mr-2 h-4 w-4" />
-                    View record details
+                    {$LL.table.record.viewRecordDetail()}
                   </ContextMenu.Item>
                   <ContextMenu.Item class="text-xs" on:click={() => copy(recordId)}>
                     <ClipboardCopyIcon class="mr-2 h-4 w-4" />
-                    Copy record ID
+                    {$LL.table.record.copyRecordId()}
                   </ContextMenu.Item>
                   <ContextMenu.Item
                     class="text-xs"
@@ -319,7 +320,7 @@
                     }}
                   >
                     <CopyIcon class="mr-2 h-4 w-4" />
-                    Duplicate Record
+                    {$LL.table.record.duplicateRecord()}
                   </ContextMenu.Item>
                   <ContextMenu.Separator />
                   <ContextMenu.Item
@@ -330,7 +331,7 @@
                     class="text-xs text-red-500 data-[highlighted]:bg-red-100 data-[highlighted]:text-red-500"
                   >
                     <Trash2Icon class="mr-2 h-4 w-4" />
-                    Delete Record
+                    {$LL.table.record.delete()}
                   </ContextMenu.Item>
                 </ContextMenu.Content>
               </ContextMenu.Root>
@@ -385,7 +386,7 @@
           </Select.Root>
 
           <span class="text-muted-foreground flex-1 text-nowrap text-xs">
-            {total} Rows
+            {$LL.table.record.records({ n: total })}
           </span>
         </div>
       </div>

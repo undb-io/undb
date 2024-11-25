@@ -8,6 +8,7 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import { cn } from "$lib/utils.js"
   import { DatabaseIcon } from "lucide-svelte"
+  import { LL } from "@undb/i18n/client"
 
   export let value: string | undefined = undefined
   export let disabled: boolean = false
@@ -46,7 +47,7 @@
           {selectedValue}
         </span>
       {:else}
-        <span class="text-muted-foreground">Select a table...</span>
+        <span class="text-muted-foreground"> {$LL.table.common.select()} </span>
       {/if}
       <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
     </Button>
@@ -58,8 +59,8 @@
         return label.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
       }}
     >
-      <Command.Input placeholder="Search tables..." class="h-9 text-xs" />
-      <Command.Empty>No tables found.</Command.Empty>
+      <Command.Input placeholder={$LL.table.common.search()} class="h-9 text-xs" />
+      <Command.Empty>{$LL.table.common.noTablesFound()}</Command.Empty>
       <Command.Group>
         {#each tables as t}
           {#if t}

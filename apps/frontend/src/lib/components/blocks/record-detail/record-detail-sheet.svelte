@@ -13,6 +13,7 @@
   import { ScrollArea } from "$lib/components/ui/scroll-area"
   import RecordDetailMenu from "./record-detail-menu.svelte"
   import { type Writable, type Readable } from "svelte/store"
+  import { LL } from "@undb/i18n/client"
 
   export let readonly = false
   export let recordDo: RecordDO | undefined
@@ -48,7 +49,7 @@
   >
     <Sheet.Header class="border-b px-6 pb-2">
       <Sheet.Title class="flex items-center justify-between pr-10">
-        <span> Record Detail </span>
+        <span>{$LL.table.record.detail()}</span>
         <!-- <button disabled class="mr-6" on:click={() => ($preferences.showAudit = !$preferences.showAudit)}>
           <HistoryIcon class="text-muted-foreground h-4 w-4" />
         </button> -->
@@ -98,12 +99,12 @@
 
     {#if !readonly}
       <Sheet.Footer class="border-t px-6 pt-4">
-        <Button variant="outline" type="button" on:click={() => ($r = null)}>Cancel</Button>
+        <Button variant="outline" type="button" on:click={() => ($r = null)}>{$LL.common.cancel()}</Button>
         <Button type="submit" form={`${$table.id.value}:updateRecord`} disabled={disabled || $isUpdatingRecord > 0}>
           {#if $isUpdatingRecord > 0}
             <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
           {/if}
-          Update
+          {$LL.table.record.update()}
         </Button>
       </Sheet.Footer>
     {/if}

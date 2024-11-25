@@ -4,6 +4,7 @@
   import { Button } from "$lib/components/ui/button"
   import { writable, type Writable } from "svelte/store"
   import { onMount } from "svelte"
+  import { LL } from "@undb/i18n/client"
 
   export let value: string[] | null
   export let field: ReferenceField
@@ -45,7 +46,7 @@
   >
     {#if hasValueReactive}
       <Button size="xs" variant="link" class="px-0" builders={[builder]} on:click={(e) => e.stopPropagation()}>
-        {value?.length} Linked Records
+        {$LL.table.record.reference.linked({ n: value?.length })}
       </Button>
     {:else}
       <Button
@@ -56,7 +57,7 @@
         builders={[builder]}
         on:click={(e) => e.stopPropagation()}
       >
-        + Link Records
+        + {$LL.table.record.reference.link()}
       </Button>
     {/if}
   </ForeignRecordsPickerDropdown>

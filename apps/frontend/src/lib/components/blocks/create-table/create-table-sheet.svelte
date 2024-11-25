@@ -7,6 +7,7 @@
   import { baseId, currentBase } from "$lib/store/base.store"
   import { useIsMutating } from "@tanstack/svelte-query"
   import { LoaderCircleIcon } from "lucide-svelte"
+  import { LL } from "@undb/i18n/client"
 
   const isCreating = useIsMutating({ mutationKey: ["createTable"] })
 
@@ -27,10 +28,7 @@
   <Sheet.Content side="left" class="sm:max-w-2/3 lg:max-w-1/2 flex !max-w-none flex-col sm:w-2/3 lg:w-1/2">
     <Sheet.Header>
       <Sheet.Title>
-        Create Table
-        {#if $currentBase}
-          at base {$currentBase.name}
-        {/if}
+        {$LL.table.common.create()}
       </Sheet.Title>
     </Sheet.Header>
 
@@ -39,13 +37,15 @@
     </ScrollArea>
 
     <Sheet.Footer>
-      <Button variant="outline" type="button" on:click={() => closeModal(CREATE_TABLE_MODAL)}>Cancel</Button>
+      <Button variant="outline" type="button" on:click={() => closeModal(CREATE_TABLE_MODAL)}>
+        {$LL.common.cancel()}
+      </Button>
       <Button type="submit" disabled={$isCreating > 0} form="createTable">
         {#if $isCreating > 0}
           <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
-          Creating
+          {$LL.common.creating()}
         {:else}
-          Create
+          {$LL.common.create()}
         {/if}
       </Button>
     </Sheet.Footer>

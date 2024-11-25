@@ -12,6 +12,7 @@
   import { Input } from "$lib/components/ui/input"
   import { Label } from "$lib/components/ui/label"
   import { page } from "$app/stores"
+  import { LL } from "@undb/i18n/client"
 
   export let table = getTable()
 
@@ -73,14 +74,14 @@
     {/if} -->
 
     <AlertDialog.Footer>
-      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Cancel>{$LL.common.cancel()}</AlertDialog.Cancel>
       <AlertDialog.Action
         {disabled}
         on:click={() => deleteTable()}
         class="text-background bg-red-500 transition-colors hover:bg-red-600"
       >
         <TrashIcon class="mr-2 h-4 w-4" />
-        Delete
+        {$LL.common.delete()}
       </AlertDialog.Action>
     </AlertDialog.Footer>
   </AlertDialog.Content>

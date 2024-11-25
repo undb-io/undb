@@ -12,6 +12,7 @@
   import { toast } from "svelte-sonner"
   import RolePicker from "../role/role-picker.svelte"
   import { page } from "$app/stores"
+  import { LL } from "@undb/i18n/client"
 
   const form = superForm(
     defaults(
@@ -60,19 +61,19 @@
     <slot>
       <Button size="sm" builders={[builder]} {...$$restProps}>
         <UserPlus class="mr-2 h-3 w-3 font-semibold" />
-        Invite Member
+        {$LL.space.inviteMember()}
       </Button>
     </slot>
   </Dialog.Trigger>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Invite to workspace</Dialog.Title>
+      <Dialog.Title>{$LL.space.inviteMember()}</Dialog.Title>
     </Dialog.Header>
 
     <form method="POST" use:enhance>
       <Form.Field {form} name="email">
         <Form.Control let:attrs>
-          <Form.Label>Email</Form.Label>
+          <Form.Label>{$LL.common.email()}</Form.Label>
           <Input {...attrs} bind:value={$formData.email} placeholder="invitee@example.com" />
         </Form.Control>
         <Form.FieldErrors />
@@ -80,7 +81,7 @@
 
       <Form.Field {form} name="role">
         <Form.Control let:attrs>
-          <Form.Label>Role</Form.Label>
+          <Form.Label>{$LL.common.role()}</Form.Label>
           <RolePicker bind:role={$formData.role} />
           <input hidden bind:value={$formData.role} name={attrs.name} />
         </Form.Control>
@@ -91,7 +92,7 @@
         {#if $invite.isPending}
           <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
         {/if}
-        Inivte
+        {$LL.space.invite()}
       </Form.Button>
     </form>
   </Dialog.Content>

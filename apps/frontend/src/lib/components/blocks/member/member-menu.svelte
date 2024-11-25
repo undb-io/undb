@@ -2,11 +2,13 @@
   import Button from "$lib/components/ui/button/button.svelte"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import * as Avatar from "$lib/components/ui/avatar"
-  import { ExternalLinkIcon, KeyIcon, LogOutIcon, SettingsIcon } from "lucide-svelte"
+  import { ExternalLinkIcon, KeyIcon, LogOutIcon, SettingsIcon, SearchIcon, EarthIcon } from "lucide-svelte"
   import { createMutation } from "@tanstack/svelte-query"
   import { goto } from "$app/navigation"
   import Logo from "$lib/images/logo.svg"
   import GithubLogo from "$lib/images/github.svg"
+  import { loadLocaleAsync, type Locales, setLocale } from "@undb/i18n/client"
+  import { LL } from "@undb/i18n/client"
 
   export let user: { avatar: string | null; username: string; userId: string }
 
@@ -19,6 +21,12 @@
 
   const logout = () => {
     $logoutMutation.mutate()
+  }
+
+  const changeLanguage = async (lang: Locales) => {
+    await loadLocaleAsync(lang)
+    setLocale(lang)
+    localStorage.setItem("lang", lang)
   }
 </script>
 
@@ -37,28 +45,28 @@
   </DropdownMenu.Trigger>
   <DropdownMenu.Content sameWidth>
     <DropdownMenu.Group>
-      <DropdownMenu.Label>Account & Space Settings</DropdownMenu.Label>
+      <DropdownMenu.Label>{$LL.common.accountAndSpaceSettings()}</DropdownMenu.Label>
       <DropdownMenu.Separator />
       <DropdownMenu.Item on:click={logout}>
         <LogOutIcon class="mr-2 h-4 w-4" />
-        Log Out
+        {$LL.account.logout()}
       </DropdownMenu.Item>
       <DropdownMenu.Item href="/account/profile">
         <SettingsIcon class="mr-2 h-4 w-4" />
-        Account Settings
+        {$LL.account.accountSettings()}
       </DropdownMenu.Item>
       <DropdownMenu.Item href="/account/token">
         <KeyIcon class="mr-2 h-4 w-4" />
-        Api Token
+        {$LL.account.apiToken()}
       </DropdownMenu.Item>
       <DropdownMenu.Item href="https://undb.io/templates" target="_blank" rel="noopener noreferrer">
         <img src={Logo} alt="undb" class="mr-2 h-4 w-4" />
-        Undb Templates
+        {$LL.account.undbTemplates()}
         <ExternalLinkIcon class="ml-auto h-4 w-4" />
       </DropdownMenu.Item>
       <DropdownMenu.Item href="https://undb.io" target="_blank" rel="noopener noreferrer">
         <img src={Logo} alt="undb" class="mr-2 h-4 w-4" />
-        Undb Website
+        {$LL.account.undbWebsite()}
         <ExternalLinkIcon class="ml-auto h-4 w-4" />
       </DropdownMenu.Item>
       <DropdownMenu.Item href="https://github.com/undb-io/undb" target="_blank" rel="noopener noreferrer">
@@ -66,6 +74,16 @@
         Github
         <ExternalLinkIcon class="ml-auto h-4 w-4" />
       </DropdownMenu.Item>
+      <DropdownMenu.Sub>
+        <DropdownMenu.SubTrigger>
+          <EarthIcon class="mr-2 h-4 w-4" />
+          {$LL.common.language()}
+        </DropdownMenu.SubTrigger>
+        <DropdownMenu.SubContent>
+          <DropdownMenu.Item on:click={() => changeLanguage("en")}>English</DropdownMenu.Item>
+          <DropdownMenu.Item on:click={() => changeLanguage("zh")}>中文</DropdownMenu.Item>
+        </DropdownMenu.SubContent>
+      </DropdownMenu.Sub>
     </DropdownMenu.Group>
   </DropdownMenu.Content>
 </DropdownMenu.Root>

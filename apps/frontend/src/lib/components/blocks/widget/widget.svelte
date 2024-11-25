@@ -10,7 +10,6 @@
   import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { TrashIcon } from "lucide-svelte"
-  import { getTable } from "$lib/store/table.store"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import { invalidate } from "$app/navigation"
   import { toast } from "svelte-sonner"
@@ -19,6 +18,7 @@
   import { GripVerticalIcon, ChevronRightIcon, CopyIcon } from "lucide-svelte"
   import { COLS } from "$lib/store/widget.store"
   import { DashboardLayouts } from "@undb/dashboard"
+  import { LL } from "@undb/i18n/client"
 
   export let tableId: string | undefined
   export let table: TableDo | undefined
@@ -182,15 +182,15 @@
               }}
             >
               <PencilIcon class="mr-2 size-3" />
-              Edit Name
+              {$LL.widget.editName()}
             </DropdownMenu.Item>
             <DropdownMenu.Item class="text-xs" on:click={() => (confirmDuplicate = true)}>
               <CopyIcon class="mr-2 size-3" />
-              Duplicate
+              {$LL.widget.duplicate(widget.name)}
             </DropdownMenu.Item>
             <DropdownMenu.Item class="text-xs" on:click={() => (confirmDelete = true)}>
               <TrashIcon class="mr-2 size-3" />
-              Delete
+              {$LL.widget.delete(widget.name)}
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Root>
@@ -215,9 +215,9 @@
 <AlertDialog.Root bind:open={confirmDelete}>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Delete Widget {widget.name}?</AlertDialog.Title>
+      <AlertDialog.Title>{$LL.widget.deleteConfirm.title(widget.name)}</AlertDialog.Title>
       <AlertDialog.Description>
-        This action cannot be undone. This will permanently delete this widget. and remove your data from our servers.
+        {$LL.widget.deleteConfirm.description()}
       </AlertDialog.Description>
     </AlertDialog.Header>
     <AlertDialog.Footer>
@@ -244,10 +244,10 @@
 <AlertDialog.Root bind:open={confirmDuplicate}>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Duplicate Widget {widget.name}?</AlertDialog.Title>
+      <AlertDialog.Title>{$LL.widget.duplicate(widget.name)}</AlertDialog.Title>
     </AlertDialog.Header>
     <AlertDialog.Footer>
-      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Cancel>{$LL.common.cancel()}</AlertDialog.Cancel>
       <AlertDialog.Action asChild>
         <Button
           on:click={() => {
@@ -270,7 +270,7 @@
             }
           }}
         >
-          Duplicate
+          {$LL.common.confirm()}
         </Button>
       </AlertDialog.Action>
     </AlertDialog.Footer>

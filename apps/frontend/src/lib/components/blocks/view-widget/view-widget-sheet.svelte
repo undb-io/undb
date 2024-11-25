@@ -13,6 +13,7 @@
   import { toast } from "svelte-sonner"
   import { onMount } from "svelte"
   import Sortable from "sortablejs"
+  import { LL } from "@undb/i18n/client"
 
   let table = getTable()
   export let viewId: Readable<string | undefined>
@@ -60,8 +61,8 @@
 <Sheet.Root portal="body" open={$isModalOpen(VIEW_WIDGET_MODAL)} onOpenChange={() => toggleModal(VIEW_WIDGET_MODAL)}>
   <Sheet.Content side="right" class="flex flex-col">
     <Sheet.Header>
-      <Sheet.Title>Widgets</Sheet.Title>
-      <Sheet.Description>View Widgets</Sheet.Description>
+      <Sheet.Title>{$LL.widget.title()}</Sheet.Title>
+      <Sheet.Description>{$LL.table.view.widget.title()}</Sheet.Description>
     </Sheet.Header>
     {#if $widgets.length}
       <div class="flex-1 space-y-3 overflow-y-auto" bind:this={widgetsContainer}>
@@ -78,7 +79,7 @@
       </div>
     {:else}
       <div class="flex flex-1 items-center justify-center">
-        <p class="text-muted-foreground text-sm">No widgets found</p>
+        <p class="text-muted-foreground text-sm">{$LL.table.view.widget.empty()}</p>
       </div>
     {/if}
     {#if !shareId}
@@ -86,7 +87,7 @@
         <Popover.Trigger asChild let:builder>
           <Button size="sm" class="w-full" builders={[builder]} variant={$widgets.length ? "outline" : "default"}>
             <PlusIcon class="mr-2 size-4" />
-            Add Widget
+            {$LL.table.view.widget.add()}
           </Button>
         </Popover.Trigger>
         <Popover.Content sameWidth>

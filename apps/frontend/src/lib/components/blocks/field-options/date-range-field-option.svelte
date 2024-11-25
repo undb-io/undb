@@ -17,6 +17,7 @@
   import DateFormatterPicker from "../date/date-formatter-picker.svelte"
   import TimeFormatterPicker from "../date/time-formatter-picker.svelte"
   import { Switch } from "$lib/components/ui/switch"
+  import { LL } from "@undb/i18n/client"
 
   const df = new DateFormatter("en-US", {
     dateStyle: "long",
@@ -25,7 +26,7 @@
   export let constraint: IDateRangeFieldConstraint | undefined
   export let display: boolean | undefined
   export let defaultValue: [string | Date | null | undefined, string | Date | null | undefined] | undefined = undefined
-  export let placeholder: string | undefined = "Default value..."
+  export let placeholder: string | undefined = $LL.table.field.defaultValue.placeholder()
   export let disabled: boolean | undefined
   export let option: IDateRangeFieldOption = DEFAULT_DATE_RANGE_FIELD_OPTION
 
@@ -50,7 +51,7 @@
 
 <div class="space-y-2">
   <div class="space-y-1">
-    <Label for="defaultValue" class="text-xs font-normal">Default value</Label>
+    <Label for="defaultValue" class="text-xs font-normal">{$LL.table.field.defaultValue.label()}</Label>
     <Popover.Root portal="body" bind:open openFocus>
       <Popover.Trigger asChild let:builder>
         <Button
@@ -99,18 +100,18 @@
     </Popover.Root>
   </div>
   <div>
-    <Label for="format" class="text-xs font-normal">Date Format</Label>
+    <Label for="format" class="text-xs font-normal">{$LL.table.field.date.format()}</Label>
     <DateFormatterPicker id="format" bind:value={option.format} />
   </div>
 
   <div class="inline-flex items-center gap-2">
     <Switch size="sm" id="includeTime" bind:checked={option.includeTime} />
-    <Label for="includeTime" class="text-xs font-normal">Include Time</Label>
+    <Label for="includeTime" class="text-xs font-normal">{$LL.table.field.date.includeTime()}</Label>
   </div>
 
   {#if option.includeTime}
     <div>
-      <Label for="timeFormat" class="text-xs font-normal">Time Format</Label>
+      <Label for="timeFormat" class="text-xs font-normal">{$LL.table.field.date.timeFormat()}</Label>
       <TimeFormatterPicker id="timeFormat" bind:value={option.timeFormat} />
     </div>
   {/if}
@@ -120,7 +121,7 @@
     </div>
     <div class="flex items-center space-x-2">
       <Checkbox id="required" bind:checked={constraint.required} />
-      <Label for="required" class="text-xs font-normal">Mark as required field.</Label>
+      <Label for="required" class="text-xs font-normal">{$LL.table.field.defaultValue.markAsRequired()}</Label>
     </div>
   {/if}
 </div>

@@ -13,6 +13,7 @@
   import { cn } from "$lib/utils"
   import { r } from "$lib/store/records.store"
   import type { Readable } from "svelte/store"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
 
@@ -80,7 +81,7 @@
     <AlertDialog.Trigger asChild let:builder>
       <Button size="sm" variant="outline" builders={[builder]} class="rounded-r-none border-r-0">
         <CopyPlusIcon class="mr-2 h-3 w-3" />
-        Duplicate {ids.length} Record{ids.length > 1 ? "s" : ""}
+        {$LL.table.record.duplicate({ n: ids.length })}
       </Button>
 
       <DropdownMenu.Root bind:open={dropdownOpen}>
@@ -101,13 +102,13 @@
                     builders={[builder]}
                   >
                     <PencilIcon class="mr-2 h-3 w-3" />
-                    Update {ids.length} Record{ids.length > 1 ? "s" : ""}
+                    {$LL.table.record.updateRecords({ n: ids.length })}
                   </Button>
                 </DropdownMenu.Item>
               </Sheet.Trigger>
               <Sheet.Content class="sm:max-w-1/2 flex h-full w-2/3 flex-col gap-0 px-0 py-4 transition-all">
                 <Sheet.Header class="flex flex-row items-center justify-between border-b px-6 pb-4">
-                  <Sheet.Title class="flex-1">Bulk update {ids.length} Records</Sheet.Title>
+                  <Sheet.Title class="flex-1">{$LL.table.record.bulkUpdateRecords({ n: ids.length })}</Sheet.Title>
                   <!-- <Button size="sm" class="mr-5" type="submit" form="bulkUpdateRecords">Bulk Update</Button> -->
                 </Sheet.Header>
 
@@ -138,19 +139,19 @@
                     builders={[builder]}
                   >
                     <Trash2Icon class="mr-2 h-3 w-3" />
-                    Delete {ids.length} Record{ids.length > 1 ? "s" : ""}
+                    {$LL.table.record.deleteRecords({ n: ids.length })}
                   </Button>
                 </DropdownMenu.Item>
               </AlertDialog.Trigger>
               <AlertDialog.Content>
                 <AlertDialog.Header>
-                  <AlertDialog.Title>Delete {ids.length} Records?</AlertDialog.Title>
+                  <AlertDialog.Title>{$LL.table.record.confirmDeleteRecords({ n: ids.length })}</AlertDialog.Title>
                   <AlertDialog.Description>
-                    This action cannot be undone. This will permanently delete records from {$table.name.value}.
+                    {$LL.table.record.confirmDeleteRecordsDescription()}
                   </AlertDialog.Description>
                 </AlertDialog.Header>
                 <AlertDialog.Footer>
-                  <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+                  <AlertDialog.Cancel>{$LL.common.cancel()}</AlertDialog.Cancel>
                   <AlertDialog.Action
                     disabled={$deleteRecordsMutation.isPending}
                     on:click={deleteRecords}
@@ -159,7 +160,7 @@
                     {#if $deleteRecordsMutation.isPending}
                       <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
                     {/if}
-                    Delete
+                    {$LL.common.delete()}
                   </AlertDialog.Action>
                 </AlertDialog.Footer>
               </AlertDialog.Content>
@@ -170,9 +171,9 @@
     </AlertDialog.Trigger>
     <AlertDialog.Content>
       <AlertDialog.Header>
-        <AlertDialog.Title>Duplicate {ids.length} Records?</AlertDialog.Title>
+        <AlertDialog.Title>{$LL.table.record.confirmDuplicateRecords({ n: ids.length })}</AlertDialog.Title>
         <AlertDialog.Description>
-          This action will duplicate {ids.length} records of table {$table.name.value}.
+          {$LL.table.record.confirmDuplicateRecordsDescription({ n: ids.length })}
         </AlertDialog.Description>
       </AlertDialog.Header>
       <AlertDialog.Footer>
@@ -181,7 +182,7 @@
           {#if $duplicateRecordsMutation.isPending}
             <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
           {/if}
-          Duplicate
+          {$LL.common.duplicate()}
         </AlertDialog.Action>
       </AlertDialog.Footer>
     </AlertDialog.Content>

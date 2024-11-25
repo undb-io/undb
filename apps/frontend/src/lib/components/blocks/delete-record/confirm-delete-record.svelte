@@ -9,6 +9,7 @@
   import { toast } from "svelte-sonner"
   import Button from "$lib/components/ui/button/button.svelte"
   import { Loader2Icon } from "lucide-svelte"
+  import { LL } from "@undb/i18n/client"
 
   const deleteRecordId = queryParam("deleteRecordId")
 
@@ -26,7 +27,7 @@
       })
     },
     onError(e) {
-      toast.error("Failed to delete record: " + e.message)
+      toast.error($LL.table.record.failedToDeleteRecord() + ": " + e.message)
     },
   })
 
@@ -49,9 +50,9 @@
 >
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
+      <AlertDialog.Title>{$LL.table.record.confirmDeleteRecord()}</AlertDialog.Title>
       <AlertDialog.Description>
-        This action cannot be undone. This will permanently delete your record and remove your data from our servers.
+        {$LL.table.record.confirmDeleteRecordDescription()}
       </AlertDialog.Description>
     </AlertDialog.Header>
     <AlertDialog.Footer>
@@ -61,14 +62,14 @@
           $deleteRecordId = null
         }}
       >
-        Cancel
+        {$LL.common.cancel()}
       </AlertDialog.Cancel>
       <AlertDialog.Action asChild>
         <Button on:click={onDelete} variant="destructive" disabled={$deleteRecordMutation.isPending}>
           {#if $deleteRecordMutation.isPending}
             <Loader2Icon class="mr-2 size-3 animate-spin" />
           {/if}
-          Delete
+          {$LL.common.delete()}
         </Button>
       </AlertDialog.Action>
     </AlertDialog.Footer>

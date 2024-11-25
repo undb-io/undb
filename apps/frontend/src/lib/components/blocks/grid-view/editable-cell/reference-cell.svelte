@@ -6,6 +6,7 @@
   import { getRecordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
   import { cn } from "$lib/utils"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
 
@@ -62,11 +63,11 @@
       >
         {#if hasValueReactive}
           <Button size="xs" variant="link" class="px-0" builders={[builder]}>
-            {$selected.length} Linked Records
+            {$LL.table.record.reference.linked({ n: $selected.length })}
           </Button>
         {:else}
           <Button size="xs" variant="link" type="button" class="text-muted-foreground px-0" builders={[builder]}
-            >+ Link Records</Button
+            >+ {$LL.table.record.reference.link()}</Button
           >
         {/if}
       </ForeignRecordsPickerDropdown>

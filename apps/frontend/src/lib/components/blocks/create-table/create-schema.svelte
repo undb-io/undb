@@ -116,15 +116,15 @@
   let activeFieldId: string | undefined
 </script>
 
-<Form.Legend>Schema</Form.Legend>
+<Form.Legend>{$LL.table.schema.label()}</Form.Legend>
 <Form.Description>
-  System Fields:
+  {$LL.table.schema.systemFields()}:
   <div class="mt-2 flex flex-wrap items-center gap-2">
     {#each systemFieldTypes as type}
       <span
         class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
       >
-        {type}
+        {$LL.table.fieldTypes[type]()}
       </span>
     {/each}
   </div>
@@ -148,7 +148,7 @@
                 }}
               />
               <Input
-                placeholder="Field name"
+                placeholder={$LL.table.schema.fieldName()}
                 {...attrs}
                 class="bg-background no-underline"
                 bind:value={field.name}
@@ -159,14 +159,14 @@
                   <span
                     class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-700/10"
                   >
-                    Required
+                    {$LL.table.schema.required()}
                   </span>
                 {/if}
                 {#if field.display}
                   <span
-                    class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10"
+                    class="inline-flex items-center text-nowrap rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10"
                   >
-                    Display
+                    {$LL.table.schema.display()}
                   </span>
                 {/if}
               </div>
@@ -187,7 +187,7 @@
                   disabled={$formData.schema.length === 1}
                   on:click={() => removeField(field.id)}
                 >
-                  Remove
+                  {$LL.common.remove()}
                 </DropdownMenu.Item>
               </DropdownMenu.Content>
             </DropdownMenu.Root>
@@ -215,7 +215,7 @@
     <Popover.Trigger class="w-full">
       <Button class="w-full" variant={$formData.schema.length ? "outline" : "default"}>
         <BetweenHorizonalEnd class="mr-2 h-4 w-4" />
-        Add Field
+        {$LL.table.schema.addField()}
       </Button>
     </Popover.Trigger>
     <Popover.Content sameWidth class="p-0">
@@ -223,7 +223,7 @@
         <Card.Content class="p-0">
           <div class="grid grid-cols-4 gap-1">
             {#each fieldTypes as type}
-              {#if type !== "rollup"}
+              {#if type !== "rollup" && type !== "button"}
                 <button
                   type="button"
                   on:click={() => addField(type)}

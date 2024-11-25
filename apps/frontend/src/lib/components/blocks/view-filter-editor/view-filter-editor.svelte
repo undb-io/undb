@@ -19,6 +19,7 @@
   } from "@undb/table"
   import { hasPermission } from "$lib/store/space-member.store"
   import type { Readable } from "svelte/store"
+  import { LL } from "@undb/i18n/client"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
@@ -69,7 +70,7 @@
       {...$$restProps}
     >
       <FilterIcon class="mr-2 h-4 w-4" />
-      Filters
+      {$LL.table.common.filters()}
       {#if count}
         <Badge variant="secondary" class="ml-2 rounded-full">{count}</Badge>
       {/if}
@@ -77,7 +78,7 @@
   </Popover.Trigger>
   <Popover.Content class="w-[630px] space-y-2 p-0 shadow-2xl" align="start">
     {#if $value?.children.length}
-      <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">Filters</div>
+      <div class="text-muted-foreground px-4 py-3 pb-0 text-xs">{$LL.table.common.filters()}</div>
     {/if}
     <FiltersEditor
       {readonly}
@@ -96,12 +97,14 @@
         {#if $mutation.isPending}
           <LoaderCircleIcon class="mr-2 h-4 w-4 animate-spin" />
         {/if}
-        Submit
+        {$LL.table.common.submit()}
       </Button>
 
       <div slot="empty" class="flex flex-col items-center gap-3 px-4 py-6 text-center">
         <FilterXIcon class="text-primary h-10 w-10" />
-        <h3 class="text-muted-foreground text-sm font-semibold tracking-tight">There's no filters</h3>
+        <h3 class="text-muted-foreground text-sm font-semibold tracking-tight">
+          {$LL.table.common.filter.empty()}
+        </h3>
       </div>
     </FiltersEditor>
   </Popover.Content>

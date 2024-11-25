@@ -20,6 +20,7 @@
   import FieldPicker from "../field-picker/field-picker.svelte"
   import * as Tooltip from "$lib/components/ui/tooltip"
   import { CircleHelpIcon } from "lucide-svelte"
+  import { LL } from "@undb/i18n/client"
 
   let open = false
 
@@ -77,7 +78,7 @@
       <Button class={cn("mt-4", $$restProps.class)} builders={[builder]} {...$$restProps}>
         <slot>
           <PlusCircleIcon class="mr-2 h-4 w-4" />
-          Create View
+          {$LL.table.view.create()}
         </slot>
       </Button>
     </Popover.Trigger>
@@ -85,7 +86,7 @@
       <form method="POST" use:enhance>
         <Form.Field {form} name="name">
           <Form.Control let:attrs>
-            <Form.Label>Name</Form.Label>
+            <Form.Label>{$LL.common.name()}</Form.Label>
             <Input {...attrs} bind:value={$formData.name} />
           </Form.Control>
           <Form.Description />
@@ -94,7 +95,7 @@
 
         <Form.Field {form} name="type">
           <Form.Control let:attrs>
-            <Form.Label>View Type</Form.Label>
+            <Form.Label>{$LL.table.view.type()}</Form.Label>
             <ViewTypePicker
               {...attrs}
               bind:value={$formData.type}
@@ -119,13 +120,13 @@
           <Form.Field {form} name="calendar.field">
             <Form.Control let:attrs>
               <Form.Label class="flex items-center gap-2">
-                Calendar Field
+                {$LL.table.view.calendar.field()}
                 <Tooltip.Root>
                   <Tooltip.Trigger>
                     <CircleHelpIcon class="size-4" />
                   </Tooltip.Trigger>
                   <Tooltip.Content>
-                    <p>Group calendar by a date type field</p>
+                    <p>{$LL.table.view.calendar.groupBy()}</p>
                   </Tooltip.Content>
                 </Tooltip.Root>
               </Form.Label>
@@ -146,7 +147,7 @@
                     .map((f) => f.id.value)
                     .includes(f.id)}
               >
-                <div slot="empty">No date field found.</div>
+                <div slot="empty">{$LL.table.view.calendar.noDateField()}</div>
               </FieldPicker>
             </Form.Control>
             <Form.Description />
@@ -156,13 +157,13 @@
           <Form.Field {form} name="gallery.field">
             <Form.Control let:attrs>
               <Form.Label class="flex items-center gap-2">
-                Gallery Field
+                {$LL.table.view.gallery.field()}
                 <Tooltip.Root>
                   <Tooltip.Trigger>
                     <CircleHelpIcon class="size-4" />
                   </Tooltip.Trigger>
                   <Tooltip.Content>
-                    <p>Gallery view will display a banner of images grouped by an attachment type field</p>
+                    <p>{$LL.table.view.gallery.groupBy()}</p>
                   </Tooltip.Content>
                 </Tooltip.Root>
               </Form.Label>
@@ -183,7 +184,7 @@
                     .map((f) => f.id.value)
                     .includes(f.id)}
               >
-                <div slot="empty">No attachment field found.</div>
+                <div slot="empty">{$LL.table.view.gallery.noAttachmentField()}</div>
               </FieldPicker>
             </Form.Control>
             <Form.Description />
@@ -193,13 +194,13 @@
           <Form.Field {form} name="kanban.field">
             <Form.Control let:attrs>
               <Form.Label class="flex items-center gap-2">
-                Kanban Field
+                {$LL.table.view.kanban.field()}
                 <Tooltip.Root>
                   <Tooltip.Trigger>
                     <CircleHelpIcon class="size-4" />
                   </Tooltip.Trigger>
                   <Tooltip.Content>
-                    <p>Group kanban by a select type field</p>
+                    <p>{$LL.table.view.kanban.groupBy()}</p>
                   </Tooltip.Content>
                 </Tooltip.Root>
               </Form.Label>
@@ -220,7 +221,7 @@
                     .map((f) => f.id.value)
                     .includes(f.id)}
               >
-                <div slot="empty">No select field found.</div>
+                <div slot="empty">{$LL.table.view.kanban.noSelectField()}</div>
               </FieldPicker>
             </Form.Control>
             <Form.Description />
@@ -232,8 +233,8 @@
           {#if $createViewMutation.isPending}
             <LoaderCircleIcon class="mr-2 h-4 w-4" />
           {/if}
-          Create</Form.FormButton
-        >
+          {$LL.common.create()}
+        </Form.FormButton>
       </form>
     </Popover.Content>
   </Popover.Root>

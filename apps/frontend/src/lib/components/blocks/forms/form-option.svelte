@@ -23,6 +23,7 @@
   import { Input } from "$lib/components/ui/input/index.js"
   import { formId } from "$lib/store/tab.store"
   import { toast } from "svelte-sonner"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
   export let form: FormVO
@@ -74,7 +75,7 @@
     mutationKey: ["table", $table.id.value, "duplicateForm"],
     mutationFn: trpc.table.form.duplicate.mutate,
     async onSuccess(data) {
-      toast.success("Duplicate form successfully")
+      toast.success($LL.table.form.duplicateSuccess())
       duplicateFormDialog = false
       await invalidate(`undb:table:${$table.id.value}`)
       formId.set(data.formId)
@@ -110,7 +111,7 @@
 
 <div class="space-y-4 p-4">
   <div class="flex items-center justify-between">
-    <h3 class="font-semibold">Form Setting</h3>
+    <h3 class="font-semibold">{$LL.table.form.formSetting()}</h3>
     <DropdownMenu.Root>
       <DropdownMenu.Trigger>
         <EllipsisIcon class="text-muted-foreground h-4 w-4" />
@@ -119,14 +120,14 @@
         <DropdownMenu.Group>
           <DropdownMenu.Item class="text-xs" on:click={() => (duplicateFormDialog = true)}>
             <CopyIcon class="mr-2 h-3 w-3" />
-            Duplicate form
+            {$LL.table.form.duplicateForm()}
           </DropdownMenu.Item>
           <DropdownMenu.Item
             on:click={() => (confirmDelete = true)}
             class="hover:text-500 flex items-center text-xs text-red-500 transition-colors hover:bg-red-100"
           >
             <TrashIcon class="mr-2 h-3 w-3" />
-            Delete form
+            {$LL.table.form.deleteForm()}
           </DropdownMenu.Item>
         </DropdownMenu.Group>
       </DropdownMenu.Content>
@@ -134,7 +135,7 @@
   </div>
 
   <div class="space-y-2">
-    <p class="text-muted-foreground">Background color</p>
+    <p class="text-muted-foreground">{$LL.table.form.backgroundColor()}</p>
     <div class="flex flex-wrap gap-2">
       {#each COLORS as color}
         {@const isSelected = color === formOption.backgroundColor}
@@ -175,9 +176,11 @@
         for="autoAddNewField"
         class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
       >
-        Auto add new field to form when create field
+        {$LL.table.form.autoAddNewField()}
       </Label>
-      <p class="text-muted-foreground text-sm">When a new field is created, it will be automatically set to show.</p>
+      <p class="text-muted-foreground text-sm">
+        {$LL.table.form.autoAddNewFieldDescription()}
+      </p>
     </div>
   </div>
 </div>
@@ -185,11 +188,11 @@
 <AlertDialog.Root bind:open={confirmDelete}>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Delete form: {form.name}?</AlertDialog.Title>
-      <AlertDialog.Description>Form will be deleted permanently.</AlertDialog.Description>
+      <AlertDialog.Title>{$LL.table.form.deleteFormConfirm({name: form.name})}</AlertDialog.Title>
+      <AlertDialog.Description>{$LL.table.form.deleteFormDescription()}</AlertDialog.Description>
     </AlertDialog.Header>
     <AlertDialog.Footer>
-      <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+      <AlertDialog.Cancel>{$LL.common.cancel()}</AlertDialog.Cancel>
       <AlertDialog.Action asChild let:builder>
         <Button
           variant="destructive"
@@ -200,7 +203,7 @@
           {#if $deleteFormMutation.isPending}
             <LoaderCircleIcon class="mr-2 h-4 w-4 animate-spin" />
           {/if}
-          Delete Form
+          {$LL.table.form.deleteForm()}
         </Button>
       </AlertDialog.Action>
     </AlertDialog.Footer>
@@ -210,20 +213,22 @@
 <Dialog.Root bind:open={duplicateFormDialog}>
   <Dialog.Content>
     <Dialog.Header>
-      <Dialog.Title>Duplicate form: {form.name}?</Dialog.Title>
-      <Dialog.Description>Form will be duplicated.</Dialog.Description>
+      <Dialog.Title>{$LL.table.form.duplicateFormDialog({name: form.name})}</Dialog.Title>
+      <Dialog.Description>{$LL.table.form.duplicateFormDialogDescription()}</Dialog.Description>
     </Dialog.Header>
     <form action="/?/username" method="POST" class="space-y-4" use:enhance>
       <Form.Field form={frm} name="name">
         <Form.Control let:attrs>
-          <Form.Label>Name</Form.Label>
+          <Form.Label>{$LL.common.name()}</Form.Label>
           <Input {...attrs} bind:value={$formData.name} />
         </Form.Control>
-        <Form.Description>Set form display name.</Form.Description>
+        <Form.Description>{$LL.table.form.setName()}</Form.Description>
         <Form.FieldErrors />
       </Form.Field>
 
-      <Form.Button disabled={$duplicateFormMutation.isPending} class="w-full">Duplicate</Form.Button>
+      <Form.Button disabled={$duplicateFormMutation.isPending} class="w-full">
+        {$LL.table.form.duplicateForm()}
+      </Form.Button>
     </form>
   </Dialog.Content>
 </Dialog.Root>

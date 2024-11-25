@@ -12,6 +12,7 @@
   import { invalidate } from "$app/navigation"
   import { hasPermission } from "$lib/store/space-member.store"
   import { CircleCheckBigIcon } from "lucide-svelte"
+  import { LL } from "@undb/i18n/client"
 
   export let readonly = false
 
@@ -64,7 +65,7 @@
       <div class="flex flex-col space-y-1.5">
         <FieldPicker
           disabled={readonly}
-          placeholder="Select a select type field to group calendar lanes"
+          placeholder={$LL.table.view.calendar.select()}
           value={$formData.calendar?.field}
           onValueChange={(field) => {
             if ($formData.calendar) {
@@ -94,7 +95,7 @@
         disabled={readonly}
       >
         <CircleCheckBigIcon class="mr-2 size-4" />
-        Confirm
+        {$LL.common.confirm()}
       </Button>
     </div>
   {/if}

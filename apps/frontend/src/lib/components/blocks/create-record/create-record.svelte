@@ -16,6 +16,7 @@
   import IdControl from "../field-control/id-control.svelte"
   import type { ICreateRecordCommandOutput } from "@undb/commands"
   import { onMount } from "svelte"
+  import { LL } from "@undb/i18n/client"
 
   // beforeNavigate(({ cancel }) => {
   //   if ($tainted) {
@@ -48,7 +49,7 @@
         client.invalidateQueries({
           queryKey: ["records", $table.id.value],
         })
-        toast.success("Record has been created!")
+        toast.success($LL.table.record.createdRecord())
         onSuccess?.(data)
         recordsStore?.invalidateRecord($table, data)
       },
@@ -141,7 +142,7 @@
               field={idField}
               class={cn($errors[ID_TYPE] && "border-red-500 focus-visible:ring-0")}
               tabIndex={-1}
-              placeholder="Leave blank to auto generate..."
+              placeholder={$LL.table.field.id.placeholder()}
             />
             <Form.FieldErrors class="mt-2" />
           </div>

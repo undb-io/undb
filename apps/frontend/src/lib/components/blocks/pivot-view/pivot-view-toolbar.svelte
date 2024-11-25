@@ -19,7 +19,6 @@
       <CreateRecordButton />
     {/if}
     <ViewFilterEditor {readonly} {viewId} />
-    <ViewSort {readonly} {viewId} />
     <PivotOptionButton {readonly} {view} />
   </div>
   <div class="flex items-center gap-2">

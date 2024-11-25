@@ -3,6 +3,7 @@
   import { Node, Anchor } from "svelvet"
   import * as Table from "$lib/components/ui/table"
   import FieldIcon from "../field-icon/field-icon.svelte"
+  import { LL } from "@undb/i18n/client"
 
   export let table: TableDo
   export let position: { x: number; y: number } | undefined = undefined
@@ -14,8 +15,8 @@
   </div>
   <Table.Root>
     <Table.Row class="relative">
-      <Table.Cell class="font-medium">Name</Table.Cell>
-      <Table.Cell class="inline-flex items-center gap-2">Type</Table.Cell>
+      <Table.Cell class="font-medium">{$LL.common.name()}</Table.Cell>
+      <Table.Cell class="inline-flex items-center gap-2">{$LL.common.type()}</Table.Cell>
     </Table.Row>
     {#each table.schema.fields as field}
       <Table.Row class="relative">
@@ -42,7 +43,7 @@
         <Table.Cell class="inline-flex items-center gap-2">
           <FieldIcon type={field.type} {field} class="h-4 w-4" />
           <span>
-            {field.type}
+            {$LL.table.fieldTypes[field.type]()}
           </span>
         </Table.Cell>
       </Table.Row>

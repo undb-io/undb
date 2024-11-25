@@ -45,6 +45,7 @@
   import { getBaseById } from "$lib/store/base.store"
   import { hasPermission } from "$lib/store/space-member.store"
   import DuplicateTable from "../duplicate-table/duplicate-table.svelte"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
   $: base = $getBaseById($table.baseId)
@@ -108,13 +109,13 @@
                     {#if $hasPermission("table:update")}
                       <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_TABLE_MODAL)}>
                         <PencilIcon class="mr-2 size-3" />
-                        Update Table Name
+                        {$LL.table.common.updateName()}
                       </DropdownMenu.Item>
                     {/if}
                     {#if $hasPermission("table:create")}
                       <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(DUPLICATE_TABLE_MODAL)}>
                         <CopyIcon class="mr-2 size-3" />
-                        Duplicate Table
+                        {$LL.table.common.duplicateTable()}
                       </DropdownMenu.Item>
                     {/if}
                     {#if $hasPermission("table:delete")}
@@ -124,7 +125,7 @@
                         class="text-xs text-red-500 hover:!bg-red-50 hover:!text-red-500"
                       >
                         <TrashIcon class="mr-2 size-3" />
-                        Delete Table
+                        {$LL.table.common.deleteTable()}
                       </DropdownMenu.Item>
                     {/if}
                   </DropdownMenu.Content>
@@ -136,7 +137,7 @@
               {#if forms.length}
                 <Breadcrumb.Item>
                   <FormInputIcon class="size-3" />
-                  Forms
+                  {$LL.table.form.label()}
                 </Breadcrumb.Item>
                 <Breadcrumb.Separator />
                 <DropdownMenu.Root>
@@ -152,7 +153,7 @@
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Content class="w-[200px]">
                     <DropdownMenu.Group>
-                      <DropdownMenu.Label>Forms</DropdownMenu.Label>
+                      <DropdownMenu.Label>{$LL.table.form.label()}</DropdownMenu.Label>
                       <DropdownMenu.RadioGroup
                         bind:value={currentFormId}
                         onValueChange={(value) => ($formId = value ?? null)}
@@ -173,18 +174,18 @@
                   </CreateFormButton>
                 </Tooltip.Trigger>
                 <Tooltip.Content>
-                  <p>Create Form</p>
+                  <p>{$LL.table.form.create()}</p>
                 </Tooltip.Content>
               </Tooltip.Root>
             {:else if $isAuthTab}
               <Breadcrumb.Item>
                 <FingerprintIcon class="size-3" />
-                Auth
+                {$LL.common.auth()}
               </Breadcrumb.Item>
             {:else if $isDeveloperTab}
               <Breadcrumb.Item>
                 <Code2Icon class="size-3" />
-                Developer
+                {$LL.common.developer()}
               </Breadcrumb.Item>
             {:else}
               <DropdownMenu.Root>
@@ -202,36 +203,36 @@
                   <DropdownMenu.Content class="w-[200px]">
                     <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(UPDATE_VIEW)}>
                       <PencilIcon class="mr-2 size-3" />
-                      Update View Name
+                      {$LL.table.view.updateName()}
                     </DropdownMenu.Item>
                     <DropdownMenu.Item class="text-xs" on:click={() => toggleModal(DUPLICATE_VIEW)}>
                       <CopyPlusIcon class="mr-2 size-3" />
-                      Duplicate View
+                      {$LL.table.view.duplicateView()}
                     </DropdownMenu.Item>
                     <DropdownMenu.Sub>
                       <DropdownMenu.SubTrigger class="text-xs">
                         <DownloadIcon class="mr-2 size-3" />
-                        Download View
+                        {$LL.table.view.downloadView()}
                       </DropdownMenu.SubTrigger>
                       <DropdownMenu.SubContent class="w-[200px]">
                         <DropdownMenu.Item class="text-xs" on:click={() => downloadView("excel")}>
                           <FileSpreadsheet class="mr-2 size-3" />
-                          Download as Excel
+                          {$LL.table.view.downloadAsExcel()}
                         </DropdownMenu.Item>
                         <DropdownMenu.Item class="text-xs" on:click={() => downloadView("csv")}>
                           <FileTextIcon class="mr-2 size-3" />
-                          Download as CSV
+                          {$LL.table.view.downloadAsCSV()}
                         </DropdownMenu.Item>
                         <DropdownMenu.Item class="text-xs" on:click={() => downloadView("json")}>
                           <FileJsonIcon class="mr-2 size-3" />
-                          Download as JSON
+                          {$LL.table.view.downloadAsJSON()}
                         </DropdownMenu.Item>
                       </DropdownMenu.SubContent>
                     </DropdownMenu.Sub>
                     {#if !view.isDefault}
                       <DropdownMenu.Item class="text-xs " on:click={() => toggleModal(SET_DEFAULT_VIEW)}>
                         <PencilIcon class="mr-2 size-3" />
-                        Set as Default View
+                        {$LL.table.view.setAsDefaultView()}
                       </DropdownMenu.Item>
                       <DropdownMenu.Separator />
                       <DropdownMenu.Item
@@ -239,7 +240,7 @@
                         on:click={() => toggleModal(DELETE_VIEW)}
                       >
                         <TrashIcon class="mr-2 size-3" />
-                        Delete View
+                        {$LL.table.view.deleteView()}
                       </DropdownMenu.Item>
                     {/if}
                   </DropdownMenu.Content>
@@ -271,7 +272,6 @@
 
         if (value === "developer" && !$developerTab) {
           $developerTab = "openapi"
-          return
         }
 
         tab.set(value === "data" ? null : (value ?? null))
@@ -280,19 +280,19 @@
       <Tabs.List>
         <Tabs.Trigger value="data">
           <SheetIcon class="mr-2 size-3" />
-          Data
+          {$LL.common.data()}
         </Tabs.Trigger>
         <Tabs.Trigger value="form">
           <TextCursorInputIcon class="mr-2 size-3" />
-          Forms
+          {$LL.table.form.label()}
         </Tabs.Trigger>
         <Tabs.Trigger value="auth">
           <FingerprintIcon class="mr-2 size-3" />
-          Auth
+          {$LL.common.auth()}
         </Tabs.Trigger>
         <Tabs.Trigger value="developer">
           <Code2Icon class="mr-2 size-3" />
-          Developer
+          {$LL.common.developer()}
         </Tabs.Trigger>
       </Tabs.List>
     </Tabs.Root>

@@ -18,6 +18,7 @@
   import { Input } from "$lib/components/ui/input"
   import { invalidate } from "$app/navigation"
   import * as Tooltip from "$lib/components/ui/tooltip"
+  import { LL } from "@undb/i18n/client"
 
   const selectedFieldId = queryParam("formField")
 
@@ -70,11 +71,11 @@
 <div class="py-a h-full w-full space-y-3 px-4 py-3">
   <div class="text-md flex items-center justify-between gap-2 font-semibold">
     <div>
-      <span> Form Fields </span>
+      <span> {$LL.table.form.formField()}</span>
       <span
         class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10"
       >
-        ({form.getVisibleFieldsCount()} / {form.getFieldsCount()} fields selected)
+        ({$LL.table.form.fieldsSelected({n: `${form.getVisibleFieldsCount()} / ${form.getFieldsCount()}`})})
       </span>
     </div>
     <ShareFormButton formId={form.id} />
@@ -82,12 +83,12 @@
 
   <div class="flex items-center gap-2">
     <SearchIcon class="text-muted-foreground h-4 w-4" />
-    <Input class="flex-1" bind:value={q} placeholder="Search form field..." />
+    <Input class="flex-1" bind:value={q} placeholder={$LL.table.form.searchFormField()} />
   </div>
 
   <div class="divide-y rounded-sm border">
     <div class="text-muted-foreground flex items-center justify-between bg-gray-50 p-2 text-xs font-normal">
-      <Label for="selectAll">Select all fields</Label>
+      <Label for="selectAll">{$LL.table.form.selectAllFields()}</Label>
       <Tooltip.Root>
         <Tooltip.Trigger>
           <Switch
@@ -105,7 +106,7 @@
           />
         </Tooltip.Trigger>
         <Tooltip.Content>
-          <p>{selectAll ? "Hide Fields" : "Show Fields"}</p>
+          <p>{selectAll ? $LL.table.form.hideFields() : $LL.table.form.showFields()}</p>
         </Tooltip.Content>
       </Tooltip.Root>
     </div>
@@ -165,7 +166,7 @@
                   />
                 </Tooltip.Trigger>
                 <Tooltip.Content>
-                  <p>Required</p>
+                  <p>{$LL.common.required()}</p>
                 </Tooltip.Content>
               </Tooltip.Root>
               <label class={cn(hiddenDisabled ? "cursor-not-allowed" : "cursor-pointer")}>
@@ -197,7 +198,7 @@
 
       {#if q && !filteredFields.length}
         <p class="text-muted-foreground flex items-center self-center p-2 text-center text-sm">
-          No fields found with title `{q}`
+          {$LL.table.form.noFieldsFound({q})}
         </p>
       {/if}
     </SortableList>

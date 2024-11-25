@@ -3,17 +3,18 @@
   import * as Table from "$lib/components/ui/table"
   import Role from "./role.svelte"
   import * as Avatar from "$lib/components/ui/avatar"
+  import { LL } from "@undb/i18n/client"
 
   export let members: GetMembers$result["members"]
 </script>
 
 <Table.Root>
-  <Table.Caption>A list of your workspace members.</Table.Caption>
+  <Table.Caption>{$LL.space.memberList()}</Table.Caption>
   <Table.Header>
     <Table.Row>
-      <Table.Head>Users</Table.Head>
-      <Table.Head>Email</Table.Head>
-      <Table.Head>Role</Table.Head>
+      <Table.Head>{$LL.common.name()}</Table.Head>
+      <Table.Head>{$LL.common.email()}</Table.Head>
+      <Table.Head>{$LL.common.role()}</Table.Head>
     </Table.Row>
   </Table.Header>
   <Table.Body>

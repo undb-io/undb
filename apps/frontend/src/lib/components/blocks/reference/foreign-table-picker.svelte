@@ -10,6 +10,7 @@
   import { GetForeignTablesStore, GetForeignTableStore } from "$houdini"
   import { group } from "radash"
   import { DatabaseIcon, ChevronRightIcon, ExternalLinkIcon } from "lucide-svelte"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
 
@@ -67,7 +68,7 @@
             {selectedValue}
           </span>
         {:else}
-          <span class="text-muted-foreground"> Select a table... </span>
+          <span class="text-muted-foreground"> {$LL.table.common.select()} </span>
         {/if}
         <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>
@@ -85,8 +86,8 @@
         return label.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
       }}
     >
-      <Command.Input placeholder="Search table..." class="h-9" />
-      <Command.Empty>No Table found.</Command.Empty>
+      <Command.Input placeholder={$LL.table.common.search()} class="h-9" />
+      <Command.Empty>{$LL.table.common.noTablesFound()}</Command.Empty>
       {#each Object.entries(groupTables) as [baseId, tables]}
         {#if tables?.length}
           {@const baseName = tables[0].base.name}

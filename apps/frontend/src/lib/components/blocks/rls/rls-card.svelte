@@ -13,6 +13,7 @@
   import { PencilIcon, Trash2Icon } from "lucide-svelte"
   import * as Dialog from "$lib/components/ui/dialog"
   import UpdateRls from "./update-rls.svelte"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
   export let rls: TableRLS
@@ -41,26 +42,26 @@
         <span
           class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10"
         >
-          {rls.subject.value}
+          {$LL.table.authz.subject[rls.subject.value]()}
         </span>
         {#if !rls.allow}
           <span
             class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-700/10"
           >
-            not allow to
+            {$LL.table.authz.notAllow()}
           </span>
         {/if}
         <span
           class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-blue-700/10"
         >
-          {rls.action.value}
+          {$LL.table.authz.actions[rls.action.value]()}
         </span>
       </div>
 
       <div class="flex items-center gap-2">
         <div class="flex items-center space-x-2">
           <Switch size="sm" id="enabled" bind:checked={rls.enabled} on:click={setTableRLS} />
-          <Label for="enabled" class="text-xs">Enabled</Label>
+          <Label for="enabled" class="text-xs">{$LL.common.enabled()}</Label>
         </div>
 
         <Dialog.Root>
@@ -72,7 +73,7 @@
               <Dialog.Trigger class="w-full">
                 <DropdownMenu.Item class="text-xs">
                   <PencilIcon class="mr-2 h-3 w-3" />
-                  Update Policy
+                  {$LL.table.authz.policy.update()}
                 </DropdownMenu.Item>
               </Dialog.Trigger>
 
@@ -80,7 +81,7 @@
                 class="hover:text-500 flex items-center text-xs text-red-500 transition-colors hover:bg-red-100"
               >
                 <Trash2Icon class="mr-2 h-3 w-3" />
-                Delete Policy
+                {$LL.table.authz.policy.delete()}
               </DropdownMenu.Item>
             </DropdownMenu.Content>
           </DropdownMenu.Root>
@@ -88,7 +89,7 @@
             <Dialog.Header>
               <Dialog.Title class="flex items-center">
                 <PencilIcon class="mr-2 h-6 w-6" />
-                Update Record Level Security
+                {$LL.table.authz.updateRLS()}
               </Dialog.Title>
             </Dialog.Header>
 
@@ -101,13 +102,13 @@
     <div class="space-y-2">
       {#if rls.condition.isSome()}
         <div class="rounded-sm bg-gray-50 px-3 py-3 pt-1 shadow-inner">
-          <span class="text-sm font-semibold">Matches Condition</span>
+          <span class="text-sm font-semibold">{$LL.table.authz.matchesConditions()}</span>
           <ConditionGroup table={$table} value={rls.condition.unwrap().props} />
         </div>
       {/if}
       {#if rls.updateCondition.isSome()}
         <div class="rounded-sm bg-gray-50 px-3 py-3 pt-1 shadow-inner">
-          <span class="text-sm font-semibold">Update Condition</span>
+          <span class="text-sm font-semibold">{$LL.table.authz.updateCondition()}</span>
           <ConditionGroup table={$table} value={rls.updateCondition.unwrap().props} />
         </div>
       {/if}
