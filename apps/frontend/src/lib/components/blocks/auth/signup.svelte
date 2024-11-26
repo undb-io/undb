@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { goto } from "$app/navigation"
   import { Button } from "$lib/components/ui/button/index.js"
   import { Input } from "$lib/components/ui/input/index.js"
   import { Label } from "$lib/components/ui/label/index.js"
-  import Logo from "$lib/images/logo.svg"
   import Github from "$lib/images/github.svg"
   import Google from "$lib/images/Google.svg"
   import { createMutation } from "@tanstack/svelte-query"
@@ -15,6 +13,7 @@
   import PasswordInput from "$lib/components/ui/input/password-input.svelte"
   import { LoaderCircleIcon } from "lucide-svelte"
   import { cn } from "$lib/utils"
+  import { LL } from "@undb/i18n/client"
 
   export let redirect: string | null
   export let invitationId: string | null
@@ -36,7 +35,7 @@
       }),
     )
     .refine((data) => data.password === data.confirmPassword, {
-      message: "Passwords do not match",
+      message: $LL.auth.passwordDoesNotMatch(),
     })
 
   type SignupSchema = z.infer<typeof schema>
@@ -51,7 +50,7 @@
           body: JSON.stringify({ ...input, invitationId }),
         })
         if (!ok) {
-          throw new Error("Failed to signup")
+          throw new Error($LL.auth.registerFailed())
         }
       } catch (error) {
         signupError = true
@@ -104,8 +103,13 @@
     <div class="grid gap-2">
       <Form.Field {form} name="username">
         <Form.Control let:attrs>
-          <Form.Label for="username">Username</Form.Label>
-          <Input {...attrs} placeholder="Enter your display username" id="username" bind:value={$formData.username} />
+          <Form.Label for="username">{$LL.auth.username()}</Form.Label>
+          <Input
+            {...attrs}
+            placeholder={$LL.auth.enterYourDisplayUsername()}
+            id="username"
+            bind:value={$formData.username}
+          />
         </Form.Control>
         <Form.Description />
         <Form.FieldErrors />
@@ -114,10 +118,10 @@
     <div class="grid gap-2">
       <Form.Field {form} name="email">
         <Form.Control let:attrs>
-          <Form.Label for="email"
-            >Email
+          <Form.Label for="email">
+            {$LL.common.email()}
             {#if invitationId}
-              <span class="text-green-500"> (Invited)</span>
+              <span class="text-green-500"> ({$LL.auth.invited()})</span>
             {/if}
           </Form.Label>
           <Input
@@ -126,7 +130,7 @@
             id="email"
             type="email"
             class={cn(!!invitationId && "border-2 border-green-500")}
-            placeholder="Enter your work email"
+            placeholder={$LL.auth.enterYourWorkEmail()}
             bind:value={$formData.email}
           />
         </Form.Control>
@@ -138,7 +142,7 @@
       <Form.Field {form} name="password">
         <Form.Control let:attrs>
           <div class="flex justify-between">
-            <Label for="password">Password</Label>
+            <Form.Label for="password">{$LL.auth.password()}</Form.Label>
           </div>
           <PasswordInput
             {...attrs}
@@ -156,7 +160,7 @@
       <Form.Field {form} name="confirmPassword">
         <Form.Control let:attrs>
           <div class="flex justify-between">
-            <Label for="confirmPassword">Confirm Password</Label>
+            <Form.Label for="confirmPassword">{$LL.auth.confirmPassword()}</Form.Label>
           </div>
           <PasswordInput
             {...attrs}
@@ -174,17 +178,17 @@
       {#if $signupMutation.isPending}
         <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
       {/if}
-      Create an account
+      {$LL.auth.createAnAccount()}
     </Button>
   </div>
   <div class="mt-4 text-center text-sm">
-    Already have an account?
+    {$LL.auth.alreadyHaveAnAccount()}
     {#if invitationId}
-      <a href={`/login?invitationId=${invitationId}`} class="underline"> Sign in </a>
+      <a href={`/login?invitationId=${invitationId}`} class="underline"> {$LL.auth.signIn()}</a>
     {:else if redirect}
-      <a href={`/login?redirect=${encodeURIComponent(redirect)}`} class="underline"> Sign in </a>
+      <a href={`/login?redirect=${encodeURIComponent(redirect)}`} class="underline"> {$LL.auth.signIn()}</a>
     {:else}
-      <a href="/login" class="underline"> Sign in </a>
+      <a href="/login" class="underline"> {$LL.auth.signIn()}</a>
     {/if}
   </div>
   {#if !invitationId && (githubEnabled || googleEnabled)}
@@ -193,13 +197,13 @@
       {#if githubEnabled}
         <Button href="/login/github" variant="secondary" class="w-full">
           <img class="mr-2 h-4 w-4" src={Github} alt="github" />
-          Login with Github
+          {$LL.auth.loginWith({ provider: "Github" })}
         </Button>
       {/if}
       {#if googleEnabled}
         <Button href="/login/google" variant="secondary" class="w-full">
           <img class="mr-2 h-4 w-4" src={Google} alt="google" />
-          Login with Google
+          {$LL.auth.loginWith({ provider: "Google" })}
         </Button>
       {/if}
     </div>

@@ -9,6 +9,7 @@
   import * as Form from "$lib/components/ui/form"
   import { LoaderCircleIcon } from "lucide-svelte"
   import * as Alert from "$lib/components/ui/alert"
+  import { LL } from "@undb/i18n/client"
 
   const schema = z.object({
     email: z.string().email(),
@@ -57,27 +58,27 @@
 
 {#if $resetPasswordMutation.isSuccess}
   <Alert.Root>
-    <Alert.Title>Email sent!</Alert.Title>
-    <Alert.Description>You can check your email address and follow the steps to reset your password.</Alert.Description>
+    <Alert.Title>{$LL.auth.emailSent()}</Alert.Title>
+    <Alert.Description>{$LL.auth.youCanCheckYourEmailAddressAndFollowTheStepsToResetYourPassword()}</Alert.Description>
   </Alert.Root>
 {:else}
   <form method="POST" use:enhance>
     <Card.Root class="mx-auto">
       <Card.Header>
-        <Card.Title class="text-2xl">Reset password</Card.Title>
-        <Card.Description>Enter your email below to reset your password.</Card.Description>
+        <Card.Title class="text-2xl">{$LL.auth.resetPassword()}</Card.Title>
+        <Card.Description>{$LL.auth.enterYourEmailBelowToResetYourPassword()}</Card.Description>
       </Card.Header>
       <Card.Content>
         <div class="grid gap-4">
           <div class="grid gap-2">
             <Form.Field {form} name="email">
               <Form.Control let:attrs>
-                <Form.Label for="email">Email</Form.Label>
+                <Form.Label for="email">{$LL.common.email()}</Form.Label>
                 <Input
                   {...attrs}
                   id="email"
                   type="email"
-                  placeholder="Enter your email to reset password."
+                  placeholder={$LL.auth.enterYourEmailBelowToResetYourPassword()}
                   bind:value={$formData.email}
                 />
               </Form.Control>
@@ -89,7 +90,7 @@
             {#if $resetPasswordMutation.isPending}
               <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
             {/if}
-            Reset
+            {$LL.auth.resetPassword()}
           </Form.Button>
         </div>
       </Card.Content>

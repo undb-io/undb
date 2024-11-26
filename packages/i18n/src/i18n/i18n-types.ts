@@ -9,6 +9,7 @@ export type Locales =
 	| 'ja'
 	| 'zh'
 	| 'ko'
+	| 'es'
 	| 'en'
 
 export type Translation = RootTranslation
@@ -16,6 +17,127 @@ export type Translation = RootTranslation
 export type Translations = RootTranslation
 
 type RootTranslation = {
+	auth: {
+		/**
+		 * L​o​g​i​n
+		 */
+		login: string
+		/**
+		 * L​o​g​i​n​ ​f​a​i​l​e​d
+		 */
+		loginFailed: string
+		/**
+		 * F​o​r​g​o​t​ ​y​o​u​r​ ​p​a​s​s​w​o​r​d​?
+		 */
+		forgotPassword: string
+		/**
+		 * E​n​t​e​r​ ​y​o​u​r​ ​e​m​a​i​l​ ​t​o​ ​l​o​g​i​n
+		 */
+		emailPlaceholder: string
+		/**
+		 * P​a​s​s​w​o​r​d
+		 */
+		password: string
+		/**
+		 * R​e​g​i​s​t​e​r
+		 */
+		register: string
+		/**
+		 * D​o​n​'​t​ ​h​a​v​e​ ​a​n​ ​a​c​c​o​u​n​t​?
+		 */
+		noAccount: string
+		/**
+		 * R​e​g​i​s​t​r​a​t​i​o​n​ ​i​s​ ​d​i​s​a​b​l​e​d​.
+		 */
+		registerDisabled: string
+		/**
+		 * C​o​n​t​a​c​t​ ​y​o​u​r​ ​a​d​m​i​n​i​s​t​r​a​t​o​r​ ​t​o​ ​r​e​q​u​e​s​t​ ​a​c​c​e​s​s​.
+		 */
+		registerDisabledDescription: string
+		/**
+		 * L​o​g​i​n​ ​w​i​t​h​ ​{​p​r​o​v​i​d​e​r​}
+		 * @param {unknown} provider
+		 */
+		loginWith: RequiredParams<'provider'>
+		/**
+		 * I​n​v​a​l​i​d​ ​e​m​a​i​l​ ​o​r​ ​p​a​s​s​w​o​r​d​.
+		 */
+		invalidEmailOrPassword: string
+		/**
+		 * L​o​g​i​n​ ​t​o​ ​y​o​u​r​ ​a​c​c​o​u​n​t​ ​a​n​d​ ​a​c​c​e​p​t​ ​t​h​e​ ​i​n​v​i​t​a​t​i​o​n
+		 */
+		loginToYourAccountAndAcceptTheInvitation: string
+		/**
+		 * E​n​t​e​r​ ​y​o​u​r​ ​e​m​a​i​l​ ​b​e​l​o​w​ ​t​o​ ​r​e​s​e​t​ ​y​o​u​r​ ​p​a​s​s​w​o​r​d​.
+		 */
+		enterYourEmailBelowToResetYourPassword: string
+		/**
+		 * E​m​a​i​l​ ​s​e​n​t​!
+		 */
+		emailSent: string
+		/**
+		 * Y​o​u​ ​c​a​n​ ​c​h​e​c​k​ ​y​o​u​r​ ​e​m​a​i​l​ ​a​d​d​r​e​s​s​ ​a​n​d​ ​f​o​l​l​o​w​ ​t​h​e​ ​s​t​e​p​s​ ​t​o​ ​r​e​s​e​t​ ​y​o​u​r​ ​p​a​s​s​w​o​r​d​.
+		 */
+		youCanCheckYourEmailAddressAndFollowTheStepsToResetYourPassword: string
+		/**
+		 * R​e​g​i​s​t​e​r​ ​f​a​i​l​e​d
+		 */
+		registerFailed: string
+		/**
+		 * P​a​s​s​w​o​r​d​ ​d​o​e​s​ ​n​o​t​ ​m​a​t​c​h
+		 */
+		passwordDoesNotMatch: string
+		/**
+		 * E​n​t​e​r​ ​y​o​u​r​ ​d​i​s​p​l​a​y​ ​u​s​e​r​n​a​m​e
+		 */
+		enterYourDisplayUsername: string
+		/**
+		 * U​s​e​r​n​a​m​e
+		 */
+		username: string
+		/**
+		 * I​n​v​i​t​e​d
+		 */
+		invited: string
+		/**
+		 * C​o​n​f​i​r​m​ ​p​a​s​s​w​o​r​d
+		 */
+		confirmPassword: string
+		/**
+		 * C​r​e​a​t​e​ ​a​n​ ​a​c​c​o​u​n​t
+		 */
+		createAnAccount: string
+		/**
+		 * A​l​r​e​a​d​y​ ​h​a​v​e​ ​a​n​ ​a​c​c​o​u​n​t​?
+		 */
+		alreadyHaveAnAccount: string
+		/**
+		 * S​i​g​n​ ​i​n
+		 */
+		signIn: string
+		/**
+		 * C​r​e​a​t​e​ ​a​c​c​o​u​n​t​ ​a​n​d​ ​a​c​c​e​p​t​ ​i​n​v​i​t​a​t​i​o​n
+		 */
+		createAccountAndAcceptInvitation: string
+		/**
+		 * E​n​t​e​r​ ​y​o​u​r​ ​i​n​f​o​r​m​a​t​i​o​n​ ​t​o​ ​c​r​e​a​t​e​ ​a​n​ ​a​c​c​o​u​n​t​.
+		 */
+		enterYourInformationToCreateAnAccount: string
+		/**
+		 * E​n​t​e​r​ ​y​o​u​r​ ​w​o​r​k​ ​e​m​a​i​l​.​.​.
+		 */
+		enterYourWorkEmail: string
+	}
+	template: {
+		/**
+		 * C​r​e​a​t​e​ ​N​e​w​ ​B​a​s​e
+		 */
+		createBase: string
+		/**
+		 * S​e​l​e​c​t​ ​a​ ​t​e​m​p​l​a​t​e​ ​t​o​ ​c​r​e​a​t​e​ ​a​ ​n​e​w​ ​b​a​s​e
+		 */
+		selectATemplateToCreateABase: string
+	}
 	setting: {
 		/**
 		 * S​e​t​t​i​n​g​s
@@ -1992,6 +2114,10 @@ type RootTranslation = {
 	}
 	common: {
 		/**
+		 * E​r​r​o​r
+		 */
+		error: string
+		/**
 		 * D​u​p​l​i​c​a​t​e
 		 */
 		duplicate: string
@@ -2270,6 +2396,126 @@ type RootTranslation = {
 }
 
 export type TranslationFunctions = {
+	auth: {
+		/**
+		 * Login
+		 */
+		login: () => LocalizedString
+		/**
+		 * Login failed
+		 */
+		loginFailed: () => LocalizedString
+		/**
+		 * Forgot your password?
+		 */
+		forgotPassword: () => LocalizedString
+		/**
+		 * Enter your email to login
+		 */
+		emailPlaceholder: () => LocalizedString
+		/**
+		 * Password
+		 */
+		password: () => LocalizedString
+		/**
+		 * Register
+		 */
+		register: () => LocalizedString
+		/**
+		 * Don't have an account?
+		 */
+		noAccount: () => LocalizedString
+		/**
+		 * Registration is disabled.
+		 */
+		registerDisabled: () => LocalizedString
+		/**
+		 * Contact your administrator to request access.
+		 */
+		registerDisabledDescription: () => LocalizedString
+		/**
+		 * Login with {provider}
+		 */
+		loginWith: (arg: { provider: unknown }) => LocalizedString
+		/**
+		 * Invalid email or password.
+		 */
+		invalidEmailOrPassword: () => LocalizedString
+		/**
+		 * Login to your account and accept the invitation
+		 */
+		loginToYourAccountAndAcceptTheInvitation: () => LocalizedString
+		/**
+		 * Enter your email below to reset your password.
+		 */
+		enterYourEmailBelowToResetYourPassword: () => LocalizedString
+		/**
+		 * Email sent!
+		 */
+		emailSent: () => LocalizedString
+		/**
+		 * You can check your email address and follow the steps to reset your password.
+		 */
+		youCanCheckYourEmailAddressAndFollowTheStepsToResetYourPassword: () => LocalizedString
+		/**
+		 * Register failed
+		 */
+		registerFailed: () => LocalizedString
+		/**
+		 * Password does not match
+		 */
+		passwordDoesNotMatch: () => LocalizedString
+		/**
+		 * Enter your display username
+		 */
+		enterYourDisplayUsername: () => LocalizedString
+		/**
+		 * Username
+		 */
+		username: () => LocalizedString
+		/**
+		 * Invited
+		 */
+		invited: () => LocalizedString
+		/**
+		 * Confirm password
+		 */
+		confirmPassword: () => LocalizedString
+		/**
+		 * Create an account
+		 */
+		createAnAccount: () => LocalizedString
+		/**
+		 * Already have an account?
+		 */
+		alreadyHaveAnAccount: () => LocalizedString
+		/**
+		 * Sign in
+		 */
+		signIn: () => LocalizedString
+		/**
+		 * Create account and accept invitation
+		 */
+		createAccountAndAcceptInvitation: () => LocalizedString
+		/**
+		 * Enter your information to create an account.
+		 */
+		enterYourInformationToCreateAnAccount: () => LocalizedString
+		/**
+		 * Enter your work email...
+		 */
+		enterYourWorkEmail: () => LocalizedString
+	}
+	template: {
+		/**
+		 * Create New Base
+		 */
+		createBase: () => LocalizedString
+		/**
+		 * Select a template to create a new base
+		 */
+		selectATemplateToCreateABase: () => LocalizedString
+	}
 	setting: {
 		/**
 		 * Settings
@@ -4219,6 +4465,10 @@ export type TranslationFunctions = {
 		}
 	}
 	common: {
+		/**
+		 * Error
+		 */
+		error: () => LocalizedString
 		/**
 		 * Duplicate
 		 */

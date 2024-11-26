@@ -4,6 +4,7 @@
   import type { PageData } from "./$types"
   import Logo from "$lib/images/logo.svg"
   import { goto } from "$app/navigation"
+  import { LL } from "@undb/i18n/client"
 
   export let data: PageData
 
@@ -39,7 +40,7 @@
           </svg>
           <span class="sr-only">Light bulb</span>
         </span>
-        <span>Login to your account and accept the invitation</span>
+        <span>{$LL.auth.loginToYourAccountAndAcceptTheInvitation()}</span>
       </p>
     </div>
     <div class="flex items-center">
@@ -70,8 +71,8 @@
   </div>
 
   <div class="rounded-md border p-6 shadow-sm">
-    <h3 class="text-xl font-semibold tracking-tight">Undb Login</h3>
-    <p class="text-muted-foreground mb-4 mt-2 text-sm">Enter your email below to login to your account.</p>
+    <h3 class="text-xl font-semibold tracking-tight">Undb {$LL.auth.login()}</h3>
+    <p class="text-muted-foreground mb-4 mt-2 text-sm">{$LL.auth.loginWithEmailDescription()}</p>
     <Login
       {registrationEnabled}
       githubEnabled={!!data.oauth?.github?.enabled}
