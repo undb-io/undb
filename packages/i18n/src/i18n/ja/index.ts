@@ -717,6 +717,7 @@ const ja = {
     today: '今日',
     clear: 'クリア',
     updated: '更新済み',
+    now: '現在'
 	},
  share: {
 	title: '共有',

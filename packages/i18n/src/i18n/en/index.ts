@@ -718,6 +718,7 @@ const en = {
       today: 'Today',
       clear: 'Clear',
       updated: 'Updated',
+      now: 'Now'
   },
   share: {
     title: 'Share',

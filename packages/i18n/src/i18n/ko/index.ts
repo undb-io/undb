@@ -717,6 +717,7 @@ const ko = {
     today: '오늘',
     clear: '지우기',
     updated: '업데이트됨',
+    now: '지금'
 	},
  share: {
 	title: '공유',

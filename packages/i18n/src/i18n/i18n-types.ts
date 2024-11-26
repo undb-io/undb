@@ -2257,6 +2257,10 @@ type RootTranslation = {
 		 * U​p​d​a​t​e​d
 		 */
 		updated: string
+		/**
+		 * N​o​w
+		 */
+		now: string
 	}
 	share: {
 		/**
@@ -4609,6 +4613,10 @@ export type TranslationFunctions = {
 		 * Updated
 		 */
 		updated: () => LocalizedString
+		/**
+		 * Now
+		 */
+		now: () => LocalizedString
 	}
 	share: {
 		/**

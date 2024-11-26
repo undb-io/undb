@@ -719,6 +719,7 @@ const zh = {
     today: '今天',
     clear: '清除',
     updated: '已更新',
+    now: '现在'
 	},
  share: {
 	title: '分享',

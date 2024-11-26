@@ -713,6 +713,7 @@ const es = {
     today: 'Hoy',
     clear: 'Limpiar',
     updated: 'Actualizado',
+    now: 'Ahora'
 	},
  share: {
 	title: 'Compartir',
