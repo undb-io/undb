@@ -9,6 +9,7 @@ const localeTranslationLoaders = {
 	ja: () => import('./ja/index.js'),
 	zh: () => import('./zh/index.js'),
 	ko: () => import('./ko/index.js'),
+	es: () => import('./es/index.js'),
 	en: () => import('./en/index.js'),
 }
 

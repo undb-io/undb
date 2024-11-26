@@ -623,7 +623,38 @@ const webhook = {
     selectATemplateToCreateABase: 'Select a template to create a new base'
   }
 
+  const auth = {
+    login: 'Login',
+    loginFailed: 'Login failed',
+    forgotPassword: 'Forgot your password?',
+    emailPlaceholder: 'Enter your email to login',
+    password: 'Password',
+    register: 'Register',
+    noAccount: 'Don\'t have an account?',
+    registerDisabled: 'Registration is disabled.',
+    registerDisabledDescription: 'Contact your administrator to request access.',
+    loginWith: 'Login with {provider}',
+    invalidEmailOrPassword: 'Invalid email or password.',
+    loginToYourAccountAndAcceptTheInvitation: 'Login to your account and accept the invitation',
+    enterYourEmailBelowToResetYourPassword: 'Enter your email below to reset your password.',
+    emailSent: 'Email sent!',
+    youCanCheckYourEmailAddressAndFollowTheStepsToResetYourPassword: 'You can check your email address and follow the steps to reset your password.',
+    registerFailed: 'Register failed',
+    passwordDoesNotMatch: 'Password does not match',
+    enterYourDisplayUsername: 'Enter your display username',
+    username: 'Username',
+    invited: 'Invited',
+    confirmPassword: 'Confirm password',
+    createAnAccount: 'Create an account',
+    alreadyHaveAnAccount: 'Already have an account?',
+    signIn: 'Sign in',
+    createAccountAndAcceptInvitation: 'Create account and accept invitation',
+    enterYourInformationToCreateAnAccount: 'Enter your information to create an account.',
+    enterYourWorkEmail: 'Enter your work email...',
+  }
+
 const en = {
+  auth,
   template,
   setting,
   base,
@@ -651,6 +682,7 @@ const en = {
     events,
   },
   common: {
+    error: 'Error',
     duplicate: 'Duplicate',
     description: 'Description',
     cancel: 'Cancel',

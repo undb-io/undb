@@ -4,6 +4,7 @@
   import Signup from "$lib/components/blocks/auth/signup.svelte"
   import Logo from "$lib/images/logo.svg"
   import { goto } from "$app/navigation"
+  import { LL } from "@undb/i18n/client"
 
   export let data: PageData
 
@@ -37,7 +38,7 @@
           </svg>
           <span class="sr-only">Light bulb</span>
         </span>
-        <span>Create account and accept invitation</span>
+        <span>{$LL.auth.createAccountAndAcceptInvitation()}</span>
       </p>
     </div>
     <div class="flex items-center">
@@ -68,8 +69,8 @@
   </div>
 
   <div class="rounded-md border p-6 shadow-sm">
-    <h3 class="text-xl font-semibold tracking-tight">Undb Sign Up</h3>
-    <p class="text-muted-foreground mb-4 mt-2 text-sm">Enter your information to create an account.</p>
+    <h3 class="text-xl font-semibold tracking-tight">Undb {$LL.auth.register()}</h3>
+    <p class="text-muted-foreground mb-4 mt-2 text-sm">{$LL.auth.enterYourInformationToCreateAnAccount()}</p>
     <Signup
       {redirect}
       {invitationId}

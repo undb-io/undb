@@ -622,7 +622,38 @@ const template = {
   selectATemplateToCreateABase: 'テンプレートを選択して Base を作成します'
 }
 
-const zh = {
+const auth = {
+  login: 'ログイン',
+  loginFailed: 'ログインに失敗しました',
+  forgotPassword: 'パスワードを忘れましたか？',
+  emailPlaceholder: 'メールアドレスを入力してください...',
+  password: 'パスワード',
+  register: '登録',
+  noAccount: 'アカウントがありませんか？',
+  registerDisabled: '登録が無効になっています。',
+  loginWith: 'ログイン {provider}',
+  invalidEmailOrPassword: '無効なメールアドレスまたはパスワードです。',
+  loginToYourAccountAndAcceptTheInvitation: 'ログインして招待を受け入れます',
+  resetPassword: 'パスワードをリセット',
+  enterYourEmailBelowToResetYourPassword: 'パスワードをリセットするためにメールアドレスを入力してください。',
+  emailSent: 'メールが送信されました！',
+  youCanCheckYourEmailAddressAndFollowTheStepsToResetYourPassword: 'メールアドレスを確認して、パスワードをリセットする手順を実行してください。',
+  registerFailed: '登録に失敗しました',
+  passwordDoesNotMatch: 'パスワードが一致しません',
+  enterYourDisplayUsername: '表示ユーザー名を入力してください',
+  username: 'ユーザー名',
+  invited: '招待済み',
+  confirmPassword: 'パスワードを確認',
+  createAnAccount: 'アカウントを作成',
+  alreadyHaveAnAccount: 'アカウントがありますか？',
+  signIn: 'ログイン',
+  createAccountAndAcceptInvitation: 'アカウントを作成して招待を受け入れる',
+  enterYourInformationToCreateAnAccount: 'アカウントを作成するための情報を入力してください。',
+  enterYourWorkEmail: '作業用メールアドレスを入力してください...',
+}
+
+const ja = {
+	auth,
   template,
   roles,
   setting,
@@ -650,6 +681,7 @@ const zh = {
   },
   webhook,
 	common: {
+		error: 'エラー',
 		continue: '続行',
     description: '説明',
 		cancel: 'キャンセル',
@@ -715,4 +747,4 @@ dashboard
 
 } satisfies BaseTranslation
 
-export default zh
+export default ja

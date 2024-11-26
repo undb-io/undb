@@ -16,6 +16,7 @@
   import autoAnimate from "@formkit/auto-animate"
   import { LoaderCircleIcon } from "lucide-svelte"
   import ResetPassword from "$lib/components/blocks/auth/reset-password.svelte"
+  import { LL } from "@undb/i18n/client"
   import { page } from "$app/stores"
 
   export let registrationEnabled: boolean
@@ -38,7 +39,7 @@
       try {
         const { ok } = await fetch("/api/login", { method: "POST", body: JSON.stringify(input) })
         if (!ok) {
-          throw new Error("Failed to login")
+          throw new Error(LL.auth.loginFailed())
         }
         return
       } catch (error) {
@@ -93,12 +94,12 @@
       <div class="grid gap-2">
         <Form.Field {form} name="email">
           <Form.Control let:attrs>
-            <Form.Label for="email">Email</Form.Label>
+            <Form.Label for="email">{$LL.common.email()}</Form.Label>
             <Input
               {...attrs}
               id="email"
               type="email"
-              placeholder="Enter your email to login"
+              placeholder={$LL.auth.emailPlaceholder()}
               bind:value={$formData.email}
             />
           </Form.Control>
@@ -110,14 +111,14 @@
         <Form.Field {form} name="password">
           <Form.Control let:attrs>
             <div class="flex justify-between">
-              <Label for="password">Password</Label>
+              <Label for="password">{$LL.auth.password()}</Label>
               <Button
                 tabindex={-1}
                 variant="link"
                 class="ml-auto h-auto p-0 text-sm"
                 on:click={() => {
                   resetPassword = true
-                }}>Forgot your password?</Button
+                }}>{$LL.auth.forgotPassword()}</Button
               >
             </div>
             <PasswordInput {...attrs} id="password" placeholder="*****" bind:value={$formData.password} />
@@ -130,29 +131,32 @@
         {#if $loginMutation.isPending}
           <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />
         {/if}
-        Login
+        {$LL.auth.login()}
       </Form.Button>
     </div>
     <div class="mt-4" use:autoAnimate>
       {#if loginError}
         <Alert.Root variant="destructive">
-          <Alert.Title>Error</Alert.Title>
-          <Alert.Description>Invalid email or password.</Alert.Description>
+          <Alert.Title>{$LL.common.error()}</Alert.Title>
+          <Alert.Description>{$LL.auth.invalidEmailOrPassword()}</Alert.Description>
         </Alert.Root>
       {/if}
     </div>
     {#if registrationEnabled}
       <div class="mt-4 text-center text-sm">
-        Don&apos;t have an account?
+        {$LL.auth.noAccount()}
         {#if redirect}
-          <a href="/signup?redirect={encodeURIComponent(redirect)}" class="underline"> Sign up </a>
+          <a href="/signup?redirect={encodeURIComponent(redirect)}" class="underline"> {$LL.auth.register()}</a>
         {:else}
-          <a href="/signup" class="underline"> Sign up </a>
+          <a href="/signup" class="underline"> {$LL.auth.register()}</a>
         {/if}
       </div>
     {:else}
       <p class="text-muted-foreground mt-4 text-center text-xs">
-        Registration is disabled. <br /> Contact your administrator to request access.
+        {$LL.auth.registerDisabled()}
+
+        <br />
+        {$LL.auth.registerDisabledDescription()}
       </p>
     {/if}
     {#if githubEnabled || googleEnabled}
@@ -161,13 +165,13 @@
         {#if githubEnabled}
           <Button href="/login/github" variant="secondary" class="w-full">
             <img class="mr-2 h-4 w-4" src={Github} alt="github" />
-            Login with Github
+            {$LL.auth.loginWith({ provider: "GitHub" })}
           </Button>
         {/if}
         {#if googleEnabled}
           <Button href="/login/google" variant="secondary" class="w-full">
             <img class="mr-2 h-4 w-4" src={Google} alt="google" />
-            Login with Google
+            {$LL.auth.loginWith({ provider: "Google" })}
           </Button>
         {/if}
       </div>

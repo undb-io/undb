@@ -622,7 +622,38 @@ const template = {
   selectATemplateToCreateABase: '템플릿을 선택하여 Base를 생성하세요'
 }
 
+const auth = {
+  login: '로그인',
+  loginFailed: '로그인 실패',
+  forgotPassword: '비밀번호를 까먹었나요?',
+  emailPlaceholder: '이메일 주소를 입력하세요...',
+  password: '비밀번호',
+  register: '회원가입',
+  noAccount: '계정이 없나요?',
+  registerDisabled: '회원가입이 비활성화되었습니다.',
+	registerDisabledDescription: '관리자에게 문의하여 회원가입을 요청하세요.',
+  loginWith: '로그인 {provider}',
+  invalidEmailOrPassword: '유효하지 않은 이메일 또는 비밀번호입니다.',
+  loginToYourAccountAndAcceptTheInvitation: '로그인하여 초대를 수락하세요',
+  enterYourEmailBelowToResetYourPassword: '비밀번호를 재설정하기 위해 이메일 주소를 입력하세요.',
+  emailSent: '이메일이 전송되었습니다!',
+  youCanCheckYourEmailAddressAndFollowTheStepsToResetYourPassword: '이메일 주소를 확인하고 비밀번호를 재설정하는 단계를 따르세요.',
+  registerFailed: '회원가입 실패',
+  passwordDoesNotMatch: '비밀번호가 일치하지 않습니다',
+  enterYourDisplayUsername: '표시 사용자 이름을 입력하세요',
+  username: '사용자 이름',
+  invited: '초대됨',
+  confirmPassword: '비밀번호 확인',
+  createAnAccount: '계정 생성',
+  alreadyHaveAnAccount: '계정이 있나요?',
+  signIn: '로그인',
+  createAccountAndAcceptInvitation: '계정 생성 및 초대 수락',
+  enterYourInformationToCreateAnAccount: '계정을 생성하기 위한 정보를 입력하세요.',
+  enterYourWorkEmail: '작업 이메일을 입력하세요...',
+}
+
 const ko = {
+	auth,
   template,
   roles,
   setting,
@@ -650,6 +681,7 @@ const ko = {
   },
   webhook,
 	common: {
+		error: '오류',
 		continue: '계속',
     description: '설명',
 		cancel: '취소',
