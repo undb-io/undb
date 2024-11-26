@@ -10,6 +10,7 @@
   import DateMacroPicker from "../date/date-macro-picker.svelte"
   import DateMacro from "../date/date-macro.svelte"
   import TimePicker from "../date/time-picker.svelte"
+  import { LL } from "@undb/i18n/client"
 
   export let readonly = false
   export let disabled = false
@@ -107,8 +108,10 @@
           const v = today(getLocalTimeZone()).toString()
           value = v
           onChange(v)
-        }}>Today</Button
+        }}
       >
+        {$LL.common.today()}
+      </Button>
       <Button
         class="flex-1"
         variant="outline"
@@ -120,7 +123,7 @@
           open = false
         }}
       >
-        Clear
+        {$LL.common.clear()}
       </Button>
     </div>
   </Popover.Content>

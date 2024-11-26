@@ -196,8 +196,7 @@
                   </div>
                 </AlertDialog.Title>
                 <AlertDialog.Description>
-                  Are you sure you want to delete the following field? All data associated with this field will be
-                  delete perminently from table.
+                  {$LL.table.field.deleteConfirm()}
                 </AlertDialog.Description>
               </AlertDialog.Header>
 

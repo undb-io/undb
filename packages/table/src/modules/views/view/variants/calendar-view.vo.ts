@@ -49,16 +49,12 @@ export type WeekScope = "selectedWeek" | "thisWeek" | "allRecords"
 export type DayScope = "selectedDate" | "withoutDate" | "allRecords"
 export type Scope = MonthScope | WeekScope | DayScope
 
-const baseScope: { value: Scope; label: string }[] = [
-  { value: "selectedDate", label: "In selected date" },
-  { value: "withoutDate", label: "Without date" },
-  { value: "allRecords", label: "All records" },
-]
+const baseScope: Scope[] = ["selectedDate", "withoutDate", "allRecords"]
 
-const scopesMap: Record<CalendarTimeScale, { value: Scope; label: string }[]> = {
+const scopesMap: Record<CalendarTimeScale, Scope[]> = {
   day: baseScope,
-  week: [{ value: "thisWeek", label: "In this week" }, ...baseScope],
-  month: [...baseScope, { value: "thisMonth", label: "In this month" }],
+  week: ["thisWeek", ...baseScope],
+  month: [...baseScope, "thisMonth"],
 } as const
 
 export class CalendarView extends AbstractView {

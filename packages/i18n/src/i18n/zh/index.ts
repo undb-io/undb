@@ -134,6 +134,8 @@ const timeScales: Record<CalendarTimeScale, string> = {
 
 const record = {
   label: '记录',
+  labels: '记录',
+	search: '搜索记录...',
   openMenu: '打开菜单',
   create: '创建记录',
   update: '更新记录',
@@ -143,7 +145,6 @@ const record = {
   createByForm: '通过表单创建',
   duplicateRecord: '复制记录',
   includeDate: "包含数据",
-  records: '{n|number} 条记录',
   detail: '记录详情',
   duplicate: '复制 {n|number} 条记录',
   updateRecords: '更新 {n|number} 条记录',
@@ -182,7 +183,10 @@ const record = {
   button: {
     confirmToUpdate: '确定更新',
     confirmToUpdateDescription: '以下字段将在您点击按钮时更新',
-  }
+  },
+  noRecord: '没有记录',
+  showHiddenFields: '显示 {n|number} 个隐藏字段',
+  hideHiddenFields: '隐藏 {n|number} 个隐藏字段',
 }
 
 const form = {
@@ -256,9 +260,10 @@ const common = {
     field: '字段',
     fields: '字段列表',
     create: '创建字段',
+		created: '字段已创建！',
     update: '更新字段',
     delete: '删除字段',
-    deleteConfirm: "",
+    deleteConfirm: '确定要删除字段吗？',
     duplicate: '复制字段',
     duplicateDescription: '确定要复制以下字段吗？',
     hidden: '{n|number} 个字段隐藏',
@@ -317,7 +322,8 @@ const common = {
     date: {
       format: '日期格式',
       includeTime: '包含时间',
-      timeFormat: '时间格式'
+      timeFormat: '时间格式',
+			selectMacro: '选择宏...'
     },
     dateRange: {
       format: '日期格式',
@@ -336,7 +342,11 @@ const common = {
         add: '添加选项',
         selectDefault: '选择默认选项...',
         search: '搜索选项...',
-        noOptionFound: '没有选项'
+        noOptionFound: '没有选项',
+        update: '更新选项',
+        delete: '删除选项',
+        createRecord: '在该选项下创建记录',
+				create: '创建选项'
       },
       allowAddMultiple: '允许添加多个选项',
       changeFromMultipleToSingle: '从多个选项更改为单个选项！',
@@ -404,7 +414,9 @@ const view = {
     view: '看板视图',
     field: '看板字段',
     groupBy: '通过选择类型字段分组',
-    noSelectField: '没有选择类型字段'
+    noSelectField: '没有选择类型字段',
+    noOption: '没有选项',
+    collapseLane: '折叠'
   },
   gallery: {
     gallery: '画廊',
@@ -422,7 +434,14 @@ const view = {
     groupBy: '通过日期字段分组',
     select: '选择一个选择类型字段来分组日历',
     selectField: '选择日历字段',
-    noDateField: '没有日期字段'
+    noDateField: '没有日期字段',
+    scope: {
+      selectedDate: '在选定日期',
+      withoutDate: '没有日期',
+      thisMonth: '在这个月',
+      allRecords: '所有记录',
+      thisWeek: '在这个周',
+    }
   },
   pivot: {
     pivot: '数据透视',
@@ -551,6 +570,7 @@ const webhook = {
   create: '创建 Webhook',
   delete: '删除 Webhook',
   update: '更新 Webhook',
+  duplicate: '复制 Webhook',
   noWebhooks: '{table} 没有 Webhook',
   noWebhooksDescription: '点击按钮创建您的第一个 Webhook',
 }
@@ -655,6 +675,10 @@ const zh = {
     enabled: '启用',
     enableCondition: '启用条件',
     type: '类型',
+    loadMore: '加载更多',
+    today: '今天',
+    clear: '清除',
+    updated: '已更新',
 	},
  share: {
 	title: '分享',

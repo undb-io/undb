@@ -1,20 +1,13 @@
 <script lang="ts">
   import {
     getConditionGroupCount,
-    getIsFilterableFieldType,
     mergeConditionGroups,
-    RecordDO,
     type DateField,
     type DateRangeField,
   } from "@undb/table"
   import { createInfiniteQuery, type CreateInfiniteQueryOptions } from "@tanstack/svelte-query"
   import CalendarViewMonthRecordsFilterPicker from "./calendar-view-month-records-filter-picker.svelte"
   import { derived, type Writable } from "svelte/store"
-  import * as Popover from "$lib/components/ui/popover/index.js"
-  import { Button } from "$lib/components/ui/button/index.js"
-  import { FilterIcon } from "lucide-svelte"
-  import Badge from "$lib/components/ui/badge/badge.svelte"
-  import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { getTable } from "$lib/store/table.store"
   import { type Readable } from "svelte/store"
   import { trpc } from "$lib/trpc/client"
@@ -30,7 +23,8 @@
   import { inview } from "svelte-inview"
   import { LoaderCircleIcon } from "lucide-svelte"
   import { CalendarView } from "@undb/table"
-  import { parseValidViewFilter, type MaybeConditionGroup, type IViewFilterOptionSchema } from "@undb/table"
+  import {  type MaybeConditionGroup, type IViewFilterOptionSchema } from "@undb/table"
+  import { LL } from "@undb/i18n/client"
 
   export let viewId: Readable<string | undefined>
   export let view: CalendarView
@@ -182,7 +176,7 @@
 
 <div class="flex h-full flex-1 flex-col gap-2 overflow-hidden p-2">
   <div class="flex items-center justify-between gap-1.5 text-sm font-medium">
-    <span> Records </span>
+    <span> {$LL.table.record.labels()} </span>
 
     <span class="flex-1">
       <CalendarViewMonthRecordsFilterPicker bind:view />
@@ -223,7 +217,7 @@
 
   <div class="flex items-center justify-between gap-2">
     <SearchIcon class="size-3 text-gray-500" />
-    <Input bind:value={$search} class="h-6 flex-1 text-xs" placeholder="Search records..." />
+    <Input bind:value={$search} class="h-6 flex-1 text-xs" placeholder={$LL.table.record.search()} />
   </div>
 
   <div class="flex-1 overflow-auto" bind:this={virtualListEl}>
@@ -273,7 +267,7 @@
       {/if}
     {:else if !$getRecords.isPending}
       <div class="flex h-full flex-1 items-center justify-center">
-        <span class="text-muted-foreground text-sm">No Records found</span>
+        <span class="text-muted-foreground text-sm">{$LL.table.record.empty()}</span>
       </div>
     {/if}
   </div>

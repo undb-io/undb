@@ -134,6 +134,8 @@ const timeScales: Record<CalendarTimeScale, string> = {
 
 const record = {
   label: 'レコード',
+	labels: 'レコード',
+	search: 'レコードを検索...',
   openMenu: 'メニューを開く',
   create: 'レコード作成',
   update: 'レコード更新',
@@ -175,6 +177,7 @@ const record = {
     recordsUpdated: '{count} 件のレコードが更新に成功しました',
     button: '一括更新'
   },
+  noRecord: 'レコードがありません',
   reference: {
     link: '関連レコード',
     linked: '{n|number} 件の関連レコード'
@@ -182,7 +185,9 @@ const record = {
   button: {
     confirmToUpdate: '更新を確認',
     confirmToUpdateDescription: '以下のフィールドがボタンをクリックしたときに更新されます',
-  }
+  },
+  showHiddenFields: '表示 {n|number} 個の非表示フィールド',
+  hideHiddenFields: '非表示 {n|number} 個の非表示フィールド',
 }
 
 const form = {
@@ -256,9 +261,10 @@ const common = {
     field: 'フィールド',
     fields: 'フィールドリスト',
     create: 'フィールドを作成',
+		created: 'フィールドが作成されました！',
     update: 'フィールドを更新',
     delete: 'フィールドを削除',
-    deleteConfirm: "",
+    deleteConfirm: 'フィールドを削除してもよろしいですか？',
     duplicate: 'フィールドを複製',
     duplicateDescription: '以下のフィールドを複製してもよろしいですか？',
     hidden: '{n|number} 個のフィールドが隠されました',
@@ -317,7 +323,8 @@ const common = {
     date: {
       format: '日付形式',
       includeTime: '時間を含む',
-      timeFormat: '時間形式'
+      timeFormat: '時間形式',
+			selectMacro: 'マクロを選択...'
     },
     dateRange: {
       format: '日付形式',
@@ -336,7 +343,11 @@ const common = {
         add: 'オプションを追加',
         selectDefault: 'デフォルトオプションを選択...',
         search: 'オプションを検索...',
-        noOptionFound: 'オプションが見つかりません'
+        noOptionFound: 'オプションが見つかりません',
+        update: 'オプションを更新',
+        delete: 'オプションを削除',
+        createRecord: 'このオプションの下にレコードを作成',
+				create: 'オプションを作成'
       },
       allowAddMultiple: '複数のオプションを追加できます',
       changeFromMultipleToSingle: '複数のオプションを単一のオプションに変更！',
@@ -404,7 +415,9 @@ const view = {
     view: 'カンバンビジュアル',
     field: 'カンバンフィールド',
     groupBy: 'タイプフィールドに基づいてグループ化',
-    noSelectField: 'タイプフィールドが選択されていません'
+    noSelectField: 'タイプフィールドが選択されていません',
+    noOption: 'オプションがありません',
+		collapseLane: '折りたたみ'
   },
   gallery: {
     gallery: 'ギャラリー',
@@ -422,7 +435,14 @@ const view = {
     groupBy: '日付フィールドに基づいてグループ化',
     select: 'カレンダービジュアルを作成するための選択タイプフィールドを選択',
     selectField: 'カレンダーフィールドを選択',
-    noDateField: '日付フィールドがありません'
+    noDateField: '日付フィールドがありません',
+    scope: {
+      selectedDate: '選択した日付',
+      withoutDate: '日付なし',
+      thisMonth: 'この月',
+      allRecords: 'すべてのレコード',
+      thisWeek: 'この週',
+    }
   },
   pivot: {
     pivot: 'ピボット',
@@ -551,6 +571,7 @@ const webhook = {
   create: 'Webhook を作成',
   delete: 'Webhook を削除',
   update: 'Webhook を更新',
+	duplicate: 'Webhook を複製',
   noWebhooks: '{table} に Webhook がありません',
   noWebhooksDescription: 'ボタンをクリックして最初の Webhook を作成します'
 }
@@ -654,6 +675,10 @@ const zh = {
     enabled: '有効',
     enableCondition: '有効条件',
     type: 'タイプ',
+		loadMore: 'もっと読み込む',
+    today: '今日',
+    clear: 'クリア',
+    updated: '更新済み',
 	},
  share: {
 	title: '共有',

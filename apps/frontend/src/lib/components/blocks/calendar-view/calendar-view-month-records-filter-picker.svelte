@@ -3,15 +3,18 @@
   import { calendarStore } from "$lib/store/calendar.store"
   import { cn } from "$lib/utils"
   import { CalendarView, type Scope } from "@undb/table"
+  import { LL } from "@undb/i18n/client"
 
   export let view: CalendarView
 
   const scope = $calendarStore.scope
   $: scopes = view.scopes
 
+  $: label = $LL.table.view.calendar.scope[$scope ?? "selectedDate"]()
+
   $: selected = {
     value: $scope,
-    label: scopes.find((s) => s.value === $scope)?.label ?? "Select Scope",
+    label,
   }
 
   function setScope(scope: Scope) {
@@ -35,8 +38,9 @@
   </Select.Trigger>
   <Select.Content>
     {#each scopes as scope}
-      <Select.Item class="text-xs" value={scope.value} label={scope.label}>
-        {scope.label}
+      {@const l = $LL.table.view.calendar.scope[scope]()}
+      <Select.Item class="text-xs" value={scope} label={l}>
+        {l}
       </Select.Item>
     {/each}
   </Select.Content>

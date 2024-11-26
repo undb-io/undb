@@ -134,6 +134,8 @@ const timeScales: Record<CalendarTimeScale, string> = {
 
 const record = {
   label: 'Record',
+  labels: 'Records',
+  search: 'Search Records...',
   openMenu: 'Open Menu',
   create: 'Create Record',
   update: 'Update Record',
@@ -182,7 +184,10 @@ const record = {
   button: {
     confirmToUpdate: 'Confirm to update',
     confirmToUpdateDescription: 'The following fields will be updated when you click the button.',
-  }
+  },
+  noRecord: 'No record',
+  showHiddenFields: 'Show {n|number} Hidden Fields',
+  hideHiddenFields: 'Hide {n|number} Hidden Fields',
 }
 
 const form =  {
@@ -258,6 +263,7 @@ const webhook = {
   create: 'Create Webhook',
   delete: 'Delete Webhook',
   update: 'Update Webhook',
+  duplicate: 'Duplicate Webhook',
   noWebhooks: '{table} have no webhooks',
   noWebhooksDescription: 'Click button to create your first webhook',
 
@@ -267,6 +273,7 @@ const webhook = {
     field: 'Field',
     fields: 'Fields',
     create: 'Create Field',
+		created: 'Field has been created!',
     update: 'Update Field',
     delete: 'Delete Field'  ,
     deleteConfirm: "Are you sure you want to delete the following field? All data associated with this field will be delete perminently from table.",
@@ -326,7 +333,8 @@ const webhook = {
     date: {
       format: 'Date Format',
       includeTime: 'Include Time',
-      timeFormat: 'Time Format'
+      timeFormat: 'Time Format',
+			selectMacro: 'Select Macro...'
     },
     dateRange: {
       format: 'Date Format',
@@ -345,7 +353,11 @@ const webhook = {
         add: 'Add Option',
         selectDefault: 'Select default options...',
         search: 'Search option...',
-        noOptionFound: 'No option found.'
+        noOptionFound: 'No option found.',
+        update: 'Update option',
+        delete: 'Delete option',
+        createRecord: 'Create record under this option',
+				create: 'Create option'
       },
       allowAddMultiple: 'Allow add multiple options',
       changeFromMultipleToSingle: 'Change from multiple options to single option!',
@@ -413,7 +425,9 @@ const webhook = {
       view: 'Kanban View',
       field: 'Kanban Field',
       groupBy: 'Group by select type field',
-      noSelectField: 'No select field found.'
+      noSelectField: 'No select field found.',
+      noOption: 'No option',
+			collapseLane: 'Collapse lane'
     },
     gallery: {
       gallery: 'Gallery',
@@ -431,7 +445,14 @@ const webhook = {
       groupBy: 'Group by date field',
       noDateField: 'No date field found.',
       select: 'Select a select type field to group calendar lanes',
-      selectField: 'Select calendar field'
+      selectField: 'Select calendar field',
+      scope: {
+        selectedDate: 'In selected date',
+        withoutDate: 'Without date',
+        thisMonth: 'In this month',
+        allRecords: 'All records',
+        thisWeek: 'In this week',
+      }
     },
     pivot: {
       pivot: 'Pivot',
@@ -654,7 +675,11 @@ const en = {
     required: 'Required',
     enabled: 'Enabled',
     enableCondition: 'Enable Condition',
-    type: 'Type'
+    type: 'Type',
+    loadMore: 'Load more',
+      today: 'Today',
+      clear: 'Clear',
+      updated: 'Updated',
   },
   share: {
     title: 'Share',
