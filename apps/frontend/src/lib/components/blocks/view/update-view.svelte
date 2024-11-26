@@ -11,6 +11,7 @@
   import { toast } from "svelte-sonner"
   import type { Readable } from "svelte/store"
   import { invalidate } from "$app/navigation"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
   export let viewId: Readable<string | undefined>
@@ -20,7 +21,7 @@
     mutationFn: trpc.table.view.update.mutate,
     async onSuccess(data, variables, context) {
       toggleModal(UPDATE_VIEW)
-      toast.success("View updated")
+      toast.success($LL.table.view.updated())
       await invalidate(`undb:table:${$table.id.value}`)
     },
     onError(error, variables, context) {
@@ -63,13 +64,13 @@
   <form method="POST" use:enhance>
     <Form.Field {form} name="name">
       <Form.Control let:attrs>
-        <Form.Label>Name</Form.Label>
+        <Form.Label>{$LL.common.name()}</Form.Label>
         <Input autofocus {...attrs} bind:value={$formData.name} />
       </Form.Control>
       <Form.Description />
       <Form.FieldErrors />
     </Form.Field>
 
-    <Form.FormButton disabled={$updateViewMutation.isPending} class="w-full">Submit</Form.FormButton>
+    <Form.FormButton disabled={$updateViewMutation.isPending} class="w-full">{$LL.common.submit()}</Form.FormButton>
   </form>
 </div>

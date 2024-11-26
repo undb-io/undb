@@ -25,6 +25,7 @@
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { writable } from "svelte/store"
   import { type MaybeConditionGroup, parseValidViewFilter } from "@undb/table"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
   export let webhook: IWebhookDTO
@@ -143,7 +144,7 @@
       <div class="flex items-center gap-2">
         <div class="flex items-center space-x-2">
           <Switch size="sm" id={"enabled" + webhook.id} bind:checked={webhook.enabled} on:click={updateWebhook} />
-          <Label class="text-xs" for={"enabled" + webhook.id}>Enabled</Label>
+          <Label class="text-xs" for={"enabled" + webhook.id}>{$LL.common.enabled()}</Label>
         </div>
 
         <DropdownMenu.Root>
@@ -156,22 +157,22 @@
               <DropdownMenu.Separator />
               <DropdownMenu.Item class="text-xs" on:click={() => (updateOpen = true)}>
                 <PencilIcon class="mr-1.5 h-3 w-3" />
-                Update Webhook
+                {$LL.webhook.update()}
               </DropdownMenu.Item>
               <DropdownMenu.Item class="text-xs">
                 <CopyIcon class="mr-1.5 h-3 w-3" />
-                Duplicate Webhook
+                {$LL.webhook.duplicate()}
               </DropdownMenu.Item>
               <AlertDialog.Root>
                 <DropdownMenu.Item class="text-xs text-red-500 hover:!bg-red-100 hover:!text-red-500">
                   <AlertDialog.Trigger class="flex items-center">
                     <TrashIcon class="mr-1.5 h-3 w-3" />
-                    Delete Webhook
+                    {$LL.webhook.delete()}
                   </AlertDialog.Trigger>
                 </DropdownMenu.Item>
                 <AlertDialog.Content>
                   <AlertDialog.Header>
-                    <AlertDialog.Title>Delete Webhook</AlertDialog.Title>
+                    <AlertDialog.Title>{$LL.webhook.delete()}</AlertDialog.Title>
                     <AlertDialog.Description>
                       This action cannot be undone. This will permanently delete the webhook.
                     </AlertDialog.Description>
@@ -188,7 +189,7 @@
                           await $deleteWebhookMutation.mutateAsync({ id: webhook.id })
                         }}
                       >
-                        Delete Space
+                        {$LL.webhook.delete()}
                       </Button>
                     </AlertDialog.Action>
                   </AlertDialog.Footer>
@@ -213,14 +214,14 @@
 <Dialog.Root bind:open={updateOpen}>
   <Dialog.Content class="z-50">
     <Dialog.Header>
-      <Dialog.Title>Update Webhook</Dialog.Title>
+      <Dialog.Title>{$LL.webhook.update()}</Dialog.Title>
     </Dialog.Header>
 
     <form method="POST" class="space-y-2" id="updateWebhook" use:enhance>
       <Form.Field {form} name="name">
         <Form.Control let:attrs>
-          <Form.Label>Name</Form.Label>
-          <Input {...attrs} bind:value={$formData.name} placeholder="webhook name" />
+          <Form.Label>{$LL.common.name()}</Form.Label>
+          <Input {...attrs} bind:value={$formData.name} placeholder={$LL.common.name()} />
         </Form.Control>
         <Form.FieldErrors />
       </Form.Field>
@@ -257,7 +258,7 @@
 
       <Form.Field {form} name="event" class="w-full">
         <Form.Control let:attrs>
-          <Form.Label>Event</Form.Label>
+          <Form.Label>{$LL.common.event()}</Form.Label>
           <Select.Root
             selected={selectedEvent}
             onSelectedChange={(v) => {
@@ -268,9 +269,9 @@
               <Select.Value placeholder="Select a event" />
             </Select.Trigger>
             <Select.Content>
-              <Select.Item value="record.created" label="Record Created" />
-              <Select.Item value="record.updated" label="Record Updated" />
-              <Select.Item value="record.deleted" label="Record Deleted" />
+              <Select.Item value="record.created" label="{$LL.events.record.created()}" />
+              <Select.Item value="record.updated" label="{$LL.events.record.updated()}" />
+              <Select.Item value="record.deleted" label="{$LL.events.record.deleted()}" />
             </Select.Content>
           </Select.Root>
           <input hidden bind:value={$formData.event} name={attrs.name} />
@@ -279,14 +280,14 @@
 
       <Collapsible.Root class="space-y-2" open={enableCondition}>
         <div class="flex items-center gap-2">
-          <Label for="enableCondition">Enable Condtion</Label>
+          <Label for="enableCondition">{$LL.common.enableCondition()}</Label>
           <Switch id="enableCondition" bind:checked={enableCondition} />
         </div>
         <Collapsible.Content>
           <FiltersEditor class="rounded-sm border" bind:value={$condition} table={$table} />
         </Collapsible.Content>
       </Collapsible.Root>
-      <Form.Button disabled={!$tainted} class="w-full">Submit</Form.Button>
+      <Form.Button disabled={!$tainted} class="w-full">{$LL.common.submit()}</Form.Button>
     </form>
   </Dialog.Content>
 </Dialog.Root>

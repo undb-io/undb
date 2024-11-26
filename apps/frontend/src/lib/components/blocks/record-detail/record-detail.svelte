@@ -17,6 +17,7 @@
   import { cn } from "$lib/utils"
   import { getRecordsStore } from "$lib/store/records.store"
   import { type Writable, type Readable } from "svelte/store"
+  import { LL } from "@undb/i18n/client"
 
   const recordsStore = getRecordsStore()
 
@@ -132,7 +133,7 @@
               <span
                 class="me-2 rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium uppercase text-green-800 dark:bg-green-900 dark:text-green-300"
               >
-                updated
+                {$LL.common.updated()}
               </span>
             {/if}
           </div>
@@ -176,8 +177,11 @@
         <div class="h-[1px] flex-1 bg-gray-100"></div>
         <Collapsible.Trigger asChild let:builder>
           <Button builders={[builder]} variant="outline" size="sm" class="text-muted-foreground">
-            {$preferences.showHiddenFields ? "Hide" : "Show"}
-            {hiddenFields.length} hidden fields
+            {#if $preferences.showHiddenFields}
+              {$LL.table.record.hideHiddenFields({ n: hiddenFields.length })}
+            {:else}
+              {$LL.table.record.showHiddenFields({ n: hiddenFields.length })}
+            {/if}
           </Button>
         </Collapsible.Trigger>
         <div class="h-[1px] flex-1 bg-gray-100"></div>
@@ -198,7 +202,7 @@
                     <span
                       class="me-2 rounded bg-green-100 px-2.5 py-0.5 text-xs font-medium uppercase text-green-800 dark:bg-green-900 dark:text-green-300"
                     >
-                      updated
+                      {$LL.common.updated()}
                     </span>
                   {/if}
                 </div>
