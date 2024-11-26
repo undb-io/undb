@@ -618,7 +618,13 @@ const webhook = {
     }
   }
 
+  const template = {
+    createBase: 'Create New Base',
+    selectATemplateToCreateABase: 'Select a template to create a new base'
+  }
+
 const en = {
+  template,
   setting,
   base,
   space,

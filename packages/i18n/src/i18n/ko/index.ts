@@ -617,7 +617,13 @@ const events = {
   }
 }
 
+const template = {
+  createBase: 'Base 생성',
+  selectATemplateToCreateABase: '템플릿을 선택하여 Base를 생성하세요'
+}
+
 const ko = {
+  template,
   roles,
   setting,
   base,
