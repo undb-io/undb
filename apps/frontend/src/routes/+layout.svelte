@@ -7,7 +7,14 @@
 
   import { QueryClient, QueryClientProvider } from "@tanstack/svelte-query"
   import ImagePreview from "$lib/components/blocks/attachment/image-preview.svelte"
-  import { setLocale, loadLocaleAsync, detectLocale, localStorageDetector } from "@undb/i18n/client"
+  import {
+    setLocale,
+    loadLocaleAsync,
+    detectLocale,
+    localStorageDetector,
+    queryStringDetector,
+    documentCookieDetector,
+  } from "@undb/i18n/client"
   import { onMount } from "svelte"
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -18,7 +25,7 @@
   })
 
   onMount(async () => {
-    const lang = detectLocale(localStorageDetector)
+    const lang = detectLocale(documentCookieDetector, queryStringDetector, localStorageDetector)
     await loadLocaleAsync(lang)
     setLocale(lang)
   })
