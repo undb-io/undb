@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-129
+
+
+### 🏡 Chore
+
+- Add i18n cookie ([1deab00](https://github.com/undb-io/undb/commit/1deab00))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-128
 
 
