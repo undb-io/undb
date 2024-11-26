@@ -622,7 +622,40 @@ const template= {
   selectATemplateToCreateABase: '选择一个模板来创建一个 Base'
 }
 
+const auth = {
+  login: '登录',
+  loginFailed: '登录失败',
+  forgotPassword: '忘记密码？',
+  emailPlaceholder: '输入您的电子邮件地址...',
+  password: '密码',
+  register: '注册',
+  noAccount: '没有账户？',
+  registerDisabled: '注册已禁用',
+  loginWithEmailDescription: '输入您的电子邮件地址和密码登录。',
+  registerDisabledDescription: '请联系管理员启用注册。',
+  loginWith: '使用 {provider} 登录',
+  invalidEmailOrPassword: '无效的电子邮件或密码。',
+  loginToYourAccountAndAcceptTheInvitation: '登录到您的账户并接受邀请',
+  resetPassword: '重置密码',
+  enterYourEmailBelowToResetYourPassword: '输入您的电子邮件地址以重置您的密码。',
+  emailSent: '电子邮件已发送！',
+  youCanCheckYourEmailAddressAndFollowTheStepsToResetYourPassword: '您可以检查您的电子邮件地址并按照步骤重置您的密码。',
+  registerFailed: '注册失败',
+  passwordDoesNotMatch: '密码不匹配',
+  enterYourDisplayUsername: '输入您的显示用户名',
+  username: '用户名',
+  invited: '已邀请',
+  confirmPassword: '确认密码',
+  createAnAccount: '创建一个账户',
+  alreadyHaveAnAccount: '已经有账户？',
+  signIn: '登录',
+  createAccountAndAcceptInvitation: '创建账户并接受邀请',
+  enterYourInformationToCreateAnAccount: '输入您的信息以创建一个账户。',
+  enterYourWorkEmail: '输入您的工作电子邮件...',
+}
+
 const zh = {
+  auth,
   template,
   roles,
   setting,
@@ -650,6 +683,7 @@ const zh = {
   },
   webhook,
 	common: {
+    error: '错误',
 		continue: '继续',
     description: '描述',
 		cancel: '取消',
