@@ -617,7 +617,13 @@ const events = {
   }
 }
 
+const template= {
+  createBase: '从模板创建 Base',
+  selectATemplateToCreateABase: '选择一个模板来创建一个 Base'
+}
+
 const zh = {
+  template,
   roles,
   setting,
   base,
