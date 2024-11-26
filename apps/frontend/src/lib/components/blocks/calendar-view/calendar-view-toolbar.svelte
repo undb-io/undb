@@ -13,6 +13,7 @@
   import ViewWidgetButton from "../view-widget/view-widget-button.svelte"
   import ViewColorEditor from "../view-color-editor/view-color-editor.svelte"
   import CalendarTimescalePicker from "./calendar-timescale-picker.svelte"
+  import { LL } from "@undb/i18n/client"
 
   export let viewId: Readable<string | undefined>
   export let view: CalendarView
@@ -24,7 +25,7 @@
   <div class="flex items-center gap-2">
     <CreateRecordButton size="xs" />
     <CalendarViewMiniMonthControl bind:view />
-    <Button variant="outline" size="xs" on:click={() => calendarStore.reset()}>Today</Button>
+    <Button variant="outline" size="xs" on:click={() => calendarStore.reset()}>{$LL.common.today()}</Button>
     {#if !shareId}
       <CalendarTimescalePicker size="xs" bind:view />
     {/if}

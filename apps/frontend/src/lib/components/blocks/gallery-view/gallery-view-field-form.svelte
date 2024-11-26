@@ -51,7 +51,7 @@
     mutationFn: trpc.table.view.update.mutate,
     mutationKey: ["updateView"],
     async onSuccess(data, variables, context) {
-      toast.success("View updated")
+      toast.success($LL.table.view.updated())
       await invalidate(`undb:table:${$table.id.value}`)
     },
   })

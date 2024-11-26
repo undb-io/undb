@@ -35,7 +35,7 @@
   }}
 >
   <Select.Trigger>
-    <Select.Value class="text-xs" placeholder="Select a macro..." />
+    <Select.Value class="text-xs" placeholder={$LL.table.field.date.selectMacro()} />
   </Select.Trigger>
   <Select.Content>
     {#each macros as macro}

@@ -6,8 +6,6 @@
   import {
     FieldIdVo,
     KanbanView,
-    RecordDO,
-    SelectFieldValue,
     Records,
     SelectEqual,
     SelectField,
@@ -46,6 +44,7 @@
   import { kanbanStore } from "$lib/store/kanban.store"
   import SelectKanbanCollapsedLane from "./select-kanban-collapsed-lane.svelte"
   import { queryParam } from "sveltekit-search-params"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
   const recordsStore = getRecordsStore()
@@ -278,7 +277,10 @@
 >
   {#if isLaneCollapsed}
     <div class="mr-2 w-full pt-2" bind:this={laneElement} data-option-id={option?.id ?? null}>
-      <SelectKanbanCollapsedLane option={option ?? { id: "", name: "No Option", color: "gray" }} viewId={$viewId} />
+      <SelectKanbanCollapsedLane
+        option={option ?? { id: "", name: $LL.table.view.kanban.noOption(), color: "gray" }}
+        viewId={$viewId}
+      />
     </div>
   {:else}
     <div class="flex w-full items-center justify-between gap-1">
@@ -292,7 +294,7 @@
         {#if option}
           <Option {option} />
         {:else}
-          <Option option={{ id: "", name: "No Option", color: "gray" }} />
+          <Option option={{ id: "", name: $LL.table.view.kanban.noOption(), color: "gray" }} />
         {/if}
       </div>
 
@@ -314,12 +316,12 @@
               }}
             >
               <Maximize2Icon class="mr-2 h-3 w-3" />
-              Collapse Lane
+              {$LL.table.view.kanban.collapseLane()}
             </DropdownMenu.Item>
             {#if !shareId && !readonly && option}
               <DropdownMenu.Item class="text-xs text-gray-700" on:click={() => (updateOptionDialogOpen = true)}>
                 <PencilIcon class="mr-2 h-3 w-3" />
-                Update option
+                {$LL.table.field.select.option.update()}
               </DropdownMenu.Item>
               <DropdownMenu.Item
                 disabled={field.options.length <= 1}
@@ -327,7 +329,7 @@
                 on:click={() => (deleteOptionDialogOpen = true)}
               >
                 <TrashIcon class="mr-2 h-3 w-3" />
-                Delete option
+                {$LL.table.field.select.option.delete()}
               </DropdownMenu.Item>
             {/if}
           </DropdownMenu.Group>
@@ -351,18 +353,18 @@
               </Button>
             {:else}
               <div class="flex h-full w-full flex-col items-center justify-center space-y-3">
-                <p class="text-sm font-semibold">No records</p>
+                <p class="text-sm font-semibold">{$LL.table.record.noRecord()}</p>
                 <div class="text-muted-foreground space-y-2 text-xs">
-                  <p>Create a new record of this option</p>
+                  <p>{$LL.table.field.select.option.createRecord()}</p>
 
                   <div class="flex w-full items-center justify-center">
-                    <Option option={option ?? { id: "", name: "No Option", color: "gray" }} />
+                    <Option option={option ?? { id: "", name: $LL.table.view.kanban.noOption(), color: "gray" }} />
                   </div>
                 </div>
                 {#if !readonly && !(field.required && !option)}
                   <Button on:click={onCreateRecord} variant="outline" size="sm">
                     <PlusIcon class="text-muted-foreground mr-2 h-4 w-4 font-semibold" />
-                    New Record
+                    {$LL.table.record.create()}
                   </Button>
                 {/if}
               </div>
@@ -388,7 +390,7 @@
               {#if $query.isFetching}
                 <LoaderCircleIcon class="mr-2 h-3 w-3 animate-spin" />
               {/if}
-              Load more
+              {$LL.common.loadMore()}
             </Button>
           {/if}
         {/if}
@@ -399,7 +401,7 @@
         {#if !(field.required && !option) && !readonly}
           <Button variant="outline" size="xs" on:click={onCreateRecord}>
             <PlusIcon class="text-muted-foreground mr-2 h-3 w-3 font-semibold" />
-            New Record
+            {$LL.table.record.create()}
           </Button>
         {:else}
           <div class="h-6"></div>
@@ -408,7 +410,8 @@
 
       {#if $query.isFetchedAfterMount}
         <p class="text-muted-foreground text-xs">
-          {$query.data?.pages.flatMap((r) => r.records).length} / {$query.data?.pages[0]?.total} records
+          {$query.data?.pages.flatMap((r) => r.records).length} / {$query.data?.pages[0]?.total}
+          {$LL.table.record.labels()}
         </p>
       {/if}
     </div>
@@ -419,12 +422,14 @@
   <Dialog.Root bind:open={updateOptionDialogOpen} portal="body">
     <Dialog.Content>
       <Dialog.Header>
-        <Dialog.Title>Update option</Dialog.Title>
+        <Dialog.Title>{$LL.table.field.select.option.update()}</Dialog.Title>
       </Dialog.Header>
 
       <form on:submit|preventDefault={() => updateOption()}>
         <OptionEditor bind:name={option.name} bind:color={option.color} />
-        <Button type="submit" disabled={$updateFieldMutation.isPending} class="mt-2 w-full">Update</Button>
+        <Button type="submit" disabled={$updateFieldMutation.isPending} class="mt-2 w-full">
+          {$LL.table.field.select.option.update()}
+        </Button>
       </form>
     </Dialog.Content>
   </Dialog.Root>
@@ -434,15 +439,18 @@
   <AlertDialog.Root bind:open={deleteOptionDialogOpen} portal="body">
     <AlertDialog.Content>
       <AlertDialog.Header>
-        <AlertDialog.Title>Delete Option <Option {option} /></AlertDialog.Title>
+        <AlertDialog.Title>
+          {$LL.table.field.select.option.delete()}
+          <Option {option} />
+        </AlertDialog.Title>
       </AlertDialog.Header>
       <AlertDialog.Footer>
-        <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+        <AlertDialog.Cancel>{$LL.common.cancel()}</AlertDialog.Cancel>
         <AlertDialog.Action asChild let:builder>
           <Button builders={[builder]} variant="destructive" on:click={() => deleteOption()}>
             <TrashIcon class="mr-2 size-4" />
-            Delete</Button
-          >
+            {$LL.common.delete()}
+          </Button>
         </AlertDialog.Action>
       </AlertDialog.Footer>
     </AlertDialog.Content>

@@ -23,6 +23,7 @@
   import OptionEditor from "../option/option-editor.svelte"
   import { invalidate } from "$app/navigation"
   import type { Writable } from "svelte/store"
+  import { LL } from "@undb/i18n/client"
 
   const table = getTable()
 
@@ -134,7 +135,7 @@
           <Popover.Trigger asChild let:builder>
             <Button variant="outline" size="sm" class="w-full" builders={[builder]}>
               <PlusIcon class="mr-2 h-4 w-4" />
-              Create New Option
+              {$LL.table.field.select.option.create()}
             </Button>
           </Popover.Trigger>
           <Popover.Content sameWidth>
@@ -145,7 +146,7 @@
               class="mt-2 w-full"
               on:click={createOption}
             >
-              Create
+              {$LL.common.create()}
             </Button>
           </Popover.Content>
         </Popover.Root>

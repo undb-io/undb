@@ -187,11 +187,11 @@
       {#if $hasPermission("table:update")}
         <div class="-mx-2 space-y-2 border-t bg-gray-50 px-2 pt-2 shadow-inner">
           <CreateFieldButton class="w-full" />
-          <div class="flex items-center gap-2">
+          <div class="flex w-full items-center gap-2">
             {#if hiddenCount > 0}
               <Button
                 variant="outline"
-                class="flex-1 gap-2 shadow-sm"
+                class="flex-1 gap-2 truncate shadow-sm"
                 size="sm"
                 on:click={() => {
                   viewFields = viewFieldsVo.showAllFields($table).toJSON()
@@ -204,7 +204,7 @@
             {:else}
               <Button
                 variant="outline"
-                class="flex-1 gap-2 shadow-sm"
+                class="flex-1 gap-2 truncate shadow-sm"
                 size="sm"
                 on:click={() => {
                   viewFields = viewFieldsVo.hideAllFields($table).toJSON()
@@ -218,7 +218,7 @@
 
             <Button
               variant="outline"
-              class="flex-1 gap-2 shadow-sm"
+              class="flex-1 gap-2 truncate shadow-sm"
               size="sm"
               on:click={() => {
                 viewOption.showSystemFields = !viewOption.showSystemFields

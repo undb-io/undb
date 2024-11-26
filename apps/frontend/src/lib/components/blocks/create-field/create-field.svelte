@@ -29,7 +29,7 @@
       mutationKey: ["table", $table.id.value, "createField"],
       mutationFn: trpc.table.field.create.mutate,
       async onSuccess() {
-        toast.success("Create field success")
+        toast.success($LL.table.field.created())
         reset()
         await invalidate(`undb:table:${$table.id.value}`)
         await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
@@ -151,8 +151,7 @@
       {/if}
 
       {$LL.table.field.create()}
-      </Button
-    >
+    </Button>
   </div>
 </form>
 

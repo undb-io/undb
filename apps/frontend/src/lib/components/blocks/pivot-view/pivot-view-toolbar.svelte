@@ -6,6 +6,7 @@
   import PivotOptionButton from "./pivot-option-button.svelte"
   import type { PivotView } from "@undb/table"
   import ShareViewButton from "../share/share-view-button.svelte"
+  import ViewFields from "../view-fields/view-fields.svelte"
 
   export let viewId: Readable<string>
   export let view: PivotView
@@ -19,6 +20,7 @@
       <CreateRecordButton />
     {/if}
     <ViewFilterEditor {readonly} {viewId} />
+    <ViewFields {viewId} {readonly} />
     <PivotOptionButton {readonly} {view} />
   </div>
   <div class="flex items-center gap-2">

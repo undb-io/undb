@@ -242,6 +242,10 @@ type RootTranslation = {
 		 */
 		update: string
 		/**
+		 * D​u​p​l​i​c​a​t​e​ ​W​e​b​h​o​o​k
+		 */
+		duplicate: string
+		/**
 		 * {​t​a​b​l​e​}​ ​h​a​v​e​ ​n​o​ ​w​e​b​h​o​o​k​s
 		 * @param {unknown} table
 		 */
@@ -803,6 +807,14 @@ type RootTranslation = {
 			 */
 			label: string
 			/**
+			 * R​e​c​o​r​d​s
+			 */
+			labels: string
+			/**
+			 * S​e​a​r​c​h​ ​R​e​c​o​r​d​s​.​.​.
+			 */
+			search: string
+			/**
 			 * O​p​e​n​ ​M​e​n​u
 			 */
 			openMenu: string
@@ -992,6 +1004,20 @@ type RootTranslation = {
 				 */
 				confirmToUpdateDescription: string
 			}
+			/**
+			 * N​o​ ​r​e​c​o​r​d
+			 */
+			noRecord: string
+			/**
+			 * S​h​o​w​ ​{​n​|​n​u​m​b​e​r​}​ ​H​i​d​d​e​n​ ​F​i​e​l​d​s
+			 * @param {unknown} n
+			 */
+			showHiddenFields: RequiredParams<'n|number'>
+			/**
+			 * H​i​d​e​ ​{​n​|​n​u​m​b​e​r​}​ ​H​i​d​d​e​n​ ​F​i​e​l​d​s
+			 * @param {unknown} n
+			 */
+			hideHiddenFields: RequiredParams<'n|number'>
 		}
 		form: {
 			/**
@@ -1241,6 +1267,10 @@ type RootTranslation = {
 			 */
 			create: string
 			/**
+			 * F​i​e​l​d​ ​h​a​s​ ​b​e​e​n​ ​c​r​e​a​t​e​d​!
+			 */
+			created: string
+			/**
 			 * U​p​d​a​t​e​ ​F​i​e​l​d
 			 */
 			update: string
@@ -1425,6 +1455,10 @@ type RootTranslation = {
 				 * T​i​m​e​ ​F​o​r​m​a​t
 				 */
 				timeFormat: string
+				/**
+				 * S​e​l​e​c​t​ ​M​a​c​r​o​.​.​.
+				 */
+				selectMacro: string
 			}
 			dateRange: {
 				/**
@@ -1480,6 +1514,22 @@ type RootTranslation = {
 					 * N​o​ ​o​p​t​i​o​n​ ​f​o​u​n​d​.
 					 */
 					noOptionFound: string
+					/**
+					 * U​p​d​a​t​e​ ​o​p​t​i​o​n
+					 */
+					update: string
+					/**
+					 * D​e​l​e​t​e​ ​o​p​t​i​o​n
+					 */
+					'delete': string
+					/**
+					 * C​r​e​a​t​e​ ​r​e​c​o​r​d​ ​u​n​d​e​r​ ​t​h​i​s​ ​o​p​t​i​o​n
+					 */
+					createRecord: string
+					/**
+					 * C​r​e​a​t​e​ ​o​p​t​i​o​n
+					 */
+					create: string
 				}
 				/**
 				 * A​l​l​o​w​ ​a​d​d​ ​m​u​l​t​i​p​l​e​ ​o​p​t​i​o​n​s
@@ -1691,6 +1741,14 @@ type RootTranslation = {
 				 * N​o​ ​s​e​l​e​c​t​ ​f​i​e​l​d​ ​f​o​u​n​d​.
 				 */
 				noSelectField: string
+				/**
+				 * N​o​ ​o​p​t​i​o​n
+				 */
+				noOption: string
+				/**
+				 * C​o​l​l​a​p​s​e​ ​l​a​n​e
+				 */
+				collapseLane: string
 			}
 			gallery: {
 				/**
@@ -1751,6 +1809,28 @@ type RootTranslation = {
 				 * S​e​l​e​c​t​ ​c​a​l​e​n​d​a​r​ ​f​i​e​l​d
 				 */
 				selectField: string
+				scope: {
+					/**
+					 * I​n​ ​s​e​l​e​c​t​e​d​ ​d​a​t​e
+					 */
+					selectedDate: string
+					/**
+					 * W​i​t​h​o​u​t​ ​d​a​t​e
+					 */
+					withoutDate: string
+					/**
+					 * I​n​ ​t​h​i​s​ ​m​o​n​t​h
+					 */
+					thisMonth: string
+					/**
+					 * A​l​l​ ​r​e​c​o​r​d​s
+					 */
+					allRecords: string
+					/**
+					 * I​n​ ​t​h​i​s​ ​w​e​e​k
+					 */
+					thisWeek: string
+				}
 			}
 			pivot: {
 				/**
@@ -2035,6 +2115,22 @@ type RootTranslation = {
 		 * T​y​p​e
 		 */
 		type: string
+		/**
+		 * L​o​a​d​ ​m​o​r​e
+		 */
+		loadMore: string
+		/**
+		 * T​o​d​a​y
+		 */
+		today: string
+		/**
+		 * C​l​e​a​r
+		 */
+		clear: string
+		/**
+		 * U​p​d​a​t​e​d
+		 */
+		updated: string
 	}
 	share: {
 		/**
@@ -2397,6 +2493,10 @@ export type TranslationFunctions = {
 		 * Update Webhook
 		 */
 		update: () => LocalizedString
+		/**
+		 * Duplicate Webhook
+		 */
+		duplicate: () => LocalizedString
 		/**
 		 * {table} have no webhooks
 		 */
@@ -2957,6 +3057,14 @@ export type TranslationFunctions = {
 			 */
 			label: () => LocalizedString
 			/**
+			 * Records
+			 */
+			labels: () => LocalizedString
+			/**
+			 * Search Records...
+			 */
+			search: () => LocalizedString
+			/**
 			 * Open Menu
 			 */
 			openMenu: () => LocalizedString
@@ -3134,6 +3242,18 @@ export type TranslationFunctions = {
 				 */
 				confirmToUpdateDescription: () => LocalizedString
 			}
+			/**
+			 * No record
+			 */
+			noRecord: () => LocalizedString
+			/**
+			 * Show {n|number} Hidden Fields
+			 */
+			showHiddenFields: (arg: { n: unknown }) => LocalizedString
+			/**
+			 * Hide {n|number} Hidden Fields
+			 */
+			hideHiddenFields: (arg: { n: unknown }) => LocalizedString
 		}
 		form: {
 			/**
@@ -3377,6 +3497,10 @@ export type TranslationFunctions = {
 			 */
 			create: () => LocalizedString
 			/**
+			 * Field has been created!
+			 */
+			created: () => LocalizedString
+			/**
 			 * Update Field
 			 */
 			update: () => LocalizedString
@@ -3559,6 +3683,10 @@ export type TranslationFunctions = {
 				 * Time Format
 				 */
 				timeFormat: () => LocalizedString
+				/**
+				 * Select Macro...
+				 */
+				selectMacro: () => LocalizedString
 			}
 			dateRange: {
 				/**
@@ -3614,6 +3742,22 @@ export type TranslationFunctions = {
 					 * No option found.
 					 */
 					noOptionFound: () => LocalizedString
+					/**
+					 * Update option
+					 */
+					update: () => LocalizedString
+					/**
+					 * Delete option
+					 */
+					'delete': () => LocalizedString
+					/**
+					 * Create record under this option
+					 */
+					createRecord: () => LocalizedString
+					/**
+					 * Create option
+					 */
+					create: () => LocalizedString
 				}
 				/**
 				 * Allow add multiple options
@@ -3825,6 +3969,14 @@ export type TranslationFunctions = {
 				 * No select field found.
 				 */
 				noSelectField: () => LocalizedString
+				/**
+				 * No option
+				 */
+				noOption: () => LocalizedString
+				/**
+				 * Collapse lane
+				 */
+				collapseLane: () => LocalizedString
 			}
 			gallery: {
 				/**
@@ -3885,6 +4037,28 @@ export type TranslationFunctions = {
 				 * Select calendar field
 				 */
 				selectField: () => LocalizedString
+				scope: {
+					/**
+					 * In selected date
+					 */
+					selectedDate: () => LocalizedString
+					/**
+					 * Without date
+					 */
+					withoutDate: () => LocalizedString
+					/**
+					 * In this month
+					 */
+					thisMonth: () => LocalizedString
+					/**
+					 * All records
+					 */
+					allRecords: () => LocalizedString
+					/**
+					 * In this week
+					 */
+					thisWeek: () => LocalizedString
+				}
 			}
 			pivot: {
 				/**
@@ -4169,6 +4343,22 @@ export type TranslationFunctions = {
 		 * Type
 		 */
 		type: () => LocalizedString
+		/**
+		 * Load more
+		 */
+		loadMore: () => LocalizedString
+		/**
+		 * Today
+		 */
+		today: () => LocalizedString
+		/**
+		 * Clear
+		 */
+		clear: () => LocalizedString
+		/**
+		 * Updated
+		 */
+		updated: () => LocalizedString
 	}
 	share: {
 		/**
