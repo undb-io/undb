@@ -617,7 +617,13 @@ const events = {
   }
 }
 
+const template = {
+  createBase: 'Base を作成',
+  selectATemplateToCreateABase: 'テンプレートを選択して Base を作成します'
+}
+
 const zh = {
+  template,
   roles,
   setting,
   base,

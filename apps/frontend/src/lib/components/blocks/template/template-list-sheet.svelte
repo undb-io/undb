@@ -3,6 +3,7 @@
   import { IMPORT_TEMPLATE_MODAL, isModalOpen, closeModal } from "$lib/store/modal.store"
   import { PackageIcon } from "lucide-svelte"
   import TemplateList from "./template-list.svelte"
+  import { LL } from "@undb/i18n/client"
 </script>
 
 <Sheet.Root
@@ -17,9 +18,9 @@
     <Sheet.Header>
       <Sheet.Title class="flex items-center">
         <PackageIcon class="mr-2 size-5" />
-        Create New Base From Template</Sheet.Title
-      >
-      <Sheet.Description>Select a template to create a new base.</Sheet.Description>
+        {$LL.template.createBase()}
+      </Sheet.Title>
+      <Sheet.Description>{$LL.template.selectATemplateToCreateABase()}</Sheet.Description>
     </Sheet.Header>
 
     <div class="flex-1 overflow-y-auto">
