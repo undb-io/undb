@@ -1,1 +1,2 @@
-export { localStorageDetector } from 'typesafe-i18n/detectors';
+export { documentCookieDetector,localStorageDetector,queryStringDetector } from 'typesafe-i18n/detectors';
+

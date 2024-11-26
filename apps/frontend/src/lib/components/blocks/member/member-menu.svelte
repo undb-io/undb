@@ -25,6 +25,7 @@
 
   const changeLanguage = async (lang: Locales) => {
     await loadLocaleAsync(lang)
+    await fetch(`/api/lang/${lang}`, { method: "POST" })
     setLocale(lang)
     localStorage.setItem("lang", lang)
   }

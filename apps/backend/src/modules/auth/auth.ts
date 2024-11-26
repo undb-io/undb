@@ -447,6 +447,27 @@ export class Auth {
         return response
       })
       .post(
+        "/api/lang/:lang",
+        (ctx) => {
+          const lang = ctx.params.lang
+          const cookie = new Cookie("lang", lang, {
+            path: "/",
+            maxAge: 365 * 24 * 60 * 60,
+          })
+          return new Response(null, {
+            status: 200,
+            headers: {
+              "Set-Cookie": cookie.serialize(),
+            },
+          })
+        },
+        {
+          params: t.Object({
+            lang: t.Enum({ es: "es", en: "en", ko: "ko", ja: "ja", zh: "zh" }),
+          }),
+        },
+      )
+      .post(
         "/api/reset-password",
         async (ctx) => {
           return withTransaction(this.queryBuilder)(async () => {
