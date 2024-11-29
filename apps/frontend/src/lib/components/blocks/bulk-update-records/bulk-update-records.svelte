@@ -64,10 +64,6 @@
   })
 
   const updateRecords = async (values: any) => {
-    if (!filter) {
-      return
-    }
-
     const selectedSchema = $table.schema.getMutableSchema(selectedFields)
     const validated = await form.validateForm({
       update: true,
@@ -181,7 +177,7 @@
       <div class="-mx-4 flex justify-end border-t py-2 pt-4">
         <Button
           size="sm"
-          disabled={!filter || !selectedFields.length}
+          disabled={!selectedFields.length}
           class="mr-5"
           on:click={() => {
             open = true
@@ -237,8 +233,13 @@
       <AlertDialog.Title>{$LL.table.record.bulkUpdate.title()}</AlertDialog.Title>
       <AlertDialog.Description>{$LL.table.record.bulkUpdate.description()}</AlertDialog.Description>
     </AlertDialog.Header>
+    {#if !filter}
+      <Alert.Root class="border-yellow-300 bg-yellow-50 text-yellow-700">
+        <Alert.Description>{$LL.table.record.bulkUpdate.noFilterAlert()}</Alert.Description>
+      </Alert.Root>
+    {/if}
     <AlertDialog.Footer>
-      <AlertDialog.Cancel>{$LL.table.common.cancel()}</AlertDialog.Cancel>
+      <AlertDialog.Cancel>{$LL.common.cancel()}</AlertDialog.Cancel>
       <AlertDialog.Action
         on:click={() => {
           if (values) {

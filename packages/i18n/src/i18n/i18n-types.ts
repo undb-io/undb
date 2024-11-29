@@ -1104,6 +1104,10 @@ type RootTranslation = {
 				 * B​u​l​k​ ​U​p​d​a​t​e
 				 */
 				button: string
+				/**
+				 * N​o​ ​f​i​l​t​e​r​,​ ​w​i​l​l​ ​u​p​d​a​t​e​ ​a​l​l​ ​r​e​c​o​r​d​s​,​ ​p​l​e​a​s​e​ ​b​e​ ​c​a​r​e​f​u​l​!
+				 */
+				noFilterAlert: string
 			}
 			reference: {
 				/**
@@ -3471,6 +3475,10 @@ export type TranslationFunctions = {
 				 * Bulk Update
 				 */
 				button: () => LocalizedString
+				/**
+				 * No filter, will update all records, please be careful!
+				 */
+				noFilterAlert: () => LocalizedString
 			}
 			reference: {
 				/**

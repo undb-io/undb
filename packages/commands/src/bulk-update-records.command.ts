@@ -16,7 +16,7 @@ export class BulkUpdateRecordsCommand extends Command implements IBulkUpdateReco
   public readonly tableId?: string
   public readonly baseName?: string
   public readonly tableName?: string
-  public readonly filter: IViewFilterGroup
+  public readonly filter?: IViewFilterGroup
   public readonly values: IRecordValues
   public readonly isOpenapi?: boolean
 
