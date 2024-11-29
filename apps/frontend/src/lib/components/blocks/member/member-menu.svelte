@@ -86,6 +86,7 @@
           <DropdownMenu.Item on:click={() => changeLanguage("ja")}>日本語</DropdownMenu.Item>
           <DropdownMenu.Item on:click={() => changeLanguage("ko")}>한국어</DropdownMenu.Item>
           <DropdownMenu.Item on:click={() => changeLanguage("es")}>Español</DropdownMenu.Item>
+          <DropdownMenu.Item on:click={() => changeLanguage("pt")}>Português</DropdownMenu.Item>
         </DropdownMenu.SubContent>
       </DropdownMenu.Sub>
     </DropdownMenu.Group>
