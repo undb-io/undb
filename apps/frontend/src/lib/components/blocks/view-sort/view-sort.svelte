@@ -137,7 +137,7 @@
                     disabled={$setViewSortMutation.isPending}
                   />
 
-                  <SortPicker bind:value={item.direction} class="col-span-3"   />
+                  <SortPicker bind:value={item.direction} class="col-span-3" />
                 </div>
                 <div class="text-muted-foreground col-span-2 flex justify-end gap-2">
                   {#if $hasPermission("table:update")}
@@ -172,7 +172,7 @@
               <PlusIcon class="mr-2 h-3 w-3" />
               {$LL.table.common.sorts.add()}
             </Button>
-            <Button disabled={disabled || $setViewSortMutation.isPending} variant="outline" size="sm" on:click={submit}>
+            <Button disabled={$setViewSortMutation.isPending} variant="outline" size="sm" on:click={submit}>
               {#if $setViewSortMutation.isPending}
                 <LoaderCircleIcon class="mr-2 h-3 w-3 animate-spin" />
               {/if}
