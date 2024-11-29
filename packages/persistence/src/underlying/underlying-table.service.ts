@@ -21,6 +21,7 @@ export class UnderlyingTableService {
     const sql: CompiledQuery[] = []
     await trx.schema
       .createTable(t.name)
+      .ifNotExists()
       .$call((tb) => {
         const visitor = new UnderlyingTableFieldVisitor(trx, t, tb, true)
         for (const field of table.schema) {

@@ -1,5 +1,5 @@
 import { baseNameSchema } from "@undb/base"
-import { dashboardIdSchema,dashboardLayoutsSchema,dashboardNameSchema,dashboardWidgetsSchema } from "@undb/dashboard"
+import { dashboardIdSchema, dashboardLayoutsSchema, dashboardNameSchema, dashboardWidgetsSchema } from "@undb/dashboard"
 import {
   createFormWithoutNameDTO,
   createTablesAttachmentFieldDTO,
@@ -7,6 +7,7 @@ import {
   createTablesCheckboxFieldDTO,
   createTablesCurrencyFieldDTO,
   createTablesDateFieldDTO,
+  createTablesDateRangeFieldDTO,
   createTablesDurationFieldDTO,
   createTablesEmailFieldDTO,
   createTablesFormulaFieldDTO,
@@ -49,6 +50,7 @@ const createTemplateFieldDTO = z.discriminatedUnion("type", [
   createTablesCheckboxFieldDTO.omit(omitName),
   createTablesCurrencyFieldDTO.omit(omitName),
   createTablesDateFieldDTO.omit(omitName),
+  createTablesDateRangeFieldDTO.omit(omitName),
   createTablesJsonFieldDTO.omit(omitName),
   createTablesUserFieldDTO.omit(omitName),
   createTablesPercentageFieldDTO.omit(omitName),

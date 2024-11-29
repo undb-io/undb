@@ -1,0 +1,175 @@
+{
+  "Everything": {
+    "tables": {
+      "Basic Field Types": {
+        "schema": {
+          "String": {
+            "id": "basic_field_types_string",
+            "type": "string"
+          },
+          "Email": {
+            "id": "basic_field_types_email",
+            "type": "email"
+          },
+          "URL": {
+            "id": "basic_field_types_url",
+            "type": "url"
+          },
+          "Long Text": {
+            "id": "basic_field_types_long_text",
+            "type": "longText"
+          },
+          "Number": {
+            "id": "basic_field_types_number",
+            "type": "number"
+          },
+          "Currency": {
+            "id": "basic_field_types_currency",
+            "type": "currency",
+            "option": {
+              "symbol": "$"
+            }
+          },
+          "Percentage": {
+            "id": "basic_field_types_percentage",
+            "type": "percentage"
+          },
+          "Duration": {
+            "id": "basic_field_types_duration",
+            "type": "duration"
+          },
+          "Checkbox": {
+            "id": "basic_field_types_checkbox",
+            "type": "checkbox"
+          },
+          "Date": {
+            "id": "basic_field_types_date",
+            "type": "date"
+          },
+          "Date Range": {
+            "id": "basic_field_types_date_range",
+            "type": "dateRange"
+          }
+        },
+        "records": [
+          {
+            "id": "basic_field_types_string_1",
+            "String": "Hello",
+            "Email": "test@test.com",
+            "URL": "https://test.com",
+            "Long Text": "Hello, world!",
+            "Number": 123,
+            "Currency": 123,
+            "Percentage": 123,
+            "Duration": 123,
+            "Checkbox": true,
+            "Date": "2024-01-01",
+            "Date Range": ["2024-01-01", "2024-01-02"]
+          }
+        ]
+      },
+      "Reference Fields": {
+        "schema": {
+          "Title": {
+            "id": "reference_fields_title",
+            "type": "string"
+          },
+          "Link": {
+            "id": "reference_fields_link",
+            "type": "reference",
+            "option": {
+              "createSymmetricField": true,
+              "foreignTable": {
+                "baseName": "Everything",
+                "tableName": "Basic Field Types"
+              }
+            }
+          },
+          "Lookup Title": {
+            "id": "reference_fields_lookup_title",
+            "type": "rollup",
+            "option": {
+              "fn": "lookup",
+              "referenceFieldId": "reference_fields_link",
+              "rollupFieldId": "basic_field_types_string"
+            }
+          }
+        },
+        "records": [
+          {
+            "id": "reference_fields_1",
+            "Title": "Hello",
+            "Link": ["basic_field_types_string_1"],
+            "Lookup Title": "<h1>Hello World</h1>"
+          }
+        ]
+      },
+      "Formula": {
+        "schema": {
+          "Title": {
+            "id": "formula_title",
+            "type": "string"
+          },
+          "Number1": {
+            "id": "formula_number1",
+            "type": "number"
+          },
+          "Number2": {
+            "id": "formula_number2",
+            "type": "number"
+          },
+          "One Plus One": {
+            "id": "formula_one_plus_one",
+            "type": "formula",
+            "option": {
+              "fn": "1 + 1"
+            }
+          },
+          "Two Minus One": {
+            "id": "formula_two_minus_one",
+            "type": "formula",
+            "option": {
+              "fn": "2 - 1"
+            }
+          },
+          "Title Length": {
+            "id": "formula_title_length",
+            "type": "formula",
+            "option": {
+              "fn": "LEN({{formula_title}})"
+            }
+          },
+          "Number1 Plus One": {
+            "id": "formula_number1_plus_one",
+            "type": "formula",
+            "option": {
+              "fn": "{{formula_number1}} + 1"
+            }
+          },
+          "Number1 Plus Number2": {
+            "id": "formula_number1_plus_number2",
+            "type": "formula",
+            "option": {
+              "fn": "{{formula_number1}} + {{formula_number2}}"
+            }
+          },
+          "Number1 Minus Number2": {
+            "id": "formula_number1_minus_number2",
+            "type": "formula",
+            "option": {
+              "fn": "{{formula_number1}} - {{formula_number2}}"
+            }
+          }
+        },
+        "records": [
+          {
+            "id": "formula_1",
+            "Title": "Hello",
+            "Number1": 1,
+            "Number2": 2
+          }
+        ]
+      }
+    }
+  }
+}
