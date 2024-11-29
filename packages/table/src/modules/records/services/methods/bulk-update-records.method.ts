@@ -1,4 +1,4 @@
-import { Some, type Option } from "@undb/domain"
+import { None, Some, type Option } from "@undb/domain"
 import type { IUniqueTableDTO } from "../../../../dto"
 import { withUniqueTable } from "../../../../specifications"
 import { getSpec, replaceCondtionFieldNameWithFieldId } from "../../../schema/fields/condition"
@@ -14,15 +14,11 @@ export async function bulkUpdateRecordsMethod(
   const table = (await this.tableRepository.findOne(Some(ts))).expect("Table not found")
 
   let filter = dto.filter
-  if (dto.isOpenapi) {
+  if (dto.isOpenapi && filter) {
     filter = replaceCondtionFieldNameWithFieldId(filter, table.schema)
   }
 
-  const spec = getSpec(table.schema, filter) as Option<RecordComositeSpecification>
-
-  if (spec.isNone()) {
-    throw new Error("Invalid fjjilter")
-  }
+  const spec = (filter ? getSpec(table.schema, filter) : None) as Option<RecordComositeSpecification>
 
   const records = await this.repo.find(table, spec)
   if (records.length === 0) {

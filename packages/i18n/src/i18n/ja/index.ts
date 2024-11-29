@@ -175,7 +175,8 @@ const record = {
     continue: '続行',
     noRecordsUpdated: 'レコードが更新されません',
     recordsUpdated: '{count} 件のレコードが更新に成功しました',
-    button: '一括更新'
+    button: '一括更新',
+    noFilterAlert: 'フィルターがないため、すべてのレコードが更新されます。慎重に操作してください！'
   },
   noRecord: 'レコードがありません',
   reference: {
@@ -717,6 +718,7 @@ const ja = {
     today: '今日',
     clear: 'クリア',
     updated: '更新済み',
+    now: '現在'
 	},
  share: {
 	title: '共有',

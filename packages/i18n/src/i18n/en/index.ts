@@ -175,7 +175,8 @@ const record = {
     continue: 'Continue',
     noRecordsUpdated: 'No records updated',
     recordsUpdated: '{count} records updated successfully',
-    button: 'Bulk Update'
+    button: 'Bulk Update',
+    noFilterAlert: 'No filter, will update all records, please be careful!'
   },
   reference: {
     link: 'Link Records',
@@ -718,6 +719,7 @@ const en = {
       today: 'Today',
       clear: 'Clear',
       updated: 'Updated',
+      now: 'Now'
   },
   share: {
     title: 'Share',

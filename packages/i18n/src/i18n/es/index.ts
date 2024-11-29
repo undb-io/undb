@@ -174,7 +174,8 @@ const record = {
     continue: 'Continuar',
     noRecordsUpdated: 'No hay registros actualizados',
     recordsUpdated: '{count} registros actualizados correctamente',
-    button: 'Actualizar en masa'
+    button: 'Actualizar en masa',
+    noFilterAlert: 'No hay filtro, se actualizarán todos los registros, por favor, ten cuidado!'
   },
   reference: {
     link: 'enlace de registro',
@@ -713,6 +714,7 @@ const es = {
     today: 'Hoy',
     clear: 'Limpiar',
     updated: 'Actualizado',
+    now: 'Ahora'
 	},
  share: {
 	title: 'Compartir',

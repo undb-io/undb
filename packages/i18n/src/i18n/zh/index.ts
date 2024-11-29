@@ -174,7 +174,8 @@ const record = {
     continue: '继续',
     noRecordsUpdated: '没有记录更新',
     recordsUpdated: '{count} 条记录更新成功',
-    button: '批量更新'
+    button: '批量更新',
+    noFilterAlert: '没有筛选条件, 将会更新所有记录，请谨慎操作！'
   },
   reference: {
     link: '关联记录',
@@ -719,6 +720,7 @@ const zh = {
     today: '今天',
     clear: '清除',
     updated: '已更新',
+    now: '现在'
 	},
  share: {
 	title: '分享',

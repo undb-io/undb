@@ -9,6 +9,7 @@
   import { isString, isDate } from "radash"
   import { Button } from "$lib/components/ui/button"
   import TimePicker from "$lib/components/blocks/date/time-picker.svelte"
+  import { LL } from "@undb/i18n/client"
 
   export let tableId: string
   export let field: DateField
@@ -113,7 +114,7 @@
               save(value)
             }}
           >
-            {includeTime ? "Now" : "Today"}
+            {includeTime ? $LL.common.now() : $LL.common.today()}
           </Button>
           {#if !field.required}
             <Button
@@ -125,7 +126,7 @@
                   onValueChange(value)
                   save(null)
                 }
-              }}>Clear</Button
+              }}>{$LL.common.clear()}</Button
             >
           {/if}
         </div>
@@ -135,7 +136,7 @@
               class="w-full"
               on:click={() => {
                 save(value ?? null)
-              }}>Save</Button
+              }}>{$LL.common.save()}</Button
             >
           </div>
         {/if}

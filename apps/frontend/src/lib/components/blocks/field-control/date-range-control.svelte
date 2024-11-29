@@ -8,6 +8,7 @@
   import { cn } from "$lib/utils.js"
   import Button from "$lib/components/ui/button/button.svelte"
   import TimePicker from "$lib/components/blocks/date/time-picker.svelte"
+  import { LL } from "@undb/i18n/client"
 
   type Value = [string | Date | null | undefined, string | Date | null | undefined] | undefined | null
 
@@ -131,31 +132,29 @@
         </div>
       {/if}
 
-      <div class="border-t p-2">
+      <div class="flex items-center gap-2 border-t p-2">
         <Button
           variant="outline"
-          class="w-full"
+          class="flex-1"
           on:click={() => {
             value = null
             onValueChange?.(null)
             open = false
           }}
         >
-          Clear
+          {$LL.common.clear()}
         </Button>
-      </div>
-      {#if includeTime}
-        <div class="border-t p-2">
+        {#if includeTime}
           <Button
-            class="w-full"
+            class="flex-1"
             on:click={() => {
               open = false
             }}
           >
-            Set Date Range
+            {$LL.common.save()}
           </Button>
-        </div>
-      {/if}
+        {/if}
+      </div>
     </Popover.Content>
   </Popover.Root>
 </div>

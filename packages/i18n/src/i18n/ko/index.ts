@@ -174,7 +174,8 @@ const record = {
     continue: '계속',
     noRecordsUpdated: '업데이트된 레코드가 없습니다',
     recordsUpdated: '{count} 개의 레코드가 성공적으로 업데이트되었습니다',
-    button: '일괄 업데이트'
+    button: '일괄 업데이트',
+    noFilterAlert: '필터가 없습니다. 모든 레코드가 업데이트됩니다. 주의하세요!'
   },
   reference: {
     link: '연결 레코드',
@@ -717,6 +718,7 @@ const ko = {
     today: '오늘',
     clear: '지우기',
     updated: '업데이트됨',
+    now: '지금'
 	},
  share: {
 	title: '공유',

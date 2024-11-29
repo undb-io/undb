@@ -270,11 +270,10 @@
           return
         }
 
+        tab.set(value === "data" ? null : (value ?? null))
         if (value === "developer" && !$developerTab) {
           $developerTab = "openapi"
         }
-
-        tab.set(value === "data" ? null : (value ?? null))
       }}
     >
       <Tabs.List>

@@ -22,7 +22,7 @@ ENV NODE_ENV=production
 ENV PORT=3721
 RUN bun run build:docker
 
-RUN rm -rf node_modules
+RUN bunx rimraf node_modules
 RUN bun install --production
 
 # Add Tini init-system
