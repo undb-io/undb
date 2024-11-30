@@ -103,4 +103,8 @@ export class RatingField extends AbstractField<RatingFieldValue, RatingFieldCons
   public get max() {
     return this.constraint.mapOr(DEFAULT_RATING_MAX, (c) => c.props.max || DEFAULT_RATING_MAX)
   }
+
+  public get min() {
+    return 0
+  }
 }

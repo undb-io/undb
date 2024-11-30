@@ -6,7 +6,14 @@
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
-  import { getIsSystemFieldType, updateFieldDTO, type Field, type FieldValue, type IUpdateFieldDTO } from "@undb/table"
+  import {
+    getIsFieldChangeTypeDisabled,
+    getIsSystemFieldType,
+    updateFieldDTO,
+    type Field,
+    type FieldValue,
+    type IUpdateFieldDTO,
+  } from "@undb/table"
   import { toast } from "svelte-sonner"
   import { derived } from "svelte/store"
   import { Option } from "@undb/domain"
@@ -19,6 +26,7 @@
   import { cn } from "$lib/utils"
   import { LoaderCircleIcon, PencilIcon } from "lucide-svelte"
   import { LL } from "@undb/i18n/client"
+  import { getIsFieldCanCastTo } from "@undb/table"
 
   const table = getTable()
 
@@ -33,7 +41,7 @@
       mutationFn: trpc.table.field.update.mutate,
       async onSuccess() {
         onSuccess()
-        toast.success("Update field success")
+        toast.success($LL.table.field.updated())
         await invalidate(`undb:table:${$table.id.value}`)
         await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
         reset()
@@ -44,41 +52,44 @@
     })),
   )
 
-  function getDefaultValue(): IUpdateFieldDTO {
+  function getDefaultValue(field: Field): IUpdateFieldDTO {
     return {
       id: field.id.value,
       type: field.type,
       name: field.name.value,
       display: !!field.display,
-      defaultValue: (field.defaultValue as Option<FieldValue>)?.unwrapUnchecked()?.value as any,
-      constraint: field.constraint.unwrapUnchecked()?.value,
-      option: field.option.unwrapUnchecked(),
+      defaultValue: (field.defaultValue as Option<FieldValue>)?.into(undefined)?.value as any,
+      constraint: field.constraint.into(undefined)?.value,
+      option: field.option.into(undefined),
     }
   }
 
-  const form = superForm<IUpdateFieldDTO>(defaults<IUpdateFieldDTO>(getDefaultValue(), zodClient(updateFieldDTO)), {
-    SPA: true,
-    dataType: "json",
-    validators: zodClient(updateFieldDTO),
-    resetForm: false,
-    invalidateAll: false,
-    onSubmit(input) {
-      validateForm({ update: true })
-    },
-    async onUpdate(event) {
-      if (!event.form.valid) {
-        console.log(event.form.errors, event.form.data)
-        return
-      }
-      const data = event.form.data
-      const field = FieldFactory.fromJSON(data).toJSON()
+  const form = superForm<IUpdateFieldDTO>(
+    defaults<IUpdateFieldDTO>(getDefaultValue(field), zodClient(updateFieldDTO)),
+    {
+      SPA: true,
+      dataType: "json",
+      validators: zodClient(updateFieldDTO),
+      resetForm: false,
+      invalidateAll: false,
+      onSubmit(input) {
+        validateForm({ update: true })
+      },
+      async onUpdate(event) {
+        if (!event.form.valid) {
+          console.log(event.form.errors, event.form.data)
+          return
+        }
+        const data = event.form.data
+        const field = FieldFactory.fromJSON(data).toJSON()
 
-      await $updateFieldMutation.mutateAsync({
-        tableId: $table.id.value,
-        field,
-      })
+        await $updateFieldMutation.mutateAsync({
+          tableId: $table.id.value,
+          field,
+        })
+      },
     },
-  })
+  )
 
   const { enhance, form: formData, reset, validateForm } = form
 </script>
@@ -87,7 +98,20 @@
   <div class="flex h-8 items-center gap-2">
     <Form.Field {form} name="type" class="h-full">
       <Form.Control let:attrs>
-        <FieldTypePicker {...attrs} bind:value={$formData.type} tabIndex={-1} class="h-full" disabled />
+        <FieldTypePicker
+          sameWidth={false}
+          {...attrs}
+          value={$formData.type}
+          tabIndex={-1}
+          class="h-full"
+          filter={(field) => getIsFieldCanCastTo($formData.type, field)}
+          disabled={getIsFieldChangeTypeDisabled($formData.type)}
+          onValueChange={(value) => {
+            console.log(value, $formData.type)
+            form.reset()
+            $formData.type = value
+          }}
+        />
       </Form.Control>
       <Form.Description />
       <Form.FieldErrors />

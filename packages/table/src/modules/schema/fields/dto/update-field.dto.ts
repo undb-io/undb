@@ -13,6 +13,7 @@ import { updateEmailFieldDTO } from "../variants/email-field"
 import { updateFormulaFieldDTO } from "../variants/formula-field/formula-field.vo"
 import { updateIdFieldDTO } from "../variants/id-field/id-field.vo"
 import { updateJsonFieldDTO } from "../variants/json-field/json-field.vo"
+import { updateLongTextFieldDTO } from "../variants/long-text-field/long-text-field.vo"
 import { updateNumberFieldDTO } from "../variants/number-field/number-field.vo"
 import { updatePercentageFieldDTO } from "../variants/percentage-field/percentage-field.vo"
 import { updateRatingFieldDTO } from "../variants/rating-field/rating-field.vo"
@@ -22,6 +23,7 @@ import { updateSelectFieldDTO } from "../variants/select-field/select-field.vo"
 import { updateStringFieldDTO } from "../variants/string-field/string-field.vo"
 import { updateUpdatedAtFieldDTO } from "../variants/updated-at-field/updated-at-field.vo"
 import { updateUpdatedByFieldDTO } from "../variants/updated-by-field/updated-by-field.vo"
+import { updateUrlFieldDTO } from "../variants/url-field/url-field.vo"
 import { updateUserFieldDTO } from "../variants/user-field"
 
 export const updateFieldDTO = z.discriminatedUnion("type", [
@@ -49,6 +51,8 @@ export const updateFieldDTO = z.discriminatedUnion("type", [
   updatePercentageFieldDTO,
   updateFormulaFieldDTO,
   updateDateRangeFieldDTO,
+  updateLongTextFieldDTO,
+  updateUrlFieldDTO,
 ])
 
 export type IUpdateFieldDTO = z.infer<typeof updateFieldDTO>

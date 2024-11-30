@@ -115,6 +115,12 @@ export class Schema extends ValueObject<Field[]> {
 
   $updateField(table: TableDo, dto: IUpdateFieldDTO) {
     const field = this.getFieldById(new FieldIdVo(dto.id)).expect("Field not found")
+    if (dto.type !== field.type) {
+      // TODO: handle typescript issue
+      // @ts-ignore
+      const newField = FieldFactory.fromJSON({ ...field.toJSON(), ...dto })
+      return new WithUpdatedFieldSpecification(field, newField)
+    }
     const updated = field.clone().update(table, dto as any)
     return new WithUpdatedFieldSpecification(field, updated)
   }

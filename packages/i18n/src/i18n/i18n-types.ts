@@ -1402,6 +1402,10 @@ type RootTranslation = {
 			 */
 			update: string
 			/**
+			 * F​i​e​l​d​ ​h​a​s​ ​b​e​e​n​ ​u​p​d​a​t​e​d​!
+			 */
+			updated: string
+			/**
 			 * D​e​l​e​t​e​ ​F​i​e​l​d
 			 */
 			'delete': string
@@ -1409,6 +1413,14 @@ type RootTranslation = {
 			 * A​r​e​ ​y​o​u​ ​s​u​r​e​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​d​e​l​e​t​e​ ​t​h​e​ ​f​o​l​l​o​w​i​n​g​ ​f​i​e​l​d​?​ ​A​l​l​ ​d​a​t​a​ ​a​s​s​o​c​i​a​t​e​d​ ​w​i​t​h​ ​t​h​i​s​ ​f​i​e​l​d​ ​w​i​l​l​ ​b​e​ ​d​e​l​e​t​e​ ​p​e​r​m​i​n​e​n​t​l​y​ ​f​r​o​m​ ​t​a​b​l​e​.
 			 */
 			deleteConfirm: string
+			/**
+			 * F​i​e​l​d​ ​h​a​s​ ​b​e​e​n​ ​d​e​l​e​t​e​d​!
+			 */
+			deleted: string
+			/**
+			 * F​a​i​l​e​d​ ​t​o​ ​d​e​l​e​t​e​ ​f​i​e​l​d
+			 */
+			deleteFailed: string
 			/**
 			 * D​u​p​l​i​c​a​t​e​ ​F​i​e​l​d
 			 */
@@ -3764,6 +3776,10 @@ export type TranslationFunctions = {
 			 */
 			update: () => LocalizedString
 			/**
+			 * Field has been updated!
+			 */
+			updated: () => LocalizedString
+			/**
 			 * Delete Field
 			 */
 			'delete': () => LocalizedString
@@ -3771,6 +3787,14 @@ export type TranslationFunctions = {
 			 * Are you sure you want to delete the following field? All data associated with this field will be delete perminently from table.
 			 */
 			deleteConfirm: () => LocalizedString
+			/**
+			 * Field has been deleted!
+			 */
+			deleted: () => LocalizedString
+			/**
+			 * Failed to delete field
+			 */
+			deleteFailed: () => LocalizedString
 			/**
 			 * Duplicate Field
 			 */
