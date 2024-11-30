@@ -1,10 +1,11 @@
 import type { Field } from "@undb/table"
-import type { IConversionStrategy } from "./conversion.interface"
+import type { UnderlyingConversionStrategy } from "./conversion.interface"
 
 export class ConversionContext {
-  constructor(private readonly strategy: IConversionStrategy) {}
+  constructor(private readonly strategy: UnderlyingConversionStrategy) {}
 
-  convert(field: Field) {
-    return this.strategy.convert(field)
+  convert(field: Field, previousField: Field) {
+    this.strategy.convert(field, previousField)
+    return this.strategy.getSql()
   }
 }

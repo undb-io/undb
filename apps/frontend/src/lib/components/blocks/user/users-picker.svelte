@@ -73,6 +73,8 @@
                 ? value?.filter((v) => v !== currentValue)
                 : [...(value ?? []), currentValue]
 
+              value = value.filter((v) => !!v)
+
               onValueChange(value ?? [])
             }}
           >
@@ -89,6 +91,8 @@
               value = value?.includes(currentValue)
                 ? value?.filter((v) => v !== currentValue)
                 : [...(value ?? []), currentValue]
+
+              value = value.filter((v) => !!v)
 
               onValueChange(value ?? [])
             }}

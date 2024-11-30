@@ -11,7 +11,7 @@
     <CirclePlusIcon class="mr-2 size-4" />
     {$LL.base.createBase()}
   </Button>
-  <Button on:click={() => toggleModal(IMPORT_TEMPLATE_MODAL)} {...$$restProps}>
+  <Button class="w-48" on:click={() => toggleModal(IMPORT_TEMPLATE_MODAL)} {...$$restProps}>
     <PackageIcon class="mr-2 size-4" />
     {$LL.base.importFromTemplate()}
   </Button>

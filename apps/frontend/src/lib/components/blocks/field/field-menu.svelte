@@ -56,14 +56,14 @@
   const deleteField = createMutation({
     mutationFn: trpc.table.field.delete.mutate,
     async onSuccess() {
-      toast.success("Delete field success")
+      toast.success($LL.table.field.deleted())
       await invalidate(`undb:table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
       open = false
       deleteAlertOpen = false
     },
     onError(error, variables, context) {
-      toast.error("Delete field failed")
+      toast.error($LL.table.field.deleteFailed())
     },
   })
 
@@ -184,7 +184,7 @@
                 <AlertDialog.Title class="flex items-center">
                   <TrashIcon class="mr-2 h-4 w-4" />
                   <div class="flex items-center gap-2">
-                  {$LL.table.field.delete()}
+                    {$LL.table.field.delete()}
 
                     <span
                       data-field-id={field.id.value}
@@ -297,7 +297,7 @@
                   }}
                 >
                   <TrashIcon class="mr-2 h-4 w-4" />
-                {$LL.table.field.delete()}
+                  {$LL.table.field.delete()}
                 </AlertDialog.Action>
               </AlertDialog.Footer>
             </AlertDialog.Content>

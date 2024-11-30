@@ -113,7 +113,7 @@ export class DashboardRepository implements IDashboardRepository {
   async updateOneById(dashboard: Dashboard, spec: IDashboardSpecification): Promise<void> {
     const userId = this.context.mustGetCurrentUserId()
 
-    const qb = getCurrentTransaction() ?? this.qb
+    const qb = this.qb
     const visitor = new DashboardMutateVisitor(dashboard, qb)
     spec.accept(visitor)
 

@@ -1,4 +1,5 @@
-import type { DateRangeField, IRollupFn } from "@undb/table"
+import type { DateRangeField, FieldType, IRollupFn } from "@undb/table"
+import type { ColumnDataType } from "kysely"
 import { match } from "ts-pattern"
 
 export function getRollupFn(fn: IRollupFn): string {
@@ -17,4 +18,13 @@ export const getDateRangeFieldName = (field: DateRangeField) => {
     start: `${field.id.value}_start`,
     end: `${field.id.value}_end`,
   }
+}
+
+export function getUnderlyingColumnType(type: FieldType): ColumnDataType {
+  return match(type)
+    .returnType<ColumnDataType>()
+    .with("string", () => "text")
+    .with("number", () => "real")
+    .with("checkbox", "currency", () => "integer")
+    .otherwise(() => "text")
 }
