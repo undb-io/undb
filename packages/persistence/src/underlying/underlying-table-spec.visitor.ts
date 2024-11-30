@@ -95,40 +95,47 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
   withUpdatedField(spec: WithUpdatedFieldSpecification): void {
     const typeChanged = spec.getIsTypeChanged()
     if (typeChanged) {
-      const strategy = ConversionFactory.create(this.tb as AlterTableBuilder, spec.previous.type, spec.field.type)
+      const previousField = spec.previous
+      const field = spec.field
+      const strategy = ConversionFactory.create(
+        this.tb as AlterTableBuilder,
+        this.qb,
+        this.table.table,
+        previousField,
+        field,
+      )
       const context = new ConversionContext(strategy)
 
-      context.convert(spec.field)
-    } else {
-      if (spec.getIsChangeItemSize()) {
-        const previous = spec.previous as SelectField | UserField
-        const field = spec.field as SelectField | UserField
+      const sql = context.convert(field, previousField)
+      this.addSql(...sql)
+    }
 
-        if (previous.isSingle) {
-          const query = this.qb
-            .updateTable(this.table.name)
-            .where((eb) => eb.not(eb.or([eb(field.id.value, "is", null), eb(field.id.value, "=", "")])))
-            .set((eb) => ({
-              [field.id.value]: eb.fn(`json_array`, [sql.raw(field.id.value)]),
-            }))
-            .compile()
+    if (spec.getIsChangeItemSize()) {
+      const previous = spec.previous as SelectField | UserField
+      const field = spec.field as SelectField | UserField
 
-          this.addSql(query)
-        } else {
-          const query = this.qb
-            .updateTable(this.table.name)
-            .where((eb) =>
-              eb.not(
-                eb.or([eb(field.id.value, "is", null), eb(field.id.value, "=", ""), eb(field.id.value, "=", "[]")]),
-              ),
-            )
-            .set((eb) => ({
-              [field.id.value]: eb.fn(`json_extract`, [sql.raw(field.id.value), sql.raw("'$[0]'")]),
-            }))
-            .compile()
+      if (previous.isSingle) {
+        const query = this.qb
+          .updateTable(this.table.name)
+          .where((eb) => eb.not(eb.or([eb(field.id.value, "is", null), eb(field.id.value, "=", "")])))
+          .set((eb) => ({
+            [field.id.value]: eb.fn(`json_array`, [sql.raw(field.id.value)]),
+          }))
+          .compile()
 
-          this.addSql(query)
-        }
+        this.addSql(query)
+      } else {
+        const query = this.qb
+          .updateTable(this.table.name)
+          .where((eb) =>
+            eb.not(eb.or([eb(field.id.value, "is", null), eb(field.id.value, "=", ""), eb(field.id.value, "=", "[]")])),
+          )
+          .set((eb) => ({
+            [field.id.value]: eb.fn(`json_extract`, [sql.raw(field.id.value), sql.raw("'$[0]'")]),
+          }))
+          .compile()
+
+        this.addSql(query)
       }
 
       const fieldVisitor = new UnderlyingTableFieldUpdatedVisitor(this.qb, this.table, spec.previous, this.tb)
