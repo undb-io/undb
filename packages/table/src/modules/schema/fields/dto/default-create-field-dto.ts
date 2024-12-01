@@ -127,7 +127,7 @@ export function createDefaultFieldDTO(table: TableDo, type: FieldType, LL: Trans
         },
       } satisfies ICreateCurrencyFieldDTO
     })
-    .otherwise(() => {
+    .otherwise((type) => {
       throw new Error(`Unsupported field type: ${type}`)
     })
 }
