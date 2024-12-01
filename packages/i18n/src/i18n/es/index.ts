@@ -1,7 +1,4 @@
-import type { CalendarTimeScale,FieldType,IFieldAggregate,IFieldMacro,IOpType,IRollupFn,ViewType } from "@undb/table"
-import type { BaseTranslation } from "../i18n-types.js"
-
-const ops: Record<IOpType, string> = {
+const ops = {
   eq: "igual a",
   neq: "no igual a",
   contains: "contiene",
@@ -42,7 +39,7 @@ const ops: Record<IOpType, string> = {
   is_false: "falso"
 }
 
-const fieldTypes: Record<FieldType, string> = {
+const fieldTypes = {
   string: "texto",
   longText: "texto largo",
   number: "número",
@@ -71,7 +68,7 @@ const fieldTypes: Record<FieldType, string> = {
   formula: "fórmula"
 }
 
-const rollupFns: Record<IRollupFn, string> = {
+const rollupFns = {
   min: "mínimo",
   max: "máximo",
   sum: "suma",
@@ -80,7 +77,7 @@ const rollupFns: Record<IRollupFn, string> = {
   lookup: "consulta"
 }
 
-const aggregateFns: Record<IFieldAggregate, string> = {
+const aggregateFns = {
   min: "mínimo",
   max: "máximo",
   sum: "suma",
@@ -103,7 +100,7 @@ const aggregateFns: Record<IFieldAggregate, string> = {
 }
 
 
-const macros: Record<IFieldMacro, string> = {
+const macros = {
   "@me": "usuario actual",
   "@now": "ahora",
   "@today": "hoy",
@@ -111,7 +108,7 @@ const macros: Record<IFieldMacro, string> = {
   "@tomorrow": "mañana"
 }
 
-const viewTypes: Record<ViewType, string> = {
+const viewTypes = {
   grid: "cuadrícula",
   kanban: "kanban",
   gallery: "galería",
@@ -120,13 +117,13 @@ const viewTypes: Record<ViewType, string> = {
   pivot: "pivote"
 }
 
-const widgetTypes: Record<string, string> = {
+const widgetTypes = {
   aggregate: "agregado",
   chart: "gráfico",
   table: "tabla"
 }
 
-const timeScales: Record<CalendarTimeScale, string> = {
+const timeScales = {
   month: "mes",
   week: "semana",
   day: "día"
@@ -145,7 +142,6 @@ const record = {
   createByForm: 'crear por formulario',
   includeData: 'incluir datos',
   duplicateRecord: 'duplicar registro',
-  includeData: "incluir fecha",
   detail: 'detalle del registro',
   duplicate: 'duplicar {n|número} registros',
   updateRecords: 'actualizar {n|número} registros',
