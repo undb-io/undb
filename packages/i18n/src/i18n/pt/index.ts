@@ -1,7 +1,6 @@
-import type { CalendarTimeScale,FieldType,IFieldAggregate,IFieldMacro,IOpType,IRollupFn,ViewType } from "@undb/table"
 import type { BaseTranslation } from "../i18n-types.js"
 
-const ops: Record<IOpType, string> = {
+const ops = {
   eq: "=",
   neq: "!=",
   contains: "Contém",
@@ -42,7 +41,7 @@ const ops: Record<IOpType, string> = {
   is_false: "É Falso",
 }
 
-const fieldTypes: Record<FieldType, string> = {
+const fieldTypes = {
   string: "Texto",
   longText: "Texto Longo",
   number: "Número",
@@ -71,7 +70,7 @@ const fieldTypes: Record<FieldType, string> = {
   formula: "Fórmula",
 }
 
-const rollupFns: Record<IRollupFn, string> = {
+const rollupFns = {
   min: "Mínimo",
   max: "Máximo",
   sum: "Soma",
@@ -80,7 +79,7 @@ const rollupFns: Record<IRollupFn, string> = {
   lookup: "Consulta"
 }
 
-const aggregateFns: Record<IFieldAggregate, string> = {
+const aggregateFns = {
   min: "Mínimo",
   max: "Máximo",
   sum: "Soma",
@@ -102,7 +101,7 @@ const aggregateFns: Record<IFieldAggregate, string> = {
   end_min: "Data Fim Mínima",
 }
 
-const macros: Record<IFieldMacro, string> = {
+const macros = {
   "@me": "Usuário Atual",
   "@now": "Agora",
   "@today": "Hoje",
@@ -110,7 +109,7 @@ const macros: Record<IFieldMacro, string> = {
   "@tomorrow": "Amanhã",
 }
 
-const viewTypes: Record<ViewType, string> = {
+const viewTypes = {
   grid: "Grade",
   kanban: "Kanban",
   gallery: "Galeria",
@@ -119,13 +118,13 @@ const viewTypes: Record<ViewType, string> = {
   pivot: "Pivot"
 }
 
-const widgetTypes: Record<string, string> = {
+const widgetTypes = {
   aggregate: "Agregação",
   chart: "Gráfico",
   table: "Tabela"
 }
 
-const timeScales: Record<CalendarTimeScale, string> = {
+const timeScales = {
   month: "Mês",
   week: "Semana",
   day: "Dia"

@@ -25,32 +25,31 @@ import type { UpdatedByField } from "./variants/updated-by-field/updated-by-fiel
 import type { UrlField } from "./variants/url-field/url-field.vo"
 import type { UserField } from "./variants/user-field"
 
-export interface IFieldVisitor {
-  id(field: IdField): void
-  autoIncrement(field: AutoIncrementField): void
-  longText(field: LongTextField): void
-  createdAt(field: CreatedAtField): void
-  createdBy(field: CreatedByField): void
-  updatedAt(field: UpdatedAtField): void
-  updatedBy(field: UpdatedByField): void
-  string(field: StringField): void
-  number(field: NumberField): void
-  rating(field: RatingField): void
-  select(field: SelectField): void
-  email(field: EmailField): void
-  attachment(field: AttachmentField): void
-  date(field: DateField): void
-  dateRange(field: DateRangeField): void
-  json(field: JsonField): void
-  checkbox(field: CheckboxField): void
-  user(field: UserField): void
-  url(field: UrlField): void
-  currency(field: CurrencyField): void
-  button(field: ButtonField): void
-  duration(field: DurationField): void
-  percentage(field: PercentageField): void
-  formula(field: FormulaField): void
-
-  reference(field: ReferenceField): void
-  rollup(field: RollupField): void
+export interface IFieldVisitor<T = void> {
+  id(field: IdField): T
+  autoIncrement(field: AutoIncrementField): T
+  longText(field: LongTextField): T
+  createdAt(field: CreatedAtField): T
+  createdBy(field: CreatedByField): T
+  updatedAt(field: UpdatedAtField): T
+  updatedBy(field: UpdatedByField): T
+  string(field: StringField): T
+  number(field: NumberField): T
+  rating(field: RatingField): T
+  select(field: SelectField): T
+  email(field: EmailField): T
+  attachment(field: AttachmentField): T
+  date(field: DateField): T
+  dateRange(field: DateRangeField): T
+  json(field: JsonField): T
+  checkbox(field: CheckboxField): T
+  user(field: UserField): T
+  url(field: UrlField): T
+  currency(field: CurrencyField): T
+  button(field: ButtonField): T
+  duration(field: DurationField): T
+  percentage(field: PercentageField): T
+  formula(field: FormulaField): T
+  reference(field: ReferenceField): T
+  rollup(field: RollupField): T
 }

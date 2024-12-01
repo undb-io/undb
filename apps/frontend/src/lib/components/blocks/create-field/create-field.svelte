@@ -6,14 +6,13 @@
   import { getTable } from "$lib/store/table.store"
   import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
-  import { createFieldDTO, type FieldType } from "@undb/table"
+  import { createDefaultFieldDTO, createFieldDTO, type FieldType } from "@undb/table"
   import { toast } from "svelte-sonner"
   import { derived } from "svelte/store"
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import FieldOptions from "../field-options/field-options.svelte"
   import FieldTypePicker from "../field-picker/field-type-picker.svelte"
-  import { createDefaultField } from "./create-default-field"
   import { LL } from "@undb/i18n/client"
   import { BetweenVerticalStartIcon, LoaderCircleIcon } from "lucide-svelte"
 
@@ -41,43 +40,33 @@
     })),
   )
 
-  const form = superForm(
-    defaults(
-      {
-        type: "string",
-        name: $table.schema.getNextFieldName($LL.table.fieldTypes.string()),
-        display: false,
-        constraint: {},
-      },
-      zodClient(createFieldDTO),
-    ),
-    {
-      SPA: true,
-      dataType: "json",
-      validators: zodClient(createFieldDTO),
-      resetForm: false,
-      invalidateAll: false,
-      onSubmit(input) {
-        validateForm({ update: true })
-      },
-      onUpdate(event) {
-        if (!event.form.valid) {
-          console.log(event.form.data, event.form.errors)
-          return
-        }
-
-        $createFieldMutation.mutate({
-          tableId: $table.id.value,
-          field: event.form.data,
-        })
-      },
+  const defaultValue = createDefaultFieldDTO($table, "string", $LL)
+  const form = superForm(defaults(defaultValue, zodClient(createFieldDTO)), {
+    SPA: true,
+    dataType: "json",
+    validators: zodClient(createFieldDTO),
+    resetForm: false,
+    invalidateAll: false,
+    onSubmit(input) {
+      validateForm({ update: true })
     },
-  )
+    onUpdate(event) {
+      if (!event.form.valid) {
+        console.log(event.form.data, event.form.errors)
+        return
+      }
+
+      $createFieldMutation.mutate({
+        tableId: $table.id.value,
+        field: event.form.data,
+      })
+    },
+  })
 
   const { allErrors, enhance, form: formData, reset, validateForm } = form
 
   function updateType(type: FieldType) {
-    $formData = createDefaultField($table, type, $LL.table.fieldTypes[type](), name)
+    $formData = createDefaultFieldDTO($table, type, $LL)
   }
 
   function onTypeChange(type: FieldType) {

@@ -1,7 +1,6 @@
-import type { CalendarTimeScale,FieldType,IFieldAggregate,IFieldMacro,IOpType,IRollupFn,ViewType } from "@undb/table"
 import type { BaseTranslation } from "../i18n-types.js"
 
-const ops: Record<IOpType, string> = {
+const ops = {
   eq: "같음",
   neq: "같지 않음",
   contains: "포함",
@@ -42,7 +41,7 @@ const ops: Record<IOpType, string> = {
   is_false: "거짓"
 }
 
-const fieldTypes: Record<FieldType, string> = {
+const fieldTypes = {
   string: "텍스트",
   longText: "긴 텍스트",
   number: "숫자",
@@ -71,7 +70,7 @@ const fieldTypes: Record<FieldType, string> = {
   formula: "수식"
 }
 
-const rollupFns: Record<IRollupFn, string> = {
+const rollupFns = {
   min: "최소값",
   max: "최대값",
   sum: "합계",
@@ -80,7 +79,7 @@ const rollupFns: Record<IRollupFn, string> = {
   lookup: "조회"
 }
 
-const aggregateFns: Record<IFieldAggregate, string> = {
+const aggregateFns = {
   min: "최소값",
   max: "최대값",
   sum: "합계",
@@ -103,7 +102,7 @@ const aggregateFns: Record<IFieldAggregate, string> = {
 }
 
 
-const macros: Record<IFieldMacro, string> = {
+const macros = {
   "@me": "현재 사용자",
   "@now": "지금",
   "@today": "오늘",
@@ -111,7 +110,7 @@ const macros: Record<IFieldMacro, string> = {
   "@tomorrow": "내일"
 }
 
-const viewTypes: Record<ViewType, string> = {
+const viewTypes = {
   grid: "그리드",
   kanban: "칸반",
   gallery: "갤러리",
@@ -120,13 +119,13 @@ const viewTypes: Record<ViewType, string> = {
   pivot: "피봇"
 }
 
-const widgetTypes: Record<string, string> = {
+const widgetTypes = {
   aggregate: "집계",
   chart: "차트",
   table: "표"
 }
 
-const timeScales: Record<CalendarTimeScale, string> = {
+const timeScales = {
   month: "월",
   week: "주",
   day: "일"
