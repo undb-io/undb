@@ -1,7 +1,6 @@
-import type { CalendarTimeScale,FieldType,IFieldAggregate,IFieldMacro,IOpType,IRollupFn,ViewType } from "@undb/table"
 import type { BaseTranslation } from "../i18n-types.js"
 
-const ops: Record<IOpType, string> = {
+const ops = {
   eq: "等于",
   neq: "不等于",
   contains: "包含",
@@ -42,7 +41,7 @@ const ops: Record<IOpType, string> = {
   is_false: "为假"
 }
 
-const fieldTypes: Record<FieldType, string> = {
+const fieldTypes = {
   string: "文本",
   longText: "长文本",
   number: "数字",
@@ -71,7 +70,7 @@ const fieldTypes: Record<FieldType, string> = {
   formula: "公式"
 }
 
-const rollupFns: Record<IRollupFn, string> = {
+const rollupFns = {
   min: "最小值",
   max: "最大值",
   sum: "求和",
@@ -80,7 +79,7 @@ const rollupFns: Record<IRollupFn, string> = {
   lookup: "查找"
 }
 
-const aggregateFns: Record<IFieldAggregate, string> = {
+const aggregateFns = {
   min: "最小值",
   max: "最大值",
   sum: "求和",
@@ -103,7 +102,7 @@ const aggregateFns: Record<IFieldAggregate, string> = {
 }
 
 
-const macros: Record<IFieldMacro, string> = {
+const macros = {
   "@me": "当前用户",
   "@now": "现在",
   "@today": "今天",
@@ -111,7 +110,7 @@ const macros: Record<IFieldMacro, string> = {
   "@tomorrow": "明天"
 }
 
-const viewTypes: Record<ViewType, string> = {
+const viewTypes = {
   grid: "表格",
   kanban: "看板",
   gallery: "画廊",
@@ -120,13 +119,13 @@ const viewTypes: Record<ViewType, string> = {
   pivot: "数据透视"
 }
 
-const widgetTypes: Record<string, string> = {
+const widgetTypes = {
   aggregate: "汇总",
   chart: "图表",
   table: "表格"
 }
 
-const timeScales: Record<CalendarTimeScale, string> = {
+const timeScales = {
   month: "月",
   week: "周",
   day: "日"

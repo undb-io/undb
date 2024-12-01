@@ -22,8 +22,6 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@undb/authz": "workspace:*",
-    "@undb/table": "workspace:*",
     "typesafe-i18n": "^5.26.2"
   }
 }

@@ -107,7 +107,6 @@
           filter={(field) => getIsFieldCanCastTo($formData.type, field)}
           disabled={getIsFieldChangeTypeDisabled($formData.type)}
           onValueChange={(value) => {
-            console.log(value, $formData.type)
             form.reset()
             $formData.type = value
           }}
