@@ -1,4 +1,8 @@
 import { z } from "@undb/zod"
+import { match } from "ts-pattern"
+import type { PartialDeep } from "type-fest"
+import type { Field, FieldType } from ".."
+import type { TableDo } from "../../../../table.do"
 import { updateAttachmentFieldDTO } from "../variants/attachment-field"
 import { updateAutoIncrementFieldDTO } from "../variants/autoincrement-field/autoincrement-field.vo"
 import { updateButtonFieldDTO } from "../variants/button-field/button-field.vo"
@@ -56,3 +60,104 @@ export const updateFieldDTO = z.discriminatedUnion("type", [
 ])
 
 export type IUpdateFieldDTO = z.infer<typeof updateFieldDTO>
+
+export const createUpdateFieldDTO = (table: TableDo, field: Field, type: FieldType) => {
+  return match(type)
+    .returnType<PartialDeep<IUpdateFieldDTO>>()
+    .with(
+      "number",
+      "string",
+      "rating",
+      "percentage",
+      "duration",
+      "longText",
+      "email",
+      "url",
+      "checkbox",
+      "json",
+      "attachment",
+      (type) => {
+        return {
+          id: field.id.value,
+          name: field.name.value,
+          type,
+          constraint: {
+            required: field.required,
+          },
+          display: field.display,
+        }
+      },
+    )
+    .with("reference", (type) => {
+      return {
+        id: field.id.value,
+        name: field.name.value,
+        type,
+        constraint: {
+          required: field.required,
+        },
+        display: false,
+      }
+    })
+    .with("rollup", "formula", "button", (type) => {
+      return {
+        id: field.id.value,
+        name: field.name.value,
+        type,
+        display: false,
+      }
+    })
+    .with("date", "dateRange", (type) => {
+      return {
+        id: field.id.value,
+        name: field.name.value,
+        type,
+        display: false,
+        option: {
+          format: "yyyy-MM-dd",
+          includeTime: false,
+        },
+      }
+    })
+    .with("user", (type) => {
+      return {
+        id: field.id.value,
+        name: field.name.value,
+        type,
+        display: false,
+        constraint: {
+          required: field.required,
+          max: 1,
+        },
+      }
+    })
+    .with("select", (type) => {
+      return {
+        id: field.id.value,
+        name: field.name.value,
+        type,
+        display: false,
+        constraint: {
+          required: field.required,
+          max: 1,
+        },
+      }
+    })
+    .with("currency", (type) => {
+      return {
+        id: field.id.value,
+        name: field.name.value,
+        type,
+        display: false,
+        constraint: {
+          required: field.required,
+        },
+        option: {
+          symbol: "$",
+        },
+      }
+    })
+    .otherwise((type) => {
+      throw new Error(`Invalid field type to update: ${type}`)
+    })
+}

@@ -7,6 +7,7 @@
   import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import {
+    createUpdateFieldDTO,
     getIsFieldChangeTypeDisabled,
     getIsSystemFieldType,
     updateFieldDTO,
@@ -53,14 +54,15 @@
   )
 
   function getDefaultValue(field: Field): IUpdateFieldDTO {
+    console.log(field.constraint)
     return {
       id: field.id.value,
       type: field.type,
       name: field.name.value,
       display: !!field.display,
       defaultValue: (field.defaultValue as Option<FieldValue>)?.into(undefined)?.value as any,
-      constraint: field.constraint.into(undefined)?.value,
-      option: field.option.into(undefined),
+      constraint: field.constraint?.unwrapUnchecked()?.value ?? {},
+      option: field.option?.unwrapUnchecked() ?? {},
     }
   }
 
@@ -109,6 +111,7 @@
           onValueChange={(value) => {
             form.reset()
             $formData.type = value
+            $formData = createUpdateFieldDTO($table, field, value)
           }}
         />
       </Form.Control>
