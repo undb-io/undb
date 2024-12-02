@@ -17,7 +17,7 @@ export const getDateRangeFieldName = (field: DateRangeField) => {
   return {
     start: `${field.id.value}_start`,
     end: `${field.id.value}_end`,
-  }
+  } as const
 }
 
 export function getUnderlyingColumnType(type: FieldType): ColumnDataType {

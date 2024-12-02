@@ -60,9 +60,22 @@
             "Long Text": "Hello, world!",
             "Number": 123,
             "Currency": 123,
-            "Percentage": 123,
+            "Percentage": 0.5,
             "Duration": 123,
             "Checkbox": true,
+            "Date": "2024-01-01",
+            "Date Range": ["2024-01-01", "2024-01-02"]
+          },
+          {
+            "id": "basic_field_types_date_range_1",
+            "String": "2024-01-01",
+            "Date": "2024-01-01",
+            "Date Range": ["2024-01-01", "2024-01-02"]
+          },
+          {
+            "id": "basic_field_types_number_1",
+            "String": "123",
+            "Number": 1720384749,
             "Date": "2024-01-01",
             "Date Range": ["2024-01-01", "2024-01-02"]
           }
