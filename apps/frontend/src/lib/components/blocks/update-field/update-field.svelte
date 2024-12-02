@@ -35,6 +35,11 @@
 
   export let onSuccess: () => void = () => {}
 
+  let type = field.type
+  let updatedType = field.type
+
+  $: isTypeChanged = type !== updatedType
+
   const client = useQueryClient()
   const updateFieldMutation = createMutation(
     derived([table], ([$table]) => ({
@@ -111,6 +116,7 @@
           onValueChange={(value) => {
             form.reset()
             $formData.type = value
+            updatedType = value
             $formData = createUpdateFieldDTO($table, field, value)
           }}
         />
@@ -127,6 +133,10 @@
       <Form.FieldErrors />
     </Form.Field>
   </div>
+
+  {#if isTypeChanged}
+    <div class="text-xs text-yellow-600">{$LL.table.field.typeChanged()}</div>
+  {/if}
 
   <div use:autoAnimate>
     {#if !getIsSystemFieldType($formData.type)}

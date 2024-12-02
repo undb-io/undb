@@ -1382,6 +1382,10 @@ type RootTranslation = {
 		}
 		field: {
 			/**
+			 * Y​o​u​ ​h​a​v​e​ ​c​h​a​n​g​e​d​ ​t​h​e​ ​f​i​e​l​d​ ​t​y​p​e​,​ ​d​a​t​a​ ​w​i​l​l​ ​b​e​ ​c​a​s​t​ ​t​o​ ​n​e​w​ ​t​y​p​e​ ​w​h​e​n​ ​p​o​s​s​i​b​l​e​,​ ​b​u​t​ ​m​a​y​ ​b​e​ ​c​l​e​a​r​e​d
+			 */
+			typeChanged: string
+			/**
 			 * F​i​e​l​d
 			 */
 			field: string
@@ -3755,6 +3759,10 @@ export type TranslationFunctions = {
 			'import': () => LocalizedString
 		}
 		field: {
+			/**
+			 * You have changed the field type, data will be cast to new type when possible, but may be cleared
+			 */
+			typeChanged: () => LocalizedString
 			/**
 			 * Field
 			 */
