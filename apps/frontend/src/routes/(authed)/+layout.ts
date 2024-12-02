@@ -8,11 +8,7 @@ export const load: LayoutLoad = async (event) => {
 
   // const search = new URLSearchParams({ redirect: redirectURL })
 
-  // const db = await createSqljsDatabase()
-  // const drizzleDB = await createDrizzleDatabase(db)
-  // migrate(drizzleDB)
-
-  // const qb = await createSqljsQueryBuilder(db)
+  // const qb = await createSqljsQueryBuilder()
   // await qb
   //   .insertInto("undb_user")
   //   .values({
