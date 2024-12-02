@@ -4,11 +4,16 @@
     "./server": {
       "import": "./src/server.ts",
       "types": "./src/server.d.ts"
+    },
+    "./client": {
+      "import": "./src/client.ts",
+      "types": "./src/client.d.ts"
     }
   },
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/sql.js": "^1.4.9",
     "drizzle-kit": "^0.28.1"
   },
   "peerDependencies": {
@@ -36,7 +41,9 @@
     "es-toolkit": "^1.27.0",
     "kysely": "^0.27.4",
     "kysely-bun-sqlite": "^0.3.2",
+    "kysely-wasm": "^0.7.0",
     "radash": "^12.1.0",
+    "sql.js": "^1.12.0",
     "ts-pattern": "^5.5.0"
   }
 }
