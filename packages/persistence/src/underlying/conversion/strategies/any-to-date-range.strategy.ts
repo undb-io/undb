@@ -3,8 +3,8 @@ import { getDateRangeFieldName } from "../../underlying-table.util"
 import { UnderlyingConversionStrategy } from "../conversion.interface"
 
 export class AnyToDateRangeStrategy extends UnderlyingConversionStrategy {
-  convert(field: Field, previousField: Field): void | Promise<void> {
-    if (field.type !== "dateRange" || previousField.type !== "date") {
+  convert(field: Field): void | Promise<void> {
+    if (field.type !== "dateRange") {
       return
     }
     const { start, end } = getDateRangeFieldName(field)
