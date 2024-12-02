@@ -1,0 +1,199 @@
+[
+  {
+    "idx": 0,
+    "when": 1723098293272,
+    "tag": "0000_lively_warstar",
+    "hash": "b8aef406c9ddaadba238f67801ba00437abcf19b75a9ebce747d77de499b4e2e",
+    "sql": [
+      "CREATE TABLE `undb_api_token` (\r`id` text PRIMARY KEY NOT NULL,\r`name` text NOT NULL,\r`user_id` text NOT NULL,\r`space_id` text NOT NULL,\r`token` text NOT NULL,\rFOREIGN KEY (`user_id`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`space_id`) REFERENCES `undb_space`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_attachment_mapping` (\r`attachment_id` text NOT NULL,\r`table_id` text NOT NULL,\r`record_id` text NOT NULL,\r`field_id` text NOT NULL,\rPRIMARY KEY(`attachment_id`, `field_id`, `record_id`, `table_id`),\rFOREIGN KEY (`attachment_id`) REFERENCES `undb_attachment`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_attachment` (\r`id` text PRIMARY KEY NOT NULL,\r`name` text NOT NULL,\r`size` integer NOT NULL,\r`mime_type` text NOT NULL,\r`url` text NOT NULL,\r`token` text,\r`created_at` integer NOT NULL,\r`created_by` text NOT NULL,\r`space_id` text NOT NULL,\rFOREIGN KEY (`created_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`space_id`) REFERENCES `undb_space`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_audit` (\r`id` text PRIMARY KEY NOT NULL,\r`timestamp` integer NOT NULL,\r`detail` text,\r`meta` text,\r`op` text NOT NULL,\r`table_id` text NOT NULL,\r`record_id` text NOT NULL,\r`operator_id` text NOT NULL,\r`space_id` text NOT NULL,\rFOREIGN KEY (`space_id`) REFERENCES `undb_space`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_base` (\r`id` text PRIMARY KEY NOT NULL,\r`name` text NOT NULL,\r`space_id` text NOT NULL,\r`created_at` text DEFAULT (CURRENT_TIMESTAMP) NOT NULL,\r`created_by` text NOT NULL,\r`updated_at` text NOT NULL,\r`updated_by` text NOT NULL,\rFOREIGN KEY (`space_id`) REFERENCES `undb_space`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`created_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`updated_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_email_verification_code` (\r`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\r`code` text NOT NULL,\r`user_id` text,\r`email` text NOT NULL,\r`expires_at` integer NOT NULL,\rFOREIGN KEY (`user_id`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_invitation` (\r`id` text PRIMARY KEY NOT NULL,\r`email` text NOT NULL,\r`role` text NOT NULL,\r`status` text NOT NULL,\r`space_id` text NOT NULL,\r`invited_at` integer NOT NULL,\r`inviter_id` text NOT NULL,\rFOREIGN KEY (`space_id`) REFERENCES `undb_space`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`inviter_id`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_oauth_account` (\r`provider_id` text NOT NULL,\r`provider_user_id` text NOT NULL,\r`user_id` text NOT NULL,\rPRIMARY KEY(`provider_id`, `provider_user_id`),\rFOREIGN KEY (`user_id`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_outbox` (\r`id` text PRIMARY KEY NOT NULL,\r`payload` text NOT NULL,\r`meta` text,\r`timestamp` integer NOT NULL,\r`operator_id` text NOT NULL,\r`name` text NOT NULL,\r`space_id` text NOT NULL,\rFOREIGN KEY (`space_id`) REFERENCES `undb_space`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_reference_id_mapping` (\r`field_id` text NOT NULL,\r`table_id` text NOT NULL,\r`symmetric_field_id` text NOT NULL,\r`foreign_table_id` text NOT NULL,\rFOREIGN KEY (`table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`foreign_table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_rollup_id_mapping` (\r`field_id` text NOT NULL,\r`table_id` text NOT NULL,\r`rollup_id` text NOT NULL,\r`rollup_table_id` text NOT NULL,\rPRIMARY KEY(`field_id`, `rollup_id`),\rFOREIGN KEY (`table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`rollup_table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_session` (\r`id` text PRIMARY KEY NOT NULL,\r`user_id` text NOT NULL,\r`expires_at` integer NOT NULL,\r`space_id` text NOT NULL,\rFOREIGN KEY (`user_id`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`space_id`) REFERENCES `undb_space`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_share` (\r`id` text PRIMARY KEY NOT NULL,\r`target_type` text NOT NULL,\r`target_id` text NOT NULL,\r`enabled` integer NOT NULL,\r`space_id` text NOT NULL,\rFOREIGN KEY (`space_id`) REFERENCES `undb_space`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_space` (\r`id` text PRIMARY KEY NOT NULL,\r`name` text,\r`is_personal` integer NOT NULL,\r`avatar` text,\r`created_at` text DEFAULT (CURRENT_TIMESTAMP) NOT NULL,\r`created_by` text NOT NULL,\r`updated_at` text NOT NULL,\r`updated_by` text NOT NULL,\r`deleted_at` integer,\r`deleted_by` text,\rFOREIGN KEY (`created_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`updated_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`deleted_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_space_member` (\r`id` text PRIMARY KEY NOT NULL,\r`user_id` text NOT NULL,\r`role` text NOT NULL,\r`space_id` text NOT NULL,\rFOREIGN KEY (`user_id`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`space_id`) REFERENCES `undb_space`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_table_id_mapping` (\r`table_id` text NOT NULL,\r`subject_id` text NOT NULL,\rPRIMARY KEY(`subject_id`, `table_id`),\rFOREIGN KEY (`table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_table` (\r`id` text PRIMARY KEY NOT NULL,\r`name` text NOT NULL,\r`base_id` text NOT NULL,\r`space_id` text NOT NULL,\r`schema` text NOT NULL,\r`views` text NOT NULL,\r`forms` text,\r`rls` text,\r`created_at` text DEFAULT (CURRENT_TIMESTAMP) NOT NULL,\r`created_by` text NOT NULL,\r`updated_at` text NOT NULL,\r`updated_by` text NOT NULL,\rFOREIGN KEY (`base_id`) REFERENCES `undb_base`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`space_id`) REFERENCES `undb_space`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`created_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`updated_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE TABLE `undb_user` (\r`id` text PRIMARY KEY NOT NULL,\r`username` text NOT NULL,\r`email` text NOT NULL,\r`email_verified` integer DEFAULT false NOT NULL,\r`password` text NOT NULL,\r`avatar` text\r);",
+      "CREATE TABLE `undb_webhook` (\r`id` text PRIMARY KEY NOT NULL,\r`name` text NOT NULL,\r`url` text NOT NULL,\r`method` text NOT NULL,\r`enabled` integer NOT NULL,\r`table_id` text NOT NULL,\r`headers` text NOT NULL,\r`condition` text,\r`event` text NOT NULL,\r`space_id` text NOT NULL,\rFOREIGN KEY (`table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`space_id`) REFERENCES `undb_space`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE UNIQUE INDEX `undb_api_token_user_id_unique` ON `undb_api_token` (`user_id`);",
+      "CREATE UNIQUE INDEX `undb_api_token_token_unique` ON `undb_api_token` (`token`);",
+      "CREATE INDEX `api_token_space_id_idx` ON `undb_api_token` (`space_id`);",
+      "CREATE INDEX `api_token_user_id_idx` ON `undb_api_token` (`user_id`);",
+      "CREATE INDEX `attachment_size_idx` ON `undb_attachment` (`size`);",
+      "CREATE INDEX `attachment_space_id_idx` ON `undb_attachment` (`space_id`);",
+      "CREATE INDEX `audit_table_id_idx` ON `undb_audit` (`table_id`);",
+      "CREATE INDEX `audit_space_id_idx` ON `undb_audit` (`space_id`);",
+      "CREATE INDEX `audit_record_id_idx` ON `undb_audit` (`record_id`);",
+      "CREATE INDEX `base_space_id_idx` ON `undb_base` (`space_id`);",
+      "CREATE UNIQUE INDEX `base_name_unique_idx` ON `undb_base` (`name`,`space_id`);",
+      "CREATE UNIQUE INDEX `undb_email_verification_code_user_id_unique` ON `undb_email_verification_code` (`user_id`);",
+      "CREATE UNIQUE INDEX `undb_invitation_email_unique` ON `undb_invitation` (`email`);",
+      "CREATE INDEX `invitation_space_id_idx` ON `undb_invitation` (`space_id`);",
+      "CREATE INDEX `outbox_space_id_idx` ON `undb_outbox` (`space_id`);",
+      "CREATE UNIQUE INDEX `reference_id_mapping_unique_idx` ON `undb_reference_id_mapping` (`field_id`,`table_id`,`symmetric_field_id`,`foreign_table_id`);",
+      "CREATE INDEX `share_space_id_idx` ON `undb_share` (`space_id`);",
+      "CREATE UNIQUE INDEX `share_unique_idx` ON `undb_share` (`target_type`,`target_id`);",
+      "CREATE INDEX `space_name_idx` ON `undb_space` (`name`);",
+      "CREATE UNIQUE INDEX `space_member_unique_idx` ON `undb_space_member` (`user_id`,`space_id`);",
+      "CREATE INDEX `table_base_id_idx` ON `undb_table` (`base_id`);",
+      "CREATE INDEX `table_space_id_idx` ON `undb_table` (`space_id`);",
+      "CREATE UNIQUE INDEX `table_name_unique_idx` ON `undb_table` (`name`,`base_id`);",
+      "CREATE UNIQUE INDEX `undb_user_email_unique` ON `undb_user` (`email`);",
+      "CREATE INDEX `user_username_idx` ON `undb_user` (`username`);",
+      "CREATE INDEX `user_email_idx` ON `undb_user` (`email`);",
+      "CREATE INDEX `webhook_table_id_idx` ON `undb_webhook` (`table_id`);",
+      "CREATE INDEX `webhook_space_id_idx` ON `undb_webhook` (`space_id`);",
+      "CREATE INDEX `webhook_url_idx` ON `undb_webhook` (`url`);"
+    ]
+  },
+  {
+    "idx": 1,
+    "when": 1723706193281,
+    "tag": "0001_familiar_joshua_kane",
+    "hash": "449cb4879eb4bfe997b556ae5a80e48267c76c76b1777160d9a9f3b5b31ac108",
+    "sql": [
+      "CREATE TABLE `undb_password_reset_token` (\r`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,\r`token` text NOT NULL,\r`user_id` text NOT NULL,\r`expires_at` integer NOT NULL,\rFOREIGN KEY (`user_id`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE UNIQUE INDEX `undb_password_reset_token_token_unique` ON `undb_password_reset_token` (`token`);",
+      "CREATE INDEX `password_reset_token_user_id_idx` ON `undb_password_reset_token` (`user_id`);"
+    ]
+  },
+  {
+    "idx": 2,
+    "when": 1723731591583,
+    "tag": "0002_fixed_lockjaw",
+    "hash": "01e006b7337199bc08c073b2fb752f1653b3d0e7827aa7ec8bb9b8d237cf3bf3",
+    "sql": [
+      "DROP INDEX IF EXISTS `undb_invitation_email_unique`;",
+      "CREATE UNIQUE INDEX `invitation_unique_idx` ON `undb_invitation` (`email`,`space_id`);"
+    ]
+  },
+  {
+    "idx": 3,
+    "when": 1723898576164,
+    "tag": "0003_dry_starhawk",
+    "hash": "806733d43aa2f171fabae7d64792ad1df65e3e77b00e7e1275d2ffa864969f6e",
+    "sql": [
+      "ALTER TABLE `undb_base` ADD `allow_template` integer DEFAULT false NOT NULL;"
+    ]
+  },
+  {
+    "idx": 4,
+    "when": 1724054589804,
+    "tag": "0004_tricky_phil_sheldon",
+    "hash": "5f712f6dc5b40f3ac407cf989b2b5a7ed865691799b7e7bb4fc68da24fa2d952",
+    "sql": [
+      "DROP INDEX IF EXISTS `undb_api_token_user_id_unique`;"
+    ]
+  },
+  {
+    "idx": 5,
+    "when": 1724391158180,
+    "tag": "0005_narrow_khan",
+    "hash": "ebf973841c3869a871e21e0399de8ae6e9dcc09259a812032f0aa4cfda4fd12c",
+    "sql": [
+      "ALTER TABLE `undb_base` DROP COLUMN `allow_template`;"
+    ]
+  },
+  {
+    "idx": 6,
+    "when": 1728358607342,
+    "tag": "0006_mature_madame_web",
+    "hash": "51995ae2bf0f8a52b57786978a421040330fb22121753aa6fbb0a51cb013ebde",
+    "sql": [
+      "ALTER TABLE `undb_outbox` ADD `user_id` text;",
+      "ALTER TABLE `undb_outbox` DROP COLUMN `operator_id`;"
+    ]
+  },
+  {
+    "idx": 7,
+    "when": 1728539365470,
+    "tag": "0007_steep_dragon_lord",
+    "hash": "2a1edb5e858eb7018e6a9c5e25c509b35e28d1e4f812c53f7b3a937476517923",
+    "sql": [
+      "ALTER TABLE `undb_table` ADD `widgets` text;"
+    ]
+  },
+  {
+    "idx": 8,
+    "when": 1728814857375,
+    "tag": "0008_bored_terror",
+    "hash": "5628ded36ba9889dc55a3ba938722857bde7537039d5cc1aec3120204f9f15c1",
+    "sql": [
+      "CREATE TABLE `undb_dashboard` (\r`id` text PRIMARY KEY NOT NULL,\r`name` text NOT NULL,\r`base_id` text NOT NULL,\r`space_id` text NOT NULL,\r`created_at` text DEFAULT (CURRENT_TIMESTAMP) NOT NULL,\r`created_by` text NOT NULL,\r`updated_at` text NOT NULL,\r`updated_by` text NOT NULL,\rFOREIGN KEY (`base_id`) REFERENCES `undb_base`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`space_id`) REFERENCES `undb_space`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`created_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`updated_by`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "CREATE INDEX `dashboard_base_id_idx` ON `undb_dashboard` (`base_id`);",
+      "CREATE INDEX `dashboard_space_id_idx` ON `undb_dashboard` (`space_id`);",
+      "CREATE UNIQUE INDEX `dashboard_name_unique_idx` ON `undb_dashboard` (`name`,`base_id`);"
+    ]
+  },
+  {
+    "idx": 9,
+    "when": 1728874533782,
+    "tag": "0009_workable_scorpion",
+    "hash": "f29952122ea89f1b717963b62111302ab5321e6b1c777cf675dd9ee18313dbf5",
+    "sql": [
+      "ALTER TABLE `undb_dashboard` ADD `widgets` text;",
+      "ALTER TABLE `undb_dashboard` ADD `layout` text;"
+    ]
+  },
+  {
+    "idx": 10,
+    "when": 1729306799169,
+    "tag": "0010_nostalgic_nehzno",
+    "hash": "c0ffe9e7e3b0523d65603d7cd4ee444fbc8bae9b4f1959741b4c01085c345d44",
+    "sql": [
+      "CREATE TABLE `undb_dashboard_table_id_mapping` (`dashboard_id` text NOT NULL,`table_id` text NOT NULL,PRIMARY KEY(`dashboard_id`, `table_id`),FOREIGN KEY (`dashboard_id`) REFERENCES `undb_dashboard`(`id`) ON UPDATE no action ON DELETE no action,FOREIGN KEY (`table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action);"
+    ]
+  },
+  {
+    "idx": 11,
+    "when": 1729514235861,
+    "tag": "0011_serious_marvex",
+    "hash": "78f2cb161b43636a6e0758dda3e0ada24f45103d395b2a66c21f699f9374eea6",
+    "sql": [
+      "PRAGMA foreign_keys=OFF;",
+      "CREATE TABLE `__new_undb_reference_id_mapping` (\r`field_id` text NOT NULL,\r`table_id` text NOT NULL,\r`symmetric_field_id` text,\r`foreign_table_id` text NOT NULL,\rFOREIGN KEY (`table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`foreign_table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "INSERT INTO `__new_undb_reference_id_mapping`(\"field_id\", \"table_id\", \"symmetric_field_id\", \"foreign_table_id\") SELECT \"field_id\", \"table_id\", \"symmetric_field_id\", \"foreign_table_id\" FROM `undb_reference_id_mapping`;",
+      "DROP TABLE `undb_reference_id_mapping`;",
+      "ALTER TABLE `__new_undb_reference_id_mapping` RENAME TO `undb_reference_id_mapping`;",
+      "PRAGMA foreign_keys=ON;",
+      "CREATE UNIQUE INDEX `reference_id_mapping_unique_idx` ON `undb_reference_id_mapping` (`field_id`,`table_id`,`symmetric_field_id`,`foreign_table_id`);"
+    ]
+  },
+  {
+    "idx": 12,
+    "when": 1729559227374,
+    "tag": "0012_lying_tomorrow_man",
+    "hash": "0f505e5a2716077ef9c514c943933273ea18a1264781a490feefb3f0059ce6cc",
+    "sql": [
+      "ALTER TABLE `undb_dashboard` ADD `description` text;"
+    ]
+  },
+  {
+    "idx": 13,
+    "when": 1730979840099,
+    "tag": "0013_lovely_mordo",
+    "hash": "59f5936ab2e03fbff473d3d56883ecce0832b71521b02bfa2ad2907d242dc00b",
+    "sql": [
+      "PRAGMA foreign_keys=OFF;",
+      "CREATE TABLE `__new_undb_reference_id_mapping` (`field_id` text NOT NULL,`table_id` text NOT NULL,`symmetric_field_id` text,`foreign_table_id` text NOT NULL);",
+      "INSERT INTO `__new_undb_reference_id_mapping`(\"field_id\", \"table_id\", \"symmetric_field_id\", \"foreign_table_id\") SELECT \"field_id\", \"table_id\", \"symmetric_field_id\", \"foreign_table_id\" FROM `undb_reference_id_mapping`;",
+      "DROP TABLE `undb_reference_id_mapping`;",
+      "ALTER TABLE `__new_undb_reference_id_mapping` RENAME TO `undb_reference_id_mapping`;",
+      "PRAGMA foreign_keys=ON;",
+      "CREATE UNIQUE INDEX `reference_id_mapping_unique_idx` ON `undb_reference_id_mapping` (`field_id`,`table_id`,`symmetric_field_id`,`foreign_table_id`);",
+      "CREATE TABLE `__new_undb_rollup_id_mapping` (`field_id` text NOT NULL,`table_id` text NOT NULL,`rollup_id` text NOT NULL,`rollup_table_id` text NOT NULL,PRIMARY KEY(`field_id`, `rollup_id`));",
+      "INSERT INTO `__new_undb_rollup_id_mapping`(\"field_id\", \"table_id\", \"rollup_id\", \"rollup_table_id\") SELECT \"field_id\", \"table_id\", \"rollup_id\", \"rollup_table_id\" FROM `undb_rollup_id_mapping`;",
+      "DROP TABLE `undb_rollup_id_mapping`;",
+      "ALTER TABLE `__new_undb_rollup_id_mapping` RENAME TO `undb_rollup_id_mapping`;"
+    ]
+  }
+]

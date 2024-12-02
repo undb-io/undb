@@ -1,6 +1,6 @@
 import type { Field, TableDo } from "@undb/table"
 import type { AlterTableBuilder, ColumnDataType, CompiledQuery } from "kysely"
-import type { IRecordQueryBuilder } from "../../qb"
+import type { IRecordQueryBuilder } from "../../qb.server"
 import { TEMP_FIELD_PREFIX } from "./conversion.constant"
 
 export abstract class UnderlyingConversionStrategy implements IConversionStrategy {

@@ -1,10 +1,10 @@
-import { SpaceMember,SpaceMemberComositeSpecification,type ISpaceMemberRepository } from "@undb/authz"
+import { SpaceMember, SpaceMemberComositeSpecification, type ISpaceMemberRepository } from "@undb/authz"
 import { singleton } from "@undb/di"
-import { None,Some,type Option } from "@undb/domain"
+import { None, Some, type Option } from "@undb/domain"
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
-import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
+import type { IQueryBuilder } from "../qb.server"
 import { SpaceMemberFilterVisitor } from "./space-member.filter-visitor"
 
 @singleton()
@@ -17,7 +17,8 @@ export class SpaceMemberRepository implements ISpaceMemberRepository {
   ) {}
 
   async exists(spec: SpaceMemberComositeSpecification): Promise<boolean> {
-    const user = await this.txContext.getCurrentTransaction()
+    const user = await this.txContext
+      .getCurrentTransaction()
       .selectFrom("undb_space_member")
       .selectAll()
       .where((eb) => {
@@ -31,7 +32,8 @@ export class SpaceMemberRepository implements ISpaceMemberRepository {
   }
 
   async findOne(spec: SpaceMemberComositeSpecification): Promise<Option<SpaceMember>> {
-    const member = await this.txContext.getCurrentTransaction()
+    const member = await this.txContext
+      .getCurrentTransaction()
       .selectFrom("undb_space_member")
       .selectAll()
       .where((eb) => {
@@ -60,7 +62,8 @@ export class SpaceMemberRepository implements ISpaceMemberRepository {
   }
   async insert(member: SpaceMember): Promise<void> {
     const json = member.toJSON()
-    await this.txContext.getCurrentTransaction()
+    await this.txContext
+      .getCurrentTransaction()
       .insertInto("undb_space_member")
       .values({
         id: json.id,

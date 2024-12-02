@@ -1,8 +1,8 @@
 import { singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import { type ApiTokenSpecification, type IApiTokenDTO, type IApiTokenQueryRepository } from "@undb/openapi"
-import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
+import type { IQueryBuilder } from "../qb.server"
 import { ApiTokenFilterVisitor } from "./api-token.filter-visitor"
 
 @singleton()

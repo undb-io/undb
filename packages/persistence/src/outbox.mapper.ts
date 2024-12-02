@@ -1,7 +1,7 @@
 import type { IContext } from "@undb/context"
 import type { BaseEvent } from "@undb/domain"
 import type { InsertOutbox } from "./db"
-import { json } from "./qb"
+import { json } from "./qb.server"
 
 export class OutboxMapper {
   static fromEvent(event: BaseEvent, context: IContext): InsertOutbox {
