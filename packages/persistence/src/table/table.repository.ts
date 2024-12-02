@@ -12,7 +12,8 @@ import {
   type TableDo,
   type TableId,
 } from "@undb/table"
-import { getCurrentTransaction } from "../ctx"
+import type { ITxContext } from "../ctx.interface"
+import { injectTxCTX } from "../ctx.provider"
 import type { InsertTable, InsertTableIdMapping } from "../db"
 import { json, type IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
@@ -33,6 +34,8 @@ export class TableRepository implements ITableRepository {
     private readonly qb: IQueryBuilder,
     @injectContext()
     private readonly context: IContext,
+    @injectTxCTX()
+    private readonly txContext: ITxContext,
   ) {}
 
   get mapper() {
@@ -48,7 +51,7 @@ export class TableRepository implements ITableRepository {
       return
     }
 
-    const trx = getCurrentTransaction()
+    const trx = this.txContext.getCurrentTransaction()
 
     const ctx = executionContext.getStore()
     const userId = ctx!.user!.userId!
@@ -69,7 +72,7 @@ export class TableRepository implements ITableRepository {
   }
 
   async insert(table: TableDo): Promise<void> {
-    const trx = getCurrentTransaction()
+    const trx = this.txContext.getCurrentTransaction()
     const ctx = executionContext.getStore()
     const userId = ctx!.user!.userId!
 
@@ -176,7 +179,8 @@ export class TableRepository implements ITableRepository {
   }
 
   async find(spec: Option<TableComositeSpecification>, ignoreSpace?: boolean): Promise<TableDo[]> {
-    const query = (getCurrentTransaction() ?? this.qb)
+    const query = this.txContext
+      .getCurrentTransaction()
       .selectFrom("undb_table")
       .selectAll("undb_table")
       .$if(spec.isSome(), (qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
@@ -189,7 +193,8 @@ export class TableRepository implements ITableRepository {
   }
 
   async findOne(spec: Option<TableComositeSpecification>): Promise<Option<TableDo>> {
-    const tb = await (getCurrentTransaction() ?? this.qb)
+    const tb = await this.txContext
+      .getCurrentTransaction()
       .selectFrom("undb_table")
       .selectAll("undb_table")
       .$if(spec.isSome(), (qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
@@ -205,7 +210,8 @@ export class TableRepository implements ITableRepository {
 
   async findOneById(id: TableId): Promise<Option<TableDo>> {
     const spec = Some(new TableIdSpecification(id))
-    const tb = await (getCurrentTransaction() ?? this.qb)
+    const tb = await this.txContext
+      .getCurrentTransaction()
       .selectFrom("undb_table")
       .selectAll("undb_table")
       .$call((qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
@@ -217,7 +223,8 @@ export class TableRepository implements ITableRepository {
 
   async findManyByIds(ids: TableId[]): Promise<TableDo[]> {
     const spec = Some(new TableIdsSpecification(ids))
-    const tbs = await (getCurrentTransaction() ?? this.qb)
+    const tbs = await this.txContext
+      .getCurrentTransaction()
       .selectFrom("undb_table")
       .selectAll("undb_table")
       .$call((qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
@@ -228,7 +235,7 @@ export class TableRepository implements ITableRepository {
   }
 
   async deleteOneById(table: TableDo): Promise<void> {
-    const trx = getCurrentTransaction()
+    const trx = this.txContext.getCurrentTransaction()
     await trx
       .deleteFrom("undb_table_id_mapping")
       .where((eb) => eb.eb("table_id", "=", table.id.value))

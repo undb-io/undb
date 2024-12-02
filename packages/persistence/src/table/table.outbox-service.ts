@@ -3,7 +3,8 @@ import { EventBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import type { IEventBus } from "@undb/domain"
 import type { ITableOutboxService, TableDo } from "@undb/table"
-import { getCurrentTransaction } from "../ctx"
+import type { ITxContext } from "../ctx.interface"
+import { injectTxCTX } from "../ctx.provider"
 import { OutboxMapper } from "../outbox.mapper"
 
 @singleton()
@@ -13,9 +14,11 @@ export class TableOutboxService implements ITableOutboxService {
     private readonly context: IContext,
     @inject(EventBus)
     private readonly eventBus: IEventBus,
+    @injectTxCTX()
+    private readonly txContext: ITxContext,
   ) {}
   async save(table: TableDo): Promise<void> {
-    const trx = getCurrentTransaction()
+    const trx = this.txContext.getCurrentTransaction()
     const values = table.domainEvents.map((e) => OutboxMapper.fromEvent(e, this.context))
     if (!values.length) return
 
@@ -26,7 +29,7 @@ export class TableOutboxService implements ITableOutboxService {
   }
 
   async saveMany(d: TableDo[]): Promise<void> {
-    const trx = getCurrentTransaction()
+    const trx = this.txContext.getCurrentTransaction()
     const values = d.flatMap((table) => table.domainEvents.map((e) => OutboxMapper.fromEvent(e, this.context)))
     if (!values.length) return
 

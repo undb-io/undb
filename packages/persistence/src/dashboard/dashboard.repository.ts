@@ -10,7 +10,8 @@ import {
 } from "@undb/dashboard"
 import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
-import { getCurrentTransaction } from "../ctx"
+import type { ITxContext } from "../ctx.interface"
+import { injectTxCTX } from "../ctx.provider"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { DashboardFilterVisitor } from "./dashboard.filter-visitor"
@@ -29,10 +30,12 @@ export class DashboardRepository implements IDashboardRepository {
     private readonly qb: IQueryBuilder,
     @injectContext()
     private readonly context: IContext,
+    @injectTxCTX()
+    private readonly txContext: ITxContext,
   ) {}
 
   async find(spec: IDashboardSpecification): Promise<Dashboard[]> {
-    const tx = getCurrentTransaction() ?? this.qb
+    const tx = this.txContext.getCurrentTransaction()
     const dashboards = await tx
       .selectFrom("undb_dashboard")
       .selectAll()
@@ -47,7 +50,7 @@ export class DashboardRepository implements IDashboardRepository {
     return dashboards.map((dashboard) => this.mapper.toDo(dashboard))
   }
   async findOne(spec: IDashboardSpecification): Promise<Option<Dashboard>> {
-    const tx = getCurrentTransaction() ?? this.qb
+    const tx = this.txContext.getCurrentTransaction()
     const dashboard = await tx
       .selectFrom("undb_dashboard")
       .selectAll()
@@ -65,7 +68,7 @@ export class DashboardRepository implements IDashboardRepository {
     const spaceId = this.context.mustGetCurrentSpaceId()
     const spec = WithDashboardId.fromString(id).and(new WithDashboardSpaceId(spaceId))
 
-    const tx = getCurrentTransaction() ?? this.qb
+    const tx = this.txContext.getCurrentTransaction()
     const dashboard = await tx
       .selectFrom("undb_dashboard")
       .selectAll()
@@ -83,7 +86,7 @@ export class DashboardRepository implements IDashboardRepository {
     const user = this.context.mustGetCurrentUserId()
     const values = this.mapper.toEntity(dashboard)
 
-    const qb = getCurrentTransaction() ?? this.qb
+    const qb = this.txContext.getCurrentTransaction()
     await qb
       .insertInto("undb_dashboard")
       .values({
@@ -130,7 +133,7 @@ export class DashboardRepository implements IDashboardRepository {
   }
 
   async deleteOneById(id: string): Promise<void> {
-    const qb = getCurrentTransaction() ?? this.qb
+    const qb = this.txContext.getCurrentTransaction()
 
     await qb
       .deleteFrom("undb_dashboard_table_id_mapping")

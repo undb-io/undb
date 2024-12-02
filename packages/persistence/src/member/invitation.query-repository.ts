@@ -2,7 +2,8 @@ import type { IInvitationQueryRepository, InvitationCompositeSpecification, Invi
 import { injectContext, type IContext } from "@undb/context"
 import { singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
-import { getCurrentTransaction } from "../ctx"
+import type { ITxContext } from "../ctx.interface"
+import { injectTxCTX } from "../ctx.provider"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { InvitationFilterVisitor } from "./invitation.filter-visitor"
@@ -14,9 +15,12 @@ export class InvitationQueryRepository implements IInvitationQueryRepository {
     private readonly qb: IQueryBuilder,
     @injectContext()
     private readonly context: IContext,
+    @injectTxCTX()
+    private readonly txContext: ITxContext,
   ) {}
   async findOneById(id: string): Promise<Option<InvitationDTO>> {
-    const invitation = await (getCurrentTransaction() ?? this.qb)
+    const invitation = await this.txContext
+      .getCurrentTransaction()
       .selectFrom("undb_invitation")
       .selectAll()
       .where("id", "=", id)
@@ -36,7 +40,8 @@ export class InvitationQueryRepository implements IInvitationQueryRepository {
   }
 
   async findOne(spec: InvitationCompositeSpecification): Promise<Option<InvitationDTO>> {
-    const invitation = await (getCurrentTransaction() ?? this.qb)
+    const invitation = await this.txContext
+      .getCurrentTransaction()
       .selectFrom("undb_invitation")
       .selectAll()
       .where((eb) => {
@@ -61,7 +66,8 @@ export class InvitationQueryRepository implements IInvitationQueryRepository {
   }
 
   async find(spec: Option<InvitationCompositeSpecification>): Promise<InvitationDTO[]> {
-    const invitations = await (getCurrentTransaction() ?? this.qb)
+    const invitations = await this.txContext
+      .getCurrentTransaction()
       .selectFrom("undb_invitation")
       .selectAll()
       .where((eb) => {

@@ -2,14 +2,13 @@ import { type ISpaceMemberService, injectSpaceMemberService } from "@undb/authz"
 import { setContextValue } from "@undb/context/server"
 import { singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
-import { type IQueryBuilder, getCurrentTransaction, injectQueryBuilder } from "@undb/persistence/server"
+import { type IQueryBuilder, type ITxContext, injectQueryBuilder, injectTxCTX } from "@undb/persistence/server"
 import { type ISpaceService, injectSpaceService } from "@undb/space"
 import { GitHub } from "arctic"
 import { Elysia } from "elysia"
 import { type Lucia, generateIdFromEntropySize } from "lucia"
 import { serializeCookie } from "oslo/cookie"
 import { OAuth2RequestError, generateState } from "oslo/oauth2"
-import { withTransaction } from "../../../db"
 import { injectLucia } from "../auth.provider"
 import { injectGithubProvider } from "./github.provider"
 
@@ -26,6 +25,8 @@ export class GithubOAuth {
     private readonly github: GitHub,
     @injectLucia()
     private readonly lucia: Lucia,
+    @injectTxCTX()
+    private readonly txContext: ITxContext,
   ) {}
 
   private logger = createLogger(GithubOAuth.name)
@@ -34,7 +35,7 @@ export class GithubOAuth {
     return new Elysia()
       .get("/login/github", async (ctx) => {
         const state = generateState()
-        const url = await this.github.createAuthorizationURL(state, { scopes: ["user:email"] })
+        const url = this.github.createAuthorizationURL(state, ["user:email"])
         return new Response(null, {
           status: 302,
           headers: {
@@ -143,8 +144,8 @@ export class GithubOAuth {
             })
           }
           const userId = generateIdFromEntropySize(10) // 16 characters long
-          const space = await withTransaction(this.queryBuilder)(async () => {
-            const tx = getCurrentTransaction()
+          const space = await this.txContext.withTransaction(async () => {
+            const tx = this.txContext.getCurrentTransaction()
             await tx
               .insertInto("undb_user")
               .values({
