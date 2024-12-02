@@ -23,7 +23,9 @@ import {
   BaseQueryRepository,
   BaseRepository,
   Client,
+  createSqliteClient,
   createSqliteQueryBuilder,
+  createTursoClient,
   createTursoQueryBuilder,
   DashboardOutboxService,
   DashboardQueryRepository,
@@ -40,6 +42,7 @@ import {
   SpaceMemberRepository,
   SpaceQueryRepository,
   SpaceRepostitory,
+  SQLITE_CLIENT,
   TableOutboxService,
   TableQueryRepository,
   TableRepository,
@@ -48,8 +51,7 @@ import {
   UserRepository,
   WebhookQueryRepository,
   WebhookRepository,
-} from "@undb/persistence"
-import { createSqliteClient, createTursoClient, SQLITE_CLIENT } from "@undb/persistence/src/client"
+} from "@undb/persistence/server"
 import { SHARE_QUERY_REPOSITORY, SHARE_REPOSITORY, SHARE_SERVICE, ShareService } from "@undb/share"
 import { SPACE_QUERY_REPOSITORY, SPACE_REPOSITORY, SPACE_SERVICE, SpaceService } from "@undb/space"
 import {

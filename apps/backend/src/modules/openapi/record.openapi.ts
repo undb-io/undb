@@ -13,7 +13,7 @@ import {
 import { CommandBus, QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import { Option, type ICommandBus, type IQueryBus, type PaginatedDTO } from "@undb/domain"
-import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
+import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence/server"
 import {
   GetAggregatesQuery,
   GetPivotDataQuery,

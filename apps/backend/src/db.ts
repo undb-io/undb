@@ -1,4 +1,4 @@
-import { IQueryBuilder, startTransaction } from "@undb/persistence"
+import { IQueryBuilder, startTransaction } from "@undb/persistence/server"
 import { IsolationLevel } from "kysely"
 
 export const withTransaction =

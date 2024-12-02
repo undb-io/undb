@@ -1,5 +1,5 @@
 import type { BaseEvent, IEventJSON, Option } from "@undb/domain"
-import type { Outbox } from "@undb/persistence"
+import type { Outbox } from "@undb/persistence/server"
 import { RecordEventFactory } from "@undb/table"
 
 export class ReplyEventFactory {

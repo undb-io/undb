@@ -1,8 +1,7 @@
 import { BunSQLiteAdapter, LibSQLAdapter } from "@lucia-auth/adapter-sqlite"
 import { container, inject, instanceCachingFactory } from "@undb/di"
 import { env } from "@undb/env"
-import { Client } from "@undb/persistence"
-import { SQLITE_CLIENT } from "@undb/persistence/src/client"
+import { Client, SQLITE_CLIENT } from "@undb/persistence/server"
 import Database from "bun:sqlite"
 import { Adapter, Lucia } from "lucia"
 
