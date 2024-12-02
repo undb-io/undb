@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-131
+
+
+### 🩹 Fixes
+
+- Fix date range field ([6fda104](https://github.com/undb-io/undb/commit/6fda104))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-130
 
 ## v1.0.0-129
