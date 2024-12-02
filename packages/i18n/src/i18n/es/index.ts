@@ -255,6 +255,7 @@ const common = {
 }
 
   const field = {
+    typeChanged: 'Ha cambiado el tipo de campo, los datos se convertirán al nuevo tipo cuando sea posible, pero pueden ser eliminados',
     field: 'campo',
     fields: 'lista de campos',
     create: 'crear campo',

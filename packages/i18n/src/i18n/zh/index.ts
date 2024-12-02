@@ -257,6 +257,7 @@ const common = {
 }
 
   const field = {
+    typeChanged: '您已更改字段类型，数据将转换为新类型，但可能会被清除',
     field: '字段',
     fields: '字段列表',
     create: '创建字段',

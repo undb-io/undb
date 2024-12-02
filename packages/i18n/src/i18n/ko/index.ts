@@ -257,6 +257,7 @@ const common = {
 }
 
   const field = {
+    typeChanged: '필드 유형을 변경했습니다. 데이터는 가능한 경우 새 유형으로 변환될 수 있지만 지울 수 있습니다.',
     field: '필드',
     fields: '필드 목록',
     create: '필드 생성',

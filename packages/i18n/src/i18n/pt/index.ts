@@ -268,6 +268,7 @@ const webhook = {
 }
 
 const field = {
+  typeChanged: 'Você alterou o tipo de campo, os dados serão convertidos para o novo tipo quando possível, mas podem ser excluídos',
   field: 'Campo',
   fields: 'Campos',
   create: 'Criar Campo',
