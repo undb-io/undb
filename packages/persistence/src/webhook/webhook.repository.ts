@@ -2,7 +2,8 @@ import { injectContext, type IContext } from "@undb/context"
 import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import { type IWebhookRepository, type WebhookDo, type WebhookSpecification } from "@undb/webhook"
-import { getCurrentTransaction } from "../ctx"
+import type { ITxContext } from "../ctx.interface"
+import { injectTxCTX } from "../ctx.provider"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { WebhookFilterVisitor } from "./webhook.filter-visitor"
@@ -18,10 +19,13 @@ export class WebhookRepository implements IWebhookRepository {
     private readonly qb: IQueryBuilder,
     @injectContext()
     private readonly context: IContext,
+    @injectTxCTX()
+    private readonly txContext: ITxContext,
   ) {}
 
   async findOneById(id: string): Promise<Option<WebhookDo>> {
-    const wb = await (getCurrentTransaction() ?? this.qb)
+    const wb = await this.txContext
+      .getCurrentTransaction()
       .selectFrom("undb_webhook")
       .selectAll()
       .where((eb) => eb.eb("id", "=", id))
@@ -35,7 +39,8 @@ export class WebhookRepository implements IWebhookRepository {
   }
 
   async find(spec: WebhookSpecification): Promise<WebhookDo[]> {
-    const wb = await (getCurrentTransaction() ?? this.qb)
+    const wb = await this.txContext
+      .getCurrentTransaction()
       .selectFrom("undb_webhook")
       .selectAll()
       .where((eb) => {
@@ -51,14 +56,15 @@ export class WebhookRepository implements IWebhookRepository {
   async insert(webhook: WebhookDo): Promise<void> {
     const values = this.mapper.toEntity(webhook)
 
-    await (getCurrentTransaction() ?? this.qb).insertInto("undb_webhook").values(values).execute()
+    await this.txContext.getCurrentTransaction().insertInto("undb_webhook").values(values).execute()
   }
 
   async updateOneById(webhook: WebhookDo, spec: WebhookSpecification): Promise<void> {
     const visitor = new WebhookMutationVisitor()
     spec.accept(visitor)
 
-    await (getCurrentTransaction() ?? this.qb)
+    await this.txContext
+      .getCurrentTransaction()
       .updateTable("undb_webhook")
       .set(visitor.data)
       .where((eb) => eb.eb("id", "=", webhook.id.value))
@@ -66,6 +72,6 @@ export class WebhookRepository implements IWebhookRepository {
   }
 
   async deleteOneById(id: string): Promise<void> {
-    await (getCurrentTransaction() ?? this.qb).deleteFrom("undb_webhook").where("undb_webhook.id", "=", id).execute()
+    await this.txContext.getCurrentTransaction().deleteFrom("undb_webhook").where("undb_webhook.id", "=", id).execute()
   }
 }

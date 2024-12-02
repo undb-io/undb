@@ -3,7 +3,8 @@ import { singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
 import type { TableComositeSpecification, TableDo } from "@undb/table"
 import type { CompiledQuery } from "kysely"
-import { getAnonymousTransaction, getCurrentTransaction } from "../ctx"
+import type { ITxContext } from "../ctx.interface"
+import { injectTxCTX } from "../ctx.provider"
 import { JoinTable } from "./reference/join-table"
 import { UnderlyingTable } from "./underlying-table"
 import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
@@ -11,13 +12,17 @@ import { UnderlyingTableSpecVisitor } from "./underlying-table-spec.visitor"
 
 @singleton()
 export class UnderlyingTableService {
-  constructor(@injectContext() private readonly context: IContext) {}
+  constructor(
+    @injectContext() private readonly context: IContext,
+    @injectTxCTX()
+    private readonly txContext: ITxContext,
+  ) {}
 
   readonly logger = createLogger(UnderlyingTableService.name)
 
   async create(table: TableDo) {
     const t = new UnderlyingTable(table)
-    const trx = getCurrentTransaction()
+    const trx = this.txContext.getCurrentTransaction()
     const sql: CompiledQuery[] = []
     await trx.schema
       .createTable(t.name)
@@ -39,7 +44,7 @@ export class UnderlyingTableService {
 
   async update(table: TableDo, spec: TableComositeSpecification) {
     const t = new UnderlyingTable(table)
-    const trx = getAnonymousTransaction()
+    const trx = this.txContext.getAnonymousTransaction()
 
     const visitor = new UnderlyingTableSpecVisitor(t, trx, this.context)
     spec.accept(visitor)
@@ -49,7 +54,7 @@ export class UnderlyingTableService {
 
   async delete(table: TableDo) {
     const t = new UnderlyingTable(table)
-    const trx = getCurrentTransaction()
+    const trx = this.txContext.getCurrentTransaction()
     await trx.schema.dropTable(t.name).ifExists().execute()
     const referenceFields = table.schema.getReferenceFields()
     for (const field of referenceFields) {

@@ -13,7 +13,8 @@ import {
 import { CommandBus, QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import { Option, type ICommandBus, type IQueryBus, type PaginatedDTO } from "@undb/domain"
-import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
+import type { ITxContext } from "@undb/persistence/server"
+import { injectQueryBuilder, injectTxCTX, type IQueryBuilder } from "@undb/persistence/server"
 import {
   GetAggregatesQuery,
   GetPivotDataQuery,
@@ -22,7 +23,6 @@ import {
 } from "@undb/queries"
 import { RecordDO, type IRecordReadableValueDTO } from "@undb/table"
 import Elysia, { t } from "elysia"
-import { withTransaction } from "../../db"
 
 @singleton()
 export class RecordOpenApi {
@@ -34,6 +34,8 @@ export class RecordOpenApi {
     private readonly commandBus: ICommandBus,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
+    @injectTxCTX()
+    private readonly txContext: ITxContext,
   ) {}
 
   public route() {
@@ -184,7 +186,7 @@ export class RecordOpenApi {
           async (ctx) => {
             const baseName = decodeURIComponent(ctx.params.baseName)
             const tableName = decodeURIComponent(ctx.params.tableName)
-            return withTransaction(this.qb)(() =>
+            return this.txContext.withTransaction(() =>
               this.commandBus.execute(new CreateRecordCommand({ baseName, tableName, values: ctx.body.values })),
             )
           },
@@ -203,7 +205,7 @@ export class RecordOpenApi {
           async (ctx) => {
             const baseName = decodeURIComponent(ctx.params.baseName)
             const tableName = decodeURIComponent(ctx.params.tableName)
-            return withTransaction(this.qb)(() =>
+            return this.txContext.withTransaction(() =>
               this.commandBus.execute(new CreateRecordsCommand({ baseName, tableName, records: ctx.body.records })),
             )
           },
@@ -222,7 +224,7 @@ export class RecordOpenApi {
           async (ctx) => {
             const baseName = decodeURIComponent(ctx.params.baseName)
             const tableName = decodeURIComponent(ctx.params.tableName)
-            return withTransaction(this.qb)(() =>
+            return this.txContext.withTransaction(() =>
               this.commandBus.execute(
                 new UpdateRecordCommand({
                   tableName,
@@ -248,7 +250,7 @@ export class RecordOpenApi {
           async (ctx) => {
             const baseName = decodeURIComponent(ctx.params.baseName)
             const tableName = decodeURIComponent(ctx.params.tableName)
-            return withTransaction(this.qb)(() =>
+            return this.txContext.withTransaction(() =>
               this.commandBus.execute(
                 new BulkUpdateRecordsCommand({
                   tableName,
@@ -278,7 +280,7 @@ export class RecordOpenApi {
           async (ctx) => {
             const baseName = decodeURIComponent(ctx.params.baseName)
             const tableName = decodeURIComponent(ctx.params.tableName)
-            return withTransaction(this.qb)(() =>
+            return this.txContext.withTransaction(() =>
               this.commandBus.execute(new DuplicateRecordCommand({ baseName, tableName, id: ctx.params.recordId })),
             )
           },
@@ -298,7 +300,7 @@ export class RecordOpenApi {
             const tableName = decodeURIComponent(ctx.params.tableName)
             const recordId = ctx.params.recordId
             const field = ctx.params.field
-            return withTransaction(this.qb)(async () => {
+            return this.txContext.withTransaction(async () => {
               const result = (await this.commandBus.execute(
                 new TriggerRecordButtonCommand({ baseName, tableName, recordId, field }),
               )) as Option<RecordDO>
@@ -326,7 +328,7 @@ export class RecordOpenApi {
           async (ctx) => {
             const baseName = decodeURIComponent(ctx.params.baseName)
             const tableName = decodeURIComponent(ctx.params.tableName)
-            return withTransaction(this.qb)(() =>
+            return this.txContext.withTransaction(() =>
               this.commandBus.execute(
                 new BulkDuplicateRecordsCommand({
                   baseName,
@@ -352,7 +354,7 @@ export class RecordOpenApi {
           async (ctx) => {
             const baseName = decodeURIComponent(ctx.params.baseName)
             const tableName = decodeURIComponent(ctx.params.tableName)
-            return withTransaction(this.qb)(() =>
+            return this.txContext.withTransaction(() =>
               this.commandBus.execute(new DeleteRecordCommand({ baseName, tableName, id: ctx.params.recordId })),
             )
           },
@@ -370,7 +372,7 @@ export class RecordOpenApi {
           async (ctx) => {
             const baseName = decodeURIComponent(ctx.params.baseName)
             const tableName = decodeURIComponent(ctx.params.tableName)
-            return withTransaction(this.qb)(() =>
+            return this.txContext.withTransaction(() =>
               this.commandBus.execute(
                 new BulkDeleteRecordsCommand({
                   baseName,
@@ -397,7 +399,7 @@ export class RecordOpenApi {
             const baseName = decodeURIComponent(ctx.params.baseName)
             const tableName = decodeURIComponent(ctx.params.tableName)
             const formName = decodeURIComponent(ctx.params.formName)
-            return withTransaction(this.qb)(() =>
+            return this.txContext.withTransaction(() =>
               this.commandBus.execute(
                 new SubmitFormCommand({ baseName, tableName, form: formName, values: ctx.body.values }),
               ),

@@ -6,7 +6,8 @@ import {
 } from "@undb/dashboard"
 import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
-import { getCurrentTransaction } from "../ctx"
+import type { ITxContext } from "../ctx.interface"
+import { injectTxCTX } from "../ctx.provider"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { DashboardFilterVisitor } from "./dashboard.filter-visitor"
@@ -20,10 +21,12 @@ export class DashboardQueryRepository implements IDashboardQueryRepository {
     private readonly mapper: DashboardMapper,
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
+    @injectTxCTX()
+    private readonly txContext: ITxContext,
   ) {}
 
   async find(spec: Option<IDashboardSpecification>): Promise<IDashboardDTO[]> {
-    const qb = getCurrentTransaction() ?? this.qb
+    const qb = this.txContext.getCurrentTransaction()
     const dashboards = await qb
       .selectFrom("undb_dashboard")
       .selectAll()
@@ -43,7 +46,7 @@ export class DashboardQueryRepository implements IDashboardQueryRepository {
   async findOneById(id: string): Promise<Option<IDashboardDTO>> {
     const spec = WithDashboardId.fromString(id)
 
-    const qb = getCurrentTransaction() ?? this.qb
+    const qb = this.txContext.getCurrentTransaction()
     const dashboard = await this.qb
       .selectFrom("undb_dashboard")
       .selectAll()

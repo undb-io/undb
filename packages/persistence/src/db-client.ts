@@ -10,6 +10,6 @@ export const createTursoClient = (url: string, authToken?: string) => {
   return createClient({ url, authToken })
 }
 
-export const createSqliteClient = (fileName: string) => {
+export const createSqliteClient = (fileName: string): Database => {
   return new Database(fileName)
 }

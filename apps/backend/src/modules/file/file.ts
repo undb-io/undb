@@ -1,6 +1,6 @@
 import { type IContext, injectContext } from "@undb/context"
 import { singleton } from "@undb/di"
-import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
+import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence/server"
 import { injectObjectStorage, type IObjectStorage, type IPutObject } from "@undb/table"
 import Elysia, { t } from "elysia"
 

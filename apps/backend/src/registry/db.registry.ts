@@ -23,8 +23,11 @@ import {
   BaseQueryRepository,
   BaseRepository,
   Client,
+  createSqliteClient,
   createSqliteQueryBuilder,
+  createTursoClient,
   createTursoQueryBuilder,
+  CTX,
   DashboardOutboxService,
   DashboardQueryRepository,
   DashboardRepository,
@@ -40,16 +43,19 @@ import {
   SpaceMemberRepository,
   SpaceQueryRepository,
   SpaceRepostitory,
+  SQLITE_CLIENT,
   TableOutboxService,
   TableQueryRepository,
   TableRepository,
   TemplateQueryRepository,
+  TX_CTX,
+  TxContext,
+  TxContextImpl,
   UserQueryRepository,
   UserRepository,
   WebhookQueryRepository,
   WebhookRepository,
-} from "@undb/persistence"
-import { createSqliteClient, createTursoClient, SQLITE_CLIENT } from "@undb/persistence/src/client"
+} from "@undb/persistence/server"
 import { SHARE_QUERY_REPOSITORY, SHARE_REPOSITORY, SHARE_SERVICE, ShareService } from "@undb/share"
 import { SPACE_QUERY_REPOSITORY, SPACE_REPOSITORY, SPACE_SERVICE, SpaceService } from "@undb/space"
 import {
@@ -64,8 +70,14 @@ import { TEMPLATE_QUERY_REPOSITORY } from "@undb/template"
 import { USER_QUERY_REPOSITORY, USER_REPOSITORY, USER_SERVICE, UserService } from "@undb/user"
 import { WEBHOOK_QUERY_REPOSITORY, WEBHOOK_REPOSITORY } from "@undb/webhook"
 import Database from "bun:sqlite"
+import { AsyncLocalStorage } from "node:async_hooks"
+
+const txContext = new AsyncLocalStorage<TxContext>()
 
 export const registerDb = () => {
+  container.register(CTX, { useValue: txContext })
+  container.register(TX_CTX, TxContextImpl)
+
   container.register(SQLITE_CLIENT, {
     useFactory: instanceCachingFactory(() => {
       if (env.UNDB_DB_PROVIDER === "sqlite" || !env.UNDB_DB_PROVIDER) {

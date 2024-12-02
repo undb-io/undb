@@ -14,7 +14,7 @@ import { None, Option, Some } from "@undb/domain"
 import { env } from "@undb/env"
 import { createLogger } from "@undb/logger"
 import { type IMailService, injectMailService } from "@undb/mail"
-import { type IQueryBuilder, getCurrentTransaction, injectQueryBuilder } from "@undb/persistence"
+import { type IQueryBuilder, type ITxContext, injectQueryBuilder, injectTxCTX } from "@undb/persistence/server"
 import { type ISpaceService, injectSpaceService } from "@undb/space"
 import { Context, Elysia, t } from "elysia"
 import type { Session, User } from "lucia"
@@ -25,7 +25,6 @@ import { alphabet, generateRandomString, sha256 } from "oslo/crypto"
 import { encodeHex } from "oslo/encoding"
 import { omit } from "radash"
 import { v7 } from "uuid"
-import { withTransaction } from "../../db"
 import { injectLucia } from "./auth.provider"
 import { OAuth } from "./oauth/oauth"
 
@@ -52,10 +51,12 @@ export class Auth {
     private readonly mailService: IMailService,
     @injectLucia()
     private readonly lucia: Lucia,
+    @injectTxCTX()
+    private readonly txContext: ITxContext,
   ) {}
 
   async #generateEmailVerificationCode(userId: string, email: string): Promise<string> {
-    const tx = getCurrentTransaction()
+    const tx = this.txContext.getCurrentTransaction()
     await tx.deleteFrom("undb_email_verification_code").where("user_id", "=", userId).execute()
     const code = env.UNDB_MOCK_MAIL_CODE || generateRandomString(6, alphabet("0-9"))
     await tx
@@ -71,29 +72,32 @@ export class Auth {
   }
 
   async #verifyVerificationCode(user: User, code: string): Promise<boolean> {
-    return (getCurrentTransaction() ?? this.queryBuilder).transaction().execute(async (tx) => {
-      const databaseCode = await tx
-        .selectFrom("undb_email_verification_code")
-        .selectAll()
-        .where("user_id", "=", user.id)
-        .executeTakeFirst()
-      if (!databaseCode || databaseCode.code !== code) {
-        return false
-      }
-      await tx.deleteFrom("undb_email_verification_code").where("id", "=", databaseCode.id).execute()
+    return this.txContext
+      .getCurrentTransaction()
+      .transaction()
+      .execute(async (tx) => {
+        const databaseCode = await tx
+          .selectFrom("undb_email_verification_code")
+          .selectAll()
+          .where("user_id", "=", user.id)
+          .executeTakeFirst()
+        if (!databaseCode || databaseCode.code !== code) {
+          return false
+        }
+        await tx.deleteFrom("undb_email_verification_code").where("id", "=", databaseCode.id).execute()
 
-      if (!isWithinExpirationDate(new Date(databaseCode.expires_at))) {
-        return false
-      }
-      if (databaseCode.email !== user.email) {
-        return false
-      }
-      return true
-    })
+        if (!isWithinExpirationDate(new Date(databaseCode.expires_at))) {
+          return false
+        }
+        if (databaseCode.email !== user.email) {
+          return false
+        }
+        return true
+      })
   }
 
   async #createPasswordResetToken(userId: string): Promise<string> {
-    const db = getCurrentTransaction() ?? this.queryBuilder
+    const db = this.txContext.getCurrentTransaction()
     await db.deleteFrom("undb_password_reset_token").where("user_id", "=", userId).execute()
     const tokenId = generateIdFromEntropySize(25) // 40 character
     const tokenHash = encodeHex(await sha256(new TextEncoder().encode(tokenId)))
@@ -206,8 +210,9 @@ export class Auth {
           },
         })
 
-        await withTransaction(this.queryBuilder)(async () => {
-          await getCurrentTransaction()
+        await this.txContext.withTransaction(async () => {
+          await this.txContext
+            .getCurrentTransaction()
             .insertInto("undb_user")
             .values({
               email: adminEmail,
@@ -326,8 +331,9 @@ export class Auth {
               },
             })
 
-            await withTransaction(this.queryBuilder)(async () => {
-              await getCurrentTransaction()
+            await this.txContext.withTransaction(async () => {
+              await this.txContext
+                .getCurrentTransaction()
                 .insertInto("undb_user")
                 .values({
                   email,
@@ -470,9 +476,9 @@ export class Auth {
       .post(
         "/api/reset-password",
         async (ctx) => {
-          return withTransaction(this.queryBuilder)(async () => {
+          return this.txContext.withTransaction(async () => {
             const email = ctx.body.email
-            const tx = getCurrentTransaction() ?? this.queryBuilder
+            const tx = this.txContext.getCurrentTransaction()
             const user = await tx.selectFrom("undb_user").selectAll().where("email", "=", email).executeTakeFirst()
             if (!user) {
               return new Response(null, {
@@ -505,8 +511,8 @@ export class Auth {
       .post(
         "/api/reset-password/:token",
         async (ctx) => {
-          return withTransaction(this.queryBuilder)(async () => {
-            const tx = getCurrentTransaction() ?? this.queryBuilder
+          return this.txContext.withTransaction(async () => {
+            const tx = this.txContext.getCurrentTransaction()
 
             const password = ctx.body.password
             const verificationToken = ctx.params.token
@@ -589,7 +595,8 @@ export class Auth {
           }
 
           await this.lucia.invalidateUserSessions(user.id)
-          await (getCurrentTransaction() ?? this.queryBuilder)
+          await this.txContext
+            .getCurrentTransaction()
             .updateTable("undb_user")
             .set("email_verified", true)
             .where("id", "=", user.id)
@@ -615,7 +622,7 @@ export class Auth {
       .get(
         "/invitation/:invitationId/accept",
         async (ctx) => {
-          return withTransaction(this.queryBuilder)(async () => {
+          return this.txContext.withTransaction(async () => {
             const { invitationId } = ctx.params
             await this.commandBus.execute(new AcceptInvitationCommand({ id: invitationId }))
 

@@ -4,11 +4,11 @@ import { type IContext, injectContext } from "@undb/context"
 import { getCurrentMember } from "@undb/context/server"
 import { CommandBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
-import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence"
+import type { ITxContext } from "@undb/persistence/server"
+import { injectQueryBuilder, injectTxCTX, type IQueryBuilder } from "@undb/persistence/server"
 import { injectSpaceService, type ISpaceService } from "@undb/space"
 import Elysia, { t } from "elysia"
 import { type Lucia } from "lucia"
-import { withTransaction } from "../../db"
 import { injectLucia } from "../auth/auth.provider"
 
 @singleton()
@@ -24,6 +24,8 @@ export class SpaceModule {
     private readonly qb: IQueryBuilder,
     @injectContext()
     private readonly context: IContext,
+    @injectTxCTX()
+    private readonly txContext: ITxContext,
   ) {}
   public route() {
     return new Elysia()
@@ -66,7 +68,7 @@ export class SpaceModule {
       .delete(
         "/api/space",
         async (ctx) => {
-          return withTransaction(this.qb)(async () => {
+          return this.txContext.withTransaction(async () => {
             await this.commandBus.execute(new DeleteSpaceCommand({}))
 
             const userId = this.context.mustGetCurrentUserId()

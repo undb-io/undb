@@ -4,7 +4,7 @@ import { initTRPC, TRPCError } from "@trpc/server"
 import { executionContext, getCurrentUserId } from "@undb/context/server"
 import { container } from "@undb/di"
 import { createLogger } from "@undb/logger"
-import { QUERY_BUILDER, startTransaction, type IQueryBuilder } from "@undb/persistence"
+import { QUERY_BUILDER, TX_CTX, type IQueryBuilder, type ITxContext } from "@undb/persistence/server"
 import { ZodError } from "@undb/zod"
 import { fromZodError } from "zod-validation-error"
 import pkg from "../package.json"
@@ -51,11 +51,12 @@ export const p = t.procedure
   .use(async (ctx) => {
     if (ctx.type === "mutation") {
       const qb = container.resolve<IQueryBuilder>(QUERY_BUILDER)
+      const txContext = container.resolve<ITxContext>(TX_CTX)
       return await qb
         .transaction()
         .setIsolationLevel("read committed")
         .execute(async (tx) => {
-          startTransaction(tx)
+          txContext.startTransaction(tx)
           const result = await ctx.next()
 
           return result

@@ -1,6 +1,7 @@
 import { singleton } from "@undb/di"
 import type { ApiTokenDo, IApiTokenRepository } from "@undb/openapi"
-import { getCurrentTransaction } from "../ctx"
+import type { ITxContext } from "../ctx.interface"
+import { injectTxCTX } from "../ctx.provider"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 
@@ -9,9 +10,12 @@ export class ApiTokenRepository implements IApiTokenRepository {
   constructor(
     @injectQueryBuilder()
     private readonly qb: IQueryBuilder,
+    @injectTxCTX()
+    private readonly txContext: ITxContext,
   ) {}
   async insert(token: ApiTokenDo): Promise<void> {
-    await (getCurrentTransaction() ?? this.qb)
+    await this.txContext
+      .getCurrentTransaction()
       .insertInto("undb_api_token")
       .values({
         id: token.id.value,
@@ -24,7 +28,8 @@ export class ApiTokenRepository implements IApiTokenRepository {
   }
 
   async deleteOneById(id: string): Promise<void> {
-    await (getCurrentTransaction() ?? this.qb)
+    await this.txContext
+      .getCurrentTransaction()
       .deleteFrom("undb_api_token")
       .where("undb_api_token.id", "=", id)
       .execute()

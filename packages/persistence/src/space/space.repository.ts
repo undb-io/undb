@@ -2,7 +2,8 @@ import { injectContext, type IContext } from "@undb/context"
 import { singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import { SpaceFactory, type ISpaceRepository, type ISpaceSpecification, type Space } from "@undb/space"
-import { getCurrentTransaction } from "../ctx"
+import type { ITxContext } from "../ctx.interface"
+import { injectTxCTX } from "../ctx.provider"
 import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
 import { SpaceFilterVisitor } from "./space.filter-visitor"
@@ -15,9 +16,12 @@ export class SpaceRepostitory implements ISpaceRepository {
     private readonly qb: IQueryBuilder,
     @injectContext()
     private readonly context: IContext,
+    @injectTxCTX()
+    private readonly txContext: ITxContext,
   ) {}
   async find(spec: ISpaceSpecification): Promise<Space[]> {
-    const space = await (getCurrentTransaction() ?? this.qb)
+    const space = await this.txContext
+      .getCurrentTransaction()
       .selectFrom("undb_space")
       .selectAll()
       .where((eb) => {
@@ -37,7 +41,8 @@ export class SpaceRepostitory implements ISpaceRepository {
     )
   }
   async findOne(spec: ISpaceSpecification): Promise<Option<Space>> {
-    const space = await (getCurrentTransaction() ?? this.qb)
+    const space = await this.txContext
+      .getCurrentTransaction()
       .selectFrom("undb_space")
       .selectAll()
       .where((eb) => new SpaceFilterVisitor(this.qb, eb).exec(Some(spec)))
@@ -57,7 +62,8 @@ export class SpaceRepostitory implements ISpaceRepository {
     )
   }
   async findOneById(id: string): Promise<Option<Space>> {
-    const space = await (getCurrentTransaction() ?? this.qb)
+    const space = await this.txContext
+      .getCurrentTransaction()
       .selectFrom("undb_space")
       .selectAll()
       .where("undb_space.id", "=", id)
@@ -78,7 +84,7 @@ export class SpaceRepostitory implements ISpaceRepository {
     )
   }
   async insert(space: Space): Promise<void> {
-    const tx = getCurrentTransaction()
+    const tx = this.txContext.getCurrentTransaction()
     const userId = this.context.getCurrentUserId()
     await tx
       .insertInto("undb_space")
@@ -99,16 +105,16 @@ export class SpaceRepostitory implements ISpaceRepository {
     spec.accept(visitor)
 
     const userId = this.context.getCurrentUserId()
-    await getCurrentTransaction()
+    await this.txContext
+      .getCurrentTransaction()
       .updateTable("undb_space")
       .set({ ...visitor.data, updated_by: userId, updated_at: new Date().toISOString() })
       .where((eb) => eb.and([eb.eb("id", "=", space.id.value), eb.eb("deleted_at", "is", null)]))
       .execute()
   }
   async deleteOneById(id: string): Promise<void> {
-    const tx = getCurrentTransaction()
-
-    await tx
+    await this.txContext
+      .getCurrentTransaction()
       .updateTable("undb_space")
       .set({ deleted_at: new Date().getTime(), deleted_by: this.context.getCurrentUserId() })
       .where("id", "=", id)
