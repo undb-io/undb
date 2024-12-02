@@ -6,7 +6,7 @@ import { drizzle as sqliteDrizzle } from "drizzle-orm/bun-sqlite"
 import { migrate as sqliteMigrate } from "drizzle-orm/bun-sqlite/migrator"
 import { drizzle as libsqlDrizzle } from "drizzle-orm/libsql"
 import { migrate as libsqlMigrate } from "drizzle-orm/libsql/migrator"
-import { SQLITE_CLIENT } from "./client"
+import { SQLITE_CLIENT } from "./db-client"
 import { DrizzleLogger } from "./db.logger"
 
 export async function dbMigrate() {

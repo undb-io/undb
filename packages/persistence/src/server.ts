@@ -18,6 +18,6 @@ export * from "./user"
 export * from "./webhook"
 
 export { type Client } from "@libsql/client"
-export { SQLITE_CLIENT, createSqliteClient, createTursoClient, injectSqliteClient } from "./client"
+export { SQLITE_CLIENT, createSqliteClient, createTursoClient, injectSqliteClient } from "./db-client"
 export { type IQueryBuilder } from "./qb"
 export { injectQueryBuilder } from "./qb.provider"
