@@ -5,15 +5,19 @@ import type { IRecordQueryBuilder } from "../../qb"
 import type { UnderlyingConversionStrategy } from "./conversion.interface"
 import { NoopConversionStrategy } from "./noop.strategy"
 import { AnyToCurrencyStrategy } from "./strategies/any-to-currency.strategy"
+import { AnyToDateRangeStrategy } from "./strategies/any-to-date-range.strategy.ts"
 import { AnyToEmailStrategy } from "./strategies/any-to-email.strategy"
 import { AnyToNumberStrategy } from "./strategies/any-to-number.strategy"
 import { AnyToTextStrategy } from "./strategies/any-to-text.strategy"
 import { AnyToUrlStrategy } from "./strategies/any-to-url.strategy"
 import { ClearValueStrategy } from "./strategies/clear-value.strategy"
+import { DateToDateRangeStrategy } from "./strategies/date-to-date-range.strategy"
 import { NumberToBooleanStrategy } from "./strategies/number-to-boolean.strategy"
+import { NumberToDateRangeStrategy } from "./strategies/number-to-date-range.strategy.ts"
 import { NumberToDateStrategy } from "./strategies/number-to-date.strategy"
 import { SelectToStringStrategy } from "./strategies/select-to-string.strategy"
 import { StringToBooleanStrategy } from "./strategies/string-to-boolean.strategy"
+import { StringToDateRangeStrategy } from "./strategies/string-to-date-range.strategy"
 import { StringToDateStrategy } from "./strategies/string-to-date.strategy"
 import { StringToSelectStrategy } from "./strategies/string-to-select.strategy"
 import { StringToUserStrategy } from "./strategies/string-to-user.strategy"
@@ -46,6 +50,18 @@ export class ConversionFactory {
         )
         .with({ toType: "email" }, () => new AnyToEmailStrategy(tb, qb, table))
         .with({ toType: "url" }, () => new AnyToUrlStrategy(tb, qb, table))
+
+        // date-range
+        .with({ fromType: "date", toType: "dateRange" }, () => new DateToDateRangeStrategy(tb, qb, table))
+        .when(
+          ({ fromType, toType }) => isTextTypeField(fromType) && toType === "dateRange",
+          () => new StringToDateRangeStrategy(tb, qb, table),
+        )
+        .when(
+          ({ fromType, toType }) => fromType === "number" && toType === "dateRange",
+          () => new NumberToDateRangeStrategy(tb, qb, table),
+        )
+        .with({ toType: "dateRange" }, () => new AnyToDateRangeStrategy(tb, qb, table))
 
         // user
         .when(

@@ -21,8 +21,12 @@ export abstract class UnderlyingConversionStrategy implements IConversionStrateg
 
   abstract convert(field: Field, previousField: Field): void | Promise<void>
 
+  generateTempFieldId(name: string) {
+    return TEMP_FIELD_PREFIX + name
+  }
+
   tempField(field: Field) {
-    return TEMP_FIELD_PREFIX + field.id.value
+    return this.generateTempFieldId(field.id.value)
   }
 
   protected changeType(field: Field, type: ColumnDataType, update: () => CompiledQuery) {
