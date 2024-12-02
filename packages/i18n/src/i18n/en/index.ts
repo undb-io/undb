@@ -270,6 +270,7 @@ const webhook = {
 }
 
   const field = {
+    typeChanged: 'You have changed the field type, data will be cast to new type when possible, but may be cleared',
     field: 'Field',
     fields: 'Fields',
     create: 'Create Field',
