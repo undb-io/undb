@@ -4,8 +4,8 @@ import { singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
-import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
+import type { IQueryBuilder } from "../qb.server"
 import { InvitationFilterVisitor } from "./invitation.filter-visitor"
 
 @singleton()

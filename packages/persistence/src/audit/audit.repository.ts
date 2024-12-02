@@ -2,8 +2,8 @@ import type { Audit, AuditSpecification, IAuditRepository } from "@undb/audit"
 import { injectContext, type IContext } from "@undb/context"
 import { inject, singleton } from "@undb/di"
 import type { Option } from "@undb/domain"
-import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
+import type { IQueryBuilder } from "../qb.server"
 import { AuditMapper } from "./audit.mapper"
 
 @singleton()

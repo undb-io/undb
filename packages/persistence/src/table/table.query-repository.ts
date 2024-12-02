@@ -8,8 +8,8 @@ import {
   type TableComositeSpecification,
   type TableId,
 } from "@undb/table"
-import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
+import type { IQueryBuilder } from "../qb.server"
 import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
 import { TableMapper } from "./table.mapper"
 import { TableReferenceVisitor } from "./table.reference-visitor"

@@ -1,8 +1,8 @@
 import { SpaceMemberComositeSpecification, type ISpaceMemberDTO, type ISpaceMemberQueryRepository } from "@undb/authz"
 import { inject, singleton } from "@undb/di"
 import { None, Option, Some } from "@undb/domain"
-import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
+import type { IQueryBuilder } from "../qb.server"
 import { MemberMapper } from "./member.mapper"
 import { SpaceMemberFilterVisitor } from "./space-member.filter-visitor"
 

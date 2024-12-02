@@ -4,7 +4,7 @@ import { singleton } from "@undb/di"
 import type { Mapper } from "@undb/domain"
 import { pick } from "radash"
 import type { Audit } from "../db"
-import { json } from "../qb"
+import { json } from "../qb.server"
 
 @singleton()
 export class AuditMapper implements Mapper<AuditDo, Audit, IAuditDTO> {

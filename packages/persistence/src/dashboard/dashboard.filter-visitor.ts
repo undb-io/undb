@@ -16,7 +16,7 @@ import type { DuplicatedDashboardSpecification } from "@undb/dashboard/src/speci
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
-import type { IQueryBuilder } from "../qb"
+import type { IQueryBuilder } from "../qb.server"
 
 export class DashboardFilterVisitor extends AbstractQBVisitor<Dashboard> implements IDashboardSpecVisitor {
   constructor(

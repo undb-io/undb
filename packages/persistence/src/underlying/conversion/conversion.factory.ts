@@ -1,7 +1,7 @@
 import type { Field, FieldType, TableDo } from "@undb/table"
 import type { AlterTableBuilder } from "kysely"
 import { match } from "ts-pattern"
-import type { IRecordQueryBuilder } from "../../qb"
+import type { IRecordQueryBuilder } from "../../qb.server.ts"
 import type { UnderlyingConversionStrategy } from "./conversion.interface"
 import { NoopConversionStrategy } from "./noop.strategy"
 import { AnyToCurrencyStrategy } from "./strategies/any-to-currency.strategy"

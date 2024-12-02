@@ -2,8 +2,8 @@ import { singleton } from "@undb/di"
 import type { ApiTokenDo, IApiTokenRepository } from "@undb/openapi"
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
-import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
+import type { IQueryBuilder } from "../qb.server"
 
 @singleton()
 export class ApiTokenRepository implements IApiTokenRepository {
