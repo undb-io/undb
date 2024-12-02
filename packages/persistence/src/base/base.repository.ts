@@ -15,7 +15,7 @@ import { injectTableRepository, TableBaseIdSpecification, type ITableRepository 
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
 import { injectQueryBuilder } from "../qb.provider"
-import type { IQueryBuilder } from "../qb.server"
+import type { IQueryBuilder } from "../qb.type"
 import { UnderlyingTableService } from "../underlying/underlying-table.service"
 import { BaseFilterVisitor } from "./base.filter-visitor"
 import { BaseMapper } from "./base.mapper"

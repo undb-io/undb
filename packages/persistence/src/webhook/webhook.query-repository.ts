@@ -3,7 +3,7 @@ import { inject, singleton } from "@undb/di"
 import { None, Some, type IPagination, type Option } from "@undb/domain"
 import type { IWebhookDTO, IWebhookQueryRepository, WebhookSpecification } from "@undb/webhook"
 import { injectQueryBuilder } from "../qb.provider"
-import type { IQueryBuilder } from "../qb.server"
+import type { IQueryBuilder } from "../qb.type"
 import { WebhookFilterVisitor } from "./webhook.filter-visitor"
 import { WebhookMapper } from "./webhook.mapper"
 

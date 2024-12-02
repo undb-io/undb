@@ -5,7 +5,7 @@ import { None, Some, type Option } from "@undb/domain"
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
 import { injectQueryBuilder } from "../qb.provider"
-import type { IQueryBuilder } from "../qb.server"
+import type { IQueryBuilder } from "../qb.type"
 import { InvitationFilterVisitor } from "./invitation.filter-visitor"
 
 @singleton()

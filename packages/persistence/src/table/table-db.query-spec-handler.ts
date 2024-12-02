@@ -1,7 +1,7 @@
 import { Option } from "@undb/domain"
 import type { TableComositeSpecification } from "@undb/table"
 import type { ExpressionBuilder } from "kysely"
-import type { IQueryBuilder } from "../qb.server"
+import type { IQueryBuilder } from "../qb.type"
 import { TableFilterVisitor } from "./table.filter-visitor"
 
 export class TableDbQuerySpecHandler {

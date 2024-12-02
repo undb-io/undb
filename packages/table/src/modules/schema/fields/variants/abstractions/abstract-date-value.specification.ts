@@ -4,7 +4,7 @@ import { isToday } from "date-fns/isToday"
 import type { IRecordVisitor, RecordDO } from "../../../../records"
 import { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import type { FieldId } from "../../field-id.vo"
-import { DateFieldValue } from "../date-field"
+import { DateFieldValue } from "../date-field/date-field-value.vo"
 
 export class DateIsSameDay extends RecordComositeSpecification {
   constructor(

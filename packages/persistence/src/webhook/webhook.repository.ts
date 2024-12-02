@@ -5,7 +5,7 @@ import { type IWebhookRepository, type WebhookDo, type WebhookSpecification } fr
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
 import { injectQueryBuilder } from "../qb.provider"
-import type { IQueryBuilder } from "../qb.server"
+import type { IQueryBuilder } from "../qb.type"
 import { WebhookFilterVisitor } from "./webhook.filter-visitor"
 import { WebhookMapper } from "./webhook.mapper"
 import { WebhookMutationVisitor } from "./webhook.mutation-visitor"

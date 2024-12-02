@@ -2,8 +2,7 @@ import { inject, singleton } from "@undb/di"
 import { AsyncLocalStorage } from "node:async_hooks"
 import type { ITxContext } from "./ctx.interface"
 import { injectQueryBuilder } from "./qb.provider"
-import type { IQueryBuilder } from "./qb.server"
-import type { AnonymousTx, Tx } from "./qb.type"
+import type { AnonymousTx, IQueryBuilder, Tx } from "./qb.type"
 
 export interface TxContext {
   trx: Tx | AnonymousTx
