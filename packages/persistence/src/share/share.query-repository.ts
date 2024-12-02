@@ -1,8 +1,8 @@
 import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import type { IShareDTO, IShareQueryRepository, ShareSpecification } from "@undb/share"
-import type { IQueryBuilder } from "../qb"
 import { injectQueryBuilder } from "../qb.provider"
+import type { IQueryBuilder } from "../qb.server"
 import { ShareFilterVisitor } from "./share.filter-visitor"
 import { ShareMapper } from "./share.mapper"
 

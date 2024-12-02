@@ -8,6 +8,23 @@ export const load: LayoutLoad = async (event) => {
 
   // const search = new URLSearchParams({ redirect: redirectURL })
 
+  // const db = await createSqljsDatabase()
+  // const drizzleDB = await createDrizzleDatabase(db)
+  // migrate(drizzleDB)
+
+  // const qb = await createSqljsQueryBuilder(db)
+  // await qb
+  //   .insertInto("undb_user")
+  //   .values({
+  //     id: "1",
+  //     email: "test@test.com",
+  //     password: "password",
+  //     username: "test",
+  //   })
+  //   .execute()
+  // const users = await qb.selectFrom("undb_user").selectAll().execute()
+  // console.log({ users })
+
   const me = await event.fetch("/api/me")
   if (me.redirected) {
     throw redirect(301, me.url)

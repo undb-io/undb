@@ -2,7 +2,7 @@ import { DashboardFactory, type Dashboard as DashboardDo, type IDashboardDTO } f
 import { singleton } from "@undb/di"
 import type { Mapper } from "@undb/domain"
 import type { Dashboard } from "../db"
-import { json } from "../qb"
+import { json } from "../qb.server"
 
 @singleton()
 export class DashboardMapper implements Mapper<DashboardDo, Dashboard, IDashboardDTO> {
