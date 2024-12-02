@@ -25,6 +25,7 @@ export const createSqljsQueryBuilder = async (db?: InitSqlJs.Database) => {
       return db
     },
     onWrite: {
+      func: (buffer) => {},
       isThrottle: true,
     },
   })
