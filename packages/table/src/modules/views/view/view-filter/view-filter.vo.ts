@@ -1,12 +1,8 @@
 import { z } from "@undb/zod"
 import type { Field } from "../../../schema"
-import {
-  Condition,
-  conditionWithoutFields,
-  createConditionGroup,
-  parseValidCondition,
-  type IRootCondition,
-} from "../../../schema/fields/condition"
+import { Condition } from "../../../schema/fields/condition/abstract-condition.vo"
+import { createConditionGroup, type IRootCondition } from "../../../schema/fields/condition/condition.type"
+import { conditionWithoutFields, parseValidCondition } from "../../../schema/fields/condition/condition.util"
 
 export const viewFilterOption = z.any()
 

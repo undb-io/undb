@@ -4,7 +4,7 @@ import { WithShareId, type IShareRepository, type Share, type ShareSpecification
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
 import { injectQueryBuilder } from "../qb.provider"
-import type { IQueryBuilder } from "../qb.server"
+import type { IQueryBuilder } from "../qb.type"
 import { ShareFilterVisitor } from "./share.filter-visitor"
 import { ShareMapper } from "./share.mapper"
 

@@ -2,7 +2,7 @@ import type { AuditSpecification, IAuditDTO, IAuditQueryRepository } from "@undb
 import { injectContext, type IContext } from "@undb/context"
 import { inject, singleton } from "@undb/di"
 import { injectQueryBuilder } from "../qb.provider"
-import type { IQueryBuilder } from "../qb.server"
+import type { IQueryBuilder } from "../qb.type"
 import { AuditFilterVisitor } from "./audit.filter-visitor"
 import { AuditMapper } from "./audit.mapper"
 

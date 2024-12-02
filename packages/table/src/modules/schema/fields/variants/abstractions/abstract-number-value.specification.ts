@@ -3,7 +3,7 @@ import { isNumber } from "radash"
 import type { IRecordVisitor, RecordDO } from "../../../../records"
 import { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import type { FieldId } from "../../field-id.vo"
-import { NumberFieldValue } from "../number-field"
+import { NumberFieldValue } from "../number-field/number-field-value.vo"
 
 export class NumberEqual extends RecordComositeSpecification {
   constructor(

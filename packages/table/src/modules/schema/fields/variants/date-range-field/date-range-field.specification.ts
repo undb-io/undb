@@ -4,7 +4,7 @@ import type { IRecordVisitor } from "../../../../records/record/record-visitor.i
 import { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import type { RecordDO } from "../../../../records/record/record.do"
 import type { FieldId } from "../../field-id.vo"
-import { DateFieldValue } from "../date-field"
+import { DateFieldValue } from "../date-field/date-field-value.vo"
 import { DateRangeFieldValue } from "./date-range-field-value.vo"
 import type { IDateRangeFieldConditionItemScope } from "./date-range-field.condition"
 

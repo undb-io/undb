@@ -9,7 +9,7 @@ import {
   type TableId,
 } from "@undb/table"
 import { injectQueryBuilder } from "../qb.provider"
-import type { IQueryBuilder } from "../qb.server"
+import type { IQueryBuilder } from "../qb.type"
 import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
 import { TableMapper } from "./table.mapper"
 import { TableReferenceVisitor } from "./table.reference-visitor"

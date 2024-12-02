@@ -2,6 +2,7 @@ import { drizzle } from "drizzle-orm/sql-js"
 import { SqlJsDialect } from "kysely-wasm"
 import InitSqlJs from "sql.js"
 import { migrate } from "./migrate.client"
+import type { IQueryBuilder } from "./qb.type"
 import { createQueryBuilderWithDialect } from "./qb.util"
 
 export const createSqljsDatabase = async () => {
@@ -15,7 +16,7 @@ export const createDrizzleDatabase = async (db: InitSqlJs.Database) => {
   return drizzle(db)
 }
 
-export const createSqljsQueryBuilder = async (db?: InitSqlJs.Database) => {
+export const createSqljsQueryBuilder = async (db?: InitSqlJs.Database): Promise<IQueryBuilder> => {
   if (!db) {
     db = await createSqljsDatabase()
   }

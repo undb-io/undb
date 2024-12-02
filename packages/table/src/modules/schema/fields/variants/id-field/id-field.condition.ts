@@ -1,5 +1,5 @@
 import { z } from "@undb/zod"
-import { createBaseConditionSchema } from "../../condition"
+import { createBaseConditionSchema } from "../../condition/base.condition"
 
 export function createIdFieldCondition<ItemType extends z.ZodTypeAny>(itemType: ItemType) {
   const base = createBaseConditionSchema(itemType)

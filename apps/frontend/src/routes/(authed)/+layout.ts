@@ -8,7 +8,9 @@ export const load: LayoutLoad = async (event) => {
 
   // const search = new URLSearchParams({ redirect: redirectURL })
 
-  // const qb = await createSqljsQueryBuilder()
+  // await registerDataService()
+  // const qb = container.resolve<IQueryBuilder>(QUERY_BUILDER)
+
   // await qb
   //   .insertInto("undb_user")
   //   .values({

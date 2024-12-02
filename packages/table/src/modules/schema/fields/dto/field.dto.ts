@@ -1,36 +1,30 @@
 import { z } from "@undb/zod"
-import {
-  buttonFieldDTO,
-  createDateFieldDTO,
-  createJsonFieldDTO,
-  createSelectFieldDTO,
-  createUrlFieldDTO,
-  dateFieldDTO,
-  dateRangeFieldDTO,
-  durationFieldDTO,
-  jsonFieldDTO,
-  percentageFieldDTO,
-  referenceFieldDTO,
-  rollupFieldDTO,
-  selectFieldDTO,
-  updatedByFieldDTO,
-  urlFieldDTO,
-} from "../variants"
-import { attachmentFieldDTO } from "../variants/attachment-field"
-import { autoIncrementFieldDTO } from "../variants/autoincrement-field"
-import { checkboxFieldDTO, createCheckboxFieldDTO } from "../variants/checkbox-field"
-import { createdAtFieldDTO } from "../variants/created-at-field"
-import { createdByFieldDTO } from "../variants/created-by-field"
-import { createCurrencyFieldDTO, currencyFieldDTO } from "../variants/currency-field"
-import { createEmailFieldDTO, emailFieldDTO } from "../variants/email-field"
+import { attachmentFieldDTO } from "../variants/attachment-field/attachment-field.vo"
+import { autoIncrementFieldDTO } from "../variants/autoincrement-field/autoincrement-field.vo"
+import { buttonFieldDTO } from "../variants/button-field/button-field.vo"
+import { checkboxFieldDTO, createCheckboxFieldDTO } from "../variants/checkbox-field/checkbox-field.vo"
+import { createdAtFieldDTO } from "../variants/created-at-field/created-at-field.vo"
+import { createdByFieldDTO } from "../variants/created-by-field/created-by-field.vo"
+import { createCurrencyFieldDTO, currencyFieldDTO } from "../variants/currency-field/currency-field.vo"
+import { createDateFieldDTO, dateFieldDTO } from "../variants/date-field/date-field.vo"
+import { dateRangeFieldDTO } from "../variants/date-range-field/date-range-field.vo"
+import { durationFieldDTO } from "../variants/duration-field/duration-field.vo"
+import { createEmailFieldDTO, emailFieldDTO } from "../variants/email-field/email-field.vo"
 import { formulaFieldDTO } from "../variants/formula-field/formula-field.vo"
 import { idFieldDTO } from "../variants/id-field/id-field.vo"
-import { createLongTextFieldDTO, longTextFieldDTO } from "../variants/long-text-field"
+import { createJsonFieldDTO, jsonFieldDTO } from "../variants/json-field/json-field.vo"
+import { createLongTextFieldDTO, longTextFieldDTO } from "../variants/long-text-field/long-text-field.vo"
 import { createNumberFieldDTO, numberFieldDTO } from "../variants/number-field/number-field.vo"
-import { ratingFieldDTO } from "../variants/rating-field"
+import { percentageFieldDTO } from "../variants/percentage-field/percentage-field.vo"
+import { ratingFieldDTO } from "../variants/rating-field/rating-field.vo"
+import { referenceFieldDTO } from "../variants/reference-field/reference-field.vo"
+import { rollupFieldDTO } from "../variants/rollup-field/rollup-field.vo"
+import { createSelectFieldDTO, selectFieldDTO } from "../variants/select-field/select-field.vo"
 import { createStringFieldDTO, stringFieldDTO } from "../variants/string-field/string-field.vo"
 import { updatedAtFieldDTO } from "../variants/updated-at-field/updated-at-field.vo"
-import { userFieldDTO } from "../variants/user-field"
+import { updatedByFieldDTO } from "../variants/updated-by-field/updated-by-field.vo"
+import { createUrlFieldDTO, urlFieldDTO } from "../variants/url-field/url-field.vo"
+import { userFieldDTO } from "../variants/user-field/user-field.vo"
 
 export const fieldDTO = z.discriminatedUnion("type", [
   stringFieldDTO,

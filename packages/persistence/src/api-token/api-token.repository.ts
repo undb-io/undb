@@ -3,7 +3,7 @@ import type { ApiTokenDo, IApiTokenRepository } from "@undb/openapi"
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
 import { injectQueryBuilder } from "../qb.provider"
-import type { IQueryBuilder } from "../qb.server"
+import type { IQueryBuilder } from "../qb.type"
 
 @singleton()
 export class ApiTokenRepository implements IApiTokenRepository {

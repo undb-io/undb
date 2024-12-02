@@ -5,7 +5,7 @@ import { SpaceFactory, type ISpaceRepository, type ISpaceSpecification, type Spa
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
 import { injectQueryBuilder } from "../qb.provider"
-import type { IQueryBuilder } from "../qb.server"
+import type { IQueryBuilder } from "../qb.type"
 import { SpaceFilterVisitor } from "./space.filter-visitor"
 import { SpaceMutateVisitor } from "./space.mutate-visitor"
 

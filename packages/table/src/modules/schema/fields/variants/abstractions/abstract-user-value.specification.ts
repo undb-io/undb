@@ -3,7 +3,7 @@ import { isString } from "radash"
 import type { IRecordVisitor, RecordDO } from "../../../../records"
 import { RecordComositeSpecification } from "../../../../records/record/record.composite-specification"
 import type { FieldId } from "../../field-id.vo"
-import { UserFieldValue, type IUserFieldValue } from "../user-field"
+import { UserFieldValue, type IUserFieldValue } from "../user-field/user-field-value.vo"
 
 export class UserEqual extends RecordComositeSpecification {
   constructor(

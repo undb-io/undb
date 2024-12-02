@@ -38,7 +38,7 @@ import type {
 import type { ExpressionBuilder } from "kysely"
 import { AbstractQBVisitor } from "../abstract-qb.visitor"
 import type { Database } from "../db"
-import type { IQueryBuilder } from "../qb.server"
+import type { IQueryBuilder } from "../qb.type"
 
 export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements ITableSpecVisitor {
   constructor(

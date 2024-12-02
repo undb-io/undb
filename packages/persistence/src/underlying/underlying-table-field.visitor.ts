@@ -31,7 +31,7 @@ import {
 import type { CurrencyField } from "@undb/table/src/modules/schema/fields/variants/currency-field"
 import type { EmailField } from "@undb/table/src/modules/schema/fields/variants/email-field"
 import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, CreateTableBuilder, sql } from "kysely"
-import type { IQueryBuilder } from "../qb.server"
+import type { IQueryBuilder } from "../qb.type"
 import { JoinTable } from "./reference/join-table"
 import { getUnderlyingFormulaType } from "./underlying-formula.util"
 import { UnderlyingFormulaVisitor } from "./underlying-formula.visitor"

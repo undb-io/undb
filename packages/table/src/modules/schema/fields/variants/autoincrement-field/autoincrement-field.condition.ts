@@ -1,5 +1,5 @@
 import { z } from "@undb/zod"
-import { createAbstractNumberFieldCondition } from "../abstractions"
+import { createAbstractNumberFieldCondition } from "../abstractions/abstract-number-field.condition"
 
 export const createAutoIncrementFieldCondition = createAbstractNumberFieldCondition
 

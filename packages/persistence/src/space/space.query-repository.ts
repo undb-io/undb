@@ -2,7 +2,7 @@ import { singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import type { ISpaceDTO, ISpaceQueryRepository, ISpaceSpecification } from "@undb/space"
 import { injectQueryBuilder } from "../qb.provider"
-import type { IQueryBuilder } from "../qb.server"
+import type { IQueryBuilder } from "../qb.type"
 import { SpaceFilterVisitor } from "./space.filter-visitor"
 
 @singleton()
