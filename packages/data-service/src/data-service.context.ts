@@ -1,4 +1,4 @@
-import type { IContext } from "@undb/context"
+import type { ContextMember, ContextUser, IContext, SetContextValue } from "@undb/context"
 import { singleton } from "@undb/di"
 import {
   injectQueryBuilder,
@@ -32,13 +32,29 @@ export class DataServicetTxContext implements ITxContext {
 
 @singleton()
 export class DataServiceContext implements IContext {
+  setContextValue: SetContextValue = () => {}
   mustGetCurrentSpaceId(): string {
     return "space1"
+  }
+  mustGetCurrentUser(): ContextUser {
+    return {
+      userId: "anonymous",
+      username: "anonymous",
+    }
   }
   mustGetCurrentUserId(): string {
     return "anonymous"
   }
   getCurrentUserId(): string | undefined {
     return "anonymous"
+  }
+  getCurrentMember(): ContextMember {
+    return {
+      role: "owner",
+      spaceId: "space1",
+    }
+  }
+  getCurrentRole(): string {
+    return "owner"
   }
 }

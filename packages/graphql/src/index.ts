@@ -3,7 +3,6 @@ import { useOpenTelemetry } from "@envelop/opentelemetry"
 import * as otel from "@opentelemetry/api"
 import type { ISpaceMemberDTO } from "@undb/authz"
 import { injectContext, type IContext } from "@undb/context"
-import { executionContext, getCurrentSpaceId } from "@undb/context/server"
 import { QueryBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import type { Option } from "@undb/domain"
@@ -453,7 +452,7 @@ export class Graphql {
             return this.queryBus.execute(new GetTemplatesQuery())
           },
           space: async () => {
-            const spaceId = getCurrentSpaceId()
+            const spaceId = this.context.mustGetCurrentSpaceId()
             if (!spaceId) {
               return null
             }
@@ -473,7 +472,7 @@ export class Graphql {
             return this.queryBus.execute(new GetMemberSpacesQuery({ userId }))
           },
           members: async (_, args) => {
-            const spaceId = getCurrentSpaceId()
+            const spaceId = this.context.mustGetCurrentSpaceId()
             if (!spaceId) {
               return []
             }
@@ -487,11 +486,11 @@ export class Graphql {
             return this.queryBus.execute(new GetMembersByIdsQuery({ ids: args.ids as [string, ...string[]] }))
           },
           member: () => {
-            const member = executionContext.getStore()?.member
+            const member = this.context.getCurrentMember()
             if (!member?.role) {
               return null
             }
-            const user = executionContext.getStore()?.user
+            const user = this.context.mustGetCurrentUser()
             return { role: member.role, userId: user?.userId }
           },
           table: async (_, args) => {

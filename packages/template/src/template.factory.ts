@@ -14,7 +14,7 @@ import {
 import { getNextName } from "@undb/utils"
 import { type IBaseTemplateDTO } from "./dto/template-schema.dto"
 
-type TemplateDTO = {
+export type TemplateDTO = {
   base: Base
   tables: {
     table: TableDo

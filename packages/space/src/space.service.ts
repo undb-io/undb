@@ -1,4 +1,4 @@
-import type { SetContextValue } from "@undb/context"
+import type { IContext } from "@undb/context"
 import { inject, singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
 import { None, Option, Some } from "oxide.ts"
@@ -30,7 +30,7 @@ export interface ISpaceService {
   createPersonalSpace(username: string): Promise<Space>
   getSpace(input: IGetSpaceInput): Promise<Option<Space>>
   getMemberSpaces(userId: string): Promise<ISpaceDTO[]>
-  setSpaceContext(setContext: SetContextValue, input: IGetSpaceInput): Promise<Space>
+  setSpaceContext(context: IContext, input: IGetSpaceInput): Promise<Space>
 }
 
 export const SPACE_SERVICE = Symbol.for("SPACE_SERVICE")
@@ -87,10 +87,10 @@ export class SpaceService implements ISpaceService {
     return this.spaceQueryRepository.find(Some(spec))
   }
 
-  async setSpaceContext(setContext: SetContextValue, input: IGetSpaceInput): Promise<Space> {
+  async setSpaceContext(context: IContext, input: IGetSpaceInput): Promise<Space> {
     this.logger.debug(input, "setSpaceContext")
     const space = await this.getSpace(input)
-    setContext("spaceId", space.unwrap().id.value)
+    context.setContextValue("spaceId", space.unwrap().id.value)
 
     return space.expect("Space not found")
   }

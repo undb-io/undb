@@ -32,7 +32,7 @@ import {
 import type { FormulaField } from "@undb/table/src/modules/schema/fields/variants/formula-field"
 import { getTableName } from "drizzle-orm"
 import { sql, type QueryCreator, type SelectExpression } from "kysely"
-import type { IRecordQueryBuilder } from "../qb.server"
+import type { IRecordQueryBuilder } from "../qb.type"
 import { users } from "../tables"
 import { JoinTable } from "../underlying/reference/join-table"
 import { UnderlyingTable } from "../underlying/underlying-table"

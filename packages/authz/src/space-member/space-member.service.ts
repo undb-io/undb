@@ -1,8 +1,8 @@
+import type { IContext } from "@undb/context"
 import { inject, singleton } from "@undb/di"
 import { and, None, Option } from "@undb/domain"
 import { createLogger } from "@undb/logger"
 import { injectSpaceService, type ISpaceId, type ISpaceService } from "@undb/space"
-import type { SetContextValue } from "../../../context/src/context.type"
 import { MemberIdVO } from "../member/member-id.vo"
 import type { InviteDTO } from "./dto"
 import { InvitationDo } from "./invitation.do"
@@ -24,7 +24,7 @@ export interface ISpaceMemberService {
   invite(dto: InviteDTO, username: string): Promise<void>
   acceptinvitation(id: string): Promise<void>
   getSpaceMember(userId: string, spaceId: ISpaceId): Promise<Option<SpaceMember>>
-  setSpaceMemberContext(setContext: SetContextValue, spaceId: ISpaceId, userId: string): Promise<Option<SpaceMember>>
+  setSpaceMemberContext(context: IContext, spaceId: ISpaceId, userId: string): Promise<Option<SpaceMember>>
 }
 
 export const SPACE_MEMBER_SERVICE = Symbol("ISpaceMemberService")
@@ -107,11 +107,7 @@ export class SpaceMemberService implements ISpaceMemberService {
     await this.invitationRepository.updateOneById(id, spec)
   }
 
-  async setSpaceMemberContext(
-    setContext: SetContextValue,
-    spaceId: ISpaceId,
-    userId: string,
-  ): Promise<Option<SpaceMember>> {
+  async setSpaceMemberContext(context: IContext, spaceId: ISpaceId, userId: string): Promise<Option<SpaceMember>> {
     this.logger.debug({ spaceId, userId }, "setSpaceMemberContext")
 
     if (!spaceId || !userId) {
@@ -122,7 +118,7 @@ export class SpaceMemberService implements ISpaceMemberService {
       return None
     }
 
-    setContext("member", {
+    context.setContextValue("member", {
       role: member.unwrap().props.role,
       spaceId,
     })

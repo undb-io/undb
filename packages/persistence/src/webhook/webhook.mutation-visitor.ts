@@ -12,7 +12,7 @@ import type {
   WithWebhookURL,
 } from "@undb/webhook"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
-import { json } from "../qb.server"
+import { json } from "../qb.util"
 
 export class WebhookMutationVisitor extends AbstractQBMutationVisitor implements IWebhookSpecVisitor {
   idEqual(s: WithWebhookId): void {

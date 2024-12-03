@@ -8,6 +8,9 @@ module.exports = {
     sourceType: "module",
     ecmaVersion: 2020,
     extraFileExtensions: [".svelte"],
+    ecmaFeatures: {
+      experimentalDecorators: true,
+    },
   },
   env: {
     browser: true,

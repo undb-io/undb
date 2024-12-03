@@ -1,5 +1,5 @@
 import { createLogger } from "@undb/logger"
-import { Kysely, ParseJSONResultsPlugin, type Dialect } from "kysely"
+import { Kysely, ParseJSONResultsPlugin, sql, type Dialect, type RawBuilder } from "kysely"
 import { type Database } from "./db"
 
 export function createQueryBuilderWithDialect(dialect: Dialect) {
@@ -31,4 +31,8 @@ export function createQueryBuilderWithDialect(dialect: Dialect) {
       }
     },
   })
+}
+
+export function json<T>(value: T): RawBuilder<T> {
+  return sql`${JSON.stringify(value)}`
 }

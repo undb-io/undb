@@ -11,13 +11,14 @@ import {
 } from "@undb/table"
 import type { ICreateFromTemplateDTO } from "../dto"
 import { injectTemplateQueryRepository, type ITemplateQueryRepository } from "../template"
-import { TemplateFactory } from "../template.factory"
+import { TemplateFactory, type TemplateDTO } from "../template.factory"
 
 export interface ITemplateService {
   createBase(
     dto: ICreateFromTemplateDTO,
     spaceId: string,
   ): Promise<{ base: Base; tables: { table: TableDo; records: RecordDO[] }[] }[]>
+  save(template: TemplateDTO, includeData?: boolean): Promise<void>
 }
 
 @singleton()
@@ -45,7 +46,13 @@ export class TemplateService implements ITemplateService {
     const baseNames = bases.map((base) => base.name.value)
     const result = TemplateFactory.create(template.template.template, baseNames, spaceId)
 
-    for (const { base, tables, dashboards } of result) {
+    await this.save(result, includeData)
+
+    return result
+  }
+
+  async save(template: TemplateDTO, includeData: boolean = false): Promise<void> {
+    for (const { base, tables, dashboards } of template) {
       await this.baseRepository.insert(base)
       await this.tableRepository.insertMany(tables.map((table) => table.table))
       if (includeData) {
@@ -53,7 +60,5 @@ export class TemplateService implements ITemplateService {
       }
       await this.dashboardRepository.insertMany(dashboards)
     }
-
-    return result
   }
 }

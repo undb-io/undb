@@ -1,8 +1,7 @@
-import { env } from "@undb/env"
-import { templates, type IBaseTemplateDTO, type ITemplateDTO } from "@undb/template"
+import { templates,type IBaseTemplateDTO,type ITemplateDTO } from "@undb/template"
 
 function getTemplateImage(folder: string, file: string) {
-  return env.UNDB_BASE_URL + "/assets/templates/" + folder + "/" + file
+  return "/assets/templates/" + folder + "/" + file
 }
 
 export const templateData: ITemplateDTO[] = [
@@ -440,16 +439,16 @@ export const templateData: ITemplateDTO[] = [
   },
 ]
 
-if (env.NODE_ENV === "development") {
-  templateData.unshift({
-    id: "everything",
-    icon: "💼",
-    name: "Everything",
-    categories: ["sales"],
-    description: "A template for testing",
-    template: {
-      type: "base",
-      template: templates.everything as IBaseTemplateDTO,
-    },
-  })
-}
+// if (env.NODE_ENV === "development") {
+//   templateData.unshift({
+//     id: "everything",
+//     icon: "💼",
+//     name: "Everything",
+//     categories: ["sales"],
+//     description: "A template for testing",
+//     template: {
+//       type: "base",
+//       template: templates.everything as IBaseTemplateDTO,
+//     },
+//   })
+// }

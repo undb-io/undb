@@ -1,6 +1,6 @@
 import { singleton } from "@undb/di"
 import { AsyncLocalStorage } from "node:async_hooks"
-import type { ExecuteContext, IContext, IExecutionContext, SetContextValue } from "."
+import type { ContextMember, ContextUser, ExecuteContext, IContext, IExecutionContext, SetContextValue } from "."
 
 export const executionContext = new AsyncLocalStorage() satisfies IExecutionContext
 
@@ -42,6 +42,10 @@ export const mustGetCurrentSpaceId = () => {
 
 @singleton()
 export class ServerContext implements IContext {
+  setContextValue: SetContextValue = setContextValue
+  mustGetCurrentUser(): ContextUser {
+    return getCurrentUser()
+  }
   mustGetCurrentSpaceId(): string {
     return mustGetCurrentSpaceId()
   }
@@ -50,5 +54,11 @@ export class ServerContext implements IContext {
   }
   getCurrentUserId(): string | undefined {
     return getCurrentUserId()
+  }
+  getCurrentMember(): ContextMember {
+    return getCurrentMember()
+  }
+  getCurrentRole(): string {
+    return getCurrentRole()
   }
 }

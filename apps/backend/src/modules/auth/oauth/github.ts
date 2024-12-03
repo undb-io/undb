@@ -1,4 +1,5 @@
 import { type ISpaceMemberService, injectSpaceMemberService } from "@undb/authz"
+import { type IContext, injectContext } from "@undb/context"
 import { setContextValue } from "@undb/context/server"
 import { singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
@@ -27,6 +28,8 @@ export class GithubOAuth {
     private readonly lucia: Lucia,
     @injectTxCTX()
     private readonly txContext: ITxContext,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   private logger = createLogger(GithubOAuth.name)
@@ -122,7 +125,7 @@ export class GithubOAuth {
             .executeTakeFirst()
 
           if (existingGithubUser) {
-            const space = await this.spaceService.setSpaceContext(setContextValue, { userId: existingGithubUser.id })
+            const space = await this.spaceService.setSpaceContext(this.context, { userId: existingGithubUser.id })
 
             await this.queryBuilder
               .insertInto("undb_oauth_account")

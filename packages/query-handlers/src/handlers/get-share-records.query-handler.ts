@@ -1,4 +1,4 @@
-import { setContextValue } from "@undb/context/server"
+import { injectContext, type IContext } from "@undb/context"
 import { queryHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import type { IQueryHandler } from "@undb/domain"
@@ -14,11 +14,13 @@ export class GetShareRecordsQueryHandler implements IQueryHandler<IGetShareRecor
     private readonly svc: IShareService,
     @injectSpaceService()
     private readonly spaceService: ISpaceService,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   async execute(query: IGetShareRecordsQuery): Promise<IGetShareRecordsOutput> {
     const { shareId } = query
-    await this.spaceService.setSpaceContext(setContextValue, { shareId })
+    await this.spaceService.setSpaceContext(this.context, { shareId })
     const records = await this.svc.getShareRecords(
       shareId,
       query.tableId,

@@ -12,6 +12,7 @@ export async function getRecords(this: RecordsQueryService, dto: IGetRecordsDTO)
 
   const query = buildQuery(table, dto)
 
+  console.log(table)
   const records = await this.repo.find(table, view, query)
   return {
     ...records,

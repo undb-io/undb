@@ -4,6 +4,7 @@
   "types": "src/index.d.ts",
   "type": "module",
   "dependencies": {
+    "@undb/context": "workspace:*",
     "@undb/di": "workspace:*",
     "@undb/domain": "workspace:*",
     "@undb/logger": "workspace:*",

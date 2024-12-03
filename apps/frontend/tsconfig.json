@@ -12,6 +12,7 @@
     "experimentalDecorators": true,
     "verbatimModuleSyntax": false,
     "emitDecoratorMetadata": true,
+    "target": "es2022",
     "rootDirs": [".", "./.svelte-kit/types", "./$houdini/types", "./$houdini"]
   }
 }

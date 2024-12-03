@@ -1,5 +1,4 @@
 import { injectContext, type IContext } from "@undb/context"
-import { executionContext, getCurrentSpaceId } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import { None, Option, Some } from "@undb/domain"
 import {
@@ -16,7 +15,8 @@ import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
 import type { InsertTable, InsertTableIdMapping } from "../db"
 import { injectQueryBuilder } from "../qb.provider"
-import { json, type IQueryBuilder } from "../qb.server"
+import type { IQueryBuilder } from "../qb.type"
+import { json } from "../qb.util"
 import { UnderlyingTableService } from "../underlying/underlying-table.service"
 import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
 import { TableMapper } from "./table.mapper"
@@ -53,8 +53,7 @@ export class TableRepository implements ITableRepository {
 
     const trx = this.txContext.getCurrentTransaction()
 
-    const ctx = executionContext.getStore()
-    const userId = ctx!.user!.userId!
+    const userId = this.context.mustGetCurrentUserId()
 
     const visitor = new TableMutationVisitor(table, trx)
     spec.unwrap().accept(visitor)
@@ -73,13 +72,9 @@ export class TableRepository implements ITableRepository {
 
   async insert(table: TableDo): Promise<void> {
     const trx = this.txContext.getCurrentTransaction()
-    const ctx = executionContext.getStore()
-    const userId = ctx!.user!.userId!
+    const userId = this.context.mustGetCurrentUserId()
 
-    const spaceId = table.spaceId ?? getCurrentSpaceId()
-    if (!spaceId) {
-      throw new Error("Space ID is required to create a table")
-    }
+    const spaceId = table.spaceId ?? this.context.mustGetCurrentSpaceId()
 
     const rls = table.rls.into(undefined)
     const values: InsertTable = {

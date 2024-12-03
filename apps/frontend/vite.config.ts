@@ -66,5 +66,11 @@ export default defineConfig({
   test: {
     include: ["src/**/*.{test,spec}.{js,ts}"],
   },
+  build: {
+    target: "es2022",
+  },
   clearScreen: false,
+  esbuild: {
+    target: "es2022",
+  },
 })
