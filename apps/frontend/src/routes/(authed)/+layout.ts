@@ -8,20 +8,7 @@ export const load: LayoutLoad = async (event) => {
 
   // const search = new URLSearchParams({ redirect: redirectURL })
 
-  // await registerDataService()
-  // const qb = container.resolve<IQueryBuilder>(QUERY_BUILDER)
-
-  // await qb
-  //   .insertInto("undb_user")
-  //   .values({
-  //     id: "1",
-  //     email: "test@test.com",
-  //     password: "password",
-  //     username: "test",
-  //   })
-  //   .execute()
-  // const users = await qb.selectFrom("undb_user").selectAll().execute()
-  // console.log({ users })
+  // await register()
 
   const me = await event.fetch("/api/me")
   if (me.redirected) {

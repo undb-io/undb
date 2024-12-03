@@ -32,7 +32,7 @@ import {
 import type { FormulaField } from "@undb/table/src/modules/schema/fields/variants/formula-field"
 import { AlterTableBuilder, sql } from "kysely"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
-import type { IRecordQueryBuilder } from "../qb.server"
+import type { IRecordQueryBuilder } from "../qb.type"
 import { getUnderlyingFormulaType } from "./underlying-formula.util"
 import { UnderlyingFormulaVisitor } from "./underlying-formula.visitor"
 import type { UnderlyingTable } from "./underlying-table"

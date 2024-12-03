@@ -63,12 +63,9 @@ import {
   type UserEqual,
 } from "@undb/table"
 import { type QueryCreator } from "kysely"
-import type { IRecordQueryBuilder } from "../qb.server"
+import type { IRecordQueryBuilder } from "../qb.type"
 
 export class RecordQuerySpecCreatorVisitor implements IRecordVisitor {
-  private getFieldId(spec: RecordComositeSpecification) {
-    return `${this.table.id.value}.${spec.fieldId.value}`
-  }
   constructor(
     private readonly qb: IRecordQueryBuilder,
     creator: QueryCreator<any> | undefined,

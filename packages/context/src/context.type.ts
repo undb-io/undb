@@ -1,6 +1,6 @@
 import { inject } from "@undb/di"
 
-interface ContextUser {
+export interface ContextUser {
   userId: string | null
   username?: string
   email?: string
@@ -23,9 +23,13 @@ export interface ExecuteContext {
 export type SetContextValue = (key: keyof ExecuteContext, value: any) => void
 
 export interface IContext {
+  setContextValue: SetContextValue
+  mustGetCurrentUser(): ContextUser
   mustGetCurrentSpaceId(): string
   mustGetCurrentUserId(): string
   getCurrentUserId(): string | undefined
+  getCurrentMember(): ContextMember
+  getCurrentRole(): string
 }
 
 export const CONTEXT_TOKEN = Symbol.for("context")

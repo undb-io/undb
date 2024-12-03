@@ -3,7 +3,7 @@ import { singleton } from "@undb/di"
 import type { Mapper } from "@undb/domain"
 import { WebhookDo, WebhookFactory, type IWebhookDTO } from "@undb/webhook"
 import type { Webhook } from "../db"
-import { json } from "../qb.server"
+import { json } from "../qb.util"
 
 @singleton()
 export class WebhookMapper implements Mapper<WebhookDo, Webhook, IWebhookDTO> {

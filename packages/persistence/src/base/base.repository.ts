@@ -8,7 +8,6 @@ import {
   type IBaseSpecification,
 } from "@undb/base"
 import { injectContext, type IContext } from "@undb/context"
-import { executionContext } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import { injectTableRepository, TableBaseIdSpecification, type ITableRepository } from "@undb/table"
@@ -86,7 +85,7 @@ export class BaseRepository implements IBaseRepository {
     return base ? Some(this.mapper.toDo(base)) : None
   }
   async insert(base: Base): Promise<void> {
-    const user = executionContext.getStore()?.user?.userId!
+    const user = this.context.mustGetCurrentUserId()
     const values = this.mapper.toEntity(base)
 
     await this.txContext
@@ -103,8 +102,7 @@ export class BaseRepository implements IBaseRepository {
     await this.outboxService.save(base)
   }
   async updateOneById(base: Base, spec: IBaseSpecification): Promise<void> {
-    const ctx = executionContext.getStore()
-    const userId = ctx!.user!.userId!
+    const userId = this.context.mustGetCurrentUserId()
 
     const visitor = new BaseMutateVisitor()
     spec.accept(visitor)

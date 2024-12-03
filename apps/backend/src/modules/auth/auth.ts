@@ -7,6 +7,7 @@ import {
 } from "@undb/authz"
 import { AcceptInvitationCommand } from "@undb/commands"
 import type { ContextMember } from "@undb/context"
+import { type IContext, injectContext } from "@undb/context"
 import { executionContext, setContextValue } from "@undb/context/server"
 import { CommandBus } from "@undb/cqrs"
 import { container, inject, singleton } from "@undb/di"
@@ -53,6 +54,8 @@ export class Auth {
     private readonly lucia: Lucia,
     @injectTxCTX()
     private readonly txContext: ITxContext,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   async #generateEmailVerificationCode(userId: string, email: string): Promise<string> {
@@ -150,10 +153,10 @@ export class Auth {
 
       const userId = user?.id!
       const spaceId = session?.spaceId
-      const space = await this.spaceService.setSpaceContext(setContextValue, { spaceId })
+      const space = await this.spaceService.setSpaceContext(this.context, { spaceId })
 
       const member = space
-        ? (await this.spaceMemberService.setSpaceMemberContext(setContextValue, space.id.value, userId))
+        ? (await this.spaceMemberService.setSpaceMemberContext(this.context, space.id.value, userId))
             .into(null)
             ?.toJSON()
         : undefined

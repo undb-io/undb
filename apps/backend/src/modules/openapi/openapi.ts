@@ -1,7 +1,7 @@
 import { injectSpaceMemberService, type ISpaceMemberService } from "@undb/authz"
 import { type IBaseRepository, injectBaseRepository } from "@undb/base"
 import { type IContext, injectContext } from "@undb/context"
-import { executionContext, setContextValue } from "@undb/context/server"
+import { executionContext } from "@undb/context/server"
 import { container, singleton } from "@undb/di"
 import { Some } from "@undb/domain"
 import { createLogger } from "@undb/logger"
@@ -146,8 +146,8 @@ export class OpenAPI {
                 const userId = await this.apiTokenService.verify(apiToken)
                 if (userId.isSome()) {
                   const user = (await this.userService.findOneById(userId.unwrap())).unwrap()
-                  const space = await this.spaceService.setSpaceContext(setContextValue, { apiToken })
-                  await this.spaceMemberService.setSpaceMemberContext(setContextValue, space.id.value, user.id)
+                  const space = await this.spaceService.setSpaceContext(this.context, { apiToken })
+                  await this.spaceMemberService.setSpaceMemberContext(this.context, space.id.value, user.id)
 
                   return
                 }

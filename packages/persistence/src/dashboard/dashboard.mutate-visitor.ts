@@ -14,7 +14,8 @@ import type {
   WithDashboardWidgets,
 } from "@undb/dashboard"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
-import { json, type IQueryBuilder } from "../qb.server"
+import type { IQueryBuilder } from "../qb.type"
+import { json } from "../qb.util"
 
 export class DashboardMutateVisitor extends AbstractQBMutationVisitor implements IDashboardSpecVisitor {
   constructor(

@@ -1,6 +1,6 @@
 import { checkPermission, type ISpaceAction } from "@undb/authz"
 import { EnableShareCommand } from "@undb/commands"
-import { getCurrentRole } from "@undb/context/server"
+import { injectContext, type IContext } from "@undb/context"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import type { ICommandHandler } from "@undb/domain"
@@ -16,11 +16,13 @@ export class EnableShareCommandHandler implements ICommandHandler<EnableShareCom
   constructor(
     @injectShareService()
     private readonly service: IShareService,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   async execute(command: EnableShareCommand): Promise<any> {
     this.logger.debug(command)
-    const role = getCurrentRole()
+    const role = this.context.getCurrentRole()
     const type = command.target.type
 
     const permission = match(type)

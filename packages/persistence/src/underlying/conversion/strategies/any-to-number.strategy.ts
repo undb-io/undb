@@ -1,7 +1,7 @@
 import type { Field, TableDo } from "@undb/table"
 import { AlterTableBuilder, CaseWhenBuilder, sql, type ColumnDataType } from "kysely"
 import { match } from "ts-pattern"
-import type { IRecordQueryBuilder } from "../../../qb.server"
+import type { IRecordQueryBuilder } from "../../../qb.type"
 import { TEMP_FIELD_PREFIX } from "../conversion.constant"
 import { UnderlyingConversionStrategy } from "../conversion.interface"
 

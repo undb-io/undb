@@ -5,9 +5,11 @@ import {
   ButtonField,
   CheckboxField,
   CreatedByField,
+  CurrencyField,
   DateField,
   DateRangeField,
   DurationField,
+  EmailField,
   FormulaField,
   ID_TYPE,
   JsonField,
@@ -28,8 +30,6 @@ import {
   type StringField,
   type UpdatedAtField,
 } from "@undb/table"
-import type { CurrencyField } from "@undb/table/src/modules/schema/fields/variants/currency-field"
-import type { EmailField } from "@undb/table/src/modules/schema/fields/variants/email-field"
 import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, CreateTableBuilder, sql } from "kysely"
 import type { IQueryBuilder } from "../qb.type"
 import { JoinTable } from "./reference/join-table"

@@ -1,5 +1,4 @@
 import { injectContext, type IContext } from "@undb/context"
-import { executionContext } from "@undb/context/server"
 import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import {
@@ -60,8 +59,7 @@ export class RecordRepository implements IRecordRepository {
 
   async insert(table: TableDo, record: RecordDO): Promise<void> {
     const trx = this.txContext.getAnonymousTransaction()
-    const context = executionContext.getStore()
-    const userId = context?.user?.userId!
+    const userId = this.context.mustGetCurrentUserId()
 
     const t = new UnderlyingTable(table)
 
@@ -92,8 +90,7 @@ export class RecordRepository implements IRecordRepository {
 
   async #bulkInsert(table: TableDo, records: RecordDO[]): Promise<void> {
     const trx = this.txContext.getAnonymousTransaction()
-    const context = executionContext.getStore()
-    const userId = context?.user?.userId!
+    const userId = this.context.mustGetCurrentUserId()
 
     const t = new UnderlyingTable(table)
 
@@ -207,8 +204,7 @@ export class RecordRepository implements IRecordRepository {
     if (spec.isNone()) return
     const trx = this.txContext.getAnonymousTransaction()
 
-    const context = executionContext.getStore()
-    const userId = context?.user?.userId!
+    const userId = this.context.mustGetCurrentUserId()
 
     const t = new UnderlyingTable(table)
     const sql: CompiledQuery[] = []
@@ -241,8 +237,7 @@ export class RecordRepository implements IRecordRepository {
     records: RecordDO[],
   ): Promise<void> {
     const trx = this.txContext.getAnonymousTransaction()
-    const context = executionContext.getStore()
-    const userId = context?.user?.userId!
+    const userId = this.context.mustGetCurrentUserId()
 
     const t = new UnderlyingTable(table)
     const queries: CompiledQuery[] = []

@@ -76,7 +76,7 @@ import { startOfDay, startOfToday, startOfTomorrow, startOfYesterday } from "dat
 import { sql, type ExpressionBuilder } from "kysely"
 import { unique } from "radash"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
-import type { IQueryBuilder, IRecordQueryBuilder } from "../qb.server"
+import type { IQueryBuilder, IRecordQueryBuilder } from "../qb.type"
 import { JoinTable } from "../underlying/reference/join-table"
 import { getDateRangeFieldName } from "../underlying/underlying-table.util"
 

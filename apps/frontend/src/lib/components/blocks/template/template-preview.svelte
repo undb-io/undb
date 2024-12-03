@@ -13,12 +13,15 @@
   import GalleryView from "$lib/components/blocks/gallery-view/gallery-view.svelte"
   import CalendarView from "$lib/components/blocks/calendar-view/calendar-view.svelte"
   import ListView from "$lib/components/blocks/list-view/list-view.svelte"
+  import { DataService } from "@undb/data-service"
+  import { container } from "@undb/di"
+  import { onMount } from "svelte"
 
   export let template: ITemplateDTO
 
   setTemplate(writable(template))
 
-  let t = TemplateFactory.create(template.template.template, [], "preview")
+  let t = TemplateFactory.create(template.template.template, [], "space1")
   let tables = t.flatMap((base) => base.tables.map(({ table }) => table))
   let bases = t.map((base) => base.base)
 
@@ -55,9 +58,17 @@
           [tables.at(0)!.id.value]: true,
         }
       : {}
+
+  // let dataService: DataService
+  // let saved = false
+  // onMount(async () => {
+  //   dataService = container.resolve<DataService>(DataService)
+  //   await dataService.template.save(t, true)
+  //   saved = true
+  // })
 </script>
 
-{#if template.template.type === "base"}
+{#if template.template.type === "base" && saved}
   <div class="flex h-full overflow-auto">
     <div class="f-full w-[350px] border-r px-4 py-2">
       <nav class="items-start gap-1 px-1.5 text-sm font-medium">
@@ -195,7 +206,7 @@
       {#if $currentTable}
         <section class="flex h-full flex-1 flex-col overflow-auto">
           {#if $currentView?.type === "grid"}
-            <TemplateGridView viewId={currentViewId} records={$records} {r} />
+            <TemplateGridView tableId={$currentTableId} viewId={currentViewId} records={$records} {r} />
           {:else if $currentView?.type === "kanban"}
             <KanbanView viewId={currentViewId} records={$records} {r} disableRecordQuery readonly />
           {:else if $currentView?.type === "gallery"}

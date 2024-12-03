@@ -1,5 +1,5 @@
 import { SubmitFormCommand } from "@undb/commands"
-import { setContextValue } from "@undb/context/server"
+import { injectContext, type IContext } from "@undb/context"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
 import type { ICommandHandler } from "@undb/domain"
@@ -16,12 +16,14 @@ export class SubmitFormCommandHandler implements ICommandHandler<SubmitFormComma
     private readonly service: IRecordsService,
     @injectSpaceService()
     private readonly spaceService: ISpaceService,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   async execute(command: SubmitFormCommand): Promise<any> {
     this.logger.debug(command, "executing submit form command")
 
-    await this.spaceService.setSpaceContext(setContextValue, { tableId: command.tableId })
+    await this.spaceService.setSpaceContext(this.context, { tableId: command.tableId })
 
     const record = await this.service.submitForm(command, { form: command.form, values: command.values })
 

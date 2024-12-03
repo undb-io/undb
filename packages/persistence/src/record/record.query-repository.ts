@@ -1,4 +1,4 @@
-import { executionContext } from "@undb/context/server"
+import { injectContext, type IContext } from "@undb/context"
 import { inject, singleton } from "@undb/di"
 import { None, Option, Some, type PaginatedDTO } from "@undb/domain"
 import {
@@ -28,7 +28,7 @@ import {
 import { getTableName } from "drizzle-orm"
 import { sql, type AliasedExpression, type Expression, type ExpressionBuilder } from "kysely"
 import { injectQueryBuilder } from "../qb.provider"
-import type { IRecordQueryBuilder } from "../qb.server"
+import type { IRecordQueryBuilder } from "../qb.type"
 import { users } from "../tables"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { RecordQueryHelper } from "./record-query.helper"
@@ -49,6 +49,8 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     private readonly tableRepo: ITableRepository,
     @inject(RecordQueryHelper)
     private readonly helper: RecordQueryHelper,
+    @injectContext()
+    private readonly context: IContext,
   ) {}
 
   async count(tableId: TableId): Promise<number> {
@@ -103,8 +105,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
   }
 
   async find(table: TableDo, view: View, query: Option<QueryArgs>): Promise<PaginatedDTO<IRecordDTO>> {
-    const context = executionContext.getStore()
-    const userId = context?.user?.userId!
+    const userId = this.context.mustGetCurrentUserId()
 
     const filter = query.into(undefined)?.filter.into(undefined)
     const defaultSort: IViewSort = [{ fieldId: AUTO_INCREMENT_TYPE, direction: "asc" }]
@@ -257,8 +258,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     aggregate: Option<IViewAggregate>,
     query: Option<QueryArgs>,
   ): Promise<Record<string, AggregateResult>> {
-    const context = executionContext.getStore()
-    const userId = context?.user?.userId!
+    const userId = this.context.mustGetCurrentUserId()
 
     const t = new UnderlyingTable(table)
     const view = table.views.getViewById(viewId.into(undefined)?.value)
