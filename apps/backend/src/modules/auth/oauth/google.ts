@@ -78,7 +78,7 @@ export class GoogleOAuth {
           const tokens = await this.google.validateAuthorizationCode(code, storedCodeVerifier)
           const googleUserResponse = await fetch("https://www.googleapis.com/oauth2/v1/userinfo", {
             headers: {
-              Authorization: `Bearer ${tokens.accessToken}`,
+              Authorization: `Bearer ${tokens.accessToken()}`,
             },
           })
           const googleUserResult: GoogleUserResult = await googleUserResponse.json()
