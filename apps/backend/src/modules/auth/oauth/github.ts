@@ -70,7 +70,7 @@ export class GithubOAuth {
           const tokens = await this.github.validateAuthorizationCode(code)
           const githubUserResponse = await fetch("https://api.github.com/user", {
             headers: {
-              Authorization: `Bearer ${tokens.accessToken}`,
+              Authorization: `Bearer ${tokens.accessToken()}`,
             },
           })
           const githubUserResult: GitHubUserResult = await githubUserResponse.json()
