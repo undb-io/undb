@@ -6,7 +6,8 @@ export const GITHUB_PROVIDER = Symbol.for("GITHUB_PROVIDER")
 
 container.register(GITHUB_PROVIDER, {
   useFactory: instanceCachingFactory(() => {
-    return new GitHub(env.GITHUB_CLIENT_ID!, env.GITHUB_CLIENT_SECRET!)
+    const redirectURL = new URL("/login/github/callback", env.UNDB_BASE_URL)
+    return new GitHub(env.GITHUB_CLIENT_ID!, env.GITHUB_CLIENT_SECRET!, redirectURL.toString())
   }),
 })
 
