@@ -1,5 +1,4 @@
 import { drizzle } from "drizzle-orm/sql-js"
-import { DummyDriver, Kysely, SqliteAdapter, SqliteIntrospector, SqliteQueryCompiler, type Dialect } from "kysely"
 import { SqlJsDialect } from "kysely-wasm"
 import InitSqlJs from "sql.js"
 import { migrate } from "./migrate.client"
@@ -27,7 +26,8 @@ export const createSqljsQueryBuilder = async (db?: InitSqlJs.Database): Promise<
       return db
     },
     onWrite: {
-      func: (buffer) => {},
+      func: (buffer) => {
+      },
       isThrottle: true,
     },
   })
@@ -36,23 +36,5 @@ export const createSqljsQueryBuilder = async (db?: InitSqlJs.Database): Promise<
 
   migrate(drizzleDB)
 
-  return createQueryBuilderWithDialect(dialect)
-}
-
-export const createDummyQueryBuilder = () => {
-  const dialect: Dialect = {
-    createAdapter() {
-      return new SqliteAdapter()
-    },
-    createDriver() {
-      return new DummyDriver()
-    },
-    createIntrospector(db: Kysely<unknown>) {
-      return new SqliteIntrospector(db)
-    },
-    createQueryCompiler() {
-      return new SqliteQueryCompiler()
-    },
-  }
   return createQueryBuilderWithDialect(dialect)
 }
