@@ -18,6 +18,7 @@
   import { getRecordsStore } from "$lib/store/records.store"
   import { type Writable, type Readable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
+  import { getIsLocal } from "$lib/store/data-service.store"
 
   const recordsStore = getRecordsStore()
 
@@ -26,6 +27,7 @@
   export let record: RecordDO
   export let viewId: Readable<string | undefined>
 
+  const isLocal = getIsLocal()
   beforeNavigate(({ cancel }) => {
     if (mutableFieldTainted) {
       if (!confirm("Are you sure you want to leave this page? You have unsaved changes that will be lost.")) {
@@ -53,7 +55,7 @@
       onSuccess()
       await client.invalidateQueries({ queryKey: [record.id.value, "get"] })
       reset({})
-      await recordsStore?.invalidateRecord($table, record.id.value)
+      await recordsStore?.invalidateRecord(isLocal, $table, record.id.value)
     },
     onError: (error) => {
       toast.error(error.message)

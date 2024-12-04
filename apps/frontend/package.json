@@ -110,6 +110,7 @@
     "lucide-svelte": "^0.462.0",
     "mode-watcher": "^0.5.0",
     "paneforge": "^0.0.6",
+    "reflect-metadata": "^0.2.2",
     "svelte-grid": "^5.1.2",
     "svelte-qrcode": "^1.0.1",
     "svelte-radix": "^2.0.1",

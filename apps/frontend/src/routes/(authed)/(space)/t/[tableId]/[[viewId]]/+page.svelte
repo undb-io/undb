@@ -10,6 +10,7 @@
   import { page } from "$app/stores"
   import { derived } from "svelte/store"
   import View from "$lib/components/blocks/view/view.svelte"
+  import { r } from "$lib/store/records.store"
 
   function handleR() {
     toggleModal(CREATE_RECORD_MODAL)
@@ -27,7 +28,7 @@
 {#key $table.id.value}
   <main class="flex h-full flex-1 flex-col overflow-auto">
     {#if $isDataTab}
-      <View {viewId} />
+      <View {viewId} {r} shareId={undefined} />
     {:else if $isFormTab}
       <Forms />
     {:else if $isAuthTab}

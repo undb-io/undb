@@ -17,6 +17,7 @@
   import type { ICreateRecordCommandOutput } from "@undb/commands"
   import { onMount } from "svelte"
   import { LL } from "@undb/i18n/client"
+  import { getIsLocal } from "$lib/store/data-service.store"
 
   // beforeNavigate(({ cancel }) => {
   //   if ($tainted) {
@@ -40,6 +41,7 @@
   const client = useQueryClient()
 
   const mediaQuery = useMediaQuery("(max-width: 768px)")
+  const isLocal = getIsLocal()
 
   const createRecordMutation = createMutation(
     derived([table], ([$table]) => ({
@@ -51,7 +53,7 @@
         })
         toast.success($LL.table.record.createdRecord())
         onSuccess?.(data)
-        recordsStore?.invalidateRecord($table, data)
+        recordsStore?.invalidateRecord(isLocal, $table, data)
       },
       onError: (error: Error) => {
         toast.error(error.message)

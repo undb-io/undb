@@ -1,5 +1,6 @@
 import { container, singleton } from "@undb/di"
 import type { IQueryBus, IQueryHandler, IQueryPublisher, Query, QueryMetadata } from "@undb/domain"
+import { createLogger } from "@undb/logger"
 import { Subject } from "rxjs"
 import type { Class } from "type-fest"
 import { QUERY_HANDLER_METADATA, QUERY_METADATA } from "./decorators/constants"
@@ -11,20 +12,26 @@ export type QueryHandlerType = Class<IQueryHandler<Query, any>>
 
 @singleton()
 export class QueryBus<Q extends Query = Query> implements IQueryBus {
+  private readonly logger = createLogger(QueryBus.name)
   private subject = new Subject<Query>()
   private readonly publisher: IQueryPublisher = new DefaultQueryPubSub(this.subject)
 
   #handlers = new Map<string, IQueryHandler<Q, any>>()
 
-  execute<T extends Q, R = any>(query: T): Promise<R> {
-    const queryId = this.getQueryId(query)
-    const handler = this.#handlers.get(queryId)
-    if (!handler) {
-      const queryName = this.getQueryName(query)
-      throw new QueryHandlerNotFoundException(queryName)
+  async execute<T extends Q, R = any>(query: T): Promise<R> {
+    try {
+      const queryId = this.getQueryId(query)
+      const handler = this.#handlers.get(queryId)
+      if (!handler) {
+        const queryName = this.getQueryName(query)
+        throw new QueryHandlerNotFoundException(queryName)
+      }
+      this.publisher.publish(query)
+      return await handler.execute(query)
+    } catch (error) {
+      this.logger.error(error)
+      throw error
     }
-    this.publisher.publish(query)
-    return handler.execute(query)
   }
 
   register(handlers: QueryHandlerType[] = []) {

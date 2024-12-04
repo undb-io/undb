@@ -50,7 +50,7 @@
       </Button>
     {/if}
   </ForeignRecordsPickerDropdown>
-  {#if hasValueReactive}
+  {#if hasValueReactive && !readonly}
     <ForeignRecordsPickerDropdown
       {onValueChange}
       {r}

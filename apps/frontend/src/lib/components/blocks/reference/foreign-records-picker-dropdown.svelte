@@ -1,13 +1,14 @@
 <script lang="ts">
-  import { GetForeignTableStore } from "$houdini"
   import * as Popover from "$lib/components/ui/popover"
   import ForeignRecordsPicker from "./foreign-records-picker.svelte"
-  import { derived, readable, writable } from "svelte/store"
+  import { derived, writable } from "svelte/store"
   import { ReferenceField, TableFactory } from "@undb/table"
   import Button from "$lib/components/ui/button/button.svelte"
   import { LoaderCircleIcon } from "lucide-svelte"
   import { type Writable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
+  import { createQuery } from "@tanstack/svelte-query"
+  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
 
   export let isSelected = false
 
@@ -23,16 +24,20 @@
   export let onOpenChange: (open: boolean) => void = () => {}
   export let onSuccess: (id?: string) => void = () => {}
 
-  const foreignTableStore = new GetForeignTableStore()
-
   let open = false
 
-  $: if (open) foreignTableStore.fetch({ variables: { tableId: foreignTableId } })
-
-  const foreignTable = derived(foreignTableStore, ($foreignTableStore) => {
-    const table = $foreignTableStore.data?.table
-    return table ? new TableFactory().fromJSON(table) : null
+  const isLocal = getIsLocal()
+  const getForeignTable = createQuery({
+    queryKey: ["foreignTable", foreignTableId, open],
+    queryFn: async () => {
+      const dataService = await getDataService(isLocal)
+      return dataService.table.getTable({ tableId: foreignTableId })
+    },
   })
+
+  const foreignTable = derived(getForeignTable, ($getForeignTable) =>
+    $getForeignTable.data ? new TableFactory().fromJSON($getForeignTable.data) : null,
+  )
 </script>
 
 <Popover.Root portal="body" bind:open {onOpenChange}>
@@ -44,7 +49,7 @@
     </slot>
   </Popover.Trigger>
   <Popover.Content class="h-[400px] max-h-[700px] w-[500px] p-0 lg:max-w-4xl">
-    {#if $foreignTableStore.fetching}
+    {#if $getForeignTable.isPending}
       <!-- content here -->
       <div class="flex h-full w-full items-center justify-center space-y-2 p-4">
         <LoaderCircleIcon class="mr-2 h-8 w-8 animate-spin" />
