@@ -29,6 +29,7 @@
   import { CREATE_RECORD_MODAL, openModal } from "$lib/store/modal.store"
   import { tick } from "svelte"
   import { hasPermission } from "$lib/store/space-member.store"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
 
   export let viewId: Readable<string | undefined>
   export let view: CalendarView
@@ -103,13 +104,16 @@
   const t = getTable()
   const q = queryParam("q")
 
+  const isLocal = getIsLocal()
+
   const getRecords = createQuery(
     derived([t, viewId, q, date], ([$table, $viewId, $q, $date]) => {
       const view = $table.views.getViewById($viewId)
       return {
         queryKey: ["records", $table?.id.value, $viewId, $q, $date.toISOString()],
         enabled: view?.type === "calendar" && !disableRecordQuery,
-        queryFn: () => {
+        queryFn: async () => {
+          const dataService = await getDataService(isLocal)
           const value = format($date, "yyyy-MM-dd")
           if (shareId) {
             return trpc.shareData.records.query({
@@ -123,7 +127,7 @@
               },
             })
           }
-          return trpc.record.list.query({
+          return dataService.records.getRecords({
             tableId: $table?.id.value,
             viewId: $viewId,
             filters: {

@@ -45,6 +45,7 @@
   import SelectKanbanCollapsedLane from "./select-kanban-collapsed-lane.svelte"
   import { queryParam } from "sveltekit-search-params"
   import { LL } from "@undb/i18n/client"
+  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
 
   const table = getTable()
   const recordsStore = getRecordsStore()
@@ -67,14 +68,17 @@
   let getIsLaneCollapsed = kanbanStore.getIsLaneCollapsed
   $: isLaneCollapsed = $viewId ? ($getIsLaneCollapsed($viewId, option?.id ?? "") ?? false) : false
 
+  const isLocal = getIsLocal()
+
   const query = createInfiniteQuery(
     derived([table, viewId, q], ([$table, $viewId, $q]) => {
       const view = $table.views.getViewById($viewId)
       return {
         queryKey: ["records", $table.id.value, $viewId, fieldId, option?.id, $q],
-        queryFn: ({ pageParam = 1 }) => {
+        queryFn: async ({ pageParam = 1 }) => {
+          const dataService = await getDataService(isLocal)
           if (shareId) {
-            return trpc.shareData.records.query({
+            return trpc.shareData.records.getRecords({
               shareId,
               tableId: $table.id.value,
               viewId: $viewId,
@@ -90,7 +94,7 @@
             })
           }
 
-          return trpc.record.list.query({
+          return dataService.records.getRecords({
             tableId: $table.id.value,
             viewId: $viewId,
             q: $q ?? undefined,

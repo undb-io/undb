@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { queryParam, ssp } from "sveltekit-search-params"
   import { getTable } from "$lib/store/table.store"
-  import { trpc } from "$lib/trpc/client"
   import { createQuery } from "@tanstack/svelte-query"
   import { RecordDO } from "@undb/table"
   import { derived } from "svelte/store"
@@ -9,17 +7,22 @@
   import RecordDetailSheet from "./record-detail-sheet.svelte"
   import { r } from "$lib/store/records.store"
   import type { Readable } from "svelte/store"
+  import { trpc } from "$lib/trpc/client"
+  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
+
+  const isLocal = getIsLocal()
 
   const table = getTable()
 
   const record = createQuery(
     derived([table, r, preferences], ([$table, $recordId, $preferences]) => ({
       queryKey: [$recordId, "get", $preferences.showHiddenFields],
-      queryFn: () => {
-        return trpc.record.get.query({
+      queryFn: async () => {
+        const dataService = await getDataService(isLocal)
+        return dataService.records.getRecordById({
           tableId: $table?.id.value,
           id: $recordId!,
           ignoreView: $preferences.showHiddenFields,

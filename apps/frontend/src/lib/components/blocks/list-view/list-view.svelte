@@ -11,6 +11,7 @@
   import { cn } from "$lib/utils"
   import ListViewLoading from "./list-view-loading.svelte"
   import ListViewList from "./list-view-list.svelte"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
 
   const table = getTable()
   export let viewId: Readable<string | undefined>
@@ -23,8 +24,9 @@
   const perPage = writable(50)
   const currentPage = writable(1)
   const q = queryParam("q")
+  const isLocal = getIsLocal()
 
-  const getRecords = () => {
+  const getRecords = async () => {
     if (shareId) {
       return trpc.shareData.records.query({
         shareId,
@@ -34,7 +36,8 @@
         pagination: { limit: $perPage, page: $currentPage },
       })
     }
-    return trpc.record.list.query({
+    const dataService = await getDataService(isLocal)
+    return dataService.records.getRecords({
       tableId: $table?.id.value,
       viewId: $viewId,
       q: $q ?? undefined,

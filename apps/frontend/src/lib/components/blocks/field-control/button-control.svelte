@@ -8,6 +8,7 @@
   import { getTable } from "$lib/store/table.store"
   import { gridViewStore } from "../grid-view/grid-view.store"
   import { getRecordsStore } from "$lib/store/records.store"
+  import { getIsLocal } from "$lib/store/data-service.store"
 
   export let tableId: string
   export let field: ButtonField
@@ -19,12 +20,14 @@
   const client = useQueryClient()
   const recordsStore = getRecordsStore()
 
+  const isLocal = getIsLocal()
+
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
     mutationFn: trpc.record.update.mutate,
     async onSuccess(data, variables, context) {
       gridViewStore.exitEditing()
-      await recordsStore?.invalidateRecord($table, recordId)
+      await recordsStore?.invalidateRecord(isLocal, $table, recordId)
       await client.invalidateQueries({ queryKey: [recordId, "get"] })
     },
     onError(error: Error) {

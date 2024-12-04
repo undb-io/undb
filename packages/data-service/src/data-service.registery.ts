@@ -26,6 +26,7 @@ import {
   SpaceQueryRepository,
   SpaceRepostitory,
   TableOutboxService,
+  TableQueryRepository,
   TableRepository,
   TemplateQueryRepository,
   TX_CTX,
@@ -39,6 +40,7 @@ import {
   RECORDS_SERVICE,
   RecordsService,
   TABLE_OUTBOX_SERVICE,
+  TABLE_QUERY_REPOSITORY,
   TABLE_REPOSITORY,
   type IObjectStorage,
   type IPresign,
@@ -66,10 +68,13 @@ class LocalObjectStorage implements IObjectStorage {
   }
 }
 
-export const registerDataService = async () => {
-  container.register(TX_CTX, DataServicetTxContext)
+export const registerQueryBuilder = async () => {
   const qb = await createSqljsQueryBuilder()
   container.register(QUERY_BUILDER, { useValue: qb })
+}
+
+export const registerDataService = () => {
+  container.register(TX_CTX, DataServicetTxContext)
   container.register(CONTEXT_TOKEN, DataServiceContext)
   container.register(BASE_OUTBOX_SERVICE, BaseOutboxService)
   container.register(BASE_REPOSITORY, BaseRepository)
@@ -91,4 +96,5 @@ export const registerDataService = async () => {
   container.register(RECORDS_SERVICE, RecordsService)
   container.register(RECORD_QUERY_REPOSITORY, RecordQueryRepository)
   container.register(OBJECT_STORAGE, LocalObjectStorage)
+  container.register(TABLE_QUERY_REPOSITORY, TableQueryRepository)
 }

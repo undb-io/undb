@@ -12,26 +12,34 @@
   import { cn } from "$lib/utils"
   import { trpc } from "$lib/trpc/client"
   import { createQuery, useQueryClient } from "@tanstack/svelte-query"
+  import { getDataService } from "$lib/store/data-service.store"
+  import { getIsLocal } from "$lib/store/data-service.store"
 
   export let foreignTable: Readable<TableDo>
   export let r: Writable<string | null>
 
   export let recordId: Readable<string>
+  export let readonly = false
+  export let viewId: Readable<string | undefined>
 
   const client = useQueryClient()
 
   const open = writable(false)
   let disabled = false
 
+  const isLocal = getIsLocal()
+
   const record = createQuery(
     derived([foreignTable, recordId, preferences, open], ([$table, $recordId, $preferences, $open]) => ({
       queryKey: [$recordId, "get", $preferences.showHiddenFields, $open],
-      queryFn: () =>
-        trpc.record.get.query({
+      queryFn: async () => {
+        const dataService = await getDataService(isLocal)
+        return dataService.records.getRecordById({
           tableId: $table?.id.value,
           id: $recordId!,
           select: $preferences.showHiddenFields ? undefined : $table?.getOrderedVisibleFields().map((f) => f.id.value),
-        }),
+        })
+      },
       enabled: !!$recordId && !!$open,
     })),
   )
@@ -87,6 +95,8 @@
             <div class={cn("overflow-hidden", $preferences.showAudit && $recordId ? "col-span-3" : "col-span-4")}>
               <ScrollArea class="h-full overflow-auto px-6">
                 <RecordDetail
+                  {readonly}
+                  {viewId}
                   onSuccess={async () => {
                     $open = false
 

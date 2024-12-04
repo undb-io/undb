@@ -7,6 +7,7 @@
   import { getTable } from "$lib/store/table.store"
   import { cn } from "$lib/utils"
   import { LL } from "@undb/i18n/client"
+  import { getIsLocal } from "$lib/store/data-service.store"
 
   const table = getTable()
 
@@ -19,7 +20,10 @@
   export let isSelected: boolean
   export let recordId: string
   export let onValueChange = (value: string[]) => {}
+  export let readonly = false
   export let r: Writable<string | null>
+
+  const isLocal = getIsLocal()
 
   $: selected = writable<string[]>(value)
 
@@ -36,7 +40,7 @@
 
   function onSuccess(id?: string) {
     if (id) {
-      recordStore?.invalidateRecord($table, id, $viewId)
+      recordStore?.invalidateRecord(isLocal, $table, id, $viewId)
     }
   }
 </script>
@@ -46,6 +50,7 @@
     <div class="flex flex-1 items-center gap-1 truncate">
       <ForeignRecordsPickerDropdown
         shouldUpdate
+        {readonly}
         onOpenChange={(open) => {
           if (!open) {
             hasValue = hasValueReactive
@@ -73,8 +78,9 @@
       </ForeignRecordsPickerDropdown>
     </div>
 
-    {#if (isSelected || isEditing) && hasValueReactive}
+    {#if (isSelected || isEditing) && hasValueReactive && !readonly}
       <ForeignRecordsPickerDropdown
+        {readonly}
         {onValueChange}
         {onSuccess}
         shouldUpdate

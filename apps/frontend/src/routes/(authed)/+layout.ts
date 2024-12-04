@@ -8,8 +8,6 @@ export const load: LayoutLoad = async (event) => {
 
   // const search = new URLSearchParams({ redirect: redirectURL })
 
-  // await register()
-
   const me = await event.fetch("/api/me")
   if (me.redirected) {
     throw redirect(301, me.url)

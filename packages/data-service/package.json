@@ -12,7 +12,8 @@
     "@undb/context": "workspace:*",
     "@undb/persistence": "workspace:*",
     "@undb/commands": "workspace:*",
-    "@undb/queries": "workspace:*"
+    "@undb/queries": "workspace:*",
+    "@undb/trpc": "workspace:*"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
