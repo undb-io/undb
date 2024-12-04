@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-133
+
+
+### 🩹 Fixes
+
+- Fix oauth ([224922e](https://github.com/undb-io/undb/commit/224922e))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-132
 
 
