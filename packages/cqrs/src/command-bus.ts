@@ -1,5 +1,6 @@
 import { container, singleton } from "@undb/di"
 import type { Command, CommandMetadata, ICommandBus, ICommandHandler, ICommandPublisher } from "@undb/domain"
+import { createLogger } from "@undb/logger"
 import { Subject } from "rxjs"
 import type { Class } from "type-fest"
 import { COMMAND_HANDLER_METADATA, COMMAND_METADATA } from "./decorators/constants"
@@ -11,20 +12,26 @@ export type CommandHandlerType = Class<ICommandHandler<Command, any>>
 
 @singleton()
 export class CommandBus<C extends Command = Command> implements ICommandBus {
+  private readonly logger = createLogger(CommandBus.name)
   private subject = new Subject<Command>()
   private readonly publisher: ICommandPublisher = new DefaultCommandPubSub(this.subject)
 
   #handlers = new Map<string, ICommandHandler<C, any>>()
 
   execute<T extends C, R = any>(command: T): Promise<R> {
-    const commandId = this.getCommandId(command)
-    const handler = this.#handlers.get(commandId)
-    if (!handler) {
-      const commandName = this.getCommandName(command)
-      throw new CommandHandlerNotFoundException(commandName)
+    try {
+      const commandId = this.getCommandId(command)
+      const handler = this.#handlers.get(commandId)
+      if (!handler) {
+        const commandName = this.getCommandName(command)
+        throw new CommandHandlerNotFoundException(commandName)
+      }
+      this.publisher.publish(command)
+      return handler.execute(command)
+    } catch (error) {
+      this.logger.error(error)
+      throw error
     }
-    this.publisher.publish(command)
-    return handler.execute(command)
   }
 
   register(handlers: CommandHandlerType[] = []) {

@@ -54,6 +54,7 @@ export class TemplateFactory {
         const records = table.records?.map((record: IFlattenCreateRecordDTO) => flattenToCreateRecordDTO(record))
 
         return {
+          id: table.id,
           baseId,
           name,
           schema,

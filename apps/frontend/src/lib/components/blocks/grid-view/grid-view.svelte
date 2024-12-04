@@ -9,16 +9,19 @@
   import GridViewDataTable from "./grid-view-data-table.svelte"
   import { preferences } from "$lib/store/persisted.store"
   import { aggregatesStore } from "$lib/store/aggregates.store"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
 
   export let readonly = false
 
   const t = getTable()
-  export let viewId: Readable<string>
+  export let viewId: Readable<string | undefined>
   export let r: Writable<string | null>
   export let shareId: string | undefined = undefined
 
   const q = queryParam("q")
   export let filter: IViewFilterGroup | undefined = undefined
+
+  const isLocal = getIsLocal()
 
   const perPage = derived(preferences, ($preferences) => $preferences.gridViewPerPage ?? 50)
   const currentPage = queryParam("page", ssp.number())
@@ -29,14 +32,17 @@
       return {
         queryKey: ["records", $table?.id.value, $viewId, $q, $currentPage, $perPage],
         enabled: view?.type === "grid",
-        queryFn: () =>
-          trpc.record.list.query({
+        queryFn: async () => {
+          const dataService = await getDataService(isLocal)
+
+          return dataService.records.getRecords({
             tableId: $table?.id.value,
             viewId: $viewId,
             q: $q ?? undefined,
             filters: filter,
             pagination: { limit: $perPage, page: $currentPage || 1 },
-          }),
+          })
+        },
       }
     }),
   )
@@ -62,7 +68,10 @@
       }
       return {
         queryKey: ["aggregates", $table?.id.value, $viewId],
-        queryFn: () => trpc.record.aggregate.query({ tableId: $table.id.value, viewId: $viewId }),
+        queryFn: async () => {
+      const dataService = await getDataService(isLocal)
+
+          return dataService.records.getAggregates({ tableId: $table.id.value, viewId: $viewId })},
         enabled: !!$table,
       }
     }),

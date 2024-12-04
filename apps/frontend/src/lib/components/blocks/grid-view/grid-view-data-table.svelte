@@ -196,7 +196,7 @@
   {/if}
   <ScrollArea orientation="both" class="h-full flex-1 overflow-auto">
     <table {...$tableAttrs} class={cn("flex h-full flex-col", $$restProps.class)}>
-      <Table.Header {...$tableHeaderAttrs} class="sticky top-0 z-50 bg-white">
+      <Table.Header {...$tableHeaderAttrs} class="sticky top-0 z-10 bg-white">
         {#each $headerRows as headerRow}
           <Subscribe rowAttrs={headerRow.attrs()}>
             <Table.Row class="text-xs transition-none hover:bg-inherit">

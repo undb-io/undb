@@ -18,6 +18,7 @@
   export let disableRecordQuery = false
   export let r: Writable<string | null>
 
+
   $: view = $table.views.getViewById($viewId) as KanbanView
   $: fieldId = view.type === "kanban" ? view.field.into(undefined) : undefined
   $: field = fieldId ? $table.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined) : undefined

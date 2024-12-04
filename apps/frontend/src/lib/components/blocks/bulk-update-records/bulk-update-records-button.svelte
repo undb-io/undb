@@ -14,7 +14,7 @@
 </script>
 
 {#if $hasPermission("record:update")}
-  <Sheet.Root bind:open>
+  <Sheet.Root bind:open portal="body">
     <Sheet.Trigger asChild let:builder>
       <Button size="sm" variant="outline" builders={[builder]}>
         <PencilIcon class="mr-2 h-3 w-3" />

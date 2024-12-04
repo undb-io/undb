@@ -1,51 +1,56 @@
 <script lang="ts">
-  import { TemplateFactory, type ITemplateDTO } from "@undb/template"
+  import { type ITemplateDTO } from "@undb/template"
   import { writable } from "svelte/store"
   import { derived } from "svelte/store"
   import { setTable } from "$lib/store/table.store"
-  import TemplateGridView from "$lib/components/blocks/template/template-grid-view.svelte"
-  import KanbanView from "$lib/components/blocks/kanban-view/kanban-view.svelte"
   import { cn } from "$lib/utils"
   import { HardDriveIcon, DatabaseIcon, ViewIcon, ChevronRightIcon } from "lucide-svelte"
   import * as Collapsible from "$lib/components/ui/collapsible"
-  import { setTemplate } from "$lib/store/template.store"
+  import { setTemplate } from "$lib/store/template.store.svelte"
   import RecordDetailSheet from "$lib/components/blocks/record-detail/record-detail-sheet.svelte"
-  import GalleryView from "$lib/components/blocks/gallery-view/gallery-view.svelte"
-  import CalendarView from "$lib/components/blocks/calendar-view/calendar-view.svelte"
-  import ListView from "$lib/components/blocks/list-view/list-view.svelte"
-  import { DataService } from "@undb/data-service"
-  import { container } from "@undb/di"
+  import View from "$lib/components/blocks/view/view.svelte"
   import { onMount } from "svelte"
+  import { registry } from "$lib/registry.svelte"
+  import { setIsLocal } from "$lib/store/data-service.store"
+  import { type DataService, getDataService } from "@undb/data-service"
+  import { createQuery } from "@tanstack/svelte-query"
+  import { preferences } from "$lib/store/persisted.store"
+  import { RecordDO } from "@undb/table"
+  import { templateStore } from "$lib/store/template.store.svelte"
 
   export let template: ITemplateDTO
 
   setTemplate(writable(template))
+  setIsLocal(true)
 
-  let t = TemplateFactory.create(template.template.template, [], "space1")
+  let t = templateStore.mustGetTemplate(template)
   let tables = t.flatMap((base) => base.tables.map(({ table }) => table))
   let bases = t.map((base) => base.base)
 
-  let currentBaseId = writable<string | undefined>(bases.at(0)?.id.value)
-  let currentBase = derived(currentBaseId, ($currentBaseId) => {
-    return bases.find((base) => base.id.value === $currentBaseId)
-  })
   let currentTableId = writable<string | undefined>(tables.at(0)?.id.value)
   let currentViewId = writable<string | undefined>(undefined)
   let currentTable = derived(currentTableId, ($currentTableId) => {
     return tables.find((table) => table.id.value === $currentTableId)
   })
-  let records = derived(currentTableId, ($currentTableId) => {
-    return t.flatMap((base) => base.tables.find((t) => t.table.id.value === $currentTableId)?.records ?? [])
-  })
-
-  let currentView = derived([currentTable, currentViewId], ([$currentTable, $currentViewId]) => {
-    return $currentTable?.views.getViewById($currentViewId)
-  })
 
   let r = writable<string | null>(null)
-  let recordDo = derived([records, r], ([$records, $r]) => {
-    return $records.find((record) => record.id.value === $r)
-  })
+
+  const record = createQuery(
+    derived([currentTable, r, preferences], ([$table, $recordId, $preferences]) => ({
+      queryKey: [$recordId, "get", $preferences.showHiddenFields],
+      enabled: !!$table && !!$recordId,
+      queryFn: async () => {
+        const dataService = getDataService(true)
+        return dataService.records.getRecordById({
+          tableId: $table?.id.value,
+          id: $recordId!,
+          ignoreView: $preferences.showHiddenFields,
+        })
+      },
+    })),
+  )
+
+  $: recordDo = $record.data?.record ? RecordDO.fromJSON($currentTable!, $record.data?.record) : undefined
 
   $: if ($currentTable) {
     setTable(writable($currentTable))
@@ -59,13 +64,21 @@
         }
       : {}
 
-  // let dataService: DataService
-  // let saved = false
-  // onMount(async () => {
-  //   dataService = container.resolve<DataService>(DataService)
-  //   await dataService.template.save(t, true)
-  //   saved = true
-  // })
+  let dataService: DataService
+  let saved = false
+  onMount(async () => {
+    await registry.register(true)
+
+    if (templateStore.isTemplateSaved(template.id)) {
+      saved = true
+      return
+    }
+
+    dataService = getDataService(true)
+    await dataService.template.save(t, true)
+    templateStore.saveTemplate(template.id, t)
+    saved = true
+  })
 </script>
 
 {#if template.template.type === "base" && saved}
@@ -205,21 +218,13 @@
     {#key $currentTableId}
       {#if $currentTable}
         <section class="flex h-full flex-1 flex-col overflow-auto">
-          {#if $currentView?.type === "grid"}
-            <TemplateGridView tableId={$currentTableId} viewId={currentViewId} records={$records} {r} />
-          {:else if $currentView?.type === "kanban"}
-            <KanbanView viewId={currentViewId} records={$records} {r} disableRecordQuery readonly />
-          {:else if $currentView?.type === "gallery"}
-            <GalleryView viewId={currentViewId} records={$records} {r} readonly disableRecordQuery />
-          {:else if $currentView?.type === "calendar"}
-            <CalendarView viewId={currentViewId} records={$records} {r} readonly disableRecordQuery />
-          {:else if $currentView?.type === "list"}
-            <ListView viewId={currentViewId} records={$records} {r} readonly disableRecordQuery />
-          {/if}
+          <View viewId={currentViewId} shareId={undefined} {r} readonly={true} />
         </section>
       {/if}
     {/key}
   </div>
 {/if}
 
-<RecordDetailSheet viewId={currentViewId} readonly recordDo={$recordDo} isLoading={false} {r} />
+{#key $currentTableId}
+  <RecordDetailSheet viewId={currentViewId} readonly {recordDo} isLoading={false} {r} />
+{/key}

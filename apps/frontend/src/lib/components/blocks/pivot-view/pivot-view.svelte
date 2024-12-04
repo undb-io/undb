@@ -6,7 +6,7 @@
   import PivotViewToolbar from "./pivot-view-toolbar.svelte"
 
   const table = getTable()
-  export let viewId: Readable<string>
+  export let viewId: Readable<string | undefined>
   export let r: Writable<string | null>
   export let readonly: boolean = false
   export let shareId: string | undefined

@@ -18,6 +18,7 @@
   import Label from "$lib/components/ui/label/label.svelte"
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
   import ForeignRecordDetailButton from "./foreign-record-detail-button.svelte"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
 
   export let foreignTable: Readable<TableDo>
   export let isSelected = false
@@ -30,6 +31,8 @@
   export let field: ReferenceField
   export let onValueChange = (value: string[]) => {}
   export let onSuccess: (id?: string) => void
+
+  const isLocal = getIsLocal()
 
   let linkAfterCreate = true
 
@@ -47,8 +50,9 @@
       return {
         queryKey: ["records", $table.id.value, $q, $currentPage, $selected?.length],
         enabled: !!$table,
-        queryFn: () =>
-          trpc.record.list.query({
+        queryFn: async () => {
+          const dataService = await getDataService(isLocal)
+          return dataService.records.getRecords({
             tableId: $table.id.value,
             q: $q || undefined,
             ignoreView: true,
@@ -75,7 +79,8 @@
               : field.condition,
             select: fields.map((f) => f.id.value),
             pagination: { limit: $perPage, page: $currentPage },
-          }),
+          })
+        },
       }
     }),
   )
@@ -280,6 +285,8 @@
                           {foreignTable}
                           {r}
                           recordId={readable(record.id)}
+                          readonly={readonly}
+                          viewId={readable(undefined)}
                         />
                         {#if !readonly}
                           {#if isSelected}
