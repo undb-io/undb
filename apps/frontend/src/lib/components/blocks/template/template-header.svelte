@@ -91,7 +91,7 @@
 <header class="flex items-center justify-between border-b px-4 py-2">
   <div class="flex items-center gap-2">
     <img src={Logo} alt="undb" class="size-4" />
-    <span class="text-sm font-medium"> Undb Template </span>
+    <span class="text-sm font-medium"> Undb {$LL.template.template()} </span>
   </div>
 
   {#if me}
