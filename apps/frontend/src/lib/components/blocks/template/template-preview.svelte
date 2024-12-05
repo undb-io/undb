@@ -30,9 +30,9 @@
   let dashboards = t.flatMap((base) => base.dashboards)
   let bases = t.map((base) => base.base)
 
-  let currentTableId = writable<string | undefined>(tables.at(0)?.id.value)
+  let currentTableId = writable<string | undefined>(dashboards.length ? undefined : tables.at(0)?.id.value)
   let currentViewId = writable<string | undefined>(undefined)
-  let currentDashboardId = writable<string | undefined>(undefined)
+  let currentDashboardId = writable<string | undefined>(dashboards.length ? dashboards.at(0)?.id.value : undefined)
   let currentTable = derived(currentTableId, ($currentTableId) => {
     return tables.find((table) => table.id.value === $currentTableId)
   })
