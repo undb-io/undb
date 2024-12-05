@@ -81,6 +81,9 @@
             "focus-visible:ring-ring h-full w-full rounded-none border px-2 text-xs outline-none focus:bg-white",
           )}
           on:change={() => {
+            if (readonly) {
+              return
+            }
             $updateCell.mutate({
               tableId,
               id: recordId,
@@ -100,6 +103,9 @@
 <Dialog.Root
   bind:open
   onOpenChange={(open) => {
+    if (readonly) {
+      return
+    }
     if (!open) {
       $updateCell.mutate({
         tableId,
