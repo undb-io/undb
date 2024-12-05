@@ -144,12 +144,12 @@ const dbEnv = createEnv({
 export const env = createEnv({
   shared: {
     LOG_LEVEL: z.enum(["info", "debug", "error"]).default("info"),
+    UNDB_BASE_URL: z.string().optional().default("http://localhost:3721"),
   },
   clientPrefix: "UNDB_PUBLIC_",
   client: {},
   server: {
     NODE_ENV: z.enum(["development", "production", "test"]).default("development"),
-    UNDB_BASE_URL: z.string().optional().default("http://localhost:3721"),
     UNDB_COOKIE_DOMAIN: z.string().optional(),
   },
   runtimeEnv: import.meta.env,

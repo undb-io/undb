@@ -1,7 +1,8 @@
-import { templates, type IBaseTemplateDTO, type ITemplateDTO } from "@undb/template"
+import { env } from "@undb/env"
+import { templates,type IBaseTemplateDTO,type ITemplateDTO } from "@undb/template"
 
 function getTemplateImage(folder: string, file: string) {
-  return "/assets/templates/" + folder + "/" + file
+  return env.UNDB_BASE_URL + "/assets/templates/" + folder + "/" + file
 }
 
 export const templateData: ITemplateDTO[] = [
