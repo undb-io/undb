@@ -1,11 +1,9 @@
 <script lang="ts">
   import { superForm } from "sveltekit-superforms/client"
   import { zodClient } from "sveltekit-superforms/adapters"
-  import SuperDebug from "sveltekit-superforms"
   import { Loader2 } from "lucide-svelte"
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
-  import { Button } from "$lib/components/ui/button"
   import { addDashboardWidgetCommand } from "@undb/commands"
   import { defaults } from "sveltekit-superforms"
   import { PlugIcon } from "lucide-svelte"
@@ -15,10 +13,9 @@
   import { getNextName } from "@undb/utils"
   import { toast } from "svelte-sonner"
   import { getDashboard, getDashboardWidgetItemsStore } from "$lib/store/dashboard.store"
-  import { DashboardWidget, DashboardLayouts } from "@undb/dashboard"
+  import { DashboardWidget, DashboardLayouts, COLS } from "@undb/dashboard"
   import TablePicker from "../table-picker/table-picker.svelte"
   import { invalidate } from "$app/navigation"
-  import { COLS } from "$lib/store/widget.store"
   import { LL } from "@undb/i18n/client"
 
   const dashboard = getDashboard()

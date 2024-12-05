@@ -16,8 +16,7 @@
   import { getDashboard, getDashboardWidgetItemsStore, getIsDashboard } from "$lib/store/dashboard.store"
   import { cn } from "$lib/utils"
   import { GripVerticalIcon, ChevronRightIcon, CopyIcon } from "lucide-svelte"
-  import { COLS } from "$lib/store/widget.store"
-  import { DashboardLayouts } from "@undb/dashboard"
+  import { COLS, DashboardLayouts } from "@undb/dashboard"
   import { LL } from "@undb/i18n/client"
 
   export let tableId: string | undefined
@@ -219,7 +218,7 @@
 <AlertDialog.Root bind:open={confirmDelete}>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>{$LL.widget.deleteConfirm.title(widget.name)}</AlertDialog.Title>
+      <AlertDialog.Title>{$LL.widget.deleteConfirm.title({ name: widget.name })}</AlertDialog.Title>
       <AlertDialog.Description>
         {$LL.widget.deleteConfirm.description()}
       </AlertDialog.Description>
@@ -248,7 +247,7 @@
 <AlertDialog.Root bind:open={confirmDuplicate}>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>{$LL.widget.duplicate(widget.name)}</AlertDialog.Title>
+      <AlertDialog.Title>{$LL.widget.duplicate({ name: widget.name })}</AlertDialog.Title>
     </AlertDialog.Header>
     <AlertDialog.Footer>
       <AlertDialog.Cancel>{$LL.common.cancel()}</AlertDialog.Cancel>
