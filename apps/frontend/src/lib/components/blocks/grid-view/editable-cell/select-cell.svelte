@@ -18,6 +18,7 @@
   export let isEditing: boolean
   export let isSelected: boolean
   export let onValueChange: (id: IOptionId | IOptionId[] | null) => void
+  export let readonly: boolean = false
 
   $: selected = Array.isArray(value)
     ? value.map((v) => field.options.find((o) => o.id === v)).filter((v) => !!v)
@@ -84,7 +85,7 @@
         <Option option={selected} />
       {/if}
     {/if}
-    {#if isSelected || open}
+    {#if (isSelected || open) && !readonly}
       <ChevronDownIcon class="text-muted-foreground h-3 w-3" />
     {/if}
   </div>
