@@ -107,30 +107,30 @@
       <GaugeIcon class="mr-2 size-4" />
       {$dashboard.name.value}
 
-      <DropdownMenu.Root>
-        <DropdownMenu.Trigger>
-          <EllipsisIcon class="text-muted-foreground ml-4 size-4" />
-        </DropdownMenu.Trigger>
-        <DropdownMenu.Content>
-          <DropdownMenu.Group>
-            <DropdownMenu.Item class="text-xs" on:click={() => (updateDialogOpen = true)}>
-              <PencilIcon class="mr-2 size-3" />
-              {$LL.dashboard.updateName()}
-            </DropdownMenu.Item>
-            <DropdownMenu.Item class="text-xs" on:click={() => (duplicateDialogOpen = true)}>
-              <CopyIcon class="mr-2 size-3" />
-              {$LL.dashboard.duplicateDashboard()}
-            </DropdownMenu.Item>
-            <DropdownMenu.Item
-              class="text-destructive text-xs hover:!bg-red-100 hover:!text-red-500"
-              on:click={() => (deleteDialogOpen = true)}
-            >
-              <TrashIcon class="mr-2 size-3" />
-              {$LL.dashboard.deleteDashboard()}
-            </DropdownMenu.Item>
-          </DropdownMenu.Group>
-        </DropdownMenu.Content>
-      </DropdownMenu.Root>
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            <EllipsisIcon class="text-muted-foreground ml-4 size-4" />
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content>
+            <DropdownMenu.Group>
+              <DropdownMenu.Item class="text-xs" on:click={() => (updateDialogOpen = true)}>
+                <PencilIcon class="mr-2 size-3" />
+                {$LL.dashboard.updateName()}
+              </DropdownMenu.Item>
+              <DropdownMenu.Item class="text-xs" on:click={() => (duplicateDialogOpen = true)}>
+                <CopyIcon class="mr-2 size-3" />
+                {$LL.dashboard.duplicateDashboard()}
+              </DropdownMenu.Item>
+              <DropdownMenu.Item
+                class="text-destructive text-xs hover:!bg-red-100 hover:!text-red-500"
+                on:click={() => (deleteDialogOpen = true)}
+              >
+                <TrashIcon class="mr-2 size-3" />
+                {$LL.dashboard.deleteDashboard()}
+              </DropdownMenu.Item>
+            </DropdownMenu.Group>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
     </h1>
     <div class="flex items-center gap-2">
       <ShareButton

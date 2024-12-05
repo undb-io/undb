@@ -102,6 +102,7 @@ export class DashboardRepository implements IDashboardRepository {
       await qb
         .insertInto("undb_dashboard_table_id_mapping")
         .values(tableIds.map((id) => ({ dashboard_id: dashboard.id.value, table_id: id })))
+        .onConflict((ob) => ob.doNothing())
         .execute()
     }
     await this.outboxService.save(dashboard)

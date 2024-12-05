@@ -47,12 +47,14 @@ export class DashboardMutateVisitor extends AbstractQBMutationVisitor implements
 
     const tableIds = v.widgets.tableIds
     if (tableIds.length > 0) {
-      const sql = this.qb
-        .insertInto("undb_dashboard_table_id_mapping")
-        .values(tableIds.map((tableId) => ({ dashboard_id: dashboardId, table_id: tableId })))
-        .onConflict((ob) => ob.doNothing())
-        .compile()
-      this.addSql(sql)
+      for (const tableId of tableIds) {
+        const sql = this.qb
+          .insertInto("undb_dashboard_table_id_mapping")
+          .values({ dashboard_id: dashboardId, table_id: tableId })
+          .onConflict((ob) => ob.doNothing())
+          .compile()
+        this.addSql(sql)
+      }
     }
   }
   withDashboardBaseId(v: DashboardBaseIdSpecification): void {

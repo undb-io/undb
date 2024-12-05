@@ -41,6 +41,6 @@
       <ShareButton type="view" id={$viewId} size="xs" />
     {/if}
 
-    <ViewWidgetButton size="xs" />
+    <ViewWidgetButton size="xs" {readonly} />
   </div>
 </div>

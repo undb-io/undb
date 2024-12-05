@@ -18,6 +18,7 @@
   let table = getTable()
   export let viewId: Readable<string | undefined>
   export let shareId: string | undefined = undefined
+  export let readonly = false
 
   let view = derived([table, viewId], ([$table, $viewId]) => $table?.views.getViewById($viewId))
   let widgets = derived([view], ([$view]) => ($view?.widgets.unwrapOr([]) ?? []).map((w) => w.toJSON()))
@@ -82,7 +83,7 @@
         <p class="text-muted-foreground text-sm">{$LL.table.view.widget.empty()}</p>
       </div>
     {/if}
-    {#if !shareId}
+    {#if !shareId && !readonly}
       <Popover.Root bind:open>
         <Popover.Trigger asChild let:builder>
           <Button size="sm" class="w-full" builders={[builder]} variant={$widgets.length ? "outline" : "default"}>

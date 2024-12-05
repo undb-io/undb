@@ -10,6 +10,7 @@
   import type { IDashboardLayouts } from "@undb/dashboard"
 
   export let shareId: string | undefined = undefined
+  export let readonly = false
 
   const dashboard = getDashboard()
 
@@ -20,6 +21,7 @@
   })
 
   const onPointeup = () => {
+    if (readonly) return
     const widgets = $widgetItems
       .map((item) => {
         const { x, y, h, w } = item[COLS]
@@ -54,6 +56,7 @@
       <DashboardWidget
         widget={dataItem.widget}
         {shareId}
+        {readonly}
         tableId={dataItem.tableId}
         {movePointerDown}
         {resizePointerDown}

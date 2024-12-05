@@ -37,7 +37,9 @@ import {
   RECORD_OUTBOX_SERVICE,
   RECORD_QUERY_REPOSITORY,
   RECORD_REPOSITORY,
+  RECORDS_QUERY_SERVICE,
   RECORDS_SERVICE,
+  RecordsQueryService,
   RecordsService,
   TABLE_OUTBOX_SERVICE,
   TABLE_QUERY_REPOSITORY,
@@ -93,6 +95,7 @@ export const registerDataService = () => {
   container.register(INVITATION_REPOSITORY, InvitationRepository)
   container.register(INVITATION_QUERY_REPOSITORY, InvitationQueryRepository)
   container.register(MAIL_SERVICE, MailService)
+  container.register(RECORDS_QUERY_SERVICE, RecordsQueryService)
   container.register(RECORDS_SERVICE, RecordsService)
   container.register(RECORD_QUERY_REPOSITORY, RecordQueryRepository)
   container.register(OBJECT_STORAGE, LocalObjectStorage)

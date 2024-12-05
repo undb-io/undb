@@ -28,19 +28,20 @@ export class DashboardFactory {
       new WithDashboardSpaceId(dto.spaceId),
       new DashboardBaseIdSpecification(dto.baseId),
       WithDashboardWidgets.from(dto.widgets || []),
-      new WithDashboardLayout(dto.layout),
+      new WithDashboardLayout(dto.layout ?? {}),
       WithDashboardDescription.fromString(dto.description),
     )
   }
 
   static create(input: ICreateDashboardDTO): Dashboard {
+    console.log(input)
     const dashboard = this.new(
       new WithDashboardId(DashboardId.fromOrCreate(input.id)),
       WithDashboardName.fromString(input.name),
       new WithDashboardSpaceId(input.spaceId),
       new DashboardBaseIdSpecification(input.baseId!),
       WithDashboardWidgets.from(input.widgets || []),
-      new WithDashboardLayout(input.layout),
+      WithDashboardLayout.create(input.widgets || [], input.layout),
       WithDashboardDescription.fromString(input.description),
     )
 

@@ -17,6 +17,8 @@
   import { preferences } from "$lib/store/persisted.store"
   import { RecordDO } from "@undb/table"
   import { templateStore } from "$lib/store/template.store.svelte"
+  import { setDashboard } from "$lib/store/dashboard.store"
+  import DashboardWidgets from "$lib/components/blocks/dashboard/dashboard-widgets.svelte"
 
   export let template: ITemplateDTO
 
@@ -25,12 +27,17 @@
 
   let t = templateStore.mustGetTemplate(template)
   let tables = t.flatMap((base) => base.tables.map(({ table }) => table))
+  let dashboards = t.flatMap((base) => base.dashboards)
   let bases = t.map((base) => base.base)
 
   let currentTableId = writable<string | undefined>(tables.at(0)?.id.value)
   let currentViewId = writable<string | undefined>(undefined)
+  let currentDashboardId = writable<string | undefined>(undefined)
   let currentTable = derived(currentTableId, ($currentTableId) => {
     return tables.find((table) => table.id.value === $currentTableId)
+  })
+  let currentDashboard = derived(currentDashboardId, ($currentDashboardId) => {
+    return dashboards.find((dashboard) => dashboard.id.value === $currentDashboardId)
   })
 
   let r = writable<string | null>(null)
@@ -54,6 +61,10 @@
 
   $: if ($currentTable) {
     setTable(writable($currentTable))
+  }
+
+  $: if ($currentDashboard) {
+    setDashboard(writable($currentDashboard))
   }
 
   let open: Record<string, boolean> =
@@ -91,6 +102,7 @@
               {#if base}
                 {@const active = base.id.value === $currentTable?.baseId && !$currentTableId && !$currentViewId}
                 {@const baseTables = tables.filter((t) => t?.baseId === base.id.value)}
+                {@const baseDashboards = dashboards.filter((d) => d.baseId === base.id.value)}
                 <Collapsible.Root bind:open={open[base.id.value]}>
                   <div
                     class={cn(
@@ -128,6 +140,33 @@
                     </div>
                   </div>
                   <Collapsible.Content class="space-y-1 pt-1">
+                    {#each baseDashboards as dashboard}
+                      {@const active = dashboard.id.value === $currentDashboardId}
+                      <div
+                        class={cn(
+                          "group flex h-8 cursor-pointer items-center justify-between gap-1 truncate rounded-md pl-8 pr-2 transition-all",
+                          active ? "bg-gray-800/90" : "hover:bg-gray-100",
+                        )}
+                      >
+                        <button
+                          on:click={() => {
+                            $currentTableId = undefined
+                            $currentViewId = undefined
+                            $currentDashboardId = dashboard.id.value
+                          }}
+                          title={dashboard.name.value}
+                          class={cn(
+                            "flex h-full flex-1 items-center overflow-hidden font-normal text-gray-600",
+                            active && "text-background font-medium",
+                          )}
+                        >
+                          <DatabaseIcon class="mr-2 h-4 w-4" />
+                          <span class="truncate">
+                            {dashboard.name.value}
+                          </span>
+                        </button>
+                      </div>
+                    {/each}
                     {#each baseTables as table}
                       {#if table}
                         {@const active = table.id.value === $currentTableId && !$currentViewId}
@@ -142,6 +181,7 @@
                             <button
                               on:click={() => {
                                 $currentTableId = table.id.value
+                                $currentDashboardId = undefined
                                 $currentViewId = undefined
                               }}
                               title={table.name.value}
@@ -196,6 +236,7 @@
                                   on:click={() => {
                                     $currentTableId = table.id.value
                                     $currentViewId = view.id.value
+                                    $currentDashboardId = undefined
                                   }}
                                 >
                                   <ViewIcon type={view.type} class="mr-2 h-4 w-4" />
@@ -220,6 +261,11 @@
         <section class="flex h-full flex-1 flex-col overflow-auto">
           <View viewId={currentViewId} shareId={undefined} {r} readonly={true} />
         </section>
+      {/if}
+    {/key}
+    {#key $currentDashboardId}
+      {#if $currentDashboard}
+        <DashboardWidgets readonly />
       {/if}
     {/key}
   </div>
