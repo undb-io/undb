@@ -1,3 +1,4 @@
+import { DEFAULT_TEMP_SPACE_ID } from "@undb/space"
 import { TemplateFactory, type ITemplateDTO, type TemplateDTO } from "@undb/template"
 import { getContext, setContext } from "svelte"
 import { derived, type Writable } from "svelte/store"
@@ -24,7 +25,7 @@ export class TemplateStore {
 
   mustGetTemplate = (template: ITemplateDTO): TemplateDTO => {
     const id = template.id
-    const t = this.templates[id] ?? TemplateFactory.create(template.template.template, [], "space1")
+    const t = this.templates[id] ?? TemplateFactory.create(template.template.template, [], DEFAULT_TEMP_SPACE_ID)
     this.templates[id] = t
     return t
   }
