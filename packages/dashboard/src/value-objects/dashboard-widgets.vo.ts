@@ -5,8 +5,6 @@ import * as z from "@undb/zod"
 import type { IUpdateDashboardWidgetDTO } from "../dto/update-dashboard-widget.dto"
 import { WithDashboardWidgets, type DashboardComositeSpecification } from "../specifications"
 
-export const COLS = 24
-
 export interface IWidgetLayout {
   x: number
   y: number
@@ -14,7 +12,7 @@ export interface IWidgetLayout {
   w: number
 }
 
-export interface WidgetLayout {
+export interface WidgetDataItem {
   [key: number]: IWidgetLayout
   id: string
   tableId: string | undefined
