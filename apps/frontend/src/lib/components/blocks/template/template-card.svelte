@@ -14,7 +14,7 @@
   import { Checkbox } from "$lib/components/ui/checkbox/index.js"
   import Label from "$lib/components/ui/label/label.svelte"
 
-  let includeData = true
+  let includeData = false
 
   export let template: ITemplateDTO
 
