@@ -528,6 +528,7 @@ const webhook = {
   }
 
   const space = {
+    space: 'Space',
     spaces: 'Spaces',
     name: "Space Name",
     setDisplayName: 'Set Display Name',
@@ -623,8 +624,16 @@ const webhook = {
   }
 
   const template = {
+    template: 'Template',
+    useThisTemplate: 'Use this template',
+    previewTemplate: 'Preview Template',
+    getStarted: 'Get Started with this template',
+    whichSpace: "Which space do you want to create this template in?",
+   whichSpaceDescription: "You can create a new base or a new table in the selected space.",
     createBase: 'Create New Base',
-    selectATemplateToCreateABase: 'Select a template to create a new base'
+    selectATemplateToCreateABase: 'Select a template to create a new base',
+    includeDataDescription: 'Include data from the template to the new base or table.',
+    loginToCreateNewBaseOrTable: 'Login to create a new base or table'
   }
 
   const auth = {
@@ -722,7 +731,8 @@ const en = {
       today: 'Today',
       clear: 'Clear',
       updated: 'Updated',
-      now: 'Now'
+      now: 'Now',
+      import: 'Import'
   },
   share: {
     title: 'Share',

@@ -526,6 +526,7 @@ const base = {
 }
 
 const space = {
+  space: 'Espaço',
   spaces: 'Espaços',
   name: "Nome do Espaço",
   setDisplayName: 'Definir Nome de Exibição',
@@ -621,8 +622,16 @@ const events = {
 }
 
 const template = {
+  template: 'Modelo',
+  useThisTemplate: 'Usar este modelo',
+  previewTemplate: 'Visualizar modelo',
+  getStarted: 'Começar com este modelo',
+  whichSpace: 'Em qual espaço?',
+  whichSpaceDescription: "Você pode criar uma nova base ou uma nova tabela em um espaço selecionado.",
   createBase: 'Criar Nova Base',
-  selectATemplateToCreateABase: 'Selecione um modelo para criar uma nova base'
+  selectATemplateToCreateABase: 'Selecione um modelo para criar uma nova base',
+  includeDataDescription: 'Incluir dados do modelo na nova base ou tabela.',
+  loginToCreateNewBaseOrTable: 'Faça login para criar uma nova base ou tabela'
 }
 
 const auth = {
@@ -720,7 +729,8 @@ const pt = {
     today: 'Hoje',
     clear: 'Limpar',
     updated: 'Atualizado',
-    now: 'Agora'
+    now: 'Agora',
+    import: 'Importar'
   },
   share: {
     title: 'Compartilhar',

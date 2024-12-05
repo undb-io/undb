@@ -517,6 +517,7 @@ const base = {
 }
 
 const space = {
+  space: '空间',
   spaces: '空间',
   name: '空间名称',
   setDisplayName: '设置显示名称',
@@ -622,8 +623,16 @@ const events = {
 }
 
 const template= {
+  template: '模板',
+  useThisTemplate: '使用此模板',
+  previewTemplate: '预览模板',
+  getStarted: '从模板开始',
+  whichSpace: '在哪个空间？',
+  whichSpaceDescription: "您可以在选定的空间中创建一个新的 Base 或一个新的表。",
   createBase: '从模板创建 Base',
-  selectATemplateToCreateABase: '选择一个模板来创建一个 Base'
+  selectATemplateToCreateABase: '选择一个模板来创建一个 Base',
+  includeDataDescription: '将模板的数据包含到新的 Base 或表中。',
+  loginToCreateNewBaseOrTable: '登录以创建新的 Base 或表'
 }
 
 const auth = {
@@ -723,7 +732,8 @@ const zh = {
     today: '今天',
     clear: '清除',
     updated: '已更新',
-    now: '现在'
+    now: '现在',
+    import: '导入'
 	},
  share: {
 	title: '分享',

@@ -6,6 +6,7 @@
   import Logo from "$lib/images/logo.svg"
   import { Button } from "$lib/components/ui/button"
   import { page } from "$app/stores"
+  import { LL } from "@undb/i18n/client"
 
   export let data: LayoutData
 
@@ -36,7 +37,9 @@
               <span class="font-bold"> Undb </span>
             </a>
 
-            <Button href={`/create-from-share/${$page.params.shareId}`} size="sm">Use this template</Button>
+            <Button href={`/create-from-share/${$page.params.shareId}`} size="sm">
+              {$LL.template.useThisTemplate()}
+            </Button>
           </div>
           <div class="w-full flex-1 overflow-y-auto">
             <ShareBaseNav {base} />

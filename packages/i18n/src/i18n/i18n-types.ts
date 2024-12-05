@@ -131,6 +131,30 @@ type RootTranslation = {
 	}
 	template: {
 		/**
+		 * T​e​m​p​l​a​t​e
+		 */
+		template: string
+		/**
+		 * U​s​e​ ​t​h​i​s​ ​t​e​m​p​l​a​t​e
+		 */
+		useThisTemplate: string
+		/**
+		 * P​r​e​v​i​e​w​ ​T​e​m​p​l​a​t​e
+		 */
+		previewTemplate: string
+		/**
+		 * G​e​t​ ​S​t​a​r​t​e​d​ ​w​i​t​h​ ​t​h​i​s​ ​t​e​m​p​l​a​t​e
+		 */
+		getStarted: string
+		/**
+		 * W​h​i​c​h​ ​s​p​a​c​e​ ​d​o​ ​y​o​u​ ​w​a​n​t​ ​t​o​ ​c​r​e​a​t​e​ ​t​h​i​s​ ​t​e​m​p​l​a​t​e​ ​i​n​?
+		 */
+		whichSpace: string
+		/**
+		 * Y​o​u​ ​c​a​n​ ​c​r​e​a​t​e​ ​a​ ​n​e​w​ ​b​a​s​e​ ​o​r​ ​a​ ​n​e​w​ ​t​a​b​l​e​ ​i​n​ ​t​h​e​ ​s​e​l​e​c​t​e​d​ ​s​p​a​c​e​.
+		 */
+		whichSpaceDescription: string
+		/**
 		 * C​r​e​a​t​e​ ​N​e​w​ ​B​a​s​e
 		 */
 		createBase: string
@@ -138,6 +162,14 @@ type RootTranslation = {
 		 * S​e​l​e​c​t​ ​a​ ​t​e​m​p​l​a​t​e​ ​t​o​ ​c​r​e​a​t​e​ ​a​ ​n​e​w​ ​b​a​s​e
 		 */
 		selectATemplateToCreateABase: string
+		/**
+		 * I​n​c​l​u​d​e​ ​d​a​t​a​ ​f​r​o​m​ ​t​h​e​ ​t​e​m​p​l​a​t​e​ ​t​o​ ​t​h​e​ ​n​e​w​ ​b​a​s​e​ ​o​r​ ​t​a​b​l​e​.
+		 */
+		includeDataDescription: string
+		/**
+		 * L​o​g​i​n​ ​t​o​ ​c​r​e​a​t​e​ ​a​ ​n​e​w​ ​b​a​s​e​ ​o​r​ ​t​a​b​l​e
+		 */
+		loginToCreateNewBaseOrTable: string
 	}
 	setting: {
 		/**
@@ -221,6 +253,10 @@ type RootTranslation = {
 		systemFieldsUpdated: string
 	}
 	space: {
+		/**
+		 * S​p​a​c​e
+		 */
+		space: string
 		/**
 		 * S​p​a​c​e​s
 		 */
@@ -2282,6 +2318,10 @@ type RootTranslation = {
 		 * N​o​w
 		 */
 		now: string
+		/**
+		 * I​m​p​o​r​t
+		 */
+		'import': string
 	}
 	share: {
 		/**
@@ -2533,6 +2573,30 @@ export type TranslationFunctions = {
 	}
 	template: {
 		/**
+		 * Template
+		 */
+		template: () => LocalizedString
+		/**
+		 * Use this template
+		 */
+		useThisTemplate: () => LocalizedString
+		/**
+		 * Preview Template
+		 */
+		previewTemplate: () => LocalizedString
+		/**
+		 * Get Started with this template
+		 */
+		getStarted: () => LocalizedString
+		/**
+		 * Which space do you want to create this template in?
+		 */
+		whichSpace: () => LocalizedString
+		/**
+		 * You can create a new base or a new table in the selected space.
+		 */
+		whichSpaceDescription: () => LocalizedString
+		/**
 		 * Create New Base
 		 */
 		createBase: () => LocalizedString
@@ -2540,6 +2604,14 @@ export type TranslationFunctions = {
 		 * Select a template to create a new base
 		 */
 		selectATemplateToCreateABase: () => LocalizedString
+		/**
+		 * Include data from the template to the new base or table.
+		 */
+		includeDataDescription: () => LocalizedString
+		/**
+		 * Login to create a new base or table
+		 */
+		loginToCreateNewBaseOrTable: () => LocalizedString
 	}
 	setting: {
 		/**
@@ -2622,6 +2694,10 @@ export type TranslationFunctions = {
 		systemFieldsUpdated: () => LocalizedString
 	}
 	space: {
+		/**
+		 * Space
+		 */
+		space: () => LocalizedString
 		/**
 		 * Spaces
 		 */
@@ -4658,6 +4734,10 @@ export type TranslationFunctions = {
 		 * Now
 		 */
 		now: () => LocalizedString
+		/**
+		 * Import
+		 */
+		'import': () => LocalizedString
 	}
 	share: {
 		/**

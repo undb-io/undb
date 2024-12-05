@@ -517,6 +517,7 @@ const base = {
 }
 
 const space = {
+  space: '공간',
   spaces: '공간',
   name: '공간 이름',
   setDisplayName: '표시 이름 설정',
@@ -622,8 +623,16 @@ const events = {
 }
 
 const template = {
+  template: '템플릿',
+  useThisTemplate: '이 템플릿 사용',
+  previewTemplate: '템플릿 미리보기',
+  getStarted: '이 템플릿으로 시작',
+  whichSpace: "이 템플릿을 생성할 공간은 어디인가요?",
+  whichSpaceDescription: "새로운 Base 또는 선택한 공간에 새로운 테이블을 생성할 수 있습니다.",
   createBase: 'Base 생성',
-  selectATemplateToCreateABase: '템플릿을 선택하여 Base를 생성하세요'
+  selectATemplateToCreateABase: '템플릿을 선택하여 Base를 생성하세요',
+  includeDataDescription: '템플릿의 데이터를 새로운 Base 또는 테이블에 포함합니다.',
+  loginToCreateNewBaseOrTable: '로그인하여 새로운 Base 또는 테이블을 생성하세요'
 }
 
 const auth = {
@@ -721,7 +730,8 @@ const ko = {
     today: '오늘',
     clear: '지우기',
     updated: '업데이트됨',
-    now: '지금'
+    now: '지금',
+    import: '가져오기'
 	},
  share: {
 	title: '공유',

@@ -518,6 +518,7 @@ const base = {
 }
 
 const space = {
+  space: 'スペース',
   spaces: 'スペース',
   name: 'スペース名',
   setDisplayName: '表示名を設定',
@@ -622,8 +623,16 @@ const events = {
 }
 
 const template = {
+  template: 'テンプレート',
+  useThisTemplate: 'このテンプレートを使用',
+  previewTemplate: 'テンプレートのプレビュー',
+  getStarted: 'このテンプレートを使用して開始',
+  whichSpace: "このテンプレートを作成するスペースはどれですか？",
+  whichSpaceDescription: "新しい Base または新しいテーブルを選択したスペースに作成できます。",
   createBase: 'Base を作成',
-  selectATemplateToCreateABase: 'テンプレートを選択して Base を作成します'
+  selectATemplateToCreateABase: 'テンプレートを選択して Base を作成します',
+  includeDataDescription: 'テンプレートのデータを新しい Base またはテーブルに含めます。',
+  loginToCreateNewBaseOrTable: 'ログインして新しい Base またはテーブルを作成します'
 }
 
 const auth = {
@@ -721,7 +730,8 @@ const ja = {
     today: '今日',
     clear: 'クリア',
     updated: '更新済み',
-    now: '現在'
+    now: '現在',
+    import: 'インポート'
 	},
  share: {
 	title: '共有',
