@@ -70,7 +70,7 @@
           <Button size="xs" variant="link" class="px-0" builders={[builder]}>
             {$LL.table.record.reference.linked({ n: $selected.length })}
           </Button>
-        {:else}
+        {:else if !readonly}
           <Button size="xs" variant="link" type="button" class="text-muted-foreground px-0" builders={[builder]}
             >+ {$LL.table.record.reference.link()}</Button
           >
