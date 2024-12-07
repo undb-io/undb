@@ -16,10 +16,12 @@
   import { Separator } from "$lib/components/ui/separator"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { writable } from "svelte/store"
-  import { GetForeignTableQueryStore } from "$houdini"
   import autoAnimate from "@formkit/auto-animate"
   import { isEqual } from "radash"
   import { LL } from "@undb/i18n/client"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { createQuery } from "@tanstack/svelte-query"
 
   export let disabled = false
 
@@ -32,14 +34,25 @@
     condition: undefined,
   }
 
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
   let allowCondition: boolean = !!option.condition
-  const getForeignTableStore = new GetForeignTableQueryStore()
+
+  const getForeignTable = createQuery({
+    queryFn: async () => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.getTable({ tableId: option.foreignTableId! })
+    },
+    queryKey: ["getForeignTable", option.foreignTableId],
+    enabled: !!option.foreignTableId,
+  })
 
   $: if (allowCondition && option.foreignTableId) {
-    getForeignTableStore.fetch({ variables: { tableId: option.foreignTableId } })
+    $getForeignTable.refetch()
   }
 
-  $: ft = $getForeignTableStore.data?.table
+  $: ft = $getForeignTable.data
 
   // @ts-ignore
   $: foreignTable = ft ? new TableFactory().fromJSON(ft) : undefined

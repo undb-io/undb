@@ -500,6 +500,7 @@ const dashboard = {
 const base = {
   name: 'Base 名称',
   noBases: '没有 Base',
+  created: 'Base 已创建',
   displayName: 'Base 显示名称',
   importFromTemplate: '从模板导入',
   createBase: '创建 Base',

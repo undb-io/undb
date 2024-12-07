@@ -14,7 +14,6 @@
   import SelectKanbanLane from "./select-kanban-lane.svelte"
   import { arrayMoveImmutable } from "array-move"
   import { isNumber } from "radash"
-  import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
   import { PlusIcon } from "lucide-svelte"
@@ -24,6 +23,9 @@
   import { invalidate } from "$app/navigation"
   import type { Writable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type IUpdateFieldCommand } from "@undb/commands"
 
   const table = getTable()
 
@@ -40,8 +42,14 @@
   let lanesContainer: HTMLElement
   $: options = field.options ?? []
 
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
   const updateFieldMudation = createMutation({
-    mutationFn: trpc.table.field.update.mutate,
+    mutationFn: async (command: IUpdateFieldCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.field.updateField(command)
+    },
     mutationKey: ["table", $table.id.value, "field", fieldId, "update"],
     async onSuccess(data) {
       await invalidate(`undb:table:${$table.id.value}`)

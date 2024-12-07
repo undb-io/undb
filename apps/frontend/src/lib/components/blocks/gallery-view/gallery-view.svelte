@@ -14,6 +14,7 @@
   import GalleryViewLoading from "./gallery-view-loading.svelte"
   import GalleryViewOptionButton from "./gallery-option-button.svelte"
   import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
 
   const table = getTable()
   export let viewId: Readable<string | undefined>
@@ -31,6 +32,7 @@
   const currentPage = writable(1)
   const q = queryParam("q")
   const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   const getRecords = async () => {
     if (shareId) {
@@ -42,7 +44,7 @@
         pagination: { limit: $perPage, page: $currentPage },
       })
     }
-    const dataService = await getDataService(isLocal)
+    const dataService = await getDataService(isLocal, isPlayground)
     return dataService.records.getRecords({
       tableId: $table?.id.value,
       viewId: $viewId,

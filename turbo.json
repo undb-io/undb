@@ -19,6 +19,9 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
+    "clean": {
+      "dependsOn": ["^clean"]
+    },
     "dev": {
       "cache": false,
       "inputs": ["$TURBO_DEFAULT$", ".env"],

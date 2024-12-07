@@ -9,9 +9,9 @@ import {
   type IRecordValues,
   type Records,
 } from "@undb/table"
-import { getContext, setContext } from "svelte"
-import { derived, writable } from "svelte/store"
-import { queryParam, ssp } from "sveltekit-search-params"
+import { getContext,setContext } from "svelte"
+import { derived,writable } from "svelte/store"
+import { queryParam,ssp } from "sveltekit-search-params"
 
 type RecordStore = {
   lastUpdatedAt: number
@@ -113,8 +113,8 @@ export const createRecordsStore = () => {
   const hasRecord = derived(store, ($store) => !!$store.records.size)
   const count = derived(store, ($store) => $store.ids.length)
 
-  const invalidateRecord = async (isLocal: boolean, table: TableDo, recordId: string, viewId?: string) => {
-    const dataService = await getDataService(isLocal)
+  const invalidateRecord = async (isLocal: boolean, isPlayground: boolean, table: TableDo, recordId: string, viewId?: string) => {
+    const dataService = await getDataService(isLocal, isPlayground)
     const view = viewId ? table.views.getViewById(viewId) : undefined
     const result = await dataService.records.getRecordById({
       tableId: table.id.value,

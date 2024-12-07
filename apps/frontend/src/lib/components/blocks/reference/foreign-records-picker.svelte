@@ -19,6 +19,8 @@
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
   import ForeignRecordDetailButton from "./foreign-record-detail-button.svelte"
   import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type IUpdateRecordCommand } from "@undb/commands"
 
   export let foreignTable: Readable<TableDo>
   export let isSelected = false
@@ -33,6 +35,7 @@
   export let onSuccess: (id?: string) => void
 
   const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   let linkAfterCreate = true
 
@@ -51,7 +54,7 @@
         queryKey: ["records", $table.id.value, $q, $currentPage, $selected?.length],
         enabled: !!$table,
         queryFn: async () => {
-          const dataService = await getDataService(isLocal)
+          const dataService = await getDataService(isLocal, isPlayground)
           return dataService.records.getRecords({
             tableId: $table.id.value,
             q: $q || undefined,
@@ -97,7 +100,10 @@
   const client = useQueryClient()
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: async (command: IUpdateRecordCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.records.updateRecord(command)
+    },
     async onSuccess(data, variables, context) {
       await client.invalidateQueries({ queryKey: ["records", field.foreignTableId] })
       onSuccess?.(recordId)

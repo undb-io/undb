@@ -30,6 +30,8 @@
   import { tick } from "svelte"
   import { hasPermission } from "$lib/store/space-member.store"
   import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type IUpdateRecordCommand } from "@undb/commands"
 
   export let viewId: Readable<string | undefined>
   export let view: CalendarView
@@ -105,6 +107,7 @@
   const q = queryParam("q")
 
   const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   const getRecords = createQuery(
     derived([t, viewId, q, date], ([$table, $viewId, $q, $date]) => {
@@ -113,7 +116,7 @@
         queryKey: ["records", $table?.id.value, $viewId, $q, $date.toISOString()],
         enabled: view?.type === "calendar" && !disableRecordQuery,
         queryFn: async () => {
-          const dataService = await getDataService(isLocal)
+          const dataService = await getDataService(isLocal, isPlayground)
           const value = format($date, "yyyy-MM-dd")
           if (shareId) {
             return trpc.shareData.records.query({
@@ -255,7 +258,10 @@
   let overMinutes: number | undefined = undefined
 
   const updateRecord = createMutation({
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: async (command: IUpdateRecordCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.records.updateRecord(command)
+    },
   })
 
   const client = useQueryClient()

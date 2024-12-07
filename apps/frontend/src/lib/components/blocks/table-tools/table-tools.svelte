@@ -9,10 +9,13 @@
   import BulkUpdateRecordsButton from "../bulk-update-records/bulk-update-records-button.svelte"
   import ViewWidgetButton from "../view-widget/view-widget-button.svelte"
   import type { Readable, Writable } from "svelte/store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
 
   export let readonly = false
   export let r: Writable<string | null>
   export let viewId: Readable<string | undefined>
+
+  const isPlayground = getIsPlayground()
 </script>
 
 <div class="flex items-center justify-between gap-2 border-b px-4 py-2">
@@ -30,7 +33,9 @@
   <div class="flex items-center gap-2">
     {#if !readonly}
       <BulkUpdateRecordsButton {r} {viewId} />
-      <ShareViewButton />
+      {#if !isPlayground}
+        <ShareViewButton />
+      {/if}
     {/if}
     <RecordsSearch />
     <ViewWidgetButton {readonly} />

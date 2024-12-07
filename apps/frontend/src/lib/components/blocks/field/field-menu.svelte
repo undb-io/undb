@@ -1,11 +1,5 @@
 <script lang="ts">
-  import {
-    FieldIdVo,
-    getIsFieldCanBeRollup,
-    type Field,
-    type IReferenceFieldOption,
-    type ReferenceField,
-  } from "@undb/table"
+  import { FieldIdVo, getIsFieldCanBeRollup, type Field, type ReferenceField } from "@undb/table"
   import { Button } from "$lib/components/ui/button"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
   import { PencilIcon, TrashIcon } from "lucide-svelte"
@@ -13,35 +7,47 @@
   import UpdateField from "../update-field/update-field.svelte"
   import { cn } from "$lib/utils"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
-  import { createMutation, useQueryClient } from "@tanstack/svelte-query"
-  import { trpc } from "$lib/trpc/client"
+  import { createMutation, createQuery, useQueryClient } from "@tanstack/svelte-query"
   import { getTable } from "$lib/store/table.store"
   import { toast } from "svelte-sonner"
   import { invalidate } from "$app/navigation"
   import Label from "$lib/components/ui/label/label.svelte"
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
-  import { GetForeignTableStore, GetRollupForeignTablesStore } from "$houdini"
+  import { GetRollupForeignTablesStore } from "$houdini"
   import * as Alert from "$lib/components/ui/alert"
   import { preferences } from "$lib/store/persisted.store"
   import { hasPermission } from "$lib/store/space-member.store"
   import { LL } from "@undb/i18n/client"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type IDeleteFieldCommand, type IDuplicateFieldCommand } from "@undb/commands"
 
   export let field: Field
   const table = getTable()
+
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   export let update = false
   export let open = false
 
   const client = useQueryClient()
 
-  const foreignTableStore = new GetForeignTableStore()
+  const getForeignTable = createQuery({
+    queryFn: async () => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.getTable({ tableId: (field as ReferenceField).foreignTableId })
+    },
+    queryKey: ["getForeignTable", $table.baseId],
+    enabled: field.type === "reference",
+  })
 
   let deleteAlertOpen = false
-  $: deleteAlertOpen &&
-    field.type === "reference" &&
-    foreignTableStore.fetch({ variables: { tableId: field.foreignTableId } })
+  $: deleteAlertOpen && field.type === "reference" && $getForeignTable.refetch()
 
-  $: symmetricField = $foreignTableStore.data?.table?.schema.find(
+  $: foreignTable = $getForeignTable.data
+
+  $: symmetricField = foreignTable?.schema?.find(
     (f) => f.type === "reference" && f.id === (field as ReferenceField).symmetricFieldId,
   )
 
@@ -54,7 +60,10 @@
     })
 
   const deleteField = createMutation({
-    mutationFn: trpc.table.field.delete.mutate,
+    mutationFn: async (command: IDeleteFieldCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.field.deleteField(command)
+    },
     async onSuccess() {
       toast.success($LL.table.field.deleted())
       await invalidate(`undb:table:${$table.id.value}`)
@@ -68,7 +77,10 @@
   })
 
   const duplicateField = createMutation({
-    mutationFn: trpc.table.field.duplicate.mutate,
+    mutationFn: async (command: IDuplicateFieldCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.field.duplicateField(command)
+    },
     async onSuccess() {
       toast.success("Duplicate field success")
       await invalidate(`undb:table:${$table.id.value}`)
@@ -229,7 +241,7 @@
                 {/if}
                 {#if symmetricField}
                   {@const foreignRollupFields =
-                    $foreignTableStore.data?.table?.schema.filter(
+                    foreignTable?.schema.filter(
                       (f) => f.type === "rollup" && f.option?.referenceFieldId === symmetricField.id,
                     ) ?? []}
                   <Alert.Root class="border-yellow-500 bg-yellow-50">
@@ -253,7 +265,7 @@
 
                       of
                       <span class="font-bold">
-                        {$foreignTableStore.data?.table?.name}
+                        {foreignTable?.name}
                       </span>
                       will also be deleted.
                     </Alert.Description>

@@ -511,6 +511,7 @@ const webhook = {
   const base = {
     name: 'Base Name',
     createBase: 'Create New Base',
+    created: 'Base created successfully',
     importFromTemplate: 'Import From Template',
     displayName: 'Base Display Name',
     noBases: 'No Bases',

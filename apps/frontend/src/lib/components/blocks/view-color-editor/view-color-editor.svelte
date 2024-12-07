@@ -20,9 +20,15 @@
   import { hasPermission } from "$lib/store/space-member.store"
   import type { Readable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
+  import type { ISetViewColorCommand } from "@undb/commands"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
+
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   const table = getTable()
   $: color = $table.views.getViewById($viewId).color.into(undefined)
@@ -37,7 +43,10 @@
 
   const mutation = createMutation({
     mutationKey: ["table", $table.id.value, "setColor"],
-    mutationFn: trpc.table.view.setColor.mutate,
+    mutationFn: async (command: ISetViewColorCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.view.setColor(command)
+    },
     onSuccess: async () => {
       await invalidate(`undb:table:${$table.id.value}`)
       open = false

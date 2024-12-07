@@ -7,7 +7,7 @@ import {
   WithBaseSpaceId,
   type IBaseRepository,
 } from "@undb/base"
-import { CreateBaseCommand } from "@undb/commands"
+import { CreateBaseCommand, type ICreateBaseCommandOutput } from "@undb/commands"
 import { injectContext, type IContext } from "@undb/context"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
@@ -16,7 +16,7 @@ import { createLogger } from "@undb/logger"
 
 @commandHandler(CreateBaseCommand)
 @singleton()
-export class CreateBaseCommandHandler implements ICommandHandler<CreateBaseCommand, any> {
+export class CreateBaseCommandHandler implements ICommandHandler<CreateBaseCommand, ICreateBaseCommandOutput> {
   private readonly logger = createLogger(CreateBaseCommandHandler.name)
 
   constructor(
@@ -26,7 +26,7 @@ export class CreateBaseCommandHandler implements ICommandHandler<CreateBaseComma
     private readonly context: IContext,
   ) {}
 
-  async execute(command: CreateBaseCommand): Promise<any> {
+  async execute(command: CreateBaseCommand): Promise<ICreateBaseCommandOutput> {
     this.logger.debug(command)
 
     const spaceId = this.context.mustGetCurrentSpaceId()
@@ -35,6 +35,7 @@ export class CreateBaseCommandHandler implements ICommandHandler<CreateBaseComma
 
     applyRules(new BaseNameShouldBeUnique(!!exists))
 
+    command.spaceId = spaceId
     const base = BaseFactory.create(command)
 
     await this.repository.insert(base)

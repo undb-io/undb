@@ -20,6 +20,9 @@
   import CreateFieldButton from "../create-field/create-field-button.svelte"
   import { LL } from "@undb/i18n/client"
   import { EyeIcon, EyeOffIcon } from "lucide-svelte"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type ISetViewFieldsCommand } from "@undb/commands"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
@@ -42,9 +45,15 @@
     return field && field.name.value.toLowerCase().includes($q.toLowerCase())
   })
 
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
   const client = useQueryClient()
   const setViewFieldsMutation = createMutation({
-    mutationFn: trpc.table.view.setFields.mutate,
+    mutationFn: async (command: ISetViewFieldsCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.view.setFields(command)
+    },
     mutationKey: ["table", $table.id.value, "setFields"],
     async onSuccess(data, variables, context) {
       await invalidate(`undb:table:${$table.id.value}`)

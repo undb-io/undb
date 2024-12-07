@@ -21,13 +21,16 @@
   import * as Form from "$lib/components/ui/form"
   import * as Alert from "$lib/components/ui/alert/index.js"
   import { PencilIcon } from "lucide-svelte"
-  import type { IBulkUpdateRecordsCommandOutput } from "@undb/commands"
+  import type { IBulkUpdateRecordsCommand, IBulkUpdateRecordsCommandOutput } from "@undb/commands"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { writable, type Writable } from "svelte/store"
   import autoAnimate from "@formkit/auto-animate"
   import type { Readable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
+  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+
 
   const table = getTable()
   export let viewId: Readable<string | undefined>
@@ -41,13 +44,19 @@
   export let filter: IViewFilterGroup | undefined = undefined
   export let onSuccess: (data: IBulkUpdateRecordsCommandOutput) => void = () => {}
 
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
   let selectedFieldIds: string[] = []
   $: selectedFields = selectedFieldIds.map((id) => $table.schema.getFieldById(new FieldIdVo(id)).unwrap())
 
   const client = useQueryClient()
 
   const updateRecordMutation = createMutation({
-    mutationFn: trpc.record.bulkUpdate.mutate,
+    mutationFn: async (command: IBulkUpdateRecordsCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.records.updateRecords(command)
+    },
     onSuccess: async (data) => {
       if (!data.modifiedCount) {
         toast.warning($LL.table.record.bulkUpdate.noRecordsUpdated())

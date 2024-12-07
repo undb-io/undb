@@ -4,7 +4,6 @@
   import { FilterIcon, FilterXIcon } from "lucide-svelte"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { getTable } from "$lib/store/table.store"
-  import { trpc } from "$lib/trpc/client"
   import { LoaderCircleIcon } from "lucide-svelte"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { invalidate } from "$app/navigation"
@@ -20,6 +19,9 @@
   import { hasPermission } from "$lib/store/space-member.store"
   import type { Readable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
+  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import type { ISetViewFilterCommand } from "@undb/commands"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
@@ -39,9 +41,15 @@
 
   const client = useQueryClient()
 
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
   const mutation = createMutation({
     mutationKey: ["table", $table.id.value, "setFilters"],
-    mutationFn: trpc.table.view.setFilter.mutate,
+    mutationFn: async (command: ISetViewFilterCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.view.setFilter(command)
+    },
     onSuccess: async () => {
       await invalidate(`undb:table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })

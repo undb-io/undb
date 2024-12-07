@@ -509,6 +509,7 @@ const dashboard = {
 const base = {
   name: 'Nome da Base',
   createBase: 'Criar Nova Base',
+  created: 'Base criada com sucesso',
   importFromTemplate: 'Importar do Modelo',
   displayName: 'Nome de Exibição da Base',
   noBases: 'Nenhuma Base',

@@ -7,6 +7,7 @@
   import { getIsLocal } from "$lib/store/data-service.store"
   import { getDataService } from "$lib/store/data-service.store"
   import { createQuery } from "@tanstack/svelte-query"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
 
   export let tableId: string | undefined
   export let shareId: string | undefined = undefined
@@ -16,6 +17,7 @@
   export let resizePointerDown: ((e: Event) => void) | undefined = undefined
 
   const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   const shareStore = new GetDashboardWidgetShareTableStore()
 
@@ -27,7 +29,7 @@
 
   const getTable = createQuery({
     queryFn: async () => {
-      const dataService = await getDataService(isLocal)
+      const dataService = await getDataService(isLocal, isPlayground)
       return dataService.table.getTable({ tableId: tableId! })
     },
     queryKey: ["dashboard-widget-table", tableId],

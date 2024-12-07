@@ -500,6 +500,7 @@ const dashboard = {
 const base = {
   name: 'Base 이름',
   noBases: 'Base가 없습니다',
+  created: 'Base가 생성되었습니다',
   displayName: 'Base 표시 이름',
   importFromTemplate: '템플릿에서 가져오기',
   createBase: 'Base 생성',

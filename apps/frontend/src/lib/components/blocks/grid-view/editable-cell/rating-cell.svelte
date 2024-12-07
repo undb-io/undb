@@ -5,6 +5,9 @@
   import { createMutation } from "@tanstack/svelte-query"
   import type { RatingField } from "@undb/table"
   import { toast } from "svelte-sonner"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type IUpdateRecordCommand } from "@undb/commands"
 
   export let tableId: string
   export let recordId: string
@@ -12,6 +15,9 @@
   export let field: RatingField
   export let readonly = false
   export let onValueChange: (value: number) => void
+
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   $: max = field.max
 
@@ -29,7 +35,10 @@
 
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: async (command: IUpdateRecordCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.records.updateRecord(command)
+    },
     onError(error: Error) {
       toast.error(error.message)
     },

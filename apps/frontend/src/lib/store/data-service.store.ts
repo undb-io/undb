@@ -12,7 +12,7 @@ export function getIsLocal() {
   return getContext<boolean>(IS_LOCAL) ?? false
 }
 
-export async function getDataService(isLocal: boolean) {
+export async function getDataService(isLocal: boolean, isPlayground: boolean) {
   await registry.register(isLocal)
-  return getDataServiceImpl(isLocal)
+  return getDataServiceImpl(isLocal, isPlayground)
 }

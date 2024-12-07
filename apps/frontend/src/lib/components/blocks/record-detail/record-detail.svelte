@@ -18,7 +18,9 @@
   import { getRecordsStore } from "$lib/store/records.store"
   import { type Writable, type Readable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal } from "$lib/store/data-service.store"
+  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type IUpdateRecordCommand } from "@undb/commands"
 
   const recordsStore = getRecordsStore()
 
@@ -28,6 +30,8 @@
   export let viewId: Readable<string | undefined>
 
   const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
   beforeNavigate(({ cancel }) => {
     if (mutableFieldTainted) {
       if (!confirm("Are you sure you want to leave this page? You have unsaved changes that will be lost.")) {
@@ -48,14 +52,17 @@
   const client = useQueryClient()
 
   const updateRecordMutation = createMutation({
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: async (command: IUpdateRecordCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.records.updateRecord(command)
+    },
     mutationKey: ["updateRecord"],
     onSuccess: async () => {
       toast.success("Record updated")
       onSuccess()
       await client.invalidateQueries({ queryKey: [record.id.value, "get"] })
       reset({})
-      await recordsStore?.invalidateRecord(isLocal, $table, record.id.value)
+      await recordsStore?.invalidateRecord(isLocal, isPlayground, $table, record.id.value)
     },
     onError: (error) => {
       toast.error(error.message)

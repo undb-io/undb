@@ -498,6 +498,7 @@ const dashboard = {
 const base = {
   name: 'Nombre de Base',
   noBases: 'No hay bases',
+  created: 'Base creada correctamente',
   displayName: 'Nombre de visualización de Base',
   importFromTemplate: 'Importar desde plantilla',
   createBase: 'Crear Base',

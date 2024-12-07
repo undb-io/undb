@@ -5,16 +5,24 @@ import {
   SPACE_MEMBER_SERVICE,
   SpaceMemberService,
 } from "@undb/authz"
-import { BASE_OUTBOX_SERVICE, BASE_REPOSITORY } from "@undb/base"
+import { BASE_OUTBOX_SERVICE,BASE_QUERY_REPOSITORY,BASE_REPOSITORY } from "@undb/base"
 import { CONTEXT_TOKEN } from "@undb/context"
-import { DASHBOARD_OUTBOX_SERVICE, DASHBOARD_REPOSITORY } from "@undb/dashboard"
+import {
+  DASHBOARD_OUTBOX_SERVICE,
+  DASHBOARD_QUERY_REPOSITORY,
+  DASHBOARD_QUERY_SERVICE,
+  DASHBOARD_REPOSITORY,
+  DashboardQueryService,
+} from "@undb/dashboard"
 import { container } from "@undb/di"
-import { MAIL_SERVICE, type IMailService, type ISendInput } from "@undb/mail"
+import { MAIL_SERVICE,type IMailService,type ISendInput } from "@undb/mail"
 import {
   BaseOutboxService,
+  BaseQueryRepository,
   BaseRepository,
   createSqljsQueryBuilder,
   DashboardOutboxService,
+  DashboardQueryRepository,
   DashboardRepository,
   InvitationQueryRepository,
   InvitationRepository,
@@ -31,7 +39,7 @@ import {
   TemplateQueryRepository,
   TX_CTX,
 } from "@undb/persistence/client"
-import { SPACE_QUERY_REPOSITORY, SPACE_REPOSITORY, SPACE_SERVICE, SpaceService } from "@undb/space"
+import { SPACE_QUERY_REPOSITORY,SPACE_REPOSITORY,SPACE_SERVICE,SpaceService } from "@undb/space"
 import {
   OBJECT_STORAGE,
   RECORD_OUTBOX_SERVICE,
@@ -49,7 +57,7 @@ import {
   type IPutObject,
 } from "@undb/table"
 import { TEMPLATE_QUERY_REPOSITORY } from "@undb/template"
-import { DataServiceContext, DataServicetTxContext } from "./data-service.context"
+import { DataServiceContext,DataServicetTxContext } from "./data-service.context"
 
 class MailService implements IMailService {
   async send(input: ISendInput): Promise<void> {}
@@ -100,4 +108,7 @@ export const registerDataService = () => {
   container.register(RECORD_QUERY_REPOSITORY, RecordQueryRepository)
   container.register(OBJECT_STORAGE, LocalObjectStorage)
   container.register(TABLE_QUERY_REPOSITORY, TableQueryRepository)
+  container.register(BASE_QUERY_REPOSITORY, BaseQueryRepository)
+  container.register(DASHBOARD_QUERY_SERVICE, DashboardQueryService)
+  container.register(DASHBOARD_QUERY_REPOSITORY, DashboardQueryRepository)
 }
