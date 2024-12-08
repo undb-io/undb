@@ -467,6 +467,7 @@ const view = {
   },
   type: '뷰 유형',
   create: '뷰 생성',
+  created: '뷰가 생성되었습니다',
   updateName: '뷰 이름 업데이트',
   updated: '뷰가 업데이트되었습니다',
   duplicateView: '뷰 복제',

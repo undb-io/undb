@@ -23,6 +23,10 @@
   )
 </script>
 
-<main class="h-screen w-full">
+<main class="flex h-screen flex-1 flex-col overflow-hidden">
   <View {viewId} {r} shareId={undefined} readonly={false} />
 </main>
+
+{#await import("$lib/components/blocks/view/delete-view-dialog.svelte") then { default: DeleteViewDialog }}
+  <DeleteViewDialog {viewId} />
+{/await}

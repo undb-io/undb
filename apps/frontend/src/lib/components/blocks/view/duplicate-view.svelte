@@ -13,13 +13,22 @@
   import { toast } from "svelte-sonner"
   import { invalidate, goto } from "$app/navigation"
   import type { Readable } from "svelte/store"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import type { IDuplicateViewCommand } from "@undb/commands"
 
   const table = getTable()
   export let viewId: Readable<string | undefined>
 
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
   const duplicateViewMutation = createMutation({
+    mutationFn: async (command: IDuplicateViewCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.view.duplicateView(command)
+    },
     mutationKey: ["table", $viewId, "duplicateView"],
-    mutationFn: trpc.table.view.duplicate.mutate,
     async onSuccess(data, variables, context) {
       closeModal(DUPLICATE_VIEW)
       toast.success("View duplicated")

@@ -7,7 +7,6 @@
   import { FieldIdVo } from "@undb/table"
   import { ListIcon, GripVerticalIcon, SearchIcon, ChevronDownIcon } from "lucide-svelte"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
-  import { trpc } from "$lib/trpc/client"
   import { tick } from "svelte"
   import { invalidate } from "$app/navigation"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
@@ -22,7 +21,7 @@
   import { EyeIcon, EyeOffIcon } from "lucide-svelte"
   import { getIsLocal, getDataService } from "$lib/store/data-service.store"
   import { getIsPlayground } from "$lib/store/playground.svelte"
-  import { type ISetViewFieldsCommand } from "@undb/commands"
+  import { type ISetViewFieldsCommand, type ISetViewOptionCommand } from "@undb/commands"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
@@ -85,7 +84,10 @@
   $: viewOption = $table.getViewOption($viewId)
 
   const setViewOptionMutation = createMutation({
-    mutationFn: trpc.table.view.setOption.mutate,
+    mutationFn: async (command: ISetViewOptionCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.view.setOption(command)
+    },
     mutationKey: ["table", $table.id.value, "setOption"],
     async onSuccess(data, variables, context) {
       await invalidate(`undb:table:${$table.id.value}`)

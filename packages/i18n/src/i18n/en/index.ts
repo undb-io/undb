@@ -477,6 +477,7 @@ const webhook = {
       selectField: 'Select a field to pivot...'
     },
     create: 'Create View',
+    created: 'View created successfully',
     type: 'View Type',
     updated: 'View updated',
     updateName: 'Update View Name',

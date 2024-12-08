@@ -35,7 +35,9 @@
   let panelLeft: PaneAPI
 
   onMount(() => {
-    if (tables.length) {
+    if (dashboards.length) {
+      goto(`/playground/bases/${base.id}/d/${dashboards[0].id}`, { replaceState: true })
+    } else if (tables.length) {
       goto(`/playground/bases/${base.id}/t/${tables[0].id}`, { replaceState: true })
       open[tables[0].id] = true
     }
@@ -61,7 +63,7 @@
         <Collapsible.Root open={true}>
           <Collapsible.Content class="space-y-1 pt-1">
             {#each dashboards as dashboard}
-              {@const active = false}
+              {@const active = dashboard.id === dashboardId}
               <div
                 class={cn(
                   "group flex h-8 cursor-pointer items-center justify-between gap-1 truncate rounded-md pl-8 pr-2 transition-all",
@@ -81,12 +83,12 @@
               </div>
             {/each}
             {#each tables as table}
-              {@const active = false}
+              {@const active = table.id === tableId && !viewId}
               <Collapsible.Root bind:open={open[table.id]}>
                 <div
                   class={cn(
                     "group flex h-8 cursor-pointer items-center justify-between gap-1 truncate rounded-md pl-8 pr-2 transition-all",
-                    active && !viewId ? "bg-gray-800/90" : "hover:bg-gray-100",
+                    active ? "bg-gray-800/90" : "hover:bg-gray-100",
                   )}
                 >
                   <a
@@ -94,7 +96,7 @@
                     title={table.name}
                     class={cn(
                       "flex h-full flex-1 items-center overflow-hidden text-sm font-normal text-gray-600",
-                      active && !viewId && "text-background font-medium",
+                      active && "text-background font-medium",
                     )}
                   >
                     <DatabaseIcon class="mr-2 h-4 w-4" />

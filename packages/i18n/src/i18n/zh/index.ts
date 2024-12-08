@@ -467,6 +467,7 @@ const view = {
   },
   type: '视图类型',
   create: '创建视图',
+  created: '视图已创建',
   updateName: '更新视图名称',
   updated: '视图已更新',
   duplicateView: '复制视图',

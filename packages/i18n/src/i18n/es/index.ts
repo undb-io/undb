@@ -465,6 +465,7 @@ const view = {
   },
   type: 'Tipo de vista',
   create: 'Crear vista',
+  created: 'Vista creada correctamente',
   updateName: 'Actualizar nombre de la vista',
   updated: 'Vista actualizada',
   duplicateView: 'Duplicar vista',

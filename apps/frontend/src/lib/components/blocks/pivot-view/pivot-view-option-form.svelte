@@ -14,6 +14,9 @@
   import { derived } from "svelte/store"
   import * as Tooltip from "$lib/components/ui/tooltip"
   import { LL } from "@undb/i18n/client"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type IUpdateViewCommand } from "@undb/commands"
 
   const table = getTable()
   export let readonly = false
@@ -69,8 +72,14 @@
     isValidColumnLabel(rowField) &&
     isValidRowLabel(columnField)
 
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
   const updateViewMutation = createMutation({
-    mutationFn: trpc.table.view.update.mutate,
+    mutationFn: async (command: IUpdateViewCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.view.updateView(command)
+    },
     mutationKey: ["updateView"],
     async onSuccess(data, variables, context) {
       toast.success($LL.table.view.updated())

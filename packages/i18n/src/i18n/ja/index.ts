@@ -468,6 +468,7 @@ const view = {
   },
   type: 'ビジュアルタイプ',
   create: 'ビジュアルを作成',
+  created: 'ビジュアルが作成されました',
   updateName: 'ビジュアル名を更新',
   updated: 'ビジュアルが更新されました',
   duplicateView: 'ビジュアルを複製',

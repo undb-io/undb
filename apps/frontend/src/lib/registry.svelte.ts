@@ -7,15 +7,21 @@ import {
   CreateFromTemplateCommandHandler,
   CreateRecordCommandHandler,
   CreateTableFieldCommandHandler,
+  CreateTableViewCommandHandler,
   DeleteBaseCommandHandler,
+  DeleteTableCommandHandler,
   DeleteTableFieldCommandHandler,
+  DeleteViewCommandHandler,
   DuplicateTableFieldCommandHandler,
+  DuplicateViewCommandHandler,
   SetViewColorCommandHandler,
   SetViewFieldsCommandHandler,
   SetViewFilterCommandHandler,
+  SetViewOptionCommandHandler,
   SetViewSortCommandHandler,
   UpdateRecordCommandHandler,
   UpdateTableFieldCommandHandler,
+  UpdateViewCommandHandler,
 } from "@undb/command-handlers"
 import { CONTEXT_TOKEN, IContext } from "@undb/context"
 import { CommandBus, QueryBus } from "@undb/cqrs"
@@ -41,6 +47,9 @@ const commandHandlers = [
   DeleteBaseCommandHandler,
   CreateBaseCommandHandler,
   UpdateRecordCommandHandler,
+  DeleteTableCommandHandler,
+  DuplicateViewCommandHandler,
+  DeleteViewCommandHandler,
   SetViewFilterCommandHandler,
   SetViewColorCommandHandler,
   SetViewFieldsCommandHandler,
@@ -49,6 +58,9 @@ const commandHandlers = [
   CreateTableFieldCommandHandler,
   UpdateTableFieldCommandHandler,
   DuplicateTableFieldCommandHandler,
+  CreateTableViewCommandHandler,
+  UpdateViewCommandHandler,
+  SetViewOptionCommandHandler,
 ]
 
 const queryHandlers = [

@@ -2080,6 +2080,10 @@ type RootTranslation = {
 			 */
 			create: string
 			/**
+			 * V​i​e​w​ ​c​r​e​a​t​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+			 */
+			created: string
+			/**
 			 * V​i​e​w​ ​T​y​p​e
 			 */
 			type: string
@@ -4499,6 +4503,10 @@ export type TranslationFunctions = {
 			 * Create View
 			 */
 			create: () => LocalizedString
+			/**
+			 * View created successfully
+			 */
+			created: () => LocalizedString
 			/**
 			 * View Type
 			 */

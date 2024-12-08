@@ -475,6 +475,7 @@ const view = {
     selectField: 'Selecionar um campo para pivotar...'
   },
   create: 'Criar Visualização',
+  created: 'Visualização criada com sucesso',
   type: 'Tipo de Visualização',
   updated: 'Visualização atualizada',
   updateName: 'Atualizar Nome da Visualização',

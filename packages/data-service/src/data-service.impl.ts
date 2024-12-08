@@ -6,15 +6,21 @@ import {
   CreateFromTemplateCommand,
   CreateRecordCommand,
   CreateTableFieldCommand,
+  CreateTableViewCommand,
   DeleteBaseCommand,
+  DeleteTableCommand,
   DeleteTableFieldCommand,
+  DeleteViewCommand,
   DuplicateTableFieldCommand,
+  DuplicateViewCommand,
   SetViewColorCommand,
   SetViewFieldsCommand,
   SetViewFilterCommand,
+  SetViewOptionCommand,
   SetViewSortCommand,
   UpdateRecordCommand,
   UpdateTableFieldCommand,
+  UpdateViewCommand,
   type IBulkDeleteRecordsCommand,
   type IBulkDuplicateRecordsCommand,
   type IBulkUpdateRecordsCommand,
@@ -26,15 +32,22 @@ import {
   type ICreateFromTemplateCommandOutput,
   type ICreateRecordCommand,
   type ICreateRecordCommandOutput,
+  type ICreateTableViewCommandOutput,
+  type ICreateViewCommand,
   type IDeleteBaseCommand,
   type IDeleteFieldCommand,
+  type IDeleteTableCommand,
+  type IDeleteViewCommand,
   type IDuplicateFieldCommand,
+  type IDuplicateViewCommand,
   type ISetViewColorCommand,
   type ISetViewFieldsCommand,
   type ISetViewFilterCommand,
+  type ISetViewOptionCommand,
   type ISetViewSortCommand,
   type IUpdateFieldCommand,
   type IUpdateRecordCommand,
+  type IUpdateViewCommand,
 } from "@undb/commands"
 import { CommandBus, QueryBus } from "@undb/cqrs"
 import { container, inject, injectable } from "@undb/di"
@@ -153,6 +166,41 @@ class ViewService {
     private readonly commandBus: ICommandBus,
   ) {}
 
+  createView = async (command: ICreateViewCommand): Promise<ICreateTableViewCommandOutput> => {
+    if (this.isLocal) {
+      return this.commandBus.execute(new CreateTableViewCommand(command))
+    }
+    return this.trpc.table.view.create.mutate(command)
+  }
+
+  updateView = async (command: IUpdateViewCommand): Promise<void> => {
+    if (this.isLocal) {
+      return this.commandBus.execute(new UpdateViewCommand(command))
+    }
+    await this.trpc.table.view.update.mutate(command)
+  }
+
+  duplicateView = async (command: IDuplicateViewCommand): Promise<void> => {
+    if (this.isLocal) {
+      return this.commandBus.execute(new DuplicateViewCommand(command))
+    }
+    await this.trpc.table.view.duplicate.mutate(command)
+  }
+
+  deleteView = async (command: IDeleteViewCommand): Promise<void> => {
+    if (this.isLocal) {
+      return this.commandBus.execute(new DeleteViewCommand(command))
+    }
+    await this.trpc.table.view.delete.mutate(command)
+  }
+
+  setOption = async (command: ISetViewOptionCommand): Promise<void> => {
+    if (this.isLocal) {
+      return this.commandBus.execute(new SetViewOptionCommand(command))
+    }
+    await this.trpc.table.view.setOption.mutate(command)
+  }
+
   setFilter = async (command: ISetViewFilterCommand): Promise<void> => {
     if (this.isLocal) {
       return this.commandBus.execute(new SetViewFilterCommand(command))
@@ -235,6 +283,8 @@ class TableService {
     private readonly isLocal: boolean,
     @inject(QueryBus)
     private readonly queryBus: IQueryBus,
+    @inject(CommandBus)
+    private readonly commandBus: ICommandBus,
   ) {}
 
   getTable = async (query: IGetTableQuery): Promise<IGetTableOutput> => {
@@ -249,6 +299,13 @@ class TableService {
       return await this.queryBus.execute(new GetTablesQuery(query))
     }
     return (await this.trpc.table.list.query(query)) as IGetTablesOutput
+  }
+
+  deleteTable = async (command: IDeleteTableCommand): Promise<void> => {
+    if (this.isLocal) {
+      return this.commandBus.execute(new DeleteTableCommand(command))
+    }
+    await this.trpc.table.delete.mutate(command)
   }
 }
 
