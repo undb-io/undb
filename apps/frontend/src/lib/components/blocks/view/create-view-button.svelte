@@ -116,117 +116,119 @@
           <Form.Description />
           <Form.FieldErrors />
         </Form.Field>
-        {#if $formData.type === "calendar" && $formData.calendar}
-          <Form.Field {form} name="calendar.field">
-            <Form.Control let:attrs>
-              <Form.Label class="flex items-center gap-2">
-                {$LL.table.view.calendar.field()}
-                <Tooltip.Root>
-                  <Tooltip.Trigger>
-                    <CircleHelpIcon class="size-4" />
-                  </Tooltip.Trigger>
-                  <Tooltip.Content>
-                    <p>{$LL.table.view.calendar.groupBy()}</p>
-                  </Tooltip.Content>
-                </Tooltip.Root>
-              </Form.Label>
-              <FieldPicker
-                {...attrs}
-                value={$formData.calendar.field}
-                onValueChange={(field) => {
-                  if ($formData.calendar) {
-                    $formData.calendar.field = field
-                  } else {
-                    $formData.calendar = { field }
-                  }
-                }}
-                class="w-full"
-                filter={(f) =>
-                  $table.schema
-                    .getCalendarFields()
-                    .map((f) => f.id.value)
-                    .includes(f.id)}
-              >
-                <div slot="empty">{$LL.table.view.calendar.noDateField()}</div>
-              </FieldPicker>
-            </Form.Control>
-            <Form.Description />
-            <Form.FieldErrors />
-          </Form.Field>
-        {:else if $formData.type === "gallery" && $formData.gallery}
-          <Form.Field {form} name="gallery.field">
-            <Form.Control let:attrs>
-              <Form.Label class="flex items-center gap-2">
-                {$LL.table.view.gallery.field()}
-                <Tooltip.Root>
-                  <Tooltip.Trigger>
-                    <CircleHelpIcon class="size-4" />
-                  </Tooltip.Trigger>
-                  <Tooltip.Content>
-                    <p>{$LL.table.view.gallery.groupBy()}</p>
-                  </Tooltip.Content>
-                </Tooltip.Root>
-              </Form.Label>
-              <FieldPicker
-                {...attrs}
-                value={$formData.gallery.field}
-                onValueChange={(field) => {
-                  if ($formData.gallery) {
-                    $formData.gallery.field = field
-                  } else {
-                    $formData.gallery = { field }
-                  }
-                }}
-                class="w-full"
-                filter={(f) =>
-                  $table.schema
-                    .getGalleryFields()
-                    .map((f) => f.id.value)
-                    .includes(f.id)}
-              >
-                <div slot="empty">{$LL.table.view.gallery.noAttachmentField()}</div>
-              </FieldPicker>
-            </Form.Control>
-            <Form.Description />
-            <Form.FieldErrors />
-          </Form.Field>
-        {:else if $formData.type === "kanban" && $formData.kanban}
-          <Form.Field {form} name="kanban.field">
-            <Form.Control let:attrs>
-              <Form.Label class="flex items-center gap-2">
-                {$LL.table.view.kanban.field()}
-                <Tooltip.Root>
-                  <Tooltip.Trigger>
-                    <CircleHelpIcon class="size-4" />
-                  </Tooltip.Trigger>
-                  <Tooltip.Content>
-                    <p>{$LL.table.view.kanban.groupBy()}</p>
-                  </Tooltip.Content>
-                </Tooltip.Root>
-              </Form.Label>
-              <FieldPicker
-                {...attrs}
-                value={$formData.kanban.field}
-                onValueChange={(field) => {
-                  if ($formData.kanban) {
-                    $formData.kanban.field = field
-                  } else {
-                    $formData.kanban = { field }
-                  }
-                }}
-                class="w-full"
-                filter={(f) =>
-                  $table.schema
-                    .getKanbanFields()
-                    .map((f) => f.id.value)
-                    .includes(f.id)}
-              >
-                <div slot="empty">{$LL.table.view.kanban.noSelectField()}</div>
-              </FieldPicker>
-            </Form.Control>
-            <Form.Description />
-            <Form.FieldErrors />
-          </Form.Field>
+        {#if $table}
+          {#if $formData.type === "calendar" && $formData.calendar}
+            <Form.Field {form} name="calendar.field">
+              <Form.Control let:attrs>
+                <Form.Label class="flex items-center gap-2">
+                  {$LL.table.view.calendar.field()}
+                  <Tooltip.Root>
+                    <Tooltip.Trigger>
+                      <CircleHelpIcon class="size-4" />
+                    </Tooltip.Trigger>
+                    <Tooltip.Content>
+                      <p>{$LL.table.view.calendar.groupBy()}</p>
+                    </Tooltip.Content>
+                  </Tooltip.Root>
+                </Form.Label>
+                <FieldPicker
+                  {...attrs}
+                  value={$formData.calendar.field}
+                  onValueChange={(field) => {
+                    if ($formData.calendar) {
+                      $formData.calendar.field = field
+                    } else {
+                      $formData.calendar = { field }
+                    }
+                  }}
+                  class="w-full"
+                  filter={(f) =>
+                    $table.schema
+                      .getCalendarFields()
+                      .map((f) => f.id.value)
+                      .includes(f.id)}
+                >
+                  <div slot="empty">{$LL.table.view.calendar.noDateField()}</div>
+                </FieldPicker>
+              </Form.Control>
+              <Form.Description />
+              <Form.FieldErrors />
+            </Form.Field>
+          {:else if $formData.type === "gallery" && $formData.gallery}
+            <Form.Field {form} name="gallery.field">
+              <Form.Control let:attrs>
+                <Form.Label class="flex items-center gap-2">
+                  {$LL.table.view.gallery.field()}
+                  <Tooltip.Root>
+                    <Tooltip.Trigger>
+                      <CircleHelpIcon class="size-4" />
+                    </Tooltip.Trigger>
+                    <Tooltip.Content>
+                      <p>{$LL.table.view.gallery.groupBy()}</p>
+                    </Tooltip.Content>
+                  </Tooltip.Root>
+                </Form.Label>
+                <FieldPicker
+                  {...attrs}
+                  value={$formData.gallery.field}
+                  onValueChange={(field) => {
+                    if ($formData.gallery) {
+                      $formData.gallery.field = field
+                    } else {
+                      $formData.gallery = { field }
+                    }
+                  }}
+                  class="w-full"
+                  filter={(f) =>
+                    $table.schema
+                      .getGalleryFields()
+                      .map((f) => f.id.value)
+                      .includes(f.id)}
+                >
+                  <div slot="empty">{$LL.table.view.gallery.noAttachmentField()}</div>
+                </FieldPicker>
+              </Form.Control>
+              <Form.Description />
+              <Form.FieldErrors />
+            </Form.Field>
+          {:else if $formData.type === "kanban" && $formData.kanban}
+            <Form.Field {form} name="kanban.field">
+              <Form.Control let:attrs>
+                <Form.Label class="flex items-center gap-2">
+                  {$LL.table.view.kanban.field()}
+                  <Tooltip.Root>
+                    <Tooltip.Trigger>
+                      <CircleHelpIcon class="size-4" />
+                    </Tooltip.Trigger>
+                    <Tooltip.Content>
+                      <p>{$LL.table.view.kanban.groupBy()}</p>
+                    </Tooltip.Content>
+                  </Tooltip.Root>
+                </Form.Label>
+                <FieldPicker
+                  {...attrs}
+                  value={$formData.kanban.field}
+                  onValueChange={(field) => {
+                    if ($formData.kanban) {
+                      $formData.kanban.field = field
+                    } else {
+                      $formData.kanban = { field }
+                    }
+                  }}
+                  class="w-full"
+                  filter={(f) =>
+                    $table.schema
+                      .getKanbanFields()
+                      .map((f) => f.id.value)
+                      .includes(f.id)}
+                >
+                  <div slot="empty">{$LL.table.view.kanban.noSelectField()}</div>
+                </FieldPicker>
+              </Form.Control>
+              <Form.Description />
+              <Form.FieldErrors />
+            </Form.Field>
+          {/if}
         {/if}
 
         <Form.FormButton disabled={$createViewMutation.isPending} class="w-full">
