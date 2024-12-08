@@ -101,6 +101,7 @@ const sortableFieldTypes: FieldType[] = [
   "currency",
   "rollup",
   "select",
+  "number",
   "rating",
   "email",
   "date",
