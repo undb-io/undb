@@ -477,6 +477,7 @@ const webhook = {
       selectField: 'Select a field to pivot...'
     },
     create: 'Create View',
+    created: 'View created successfully',
     type: 'View Type',
     updated: 'View updated',
     updateName: 'Update View Name',
@@ -511,6 +512,7 @@ const webhook = {
   const base = {
     name: 'Base Name',
     createBase: 'Create New Base',
+    created: 'Base created successfully',
     importFromTemplate: 'Import From Template',
     displayName: 'Base Display Name',
     noBases: 'No Bases',

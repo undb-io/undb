@@ -19,6 +19,7 @@
   import { templateStore } from "$lib/store/template.store.svelte"
   import { setDashboard } from "$lib/store/dashboard.store"
   import DashboardWidgets from "$lib/components/blocks/dashboard/dashboard-widgets.svelte"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
 
   export let template: ITemplateDTO
 
@@ -42,12 +43,14 @@
 
   let r = writable<string | null>(null)
 
+  const isPlayground = getIsPlayground()
+
   const record = createQuery(
     derived([currentTable, r, preferences], ([$table, $recordId, $preferences]) => ({
       queryKey: [$recordId, "get", $preferences.showHiddenFields],
       enabled: !!$table && !!$recordId,
       queryFn: async () => {
-        const dataService = getDataService(true)
+        const dataService = getDataService(true, isPlayground)
         return dataService.records.getRecordById({
           tableId: $table?.id.value,
           id: $recordId!,
@@ -85,7 +88,7 @@
       return
     }
 
-    dataService = getDataService(true)
+    dataService = getDataService(true, isPlayground)
     await dataService.template.save(t, true)
     templateStore.saveTemplate(template.id, t)
     saved = true

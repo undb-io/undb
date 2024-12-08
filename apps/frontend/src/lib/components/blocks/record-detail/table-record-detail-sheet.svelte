@@ -9,11 +9,13 @@
   import type { Readable } from "svelte/store"
   import { trpc } from "$lib/trpc/client"
   import { getDataService, getIsLocal } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
 
   const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   const table = getTable()
 
@@ -21,7 +23,7 @@
     derived([table, r, preferences], ([$table, $recordId, $preferences]) => ({
       queryKey: [$recordId, "get", $preferences.showHiddenFields],
       queryFn: async () => {
-        const dataService = await getDataService(isLocal)
+        const dataService = await getDataService(isLocal, isPlayground)
         return dataService.records.getRecordById({
           tableId: $table?.id.value,
           id: $recordId!,

@@ -467,6 +467,7 @@ const view = {
   },
   type: '뷰 유형',
   create: '뷰 생성',
+  created: '뷰가 생성되었습니다',
   updateName: '뷰 이름 업데이트',
   updated: '뷰가 업데이트되었습니다',
   duplicateView: '뷰 복제',
@@ -500,6 +501,7 @@ const dashboard = {
 const base = {
   name: 'Base 이름',
   noBases: 'Base가 없습니다',
+  created: 'Base가 생성되었습니다',
   displayName: 'Base 표시 이름',
   importFromTemplate: '템플릿에서 가져오기',
   createBase: 'Base 생성',

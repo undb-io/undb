@@ -195,6 +195,10 @@ type RootTranslation = {
 		 */
 		createBase: string
 		/**
+		 * B​a​s​e​ ​c​r​e​a​t​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+		 */
+		created: string
+		/**
 		 * I​m​p​o​r​t​ ​F​r​o​m​ ​T​e​m​p​l​a​t​e
 		 */
 		importFromTemplate: string
@@ -2076,6 +2080,10 @@ type RootTranslation = {
 			 */
 			create: string
 			/**
+			 * V​i​e​w​ ​c​r​e​a​t​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+			 */
+			created: string
+			/**
 			 * V​i​e​w​ ​T​y​p​e
 			 */
 			type: string
@@ -2636,6 +2644,10 @@ export type TranslationFunctions = {
 		 * Create New Base
 		 */
 		createBase: () => LocalizedString
+		/**
+		 * Base created successfully
+		 */
+		created: () => LocalizedString
 		/**
 		 * Import From Template
 		 */
@@ -4491,6 +4503,10 @@ export type TranslationFunctions = {
 			 * Create View
 			 */
 			create: () => LocalizedString
+			/**
+			 * View created successfully
+			 */
+			created: () => LocalizedString
 			/**
 			 * View Type
 			 */

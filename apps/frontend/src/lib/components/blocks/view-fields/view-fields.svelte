@@ -7,7 +7,6 @@
   import { FieldIdVo } from "@undb/table"
   import { ListIcon, GripVerticalIcon, SearchIcon, ChevronDownIcon } from "lucide-svelte"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
-  import { trpc } from "$lib/trpc/client"
   import { tick } from "svelte"
   import { invalidate } from "$app/navigation"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
@@ -20,6 +19,9 @@
   import CreateFieldButton from "../create-field/create-field-button.svelte"
   import { LL } from "@undb/i18n/client"
   import { EyeIcon, EyeOffIcon } from "lucide-svelte"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type ISetViewFieldsCommand, type ISetViewOptionCommand } from "@undb/commands"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
@@ -42,9 +44,15 @@
     return field && field.name.value.toLowerCase().includes($q.toLowerCase())
   })
 
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
   const client = useQueryClient()
   const setViewFieldsMutation = createMutation({
-    mutationFn: trpc.table.view.setFields.mutate,
+    mutationFn: async (command: ISetViewFieldsCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.view.setFields(command)
+    },
     mutationKey: ["table", $table.id.value, "setFields"],
     async onSuccess(data, variables, context) {
       await invalidate(`undb:table:${$table.id.value}`)
@@ -76,7 +84,10 @@
   $: viewOption = $table.getViewOption($viewId)
 
   const setViewOptionMutation = createMutation({
-    mutationFn: trpc.table.view.setOption.mutate,
+    mutationFn: async (command: ISetViewOptionCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.view.setOption(command)
+    },
     mutationKey: ["table", $table.id.value, "setOption"],
     async onSuccess(data, variables, context) {
       await invalidate(`undb:table:${$table.id.value}`)

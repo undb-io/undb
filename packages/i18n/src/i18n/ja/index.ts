@@ -468,6 +468,7 @@ const view = {
   },
   type: 'ビジュアルタイプ',
   create: 'ビジュアルを作成',
+  created: 'ビジュアルが作成されました',
   updateName: 'ビジュアル名を更新',
   updated: 'ビジュアルが更新されました',
   duplicateView: 'ビジュアルを複製',
@@ -501,6 +502,7 @@ const dashboard = {
 const base = {
   name: 'Base 名',
   noBases: 'Base がありません',
+  created: 'Base が作成されました',
   displayName: 'Base 表示名',
   importFromTemplate: 'テンプレートからインポート',
   createBase: 'Base を作成',

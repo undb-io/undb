@@ -10,6 +10,9 @@
   import { Button } from "$lib/components/ui/button"
   import TimePicker from "$lib/components/blocks/date/time-picker.svelte"
   import { LL } from "@undb/i18n/client"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type IUpdateRecordCommand } from "@undb/commands"
 
   export let tableId: string
   export let field: DateField
@@ -39,9 +42,15 @@
     open = false
   }
 
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: async (command: IUpdateRecordCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.records.updateRecord(command)
+    },
     onSuccess(data, variables, context) {
       open = false
     },
@@ -81,7 +90,7 @@
               value = undefined
             }
             onValueChange(value)
-            if (!shouldConfirm) {
+            if (!shouldConfirm && value) {
               save(value)
             }
           }}

@@ -14,6 +14,7 @@
   import { createQuery, useQueryClient } from "@tanstack/svelte-query"
   import { getDataService } from "$lib/store/data-service.store"
   import { getIsLocal } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
 
   export let foreignTable: Readable<TableDo>
   export let r: Writable<string | null>
@@ -28,12 +29,13 @@
   let disabled = false
 
   const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   const record = createQuery(
     derived([foreignTable, recordId, preferences, open], ([$table, $recordId, $preferences, $open]) => ({
       queryKey: [$recordId, "get", $preferences.showHiddenFields, $open],
       queryFn: async () => {
-        const dataService = await getDataService(isLocal)
+        const dataService = await getDataService(isLocal, isPlayground)
         return dataService.records.getRecordById({
           tableId: $table?.id.value,
           id: $recordId!,

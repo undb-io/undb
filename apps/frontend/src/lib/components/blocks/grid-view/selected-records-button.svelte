@@ -1,7 +1,6 @@
 <script lang="ts">
   import Button from "$lib/components/ui/button/button.svelte"
   import { getTable } from "$lib/store/table.store"
-  import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
@@ -14,6 +13,12 @@
   import { r } from "$lib/store/records.store"
   import type { Readable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
+  import { type IBulkDeleteRecordsCommand, type IBulkDuplicateRecordsCommand } from "@undb/commands"
+  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   const table = getTable()
 
@@ -28,7 +33,10 @@
 
   const client = useQueryClient()
   const deleteRecordsMutation = createMutation({
-    mutationFn: trpc.record.bulkDelete.mutate,
+    mutationFn: async (command: IBulkDeleteRecordsCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.records.deleteRecords(command)
+    },
     onSuccess(data, variables, context) {
       client.invalidateQueries({
         queryKey: ["records", $table.id.value],
@@ -52,7 +60,10 @@
   }
 
   const duplicateRecordsMutation = createMutation({
-    mutationFn: trpc.record.bulkDuplicate.mutate,
+    mutationFn: async (command: IBulkDuplicateRecordsCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.records.duplicateRecords(command)
+    },
     async onSuccess(data, variables, context) {
       await client.invalidateQueries({
         queryKey: ["records", $table.id.value],
@@ -147,7 +158,7 @@
                 <AlertDialog.Header>
                   <AlertDialog.Title>{$LL.table.record.confirmDeleteRecords({ n: ids.length })}</AlertDialog.Title>
                   <AlertDialog.Description>
-                    {$LL.table.record.confirmDeleteRecordsDescription()}
+                    {$LL.table.record.confirmDeleteRecordsDescription({ table: $table.name.value })}
                   </AlertDialog.Description>
                 </AlertDialog.Header>
                 <AlertDialog.Footer>

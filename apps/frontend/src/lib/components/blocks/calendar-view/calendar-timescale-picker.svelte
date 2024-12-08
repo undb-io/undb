@@ -15,6 +15,9 @@
   import { getTable } from "$lib/store/table.store"
   import { invalidate } from "$app/navigation"
   import { type ICalendarViewDTO } from "@undb/table"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type IUpdateViewCommand } from "@undb/commands"
 
   export let view: CalendarView
   const table = getTable()
@@ -38,8 +41,14 @@
     })
   }
 
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
   const updateViewMutation = createMutation({
-    mutationFn: trpc.table.view.update.mutate,
+    mutationFn: async (command: IUpdateViewCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.view.updateView(command)
+    },
     mutationKey: ["updateView"],
     async onSuccess(data, variables, context) {
       await invalidate(`undb:table:${$table.id.value}`)

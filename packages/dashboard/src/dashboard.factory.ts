@@ -34,7 +34,6 @@ export class DashboardFactory {
   }
 
   static create(input: ICreateDashboardDTO): Dashboard {
-    console.log(input)
     const dashboard = this.new(
       new WithDashboardId(DashboardId.fromOrCreate(input.id)),
       WithDashboardName.fromString(input.name),

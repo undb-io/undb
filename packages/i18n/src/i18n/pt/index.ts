@@ -475,6 +475,7 @@ const view = {
     selectField: 'Selecionar um campo para pivotar...'
   },
   create: 'Criar Visualização',
+  created: 'Visualização criada com sucesso',
   type: 'Tipo de Visualização',
   updated: 'Visualização atualizada',
   updateName: 'Atualizar Nome da Visualização',
@@ -509,6 +510,7 @@ const dashboard = {
 const base = {
   name: 'Nome da Base',
   createBase: 'Criar Nova Base',
+  created: 'Base criada com sucesso',
   importFromTemplate: 'Importar do Modelo',
   displayName: 'Nome de Exibição da Base',
   noBases: 'Nenhuma Base',

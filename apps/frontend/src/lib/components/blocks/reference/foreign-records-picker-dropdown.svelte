@@ -9,6 +9,7 @@
   import { LL } from "@undb/i18n/client"
   import { createQuery } from "@tanstack/svelte-query"
   import { getDataService, getIsLocal } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
 
   export let isSelected = false
 
@@ -27,10 +28,12 @@
   let open = false
 
   const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
   const getForeignTable = createQuery({
     queryKey: ["foreignTable", foreignTableId, open],
     queryFn: async () => {
-      const dataService = await getDataService(isLocal)
+      const dataService = await getDataService(isLocal, isPlayground)
       return dataService.table.getTable({ tableId: foreignTableId })
     },
   })

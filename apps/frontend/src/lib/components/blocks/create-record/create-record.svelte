@@ -14,10 +14,12 @@
   import { defaultRecordValues, getRecordsStore } from "$lib/store/records.store"
   import { useMediaQuery } from "$lib/store/media-query.store"
   import IdControl from "../field-control/id-control.svelte"
-  import type { ICreateRecordCommandOutput } from "@undb/commands"
+  import type { ICreateRecordCommand, ICreateRecordCommandOutput } from "@undb/commands"
   import { onMount } from "svelte"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal } from "$lib/store/data-service.store"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+    import { getIsPlayground } from "$lib/store/playground.svelte"
+
 
   // beforeNavigate(({ cancel }) => {
   //   if ($tainted) {
@@ -42,10 +44,14 @@
 
   const mediaQuery = useMediaQuery("(max-width: 768px)")
   const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   const createRecordMutation = createMutation(
     derived([table], ([$table]) => ({
-      mutationFn: trpc.record.create.mutate,
+      mutationFn: async (command: ICreateRecordCommand) => {
+        const dataService = await getDataService(isLocal, isPlayground)
+        return dataService.records.createRecord(command)
+      },
       mutationKey: [$table.id.value, "createRecord"],
       onSuccess: (data: ICreateRecordCommandOutput) => {
         client.invalidateQueries({
@@ -53,7 +59,7 @@
         })
         toast.success($LL.table.record.createdRecord())
         onSuccess?.(data)
-        recordsStore?.invalidateRecord(isLocal, $table, data)
+        recordsStore?.invalidateRecord(isLocal, isPlayground, $table, data)
       },
       onError: (error: Error) => {
         toast.error(error.message)

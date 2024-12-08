@@ -465,6 +465,7 @@ const view = {
   },
   type: 'Tipo de vista',
   create: 'Crear vista',
+  created: 'Vista creada correctamente',
   updateName: 'Actualizar nombre de la vista',
   updated: 'Vista actualizada',
   duplicateView: 'Duplicar vista',
@@ -498,6 +499,7 @@ const dashboard = {
 const base = {
   name: 'Nombre de Base',
   noBases: 'No hay bases',
+  created: 'Base creada correctamente',
   displayName: 'Nombre de visualización de Base',
   importFromTemplate: 'Importar desde plantilla',
   createBase: 'Crear Base',

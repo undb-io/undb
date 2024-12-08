@@ -14,19 +14,34 @@
   import { Checkbox } from "$lib/components/ui/checkbox/index.js"
   import Label from "$lib/components/ui/label/label.svelte"
   import { LL } from "@undb/i18n/client"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type ICreateFromTemplateCommand } from "@undb/commands"
 
-  let includeData = false
 
   export let template: ITemplateDTO
 
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
+  let includeData = !!isPlayground
+
   const createFromTemplate = createMutation({
-    mutationFn: trpc.template.createFromTemplate.mutate,
+    mutationFn: async (command: ICreateFromTemplateCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.template.createFromTemplate(command)
+    },
     async onSuccess(data, variables, context) {
-      toast.success("Base created successfully")
+      toast.success($LL.base.created())
       closeModal(IMPORT_TEMPLATE_MODAL)
       await invalidateAll()
+
       if (data.baseIds.length > 0) {
-        goto(`/bases/${data.baseIds[0]}`)
+        if (isPlayground) {
+          await goto(`/playground/bases/${data.baseIds[0]}`)
+        } else {
+          await goto(`/bases/${data.baseIds[0]}`)
+        }
       }
     },
     onError(error) {

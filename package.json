@@ -20,7 +20,10 @@
     "migrate:db": "drizzle-kit push --config drizzle.config.ts",
     "move-assets": "bun run ./scripts/move-assets.ts",
     "migrate:deploy": "bun run ./scripts/migrate.ts",
-    "prepare": "husky || echo 1"
+    "prepare": "husky || echo 1",
+    "clean:root": "bunx rimraf node_modules",
+    "clean:turbo": "turbo clean",
+    "clean": "run-p clean:*"
   },
   "devDependencies": {
     "drizzle-kit": "^0.28.1",
