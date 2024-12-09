@@ -1,9 +1,8 @@
 <script lang="ts">
   import * as Form from "$lib/components/ui/form"
-  import { trpc } from "$lib/trpc/client.js"
   import { createMutation } from "@tanstack/svelte-query"
   import SuperDebug, { superForm, defaults } from "sveltekit-superforms"
-  import { createTableCommand } from "@undb/commands"
+  import { createTableCommand, ICreateTableCommand } from "@undb/commands"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { Input } from "$lib/components/ui/input"
   import CreateSchema from "./create-schema.svelte"
@@ -14,12 +13,20 @@
   import { CREATE_TABLE_MODAL, closeModal } from "$lib/store/modal.store"
   import { baseId, currentBase } from "$lib/store/base.store"
   import { getNextName } from "@undb/utils"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   const schema = createTableCommand.omit({ baseId: true })
   export let tableNames: string[]
 
   const mutation = createMutation({
-    mutationFn: trpc.table.create.mutate,
+    mutationFn: async (command: ICreateTableCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.createTable(command)
+    },
     mutationKey: ["createTable"],
     async onSuccess(data) {
       await invalidate("undb:tables")

@@ -10,6 +10,7 @@ import {
   CreateTableCommandHandler,
   CreateTableFieldCommandHandler,
   CreateTableViewCommandHandler,
+  CreateViewWidgetCommandHandler,
   DeleteBaseCommandHandler,
   DeleteTableCommandHandler,
   DeleteTableFieldCommandHandler,
@@ -65,6 +66,7 @@ const commandHandlers = [
   SetViewOptionCommandHandler,
   CreateTableCommandHandler,
   CreateRecordsCommandHandler,
+  CreateViewWidgetCommandHandler,
 ]
 
 const queryHandlers = [

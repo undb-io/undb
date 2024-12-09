@@ -68,7 +68,7 @@
               {@const active = dashboard.id === dashboardId}
               <div
                 class={cn(
-                  "group flex h-8 cursor-pointer items-center justify-between gap-1 truncate rounded-md pl-8 pr-2 transition-all",
+                  "group flex h-8 cursor-pointer items-center justify-between gap-1 truncate rounded-md pl-2 pr-2 transition-all",
                   active ? "bg-gray-800/90" : "hover:bg-gray-100",
                 )}
               >
@@ -89,7 +89,7 @@
               <Collapsible.Root bind:open={open[table.id]}>
                 <div
                   class={cn(
-                    "group flex h-8 cursor-pointer items-center justify-between gap-1 truncate rounded-md pl-8 pr-2 transition-all",
+                    "group flex h-8 cursor-pointer items-center justify-between gap-1 truncate rounded-md pl-2 pr-2 transition-all",
                     active ? "bg-gray-800/90" : "hover:bg-gray-100",
                   )}
                 >
@@ -209,4 +209,8 @@
 
 {#await import("$lib/components/blocks/import-table/import-table-dialog.svelte") then { default: ImportTableDialog }}
   <ImportTableDialog tableNames={tables.map((t) => t.name)} />
+{/await}
+
+{#await import("$lib/components/blocks/create-table/create-table-sheet.svelte") then { default: CreateTableSheet }}
+  <CreateTableSheet tableNames={tables.map((t) => t.name)} />
 {/await}

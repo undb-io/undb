@@ -9,6 +9,7 @@ import {
   CreateTableCommand,
   CreateTableFieldCommand,
   CreateTableViewCommand,
+  CreateViewWidgetCommand,
   DeleteBaseCommand,
   DeleteTableCommand,
   DeleteTableFieldCommand,
@@ -40,6 +41,7 @@ import {
   type ICreateTableCommandOutput,
   type ICreateTableViewCommandOutput,
   type ICreateViewCommand,
+  type ICreateViewWidgetCommand,
   type IDeleteBaseCommand,
   type IDeleteFieldCommand,
   type IDeleteTableCommand,
@@ -198,6 +200,14 @@ class ViewService {
       return this.commandBus.execute(new DeleteViewCommand(command))
     }
     await this.trpc.table.view.delete.mutate(command)
+  }
+
+  createViewWidget = async (command: ICreateViewWidgetCommand): Promise<void> => {
+    if (this.isLocal) {
+      await this.commandBus.execute(new CreateViewWidgetCommand(command))
+    }
+
+    await this.trpc.table.view.widget.create.mutate(command)
   }
 
   setOption = async (command: ISetViewOptionCommand): Promise<void> => {
