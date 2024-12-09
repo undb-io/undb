@@ -1,3 +1,5 @@
+import "reflect-metadata"
+
 export * from "./ctx.interface"
 export * from "./ctx.provider"
 export * from "./migrate.client"
