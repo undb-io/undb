@@ -30,6 +30,7 @@
   let updateOpen = false
 
   export let onDuplicateSuccess: () => void = () => {}
+  export let onDeleteSuccess: () => void = () => {}
 
   const client = useQueryClient()
   const deleteRecordsMutation = createMutation({
@@ -42,6 +43,7 @@
         queryKey: ["records", $table.id.value],
       })
       toast.success("Record has been deleted!")
+      onDeleteSuccess()
       open = false
     },
   })
