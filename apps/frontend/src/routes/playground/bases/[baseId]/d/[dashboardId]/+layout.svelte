@@ -14,4 +14,6 @@
   }
 </script>
 
-<slot></slot>
+{#key dashboard.id}
+  <slot></slot>
+{/key}

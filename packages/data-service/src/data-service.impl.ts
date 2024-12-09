@@ -1,4 +1,5 @@
 import {
+  AddDashboardWidgetCommand,
   BulkDeleteRecordsCommand,
   BulkDuplicateRecordsCommand,
   BulkUpdateRecordsCommand,
@@ -24,6 +25,7 @@ import {
   UpdateRecordCommand,
   UpdateTableFieldCommand,
   UpdateViewCommand,
+  type IAddDashboardWidgetCommand,
   type IBulkDeleteRecordsCommand,
   type IBulkDuplicateRecordsCommand,
   type IBulkUpdateRecordsCommand,
@@ -57,9 +59,9 @@ import {
   type IUpdateRecordCommand,
   type IUpdateViewCommand,
 } from "@undb/commands"
-import { CommandBus,QueryBus } from "@undb/cqrs"
-import { container,inject,injectable } from "@undb/di"
-import type { ICommandBus,IQueryBus } from "@undb/domain"
+import { CommandBus, QueryBus } from "@undb/cqrs"
+import { container, inject, injectable } from "@undb/di"
+import type { ICommandBus, IQueryBus } from "@undb/domain"
 import {
   GetAggregatesQuery,
   GetBaseQuery,
@@ -86,7 +88,7 @@ import {
   type IGetTablesOutput,
   type IGetTablesQuery,
 } from "@undb/queries"
-import type { ITemplateService,TemplateDTO } from "@undb/template"
+import type { ITemplateService, TemplateDTO } from "@undb/template"
 import { TemplateService as TemplateServiceImpl } from "@undb/template"
 import {
   injectIsLocal,
@@ -341,6 +343,8 @@ class DashboardService {
     private readonly isLocal: boolean,
     @inject(QueryBus)
     private readonly queryBus: IQueryBus,
+    @inject(CommandBus)
+    private readonly commandBus: ICommandBus,
   ) {}
 
   getDashboardById = async (query: IGetDashboardByIdQuery): Promise<IGetDashboardByIdOutput> => {
@@ -355,6 +359,13 @@ class DashboardService {
       return await this.queryBus.execute(new GetDashboardsQuery(query))
     }
     return (await this.trpc.dashboard.list.query(query)) as IGetDashboardsOutput
+  }
+
+  addWidget = async (command: IAddDashboardWidgetCommand): Promise<void> => {
+    if (this.isLocal) {
+      return this.commandBus.execute(new AddDashboardWidgetCommand(command))
+    }
+    await this.trpc.dashboard.widget.add.mutate(command)
   }
 }
 

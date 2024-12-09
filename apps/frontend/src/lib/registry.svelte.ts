@@ -1,5 +1,6 @@
 import { ISpaceMemberService, SPACE_MEMBER_SERVICE } from "@undb/authz"
 import {
+  AddDashboardWidgetCommandHandler,
   BulkDeleteRecordsCommandHandler,
   BulkDuplicateRecordsCommandHandler,
   BulkUpdateRecordsCommandHandler,
@@ -42,6 +43,7 @@ import {
 } from "@undb/query-handlers"
 
 const commandHandlers = [
+  AddDashboardWidgetCommandHandler,
   BulkDuplicateRecordsCommandHandler,
   BulkDeleteRecordsCommandHandler,
   BulkUpdateRecordsCommandHandler,

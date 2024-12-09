@@ -1,5 +1,6 @@
 export * from "./registry"
 
+export * from "./handlers/add-dashboard-widget.command-handler"
 export * from "./handlers/bulk-delete-records.command-handler"
 export * from "./handlers/bulk-duplicate-records.command-handler"
 export * from "./handlers/bulk-update-records.command-handler"
