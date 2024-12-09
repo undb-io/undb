@@ -57,9 +57,9 @@ import {
   type IUpdateRecordCommand,
   type IUpdateViewCommand,
 } from "@undb/commands"
-import { CommandBus, QueryBus } from "@undb/cqrs"
-import { container, inject, injectable } from "@undb/di"
-import type { ICommandBus, IQueryBus } from "@undb/domain"
+import { CommandBus,QueryBus } from "@undb/cqrs"
+import { container,inject,injectable } from "@undb/di"
+import type { ICommandBus,IQueryBus } from "@undb/domain"
 import {
   GetAggregatesQuery,
   GetBaseQuery,
@@ -86,7 +86,7 @@ import {
   type IGetTablesOutput,
   type IGetTablesQuery,
 } from "@undb/queries"
-import type { ITemplateService, TemplateDTO } from "@undb/template"
+import type { ITemplateService,TemplateDTO } from "@undb/template"
 import { TemplateService as TemplateServiceImpl } from "@undb/template"
 import {
   injectIsLocal,
@@ -205,9 +205,9 @@ class ViewService {
   createViewWidget = async (command: ICreateViewWidgetCommand): Promise<void> => {
     if (this.isLocal) {
       await this.commandBus.execute(new CreateViewWidgetCommand(command))
+    } else {
+      await this.trpc.table.view.widget.create.mutate(command)
     }
-
-    await this.trpc.table.view.widget.create.mutate(command)
   }
 
   setOption = async (command: ISetViewOptionCommand): Promise<void> => {

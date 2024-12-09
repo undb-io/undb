@@ -12,7 +12,7 @@
     <p class="text-sm text-gray-500 dark:text-gray-400">
       {$LL.playground.playgroundModeDescription()}
     </p>
-    <button
+    <!-- <button
       data-collapse-toggle="banner"
       type="button"
       class="flex items-center rounded-lg p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
@@ -27,6 +27,6 @@
           clip-rule="evenodd"
         ></path></svg
       >
-    </button>
+    </button> -->
   </div>
 {/if}

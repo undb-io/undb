@@ -2,16 +2,16 @@
   import * as Form from "$lib/components/ui/form"
   import { createMutation } from "@tanstack/svelte-query"
   import SuperDebug, { superForm, defaults } from "sveltekit-superforms"
-  import { createTableCommand, ICreateTableCommand } from "@undb/commands"
+  import { createTableCommand, type ICreateTableCommand } from "@undb/commands"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { Input } from "$lib/components/ui/input"
   import CreateSchema from "./create-schema.svelte"
   import { toast } from "svelte-sonner"
-  import { invalidate } from "$app/navigation"
+  import { invalidate, invalidateAll } from "$app/navigation"
   import { goto } from "$app/navigation"
   import { FieldIdVo } from "@undb/table"
   import { CREATE_TABLE_MODAL, closeModal } from "$lib/store/modal.store"
-  import { baseId, currentBase } from "$lib/store/base.store"
+  import { baseId, currentBase, currentBaseId } from "$lib/store/base.store"
   import { getNextName } from "@undb/utils"
   import { getIsLocal, getDataService } from "$lib/store/data-service.store"
   import { getIsPlayground } from "$lib/store/playground.svelte"
@@ -29,8 +29,13 @@
     },
     mutationKey: ["createTable"],
     async onSuccess(data) {
-      await invalidate("undb:tables")
-      await goto(`/t/${data}`)
+      if (isPlayground) {
+        await invalidateAll()
+        await goto(`/playground/bases/${$currentBaseId}/t/${data}`)
+      } else {
+        await invalidate("undb:tables")
+        await goto(`/t/${data}`)
+      }
       baseId.set(null)
       form.reset()
       closeModal(CREATE_TABLE_MODAL)
@@ -70,7 +75,7 @@
           console.log(event.form.errors)
           return
         }
-        const _baseId = $currentBase?.id ?? $baseId
+        const _baseId = $currentBaseId
         if (!_baseId) return
 
         await $mutation.mutateAsync({
