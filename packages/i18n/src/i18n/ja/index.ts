@@ -699,9 +699,18 @@ const ja = {
     schema,
   authz,
   events,
+    import: {
+      importFile: 'インポートファイル...',
+      firstRowAsHeader: '最初の行をヘッダーとして',
+      importData: 'データをインポート',
+      fieldsSelected: '{count} フィールド選択',
+      configField: 'フィールドを設定',
+      nextStep: '次のステップ',
+    },
   },
   webhook,
 	common: {
+    back: '戻る',
 		error: 'エラー',
 		continue: '続行',
     description: '説明',

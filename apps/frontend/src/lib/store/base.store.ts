@@ -12,6 +12,10 @@ export const currentBase = derived([bases, baseId, page], ([$bases, $baseId, $pa
   return $bases?.find((base) => base?.id === baseId) ?? null
 })
 
+export const currentBaseId = derived([page, baseId], ([$page, $baseId]) => {
+  return $page.params.baseId ?? $baseId ?? null
+})
+
 export const getBaseById = derived([bases], ([$bases]) => {
   return (baseId: string) => $bases?.find((base) => base?.id === baseId) ?? null
 })

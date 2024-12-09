@@ -693,9 +693,18 @@ const es = {
     schema,
   authz,
   events,
+    import: {
+      importFile: 'Importar archivo...',
+      firstRowAsHeader: 'Primera fila como encabezado',
+      importData: 'Importar datos',
+      fieldsSelected: '{count} campos seleccionados',
+      configField: 'Configurar campo',
+      nextStep: 'Siguiente paso',
+    },
   },
   webhook,
 	common: {
+    back: 'Atrás',
     error: 'Error',
 		continue: 'Continuar',
     description: 'Descripción',

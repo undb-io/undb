@@ -699,8 +699,17 @@ const pt = {
     aggregate,
     schema,
     events,
+    import: {
+      importFile: 'Importar arquivo...',
+      firstRowAsHeader: 'Primeira linha como cabeçalho',
+      importData: 'Importar dados',
+      fieldsSelected: '{count} campos selecionados',
+      configField: 'Configurar campo',
+      nextStep: 'Próximo passo',
+    },
   },
   common: {
+    back: 'Voltar',
     error: 'Erro',
     duplicate: 'Duplicar',
     description: 'Descrição',

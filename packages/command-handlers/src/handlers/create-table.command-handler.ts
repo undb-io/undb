@@ -1,4 +1,4 @@
-import { CreateTableCommand } from "@undb/commands"
+import { CreateTableCommand, type ICreateTableCommandOutput } from "@undb/commands"
 import { injectContext, type IContext } from "@undb/context"
 import { commandHandler } from "@undb/cqrs"
 import { singleton } from "@undb/di"
@@ -8,7 +8,7 @@ import { injectTableService, type ITableService } from "@undb/table"
 
 @commandHandler(CreateTableCommand)
 @singleton()
-export class CreateTableCommandHandler implements ICommandHandler<CreateTableCommand, any> {
+export class CreateTableCommandHandler implements ICommandHandler<CreateTableCommand, ICreateTableCommandOutput> {
   private readonly logger = createLogger(CreateTableCommandHandler.name)
 
   constructor(
@@ -18,7 +18,7 @@ export class CreateTableCommandHandler implements ICommandHandler<CreateTableCom
     private readonly context: IContext,
   ) {}
 
-  async execute(command: CreateTableCommand): Promise<any> {
+  async execute(command: CreateTableCommand): Promise<ICreateTableCommandOutput> {
     this.logger.debug(command)
 
     const spaceId = this.context.mustGetCurrentSpaceId()

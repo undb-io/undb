@@ -23,7 +23,7 @@
   )
 </script>
 
-<main class="flex h-screen flex-1 flex-col overflow-hidden">
+<main class="flex flex-1 flex-col overflow-hidden">
   <View {viewId} {r} shareId={undefined} readonly={false} />
 </main>
 

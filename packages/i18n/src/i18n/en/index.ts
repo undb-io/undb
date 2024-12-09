@@ -701,8 +701,17 @@ const en = {
     aggregate,
     schema,
     events,
+    import: {
+      importFile: 'Import File...',
+      firstRowAsHeader: 'First row as header',
+      importData: 'Import Data',
+      fieldsSelected: '{count} fields selected',
+      configField: 'Config Field',
+      nextStep: 'Next step',
+    },
   },
   common: {
+    back: 'Back',
     error: 'Error',
     duplicate: 'Duplicate',
     description: 'Description',

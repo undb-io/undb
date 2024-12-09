@@ -701,9 +701,18 @@ const zh = {
     schema,
   authz,
   events,
+    import: {
+      importFile: '导入文件...',
+      firstRowAsHeader: '第一行作为标题',
+      importData: '导入数据',
+      fieldsSelected: '{count} 字段选择',
+      configField: '配置字段',
+      nextStep: '下一步',
+    },
   },
   webhook,
 	common: {
+    back: '返回',
     error: '错误',
 		continue: '继续',
     description: '描述',
@@ -741,7 +750,7 @@ const zh = {
     clear: '清除',
     updated: '已更新',
     now: '现在',
-    import: '导入'
+    import: '导入',
 	},
  share: {
 	title: '分享',

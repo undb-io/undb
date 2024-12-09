@@ -50,7 +50,7 @@
   let open = {} as Record<string, boolean>
 </script>
 
-<main class="flex flex-col">
+<main class="flex flex-1 flex-col overflow-hidden">
   <PlaygroundMenubar />
   <Resizable.PaneGroup class="flex-1" direction="horizontal">
     <Resizable.Pane
@@ -201,8 +201,12 @@
       </nav>
     </Resizable.Pane>
     <Resizable.Handle />
-    <Resizable.Pane class="grid h-screen flex-1" defaultSize={RIGHT_SIZE}>
+    <Resizable.Pane class="grid flex-1" defaultSize={RIGHT_SIZE}>
       <slot />
     </Resizable.Pane>
   </Resizable.PaneGroup>
 </main>
+
+{#await import("$lib/components/blocks/import-table/import-table-dialog.svelte") then { default: ImportTableDialog }}
+  <ImportTableDialog tableNames={tables.map((t) => t.name)} />
+{/await}

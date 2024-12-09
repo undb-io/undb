@@ -5,7 +5,7 @@
   import { LL } from "@undb/i18n/client"
 </script>
 
-<main class="flex h-screen w-screen items-center justify-center">
+<main class="flex w-screen flex-1 items-center justify-center">
   <div class="flex flex-col space-y-2">
     <Button class="w-48" on:click={() => toggleModal(CREATE_BASE_MODAL)} {...$$restProps}>
       <CirclePlusIcon class="mr-2 size-4" />

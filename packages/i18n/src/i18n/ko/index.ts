@@ -699,9 +699,18 @@ const ko = {
     schema,
   authz,
   events,
+    import: {
+      importFile: '파일 가져오기...',
+      firstRowAsHeader: '첫 번째 행을 헤더로',
+      importData: '데이터 가져오기',
+      fieldsSelected: '{count} 필드 선택',
+      configField: '필드 설정',
+      nextStep: '다음 단계',
+    },
   },
   webhook,
 	common: {
+    back: '뒤로',
 		error: '오류',
 		continue: '계속',
     description: '설명',

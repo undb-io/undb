@@ -2186,8 +2186,39 @@ type RootTranslation = {
 				deleted: string
 			}
 		}
+		'import': {
+			/**
+			 * I​m​p​o​r​t​ ​F​i​l​e​.​.​.
+			 */
+			importFile: string
+			/**
+			 * F​i​r​s​t​ ​r​o​w​ ​a​s​ ​h​e​a​d​e​r
+			 */
+			firstRowAsHeader: string
+			/**
+			 * I​m​p​o​r​t​ ​D​a​t​a
+			 */
+			importData: string
+			/**
+			 * {​c​o​u​n​t​}​ ​f​i​e​l​d​s​ ​s​e​l​e​c​t​e​d
+			 * @param {unknown} count
+			 */
+			fieldsSelected: RequiredParams<'count'>
+			/**
+			 * C​o​n​f​i​g​ ​F​i​e​l​d
+			 */
+			configField: string
+			/**
+			 * N​e​x​t​ ​s​t​e​p
+			 */
+			nextStep: string
+		}
 	}
 	common: {
+		/**
+		 * B​a​c​k
+		 */
+		back: string
 		/**
 		 * E​r​r​o​r
 		 */
@@ -4620,8 +4651,38 @@ export type TranslationFunctions = {
 				deleted: () => LocalizedString
 			}
 		}
+		'import': {
+			/**
+			 * Import File...
+			 */
+			importFile: () => LocalizedString
+			/**
+			 * First row as header
+			 */
+			firstRowAsHeader: () => LocalizedString
+			/**
+			 * Import Data
+			 */
+			importData: () => LocalizedString
+			/**
+			 * {count} fields selected
+			 */
+			fieldsSelected: (arg: { count: unknown }) => LocalizedString
+			/**
+			 * Config Field
+			 */
+			configField: () => LocalizedString
+			/**
+			 * Next step
+			 */
+			nextStep: () => LocalizedString
+		}
 	}
 	common: {
+		/**
+		 * Back
+		 */
+		back: () => LocalizedString
 		/**
 		 * Error
 		 */

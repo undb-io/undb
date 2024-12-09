@@ -5,6 +5,8 @@ import {
   CreateBaseCommand,
   CreateFromTemplateCommand,
   CreateRecordCommand,
+  CreateRecordsCommand,
+  CreateTableCommand,
   CreateTableFieldCommand,
   CreateTableViewCommand,
   DeleteBaseCommand,
@@ -32,6 +34,10 @@ import {
   type ICreateFromTemplateCommandOutput,
   type ICreateRecordCommand,
   type ICreateRecordCommandOutput,
+  type ICreateRecordsCommand,
+  type ICreateRecordsCommandOutput,
+  type ICreateTableCommand,
+  type ICreateTableCommandOutput,
   type ICreateTableViewCommandOutput,
   type ICreateViewCommand,
   type IDeleteBaseCommand,
@@ -301,6 +307,13 @@ class TableService {
     return (await this.trpc.table.list.query(query)) as IGetTablesOutput
   }
 
+  createTable = async (command: ICreateTableCommand): Promise<ICreateTableCommandOutput> => {
+    if (this.isLocal) {
+      return this.commandBus.execute(new CreateTableCommand(command))
+    }
+    return this.trpc.table.create.mutate(command)
+  }
+
   deleteTable = async (command: IDeleteTableCommand): Promise<void> => {
     if (this.isLocal) {
       return this.commandBus.execute(new DeleteTableCommand(command))
@@ -374,6 +387,13 @@ class RecordsService {
       return this.commandBus.execute(new CreateRecordCommand(command))
     }
     return this.trpc.record.create.mutate(command)
+  }
+
+  createRecords = async (command: ICreateRecordsCommand): Promise<ICreateRecordsCommandOutput> => {
+    if (this.isLocal) {
+      return this.commandBus.execute(new CreateRecordsCommand(command))
+    }
+    await this.trpc.record.bulkCreate.mutate(command)
   }
 
   updateRecord = async (command: IUpdateRecordCommand): Promise<void> => {
