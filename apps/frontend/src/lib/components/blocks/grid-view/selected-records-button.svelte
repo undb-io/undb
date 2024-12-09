@@ -184,11 +184,11 @@
       <AlertDialog.Header>
         <AlertDialog.Title>{$LL.table.record.confirmDuplicateRecords({ n: ids.length })}</AlertDialog.Title>
         <AlertDialog.Description>
-          {$LL.table.record.confirmDuplicateRecordsDescription({ n: ids.length })}
+          {$LL.table.record.confirmDuplicateRecordsDescription({ table: $table.name.value, n: ids.length })}
         </AlertDialog.Description>
       </AlertDialog.Header>
       <AlertDialog.Footer>
-        <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+        <AlertDialog.Cancel>{$LL.common.cancel()}</AlertDialog.Cancel>
         <AlertDialog.Action disabled={$duplicateRecordsMutation.isPending} on:click={duplicateRecords}>
           {#if $duplicateRecordsMutation.isPending}
             <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />

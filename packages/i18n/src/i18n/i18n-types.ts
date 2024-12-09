@@ -18,6 +18,16 @@ export type Translation = RootTranslation
 export type Translations = RootTranslation
 
 type RootTranslation = {
+	playground: {
+		/**
+		 * P​l​a​y​g​r​o​u​n​d​ ​M​o​d​e
+		 */
+		playgroundMode: string
+		/**
+		 * Y​o​u​ ​a​r​e​ ​i​n​ ​p​l​a​y​g​r​o​u​n​d​ ​m​o​d​e​,​ ​a​l​l​ ​c​h​a​n​g​e​s​ ​w​i​l​l​ ​b​e​ ​l​o​s​t​ ​a​f​t​e​r​ ​y​o​u​ ​c​l​o​s​e​ ​o​r​ ​r​e​f​r​e​s​h​ ​t​h​e​ ​p​a​g​e​.
+		 */
+		playgroundModeDescription: string
+	}
 	auth: {
 		/**
 		 * L​o​g​i​n
@@ -2469,6 +2479,16 @@ type RootTranslation = {
 }
 
 export type TranslationFunctions = {
+	playground: {
+		/**
+		 * Playground Mode
+		 */
+		playgroundMode: () => LocalizedString
+		/**
+		 * You are in playground mode, all changes will be lost after you close or refresh the page.
+		 */
+		playgroundModeDescription: () => LocalizedString
+	}
 	auth: {
 		/**
 		 * Login

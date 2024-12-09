@@ -666,7 +666,13 @@ const auth = {
   enterYourWorkEmail: 'Digite seu email de trabalho...',
 }
 
+const playground = {
+  playgroundMode: 'Modo de teste',
+  playgroundModeDescription: 'Você está no modo de teste, todos os seus dados serão perdidos após você fechar ou atualizar a página.'
+}
+
 const pt = {
+  playground,
   auth,
   template,
   setting,

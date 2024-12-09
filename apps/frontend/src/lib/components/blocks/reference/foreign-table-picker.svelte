@@ -83,7 +83,7 @@
         <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>
       {#if value}
-        <a href={`/t/${value}`} class="text-muted-foreground">
+        <a href={isPlayground ? `/playground/bases/${$table.baseId}/t/${value}` : `/t/${value}`} class="text-muted-foreground">
           <ExternalLinkIcon class="mr-2 h-3 w-3" />
         </a>
       {/if}

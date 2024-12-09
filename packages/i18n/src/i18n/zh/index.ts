@@ -669,7 +669,13 @@ const auth = {
   enterYourWorkEmail: '输入您的工作电子邮件...',
 }
 
+const playground = {
+  playgroundMode: '沙盒模式',
+  playgroundModeDescription: '您处于沙盒模式，所有更改将在您关闭或刷新页面后丢失。'
+}
+
 const zh = {
+  playground,
   auth,
   template,
   roles,

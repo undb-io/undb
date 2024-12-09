@@ -668,7 +668,13 @@ const webhook = {
     enterYourWorkEmail: 'Enter your work email...',
   }
 
+  const playground = {
+    playgroundMode: 'Playground Mode',
+    playgroundModeDescription: 'You are in playground mode, all changes will be lost after you close or refresh the page.'
+  }
+
 const en = {
+  playground,
   auth,
   template,
   setting,

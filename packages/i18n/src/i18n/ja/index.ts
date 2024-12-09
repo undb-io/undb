@@ -667,7 +667,13 @@ const auth = {
   enterYourWorkEmail: '作業用メールアドレスを入力してください...',
 }
 
+const playground = {
+  playgroundMode: 'プレイグラウンドモード',
+  playgroundModeDescription: 'プレイグラウンドモードです。ページを閉じるかリフレッシュするとすべての変更が失われます。'
+}
+
 const ja = {
+  playground,
 	auth,
   template,
   roles,

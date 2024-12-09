@@ -667,7 +667,13 @@ const auth = {
   enterYourWorkEmail: '작업 이메일을 입력하세요...',
 }
 
+const playground = {
+  playgroundMode: '플레이그라운드 모드',
+  playgroundModeDescription: '플레이그라운드 모드입니다. 페이지를 닫거나 새로고침하면 모든 변경 사항이 손실됩니다.'
+}
+
 const ko = {
+  playground,
 	auth,
   template,
   roles,

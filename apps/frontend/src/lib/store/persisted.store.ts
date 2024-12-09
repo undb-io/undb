@@ -7,6 +7,7 @@ export const preferences = persisted("undb_preferences", {
   gridViewPerPage: 50,
   panelLeftWidth: 20,
   panelLeftCollapsed: false,
+  playgroundModeDismissed: false,
 })
 
 interface LastViewed {

@@ -20,6 +20,7 @@
   import { LL } from "@undb/i18n/client"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js"
   import { DELETE_VIEW, DUPLICATE_VIEW, SET_DEFAULT_VIEW, toggleModal, UPDATE_VIEW } from "$lib/store/modal.store"
+  import PlaygroundMenubar from "$lib/components/blocks/playground/playground-menubar.svelte"
 
   export let data: PageData
 
@@ -49,8 +50,9 @@
   let open = {} as Record<string, boolean>
 </script>
 
-<main class="flex">
-  <Resizable.PaneGroup direction="horizontal">
+<main class="flex flex-col">
+  <PlaygroundMenubar />
+  <Resizable.PaneGroup class="flex-1" direction="horizontal">
     <Resizable.Pane
       bind:pane={panelLeft}
       collapsible
@@ -59,7 +61,7 @@
       minSize={15}
       maxSize={30}
     >
-      <nav class="flex h-full flex-col">
+      <nav class="flex h-full flex-col p-2">
         <Collapsible.Root open={true}>
           <Collapsible.Content class="space-y-1 pt-1">
             {#each dashboards as dashboard}

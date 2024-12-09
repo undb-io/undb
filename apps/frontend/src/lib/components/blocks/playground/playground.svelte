@@ -17,11 +17,3 @@
     </Button>
   </div>
 </main>
-
-{#await import("$lib/components/blocks/create-base/create-base-dialog.svelte") then { default: CreateBaseDialog }}
-  <CreateBaseDialog baseNames={[]} />
-{/await}
-
-{#await import("$lib/components/blocks/template/template-list-sheet.svelte") then { default: TemplateListSheet }}
-  <TemplateListSheet />
-{/await}

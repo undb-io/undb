@@ -661,7 +661,13 @@ const auth = {
   enterYourWorkEmail: 'Introduce tu correo electrónico de trabajo...',
 }
 
+const playground = {
+  playgroundMode: 'Modo de prueba',
+  playgroundModeDescription: 'Estás en modo de prueba, todos los cambios se perderán después de cerrar o refrescar la página.'
+}
+
 const es = {
+  playground,
   auth,
   template,
   roles,
