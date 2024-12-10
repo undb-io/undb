@@ -36,14 +36,16 @@
 
   let panelLeft: PaneAPI
 
-  onMount(() => {
+  function redirect() {
     if (dashboards.length) {
       goto(`/playground/bases/${base.id}/d/${dashboards[0].id}`, { replaceState: true })
     } else if (tables.length) {
       goto(`/playground/bases/${base.id}/t/${tables[0].id}`, { replaceState: true })
       open[tables[0].id] = true
     }
-  })
+  }
+
+  $: if (paramBaseId) redirect()
 
   const SIZE = 20
   const RIGHT_SIZE = 100 - SIZE

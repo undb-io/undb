@@ -7,15 +7,45 @@
     CREATE_TABLE_MODAL,
   } from "$lib/store/modal.store"
   import { Button } from "$lib/components/ui/button"
+  import { HardDriveIcon } from "lucide-svelte"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { LL } from "@undb/i18n/client"
   import { ImportIcon, ChevronDownIcon, CirclePlusIcon } from "lucide-svelte"
   import { type IBaseDTO } from "@undb/base"
+  import * as Select from "$lib/components/ui/select"
+  import { page } from "$app/stores"
+  import { goto } from "$app/navigation"
 
   export let bases: IBaseDTO[]
+
+  $: baseId = $page.params.baseId
+  $: selectedBase = bases.find((base) => base.id === baseId)
+  $: selectedValue = selectedBase ? { value: selectedBase.id, label: selectedBase.name } : undefined
 </script>
 
 <div class="flex items-center gap-2 border-b p-2">
+  <Select.Root
+    selected={selectedValue}
+    onSelectedChange={async (v) => {
+      if (v) {
+       await goto(`/playground/bases/${v.value}`)
+      }
+    }}
+  >
+    <Select.Trigger class="h-6 w-[250px] rounded-sm px-2 text-xs">
+      <HardDriveIcon class="mr-2 size-4 shrink-0" />
+      <Select.Value placeholder="Base" />
+    </Select.Trigger>
+    <Select.Content>
+      {#each bases as base}
+        <Select.Item class="flex items-center overflow-hidden" value={base.id}>
+          <HardDriveIcon class="mr-2 size-4 shrink-0" />
+          <span class="flex-1 truncate">{base.name}</span>
+        </Select.Item>
+      {/each}
+    </Select.Content>
+  </Select.Root>
+
   <div class="flex items-center gap-0">
     <Button
       size="xs"
