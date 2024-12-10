@@ -1,3 +1,4 @@
+import "core-js"
 import "reflect-metadata"
 
 import { trpc } from "$lib/trpc/client"
