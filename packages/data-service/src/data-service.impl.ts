@@ -65,16 +65,20 @@ import type { ICommandBus, IQueryBus } from "@undb/domain"
 import {
   GetAggregatesQuery,
   GetBaseQuery,
+  GetBasesQuery,
   GetDashboardByIdQuery,
   GetDashboardsQuery,
   GetRecordByIdQuery,
   GetRecordsQuery,
   GetTableQuery,
   GetTablesQuery,
+  GetTemplatesQuery,
   type IGetAggregatesOutput,
   type IGetAggregatesQuery,
   type IGetBaseOutput,
   type IGetBaseQuery,
+  type IGetBasesQuery,
+  type IGetBasesQueryOutput,
   type IGetDashboardByIdOutput,
   type IGetDashboardByIdQuery,
   type IGetDashboardsOutput,
@@ -87,6 +91,8 @@ import {
   type IGetTableQuery,
   type IGetTablesOutput,
   type IGetTablesQuery,
+  type IGetTemplatesQuery,
+  type IGetTemplatesQueryOutput,
 } from "@undb/queries"
 import type { ITemplateService, TemplateDTO } from "@undb/template"
 import { TemplateService as TemplateServiceImpl } from "@undb/template"
@@ -112,7 +118,16 @@ class TemplateService {
     private readonly templateService: ITemplateService,
     @injectTrpcClient()
     private readonly trpc: TrpcProxyClient,
+    @inject(QueryBus)
+    private readonly queryBus: IQueryBus,
   ) {}
+
+  listTemplates = async (query: IGetTemplatesQuery): Promise<IGetTemplatesQueryOutput> => {
+    if (this.isLocal) {
+      return await this.queryBus.execute(new GetTemplatesQuery())
+    }
+    return (await this.trpc.template.list.query({})) as IGetTemplatesQueryOutput
+  }
 
   save = async (template: TemplateDTO, includeData: boolean = false): Promise<void> => {
     if (!this.isLocal) {
@@ -142,6 +157,13 @@ class BaseService {
     @inject(CommandBus)
     private readonly commandBus: ICommandBus,
   ) {}
+
+  listBases = async (query: IGetBasesQuery): Promise<IGetBasesQueryOutput> => {
+    if (this.isLocal) {
+      return await this.queryBus.execute(new GetBasesQuery(query))
+    }
+    return (await this.trpc.base.list.query(query)) as IGetBasesQueryOutput
+  }
 
   getBase = async (query: IGetBaseQuery): Promise<IGetBaseOutput> => {
     if (this.isLocal) {

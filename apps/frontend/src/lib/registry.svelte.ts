@@ -34,12 +34,14 @@ import { container } from "@undb/di"
 import {
   GetAggregatesQueryHandler,
   GetBaseQueryHandler,
+  GetBasesQueryHandler,
   GetDashboardByIdQueryHandler,
   GetDashboardsQueryHandler,
   GetRecordByIdQueryHandler,
   GetRecordsQueryHandler,
   GetTableQueryHandler,
   GetTablesQueryHandler,
+  GetTemplatesQueryHandler,
 } from "@undb/query-handlers"
 
 const commandHandlers = [
@@ -80,6 +82,8 @@ const queryHandlers = [
   GetBaseQueryHandler,
   GetDashboardsQueryHandler,
   GetDashboardByIdQueryHandler,
+  GetTemplatesQueryHandler,
+  GetBasesQueryHandler,
 ]
 
 class Registry {

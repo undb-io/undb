@@ -147,6 +147,7 @@ import {
   GetAggregatesQuery,
   GetApiTokensQuery,
   GetBaseQuery,
+  GetBasesQuery,
   GetDashboardByIdQuery,
   GetDashboardsQuery,
   GetMemberSpacesQuery,
@@ -168,6 +169,8 @@ import {
   getApiTokensQuery,
   getBaseQuery,
   getBaseQueryOutput,
+  getBasesQuery,
+  getBasesQueryOutput,
   getDashboardByIdQuery,
   getDashboardsQuery,
   getMemberSpacesOutput,
@@ -434,6 +437,11 @@ const webhookRouter = t.router({
 })
 
 const baseRouter = t.router({
+  list: privateProcedure
+    .use(authz("base:list"))
+    .input(getBasesQuery)
+    .output(getBasesQueryOutput)
+    .query(({ input }) => queryBus.execute(new GetBasesQuery(input))),
   get: privateProcedure
     .use(authz("base:read"))
     .input(getBaseQuery)

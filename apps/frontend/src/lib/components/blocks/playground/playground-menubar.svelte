@@ -10,6 +10,9 @@
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { LL } from "@undb/i18n/client"
   import { ImportIcon, ChevronDownIcon, CirclePlusIcon } from "lucide-svelte"
+  import { type IBaseDTO } from "@undb/base"
+
+  export let bases: IBaseDTO[]
 </script>
 
 <div class="flex items-center gap-2 border-b p-2">

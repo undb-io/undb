@@ -24,6 +24,7 @@
 
   export let data: PageData
 
+  $: bases = data.bases
   $: base = data.base
   $: tables = data.tables
   $: dashboards = data.dashboards
@@ -51,7 +52,7 @@
 </script>
 
 <main class="flex flex-1 flex-col overflow-hidden">
-  <PlaygroundMenubar />
+  <PlaygroundMenubar {bases} />
   <Resizable.PaneGroup class="flex-1" direction="horizontal">
     <Resizable.Pane
       bind:pane={panelLeft}
