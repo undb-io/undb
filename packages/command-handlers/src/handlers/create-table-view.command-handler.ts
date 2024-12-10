@@ -18,6 +18,7 @@ export class CreateTableViewCommandHandler
     const { table, view } = await this.service.createTableView(command.input)
 
     return {
+      baseId: table.baseId,
       tableId: table.id.value,
       viewId: view.id.value,
     }

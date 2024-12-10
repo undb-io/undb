@@ -5,6 +5,9 @@
   import type { StringField } from "@undb/table"
   import { toast } from "svelte-sonner"
   import { gridViewStore } from "../grid-view.store"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type IUpdateRecordCommand } from "@undb/commands"
 
   export let tableId: string
   export let field: StringField
@@ -14,9 +17,15 @@
   export let readonly: boolean
   export let onValueChange: (value: string) => void
 
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: async (command: IUpdateRecordCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.records.updateRecord(command)
+    },
     onSuccess(data, variables, context) {
       el?.blur()
       gridViewStore.exitEditing()

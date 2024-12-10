@@ -202,6 +202,10 @@ export class DashboardWidgets extends ValueObject<IDashboardWidgets> {
   }
 
   addWidget(table: TableDo, dto: IDashboardWidget): DashboardWidgets {
+    const value = this.value
+    if (value.some((w) => w.widget.id === dto.widget.id)) {
+      return new DashboardWidgets(value)
+    }
     const widget = DashboardWidget.from(table, dto.widget)
     return new DashboardWidgets([...this.value, widget.toJSON()])
   }

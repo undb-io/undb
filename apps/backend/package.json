@@ -8,8 +8,8 @@
     "build:docker": "bun build --compile src/index.ts --target=bun --packages=external --sourcemap --outfile undb"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.701.0",
-    "@aws-sdk/s3-request-presigner": "^3.701.0",
+    "@aws-sdk/client-s3": "^3.705.0",
+    "@aws-sdk/s3-request-presigner": "^3.705.0",
     "@elysiajs/cors": "1.1.0",
     "@elysiajs/cron": "1.1.0",
     "@elysiajs/html": "1.1.0",
@@ -42,7 +42,7 @@
     "@undb/trpc": "workspace:*",
     "@undb/webhook": "workspace:*",
     "arctic": "^2.3.0",
-    "bun": "^1.1.37",
+    "bun": "^1.1.38",
     "core-js": "^3.39.0",
     "elysia": "1.1.7",
     "got": "^14.4.5",
@@ -62,7 +62,7 @@
     "@types/nodemailer": "^6.4.17",
     "@types/uuid": "^10.0.0",
     "bun-types": "latest",
-    "kysely": "^0.27.4"
+    "kysely": "^0.27.5"
   },
   "types": "./src/app.d.ts",
   "exports": {

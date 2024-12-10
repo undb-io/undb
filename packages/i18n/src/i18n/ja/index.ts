@@ -468,6 +468,7 @@ const view = {
   },
   type: 'ビジュアルタイプ',
   create: 'ビジュアルを作成',
+  created: 'ビジュアルが作成されました',
   updateName: 'ビジュアル名を更新',
   updated: 'ビジュアルが更新されました',
   duplicateView: 'ビジュアルを複製',
@@ -501,6 +502,7 @@ const dashboard = {
 const base = {
   name: 'Base 名',
   noBases: 'Base がありません',
+  created: 'Base が作成されました',
   displayName: 'Base 表示名',
   importFromTemplate: 'テンプレートからインポート',
   createBase: 'Base を作成',
@@ -665,7 +667,13 @@ const auth = {
   enterYourWorkEmail: '作業用メールアドレスを入力してください...',
 }
 
+const playground = {
+  playgroundMode: 'プレイグラウンドモード',
+  playgroundModeDescription: 'プレイグラウンドモードです。ページを閉じるかリフレッシュするとすべての変更が失われます。'
+}
+
 const ja = {
+  playground,
 	auth,
   template,
   roles,
@@ -691,9 +699,18 @@ const ja = {
     schema,
   authz,
   events,
+    import: {
+      importFile: 'インポートファイル...',
+      firstRowAsHeader: '最初の行をヘッダーとして',
+      importData: 'データをインポート',
+      fieldsSelected: '{count} フィールド選択',
+      configField: 'フィールドを設定',
+      nextStep: '次のステップ',
+    },
   },
   webhook,
 	common: {
+    back: '戻る',
 		error: 'エラー',
 		continue: '続行',
     description: '説明',

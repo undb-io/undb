@@ -13,6 +13,7 @@
     "@undb/base": "workspace:*",
     "@undb/commands": "workspace:*",
     "@undb/context": "workspace:*",
+    "@undb/table": "workspace:*",
     "@undb/cqrs": "workspace:*",
     "@undb/dashboard": "workspace:*",
     "@undb/di": "workspace:*",

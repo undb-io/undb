@@ -186,6 +186,7 @@
         <SelectedRecordsButton
           {viewId}
           onDuplicateSuccess={() => selectedDataIds?.clear()}
+          onDeleteSuccess={() => selectedDataIds?.clear()}
           class={selectedRecordIds.length && "opacity-100"}
           ids={selectedRecordIds}
         />

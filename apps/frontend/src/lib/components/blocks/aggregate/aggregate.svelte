@@ -8,6 +8,7 @@
   import * as Tooltip from "$lib/components/ui/tooltip"
   import type { TableDo } from "@undb/table"
   import { getDataService, getIsLocal } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
 
   export let tableId: string | undefined
   export let table: TableDo | undefined
@@ -22,6 +23,7 @@
   $: isValid = isValidWidget(widget) && !!tableId
 
   const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   const getAggregate = createQuery({
     queryKey: ["aggregate", widget.id],
@@ -41,7 +43,7 @@
           ignoreView,
         })
       }
-      const dataService = await getDataService(isLocal)
+      const dataService = await getDataService(isLocal, isPlayground)
       return dataService.records.getAggregates({
         tableId: tableId!,
         viewId,

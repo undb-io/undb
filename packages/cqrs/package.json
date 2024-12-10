@@ -6,7 +6,7 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@types/uuid": "^10.0.0",
-    "type-fest": "^4.29.0"
+    "type-fest": "^4.30.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

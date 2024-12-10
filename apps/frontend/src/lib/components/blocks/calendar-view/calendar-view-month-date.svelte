@@ -17,6 +17,9 @@
   import { CREATE_RECORD_MODAL, openModal } from "$lib/store/modal.store"
   import { defaultRecordValues } from "$lib/store/records.store"
   import { type Readable } from "svelte/store"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type IUpdateRecordCommand } from "@undb/commands"
 
   export let field: DateField | DateRangeField
   export let date: Date
@@ -32,6 +35,9 @@
 
   const isSelected = calendarStore.isSelected
   const getIsSameMonth = calendarStore.getIsSameMonth
+
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   $: color = $viewId ? $table.views.getViewById($viewId)?.color.into(undefined) : undefined
 
@@ -84,7 +90,10 @@
   }
 
   const updateRecord = createMutation({
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: async (command: IUpdateRecordCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.records.updateRecord(command)
+    },
   })
 
   const client = useQueryClient()

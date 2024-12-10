@@ -46,6 +46,9 @@
   import { queryParam } from "sveltekit-search-params"
   import { LL } from "@undb/i18n/client"
   import { getDataService, getIsLocal } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type IUpdateRecordCommand } from "@undb/commands"
+  import { type IUpdateFieldCommand } from "@undb/commands"
 
   const table = getTable()
   const recordsStore = getRecordsStore()
@@ -69,6 +72,7 @@
   $: isLaneCollapsed = $viewId ? ($getIsLaneCollapsed($viewId, option?.id ?? "") ?? false) : false
 
   const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   const query = createInfiniteQuery(
     derived([table, viewId, q], ([$table, $viewId, $q]) => {
@@ -76,7 +80,7 @@
       return {
         queryKey: ["records", $table.id.value, $viewId, fieldId, option?.id, $q],
         queryFn: async ({ pageParam = 1 }) => {
-          const dataService = await getDataService(isLocal)
+          const dataService = await getDataService(isLocal, isPlayground)
           if (shareId) {
             return trpc.shareData.records.getRecords({
               shareId,
@@ -130,14 +134,20 @@
   const spec = Some(new SelectEqual(option?.id ?? null, new FieldIdVo(fieldId)))
 
   const updateRecord = createMutation({
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: async (command: IUpdateRecordCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.records.updateRecord(command)
+    },
     onError: (error, variables, context) => {
       toast.error(error.message)
     },
   })
 
   const updateFieldMutation = createMutation({
-    mutationFn: trpc.table.field.update.mutate,
+    mutationFn: async (command: IUpdateFieldCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.field.updateField(command)
+    },
     onSuccess: async (data, variables, context) => {
       toast.success("Option updated")
       updateOptionDialogOpen = false

@@ -13,6 +13,7 @@
   import FieldControl from "../../field-control/field-control.svelte"
   import { LL } from "@undb/i18n/client"
   import { getIsLocal } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
 
   export let tableId: string
   export let field: ButtonField
@@ -24,13 +25,14 @@
   const recordsStore = getRecordsStore()
 
   const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   const trigger = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId, "trigger"],
     mutationFn: trpc.record.trigger.mutate,
     async onSuccess(data, variables, context) {
       gridViewStore.exitEditing()
-      await recordsStore?.invalidateRecord(isLocal, $table, recordId)
+      await recordsStore?.invalidateRecord(isLocal, isPlayground, $table, recordId)
     },
     onError(error: Error) {
       toast.error(error.message)

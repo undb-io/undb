@@ -18,6 +18,16 @@ export type Translation = RootTranslation
 export type Translations = RootTranslation
 
 type RootTranslation = {
+	playground: {
+		/**
+		 * P​l​a​y​g​r​o​u​n​d​ ​M​o​d​e
+		 */
+		playgroundMode: string
+		/**
+		 * Y​o​u​ ​a​r​e​ ​i​n​ ​p​l​a​y​g​r​o​u​n​d​ ​m​o​d​e​,​ ​a​l​l​ ​c​h​a​n​g​e​s​ ​w​i​l​l​ ​b​e​ ​l​o​s​t​ ​a​f​t​e​r​ ​y​o​u​ ​c​l​o​s​e​ ​o​r​ ​r​e​f​r​e​s​h​ ​t​h​e​ ​p​a​g​e​.
+		 */
+		playgroundModeDescription: string
+	}
 	auth: {
 		/**
 		 * L​o​g​i​n
@@ -194,6 +204,10 @@ type RootTranslation = {
 		 * C​r​e​a​t​e​ ​N​e​w​ ​B​a​s​e
 		 */
 		createBase: string
+		/**
+		 * B​a​s​e​ ​c​r​e​a​t​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+		 */
+		created: string
 		/**
 		 * I​m​p​o​r​t​ ​F​r​o​m​ ​T​e​m​p​l​a​t​e
 		 */
@@ -2076,6 +2090,10 @@ type RootTranslation = {
 			 */
 			create: string
 			/**
+			 * V​i​e​w​ ​c​r​e​a​t​e​d​ ​s​u​c​c​e​s​s​f​u​l​l​y
+			 */
+			created: string
+			/**
 			 * V​i​e​w​ ​T​y​p​e
 			 */
 			type: string
@@ -2168,8 +2186,39 @@ type RootTranslation = {
 				deleted: string
 			}
 		}
+		'import': {
+			/**
+			 * I​m​p​o​r​t​ ​F​i​l​e​.​.​.
+			 */
+			importFile: string
+			/**
+			 * F​i​r​s​t​ ​r​o​w​ ​a​s​ ​h​e​a​d​e​r
+			 */
+			firstRowAsHeader: string
+			/**
+			 * I​m​p​o​r​t​ ​D​a​t​a
+			 */
+			importData: string
+			/**
+			 * {​c​o​u​n​t​}​ ​f​i​e​l​d​s​ ​s​e​l​e​c​t​e​d
+			 * @param {unknown} count
+			 */
+			fieldsSelected: RequiredParams<'count'>
+			/**
+			 * C​o​n​f​i​g​ ​F​i​e​l​d
+			 */
+			configField: string
+			/**
+			 * N​e​x​t​ ​s​t​e​p
+			 */
+			nextStep: string
+		}
 	}
 	common: {
+		/**
+		 * B​a​c​k
+		 */
+		back: string
 		/**
 		 * E​r​r​o​r
 		 */
@@ -2461,6 +2510,16 @@ type RootTranslation = {
 }
 
 export type TranslationFunctions = {
+	playground: {
+		/**
+		 * Playground Mode
+		 */
+		playgroundMode: () => LocalizedString
+		/**
+		 * You are in playground mode, all changes will be lost after you close or refresh the page.
+		 */
+		playgroundModeDescription: () => LocalizedString
+	}
 	auth: {
 		/**
 		 * Login
@@ -2636,6 +2695,10 @@ export type TranslationFunctions = {
 		 * Create New Base
 		 */
 		createBase: () => LocalizedString
+		/**
+		 * Base created successfully
+		 */
+		created: () => LocalizedString
 		/**
 		 * Import From Template
 		 */
@@ -4492,6 +4555,10 @@ export type TranslationFunctions = {
 			 */
 			create: () => LocalizedString
 			/**
+			 * View created successfully
+			 */
+			created: () => LocalizedString
+			/**
 			 * View Type
 			 */
 			type: () => LocalizedString
@@ -4584,8 +4651,38 @@ export type TranslationFunctions = {
 				deleted: () => LocalizedString
 			}
 		}
+		'import': {
+			/**
+			 * Import File...
+			 */
+			importFile: () => LocalizedString
+			/**
+			 * First row as header
+			 */
+			firstRowAsHeader: () => LocalizedString
+			/**
+			 * Import Data
+			 */
+			importData: () => LocalizedString
+			/**
+			 * {count} fields selected
+			 */
+			fieldsSelected: (arg: { count: unknown }) => LocalizedString
+			/**
+			 * Config Field
+			 */
+			configField: () => LocalizedString
+			/**
+			 * Next step
+			 */
+			nextStep: () => LocalizedString
+		}
 	}
 	common: {
+		/**
+		 * Back
+		 */
+		back: () => LocalizedString
 		/**
 		 * Error
 		 */

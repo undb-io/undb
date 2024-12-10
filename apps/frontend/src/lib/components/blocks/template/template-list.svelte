@@ -1,12 +1,19 @@
 <script lang="ts">
   import type { ITemplateDTO } from "@undb/template"
-  import { trpc } from "$lib/trpc/client"
   import { createQuery } from "@tanstack/svelte-query"
   import TemplateCard from "./template-card.svelte"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   const getTemplates = createQuery({
     queryKey: ["templates"],
-    queryFn: trpc.template.list.query,
+    queryFn: async () => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.template.listTemplates({})
+    },
   })
 
   $: templates = ($getTemplates.data ?? []) as ITemplateDTO[]

@@ -8,6 +8,9 @@
   import { Maximize2Icon } from "lucide-svelte"
   import * as Dialog from "$lib/components/ui/dialog"
   import Tiptap from "$lib/components/tiptap/tiptap.svelte"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type IUpdateRecordCommand } from "@undb/commands"
 
   export let tableId: string
   export let field: LongTextField
@@ -18,9 +21,15 @@
   export let readonly: boolean
   export let onValueChange: (value: string) => void
 
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: async (command: IUpdateRecordCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.records.updateRecord(command)
+    },
     onSuccess(data, variables, context) {
       el?.blur()
       open = false

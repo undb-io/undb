@@ -467,6 +467,7 @@ const view = {
   },
   type: '视图类型',
   create: '创建视图',
+  created: '视图已创建',
   updateName: '更新视图名称',
   updated: '视图已更新',
   duplicateView: '复制视图',
@@ -500,6 +501,7 @@ const dashboard = {
 const base = {
   name: 'Base 名称',
   noBases: '没有 Base',
+  created: 'Base 已创建',
   displayName: 'Base 显示名称',
   importFromTemplate: '从模板导入',
   createBase: '创建 Base',
@@ -667,7 +669,13 @@ const auth = {
   enterYourWorkEmail: '输入您的工作电子邮件...',
 }
 
+const playground = {
+  playgroundMode: '沙盒模式',
+  playgroundModeDescription: '您处于沙盒模式，所有更改将在您关闭或刷新页面后丢失。'
+}
+
 const zh = {
+  playground,
   auth,
   template,
   roles,
@@ -693,9 +701,18 @@ const zh = {
     schema,
   authz,
   events,
+    import: {
+      importFile: '导入文件...',
+      firstRowAsHeader: '第一行作为标题',
+      importData: '导入数据',
+      fieldsSelected: '{count} 字段选择',
+      configField: '配置字段',
+      nextStep: '下一步',
+    },
   },
   webhook,
 	common: {
+    back: '返回',
     error: '错误',
 		continue: '继续',
     description: '描述',
@@ -733,7 +750,7 @@ const zh = {
     clear: '清除',
     updated: '已更新',
     now: '现在',
-    import: '导入'
+    import: '导入',
 	},
  share: {
 	title: '分享',

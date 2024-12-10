@@ -11,7 +11,9 @@
   import UserMacro from "../../user/user-macro.svelte"
   import { getRecordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
-  import { getIsLocal } from "$lib/store/data-service.store"
+  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type IUpdateRecordCommand } from "@undb/commands"
 
   export let tableId: string
   export let field: UserField
@@ -32,14 +34,18 @@
   const store = getRecordsStore()
 
   const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: async (command: IUpdateRecordCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.records.updateRecord(command)
+    },
     async onSuccess(data, variables) {
       const value = variables.values[field.id.value]
       if (isUserFieldMacro(value)) {
-        await store?.invalidateRecord(isLocal, $table, recordId)
+        await store?.invalidateRecord(isLocal, isPlayground, $table, recordId)
       }
     },
     onError(error: Error) {

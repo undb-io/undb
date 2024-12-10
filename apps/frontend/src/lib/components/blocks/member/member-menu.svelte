@@ -60,6 +60,10 @@
         <KeyIcon class="mr-2 h-4 w-4" />
         {$LL.account.apiToken()}
       </DropdownMenu.Item>
+      <DropdownMenu.Item href="/playground">
+        <img src={GithubLogo} alt="undb" class="mr-2 h-4 w-4" />
+        Playground
+      </DropdownMenu.Item>
       <DropdownMenu.Item href="https://undb.io/templates" target="_blank" rel="noopener noreferrer">
         <img src={Logo} alt="undb" class="mr-2 h-4 w-4" />
         {$LL.account.undbTemplates()}

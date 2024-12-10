@@ -71,6 +71,7 @@ export class SpaceMemberRepository implements ISpaceMemberRepository {
         space_id: json.spaceId,
         user_id: json.userId,
       })
+      .onConflict((c) => c.doNothing())
       .execute()
   }
 }

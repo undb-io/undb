@@ -14,7 +14,7 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@types/sql.js": "^1.4.9",
-    "drizzle-kit": "^0.28.1"
+    "drizzle-kit": "^0.30.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -37,12 +37,13 @@
     "@undb/user": "workspace:*",
     "@undb/webhook": "workspace:*",
     "date-fns": "^4.1.0",
-    "drizzle-orm": "^0.36.4",
-    "es-toolkit": "^1.27.0",
-    "kysely": "^0.27.4",
+    "drizzle-orm": "^0.38.0",
+    "es-toolkit": "^1.29.0",
+    "kysely": "^0.27.5",
     "kysely-bun-sqlite": "^0.3.2",
     "kysely-wasm": "^0.7.0",
     "radash": "^12.1.0",
+    "reflect-metadata": "^0.2.2",
     "sql.js": "^1.12.0",
     "ts-pattern": "^5.5.0"
   }

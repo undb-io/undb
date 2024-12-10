@@ -5,7 +5,7 @@
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
   import { Button } from "$lib/components/ui/button"
-  import { createViewWidgetCommand } from "@undb/commands"
+  import { createViewWidgetCommand, type ICreateViewWidgetCommand } from "@undb/commands"
   import { defaults } from "sveltekit-superforms"
   import { getTable } from "$lib/store/table.store"
   import { WidgetVO } from "@undb/table"
@@ -13,13 +13,18 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
   import { invalidate } from "$app/navigation"
-  import WidgetTypePicker from "./widget-type-picker.svelte"
   import { derived } from "svelte/store"
   import { getNextName } from "@undb/utils"
   import { toast } from "svelte-sonner"
   import { LL } from "@undb/i18n/client"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
 
   const table = getTable()
+
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
   export let viewId: string
 
   let view = derived([table], ([$table]) => $table?.views.getViewById(viewId))
@@ -58,7 +63,10 @@
   const { form: formData, enhance, validateForm, allErrors, tainted, reset, errors } = form
 
   const createViewWidgetMutation = createMutation({
-    mutationFn: trpc.table.view.widget.create.mutate,
+    mutationFn: async (command: ICreateViewWidgetCommand) => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.view.createViewWidget(command)
+    },
     async onSuccess(data) {
       await invalidate(`undb:table:${$table.id.value}`)
       onSuccess()

@@ -9,12 +9,17 @@
     type IRollupFieldOption,
   } from "@undb/table"
   import FieldPicker from "../field-picker/field-picker.svelte"
-  import { GetForeignTableQueryStore } from "$houdini"
   import { writable } from "svelte/store"
   import RollupFnPicker from "../rollup/rollup-fn-picker.svelte"
   import Label from "$lib/components/ui/label/label.svelte"
   import autoAnimate from "@formkit/auto-animate"
   import { LL } from "@undb/i18n/client"
+  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { createQuery } from "@tanstack/svelte-query"
+
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   export let disabled: boolean = false
 
@@ -29,11 +34,18 @@
   ) as ReferenceField | undefined
   $: foreignTableId = field?.foreignTableId
 
-  const store = new GetForeignTableQueryStore()
+  const getForeignTable = createQuery({
+    queryFn: async () => {
+      const dataService = await getDataService(isLocal, isPlayground)
+      return dataService.table.getTable({ tableId: foreignTableId! })
+    },
+    queryKey: ["getForeignTable", foreignTableId],
+    enabled: !!foreignTableId,
+  })
 
-  $: if (foreignTableId) store.fetch({ variables: { tableId: foreignTableId } })
+  $: if (foreignTableId) $getForeignTable.refetch()
 
-  $: foreignTable = $store.data?.table
+  $: foreignTable = $getForeignTable.data
   const foreignTableDo = writable<TableDo>()
   $: if (foreignTable) foreignTableDo.set(new TableFactory().fromJSON(foreignTable))
   $: schema = foreignTable?.schema

@@ -467,6 +467,7 @@ const view = {
   },
   type: '뷰 유형',
   create: '뷰 생성',
+  created: '뷰가 생성되었습니다',
   updateName: '뷰 이름 업데이트',
   updated: '뷰가 업데이트되었습니다',
   duplicateView: '뷰 복제',
@@ -500,6 +501,7 @@ const dashboard = {
 const base = {
   name: 'Base 이름',
   noBases: 'Base가 없습니다',
+  created: 'Base가 생성되었습니다',
   displayName: 'Base 표시 이름',
   importFromTemplate: '템플릿에서 가져오기',
   createBase: 'Base 생성',
@@ -665,7 +667,13 @@ const auth = {
   enterYourWorkEmail: '작업 이메일을 입력하세요...',
 }
 
+const playground = {
+  playgroundMode: '플레이그라운드 모드',
+  playgroundModeDescription: '플레이그라운드 모드입니다. 페이지를 닫거나 새로고침하면 모든 변경 사항이 손실됩니다.'
+}
+
 const ko = {
+  playground,
 	auth,
   template,
   roles,
@@ -691,9 +699,18 @@ const ko = {
     schema,
   authz,
   events,
+    import: {
+      importFile: '파일 가져오기...',
+      firstRowAsHeader: '첫 번째 행을 헤더로',
+      importData: '데이터 가져오기',
+      fieldsSelected: '{count} 필드 선택',
+      configField: '필드 설정',
+      nextStep: '다음 단계',
+    },
   },
   webhook,
 	common: {
+    back: '뒤로',
 		error: '오류',
 		continue: '계속',
     description: '설명',

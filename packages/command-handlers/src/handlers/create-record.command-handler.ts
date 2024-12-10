@@ -15,7 +15,7 @@ export class CreateRecordCommandHandler implements ICommandHandler<CreateRecordC
   ) {}
 
   async execute(command: CreateRecordCommand): Promise<any> {
-    this.logger.info(command, "executing create record command")
+    this.logger.debug(command, "executing create record command")
     const record = await this.service.createRecord(command, { id: command.id, values: command.values })
 
     return record.id.value
