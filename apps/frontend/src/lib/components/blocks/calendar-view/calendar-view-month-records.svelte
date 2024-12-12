@@ -20,8 +20,7 @@
   import { CalendarView } from "@undb/table"
   import { type MaybeConditionGroup, type IViewFilterOptionSchema } from "@undb/table"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let viewId: Readable<string | undefined>
   export let view: CalendarView
@@ -31,8 +30,8 @@
   export let readonly = false
 
   const t = getTable()
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+
+  const dataService = getDataService()
 
   let defaultField = $t.schema.getDefaultDisplayField().into(undefined)
 
@@ -102,7 +101,6 @@
         return {
           queryKey: ["records", $table?.id.value, $viewId, $scope, dateString, $search],
           queryFn: async ({ pageParam = 1 }) => {
-            const dataService = await getDataService(isLocal, isPlayground)
             if (shareId) {
               return trpc.shareData.records.query({
                 shareId,

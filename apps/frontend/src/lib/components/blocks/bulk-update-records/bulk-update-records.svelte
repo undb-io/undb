@@ -28,9 +28,7 @@
   import autoAnimate from "@formkit/auto-animate"
   import type { Readable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
-  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
-
+  import { getDataService } from "$lib/store/data-service.store"
 
   const table = getTable()
   export let viewId: Readable<string | undefined>
@@ -44,17 +42,15 @@
   export let filter: IViewFilterGroup | undefined = undefined
   export let onSuccess: (data: IBulkUpdateRecordsCommandOutput) => void = () => {}
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
-
   let selectedFieldIds: string[] = []
   $: selectedFields = selectedFieldIds.map((id) => $table.schema.getFieldById(new FieldIdVo(id)).unwrap())
 
   const client = useQueryClient()
 
+  const dataService = getDataService()
+
   const updateRecordMutation = createMutation({
     mutationFn: async (command: IBulkUpdateRecordsCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
       return dataService.records.updateRecords(command)
     },
     onSuccess: async (data) => {

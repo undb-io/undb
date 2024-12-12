@@ -50,6 +50,7 @@ import {
   type IDeleteViewCommand,
   type IDuplicateFieldCommand,
   type IDuplicateViewCommand,
+  type IDuplicateViewCommandOutput,
   type ISetViewColorCommand,
   type ISetViewFieldsCommand,
   type ISetViewFilterCommand,
@@ -60,8 +61,9 @@ import {
   type IUpdateViewCommand,
 } from "@undb/commands"
 import { CommandBus, QueryBus } from "@undb/cqrs"
-import { container, inject, injectable } from "@undb/di"
+import { inject, injectable } from "@undb/di"
 import type { ICommandBus, IQueryBus } from "@undb/domain"
+import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence/client"
 import {
   GetAggregatesQuery,
   GetBaseQuery,
@@ -96,14 +98,7 @@ import {
 } from "@undb/queries"
 import type { ITemplateService, TemplateDTO } from "@undb/template"
 import { TemplateService as TemplateServiceImpl } from "@undb/template"
-import {
-  injectIsLocal,
-  injectIsPlayground,
-  injectTrpcClient,
-  IS_LOCAL,
-  IS_PLAYGROUND,
-  type TrpcProxyClient,
-} from "./data-service.provider"
+import { injectIsLocal, injectIsPlayground, injectTrpcClient, type TrpcProxyClient } from "./data-service.provider"
 
 @injectable()
 class TemplateService {
@@ -133,7 +128,7 @@ class TemplateService {
     if (!this.isLocal) {
       throw new Error("Template service save is only supported in local mode")
     }
-    await this.templateService.save(template, includeData)
+    return this.templateService.save(template, includeData)
   }
 
   createFromTemplate = async (command: ICreateFromTemplateCommand): Promise<ICreateFromTemplateCommandOutput> => {
@@ -160,7 +155,7 @@ class BaseService {
 
   listBases = async (query: IGetBasesQuery): Promise<IGetBasesQueryOutput> => {
     if (this.isLocal) {
-      return await this.queryBus.execute(new GetBasesQuery(query))
+      return await this.queryBus.execute(new GetBasesQuery())
     }
     return (await this.trpc.base.list.query(query)) as IGetBasesQueryOutput
   }
@@ -212,11 +207,11 @@ class ViewService {
     await this.trpc.table.view.update.mutate(command)
   }
 
-  duplicateView = async (command: IDuplicateViewCommand): Promise<void> => {
+  duplicateView = async (command: IDuplicateViewCommand): Promise<IDuplicateViewCommandOutput> => {
     if (this.isLocal) {
       return this.commandBus.execute(new DuplicateViewCommand(command))
     }
-    await this.trpc.table.view.duplicate.mutate(command)
+    return this.trpc.table.view.duplicate.mutate(command)
   }
 
   deleteView = async (command: IDeleteViewCommand): Promise<void> => {
@@ -471,6 +466,12 @@ class RecordsService {
 @injectable()
 export class DataService {
   constructor(
+    @injectIsLocal()
+    public readonly isLocal: boolean,
+    @injectIsPlayground()
+    public readonly isPlayground: boolean,
+    @injectQueryBuilder()
+    public readonly queryBuilder: IQueryBuilder,
     @inject(TemplateService)
     public readonly template: TemplateService,
     @inject(RecordsService)
@@ -482,10 +483,4 @@ export class DataService {
     @inject(DashboardService)
     public readonly dashboard: DashboardService,
   ) {}
-}
-
-export const getDataService = (isLocal: boolean, isPlayground: boolean) => {
-  container.register(IS_LOCAL, { useValue: isLocal })
-  container.register(IS_PLAYGROUND, { useValue: isPlayground })
-  return container.resolve<DataService>(DataService)
 }

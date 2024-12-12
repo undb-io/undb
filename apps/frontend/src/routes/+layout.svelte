@@ -16,6 +16,13 @@
     documentCookieDetector,
   } from "@undb/i18n/client"
   import { onMount } from "svelte"
+  import { setDataService } from "$lib/store/data-service.store"
+  import type { LayoutData } from "./$types"
+
+  export let data: LayoutData
+
+  setDataService(data.dataService)
+
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {

@@ -14,12 +14,10 @@
   import Label from "$lib/components/ui/label/label.svelte"
   import autoAnimate from "@formkit/auto-animate"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
   import { createQuery } from "@tanstack/svelte-query"
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   export let disabled: boolean = false
 
@@ -36,7 +34,6 @@
 
   const getForeignTable = createQuery({
     queryFn: async () => {
-      const dataService = await getDataService(isLocal, isPlayground)
       return dataService.table.getTable({ tableId: foreignTableId! })
     },
     queryKey: ["getForeignTable", foreignTableId],

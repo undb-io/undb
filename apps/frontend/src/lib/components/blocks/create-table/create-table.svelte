@@ -13,20 +13,15 @@
   import { CREATE_TABLE_MODAL, closeModal } from "$lib/store/modal.store"
   import { baseId, currentBase, currentBaseId } from "$lib/store/base.store"
   import { getNextName } from "@undb/utils"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const schema = createTableCommand.omit({ baseId: true })
   export let tableNames: string[]
 
   const mutation = createMutation({
-    mutationFn: async (command: ICreateTableCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.createTable(command)
-    },
+    mutationFn: dataService.table.createTable,
     mutationKey: ["createTable"],
     async onSuccess(data) {
       if (isPlayground) {

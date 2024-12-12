@@ -1,9 +1,7 @@
 <script lang="ts">
-  import type { ITemplateDTO } from "@undb/template"
   import * as Card from "$lib/components/ui/card"
   import { Button } from "$lib/components/ui/button"
   import { createMutation } from "@tanstack/svelte-query"
-  import { trpc } from "$lib/trpc/client"
   import { toast } from "svelte-sonner"
   import { invalidateAll, goto } from "$app/navigation"
   import { IMPORT_TEMPLATE_MODAL, closeModal } from "$lib/store/modal.store"
@@ -14,23 +12,26 @@
   import { Checkbox } from "$lib/components/ui/checkbox/index.js"
   import Label from "$lib/components/ui/label/label.svelte"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { setDataService } from "$lib/store/data-service.store"
+  import { DataService } from "@undb/data-service"
   import { getIsPlayground } from "$lib/store/playground.svelte"
-  import { type ICreateFromTemplateCommand } from "@undb/commands"
+  import { setTemplate } from "$lib/store/template.store.svelte"
+  import { type ITemplateDTO } from "@undb/template"
+  import { writable } from "svelte/store"
 
-
+  export let dataService: DataService
   export let template: ITemplateDTO
 
-  const isLocal = getIsLocal()
   const isPlayground = getIsPlayground()
+
+  setDataService(dataService)
 
   let includeData = !!isPlayground
 
+  setTemplate(writable(template))
+
   const createFromTemplate = createMutation({
-    mutationFn: async (command: ICreateFromTemplateCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.template.createFromTemplate(command)
-    },
+    mutationFn: dataService.template.createFromTemplate,
     async onSuccess(data, variables, context) {
       toast.success($LL.base.created())
       closeModal(IMPORT_TEMPLATE_MODAL)

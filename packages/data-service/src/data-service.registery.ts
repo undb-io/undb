@@ -5,7 +5,7 @@ import {
   SPACE_MEMBER_SERVICE,
   SpaceMemberService,
 } from "@undb/authz"
-import { BASE_OUTBOX_SERVICE,BASE_QUERY_REPOSITORY,BASE_REPOSITORY } from "@undb/base"
+import { BASE_OUTBOX_SERVICE, BASE_QUERY_REPOSITORY, BASE_REPOSITORY } from "@undb/base"
 import { CONTEXT_TOKEN } from "@undb/context"
 import {
   DASHBOARD_OUTBOX_SERVICE,
@@ -14,8 +14,8 @@ import {
   DASHBOARD_REPOSITORY,
   DashboardQueryService,
 } from "@undb/dashboard"
-import { container } from "@undb/di"
-import { MAIL_SERVICE,type IMailService,type ISendInput } from "@undb/mail"
+import { type DependencyContainer } from "@undb/di"
+import { MAIL_SERVICE, type IMailService, type ISendInput } from "@undb/mail"
 import {
   BaseOutboxService,
   BaseQueryRepository,
@@ -39,7 +39,7 @@ import {
   TemplateQueryRepository,
   TX_CTX,
 } from "@undb/persistence/client"
-import { SPACE_QUERY_REPOSITORY,SPACE_REPOSITORY,SPACE_SERVICE,SpaceService } from "@undb/space"
+import { SPACE_QUERY_REPOSITORY, SPACE_REPOSITORY, SPACE_SERVICE, SpaceService } from "@undb/space"
 import {
   OBJECT_STORAGE,
   RECORD_OUTBOX_SERVICE,
@@ -57,7 +57,8 @@ import {
   type IPutObject,
 } from "@undb/table"
 import { TEMPLATE_QUERY_REPOSITORY } from "@undb/template"
-import { DataServiceContext,DataServicetTxContext } from "./data-service.context"
+import { DataServiceContext, DataServicetTxContext } from "./data-service.context"
+import { IS_LOCAL, IS_PLAYGROUND } from "./data-service.provider"
 
 class MailService implements IMailService {
   async send(input: ISendInput): Promise<void> {}
@@ -78,12 +79,11 @@ class LocalObjectStorage implements IObjectStorage {
   }
 }
 
-export const registerQueryBuilder = async () => {
-  const qb = await createSqljsQueryBuilder()
+export const registerDataService = async (container: DependencyContainer, isLocal: boolean, isPlayground: boolean) => {
+  container.register(IS_LOCAL, { useValue: isLocal })
+  container.register(IS_PLAYGROUND, { useValue: isPlayground })
+  const qb = isLocal ? await createSqljsQueryBuilder() : await createSqljsQueryBuilder()
   container.register(QUERY_BUILDER, { useValue: qb })
-}
-
-export const registerDataService = () => {
   container.register(TX_CTX, DataServicetTxContext)
   container.register(CONTEXT_TOKEN, DataServiceContext)
   container.register(BASE_OUTBOX_SERVICE, BaseOutboxService)

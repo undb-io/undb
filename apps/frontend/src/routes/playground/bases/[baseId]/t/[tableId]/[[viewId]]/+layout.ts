@@ -1,4 +1,3 @@
-import { getDataService } from "$lib/store/data-service.store"
 import { redirect } from "@sveltejs/kit"
 import { tryit } from "radash"
 import { LayoutLoad } from "./$types"
@@ -8,7 +7,7 @@ export const load: LayoutLoad = async (event) => {
 
   event.depends(`undb:table:${tableId}`)
 
-  const dataService = await getDataService(true, true)
+  const dataService = (await event.parent()).dataService
 
   const getTable = tryit(dataService.table.getTable)
   const [err, table] = await getTable({ tableId })

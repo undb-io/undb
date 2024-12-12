@@ -7,9 +7,7 @@
   import { debounce, isNumber } from "radash"
   import { gridViewStore } from "../grid-view.store"
   import DurationInput from "$lib/components/blocks/duration/duration-input.svelte"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
-  import { type IUpdateRecordCommand } from "@undb/commands"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let tableId: string
   export let field: DurationField
@@ -18,15 +16,11 @@
   export let recordId: string
   export let onValueChange: (value: number) => void
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: async (command: IUpdateRecordCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.records.updateRecord(command)
-    },
+    mutationFn: dataService.records.updateRecord,
     onSuccess(data, variables, context) {
       gridViewStore.exitEditing()
     },

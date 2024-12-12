@@ -1,7 +1,13 @@
 <script lang="ts">
-  import { setIsLocal } from "$lib/store/data-service.store"
+  import { setDataService, setIsLocal } from "$lib/store/data-service.store"
   import { setIsPlayground } from "$lib/store/playground.svelte"
   import PlaygroundAlert from "$lib/components/blocks/playground/playground-alert.svelte"
+  import type { LayoutData } from "./$types"
+
+  export let data: LayoutData
+
+  const dataService = data.dataService
+  setDataService(dataService)
 
   setIsLocal(true)
   setIsPlayground(true)

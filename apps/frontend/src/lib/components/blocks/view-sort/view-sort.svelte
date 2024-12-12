@@ -28,9 +28,7 @@
   import { hasPermission } from "$lib/store/space-member.store"
   import { LL } from "@undb/i18n/client"
   import SortPicker from "./sort-picker.svelte"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
-  import type { ISetViewSortCommand } from "@undb/commands"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
@@ -54,8 +52,7 @@
 
   let open = false
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   function addSort() {
     if (disabled) {
@@ -67,10 +64,7 @@
   const client = useQueryClient()
   const setViewSortMutation = createMutation({
     mutationKey: ["table", $table.id.value, "setSort"],
-    mutationFn: async (command: ISetViewSortCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.view.setSort(command)
-    },
+    mutationFn: dataService.table.view.setSort,
     async onSettled() {
       await invalidate(`undb:table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })

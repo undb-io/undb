@@ -1,4 +1,4 @@
-import { container, singleton } from "@undb/di"
+import { container, singleton, type DependencyContainer } from "@undb/di"
 import type { BaseEvent, EventMetadata, IEventBus, IEventHandler, IEventPublisher } from "@undb/domain"
 import { Subject } from "rxjs"
 import type { Class } from "type-fest"
@@ -33,15 +33,15 @@ export class EventBus<TEvent extends BaseEvent = BaseEvent> implements IEventBus
     await Promise.all(events.map((event) => this.publish(event)))
   }
 
-  register(handlers: EventHandlerType[]) {
-    handlers.forEach((handler) => this.registerHandler(handler))
+  register(handlers: EventHandlerType[] = [], c = container) {
+    handlers.forEach((handler) => this.registerHandler(c, handler))
   }
 
   private bind<T extends TEvent>(handler: IEventHandler<T, any>, id: string) {
     this.#handlers.set(id, handler)
   }
 
-  protected registerHandler(handler: EventHandlerType) {
+  protected registerHandler(container: DependencyContainer, handler: EventHandlerType) {
     const instance = container.resolve(handler)
     if (!instance) {
       return

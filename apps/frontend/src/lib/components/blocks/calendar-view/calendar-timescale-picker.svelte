@@ -10,13 +10,10 @@
   import { LL } from "@undb/i18n/client"
   import { calendarTimeScales, type CalendarTimeScale, type CalendarView } from "@undb/table"
   import { createMutation } from "@tanstack/svelte-query"
-  import { trpc } from "$lib/trpc/client"
-  import { toast } from "svelte-sonner"
   import { getTable } from "$lib/store/table.store"
   import { invalidate } from "$app/navigation"
   import { type ICalendarViewDTO } from "@undb/table"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
   import { type IUpdateViewCommand } from "@undb/commands"
 
   export let view: CalendarView
@@ -41,12 +38,10 @@
     })
   }
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const updateViewMutation = createMutation({
     mutationFn: async (command: IUpdateViewCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
       return dataService.table.view.updateView(command)
     },
     mutationKey: ["updateView"],

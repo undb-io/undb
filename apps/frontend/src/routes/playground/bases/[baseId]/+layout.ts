@@ -1,4 +1,3 @@
-import { getDataService } from "$lib/store/data-service.store"
 import { redirect } from "@sveltejs/kit"
 import { tryit } from "radash"
 import { LayoutLoad } from "./$types"
@@ -6,7 +5,7 @@ import { LayoutLoad } from "./$types"
 export const load: LayoutLoad = async (event) => {
   const baseId = event.params.baseId
 
-  const dataService = await getDataService(true, true)
+  const dataService = (await event.parent()).dataService
 
   const getBase = tryit(dataService.base.getBase)
   const [err, base] = await getBase({ baseId })

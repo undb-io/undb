@@ -18,9 +18,9 @@
   import { getRecordsStore } from "$lib/store/records.store"
   import { type Writable, type Readable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
-  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
+  import { getDataService } from "$lib/store/data-service.store"
+  import { getIsLocal } from "$lib/store/data-service.store"
   import { getIsPlayground } from "$lib/store/playground.svelte"
-  import { type IUpdateRecordCommand } from "@undb/commands"
 
   const recordsStore = getRecordsStore()
 
@@ -29,8 +29,7 @@
   export let record: RecordDO
   export let viewId: Readable<string | undefined>
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   beforeNavigate(({ cancel }) => {
     if (mutableFieldTainted) {
@@ -51,11 +50,11 @@
 
   const client = useQueryClient()
 
+  const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
+
   const updateRecordMutation = createMutation({
-    mutationFn: async (command: IUpdateRecordCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.records.updateRecord(command)
-    },
+    mutationFn: dataService.records.updateRecord,
     mutationKey: ["updateRecord"],
     onSuccess: async () => {
       toast.success("Record updated")

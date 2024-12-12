@@ -23,9 +23,7 @@
   import { invalidate } from "$app/navigation"
   import type { Writable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
-  import { type IUpdateFieldCommand } from "@undb/commands"
+  import { getDataService } from "$lib/store/data-service.store"
 
   const table = getTable()
 
@@ -42,14 +40,10 @@
   let lanesContainer: HTMLElement
   $: options = field.options ?? []
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const updateFieldMudation = createMutation({
-    mutationFn: async (command: IUpdateFieldCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.field.updateField(command)
-    },
+    mutationFn: dataService.table.field.updateField,
     mutationKey: ["table", $table.id.value, "field", fieldId, "update"],
     async onSuccess(data) {
       await invalidate(`undb:table:${$table.id.value}`)

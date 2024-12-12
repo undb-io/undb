@@ -17,13 +17,11 @@
   import { getNextName } from "@undb/utils"
   import { toast } from "svelte-sonner"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
 
   const table = getTable()
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   export let viewId: string
 
@@ -63,10 +61,7 @@
   const { form: formData, enhance, validateForm, allErrors, tainted, reset, errors } = form
 
   const createViewWidgetMutation = createMutation({
-    mutationFn: async (command: ICreateViewWidgetCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.view.createViewWidget(command)
-    },
+    mutationFn: dataService.table.view.createViewWidget,
     async onSuccess(data) {
       await invalidate(`undb:table:${$table.id.value}`)
       onSuccess()

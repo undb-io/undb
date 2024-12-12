@@ -10,16 +10,13 @@
   import RecordDetailSheet from "$lib/components/blocks/record-detail/record-detail-sheet.svelte"
   import View from "$lib/components/blocks/view/view.svelte"
   import { onMount } from "svelte"
-  import { registry } from "$lib/registry.svelte"
-  import { setIsLocal } from "$lib/store/data-service.store"
-  import { type DataService, getDataService } from "@undb/data-service"
+  import { getDataService, setIsLocal } from "$lib/store/data-service.store"
   import { createQuery } from "@tanstack/svelte-query"
   import { preferences } from "$lib/store/persisted.store"
   import { RecordDO } from "@undb/table"
   import { templateStore } from "$lib/store/template.store.svelte"
   import { setDashboard } from "$lib/store/dashboard.store"
   import DashboardWidgets from "$lib/components/blocks/dashboard/dashboard-widgets.svelte"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
 
   export let template: ITemplateDTO
 
@@ -43,14 +40,13 @@
 
   let r = writable<string | null>(null)
 
-  const isPlayground = getIsPlayground()
+  let dataService = getDataService()
 
   const record = createQuery(
     derived([currentTable, r, preferences], ([$table, $recordId, $preferences]) => ({
       queryKey: [$recordId, "get", $preferences.showHiddenFields],
       enabled: !!$table && !!$recordId,
       queryFn: async () => {
-        const dataService = getDataService(true, isPlayground)
         return dataService.records.getRecordById({
           tableId: $table?.id.value,
           id: $recordId!,
@@ -78,17 +74,13 @@
         }
       : {}
 
-  let dataService: DataService
   let saved = false
   onMount(async () => {
-    await registry.register(true)
-
     if (templateStore.isTemplateSaved(template.id)) {
       saved = true
       return
     }
 
-    dataService = getDataService(true, isPlayground)
     await dataService.template.save(t, true)
     templateStore.saveTemplate(template.id, t)
     saved = true

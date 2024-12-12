@@ -16,9 +16,7 @@
   import type { ICreateRecordCommand, ICreateRecordCommandOutput } from "@undb/commands"
   import { onMount } from "svelte"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-    import { getIsPlayground } from "$lib/store/playground.svelte"
-
+  import { getDataService } from "$lib/store/data-service.store"
 
   // beforeNavigate(({ cancel }) => {
   //   if ($tainted) {
@@ -42,15 +40,11 @@
   const client = useQueryClient()
 
   const mediaQuery = useMediaQuery("(max-width: 768px)")
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const createRecordMutation = createMutation(
     derived([table], ([$table]) => ({
-      mutationFn: async (command: ICreateRecordCommand) => {
-        const dataService = await getDataService(isLocal, isPlayground)
-        return dataService.records.createRecord(command)
-      },
+      mutationFn: dataService.records.createRecord,
       mutationKey: [$table.id.value, "createRecord"],
       onSuccess: (data: ICreateRecordCommandOutput) => {
         client.invalidateQueries({

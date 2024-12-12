@@ -1,11 +1,16 @@
+import { Registry } from "$lib/registry.svelte"
 import "core-js"
 import "reflect-metadata"
-
-import { trpc } from "$lib/trpc/client"
-import { TRPC_CLIENT } from "@undb/data-service"
-import { container } from "@undb/di"
-
-container.register(TRPC_CLIENT, { useValue: trpc })
+import { LayoutLoad } from "./$types"
 
 export const ssr = false
 export const prerender = true
+
+export const load: LayoutLoad = async (event) => {
+  const registry = new Registry()
+  const dataService = await registry.register(false, false)
+
+  return {
+    dataService,
+  }
+}

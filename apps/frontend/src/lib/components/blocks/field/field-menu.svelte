@@ -18,15 +18,12 @@
   import { preferences } from "$lib/store/persisted.store"
   import { hasPermission } from "$lib/store/space-member.store"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
-  import { type IDeleteFieldCommand, type IDuplicateFieldCommand } from "@undb/commands"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let field: Field
   const table = getTable()
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   export let update = false
   export let open = false
@@ -34,10 +31,7 @@
   const client = useQueryClient()
 
   const getForeignTable = createQuery({
-    queryFn: async () => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.getTable({ tableId: (field as ReferenceField).foreignTableId })
-    },
+    queryFn: () => dataService.table.getTable({ tableId: $table.id.value }),
     queryKey: ["getForeignTable", $table.baseId],
     enabled: field.type === "reference",
   })
@@ -60,10 +54,7 @@
     })
 
   const deleteField = createMutation({
-    mutationFn: async (command: IDeleteFieldCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.field.deleteField(command)
-    },
+    mutationFn: dataService.table.field.deleteField,
     async onSuccess() {
       toast.success($LL.table.field.deleted())
       await invalidate(`undb:table:${$table.id.value}`)
@@ -77,10 +68,7 @@
   })
 
   const duplicateField = createMutation({
-    mutationFn: async (command: IDuplicateFieldCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.field.duplicateField(command)
-    },
+    mutationFn: dataService.table.field.duplicateField,
     async onSuccess() {
       toast.success("Duplicate field success")
       await invalidate(`undb:table:${$table.id.value}`)

@@ -14,11 +14,9 @@
   import type { Readable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
   import { type IBulkDeleteRecordsCommand, type IBulkDuplicateRecordsCommand } from "@undb/commands"
-  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const table = getTable()
 
@@ -34,10 +32,7 @@
 
   const client = useQueryClient()
   const deleteRecordsMutation = createMutation({
-    mutationFn: async (command: IBulkDeleteRecordsCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.records.deleteRecords(command)
-    },
+    mutationFn: dataService.records.deleteRecords,
     onSuccess(data, variables, context) {
       client.invalidateQueries({
         queryKey: ["records", $table.id.value],
@@ -62,10 +57,7 @@
   }
 
   const duplicateRecordsMutation = createMutation({
-    mutationFn: async (command: IBulkDuplicateRecordsCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.records.duplicateRecords(command)
-    },
+    mutationFn: dataService.records.duplicateRecords,
     async onSuccess(data, variables, context) {
       await client.invalidateQueries({
         queryKey: ["records", $table.id.value],

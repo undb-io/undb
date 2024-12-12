@@ -4,7 +4,6 @@
   import { FilterXIcon, PaintBucketIcon } from "lucide-svelte"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { getTable } from "$lib/store/table.store"
-  import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { invalidate } from "$app/navigation"
   import { writable } from "svelte/store"
@@ -20,15 +19,12 @@
   import { hasPermission } from "$lib/store/space-member.store"
   import type { Readable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
-  import type { ISetViewColorCommand } from "@undb/commands"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const table = getTable()
   $: color = $table.views.getViewById($viewId).color.into(undefined)
@@ -43,10 +39,7 @@
 
   const mutation = createMutation({
     mutationKey: ["table", $table.id.value, "setColor"],
-    mutationFn: async (command: ISetViewColorCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.view.setColor(command)
-    },
+    mutationFn: dataService.table.view.setColor,
     onSuccess: async () => {
       await invalidate(`undb:table:${$table.id.value}`)
       open = false

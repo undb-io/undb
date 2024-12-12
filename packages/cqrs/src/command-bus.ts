@@ -1,4 +1,4 @@
-import { container, singleton } from "@undb/di"
+import { container, singleton, type DependencyContainer } from "@undb/di"
 import type { Command, CommandMetadata, ICommandBus, ICommandHandler, ICommandPublisher } from "@undb/domain"
 import { createLogger } from "@undb/logger"
 import { Subject } from "rxjs"
@@ -34,15 +34,15 @@ export class CommandBus<C extends Command = Command> implements ICommandBus {
     }
   }
 
-  register(handlers: CommandHandlerType[] = []) {
-    handlers.forEach((handler) => this.registerHandler(handler))
+  register(handlers: CommandHandlerType[] = [], c = container) {
+    handlers.forEach((handler) => this.registerHandler(c, handler))
   }
 
   private bind<T extends C>(handler: ICommandHandler<T, any>, id: string) {
     this.#handlers.set(id, handler)
   }
 
-  protected registerHandler(handler: CommandHandlerType) {
+  protected registerHandler(container: DependencyContainer, handler: CommandHandlerType) {
     const instance = container.resolve(handler)
     if (!instance) {
       return

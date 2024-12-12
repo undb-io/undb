@@ -10,16 +10,13 @@
   import { isToday } from "date-fns/isToday"
   import { isWeekend } from "date-fns/isWeekend"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
-  import { trpc } from "$lib/trpc/client"
   import { dropTargetForElements } from "@atlaskit/pragmatic-drag-and-drop/element/adapter"
   import { format } from "date-fns/format"
   import { cn } from "$lib/utils"
   import { CREATE_RECORD_MODAL, openModal } from "$lib/store/modal.store"
   import { defaultRecordValues } from "$lib/store/records.store"
   import { type Readable } from "svelte/store"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
-  import { type IUpdateRecordCommand } from "@undb/commands"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let field: DateField | DateRangeField
   export let date: Date
@@ -36,8 +33,7 @@
   const isSelected = calendarStore.isSelected
   const getIsSameMonth = calendarStore.getIsSameMonth
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   $: color = $viewId ? $table.views.getViewById($viewId)?.color.into(undefined) : undefined
 
@@ -90,10 +86,7 @@
   }
 
   const updateRecord = createMutation({
-    mutationFn: async (command: IUpdateRecordCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.records.updateRecord(command)
-    },
+    mutationFn: dataService.records.updateRecord,
   })
 
   const client = useQueryClient()

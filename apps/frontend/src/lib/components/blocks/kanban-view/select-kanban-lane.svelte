@@ -45,8 +45,7 @@
   import SelectKanbanCollapsedLane from "./select-kanban-collapsed-lane.svelte"
   import { queryParam } from "sveltekit-search-params"
   import { LL } from "@undb/i18n/client"
-  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
   import { type IUpdateRecordCommand } from "@undb/commands"
   import { type IUpdateFieldCommand } from "@undb/commands"
 
@@ -71,8 +70,7 @@
   let getIsLaneCollapsed = kanbanStore.getIsLaneCollapsed
   $: isLaneCollapsed = $viewId ? ($getIsLaneCollapsed($viewId, option?.id ?? "") ?? false) : false
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const query = createInfiniteQuery(
     derived([table, viewId, q], ([$table, $viewId, $q]) => {
@@ -80,7 +78,6 @@
       return {
         queryKey: ["records", $table.id.value, $viewId, fieldId, option?.id, $q],
         queryFn: async ({ pageParam = 1 }) => {
-          const dataService = await getDataService(isLocal, isPlayground)
           if (shareId) {
             return trpc.shareData.records.getRecords({
               shareId,
@@ -134,20 +131,14 @@
   const spec = Some(new SelectEqual(option?.id ?? null, new FieldIdVo(fieldId)))
 
   const updateRecord = createMutation({
-    mutationFn: async (command: IUpdateRecordCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.records.updateRecord(command)
-    },
+    mutationFn: dataService.records.updateRecord,
     onError: (error, variables, context) => {
       toast.error(error.message)
     },
   })
 
   const updateFieldMutation = createMutation({
-    mutationFn: async (command: IUpdateFieldCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.field.updateField(command)
-    },
+    mutationFn: dataService.table.field.updateField,
     onSuccess: async (data, variables, context) => {
       toast.success("Option updated")
       updateOptionDialogOpen = false

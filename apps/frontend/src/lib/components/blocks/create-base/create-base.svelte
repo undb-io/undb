@@ -11,17 +11,14 @@
   import { LoaderCircleIcon } from "lucide-svelte"
   import { getNextName } from "@undb/utils"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getDataService } from "$lib/store/data-service.store"
   import { getIsPlayground } from "$lib/store/playground.svelte"
 
-  const isLocal = getIsLocal()
   const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const mutation = createMutation({
-    mutationFn: async (command: ICreateBaseCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.base.createBase(command)
-    },
+    mutationFn: dataService.base.createBase,
     async onSuccess(data) {
       form.reset()
       if (isPlayground) {

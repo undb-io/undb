@@ -2,21 +2,25 @@
   import type { ITemplateDTO } from "@undb/template"
   import { createQuery } from "@tanstack/svelte-query"
   import TemplateCard from "./template-card.svelte"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getDataService, setIsLocal } from "$lib/store/data-service.store"
+  import { Registry } from "$lib/registry.svelte"
   import { getIsPlayground } from "$lib/store/playground.svelte"
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const getTemplates = createQuery({
     queryKey: ["templates"],
-    queryFn: async () => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.template.listTemplates({})
-    },
+    queryFn: () => dataService.template.listTemplates({}),
   })
 
   $: templates = ($getTemplates.data ?? []) as ITemplateDTO[]
+
+  let isLocal = true
+  setIsLocal(isLocal)
+
+  let isPlayground = getIsPlayground()
+
+  let registry = new Registry()
 </script>
 
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
@@ -28,8 +32,12 @@
       </div>
     {/each}
   {:else}
-    {#each templates as template}
-      <TemplateCard {template} />
-    {/each}
+    {#await registry.register(isLocal, isPlayground)}
+      loading
+    {:then dataService}
+      {#each templates as template}
+        <TemplateCard {dataService} {template} />
+      {/each}
+    {/await}
   {/if}
 </div>

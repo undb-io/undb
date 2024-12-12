@@ -6,16 +6,13 @@
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import CreateFieldButton from "../create-field/create-field-button.svelte"
-  import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
   import { invalidate } from "$app/navigation"
   import { hasPermission } from "$lib/store/space-member.store"
   import { CircleCheckBigIcon } from "lucide-svelte"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
-  import { type IUpdateViewCommand } from "@undb/commands"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let readonly = false
 
@@ -52,14 +49,10 @@
 
   const { enhance, form: formData } = form
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const updateViewMutation = createMutation({
-    mutationFn: async (command: IUpdateViewCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.view.updateView(command)
-    },
+    mutationFn: dataService.table.view.updateView,
     mutationKey: ["updateView"],
     async onSuccess(data, variables, context) {
       toast.success($LL.table.view.updated())

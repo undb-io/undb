@@ -16,13 +16,12 @@
   import TablePicker from "../table-picker/table-picker.svelte"
   import { invalidate, invalidateAll } from "$app/navigation"
   import { LL } from "@undb/i18n/client"
-  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
+  import { getDataService } from "$lib/store/data-service.store"
   import { getIsPlayground } from "$lib/store/playground.svelte"
 
   const dashboard = getDashboard()
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   let widgets = derived([dashboard], ([$dashboard]) => $dashboard?.widgets.value ?? [])
   let widgetNames = derived([widgets], ([$widgets]) => $widgets.map((w) => w.widget.name))
@@ -72,11 +71,10 @@
 
   const { form: formData, enhance, validateForm } = form
 
+  const isPlayground = getIsPlayground()
+
   const addDashboardWidgetMutation = createMutation({
-    mutationFn: async (input: IAddDashboardWidgetCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.dashboard.addWidget(input)
-    },
+    mutationFn: dataService.dashboard.addWidget,
     async onSuccess(data) {
       onSuccess()
       if (isPlayground) {

@@ -5,23 +5,17 @@
   import { getTable } from "$lib/store/table.store"
   import { toast } from "svelte-sonner"
   import { goto, invalidate } from "$app/navigation"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
-  import type { IDeleteViewCommand } from "@undb/commands"
+  import { getDataService } from "$lib/store/data-service.store"
   import { type Readable } from "svelte/store"
 
   const table = getTable()
   export let viewId: Readable<string | undefined>
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const deleteViewMutation = createMutation({
     mutationKey: ["table", $viewId, "deleteView"],
-    mutationFn: async (command: IDeleteViewCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.view.deleteView(command)
-    },
+    mutationFn: dataService.table.view.deleteView,
     async onSuccess(data, variables, context) {
       await invalidate(`undb:table:${$table.id.value}`)
       if (isPlayground) {

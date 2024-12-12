@@ -28,8 +28,7 @@
   import { LoaderCircleIcon, PencilIcon } from "lucide-svelte"
   import { LL } from "@undb/i18n/client"
   import { getIsFieldCanCastTo } from "@undb/table"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
   import { type IUpdateFieldCommand } from "@undb/commands"
 
   const table = getTable()
@@ -43,17 +42,13 @@
 
   $: isTypeChanged = type !== updatedType
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const client = useQueryClient()
   const updateFieldMutation = createMutation(
     derived([table], ([$table]) => ({
       mutationKey: ["table", $table.id.value, "updateField"],
-      mutationFn: async (command: IUpdateFieldCommand) => {
-        const dataService = await getDataService(isLocal, isPlayground)
-        return dataService.table.field.updateField(command)
-      },
+      mutationFn: dataService.table.field.updateField,
       async onSuccess() {
         onSuccess()
         toast.success($LL.table.field.updated())

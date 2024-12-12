@@ -1,6 +1,5 @@
 <script lang="ts">
   import { getTable } from "$lib/store/table.store"
-  import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { LoaderCircleIcon } from "lucide-svelte"
   import { duplicateViewCommand } from "@undb/commands"
@@ -13,27 +12,28 @@
   import { toast } from "svelte-sonner"
   import { invalidate, goto } from "$app/navigation"
   import type { Readable } from "svelte/store"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getDataService } from "$lib/store/data-service.store"
   import { getIsPlayground } from "$lib/store/playground.svelte"
-  import type { IDuplicateViewCommand } from "@undb/commands"
 
   const table = getTable()
   export let viewId: Readable<string | undefined>
 
-  const isLocal = getIsLocal()
   const isPlayground = getIsPlayground()
 
+  const dataService = getDataService()
+
   const duplicateViewMutation = createMutation({
-    mutationFn: async (command: IDuplicateViewCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.view.duplicateView(command)
-    },
+    mutationFn: dataService.table.view.duplicateView,
     mutationKey: ["table", $viewId, "duplicateView"],
     async onSuccess(data, variables, context) {
       closeModal(DUPLICATE_VIEW)
       toast.success("View duplicated")
       await invalidate(`undb:table:${data.tableId}`)
-      await goto(`/t/${data.tableId}/${data.viewId}`)
+      if (isPlayground) {
+        await goto(`/playground/bases/${data.baseId}/t/${data.tableId}/${data.viewId}`)
+      } else {
+        await goto(`/t/${data.tableId}/${data.viewId}`)
+      }
     },
     onError(error, variables, context) {
       toast.error(error.message)

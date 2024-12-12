@@ -9,11 +9,9 @@
   import { createQuery } from "@tanstack/svelte-query"
   import { queryParam } from "sveltekit-search-params"
   import CalendarDateRemoveButton from "./calendar-date-remove-button.svelte"
-  import CalendarViewMiniMonth from "./calendar-view-mini-month.svelte"
   import CalendarViewMonthRecords from "./calendar-view-month-records.svelte"
   import CalendarViewMonthDate from "./calendar-view-month-date.svelte"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let viewId: Readable<string | undefined>
   export let view: CalendarView
@@ -28,8 +26,7 @@
 
   const t = getTable()
   const q = queryParam("q")
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const getRecords = createQuery(
     derived([t, viewId, q, startTimestamp, endTimestamp], ([$table, $viewId, $q, $startTimestamp, $endTimestamp]) => {
@@ -45,7 +42,6 @@
         ],
         enabled: view?.type === "calendar" && !!$startTimestamp && !!$endTimestamp && !disableRecordQuery,
         queryFn: async () => {
-          const dataService = await getDataService(isLocal, isPlayground)
           if (shareId) {
             return trpc.shareData.records.query({
               shareId,

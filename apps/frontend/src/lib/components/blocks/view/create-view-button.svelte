@@ -21,8 +21,7 @@
   import * as Tooltip from "$lib/components/ui/tooltip"
   import { CircleHelpIcon } from "lucide-svelte"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
   import { type ICreateViewCommand } from "@undb/commands"
 
   let open = false
@@ -32,14 +31,10 @@
   export let tableId: string
   export let viewNames: string[]
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const createViewMutation = createMutation({
-    mutationFn: async (command: ICreateViewCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.view.createView(command)
-    },
+    mutationFn: dataService.table.view.createView,
     mutationKey: ["table", tableId, "createView"],
     async onSuccess(data) {
       viewNames = [...viewNames, $formData.name]

@@ -9,19 +9,16 @@
   import { DatabaseIcon } from "lucide-svelte"
   import { LL } from "@undb/i18n/client"
   import { createQuery } from "@tanstack/svelte-query"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let value: string | undefined = undefined
   export let disabled: boolean = false
   export let baseId: string
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const getTables = createQuery({
     queryFn: async () => {
-      const dataService = await getDataService(isLocal, isPlayground)
       return dataService.table.getTables({ baseId })
     },
     queryKey: ["tables", baseId],

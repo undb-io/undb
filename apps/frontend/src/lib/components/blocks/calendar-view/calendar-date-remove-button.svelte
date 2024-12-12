@@ -8,8 +8,7 @@
   import { useQueryClient } from "@tanstack/svelte-query"
   import { cn } from "$lib/utils"
   import { calendarStore } from "$lib/store/calendar.store"
-  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
   import { type IUpdateRecordCommand } from "@undb/commands"
 
   export let view: CalendarView
@@ -21,12 +20,10 @@
 
   let field = fieldId ? $t.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined) : undefined
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const updateRecord = createMutation({
     mutationFn: async (command: IUpdateRecordCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
       return dataService.records.updateRecord(command)
     },
   })

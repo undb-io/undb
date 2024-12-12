@@ -10,13 +10,11 @@
   import { Label } from "$lib/components/ui/label"
   import { LL } from "@undb/i18n/client"
   import { type IDeleteTableCommand } from "@undb/commands"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let table = getTable()
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   // const foreignTableStore = new GetTableForeignTablesStore()
   // $: $isModalOpen(DELETE_TABLE_MODAL) &&
@@ -27,10 +25,7 @@
   // $: foreignTables = $foreignTableStore.data?.tableForeignTables ?? []
 
   const deleteTableMutation = createMutation({
-    mutationFn: async (command: IDeleteTableCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.deleteTable(command)
-    },
+    mutationFn: dataService.table.deleteTable,
     async onSuccess(data, variables, context) {
       await goto("/")
       await invalidateAll()

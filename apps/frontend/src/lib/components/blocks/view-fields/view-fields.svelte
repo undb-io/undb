@@ -19,9 +19,7 @@
   import CreateFieldButton from "../create-field/create-field-button.svelte"
   import { LL } from "@undb/i18n/client"
   import { EyeIcon, EyeOffIcon } from "lucide-svelte"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
-  import { type ISetViewFieldsCommand, type ISetViewOptionCommand } from "@undb/commands"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
@@ -44,15 +42,11 @@
     return field && field.name.value.toLowerCase().includes($q.toLowerCase())
   })
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const client = useQueryClient()
   const setViewFieldsMutation = createMutation({
-    mutationFn: async (command: ISetViewFieldsCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.view.setFields(command)
-    },
+    mutationFn: dataService.table.view.setFields,
     mutationKey: ["table", $table.id.value, "setFields"],
     async onSuccess(data, variables, context) {
       await invalidate(`undb:table:${$table.id.value}`)
@@ -84,10 +78,7 @@
   $: viewOption = $table.getViewOption($viewId)
 
   const setViewOptionMutation = createMutation({
-    mutationFn: async (command: ISetViewOptionCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.view.setOption(command)
-    },
+    mutationFn: dataService.table.view.setOption,
     mutationKey: ["table", $table.id.value, "setOption"],
     async onSuccess(data, variables, context) {
       await invalidate(`undb:table:${$table.id.value}`)

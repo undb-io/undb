@@ -9,14 +9,12 @@
   import { getTable } from "$lib/store/table.store"
   import { DatabaseIcon, ExternalLinkIcon } from "lucide-svelte"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
   import { createQuery } from "@tanstack/svelte-query"
 
   const table = getTable()
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   let open = false
   export let value: string | undefined = undefined
@@ -24,7 +22,6 @@
 
   const getForeignTable = createQuery({
     queryFn: async () => {
-      const dataService = await getDataService(isLocal, isPlayground)
       return dataService.table.getTable({ tableId: value! })
     },
     queryKey: ["getForeignTable", value],
@@ -33,7 +30,6 @@
 
   const getForeignTables = createQuery({
     queryFn: async () => {
-      const dataService = await getDataService(isLocal, isPlayground)
       return dataService.table.getTables({})
     },
     queryKey: ["getForeignTables", $table.baseId],
@@ -83,7 +79,10 @@
         <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>
       {#if value}
-        <a href={isPlayground ? `/playground/bases/${$table.baseId}/t/${value}` : `/t/${value}`} class="text-muted-foreground">
+        <a
+          href={isPlayground ? `/playground/bases/${$table.baseId}/t/${value}` : `/t/${value}`}
+          class="text-muted-foreground"
+        >
           <ExternalLinkIcon class="mr-2 h-3 w-3" />
         </a>
       {/if}

@@ -19,8 +19,7 @@
   import autoAnimate from "@formkit/auto-animate"
   import { isEqual } from "radash"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
   import { createQuery } from "@tanstack/svelte-query"
 
   export let disabled = false
@@ -34,16 +33,12 @@
     condition: undefined,
   }
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   let allowCondition: boolean = !!option.condition
 
   const getForeignTable = createQuery({
-    queryFn: async () => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.getTable({ tableId: option.foreignTableId! })
-    },
+    queryFn: () => dataService.table.getTable({ tableId: option.foreignTableId! }),
     queryKey: ["getForeignTable", option.foreignTableId],
     enabled: !!option.foreignTableId,
   })

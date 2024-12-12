@@ -21,8 +21,7 @@
   import { onMount } from "svelte"
   import { isEqual } from "radash"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
   import { createQuery } from "@tanstack/svelte-query"
 
   export let constraint: IReferenceFieldConstraint | undefined = {
@@ -37,12 +36,10 @@
 
   let allowCondition: boolean = !!option.condition
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const getForeignTable = createQuery({
     queryFn: async () => {
-      const dataService = await getDataService(isLocal, isPlayground)
       return dataService.table.getTable({ tableId: option.foreignTableId! })
     },
     queryKey: ["getForeignTable", option.foreignTableId],

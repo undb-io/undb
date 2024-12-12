@@ -1,6 +1,5 @@
 <script lang="ts">
   import { getTable } from "$lib/store/table.store"
-  import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { updateViewCommand } from "@undb/commands"
   import { defaults, superForm } from "sveltekit-superforms"
@@ -12,22 +11,16 @@
   import type { Readable } from "svelte/store"
   import { invalidate } from "$app/navigation"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
-  import { type IUpdateViewCommand } from "@undb/commands"
+  import { getDataService } from "$lib/store/data-service.store"
 
   const table = getTable()
   export let viewId: Readable<string | undefined>
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const updateViewMutation = createMutation({
     mutationKey: ["table", $viewId, "updateView"],
-    mutationFn: async (command: IUpdateViewCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.view.updateView(command)
-    },
+    mutationFn: dataService.table.view.updateView,
     async onSuccess(data, variables, context) {
       toggleModal(UPDATE_VIEW)
       toast.success($LL.table.view.updated())

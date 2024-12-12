@@ -35,8 +35,7 @@
   import FieldOptions from "../field-options/field-options.svelte"
   import FieldIcon from "../field-icon/field-icon.svelte"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
   import { type ICreateRecordsCommand, type ICreateTableCommand } from "@undb/commands"
   import { tick } from "svelte"
 
@@ -53,15 +52,11 @@
   let schema: ICreateSchemaDTO | undefined
   let selectedFields: string[] = []
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const createRecords = createMutation({
     mutationKey: ["table", "import", "records"],
-    mutationFn: async (command: ICreateRecordsCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.records.createRecords(command)
-    },
+    mutationFn: dataService.records.createRecords,
     async onSuccess() {
       if (isPlayground) {
         await goto(`/playground/bases/${$currentBaseId}/t/${tableId}`)
@@ -81,10 +76,7 @@
 
   const createTable = createMutation({
     mutationKey: ["table", "import"],
-    mutationFn: async (command: ICreateTableCommand) => {
-      const dataService = await getDataService(isLocal, isPlayground)
-      return dataService.table.createTable(command)
-    },
+    mutationFn: dataService.table.createTable,
     async onSuccess(tableId) {
       const rs = data?.data.slice(1).map((r) => r.map((v) => String(v))) ?? []
       if (importData && rs.length && schema) {
