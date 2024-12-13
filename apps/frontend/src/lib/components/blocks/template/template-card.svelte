@@ -1,9 +1,7 @@
 <script lang="ts">
-  import type { ITemplateDTO } from "@undb/template"
   import * as Card from "$lib/components/ui/card"
   import { Button } from "$lib/components/ui/button"
   import { createMutation } from "@tanstack/svelte-query"
-  import { trpc } from "$lib/trpc/client"
   import { toast } from "svelte-sonner"
   import { invalidateAll, goto } from "$app/navigation"
   import { IMPORT_TEMPLATE_MODAL, closeModal } from "$lib/store/modal.store"
@@ -14,19 +12,37 @@
   import { Checkbox } from "$lib/components/ui/checkbox/index.js"
   import Label from "$lib/components/ui/label/label.svelte"
   import { LL } from "@undb/i18n/client"
+  import { setDataService } from "$lib/store/data-service.store"
+  import { DataService } from "@undb/data-service"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { setTemplate } from "$lib/store/template.store.svelte"
+  import { type ITemplateDTO } from "@undb/template"
+  import { writable } from "svelte/store"
 
-  let includeData = false
-
+  export let dataService: DataService
   export let template: ITemplateDTO
 
+  const isPlayground = getIsPlayground()
+
+  setDataService(dataService)
+
+  let includeData = !!isPlayground
+
+  setTemplate(writable(template))
+
   const createFromTemplate = createMutation({
-    mutationFn: trpc.template.createFromTemplate.mutate,
+    mutationFn: dataService.template.createFromTemplate,
     async onSuccess(data, variables, context) {
-      toast.success("Base created successfully")
+      toast.success($LL.base.created())
       closeModal(IMPORT_TEMPLATE_MODAL)
       await invalidateAll()
+
       if (data.baseIds.length > 0) {
-        goto(`/bases/${data.baseIds[0]}`)
+        if (isPlayground) {
+          await goto(`/playground/bases/${data.baseIds[0]}`)
+        } else {
+          await goto(`/bases/${data.baseIds[0]}`)
+        }
       }
     },
     onError(error) {

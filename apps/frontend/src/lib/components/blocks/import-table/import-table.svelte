@@ -14,10 +14,9 @@
     ImportIcon,
   } from "lucide-svelte"
   import * as Table from "$lib/components/ui/table"
-  import { invalidate, goto } from "$app/navigation"
-  import { baseId, currentBase } from "$lib/store/base.store"
+  import { invalidate, goto, invalidateAll } from "$app/navigation"
+  import { baseId, currentBaseId } from "$lib/store/base.store"
   import { closeModal, IMPORT_TABLE_MODAL } from "$lib/store/modal.store"
-  import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
   import {
@@ -35,6 +34,10 @@
   import * as Dialog from "$lib/components/ui/dialog"
   import FieldOptions from "../field-options/field-options.svelte"
   import FieldIcon from "../field-icon/field-icon.svelte"
+  import { LL } from "@undb/i18n/client"
+  import { getDataService } from "$lib/store/data-service.store"
+  import { type ICreateRecordsCommand, type ICreateTableCommand } from "@undb/commands"
+  import { tick } from "svelte"
 
   export let tableNames: string[]
 
@@ -49,13 +52,20 @@
   let schema: ICreateSchemaDTO | undefined
   let selectedFields: string[] = []
 
+  const dataService = getDataService()
+
   const createRecords = createMutation({
     mutationKey: ["table", "import", "records"],
-    mutationFn: trpc.record.bulkCreate.mutate,
+    mutationFn: dataService.records.createRecords,
     async onSuccess() {
-      await invalidate("undb:tables")
-      await goto(`/t/${tableId}`)
-      await invalidate(`undb:table:${tableId}`)
+      if (isPlayground) {
+        await goto(`/playground/bases/${$currentBaseId}/t/${tableId}`)
+        await invalidateAll()
+      } else {
+        await invalidate("undb:tables")
+        await invalidate(`undb:table:${tableId}`)
+        await goto(`/t/${tableId}`)
+      }
       closeModal(IMPORT_TABLE_MODAL)
       baseId.set(null)
     },
@@ -66,7 +76,7 @@
 
   const createTable = createMutation({
     mutationKey: ["table", "import"],
-    mutationFn: trpc.table.create.mutate,
+    mutationFn: dataService.table.createTable,
     async onSuccess(tableId) {
       const rs = data?.data.slice(1).map((r) => r.map((v) => String(v))) ?? []
       if (importData && rs.length && schema) {
@@ -89,6 +99,9 @@
 
           return record
         })
+
+        // TODO: web worker
+        await tick()
 
         $createRecords.mutate({
           tableId: tableId,
@@ -183,7 +196,7 @@
 
     if (step === 1) {
       if (!file || !data) return
-      const _baseId = $currentBase?.id ?? $baseId
+      const _baseId = $currentBaseId ?? $baseId
       if (!_baseId) return
 
       $createTable.mutate({
@@ -202,7 +215,7 @@
   <Input
     disabled={!!file}
     type="file"
-    placeholder="import file..."
+    placeholder={$LL.table.import.importFile()}
     on:change={onChange}
     accept=".csv, .json, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
   />
@@ -226,11 +239,11 @@
       bind:checked={firstRowAsHeader}
       onCheckedChange={handleFile}
     />
-    First row as header
+    {$LL.table.import.firstRowAsHeader()}
   </Label>
   <Label class="flex items-center gap-2">
     <Checkbox disabled={$createTable.isPending || $createRecords.isPending} bind:checked={importData} />
-    Import Data
+    {$LL.table.import.importData()}
   </Label>
 {:else if step === 1}
   <Label class="flex items-center gap-2">
@@ -239,11 +252,11 @@
       bind:checked={firstRowAsHeader}
       onCheckedChange={handleFile}
     />
-    First row as header
+    {$LL.table.import.firstRowAsHeader()}
   </Label>
   <Label class="flex items-center gap-2">
     <Checkbox disabled={$createTable.isPending || $createRecords.isPending} bind:checked={importData} />
-    <span>Import Data</span>
+    <span>{$LL.table.import.importData()}</span>
 
     {#if (data?.data.length ?? 0) > 1}
       <span>({(data?.data.length ?? 0) - 1} rows)</span>
@@ -257,7 +270,7 @@
       </Label>
 
       <p class="text-sm text-gray-500">
-        {selectedFields.length} fields selected
+        {$LL.table.import.fieldsSelected({ count: selectedFields.length })}
       </p>
     </div>
     <div class="rounded-sm border">
@@ -309,7 +322,7 @@
                   <Dialog.Content>
                     <Dialog.Header>
                       <Dialog.Title class="flex items-center">
-                        Config Field
+                        {$LL.table.import.configField()}
                         <FieldIcon type={field.type} class="ml-2 mr-2 size-4" />
                         {field.name}
                       </Dialog.Title>
@@ -342,7 +355,7 @@
       size="sm"
     >
       <ArrowLeftIcon class="mr-2 h-4 w-4" />
-      Back
+      {$LL.common.back()}
     </Button>
   {/if}
   <Button
@@ -356,14 +369,13 @@
     size="sm"
   >
     {#if step === 0}
-      Next step <ArrowRightIcon class="ml-2 h-4 w-4" />
+      {$LL.table.import.nextStep()} <ArrowRightIcon class="ml-2 h-4 w-4" />
     {:else}
       {#if $createTable.isPending || $createRecords.isPending}
         <LoaderCircleIcon class="mr-2 h-4 w-4 animate-spin" />
-      {:else}
-        <ImportIcon class="mr-2 size-4" />
       {/if}
-      Import
+      <ImportIcon class="mr-2 size-4" />
+      {$LL.common.import()}
     {/if}
   </Button>
 </div>

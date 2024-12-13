@@ -1,46 +1,110 @@
-import { CreateFromTemplateCommandHandler, DeleteBaseCommandHandler } from "@undb/command-handlers"
-import { CommandBus, QueryBus } from "@undb/cqrs"
-import { registerDataService, registerQueryBuilder } from "@undb/data-service"
+import { ISpaceMemberService,SPACE_MEMBER_SERVICE } from "@undb/authz"
+import {
+  AddDashboardWidgetCommandHandler,
+  BulkDeleteRecordsCommandHandler,
+  BulkDuplicateRecordsCommandHandler,
+  BulkUpdateRecordsCommandHandler,
+  CreateBaseCommandHandler,
+  CreateFromTemplateCommandHandler,
+  CreateRecordCommandHandler,
+  CreateRecordsCommandHandler,
+  CreateTableCommandHandler,
+  CreateTableFieldCommandHandler,
+  CreateTableViewCommandHandler,
+  CreateViewWidgetCommandHandler,
+  DeleteBaseCommandHandler,
+  DeleteTableCommandHandler,
+  DeleteTableFieldCommandHandler,
+  DeleteViewCommandHandler,
+  DuplicateTableFieldCommandHandler,
+  DuplicateViewCommandHandler,
+  SetViewColorCommandHandler,
+  SetViewFieldsCommandHandler,
+  SetViewFilterCommandHandler,
+  SetViewOptionCommandHandler,
+  SetViewSortCommandHandler,
+  UpdateRecordCommandHandler,
+  UpdateTableFieldCommandHandler,
+  UpdateViewCommandHandler,
+} from "@undb/command-handlers"
+import { CONTEXT_TOKEN,IContext } from "@undb/context"
+import { CommandBus,QueryBus } from "@undb/cqrs"
+import { DataService,registerDataService,TRPC_CLIENT } from "@undb/data-service"
 import { container } from "@undb/di"
 import {
   GetAggregatesQueryHandler,
+  GetBaseQueryHandler,
+  GetBasesQueryHandler,
+  GetDashboardByIdQueryHandler,
+  GetDashboardsQueryHandler,
   GetRecordByIdQueryHandler,
   GetRecordsQueryHandler,
   GetTableQueryHandler,
+  GetTablesQueryHandler,
+  GetTemplatesQueryHandler,
 } from "@undb/query-handlers"
+import { trpc } from "./trpc/client"
 
-const commandHandlers = [CreateFromTemplateCommandHandler, DeleteBaseCommandHandler]
+const commandHandlers = [
+  AddDashboardWidgetCommandHandler,
+  BulkDuplicateRecordsCommandHandler,
+  BulkDeleteRecordsCommandHandler,
+  BulkUpdateRecordsCommandHandler,
+  CreateFromTemplateCommandHandler,
+  CreateRecordCommandHandler,
+  DeleteBaseCommandHandler,
+  CreateBaseCommandHandler,
+  UpdateRecordCommandHandler,
+  DeleteTableCommandHandler,
+  DuplicateViewCommandHandler,
+  DeleteViewCommandHandler,
+  SetViewFilterCommandHandler,
+  SetViewColorCommandHandler,
+  SetViewFieldsCommandHandler,
+  SetViewSortCommandHandler,
+  DeleteTableFieldCommandHandler,
+  CreateTableFieldCommandHandler,
+  UpdateTableFieldCommandHandler,
+  DuplicateTableFieldCommandHandler,
+  CreateTableViewCommandHandler,
+  UpdateViewCommandHandler,
+  SetViewOptionCommandHandler,
+  CreateTableCommandHandler,
+  CreateRecordsCommandHandler,
+  CreateViewWidgetCommandHandler,
+]
+
 const queryHandlers = [
+  GetTablesQueryHandler,
   GetRecordsQueryHandler,
   GetRecordByIdQueryHandler,
   GetTableQueryHandler,
   GetAggregatesQueryHandler,
+  GetBaseQueryHandler,
+  GetDashboardsQueryHandler,
+  GetDashboardByIdQueryHandler,
+  GetTemplatesQueryHandler,
+  GetBasesQueryHandler,
 ]
 
-class Registry {
-  #registered = $state(false)
-  #registeredLocal = $state(false)
+export class Registry {
+  async register(isLocal: boolean, isPlayground: boolean): Promise<DataService> {
+    const childContainer = container.createChildContainer()
 
-  async register(isLocal = false) {
-    // if (isLocal) {
-    if (!this.#registeredLocal) {
-      await registerQueryBuilder()
-      this.#registeredLocal = true
-    }
-    // }
+    childContainer.register(TRPC_CLIENT, { useValue: trpc })
+    await registerDataService(childContainer, isLocal, isPlayground)
 
-    if (!this.#registered) {
-      registerDataService()
+    const commandBus = childContainer.resolve(CommandBus)
+    commandBus.register(commandHandlers, childContainer)
 
-      const commandBus = container.resolve(CommandBus)
-      commandBus.register(commandHandlers)
+    const queryBus = childContainer.resolve(QueryBus)
+    queryBus.register(queryHandlers, childContainer)
 
-      const queryBus = container.resolve(QueryBus)
-      queryBus.register(queryHandlers)
+    // TODO: move to other file
+    const context = childContainer.resolve<IContext>(CONTEXT_TOKEN)
+    const spaceMemberService = childContainer.resolve<ISpaceMemberService>(SPACE_MEMBER_SERVICE)
+    await spaceMemberService.createMember(context.mustGetCurrentUserId(), context.mustGetCurrentSpaceId(), "admin")
 
-      this.#registered = true
-    }
+    return childContainer.resolve(DataService)
   }
 }
-
-export const registry = new Registry()

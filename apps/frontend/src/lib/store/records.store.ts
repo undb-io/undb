@@ -1,4 +1,4 @@
-import { getDataService } from "$lib/store/data-service.store"
+import { DataService } from "@undb/data-service"
 import type { Option } from "@undb/domain"
 import {
   Field,
@@ -113,8 +113,7 @@ export const createRecordsStore = () => {
   const hasRecord = derived(store, ($store) => !!$store.records.size)
   const count = derived(store, ($store) => $store.ids.length)
 
-  const invalidateRecord = async (isLocal: boolean, table: TableDo, recordId: string, viewId?: string) => {
-    const dataService = await getDataService(isLocal)
+  const invalidateRecord = async (dataService: DataService, table: TableDo, recordId: string, viewId?: string) => {
     const view = viewId ? table.views.getViewById(viewId) : undefined
     const result = await dataService.records.getRecordById({
       tableId: table.id.value,

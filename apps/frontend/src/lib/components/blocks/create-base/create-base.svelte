@@ -1,26 +1,34 @@
 <script lang="ts">
   import * as Form from "$lib/components/ui/form"
-  import { trpc } from "$lib/trpc/client.js"
   import { createMutation } from "@tanstack/svelte-query"
   import { superForm, defaults } from "sveltekit-superforms"
-  import { createBaseCommand } from "@undb/commands"
+  import { createBaseCommand, type ICreateBaseCommand } from "@undb/commands"
   import { zodClient } from "sveltekit-superforms/adapters"
   import { Input } from "$lib/components/ui/input"
   import { toast } from "svelte-sonner"
   import { CREATE_BASE_MODAL, closeModal } from "$lib/store/modal.store"
   import { goto, invalidateAll } from "$app/navigation"
   import { LoaderCircleIcon } from "lucide-svelte"
-  import { tick } from "svelte"
   import { getNextName } from "@undb/utils"
   import { LL } from "@undb/i18n/client"
+  import { getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+
+  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const mutation = createMutation({
-    mutationFn: trpc.base.create.mutate,
+    mutationFn: dataService.base.createBase,
     async onSuccess(data) {
       form.reset()
-      await goto(`/bases/${data}`)
-      await invalidateAll()
+      if (isPlayground) {
+        await goto(`/playground/bases/${data}`)
+      } else {
+        await goto(`/bases/${data}`)
+        await invalidateAll()
+      }
       closeModal(CREATE_BASE_MODAL)
+      toast.success($LL.base.created())
     },
     onError(error) {
       toast.error(error.message)
@@ -34,7 +42,7 @@
   const form = superForm(
     defaults(
       {
-        name: getNextName(baseNames, "base"),
+        name: getNextName(baseNames, "Base"),
       },
       zodClient(schema),
     ),
@@ -67,11 +75,11 @@
         {...attrs}
         disabled={$mutation.isPending}
         bind:value={$formData.name}
-        placeholder="{$LL.base.displayName()}"
+        placeholder={$LL.base.displayName()}
       />
     </Form.Control>
     <Form.FieldErrors />
-</Form.Field>
+  </Form.Field>
 
   <div class="flex items-center justify-end gap-2">
     <Form.FormButton type="button" variant="secondary" on:click={() => closeModal(CREATE_BASE_MODAL)}>

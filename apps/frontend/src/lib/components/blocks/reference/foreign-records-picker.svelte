@@ -1,6 +1,5 @@
 <script lang="ts">
   import { createMutation, createQuery, useQueryClient } from "@tanstack/svelte-query"
-  import { trpc } from "$lib/trpc/client"
   import { ID_TYPE, Records, ReferenceField, TableDo, type IRecordsDTO } from "@undb/table"
   import { derived, readable, writable, type Readable, type Writable } from "svelte/store"
   import { ScrollArea } from "$lib/components/ui/scroll-area"
@@ -18,7 +17,8 @@
   import Label from "$lib/components/ui/label/label.svelte"
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
   import ForeignRecordDetailButton from "./foreign-record-detail-button.svelte"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getDataService } from "$lib/store/data-service.store"
+  import { type IUpdateRecordCommand } from "@undb/commands"
 
   export let foreignTable: Readable<TableDo>
   export let isSelected = false
@@ -32,7 +32,7 @@
   export let onValueChange = (value: string[]) => {}
   export let onSuccess: (id?: string) => void
 
-  const isLocal = getIsLocal()
+  const dataService = getDataService()
 
   let linkAfterCreate = true
 
@@ -50,9 +50,8 @@
       return {
         queryKey: ["records", $table.id.value, $q, $currentPage, $selected?.length],
         enabled: !!$table,
-        queryFn: async () => {
-          const dataService = await getDataService(isLocal)
-          return dataService.records.getRecords({
+        queryFn: () =>
+          dataService.records.getRecords({
             tableId: $table.id.value,
             q: $q || undefined,
             ignoreView: true,
@@ -79,8 +78,7 @@
               : field.condition,
             select: fields.map((f) => f.id.value),
             pagination: { limit: $perPage, page: $currentPage },
-          })
-        },
+          }),
       }
     }),
   )
@@ -97,7 +95,7 @@
   const client = useQueryClient()
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: dataService.records.updateRecord,
     async onSuccess(data, variables, context) {
       await client.invalidateQueries({ queryKey: ["records", field.foreignTableId] })
       onSuccess?.(recordId)
@@ -285,7 +283,7 @@
                           {foreignTable}
                           {r}
                           recordId={readable(record.id)}
-                          readonly={readonly}
+                          {readonly}
                           viewId={readable(undefined)}
                         />
                         {#if !readonly}

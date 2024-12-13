@@ -1,6 +1,5 @@
 <script lang="ts">
   import { isUserFieldMacro, UserField, type IUserFieldDisplayValue, type IUserFieldValue } from "@undb/table"
-  import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
   import UserFieldComponent from "$lib/components/blocks/field-value/user-field.svelte"
@@ -11,7 +10,7 @@
   import UserMacro from "../../user/user-macro.svelte"
   import { getRecordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
-  import { getIsLocal } from "$lib/store/data-service.store"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let tableId: string
   export let field: UserField
@@ -31,15 +30,15 @@
 
   const store = getRecordsStore()
 
-  const isLocal = getIsLocal()
+  const dataService = getDataService()
 
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: dataService.records.updateRecord,
     async onSuccess(data, variables) {
       const value = variables.values[field.id.value]
       if (isUserFieldMacro(value)) {
-        await store?.invalidateRecord(isLocal, $table, recordId)
+        await store?.invalidateRecord(isLocal, isPlayground, $table, recordId)
       }
     },
     onError(error: Error) {

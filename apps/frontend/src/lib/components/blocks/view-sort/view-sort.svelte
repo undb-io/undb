@@ -28,6 +28,7 @@
   import { hasPermission } from "$lib/store/space-member.store"
   import { LL } from "@undb/i18n/client"
   import SortPicker from "./sort-picker.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
@@ -51,6 +52,8 @@
 
   let open = false
 
+  const dataService = getDataService()
+
   function addSort() {
     if (disabled) {
       return
@@ -61,7 +64,7 @@
   const client = useQueryClient()
   const setViewSortMutation = createMutation({
     mutationKey: ["table", $table.id.value, "setSort"],
-    mutationFn: trpc.table.view.setSort.mutate,
+    mutationFn: dataService.table.view.setSort,
     async onSettled() {
       await invalidate(`undb:table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })

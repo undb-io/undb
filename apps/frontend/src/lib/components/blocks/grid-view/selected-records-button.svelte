@@ -1,7 +1,6 @@
 <script lang="ts">
   import Button from "$lib/components/ui/button/button.svelte"
   import { getTable } from "$lib/store/table.store"
-  import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
@@ -14,6 +13,10 @@
   import { r } from "$lib/store/records.store"
   import type { Readable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
+  import { type IBulkDeleteRecordsCommand, type IBulkDuplicateRecordsCommand } from "@undb/commands"
+  import { getDataService } from "$lib/store/data-service.store"
+
+  const dataService = getDataService()
 
   const table = getTable()
 
@@ -25,15 +28,17 @@
   let updateOpen = false
 
   export let onDuplicateSuccess: () => void = () => {}
+  export let onDeleteSuccess: () => void = () => {}
 
   const client = useQueryClient()
   const deleteRecordsMutation = createMutation({
-    mutationFn: trpc.record.bulkDelete.mutate,
+    mutationFn: dataService.records.deleteRecords,
     onSuccess(data, variables, context) {
       client.invalidateQueries({
         queryKey: ["records", $table.id.value],
       })
       toast.success("Record has been deleted!")
+      onDeleteSuccess()
       open = false
     },
   })
@@ -52,7 +57,7 @@
   }
 
   const duplicateRecordsMutation = createMutation({
-    mutationFn: trpc.record.bulkDuplicate.mutate,
+    mutationFn: dataService.records.duplicateRecords,
     async onSuccess(data, variables, context) {
       await client.invalidateQueries({
         queryKey: ["records", $table.id.value],
@@ -147,7 +152,7 @@
                 <AlertDialog.Header>
                   <AlertDialog.Title>{$LL.table.record.confirmDeleteRecords({ n: ids.length })}</AlertDialog.Title>
                   <AlertDialog.Description>
-                    {$LL.table.record.confirmDeleteRecordsDescription()}
+                    {$LL.table.record.confirmDeleteRecordsDescription({ table: $table.name.value })}
                   </AlertDialog.Description>
                 </AlertDialog.Header>
                 <AlertDialog.Footer>
@@ -173,11 +178,11 @@
       <AlertDialog.Header>
         <AlertDialog.Title>{$LL.table.record.confirmDuplicateRecords({ n: ids.length })}</AlertDialog.Title>
         <AlertDialog.Description>
-          {$LL.table.record.confirmDuplicateRecordsDescription({ n: ids.length })}
+          {$LL.table.record.confirmDuplicateRecordsDescription({ table: $table.name.value, n: ids.length })}
         </AlertDialog.Description>
       </AlertDialog.Header>
       <AlertDialog.Footer>
-        <AlertDialog.Cancel>Cancel</AlertDialog.Cancel>
+        <AlertDialog.Cancel>{$LL.common.cancel()}</AlertDialog.Cancel>
         <AlertDialog.Action disabled={$duplicateRecordsMutation.isPending} on:click={duplicateRecords}>
           {#if $duplicateRecordsMutation.isPending}
             <LoaderCircleIcon class="mr-2 h-5 w-5 animate-spin" />

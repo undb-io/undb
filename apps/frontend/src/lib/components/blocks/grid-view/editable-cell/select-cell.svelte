@@ -3,13 +3,13 @@
 
   import Option from "../../option/option.svelte"
   import { cn } from "$lib/utils"
-  import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
   import { ChevronDownIcon } from "lucide-svelte"
   import OptionsPicker from "../../option/options-picker.svelte"
   import type { IOptionId } from "@undb/table/src/modules/schema/fields/option/option-id.vo"
   import OptionPicker from "../../option/option-picker.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let tableId: string
   export let field: SelectField
@@ -19,6 +19,8 @@
   export let isSelected: boolean
   export let onValueChange: (id: IOptionId | IOptionId[] | null) => void
   export let readonly: boolean = false
+
+  const dataService = getDataService()
 
   $: selected = Array.isArray(value)
     ? value.map((v) => field.options.find((o) => o.id === v)).filter((v) => !!v)
@@ -31,7 +33,7 @@
 
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: dataService.records.updateRecord,
     onError(error: Error) {
       toast.error(error.message)
     },

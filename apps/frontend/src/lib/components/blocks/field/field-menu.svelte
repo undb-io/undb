@@ -1,11 +1,5 @@
 <script lang="ts">
-  import {
-    FieldIdVo,
-    getIsFieldCanBeRollup,
-    type Field,
-    type IReferenceFieldOption,
-    type ReferenceField,
-  } from "@undb/table"
+  import { FieldIdVo, getIsFieldCanBeRollup, type Field, type ReferenceField } from "@undb/table"
   import { Button } from "$lib/components/ui/button"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
   import { PencilIcon, TrashIcon } from "lucide-svelte"
@@ -13,35 +7,41 @@
   import UpdateField from "../update-field/update-field.svelte"
   import { cn } from "$lib/utils"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
-  import { createMutation, useQueryClient } from "@tanstack/svelte-query"
-  import { trpc } from "$lib/trpc/client"
+  import { createMutation, createQuery, useQueryClient } from "@tanstack/svelte-query"
   import { getTable } from "$lib/store/table.store"
   import { toast } from "svelte-sonner"
   import { invalidate } from "$app/navigation"
   import Label from "$lib/components/ui/label/label.svelte"
   import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte"
-  import { GetForeignTableStore, GetRollupForeignTablesStore } from "$houdini"
+  import { GetRollupForeignTablesStore } from "$houdini"
   import * as Alert from "$lib/components/ui/alert"
   import { preferences } from "$lib/store/persisted.store"
   import { hasPermission } from "$lib/store/space-member.store"
   import { LL } from "@undb/i18n/client"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let field: Field
   const table = getTable()
+
+  const dataService = getDataService()
 
   export let update = false
   export let open = false
 
   const client = useQueryClient()
 
-  const foreignTableStore = new GetForeignTableStore()
+  const getForeignTable = createQuery({
+    queryFn: () => dataService.table.getTable({ tableId: $table.id.value }),
+    queryKey: ["getForeignTable", $table.baseId],
+    enabled: field.type === "reference",
+  })
 
   let deleteAlertOpen = false
-  $: deleteAlertOpen &&
-    field.type === "reference" &&
-    foreignTableStore.fetch({ variables: { tableId: field.foreignTableId } })
+  $: deleteAlertOpen && field.type === "reference" && $getForeignTable.refetch()
 
-  $: symmetricField = $foreignTableStore.data?.table?.schema.find(
+  $: foreignTable = $getForeignTable.data
+
+  $: symmetricField = foreignTable?.schema?.find(
     (f) => f.type === "reference" && f.id === (field as ReferenceField).symmetricFieldId,
   )
 
@@ -54,7 +54,7 @@
     })
 
   const deleteField = createMutation({
-    mutationFn: trpc.table.field.delete.mutate,
+    mutationFn: dataService.table.field.deleteField,
     async onSuccess() {
       toast.success($LL.table.field.deleted())
       await invalidate(`undb:table:${$table.id.value}`)
@@ -68,7 +68,7 @@
   })
 
   const duplicateField = createMutation({
-    mutationFn: trpc.table.field.duplicate.mutate,
+    mutationFn: dataService.table.field.duplicateField,
     async onSuccess() {
       toast.success("Duplicate field success")
       await invalidate(`undb:table:${$table.id.value}`)
@@ -229,7 +229,7 @@
                 {/if}
                 {#if symmetricField}
                   {@const foreignRollupFields =
-                    $foreignTableStore.data?.table?.schema.filter(
+                    foreignTable?.schema.filter(
                       (f) => f.type === "rollup" && f.option?.referenceFieldId === symmetricField.id,
                     ) ?? []}
                   <Alert.Root class="border-yellow-500 bg-yellow-50">
@@ -253,7 +253,7 @@
 
                       of
                       <span class="font-bold">
-                        {$foreignTableStore.data?.table?.name}
+                        {foreignTable?.name}
                       </span>
                       will also be deleted.
                     </Alert.Description>

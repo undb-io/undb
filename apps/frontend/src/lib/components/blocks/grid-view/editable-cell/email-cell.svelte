@@ -5,6 +5,7 @@
   import type { EmailField } from "@undb/table"
   import { toast } from "svelte-sonner"
   import { gridViewStore } from "../grid-view.store"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let tableId: string
   export let field: EmailField
@@ -13,9 +14,11 @@
   export let isEditing: boolean
   export let onValueChange: (value: string) => void
 
+  const dataService = getDataService()
+
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: dataService.records.updateRecord,
     onSuccess(data, variables, context) {
       el?.blur()
       gridViewStore.exitEditing()

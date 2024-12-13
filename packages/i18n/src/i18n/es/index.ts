@@ -465,6 +465,7 @@ const view = {
   },
   type: 'Tipo de vista',
   create: 'Crear vista',
+  created: 'Vista creada correctamente',
   updateName: 'Actualizar nombre de la vista',
   updated: 'Vista actualizada',
   duplicateView: 'Duplicar vista',
@@ -498,6 +499,7 @@ const dashboard = {
 const base = {
   name: 'Nombre de Base',
   noBases: 'No hay bases',
+  created: 'Base creada correctamente',
   displayName: 'Nombre de visualización de Base',
   importFromTemplate: 'Importar desde plantilla',
   createBase: 'Crear Base',
@@ -659,7 +661,13 @@ const auth = {
   enterYourWorkEmail: 'Introduce tu correo electrónico de trabajo...',
 }
 
+const playground = {
+  playgroundMode: 'Modo de prueba',
+  playgroundModeDescription: 'Estás en modo de prueba, todos los cambios se perderán después de cerrar o refrescar la página.'
+}
+
 const es = {
+  playground,
   auth,
   template,
   roles,
@@ -685,9 +693,18 @@ const es = {
     schema,
   authz,
   events,
+    import: {
+      importFile: 'Importar archivo...',
+      firstRowAsHeader: 'Primera fila como encabezado',
+      importData: 'Importar datos',
+      fieldsSelected: '{count} campos seleccionados',
+      configField: 'Configurar campo',
+      nextStep: 'Siguiente paso',
+    },
   },
   webhook,
 	common: {
+    back: 'Atrás',
     error: 'Error',
 		continue: 'Continuar',
     description: 'Descripción',

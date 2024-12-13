@@ -15,12 +15,14 @@
   import { hasPermission } from "$lib/store/space-member.store"
   import { LoaderCircleIcon } from "lucide-svelte"
   import ViewTypePicker from "./view-type-picker.svelte"
-  import { goto, invalidate } from "$app/navigation"
+  import { goto, invalidate, invalidateAll } from "$app/navigation"
   import { getTable } from "$lib/store/table.store"
   import FieldPicker from "../field-picker/field-picker.svelte"
   import * as Tooltip from "$lib/components/ui/tooltip"
   import { CircleHelpIcon } from "lucide-svelte"
   import { LL } from "@undb/i18n/client"
+  import { getDataService } from "$lib/store/data-service.store"
+  import { type ICreateViewCommand } from "@undb/commands"
 
   let open = false
 
@@ -29,15 +31,22 @@
   export let tableId: string
   export let viewNames: string[]
 
+  const dataService = getDataService()
+
   const createViewMutation = createMutation({
-    mutationFn: trpc.table.view.create.mutate,
+    mutationFn: dataService.table.view.createView,
     mutationKey: ["table", tableId, "createView"],
     async onSuccess(data) {
       viewNames = [...viewNames, $formData.name]
-      toast.success("created view successfully")
+      toast.success($LL.table.view.created())
       reset()
-      await invalidate(`undb:table:${tableId}`)
-      await goto(`/t/${tableId}/${data.viewId}`)
+      if (isPlayground) {
+        await invalidateAll()
+        await goto(`/playground/bases/${data.baseId}/t/${tableId}/${data.viewId}`)
+      } else {
+        await invalidate(`undb:table:${tableId}`)
+        await goto(`/t/${tableId}/${data.viewId}`)
+      }
     },
     onError(e) {
       toast.error(e.message)

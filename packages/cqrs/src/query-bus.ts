@@ -1,4 +1,4 @@
-import { container, singleton } from "@undb/di"
+import { container, singleton, type DependencyContainer } from "@undb/di"
 import type { IQueryBus, IQueryHandler, IQueryPublisher, Query, QueryMetadata } from "@undb/domain"
 import { createLogger } from "@undb/logger"
 import { Subject } from "rxjs"
@@ -34,15 +34,15 @@ export class QueryBus<Q extends Query = Query> implements IQueryBus {
     }
   }
 
-  register(handlers: QueryHandlerType[] = []) {
-    handlers.forEach((handler) => this.registerHandler(handler))
+  register(handlers: QueryHandlerType[] = [], c = container) {
+    handlers.forEach((handler) => this.registerHandler(c, handler))
   }
 
   private bind<T extends Q>(handler: IQueryHandler<T, any>, id: string) {
     this.#handlers.set(id, handler)
   }
 
-  protected registerHandler(handler: QueryHandlerType) {
+  protected registerHandler(container: DependencyContainer, handler: QueryHandlerType) {
     const instance = container.resolve(handler)
     if (!instance) {
       return

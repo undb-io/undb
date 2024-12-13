@@ -1,7 +1,6 @@
 <script lang="ts">
   import * as Form from "$lib/components/ui/form"
   import FieldIcon from "$lib/components/blocks/field-icon/field-icon.svelte"
-  import { trpc } from "$lib/trpc/client"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import FieldControl from "../field-control/field-control.svelte"
   import { defaults, superForm } from "sveltekit-superforms"
@@ -14,10 +13,10 @@
   import { defaultRecordValues, getRecordsStore } from "$lib/store/records.store"
   import { useMediaQuery } from "$lib/store/media-query.store"
   import IdControl from "../field-control/id-control.svelte"
-  import type { ICreateRecordCommandOutput } from "@undb/commands"
+  import type { ICreateRecordCommand, ICreateRecordCommandOutput } from "@undb/commands"
   import { onMount } from "svelte"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal } from "$lib/store/data-service.store"
+  import { getDataService } from "$lib/store/data-service.store"
 
   // beforeNavigate(({ cancel }) => {
   //   if ($tainted) {
@@ -41,11 +40,11 @@
   const client = useQueryClient()
 
   const mediaQuery = useMediaQuery("(max-width: 768px)")
-  const isLocal = getIsLocal()
+  const dataService = getDataService()
 
   const createRecordMutation = createMutation(
     derived([table], ([$table]) => ({
-      mutationFn: trpc.record.create.mutate,
+      mutationFn: dataService.records.createRecord,
       mutationKey: [$table.id.value, "createRecord"],
       onSuccess: (data: ICreateRecordCommandOutput) => {
         client.invalidateQueries({
@@ -53,7 +52,7 @@
         })
         toast.success($LL.table.record.createdRecord())
         onSuccess?.(data)
-        recordsStore?.invalidateRecord(isLocal, $table, data)
+        recordsStore?.invalidateRecord(isLocal, isPlayground, $table, data)
       },
       onError: (error: Error) => {
         toast.error(error.message)

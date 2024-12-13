@@ -5,7 +5,7 @@
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest",
-    "type-fest": "^4.29.0"
+    "type-fest": "^4.30.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

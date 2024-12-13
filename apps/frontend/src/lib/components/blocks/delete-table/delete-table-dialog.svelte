@@ -1,20 +1,20 @@
 <script lang="ts">
   import { goto, invalidateAll } from "$app/navigation"
-  import { GetTableForeignTablesStore } from "$houdini"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
-  import * as Alert from "$lib/components/ui/alert"
   import { closeModal, DELETE_TABLE_MODAL, isModalOpen } from "$lib/store/modal.store"
   import { getTable } from "$lib/store/table.store"
-  import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { TrashIcon } from "lucide-svelte"
   import { toast } from "svelte-sonner"
   import { Input } from "$lib/components/ui/input"
   import { Label } from "$lib/components/ui/label"
-  import { page } from "$app/stores"
   import { LL } from "@undb/i18n/client"
+  import { type IDeleteTableCommand } from "@undb/commands"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let table = getTable()
+
+  const dataService = getDataService()
 
   // const foreignTableStore = new GetTableForeignTablesStore()
   // $: $isModalOpen(DELETE_TABLE_MODAL) &&
@@ -25,7 +25,7 @@
   // $: foreignTables = $foreignTableStore.data?.tableForeignTables ?? []
 
   const deleteTableMutation = createMutation({
-    mutationFn: trpc.table.delete.mutate,
+    mutationFn: dataService.table.deleteTable,
     async onSuccess(data, variables, context) {
       await goto("/")
       await invalidateAll()

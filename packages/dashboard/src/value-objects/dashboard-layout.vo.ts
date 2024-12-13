@@ -117,9 +117,7 @@ export class DashboardLayouts extends ValueObject<IDashboardLayouts> {
         position = { x: 0, y: 0 }
       } else {
         const prev = items.slice(0, i)
-        console.log({ newItem }, prev)
         const foundPosition = gridHelp.findSpace(newItem, prev, COLS)
-        console.log({ foundPosition })
         position = {
           x: foundPosition.x,
           y: foundPosition.y,

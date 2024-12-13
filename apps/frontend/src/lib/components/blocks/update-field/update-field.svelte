@@ -28,6 +28,8 @@
   import { LoaderCircleIcon, PencilIcon } from "lucide-svelte"
   import { LL } from "@undb/i18n/client"
   import { getIsFieldCanCastTo } from "@undb/table"
+  import { getDataService } from "$lib/store/data-service.store"
+  import { type IUpdateFieldCommand } from "@undb/commands"
 
   const table = getTable()
 
@@ -40,11 +42,13 @@
 
   $: isTypeChanged = type !== updatedType
 
+  const dataService = getDataService()
+
   const client = useQueryClient()
   const updateFieldMutation = createMutation(
     derived([table], ([$table]) => ({
       mutationKey: ["table", $table.id.value, "updateField"],
-      mutationFn: trpc.table.field.update.mutate,
+      mutationFn: dataService.table.field.updateField,
       async onSuccess() {
         onSuccess()
         toast.success($LL.table.field.updated())
@@ -59,7 +63,6 @@
   )
 
   function getDefaultValue(field: Field): IUpdateFieldDTO {
-    console.log(field.constraint)
     return {
       id: field.id.value,
       type: field.type,

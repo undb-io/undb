@@ -3,7 +3,7 @@ import { DashboardTableIdSpecification, injectDashboardRepository, type IDashboa
 import { singleton } from "@undb/di"
 import type { IEventHandler } from "@undb/domain"
 import { createLogger } from "@undb/logger"
-import { FieldDeletedEvent } from "../../../table/src"
+import { FieldDeletedEvent } from "@undb/table"
 
 @eventHandler(FieldDeletedEvent)
 @singleton()

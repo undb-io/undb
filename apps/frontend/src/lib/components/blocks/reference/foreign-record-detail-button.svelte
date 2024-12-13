@@ -10,10 +10,8 @@
   import AuditList from "../audit/audit-list.svelte"
   import RecordDetail from "../record-detail/record-detail.svelte"
   import { cn } from "$lib/utils"
-  import { trpc } from "$lib/trpc/client"
   import { createQuery, useQueryClient } from "@tanstack/svelte-query"
   import { getDataService } from "$lib/store/data-service.store"
-  import { getIsLocal } from "$lib/store/data-service.store"
 
   export let foreignTable: Readable<TableDo>
   export let r: Writable<string | null>
@@ -27,19 +25,17 @@
   const open = writable(false)
   let disabled = false
 
-  const isLocal = getIsLocal()
+  const dataService = getDataService()
 
   const record = createQuery(
     derived([foreignTable, recordId, preferences, open], ([$table, $recordId, $preferences, $open]) => ({
       queryKey: [$recordId, "get", $preferences.showHiddenFields, $open],
-      queryFn: async () => {
-        const dataService = await getDataService(isLocal)
-        return dataService.records.getRecordById({
+      queryFn: () =>
+        dataService.records.getRecordById({
           tableId: $table?.id.value,
           id: $recordId!,
           select: $preferences.showHiddenFields ? undefined : $table?.getOrderedVisibleFields().map((f) => f.id.value),
-        })
-      },
+        }),
       enabled: !!$recordId && !!$open,
     })),
   )

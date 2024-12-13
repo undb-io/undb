@@ -10,11 +10,11 @@
   import { LL } from "@undb/i18n/client"
   import { calendarTimeScales, type CalendarTimeScale, type CalendarView } from "@undb/table"
   import { createMutation } from "@tanstack/svelte-query"
-  import { trpc } from "$lib/trpc/client"
-  import { toast } from "svelte-sonner"
   import { getTable } from "$lib/store/table.store"
   import { invalidate } from "$app/navigation"
   import { type ICalendarViewDTO } from "@undb/table"
+  import { getDataService } from "$lib/store/data-service.store"
+  import { type IUpdateViewCommand } from "@undb/commands"
 
   export let view: CalendarView
   const table = getTable()
@@ -38,8 +38,12 @@
     })
   }
 
+  const dataService = getDataService()
+
   const updateViewMutation = createMutation({
-    mutationFn: trpc.table.view.update.mutate,
+    mutationFn: async (command: IUpdateViewCommand) => {
+      return dataService.table.view.updateView(command)
+    },
     mutationKey: ["updateView"],
     async onSuccess(data, variables, context) {
       await invalidate(`undb:table:${$table.id.value}`)

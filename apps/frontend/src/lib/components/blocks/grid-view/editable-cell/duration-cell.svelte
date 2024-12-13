@@ -7,6 +7,7 @@
   import { debounce, isNumber } from "radash"
   import { gridViewStore } from "../grid-view.store"
   import DurationInput from "$lib/components/blocks/duration/duration-input.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let tableId: string
   export let field: DurationField
@@ -15,9 +16,11 @@
   export let recordId: string
   export let onValueChange: (value: number) => void
 
+  const dataService = getDataService()
+
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: dataService.records.updateRecord,
     onSuccess(data, variables, context) {
       gridViewStore.exitEditing()
     },

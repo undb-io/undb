@@ -12,6 +12,8 @@
   import { invalidate } from "$app/navigation"
   import { CircleCheckBigIcon } from "lucide-svelte"
   import { LL } from "@undb/i18n/client"
+  import { getDataService } from "$lib/store/data-service.store"
+  import { type IUpdateViewCommand } from "@undb/commands"
 
   const table = getTable()
   export let readonly = false
@@ -47,8 +49,10 @@
 
   const { enhance, form: formData } = form
 
+  const dataService = getDataService()
+
   const updateViewMutation = createMutation({
-    mutationFn: trpc.table.view.update.mutate,
+    mutationFn: dataService.table.view.updateView,
     mutationKey: ["updateView"],
     async onSuccess(data, variables, context) {
       toast.success($LL.table.view.updated())

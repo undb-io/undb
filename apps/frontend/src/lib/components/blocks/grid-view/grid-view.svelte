@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { derived, writable, type Readable, type Writable } from "svelte/store"
-  import { createRecordsStore, setRecordsStore, type RecordsStore } from "$lib/store/records.store"
+  import { derived, type Readable, type Writable } from "svelte/store"
+  import { createRecordsStore, setRecordsStore } from "$lib/store/records.store"
   import { Records, type IRecordsDTO, type IViewFilterGroup } from "@undb/table"
   import { createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"
@@ -9,7 +9,7 @@
   import GridViewDataTable from "./grid-view-data-table.svelte"
   import { preferences } from "$lib/store/persisted.store"
   import { aggregatesStore } from "$lib/store/aggregates.store"
-  import { getIsLocal, getDataService } from "$lib/store/data-service.store"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let readonly = false
 
@@ -21,10 +21,10 @@
   const q = queryParam("q")
   export let filter: IViewFilterGroup | undefined = undefined
 
-  const isLocal = getIsLocal()
-
   const perPage = derived(preferences, ($preferences) => $preferences.gridViewPerPage ?? 50)
   const currentPage = queryParam("page", ssp.number())
+
+  const dataService = getDataService()
 
   const getRecords = createQuery(
     derived([t, viewId, perPage, currentPage, q], ([$table, $viewId, $perPage, $currentPage, $q]) => {
@@ -33,8 +33,6 @@
         queryKey: ["records", $table?.id.value, $viewId, $q, $currentPage, $perPage],
         enabled: view?.type === "grid",
         queryFn: async () => {
-          const dataService = await getDataService(isLocal)
-
           return dataService.records.getRecords({
             tableId: $table?.id.value,
             viewId: $viewId,
@@ -69,9 +67,8 @@
       return {
         queryKey: ["aggregates", $table?.id.value, $viewId],
         queryFn: async () => {
-      const dataService = await getDataService(isLocal)
-
-          return dataService.records.getAggregates({ tableId: $table.id.value, viewId: $viewId })},
+          return dataService.records.getAggregates({ tableId: $table.id.value, viewId: $viewId })
+        },
         enabled: !!$table,
       }
     }),

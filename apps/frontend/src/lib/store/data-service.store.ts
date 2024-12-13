@@ -1,5 +1,4 @@
-import { registry } from "$lib/registry.svelte"
-import { getDataService as getDataServiceImpl } from "@undb/data-service"
+import { DataService } from "@undb/data-service"
 import { getContext, setContext } from "svelte"
 
 const IS_LOCAL = "IS_LOCAL"
@@ -12,7 +11,12 @@ export function getIsLocal() {
   return getContext<boolean>(IS_LOCAL) ?? false
 }
 
-export async function getDataService(isLocal: boolean) {
-  await registry.register(isLocal)
-  return getDataServiceImpl(isLocal)
+const DATA_SERVICE = "DATA_SERVICE"
+
+export function setDataService(dataService: DataService) {
+  setContext(DATA_SERVICE, dataService)
+}
+
+export function getDataService() {
+  return getContext<DataService>(DATA_SERVICE)
 }

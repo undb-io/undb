@@ -11,6 +11,7 @@
   import Button from "$lib/components/ui/button/button.svelte"
   import TimePicker from "$lib/components/blocks/date/time-picker.svelte"
   import { LL } from "@undb/i18n/client"
+  import { getDataService } from "$lib/store/data-service.store"
 
   type Value = [string | Date | null | undefined, string | Date | null | undefined] | undefined
 
@@ -51,9 +52,11 @@
     open = true
   }
 
+  const dataService = getDataService()
+
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: dataService.records.updateRecord,
     onSuccess(data, variables, context) {
       open = false
     },

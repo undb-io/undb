@@ -477,6 +477,7 @@ const webhook = {
       selectField: 'Select a field to pivot...'
     },
     create: 'Create View',
+    created: 'View created successfully',
     type: 'View Type',
     updated: 'View updated',
     updateName: 'Update View Name',
@@ -511,6 +512,7 @@ const webhook = {
   const base = {
     name: 'Base Name',
     createBase: 'Create New Base',
+    created: 'Base created successfully',
     importFromTemplate: 'Import From Template',
     displayName: 'Base Display Name',
     noBases: 'No Bases',
@@ -666,7 +668,13 @@ const webhook = {
     enterYourWorkEmail: 'Enter your work email...',
   }
 
+  const playground = {
+    playgroundMode: 'Playground Mode',
+    playgroundModeDescription: 'You are in playground mode, all changes will be lost after you close or refresh the page.'
+  }
+
 const en = {
+  playground,
   auth,
   template,
   setting,
@@ -693,8 +701,17 @@ const en = {
     aggregate,
     schema,
     events,
+    import: {
+      importFile: 'Import File...',
+      firstRowAsHeader: 'First row as header',
+      importData: 'Import Data',
+      fieldsSelected: '{count} fields selected',
+      configField: 'Config Field',
+      nextStep: 'Next step',
+    },
   },
   common: {
+    back: 'Back',
     error: 'Error',
     duplicate: 'Duplicate',
     description: 'Description',

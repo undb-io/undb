@@ -1,10 +1,10 @@
 <script lang="ts">
   import { Label } from "$lib/components/ui/label"
-  import { trpc } from "$lib/trpc/client"
   import { cn } from "$lib/utils"
   import { createMutation } from "@tanstack/svelte-query"
   import type { RatingField } from "@undb/table"
   import { toast } from "svelte-sonner"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let tableId: string
   export let recordId: string
@@ -12,6 +12,8 @@
   export let field: RatingField
   export let readonly = false
   export let onValueChange: (value: number) => void
+
+  const dataService = getDataService()
 
   $: max = field.max
 
@@ -29,7 +31,7 @@
 
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: dataService.records.updateRecord,
     onError(error: Error) {
       toast.error(error.message)
     },

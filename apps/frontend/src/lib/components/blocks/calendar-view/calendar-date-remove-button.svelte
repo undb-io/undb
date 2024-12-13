@@ -4,11 +4,12 @@
   import { type RecordDO, CalendarView, DateFieldValue, FieldIdVo } from "@undb/table"
   import { getRecordsStore } from "$lib/store/records.store"
   import { getTable } from "$lib/store/table.store"
-  import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { useQueryClient } from "@tanstack/svelte-query"
   import { cn } from "$lib/utils"
   import { calendarStore } from "$lib/store/calendar.store"
+  import { getDataService } from "$lib/store/data-service.store"
+  import { type IUpdateRecordCommand } from "@undb/commands"
 
   export let view: CalendarView
 
@@ -19,8 +20,12 @@
 
   let field = fieldId ? $t.schema.getFieldById(new FieldIdVo(fieldId)).into(undefined) : undefined
 
+  const dataService = getDataService()
+
   const updateRecord = createMutation({
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: async (command: IUpdateRecordCommand) => {
+      return dataService.records.updateRecord(command)
+    },
   })
 
   const client = useQueryClient()

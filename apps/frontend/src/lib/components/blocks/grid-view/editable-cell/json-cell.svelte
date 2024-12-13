@@ -8,6 +8,7 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
   import ScrollArea from "$lib/components/ui/scroll-area/scroll-area.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let tableId: string
   export let value: JsonValue | undefined = undefined
@@ -16,9 +17,11 @@
   export let recordId: string
   export let onValueChange: (value: JsonValue | undefined) => void
 
+  const dataService = getDataService()
+
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: dataService.records.updateRecord,
     onError(error: Error) {
       toast.error(error.message)
     },

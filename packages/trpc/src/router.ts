@@ -71,6 +71,7 @@ import {
   bulkduplicateRecordsCommand,
   createApiTokenCommand,
   createBaseCommand,
+  createBaseCommandOutput,
   createDashboardCommand,
   createFromShareCommand,
   createFromTemplateCommand,
@@ -145,7 +146,10 @@ import {
   CountRecordsQuery,
   GetAggregatesQuery,
   GetApiTokensQuery,
+  GetBaseQuery,
+  GetBasesQuery,
   GetDashboardByIdQuery,
+  GetDashboardsQuery,
   GetMemberSpacesQuery,
   GetPivotDataQuery,
   GetRecordByIdQuery,
@@ -163,7 +167,12 @@ import {
   countRecordsQuery,
   getAggregatesQuery,
   getApiTokensQuery,
+  getBaseQuery,
+  getBaseQueryOutput,
+  getBasesQuery,
+  getBasesQueryOutput,
   getDashboardByIdQuery,
+  getDashboardsQuery,
   getMemberSpacesOutput,
   getMemberSpacesQuery,
   getPivotDataQuery,
@@ -174,6 +183,8 @@ import {
   getShareRecordByIdQuery,
   getShareRecordsQuery,
   getTableQuery,
+  getTablesQuery,
+  getTablesQueryOutput,
   getTemplateOutput,
   getTemplateQuery,
   getTemplatesQuery,
@@ -312,8 +323,8 @@ const fieldRouter = t.router({
 const tableRouter = t.router({
   list: privateProcedure
     .use(authz("table:list"))
-    .input(z.void())
-    .output(tableDTO.array())
+    .input(getTablesQuery)
+    .output(getTablesQueryOutput)
     .query(() => queryBus.execute(new GetTablesQuery({}))),
   get: privateProcedure
     .use(authz("table:read"))
@@ -426,9 +437,20 @@ const webhookRouter = t.router({
 })
 
 const baseRouter = t.router({
+  list: privateProcedure
+    .use(authz("base:list"))
+    .input(getBasesQuery)
+    .output(getBasesQueryOutput)
+    .query(({ input }) => queryBus.execute(new GetBasesQuery(input))),
+  get: privateProcedure
+    .use(authz("base:read"))
+    .input(getBaseQuery)
+    .output(getBaseQueryOutput)
+    .query(({ input }) => queryBus.execute(new GetBaseQuery(input))),
   create: privateProcedure
     .use(authz("base:create"))
     .input(createBaseCommand.omit({ spaceId: true }))
+    .output(createBaseCommandOutput)
     .mutation(({ input }) => {
       const spaceId = getCurrentSpaceId()
       if (!spaceId) {
@@ -564,6 +586,10 @@ const dashboardRouter = t.router({
     .use(authz("dashboard:read"))
     .input(getDashboardByIdQuery)
     .query(({ input }) => queryBus.execute(new GetDashboardByIdQuery(input))),
+  list: privateProcedure
+    .use(authz("dashboard:list"))
+    .input(getDashboardsQuery)
+    .query(({ input }) => queryBus.execute(new GetDashboardsQuery(input))),
   update: privateProcedure
     .use(authz("dashboard:update"))
     .input(updateDashboardCommand)

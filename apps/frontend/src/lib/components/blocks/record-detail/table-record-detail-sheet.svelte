@@ -7,27 +7,24 @@
   import RecordDetailSheet from "./record-detail-sheet.svelte"
   import { r } from "$lib/store/records.store"
   import type { Readable } from "svelte/store"
-  import { trpc } from "$lib/trpc/client"
-  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
 
-  const isLocal = getIsLocal()
+  const dataService = getDataService()
 
   const table = getTable()
 
   const record = createQuery(
     derived([table, r, preferences], ([$table, $recordId, $preferences]) => ({
       queryKey: [$recordId, "get", $preferences.showHiddenFields],
-      queryFn: async () => {
-        const dataService = await getDataService(isLocal)
-        return dataService.records.getRecordById({
+      queryFn: () =>
+        dataService.records.getRecordById({
           tableId: $table?.id.value,
           id: $recordId!,
           ignoreView: $preferences.showHiddenFields,
-        })
-      },
+        }),
       enabled: !!$recordId,
     })),
   )

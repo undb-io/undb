@@ -16,10 +16,11 @@
   import { Separator } from "$lib/components/ui/separator"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { writable } from "svelte/store"
-  import { GetForeignTableQueryStore } from "$houdini"
   import autoAnimate from "@formkit/auto-animate"
   import { isEqual } from "radash"
   import { LL } from "@undb/i18n/client"
+  import { getDataService } from "$lib/store/data-service.store"
+  import { createQuery } from "@tanstack/svelte-query"
 
   export let disabled = false
 
@@ -32,14 +33,21 @@
     condition: undefined,
   }
 
+  const dataService = getDataService()
+
   let allowCondition: boolean = !!option.condition
-  const getForeignTableStore = new GetForeignTableQueryStore()
+
+  const getForeignTable = createQuery({
+    queryFn: () => dataService.table.getTable({ tableId: option.foreignTableId! }),
+    queryKey: ["getForeignTable", option.foreignTableId],
+    enabled: !!option.foreignTableId,
+  })
 
   $: if (allowCondition && option.foreignTableId) {
-    getForeignTableStore.fetch({ variables: { tableId: option.foreignTableId } })
+    $getForeignTable.refetch()
   }
 
-  $: ft = $getForeignTableStore.data?.table
+  $: ft = $getForeignTable.data
 
   // @ts-ignore
   $: foreignTable = ft ? new TableFactory().fromJSON(ft) : undefined

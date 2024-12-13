@@ -4,21 +4,24 @@
   import { Loader2 } from "lucide-svelte"
   import * as Form from "$lib/components/ui/form"
   import { Input } from "$lib/components/ui/input"
-  import { addDashboardWidgetCommand } from "@undb/commands"
+  import { addDashboardWidgetCommand, type IAddDashboardWidgetCommand } from "@undb/commands"
   import { defaults } from "sveltekit-superforms"
   import { PlugIcon } from "lucide-svelte"
   import { createMutation } from "@tanstack/svelte-query"
-  import { trpc } from "$lib/trpc/client"
   import { derived } from "svelte/store"
   import { getNextName } from "@undb/utils"
   import { toast } from "svelte-sonner"
   import { getDashboard, getDashboardWidgetItemsStore } from "$lib/store/dashboard.store"
   import { DashboardWidget, DashboardLayouts, COLS } from "@undb/dashboard"
   import TablePicker from "../table-picker/table-picker.svelte"
-  import { invalidate } from "$app/navigation"
+  import { invalidate, invalidateAll } from "$app/navigation"
   import { LL } from "@undb/i18n/client"
+  import { getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
 
   const dashboard = getDashboard()
+
+  const dataService = getDataService()
 
   let widgets = derived([dashboard], ([$dashboard]) => $dashboard?.widgets.value ?? [])
   let widgetNames = derived([widgets], ([$widgets]) => $widgets.map((w) => w.widget.name))
@@ -68,11 +71,18 @@
 
   const { form: formData, enhance, validateForm } = form
 
+  const isPlayground = getIsPlayground()
+
   const addDashboardWidgetMutation = createMutation({
-    mutationFn: trpc.dashboard.widget.add.mutate,
+    mutationFn: dataService.dashboard.addWidget,
     async onSuccess(data) {
       onSuccess()
-      await invalidate(`undb:dashboard:${$dashboard.id.value}`)
+      if (isPlayground) {
+        await invalidateAll()
+      } else {
+        await invalidate(`undb:dashboard:${$dashboard.id.value}`)
+      }
+      toast.success("Created")
     },
     onError(error, variables, context) {
       toast.error(error.message)
