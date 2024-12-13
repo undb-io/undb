@@ -8,10 +8,13 @@ export const load: LayoutLoad = async (event) => {
 
   const dataService = await new Registry().register(true, true)
 
+  const me = await event.fetch("/api/me")
+
   const bases = await dataService.base.listBases()
 
   return {
     bases,
     dataService,
+    me: me.redirected ? null : await me.json(),
   }
 }

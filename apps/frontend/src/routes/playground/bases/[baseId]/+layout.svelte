@@ -24,6 +24,7 @@
 
   export let data: PageData
 
+  $: isLoggedIn = !!data.me
   $: bases = data.bases
   $: base = data.base
   $: tables = data.tables
@@ -54,7 +55,7 @@
 </script>
 
 <main class="flex flex-1 flex-col overflow-hidden">
-  <PlaygroundMenubar {bases} />
+  <PlaygroundMenubar {bases} {isLoggedIn} />
   <Resizable.PaneGroup class="flex-1" direction="horizontal">
     <Resizable.Pane
       bind:pane={panelLeft}

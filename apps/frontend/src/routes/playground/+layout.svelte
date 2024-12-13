@@ -3,6 +3,7 @@
   import { setIsPlayground } from "$lib/store/playground.svelte"
   import PlaygroundAlert from "$lib/components/blocks/playground/playground-alert.svelte"
   import type { LayoutData } from "./$types"
+  import  TemplateListSheet  from "$lib/components/blocks/template/template-list-sheet.svelte"
 
   export let data: LayoutData
 
@@ -22,6 +23,4 @@
   <CreateBaseDialog baseNames={[]} />
 {/await}
 
-{#await import("$lib/components/blocks/template/template-list-sheet.svelte") then { default: TemplateListSheet }}
-  <TemplateListSheet />
-{/await}
+<TemplateListSheet />

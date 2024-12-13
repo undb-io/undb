@@ -42,7 +42,7 @@
   const form = superForm(
     defaults(
       {
-        name: getNextName(baseNames, "base"),
+        name: getNextName(baseNames, "Base"),
       },
       zodClient(schema),
     ),

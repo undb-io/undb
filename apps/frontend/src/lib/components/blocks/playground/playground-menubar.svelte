@@ -7,24 +7,28 @@
     CREATE_TABLE_MODAL,
   } from "$lib/store/modal.store"
   import { Button } from "$lib/components/ui/button"
-  import { HardDriveIcon } from "lucide-svelte"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import { LL } from "@undb/i18n/client"
   import { ImportIcon, ChevronDownIcon, CirclePlusIcon } from "lucide-svelte"
   import { type IBaseDTO } from "@undb/base"
-  import * as Select from "$lib/components/ui/select"
   import { page } from "$app/stores"
-  import { goto } from "$app/navigation"
+  import PlaygroundSpaceButton from "./playground-space-button.svelte"
+  import Logo from "$lib/images/logo.svg"
 
-  export let bases: IBaseDTO[]
+  type Props = {
+    bases: IBaseDTO[]
+    isLoggedIn: boolean
+  }
 
-  $: baseId = $page.params.baseId
-  $: selectedBase = bases.find((base) => base.id === baseId)
-  $: selectedValue = selectedBase ? { value: selectedBase.id, label: selectedBase.name } : undefined
+  let { bases, isLoggedIn }: Props = $props()
+
+  let baseId = $derived($page.params.baseId)
+  let selectedBase = $derived(bases.find((base) => base.id === baseId))
+  let selectedValue = $derived(selectedBase ? { value: selectedBase.id, label: selectedBase.name } : undefined)
 </script>
 
-<div class="flex items-center gap-2 border-b p-2">
-  <Select.Root
+<div class="flex items-center justify-between gap-2 border-b p-2">
+  <!-- <Select.Root
     selected={selectedValue}
     onSelectedChange={async (v) => {
       if (v) {
@@ -44,73 +48,80 @@
         </Select.Item>
       {/each}
     </Select.Content>
-  </Select.Root>
+  </Select.Root> -->
 
-  <div class="flex items-center gap-0">
-    <Button
-      size="xs"
-      variant="outline"
-      class="rounded-r-none"
-      on:click={() => {
-        openModal(IMPORT_TEMPLATE_MODAL)
-      }}
-    >
-      <ImportIcon class="mr-2 h-3 w-3" />
-      {$LL.base.importFromTemplate()}
-    </Button>
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild let:builder>
-        <Button builders={[builder]} size="xs" variant="outline" class="rounded-l-none border-l-0">
-          <ChevronDownIcon class="h-3 w-3" />
-        </Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content class="w-40">
-        <DropdownMenu.Group>
-          <DropdownMenu.Item
-            class="text-xs"
-            on:click={() => {
-              openModal(CREATE_BASE_MODAL)
-            }}
-          >
-            <CirclePlusIcon class="mr-2 h-3 w-3" />
-            {$LL.base.createBase()}
-          </DropdownMenu.Item>
-        </DropdownMenu.Group>
-      </DropdownMenu.Content>
-    </DropdownMenu.Root>
+  <div class="flex items-center gap-2">
+    <img src={Logo} alt="" class="h-4 w-4 rounded-full" />
+       <div class="flex items-center gap-0">
+      <Button
+        size="xs"
+        variant="outline"
+        class="rounded-r-none"
+        on:click={() => {
+          openModal(IMPORT_TEMPLATE_MODAL)
+        }}
+      >
+        <ImportIcon class="mr-2 h-3 w-3" />
+        {$LL.base.importFromTemplate()}
+      </Button>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger asChild let:builder>
+          <Button builders={[builder]} size="xs" variant="outline" class="rounded-l-none border-l-0">
+            <ChevronDownIcon class="h-3 w-3" />
+          </Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content class="w-40">
+          <DropdownMenu.Group>
+            <DropdownMenu.Item
+              class="text-xs"
+              on:click={() => {
+                openModal(CREATE_BASE_MODAL)
+              }}
+            >
+              <CirclePlusIcon class="mr-2 h-3 w-3" />
+              {$LL.base.createBase()}
+            </DropdownMenu.Item>
+          </DropdownMenu.Group>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+    </div>
+
+    <div class="flex items-center gap-0">
+      <Button
+        size="xs"
+        variant="outline"
+        class="rounded-r-none"
+        on:click={() => {
+          openModal(IMPORT_TABLE_MODAL)
+        }}
+      >
+        <ImportIcon class="mr-2 h-3 w-3" />
+        {$LL.table.common.import()}
+      </Button>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger asChild let:builder>
+          <Button builders={[builder]} size="xs" variant="outline" class="rounded-l-none border-l-0">
+            <ChevronDownIcon class="h-3 w-3" />
+          </Button>
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content class="w-40">
+          <DropdownMenu.Group>
+            <DropdownMenu.Item
+              class="text-xs"
+              on:click={() => {
+                openModal(CREATE_TABLE_MODAL)
+              }}
+            >
+              <CirclePlusIcon class="mr-2 h-3 w-3" />
+              {$LL.table.common.create()}
+            </DropdownMenu.Item>
+          </DropdownMenu.Group>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+    </div>
   </div>
 
-  <div class="flex items-center gap-0">
-    <Button
-      size="xs"
-      variant="outline"
-      class="rounded-r-none"
-      on:click={() => {
-        openModal(IMPORT_TABLE_MODAL)
-      }}
-    >
-      <ImportIcon class="mr-2 h-3 w-3" />
-      {$LL.table.common.import()}
-    </Button>
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild let:builder>
-        <Button builders={[builder]} size="xs" variant="outline" class="rounded-l-none border-l-0">
-          <ChevronDownIcon class="h-3 w-3" />
-        </Button>
-      </DropdownMenu.Trigger>
-      <DropdownMenu.Content class="w-40">
-        <DropdownMenu.Group>
-          <DropdownMenu.Item
-            class="text-xs"
-            on:click={() => {
-              openModal(CREATE_TABLE_MODAL)
-            }}
-          >
-            <CirclePlusIcon class="mr-2 h-3 w-3" />
-            {$LL.table.common.create()}
-          </DropdownMenu.Item>
-        </DropdownMenu.Group>
-      </DropdownMenu.Content>
-    </DropdownMenu.Root>
+  <div class="flex items-center gap-2">
+    <PlaygroundSpaceButton size="xs" {isLoggedIn} />
   </div>
 </div>
