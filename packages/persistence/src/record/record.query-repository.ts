@@ -1,6 +1,6 @@
-import { injectContext, type IContext } from "@undb/context"
-import { inject, singleton } from "@undb/di"
-import { None, Option, Some, type PaginatedDTO } from "@undb/domain"
+import { injectContext,type IContext } from "@undb/context"
+import { inject,singleton } from "@undb/di"
+import { None,Option,Some,type PaginatedDTO } from "@undb/domain"
 import {
   AUTO_INCREMENT_TYPE,
   ID_TYPE,
@@ -26,7 +26,7 @@ import {
   type ViewId,
 } from "@undb/table"
 import { getTableName } from "drizzle-orm"
-import { sql, type AliasedExpression, type Expression, type ExpressionBuilder } from "kysely"
+import { sql,type AliasedExpression,type Expression,type ExpressionBuilder } from "kysely"
 import { injectQueryBuilder } from "../qb.provider"
 import type { IRecordQueryBuilder } from "../qb.type"
 import { users } from "../tables"
@@ -304,17 +304,15 @@ export class RecordQueryRepository implements IRecordQueryRepository {
           if (!fieldAggregate) {
             continue
           }
+          if (fieldAggregate === "count") {
+            const builder = new AggregateFnBuiler(t, eb, undefined, fieldAggregate)
+            ebs.push(builder.build())
+            continue
+          }
           if (!selectFields.some((f) => f.id.value === fieldId)) {
             continue
           }
           const field = table.schema.fieldMapById.get(fieldId)
-          if (!field) {
-            if (fieldAggregate === "count") {
-              const builder = new AggregateFnBuiler(t, eb, undefined, fieldAggregate)
-              ebs.push(builder.build())
-              continue
-            }
-          }
           const builder = new AggregateFnBuiler(t, eb, field, fieldAggregate)
           ebs.push(builder.build())
         }

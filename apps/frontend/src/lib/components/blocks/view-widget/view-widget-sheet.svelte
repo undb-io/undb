@@ -6,32 +6,20 @@
   import { getTable } from "$lib/store/table.store"
   import { derived, type Readable } from "svelte/store"
   import { PlusIcon } from "lucide-svelte"
-  import { createMutation } from "@tanstack/svelte-query"
-  import { trpc } from "$lib/trpc/client"
   import CreateViewWidgetForm from "../widget/create-view-widget-form.svelte"
   import Widget from "../widget/widget.svelte"
-  import { toast } from "svelte-sonner"
   import { onMount } from "svelte"
-  import Sortable from "sortablejs"
   import { LL } from "@undb/i18n/client"
 
   let table = getTable()
   export let viewId: Readable<string | undefined>
   export let shareId: string | undefined = undefined
+  export let readonly = false
 
   let view = derived([table, viewId], ([$table, $viewId]) => $table?.views.getViewById($viewId))
   let widgets = derived([view], ([$view]) => ($view?.widgets.unwrapOr([]) ?? []).map((w) => w.toJSON()))
 
-  const createViewWidgetMutation = createMutation({
-    mutationFn: trpc.table.view.widget.create.mutate,
-    onError(error, variables, context) {
-      toast.error(error.message)
-    },
-  })
-
   let open = false
-
-  let widgetsContainer: HTMLElement
 
   onMount(() => {
     // if (widgetsContainer) {
@@ -82,7 +70,7 @@
         <p class="text-muted-foreground text-sm">{$LL.table.view.widget.empty()}</p>
       </div>
     {/if}
-    {#if !shareId}
+    {#if !shareId && !readonly}
       <Popover.Root bind:open>
         <Popover.Trigger asChild let:builder>
           <Button size="sm" class="w-full" builders={[builder]} variant={$widgets.length ? "outline" : "default"}>

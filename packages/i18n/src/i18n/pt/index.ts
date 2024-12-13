@@ -475,6 +475,7 @@ const view = {
     selectField: 'Selecionar um campo para pivotar...'
   },
   create: 'Criar Visualização',
+  created: 'Visualização criada com sucesso',
   type: 'Tipo de Visualização',
   updated: 'Visualização atualizada',
   updateName: 'Atualizar Nome da Visualização',
@@ -509,6 +510,7 @@ const dashboard = {
 const base = {
   name: 'Nome da Base',
   createBase: 'Criar Nova Base',
+  created: 'Base criada com sucesso',
   importFromTemplate: 'Importar do Modelo',
   displayName: 'Nome de Exibição da Base',
   noBases: 'Nenhuma Base',
@@ -526,6 +528,7 @@ const base = {
 }
 
 const space = {
+  space: 'Espaço',
   spaces: 'Espaços',
   name: "Nome do Espaço",
   setDisplayName: 'Definir Nome de Exibição',
@@ -621,8 +624,16 @@ const events = {
 }
 
 const template = {
+  template: 'Modelo',
+  useThisTemplate: 'Usar este modelo',
+  previewTemplate: 'Visualizar modelo',
+  getStarted: 'Começar com este modelo',
+  whichSpace: 'Em qual espaço?',
+  whichSpaceDescription: "Você pode criar uma nova base ou uma nova tabela em um espaço selecionado.",
   createBase: 'Criar Nova Base',
-  selectATemplateToCreateABase: 'Selecione um modelo para criar uma nova base'
+  selectATemplateToCreateABase: 'Selecione um modelo para criar uma nova base',
+  includeDataDescription: 'Incluir dados do modelo na nova base ou tabela.',
+  loginToCreateNewBaseOrTable: 'Faça login para criar uma nova base ou tabela'
 }
 
 const auth = {
@@ -655,7 +666,13 @@ const auth = {
   enterYourWorkEmail: 'Digite seu email de trabalho...',
 }
 
+const playground = {
+  playgroundMode: 'Modo de teste',
+  playgroundModeDescription: 'Você está no modo de teste, todos os seus dados serão perdidos após você fechar ou atualizar a página.'
+}
+
 const pt = {
+  playground,
   auth,
   template,
   setting,
@@ -682,8 +699,17 @@ const pt = {
     aggregate,
     schema,
     events,
+    import: {
+      importFile: 'Importar arquivo...',
+      firstRowAsHeader: 'Primeira linha como cabeçalho',
+      importData: 'Importar dados',
+      fieldsSelected: '{count} campos selecionados',
+      configField: 'Configurar campo',
+      nextStep: 'Próximo passo',
+    },
   },
   common: {
+    back: 'Voltar',
     error: 'Erro',
     duplicate: 'Duplicar',
     description: 'Descrição',
@@ -720,7 +746,8 @@ const pt = {
     today: 'Hoje',
     clear: 'Limpar',
     updated: 'Atualizado',
-    now: 'Agora'
+    now: 'Agora',
+    import: 'Importar'
   },
   share: {
     title: 'Compartilhar',

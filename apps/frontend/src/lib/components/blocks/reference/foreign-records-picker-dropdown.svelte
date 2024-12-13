@@ -8,7 +8,7 @@
   import { type Writable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
   import { createQuery } from "@tanstack/svelte-query"
-  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let isSelected = false
 
@@ -26,11 +26,11 @@
 
   let open = false
 
-  const isLocal = getIsLocal()
+  const dataService = getDataService()
+
   const getForeignTable = createQuery({
     queryKey: ["foreignTable", foreignTableId, open],
     queryFn: async () => {
-      const dataService = await getDataService(isLocal)
       return dataService.table.getTable({ tableId: foreignTableId })
     },
   })

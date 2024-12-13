@@ -7,8 +7,6 @@
   import { goto } from "$app/navigation"
   import { page } from "$app/stores"
   import { shortcut, type ShortcutEventDetail } from "@svelte-put/shortcut"
-  import { ScrollArea } from "$lib/components/ui/scroll-area/index.js"
-  import { CREATE_TABLE_MODAL, toggleModal } from "$lib/store/modal.store"
   import Command from "$lib/components/blocks/command/command.svelte"
   import { role } from "$lib/store/space-member.store"
   import { baseId, bases as basesStore } from "$lib/store/base.store"
@@ -138,7 +136,7 @@
 {/await}
 
 {#await import("$lib/components/blocks/dashboard/create-dashboard-dialog.svelte") then { default: CreateDashboardDialog }}
-  <CreateDashboardDialog />
+  <CreateDashboardDialog dashboardNames={[]} />
 {/await}
 
 <Command tables={$tables} />

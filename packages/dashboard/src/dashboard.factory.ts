@@ -28,7 +28,7 @@ export class DashboardFactory {
       new WithDashboardSpaceId(dto.spaceId),
       new DashboardBaseIdSpecification(dto.baseId),
       WithDashboardWidgets.from(dto.widgets || []),
-      new WithDashboardLayout(dto.layout),
+      new WithDashboardLayout(dto.layout ?? {}),
       WithDashboardDescription.fromString(dto.description),
     )
   }
@@ -40,7 +40,7 @@ export class DashboardFactory {
       new WithDashboardSpaceId(input.spaceId),
       new DashboardBaseIdSpecification(input.baseId!),
       WithDashboardWidgets.from(input.widgets || []),
-      new WithDashboardLayout(input.layout),
+      WithDashboardLayout.create(input.widgets || [], input.layout),
       WithDashboardDescription.fromString(input.description),
     )
 

@@ -45,7 +45,9 @@
   import SelectKanbanCollapsedLane from "./select-kanban-collapsed-lane.svelte"
   import { queryParam } from "sveltekit-search-params"
   import { LL } from "@undb/i18n/client"
-  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
+  import { getDataService } from "$lib/store/data-service.store"
+  import { type IUpdateRecordCommand } from "@undb/commands"
+  import { type IUpdateFieldCommand } from "@undb/commands"
 
   const table = getTable()
   const recordsStore = getRecordsStore()
@@ -68,7 +70,7 @@
   let getIsLaneCollapsed = kanbanStore.getIsLaneCollapsed
   $: isLaneCollapsed = $viewId ? ($getIsLaneCollapsed($viewId, option?.id ?? "") ?? false) : false
 
-  const isLocal = getIsLocal()
+  const dataService = getDataService()
 
   const query = createInfiniteQuery(
     derived([table, viewId, q], ([$table, $viewId, $q]) => {
@@ -76,7 +78,6 @@
       return {
         queryKey: ["records", $table.id.value, $viewId, fieldId, option?.id, $q],
         queryFn: async ({ pageParam = 1 }) => {
-          const dataService = await getDataService(isLocal)
           if (shareId) {
             return trpc.shareData.records.getRecords({
               shareId,
@@ -130,14 +131,14 @@
   const spec = Some(new SelectEqual(option?.id ?? null, new FieldIdVo(fieldId)))
 
   const updateRecord = createMutation({
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: dataService.records.updateRecord,
     onError: (error, variables, context) => {
       toast.error(error.message)
     },
   })
 
   const updateFieldMutation = createMutation({
-    mutationFn: trpc.table.field.update.mutate,
+    mutationFn: dataService.table.field.updateField,
     onSuccess: async (data, variables, context) => {
       toast.success("Option updated")
       updateOptionDialogOpen = false

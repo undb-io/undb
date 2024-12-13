@@ -8,6 +8,7 @@
   import { cn } from "$lib/utils"
   import { LL } from "@undb/i18n/client"
   import { getIsLocal } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
 
   const table = getTable()
 
@@ -24,7 +25,7 @@
   export let r: Writable<string | null>
 
   const isLocal = getIsLocal()
-
+  const isPlayground = getIsPlayground()
   $: selected = writable<string[]>(value)
 
   let hasValue = Array.isArray(value) && value.length > 0
@@ -40,7 +41,7 @@
 
   function onSuccess(id?: string) {
     if (id) {
-      recordStore?.invalidateRecord(isLocal, $table, id, $viewId)
+      recordStore?.invalidateRecord(isLocal, isPlayground, $table, id, $viewId)
     }
   }
 </script>
@@ -70,7 +71,7 @@
           <Button size="xs" variant="link" class="px-0" builders={[builder]}>
             {$LL.table.record.reference.linked({ n: $selected.length })}
           </Button>
-        {:else}
+        {:else if !readonly}
           <Button size="xs" variant="link" type="button" class="text-muted-foreground px-0" builders={[builder]}
             >+ {$LL.table.record.reference.link()}</Button
           >

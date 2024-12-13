@@ -1,24 +1,10 @@
-import type { Dashboard } from "@undb/dashboard"
+import { COLS, type Dashboard, type WidgetDataItem } from "@undb/dashboard"
 import { WidgetIdVo, type IWidgetDTO, type IWidgetType } from "@undb/table"
 import { writable } from "svelte/store"
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import gridHelp from "svelte-grid/build/helper/index.mjs"
-
-export const COLS = 24
-
-export interface WidgetDataItem {
-  [key: number]: {
-    x: number
-    y: number
-    h: number
-    w: number
-  }
-  id: string
-  tableId: string | undefined
-  widget: IWidgetDTO | null
-}
 
 export const createWidgetItems = (dashboard: Dashboard) => {
   const { subscribe, set, update } = writable<WidgetDataItem[]>([])

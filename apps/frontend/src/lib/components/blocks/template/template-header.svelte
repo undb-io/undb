@@ -15,6 +15,7 @@
   import * as Form from "$lib/components/ui/form/index.js"
   import { goto, invalidate } from "$app/navigation"
   import LoginOrSignup from "../auth/login-or-signup.svelte"
+  import { LL } from "@undb/i18n/client"
 
   export let template: ITemplateDTO
   export let me: any
@@ -88,10 +89,10 @@
 </script>
 
 <header class="flex items-center justify-between border-b px-4 py-2">
-  <div class="flex items-center gap-2">
+  <a href="/" class="flex items-center gap-2">
     <img src={Logo} alt="undb" class="size-4" />
-    <span class="text-sm font-medium"> Undb Template </span>
-  </div>
+    <span class="text-sm font-medium"> Undb {$LL.template.template()} </span>
+  </a>
 
   {#if me}
     <Dialog.Root
@@ -103,18 +104,18 @@
       }}
     >
       <Dialog.Trigger asChild let:builder>
-        <Button size="sm" builders={[builder]}>Get started with this template</Button>
+        <Button size="sm" builders={[builder]}>{$LL.template.getStarted()}</Button>
       </Dialog.Trigger>
       <Dialog.Content>
         <Dialog.Header>
-          <Dialog.Title>Which space do you want to create this template in?</Dialog.Title>
-          <Dialog.Description>You can create a new base or a new table in the selected space.</Dialog.Description>
+          <Dialog.Title>{$LL.template.whichSpace()}</Dialog.Title>
+          <Dialog.Description>{$LL.template.whichSpaceDescription()}</Dialog.Description>
         </Dialog.Header>
 
         <form method="POST" use:enhance>
           <Form.Field {form} name="spaceId">
             <Form.Control let:attrs>
-              <Form.Label>Space</Form.Label>
+              <Form.Label>{$LL.space.space()}</Form.Label>
 
               <Select.Root
                 selected={selectedSpace}
@@ -123,7 +124,7 @@
                 }}
               >
                 <Select.Trigger class="w-full">
-                  <Select.Value placeholder="Space" />
+                  <Select.Value placeholder={$LL.space.space()} />
                 </Select.Trigger>
                 <Select.Content sameWidth>
                   {#each items as item}
@@ -133,9 +134,7 @@
               </Select.Root>
               <input hidden bind:value={$formData.spaceId} name={attrs.name} />
             </Form.Control>
-            <Form.Description
-              >Select a space to create a new base or a new table in the selected space.</Form.Description
-            >
+            <Form.Description>{$LL.template.selectATemplateToCreateABase()}</Form.Description>
             <Form.FieldErrors />
           </Form.Field>
 
@@ -147,8 +146,8 @@
             <Form.Control let:attrs>
               <Checkbox {...attrs} bind:checked={$formData.includeData} />
               <div class="space-y-1 leading-none">
-                <Form.Label>Include data</Form.Label>
-                <Form.Description>Include data from the template to the new base or table.</Form.Description>
+                <Form.Label>{$LL.table.record.includeData()}</Form.Label>
+                <Form.Description>{$LL.template.includeDataDescription()}</Form.Description>
               </div>
               <input name={attrs.name} value={$formData.includeData} hidden />
             </Form.Control>
@@ -158,14 +157,14 @@
             {#if $createFromTemplate.isPending}
               <LoaderCircleIcon class="mr-2 size-4 animate-spin" />
             {/if}
-            Import
+            {$LL.common.import()}
           </Form.Button>
         </form>
       </Dialog.Content>
     </Dialog.Root>
   {:else}
     <Button href={`/login?redirect=${encodeURIComponent(`/templates/${template.id}`)}`}
-      >Login to create a new base or table</Button
+      >{$LL.template.loginToCreateNewBaseOrTable()}</Button
     >
   {/if}
 </header>

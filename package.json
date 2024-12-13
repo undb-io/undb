@@ -1,6 +1,6 @@
 {
   "name": "undb",
-  "version": "1.0.0-133",
+  "version": "1.0.0-134",
   "private": true,
   "scripts": {
     "build": "NODE_ENV=production bun --bun turbo build",
@@ -20,14 +20,17 @@
     "migrate:db": "drizzle-kit push --config drizzle.config.ts",
     "move-assets": "bun run ./scripts/move-assets.ts",
     "migrate:deploy": "bun run ./scripts/migrate.ts",
-    "prepare": "husky || echo 1"
+    "prepare": "husky || echo 1",
+    "clean:root": "bunx rimraf node_modules",
+    "clean:turbo": "turbo clean",
+    "clean": "run-p clean:*"
   },
   "devDependencies": {
-    "drizzle-kit": "^0.28.1",
+    "drizzle-kit": "^0.30.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.2.10",
     "npm-run-all2": "^7.0.1",
-    "prettier": "^3.4.1",
+    "prettier": "^3.4.2",
     "turbo": "^2.3.3"
   },
   "lint-staged": {
@@ -36,7 +39,7 @@
   "engines": {
     "node": ">=18"
   },
-  "packageManager": "bun@1.1.37",
+  "packageManager": "bun@1.1.38",
   "workspaces": [
     "apps/*",
     "packages/*"

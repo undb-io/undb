@@ -5,6 +5,7 @@
   import { createMutation } from "@tanstack/svelte-query"
   import type { CheckboxField } from "@undb/table"
   import { toast } from "svelte-sonner"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let tableId: string
   export let field: CheckboxField
@@ -13,9 +14,11 @@
   export let readonly = false
   export let onValueChange: (value: boolean) => void
 
+  const dataService = getDataService()
+
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: dataService.records.updateRecord,
     onError(error: Error) {
       toast.error(error.message)
     },

@@ -477,6 +477,7 @@ const webhook = {
       selectField: 'Select a field to pivot...'
     },
     create: 'Create View',
+    created: 'View created successfully',
     type: 'View Type',
     updated: 'View updated',
     updateName: 'Update View Name',
@@ -511,6 +512,7 @@ const webhook = {
   const base = {
     name: 'Base Name',
     createBase: 'Create New Base',
+    created: 'Base created successfully',
     importFromTemplate: 'Import From Template',
     displayName: 'Base Display Name',
     noBases: 'No Bases',
@@ -528,6 +530,7 @@ const webhook = {
   }
 
   const space = {
+    space: 'Space',
     spaces: 'Spaces',
     name: "Space Name",
     setDisplayName: 'Set Display Name',
@@ -623,8 +626,16 @@ const webhook = {
   }
 
   const template = {
+    template: 'Template',
+    useThisTemplate: 'Use this template',
+    previewTemplate: 'Preview Template',
+    getStarted: 'Get Started with this template',
+    whichSpace: "Which space do you want to create this template in?",
+   whichSpaceDescription: "You can create a new base or a new table in the selected space.",
     createBase: 'Create New Base',
-    selectATemplateToCreateABase: 'Select a template to create a new base'
+    selectATemplateToCreateABase: 'Select a template to create a new base',
+    includeDataDescription: 'Include data from the template to the new base or table.',
+    loginToCreateNewBaseOrTable: 'Login to create a new base or table'
   }
 
   const auth = {
@@ -657,7 +668,13 @@ const webhook = {
     enterYourWorkEmail: 'Enter your work email...',
   }
 
+  const playground = {
+    playgroundMode: 'Playground Mode',
+    playgroundModeDescription: 'You are in playground mode, all changes will be lost after you close or refresh the page.'
+  }
+
 const en = {
+  playground,
   auth,
   template,
   setting,
@@ -684,8 +701,17 @@ const en = {
     aggregate,
     schema,
     events,
+    import: {
+      importFile: 'Import File...',
+      firstRowAsHeader: 'First row as header',
+      importData: 'Import Data',
+      fieldsSelected: '{count} fields selected',
+      configField: 'Config Field',
+      nextStep: 'Next step',
+    },
   },
   common: {
+    back: 'Back',
     error: 'Error',
     duplicate: 'Duplicate',
     description: 'Description',
@@ -722,7 +748,8 @@ const en = {
       today: 'Today',
       clear: 'Clear',
       updated: 'Updated',
-      now: 'Now'
+      now: 'Now',
+      import: 'Import'
   },
   share: {
     title: 'Share',

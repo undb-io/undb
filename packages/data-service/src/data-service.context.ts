@@ -7,6 +7,7 @@ import {
   type ITxContext,
   type Tx,
 } from "@undb/persistence/client"
+import { DEFAULT_TEMP_SPACE_ID } from "@undb/space"
 
 @singleton()
 export class DataServicetTxContext implements ITxContext {
@@ -34,7 +35,7 @@ export class DataServicetTxContext implements ITxContext {
 export class DataServiceContext implements IContext {
   setContextValue: SetContextValue = () => {}
   mustGetCurrentSpaceId(): string {
-    return "space1"
+    return DEFAULT_TEMP_SPACE_ID
   }
   mustGetCurrentUser(): ContextUser {
     return {
@@ -51,7 +52,7 @@ export class DataServiceContext implements IContext {
   getCurrentMember(): ContextMember {
     return {
       role: "owner",
-      spaceId: "space1",
+      spaceId: DEFAULT_TEMP_SPACE_ID,
     }
   }
   getCurrentRole(): string {

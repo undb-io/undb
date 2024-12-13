@@ -1,9 +1,19 @@
 <script lang="ts">
   import * as Sheet from "$lib/components/ui/sheet"
-  import { IMPORT_TEMPLATE_MODAL, isModalOpen, closeModal } from "$lib/store/modal.store"
+  import { IMPORT_TEMPLATE_MODAL, isModalOpen, closeModal, openModal } from "$lib/store/modal.store"
   import { PackageIcon } from "lucide-svelte"
   import TemplateList from "./template-list.svelte"
   import { LL } from "@undb/i18n/client"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { onMount } from "svelte"
+
+  let isPlayground = getIsPlayground()
+
+  onMount(() => {
+    if (isPlayground) {
+      openModal(IMPORT_TEMPLATE_MODAL)
+    }
+  })
 </script>
 
 <Sheet.Root

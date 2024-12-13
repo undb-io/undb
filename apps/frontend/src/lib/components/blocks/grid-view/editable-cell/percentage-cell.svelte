@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { trpc } from "$lib/trpc/client"
   import { cn } from "$lib/utils"
   import { createMutation } from "@tanstack/svelte-query"
   import { NumberField } from "@undb/table"
@@ -8,6 +7,7 @@
   import { gridViewStore } from "../grid-view.store"
   import { Slider } from "$lib/components/ui/slider"
   import * as Tooltip from "$lib/components/ui/tooltip"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let tableId: string
   export let field: NumberField
@@ -16,9 +16,11 @@
   export let recordId: string
   export let onValueChange: (value: number) => void
 
+  const dataService = getDataService()
+
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: dataService.records.updateRecord,
     onSuccess(data, variables, context) {
       el?.blur()
       gridViewStore.exitEditing()

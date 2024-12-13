@@ -1142,6 +1142,22 @@
                 }
               }
             }
+          },
+          "Total Salary": {
+            "tableName": "Employees",
+            "widget": {
+              "id": "total_salary",
+              "name": "Total Salary",
+              "item": {
+                "type": "aggregate",
+                "aggregate": {
+                  "type": "sum",
+                  "config": {
+                    "field": "salary"
+                  }
+                }
+              }
+            }
           }
         }
       }

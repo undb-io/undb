@@ -21,13 +21,14 @@
   import * as Form from "$lib/components/ui/form"
   import * as Alert from "$lib/components/ui/alert/index.js"
   import { PencilIcon } from "lucide-svelte"
-  import type { IBulkUpdateRecordsCommandOutput } from "@undb/commands"
+  import type { IBulkUpdateRecordsCommand, IBulkUpdateRecordsCommandOutput } from "@undb/commands"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { writable, type Writable } from "svelte/store"
   import autoAnimate from "@formkit/auto-animate"
   import type { Readable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
+  import { getDataService } from "$lib/store/data-service.store"
 
   const table = getTable()
   export let viewId: Readable<string | undefined>
@@ -46,8 +47,12 @@
 
   const client = useQueryClient()
 
+  const dataService = getDataService()
+
   const updateRecordMutation = createMutation({
-    mutationFn: trpc.record.bulkUpdate.mutate,
+    mutationFn: async (command: IBulkUpdateRecordsCommand) => {
+      return dataService.records.updateRecords(command)
+    },
     onSuccess: async (data) => {
       if (!data.modifiedCount) {
         toast.warning($LL.table.record.bulkUpdate.noRecordsUpdated())

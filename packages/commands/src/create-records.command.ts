@@ -11,6 +11,10 @@ export const createRecordsCommand = z
 
 export type ICreateRecordsCommand = z.infer<typeof createRecordsCommand>
 
+export const createRecordsCommandOutput = z.void()
+
+export type ICreateRecordsCommandOutput = z.infer<typeof createRecordsCommandOutput>
+
 export class CreateRecordsCommand extends Command implements ICreateRecordsCommand {
   public readonly tableId?: string
   public readonly tableName?: string

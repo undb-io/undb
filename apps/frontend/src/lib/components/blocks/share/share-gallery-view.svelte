@@ -10,5 +10,5 @@
 <GalleryView {shareId} {viewId} {r} />
 
 {#await import("$lib/components/blocks/view-widget/view-widget-sheet.svelte") then { default: ViewWidgetSheet }}
-  <ViewWidgetSheet {viewId} {shareId} />
+  <ViewWidgetSheet {viewId} {shareId} readonly />
 {/await}

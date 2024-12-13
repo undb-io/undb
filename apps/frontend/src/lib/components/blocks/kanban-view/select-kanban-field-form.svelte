@@ -6,13 +6,13 @@
   import { defaults, superForm } from "sveltekit-superforms"
   import { zodClient } from "sveltekit-superforms/adapters"
   import CreateFieldButton from "../create-field/create-field-button.svelte"
-  import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
   import { invalidate } from "$app/navigation"
   import { hasPermission } from "$lib/store/space-member.store"
   import { CircleCheckBigIcon } from "lucide-svelte"
   import { LL } from "@undb/i18n/client"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let readonly = false
 
@@ -49,8 +49,10 @@
 
   const { enhance, form: formData } = form
 
+  const dataService = getDataService()
+
   const updateViewMutation = createMutation({
-    mutationFn: trpc.table.view.update.mutate,
+    mutationFn: dataService.table.view.updateView,
     mutationKey: ["updateView"],
     async onSuccess(data, variables, context) {
       toast.success($LL.table.view.updated())

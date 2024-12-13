@@ -8,7 +8,9 @@
   import { getTable } from "$lib/store/table.store"
   import { gridViewStore } from "../grid-view/grid-view.store"
   import { getRecordsStore } from "$lib/store/records.store"
-  import { getIsLocal } from "$lib/store/data-service.store"
+  import { getDataService, getIsLocal } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { type IUpdateRecordCommand } from "@undb/commands"
 
   export let tableId: string
   export let field: ButtonField
@@ -20,14 +22,17 @@
   const client = useQueryClient()
   const recordsStore = getRecordsStore()
 
+  const dataService = getDataService()
+
   const isLocal = getIsLocal()
+  const isPlayground = getIsPlayground()
 
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: dataService.records.updateRecord,
     async onSuccess(data, variables, context) {
       gridViewStore.exitEditing()
-      await recordsStore?.invalidateRecord(isLocal, $table, recordId)
+      await recordsStore?.invalidateRecord(isLocal, isPlayground, $table, recordId)
       await client.invalidateQueries({ queryKey: [recordId, "get"] })
     },
     onError(error: Error) {

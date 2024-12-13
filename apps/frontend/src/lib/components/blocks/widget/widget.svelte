@@ -16,8 +16,7 @@
   import { getDashboard, getDashboardWidgetItemsStore, getIsDashboard } from "$lib/store/dashboard.store"
   import { cn } from "$lib/utils"
   import { GripVerticalIcon, ChevronRightIcon, CopyIcon } from "lucide-svelte"
-  import { COLS } from "$lib/store/widget.store"
-  import { DashboardLayouts } from "@undb/dashboard"
+  import { COLS, DashboardLayouts } from "@undb/dashboard"
   import { LL } from "@undb/i18n/client"
 
   export let tableId: string | undefined
@@ -27,6 +26,7 @@
   export let viewId: string | undefined = undefined
   export let ignoreView: boolean = false
   export let shareId: string | undefined = undefined
+  export let readonly = false
 
   export let movePointerDown: ((e: Event) => void) | undefined = undefined
   export let resizePointerDown: ((e: Event) => void) | undefined = undefined
@@ -100,7 +100,7 @@
 <div class={cn("group flex h-full w-full flex-col rounded-sm border", $$restProps.class)}>
   <div class="flex items-center justify-between p-2">
     <div class="flex items-center gap-0.5">
-      {#if movePointerDown && !shareId}
+      {#if movePointerDown && !shareId && !readonly}
         <button on:pointerdown={movePointerDown}>
           <GripVerticalIcon
             class="text-muted-foreground size-4 cursor-grab opacity-0 group-hover:block group-hover:opacity-100 dark:text-gray-200"
@@ -109,7 +109,7 @@
       {/if}
       <span class="text-sm font-bold">{widget.name}</span>
     </div>
-    {#if !shareId}
+    {#if !shareId && !readonly}
       <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100">
         <Dialog.Root bind:open portal="body">
           <Dialog.Trigger>
@@ -144,6 +144,7 @@
                     {viewId}
                     {shareId}
                     {ignoreView}
+                    {readonly}
                     aggregate={widget.item.aggregate}
                     class="h-full text-[6rem]"
                   />
@@ -169,31 +170,33 @@
           </Dialog.Content>
         </Dialog.Root>
 
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger>
-            <EllipsisIcon class="size-3" />
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content>
-            <DropdownMenu.Item
-              class="text-xs"
-              on:click={() => {
-                open = true
-                editing = true
-              }}
-            >
-              <PencilIcon class="mr-2 size-3" />
-              {$LL.widget.editName()}
-            </DropdownMenu.Item>
-            <DropdownMenu.Item class="text-xs" on:click={() => (confirmDuplicate = true)}>
-              <CopyIcon class="mr-2 size-3" />
-              {$LL.widget.duplicate(widget.name)}
-            </DropdownMenu.Item>
-            <DropdownMenu.Item class="text-xs" on:click={() => (confirmDelete = true)}>
-              <TrashIcon class="mr-2 size-3" />
-              {$LL.widget.delete(widget.name)}
-            </DropdownMenu.Item>
-          </DropdownMenu.Content>
-        </DropdownMenu.Root>
+        {#if !readonly}
+          <DropdownMenu.Root>
+            <DropdownMenu.Trigger>
+              <EllipsisIcon class="size-3" />
+            </DropdownMenu.Trigger>
+            <DropdownMenu.Content>
+              <DropdownMenu.Item
+                class="text-xs"
+                on:click={() => {
+                  open = true
+                  editing = true
+                }}
+              >
+                <PencilIcon class="mr-2 size-3" />
+                {$LL.widget.editName()}
+              </DropdownMenu.Item>
+              <DropdownMenu.Item class="text-xs" on:click={() => (confirmDuplicate = true)}>
+                <CopyIcon class="mr-2 size-3" />
+                {$LL.widget.duplicate({ name: widget.name })}
+              </DropdownMenu.Item>
+              <DropdownMenu.Item class="text-xs" on:click={() => (confirmDelete = true)}>
+                <TrashIcon class="mr-2 size-3" />
+                {$LL.widget.delete({ name: widget.name })}
+              </DropdownMenu.Item>
+            </DropdownMenu.Content>
+          </DropdownMenu.Root>
+        {/if}
       </div>
     {/if}
   </div>
@@ -201,7 +204,7 @@
     <Aggregate {table} {tableId} {ignoreView} {widget} {viewId} {shareId} aggregate={widget.item.aggregate} />
   {/if}
 
-  {#if resizePointerDown && !shareId}
+  {#if resizePointerDown && !shareId && !readonly}
     <button on:pointerdown={resizePointerDown}>
       <ChevronRightIcon
         class="text-muted-foreground absolute bottom-0 right-0
@@ -215,7 +218,7 @@
 <AlertDialog.Root bind:open={confirmDelete}>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>{$LL.widget.deleteConfirm.title(widget.name)}</AlertDialog.Title>
+      <AlertDialog.Title>{$LL.widget.deleteConfirm.title({ name: widget.name })}</AlertDialog.Title>
       <AlertDialog.Description>
         {$LL.widget.deleteConfirm.description()}
       </AlertDialog.Description>
@@ -244,7 +247,7 @@
 <AlertDialog.Root bind:open={confirmDuplicate}>
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>{$LL.widget.duplicate(widget.name)}</AlertDialog.Title>
+      <AlertDialog.Title>{$LL.widget.duplicate({ name: widget.name })}</AlertDialog.Title>
     </AlertDialog.Header>
     <AlertDialog.Footer>
       <AlertDialog.Cancel>{$LL.common.cancel()}</AlertDialog.Cancel>

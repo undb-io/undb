@@ -19,7 +19,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "@asteasolutions/zod-to-openapi": "^7.2.0",
+    "@asteasolutions/zod-to-openapi": "^7.3.0",
     "@undb/base": "workspace:*",
     "@undb/di": "workspace:*",
     "@undb/domain": "workspace:*",

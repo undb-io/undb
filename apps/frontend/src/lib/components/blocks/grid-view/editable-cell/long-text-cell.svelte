@@ -8,6 +8,7 @@
   import { Maximize2Icon } from "lucide-svelte"
   import * as Dialog from "$lib/components/ui/dialog"
   import Tiptap from "$lib/components/tiptap/tiptap.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let tableId: string
   export let field: LongTextField
@@ -18,9 +19,11 @@
   export let readonly: boolean
   export let onValueChange: (value: string) => void
 
+  const dataService = getDataService()
+
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: dataService.records.updateRecord,
     onSuccess(data, variables, context) {
       el?.blur()
       open = false
@@ -81,6 +84,9 @@
             "focus-visible:ring-ring h-full w-full rounded-none border px-2 text-xs outline-none focus:bg-white",
           )}
           on:change={() => {
+            if (readonly) {
+              return
+            }
             $updateCell.mutate({
               tableId,
               id: recordId,
@@ -100,6 +106,9 @@
 <Dialog.Root
   bind:open
   onOpenChange={(open) => {
+    if (readonly) {
+      return
+    }
     if (!open) {
       $updateCell.mutate({
         tableId,

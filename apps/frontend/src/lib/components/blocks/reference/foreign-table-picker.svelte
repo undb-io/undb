@@ -7,33 +7,43 @@
   import { Button } from "$lib/components/ui/button/index.js"
   import { cn } from "$lib/utils.js"
   import { getTable } from "$lib/store/table.store"
-  import { GetForeignTablesStore, GetForeignTableStore } from "$houdini"
-  import { group } from "radash"
-  import { DatabaseIcon, ChevronRightIcon, ExternalLinkIcon } from "lucide-svelte"
+  import { DatabaseIcon, ExternalLinkIcon } from "lucide-svelte"
   import { LL } from "@undb/i18n/client"
+  import { getDataService } from "$lib/store/data-service.store"
+  import { createQuery } from "@tanstack/svelte-query"
 
   const table = getTable()
 
-  const getForeignTablesStore = new GetForeignTablesStore()
-  const getForeignTableStore = new GetForeignTableStore()
-
-  $: open && getForeignTablesStore.fetch()
-  $: foreignTables = $getForeignTablesStore.data?.tables.filter((t) => !!t) ?? []
-  $: groupTables = group(foreignTables, (t) => t.base?.id)
+  const dataService = getDataService()
 
   let open = false
   export let value: string | undefined = undefined
   export let disabled: boolean = false
 
-  $: foreignBase = $getForeignTableStore.data?.table?.base
+  const getForeignTable = createQuery({
+    queryFn: async () => {
+      return dataService.table.getTable({ tableId: value! })
+    },
+    queryKey: ["getForeignTable", value],
+    enabled: !!value,
+  })
 
-  $: selectedValue =
-    foreignTables.filter((f) => !!f).find((f) => f.id === value)?.name ?? $getForeignTableStore.data?.table?.name ?? ""
+  const getForeignTables = createQuery({
+    queryFn: async () => {
+      return dataService.table.getTables({})
+    },
+    queryKey: ["getForeignTables", $table.baseId],
+  })
+
+  $: open && $getForeignTables.refetch()
+  $: foreignTables = $getForeignTables.data?.filter((t) => !!t) ?? []
+
+  $: foreignTable = $getForeignTable.data
+
+  $: selectedValue = foreignTables.filter((f) => !!f).find((f) => f.id === value)?.name ?? foreignTable?.name ?? ""
   let fetched = false
   $: if (value && !selectedValue && !fetched) {
-    getForeignTableStore.fetch({ variables: { tableId: value } }).then(() => {
-      fetched = true
-    })
+    $getForeignTable.refetch()
   }
 
   // We want to refocus the trigger button when the user selects
@@ -61,10 +71,6 @@
       >
         {#if selectedValue}
           <span class="inline-flex items-center gap-1 truncate text-xs text-gray-700">
-            {#if foreignBase}
-              {foreignBase.name}
-              <ChevronRightIcon class="size-3 shrink-0 opacity-50" />
-            {/if}
             {selectedValue}
           </span>
         {:else}
@@ -73,7 +79,10 @@
         <CaretSort class="ml-2 h-4 w-4 shrink-0 opacity-50" />
       </Button>
       {#if value}
-        <a href={`/t/${value}`} class="text-muted-foreground">
+        <a
+          href={isPlayground ? `/playground/bases/${$table.baseId}/t/${value}` : `/t/${value}`}
+          class="text-muted-foreground"
+        >
           <ExternalLinkIcon class="mr-2 h-3 w-3" />
         </a>
       {/if}
@@ -88,38 +97,33 @@
     >
       <Command.Input placeholder={$LL.table.common.search()} class="h-9" />
       <Command.Empty>{$LL.table.common.noTablesFound()}</Command.Empty>
-      {#each Object.entries(groupTables) as [baseId, tables]}
-        {#if tables?.length}
-          {@const baseName = tables[0].base.name}
-          <Command.Group heading={baseName}>
-            {#each tables as t}
-              {#if t}
-                <Command.Item
-                  value={t.id}
-                  onSelect={(currentValue) => {
-                    value = currentValue
-                    closeAndFocusTrigger(ids.trigger)
-                  }}
-                  class="gap-2"
+      {#if foreignTables?.length}
+        {#each foreignTables as t}
+          {#if t}
+            <Command.Item
+              value={t.id}
+              onSelect={(currentValue) => {
+                value = currentValue
+                closeAndFocusTrigger(ids.trigger)
+              }}
+              class="gap-2"
+            >
+              <Check class={cn("h-4 w-4", value !== t.id && "text-transparent")} />
+              <span class="inline-flex items-center gap-2 truncate text-xs text-gray-700">
+                <DatabaseIcon class="h-4 w-4" />
+                {t.name}
+              </span>
+              {#if t.id === $table?.id.value}
+                <span
+                  class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10"
                 >
-                  <Check class={cn("h-4 w-4", value !== t.id && "text-transparent")} />
-                  <span class="inline-flex items-center gap-2 truncate text-xs text-gray-700">
-                    <DatabaseIcon class="h-4 w-4" />
-                    {t.name}
-                  </span>
-                  {#if t.id === $table?.id.value}
-                    <span
-                      class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10"
-                    >
-                      Current
-                    </span>
-                  {/if}
-                </Command.Item>
+                  Current
+                </span>
               {/if}
-            {/each}
-          </Command.Group>
-        {/if}
-      {/each}
+            </Command.Item>
+          {/if}
+        {/each}
+      {/if}
     </Command.Root>
   </Popover.Content>
 </Popover.Root>

@@ -5,6 +5,20 @@ import * as z from "@undb/zod"
 import type { IUpdateDashboardWidgetDTO } from "../dto/update-dashboard-widget.dto"
 import { WithDashboardWidgets, type DashboardComositeSpecification } from "../specifications"
 
+export interface IWidgetLayout {
+  x: number
+  y: number
+  h: number
+  w: number
+}
+
+export interface WidgetDataItem {
+  [key: number]: IWidgetLayout
+  id: string
+  tableId: string | undefined
+  widget: IWidgetDTO | null
+}
+
 export const dashboardWidgetSchema = z.object({
   table: z.object({
     id: tableId.optional(),
@@ -188,6 +202,10 @@ export class DashboardWidgets extends ValueObject<IDashboardWidgets> {
   }
 
   addWidget(table: TableDo, dto: IDashboardWidget): DashboardWidgets {
+    const value = this.value
+    if (value.some((w) => w.widget.id === dto.widget.id)) {
+      return new DashboardWidgets(value)
+    }
     const widget = DashboardWidget.from(table, dto.widget)
     return new DashboardWidgets([...this.value, widget.toJSON()])
   }

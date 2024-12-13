@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { GetTablesStore } from "$houdini"
   import Check from "svelte-radix/Check.svelte"
   import CaretSort from "svelte-radix/CaretSort.svelte"
   import { tick } from "svelte"
@@ -9,18 +8,27 @@
   import { cn } from "$lib/utils.js"
   import { DatabaseIcon } from "lucide-svelte"
   import { LL } from "@undb/i18n/client"
+  import { createQuery } from "@tanstack/svelte-query"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let value: string | undefined = undefined
   export let disabled: boolean = false
   export let baseId: string
 
-  $: selectedValue = tables.find((t) => t.id === value)?.name ?? ""
+  const dataService = getDataService()
 
-  const store = new GetTablesStore()
+  const getTables = createQuery({
+    queryFn: async () => {
+      return dataService.table.getTables({ baseId })
+    },
+    queryKey: ["tables", baseId],
+  })
 
   let open = false
-  $: open && store.fetch({ variables: { baseId } })
-  $: tables = $store.data?.tables.filter((t) => !!t) ?? []
+  $: open && $getTables.refetch()
+  $: tables = $getTables.data?.filter((t) => !!t) ?? []
+
+  $: selectedValue = tables.find((t) => t.id === value)?.name ?? ""
 
   function closeAndFocusTrigger(triggerId: string) {
     open = false

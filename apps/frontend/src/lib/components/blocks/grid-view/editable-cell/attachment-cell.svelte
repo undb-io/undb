@@ -1,6 +1,5 @@
 <script lang="ts">
   import { isImage, type AttachmentField, type IAttachmentFieldValue, type IPresign } from "@undb/table"
-  import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { toast } from "svelte-sonner"
   import Label from "$lib/components/ui/label/label.svelte"
@@ -10,6 +9,7 @@
   import * as Dialog from "$lib/components/ui/dialog"
   import * as AlertDialog from "$lib/components/ui/alert-dialog"
   import { AspectRatio } from "$lib/components/ui/aspect-ratio"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let tableId: string
   export let value: IAttachmentFieldValue | undefined = undefined
@@ -21,9 +21,11 @@
   $: max = field.max
   $: disabled = value?.length ?? 0 >= max
 
+  const dataService = getDataService()
+
   const updateCell = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId],
-    mutationFn: trpc.record.update.mutate,
+    mutationFn: dataService.records.updateRecord,
     onError(error: Error) {
       toast.error(error.message)
     },

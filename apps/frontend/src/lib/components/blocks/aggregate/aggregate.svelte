@@ -7,22 +7,26 @@
   import { TriangleAlertIcon } from "lucide-svelte"
   import * as Tooltip from "$lib/components/ui/tooltip"
   import type { TableDo } from "@undb/table"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let tableId: string | undefined
   export let table: TableDo | undefined
   export let viewId: string | undefined
   export let shareId: string | undefined
   export let ignoreView: boolean = false
+  export let readonly = false
 
   export let widget: IWidgetDTO
   export let aggregate: IAggregate
 
   $: isValid = isValidWidget(widget) && !!tableId
 
+  const dataService = getDataService()
+
   const getAggregate = createQuery({
     queryKey: ["aggregate", widget.id],
     enabled: !!tableId,
-    queryFn: () => {
+    queryFn: async () => {
       const agg =
         aggregate.type === "count"
           ? ({ [ID_TYPE]: "count" } as const)
@@ -37,7 +41,7 @@
           ignoreView,
         })
       }
-      return trpc.record.aggregate.query({
+      return dataService.records.getAggregates({
         tableId: tableId!,
         viewId,
         aggregate: agg,

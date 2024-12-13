@@ -21,6 +21,6 @@
 
   <div class="flex items-center gap-2">
     <RecordsSearch />
-    <ViewWidgetButton />
+    <ViewWidgetButton readonly />
   </div>
 </div>

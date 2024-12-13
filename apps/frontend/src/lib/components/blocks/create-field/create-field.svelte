@@ -15,6 +15,7 @@
   import FieldTypePicker from "../field-picker/field-type-picker.svelte"
   import { LL } from "@undb/i18n/client"
   import { BetweenVerticalStartIcon, LoaderCircleIcon } from "lucide-svelte"
+  import { getDataService } from "$lib/store/data-service.store"
 
   const table = getTable()
 
@@ -22,11 +23,13 @@
 
   let name = ""
 
+  const dataService = getDataService()
+
   const client = useQueryClient()
   const createFieldMutation = createMutation(
     derived([table], ([$table]) => ({
       mutationKey: ["table", $table.id.value, "createField"],
-      mutationFn: trpc.table.field.create.mutate,
+      mutationFn: dataService.table.field.createField,
       async onSuccess() {
         toast.success($LL.table.field.created())
         reset()

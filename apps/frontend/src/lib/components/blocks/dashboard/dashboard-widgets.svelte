@@ -1,15 +1,16 @@
 <script lang="ts">
   import { getDashboard, getDashboardWidgetItemsStore } from "$lib/store/dashboard.store"
-  import { COLS, cols } from "$lib/store/widget.store"
+  import { cols } from "$lib/store/widget.store"
   import { createMutation } from "@tanstack/svelte-query"
   import DashboardWidget from "./dashboard-widget.svelte"
 
   // @ts-ignore
   import Grid from "svelte-grid"
   import { trpc } from "$lib/trpc/client"
-  import type { IDashboardLayouts } from "@undb/dashboard"
+  import { COLS, type IDashboardLayouts } from "@undb/dashboard"
 
   export let shareId: string | undefined = undefined
+  export let readonly = false
 
   const dashboard = getDashboard()
 
@@ -20,6 +21,7 @@
   })
 
   const onPointeup = () => {
+    if (readonly) return
     const widgets = $widgetItems
       .map((item) => {
         const { x, y, h, w } = item[COLS]
@@ -54,6 +56,7 @@
       <DashboardWidget
         widget={dataItem.widget}
         {shareId}
+        {readonly}
         tableId={dataItem.tableId}
         {movePointerDown}
         {resizePointerDown}

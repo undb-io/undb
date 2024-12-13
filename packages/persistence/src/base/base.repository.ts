@@ -99,6 +99,7 @@ export class BaseRepository implements IBaseRepository {
         updated_at: new Date().toISOString(),
       })
       .execute()
+
     await this.outboxService.save(base)
   }
   async updateOneById(base: Base, spec: IBaseSpecification): Promise<void> {

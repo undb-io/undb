@@ -4,7 +4,6 @@
   import { FilterIcon, FilterXIcon } from "lucide-svelte"
   import FiltersEditor from "../filters-editor/filters-editor.svelte"
   import { getTable } from "$lib/store/table.store"
-  import { trpc } from "$lib/trpc/client"
   import { LoaderCircleIcon } from "lucide-svelte"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
   import { invalidate } from "$app/navigation"
@@ -20,6 +19,7 @@
   import { hasPermission } from "$lib/store/space-member.store"
   import type { Readable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let readonly = false
   export let viewId: Readable<string | undefined>
@@ -34,14 +34,15 @@
 
   $: $table, value.set(filter?.toMaybeConditionGroup())
 
-  $: visibleFields = $table.getOrderedVisibleFields()
   let open = false
 
   const client = useQueryClient()
 
+  const dataService = getDataService()
+
   const mutation = createMutation({
     mutationKey: ["table", $table.id.value, "setFilters"],
-    mutationFn: trpc.table.view.setFilter.mutate,
+    mutationFn: dataService.table.view.setFilter,
     onSuccess: async () => {
       await invalidate(`undb:table:${$table.id.value}`)
       await client.invalidateQueries({ queryKey: ["records", $table.id.value] })
