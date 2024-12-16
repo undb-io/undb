@@ -13,7 +13,6 @@
   import { r } from "$lib/store/records.store"
   import type { Readable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
-  import { type IBulkDeleteRecordsCommand, type IBulkDuplicateRecordsCommand } from "@undb/commands"
   import { getDataService } from "$lib/store/data-service.store"
 
   const dataService = getDataService()
@@ -62,7 +61,7 @@
       await client.invalidateQueries({
         queryKey: ["records", $table.id.value],
       })
-      toast.success("Record has been duplicated!")
+      toast.success($LL.table.record.bulkDuplicated())
       onDuplicateSuccess()
     },
   })

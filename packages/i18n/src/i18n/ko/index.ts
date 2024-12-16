@@ -139,6 +139,7 @@ const record = {
   create: '레코드 생성',
   update: '레코드 수정',
   delete: '레코드 삭제',
+  bulkDuplicated: '레코드가 복제되었습니다!',
   viewRecordDetail: '레코드 상세 보기',
   copyRecordId: '레코드 ID 복사',
   createByForm: '양식으로 생성',
@@ -640,6 +641,7 @@ const template = {
 const auth = {
   login: '로그인',
   loginFailed: '로그인 실패',
+  gotoSpace: '공간으로 이동',
   forgotPassword: '비밀번호를 까먹었나요?',
   emailPlaceholder: '이메일 주소를 입력하세요...',
   password: '비밀번호',

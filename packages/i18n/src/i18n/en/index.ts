@@ -143,6 +143,7 @@ const record = {
   copyRecordId: 'Copy Record ID',
   createByForm: 'Create By Form',
   duplicateRecord: 'Duplicate Record',
+  bulkDuplicated: 'Records have been duplicated!',
   includeData: 'Include Data',
   records: '{n|number} Records',
   detail: 'Record Detail',
@@ -641,6 +642,7 @@ const webhook = {
   const auth = {
     login: 'Login',
     loginFailed: 'Login failed',
+    gotoSpace: 'Go to space',
     forgotPassword: 'Forgot your password?',
     emailPlaceholder: 'Enter your email to login',
     password: 'Password',

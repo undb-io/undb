@@ -138,6 +138,7 @@ const record = {
   create: 'Criar Registro',
   update: 'Atualizar Registro',
   delete: 'Excluir Registro',
+  bulkDuplicated: 'Registros duplicados!',
   viewRecordDetail: 'Ver Detalhes do Registro',
   copyRecordId: 'Copiar ID do Registro',
   createByForm: 'Criar por Formulário',
@@ -639,6 +640,7 @@ const template = {
 const auth = {
   login: 'Entrar',
   loginFailed: 'Falha no login',
+  gotoSpace: 'Ir para o espaço',
   forgotPassword: 'Esqueceu sua senha?',
   emailPlaceholder: 'Digite seu email para entrar',
   password: 'Senha',

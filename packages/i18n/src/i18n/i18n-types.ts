@@ -38,6 +38,10 @@ type RootTranslation = {
 		 */
 		loginFailed: string
 		/**
+		 * G​o​ ​t​o​ ​s​p​a​c​e
+		 */
+		gotoSpace: string
+		/**
 		 * F​o​r​g​o​t​ ​y​o​u​r​ ​p​a​s​s​w​o​r​d​?
 		 */
 		forgotPassword: string
@@ -1019,6 +1023,10 @@ type RootTranslation = {
 			 * D​u​p​l​i​c​a​t​e​ ​R​e​c​o​r​d
 			 */
 			duplicateRecord: string
+			/**
+			 * R​e​c​o​r​d​s​ ​h​a​v​e​ ​b​e​e​n​ ​d​u​p​l​i​c​a​t​e​d​!
+			 */
+			bulkDuplicated: string
 			/**
 			 * I​n​c​l​u​d​e​ ​D​a​t​a
 			 */
@@ -2530,6 +2538,10 @@ export type TranslationFunctions = {
 		 */
 		loginFailed: () => LocalizedString
 		/**
+		 * Go to space
+		 */
+		gotoSpace: () => LocalizedString
+		/**
 		 * Forgot your password?
 		 */
 		forgotPassword: () => LocalizedString
@@ -3506,6 +3518,10 @@ export type TranslationFunctions = {
 			 * Duplicate Record
 			 */
 			duplicateRecord: () => LocalizedString
+			/**
+			 * Records have been duplicated!
+			 */
+			bulkDuplicated: () => LocalizedString
 			/**
 			 * Include Data
 			 */

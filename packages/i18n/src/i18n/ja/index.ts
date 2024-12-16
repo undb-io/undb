@@ -139,6 +139,7 @@ const record = {
   create: 'レコード作成',
   update: 'レコード更新',
   delete: 'レコード削除',
+  bulkDuplicated: 'レコードが複製されました！',
   viewRecordDetail: 'レコード詳細を表示',
   copyRecordId: 'レコードIDをコピー',
   createByForm: 'フォームから作成',
@@ -640,6 +641,7 @@ const template = {
 const auth = {
   login: 'ログイン',
   loginFailed: 'ログインに失敗しました',
+  gotoSpace: 'スペースに移動',
   forgotPassword: 'パスワードを忘れましたか？',
   emailPlaceholder: 'メールアドレスを入力してください...',
   password: 'パスワード',

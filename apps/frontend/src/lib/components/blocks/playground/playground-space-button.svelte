@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Button, type Props as ButtonProps } from "$lib/components/ui/button"
+  import { LL } from "@undb/i18n/client"
 
   type Props = {
     isLoggedIn: boolean
@@ -10,7 +11,7 @@
 </script>
 
 {#if isLoggedIn}
-  <Button href="/" {...rest}>Go to space</Button>
+  <Button href="/" {...rest}>{$LL.auth.gotoSpace()}</Button>
 {:else}
-  <Button href="/login" {...rest}>Login</Button>
+  <Button href="/login" {...rest}>{$LL.auth.login()}</Button>
 {/if}
