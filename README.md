@@ -38,6 +38,7 @@ UNDB is a no-code platform that can also serve as a Backend as a Service (BaaS).
 
 - ⚡ No-code platform, easy to use
 - 🗄️ Based on SQLite, a lightweight database
+- 🥁 Built-in playground mode, try it out without any setup
 - 🔐 Private and local first
 - 📦 Can be packaged into a binary file using Bun
 - 📊 Support formula field like Excel/Airtable
