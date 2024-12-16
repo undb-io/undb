@@ -256,6 +256,7 @@ export const users = sqliteTable(
     email_verified: integer("email_verified", { mode: "boolean" }).notNull().default(false),
     password: text("password").notNull(),
     avatar: text("avatar"),
+    otp_secret: text("otp_secret"),
   },
   (table) => {
     return {

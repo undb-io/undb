@@ -13,6 +13,7 @@ const authEnv = createEnv({
       .transform((v) => v === "true"),
     UNDB_ADMIN_EMAIL: z.string().email().optional(),
     UNDB_ADMIN_PASSWORD: z.string().optional(),
+    UNDB_OTP_SECRET: z.string().optional(),
   },
   runtimeEnv: import.meta.env,
   emptyStringAsUndefined: true,

@@ -114,7 +114,7 @@ export const app = new Elysia()
     swagger({
       path: "/openapi",
       excludeStaticFile: false,
-      exclude: new RegExp(/^(?!.*\/api\/bases).*/),
+      // exclude: new RegExp(/^(?!.*\/api\/bases).*/),
       documentation: {
         info: {
           title: "Undb OpenAPI Documentation",

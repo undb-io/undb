@@ -2,7 +2,7 @@ import { injectSpaceMemberService, type ISpaceMemberService } from "@undb/authz"
 import { type IBaseRepository, injectBaseRepository } from "@undb/base"
 import { type IContext, injectContext } from "@undb/context"
 import { executionContext } from "@undb/context/server"
-import { container, singleton } from "@undb/di"
+import { container, inject, singleton } from "@undb/di"
 import { Some } from "@undb/domain"
 import { createLogger } from "@undb/logger"
 import {
@@ -22,6 +22,8 @@ import {
 } from "@undb/table"
 import { injectUserService, type IUserService } from "@undb/user"
 import Elysia, { t } from "elysia"
+import { OtpRoute } from "../auth/otp.route"
+import { AuthOpenAPI } from "./auth/auth.openapi"
 import { RecordOpenApi } from "./record.openapi"
 
 @singleton()
@@ -45,6 +47,10 @@ export class OpenAPI {
     private spaceService: ISpaceService,
     @injectContext()
     private readonly context: IContext,
+    @inject(AuthOpenAPI)
+    private readonly authOpenAPI: AuthOpenAPI,
+    @inject(OtpRoute)
+    private readonly otpRoute: OtpRoute,
   ) {}
 
   async getSpec(baseName: string, tableName: string) {
@@ -133,6 +139,7 @@ export class OpenAPI {
           },
         },
       )
+      .group("/openapi/auth", (app) => app.use(this.authOpenAPI.route(app)).use(this.otpRoute.route(app)))
       .group("/openapi/bases/:baseName/tables/:tableName", (app) =>
         app
           .guard({
