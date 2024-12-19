@@ -4,6 +4,7 @@
   "types": "src/index.d.ts",
   "type": "module",
   "dependencies": {
+    "lucia": "^3.2.2",
     "@undb/di": "workspace:*",
     "@undb/domain": "workspace:*"
   },

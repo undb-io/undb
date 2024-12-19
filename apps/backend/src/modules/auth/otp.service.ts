@@ -3,6 +3,7 @@ import { singleton } from "@undb/di"
 import { type IMailService, injectMailService } from "@undb/mail"
 import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence/server"
 import { injectSpaceService, type ISpaceService } from "@undb/space"
+import { injectUserService, type IUserService } from "@undb/user"
 import { Lucia } from "lucia"
 import { decodeHex, encodeHex } from "oslo/encoding"
 import { injectLucia } from "./auth.provider"
@@ -11,6 +12,9 @@ export interface IOtpService {
   sendOtp(email: string): Promise<void>
   verifyOtp(email: string, otp: string): Promise<string>
 }
+
+const OTP_EXPIRES_IN = 60 * 10
+const OTP_DIGITS = 6
 
 @singleton()
 export class OtpService implements IOtpService {
@@ -23,14 +27,16 @@ export class OtpService implements IOtpService {
     private readonly mailService: IMailService,
     @injectSpaceService()
     private readonly spaceService: ISpaceService,
+    @injectUserService()
+    private readonly userService: IUserService,
   ) {}
 
   public async sendOtp(email: string): Promise<void> {
-    await this.qb.selectFrom("undb_user").selectAll().where("undb_user.email", "=", email).executeTakeFirstOrThrow()
+    await this.userService.findOneOrCreateByEmail(email)
 
     const secret = new Uint8Array(20)
     const key = crypto.getRandomValues(secret)
-    const totp = generateTOTP(key, 60 * 10, 6)
+    const totp = generateTOTP(key, OTP_EXPIRES_IN, OTP_DIGITS)
 
     const hex = encodeHex(key)
     await this.qb
@@ -39,7 +45,17 @@ export class OtpService implements IOtpService {
       .where((eb) => eb.eb("undb_user.email", "=", email))
       .execute()
 
-    console.log(totp)
+    await this.mailService.send({
+      to: email,
+      subject: "One-time password - undb",
+      template: "otp",
+      data: {
+        email,
+        action_url: "https://undb.io",
+        expires_in: OTP_EXPIRES_IN,
+        otp: totp,
+      },
+    })
   }
 
   /**
@@ -66,7 +82,7 @@ export class OtpService implements IOtpService {
 
     const key = decodeHex(otp_secret)
 
-    const verified = verifyTOTP(key, 60 * 10, 6, otp)
+    const verified = verifyTOTP(key, OTP_EXPIRES_IN, OTP_DIGITS, otp)
     if (!verified) {
       throw new Error("Invalid OTP")
     }

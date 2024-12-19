@@ -669,6 +669,8 @@ const auth = {
   createAccountAndAcceptInvitation: '创建账户并接受邀请',
   enterYourInformationToCreateAnAccount: '输入您的信息以创建一个账户。',
   enterYourWorkEmail: '输入您的工作电子邮件...',
+  sendOtpCode: '发送验证码',
+  verifyOtp: '验证验证码'
 }
 
 const playground = {

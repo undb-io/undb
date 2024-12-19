@@ -30,11 +30,7 @@ export const space = sqliteTable(
     deletedAt: integer("deleted_at", { mode: "timestamp_ms" }),
     deletedBy: text("deleted_by").references(() => users.id),
   },
-  (table) => {
-    return {
-      nameIdx: index("space_name_idx").on(table.name),
-    }
-  },
+  (table) => [index("space_name_idx").on(table.name)],
 )
 
 export const tables = sqliteTable(
@@ -69,13 +65,11 @@ export const tables = sqliteTable(
       .notNull()
       .references(() => users.id),
   },
-  (table) => {
-    return {
-      baseIdIdx: index("table_base_id_idx").on(table.baseId),
-      uniqueOnName: unique("table_name_unique_idx").on(table.name, table.baseId),
-      spaceIdIdx: index("table_space_id_idx").on(table.spaceId),
-    }
-  },
+  (table) => [
+    index("table_base_id_idx").on(table.baseId),
+    unique("table_name_unique_idx").on(table.name, table.baseId),
+    index("table_space_id_idx").on(table.spaceId),
+  ],
 )
 
 export const tableIdMapping = sqliteTable(
@@ -86,11 +80,7 @@ export const tableIdMapping = sqliteTable(
       .references(() => tables.id),
     subjectId: text("subject_id").notNull(),
   },
-  (table) => {
-    return {
-      pk: primaryKey({ columns: [table.tableId, table.subjectId] }),
-    }
-  },
+  (table) => [primaryKey({ columns: [table.tableId, table.subjectId] })],
 )
 
 export const referenceIdMapping = sqliteTable(
@@ -101,16 +91,14 @@ export const referenceIdMapping = sqliteTable(
     symmetricFieldId: text("symmetric_field_id"),
     foreignTableId: text("foreign_table_id").notNull(),
   },
-  (table) => {
-    return {
-      uniqueIndex: unique("reference_id_mapping_unique_idx").on(
-        table.fieldId,
-        table.tableId,
-        table.symmetricFieldId,
-        table.foreignTableId,
-      ),
-    }
-  },
+  (table) => [
+    unique("reference_id_mapping_unique_idx").on(
+      table.fieldId,
+      table.tableId,
+      table.symmetricFieldId,
+      table.foreignTableId,
+    ),
+  ],
 )
 
 export const rollupIdMapping = sqliteTable(
@@ -121,11 +109,7 @@ export const rollupIdMapping = sqliteTable(
     rollupId: text("rollup_id").notNull(),
     rollupTableId: text("rollup_table_id").notNull(),
   },
-  (table) => {
-    return {
-      pk: primaryKey({ columns: [table.fieldId, table.rollupId] }),
-    }
-  },
+  (table) => [primaryKey({ columns: [table.fieldId, table.rollupId] })],
 )
 
 export const dashboards = sqliteTable(
@@ -157,13 +141,11 @@ export const dashboards = sqliteTable(
       .notNull()
       .references(() => users.id),
   },
-  (table) => {
-    return {
-      baseIdIdx: index("dashboard_base_id_idx").on(table.baseId),
-      uniqueOnName: unique("dashboard_name_unique_idx").on(table.name, table.baseId),
-      spaceIdIdx: index("dashboard_space_id_idx").on(table.spaceId),
-    }
-  },
+  (table) => [
+    index("dashboard_base_id_idx").on(table.baseId),
+    unique("dashboard_name_unique_idx").on(table.name, table.baseId),
+    index("dashboard_space_id_idx").on(table.spaceId),
+  ],
 )
 
 export const dashboardTableIdMapping = sqliteTable(
@@ -176,11 +158,7 @@ export const dashboardTableIdMapping = sqliteTable(
       .notNull()
       .references(() => tables.id),
   },
-  (table) => {
-    return {
-      pk: primaryKey({ columns: [table.dashboardId, table.tableId] }),
-    }
-  },
+  (table) => [primaryKey({ columns: [table.dashboardId, table.tableId] })],
 )
 
 export const attachments = sqliteTable(
@@ -200,12 +178,7 @@ export const attachments = sqliteTable(
       .notNull()
       .references(() => space.id),
   },
-  (table) => {
-    return {
-      sizeIdx: index("attachment_size_idx").on(table.size),
-      spaceIdIdx: index("attachment_space_id_idx").on(table.spaceId),
-    }
-  },
+  (table) => [index("attachment_size_idx").on(table.size), index("attachment_space_id_idx").on(table.spaceId)],
 )
 
 export const attachmentMapping = sqliteTable(
@@ -220,11 +193,7 @@ export const attachmentMapping = sqliteTable(
     recordId: text("record_id").notNull(),
     fieldId: text("field_id").notNull(),
   },
-  (table) => {
-    return {
-      pk: primaryKey({ columns: [table.attachmentId, table.tableId, table.recordId, table.fieldId] }),
-    }
-  },
+  (table) => [primaryKey({ columns: [table.attachmentId, table.tableId, table.recordId, table.fieldId] })],
 )
 
 export const outbox = sqliteTable(
@@ -240,11 +209,7 @@ export const outbox = sqliteTable(
       .notNull()
       .references(() => space.id),
   },
-  (table) => {
-    return {
-      spaceIdIdx: index("outbox_space_id_idx").on(table.spaceId),
-    }
-  },
+  (table) => [index("outbox_space_id_idx").on(table.spaceId)],
 )
 
 export const users = sqliteTable(
@@ -258,12 +223,7 @@ export const users = sqliteTable(
     avatar: text("avatar"),
     otp_secret: text("otp_secret"),
   },
-  (table) => {
-    return {
-      usernameIdx: index("user_username_idx").on(table.username),
-      emailIdx: index("user_email_idx").on(table.email),
-    }
-  },
+  (table) => [index("user_username_idx").on(table.username), index("user_email_idx").on(table.email)],
 )
 
 export const passwordResetTokenTable = sqliteTable(
@@ -276,11 +236,7 @@ export const passwordResetTokenTable = sqliteTable(
       .references(() => users.id),
     expiresAt: integer("expires_at", { mode: "timestamp" }).notNull(),
   },
-  (table) => {
-    return {
-      userIdIdx: index("password_reset_token_user_id_idx").on(table.userId),
-    }
-  },
+  (table) => [index("password_reset_token_user_id_idx").on(table.userId)],
 )
 
 export const oauthAccount = sqliteTable(
@@ -292,11 +248,7 @@ export const oauthAccount = sqliteTable(
       .notNull()
       .references(() => users.id),
   },
-  (table) => {
-    return {
-      pk: primaryKey({ columns: [table.provider_id, table.provider_user_id] }),
-    }
-  },
+  (table) => [primaryKey({ columns: [table.provider_id, table.provider_user_id] })],
 )
 
 export const emailVerificationCode = sqliteTable("email_verification_code", {
@@ -338,13 +290,11 @@ export const webhook = sqliteTable(
       .notNull()
       .references(() => space.id),
   },
-  (table) => {
-    return {
-      tableIdIdx: index("webhook_table_id_idx").on(table.tableId),
-      spaceIdIdx: index("webhook_space_id_idx").on(table.spaceId),
-      urlIdx: index("webhook_url_idx").on(table.url),
-    }
-  },
+  (table) => [
+    index("webhook_table_id_idx").on(table.tableId),
+    index("webhook_space_id_idx").on(table.spaceId),
+    index("webhook_url_idx").on(table.url),
+  ],
 )
 
 export const audit = sqliteTable(
@@ -362,13 +312,11 @@ export const audit = sqliteTable(
       .notNull()
       .references(() => space.id),
   },
-  (table) => {
-    return {
-      tableIdIdx: index("audit_table_id_idx").on(table.tableId),
-      spaceIdIdx: index("audit_space_id_idx").on(table.spaceId),
-      recordIdIdx: index("audit_record_id_idx").on(table.recordId),
-    }
-  },
+  (table) => [
+    index("audit_table_id_idx").on(table.tableId),
+    index("audit_space_id_idx").on(table.spaceId),
+    index("audit_record_id_idx").on(table.recordId),
+  ],
 )
 
 export const spaceMember = sqliteTable(
@@ -383,11 +331,7 @@ export const spaceMember = sqliteTable(
       .notNull()
       .references(() => space.id),
   },
-  (table) => {
-    return {
-      uniqueIdx: unique("space_member_unique_idx").on(table.userId, table.spaceId),
-    }
-  },
+  (table) => [unique("space_member_unique_idx").on(table.userId, table.spaceId)],
 )
 
 export const baseTable = sqliteTable(
@@ -411,10 +355,7 @@ export const baseTable = sqliteTable(
       .notNull()
       .references(() => users.id),
   },
-  (base) => ({
-    uniqueNameIndex: unique("base_name_unique_idx").on(base.name, base.spaceId),
-    spaceIdIdx: index("base_space_id_idx").on(base.spaceId),
-  }),
+  (base) => [unique("base_name_unique_idx").on(base.name, base.spaceId), index("base_space_id_idx").on(base.spaceId)],
 )
 
 export const shareTable = sqliteTable(
@@ -428,12 +369,10 @@ export const shareTable = sqliteTable(
       .notNull()
       .references(() => space.id),
   },
-  (table) => {
-    return {
-      uniqueIdx: unique("share_unique_idx").on(table.targetType, table.targetId),
-      spaceIdIdx: index("share_space_id_idx").on(table.spaceId),
-    }
-  },
+  (table) => [
+    unique("share_unique_idx").on(table.targetType, table.targetId),
+    index("share_space_id_idx").on(table.spaceId),
+  ],
 )
 
 export const invitations = sqliteTable(
@@ -451,12 +390,10 @@ export const invitations = sqliteTable(
       .notNull()
       .references(() => users.id),
   },
-  (table) => {
-    return {
-      spaceIdIdx: index("invitation_space_id_idx").on(table.spaceId),
-      uniqueIdx: unique("invitation_unique_idx").on(table.email, table.spaceId),
-    }
-  },
+  (table) => [
+    index("invitation_space_id_idx").on(table.spaceId),
+    unique("invitation_unique_idx").on(table.email, table.spaceId),
+  ],
 )
 
 export const apiTokenTable = sqliteTable(
@@ -472,10 +409,5 @@ export const apiTokenTable = sqliteTable(
       .notNull(),
     token: text("token").notNull().unique(),
   },
-  (table) => {
-    return {
-      spaceIdIdx: index("api_token_space_id_idx").on(table.spaceId),
-      userIdIdx: index("api_token_user_id_idx").on(table.userId),
-    }
-  },
+  (table) => [index("api_token_space_id_idx").on(table.spaceId), index("api_token_user_id_idx").on(table.userId)],
 )

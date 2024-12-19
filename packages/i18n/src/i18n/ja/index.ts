@@ -651,6 +651,7 @@ const auth = {
   loginWith: 'ログイン {provider}',
   invalidEmailOrPassword: '無効なメールアドレスまたはパスワードです。',
   loginToYourAccountAndAcceptTheInvitation: 'ログインして招待を受け入れます',
+  loginWithEmailDescription: 'メールアドレスとパスワードを入力してログインします。',
   resetPassword: 'パスワードをリセット',
   enterYourEmailBelowToResetYourPassword: 'パスワードをリセットするためにメールアドレスを入力してください。',
   emailSent: 'メールが送信されました！',
@@ -667,6 +668,8 @@ const auth = {
   createAccountAndAcceptInvitation: 'アカウントを作成して招待を受け入れる',
   enterYourInformationToCreateAnAccount: 'アカウントを作成するための情報を入力してください。',
   enterYourWorkEmail: '作業用メールアドレスを入力してください...',
+  sendOtpCode: 'コードを送信',
+  verifyOtp: 'コードを検証'
 }
 
 const playground = {

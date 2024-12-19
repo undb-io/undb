@@ -10,6 +10,10 @@ type Audit {
   timestamp: String!
 }
 
+type AuthSetting {
+  otp: OtpSetting
+}
+
 type Base {
   dashboards: [Dashboard]!
   id: ID!
@@ -144,6 +148,10 @@ type OAuthSettings {
   google: OAuthSetting
 }
 
+type OtpSetting {
+  enabled: Boolean!
+}
+
 type PivotOption {
   aggregate: String
   columnLabel: String
@@ -202,6 +210,7 @@ type RegistrationSetting {
 }
 
 type Settings {
+  auth: AuthSetting
   oauth: OAuthSettings
   registration: RegistrationSetting
 }

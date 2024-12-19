@@ -644,6 +644,7 @@ const auth = {
   password: 'Contraseña',
   register: 'Registrarse',
   noAccount: '¿No tienes una cuenta?',
+  loginWithEmailDescription: 'Introduce tu correo electrónico y contraseña para iniciar sesión.',
   registerDisabled: 'El registro está deshabilitado.',
   registerDisabledDescription: 'Póngase en contacto con su administrador para solicitar acceso.',
   loginWith: 'Iniciar sesión con {provider}',
@@ -661,6 +662,8 @@ const auth = {
   createAnAccount: 'Crear una cuenta',
   alreadyHaveAnAccount: '¿Ya tienes una cuenta?',
   enterYourWorkEmail: 'Introduce tu correo electrónico de trabajo...',
+  sendOtpCode: 'Enviar código',
+  verifyOtp: 'Verificar código'
 }
 
 const playground = {

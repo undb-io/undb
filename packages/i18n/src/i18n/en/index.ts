@@ -653,6 +653,7 @@ const webhook = {
     loginWith: 'Login with {provider}',
     invalidEmailOrPassword: 'Invalid email or password.',
     loginToYourAccountAndAcceptTheInvitation: 'Login to your account and accept the invitation',
+    loginWithEmailDescription: 'Enter your email and password to login.',
     enterYourEmailBelowToResetYourPassword: 'Enter your email below to reset your password.',
     emailSent: 'Email sent!',
     youCanCheckYourEmailAddressAndFollowTheStepsToResetYourPassword: 'You can check your email address and follow the steps to reset your password.',
@@ -668,6 +669,8 @@ const webhook = {
     createAccountAndAcceptInvitation: 'Create account and accept invitation',
     enterYourInformationToCreateAnAccount: 'Enter your information to create an account.',
     enterYourWorkEmail: 'Enter your work email...',
+    sendOtpCode: 'Send Code',
+    verifyOtp: 'Verify Code'
   }
 
   const playground = {

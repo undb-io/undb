@@ -14,6 +14,14 @@ const authEnv = createEnv({
     UNDB_ADMIN_EMAIL: z.string().email().optional(),
     UNDB_ADMIN_PASSWORD: z.string().optional(),
     UNDB_OTP_SECRET: z.string().optional(),
+    UNDB_AUTH_OTP_ENABLED: z
+      .string()
+      .optional()
+      .default("false")
+      .refine((v) => v === "true" || v === "false", {
+        message: "UNDB_AUTH_OTP_ENABLED must be a boolean",
+      })
+      .transform((v) => v === "true"),
   },
   runtimeEnv: import.meta.env,
   emptyStringAsUndefined: true,

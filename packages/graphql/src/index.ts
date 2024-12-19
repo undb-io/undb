@@ -360,8 +360,17 @@ export class Graphql {
         enabled: Boolean!
       }
 
+      type OtpSetting {
+        enabled: Boolean!
+      }
+
+      type AuthSetting {
+        otp: OtpSetting
+      }
+
       type Settings {
         oauth: OAuthSettings
+        auth: AuthSetting
         registration: RegistrationSetting
       }
 
@@ -437,6 +446,11 @@ export class Graphql {
             return {
               registration: {
                 enabled: !env.UNDB_DISABLE_REGISTRATION,
+              },
+              auth: {
+                otp: {
+                  enabled: env.UNDB_AUTH_OTP_ENABLED,
+                },
               },
               oauth: {
                 google: {

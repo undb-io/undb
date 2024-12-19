@@ -24,6 +24,7 @@
   export let onSuccess: () => void = () => {}
   export let githubEnabled: boolean
   export let googleEnabled: boolean
+  export let otpEnabled: boolean
 
   const schema = z.object({
     email: z.string().email(),
@@ -39,7 +40,7 @@
       try {
         const { ok } = await fetch("/api/login", { method: "POST", body: JSON.stringify(input) })
         if (!ok) {
-          throw new Error(LL.auth.loginFailed())
+          throw new Error($LL.auth.loginFailed())
         }
         return
       } catch (error) {
@@ -175,6 +176,11 @@
           </Button>
         {/if}
       </div>
+    {/if}
+    {#if otpEnabled}
+      <Button href="/login-with-otp" variant="link" class="mt-4 w-full" size="xs">
+        {$LL.auth.loginWith({ provider: "One-time password" })}
+      </Button>
     {/if}
   </form>
 {/if}

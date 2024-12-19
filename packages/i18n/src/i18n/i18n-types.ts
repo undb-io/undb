@@ -83,6 +83,10 @@ type RootTranslation = {
 		 */
 		loginToYourAccountAndAcceptTheInvitation: string
 		/**
+		 * E​n​t​e​r​ ​y​o​u​r​ ​e​m​a​i​l​ ​a​n​d​ ​p​a​s​s​w​o​r​d​ ​t​o​ ​l​o​g​i​n​.
+		 */
+		loginWithEmailDescription: string
+		/**
 		 * E​n​t​e​r​ ​y​o​u​r​ ​e​m​a​i​l​ ​b​e​l​o​w​ ​t​o​ ​r​e​s​e​t​ ​y​o​u​r​ ​p​a​s​s​w​o​r​d​.
 		 */
 		enterYourEmailBelowToResetYourPassword: string
@@ -142,6 +146,14 @@ type RootTranslation = {
 		 * E​n​t​e​r​ ​y​o​u​r​ ​w​o​r​k​ ​e​m​a​i​l​.​.​.
 		 */
 		enterYourWorkEmail: string
+		/**
+		 * S​e​n​d​ ​C​o​d​e
+		 */
+		sendOtpCode: string
+		/**
+		 * V​e​r​i​f​y​ ​C​o​d​e
+		 */
+		verifyOtp: string
 	}
 	template: {
 		/**
@@ -2582,6 +2594,10 @@ export type TranslationFunctions = {
 		 */
 		loginToYourAccountAndAcceptTheInvitation: () => LocalizedString
 		/**
+		 * Enter your email and password to login.
+		 */
+		loginWithEmailDescription: () => LocalizedString
+		/**
 		 * Enter your email below to reset your password.
 		 */
 		enterYourEmailBelowToResetYourPassword: () => LocalizedString
@@ -2641,6 +2657,14 @@ export type TranslationFunctions = {
 		 * Enter your work email...
 		 */
 		enterYourWorkEmail: () => LocalizedString
+		/**
+		 * Send Code
+		 */
+		sendOtpCode: () => LocalizedString
+		/**
+		 * Verify Code
+		 */
+		verifyOtp: () => LocalizedString
 	}
 	template: {
 		/**

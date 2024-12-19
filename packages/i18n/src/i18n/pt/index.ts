@@ -649,6 +649,7 @@ const auth = {
   registerDisabled: 'Registro desativado.',
   registerDisabledDescription: 'Entre em contato com seu administrador para solicitar acesso.',
   loginWith: 'Entrar com {provider}',
+  loginWithEmailDescription: 'Digite seu email e senha para entrar.',
   invalidEmailOrPassword: 'Email ou senha inválidos.',
   loginToYourAccountAndAcceptTheInvitation: 'Entre em sua conta e aceite o convite',
   enterYourEmailBelowToResetYourPassword: 'Digite seu email abaixo para redefinir sua senha.',
@@ -666,6 +667,8 @@ const auth = {
   createAccountAndAcceptInvitation: 'Criar conta e aceitar convite',
   enterYourInformationToCreateAnAccount: 'Digite suas informações para criar uma conta.',
   enterYourWorkEmail: 'Digite seu email de trabalho...',
+  sendOtpCode: 'Enviar código',
+  verifyOtp: 'Verificar código'
 }
 
 const playground = {

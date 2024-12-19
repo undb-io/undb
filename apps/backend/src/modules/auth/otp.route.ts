@@ -22,6 +22,7 @@ export class OtpRoute {
         return
       },
       {
+        type: "json",
         body: t.Object({
           email: t.String({ format: "email" }),
         }),
@@ -44,6 +45,7 @@ export class OtpRoute {
         })
       },
       {
+        type: "json",
         body: t.Object({
           email: t.String({ format: "email" }),
           otp: t.String(),
