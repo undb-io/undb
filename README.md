@@ -66,6 +66,17 @@ UNDB is a no-code platform that can also serve as a Backend as a Service (BaaS).
 docker run -p 3721:3721 ghcr.io/undb-io/undb:latest
 ```
 
+- Run with docker with volume
+
+```bash
+docker run -d \
+  -p 3721:3721 \
+  -v $(pwd)/undb.sqlite:/usr/src/app/undb.sqlite \
+  -v $(pwd)/undb:/usr/src/app/undb \
+  --name undb \
+  ghcr.io/undb-io/undb:latest
+```
+
 ## Development
 
 ### Local Development (Recommended)
