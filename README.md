@@ -38,6 +38,7 @@ UNDB is a no-code platform that can also serve as a Backend as a Service (BaaS).
 
 - ⚡ No-code platform, easy to use
 - 🗄️ Based on SQLite, a lightweight database
+- 🥁 Built-in playground mode, try it out without any setup
 - 🔐 Private and local first
 - 📦 Can be packaged into a binary file using Bun
 - 📊 Support formula field like Excel/Airtable
@@ -63,6 +64,17 @@ UNDB is a no-code platform that can also serve as a Backend as a Service (BaaS).
 
 ```bash
 docker run -p 3721:3721 ghcr.io/undb-io/undb:latest
+```
+
+- Run with docker with volume
+
+```bash
+docker run -d \
+  -p 3721:3721 \
+  -v $(pwd)/undb.sqlite:/usr/src/app/undb.sqlite \
+  -v $(pwd)/undb:/usr/src/app/undb \
+  --name undb \
+  ghcr.io/undb-io/undb:latest
 ```
 
 ## Development

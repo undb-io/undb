@@ -25,6 +25,25 @@ export class UserQueryRepository implements IUserQueryRepository {
       id: user.id,
       email: user.email,
       username: user.username,
+      password: user.password,
+    })
+  }
+
+  async findOneByEmail(email: string): Promise<Option<IUser>> {
+    const user = await this.qb
+      .selectFrom("undb_user")
+      .selectAll()
+      .where((eb) => eb.eb("undb_user.email", "=", email))
+      .executeTakeFirst()
+
+    if (!user) {
+      return None
+    }
+    return Some({
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      password: user.password,
     })
   }
 }

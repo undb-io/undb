@@ -4,13 +4,14 @@ import type { IUser } from "./user.type"
 
 export interface IUserQueryRepository {
   findOneById(userId: string): Promise<Option<IUser>>
+  findOneByEmail(email: string): Promise<Option<IUser>>
 }
 
 export const USER_QUERY_REPOSITORY = Symbol("USER_QUERY_REPOSITORY")
 export const injectUserQueryRepository = () => inject(USER_QUERY_REPOSITORY)
 
 export interface IUserRepository {
-  insert(user: IUser): Promise<void>
+  insert(user: IUser): Promise<IUser>
   updateOneById(userId: string, user: IUser): Promise<void>
 }
 

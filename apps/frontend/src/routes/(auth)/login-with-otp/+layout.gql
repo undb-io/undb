@@ -1,0 +1,9 @@
+query GetLoginWithOtpSettings {
+  settings {
+    auth {
+      otp {
+        enabled
+      }
+    }
+  }
+}

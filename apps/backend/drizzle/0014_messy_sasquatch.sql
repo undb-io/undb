@@ -1,0 +1,1 @@
+ALTER TABLE `undb_user` ADD `otp_secret` text;

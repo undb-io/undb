@@ -38,6 +38,10 @@ type RootTranslation = {
 		 */
 		loginFailed: string
 		/**
+		 * G​o​ ​t​o​ ​s​p​a​c​e
+		 */
+		gotoSpace: string
+		/**
 		 * F​o​r​g​o​t​ ​y​o​u​r​ ​p​a​s​s​w​o​r​d​?
 		 */
 		forgotPassword: string
@@ -78,6 +82,10 @@ type RootTranslation = {
 		 * L​o​g​i​n​ ​t​o​ ​y​o​u​r​ ​a​c​c​o​u​n​t​ ​a​n​d​ ​a​c​c​e​p​t​ ​t​h​e​ ​i​n​v​i​t​a​t​i​o​n
 		 */
 		loginToYourAccountAndAcceptTheInvitation: string
+		/**
+		 * E​n​t​e​r​ ​y​o​u​r​ ​e​m​a​i​l​ ​a​n​d​ ​p​a​s​s​w​o​r​d​ ​t​o​ ​l​o​g​i​n​.
+		 */
+		loginWithEmailDescription: string
 		/**
 		 * E​n​t​e​r​ ​y​o​u​r​ ​e​m​a​i​l​ ​b​e​l​o​w​ ​t​o​ ​r​e​s​e​t​ ​y​o​u​r​ ​p​a​s​s​w​o​r​d​.
 		 */
@@ -138,6 +146,14 @@ type RootTranslation = {
 		 * E​n​t​e​r​ ​y​o​u​r​ ​w​o​r​k​ ​e​m​a​i​l​.​.​.
 		 */
 		enterYourWorkEmail: string
+		/**
+		 * S​e​n​d​ ​C​o​d​e
+		 */
+		sendOtpCode: string
+		/**
+		 * V​e​r​i​f​y​ ​C​o​d​e
+		 */
+		verifyOtp: string
 	}
 	template: {
 		/**
@@ -1019,6 +1035,10 @@ type RootTranslation = {
 			 * D​u​p​l​i​c​a​t​e​ ​R​e​c​o​r​d
 			 */
 			duplicateRecord: string
+			/**
+			 * R​e​c​o​r​d​s​ ​h​a​v​e​ ​b​e​e​n​ ​d​u​p​l​i​c​a​t​e​d​!
+			 */
+			bulkDuplicated: string
 			/**
 			 * I​n​c​l​u​d​e​ ​D​a​t​a
 			 */
@@ -2530,6 +2550,10 @@ export type TranslationFunctions = {
 		 */
 		loginFailed: () => LocalizedString
 		/**
+		 * Go to space
+		 */
+		gotoSpace: () => LocalizedString
+		/**
 		 * Forgot your password?
 		 */
 		forgotPassword: () => LocalizedString
@@ -2569,6 +2593,10 @@ export type TranslationFunctions = {
 		 * Login to your account and accept the invitation
 		 */
 		loginToYourAccountAndAcceptTheInvitation: () => LocalizedString
+		/**
+		 * Enter your email and password to login.
+		 */
+		loginWithEmailDescription: () => LocalizedString
 		/**
 		 * Enter your email below to reset your password.
 		 */
@@ -2629,6 +2657,14 @@ export type TranslationFunctions = {
 		 * Enter your work email...
 		 */
 		enterYourWorkEmail: () => LocalizedString
+		/**
+		 * Send Code
+		 */
+		sendOtpCode: () => LocalizedString
+		/**
+		 * Verify Code
+		 */
+		verifyOtp: () => LocalizedString
 	}
 	template: {
 		/**
@@ -3506,6 +3542,10 @@ export type TranslationFunctions = {
 			 * Duplicate Record
 			 */
 			duplicateRecord: () => LocalizedString
+			/**
+			 * Records have been duplicated!
+			 */
+			bulkDuplicated: () => LocalizedString
 			/**
 			 * Include Data
 			 */

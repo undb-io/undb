@@ -139,6 +139,7 @@ const record = {
   create: 'レコード作成',
   update: 'レコード更新',
   delete: 'レコード削除',
+  bulkDuplicated: 'レコードが複製されました！',
   viewRecordDetail: 'レコード詳細を表示',
   copyRecordId: 'レコードIDをコピー',
   createByForm: 'フォームから作成',
@@ -640,6 +641,7 @@ const template = {
 const auth = {
   login: 'ログイン',
   loginFailed: 'ログインに失敗しました',
+  gotoSpace: 'スペースに移動',
   forgotPassword: 'パスワードを忘れましたか？',
   emailPlaceholder: 'メールアドレスを入力してください...',
   password: 'パスワード',
@@ -649,6 +651,7 @@ const auth = {
   loginWith: 'ログイン {provider}',
   invalidEmailOrPassword: '無効なメールアドレスまたはパスワードです。',
   loginToYourAccountAndAcceptTheInvitation: 'ログインして招待を受け入れます',
+  loginWithEmailDescription: 'メールアドレスとパスワードを入力してログインします。',
   resetPassword: 'パスワードをリセット',
   enterYourEmailBelowToResetYourPassword: 'パスワードをリセットするためにメールアドレスを入力してください。',
   emailSent: 'メールが送信されました！',
@@ -665,6 +668,8 @@ const auth = {
   createAccountAndAcceptInvitation: 'アカウントを作成して招待を受け入れる',
   enterYourInformationToCreateAnAccount: 'アカウントを作成するための情報を入力してください。',
   enterYourWorkEmail: '作業用メールアドレスを入力してください...',
+  sendOtpCode: 'コードを送信',
+  verifyOtp: 'コードを検証'
 }
 
 const playground = {

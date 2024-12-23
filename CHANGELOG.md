@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-135
+
+
+### 🏡 Chore
+
+- Add readme about docker volume ([e32d902](https://github.com/undb-io/undb/commit/e32d902))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-134
 
 ## v1.0.0-133

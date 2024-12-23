@@ -195,5 +195,14 @@
       "DROP TABLE `undb_rollup_id_mapping`;",
       "ALTER TABLE `__new_undb_rollup_id_mapping` RENAME TO `undb_rollup_id_mapping`;"
     ]
+  },
+  {
+    "idx": 14,
+    "when": 1734333364633,
+    "tag": "0014_messy_sasquatch",
+    "hash": "b4c01e3f39a5093e2f91f519e64b106f62f72882b145a67c582b785f92765e27",
+    "sql": [
+      "ALTER TABLE `undb_user` ADD `otp_secret` text;"
+    ]
   }
 ]

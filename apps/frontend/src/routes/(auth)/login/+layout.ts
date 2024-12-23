@@ -9,6 +9,7 @@ export const load: LayoutLoad = async () => {
 
   return {
     registrationEnabled,
+    otpEnabled: !!data.data?.settings?.auth?.otp?.enabled,
     oauth: data.data?.settings?.oauth,
   }
 }

@@ -139,6 +139,7 @@ const record = {
   create: '레코드 생성',
   update: '레코드 수정',
   delete: '레코드 삭제',
+  bulkDuplicated: '레코드가 복제되었습니다!',
   viewRecordDetail: '레코드 상세 보기',
   copyRecordId: '레코드 ID 복사',
   createByForm: '양식으로 생성',
@@ -640,6 +641,7 @@ const template = {
 const auth = {
   login: '로그인',
   loginFailed: '로그인 실패',
+  gotoSpace: '공간으로 이동',
   forgotPassword: '비밀번호를 까먹었나요?',
   emailPlaceholder: '이메일 주소를 입력하세요...',
   password: '비밀번호',
@@ -650,6 +652,7 @@ const auth = {
   loginWith: '로그인 {provider}',
   invalidEmailOrPassword: '유효하지 않은 이메일 또는 비밀번호입니다.',
   loginToYourAccountAndAcceptTheInvitation: '로그인하여 초대를 수락하세요',
+  loginWithEmailDescription: '이메일 주소와 비밀번호를 입력하여 로그인하세요.',
   enterYourEmailBelowToResetYourPassword: '비밀번호를 재설정하기 위해 이메일 주소를 입력하세요.',
   emailSent: '이메일이 전송되었습니다!',
   youCanCheckYourEmailAddressAndFollowTheStepsToResetYourPassword: '이메일 주소를 확인하고 비밀번호를 재설정하는 단계를 따르세요.',
@@ -665,6 +668,8 @@ const auth = {
   createAccountAndAcceptInvitation: '계정 생성 및 초대 수락',
   enterYourInformationToCreateAnAccount: '계정을 생성하기 위한 정보를 입력하세요.',
   enterYourWorkEmail: '작업 이메일을 입력하세요...',
+  sendOtpCode: '코드 전송',
+  verifyOtp: '코드 검증'
 }
 
 const playground = {

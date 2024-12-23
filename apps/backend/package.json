@@ -21,6 +21,7 @@
     "@json2csv/plainjs": "^7.0.6",
     "@kitajs/ts-html-plugin": "latest",
     "@lucia-auth/adapter-sqlite": "^3.0.2",
+    "@oslojs/otp": "^1.1.0",
     "@undb/audit": "workspace:*",
     "@undb/authz": "workspace:*",
     "@undb/base": "workspace:*",

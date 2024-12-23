@@ -138,6 +138,7 @@ const record = {
   create: 'Criar Registro',
   update: 'Atualizar Registro',
   delete: 'Excluir Registro',
+  bulkDuplicated: 'Registros duplicados!',
   viewRecordDetail: 'Ver Detalhes do Registro',
   copyRecordId: 'Copiar ID do Registro',
   createByForm: 'Criar por Formulário',
@@ -639,6 +640,7 @@ const template = {
 const auth = {
   login: 'Entrar',
   loginFailed: 'Falha no login',
+  gotoSpace: 'Ir para o espaço',
   forgotPassword: 'Esqueceu sua senha?',
   emailPlaceholder: 'Digite seu email para entrar',
   password: 'Senha',
@@ -647,6 +649,7 @@ const auth = {
   registerDisabled: 'Registro desativado.',
   registerDisabledDescription: 'Entre em contato com seu administrador para solicitar acesso.',
   loginWith: 'Entrar com {provider}',
+  loginWithEmailDescription: 'Digite seu email e senha para entrar.',
   invalidEmailOrPassword: 'Email ou senha inválidos.',
   loginToYourAccountAndAcceptTheInvitation: 'Entre em sua conta e aceite o convite',
   enterYourEmailBelowToResetYourPassword: 'Digite seu email abaixo para redefinir sua senha.',
@@ -664,6 +667,8 @@ const auth = {
   createAccountAndAcceptInvitation: 'Criar conta e aceitar convite',
   enterYourInformationToCreateAnAccount: 'Digite suas informações para criar uma conta.',
   enterYourWorkEmail: 'Digite seu email de trabalho...',
+  sendOtpCode: 'Enviar código',
+  verifyOtp: 'Verificar código'
 }
 
 const playground = {

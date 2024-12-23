@@ -137,6 +137,7 @@ const record = {
   create: 'crear registro',
   update: 'actualizar registro',
   delete: 'eliminar registro',
+  bulkDuplicated: '¡Registros duplicados!',
   viewRecordDetail: 'ver detalle del registro',
   copyRecordId: 'copiar ID de registro',
   createByForm: 'crear por formulario',
@@ -638,10 +639,12 @@ const auth = {
   login: 'Iniciar sesión',
   loginFailed: 'Inicio de sesión fallido',
   forgotPassword: '¿Olvidaste tu contraseña?',
+  gotoSpace: 'Ir al espacio',
   emailPlaceholder: 'Introduce tu correo electrónico para iniciar sesión...',
   password: 'Contraseña',
   register: 'Registrarse',
   noAccount: '¿No tienes una cuenta?',
+  loginWithEmailDescription: 'Introduce tu correo electrónico y contraseña para iniciar sesión.',
   registerDisabled: 'El registro está deshabilitado.',
   registerDisabledDescription: 'Póngase en contacto con su administrador para solicitar acceso.',
   loginWith: 'Iniciar sesión con {provider}',
@@ -659,6 +662,8 @@ const auth = {
   createAnAccount: 'Crear una cuenta',
   alreadyHaveAnAccount: '¿Ya tienes una cuenta?',
   enterYourWorkEmail: 'Introduce tu correo electrónico de trabajo...',
+  sendOtpCode: 'Enviar código',
+  verifyOtp: 'Verificar código'
 }
 
 const playground = {

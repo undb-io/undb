@@ -11,14 +11,17 @@
   import { goto } from "$app/navigation"
   import { FieldIdVo } from "@undb/table"
   import { CREATE_TABLE_MODAL, closeModal } from "$lib/store/modal.store"
-  import { baseId, currentBase, currentBaseId } from "$lib/store/base.store"
+  import { baseId, currentBaseId } from "$lib/store/base.store"
   import { getNextName } from "@undb/utils"
   import { getDataService } from "$lib/store/data-service.store"
+  import { getIsPlayground } from "$lib/store/playground.svelte"
 
   const dataService = getDataService()
 
   const schema = createTableCommand.omit({ baseId: true })
   export let tableNames: string[]
+
+  const isPlayground = getIsPlayground()
 
   const mutation = createMutation({
     mutationFn: dataService.table.createTable,

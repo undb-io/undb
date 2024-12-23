@@ -21,6 +21,8 @@ export class Web {
       .use(staticPlugin({ prefix: "/", assets: "dist" }))
       .use(staticPlugin({ prefix: "/assets", assets: "assets" }))
       .get("/", () => getIndex())
+      .get("/playground", () => getIndex())
+      .get("/playground/*", () => getIndex())
       .get("/t/*", () => getIndex())
       .get("/dashboards/*", () => getIndex())
       .get("/s/*", () => getIndex())

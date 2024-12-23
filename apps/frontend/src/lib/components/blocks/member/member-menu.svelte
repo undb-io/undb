@@ -2,7 +2,15 @@
   import Button from "$lib/components/ui/button/button.svelte"
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
   import * as Avatar from "$lib/components/ui/avatar"
-  import { ExternalLinkIcon, KeyIcon, LogOutIcon, SettingsIcon, SearchIcon, EarthIcon } from "lucide-svelte"
+  import {
+    ExternalLinkIcon,
+    KeyIcon,
+    LogOutIcon,
+    SettingsIcon,
+    SearchIcon,
+    EarthIcon,
+    PipetteIcon,
+  } from "lucide-svelte"
   import { createMutation } from "@tanstack/svelte-query"
   import { goto } from "$app/navigation"
   import Logo from "$lib/images/logo.svg"
@@ -61,8 +69,8 @@
         {$LL.account.apiToken()}
       </DropdownMenu.Item>
       <DropdownMenu.Item href="/playground">
-        <img src={GithubLogo} alt="undb" class="mr-2 h-4 w-4" />
-        Playground
+        <PipetteIcon class="mr-2 h-4 w-4" />
+        {$LL.playground.playgroundMode()}
       </DropdownMenu.Item>
       <DropdownMenu.Item href="https://undb.io/templates" target="_blank" rel="noopener noreferrer">
         <img src={Logo} alt="undb" class="mr-2 h-4 w-4" />

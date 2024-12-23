@@ -139,6 +139,7 @@ const record = {
   create: '创建记录',
   update: '更新记录',
   delete: '删除记录',
+  bulkDuplicated: '记录已复制！',
   viewRecordDetail: '查看记录详情',
   copyRecordId: '复制记录ID',
   createByForm: '通过表单创建',
@@ -640,6 +641,7 @@ const template= {
 const auth = {
   login: '登录',
   loginFailed: '登录失败',
+  gotoSpace: '前往空间',
   forgotPassword: '忘记密码？',
   emailPlaceholder: '输入您的电子邮件地址...',
   password: '密码',
@@ -667,6 +669,8 @@ const auth = {
   createAccountAndAcceptInvitation: '创建账户并接受邀请',
   enterYourInformationToCreateAnAccount: '输入您的信息以创建一个账户。',
   enterYourWorkEmail: '输入您的工作电子邮件...',
+  sendOtpCode: '发送验证码',
+  verifyOtp: '验证验证码'
 }
 
 const playground = {

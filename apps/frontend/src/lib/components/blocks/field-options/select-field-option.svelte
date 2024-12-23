@@ -102,7 +102,19 @@
         >
           {#each option.options as o (o.id)}
             <div class="flex gap-1">
-              <OptionEditor {disabled} bind:color={o.color} bind:name={o.name} />
+              <OptionEditor
+                {disabled}
+                color={o.color}
+                name={o.name}
+                onNameChange={(name) => {
+                  o.name = name
+                  option.options = [...option.options]
+                }}
+                onColorChange={(color) => {
+                  o.color = color
+                  option.options = [...option.options]
+                }}
+              />
 
               <div class="inline-flex items-center">
                 <button {disabled} type="button" class="handler">

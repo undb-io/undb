@@ -9,9 +9,13 @@ export class UserRepository implements IUserRepository {
     @injectTxCTX()
     private readonly txContext: ITxContext,
   ) {}
-  insert(user: IUser): Promise<void> {
-    throw new Error("Method not implemented.")
+
+  async insert(user: IUser): Promise<IUser> {
+    const trx = this.txContext.getCurrentTransaction()
+    const [returnedUser] = await trx.insertInto("undb_user").values(user).returningAll().execute()
+    return returnedUser
   }
+
   async updateOneById(userId: string, user: IUser): Promise<void> {
     const trx = this.txContext.getCurrentTransaction()
     await trx.updateTable("undb_user").set({ username: user.username }).where("id", "=", userId).execute()

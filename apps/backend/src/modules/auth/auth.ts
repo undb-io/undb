@@ -28,6 +28,7 @@ import { omit } from "radash"
 import { v7 } from "uuid"
 import { injectLucia } from "./auth.provider"
 import { OAuth } from "./oauth/oauth"
+import { OtpRoute } from "./otp.route"
 
 const getUsernameFromEmail = (email: string): string => {
   return email.split("@")[0]
@@ -35,11 +36,11 @@ const getUsernameFromEmail = (email: string): string => {
 
 @singleton()
 export class Auth {
-  logger = createLogger(Auth.name)
+  private readonly logger = createLogger(Auth.name)
 
   constructor(
     @injectSpaceMemberService()
-    private spaceMemberService: ISpaceMemberService,
+    private readonly spaceMemberService: ISpaceMemberService,
     @inject(CommandBus)
     private readonly commandBus: CommandBus,
     @injectInvitationQueryRepository()
@@ -56,6 +57,8 @@ export class Auth {
     private readonly txContext: ITxContext,
     @injectContext()
     private readonly context: IContext,
+    @inject(OtpRoute)
+    private readonly otpRoute: OtpRoute,
   ) {}
 
   async #generateEmailVerificationCode(userId: string, email: string): Promise<string> {
@@ -239,6 +242,7 @@ export class Auth {
     const oauth = container.resolve(OAuth)
     return new Elysia()
       .use(oauth.route())
+      .group("/api/auth", (app) => this.otpRoute.route(app))
       .onAfterResponse((ctx) => {
         const requestId = executionContext.getStore()?.requestId
         this.logger.info(

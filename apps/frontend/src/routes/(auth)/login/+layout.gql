@@ -3,6 +3,11 @@ query GetLoginSettings {
     registration {
       enabled
     }
+    auth {
+      otp {
+        enabled
+      }
+    }
     oauth {
       google {
         enabled

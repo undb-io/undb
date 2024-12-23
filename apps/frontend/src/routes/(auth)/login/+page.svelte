@@ -74,6 +74,7 @@
     <h3 class="text-xl font-semibold tracking-tight">Undb {$LL.auth.login()}</h3>
     <p class="text-muted-foreground mb-4 mt-2 text-sm">{$LL.auth.loginWithEmailDescription()}</p>
     <Login
+      otpEnabled={!!data.otpEnabled}
       {registrationEnabled}
       githubEnabled={!!data.oauth?.github?.enabled}
       googleEnabled={!!data.oauth?.google?.enabled}
