@@ -1,4 +1,4 @@
-import { generateTOTP, verifyTOTP } from "@oslojs/otp"
+import { createTOTPKeyURI, generateTOTP, verifyTOTP } from "@oslojs/otp"
 import { singleton } from "@undb/di"
 import { type IMailService, injectMailService } from "@undb/mail"
 import { injectQueryBuilder, type IQueryBuilder } from "@undb/persistence/server"
@@ -8,13 +8,18 @@ import { Lucia } from "lucia"
 import { decodeHex, encodeHex } from "oslo/encoding"
 import { injectLucia } from "./auth.provider"
 
+interface ISendOtpResponse {
+  keyURI: string
+}
+
 export interface IOtpService {
-  sendOtp(email: string): Promise<void>
+  sendOtp(email: string): Promise<ISendOtpResponse>
   verifyOtp(email: string, otp: string): Promise<string>
 }
 
 const OTP_EXPIRES_IN = 60 * 10
 const OTP_DIGITS = 6
+const OTP_ISSUER = "undb"
 
 @singleton()
 export class OtpService implements IOtpService {
@@ -31,8 +36,11 @@ export class OtpService implements IOtpService {
     private readonly userService: IUserService,
   ) {}
 
-  public async sendOtp(email: string): Promise<void> {
-    await this.userService.findOneOrCreateByEmail(email)
+  public async sendOtp(email: string): Promise<ISendOtpResponse> {
+    const user = await this.userService.findOneByEmail(email)
+    if (user.isNone()) {
+      throw new Error("User not found")
+    }
 
     const secret = new Uint8Array(20)
     const key = crypto.getRandomValues(secret)
@@ -45,6 +53,12 @@ export class OtpService implements IOtpService {
       .where((eb) => eb.eb("undb_user.email", "=", email))
       .execute()
 
+    const issuer = OTP_ISSUER
+    const accountName = email
+    const intervalInSeconds = OTP_EXPIRES_IN
+    const digits = OTP_DIGITS
+    const uri = createTOTPKeyURI(issuer, accountName, key, intervalInSeconds, digits)
+
     await this.mailService.send({
       to: email,
       subject: "One-time password - undb",
@@ -56,6 +70,10 @@ export class OtpService implements IOtpService {
         otp: totp,
       },
     })
+
+    return {
+      keyURI: uri,
+    }
   }
 
   /**
