@@ -5,6 +5,7 @@
   import Logo from "$lib/images/logo.svg"
   import { goto } from "$app/navigation"
   import { LL } from "@undb/i18n/client"
+  import { Button } from "$lib/components/ui/button"
 
   export let data: PageData
 
@@ -85,5 +86,9 @@
         }
       }}
     />
+  </div>
+  <div>
+    <Button href="/playground" variant="link" class="w-full" size="sm">Try Undb Playground</Button>
+    <p class="text-muted-foreground w-full text-center text-xs">Without register</p>
   </div>
 </section>
