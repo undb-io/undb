@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-136
+
+
+### 🩹 Fixes
+
+- Fix create dashboard widget ([27b5b06](https://github.com/undb-io/undb/commit/27b5b06))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-135
 
 

@@ -35,13 +35,12 @@ export class DashboardRepository implements IDashboardRepository {
   ) {}
 
   async find(spec: IDashboardSpecification): Promise<Dashboard[]> {
-    const tx = this.txContext.getCurrentTransaction()
-    const dashboards = await tx
+    const dashboards = await this.qb
       .selectFrom("undb_dashboard")
       .selectAll()
       .$call((qb) => new DashboardReferenceVisitor(qb).call(spec))
       .where((eb) => {
-        const visitor = new DashboardFilterVisitor(eb, tx)
+        const visitor = new DashboardFilterVisitor(eb, this.qb)
         spec.accept(visitor)
         return visitor.cond
       })
@@ -50,13 +49,12 @@ export class DashboardRepository implements IDashboardRepository {
     return dashboards.map((dashboard) => this.mapper.toDo(dashboard))
   }
   async findOne(spec: IDashboardSpecification): Promise<Option<Dashboard>> {
-    const tx = this.txContext.getCurrentTransaction()
-    const dashboard = await tx
+    const dashboard = await this.qb
       .selectFrom("undb_dashboard")
       .selectAll()
       .$call((qb) => new DashboardReferenceVisitor(qb).call(spec))
       .where((eb) => {
-        const visitor = new DashboardFilterVisitor(eb, tx)
+        const visitor = new DashboardFilterVisitor(eb, this.qb)
         spec.accept(visitor)
         return visitor.cond
       })
@@ -68,13 +66,12 @@ export class DashboardRepository implements IDashboardRepository {
     const spaceId = this.context.mustGetCurrentSpaceId()
     const spec = WithDashboardId.fromString(id).and(new WithDashboardSpaceId(spaceId))
 
-    const tx = this.txContext.getCurrentTransaction()
-    const dashboard = await tx
+    const dashboard = await this.qb
       .selectFrom("undb_dashboard")
       .selectAll()
       .$call((qb) => new DashboardReferenceVisitor(qb).call(spec))
       .where((eb) => {
-        const visitor = new DashboardFilterVisitor(eb, tx)
+        const visitor = new DashboardFilterVisitor(eb, this.qb)
         spec.accept(visitor)
         return visitor.cond
       })
@@ -117,7 +114,7 @@ export class DashboardRepository implements IDashboardRepository {
   async updateOneById(dashboard: Dashboard, spec: IDashboardSpecification): Promise<void> {
     const userId = this.context.mustGetCurrentUserId()
 
-    const qb = this.qb
+    const qb = this.txContext.getCurrentTransaction()
     const visitor = new DashboardMutateVisitor(dashboard, qb)
     spec.accept(visitor)
 
