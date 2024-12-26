@@ -174,8 +174,7 @@ export class TableRepository implements ITableRepository {
   }
 
   async find(spec: Option<TableComositeSpecification>, ignoreSpace?: boolean): Promise<TableDo[]> {
-    const query = this.txContext
-      .getCurrentTransaction()
+    const query = this.qb
       .selectFrom("undb_table")
       .selectAll("undb_table")
       .$if(spec.isSome(), (qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
@@ -188,8 +187,7 @@ export class TableRepository implements ITableRepository {
   }
 
   async findOne(spec: Option<TableComositeSpecification>): Promise<Option<TableDo>> {
-    const tb = await this.txContext
-      .getCurrentTransaction()
+    const tb = await this.qb
       .selectFrom("undb_table")
       .selectAll("undb_table")
       .$if(spec.isSome(), (qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
@@ -205,8 +203,7 @@ export class TableRepository implements ITableRepository {
 
   async findOneById(id: TableId): Promise<Option<TableDo>> {
     const spec = Some(new TableIdSpecification(id))
-    const tb = await this.txContext
-      .getCurrentTransaction()
+    const tb = await this.qb
       .selectFrom("undb_table")
       .selectAll("undb_table")
       .$call((qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))

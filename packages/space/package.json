@@ -6,7 +6,7 @@
   "dependencies": {
     "@undb/context": "workspace:*",
     "@undb/logger": "workspace:*",
-    "ts-pattern": "^5.5.0"
+    "ts-pattern": "^5.6.0"
   },
   "devDependencies": {
     "@types/bun": "latest"
