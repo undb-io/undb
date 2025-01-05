@@ -3,6 +3,7 @@ import type {
   DashboardBaseIdSpecification,
   DashboardTableIdSpecification,
   DashboardUniqueSpecification,
+  IDashboardSpecification,
   IDashboardSpecVisitor,
   WithDashboardDescription,
   WithDashboardId,
@@ -24,6 +25,11 @@ export class DashboardFilterVisitor extends AbstractQBVisitor<Dashboard> impleme
     private readonly qb: IQueryBuilder,
   ) {
     super(eb)
+  }
+
+  $where(spec: IDashboardSpecification) {
+    spec.accept(this)
+    return this.cond
   }
 
   withDescription(v: WithDashboardDescription): void {

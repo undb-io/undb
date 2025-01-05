@@ -4,6 +4,7 @@ import type {
   DashboardTableIdSpecification,
   DashboardUniqueSpecification,
   DuplicatedDashboardSpecification,
+  IDashboardSpecification,
   IDashboardSpecVisitor,
   WithDashboardDescription,
   WithDashboardId,
@@ -23,6 +24,11 @@ export class DashboardMutateVisitor extends AbstractQBMutationVisitor implements
     private readonly qb: IQueryBuilder,
   ) {
     super()
+  }
+
+  $mutate(spec: IDashboardSpecification) {
+    spec.accept(this)
+    return this
   }
 
   withUniqueDashboard(v: DashboardUniqueSpecification): void {}

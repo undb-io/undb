@@ -30,14 +30,8 @@ export class DashboardQueryRepository implements IDashboardQueryRepository {
     const dashboards = await qb
       .selectFrom("undb_dashboard")
       .selectAll()
-      .$if(spec.isSome(), (qb) => new DashboardReferenceVisitor(qb).call(spec.unwrap()))
-      .where((eb) => {
-        const visitor = new DashboardFilterVisitor(eb, qb)
-        if (spec.isSome()) {
-          spec.unwrap().accept(visitor)
-        }
-        return visitor.cond
-      })
+      .$if(spec.isSome(), (sb) => new DashboardReferenceVisitor(sb).call(spec.unwrap()))
+      .$if(spec.isSome(), (sb) => sb.where((eb) => new DashboardFilterVisitor(eb, qb).$where(spec.unwrap())))
       .execute()
 
     return dashboards.map((b) => this.mapper.toDTO(b))
@@ -51,11 +45,7 @@ export class DashboardQueryRepository implements IDashboardQueryRepository {
       .selectFrom("undb_dashboard")
       .selectAll()
       .$call((qb) => new DashboardReferenceVisitor(qb).call(spec))
-      .where((eb) => {
-        const visitor = new DashboardFilterVisitor(eb, qb)
-        spec.accept(visitor)
-        return visitor.cond
-      })
+      .where((eb) => new DashboardFilterVisitor(eb, qb).$where(spec))
       .executeTakeFirst()
 
     return dashboard ? Some(this.mapper.toDTO(dashboard)) : None

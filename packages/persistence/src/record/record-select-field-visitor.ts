@@ -40,7 +40,7 @@ import { createDisplayFieldName } from "./record-utils"
 export class RecordSelectFieldVisitor implements IFieldVisitor {
   #select: SelectExpression<any, any>[] = []
 
-  addSelect(select: SelectExpression<any, any>): void {
+  #addSelect(select: SelectExpression<any, any>): void {
     this.#select.push(select)
   }
 
@@ -60,7 +60,7 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     private readonly foreignTables: Map<string, TableDo>,
     private readonly eb: ExpressionBuilder<any, string>,
   ) {
-    this.addSelect(this.getField(ID_TYPE))
+    this.#addSelect(this.getField(ID_TYPE))
   }
 
   #selectSingelUser(field: UserField | CreatedByField | UpdatedByField) {
@@ -83,70 +83,70 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
       .limit(1)
       .as(as)
 
-    this.addSelect(name)
+    this.#addSelect(name)
   }
 
   select(field: SelectField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
 
   longText(field: LongTextField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
 
   id(field: IdField): void {
     // this.addSelect(this.getField(field.id.value))
   }
   autoIncrement(field: AutoIncrementField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
   createdAt(field: CreatedAtField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
   createdBy(field: CreatedByField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
     this.#selectSingelUser(field)
   }
   updatedBy(field: UpdatedByField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
     this.#selectSingelUser(field)
   }
   updatedAt(field: UpdatedAtField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
   string(field: StringField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
   number(field: NumberField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
   button(field: ButtonField): void {}
   currency(field: CurrencyField): void {
     const fieldName = this.getField(field.id.value)
     const selection = sql`${sql.raw(fieldName)} / 100.0`.as(field.id.value)
-    this.addSelect(selection)
+    this.#addSelect(selection)
   }
   rating(field: RatingField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
   email(field: EmailField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
   url(field: UrlField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
   json(field: JsonField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
   duration(field: DurationField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
   percentage(field: PercentageField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
   reference(field: ReferenceField): void {
     const select = `${field.id.value}.${field.id.value} as ${field.id.value}`
-    this.addSelect(select)
+    this.#addSelect(select)
 
     const name = createDisplayFieldName(field)
 
@@ -163,37 +163,37 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
         )
         .as(name)
 
-      this.addSelect(select)
+      this.#addSelect(select)
     }
   }
   rollup(field: RollupField): void {
     const select = `${field.referenceFieldId}.${field.id.value} as ${field.id.value}`
-    this.addSelect(select)
+    this.#addSelect(select)
   }
   formula(field: FormulaField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
   attachment(field: AttachmentField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
   date(field: DateField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
   dateRange(field: DateRangeField): void {
     const { start, end } = getDateRangeFieldName(field)
-    this.addSelect(this.eb.fn("json_array", [this.getField(start), this.getField(end)]).as(field.id.value))
+    this.#addSelect(this.eb.fn("json_array", [this.getField(start), this.getField(end)]).as(field.id.value))
   }
   checkbox(field: CheckboxField): void {
-    this.addSelect(this.getField(field.id.value))
+    this.#addSelect(this.getField(field.id.value))
   }
   user(field: UserField): void {
     const as = createDisplayFieldName(field)
     if (field.isSingle) {
-      this.addSelect(this.getField(field.id.value))
+      this.#addSelect(this.getField(field.id.value))
       this.#selectSingelUser(field)
     } else {
-      this.addSelect(this.getField(field.id.value))
-      this.addSelect(
+      this.#addSelect(this.getField(field.id.value))
+      this.#addSelect(
         this.eb
           .case()
           .when(`${this.table.name}.${field.id.value}`, "is", null)
