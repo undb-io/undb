@@ -174,12 +174,13 @@ export class TableRepository implements ITableRepository {
   }
 
   async find(spec: Option<TableComositeSpecification>, ignoreSpace?: boolean): Promise<TableDo[]> {
-    const query = this.qb
+    const tx = this.txContext.getCurrentTransaction()
+    const query = tx
       .selectFrom("undb_table")
       .selectAll("undb_table")
       .$if(spec.isSome(), (qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
       .where((eb) =>
-        new TableDbQuerySpecHandler(this.qb, eb, this.context.mustGetCurrentSpaceId(), ignoreSpace).handle(spec),
+        new TableDbQuerySpecHandler(tx, eb, this.context.mustGetCurrentSpaceId(), ignoreSpace).handle(spec),
       )
     const tbs = await query.execute()
 
@@ -187,11 +188,12 @@ export class TableRepository implements ITableRepository {
   }
 
   async findOne(spec: Option<TableComositeSpecification>): Promise<Option<TableDo>> {
-    const tb = await this.qb
+    const tx = this.txContext.getCurrentTransaction()
+    const tb = await tx
       .selectFrom("undb_table")
       .selectAll("undb_table")
       .$if(spec.isSome(), (qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
-      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb, this.context.mustGetCurrentSpaceId()).handle(spec))
+      .where((eb) => new TableDbQuerySpecHandler(tx, eb, this.context.mustGetCurrentSpaceId()).handle(spec))
       .executeTakeFirst()
 
     if (!tb) {
@@ -203,11 +205,12 @@ export class TableRepository implements ITableRepository {
 
   async findOneById(id: TableId): Promise<Option<TableDo>> {
     const spec = Some(new TableIdSpecification(id))
-    const tb = await this.qb
+    const tx = this.txContext.getCurrentTransaction()
+    const tb = await tx
       .selectFrom("undb_table")
       .selectAll("undb_table")
       .$call((qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
-      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb, this.context.mustGetCurrentSpaceId()).handle(spec))
+      .where((eb) => new TableDbQuerySpecHandler(tx, eb, this.context.mustGetCurrentSpaceId()).handle(spec))
       .executeTakeFirst()
 
     return tb ? Some(this.mapper.toDo(tb)) : None
@@ -215,12 +218,12 @@ export class TableRepository implements ITableRepository {
 
   async findManyByIds(ids: TableId[]): Promise<TableDo[]> {
     const spec = Some(new TableIdsSpecification(ids))
-    const tbs = await this.txContext
-      .getCurrentTransaction()
+    const tx = this.txContext.getCurrentTransaction()
+    const tbs = await tx
       .selectFrom("undb_table")
       .selectAll("undb_table")
       .$call((qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
-      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb, this.context.mustGetCurrentSpaceId()).handle(spec))
+      .where((eb) => new TableDbQuerySpecHandler(tx, eb, this.context.mustGetCurrentSpaceId()).handle(spec))
       .execute()
 
     return tbs.map((t) => this.mapper.toDo(t))
