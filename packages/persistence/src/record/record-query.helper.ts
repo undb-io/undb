@@ -56,13 +56,7 @@ export class RecordQueryHelper {
     return qb
       .selectFrom(table.id.value)
       .$call((qb) => new RecordReferenceVisitor(qb, table).join(visibleFields))
-      .$call((qb) => {
-        const visitor = new RecordSpecReferenceVisitor(qb, table)
-        if (spec.isSome()) {
-          spec.unwrap().accept(visitor)
-        }
-        return visitor.join()
-      })
+      .$if(spec.isSome(), (qb) => new RecordSpecReferenceVisitor(qb, table).$join(spec.unwrap()))
       .select((sb) => new RecordSelectFieldVisitor(t, foreignTables, sb).$select(visibleFields))
   }
 

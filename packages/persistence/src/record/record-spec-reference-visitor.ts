@@ -58,6 +58,7 @@ import {
   UrlEqual,
   UserEmpty,
   UserEqual,
+  type IRecordComositeSpecification,
   type IRecordVisitor,
   type TableDo,
 } from "@undb/table"
@@ -70,7 +71,8 @@ export class RecordSpecReferenceVisitor implements IRecordVisitor {
     private readonly table: TableDo,
   ) {}
 
-  join() {
+  $join(spec: IRecordComositeSpecification) {
+    spec.accept(this)
     return this.qb
   }
 

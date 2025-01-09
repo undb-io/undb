@@ -1,6 +1,6 @@
-import { injectContext,type IContext } from "@undb/context"
-import { inject,singleton } from "@undb/di"
-import { None,Option,Some,type PaginatedDTO } from "@undb/domain"
+import { injectContext, type IContext } from "@undb/context"
+import { inject, singleton } from "@undb/di"
+import { None, Option, Some, type PaginatedDTO } from "@undb/domain"
 import {
   AUTO_INCREMENT_TYPE,
   ID_TYPE,
@@ -26,7 +26,7 @@ import {
   type ViewId,
 } from "@undb/table"
 import { getTableName } from "drizzle-orm"
-import { sql,type AliasedExpression,type Expression,type ExpressionBuilder } from "kysely"
+import { sql, type AliasedExpression, type Expression, type ExpressionBuilder } from "kysely"
 import { injectQueryBuilder } from "../qb.provider"
 import type { IRecordQueryBuilder } from "../qb.type"
 import { users } from "../tables"
@@ -290,13 +290,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
     const result = await qb
       .selectFrom(t.name)
       .$call((qb) => new RecordReferenceVisitor(qb, table).join(selectFields))
-      .$call((qb) => {
-        const visitor = new RecordSpecReferenceVisitor(qb, table)
-        if (spec.isSome()) {
-          spec.unwrap().accept(visitor)
-        }
-        return visitor.join()
-      })
+      .$if(spec.isSome(), (qb) => new RecordSpecReferenceVisitor(qb, table).$join(spec.unwrap()))
       .select((eb) => {
         const ebs: AliasedExpression<any, any>[] = []
 

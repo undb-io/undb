@@ -1,7 +1,4 @@
 import {
-  DateRangeField,
-  ID_TYPE,
-  PercentageField,
   type AttachmentField,
   type AutoIncrementField,
   type ButtonField,
@@ -10,14 +7,18 @@ import {
   type CreatedByField,
   type CurrencyField,
   type DateField,
+  type DateRangeField,
   type DurationField,
   type EmailField,
   type Field,
+  type FormulaField,
+  ID_TYPE,
   type IFieldVisitor,
   type IdField,
   type JsonField,
   type LongTextField,
   type NumberField,
+  type PercentageField,
   type RatingField,
   type ReferenceField,
   type RollupField,
@@ -29,7 +30,6 @@ import {
   type UrlField,
   type UserField,
 } from "@undb/table"
-import type { FormulaField } from "@undb/table/src/modules/schema/fields/variants/formula-field"
 import type { SelectQueryBuilder } from "kysely"
 
 export class RecordReferenceVisitor implements IFieldVisitor {

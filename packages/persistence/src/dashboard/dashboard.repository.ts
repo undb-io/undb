@@ -39,11 +39,7 @@ export class DashboardRepository implements IDashboardRepository {
       .selectFrom("undb_dashboard")
       .selectAll()
       .$call((qb) => new DashboardReferenceVisitor(qb).call(spec))
-      .where((eb) => {
-        const visitor = new DashboardFilterVisitor(eb, this.qb)
-        spec.accept(visitor)
-        return visitor.cond
-      })
+      .where((eb) => new DashboardFilterVisitor(eb, this.qb).$where(spec))
       .execute()
 
     return dashboards.map((dashboard) => this.mapper.toDo(dashboard))
@@ -53,11 +49,7 @@ export class DashboardRepository implements IDashboardRepository {
       .selectFrom("undb_dashboard")
       .selectAll()
       .$call((qb) => new DashboardReferenceVisitor(qb).call(spec))
-      .where((eb) => {
-        const visitor = new DashboardFilterVisitor(eb, this.qb)
-        spec.accept(visitor)
-        return visitor.cond
-      })
+      .where((eb) => new DashboardFilterVisitor(eb, this.qb).$where(spec))
       .executeTakeFirst()
 
     return dashboard ? Some(this.mapper.toDo(dashboard)) : None
@@ -70,11 +62,7 @@ export class DashboardRepository implements IDashboardRepository {
       .selectFrom("undb_dashboard")
       .selectAll()
       .$call((qb) => new DashboardReferenceVisitor(qb).call(spec))
-      .where((eb) => {
-        const visitor = new DashboardFilterVisitor(eb, this.qb)
-        spec.accept(visitor)
-        return visitor.cond
-      })
+      .where((eb) => new DashboardFilterVisitor(eb, this.qb).$where(spec))
       .executeTakeFirst()
 
     return dashboard ? Some(this.mapper.toDo(dashboard)) : None
@@ -115,8 +103,7 @@ export class DashboardRepository implements IDashboardRepository {
     const userId = this.context.mustGetCurrentUserId()
 
     const qb = this.txContext.getCurrentTransaction()
-    const visitor = new DashboardMutateVisitor(dashboard, qb)
-    spec.accept(visitor)
+    const visitor = new DashboardMutateVisitor(dashboard, qb).$mutate(spec)
 
     await qb
       .updateTable("undb_dashboard")
@@ -127,6 +114,7 @@ export class DashboardRepository implements IDashboardRepository {
     for (const sql of visitor.sql) {
       await qb.executeQuery(sql)
     }
+
     await this.outboxService.save(dashboard)
   }
 
