@@ -14,8 +14,6 @@ import {
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
 import type { InsertTable, InsertTableIdMapping } from "../db"
-import { injectQueryBuilder } from "../qb.provider"
-import type { IQueryBuilder } from "../qb.type"
 import { json } from "../qb.util"
 import { UnderlyingTableService } from "../underlying/underlying-table.service"
 import { TableFilterVisitor } from "./table.filter-visitor"
@@ -30,8 +28,6 @@ export class TableRepository implements ITableRepository {
     private readonly underlyingTableService: UnderlyingTableService,
     @injectTableOutboxService()
     private readonly outboxService: ITableOutboxService,
-    @injectQueryBuilder()
-    private readonly qb: IQueryBuilder,
     @injectContext()
     private readonly context: IContext,
     @injectTxCTX()

@@ -35,21 +35,23 @@ export class DashboardRepository implements IDashboardRepository {
   ) {}
 
   async find(spec: IDashboardSpecification): Promise<Dashboard[]> {
-    const dashboards = await this.qb
+    const trx = this.txContext.getCurrentTransaction()
+    const dashboards = await trx
       .selectFrom("undb_dashboard")
       .selectAll()
       .$call((qb) => new DashboardReferenceVisitor(qb).call(spec))
-      .where((eb) => new DashboardFilterVisitor(eb, this.qb).$where(spec))
+      .where((eb) => new DashboardFilterVisitor(eb, trx).$where(spec))
       .execute()
 
     return dashboards.map((dashboard) => this.mapper.toDo(dashboard))
   }
   async findOne(spec: IDashboardSpecification): Promise<Option<Dashboard>> {
-    const dashboard = await this.qb
+    const trx = this.txContext.getCurrentTransaction()
+    const dashboard = await trx
       .selectFrom("undb_dashboard")
       .selectAll()
       .$call((qb) => new DashboardReferenceVisitor(qb).call(spec))
-      .where((eb) => new DashboardFilterVisitor(eb, this.qb).$where(spec))
+      .where((eb) => new DashboardFilterVisitor(eb, trx).$where(spec))
       .executeTakeFirst()
 
     return dashboard ? Some(this.mapper.toDo(dashboard)) : None
@@ -58,11 +60,13 @@ export class DashboardRepository implements IDashboardRepository {
     const spaceId = this.context.mustGetCurrentSpaceId()
     const spec = WithDashboardId.fromString(id).and(new WithDashboardSpaceId(spaceId))
 
-    const dashboard = await this.qb
+    const trx = this.txContext.getCurrentTransaction()
+
+    const dashboard = await trx
       .selectFrom("undb_dashboard")
       .selectAll()
       .$call((qb) => new DashboardReferenceVisitor(qb).call(spec))
-      .where((eb) => new DashboardFilterVisitor(eb, this.qb).$where(spec))
+      .where((eb) => new DashboardFilterVisitor(eb, trx).$where(spec))
       .executeTakeFirst()
 
     return dashboard ? Some(this.mapper.toDo(dashboard)) : None

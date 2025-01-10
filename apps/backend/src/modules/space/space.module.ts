@@ -5,7 +5,7 @@ import { getCurrentMember } from "@undb/context/server"
 import { CommandBus } from "@undb/cqrs"
 import { inject, singleton } from "@undb/di"
 import type { ITxContext } from "@undb/persistence/server"
-import { injectQueryBuilder, injectTxCTX, type IQueryBuilder } from "@undb/persistence/server"
+import { injectTxCTX } from "@undb/persistence/server"
 import { injectSpaceService, type ISpaceService } from "@undb/space"
 import Elysia, { t } from "elysia"
 import { type Lucia } from "lucia"
@@ -20,8 +20,6 @@ export class SpaceModule {
     private readonly spaceService: ISpaceService,
     @inject(CommandBus)
     private readonly commandBus: CommandBus,
-    @injectQueryBuilder()
-    private readonly qb: IQueryBuilder,
     @injectContext()
     private readonly context: IContext,
     @injectTxCTX()
