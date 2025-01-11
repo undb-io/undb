@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-138
+
+
+### 🩹 Fixes
+
+- Fix select issue ([aea8243](https://github.com/undb-io/undb/commit/aea8243))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-137
 
 
