@@ -31,6 +31,7 @@ import {
   DashboardOutboxService,
   DashboardQueryRepository,
   DashboardRepository,
+  DATABASE_CLIENT,
   InvitationQueryRepository,
   InvitationRepository,
   QUERY_BUILDER,
@@ -43,7 +44,6 @@ import {
   SpaceMemberRepository,
   SpaceQueryRepository,
   SpaceRepostitory,
-  SQLITE_CLIENT,
   TableOutboxService,
   TableQueryRepository,
   TableRepository,
@@ -78,7 +78,7 @@ export const registerDb = () => {
   container.register(CTX, { useValue: txContext })
   container.register(TX_CTX, TxContextImpl)
 
-  container.register(SQLITE_CLIENT, {
+  container.register(DATABASE_CLIENT, {
     useFactory: instanceCachingFactory(() => {
       if (env.UNDB_DB_PROVIDER === "sqlite" || !env.UNDB_DB_PROVIDER) {
         return createSqliteClient("undb.sqlite")
@@ -89,10 +89,10 @@ export const registerDb = () => {
   container.register(QUERY_BUILDER, {
     useFactory: instanceCachingFactory((c) => {
       if (env.UNDB_DB_PROVIDER === "sqlite" || !env.UNDB_DB_PROVIDER) {
-        const sqlite = c.resolve<Database>(SQLITE_CLIENT)
+        const sqlite = c.resolve<Database>(DATABASE_CLIENT)
         return createSqliteQueryBuilder(sqlite)
       }
-      const sqlite = c.resolve<Client>(SQLITE_CLIENT)
+      const sqlite = c.resolve<Client>(DATABASE_CLIENT)
       return createTursoQueryBuilder(sqlite)
     }),
   })

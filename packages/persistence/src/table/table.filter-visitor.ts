@@ -1,7 +1,9 @@
+import type { Option } from "@undb/domain"
 import type {
   DuplicatedTableSpecification,
   ITableSpecVisitor,
   TableBaseIdSpecification,
+  TableComositeSpecification,
   TableDo,
   TableFormsSpecification,
   TableIdSpecification,
@@ -52,6 +54,13 @@ export class TableFilterVisitor extends AbstractQBVisitor<TableDo> implements IT
     if (!ignoreSpace && !cloned) {
       this.addCond(this.eb.eb("undb_table.space_id", "=", spaceId))
     }
+  }
+  $where(spec: Option<TableComositeSpecification>) {
+    if (spec.isSome()) {
+      spec.unwrap().accept(this)
+    }
+
+    return this.cond
   }
   withSpaceId(id: TableSpaceIdSpecification): void {
     this.addCond(this.eb.eb("undb_table.space_id", "=", id.spaceId))

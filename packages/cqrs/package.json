@@ -6,7 +6,7 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@types/uuid": "^10.0.0",
-    "type-fest": "^4.31.0"
+    "type-fest": "^4.32.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
@@ -17,6 +17,6 @@
     "@undb/logger": "workspace:*",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
-    "uuid": "^11.0.3"
+    "uuid": "^11.0.5"
   }
 }

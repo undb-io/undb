@@ -1,7 +1,7 @@
 import { BunSQLiteAdapter, LibSQLAdapter } from "@lucia-auth/adapter-sqlite"
 import { container, inject, instanceCachingFactory } from "@undb/di"
 import { env } from "@undb/env"
-import { Client, SQLITE_CLIENT } from "@undb/persistence/server"
+import { Client, DATABASE_CLIENT } from "@undb/persistence/server"
 import Database from "bun:sqlite"
 import { Adapter, Lucia } from "lucia"
 
@@ -72,10 +72,10 @@ declare module "lucia" {
 container.register(LUCIA_PROVIDER, {
   useFactory: instanceCachingFactory((c) => {
     if (env.UNDB_DB_PROVIDER === "sqlite" || !env.UNDB_DB_PROVIDER) {
-      const sqlite = c.resolve<Database>(SQLITE_CLIENT)
+      const sqlite = c.resolve<Database>(DATABASE_CLIENT)
       return createSqliteLucia(sqlite)
     }
-    const sqlite = c.resolve<Client>(SQLITE_CLIENT)
+    const sqlite = c.resolve<Client>(DATABASE_CLIENT)
     return createTursoLucia(sqlite)
   }),
 })

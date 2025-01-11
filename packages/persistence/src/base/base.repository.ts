@@ -13,8 +13,6 @@ import { None, Some, type Option } from "@undb/domain"
 import { injectTableRepository, TableBaseIdSpecification, type ITableRepository } from "@undb/table"
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
-import { injectQueryBuilder } from "../qb.provider"
-import type { IQueryBuilder } from "../qb.type"
 import { UnderlyingTableService } from "../underlying/underlying-table.service"
 import { BaseFilterVisitor } from "./base.filter-visitor"
 import { BaseMapper } from "./base.mapper"
@@ -27,8 +25,6 @@ export class BaseRepository implements IBaseRepository {
     private readonly mapper: BaseMapper,
     @injectBaseOutboxService()
     private readonly outboxService: IBaseOutboxService,
-    @injectQueryBuilder()
-    private readonly qb: IQueryBuilder,
     @injectTableRepository()
     private readonly tableRepository: ITableRepository,
     @inject(UnderlyingTableService)

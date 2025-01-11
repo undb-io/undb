@@ -44,7 +44,7 @@
     $updateCell.mutate({
       tableId,
       id: recordId,
-      values: { [field.id.value]: value },
+      values: { [field.id.value]: id },
     })
   }
 </script>

@@ -10,7 +10,7 @@ import {
 } from "@undb/table"
 import { injectQueryBuilder } from "../qb.provider"
 import type { IQueryBuilder } from "../qb.type"
-import { TableDbQuerySpecHandler } from "./table-db.query-spec-handler"
+import { TableFilterVisitor } from "./table.filter-visitor"
 import { TableMapper } from "./table.mapper"
 import { TableReferenceVisitor } from "./table.reference-visitor"
 
@@ -32,7 +32,7 @@ export class TableQueryRepository implements ITableQueryRepository {
       .selectFrom("undb_table")
       .selectAll()
       .$if(spec.isSome(), (qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
-      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb, this.context.mustGetCurrentSpaceId()).handle(spec))
+      .where((eb) => new TableFilterVisitor(this.qb, eb, this.context.mustGetCurrentSpaceId()).$where(spec))
       .execute()
 
     return tbs.map((r) => this.mapper.toDTO(r))
@@ -43,7 +43,7 @@ export class TableQueryRepository implements ITableQueryRepository {
       .selectFrom("undb_table")
       .selectAll()
       .$call((qb) => new TableReferenceVisitor(qb).call(spec))
-      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb, this.context.mustGetCurrentSpaceId()).handle(Some(spec)))
+      .where((eb) => new TableFilterVisitor(this.qb, eb, this.context.mustGetCurrentSpaceId()).$where(Some(spec)))
       .executeTakeFirst()
 
     return tb ? Some(this.mapper.toDTO(tb)) : None
@@ -55,7 +55,7 @@ export class TableQueryRepository implements ITableQueryRepository {
       .selectFrom("undb_table")
       .selectAll()
       .$call((qb) => new TableReferenceVisitor(qb).call(spec.unwrap()))
-      .where((eb) => new TableDbQuerySpecHandler(this.qb, eb, this.context.mustGetCurrentSpaceId()).handle(spec))
+      .where((eb) => new TableFilterVisitor(this.qb, eb, this.context.mustGetCurrentSpaceId()).$where(spec))
       .executeTakeFirst()
 
     return tb ? Some(this.mapper.toDTO(tb)) : None
