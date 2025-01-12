@@ -77,6 +77,12 @@ docker run -d \
   ghcr.io/undb-io/undb:latest
 ```
 
+### Deploy on Render.com
+
+<a href="https://render.com/deploy?repo=https://github.com/undb-io/undb">
+  <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
+</a>
+
 ## Development
 
 ### Local Development (Recommended)
