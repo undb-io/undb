@@ -32,7 +32,8 @@
     queryFn: async () => {
       return dataService.table.getTables({})
     },
-    queryKey: ["getForeignTables", $table.baseId],
+    enabled: !!$table?.baseId,
+    queryKey: ["getForeignTables", $table?.baseId],
   })
 
   $: open && $getForeignTables.refetch()
