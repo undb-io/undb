@@ -31,6 +31,7 @@ import {
   type UpdatedAtField,
 } from "@undb/table"
 import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, CreateTableBuilder, sql } from "kysely"
+import type { IDbProvider } from "../db.provider"
 import type { IQueryBuilder } from "../qb.type"
 import { JoinTable } from "./reference/join-table"
 import { getUnderlyingFormulaType } from "./underlying-formula.util"
@@ -45,7 +46,7 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     private readonly qb: IQueryBuilder,
     private readonly t: UnderlyingTable,
     public tb: TB,
-    private readonly dbProvider: string,
+    private readonly dbProvider: IDbProvider,
     public readonly isNew: boolean = false,
   ) {}
   public atb: AlterTableColumnAlteringBuilder | CreateTableBuilder<any, any> | null = null
@@ -70,7 +71,7 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     const c = this.tb.addColumn(field.id.value, "timestamp", (b) => b.defaultTo(sql`(CURRENT_TIMESTAMP)`).notNull())
     this.addColumn(c)
 
-    if (this.dbProvider === "postgres") {
+    if (this.dbProvider.isPostgres()) {
       const query = sql
         .raw(
           `
@@ -104,7 +105,7 @@ CREATE TRIGGER update_customer_modtime_${tableName} BEFORE UPDATE ON ${tableName
     }
   }
   autoIncrement(field: AutoIncrementField): void {
-    if (this.dbProvider === "postgres") {
+    if (this.dbProvider.isPostgres()) {
       const c = this.tb.addColumn(field.id.value, "bigserial", (b) => b.primaryKey())
       this.addColumn(c)
     } else {
@@ -203,7 +204,7 @@ CREATE TRIGGER update_customer_modtime_${tableName} BEFORE UPDATE ON ${tableName
   }
   rollup(field: RollupField): void {}
   checkbox(field: CheckboxField): void {
-    const defaultValue = this.dbProvider === "postgres" ? false : 0
+    const defaultValue = this.dbProvider.isPostgres() ? false : 0
     const c = this.tb.addColumn(field.id.value, "boolean", (b) => b.defaultTo(defaultValue).notNull())
     this.addColumn(c)
   }
@@ -230,7 +231,7 @@ CREATE TRIGGER update_customer_modtime_${tableName} BEFORE UPDATE ON ${tableName
     const type = getUnderlyingFormulaType(field.returnType)
     const c = this.tb.addColumn(field.id.value, type, (b) => {
       const column = b.generatedAlwaysAs(sql.raw(parsed))
-      if (this.dbProvider === "postgres") {
+      if (this.dbProvider.isPostgres()) {
         return column.stored()
       }
       return this.isNew ? column.stored() : column

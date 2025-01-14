@@ -5,7 +5,7 @@ import type { TableComositeSpecification, TableDo } from "@undb/table"
 import type { CompiledQuery } from "kysely"
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
-import { injectDbProvider } from "../db.provider"
+import { DbProviderService, type IDbProvider } from "../db.provider"
 import { DatabaseFnUtil, type IDatabaseFnUtil } from "../utils/fn.util"
 import { JoinTable } from "./reference/join-table"
 import { UnderlyingTable } from "./underlying-table"
@@ -18,8 +18,8 @@ export class UnderlyingTableService {
     @injectContext() private readonly context: IContext,
     @injectTxCTX()
     private readonly txContext: ITxContext,
-    @injectDbProvider()
-    private readonly dbProvider: string,
+    @inject(DbProviderService)
+    private readonly dbProvider: IDbProvider,
     @inject(DatabaseFnUtil)
     private readonly dbFnUtil: IDatabaseFnUtil,
   ) {}
