@@ -14,3 +14,5 @@ export * from "./record"
 export * from "./space"
 export * from "./table"
 export * from "./template"
+
+export * from "./db.provider"

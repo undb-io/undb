@@ -48,6 +48,7 @@ import type {
 import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
 import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, CreateTableBuilder, sql } from "kysely"
 import type { IRecordQueryBuilder } from "../qb.type"
+import type { IDatabaseFnUtil } from "../utils/fn.util"
 import { ConversionContext } from "./conversion/conversion.context"
 import { ConversionFactory } from "./conversion/conversion.factory"
 import { JoinTable } from "./reference/join-table"
@@ -61,6 +62,8 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
     public readonly table: UnderlyingTable,
     public readonly qb: IRecordQueryBuilder,
     public readonly context: IContext,
+    private readonly dbProvider: string,
+    private readonly dbFnUtil: IDatabaseFnUtil,
   ) {
     this.tb = qb.schema.alterTable(table.name)
   }
@@ -119,7 +122,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
           .updateTable(this.table.name)
           .where((eb) => eb.not(eb.or([eb(field.id.value, "is", null), eb(field.id.value, "=", "")])))
           .set((eb) => ({
-            [field.id.value]: eb.fn(`json_array`, [sql.raw(field.id.value)]),
+            [field.id.value]: eb.fn(this.dbFnUtil.jsonArray, [sql.raw(`${this.table.name}."${field.id.value}"`)]),
           }))
           .compile()
 
@@ -138,7 +141,13 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
         this.addSql(query)
       }
 
-      const fieldVisitor = new UnderlyingTableFieldUpdatedVisitor(this.qb, this.table, spec.previous, this.tb)
+      const fieldVisitor = new UnderlyingTableFieldUpdatedVisitor(
+        this.qb,
+        this.table,
+        spec.previous,
+        this.tb,
+        this.dbFnUtil,
+      )
       spec.field.accept(fieldVisitor)
       this.addSql(...fieldVisitor.sql)
     }
@@ -217,7 +226,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
   withName(name: TableNameSpecification): void {}
   withSchema(schema: TableSchemaSpecification): void {}
   withNewField(schema: WithNewFieldSpecification): void {
-    const fieldVisitor = new UnderlyingTableFieldVisitor(this.qb, this.table, this.tb, false)
+    const fieldVisitor = new UnderlyingTableFieldVisitor(this.qb, this.table, this.tb, this.dbProvider, false)
     schema.field.accept(fieldVisitor)
     this.addSql(...fieldVisitor.sql)
     this.atb = fieldVisitor.atb

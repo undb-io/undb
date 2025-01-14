@@ -1,10 +1,12 @@
 import { injectContext, type IContext } from "@undb/context"
-import { singleton } from "@undb/di"
+import { inject, singleton } from "@undb/di"
 import { createLogger } from "@undb/logger"
 import type { TableComositeSpecification, TableDo } from "@undb/table"
 import type { CompiledQuery } from "kysely"
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
+import { injectDbProvider } from "../db.provider"
+import { DatabaseFnUtil, type IDatabaseFnUtil } from "../utils/fn.util"
 import { JoinTable } from "./reference/join-table"
 import { UnderlyingTable } from "./underlying-table"
 import { UnderlyingTableFieldVisitor } from "./underlying-table-field.visitor"
@@ -16,6 +18,10 @@ export class UnderlyingTableService {
     @injectContext() private readonly context: IContext,
     @injectTxCTX()
     private readonly txContext: ITxContext,
+    @injectDbProvider()
+    private readonly dbProvider: string,
+    @inject(DatabaseFnUtil)
+    private readonly dbFnUtil: IDatabaseFnUtil,
   ) {}
 
   readonly logger = createLogger(UnderlyingTableService.name)
@@ -28,7 +34,7 @@ export class UnderlyingTableService {
       .createTable(t.name)
       .ifNotExists()
       .$call((tb) => {
-        const visitor = new UnderlyingTableFieldVisitor(trx, t, tb, true)
+        const visitor = new UnderlyingTableFieldVisitor(trx, t, tb, this.dbProvider, true)
         for (const field of table.schema) {
           field.accept(visitor)
         }
@@ -46,7 +52,7 @@ export class UnderlyingTableService {
     const t = new UnderlyingTable(table)
     const trx = this.txContext.getAnonymousTransaction()
 
-    const visitor = new UnderlyingTableSpecVisitor(t, trx, this.context)
+    const visitor = new UnderlyingTableSpecVisitor(t, trx, this.context, this.dbProvider, this.dbFnUtil)
     spec.accept(visitor)
 
     await visitor.execute()

@@ -14,10 +14,10 @@ export const injectContext = () => inject(CTX)
 @singleton()
 export class TxContextImpl implements ITxContext {
   constructor(
-    @injectQueryBuilder()
-    private readonly qb: IQueryBuilder,
     @injectContext()
     private readonly context: AsyncLocalStorage<TxContext>,
+    @injectQueryBuilder()
+    private readonly qb: IQueryBuilder,
   ) {}
 
   withTransaction<T = any>(callback: () => Promise<T>): Promise<T> {

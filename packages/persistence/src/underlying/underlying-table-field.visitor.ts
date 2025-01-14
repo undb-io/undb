@@ -45,6 +45,7 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     private readonly qb: IQueryBuilder,
     private readonly t: UnderlyingTable,
     public tb: TB,
+    private readonly dbProvider: string,
     public readonly isNew: boolean = false,
   ) {}
   public atb: AlterTableColumnAlteringBuilder | CreateTableBuilder<any, any> | null = null
@@ -69,22 +70,47 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     const c = this.tb.addColumn(field.id.value, "timestamp", (b) => b.defaultTo(sql`(CURRENT_TIMESTAMP)`).notNull())
     this.addColumn(c)
 
-    const query = sql
-      .raw(
-        `
+    if (this.dbProvider === "postgres") {
+      const query = sql
+        .raw(
+          `
+CREATE OR REPLACE FUNCTION update_modified_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW."${field.id.value}" = now();
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER update_customer_modtime_${tableName} BEFORE UPDATE ON ${tableName} FOR EACH ROW EXECUTE PROCEDURE  update_modified_column();
+`,
+        )
+        .compile(this.qb)
+
+      this.#sql.push(query)
+    } else {
+      const query = sql
+        .raw(
+          `
       CREATE TRIGGER IF NOT EXISTS update_at_update_${tableName} AFTER UPDATE ON \`${tableName}\`
       BEGIN
         update \`${tableName}\` SET ${field.id.value} = datetime('now') WHERE ${ID_TYPE} = NEW.${ID_TYPE};
       END;
     `,
-      )
-      .compile(this.qb)
+        )
+        .compile(this.qb)
 
-    this.#sql.push(query)
+      this.#sql.push(query)
+    }
   }
   autoIncrement(field: AutoIncrementField): void {
-    const c = this.tb.addColumn(field.id.value, "integer", (b) => b.autoIncrement().primaryKey())
-    this.addColumn(c)
+    if (this.dbProvider === "postgres") {
+      const c = this.tb.addColumn(field.id.value, "bigserial", (b) => b.primaryKey())
+      this.addColumn(c)
+    } else {
+      const c = this.tb.addColumn(field.id.value, "integer", (b) => b.primaryKey().autoIncrement())
+      this.addColumn(c)
+    }
   }
   createdAt(field: CreatedAtField): void {
     const c = this.tb.addColumn(field.id.value, "timestamp", (b) => b.defaultTo(sql`CURRENT_TIMESTAMP`).notNull())
@@ -166,15 +192,19 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     const sql = this.qb.schema
       .createTable(joinTable.getTableName())
       .ifNotExists()
-      .addColumn(joinTable.getSymmetricValueFieldId(), "varchar(10)", (b) => b.notNull())
-      .addColumn(joinTable.getValueFieldId(), "varchar(10)", (b) => b.notNull())
-      .addPrimaryKeyConstraint("primary_key", [joinTable.getSymmetricValueFieldId(), joinTable.getValueFieldId()])
+      .addColumn(joinTable.getSymmetricValueFieldId(), "varchar(255)", (b) => b.notNull())
+      .addColumn(joinTable.getValueFieldId(), "varchar(255)", (b) => b.notNull())
+      .addPrimaryKeyConstraint(joinTable.getTableName() + "_primary_key", [
+        joinTable.getSymmetricValueFieldId(),
+        joinTable.getValueFieldId(),
+      ])
       .compile()
     this.addSql(sql)
   }
   rollup(field: RollupField): void {}
   checkbox(field: CheckboxField): void {
-    const c = this.tb.addColumn(field.id.value, "boolean", (b) => b.defaultTo(0).notNull())
+    const defaultValue = this.dbProvider === "postgres" ? false : 0
+    const c = this.tb.addColumn(field.id.value, "boolean", (b) => b.defaultTo(defaultValue).notNull())
     this.addColumn(c)
   }
   duration(field: DurationField): void {
@@ -200,6 +230,9 @@ export class UnderlyingTableFieldVisitor<TB extends CreateTableBuilder<any, any>
     const type = getUnderlyingFormulaType(field.returnType)
     const c = this.tb.addColumn(field.id.value, type, (b) => {
       const column = b.generatedAlwaysAs(sql.raw(parsed))
+      if (this.dbProvider === "postgres") {
+        return column.stored()
+      }
       return this.isNew ? column.stored() : column
     })
     this.addColumn(c)

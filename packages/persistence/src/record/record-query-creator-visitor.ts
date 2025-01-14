@@ -33,10 +33,11 @@ import type { FormulaField } from "@undb/table/src/modules/schema/fields/variant
 import { getTableName } from "drizzle-orm"
 import { sql, type QueryCreator, type SelectExpression } from "kysely"
 import type { IRecordQueryBuilder } from "../qb.type"
-import { users } from "../tables"
+import { users } from "../schema/sqlite"
 import { JoinTable } from "../underlying/reference/join-table"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { getRollupFn } from "../underlying/underlying-table.util"
+import type { IDatabaseFnUtil } from "../utils/fn.util"
 import { getJsonExpandedFieldName } from "./record-utils"
 
 export class RecordQueryCreatorVisitor implements IFieldVisitor {
@@ -45,6 +46,7 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
     private readonly table: TableDo,
     private readonly foreignTables: Map<string, TableDo>,
     private readonly visibleFields: Field[],
+    private readonly dbFnUtil: IDatabaseFnUtil,
   ) {}
 
   #creator: QueryCreator<any> | null = null
@@ -147,14 +149,18 @@ export class RecordQueryCreatorVisitor implements IFieldVisitor {
           (sb) =>
             [
               `${name}.${valueField} as ${ID_TYPE}`,
-              visible ? sb.fn("json_group_array", [sb.ref(`${name}.${symmetricField}`)]).as(field.id.value) : undefined,
+              visible
+                ? sb.fn(this.dbFnUtil.jsonGroupArray, [sb.ref(`${name}.${symmetricField}`)]).as(field.id.value)
+                : undefined,
               // select display fields for reference
               ...displayFields.map((f) =>
-                sb.fn("json_group_array", [sb.ref(`${underlyingForiegnTable.name}.${f.id.value}`)]).as(f.id.value),
+                sb
+                  .fn(this.dbFnUtil.jsonGroupArray, [sb.ref(`${underlyingForiegnTable.name}.${f.id.value}`)])
+                  .as(f.id.value),
               ),
               ...rollupFields.map((rollupField) =>
                 sb
-                  .fn(getRollupFn(rollupField.fn), [
+                  .fn(getRollupFn(rollupField.fn, this.dbFnUtil), [
                     sb.ref(`${underlyingForiegnTable.name}.${rollupField.rollupFieldId}`),
                   ])
                   .as(rollupField.id.value),

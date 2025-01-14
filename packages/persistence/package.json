@@ -13,6 +13,7 @@
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/pg": "^8.11.10",
     "@types/sql.js": "^1.4.9",
     "drizzle-kit": "^0.30.1"
   },
@@ -42,6 +43,8 @@
     "kysely": "^0.27.5",
     "kysely-bun-sqlite": "^0.3.2",
     "kysely-wasm": "^0.7.0",
+    "pg": "^8.13.1",
+    "postgres": "^3.4.5",
     "radash": "^12.1.0",
     "reflect-metadata": "^0.2.2",
     "sql.js": "^1.12.0",

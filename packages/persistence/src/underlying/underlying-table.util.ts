@@ -1,10 +1,11 @@
 import type { DateRangeField, FieldType, IRollupFn } from "@undb/table"
 import type { ColumnDataType } from "kysely"
 import { match } from "ts-pattern"
+import type { IDatabaseFnUtil } from "../utils/fn.util"
 
-export function getRollupFn(fn: IRollupFn): string {
+export function getRollupFn(fn: IRollupFn, dbFnUtil: IDatabaseFnUtil): string {
   return match(fn)
-    .with("lookup", () => "json_group_array")
+    .with("lookup", () => dbFnUtil.jsonGroupArray)
     .with("average", () => "avg")
     .with("sum", () => "sum")
     .with("count", () => "count")
