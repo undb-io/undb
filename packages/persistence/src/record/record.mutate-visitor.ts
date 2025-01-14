@@ -76,6 +76,7 @@ import { startOfDay, startOfToday, startOfTomorrow, startOfYesterday } from "dat
 import { sql, type ExpressionBuilder } from "kysely"
 import { unique } from "radash"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
+import type { IDbProvider } from "../db.provider"
 import type { IQueryBuilder, IRecordQueryBuilder } from "../qb.type"
 import { JoinTable } from "../underlying/reference/join-table"
 import { getDateRangeFieldName } from "../underlying/underlying-table.util"
@@ -90,14 +91,14 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     private readonly qb: IRecordQueryBuilder,
     private readonly eb: ExpressionBuilder<any, any>,
     private readonly context: IContext,
-    private readonly dbProvider: string,
+    private readonly dbProvider: IDbProvider,
   ) {
     super()
   }
 
   #setDate(fieldId: string, value: Date | null) {
     if (value) {
-      this.setData(fieldId, this.dbProvider === "postgres" ? value : value.getTime())
+      this.setData(fieldId, this.dbProvider.isPostgres() ? value : value.getTime())
     } else {
       this.setData(fieldId, null)
     }

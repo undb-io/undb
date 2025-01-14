@@ -22,7 +22,7 @@ import { chunk } from "es-toolkit/array"
 import { sql, type CompiledQuery, type ExpressionBuilder } from "kysely"
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
-import { injectDbProvider } from "../db.provider"
+import { DbProviderService, type IDbProvider } from "../db.provider"
 import { UnderlyingTable } from "../underlying/underlying-table"
 import { RecordQueryHelper } from "./record-query.helper"
 import { getRecordDTOFromEntity } from "./record-utils"
@@ -44,8 +44,8 @@ export class RecordRepository implements IRecordRepository {
     private readonly context: IContext,
     @injectTxCTX()
     private readonly txContext: ITxContext,
-    @injectDbProvider()
-    private readonly dbProvider: string,
+    @inject(DbProviderService)
+    private readonly dbProvider: IDbProvider,
   ) {}
 
   private async getForeignTables(table: TableDo, fields: Field[]): Promise<Map<string, TableDo>> {

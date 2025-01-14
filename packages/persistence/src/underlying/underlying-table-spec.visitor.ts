@@ -47,6 +47,7 @@ import type {
 } from "@undb/table/src/specifications/table-forms.specification"
 import type { WithTableRLS } from "@undb/table/src/specifications/table-rls.specification"
 import { AlterTableBuilder, AlterTableColumnAlteringBuilder, CompiledQuery, CreateTableBuilder, sql } from "kysely"
+import type { IDbProvider } from "../db.provider"
 import type { IRecordQueryBuilder } from "../qb.type"
 import type { IDatabaseFnUtil } from "../utils/fn.util"
 import { ConversionContext } from "./conversion/conversion.context"
@@ -62,7 +63,7 @@ export class UnderlyingTableSpecVisitor implements ITableSpecVisitor {
     public readonly table: UnderlyingTable,
     public readonly qb: IRecordQueryBuilder,
     public readonly context: IContext,
-    private readonly dbProvider: string,
+    private readonly dbProvider: IDbProvider,
     private readonly dbFnUtil: IDatabaseFnUtil,
   ) {
     this.tb = qb.schema.alterTable(table.name)
