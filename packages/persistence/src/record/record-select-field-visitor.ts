@@ -32,9 +32,10 @@ import {
 import type { FormulaField } from "@undb/table/src/modules/schema/fields/variants/formula-field"
 import { getTableName } from "drizzle-orm"
 import { sql, type ExpressionBuilder, type SelectExpression } from "kysely"
-import { users } from "../tables"
+import { users } from "../schema/sqlite"
 import type { UnderlyingTable } from "../underlying/underlying-table"
 import { getDateRangeFieldName } from "../underlying/underlying-table.util"
+import type { IDatabaseFnUtil } from "../utils/fn.util"
 import { createDisplayFieldName } from "./record-utils"
 
 export class RecordSelectFieldVisitor implements IFieldVisitor {
@@ -59,11 +60,15 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     private readonly table: UnderlyingTable,
     private readonly foreignTables: Map<string, TableDo>,
     private readonly eb: ExpressionBuilder<any, string>,
+    private readonly dbProvider: string,
+    private readonly dbFnUtil: IDatabaseFnUtil,
   ) {
     this.#addSelect(this.getField(ID_TYPE))
   }
 
   #selectSingelUser(field: UserField | CreatedByField | UpdatedByField) {
+    const db = this.dbProvider
+
     const as = createDisplayFieldName(field)
     const user = getTableName(users)
 
@@ -71,7 +76,7 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
       .selectFrom(user)
       .select(
         this.eb
-          .fn("json_object", [
+          .fn(this.dbFnUtil.jsonObject, [
             sql.raw("'username'"),
             this.eb.fn.coalesce(`${user}.${users.username.name}`, sql`NULL`),
             sql.raw("'email'"),
@@ -122,8 +127,7 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   }
   button(field: ButtonField): void {}
   currency(field: CurrencyField): void {
-    const fieldName = this.getField(field.id.value)
-    const selection = sql`${sql.raw(fieldName)} / 100.0`.as(field.id.value)
+    const selection = sql`${sql.raw(`${this.table.name}."${field.id.value}"`)} / 100.0`.as(field.id.value)
     this.#addSelect(selection)
   }
   rating(field: RatingField): void {
@@ -155,7 +159,7 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
       const displayFields = foreignTable.schema.getDisplayFields()
       const select = this.eb
         .fn(
-          "json_object",
+          this.dbFnUtil.jsonObject,
           displayFields.flatMap((displayField) => [
             sql.raw(`'${displayField.id.value}'`),
             `${field.id.value}.${displayField.id.value}`,
@@ -181,7 +185,7 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
   }
   dateRange(field: DateRangeField): void {
     const { start, end } = getDateRangeFieldName(field)
-    this.#addSelect(this.eb.fn("json_array", [this.getField(start), this.getField(end)]).as(field.id.value))
+    this.#addSelect(this.eb.fn(this.dbFnUtil.jsonArray, [this.getField(start), this.getField(end)]).as(field.id.value))
   }
   checkbox(field: CheckboxField): void {
     this.#addSelect(this.getField(field.id.value))
@@ -199,8 +203,8 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
           .when(`${this.table.name}.${field.id.value}`, "is", null)
           .then(null)
           .else(
-            this.eb.fn("json_group_array", [
-              this.eb.fn("json_object", [
+            this.eb.fn(this.dbFnUtil.jsonGroupArray, [
+              this.eb.fn(this.dbFnUtil.jsonObject, [
                 sql.raw("'username'"),
                 this.eb.fn.coalesce(`${field.id.value}.${users.username.name}`, sql`NULL`),
                 sql.raw("'email'"),

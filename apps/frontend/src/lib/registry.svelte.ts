@@ -1,4 +1,4 @@
-import { ISpaceMemberService,SPACE_MEMBER_SERVICE } from "@undb/authz"
+import { ISpaceMemberService, SPACE_MEMBER_SERVICE } from "@undb/authz"
 import {
   AddDashboardWidgetCommandHandler,
   BulkDeleteRecordsCommandHandler,
@@ -27,10 +27,11 @@ import {
   UpdateTableFieldCommandHandler,
   UpdateViewCommandHandler,
 } from "@undb/command-handlers"
-import { CONTEXT_TOKEN,IContext } from "@undb/context"
-import { CommandBus,QueryBus } from "@undb/cqrs"
-import { DataService,registerDataService,TRPC_CLIENT } from "@undb/data-service"
+import { CONTEXT_TOKEN, IContext } from "@undb/context"
+import { CommandBus, QueryBus } from "@undb/cqrs"
+import { DataService, registerDataService, TRPC_CLIENT } from "@undb/data-service"
 import { container } from "@undb/di"
+import { DB_PROVIDER } from "@undb/persistence/client"
 import {
   GetAggregatesQueryHandler,
   GetBaseQueryHandler,
@@ -91,6 +92,7 @@ export class Registry {
   async register(isLocal: boolean, isPlayground: boolean): Promise<DataService> {
     const childContainer = container.createChildContainer()
 
+    childContainer.register(DB_PROVIDER, { useValue: "sqlite" })
     childContainer.register(TRPC_CLIENT, { useValue: trpc })
     await registerDataService(childContainer, isLocal, isPlayground)
 

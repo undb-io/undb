@@ -22,7 +22,7 @@ import type {
   tables,
   users,
   webhook,
-} from "./tables"
+} from "./schema/sqlite"
 
 type SpaceTable = Kyselify<typeof space>
 type TableTable = Kyselify<typeof tables>

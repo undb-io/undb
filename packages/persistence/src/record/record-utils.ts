@@ -176,6 +176,11 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any, foreignTable
         }
       }
 
+      if (field.type === "currency") {
+        values[key] = Number(value)
+        continue
+      }
+
       if (field.type === "checkbox") {
         values[key] = Boolean(value)
         continue
@@ -191,6 +196,11 @@ export function getRecordDTOFromEntity(table: TableDo, entity: any, foreignTable
         values[key] = [start?.toISOString() ?? null, end?.toISOString() ?? null]
         continue
       }
+      if (field.type === "autoIncrement") {
+        values[key] = Number(value)
+        continue
+      }
+
       values[key] = value
     }
   }

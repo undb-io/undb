@@ -38,7 +38,7 @@ import type {
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
 import { type IQueryBuilder } from "../qb.type"
 import { json } from "../qb.util"
-import { tables } from "../tables"
+import { tables } from "../schema/sqlite"
 
 export class TableMutationVisitor extends AbstractQBMutationVisitor implements ITableSpecVisitor {
   constructor(

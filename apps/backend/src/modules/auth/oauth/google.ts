@@ -96,7 +96,9 @@ export class GoogleOAuth {
 
           if (existingUser) {
             const space = (await this.spaceService.getSpace({ userId: existingUser.user_id })).expect("Space not found")
-            const session = await this.lucia.createSession(existingUser.user_id, { space_id: space.id.value })
+
+            const spaceId = space.id.value
+            const session = await this.lucia.createSession(existingUser.user_id, { space_id: spaceId, spaceId })
             const sessionCookie = this.lucia.createSessionCookie(session.id)
             return new Response(null, {
               status: 302,
@@ -124,7 +126,8 @@ export class GoogleOAuth {
               })
               .execute()
 
-            const session = await this.lucia.createSession(existingGoogleUser.id, { space_id: space.id.value })
+            const spaceId = space.id.value
+            const session = await this.lucia.createSession(existingGoogleUser.id, { space_id: spaceId, spaceId })
             const sessionCookie = this.lucia.createSessionCookie(session.id)
             return new Response(null, {
               status: 302,
@@ -170,7 +173,8 @@ export class GoogleOAuth {
 
             return space
           })
-          const session = await this.lucia.createSession(userId, { space_id: space.id.value })
+          const spaceId = space.id.value
+          const session = await this.lucia.createSession(userId, { space_id: spaceId, spaceId })
           const sessionCookie = this.lucia.createSessionCookie(session.id)
           return new Response(null, {
             status: 302,
