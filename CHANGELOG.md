@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-139
+
+
+### 🚀 Enhancements
+
+- Add db provider ([9263900](https://github.com/undb-io/undb/commit/9263900))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-138
 
 
