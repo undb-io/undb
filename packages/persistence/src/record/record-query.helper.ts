@@ -5,7 +5,7 @@ import { FieldIdVo, type Field, type IViewSort, type RecordComositeSpecification
 import { sql, type ExpressionBuilder, type SelectQueryBuilder } from "kysely"
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
-import { injectDbProvider } from "../db.provider"
+import { DbProviderService, type IDbProvider } from "../db.provider"
 import { injectQueryBuilder } from "../qb.provider"
 import type { IRecordQueryBuilder } from "../qb.type"
 import { UnderlyingTable } from "../underlying/underlying-table"
@@ -26,8 +26,8 @@ export class RecordQueryHelper {
     private readonly context: IContext,
     @injectTxCTX()
     private readonly txContext: ITxContext,
-    @injectDbProvider()
-    private readonly dbProvider: string,
+    @inject(DbProviderService)
+    private readonly dbProvider: IDbProvider,
     @inject(DatabaseFnUtil)
     private readonly dbFnUtil: IDatabaseFnUtil,
   ) {}

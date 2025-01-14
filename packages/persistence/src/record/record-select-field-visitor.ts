@@ -32,6 +32,7 @@ import {
 import type { FormulaField } from "@undb/table/src/modules/schema/fields/variants/formula-field"
 import { getTableName } from "drizzle-orm"
 import { sql, type ExpressionBuilder, type SelectExpression } from "kysely"
+import type { IDbProvider } from "../db.provider"
 import { users } from "../schema/sqlite"
 import type { UnderlyingTable } from "../underlying/underlying-table"
 import { getDateRangeFieldName } from "../underlying/underlying-table.util"
@@ -60,15 +61,13 @@ export class RecordSelectFieldVisitor implements IFieldVisitor {
     private readonly table: UnderlyingTable,
     private readonly foreignTables: Map<string, TableDo>,
     private readonly eb: ExpressionBuilder<any, string>,
-    private readonly dbProvider: string,
+    private readonly dbProvider: IDbProvider,
     private readonly dbFnUtil: IDatabaseFnUtil,
   ) {
     this.#addSelect(this.getField(ID_TYPE))
   }
 
   #selectSingelUser(field: UserField | CreatedByField | UpdatedByField) {
-    const db = this.dbProvider
-
     const as = createDisplayFieldName(field)
     const user = getTableName(users)
 

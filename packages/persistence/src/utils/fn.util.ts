@@ -1,6 +1,6 @@
-import { singleton } from "@undb/di"
+import { inject, singleton } from "@undb/di"
 import { match } from "ts-pattern"
-import { injectDbProvider } from "../db.provider"
+import { DbProviderService, type IDbProvider } from "../db.provider"
 
 export interface IDatabaseFnUtil {
   get jsonGroupArray(): string
@@ -10,23 +10,32 @@ export interface IDatabaseFnUtil {
 
 @singleton()
 export class DatabaseFnUtil implements IDatabaseFnUtil {
-  constructor(@injectDbProvider() private readonly dbProvider: string) {}
+  constructor(@inject(DbProviderService) private readonly dbProvider: IDbProvider) {}
 
   get jsonGroupArray() {
     return match(this.dbProvider)
-      .with("postgres", () => "json_agg")
+      .when(
+        (p) => p.isPostgres(),
+        () => "json_agg",
+      )
       .otherwise(() => "json_group_array")
   }
 
   get jsonObject() {
     return match(this.dbProvider)
-      .with("postgres", () => "json_build_object")
+      .when(
+        (p) => p.isPostgres(),
+        () => "json_build_object",
+      )
       .otherwise(() => "json_object")
   }
 
   get jsonArray() {
     return match(this.dbProvider)
-      .with("postgres", () => "json_build_array")
+      .when(
+        (p) => p.isPostgres(),
+        () => "json_build_array",
+      )
       .otherwise(() => "json_array")
   }
 }
