@@ -33,6 +33,7 @@ import type { FormulaField } from "@undb/table/src/modules/schema/fields/variant
 import { AlterTableBuilder, sql } from "kysely"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
 import type { IRecordQueryBuilder } from "../qb.type"
+import type { IDatabaseFnUtil } from "../utils/fn.util"
 import { getUnderlyingFormulaType } from "./underlying-formula.util"
 import { UnderlyingFormulaVisitor } from "./underlying-formula.visitor"
 import type { UnderlyingTable } from "./underlying-table"
@@ -43,6 +44,7 @@ export class UnderlyingTableFieldUpdatedVisitor extends AbstractQBMutationVisito
     private readonly table: UnderlyingTable,
     private readonly prev: Field,
     private readonly tb: AlterTableBuilder,
+    private readonly dbFnUtil: IDatabaseFnUtil,
   ) {
     super()
   }
@@ -85,16 +87,17 @@ export class UnderlyingTableFieldUpdatedVisitor extends AbstractQBMutationVisito
       if (deletedOptions.length === 0) {
         return
       }
+      const jsonGroupArray = this.dbFnUtil.jsonGroupArray
       const query = this.qb
         .updateTable(tableId)
         .set({
           [field.id.value]: sql`(
-          SELECT json_group_array(value)
-          FROM json_each(${sql.raw(tableId + "." + field.id.value)})
+          SELECT ${sql.raw(jsonGroupArray)}(value)
+          FROM json_each(${sql.raw(`${tableId}."${field.id.value}"`)})
           WHERE value NOT IN (${sql.join(deletedOptions)})
         )`,
         })
-        .where(sql`json_array_length(${sql.raw(tableId + "." + field.id.value)})`, ">", 0)
+        .where(sql`json_array_length(${sql.raw(`${tableId}."${field.id.value}"`)})`, ">", 0)
         .compile()
 
       this.addSql(query)

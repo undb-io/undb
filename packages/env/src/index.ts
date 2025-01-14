@@ -36,6 +36,14 @@ const tursoEnv = createEnv({
   emptyStringAsUndefined: true,
 })
 
+const postgresEnv = createEnv({
+  server: {
+    UNDB_DB_POSTGRES_URL: z.string().optional(),
+  },
+  runtimeEnv: import.meta.env,
+  emptyStringAsUndefined: true,
+})
+
 const oauthEnv = createEnv({
   server: {
     UNDB_OAUTH_GITHUB_ENABLED: z
@@ -140,7 +148,7 @@ const emailEnv = createEnv({
 
 const dbEnv = createEnv({
   server: {
-    UNDB_DB_PROVIDER: z.enum(["sqlite", "turso"]).default("sqlite").optional(),
+    UNDB_DB_PROVIDER: z.enum(["sqlite", "turso", "postgres"]).default("sqlite").optional(),
     UNDB_OUTBOX_SCAN_BATCH_SIZE: z
       .string()
       .optional()
@@ -163,5 +171,5 @@ export const env = createEnv({
   },
   runtimeEnv: import.meta.env,
   emptyStringAsUndefined: true,
-  extends: [tursoEnv, dbEnv, oauthEnv, storageEnv, s3Env, emailEnv, minioEnv, authEnv],
+  extends: [tursoEnv, postgresEnv, dbEnv, oauthEnv, storageEnv, s3Env, emailEnv, minioEnv, authEnv],
 })

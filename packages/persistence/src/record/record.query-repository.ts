@@ -29,28 +29,28 @@ import { getTableName } from "drizzle-orm"
 import { sql, type AliasedExpression, type Expression, type ExpressionBuilder } from "kysely"
 import { injectQueryBuilder } from "../qb.provider"
 import type { IRecordQueryBuilder } from "../qb.type"
-import { users } from "../tables"
+import { users } from "../schema/sqlite"
 import { UnderlyingTable } from "../underlying/underlying-table"
+import { DatabaseFnUtil, type IDatabaseFnUtil } from "../utils/fn.util"
 import { RecordQueryHelper } from "./record-query.helper"
 import { RecordReferenceVisitor } from "./record-reference-visitor"
 import { RecordSpecReferenceVisitor } from "./record-spec-reference-visitor"
 import { getRecordDTOFromEntity } from "./record-utils"
 import { AggregateFnBuiler } from "./record.aggregate-builder"
-import { RecordMapper } from "./record.mapper"
 
 @singleton()
 export class RecordQueryRepository implements IRecordQueryRepository {
   constructor(
     @injectQueryBuilder()
     private readonly qb: IRecordQueryBuilder,
-    @inject(RecordMapper)
-    private readonly mapper: RecordMapper,
     @injectTableRepository()
     private readonly tableRepo: ITableRepository,
     @inject(RecordQueryHelper)
     private readonly helper: RecordQueryHelper,
     @injectContext()
     private readonly context: IContext,
+    @inject(DatabaseFnUtil)
+    private readonly dbFnUtil: IDatabaseFnUtil,
   ) {}
 
   async count(tableId: TableId): Promise<number> {
@@ -67,7 +67,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
 
     const selectFields = table.getSelectFields(view, undefined)
     const foreignTables = await this.getForeignTables(table, selectFields)
-    const qb = this.helper.createQuery(table, foreignTables, selectFields, spec)
+    const qb = this.helper.createQuery(table, foreignTables, selectFields, spec, true)
 
     const { total } = await qb
       .select((eb) => eb.fn.countAll().as("total"))
@@ -181,7 +181,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
               .selectFrom(user)
               .select(
                 eb
-                  .fn("json_object", [
+                  .fn(this.dbFnUtil.jsonObject, [
                     sql.raw("'username'"),
                     eb.fn.coalesce(`${user}.${users.username.name}`, sql`NULL`),
                     sql.raw("'email'"),
@@ -209,9 +209,9 @@ export class RecordQueryRepository implements IRecordQueryRepository {
                 throw new Error("value field is required")
               }
 
-              let valueFieldAlias = `${t.name}.${valueField.id.value}`
+              let valueFieldAlias = `${t.name}."${valueField.id.value}"`
               if (valueField.type === "currency") {
-                valueFieldAlias = `${t.name}.${valueField.id.value} / 100`
+                valueFieldAlias = `${t.name}."${valueField.id.value}" / 100`
               }
 
               const caseString =
@@ -224,7 +224,7 @@ export class RecordQueryRepository implements IRecordQueryRepository {
           })
           .flat()
 
-        selects.push(eb.fn("json_object", columnSelects).as("values"))
+        selects.push(eb.fn(this.dbFnUtil.jsonObject, columnSelects).as("values"))
 
         if (aggFn === "count") {
           selects.push(sql.raw(`sum(CASE WHEN "${t.name}"."${columnField.id.value}" IS NOT NULL THEN 1 END)`).as(`agg`))

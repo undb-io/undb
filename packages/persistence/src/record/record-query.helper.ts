@@ -1,13 +1,15 @@
 import { injectContext, type IContext } from "@undb/context"
-import { singleton } from "@undb/di"
+import { inject, singleton } from "@undb/di"
 import type { IPagination, Option } from "@undb/domain"
 import { FieldIdVo, type Field, type IViewSort, type RecordComositeSpecification, type TableDo } from "@undb/table"
 import { sql, type ExpressionBuilder, type SelectQueryBuilder } from "kysely"
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
+import { injectDbProvider } from "../db.provider"
 import { injectQueryBuilder } from "../qb.provider"
 import type { IRecordQueryBuilder } from "../qb.type"
 import { UnderlyingTable } from "../underlying/underlying-table"
+import { DatabaseFnUtil, type IDatabaseFnUtil } from "../utils/fn.util"
 import { RecordQueryCreatorVisitor } from "./record-query-creator-visitor"
 import { RecordQuerySpecCreatorVisitor } from "./record-query-spec-creator-visitor"
 import { RecordReferenceVisitor } from "./record-reference-visitor"
@@ -24,6 +26,10 @@ export class RecordQueryHelper {
     private readonly context: IContext,
     @injectTxCTX()
     private readonly txContext: ITxContext,
+    @injectDbProvider()
+    private readonly dbProvider: string,
+    @inject(DatabaseFnUtil)
+    private readonly dbFnUtil: IDatabaseFnUtil,
   ) {}
 
   createQueryCreator(
@@ -34,7 +40,7 @@ export class RecordQueryHelper {
   ) {
     const trx = this.txContext.getAnonymousTransaction()
 
-    let qb = new RecordQueryCreatorVisitor(trx, table, foreignTables, visibleFields).create()
+    let qb = new RecordQueryCreatorVisitor(trx, table, foreignTables, visibleFields, this.dbFnUtil).create()
     const visitor = new RecordQuerySpecCreatorVisitor(trx, qb, table)
     if (spec.isSome()) {
       spec.unwrap().accept(visitor)
@@ -49,6 +55,7 @@ export class RecordQueryHelper {
     foreignTables: Map<string, TableDo>,
     visibleFields: Field[],
     spec: Option<RecordComositeSpecification>,
+    aggregate = false,
   ) {
     const t = new UnderlyingTable(table)
     const qb = this.createQueryCreator(table, foreignTables, visibleFields, spec)
@@ -57,7 +64,11 @@ export class RecordQueryHelper {
       .selectFrom(table.id.value)
       .$call((qb) => new RecordReferenceVisitor(qb, table).join(visibleFields))
       .$if(spec.isSome(), (qb) => new RecordSpecReferenceVisitor(qb, table).$join(spec.unwrap()))
-      .select((sb) => new RecordSelectFieldVisitor(t, foreignTables, sb).$select(visibleFields))
+      .$if(!aggregate, (qb) =>
+        qb.select((sb) =>
+          new RecordSelectFieldVisitor(t, foreignTables, sb, this.dbProvider, this.dbFnUtil).$select(visibleFields),
+        ),
+      )
   }
 
   handleWhere(table: TableDo, spec: Option<RecordComositeSpecification>) {

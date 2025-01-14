@@ -379,7 +379,7 @@ export class Auth {
             })
           }
 
-          const session = await this.lucia.createSession(userId, { space_id: spaceId })
+          const session = await this.lucia.createSession(userId, { space_id: spaceId, spaceId })
           const sessionCookie = this.lucia.createSessionCookie(session.id)
 
           response.headers.set("Set-Cookie", sessionCookie.serialize())
@@ -434,7 +434,8 @@ export class Auth {
             space = Some(await this.spaceService.createSpace({ name: user.username }))
             await this.spaceMemberService.createMember(user.id, space.unwrap().id.value, "owner")
           }
-          const session = await this.lucia.createSession(user.id, { space_id: space.unwrap().id.value })
+          const spaceId = space.unwrap().id.value
+          const session = await this.lucia.createSession(user.id, { space_id: spaceId, spaceId })
           const sessionCookie = this.lucia.createSessionCookie(session.id)
 
           return new Response(null, {
@@ -548,7 +549,8 @@ export class Auth {
               "User should have a space",
             )
 
-            const session = await this.lucia.createSession(token.user_id, { space_id: space.id.value })
+            const spaceId = space.id.value
+            const session = await this.lucia.createSession(token.user_id, { space_id: spaceId, spaceId })
             const sessionCookie = this.lucia.createSessionCookie(session.id)
             return new Response(null, {
               status: 302,
@@ -609,7 +611,8 @@ export class Auth {
             .where("id", "=", user.id)
             .execute()
 
-          const session = await this.lucia.createSession(user.id, { space_id: validatedSession.spaceId })
+          const spaceId = validatedSession.spaceId
+          const session = await this.lucia.createSession(user.id, { space_id: spaceId, spaceId })
           const sessionCookie = this.lucia.createSessionCookie(session.id)
           return new Response(null, {
             status: 302,
@@ -666,7 +669,7 @@ export class Auth {
               return redirectToSignupOrLogin("signup", email)
             } else {
               await this.spaceMemberService.createMember(user.id, spaceId, role)
-              const session = await this.lucia.createSession(user.id, { space_id: spaceId })
+              const session = await this.lucia.createSession(user.id, { space_id: spaceId, spaceId })
               const sessionCookie = this.lucia.createSessionCookie(session.id)
               return redirectToSignupOrLogin("login", email, sessionCookie)
             }

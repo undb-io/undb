@@ -107,7 +107,8 @@ export class OtpService implements IOtpService {
 
     await this.qb.updateTable("undb_user").set({ otp_secret: null }).where("undb_user.email", "=", email).execute()
 
-    const session = await this.lucia.createSession(id, { space_id: space.unwrap().id.value })
+    const spaceId = space.unwrap().id.value
+    const session = await this.lucia.createSession(id, { space_id: spaceId, spaceId })
     const sessionCookie = this.lucia.createSessionCookie(session.id)
 
     return sessionCookie.serialize()

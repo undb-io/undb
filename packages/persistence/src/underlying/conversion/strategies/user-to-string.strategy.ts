@@ -1,7 +1,7 @@
 import { type Field } from "@undb/table"
 import { getTableName } from "drizzle-orm"
 import { CaseWhenBuilder, sql } from "kysely"
-import { users } from "../../../tables"
+import { users } from "../../../schema/sqlite"
 import { UnderlyingConversionStrategy } from "../conversion.interface"
 
 export class UserToStringStrategy extends UnderlyingConversionStrategy {

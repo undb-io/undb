@@ -23,6 +23,8 @@ import {
   BaseQueryRepository,
   BaseRepository,
   Client,
+  createPostgresClient,
+  createPostgresQueryBuilder,
   createSqliteClient,
   createSqliteQueryBuilder,
   createTursoClient,
@@ -32,6 +34,7 @@ import {
   DashboardQueryRepository,
   DashboardRepository,
   DATABASE_CLIENT,
+  DB_PROVIDER,
   InvitationQueryRepository,
   InvitationRepository,
   QUERY_BUILDER,
@@ -71,31 +74,41 @@ import { USER_QUERY_REPOSITORY, USER_REPOSITORY, USER_SERVICE, UserService } fro
 import { WEBHOOK_QUERY_REPOSITORY, WEBHOOK_REPOSITORY } from "@undb/webhook"
 import Database from "bun:sqlite"
 import { AsyncLocalStorage } from "node:async_hooks"
+import pg from "pg"
 
 const txContext = new AsyncLocalStorage<TxContext>()
 
 export const registerDb = () => {
+  container.register(DB_PROVIDER, { useValue: env.UNDB_DB_PROVIDER || "sqlite" })
   container.register(CTX, { useValue: txContext })
-  container.register(TX_CTX, TxContextImpl)
-
   container.register(DATABASE_CLIENT, {
     useFactory: instanceCachingFactory(() => {
-      if (env.UNDB_DB_PROVIDER === "sqlite" || !env.UNDB_DB_PROVIDER) {
+      const dbProvider = container.resolve<string>(DB_PROVIDER)
+      if (dbProvider === "sqlite" || !dbProvider) {
         return createSqliteClient("undb.sqlite")
+      }
+      if (dbProvider === "postgres") {
+        return createPostgresClient(env.UNDB_DB_POSTGRES_URL!)
       }
       return createTursoClient(env.UNDB_DB_TURSO_URL!, env.UNDB_DB_TURSO_AUTH_TOKEN)
     }),
   })
   container.register(QUERY_BUILDER, {
     useFactory: instanceCachingFactory((c) => {
-      if (env.UNDB_DB_PROVIDER === "sqlite" || !env.UNDB_DB_PROVIDER) {
+      const dbProvider = container.resolve<string>(DB_PROVIDER)
+      if (dbProvider === "sqlite" || !dbProvider) {
         const sqlite = c.resolve<Database>(DATABASE_CLIENT)
         return createSqliteQueryBuilder(sqlite)
+      } else if (dbProvider === "postgres") {
+        const pg = c.resolve<pg.Pool>(DATABASE_CLIENT)
+        return createPostgresQueryBuilder(pg)
       }
+
       const sqlite = c.resolve<Client>(DATABASE_CLIENT)
       return createTursoQueryBuilder(sqlite)
     }),
   })
+  container.register(TX_CTX, TxContextImpl)
 
   container.register(CONTEXT_TOKEN, ServerContext)
   container.register(SPACE_REPOSITORY, SpaceRepostitory)

@@ -3,7 +3,7 @@ import fs from "node:fs"
 import path from "node:path"
 import url from "node:url"
 
-const { default: journal } = await import("../apps/backend/drizzle/meta/_journal.json", {
+const { default: journal } = await import("../apps/backend/drizzle/sqlite/meta/_journal.json", {
   with: { type: "json" },
 })
 
@@ -28,7 +28,7 @@ for (let index = 0; index < journal.entries.length; index++) {
 
   console.log('(%d) Parsing migration tagged "%s"', index + 1, tag)
 
-  const filepath = path.resolve(root, "./apps/backend/drizzle", `${tag}.sql`)
+  const filepath = path.resolve(root, "./apps/backend/drizzle/sqlite", `${tag}.sql`)
   const migration_file = fs.readFileSync(filepath).toString()
 
   migrate.push({

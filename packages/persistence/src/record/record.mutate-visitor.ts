@@ -90,19 +90,24 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     private readonly qb: IRecordQueryBuilder,
     private readonly eb: ExpressionBuilder<any, any>,
     private readonly context: IContext,
+    private readonly dbProvider: string,
   ) {
     super()
+  }
+
+  #setDate(fieldId: string, value: Date | null) {
+    if (value) {
+      this.setData(fieldId, this.dbProvider === "postgres" ? value : value.getTime())
+    } else {
+      this.setData(fieldId, null)
+    }
   }
 
   idIn(spec: IdIn): void {
     throw new Error("Method not implemented.")
   }
   checkboxEqual(spec: CheckboxEqual): void {
-    if (!spec.value) {
-      this.setData(spec.fieldId.value, false)
-    } else {
-      this.setData(spec.fieldId.value, spec.value)
-    }
+    this.setData(spec.fieldId.value, Boolean(spec.value))
   }
   jsonEqual(spec: JsonEqual): void {
     if (!spec.json) {
@@ -125,33 +130,33 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
   dateEqual(spec: DateEqual): void {
     if (spec.date === "@now") {
       const start = startOfDay(new Date())
-      this.setData(spec.fieldId.value, start.getTime())
+      this.#setDate(spec.fieldId.value, start)
     } else if (spec.date === "@today") {
       const start = startOfToday()
-      this.setData(spec.fieldId.value, start.getTime())
+      this.#setDate(spec.fieldId.value, start)
     } else if (spec.date === "@yesterday") {
       const start = startOfYesterday()
-      this.setData(spec.fieldId.value, start.getTime())
+      this.#setDate(spec.fieldId.value, start)
     } else if (spec.date === "@tomorrow") {
       const start = startOfTomorrow()
-      this.setData(spec.fieldId.value, start.getTime())
+      this.#setDate(spec.fieldId.value, start)
     } else {
-      this.setData(spec.fieldId.value, spec.date?.getTime() ?? null)
+      this.#setDate(spec.fieldId.value, spec.date)
     }
   }
   dateRangeEqual(spec: DateRangeEqual): void {
     const field = this.table.schema.getFieldById(new FieldIdVo(spec.fieldId.value)).expect("No field found")
     const { start, end } = getDateRangeFieldName(field as DateRangeField)
 
-    this.setData(start, spec.dateRange.start?.getTime() ?? null)
-    this.setData(end, spec.dateRange.end?.getTime() ?? null)
+    this.#setDate(start, spec.dateRange.start)
+    this.#setDate(end, spec.dateRange.end)
   }
   dateRangeIsEmpty(spec: DateRangeIsEmpty): void {
     const field = this.table.schema.getFieldById(new FieldIdVo(spec.fieldId.value)).expect("No field found")
     const { start, end } = getDateRangeFieldName(field as DateRangeField)
 
-    this.setData(start, null)
-    this.setData(end, null)
+    this.#setDate(start, null)
+    this.#setDate(end, null)
   }
   dateRangeDateIsAfter(spec: DateRangeDateIsAfter): void {
     throw new Error("Method not implemented.")
@@ -444,7 +449,7 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
     this.setData(s.fieldId.value, s.value || null)
   }
   clone(): this {
-    return new RecordMutateVisitor(this.table, this.record, this.qb, this.eb, this.context) as this
+    return new RecordMutateVisitor(this.table, this.record, this.qb, this.eb, this.context, this.dbProvider) as this
   }
   formulaEqual(s: FormulaEqual): void {
     throw new Error("Method not implemented.")

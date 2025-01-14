@@ -172,6 +172,20 @@
             "option": {
               "fn": "{{formula_number1}} - {{formula_number2}}"
             }
+          },
+          "ADD": {
+            "id": "formula_add",
+            "type": "formula",
+            "option": {
+              "fn": "ADD(1, 2)"
+            }
+          },
+          "ADD Number1 Number2": {
+            "id": "formula_add_number1_number2",
+            "type": "formula",
+            "option": {
+              "fn": "ADD({{formula_number1}}, {{formula_number2}})"
+            }
           }
         },
         "records": [
