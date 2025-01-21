@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { trpc } from "$lib/trpc/client"
   import { createMutation } from "@tanstack/svelte-query"
   import { ButtonField, FieldIdVo, RecordDO } from "@undb/table"
   import { toast } from "svelte-sonner"
@@ -12,8 +11,7 @@
   import FieldPicker from "../../field-picker/field-picker.svelte"
   import FieldControl from "../../field-control/field-control.svelte"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
 
   export let tableId: string
   export let field: ButtonField
@@ -24,15 +22,14 @@
   const table = getTable()
   const recordsStore = getRecordsStore()
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
 
   const trigger = createMutation({
     mutationKey: ["record", tableId, field.id.value, recordId, "trigger"],
-    mutationFn: trpc.record.trigger.mutate,
+    mutationFn: dataService.records.triggerRecordButton,
     async onSuccess(data, variables, context) {
       gridViewStore.exitEditing()
-      await recordsStore?.invalidateRecord(isLocal, isPlayground, $table, recordId)
+      await recordsStore?.invalidateRecord(dataService, $table, recordId)
     },
     onError(error: Error) {
       toast.error(error.message)

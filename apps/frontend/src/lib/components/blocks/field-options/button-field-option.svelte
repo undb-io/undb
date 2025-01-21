@@ -41,6 +41,20 @@
       confirm: true,
     },
   }
+  onMount(() => {
+    if (!option.action) {
+      option.action = {
+        type: "update",
+        values: [
+          {
+            field: undefined,
+            value: undefined,
+          },
+        ],
+        confirm: true,
+      }
+    }
+  })
   const value = writable<MaybeConditionGroup<any> | undefined>()
   $: validValue = $table && $value ? parseValidViewFilter($table.schema, $value) : undefined
   $: if (validValue) {
@@ -56,7 +70,7 @@
     }
   })
 
-  $: selectedFields = option.action.values.map((v) => v.field)
+  $: selectedFields = option.action?.values.map((v) => v.field) ?? []
   $: selectableFields =
     $table?.schema.fields.filter(
       (f) => getIsMutableFieldType(f.type) && f.type !== "attachment" && !selectedFields.includes(f.id.value),
@@ -83,7 +97,7 @@
 
   <div class="space-y-2 rounded-md border px-4 py-3">
     <p class="text-xs font-semibold">{$LL.table.field.button.updateValueWhenClickButton()}</p>
-    {#each option.action.values as value, index}
+    {#each option.action?.values as value, index}
       {@const field =
         value.field && $table ? $table.schema.getFieldById(new FieldIdVo(value.field)).unwrap() : undefined}
       <FieldPicker
@@ -115,15 +129,23 @@
           tableId={$table?.id.value}
         />
       {/if}
-      {#if index !== option.action.values.length - 1}
+      {#if index !== (option.action?.values?.length ?? 0) - 1}
         <Separator />
       {/if}
     {/each}
-    {#if selectableFields.length > 0 && option.action.values.every((v) => v.field)}
+    {#if selectableFields.length > 0 && (option.action?.values?.every((v) => v.field) ?? false)}
       <Button
         class="text-muted-foreground w-full justify-start text-xs"
         on:click={() => {
-          option.action.values = [...option.action.values, { field: undefined, value: undefined }]
+          if (!option.action) {
+            option.action = {
+              type: "update",
+              values: [],
+              confirm: true,
+            }
+          } else {
+            option.action.values = [...(option.action?.values ?? []), { field: undefined, value: undefined }]
+          }
         }}
         variant="link"
         size="sm">{$LL.table.field.button.addAnotherFieldToUpdate()}</Button
@@ -132,7 +154,9 @@
   </div>
 
   <div class="flex items-center gap-2">
-    <Checkbox id="confirm" bind:checked={option.action.confirm} />
-    <Label class="text-xs font-normal" for="confirm">{$LL.table.field.button.confirmBeforeUpdate()}</Label>
+    {#if option.action}
+      <Checkbox id="confirm" bind:checked={option.action.confirm} />
+      <Label class="text-xs font-normal" for="confirm">{$LL.table.field.button.confirmBeforeUpdate()}</Label>
+    {/if}
   </div>
 </div>

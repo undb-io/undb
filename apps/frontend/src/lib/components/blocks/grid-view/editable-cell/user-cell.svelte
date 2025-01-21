@@ -38,7 +38,7 @@
     async onSuccess(data, variables) {
       const value = variables.values[field.id.value]
       if (isUserFieldMacro(value)) {
-        await store?.invalidateRecord(isLocal, isPlayground, $table, recordId)
+        await store?.invalidateRecord(dataService, $table, recordId)
       }
     },
     onError(error: Error) {

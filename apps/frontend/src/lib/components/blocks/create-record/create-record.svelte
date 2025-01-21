@@ -52,7 +52,7 @@
         })
         toast.success($LL.table.record.createdRecord())
         onSuccess?.(data)
-        recordsStore?.invalidateRecord(isLocal, isPlayground, $table, data)
+        recordsStore?.invalidateRecord(dataService, $table, data)
       },
       onError: (error: Error) => {
         toast.error(error.message)
