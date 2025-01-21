@@ -21,7 +21,7 @@ const createLuciaWithAdapter = (adapter: Adapter) => {
     },
     getSessionAttributes: (attributes) => {
       return {
-        spaceId: attributes.space_id ?? attributes.spaceId,
+        spaceId: attributes.spaceId,
       }
     },
     getUserAttributes: (attributes) => {
@@ -76,7 +76,6 @@ declare module "lucia" {
     }
   }
   interface DatabaseSessionAttributes {
-    space_id: string
     spaceId: string
   }
 }

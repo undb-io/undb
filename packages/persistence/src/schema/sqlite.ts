@@ -267,7 +267,7 @@ export const sessionTable = sqliteTable("session", {
     .notNull()
     .references(() => users.id),
   expiresAt: integer("expires_at").notNull(),
-  spaceId: text("space_id")
+  spaceId: text("spaceId")
     .notNull()
     .references(() => space.id),
 })

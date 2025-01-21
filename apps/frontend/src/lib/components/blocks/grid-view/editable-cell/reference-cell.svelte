@@ -7,8 +7,7 @@
   import { getTable } from "$lib/store/table.store"
   import { cn } from "$lib/utils"
   import { LL } from "@undb/i18n/client"
-  import { getIsLocal } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
+  import { getDataService } from "$lib/store/data-service.store"
 
   const table = getTable()
 
@@ -24,8 +23,8 @@
   export let readonly = false
   export let r: Writable<string | null>
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
+  const dataService = getDataService()
+
   $: selected = writable<string[]>(value)
 
   let hasValue = Array.isArray(value) && value.length > 0
@@ -41,7 +40,7 @@
 
   function onSuccess(id?: string) {
     if (id) {
-      recordStore?.invalidateRecord(isLocal, isPlayground, $table, id, $viewId)
+      recordStore?.invalidateRecord(dataService, $table, id, $viewId)
     }
   }
 </script>

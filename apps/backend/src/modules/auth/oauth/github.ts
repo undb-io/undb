@@ -89,7 +89,7 @@ export class GithubOAuth {
           if (existingUser) {
             const space = (await this.spaceService.getSpace({ userId: existingUser.user_id })).expect("space not found")
             const spaceId = space.id.value
-            const session = await this.lucia.createSession(existingUser.user_id, { space_id: spaceId, spaceId })
+            const session = await this.lucia.createSession(existingUser.user_id, { spaceId })
             const sessionCookie = this.lucia.createSessionCookie(session.id)
             return new Response(null, {
               status: 302,
@@ -138,7 +138,7 @@ export class GithubOAuth {
               .execute()
 
             const spaceId = space.id.value
-            const session = await this.lucia.createSession(existingGithubUser.id, { space_id: spaceId, spaceId })
+            const session = await this.lucia.createSession(existingGithubUser.id, { spaceId })
             const sessionCookie = this.lucia.createSessionCookie(session.id)
             return new Response(null, {
               status: 302,
@@ -186,7 +186,7 @@ export class GithubOAuth {
           })
 
           const spaceId = space.id.value
-          const session = await this.lucia.createSession(userId, { space_id: spaceId, spaceId })
+          const session = await this.lucia.createSession(userId, { spaceId })
           const sessionCookie = this.lucia.createSessionCookie(session.id)
           return new Response(null, {
             status: 302,

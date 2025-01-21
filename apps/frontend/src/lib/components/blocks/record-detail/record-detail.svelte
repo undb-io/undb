@@ -19,8 +19,6 @@
   import { type Writable, type Readable } from "svelte/store"
   import { LL } from "@undb/i18n/client"
   import { getDataService } from "$lib/store/data-service.store"
-  import { getIsLocal } from "$lib/store/data-service.store"
-  import { getIsPlayground } from "$lib/store/playground.svelte"
 
   const recordsStore = getRecordsStore()
 
@@ -50,9 +48,6 @@
 
   const client = useQueryClient()
 
-  const isLocal = getIsLocal()
-  const isPlayground = getIsPlayground()
-
   const updateRecordMutation = createMutation({
     mutationFn: dataService.records.updateRecord,
     mutationKey: ["updateRecord"],
@@ -61,7 +56,7 @@
       onSuccess()
       await client.invalidateQueries({ queryKey: [record.id.value, "get"] })
       reset({})
-      await recordsStore?.invalidateRecord(isLocal, isPlayground, $table, record.id.value)
+      await recordsStore?.invalidateRecord(dataService, $table, record.id.value)
     },
     onError: (error) => {
       toast.error(error.message)

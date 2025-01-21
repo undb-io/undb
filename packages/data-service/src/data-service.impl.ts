@@ -22,6 +22,7 @@ import {
   SetViewFilterCommand,
   SetViewOptionCommand,
   SetViewSortCommand,
+  TriggerRecordButtonCommand,
   UpdateRecordCommand,
   UpdateTableFieldCommand,
   UpdateViewCommand,
@@ -56,6 +57,7 @@ import {
   type ISetViewFilterCommand,
   type ISetViewOptionCommand,
   type ISetViewSortCommand,
+  type ITriggerRecordButtonCommand,
   type IUpdateFieldCommand,
   type IUpdateRecordCommand,
   type IUpdateViewCommand,
@@ -460,6 +462,13 @@ class RecordsService {
       return this.commandBus.execute(new BulkUpdateRecordsCommand(command))
     }
     return this.trpc.record.bulkUpdate.mutate(command)
+  }
+
+  triggerRecordButton = async (command: ITriggerRecordButtonCommand): Promise<void> => {
+    if (this.isLocal) {
+      return this.commandBus.execute(new TriggerRecordButtonCommand(command))
+    }
+    await this.trpc.record.trigger.mutate(command)
   }
 }
 
