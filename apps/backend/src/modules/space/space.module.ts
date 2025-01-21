@@ -48,7 +48,7 @@ export class SpaceModule {
           }
           await this.lucia.invalidateUserSessions(user.id)
           const sid = space.id.value
-          const updatedSession = await this.lucia.createSession(user.id, { space_id: sid, spaceId: sid })
+          const updatedSession = await this.lucia.createSession(user.id, { spaceId: sid })
           const sessionCookie = this.lucia.createSessionCookie(updatedSession.id)
           return new Response(null, {
             status: 302,
@@ -76,7 +76,7 @@ export class SpaceModule {
             const space = (await this.spaceService.getSpace({ userId })).expect("Space not found")
 
             const sid = space.id.value
-            const updatedSession = await this.lucia.createSession(userId, { space_id: sid, spaceId: sid })
+            const updatedSession = await this.lucia.createSession(userId, { spaceId: sid })
             const sessionCookie = this.lucia.createSessionCookie(updatedSession.id)
             return new Response(null, {
               status: 200,
