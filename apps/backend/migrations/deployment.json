@@ -107,7 +107,7 @@
     "idx": 6,
     "when": 1728358607342,
     "tag": "0006_mature_madame_web",
-    "hash": "51995ae2bf0f8a52b57786978a421040330fb22121753aa6fbb0a51cb013ebde",
+    "hash": "2d3c434e963ac561d037554aabde467e4a514dc2f015d938cf0001da7f673bcf",
     "sql": [
       "ALTER TABLE `undb_outbox` ADD `user_id` text;",
       "ALTER TABLE `undb_outbox` DROP COLUMN `operator_id`;"
@@ -148,9 +148,9 @@
     "idx": 10,
     "when": 1729306799169,
     "tag": "0010_nostalgic_nehzno",
-    "hash": "c0ffe9e7e3b0523d65603d7cd4ee444fbc8bae9b4f1959741b4c01085c345d44",
+    "hash": "5ae829af899a7374b61092468af12258938a7f1bcc92b55cb481042dcb59837c",
     "sql": [
-      "CREATE TABLE `undb_dashboard_table_id_mapping` (`dashboard_id` text NOT NULL,`table_id` text NOT NULL,PRIMARY KEY(`dashboard_id`, `table_id`),FOREIGN KEY (`dashboard_id`) REFERENCES `undb_dashboard`(`id`) ON UPDATE no action ON DELETE no action,FOREIGN KEY (`table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action);"
+      "CREATE TABLE `undb_dashboard_table_id_mapping` (\r`dashboard_id` text NOT NULL,\r`table_id` text NOT NULL,\rPRIMARY KEY(`dashboard_id`, `table_id`),\rFOREIGN KEY (`dashboard_id`) REFERENCES `undb_dashboard`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`table_id`) REFERENCES `undb_table`(`id`) ON UPDATE no action ON DELETE no action\r);"
     ]
   },
   {
@@ -181,16 +181,16 @@
     "idx": 13,
     "when": 1730979840099,
     "tag": "0013_lovely_mordo",
-    "hash": "59f5936ab2e03fbff473d3d56883ecce0832b71521b02bfa2ad2907d242dc00b",
+    "hash": "6a36e0da06793be22662a86e1ff42b9414a8723753addae312cf00de52703f79",
     "sql": [
       "PRAGMA foreign_keys=OFF;",
-      "CREATE TABLE `__new_undb_reference_id_mapping` (`field_id` text NOT NULL,`table_id` text NOT NULL,`symmetric_field_id` text,`foreign_table_id` text NOT NULL);",
+      "CREATE TABLE `__new_undb_reference_id_mapping` (\r`field_id` text NOT NULL,\r`table_id` text NOT NULL,\r`symmetric_field_id` text,\r`foreign_table_id` text NOT NULL\r);",
       "INSERT INTO `__new_undb_reference_id_mapping`(\"field_id\", \"table_id\", \"symmetric_field_id\", \"foreign_table_id\") SELECT \"field_id\", \"table_id\", \"symmetric_field_id\", \"foreign_table_id\" FROM `undb_reference_id_mapping`;",
       "DROP TABLE `undb_reference_id_mapping`;",
       "ALTER TABLE `__new_undb_reference_id_mapping` RENAME TO `undb_reference_id_mapping`;",
       "PRAGMA foreign_keys=ON;",
       "CREATE UNIQUE INDEX `reference_id_mapping_unique_idx` ON `undb_reference_id_mapping` (`field_id`,`table_id`,`symmetric_field_id`,`foreign_table_id`);",
-      "CREATE TABLE `__new_undb_rollup_id_mapping` (`field_id` text NOT NULL,`table_id` text NOT NULL,`rollup_id` text NOT NULL,`rollup_table_id` text NOT NULL,PRIMARY KEY(`field_id`, `rollup_id`));",
+      "CREATE TABLE `__new_undb_rollup_id_mapping` (\r`field_id` text NOT NULL,\r`table_id` text NOT NULL,\r`rollup_id` text NOT NULL,\r`rollup_table_id` text NOT NULL,\rPRIMARY KEY(`field_id`, `rollup_id`)\r);",
       "INSERT INTO `__new_undb_rollup_id_mapping`(\"field_id\", \"table_id\", \"rollup_id\", \"rollup_table_id\") SELECT \"field_id\", \"table_id\", \"rollup_id\", \"rollup_table_id\" FROM `undb_rollup_id_mapping`;",
       "DROP TABLE `undb_rollup_id_mapping`;",
       "ALTER TABLE `__new_undb_rollup_id_mapping` RENAME TO `undb_rollup_id_mapping`;"
@@ -203,6 +203,20 @@
     "hash": "b4c01e3f39a5093e2f91f519e64b106f62f72882b145a67c582b785f92765e27",
     "sql": [
       "ALTER TABLE `undb_user` ADD `otp_secret` text;"
+    ]
+  },
+  {
+    "idx": 15,
+    "when": 1737446284193,
+    "tag": "0015_greedy_ben_grimm",
+    "hash": "f6b79d1c1531adfe3201428645ee289f7854c8bda01d19cd6bae95b025280ed6",
+    "sql": [
+      "PRAGMA foreign_keys=OFF;",
+      "CREATE TABLE `__new_undb_session` (\r`id` text PRIMARY KEY NOT NULL,\r`user_id` text NOT NULL,\r`expires_at` integer NOT NULL,\r`spaceId` text NOT NULL,\rFOREIGN KEY (`user_id`) REFERENCES `undb_user`(`id`) ON UPDATE no action ON DELETE no action,\rFOREIGN KEY (`spaceId`) REFERENCES `undb_space`(`id`) ON UPDATE no action ON DELETE no action\r);",
+      "INSERT INTO `__new_undb_session`(\"id\", \"user_id\", \"expires_at\", \"spaceId\") SELECT \"id\", \"user_id\", \"expires_at\", \"spaceId\" FROM `undb_session`;",
+      "DROP TABLE `undb_session`;",
+      "ALTER TABLE `__new_undb_session` RENAME TO `undb_session`;",
+      "PRAGMA foreign_keys=ON;"
     ]
   }
 ]

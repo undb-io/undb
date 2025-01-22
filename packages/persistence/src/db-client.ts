@@ -1,6 +1,7 @@
 import { createClient } from "@libsql/client"
 import { inject } from "@undb/di"
 import Database from "bun:sqlite"
+import mysql from "mysql2/promise"
 import pg from "pg"
 
 export const DATABASE_CLIENT = Symbol.for("DATABASE_CLIENT")
@@ -19,4 +20,8 @@ export const createPostgresClient = (connectionString: string) => {
   return new pg.Pool({
     connectionString,
   })
+}
+
+export const createMysqlClient = (connectionString: string): mysql.Pool => {
+  return mysql.createPool(connectionString)
 }

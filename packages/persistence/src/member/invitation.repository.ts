@@ -1,8 +1,9 @@
 import type { IInvitationRepository, InvitationCompositeSpecification, InvitationDo } from "@undb/authz"
 import { injectContext, type IContext } from "@undb/context"
-import { singleton } from "@undb/di"
+import { inject, singleton } from "@undb/di"
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
+import { DbProviderService, type IDbProvider } from "../db.provider"
 import { InvitationMutationVisitor } from "./invitation.mutation-visitor"
 
 @singleton()
@@ -12,6 +13,8 @@ export class InvitationRepository implements IInvitationRepository {
     private readonly context: IContext,
     @injectTxCTX()
     private readonly txContext: ITxContext,
+    @inject(DbProviderService)
+    private readonly dbProvider: IDbProvider,
   ) {}
   async deleteOneById(id: string): Promise<void> {
     const trx = this.txContext.getCurrentTransaction()
@@ -47,12 +50,21 @@ export class InvitationRepository implements IInvitationRepository {
         invited_at: invitation.invitedAt.getTime(),
         inviter_id: invitation.inviterId,
       })
-      .onConflict((oc) =>
-        oc.columns(["id", "email"]).doUpdateSet({
+      .$if(this.dbProvider.isMysql(), (eb) =>
+        eb.onDuplicateKeyUpdate({
           invited_at: new Date(),
           status: invitation.status,
           role: invitation.role,
         }),
+      )
+      .$if(this.dbProvider.not.isMysql(), (eb) =>
+        eb.onConflict((oc) =>
+          oc.columns(["id", "email"]).doUpdateSet({
+            invited_at: new Date(),
+            status: invitation.status,
+            role: invitation.role,
+          }),
+        ),
       )
       .execute()
   }

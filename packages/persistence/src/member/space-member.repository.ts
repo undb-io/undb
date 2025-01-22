@@ -1,8 +1,9 @@
 import { SpaceMember, SpaceMemberComositeSpecification, type ISpaceMemberRepository } from "@undb/authz"
-import { singleton } from "@undb/di"
+import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
+import { DbProviderService, type IDbProvider } from "../db.provider"
 import { injectQueryBuilder } from "../qb.provider"
 import type { IQueryBuilder } from "../qb.type"
 import { SpaceMemberFilterVisitor } from "./space-member.filter-visitor"
@@ -14,6 +15,8 @@ export class SpaceMemberRepository implements ISpaceMemberRepository {
     private readonly qb: IQueryBuilder,
     @injectTxCTX()
     private readonly txContext: ITxContext,
+    @inject(DbProviderService)
+    private readonly dbProvider: IDbProvider,
   ) {}
 
   async exists(spec: SpaceMemberComositeSpecification): Promise<boolean> {
@@ -71,7 +74,8 @@ export class SpaceMemberRepository implements ISpaceMemberRepository {
         space_id: json.spaceId,
         user_id: json.userId,
       })
-      .onConflict((c) => c.doNothing())
+      .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
+      .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((c) => c.doNothing()))
       .execute()
   }
 }

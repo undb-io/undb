@@ -215,7 +215,8 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
               }
             }),
           )
-          .onConflict((bd) => bd.columns(["id"]).doNothing())
+          .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
+          .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((bd) => bd.columns(["id"]).doNothing()))
           .compile()
         this.addSql(insert)
 
@@ -229,7 +230,10 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
               attachment_id: value.id,
             })),
           )
-          .onConflict((bd) => bd.columns(["table_id", "field_id", "record_id", "attachment_id"]).doNothing())
+          .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
+          .$if(this.dbProvider.not.isMysql(), (eb) =>
+            eb.onConflict((bd) => bd.columns(["table_id", "field_id", "record_id", "attachment_id"]).doNothing()),
+          )
           .compile()
         this.addSql(insertSql)
       }
@@ -279,7 +283,10 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
 
             return values.reduce((prev, value) => prev.unionAll(expression(value)), expression(values[0]))
           })
-          .onConflict((bd) => bd.columns([fieldId, symmetricFieldId]).doNothing())
+          .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
+          .$if(this.dbProvider.not.isMysql(), (eb) =>
+            eb.onConflict((bd) => bd.columns([fieldId, symmetricFieldId]).doNothing()),
+          )
           .compile()
         this.addSql(insert)
       }
@@ -307,7 +314,10 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
             [symmetricFieldId]: recordId,
           })),
         )
-        .onConflict((bd) => bd.columns([fieldId, symmetricFieldId]).doNothing())
+        .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
+        .$if(this.dbProvider.not.isMysql(), (eb) =>
+          eb.onConflict((bd) => bd.columns([fieldId, symmetricFieldId]).doNothing()),
+        )
         .compile()
       this.addSql(insert)
     }

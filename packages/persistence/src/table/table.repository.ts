@@ -14,6 +14,7 @@ import {
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
 import type { InsertTable, InsertTableIdMapping } from "../db"
+import { DbProviderService, type IDbProvider } from "../db.provider"
 import { json } from "../qb.util"
 import { UnderlyingTableService } from "../underlying/underlying-table.service"
 import { TableFilterVisitor } from "./table.filter-visitor"
@@ -32,6 +33,8 @@ export class TableRepository implements ITableRepository {
     private readonly context: IContext,
     @injectTxCTX()
     private readonly txContext: ITxContext,
+    @inject(DbProviderService)
+    private readonly dbProvider: IDbProvider,
   ) {}
 
   get mapper() {
@@ -51,7 +54,7 @@ export class TableRepository implements ITableRepository {
 
     const userId = this.context.mustGetCurrentUserId()
 
-    const visitor = new TableMutationVisitor(table, trx)
+    const visitor = new TableMutationVisitor(table, trx, this.dbProvider)
     spec.unwrap().accept(visitor)
 
     await trx
@@ -100,7 +103,8 @@ export class TableRepository implements ITableRepository {
     await trx
       .insertInto("undb_table_id_mapping")
       .values(mapping)
-      .onConflict((ob) => ob.doNothing())
+      .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
+      .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
       .execute()
 
     for (const view of table.views.views) {
@@ -110,7 +114,8 @@ export class TableRepository implements ITableRepository {
           table_id: table.id.value,
           subject_id: view.id.value,
         })
-        .onConflict((ob) => ob.doNothing())
+        .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
+        .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
         .execute()
     }
 
@@ -121,7 +126,8 @@ export class TableRepository implements ITableRepository {
           table_id: table.id.value,
           subject_id: form.id,
         })
-        .onConflict((ob) => ob.doNothing())
+        .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
+        .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
         .execute()
     }
 
