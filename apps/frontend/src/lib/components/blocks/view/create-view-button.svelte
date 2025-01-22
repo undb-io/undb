@@ -23,6 +23,7 @@
   import { LL } from "@undb/i18n/client"
   import { getDataService } from "$lib/store/data-service.store"
   import { type ICreateViewCommand } from "@undb/commands"
+    import { getIsPlayground } from "$lib/store/playground.svelte"
 
   let open = false
 
@@ -32,6 +33,7 @@
   export let viewNames: string[]
 
   const dataService = getDataService()
+  const isPlayground = getIsPlayground()
 
   const createViewMutation = createMutation({
     mutationFn: dataService.table.view.createView,
