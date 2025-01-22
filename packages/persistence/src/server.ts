@@ -22,6 +22,7 @@ export * from "./ctx.interface"
 export * from "./ctx.provider"
 export {
   DATABASE_CLIENT,
+  createMysqlClient,
   createPostgresClient,
   createSqliteClient,
   createTursoClient,
@@ -30,4 +31,5 @@ export {
 export * from "./db.provider"
 export { injectQueryBuilder } from "./qb.provider"
 export { type IQueryBuilder } from "./qb.type"
+export { sessionTable as mysqlSessionTable, users as mysqlUsers } from "./schema/mysql"
 export { sessionTable as pgSessionTable, users as pgUsers } from "./schema/postgres"

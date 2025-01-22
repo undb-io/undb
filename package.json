@@ -18,6 +18,7 @@
     "generate": "run-s generate:db migrate:deploy",
     "generate:db": "run-p generate:db:*",
     "generate:db:postgres": "drizzle-kit generate --config drizzle.postgres.config.ts",
+    "generate:db:mysql": "drizzle-kit generate --config drizzle.mysql.config.ts",
     "generate:db:sqlite": "drizzle-kit generate --config drizzle.sqlite.config.ts",
     "migrate:db": "drizzle-kit push --config drizzle.sqlite.config.ts",
     "move-assets": "bun run ./scripts/move-assets.ts",

@@ -12,6 +12,7 @@ import { inject, singleton } from "@undb/di"
 import { None, Some, type Option } from "@undb/domain"
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
+import { DbProviderService, type IDbProvider } from "../db.provider"
 import { injectQueryBuilder } from "../qb.provider"
 import type { IQueryBuilder } from "../qb.type"
 import { DashboardFilterVisitor } from "./dashboard.filter-visitor"
@@ -32,6 +33,8 @@ export class DashboardRepository implements IDashboardRepository {
     private readonly context: IContext,
     @injectTxCTX()
     private readonly txContext: ITxContext,
+    @inject(DbProviderService)
+    private readonly dbProvider: IDbProvider,
   ) {}
 
   async find(spec: IDashboardSpecification): Promise<Dashboard[]> {
@@ -107,7 +110,7 @@ export class DashboardRepository implements IDashboardRepository {
     const userId = this.context.mustGetCurrentUserId()
 
     const qb = this.txContext.getCurrentTransaction()
-    const visitor = new DashboardMutateVisitor(dashboard, qb).$mutate(spec)
+    const visitor = new DashboardMutateVisitor(dashboard, qb, this.dbProvider).$mutate(spec)
 
     await qb
       .updateTable("undb_dashboard")
