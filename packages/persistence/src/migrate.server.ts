@@ -5,8 +5,11 @@ import { drizzle as sqliteDrizzle } from "drizzle-orm/bun-sqlite"
 import { migrate as sqliteMigrate } from "drizzle-orm/bun-sqlite/migrator"
 import { drizzle as libsqlDrizzle } from "drizzle-orm/libsql"
 import { migrate as libsqlMigrate } from "drizzle-orm/libsql/migrator"
+import { drizzle as mysqlDrizzle } from "drizzle-orm/mysql2"
+import { migrate as mysqlMigrate } from "drizzle-orm/mysql2/migrator"
 import { drizzle as postgresDrizzle } from "drizzle-orm/node-postgres"
 import { migrate as postgresMigrate } from "drizzle-orm/node-postgres/migrator"
+import mysql from "mysql2/promise"
 import pg from "pg"
 import { DATABASE_CLIENT } from "./db-client"
 import { DrizzleLogger } from "./db.logger"
@@ -14,10 +17,12 @@ import { DB_PROVIDER } from "./db.provider"
 
 export async function dbMigrate() {
   const dbProvider = container.resolve<string>(DB_PROVIDER)
+  const logger = new DrizzleLogger()
+
   if (dbProvider === "sqlite" || !dbProvider) {
     const sqlite = container.resolve<Database>(DATABASE_CLIENT)
     const db = sqliteDrizzle(sqlite, {
-      logger: new DrizzleLogger(),
+      logger,
     })
 
     sqliteMigrate(db, { migrationsFolder: "./drizzle/sqlite" })
@@ -26,16 +31,24 @@ export async function dbMigrate() {
     const pg = container.resolve<pg.Pool>(DATABASE_CLIENT)
 
     const db = postgresDrizzle(pg, {
-      logger: new DrizzleLogger(),
+      logger,
     })
 
     await postgresMigrate(db, { migrationsFolder: "./drizzle/postgres" })
+    return
+  } else if (dbProvider === "mysql") {
+    const mysql = container.resolve<mysql.Pool>(DATABASE_CLIENT)
+    const db = mysqlDrizzle(mysql, {
+      logger,
+    })
+
+    await mysqlMigrate(db, { migrationsFolder: "./drizzle/mysql" })
     return
   }
 
   const sqlite = container.resolve<Client>(DATABASE_CLIENT)
   const db = libsqlDrizzle(sqlite, {
-    logger: new DrizzleLogger(),
+    logger,
   })
 
   await libsqlMigrate(db, { migrationsFolder: "./drizzle/sqlite" })

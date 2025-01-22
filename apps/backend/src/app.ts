@@ -43,32 +43,7 @@ export const app = new Elysia()
     await dbMigrate()
     logger.info("db migrate done")
     await auth.onStart()
-  })
-  .use(opentelemetry.plugin())
-  .use(loggerPlugin())
-  .onError((ctx) => {
-    if (ctx.code === "NOT_FOUND") {
-      ctx.set.status = 404
-      ctx.logger.error(
-        {
-          error: ctx.error,
-          path: ctx.path,
-          headers: ctx.headers,
-        },
-        "Not Found",
-      )
 
-      return "Not Found :("
-    }
-
-    return new Response(ctx.error.toString())
-  })
-  .trace(async ({ set, onHandle }) => {
-    const { begin, end } = await onHandle()
-
-    set.headers["Server-Timing"] = `handle;dur=${(await end) - begin}`
-  })
-  .onStart(async () => {
     const pubsub = container.resolve(PubSubContext)
     const webhookEventHandler = container.resolve(WebhookEventsHandler)
     // const auditEventHandler = container.resolve(AuditEventHandler)
@@ -94,6 +69,30 @@ export const app = new Elysia()
         logger.error(error)
       }
     }
+  })
+  .use(opentelemetry.plugin())
+  .use(loggerPlugin())
+  .onError((ctx) => {
+    if (ctx.code === "NOT_FOUND") {
+      ctx.set.status = 404
+      ctx.logger.error(
+        {
+          error: ctx.error,
+          path: ctx.path,
+          headers: ctx.headers,
+        },
+        "Not Found",
+      )
+
+      return "Not Found :("
+    }
+
+    return new Response(ctx.error.toString())
+  })
+  .trace(async ({ set, onHandle }) => {
+    const { begin, end } = await onHandle()
+
+    set.headers["Server-Timing"] = `handle;dur=${(await end) - begin}`
   })
   .use(
     staticPlugin({

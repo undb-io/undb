@@ -15,6 +15,7 @@ import type {
   WithDashboardWidgets,
 } from "@undb/dashboard"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
+import type { IDbProvider } from "../db.provider"
 import type { IQueryBuilder } from "../qb.type"
 import { json } from "../qb.util"
 
@@ -22,6 +23,7 @@ export class DashboardMutateVisitor extends AbstractQBMutationVisitor implements
   constructor(
     private readonly dashboard: Dashboard,
     private readonly qb: IQueryBuilder,
+    private readonly dbProvider: IDbProvider,
   ) {
     super()
   }
@@ -57,7 +59,8 @@ export class DashboardMutateVisitor extends AbstractQBMutationVisitor implements
         const sql = this.qb
           .insertInto("undb_dashboard_table_id_mapping")
           .values({ dashboard_id: dashboardId, table_id: tableId })
-          .onConflict((ob) => ob.doNothing())
+          .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
+          .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
           .compile()
         this.addSql(sql)
       }

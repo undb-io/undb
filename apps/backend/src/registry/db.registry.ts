@@ -23,6 +23,8 @@ import {
   BaseQueryRepository,
   BaseRepository,
   Client,
+  createMysqlClient,
+  createMysqlQueryBuilder,
   createPostgresClient,
   createPostgresQueryBuilder,
   createSqliteClient,
@@ -73,6 +75,7 @@ import { TEMPLATE_QUERY_REPOSITORY } from "@undb/template"
 import { USER_QUERY_REPOSITORY, USER_REPOSITORY, USER_SERVICE, UserService } from "@undb/user"
 import { WEBHOOK_QUERY_REPOSITORY, WEBHOOK_REPOSITORY } from "@undb/webhook"
 import Database from "bun:sqlite"
+import mysql from "mysql2/promise"
 import { AsyncLocalStorage } from "node:async_hooks"
 import pg from "pg"
 
@@ -90,6 +93,9 @@ export const registerDb = () => {
       if (dbProvider === "postgres") {
         return createPostgresClient(env.UNDB_DB_POSTGRES_URL!)
       }
+      if (dbProvider === "mysql") {
+        return createMysqlClient(env.UNDB_DB_MYSQL_URL!)
+      }
       return createTursoClient(env.UNDB_DB_TURSO_URL!, env.UNDB_DB_TURSO_AUTH_TOKEN)
     }),
   })
@@ -102,6 +108,9 @@ export const registerDb = () => {
       } else if (dbProvider === "postgres") {
         const pg = c.resolve<pg.Pool>(DATABASE_CLIENT)
         return createPostgresQueryBuilder(pg)
+      } else if (dbProvider === "mysql") {
+        const mysql = c.resolve<mysql.Pool>(DATABASE_CLIENT)
+        return createMysqlQueryBuilder(mysql)
       }
 
       const sqlite = c.resolve<Client>(DATABASE_CLIENT)

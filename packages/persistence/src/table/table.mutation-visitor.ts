@@ -36,6 +36,7 @@ import type {
   WithoutView,
 } from "@undb/table"
 import { AbstractQBMutationVisitor } from "../abstract-qb.visitor"
+import type { IDbProvider } from "../db.provider"
 import { type IQueryBuilder } from "../qb.type"
 import { json } from "../qb.util"
 import { tables } from "../schema/sqlite"
@@ -44,6 +45,7 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
   constructor(
     private readonly table: TableDo,
     private readonly qb: IQueryBuilder,
+    private readonly dbProvider: IDbProvider,
   ) {
     super()
   }
@@ -76,7 +78,8 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
         table_id: this.table.id.value,
         subject_id: field.id.value,
       })
-      .onConflict((ob) => ob.doNothing())
+      .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
+      .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
       .compile()
     this.addSql(sql)
 
@@ -91,7 +94,8 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
           rollup_id: field.id.value,
           rollup_table_id: this.table.id.value,
         })
-        .onConflict((ob) => ob.doNothing())
+        .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
+        .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
         .compile()
       this.addSql(sql)
     } else if (field.type === "reference") {
@@ -103,7 +107,8 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
           symmetric_field_id: field.symmetricFieldId ?? null,
           foreign_table_id: field.foreignTableId,
         })
-        .onConflict((ob) => ob.doNothing())
+        .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
+        .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
         .compile()
 
       this.addSql(sql)
@@ -165,7 +170,8 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
         table_id: this.table.id.value,
         subject_id: views.view.id.value,
       })
-      .onConflict((ob) => ob.doNothing())
+      .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
+      .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
       .compile()
 
     this.addSql(sql)
@@ -217,7 +223,8 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
         table_id: this.table.id.value,
         subject_id: views.form.id,
       })
-      .onConflict((ob) => ob.doNothing())
+      .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
+      .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
       .compile()
 
     this.addSql(sql)

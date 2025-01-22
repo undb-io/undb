@@ -3,6 +3,7 @@ import { None, Some, type Option } from "@undb/domain"
 import { WithShareId, type IShareRepository, type Share, type ShareSpecification } from "@undb/share"
 import type { ITxContext } from "../ctx.interface"
 import { injectTxCTX } from "../ctx.provider"
+import { DbProviderService, type IDbProvider } from "../db.provider"
 import { injectQueryBuilder } from "../qb.provider"
 import type { IQueryBuilder } from "../qb.type"
 import { ShareFilterVisitor } from "./share.filter-visitor"
@@ -17,6 +18,8 @@ export class ShareRepository implements IShareRepository {
     private readonly qb: IQueryBuilder,
     @injectTxCTX()
     private readonly txContext: ITxContext,
+    @inject(DbProviderService)
+    private readonly dbProvider: IDbProvider,
   ) {}
   insert(share: Share): Promise<void> {
     throw new Error("Method not implemented.")
@@ -28,7 +31,10 @@ export class ShareRepository implements IShareRepository {
       .getCurrentTransaction()
       .insertInto("undb_share")
       .values(entity)
-      .onConflict((ob) => ob.columns(["target_id", "target_type"]).doUpdateSet({ enabled: share.enabled }))
+      .$if(this.dbProvider.isMysql(), (eb) => eb.onDuplicateKeyUpdate({ enabled: share.enabled }))
+      .$if(this.dbProvider.not.isMysql(), (eb) =>
+        eb.onConflict((ob) => ob.columns(["target_id", "target_type"]).doUpdateSet({ enabled: share.enabled })),
+      )
       .execute()
   }
   async findOneById(id: string): Promise<Option<Share>> {
