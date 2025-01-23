@@ -3,7 +3,7 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "bun --watch src/index.ts",
+    "dev": "bun --hot --target=bun src/index.ts",
     "build": "bun build --compile src/index.ts --target=bun --sourcemap --outfile undb",
     "build:docker": "bun build --compile src/index.ts --target=bun --packages=external --sourcemap --outfile undb"
   },

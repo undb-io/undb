@@ -12,8 +12,8 @@ export interface IPresign {
 }
 
 export interface IObjectStorage {
-  presign(fileName: string, path: string, mimeType: string): Promise<IPresign>
-  getPreviewUrl(fileName: string): Promise<string>
+  presign(fileName: string, path: string, mimeType: string): Promise<IPresign> | IPresign
+  getPreviewUrl(fileName: string): Promise<string> | string
   put(buffer: Buffer, path: string, originalname: string, mimeType: string): Promise<IPutObject>
   get(id: string): Promise<Buffer>
 }
