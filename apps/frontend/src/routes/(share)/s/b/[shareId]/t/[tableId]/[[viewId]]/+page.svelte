@@ -10,6 +10,7 @@
   import ShareGalleryView from "$lib/components/blocks/share/share-gallery-view.svelte"
   import ShareKanbanView from "$lib/components/blocks/share/share-kanban-view.svelte"
   import { r } from "$lib/store/records.store"
+  import { setShareId } from "$lib/store/share.store.svelte"
 
   let RecordDetailSheet: ComponentType
 
@@ -18,6 +19,10 @@
   onMount(async () => {
     RecordDetailSheet = (await import("$lib/components/blocks/record-detail/share-record-detail-sheet.svelte")).default
   })
+
+  $: if ($shareId) {
+    setShareId($shareId)
+  }
 
   const t = getTable()
 

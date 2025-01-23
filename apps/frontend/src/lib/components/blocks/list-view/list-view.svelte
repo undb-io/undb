@@ -72,7 +72,7 @@
   $: total = ($getRecordsQuery.data as any)?.total
 </script>
 
-<TableTools {r} {readonly} {viewId} />
+<TableTools {r} {readonly} {viewId} {shareId}/>
 
 <div class={cn("flex-1 overflow-y-auto overflow-x-hidden")}>
   {#if $isLoading}

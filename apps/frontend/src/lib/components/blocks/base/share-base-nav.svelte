@@ -4,6 +4,7 @@
   import { ChevronRightIcon, DatabaseIcon, HardDriveIcon, SheetIcon } from "lucide-svelte"
   import * as Collapsible from "$lib/components/ui/collapsible"
   import { cn } from "$lib/utils"
+  import { setShareId } from "$lib/store/share.store.svelte"
 
   export let base: {
     id: string
@@ -27,6 +28,10 @@
 
   $: active = !tableId && !viewId
   let open: Record<string, boolean> = {}
+
+  $: if (shareId) {
+    setShareId(shareId)
+  }
 </script>
 
 <nav class="items-start gap-1 px-1.5 text-sm font-medium">

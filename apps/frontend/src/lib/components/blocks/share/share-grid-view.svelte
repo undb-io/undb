@@ -70,6 +70,7 @@
     readonly
     {perPage}
     {currentPage}
+    {shareId}
     isLoading={$getRecords.isLoading}
     total={$getRecords.data?.total ?? 0}
   />

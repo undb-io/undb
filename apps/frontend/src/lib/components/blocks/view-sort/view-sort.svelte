@@ -1,18 +1,8 @@
 <script lang="ts">
   import * as Popover from "$lib/components/ui/popover/index.js"
   import { Button } from "$lib/components/ui/button/index.js"
-  import * as Select from "$lib/components/ui/select"
   import Badge from "$lib/components/ui/badge/badge.svelte"
-  import {
-    ArrowDownAzIcon,
-    ArrowUpDownIcon,
-    ArrowUpZaIcon,
-    GripVerticalIcon,
-    Trash2Icon,
-    PlusIcon,
-    SortAscIcon,
-    LoaderCircleIcon,
-  } from "lucide-svelte"
+  import { ArrowUpDownIcon, GripVerticalIcon, Trash2Icon, PlusIcon, SortAscIcon, LoaderCircleIcon } from "lucide-svelte"
   import { cn } from "$lib/utils"
   import { SortableList } from "@jhubbardsf/svelte-sortablejs"
   import type { Readable } from "svelte/store"
@@ -20,7 +10,6 @@
   import { type IViewSort, isFieldSortable } from "@undb/table"
   import FieldPicker from "../field-picker/field-picker.svelte"
   import { createMutation, useQueryClient } from "@tanstack/svelte-query"
-  import { trpc } from "$lib/trpc/client"
   import { invalidate } from "$app/navigation"
   import { isNumber } from "radash"
   import { onMount } from "svelte"
@@ -137,18 +126,18 @@
                       }
                     }}
                     class="col-span-5 rounded-r-none border-r-0"
-                    disabled={$setViewSortMutation.isPending}
+                    disabled={$setViewSortMutation.isPending || readonly}
                   />
 
-                  <SortPicker bind:value={item.direction} class="col-span-3" />
+                  <SortPicker bind:value={item.direction} class="col-span-3" disabled={readonly} />
                 </div>
                 <div class="text-muted-foreground col-span-2 flex justify-end gap-2">
-                  {#if $hasPermission("table:update")}
+                  {#if $hasPermission("table:update") && !readonly}
                     <button disabled={$setViewSortMutation.isPending} on:click={() => removeSort(item.fieldId)}>
                       <Trash2Icon class="h-3 w-3" />
                     </button>
                     <button
-                      disabled={$setViewSortMutation.isPending}
+                      disabled={$setViewSortMutation.isPending || readonly}
                       class=".handler"
                       on:click={() => removeSort(item.fieldId)}
                     >

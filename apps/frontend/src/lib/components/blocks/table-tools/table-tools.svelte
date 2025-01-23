@@ -14,6 +14,7 @@
   export let readonly = false
   export let r: Writable<string | null>
   export let viewId: Readable<string | undefined>
+  export let shareId: string | undefined
 
   const isPlayground = getIsPlayground()
 </script>
@@ -23,7 +24,7 @@
     {#if !readonly}
       <CreateRecordButton />
     {/if}
-    <ViewFilterEditor {readonly} {viewId} />
+    <ViewFilterEditor {readonly} {viewId} {shareId} />
     <ViewColorEditor {readonly} {viewId} />
     <ViewSort {readonly} {viewId} />
     <ViewFields {readonly} {viewId} />

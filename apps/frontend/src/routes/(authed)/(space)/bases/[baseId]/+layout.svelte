@@ -1,7 +1,7 @@
 <script lang="ts">
   import BaseHeader from "$lib/components/blocks/base/base-header.svelte"
   import UpdateBaseDialog from "$lib/components/blocks/base/update-base-dialog.svelte"
-  import { shareStore } from "$lib/store/share.store"
+  import { shareStore } from "$lib/store/share.store.svelte"
   import type { LayoutData } from "./$types"
 
   export let data: LayoutData
