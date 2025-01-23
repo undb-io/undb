@@ -85,6 +85,7 @@
   {perPage}
   {currentPage}
   {r}
+  {shareId}
   isLoading={$getRecords.isLoading}
   total={$getRecords.data?.total ?? 0}
 />

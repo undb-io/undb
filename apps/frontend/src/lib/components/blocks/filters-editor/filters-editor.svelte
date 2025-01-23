@@ -8,6 +8,10 @@
     FieldIdVo,
     type Conjunction,
     type FieldType,
+    addMaybeCondition,
+    addMaybeConditionGroup,
+    removeCondition,
+    swapCondition,
   } from "@undb/table"
   import FilterField from "./filter-field.svelte"
   import Button from "$lib/components/ui/button/button.svelte"
@@ -34,6 +38,7 @@
   export let filter: (field: IField) => boolean = () => true
   export let disabled = false
   export let readonly = false
+  export let sameWidth = true
 
   export let onValueChange: ((value: MaybeConditionGroup<any> | undefined) => void) | undefined = undefined
 
@@ -54,11 +59,7 @@
       value: undefined,
       option: {},
     }
-    if (!value) {
-      value = { children: [filter], conjunction: defaultConjunction, id: uid(10), option: {} }
-    } else {
-      value.children = [...value.children, filter]
-    }
+      value = addMaybeCondition(value, filter, defaultConjunction)
   }
 
   function addConditionGroup() {
@@ -68,30 +69,16 @@
       option: {},
       children: [],
     }
-    if (!value) {
-      value = { children: [conditionGroup], conjunction: defaultConjunction, id: uid(10), option: {} }
-    } else {
-      value.children = [...value.children, conditionGroup]
-    }
+      value = addMaybeConditionGroup(value, conditionGroup, defaultConjunction)
   }
 
   function removeFilter(index: number) {
-    if (value) {
-      value.children.splice(index, 1)
-      value.children = [...value.children]
-    }
+      value = removeCondition(value, index)
   }
 
   function swapFilter(oldIndex: number, newIndex: number) {
-    if (value) {
-      const filters = [...value.children]
-      const [removed] = filters.splice(oldIndex, 1)
-      filters.splice(newIndex, 0, removed)
-      value.children = [...filters]
-    }
+      value = swapCondition(value, oldIndex, newIndex)
   }
-
-  export let sameWidth = true
 </script>
 
 <div use:autoAnimate class={cn("space-y-2", isEven ? "bg-muted" : "bg-popover", $$restProps.class)} data-level={level}>
@@ -141,6 +128,7 @@
 
                     child = child
                     value = value
+                    onValueChange?.(value)
                   }
                 }}
                 {filter}
@@ -227,33 +215,33 @@
     <slot name="empty" />
   {/if}
   {#if !readonly}
-    <div class={cn("flex justify-between px-4", value?.children.length ? "border-t py-2" : "py-3")}>
-      <div class="flex items-center gap-2">
-        {#if !readonly && $hasPermission("table:update")}
-          <Button disabled={!filteredFields.length || disabled} variant="ghost" size="sm" on:click={addCondition}>
-            <PlusIcon class="mr-2 h-3 w-3" />
-            {$LL.table.common.condition.add()}
-          </Button>
-          {#if !disableGroup}
-            {#if level < 3}
-              <Button
-                disabled={!filteredFields.length || disabled}
-                variant="ghost"
-                class="text-muted-foreground"
-                size="sm"
-                on:click={addConditionGroup}
-              >
-                <PlusIcon class="mr-2 h-3 w-3" />
-                {$LL.table.common.condition.addGroup()}
-              </Button>
-            {/if}
+  <div class={cn("flex justify-between px-4", value?.children.length ? "border-t py-2" : "py-3")}>
+    <div class="flex items-center gap-2">
+      {#if ( !readonly && $hasPermission("table:update")) }
+        <Button disabled={!filteredFields.length || disabled} variant="ghost" size="sm" on:click={addCondition}>
+          <PlusIcon class="mr-2 h-3 w-3" />
+          {$LL.table.common.condition.add()}
+        </Button>
+        {#if !disableGroup}
+          {#if level < 3}
+            <Button
+              disabled={!filteredFields.length || disabled}
+              variant="ghost"
+              class="text-muted-foreground"
+              size="sm"
+              on:click={addConditionGroup}
+            >
+              <PlusIcon class="mr-2 h-3 w-3" />
+              {$LL.table.common.condition.addGroup()}
+            </Button>
           {/if}
         {/if}
-      </div>
-
-      {#if !readonly && $hasPermission("table:update")}
-        <slot name="footer" />
       {/if}
     </div>
-  {/if}
+
+    {#if !readonly && $hasPermission("table:update")}
+      <slot name="footer" />
+    {/if}
+  </div>
+{/if}
 </div>

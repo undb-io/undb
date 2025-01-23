@@ -8,7 +8,7 @@
   import Button from "$lib/components/ui/button/button.svelte"
   import { getFormBgColor } from "$lib/components/blocks/forms/form-bg-color"
   import FieldControl from "$lib/components/blocks/field-control/field-control.svelte"
-  import { shareStore } from "$lib/store/share.store"
+  import { shareStore } from "$lib/store/share.store.svelte"
   import { page } from "$app/stores"
   import { closeModal, CREATE_RECORD_MODAL } from "$lib/store/modal.store"
   import { trpc } from "$lib/trpc/client"
@@ -55,9 +55,9 @@
 
   const createRecord = (values: any) => {
     const formId = form?.id
-        if (!formId) {
-          return
-        }
+    if (!formId) {
+      return
+    }
     $createRecordMutation.mutate({
       tableId: $table.id.value,
       form: formId,

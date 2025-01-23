@@ -43,6 +43,7 @@
   export let total: number
   export let hidePagination = false
   export let r: Writable<string | null>
+  export let shareId: string | undefined
 
   const t = getTable()
 
@@ -181,7 +182,7 @@
 
 <div class="flex h-full w-full flex-col">
   {#if !readonly}
-    <TableTools {r} {viewId}>
+    <TableTools {r} {viewId} {shareId}>
       {#if selectedRecordIds.length}
         <SelectedRecordsButton
           {viewId}

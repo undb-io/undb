@@ -7,7 +7,7 @@
   import { createMutation } from "@tanstack/svelte-query"
   import { CopyIcon, ShareIcon, CopyCheckIcon, ExternalLinkIcon, QrCodeIcon } from "lucide-svelte"
   import * as Popover from "$lib/components/ui/popover"
-  import { shareStore } from "$lib/store/share.store"
+  import { shareStore } from "$lib/store/share.store.svelte"
   import { invalidate } from "$app/navigation"
   import { Input } from "$lib/components/ui/input"
   import { getIframe, getShareUrl, type IShareTarget } from "@undb/share"

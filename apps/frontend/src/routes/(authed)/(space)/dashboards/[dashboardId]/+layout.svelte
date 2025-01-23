@@ -3,7 +3,7 @@
   import type { LayoutData } from "./$types"
   import { setDashboard } from "$lib/store/dashboard.store"
   import { writable } from "svelte/store"
-  import { shareStore } from "$lib/store/share.store"
+  import { shareStore } from "$lib/store/share.store.svelte"
 
   export let data: LayoutData
 
