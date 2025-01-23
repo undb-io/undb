@@ -1,0 +1,51 @@
+services:
+  # undb:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.dev
+  #   container_name: undb
+  #   volumes:
+  #     - .:/app
+  #     - /app/node_modules
+  #   ports:
+  #     - 3721:3721
+  #   environment:
+  #     - LOG_LEVEL=debug
+  #     - UNDB_BASE_URL=http://localhost:3721
+  #     - UNDB_DB_PROVIDER=turso
+  #     - UNDB_DB_TURSO_URL=http://db:8080
+  #     - UNDB_STORAGE_PROVIDER=minio
+  #     - UNDB_MINIO_STORAGE_ENDPOINT=http://minio:9000
+  #     - UNDB_VERIFY_EMAIL=true
+  #     - UNDB_MAIL_HOST=maildev
+  #     - UNDB_MAIL_PORT=1025
+  #     - UNDB_DISABLE_REGISTRATION=true
+  #     - UNDB_ADMIN_EMAIL=admin@undb.io
+  #     - UNDB_ADMIN_PASSWORD=admin
+  #   depends_on:
+  #     - db
+  #     - minio
+  #     - maildev
+
+  # db:
+  #   image: ghcr.io/tursodatabase/libsql-server:latest
+  #   environment:
+  #     - SQLD_NODE=primary
+  #   volumes:
+  #     - ./apps/backend/.undb:/var/lib/sqld
+
+  minio:
+    image: quay.io/minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    volumes:
+      - ./minio/data:/data
+    command: server /data --console-address ":9001"
+
+  maildev:
+    image: maildev/maildev

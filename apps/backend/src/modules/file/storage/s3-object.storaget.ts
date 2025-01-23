@@ -15,7 +15,7 @@ export class S3ObjectStorage implements IObjectStorage {
     region: env.UNDB_S3_STORAGE_REGION!,
   })
 
-  async presign(fileName: string, _path: string, mimeType: string): Promise<IPresign> {
+  presign(fileName: string, _path: string, mimeType: string): IPresign {
     const id = v7()
     const token = nanoid(16)
     const ext = path.extname(fileName)
@@ -31,7 +31,7 @@ export class S3ObjectStorage implements IObjectStorage {
     }
   }
 
-  async getPreviewUrl(fileName: string): Promise<string> {
+  getPreviewUrl(fileName: string): string {
     return this.s3Client.presign(fileName, { bucket: env.UNDB_STORAGE_PRIVATE_BUCKET, expiresIn: 24 * 60 * 60 })
   }
 
