@@ -97,9 +97,7 @@
       </Button>
       <div slot="empty" class="flex flex-col items-center gap-3 px-4 py-6 text-center">
         <FilterXIcon class="text-primary h-10 w-10" />
-        <h3 class="text-muted-foreground text-sm font-semibold tracking-tight">
-          {$LL.table.common.colorEmpty()}
-        </h3>
+        <h3 class="text-muted-foreground text-sm tracking-tight">{$LL.table.common.colorEmpty()}</h3>
       </div>
     </FiltersEditor>
   </Popover.Content>

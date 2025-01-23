@@ -8,7 +8,7 @@ import type {
 import type { Schema } from "../../schema.vo"
 import { FieldIdVo } from "../field-id.vo"
 import type { AbstractField } from "../variants/abstract-field.vo"
-import type { IConditionGroup, IConditionGroupChildren, MaybeConditionGroup } from "./condition.type"
+import type { Conjunction, IConditionGroup, IConditionGroupChildren, MaybeConditionGroup } from "./condition.type"
 import type { IFieldCondition, MaybeFieldCondition, MaybeFieldConditionWithFieldId } from "./field-condition.type"
 
 type Spec = Option<IRecordComositeSpecification | INotRecordComositeSpecification>
@@ -294,5 +294,75 @@ export function mergeConditionGroups<OptionType extends z.ZodTypeAny>(
   return {
     conjunction: "and",
     children: [a, b],
+  }
+}
+
+export function addMaybeCondition(
+  value: MaybeConditionGroup<any> | undefined,
+  condition: MaybeFieldCondition,
+  conjunction: Conjunction = "and",
+) {
+  if (!value) {
+    return {
+      children: [condition],
+      conjunction,
+      id: uid(10),
+      option: {},
+    }
+  }
+
+  return {
+    children: [...value.children, condition],
+    conjunction,
+    id: uid(10),
+    option: {},
+  }
+}
+
+export function addMaybeConditionGroup(
+  value: MaybeConditionGroup<any> | undefined,
+  conditionGroup: MaybeConditionGroup<any>,
+  conjunction: Conjunction = "and",
+) {
+  if (!value) {
+    return {
+      children: [conditionGroup],
+      conjunction,
+      id: uid(10),
+      option: {},
+    }
+  }
+
+  return {
+    children: [...value.children, conditionGroup],
+    conjunction,
+    id: uid(10),
+    option: {},
+  }
+}
+
+export function removeCondition(value: MaybeConditionGroup<any> | undefined, index: number) {
+  if (!value) {
+    return value
+  }
+
+  return {
+    ...value,
+    children: value.children.filter((_, i) => i !== index),
+  }
+}
+
+export function swapCondition(value: MaybeConditionGroup<any> | undefined, oldIndex: number, newIndex: number) {
+  if (!value) {
+    return value
+  }
+
+  const children = [...value.children]
+  const [removed] = children.splice(oldIndex, 1)
+  children.splice(newIndex, 0, removed)
+
+  return {
+    ...value,
+    children,
   }
 }

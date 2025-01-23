@@ -4,7 +4,7 @@
   import { setTable } from "$lib/store/table.store"
   import type { LayoutData } from "./$types"
   import { writable } from "svelte/store"
-  import { shareStore } from "$lib/store/share.store"
+  import { shareStore } from "$lib/store/share.store.svelte"
   import { aggregatesStore } from "$lib/store/aggregates.store"
 
   export let data: LayoutData

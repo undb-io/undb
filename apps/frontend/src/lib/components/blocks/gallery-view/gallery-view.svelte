@@ -79,7 +79,7 @@
   $: total = ($getRecordsQuery.data as any)?.total
 </script>
 
-<TableTools {r} {viewId} {readonly}>
+<TableTools {r} {viewId} {readonly} {shareId}>
   {#if !shareId}
     <GalleryViewOptionButton {view} {readonly} />
   {/if}

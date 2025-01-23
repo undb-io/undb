@@ -3,7 +3,7 @@
   import { setTable } from "$lib/store/table.store"
   import type { LayoutData } from "./$types"
   import { derived, writable } from "svelte/store"
-  import { shareStore } from "$lib/store/share.store"
+  import { shareStore } from "$lib/store/share.store.svelte"
   import { aggregatesStore } from "$lib/store/aggregates.store"
   import { createQuery } from "@tanstack/svelte-query"
   import { trpc } from "$lib/trpc/client"

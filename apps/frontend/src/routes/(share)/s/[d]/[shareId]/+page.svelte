@@ -3,10 +3,15 @@
   import DashboardWidgets from "$lib/components/blocks/dashboard/dashboard-widgets.svelte"
   import { getDashboard } from "$lib/store/dashboard.store"
   import { GaugeIcon } from "lucide-svelte"
+  import { setShareId } from "$lib/store/share.store.svelte"
 
   const dashboard = getDashboard()
 
   const shareId = $page.params.shareId
+
+  $: if (shareId) {
+    setShareId(shareId)
+  }
 </script>
 
 <div class="flex h-full flex-col">

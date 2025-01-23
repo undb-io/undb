@@ -3,7 +3,7 @@
   import { setTable } from "$lib/store/table.store"
   import type { LayoutData } from "./$types"
   import { writable } from "svelte/store"
-  import { shareStore } from "$lib/store/share.store"
+  import { shareStore } from "$lib/store/share.store.svelte"
   import { goto } from "$app/navigation"
 
   export let data: LayoutData
