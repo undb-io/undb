@@ -77,7 +77,7 @@ import { WEBHOOK_QUERY_REPOSITORY, WEBHOOK_REPOSITORY } from "@undb/webhook"
 import Database from "bun:sqlite"
 import mysql from "mysql2/promise"
 import { AsyncLocalStorage } from "node:async_hooks"
-import pg from "pg"
+import postgres from "postgres"
 
 const txContext = new AsyncLocalStorage<TxContext>()
 
@@ -106,7 +106,7 @@ export const registerDb = () => {
         const sqlite = c.resolve<Database>(DATABASE_CLIENT)
         return createSqliteQueryBuilder(sqlite)
       } else if (dbProvider === "postgres") {
-        const pg = c.resolve<pg.Pool>(DATABASE_CLIENT)
+        const pg = c.resolve<postgres.Sql>(DATABASE_CLIENT)
         return createPostgresQueryBuilder(pg)
       } else if (dbProvider === "mysql") {
         const mysql = c.resolve<mysql.Pool>(DATABASE_CLIENT)

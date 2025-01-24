@@ -4,10 +4,10 @@ import { BunSQLiteAdapter, LibSQLAdapter } from "@lucia-auth/adapter-sqlite"
 import { container, inject, instanceCachingFactory } from "@undb/di"
 import { Client, DATABASE_CLIENT, DB_PROVIDER, pgSessionTable, pgUsers } from "@undb/persistence/server"
 import Database from "bun:sqlite"
-import { drizzle as drizzlePg } from "drizzle-orm/node-postgres"
+import { drizzle as drizzlePg } from "drizzle-orm/postgres-js"
 import { Adapter, Lucia } from "lucia"
 import mysql from "mysql2/promise"
-import pg from "pg"
+import postgres from "postgres"
 
 export const LUCIA_PROVIDER = Symbol.for("LUCIA_PROVIDER")
 export const injectLucia = () => inject(LUCIA_PROVIDER)
@@ -57,7 +57,7 @@ const createSqliteLucia = (sqlite: Database) => {
   return createLuciaWithAdapter(adapter)
 }
 
-const createPostgresLucia = (pool: pg.Pool) => {
+const createPostgresLucia = (pool: postgres.Sql) => {
   const db = drizzlePg(pool)
 
   const adapter = new DrizzlePostgreSQLAdapter(db, pgSessionTable, pgUsers)
@@ -98,7 +98,7 @@ container.register(LUCIA_PROVIDER, {
       const sqlite = c.resolve<Database>(DATABASE_CLIENT)
       return createSqliteLucia(sqlite)
     } else if (dbProvider === "postgres") {
-      const pool = c.resolve<pg.Pool>(DATABASE_CLIENT)
+      const pool = c.resolve<postgres.Sql>(DATABASE_CLIENT)
       return createPostgresLucia(pool)
     } else if (dbProvider === "mysql") {
       const connection = c.resolve<mysql.Pool>(DATABASE_CLIENT)

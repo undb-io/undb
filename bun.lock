@@ -67,6 +67,7 @@
         "nodemailer": "^6.9.16",
         "oslo": "^1.2.1",
         "pg": "^8.13.1",
+        "postgres": "^3.4.5",
         "radash": "^12.1.0",
         "reflect-metadata": "^0.2.2",
         "uuid": "^11.0.5",
@@ -550,6 +551,7 @@
         "es-toolkit": "^1.31.0",
         "kysely": "^0.27.5",
         "kysely-bun-sqlite": "^0.3.2",
+        "kysely-postgres-js": "^2.0.0",
         "kysely-wasm": "^0.7.0",
         "mysql2": "^3.12.0",
         "pg": "^8.13.1",
@@ -2388,6 +2390,8 @@
     "kysely": ["kysely@0.27.5", "https://registry.npmmirror.com/kysely/-/kysely-0.27.5.tgz", {}, "sha512-s7hZHcQeSNKpzCkHRm8yA+0JPLjncSWnjb+2TIElwS2JAqYr+Kv3Ess+9KFfJS0C1xcQ1i9NkNHpWwCYpHMWsA=="],
 
     "kysely-bun-sqlite": ["kysely-bun-sqlite@0.3.2", "https://registry.npmmirror.com/kysely-bun-sqlite/-/kysely-bun-sqlite-0.3.2.tgz", { "dependencies": { "bun-types": "^1.0.25" }, "peerDependencies": { "kysely": "^0.27.2" } }, "sha512-YucMcOGGxNCmlAnkvNfTKZX6Bk1sYsuVVXlQN/5ZUgerlq/J9/EuR3aMOOZ25ASLM7oMglSxfeQxkiw0+hrEOQ=="],
+
+    "kysely-postgres-js": ["kysely-postgres-js@2.0.0", "https://registry.npmmirror.com/kysely-postgres-js/-/kysely-postgres-js-2.0.0.tgz", { "peerDependencies": { "kysely": ">= 0.24.0 < 1", "postgres": ">= 3.4.0 < 4" } }, "sha512-R1tWx6/x3tSatWvsmbHJxpBZYhNNxcnMw52QzZaHKg7ZOWtHib4iZyEaw4gb2hNKVctWQ3jfMxZT/ZaEMK6kBQ=="],
 
     "kysely-wasm": ["kysely-wasm@0.7.0", "https://registry.npmmirror.com/kysely-wasm/-/kysely-wasm-0.7.0.tgz", { "peerDependencies": { "kysely": ">=0.26" } }, "sha512-SUzSCJdY4AioyivtcjJBXXnXE2Y3Tdsv96sJYfey6KlFPNVf7JrUl7SiI8gimZJqFLtdvmzjPJwevc5ReLSHjQ=="],
 
