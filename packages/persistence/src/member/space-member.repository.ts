@@ -75,7 +75,7 @@ export class SpaceMemberRepository implements ISpaceMemberRepository {
         user_id: json.userId,
       })
       .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
-      .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((c) => c.doNothing()))
+      .$if(!this.dbProvider.isMysql(), (eb) => eb.onConflict((c) => c.doNothing()))
       .execute()
   }
 }

@@ -32,7 +32,7 @@ export class ShareRepository implements IShareRepository {
       .insertInto("undb_share")
       .values(entity)
       .$if(this.dbProvider.isMysql(), (eb) => eb.onDuplicateKeyUpdate({ enabled: share.enabled }))
-      .$if(this.dbProvider.not.isMysql(), (eb) =>
+      .$if(!this.dbProvider.isMysql(), (eb) =>
         eb.onConflict((ob) => ob.columns(["target_id", "target_type"]).doUpdateSet({ enabled: share.enabled })),
       )
       .execute()

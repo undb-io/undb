@@ -57,7 +57,7 @@ export class InvitationRepository implements IInvitationRepository {
           role: invitation.role,
         }),
       )
-      .$if(this.dbProvider.not.isMysql(), (eb) =>
+      .$if(!this.dbProvider.isMysql(), (eb) =>
         eb.onConflict((oc) =>
           oc.columns(["id", "email"]).doUpdateSet({
             invited_at: new Date(),

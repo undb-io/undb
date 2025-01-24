@@ -1,4 +1,4 @@
-import { inject, singleton } from "@undb/di"
+import { inject, injectable } from "@undb/di"
 
 export const DB_PROVIDER = Symbol.for("DB_PROVIDER")
 
@@ -7,29 +7,20 @@ export const injectDbProvider = () => inject(DB_PROVIDER)
 export interface IDbProvider {
   getDbProvider(): string
 
-  get not(): this
-
   isPostgres(): boolean
   isMysql(): boolean
   isSqlite(): boolean
 }
 
-@singleton()
+@injectable()
 export class DbProviderService implements IDbProvider {
   constructor(@inject(DB_PROVIDER) private readonly dbProvider: string) {}
-
-  #isNot: boolean = false
-
-  get not(): this {
-    this.#isNot = true
-    return this
-  }
 
   getDbProvider(): string {
     return this.dbProvider
   }
   #is(dbProvider: string) {
-    return this.#isNot ? this.dbProvider !== dbProvider : this.dbProvider === dbProvider
+    return this.dbProvider === dbProvider
   }
   isPostgres(): boolean {
     return this.#is("postgres")
