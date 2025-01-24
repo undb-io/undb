@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-141
+
+
+### 🩹 Fixes
+
+- Fix bun lock ([e50d894](https://github.com/undb-io/undb/commit/e50d894))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](http://github.com/nichenqin))
+
 ## v1.0.0-140
 
 
