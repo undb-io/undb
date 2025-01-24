@@ -216,7 +216,7 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
             }),
           )
           .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
-          .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((bd) => bd.columns(["id"]).doNothing()))
+          .$if(!this.dbProvider.isMysql(), (eb) => eb.onConflict((bd) => bd.columns(["id"]).doNothing()))
           .compile()
         this.addSql(insert)
 
@@ -231,7 +231,7 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
             })),
           )
           .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
-          .$if(this.dbProvider.not.isMysql(), (eb) =>
+          .$if(!this.dbProvider.isMysql(), (eb) =>
             eb.onConflict((bd) => bd.columns(["table_id", "field_id", "record_id", "attachment_id"]).doNothing()),
           )
           .compile()
@@ -284,7 +284,7 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
             return values.reduce((prev, value) => prev.unionAll(expression(value)), expression(values[0]))
           })
           .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
-          .$if(this.dbProvider.not.isMysql(), (eb) =>
+          .$if(!this.dbProvider.isMysql(), (eb) =>
             eb.onConflict((bd) => bd.columns([fieldId, symmetricFieldId]).doNothing()),
           )
           .compile()
@@ -315,7 +315,7 @@ export class RecordMutateVisitor extends AbstractQBMutationVisitor implements IR
           })),
         )
         .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
-        .$if(this.dbProvider.not.isMysql(), (eb) =>
+        .$if(!this.dbProvider.isMysql(), (eb) =>
           eb.onConflict((bd) => bd.columns([fieldId, symmetricFieldId]).doNothing()),
         )
         .compile()

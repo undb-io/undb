@@ -60,7 +60,7 @@ export class DashboardMutateVisitor extends AbstractQBMutationVisitor implements
           .insertInto("undb_dashboard_table_id_mapping")
           .values({ dashboard_id: dashboardId, table_id: tableId })
           .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
-          .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
+          .$if(!this.dbProvider.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
           .compile()
         this.addSql(sql)
       }

@@ -79,7 +79,7 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
         subject_id: field.id.value,
       })
       .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
-      .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
+      .$if(!this.dbProvider.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
       .compile()
     this.addSql(sql)
 
@@ -95,7 +95,7 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
           rollup_table_id: this.table.id.value,
         })
         .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
-        .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
+        .$if(!this.dbProvider.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
         .compile()
       this.addSql(sql)
     } else if (field.type === "reference") {
@@ -108,7 +108,7 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
           foreign_table_id: field.foreignTableId,
         })
         .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
-        .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
+        .$if(!this.dbProvider.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
         .compile()
 
       this.addSql(sql)
@@ -171,7 +171,7 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
         subject_id: views.view.id.value,
       })
       .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
-      .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
+      .$if(!this.dbProvider.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
       .compile()
 
     this.addSql(sql)
@@ -224,7 +224,7 @@ export class TableMutationVisitor extends AbstractQBMutationVisitor implements I
         subject_id: views.form.id,
       })
       .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
-      .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
+      .$if(!this.dbProvider.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
       .compile()
 
     this.addSql(sql)

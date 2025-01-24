@@ -104,7 +104,7 @@ export class TableRepository implements ITableRepository {
       .insertInto("undb_table_id_mapping")
       .values(mapping)
       .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
-      .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
+      .$if(!this.dbProvider.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
       .execute()
 
     for (const view of table.views.views) {
@@ -115,7 +115,7 @@ export class TableRepository implements ITableRepository {
           subject_id: view.id.value,
         })
         .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
-        .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
+        .$if(!this.dbProvider.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
         .execute()
     }
 
@@ -127,7 +127,7 @@ export class TableRepository implements ITableRepository {
           subject_id: form.id,
         })
         .$if(this.dbProvider.isMysql(), (eb) => eb.ignore())
-        .$if(this.dbProvider.not.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
+        .$if(!this.dbProvider.isMysql(), (eb) => eb.onConflict((ob) => ob.doNothing()))
         .execute()
     }
 
