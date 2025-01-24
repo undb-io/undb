@@ -1,10 +1,11 @@
 import type { Client } from "@libsql/client"
 import { LibsqlDialect } from "@libsql/kysely-libsql"
 import { Database as SqliteDatabase } from "bun:sqlite"
-import { MysqlDialect, PostgresDialect } from "kysely"
+import { MysqlDialect } from "kysely"
 import { BunSqliteDialect } from "kysely-bun-sqlite"
+import { PostgresJSDialect } from "kysely-postgres-js"
 import mysql from "mysql2/promise"
-import pg from "pg"
+import postgres from "postgres"
 import { createQueryBuilderWithDialect } from "./qb.util"
 
 export function createTursoQueryBuilder(client: Client) {
@@ -23,10 +24,10 @@ export function createSqliteQueryBuilder(sqlite: SqliteDatabase) {
   )
 }
 
-export function createPostgresQueryBuilder(pg: pg.Pool) {
+export function createPostgresQueryBuilder(pg: postgres.Sql) {
   return createQueryBuilderWithDialect(
-    new PostgresDialect({
-      pool: pg,
+    new PostgresJSDialect({
+      postgres: pg,
     }),
   )
 }
