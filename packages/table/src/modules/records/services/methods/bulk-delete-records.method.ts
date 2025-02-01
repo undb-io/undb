@@ -2,7 +2,7 @@ import { Some } from "@undb/domain"
 import type { IUniqueTableDTO } from "../../../../dto"
 import { withUniqueTable } from "../../../../specifications"
 import { getSpec, replaceCondtionFieldNameWithFieldId } from "../../../schema/fields/condition"
-import { RecordComositeSpecification, RecordDO, type IBulkDeleteRecordsDTO } from "../../record"
+import type { IBulkDeleteRecordsDTO, RecordComositeSpecification, RecordDO } from "../../record"
 import type { RecordsService } from "../records.service"
 
 export async function bulkdeleteRecordsMethod(

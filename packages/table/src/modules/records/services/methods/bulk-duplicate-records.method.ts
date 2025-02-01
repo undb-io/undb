@@ -2,7 +2,7 @@ import { Some } from "@undb/domain"
 import type { IUniqueTableDTO } from "../../../../dto"
 import { withUniqueTable } from "../../../../specifications"
 import { getSpec, replaceCondtionFieldNameWithFieldId } from "../../../schema/fields/condition/condition.util"
-import { RecordComositeSpecification, RecordDO, type IBulkDuplicateRecordsDTO } from "../../record"
+import type { IBulkDuplicateRecordsDTO, RecordComositeSpecification, RecordDO } from "../../record"
 import type { RecordsService } from "../records.service"
 
 export async function bulkduplicateRecordsMethod(

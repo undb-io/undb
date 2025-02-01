@@ -12,7 +12,6 @@
     "dev:docker": "docker compose -f docker-compose.dev.yaml up",
     "dev": "bun --bun turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md,svelte}\"",
     "studio": "drizzle-kit studio --config drizzle.sqlite.config.ts",
     "studio:turso": "drizzle-kit studio --config drizzle.turso.config.ts",
     "generate": "run-s generate:db migrate:deploy",
@@ -29,22 +28,16 @@
     "clean": "run-p clean:*"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "drizzle-kit": "^0.30.2",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.1",
     "npm-run-all2": "^7.0.2",
-    "prettier": "^3.4.2",
     "turbo": "^2.3.3"
-  },
-  "lint-staged": {
-    "**/*": "bunx --bun prettier --write --ignore-unknown"
   },
   "engines": {
     "node": ">=18"
   },
   "packageManager": "bun@1.2.0",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+  "workspaces": ["apps/*", "packages/*"]
 }
