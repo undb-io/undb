@@ -71,7 +71,7 @@ docker run -p 3721:3721 ghcr.io/undb-io/undb:latest
 ```bash
 docker run -d \
   -p 3721:3721 \
-  -v $(pwd)/undb:/usr/src/app/.undb/storage
+  -v $(pwd)/undb:/usr/src/app/.undb/storage \
   -v $(pwd)/undb:/usr/src/app/.undb \
   --name undb \
   ghcr.io/undb-io/undb:latest
