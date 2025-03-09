@@ -1,7 +1,7 @@
-import { Condition, type IRootCondition, createConditionGroup, parseValidCondition } from "@undb/table"
+import { Condition,type IRootCondition,createConditionGroup,parseValidCondition } from "@undb/table"
 import { z } from "@undb/zod"
 
-export const webhookConditionOption = z.undefined()
+export const webhookConditionOption = z.any()
 
 export type IWebhookConditionOptionSchema = typeof webhookConditionOption
 

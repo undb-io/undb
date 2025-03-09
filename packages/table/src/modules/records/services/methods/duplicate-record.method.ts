@@ -1,7 +1,7 @@
 import { Some } from "@undb/domain"
 import type { IUniqueTableDTO } from "../../../../dto"
 import { withUniqueTable } from "../../../../specifications"
-import { RecordDO, RecordIdVO, type IDuplicateRecordDTO } from "../../record"
+import { type IDuplicateRecordDTO, type RecordDO, RecordIdVO } from "../../record"
 import type { RecordsService } from "../records.service"
 
 export async function duplicateRecordMethod(

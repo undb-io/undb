@@ -1,4 +1,4 @@
-import { None, Some, andOptions, type IPagination, type Option, type PaginatedDTO } from "@undb/domain"
+import { type IPagination, None, type Option, type PaginatedDTO, Some, andOptions } from "@undb/domain"
 import type { TableId } from "../../../table-id.vo"
 import type { TableDo } from "../../../table.do"
 import { getSpec } from "../../schema/fields/condition"
