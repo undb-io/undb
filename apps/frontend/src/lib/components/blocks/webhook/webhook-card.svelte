@@ -1,39 +1,42 @@
 <script lang="ts">
-  import * as Card from "$lib/components/ui/card"
-  import type { IWebhookConditionOptionSchema, IWebhookDTO } from "@undb/webhook"
-  import { Label } from "$lib/components/ui/label/index.js"
-  import { Switch } from "$lib/components/ui/switch/index.js"
-  import { DotsHorizontal } from "svelte-radix"
-  import { createMutation, QueryObserver, useQueryClient } from "@tanstack/svelte-query"
-  import { getTable } from "$lib/store/table.store"
-  import { trpc } from "$lib/trpc/client"
-  import { tick } from "svelte"
-  import * as DropdownMenu from "$lib/components/ui/dropdown-menu"
-  import { CopyIcon, PencilIcon, TrashIcon } from "lucide-svelte"
-  import * as AlertDialog from "$lib/components/ui/alert-dialog"
-  import { Button } from "$lib/components/ui/button"
-  import { hasPermission } from "$lib/store/space-member.store"
-  import { toast } from "svelte-sonner"
-  import * as Dialog from "$lib/components/ui/dialog"
-  import { defaults, superForm } from "sveltekit-superforms"
-  import { zodClient } from "sveltekit-superforms/adapters"
-  import { updateWebhookCommand } from "@undb/commands"
-  import * as Form from "$lib/components/ui/form"
-  import { Input } from "$lib/components/ui/input"
-  import * as Select from "$lib/components/ui/select/index.js"
-  import * as Collapsible from "$lib/components/ui/collapsible"
-  import FiltersEditor from "../filters-editor/filters-editor.svelte"
-  import { writable } from "svelte/store"
-  import { type MaybeConditionGroup, parseValidViewFilter } from "@undb/table"
-  import { LL } from "@undb/i18n/client"
+  import * as Card from '$lib/components/ui/card'
+  import type { IWebhookConditionOptionSchema, IWebhookDTO } from '@undb/webhook'
+  import { Label } from '$lib/components/ui/label/index.js'
+  import { Switch } from '$lib/components/ui/switch/index.js'
+  import { DotsHorizontal } from 'svelte-radix'
+  import { createMutation, QueryObserver, useQueryClient } from '@tanstack/svelte-query'
+  import { getTable } from '$lib/store/table.store'
+  import { trpc } from '$lib/trpc/client'
+  import { onMount, tick } from 'svelte'
+  import * as DropdownMenu from '$lib/components/ui/dropdown-menu'
+  import { CopyIcon, PencilIcon, TrashIcon } from 'lucide-svelte'
+  import * as AlertDialog from '$lib/components/ui/alert-dialog'
+  import { Button } from '$lib/components/ui/button'
+  import { hasPermission } from '$lib/store/space-member.store'
+  import { toast } from 'svelte-sonner'
+  import * as Dialog from '$lib/components/ui/dialog'
+  import { defaults, superForm } from 'sveltekit-superforms'
+  import { zodClient } from 'sveltekit-superforms/adapters'
+  import { updateWebhookCommand } from '@undb/commands'
+  import * as Form from '$lib/components/ui/form'
+  import { Input } from '$lib/components/ui/input'
+  import * as Select from '$lib/components/ui/select/index.js'
+  import * as Collapsible from '$lib/components/ui/collapsible'
+  import FiltersEditor from '../filters-editor/filters-editor.svelte'
+  import { writable } from 'svelte/store'
+  import { type MaybeConditionGroup, parseValidViewFilter, toMaybeConditionGroup } from '@undb/table'
+  import { LL } from '@undb/i18n/client'
 
   const table = getTable()
   export let webhook: IWebhookDTO
 
+  $: console.log(webhook)
+  $: console.log(webhook.condition)
+
   let updateOpen = false
 
   const updateWebhookMutation = createMutation({
-    mutationKey: ["table", $table.id.value, "updateWebhook"],
+    mutationKey: ['table', $table.id.value, 'updateWebhook'],
     mutationFn: trpc.webhook.update.mutate,
   })
 
@@ -61,7 +64,7 @@
     ),
     {
       SPA: true,
-      dataType: "json",
+      dataType: 'json',
       validators: zodClient(updateWebhookCommand),
       resetForm: false,
       invalidateAll: false,
@@ -83,11 +86,11 @@
 
   const client = useQueryClient()
   const observer = new QueryObserver(client, {
-    queryKey: ["tables", $table.id.value, "webhooks"],
+    queryKey: ['tables', $table.id.value, 'webhooks'],
   })
 
   const deleteWebhookMutation = createMutation({
-    mutationKey: ["table", $table.id.value, "deleteWebhook"],
+    mutationKey: ['table', $table.id.value, 'deleteWebhook'],
     mutationFn: trpc.webhook.delete.mutate,
     onError(error, variables, context) {
       toast.error(error.message)
@@ -97,7 +100,9 @@
     },
   })
 
-  const condition = writable<MaybeConditionGroup<IWebhookConditionOptionSchema> | undefined>()
+  const condition = writable<MaybeConditionGroup<IWebhookConditionOptionSchema> | undefined>(
+    toMaybeConditionGroup(webhook?.condition),
+  )
   $: validCondition = $condition ? parseValidViewFilter($table.schema, $condition) : undefined
   $: validCondition,
     formData.update(($form) => {
@@ -120,6 +125,9 @@
     : undefined
 
   let enableCondition = false
+  onMount(() => {
+    enableCondition = webhook?.condition !== undefined
+  })
 </script>
 
 <Card.Root>
@@ -143,8 +151,8 @@
 
       <div class="flex items-center gap-2">
         <div class="flex items-center space-x-2">
-          <Switch size="sm" id={"enabled" + webhook.id} bind:checked={webhook.enabled} on:click={updateWebhook} />
-          <Label class="text-xs" for={"enabled" + webhook.id}>{$LL.common.enabled()}</Label>
+          <Switch size="sm" id={'enabled' + webhook.id} bind:checked={webhook.enabled} on:click={updateWebhook} />
+          <Label class="text-xs" for={'enabled' + webhook.id}>{$LL.common.enabled()}</Label>
         </div>
 
         <DropdownMenu.Root>
@@ -184,7 +192,7 @@
                         variant="destructive"
                         builders={[builder]}
                         disabled={//
-                        $deleteWebhookMutation.isPending || !$hasPermission("space:delete")}
+                        $deleteWebhookMutation.isPending || !$hasPermission('space:delete')}
                         on:click={async () => {
                           await $deleteWebhookMutation.mutateAsync({ id: webhook.id })
                         }}
@@ -269,9 +277,9 @@
               <Select.Value placeholder="Select a event" />
             </Select.Trigger>
             <Select.Content>
-              <Select.Item value="record.created" label="{$LL.events.record.created()}" />
-              <Select.Item value="record.updated" label="{$LL.events.record.updated()}" />
-              <Select.Item value="record.deleted" label="{$LL.events.record.deleted()}" />
+              <Select.Item value="record.created" label={$LL.table.events.record.created()} />
+              <Select.Item value="record.updated" label={$LL.table.events.record.updated()} />
+              <Select.Item value="record.deleted" label={$LL.table.events.record.deleted()} />
             </Select.Content>
           </Select.Root>
           <input hidden bind:value={$formData.event} name={attrs.name} />

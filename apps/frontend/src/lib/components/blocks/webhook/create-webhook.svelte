@@ -1,23 +1,23 @@
 <script lang="ts">
-  import * as Form from "$lib/components/ui/form"
-  import * as Select from "$lib/components/ui/select/index.js"
-  import * as Collapsible from "$lib/components/ui/collapsible"
-  import { Switch } from "$lib/components/ui/switch"
-  import { Label } from "$lib/components/ui/label"
-  import { trpc } from "$lib/trpc/client.js"
-  import { createMutation, useQueryClient } from "@tanstack/svelte-query"
-  import SuperDebug, { superForm, defaults } from "sveltekit-superforms"
-  import { createWebhookCommand, type ICreateWebhookCommand } from "@undb/commands"
-  import { zodClient } from "sveltekit-superforms/adapters"
-  import { Input } from "$lib/components/ui/input"
-  import { toast } from "svelte-sonner"
-  import { getTable } from "$lib/store/table.store"
-  import FiltersEditor from "../filters-editor/filters-editor.svelte"
-  import { type MaybeConditionGroup, parseValidViewFilter } from "@undb/table"
-  import { writable } from "svelte/store"
-  import { closeModal, CREATE_WEBHOOK_MODAL } from "$lib/store/modal.store"
-  import type { IWebhookConditionOptionSchema } from "@undb/webhook"
-  import { LL } from "@undb/i18n/client"
+  import * as Form from '$lib/components/ui/form'
+  import * as Select from '$lib/components/ui/select/index.js'
+  import * as Collapsible from '$lib/components/ui/collapsible'
+  import { Switch } from '$lib/components/ui/switch'
+  import { Label } from '$lib/components/ui/label'
+  import { trpc } from '$lib/trpc/client.js'
+  import { createMutation, useQueryClient } from '@tanstack/svelte-query'
+  import SuperDebug, { superForm, defaults } from 'sveltekit-superforms'
+  import { createWebhookCommand, type ICreateWebhookCommand } from '@undb/commands'
+  import { zodClient } from 'sveltekit-superforms/adapters'
+  import { Input } from '$lib/components/ui/input'
+  import { toast } from 'svelte-sonner'
+  import { getTable } from '$lib/store/table.store'
+  import FiltersEditor from '../filters-editor/filters-editor.svelte'
+  import { type MaybeConditionGroup, parseValidViewFilter } from '@undb/table'
+  import { writable } from 'svelte/store'
+  import { closeModal, CREATE_WEBHOOK_MODAL } from '$lib/store/modal.store'
+  import type { IWebhookConditionOptionSchema } from '@undb/webhook'
+  import { LL } from '@undb/i18n/client'
 
   const table = getTable()
 
@@ -28,7 +28,7 @@
       form.reset()
       closeModal(CREATE_WEBHOOK_MODAL)
       await client.invalidateQueries({
-        queryKey: ["tables", $table.id.value, "webhooks"],
+        queryKey: ['tables', $table.id.value, 'webhooks'],
       })
     },
     onError(error) {
@@ -39,24 +39,27 @@
   const form = superForm<ICreateWebhookCommand>(
     defaults(
       {
-        name: "webhook",
-        method: "POST",
-        url: "",
+        name: 'webhook',
+        method: 'POST',
+        url: '',
         tableId: $table.id.value,
         enabled: true,
         headers: {},
-        event: "record.created",
+        event: 'record.created',
       },
       zodClient(createWebhookCommand),
     ),
     {
       SPA: true,
-      dataType: "json",
+      dataType: 'json',
       validators: zodClient(createWebhookCommand),
       resetForm: false,
       invalidateAll: true,
       onUpdate(event) {
-        if (!event.form.valid) return
+        if (!event.form.valid) {
+          console.log(event.form.errors)
+          return
+        }
 
         $createWebhookMutation.mutate(event.form.data)
       },
@@ -65,7 +68,7 @@
 
   const { form: formData, enhance, allErrors } = form
 
-  const condition = writable<MaybeConditionGroup<IWebhookConditionOptionSchema> | undefined>()
+  const condition = writable<MaybeConditionGroup<any> | undefined>()
   $: validCondition = $condition ? parseValidViewFilter($table.schema, $condition) : undefined
   $: validCondition,
     formData.update(($form) => {

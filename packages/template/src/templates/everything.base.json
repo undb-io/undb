@@ -49,6 +49,29 @@
           "Date Range": {
             "id": "basic_field_types_date_range",
             "type": "dateRange"
+          },
+          "Select": {
+            "id": "basic_field_types_select",
+            "type": "select",
+            "option": {
+              "options": [
+                {
+                  "id": "basic_field_types_select_option_1",
+                  "color": "red",
+                  "name": "Option 1"
+                },
+                {
+                  "id": "basic_field_types_select_option_2",
+                  "color": "blue",
+                  "name": "Option 2"
+                },
+                {
+                  "id": "basic_field_types_select_option_3",
+                  "color": "green",
+                  "name": "Option 3"
+                }
+              ]
+            }
           }
         },
         "records": [
