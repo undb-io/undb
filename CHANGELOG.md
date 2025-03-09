@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-142
+
+
+### 🩹 Fixes
+
+- Fix volume ([db6762d](https://github.com/undb-io/undb/commit/db6762d))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](https://github.com/nichenqin))
+
 ## v1.0.0-141
 
 
