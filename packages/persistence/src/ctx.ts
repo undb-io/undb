@@ -1,8 +1,8 @@
-import { inject, singleton } from "@undb/di"
+import { inject,singleton } from "@undb/di"
 import { AsyncLocalStorage } from "node:async_hooks"
 import type { ITxContext } from "./ctx.interface"
 import { injectQueryBuilder } from "./qb.provider"
-import type { AnonymousTx, IQueryBuilder, Tx } from "./qb.type"
+import type { AnonymousTx,IQueryBuilder,Tx } from "./qb.type"
 
 export interface TxContext {
   trx: Tx | AnonymousTx
@@ -22,15 +22,21 @@ export class TxContextImpl implements ITxContext {
 
   withTransaction<T = any>(callback: () => Promise<T>): Promise<T> {
     return this.qb.transaction().execute(async (trx) => {
-      return new Promise(async (resolve, reject) => {
-        this.startTransaction(trx)
-        try {
-          const result = await callback()
-          resolve(result)
-        } catch (error) {
-          reject(error)
-        }
-      })
+      let storeExisted = false
+      const currentStore = this.context.getStore()
+      if (currentStore?.trx) {
+        storeExisted = true
+        return callback()
+      }
+
+      // 创建新事务上下文
+      this.startTransaction(trx);
+      try {
+        const result = await callback();
+        return result;
+      } catch (error) {
+        throw error;
+      }
     })
   }
 

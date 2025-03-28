@@ -7,22 +7,22 @@ import {
 } from "@undb/authz"
 import { AcceptInvitationCommand } from "@undb/commands"
 import type { ContextMember } from "@undb/context"
-import { type IContext, injectContext } from "@undb/context"
-import { executionContext, setContextValue } from "@undb/context/server"
+import { type IContext,injectContext } from "@undb/context"
+import { executionContext,setContextValue } from "@undb/context/server"
 import { CommandBus } from "@undb/cqrs"
-import { container, inject, singleton } from "@undb/di"
-import { None, Option, Some } from "@undb/domain"
+import { container,inject,singleton } from "@undb/di"
+import { None,Option,Some } from "@undb/domain"
 import { env } from "@undb/env"
 import { createLogger } from "@undb/logger"
-import { type IMailService, injectMailService } from "@undb/mail"
-import { type IQueryBuilder, type ITxContext, injectQueryBuilder, injectTxCTX } from "@undb/persistence/server"
-import { type ISpaceService, injectSpaceService } from "@undb/space"
-import { Context, Elysia, t } from "elysia"
-import type { Session, User } from "lucia"
-import { Lucia, generateIdFromEntropySize } from "lucia"
-import { TimeSpan, createDate, isWithinExpirationDate } from "oslo"
+import { type IMailService,injectMailService } from "@undb/mail"
+import { type IQueryBuilder,type ITxContext,injectQueryBuilder,injectTxCTX } from "@undb/persistence/server"
+import { type ISpaceService,injectSpaceService } from "@undb/space"
+import { Context,Elysia,t } from "elysia"
+import type { Session,User } from "lucia"
+import { Lucia,generateIdFromEntropySize } from "lucia"
+import { TimeSpan,createDate,isWithinExpirationDate } from "oslo"
 import { Cookie } from "oslo/cookie"
-import { alphabet, generateRandomString, sha256 } from "oslo/crypto"
+import { alphabet,generateRandomString,sha256 } from "oslo/crypto"
 import { encodeHex } from "oslo/encoding"
 import { omit } from "radash"
 import { v7 } from "uuid"
@@ -632,7 +632,6 @@ export class Auth {
       .get(
         "/invitation/:invitationId/accept",
         async (ctx) => {
-          return this.txContext.withTransaction(async () => {
             const { invitationId } = ctx.params
             await this.commandBus.execute(new AcceptInvitationCommand({ id: invitationId }))
 
@@ -673,7 +672,6 @@ export class Auth {
               const sessionCookie = this.lucia.createSessionCookie(session.id)
               return redirectToSignupOrLogin("login", email, sessionCookie)
             }
-          })
         },
         {
           params: t.Object({
