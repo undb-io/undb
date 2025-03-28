@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.0.0-143
+
+
+### 🩹 Fixes
+
+- Fix sqlite database tx ([61b124c](https://github.com/undb-io/undb/commit/61b124c))
+
+### ❤️ Contributors
+
+- Nichenqin ([@nichenqin](https://github.com/nichenqin))
+
 ## v1.0.0-142
 
 
