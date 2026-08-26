@@ -82,6 +82,12 @@ docker run -d \
   <img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render">
 </a>
 
+### Deploy on RepoCloud
+
+<a href="https://repocloud.io/details/Undb/">
+  <img src="https://d16t0pc4846x52.cloudfront.net/deploylobe.svg" alt="Deploy on RepoCloud">
+</a>
+
 ## Development
 
 ### Local Development (Recommended)
